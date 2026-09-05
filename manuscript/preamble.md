@@ -108,12 +108,21 @@
 % Unicode-capable mono font for Lean code listings. Pandoc's Highlighting
 % (fancyvrb) environment defaults to \ttfamily = lmtt, which lacks the Greek
 % and mathematical glyphs used in the catalogue. FreeSerif covers the complete
-% audited prose glyph set; FreeMono preserves fixed-width code. XeTeX character
-% transitions supply the four mathematical-script carrier names that FreeMono
-% does not contain, without changing the spacing of the surrounding code.
+% audited prose glyph set.
+%
+% The code face is JuliaMono, not FreeMono. Lean 4 sources in this catalogue
+% use Unicode subscript/superscript operator suffixes (``\circ\_m``, ``\otimes\_m``,
+% ``\circ\_k``, ``\forall^m``, ``s^c``, ``\mu\_i``, ``\ldots`` = U+2098 U+2096 U+1D50
+% U+209A U+1D62 U+1D9C). FreeMono contains none of them, so XeTeX dropped
+% every occurrence silently and printed, among others, the complement lemma
+% ``\mu s^c = 1 - \mu s`` as the false statement ``\mu s = 1 - \mu s``. JuliaMono
+% is built for exactly this: full Subscripts-and-Superscripts (U+2070-U+209F)
+% and Phonetic-Extensions coverage at fixed width. Verify a candidate face with
+% ``fc-list ":charset=2098 2096 1D50 209A 1D62 1D9C" family`` before changing it,
+% and keep the ``Missing character`` count in the render log at zero.
 \usepackage{fontspec}
 \setmainfont{FreeSerif}
-\setmonofont{FreeMono}[Scale=MatchLowercase]
+\setmonofont{JuliaMono}[Scale=MatchLowercase]
 \usepackage{ucharclasses}
 \newfontfamily\leanunicodefont{FreeSerif}
 \setTransitionsFor{MathematicalAlphanumericSymbols}{\leanunicodefont}{}
