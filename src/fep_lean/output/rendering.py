@@ -24,6 +24,11 @@ SOURCE_EXCLUDES = frozenset(
         "09z_unified_formalism_catalogue.md",
     }
 )
+# Generated appendices that carry no ``{{placeholder}}`` and therefore need no
+# substitution, but must still reach the rendered tree. They were previously
+# only excluded, so an injected-tree render dropped the entire 155-topic
+# formalism catalogue -- roughly two thirds of the paper -- with no diagnostic.
+VERBATIM_SOURCES: tuple[str, ...] = ("09z_unified_formalism_catalogue.md",)
 MANUSCRIPT_ASSETS: dict[str, tuple[Path, Path]] = {
     "../docs/formalism-atlas.svg": (
         Path("docs/formalism-atlas.svg"),
@@ -46,6 +51,19 @@ MANUSCRIPT_ASSETS: dict[str, tuple[Path, Path]] = {
     "../output/figures/status_distribution.png": (
         Path("output/figures/status_distribution.png"),
         Path("assets/status_distribution.png"),
+    ),
+    # Rasterized from the SVG projections by
+    # ``scripts/build_manuscript_figures.py`` (fep_lean.output.svg_raster).
+    # 04f and 04g cite these two as PNGs; without the rows here the combined
+    # render kept an escaping ``../`` path and aborted on
+    # ``! Unable to load picture or PDF file``.
+    "../output/figures/formalism-atlas.png": (
+        Path("output/figures/formalism-atlas.png"),
+        Path("assets/formalism-atlas.png"),
+    ),
+    "../output/figures/formal-kernel-dashboard.png": (
+        Path("output/figures/formal-kernel-dashboard.png"),
+        Path("assets/formal-kernel-dashboard.png"),
     ),
 }
 
@@ -247,6 +265,12 @@ def render_manuscript(
                 reference, destination_relative.as_posix()
             )
         rendered_contents[source_path] = rendered_content
+
+    # Verbatim generated appendices: no substitution, but they must ship.
+    for verbatim_name in VERBATIM_SOURCES:
+        verbatim_path = source / verbatim_name
+        if verbatim_path.is_file():
+            rendered_contents[verbatim_path] = verbatim_path.read_text(encoding="utf-8")
 
     destination.parent.mkdir(parents=True, exist_ok=True)
     staged = Path(

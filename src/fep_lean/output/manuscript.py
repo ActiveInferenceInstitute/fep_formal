@@ -10,6 +10,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +30,11 @@ from fep_lean.output.publication_metadata import (
 )
 
 UNIFIED_FORMALISM_CATALOGUE_FILENAME = "09z_unified_formalism_catalogue.md"
-_RUN_BOUND_MANUSCRIPT_KEYS = frozenset({"compile_rate", "full", "hermes", "verify"})
+# ``source`` carries the checkout identity and the wall-clock render date, so
+# it is run-bound by construction and must not participate in drift equality.
+_RUN_BOUND_MANUSCRIPT_KEYS = frozenset(
+    {"compile_rate", "full", "hermes", "source", "verify"}
+)
 _TEST_COLLECTION_CACHE_SCHEMA_VERSION = 4
 _TEST_COLLECTION_PLUGIN_DISTRIBUTIONS = ("pytest", "pytest-timeout")
 _TEST_COLLECTION_EXPLICIT_PLUGINS = ("pytest_timeout",)
@@ -52,6 +57,66 @@ _TEST_COLLECTION_TEMP_ENVIRONMENT_POLICY = {
     "TMPDIR": ".",
     "XDG_CACHE_HOME": "xdg-cache",
 }
+
+
+def _git_output(project_root: Path, arguments: list[str]) -> str:
+    """Return trimmed ``git`` stdout, or the empty string when git cannot answer."""
+
+    try:
+        completed = subprocess.run(  # nosec B603 B607 - fixed argv, shell=False
+            ["git", "-C", str(project_root), *arguments],
+            capture_output=True,
+            check=False,
+            text=True,
+            timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    if completed.returncode != 0:
+        return ""
+    return completed.stdout.strip()
+
+
+def _source_stamp_vars(project_root: Path) -> dict[str, str]:
+    """Return the checkout identity this render describes.
+
+    The title page carries an authored ``paper.version``/``paper.date`` from
+    ``manuscript/config.yaml``, which a reader uses to fetch the sources behind
+    the numbers.  When the checkout has moved past the stamped tag, those two
+    fields silently describe a different tree: the audited v1.1.0 stamp sat on
+    a paper whose live-token counts came from a tree 15,033 Lean lines newer,
+    and no reader could reproduce a single headline count from the tag.
+
+    These variables are the reproducible complement -- the exact commit the
+    numbers were computed from, whether that checkout was clean, and when the
+    render happened.  Every value is computed; none is authored.
+    """
+
+    root = Path(project_root)
+    commit = _git_output(root, ["rev-parse", "HEAD"])
+    short_commit = _git_output(root, ["rev-parse", "--short=12", "HEAD"])
+    describe = _git_output(root, ["describe", "--tags", "--always", "--dirty"])
+    exact_tag = _git_output(root, ["describe", "--exact-match", "--tags", "HEAD"])
+    porcelain = _git_output(root, ["status", "--porcelain"])
+    commit_date = _git_output(root, ["log", "-1", "--format=%cI"])
+    dirty = bool(porcelain)
+    stamp = short_commit or "unknown"
+    if dirty:
+        stamp = f"{stamp} (uncommitted changes present)"
+    return {
+        "commit": commit or "unknown",
+        "short_commit": short_commit or "unknown",
+        "describe": describe or "unknown",
+        "exact_tag": exact_tag or "none",
+        "commit_date": commit_date or "unknown",
+        "dirty": "true" if dirty else "false",
+        "render_date": datetime.now(UTC).date().isoformat(),
+        # One ready-to-typeset line for the title page.
+        "stamp": (
+            f"source snapshot {stamp}, rendered "
+            f"{datetime.now(UTC).date().isoformat()}"
+        ),
+    }
 
 
 def _read_toolchain_vars(project_root: Path) -> dict[str, str]:
@@ -859,6 +924,7 @@ def build_manuscript_vars(
         },
         "compile_rate": compile_rate,
         **_read_toolchain_vars(project_root),
+        "source": _source_stamp_vars(project_root),
         "verify": verify,
         "full": {
             "claim_ready": manifest is not None,

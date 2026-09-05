@@ -68,6 +68,19 @@
 % cleveref after bookmark so cross-references are defined in the preamble and
 % retain the package ordering required by cleveref.
 \AddToHook{package/bookmark/after}{\RequirePackage{cleveref}}
+% Headings that name real identifiers (``lean_verifier.py``,
+% ``verify_batch(max_workers=1)``, ``FEP_LEAN_VERIFY_VERBOSE=1``) reach
+% hyperref's PDF-string sanitizer as ``\_``, which it drops with
+% ``Token not allowed in a PDF string ... removing `subscript'``. The visible
+% heading stays correct but the bookmark pane then names symbols that do not
+% exist (``leanverifier.py``, ``verifybatch(maxworkers=1)``). Bind ``\_`` to a
+% literal underscore for the PDF-string branch only; text mode is untouched.
+\AddToHook{package/bookmark/after}{%
+  \pdfstringdefDisableCommands{%
+    \def\_{\string_}%
+    \def\textunderscore{\string_}%
+  }%
+}
 
 % ── Styled theorem/code panels ───────────────────────────────────
 % tcolorbox intentionally NOT loaded: the only style it defined (lean4box)
