@@ -43,6 +43,13 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="directory holding the compiler logs (default: output/pdf)",
     )
+    parser.add_argument(
+        "--manuscript-dir",
+        type=Path,
+        default=None,
+        help="authored manuscript sources to compare the render against "
+        "(default: manuscript)",
+    )
     return parser
 
 
@@ -51,6 +58,11 @@ def main(argv: list[str] | None = None) -> int:
     project_root = Path(__file__).resolve().parents[1]
     pdf_dir = (
         args.pdf_dir if args.pdf_dir is not None else project_root / "output" / "pdf"
+    )
+    manuscript_dir = (
+        args.manuscript_dir
+        if args.manuscript_dir is not None
+        else project_root / "manuscript"
     )
     results = render_log_defects(pdf_dir)
     failed = False
@@ -68,12 +80,10 @@ def main(argv: list[str] | None = None) -> int:
     # line it became. Reading the committed projection costs nothing and keeps
     # this acceptance script free of the catalogue build.
     variables = None
-    vars_path = project_root / "manuscript" / "manuscript_vars.yaml"
+    vars_path = manuscript_dir / "manuscript_vars.yaml"
     if vars_path.is_file():
         variables = yaml.safe_load(vars_path.read_text(encoding="utf-8"))
-    stale = stale_render_defects(
-        project_root / "manuscript", pdf_dir, variables=variables
-    )
+    stale = stale_render_defects(manuscript_dir, pdf_dir, variables=variables)
     for line in stale:
         print(f"FAIL: {line}")
     if not stale:

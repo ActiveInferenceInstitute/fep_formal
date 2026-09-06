@@ -42,6 +42,7 @@ if __name__ == "__main__":
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from check_render_log import main as accept_render
+from render_manuscript import main as render_sources
 
 from fep_lean.output.render_fonts import (
     FontProbeError,
@@ -55,6 +56,7 @@ TEMPLATE_ENVIRONMENT_VARIABLE = "FEP_LEAN_TEMPLATE_DIR"
 # share its output tree. The lock is a directory because ``mkdir`` is atomic.
 LOCK_ENVIRONMENT_VARIABLE = "DOCXOLOGY_RENDER_LOCK"
 Runner = Callable[[Sequence[str], Path], int]
+Hydrator = Callable[[], int]
 
 
 def default_runner(command: Sequence[str], cwd: Path) -> int:
@@ -103,10 +105,21 @@ def render_publication(
     template: Path,
     *,
     runner: Runner = default_runner,
+    hydrator: Hydrator | None = None,
     project: str = PROJECT_NAME,
     skip_probe: bool = False,
 ) -> int:
-    """Render through the template, then accept or reject the result.
+    """Hydrate the sources, render through the template, then accept or reject.
+
+    The hydration step is neither optional nor the template's job. The template
+    renders from ``output/manuscript`` whenever that directory exists
+    (``infrastructure/rendering/_manuscript_source.resolve_manuscript_dir``)
+    and refreshes only ``config.yaml`` and ``preamble.md`` inside it; its own
+    hydration hook looks for a ``scripts/z_generate_manuscript_variables.py``
+    this project does not have, and silently does nothing. A render run without
+    this step therefore typesets whatever the project's renderer last wrote
+    there -- which is how a render made after two chapters were fixed
+    reproduced their drift exactly.
 
     The template's exit code is reported but never sufficient: the acceptance
     runs whatever it was, because the failure this guards against is exactly a
@@ -128,6 +141,13 @@ def render_publication(
             )
             return 1
         print("OK: every typeset codepoint is covered by an installed font")
+    hydration = (hydrator or (lambda: render_sources([])))()
+    if hydration != 0:
+        print(
+            "FAIL: the authored sources did not render; refusing to typeset "
+            "whatever output/manuscript happens to hold"
+        )
+        return 1
     command = [
         "uv",
         "run",
@@ -139,7 +159,14 @@ def render_publication(
     ]
     render_status = runner(command, template)
     print(f"Template render exit={render_status}")
-    acceptance = accept_render(["--pdf-dir", str(project_root / "output" / "pdf")])
+    acceptance = accept_render(
+        [
+            "--pdf-dir",
+            str(project_root / "output" / "pdf"),
+            "--manuscript-dir",
+            str(project_root / "manuscript"),
+        ]
+    )
     if render_status != 0:
         print("FAIL: the template's render stage reported failure")
     if acceptance != 0:
@@ -183,7 +210,14 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     project_root = Path(__file__).resolve().parents[1]
     if args.accept_only:
-        return accept_render(["--pdf-dir", str(project_root / "output" / "pdf")])
+        return accept_render(
+            [
+                "--pdf-dir",
+                str(project_root / "output" / "pdf"),
+                "--manuscript-dir",
+                str(project_root / "manuscript"),
+            ]
+        )
     try:
         template = resolve_template(args.template)
     except FileNotFoundError as error:

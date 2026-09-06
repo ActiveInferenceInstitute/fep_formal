@@ -68,6 +68,11 @@ def _successful_template(_command: Sequence[str], _cwd: Path) -> int:
     return 0
 
 
+def _hydrated() -> int:
+    """A successful authored-source render."""
+    return 0
+
+
 def test_a_successful_template_render_over_a_dirty_log_is_rejected(
     tmp_path: Path,
 ) -> None:
@@ -75,7 +80,11 @@ def test_a_successful_template_render_over_a_dirty_log_is_rejected(
     project = _project(tmp_path, DIRTY_LOG)
 
     status = driver.render_publication(
-        project, tmp_path / "template", runner=_successful_template, skip_probe=True
+        project,
+        tmp_path / "template",
+        runner=_successful_template,
+        hydrator=_hydrated,
+        skip_probe=True,
     )
 
     assert status == 1
@@ -86,7 +95,11 @@ def test_a_clean_render_is_accepted(tmp_path: Path) -> None:
     project = _project(tmp_path, CLEAN_LOG)
 
     status = driver.render_publication(
-        project, tmp_path / "template", runner=_successful_template, skip_probe=True
+        project,
+        tmp_path / "template",
+        runner=_successful_template,
+        hydrator=_hydrated,
+        skip_probe=True,
     )
 
     assert status == 0
@@ -100,6 +113,7 @@ def test_a_failed_template_render_is_never_accepted(tmp_path: Path) -> None:
         project,
         tmp_path / "template",
         runner=lambda _command, _cwd: 1,
+        hydrator=_hydrated,
         skip_probe=True,
     )
 
@@ -118,7 +132,11 @@ def test_acceptance_runs_even_when_the_template_failed(tmp_path: Path) -> None:
 
     assert (
         driver.render_publication(
-            project, tmp_path / "template", runner=runner, skip_probe=True
+            project,
+            tmp_path / "template",
+            runner=runner,
+            hydrator=_hydrated,
+            skip_probe=True,
         )
         == 1
     )
@@ -136,7 +154,11 @@ def test_the_render_command_is_the_documented_template_stage(tmp_path: Path) -> 
         return 0
 
     driver.render_publication(
-        project, tmp_path / "template", runner=runner, skip_probe=True
+        project,
+        tmp_path / "template",
+        runner=runner,
+        hydrator=_hydrated,
+        skip_probe=True,
     )
 
     assert seen == [
@@ -183,3 +205,54 @@ def test_the_shared_render_lock_is_exclusive(tmp_path: Path) -> None:
     assert driver.acquire_lock(lock, timeout_s=0) is False
     lock.rmdir()
     assert driver.acquire_lock(lock, timeout_s=0) is True
+
+
+def test_sources_that_will_not_render_stop_the_publication(tmp_path: Path) -> None:
+    """The template typesets output/manuscript, so unhydrated sources ship stale.
+
+    The template renders from the project's own rendered tree when it exists
+    and its hydration hook does not fire for this project, so a render run
+    without a successful source render reproduces whatever was typeset last.
+    """
+    driver = _driver()
+    project = _project(tmp_path, CLEAN_LOG)
+    rendered: list[str] = []
+
+    def runner(_command: Sequence[str], _cwd: Path) -> int:
+        rendered.append("template ran")
+        return 0
+
+    status = driver.render_publication(
+        project,
+        tmp_path / "template",
+        runner=runner,
+        hydrator=lambda: 1,
+        skip_probe=True,
+    )
+
+    assert status == 1
+    assert rendered == []
+
+
+def test_the_sources_are_hydrated_before_the_template_runs(tmp_path: Path) -> None:
+    driver = _driver()
+    project = _project(tmp_path, CLEAN_LOG)
+    order: list[str] = []
+
+    def runner(_command: Sequence[str], _cwd: Path) -> int:
+        order.append("template")
+        return 0
+
+    def hydrator() -> int:
+        order.append("hydrate")
+        return 0
+
+    driver.render_publication(
+        project,
+        tmp_path / "template",
+        runner=runner,
+        hydrator=hydrator,
+        skip_probe=True,
+    )
+
+    assert order == ["hydrate", "template"]

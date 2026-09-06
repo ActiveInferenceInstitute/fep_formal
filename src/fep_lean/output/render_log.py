@@ -260,45 +260,39 @@ def stale_render_defects(
     variables: Mapping[str, Any] | None = None,
     max_lines: int = 3,
 ) -> tuple[str, ...]:
-    """Return every manuscript source whose text is not in the combined render.
+    """Return every authored source whose text is not in the combined render.
 
-    An audit of the shipped PDF found it predated two of its own chapters, and
-    one prose line had genuinely drifted: 02b said "The table below reports ..."
-    while the rendered document still said "Table 1 reports ...". Nothing in the
-    pipeline noticed, because the compiler log of a render says nothing about
-    what changed after it.
+    Two failures produced the same artifact, and both are checked here by the
+    same test. The audited PDF predated two of its own chapters and one prose
+    line had genuinely drifted -- 02b said "The table below reports ..." while
+    the render still said "Table 1 reports ...". Then a later render, run after
+    those chapters were fixed, reproduced the drift exactly: the shared
+    template renders from ``output/manuscript`` when that directory exists, so
+    a render whose *inputs* were never regenerated is newer than every authored
+    source and still describes an older tree.
 
-    Modification time alone is the wrong test, and the first version of this
-    guard proved it: regenerating ``09z`` and ``manuscript_vars.yaml`` to
-    byte-identical content moved their mtimes and failed the render they
-    describe exactly. Mtime is kept as the cheap trigger -- nothing older than
-    the render can have changed since -- and the verdict is content: a source is
-    stale only when a line of it, substituted the way the renderer substitutes
-    it, is absent from the combined render.
+    Modification time cannot see the second case and got the first one wrong
+    too: regenerating two files to byte-identical content moved their mtimes
+    and failed the render they describe exactly. So no source is skipped and no
+    mtime is read. A source is stale when a line of it, substituted the way the
+    renderer substitutes it, is not a line of the combined document.
 
     ``variables`` is the render's own variable mapping. Without it, lines
     carrying ``{{placeholder}}`` tokens cannot be compared and are skipped, so
-    pass it wherever it is available. A change to ``manuscript_vars.yaml``
-    re-checks every source, because a changed value drifts a chapter that was
-    itself never touched.
+    pass it wherever it is available.
     """
 
     combined = Path(pdf_dir) / combined_name
     if not combined.is_file():
         return (f"{combined}: combined render is absent; nothing to compare against",)
-    rendered_at = combined.stat().st_mtime
-    rendered_text = combined.read_text(encoding="utf-8", errors="replace")
+    rendered_lines = {
+        line.strip()
+        for line in combined.read_text(encoding="utf-8", errors="replace").splitlines()
+    }
     manuscript = Path(manuscript_dir)
-    sources = [
-        path
-        for path in sorted(manuscript.glob("*.md"))
-        if path.name not in _NON_RENDERED_MANUSCRIPT_FILES
-    ]
-    vars_path = manuscript / "manuscript_vars.yaml"
-    variables_changed = vars_path.is_file() and vars_path.stat().st_mtime > rendered_at
     stale: list[str] = []
-    for source in sources:
-        if not variables_changed and source.stat().st_mtime <= rendered_at:
+    for source in sorted(manuscript.glob("*.md")):
+        if source.name in _NON_RENDERED_MANUSCRIPT_FILES:
             continue
         text = source.read_text(encoding="utf-8", errors="replace")
         if variables is not None:
@@ -306,7 +300,8 @@ def stale_render_defects(
         missing = [
             line
             for line in _significant_lines(text)
-            if ("{{" not in line or variables is not None) and line not in rendered_text
+            if ("{{" not in line or variables is not None)
+            and line not in rendered_lines
         ]
         if not missing:
             continue

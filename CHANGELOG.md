@@ -53,11 +53,17 @@
   `--check`ed in CI; `scripts/build_render_fonts.py --probe` asks the host's
   fontconfig whether the selected faces cover the set, and
   `render_publication.py` runs it as a preflight.
-- Judged render staleness by content instead of modification time. The first
-  guard failed the delivered artifact because regenerating two files to
-  byte-identical content moved their mtimes; mtime is now the trigger and the
-  verdict is whether the source's own lines, substituted the way the renderer
-  substitutes them, are in the combined document.
+- Judged render staleness by content instead of modification time, over every
+  authored source rather than the ones a clock singles out. The first guard
+  failed the delivered artifact because regenerating two files to
+  byte-identical content moved their mtimes, and it could not have caught the
+  opposite case at all: the template renders from `output/manuscript` when that
+  directory exists and its hydration hook does not fire for this project, so a
+  render made after two chapters were fixed reproduced their drift exactly
+  while being newer than every source. The verdict is now whether each source's
+  own lines, substituted the way the renderer substitutes them, are lines of
+  the combined document -- and `render_publication.py` renders the authored
+  sources itself before handing off to the template.
 - Linked into the repository through a ref that resolves. Five source links
   were pinned to a commit that existed only locally, so all five 404ed in the
   published PDF; they now resolve through the commit once it is on the remote

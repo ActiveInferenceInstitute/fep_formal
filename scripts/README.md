@@ -55,9 +55,13 @@ uv run python scripts/render_manuscript.py --check
 uv run python scripts/render_manuscript.py
 ```
 
-`render_publication.py` is the publication entry point: it runs the shared
-rendering template's PDF stage and then this repository's own acceptance, and
-its exit code is the conjunction of the two. The template compiles with
+`render_publication.py` is the publication entry point: it renders the authored
+sources into `output/manuscript/`, runs the shared rendering template's PDF
+stage, and then runs this repository's own acceptance; its exit code is the
+conjunction. The first step is load-bearing: the template renders from
+`output/manuscript/` whenever it exists and its hydration hook looks for a
+generator script this project does not have, so a render invoked without it
+typesets whatever that directory last held. The template compiles with
 `-interaction=nonstopmode` and tests its log for four fatal markers, so a `!`
 error and every `Missing character:` note exit zero with a PDF written -- the
 mechanism that shipped 162 dropped glyphs and one false printed theorem. The

@@ -288,15 +288,24 @@ def test_a_drifted_prose_line_is_stale(tmp_path: Path) -> None:
     assert "The table below reports" in defects[0]
 
 
-def test_a_source_older_than_the_render_is_not_read(tmp_path: Path) -> None:
-    """Nothing older than the render can have changed since it was written."""
+def test_a_render_newer_than_every_source_can_still_be_stale(tmp_path: Path) -> None:
+    """The second failure this guard exists for.
+
+    The shared template renders from the project's own rendered tree, so a
+    render whose inputs were never regenerated is newer than every authored
+    source and still typesets the drift. Mtime cannot see that; content can.
+    """
     manuscript, pdf = _stale_tree(
         tmp_path,
         CHAPTER,
         RENDERED.replace("The table below reports", "Table 1 reports"),
     )
     os.utime(manuscript / "02b_background.md", (500, 500))
-    assert stale_render_defects(manuscript, pdf) == ()
+
+    defects = stale_render_defects(manuscript, pdf)
+
+    assert len(defects) == 1
+    assert "The table below reports" in defects[0]
 
 
 def test_placeholder_lines_are_compared_through_the_render_variables(
@@ -319,10 +328,10 @@ def test_placeholder_lines_are_compared_through_the_render_variables(
     assert "162 topic-scoped" in defects[0]
 
 
-def test_a_changed_variable_file_re_checks_untouched_chapters(
+def test_a_changed_variable_file_drifts_a_chapter_nobody_edited(
     tmp_path: Path,
 ) -> None:
-    """A count can drift a chapter nobody edited, so vars gate every source."""
+    """A count can drift a chapter no one touched, so no source is skipped."""
     chapter = (
         "The catalogue holds {{total_topics}} topic-scoped Lean bodies across "
         "every maintained area of the formalization.\n"
@@ -334,11 +343,9 @@ def test_a_changed_variable_file_re_checks_untouched_chapters(
         "maintained area of the formalization.\n",
     )
     os.utime(manuscript / "02b_background.md", (500, 500))
-    (manuscript / "manuscript_vars.yaml").write_text(
-        "total_topics: 162\n", encoding="utf-8"
-    )
-    os.utime(manuscript / "manuscript_vars.yaml", (2_000, 2_000))
+
     defects = stale_render_defects(manuscript, pdf, variables={"total_topics": 162})
+
     assert len(defects) == 1
     assert "162 topic-scoped" in defects[0]
 
