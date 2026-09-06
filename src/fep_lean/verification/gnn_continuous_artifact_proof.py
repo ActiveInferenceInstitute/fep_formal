@@ -53,7 +53,7 @@ FORMULAS = {
 }
 EPSILON = Fraction(1, 10**15)
 RENDER_ROUTE = [
-    "gnn.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
+    "gnn.extract.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
     "render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
     "render.processor.render_gnn_spec(jax)",
 ]

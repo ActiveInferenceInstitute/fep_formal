@@ -454,7 +454,7 @@ def verify_document(
 
     document_sha = hashlib.sha256(document.read_bytes()).hexdigest()
 
-    # Render-route extraction (pinned: gnn.pomdp_extractor, strict).
+    # Render-route extraction (pinned: gnn.extract.pomdp_extractor, strict).
     gnn_src = gnn.resolve() / "src"
     import sys as _sys
 
@@ -464,7 +464,7 @@ def verify_document(
     try:
         # Runtime-bridged imports: the GNN checkout is bound via sys.path
         # above (see RENDER_ROUTE pinning); gnn is not a fep_lean dependency.
-        from gnn.pomdp_extractor import (  # type: ignore[import-not-found]
+        from gnn.extract.pomdp_extractor import (  # type: ignore[import-not-found]
             extract_pomdp_from_file,
         )
         from gnn.schema import parse_state_space  # type: ignore[import-not-found]
