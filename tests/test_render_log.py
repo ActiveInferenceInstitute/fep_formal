@@ -435,3 +435,41 @@ def test_a_drifted_line_beside_a_stamp_line_is_still_drift(tmp_path: Path) -> No
 
     assert len(defects) == 1
     assert "The table below reports" in defects[0]
+
+
+def test_a_caption_line_the_renderer_consumes_is_not_drift(tmp_path: Path) -> None:
+    """The italic line under a diagram fence becomes the figure's caption.
+
+    Its words survive into ``\\caption{...}`` and the figure's ``alt`` text, so
+    the line is gone while the sentence is not.
+    """
+    caption = (
+        "The Hermes topic run: a canonical topic entry reaches a Lean block "
+        "only through a session and a compiler."
+    )
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        f"*{caption}*\n",
+        "\\begin{figure}[htbp]\n"
+        f"\\includegraphics[alt={{{caption}}}]{{figures/diagram.png}}\n"
+        f"\\caption{{{caption}}}\n"
+        "\\end{figure}\n",
+    )
+
+    assert stale_render_defects(manuscript, pdf) == ()
+
+
+def test_a_drifted_caption_is_still_drift(tmp_path: Path) -> None:
+    """Only the markup is forgiven; changed words are not a substring either."""
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        "*The Hermes topic run: a canonical topic entry reaches a Lean block "
+        "only through a session and a compiler.*\n",
+        "\\caption{The Hermes topic run: a canonical topic entry reaches a Lean "
+        "block only through a retry.}\n",
+    )
+
+    defects = stale_render_defects(manuscript, pdf)
+
+    assert len(defects) == 1
+    assert "The Hermes topic run" in defects[0]

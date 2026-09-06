@@ -65,7 +65,9 @@
   the combined document -- and `render_publication.py` renders the authored
   sources itself before handing off to the template. Lines carrying a
   `{{source.*}}` stamp are exempt: they name the commit and date of one render,
-  so no committed projection can agree with them.
+  so no committed projection can agree with them, and a line whose markup the
+  renderer consumes (the italic caption under a diagram fence becomes that
+  figure's `\caption`) counts as rendered when its text is in the document.
 - Linked into the repository through a ref that resolves. Five source links
   were pinned to a commit that existed only locally, so all five 404ed in the
   published PDF; they now resolve through the commit once it is on the remote

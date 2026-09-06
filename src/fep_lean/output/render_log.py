@@ -268,6 +268,24 @@ def _comparable(raw_line: str, variables: Mapping[str, Any] | None) -> bool:
     return variables is not None or "{{" not in raw_line
 
 
+# Markdown emphasis is markup the renderer may consume rather than carry: the
+# italic line under a diagram fence becomes that figure's ``\caption{...}`` and
+# its ``alt`` text, so its words survive while the line does not. Comparing the
+# emphasized text as a substring of the rendered document keeps that case out
+# of the report without weakening it -- drift changes the words, and changed
+# words are not a substring either.
+_EMPHASIS = "*_ "
+
+
+def _is_rendered(line: str, rendered_lines: set[str], rendered_text: str) -> bool:
+    """True when a source line survives into the render, as a line or in one."""
+
+    if line in rendered_lines:
+        return True
+    core = line.strip(_EMPHASIS)
+    return bool(core) and core in rendered_text
+
+
 def stale_render_defects(
     manuscript_dir: Path,
     pdf_dir: Path,
@@ -300,10 +318,8 @@ def stale_render_defects(
     combined = Path(pdf_dir) / combined_name
     if not combined.is_file():
         return (f"{combined}: combined render is absent; nothing to compare against",)
-    rendered_lines = {
-        line.strip()
-        for line in combined.read_text(encoding="utf-8", errors="replace").splitlines()
-    }
+    rendered_text = combined.read_text(encoding="utf-8", errors="replace")
+    rendered_lines = {line.strip() for line in rendered_text.splitlines()}
     manuscript = Path(manuscript_dir)
     stale: list[str] = []
     for source in sorted(manuscript.glob("*.md")):
@@ -325,7 +341,8 @@ def stale_render_defects(
         missing = [
             line
             for line, raw in authored.items()
-            if _comparable(raw, variables) and line not in rendered_lines
+            if _comparable(raw, variables)
+            and not _is_rendered(line, rendered_lines, rendered_text)
         ]
         if not missing:
             continue
