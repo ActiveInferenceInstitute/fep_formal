@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 from collections import Counter, defaultdict
+from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
@@ -41,6 +42,42 @@ _IMPORT_RE = re.compile(r"^\s*import\s+(\S+)", re.MULTILINE)
 
 COVERAGE_JSON = Path("docs/formalism-coverage.json")
 COVERAGE_MARKDOWN = Path("docs/formalism-coverage.md")
+
+
+def topic_import_modules(topic_id: str) -> tuple[str, ...]:
+    """Return the modules a topic body imports, in body order, without repeats.
+
+    This is one half of the topic-to-module incidence relation that
+    :func:`build_formalism_coverage` aggregates into the coverage report's
+    "Mathlib support surface" table -- same regex, same source, same comment
+    stripping -- so a caller that needs one row's modules cannot disagree with
+    the report that owns the relation.
+
+    The framework chapters used to carry a hand-typed module per row instead.
+    Forty of seventy-one of those cells named a module their row never imports,
+    because nothing recomputed them when a body narrowed or moved an import.
+    """
+
+    body = BODIES[topic_id]
+    return tuple(dict.fromkeys(_IMPORT_RE.findall(lean_code_without_comments(body))))
+
+
+def render_topic_import_modules(
+    modules: Iterable[str], *, omit_prefix: str = "Mathlib."
+) -> str:
+    """Render a row's imports as one inline-code list for a manuscript cell.
+
+    ``Mathlib.`` is dropped because every framework table sits under a heading
+    that says so and the column would otherwise repeat it on every line; any
+    other namespace (``FepSketches.``) keeps its prefix, so the two are never
+    confusable. An empty import list renders as an em dash rather than an empty
+    cell, which a reader cannot distinguish from a missing value.
+    """
+
+    names = [module.removeprefix(omit_prefix) for module in modules]
+    if not names:
+        return "---"
+    return ", ".join(f"`{name}`" for name in names)
 
 
 def build_formalism_coverage(project_root: Path) -> dict[str, Any]:

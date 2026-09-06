@@ -29,6 +29,7 @@ import yaml
 
 from fep_lean.catalogue import FEPTopicCatalogue
 from fep_lean.catalogue.references import (
+    hand_maintained_module_cells,
     unattributed_row_declarations,
     unresolved_manuscript_references,
 )
@@ -177,6 +178,16 @@ def main(argv: list[str] | None = None) -> int:
     if stale_references:
         print("ERROR: stale theorem identifiers in the manuscript")
         for item in stale_references:
+            print(f"  {item}")
+        return 1
+    # The framework tables' module column is computed from each row's own Lean
+    # imports. A hand-typed cell there drifted on forty of seventy-one rows
+    # before it was generated; nothing but this check stops one being typed
+    # back in, because a literal module name resolves as prose everywhere else.
+    hand_typed = hand_maintained_module_cells(source_dir)
+    if hand_typed:
+        print("ERROR: hand-typed module cells in the manuscript")
+        for item in hand_typed:
             print(f"  {item}")
         return 1
     # ``manuscript/preamble.md`` is copied verbatim by the renderer and never

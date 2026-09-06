@@ -8,6 +8,7 @@ from pathlib import Path
 
 from fep_lean.lean_source import lean_code_without_comments
 
+from .coverage import topic_import_modules
 from .registry import BODIES
 
 _DECLARATION_RE = re.compile(
@@ -28,13 +29,16 @@ _ANY_FENCE_RE = re.compile(r"^```[^\n]*\n.*?^```", re.DOTALL | re.MULTILINE)
 # telling the reader that token is one of that row's declarations.
 _ROW_RE = re.compile(r"\bfep-\d{3}\b")
 _BACKTICK_RE = re.compile(r"`([^`]+)`")
-# The framework chapters carry a hand-maintained "Mathlib navigation hint"
-# column. A hint is editorial -- it points a reader at the part of the library
-# a row lives near -- but it must at least name something that exists in the
-# pinned Mathlib, and two of them named modules that had been renamed away.
-_NAVIGATION_ROW_RE = re.compile(
-    r"^\|\s*fep-\d{3}\s*\|.*\|\s*`(?P<hint>[A-Za-z][A-Za-z0-9_.]*)`\s*\|[^|]*\|\s*$"
+# The framework chapters print each row's module column. It used to be
+# hand-maintained "Mathlib navigation hint" prose, and forty of its
+# seventy-one cells named a module the row never imports; the column is now
+# the ``{{topics.fep-NNN.imported_modules}}`` token, computed from the body's
+# own imports. This pattern matches a five-column ``fep-NNN`` row and captures
+# that column so a hand-typed value can be rejected before it drifts again.
+_MODULE_ROW_RE = re.compile(
+    r"^\|\s*(?P<topic>fep-\d{3})\s*\|[^|]*\|[^|]*\|(?P<modules>[^|]*)\|[^|]*\|\s*$"
 )
+_IMPORTED_MODULES_TOKEN = "{{{{topics.{topic}.imported_modules}}}}"
 # snake_case (must contain an underscore, so bare English words are ignored)
 # or CamelCase type-shaped names.
 _IDENTIFIER_RE = re.compile(
@@ -181,26 +185,52 @@ def mathlib_module_index(mathlib_root: Path) -> frozenset[str]:
     return frozenset(names)
 
 
-def unknown_mathlib_navigation_hints(
-    manuscript_dir: Path, mathlib_root: Path
-) -> tuple[str, ...]:
-    """Return navigation hints that name nothing in the pinned Mathlib.
+def hand_maintained_module_cells(manuscript_dir: Path) -> tuple[str, ...]:
+    """Return framework-table rows whose module column is hand-typed.
 
-    The column is a reader's entry point into the library. A hint naming a
-    module that a Mathlib rename removed sends the reader to a dead path and
-    cannot be caught by the declaration audits, which only look at names the
-    catalogue itself owns.
+    The column names the Mathlib modules a row's Lean body imports. When it was
+    authored by hand, forty of seventy-one cells had drifted away from the
+    imports they described -- ``fep-023`` advertised
+    ``MeasureTheory.Measure.Typeclasses.Probability`` while its body imports
+    ``Mathlib.MeasureTheory.Measure.MeasureSpace`` -- because nothing recomputed
+    a cell when a body narrowed or moved an import. Every cell is now the
+    row's own ``imported_modules`` token, and this audit is what stops a
+    literal from being typed back in.
     """
-    index = mathlib_module_index(mathlib_root)
+
     failures: list[str] = []
     for path in manuscript_reference_files(manuscript_dir):
         for line_number, line in enumerate(
             path.read_text(encoding="utf-8").splitlines(), 1
         ):
-            match = _NAVIGATION_ROW_RE.match(line.strip())
+            match = _MODULE_ROW_RE.match(line.strip())
             if match is None:
                 continue
-            hint = match.group("hint")
-            if f"Mathlib.{hint}" not in index:
-                failures.append(f"{path.name}:{line_number}: Mathlib.{hint}")
+            expected = _IMPORTED_MODULES_TOKEN.format(topic=match.group("topic"))
+            if match.group("modules").strip() == expected:
+                continue
+            failures.append(
+                f"{path.name}:{line_number}: module column is hand-typed "
+                f"({match.group('modules').strip()!r}); use {expected}"
+            )
+    return tuple(failures)
+
+
+def unknown_topic_import_modules(mathlib_root: Path) -> tuple[str, ...]:
+    """Return imported Mathlib modules that name nothing in the pinned library.
+
+    The generated column is only as good as the incidence relation behind it:
+    a body that imports a module a Mathlib rename removed would print a dead
+    path for every reader. This checks the relation itself, over all catalogue
+    topics rather than only the rows a framework chapter tabulates.
+    """
+
+    index = mathlib_module_index(mathlib_root)
+    failures: list[str] = []
+    for topic_id in BODIES:
+        for module in topic_import_modules(topic_id):
+            if not module.startswith("Mathlib"):
+                continue
+            if module not in index:
+                failures.append(f"{topic_id}: {module}")
     return tuple(failures)

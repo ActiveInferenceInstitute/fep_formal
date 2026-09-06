@@ -16,7 +16,11 @@ from typing import Any
 
 import yaml
 
-from fep_lean.catalogue.coverage import build_formalism_coverage
+from fep_lean.catalogue.coverage import (
+    build_formalism_coverage,
+    render_topic_import_modules,
+    topic_import_modules,
+)
 from fep_lean.catalogue.relations import EdgeKind
 from fep_lean.catalogue.topics import FEPTopicCatalogue
 from fep_lean.output.evidence import (
@@ -887,6 +891,12 @@ def build_manuscript_vars(
             "mathlib_status": topic.mathlib_status,
             "primary_theorem": topic.primary_theorem,
             "semantic_disposition": topic.semantic_disposition,
+            # The framework chapters print this cell. It is computed from the
+            # body's own ``import`` lines so the column cannot drift away from
+            # what the row compiles against; see FEPLEAN-ACC-07.
+            "imported_modules": render_topic_import_modules(
+                topic_import_modules(topic.id)
+            ),
             "assumption_review": topic.assumption_review,
             "non_vacuity": topic.non_vacuity,
             "acceptance_probe": topic.acceptance_probe,
