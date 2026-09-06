@@ -4,7 +4,7 @@
 - [FEP background](fep-background.md) — conceptual orientation with explicit formalization boundaries.
 - [Formal-kernel methods](formal-kernel-methods.md) — shared carriers, theorem scope, validation ladder, and visualization contract.
 - [Design programs](design/README.md) — prospective architecture and research goals, kept separate from current catalogue and evidence claims.
-- [GNN bridge](design/gnn-bridge/README.md) — cross-repo articulation with the GeneralizedNotationNotation pipeline (bridge CLI, Lean AST, source custody, v0.5).
+- [GNN bridge](design/gnn-bridge/README.md) — cross-repo articulation with the GeneralizedNotationNotation pipeline (bridge CLI, Lean AST, source custody, v0.6).
 - [FEP research horizons](design/fep-research-program/README.md) — dependency-ordered finite synthesis, smooth/stochastic lifting, and an end-to-end scientific case study.
 - [155-topic expansion chapter](../manuscript/04i_formalism_catalogue_155.md) — finite risk, policy trees, native blankets, exponential-family duality, continuous time, and evidence boundaries.
 - [Topic reference](topics-reference.md) — canonical owners, inspection, and receipt semantics.

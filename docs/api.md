@@ -316,6 +316,7 @@ The installed console script is `fep-lean`:
 ```text
 fep-lean setup
 fep-lean preflight
+fep-lean bridge {status,pin,emit,certify,verify-certificate,verify-document} --gnn-root PATH
 fep-lean verify [--area AREA] [--topic ID] [--fail-on-warnings] [--receipt PATH]
 fep-lean catalogue [--area AREA] [--topic ID]
 fep-lean atlas [--check]
@@ -338,7 +339,7 @@ so every operator command shares the same project-root and logging contract.
 
 ## GNN bridge
 
-`fep_lean.bridge` exposes the cross-repo operations surface (contract v0.5):
+`fep_lean.bridge` exposes the cross-repo operations surface (contract v0.6):
 
 - CLI: `fep-lean bridge {status,pin,emit,certify,verify-certificate,verify-document} --gnn-root PATH`.
 - Python: `status`, `pin_sources`, `check_sources`, `emit`,
@@ -353,7 +354,7 @@ seals owner bytes on both sides. The GNN owner-roster glob is
 `src/gnn/**/*.py` plus `src/gnn/main.py`; the pin JSON shape is
 `{"schema_version": 1, "fep_lean": {"commit", "owners"}, "gnn": {"commit", "owners"}}`.
 `verify-document --document PATH` extracts one emitted document through the
-pinned render route (`gnn.pomdp_extractor.extract_pomdp_from_file`,
+pinned render route (`gnn.extract.pomdp_extractor.extract_pomdp_from_file`,
 strict validation) and decides `FEP.GnnDocument.documentWellFormed` in a
 compile-once Lean probe. Receipt schema: `{"schema_version": 2, "document",
 "model_family", "extracted_family", "toolchain", "status", "warnings"}`.

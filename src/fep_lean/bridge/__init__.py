@@ -3,7 +3,7 @@
 Checks are read-only. Emission and custody pin changes are explicit operations.
 No bridge result establishes native Lean or full-provider verification.
 
-Operations surface (contract v0.5):
+Operations surface (contract v0.6):
 ``status``, ``pin_sources``, ``check_sources``, ``emit``,
 ``certificate_receipt``, ``emit_certificate``, ``validate_certificate``,
 ``verify_document``; custody primitives ``fingerprint``,
@@ -25,6 +25,7 @@ from fep_lean.bridge.operations import (
     check_sources,
     emit,
     emit_certificate,
+    owner_roster,
     pin_sources,
     status,
     validate_certificate,
@@ -45,6 +46,7 @@ __all__ = [
     "emit",
     "emit_certificate",
     "fingerprint",
+    "owner_roster",
     "pin_sources",
     "status",
     "validate_binding",

@@ -71,7 +71,7 @@ named Lean generative-model definition
 and the reverse direction:
 
 ```text
-GNN syntax and step inventory (doc/gnn/gnn_syntax.md; src/pipeline/step_registry.py)
+GNN syntax and step inventory (doc/gnn/gnn_syntax.md; src/gnn/pipeline/step_registry.py)
   -> Lean AST and decidable well-formedness
   -> static and dynamic semantics
   -> denotations reusing fep_lean carriers (FiniteLaw, FiniteKernel, FiniteHMM, LinearGaussianParameters)
@@ -215,6 +215,9 @@ Blanket structure and the ontology bindings `s=HiddenState`, `o=Observation`,
       prediction bounds; the complete positive axiom census and both coefficient
       negatives pass, with a current schema-2 receipt
       ([report](../../../specs/gnn-bridge-q7-continuous-ou-proof/REPORT.md)).
+- [x] v0.6 — extraction-package migration slice closed: the pinned render
+      route is `gnn.extract.pomdp_extractor.extract_pomdp_from_file` and
+      `python -m gnn.extract` is preserved.
 
 Opening any unchecked row requires a bounded spec slice per the
 [design lifecycle](../README.md).
@@ -244,6 +247,7 @@ uv run fep-lean bridge emit --gnn-root GNN_PATH --model continuous
 uv run fep-lean bridge status --gnn-root GNN_PATH
 uv run fep-lean bridge emit --gnn-root GNN_PATH --model finite --check
 uv run fep-lean bridge emit --gnn-root GNN_PATH --model continuous --check
+uv run fep-lean bridge verify-document --gnn-root GNN_PATH --document PATH --fail-on-warnings
 ```
 
 Pin only after reviewing the settled owner changes. Pin and emit are explicit

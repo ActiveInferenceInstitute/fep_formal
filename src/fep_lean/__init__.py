@@ -9,6 +9,9 @@ Subpackages
     output/        — Artifact generators (figures, manuscript vars, reports)
     pipeline/      — 4-stage core DAG (Load Catalogue, Environment Validation,
                      Gauss Sessions, Manuscript Artifacts) and entry scripts
+    bridge/        — cross-repo GNN custody + verification operations
+    data/          — generated package data (topics.yaml)
+    formal/        — Lean 4 sources mirrored/generated under lean/
 """
 
 from __future__ import annotations
@@ -32,6 +35,7 @@ from fep_lean.catalogue import (
     TopicEntry,
     load_catalogue_metadata,
     load_formalism_graph,
+    load_formalism_novelty,
     load_theorem_maturity,
 )
 from fep_lean.gauss.cli import check_gauss_cli
@@ -138,6 +142,7 @@ __all__ = [
     "latest_claim_ready_full_report",
     "load_catalogue_metadata",
     "load_formalism_graph",
+    "load_formalism_novelty",
     "load_theorem_maturity",
     "manuscript_projection_drift",
     "project_root",

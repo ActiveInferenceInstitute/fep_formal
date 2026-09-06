@@ -25,7 +25,7 @@ fep-lean bridge      Inspect, pin, emit, certify, or verify GNN bridge custody.
 `verify-certificate`, and `verify-document` are read-only; `pin`, `emit`,
 and `certify` write receipts and require `--gnn-root PATH`.
 `verify-document --document PATH` checks one emitted GNN document against
-the `FEP.GnnDocument` typed surface (syntax + `WellFormed`, contract v0.5).
+the `FEP.GnnDocument` typed surface (syntax + `WellFormed`, contract v0.6).
 
 For a generated report bundle, the read-only receipt checker is:
 
