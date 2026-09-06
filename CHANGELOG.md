@@ -1,5 +1,40 @@
 ## Unreleased — connected Horizon research program
 
+### Publication render remediation
+
+- Typeset Lean's Unicode operator suffixes: the code face is JuliaMono, not
+  FreeMono, which covers none of U+2098 U+2096 U+1D50 U+209A U+1D62 U+1D9C and
+  had XeTeX drop all 162 occurrences silently -- printing the complement lemma
+  `μ sᶜ = 1 - μ s` as the false `μ s = 1 - μ s`.
+- Made the LaTeX pass fail closed. `scripts/check_render_log.py` rejects a
+  render whose log records any `! ` error or `Missing character`, a mermaid
+  diagram that shipped as verbatim source, a combined build older than its own
+  manuscript sources, an uncaptioned table, or a contents number that overflows
+  its number box. The shared template's own success test looks for four fatal
+  markers and passes all of these.
+- Gave every line break a cue. `\seqinsert` now emits a discretionary carrying
+  a grey continuation arrow, so a table cell can no longer print
+  `FEP.FiniteKernel.comp_assoc` as `FEP.Fini` / `teKernel.comp_assoc`; fvextra
+  gains `breaknonspaceingroup`, without which `breaklines` was inert for every
+  Lean listing because pandoc wraps each token in a macro.
+- Widened the contents number columns. `article`'s default
+  `\@dottedtocline` widths are too narrow for numbering that reaches
+  `15.100.1`, so 224 contents lines printed as `15.100fep-100`.
+- Captioned all 36 tables and the pipeline diagram. The combined build had 36
+  `longtable`s and six captions, all six on figures, so no table carried a
+  number any prose could cite; the one Mermaid diagram shipped as
+  "Figure 3: Mermaid diagram", the template's placeholder.
+- Carried `manuscript/config.yaml`'s subtitle and fifteen keywords into the PDF
+  `/Info` dictionary, and made `scripts/render_manuscript.py` fail closed when
+  the preamble copy drifts from the config (`pdf_metadata_drift`).
+- Pinned the "Mathlib navigation hint" column: two of its 71 cells named
+  modules the pinned Mathlib does not contain
+  (`Analysis.Calculus.Deriv.Monotone`, `LinearAlgebra.Matrix.Multiplication`).
+  `unknown_mathlib_navigation_hints` indexes the checkout and fails on any hint
+  that names neither a module nor a module directory.
+- Restored the green `ruff check` / `ruff format --check` gate that the render
+  and audit fixes had broken (6 findings, 8 unformatted files).
+
 - Hardened every production Lean/Lake probe against orphaned-grandchild
   timeouts: new `src/fep_lean/verification/_subprocess.py` runs each external
   probe in its own process group with a watchdog `SIGKILL` of the whole group
