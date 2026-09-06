@@ -56,15 +56,15 @@ from fep_lean.output.release_bundle import (
     validate_release_bundle,
     write_publication_manuscript,
 )
-from fep_lean.output.rendering import (
-    ManuscriptRenderError,
-    render_manuscript,
-    unresolved_placeholders,
-)
 from fep_lean.output.render_log import (
     RenderLogDefects,
     render_log_defects,
     scan_render_log,
+)
+from fep_lean.output.rendering import (
+    ManuscriptRenderError,
+    render_manuscript,
+    unresolved_placeholders,
 )
 from fep_lean.output.reporter import Reporter, ReportPaths, validate_report_receipt
 
@@ -103,11 +103,11 @@ __all__ = [
     "manuscript_projection_drift",
     "publication_manuscript_errors",
     "release_bundle_prerequisite_errors",
-    "render_log_defects",
     "render_formal_kernel_dashboard_html",
     "render_formal_kernel_dashboard_svg",
     "render_formalism_atlas_html",
     "render_formalism_atlas_svg",
+    "render_log_defects",
     "render_manuscript",
     "render_publication_manuscript",
     "scan_render_log",

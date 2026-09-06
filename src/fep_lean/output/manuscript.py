@@ -26,8 +26,8 @@ from fep_lean.output.evidence import (
 from fep_lean.output.provenance import config_owner_paths, source_owner_paths
 from fep_lean.output.publication_metadata import (
     load_graphical_abstract,
-    load_repository_url,
     load_publication_author,
+    load_repository_url,
 )
 
 UNIFIED_FORMALISM_CATALOGUE_FILENAME = "09z_unified_formalism_catalogue.md"
@@ -114,8 +114,7 @@ def _source_stamp_vars(project_root: Path) -> dict[str, str]:
         "render_date": datetime.now(UTC).date().isoformat(),
         # One ready-to-typeset line for the title page.
         "stamp": (
-            f"source snapshot {stamp}, rendered "
-            f"{datetime.now(UTC).date().isoformat()}"
+            f"source snapshot {stamp}, rendered {datetime.now(UTC).date().isoformat()}"
         ),
     }
 

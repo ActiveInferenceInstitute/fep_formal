@@ -32,7 +32,9 @@ _BIBLIOGRAPHY_CALL_RE = re.compile(r"\\bibliography\{[^}]*\brefer(ences)?\b[^}]*
 # (``infrastructure/rendering/_pdf_combined_bibliography.py``
 # ``_REFERENCE_SECTION_RE``). A heading that loses that word silently produces
 # two headings, so pin it here.
-_REFERENCES_HEADING_RE = re.compile(r"^#{1,3} .*\breferences\b", re.IGNORECASE | re.MULTILINE)
+_REFERENCES_HEADING_RE = re.compile(
+    r"^#{1,3} .*\breferences\b", re.IGNORECASE | re.MULTILINE
+)
 _AUTHORING_EXCLUDES = frozenset(
     {
         "07_references.md",
@@ -122,9 +124,9 @@ def audit_citations(project_root: Path = PROJECT_ROOT) -> tuple[str, ...]:
             "07_references.md must call \\bibliography{references} so the entries "
             "typeset inside the section rather than after the appendices"
         )
-    if "<div id=\"refs\"" in references_text:
+    if '<div id="refs"' in references_text:
         errors.append(
-            "07_references.md carries a Pandoc citeproc anchor (<div id=\"refs\">) "
+            '07_references.md carries a Pandoc citeproc anchor (<div id="refs">) '
             "that this natbib/BibTeX build silently drops"
         )
 

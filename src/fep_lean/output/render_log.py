@@ -35,10 +35,12 @@ from pathlib import Path
 
 __all__ = [
     "RenderLogDefects",
-    "scan_render_log",
-    "render_log_defects",
+    "contents_number_overflow_defects",
     "mermaid_fallback_defects",
+    "render_log_defects",
+    "scan_render_log",
     "stale_render_defects",
+    "uncaptioned_table_defects",
 ]
 
 _TEX_ERROR_PREFIX = "! "
@@ -74,8 +76,10 @@ class RenderLogDefects:
             return f"OK: {self.log_path} records 0 TeX errors and 0 missing characters"
         parts = [
             f"{len(self.tex_errors)} TeX error(s)",
-            f"{len(self.missing_characters)} missing character(s)"
-            f" across {len(self.missing_by_codepoint)} distinct codepoint(s)",
+            (
+                f"{len(self.missing_characters)} missing character(s)"
+                f" across {len(self.missing_by_codepoint)} distinct codepoint(s)"
+            ),
         ]
         return f"FAIL: {self.log_path} records " + " and ".join(parts)
 
@@ -86,7 +90,9 @@ class RenderLogDefects:
         for error in self.tex_errors[:max_lines]:
             lines.append(f"  error: {error}")
         if len(self.tex_errors) > max_lines:
-            lines.append(f"  ... {len(self.tex_errors) - max_lines} further TeX error(s)")
+            lines.append(
+                f"  ... {len(self.tex_errors) - max_lines} further TeX error(s)"
+            )
         for codepoint, count in self.missing_by_codepoint[:max_lines]:
             lines.append(f"  dropped: {count:>4}x {codepoint}")
         if len(self.missing_by_codepoint) > max_lines:
@@ -122,14 +128,18 @@ def scan_render_log(log_path: Path) -> RenderLogDefects:
         missing.append(line.strip())
         match = _MISSING_GLYPH_RE.search(line)
         if match:
-            codepoints[f"{match['char']} ({match['codepoint']}) in font {match['font']}"] += 1
+            codepoints[
+                f"{match['char']} ({match['codepoint']}) in font {match['font']}"
+            ] += 1
         else:
             codepoints[line.strip()] += 1
     return RenderLogDefects(
         log_path=log_path,
         tex_errors=tuple(errors),
         missing_characters=tuple(missing),
-        missing_by_codepoint=tuple(sorted(codepoints.items(), key=lambda item: (-item[1], item[0]))),
+        missing_by_codepoint=tuple(
+            sorted(codepoints.items(), key=lambda item: (-item[1], item[0]))
+        ),
     )
 
 
@@ -245,3 +255,67 @@ def stale_render_defects(
                 f"the render describes an older tree"
             )
     return tuple(stale)
+
+
+# Pandoc emits one ``longtable`` per authored pipe table and, when the table has
+# a caption, a ``\caption`` before the running head that ``\endfirsthead``
+# closes. The audited PDF held 36 longtables and 6 ``\caption`` calls, all six
+# on figures, so no table in the document carried a number a reader could cite.
+_LONGTABLE_RE = re.compile(r"\\begin\{longtable\}")
+_LONGTABLE_HEAD_END = r"\endfirsthead"
+
+
+def uncaptioned_table_defects(
+    pdf_dir: Path, tex_name: str = DEFAULT_TEX_NAME
+) -> tuple[str, ...]:
+    """Return one line per rendered table that carries no caption."""
+
+    tex_path = Path(pdf_dir) / tex_name
+    if not tex_path.is_file():
+        return ()
+    content = tex_path.read_text(encoding="utf-8", errors="replace")
+    failures: list[str] = []
+    for match in _LONGTABLE_RE.finditer(content):
+        head_end = content.find(_LONGTABLE_HEAD_END, match.end())
+        head = content[match.end() : head_end if head_end != -1 else match.end() + 800]
+        if r"\caption{" in head:
+            continue
+        line_number = content.count("\n", 0, match.start()) + 1
+        failures.append(
+            f"{tex_path}:{line_number}: longtable has no \\caption, so it is "
+            f"unnumbered and no prose can refer to it"
+        )
+    return tuple(failures)
+
+
+# A contents line whose section number is wider than its number box overflows
+# into the entry title: ``15.100fep-100 --- ...``. TeX reports that as an
+# overfull \hbox whose next log line holds the number alone, which is what
+# separates this class from ordinary overfull prose.
+_OVERFULL_RE = re.compile(r"^Overfull \\hbox \(([0-9.]+)pt too wide\)")
+_BARE_NUMBER_RE = re.compile(r"^\\[^ ]+ (?P<number>\d+(?:\.\d+)*)\s*$")
+
+
+def contents_number_overflow_defects(
+    pdf_dir: Path, log_name: str = "_combined_manuscript.log"
+) -> tuple[str, ...]:
+    """Return one line per contents entry whose number overflowed its box."""
+
+    log_path = Path(pdf_dir) / log_name
+    if not log_path.is_file():
+        return ()
+    lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
+    failures: list[str] = []
+    for index, line in enumerate(lines):
+        overfull = _OVERFULL_RE.match(line)
+        if overfull is None or index + 1 >= len(lines):
+            continue
+        number = _BARE_NUMBER_RE.match(lines[index + 1])
+        if number is None:
+            continue
+        failures.append(
+            f"{log_path}:{index + 1}: contents number {number['number']} overflows "
+            f"its number box by {overfull.group(1)}pt and collides with the entry "
+            f"title; widen the matching \\@dottedtocline number width"
+        )
+    return tuple(failures)

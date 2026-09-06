@@ -63,7 +63,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     for figure in produced:
         relative = figure.png_path.relative_to(project_root)
-        print(f"Wrote {relative} ({figure.byte_size} bytes) from {figure.svg_path.name}")
+        print(
+            f"Wrote {relative} ({figure.byte_size} bytes) from {figure.svg_path.name}"
+        )
     return 0
 
 

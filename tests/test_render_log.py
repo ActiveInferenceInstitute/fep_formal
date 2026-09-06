@@ -11,8 +11,10 @@ from pathlib import Path
 
 from fep_lean.output.render_log import (
     RenderLogDefects,
+    contents_number_overflow_defects,
     render_log_defects,
     scan_render_log,
+    uncaptioned_table_defects,
 )
 
 CLEAN_LOG = """This is XeTeX, Version 3.141592653
@@ -44,7 +46,9 @@ def test_clean_log_is_accepted(tmp_path: Path) -> None:
     assert defects.summary().startswith("OK:")
 
 
-def test_output_written_does_not_excuse_errors_or_dropped_glyphs(tmp_path: Path) -> None:
+def test_output_written_does_not_excuse_errors_or_dropped_glyphs(
+    tmp_path: Path,
+) -> None:
     """The exact fail-open shape: a PDF was written, yet the log is defective."""
 
     log = _write(tmp_path, "_combined_manuscript.log", DEFECTIVE_LOG)
@@ -56,7 +60,9 @@ def test_output_written_does_not_excuse_errors_or_dropped_glyphs(tmp_path: Path)
 
 
 def test_missing_glyphs_are_grouped_by_codepoint(tmp_path: Path) -> None:
-    defects = scan_render_log(_write(tmp_path, "_combined_manuscript.log", DEFECTIVE_LOG))
+    defects = scan_render_log(
+        _write(tmp_path, "_combined_manuscript.log", DEFECTIVE_LOG)
+    )
     grouped = dict(defects.missing_by_codepoint)
     assert sum(grouped.values()) == 3
     assert any("U+2098" in key and count == 2 for key, count in grouped.items())
@@ -95,3 +101,69 @@ def test_render_log_defects_scans_every_present_log(tmp_path: Path) -> None:
     results = render_log_defects(tmp_path)
     assert len(results) == 2
     assert [defects.clean for defects in results] == [True, False]
+
+
+CAPTIONED_TABLE = r"""\begin{longtable}[]{@{}ll@{}}
+\caption{Topic count and native receipt rate for each catalogue area.}\tabularnewline
+\toprule\noalign{}
+A & B \\
+\midrule\noalign{}
+\endfirsthead
+\bottomrule\noalign{}
+\endlastfoot
+1 & 2 \\
+\end{longtable}
+"""
+
+UNCAPTIONED_TABLE = r"""\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+A & B \\
+\midrule\noalign{}
+\endfirsthead
+\bottomrule\noalign{}
+\endlastfoot
+1 & 2 \\
+\end{longtable}
+"""
+
+# The exact shape TeX writes when a contents number is wider than its box.
+CONTENTS_OVERFLOW_LOG = """This is XeTeX, Version 3.141592653
+Overfull \\hbox (4.49997pt too wide) detected at line 578
+\\TU/FreeSerif(0)/m/n/10 15.100
+ []
+
+Overfull \\hbox (12.0pt too wide) in paragraph at lines 900--901
+\\TU/FreeSerif(0)/m/n/10 ordinary prose that is simply too wide
+ []
+Output written on _combined_manuscript.pdf (347 pages).
+"""
+
+
+def test_captioned_table_is_accepted(tmp_path: Path) -> None:
+    _write(tmp_path, "_combined_manuscript.tex", CAPTIONED_TABLE)
+    assert uncaptioned_table_defects(tmp_path) == ()
+
+
+def test_uncaptioned_table_is_reported(tmp_path: Path) -> None:
+    _write(tmp_path, "_combined_manuscript.tex", UNCAPTIONED_TABLE + CAPTIONED_TABLE)
+    defects = uncaptioned_table_defects(tmp_path)
+    assert len(defects) == 1
+    assert defects[0].endswith("no prose can refer to it")
+    assert ":1:" in defects[0]
+
+
+def test_contents_number_overflow_is_separated_from_prose_overflow(
+    tmp_path: Path,
+) -> None:
+    """Only the bare-number overflow is a contents defect; wide prose is not."""
+    _write(tmp_path, "_combined_manuscript.log", CONTENTS_OVERFLOW_LOG)
+    defects = contents_number_overflow_defects(tmp_path)
+    assert len(defects) == 1
+    assert "contents number 15.100" in defects[0]
+    assert "4.49997pt" in defects[0]
+
+
+def test_absent_render_artifacts_report_nothing(tmp_path: Path) -> None:
+    """Both audits read build output, so an unbuilt tree has nothing to judge."""
+    assert uncaptioned_table_defects(tmp_path) == ()
+    assert contents_number_overflow_defects(tmp_path) == ()

@@ -305,7 +305,8 @@ def validate_native_lean_receipt(
         raw_occurrences = row.get("sorry_occurrences")
         sorry_occurrences += (
             int(raw_occurrences)
-            if isinstance(raw_occurrences, int) and not isinstance(raw_occurrences, bool)
+            if isinstance(raw_occurrences, int)
+            and not isinstance(raw_occurrences, bool)
             else int(has_sorry)
         )
         verified_topics += (

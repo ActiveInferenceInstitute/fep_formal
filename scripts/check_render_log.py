@@ -23,9 +23,11 @@ if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
 from fep_lean.output.render_log import (
+    contents_number_overflow_defects,
     mermaid_fallback_defects,
     render_log_defects,
     stale_render_defects,
+    uncaptioned_table_defects,
 )
 
 
@@ -45,7 +47,9 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     project_root = Path(__file__).resolve().parents[1]
-    pdf_dir = args.pdf_dir if args.pdf_dir is not None else project_root / "output" / "pdf"
+    pdf_dir = (
+        args.pdf_dir if args.pdf_dir is not None else project_root / "output" / "pdf"
+    )
     results = render_log_defects(pdf_dir)
     failed = False
     for defects in results:
@@ -62,7 +66,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"FAIL: {line}")
     if not stale:
         print("OK: no manuscript source is newer than the combined render")
-    return 1 if failed or fallbacks or stale else 0
+    uncaptioned = uncaptioned_table_defects(pdf_dir)
+    for line in uncaptioned:
+        print(f"FAIL: {line}")
+    if not uncaptioned:
+        print("OK: every rendered table carries a caption")
+    overflowed = contents_number_overflow_defects(pdf_dir)
+    for line in overflowed:
+        print(f"FAIL: {line}")
+    if not overflowed:
+        print("OK: no contents number overflows its number box")
+    return 1 if failed or fallbacks or stale or uncaptioned or overflowed else 0
 
 
 if __name__ == "__main__":

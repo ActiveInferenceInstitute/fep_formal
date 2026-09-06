@@ -29,8 +29,8 @@ from pathlib import Path
 __all__ = [
     "MANUSCRIPT_COPIED_FIGURES",
     "MANUSCRIPT_SVG_FIGURES",
-    "SvgRasterError",
     "RasterizedFigure",
+    "SvgRasterError",
     "manuscript_png_drift",
     "rasterize_svg",
     "resolve_rasterizer",
@@ -83,7 +83,9 @@ def resolve_rasterizer() -> Path:
     return Path(found).resolve()
 
 
-def rasterize_svg(svg_path: Path, png_path: Path, *, width_px: int = RASTER_WIDTH_PX) -> RasterizedFigure:
+def rasterize_svg(
+    svg_path: Path, png_path: Path, *, width_px: int = RASTER_WIDTH_PX
+) -> RasterizedFigure:
     """Rasterize one SVG to PNG at a fixed width.
 
     Raises:
@@ -180,9 +182,7 @@ def manuscript_png_drift(project_root: Path) -> list[str]:
             stale.append(f"{svg_relative}: figure source missing")
             continue
         if not png_path.is_file():
-            stale.append(
-                f"output/figures/{png_name}: not produced from {svg_relative}"
-            )
+            stale.append(f"output/figures/{png_name}: not produced from {svg_relative}")
             continue
         if png_path.stat().st_mtime < svg_path.stat().st_mtime:
             stale.append(f"output/figures/{png_name}: older than {svg_relative}")
