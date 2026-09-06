@@ -138,6 +138,26 @@ def unresolved_placeholders(
     return tuple(unresolved)
 
 
+def substitute_placeholders(content: str, variables: Mapping[str, Any]) -> str:
+    """Return ``content`` with every known ``{{placeholder}}`` resolved.
+
+    Callers that already ran :func:`unresolved_placeholders` get the render's
+    exact substitution; a caller checking rendered output against its source
+    (see ``fep_lean.output.render_log.stale_render_defects``) needs the same
+    text the renderer produced, not the authored tokens.
+    """
+
+    flat = flatten_variables(variables)
+
+    def replace(match: re.Match[str]) -> str:
+        key = match.group(1).strip()
+        if key == "…" or key not in flat:
+            return match.group(0)
+        return flat[key]
+
+    return PLACEHOLDER_RE.sub(replace, content)
+
+
 def _atomic_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, raw_path = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
@@ -215,15 +235,10 @@ def render_manuscript(
         source_path: source_path.read_text(encoding="utf-8")
         for source_path in manuscript_source_files(source)
     }
-    flat = flatten_variables(variables)
-    rendered_contents: dict[Path, str] = {}
-    for source_path, content in source_contents.items():
-
-        def replace(match: re.Match[str]) -> str:
-            key = match.group(1).strip()
-            return match.group(0) if key == "…" else flat[key]
-
-        rendered_contents[source_path] = PLACEHOLDER_RE.sub(replace, content)
+    rendered_contents: dict[Path, str] = {
+        source_path: substitute_placeholders(content, variables)
+        for source_path, content in source_contents.items()
+    }
 
     referenced_assets = {
         reference: paths

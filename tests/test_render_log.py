@@ -7,13 +7,16 @@ successful.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from fep_lean.output.render_log import (
     RenderLogDefects,
     contents_number_overflow_defects,
+    mermaid_fallback_defects,
     render_log_defects,
     scan_render_log,
+    stale_render_defects,
     uncaptioned_table_defects,
 )
 
@@ -167,3 +170,210 @@ def test_absent_render_artifacts_report_nothing(tmp_path: Path) -> None:
     """Both audits read build output, so an unbuilt tree has nothing to judge."""
     assert uncaptioned_table_defects(tmp_path) == ()
     assert contents_number_overflow_defects(tmp_path) == ()
+
+
+# ── mermaid fallback ──────────────────────────────────────────────────────
+# The audited PDF shipped its only diagram as a page of ``flowchart LR`` source
+# captioned "Figure 3: Mermaid diagram", because the renderer logs a warning
+# and falls back when it cannot find a browser. This is the shape it emits.
+MERMAID_FALLBACK = r"""\begin{figure}[htbp]
+\centering
+\begin{verbatim}
+flowchart LR
+  source[canonical TopicEntry] --> session[SQLite session]
+\end{verbatim}
+\caption{Mermaid diagram}
+\end{figure}
+"""
+
+RASTERIZED_FIGURE = r"""\begin{figure}[htbp]
+\centering
+\includegraphics{figures/mermaid_inline/diagram-1.png}
+\caption{The Hermes topic run}
+\end{figure}
+"""
+
+# A verbatim figure that is not a diagram: a code listing shown as a figure.
+VERBATIM_LISTING = r"""\begin{figure}[htbp]
+\centering
+\begin{verbatim}
+theorem fep001_union_bound : True := trivial
+\end{verbatim}
+\caption{A Lean listing}
+\end{figure}
+"""
+
+
+def test_rasterized_diagram_is_accepted(tmp_path: Path) -> None:
+    _write(tmp_path, "_combined_manuscript.tex", RASTERIZED_FIGURE)
+    assert mermaid_fallback_defects(tmp_path) == ()
+
+
+def test_mermaid_source_shipped_as_verbatim_is_reported(tmp_path: Path) -> None:
+    """The exact artifact defect: diagram source typeset as the figure."""
+    _write(tmp_path, "_combined_manuscript.tex", RASTERIZED_FIGURE + MERMAID_FALLBACK)
+    defects = mermaid_fallback_defects(tmp_path)
+    assert len(defects) == 1
+    assert "mermaid diagram shipped as verbatim source" in defects[0]
+    assert "'flowchart LR'" in defects[0]
+    assert "'Mermaid diagram'" in defects[0]
+
+
+def test_a_verbatim_figure_that_is_not_a_diagram_is_not_reported(
+    tmp_path: Path,
+) -> None:
+    """A code listing in a figure is legitimate; only diagram source is not."""
+    _write(tmp_path, "_combined_manuscript.tex", VERBATIM_LISTING)
+    assert mermaid_fallback_defects(tmp_path) == ()
+
+
+def test_mermaid_audit_reads_the_caption_not_the_alt_text(tmp_path: Path) -> None:
+    """A fallback with an authored caption is still a fallback."""
+    _write(
+        tmp_path,
+        "_combined_manuscript.tex",
+        MERMAID_FALLBACK.replace("Mermaid diagram", "The Hermes topic run"),
+    )
+    defects = mermaid_fallback_defects(tmp_path)
+    assert len(defects) == 1
+    assert "'The Hermes topic run'" in defects[0]
+
+
+# ── staleness ─────────────────────────────────────────────────────────────
+CHAPTER = (
+    "# Background\n\n"
+    "The table below reports the present catalogue's scope across every "
+    "maintained area of the formalization.\n"
+)
+RENDERED = (
+    "# Background\n\n"
+    "The table below reports the present catalogue's scope across every "
+    "maintained area of the formalization.\n"
+)
+
+
+def _stale_tree(tmp_path: Path, chapter: str, rendered: str) -> tuple[Path, Path]:
+    manuscript = tmp_path / "manuscript"
+    pdf = tmp_path / "pdf"
+    manuscript.mkdir()
+    pdf.mkdir()
+    (pdf / "_combined_manuscript.md").write_text(rendered, encoding="utf-8")
+    os.utime(pdf / "_combined_manuscript.md", (1_000, 1_000))
+    (manuscript / "02b_background.md").write_text(chapter, encoding="utf-8")
+    os.utime(manuscript / "02b_background.md", (2_000, 2_000))
+    return manuscript, pdf
+
+
+def test_a_newer_source_with_identical_content_is_not_stale(tmp_path: Path) -> None:
+    """The false positive that failed the delivered artifact.
+
+    Regenerating a chapter to byte-identical content moves its mtime. The first
+    version of this guard compared mtimes and rejected a render that described
+    exactly that tree.
+    """
+    manuscript, pdf = _stale_tree(tmp_path, CHAPTER, RENDERED)
+    assert stale_render_defects(manuscript, pdf) == ()
+
+
+def test_a_drifted_prose_line_is_stale(tmp_path: Path) -> None:
+    """The real drift: 02b says "The table below", the render says "Table 1"."""
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        CHAPTER,
+        RENDERED.replace("The table below reports", "Table 1 reports"),
+    )
+    defects = stale_render_defects(manuscript, pdf)
+    assert len(defects) == 1
+    assert "1 line(s) absent" in defects[0]
+    assert "The table below reports" in defects[0]
+
+
+def test_a_source_older_than_the_render_is_not_read(tmp_path: Path) -> None:
+    """Nothing older than the render can have changed since it was written."""
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        CHAPTER,
+        RENDERED.replace("The table below reports", "Table 1 reports"),
+    )
+    os.utime(manuscript / "02b_background.md", (500, 500))
+    assert stale_render_defects(manuscript, pdf) == ()
+
+
+def test_placeholder_lines_are_compared_through_the_render_variables(
+    tmp_path: Path,
+) -> None:
+    """A token line matches the value it rendered to, and only that value."""
+    chapter = (
+        "The catalogue holds {{total_topics}} topic-scoped Lean bodies across "
+        "every maintained area of the formalization.\n"
+    )
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        chapter,
+        "The catalogue holds 155 topic-scoped Lean bodies across every "
+        "maintained area of the formalization.\n",
+    )
+    assert stale_render_defects(manuscript, pdf, variables={"total_topics": 155}) == ()
+    defects = stale_render_defects(manuscript, pdf, variables={"total_topics": 162})
+    assert len(defects) == 1
+    assert "162 topic-scoped" in defects[0]
+
+
+def test_a_changed_variable_file_re_checks_untouched_chapters(
+    tmp_path: Path,
+) -> None:
+    """A count can drift a chapter nobody edited, so vars gate every source."""
+    chapter = (
+        "The catalogue holds {{total_topics}} topic-scoped Lean bodies across "
+        "every maintained area of the formalization.\n"
+    )
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        chapter,
+        "The catalogue holds 155 topic-scoped Lean bodies across every "
+        "maintained area of the formalization.\n",
+    )
+    os.utime(manuscript / "02b_background.md", (500, 500))
+    (manuscript / "manuscript_vars.yaml").write_text(
+        "total_topics: 162\n", encoding="utf-8"
+    )
+    os.utime(manuscript / "manuscript_vars.yaml", (2_000, 2_000))
+    defects = stale_render_defects(manuscript, pdf, variables={"total_topics": 162})
+    assert len(defects) == 1
+    assert "162 topic-scoped" in defects[0]
+
+
+def test_image_lines_are_not_drift(tmp_path: Path) -> None:
+    """The renderer rewrites image paths; that is not a stale chapter."""
+    chapter = (
+        "![A generated figure showing the area distribution of the catalogue]"
+        "(../output/figures/topics_by_area.png)\n"
+    )
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        chapter,
+        "![A generated figure showing the area distribution of the catalogue]"
+        "(figures/topics_by_area.png)\n",
+    )
+    assert stale_render_defects(manuscript, pdf) == ()
+
+
+def test_an_absent_combined_render_is_a_defect(tmp_path: Path) -> None:
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+    defects = stale_render_defects(manuscript, tmp_path / "pdf")
+    assert len(defects) == 1
+    assert "combined render is absent" in defects[0]
+
+
+def test_preamble_is_not_compared_against_the_combined_document(
+    tmp_path: Path,
+) -> None:
+    """``preamble.md`` becomes the LaTeX header, never combined prose."""
+    manuscript, pdf = _stale_tree(tmp_path, CHAPTER, RENDERED)
+    (manuscript / "preamble.md").write_text(
+        "\\usepackage[margin=1cm, top=1.2cm, bottom=1.2cm, heightrounded]{geometry}\n",
+        encoding="utf-8",
+    )
+    os.utime(manuscript / "preamble.md", (2_000, 2_000))
+    assert stale_render_defects(manuscript, pdf) == ()

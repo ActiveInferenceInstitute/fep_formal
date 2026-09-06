@@ -22,6 +22,8 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
+import yaml
+
 from fep_lean.output.render_log import (
     contents_number_overflow_defects,
     mermaid_fallback_defects,
@@ -61,7 +63,17 @@ def main(argv: list[str] | None = None) -> int:
         print(f"FAIL: {line}")
     if not fallbacks:
         print("OK: no mermaid diagram fell back to verbatim source")
-    stale = stale_render_defects(project_root / "manuscript", pdf_dir)
+    # The renderer resolves ``{{placeholder}}`` tokens from this file, so the
+    # staleness check needs it to compare a source line against the rendered
+    # line it became. Reading the committed projection costs nothing and keeps
+    # this acceptance script free of the catalogue build.
+    variables = None
+    vars_path = project_root / "manuscript" / "manuscript_vars.yaml"
+    if vars_path.is_file():
+        variables = yaml.safe_load(vars_path.read_text(encoding="utf-8"))
+    stale = stale_render_defects(
+        project_root / "manuscript", pdf_dir, variables=variables
+    )
     for line in stale:
         print(f"FAIL: {line}")
     if not stale:
