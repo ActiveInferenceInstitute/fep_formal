@@ -190,6 +190,17 @@
 \renewcommand*\l@subparagraph{\@dottedtocline{5}{18.9em}{7.2em}}
 \makeatother
 
+% ── Widows and orphans ────────────────────────────────────────────
+% LaTeX's default penalties (150) are low enough that a paragraph may leave a
+% single line stranded at the foot or head of a page. In a 347-page document
+% with many short paragraphs between headings, that is the most common way a
+% page acquires an orphan. These are preventative settings, not a repair of a
+% counted defect.
+\widowpenalty=10000
+\clubpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+
 % ── Float placement ───────────────────────────────────────────────
 % LaTeX's defaults send a figure to a page of its own as soon as it exceeds
 % 70 percent of the text height, which left a float-only page carrying one orphaned
