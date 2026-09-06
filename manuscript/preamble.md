@@ -206,29 +206,6 @@
 \AtBeginDocument{\renewcommand*\l@section{\@dottedtocline{1}{0em}{2.6em}}\renewcommand*\l@subsection{\@dottedtocline{2}{2.6em}{4.3em}}\renewcommand*\l@subsubsection{\@dottedtocline{3}{6.9em}{5.6em}}\renewcommand*\l@paragraph{\@dottedtocline{4}{12.5em}{6.4em}}\renewcommand*\l@subparagraph{\@dottedtocline{5}{18.9em}{7.2em}}}
 \makeatother
 
-% ── Widows and orphans ────────────────────────────────────────────
-% LaTeX's default penalties (150) are low enough that a paragraph may leave a
-% single line stranded at the foot or head of a page. In a 347-page document
-% with many short paragraphs between headings, that is the most common way a
-% page acquires an orphan. These are preventative settings, not a repair of a
-% counted defect.
-\widowpenalty=10000
-\clubpenalty=10000
-\displaywidowpenalty=10000
-\brokenpenalty=10000
-
-% ── Float placement ───────────────────────────────────────────────
-% LaTeX's defaults open a page of its own for any float taller than 70 percent
-% of the text height, and accept such a page when it is only half full. Let a
-% float occupy more of a shared page before a float page is opened, and require
-% a float page that does open to be genuinely full. The audited build had one
-% float page (the kernel dashboard, which is 2000x3480 and legitimately fills
-% a page); these settings are preventative, not a repair of a counted defect.
-\renewcommand{\topfraction}{0.9}
-\renewcommand{\bottomfraction}{0.8}
-\renewcommand{\textfraction}{0.07}
-\renewcommand{\floatpagefraction}{0.8}
-
 % ── Document metadata carried into the PDF /Info dictionary ───────
 % manuscript/config.yaml declares a subtitle and a keyword list; pandoc's
 % \hypersetup carries only title, author and language, so both were dropped
