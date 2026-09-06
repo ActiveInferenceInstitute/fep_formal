@@ -55,5 +55,31 @@ uv run python scripts/render_manuscript.py --check
 uv run python scripts/render_manuscript.py
 ```
 
+`render_publication.py` is the publication entry point: it runs the shared
+rendering template's PDF stage and then this repository's own acceptance, and
+its exit code is the conjunction of the two. The template compiles with
+`-interaction=nonstopmode` and tests its log for four fatal markers, so a `!`
+error and every `Missing character:` note exit zero with a PDF written -- the
+mechanism that shipped 162 dropped glyphs and one false printed theorem. The
+template is a separate repository, so this repository cannot fix that test; it
+declines to accept its verdict instead. A preflight probes the host's installed
+fonts first, because the dropped-glyph failure is silent by construction:
+
+```bash
+FEP_LEAN_TEMPLATE_DIR=<template checkout> \
+  uv run python scripts/render_publication.py
+uv run python scripts/render_publication.py --accept-only
+```
+
+`check_render_log.py` is that acceptance on its own, and
+`build_render_fonts.py` owns the font requirement: `--check` fails when the
+manuscript starts typesetting a glyph the committed record does not list, and
+`--probe` asks the host's fontconfig whether the selected faces cover the set:
+
+```bash
+uv run python scripts/build_render_fonts.py --check
+uv run python scripts/build_render_fonts.py --probe
+```
+
 Do not invoke repository-root modules or set a monorepo-specific `PYTHONPATH`;
 each wrapper resolves this checkout's `src/` directory directly.

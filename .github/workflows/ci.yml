@@ -30,6 +30,7 @@ jobs:
           uv run python scripts/_maint_build_lean_landscape.py --check
           uv run python scripts/build_formalism_atlas.py --check
           uv run python scripts/build_formal_kernel_dashboard.py --check
+          uv run python scripts/build_render_fonts.py --check
       - name: Generate and validate publication inputs
         run: |
           uv run fep-lean catalogue
