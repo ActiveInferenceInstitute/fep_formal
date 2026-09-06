@@ -1,8 +1,4 @@
 {
-  "pinned_at": "2026-09-06",
-  "gnn_commit": "e62b9e98e6f4dd0b0e2b528638920223a7c23e0d",
-  "pin_scope": "GNN HEAD pin: both pinned files verified clean (git status) at pin time; v0.5 rename re-pin (src/gnn layout)",
-  "doc/gnn/gnn_syntax.md": "67a3a1a81fa8cdc6baef9059c22519cce40babf066db038573008fe87ba61408",
-  "src/gnn/pipeline/step_registry.py": "932f79563bfd209156c49d151f100ee0e90308ecc55c6b60436eec4fdce8ec6d",
-  "note": "GNN checkout: ../GeneralizedNotationNotation relative to the fep_lean root; Q1-pinned surface per bridge contract section 9"
+  "docs/gnn/gnn_syntax.md": "67a3a1a81fa8cdc6baef9059c22519cce40babf066db038573008fe87ba61408",
+  "src/gnn/pipeline/step_registry.py": "932f79563bfd209156c49d151f100ee0e90308ecc55c6b60436eec4fdce8ec6d"
 }
