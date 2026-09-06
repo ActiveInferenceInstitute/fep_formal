@@ -52,11 +52,13 @@
   owner, the entry is gone, and the set is split into three provenance groups
   that `unverified_non_catalogue_identifiers` checks against their sources: a
   Mathlib citation against the names the pinned checkout introduces (a
-  declaration header, or a tactic's quoted token -- `norm_num` has no
-  declaration of that name), a local citation against `src/fep_lean/formal`,
-  and a record field against `TopicEntry`. `scripts/render_manuscript.py` fails
-  on an unverifiable entry and prints an explicit "unchecked" line when the
-  pinned library is absent rather than passing the group in silence.
+  declaration header, or a quoted token -- no `theorem`/`def` header carries
+  `norm_num`; the tactic's name reaches the reader as the literal in
+  `elab (name := normNum) "norm_num" ... : tactic`), a local citation
+  against `src/fep_lean/formal`, and a record field against `TopicEntry`.
+  `scripts/render_manuscript.py` fails on an unverifiable entry and prints an
+  explicit "unchecked" line when the pinned library is absent rather than
+  passing the group in silence.
 
 - Gave the acceptance somewhere to bite. `scripts/check_render_log.py` was a
   real, tested check that nothing ran: `grep -rn check_render_log

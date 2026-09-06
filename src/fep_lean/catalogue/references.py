@@ -281,10 +281,12 @@ def lean_names_introduced(lean_root: Path) -> frozenset[str]:
     Two forms count, because both are cited in prose. A declaration header
     (``theorem``/``def``/``class``/...) introduces its name directly. A
     ``syntax``/``elab``/``macro`` construct introduces an internal name via
-    ``(name := ...)`` and a user-facing token via its quoted literal: Mathlib
-    writes ``elab (name := normNum) "norm_num" ... : tactic``, so ``norm_num``
-    is a real name of the pinned library even though no declaration header
-    carries it.
+    ``(name := ...)`` and a user-facing token via its quoted literal. Mathlib's
+    ``norm_num`` reaches a reader through both of the second kind and neither
+    of the first: ``syntax (name := norm_num) "norm_num " term,+ : attr``
+    names the attribute, and ``elab (name := normNum) "norm_num" ... : tactic``
+    names the tactic, while no ``theorem``/``def`` header carries the name at
+    all. A header-only scan would report the pinned library does not have it.
     """
 
     root = Path(lean_root)
