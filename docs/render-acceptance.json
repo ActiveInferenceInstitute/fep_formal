@@ -8,7 +8,7 @@
     "tex_errors": 0,
     "uncaptioned_tables": 0
   },
-  "manuscript_source_digest": "0ab723014c89f1040983612808a0ead3907019edae071b503e6adec3a57fdc2b",
+  "manuscript_source_digest": "db95ed7ceb9246eccb515bb50795dba0ce3e64dacfe383609fe944e7d46fe89b",
   "pages": 350,
   "receipt_version": 1,
   "source_digests": {
@@ -24,7 +24,7 @@
     "03e_lean_compilation.md": "a08fb4362f430cc495c6b5845aa28dc4ec57561114763b819f8ece9b153c1ebf",
     "03f_pipeline_architecture.md": "7b55726826552bc7435ba396afbad95ce0759b1f0892715065e1c5861b8f00b3",
     "04a_framework_fep.md": "58ce9bb3e71f5ffecf1abecb4cf87a1023c65cd768f1a5602d50eeb2ef4312d1",
-    "04b_framework_active_inference.md": "4c7b0c3e80b1c61cff688b7b4a0b98952ca7616b9f986c7aab92db4834b6a030",
+    "04b_framework_active_inference.md": "57f29d01543dabedbacaaf4125981ce818ce27ca6768a7d89fd3a9ba242cbd91",
     "04c_framework_sophisticated_dynamics.md": "de9f3e45c74473f625ee15e6bc9097d3417acdcf6a860398e0999d9872a1c56b",
     "04d_framework_thermodynamics.md": "1e342fb7608add7b7d5cc1f1e49b5c71da5f28223e1b89c25bbe81b6830c2a56",
     "04e_quantitative_metrics.md": "e904a05d3232a3b10a0a6f9a06a5d7ebfc31b0df89bfcd4ec4c502b46a8a4a63",
