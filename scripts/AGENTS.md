@@ -17,6 +17,19 @@ declaration/axiom evidence adapter. The
 `theorem_maturity_audit.py` maintenance command validates that review and
 renders `docs/theorem-maturity-audit.md`.
 
+`render_publication.py` is the publication entry point and owns the render
+boundary: it renders the authored sources into `output/manuscript/` (the
+directory the shared template actually typesets), runs the template's PDF
+stage, and then runs `check_render_log.py`, exiting on the conjunction. The
+template's own success test looks for four fatal markers under
+`-interaction=nonstopmode`, so it reports success over a log recording TeX
+errors and dropped glyphs; that template is a separate repository and this
+wrapper does not accept its verdict. `build_render_fonts.py` owns the derived
+font requirement (`docs/render-fonts.json`, `--check` in CI) and the host
+probe. None of the three reconstructs a roster or a policy: the acceptance
+predicates live in `fep_lean.output.render_log`, the requirement in
+`fep_lean.output.render_fonts`.
+
 `build_release_bundle.py` is a thin public wrapper over
 `fep_lean.output.release_bundle`. It never reconstructs the archive roster,
 renderer policy, manifest, checksum table, or evidence boundaries. `--check`
