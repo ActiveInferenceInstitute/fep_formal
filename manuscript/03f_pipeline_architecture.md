@@ -73,7 +73,7 @@ For receipt `{{verify.run_id}}`, recorded native compiler time is {{verify.durat
 
 From the project root:
 
-1. synchronize the locked Python environment with `uv sync --locked`;
+1. synchronize the locked Python environment with `uv sync --locked --extra dev`, whose test extras step 5 needs;
 2. explicitly prepare the pinned Lean workspace with `uv run fep-lean setup` when its cache is absent;
 3. regenerate and drift-check catalogue, aggregate Lean, semantic audit, and coverage projections;
 4. run `uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json` for native evidence;

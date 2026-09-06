@@ -2,6 +2,29 @@
 
 ### Publication render remediation
 
+- Made the published reproduction recipes reproduce. The conclusion's
+  Reproducibility Statement, the `AGENTS.md` required-check list, `README.md`,
+  `scripts/README.md`, `docs/SPEC.md`, `docs/testing.md`,
+  `docs/development.md`, `docs/authorship-guide.md` and one block in
+  `docs/cold-start-and-cleanup.md` ran
+  `scripts/render_manuscript.py --check` with no generator ahead of it.
+  `manuscript/manuscript_vars.yaml` and the generated appendix are
+  `.gitignore`d build products, so on a fresh checkout the check exits 1 with
+  "test collection cache is missing" before validating anything. Each block
+  now runs `uv run fep-lean catalogue` first, and
+  `unreproducible_command_blocks` fails the render path on any published shell
+  block that reintroduces the gap -- it found five sites beyond the two that
+  were reported. The generating form of `render_manuscript.py` does not
+  qualify: with the projection absent it exits 1 the same way `--check` does.
+- Restored the test extras the Reproducibility Statement's own first line
+  removed. It opened `uv sync --locked`, which prunes the `dev` group, and the
+  check it ends with counts the collected suite: running the published
+  sequence verbatim gave "required pytest collection distribution is missing:
+  pytest" and exit 1 from both `fep-lean catalogue` and
+  `render_manuscript.py --check`. The statement and 3.6.6's checklist now say
+  `uv sync --locked --extra dev`, and the same audit rejects a block whose
+  sync starves the check that follows it.
+
 - Replaced the primer's hand-typed "about 1-2 seconds" per verification with
   the receipt's own distribution. Nothing supported the range: the same PDF
   prints 14.952 s per result in the compilation chapter, and the cited receipt

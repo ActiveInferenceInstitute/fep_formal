@@ -59,10 +59,10 @@ Posterior contraction itself is already proved on the selected two-hypothesis Ga
 
 ## Reproducibility Statement {#sec:reproducibility_statement}
 
-The Python environment is lockfile-controlled; Lean and Mathlib are pinned in the Lake workspace; generated artifacts have drift checks; and native evidence can be reproduced with:
+The Python environment is lockfile-controlled; Lean and Mathlib are pinned in the Lake workspace; generated artifacts have drift checks; and native evidence can be reproduced with the sequence below. `fep-lean catalogue` appears before the manuscript drift check because `manuscript/manuscript_vars.yaml` and the generated appendix are build products rather than tracked sources: on a fresh checkout they do not exist yet, and the check that compares them to canonical data has nothing to compare.
 
 ```bash
-uv sync --locked
+uv sync --locked --extra dev
 uv run fep-lean setup
 uv run python scripts/_maint_build_topics_catalogue.py --check
 uv run python scripts/_maint_build_fep_all_lean.py --check
@@ -73,6 +73,7 @@ uv run fep-lean atlas --check
 uv run python scripts/build_formal_kernel_dashboard.py --check
 uv run python scripts/audit_formalisms.py --receipt output/formalism-audit.json
 uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
 uv run python docs/theorem_ref_audit.py
 ```

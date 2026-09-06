@@ -47,6 +47,7 @@ from fep_lean.output.publication_metadata import (
 from fep_lean.output.rendering import (
     ManuscriptRenderError,
     render_manuscript,
+    unreproducible_command_blocks,
     unresolved_placeholders,
 )
 
@@ -263,6 +264,17 @@ def main(argv: list[str] | None = None) -> int:
     if miscounted:
         print("ERROR: area row counts labelled as proved declarations")
         for item in miscounted:
+            print(f"  {item}")
+        return 1
+    # This script is itself published, in ten shell blocks across the paper,
+    # the READMEs, the agent contracts and CI. Four of them ran the check with
+    # no generator ahead of it, so the Reproducibility Statement's own recipe
+    # exited 1 on a fresh checkout. The script that the blocks promise is the
+    # one that checks them.
+    unreproducible = unreproducible_command_blocks(project_root)
+    if unreproducible:
+        print("ERROR: published command blocks that cannot run as written")
+        for item in unreproducible:
             print(f"  {item}")
         return 1
     # ``manuscript/preamble.md`` is copied verbatim by the renderer and never

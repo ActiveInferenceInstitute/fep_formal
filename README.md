@@ -225,6 +225,7 @@ uv run python scripts/audit_formalisms.py \
   --receipt output/formalism-audit.json
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
+uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
 uv run pytest tests/ -q --cov=src --cov-fail-under=89
 uv run mypy src

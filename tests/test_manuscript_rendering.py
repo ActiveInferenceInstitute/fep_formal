@@ -24,6 +24,7 @@ from fep_lean.output.rendering import (
     manuscript_source_files,
     render_manuscript,
     substitute_placeholders,
+    unreproducible_command_blocks,
     unresolved_placeholders,
 )
 
@@ -490,3 +491,57 @@ def test_substitution_stays_fail_closed_for_the_renderer() -> None:
         substitute_placeholders("Holds {{total_topics}} bodies.", {"total_topics": 155})
         == "Holds 155 bodies."
     )
+
+
+def _shell_block(*commands: str) -> str:
+    """Return one fenced shell block, assembled so this file holds no fence."""
+    fence = "`" * 3
+    body = "".join(f"{command}\n" for command in commands)
+    return f"{fence}bash\n{body}{fence}\n"
+
+
+def test_no_published_command_block_runs_the_check_without_a_generator() -> None:
+    assert unreproducible_command_blocks(PROJ) == ()
+
+
+def test_published_block_without_a_generator_is_rejected(tmp_path: Path) -> None:
+    """The exact Reproducibility Statement that shipped, minus its generator."""
+    (tmp_path / "06_conclusion.md").write_text(
+        "Reproduce with:\n\n"
+        + _shell_block(
+            "uv sync --locked",
+            "uv run python scripts/render_manuscript.py --check",
+        ),
+        encoding="utf-8",
+    )
+    defects = unreproducible_command_blocks(tmp_path)
+    assert len(defects) == 1
+    assert "runs with no generator ahead of it" in defects[0]
+    assert defects[0].startswith("06_conclusion.md:")
+
+
+def test_published_block_with_the_generator_is_accepted(tmp_path: Path) -> None:
+    (tmp_path / "06_conclusion.md").write_text(
+        "Reproduce with:\n\n"
+        + _shell_block(
+            "uv sync --locked",
+            "uv run fep-lean catalogue",
+            "uv run python scripts/render_manuscript.py --check",
+        ),
+        encoding="utf-8",
+    )
+    assert unreproducible_command_blocks(tmp_path) == ()
+
+
+def test_generating_render_mode_does_not_count_as_the_generator(
+    tmp_path: Path,
+) -> None:
+    """It rebuilds the test cache but never writes ``manuscript_vars.yaml``."""
+    (tmp_path / "README.md").write_text(
+        _shell_block(
+            "uv run python scripts/render_manuscript.py --check",
+            "uv run python scripts/render_manuscript.py",
+        ),
+        encoding="utf-8",
+    )
+    assert len(unreproducible_command_blocks(tmp_path)) == 1

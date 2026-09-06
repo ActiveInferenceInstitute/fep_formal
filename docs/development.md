@@ -54,6 +54,7 @@ uv run fep-lean atlas --check
 uv run fep-lean dashboard --check
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
+uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
 
 uv run ruff check src tests scripts docs

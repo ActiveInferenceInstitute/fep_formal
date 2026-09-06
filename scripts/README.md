@@ -46,11 +46,15 @@ uv run python scripts/audit_formalisms.py \
 
 `render_manuscript.py` is the fail-closed source-to-build renderer. Its check
 mode validates the stable typed-variable projection, the exact generated
-appendix, and every authored placeholder without writing output. Run-local
-receipt/provider values are rebuilt from independently validated evidence; the
-default mode writes the resolved files under `output/manuscript/`:
+appendix, and every authored placeholder without writing output. Neither mode
+creates that projection -- `fep-lean catalogue` owns it, and both modes exit 1
+with "stale manuscript projections" where it is absent, which on a fresh
+checkout is always. Run-local receipt/provider values are rebuilt from
+independently validated evidence; the default mode writes the resolved files
+under `output/manuscript/`:
 
 ```bash
+uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
 uv run python scripts/render_manuscript.py
 ```

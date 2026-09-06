@@ -31,6 +31,7 @@ uv run python docs/pin_audit.py
 uv run python docs/xref_audit.py
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
+uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
 ```
 

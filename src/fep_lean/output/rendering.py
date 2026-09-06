@@ -16,6 +16,46 @@ from fep_lean.output.publication_metadata import (
 )
 
 PLACEHOLDER_RE = re.compile(r"\{\{([^}]+)\}\}")
+# Every shell block this repository publishes is a promise a reader can run.
+# ``scripts/render_manuscript.py --check`` validates
+# ``manuscript/manuscript_vars.yaml`` and the generated appendix, both build
+# products excluded by ``.gitignore``. On a checkout that has not built them
+# it exits 1 with "test collection cache is missing", so a block that runs the
+# check without a generator ahead of it publishes a recipe that fails on the
+# first try. Four blocks did, the paper's own Reproducibility Statement
+# among them.
+_SHELL_FENCE_LANGUAGES: tuple[str, ...] = ("bash", "console", "shell", "sh")
+_SHELL_FENCE_RE = re.compile(
+    r"^(?P<indent>[ \t]*)```(?:"
+    + "|".join(_SHELL_FENCE_LANGUAGES)
+    + r")[^\n]*\n(?P<body>.*?)^(?P=indent)```",
+    re.DOTALL | re.MULTILINE,
+)
+_RENDER_CHECK_TOKEN = "scripts/render_manuscript.py --check"
+# What actually regenerates the projections the check validates. The
+# generating form of ``render_manuscript.py`` does not: it rebuilds the test
+# cache but never writes ``manuscript_vars.yaml``, so with that file absent it
+# exits 1 with "stale manuscript projections" exactly as ``--check`` does.
+_PROJECTION_GENERATORS: tuple[str, ...] = ("fep-lean catalogue",)
+# The check counts the collected test suite, so it imports pytest and
+# pytest-timeout -- both `dev` extras. A block that opens with a bare
+# `uv sync --locked` *removes* them from an existing environment, and the
+# check then exits 1 with "required pytest collection distribution is
+# missing: pytest". The conclusion's Reproducibility Statement opened exactly
+# that way.
+_SYNC_TOKEN = "uv sync"
+_SYNC_TEST_EXTRA = "--extra dev"
+# Files whose shell blocks are published as reproduction instructions. Blocks
+# under a generated or vendored tree are not this repository's promise.
+_PUBLISHED_COMMAND_GLOBS: tuple[str, ...] = (
+    "*.md",
+    ".github/workflows/*.yml",
+    "docs/*.md",
+    "manuscript/*.md",
+    "scripts/*.md",
+    "src/fep_lean/*.md",
+    "tests/*.md",
+)
 SOURCE_EXCLUDES = frozenset(
     {
         "AGENTS.md",
@@ -104,6 +144,64 @@ def manuscript_source_files(source_dir: Path) -> tuple[Path, ...]:
     return tuple(
         path for path in sorted(source.glob("*.md")) if path.name not in SOURCE_EXCLUDES
     )
+
+
+def published_command_files(project_root: Path) -> tuple[Path, ...]:
+    """Return the files whose shell blocks are published as instructions."""
+    root = Path(project_root)
+    found: set[Path] = set()
+    for pattern in _PUBLISHED_COMMAND_GLOBS:
+        found.update(path for path in root.glob(pattern) if path.is_file())
+    return tuple(sorted(found))
+
+
+def unreproducible_command_blocks(project_root: Path) -> tuple[str, ...]:
+    """Return published shell blocks whose render check cannot pass as written.
+
+    ``render_manuscript.py --check`` validates generated projections it does
+    not create. A block that runs it without first running a generator --
+    ``fep-lean catalogue``, or the generating form of the script itself --
+    exits 1 on any checkout that has not already built them, which is every
+    fresh clone. This audit reads each block in order and reports the ones
+    that ask a reader to run a check nothing in the block can satisfy.
+    """
+
+    root = Path(project_root)
+    failures: list[str] = []
+    for path in published_command_files(root):
+        text = path.read_text(encoding="utf-8")
+        for fence in _SHELL_FENCE_RE.finditer(text):
+            body = fence.group("body")
+            index = body.find(_RENDER_CHECK_TOKEN)
+            if index < 0:
+                continue
+            preceding = body[:index]
+            offset = fence.start("body") + index
+            line_number = text.count("\n", 0, offset) + 1
+            try:
+                display = path.relative_to(root).as_posix()
+            except ValueError:  # pragma: no cover - defensive
+                display = path.name
+            if not any(token.strip() in preceding for token in _PROJECTION_GENERATORS):
+                failures.append(
+                    f"{display}:{line_number}: "
+                    f"`{_RENDER_CHECK_TOKEN}` runs with no generator ahead of "
+                    "it; add `uv run fep-lean catalogue` earlier in the same "
+                    "block"
+                )
+            starved = [
+                line
+                for line in preceding.splitlines()
+                if _SYNC_TOKEN in line and _SYNC_TEST_EXTRA not in line
+            ]
+            if starved:
+                failures.append(
+                    f"{display}:{line_number}: "
+                    f"`{_RENDER_CHECK_TOKEN}` follows `{starved[0].strip()}`, "
+                    f"which leaves no pytest to collect; pass "
+                    f"`{_SYNC_TEST_EXTRA}`"
+                )
+    return tuple(failures)
 
 
 def unresolved_placeholders(
