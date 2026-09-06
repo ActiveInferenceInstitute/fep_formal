@@ -34,7 +34,7 @@ DOCUMENTS = {
 CONTRACT = "docs/design/gnn-bridge/bridge-contract.md"
 MIRROR = "doc/other/fep_lean/bridge-contract.md"
 SYNTAX_PIN = "specs/gnn-bridge-w1-bridge-operations/syntax-pin.json"
-SYNTAX_FILES = ("doc/gnn/gnn_syntax.md", "src/pipeline/step_registry.py")
+SYNTAX_FILES = ("doc/gnn/gnn_syntax.md", "src/gnn/pipeline/step_registry.py")
 
 
 def owner_roster(root: Path, repository: str) -> list[str]:
@@ -52,11 +52,14 @@ def owner_roster(root: Path, repository: str) -> list[str]:
         ]
         patterns = ("src/fep_lean/**/*.py", "src/fep_lean/formal/**/*.lean")
     elif repository == "gnn":
-        fixed = ["pyproject.toml", "uv.lock", "src/main.py", MIRROR, *SYNTAX_FILES]
-        patterns = tuple(
-            f"src/{folder}/**/*.py"
-            for folder in ("gnn", "render", "execute", "pipeline", "utils", "ontology")
-        )
+        fixed = [
+            "pyproject.toml",
+            "uv.lock",
+            "src/gnn/main.py",
+            MIRROR,
+            *SYNTAX_FILES,
+        ]
+        patterns = ("src/gnn/**/*.py",)
     else:
         raise ValueError("unknown repository")
     return sorted(
@@ -81,7 +84,7 @@ def _head(root: Path) -> str:
     return result.stdout.strip()
 
 
-def _read_object(path: Path) -> dict[str, Any]:
+def read_object(path: Path) -> dict[str, Any]:
     result = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(result, dict):
         raise TypeError(f"JSON root must be an object: {path.name}")
@@ -150,7 +153,7 @@ def projected_document(root: Path, model: str, pin: dict[str, Any]) -> str:
 def emit(
     root: Path, gnn: Path, model: str, *, check: bool = False, refresh: bool = False
 ) -> bool:
-    pin = _read_object(root / PIN)
+    pin = read_object(root / PIN)
     errors = check_sources(root, gnn, pin)
     if errors:
         raise ValueError("source pin is stale: " + "; ".join(errors))
@@ -177,7 +180,7 @@ def status(root: Path, gnn: Path) -> dict[str, Any]:
     """Inspect both models and all owners. Never invoke an emitting subprocess."""
     checks: dict[str, dict[str, Any]] = {}
     try:
-        pin = _read_object(root / PIN)
+        pin = read_object(root / PIN)
         errors = check_sources(root, gnn, pin)
         checks["source_binding"] = {"passed": not errors, "errors": errors}
         for model in DOCUMENTS:
@@ -189,7 +192,7 @@ def status(root: Path, gnn: Path) -> dict[str, Any]:
     except (ValueError, OSError, KeyError, TypeError) as exc:
         checks["source_binding"] = {"passed": False, "errors": [str(exc)]}
     try:
-        syntax_pin = _read_object(root / SYNTAX_PIN)
+        syntax_pin = read_object(root / SYNTAX_PIN)
         actual = fingerprint(gnn, SYNTAX_FILES)
         checks["syntax_surface"] = {
             "passed": all(actual[name] == syntax_pin.get(name) for name in SYNTAX_FILES)
@@ -223,7 +226,7 @@ def certificate_receipt(
     root: Path, gnn: Path, results: Path, *, tolerance: float = TOLERANCE
 ) -> dict[str, Any]:
     """Evaluate one explicit result artifact; records agreement, never a proof."""
-    pin = _read_object(root / PIN)
+    pin = read_object(root / PIN)
     errors = check_sources(root, gnn, pin)
     if errors:
         raise ValueError("stale source pin: " + "; ".join(errors))
@@ -231,7 +234,7 @@ def certificate_receipt(
         raise ValueError("finite document is stale")
     relative = results.resolve().relative_to(root.resolve()).as_posix()
     artifacts = fingerprint(root, [relative, DOCUMENTS["finite"]])
-    payload = _read_object(results)
+    payload = read_object(results)
     certificates, observations, ok = compare(payload, tolerance)
     if fingerprint(root, artifacts) != artifacts or check_sources(root, gnn, pin):
         raise ValueError("sources or artifacts changed during comparison")
@@ -254,7 +257,7 @@ def certificate_receipt(
 def validate_certificate(root: Path, gnn: Path, receipt: dict[str, Any]) -> list[str]:
     """Recompute the whole comparison and binding; never trust a passed flag."""
     try:
-        pin = _read_object(root / PIN)
+        pin = read_object(root / PIN)
         if receipt.get("source_pin") != pin:
             return ["certificate source pin mismatch"]
         results = root / receipt["results_path"]
@@ -283,3 +286,228 @@ def emit_certificate(path: Path, receipt: dict[str, Any]) -> None:
             receipt["all_certificates_pass"],
         ),
     )
+
+
+# ---------------------------------------------------------------------------
+# Direction 2 S7 (contract v0.5): verify-document
+# ---------------------------------------------------------------------------
+
+_VERIFY_RECEIPT_SCHEMA = 2
+
+
+def _lean_escape(text: str) -> str:
+    """Escape ``text`` for a Lean string literal."""
+    return (
+        text.replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("\n", "\\n")
+        .replace("\r", "\\r")
+        .replace("\t", "\\t")
+    )
+
+
+def _lean_number(value: Any) -> str:
+    """Format one numeric payload entry deterministically."""
+    if isinstance(value, bool):
+        return str(value)
+    if isinstance(value, int):
+        return str(value)
+    return repr(float(value))
+
+
+def _lean_payload(name: str, value: Any) -> str:
+    """Render one parameterization entry as a verbatim brace payload."""
+
+    def render(v: Any) -> str:
+        if isinstance(v, dict):
+            inner = ", ".join(f"{k}: {_lean_number(x)}" for k, x in v.items())
+            return "{" + inner + "}"
+        if isinstance(v, (list, tuple)):
+            if v and isinstance(v[0], (list, tuple, dict)):
+                return "{\n  " + ", ".join(render(row) for row in v) + "\n}"
+            return "{" + "(" + ", ".join(_lean_number(x) for x in v) + ")" + "}"
+        return "{" + _lean_number(v) + "}"
+
+    return render(value)
+
+
+_VALUE_TYPE_LEAN = {"float": ".floatT", "int": ".intT", "bool": ".boolT"}
+
+
+def _probe_sections(space: Any, declared: list[dict[str, Any]]) -> list[str]:
+    """Project one extracted POMDP state space onto ``GnnSection`` values.
+
+    Mirrors the frozen 13-kind inventory in canonical rank order; optional
+    sections are emitted only when the extracted payload carries content.
+    """
+    import re as _re
+
+    def conn_edge(src: str, op: str, dst: str) -> str:
+        kind = ".undirected" if op == "-" else ".directed"
+        return (
+            '{ src := "' + _lean_escape(src) + '", kind := ' + kind
+            + ', dst := "' + _lean_escape(dst) + '", label := none }'
+        )
+
+    def decl(var: Any) -> str:
+        def attr(obj: Any, key: str, default: Any) -> Any:
+            if isinstance(obj, dict):
+                return obj.get(key, default)
+            return getattr(obj, key, default)
+
+        def dim(d: Any) -> str:
+            text = str(d)
+            if isinstance(d, int) or text.isdigit():
+                return f".lit {int(d)}"
+            return f'.ref "{_lean_escape(text)}"'
+
+        dims = ", ".join(dim(d) for d in (attr(var, "dimensions", None) or [1]))
+        value_type = _VALUE_TYPE_LEAN.get(
+            str(attr(var, "type", attr(var, "data_type", "float"))), ".floatT"
+        )
+        return (
+            '⟨"' + _lean_escape(str(attr(var, "name", ""))) + '", [' + dims + "], "
+            + value_type + ", none⟩"
+        )
+
+    sections: list[str] = []
+    identifier = _re.sub(r"[^A-Za-z0-9_π']", "", space.gnn_section or space.model_name or "GNNModel")
+    sections.append(f'.gnnSection "{_lean_escape(identifier)}"')
+    sections.append(".gnnVersionAndFlags .v1 []")
+    sections.append(f'.modelName "{_lean_escape(space.model_name or identifier)}"')
+    if space.model_annotation:
+        sections.append(f'.modelAnnotation "{_lean_escape(space.model_annotation)}"')
+
+    # Full StateSpaceBlock inventory: the POMDP extractor classifies only
+    # state/observation/action variables, while well-formedness requires
+    # every declared variable (incl. A-E matrices and F/G readouts).
+    variables = declared or [
+        *(space.state_variables or []),
+        *(space.observation_variables or []),
+        *(space.action_variables or []),
+    ]
+    decls = ", ".join(decl(v) for v in variables)
+    sections.append(f".stateSpaceBlock [{decls}]")
+
+    edges = ", ".join(conn_edge(s, op, d) for s, op, d in (space.connections or []))
+    sections.append(f".connections [{edges}]")
+
+    param_entries = ", ".join(
+        '⟨"' + _lean_escape(str(var)) + '", "' + _lean_escape(_lean_payload(var, payload)) + '"⟩'
+        for var, payload in sorted((space.initial_parameterization or {}).items())
+    )
+    sections.append(f".initialParameterization [{param_entries}]")
+
+    bindings = ", ".join(
+        '⟨"' + _lean_escape(str(var)) + '", "' + _lean_escape(str(term)) + '"⟩'
+        for var, term in sorted((space.ontology_mapping or {}).items())
+    )
+    if bindings:
+        sections.append(f".actInfOntologyAnnotation [{bindings}]")
+
+    sections.append(
+        '.footer "Verified by fep-lean bridge verify-document (contract v0.5)"'
+    )
+    return sections
+
+
+def _probe_lean_code(space: Any, declared: list[dict[str, Any]]) -> str:
+    """Build the compile-once probe that guards well-formedness."""
+    sections = ",\n    ".join(_probe_sections(space, declared))
+    return (
+        "import FepSketches.gnn_document\n\n"
+        "open FEP.GnnDocument\n\n"
+        "-- bridge verify-document probe: constructed from the extracted\n"
+        "-- typed payload of one emitted document (contract v0.5, S7).\n"
+        "def bridgeProbeDoc : GnnDocument where\n"
+        "  sections :=\n"
+        "    [ " + sections + "\n"
+        "    ]\n\n"
+        "example : documentWellFormed bridgeProbeDoc = true := by decide\n"
+    )
+
+
+def verify_document(
+    root: Path,
+    gnn: Path,
+    document: Path,
+    model: str = "finite",
+    receipt: Path | None = None,
+    fail_on_warnings: bool = False,
+) -> dict[str, Any]:
+    """Verify one emitted GNN document against the ``FEP.GnnDocument`` AST.
+
+    Direction 2 S7 (contract v0.5): extract the typed payload via the pinned
+    render route, construct a ``GnnDocument`` value in a compile-once Lean
+    probe, and decide ``documentWellFormed``. Proves syntax and mechanical
+    well-formedness only — never ``DiscreteConforms``/``ContinuousConforms``
+    (documented no-go, contract §13).
+    """
+    from fep_lean.verification.lean_verifier import LeanVerifier
+
+    warnings: list[str] = []
+    if model not in EMITTERS:
+        raise ValueError(f"unknown model family: {model}")
+    document = document.resolve()
+    if not document.is_file():
+        raise FileNotFoundError(f"document not found: {document}")
+
+    document_sha = hashlib.sha256(document.read_bytes()).hexdigest()
+
+    # Render-route extraction (pinned: gnn.pomdp_extractor, strict).
+    gnn_src = gnn.resolve() / "src"
+    import sys as _sys
+
+    inserted = str(gnn_src) not in _sys.path
+    if inserted:
+        _sys.path.insert(0, str(gnn_src))
+    try:
+        # Runtime-bridged imports: the GNN checkout is bound via sys.path
+        # above (see RENDER_ROUTE pinning); gnn is not a fep_lean dependency.
+        from gnn.pomdp_extractor import (  # type: ignore[import-not-found]
+            extract_pomdp_from_file,
+        )
+        from gnn.schema import parse_state_space  # type: ignore[import-not-found]
+
+        space = extract_pomdp_from_file(document, strict_validation=True)
+    finally:
+        if inserted:
+            _sys.path.remove(str(gnn_src))
+    if space is None:
+        raise ValueError(f"document does not extract as a POMDP: {document}")
+
+    extracted_family = (
+        "continuous" if getattr(space, "model_kind", "discrete") == "continuous" else "finite"
+    )
+    if extracted_family != model:
+        warnings.append(
+            f"model family mismatch: requested {model}, document extracts as {extracted_family}"
+        )
+
+    verifier = LeanVerifier(lean_dir=root.resolve() / "lean", project_root=root.resolve())
+    declared, _decl_errors = parse_state_space(document.read_text(encoding="utf-8"))
+    result = verifier.verify_sketch(
+        "bridge-verify-document", _probe_lean_code(space, declared)
+    )
+    if result.skip_reason:
+        status = "skipped"
+        warnings.append(result.skip_reason)
+    elif result.compiles and not result.has_sorry:
+        status = "ok"
+    else:
+        status = "failed"
+    if fail_on_warnings and warnings:
+        status = "failed"
+
+    payload: dict[str, Any] = {
+        "schema_version": _VERIFY_RECEIPT_SCHEMA,
+        "document": document_sha,
+        "model_family": model,
+        "extracted_family": extracted_family,
+        "toolchain": {"lean": result.lean_version},
+        "status": status,
+        "warnings": warnings,
+    }
+    if receipt is not None:
+        write_json(receipt, payload)
+    return payload

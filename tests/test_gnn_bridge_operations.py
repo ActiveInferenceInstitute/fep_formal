@@ -192,13 +192,13 @@ def test_relevant_roster_changes_are_rejected(
 ) -> None:
     root, gnn = pair
     if change == "add":
-        path = gnn / "src/render/new.py"
+        path = gnn / "src/gnn/render/new.py"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("new owner")
     elif change == "delete":
-        (gnn / "src/main.py").unlink()
+        (gnn / "src/gnn/main.py").unlink()
     else:
-        (gnn / "src/main.py").write_text("changed")
+        (gnn / "src/gnn/main.py").write_text("changed")
     assert operations.status(root, gnn)["status"] == "error"
     with pytest.raises(ValueError, match="stale"):
         operations.emit(root, gnn, "finite")
@@ -241,7 +241,7 @@ def test_receipt_tampering_is_rejected(pair: tuple[Path, Path], mutation: str) -
     if mutation == "artifact":
         path.write_text('{"policy_posterior": [[0.5, 0.5]]}')
     elif mutation == "owner":
-        (gnn / "src/main.py").write_text("modified")
+        (gnn / "src/gnn/main.py").write_text("modified")
     elif mutation == "source_pin":
         receipt["source_pin"]["gnn"]["owners"] = {}
     elif mutation == "tolerance":
@@ -258,7 +258,7 @@ def test_comparison_rejects_mid_check_source_change(
     original = operations.compare
 
     def changed(*args: object) -> object:
-        (gnn / "src/main.py").write_text("changed during check")
+        (gnn / "src/gnn/main.py").write_text("changed during check")
         return original(*args)
 
     monkeypatch.setattr(operations, "compare", changed)
@@ -341,7 +341,7 @@ def test_emitter_ignores_unbound_bytecode(pair: tuple[Path, Path]) -> None:
 
     root, _ = pair
     emitter = root / operations.EMITTERS["finite"]
-    pin = operations._read_object(root / operations.PIN)
+    pin = operations.read_object(root / operations.PIN)
     expected = operations.projected_document(root, "finite", pin)
     cache = Path(importlib.util.cache_from_source(str(emitter)))
     cache.parent.mkdir(parents=True, exist_ok=True)

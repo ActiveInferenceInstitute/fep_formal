@@ -18,12 +18,14 @@ fep-lean dashboard   Generate or drift-check finite numerical witnesses.
 fep-lean run         Execute Hermes, Lean, and SQLite verification.
 fep-lean topic ID    Execute one topic in full mode.
 fep-lean report      Generate the offline catalogue report.
-fep-lean bridge      Inspect, pin, emit, or certify GNN bridge custody.
+fep-lean bridge      Inspect, pin, emit, certify, or verify GNN bridge custody.
 ```
 
-`bridge` operates on an explicit sibling GNN checkout: `status` and
-`verify-certificate` are read-only; `pin`, `emit`, and `certify` write
-receipts and require `--gnn-root PATH`.
+`bridge` operates on an explicit sibling GNN checkout: `status`,
+`verify-certificate`, and `verify-document` are read-only; `pin`, `emit`,
+and `certify` write receipts and require `--gnn-root PATH`.
+`verify-document --document PATH` checks one emitted GNN document against
+the `FEP.GnnDocument` typed surface (syntax + `WellFormed`, contract v0.5).
 
 For a generated report bundle, the read-only receipt checker is:
 

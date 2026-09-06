@@ -11,7 +11,15 @@ from fep_lean.bridge import operations
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
-        "operation", choices=("status", "pin", "emit", "certify", "verify-certificate")
+        "operation",
+        choices=(
+            "status",
+            "pin",
+            "emit",
+            "certify",
+            "verify-certificate",
+            "verify-document",
+        ),
     )
     parser.add_argument(
         "--gnn-root",
@@ -38,6 +46,16 @@ def add_arguments(parser: argparse.ArgumentParser) -> None:
         "--receipt",
         type=Path,
         help="explicit certificate output/input; omitted certify is read-only",
+    )
+    parser.add_argument(
+        "--document",
+        type=Path,
+        help="emitted GNN document for verify-document (md or lean)",
+    )
+    parser.add_argument(
+        "--fail-on-warnings",
+        action="store_true",
+        help="verify-document: treat warnings as failures (fail-closed)",
     )
 
 
@@ -76,13 +94,25 @@ def run(root: Path, args: argparse.Namespace) -> int:
                 "status": "ok" if receipt["all_certificates_pass"] else "error",
                 "receipt": receipt,
             }
-        else:
+        elif args.operation == "verify-certificate":
             if args.receipt is None:
                 raise ValueError("verify-certificate requires --receipt")
             errors = operations.validate_certificate(
-                root, gnn, operations._read_object(args.receipt)
+                root, gnn, operations.read_object(args.receipt)
             )
             result = {"status": "error" if errors else "ok", "errors": errors}
+        else:
+            if args.document is None:
+                raise ValueError("verify-document requires --document")
+            receipt = operations.verify_document(
+                root,
+                gnn,
+                args.document,
+                model=args.model,
+                receipt=args.receipt,
+                fail_on_warnings=args.fail_on_warnings,
+            )
+            result = {"status": receipt["status"], "receipt": receipt}
         print(json.dumps(result, indent=2, allow_nan=False))
         return 0 if result["status"] == "ok" else 1
     except (OSError, ValueError, KeyError, TypeError) as exc:

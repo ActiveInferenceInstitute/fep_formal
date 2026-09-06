@@ -1,6 +1,10 @@
 # P3 certificates — FepLeanSymmetricBool
 
-Executed results: `simulation_results.json` (P3 custody run).
+Identified result artifact: `simulation_results.json`.
+
+Numerical comparison only; execution provenance unverified.
+`execution_source_verified: false`; `native_claim_ready: false`.
+A passing comparison does not establish a current pipeline execution or Lean proof.
 
 | Certificate | Result | Lean value | Executed value | Delta |
 | --- | --- | --- | --- | --- |
@@ -13,8 +17,8 @@ for the Boolean carrier (README C3).
 
 ## Evidence planes
 
-- C1: Lean side = native Lean compilation (pinned workspace) + numerical witness; executed side = GNN pipeline execution.
-- C2: Lean side = native Lean compilation (pinned workspace) + numerical witness; executed side = GNN pipeline execution.
+- C1: Lean side = referenced Lean statement (native receipt checked separately) + numerical witness; executed side = reported numerical values; execution provenance unverified.
+- C2: Lean side = referenced Lean statement (native receipt checked separately) + numerical witness; executed side = reported numerical values; execution provenance unverified.
 
 ## Observations (findings, exact numbers)
 

@@ -686,7 +686,7 @@ def test_rejects_changed_current_bytes(
         "projection": "lean/FepSketches/gnn_denotation.lean",
         "olean": "lean/.lake/build/lib/lean/FepSketches/gnn_denotation.olean",
     }
-    path = gnn / "src/main.py" if artifact == "gnn_owner" else root / paths[artifact]
+    path = gnn / "src/gnn/main.py" if artifact == "gnn_owner" else root / paths[artifact]
     path.write_bytes(path.read_bytes() + b"\n")
     assert verifier.validate_receipt(gnn, receipt)
 
@@ -985,7 +985,7 @@ def test_output_collisions_fail_before_native_launch(
         "fixture": root / verifier.contract.fixtures["symmetric"],
         "cache": root / "lean/.lake/build/lib/lean/FepSketches/gnn_denotation.olean",
         "binary": root / "bin/lean",
-        "gnn": gnn / "src/main.py",
+        "gnn": gnn / "src/gnn/main.py",
     }
 
     def forbidden(*_args: Any, **_kwargs: Any) -> None:

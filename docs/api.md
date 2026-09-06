@@ -1,7 +1,7 @@
 # Public Python API
 
 **Version:** 1.1.0
-**Last reviewed:** 2026-08-21
+**Last reviewed:** 2026-09-06
 
 The installed distribution exposes one root namespace, `fep_lean`. Generic
 top-level names such as `catalogue`, `pipeline`, and `output` are not packages
@@ -335,6 +335,42 @@ review of the exact compiled source; either provider turn can fail the result.
 
 There is no separate `fep-lean-preflight` entry point. Use `fep-lean preflight`
 so every operator command shares the same project-root and logging contract.
+
+## GNN bridge
+
+`fep_lean.bridge` exposes the cross-repo operations surface (contract v0.5):
+
+- CLI: `fep-lean bridge {status,pin,emit,certify,verify-certificate,verify-document} --gnn-root PATH`.
+- Python: `status`, `pin_sources`, `check_sources`, `emit`,
+  `certificate_receipt`, `emit_certificate`, `validate_certificate`,
+  `verify_document`.
+- Custody constants: `PIN`, `EMITTERS`, `DOCUMENTS`, `CONTRACT`, `MIRROR`,
+  `SYNTAX_PIN`, `SYNTAX_FILES`; primitives `fingerprint`, `binding_digest`,
+  `validate_binding`.
+
+The source-custody pin (`specs/gnn-bridge-w2-source-custody/source-pin.json`)
+seals owner bytes on both sides. The GNN owner-roster glob is
+`src/gnn/**/*.py` plus `src/gnn/main.py`; the pin JSON shape is
+`{"schema_version": 1, "fep_lean": {"commit", "owners"}, "gnn": {"commit", "owners"}}`.
+`verify-document --document PATH` extracts one emitted document through the
+pinned render route (`gnn.pomdp_extractor.extract_pomdp_from_file`,
+strict validation) and decides `FEP.GnnDocument.documentWellFormed` in a
+compile-once Lean probe. Receipt schema: `{"schema_version": 2, "document",
+"model_family", "extracted_family", "toolchain", "status", "warnings"}`.
+
+## Formal Lean modules
+
+The `fep_lean.formal` namespace carries the bridge's typed surface:
+
+- `FEP.GnnDocument` — `GnnSectionKind` (frozen 13-kind inventory in canonical
+  rank order), `GnnDocument`, `documentWellFormed`, and `WellFormed`
+  (decidable mechanical well-formedness).
+- `FEP.GnnDenotation` — `DiscreteConforms` / `ContinuousConforms` for the two
+  model families.
+- `FEP.GnnRenderStatements` — renderer statement contracts.
+
+Compile with the committed workspace: `lean/` (Lake + Mathlib4); see
+`lean/README.md`.
 
 ## Stability boundary
 
