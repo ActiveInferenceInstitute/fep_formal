@@ -44,7 +44,8 @@ fresh render fails CI. It is not bound to the values a `{{token}}` resolves
 to; `manuscript_projection_drift` and `stale_render_defects` own that surface
 and both run on the render path. A rejected render writes no receipt and
 removes the standing one -- sources can drift out of a render without changing,
-so the digest alone would let a superseded receipt keep vouching.
+so the digest alone would let a superseded receipt keep vouching. The digests
+are recorded per file, so a stale receipt names what moved.
 
 `build_release_bundle.py` is a thin public wrapper over
 `fep_lean.output.release_bundle`. It never reconstructs the archive roster,

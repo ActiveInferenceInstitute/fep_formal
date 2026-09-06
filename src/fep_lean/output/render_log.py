@@ -49,6 +49,7 @@ __all__ = [
     "build_acceptance_receipt",
     "contents_number_overflow_defects",
     "manuscript_source_digest",
+    "manuscript_source_digests",
     "mermaid_fallback_defects",
     "receipt_defects",
     "render_log_defects",
@@ -468,21 +469,40 @@ def rendered_manuscript_sources(manuscript_dir: Path) -> tuple[Path, ...]:
     )
 
 
-def manuscript_source_digest(manuscript_dir: Path) -> str:
-    """Return one digest over every typeset source and the LaTeX preamble.
+def manuscript_source_digests(manuscript_dir: Path) -> dict[str, str]:
+    """Return one digest per file the acceptance covers, keyed by name.
 
     ``preamble.md`` is not typeset as prose -- the template copies it into the
     LaTeX header -- but it selects the fonts, and choosing a face without the
-    document's glyphs is the defect that shipped a false theorem. A digest that
+    document's glyphs is the defect that shipped a false theorem. A record that
     ignored it would accept that change silently.
+
+    The digests are per file rather than one blob so that a mismatch can name
+    what moved. A reader who is told only that two hashes differ has to bisect
+    thirty files; a reader told ``09z_unified_formalism_catalogue.md`` knows
+    immediately that the generated appendix, not a chapter, is what changed.
     """
 
     manuscript = Path(manuscript_dir)
+    return {
+        path.name: hashlib.sha256(
+            path.read_bytes() if path.is_file() else b""
+        ).hexdigest()
+        for path in (
+            *rendered_manuscript_sources(manuscript),
+            manuscript / "preamble.md",
+        )
+    }
+
+
+def manuscript_source_digest(manuscript_dir: Path) -> str:
+    """Return one digest over every typeset source and the LaTeX preamble."""
+
     digest = hashlib.sha256()
-    for path in (*rendered_manuscript_sources(manuscript), manuscript / "preamble.md"):
-        digest.update(path.name.encode("utf-8"))
+    for name, file_digest in sorted(manuscript_source_digests(manuscript_dir).items()):
+        digest.update(name.encode("utf-8"))
         digest.update(b"\0")
-        digest.update(path.read_bytes() if path.is_file() else b"")
+        digest.update(file_digest.encode("utf-8"))
         digest.update(b"\0")
     return digest.hexdigest()
 
@@ -520,7 +540,7 @@ def build_acceptance_receipt(
         "receipt_version": RECEIPT_VERSION,
         "accepted": not any(checks.values()),
         "manuscript_source_digest": manuscript_source_digest(manuscript_dir),
-        "sources": [path.name for path in rendered_manuscript_sources(manuscript_dir)],
+        "source_digests": manuscript_source_digests(manuscript_dir),
         "pages": rendered_page_count(pdf_dir),
         "checks": checks,
     }
@@ -577,5 +597,27 @@ def receipt_defects(receipt_path: Path, manuscript_dir: Path) -> tuple[str, ...]
             f"{path}: covers manuscript sources {recorded!r} but this checkout "
             f"is {expected!r}; the shipped render predates these sources -- "
             f"re-run scripts/render_publication.py"
+            + _moved_sources(receipt.get("source_digests"), manuscript_dir)
         )
     return tuple(failures)
+
+
+def _moved_sources(recorded: Any, manuscript_dir: Path, limit: int = 5) -> str:
+    """Return the names that differ, so a stale receipt says what changed."""
+
+    if not isinstance(recorded, dict):
+        return ""
+    live = manuscript_source_digests(manuscript_dir)
+    moved = sorted(
+        {
+            name
+            for name in set(recorded) | set(live)
+            if recorded.get(name) != live.get(name)
+        }
+    )
+    if not moved:
+        return ""
+    shown = ", ".join(moved[:limit])
+    if len(moved) > limit:
+        shown += f", and {len(moved) - limit} more"
+    return f"; changed since that render: {shown}"

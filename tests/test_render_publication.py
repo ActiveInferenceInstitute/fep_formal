@@ -282,6 +282,7 @@ def test_a_clean_render_writes_the_committed_receipt(tmp_path: Path) -> None:
     assert receipt["manuscript_source_digest"] == manuscript_source_digest(
         project / "manuscript"
     )
+    assert sorted(receipt["source_digests"]) == ["02b_background.md", "preamble.md"]
 
 
 def test_a_rejected_render_leaves_no_receipt(tmp_path: Path) -> None:

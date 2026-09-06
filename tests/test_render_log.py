@@ -19,6 +19,7 @@ from fep_lean.output.render_log import (
     build_acceptance_receipt,
     contents_number_overflow_defects,
     manuscript_source_digest,
+    manuscript_source_digests,
     mermaid_fallback_defects,
     receipt_defects,
     render_log_defects,
@@ -537,6 +538,12 @@ def test_the_preamble_is_part_of_the_digest(tmp_path: Path) -> None:
     assert manuscript_source_digest(manuscript) != before
 
 
+def test_every_covered_file_carries_its_own_digest(tmp_path: Path) -> None:
+    manuscript = _manuscript(tmp_path)
+    digests = manuscript_source_digests(manuscript)
+    assert sorted(digests) == ["01_abstract.md", "preamble.md"]
+
+
 def test_a_clean_acceptance_receipt_covers_this_checkout(tmp_path: Path) -> None:
     manuscript = _manuscript(tmp_path)
     receipt = build_acceptance_receipt(
@@ -592,6 +599,8 @@ def test_an_edited_chapter_leaves_the_receipt_stale(tmp_path: Path) -> None:
     )
     defects = receipt_defects(path, manuscript)
     assert any("predates these sources" in line for line in defects)
+    # The mismatch names the file, so a reader does not bisect thirty of them.
+    assert any("changed since that render: 01_abstract.md" in line for line in defects)
 
 
 def test_an_absent_receipt_is_a_defect_not_a_pass(tmp_path: Path) -> None:

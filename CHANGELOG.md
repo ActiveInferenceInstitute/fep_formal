@@ -52,7 +52,8 @@
   to, which `manuscript_projection_drift` and `stale_render_defects` own on the
   render path. A rejected render writes no receipt and withdraws the standing
   one: sources can drift out of a render without changing, so the digest alone
-  would let a superseded receipt keep vouching.
+  would let a superseded receipt keep vouching. The digests are recorded per
+  file, so a stale receipt names what moved instead of printing two hashes.
 - Made the publication entry point fail closed. `scripts/render_publication.py`
   runs the shared template's render stage and this repository's acceptance and
   exits on the conjunction, so a render the template calls successful over a
