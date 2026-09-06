@@ -77,7 +77,9 @@ uv run python scripts/render_publication.py --accept-only
 
 `check_render_log.py` is that acceptance on its own. A run that finds nothing
 writes `docs/render-acceptance.json`; `--verify-receipt` re-reads it and is
-what CI runs, because a hosted runner cannot render this document at all:
+what CI runs, because CI does not render this document -- that needs a checkout
+of the shared template, XeLaTeX, pandoc, `rsvg-convert`, the mermaid CLI and
+the two faces the preamble selects:
 
 ```bash
 uv run python scripts/check_render_log.py --receipt docs/render-acceptance.json

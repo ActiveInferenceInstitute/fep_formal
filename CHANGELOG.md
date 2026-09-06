@@ -44,9 +44,8 @@
   reach `main` unopposed. CI cannot re-run it, because CI does not render this
   manuscript: that needs a checkout of the shared template, XeLaTeX, pandoc,
   `rsvg-convert`, the mermaid CLI and the two faces the preamble selects. So a
-  clean acceptance
-  now writes
-  `docs/render-acceptance.json` and CI runs `--verify-receipt` against it. The
+  clean acceptance now writes `docs/render-acceptance.json` and CI runs
+  `--verify-receipt` against it. The
   receipt is bound to a digest over every typeset manuscript source plus
   `manuscript/preamble.md`, so a chapter or a font selection changed without a
   fresh render fails CI; it is not bound to the values a `{{token}}` resolves
