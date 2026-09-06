@@ -37,6 +37,8 @@ from fep_lean.output.manuscript import (
 from fep_lean.output.publication_metadata import (
     PublicationMetadataError,
     load_publication_author,
+    pdf_metadata_drift,
+    pdf_metadata_fields,
 )
 
 PROJ = Path(__file__).resolve().parent.parent
@@ -1448,3 +1450,63 @@ def test_test_count_generation_rejects_inputs_changed_during_collection(
     ):
         _count_test_cases(tmp_path)
     assert not (tmp_path / "output" / ".cache" / "tests_collected.json").exists()
+
+
+def test_live_preamble_carries_every_declared_pdf_metadata_string() -> None:
+    """The published preamble must already agree with ``config.yaml``."""
+    assert pdf_metadata_drift(PROJ) == ()
+    fields = pdf_metadata_fields(PROJ)
+    preamble = (PROJ / "manuscript/preamble.md").read_text(encoding="utf-8")
+    assert f"pdfsubject={{{fields['pdfsubject']}}}" in preamble
+    assert f"pdfkeywords={{{fields['pdfkeywords']}}}" in preamble
+
+
+def test_pdf_metadata_drift_reports_a_changed_keyword_list(tmp_path: Path) -> None:
+    """A keyword added to config alone must fail before the PDF is built."""
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir(parents=True)
+    config_path = manuscript / "config.yaml"
+    shutil.copy2(PROJ / "manuscript/config.yaml", config_path)
+    shutil.copy2(PROJ / "manuscript/preamble.md", manuscript / "preamble.md")
+    assert pdf_metadata_drift(tmp_path) == ()
+
+    config_path.write_text(
+        config_path.read_text(encoding="utf-8").replace(
+            '  - "mathlib4"\n', '  - "mathlib4"\n  - "unannounced keyword"\n'
+        ),
+        encoding="utf-8",
+    )
+    drift = pdf_metadata_drift(tmp_path)
+    assert len(drift) == 1
+    assert "pdfkeywords does not match" in drift[0]
+    assert "unannounced keyword" in drift[0]
+
+
+def test_pdf_metadata_drift_reports_a_missing_hypersetup_field(tmp_path: Path) -> None:
+    """Deleting the preamble copy must fail rather than silently drop metadata."""
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir(parents=True)
+    shutil.copy2(PROJ / "manuscript/config.yaml", manuscript / "config.yaml")
+    fields = pdf_metadata_fields(PROJ)
+    preamble = (PROJ / "manuscript/preamble.md").read_text(encoding="utf-8")
+    (manuscript / "preamble.md").write_text(
+        preamble.replace(f"  pdfsubject={{{fields['pdfsubject']}}},\n", ""),
+        encoding="utf-8",
+    )
+    drift = pdf_metadata_drift(tmp_path)
+    assert len(drift) == 1
+    assert "declares no \\hypersetup pdfsubject" in drift[0]
+
+
+def test_pdf_metadata_fields_reject_a_latex_unsafe_keyword(tmp_path: Path) -> None:
+    """A brace or the separator inside a keyword would corrupt ``\\hypersetup``."""
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir(parents=True)
+    (manuscript / "config.yaml").write_text(
+        (PROJ / "manuscript/config.yaml")
+        .read_text(encoding="utf-8")
+        .replace('  - "mathlib4"\n', '  - "mathlib4; smuggled"\n'),
+        encoding="utf-8",
+    )
+    with pytest.raises(PublicationMetadataError, match="not LaTeX-safe"):
+        pdf_metadata_fields(tmp_path)

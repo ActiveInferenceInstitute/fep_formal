@@ -154,4 +154,60 @@
 % \setmathfont, unicode-math's fallback chain ends in lmroman text font
 % (which lacks U+2223) and warns on every \mid in math mode.
 \setmathfont{latinmodern-math.otf}
+% ── Legible breaking of long identifiers ──────────────────────────
+% The shared template defines \breaktt/\breakseq through seqsplit, whose
+% \seqinsert hook is plain stretchable space: a break may fall between ANY two
+% characters and leaves no mark. A catalogue table therefore printed
+% ``FEP.FiniteKernel.comp_assoc`` as ``FEP.Fini`` / ``teKernel.comp_assoc`` and
+% ``FEP.ActiveInference.posteriorState_mul_evidence`` as ``FEP.ActiveI`` /
+% ``nference....``, which a reader cannot distinguish from the declaration's
+% real spelling. Replace the hook with a discretionary that types a small grey
+% continuation arrow at the end of the broken line. The arrow can never be part
+% of a Lean name or a Mathlib module path, so the break is unambiguous.
+% The pre-break material is wrapped in an \hbox because TeX admits only boxes,
+% characters, kerns and rules inside a \discretionary -- a bare \textcolor
+% (a whatsit) is not permitted there.
+\definecolor{fepbreak}{RGB}{130,130,130}
+\newcommand{\fepbreakcue}{\hbox{\normalfont\tiny\color{fepbreak}$\hookrightarrow$}}
+\def\seqinsert{\ifmmode\allowbreak\else\discretionary{\fepbreakcue}{}{}\fi}
+
+% Code listings wrap under fvextra rather than seqsplit; give them the same cue
+% on the continuation line so one document has one break convention.
+\fvset{breaksymbolleft={\normalfont\tiny\color{fepbreak}$\hookrightarrow$},breaksymbolsepleft=2pt}
+
+% ── Contents: number columns wide enough for the deepest numbering ─
+% secnumdepth is 5 and the appendix numbers reach 15.100, 15.100.1 and
+% 5.20.10.1. article's default \@dottedtocline number widths (2.3em / 3.2em /
+% 4.1em / 5em) are too narrow for those, so 224 contents lines overflowed their
+% number box and printed as ``15.100fep-100'' and ``15.100.1Lean sketch'' with
+% the number welded to the title. Widen every level's number box and push each
+% level's indent out by its parent's width so the columns still line up.
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{0em}{2.6em}}
+\renewcommand*\l@subsection{\@dottedtocline{2}{2.6em}{4.3em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{6.9em}{5.6em}}
+\renewcommand*\l@paragraph{\@dottedtocline{4}{12.5em}{6.4em}}
+\renewcommand*\l@subparagraph{\@dottedtocline{5}{18.9em}{7.2em}}
+\makeatother
+
+% ── Float placement ───────────────────────────────────────────────
+% LaTeX's defaults send a figure to a page of its own as soon as it exceeds
+% 70 percent of the text height, which left a float-only page carrying one orphaned
+% line of body text. Let a float occupy more of a shared page before a float
+% page is opened, and require a float page to be genuinely full.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.8}
+
+% ── Document metadata carried into the PDF /Info dictionary ───────
+% manuscript/config.yaml declares a subtitle and a keyword list; pandoc's
+% \hypersetup carries only title, author and language, so both were dropped
+% from the published PDF. The preamble is copied verbatim by the renderer and
+% is never placeholder-substituted, so these two strings are a deliberate copy
+% of config.yaml -- ``scripts/render_manuscript.py`` fails closed when they
+% drift from it (see pdf_metadata_drift).
+\hypersetup{
+  pdfsubject={AI-Driven Theorem Sketching and Verification for Active Inference and Bayesian Mechanics},
+  pdfkeywords={free energy principle; active inference; bayesian mechanics; lean 4; formal verification; theorem proving; mathlib4; reproducible research; interactive theorem proving; variational inference; information geometry; LLM-ITP integration; execution-integrity pipeline; continuous-time Markov chains; measure theory formalization}}
 ```

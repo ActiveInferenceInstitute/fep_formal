@@ -37,6 +37,10 @@ from fep_lean.output.manuscript import (
     build_manuscript_vars,
     manuscript_projection_drift,
 )
+from fep_lean.output.publication_metadata import (
+    PublicationMetadataError,
+    pdf_metadata_drift,
+)
 from fep_lean.output.rendering import (
     ManuscriptRenderError,
     render_manuscript,
@@ -173,6 +177,19 @@ def main(argv: list[str] | None = None) -> int:
     if stale_references:
         print("ERROR: stale theorem identifiers in the manuscript")
         for item in stale_references:
+            print(f"  {item}")
+        return 1
+    # ``manuscript/preamble.md`` is copied verbatim by the renderer and never
+    # placeholder-substituted, so the PDF ``/Info`` subject and keyword strings
+    # it carries are the one metadata copy the placeholder gate cannot check.
+    try:
+        metadata_drift = pdf_metadata_drift(project_root)
+    except PublicationMetadataError as exc:
+        print(f"ERROR: cannot validate PDF metadata: {exc}")
+        return 1
+    if metadata_drift:
+        print("ERROR: PDF metadata in manuscript/preamble.md has drifted")
+        for item in metadata_drift:
             print(f"  {item}")
         return 1
     if args.check:
