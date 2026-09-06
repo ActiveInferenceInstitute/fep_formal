@@ -188,7 +188,7 @@ The thermodynamic topics encode six distinct, composable layers of the theory:
 | fep-099 | Reversible one-step KL dissipation and irreversible positive-production witness | `{{topics.fep-099.semantic_disposition}}` | `InformationTheory.KullbackLeibler.ChainRule` | 0 |
 | fep-149 | Positive-rate two-state continuous-time Markov kernel and nonuniform benchmark | `{{topics.fep-149.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
 | fep-150 | Continuous-time transition is the identity at time zero | `{{topics.fep-150.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-151 | Exact Chapman--Kolmogorov semigroup law | `{{topics.fep-151.semantic_disposition}}` | `LinearAlgebra.Matrix.Multiplication` | 0 |
+| fep-151 | Exact Chapman--Kolmogorov semigroup law | `{{topics.fep-151.semantic_disposition}}` | `Data.Matrix.Mul` | 0 |
 | fep-152 | Entrywise left and right continuous-time master equations | `{{topics.fep-152.semantic_disposition}}` | `Analysis.SpecialFunctions.ExpDeriv` | 0 |
 | fep-153 | Stationarity and detailed balance for the exact semigroup | `{{topics.fep-153.semantic_disposition}}` | `Probability.Kernel.Invariance` | 0 |
 | fep-154 | Exact exponential relaxation from an arbitrary normalized Boolean law | `{{topics.fep-154.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |

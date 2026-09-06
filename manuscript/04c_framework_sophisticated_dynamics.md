@@ -79,7 +79,7 @@ Information geometry treats parametric families of probability distributions $\m
 | fep-145 | Centered scalar score with zero model expectation | `{{topics.fep-145.semantic_disposition}}` | `Algebra.Order.BigOperators.Group.Finset` | 0 |
 | fep-146 | Log-partition Hessian and Fisher information equal variance, with rank and zero boundaries | `{{topics.fep-146.semantic_disposition}}` | `Analysis.Calculus.Deriv.Basic` | 0 |
 | fep-147 | Exponential-family KL equals the log-partition Bregman divergence | `{{topics.fep-147.semantic_disposition}}` | `InformationTheory.KullbackLeibler.Basic` | 0 |
-| fep-148 | Positive-variance mean coordinate is strictly monotone and injective on an interval | `{{topics.fep-148.semantic_disposition}}` | `Analysis.Calculus.Deriv.Monotone` | 0 |
+| fep-148 | Positive-variance mean coordinate is strictly monotone and injective on an interval | `{{topics.fep-148.semantic_disposition}}` | `Analysis.Calculus.Deriv.MeanValue` | 0 |
 : Information Geometry topics: the Lean content each row actually states, its semantic disposition, a Mathlib navigation hint, and its `sorry` count.
 
 #### Fisher Information Metric (fep-004) {#sec:sd_fisher}

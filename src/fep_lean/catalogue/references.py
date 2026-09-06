@@ -28,6 +28,13 @@ _ANY_FENCE_RE = re.compile(r"^```[^\n]*\n.*?^```", re.DOTALL | re.MULTILINE)
 # telling the reader that token is one of that row's declarations.
 _ROW_RE = re.compile(r"\bfep-\d{3}\b")
 _BACKTICK_RE = re.compile(r"`([^`]+)`")
+# The framework chapters carry a hand-maintained "Mathlib navigation hint"
+# column. A hint is editorial -- it points a reader at the part of the library
+# a row lives near -- but it must at least name something that exists in the
+# pinned Mathlib, and two of them named modules that had been renamed away.
+_NAVIGATION_ROW_RE = re.compile(
+    r"^\|\s*fep-\d{3}\s*\|.*\|\s*`(?P<hint>[A-Za-z][A-Za-z0-9_.]*)`\s*\|[^|]*\|\s*$"
+)
 # snake_case (must contain an underscore, so bare English words are ignored)
 # or CamelCase type-shaped names.
 _IDENTIFIER_RE = re.compile(
@@ -149,4 +156,51 @@ def unattributed_row_declarations(
                 if token in known or token in NON_CATALOGUE_IDENTIFIERS:
                     continue
                 failures.append(f"{path.name}:{line_number}: {token}")
+    return tuple(failures)
+
+
+def mathlib_module_index(mathlib_root: Path) -> frozenset[str]:
+    """Return every module and module directory in a Mathlib checkout.
+
+    A directory counts because a navigation hint is allowed to point at a
+    subtree (``Data.Finset``) rather than a single file.
+    """
+    root = Path(mathlib_root)
+    library = root / "Mathlib"
+    if not library.is_dir():
+        raise FileNotFoundError(
+            f"no Mathlib library under {root}; run `lake exe cache get` in lean/"
+        )
+    names: set[str] = {"Mathlib"}
+    for path in library.rglob("*"):
+        if path.is_dir():
+            names.add(".".join(("Mathlib", *path.relative_to(library).parts)))
+        elif path.suffix == ".lean":
+            relative = path.relative_to(library).with_suffix("")
+            names.add(".".join(("Mathlib", *relative.parts)))
+    return frozenset(names)
+
+
+def unknown_mathlib_navigation_hints(
+    manuscript_dir: Path, mathlib_root: Path
+) -> tuple[str, ...]:
+    """Return navigation hints that name nothing in the pinned Mathlib.
+
+    The column is a reader's entry point into the library. A hint naming a
+    module that a Mathlib rename removed sends the reader to a dead path and
+    cannot be caught by the declaration audits, which only look at names the
+    catalogue itself owns.
+    """
+    index = mathlib_module_index(mathlib_root)
+    failures: list[str] = []
+    for path in manuscript_reference_files(manuscript_dir):
+        for line_number, line in enumerate(
+            path.read_text(encoding="utf-8").splitlines(), 1
+        ):
+            match = _NAVIGATION_ROW_RE.match(line.strip())
+            if match is None:
+                continue
+            hint = match.group("hint")
+            if f"Mathlib.{hint}" not in index:
+                failures.append(f"{path.name}:{line_number}: Mathlib.{hint}")
     return tuple(failures)
