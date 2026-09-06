@@ -11,10 +11,13 @@ from fep_lean.catalogue.coverage import (
     topic_import_modules,
 )
 from fep_lean.catalogue.references import (
+    MATHLIB_CITED_NAMES,
     hand_maintained_module_cells,
+    lean_names_introduced,
     mathlib_module_index,
     unknown_topic_import_modules,
     unresolved_manuscript_references,
+    unverified_non_catalogue_identifiers,
 )
 from fep_lean.formal.declarations import composed_theorem_declarations
 
@@ -122,3 +125,65 @@ def test_mathlib_module_index_refuses_a_checkout_without_the_library(
         assert "lake exe cache get" in str(error)
     else:  # pragma: no cover - the audit must never pass on an absent library
         raise AssertionError("an absent Mathlib library must not index as empty")
+
+
+@requires_mathlib
+def test_every_allowlisted_identifier_exists_in_its_claimed_source() -> None:
+    """The reference audits' one blind spot is checked, not asserted in prose."""
+    assert unverified_non_catalogue_identifiers(MATHLIB) == ()
+
+
+@requires_mathlib
+def test_lean_name_index_sees_declarations_and_tactic_tokens() -> None:
+    names = lean_names_introduced(MATHLIB / "Mathlib")
+    # A declaration header, and a tactic whose only name is a quoted token in
+    # ``elab (name := normNum) "norm_num" ... : tactic``.
+    assert "klDiv_compProd_eq_add" in names
+    assert "norm_num" in names
+    # The name that shipped as Mathlib prior art. It is this catalogue's own.
+    assert "min_agrees_on_value" not in names
+
+
+@requires_mathlib
+def test_a_catalogue_row_cannot_pass_as_mathlib_prior_art(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The exact drift that shipped: fep-008's own theorem, prefix stripped."""
+    from fep_lean.catalogue import references
+
+    monkeypatch.setattr(
+        references,
+        "MATHLIB_CITED_NAMES",
+        MATHLIB_CITED_NAMES | {"min_agrees_on_value"},
+    )
+    defects = unverified_non_catalogue_identifiers(MATHLIB)
+    expected = (
+        "MATHLIB_CITED_NAMES: min_agrees_on_value: "
+        "the pinned Mathlib checkout introduces no such name"
+    )
+    assert defects == (expected,)
+
+
+def test_an_absent_mathlib_is_reported_unchecked_not_passed() -> None:
+    """No pinned library means no verification, and the audit must say so."""
+    defects = unverified_non_catalogue_identifiers(None)
+    assert len(defects) == len(MATHLIB_CITED_NAMES)
+    assert all("unchecked" in defect for defect in defects)
+
+
+def test_local_and_record_groups_are_checked_without_mathlib() -> None:
+    """``FullSupport`` and the record fields resolve off the pinned library."""
+    defects = unverified_non_catalogue_identifiers(None)
+    assert not any(
+        defect.startswith(("LOCAL_FORMAL_CITED_NAMES", "CATALOGUE_RECORD_FIELDS"))
+        for defect in defects
+    )
+
+
+def test_fep008_prose_names_the_row_not_a_bare_lemma() -> None:
+    """fep-008's proof paragraph must not print a catalogue name as Mathlib's."""
+    prose = (PROJ / "manuscript" / "04b_framework_active_inference.md").read_text(
+        encoding="utf-8"
+    )
+    assert "`fep008_min_agrees_on_value`" in prose
+    assert "`min_agrees_on_value`" not in prose

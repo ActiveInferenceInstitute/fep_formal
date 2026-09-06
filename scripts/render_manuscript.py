@@ -32,6 +32,7 @@ from fep_lean.catalogue.references import (
     hand_maintained_module_cells,
     unattributed_row_declarations,
     unresolved_manuscript_references,
+    unverified_non_catalogue_identifiers,
 )
 from fep_lean.formal.declarations import composed_theorem_declarations
 from fep_lean.output.manuscript import (
@@ -215,6 +216,24 @@ def main(argv: list[str] | None = None) -> int:
     if unresolved:
         print("ERROR: unresolved manuscript placeholders")
         for item in unresolved:
+            print(f"  {item}")
+        return 1
+    # The reference audits look past one reviewed set of names -- Mathlib
+    # citations, this repository's own maintained Lean declarations, and
+    # catalogue record fields. Each group is checked against the source it
+    # claims, because a group comment is exactly what let a catalogue theorem
+    # sit in the Mathlib group under a stripped prefix and read as prior art.
+    pinned = project_root / "lean" / ".lake" / "packages" / "mathlib"
+    mathlib_root: Path | None = pinned if (pinned / "Mathlib").is_dir() else None
+    if mathlib_root is None:
+        print(
+            "  unchecked: the pinned Mathlib checkout is absent, so the audit's "
+            "Mathlib citations are taken on trust; run `lake exe cache get` in lean/"
+        )
+    miscategorised = unverified_non_catalogue_identifiers(mathlib_root)
+    if miscategorised:
+        print("ERROR: allowlisted identifiers their claimed source does not contain")
+        for item in miscategorised:
             print(f"  {item}")
         return 1
     stale_references = unresolved_manuscript_reference_report(source_dir)

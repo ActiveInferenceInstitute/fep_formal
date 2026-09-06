@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterable, Mapping
+from dataclasses import fields
 from pathlib import Path
 
 from fep_lean.lean_source import lean_code_without_comments
 
 from .coverage import topic_import_modules
 from .registry import BODIES
+from .topics import TopicEntry
 
 _DECLARATION_RE = re.compile(
     r"^\s*(?:noncomputable\s+)?(?:theorem|lemma|def|abbrev|structure|inductive)\s+"
@@ -45,36 +47,73 @@ _IDENTIFIER_RE = re.compile(
     r"[a-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)+|[A-Z][A-Za-z0-9]*[a-z][A-Za-z0-9]*"
 )
 # Identifiers that legitimately appear beside a ``fep-NNN`` row without being
-# one of its declarations: Mathlib lemma names the prose cites as prior art,
-# and catalogue metadata field names. Every entry is a reviewed exception; a
-# new unresolved name fails the audit rather than joining this set silently.
-NON_CATALOGUE_IDENTIFIERS = frozenset(
+# one of its declarations. The set is split by provenance, and every group is
+# checked against its own source by :func:`unverified_non_catalogue_identifiers`
+# rather than asserted in a comment. A comment is what let
+# ``min_agrees_on_value`` sit in this set for two releases labelled "Mathlib
+# declarations cited as prior art": no such Mathlib name exists, and the
+# manuscript was printing this catalogue's own ``fep008_min_agrees_on_value``
+# stripped of its prefix, between two real Mathlib names, so it read as prior
+# art. A new unresolved name fails the audit rather than joining a group
+# silently, and a name that joins a group it cannot be verified against fails
+# the audit too.
+
+#: Names the pinned Mathlib checkout introduces -- as a declaration header, or
+#: as the quoted token of a tactic or syntax construct (``norm_num``). Verified
+#: against ``lean/.lake/packages/mathlib``.
+MATHLIB_CITED_NAMES = frozenset(
     {
-        # Mathlib declarations cited as prior art or as a proof step.
-        "klDiv_compProd_eq_add",
-        "le_antisymm",
-        "measure_union_le",
-        "min_agrees_on_value",
-        "norm_num",
-        "sq_nonneg",
-        # Mathlib and maintained-module type names cited as context, verified
-        # present under lean/.lake/packages/mathlib or src/fep_lean/formal.
         "CondIndep",
         "CondIndepFun",
         "ENNReal",
-        "FullSupport",
         "SigmaFinite",
-        # Catalogue metadata field names from config/catalogue_metadata.yaml.
-        "mathlib_status",
-        "semantic_disposition",
-        "assumption_review",
-        "non_vacuity",
-        "acceptance_probe",
-        "primary_theorem",
-        "lean_sketch",
-        "latex_equations",
+        "klDiv_compProd_eq_add",
+        "le_antisymm",
+        "measure_union_le",
+        "norm_num",
+        "sq_nonneg",
     }
 )
+#: Names declared by this repository's own maintained Lean modules -- neither
+#: Mathlib nor a catalogue topic body. Verified against ``src/fep_lean/formal``.
+LOCAL_FORMAL_CITED_NAMES = frozenset({"FullSupport"})
+#: Per-topic catalogue record fields, named where the prose explains what a
+#: generated column reports. Verified against
+#: :class:`fep_lean.catalogue.topics.TopicEntry`.
+CATALOGUE_RECORD_FIELDS = frozenset(
+    {
+        "acceptance_probe",
+        "assumption_review",
+        "latex_equations",
+        "lean_sketch",
+        "mathlib_status",
+        "non_vacuity",
+        "primary_theorem",
+        "semantic_disposition",
+    }
+)
+NON_CATALOGUE_IDENTIFIERS = (
+    MATHLIB_CITED_NAMES | LOCAL_FORMAL_CITED_NAMES | CATALOGUE_RECORD_FIELDS
+)
+# Lean introduces a name two ways, and prose cites both. A declaration header
+# carries its name directly; a ``syntax``/``elab``/``macro`` construct carries
+# an internal ``(name := ...)`` and a user-facing quoted token, which is how
+# ``norm_num`` exists without a declaration header of that name. The window is
+# generous because Mathlib routinely breaks the construct across lines.
+_LEAN_DECLARATION_RE = re.compile(
+    r"^[ \t]*(?:@\[[^\]]*\][ \t]*)?"
+    r"(?:(?:protected|private|scoped|local|noncomputable|nonrec|partial|unsafe)[ \t]+)*"
+    r"(?:theorem|lemma|def|abbrev|structure|inductive|class|instance|opaque|axiom)"
+    r"[ \t]+([A-Za-z_][A-Za-z0-9_']*)",
+    re.MULTILINE,
+)
+_LEAN_SYNTAX_RE = re.compile(
+    r"^[ \t]*(?:@\[[^\]]*\][ \t]*)?(?:(?:scoped|local)[ \t]+)*(?:syntax|elab|macro)\b",
+    re.MULTILINE,
+)
+_LEAN_SYNTAX_NAME_RE = re.compile(r"\(\s*name\s*:=\s*([A-Za-z_][A-Za-z0-9_'.]*)\s*\)")
+_LEAN_SYNTAX_TOKEN_RE = re.compile(r"\"\s*([A-Za-z_][A-Za-z0-9_']*)\s*\"")
+_SYNTAX_WINDOW = 200
 _EXCLUDED_MANUSCRIPT_FILES = frozenset(
     {
         "AGENTS.md",
@@ -233,4 +272,78 @@ def unknown_topic_import_modules(mathlib_root: Path) -> tuple[str, ...]:
                 continue
             if module not in index:
                 failures.append(f"{topic_id}: {module}")
+    return tuple(failures)
+
+
+def lean_names_introduced(lean_root: Path) -> frozenset[str]:
+    """Return every name a Lean source tree introduces.
+
+    Two forms count, because both are cited in prose. A declaration header
+    (``theorem``/``def``/``class``/...) introduces its name directly. A
+    ``syntax``/``elab``/``macro`` construct introduces an internal name via
+    ``(name := ...)`` and a user-facing token via its quoted literal: Mathlib
+    writes ``elab (name := normNum) "norm_num" ... : tactic``, so ``norm_num``
+    is a real name of the pinned library even though no declaration header
+    carries it.
+    """
+
+    root = Path(lean_root)
+    if not root.is_dir():
+        raise FileNotFoundError(f"no Lean sources under {root}")
+    names: set[str] = set()
+    for path in sorted(root.rglob("*.lean")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        names.update(_LEAN_DECLARATION_RE.findall(text))
+        for match in _LEAN_SYNTAX_RE.finditer(text):
+            window = text[match.end() : match.end() + _SYNTAX_WINDOW]
+            names.update(_LEAN_SYNTAX_NAME_RE.findall(window))
+            names.update(_LEAN_SYNTAX_TOKEN_RE.findall(window))
+    return frozenset(names)
+
+
+def unverified_non_catalogue_identifiers(
+    mathlib_root: Path | None = None,
+    *,
+    formal_root: Path | None = None,
+) -> tuple[str, ...]:
+    """Return allowlisted identifiers their claimed source does not contain.
+
+    :data:`NON_CATALOGUE_IDENTIFIERS` is the one place this audit is told to
+    look past a name. Each group names where its members come from; this checks
+    the claim. ``mathlib_root`` may be ``None`` when the pinned checkout is
+    absent (``lean/.lake`` is a build artifact), in which case the Mathlib group
+    is reported as unchecked rather than silently passed.
+    """
+
+    failures: list[str] = []
+    if mathlib_root is None:
+        failures.extend(
+            f"MATHLIB_CITED_NAMES: {name}: unchecked, the pinned Mathlib "
+            "checkout is absent; run `lake exe cache get` in lean/"
+            for name in sorted(MATHLIB_CITED_NAMES)
+        )
+    else:
+        mathlib_names = lean_names_introduced(Path(mathlib_root) / "Mathlib")
+        failures.extend(
+            f"MATHLIB_CITED_NAMES: {name}: the pinned Mathlib checkout "
+            "introduces no such name"
+            for name in sorted(MATHLIB_CITED_NAMES - mathlib_names)
+        )
+    root = (
+        Path(formal_root)
+        if formal_root is not None
+        else Path(__file__).resolve().parents[1] / "formal"
+    )
+    local_names = lean_names_introduced(root)
+    failures.extend(
+        f"LOCAL_FORMAL_CITED_NAMES: {name}: no declaration under {root.name}/"
+        for name in sorted(LOCAL_FORMAL_CITED_NAMES - local_names)
+    )
+    record_fields = frozenset(field.name for field in fields(TopicEntry)) | frozenset(
+        name for name, value in vars(TopicEntry).items() if isinstance(value, property)
+    )
+    failures.extend(
+        f"CATALOGUE_RECORD_FIELDS: {name}: TopicEntry has no such field"
+        for name in sorted(CATALOGUE_RECORD_FIELDS - record_fields)
+    )
     return tuple(failures)

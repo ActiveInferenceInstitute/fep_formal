@@ -38,6 +38,26 @@
   `hand_maintained_module_cells` fails the render path on a literal typed back
   in, and `unknown_topic_import_modules` checks the relation itself against the
   pinned Mathlib.
+- Stopped a catalogue theorem reading as Mathlib prior art, and made the
+  allowlist that hid it self-checking. `manuscript/04b_framework_active_inference.md`
+  said fep-008's proof used "`min_agrees_on_value` plus `le_antisymm`", between
+  two real Mathlib names; `grep -rl min_agrees_on_value
+  lean/.lake/packages/mathlib/Mathlib` matches nothing, because the name is
+  this catalogue's own `fep008_min_agrees_on_value`
+  (`src/fep_lean/catalogue/bodies/core_active_inference.py`) printed without its
+  prefix. It evaded the reference audit only by sitting in
+  `NON_CATALOGUE_IDENTIFIERS` under the comment "Mathlib declarations cited as
+  prior art", which made that set's own header claim -- "Every entry is a
+  reviewed exception" -- false. The prose now attributes each step to its
+  owner, the entry is gone, and the set is split into three provenance groups
+  that `unverified_non_catalogue_identifiers` checks against their sources: a
+  Mathlib citation against the names the pinned checkout introduces (a
+  declaration header, or a tactic's quoted token -- `norm_num` has no
+  declaration of that name), a local citation against `src/fep_lean/formal`,
+  and a record field against `TopicEntry`. `scripts/render_manuscript.py` fails
+  on an unverifiable entry and prints an explicit "unchecked" line when the
+  pinned library is absent rather than passing the group in silence.
+
 - Gave the acceptance somewhere to bite. `scripts/check_render_log.py` was a
   real, tested check that nothing ran: `grep -rn check_render_log
   --include="*.yml" .github/` matched nothing, so every defect it catches could
