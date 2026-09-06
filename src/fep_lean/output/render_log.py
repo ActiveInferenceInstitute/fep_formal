@@ -253,6 +253,21 @@ def _significant_lines(text: str) -> list[str]:
     return lines
 
 
+# The source stamp names the commit the render was computed from and the date
+# it ran. Both are unique to a render by construction, so a committed variable
+# projection can never agree with them and a line carrying one cannot be
+# compared -- checking it would report every render as stale one commit later.
+_PER_RENDER_TOKEN = "{{source."
+
+
+def _comparable(raw_line: str, variables: Mapping[str, Any] | None) -> bool:
+    """True when a source line can be matched against the rendered document."""
+
+    if _PER_RENDER_TOKEN in raw_line:
+        return False
+    return variables is not None or "{{" not in raw_line
+
+
 def stale_render_defects(
     manuscript_dir: Path,
     pdf_dir: Path,
@@ -295,13 +310,22 @@ def stale_render_defects(
         if source.name in _NON_RENDERED_MANUSCRIPT_FILES:
             continue
         text = source.read_text(encoding="utf-8", errors="replace")
-        if variables is not None:
-            text = substitute_placeholders(text, variables)
+        authored = {
+            authored_line.strip(): raw_line.strip()
+            for authored_line, raw_line in zip(
+                _significant_lines(
+                    substitute_placeholders(text, variables)
+                    if variables is not None
+                    else text
+                ),
+                _significant_lines(text),
+                strict=False,
+            )
+        }
         missing = [
             line
-            for line in _significant_lines(text)
-            if ("{{" not in line or variables is not None)
-            and line not in rendered_lines
+            for line, raw in authored.items()
+            if _comparable(raw, variables) and line not in rendered_lines
         ]
         if not missing:
             continue

@@ -384,3 +384,54 @@ def test_preamble_is_not_compared_against_the_combined_document(
     )
     os.utime(manuscript / "preamble.md", (2_000, 2_000))
     assert stale_render_defects(manuscript, pdf) == ()
+
+
+def test_a_per_render_source_stamp_line_is_not_drift(tmp_path: Path) -> None:
+    """The stamp names this render's commit; no projection can agree with it.
+
+    ``manuscript_vars.yaml`` records the commit it was generated at, so one
+    commit later the file and the render disagree by construction. Comparing
+    that line would report every render as stale.
+    """
+    chapter = (
+        "That checkout is `{{source.short_commit}}`, rendered "
+        "{{source.render_date}}, and the counts come from it alone.\n"
+    )
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        chapter,
+        "That checkout is `abc123def456`, rendered 2026-09-06, and the counts "
+        "come from it alone.\n",
+    )
+
+    assert (
+        stale_render_defects(
+            manuscript, pdf, variables={"source": {"short_commit": "stale000"}}
+        )
+        == ()
+    )
+
+
+def test_a_drifted_line_beside_a_stamp_line_is_still_drift(tmp_path: Path) -> None:
+    """Only the stamp line is exempt, not the file that carries it."""
+    chapter = (
+        "That checkout is `{{source.short_commit}}`, rendered "
+        "{{source.render_date}}, and the counts come from it alone.\n\n"
+        "The table below reports the present catalogue's scope across every "
+        "maintained area of the formalization.\n"
+    )
+    manuscript, pdf = _stale_tree(
+        tmp_path,
+        chapter,
+        "That checkout is `abc123def456`, rendered 2026-09-06, and the counts "
+        "come from it alone.\n\n"
+        "Table 1 reports the present catalogue's scope across every "
+        "maintained area of the formalization.\n",
+    )
+
+    defects = stale_render_defects(
+        manuscript, pdf, variables={"source": {"short_commit": "stale000"}}
+    )
+
+    assert len(defects) == 1
+    assert "The table below reports" in defects[0]
