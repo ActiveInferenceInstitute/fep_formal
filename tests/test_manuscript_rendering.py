@@ -505,7 +505,13 @@ def test_no_published_command_block_runs_the_check_without_a_generator() -> None
 
 
 def test_published_block_without_a_generator_is_rejected(tmp_path: Path) -> None:
-    """The exact Reproducibility Statement that shipped, minus its generator."""
+    """The exact Reproducibility Statement that shipped, both breaks and all.
+
+    It opened `uv sync --locked` and ended on the check, so it failed twice
+    over: nothing built the projection, and the sync had already removed the
+    pytest the check collects. Each break is reported separately because
+    fixing one leaves the block still broken.
+    """
     (tmp_path / "06_conclusion.md").write_text(
         "Reproduce with:\n\n"
         + _shell_block(
@@ -515,16 +521,32 @@ def test_published_block_without_a_generator_is_rejected(tmp_path: Path) -> None
         encoding="utf-8",
     )
     defects = unreproducible_command_blocks(tmp_path)
-    assert len(defects) == 1
+    assert len(defects) == 2
+    assert all(defect.startswith("06_conclusion.md:") for defect in defects)
     assert "runs with no generator ahead of it" in defects[0]
-    assert defects[0].startswith("06_conclusion.md:")
+    assert "leaves no pytest to collect" in defects[1]
+
+
+def test_published_block_with_a_starved_sync_is_rejected(tmp_path: Path) -> None:
+    """A generator alone is not enough: `uv sync --locked` prunes `dev`."""
+    (tmp_path / "06_conclusion.md").write_text(
+        _shell_block(
+            "uv sync --locked",
+            "uv run fep-lean catalogue",
+            "uv run python scripts/render_manuscript.py --check",
+        ),
+        encoding="utf-8",
+    )
+    defects = unreproducible_command_blocks(tmp_path)
+    assert len(defects) == 1
+    assert "leaves no pytest to collect" in defects[0]
 
 
 def test_published_block_with_the_generator_is_accepted(tmp_path: Path) -> None:
     (tmp_path / "06_conclusion.md").write_text(
         "Reproduce with:\n\n"
         + _shell_block(
-            "uv sync --locked",
+            "uv sync --locked --extra dev",
             "uv run fep-lean catalogue",
             "uv run python scripts/render_manuscript.py --check",
         ),
@@ -544,4 +566,6 @@ def test_generating_render_mode_does_not_count_as_the_generator(
         ),
         encoding="utf-8",
     )
-    assert len(unreproducible_command_blocks(tmp_path)) == 1
+    defects = unreproducible_command_blocks(tmp_path)
+    assert len(defects) == 1
+    assert "runs with no generator ahead of it" in defects[0]
