@@ -123,10 +123,13 @@ def unresolved_manuscript_reference_report(source_dir: Path) -> tuple[str, ...]:
         declaration.rsplit(".", 1)[-1]
         for declaration in composed_theorem_declarations()
     }
-    return (
+    # A name that is both ``fepNNN_``-shaped and quoted beside its row matches
+    # both audits; report each location once, in file order.
+    found = [
         *unresolved_manuscript_references(source_dir, additional_declarations=composed),
         *unattributed_row_declarations(source_dir, additional_declarations=composed),
-    )
+    ]
+    return tuple(dict.fromkeys(found))
 
 
 def main(argv: list[str] | None = None) -> int:

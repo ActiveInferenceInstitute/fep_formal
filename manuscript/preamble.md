@@ -70,14 +70,22 @@
 \AddToHook{package/bookmark/after}{\RequirePackage{cleveref}}
 % Headings that name real identifiers (``lean_verifier.py``,
 % ``verify_batch(max_workers=1)``, ``FEP_LEAN_VERIFY_VERBOSE=1``) reach
-% hyperref's PDF-string sanitizer as ``\_``, which it drops with
-% ``Token not allowed in a PDF string ... removing `subscript'``. The visible
-% heading stays correct but the bookmark pane then names symbols that do not
-% exist (``leanverifier.py``, ``verifybatch(maxworkers=1)``). Bind ``\_`` to a
-% literal underscore for the PDF-string branch only; text mode is untouched.
+% hyperref's PDF-string sanitizer as a catcode-8 ``_``: Pandoc writes the
+% heading as \texorpdfstring{visible}{plain text}, and the plain-text branch
+% carries the raw character. hyperref drops every catcode-8 token with
+% ``Token not allowed in a PDF string ... removing `subscript'``
+% (hyperref.sty:1473), so the visible heading stayed correct while the bookmark
+% pane named symbols that do not exist: ``leanverifier.py``,
+% ``verifybatch(maxworkers=1)``, ``FEPLEANVERIFYVERBOSE=1``.
+%
+% \pdfstringdefDisableCommands cannot reach this, because the offending token
+% is the bare character rather than \_. The underscore package makes ``_``
+% active and, under hyperref's \if@safe@actives, expands it to \string_ --
+% a catcode-12 underscore that survives the sanitizer. Math subscripts are
+% unaffected (the package routes \ifmmode to \sb) and verbatim is untouched.
+\usepackage{underscore}
 \AddToHook{package/bookmark/after}{%
   \pdfstringdefDisableCommands{%
-    \def\_{\string_}%
     \def\textunderscore{\string_}%
   }%
 }
