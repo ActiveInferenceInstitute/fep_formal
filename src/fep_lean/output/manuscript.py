@@ -172,11 +172,15 @@ def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
         "compiles_true": 0,
         "compiles_false": 0,
         "sorry_count": 0,
+        "sorry_topics": 0,
+        "sorry_occurrences": 0,
         "warning_count": 0,
         "duration_seconds": 0.0,
         "duration_min": 0.0,
         "mean_topic_s": 0.0,
         "failed_topic_ids": "none",
+        "not_clean_topic_ids": "none",
+        "failed_compile_topic_ids": "none",
         "clean_topic_ids": [],
     }
     if path is None or not path.is_file():
@@ -211,8 +215,20 @@ def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
         for row in results
         if isinstance(row, dict)
     ]
-    sorry_count = sum(
+    # Two different questions, two different numbers. ``sorry_topics`` counts
+    # topics that admit anything; ``sorry_occurrences`` counts admitted proofs.
+    # Prose that says "uses of ``sorry``" wants the second. ``sorry_count`` is
+    # retained as the historical alias of ``sorry_topics``.
+    sorry_topics = sum(
         bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
+        for row in results
+        if isinstance(row, dict)
+    )
+    sorry_occurrences = sum(
+        int(row["sorry_occurrences"])
+        if isinstance(row.get("sorry_occurrences"), int)
+        and not isinstance(row.get("sorry_occurrences"), bool)
+        else bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
         for row in results
         if isinstance(row, dict)
     )
@@ -229,22 +245,34 @@ def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
         and not bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
         and not row.get("warnings", [])
     ]
-    failed_ids = [
+    # ``clean`` means compiled, unadmitted and warning-free, so its complement
+    # includes topics that compiled cleanly but emitted a warning. Printing
+    # that complement under the label "failed" is wrong; name both sets.
+    not_clean_ids = [
         str(row.get("topic_id", ""))
         for row in results
         if isinstance(row, dict) and str(row.get("topic_id", "")) not in clean_ids
     ]
+    failed_compile_ids = [
+        str(row.get("topic_id", ""))
+        for row in results
+        if isinstance(row, dict) and not bool(row.get("compiles", False))
+    ]
     duration_seconds = sum(durations)
     base.update(
         {
-            "sorry_count": sorry_count,
+            "sorry_count": sorry_topics,
+            "sorry_topics": sorry_topics,
+            "sorry_occurrences": sorry_occurrences,
             "warning_count": warning_count,
             "duration_seconds": round(duration_seconds, 3),
             "duration_min": round(duration_seconds / 60, 2),
             "mean_topic_s": round(duration_seconds / len(durations), 3)
             if durations
             else 0.0,
-            "failed_topic_ids": ", ".join(failed_ids) or "none",
+            "failed_topic_ids": ", ".join(not_clean_ids) or "none",
+            "not_clean_topic_ids": ", ".join(not_clean_ids) or "none",
+            "failed_compile_topic_ids": ", ".join(failed_compile_ids) or "none",
             "clean_topic_ids": clean_ids,
         }
     )
@@ -276,10 +304,15 @@ def _verify_block_from_native_receipt(
         and not bool(row.get("has_sorry", False))
         and not row.get("warnings", [])
     ]
-    failed_ids = [
+    not_clean_ids = [
         str(row.get("topic_id", ""))
         for row in rows
         if isinstance(row, dict) and str(row.get("topic_id", "")) not in clean_ids
+    ]
+    failed_compile_ids = [
+        str(row.get("topic_id", ""))
+        for row in rows
+        if isinstance(row, dict) and not bool(row.get("compiles", False))
     ]
     duration_seconds = float(payload.get("duration_s", 0.0) or 0.0)
     catalogue_digest = str(payload.get("catalogue_sha256", ""))
@@ -301,11 +334,17 @@ def _verify_block_from_native_receipt(
                 if isinstance(row, dict)
             ),
             "sorry_count": int(validation.get("sorry_count", 0)),
+            "sorry_topics": int(validation.get("sorry_count", 0)),
+            "sorry_occurrences": int(
+                validation.get("sorry_occurrences", validation.get("sorry_count", 0))
+            ),
             "warning_count": int(validation.get("warning_count", 0)),
             "duration_seconds": round(duration_seconds, 3),
             "duration_min": round(duration_seconds / 60, 2),
             "mean_topic_s": round(duration_seconds / len(rows), 3) if rows else 0.0,
-            "failed_topic_ids": ", ".join(failed_ids) or "none",
+            "failed_topic_ids": ", ".join(not_clean_ids) or "none",
+            "not_clean_topic_ids": ", ".join(not_clean_ids) or "none",
+            "failed_compile_topic_ids": ", ".join(failed_compile_ids) or "none",
             "clean_topic_ids": clean_ids,
         }
     )
