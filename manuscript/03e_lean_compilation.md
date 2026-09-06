@@ -1,6 +1,6 @@
 ## Native Lean 4 Compilation and Execution-Integrity Verification {#sec:native_lean_4_compilation_and_zero_direct_verification}
 
-Native verification is a compiler operation, not a catalogue property. The rendered evidence kind is `{{verify.evidence_kind}}`; claim readiness is `{{verify.claim_ready}}`; the full-catalogue rate is `{{compile_rate.total}}`, with {{verify.warning_count}} warnings and {{verify.sorry_count}} admitted proofs in the selected receipt. If no matching receipt exists, these fields render as unavailable rather than borrowing a `complete` flag from catalogue mode.
+Native verification is a compiler operation, not a catalogue property. The rendered evidence kind is `{{verify.evidence_kind}}`; claim readiness is `{{verify.claim_ready}}`; the full-catalogue rate is `{{compile_rate.total}}`, with {{verify.warning_count}} warnings and {{verify.sorry_occurrences}} admitted proofs in the selected receipt. If no matching receipt exists, these fields render as unavailable rather than borrowing a `complete` flag from catalogue mode.
 
 ### Why Simulated Compilation Fails {#sec:why_simulated_compilation_fails}
 
@@ -41,7 +41,7 @@ The local `.lake` tree is an untracked build cache. Verification refuses a visib
 
 ### Measured Compilation Headline {#sec:measured_compilation_headline}
 
-The only headline used here is receipt-derived: **`{{compile_rate.total}}`** for receipt `{{verify.run_id}}`. Its {{verify.topics_with_result}} results contain {{verify.compiles_true}} compiler successes, {{verify.compiles_false}} failures, {{verify.warning_count}} warnings, and {{verify.sorry_count}} uses of `sorry`. `mathlib_status: real` is not substituted for any of these numbers.
+The only headline used here is receipt-derived: **`{{compile_rate.total}}`** for receipt `{{verify.run_id}}`. Its {{verify.topics_with_result}} results contain {{verify.compiles_true}} compiler successes, {{verify.compiles_false}} failures, {{verify.warning_count}} warnings, and {{verify.sorry_occurrences}} uses of `sorry` in {{verify.sorry_topics}} topics. `mathlib_status: real` is not substituted for any of these numbers.
 
 ### Preflight: `LeanVerifier.check_mathlib_built()` {#sec:leanverifier_preflight}
 

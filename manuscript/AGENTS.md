@@ -60,9 +60,13 @@ Every `{{placeholder}}` in an authored chapter must be emitted by
 placeholder family is introduced; never populate a run-bound value from a
 configuration default or an unvalidated receipt.
 
-After editing `references.bib`, keep the grouped index in `07_references.md`
-aligned. Every citation key must resolve and bibliographic claims must be
-grounded in a verifiable primary or published source.
+`07_references.md` carries the section heading and a raw-LaTeX
+`\bibliography{references}` call; the entry list itself is emitted by BibTeX
+from `references.bib`, so there is no hand-maintained index to keep aligned.
+The heading must keep the word "References" -- the combined renderer detects an
+explicit references section by that word and suppresses natbib's duplicate
+heading only when it matches. Every citation key must resolve and bibliographic
+claims must be grounded in a verifiable primary or published source.
 
 ## Conventions
 

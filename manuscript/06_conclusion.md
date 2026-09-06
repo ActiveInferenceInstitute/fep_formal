@@ -43,7 +43,7 @@ The practical implication is a change in review questions. Instead of asking onl
 
 ### Compilation Headline
 
-The rendered native rate is **`{{compile_rate.total}}`** from evidence kind `{{verify.evidence_kind}}`. Claim readiness is `{{verify.claim_ready}}`, with {{verify.warning_count}} warnings and {{verify.sorry_count}} admitted proofs. Catalogue generation alone cannot populate this headline.
+The rendered native rate is **`{{compile_rate.total}}`** from evidence kind `{{verify.evidence_kind}}`. Claim readiness is `{{verify.claim_ready}}`, with {{verify.warning_count}} warnings and {{verify.sorry_occurrences}} admitted proofs. Catalogue generation alone cannot populate this headline.
 
 ### Mathlib Integration Lessons
 
@@ -55,7 +55,7 @@ LLMs can help translate, explain, and review candidate statements. Their output 
 
 ## Future Work {#sec:future_work}
 
-The highest-value next step for the empirical-prior strand is to connect finite Laplace risk transfer and the concentration machinery to posterior contraction for that estimator, minimax or empirical calibration on one sampling model, and to formalize a named empirical marginal-likelihood objective without extrapolating from H1's selected Boolean witness. Beyond that, depth should proceed through probability laws or learning over finite policy trees and EFE equivalence conditions, generalization of H1's selected invariant blanket to blanket existence and arbitrary-mixture closure, multidimensional smooth exponential-family geometry with dual connections, a general constrained maximum-entropy theorem, generic finite CTMC infrastructure, and one continuous-state diffusion case study. Shared library extraction should follow demonstrated cross-topic proof reuse rather than precede it.
+Posterior contraction itself is already proved on the selected two-hypothesis Gaussian-mean carrier of `FEP.PosteriorConvergence`. The highest-value next step for the empirical-prior strand is therefore to carry it across carriers: to connect finite Laplace risk transfer and the concentration machinery to posterior contraction for that estimator, minimax or empirical calibration on one sampling model, and to formalize a named empirical marginal-likelihood objective without extrapolating from H1's selected Boolean witness. Beyond that, depth should proceed through probability laws or learning over finite policy trees and EFE equivalence conditions, generalization of H1's selected invariant blanket to blanket existence and arbitrary-mixture closure, multidimensional smooth exponential-family geometry with dual connections, a general constrained maximum-entropy theorem, generic finite CTMC infrastructure, and one continuous-state diffusion case study. Shared library extraction should follow demonstrated cross-topic proof reuse rather than precede it.
 
 ## Reproducibility Statement {#sec:reproducibility_statement}
 

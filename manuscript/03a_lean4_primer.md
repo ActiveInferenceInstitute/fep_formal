@@ -117,24 +117,58 @@ Before the full ELBO, consider the simplest FEP-flavoured informal claim and its
 4. *State the inequality.* `μ (s ∪ t) ≤ μ s + μ t`.
 5. *Discharge the proof.* Invoke the Mathlib4 lemma `measure_union_le` via the `exact` tactic.
 
-**Formal (Lean 4, Mathlib4 `{{mathlib_tag}}`, catalogue row fep-001):**
+**Formal (Lean 4, Mathlib4 `{{mathlib_tag}}`) — a primer illustration, not a catalogue row:**
 
 ```lean
-import Mathlib
+import Mathlib.MeasureTheory.Measure.MeasureSpace
 
 open MeasureTheory
 
-namespace FEP001
+namespace PrimerUnionBound
 
-theorem fep001_union_bound {α : Type*} [MeasurableSpace α]
+theorem union_bound {α : Type*} [MeasurableSpace α]
     (μ : Measure α) (s t : Set α) :
     μ (s ∪ t) ≤ μ s + μ t := by
   exact measure_union_le s t
 
+end PrimerUnionBound
+```
+
+Every implicit assumption of the informal claim has been made explicit (the type, its σ-algebra, and the two sets), and the inequality is discharged by a single pre-verified Mathlib4 lemma. Three structural conventions carry over to every catalogue body: a namespace, so names cannot collide in the {{total_topics}}-topic aggregate build; targeted imports rather than the whole of Mathlib4; and an `open` block that brings the needed names into scope without fully-qualified paths.
+
+What the illustration does not carry over is scale. Catalogue rows state the FEP quantity itself rather than a Mathlib4 lemma restated under a new name. Row `fep-001`, the variational free-energy bound, declares two definitions and three theorems over `InformationTheory.klDiv`:
+
+```lean
+import Mathlib.InformationTheory.KullbackLeibler.Basic
+
+namespace FEP001
+
+variable {α : Type*} [MeasurableSpace α]
+
+open MeasureTheory
+open scoped ENNReal
+
+/-- Native variational gap between an approximate and exact posterior law. -/
+noncomputable def fep001_variationalGap
+    (approximation posterior : Measure α) : ENNReal :=
+  InformationTheory.klDiv approximation posterior
+
+/-- Surprisal plus the native KL variational gap. -/
+noncomputable def fep001_variationalUpperBound
+    (approximation posterior : Measure α) (surprisal : ENNReal) : ENNReal :=
+  surprisal + fep001_variationalGap approximation posterior
+
+/-- The KL remainder makes the variational quantity an upper bound. -/
+theorem fep001_variationalUpperBound_ge
+    (approximation posterior : Measure α) (surprisal : ENNReal) :
+    surprisal ≤
+      fep001_variationalUpperBound approximation posterior surprisal := by
+  exact le_add_right (le_refl _)
+
 end FEP001
 ```
 
-This three-line proof is a real (sorry-free) catalogue row: every implicit assumption of the informal claim has been made explicit (the type, its σ-algebra, and the two sets), and the inequality is discharged by a single pre-verified Mathlib4 lemma. The `FEP001` namespace prevents name collisions in the {{total_topics}}-topic aggregate build, and `open MeasureTheory` brings `Measure` and `measure_union_le` into scope without fully-qualified names. This is the template every catalogue body follows.
+The row also proves `fep001_variationalGap_eq_zero_iff` — the gap vanishes exactly at the posterior for finite measures — and `fep001_variationalUpperBound_eq_iff`, its consequence at finite surprisal. The complete body, and every other row's, is reproduced in the generated catalogue appendix.
 
 ### Concrete Example: Informal vs Formal ELBO {#sec:concrete_example_informal_vs_formal_elbo}
 
@@ -167,7 +201,7 @@ end FEP002
 
 The topic-row version fixes the measurable space, both measures, the order of KL arguments, and the nonnegative extended-real codomain. Its inequality is deliberately narrower than the informal theorem: it treats surprisal and posterior as inputs rather than constructing them from a joint model. The separate finite `GenerativeModel` foundation closes that bridge for one normalized finite carrier by constructing evidence and posterior, proving Bayes reconstruction, and deriving posterior-form VFE and its evidence bound. Keeping the two declarations separate makes the difference between a native measure-level remainder theorem and a finite model theorem visible in their types.
 
-**Catalogue note.** The {{total_topics}} committed bodies in the family modules under `src/fep_lean/catalogue/bodies/` carry targeted `import Mathlib.…` lines. The validated registry fixes their order and source identity. [`LeanVerifier._wrap_lean_code`](../src/fep_lean/verification/lean_verifier.py) preserves a body with leading imports and supplies the shared preamble only when imports are absent ([@sec:native_lean_4_compilation_and_zero_direct_verification]; Appendix B).
+**Catalogue note.** The {{total_topics}} committed bodies in the family modules under `src/fep_lean/catalogue/bodies/` carry targeted `import Mathlib.…` lines. The validated registry fixes their order and source identity. [`LeanVerifier._wrap_lean_code`]({{publication.repository_url}}/blob/{{source.commit}}/src/fep_lean/verification/lean_verifier.py) preserves a body with leading imports and supplies the shared preamble only when imports are absent ([@sec:native_lean_4_compilation_and_zero_direct_verification]; Appendix B).
 
 ### Reading Type Error Messages {#sec:reading_type_error_messages}
 

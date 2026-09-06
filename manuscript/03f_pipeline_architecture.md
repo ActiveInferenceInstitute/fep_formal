@@ -1,6 +1,6 @@
 ## Pipeline Architecture and Execution Profile {#sec:pipeline_architecture_and_execution_profile}
 
-### The Central Execution and Orchestration DAG {#sec:the_6_step_directed_acyclic_graph}
+### The Central Execution and Orchestration DAG {#sec:execution_orchestration_dag}
 
 The architecture is organized around evidence boundaries rather than one undifferentiated success flag:
 
@@ -63,7 +63,7 @@ The package now uses the unambiguous `fep_lean` namespace, so correctness no lon
 
 ### Representative Run Statistics {#sec:pipeline_run_statistics}
 
-No unvalidated run is called representative. The renderer reports native evidence `{{verify.evidence_kind}}` with `{{verify.compiles_true}}/{{verify.topics_with_result}}` compiler successes, {{verify.warning_count}} warnings, and {{verify.sorry_count}} admissions. It reports full readiness as `{{full.claim_ready}}`; Hermes fields remain unavailable unless that predicate is true.
+No unvalidated run is called representative. The renderer reports native evidence `{{verify.evidence_kind}}` with `{{verify.compiles_true}}/{{verify.topics_with_result}}` compiler successes, {{verify.warning_count}} warnings, and {{verify.sorry_occurrences}} admissions. It reports full readiness as `{{full.claim_ready}}`; Hermes fields remain unavailable unless that predicate is true.
 
 ### Execution Metrics: Representative Run {#sec:execution_metrics_the_definitive_run}
 
