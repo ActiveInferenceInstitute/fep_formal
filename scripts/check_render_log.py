@@ -22,7 +22,11 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
-from fep_lean.output.render_log import mermaid_fallback_defects, render_log_defects
+from fep_lean.output.render_log import (
+    mermaid_fallback_defects,
+    render_log_defects,
+    stale_render_defects,
+)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -53,7 +57,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"FAIL: {line}")
     if not fallbacks:
         print("OK: no mermaid diagram fell back to verbatim source")
-    return 1 if failed or fallbacks else 0
+    stale = stale_render_defects(project_root / "manuscript", pdf_dir)
+    for line in stale:
+        print(f"FAIL: {line}")
+    if not stale:
+        print("OK: no manuscript source is newer than the combined render")
+    return 1 if failed or fallbacks or stale else 0
 
 
 if __name__ == "__main__":

@@ -38,6 +38,7 @@ __all__ = [
     "scan_render_log",
     "render_log_defects",
     "mermaid_fallback_defects",
+    "stale_render_defects",
 ]
 
 _TEX_ERROR_PREFIX = "! "
@@ -202,3 +203,45 @@ def mermaid_fallback_defects(
             f"back instead of rasterizing it"
         )
     return tuple(failures)
+
+
+DEFAULT_COMBINED_MARKDOWN = "_combined_manuscript.md"
+# Contributor documentation that lives beside the chapters but is never
+# typeset, so editing it cannot make a render stale.
+_NON_RENDERED_MANUSCRIPT_FILES = frozenset({"AGENTS.md", "README.md"})
+
+
+def stale_render_defects(
+    manuscript_dir: Path,
+    pdf_dir: Path,
+    combined_name: str = DEFAULT_COMBINED_MARKDOWN,
+) -> tuple[str, ...]:
+    """Return every manuscript source newer than the combined render.
+
+    An audit of the shipped PDF found it predated two of its own chapters, and
+    one prose line had genuinely drifted: 02b said "The table below reports ..."
+    while the rendered document still said "Table 1 reports ...". Nothing in the
+    pipeline noticed, because the compiler log of a render says nothing about
+    what changed after it. Modification times do.
+    """
+
+    combined = Path(pdf_dir) / combined_name
+    if not combined.is_file():
+        return (f"{combined}: combined render is absent; nothing to compare against",)
+    rendered_at = combined.stat().st_mtime
+    sources = [
+        path
+        for path in sorted(Path(manuscript_dir).glob("*.md"))
+        if path.name not in _NON_RENDERED_MANUSCRIPT_FILES
+    ]
+    vars_path = Path(manuscript_dir) / "manuscript_vars.yaml"
+    if vars_path.is_file():
+        sources.append(vars_path)
+    stale = []
+    for source in sources:
+        if source.stat().st_mtime > rendered_at:
+            stale.append(
+                f"{source}: modified after {combined.name} was written; "
+                f"the render describes an older tree"
+            )
+    return tuple(stale)
