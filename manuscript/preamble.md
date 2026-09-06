@@ -21,7 +21,12 @@
 \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{
   commandchars=\\\{\},
   breaklines=true,
-  breakanywhere=true
+  breakanywhere=true,
+  % Pandoc wraps every token of highlighted code in a \XxxTok macro. Without
+  % this, fvextra cannot break inside those macro arguments, so breaklines and
+  % breakanywhere are inert for Lean listings and an over-long line runs into
+  % the margin instead of wrapping.
+  breaknonspaceingroup=true
 }
 \lstset{
   basicstyle=\ttfamily\footnotesize,
