@@ -41,6 +41,39 @@ _MODULE_ROW_RE = re.compile(
     r"^\|\s*(?P<topic>fep-\d{3})\s*\|[^|]*\|[^|]*\|(?P<modules>[^|]*)\|[^|]*\|\s*$"
 )
 _IMPORTED_MODULES_TOKEN = "{{{{topics.{topic}.imported_modules}}}}"
+# ``areas.<Area>.count`` counts catalogue *rows*; it is projected from
+# ``area_counts`` and is a different number from the area's theorem total,
+# which ``docs/formalism-coverage.json`` carries per row as ``theorem_count``.
+# A single Information Geometry row proves several theorems, so labelling the
+# row count "theorems" understates the proof total by a multiple. The
+# manuscript did that in two sentences that sat three lines under a heading
+# reading "What the ... Rows Establish", contradicting itself on one page, and
+# they survived the fix to that heading. A count token cannot carry its own
+# unit, so the unit is what this audit checks: after an area-count token, the
+# first counted-thing noun on the line must name rows, not declarations.
+_AREA_COUNT_RE = re.compile(r"\{\{areas\.(?P<area>[A-Za-z]+)\.count\}\}")
+_ROW_NOUNS = frozenset(
+    {"topic", "topics", "row", "rows", "body", "bodies", "entry", "entries"}
+)
+_DECLARATION_NOUNS = frozenset(
+    {
+        "theorem",
+        "theorems",
+        "lemma",
+        "lemmas",
+        "declaration",
+        "declarations",
+        "proof",
+        "proofs",
+        "definition",
+        "definitions",
+    }
+)
+# How far past the token to look for the noun. "{{areas.InfoGeometry.count}}
+# Information Geometry theorems" puts it third; the window is deliberately
+# short so an unrelated later clause cannot trip the audit.
+_AREA_NOUN_WINDOW = 6
+_WORD_RE = re.compile(r"[A-Za-z][A-Za-z-]*")
 # snake_case (must contain an underscore, so bare English words are ignored)
 # or CamelCase type-shaped names.
 _IDENTIFIER_RE = re.compile(
@@ -252,6 +285,40 @@ def hand_maintained_module_cells(manuscript_dir: Path) -> tuple[str, ...]:
                 f"{path.name}:{line_number}: module column is hand-typed "
                 f"({match.group('modules').strip()!r}); use {expected}"
             )
+    return tuple(failures)
+
+
+def miscounted_area_labels(manuscript_dir: Path) -> tuple[str, ...]:
+    """Return area row-count tokens the prose labels as proved declarations.
+
+    ``{{areas.<Area>.count}}`` resolves to the number of catalogue rows in an
+    area. Labelling it "theorems" states a proof count the catalogue does not
+    have -- Information Geometry has 21 rows and 64 theorems -- and the
+    manuscript did exactly that in two sentences that survived a fix to the
+    heading directly above them. A count token cannot carry its own unit, so
+    the unit is audited here: the first counted-thing noun following an
+    area-count token must name rows, never declarations.
+    """
+
+    failures: list[str] = []
+    for path in manuscript_reference_files(manuscript_dir):
+        for line_number, line in enumerate(
+            _blank_non_lean_fences(path.read_text(encoding="utf-8")).splitlines(), 1
+        ):
+            for match in _AREA_COUNT_RE.finditer(line):
+                words = _WORD_RE.findall(line[match.end() :])[:_AREA_NOUN_WINDOW]
+                for word in words:
+                    lowered = word.lower()
+                    if lowered in _ROW_NOUNS:
+                        break
+                    if lowered in _DECLARATION_NOUNS:
+                        failures.append(
+                            f"{path.name}:{line_number}: "
+                            f"{{{{areas.{match.group('area')}.count}}}} counts "
+                            f"catalogue rows but is labelled {word!r}; "
+                            "name rows, or cite a declaration count"
+                        )
+                        break
     return tuple(failures)
 
 

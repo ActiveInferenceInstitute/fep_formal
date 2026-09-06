@@ -2,6 +2,18 @@
 
 ### Publication render remediation
 
+- Stopped printing catalogue row counts as theorem counts. Two sentences in
+  the sophisticated-dynamics synthesis read "The {{areas.InfoGeometry.count}}
+  Information Geometry theorems" and "The {{areas.BayesianMechanics.count}}
+  Bayesian Mechanics theorems"; those tokens carry row counts, three lines
+  below a heading that already said "Rows" and a sentence that already said
+  "rows", so the rendered PDF contradicted itself on one page and understated
+  its own proof totals, which `docs/formalism-coverage.json` sums per area
+  from each row's `theorem_count`. Both sentences now say "rows", and
+  `miscounted_area_labels` fails the render path on any `{{areas.*.count}}`
+  token whose following noun names theorems, lemmas, declarations, proofs, or
+  definitions, so the class cannot return through a third sentence.
+
 - Typeset Lean's Unicode operator suffixes: the code face is JuliaMono, not
   FreeMono, which covers none of U+2098 U+2096 U+1D50 U+209A U+1D62 U+1D9C and
   had XeTeX drop all 162 occurrences silently -- printing the complement lemma

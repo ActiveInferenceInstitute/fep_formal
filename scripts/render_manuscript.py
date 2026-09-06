@@ -30,6 +30,7 @@ import yaml
 from fep_lean.catalogue import FEPTopicCatalogue
 from fep_lean.catalogue.references import (
     hand_maintained_module_cells,
+    miscounted_area_labels,
     unattributed_row_declarations,
     unresolved_manuscript_references,
     unverified_non_catalogue_identifiers,
@@ -251,6 +252,17 @@ def main(argv: list[str] | None = None) -> int:
     if hand_typed:
         print("ERROR: hand-typed module cells in the manuscript")
         for item in hand_typed:
+            print(f"  {item}")
+        return 1
+    # A row count labelled "theorems" is the same failure one level up: the
+    # token resolves, so every placeholder gate passes, while the sentence
+    # states a proof total the catalogue does not have. Two such sentences
+    # shipped in a rendered PDF three lines below a heading that already said
+    # "Rows"; only the heading had been fixed.
+    miscounted = miscounted_area_labels(source_dir)
+    if miscounted:
+        print("ERROR: area row counts labelled as proved declarations")
+        for item in miscounted:
             print(f"  {item}")
         return 1
     # ``manuscript/preamble.md`` is copied verbatim by the renderer and never

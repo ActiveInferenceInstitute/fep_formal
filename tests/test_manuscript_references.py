@@ -15,6 +15,7 @@ from fep_lean.catalogue.references import (
     hand_maintained_module_cells,
     lean_names_introduced,
     mathlib_module_index,
+    miscounted_area_labels,
     unknown_topic_import_modules,
     unresolved_manuscript_references,
     unverified_non_catalogue_identifiers,
@@ -81,6 +82,37 @@ def test_import_audit_catches_a_module_a_rename_removed(
 
 def test_no_framework_table_cell_names_a_hand_typed_module() -> None:
     assert hand_maintained_module_cells(PROJ / "manuscript") == ()
+
+
+def test_no_area_row_count_is_labelled_a_declaration_count() -> None:
+    assert miscounted_area_labels(PROJ / "manuscript") == ()
+
+
+def test_area_row_count_labelled_theorems_is_rejected(tmp_path: Path) -> None:
+    """The exact drift that shipped in the PDF: rows printed as theorems."""
+    stale = tmp_path / "04c_framework_sophisticated_dynamics.md"
+    stale.write_text(
+        "**The {{areas.InfoGeometry.count}} Information Geometry theorems** "
+        "establish the substrate:\n",
+        encoding="utf-8",
+    )
+    defects = miscounted_area_labels(tmp_path)
+    assert len(defects) == 1
+    assert "counts catalogue rows but is labelled 'theorems'" in defects[0]
+    assert "{{areas.InfoGeometry.count}}" in defects[0]
+
+
+def test_area_row_count_labelled_rows_is_accepted(tmp_path: Path) -> None:
+    """A row noun clears the audit, and so does a heading that names topics."""
+    clean = tmp_path / "04c_framework_sophisticated_dynamics.md"
+    clean.write_text(
+        "**The {{areas.InfoGeometry.count}} Information Geometry rows** "
+        "establish the substrate, proving many theorems.\n"
+        "### Results ({{areas.BayesianMechanics.count}} topics)\n"
+        "| Information Geometry | {{areas.InfoGeometry.count}} | rate |\n",
+        encoding="utf-8",
+    )
+    assert miscounted_area_labels(tmp_path) == ()
 
 
 def test_hand_typed_module_cell_is_rejected(tmp_path: Path) -> None:

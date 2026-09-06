@@ -290,7 +290,7 @@ The fep-046 row recursively defines every allocated weight and the residual mass
 
 Taken together, the {{areas.InfoGeometry.count}} Information Geometry rows and {{areas.BayesianMechanics.count}} Bayesian Mechanics rows map a broad set of probabilistic and geometric interfaces. They do not yet span the full infrastructure required for a complete FEP formalization.
 
-**The {{areas.InfoGeometry.count}} Information Geometry theorems** establish the **differential-geometric substrate**:
+**The {{areas.InfoGeometry.count}} Information Geometry rows** establish the **differential-geometric substrate**:
 
 - **Fisher geometry** — fep-038 derives the Bernoulli score, Fisher information and natural gradient; fep-004 abstracts its finite weighted metric; fep-018 gives the corresponding coordinate distance and separation law.
 - **Categorical and optimization geometry** — fep-100--106 establish simplex-tangent Fisher positivity, pullback, scalar Cramér--Rao, invertible-chart natural-gradient equivariance, mirror-descent and affine Bregman identities, and replicator equivalence with full-rank and null boundaries.
@@ -300,7 +300,7 @@ Taken together, the {{areas.InfoGeometry.count}} Information Geometry rows and {
 - **Metric-space realization** — fep-018 proves Bernoulli Fisher--Rao nonnegativity, symmetry, triangle inequality, and separation, without claiming general $\alpha$-geodesics.
 - **Normalized Bayesian inversion** — fep-017 uses Mathlib's posterior kernel and proves normalization, reconstruction, recovery, and a countable Bayes-density law.
 
-**The {{areas.BayesianMechanics.count}} Bayesian Mechanics theorems** establish the **probabilistic substrate**:
+**The {{areas.BayesianMechanics.count}} Bayesian Mechanics rows** establish the **probabilistic substrate**:
 
 - **Finite partitions** — fep-005 proves a four-label disjoint cover with unique membership but not the conditional-independence structure $p(\mu,\eta\mid b) = p(\mu\mid b)p(\eta\mid b)$.
 - **Conditional independence and measure substrates** — fep-009 proves generic `CondIndep` symmetry and a trivial-σ-algebra witness. The maintained blanket foundation connects the fep-005-style four-block structure to a normalized finite law, positive-mass conditional factorization, zero conditional mutual information, and typed nontrivial dynamics. fep-135--141 embed this carrier into native measures and prove one concrete sigma-algebra-valued `CondIndepFun` statement, measurable endpoint coarsening, and rowwise transition preservation. H1 adds one full-support factorized stationary law and proves invariance under its selected positive-time refresh kernel. Generic blanket existence, arbitrary-mixture closure, causal identification, and biological interpretation remain absent.
