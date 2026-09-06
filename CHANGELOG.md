@@ -51,7 +51,9 @@
   `manuscript/preamble.md`, so a chapter or a font selection changed without a
   fresh render fails CI; it is not bound to the values a `{{token}}` resolves
   to, which `manuscript_projection_drift` and `stale_render_defects` own on the
-  render path. A rejected render writes no receipt.
+  render path. A rejected render writes no receipt and withdraws the standing
+  one: sources can drift out of a render without changing, so the digest alone
+  would let a superseded receipt keep vouching.
 - Made the publication entry point fail closed. `scripts/render_publication.py`
   runs the shared template's render stage and this repository's acceptance and
   exits on the conjunction, so a render the template calls successful over a

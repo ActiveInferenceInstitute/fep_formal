@@ -41,7 +41,9 @@ The receipt is bound to a digest over every typeset manuscript source plus
 `manuscript/preamble.md`, so a chapter or a font selection changed without a
 fresh render fails CI. It is not bound to the values a `{{token}}` resolves
 to; `manuscript_projection_drift` and `stale_render_defects` own that surface
-and both run on the render path.
+and both run on the render path. A rejected render writes no receipt and
+removes the standing one -- sources can drift out of a render without changing,
+so the digest alone would let a superseded receipt keep vouching.
 
 `build_release_bundle.py` is a thin public wrapper over
 `fep_lean.output.release_bundle`. It never reconstructs the archive roster,

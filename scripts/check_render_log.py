@@ -145,18 +145,25 @@ def main(argv: list[str] | None = None) -> int:
             "contents_number_overflows": len(overflowed),
         }
         receipt = build_acceptance_receipt(manuscript_dir, pdf_dir, counts=counts)
-        # A rejected render must not leave a receipt behind claiming otherwise,
-        # and must not leave the previous render's receipt in place either --
-        # that one describes a tree nobody is shipping any more.
-        if not receipt["accepted"]:
-            print(
-                f"FAIL: not writing {args.receipt}; this render was rejected, "
-                f"so no receipt may claim these sources were accepted"
-            )
-            return 1
         path = (
             args.receipt if args.receipt.is_absolute() else project_root / args.receipt
         )
+        # A rejected render must not leave a receipt claiming otherwise, and
+        # the previous render's receipt is such a claim: it says these sources
+        # were accepted, and this run is direct evidence that they no longer
+        # are. Sources can drift out of a render without changing -- a moved
+        # count leaves every chapter byte-identical -- so the digest alone
+        # would not catch it. Removing the receipt does; recover it with
+        # ``git checkout`` once the render is clean again.
+        if not receipt["accepted"]:
+            print(
+                f"FAIL: this render was rejected, so no receipt may claim "
+                f"these sources were accepted; not writing {path}"
+            )
+            if path.is_file():
+                path.unlink()
+                print(f"FAIL: removed the previous receipt at {path}")
+            return 1
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(
             json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"

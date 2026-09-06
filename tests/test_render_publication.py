@@ -301,6 +301,44 @@ def test_a_rejected_render_leaves_no_receipt(tmp_path: Path) -> None:
     assert not (project / driver.RECEIPT_PATH).exists()
 
 
+def test_a_rejected_render_withdraws_the_standing_receipt(tmp_path: Path) -> None:
+    """A stale receipt is a live claim, and this run disproves it.
+
+    Sources can drift out of a render without changing: a count that moves
+    under ``src/`` leaves every chapter byte-identical, so the digest cannot
+    catch it and the previous receipt would keep vouching for a render that no
+    longer passes.
+    """
+    driver = _driver()
+    project = _project(tmp_path, CLEAN_LOG)
+    assert (
+        driver.render_publication(
+            project,
+            tmp_path / "template",
+            runner=_successful_template,
+            hydrator=_hydrated,
+            skip_probe=True,
+        )
+        == 0
+    )
+    receipt = project / driver.RECEIPT_PATH
+    assert receipt.is_file()
+
+    (project / "output" / "pdf" / "_combined_manuscript.log").write_text(
+        DIRTY_LOG, encoding="utf-8"
+    )
+    status = driver.render_publication(
+        project,
+        tmp_path / "template",
+        runner=_successful_template,
+        hydrator=_hydrated,
+        skip_probe=True,
+    )
+
+    assert status == 1
+    assert not receipt.exists()
+
+
 def test_continuous_integration_invokes_the_acceptance() -> None:
     """The audited state: a real, tested acceptance that nothing ran.
 
