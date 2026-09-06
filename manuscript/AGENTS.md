@@ -52,7 +52,22 @@ uv run python docs/citation_audit.py
 uv run python docs/pin_audit.py
 uv run python docs/xref_audit.py
 uv run python docs/check_links.py --strict --include-root
+uv run python scripts/build_render_fonts.py --check
 ```
+
+Publishing runs one command, not two:
+
+```bash
+FEP_LEAN_TEMPLATE_DIR=<template checkout> \
+  uv run python scripts/render_publication.py
+```
+
+It renders the authored sources into `output/manuscript/` (the directory the
+shared template actually typesets), runs the template's PDF stage, and then
+runs `scripts/check_render_log.py`. Running the template stage on its own
+typesets whatever that directory last held and accepts a log recording TeX
+errors and dropped glyphs, because the template's success test looks for four
+fatal markers under `-interaction=nonstopmode`.
 
 Every `{{placeholder}}` in an authored chapter must be emitted by
 `src/fep_lean/output/manuscript.py::build_manuscript_vars` and resolve under
@@ -71,6 +86,10 @@ claims must be grounded in a verifiable primary or published source.
 ## Conventions
 
 - Cite the generated appendix instead of copying catalogue bodies into prose.
+- A table cell naming Lean modules is a token, never a literal: the
+  framework chapters print `{{topics.fep-NNN.imported_modules}}`, computed
+  from each row's own imports. Forty of seventy-one hand-typed cells had
+  drifted before it was generated.
 - Pedagogical Lean snippets are allowed only when clearly separated from
   canonical `fep-NNN` declarations.
 - Do not hard-code changing run metrics, toolchain values, semantic totals, or
