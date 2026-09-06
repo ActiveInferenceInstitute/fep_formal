@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import shutil
+import subprocess
 from pathlib import Path
 from types import ModuleType
 
@@ -11,6 +12,7 @@ import pytest
 import yaml
 
 from fep_lean.catalogue import FEPTopicCatalogue
+from fep_lean.output import manuscript as manuscript_module
 from fep_lean.output.manuscript import (
     build_manuscript_vars,
     manuscript_projection_drift,
@@ -378,3 +380,98 @@ def test_render_manuscript_fails_closed_for_missing_visual_asset(
         render_manuscript(source, destination, {})
 
     assert not destination.exists()
+
+
+def test_a_release_stamp_mismatch_must_be_disclosed(tmp_path: Path) -> None:
+    """FEPLEAN-ACC-02: v1.1.0 on the title page over a tree 15,033 lines newer.
+
+    Between releases the checkout is always ahead of the stamped tag, so the
+    mismatch itself cannot be the failure. Saying nothing about it can be.
+    """
+    module = _load_render_script()
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+    (manuscript / "00_front_matter.md").write_text(
+        "Rendered from an unnamed tree.\n", encoding="utf-8"
+    )
+
+    undisclosed = module.undisclosed_source_stamp(manuscript)
+
+    assert len(undisclosed) == 2
+    assert any("source.commit" in item for item in undisclosed)
+    assert any("source.published_note" in item for item in undisclosed)
+
+
+def test_a_disclosed_mismatch_passes(tmp_path: Path) -> None:
+    module = _load_render_script()
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+    (manuscript / "00_front_matter.md").write_text(
+        "That checkout is `{{source.short_commit}}`. {{source.published_note}}\n",
+        encoding="utf-8",
+    )
+
+    assert module.undisclosed_source_stamp(manuscript) == ()
+
+
+def test_the_shipped_manuscript_discloses_its_source(tmp_path: Path) -> None:
+    module = _load_render_script()
+
+    assert module.undisclosed_source_stamp(PROJ / "manuscript") == ()
+
+
+def _git(repository: Path, *arguments: str) -> None:
+    subprocess.run(
+        ["git", "-C", str(repository), *arguments],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+
+def _repository_with_a_commit(tmp_path: Path) -> Path:
+    repository = tmp_path / "repo"
+    repository.mkdir()
+    _git(repository, "init", "--initial-branch=main")
+    _git(repository, "config", "user.email", "test@example.invalid")
+    _git(repository, "config", "user.name", "Test")
+    (repository / "README.md").write_text("x\n", encoding="utf-8")
+    _git(repository, "add", "README.md")
+    _git(repository, "commit", "-m", "initial")
+    return repository
+
+
+def test_an_unpushed_commit_links_through_the_default_branch(tmp_path: Path) -> None:
+    """FEPLEAN-C9's second form: five sha permalinks that 404.
+
+    A commit-pinned link is the right provenance, but only once the commit is
+    on the remote. Until then it resolves nowhere, so the document says so and
+    links through the branch instead.
+    """
+    repository = _repository_with_a_commit(tmp_path)
+
+    stamp = manuscript_module._source_stamp_vars(repository)
+
+    assert stamp["published"] == "false"
+    assert stamp["published_ref"] == "main"
+    assert "not yet on the public repository" in stamp["published_note"]
+
+
+def test_a_pushed_commit_links_to_the_exact_tree(tmp_path: Path) -> None:
+    """The same render self-heals into permalinks once the branch is pushed."""
+    upstream = tmp_path / "upstream.git"
+    subprocess.run(
+        ["git", "init", "--bare", "--initial-branch=main", str(upstream)],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    repository = _repository_with_a_commit(tmp_path)
+    _git(repository, "remote", "add", "origin", str(upstream))
+    _git(repository, "push", "-u", "origin", "main")
+
+    stamp = manuscript_module._source_stamp_vars(repository)
+
+    assert stamp["published"] == "true"
+    assert stamp["published_ref"] == stamp["commit"]
+    assert "is on the public repository" in stamp["published_note"]

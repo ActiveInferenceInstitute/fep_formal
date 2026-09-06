@@ -82,6 +82,62 @@ def _git_output(project_root: Path, arguments: list[str]) -> str:
     return completed.stdout.strip()
 
 
+def _default_branch(project_root: Path) -> str:
+    """Return the remote's default branch, falling back to ``main``."""
+
+    head = _git_output(
+        project_root, ["symbolic-ref", "--quiet", "refs/remotes/origin/HEAD"]
+    )
+    branch = head.rsplit("/", 1)[-1] if head else ""
+    return branch or "main"
+
+
+def _published_ref(project_root: Path, commit: str) -> tuple[str, bool, str]:
+    """Return the ref every in-document source link should resolve through.
+
+    A commit-pinned permalink is the right provenance for a link into the
+    repository -- it names the exact tree the sentence describes -- but only
+    once that commit is on the remote. The audited fix pinned five links to a
+    commit that existed on one laptop, so every one of them 404s in the
+    published PDF.
+
+    So the ref is the commit when the commit is reachable from a remote branch,
+    and the default branch when it is not. The link resolves either way, and
+    the accompanying note says which of the two the reader is following, rather
+    than implying a permalink the repository cannot serve.
+    """
+
+    if not commit:
+        return (
+            _default_branch(project_root),
+            False,
+            (
+                "The source commit could not be determined from this checkout, so "
+                "links resolve through the repository's default branch."
+            ),
+        )
+    remote_branches = _git_output(project_root, ["branch", "-r", "--contains", commit])
+    if remote_branches.strip():
+        return (
+            commit,
+            True,
+            (
+                "This commit is on the public repository, so every source link in "
+                "this document is a permalink to the exact tree described here."
+            ),
+        )
+    branch = _default_branch(project_root)
+    return (
+        branch,
+        False,
+        (
+            f"This commit is not yet on the public repository, so source links "
+            f"resolve through the `{branch}` branch until it is pushed; fetch the "
+            f"commit named above to reproduce a number exactly."
+        ),
+    )
+
+
 def _source_stamp_vars(project_root: Path) -> dict[str, str]:
     """Return the checkout identity this render describes.
 
@@ -99,6 +155,7 @@ def _source_stamp_vars(project_root: Path) -> dict[str, str]:
 
     root = Path(project_root)
     commit = _git_output(root, ["rev-parse", "HEAD"])
+    published_ref, published, published_note = _published_ref(root, commit)
     short_commit = _git_output(root, ["rev-parse", "--short=12", "HEAD"])
     describe = _git_output(root, ["describe", "--tags", "--always", "--dirty"])
     exact_tag = _git_output(root, ["describe", "--exact-match", "--tags", "HEAD"])
@@ -111,6 +168,9 @@ def _source_stamp_vars(project_root: Path) -> dict[str, str]:
     return {
         "commit": commit or "unknown",
         "short_commit": short_commit or "unknown",
+        "published_ref": published_ref,
+        "published": "true" if published else "false",
+        "published_note": published_note,
         "describe": describe or "unknown",
         "exact_tag": exact_tag or "none",
         "commit_date": commit_date or "unknown",

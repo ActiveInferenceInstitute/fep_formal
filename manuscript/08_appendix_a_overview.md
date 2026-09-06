@@ -53,7 +53,7 @@ To avoid duplicating Lean that can drift from the SSOT, this appendix does **not
 
 Every shipped row in Appendix B declares its own Mathlib imports rather than relying on an implicit global prelude. The project uses measure/probability kernels and conditional independence, finite sums and sets, real logarithm/exponential and calculus, finite-dimensional matrices and metrics, information theory, contraction limits, and the real strong law. Pedagogical snippets may use broader imports for exposition only; they are not catalogue sources.
 
-The generated [formalism coverage report]({{publication.repository_url}}/blob/{{source.commit}}/docs/formalism-coverage.md) is the exact import and declaration roster. It owns both the topic-to-Mathlib incidence table and the maintained formal-module dependency graph. The atlas renders those import dependencies separately from scientific edges, while formal relations require named declarations. This avoids a static appendix roster that would drift whenever a sketch narrows an import.
+The generated [formalism coverage report]({{publication.repository_url}}/blob/{{source.published_ref}}/docs/formalism-coverage.md) is the exact import and declaration roster. It owns both the topic-to-Mathlib incidence table and the maintained formal-module dependency graph. The atlas renders those import dependencies separately from scientific edges, while formal relations require named declarations. This avoids a static appendix roster that would drift whenever a sketch narrows an import.
 
 ## Formalization Epistemology: Realism vs. Illusionism {#sec:formalization_epistemology}
 

@@ -114,6 +114,40 @@ def report_source_stamp(project_root: Path, variables: dict[str, Any]) -> int:
     return 1
 
 
+# What the manuscript must typeset when the checkout is not the stamped tag.
+# Each group is one disclosure; any token in a group satisfies it.
+_SOURCE_DISCLOSURE_TOKENS: tuple[tuple[str, ...], ...] = (
+    ("source.stamp", "source.short_commit", "source.commit"),
+    ("source.published_note",),
+)
+
+
+def undisclosed_source_stamp(source_dir: Path) -> tuple[str, ...]:
+    """Return the source disclosures the manuscript fails to typeset.
+
+    The title page carries an authored ``paper.version``/``paper.date``. When
+    the checkout has moved past that tag -- which it has for every commit
+    between releases -- those two fields name a release that does not contain
+    the numbers the render computed, and the audited PDF stamped v1.1.0 over a
+    tree 15,033 Lean lines newer with nothing on the page to say so.
+
+    Requiring the tag to match on every commit would make the mismatch a
+    permanent failure rather than a disclosure. What must never happen is the
+    mismatch going unsaid, so that is what is checked: the document must print
+    the commit its numbers came from, and whether that commit is public.
+    """
+
+    typeset = "\n".join(
+        path.read_text(encoding="utf-8")
+        for path in sorted(Path(source_dir).glob("*.md"))
+    )
+    return tuple(
+        f"none of {{{', '.join(group)}}} is typeset"
+        for group in _SOURCE_DISCLOSURE_TOKENS
+        if not any(f"{{{{{token}}}}}" in typeset for token in group)
+    )
+
+
 def unresolved_manuscript_reference_report(source_dir: Path) -> tuple[str, ...]:
     """Return every manuscript identifier that names no canonical declaration.
 
@@ -168,6 +202,15 @@ def main(argv: list[str] | None = None) -> int:
     stamp_status = report_source_stamp(project_root, variables)
     if args.require_release_stamp and stamp_status != 0:
         return stamp_status
+    if stamp_status != 0:
+        # A mismatch is allowed between releases; an undisclosed one is not.
+        undisclosed = undisclosed_source_stamp(source_dir)
+        if undisclosed:
+            print("ERROR: the release-stamp mismatch is not disclosed to readers")
+            for item in undisclosed:
+                print(f"  {item}")
+            return 1
+        print("  disclosed: the manuscript typesets the source stamp it renders")
     unresolved = unresolved_placeholders(source_dir, variables)
     if unresolved:
         print("ERROR: unresolved manuscript placeholders")
