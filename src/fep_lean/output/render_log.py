@@ -314,7 +314,7 @@ def stale_render_defects(
             authored_line.strip(): raw_line.strip()
             for authored_line, raw_line in zip(
                 _significant_lines(
-                    substitute_placeholders(text, variables)
+                    substitute_placeholders(text, variables, strict=False)
                     if variables is not None
                     else text
                 ),

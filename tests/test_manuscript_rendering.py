@@ -23,6 +23,7 @@ from fep_lean.output.rendering import (
     ManuscriptRenderError,
     manuscript_source_files,
     render_manuscript,
+    substitute_placeholders,
     unresolved_placeholders,
 )
 
@@ -475,3 +476,17 @@ def test_a_pushed_commit_links_to_the_exact_tree(tmp_path: Path) -> None:
     assert stamp["published"] == "true"
     assert stamp["published_ref"] == stamp["commit"]
     assert "is on the public repository" in stamp["published_note"]
+
+
+def test_substitution_stays_fail_closed_for_the_renderer() -> None:
+    """An unknown key must never reach a page as a literal ``{{token}}``."""
+    with pytest.raises(KeyError):
+        substitute_placeholders("Holds {{total_topics}} bodies.", {})
+    assert (
+        substitute_placeholders("Holds {{total_topics}} bodies.", {}, strict=False)
+        == "Holds {{total_topics}} bodies."
+    )
+    assert (
+        substitute_placeholders("Holds {{total_topics}} bodies.", {"total_topics": 155})
+        == "Holds 155 bodies."
+    )

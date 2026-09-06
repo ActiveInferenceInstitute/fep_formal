@@ -138,22 +138,30 @@ def unresolved_placeholders(
     return tuple(unresolved)
 
 
-def substitute_placeholders(content: str, variables: Mapping[str, Any]) -> str:
-    """Return ``content`` with every known ``{{placeholder}}`` resolved.
+def substitute_placeholders(
+    content: str, variables: Mapping[str, Any], *, strict: bool = True
+) -> str:
+    """Return ``content`` with every ``{{placeholder}}`` resolved.
 
-    Callers that already ran :func:`unresolved_placeholders` get the render's
-    exact substitution; a caller checking rendered output against its source
-    (see ``fep_lean.output.render_log.stale_render_defects``) needs the same
-    text the renderer produced, not the authored tokens.
+    The renderer calls this after :func:`unresolved_placeholders` has already
+    refused any unknown key, and keeps ``strict`` so an unknown one raises
+    rather than printing a literal ``{{token}}`` onto a page.
+
+    A caller comparing rendered output against its source (see
+    ``fep_lean.output.render_log.stale_render_defects``) needs the same text
+    the renderer produced but may hold an older variable projection, so it
+    passes ``strict=False`` and leaves what it cannot resolve alone.
     """
 
     flat = flatten_variables(variables)
 
     def replace(match: re.Match[str]) -> str:
         key = match.group(1).strip()
-        if key == "…" or key not in flat:
+        if key == "…":
             return match.group(0)
-        return flat[key]
+        if strict:
+            return flat[key]
+        return flat.get(key, match.group(0))
 
     return PLACEHOLDER_RE.sub(replace, content)
 
