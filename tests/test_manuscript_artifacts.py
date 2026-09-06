@@ -491,6 +491,38 @@ def test_verify_block_from_manifest_json(tmp_path: Path) -> None:
     assert b["topics_with_result"] == 3
 
 
+def test_verify_block_reports_the_topic_duration_spread(tmp_path: Path) -> None:
+    """A mean alone let "about 1-2 seconds" stand against a 14.95 s mean."""
+    p = tmp_path / "verification_manifest.json"
+    p.write_text(
+        json.dumps(
+            {
+                "verify_lean_ran": True,
+                "results": [
+                    {"topic_id": "fep-001", "compiles": True, "duration_s": 2.5},
+                    {"topic_id": "fep-002", "compiles": True, "duration_s": 9.0},
+                    {"topic_id": "fep-003", "compiles": True, "duration_s": 183.5},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    b = _verify_block_from_manifest(p)
+    assert b["min_topic_s"] == 2.5
+    assert b["median_topic_s"] == 9.0
+    assert b["max_topic_s"] == 183.5
+    # The mean sits between the median and the maximum and resembles neither,
+    # which is exactly why the spread is published beside it.
+    assert b["mean_topic_s"] == 65.0
+
+
+def test_verify_block_spread_is_zero_without_results() -> None:
+    b = _verify_block_from_manifest(None)
+    assert b["min_topic_s"] == 0.0
+    assert b["median_topic_s"] == 0.0
+    assert b["max_topic_s"] == 0.0
+
+
 def test_hermes_block_missing_summary_returns_zeros() -> None:
     block = _hermes_block_from_summary(None)
     assert block["summary_present"] is False

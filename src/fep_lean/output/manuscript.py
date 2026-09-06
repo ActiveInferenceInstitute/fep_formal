@@ -7,9 +7,11 @@ import importlib.metadata
 import json
 import os
 import re
+import statistics
 import subprocess
 import sys
 import tempfile
+from collections.abc import Sequence
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -225,6 +227,28 @@ def _get_latest_verification_manifest(
     return report_root / "verification_manifest.json" if report_root else None
 
 
+def _topic_duration_spread(durations: Sequence[float]) -> dict[str, float]:
+    """Return the per-topic elapsed-time spread a mean alone cannot show.
+
+    The primer printed "about 1-2 seconds" per verification for four releases.
+    No receipt has ever supported it: the mean is an order of magnitude
+    larger, and the fastest topic in the audited run is still above the top of
+    that range. A mean hides that, because one 183-second topic and a
+    two-second topic average to something neither resembles. Publishing the
+    minimum, median and maximum alongside it makes the hand-typed range
+    unwritable -- the numbers come from the same receipt as the mean.
+    """
+
+    ordered = sorted(float(value) for value in durations)
+    if not ordered:
+        return {"min_topic_s": 0.0, "median_topic_s": 0.0, "max_topic_s": 0.0}
+    return {
+        "min_topic_s": round(ordered[0], 3),
+        "median_topic_s": round(statistics.median(ordered), 3),
+        "max_topic_s": round(ordered[-1], 3),
+    }
+
+
 def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
     base: dict[str, Any] = {
         "manifest_present": False,
@@ -242,6 +266,9 @@ def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
         "duration_seconds": 0.0,
         "duration_min": 0.0,
         "mean_topic_s": 0.0,
+        "min_topic_s": 0.0,
+        "median_topic_s": 0.0,
+        "max_topic_s": 0.0,
         "failed_topic_ids": "none",
         "not_clean_topic_ids": "none",
         "failed_compile_topic_ids": "none",
@@ -334,6 +361,7 @@ def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
             "mean_topic_s": round(duration_seconds / len(durations), 3)
             if durations
             else 0.0,
+            **_topic_duration_spread(durations),
             "failed_topic_ids": ", ".join(not_clean_ids) or "none",
             "not_clean_topic_ids": ", ".join(not_clean_ids) or "none",
             "failed_compile_topic_ids": ", ".join(failed_compile_ids) or "none",
@@ -379,6 +407,11 @@ def _verify_block_from_native_receipt(
         if isinstance(row, dict) and not bool(row.get("compiles", False))
     ]
     duration_seconds = float(payload.get("duration_s", 0.0) or 0.0)
+    row_durations = [
+        float(row.get("duration_s", 0.0) or 0.0)
+        for row in rows
+        if isinstance(row, dict)
+    ]
     catalogue_digest = str(payload.get("catalogue_sha256", ""))
     base.update(
         {
@@ -406,6 +439,7 @@ def _verify_block_from_native_receipt(
             "duration_seconds": round(duration_seconds, 3),
             "duration_min": round(duration_seconds / 60, 2),
             "mean_topic_s": round(duration_seconds / len(rows), 3) if rows else 0.0,
+            **_topic_duration_spread(row_durations),
             "failed_topic_ids": ", ".join(not_clean_ids) or "none",
             "not_clean_topic_ids": ", ".join(not_clean_ids) or "none",
             "failed_compile_topic_ids": ", ".join(failed_compile_ids) or "none",

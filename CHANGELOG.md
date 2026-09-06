@@ -2,6 +2,26 @@
 
 ### Publication render remediation
 
+- Replaced the primer's hand-typed "about 1-2 seconds" per verification with
+  the receipt's own distribution. Nothing supported the range: the same PDF
+  prints 14.952 s per result in the compilation chapter, and the cited receipt
+  records a per-topic minimum of 2.381 s, a median of 8.982 s and a maximum of
+  183.318 s, with 0 of 155 topics at or under 2 s. `verify.min_topic_s`,
+  `verify.median_topic_s` and `verify.max_topic_s` now project that spread
+  beside the existing mean, so the sentence is regenerated rather than typed.
+- Published a verification command that runs. The primer printed `lake env
+  lean lean/FepSketches/FepCheck_fep001.lean`, which exits 1 from every
+  directory because no file of that name is ever created: `LeanVerifier` uses
+  `tempfile.mkstemp(prefix=f"_verify_{topic_id}_")` and unlinks the result.
+  The chapter now names the real argv, run with `lean/` as the working
+  directory, and publishes `uv run fep-lean verify --topic fep-001` as the
+  reproducible entry point. The same paragraph claimed `_wrap_lean_code`
+  prepends imports, adds area-specific opens and wraps the body in a
+  namespace; all 155 catalogue bodies already begin with `import` and declare
+  their own `namespace FEP<NNN>`, so the wrapper returns every one of them
+  unchanged. It also credited native mode with writing `VerifyResult` to
+  SQLite; the session store belongs to full OpenGauss mode.
+
 - Stopped printing catalogue row counts as theorem counts. Two sentences in
   the sophisticated-dynamics synthesis read "The {{areas.InfoGeometry.count}}
   Information Geometry theorems" and "The {{areas.BayesianMechanics.count}}
