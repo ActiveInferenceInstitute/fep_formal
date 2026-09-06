@@ -5,7 +5,7 @@
 | Version | 0.6 |
 | Date | 2026-09-06 |
 | Canonical copy | this file, `fep_lean/docs/design/gnn-bridge/bridge-contract.md` |
-| Mirror copy | `GeneralizedNotationNotation/doc/other/fep_lean/bridge-contract.md` |
+| Mirror copy | `GeneralizedNotationNotation/docs/other/fep_lean/bridge-contract.md` |
 | Change rule | substance changes bump the version and land in both checkouts in the same working session |
 
 ## 1. Purpose and scope

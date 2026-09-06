@@ -32,9 +32,9 @@ DOCUMENTS = {
     "continuous": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
 }
 CONTRACT = "docs/design/gnn-bridge/bridge-contract.md"
-MIRROR = "doc/other/fep_lean/bridge-contract.md"
+MIRROR = "docs/other/fep_lean/bridge-contract.md"
 SYNTAX_PIN = "specs/gnn-bridge-w1-bridge-operations/syntax-pin.json"
-SYNTAX_FILES = ("doc/gnn/gnn_syntax.md", "src/gnn/pipeline/step_registry.py")
+SYNTAX_FILES = ("docs/gnn/gnn_syntax.md", "src/gnn/pipeline/step_registry.py")
 
 
 def owner_roster(root: Path, repository: str) -> list[str]:
