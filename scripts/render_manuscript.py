@@ -224,9 +224,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  {item}")
         return 1
     # The framework tables' module column is computed from each row's own Lean
-    # imports. A hand-typed cell there drifted on forty of seventy-one rows
-    # before it was generated; nothing but this check stops one being typed
-    # back in, because a literal module name resolves as prose everywhere else.
+    # imports. Before it was generated, a hand-typed cell named a module the
+    # row never imported on forty-two of seventy-one rows; nothing but this
+    # check stops one being typed back in, because a literal module name
+    # resolves as prose everywhere else.
     hand_typed = hand_maintained_module_cells(source_dir)
     if hand_typed:
         print("ERROR: hand-typed module cells in the manuscript")

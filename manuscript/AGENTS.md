@@ -99,8 +99,8 @@ claims must be grounded in a verifiable primary or published source.
 - Cite the generated appendix instead of copying catalogue bodies into prose.
 - A table cell naming Lean modules is a token, never a literal: the
   framework chapters print `{{topics.fep-NNN.imported_modules}}`, computed
-  from each row's own imports. Forty of seventy-one hand-typed cells had
-  drifted before it was generated.
+  from each row's own imports. Before it was generated, forty-two of
+  seventy-one hand-typed cells named a module their row never imported.
 - Pedagogical Lean snippets are allowed only when clearly separated from
   canonical `fep-NNN` declarations.
 - Do not hard-code changing run metrics, toolchain values, semantic totals, or

@@ -30,7 +30,7 @@ _ANY_FENCE_RE = re.compile(r"^```[^\n]*\n.*?^```", re.DOTALL | re.MULTILINE)
 _ROW_RE = re.compile(r"\bfep-\d{3}\b")
 _BACKTICK_RE = re.compile(r"`([^`]+)`")
 # The framework chapters print each row's module column. It used to be
-# hand-maintained "Mathlib navigation hint" prose, and forty of its
+# hand-maintained "Mathlib navigation hint" prose, and forty-two of its
 # seventy-one cells named a module the row never imports; the column is now
 # the ``{{topics.fep-NNN.imported_modules}}`` token, computed from the body's
 # own imports. This pattern matches a five-column ``fep-NNN`` row and captures
@@ -189,8 +189,8 @@ def hand_maintained_module_cells(manuscript_dir: Path) -> tuple[str, ...]:
     """Return framework-table rows whose module column is hand-typed.
 
     The column names the Mathlib modules a row's Lean body imports. When it was
-    authored by hand, forty of seventy-one cells had drifted away from the
-    imports they described -- ``fep-023`` advertised
+    authored by hand, forty-two of its seventy-one cells named a module the
+    row never imported -- ``fep-023`` advertised
     ``MeasureTheory.Measure.Typeclasses.Probability`` while its body imports
     ``Mathlib.MeasureTheory.Measure.MeasureSpace`` -- because nothing recomputed
     a cell when a body narrowed or moved an import. Every cell is now the

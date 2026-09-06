@@ -54,8 +54,9 @@ def topic_import_modules(topic_id: str) -> tuple[str, ...]:
     the report that owns the relation.
 
     The framework chapters used to carry a hand-typed module per row instead.
-    Forty of seventy-one of those cells named a module their row never imports,
-    because nothing recomputed them when a body narrowed or moved an import.
+    Forty-two of those seventy-one cells named a module their row never
+    imported, because nothing recomputed them when a body narrowed or moved an
+    import.
     """
 
     body = BODIES[topic_id]

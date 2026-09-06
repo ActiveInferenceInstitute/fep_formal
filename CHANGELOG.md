@@ -28,7 +28,7 @@
   `/Info` dictionary, and made `scripts/render_manuscript.py` fail closed when
   the preamble copy drifts from the config (`pdf_metadata_drift`).
 - Replaced the hand-maintained "Mathlib navigation hint" column with each
-  row's own imports. Forty of its 71 cells named a module the row never
+  row's own imports. Forty-two of its 71 cells named a module the row never
   imports -- `fep-023` advertised
   `MeasureTheory.Measure.Typeclasses.Probability` against a body that imports
   `Mathlib.MeasureTheory.Measure.MeasureSpace` -- because nothing recomputed a
