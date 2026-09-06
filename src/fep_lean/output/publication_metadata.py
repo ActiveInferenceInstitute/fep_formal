@@ -166,6 +166,26 @@ def load_publication_author(project_root: Path) -> PublicationAuthor:
     )
 
 
+def load_repository_url(project_root: Path) -> str:
+    """Return the canonical repository URL declared by ``CITATION.cff``.
+
+    Four manuscript hyperlinks previously pointed at ``../docs/...`` and
+    ``../src/...``. Those resolve relative to the PDF's own directory, which is
+    ``output/pdf/``, so every one of them was dead in the published artifact --
+    including the coverage report the manuscript designates as the owner of the
+    incidence table. Anchoring them to this URL plus the render's exact commit
+    makes them resolvable from anywhere and pinned to the tree they describe.
+    """
+
+    citation = _load_yaml_owner(project_root, "CITATION.cff", label="CITATION.cff")
+    url = _required_text(citation, "repository-code", label="CITATION.cff")
+    if not url.startswith("https://"):
+        raise PublicationMetadataError(
+            "CITATION.cff repository-code must be an https URL"
+        )
+    return url.rstrip("/")
+
+
 def load_graphical_abstract(project_root: Path) -> GraphicalAbstractAsset:
     """Load and validate the configured graphical-abstract cover asset."""
     config = _load_yaml_owner(

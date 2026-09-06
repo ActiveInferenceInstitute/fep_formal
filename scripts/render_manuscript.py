@@ -28,6 +28,11 @@ if __name__ == "__main__":
 import yaml
 
 from fep_lean.catalogue import FEPTopicCatalogue
+from fep_lean.catalogue.references import (
+    unattributed_row_declarations,
+    unresolved_manuscript_references,
+)
+from fep_lean.formal.declarations import composed_theorem_declarations
 from fep_lean.output.manuscript import (
     build_manuscript_vars,
     manuscript_projection_drift,
@@ -104,6 +109,26 @@ def report_source_stamp(project_root: Path, variables: dict[str, Any]) -> int:
     return 1
 
 
+def unresolved_manuscript_reference_report(source_dir: Path) -> tuple[str, ...]:
+    """Return every manuscript identifier that names no canonical declaration.
+
+    The abstract claims that "stale theorem identifiers block publication". Until
+    this call existed, nothing on the render path checked one: the audit lived in
+    ``docs/theorem_ref_audit.py``, which no gate invoked. Both forms are checked --
+    the ``fepNNN_`` prefix form inside prose and ``lean`` fences, and the
+    un-prefixed identifiers a line attributes to a ``fep-NNN`` row.
+    """
+
+    composed = {
+        declaration.rsplit(".", 1)[-1]
+        for declaration in composed_theorem_declarations()
+    }
+    return (
+        *unresolved_manuscript_references(source_dir, additional_declarations=composed),
+        *unattributed_row_declarations(source_dir, additional_declarations=composed),
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     project_root = Path(__file__).resolve().parents[1]
@@ -139,6 +164,12 @@ def main(argv: list[str] | None = None) -> int:
     if unresolved:
         print("ERROR: unresolved manuscript placeholders")
         for item in unresolved:
+            print(f"  {item}")
+        return 1
+    stale_references = unresolved_manuscript_reference_report(source_dir)
+    if stale_references:
+        print("ERROR: stale theorem identifiers in the manuscript")
+        for item in stale_references:
             print(f"  {item}")
         return 1
     if args.check:

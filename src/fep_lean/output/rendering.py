@@ -52,6 +52,12 @@ MANUSCRIPT_ASSETS: dict[str, tuple[Path, Path]] = {
         Path("output/figures/status_distribution.png"),
         Path("assets/status_distribution.png"),
     ),
+    # 04e's area-distribution paragraph described a figure the document did not
+    # contain; the figure now ships, so its asset must resolve too.
+    "../output/figures/topics_by_area.png": (
+        Path("output/figures/topics_by_area.png"),
+        Path("assets/topics_by_area.png"),
+    ),
     # Rasterized from the SVG projections by
     # ``scripts/build_manuscript_figures.py`` (fep_lean.output.svg_raster).
     # 04f and 04g cite these two as PNGs; without the rows here the combined

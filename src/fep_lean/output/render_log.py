@@ -37,6 +37,7 @@ __all__ = [
     "RenderLogDefects",
     "scan_render_log",
     "render_log_defects",
+    "mermaid_fallback_defects",
 ]
 
 _TEX_ERROR_PREFIX = "! "
@@ -147,3 +148,57 @@ def render_log_defects(
     if not present:
         return [scan_render_log(pdf_dir / log_names[0])]
     return [scan_render_log(path) for path in present]
+
+
+# A ``mermaid`` fence the renderer could not rasterize is replaced by a
+# ``verbatim`` block holding the diagram's own source, captioned with the
+# fence's alt text or the literal fallback ``Mermaid diagram``. The template
+# logs that at WARNING and keeps going, so the manuscript's only diagram
+# shipped as a page of ``flowchart LR`` source captioned "Figure 3: Mermaid
+# diagram". The missing-``mmdc`` branch of the same function raises, so the
+# two failure modes disagree; this is the project-side half that makes both
+# fail closed.
+_MERMAID_FALLBACK_RE = re.compile(
+    r"\\begin\{figure\}\[htbp\]\s*\n\\centering\s*\n\\begin\{verbatim\}\n"
+    r"(?P<body>.*?)\n\\end\{verbatim\}\s*\n\\caption\{(?P<caption>[^}]*)\}",
+    re.DOTALL,
+)
+# ``flowchart``/``graph``/``sequenceDiagram``/... opening a verbatim figure is
+# mermaid source, whatever the caption says.
+_MERMAID_SOURCE_RE = re.compile(
+    r"^\s*(?:%%\{.*?\}%%\s*)?"
+    r"(flowchart|graph|sequenceDiagram|classDiagram|stateDiagram(?:-v2)?|erDiagram"
+    r"|journey|gantt|pie|gitGraph|mindmap|timeline|quadrantChart|C4Context)\b",
+    re.IGNORECASE,
+)
+DEFAULT_TEX_NAME = "_combined_manuscript.tex"
+
+
+def mermaid_fallback_defects(
+    pdf_dir: Path, tex_name: str = DEFAULT_TEX_NAME
+) -> tuple[str, ...]:
+    """Return one line per mermaid diagram that shipped as raw source.
+
+    The rendered LaTeX is the evidence: a rasterized diagram is an
+    ``\\includegraphics`` of a PNG under ``figures/mermaid_inline/``, while a
+    failed one is a ``verbatim`` block containing the fence's own source.
+    """
+
+    tex_path = Path(pdf_dir) / tex_name
+    if not tex_path.is_file():
+        return ()
+    content = tex_path.read_text(encoding="utf-8", errors="replace")
+    failures: list[str] = []
+    for match in _MERMAID_FALLBACK_RE.finditer(content):
+        body = match.group("body")
+        caption = match.group("caption").strip()
+        if not _MERMAID_SOURCE_RE.match(body):
+            continue
+        line_number = content.count("\n", 0, match.start()) + 1
+        first_line = body.strip().splitlines()[0].strip()
+        failures.append(
+            f"{tex_path}:{line_number}: mermaid diagram shipped as verbatim source "
+            f"(caption {caption!r}, first line {first_line!r}) -- the renderer fell "
+            f"back instead of rasterizing it"
+        )
+    return tuple(failures)

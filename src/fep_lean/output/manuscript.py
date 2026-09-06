@@ -26,6 +26,7 @@ from fep_lean.output.evidence import (
 from fep_lean.output.provenance import config_owner_paths, source_owner_paths
 from fep_lean.output.publication_metadata import (
     load_graphical_abstract,
+    load_repository_url,
     load_publication_author,
 )
 
@@ -946,6 +947,8 @@ def build_manuscript_vars(
     )
     publication_author = load_publication_author(root)
     graphical_abstract = load_graphical_abstract(root)
+    source_stamp = _source_stamp_vars(project_root)
+    repository_url = load_repository_url(root)
     return {
         **summary,
         "areas": area_vars,
@@ -963,7 +966,7 @@ def build_manuscript_vars(
         },
         "compile_rate": compile_rate,
         **_read_toolchain_vars(project_root),
-        "source": _source_stamp_vars(project_root),
+        "source": source_stamp,
         "verify": verify,
         "full": {
             "claim_ready": manifest is not None,
@@ -974,6 +977,7 @@ def build_manuscript_vars(
         "publication": {
             "author": publication_author.manuscript_variables(),
             "graphical_abstract": graphical_abstract.manuscript_variables(),
+            "repository_url": repository_url,
         },
     }
 
