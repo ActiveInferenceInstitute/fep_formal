@@ -427,11 +427,12 @@ def contents_number_overflow_defects(
     return tuple(failures)
 
 
-# The acceptance above needs a real render to judge, and this manuscript's
-# render needs XeLaTeX, pandoc, the mermaid CLI, a browser for two captured
-# figures, and two fonts no Debian package ships. A hosted runner has none of
-# them, so continuous integration cannot re-run the acceptance. What it can do
-# is refuse to merge sources the acceptance has never seen.
+# The acceptance above needs a real render to judge, and continuous
+# integration does not produce one: a render needs a checkout of the shared
+# template -- a separate repository this project does not pin -- plus XeLaTeX,
+# pandoc, ``rsvg-convert``, the mermaid CLI and the two faces
+# ``manuscript/preamble.md`` selects. So CI cannot re-run the acceptance. What
+# it can do is refuse to merge sources the acceptance has never seen.
 #
 # That is what this receipt is for. It is written only by an acceptance that
 # found nothing, it is committed, and it names the exact manuscript sources it

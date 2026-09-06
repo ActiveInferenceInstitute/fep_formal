@@ -7,12 +7,13 @@ render (see ``fep_lean.output.render_log``).  This wrapper is the project-side
 fail-closed acceptance for a combined PDF build and must be run after
 ``stage_03_render.py``.
 
-A hosted CI runner has neither XeLaTeX, pandoc, the mermaid CLI, a browser
-for the two captured figures, nor the two fonts this document selects, so it
-cannot re-run this acceptance.  ``--receipt`` writes what the acceptance found
-into a committed file and ``--verify-receipt`` re-reads it, which is how the
-gate reaches CI: a chapter edited without a fresh render leaves the receipt
-naming a digest the checkout no longer has.
+Continuous integration does not render this manuscript -- that needs a
+checkout of the shared template, XeLaTeX, pandoc, ``rsvg-convert``, the mermaid
+CLI and the two faces ``manuscript/preamble.md`` selects -- so it cannot re-run
+this acceptance.  ``--receipt`` writes what it found into a committed file and
+``--verify-receipt`` re-reads it, which is how the gate reaches CI: a chapter
+edited without a fresh render leaves the receipt naming a digest the checkout
+no longer has.
 
 Usage:
     uv run python scripts/check_render_log.py
