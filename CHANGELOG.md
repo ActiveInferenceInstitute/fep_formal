@@ -27,11 +27,46 @@
 - Carried `manuscript/config.yaml`'s subtitle and fifteen keywords into the PDF
   `/Info` dictionary, and made `scripts/render_manuscript.py` fail closed when
   the preamble copy drifts from the config (`pdf_metadata_drift`).
-- Pinned the "Mathlib navigation hint" column: two of its 71 cells named
-  modules the pinned Mathlib does not contain
-  (`Analysis.Calculus.Deriv.Monotone`, `LinearAlgebra.Matrix.Multiplication`).
-  `unknown_mathlib_navigation_hints` indexes the checkout and fails on any hint
-  that names neither a module nor a module directory.
+- Replaced the hand-maintained "Mathlib navigation hint" column with each
+  row's own imports. Forty of its 71 cells named a module the row never
+  imports -- `fep-023` advertised
+  `MeasureTheory.Measure.Typeclasses.Probability` against a body that imports
+  `Mathlib.MeasureTheory.Measure.MeasureSpace` -- because nothing recomputed a
+  cell when a body moved an import. Every cell is now
+  `{{topics.fep-NNN.imported_modules}}`, produced from the same regex and
+  source as the coverage report's incidence table;
+  `hand_maintained_module_cells` fails the render path on a literal typed back
+  in, and `unknown_topic_import_modules` checks the relation itself against the
+  pinned Mathlib.
+- Made the publication entry point fail closed. `scripts/render_publication.py`
+  runs the shared template's render stage and this repository's acceptance and
+  exits on the conjunction, so a render the template calls successful over a
+  dirty log is rejected here. The template compiles with
+  `-interaction=nonstopmode` and tests four fatal markers; it is a separate
+  repository, and `_pdf_latex_pipeline._check_fatal_error` still fails open
+  upstream (as does `_pdf_mermaid.py`'s `render_disabled_reason` branch, which
+  warns where the missing-`mmdc` branch raises).
+- Recorded and probed the font requirement the render depends on. The R1 fix
+  was a font installed on one machine and nothing in the checkout said which
+  glyphs the document needs, so a render elsewhere would regress identically
+  and silently. `docs/render-fonts.json` is derived from the sources and
+  `--check`ed in CI; `scripts/build_render_fonts.py --probe` asks the host's
+  fontconfig whether the selected faces cover the set, and
+  `render_publication.py` runs it as a preflight.
+- Judged render staleness by content instead of modification time. The first
+  guard failed the delivered artifact because regenerating two files to
+  byte-identical content moved their mtimes; mtime is now the trigger and the
+  verdict is whether the source's own lines, substituted the way the renderer
+  substitutes them, are in the combined document.
+- Linked into the repository through a ref that resolves. Five source links
+  were pinned to a commit that existed only locally, so all five 404ed in the
+  published PDF; they now resolve through the commit once it is on the remote
+  and through the default branch until then, and the front matter prints which
+  (`{{source.published_note}}`).
+- Made an undisclosed release-stamp mismatch fatal. Between releases the
+  checkout is always ahead of the stamped tag, so the mismatch cannot be the
+  failure -- saying nothing about it can be, and the audited PDF stamped v1.1.0
+  over a tree 15,033 Lean lines newer with nothing on the page to say so.
 - Restored the green `ruff check` / `ruff format --check` gate that the render
   and audit fixes had broken (6 findings, 8 unformatted files).
 
