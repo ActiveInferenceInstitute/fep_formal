@@ -164,12 +164,17 @@
 % real spelling. Replace the hook with a discretionary that types a small grey
 % continuation arrow at the end of the broken line. The arrow can never be part
 % of a Lean name or a Mathlib module path, so the break is unambiguous.
-% The pre-break material is wrapped in an \hbox because TeX admits only boxes,
-% characters, kerns and rules inside a \discretionary -- a bare \textcolor
-% (a whatsit) is not permitted there.
+% The cue must be a box: TeX admits only boxes, characters, kerns and rules
+% inside a \discretionary, so neither a bare \textcolor (a whatsit) nor an
+% inline formula is permitted there. It is typeset once into a box register and
+% \copy-ed at each break point, because \seqsplit calls \seqinsert between
+% every pair of characters and rebuilding the box would be paid for ~15000
+% times per run.
 \definecolor{fepbreak}{RGB}{130,130,130}
-\newcommand{\fepbreakcue}{\hbox{\normalfont\tiny\color{fepbreak}$\hookrightarrow$}}
-\def\seqinsert{\ifmmode\allowbreak\else\discretionary{\fepbreakcue}{}{}\fi}
+\newsavebox{\fepbreakbox}
+\AtBeginDocument{%
+  \savebox{\fepbreakbox}{\normalfont\tiny\textcolor{fepbreak}{\ensuremath{\hookrightarrow}}}}
+\def\seqinsert{\ifmmode\allowbreak\else\discretionary{\copy\fepbreakbox}{}{}\fi}
 
 % Code listings wrap under fvextra rather than seqsplit; give them the same cue
 % on the continuation line so one document has one break convention.
