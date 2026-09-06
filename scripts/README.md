@@ -75,7 +75,15 @@ FEP_LEAN_TEMPLATE_DIR=<template checkout> \
 uv run python scripts/render_publication.py --accept-only
 ```
 
-`check_render_log.py` is that acceptance on its own, and
+`check_render_log.py` is that acceptance on its own. A run that finds nothing
+writes `docs/render-acceptance.json`; `--verify-receipt` re-reads it and is
+what CI runs, because a hosted runner cannot render this document at all:
+
+```bash
+uv run python scripts/check_render_log.py --receipt docs/render-acceptance.json
+uv run python scripts/check_render_log.py --verify-receipt
+```
+
 `build_render_fonts.py` owns the font requirement: `--check` fails when the
 manuscript starts typesetting a glyph the committed record does not list, and
 `--probe` asks the host's fontconfig whether the selected faces cover the set:

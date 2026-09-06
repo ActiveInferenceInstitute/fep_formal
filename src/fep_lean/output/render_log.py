@@ -28,6 +28,8 @@ can be rejected on them.  It reads a log; it never invokes a compiler.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 from collections import Counter
 from collections.abc import Mapping
@@ -42,10 +44,15 @@ from fep_lean.output.rendering import (
 )
 
 __all__ = [
+    "RECEIPT_VERSION",
     "RenderLogDefects",
+    "build_acceptance_receipt",
     "contents_number_overflow_defects",
+    "manuscript_source_digest",
     "mermaid_fallback_defects",
+    "receipt_defects",
     "render_log_defects",
+    "rendered_manuscript_sources",
     "scan_render_log",
     "stale_render_defects",
     "uncaptioned_table_defects",
@@ -416,5 +423,158 @@ def contents_number_overflow_defects(
             f"{log_path}:{index + 1}: contents number {number['number']} overflows "
             f"its number box by {overfull.group(1)}pt and collides with the entry "
             f"title; widen the matching \\@dottedtocline number width"
+        )
+    return tuple(failures)
+
+
+# The acceptance above needs a real render to judge, and this manuscript's
+# render needs XeLaTeX, pandoc, the mermaid CLI, a browser for two captured
+# figures, and two fonts no Debian package ships. A hosted runner has none of
+# them, so continuous integration cannot re-run the acceptance. What it can do
+# is refuse to merge sources the acceptance has never seen.
+#
+# That is what this receipt is for. It is written only by an acceptance that
+# found nothing, it is committed, and it names the exact manuscript sources it
+# covered. A chapter edited without a fresh render leaves the receipt naming a
+# digest the checkout no longer has, and the verification below fails.
+#
+# Its boundary is stated rather than implied: it binds the acceptance to the
+# authored manuscript text and the LaTeX preamble, not to the values a
+# chapter's ``{{token}}`` resolves to. A change under ``src/`` that moves a
+# computed count leaves this receipt valid; ``manuscript_projection_drift``
+# and :func:`stale_render_defects` own that surface, and both run on the
+# render path.
+RECEIPT_VERSION = 1
+# Every check whose defect list must be empty for a render to be publishable.
+_RECEIPT_CHECKS = (
+    "tex_errors",
+    "missing_characters",
+    "mermaid_fallbacks",
+    "stale_sources",
+    "uncaptioned_tables",
+    "contents_number_overflows",
+)
+_PAGES_RE = re.compile(r"Output written on \S+ \((?P<pages>\d+) pages?")
+
+
+def rendered_manuscript_sources(manuscript_dir: Path) -> tuple[Path, ...]:
+    """Return the manuscript files the template typesets, in render order."""
+
+    return tuple(
+        path
+        for path in sorted(Path(manuscript_dir).glob("*.md"))
+        if path.name not in _NON_RENDERED_MANUSCRIPT_FILES
+    )
+
+
+def manuscript_source_digest(manuscript_dir: Path) -> str:
+    """Return one digest over every typeset source and the LaTeX preamble.
+
+    ``preamble.md`` is not typeset as prose -- the template copies it into the
+    LaTeX header -- but it selects the fonts, and choosing a face without the
+    document's glyphs is the defect that shipped a false theorem. A digest that
+    ignored it would accept that change silently.
+    """
+
+    manuscript = Path(manuscript_dir)
+    digest = hashlib.sha256()
+    for path in (*rendered_manuscript_sources(manuscript), manuscript / "preamble.md"):
+        digest.update(path.name.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes() if path.is_file() else b"")
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def rendered_page_count(
+    pdf_dir: Path, log_name: str = "_combined_manuscript.log"
+) -> int:
+    """Return the page count the compiler recorded, or ``0`` when it did not."""
+
+    log_path = Path(pdf_dir) / log_name
+    if not log_path.is_file():
+        return 0
+    match = _PAGES_RE.search(log_path.read_text(encoding="utf-8", errors="replace"))
+    return int(match["pages"]) if match else 0
+
+
+def build_acceptance_receipt(
+    manuscript_dir: Path,
+    pdf_dir: Path,
+    *,
+    counts: Mapping[str, int],
+) -> dict[str, Any]:
+    """Return the receipt recording that this render passed this acceptance.
+
+    ``counts`` is the number of defects each check reported, keyed by
+    :data:`_RECEIPT_CHECKS`; the caller has already run them, so recomputing
+    here would let the receipt disagree with the report it accompanies.
+    """
+
+    missing = [name for name in _RECEIPT_CHECKS if name not in counts]
+    if missing:
+        raise ValueError(f"acceptance receipt is missing checks: {sorted(missing)}")
+    checks = {name: int(counts[name]) for name in _RECEIPT_CHECKS}
+    return {
+        "receipt_version": RECEIPT_VERSION,
+        "accepted": not any(checks.values()),
+        "manuscript_source_digest": manuscript_source_digest(manuscript_dir),
+        "sources": [path.name for path in rendered_manuscript_sources(manuscript_dir)],
+        "pages": rendered_page_count(pdf_dir),
+        "checks": checks,
+    }
+
+
+def receipt_defects(receipt_path: Path, manuscript_dir: Path) -> tuple[str, ...]:
+    """Return why the committed acceptance receipt does not cover this checkout.
+
+    An absent, unreadable, rejecting or stale receipt is a defect. Not knowing
+    whether the shipped render was accepted is the state this whole module
+    exists to reject, so it is never treated as an absence of evidence.
+    """
+
+    path = Path(receipt_path)
+    if not path.is_file():
+        absent = (
+            f"{path}: no acceptance receipt, so no render of these sources is "
+            f"known to have passed the acceptance; run "
+            f"scripts/render_publication.py"
+        )
+        return (absent,)
+    try:
+        receipt = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
+        return (f"{path}: unreadable acceptance receipt ({error})",)
+    if not isinstance(receipt, dict):
+        return (f"{path}: acceptance receipt is not a JSON object",)
+    failures: list[str] = []
+    version = receipt.get("receipt_version")
+    if version != RECEIPT_VERSION:
+        failures.append(
+            f"{path}: receipt_version is {version!r}, expected {RECEIPT_VERSION}"
+        )
+    checks = receipt.get("checks")
+    if not isinstance(checks, dict):
+        failures.append(f"{path}: receipt records no checks")
+    else:
+        for name in _RECEIPT_CHECKS:
+            if name not in checks:
+                failures.append(f"{path}: receipt does not record {name}")
+            elif checks[name]:
+                failures.append(
+                    f"{path}: the accepted render reported {checks[name]} {name}"
+                )
+    if receipt.get("accepted") is not True:
+        failures.append(
+            f"{path}: records accepted={receipt.get('accepted')!r}; the render "
+            f"it describes was rejected"
+        )
+    expected = manuscript_source_digest(manuscript_dir)
+    recorded = receipt.get("manuscript_source_digest")
+    if recorded != expected:
+        failures.append(
+            f"{path}: covers manuscript sources {recorded!r} but this checkout "
+            f"is {expected!r}; the shipped render predates these sources -- "
+            f"re-run scripts/render_publication.py"
         )
     return tuple(failures)

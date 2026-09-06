@@ -37,6 +37,20 @@ jobs:
           uv run python scripts/render_manuscript.py --check
           uv run python docs/theorem_ref_audit.py
           uv run python docs/citation_audit.py
+      # The shipped artifact is a 350-page PDF, and the defects that reached it
+      # -- 162 dropped glyphs, one false printed theorem, a diagram shipped as
+      # its own source, chapters the render predated -- are all invisible to
+      # the shared template's success test. `scripts/check_render_log.py` is
+      # the acceptance that catches them, but it needs a real render to read,
+      # and this render needs XeLaTeX, pandoc, the mermaid CLI, a browser for
+      # two captured figures and two fonts no apt package ships. A hosted
+      # runner has none of those, so this job cannot re-run the acceptance. It
+      # requires instead that the acceptance has run over exactly these
+      # sources: the receipt is written only by an acceptance that found
+      # nothing, and it names the digest of the manuscript it covered, so a
+      # chapter edited without a fresh render fails here.
+      - name: Require the shipped render to have passed the acceptance
+        run: uv run python scripts/check_render_log.py --verify-receipt
       - run: uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
       - run: uv run python docs/check_links.py --strict --include-root
       - run: uv run python docs/md_hygiene.py --strict

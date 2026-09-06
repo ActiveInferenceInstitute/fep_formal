@@ -38,6 +38,18 @@
   `hand_maintained_module_cells` fails the render path on a literal typed back
   in, and `unknown_topic_import_modules` checks the relation itself against the
   pinned Mathlib.
+- Gave the acceptance somewhere to bite. `scripts/check_render_log.py` was a
+  real, tested check that nothing ran: `grep -rn check_render_log
+  --include="*.yml" .github/` matched nothing, so every defect it catches could
+  reach `main` unopposed. A hosted runner cannot re-run it -- this render needs
+  XeLaTeX, pandoc, the mermaid CLI, a browser for two captured figures and two
+  fonts no apt package ships -- so a clean acceptance now writes
+  `docs/render-acceptance.json` and CI runs `--verify-receipt` against it. The
+  receipt is bound to a digest over every typeset manuscript source plus
+  `manuscript/preamble.md`, so a chapter or a font selection changed without a
+  fresh render fails CI; it is not bound to the values a `{{token}}` resolves
+  to, which `manuscript_projection_drift` and `stale_render_defects` own on the
+  render path. A rejected render writes no receipt.
 - Made the publication entry point fail closed. `scripts/render_publication.py`
   runs the shared template's render stage and this repository's acceptance and
   exits on the conjunction, so a render the template calls successful over a

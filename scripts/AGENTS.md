@@ -30,6 +30,17 @@ probe. None of the three reconstructs a roster or a policy: the acceptance
 predicates live in `fep_lean.output.render_log`, the requirement in
 `fep_lean.output.render_fonts`.
 
+A clean acceptance writes `docs/render-acceptance.json`, and CI runs
+`check_render_log.py --verify-receipt` against it. That indirection is not
+decoration: a hosted runner has no XeLaTeX, mermaid CLI, browser or JuliaMono,
+so it cannot re-run the acceptance and would otherwise run nothing at all --
+which is exactly the audited state, a tested acceptance no workflow invoked.
+The receipt is bound to a digest over every typeset manuscript source plus
+`manuscript/preamble.md`, so a chapter or a font selection changed without a
+fresh render fails CI. It is not bound to the values a `{{token}}` resolves
+to; `manuscript_projection_drift` and `stale_render_defects` own that surface
+and both run on the render path.
+
 `build_release_bundle.py` is a thin public wrapper over
 `fep_lean.output.release_bundle`. It never reconstructs the archive roster,
 renderer policy, manifest, checksum table, or evidence boundaries. `--check`

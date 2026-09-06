@@ -7,14 +7,22 @@ successful.
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 
+import pytest
+
 from fep_lean.output.render_log import (
+    RECEIPT_VERSION,
     RenderLogDefects,
+    build_acceptance_receipt,
     contents_number_overflow_defects,
+    manuscript_source_digest,
     mermaid_fallback_defects,
+    receipt_defects,
     render_log_defects,
+    rendered_manuscript_sources,
     scan_render_log,
     stale_render_defects,
     uncaptioned_table_defects,
@@ -473,3 +481,164 @@ def test_a_drifted_caption_is_still_drift(tmp_path: Path) -> None:
 
     assert len(defects) == 1
     assert "The Hermes topic run" in defects[0]
+
+
+# ── acceptance receipt ────────────────────────────────────────────────────
+# A hosted runner cannot re-run the acceptance above, so the gate that reaches
+# CI is this receipt: written only by a clean acceptance, committed, and bound
+# to the manuscript sources it covered.
+CLEAN_COUNTS = {
+    "tex_errors": 0,
+    "missing_characters": 0,
+    "mermaid_fallbacks": 0,
+    "stale_sources": 0,
+    "uncaptioned_tables": 0,
+    "contents_number_overflows": 0,
+}
+
+
+def _manuscript(tmp_path: Path) -> Path:
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+    (manuscript / "01_abstract.md").write_text("An abstract.\n", encoding="utf-8")
+    (manuscript / "preamble.md").write_text(
+        "\\setmonofont{JuliaMono}\n", encoding="utf-8"
+    )
+    (manuscript / "AGENTS.md").write_text("Contributor notes.\n", encoding="utf-8")
+    return manuscript
+
+
+def _pdf_dir(tmp_path: Path) -> Path:
+    pdf_dir = tmp_path / "pdf"
+    pdf_dir.mkdir()
+    _write(pdf_dir, "_combined_manuscript.log", CLEAN_LOG)
+    return pdf_dir
+
+
+def test_contributor_documentation_is_not_a_typeset_source(tmp_path: Path) -> None:
+    """The digest covers what the template typesets, not what lives beside it."""
+    names = [path.name for path in rendered_manuscript_sources(_manuscript(tmp_path))]
+    assert names == ["01_abstract.md"]
+
+
+def test_the_preamble_is_part_of_the_digest(tmp_path: Path) -> None:
+    """Changing the font selection must invalidate a receipt.
+
+    ``preamble.md`` is never typeset as prose, so it is not a rendered source
+    -- but selecting a face without the document's glyphs is exactly the change
+    that shipped a false theorem, and a digest that ignored it would accept
+    that change silently.
+    """
+    manuscript = _manuscript(tmp_path)
+    before = manuscript_source_digest(manuscript)
+    (manuscript / "preamble.md").write_text(
+        "\\setmonofont{FreeMono}\n", encoding="utf-8"
+    )
+    assert manuscript_source_digest(manuscript) != before
+
+
+def test_a_clean_acceptance_receipt_covers_this_checkout(tmp_path: Path) -> None:
+    manuscript = _manuscript(tmp_path)
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts=CLEAN_COUNTS
+    )
+    assert receipt["accepted"] is True
+    assert receipt["receipt_version"] == RECEIPT_VERSION
+    assert receipt["pages"] == 346
+    path = tmp_path / "render-acceptance.json"
+    path.write_text(json.dumps(receipt), encoding="utf-8")
+    assert receipt_defects(path, manuscript) == ()
+
+
+def test_a_receipt_never_claims_acceptance_for_a_defective_render(
+    tmp_path: Path,
+) -> None:
+    receipt = build_acceptance_receipt(
+        _manuscript(tmp_path),
+        _pdf_dir(tmp_path),
+        counts={**CLEAN_COUNTS, "missing_characters": 3},
+    )
+    assert receipt["accepted"] is False
+
+
+def test_a_receipt_recording_a_defect_is_rejected(tmp_path: Path) -> None:
+    """Even hand-edited to ``accepted``, a recorded defect fails the gate."""
+    manuscript = _manuscript(tmp_path)
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts={**CLEAN_COUNTS, "tex_errors": 2}
+    )
+    receipt["accepted"] = True
+    path = tmp_path / "render-acceptance.json"
+    path.write_text(json.dumps(receipt), encoding="utf-8")
+    defects = receipt_defects(path, manuscript)
+    assert any("reported 2 tex_errors" in line for line in defects)
+
+
+def test_an_edited_chapter_leaves_the_receipt_stale(tmp_path: Path) -> None:
+    """The defect this gate exists for: sources shipped without a re-render."""
+    manuscript = _manuscript(tmp_path)
+    path = tmp_path / "render-acceptance.json"
+    path.write_text(
+        json.dumps(
+            build_acceptance_receipt(
+                manuscript, _pdf_dir(tmp_path), counts=CLEAN_COUNTS
+            )
+        ),
+        encoding="utf-8",
+    )
+    assert receipt_defects(path, manuscript) == ()
+    (manuscript / "01_abstract.md").write_text(
+        "An abstract, revised after the render.\n", encoding="utf-8"
+    )
+    defects = receipt_defects(path, manuscript)
+    assert any("predates these sources" in line for line in defects)
+
+
+def test_an_absent_receipt_is_a_defect_not_a_pass(tmp_path: Path) -> None:
+    defects = receipt_defects(tmp_path / "nothing.json", _manuscript(tmp_path))
+    assert len(defects) == 1
+    assert "no acceptance receipt" in defects[0]
+
+
+def test_an_unreadable_receipt_is_a_defect(tmp_path: Path) -> None:
+    path = tmp_path / "render-acceptance.json"
+    path.write_text("{not json", encoding="utf-8")
+    defects = receipt_defects(path, _manuscript(tmp_path))
+    assert len(defects) == 1
+    assert "unreadable acceptance receipt" in defects[0]
+
+
+def test_a_receipt_from_a_future_schema_is_a_defect(tmp_path: Path) -> None:
+    manuscript = _manuscript(tmp_path)
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts=CLEAN_COUNTS
+    )
+    receipt["receipt_version"] = RECEIPT_VERSION + 1
+    path = tmp_path / "render-acceptance.json"
+    path.write_text(json.dumps(receipt), encoding="utf-8")
+    assert any("receipt_version" in line for line in receipt_defects(path, manuscript))
+
+
+def test_a_receipt_missing_a_check_is_not_accepted(tmp_path: Path) -> None:
+    """A receipt written by an older acceptance cannot vouch for a newer one."""
+    manuscript = _manuscript(tmp_path)
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts=CLEAN_COUNTS
+    )
+    del receipt["checks"]["mermaid_fallbacks"]
+    path = tmp_path / "render-acceptance.json"
+    path.write_text(json.dumps(receipt), encoding="utf-8")
+    assert any(
+        "does not record mermaid_fallbacks" in line
+        for line in receipt_defects(path, manuscript)
+    )
+
+
+def test_building_a_receipt_without_every_check_is_refused(tmp_path: Path) -> None:
+    """The builder cannot silently omit a check the verifier will demand."""
+    with pytest.raises(ValueError, match="missing checks"):
+        build_acceptance_receipt(
+            _manuscript(tmp_path),
+            _pdf_dir(tmp_path),
+            counts={"tex_errors": 0},
+        )

@@ -10,11 +10,15 @@ accept the template's verdict.
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 from collections.abc import Sequence
 from pathlib import Path
 
 import pytest
+import yaml
+
+from fep_lean.output.render_log import manuscript_source_digest, receipt_defects
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -256,3 +260,72 @@ def test_the_sources_are_hydrated_before_the_template_runs(tmp_path: Path) -> No
     )
 
     assert order == ["hydrate", "template"]
+
+
+def test_a_clean_render_writes_the_committed_receipt(tmp_path: Path) -> None:
+    """A hosted runner reads this file because it cannot run the acceptance."""
+    driver = _driver()
+    project = _project(tmp_path, CLEAN_LOG)
+
+    status = driver.render_publication(
+        project,
+        tmp_path / "template",
+        runner=_successful_template,
+        hydrator=_hydrated,
+        skip_probe=True,
+    )
+
+    assert status == 0
+    receipt = json.loads((project / driver.RECEIPT_PATH).read_text(encoding="utf-8"))
+    assert receipt["accepted"] is True
+    assert receipt["pages"] == 350
+    assert receipt["manuscript_source_digest"] == manuscript_source_digest(
+        project / "manuscript"
+    )
+
+
+def test_a_rejected_render_leaves_no_receipt(tmp_path: Path) -> None:
+    """A receipt is a claim of acceptance; a rejected render may not make one."""
+    driver = _driver()
+    project = _project(tmp_path, DIRTY_LOG)
+
+    status = driver.render_publication(
+        project,
+        tmp_path / "template",
+        runner=_successful_template,
+        hydrator=_hydrated,
+        skip_probe=True,
+    )
+
+    assert status == 1
+    assert not (project / driver.RECEIPT_PATH).exists()
+
+
+def test_continuous_integration_invokes_the_acceptance() -> None:
+    """The audited state: a real, tested acceptance that nothing ran.
+
+    ``grep -rn check_render_log --include="*.yml" .github/`` returned no match,
+    so every defect this gate catches could reach ``main`` unopposed. This pins
+    the wiring, not the wording: some step of the workflow must run the
+    acceptance script.
+    """
+    workflow = yaml.safe_load(
+        (PROJECT_ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    )
+    commands = [
+        step.get("run", "")
+        for job in workflow["jobs"].values()
+        for step in job["steps"]
+    ]
+    assert any("scripts/check_render_log.py" in command for command in commands)
+
+
+def test_the_committed_receipt_covers_the_committed_manuscript() -> None:
+    """The gate's verdict on this checkout, run as a test rather than in CI."""
+    assert (
+        receipt_defects(
+            PROJECT_ROOT / "docs" / "render-acceptance.json",
+            PROJECT_ROOT / "manuscript",
+        )
+        == ()
+    )

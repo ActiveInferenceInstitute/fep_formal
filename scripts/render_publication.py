@@ -51,6 +51,11 @@ from fep_lean.output.render_fonts import (
 
 PROJECT_NAME = "fep_lean"
 RENDER_STAGE = Path("scripts/pipeline/stage_03_render.py")
+# The committed record of what the acceptance found. CI cannot re-run the
+# acceptance -- a hosted runner has no XeLaTeX, mermaid CLI, browser or
+# JuliaMono -- so it verifies this instead, and a chapter edited without a
+# fresh render leaves it naming a digest the checkout no longer has.
+RECEIPT_PATH = Path("docs") / "render-acceptance.json"
 TEMPLATE_ENVIRONMENT_VARIABLE = "FEP_LEAN_TEMPLATE_DIR"
 # One template checkout serves several projects, and two concurrent renders
 # share its output tree. The lock is a directory because ``mkdir`` is atomic.
@@ -159,12 +164,17 @@ def render_publication(
     ]
     render_status = runner(command, template)
     print(f"Template render exit={render_status}")
+    # ``--receipt`` records the verdict where a runner without a LaTeX
+    # toolchain can read it. It is written only when nothing was found, so a
+    # rejected render leaves no receipt claiming these sources were accepted.
     acceptance = accept_render(
         [
             "--pdf-dir",
             str(project_root / "output" / "pdf"),
             "--manuscript-dir",
             str(project_root / "manuscript"),
+            "--receipt",
+            str(project_root / RECEIPT_PATH),
         ]
     )
     if render_status != 0:
@@ -216,6 +226,8 @@ def main(argv: list[str] | None = None) -> int:
                 str(project_root / "output" / "pdf"),
                 "--manuscript-dir",
                 str(project_root / "manuscript"),
+                "--receipt",
+                str(project_root / RECEIPT_PATH),
             ]
         )
     try:
