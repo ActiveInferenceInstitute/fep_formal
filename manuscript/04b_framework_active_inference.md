@@ -166,6 +166,7 @@ Policy selection reduces to minimization of $G$ over the finite policy set. **fe
 | fep-034 | Native normalized transition--observation posterior filter | `{{topics.fep-034.semantic_disposition}}` | `Probability.Kernel.Posterior` | 0 |
 | fep-041 | Native measure-KL information gain and zero-expectation law | `{{topics.fep-041.semantic_disposition}}` | `InformationTheory.KullbackLeibler.Basic` | 0 |
 | fep-047 | `Matrix.mulVec` sum-product propagation with exact composition | `{{topics.fep-047.semantic_disposition}}` | `Data.Matrix.Mul` | 0 |
+: Active Inference topics: the Lean content each row actually states, its semantic disposition, a Mathlib navigation hint, and its `sorry` count.
 
 **Representative formalization** — *Expected Free Energy (fep-003, [@eq:eq_4])*: On the maintained finite policy-conditioned carrier, EFE decomposes into pragmatic cost minus epistemic value:
 

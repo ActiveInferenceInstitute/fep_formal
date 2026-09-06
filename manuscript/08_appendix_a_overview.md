@@ -20,6 +20,7 @@ Native compilation status for the full roster is **`{{compile_rate.total}}`** ag
 | Bayesian Mechanics ({{areas.BayesianMechanics.count}}) | `{{compile_rate.by_area.BayesianMechanics}}` | Matrices, probability measures |
 | Thermodynamics ({{areas.Thermodynamics.count}}) | `{{compile_rate.by_area.Thermodynamics}}` | Real logarithms and exponentials |
 | **Total ({{total_topics}})** | **`{{compile_rate.total}}`** | — |
+: Per-area topic counts, native compile status from the verifier, and the Mathlib domains each area reaches.
 
 Rates come from the selected validated evidence projected into `manuscript_vars.yaml`:
 
@@ -46,6 +47,7 @@ To avoid duplicating Lean that can drift from the SSOT, this appendix does **not
 | fep-001 | [@sec:catalogue-fep-001] | [@sec:eqs-fep-001] |
 | fep-031 | [@sec:catalogue-fep-031] | [@sec:eqs-fep-031] |
 | fep-046 | [@sec:catalogue-fep-046] | [@sec:eqs-fep-046] |
+: Representative topics, with pointers to the Lean body in Appendix B and the display math in Appendix C.
 
 ## Mathlib4 Imports Used Across the Catalogue {#sec:mathlib4_imports_catalogue}
 

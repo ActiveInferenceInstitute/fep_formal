@@ -34,6 +34,7 @@ Executable discovery respects explicit overrides and the toolchain named by `lea
 | `has_sorry` | The source admitted an unproved goal |
 | `warnings` | Lean accepted the file but reported a quality or migration issue |
 | semantic disposition | Human-reviewed relationship between theorem and topic claim |
+: The dimensions `VerifyResult` keeps separate, and why none of them is collapsed into process exit status.
 
 ### Aggressive Mathlib4 Caching {#sec:aggressive_mathlib_caching}
 
@@ -87,6 +88,7 @@ A native claim is accepted exactly when a schema-valid receipt identifies the ca
 | Native Lean | Selected compiler results satisfy the native receipt | Formal compilation evidence unavailable |
 | Full pipeline | Required capabilities and every selected full-mode row succeed | No Hermes/OpenGauss publication claim |
 | Manuscript rendering | Every placeholder and theorem identifier resolves | Publication build blocked |
+: Per-stage acceptance criteria of the compilation pipeline, and what a failure at each boundary does and does not mean.
 
 #### Three Levels of Truth {#sec:three_levels_of_truth}
 

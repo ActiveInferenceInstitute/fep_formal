@@ -9,6 +9,7 @@ FEP Lean is best understood as a domain catalogue and evidence pipeline, not as 
 | Draft, Sketch, Prove [@jiang2023draft] | autoformalization plus proof | informal proof/problem | formal statement and discharged obligations | related translation workflow at theorem scale |
 | PhysLean [@toobysmith2024] | human-led physics library | domain mathematics | reviewed definitions/theorems in Lean | closest library-building analogue |
 | FEP Lean | catalogue curation, semantic audit, and evidence separation | contested domain claims | source parity + native receipt + semantic disposition | formalization-surface map for FEP |
+: LLM-ITP system families compared with FEP Lean by primary task, starting point and the evidence each typically reports.
 
 The distinctive contribution is the coupling of breadth with claim calibration: every row has an exact source, declaration inventory, primary theorem, assumption review, non-vacuity note, and disposition. This is not evidence that the approach outperforms proof-search systems on their benchmarks.
 
@@ -23,6 +24,7 @@ No controlled human-time experiment is included, so the manuscript does not repo
 | Establish type/proof correctness | invoke Lean | none | Lean kernel + native receipt |
 | Explain proof strategy | write prose | may draft commentary | author/reviewer |
 | Assert model/time/cost results | inspect full run | generates observed fields | validated full receipt |
+: Division of work between the researcher-owned path and the optional Hermes contribution, with the acceptance owner for each activity.
 
 This allocation is intentionally conservative. Uniform model commentary can reduce blank-page effort, but it also creates new review work: semantic drift, invented library names, missing code fences, and provider-dependent output must be checked. A future comparison should randomize topics, preregister editing-time and semantic-fidelity metrics, and distinguish initial draft, compile repair, and expert review.
 
@@ -66,6 +68,7 @@ The publication metrics are deliberately split:
 | declaration/import counts | parsed canonical Lean source |
 | native compile/warning/`sorry` outcomes | validated `output/native-verification.json` |
 | Hermes success, model, retries, tokens, latency | validated full report only |
+: Publication metric families and the source each is currently drawn from.
 
 The native compile rate rendered for this source state is `{{compile_rate.total}}`; its evidence kind is `{{verify.evidence_kind}}`, warning count `{{verify.warning_count}}`, and claim-ready predicate `{{verify.claim_ready}}`. Full Hermes/OpenGauss claim readiness is separately `{{full.claim_ready}}`. These values are not interchangeable, and a false predicate is a result rather than a placeholder for a preferred headline.
 

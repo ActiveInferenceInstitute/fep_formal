@@ -80,6 +80,7 @@ Information geometry treats parametric families of probability distributions $\m
 | fep-146 | Log-partition Hessian and Fisher information equal variance, with rank and zero boundaries | `{{topics.fep-146.semantic_disposition}}` | `Analysis.Calculus.Deriv.Basic` | 0 |
 | fep-147 | Exponential-family KL equals the log-partition Bregman divergence | `{{topics.fep-147.semantic_disposition}}` | `InformationTheory.KullbackLeibler.Basic` | 0 |
 | fep-148 | Positive-variance mean coordinate is strictly monotone and injective on an interval | `{{topics.fep-148.semantic_disposition}}` | `Analysis.Calculus.Deriv.Monotone` | 0 |
+: Information Geometry topics: the Lean content each row actually states, its semantic disposition, a Mathlib navigation hint, and its `sorry` count.
 
 #### Fisher Information Metric (fep-004) {#sec:sd_fisher}
 
@@ -157,6 +158,7 @@ Endpoint limits and distinguished values:
 | $\alpha \to 1$ | $D_\text{KL}(p \,\|\, q)$ | M-projection, mass-covering |
 | $\alpha \to 0$ | $D_\text{KL}(q \,\|\, p)$ | I-projection, mode-seeking |
 | $\alpha = 1/2$ | $4\,H^2(p, q)$ | Symmetric Hellinger distance squared |
+: Endpoint limits and distinguished values of the Renyi/Tsallis $\alpha$-divergence family (fep-044).
 
 The family sits within the broader class of Csiszár $f$-divergences. The fep-044 row selects the distinguished Bernoulli Hellinger instance rather than pretending to cover the entire $\alpha$ family. It defines squared Hellinger divergence with the conventional factor $1/2$ and proves nonnegativity, symmetry, zero iff equal parameters on $[0,1]$, and invariance under exchanging success with failure. Measure-level $\alpha$-divergence, endpoint limits, and general density integration remain separate extensions.
 
@@ -228,6 +230,7 @@ In a NESS decomposition, skew-symmetry of a current supplies cancellations, but 
 | fep-139 | Factorized static blanket satisfies native `CondIndepFun`, with a correlated nontrivial witness | `{{topics.fep-139.semantic_disposition}}` | `Probability.Independence.Conditional` | 0 |
 | fep-140 | Measurable endpoint maps preserve native blanket conditional independence | `{{topics.fep-140.semantic_disposition}}` | `Probability.Independence.Conditional` | 0 |
 | fep-141 | A factorized finite transition row preserves the native blanket property | `{{topics.fep-141.semantic_disposition}}` | `Probability.Kernel.Composition.MeasureComp` | 0 |
+: Bayesian Mechanics topics: the Lean content each row actually states, its semantic disposition, a Mathlib navigation hint, and its `sorry` count.
 
 #### Hierarchical Generative Models and Predictive Coding (fep-027) {#sec:sd_hierarchical}
 

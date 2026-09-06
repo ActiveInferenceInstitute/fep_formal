@@ -144,6 +144,7 @@ This project addresses a narrower, directly inspectable **verification gap**: fa
 | Fisher metric (fep-004/fep-038) | Positive-definite finite weighted metric and an exact Bernoulli statistical-family specialization | `formalized` at finite/Bernoulli scope |
 | Finite softmax (fep-028) | Support-aware full finite probability vector with exact zero off-support and global normalization | `formalized` |
 | Conjugate update (fep-045) | Exact normalized Bernoulli posterior closure and parameter update under positive binary evidence | `formalized` at binary scope |
+: The verification gap: each topic-facing concept against the formal object the catalogue currently states in Lean, and that object's semantic disposition.
 
 _Current semantic status of representative catalogue rows. The generated coverage report is authoritative for all {{total_topics}} rows._
 
@@ -195,6 +196,7 @@ A range of prior efforts have formalized parts of cognitive science, statistical
 | LeanDojo [@yang2024leandojo] | Lean 4 | Proof search benchmarks | Retrieval-augmented LLM | Demonstrates tractability of LLM ↔ Lean interfaces |
 | Mathlib information theory [@mathlib2020] | Lean 4 | Measure-theoretic information theory | Native KL divergence and chain rules | Direct library substrate for fep-002 and fep-014 |
 | Categorical ontology / classical simulation [@namjoshi2026fundamentals] | Lean 4 | Foundations | Definitions of classical / quantum systems | Adjacent formalization of physical theories |
+: Prior formalization work in adjacent domains, with the prover, domain and scope of each project and its methodological relevance here.
 
 The landscape shows that adjacent domains have proven tractable. We have not conducted the systematic, date-bounded search needed to establish whether this is the first catalogue-scale FEP formalization, so we make no priority claim. The inspectable contribution is the particular versioned catalogue, semantic audit, and receipt boundary reported here.
 
@@ -212,6 +214,7 @@ Recent systems illustrate several ways to connect language models with interacti
 | AlphaProof [@alphaproof2024] | 2024 | Gemini + AlphaZero | IMO 2024 | Silver-medal level problem solving |
 | Lean Copilot [@song2025copilot] | 2025 | Editor integration | N/A | Real-time tactic suggestion in VSCode |
 | DeepSeek-Prover-V2 [@deepseek2025proverv2] | 2025 | RL + subgoal decomposition | miniF2F, ProofNet | Reinforcement learning for structured proof planning |
+: Systems bridging language models and interactive theorem provers, by year, approach, reported benchmark and key innovation.
 
 These systems largely begin with already formalized targets and concentrate on proof search. Translating a physical theory adds an earlier modeling burden: choosing definitions, types, scope, and assumptions for concepts such as Markov blankets, solenoidal flows, and Expected Free Energy decompositions. The maintained kernel in this work emphasizes that translation and review problem. The optional Hermes path can explain or refine candidate Lean, but it supplies no correctness or authorship claim without subsequent compilation and a claim-ready full receipt.
 

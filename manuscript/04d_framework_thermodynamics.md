@@ -193,6 +193,7 @@ The thermodynamic topics encode six distinct, composable layers of the theory:
 | fep-153 | Stationarity and detailed balance for the exact semigroup | `{{topics.fep-153.semantic_disposition}}` | `Probability.Kernel.Invariance` | 0 |
 | fep-154 | Exact exponential relaxation from an arbitrary normalized Boolean law | `{{topics.fep-154.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
 | fep-155 | Exact quadratic Lyapunov law, derivative, and strict benchmark decay | `{{topics.fep-155.semantic_disposition}}` | `Analysis.SpecialFunctions.ExpDeriv` | 0 |
+: Thermodynamics topics: the Lean content each row actually states, its semantic disposition, a Mathlib navigation hint, and its `sorry` count.
 
 The strongest direct facts form a chain rather than an isolated roster: fep-030 and fep-031 meet at the binary infinite-temperature maximum; fep-025's finite currents feed fep-049's dissipation law; fep-040's Gaussian thermal entropy feeds fep-013's Helmholtz derivative; and fep-050 derives Landauer heat and work bounds from named physical premises. Each chain is narrower than the full physical theory, but each seam is checked in Lean.
 

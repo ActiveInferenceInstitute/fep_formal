@@ -29,6 +29,7 @@ Lean 4 is built on a deep correspondence between logic and computation called th
 | $P \lor Q$ | Disjunction `Or P Q` (proof-irrelevant; `P ⊕ Q` is the data-level analogue) |
 | Modus ponens | Function application `f a : Q` given `f : P → Q`, `a : P` |
 | $\bot$ (false) | Empty type `False` |
+: The Curry-Howard correspondence: each logical connective and the Lean 4 type that represents it.
 
 In Lean 4, proving a theorem is equivalent to constructing a program whose type is the proposition being proved. If the program type-checks, the theorem is proven. This is fundamentally different from computer algebra systems (Mathematica, SymPy) which *compute* with symbols but cannot *prove* that a result holds for all inputs universally. The Curry-Howard lens is also what justifies the FEP verifier treating `lake env lean` exit code 0 as *proof*: successful type-checking of the proof term is, by construction, a checked proof of the stated theorem.
 
@@ -74,6 +75,7 @@ Lean 4 proofs are written using **tactics**—commands that transform proof goal
 | `have h : P := ...` | Introduce intermediate lemma `h : P` | Build step-by-step proofs for complex bounds |
 | `calc` | Chain transitivity steps | $a \leq b \leq c$ derivations in energy bounds |
 | `sorry` | Admit goal without proof | Mark aspirational proof steps (compile flag) |
+: Lean 4 tactics used in the catalogue bodies, with the goal transformation each performs and where it appears in the FEP formalizations.
 
 The catalogue's {{total_topics}} Lean bodies collectively exercise the major tactic families enumerated above. `exact`, `simp`, `rw`, `linarith`, `positivity`, and `have` dominate by frequency, while `nlinarith`, `ring`, `norm_num`, `intro`, `constructor`, and `calc` appear in specific topic families — for example, `calc` anchors fep-021's energy-bound derivation, and `constructor` structures fep-028's softmax lemma. The exhaustiveness claim is intentionally conservative: a small handful of niche tactics (e.g. `omega` and `decide`) are used opportunistically rather than uniformly.
 
@@ -100,6 +102,7 @@ This executes inside the Lake build environment rooted at `lean/`, which provide
 | Finite sums | `Algebra.BigOperators.Group.Finset`, `Data.Finset.Basic` |
 | Metric spaces | `Topology.MetricSpace.Basic`, `Topology.MetricSpace.PseudoMetric` |
 | Real arithmetic | `Analysis.SpecialFunctions.Pow.Real`, `Mathlib.Tactic` |
+: Mathlib4 modules each catalogue topic area draws on.
 
 ### From Informal Bound to Lean Statement: A Minimal Walk-Through {#sec:informal_to_formal_walkthrough}
 
