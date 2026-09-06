@@ -192,12 +192,18 @@
 % number box and printed as ``15.100fep-100'' and ``15.100.1Lean sketch'' with
 % the number welded to the title. Widen every level's number box and push each
 % level's indent out by its parent's width so the columns still line up.
+% One \AtBeginDocument line, deliberately. The slide pipeline builds its
+% beamer header by keeping preamble lines that START with \newcommand,
+% \renewcommand, \providecommand, \usepackage, \lstset or a comment, and
+% drops everything else -- including \makeatletter. Written as five bare
+% \renewcommand* lines, these are kept, rewritten to \providecommand*, and
+% land in the deck with no \makeatletter around them, so beamer reads
+% ``\l@s'' + ``ection'' and every deck dies on "Missing \begin{document}".
+% Starting the line with \AtBeginDocument takes it off that allowlist, so the
+% decks never see it while the combined PDF still gets it. \makeatletter must
+% precede the line for \l@section and \@dottedtocline to tokenize.
 \makeatletter
-\renewcommand*\l@section{\@dottedtocline{1}{0em}{2.6em}}
-\renewcommand*\l@subsection{\@dottedtocline{2}{2.6em}{4.3em}}
-\renewcommand*\l@subsubsection{\@dottedtocline{3}{6.9em}{5.6em}}
-\renewcommand*\l@paragraph{\@dottedtocline{4}{12.5em}{6.4em}}
-\renewcommand*\l@subparagraph{\@dottedtocline{5}{18.9em}{7.2em}}
+\AtBeginDocument{\renewcommand*\l@section{\@dottedtocline{1}{0em}{2.6em}}\renewcommand*\l@subsection{\@dottedtocline{2}{2.6em}{4.3em}}\renewcommand*\l@subsubsection{\@dottedtocline{3}{6.9em}{5.6em}}\renewcommand*\l@paragraph{\@dottedtocline{4}{12.5em}{6.4em}}\renewcommand*\l@subparagraph{\@dottedtocline{5}{18.9em}{7.2em}}}
 \makeatother
 
 % ── Widows and orphans ────────────────────────────────────────────
