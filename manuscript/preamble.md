@@ -212,10 +212,12 @@
 \brokenpenalty=10000
 
 % ── Float placement ───────────────────────────────────────────────
-% LaTeX's defaults send a figure to a page of its own as soon as it exceeds
-% 70 percent of the text height, which left a float-only page carrying one orphaned
-% line of body text. Let a float occupy more of a shared page before a float
-% page is opened, and require a float page to be genuinely full.
+% LaTeX's defaults open a page of its own for any float taller than 70 percent
+% of the text height, and accept such a page when it is only half full. Let a
+% float occupy more of a shared page before a float page is opened, and require
+% a float page that does open to be genuinely full. The audited build had one
+% float page (the kernel dashboard, which is 2000x3480 and legitimately fills
+% a page); these settings are preventative, not a repair of a counted defect.
 \renewcommand{\topfraction}{0.9}
 \renewcommand{\bottomfraction}{0.8}
 \renewcommand{\textfraction}{0.07}
