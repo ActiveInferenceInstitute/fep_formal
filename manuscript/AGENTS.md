@@ -55,7 +55,18 @@ uv run python docs/check_links.py --strict --include-root
 uv run python scripts/build_render_fonts.py --check
 ```
 
-Publishing runs one command, not two:
+Order matters before publishing. The native receipt binds every maintained
+Python source (`fep_lean.output.provenance.SOURCE_OWNER_ROSTER`), so editing
+one after `fep-lean verify` un-binds it and the next render prints
+`not verified` for every compile rate. Run the verification after the last
+source edit, then render:
+
+```bash
+uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-lean catalogue
+```
+
+Publishing then runs one command, not two:
 
 ```bash
 FEP_LEAN_TEMPLATE_DIR=<template checkout> \
