@@ -326,6 +326,13 @@
   pin-audit schedule, whose result previously went to nobody. Actions moved
   to current majors: checkout@v7, upload-artifact@v7, setup-uv@v10, cache@v6,
   github-script@v9.
+- Moved `scripts/render_manuscript.py --check` to the lean CI job, after the
+  Mathlib cache fetch: its Mathlib-citation allowlist verification fails
+  closed when `lean/.lake/packages/mathlib` is absent, which made the check
+  unpassable in the Python job on every fresh checkout (masked behind the
+  font-check STALE, which died first). The job also runs
+  `uv run fep-lean catalogue` first, because the generated manuscript inputs
+  do not survive across jobs.
 - Documentation accuracy: `--gnn-root` documented as required for every
   `bridge` verb; the README/AGENTS/SPEC check lists now match what CI runs
   (`docs/pin_audit.py --check-latest`, `uv lock --check`, the
