@@ -324,8 +324,8 @@
   every job, a coverage-report artifact, a pinned `elan-init` commit plus an
   elan-toolchain cache, and a deduplicated failure issue from the weekly
   pin-audit schedule, whose result previously went to nobody. Actions moved
-  to current majors: checkout@v7, upload-artifact@v7, setup-uv@v10, cache@v6,
-  github-script@v9.
+  to current majors: checkout@v7, upload-artifact@v7, setup-uv@v10.0.1 (no
+  rolling v10 major tag exists), cache@v6, github-script@v9.
 - Moved `scripts/render_manuscript.py --check` to the lean CI job, after the
   Mathlib cache fetch: its Mathlib-citation allowlist verification fails
   closed when `lean/.lake/packages/mathlib` is absent, which made the check
