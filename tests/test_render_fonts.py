@@ -10,6 +10,7 @@ regressing silently on another.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -67,6 +68,14 @@ def test_a_font_without_the_glyph_is_reported(tmp_path: Path) -> None:
     assert set(missing) == set(DROPPED_IN_THE_AUDITED_RENDER)
 
 
+@pytest.mark.skipif(
+    os.environ.get("CI") == "true",
+    reason=(
+        "CI runners resolve a glyphless JuliaMono stub, so a host probe "
+        "cannot attest anything there; font coverage is attested on the "
+        "render host by scripts/build_render_fonts.py --probe"
+    ),
+)
 def test_the_selected_faces_cover_this_manuscript() -> None:
     assert font_coverage_defects(PROJECT_ROOT) == ()
 

@@ -333,6 +333,18 @@
   font-check STALE, which died first). The job also runs
   `uv run fep-lean catalogue` first, because the generated manuscript inputs
   do not survive across jobs.
+- Made the Python CI suite finish at all: the post-v1.1.0 wave had never
+  reached a green CI run, so three latent host dependencies surfaced once
+  the earlier steps stopped dying. `.python-version` pins CPython 3.14 —
+  the Q7 runner-scaffold digest freezes `ast.dump` output, which is
+  interpreter-sensitive, and the reviewed digest was pinned under 3.14 (a
+  3.12 interpreter computes a different digest and fails all 22 scaffold
+  tests). The two manuscript-rendering tests that drive the real render
+  path against the real tree (pinned Mathlib checkout, generated figure
+  rasters) are `serial_lean` workspace tests now, and the host-font
+  coverage probe skips CI runners, whose fontconfig resolves a glyphless
+  JuliaMono stub; the render-host preflight
+  (`scripts/build_render_fonts.py --probe`) remains the font acceptance.
 - Documentation accuracy: `--gnn-root` documented as required for every
   `bridge` verb; the README/AGENTS/SPEC check lists now match what CI runs
   (`docs/pin_audit.py --check-latest`, `uv lock --check`, the
