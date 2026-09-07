@@ -18,9 +18,9 @@ SLICE = Path(__file__).resolve().parent
 CODE = """
 import sys
 from pathlib import Path
-from gnn.pomdp_extractor import extract_pomdp_from_file
-from render.pomdp_processor import POMDPRenderProcessor
-from render.processor import render_gnn_spec
+from gnn.extract.pomdp_extractor import extract_pomdp_from_file
+from gnn.render.pomdp_processor import POMDPRenderProcessor
+from gnn.render.processor import render_gnn_spec
 source, output = map(Path, sys.argv[1:])
 model = extract_pomdp_from_file(source, strict_validation=True)
 if model is None:
@@ -32,9 +32,9 @@ if not ok:
 print(message)
 """
 ROUTE = [
-    "gnn.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
-    "render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
-    "render.processor.render_gnn_spec(jax)",
+    "gnn.extract.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
+    "gnn.render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
+    "gnn.render.processor.render_gnn_spec(jax)",
 ]
 
 

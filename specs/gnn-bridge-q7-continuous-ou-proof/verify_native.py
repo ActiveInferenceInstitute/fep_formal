@@ -40,9 +40,9 @@ CONTRACT = ArtifactContract(
     targets=("FepSketches.compositions.smooth_reference_kernel",),
     scope="static binary64 coefficient approximation and real-arithmetic prediction bounds",
     render_route=(
-        "gnn.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
-        "render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
-        "render.processor.render_gnn_spec(jax)",
+        "gnn.extract.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
+        "gnn.render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
+        "gnn.render.processor.render_gnn_spec(jax)",
     ),
     extractor="src/fep_lean/verification/gnn_continuous_artifact_proof.py",
     adapter=f"{SLICE}/verify_native.py",

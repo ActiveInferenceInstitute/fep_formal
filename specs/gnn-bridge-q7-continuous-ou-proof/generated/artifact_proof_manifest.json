@@ -81,13 +81,13 @@
   "expected_contract_sha256": "e2fe151f193f98f005ba3f09eb068bbdfa13cdc2be656251cb4ce4d02e7c4a9b",
   "inputs": {
     "specs/gnn-bridge-q7-continuous-ou-proof/expected.json": "e2fe151f193f98f005ba3f09eb068bbdfa13cdc2be656251cb4ce4d02e7c4a9b",
-    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "07dcf861dfcb1b46ccd0ee03e679e944c9daac9beb11b4bb66418e7ddbe7e6ae",
+    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "907b6d1dd2928cf942bc1540ee697e973e3387ea2120d0adf0279ce95d09bd02",
     "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py": "df224c183dc2c2b907d8ac9d7c846fe86b4a8d556a8b7f5a9ad25df49fc5e7f6",
     "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "afe29da7d7e2b7f0b4b725b8349dfa9de6047cf16b22de5a0a8117209c61e6fb",
     "specs/gnn-bridge-q7-continuous-ou-proof/probe.template.lean": "4ca4dd970d49b09563b3cf3d7b63f1ee14278f0dd49a4ffc45611b599fdb453a",
-    "specs/gnn-bridge-q7-continuous-ou-proof/refresh_render.py": "6b0ec2410745a784be19f104780e4147f671ad06bdde045087c7edfd48acb848",
-    "specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "3dad3e85d5ad7266c2a1edca6a342ea9eb66c543c16ab5a0579f54b01b3bdd9e",
-    "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "25745321f3f3731fed73fe8ebe9fa255500ed1c23941d27b5e6c3de4938f9843"
+    "specs/gnn-bridge-q7-continuous-ou-proof/refresh_render.py": "8c87d71db852a2f0db61d640603d5669f06bce9e3f2924e0b646ea99a330f6e7",
+    "specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "7bd074a265b77cb19ab034cecdb09c5d677a33a6d54677511c676151fa54a404",
+    "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "e80de8bc15ed753ac6d072c67be8f6fa0cd2d16bd2b0694759f6b403e8a04237"
   },
   "native_evidence": "required separately; not supplied by generation",
   "outputs": {
@@ -115,9 +115,9 @@
       "ou": "specs/gnn-bridge-q7-continuous-ou-proof/generated/probe.lean"
     },
     "render_route": [
-      "gnn.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
-      "render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
-      "render.processor.render_gnn_spec(jax)"
+      "gnn.extract.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
+      "gnn.render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
+      "gnn.render.processor.render_gnn_spec(jax)"
     ],
     "scope": "static binary64 coefficient approximation and real-arithmetic prediction bounds",
     "targets": [

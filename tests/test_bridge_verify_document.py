@@ -20,10 +20,16 @@ def test_owner_roster_gnn_glob() -> None:
     assert roster, "roster must not be empty"
     assert "src/gnn/main.py" in roster
     assert operations.MIRROR in roster
-    assert "doc/gnn/gnn_syntax.md" in roster
+    assert "docs/gnn/gnn_syntax.md" in roster
     assert "src/gnn/pipeline/step_registry.py" in roster
-    fixed = {"pyproject.toml", "uv.lock", "src/gnn/main.py", operations.MIRROR,
-             "doc/gnn/gnn_syntax.md", "src/gnn/pipeline/step_registry.py"}
+    fixed = {
+        "pyproject.toml",
+        "uv.lock",
+        "src/gnn/main.py",
+        operations.MIRROR,
+        "docs/gnn/gnn_syntax.md",
+        "src/gnn/pipeline/step_registry.py",
+    }
     for path in set(roster) - fixed:
         assert path.startswith("src/gnn/"), f"stale owner path: {path}"
 
@@ -41,7 +47,7 @@ def test_roster_matches_renamed_tree() -> None:
         "uv.lock",
         "src/gnn/main.py",
         operations.MIRROR,
-        "doc/gnn/gnn_syntax.md",
+        "docs/gnn/gnn_syntax.md",
         "src/gnn/pipeline/step_registry.py",
     }
     assert roster == on_disk

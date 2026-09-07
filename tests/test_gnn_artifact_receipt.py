@@ -686,7 +686,9 @@ def test_rejects_changed_current_bytes(
         "projection": "lean/FepSketches/gnn_denotation.lean",
         "olean": "lean/.lake/build/lib/lean/FepSketches/gnn_denotation.olean",
     }
-    path = gnn / "src/gnn/main.py" if artifact == "gnn_owner" else root / paths[artifact]
+    path = (
+        gnn / "src/gnn/main.py" if artifact == "gnn_owner" else root / paths[artifact]
+    )
     path.write_bytes(path.read_bytes() + b"\n")
     assert verifier.validate_receipt(gnn, receipt)
 

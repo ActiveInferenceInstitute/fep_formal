@@ -345,8 +345,13 @@ def _probe_sections(space: Any, declared: list[dict[str, Any]]) -> list[str]:
     def conn_edge(src: str, op: str, dst: str) -> str:
         kind = ".undirected" if op == "-" else ".directed"
         return (
-            '{ src := "' + _lean_escape(src) + '", kind := ' + kind
-            + ', dst := "' + _lean_escape(dst) + '", label := none }'
+            '{ src := "'
+            + _lean_escape(src)
+            + '", kind := '
+            + kind
+            + ', dst := "'
+            + _lean_escape(dst)
+            + '", label := none }'
         )
 
     def decl(var: Any) -> str:
@@ -366,12 +371,19 @@ def _probe_sections(space: Any, declared: list[dict[str, Any]]) -> list[str]:
             str(attr(var, "type", attr(var, "data_type", "float"))), ".floatT"
         )
         return (
-            '⟨"' + _lean_escape(str(attr(var, "name", ""))) + '", [' + dims + "], "
-            + value_type + ", none⟩"
+            '⟨"'
+            + _lean_escape(str(attr(var, "name", "")))
+            + '", ['
+            + dims
+            + "], "
+            + value_type
+            + ", none⟩"
         )
 
     sections: list[str] = []
-    identifier = _re.sub(r"[^A-Za-z0-9_π']", "", space.gnn_section or space.model_name or "GNNModel")
+    identifier = _re.sub(
+        r"[^A-Za-z0-9_π']", "", space.gnn_section or space.model_name or "GNNModel"
+    )
     sections.append(f'.gnnSection "{_lean_escape(identifier)}"')
     sections.append(".gnnVersionAndFlags .v1 []")
     sections.append(f'.modelName "{_lean_escape(space.model_name or identifier)}"')
@@ -393,7 +405,11 @@ def _probe_sections(space: Any, declared: list[dict[str, Any]]) -> list[str]:
     sections.append(f".connections [{edges}]")
 
     param_entries = ", ".join(
-        '⟨"' + _lean_escape(str(var)) + '", "' + _lean_escape(_lean_payload(var, payload)) + '"⟩'
+        '⟨"'
+        + _lean_escape(str(var))
+        + '", "'
+        + _lean_escape(_lean_payload(var, payload))
+        + '"⟩'
         for var, payload in sorted((space.initial_parameterization or {}).items())
     )
     sections.append(f".initialParameterization [{param_entries}]")
@@ -477,14 +493,18 @@ def verify_document(
         raise ValueError(f"document does not extract as a POMDP: {document}")
 
     extracted_family = (
-        "continuous" if getattr(space, "model_kind", "discrete") == "continuous" else "finite"
+        "continuous"
+        if getattr(space, "model_kind", "discrete") == "continuous"
+        else "finite"
     )
     if extracted_family != model:
         warnings.append(
             f"model family mismatch: requested {model}, document extracts as {extracted_family}"
         )
 
-    verifier = LeanVerifier(lean_dir=root.resolve() / "lean", project_root=root.resolve())
+    verifier = LeanVerifier(
+        lean_dir=root.resolve() / "lean", project_root=root.resolve()
+    )
     declared, _decl_errors = parse_state_space(document.read_text(encoding="utf-8"))
     result = verifier.verify_sketch(
         "bridge-verify-document", _probe_lean_code(space, declared)

@@ -54,8 +54,8 @@ FORMULAS = {
 EPSILON = Fraction(1, 10**15)
 RENDER_ROUTE = [
     "gnn.extract.pomdp_extractor.extract_pomdp_from_file(strict_validation=True)",
-    "render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
-    "render.processor.render_gnn_spec(jax)",
+    "gnn.render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
+    "gnn.render.processor.render_gnn_spec(jax)",
 ]
 THEOREMS = (
     "selected_decay",
