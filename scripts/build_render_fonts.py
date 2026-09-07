@@ -63,7 +63,11 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print("OK: every typeset codepoint is covered by an installed font")
         return 0
-    rendered = _rendered(root)
+    try:
+        rendered = _rendered(root)
+    except FontProbeError as error:
+        print(f"FAIL: {error}")
+        return 1
     if args.check:
         current = target.read_text(encoding="utf-8") if target.is_file() else ""
         if current != rendered:

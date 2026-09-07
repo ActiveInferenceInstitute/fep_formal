@@ -14,6 +14,7 @@ from pathlib import Path
 
 import pytest
 
+from fep_lean.output.manuscript import UNIFIED_FORMALISM_CATALOGUE_FILENAME
 from fep_lean.output.render_fonts import (
     FontProbeError,
     code_font_codepoints,
@@ -77,9 +78,30 @@ def test_a_preamble_with_no_code_face_is_a_defect(tmp_path: Path) -> None:
         "\\setmainfont{FreeSerif}\n", encoding="utf-8"
     )
     (manuscript / "chapter.md").write_text("`sᶜ`\n", encoding="utf-8")
+    (manuscript / UNIFIED_FORMALISM_CATALOGUE_FILENAME).write_text("", encoding="utf-8")
     defects = font_coverage_defects(tmp_path)
     assert len(defects) == 1
     assert "selects no \\setmonofont" in defects[0]
+
+
+def test_requirement_derivation_fails_closed_without_the_appendix(
+    tmp_path: Path,
+) -> None:
+    """A fresh checkout must not derive an understated glyph requirement.
+
+    The generated appendix is part of the typeset surface; deriving the
+    requirement without it silently shrinks the committed record (and then
+    every later check agrees with the wrong record).
+    """
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+    (manuscript / "chapter.md").write_text("`sᶜ`\n", encoding="utf-8")
+    with pytest.raises(FontProbeError) as error:
+        font_coverage_defects(tmp_path)
+    assert UNIFIED_FORMALISM_CATALOGUE_FILENAME in str(error.value)
+    assert "fep-lean catalogue" in str(error.value)
+    with pytest.raises(FontProbeError):
+        render_font_projection(tmp_path)
 
 
 def test_an_unprobeable_host_fails_closed(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -91,6 +113,11 @@ def test_an_unprobeable_host_fails_closed(monkeypatch: pytest.MonkeyPatch) -> No
 
 
 def test_the_committed_requirement_matches_the_sources() -> None:
+    appendix = PROJECT_ROOT / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
+    if not appendix.is_file():
+        pytest.skip(
+            "generated appendix is missing; run `uv run fep-lean catalogue` first"
+        )
     committed = json.loads(
         (PROJECT_ROOT / "docs" / "render-fonts.json").read_text(encoding="utf-8")
     )
