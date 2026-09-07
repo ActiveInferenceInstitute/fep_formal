@@ -1,6 +1,6 @@
 # fep_lean formalism and publication handoff
 
-**Date:** 2026-08-24
+**Date:** 2026-09-07
 **Repository:** `ActiveInferenceInstitute/fep_lean`
 **Checkout:** this repository checkout (see the `origin` remote)
 **Release line:** `v1.1.0`
@@ -137,9 +137,11 @@ The accepted H2.5d-R0 repair proves the centered native stationary-joint
 factorization. Maintained H2.5d now proves the arbitrary-center native joint,
 blanket-a.e. pair/scalar Gaussian conditionals, endpoint `CondIndepFun`, actual
 stationary covariance `1 / 24`, and a bounded bivariate precision perturbation
-with actual covariance `-1 / 15` and native non-independence. H2.7-R0 has
-accepted the density-relative VFE and local natural-gradient bridge. H2.7 is
-the sole legal implementation slice; H3 remains closed.
+with actual covariance `-1 / 15` and native non-independence. H2.7-R0 accepted
+the density-relative VFE and local natural-gradient proof gate, and the H2.7
+terminal certificate is itself accepted: the terminal record validates 328
+mandatory cases, the enabled Fin4 supplement, and three source-bound reviews.
+Only read-only H3.G0 eligibility is open; H3.0--H3.7 remain closed.
 
 The canonical backlog row [`FEP-EVIDENCE-CURRENT`](TODO.md) owns the next
 coordinated projection and receipt refresh against the final current accepted
@@ -151,7 +153,9 @@ exact 50-topic source digest; current provider claims require a new,
 independently validated source-bound full report.
 
 The newest evidence layer — Q5/Q6/Q7 artifact proofs, W2 source custody, the
-version-0.4 bridge contract, and schema-2 receipts — is summarized in
+v0.6 bridge contract (the W2 report records the v0.4 snapshot; contracts v0.5
+and v0.6 added verify-document and the extraction-package render route), and
+schema-2 receipts — is summarized in
 [specs/gnn-bridge-w2-source-custody/WAVE2-REPORT.md](specs/gnn-bridge-w2-source-custody/WAVE2-REPORT.md).
 
 ## Reproduction commands
@@ -180,6 +184,7 @@ uv run fep-lean verify --fail-on-warnings \
 uv run python scripts/audit_formalisms.py \
   --receipt output/formalism-audit.json
 uv run fep-lean catalogue
+uv run python scripts/build_render_fonts.py --check
 uv run python scripts/render_manuscript.py --check
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py

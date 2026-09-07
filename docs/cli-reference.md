@@ -21,9 +21,9 @@ fep-lean report      Generate the offline catalogue report.
 fep-lean bridge      Inspect, pin, emit, certify, or verify GNN bridge custody.
 ```
 
-`bridge` operates on an explicit sibling GNN checkout: `status`,
-`verify-certificate`, and `verify-document` are read-only; `pin`, `emit`,
-and `certify` write receipts and require `--gnn-root PATH`.
+`bridge` operates on an explicit sibling GNN checkout (`--gnn-root PATH` is
+required for every verb): `status`, `verify-certificate`, and
+`verify-document` are read-only; `pin`, `emit`, and `certify` write receipts.
 `verify-document --document PATH` checks one emitted GNN document against
 the `FEP.GnnDocument` typed surface (syntax + `WellFormed`, contract v0.6).
 

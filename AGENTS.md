@@ -96,13 +96,14 @@ uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
 uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
-uv run pytest tests/ -q --cov=src --cov-fail-under=89
+uv run python scripts/build_render_fonts.py --check
+uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 uv run mypy src
 uv run ruff check src tests scripts docs
 uv run ruff format --check src tests scripts docs
 uv run python docs/check_links.py --strict --include-root
 uv run python docs/md_hygiene.py --strict
-uv run python docs/pin_audit.py
+uv run python docs/pin_audit.py --check-latest
 uv run python docs/xref_audit.py
 uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
 ```
@@ -110,8 +111,10 @@ uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
 Live bridge and native-receipt checks additionally require the explicitly
 named GNN pair: `fep-lean bridge status --gnn-root PATH`, both emitters'
 `--check`, and `verify_native.py --check --gnn-root PATH --receipt
-specs/gnn-bridge-q5-artifact-proof/native_receipt.json`. They are not
-unconditionally runnable and never repair content drift.
+specs/gnn-bridge-q5-artifact-proof/native_receipt.json`; the listed
+`generate_probe.py --check` needs the same sibling checkout. They are not
+unconditionally runnable, are not executed by CI, and never repair content
+drift.
 
 Do not claim Lean verification from catalogue mode or from generated manuscript
 values. Native compilation and full Hermes/OpenGauss execution are distinct

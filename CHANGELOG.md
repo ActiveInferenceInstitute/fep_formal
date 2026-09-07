@@ -301,6 +301,60 @@
   passing with every authored placeholder resolved. Native Lean compile sweep
   and Hermes/OpenGauss receipts remain deferred to the coordinator.
 
+### CI integrity and maintenance accuracy (2026-09-07)
+
+- Fixed the red `main` CI. The projection-check step ran
+  `scripts/build_render_fonts.py --check` before `uv run fep-lean catalogue`
+  had materialized the gitignored generated appendix
+  (`manuscript/09z_unified_formalism_catalogue.md`), so every fresh checkout
+  derived a smaller glyph set than the committed `docs/render-fonts.json` and
+  the workflow reported a false STALE. The check now runs after the catalogue
+  step, and requirement derivation fails closed on its own: without the
+  generated appendix, `render_font_projection` and `font_coverage_defects`
+  raise `FontProbeError` naming the remedy instead of silently deriving an
+  understated requirement that every later check would accept.
+- Closed `FEP-H2-SMOOTH` per the backlog closure rule: H2.7 and its R0 proof
+  gate are accepted with terminal evidence in the Horizon 2 spec (328
+  mandatory cases, the enabled Fin4 supplement, three source-bound reviews).
+  Remaining H3 work stays under `FEP-H3-SCIENCE`. The backlog gains three
+  cold-startable major rows: `FEP-CI-RENDER`, `FEP-LEAN-UPGRADE`, and
+  `FEP-RELEASE-NEXT`; `FEP-EVIDENCE-CURRENT` now names the settled owner
+  roster (bridge contract v0.6, GNN 3.3.0 route rename re-pin).
+- CI hygiene: `concurrency` groups with PR cancellation, `timeout-minutes` on
+  every job, a coverage-report artifact, a pinned `elan-init` commit plus an
+  elan-toolchain cache, and a deduplicated failure issue from the weekly
+  pin-audit schedule, whose result previously went to nobody. Actions moved
+  to current majors: checkout@v7, upload-artifact@v7, setup-uv@v10.0.1 (no
+  rolling v10 major tag exists), cache@v6, github-script@v9.
+- Moved `scripts/render_manuscript.py --check` to the lean CI job, after the
+  Mathlib cache fetch: its Mathlib-citation allowlist verification fails
+  closed when `lean/.lake/packages/mathlib` is absent, which made the check
+  unpassable in the Python job on every fresh checkout (masked behind the
+  font-check STALE, which died first). The job also runs
+  `uv run fep-lean catalogue` first, because the generated manuscript inputs
+  do not survive across jobs.
+- Made the Python CI suite finish at all: the post-v1.1.0 wave had never
+  reached a green CI run, so three latent host dependencies surfaced once
+  the earlier steps stopped dying. `.python-version` pins CPython 3.14 —
+  the Q7 runner-scaffold digest freezes `ast.dump` output, which is
+  interpreter-sensitive, and the reviewed digest was pinned under 3.14 (a
+  3.12 interpreter computes a different digest and fails all 22 scaffold
+  tests). The two manuscript-rendering tests that drive the real render
+  path against the real tree (pinned Mathlib checkout, generated figure
+  rasters) are `serial_lean` workspace tests now, and the host-font
+  coverage probe skips CI runners, whose fontconfig resolves a glyphless
+  JuliaMono stub; the render-host preflight
+  (`scripts/build_render_fonts.py --probe`) remains the font acceptance.
+- Documentation accuracy: `--gnn-root` documented as required for every
+  `bridge` verb; the README/AGENTS/SPEC check lists now match what CI runs
+  (`docs/pin_audit.py --check-latest`, `uv lock --check`, the
+  `build_render_fonts.py --check` gate, and the `-m "not serial_lean"` pytest
+  filter); HANDOFF's H2.7 status paragraph and its bridge-contract version
+  (v0.4 → v0.6) refreshed against the tree. Dependency bumps were attempted
+  and reverted: the Horizon predecessor receipts bind `uv.lock` bytes, so a
+  lock refresh without the coordinated evidence re-pin fails the acceptance
+  chain fail-closed (see `FEP-EVIDENCE-CURRENT`).
+
 ## 1.1.0 — 2026-08-23
 
 ### 155-topic formalism expansion and release acceptance

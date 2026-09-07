@@ -26,6 +26,8 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
+from fep_lean.output.manuscript import UNIFIED_FORMALISM_CATALOGUE_FILENAME
+
 __all__ = [
     "FontProbeError",
     "code_font_codepoints",
@@ -51,12 +53,34 @@ _ROLE_COMMANDS = {CODE_ROLE: "setmonofont", PROSE_ROLE: "setmainfont"}
 
 
 class FontProbeError(RuntimeError):
-    """Raised when host font coverage cannot be established at all.
+    """Raised when the font requirement cannot be established at all.
 
     Not knowing is not the same as being covered: a render host without
-    fontconfig cannot demonstrate that it will typeset the document, and the
-    failure mode being guarded against is silent.
+    fontconfig cannot demonstrate that it will typeset the document, and a
+    checkout whose generated manuscript inputs have not been materialized
+    would yield an understated requirement that passes every later check.
+    Both failure modes are silent, so both fail closed here.
     """
+
+
+def _require_generated_manuscript(manuscript_dir: Path) -> None:
+    """Fail closed when the generated appendix has not been materialized.
+
+    The generated appendix (``manuscript/09z_unified_formalism_catalogue.md``,
+    written by ``uv run fep-lean catalogue``) is part of the typeset surface:
+    it carries every Lean body in the catalogue. Globs over
+    ``manuscript/*.md`` silently compute a smaller -- and wrong -- glyph set
+    on a fresh checkout where it is absent, so requirement derivation must
+    refuse to run without it.
+    """
+
+    appendix = manuscript_dir / UNIFIED_FORMALISM_CATALOGUE_FILENAME
+    if not appendix.is_file():
+        raise FontProbeError(
+            f"{UNIFIED_FORMALISM_CATALOGUE_FILENAME} is missing under "
+            f"{manuscript_dir}; the glyph requirement covers the generated "
+            "appendix, so run `uv run fep-lean catalogue` first"
+        )
 
 
 def _manuscript_files(manuscript_dir: Path) -> tuple[Path, ...]:
@@ -154,6 +178,7 @@ def font_coverage_defects(project_root: Path) -> tuple[str, ...]:
 
     root = Path(project_root)
     manuscript = root / "manuscript"
+    _require_generated_manuscript(manuscript)
     fonts = declared_fonts(manuscript / "preamble.md")
     requirements = {
         CODE_ROLE: code_font_codepoints(manuscript),
@@ -190,6 +215,7 @@ def render_font_projection(project_root: Path) -> dict[str, Any]:
     """
 
     manuscript = Path(project_root) / "manuscript"
+    _require_generated_manuscript(manuscript)
     fonts = declared_fonts(manuscript / "preamble.md")
     roles = {}
     for role, codepoints in (

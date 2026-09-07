@@ -76,6 +76,10 @@ def _load_render_script() -> ModuleType:
     return module
 
 
+# Runs the real render-check script against the real tree: its Mathlib-citation
+# verification needs the pinned lean/.lake/packages/mathlib checkout, so it is
+# a workspace test like the other serial_lean files, not a CI-python test.
+@pytest.mark.serial_lean
 def test_render_manuscript_check_disables_test_count_cache(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -167,6 +171,7 @@ def test_all_authored_manuscript_placeholders_are_in_typed_projection() -> None:
     assert unresolved_placeholders(PROJ / "manuscript", variables) == ()
 
 
+@pytest.mark.serial_lean
 def test_live_render_includes_author_block_and_canonical_graphical_abstract(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
