@@ -30,12 +30,29 @@ jobs:
           uv run python scripts/_maint_build_lean_landscape.py --check
           uv run python scripts/build_formalism_atlas.py --check
           uv run python scripts/build_formal_kernel_dashboard.py --check
+          uv run python scripts/build_render_fonts.py --check
       - name: Generate and validate publication inputs
         run: |
           uv run fep-lean catalogue
           uv run python scripts/render_manuscript.py --check
           uv run python docs/theorem_ref_audit.py
           uv run python docs/citation_audit.py
+      # The shipped artifact is a 350-page PDF, and the defects that reached it
+      # -- 162 dropped glyphs, one false printed theorem, a diagram shipped as
+      # its own source, chapters the render predated -- are all invisible to
+      # the shared template's success test. `scripts/check_render_log.py` is
+      # the acceptance that catches them, but it reads a real render, and this
+      # workflow does not produce one: rendering needs a checkout of the shared
+      # template -- a separate repository this project does not pin -- plus
+      # XeLaTeX, pandoc, `rsvg-convert`, the mermaid CLI and the two faces
+      # `manuscript/preamble.md` selects. The audited alternative was to run
+      # nothing at all. So this step requires instead that the acceptance
+      # has run over exactly these sources: the receipt is written only by an
+      # acceptance that found nothing, and it names the digest of the
+      # manuscript it covered, so a chapter edited without a fresh render
+      # fails here.
+      - name: Require the shipped render to have passed the acceptance
+        run: uv run python scripts/check_render_log.py --verify-receipt
       - run: uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
       - run: uv run python docs/check_links.py --strict --include-root
       - run: uv run python docs/md_hygiene.py --strict

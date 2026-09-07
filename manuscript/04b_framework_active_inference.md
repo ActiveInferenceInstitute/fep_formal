@@ -149,23 +149,24 @@ $$ {#eq:ai_affordance_set}
 
 #### Optimal Policy Existence (fep-008) {#sec:ai_optimal_policy_existence}
 
-Policy selection reduces to minimization of $G$ over the finite policy set. **fep-008** certifies that such a minimizer exists and that all minimizers share a common EFE value. The proof invokes `Finset.exists_min_image` to obtain an explicit minimizer $\pi^\star$ with $G(\pi^\star) \le G(\pi)$ for every $\pi \in \Pi$, and then `min_agrees_on_value` plus `le_antisymm` to show that any two minimizers $\pi^\star_1, \pi^\star_2$ satisfy $G(\pi^\star_1) = G(\pi^\star_2)$. The discrete, finite setting matches real Active-Inference implementations that enumerate a finite policy horizon; fep-008 is thus the small but essential existence theorem that downstream results (commitment to a specific action, deterministic policy extraction, value iteration on the EFE lattice) rely upon.
+Policy selection reduces to minimization of $G$ over the finite policy set. **fep-008** certifies that such a minimizer exists and that all minimizers share a common EFE value. Its `fep008_exists_minG` invokes Mathlib's `Finset.exists_min_image` to obtain an explicit minimizer $\pi^\star$ with $G(\pi^\star) \le G(\pi)$ for every $\pi \in \Pi$; the row's own second theorem, `fep008_min_agrees_on_value`, then shows that any two minimizers $\pi^\star_1, \pi^\star_2$ satisfy $G(\pi^\star_1) = G(\pi^\star_2)$, discharging that goal with Mathlib's `le_antisymm` applied to the two minimality hypotheses. The discrete, finite setting matches real Active-Inference implementations that enumerate a finite policy horizon; fep-008 is thus the small but essential existence theorem that downstream results (commitment to a specific action, deterministic policy extraction, value iteration on the EFE lattice) rely upon.
 
 #### Mathlib Footprint and Verification Status {#sec:ai_mathlib_table}
 
-| Topic | Actual Lean content | Semantic disposition | Mathlib navigation hint | `sorry` count |
-|-------|---------|----------|--------------------|--------------|
-| fep-003 | Discounted `ENNReal` pragmatic cost with exact horizon increment | `{{topics.fep-003.semantic_disposition}}` | `Data.ENNReal.Inv` | 0 |
-| fep-007 | Positive, support-normalized finite sum-product message | `{{topics.fep-007.semantic_disposition}}` | `Algebra.BigOperators` | 0 |
-| fep-008 | Finite nonempty-set minimizer existence and value agreement | `{{topics.fep-008.semantic_disposition}}` | `Data.Finset` | 0 |
-| fep-020 | Normalized two-state transition, stationarity, exact iterates, convergence | `{{topics.fep-020.semantic_disposition}}` | `Analysis.SpecificLimits.Normed` | 0 |
-| fep-021 | Explicit `ENNReal` EFE convention with balance and order laws | `{{topics.fep-021.semantic_disposition}}` | `Data.ENNReal.Inv` | 0 |
-| fep-023 | Policy-indexed reachable probability laws and normalization transfer | `{{topics.fep-023.semantic_disposition}}` | `MeasureTheory.Measure.Typeclasses.Probability` | 0 |
-| fep-028 | Support-aware full finite softmax probability law | `{{topics.fep-028.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-033 | Deterministic transition-aware Bellman recursion | `{{topics.fep-033.semantic_disposition}}` | `Data.ENNReal.Inv` | 0 |
-| fep-034 | Native normalized transition--observation posterior filter | `{{topics.fep-034.semantic_disposition}}` | `Probability.Kernel.Posterior` | 0 |
-| fep-041 | Native measure-KL information gain and zero-expectation law | `{{topics.fep-041.semantic_disposition}}` | `InformationTheory.KullbackLeibler.Basic` | 0 |
-| fep-047 | `Matrix.mulVec` sum-product propagation with exact composition | `{{topics.fep-047.semantic_disposition}}` | `Data.Matrix.Mul` | 0 |
+| Topic | Actual Lean content | Semantic disposition | Modules imported (`Mathlib.` prefix omitted) | `sorry` count |
+|-------|---------|----------|--------------------------|--------|
+| fep-003 | Discounted `ENNReal` pragmatic cost with exact horizon increment | `{{topics.fep-003.semantic_disposition}}` | {{topics.fep-003.imported_modules}} | 0 |
+| fep-007 | Positive, support-normalized finite sum-product message | `{{topics.fep-007.semantic_disposition}}` | {{topics.fep-007.imported_modules}} | 0 |
+| fep-008 | Finite nonempty-set minimizer existence and value agreement | `{{topics.fep-008.semantic_disposition}}` | {{topics.fep-008.imported_modules}} | 0 |
+| fep-020 | Normalized two-state transition, stationarity, exact iterates, convergence | `{{topics.fep-020.semantic_disposition}}` | {{topics.fep-020.imported_modules}} | 0 |
+| fep-021 | Explicit `ENNReal` EFE convention with balance and order laws | `{{topics.fep-021.semantic_disposition}}` | {{topics.fep-021.imported_modules}} | 0 |
+| fep-023 | Policy-indexed reachable probability laws and normalization transfer | `{{topics.fep-023.semantic_disposition}}` | {{topics.fep-023.imported_modules}} | 0 |
+| fep-028 | Support-aware full finite softmax probability law | `{{topics.fep-028.semantic_disposition}}` | {{topics.fep-028.imported_modules}} | 0 |
+| fep-033 | Deterministic transition-aware Bellman recursion | `{{topics.fep-033.semantic_disposition}}` | {{topics.fep-033.imported_modules}} | 0 |
+| fep-034 | Native normalized transition--observation posterior filter | `{{topics.fep-034.semantic_disposition}}` | {{topics.fep-034.imported_modules}} | 0 |
+| fep-041 | Native measure-KL information gain and zero-expectation law | `{{topics.fep-041.semantic_disposition}}` | {{topics.fep-041.imported_modules}} | 0 |
+| fep-047 | `Matrix.mulVec` sum-product propagation with exact composition | `{{topics.fep-047.semantic_disposition}}` | {{topics.fep-047.imported_modules}} | 0 |
+: Active Inference topics: the Lean content each row actually states, its semantic disposition, the modules its Lean body imports (generated from the body, `Mathlib.` omitted), and its `sorry` count.
 
 **Representative formalization** — *Expected Free Energy (fep-003, [@eq:eq_4])*: On the maintained finite policy-conditioned carrier, EFE decomposes into pragmatic cost minus epistemic value:
 

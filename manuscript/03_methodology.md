@@ -13,6 +13,7 @@ The architecture has three source layers and three evidence layers.
 | Authorship | roster/family metadata, maturity and novelty review, authored relations, family-owned topic bodies, and manifested formal resources | checkout/wheel `topics.yaml`; topic aggregate; foundation, composition-leaf, and import-aggregate Lean; coverage, atlas, and numerical dashboard | roster, source parity, declared semantic scope, maintained dependency structure, and witnessed composition |
 | Native verification | exact topic roster plus generated catalogue/formal modules and pinned Lake workspace | native topic receipt plus formalism declaration/axiom receipt | compiler exit status, warnings, `sorry`/`sorryAx`, declaration resolution, toolchain and source digests |
 | Full pipeline | live credentials, Hermes result, OpenGauss session state, native verification | hashed report bundle and independently validated full receipt | only the observed LLM/session/run claims |
+: The three source layers and three evidence layers, with the canonical input, derived output and evidentiary reach of each.
 
 `FEPPipeline` itself has four stages: Load Catalogue, Environment Validation, Gauss Sessions, and Manuscript Artifacts. In `catalogue` mode the Gauss stage is explicitly `not_run`. In `full` mode all selected topics must produce successful Hermes-backed results and clean Lean verification before the run is complete. `Reporter` executes only after a complete pipeline result; incomplete runs do not receive a successful report directory.
 

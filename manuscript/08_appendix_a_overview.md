@@ -1,6 +1,6 @@
 # Appendix A: Formalisms Overview {#sec:appendix_comprehensive_formalisms_overview}
 
-**Appendices B and C (material)** are one auto-generated file, `09z_unified_formalism_catalogue.md`, produced during Manuscript Artifacts. It juxtaposes, per `fep-NNN` topic, the fenced Lean body and the typeset display-math blocks (former appendices B and C). Stable descriptive metadata comes from `config/catalogue_metadata.yaml`, semantic review from `config/theorem_maturity.yaml`, canonical Lean bodies from family modules under `src/fep_lean/catalogue/bodies/`, and equation signatures from `src/fep_lean/catalogue/latex.py`; `scripts/_maint_build_topics_catalogue.py` joins them into the generated catalogue. Each topic has one display-math **block** per `theorem` (typically `aligned`), with a unique stable id `eq:fep-NNN-k`. Counts and validated evidence projections come from `manuscript_vars.yaml`. See `docs/_generated/canonical_facts.md` for status.
+**Appendices B and C (material)** are one auto-generated file, `09z_unified_formalism_catalogue.md`, produced during Manuscript Artifacts. It juxtaposes, per `fep-NNN` topic, the fenced Lean body and the typeset display-math blocks (former appendices B and C). Stable descriptive metadata comes from `config/catalogue_metadata.yaml`, semantic review from `config/theorem_maturity.yaml`, canonical Lean bodies from family modules under `src/fep_lean/catalogue/bodies/`, and equation signatures from `src/fep_lean/catalogue/latex.py`; `scripts/_maint_build_topics_catalogue.py` joins them into the generated catalogue. Each topic has one display-math **block** per `theorem` (typically `aligned`), with a unique stable id `eq:fep-NNN-k`. Counts and validated evidence projections come from `manuscript_vars.yaml`.
 
 ## Complete Topic Catalogue {#sec:complete_topic_catalogue}
 
@@ -20,6 +20,7 @@ Native compilation status for the full roster is **`{{compile_rate.total}}`** ag
 | Bayesian Mechanics ({{areas.BayesianMechanics.count}}) | `{{compile_rate.by_area.BayesianMechanics}}` | Matrices, probability measures |
 | Thermodynamics ({{areas.Thermodynamics.count}}) | `{{compile_rate.by_area.Thermodynamics}}` | Real logarithms and exponentials |
 | **Total ({{total_topics}})** | **`{{compile_rate.total}}`** | — |
+: Per-area topic counts, native compile status from the verifier, and the Mathlib domains each area reaches.
 
 Rates come from the selected validated evidence projected into `manuscript_vars.yaml`:
 
@@ -46,12 +47,13 @@ To avoid duplicating Lean that can drift from the SSOT, this appendix does **not
 | fep-001 | [@sec:catalogue-fep-001] | [@sec:eqs-fep-001] |
 | fep-031 | [@sec:catalogue-fep-031] | [@sec:eqs-fep-031] |
 | fep-046 | [@sec:catalogue-fep-046] | [@sec:eqs-fep-046] |
+: Representative topics, with pointers to the Lean body in Appendix B and the display math in Appendix C.
 
 ## Mathlib4 Imports Used Across the Catalogue {#sec:mathlib4_imports_catalogue}
 
 Every shipped row in Appendix B declares its own Mathlib imports rather than relying on an implicit global prelude. The project uses measure/probability kernels and conditional independence, finite sums and sets, real logarithm/exponential and calculus, finite-dimensional matrices and metrics, information theory, contraction limits, and the real strong law. Pedagogical snippets may use broader imports for exposition only; they are not catalogue sources.
 
-The generated [formalism coverage report](../docs/formalism-coverage.md) is the exact import and declaration roster. It owns both the topic-to-Mathlib incidence table and the maintained formal-module dependency graph. The atlas renders those import dependencies separately from scientific edges, while formal relations require named declarations. This avoids a static appendix roster that would drift whenever a sketch narrows an import.
+The generated [formalism coverage report]({{publication.repository_url}}/blob/{{source.published_ref}}/docs/formalism-coverage.md) is the exact import and declaration roster. It owns both the topic-to-Mathlib incidence table and the maintained formal-module dependency graph. The atlas renders those import dependencies separately from scientific edges, while formal relations require named declarations. This avoids a static appendix roster that would drift whenever a sketch narrows an import.
 
 ## Formalization Epistemology: Realism vs. Illusionism {#sec:formalization_epistemology}
 

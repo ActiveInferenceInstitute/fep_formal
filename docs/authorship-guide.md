@@ -103,6 +103,7 @@ uv run pytest \
   tests/test_manuscript_references.py \
   -q --no-cov
 uv run python docs/theorem_ref_audit.py
+uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
 ```
 

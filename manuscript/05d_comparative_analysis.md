@@ -9,6 +9,7 @@ FEP Lean is best understood as a domain catalogue and evidence pipeline, not as 
 | Draft, Sketch, Prove [@jiang2023draft] | autoformalization plus proof | informal proof/problem | formal statement and discharged obligations | related translation workflow at theorem scale |
 | PhysLean [@toobysmith2024] | human-led physics library | domain mathematics | reviewed definitions/theorems in Lean | closest library-building analogue |
 | FEP Lean | catalogue curation, semantic audit, and evidence separation | contested domain claims | source parity + native receipt + semantic disposition | formalization-surface map for FEP |
+: LLM-ITP system families compared with FEP Lean by primary task, starting point and the evidence each typically reports.
 
 The distinctive contribution is the coupling of breadth with claim calibration: every row has an exact source, declaration inventory, primary theorem, assumption review, non-vacuity note, and disposition. This is not evidence that the approach outperforms proof-search systems on their benchmarks.
 
@@ -23,6 +24,7 @@ No controlled human-time experiment is included, so the manuscript does not repo
 | Establish type/proof correctness | invoke Lean | none | Lean kernel + native receipt |
 | Explain proof strategy | write prose | may draft commentary | author/reviewer |
 | Assert model/time/cost results | inspect full run | generates observed fields | validated full receipt |
+: Division of work between the researcher-owned path and the optional Hermes contribution, with the acceptance owner for each activity.
 
 This allocation is intentionally conservative. Uniform model commentary can reduce blank-page effort, but it also creates new review work: semantic drift, invented library names, missing code fences, and provider-dependent output must be checked. A future comparison should randomize topics, preregister editing-time and semantic-fidelity metrics, and distinguish initial draft, compile repair, and expert review.
 
@@ -34,7 +36,9 @@ The repository makes no priority claim about being the first FEP formalization o
 
 ### State-Space Models, Domain-Specific Languages, and Generalized Notation {#sec:gnn_dsl_complementarity}
 
-Executable Active-Inference tools and notations such as pymdp [@heins2022pymdp] or GNN [@smekal2023gnn] occupy a different layer. They specify and run model instances; Lean states and proves invariants. A useful bridge would translate a typed model representation into a common Lean probability/kernel structure, generate proof obligations for normalization and conditional independence, and retain a provenance link back to executable parameters. The current catalogue does not implement that bridge.
+Executable Active-Inference tools and notations such as pymdp [@heins2022pymdp] or GNN [@smekal2023gnn] occupy a different layer. They specify and run model instances; Lean states and proves invariants. This package implements one such bridge from GNN. Four maintained modules carry it. `FEP.GnnDocument` (`lean/FepSketches/gnn_document.lean`) fixes the GNN abstract syntax and a `WellFormed` predicate that is decidable, so document validity is discharged by `decide` rather than asserted. `FEP.GnnDenotation` supplies `denoteDiscrete`, which sends a discrete-family document together with a conforming numeric payload to a `GenerativeModel` of `active_inference.lean` -- the same carrier the catalogue's finite active-inference rows use -- and `symBoolDoc_denotation` proves that the exemplar document's denotation is definitionally the hand-written `symmetricBoolModel trueBiasedPolicyPrior`, which is exactly the executable-refines-formal statement the next paragraph names as a requirement. `FEP.GnnContinuous` does the same for a linear-Gaussian family. `FEP.GnnRenderStatements` states, and proves for the exemplar, that the pymdp, ActiveInference.jl and JAX renderings of a document agree with its denotation, and that a policy rollout equals the corresponding kernel power. Provenance runs through `fep-lean bridge`, whose certificates are pinned to source digests in `specs/gnn-bridge-w2-source-custody/source-pin.json`.
+
+The obligations the bridge discharges are the normalization ones: `DiscreteConforms` requires every row of the payload to be a probability vector, and the denotation cannot be formed without those proofs. Conditional-independence obligations are not generated -- no module in the bridge states one -- and the denotation is defined for the discrete and linear-Gaussian families rather than for arbitrary GNN documents. The specification slices are `specs/gnn-bridge-*`.
 
 This distinction matters for validation. A numerical implementation can be tested on data while a theorem can be checked for deductive correctness; neither subsumes the other. End-to-end assurance needs both, plus a proof that the executable representation refines the formal one.
 
@@ -64,6 +68,7 @@ The publication metrics are deliberately split:
 | declaration/import counts | parsed canonical Lean source |
 | native compile/warning/`sorry` outcomes | validated `output/native-verification.json` |
 | Hermes success, model, retries, tokens, latency | validated full report only |
+: Publication metric families and the source each is currently drawn from.
 
 The native compile rate rendered for this source state is `{{compile_rate.total}}`; its evidence kind is `{{verify.evidence_kind}}`, warning count `{{verify.warning_count}}`, and claim-ready predicate `{{verify.claim_ready}}`. Full Hermes/OpenGauss claim readiness is separately `{{full.claim_ready}}`. These values are not interchangeable, and a false predicate is a result rather than a placeholder for a preferred headline.
 

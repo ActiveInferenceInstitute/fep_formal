@@ -56,6 +56,11 @@ from fep_lean.output.release_bundle import (
     validate_release_bundle,
     write_publication_manuscript,
 )
+from fep_lean.output.render_log import (
+    RenderLogDefects,
+    render_log_defects,
+    scan_render_log,
+)
 from fep_lean.output.rendering import (
     ManuscriptRenderError,
     render_manuscript,
@@ -78,6 +83,7 @@ __all__ = [
     "PublicationManuscript",
     "ReleaseBundleError",
     "ReleaseBundleValidation",
+    "RenderLogDefects",
     "ReportPaths",
     "Reporter",
     "atlas_projection_drift",
@@ -101,8 +107,10 @@ __all__ = [
     "render_formal_kernel_dashboard_svg",
     "render_formalism_atlas_html",
     "render_formalism_atlas_svg",
+    "render_log_defects",
     "render_manuscript",
     "render_publication_manuscript",
+    "scan_render_log",
     "unresolved_placeholders",
     "validate_native_lean_receipt",
     "validate_release_bundle",

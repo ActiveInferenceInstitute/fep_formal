@@ -15,6 +15,7 @@ The package also demonstrates a publication pattern for computational mathematic
 | External nondeterminism | Provider output and availability vary | Full mode is optional and has a separate claim predicate |
 | Catalogue selection | {{total_topics}} curated rows are not a census of FEP mathematics | Stable scope and explicit extension criteria |
 | Publication drift | Stale variables or identifiers can preserve obsolete claims | Fail-closed renderer and reference audits |
+: Threats to validity, the consequence of each, and the control currently in place against it.
 
 The most important limitation is compositional depth. The catalogue contains individually checkable fragments plus **{{formalism.metrics.theorem_witnessed_relations}}** witnessed cross-topic relations—only **{{formalism.metrics.formal_relation_witnesses}}** of them derivational and **{{formalism.metrics.formal_pairing_witnesses}}** explicitly non-implicational. H1 now supplies one genuine end-to-end finite composition from posterior learning through a one-step decision and action to factorized invariant dynamics and strict KL decrease. It does not supply a general derivation from stochastic dynamics to perception, action, and physical thermodynamic behavior. The **{{semantic_dispositions.formalized}}** `formalized` rows are deliberately narrowed: among them are KL identities, generic conditional-independence and invariant-kernel laws, binary entropy optimality, strict two-point Jensen, and one concrete contraction-convergence theorem. They do not establish the general FEP.
 

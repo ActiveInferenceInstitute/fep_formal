@@ -39,6 +39,7 @@ Four evidence planes must therefore be read separately:
 | Native Lean and declaration receipts | Acceptance of the exact propositions at the pinned compiler; declaration resolution and trusted-axiom closure when the corresponding receipt validates | That hypotheses hold in a biological system, that a numerical plot is representative, or that a provider ran |
 | Deterministic numerical witnesses | Exact finite evaluations of named theorem instances and boundary checks | Deductive proof, stochastic calibration on data, or extension beyond the sampled carrier |
 | Provider-backed full execution | Hermes/OpenGauss execution for the exact source only when a complete report independently validates | A stronger theorem, physical truth of the FEP, or evidence for any later source snapshot |
+: The four evidence planes, and the boundary of what each can and cannot establish.
 
 The v1.1.0 release-snapshot declaration/axiom, native, Python, and Chrome
 receipts bind the frozen 155-topic source that they hash. Active Horizon work
@@ -95,6 +96,7 @@ forecast-calibration claim.
 | `fep-125` | `fep125_brierExcess_eq_sqError`; `fep125_brierExcess_self` | The polynomial identity is real-valued; its probability interpretation additionally uses $p,q\in[0,1]$. Unequal forecasts have positive squared excess, while $q=p$ is the zero boundary. |
 | `fep-126` | `fep126_laplaceBrierRisk_le`; `fep126_sampling_mass_one` | The same finite-law, count, positivity, and target hypotheses as the squared-risk theorem. A nondegenerate law yields a genuine weighted risk rather than a single substituted value. |
 | `fep-127` | `fep127_laplaceBadEvent_subset`; `fep127_laplaceBadEvent_probability_le` | A raw event-probability bound is supplied. Event containment transfers the bound monotonically; it does not manufacture a concentration inequality or posterior-contraction rate. |
+: Finite-sample risk and calibration topics (fep-121 to fep-127), with each row's declarations and the explicit assumptions that keep it non-vacuous.
 
 The family closes a finite risk-transfer gap for the exact Laplace estimator.
 It does **not** prove minimax optimality, frequentist calibration from observed
@@ -132,6 +134,7 @@ convention.
 | `fep-132` | `fep132_optimalTree_le_openLoop`; `fep132_finite_horizon_depth` | Finite nonempty actions and a common finite cost model. The theorem proves weak dominance for every embedded plan; strictness is supplied separately by `fep-134`. |
 | `fep-133` | `fep133_policyTree_efe_eq_risk_add_ambiguity`; `fep133_optimalValues_agree` | Every belief-indexed generative model satisfies the maintained `FullSupport` contract. The result transports an existing identity; it does not validate the EFE model empirically. |
 | `fep-134` | `fep134_boolFeedback_strictlyBetter`; `fep134_feedback_continuation_changes` | A fair Boolean observation and mismatch terminal cost. Feedback has value $0$, each fixed second action has value $1/2$, and the continuation action differs across the two observations. |
+: Closed-loop policy-tree and expected-free-energy topics (fep-128 to fep-134), with each row's declarations and non-vacuity assumptions.
 
 The Boolean witness rules out a vocabulary-only notion of feedback: its two
 continuations are propositionally unequal and its value gap is exactly one
@@ -172,6 +175,7 @@ internal and external coordinate maps conditioned on the blanket coordinate.
 | `fep-139` | `fep139_staticJoint_condIndepFun`; `fep139_correlatedBlanket_nonvacuous` | Finite discrete standard-Borel carriers, nonempty internal/external types, and exact factorized rows. The Boolean witness has two positive correlated blanket regimes, so independence is not obtained by collapsing the entire law to one point. |
 | `fep-140` | `fep140_condIndepFun_measurableImages` | Measurable maps of internal and external coordinates. Identity maps recover `fep-139`; noninjective coarsenings can merge endpoint states without changing the conditional-independence conclusion. |
 | `fep-141` | `fep141_prediction_preserves_nativeBlanket` | A finite factorized dynamics row and one supplied current state. Multiple positive next-blanket regimes and nonconstant endpoint laws are permitted. Arbitrary mixtures over uncertain current states are not covered. |
+: Finite-to-native blanket-transfer topics (fep-135 to fep-141), with each row's declarations and non-vacuity assumptions.
 
 This family closes one concrete finite-to-native conditional-independence seam.
 It does not prove that every system admits a blanket, that arbitrary mixtures
@@ -215,6 +219,7 @@ described in the general theory.
 | `fep-146` | `fep146_logPartition_secondDeriv_eq_variance`; `fep146_fisher_eq_variance`; `fep146_threeState_variance_positive`; `fep146_constantStatistic_zero_boundary` | The finite scalar family and the proved first derivative. For statistic $(0,1,2)$ with unit bases, variance at zero is $2/3>0$; a constant statistic has exactly zero variance and Fisher information. |
 | `fep-147` | `fep147_exponentialFamily_KL_eq_bregman`; `fep147_exponentialFamily_fullSupport` | Two members of the same supported scalar family. Equal parameters give the zero-KL boundary through the shared finite-KL separation theorem. The companion three-state family has variance $2/3$, while the constant-statistic family has zero variance; this row does not add a separate strict-KL witness for unequal parameters. |
 | `fep-148` | `fep148_meanParameter_strictMono`; `fep148_meanParameter_injective` | Variance is explicitly positive throughout a stated closed interval. The theorem is interval-local and does not infer positivity for degenerate statistics. |
+: Finite exponential-family dual-geometry topics (fep-142 to fep-148), with each row's declarations and non-vacuity assumptions.
 
 The three-state and constant-statistic witnesses make the rank premise visible:
 strict mean-coordinate monotonicity is supported by positive variance, while a
@@ -261,6 +266,7 @@ $$ {#eq:catalogue_155_relaxation}
 | `fep-153` | `fep153_twoStateSemigroup_stationary`; `fep153_twoStateSemigroup_detailedBalance` | Positive rates and nonnegative time for the kernel. Unequal rates give a nonuniform stationary law while opposing fluxes balance exactly. |
 | `fep-154` | `fep154_twoStateRelaxation_exact`; `fep154_benchmarkInitial_nonstationary` | An arbitrary normalized Boolean initial law. The false point mass differs from the benchmark stationary law, so the relaxed coordinate starts nonzero. |
 | `fep-155` | `fep155_twoStateLyapunov_exact`; `fep155_twoStateLyapunov_hasDerivAt`; `fep155_benchmarkLyapunov_strictlyDecreasing` | The scalar squared stationary deviation for the exact two-state chain. At the nonstationary benchmark, the derivative at time zero is strictly negative. |
+: Two-state continuous-time thermodynamics topics (fep-149 to fep-155), with each row's declarations and non-vacuity assumptions.
 
 This family adds genuine continuous time, a semigroup, and a master equation at
 one exact finite-state scope. It is not a Langevin SDE, a Fokker--Planck PDE, a
@@ -282,6 +288,7 @@ scientific derivation.
 | `fep-135`--`fep-141` | `fep135_embeddedLaw_extends_fep017`; `fep136_embeddedExpectation_extends_fep015`; `fep137_embeddedPredictive_extends_fep019`; `fep138_rectangleFactorization_extends_fep079`; `fep139_nativeCondIndep_connects_fep009_fep079`; `fep140_measurableCoarsening_extends_fep009`; `fep141_blanketTransition_extends_fep080` |
 | `fep-142`--`fep-148` | `fep142_exponentialNormalization_extends_fep031`; `fep143_logDensityRatio_extends_fep026`; `fep144_logPartitionGradient_extends_fep040`; `fep145_centeredScore_extends_fep038`; `fep146_fisherVariance_extends_fep100`; `fep147_KLBregman_connects_fep014_fep104`; `fep148_meanCoordinate_extends_fep103` |
 | `fep-149`--`fep-155` | `fep149_continuousKernel_extends_fep020`; `fep150_semigroupZero_extends_fep006`; `fep151_semigroupAdd_extends_fep006`; `fep152_masterEquation_extends_fep020`; `fep153_continuousDetailedBalance_extends_fep010`; `fep154_continuousRelaxation_extends_fep020`; `fep155_lyapunovDecay_extends_fep032` |
+: Composition ledger: the manifested declarations that tie each group of new topics back to the established core.
 
 These bridges are primarily `formal_pairing` witnesses: they preserve both
 endpoint laws in one checked conclusion without claiming that one topic follows
@@ -300,6 +307,7 @@ fifteen expansion families. The five new witnesses are not generic plots:
 | `native-blanket-transfer` | the two positive regimes sum to one; rectangle factorization is exact; the off-regime has zero mass; every conditional product row is present |
 | `exponential-family-duality` | both laws normalize; the score is centered; finite KL equals log-partition Bregman divergence; three-state variance is $2/3$; the constant-statistic boundary is zero |
 | `two-state-master-equation` | row normalization, semigroup addition, master equation, detailed balance, and relaxation all close numerically; the benchmark Lyapunov derivative is negative |
+: The numerical witnesses added for the expansion families, with the exact check each performs and the boundary of what it certifies.
 
 Each check has a typed relation (`eq`, `le`, `ge`, or `predicate`), explicit
 operands, and its own tolerance. Acceptance is the conjunction of all checks

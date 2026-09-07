@@ -20,7 +20,21 @@ _FIELD_RE = re.compile(
 )
 _CITATION_BLOCK_RE = re.compile(r"\[[^\]]*?@[^\]]+\]")
 _CITATION_KEY_RE = re.compile(r"@([A-Za-z][A-Za-z0-9_:.+-]*)")
-_INDEX_KEY_RE = re.compile(r"^    ([A-Za-z][A-Za-z0-9_:.+-]+)\s+—", re.MULTILINE)
+# ``07_references.md`` used to carry a hand-copied index of every bibliography
+# key inside an HTML comment, which never rendered. The section it introduced
+# printed no bibliography at all: it ended with a bare ``<div id="refs"></div>``,
+# a Pandoc citeproc anchor that Pandoc's LaTeX writer drops, under a
+# natbib/BibTeX build. The index is gone; what replaces the check is the
+# mechanism that actually places the entries.
+_BIBLIOGRAPHY_CALL_RE = re.compile(r"\\bibliography\{[^}]*\brefer(ences)?\b[^}]*\}")
+# The combined renderer suppresses natbib's duplicate heading only when the
+# manuscript's own section title contains the word "references"
+# (``infrastructure/rendering/_pdf_combined_bibliography.py``
+# ``_REFERENCE_SECTION_RE``). A heading that loses that word silently produces
+# two headings, so pin it here.
+_REFERENCES_HEADING_RE = re.compile(
+    r"^#{1,3} .*\breferences\b", re.IGNORECASE | re.MULTILINE
+)
 _AUTHORING_EXCLUDES = frozenset(
     {
         "07_references.md",
@@ -99,14 +113,22 @@ def audit_citations(project_root: Path = PROJECT_ROOT) -> tuple[str, ...]:
     if uncited:
         errors.append("uncited bibliography entries: " + ", ".join(uncited))
 
-    index_text = (manuscript / "07_references.md").read_text(encoding="utf-8")
-    index_keys = set(_INDEX_KEY_RE.findall(index_text))
-    if missing := sorted(key_set - index_keys):
+    references_text = (manuscript / "07_references.md").read_text(encoding="utf-8")
+    if _REFERENCES_HEADING_RE.search(references_text) is None:
         errors.append(
-            "bibliography keys missing from human index: " + ", ".join(missing)
+            "07_references.md heading must contain the word 'References' so the "
+            "combined renderer suppresses natbib's duplicate heading"
         )
-    if extra := sorted(index_keys - key_set):
-        errors.append("human-index keys missing from bibliography: " + ", ".join(extra))
+    if _BIBLIOGRAPHY_CALL_RE.search(references_text) is None:
+        errors.append(
+            "07_references.md must call \\bibliography{references} so the entries "
+            "typeset inside the section rather than after the appendices"
+        )
+    if '<div id="refs"' in references_text:
+        errors.append(
+            '07_references.md carries a Pandoc citeproc anchor (<div id="refs">) '
+            "that this natbib/BibTeX build silently drops"
+        )
 
     by_key = {entry.key: entry for entry in entries}
     for banned in ("maheu2026reframing", "lean_slt2026"):

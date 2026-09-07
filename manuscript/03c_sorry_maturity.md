@@ -20,19 +20,19 @@ A second axis, `semantic_disposition`, records whether the primary theorem direc
 
 #### Level 1 — `real` (Kernel-Complete at the Stated Scope) {#sec:level_real}
 
-A `real` body has no admitted proof and is accepted by the pinned Lean/Mathlib environment. For example:
+A `real` body has no admitted proof and is accepted by the pinned Lean/Mathlib environment. Illustrated on the primer's union bound rather than on a catalogue row, so that the shape is visible in ten lines:
 
 ```lean
 import Mathlib.MeasureTheory.Measure.MeasureSpace
 
-namespace FEP001
+namespace PrimerUnionBound
 open MeasureTheory
 
-theorem fep001_measure_union_le {α : Type*} [MeasurableSpace α]
+theorem union_bound {α : Type*} [MeasurableSpace α]
     (μ : Measure α) (s t : Set α) :
     μ (s ∪ t) ≤ μ s + μ t :=
   measure_union_le s t
-end FEP001
+end PrimerUnionBound
 ```
 
 This proves exactly the measure union bound. The topic title may motivate an FEP interpretation, but the kernel does not transfer that interpretation into the theorem type. Semantic review must do that separately.

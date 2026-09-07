@@ -95,11 +95,27 @@ _RE_SORRY = re.compile(r"\bsorry\b")
 _RE_IMPORT_COMMAND = re.compile(r"^import(?:\s+|$)")
 
 
+def _strip_lean_comments(code: str) -> str:
+    """Remove Lean block and line comments so a commented ``sorry`` is not counted."""
+    without_blocks = re.sub(r"/-.*?-/?", "", code, flags=re.DOTALL)
+    return re.sub(r"--[^\n]*", "", without_blocks)
+
+
 def _has_sorry(code: str) -> bool:
     """Detect proof placeholders while ignoring Lean line and block comments."""
-    without_blocks = re.sub(r"/-.*?-/?", "", code, flags=re.DOTALL)
-    without_lines = re.sub(r"--[^\n]*", "", without_blocks)
-    return bool(_RE_SORRY.search(without_lines))
+    return bool(_RE_SORRY.search(_strip_lean_comments(code)))
+
+
+def _count_sorry(code: str) -> int:
+    """Count proof placeholders, ignoring Lean line and block comments.
+
+    ``has_sorry`` answers "does this topic admit anything"; the manuscript also
+    prints a figure it calls "uses of ``sorry``", which is an occurrence count.
+    Summing the boolean gave the number of *topics*, so a topic with three
+    admitted proofs contributed one. Count the occurrences here so the two
+    questions have two answers.
+    """
+    return len(_RE_SORRY.findall(_strip_lean_comments(code)))
 
 
 _RE_FAIL_KIND_TIMEOUT = re.compile(r"timeout|timed out", re.IGNORECASE)
@@ -224,6 +240,7 @@ class VerifyResult:
     topic_id: str
     compiles: bool
     has_sorry: bool
+    sorry_occurrences: int = 0
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     stdout: str = ""
@@ -251,6 +268,7 @@ class VerifyResult:
             "topic_id": self.topic_id,
             "compiles": self.compiles,
             "has_sorry": self.has_sorry,
+            "sorry_occurrences": self.sorry_occurrences,
             "status": self.status,
             "errors": self.errors,
             "warnings": self.warnings,
@@ -473,6 +491,7 @@ class LeanVerifier:
                 topic_id=topic_id,
                 compiles=False,
                 has_sorry=_has_sorry(lean_code),
+                sorry_occurrences=_count_sorry(lean_code),
                 lean_version=lv,
                 skip_reason="lake not found — install elan/lean or set FEP_LEAN_LAKE_EXE",
             )
@@ -481,6 +500,7 @@ class LeanVerifier:
                 topic_id=topic_id,
                 compiles=False,
                 has_sorry=_has_sorry(lean_code),
+                sorry_occurrences=_count_sorry(lean_code),
                 lean_version=lv,
                 skip_reason=f"lean_dir not found: {self._lean_dir}",
             )
@@ -489,6 +509,7 @@ class LeanVerifier:
                 topic_id=topic_id,
                 compiles=False,
                 has_sorry=_has_sorry(lean_code),
+                sorry_occurrences=_count_sorry(lean_code),
                 lean_version=lv,
                 skip_reason="lakefile.lean not found",
             )
@@ -496,6 +517,7 @@ class LeanVerifier:
         # Wrap bare theorem declarations in the required import preamble
         full_code = self._wrap_lean_code(lean_code)
         has_sorry = _has_sorry(full_code)
+        sorry_occurrences = _count_sorry(full_code)
 
         tmp_file: Path | None = None
         try:
@@ -542,6 +564,7 @@ class LeanVerifier:
                 topic_id=topic_id,
                 compiles=compiles,
                 has_sorry=has_sorry,
+                sorry_occurrences=sorry_occurrences,
                 errors=errors,
                 warnings=warnings,
                 stdout=combined[:8000],
@@ -557,6 +580,7 @@ class LeanVerifier:
                 topic_id=topic_id,
                 compiles=False,
                 has_sorry=has_sorry,
+                sorry_occurrences=sorry_occurrences,
                 lean_version=lv,
                 lean_file=tmp_file,
                 duration_s=float(t_used),
@@ -570,6 +594,7 @@ class LeanVerifier:
                 topic_id=topic_id,
                 compiles=False,
                 has_sorry=_has_sorry(lean_code),
+                sorry_occurrences=_count_sorry(lean_code),
                 lean_version=lv,
                 skip_reason=str(exc),
             )

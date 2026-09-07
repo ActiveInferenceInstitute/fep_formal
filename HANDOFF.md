@@ -187,6 +187,9 @@ uv run python docs/check_links.py --strict --include-root
 uv run python docs/md_hygiene.py --strict
 uv run python docs/xref_audit.py
 uv run python scripts/capture_browser_acceptance.py
+FEP_LEAN_TEMPLATE_DIR=<template checkout> \
+  uv run python scripts/render_publication.py
+uv run python scripts/check_render_log.py --verify-receipt
 uv run python scripts/build_release_bundle.py --run-python-acceptance
 uv run fep-lean preflight
 git diff --check
@@ -219,6 +222,14 @@ validate against the live checkout before publication.
 Independently validate the native receipt against the live source tree before
 using its prose projection. The CI workflow contains the exact validation
 snippet.
+
+`render_publication.py` belongs in that sequence rather than beside it: it is
+the only command that runs the fail-closed acceptance over a real render, and
+the only one that writes `docs/render-acceptance.json`. CI verifies that
+receipt but cannot produce one, because it does not render this manuscript --
+that needs a checkout of the shared template, XeLaTeX, pandoc,
+`rsvg-convert`, the mermaid CLI and the two faces the preamble selects. A
+publication run that skips it leaves CI red on the next manuscript change.
 
 ## Historical external stage
 

@@ -71,7 +71,7 @@ $$
 $$ {#eq:eq_PC_update}
 where $\varepsilon$ is the sensory prediction error, $\Pi_s$ is the prior precision on $\mu$, and $\mu_{\text{prior}}$ is the prior expectation. Here $\Pi_\varepsilon \cdot \varepsilon$ is the precision-weighted prediction error: each component of the error is rescaled by how confident the model is about that channel, so that more reliable sensory dimensions drive belief updates more aggressively. The first term on the right drives $\mu$ to reduce sensory prediction error; the second term anchors $\mu$ to its prior.
 
-This equation ties three separate strands of the catalogue together. (i) It is a **gradient flow** on $F$ and therefore shares the contraction structure formalized for quadratic descents in **fep-032** (`descent_contracts`, `grad_sq_nonneg`, `fixed_point`). (ii) Under the Laplace approximation introduced next, the energy $U_q$ reduces to a sum of quadratics in $\varepsilon$ weighted by the precisions $\Pi$; this is exactly the quadratic-minimum structure formalized in **fep-016** (`sq_nonneg`, `minimum at mode`, `precision-weighted quadratic`). (iii) Message passing across hierarchical layers of a predictive-coding network [@friston2018deep] propagates the same form recursively, which is the structural content of **fep-045** (`ConjugateFamily`, `fold`, `single_update`) and the monotone-composition lemmas in **fep-048**. A reader who wants to know where in the Lean 4 catalogue the "prediction error" half of the FEP lives should therefore look at the intersection of these four rows.
+This equation ties three separate strands of the catalogue together. (i) It is a **gradient flow** on $F$ and therefore shares the contraction structure formalized for quadratic descents in **fep-032** (`fep032_quadraticEnergy_descent`, `fep032_quadraticUpdate_fixed`, `fep032_quadraticUpdate_tendsto`). (ii) Under the Laplace approximation introduced next, the energy $U_q$ reduces to a sum of quadratics in $\varepsilon$ weighted by the precisions $\Pi$; this is exactly the quadratic-minimum structure formalized in **fep-016** (`fep016_quadratic_min`, `fep016_quadratic_at_mode`, `fep016_precision_weighted`). (iii) Message passing across hierarchical layers of a predictive-coding network [@friston2018deep] propagates the same form recursively, which is the structural content of **fep-045** (`fep045_bernoulli_posterior_closed`, `fep045_posterior_mass_one`) and the monotone-composition lemmas in **fep-048** (`fep048_halfUpdate_contracts`, `fep048_halfUpdate_unique_fixed_point`). A reader who wants to know where in the Lean 4 catalogue the "prediction error" half of the FEP lives should therefore look at the intersection of these four rows.
 
 ### The Laplace Approximation and the Quadratic Form of $F$ {#sec:laplace_approximation}
 
@@ -144,6 +144,7 @@ This project addresses a narrower, directly inspectable **verification gap**: fa
 | Fisher metric (fep-004/fep-038) | Positive-definite finite weighted metric and an exact Bernoulli statistical-family specialization | `formalized` at finite/Bernoulli scope |
 | Finite softmax (fep-028) | Support-aware full finite probability vector with exact zero off-support and global normalization | `formalized` |
 | Conjugate update (fep-045) | Exact normalized Bernoulli posterior closure and parameter update under positive binary evidence | `formalized` at binary scope |
+: The verification gap: each topic-facing concept against the formal object the catalogue currently states in Lean, and that object's semantic disposition.
 
 _Current semantic status of representative catalogue rows. The generated coverage report is authoritative for all {{total_topics}} rows._
 
@@ -195,6 +196,7 @@ A range of prior efforts have formalized parts of cognitive science, statistical
 | LeanDojo [@yang2024leandojo] | Lean 4 | Proof search benchmarks | Retrieval-augmented LLM | Demonstrates tractability of LLM ↔ Lean interfaces |
 | Mathlib information theory [@mathlib2020] | Lean 4 | Measure-theoretic information theory | Native KL divergence and chain rules | Direct library substrate for fep-002 and fep-014 |
 | Categorical ontology / classical simulation [@namjoshi2026fundamentals] | Lean 4 | Foundations | Definitions of classical / quantum systems | Adjacent formalization of physical theories |
+: Prior formalization work in adjacent domains, with the prover, domain and scope of each project and its methodological relevance here.
 
 The landscape shows that adjacent domains have proven tractable. We have not conducted the systematic, date-bounded search needed to establish whether this is the first catalogue-scale FEP formalization, so we make no priority claim. The inspectable contribution is the particular versioned catalogue, semantic audit, and receipt boundary reported here.
 
@@ -212,6 +214,7 @@ Recent systems illustrate several ways to connect language models with interacti
 | AlphaProof [@alphaproof2024] | 2024 | Gemini + AlphaZero | IMO 2024 | Silver-medal level problem solving |
 | Lean Copilot [@song2025copilot] | 2025 | Editor integration | N/A | Real-time tactic suggestion in VSCode |
 | DeepSeek-Prover-V2 [@deepseek2025proverv2] | 2025 | RL + subgoal decomposition | miniF2F, ProofNet | Reinforcement learning for structured proof planning |
+: Systems bridging language models and interactive theorem provers, by year, approach, reported benchmark and key innovation.
 
 These systems largely begin with already formalized targets and concentrate on proof search. Translating a physical theory adds an earlier modeling burden: choosing definitions, types, scope, and assumptions for concepts such as Markov blankets, solenoidal flows, and Expected Free Energy decompositions. The maintained kernel in this work emphasizes that translation and review problem. The optional Hermes path can explain or refine candidate Lean, but it supplies no correctness or authorship claim without subsequent compilation and a claim-ready full receipt.
 

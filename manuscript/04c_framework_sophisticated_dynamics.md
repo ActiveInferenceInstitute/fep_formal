@@ -56,30 +56,31 @@ Lean proves that $1/2$ is stationary and that $T_\alpha^{,n}(p)\to1/2$ whenever 
 
 Information geometry treats parametric families of probability distributions $\mathcal{M} = \{p_\theta\}_{\theta \in \Theta}$ as Riemannian manifolds, with the Fisher information tensor as the canonical metric. The {{areas.InfoGeometry.count}} catalogue rows build an exact Bernoulli family deeply, extend it with a categorical score carrier, and add a full-support finite scalar exponential family. The categorical expansion proves Fisher positivity on simplex tangents with explicit full-rank and null directions, pullback, an unbiased scalar Cramér--Rao bound under score regularity, natural-gradient equivariance under an invertible full-rank chart, a mirror-descent three-point identity, an affine-projection Bregman Pythagorean law, and replicator--natural-gradient equivalence. The scalar exponential-family expansion proves normalization, affine log-density ratios, first and second log-partition derivatives, centered scores, Fisher--variance equality, KL--Bregman duality, and interval-local mean-coordinate injection. These finite laws complement native KL, Hellinger, and Bernoulli Fisher--Rao results [@amari1983foundation]. Arbitrary smooth coordinate atlases, multidimensional dual connections, curvature, and general geodesics remain outside scope.
 
-| Topic | Actual Lean content | Semantic disposition | Mathlib navigation hint | `sorry` count |
-|-------|---------|----------|--------------------|--------------|
-| fep-004 | Finite diagonal Fisher metric: symmetry, positive semidefiniteness, and positive definiteness | `{{topics.fep-004.semantic_disposition}}` | `Algebra.Order.BigOperators.Group.Finset` | 0 |
-| fep-014 | Native KL nonnegativity, self-zero, zero characterization, and composition-product chain rule | `{{topics.fep-014.semantic_disposition}}` | `InformationTheory.KullbackLeibler.ChainRule` | 0 |
-| fep-017 | Native posterior kernel: normalized fibers, joint reconstruction, prior recovery, and Bayes density | `{{topics.fep-017.semantic_disposition}}` | `Probability.Kernel.Posterior` | 0 |
-| fep-018 | Bernoulli Fisher--Rao coordinate distance, symmetry, triangle inequality, and separation | `{{topics.fep-018.semantic_disposition}}` | `Analysis.SpecialFunctions.Trigonometric.Inverse` | 0 |
-| fep-024 | Native KL-regularized objective and its exact zero-weight and self-prior laws | `{{topics.fep-024.semantic_disposition}}` | `InformationTheory.KullbackLeibler.Basic` | 0 |
-| fep-029 | Quadratic Bregman definition, squared-distance identity, nonnegativity, and point separation | `{{topics.fep-029.semantic_disposition}}` | `Analysis.Convex.Basic` | 0 |
-| fep-038 | Bernoulli score, Fisher information and metric, natural gradient, and coordinate pullback | `{{topics.fep-038.semantic_disposition}}` | `Analysis.Calculus.Deriv.Basic` | 0 |
-| fep-044 | Bernoulli squared Hellinger divergence: nonnegativity, symmetry, separation, and relabeling invariance | `{{topics.fep-044.semantic_disposition}}` | `Data.Real.Sqrt` | 0 |
-| fep-100 | Categorical Fisher positivity on simplex tangents with rank/null witnesses | `{{topics.fep-100.semantic_disposition}}` | `LinearAlgebra.Matrix.Notation` | 0 |
-| fep-101 | Fisher pullback under a finite reparameterization | `{{topics.fep-101.semantic_disposition}}` | `Data.Matrix.Mul` | 0 |
-| fep-102 | Unbiased scalar Cramér--Rao under score regularity and positive Fisher information | `{{topics.fep-102.semantic_disposition}}` | `Analysis.InnerProductSpace.Basic` | 0 |
-| fep-103 | Natural-gradient equivariance under an invertible full-rank chart | `{{topics.fep-103.semantic_disposition}}` | `LinearAlgebra.Matrix.NonsingularInverse` | 0 |
-| fep-104 | Mirror-descent three-point identity | `{{topics.fep-104.semantic_disposition}}` | `Analysis.Convex.Basic` | 0 |
-| fep-105 | Bregman Pythagorean law for an affine information projection | `{{topics.fep-105.semantic_disposition}}` | `LinearAlgebra.AffineSpace.AffineSubspace.Basic` | 0 |
-| fep-106 | Replicator--natural-gradient equivalence on the finite simplex | `{{topics.fep-106.semantic_disposition}}` | `LinearAlgebra.Matrix.Notation` | 0 |
-| fep-142 | Full-support finite scalar exponential-family normalization | `{{topics.fep-142.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-143 | Affine log-density ratio within one supported exponential family | `{{topics.fep-143.semantic_disposition}}` | `Analysis.SpecialFunctions.Log.Basic` | 0 |
-| fep-144 | Log-partition derivative equals the sufficient-statistic mean | `{{topics.fep-144.semantic_disposition}}` | `Analysis.SpecialFunctions.ExpDeriv` | 0 |
-| fep-145 | Centered scalar score with zero model expectation | `{{topics.fep-145.semantic_disposition}}` | `Algebra.Order.BigOperators.Group.Finset` | 0 |
-| fep-146 | Log-partition Hessian and Fisher information equal variance, with rank and zero boundaries | `{{topics.fep-146.semantic_disposition}}` | `Analysis.Calculus.Deriv.Basic` | 0 |
-| fep-147 | Exponential-family KL equals the log-partition Bregman divergence | `{{topics.fep-147.semantic_disposition}}` | `InformationTheory.KullbackLeibler.Basic` | 0 |
-| fep-148 | Positive-variance mean coordinate is strictly monotone and injective on an interval | `{{topics.fep-148.semantic_disposition}}` | `Analysis.Calculus.Deriv.Monotone` | 0 |
+| Topic | Actual Lean content | Semantic disposition | Modules imported (`Mathlib.` prefix omitted) | `sorry` count |
+|-------|---------|----------|--------------------------|--------|
+| fep-004 | Finite diagonal Fisher metric: symmetry, positive semidefiniteness, and positive definiteness | `{{topics.fep-004.semantic_disposition}}` | {{topics.fep-004.imported_modules}} | 0 |
+| fep-014 | Native KL nonnegativity, self-zero, zero characterization, and composition-product chain rule | `{{topics.fep-014.semantic_disposition}}` | {{topics.fep-014.imported_modules}} | 0 |
+| fep-017 | Native posterior kernel: normalized fibers, joint reconstruction, prior recovery, and Bayes density | `{{topics.fep-017.semantic_disposition}}` | {{topics.fep-017.imported_modules}} | 0 |
+| fep-018 | Bernoulli Fisher--Rao coordinate distance, symmetry, triangle inequality, and separation | `{{topics.fep-018.semantic_disposition}}` | {{topics.fep-018.imported_modules}} | 0 |
+| fep-024 | Native KL-regularized objective and its exact zero-weight and self-prior laws | `{{topics.fep-024.semantic_disposition}}` | {{topics.fep-024.imported_modules}} | 0 |
+| fep-029 | Quadratic Bregman definition, squared-distance identity, nonnegativity, and point separation | `{{topics.fep-029.semantic_disposition}}` | {{topics.fep-029.imported_modules}} | 0 |
+| fep-038 | Bernoulli score, Fisher information and metric, natural gradient, and coordinate pullback | `{{topics.fep-038.semantic_disposition}}` | {{topics.fep-038.imported_modules}} | 0 |
+| fep-044 | Bernoulli squared Hellinger divergence: nonnegativity, symmetry, separation, and relabeling invariance | `{{topics.fep-044.semantic_disposition}}` | {{topics.fep-044.imported_modules}} | 0 |
+| fep-100 | Categorical Fisher positivity on simplex tangents with rank/null witnesses | `{{topics.fep-100.semantic_disposition}}` | {{topics.fep-100.imported_modules}} | 0 |
+| fep-101 | Fisher pullback under a finite reparameterization | `{{topics.fep-101.semantic_disposition}}` | {{topics.fep-101.imported_modules}} | 0 |
+| fep-102 | Unbiased scalar Cramér--Rao under score regularity and positive Fisher information | `{{topics.fep-102.semantic_disposition}}` | {{topics.fep-102.imported_modules}} | 0 |
+| fep-103 | Natural-gradient equivariance under an invertible full-rank chart | `{{topics.fep-103.semantic_disposition}}` | {{topics.fep-103.imported_modules}} | 0 |
+| fep-104 | Mirror-descent three-point identity | `{{topics.fep-104.semantic_disposition}}` | {{topics.fep-104.imported_modules}} | 0 |
+| fep-105 | Bregman Pythagorean law for an affine information projection | `{{topics.fep-105.semantic_disposition}}` | {{topics.fep-105.imported_modules}} | 0 |
+| fep-106 | Replicator--natural-gradient equivalence on the finite simplex | `{{topics.fep-106.semantic_disposition}}` | {{topics.fep-106.imported_modules}} | 0 |
+| fep-142 | Full-support finite scalar exponential-family normalization | `{{topics.fep-142.semantic_disposition}}` | {{topics.fep-142.imported_modules}} | 0 |
+| fep-143 | Affine log-density ratio within one supported exponential family | `{{topics.fep-143.semantic_disposition}}` | {{topics.fep-143.imported_modules}} | 0 |
+| fep-144 | Log-partition derivative equals the sufficient-statistic mean | `{{topics.fep-144.semantic_disposition}}` | {{topics.fep-144.imported_modules}} | 0 |
+| fep-145 | Centered scalar score with zero model expectation | `{{topics.fep-145.semantic_disposition}}` | {{topics.fep-145.imported_modules}} | 0 |
+| fep-146 | Log-partition Hessian and Fisher information equal variance, with rank and zero boundaries | `{{topics.fep-146.semantic_disposition}}` | {{topics.fep-146.imported_modules}} | 0 |
+| fep-147 | Exponential-family KL equals the log-partition Bregman divergence | `{{topics.fep-147.semantic_disposition}}` | {{topics.fep-147.imported_modules}} | 0 |
+| fep-148 | Positive-variance mean coordinate is strictly monotone and injective on an interval | `{{topics.fep-148.semantic_disposition}}` | {{topics.fep-148.imported_modules}} | 0 |
+: Information Geometry topics: the Lean content each row actually states, its semantic disposition, the modules its Lean body imports (generated from the body, `Mathlib.` omitted), and its `sorry` count.
 
 #### Fisher Information Metric (fep-004) {#sec:sd_fisher}
 
@@ -157,6 +158,7 @@ Endpoint limits and distinguished values:
 | $\alpha \to 1$ | $D_\text{KL}(p \,\|\, q)$ | M-projection, mass-covering |
 | $\alpha \to 0$ | $D_\text{KL}(q \,\|\, p)$ | I-projection, mode-seeking |
 | $\alpha = 1/2$ | $4\,H^2(p, q)$ | Symmetric Hellinger distance squared |
+: Endpoint limits and distinguished values of the Renyi/Tsallis $\alpha$-divergence family (fep-044).
 
 The family sits within the broader class of Csiszár $f$-divergences. The fep-044 row selects the distinguished Bernoulli Hellinger instance rather than pretending to cover the entire $\alpha$ family. It defines squared Hellinger divergence with the conventional factor $1/2$ and proves nonnegativity, symmetry, zero iff equal parameters on $[0,1]$, and invariance under exchanging success with failure. Measure-level $\alpha$-divergence, endpoint limits, and general density integration remain separate extensions.
 
@@ -207,27 +209,28 @@ Topic **fep-005** defines four `Finset.filter` blocks from an arbitrary assignme
 
 In a NESS decomposition, skew-symmetry of a current supplies cancellations, but antisymmetry alone does not imply a continuous-space stationarity equation for an arbitrary field and density. Topic fep-025 now defines finite probability current as forward flow minus reverse flow, defines its divergence, proves antisymmetry and global conservation, and shows that a normalized transition matrix with a stationary distribution has zero divergence at every state. A directed three-state cycle witnesses the genuinely non-equilibrium case: its current is divergence-free yet nonzero, so stationarity does not force detailed balance. The row does not claim a diffusion, density PDE, or continuous Helmholtz decomposition; see [@sec:thermodynamics_results].
 
-**Mathlib4 module footprint (Bayesian Mechanics)**: The area now uses several concrete backbones. Finite partitions and probability currents use `Finset` and `Matrix`; blanket independence reaches `Probability.Independence.Conditional`; reversibility reaches `Probability.Kernel.Invariance`; posterior, predictive, and hierarchical laws use native kernel composition and composition products; empirical-prior estimation uses `Probability.ProbabilityMassFunction.Binomial` plus exact sequence limits. Gaussian laws and derivatives use `Probability.Distributions.Gaussian.Real` and `Analysis.SpecialFunctions.Log.Deriv`. These imports expose real structures, while the authored cross-topic theorems certify which structures actually compose.
+**Mathlib4 module footprint (Bayesian Mechanics)**: The area now uses several concrete backbones. Finite partitions and probability currents use `Finset` and `Matrix`; blanket independence reaches `Probability.Independence.Conditional`; reversibility reaches `Probability.Kernel.Invariance`; posterior, predictive, and hierarchical laws use native kernel composition and composition products; empirical-prior estimation uses `Probability.Distributions.Binomial` plus exact sequence limits. Gaussian laws and derivatives use `Probability.Distributions.Gaussian.Real` and `Analysis.SpecialFunctions.Log.Deriv`. These imports expose real structures, while the authored cross-topic theorems certify which structures actually compose.
 
-| Topic | Actual Lean content | Semantic disposition | Mathlib navigation hint | `sorry` count |
-|-------|---------|----------|--------------------|--------------|
-| fep-005 | Four-label finite partition with disjointness and unique total membership | `{{topics.fep-005.semantic_disposition}}` | `Data.Finset.Basic` | 0 |
-| fep-009 | Conditional-independence symmetry and a trivial-σ-algebra witness, plus basic measure laws | `{{topics.fep-009.semantic_disposition}}` | `Probability.Independence.Conditional` | 0 |
-| fep-010 | Reversible Markov kernel implies invariant measure; identity-kernel witness and invariant composition | `{{topics.fep-010.semantic_disposition}}` | `Probability.Kernel.Invariance` | 0 |
-| fep-019 | Native prior-predictive measure, mass preservation, normalization, and sequential association | `{{topics.fep-019.semantic_disposition}}` | `Probability.Kernel.Composition.MeasureComp` | 0 |
-| fep-027 | Normalized hierarchical joint, exact marginals, and three-level associativity | `{{topics.fep-027.semantic_disposition}}` | `Probability.Kernel.Composition.MeasureComp` | 0 |
-| fep-022 | Posterior-predictive kernel plus exact proper Bernoulli Brier-score decomposition | `{{topics.fep-022.semantic_disposition}}` | `Probability.Kernel.Composition.MeasureComp` | 0 |
-| fep-036 | Finite binomial sampling, outcome-indexed Laplace prior, shrinkage identity, and consistency transfer | `{{topics.fep-036.semantic_disposition}}` | `Probability.ProbabilityMassFunction.Binomial` | 0 |
-| fep-040 | Native Gaussian law and moments; entropy monotonicity, derivatives, and heat capacity | `{{topics.fep-040.semantic_disposition}}` | `Probability.Distributions.Gaussian.Real` | 0 |
-| fep-042 | Bernoulli sufficient statistic and exact likelihood factorization | `{{topics.fep-042.semantic_disposition}}` | `Data.List.Count` | 0 |
-| fep-046 | Recursive finite stick weights, exact mass conservation, and residual bounds | `{{topics.fep-046.semantic_disposition}}` | `Algebra.BigOperators.Ring.List` | 0 |
-| fep-135 | Weighted-Dirac embedding preserves singleton masses and normalization | `{{topics.fep-135.semantic_disposition}}` | `MeasureTheory.Measure.WithDensityFinite` | 0 |
-| fep-136 | Embedded finite laws are injective and preserve finite expectations | `{{topics.fep-136.semantic_disposition}}` | `MeasureTheory.Integral.Bochner.Basic` | 0 |
-| fep-137 | Embedded finite prediction agrees with native measure--kernel composition | `{{topics.fep-137.semantic_disposition}}` | `Probability.Kernel.Composition.MeasureComp` | 0 |
-| fep-138 | Embedded static blanket law has exact rectangle factorization | `{{topics.fep-138.semantic_disposition}}` | `MeasureTheory.Constructions.Pi` | 0 |
-| fep-139 | Factorized static blanket satisfies native `CondIndepFun`, with a correlated nontrivial witness | `{{topics.fep-139.semantic_disposition}}` | `Probability.Independence.Conditional` | 0 |
-| fep-140 | Measurable endpoint maps preserve native blanket conditional independence | `{{topics.fep-140.semantic_disposition}}` | `Probability.Independence.Conditional` | 0 |
-| fep-141 | A factorized finite transition row preserves the native blanket property | `{{topics.fep-141.semantic_disposition}}` | `Probability.Kernel.Composition.MeasureComp` | 0 |
+| Topic | Actual Lean content | Semantic disposition | Modules imported (`Mathlib.` prefix omitted) | `sorry` count |
+|-------|---------|----------|--------------------------|--------|
+| fep-005 | Four-label finite partition with disjointness and unique total membership | `{{topics.fep-005.semantic_disposition}}` | {{topics.fep-005.imported_modules}} | 0 |
+| fep-009 | Conditional-independence symmetry and a trivial-σ-algebra witness, plus basic measure laws | `{{topics.fep-009.semantic_disposition}}` | {{topics.fep-009.imported_modules}} | 0 |
+| fep-010 | Reversible Markov kernel implies invariant measure; identity-kernel witness and invariant composition | `{{topics.fep-010.semantic_disposition}}` | {{topics.fep-010.imported_modules}} | 0 |
+| fep-019 | Native prior-predictive measure, mass preservation, normalization, and sequential association | `{{topics.fep-019.semantic_disposition}}` | {{topics.fep-019.imported_modules}} | 0 |
+| fep-027 | Normalized hierarchical joint, exact marginals, and three-level associativity | `{{topics.fep-027.semantic_disposition}}` | {{topics.fep-027.imported_modules}} | 0 |
+| fep-022 | Posterior-predictive kernel plus exact proper Bernoulli Brier-score decomposition | `{{topics.fep-022.semantic_disposition}}` | {{topics.fep-022.imported_modules}} | 0 |
+| fep-036 | Finite binomial sampling, outcome-indexed Laplace prior, shrinkage identity, and consistency transfer | `{{topics.fep-036.semantic_disposition}}` | {{topics.fep-036.imported_modules}} | 0 |
+| fep-040 | Native Gaussian law and moments; entropy monotonicity, derivatives, and heat capacity | `{{topics.fep-040.semantic_disposition}}` | {{topics.fep-040.imported_modules}} | 0 |
+| fep-042 | Bernoulli sufficient statistic and exact likelihood factorization | `{{topics.fep-042.semantic_disposition}}` | {{topics.fep-042.imported_modules}} | 0 |
+| fep-046 | Recursive finite stick weights, exact mass conservation, and residual bounds | `{{topics.fep-046.semantic_disposition}}` | {{topics.fep-046.imported_modules}} | 0 |
+| fep-135 | Weighted-Dirac embedding preserves singleton masses and normalization | `{{topics.fep-135.semantic_disposition}}` | {{topics.fep-135.imported_modules}} | 0 |
+| fep-136 | Embedded finite laws are injective and preserve finite expectations | `{{topics.fep-136.semantic_disposition}}` | {{topics.fep-136.imported_modules}} | 0 |
+| fep-137 | Embedded finite prediction agrees with native measure--kernel composition | `{{topics.fep-137.semantic_disposition}}` | {{topics.fep-137.imported_modules}} | 0 |
+| fep-138 | Embedded static blanket law has exact rectangle factorization | `{{topics.fep-138.semantic_disposition}}` | {{topics.fep-138.imported_modules}} | 0 |
+| fep-139 | Factorized static blanket satisfies native `CondIndepFun`, with a correlated nontrivial witness | `{{topics.fep-139.semantic_disposition}}` | {{topics.fep-139.imported_modules}} | 0 |
+| fep-140 | Measurable endpoint maps preserve native blanket conditional independence | `{{topics.fep-140.semantic_disposition}}` | {{topics.fep-140.imported_modules}} | 0 |
+| fep-141 | A factorized finite transition row preserves the native blanket property | `{{topics.fep-141.semantic_disposition}}` | {{topics.fep-141.imported_modules}} | 0 |
+: Bayesian Mechanics topics: the Lean content each row actually states, its semantic disposition, the modules its Lean body imports (generated from the body, `Mathlib.` omitted), and its `sorry` count.
 
 #### Hierarchical Generative Models and Predictive Coding (fep-027) {#sec:sd_hierarchical}
 
@@ -283,11 +286,11 @@ The fep-046 row recursively defines every allocated weight and the residual mass
 
 **Representative formalization** — *Hierarchical Generative Models (fep-027)*: Hierarchical models sit at the junction of Bayesian mechanics and measure-theoretic probability. The row uses Mathlib's composition product $\mu \otimes_m \kappa$ rather than an independent product measure: it proves normalization under probability/Markov hypotheses, exact parent and predictive marginals, and associativity of a third conditional level. This is a kernel-valued hierarchy with real conditional dependence, while a particular predictive-coding factorization and blanket structure remain model choices.
 
-### Synthesis: What the {{combined_info_bayes_count}} Theorems Establish {#sec:sophisticated_synthesis}
+### Synthesis: What the {{combined_info_bayes_count}} Rows Establish {#sec:sophisticated_synthesis}
 
 Taken together, the {{areas.InfoGeometry.count}} Information Geometry rows and {{areas.BayesianMechanics.count}} Bayesian Mechanics rows map a broad set of probabilistic and geometric interfaces. They do not yet span the full infrastructure required for a complete FEP formalization.
 
-**The {{areas.InfoGeometry.count}} Information Geometry theorems** establish the **differential-geometric substrate**:
+**The {{areas.InfoGeometry.count}} Information Geometry rows** establish the **differential-geometric substrate**:
 
 - **Fisher geometry** — fep-038 derives the Bernoulli score, Fisher information and natural gradient; fep-004 abstracts its finite weighted metric; fep-018 gives the corresponding coordinate distance and separation law.
 - **Categorical and optimization geometry** — fep-100--106 establish simplex-tangent Fisher positivity, pullback, scalar Cramér--Rao, invertible-chart natural-gradient equivariance, mirror-descent and affine Bregman identities, and replicator equivalence with full-rank and null boundaries.
@@ -297,7 +300,7 @@ Taken together, the {{areas.InfoGeometry.count}} Information Geometry rows and {
 - **Metric-space realization** — fep-018 proves Bernoulli Fisher--Rao nonnegativity, symmetry, triangle inequality, and separation, without claiming general $\alpha$-geodesics.
 - **Normalized Bayesian inversion** — fep-017 uses Mathlib's posterior kernel and proves normalization, reconstruction, recovery, and a countable Bayes-density law.
 
-**The {{areas.BayesianMechanics.count}} Bayesian Mechanics theorems** establish the **probabilistic substrate**:
+**The {{areas.BayesianMechanics.count}} Bayesian Mechanics rows** establish the **probabilistic substrate**:
 
 - **Finite partitions** — fep-005 proves a four-label disjoint cover with unique membership but not the conditional-independence structure $p(\mu,\eta\mid b) = p(\mu\mid b)p(\eta\mid b)$.
 - **Conditional independence and measure substrates** — fep-009 proves generic `CondIndep` symmetry and a trivial-σ-algebra witness. The maintained blanket foundation connects the fep-005-style four-block structure to a normalized finite law, positive-mass conditional factorization, zero conditional mutual information, and typed nontrivial dynamics. fep-135--141 embed this carrier into native measures and prove one concrete sigma-algebra-valued `CondIndepFun` statement, measurable endpoint coarsening, and rowwise transition preservation. H1 adds one full-support factorized stationary law and proves invariance under its selected positive-time refresh kernel. Generic blanket existence, arbitrary-mixture closure, causal identification, and biological interpretation remain absent.

@@ -7,15 +7,22 @@ import importlib.metadata
 import json
 import os
 import re
+import statistics
 import subprocess
 import sys
 import tempfile
+from collections.abc import Sequence
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from fep_lean.catalogue.coverage import build_formalism_coverage
+from fep_lean.catalogue.coverage import (
+    build_formalism_coverage,
+    render_topic_import_modules,
+    topic_import_modules,
+)
 from fep_lean.catalogue.relations import EdgeKind
 from fep_lean.catalogue.topics import FEPTopicCatalogue
 from fep_lean.output.evidence import (
@@ -26,10 +33,15 @@ from fep_lean.output.provenance import config_owner_paths, source_owner_paths
 from fep_lean.output.publication_metadata import (
     load_graphical_abstract,
     load_publication_author,
+    load_repository_url,
 )
 
 UNIFIED_FORMALISM_CATALOGUE_FILENAME = "09z_unified_formalism_catalogue.md"
-_RUN_BOUND_MANUSCRIPT_KEYS = frozenset({"compile_rate", "full", "hermes", "verify"})
+# ``source`` carries the checkout identity and the wall-clock render date, so
+# it is run-bound by construction and must not participate in drift equality.
+_RUN_BOUND_MANUSCRIPT_KEYS = frozenset(
+    {"compile_rate", "full", "hermes", "source", "verify"}
+)
 _TEST_COLLECTION_CACHE_SCHEMA_VERSION = 4
 _TEST_COLLECTION_PLUGIN_DISTRIBUTIONS = ("pytest", "pytest-timeout")
 _TEST_COLLECTION_EXPLICIT_PLUGINS = ("pytest_timeout",)
@@ -52,6 +64,125 @@ _TEST_COLLECTION_TEMP_ENVIRONMENT_POLICY = {
     "TMPDIR": ".",
     "XDG_CACHE_HOME": "xdg-cache",
 }
+
+
+def _git_output(project_root: Path, arguments: list[str]) -> str:
+    """Return trimmed ``git`` stdout, or the empty string when git cannot answer."""
+
+    try:
+        completed = subprocess.run(  # nosec B603 B607 - fixed argv, shell=False
+            ["git", "-C", str(project_root), *arguments],
+            capture_output=True,
+            check=False,
+            text=True,
+            timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    if completed.returncode != 0:
+        return ""
+    return completed.stdout.strip()
+
+
+def _default_branch(project_root: Path) -> str:
+    """Return the remote's default branch, falling back to ``main``."""
+
+    head = _git_output(
+        project_root, ["symbolic-ref", "--quiet", "refs/remotes/origin/HEAD"]
+    )
+    branch = head.rsplit("/", 1)[-1] if head else ""
+    return branch or "main"
+
+
+def _published_ref(project_root: Path, commit: str) -> tuple[str, bool, str]:
+    """Return the ref every in-document source link should resolve through.
+
+    A commit-pinned permalink is the right provenance for a link into the
+    repository -- it names the exact tree the sentence describes -- but only
+    once that commit is on the remote. The audited fix pinned five links to a
+    commit that existed on one laptop, so every one of them 404s in the
+    published PDF.
+
+    So the ref is the commit when the commit is reachable from a remote branch,
+    and the default branch when it is not. The link resolves either way, and
+    the accompanying note says which of the two the reader is following, rather
+    than implying a permalink the repository cannot serve.
+    """
+
+    if not commit:
+        return (
+            _default_branch(project_root),
+            False,
+            (
+                "The source commit could not be determined from this checkout, so "
+                "links resolve through the repository's default branch."
+            ),
+        )
+    remote_branches = _git_output(project_root, ["branch", "-r", "--contains", commit])
+    if remote_branches.strip():
+        return (
+            commit,
+            True,
+            (
+                "This commit is on the public repository, so every source link in "
+                "this document is a permalink to the exact tree described here."
+            ),
+        )
+    branch = _default_branch(project_root)
+    return (
+        branch,
+        False,
+        (
+            f"This commit is not yet on the public repository, so source links "
+            f"resolve through the `{branch}` branch until it is pushed; fetch the "
+            f"commit named above to reproduce a number exactly."
+        ),
+    )
+
+
+def _source_stamp_vars(project_root: Path) -> dict[str, str]:
+    """Return the checkout identity this render describes.
+
+    The title page carries an authored ``paper.version``/``paper.date`` from
+    ``manuscript/config.yaml``, which a reader uses to fetch the sources behind
+    the numbers.  When the checkout has moved past the stamped tag, those two
+    fields silently describe a different tree: the audited v1.1.0 stamp sat on
+    a paper whose live-token counts came from a tree 15,033 Lean lines newer,
+    and no reader could reproduce a single headline count from the tag.
+
+    These variables are the reproducible complement -- the exact commit the
+    numbers were computed from, whether that checkout was clean, and when the
+    render happened.  Every value is computed; none is authored.
+    """
+
+    root = Path(project_root)
+    commit = _git_output(root, ["rev-parse", "HEAD"])
+    published_ref, published, published_note = _published_ref(root, commit)
+    short_commit = _git_output(root, ["rev-parse", "--short=12", "HEAD"])
+    describe = _git_output(root, ["describe", "--tags", "--always", "--dirty"])
+    exact_tag = _git_output(root, ["describe", "--exact-match", "--tags", "HEAD"])
+    porcelain = _git_output(root, ["status", "--porcelain"])
+    commit_date = _git_output(root, ["log", "-1", "--format=%cI"])
+    dirty = bool(porcelain)
+    stamp = short_commit or "unknown"
+    if dirty:
+        stamp = f"{stamp} (uncommitted changes present)"
+    return {
+        "commit": commit or "unknown",
+        "short_commit": short_commit or "unknown",
+        "published_ref": published_ref,
+        "published": "true" if published else "false",
+        "published_note": published_note,
+        "describe": describe or "unknown",
+        "exact_tag": exact_tag or "none",
+        "commit_date": commit_date or "unknown",
+        "dirty": "true" if dirty else "false",
+        "render_date": datetime.now(UTC).date().isoformat(),
+        # One ready-to-typeset line for the title page.
+        "stamp": (
+            f"source snapshot {stamp}, rendered {datetime.now(UTC).date().isoformat()}"
+        ),
+    }
 
 
 def _read_toolchain_vars(project_root: Path) -> dict[str, str]:
@@ -96,6 +227,28 @@ def _get_latest_verification_manifest(
     return report_root / "verification_manifest.json" if report_root else None
 
 
+def _topic_duration_spread(durations: Sequence[float]) -> dict[str, float]:
+    """Return the per-topic elapsed-time spread a mean alone cannot show.
+
+    The primer printed "about 1-2 seconds" per verification for four releases.
+    No receipt has ever supported it: the mean is an order of magnitude
+    larger, and the fastest topic in the audited run is still above the top of
+    that range. A mean hides that, because one 183-second topic and a
+    two-second topic average to something neither resembles. Publishing the
+    minimum, median and maximum alongside it makes the hand-typed range
+    unwritable -- the numbers come from the same receipt as the mean.
+    """
+
+    ordered = sorted(float(value) for value in durations)
+    if not ordered:
+        return {"min_topic_s": 0.0, "median_topic_s": 0.0, "max_topic_s": 0.0}
+    return {
+        "min_topic_s": round(ordered[0], 3),
+        "median_topic_s": round(statistics.median(ordered), 3),
+        "max_topic_s": round(ordered[-1], 3),
+    }
+
+
 def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
     base: dict[str, Any] = {
         "manifest_present": False,
@@ -107,11 +260,18 @@ def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
         "compiles_true": 0,
         "compiles_false": 0,
         "sorry_count": 0,
+        "sorry_topics": 0,
+        "sorry_occurrences": 0,
         "warning_count": 0,
         "duration_seconds": 0.0,
         "duration_min": 0.0,
         "mean_topic_s": 0.0,
+        "min_topic_s": 0.0,
+        "median_topic_s": 0.0,
+        "max_topic_s": 0.0,
         "failed_topic_ids": "none",
+        "not_clean_topic_ids": "none",
+        "failed_compile_topic_ids": "none",
         "clean_topic_ids": [],
     }
     if path is None or not path.is_file():
@@ -146,8 +306,20 @@ def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
         for row in results
         if isinstance(row, dict)
     ]
-    sorry_count = sum(
+    # Two different questions, two different numbers. ``sorry_topics`` counts
+    # topics that admit anything; ``sorry_occurrences`` counts admitted proofs.
+    # Prose that says "uses of ``sorry``" wants the second. ``sorry_count`` is
+    # retained as the historical alias of ``sorry_topics``.
+    sorry_topics = sum(
         bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
+        for row in results
+        if isinstance(row, dict)
+    )
+    sorry_occurrences = sum(
+        int(row["sorry_occurrences"])
+        if isinstance(row.get("sorry_occurrences"), int)
+        and not isinstance(row.get("sorry_occurrences"), bool)
+        else bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
         for row in results
         if isinstance(row, dict)
     )
@@ -164,22 +336,35 @@ def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
         and not bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
         and not row.get("warnings", [])
     ]
-    failed_ids = [
+    # ``clean`` means compiled, unadmitted and warning-free, so its complement
+    # includes topics that compiled cleanly but emitted a warning. Printing
+    # that complement under the label "failed" is wrong; name both sets.
+    not_clean_ids = [
         str(row.get("topic_id", ""))
         for row in results
         if isinstance(row, dict) and str(row.get("topic_id", "")) not in clean_ids
     ]
+    failed_compile_ids = [
+        str(row.get("topic_id", ""))
+        for row in results
+        if isinstance(row, dict) and not bool(row.get("compiles", False))
+    ]
     duration_seconds = sum(durations)
     base.update(
         {
-            "sorry_count": sorry_count,
+            "sorry_count": sorry_topics,
+            "sorry_topics": sorry_topics,
+            "sorry_occurrences": sorry_occurrences,
             "warning_count": warning_count,
             "duration_seconds": round(duration_seconds, 3),
             "duration_min": round(duration_seconds / 60, 2),
             "mean_topic_s": round(duration_seconds / len(durations), 3)
             if durations
             else 0.0,
-            "failed_topic_ids": ", ".join(failed_ids) or "none",
+            **_topic_duration_spread(durations),
+            "failed_topic_ids": ", ".join(not_clean_ids) or "none",
+            "not_clean_topic_ids": ", ".join(not_clean_ids) or "none",
+            "failed_compile_topic_ids": ", ".join(failed_compile_ids) or "none",
             "clean_topic_ids": clean_ids,
         }
     )
@@ -211,12 +396,22 @@ def _verify_block_from_native_receipt(
         and not bool(row.get("has_sorry", False))
         and not row.get("warnings", [])
     ]
-    failed_ids = [
+    not_clean_ids = [
         str(row.get("topic_id", ""))
         for row in rows
         if isinstance(row, dict) and str(row.get("topic_id", "")) not in clean_ids
     ]
+    failed_compile_ids = [
+        str(row.get("topic_id", ""))
+        for row in rows
+        if isinstance(row, dict) and not bool(row.get("compiles", False))
+    ]
     duration_seconds = float(payload.get("duration_s", 0.0) or 0.0)
+    row_durations = [
+        float(row.get("duration_s", 0.0) or 0.0)
+        for row in rows
+        if isinstance(row, dict)
+    ]
     catalogue_digest = str(payload.get("catalogue_sha256", ""))
     base.update(
         {
@@ -236,11 +431,18 @@ def _verify_block_from_native_receipt(
                 if isinstance(row, dict)
             ),
             "sorry_count": int(validation.get("sorry_count", 0)),
+            "sorry_topics": int(validation.get("sorry_count", 0)),
+            "sorry_occurrences": int(
+                validation.get("sorry_occurrences", validation.get("sorry_count", 0))
+            ),
             "warning_count": int(validation.get("warning_count", 0)),
             "duration_seconds": round(duration_seconds, 3),
             "duration_min": round(duration_seconds / 60, 2),
             "mean_topic_s": round(duration_seconds / len(rows), 3) if rows else 0.0,
-            "failed_topic_ids": ", ".join(failed_ids) or "none",
+            **_topic_duration_spread(row_durations),
+            "failed_topic_ids": ", ".join(not_clean_ids) or "none",
+            "not_clean_topic_ids": ", ".join(not_clean_ids) or "none",
+            "failed_compile_topic_ids": ", ".join(failed_compile_ids) or "none",
             "clean_topic_ids": clean_ids,
         }
     )
@@ -783,6 +985,12 @@ def build_manuscript_vars(
             "mathlib_status": topic.mathlib_status,
             "primary_theorem": topic.primary_theorem,
             "semantic_disposition": topic.semantic_disposition,
+            # The framework chapters print this cell. It is computed from the
+            # body's own ``import`` lines so the column cannot drift away from
+            # what the row compiles against; see FEPLEAN-ACC-07.
+            "imported_modules": render_topic_import_modules(
+                topic_import_modules(topic.id)
+            ),
             "assumption_review": topic.assumption_review,
             "non_vacuity": topic.non_vacuity,
             "acceptance_probe": topic.acceptance_probe,
@@ -842,6 +1050,8 @@ def build_manuscript_vars(
     )
     publication_author = load_publication_author(root)
     graphical_abstract = load_graphical_abstract(root)
+    source_stamp = _source_stamp_vars(project_root)
+    repository_url = load_repository_url(root)
     return {
         **summary,
         "areas": area_vars,
@@ -859,6 +1069,7 @@ def build_manuscript_vars(
         },
         "compile_rate": compile_rate,
         **_read_toolchain_vars(project_root),
+        "source": source_stamp,
         "verify": verify,
         "full": {
             "claim_ready": manifest is not None,
@@ -869,6 +1080,7 @@ def build_manuscript_vars(
         "publication": {
             "author": publication_author.manuscript_variables(),
             "graphical_abstract": graphical_abstract.manuscript_variables(),
+            "repository_url": repository_url,
         },
     }
 

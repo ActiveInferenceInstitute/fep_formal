@@ -210,4 +210,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-# Integrated into validation via `infrastructure.validation.cli` and fep_lean pipeline (see docs/_generated/canonical_facts.md).
+# Integrated into validation via `infrastructure.validation.cli` and the fep_lean pipeline.

@@ -46,13 +46,57 @@ uv run python scripts/audit_formalisms.py \
 
 `render_manuscript.py` is the fail-closed source-to-build renderer. Its check
 mode validates the stable typed-variable projection, the exact generated
-appendix, and every authored placeholder without writing output. Run-local
-receipt/provider values are rebuilt from independently validated evidence; the
-default mode writes the resolved files under `output/manuscript/`:
+appendix, and every authored placeholder without writing output. Neither mode
+creates that projection -- `fep-lean catalogue` owns it, and both modes exit 1
+with "stale manuscript projections" where it is absent, which on a fresh
+checkout is always. Run-local receipt/provider values are rebuilt from
+independently validated evidence; the default mode writes the resolved files
+under `output/manuscript/`:
 
 ```bash
+uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
 uv run python scripts/render_manuscript.py
+```
+
+`render_publication.py` is the publication entry point: it renders the authored
+sources into `output/manuscript/`, runs the shared rendering template's PDF
+stage, and then runs this repository's own acceptance; its exit code is the
+conjunction. The first step is load-bearing: the template renders from
+`output/manuscript/` whenever it exists and its hydration hook looks for a
+generator script this project does not have, so a render invoked without it
+typesets whatever that directory last held. The template compiles with
+`-interaction=nonstopmode` and tests its log for four fatal markers, so a `!`
+error and every `Missing character:` note exit zero with a PDF written -- the
+mechanism that shipped 162 dropped glyphs and one false printed theorem. The
+template is a separate repository, so this repository cannot fix that test; it
+declines to accept its verdict instead. A preflight probes the host's installed
+fonts first, because the dropped-glyph failure is silent by construction:
+
+```bash
+FEP_LEAN_TEMPLATE_DIR=<template checkout> \
+  uv run python scripts/render_publication.py
+uv run python scripts/render_publication.py --accept-only
+```
+
+`check_render_log.py` is that acceptance on its own. A run that finds nothing
+writes `docs/render-acceptance.json`; `--verify-receipt` re-reads it and is
+what CI runs, because CI does not render this document -- that needs a checkout
+of the shared template, XeLaTeX, pandoc, `rsvg-convert`, the mermaid CLI and
+the two faces the preamble selects:
+
+```bash
+uv run python scripts/check_render_log.py --receipt docs/render-acceptance.json
+uv run python scripts/check_render_log.py --verify-receipt
+```
+
+`build_render_fonts.py` owns the font requirement: `--check` fails when the
+manuscript starts typesetting a glyph the committed record does not list, and
+`--probe` asks the host's fontconfig whether the selected faces cover the set:
+
+```bash
+uv run python scripts/build_render_fonts.py --check
+uv run python scripts/build_render_fonts.py --probe
 ```
 
 Do not invoke repository-root modules or set a monorepo-specific `PYTHONPATH`;

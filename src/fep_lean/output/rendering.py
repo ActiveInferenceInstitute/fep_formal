@@ -16,6 +16,46 @@ from fep_lean.output.publication_metadata import (
 )
 
 PLACEHOLDER_RE = re.compile(r"\{\{([^}]+)\}\}")
+# Every shell block this repository publishes is a promise a reader can run.
+# ``scripts/render_manuscript.py --check`` validates
+# ``manuscript/manuscript_vars.yaml`` and the generated appendix, both build
+# products excluded by ``.gitignore``. On a checkout that has not built them
+# it exits 1 with "test collection cache is missing", so a block that runs the
+# check without a generator ahead of it publishes a recipe that fails on the
+# first try. Four blocks did, the paper's own Reproducibility Statement
+# among them.
+_SHELL_FENCE_LANGUAGES: tuple[str, ...] = ("bash", "console", "shell", "sh")
+_SHELL_FENCE_RE = re.compile(
+    r"^(?P<indent>[ \t]*)```(?:"
+    + "|".join(_SHELL_FENCE_LANGUAGES)
+    + r")[^\n]*\n(?P<body>.*?)^(?P=indent)```",
+    re.DOTALL | re.MULTILINE,
+)
+_RENDER_CHECK_TOKEN = "scripts/render_manuscript.py --check"
+# What actually regenerates the projections the check validates. The
+# generating form of ``render_manuscript.py`` does not: it rebuilds the test
+# cache but never writes ``manuscript_vars.yaml``, so with that file absent it
+# exits 1 with "stale manuscript projections" exactly as ``--check`` does.
+_PROJECTION_GENERATORS: tuple[str, ...] = ("fep-lean catalogue",)
+# The check counts the collected test suite, so it imports pytest and
+# pytest-timeout -- both `dev` extras. A block that opens with a bare
+# `uv sync --locked` *removes* them from an existing environment, and the
+# check then exits 1 with "required pytest collection distribution is
+# missing: pytest". The conclusion's Reproducibility Statement opened exactly
+# that way.
+_SYNC_TOKEN = "uv sync"
+_SYNC_TEST_EXTRA = "--extra dev"
+# Files whose shell blocks are published as reproduction instructions. Blocks
+# under a generated or vendored tree are not this repository's promise.
+_PUBLISHED_COMMAND_GLOBS: tuple[str, ...] = (
+    "*.md",
+    ".github/workflows/*.yml",
+    "docs/*.md",
+    "manuscript/*.md",
+    "scripts/*.md",
+    "src/fep_lean/*.md",
+    "tests/*.md",
+)
 SOURCE_EXCLUDES = frozenset(
     {
         "AGENTS.md",
@@ -24,6 +64,11 @@ SOURCE_EXCLUDES = frozenset(
         "09z_unified_formalism_catalogue.md",
     }
 )
+# Generated appendices that carry no ``{{placeholder}}`` and therefore need no
+# substitution, but must still reach the rendered tree. They were previously
+# only excluded, so an injected-tree render dropped the entire 155-topic
+# formalism catalogue -- roughly two thirds of the paper -- with no diagnostic.
+VERBATIM_SOURCES: tuple[str, ...] = ("09z_unified_formalism_catalogue.md",)
 MANUSCRIPT_ASSETS: dict[str, tuple[Path, Path]] = {
     "../docs/formalism-atlas.svg": (
         Path("docs/formalism-atlas.svg"),
@@ -46,6 +91,25 @@ MANUSCRIPT_ASSETS: dict[str, tuple[Path, Path]] = {
     "../output/figures/status_distribution.png": (
         Path("output/figures/status_distribution.png"),
         Path("assets/status_distribution.png"),
+    ),
+    # 04e's area-distribution paragraph described a figure the document did not
+    # contain; the figure now ships, so its asset must resolve too.
+    "../output/figures/topics_by_area.png": (
+        Path("output/figures/topics_by_area.png"),
+        Path("assets/topics_by_area.png"),
+    ),
+    # Rasterized from the SVG projections by
+    # ``scripts/build_manuscript_figures.py`` (fep_lean.output.svg_raster).
+    # 04f and 04g cite these two as PNGs; without the rows here the combined
+    # render kept an escaping ``../`` path and aborted on
+    # ``! Unable to load picture or PDF file``.
+    "../output/figures/formalism-atlas.png": (
+        Path("output/figures/formalism-atlas.png"),
+        Path("assets/formalism-atlas.png"),
+    ),
+    "../output/figures/formal-kernel-dashboard.png": (
+        Path("output/figures/formal-kernel-dashboard.png"),
+        Path("assets/formal-kernel-dashboard.png"),
     ),
 }
 
@@ -82,6 +146,64 @@ def manuscript_source_files(source_dir: Path) -> tuple[Path, ...]:
     )
 
 
+def published_command_files(project_root: Path) -> tuple[Path, ...]:
+    """Return the files whose shell blocks are published as instructions."""
+    root = Path(project_root)
+    found: set[Path] = set()
+    for pattern in _PUBLISHED_COMMAND_GLOBS:
+        found.update(path for path in root.glob(pattern) if path.is_file())
+    return tuple(sorted(found))
+
+
+def unreproducible_command_blocks(project_root: Path) -> tuple[str, ...]:
+    """Return published shell blocks whose render check cannot pass as written.
+
+    ``render_manuscript.py --check`` validates generated projections it does
+    not create. A block that runs it without first running a generator --
+    ``fep-lean catalogue``, or the generating form of the script itself --
+    exits 1 on any checkout that has not already built them, which is every
+    fresh clone. This audit reads each block in order and reports the ones
+    that ask a reader to run a check nothing in the block can satisfy.
+    """
+
+    root = Path(project_root)
+    failures: list[str] = []
+    for path in published_command_files(root):
+        text = path.read_text(encoding="utf-8")
+        for fence in _SHELL_FENCE_RE.finditer(text):
+            body = fence.group("body")
+            index = body.find(_RENDER_CHECK_TOKEN)
+            if index < 0:
+                continue
+            preceding = body[:index]
+            offset = fence.start("body") + index
+            line_number = text.count("\n", 0, offset) + 1
+            try:
+                display = path.relative_to(root).as_posix()
+            except ValueError:  # pragma: no cover - defensive
+                display = path.name
+            if not any(token.strip() in preceding for token in _PROJECTION_GENERATORS):
+                failures.append(
+                    f"{display}:{line_number}: "
+                    f"`{_RENDER_CHECK_TOKEN}` runs with no generator ahead of "
+                    "it; add `uv run fep-lean catalogue` earlier in the same "
+                    "block"
+                )
+            starved = [
+                line
+                for line in preceding.splitlines()
+                if _SYNC_TOKEN in line and _SYNC_TEST_EXTRA not in line
+            ]
+            if starved:
+                failures.append(
+                    f"{display}:{line_number}: "
+                    f"`{_RENDER_CHECK_TOKEN}` follows `{starved[0].strip()}`, "
+                    f"which leaves no pytest to collect; pass "
+                    f"`{_SYNC_TEST_EXTRA}`"
+                )
+    return tuple(failures)
+
+
 def unresolved_placeholders(
     source_dir: Path, variables: Mapping[str, Any]
 ) -> tuple[str, ...]:
@@ -112,6 +234,34 @@ def unresolved_placeholders(
             line_number = content.count("\n", 0, match.start()) + 1
             unresolved.append(f"{path.name}:{line_number}: unclosed opening delimiter")
     return tuple(unresolved)
+
+
+def substitute_placeholders(
+    content: str, variables: Mapping[str, Any], *, strict: bool = True
+) -> str:
+    """Return ``content`` with every ``{{placeholder}}`` resolved.
+
+    The renderer calls this after :func:`unresolved_placeholders` has already
+    refused any unknown key, and keeps ``strict`` so an unknown one raises
+    rather than printing a literal ``{{token}}`` onto a page.
+
+    A caller comparing rendered output against its source (see
+    ``fep_lean.output.render_log.stale_render_defects``) needs the same text
+    the renderer produced but may hold an older variable projection, so it
+    passes ``strict=False`` and leaves what it cannot resolve alone.
+    """
+
+    flat = flatten_variables(variables)
+
+    def replace(match: re.Match[str]) -> str:
+        key = match.group(1).strip()
+        if key == "…":
+            return match.group(0)
+        if strict:
+            return flat[key]
+        return flat.get(key, match.group(0))
+
+    return PLACEHOLDER_RE.sub(replace, content)
 
 
 def _atomic_text(path: Path, text: str) -> None:
@@ -191,15 +341,10 @@ def render_manuscript(
         source_path: source_path.read_text(encoding="utf-8")
         for source_path in manuscript_source_files(source)
     }
-    flat = flatten_variables(variables)
-    rendered_contents: dict[Path, str] = {}
-    for source_path, content in source_contents.items():
-
-        def replace(match: re.Match[str]) -> str:
-            key = match.group(1).strip()
-            return match.group(0) if key == "…" else flat[key]
-
-        rendered_contents[source_path] = PLACEHOLDER_RE.sub(replace, content)
+    rendered_contents: dict[Path, str] = {
+        source_path: substitute_placeholders(content, variables)
+        for source_path, content in source_contents.items()
+    }
 
     referenced_assets = {
         reference: paths
@@ -247,6 +392,12 @@ def render_manuscript(
                 reference, destination_relative.as_posix()
             )
         rendered_contents[source_path] = rendered_content
+
+    # Verbatim generated appendices: no substitution, but they must ship.
+    for verbatim_name in VERBATIM_SOURCES:
+        verbatim_path = source / verbatim_name
+        if verbatim_path.is_file():
+            rendered_contents[verbatim_path] = verbatim_path.read_text(encoding="utf-8")
 
     destination.parent.mkdir(parents=True, exist_ok=True)
     staged = Path(

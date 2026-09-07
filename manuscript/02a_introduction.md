@@ -32,6 +32,7 @@ Lean 4 was selected for project-specific, reproducible reasons rather than a mut
 | Information theory | `InformationTheory.klDiv` plus self, zero-characterization, Gibbs, and kernel chain-rule lemmas | Reuse native KL results in fep-002 and fep-014 |
 | Executable proof tooling | Lean elaborator, kernel, and tactics available through the pinned Lake workspace | Produce replayable per-topic and aggregate compiler evidence |
 | Research-tool integration | Lean source is text, compiler results are structured, and local tooling can isolate invocations | Keep optional LLM commentary outside the acceptance boundary |
+: Prover-selection requirements, the evidence each one is checked against at the pinned Lean/Mathlib revision, and the consequence for this project.
 
 This is a fitness claim for the present catalogue, not a claim that Lean dominates Coq, Isabelle/HOL, Agda, or another prover for every physical theory.
 
@@ -106,3 +107,4 @@ The following notation is used throughout this paper:
 | $\Gamma$ | Solenoidal flow operator | [@sec:the_theoretical_landscape] |
 | $Q = -Q^\top$ | Skew-symmetric (solenoidal) matrix | [@sec:the_theoretical_landscape], [@eq:eq_25] |
 | $F, U, T, S$ | Helmholtz free energy, internal energy, temperature, entropy | [@sec:thermodynamics_results] |
+: Notation used throughout the paper, with the section in which each symbol is first used.

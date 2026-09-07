@@ -1,6 +1,6 @@
 ## Pipeline Architecture and Execution Profile {#sec:pipeline_architecture_and_execution_profile}
 
-### The Central Execution and Orchestration DAG {#sec:the_6_step_directed_acyclic_graph}
+### The Central Execution and Orchestration DAG {#sec:execution_orchestration_dag}
 
 The architecture is organized around evidence boundaries rather than one undifferentiated success flag:
 
@@ -63,7 +63,7 @@ The package now uses the unambiguous `fep_lean` namespace, so correctness no lon
 
 ### Representative Run Statistics {#sec:pipeline_run_statistics}
 
-No unvalidated run is called representative. The renderer reports native evidence `{{verify.evidence_kind}}` with `{{verify.compiles_true}}/{{verify.topics_with_result}}` compiler successes, {{verify.warning_count}} warnings, and {{verify.sorry_count}} admissions. It reports full readiness as `{{full.claim_ready}}`; Hermes fields remain unavailable unless that predicate is true.
+No unvalidated run is called representative. The renderer reports native evidence `{{verify.evidence_kind}}` with `{{verify.compiles_true}}/{{verify.topics_with_result}}` compiler successes, {{verify.warning_count}} warnings, and {{verify.sorry_occurrences}} admissions. It reports full readiness as `{{full.claim_ready}}`; Hermes fields remain unavailable unless that predicate is true.
 
 ### Execution Metrics: Representative Run {#sec:execution_metrics_the_definitive_run}
 
@@ -73,7 +73,7 @@ For receipt `{{verify.run_id}}`, recorded native compiler time is {{verify.durat
 
 From the project root:
 
-1. synchronize the locked Python environment with `uv sync --locked`;
+1. synchronize the locked Python environment with `uv sync --locked --extra dev`, whose test extras step 5 needs;
 2. explicitly prepare the pinned Lean workspace with `uv run fep-lean setup` when its cache is absent;
 3. regenerate and drift-check catalogue, aggregate Lean, semantic audit, and coverage projections;
 4. run `uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json` for native evidence;

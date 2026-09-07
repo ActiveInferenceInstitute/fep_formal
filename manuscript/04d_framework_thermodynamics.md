@@ -170,29 +170,30 @@ The thermodynamic topics encode six distinct, composable layers of the theory:
 - **Finite path thermodynamics (fep-093--099)** — normalized forward/reverse path laws, involutive reversal, path-ratio and fluctuation identities, finite Jarzynski normalization, local current cancellation, and reversible KL dissipation with explicit irreversible and zero-rate boundaries.
 - **Two-state continuous time (fep-149--155)** — a positive-rate Boolean Markov kernel, identity and Chapman--Kolmogorov laws, left and right master equations, a nonuniform detailed-balance stationary law, exact exponential relaxation, and quadratic Lyapunov decay with a strict nonstationary benchmark.
 
-| Topic | Actual Lean content | Semantic disposition | Mathlib navigation hint | `sorry` count |
-|-------|---------|----------|--------------------|--------------|
-| fep-013 | Helmholtz definition, exact derivative, and equilibrium reduction to $-S$ | `{{topics.fep-013.semantic_disposition}}` | `Analysis.Calculus.Deriv.Basic` | 0 |
-| fep-025 | Finite probability current, conservation, stationarity, and nonzero three-cycle witness | `{{topics.fep-025.semantic_disposition}}` | `LinearAlgebra.Matrix.Notation` | 0 |
-| fep-030 | Native binary-entropy maximum/equality characterization and exact uniform finite entropy | `{{topics.fep-030.semantic_disposition}}` | `Analysis.SpecialFunctions.BinaryEntropy` | 0 |
-| fep-031 | Finite Gibbs-weight positivity, energy monotonicity, normalization, and mass one | `{{topics.fep-031.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-037 | Two-state autocorrelation recurrence/decay and exact fluctuation--response kernel | `{{topics.fep-037.semantic_disposition}}` | `Analysis.SpecificLimits.Normed` | 0 |
-| fep-049 | Finite quadratic and edge-flux entropy production with equilibrium separation | `{{topics.fep-049.semantic_disposition}}` | `Analysis.SpecialFunctions.Log.Basic` | 0 |
-| fep-050 | Boolean erasure entropy loss and conditional Landauer heat/work derivation | `{{topics.fep-050.semantic_disposition}}` | `Analysis.SpecialFunctions.BinaryEntropy` | 0 |
-| fep-093 | Normalized finite forward/reverse path laws, reversal, and full-support ratio | `{{topics.fep-093.semantic_disposition}}` | `Probability.Kernel.Invariance` | 0 |
-| fep-094 | Finite path entropy production identified with finite KL | `{{topics.fep-094.semantic_disposition}}` | `InformationTheory.KullbackLeibler.Basic` | 0 |
-| fep-095 | Detailed finite fluctuation symmetry from the path-law ratio | `{{topics.fep-095.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-096 | Integral fluctuation identity under normalized full-support path laws | `{{topics.fep-096.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-097 | Finite Jarzynski identity with explicit work, inverse temperature, and normalization | `{{topics.fep-097.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-098 | Local detailed balance and edge-current cancellation | `{{topics.fep-098.semantic_disposition}}` | `Probability.Kernel.Invariance` | 0 |
-| fep-099 | Reversible one-step KL dissipation and irreversible positive-production witness | `{{topics.fep-099.semantic_disposition}}` | `InformationTheory.KullbackLeibler.ChainRule` | 0 |
-| fep-149 | Positive-rate two-state continuous-time Markov kernel and nonuniform benchmark | `{{topics.fep-149.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-150 | Continuous-time transition is the identity at time zero | `{{topics.fep-150.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-151 | Exact Chapman--Kolmogorov semigroup law | `{{topics.fep-151.semantic_disposition}}` | `LinearAlgebra.Matrix.Multiplication` | 0 |
-| fep-152 | Entrywise left and right continuous-time master equations | `{{topics.fep-152.semantic_disposition}}` | `Analysis.SpecialFunctions.ExpDeriv` | 0 |
-| fep-153 | Stationarity and detailed balance for the exact semigroup | `{{topics.fep-153.semantic_disposition}}` | `Probability.Kernel.Invariance` | 0 |
-| fep-154 | Exact exponential relaxation from an arbitrary normalized Boolean law | `{{topics.fep-154.semantic_disposition}}` | `Analysis.SpecialFunctions.Exp` | 0 |
-| fep-155 | Exact quadratic Lyapunov law, derivative, and strict benchmark decay | `{{topics.fep-155.semantic_disposition}}` | `Analysis.SpecialFunctions.ExpDeriv` | 0 |
+| Topic | Actual Lean content | Semantic disposition | Modules imported (`Mathlib.` prefix omitted) | `sorry` count |
+|-------|---------|----------|--------------------------|--------|
+| fep-013 | Helmholtz definition, exact derivative, and equilibrium reduction to $-S$ | `{{topics.fep-013.semantic_disposition}}` | {{topics.fep-013.imported_modules}} | 0 |
+| fep-025 | Finite probability current, conservation, stationarity, and nonzero three-cycle witness | `{{topics.fep-025.semantic_disposition}}` | {{topics.fep-025.imported_modules}} | 0 |
+| fep-030 | Native binary-entropy maximum/equality characterization and exact uniform finite entropy | `{{topics.fep-030.semantic_disposition}}` | {{topics.fep-030.imported_modules}} | 0 |
+| fep-031 | Finite Gibbs-weight positivity, energy monotonicity, normalization, and mass one | `{{topics.fep-031.semantic_disposition}}` | {{topics.fep-031.imported_modules}} | 0 |
+| fep-037 | Two-state autocorrelation recurrence/decay and exact fluctuation--response kernel | `{{topics.fep-037.semantic_disposition}}` | {{topics.fep-037.imported_modules}} | 0 |
+| fep-049 | Finite quadratic and edge-flux entropy production with equilibrium separation | `{{topics.fep-049.semantic_disposition}}` | {{topics.fep-049.imported_modules}} | 0 |
+| fep-050 | Boolean erasure entropy loss and conditional Landauer heat/work derivation | `{{topics.fep-050.semantic_disposition}}` | {{topics.fep-050.imported_modules}} | 0 |
+| fep-093 | Normalized finite forward/reverse path laws, reversal, and full-support ratio | `{{topics.fep-093.semantic_disposition}}` | {{topics.fep-093.imported_modules}} | 0 |
+| fep-094 | Finite path entropy production identified with finite KL | `{{topics.fep-094.semantic_disposition}}` | {{topics.fep-094.imported_modules}} | 0 |
+| fep-095 | Detailed finite fluctuation symmetry from the path-law ratio | `{{topics.fep-095.semantic_disposition}}` | {{topics.fep-095.imported_modules}} | 0 |
+| fep-096 | Integral fluctuation identity under normalized full-support path laws | `{{topics.fep-096.semantic_disposition}}` | {{topics.fep-096.imported_modules}} | 0 |
+| fep-097 | Finite Jarzynski identity with explicit work, inverse temperature, and normalization | `{{topics.fep-097.semantic_disposition}}` | {{topics.fep-097.imported_modules}} | 0 |
+| fep-098 | Local detailed balance and edge-current cancellation | `{{topics.fep-098.semantic_disposition}}` | {{topics.fep-098.imported_modules}} | 0 |
+| fep-099 | Reversible one-step KL dissipation and irreversible positive-production witness | `{{topics.fep-099.semantic_disposition}}` | {{topics.fep-099.imported_modules}} | 0 |
+| fep-149 | Positive-rate two-state continuous-time Markov kernel and nonuniform benchmark | `{{topics.fep-149.semantic_disposition}}` | {{topics.fep-149.imported_modules}} | 0 |
+| fep-150 | Continuous-time transition is the identity at time zero | `{{topics.fep-150.semantic_disposition}}` | {{topics.fep-150.imported_modules}} | 0 |
+| fep-151 | Exact Chapman--Kolmogorov semigroup law | `{{topics.fep-151.semantic_disposition}}` | {{topics.fep-151.imported_modules}} | 0 |
+| fep-152 | Entrywise left and right continuous-time master equations | `{{topics.fep-152.semantic_disposition}}` | {{topics.fep-152.imported_modules}} | 0 |
+| fep-153 | Stationarity and detailed balance for the exact semigroup | `{{topics.fep-153.semantic_disposition}}` | {{topics.fep-153.imported_modules}} | 0 |
+| fep-154 | Exact exponential relaxation from an arbitrary normalized Boolean law | `{{topics.fep-154.semantic_disposition}}` | {{topics.fep-154.imported_modules}} | 0 |
+| fep-155 | Exact quadratic Lyapunov law, derivative, and strict benchmark decay | `{{topics.fep-155.semantic_disposition}}` | {{topics.fep-155.imported_modules}} | 0 |
+: Thermodynamics topics: the Lean content each row actually states, its semantic disposition, the modules its Lean body imports (generated from the body, `Mathlib.` omitted), and its `sorry` count.
 
 The strongest direct facts form a chain rather than an isolated roster: fep-030 and fep-031 meet at the binary infinite-temperature maximum; fep-025's finite currents feed fep-049's dissipation law; fep-040's Gaussian thermal entropy feeds fep-013's Helmholtz derivative; and fep-050 derives Landauer heat and work bounds from named physical premises. Each chain is narrower than the full physical theory, but each seam is checked in Lean.
 

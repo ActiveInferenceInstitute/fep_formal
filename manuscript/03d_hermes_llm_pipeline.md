@@ -33,6 +33,8 @@ flowchart LR
     receipt -- yes --> eligible[full-run claims eligible]
 ```
 
+*The Hermes topic run: a canonical topic entry reaches a Lean block only through a session and a compiler, and reaches a manuscript claim only through a valid full receipt. Each diamond is a rejection point, not a retry.*
+
 ### FEP-Domain System Prompt {#sec:fep_domain_system_prompt}
 
 The system prompt asks for a short mathematical explanation and one refined Lean block. Its load-bearing constraints are concrete: copy the original imports, preserve the `FEPNNN` namespace, retain explicit tactic hint lists, and never introduce `sorry` into a source that was already `sorry`-free. Workflow preambles may request draft, prove, review, or verify behavior, but they do not weaken the compiler or receipt gates.
@@ -71,6 +73,7 @@ The implementation distinguishes mechanisms that are often conflated in LLM repo
 | Cross-model advance | empty content, wall-clock timeout, non-retriable HTTP failure, transport failure, or parse failure | provider model | `chain_advance_reason`, `model_used`, aggregated as `model_fallback_count` and `chain_advance_reasons` | the configured primary did not supply the accepted response |
 | Hermes-refined Lean outcome | the returned refinement is compiled with `lake env lean` | no provider retry; this occurs after the LLM stage | `hermes_lean_compiles_count` | a failed refinement remains a topic failure; no baseline body is substituted |
 | Native canonical verification | the curated catalogue is compiled independently of Hermes | execution mode | source-bound native receipt | separate non-LLM evidence contract |
+: The three classes of pipeline fallback, the field each records, and how each may and may not be read as evidence.
 
 `HermesResult` carries the per-call retry count and labeled chain-advance cause,
 and `TopicRunResult.as_dict()` propagates them into `summary.json`. The

@@ -1,6 +1,6 @@
 ## Native Lean 4 Compilation and Execution-Integrity Verification {#sec:native_lean_4_compilation_and_zero_direct_verification}
 
-Native verification is a compiler operation, not a catalogue property. The rendered evidence kind is `{{verify.evidence_kind}}`; claim readiness is `{{verify.claim_ready}}`; the full-catalogue rate is `{{compile_rate.total}}`, with {{verify.warning_count}} warnings and {{verify.sorry_count}} admitted proofs in the selected receipt. If no matching receipt exists, these fields render as unavailable rather than borrowing a `complete` flag from catalogue mode.
+Native verification is a compiler operation, not a catalogue property. The rendered evidence kind is `{{verify.evidence_kind}}`; claim readiness is `{{verify.claim_ready}}`; the full-catalogue rate is `{{compile_rate.total}}`, with {{verify.warning_count}} warnings and {{verify.sorry_occurrences}} admitted proofs in the selected receipt. If no matching receipt exists, these fields render as unavailable rather than borrowing a `complete` flag from catalogue mode.
 
 ### Why Simulated Compilation Fails {#sec:why_simulated_compilation_fails}
 
@@ -34,6 +34,7 @@ Executable discovery respects explicit overrides and the toolchain named by `lea
 | `has_sorry` | The source admitted an unproved goal |
 | `warnings` | Lean accepted the file but reported a quality or migration issue |
 | semantic disposition | Human-reviewed relationship between theorem and topic claim |
+: The dimensions `VerifyResult` keeps separate, and why none of them is collapsed into process exit status.
 
 ### Aggressive Mathlib4 Caching {#sec:aggressive_mathlib_caching}
 
@@ -41,7 +42,7 @@ The local `.lake` tree is an untracked build cache. Verification refuses a visib
 
 ### Measured Compilation Headline {#sec:measured_compilation_headline}
 
-The only headline used here is receipt-derived: **`{{compile_rate.total}}`** for receipt `{{verify.run_id}}`. Its {{verify.topics_with_result}} results contain {{verify.compiles_true}} compiler successes, {{verify.compiles_false}} failures, {{verify.warning_count}} warnings, and {{verify.sorry_count}} uses of `sorry`. `mathlib_status: real` is not substituted for any of these numbers.
+The only headline used here is receipt-derived: **`{{compile_rate.total}}`** for receipt `{{verify.run_id}}`. Its {{verify.topics_with_result}} results contain {{verify.compiles_true}} compiler successes, {{verify.compiles_false}} failures, {{verify.warning_count}} warnings, and {{verify.sorry_occurrences}} uses of `sorry` in {{verify.sorry_topics}} topics. `mathlib_status: real` is not substituted for any of these numbers.
 
 ### Preflight: `LeanVerifier.check_mathlib_built()` {#sec:leanverifier_preflight}
 
@@ -87,6 +88,7 @@ A native claim is accepted exactly when a schema-valid receipt identifies the ca
 | Native Lean | Selected compiler results satisfy the native receipt | Formal compilation evidence unavailable |
 | Full pipeline | Required capabilities and every selected full-mode row succeed | No Hermes/OpenGauss publication claim |
 | Manuscript rendering | Every placeholder and theorem identifier resolves | Publication build blocked |
+: Per-stage acceptance criteria of the compilation pipeline, and what a failure at each boundary does and does not mean.
 
 #### Three Levels of Truth {#sec:three_levels_of_truth}
 

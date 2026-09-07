@@ -1,5 +1,178 @@
 ## Unreleased — connected Horizon research program
 
+### Publication render remediation
+
+- Made the published reproduction recipes reproduce. The conclusion's
+  Reproducibility Statement, the `AGENTS.md` required-check list, `README.md`,
+  `scripts/README.md`, `docs/SPEC.md`, `docs/testing.md`,
+  `docs/development.md`, `docs/authorship-guide.md` and one block in
+  `docs/cold-start-and-cleanup.md` ran
+  `scripts/render_manuscript.py --check` with no generator ahead of it.
+  `manuscript/manuscript_vars.yaml` and the generated appendix are
+  `.gitignore`d build products, so on a fresh checkout the check exits 1 with
+  "test collection cache is missing" before validating anything. Each block
+  now runs `uv run fep-lean catalogue` first, and
+  `unreproducible_command_blocks` fails the render path on any published shell
+  block that reintroduces the gap -- it found five sites beyond the two that
+  were reported. The generating form of `render_manuscript.py` does not
+  qualify: with the projection absent it exits 1 the same way `--check` does.
+- Restored the test extras the Reproducibility Statement's own first line
+  removed. It opened `uv sync --locked`, which prunes the `dev` group, and the
+  check it ends with counts the collected suite: running the published
+  sequence verbatim gave "required pytest collection distribution is missing:
+  pytest" and exit 1 from both `fep-lean catalogue` and
+  `render_manuscript.py --check`. The statement and 3.6.6's checklist now say
+  `uv sync --locked --extra dev`, and the same audit rejects a block whose
+  sync starves the check that follows it.
+
+- Replaced the primer's hand-typed "about 1-2 seconds" per verification with
+  the receipt's own distribution. Nothing supported the range: the same PDF
+  prints 14.952 s per result in the compilation chapter, and the cited receipt
+  records a per-topic minimum of 2.381 s, a median of 8.982 s and a maximum of
+  183.318 s, with 0 of 155 topics at or under 2 s. `verify.min_topic_s`,
+  `verify.median_topic_s` and `verify.max_topic_s` now project that spread
+  beside the existing mean, so the sentence is regenerated rather than typed.
+- Published a verification command that runs. The primer printed `lake env
+  lean lean/FepSketches/FepCheck_fep001.lean`, which exits 1 from every
+  directory because no file of that name is ever created: `LeanVerifier` uses
+  `tempfile.mkstemp(prefix=f"_verify_{topic_id}_")` and unlinks the result.
+  The chapter now names the real argv, run with `lean/` as the working
+  directory, and publishes `uv run fep-lean verify --topic fep-001` as the
+  reproducible entry point. The same paragraph claimed `_wrap_lean_code`
+  prepends imports, adds area-specific opens and wraps the body in a
+  namespace; all 155 catalogue bodies already begin with `import` and declare
+  their own `namespace FEP<NNN>`, so the wrapper returns every one of them
+  unchanged. It also credited native mode with writing `VerifyResult` to
+  SQLite; the session store belongs to full OpenGauss mode.
+
+- Stopped printing catalogue row counts as theorem counts. Two sentences in
+  the sophisticated-dynamics synthesis read "The {{areas.InfoGeometry.count}}
+  Information Geometry theorems" and "The {{areas.BayesianMechanics.count}}
+  Bayesian Mechanics theorems"; those tokens carry row counts, three lines
+  below a heading that already said "Rows" and a sentence that already said
+  "rows", so the rendered PDF contradicted itself on one page and understated
+  its own proof totals, which `docs/formalism-coverage.json` sums per area
+  from each row's `theorem_count`. Both sentences now say "rows", and
+  `miscounted_area_labels` fails the render path on any `{{areas.*.count}}`
+  token whose following noun names theorems, lemmas, declarations, proofs, or
+  definitions, so the class cannot return through a third sentence.
+
+- Typeset Lean's Unicode operator suffixes: the code face is JuliaMono, not
+  FreeMono, which covers none of U+2098 U+2096 U+1D50 U+209A U+1D62 U+1D9C and
+  had XeTeX drop all 162 occurrences silently -- printing the complement lemma
+  `μ sᶜ = 1 - μ s` as the false `μ s = 1 - μ s`.
+- Made the LaTeX pass fail closed. `scripts/check_render_log.py` rejects a
+  render whose log records any `! ` error or `Missing character`, a mermaid
+  diagram that shipped as verbatim source, a combined build older than its own
+  manuscript sources, an uncaptioned table, or a contents number that overflows
+  its number box. The shared template's own success test looks for four fatal
+  markers and passes all of these.
+- Gave every line break a cue. `\seqinsert` now emits a discretionary carrying
+  a grey continuation arrow, so a table cell can no longer print
+  `FEP.FiniteKernel.comp_assoc` as `FEP.Fini` / `teKernel.comp_assoc`; fvextra
+  gains `breaknonspaceingroup`, without which `breaklines` was inert for every
+  Lean listing because pandoc wraps each token in a macro.
+- Widened the contents number columns. `article`'s default
+  `\@dottedtocline` widths are too narrow for numbering that reaches
+  `15.100.1`, so 224 contents lines printed as `15.100fep-100`.
+- Captioned all 36 tables and the pipeline diagram. The combined build had 36
+  `longtable`s and six captions, all six on figures, so no table carried a
+  number any prose could cite; the one Mermaid diagram shipped as
+  "Figure 3: Mermaid diagram", the template's placeholder.
+- Carried `manuscript/config.yaml`'s subtitle and fifteen keywords into the PDF
+  `/Info` dictionary, and made `scripts/render_manuscript.py` fail closed when
+  the preamble copy drifts from the config (`pdf_metadata_drift`).
+- Replaced the hand-maintained "Mathlib navigation hint" column with each
+  row's own imports. Forty-two of its 71 cells named a module the row never
+  imports -- `fep-023` advertised
+  `MeasureTheory.Measure.Typeclasses.Probability` against a body that imports
+  `Mathlib.MeasureTheory.Measure.MeasureSpace` -- because nothing recomputed a
+  cell when a body moved an import. Every cell is now
+  `{{topics.fep-NNN.imported_modules}}`, produced from the same regex and
+  source as the coverage report's incidence table;
+  `hand_maintained_module_cells` fails the render path on a literal typed back
+  in, and `unknown_topic_import_modules` checks the relation itself against the
+  pinned Mathlib.
+- Stopped a catalogue theorem reading as Mathlib prior art, and made the
+  allowlist that hid it self-checking. `manuscript/04b_framework_active_inference.md`
+  said fep-008's proof used "`min_agrees_on_value` plus `le_antisymm`", between
+  two real Mathlib names; `grep -rl min_agrees_on_value
+  lean/.lake/packages/mathlib/Mathlib` matches nothing, because the name is
+  this catalogue's own `fep008_min_agrees_on_value`
+  (`src/fep_lean/catalogue/bodies/core_active_inference.py`) printed without its
+  prefix. It evaded the reference audit only by sitting in
+  `NON_CATALOGUE_IDENTIFIERS` under the comment "Mathlib declarations cited as
+  prior art", which made that set's own header claim -- "Every entry is a
+  reviewed exception" -- false. The prose now attributes each step to its
+  owner, the entry is gone, and the set is split into three provenance groups
+  that `unverified_non_catalogue_identifiers` checks against their sources: a
+  Mathlib citation against the names the pinned checkout introduces (a
+  declaration header, or a quoted token -- no `theorem`/`def` header carries
+  `norm_num`; the tactic's name reaches the reader as the literal in
+  `elab (name := normNum) "norm_num" ... : tactic`), a local citation
+  against `src/fep_lean/formal`, and a record field against `TopicEntry`.
+  `scripts/render_manuscript.py` fails on an unverifiable entry and prints an
+  explicit "unchecked" line when the pinned library is absent rather than
+  passing the group in silence.
+
+- Gave the acceptance somewhere to bite. `scripts/check_render_log.py` was a
+  real, tested check that nothing ran: `grep -rn check_render_log
+  --include="*.yml" .github/` matched nothing, so every defect it catches could
+  reach `main` unopposed. CI cannot re-run it, because CI does not render this
+  manuscript: that needs a checkout of the shared template, XeLaTeX, pandoc,
+  `rsvg-convert`, the mermaid CLI and the two faces the preamble selects. So a
+  clean acceptance now writes `docs/render-acceptance.json` and CI runs
+  `--verify-receipt` against it. The
+  receipt is bound to a digest over every typeset manuscript source plus
+  `manuscript/preamble.md`, so a chapter or a font selection changed without a
+  fresh render fails CI; it is not bound to the values a `{{token}}` resolves
+  to, which `manuscript_projection_drift` and `stale_render_defects` own on the
+  render path. A rejected render writes no receipt and withdraws the standing
+  one: sources can drift out of a render without changing, so the digest alone
+  would let a superseded receipt keep vouching. The digests are recorded per
+  file, so a stale receipt names what moved instead of printing two hashes.
+- Made the publication entry point fail closed. `scripts/render_publication.py`
+  runs the shared template's render stage and this repository's acceptance and
+  exits on the conjunction, so a render the template calls successful over a
+  dirty log is rejected here. The template compiles with
+  `-interaction=nonstopmode` and tests four fatal markers; it is a separate
+  repository, and `_pdf_latex_pipeline._check_fatal_error` still fails open
+  upstream (as does `_pdf_mermaid.py`'s `render_disabled_reason` branch, which
+  warns where the missing-`mmdc` branch raises).
+- Recorded and probed the font requirement the render depends on. The R1 fix
+  was a font installed on one machine and nothing in the checkout said which
+  glyphs the document needs, so a render elsewhere would regress identically
+  and silently. `docs/render-fonts.json` is derived from the sources and
+  `--check`ed in CI; `scripts/build_render_fonts.py --probe` asks the host's
+  fontconfig whether the selected faces cover the set, and
+  `render_publication.py` runs it as a preflight.
+- Judged render staleness by content instead of modification time, over every
+  authored source rather than the ones a clock singles out. The first guard
+  failed the delivered artifact because regenerating two files to
+  byte-identical content moved their mtimes, and it could not have caught the
+  opposite case at all: the template renders from `output/manuscript` when that
+  directory exists and its hydration hook does not fire for this project, so a
+  render made after two chapters were fixed reproduced their drift exactly
+  while being newer than every source. The verdict is now whether each source's
+  own lines, substituted the way the renderer substitutes them, are lines of
+  the combined document -- and `render_publication.py` renders the authored
+  sources itself before handing off to the template. Lines carrying a
+  `{{source.*}}` stamp are exempt: they name the commit and date of one render,
+  so no committed projection can agree with them, and a line whose markup the
+  renderer consumes (the italic caption under a diagram fence becomes that
+  figure's `\caption`) counts as rendered when its text is in the document.
+- Linked into the repository through a ref that resolves. Five source links
+  were pinned to a commit that existed only locally, so all five 404ed in the
+  published PDF; they now resolve through the commit once it is on the remote
+  and through the default branch until then, and the front matter prints which
+  (`{{source.published_note}}`).
+- Made an undisclosed release-stamp mismatch fatal. Between releases the
+  checkout is always ahead of the stamped tag, so the mismatch cannot be the
+  failure -- saying nothing about it can be, and the audited PDF stamped v1.1.0
+  over a tree 15,033 Lean lines newer with nothing on the page to say so.
+- Restored the green `ruff check` / `ruff format --check` gate that the render
+  and audit fixes had broken (6 findings, 8 unformatted files).
+
 - Hardened every production Lean/Lake probe against orphaned-grandchild
   timeouts: new `src/fep_lean/verification/_subprocess.py` runs each external
   probe in its own process group with a watchdog `SIGKILL` of the whole group

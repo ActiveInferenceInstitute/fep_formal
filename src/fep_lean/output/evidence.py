@@ -99,10 +99,21 @@ def _result_row(result: Any) -> dict[str, Any]:
     has_sorry = raw.get("has_sorry", raw.get("lean_has_sorry", False))
     if not isinstance(compiles, bool) or not isinstance(has_sorry, bool):
         raise TypeError("native result compiles and has_sorry must be booleans")
+    # ``has_sorry`` is a per-topic boolean; ``sorry_occurrences`` is the count of
+    # admitted proofs in that topic. Summing the boolean answers "how many
+    # topics admit anything", never "how many uses of ``sorry``". A receipt
+    # written before this field existed derives it from the boolean.
+    raw_occurrences = raw.get("sorry_occurrences")
+    sorry_occurrences = (
+        int(raw_occurrences)
+        if isinstance(raw_occurrences, int) and not isinstance(raw_occurrences, bool)
+        else int(has_sorry)
+    )
     row = {
         "topic_id": str(raw.get("topic_id", "")),
         "compiles": compiles,
         "has_sorry": has_sorry,
+        "sorry_occurrences": sorry_occurrences,
         "warnings": list(warnings) if isinstance(warnings, list) else [],
         "errors": list(errors) if isinstance(errors, list) else [],
         "duration_s": float(raw.get("duration_s", 0.0) or 0.0),
@@ -132,6 +143,7 @@ def build_native_lean_receipt(
     source = _source_snapshot(Path(project_root), live_topic_ids=live_topic_ids)
     warning_count = sum(len(row["warnings"]) for row in rows)
     sorry_count = sum(bool(row["has_sorry"]) for row in rows)
+    sorry_occurrences = sum(int(row["sorry_occurrences"]) for row in rows)
     verified_topics = sum(
         bool(row["compiles"])
         and not bool(row["has_sorry"])
@@ -164,6 +176,7 @@ def build_native_lean_receipt(
         "verified_topics": verified_topics,
         "warning_count": warning_count,
         "sorry_count": sorry_count,
+        "sorry_occurrences": sorry_occurrences,
         "duration_s": round(sum(float(row["duration_s"]) for row in rows), 3),
         **source,
         "lean_version": row_versions[0] if version_evidence_valid else "",
@@ -213,6 +226,7 @@ def validate_native_lean_receipt(
             "verified_topics": 0,
             "warning_count": 0,
             "sorry_count": 0,
+            "sorry_occurrences": 0,
             "errors": [f"cannot read native receipt: {exc}"],
         }
     if not isinstance(payload, dict):
@@ -246,6 +260,7 @@ def validate_native_lean_receipt(
 
     warning_count = 0
     sorry_count = 0
+    sorry_occurrences = 0
     verified_topics = 0
     row_versions: list[str] = []
     row_duration_total = 0.0
@@ -287,6 +302,13 @@ def validate_native_lean_receipt(
             )
             continue
         sorry_count += has_sorry
+        raw_occurrences = row.get("sorry_occurrences")
+        sorry_occurrences += (
+            int(raw_occurrences)
+            if isinstance(raw_occurrences, int)
+            and not isinstance(raw_occurrences, bool)
+            else int(has_sorry)
+        )
         verified_topics += (
             compiles and not has_sorry and not warnings and not row_errors
         )
@@ -338,6 +360,9 @@ def validate_native_lean_receipt(
     ):
         if payload.get(field) != actual:
             errors.append(f"{field} disagrees with receipt rows")
+    declared_occurrences = payload.get("sorry_occurrences")
+    if declared_occurrences is not None and declared_occurrences != sorry_occurrences:
+        errors.append("sorry_occurrences disagrees with receipt rows")
     expected_complete = (
         bool(selected) and verified_topics == len(selected) and versions_match_pin
     )
@@ -434,6 +459,7 @@ def validate_native_lean_receipt(
         "verified_topics": verified_topics,
         "warning_count": warning_count,
         "sorry_count": sorry_count,
+        "sorry_occurrences": sorry_occurrences,
         "duration_s": validated_duration,
         "lean_version": recorded_lean_version,
         "lean_toolchain": str(payload.get("lean_toolchain", "")),

@@ -2,7 +2,9 @@
 
 This section reports three surfaces separately: catalogue coverage, native Lean evidence, and optional full-pipeline evidence. A count from one surface is never substituted for another. The generated formalism coverage audit is authoritative for source structure; native and full receipts are authoritative for execution claims.
 
-The area-distribution figure visualizes catalogue breadth only. It does not measure scientific maturity or compilation success.
+![Topic distribution across the five catalogue areas. The figure visualizes catalogue breadth only.](../output/figures/topics_by_area.png){#fig:topics_by_area width=80%}
+
+The area-distribution figure above visualizes catalogue breadth only. It does not measure scientific maturity or compilation success.
 
 ### Aggregate Catalogue Metrics {#sec:aggregate_metrics}
 
@@ -14,6 +16,7 @@ The catalogue contains {{total_topics}} topics across {{total_areas}} areas. `ma
 | Maintained foundations | {{formalism.metrics.foundation_modules}} | {{formalism.metrics.foundation_theorems}} |
 | All maintained formal resources, including composition | {{formalism.metrics.formal_modules}} | {{formalism.metrics.formal_resource_theorems}} |
 | Package total, without double-counting resources | — | {{formalism.metrics.theorems}} |
+: Module and theorem-declaration counts by source layer, computed at render time from the formalism audit.
 
 | Area | Topics | Native receipt rate |
 | --- | ---: | ---: |
@@ -23,6 +26,7 @@ The catalogue contains {{total_topics}} topics across {{total_areas}} areas. `ma
 | Information Geometry | {{areas.InfoGeometry.count}} | `{{compile_rate.by_area.InfoGeometry}}` |
 | Thermodynamics | {{areas.Thermodynamics.count}} | `{{compile_rate.by_area.Thermodynamics}}` |
 | **Total** | **{{total_topics}}** | **`{{compile_rate.total}}`** |
+: Topic count and native receipt rate for each catalogue area.
 
 The runtime projection reports the following receipt-derived values:
 
@@ -35,11 +39,14 @@ The runtime projection reports the following receipt-derived values:
 | Compiled | {{verify.compiles_true}} |
 | Failed compilation | {{verify.compiles_false}} |
 | Warnings | {{verify.warning_count}} |
-| `sorry` | {{verify.sorry_count}} |
-| Failed topic IDs | {{verify.failed_topic_ids}} |
+| Admitted proofs (`sorry` occurrences) | {{verify.sorry_occurrences}} |
+| Topics containing `sorry` | {{verify.sorry_topics}} |
+| Topic IDs that failed to compile | {{verify.failed_compile_topic_ids}} |
+| Topic IDs not clean (failed, warned, or admitted) | {{verify.not_clean_topic_ids}} |
 | Measured compiler time | {{verify.duration_seconds}} s |
 | Mean measured time per result | {{verify.mean_topic_s}} s |
 | Lean / Mathlib pin | `{{lean_toolchain}}` / `{{mathlib_tag}}` |
+: Receipt-derived fields of the runtime verification projection.
 
 A native receipt becomes claim-ready only for the exact ordered roster of {{total_topics}} topics with every result compiling, zero errors, zero warnings, zero `sorry`, actual Lean output matching the configured pin, the resolved Mathlib commit, finite timing evidence, and source/toolchain digests matching an explicitly supplied live tree. A valid subset or structurally validated unbound receipt remains useful diagnostic evidence but cannot populate the full-catalogue headline.
 
@@ -69,6 +76,7 @@ Hermes commentary is optional and has no bearing on native Lean acceptance. Manu
 | Hermes-refined sketches compiling | {{hermes.hermes_lean_compiles_count}} |
 | Mean measured topic time | {{hermes.mean_topic_s}} s |
 | Token total | {{hermes.tokens_total}} |
+: Hermes full-run fields, exposed only from an independently validated, claim-ready report.
 
 When `full.claim_ready` is false, zero or empty cells above mean *unavailable evidence*, not an observed zero-event experiment. Catalogue mode cannot populate this table.
 
@@ -78,7 +86,7 @@ Only receipt-recorded elapsed time is reported: {{verify.duration_seconds}} seco
 
 ### Error Category Distribution {#sec:error_category_distribution}
 
-`LeanVerifier` retains compiler errors, warnings, and an advisory failure category for each topic. The current receipt summary reports {{verify.compiles_false}} compile failures, {{verify.warning_count}} warnings, and {{verify.sorry_count}} admitted proofs. Per-topic rows in the receipt, rather than a manually maintained chart, are authoritative.
+`LeanVerifier` retains compiler errors, warnings, and an advisory failure category for each topic. The current receipt summary reports {{verify.compiles_false}} compile failures, {{verify.warning_count}} warnings, and {{verify.sorry_occurrences}} admitted proofs across {{verify.sorry_topics}} topics. Per-topic rows in the receipt, rather than a manually maintained chart, are authoritative.
 
 ### Live Verification Error Taxonomy: Hermes-Assisted Run {#sec:live_verification_error_taxonomy}
 
