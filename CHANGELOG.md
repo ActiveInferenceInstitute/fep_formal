@@ -354,6 +354,15 @@
   and reverted: the Horizon predecessor receipts bind `uv.lock` bytes, so a
   lock refresh without the coordinated evidence re-pin fails the acceptance
   chain fail-closed (see `FEP-EVIDENCE-CURRENT`).
+- Follow-up parity sweep after an adversarial doc review: the README, AGENTS,
+  SPEC, HANDOFF, testing, development, and cold-start check lists now name the
+  exact CI invocations for the atlas and formal-kernel dashboard projections
+  (the generator `--check` scripts, not the CLI freshness forms), and carry the
+  render-acceptance receipt verification, the lock check, the
+  `--check-latest` pin audit, and the `-m "not serial_lean"` pytest filter
+  wherever the corresponding recipe appears. The `FEP-SCAFFOLD-PORTABILITY`
+  backlog row now scopes only the Q7 scaffold digest (Q5's runner custody is
+  whole-file sha256 and already interpreter-independent).
 
 ## 1.1.0 — 2026-08-23
 

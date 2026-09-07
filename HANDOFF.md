@@ -173,7 +173,7 @@ uv run python scripts/theorem_maturity_audit.py --check
 uv run python scripts/build_formalism_coverage.py --check
 uv run python scripts/_maint_build_lean_landscape.py --check
 uv run python scripts/build_formalism_atlas.py --check
-uv run fep-lean dashboard --check
+uv run python scripts/build_formal_kernel_dashboard.py --check
 uv run python docs/pin_audit.py --check-latest
 uv run mypy src
 uv run ruff check src tests scripts docs

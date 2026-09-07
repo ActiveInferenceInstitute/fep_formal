@@ -15,11 +15,12 @@ uv run python docs/xref_audit.py
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
 uv run python scripts/build_formalism_coverage.py --check
-uv run fep-lean atlas --check
-uv run fep-lean dashboard --check
+uv run python scripts/build_formalism_atlas.py --check
+uv run python scripts/build_formal_kernel_dashboard.py --check
 uv run fep-lean catalogue
 uv run python scripts/render_manuscript.py --check
 uv run python scripts/build_render_fonts.py --check
+uv run python scripts/check_render_log.py --verify-receipt
 ```
 
 Claims about catalogue compilation must be backed by a current validated

@@ -60,10 +60,10 @@ uv run python scripts/render_manuscript.py --check
 uv run ruff check src tests scripts docs
 uv run ruff format --check src tests scripts docs
 uv run mypy src
-uv run pytest tests/ -q --cov=src --cov-fail-under=89
+uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 uv run python docs/check_links.py --strict --include-root
 uv run python docs/md_hygiene.py --strict
-uv run python docs/pin_audit.py
+uv run python docs/pin_audit.py --check-latest
 uv run python docs/xref_audit.py
 ```
 
