@@ -10,12 +10,17 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   python:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
         with:
           enable-cache: true
       - run: uv sync --locked --extra dev
@@ -30,10 +35,15 @@ jobs:
           uv run python scripts/_maint_build_lean_landscape.py --check
           uv run python scripts/build_formalism_atlas.py --check
           uv run python scripts/build_formal_kernel_dashboard.py --check
-          uv run python scripts/build_render_fonts.py --check
       - name: Generate and validate publication inputs
         run: |
           uv run fep-lean catalogue
+          # The glyph projection reads the generated appendix
+          # (manuscript/09z_unified_formalism_catalogue.md, a gitignored build
+          # product), so this check is only decidable after the catalogue has
+          # materialized the manuscript inputs; earlier placement reported a
+          # false STALE on every fresh checkout.
+          uv run python scripts/build_render_fonts.py --check
           uv run python scripts/render_manuscript.py --check
           uv run python docs/theorem_ref_audit.py
           uv run python docs/citation_audit.py
@@ -53,7 +63,13 @@ jobs:
       # fails here.
       - name: Require the shipped render to have passed the acceptance
         run: uv run python scripts/check_render_log.py --verify-receipt
-      - run: uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
+      - run: uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage.xml
       - run: uv run python docs/check_links.py --strict --include-root
       - run: uv run python docs/md_hygiene.py --strict
       - name: Require the newest stable Lean-Mathlib release pair
@@ -68,15 +84,23 @@ jobs:
 
   lean:
     runs-on: ubuntu-latest
+    timeout-minutes: 180
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
         with:
           enable-cache: true
+      - name: Cache the elan toolchain
+        uses: actions/cache@v6
+        with:
+          path: ~/.elan
+          key: elan-${{ hashFiles('lean/lean-toolchain') }}
       - name: Install elan
         shell: bash
         run: |
-          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          # Pinned elan-init (leanprover/elan@0e36a07b, 2026-08-26); the
+          # unpinned master script is remote code executed on every lean run.
+          curl https://raw.githubusercontent.com/leanprover/elan/0e36a07b9bbcc5381fa6250df109f9a4f94d7bac/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
       - name: Install pinned toolchain
         run: elan toolchain install "$(cat lean/lean-toolchain)"
@@ -134,7 +158,7 @@ jobs:
           print({"valid": not errors, "errors": errors})
           raise SystemExit(0 if not errors else 1)
           PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: native-formal-evidence
           path: |
