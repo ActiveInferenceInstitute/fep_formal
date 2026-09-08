@@ -32,6 +32,12 @@ repositories; it does not translate proofs, run code, or compare numbers.
    `specs/`: the README states scope, `data/notation-map.yaml` is the
    artifact, the checker is the freshness gate, and implementation status
    lives in this README's status line.
+5. **Artifact scope.** `data/notation-map.yaml` is the machine-checked
+   core subset, not an exhaustive census: rows are added one at a time
+   through this slice's lifecycle, and the partner page
+   (`GEO-INFER-ACT/docs/fep_lean_notation_bridge.md`) may discuss
+   constructs whose rows have not landed yet. A row, once added, is
+   digest-gated by the checker; the page's prose is the broader record.
 
 ## Anchor grammar
 
