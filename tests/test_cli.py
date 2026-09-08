@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import ClassVar
 
+import pytest
+
 from fep_lean import cli
 from fep_lean._paths import project_root_errors
 from fep_lean.verification._toolchain import pinned_lean_semver, read_toolchain_pin
@@ -79,6 +81,32 @@ def test_build_parser_registers_all_commands() -> None:
     assert parser.parse_args(["atlas", "--check"]).check is True
     assert parser.parse_args(["dashboard", "--check"]).check is True
     assert parser.parse_args(["report"]).command == "report"
+    assert parser.parse_args(["setup"]).command == "setup"
+    assert parser.parse_args(["preflight"]).command == "preflight"
+    assert parser.parse_args(["status"]).command == "status"
+    assert parser.parse_args(["status"]).gnn_root is None
+    assert (
+        str(parser.parse_args(["status", "--gnn-root", "/tmp/g"]).gnn_root) == "/tmp/g"
+    )
+    assert (
+        parser.parse_args(["bridge", "status", "--gnn-root", "/tmp/g"]).operation
+        == "status"
+    )
+
+
+def test_main_status_composes_on_checkout(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    code = cli.main(["--project-root", str(PROJ), "status"])
+    payload = json.loads(capsys.readouterr().out)
+    assert code == 0
+    assert payload["status"] == "ok"
+    assert [section["name"] for section in payload["sections"]] == [
+        "catalogue_build_products",
+        "render_receipt_freshness",
+        "bridge_source_pin",
+        "native_verification_receipt",
+    ]
 
 
 def test_print_result_handles_complete_and_incomplete_results() -> None:
