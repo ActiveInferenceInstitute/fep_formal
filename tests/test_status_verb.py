@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from fep_lean.output.render_log import manuscript_source_digest
 from fep_lean.cli import (
     RENDER_RECEIPT,
     SOURCE_PIN,
@@ -14,6 +13,7 @@ from fep_lean.cli import (
     catalogue_products_section,
     render_receipt_section,
 )
+from fep_lean.output.render_log import manuscript_source_digest
 
 SECTION_NAMES = (
     "catalogue_build_products",
