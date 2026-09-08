@@ -110,7 +110,7 @@ claims.
 
 For theorem ownership, support conventions, the validation ladder, and the
 limits of numerical witnesses, see
-[formal-kernel methods](formal-kernel-methods.md).
+[formal-kernel methods](guides/formal-kernel-methods.md).
 
 ## Roster expansion
 

@@ -18,8 +18,8 @@ no longer has.
 Usage:
     uv run python scripts/check_render_log.py
     uv run python scripts/check_render_log.py --pdf-dir output/pdf
-    uv run python scripts/check_render_log.py --receipt docs/render-acceptance.json
-    uv run python scripts/check_render_log.py --verify-receipt docs/render-acceptance.json
+    uv run python scripts/check_render_log.py --receipt docs/evidence/render-acceptance.json
+    uv run python scripts/check_render_log.py --verify-receipt docs/evidence/render-acceptance.json
 """
 
 from __future__ import annotations
@@ -45,7 +45,7 @@ from fep_lean.output.render_log import (
     uncaptioned_table_defects,
 )
 
-DEFAULT_RECEIPT = Path("docs") / "render-acceptance.json"
+DEFAULT_RECEIPT = Path("docs") / "evidence" / "render-acceptance.json"
 
 
 def build_parser() -> argparse.ArgumentParser:

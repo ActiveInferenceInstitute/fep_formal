@@ -193,8 +193,8 @@ aggregate, rerun the native Lean probe, and retain the receipt in
 
 ## Source links
 
-- [Maintained audit data](../config/theorem_maturity.yaml)
-- [Catalogue metadata](../config/topics.yaml)
-- [Lean body registry](../src/fep_lean/catalogue/registry.py)
-- [Family-owned Lean bodies](../src/fep_lean/catalogue/bodies/)
-- [Native verification command](cli-reference.md)
+- [Maintained audit data](../../config/theorem_maturity.yaml)
+- [Catalogue metadata](../../config/topics.yaml)
+- [Lean body registry](../../src/fep_lean/catalogue/registry.py)
+- [Family-owned Lean bodies](../../src/fep_lean/catalogue/bodies/)
+- [Native verification command](../cli-reference.md)

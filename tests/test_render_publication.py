@@ -363,7 +363,7 @@ def test_the_committed_receipt_covers_the_committed_manuscript() -> None:
     """The gate's verdict on this checkout, run as a test rather than in CI."""
     assert (
         receipt_defects(
-            PROJECT_ROOT / "docs" / "render-acceptance.json",
+            PROJECT_ROOT / "docs" / "evidence" / "render-acceptance.json",
             PROJECT_ROOT / "manuscript",
         )
         == ()

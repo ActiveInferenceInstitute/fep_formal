@@ -27,7 +27,7 @@ uv run fep-lean dashboard --check
 The Lake build type-checks the projected formal modules. The audit separately
 resolves reviewed declarations and parses their axiom reports. The atlas and
 dashboard are structural and numerical views, respectively; neither replaces
-the native checks. See [formal-kernel methods](formal-kernel-methods.md).
+the native checks. See [formal-kernel methods](guides/formal-kernel-methods.md).
 
 For strict verification, install the pinned Lean workspace and OpenGauss,
 configure `OPENROUTER_API_KEY` or an Anthropic-compatible Hermes endpoint, then

@@ -55,4 +55,4 @@ reused across those boundaries without independent receipt validation.
 
 The shared mathematical contracts and the distinction between structural,
 numerical, deductive, and execution evidence are documented in
-[Formal-kernel methods](formal-kernel-methods.md).
+[Formal-kernel methods](guides/formal-kernel-methods.md).

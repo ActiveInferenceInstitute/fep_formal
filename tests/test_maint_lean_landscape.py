@@ -3,7 +3,7 @@
 The landscape page is generated from the formal manifest and the real
 ``import FepSketches.*`` statements in the workspace sources. These tests
 exercise the actual generator against the real repository so drift between
-the manifest, the Lean sources, and ``docs/lean-landscape.md`` fails fast.
+the manifest, the Lean sources, and ``docs/generated/lean-landscape.md`` fails fast.
 """
 
 from __future__ import annotations
@@ -57,7 +57,7 @@ def test_every_manifest_module_appears_in_rendered_page() -> None:
 
 def test_generated_page_is_current() -> None:
     page = PROJ / "docs" / "lean-landscape.md"
-    assert page.exists(), "docs/lean-landscape.md must be tracked and current"
+    assert page.exists(), "docs/generated/lean-landscape.md must be tracked and current"
     module = _load_module()
     assert page.read_text(encoding="utf-8") == module.render_landscape(PROJ)
 

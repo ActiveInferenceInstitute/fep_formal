@@ -128,6 +128,6 @@ def test_the_committed_requirement_matches_the_sources() -> None:
             "generated appendix is missing; run `uv run fep-lean catalogue` first"
         )
     committed = json.loads(
-        (PROJECT_ROOT / "docs" / "render-fonts.json").read_text(encoding="utf-8")
+        (PROJECT_ROOT / "docs" / "evidence" / "render-fonts.json").read_text(encoding="utf-8")
     )
     assert committed == render_font_projection(PROJECT_ROOT)

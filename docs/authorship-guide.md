@@ -56,7 +56,7 @@ stable topic namespaces, place it in the appropriate manifested leaf under
 `src/fep_lean/formal/compositions/` and add its novelty/relation evidence.
 `composed.lean` is an import-only aggregate. Follow the ownership,
 support-assumption, and dependency rules in
-[formal-kernel methods](formal-kernel-methods.md); do not manufacture a formal
+[formal-kernel methods](guides/formal-kernel-methods.md); do not manufacture a formal
 relation from a shared import.
 
 ## 3. Regenerate; never mirror edits by hand

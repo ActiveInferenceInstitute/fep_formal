@@ -3,7 +3,7 @@
 This page supplies conceptual orientation for the catalogue. It does not claim
 that every displayed scientific object has been constructed in Lean. For the
 exact proposition proved by each row, use the
-[formalism coverage report](formalism-coverage.md) and canonical family body.
+[formalism coverage report](../formalism-coverage.md) and canonical family body.
 
 ## Variational free energy
 
@@ -79,7 +79,7 @@ generative transition and the exact positive-time refresh kernel. This is a
 model-specific one-step posterior--decision--action certificate, not
 transition-aware planning, EFE-optimal control, or a claim about how future
 transition consequences determine the report. The exact theorem lives in
-[`finite_reference_agent.lean`](../src/fep_lean/formal/compositions/finite_reference_agent.lean).
+[`finite_reference_agent.lean`](../../src/fep_lean/formal/compositions/finite_reference_agent.lean).
 
 ## Bayesian mechanics and Markov blankets
 
@@ -215,7 +215,7 @@ uniform law. Those are probability-divergence inequalities. They are not
 measured heat, physical entropy production, or thermodynamic free-energy
 dissipation.
 
-The offline [formalism atlas](formalism-atlas.html) distinguishes such
+The offline [formalism atlas](../formalism-atlas.html) distinguishes such
 conceptual frontiers from checked formal seams; imports never create an
 automatic scientific edge. fep-036 closes its reviewed finite empirical-Bayes
 capability with a binomial model and deterministic consistency transfer, while
@@ -254,10 +254,10 @@ remain separate.
 
 ## Primary routes for deeper reading
 
-- [Manuscript background](../manuscript/02b_background.md)
+- [Manuscript background](../../manuscript/02b_background.md)
 - [Pinned Mathlib surface](lean4.md)
-- [Theorem maturity policy](theorem-maturity-audit.md)
-- [Formalism coverage and retained capabilities](formalism-coverage.md)
+- [Theorem maturity policy](../generated/theorem-maturity-audit.md)
+- [Formalism coverage and retained capabilities](../formalism-coverage.md)
 - [Formal-kernel methods and validation](formal-kernel-methods.md)
-- [Deterministic formal-kernel dashboard](formal-kernel-dashboard.html)
-- [Topic inspection and reproduction](topics-reference.md)
+- [Deterministic formal-kernel dashboard](../formal-kernel-dashboard.html)
+- [Topic inspection and reproduction](../topics-reference.md)

@@ -31,7 +31,7 @@ from fep_lean.output.render_fonts import (
     render_font_projection,
 )
 
-PROJECTION = Path("docs/render-fonts.json")
+PROJECTION = Path("docs/evidence/render-fonts.json")
 
 
 def _rendered(project_root: Path) -> str:

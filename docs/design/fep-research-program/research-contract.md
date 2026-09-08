@@ -14,7 +14,7 @@ these rules.
 | Current reusable formal module roster | [`formal/manifest.py`](../../../src/fep_lean/formal/manifest.py) | Formal projection and declaration audits |
 | Prospective H1--H3 goals | This directory | Documentation checks and active/future specs |
 | Active implementation status | A bounded directory under `specs/`; accepted history moves to `specs/done/` | Its tests and acceptance record |
-| Lean/Mathlib pin and supported-version policy | [`lean/lean-toolchain`](../../../lean/lean-toolchain), [`lean/lake-manifest.json`](../../../lean/lake-manifest.json), and [`docs/lean4.md`](../../lean4.md) | Pin audit, including `--check-latest` |
+| Lean/Mathlib pin and supported-version policy | [`lean/lean-toolchain`](../../../lean/lean-toolchain), [`lean/lake-manifest.json`](../../../lean/lake-manifest.json), and [`docs/lean4.md`](../../guides/lean4.md) | Pin audit, including `--check-latest` |
 | Empirical protocol after preregistration | The frozen H3 protocol artifact selected by H3.0 | Dataset, analysis, and report validators |
 
 No horizon may create another topic roster, theorem-maturity table, relation

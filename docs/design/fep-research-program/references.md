@@ -8,9 +8,9 @@ project can use.
 
 ## Current project boundary
 
-- [FEP background](../../fep-background.md) — current scientific scope and
+- [FEP background](../../guides/fep-background.md) — current scientific scope and
   formalization boundary.
-- [Formal-kernel methods](../../formal-kernel-methods.md) — current carriers,
+- [Formal-kernel methods](../../guides/formal-kernel-methods.md) — current carriers,
   module ownership, and evidence distinctions.
 - [Topic reference](../../topics-reference.md) — canonical metadata, maturity,
   novelty, relation, body, and manifest owners.

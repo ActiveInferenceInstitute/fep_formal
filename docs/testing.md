@@ -53,4 +53,4 @@ workspace.
 The atlas and dashboard tests validate deterministic projection and
 accessibility contracts. The atlas visualizes authored provenance; the
 dashboard visualizes selected finite examples. Neither is deductive evidence.
-See [formal-kernel methods](formal-kernel-methods.md) for the evidence matrix.
+See [formal-kernel methods](guides/formal-kernel-methods.md) for the evidence matrix.

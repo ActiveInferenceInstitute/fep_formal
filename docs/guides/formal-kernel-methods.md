@@ -10,10 +10,10 @@ information-geometric, collective, and learning claims can meet under visible
 hypotheses.
 
 The authoritative module set and dependency order live in
-[`src/fep_lean/formal/manifest.py`](../src/fep_lean/formal/manifest.py). The
-files under [`src/fep_lean/formal/`](../src/fep_lean/formal/) are canonical;
+[`src/fep_lean/formal/manifest.py`](../../src/fep_lean/formal/manifest.py). The
+files under [`src/fep_lean/formal/`](../../src/fep_lean/formal/) are canonical;
 their copies under `lean/FepSketches/` are generated Lake inputs. The
-[formalism coverage report](formalism-coverage.md) is the generated declaration
+[formalism coverage report](../formalism-coverage.md) is the generated declaration
 inventory, not an authoring surface.
 
 ## Two theorem planes
@@ -31,7 +31,7 @@ The project intentionally has two related theorem planes:
 
 An import between modules is an implementation dependency, not a scientific
 claim. A cross-topic relation becomes formal only when
-[`config/formalism_relations.yaml`](../config/formalism_relations.yaml) names a
+[`config/formalism_relations.yaml`](../../config/formalism_relations.yaml) names a
 qualified Lean declaration as its witness. The atlas therefore renders module
 imports in a separate dependency layer rather than silently treating them as
 theorem edges.
@@ -266,7 +266,7 @@ Start with a mathematical contract rather than a desired topic label:
    limitations.
 
 Topic-local work follows the additional semantic-review workflow in the
-[formalism authorship guide](authorship-guide.md). Shared-kernel changes must
+[formalism authorship guide](../authorship-guide.md). Shared-kernel changes must
 also preserve the dependency order in the manifest and must not introduce an
 import cycle merely to reuse a downstream result.
 
@@ -325,12 +325,12 @@ rather than substituting one for the other.
 
 ## Validation visualizations
 
-The [formalism atlas](formalism-atlas.html) answers a structural question:
+The [formalism atlas](../formalism-atlas.html) answers a structural question:
 which topic, capability, and maintained-module relationships are authored, and
 which qualified declarations witness the formal ones? Its static
-[SVG projection](formalism-atlas.svg) preserves the same graph for publication.
+[SVG projection](../formalism-atlas.svg) preserves the same graph for publication.
 
-The [formal-kernel dashboard](formal-kernel-dashboard.html) answers a different
+The [formal-kernel dashboard](../formal-kernel-dashboard.html) answers a different
 question: do deterministic numerical witnesses exhibit the qualitative shape
 of selected checked laws? Its fifteen panels cover one diagnostic for each
 expansion family: finite posterior reconstruction, Gibbs variational duality,
@@ -340,7 +340,7 @@ fluctuation identity, categorical Fisher rank, consensus contraction, a
 sub-Gaussian envelope, Laplace/Brier risk transfer, policy-tree feedback,
 native blanket transfer, exponential-family KL/Bregman duality, and a
 two-state master equation. The static
-[dashboard SVG](formal-kernel-dashboard.svg) is the manuscript-safe projection.
+[dashboard SVG](../formal-kernel-dashboard.svg) is the manuscript-safe projection.
 
 Dashboard values come from closed finite formulas and coverage-derived summary
 metrics. Each witness owns typed equality, inequality, or predicate checks with

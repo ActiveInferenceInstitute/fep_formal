@@ -69,7 +69,7 @@ only after H2.7 passes; explicit imports provide the foundation closure.
 **Depends on:** H1 exit.
 
 **Single owner:** the active H2 spec owns exact probe files; stable pin claims
-remain in [`docs/lean4.md`](../../lean4.md).
+remain in [`docs/lean4.md`](../../guides/lean4.md).
 
 **Accepted result:** 25 `go`, 13 optional no-go, three historical blocking
 no-go rows, and one historical upstream-required row. H2.5b-R0/H2.5b now

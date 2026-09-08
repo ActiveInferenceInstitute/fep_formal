@@ -179,7 +179,7 @@ _REQUIRED_STATIC_MEMBERS: tuple[tuple[str, str], ...] = (
     ),
     ("docs/formalism-coverage.json", "formalism_coverage"),
     ("docs/formalism-coverage.md", "formalism_coverage"),
-    ("docs/theorem-maturity-audit.md", "theorem_maturity"),
+    ("docs/generated/theorem-maturity-audit.md", "theorem_maturity"),
     ("docs/formalism-atlas.svg", "formalism_visualization"),
     ("docs/formalism-atlas.html", "formalism_visualization"),
     ("docs/formal-kernel-dashboard.svg", "numerical_visualization"),
@@ -1592,7 +1592,7 @@ def _theorem_maturity_projection_errors(project_root: Path) -> tuple[str, ...]:
         validate_audit = namespace["validate_audit"]
         render_markdown = namespace["render_markdown"]
         expected = render_markdown(validate_audit(root))
-        actual = (root / "docs" / "theorem-maturity-audit.md").read_text(
+        actual = (root / "docs" / "generated" / "theorem-maturity-audit.md").read_text(
             encoding="utf-8"
         )
     except (KeyError, OSError, TypeError, ValueError) as exc:

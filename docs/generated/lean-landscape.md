@@ -3,20 +3,20 @@
 # Formal Lean Theorem Landscape
 
 Deterministic dependency map of the maintained formal kernel, generated from
-[`src/fep_lean/formal/manifest.py`](../src/fep_lean/formal/manifest.py) and the
+[`src/fep_lean/formal/manifest.py`](../../src/fep_lean/formal/manifest.py) and the
 actual `import FepSketches.*` statements in the workspace sources. The exact
 roster and roles live in the manifest; this page projects them for navigation.
 
 - **Layer N** modules import only modules in strictly lower layers, so layers
   build in order and any module in layer N can be read after its predecessors.
 - Topic bodies (155 catalogue rows) live in family modules under
-  [`src/fep_lean/catalogue/bodies/`](../src/fep_lean/catalogue/bodies/), not
+  [`src/fep_lean/catalogue/bodies/`](../../src/fep_lean/catalogue/bodies/), not
   here; the aggregate `fep_all.lean` covers all of them.
 - Regenerate with `uv run python scripts/_maint_build_lean_landscape.py`;
   `--check` is the non-mutating freshness gate.
 - The interactive relation graph over these modules is
-  [`formalism-atlas.html`](formalism-atlas.html); generated counts are in
-  [`formalism-coverage.md`](formalism-coverage.md).
+  [`formalism-atlas.html`](../formalism-atlas.html); generated counts are in
+  [`formalism-coverage.md`](../formalism-coverage.md).
 
 ## Layer 0 (6 modules)
 
@@ -147,8 +147,8 @@ Total maintained formal modules: **56** across **13** dependency layers.
 An agent landing cold should read in this order:
 
 1. [`../AGENTS.md`](../AGENTS.md) — purpose, terminology, execution contract.
-2. [`lean4.md`](lean4.md) — pinned toolchain, build commands, aggregate rules.
+2. [`lean4.md`](../guides/lean4.md) — pinned toolchain, build commands, aggregate rules.
 3. This page — where each formal module sits in the dependency order.
-4. [`formalism-coverage.md`](formalism-coverage.md) — measured declaration
+4. [`formalism-coverage.md`](../formalism-coverage.md) — measured declaration
    counts and semantic disposition.
-5. [`../TODO.md`](../TODO.md) — open backlog with acceptance probes.
+5. [`../TODO.md`](../../TODO.md) — open backlog with acceptance probes.

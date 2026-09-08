@@ -228,8 +228,8 @@ Opening any unchecked row requires a bounded spec slice per the
 2. [Bridge contract](bridge-contract.md) — the shared rules both sides honor.
 3. [Direction 1](direction-1-lean-to-gnn.md) and
    [Direction 2](direction-2-gnn-to-lean.md).
-4. Background: [FEP background](../../fep-background.md) and
-   [formal-kernel methods](../../formal-kernel-methods.md); on the GNN side,
+4. Background: [FEP background](../../guides/fep-background.md) and
+   [formal-kernel methods](../../guides/formal-kernel-methods.md); on the GNN side,
    the mirror folder `GeneralizedNotationNotation/doc/other/fep_lean/`.
 
 ## Operating the bridge

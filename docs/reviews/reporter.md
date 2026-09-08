@@ -125,7 +125,7 @@ it outside the operator boundary.
 
 ## Navigation
 
-- [Hermes](hermes.md)
-- [Pipeline](pipeline.md)
-- [Public API](api.md)
-- [Documentation index](README.md)
+- [Hermes](../hermes.md)
+- [Pipeline](../pipeline.md)
+- [Public API](../api.md)
+- [Documentation index](../README.md)

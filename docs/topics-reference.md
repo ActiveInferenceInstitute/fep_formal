@@ -19,7 +19,7 @@ Each view answers a different question:
 | How do the reviewed nodes and edges look as a graph? | [Interactive formalism atlas](formalism-atlas.html) or [static SVG](formalism-atlas.svg) |
 | How do selected finite laws behave numerically? | [Interactive formal-kernel dashboard](formal-kernel-dashboard.html) or [static SVG](formal-kernel-dashboard.svg) |
 | Which proofs genuinely compose stable topic namespaces? | Manifested leaves under [`src/fep_lean/formal/compositions/`](../src/fep_lean/formal/compositions/); [`composed.lean`](../src/fep_lean/formal/composed.lean) imports them |
-| Which shared finite carriers and laws support those proofs? | [Formal-kernel methods](formal-kernel-methods.md) and [`src/fep_lean/formal/`](../src/fep_lean/formal/) |
+| Which shared finite carriers and laws support those proofs? | [Formal-kernel methods](guides/formal-kernel-methods.md) and [`src/fep_lean/formal/`](../src/fep_lean/formal/) |
 | What exact theorem statements and proofs appear in the publication appendix? | Generated `manuscript/09z_unified_formalism_catalogue.md` |
 | Did the current bytes compile? | A validated native receipt, normally `output/native-verification.json` |
 

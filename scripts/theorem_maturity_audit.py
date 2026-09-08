@@ -14,7 +14,7 @@ SRC = ROOT / "src"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 AUDIT_PATH = ROOT / "config" / "theorem_maturity.yaml"
-OUTPUT_PATH = ROOT / "docs" / "theorem-maturity-audit.md"
+OUTPUT_PATH = ROOT / "docs" / "generated" / "theorem-maturity-audit.md"
 
 
 def validate_audit(root: Path = ROOT) -> dict[str, Any]:
@@ -109,11 +109,11 @@ def render_markdown(data: dict[str, Any]) -> str:
             "",
             "## Source links",
             "",
-            "- [Maintained audit data](../config/theorem_maturity.yaml)",
-            "- [Catalogue metadata](../config/topics.yaml)",
-            "- [Lean body registry](../src/fep_lean/catalogue/registry.py)",
-            "- [Family-owned Lean bodies](../src/fep_lean/catalogue/bodies/)",
-            "- [Native verification command](cli-reference.md)",
+            "- [Maintained audit data](../../config/theorem_maturity.yaml)",
+            "- [Catalogue metadata](../../config/topics.yaml)",
+            "- [Lean body registry](../../src/fep_lean/catalogue/registry.py)",
+            "- [Family-owned Lean bodies](../../src/fep_lean/catalogue/bodies/)",
+            "- [Native verification command](../cli-reference.md)",
             "",
         ]
     )

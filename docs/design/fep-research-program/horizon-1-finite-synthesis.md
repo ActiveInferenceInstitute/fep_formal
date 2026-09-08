@@ -70,7 +70,7 @@ imports; the listed foundation imports determine their transitive closure.
 
 **Depends on:** released v1.1.0 only.
 
-**Single owners:** pin facts remain in [`docs/lean4.md`](../../lean4.md) and the
+**Single owners:** pin facts remain in [`docs/lean4.md`](../../guides/lean4.md) and the
 Lean lockfiles; module membership remains in
 [`formal/manifest.py`](../../../src/fep_lean/formal/manifest.py).
 
