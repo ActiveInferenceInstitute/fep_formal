@@ -9,11 +9,11 @@ import os
 import subprocess
 import time
 from collections.abc import Sequence
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from fep_lean._paths import project_root, project_root_errors
-from dataclasses import dataclass
 from fep_lean.bridge import operations
 from fep_lean.bridge.custody import validate_binding
 from fep_lean.catalogue.generation import (
@@ -21,12 +21,6 @@ from fep_lean.catalogue.generation import (
     fep_all_projection_drift,
 )
 from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.output.manuscript import (
-    build_manuscript_vars,
-    manuscript_projection_drift,
-)
-from fep_lean.output.render_log import receipt_defects
-
 from fep_lean.output.evidence import (
     build_native_lean_receipt,
     validate_native_lean_receipt,
@@ -40,6 +34,11 @@ from fep_lean.output.formalism_atlas import (
     atlas_projection_drift,
     write_formalism_atlas,
 )
+from fep_lean.output.manuscript import (
+    build_manuscript_vars,
+    manuscript_projection_drift,
+)
+from fep_lean.output.render_log import receipt_defects
 from fep_lean.pipeline.orchestrator import run_pipeline, run_single_topic
 from fep_lean.verification._subprocess import run_process_group
 from fep_lean.verification._toolchain import find_executable, subprocess_env
