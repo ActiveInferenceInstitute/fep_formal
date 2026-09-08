@@ -12,6 +12,8 @@ uv run fep-lean atlas --check
 uv run fep-lean dashboard --check
 uv run fep-lean preflight
 uv run fep-lean run --topic fep-001
+uv run fep-lean status
+uv run fep-lean topic fep-001
 ```
 
 The full test and documentation gates are listed in
