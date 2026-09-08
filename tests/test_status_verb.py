@@ -5,16 +5,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from fep_lean.catalogue.generation import render_fep_all_lean
 from fep_lean.output.render_log import manuscript_source_digest
 from fep_lean.status import (
-    NATIVE_RECEIPT,
     RENDER_RECEIPT,
     SOURCE_PIN,
-    build_status_report,
     bridge_pin_section,
+    build_status_report,
     catalogue_products_section,
-    native_receipt_section,
     render_receipt_section,
 )
 
@@ -138,4 +135,6 @@ def test_malformed_receipts_fail_closed_without_exceptions(tmp_path: Path) -> No
     receipt.write_text("{not json")
     section = render_receipt_section(tmp_path)
     assert section.state == "stale"
-    assert any("unreadable acceptance receipt" in finding for finding in section.findings)
+    assert any(
+        "unreadable acceptance receipt" in finding for finding in section.findings
+    )

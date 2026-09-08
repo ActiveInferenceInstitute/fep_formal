@@ -191,7 +191,9 @@ def bridge_pin_section(root: Path, gnn_root: Path | None = None) -> SectionRepor
         return SectionReport(
             name="bridge_source_pin",
             state="not_pinned",
-            findings=("specs/gnn-bridge-w2-source-custody/source-pin.json: not pinned",),
+            findings=(
+                "specs/gnn-bridge-w2-source-custody/source-pin.json: not pinned",
+            ),
             composes=composes,
             boundary=(
                 "No source pin exists, so no bridge evidence is bound to owner "
