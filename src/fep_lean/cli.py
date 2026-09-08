@@ -331,6 +331,22 @@ def build_parser() -> argparse.ArgumentParser:
         "--workflow", choices=("verify", "draft", "prove", "review"), default="verify"
     )
     sub.add_parser("report", help="run catalogue mode and emit a complete report")
+    status = sub.add_parser(
+        "status",
+        help=(
+            "read-only evidence-currency report composing existing checks; "
+            "exit 0 means the report composed, not that evidence is current"
+        ),
+    )
+    status.add_argument(
+        "--gnn-root",
+        type=Path,
+        default=None,
+        help=(
+            "explicit GNN checkout for full source-pin comparison; omit to "
+            "report pin presence and the fep_lean side only"
+        ),
+    )
     return parser
 
 
@@ -404,6 +420,11 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         if args.command == "report":
             return _print_result(run_pipeline(mode="catalogue"))
+        if args.command == "status":
+            from fep_lean.status import build_status_report, report_to_json
+
+            print(report_to_json(build_status_report(root, args.gnn_root)))
+            return 0
         parser.error(f"unsupported command: {args.command}")
         return 2
     finally:
