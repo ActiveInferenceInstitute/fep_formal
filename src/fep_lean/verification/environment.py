@@ -189,7 +189,7 @@ def _check_topics_yaml(project_root: Path) -> tuple[bool, str]:
 
 
 def _check_dirs(project_root: Path) -> tuple[bool, str]:
-    required = ("manuscript", "config", "src", "lean", "scripts", "tests")
+    required = ("config", "docs", "src", "lean", "scripts", "tests")
     missing = [rel for rel in required if not (project_root / rel).is_dir()]
     return (
         not missing,
@@ -239,7 +239,7 @@ def _check_file(project_root: Path, relative: str) -> tuple[bool, str]:
 
 
 def _check_references_bib(project_root: Path) -> tuple[bool, str]:
-    path = project_root / "manuscript" / "references.bib"
+    path = project_root / "docs" / "manuscript" / "references.bib"
     if not path.is_file():
         return False, "manuscript/references.bib is missing"
     try:
@@ -307,7 +307,7 @@ def _check_python_numpy_matplotlib() -> tuple[bool, str]:
 
 
 def _check_manuscript_config(project_root: Path) -> tuple[bool, str]:
-    return _check_file(project_root, "manuscript/config.yaml")
+    return _check_file(project_root, "docs/manuscript/config.yaml")
 
 
 def _check_scripts_tests(project_root: Path) -> tuple[bool, str]:
@@ -342,7 +342,7 @@ def run_validation_checks(project_root: Path, *, mode: str = "full") -> dict[str
         ("output_writable", lambda: _check_output_writable(project_root)),
         (
             "manuscript_config",
-            lambda: _check_file(project_root, "manuscript/config.yaml"),
+            lambda: _check_file(project_root, "docs/manuscript/config.yaml"),
         ),
         ("catalogue_loader", lambda: _check_topics_yaml(project_root)),
         ("references_bib", lambda: _check_references_bib(project_root)),

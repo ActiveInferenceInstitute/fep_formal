@@ -49,7 +49,7 @@ MANUSCRIPT_SVG_FIGURES: Mapping[str, str] = {
 # reference to ``../figures/<name>`` relative to ``output/pdf/``, so an asset
 # that lives only in ``manuscript/assets/`` renders as a missing figure.
 MANUSCRIPT_COPIED_FIGURES: Mapping[str, str] = {
-    "graphical-abstract.png": "manuscript/assets/graphical-abstract.png",
+    "graphical-abstract.png": "docs/manuscript/assets/graphical-abstract.png",
 }
 # Width in pixels of the rasterized output. Fixed so two runs on the same SVG
 # produce the same bytes regardless of the host's display metrics.

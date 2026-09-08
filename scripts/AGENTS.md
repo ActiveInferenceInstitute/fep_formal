@@ -34,12 +34,12 @@ A clean acceptance writes `docs/render-acceptance.json`, and CI runs
 `check_render_log.py --verify-receipt` against it. That indirection is not
 decoration: CI does not render this manuscript -- that needs a checkout of the
 shared template, XeLaTeX, pandoc, `rsvg-convert`, the mermaid CLI and the two
-faces `manuscript/preamble.md` selects -- so it cannot re-run the acceptance
+faces `docs/manuscript/preamble.md` selects -- so it cannot re-run the acceptance
 and would otherwise run nothing at all, which is exactly the audited state: a
 tested acceptance no workflow invoked.
 
 The receipt is bound to a digest over every typeset manuscript source plus
-`manuscript/preamble.md`, so a chapter or a font selection changed without a
+`docs/manuscript/preamble.md`, so a chapter or a font selection changed without a
 fresh render fails CI. It is not bound to the values a `{{token}}` resolves
 to; `manuscript_projection_drift` and `stale_render_defects` own that surface
 and both run on the render path. A rejected render writes no receipt and

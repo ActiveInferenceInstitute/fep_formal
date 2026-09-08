@@ -204,7 +204,7 @@ checkout root. The equivalent maintained scripts are thin command wrappers in
   acceptance probes.
 - [`CHANGELOG.md`](CHANGELOG.md) records release changes and their evidence
   boundary.
-- [`manuscript/04i_formalism_catalogue_155.md`](manuscript/04i_formalism_catalogue_155.md)
+- [`manuscript/04i_formalism_catalogue_155.md`](docs/manuscript/04i_formalism_catalogue_155.md)
   states the five new families, theorem assumptions, non-vacuity witnesses,
   and evidence boundaries in one authored chapter.
 - [`HANDOFF.md`](HANDOFF.md) gives the next reviewer the operating protocol,

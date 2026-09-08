@@ -93,7 +93,7 @@ def report_source_stamp(project_root: Path, variables: dict[str, Any]) -> int:
         return 0
     print(f"Source stamp: {source.get('stamp', 'unknown')}")
     print(f"  git describe: {source.get('describe', 'unknown')}")
-    config_path = project_root / "manuscript" / "config.yaml"
+    config_path = project_root / "docs" / "manuscript" / "config.yaml"
     declared = ""
     if config_path.is_file():
         config = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
@@ -177,7 +177,7 @@ def unresolved_manuscript_reference_report(source_dir: Path) -> tuple[str, ...]:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     project_root = Path(__file__).resolve().parents[1]
-    source_dir = project_root / "manuscript"
+    source_dir = project_root / "docs" / "manuscript"
     try:
         catalogue = FEPTopicCatalogue.from_yaml(project_root / "config" / "topics.yaml")
         variables = build_manuscript_vars(

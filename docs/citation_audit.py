@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-MANUSCRIPT = PROJECT_ROOT / "manuscript"
+MANUSCRIPT = PROJECT_ROOT / "docs" / "manuscript"
 _ENTRY_RE = re.compile(
     r"^@(?P<kind>[A-Za-z]+)\{(?P<key>[^,\s]+),(?P<body>.*?)(?=^@[A-Za-z]+\{|\Z)",
     re.MULTILINE | re.DOTALL,
@@ -97,7 +97,7 @@ def cited_keys(manuscript_dir: Path) -> set[str]:
 def audit_citations(project_root: Path = PROJECT_ROOT) -> tuple[str, ...]:
     """Return deterministic citation-contract violations."""
     root = Path(project_root)
-    manuscript = root / "manuscript"
+    manuscript = root / "docs" / "manuscript"
     entries = parse_bibliography(manuscript / "references.bib")
     errors: list[str] = []
     keys = [entry.key for entry in entries]
@@ -191,7 +191,7 @@ def main(argv: list[str] | None = None) -> int:
         for error in errors:
             print(f"FAIL: {error}")
         return 1
-    entries = parse_bibliography(args.root / "manuscript" / "references.bib")
+    entries = parse_bibliography(args.root / "docs" / "manuscript" / "references.bib")
     print(f"OK: {len(entries)} bibliography entries are defined, indexed, and cited")
     return 0
 

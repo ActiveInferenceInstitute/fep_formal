@@ -132,7 +132,7 @@ CONFIG_OWNER_FILES: tuple[str, ...] = (
     "config/theorem_maturity.yaml",
     "config/topics.yaml",
     "src/fep_lean/data/topics.yaml",
-    "manuscript/config.yaml",
+    "docs/manuscript/config.yaml",
     "lean/lean-toolchain",
     "lean/lakefile.lean",
     "lean/lake-manifest.json",

@@ -15,7 +15,7 @@ _CHECKOUT_MARKERS = (
     "config/settings.yaml",
     "lean/lean-toolchain",
     "lean/lakefile.lean",
-    "manuscript/config.yaml",
+    "docs/manuscript/config.yaml",
     "src/fep_lean/__init__.py",
 )
 

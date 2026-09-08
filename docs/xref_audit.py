@@ -45,7 +45,7 @@ Usage
 
     uv run python docs/xref_audit.py            # default
     uv run python docs/xref_audit.py --verbose  # list every defined anchor
-    uv run python docs/xref_audit.py --root path/to/manuscript
+    uv run python docs/xref_audit.py --root path/to/docs/manuscript
 """
 
 from __future__ import annotations
@@ -58,7 +58,7 @@ from pathlib import Path
 
 DOCS_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = DOCS_DIR.parent
-DEFAULT_ROOT = PROJECT_ROOT / "manuscript"
+DEFAULT_ROOT = PROJECT_ROOT / "docs" / "manuscript"
 
 if str(PROJECT_ROOT / "src") not in sys.path:  # pragma: no cover - import shim
     sys.path.insert(0, str(PROJECT_ROOT / "src"))

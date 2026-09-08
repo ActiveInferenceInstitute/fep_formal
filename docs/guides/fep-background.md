@@ -254,7 +254,7 @@ remain separate.
 
 ## Primary routes for deeper reading
 
-- [Manuscript background](../../manuscript/02b_background.md)
+- [Manuscript background](../manuscript/02b_background.md)
 - [Pinned Mathlib surface](lean4.md)
 - [Theorem maturity policy](../generated/theorem-maturity-audit.md)
 - [Formalism coverage and retained capabilities](../formalism-coverage.md)

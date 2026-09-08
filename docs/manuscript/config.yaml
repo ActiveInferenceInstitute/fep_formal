@@ -16,7 +16,7 @@ publication:
   volume: ""
   pages: ""
   graphical_abstract:
-    path: "manuscript/assets/graphical-abstract.png"
+    path: "docs/manuscript/assets/graphical-abstract.png"
     media_type: "image/png"
     width_px: 1536
     height_px: 1024

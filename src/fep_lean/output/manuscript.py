@@ -1131,8 +1131,8 @@ def manuscript_projection_drift(
         if expected_variables is not None
         else build_manuscript_vars(cat, root, output_root=output_root)
     )
-    vars_path = root / "manuscript" / "manuscript_vars.yaml"
-    appendix_path = root / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
+    vars_path = root / "docs" / "manuscript" / "manuscript_vars.yaml"
+    appendix_path = root / "docs" / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
     drift: list[Path] = []
 
     try:
@@ -1245,12 +1245,12 @@ def write_manuscript_vars(
     cat = catalogue or FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
     out = _safe_project_path(
         root,
-        root / "manuscript" / "manuscript_vars.yaml",
+        root / "docs" / "manuscript" / "manuscript_vars.yaml",
         label="manuscript projection",
     )
     appendix = _safe_project_path(
         root,
-        root / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME,
+        root / "docs" / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME,
         label="manuscript projection",
     )
     variables = _dump_manuscript_vars(
@@ -1274,7 +1274,7 @@ def write_unified_formalism_appendix_markdown(
     cat = catalogue or FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
     out = _safe_project_path(
         root,
-        root / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME,
+        root / "docs" / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME,
         label="manuscript projection",
     )
     _atomic_write_text(out, build_unified_formalism_appendix_markdown(cat, root))

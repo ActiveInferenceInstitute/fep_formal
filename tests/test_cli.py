@@ -39,7 +39,7 @@ def _make_checkout_root(root: Path) -> None:
             "lean/lake-manifest.json",
             '{"packages":[{"name":"mathlib","rev":"' + "a" * 40 + '"}]}\n',
         ),
-        ("manuscript/config.yaml", "{}\n"),
+        ("docs/manuscript/config.yaml", "{}\n"),
         ("src/fep_lean/__init__.py", "\n"),
         ("src/fep_lean/catalogue/registry.py", "BODIES = {}\n"),
     ):

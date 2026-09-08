@@ -48,12 +48,12 @@ def _copy_publication_metadata(project_root: Path) -> None:
     manuscript = project_root / "manuscript"
     manuscript.mkdir(parents=True, exist_ok=True)
     shutil.copy2(PROJ / "CITATION.cff", project_root / "CITATION.cff")
-    shutil.copy2(PROJ / "manuscript/config.yaml", manuscript / "config.yaml")
-    shutil.copytree(PROJ / "manuscript/assets", manuscript / "assets")
+    shutil.copy2(PROJ / "docs/manuscript/config.yaml", manuscript / "config.yaml")
+    shutil.copytree(PROJ / "docs/manuscript/assets", manuscript / "assets")
 
 
 def test_authored_figure_anchors_are_attached_to_figures() -> None:
-    for path in sorted((PROJ / "manuscript").glob("*.md")):
+    for path in sorted((PROJ / "docs" / "manuscript").glob("*.md")):
         for line_number, line in enumerate(
             path.read_text(encoding="utf-8").splitlines(), start=1
         ):
@@ -62,7 +62,7 @@ def test_authored_figure_anchors_are_attached_to_figures() -> None:
 
 
 def test_appendix_orientation_tables_avoid_narrow_identifier_columns() -> None:
-    appendix = (PROJ / "manuscript/08_appendix_a_overview.md").read_text(
+    appendix = (PROJ / "docs/manuscript/08_appendix_a_overview.md").read_text(
         encoding="utf-8"
     )
 
@@ -74,7 +74,7 @@ def test_appendix_orientation_tables_avoid_narrow_identifier_columns() -> None:
 
 
 def test_pdf_preamble_wraps_highlighted_lean_without_clipping() -> None:
-    preamble = (PROJ / "manuscript/preamble.md").read_text(encoding="utf-8")
+    preamble = (PROJ / "docs/manuscript/preamble.md").read_text(encoding="utf-8")
 
     assert r"\usepackage{fvextra}" in preamble
     assert r"\RecustomVerbatimEnvironment{Highlighting}{Verbatim}" in preamble
@@ -148,7 +148,7 @@ def test_build_manuscript_vars_projects_the_canonical_citation_author(
 
     variables = build_manuscript_vars(catalogue, PROJ)
     manuscript_config = yaml.safe_load(
-        (PROJ / "manuscript/config.yaml").read_text(encoding="utf-8")
+        (PROJ / "docs/manuscript/config.yaml").read_text(encoding="utf-8")
     )
 
     assert variables["publication"]["author"] == {
@@ -184,7 +184,7 @@ def test_build_manuscript_vars_validates_the_canonical_graphical_abstract(
     variables = build_manuscript_vars(catalogue, PROJ)
 
     assert variables["publication"]["graphical_abstract"] == {
-        "source_path": "manuscript/assets/graphical-abstract.png",
+        "source_path": "docs/manuscript/assets/graphical-abstract.png",
         "render_path": "assets/graphical-abstract.png",
         "media_type": "image/png",
         "width_px": 1536,
@@ -1488,7 +1488,7 @@ def test_live_preamble_carries_every_declared_pdf_metadata_string() -> None:
     """The published preamble must already agree with ``config.yaml``."""
     assert pdf_metadata_drift(PROJ) == ()
     fields = pdf_metadata_fields(PROJ)
-    preamble = (PROJ / "manuscript/preamble.md").read_text(encoding="utf-8")
+    preamble = (PROJ / "docs/manuscript/preamble.md").read_text(encoding="utf-8")
     assert f"pdfsubject={{{fields['pdfsubject']}}}" in preamble
     assert f"pdfkeywords={{{fields['pdfkeywords']}}}" in preamble
 
@@ -1498,8 +1498,8 @@ def test_pdf_metadata_drift_reports_a_changed_keyword_list(tmp_path: Path) -> No
     manuscript = tmp_path / "manuscript"
     manuscript.mkdir(parents=True)
     config_path = manuscript / "config.yaml"
-    shutil.copy2(PROJ / "manuscript/config.yaml", config_path)
-    shutil.copy2(PROJ / "manuscript/preamble.md", manuscript / "preamble.md")
+    shutil.copy2(PROJ / "docs/manuscript/config.yaml", config_path)
+    shutil.copy2(PROJ / "docs/manuscript/preamble.md", manuscript / "preamble.md")
     assert pdf_metadata_drift(tmp_path) == ()
 
     config_path.write_text(
@@ -1518,9 +1518,9 @@ def test_pdf_metadata_drift_reports_a_missing_hypersetup_field(tmp_path: Path) -
     """Deleting the preamble copy must fail rather than silently drop metadata."""
     manuscript = tmp_path / "manuscript"
     manuscript.mkdir(parents=True)
-    shutil.copy2(PROJ / "manuscript/config.yaml", manuscript / "config.yaml")
+    shutil.copy2(PROJ / "docs/manuscript/config.yaml", manuscript / "config.yaml")
     fields = pdf_metadata_fields(PROJ)
-    preamble = (PROJ / "manuscript/preamble.md").read_text(encoding="utf-8")
+    preamble = (PROJ / "docs/manuscript/preamble.md").read_text(encoding="utf-8")
     (manuscript / "preamble.md").write_text(
         preamble.replace(f"  pdfsubject={{{fields['pdfsubject']}}},\n", ""),
         encoding="utf-8",
@@ -1535,7 +1535,7 @@ def test_pdf_metadata_fields_reject_a_latex_unsafe_keyword(tmp_path: Path) -> No
     manuscript = tmp_path / "manuscript"
     manuscript.mkdir(parents=True)
     (manuscript / "config.yaml").write_text(
-        (PROJ / "manuscript/config.yaml")
+        (PROJ / "docs/manuscript/config.yaml")
         .read_text(encoding="utf-8")
         .replace('  - "mathlib4"\n', '  - "mathlib4; smuggled"\n'),
         encoding="utf-8",

@@ -177,7 +177,7 @@ def font_coverage_defects(project_root: Path) -> tuple[str, ...]:
     """
 
     root = Path(project_root)
-    manuscript = root / "manuscript"
+    manuscript = root / "docs" / "manuscript"
     _require_generated_manuscript(manuscript)
     fonts = declared_fonts(manuscript / "preamble.md")
     requirements = {
@@ -214,7 +214,7 @@ def render_font_projection(project_root: Path) -> dict[str, Any]:
     starts using a glyph nobody has confirmed a font for.
     """
 
-    manuscript = Path(project_root) / "manuscript"
+    manuscript = Path(project_root) / "docs" / "manuscript"
     _require_generated_manuscript(manuscript)
     fonts = declared_fonts(manuscript / "preamble.md")
     roles = {}

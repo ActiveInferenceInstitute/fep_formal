@@ -39,7 +39,7 @@ jobs:
         run: |
           uv run fep-lean catalogue
           # The glyph projection reads the generated appendix
-          # (manuscript/09z_unified_formalism_catalogue.md, a gitignored build
+          # (docs/manuscript/09z_unified_formalism_catalogue.md, a gitignored build
           # product), so this check is only decidable after the catalogue has
           # materialized the manuscript inputs; earlier placement reported a
           # false STALE on every fresh checkout.
@@ -54,7 +54,7 @@ jobs:
       # workflow does not produce one: rendering needs a checkout of the shared
       # template -- a separate repository this project does not pin -- plus
       # XeLaTeX, pandoc, `rsvg-convert`, the mermaid CLI and the two faces
-      # `manuscript/preamble.md` selects. The audited alternative was to run
+      # `docs/manuscript/preamble.md` selects. The audited alternative was to run
       # nothing at all. So this step requires instead that the acceptance
       # has run over exactly these sources: the receipt is written only by an
       # acceptance that found nothing, and it names the digest of the

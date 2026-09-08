@@ -172,7 +172,14 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    files: list[Path] = sorted(DOCS_DIR.glob("**/*.md"))
+    # The manuscript subdirectory is gated by docs/xref_audit.py, which
+    # understands the render-time template placeholders and pipeline-relative
+    # figure paths the chapters use; the plain link audit skips it.
+    files: list[Path] = sorted(
+        path
+        for path in DOCS_DIR.glob("**/*.md")
+        if DOCS_DIR / "manuscript" not in path.parents
+    )
     if args.include_root:
         for name in ("README.md", "AGENTS.md", "SPEC.md", "PAI.md"):
             p = PROJECT_ROOT / name

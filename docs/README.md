@@ -6,7 +6,7 @@ lifecycle: authored operating docs at this level, long-form background in
 regenerable projections in [`generated/`](generated/), committed render
 receipts in [`evidence/`](evidence/), prospective programs in
 [`design/`](design/README.md), and the publication sources one level up in
-[`../manuscript/`](../manuscript/README.md).
+[`manuscript/`](manuscript/README.md).
 
 ## Start here
 
@@ -74,8 +74,8 @@ publication pipeline, verified by `scripts/check_render_log.py
 
 ## Manuscript
 
-The publication sources live in [`../manuscript/`](../manuscript/README.md);
-the [155-topic expansion chapter](../manuscript/04i_formalism_catalogue_155.md)
+The publication sources live in [`manuscript/`](manuscript/README.md);
+the [155-topic expansion chapter](manuscript/04i_formalism_catalogue_155.md)
 carries the finite risk, policy trees, native blankets, exponential-family
 duality, continuous time, and evidence boundaries. Catalogue-derived
 manuscript inputs (`09z_unified_formalism_catalogue.md`,

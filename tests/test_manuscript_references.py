@@ -40,7 +40,7 @@ def test_all_fep_declaration_references_resolve() -> None:
     }
     assert (
         unresolved_manuscript_references(
-            PROJ / "manuscript", additional_declarations=composed
+            PROJ / "docs" / "manuscript", additional_declarations=composed
         )
         == ()
     )
@@ -81,11 +81,11 @@ def test_import_audit_catches_a_module_a_rename_removed(
 
 
 def test_no_framework_table_cell_names_a_hand_typed_module() -> None:
-    assert hand_maintained_module_cells(PROJ / "manuscript") == ()
+    assert hand_maintained_module_cells(PROJ / "docs" / "manuscript") == ()
 
 
 def test_no_area_row_count_is_labelled_a_declaration_count() -> None:
-    assert miscounted_area_labels(PROJ / "manuscript") == ()
+    assert miscounted_area_labels(PROJ / "docs" / "manuscript") == ()
 
 
 def test_area_row_count_labelled_theorems_is_rejected(tmp_path: Path) -> None:
@@ -117,7 +117,7 @@ def test_area_row_count_labelled_rows_is_accepted(tmp_path: Path) -> None:
 
 def test_hand_typed_module_cell_is_rejected(tmp_path: Path) -> None:
     """The exact drift that shipped: a literal where the token belongs."""
-    source = PROJ / "manuscript" / "04b_framework_active_inference.md"
+    source = PROJ / "docs" / "manuscript" / "04b_framework_active_inference.md"
     body = source.read_text(encoding="utf-8")
     token = "{{topics.fep-023.imported_modules}}"
     assert token in body
@@ -214,8 +214,8 @@ def test_local_and_record_groups_are_checked_without_mathlib() -> None:
 
 def test_fep008_prose_names_the_row_not_a_bare_lemma() -> None:
     """fep-008's proof paragraph must not print a catalogue name as Mathlib's."""
-    prose = (PROJ / "manuscript" / "04b_framework_active_inference.md").read_text(
-        encoding="utf-8"
-    )
+    prose = (
+        PROJ / "docs" / "manuscript" / "04b_framework_active_inference.md"
+    ).read_text(encoding="utf-8")
     assert "`fep008_min_agrees_on_value`" in prose
     assert "`min_agrees_on_value`" not in prose

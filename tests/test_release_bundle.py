@@ -356,7 +356,7 @@ def test_project_snapshot_captures_each_release_owned_evidence_plane(
         "pyproject.toml": b"[project]\nname = 'fixture'\n",
         "README.md": b"# Fixture\n",
         bundle_module.RENDERER_PROVENANCE.as_posix(): (b'{"pdf":{"current":true}}\n'),
-        "manuscript/01_chapter.md": b"# Source chapter\n",
+        "docs/manuscript/01_chapter.md": b"# Source chapter\n",
         "output/manuscript/01_chapter.md": b"# Rendered chapter\n",
         "output/manuscript/assets/atlas.svg": b"<svg/>\n",
         bundle_module.PUBLICATION_PDF.as_posix(): b"%PDF fixture\n",
@@ -884,8 +884,8 @@ def test_archive_validator_rejects_unnormalized_metadata(tmp_path: Path) -> None
 @pytest.mark.parametrize(
     "omitted",
     [
-        "manuscript/references.bib",
-        "manuscript/09z_unified_formalism_catalogue.md",
+        "docs/manuscript/references.bib",
+        "docs/manuscript/09z_unified_formalism_catalogue.md",
         "docs/formalism-coverage.json",
         "docs/formalism-atlas.svg",
         "docs/formal-kernel-dashboard.html",
@@ -920,8 +920,8 @@ def _minimal_manuscript(project_root: Path) -> None:
     rendered = project_root / "output" / "manuscript"
     manuscript.mkdir(parents=True)
     rendered.mkdir(parents=True)
-    shutil.copy2(PROJ / "manuscript/config.yaml", manuscript / "config.yaml")
-    asset = (PROJ / "manuscript/assets/graphical-abstract.png").read_bytes()
+    shutil.copy2(PROJ / "docs/manuscript/config.yaml", manuscript / "config.yaml")
+    asset = (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
     (manuscript / "assets").mkdir()
     (manuscript / "assets/graphical-abstract.png").write_bytes(asset)
     (rendered / "assets").mkdir()
@@ -989,7 +989,7 @@ def test_publication_html_shows_author_and_embeds_graphical_abstract(
     assert b"data:image/png;base64," in rendered.html
     provenance = json.loads(rendered.provenance)
     inputs = {record["path"]: record for record in provenance["inputs"]}
-    assert inputs["manuscript/assets/graphical-abstract.png"]["sha256"] == (
+    assert inputs["docs/manuscript/assets/graphical-abstract.png"]["sha256"] == (
         "969c7e959360545b3fff95963a9d88a8f7addb7f6d536a1b983da8032cbd9ccd"
     )
 
@@ -1037,7 +1037,7 @@ def test_publication_resources_require_graphical_abstract_contract(
     tmp_path: Path,
 ) -> None:
     _minimal_manuscript(tmp_path)
-    config_path = tmp_path / "manuscript/config.yaml"
+    config_path = tmp_path / "docs/manuscript/config.yaml"
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     del config["publication"]["graphical_abstract"]
     config_path.write_text(
@@ -1073,7 +1073,7 @@ def test_publication_html_is_two_render_reproducible_and_checkable(
     provenance = json.loads(rendered.provenance)
     assert provenance["html"]["status"] == "reproducible"
     assert provenance["pdf"]["status"] == "xelatex_unavailable"
-    assert "manuscript/preamble.md" in {
+    assert "docs/manuscript/preamble.md" in {
         record["path"] for record in provenance["inputs"]
     }
     assert set(provenance["normalized_environment"]) == {
@@ -1131,10 +1131,10 @@ def test_release_rejects_manuscript_sources_that_escape_through_symlinks(
 @pytest.mark.parametrize(
     ("relative", "expected_error"),
     [
-        ("manuscript/config.yaml", "path traverses a symlink"),
-        ("manuscript/references.bib", "required regular file is missing"),
+        ("docs/manuscript/config.yaml", "path traverses a symlink"),
+        ("docs/manuscript/references.bib", "required regular file is missing"),
         (
-            "manuscript/09z_unified_formalism_catalogue.md",
+            "docs/manuscript/09z_unified_formalism_catalogue.md",
             "required regular file is missing",
         ),
         (
@@ -1156,7 +1156,7 @@ def test_publication_renderer_rejects_symlinked_metadata_appendix_and_resources(
     _minimal_manuscript(tmp_path)
     canonical = tmp_path / relative
     if relative.startswith(("output/manuscript/assets/", "docs/")):
-        source = tmp_path / "manuscript/01_chapter.md"
+        source = tmp_path / "docs/manuscript/01_chapter.md"
         rendered = tmp_path / "output/manuscript/01_chapter.md"
         source.write_text("![Atlas](../docs/formalism-atlas.svg)\n", encoding="utf-8")
         rendered.write_text("![Atlas](assets/formalism-atlas.svg)\n", encoding="utf-8")
@@ -1168,7 +1168,7 @@ def test_publication_renderer_rejects_symlinked_metadata_appendix_and_resources(
             docs.mkdir()
             (docs / "formalism-atlas.svg").write_text("<svg/>", encoding="utf-8")
             (outside / "graphical-abstract.png").write_bytes(
-                (PROJ / "manuscript/assets/graphical-abstract.png").read_bytes()
+                (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
             )
         if canonical.parent.exists():
             shutil.rmtree(canonical.parent)
@@ -1389,7 +1389,7 @@ def test_renderer_provenance_binds_referenced_local_manuscript_figures(
 ) -> None:
     _minimal_manuscript(tmp_path)
     reference = "![Status](../output/figures/status_distribution.png)\n"
-    (tmp_path / "manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
+    (tmp_path / "docs/manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
     (tmp_path / "output/manuscript/01_chapter.md").write_text(
         reference, encoding="utf-8"
     )
@@ -1434,7 +1434,7 @@ def test_publication_renderer_rejects_a_resource_changed_during_rendering(
 ) -> None:
     _minimal_manuscript(tmp_path)
     reference = "![Status](../output/figures/status_distribution.png)\n"
-    (tmp_path / "manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
+    (tmp_path / "docs/manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
     (tmp_path / "output/manuscript/01_chapter.md").write_text(
         reference, encoding="utf-8"
     )
@@ -1496,7 +1496,7 @@ def test_renderer_rejects_unowned_or_provider_manuscript_image_targets(
     error: str,
 ) -> None:
     _minimal_manuscript(tmp_path)
-    (tmp_path / "manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
+    (tmp_path / "docs/manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
     (tmp_path / "output/manuscript/01_chapter.md").write_text(
         reference, encoding="utf-8"
     )
@@ -2618,7 +2618,7 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
         "  doi: 10.5281/zenodo.19699233\n",
         encoding="utf-8",
     )
-    (project_root / "manuscript/config.yaml").write_text(
+    (project_root / "docs/manuscript/config.yaml").write_text(
         "paper:\n"
         '  version: "1.1.0"\n'
         '  date: "2026-08-23"\n'
@@ -2761,7 +2761,7 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
     )
     _write_release_metadata_fixture(tmp_path)
 
-    (tmp_path / "manuscript/config.yaml").write_text(
+    (tmp_path / "docs/manuscript/config.yaml").write_text(
         "paper:\n"
         '  version: "1.1.0"\n'
         '  date: "2026-08-23"\n'
@@ -2776,7 +2776,7 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
         "manuscript publication DOI must be 10.5281/zenodo.19699233",
     )
 
-    (tmp_path / "manuscript/config.yaml").write_text(
+    (tmp_path / "docs/manuscript/config.yaml").write_text(
         "paper:\n"
         '  version: "1.1.0"\n'
         '  date: "2026-08-23"\n'
@@ -2792,7 +2792,7 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
         "manuscript metadata license must be CC-BY-4.0",
     )
 
-    (tmp_path / "manuscript/config.yaml").write_text(
+    (tmp_path / "docs/manuscript/config.yaml").write_text(
         "paper:\n"
         '  version: "1.1.0"\n'
         '  date: "2026-08-23"\n'
@@ -2857,13 +2857,13 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
             "CITATION.cff date-released must be 2026-08-23",
         ),
         (
-            "manuscript/config.yaml",
+            "docs/manuscript/config.yaml",
             'version: "1.1.0"',
             'version: "1.2.0"',
             "manuscript paper version must be 1.1.0",
         ),
         (
-            "manuscript/config.yaml",
+            "docs/manuscript/config.yaml",
             'date: "2026-08-23"',
             'date: "2026-08-22"',
             "manuscript paper date must be 2026-08-23",

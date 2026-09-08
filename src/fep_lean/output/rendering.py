@@ -51,7 +51,7 @@ _PUBLISHED_COMMAND_GLOBS: tuple[str, ...] = (
     "*.md",
     ".github/workflows/*.yml",
     "docs/*.md",
-    "manuscript/*.md",
+    "docs/manuscript/*.md",
     "scripts/*.md",
     "src/fep_lean/*.md",
     "tests/*.md",

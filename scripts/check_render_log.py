@@ -96,7 +96,7 @@ def main(argv: list[str] | None = None) -> int:
     manuscript_dir = (
         args.manuscript_dir
         if args.manuscript_dir is not None
-        else project_root / "manuscript"
+        else project_root / "docs" / "manuscript"
     )
     results = render_log_defects(pdf_dir)
     failed = False
@@ -183,7 +183,7 @@ def verify_receipt(project_root: Path, args: argparse.Namespace) -> int:
     manuscript_dir = (
         args.manuscript_dir
         if args.manuscript_dir is not None
-        else project_root / "manuscript"
+        else project_root / "docs" / "manuscript"
     )
     defects = receipt_defects(receipt, manuscript_dir)
     for line in defects:

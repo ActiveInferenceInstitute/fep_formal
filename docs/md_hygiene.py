@@ -189,7 +189,13 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    files = sorted(DOCS_DIR.glob("**/*.md"))
+    # The manuscript subdirectory is gated by docs/xref_audit.py; its pandoc
+    # citations and render-time placeholders are not plain-markdown issues.
+    files = sorted(
+        path
+        for path in DOCS_DIR.glob("**/*.md")
+        if DOCS_DIR / "manuscript" not in path.parents
+    )
     if args.include_root:
         for name in ("README.md", "AGENTS.md", "SPEC.md", "PAI.md"):
             p = PROJECT_ROOT / name

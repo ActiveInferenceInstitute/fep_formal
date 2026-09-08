@@ -14,8 +14,8 @@ Canonical sources of truth (read at every invocation, never the docs):
                                                     must equal ``hermes.model``.
 
 The script then walks every current ``*.md`` in this standalone checkout
-(excluding ``manuscript/`` which uses ``{{...}}`` placeholders rendered from
-``manuscript_vars.yaml``, completed historical specs, and
+(excluding ``docs/manuscript/`` which uses ``{{...}}`` placeholders rendered from
+``docs/manuscript/manuscript_vars.yaml``, completed historical specs, and
 ``docs/_generated/`` which is build output) and flags any *literal* pin that
 does not match the canonical value. For ``CHANGELOG.md``, only the current
 ``Unreleased`` section is audited; older release notes intentionally retain
@@ -70,7 +70,7 @@ DOCS_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = DOCS_DIR.parent
 
 EXCLUDED_DIRS = (
-    PROJECT_ROOT / "manuscript",
+    PROJECT_ROOT / "docs" / "manuscript",
     PROJECT_ROOT / "docs" / "_generated",
 )
 

@@ -97,7 +97,7 @@ optimization as broader claims. Parallel seven-topic families add finite
 policy trees, native blanket transfer, scalar exponential-family dual geometry,
 and an exact two-state continuous-time semigroup. Their scope and non-vacuity
 contracts are summarized in
-[`manuscript/04i_formalism_catalogue_155.md`](../manuscript/04i_formalism_catalogue_155.md).
+[`manuscript/04i_formalism_catalogue_155.md`](manuscript/04i_formalism_catalogue_155.md).
 Historical proxy and gap values remain part of the schema so older receipts
 and future regressions stay interpretable.
 

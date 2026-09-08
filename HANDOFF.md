@@ -219,7 +219,7 @@ The canonical Python-acceptance command runs the exact collected suite and
 atomically writes `output/pytest.xml`, `output/coverage.xml`, and
 `output/python-acceptance.json`; a raw `pytest` run is a useful development
 gate but is not a release receipt. Catalogue/manuscript generation precedes
-that receipt because `manuscript/manuscript_vars.yaml` owns the canonical test
+that receipt because `docs/manuscript/manuscript_vars.yaml` owns the canonical test
 count. Browser capture follows the final renderer sources and atlas/dashboard
 bytes. The two archive builds must remain byte-identical and independently
 validate against the live checkout before publication.

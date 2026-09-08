@@ -35,7 +35,7 @@ def _graphical_abstract_variables() -> dict[str, object]:
     return {
         "publication": {
             "graphical_abstract": {
-                "source_path": "manuscript/assets/graphical-abstract.png",
+                "source_path": "docs/manuscript/assets/graphical-abstract.png",
                 "render_path": "assets/graphical-abstract.png",
                 "media_type": "image/png",
                 "width_px": 1536,
@@ -52,7 +52,7 @@ def _graphical_abstract_variables() -> dict[str, object]:
 def _write_graphical_abstract_render_fixture(project_root: Path) -> Path:
     source = project_root / "manuscript"
     source.mkdir(parents=True)
-    shutil.copy2(PROJ / "manuscript/config.yaml", source / "config.yaml")
+    shutil.copy2(PROJ / "docs/manuscript/config.yaml", source / "config.yaml")
     (source / "00_front_matter.md").write_text(
         "![Graphical abstract]({{publication.graphical_abstract.render_path}})\n",
         encoding="utf-8",
@@ -63,8 +63,8 @@ def _write_graphical_abstract_render_fixture(project_root: Path) -> Path:
 def _copy_publication_metadata(project_root: Path) -> None:
     manuscript = project_root / "manuscript"
     shutil.copy2(PROJ / "CITATION.cff", project_root / "CITATION.cff")
-    shutil.copy2(PROJ / "manuscript/config.yaml", manuscript / "config.yaml")
-    shutil.copytree(PROJ / "manuscript/assets", manuscript / "assets")
+    shutil.copy2(PROJ / "docs/manuscript/config.yaml", manuscript / "config.yaml")
+    shutil.copytree(PROJ / "docs/manuscript/assets", manuscript / "assets")
 
 
 def _load_render_script() -> ModuleType:
@@ -161,14 +161,14 @@ def test_all_authored_manuscript_placeholders_are_in_typed_projection() -> None:
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     variables = build_manuscript_vars(catalogue, PROJ)
     source_names = tuple(
-        path.name for path in manuscript_source_files(PROJ / "manuscript")
+        path.name for path in manuscript_source_files(PROJ / "docs" / "manuscript")
     )
 
     assert source_names[0] == "00_front_matter.md"
     assert source_names[-1] == "08_appendix_a_overview.md"
     assert all(name[0].isdigit() for name in source_names)
     assert "preamble.md" not in source_names
-    assert unresolved_placeholders(PROJ / "manuscript", variables) == ()
+    assert unresolved_placeholders(PROJ / "docs" / "manuscript", variables) == ()
 
 
 @pytest.mark.serial_lean
@@ -179,7 +179,9 @@ def test_live_render_includes_author_block_and_canonical_graphical_abstract(
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     variables = build_manuscript_vars(catalogue, PROJ)
 
-    rendered = render_manuscript(PROJ / "manuscript", tmp_path / "build", variables)
+    rendered = render_manuscript(
+        PROJ / "docs" / "manuscript", tmp_path / "build", variables
+    )
 
     assert rendered[0].name == "00_front_matter.md"
     front_matter = rendered[0].read_text(encoding="utf-8")
@@ -189,7 +191,7 @@ def test_live_render_includes_author_block_and_canonical_graphical_abstract(
     assert "daniel@activeinference.institute" in front_matter
     assert "assets/graphical-abstract.png" in front_matter
     assert (tmp_path / "build/assets/graphical-abstract.png").read_bytes() == (
-        PROJ / "manuscript/assets/graphical-abstract.png"
+        PROJ / "docs/manuscript/assets/graphical-abstract.png"
     ).read_bytes()
 
 
@@ -213,7 +215,9 @@ def test_render_manuscript_fails_closed_when_graphical_abstract_is_tampered(
     source = _write_graphical_abstract_render_fixture(tmp_path)
     asset = source / "assets/graphical-abstract.png"
     asset.parent.mkdir()
-    data = bytearray((PROJ / "manuscript/assets/graphical-abstract.png").read_bytes())
+    data = bytearray(
+        (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
+    )
     data[-1] ^= 1
     asset.write_bytes(data)
     destination = tmp_path / "build"
@@ -236,7 +240,7 @@ def test_render_manuscript_rejects_graphical_abstract_that_escapes_root(
         yaml.safe_dump(config, sort_keys=False, allow_unicode=True), encoding="utf-8"
     )
     outside.write_bytes(
-        (PROJ / "manuscript/assets/graphical-abstract.png").read_bytes()
+        (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
     )
     destination = tmp_path / "build"
 
@@ -424,7 +428,7 @@ def test_a_disclosed_mismatch_passes(tmp_path: Path) -> None:
 def test_the_shipped_manuscript_discloses_its_source(tmp_path: Path) -> None:
     module = _load_render_script()
 
-    assert module.undisclosed_source_stamp(PROJ / "manuscript") == ()
+    assert module.undisclosed_source_stamp(PROJ / "docs" / "manuscript") == ()
 
 
 def _git(repository: Path, *arguments: str) -> None:

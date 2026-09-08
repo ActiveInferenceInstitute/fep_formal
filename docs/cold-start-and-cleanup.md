@@ -22,7 +22,7 @@ These paths are source or tracked generated projections:
 - `docs/formalism-atlas.svg`, `docs/formalism-atlas.html`,
   `docs/formal-kernel-dashboard.svg`, and
   `docs/formal-kernel-dashboard.html`
-- authored `manuscript/*.md` files
+- authored `docs/manuscript/*.md` files
 
 In particular, do not remove `lean/FepSketches/`: it contains the tracked
 aggregate. The verifier owns only files matching
@@ -46,8 +46,8 @@ removal.
 | Path | Contents | Reproducer |
 | --- | --- | --- |
 | `output/` | figures, rendered manuscript, native receipts, run reports | relevant CLI command below |
-| `manuscript/manuscript_vars.yaml` | generated typed variable projection | `fep-lean catalogue` |
-| `manuscript/09z_unified_formalism_catalogue.md` | generated Lean and equation appendix | `fep-lean catalogue` |
+| `docs/manuscript/manuscript_vars.yaml` | generated typed variable projection | `fep-lean catalogue` |
+| `docs/manuscript/09z_unified_formalism_catalogue.md` | generated Lean and equation appendix | `fep-lean catalogue` |
 | `.pytest_cache/`, `.coverage`, `htmlcov/` | test metadata and coverage output | coverage gate |
 | `build/`, `dist/`, `*.egg-info/` | Python build output | `uv build` or `uv sync` |
 | `__pycache__/` | interpreter bytecode | Python import |

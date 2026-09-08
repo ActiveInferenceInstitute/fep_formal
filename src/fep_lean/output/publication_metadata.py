@@ -189,7 +189,7 @@ def load_repository_url(project_root: Path) -> str:
 def load_graphical_abstract(project_root: Path) -> GraphicalAbstractAsset:
     """Load and validate the configured graphical-abstract cover asset."""
     config = _load_yaml_owner(
-        project_root, "manuscript/config.yaml", label="manuscript/config.yaml"
+        project_root, "docs/manuscript/config.yaml", label="docs/manuscript/config.yaml"
     )
     publication = _mapping(
         config.get("publication"), label="manuscript publication metadata"
@@ -291,25 +291,27 @@ def pdf_metadata_fields(project_root: Path) -> dict[str, str]:
     the single definition of what those hand-written strings must say.
     """
     config = _load_yaml_owner(
-        project_root, "manuscript/config.yaml", label="manuscript/config.yaml"
+        project_root, "docs/manuscript/config.yaml", label="docs/manuscript/config.yaml"
     )
-    paper = _mapping(config.get("paper"), label="manuscript/config.yaml paper")
-    subtitle = _required_text(paper, "subtitle", label="manuscript/config.yaml paper")
+    paper = _mapping(config.get("paper"), label="docs/manuscript/config.yaml paper")
+    subtitle = _required_text(
+        paper, "subtitle", label="docs/manuscript/config.yaml paper"
+    )
     raw_keywords = config.get("keywords")
     if not isinstance(raw_keywords, list) or not raw_keywords:
         raise PublicationMetadataError(
-            "manuscript/config.yaml keywords must be a non-empty list"
+            "docs/manuscript/config.yaml keywords must be a non-empty list"
         )
     keywords: list[str] = []
     for entry in raw_keywords:
         if not isinstance(entry, str) or not entry.strip():
             raise PublicationMetadataError(
-                "manuscript/config.yaml keywords must all be non-empty strings"
+                "docs/manuscript/config.yaml keywords must all be non-empty strings"
             )
         keyword = entry.strip()
         if any(character in keyword for character in "{}") or ";" in keyword:
             raise PublicationMetadataError(
-                f"manuscript/config.yaml keyword is not LaTeX-safe: {keyword}"
+                f"docs/manuscript/config.yaml keyword is not LaTeX-safe: {keyword}"
             )
         keywords.append(keyword)
     return {
@@ -328,7 +330,7 @@ def pdf_metadata_drift(project_root: Path) -> tuple[str, ...]:
     """
     expected = pdf_metadata_fields(project_root)
     preamble = _safe_project_file(
-        project_root, "manuscript/preamble.md", label="manuscript/preamble.md"
+        project_root, "docs/manuscript/preamble.md", label="docs/manuscript/preamble.md"
     )
     try:
         text = preamble.read_text(encoding="utf-8")
@@ -345,12 +347,12 @@ def pdf_metadata_drift(project_root: Path) -> tuple[str, ...]:
         actual = found.get(field)
         if actual is None:
             drift.append(
-                f"manuscript/preamble.md declares no \\hypersetup {field}; "
-                f"manuscript/config.yaml requires: {wanted}"
+                f"docs/manuscript/preamble.md declares no \\hypersetup {field}; "
+                f"docs/manuscript/config.yaml requires: {wanted}"
             )
         elif actual != wanted:
             drift.append(
-                f"manuscript/preamble.md {field} does not match "
-                f"manuscript/config.yaml\n  preamble: {actual}\n  config:   {wanted}"
+                f"docs/manuscript/preamble.md {field} does not match "
+                f"docs/manuscript/config.yaml\n  preamble: {actual}\n  config:   {wanted}"
             )
     return tuple(drift)
