@@ -71,7 +71,7 @@ named Lean generative-model definition
 and the reverse direction:
 
 ```text
-GNN syntax and step inventory (doc/gnn/gnn_syntax.md; src/gnn/pipeline/step_registry.py)
+GNN syntax and step inventory (docs/gnn/gnn_syntax.md; src/gnn/pipeline/step_registry.py)
   -> Lean AST and decidable well-formedness
   -> static and dynamic semantics
   -> denotations reusing fep_lean carriers (FiniteLaw, FiniteKernel, FiniteHMM, LinearGaussianParameters)
@@ -136,7 +136,7 @@ Blanket structure and the ontology bindings `s=HiddenState`, `o=Observation`,
    either side's hosting.
 9. **Mirrored contract.** The canonical contract lives in this directory;
    the mirror lives at
-   `GeneralizedNotationNotation/doc/other/fep_lean/bridge-contract.md`.
+   `GeneralizedNotationNotation/docs/other/fep_lean/bridge-contract.md`.
    Contract edits land in both checkouts in the same working session.
 10. **Spec-first lifecycle.** A bounded spec under `specs/` precedes any
     code: no projection module, emitter, or Lean AST lands without an opened
@@ -230,7 +230,7 @@ Opening any unchecked row requires a bounded spec slice per the
    [Direction 2](direction-2-gnn-to-lean.md).
 4. Background: [FEP background](../../fep-background.md) and
    [formal-kernel methods](../../formal-kernel-methods.md); on the GNN side,
-   the mirror folder `GeneralizedNotationNotation/doc/other/fep_lean/`.
+   the mirror folder `GeneralizedNotationNotation/docs/other/fep_lean/`.
 
 ## Operating the bridge
 

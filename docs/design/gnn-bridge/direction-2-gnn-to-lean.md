@@ -31,7 +31,7 @@ existing carriers.
 The syntax surface and the step inventory are owned by GNN and frozen per
 slice:
 
-- normative syntax: `GeneralizedNotationNotation/doc/gnn/gnn_syntax.md`
+- normative syntax: `GeneralizedNotationNotation/docs/gnn/gnn_syntax.md`
   (sectioned Markdown documents; sections `GNNSection`, `GNNVersionAndFlags`,
   `ModelName`, `StateSpaceBlock`, `Connections`, `ModelAnnotation`,
   `InitialParameterization`, `Equations`, `Time`, `ActInfOntologyAnnotation`,
@@ -106,7 +106,7 @@ declaration, and none reserves a catalogue identifier:
   active and to its archived acceptance record after exit.
 - GNN-side companions to each slice (exemplar curation, syntax-surface
   freezes, vocabulary questions) are tracked in the mirror folder
-  `GeneralizedNotationNotation/doc/other/fep_lean/`.
+  `GeneralizedNotationNotation/docs/other/fep_lean/`.
 
 ## Open problems
 
