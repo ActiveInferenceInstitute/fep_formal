@@ -1,4 +1,4 @@
-## Unreleased — documentation restructure
+## Unreleased — connected Horizon research program
 
 ### Documentation lifecycle subfolders and manuscript relocation
 
@@ -22,8 +22,6 @@
   exactly as their pre-move layout implicitly did — the manuscript remains
   gated by `docs/xref_audit.py`, `docs/citation_audit.py`,
   `docs/theorem_ref_audit.py`, and the render receipt verification.
-
-## Unreleased — connected Horizon research program
 
 ### Publication render remediation
 
