@@ -13,7 +13,7 @@ diff-style listing on stderr with exit 1; a clean map exits 0.
 
 Usage::
 
-    uv run python scripts/check_geo_notation_bridge.py --check
+    uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
 """
 
 from __future__ import annotations
@@ -26,7 +26,18 @@ from typing import Any
 
 import yaml
 
-ROOT = Path(__file__).resolve().parents[1]
+def _repo_root() -> Path:
+    """Walk up to the checkout root: the directory holding pyproject.toml."""
+    for candidate in Path(__file__).resolve().parents:
+        if (candidate / "pyproject.toml").is_file():
+            return candidate
+    raise SystemExit(
+        "check_geo_notation_bridge.py: no pyproject.toml above "
+        f"{Path(__file__).resolve().parent}; run it inside the fep_lean checkout"
+    )
+
+
+ROOT = _repo_root()
 MAP_REL = Path("specs/geo-infer-notation-bridge/data/notation-map.yaml")
 MATURITY_REL = Path("config/theorem_maturity.yaml")
 

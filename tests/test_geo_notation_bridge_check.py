@@ -13,7 +13,7 @@ SLICE = REPO_ROOT / "specs" / "geo-infer-notation-bridge"
 if str(SLICE) not in sys.path:
     sys.path.insert(0, str(SLICE))
 
-from check_geo_notation_bridge import validate_map
+from check_geo_notation_bridge import MAP_REL, ROOT, validate_map
 
 MATURITY = "config/theorem_maturity.yaml"
 MAP = "specs/geo-infer-notation-bridge/data/notation-map.yaml"
@@ -68,6 +68,12 @@ def stage(root: Path, entries: list) -> Path:
 
 def test_repository_map_validates_clean() -> None:
     assert validate_map(REPO_ROOT) == []
+
+
+def test_cli_root_resolves_to_checkout() -> None:
+    """The advertised CLI command resolves this checkout and its real map."""
+    assert (ROOT / "pyproject.toml").is_file()
+    assert (ROOT / MAP_REL).is_file()
 
 
 def test_unknown_topic_id_is_drift(tmp_path: Path) -> None:
