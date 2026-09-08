@@ -45,7 +45,7 @@ PROJ = Path(__file__).resolve().parent.parent
 
 
 def _copy_publication_metadata(project_root: Path) -> None:
-    manuscript = project_root / "manuscript"
+    manuscript = project_root / "docs" / "manuscript"
     manuscript.mkdir(parents=True, exist_ok=True)
     shutil.copy2(PROJ / "CITATION.cff", project_root / "CITATION.cff")
     shutil.copy2(PROJ / "docs/manuscript/config.yaml", manuscript / "config.yaml")
@@ -269,7 +269,7 @@ def test_write_unified_formalism_appendix_markdown_roundtrip(tmp_path: Path) -> 
         PROJ / "src" / "fep_lean" / "formal",
         tmp_path / "src" / "fep_lean" / "formal",
     )
-    (tmp_path / "manuscript").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "manuscript").mkdir(parents=True, exist_ok=True)
     c = FEPTopicCatalogue.from_yaml(tmp_path / "config" / "topics.yaml")
     out = write_unified_formalism_appendix_markdown(tmp_path, c)
     assert out.is_file()
@@ -849,7 +849,9 @@ def test_write_manuscript_vars_roundtrip(
     assert out.is_file()
     data = yaml.safe_load(out.read_text(encoding="utf-8"))
     assert data["total_topics"] == len(c.topics)
-    assert (tmp_path / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME).is_file()
+    assert (
+        tmp_path / "docs" / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
+    ).is_file()
     expected_toolchain = _read_toolchain_vars(tmp_path)
     assert data["lean_version"] == expected_toolchain["lean_version"]
     assert data["mathlib_tag"] == expected_toolchain["mathlib_tag"]
@@ -859,8 +861,8 @@ def test_write_manuscript_vars_roundtrip(
 def test_write_manuscript_vars_rolls_back_projection_pair_on_replace_failure(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     vars_path = manuscript / "manuscript_vars.yaml"
     appendix_path = manuscript / UNIFIED_FORMALISM_CATALOGUE_FILENAME
     vars_before = b"old: variables\n"
@@ -898,9 +900,11 @@ def test_write_manuscript_vars_rolls_back_projection_pair_on_replace_failure(
 def test_write_manuscript_vars_rolls_back_absent_pair_on_keyboard_interrupt(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    (tmp_path / "manuscript").mkdir()
-    vars_path = tmp_path / "manuscript" / "manuscript_vars.yaml"
-    appendix_path = tmp_path / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
+    (tmp_path / "docs" / "manuscript").mkdir(parents=True)
+    vars_path = tmp_path / "docs" / "manuscript" / "manuscript_vars.yaml"
+    appendix_path = (
+        tmp_path / "docs" / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
+    )
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     monkeypatch.setattr(
         manuscript_module,
@@ -926,7 +930,7 @@ def test_write_manuscript_vars_rolls_back_absent_pair_on_keyboard_interrupt(
 
     assert not vars_path.exists()
     assert not appendix_path.exists()
-    assert not tuple((tmp_path / "manuscript").glob(".*.tmp"))
+    assert not tuple((tmp_path / "docs" / "manuscript").glob(".*.tmp"))
 
 
 def test_manuscript_projection_writers_reject_symlinked_destination_ancestor(
@@ -936,7 +940,8 @@ def test_manuscript_projection_writers_reject_symlinked_destination_ancestor(
     root.mkdir()
     outside = tmp_path / "outside-manuscript"
     outside.mkdir()
-    (root / "manuscript").symlink_to(outside, target_is_directory=True)
+    (root / "docs").mkdir()
+    (root / "docs" / "manuscript").symlink_to(outside, target_is_directory=True)
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     monkeypatch.setattr(
         manuscript_module,
@@ -1495,7 +1500,7 @@ def test_live_preamble_carries_every_declared_pdf_metadata_string() -> None:
 
 def test_pdf_metadata_drift_reports_a_changed_keyword_list(tmp_path: Path) -> None:
     """A keyword added to config alone must fail before the PDF is built."""
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     manuscript.mkdir(parents=True)
     config_path = manuscript / "config.yaml"
     shutil.copy2(PROJ / "docs/manuscript/config.yaml", config_path)
@@ -1516,7 +1521,7 @@ def test_pdf_metadata_drift_reports_a_changed_keyword_list(tmp_path: Path) -> No
 
 def test_pdf_metadata_drift_reports_a_missing_hypersetup_field(tmp_path: Path) -> None:
     """Deleting the preamble copy must fail rather than silently drop metadata."""
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     manuscript.mkdir(parents=True)
     shutil.copy2(PROJ / "docs/manuscript/config.yaml", manuscript / "config.yaml")
     fields = pdf_metadata_fields(PROJ)
@@ -1532,7 +1537,7 @@ def test_pdf_metadata_drift_reports_a_missing_hypersetup_field(tmp_path: Path) -
 
 def test_pdf_metadata_fields_reject_a_latex_unsafe_keyword(tmp_path: Path) -> None:
     """A brace or the separator inside a keyword would corrupt ``\\hypersetup``."""
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     manuscript.mkdir(parents=True)
     (manuscript / "config.yaml").write_text(
         (PROJ / "docs/manuscript/config.yaml")

@@ -86,7 +86,9 @@ def test_manuscript_vars_yaml_is_current(
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     fresh = build_manuscript_vars(catalogue, PROJ)
     committed = yaml.safe_load(
-        (PROJ / "manuscript" / "manuscript_vars.yaml").read_text(encoding="utf-8")
+        (PROJ / "docs" / "manuscript" / "manuscript_vars.yaml").read_text(
+            encoding="utf-8"
+        )
     )
     fresh_keys = set(_flatten(fresh))
     committed_keys = set(_flatten(committed))

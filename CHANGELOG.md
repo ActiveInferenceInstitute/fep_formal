@@ -1,3 +1,28 @@
+## Unreleased — documentation restructure
+
+### Documentation lifecycle subfolders and manuscript relocation
+
+- Reorganized `docs/` by lifecycle: long-form background pages moved to
+  `docs/guides/`, dated review snapshots to `docs/reviews/`, script-written
+  projections to `docs/generated/` (lean landscape, theorem maturity audit),
+  and the committed render receipts to `docs/evidence/`. The six audit tools
+  remain at `docs/` root because the frozen manuscript chapters document
+  their exact invocation paths. `docs/README.md` is now a lifecycle index
+  whose generated-products table names each producer and freshness gate.
+- Relocated the publication sources from `manuscript/` to
+  `docs/manuscript/` with byte-identical contents: the render acceptance
+  receipt is keyed by source filename, not directory, so the frozen
+  `docs/evidence/render-acceptance.json` validates against the relocated
+  sources without a fresh render. All hard-coded `manuscript/` path
+  constants (catalogue writers, render pipeline, release bundle member
+  list, environment checks, provenance owners, gitignore) now resolve to
+  `docs/manuscript/`, chapter-relative links keep resolving unchanged
+  (`docs/manuscript/../docs` == `docs/`), and `docs/check_links.py` and
+  `docs/md_hygiene.py` scope the manuscript out of the plain-link audit
+  exactly as their pre-move layout implicitly did — the manuscript remains
+  gated by `docs/xref_audit.py`, `docs/citation_audit.py`,
+  `docs/theorem_ref_audit.py`, and the render receipt verification.
+
 ## Unreleased — connected Horizon research program
 
 ### Publication render remediation

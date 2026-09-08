@@ -140,8 +140,8 @@ def test_references_bib_is_required_and_nonempty(tmp_path: Path) -> None:
     assert not ok
     assert "missing" in message
 
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     bibliography = manuscript / "references.bib"
     bibliography.write_text("\n", encoding="utf-8")
     ok, message = _check_references_bib(tmp_path)
@@ -152,8 +152,8 @@ def test_references_bib_is_required_and_nonempty(tmp_path: Path) -> None:
 def test_references_bib_rejects_malformed_and_duplicate_entries(
     tmp_path: Path,
 ) -> None:
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     bibliography = manuscript / "references.bib"
     bibliography.write_text(
         "@article{broken,\n  title = {Unclosed title}\n",

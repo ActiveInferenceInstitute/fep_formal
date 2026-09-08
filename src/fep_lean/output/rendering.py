@@ -351,17 +351,20 @@ def render_manuscript(
         for reference, paths in MANUSCRIPT_ASSETS.items()
         if any(reference in content for content in rendered_contents.values())
     }
+    # MANUSCRIPT_ASSETS source paths are project-root-relative; the
+    # manuscript lives at <root>/docs/manuscript.
+    asset_root = source.parent.parent
     missing_assets = [
-        str(source.parent / source_relative)
+        str(asset_root / source_relative)
         for source_relative, _destination_relative in referenced_assets.values()
-        if not (source.parent / source_relative).is_file()
+        if not (asset_root / source_relative).is_file()
     ]
     if missing_assets:
         raise ManuscriptRenderError(
             "referenced manuscript assets are missing:\n" + "\n".join(missing_assets)
         )
     asset_contents = {
-        destination_relative: (source.parent / source_relative).read_bytes()
+        destination_relative: (asset_root / source_relative).read_bytes()
         for source_relative, destination_relative in referenced_assets.values()
     }
     graphical_abstract_requested = any(
@@ -370,7 +373,10 @@ def render_manuscript(
     )
     if graphical_abstract_requested:
         try:
-            graphical_abstract = load_graphical_abstract(source.parent)
+            # config.yaml's graphical-abstract path is project-root-relative
+            # and the manuscript lives at <root>/docs/manuscript, so the
+            # loader gets the project root, not the manuscript directory.
+            graphical_abstract = load_graphical_abstract(source.parent.parent)
         except PublicationMetadataError as exc:
             raise ManuscriptRenderError(str(exc)) from exc
         expected_variables = graphical_abstract.manuscript_variables()

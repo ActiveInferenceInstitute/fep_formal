@@ -262,9 +262,9 @@ RENDERED = (
 
 
 def _stale_tree(tmp_path: Path, chapter: str, rendered: str) -> tuple[Path, Path]:
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     pdf = tmp_path / "pdf"
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     pdf.mkdir()
     (pdf / "_combined_manuscript.md").write_text(rendered, encoding="utf-8")
     os.utime(pdf / "_combined_manuscript.md", (1_000, 1_000))
@@ -375,8 +375,8 @@ def test_image_lines_are_not_drift(tmp_path: Path) -> None:
 
 
 def test_an_absent_combined_render_is_a_defect(tmp_path: Path) -> None:
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     defects = stale_render_defects(manuscript, tmp_path / "pdf")
     assert len(defects) == 1
     assert "combined render is absent" in defects[0]
@@ -499,8 +499,8 @@ CLEAN_COUNTS = {
 
 
 def _manuscript(tmp_path: Path) -> Path:
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     (manuscript / "01_abstract.md").write_text("An abstract.\n", encoding="utf-8")
     (manuscript / "preamble.md").write_text(
         "\\setmonofont{JuliaMono}\n", encoding="utf-8"

@@ -50,7 +50,7 @@ def _graphical_abstract_variables() -> dict[str, object]:
 
 
 def _write_graphical_abstract_render_fixture(project_root: Path) -> Path:
-    source = project_root / "manuscript"
+    source = project_root / "docs" / "manuscript"
     source.mkdir(parents=True)
     shutil.copy2(PROJ / "docs/manuscript/config.yaml", source / "config.yaml")
     (source / "00_front_matter.md").write_text(
@@ -61,7 +61,7 @@ def _write_graphical_abstract_render_fixture(project_root: Path) -> Path:
 
 
 def _copy_publication_metadata(project_root: Path) -> None:
-    manuscript = project_root / "manuscript"
+    manuscript = project_root / "docs" / "manuscript"
     shutil.copy2(PROJ / "CITATION.cff", project_root / "CITATION.cff")
     shutil.copy2(PROJ / "docs/manuscript/config.yaml", manuscript / "config.yaml")
     shutil.copytree(PROJ / "docs/manuscript/assets", manuscript / "assets")
@@ -114,7 +114,7 @@ def test_render_manuscript_fails_closed_without_mutating_source(
 ) -> None:
     source = tmp_path / "source"
     destination = tmp_path / "build"
-    source.mkdir()
+    source.mkdir(parents=True)
     chapter = source / "01_chapter.md"
     original = "Verified: {{verify.claim_ready}}; missing: {{unknown.value}}\n"
     chapter.write_text(original, encoding="utf-8")
@@ -131,7 +131,7 @@ def test_render_manuscript_rejects_multiline_unknown_before_any_output(
 ) -> None:
     source = tmp_path / "source"
     destination = tmp_path / "build"
-    source.mkdir()
+    source.mkdir(parents=True)
     (source / "01_good.md").write_text("Known: {{known}}\n", encoding="utf-8")
     (source / "02_bad.md").write_text("Unknown: {{unknown\nvalue}}\n", encoding="utf-8")
 
@@ -147,7 +147,7 @@ def test_render_manuscript_rejects_malformed_delimiter_before_any_output(
 ) -> None:
     source = tmp_path / "source"
     destination = tmp_path / "build"
-    source.mkdir()
+    source.mkdir(parents=True)
     (source / "01_good.md").write_text("Known: {{known}}\n", encoding="utf-8")
     (source / "02_bad.md").write_text(f"Malformed: {malformed}\n", encoding="utf-8")
 
@@ -214,7 +214,7 @@ def test_render_manuscript_fails_closed_when_graphical_abstract_is_tampered(
 ) -> None:
     source = _write_graphical_abstract_render_fixture(tmp_path)
     asset = source / "assets/graphical-abstract.png"
-    asset.parent.mkdir()
+    asset.parent.mkdir(parents=True)
     data = bytearray(
         (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
     )
@@ -265,7 +265,7 @@ def test_manuscript_projection_drift_detects_stale_stable_data(
         PROJ / "src" / "fep_lean" / "formal",
         tmp_path / "src" / "fep_lean" / "formal",
     )
-    (tmp_path / "manuscript").mkdir()
+    (tmp_path / "docs" / "manuscript").mkdir(parents=True)
     _copy_publication_metadata(tmp_path)
     (tmp_path / "tests").mkdir()
     monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _root: 0)
@@ -304,11 +304,11 @@ def test_manuscript_projection_drift_detects_stale_stable_data(
 def test_render_manuscript_copies_and_rewrites_visual_assets(
     tmp_path: Path,
 ) -> None:
-    source = tmp_path / "manuscript"
+    source = tmp_path / "docs" / "manuscript"
     destination = tmp_path / "build"
     docs = tmp_path / "docs"
-    source.mkdir()
-    docs.mkdir()
+    source.mkdir(parents=True)
+    docs.mkdir(exist_ok=True)
     (source / "01_chapter.md").write_text(
         "![Atlas](../docs/formalism-atlas.svg)\n"
         "[Interactive](../docs/formalism-atlas.html)\n"
@@ -351,11 +351,11 @@ def test_render_manuscript_copies_and_rewrites_visual_assets(
 def test_rerender_replaces_the_owned_chapter_and_asset_roster(
     tmp_path: Path,
 ) -> None:
-    source = tmp_path / "manuscript"
+    source = tmp_path / "docs" / "manuscript"
     destination = tmp_path / "build"
     docs = tmp_path / "docs"
-    source.mkdir()
-    docs.mkdir()
+    source.mkdir(parents=True)
+    docs.mkdir(exist_ok=True)
     (source / "01_keep.md").write_text(
         "![Atlas](../docs/formalism-atlas.svg)\n", encoding="utf-8"
     )
@@ -380,9 +380,9 @@ def test_rerender_replaces_the_owned_chapter_and_asset_roster(
 def test_render_manuscript_fails_closed_for_missing_visual_asset(
     tmp_path: Path,
 ) -> None:
-    source = tmp_path / "manuscript"
+    source = tmp_path / "docs" / "manuscript"
     destination = tmp_path / "build"
-    source.mkdir()
+    source.mkdir(parents=True)
     (source / "01_chapter.md").write_text(
         "![Atlas](../docs/formalism-atlas.svg)\n", encoding="utf-8"
     )
@@ -400,8 +400,8 @@ def test_a_release_stamp_mismatch_must_be_disclosed(tmp_path: Path) -> None:
     mismatch itself cannot be the failure. Saying nothing about it can be.
     """
     module = _load_render_script()
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     (manuscript / "00_front_matter.md").write_text(
         "Rendered from an unnamed tree.\n", encoding="utf-8"
     )
@@ -415,8 +415,8 @@ def test_a_release_stamp_mismatch_must_be_disclosed(tmp_path: Path) -> None:
 
 def test_a_disclosed_mismatch_passes(tmp_path: Path) -> None:
     module = _load_render_script()
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     (manuscript / "00_front_matter.md").write_text(
         "That checkout is `{{source.short_commit}}`. {{source.published_note}}\n",
         encoding="utf-8",

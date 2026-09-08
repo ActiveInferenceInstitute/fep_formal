@@ -916,7 +916,7 @@ def test_required_release_payload_cannot_be_omitted(
 
 
 def _minimal_manuscript(project_root: Path) -> None:
-    manuscript = project_root / "manuscript"
+    manuscript = project_root / "docs" / "manuscript"
     rendered = project_root / "output" / "manuscript"
     manuscript.mkdir(parents=True)
     rendered.mkdir(parents=True)
@@ -1112,7 +1112,7 @@ def test_release_rejects_manuscript_sources_that_escape_through_symlinks(
     tmp_path: Path,
 ) -> None:
     project_root = tmp_path / "checkout"
-    manuscript = project_root / "manuscript"
+    manuscript = project_root / "docs" / "manuscript"
     rendered = project_root / "output" / "manuscript"
     manuscript.mkdir(parents=True)
     outside = tmp_path / "outside.md"
@@ -1124,7 +1124,7 @@ def test_release_rejects_manuscript_sources_that_escape_through_symlinks(
     errors = bundle_module._rendered_manuscript_errors(project_root)
 
     assert errors == (
-        "manuscript source is not a canonical regular file: manuscript/01_chapter.md",
+        "manuscript source is not a canonical regular file: docs/manuscript/01_chapter.md",
     )
 
 
@@ -1143,7 +1143,7 @@ def test_release_rejects_manuscript_sources_that_escape_through_symlinks(
         ),
         (
             "docs/formalism-atlas.svg",
-            "required file traverses a symlink",
+            "required regular file is missing",
         ),
     ],
 )
@@ -1155,7 +1155,7 @@ def test_publication_renderer_rejects_symlinked_metadata_appendix_and_resources(
 ) -> None:
     _minimal_manuscript(tmp_path)
     canonical = tmp_path / relative
-    if relative.startswith(("output/manuscript/assets/", "docs/")):
+    if relative.startswith("output/manuscript/assets/"):
         source = tmp_path / "docs/manuscript/01_chapter.md"
         rendered = tmp_path / "output/manuscript/01_chapter.md"
         source.write_text("![Atlas](../docs/formalism-atlas.svg)\n", encoding="utf-8")
@@ -1163,17 +1163,28 @@ def test_publication_renderer_rejects_symlinked_metadata_appendix_and_resources(
         outside = tmp_path / "outside-assets"
         outside.mkdir()
         (outside / canonical.name).write_text("<svg/>", encoding="utf-8")
-        if relative.startswith("output/manuscript/assets/"):
-            docs = tmp_path / "docs"
-            docs.mkdir()
-            (docs / "formalism-atlas.svg").write_text("<svg/>", encoding="utf-8")
-            (outside / "graphical-abstract.png").write_bytes(
-                (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
-            )
+        docs = tmp_path / "docs"
+        docs.mkdir(exist_ok=True)
+        (docs / "formalism-atlas.svg").write_text("<svg/>", encoding="utf-8")
+        (outside / "graphical-abstract.png").write_bytes(
+            (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
+        )
         if canonical.parent.exists():
             shutil.rmtree(canonical.parent)
         canonical.parent.symlink_to(outside, target_is_directory=True)
     else:
+        # A referenced-but-unwritten projection (the atlas SVG) is materialized
+        # before the single-file symlink swap so the swap reads real bytes.
+        canonical.parent.mkdir(parents=True, exist_ok=True)
+        if relative == "docs/formalism-atlas.svg":
+            (tmp_path / "docs/manuscript/01_chapter.md").write_text(
+                "![Atlas](../docs/formalism-atlas.svg)\n", encoding="utf-8"
+            )
+            (tmp_path / "output/manuscript/01_chapter.md").write_text(
+                "![Atlas](assets/formalism-atlas.svg)\n", encoding="utf-8"
+            )
+        if not canonical.exists():
+            canonical.write_text("<svg/>", encoding="utf-8")
         outside = tmp_path / f"outside-{canonical.name}"
         outside.write_bytes(canonical.read_bytes())
         canonical.unlink()
@@ -1880,9 +1891,9 @@ def test_numerical_receipt_preserves_every_typed_check_and_evidence_boundary() -
 
 def test_python_receipts_bind_full_roster_and_coverage_floor(tmp_path: Path) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     test_root = tmp_path / "tests"
     test_root.mkdir()
     source = tmp_path / "src/fep_lean"
@@ -1961,9 +1972,9 @@ def test_python_receipts_require_actual_testcase_and_coverage_line_records(
     tmp_path: Path,
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     (manuscript / "manuscript_vars.yaml").write_text(
         "tests:\n  collected: 1\n", encoding="utf-8"
     )
@@ -1987,9 +1998,9 @@ def test_python_receipts_aggregate_invalid_junit_and_coverage_records(
     tmp_path: Path,
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     (manuscript / "manuscript_vars.yaml").write_text(
         "tests:\n  collected: 0\n", encoding="utf-8"
     )
@@ -2025,10 +2036,10 @@ def test_python_receipts_bind_the_exact_collected_node_id_roster(
     tmp_path: Path,
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     source = tmp_path / "src/fep_lean"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     source.mkdir(parents=True)
     (source / "a.py").write_text("value = 1\n", encoding="utf-8")
     (manuscript / "manuscript_vars.yaml").write_text(
@@ -2072,10 +2083,10 @@ def test_python_receipts_reject_noncanonical_coverage_source_records(
     tmp_path: Path,
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     source = tmp_path / "src/fep_lean"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     source.mkdir(parents=True)
     (source / "real.py").write_text("value = 1\n", encoding="utf-8")
     (manuscript / "manuscript_vars.yaml").write_text(
@@ -2106,9 +2117,9 @@ def test_python_coverage_floor_uses_exact_line_counters_not_rounded_rate(
     tmp_path: Path,
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     (manuscript / "manuscript_vars.yaml").write_text(
         "tests:\n  collected: 1\n", encoding="utf-8"
     )
@@ -2141,10 +2152,10 @@ def test_python_acceptance_is_emitted_only_by_the_exact_stable_run(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     tests = tmp_path / "tests"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     tests.mkdir()
     source = tmp_path / "src/fep_lean"
     source.mkdir(parents=True)
@@ -2250,10 +2261,10 @@ def test_python_acceptance_rolls_back_when_inputs_or_executor_change_during_run(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     tests = tmp_path / "tests"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     tests.mkdir()
     source = tmp_path / "src/fep_lean"
     source.mkdir(parents=True)
@@ -2341,10 +2352,10 @@ def test_python_acceptance_rolls_back_after_an_interrupted_run(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     tests = tmp_path / "tests"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     tests.mkdir()
     (tests / "test_fixture.py").write_text(
         "def test_fixture():\n    assert True\n", encoding="utf-8"
@@ -2387,10 +2398,10 @@ def test_python_acceptance_failure_removes_partial_new_receipts_and_restores_pri
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     output = tmp_path / "output"
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     tests = tmp_path / "tests"
     output.mkdir()
-    manuscript.mkdir()
+    manuscript.mkdir(parents=True)
     tests.mkdir()
     (tests / "test_fixture.py").write_text(
         "def test_fixture():\n    assert True\n", encoding="utf-8"
@@ -2588,7 +2599,7 @@ def test_prerequisite_gate_reports_stale_projection_native_formal_and_browser_pl
 
 def _write_release_metadata_fixture(project_root: Path) -> None:
     (project_root / ".aii").mkdir(parents=True, exist_ok=True)
-    (project_root / "manuscript").mkdir(parents=True, exist_ok=True)
+    (project_root / "docs" / "manuscript").mkdir(parents=True, exist_ok=True)
     (project_root / "src/fep_lean").mkdir(parents=True, exist_ok=True)
     (project_root / "config").mkdir(parents=True, exist_ok=True)
     (project_root / "LICENSE").write_text(
@@ -3154,7 +3165,7 @@ def test_public_builder_fingerprints_unbundled_manuscript_sources(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     project_root = tmp_path / "checkout"
-    manuscript = project_root / "manuscript"
+    manuscript = project_root / "docs" / "manuscript"
     manuscript.mkdir(parents=True)
     source = manuscript / "01_chapter.md"
     source.write_text("source A\n", encoding="utf-8")

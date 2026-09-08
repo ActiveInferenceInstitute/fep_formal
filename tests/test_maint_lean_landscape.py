@@ -56,7 +56,7 @@ def test_every_manifest_module_appears_in_rendered_page() -> None:
 
 
 def test_generated_page_is_current() -> None:
-    page = PROJ / "docs" / "lean-landscape.md"
+    page = PROJ / "docs" / "generated" / "lean-landscape.md"
     assert page.exists(), "docs/generated/lean-landscape.md must be tracked and current"
     module = _load_module()
     assert page.read_text(encoding="utf-8") == module.render_landscape(PROJ)

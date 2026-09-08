@@ -49,7 +49,7 @@ def _driver():
 
 def _project(tmp_path: Path, log: str) -> Path:
     """A project tree holding one rendered chapter and one compiler log."""
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     pdf = tmp_path / "output" / "pdf"
     manuscript.mkdir(parents=True)
     pdf.mkdir(parents=True)
@@ -280,7 +280,7 @@ def test_a_clean_render_writes_the_committed_receipt(tmp_path: Path) -> None:
     assert receipt["accepted"] is True
     assert receipt["pages"] == 350
     assert receipt["manuscript_source_digest"] == manuscript_source_digest(
-        project / "manuscript"
+        project / "docs" / "manuscript"
     )
     assert sorted(receipt["source_digests"]) == ["02b_background.md", "preamble.md"]
 
@@ -364,7 +364,7 @@ def test_the_committed_receipt_covers_the_committed_manuscript() -> None:
     assert (
         receipt_defects(
             PROJECT_ROOT / "docs" / "evidence" / "render-acceptance.json",
-            PROJECT_ROOT / "manuscript",
+            PROJECT_ROOT / "docs" / "manuscript",
         )
         == ()
     )

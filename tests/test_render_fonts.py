@@ -81,8 +81,8 @@ def test_the_selected_faces_cover_this_manuscript() -> None:
 
 
 def test_a_preamble_with_no_code_face_is_a_defect(tmp_path: Path) -> None:
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     (manuscript / "preamble.md").write_text(
         "\\setmainfont{FreeSerif}\n", encoding="utf-8"
     )
@@ -102,8 +102,8 @@ def test_requirement_derivation_fails_closed_without_the_appendix(
     requirement without it silently shrinks the committed record (and then
     every later check agrees with the wrong record).
     """
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     (manuscript / "chapter.md").write_text("`sᶜ`\n", encoding="utf-8")
     with pytest.raises(FontProbeError) as error:
         font_coverage_defects(tmp_path)
