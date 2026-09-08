@@ -1,0 +1,147 @@
+# Notation-level mapping between fep_lean theorem proxies and the implemented
+# GEO-INFER-ACT Active Inference surface.
+#
+# This file is documentation-level data: it records correspondence of symbols
+# and constructs between the two repositories. It never claims that any
+# GEO-INFER implementation is verified or proved by fep_lean, and no Lean
+# proof claim is promoted by a notation row. Evidence planes stay distinct
+# (see the GNN bridge charter, decision 4, and this slice's README).
+#
+# Entries are checked by scripts/check_geo_notation_bridge.py --check:
+# every topic_id and symbol must exist in config/theorem_maturity.yaml, and
+# every geo_anchor must match the strict
+# `GEO-INFER-<MOD>/<repo-relative path>::<Symbol>` grammar.
+schema_version: 1
+entries:
+- concept: variational free energy
+  fep_lean:
+    topic_id: fep-002
+    symbol: fep002_vfe_ge_surprisal
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/free_energy.py::FreeEnergyCalculator
+  correspondence: >-
+    FreeEnergyCalculator.compute_categorical_free_energy computes F[q(s), o]
+    as complexity (KL divergence from prior) minus accuracy and documents it
+    as an upper bound on negative log evidence; fep-002 proves the same bound
+    exactly for a surprisal-plus-KL variational free energy, with equality at
+    the posterior. The correspondence is notational: the Lean theorem states
+    the inequality; the Python class computes a numerical instance of it.
+  reference: >-
+    Friston (2010), "The free-energy principle: a unified brain theory?", Nature Reviews Neuroscience 11(7)
+- concept: entropy-regularized policy cost
+  fep_lean:
+    topic_id: fep-012
+    symbol: fep012_entropyRegularizedCost_le_expectedCost
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/policy_selection.py::PolicySelector
+  correspondence: >-
+    PolicySelector balances exploitation against exploration through a
+    temperature parameter over expected free energy; fep-012 states the exact
+    entropy-regularized inequality that at nonnegative temperature a
+    temperature-weighted expected cost lowers by exactly the policy's entropy
+    reward. The mapping is notation-level only.
+  reference: >-
+    Parr, Pezzulo & Friston (2022), Active Inference, MIT Press
+- concept: posterior reconstruction under belief updating
+  fep_lean:
+    topic_id: fep-017
+    symbol: fep017_posterior_joint_reconstruction
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/belief_updating.py::BayesianBeliefUpdate
+  correspondence: >-
+    BayesianBeliefUpdate implements categorical belief updating from a
+    likelihood and a prior; fep-017 proves that Mathlib's posterior Markov
+    kernel composed with the predictive law reconstructs the swapped
+    prior-likelihood joint law. Correspondence of the Bayesian update
+    construct; no numerical-agreement claim is made.
+  reference: >-
+    Parr, Pezzulo & Friston (2022), Active Inference, MIT Press
+- concept: expected free energy as pragmatic cost minus epistemic value
+  fep_lean:
+    topic_id: fep-021
+    symbol: fep021_efe_epistemic_balance
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/policy_selection.py::PolicySelector
+  correspondence: >-
+    PolicySelector documents its objective as expected free energy balancing
+    exploration (epistemic value) and exploitation (pragmatic value);
+    fep-021 defines expected free energy exactly as pragmatic expected cost
+    minus epistemic information value and states its monotonicity. The
+    symbols correspond; the Python selection loop is not a Lean proof.
+  reference: >-
+    Parr & Friston (2018), "The anatomy of choice: active inference and decision-making", Neuropsychologia
+- concept: softmax policy weights
+  fep_lean:
+    topic_id: fep-028
+    symbol: fep028_softmax_sum_univ
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/policy_selection.py::PolicySelector
+  correspondence: >-
+    PolicySelector turns policy scores into a normalized selection
+    distribution via a temperature softmax; fep-028 proves that
+    exponentiated policy scores on a nonempty support form a nonnegative
+    weight vector summing to one. Notation-level correspondence of the
+    softmax construct.
+  reference: >-
+    Parr, Pezzulo & Friston (2022), Active Inference, MIT Press
+- concept: Markov blanket factorization
+  fep_lean:
+    topic_id: fep-079
+    symbol: fep079_blanketFactorization_iff_conditionalMutualInformation_zero
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/generative_model.py::MarkovBlanket
+  correspondence: >-
+    MarkovBlanket models the internal, sensory, and active partition of a
+    generative model; fep-079 proves the conditional-mutual-information
+    characterization of internal-external factorization on a finite
+    conditional-blanket carrier. Correspondence of the blanket construct; the
+    Python class carries structure, the Lean row carries the exact
+    factorization criterion.
+  reference: >-
+    Friston (2013), "Life as we know it", Journal of the Royal Society Interface 10(86)
+- concept: coupled subsystem blanket composition
+  fep_lean:
+    topic_id: fep-081
+    symbol: fep081_coupledSubsystem_blanketComposition
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/generative_model.py::HierarchicalLevel
+  correspondence: >-
+    HierarchicalLevel composes coupled levels of a hierarchical generative
+    model; fep-081 proves that two conditionally factorized subsystems retain
+    zero paired-row mutual information under an arbitrarily coupled joint
+    blanket law. Correspondence of the composition construct only.
+  reference: >-
+    Friston (2013), "Life as we know it", Journal of the Royal Society Interface 10(86)
+- concept: generalized filtering correction step
+  fep_lean:
+    topic_id: fep-090
+    symbol: fep090_finiteJet_generalizedFiltering_correctionEquation
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/variational_inference.py::VariationalInference
+  correspondence: >-
+    VariationalInference implements iterative variational updating of beliefs
+    given a model and observations; fep-090 states the exact finite-jet
+    generalized-filtering Euler step (current coordinate plus truncated shift
+    minus the certified quadratic energy gradient) on generalized
+    coordinates. Correspondence of the inference-step construct; no
+    trajectory-agreement claim.
+  reference: >-
+    Friston, Stephan, Li & Daunizeau (2010), "Generalised filtering", Mathematical Biosciences 227(2)
+- concept: policy-tree value recursion
+  fep_lean:
+    topic_id: fep-128
+    symbol: fep128_policyTreeValue_node
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/active_inference.py::ActiveInferenceModel
+  correspondence: >-
+    ActiveInferenceModel steps perception and policy evaluation through an
+    environment model; fep-128 states the exact recursion that a finite
+    policy-tree node equals its stage cost plus the observation-law weighted
+    values of observation-contingent continuations. Correspondence of the
+    value-recursion construct; the simulator is not a proof.
+  reference: >-
+    Parr & Friston (2018), "The anatomy of choice: active inference and decision-making", Neuropsychologia
+- concept: expected free energy as risk plus ambiguity
+  fep_lean:
+    topic_id: fep-133
+    symbol: fep133_policyTree_efe_eq_risk_add_ambiguity
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/markov_decision_process.py::MarkovDecisionProcess
+  correspondence: >-
+    MarkovDecisionProcess carries the policy-evaluation environment used by
+    the Act surface; fep-133 proves that the one-step full-support
+    expected-free-energy identity (risk plus ambiguity) lifts through every
+    branch of a finite policy tree. Correspondence of the decomposition;
+    numerical agreement is owned by certificate comparisons, not notation.
+  reference: >-
+    Parr, Pezzulo & Friston (2022), Active Inference, MIT Press

@@ -52,6 +52,7 @@ uv run python scripts/build_formalism_coverage.py --check
 uv run python scripts/_maint_build_lean_landscape.py --check
 uv run fep-lean atlas --check
 uv run fep-lean dashboard --check
+uv run python scripts/check_geo_notation_bridge.py --check
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
 uv run fep-lean catalogue
