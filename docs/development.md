@@ -52,7 +52,7 @@ uv run python scripts/build_formalism_coverage.py --check
 uv run python scripts/_maint_build_lean_landscape.py --check
 uv run fep-lean atlas --check
 uv run fep-lean dashboard --check
-uv run python scripts/check_geo_notation_bridge.py --check
+uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
 uv run fep-lean catalogue
@@ -121,6 +121,19 @@ updating the roster seal and family metadata, semantic record, canonical body,
 novelty record and composition bridge, generated projections, registry and
 coverage tests, and manuscript review together. A new ID is not accepted until
 that scientific review and its native acceptance plan are explicit.
+
+## Source-owner roster expansion
+
+The report and native receipts bind a versioned owner roster
+(`SOURCE_OWNER_ROSTER` in `src/fep_lean/output/provenance.py`), not a
+recursive checkout snapshot. Adding a file under `src/fep_lean/**/*.py` or
+`scripts/*.py` fails receipt validation fail-closed until the file is
+reviewed into the roster and `OWNER_MANIFEST_VERSION` is bumped. The bump
+orphans every retained receipt that pins the previous version, so roster
+growth is a coordinated evidence refresh owned by `FEP-EVIDENCE-CURRENT`,
+not a per-PR append. Per-PR alternatives: fold the new code into an existing
+rostered owner (the status verb lives in `cli.py`), or keep tooling
+slice-local under `specs/`, which is not rostered.
 
 See [authorship-guide.md](authorship-guide.md), [testing.md](testing.md), and
 [troubleshooting.md](troubleshooting.md).

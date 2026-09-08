@@ -19,13 +19,25 @@ fep-lean run         Execute Hermes, Lean, and SQLite verification.
 fep-lean topic ID    Execute one topic in full mode.
 fep-lean report      Generate the offline catalogue report.
 fep-lean bridge      Inspect, pin, emit, certify, or verify GNN bridge custody.
+fep-lean status      Read-only evidence-currency report over existing checks.
 ```
 
 `bridge` operates on an explicit sibling GNN checkout (`--gnn-root PATH` is
 required for every verb): `status`, `verify-certificate`, and
 `verify-document` are read-only; `pin`, `emit`, and `certify` write receipts.
 `verify-document --document PATH` checks one emitted GNN document against
-the `FEP.GnnDocument` typed surface (syntax + `WellFormed`, contract v0.6).
+the `FEP.GnnDocument` typed surface (syntax + `WellFormed`, contract v0.6);
+`--fail-on-warnings` treats verify-document warnings as failures. For
+`emit` only, `--check` checks emitted bytes without writes and
+`--refresh-digests` rewrites only permitted Signature custody fields.
+
+`status` composes the existing fail-closed checks into one read-only
+evidence-currency report: catalogue projection drift, render-receipt
+defects, bridge source-pin binding, and native-receipt validation. It
+accepts an optional `--gnn-root PATH` for the full two-sided pin comparison
+and prints the report as JSON. Every section carries its capability
+boundary; exit 0 means the report composed, not that the evidence is
+current.
 
 For a generated report bundle, the read-only receipt checker is:
 
@@ -68,8 +80,12 @@ not Lean proof receipts or empirical validation.
 
 `verify` never calls Hermes, OpenGauss, or the full pipeline. It requires the
 already-built pinned Mathlib cache and returns one native `lake env lean` result
-per selected topic.
+per selected topic. `--receipt PATH` atomically writes a typed native-Lean
+verification receipt for the run; `--fail-on-warnings` treats any Lean warning
+as a verification failure.
 
 Exit status is zero only for a complete result. A full-mode capability failure,
 topic warning, review failure, artifact failure, or unresolved report state
-returns non-zero.
+returns non-zero. The exception is `status`, whose documented boundary is the
+report itself: it exits 0 whenever the report composes, even when sections
+report stale evidence.

@@ -49,6 +49,13 @@ promote the semantic disposition or prove the full FEP concept.
 - `TODO.md` — canonical open-only backlog; completed work is not retained as
   struck-through rows.
 - `HANDOFF.md` — next-reviewer protocol, evidence receipt, and remaining scope.
+- `src/fep_lean/output/provenance.py` — versioned source-owner roster
+  (`OWNER_MANIFEST_VERSION`, `SOURCE_OWNER_ROSTER`). New files under
+  `src/fep_lean/**/*.py` or `scripts/*.py` fail report and native receipts
+  fail-closed until reviewed into the roster; roster growth is a coordinated
+  evidence refresh (`FEP-EVIDENCE-CURRENT`), not a per-PR append. Sanctioned
+  per-PR alternatives: fold new code into an existing owner or keep tooling
+  slice-local under `specs/`.
 
 ## Execution contract
 
@@ -108,7 +115,7 @@ uv run python docs/md_hygiene.py --strict
 uv run python docs/pin_audit.py --check-latest
 uv run python docs/xref_audit.py
 uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
-uv run python scripts/check_geo_notation_bridge.py --check
+uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
 ```
 
 Live bridge and native-receipt checks additionally require the explicitly

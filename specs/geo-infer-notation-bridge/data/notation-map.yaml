@@ -7,7 +7,7 @@
 # proof claim is promoted by a notation row. Evidence planes stay distinct
 # (see the GNN bridge charter, decision 4, and this slice's README).
 #
-# Entries are checked by scripts/check_geo_notation_bridge.py --check:
+# Entries are checked by specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check:
 # every topic_id and symbol must exist in config/theorem_maturity.yaml, and
 # every geo_anchor must match the strict
 # `GEO-INFER-<MOD>/<repo-relative path>::<Symbol>` grammar.

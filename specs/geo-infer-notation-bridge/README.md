@@ -21,9 +21,10 @@ repositories; it does not translate proofs, run code, or compare numbers.
    stay distinct: Lean native compilation, semantic review, numerical
    witnesses, and Python execution remain separate evidence classes.
 2. **Deterministic checker or nothing.** Every mapping row is validated by
-   `scripts/check_geo_notation_bridge.py`: strict YAML schema, every topic id
-   and symbol must exist in `config/theorem_maturity.yaml`, and every
-   GEO-INFER anchor must match a strict grammar. No heuristic extraction.
+   `specs/geo-infer-notation-bridge/check_geo_notation_bridge.py`: strict YAML
+   schema, every topic id and symbol must exist in
+   `config/theorem_maturity.yaml`, and every GEO-INFER anchor must match a
+   strict grammar. No heuristic extraction.
 3. **Cross-repo references are prose paths only.** GEO-INFER anchors are
    written as `GEO-INFER-<MOD>/<repo-relative path>::<Symbol>` inline code,
    never as markdown links, because each repository validates links
@@ -60,7 +61,7 @@ the GEO-INFER side; that review belongs to mapping review, not automation.
 ## Operations
 
 ```bash
-uv run python scripts/check_geo_notation_bridge.py --check
+uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
 ```
 
 Exit 0 when every entry passes; exit 1 with a diff-style drift report on any

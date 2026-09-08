@@ -1,5 +1,29 @@
 ## Unreleased — connected Horizon research program
 
+### Evidence-currency status verb and GEO-INFER notation slice (2026-09-08)
+
+- Added the read-only `fep-lean status` verb: it composes existing
+  fail-closed checks (catalogue projection drift, render-receipt defects,
+  bridge source-pin binding, native-receipt validation) into one
+  evidence-currency report whose every section carries its capability
+  boundary; exit 0 means the report composed, never that evidence is
+  current. The implementation lives in the rostered `cli.py` owner: report
+  and native receipts bind a versioned source-owner roster, so a new
+  `src/fep_lean/**` module would fail source-binding until a coordinated
+  `OWNER_MANIFEST_VERSION` refresh.
+- Added the `specs/geo-infer-notation-bridge/` slice: charter, the
+  `data/notation-map.yaml` correspondence artifact (reviewed rows between
+  fep_lean theorem proxies and the GEO-INFER-ACT implemented surface), and a
+  slice-local deterministic checker; registered in the AGENTS required-check
+  list and `docs/development.md`, which now also document the source-owner
+  roster rule.
+- Corrected five stale `scripts/check_geo_notation_bridge.py` references to
+  the slice path after the checker moved under `specs/` (AGENTS required
+  checks, development guide, slice README and checker docstring,
+  notation-map header), and completed `docs/cli-reference.md`: the `status`
+  verb, its exit-status boundary, `verify --receipt/--fail-on-warnings`, and
+  the `emit --check/--refresh-digests` flags.
+
 ### Publication render remediation
 
 - Made the published reproduction recipes reproduce. The conclusion's
