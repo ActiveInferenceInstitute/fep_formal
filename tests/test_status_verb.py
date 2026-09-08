@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from fep_lean.output.render_log import manuscript_source_digest
-from fep_lean.status import (
+from fep_lean.cli import (
     RENDER_RECEIPT,
     SOURCE_PIN,
     bridge_pin_section,

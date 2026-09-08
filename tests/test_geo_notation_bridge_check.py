@@ -9,9 +9,9 @@ import pytest
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPTS = REPO_ROOT / "scripts"
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
+SLICE = REPO_ROOT / "specs" / "geo-infer-notation-bridge"
+if str(SLICE) not in sys.path:
+    sys.path.insert(0, str(SLICE))
 
 from check_geo_notation_bridge import validate_map
 
