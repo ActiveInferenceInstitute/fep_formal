@@ -161,6 +161,9 @@ Use `uv run fep-lean --help` for filters, workflow selection, and the explicit
 checkout root. The equivalent maintained scripts are thin command wrappers in
 [`scripts/`](scripts/).
 
+The operator command quick reference lives at
+[`docs/quickref.md`](docs/quickref.md).
+
 ## Source of truth
 
 - [`config/catalogue_metadata.yaml`](config/catalogue_metadata.yaml) maintains

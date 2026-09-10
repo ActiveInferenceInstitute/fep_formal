@@ -9,6 +9,9 @@
 - [155-topic expansion chapter](../manuscript/04i_formalism_catalogue_155.md) — finite risk, policy trees, native blankets, exponential-family duality, continuous time, and evidence boundaries.
 - [Topic reference](topics-reference.md) — canonical owners, inspection, and receipt semantics.
 - [Pipeline](pipeline.md) — stages, modes, and result contract.
+- [Quick reference](quickref.md) — copy-paste command quick start for operator and maintenance runs.
+- [Glossary](glossary.md) — canonical vocabulary for modes, kernels, receipts, and evidence planes.
+- [Report bundles](reporter.md) — run-directory layout, provenance files, and receipt validation.
 - [CLI reference](cli-reference.md) — canonical command surface.
 - [Configuration](configuration.md) — settings and environment overrides.
 - [Lean 4](lean4.md) — pinned workspace and aggregate generation.
