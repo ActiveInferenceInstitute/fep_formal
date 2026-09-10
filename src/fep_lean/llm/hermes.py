@@ -34,12 +34,14 @@ Supported API backends:
 
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import http.client
 import json
 import logging
 import os
 import re
+import socket
 import threading
 import time
 import urllib.error
@@ -162,6 +164,15 @@ _REASONING_MODELS = {
     "openai/o1",
     "openai/o3",
 }
+
+
+# Cap the in-memory API response: config/env-controlled base_url means a
+# misbehaving endpoint could otherwise stream unbounded bytes into memory
+# (timeouts bound time, not bytes).
+_MAX_RESPONSE_CHUNK = 64 * 1024
+_MAX_RESPONSE_BYTES = 8 * 1024 * 1024
+
+
 
 
 @dataclass
@@ -319,18 +330,17 @@ class HermesConfig:
             api_key = os.environ.get("OPENAI_API_KEY", "")
             if api_key:
                 key_source = "OPENAI_API_KEY"
-        if not api_key:
-            # Runtime settings never contain provider credentials
-            # (config/SPEC.md); a committed settings.yaml api_key is rejected
-            # rather than silently honored, since the file is an owner byte
-            # that can drift into a published checkout.
-            if cfg.get("api_key"):
-                log.error(
-                    "hermes.api_key in settings.yaml is rejected: runtime "
-                    "settings never contain provider credentials; set "
-                    "OPENROUTER_API_KEY/ANTHROPIC_API_KEY/OPENAI_API_KEY in "
-                    "the environment or ~/.gauss/.env instead"
-                )
+        # Runtime settings never contain provider credentials
+        # (config/SPEC.md); a committed settings.yaml api_key is rejected
+        # rather than silently honored, since the file is an owner byte that
+        # can drift into a published checkout.
+        if not api_key and cfg.get("api_key"):
+            log.error(
+                "hermes.api_key in settings.yaml is rejected: runtime "
+                "settings never contain provider credentials; set "
+                "OPENROUTER_API_KEY/ANTHROPIC_API_KEY/OPENAI_API_KEY in "
+                "the environment or ~/.gauss/.env instead"
+            )
         inst.api_key = api_key.strip().strip("'\"") if api_key else ""
 
         if inst.api_key:
@@ -854,10 +864,31 @@ class HermesExplainer:
         # urlopen+read in a worker thread and giving up at ``timeout`` seconds.
         result: dict[str, Any] = {}
 
+        response_holder: list[Any] = []
+
         def _do_request() -> None:
             try:
                 with urllib.request.urlopen(req, timeout=timeout) as resp:
-                    result["raw"] = resp.read().decode("utf-8")
+                    response_holder.append(resp)
+                    # Bounded read: a misbehaving endpoint can stream without
+                    # end, and a socket timeout bounds time, not bytes.
+                    chunks: list[bytes] = []
+                    total = 0
+                    while True:
+                        chunk = resp.read(_MAX_RESPONSE_CHUNK)
+                        if not chunk:
+                            break
+                        total += len(chunk)
+                        if total > _MAX_RESPONSE_BYTES:
+                            result["exc"] = HermesAPIError(
+                                f"API response exceeds {_MAX_RESPONSE_BYTES} "
+                                "bytes; rejecting oversized stream.",
+                                status_code=None,
+                                transient=True,
+                            )
+                            return
+                        chunks.append(chunk)
+                    result["raw"] = b"".join(chunks).decode("utf-8")
             except BaseException as inner_exc:  # re-raised on the calling thread
                 result["exc"] = inner_exc
 
@@ -865,6 +896,23 @@ class HermesExplainer:
         worker.start()
         worker.join(timeout=timeout)
         if worker.is_alive():
+            # Close the worker's still-open response so the parked thread's
+            # socket buffer is released instead of accumulating until the
+            # provider closes the stream.
+            resp_obj = response_holder[0] if response_holder else None
+            if resp_obj is not None:
+                # ``resp.close()`` can block on unread buffered data (the
+                # slow-stream case this guard exists for), so force the
+                # underlying socket into shutdown first; close() on a
+                # shutdown socket returns immediately.
+                with contextlib.suppress(OSError, ValueError, AttributeError):
+                    fp = getattr(resp_obj, "fp", None)
+                    raw = getattr(fp, "raw", None) or fp
+                    sock_obj = getattr(raw, "_sock", None)
+                    if sock_obj is not None:
+                        sock_obj.shutdown(socket.SHUT_RDWR)
+                with contextlib.suppress(OSError, ValueError):
+                    resp_obj.close()
             raise HermesAPIError(
                 f"Wall-clock timeout after {timeout}s "
                 f"(model={model}); abandoning request and advancing chain.",
@@ -900,7 +948,17 @@ class HermesExplainer:
                     status_code=None,
                     transient=True,
                 ) from exc
-        parsed = json.loads(result["raw"])
+        try:
+            parsed = json.loads(result["raw"])
+        except json.JSONDecodeError as exc:
+            # A truncated/garbled body (connection cut mid-stream) is a
+            # transport failure, not a caller bug: surface it as transient so
+            # the retry chain treats it like any other network fault.
+            raise HermesAPIError(
+                f"API response is not valid JSON: {exc}",
+                status_code=None,
+                transient=True,
+            ) from exc
         if not isinstance(parsed, dict):
             raise HermesAPIError(
                 "API response must be a JSON object",

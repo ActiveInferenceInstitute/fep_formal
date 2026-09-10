@@ -381,9 +381,11 @@ class TestCallAPI:
                 h._call_api([{"role": "user", "content": "hi"}], "temporary-model")
             assert exc_info.value.status_code is None
             assert exc_info.value.transient is True
-            assert "HTTP transport error" in str(
-                exc_info.value
-            ) or "Connection error" in str(exc_info.value)
+            assert (
+                "HTTP transport error" in str(exc_info.value)
+                or "Connection error" in str(exc_info.value)
+                or "not valid JSON" in str(exc_info.value)
+            )
         finally:
             server.shutdown()
 
