@@ -484,6 +484,12 @@ def _math_units(source: str) -> list[str]:
 
 def _converted_rows(source: str) -> list[str]:
     """Convert one Lean fragment into bounded, application-safe math rows."""
+    if "@@" in source:
+        # Sentinel markers must never collide with literal source text: the
+        # bodies are regex-sealed, so this can only mean a drift in the seal.
+        # (The converter's own @@NNNNNN@@ sentinels are injected after this
+        # check, on already-validated text.)
+        raise ValueError("source already contains sentinel marker '@@'")
     _convert_lean_expr(source)  # Validate the complete fragment in one pass.
     units = _math_units(source)
     if not units:
@@ -539,8 +545,6 @@ def _one_theorem_latex(var_ctx: str, binders: str, goal: str, *, with_ctx: bool)
         rows.extend(_converted_rows(goal))
     if not rows:
         return r"\mathsf{?}"
-    if len(rows) == 1:
-        return _wrap_aligned(rows)
     return _wrap_aligned(rows)
 
 

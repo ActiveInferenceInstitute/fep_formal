@@ -75,6 +75,9 @@ class TheoremMaturityAudit:
         return dict(sorted(counts.items()))
 
 
+NATIVE_COMPILE_PHRASE = "native Lean compile"
+
+
 _REQUIRED_RECORD_FIELDS = (
     "id",
     "primary_theorem",
@@ -205,7 +208,7 @@ def load_theorem_maturity(
                 f"missing={missing_theorems!r} unreviewed={unreviewed_theorems!r}"
             )
         acceptance_probe = _nonempty_string(raw_row, "acceptance_probe", topic_id)
-        if "native Lean compile" not in acceptance_probe:
+        if NATIVE_COMPILE_PHRASE not in acceptance_probe:
             raise SemanticValidationError(
                 f"{topic_id}: acceptance_probe must name a native Lean compile"
             )

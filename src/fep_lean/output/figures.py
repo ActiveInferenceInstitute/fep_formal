@@ -90,12 +90,18 @@ def _write_status_distribution(values: Mapping[str, int], out: Path) -> Path:
     nums = [int(values[k]) for k in labels]
     fig, ax = plt.subplots(figsize=(5.2, 4.4))
     if nums:
+        palette = ["#2f855a", "#d69e2e", "#c53030", "#3182ce"]
+        # A fourth status used to silently cycle to the first color; a new
+        # status must extend the palette, not alias an existing slice.
+        assert len(nums) <= len(palette), (
+            f"{len(labels)} statuses exceed the {len(palette)}-color palette"
+        )
         ax.pie(
             nums,
             labels=labels,
             autopct="%1.0f%%",
             startangle=90,
-            colors=["#2f855a", "#d69e2e", "#c53030"][: len(nums)],
+            colors=palette[: len(nums)],
         )
     ax.set_title("Formalization status distribution")
     return _save(fig, out)
