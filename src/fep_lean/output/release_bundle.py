@@ -15,7 +15,6 @@ import json
 import math
 import os
 import re
-import runpy
 import shlex
 import shutil
 import struct
@@ -36,6 +35,10 @@ import yaml
 
 from fep_lean.catalogue.coverage import formalism_coverage_drift
 from fep_lean.catalogue.relations import EdgeKind
+from fep_lean.catalogue.theorem_maturity_projection import (
+    render_markdown,
+    validate_audit,
+)
 from fep_lean.catalogue.topics import FEPTopicCatalogue
 from fep_lean.output.browser_capture import (
     BROWSER_ASSET_ROOT,
@@ -1584,11 +1587,7 @@ def _browser_screenshot_paths(project_root: Path) -> tuple[str, ...]:
 
 def _theorem_maturity_projection_errors(project_root: Path) -> tuple[str, ...]:
     root = Path(project_root).resolve()
-    script = root / "scripts" / "theorem_maturity_audit.py"
     try:
-        namespace = runpy.run_path(str(script))
-        validate_audit = namespace["validate_audit"]
-        render_markdown = namespace["render_markdown"]
         expected = render_markdown(validate_audit(root))
         actual = (root / "docs" / "theorem-maturity-audit.md").read_text(
             encoding="utf-8"
