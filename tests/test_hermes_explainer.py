@@ -8,6 +8,7 @@ are unset (real CI guard — no direct execution).
 from __future__ import annotations
 
 import os
+import threading
 import time
 from pathlib import Path
 
@@ -796,3 +797,52 @@ def test_restore_lean_structure_does_not_add_hermes_imports() -> None:
     )
     result = restore_lean_structure(refined_with_extra_import, _ORIG_SKETCH)
     assert "Mathlib.Data.Fin" not in result
+
+
+def test_preflight_never_mutates_shared_config_budgets(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Concurrent effective_max_tokens() must see original budgets during preflight.
+
+    SC-5: preflight used to rewrite shared HermesConfig fields (max_tokens=1,
+    reasoning_max_tokens=1, capped timeouts) for the duration of the probe, so
+    a concurrent real request could be sent with probe-sized budgets. The
+    probe now passes per-call budgets and leaves the shared config untouched.
+    """
+    cfg = HermesConfig(
+        enabled=True, api_key="test-key", max_tokens=16384, reasoning_max_tokens=65536
+    )
+    ex = HermesExplainer(cfg)
+    captured: dict[str, tuple[int, int] | None] = {"budgets": None}
+    release = threading.Event()
+
+    def probe_call(inst, messages, model, budgets=None):
+        captured["budgets"] = budgets
+        # Hold the "probe" open while another thread reads the shared budgets.
+        release.wait(timeout=5)
+        return {
+            "choices": [{"message": {"content": "ping"}}],
+            "usage": {},
+        }
+
+    monkeypatch.setattr(HermesExplainer, "_call_api", probe_call)
+    observed: list[tuple[int, int]] = []
+
+    def read_budgets() -> None:
+        observed.append((cfg.effective_max_tokens(), cfg.effective_timeout()))
+
+    reader = threading.Thread(target=read_budgets, name="budget-reader")
+    reader.start()
+    try:
+        assert ex.preflight() is True
+    finally:
+        release.set()
+        reader.join(timeout=5)
+    # The probe request itself carried probe-sized budgets...
+    assert captured["budgets"] is not None
+    assert captured["budgets"][0] == 1
+    # ...while the concurrent reader observed the ORIGINAL config budgets...
+    assert observed == [(cfg.effective_max_tokens(), cfg.effective_timeout())]
+    # ...and the shared config is byte-identical afterwards.
+    assert cfg.max_tokens == 16384
+    assert cfg.reasoning_max_tokens == 65536

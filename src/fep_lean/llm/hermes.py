@@ -465,16 +465,12 @@ class HermesExplainer:
             {"role": "system", "content": "ping"},
             {"role": "user", "content": "ping"},
         ]
-        original_max = self._cfg.max_tokens
-        original_reasoning_max = self._cfg.reasoning_max_tokens
-        original_timeout = self._cfg.timeout_s
-        original_reasoning_timeout = self._cfg.reasoning_timeout_s
-        self._cfg.max_tokens = 1
-        self._cfg.reasoning_max_tokens = 1
-        self._cfg.timeout_s = min(30, original_timeout)
-        self._cfg.reasoning_timeout_s = min(30, original_reasoning_timeout)
+        probe_budgets = (
+            1,
+            min(30, self._cfg.reasoning_timeout_s),
+        )
         try:
-            self._call_api(probe_messages, self._cfg.model)
+            self._call_api(probe_messages, self._cfg.model, budgets=probe_budgets)
             log.info(
                 "Hermes preflight OK (model=%s, base_url=%s)",
                 self._cfg.model,
@@ -508,11 +504,6 @@ class HermesExplainer:
         except (OSError, http.client.HTTPException, urllib.error.URLError) as exc:
             log.warning("Hermes preflight transport error: %s — continuing.", exc)
             return True
-        finally:
-            self._cfg.max_tokens = original_max
-            self._cfg.reasoning_max_tokens = original_reasoning_max
-            self._cfg.timeout_s = original_timeout
-            self._cfg.reasoning_timeout_s = original_reasoning_timeout
 
     # ── Public ────────────────────────────────────────────────────────────────
 
@@ -807,14 +798,29 @@ class HermesExplainer:
                     chain.append(m)
         return chain
 
-    def _call_api(self, messages: list[dict[str, str]], model: str) -> dict[str, Any]:
-        """Make the HTTP POST and return the parsed JSON response body."""
+    def _call_api(
+        self,
+        messages: list[dict[str, str]],
+        model: str,
+        budgets: tuple[int, int] | None = None,
+    ) -> dict[str, Any]:
+        """Make the HTTP POST and return the parsed JSON response body.
+
+        ``budgets`` optionally supplies ``(max_tokens, timeout_s)`` for this
+        call alone — preflight uses probe-sized budgets without mutating the
+        shared config, so a concurrent real request keeps its full budgets.
+        """
         url = self._cfg.base_url.rstrip("/") + "/chat/completions"
         is_reasoning = model in _REASONING_MODELS
-        max_tokens = (
-            self._cfg.reasoning_max_tokens if is_reasoning else self._cfg.max_tokens
-        )
-        timeout = self._cfg.reasoning_timeout_s if is_reasoning else self._cfg.timeout_s
+        if budgets is not None:
+            max_tokens, timeout = budgets
+        else:
+            max_tokens = (
+                self._cfg.reasoning_max_tokens if is_reasoning else self._cfg.max_tokens
+            )
+            timeout = (
+                self._cfg.reasoning_timeout_s if is_reasoning else self._cfg.timeout_s
+            )
 
         body: dict[str, Any] = {
             "model": model,

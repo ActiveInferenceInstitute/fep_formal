@@ -140,23 +140,18 @@ def test_preflight_bounds_reasoning_model_and_restores_budget(
         reasoning_max_tokens=999,
         reasoning_timeout_s=90,
     )
-    seen: list[tuple[int, int, int, int]] = []
+    seen: list[tuple[int, int] | None] = []
     exp = HermesExplainer(cfg)
 
-    def fake_call(_messages, _model):
-        seen.append(
-            (
-                cfg.max_tokens,
-                cfg.reasoning_max_tokens,
-                cfg.timeout_s,
-                cfg.reasoning_timeout_s,
-            )
-        )
+    def fake_call(_messages, _model, budgets=None):
+        seen.append(budgets)
         return {"choices": []}
 
     monkeypatch.setattr(exp, "_call_api", fake_call)
     assert exp.preflight() is True
-    assert seen == [(1, 1, 30, 30)]
+    # Probe budgets are passed per call: 1 token, capped at 30 s.
+    assert seen == [(1, 30)]
+    # The shared config budgets are never mutated.
     assert (
         cfg.max_tokens,
         cfg.reasoning_max_tokens,
