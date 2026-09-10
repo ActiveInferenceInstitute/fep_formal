@@ -59,7 +59,15 @@ from fep_lean.output.browser_capture import (
 from fep_lean.output.evidence import validate_native_lean_receipt
 from fep_lean.output.formal_kernel_dashboard import formal_kernel_dashboard_drift
 from fep_lean.output.formalism_atlas import atlas_projection_drift
-from fep_lean.output.formalism_presentation import build_formalism_presentation
+from fep_lean.output.formalism_presentation import (
+    RELEASE_CAPABILITIES,
+    RELEASE_FAMILIES,
+    RELEASE_RELATIONS,
+    RELEASE_SEAL,
+    RELEASE_TOPICS,
+    RELEASE_WITNESSES,
+    build_formalism_presentation,
+)
 from fep_lean.output.fsutil import atomic_write_bytes, sha256_bytes
 from fep_lean.output.manuscript import (
     collection_runtime_identity,
@@ -1398,18 +1406,18 @@ def _browser_receipt_errors(project_root: Path) -> tuple[str, ...]:
     except (OSError, TypeError, ValueError) as exc:
         errors.append(f"live browser presentation cannot be loaded: {exc}")
         required_counts = {
-            "topics": 155,
-            "families": 20,
-            "witnesses": 15,
-            "relations": 133,
-            "capabilities": 48,
+            "topics": RELEASE_TOPICS,
+            "families": RELEASE_FAMILIES,
+            "witnesses": RELEASE_WITNESSES,
+            "relations": RELEASE_RELATIONS,
+            "capabilities": RELEASE_CAPABILITIES,
         }
     if required_counts != {
-        "topics": 155,
-        "families": 20,
-        "witnesses": 15,
-        "relations": 133,
-        "capabilities": 48,
+        "topics": RELEASE_TOPICS,
+        "families": RELEASE_FAMILIES,
+        "witnesses": RELEASE_WITNESSES,
+        "relations": RELEASE_RELATIONS,
+        "capabilities": RELEASE_CAPABILITIES,
     }:
         errors.append("live presentation does not match the 155-topic release seal")
     if isinstance(expected, dict):
@@ -2239,9 +2247,9 @@ def _base_prerequisite_errors(project_root: Path) -> tuple[str, ...]:
         native.get("valid") is True
         and native.get("source_bound") is True
         and native.get("native_claim_ready") is True
-        and native.get("live_catalogue_topics") == 155
-        and native.get("selected_topics") == 155
-        and native.get("verified_topics") == 155
+        and native.get("live_catalogue_topics") == RELEASE_SEAL["topics"]
+        and native.get("selected_topics") == RELEASE_SEAL["topics"]
+        and native.get("verified_topics") == RELEASE_SEAL["topics"]
     ):
         native_errors = native.get("errors")
         detail = "; ".join(native_errors) if isinstance(native_errors, list) else ""
@@ -2337,7 +2345,7 @@ def build_numerical_witness_receipt(project_root: Path) -> bytes:
         "config_sha256": report_config_digest(root),
         "witnesses": records,
     }
-    if payload["witness_count"] != 15 or payload["complete"] is not True:
+    if payload["witness_count"] != RELEASE_SEAL["witnesses"] or payload["complete"] is not True:
         raise ReleaseBundleError(
             "the live numerical witness closure is not the accepted 15-witness release"
         )
@@ -3496,11 +3504,11 @@ def validate_release_bundle(
                 errors.append("manifest members must be lexically ordered")
 
         if manifest.get("catalogue") != {
-            "areas": 5,
-            "families": 20,
-            "first_id": "fep-001",
-            "last_id": "fep-155",
-            "topics": 155,
+            "areas": RELEASE_SEAL["areas"],
+            "families": RELEASE_SEAL["families"],
+            "first_id": RELEASE_SEAL["first_id"],
+            "last_id": RELEASE_SEAL["last_id"],
+            "topics": RELEASE_SEAL["topics"],
         }:
             errors.append(
                 "manifest catalogue does not match the 155-topic release seal"
@@ -3510,9 +3518,9 @@ def validate_release_bundle(
             errors.append("manifest formalism summary must be an object")
         else:
             for key, expected in (
-                ("relations", 133),
-                ("capabilities", 48),
-                ("numerical_witnesses", 15),
+                ("relations", RELEASE_SEAL["relations"]),
+                ("capabilities", RELEASE_SEAL["capabilities"]),
+                ("numerical_witnesses", RELEASE_SEAL["witnesses"]),
             ):
                 if formalism.get(key) != expected:
                     errors.append(f"manifest formalism.{key} is stale")

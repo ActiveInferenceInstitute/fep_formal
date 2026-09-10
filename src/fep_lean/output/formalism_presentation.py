@@ -14,7 +14,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
-from typing import cast
+from typing import Final, cast
 
 from fep_lean.catalogue.coverage import build_formalism_coverage
 from fep_lean.verification.numerical_witnesses import (
@@ -28,6 +28,31 @@ NUMERICAL_EVIDENCE_BOUNDARY = (
     "They can expose finite sign, normalization, support, rank, identity, and "
     "contraction errors; they are neither Lean proof receipts nor empirical "
     "validation of the Free Energy Principle."
+)
+
+# The versioned release seal: the catalogue shape a release claims, not a live
+# count. Bump it deliberately with each catalogue release; every receipt
+# validator derives its expectations from this one definition.
+RELEASE_FIRST_ID: Final = "fep-001"
+RELEASE_LAST_ID: Final = "fep-155"
+RELEASE_TOPICS: Final = 155
+RELEASE_FAMILIES: Final = 20
+RELEASE_AREAS: Final = 5
+RELEASE_WITNESSES: Final = 15
+RELEASE_RELATIONS: Final = 133
+RELEASE_CAPABILITIES: Final = 48
+
+RELEASE_SEAL: Final[Mapping[str, int | str]] = MappingProxyType(
+    {
+        "first_id": RELEASE_FIRST_ID,
+        "last_id": RELEASE_LAST_ID,
+        "topics": RELEASE_TOPICS,
+        "families": RELEASE_FAMILIES,
+        "areas": RELEASE_AREAS,
+        "witnesses": RELEASE_WITNESSES,
+        "relations": RELEASE_RELATIONS,
+        "capabilities": RELEASE_CAPABILITIES,
+    }
 )
 
 _FORMALISM_ACRONYMS = {
@@ -478,6 +503,15 @@ def build_formalism_presentation(project_root: Path) -> FormalismPresentation:
 
 __all__ = [
     "NUMERICAL_EVIDENCE_BOUNDARY",
+    "RELEASE_AREAS",
+    "RELEASE_CAPABILITIES",
+    "RELEASE_FAMILIES",
+    "RELEASE_FIRST_ID",
+    "RELEASE_LAST_ID",
+    "RELEASE_RELATIONS",
+    "RELEASE_SEAL",
+    "RELEASE_TOPICS",
+    "RELEASE_WITNESSES",
     "FormalismPresentation",
     "PresentationArea",
     "PresentationCapability",
