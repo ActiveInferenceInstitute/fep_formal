@@ -878,10 +878,18 @@ def write_formalism_atlas(
 
 
 def atlas_projection_drift(
-    project_root: Path, *, output_root: Path | None = None
+    project_root: Path,
+    *,
+    output_root: Path | None = None,
+    presentation: FormalismPresentation | None = None,
 ) -> tuple[Path, ...]:
-    """Return missing or stale atlas projection paths in stable order."""
-    atlas = build_formalism_atlas(Path(project_root))
+    """Return missing or stale atlas projection paths in stable order.
+
+    ``presentation`` optionally supplies the already-built shared join so a
+    caller that validated several planes against one snapshot can thread it
+    through without rebuilding it per call (SC-20). No output bytes change.
+    """
+    atlas = build_formalism_atlas(Path(project_root)) if presentation is None else presentation
     svg_path, html_path = atlas_projection_paths(project_root, output_root=output_root)
     expected = {
         svg_path: render_formalism_atlas_svg(atlas),

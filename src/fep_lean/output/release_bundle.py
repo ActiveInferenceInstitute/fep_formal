@@ -2225,13 +2225,14 @@ def _base_prerequisite_errors(project_root: Path) -> tuple[str, ...]:
             f"formalism coverage projection is stale: {path.relative_to(root)}"
             for path in formalism_coverage_drift(root)
         )
+        presentation = build_formalism_presentation(root)
         errors.extend(
             f"formalism atlas projection is stale: {path.relative_to(root)}"
-            for path in atlas_projection_drift(root)
+            for path in atlas_projection_drift(root, presentation=presentation)
         )
         errors.extend(
             f"formal-kernel dashboard projection is stale: {path.relative_to(root)}"
-            for path in formal_kernel_dashboard_drift(root)
+            for path in formal_kernel_dashboard_drift(root, presentation=presentation)
         )
     except (OSError, TypeError, ValueError) as exc:
         errors.append(f"canonical projections cannot be validated: {exc}")

@@ -1265,10 +1265,20 @@ def write_formal_kernel_dashboard(
 
 
 def formal_kernel_dashboard_drift(
-    project_root: Path, *, output_root: Path | None = None
+    project_root: Path,
+    *,
+    output_root: Path | None = None,
+    presentation: FormalismPresentation | None = None,
 ) -> tuple[Path, ...]:
-    """Return missing or stale dashboard projection paths in stable order."""
-    dashboard = build_formal_kernel_dashboard(Path(project_root))
+    """Return missing or stale dashboard projection paths in stable order.
+
+    ``presentation`` optionally supplies the already-built shared join (SC-20).
+    """
+    dashboard = (
+        build_formal_kernel_dashboard(Path(project_root))
+        if presentation is None
+        else presentation
+    )
     svg_path, html_path = dashboard_projection_paths(
         project_root, output_root=output_root
     )
