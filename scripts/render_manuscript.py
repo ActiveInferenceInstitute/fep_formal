@@ -155,8 +155,10 @@ def unresolved_manuscript_reference_report(source_dir: Path) -> tuple[str, ...]:
     """Return every manuscript identifier that names no canonical declaration.
 
     The abstract claims that "stale theorem identifiers block publication". Until
-    this call existed, nothing on the render path checked one: the audit lived in
-    ``docs/theorem_ref_audit.py``, which no gate invoked. Both forms are checked --
+    this call existed, nothing on the render path checked one: the audit lived
+    only in ``docs/theorem_ref_audit.py``. That is no longer true -- CI runs
+    both this render check and the standalone theorem audit -- so the surface
+    is checked twice by independent gates. Both forms are checked --
     the ``fepNNN_`` prefix form inside prose and ``lean`` fences, and the
     un-prefixed identifiers a line attributes to a ``fep-NNN`` row.
     """

@@ -54,3 +54,24 @@ must remain non-mutating and bind an existing archive back to current sources.
 Generated Lean output is tracked and must be regeneration-identical. The formal
 resource manifest owns foundation, leaf-composition, and import-aggregate
 projections; wrapper scripts must not reconstruct that roster independently.
+
+`build_manuscript_figures.py` publishes the atlas/dashboard PNGs and graphical
+abstract the manuscript chapters cite, rasterizing the committed SVG
+projections; `--check` fails when a cited PNG is missing or older than its
+SVG source. The write pass must precede the check on a fresh checkout because
+`output/` is gitignored; CI runs exactly that pair after `fep-lean catalogue`.
+It reconstructs no roster: the cited-figure map lives in
+`fep_lean.output.svg_raster`.
+
+`verify_report_receipt.py` is a thin wrapper over
+`fep_lean.output.reporter.validate_report_receipt`: it recomputes a report
+bundle's artifact hashes, reconciles the summary, run, and verification
+manifests, and compares stored digests with a live checkout.
+`--require-complete` additionally demands a complete, non-empty, zero-warning
+full-mode receipt. It never reruns the pipeline.
+
+`capture_browser_acceptance.py` is a thin wrapper over
+`fep_lean.output.browser_capture.capture_browser_acceptance`: it records the
+canonical Chrome/CDP acceptance receipt plus six bound screenshots under
+`output/`. It needs a local browser and is not part of CI; the receipt it
+writes is what `fep_lean.output.release_bundle` validation consumes.

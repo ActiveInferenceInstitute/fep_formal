@@ -99,5 +99,49 @@ uv run python scripts/build_render_fonts.py --check
 uv run python scripts/build_render_fonts.py --probe
 ```
 
+`build_manuscript_figures.py` publishes the two atlas/dashboard PNGs the
+manuscript cites (rasterized from the committed SVG projections via
+`rsvg-convert`) and the graphical abstract under `output/figures/`; `--check`
+fails when a cited PNG is missing or older than its SVG projection. The write
+pass must precede the check on a fresh checkout because `output/` is
+gitignored -- CI runs exactly that pair after `fep-lean catalogue`:
+
+```bash
+uv run python scripts/build_manuscript_figures.py
+uv run python scripts/build_manuscript_figures.py --check
+```
+
+`verify_report_receipt.py` independently validates a generated report bundle
+under `output/reports/run_...`: it recomputes the listed artifact hashes,
+reconciles the summary, run, and verification manifests, and compares stored
+source/config digests against a live checkout (`--project-root` to select
+another one); `--require-complete` additionally demands a complete,
+non-empty, zero-warning full-mode receipt:
+
+```bash
+uv run python scripts/verify_report_receipt.py output/reports/run_... --require-complete
+```
+
+`capture_browser_acceptance.py` records the canonical Chrome/CDP browser
+acceptance: it drives a local Chrome/Chromium (or `--browser PATH`) through
+the receipt surface and writes `output/browser-acceptance.json` with six
+bound screenshots. It needs a real browser and is not part of CI:
+
+```bash
+uv run python scripts/capture_browser_acceptance.py
+```
+
+`build_release_bundle.py` builds or validates the deterministic evidence
+bundle: without flags it renders the publication set and writes the
+`--output PATH` archive; `--check` re-renders in temporary directories and
+binds an existing archive back to current sources without mutating them;
+`--run-python-acceptance` runs the exact full acceptance command and retains
+its receipts:
+
+```bash
+uv run python scripts/build_release_bundle.py --output dist/fep-lean.tar.gz
+uv run python scripts/build_release_bundle.py --check --output dist/fep-lean.tar.gz
+```
+
 Do not invoke repository-root modules or set a monorepo-specific `PYTHONPATH`;
 each wrapper resolves this checkout's `src/` directory directly.
