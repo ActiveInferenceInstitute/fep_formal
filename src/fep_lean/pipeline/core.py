@@ -166,7 +166,7 @@ class FEPPipeline:
             self.project_root, output_root or configured_root
         )
         self._catalogue: FEPTopicCatalogue | None = None
-        self._topics_to_run: list[Any] = []
+        self._topics_to_run: tuple[Any, ...] = ()
         self._run_topic_results: list[dict[str, Any]] = []
 
     def run(
@@ -325,11 +325,11 @@ class FEPPipeline:
                 unknown = sorted(set(topic_filter) - {topic.id for topic in topics})
                 if unknown:
                     raise ValueError(f"unknown topic ids: {', '.join(unknown)}")
-                topics = [topic for topic in topics if topic.id in topic_filter]
+                topics = tuple(topic for topic in topics if topic.id in topic_filter)
             if area_filter:
-                topics = [topic for topic in topics if topic.area == area_filter]
+                topics = tuple(topic for topic in topics if topic.area == area_filter)
             maximum = _max_topics_from_env()
-            self._topics_to_run = topics[:maximum] if maximum else topics
+            self._topics_to_run = tuple(topics[:maximum] if maximum else topics)
             return {
                 "topics": [topic.id for topic in self._topics_to_run],
                 "total_catalogue_topics": len(self._catalogue.topics),
@@ -345,7 +345,9 @@ class FEPPipeline:
                     "Hermes is not live; full mode requires configured credentials"
                 )
             runner.hermes.preflight()
-            results = runner.run_topics_batch(self._topics_to_run, workflow=workflow)
+            results = runner.run_topics_batch(
+                list(self._topics_to_run), workflow=workflow
+            )
             return {
                 "results": results,
                 "topics": [result.as_dict() for result in results],

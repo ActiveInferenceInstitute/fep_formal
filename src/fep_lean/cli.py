@@ -189,9 +189,9 @@ def _verify(
             unknown = sorted(set(topic_ids) - known)
             if unknown:
                 raise ValueError(f"unknown topic ids: {', '.join(unknown)}")
-            topics = [topic for topic in topics if topic.id in topic_ids]
+            topics = tuple(topic for topic in topics if topic.id in topic_ids)
         if area:
-            topics = [topic for topic in topics if topic.area == area]
+            topics = tuple(topic for topic in topics if topic.area == area)
         if not topics:
             raise ValueError("no catalogue topics matched the requested filters")
     except Exception as exc:

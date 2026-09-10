@@ -6,6 +6,7 @@ Importable as ``from fep_lean.catalogue.topics import FEPTopicCatalogue``.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from importlib.resources import files
 from pathlib import Path
@@ -55,13 +56,53 @@ class FEPTopicCatalogue:
 
     def __init__(
         self,
-        topics: list[TopicEntry],
+        topics: Sequence[TopicEntry],
         source_path: Path,
         roster: RosterSeal,
         families: tuple[str, ...],
     ) -> None:
-        """Initialize from parsed TopicEntry list (used by from_yaml classmethod)."""
-        self._topics = topics
+        """Initialize the sole validating construction path.
+
+        Roster, order, and consistency are asserted here so no unvalidated
+        catalogue can exist: every constructor (including ``from_yaml`` and
+        ``default``) passes through these checks.
+        """
+        if not isinstance(roster, RosterSeal):
+            raise CatalogueValidationError("catalogue roster must be a RosterSeal")
+        if not isinstance(source_path, Path):
+            raise CatalogueValidationError("catalogue source_path must be a Path")
+        if (
+            not isinstance(families, tuple)
+            or not families
+            or not all(isinstance(family, str) and family for family in families)
+            or len(families) != len(set(families))
+        ):
+            raise CatalogueValidationError(
+                "catalogue families must be a non-empty unique tuple of strings"
+            )
+        entries = tuple(topics)
+        if not entries or not all(isinstance(entry, TopicEntry) for entry in entries):
+            raise CatalogueValidationError(
+                "catalogue topics must be a non-empty sequence of TopicEntry"
+            )
+        if tuple(entry.id for entry in entries) != roster.topic_ids:
+            raise CatalogueValidationError(
+                "catalogue rows must exactly match the sealed roster in order"
+            )
+        for entry in entries:
+            if entry.area not in AREAS:
+                raise CatalogueValidationError(
+                    f"{entry.id}: unsupported area {entry.area!r}"
+                )
+            if entry.family not in families:
+                raise CatalogueValidationError(
+                    f"{entry.id}: family is absent from the vocabulary"
+                )
+            if entry.mathlib_status not in MATHLIB_STATUSES:
+                raise CatalogueValidationError(
+                    f"{entry.id}: unsupported mathlib_status {entry.mathlib_status!r}"
+                )
+        self._topics: tuple[TopicEntry, ...] = entries
         self.source_path = source_path
         self.roster = roster
         self.families = families
@@ -282,8 +323,8 @@ class FEPTopicCatalogue:
         return cls(topics, resolved, roster, families)
 
     @property
-    def topics(self) -> list[TopicEntry]:
-        return list(self._topics)
+    def topics(self) -> tuple[TopicEntry, ...]:
+        return self._topics
 
     def summary(self) -> dict[str, Any]:
         """Counts by area and global maturity tallies."""
@@ -298,10 +339,6 @@ class FEPTopicCatalogue:
             areas[t.area] = areas.get(t.area, 0) + 1
             family_counts[t.family] = family_counts.get(t.family, 0) + 1
             st = t.mathlib_status
-            if st not in maturity_totals:
-                raise CatalogueValidationError(
-                    f"{t.id}: unsupported mathlib_status {st!r}"
-                )
             maturity_totals[st] = maturity_totals.get(st, 0) + 1
             if t.area not in area_maturity:
                 area_maturity[t.area] = {k: 0 for k in _MATURITY_ORDER}
