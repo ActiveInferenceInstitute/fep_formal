@@ -10,9 +10,15 @@ from typing import Literal, TypeAlias
 from fep_lean.output.formalism_presentation import (
     FormalismPresentation,
     build_formalism_presentation,
-    humanize_formalism_identifier,
 )
 from fep_lean.output.fsutil import atomic_write_text
+from fep_lean.output.svg_presentation import (
+    escape_svg_text,
+    humanize_identifier,
+    options_fragment,
+    svg_text_lines,
+    wrap_text,
+)
 from fep_lean.verification.numerical_witnesses import NumericalWitness, Scalar
 
 DASHBOARD_SVG = Path("docs/formal-kernel-dashboard.svg")
@@ -39,8 +45,6 @@ def build_formal_kernel_dashboard(project_root: Path) -> FormalKernelDashboard:
     return build_formalism_presentation(Path(project_root))
 
 
-def _escape(value: object) -> str:
-    return html.escape(str(value), quote=True)
 
 
 def _text(value: object) -> str:
@@ -53,8 +57,6 @@ def _scalar_text(value: Scalar) -> str:
     return repr(value)
 
 
-def _humanize(value: str) -> str:
-    return humanize_formalism_identifier(value)
 
 
 def _formal_alignment_explanation(witness: NumericalWitness) -> str:
@@ -94,34 +96,8 @@ def _compact_number(value: float) -> str:
     return f"{value:.4g}"
 
 
-def _wrap(value: str, width: int, *, lines: int | None = 2) -> tuple[str, ...]:
-    words = value.split()
-    wrapped: list[str] = []
-    current: list[str] = []
-    for word in words:
-        candidate = " ".join((*current, word))
-        if current and len(candidate) > width:
-            wrapped.append(" ".join(current))
-            current = [word]
-        else:
-            current.append(word)
-    if current:
-        wrapped.append(" ".join(current))
-    if lines is None or len(wrapped) <= lines:
-        return tuple(wrapped)
-    kept = wrapped[:lines]
-    kept[-1] = kept[-1].rstrip("…") + "…"
-    return tuple(kept)
 
 
-def _svg_text_lines(
-    lines: tuple[str, ...], *, x: float, y: float, css_class: str, step: int
-) -> list[str]:
-    return [
-        f'<text class="{css_class}" x="{x:.1f}" y="{y + index * step:.1f}">'
-        f"{_escape(line)}</text>"
-        for index, line in enumerate(lines)
-    ]
 
 
 def _numeric(value: Scalar) -> float | None:
@@ -205,11 +181,11 @@ def _coincident_marker_svg(
     """Render a centered identity glyph without perturbing its data coordinate."""
     point = f' data-point-index="{point_index}"' if point_index is not None else ""
     common = (
-        f'class="{css_class}" data-series-key="{_escape(series_key)}" '
+        f'class="{css_class}" data-series-key="{escape_svg_text(series_key)}" '
         f'data-marker-shape="{shape}" data-center-x="{center_x:.2f}" '
         f'data-center-y="{center_y:.2f}" data-visual-offset="0"{point}'
     )
-    title = f"<title>{_escape(series_key)} · identical shared-rail value</title>"
+    title = f"<title>{escape_svg_text(series_key)} · identical shared-rail value</title>"
     if shape == "ring":
         return (
             f'<circle {common} cx="{center_x:.2f}" cy="{center_y:.2f}" r="6" '
@@ -273,10 +249,10 @@ def _plot_elements(
     y_axis = f"y · {' / '.join(y_labels)} · unit: {y_unit}"
     x_axis = f"x · {x_label} · unit: {x_unit}"
     axis_text_width = max(28, int((width - 32) / 8))
-    y_axis_lines = _wrap(y_axis, axis_text_width, lines=None)
-    x_axis_lines = _wrap(x_axis, axis_text_width, lines=None)
+    y_axis_lines = wrap_text(y_axis, axis_text_width, lines=None)
+    x_axis_lines = wrap_text(x_axis, axis_text_width, lines=None)
     x_domain = _x_domain_caption(witness, raw_x)
-    domain_lines = _wrap(x_domain, axis_text_width, lines=None)
+    domain_lines = wrap_text(x_domain, axis_text_width, lines=None)
     categorical = x_unit == "categorical"
     category_labels = tuple(f"C{index + 1}" for index in range(len(raw_x)))
     category_key_columns = 1 if stacked_legend else 2
@@ -310,7 +286,7 @@ def _plot_elements(
         int(((width - 42) if stacked_legend else (legend_width - 18)) / 7),
     )
     legend_lines = tuple(
-        _wrap(columns[key].label, legend_limit, lines=None) for key, _values in series
+        wrap_text(columns[key].label, legend_limit, lines=None) for key, _values in series
     )
     coincident_with: list[str | None] = []
     for series_index, (_key, values) in enumerate(series):
@@ -343,11 +319,11 @@ def _plot_elements(
     )
     lines = [
         (
-            f'<g class="plot" data-plot-for="{_escape(witness.id)}" '
+            f'<g class="plot" data-plot-for="{escape_svg_text(witness.id)}" '
             f'data-zero-baseline="{str(zero_baseline).lower()}" '
             f'data-y-min="{y_min!r}" data-y-max="{y_max!r}" '
-            f'data-x-quantity="{_escape(x_label)}" data-x-unit="{x_unit}" '
-            f'data-y-quantities="{_escape(" | ".join(y_labels))}" '
+            f'data-x-quantity="{escape_svg_text(x_label)}" data-x-unit="{x_unit}" '
+            f'data-y-quantities="{escape_svg_text(" | ".join(y_labels))}" '
             f'data-y-unit="{y_unit}" data-legend-layout="{legend_layout}" '
             f'data-native-plot-height="{native_plot_height}" '
             f'data-category-count="{len(raw_x) if categorical else 0}" '
@@ -357,7 +333,7 @@ def _plot_elements(
         (
             f'<text class="axis-label axis-y-label" x="{x + 8}" y="{y + 13}">'
             + "".join(
-                f'<tspan x="{x + 8}" y="{y + 13 + index * axis_line_step}">{_escape(line)}</tspan>'
+                f'<tspan x="{x + 8}" y="{y + 13 + index * axis_line_step}">{escape_svg_text(line)}</tspan>'
                 for index, line in enumerate(y_axis_lines)
             )
             + "</text>"
@@ -418,21 +394,21 @@ def _plot_elements(
                 )
                 lines.append(
                     f'<rect class="plot-bar" data-category-index="{point_index}" '
-                    f'data-series-key="{_escape(key)}" data-value="{value!r}" '
+                    f'data-series-key="{escape_svg_text(key)}" data-value="{value!r}" '
                     f'data-zero-value="{str(is_zero).lower()}" '
                     f'x="{bar_x:.2f}" y="{min(point_y, baseline_y):.2f}" '
                     f'width="{bar_width:.2f}" height="{max(1.0, abs(baseline_y - point_y)):.2f}" '
-                    f'fill="{color}" opacity="0.82"><title>{_escape(key)}</title></rect>'
+                    f'fill="{color}" opacity="0.82"><title>{escape_svg_text(key)}</title></rect>'
                 )
                 if is_zero:
                     marker_x = bar_x + bar_width / 2
                     lines.append(
                         f'<circle class="zero-value-marker" '
                         f'data-category-index="{point_index}" '
-                        f'data-series-key="{_escape(key)}" '
+                        f'data-series-key="{escape_svg_text(key)}" '
                         f'cx="{marker_x:.2f}" cy="{baseline_y:.2f}" r="4" '
                         f'fill="white" stroke="{color}" stroke-width="2">'
-                        f"<title>{_escape(key)}: exact zero, not missing</title></circle>"
+                        f"<title>{escape_svg_text(key)}: exact zero, not missing</title></circle>"
                     )
         else:
             if witness.plot.kind == "line":
@@ -442,7 +418,7 @@ def _plot_elements(
                 )
                 if coincident_root is None:
                     lines.append(
-                        f'<path data-series-key="{_escape(key)}" '
+                        f'<path data-series-key="{escape_svg_text(key)}" '
                         f'data-overlap-role="{overlap_role}" d="{path}" '
                         f'fill="none" stroke="{color}" stroke-width="2.8" '
                         'vector-effect="non-scaling-stroke"/>'
@@ -451,7 +427,7 @@ def _plot_elements(
                     shared_keys = " | ".join(coincident_groups[coincident_root])
                     lines.append(
                         f'<path class="coincident-value-rail" '
-                        f'data-series-keys="{_escape(shared_keys)}" '
+                        f'data-series-keys="{escape_svg_text(shared_keys)}" '
                         'data-visual-offset="0" d="'
                         f'{path}" fill="none" stroke="#334155" stroke-width="3.4" '
                         'stroke-linecap="round" vector-effect="non-scaling-stroke"/>'
@@ -472,10 +448,10 @@ def _plot_elements(
                     )
                 else:
                     lines.append(
-                        f'<circle data-series-key="{_escape(key)}" '
+                        f'<circle data-series-key="{escape_svg_text(key)}" '
                         f'data-overlap-role="{overlap_role}" cx="{point_x:.2f}" '
                         f'cy="{point_y:.2f}" r="3.4" '
-                        f'fill="{color}"><title>{_escape(key)}</title></circle>'
+                        f'fill="{color}"><title>{escape_svg_text(key)}</title></circle>'
                     )
     if categorical:
         group_width = plot_width / max(1, len(x_values))
@@ -485,12 +461,12 @@ def _plot_elements(
             center_x = plot_left + (category_index + 0.5) * group_width
             lines.append(
                 f'<text class="category-tick" data-category-index="{category_index}" '
-                f'data-category-value="{_escape(_plot_scalar_text(category_value))}" '
+                f'data-category-value="{escape_svg_text(_plot_scalar_text(category_value))}" '
                 f'x="{center_x:.2f}" y="{category_tick_y:.2f}" '
                 f'text-anchor="middle">{category_label}</text>'
             )
     x_axis_tspans = "".join(
-        f'<tspan x="{x_axis_left}" y="{x_axis_y + line_index * annotation_line_step}">{_escape(line)}</tspan>'
+        f'<tspan x="{x_axis_left}" y="{x_axis_y + line_index * annotation_line_step}">{escape_svg_text(line)}</tspan>'
         for line_index, line in enumerate(x_axis_lines)
     )
     lines.append(
@@ -499,7 +475,7 @@ def _plot_elements(
     )
     if categorical:
         lines.append(
-            f'<text class="x-domain" data-x-domain="{_escape(x_domain)}" '
+            f'<text class="x-domain" data-x-domain="{escape_svg_text(x_domain)}" '
             f'x="{x + 8}" y="{domain_y}">Category key · full labels in exact HTML table</text>'
         )
         key_width = (width - 16) / category_key_columns
@@ -514,18 +490,18 @@ def _plot_elements(
             lines.append(
                 f'<text class="category-key-item" data-category-index="{category_index}" '
                 f'data-category-label="{category_label}" '
-                f'data-category-value="{_escape(_plot_scalar_text(category_value))}" '
+                f'data-category-value="{escape_svg_text(_plot_scalar_text(category_value))}" '
                 f'x="{key_x:.2f}" y="{key_y:.2f}">{category_label} · '
-                f"{_escape(compact_label)}<title>{_escape(_plot_scalar_text(category_value))}</title></text>"
+                f"{escape_svg_text(compact_label)}<title>{escape_svg_text(_plot_scalar_text(category_value))}</title></text>"
             )
     else:
         domain_tspans = "".join(
             f'<tspan x="{plot_left}" y="{domain_y + line_index * annotation_line_step:.2f}">'
-            f"{_escape(line)}</tspan>"
+            f"{escape_svg_text(line)}</tspan>"
             for line_index, line in enumerate(domain_lines)
         )
         lines.append(
-            f'<text class="x-domain" data-x-domain="{_escape(x_domain)}" '
+            f'<text class="x-domain" data-x-domain="{escape_svg_text(x_domain)}" '
             f'x="{plot_left}" y="{domain_y}">{domain_tspans}</text>'
         )
     if stacked_legend:
@@ -542,7 +518,7 @@ def _plot_elements(
         overlap_role = "coincident-member" if coincident_root else "independent"
         tspans = "".join(
             f'<tspan x="{legend_x + 20:.2f}" y="{legend_y + line_index * annotation_line_step:.2f}">'
-            f"{_escape(line)}</tspan>"
+            f"{escape_svg_text(line)}</tspan>"
             for line_index, line in enumerate(wrapped_label)
         )
         if witness.plot.kind == "line":
@@ -561,7 +537,7 @@ def _plot_elements(
                 )
             else:
                 lines.append(
-                    f'<line class="legend-swatch" data-series-key="{_escape(key)}" '
+                    f'<line class="legend-swatch" data-series-key="{escape_svg_text(key)}" '
                     f'data-overlap-role="{overlap_role}" x1="{legend_x}" '
                     f'y1="{legend_y - 4}" x2="{legend_x + 10}" y2="{legend_y - 4}" '
                     f'stroke="{color}" stroke-width="2.8"/>'
@@ -572,20 +548,20 @@ def _plot_elements(
                 f'fill="{color}"/>'
             )
         lines.append(
-            f'<text class="legend" data-series-key="{_escape(key)}" '
+            f'<text class="legend" data-series-key="{escape_svg_text(key)}" '
             f'x="{legend_x + 20:.2f}" y="{legend_y}">'
-            f"<title>{_escape(key)}</title>{tspans}</text>"
+            f"<title>{escape_svg_text(key)}</title>{tspans}</text>"
         )
         legend_y += len(wrapped_label) * annotation_line_step + 9
     if witness.plot.kind == "line" and coincident_roots:
-        overlap_lines = _wrap(
+        overlap_lines = wrap_text(
             "Identical values · shared rail + ring/diamond identities · no value offset",
             legend_limit,
             lines=None,
         )
         tspans = "".join(
             f'<tspan x="{legend_x:.2f}" y="{legend_y + index * annotation_line_step:.2f}">'
-            f"{_escape(line)}</tspan>"
+            f"{escape_svg_text(line)}</tspan>"
             for index, line in enumerate(overlap_lines)
         )
         lines.append(
@@ -594,14 +570,14 @@ def _plot_elements(
         )
         legend_y += len(overlap_lines) * annotation_line_step + 9
     if has_exact_zero:
-        zero_key_lines = _wrap(
+        zero_key_lines = wrap_text(
             "Hollow marker per series · exact zero, not missing",
             legend_limit,
             lines=None,
         )
         tspans = "".join(
             f'<tspan x="{legend_x + 20:.2f}" y="{legend_y + index * annotation_line_step:.2f}">'
-            f"{_escape(line)}</tspan>"
+            f"{escape_svg_text(line)}</tspan>"
             for index, line in enumerate(zero_key_lines)
         )
         lines.extend(
@@ -695,8 +671,8 @@ def _render_formal_kernel_dashboard_desktop_svg(
             [
                 '<rect class="banner" x="40" y="101" width="1520" height="68" rx="9"/>',
                 '<text class="banner-label" x="58" y="123">Evidence boundary</text>',
-                *_svg_text_lines(
-                    _wrap(dashboard.numerical_evidence_boundary, 132, lines=2),
+                *svg_text_lines(
+                    wrap_text(dashboard.numerical_evidence_boundary, 132, lines=2),
                     x=58,
                     y=143,
                     css_class="banner-line",
@@ -730,35 +706,35 @@ def _render_formal_kernel_dashboard_desktop_svg(
         lines.extend(
             [
                 (
-                    f'<g class="witness-summary" data-witness-summary="{_escape(witness.id)}" '
-                    f'data-witness-id="{_escape(witness.id)}" data-family="{_escape(witness.family)}" '
+                    f'<g class="witness-summary" data-witness-summary="{escape_svg_text(witness.id)}" '
+                    f'data-witness-id="{escape_svg_text(witness.id)}" data-family="{escape_svg_text(witness.family)}" '
                     f'data-witness-status="{status}" data-check-count="{len(witness.checks)}" '
                     f'data-max-check-residual="{_maximum_check_residual(witness)!r}" '
-                    f'data-formal-alignment="{_escape(witness.formal_alignment)}" '
+                    f'data-formal-alignment="{escape_svg_text(witness.formal_alignment)}" '
                     f'data-boundary-observed="{str(witness.boundary_observed).lower()}" '
                     f'data-footer-band-top="{footer_top}" '
                     f'role="listitem" tabindex="0" '
-                    f'aria-label="{_escape(witness.title)}, {status}, '
-                    f'{_escape(_humanize(witness.formal_alignment))}">'
+                    f'aria-label="{escape_svg_text(witness.title)}, {status}, '
+                    f'{escape_svg_text(humanize_identifier(witness.formal_alignment))}">'
                 ),
-                f"<title>{_escape(witness.title)} · {witness.id} · {witness.family}</title>",
+                f"<title>{escape_svg_text(witness.title)} · {witness.id} · {witness.family}</title>",
                 (
-                    f"<desc>{_escape(witness.invariant)} Boundary: "
-                    f"{_escape(witness.boundary_behavior)} Theorem mirrors: "
-                    f"{_escape(', '.join(witness.theorem_mirrors))} Formal alignment: "
-                    f"{_escape(witness.formal_alignment)}. Typed checks: "
-                    f"{_escape(_check_summary(witness))}.</desc>"
+                    f"<desc>{escape_svg_text(witness.invariant)} Boundary: "
+                    f"{escape_svg_text(witness.boundary_behavior)} Theorem mirrors: "
+                    f"{escape_svg_text(', '.join(witness.theorem_mirrors))} Formal alignment: "
+                    f"{escape_svg_text(witness.formal_alignment)}. Typed checks: "
+                    f"{escape_svg_text(_check_summary(witness))}.</desc>"
                 ),
                 f'<rect class="card" x="{x}" y="{y}" width="{card_width}" height="{card_height}" rx="13"/>',
             ]
         )
         lines.extend(
-            f'<text class="card-title" x="{x + 18}" y="{y + 73 + line_index * 21}">{_escape(line)}</text>'
-            for line_index, line in enumerate(_wrap(witness.title, 46))
+            f'<text class="card-title" x="{x + 18}" y="{y + 73 + line_index * 21}">{escape_svg_text(line)}</text>'
+            for line_index, line in enumerate(wrap_text(witness.title, 46))
         )
         lines.extend(
             [
-                f'<text class="family" x="{x + 18}" y="{y + 115}">{_escape(witness.family)} · {len(witness.rows)} rows · {witness.plot.kind}</text>',
+                f'<text class="family" x="{x + 18}" y="{y + 115}">{escape_svg_text(witness.family)} · {len(witness.rows)} rows · {witness.plot.kind}</text>',
                 (
                     f'<text class="metric" x="{x + 18}" y="{y + 135}">'
                     f"{len(witness.checks)} typed checks · max residual "
@@ -778,7 +754,7 @@ def _render_formal_kernel_dashboard_desktop_svg(
                 ),
                 (
                     f'<text class="alignment" x="{x + 18}" y="{footer_top + 18}">Formal alignment · '
-                    f"{_escape(_humanize(witness.formal_alignment))}</text>"
+                    f"{escape_svg_text(humanize_identifier(witness.formal_alignment))}</text>"
                 ),
                 (
                     f'<text class="alignment" x="{x + 18}" y="{footer_top + 36}">Boundary observed · '
@@ -910,14 +886,14 @@ def _render_formal_kernel_dashboard_mobile_svg(
         lines.extend(
             [
                 (
-                    f'<g data-mobile-witness-summary="{_escape(witness.id)}" '
-                    f'data-family="{_escape(witness.family)}" '
-                    f'data-formal-alignment="{_escape(witness.formal_alignment)}" '
-                    f'role="listitem" aria-label="{_escape(witness.title)}, {status}, '
-                    f'{_escape(_humanize(witness.formal_alignment))}">'
+                    f'<g data-mobile-witness-summary="{escape_svg_text(witness.id)}" '
+                    f'data-family="{escape_svg_text(witness.family)}" '
+                    f'data-formal-alignment="{escape_svg_text(witness.formal_alignment)}" '
+                    f'role="listitem" aria-label="{escape_svg_text(witness.title)}, {status}, '
+                    f'{escape_svg_text(humanize_identifier(witness.formal_alignment))}">'
                 ),
-                f"<title>{_escape(witness.title)} · {witness.id}</title>",
-                f"<desc>Typed checks: {_escape(_check_summary(witness))}.</desc>",
+                f"<title>{escape_svg_text(witness.title)} · {witness.id}</title>",
+                f"<desc>Typed checks: {escape_svg_text(_check_summary(witness))}.</desc>",
                 (
                     f'<rect class="mobile-card" x="{margin}" y="{y}" '
                     f'width="{card_width}" height="{card_height}" rx="11"/>'
@@ -926,12 +902,12 @@ def _render_formal_kernel_dashboard_mobile_svg(
         )
         lines.extend(
             f'<text class="mobile-card-title" x="{margin + 12}" '
-            f'y="{y + 70 + line_index * 17}">{_escape(line)}</text>'
-            for line_index, line in enumerate(_wrap(witness.title, 39, lines=3))
+            f'y="{y + 70 + line_index * 17}">{escape_svg_text(line)}</text>'
+            for line_index, line in enumerate(wrap_text(witness.title, 39, lines=3))
         )
         lines.extend(
-            _svg_text_lines(
-                _wrap(witness.family, 52, lines=2),
+            svg_text_lines(
+                wrap_text(witness.family, 52, lines=2),
                 x=margin + 12,
                 y=y + 122,
                 css_class="mobile-family",
@@ -942,7 +918,7 @@ def _render_formal_kernel_dashboard_mobile_svg(
             [
                 (
                     f'<text class="mobile-alignment" x="{margin + 12}" y="{y + 154}">'
-                    f"Formal alignment · {_escape(_humanize(witness.formal_alignment))}</text>"
+                    f"Formal alignment · {escape_svg_text(humanize_identifier(witness.formal_alignment))}</text>"
                 ),
                 (
                     f'<text class="mobile-metric" x="{margin + 12}" y="{y + 172}">'
@@ -985,7 +961,7 @@ def _render_formal_kernel_dashboard_mobile_svg(
 
 def _parameter_table(witness: NumericalWitness) -> str:
     rows = "".join(
-        f'<tr><th scope="row"><code>{_escape(key)}</code></th>'
+        f'<tr><th scope="row"><code>{escape_svg_text(key)}</code></th>'
         f"<td>{_text(_scalar_text(value))}</td></tr>"
         for key, value in witness.parameters
     )
@@ -997,7 +973,7 @@ def _parameter_table(witness: NumericalWitness) -> str:
 
 def _data_table(witness: NumericalWitness) -> str:
     headings = "".join(
-        f'<th scope="col" data-column-key="{_escape(column.key)}">{_escape(column.label)}</th>'
+        f'<th scope="col" data-column-key="{escape_svg_text(column.key)}">{escape_svg_text(column.label)}</th>'
         for column in witness.columns
     )
     rows = "".join(
@@ -1014,9 +990,9 @@ def _data_table(witness: NumericalWitness) -> str:
 
 def _check_table(witness: NumericalWitness) -> str:
     rows = "".join(
-        f'<tr data-numerical-check="{_escape(check.id)}">'
-        f'<th scope="row"><code>{_escape(check.id)}</code></th>'
-        f"<td><code>{_escape(check.relation)}</code></td>"
+        f'<tr data-numerical-check="{escape_svg_text(check.id)}">'
+        f'<th scope="row"><code>{escape_svg_text(check.id)}</code></th>'
+        f"<td><code>{escape_svg_text(check.relation)}</code></td>"
         f"<td>{_text(_scalar_text(check.lhs))}</td>"
         f"<td>{_text(_scalar_text(check.rhs))}</td>"
         f"<td>{check.tolerance!r}</td><td>{check.residual!r}</td>"
@@ -1035,55 +1011,55 @@ def _check_table(witness: NumericalWitness) -> str:
 def _exact_scroll_region(*, hint: str, label: str, table: str) -> str:
     """Expose one exact table as a keyboard-focusable horizontal region."""
     return (
-        f'<p class="table-scroll-hint">{_escape(hint)}</p>'
+        f'<p class="table-scroll-hint">{escape_svg_text(hint)}</p>'
         f'<div class="table-wrap exact-scroll" role="region" tabindex="0" '
-        f'aria-label="{_escape(label)}" data-scroll-axis="horizontal">{table}</div>'
+        f'aria-label="{escape_svg_text(label)}" data-scroll-axis="horizontal">{table}</div>'
     )
 
 
 def _witness_detail(witness: NumericalWitness) -> str:
     status = "accepted" if witness.accepted else "rejected"
     check_label = "TYPED CHECKS PASSED" if witness.accepted else "TYPED CHECKS FAILED"
-    alignment_label = _humanize(witness.formal_alignment)
+    alignment_label = humanize_identifier(witness.formal_alignment)
     search = (
         f"{witness.id} {witness.family} {witness.title} {witness.invariant} "
         f"{' '.join(witness.theorem_mirrors)} {witness.boundary_behavior} "
         f"{witness.formal_alignment} {alignment_label} {_check_summary(witness)}"
     ).lower()
     mirrors = "".join(
-        f'<li data-theorem-mirror="{index}"><code>{_escape(theorem)}</code></li>'
+        f'<li data-theorem-mirror="{index}"><code>{escape_svg_text(theorem)}</code></li>'
         for index, theorem in enumerate(witness.theorem_mirrors)
     )
     plot_series = ", ".join(
-        f"<code>{_escape(key)}</code>" for key in witness.plot.y_keys
+        f"<code>{escape_svg_text(key)}</code>" for key in witness.plot.y_keys
     )
     detail_id = f"witness-detail-{witness.id}"
     return (
         '<details class="witness-detail">'
-        f'<summary class="witness-detail-summary" id="{_escape(detail_id)}">'
-        f'<span class="summary-title">{_escape(witness.title)}</span>'
-        f'<span class="summary-meta"><code>{_escape(witness.id)}</code> · '
-        f"{_escape(_humanize(witness.family))} · {check_label}</span></summary>"
-        f'<article class="witness-workbench" data-witness-id="{_escape(witness.id)}" '
-        f'data-family="{_escape(witness.family)}" data-status="{status}" '
-        f'data-formal-alignment="{_escape(witness.formal_alignment)}" '
-        f'data-search="{_escape(search)}">'
-        f'<header><div><p class="eyebrow">{_escape(witness.family)}</p><h2>{_escape(witness.title)}</h2>'
-        f'<p><code>{_escape(witness.id)}</code></p></div><div class="badges">'
+        f'<summary class="witness-detail-summary" id="{escape_svg_text(detail_id)}">'
+        f'<span class="summary-title">{escape_svg_text(witness.title)}</span>'
+        f'<span class="summary-meta"><code>{escape_svg_text(witness.id)}</code> · '
+        f"{escape_svg_text(humanize_identifier(witness.family))} · {check_label}</span></summary>"
+        f'<article class="witness-workbench" data-witness-id="{escape_svg_text(witness.id)}" '
+        f'data-family="{escape_svg_text(witness.family)}" data-status="{status}" '
+        f'data-formal-alignment="{escape_svg_text(witness.formal_alignment)}" '
+        f'data-search="{escape_svg_text(search)}">'
+        f'<header><div><p class="eyebrow">{escape_svg_text(witness.family)}</p><h2>{escape_svg_text(witness.title)}</h2>'
+        f'<p><code>{escape_svg_text(witness.id)}</code></p></div><div class="badges">'
         f'<span class="badge {status}">{check_label}</span>'
         '<span class="badge non-proof">NON-PROOF WITNESS</span></div></header>'
-        f'<p class="invariant"><strong>Invariant.</strong> {_escape(witness.invariant)}</p>'
+        f'<p class="invariant"><strong>Invariant.</strong> {escape_svg_text(witness.invariant)}</p>'
         '<dl class="diagnostics">'
         f"<div><dt>Numerical checks</dt><dd><code>{len(witness.checks)}</code></dd></div>"
         f"<div><dt>Maximum residual</dt><dd><code>{_compact_number(_maximum_check_residual(witness))}</code></dd></div>"
         f"<div><dt>Boundary observed</dt><dd>{str(witness.boundary_observed).lower()}</dd></div>"
-        f"<div><dt>Evidence kind</dt><dd><code>{_escape(witness.evidence_kind)}</code></dd></div>"
-        f"<div><dt>Formal alignment</dt><dd><code>{_escape(witness.formal_alignment)}</code>"
-        f'<span class="alignment-note">{_escape(alignment_label)} — '
-        f"{_escape(_formal_alignment_explanation(witness))}</span></dd></div>"
+        f"<div><dt>Evidence kind</dt><dd><code>{escape_svg_text(witness.evidence_kind)}</code></dd></div>"
+        f"<div><dt>Formal alignment</dt><dd><code>{escape_svg_text(witness.formal_alignment)}</code>"
+        f'<span class="alignment-note">{escape_svg_text(alignment_label)} — '
+        f"{escape_svg_text(_formal_alignment_explanation(witness))}</span></dd></div>"
         "</dl>"
-        f"<p><strong>Boundary behavior.</strong> {_escape(witness.boundary_behavior)}</p>"
-        f"<p><strong>Plot contract.</strong> {_escape(witness.plot.kind)} · x <code>{_escape(witness.plot.x_key)}</code> · y {plot_series}</p>"
+        f"<p><strong>Boundary behavior.</strong> {escape_svg_text(witness.boundary_behavior)}</p>"
+        f"<p><strong>Plot contract.</strong> {escape_svg_text(witness.plot.kind)} · x <code>{escape_svg_text(witness.plot.x_key)}</code> · y {plot_series}</p>"
         '<div class="workbench-grid"><div>'
         f"{_exact_scroll_region(hint='← Swipe horizontally for exact parameters →', label=f'{witness.title} exact parameters', table=_parameter_table(witness))}"
         f'</div><div class="theorem-group"><h3>Theorem mirrors</h3><ul>{mirrors}</ul></div></div>'
@@ -1095,9 +1071,9 @@ def _witness_detail(witness: NumericalWitness) -> str:
 
 def _detail_index(witnesses: tuple[NumericalWitness, ...]) -> str:
     items = "".join(
-        f'<li><a data-detail-jump="{_escape(witness.id)}" '
-        f'href="#witness-detail-{_escape(witness.id)}">'
-        f"<code>{_escape(witness.id)}</code> · {_escape(witness.title)}</a></li>"
+        f'<li><a data-detail-jump="{escape_svg_text(witness.id)}" '
+        f'href="#witness-detail-{escape_svg_text(witness.id)}">'
+        f"<code>{escape_svg_text(witness.id)}</code> · {escape_svg_text(witness.title)}</a></li>"
         for witness in witnesses
     )
     return (
@@ -1110,11 +1086,6 @@ def _detail_index(witnesses: tuple[NumericalWitness, ...]) -> str:
     )
 
 
-def _options(values: list[str]) -> str:
-    return '<option value="">All families</option>' + "".join(
-        f'<option value="{_escape(value)}">{_escape(_humanize(value))}</option>'
-        for value in values
-    )
 
 
 def _mobile_plot_groups(
@@ -1228,13 +1199,13 @@ th,td{padding:9px;border-top:1px solid #e2e8f0;text-align:left;vertical-align:to
         f'<p class="lede">All {len(dashboard.witnesses)} typed witnesses are rendered from '
         "their evaluated table and plot schemas. Nothing here is recomputed in the "
         "presentation layer.</p>"
-        f'<p class="boundary"><strong>Evidence boundary.</strong> {_escape(dashboard.numerical_evidence_boundary)}'
+        f'<p class="boundary"><strong>Evidence boundary.</strong> {escape_svg_text(dashboard.numerical_evidence_boundary)}'
         "</p></header><main>"
         '<section class="controls" aria-label="Numerical witness filters">'
         '<div class="field search"><label for="witness-search">Search workbench</label>'
         '<input id="witness-search" type="search" aria-keyshortcuts="/ Escape" placeholder="Family, ID, theorem, invariant, boundary…"></div>'
         '<div class="field"><label for="witness-family-filter">Family</label><select id="witness-family-filter">'
-        f"{_options(families)}</select></div>"
+        f"{options_fragment(families, all_label='families')}</select></div>"
         '<div class="field"><label for="witness-status-filter">Evaluation status</label><select id="witness-status-filter">'
         '<option value="">All statuses</option><option value="accepted">Typed checks passed</option><option value="rejected">Typed checks failed</option></select></div>'
         f'<div id="witness-result-count" class="result" role="status" aria-live="polite">{len(dashboard.witnesses)} witnesses matched</div>'

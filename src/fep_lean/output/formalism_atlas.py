@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import html
 import json
 from collections import Counter
 from collections.abc import Mapping
@@ -13,9 +12,15 @@ from fep_lean.output.formalism_presentation import (
     FormalismPresentation,
     PresentationFamily,
     build_formalism_presentation,
-    humanize_formalism_identifier,
 )
 from fep_lean.output.fsutil import atomic_write_text
+from fep_lean.output.svg_presentation import (
+    escape_svg_text,
+    humanize_identifier,
+    options_fragment,
+    svg_text_lines,
+    wrap_text,
+)
 
 ATLAS_SVG = Path("docs/formalism-atlas.svg")
 ATLAS_HTML = Path("docs/formalism-atlas.html")
@@ -37,36 +42,14 @@ def build_formalism_atlas(project_root: Path) -> FormalismAtlas:
     return build_formalism_presentation(Path(project_root))
 
 
-def _escape(value: object) -> str:
-    return html.escape(str(value), quote=True)
 
 
-def _humanize(value: str) -> str:
-    return humanize_formalism_identifier(value)
 
 
-def _wrap(value: str, width: int, *, lines: int | None = 2) -> tuple[str, ...]:
-    words = value.split()
-    wrapped: list[str] = []
-    current: list[str] = []
-    for word in words:
-        candidate = " ".join((*current, word))
-        if current and len(candidate) > width:
-            wrapped.append(" ".join(current))
-            current = [word]
-        else:
-            current.append(word)
-    if current:
-        wrapped.append(" ".join(current))
-    if lines is None or len(wrapped) <= lines:
-        return tuple(wrapped)
-    retained = wrapped[:lines]
-    retained[-1] = retained[-1].rstrip("…") + "…"
-    return tuple(retained)
 
 
 def _status_summary(counts: Mapping[str, int]) -> str:
-    return " · ".join(f"{_humanize(str(key))} {value}" for key, value in counts.items())
+    return " · ".join(f"{humanize_identifier(str(key))} {value}" for key, value in counts.items())
 
 
 def _formal_alignment_summary(counts: Mapping[str, int]) -> str:
@@ -74,7 +57,7 @@ def _formal_alignment_summary(counts: Mapping[str, int]) -> str:
         return "0 numerical witnesses"
     ordered = sorted(counts, key=lambda key: (key == "structural_analogue", key))
     return " · ".join(
-        f"{counts[key]} {_humanize(key).lower()}{'s' if counts[key] != 1 else ''}"
+        f"{counts[key]} {humanize_identifier(key).lower()}{'s' if counts[key] != 1 else ''}"
         for key in ordered
     )
 
@@ -94,7 +77,7 @@ def _disposition_chip_layout(
     cursor = 0.0
     layout: list[tuple[str, str, int, float, float]] = []
     for disposition, count in sorted(counts.items()):
-        label = f"{_humanize(disposition)} · {count}"
+        label = f"{humanize_identifier(disposition)} · {count}"
         chip_width = min(available_width, max(92.0, 24.0 + len(label) * 7.2))
         if cursor and cursor + chip_width > available_width:
             row += 1
@@ -113,14 +96,6 @@ def _family_by_area(
     }
 
 
-def _svg_text_lines(
-    lines: tuple[str, ...], *, x: float, y: float, css_class: str, step: int = 18
-) -> list[str]:
-    return [
-        f'<text class="{css_class}" x="{x:.1f}" y="{y + index * step:.1f}">'
-        f"{_escape(line)}</text>"
-        for index, line in enumerate(lines)
-    ]
 
 
 def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
@@ -175,10 +150,10 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
             '<desc id="atlas-description">Five broad areas summarize canonical '
             "topic families and semantic dispositions. Authored relation counts are "
             "reported separately from formal-module code dependencies. "
-            f"{_escape(atlas.structural_evidence_boundary)} "
-            f"{_escape(atlas.numerical_evidence_boundary)}</desc>"
+            f"{escape_svg_text(atlas.structural_evidence_boundary)} "
+            f"{escape_svg_text(atlas.numerical_evidence_boundary)}</desc>"
         ),
-        f"<metadata>{_escape(json.dumps(metadata, sort_keys=True, separators=(',', ':')))}</metadata>",
+        f"<metadata>{escape_svg_text(json.dumps(metadata, sort_keys=True, separators=(',', ':')))}</metadata>",
         """<style>
             .background{fill:#f8fafc}.title{fill:#0f172a;font:800 34px system-ui,sans-serif}
             .subtitle{fill:#475569;font:500 16px system-ui,sans-serif}.area-card{fill:#fff;stroke-width:2}
@@ -212,8 +187,8 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
         lines.extend(
             [
                 (
-                    f'<g data-area-summary="{_escape(area.id)}" role="group" '
-                    f'aria-label="{_escape(area.id)}, {len(area.topic_ids)} topics">'
+                    f'<g data-area-summary="{escape_svg_text(area.id)}" role="group" '
+                    f'aria-label="{escape_svg_text(area.id)}, {len(area.topic_ids)} topics">'
                 ),
                 (
                     f'<rect class="area-card" x="{x}" y="{area_top}" '
@@ -222,7 +197,7 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
                 ),
                 (
                     f'<text class="area-name" x="{x + 18}" y="{area_top + 34}" '
-                    f'style="fill:{stroke}">{_escape(_humanize(area.id))}</text>'
+                    f'style="fill:{stroke}">{escape_svg_text(humanize_identifier(area.id))}</text>'
                 ),
                 (
                     f'<text class="area-count" x="{x + 18}" y="{area_top + 62}">'
@@ -231,8 +206,8 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
             ]
         )
         lines.extend(
-            _svg_text_lines(
-                _wrap(_status_summary(area.disposition_counts), 58, lines=2),
+            svg_text_lines(
+                wrap_text(_status_summary(area.disposition_counts), 58, lines=2),
                 x=x + 18,
                 y=area_top + 88,
                 css_class="area-count",
@@ -245,9 +220,9 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
             lines.extend(
                 [
                     (
-                        f'<g data-family-summary="{_escape(family.id)}" role="group" '
-                        f'data-formal-alignments="{_escape(_formal_alignment_data(family.formal_alignment_counts))}" '
-                        f'aria-label="{_escape(family.id)}, {len(family.topic_ids)} topics">'
+                        f'<g data-family-summary="{escape_svg_text(family.id)}" role="group" '
+                        f'data-formal-alignments="{escape_svg_text(_formal_alignment_data(family.formal_alignment_counts))}" '
+                        f'aria-label="{escape_svg_text(family.id)}, {len(family.topic_ids)} topics">'
                     ),
                     (
                         f'<rect class="family-card" x="{x}" y="{y}" '
@@ -256,8 +231,8 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
                 ]
             )
             lines.extend(
-                _svg_text_lines(
-                    _wrap(_humanize(family.id), 56),
+                svg_text_lines(
+                    wrap_text(humanize_identifier(family.id), 56),
                     x=x + 13,
                     y=y + 20,
                     css_class="family-name",
@@ -267,7 +242,7 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
             lines.append(
                 f'<text class="family-count" x="{x + 13}" y="{y + 50}">'
                 f"{len(family.topic_ids)} topics · "
-                f"{_escape(_formal_alignment_summary(family.formal_alignment_counts))}</text>"
+                f"{escape_svg_text(_formal_alignment_summary(family.formal_alignment_counts))}</text>"
             )
             lines.append("</g>")
 
@@ -287,8 +262,8 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
         lines.extend(
             [
                 (
-                    f'<g data-relation-kind="{_escape(kind)}" role="group" '
-                    f'aria-label="{_escape(kind)}, {count} relations">'
+                    f'<g data-relation-kind="{escape_svg_text(kind)}" role="group" '
+                    f'aria-label="{escape_svg_text(kind)}, {count} relations">'
                 ),
                 (
                     f'<rect class="relation-card" x="{x}" y="{relation_card_y}" '
@@ -296,7 +271,7 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
                 ),
                 (
                     f'<text class="relation-kind" x="{x + 14}" y="{relation_card_y + 27}">'
-                    f"{_escape(_humanize(kind))}</text>"
+                    f"{escape_svg_text(humanize_identifier(kind))}</text>"
                 ),
                 (
                     f'<text class="relation-count" x="{x + 14}" y="{relation_card_y + 52}">'
@@ -335,7 +310,7 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
                 f'<circle cx="{item_x + 5}" cy="{y - 4}" r="5" fill="{color}"/>',
                 (
                     f'<text class="status-label" x="{item_x + 18}" y="{y}">'
-                    f"{_escape(_humanize(disposition))} · {count}</text>"
+                    f"{escape_svg_text(humanize_identifier(disposition))} · {count}</text>"
                 ),
             ]
         )
@@ -351,7 +326,7 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
             (
                 f'<text class="boundary-title" x="58" y="{boundary_y + 25}">'
                 "Numerical alignment · "
-                f"{_escape(_formal_alignment_summary(alignment_counts))}</text>"
+                f"{escape_svg_text(_formal_alignment_summary(alignment_counts))}</text>"
             ),
             (
                 f'<text class="boundary-text" x="58" y="{boundary_y + 48}">'
@@ -360,7 +335,7 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
             ),
             (
                 f'<text class="footer" x="40" y="{height - 14}">Reviewed '
-                f"{_escape(atlas.review_date)} · Module-import dependencies are code structure, "
+                f"{escape_svg_text(atlas.review_date)} · Module-import dependencies are code structure, "
                 "not authored scientific relations.</text>"
             ),
             "</svg>",
@@ -416,7 +391,7 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
     status_rows = max((item[2] for item in status_chip_layout), default=0) + 1
     relation_height = 42 + relation_cards_height + 34 + status_rows * 30 + 24
     header_height = 128
-    boundary_lines = _wrap(
+    boundary_lines = wrap_text(
         atlas.numerical_evidence_boundary,
         44,
         lines=None,
@@ -470,8 +445,8 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
         lines.extend(
             [
                 (
-                    f'<g data-mobile-area-summary="{_escape(area.id)}" role="group" '
-                    f'aria-label="{_escape(area.id)}, {len(area.topic_ids)} topics">'
+                    f'<g data-mobile-area-summary="{escape_svg_text(area.id)}" role="group" '
+                    f'aria-label="{escape_svg_text(area.id)}, {len(area.topic_ids)} topics">'
                 ),
                 (
                     f'<rect class="mobile-area" x="{margin}" y="{y}" '
@@ -480,7 +455,7 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
                 ),
                 (
                     f'<text class="mobile-area-name" x="{margin + 14}" y="{y + 29}" '
-                    f'style="fill:{stroke}">{_escape(_humanize(area.id))}</text>'
+                    f'style="fill:{stroke}">{escape_svg_text(humanize_identifier(area.id))}</text>'
                 ),
                 (
                     f'<text class="mobile-area-count" x="{margin + 14}" y="{y + 56}">'
@@ -498,7 +473,7 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
             lines.extend(
                 [
                     (
-                        f'<g data-disposition-chip="{_escape(disposition)}" '
+                        f'<g data-disposition-chip="{escape_svg_text(disposition)}" '
                         f'data-chip-row="{chip_row}" role="group">'
                     ),
                     (
@@ -508,7 +483,7 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
                     ),
                     (
                         f'<text class="mobile-disposition-text" x="{margin + 25 + chip_x:.1f}" '
-                        f'y="{chip_y + 17}" style="fill:{color}">{_escape(label)}</text>'
+                        f'y="{chip_y + 17}" style="fill:{color}">{escape_svg_text(label)}</text>'
                     ),
                     "</g>",
                 ]
@@ -518,8 +493,8 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
             lines.extend(
                 [
                     (
-                        f'<g data-mobile-family-summary="{_escape(family.id)}" '
-                        f'data-formal-alignments="{_escape(_formal_alignment_data(family.formal_alignment_counts))}" '
+                        f'<g data-mobile-family-summary="{escape_svg_text(family.id)}" '
+                        f'data-formal-alignments="{escape_svg_text(_formal_alignment_data(family.formal_alignment_counts))}" '
                         'role="group">'
                     ),
                     (
@@ -529,8 +504,8 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
                 ]
             )
             lines.extend(
-                _svg_text_lines(
-                    _wrap(_humanize(family.id), 39),
+                svg_text_lines(
+                    wrap_text(humanize_identifier(family.id), 39),
                     x=margin + 12,
                     y=family_y + 22,
                     css_class="mobile-family-name",
@@ -540,7 +515,7 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
             lines.append(
                 f'<text class="mobile-family-count" x="{margin + 12}" y="{family_y + 62}">'
                 f"{len(family.topic_ids)} topics · "
-                f"{_escape(_formal_alignment_summary(family.formal_alignment_counts))}</text>"
+                f"{escape_svg_text(_formal_alignment_summary(family.formal_alignment_counts))}</text>"
             )
             lines.append("</g>")
             family_y += family_height
@@ -571,7 +546,7 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
                 ),
                 (
                     f'<text class="mobile-relation-kind" x="{x + 12:.1f}" y="{card_y + 27}">'
-                    f"{_escape(_humanize(kind))}</text>"
+                    f"{escape_svg_text(humanize_identifier(kind))}</text>"
                 ),
                 (
                     f'<text class="mobile-relation-count" x="{x + 12:.1f}" y="{card_y + 52}">'
@@ -593,7 +568,7 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
         lines.extend(
             [
                 (
-                    f'<g data-status-key-chip="{_escape(disposition)}" '
+                    f'<g data-status-key-chip="{escape_svg_text(disposition)}" '
                     f'data-chip-row="{chip_row}">'
                 ),
                 (
@@ -603,7 +578,7 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
                 ),
                 (
                     f'<text class="mobile-disposition-text" x="{margin + 11 + chip_x:.1f}" '
-                    f'y="{chip_y + 17}" style="fill:{color}">{_escape(label)}</text>'
+                    f'y="{chip_y + 17}" style="fill:{color}">{escape_svg_text(label)}</text>'
                 ),
                 "</g>",
             ]
@@ -622,12 +597,12 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
             ),
             (
                 f'<text class="mobile-alignment-text" x="{margin + 12}" y="{boundary_y + 44}">'
-                f"{_escape(_formal_alignment_summary(alignment_counts))}</text>"
+                f"{escape_svg_text(_formal_alignment_summary(alignment_counts))}</text>"
             ),
         ]
     )
     lines.extend(
-        _svg_text_lines(
+        svg_text_lines(
             boundary_lines,
             x=margin + 12,
             y=boundary_y + 62,
@@ -639,13 +614,6 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
     return "\n".join(lines) + "\n"
 
 
-def _options(values: list[str], *, label: str) -> str:
-    rows = [f'<option value="">All {label}</option>']
-    rows.extend(
-        f'<option value="{_escape(value)}">{_escape(_humanize(value))}</option>'
-        for value in values
-    )
-    return "".join(rows)
 
 
 def _topic_table(atlas: FormalismAtlas) -> str:
@@ -657,18 +625,18 @@ def _topic_table(atlas: FormalismAtlas) -> str:
             f"{topic.invariant} {topic.assumption_review} {topic.non_vacuity}"
         ).lower()
         rows.append(
-            f'<tr data-topic-row="{_escape(topic.id)}" data-area="{_escape(topic.area)}" '
-            f'data-family="{_escape(topic.family)}" '
-            f'data-status="{_escape(topic.semantic_disposition)}" '
-            f'data-search="{_escape(search)}">'
-            f'<th scope="row"><code>{_escape(topic.id)}</code><span>{_escape(topic.title)}</span></th>'
-            f'<td data-label="Area">{_escape(_humanize(topic.area))}</td>'
-            f'<td data-label="Family">{_escape(_humanize(topic.family))}</td>'
-            f'<td data-label="Status"><span class="status">{_escape(_humanize(topic.semantic_disposition))}</span></td>'
-            f'<td data-label="Primary theorem"><code>{_escape(topic.primary_theorem)}</code></td>'
-            f'<td data-label="Invariant"><details class="topic-review"><summary>Read invariant</summary><p>{_escape(topic.invariant)}</p></details></td>'
-            f'<td data-label="Assumptions / scope"><details class="topic-review"><summary>Read assumptions</summary><p>{_escape(topic.assumption_review)}</p></details></td>'
-            f'<td data-label="Non-vacuity"><details class="topic-review"><summary>Read non-vacuity review</summary><p>{_escape(topic.non_vacuity)}</p></details></td>'
+            f'<tr data-topic-row="{escape_svg_text(topic.id)}" data-area="{escape_svg_text(topic.area)}" '
+            f'data-family="{escape_svg_text(topic.family)}" '
+            f'data-status="{escape_svg_text(topic.semantic_disposition)}" '
+            f'data-search="{escape_svg_text(search)}">'
+            f'<th scope="row"><code>{escape_svg_text(topic.id)}</code><span>{escape_svg_text(topic.title)}</span></th>'
+            f'<td data-label="Area">{escape_svg_text(humanize_identifier(topic.area))}</td>'
+            f'<td data-label="Family">{escape_svg_text(humanize_identifier(topic.family))}</td>'
+            f'<td data-label="Status"><span class="status">{escape_svg_text(humanize_identifier(topic.semantic_disposition))}</span></td>'
+            f'<td data-label="Primary theorem"><code>{escape_svg_text(topic.primary_theorem)}</code></td>'
+            f'<td data-label="Invariant"><details class="topic-review"><summary>Read invariant</summary><p>{escape_svg_text(topic.invariant)}</p></details></td>'
+            f'<td data-label="Assumptions / scope"><details class="topic-review"><summary>Read assumptions</summary><p>{escape_svg_text(topic.assumption_review)}</p></details></td>'
+            f'<td data-label="Non-vacuity"><details class="topic-review"><summary>Read non-vacuity review</summary><p>{escape_svg_text(topic.non_vacuity)}</p></details></td>'
             f'<td data-label="Counts">{topic.theorem_count} / {topic.definition_count} / {len(topic.imports)}</td>'
             "</tr>"
         )
@@ -677,13 +645,13 @@ def _topic_table(atlas: FormalismAtlas) -> str:
 
 def _relation_table(atlas: FormalismAtlas) -> str:
     return "".join(
-        f'<tr data-relation-row="{index}" data-kind="{_escape(relation.kind)}">'
-        f'<th scope="row"><code>{_escape(relation.source)}</code></th>'
-        f'<td data-label="Relation kind"><span class="status">{_escape(_humanize(relation.kind))}</span></td>'
-        f'<td data-label="Paired topic"><code>{_escape(relation.target)}</code></td>'
-        f'<td data-label="Rationale">{_escape(relation.rationale)}</td>'
+        f'<tr data-relation-row="{index}" data-kind="{escape_svg_text(relation.kind)}">'
+        f'<th scope="row"><code>{escape_svg_text(relation.source)}</code></th>'
+        f'<td data-label="Relation kind"><span class="status">{escape_svg_text(humanize_identifier(relation.kind))}</span></td>'
+        f'<td data-label="Paired topic"><code>{escape_svg_text(relation.target)}</code></td>'
+        f'<td data-label="Rationale">{escape_svg_text(relation.rationale)}</td>'
         f'<td data-label="Exact witness">'
-        f"{f'<code>{_escape(relation.witness)}</code>' if relation.witness else '—'}</td>"
+        f"{f'<code>{escape_svg_text(relation.witness)}</code>' if relation.witness else '—'}</td>"
         "</tr>"
         for index, relation in enumerate(atlas.relations)
     )
@@ -691,12 +659,12 @@ def _relation_table(atlas: FormalismAtlas) -> str:
 
 def _capability_table(atlas: FormalismAtlas) -> str:
     return "".join(
-        f'<tr data-capability-row="{_escape(capability.id)}">'
-        f'<th scope="row"><code>{_escape(capability.id)}</code><span>{_escape(capability.title)}</span></th>'
-        f"<td>{_escape(_humanize(capability.status))}</td>"
-        f"<td>{_escape(capability.description)}</td>"
-        f"<td>{', '.join(f'<code>{_escape(item)}</code>' for item in capability.evidence) or '—'}</td>"
-        f"<td>{', '.join(_escape(item) for item in capability.blocked_topics) or '—'}</td>"
+        f'<tr data-capability-row="{escape_svg_text(capability.id)}">'
+        f'<th scope="row"><code>{escape_svg_text(capability.id)}</code><span>{escape_svg_text(capability.title)}</span></th>'
+        f"<td>{escape_svg_text(humanize_identifier(capability.status))}</td>"
+        f"<td>{escape_svg_text(capability.description)}</td>"
+        f"<td>{', '.join(f'<code>{escape_svg_text(item)}</code>' for item in capability.evidence) or '—'}</td>"
+        f"<td>{', '.join(escape_svg_text(item) for item in capability.blocked_topics) or '—'}</td>"
         "</tr>"
         for capability in atlas.capabilities
     )
@@ -704,12 +672,12 @@ def _capability_table(atlas: FormalismAtlas) -> str:
 
 def _module_table(atlas: FormalismAtlas) -> str:
     return "".join(
-        f'<tr data-module-row="{_escape(module.id)}">'
-        f'<th scope="row"><code>{_escape(module.lean_module)}</code></th>'
-        f"<td>{_escape(_humanize(module.role))}</td>"
+        f'<tr data-module-row="{escape_svg_text(module.id)}">'
+        f'<th scope="row"><code>{escape_svg_text(module.lean_module)}</code></th>'
+        f"<td>{escape_svg_text(humanize_identifier(module.role))}</td>"
         f"<td>{module.theorem_count}</td><td>{module.definition_count}</td>"
         f"<td>{module.structure_count}</td>"
-        f"<td>{', '.join(f'<code>{_escape(item)}</code>' for item in module.formal_dependencies) or '—'}</td>"
+        f"<td>{', '.join(f'<code>{escape_svg_text(item)}</code>' for item in module.formal_dependencies) or '—'}</td>"
         "</tr>"
         for module in atlas.formal_modules
     )
@@ -722,8 +690,8 @@ def _dependency_table(atlas: FormalismAtlas) -> str:
         for dependency in module.formal_dependencies:
             rows.append(
                 f'<tr data-dependency-row="{index}"><th scope="row"><code>'
-                f'{_escape(module.lean_module)}</code></th><td aria-label="depends on">→</td>'
-                f"<td><code>{_escape(dependency)}</code></td></tr>"
+                f'{escape_svg_text(module.lean_module)}</code></th><td aria-label="depends on">→</td>'
+                f"<td><code>{escape_svg_text(dependency)}</code></td></tr>"
             )
             index += 1
     return "".join(rows)
@@ -775,24 +743,24 @@ tbody th{min-width:170px}tbody th span{display:block;font-weight:500;margin-top:
 <a class="skip" href="#topic-table">Skip to topic table</a>
 <header><p>FEP Lean · deterministic generated projection</p><h1>Formalism composition atlas</h1>"""
     controls = (
-        f'<p class="lede">{_escape(title_summary)}. The compact SVG summarizes five broad '
+        f'<p class="lede">{escape_svg_text(title_summary)}. The compact SVG summarizes five broad '
         "areas and their data-driven families; the tables below preserve every canonical "
         f"record without turning the static figure into a {len(atlas.topics)}-card "
         "print sheet.</p>"
-        f'<p class="boundary"><strong>Evidence boundary.</strong> {_escape(atlas.structural_evidence_boundary)} '
-        f"{_escape(atlas.numerical_evidence_boundary)}</p></header><main>"
+        f'<p class="boundary"><strong>Evidence boundary.</strong> {escape_svg_text(atlas.structural_evidence_boundary)} '
+        f"{escape_svg_text(atlas.numerical_evidence_boundary)}</p></header><main>"
         '<section class="controls" aria-label="Atlas filters">'
         '<div class="field search"><label for="atlas-search">Search topics</label>'
         '<input id="atlas-search" type="search" aria-keyshortcuts="/ Escape" '
         'placeholder="ID, title, theorem, invariant, assumption…"></div>'
         '<div class="field"><label for="area-filter">Area</label><select id="area-filter">'
-        f"{_options([area.id for area in atlas.areas], label='areas')}</select></div>"
+        f"{options_fragment([area.id for area in atlas.areas], all_label='areas')}</select></div>"
         '<div class="field"><label for="family-filter">Family</label><select id="family-filter">'
-        f"{_options(topic_families, label='families')}</select></div>"
+        f"{options_fragment(topic_families, all_label='families')}</select></div>"
         '<div class="field"><label for="status-filter">Semantic status</label><select id="status-filter">'
-        f"{_options(statuses, label='statuses')}</select></div>"
+        f"{options_fragment(statuses, all_label='statuses')}</select></div>"
         '<div class="field"><label for="relation-filter">Relation kind</label><select id="relation-filter">'
-        f"{_options(relation_kinds, label='relation kinds')}</select></div>"
+        f"{options_fragment(relation_kinds, all_label='relation kinds')}</select></div>"
         f'<div id="atlas-result-count" class="result" role="status" aria-live="polite">{len(atlas.topics)} topics matched</div>'
         "</section>"
     )
