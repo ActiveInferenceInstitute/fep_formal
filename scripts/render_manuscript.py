@@ -64,6 +64,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="validate that every placeholder resolves without writing output",
     )
     parser.add_argument(
+        "--allow-unavailable-evidence",
+        action="store_true",
+        help="opt out of the strict default that fails when the native "
+        "verification receipt is absent or not claim-ready (for "
+        "intentionally dry renders)",
+    )
+    parser.add_argument(
         "--require-release-stamp",
         action="store_true",
         help="fail when the checkout is not exactly the tag named by "
@@ -204,6 +211,23 @@ def main(argv: list[str] | None = None) -> int:
                 display_path = path
             print(f"  {display_path}")
         return 1
+    if not args.allow_unavailable_evidence:
+        # SC-19: a tree whose verification receipts vanished renders
+        # byte-identical "unavailable" evidence blocks and reports zero
+        # projection drift, so this gate alone can publish a manuscript whose
+        # verification claims are unverifiable. Fail closed unless the caller
+        # opted out for an intentionally dry render.
+        native_receipt = project_root / "output" / "native-verification.json"
+        verify_block = variables.get("verify") if isinstance(variables, dict) else None
+        claim_ready = bool(verify_block.get("claim_ready")) if isinstance(verify_block, dict) else False
+        if not claim_ready:
+            print(
+                "ERROR: native verification receipt is absent or not claim-ready "
+                f"({native_receipt}); the manuscript would typeset unverifiable "
+                "verification claims. Render with --allow-unavailable-evidence "
+                "for an intentionally dry run."
+            )
+            return 1
     stamp_status = report_source_stamp(project_root, variables)
     if args.require_release_stamp and stamp_status != 0:
         return stamp_status
