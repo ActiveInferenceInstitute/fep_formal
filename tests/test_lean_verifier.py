@@ -293,7 +293,7 @@ def test_verify_batch_empty_input(verifier: LeanVerifier) -> None:
 
 
 def test_subprocess_env_has_elan_home() -> None:
-    env = _subprocess_env()
+    env = _subprocess_env(LEAN_DIR)
     assert "ELAN_HOME" in env
     assert len(env["ELAN_HOME"]) > 0
 

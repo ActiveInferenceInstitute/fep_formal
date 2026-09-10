@@ -191,6 +191,12 @@ def find_executable(name: str, lean_dir: Path | None = None) -> str | None:
     return str(elan_proxy) if elan_proxy.is_file() else None
 
 
+def lake_version_matches_pin(version_output: str, toolchain: str) -> bool:
+    """Return whether a ``lake --version`` line carries the pinned Lean version."""
+    match = _ACTUAL_LEAN_VERSION_RE.match(version_output.strip().splitlines()[0] if version_output.strip() else "")
+    return match is not None and f"v{match.group('version')}" in toolchain
+
+
 def subprocess_env(lean_dir: Path | None = None) -> dict[str, str]:
     """Build an environment dict for lean/lake sub-processes.
 

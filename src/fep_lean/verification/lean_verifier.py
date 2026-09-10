@@ -53,7 +53,6 @@ import logging
 import math
 import os
 import re
-import shutil
 import statistics
 import subprocess
 import tempfile
@@ -66,6 +65,7 @@ from fep_lean.verification._subprocess import run_process_group
 from fep_lean.verification._toolchain import (
     ensure_writable_elan_home as _ensure_elan_home,
 )
+from fep_lean.verification._toolchain import find_executable as _shared_find_executable
 from fep_lean.verification._toolchain import (
     find_toolchain_bin as _shared_find_toolchain_bin,
 )
@@ -73,7 +73,11 @@ from fep_lean.verification._toolchain import get_elan_home as _get_elan_home
 from fep_lean.verification._toolchain import (
     get_writable_elan_home as _get_elan_home_override,
 )
+from fep_lean.verification._toolchain import (
+    lake_version_matches_pin as _lake_version_matches_pin,
+)
 from fep_lean.verification._toolchain import read_toolchain_name as _read_toolchain_name
+from fep_lean.verification._toolchain import subprocess_env as _shared_subprocess_env
 
 log = logging.getLogger(__name__)
 
@@ -160,20 +164,14 @@ def _get_elan_bin() -> Path:
     return _get_elan_home() / "bin"
 
 
-def _subprocess_env() -> dict[str, str]:
+def _subprocess_env(lean_dir: Path | None = None) -> dict[str, str]:
     """Build an environment dict for lean/lake sub-processes.
 
-    Delegates to ``fep_lean.verification._toolchain.subprocess_env`` but uses the
-    instance's ``_lean_dir`` when available via ``_direct_toolchain_bin``.
+    Delegates to ``fep_lean.verification._toolchain.subprocess_env``; callers
+    must thread the instance's ``_lean_dir`` so the direct toolchain ``bin/``
+    is prepended to ``PATH`` (matching the pinned lake at argv head).
     """
-    from fep_lean.verification._toolchain import subprocess_env as _tc_subprocess_env
-
-    return _tc_subprocess_env()
-
-
-def _lean_toolchain_name(lean_dir: Path) -> str | None:
-    """Read ``lean/lean-toolchain`` and return the elan-style toolchain name."""
-    return _read_toolchain_name(lean_dir)
+    return _shared_subprocess_env(lean_dir)
 
 
 def _direct_toolchain_bin(lean_dir: Path | None = None) -> Path | None:
@@ -182,25 +180,8 @@ def _direct_toolchain_bin(lean_dir: Path | None = None) -> Path | None:
 
 
 def _find_exe(name: str, lean_dir: Path | None = None) -> str | None:
-    """Resolve an executable from explicit, direct-toolchain, or PATH sources.
-
-    The elan proxy is retained as a final fallback for environments where it
-    is installed but not exposed on ``PATH``.
-    """
-    env_key = f"FEP_LEAN_{name.upper()}_EXE"
-    explicit = os.environ.get(env_key, "")
-    if explicit and Path(explicit).is_file():
-        return explicit
-    toolchain_bin = _direct_toolchain_bin(lean_dir)
-    if toolchain_bin:
-        direct = toolchain_bin / name
-        if direct.is_file():
-            return str(direct)
-    found = shutil.which(name)
-    if found:
-        return found
-    elan_proxy = _get_elan_bin() / name
-    return str(elan_proxy) if elan_proxy.is_file() else None
+    """Resolve an executable via the shared toolchain resolution order."""
+    return _shared_find_executable(name, lean_dir)
 
 
 def _sanitize_lean_block(code: str) -> str:
@@ -356,18 +337,12 @@ class LeanVerifier:
                 text=True,
                 timeout=2,
                 check=False,
-                env=_subprocess_env(),
+                env=_subprocess_env(self._lean_dir),
             )
             output = (r.stdout or "") + (r.stderr or "")
-            pinned = ""
-            toolchain_file = self._lean_dir / "lean-toolchain"
-            if toolchain_file.is_file():
-                match = re.search(
-                    r"v(\d+\.\d+\.\d+)", toolchain_file.read_text(encoding="utf-8")
-                )
-                pinned = match.group(1) if match else ""
+            pinned = _read_toolchain_name(self._lean_dir)
             available = r.returncode == 0 and (
-                not pinned or f"Lean version {pinned}" in output
+                not pinned or _lake_version_matches_pin(output, pinned)
             )
         except (OSError, subprocess.TimeoutExpired):
             available = False
@@ -387,7 +362,7 @@ class LeanVerifier:
                 text=True,
                 timeout=20,
                 check=False,
-                env=_subprocess_env(),
+                env=_subprocess_env(self._lean_dir),
             )
             stdout = (r.stdout or "").strip()
             stderr = (r.stderr or "").strip()
@@ -682,7 +657,7 @@ class LeanVerifier:
         the direct child and lets the ``lean`` grandchild hold the pipes and
         the ``.olean`` lock region past the advertised timeout.
         """
-        env = _subprocess_env()
+        env = _subprocess_env(self._lean_dir)
         if self._lake_exe is None:
             raise RuntimeError("lake executable is unavailable")
         return run_process_group(
