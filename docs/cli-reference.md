@@ -23,11 +23,16 @@ fep-lean status      Read-only evidence-currency report over existing checks.
 ```
 
 `bridge` operates on an explicit sibling GNN checkout (`--gnn-root PATH` is
-required for every verb): `status`, `verify-certificate`, and
-`verify-document` are read-only; `pin` and `emit` write receipts; `certify`
-writes one only with `--receipt PATH` and is read-only without it.
+required for every verb). The current bridge surface is contract v0.6;
+`verify-document` was added in contract v0.5. `status`,
+`verify-certificate`, and `verify-document` are read-only; `pin` and `emit`
+write receipts; `certify` writes one only with `--receipt PATH` and is
+read-only without it. `certify` requires `--results PATH` -- the executed
+results JSON under the fep_lean checkout -- and `verify-certificate`
+requires `--receipt PATH`. `--model {finite,continuous}` (default
+`finite`) selects the model family for `emit` and `verify-document`.
 `verify-document --document PATH` checks one emitted GNN document against
-the `FEP.GnnDocument` typed surface (syntax + `WellFormed`, contract v0.6);
+the `FEP.GnnDocument` typed surface (syntax + `WellFormed`);
 `--fail-on-warnings` treats verify-document warnings as failures. For
 `emit` only, `--check` checks emitted bytes without writes and
 `--refresh-digests` rewrites only permitted Signature custody fields.

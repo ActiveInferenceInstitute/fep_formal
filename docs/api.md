@@ -1,7 +1,7 @@
 # Public Python API
 
 **Version:** 1.1.0
-**Last reviewed:** 2026-09-06
+**Last reviewed:** 2026-09-10
 
 The installed distribution exposes one root namespace, `fep_lean`. Generic
 top-level names such as `catalogue`, `pipeline`, and `output` are not packages
@@ -324,6 +324,7 @@ fep-lean dashboard [--check]
 fep-lean run [--area AREA] [--topic ID] [--workflow verify|draft|prove|review]
 fep-lean topic ID [--workflow verify|draft|prove|review]
 fep-lean report
+fep-lean status [--gnn-root PATH]
 ```
 
 The wheel provides imports, packaged catalogue and manifested formal resources,
@@ -336,6 +337,10 @@ review of the exact compiled source; either provider turn can fail the result.
 
 There is no separate `fep-lean-preflight` entry point. Use `fep-lean preflight`
 so every operator command shares the same project-root and logging contract.
+`fep-lean status` is read-only: it composes the existing fail-closed checks
+into one evidence-currency report and exits 0 whenever the report composes.
+See the status section in [CLI reference](cli-reference.md) for each
+section's capability boundary.
 
 ## GNN bridge
 
