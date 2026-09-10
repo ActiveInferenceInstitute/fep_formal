@@ -52,5 +52,5 @@ capabilities:
 - documentation
 tasks:
   test:
-    cmd: python -m pytest
+    cmd: uv run --extra dev python -m pytest
     description: Run the test suite.

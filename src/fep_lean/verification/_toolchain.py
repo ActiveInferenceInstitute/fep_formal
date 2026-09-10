@@ -106,7 +106,10 @@ def get_writable_elan_home() -> str:
     """
     if env := os.environ.get("ELAN_HOME"):
         return env
-    return str(Path(tempfile.gettempdir()) / "fep_lean_elan")
+    # Per-user tempdir: a bare /tmp/fep_lean_elan is world-writable and shared
+    # across users; scope the fallback to this uid so concurrent users on one
+    # host cannot seed each other's elan state.
+    return str(Path(tempfile.gettempdir()) / f"fep_lean_elan_{os.getuid()}")
 
 
 def ensure_writable_elan_home() -> None:

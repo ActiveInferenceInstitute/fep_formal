@@ -551,18 +551,30 @@ class TestFromSettingsEdgeCases:
         cfg = HermesConfig.from_settings(settings_path=Path("/nonexistent"))
         assert cfg.api_key == "sk-openai-test456"
 
-    def test_api_key_from_settings_yaml(
-        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    def test_api_key_from_settings_yaml_is_rejected(
+        self,
+        tmp_path: Path,
+        monkeypatch: pytest.MonkeyPatch,
+        caplog: pytest.LogCaptureFixture,
     ) -> None:
-        """Cover lines 212-214: api_key from settings.yaml when no env vars."""
+        """SC-33(c): runtime settings never carry provider credentials.
+
+        A committed settings.yaml api_key is rejected (logged, key left
+        empty) instead of silently honored — the file is an owner byte that
+        can drift into a published checkout.
+        """
+        import logging
+
         yaml_file = tmp_path / "settings.yaml"
         yaml_file.write_text("hermes:\n  api_key: sk-yaml-key789\n", encoding="utf-8")
         monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         monkeypatch.setenv("GAUSS_HOME", "/tmp/__no_gauss__")
-        cfg = HermesConfig.from_settings(settings_path=yaml_file)
-        assert cfg.api_key == "sk-yaml-key789"
+        with caplog.at_level(logging.ERROR, logger="fep_lean.llm.hermes"):
+            cfg = HermesConfig.from_settings(settings_path=yaml_file)
+        assert cfg.api_key == ""
+        assert any("rejected" in record.message for record in caplog.records)
 
     def test_no_api_key_anywhere(
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch

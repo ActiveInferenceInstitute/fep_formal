@@ -320,9 +320,17 @@ class HermesConfig:
             if api_key:
                 key_source = "OPENAI_API_KEY"
         if not api_key:
-            api_key = cfg.get("api_key", "")
-            if api_key:
-                key_source = "settings.yaml"
+            # Runtime settings never contain provider credentials
+            # (config/SPEC.md); a committed settings.yaml api_key is rejected
+            # rather than silently honored, since the file is an owner byte
+            # that can drift into a published checkout.
+            if cfg.get("api_key"):
+                log.error(
+                    "hermes.api_key in settings.yaml is rejected: runtime "
+                    "settings never contain provider credentials; set "
+                    "OPENROUTER_API_KEY/ANTHROPIC_API_KEY/OPENAI_API_KEY in "
+                    "the environment or ~/.gauss/.env instead"
+                )
         inst.api_key = api_key.strip().strip("'\"") if api_key else ""
 
         if inst.api_key:

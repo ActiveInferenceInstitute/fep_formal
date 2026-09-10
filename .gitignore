@@ -47,7 +47,8 @@ htmlcov/
 .DS_Store
 
 # fep_lean specific
-index.md
+# Generated glyph-projection index (gitignored build product, root-level only)
+/index.md
 /output/
 reports/
 lean/build/
