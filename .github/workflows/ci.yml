@@ -46,6 +46,18 @@ jobs:
           uv run python scripts/build_render_fonts.py --check
           uv run python docs/theorem_ref_audit.py
           uv run python docs/citation_audit.py
+      # The two atlas/dashboard PNGs the manuscript cites live under the
+      # gitignored output/ tree, so a fresh checkout has none: `--check` alone
+      # would fail on every run ("not produced from ..."). The write pass
+      # rasterizes the committed SVG projections (needs rsvg-convert) and,
+      # running after the catalogue step, guarantees the PNG mtimes postdate
+      # their SVGs; the check then pins them as current.
+      - name: Install the SVG rasterizer
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends librsvg2-bin
+      - name: Rasterize the manuscript figures and check them
+        run: |
+          uv run python scripts/build_manuscript_figures.py
+          uv run python scripts/build_manuscript_figures.py --check
       # The shipped artifact is a 350-page PDF, and the defects that reached it
       # -- 162 dropped glyphs, one false printed theorem, a diagram shipped as
       # its own source, chapters the render predated -- are all invisible to
