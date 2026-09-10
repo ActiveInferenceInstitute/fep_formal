@@ -14,8 +14,18 @@ from typing import Any
 
 import yaml
 
-from .schema import AREAS, MATHLIB_STATUSES, RosterSeal
-from .semantics import SemanticDisposition, theorem_names
+from .schema import (
+    AREAS,
+    GENERATED_TOPIC_FIELDS,
+    MATHLIB_STATUSES,
+    RosterSeal,
+    load_catalogue_metadata,
+)
+from .semantics import (
+    SemanticDisposition,
+    SemanticValidationError,
+    theorem_names,
+)
 
 _MATURITY_ORDER = ("real", "partial", "aspirational")
 
@@ -116,126 +126,52 @@ class FEPTopicCatalogue:
     def from_yaml(cls, path: Path | None = None) -> FEPTopicCatalogue:
         """Load and validate the complete catalogue from YAML.
 
-        Validation is deliberately strict because downstream Lean and report
-        stages use this file as their source of truth. Missing or extra rows,
-        malformed identifiers, absent theorem bodies, and mismatched equation
-        signatures are rejected before any external service is contacted.
+        Document, roster, family, and per-row metadata validation is
+        delegated to ``schema.load_catalogue_metadata`` with the generated
+        topic row-field set, so a rule tightened there can no longer stay
+        loose here. Only the generated-projection-specific checks (the Lean
+        sketch, its theorem count against the typeset equations, and
+        theorem-role closure) remain.
         """
         resolved = path if path is not None else _default_topics_path()
+        try:
+            manifest = load_catalogue_metadata(
+                resolved, row_fields=GENERATED_TOPIC_FIELDS
+            )
+        except (OSError, SemanticValidationError) as exc:
+            raise CatalogueValidationError(str(exc)) from exc
         try:
             data = yaml.safe_load(resolved.read_text(encoding="utf-8"))
         except (OSError, yaml.YAMLError) as exc:
             raise CatalogueValidationError(
                 f"cannot read catalogue {resolved}: {exc}"
             ) from exc
-        if not isinstance(data, dict):
-            raise CatalogueValidationError("catalogue must be a YAML object")
-        required_document_fields = {"schema_version", "roster", "families", "topics"}
-        if set(data) != required_document_fields or data.get("schema_version") != 2:
-            raise CatalogueValidationError(
-                "catalogue must be an exact schema-2 roster/families/topics document"
-            )
-        roster_raw = data.get("roster")
-        if not isinstance(roster_raw, dict) or set(roster_raw) != {
-            "first_id",
-            "last_id",
-        }:
-            raise CatalogueValidationError(
-                "catalogue roster must contain only first_id and last_id"
-            )
-        try:
-            roster = RosterSeal(
-                first_id=str(roster_raw["first_id"]),
-                last_id=str(roster_raw["last_id"]),
-            )
-            expected_ids = roster.topic_ids
-        except ValueError as exc:
-            raise CatalogueValidationError(str(exc)) from exc
-        raw_families = data.get("families")
-        if (
-            not isinstance(raw_families, list)
-            or not raw_families
-            or not all(isinstance(family, str) and family for family in raw_families)
-            or len(raw_families) != len(set(raw_families))
-        ):
-            raise CatalogueValidationError(
-                "catalogue families must be a non-empty unique list of strings"
-            )
-        families = tuple(raw_families)
-        if not isinstance(data.get("topics"), list):
-            raise CatalogueValidationError("catalogue topics must be a list")
+        assert isinstance(data, dict)  # load_catalogue_metadata validated shape
+        roster = manifest.roster
+        families = manifest.families
+        expected_ids = roster.topic_ids
         raw = data["topics"]
+        if not isinstance(raw, list):
+            raise CatalogueValidationError("catalogue topics must be a list")
         raw_ids = tuple(row.get("id") if isinstance(row, dict) else None for row in raw)
         if raw_ids != expected_ids:
             raise CatalogueValidationError(
                 "catalogue rows must exactly match the sealed roster in order"
             )
         topics: list[TopicEntry] = []
-        required = {
-            "id",
-            "title",
-            "area",
-            "family",
-            "mathlib_modules",
-            "mathlib_status",
-            "primary_theorem",
-            "supporting_theorems",
-            "boundary_theorems",
-            "semantic_disposition",
-            "nl",
-            "assumption_review",
-            "non_vacuity",
-            "acceptance_probe",
-            "lean_sketch",
-            "latex_equations",
-        }
+        records_by_id = {record.id: record for record in manifest.records}
         for index, row in enumerate(raw, 1):
             if not isinstance(row, dict):
                 raise CatalogueValidationError(f"topic row {index} must be a mapping")
-            missing = required - set(row)
-            unknown = set(row) - required
-            if missing or unknown:
-                details = []
-                if missing:
-                    details.append("missing " + ", ".join(sorted(missing)))
-                if unknown:
-                    details.append("unknown " + ", ".join(sorted(unknown)))
-                raise CatalogueValidationError(
-                    f"topic row {index}: {'; '.join(details)}"
-                )
             expected_id = expected_ids[index - 1]
             if row["id"] != expected_id:
                 raise CatalogueValidationError(
                     f"topic row {index} must have id {expected_id!r}"
                 )
-            if row["area"] not in AREAS:
-                raise CatalogueValidationError(
-                    f"{expected_id}: unsupported area {row['area']!r}"
-                )
-            if row["family"] not in families:
-                raise CatalogueValidationError(
-                    f"{expected_id}: family is absent from the vocabulary"
-                )
-            raw_modules = row.get("mathlib_modules")
-            if (
-                not isinstance(raw_modules, list)
-                or not raw_modules
-                or not all(
-                    isinstance(module, str) and module.strip() for module in raw_modules
-                )
-                or len(raw_modules) != len(set(raw_modules))
-            ):
-                raise CatalogueValidationError(
-                    f"{expected_id}: mathlib_modules must be a non-empty unique string list"
-                )
-            if str(row["mathlib_status"]).strip().lower() not in MATHLIB_STATUSES:
-                raise CatalogueValidationError(
-                    f"{expected_id}: unsupported mathlib_status"
-                )
+            record = records_by_id[expected_id]
             if not all(
                 isinstance(row[key], str) and row[key].strip()
                 for key in (
-                    "title",
                     "primary_theorem",
                     "semantic_disposition",
                     "nl",
@@ -302,11 +238,11 @@ class FEPTopicCatalogue:
             topics.append(
                 TopicEntry(
                     id=row["id"],
-                    title=row["title"],
-                    area=row["area"],
-                    family=row["family"],
-                    mathlib_modules=tuple(module.strip() for module in raw_modules),
-                    mathlib_status=str(row["mathlib_status"]).strip().lower(),
+                    title=record.title,
+                    area=record.area,
+                    family=record.family,
+                    mathlib_modules=record.mathlib_modules,
+                    mathlib_status=record.mathlib_status,
                     primary_theorem=row["primary_theorem"],
                     supporting_theorems=role_lists[0],
                     boundary_theorems=role_lists[1],

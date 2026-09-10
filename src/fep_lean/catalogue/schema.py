@@ -25,6 +25,24 @@ _TOPIC_FIELDS = frozenset(
     {"id", "title", "area", "family", "mathlib_modules", "mathlib_status"}
 )
 
+# The generated catalogue document (config/topics.yaml and the packaged copy)
+# carries the metadata fields plus its generated projections; validation
+# accepts exactly this set on that document.
+GENERATED_TOPIC_FIELDS = _TOPIC_FIELDS | frozenset(
+    {
+        "primary_theorem",
+        "supporting_theorems",
+        "boundary_theorems",
+        "semantic_disposition",
+        "nl",
+        "assumption_review",
+        "non_vacuity",
+        "acceptance_probe",
+        "lean_sketch",
+        "latex_equations",
+    }
+)
+
 
 def topic_ids_sha256(topic_ids: Sequence[str]) -> str:
     """Hash an ordered roster with an unambiguous newline-delimited encoding."""
@@ -132,8 +150,18 @@ def _reject_field_drift(
         raise SemanticValidationError(f"{owner}: {'; '.join(details)}")
 
 
-def load_catalogue_metadata(path: Path) -> CatalogueMetadataManifest:
-    """Load metadata and reject any schema, roster, vocabulary, or row drift."""
+def load_catalogue_metadata(
+    path: Path, row_fields: frozenset[str] | None = None
+) -> CatalogueMetadataManifest:
+    """Load metadata and reject any schema, roster, vocabulary, or row drift.
+
+    ``row_fields`` selects the accepted per-row field set: the maintained
+    metadata document by default, the generated catalogue's superset when
+    the caller passes ``GENERATED_TOPIC_FIELDS``.
+    """
+    accepted_topic_fields = (
+        _TOPIC_FIELDS if row_fields is None else frozenset(row_fields)
+    )
     try:
         raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
     except (OSError, yaml.YAMLError) as exc:
@@ -188,7 +216,7 @@ def load_catalogue_metadata(path: Path) -> CatalogueMetadataManifest:
                 "every catalogue metadata row must be an object"
             )
         topic_id = _required_text(raw_row, "id", "topic")
-        _reject_field_drift(raw_row, _TOPIC_FIELDS, topic_id)
+        _reject_field_drift(raw_row, accepted_topic_fields, topic_id)
         area = _required_text(raw_row, "area", topic_id)
         if area not in AREAS:
             raise SemanticValidationError(f"{topic_id}: unsupported area {area!r}")
@@ -238,6 +266,7 @@ def load_catalogue_metadata(path: Path) -> CatalogueMetadataManifest:
 
 __all__ = [
     "AREAS",
+    "GENERATED_TOPIC_FIELDS",
     "MATHLIB_STATUSES",
     "CatalogueMetadata",
     "CatalogueMetadataManifest",
