@@ -84,8 +84,34 @@ def _head(root: Path) -> str:
     return result.stdout.strip()
 
 
+def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _reject_nonfinite_constant(token: str) -> float:
+    raise ValueError(f"non-finite JSON constant: {token}")
+
+
 def read_object(path: Path) -> dict[str, Any]:
-    result = json.loads(path.read_text(encoding="utf-8"))
+    """Parse one custody JSON object; reject duplicate keys and NaN/Infinity.
+
+    The custody PIN anchors the bridge, so last-key-wins silently accepting a
+    duplicated ``owners``/``commit`` key is unacceptable: every sibling
+    receipt engine already rejects both.
+    """
+    try:
+        result = json.loads(
+            path.read_text(encoding="utf-8"),
+            object_pairs_hook=_reject_duplicate_keys,
+            parse_constant=_reject_nonfinite_constant,
+        )
+    except (json.JSONDecodeError, RecursionError) as exc:
+        raise ValueError(f"invalid JSON in {path.name}: {exc}") from exc
     if not isinstance(result, dict):
         raise TypeError(f"JSON root must be an object: {path.name}")
     return result

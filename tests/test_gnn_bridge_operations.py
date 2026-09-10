@@ -400,3 +400,42 @@ def test_markdown_receipt_preserves_numerical_only_scope(
     assert "execution_source_verified: false" in markdown
     assert "native_claim_ready: false" in markdown
     assert "execution provenance unverified" in markdown
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        '{"schema_version": 1, "fep_lean": {"commit": "a", "commit": "b"}}',
+        '{"owners": {"a": "x"}, "owners": {}}',
+    ],
+    ids=["duplicate-nested-key", "duplicate-top-level-key"],
+)
+def test_read_object_rejects_duplicate_keys(
+    tmp_path: Path, payload: str
+) -> None:
+    target = tmp_path / "pin.json"
+    target.write_text(payload, encoding="utf-8")
+    with pytest.raises(ValueError, match="duplicate JSON key"):
+        operations.read_object(target)
+
+
+@pytest.mark.parametrize(
+    "payload",
+    ['{"x": NaN}', '{"x": Infinity}', '{"x": -Infinity}'],
+)
+def test_read_object_rejects_nonfinite_constants(
+    tmp_path: Path, payload: str
+) -> None:
+    target = tmp_path / "pin.json"
+    target.write_text(payload, encoding="utf-8")
+    with pytest.raises(ValueError, match="non-finite JSON constant"):
+        operations.read_object(target)
+
+
+def test_read_object_accepts_wellformed_pin(tmp_path: Path) -> None:
+    target = tmp_path / "pin.json"
+    target.write_text('{"schema_version": 1, "owners": {"a": "b"}}', encoding="utf-8")
+    assert operations.read_object(target) == {
+        "schema_version": 1,
+        "owners": {"a": "b"},
+    }
