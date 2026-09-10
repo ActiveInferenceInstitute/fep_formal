@@ -10,6 +10,7 @@ from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
 
+from fep_lean.output.fsutil import atomic_write_bytes, atomic_write_text
 from fep_lean.output.publication_metadata import (
     PublicationMetadataError,
     load_graphical_abstract,
@@ -265,31 +266,13 @@ def substitute_placeholders(
 
 
 def _atomic_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, raw_path = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            handle.write(text)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(raw_path, path)
-    finally:
-        if os.path.exists(raw_path):
-            os.unlink(raw_path)
+    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
+    atomic_write_text(path, text)
 
 
 def _atomic_bytes(path: Path, data: bytes) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, raw_path = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(fd, "wb") as handle:
-            handle.write(data)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(raw_path, path)
-    finally:
-        if os.path.exists(raw_path):
-            os.unlink(raw_path)
+    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
+    atomic_write_bytes(path, data)
 
 
 def _replace_render_tree(staged: Path, destination: Path) -> None:

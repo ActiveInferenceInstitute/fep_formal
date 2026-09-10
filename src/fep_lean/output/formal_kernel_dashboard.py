@@ -12,7 +12,7 @@ from fep_lean.output.formalism_presentation import (
     build_formalism_presentation,
     humanize_formalism_identifier,
 )
-from fep_lean.output.rendering import _atomic_text
+from fep_lean.output.fsutil import atomic_write_text
 from fep_lean.verification.numerical_witnesses import NumericalWitness, Scalar
 
 DASHBOARD_SVG = Path("docs/formal-kernel-dashboard.svg")
@@ -1288,8 +1288,8 @@ def write_formal_kernel_dashboard(
     svg_path, html_path = dashboard_projection_paths(
         project_root, output_root=output_root
     )
-    _atomic_text(svg_path, render_formal_kernel_dashboard_svg(dashboard))
-    _atomic_text(html_path, render_formal_kernel_dashboard_html(dashboard))
+    atomic_write_text(svg_path, render_formal_kernel_dashboard_svg(dashboard))
+    atomic_write_text(html_path, render_formal_kernel_dashboard_html(dashboard))
     return svg_path, html_path
 
 

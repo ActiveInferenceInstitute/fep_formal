@@ -2411,7 +2411,7 @@ def test_python_acceptance_failure_removes_partial_new_receipts_and_restores_pri
     )
     monkeypatch.setattr(
         bundle_module,
-        "_collection_runtime_identity",
+        "collection_runtime_identity",
         lambda: {"pytest_arguments": []},
     )
     monkeypatch.setattr(
@@ -2478,7 +2478,7 @@ def test_python_acceptance_validator_aggregates_stale_noncanonical_evidence(
     )
     monkeypatch.setattr(
         bundle_module,
-        "_collection_runtime_identity",
+        "collection_runtime_identity",
         lambda: {"pytest_arguments": ["--collect-only"]},
     )
     executor_calls = 0

@@ -60,12 +60,13 @@ from fep_lean.output.evidence import validate_native_lean_receipt
 from fep_lean.output.formal_kernel_dashboard import formal_kernel_dashboard_drift
 from fep_lean.output.formalism_atlas import atlas_projection_drift
 from fep_lean.output.formalism_presentation import build_formalism_presentation
+from fep_lean.output.fsutil import atomic_write_bytes, sha256_bytes
 from fep_lean.output.manuscript import (
-    _collection_runtime_identity,
-    _parse_pytest_collection_stdout,
-    _pytest_collection_command,
-    _pytest_collection_environment,
+    collection_runtime_identity,
     manuscript_projection_drift,
+    parse_pytest_collection_stdout,
+    pytest_collection_command,
+    pytest_collection_environment,
 )
 from fep_lean.output.provenance import (
     config_owner_paths,
@@ -246,7 +247,8 @@ class _BundleMember:
 
 
 def _sha256(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
+    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
+    return sha256_bytes(data)
 
 
 def _canonical_json(payload: Mapping[str, Any]) -> bytes:
@@ -277,20 +279,8 @@ def _source_date_epoch(value: int | None = None) -> int:
 
 
 def _atomic_bytes(path: Path, data: bytes) -> None:
-    destination = Path(path)
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    fd, raw_path = tempfile.mkstemp(
-        prefix=f".{destination.name}.", dir=destination.parent
-    )
-    try:
-        with os.fdopen(fd, "wb") as handle:
-            handle.write(data)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(raw_path, destination)
-    finally:
-        if os.path.exists(raw_path):
-            os.unlink(raw_path)
+    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
+    atomic_write_bytes(path, data)
 
 
 def _relative_file_bytes(project_root: Path, relative: str) -> bytes:
@@ -2457,7 +2447,7 @@ def _controlled_python_acceptance_path(uv_path: str) -> str:
 
 
 def _python_acceptance_environment(temporary_root: Path) -> dict[str, str]:
-    environment = _pytest_collection_environment(temporary_root)
+    environment = pytest_collection_environment(temporary_root)
     environment["COVERAGE_FILE"] = str(temporary_root / ".coverage")
     uv_identity = _python_acceptance_external_executable("uv")
     environment["PATH"] = _controlled_python_acceptance_path(uv_identity["path"])
@@ -2465,7 +2455,7 @@ def _python_acceptance_environment(temporary_root: Path) -> dict[str, str]:
 
 
 def _python_acceptance_runtime_identity() -> dict[str, Any]:
-    collection_identity = _collection_runtime_identity()
+    collection_identity = collection_runtime_identity()
     uv_identity = _python_acceptance_external_executable("uv")
     identity: dict[str, Any] = {
         "environment": {
@@ -2489,12 +2479,12 @@ def _python_acceptance_runtime_identity() -> dict[str, Any]:
 def _collect_python_node_ids(
     project_root: Path, temporary_root: Path
 ) -> tuple[str, ...]:
-    command = _pytest_collection_command(temporary_root / "pytest-cache")
+    command = pytest_collection_command(temporary_root / "pytest-cache")
     try:
         completed = subprocess.run(
             command,
             cwd=project_root,
-            env=_pytest_collection_environment(temporary_root),
+            env=pytest_collection_environment(temporary_root),
             check=False,
             capture_output=True,
             text=True,
@@ -2511,7 +2501,7 @@ def _collect_python_node_ids(
             + (f": {detail}" if detail else "")
         )
     try:
-        return _parse_pytest_collection_stdout(completed.stdout)
+        return parse_pytest_collection_stdout(completed.stdout)
     except ValueError as exc:
         raise ReleaseBundleError(
             f"canonical Python test collection is invalid: {exc}"
@@ -2606,7 +2596,7 @@ def _python_acceptance_receipt_errors(project_root: Path) -> tuple[str, ...]:
             prefix="fep-lean-pytest-check-"
         ) as raw_directory:
             live_node_ids = _collect_python_node_ids(root, Path(raw_directory))
-        current_collection = _collection_runtime_identity()
+        current_collection = collection_runtime_identity()
         current_executor = _python_acceptance_runtime_identity()
     except (OSError, TypeError, ValueError, ReleaseBundleError) as exc:
         errors.append(f"Python acceptance runtime cannot be validated: {exc}")
@@ -2737,7 +2727,7 @@ def run_python_acceptance(project_root: Path) -> Path:
     before = _python_input_snapshot(root)
     try:
         executor_before = _python_acceptance_runtime_identity()
-        collection_identity = _collection_runtime_identity()
+        collection_identity = collection_runtime_identity()
         with tempfile.TemporaryDirectory(prefix="fep-lean-pytest-") as raw:
             temporary_root = Path(raw)
             node_ids = _collect_python_node_ids(root, temporary_root)

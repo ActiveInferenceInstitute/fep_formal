@@ -9,7 +9,6 @@ toolchain.  Full-run claim readiness remains owned by
 
 from __future__ import annotations
 
-import hashlib
 import json
 import math
 import os
@@ -20,6 +19,7 @@ from pathlib import Path
 from typing import Any
 
 from fep_lean.catalogue.schema import topic_ids_sha256
+from fep_lean.output.fsutil import sha256_file
 from fep_lean.output.provenance import (
     OWNER_MANIFEST_VERSION,
     catalogue_sources_digest,
@@ -39,7 +39,8 @@ _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else ""
+    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
+    return sha256_file(path)
 
 
 def _toolchain_snapshot(project_root: Path) -> dict[str, str]:

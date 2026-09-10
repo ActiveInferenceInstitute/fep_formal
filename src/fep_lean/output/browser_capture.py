@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from fep_lean.output.formalism_presentation import build_formalism_presentation
+from fep_lean.output.fsutil import sha256_bytes
 
 BROWSER_ASSET_ROOT = Path("specs/done/formalism-catalogue-155/assets")
 BROWSER_RECEIPT = BROWSER_ASSET_ROOT / "browser-interaction-receipt.json"
@@ -302,7 +303,8 @@ def canonical_browser_observations(
 
 
 def _sha256(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()
+    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
+    return sha256_bytes(data)
 
 
 def _project_counts(project_root: Path) -> dict[str, int]:

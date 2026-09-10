@@ -606,7 +606,7 @@ def _test_collection_input_paths(project_root: Path) -> tuple[Path, ...]:
     return tuple(sorted(validated, key=lambda path: path.as_posix()))
 
 
-def _collection_runtime_identity() -> dict[str, Any]:
+def collection_runtime_identity() -> dict[str, Any]:
     """Return the interpreter, plugin, and hermetic-policy collection identity."""
     executable = Path(sys.executable).resolve()
     if not executable.is_file():
@@ -679,7 +679,7 @@ def _test_collection_fingerprint(
     return digest.hexdigest()
 
 
-def _pytest_collection_command(cache_dir: Path) -> list[str]:
+def pytest_collection_command(cache_dir: Path) -> list[str]:
     """Return the exact quiet collection command used by evidence builders."""
     return [
         sys.executable,
@@ -701,7 +701,7 @@ def _pytest_collection_command(cache_dir: Path) -> list[str]:
     ]
 
 
-def _pytest_collection_environment(temporary_root: Path) -> dict[str, str]:
+def pytest_collection_environment(temporary_root: Path) -> dict[str, str]:
     """Return the hermetic environment used for collection evidence."""
     return {
         **_TEST_COLLECTION_ENVIRONMENT_POLICY,
@@ -714,7 +714,7 @@ def _pytest_collection_environment(temporary_root: Path) -> dict[str, str]:
     }
 
 
-def _parse_pytest_collection_stdout(stdout: str) -> tuple[str, ...]:
+def parse_pytest_collection_stdout(stdout: str) -> tuple[str, ...]:
     """Parse the exact ordered node-id roster from quiet pytest output."""
     summary_pattern = re.compile(
         r"(?:=+\s+)?([1-9]\d*) tests? collected in "
@@ -933,6 +933,13 @@ def _count_test_cases(project_root: Path, *, write_cache: bool = True) -> int:
             + "\n",
         )
     return count
+
+
+# Backwards-compatible private aliases (SC-16 promoted these to public names).
+_collection_runtime_identity = collection_runtime_identity
+_parse_pytest_collection_stdout = parse_pytest_collection_stdout
+_pytest_collection_command = pytest_collection_command
+_pytest_collection_environment = pytest_collection_environment
 
 
 _SMALL_NUMBER_WORDS = {

@@ -7,9 +7,7 @@ import hashlib
 import json
 import logging
 import math
-import os
 import re
-import tempfile
 from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,6 +20,7 @@ from fep_lean.llm.hermes import (
     lean_semantic_contract_sha256,
     preserves_lean_semantic_contract,
 )
+from fep_lean.output.fsutil import atomic_write_text
 from fep_lean.output.provenance import (
     OWNER_MANIFEST_VERSION,
     catalogue_sources_digest,
@@ -298,17 +297,8 @@ def _report_projection_result(summary: dict[str, Any]) -> SimpleNamespace:
 
 
 def _atomic_text(path: Path, text: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, raw = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            handle.write(text)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(raw, path)
-    finally:
-        if os.path.exists(raw):
-            os.unlink(raw)
+    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
+    atomic_write_text(path, text)
 
 
 def validate_report_receipt(
