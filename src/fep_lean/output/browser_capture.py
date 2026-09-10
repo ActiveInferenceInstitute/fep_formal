@@ -422,7 +422,13 @@ class _WebSocket:
             f"Sec-WebSocket-Key: {key}\r\n"
             "Sec-WebSocket-Version: 13\r\n\r\n"
         ).encode("ascii")
-        connection.sendall(request)
+        try:
+            connection.sendall(request)
+        except OSError as exc:
+            connection.close()
+            raise BrowserCaptureError(
+                f"CDP WebSocket request could not be sent: {exc}"
+            ) from exc
         response = bytearray()
         while b"\r\n\r\n" not in response:
             chunk = connection.recv(4096)

@@ -1683,10 +1683,6 @@ class Reporter:
         for row in topics:
             topic_id = str(row["topic_id"])
             _atomic_text(root / "topics" / f"{topic_id}.md", self._topic_md(row))
-        _atomic_text(
-            root / "summary.json",
-            json.dumps(summary, indent=2, sort_keys=True, default=str) + "\n",
-        )
         manifest = self.build_verification_manifest(topics)
         _atomic_text(
             root / "verification_manifest.json",
