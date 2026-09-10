@@ -137,3 +137,16 @@ slice-local under `specs/`, which is not rostered.
 
 See [authorship-guide.md](authorship-guide.md), [testing.md](testing.md), and
 [troubleshooting.md](troubleshooting.md).
+
+## Interpreter contract
+
+`requires-python = ">=3.10"` declares the packaging floor, but the current
+dev/evidence reality is narrower and pinned: `.python-version` pins CPython
+3.14 for development and CI, mypy models 3.12 (`[tool.mypy] python_version`),
+and the runtime test suite runs under 3.14 only. The declared 3.10/3.11 floor
+is evidentially unsupported until `FEP-SCAFFOLD-PORTABILITY` resolves:
+`scaffold_digest` freezes `ast.dump` output, which differs across CPython
+minor versions, so a scaffold accepted under one interpreter cannot be
+re-validated under another. Treat 3.14 as the only accepted runtime for
+verification runs until that TODO lands a version-stable serialization or an
+explicit multi-interpreter acceptance record.
