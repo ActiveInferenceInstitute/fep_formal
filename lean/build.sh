@@ -4,6 +4,11 @@
 # always warms the cache first, and runs at nice 10.
 # Usage: ./build.sh [lake build args...]
 set -u
+# Fail the wrapper when the left side of a pipe fails: without pipefail the
+# `| tee` pipelines below report tee's status, so a failed build exited 0.
+# Deliberately no `set -e`: the cache-get failure is tolerated downstream with
+# a from-source fallback, and the build status is captured explicitly instead.
+set -o pipefail
 CORES=$(sysctl -n hw.ncpu 2>/dev/null || nproc 2>/dev/null || echo 8)
 BUILD_JOBS=$(( CORES / 2 ))
 [ "$BUILD_JOBS" -lt 1 ] && BUILD_JOBS=1
@@ -24,7 +29,7 @@ nice -n 10 lake exe cache get 2>&1 | tee -a "$LOGFILE"
 # future Lake versions that restore an explicit knob.
 echo "  lake build (auto-parallelism, target_jobs=$BUILD_JOBS) $*" | tee -a "$LOGFILE"
 nice -n 10 lake build "$@" 2>&1 | tee -a "$LOGFILE"
-EXIT=$?
+EXIT=${PIPESTATUS[0]}
 
 echo "  exit=$EXIT $(date)" | tee -a "$LOGFILE"
 exit $EXIT
