@@ -21,8 +21,10 @@ informational pending verification that the format pass is stable on CI runners.
 
 ### Updated staged plan
 
-1. ✅ **Pin a reviewed Ruff version** in the `dev` extra and capture a baseline file
-   before changing findings. (Done: `pyproject.toml` + `.ruff_baseline.txt`)
+1. ✅ **Pin a reviewed Ruff version** in the `dev` extra.
+   (Done: `pyproject.toml`. The former `.ruff_baseline.txt` artifact is
+   deleted; it recorded a frozen ruff version and a 0-finding count that
+   revision 5 made redundant.)
 2. ✅ **Clear source and maintenance-script lint findings in small, reviewable batches.**
    (Done: ruff check is 0 findings.)
 3. ✅ **Run `ruff format` on the 55 remaining files** to clear the format debt, then
