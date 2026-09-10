@@ -16,7 +16,7 @@ from pathlib import Path
 from fep_lean.catalogue.registry import body_source_relative_paths
 from fep_lean.formal.manifest import FORMAL_MODULES, formal_resource_relative_paths
 
-OWNER_MANIFEST_VERSION = 15
+OWNER_MANIFEST_VERSION = 16
 
 # Globs are discovery rules only. They must never define the digest roster:
 # deleting a source file would otherwise silently delete it from the claimed
@@ -85,6 +85,7 @@ SOURCE_OWNER_ROSTER: tuple[str, ...] = (
     "src/fep_lean/output/browser_capture.py",
     "src/fep_lean/output/evidence.py",
     "src/fep_lean/output/figures.py",
+    "src/fep_lean/output/fsutil.py",
     "src/fep_lean/output/formal_kernel_dashboard.py",
     "src/fep_lean/output/formalism_atlas.py",
     "src/fep_lean/output/formalism_presentation.py",
@@ -96,6 +97,7 @@ SOURCE_OWNER_ROSTER: tuple[str, ...] = (
     "src/fep_lean/output/render_fonts.py",
     "src/fep_lean/output/render_log.py",
     "src/fep_lean/output/reporter.py",
+    "src/fep_lean/output/svg_presentation.py",
     "src/fep_lean/output/svg_raster.py",
     "src/fep_lean/pipeline/__init__.py",
     "src/fep_lean/pipeline/core.py",
@@ -103,6 +105,7 @@ SOURCE_OWNER_ROSTER: tuple[str, ...] = (
     "src/fep_lean/verification/__init__.py",
     "src/fep_lean/verification/_horizon_numerical_witnesses.py",
     "src/fep_lean/verification/_toolchain.py",
+    "src/fep_lean/verification/_jsonutil.py",
     "src/fep_lean/verification/_subprocess.py",
     "src/fep_lean/verification/environment.py",
     "src/fep_lean/verification/formalism_audit.py",
