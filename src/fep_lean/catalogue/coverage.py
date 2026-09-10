@@ -21,6 +21,7 @@ from fep_lean.formal.manifest import (
     formal_resource_paths,
 )
 from fep_lean.lean_source import (
+    LEAN_THEOREM_RE,
     lean_code_without_comments,
     lean_declaration_conclusion,
 )
@@ -30,9 +31,7 @@ from .relations import CapabilityStatus, EdgeKind, load_formalism_graph
 from .schema import load_catalogue_metadata
 from .semantics import SemanticDisposition, load_theorem_maturity
 
-_THEOREM_RE = re.compile(
-    r"^\s*(?:theorem|lemma)\s+([A-Za-z][A-Za-z0-9_]*)", re.MULTILINE
-)
+_THEOREM_RE = LEAN_THEOREM_RE
 _DEFINITION_RE = re.compile(
     r"^\s*(?:noncomputable\s+)?def\s+([A-Za-z][A-Za-z0-9_]*)", re.MULTILINE
 )

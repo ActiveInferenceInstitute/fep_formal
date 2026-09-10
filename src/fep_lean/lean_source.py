@@ -12,6 +12,14 @@ _LEAN_SECTION_RE = re.compile(
 )
 _LEAN_END_RE = re.compile(rf"^\s*end(?:\s+({_LEAN_QUALIFIED_NAME}))?\s*$")
 
+# Canonical theorem/lemma header regex for every catalogue/registry/coverage
+# consumer. Identifiers start with a letter (Lean's own rule for the names
+# these bodies use); one definition, imported everywhere a theorem roster is
+# parsed.
+LEAN_THEOREM_RE = re.compile(
+    r"^\s*(?:theorem|lemma)\s+([A-Za-z][A-Za-z0-9_]*)", re.MULTILINE
+)
+
 
 def lean_code_without_comments(source: str) -> str:
     """Blank nested comments and strings while preserving source offsets.
@@ -160,6 +168,7 @@ def lean_declaration_conclusion(source: str) -> str:
 
 
 __all__ = [
+    "LEAN_THEOREM_RE",
     "is_lean_qualified_name",
     "iter_lean_namespace_scopes",
     "lean_code_without_comments",

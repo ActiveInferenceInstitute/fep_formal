@@ -7,7 +7,7 @@ from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from types import MappingProxyType, ModuleType
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_lean.lean_source import LEAN_THEOREM_RE, lean_code_without_comments
 
 from .bodies import (
     causal_blankets_interventions,
@@ -41,9 +41,7 @@ _DECLARATION_RE = re.compile(
     r"([A-Za-z][A-Za-z0-9_]*)",
     re.MULTILINE,
 )
-_THEOREM_RE = re.compile(
-    r"^\s*(?:theorem|lemma)\s+([A-Za-z][A-Za-z0-9_]*)", re.MULTILINE
-)
+_THEOREM_RE = LEAN_THEOREM_RE
 
 
 class RegistryValidationError(ValueError):

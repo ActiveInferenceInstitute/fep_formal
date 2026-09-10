@@ -8,7 +8,6 @@ same fields.
 
 from __future__ import annotations
 
-import re
 from collections import Counter
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
@@ -18,7 +17,10 @@ from typing import Any
 
 import yaml
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_lean.lean_source import (
+    LEAN_THEOREM_RE,
+    lean_code_without_comments,
+)
 
 
 class SemanticValidationError(ValueError):
@@ -84,7 +86,7 @@ _REQUIRED_RECORD_FIELDS = (
     "acceptance_probe",
     "disposition",
 )
-_THEOREM_RE = re.compile(r"^\s*(?:theorem|lemma)\s+([A-Za-z0-9_]+)\s*", re.MULTILINE)
+_THEOREM_RE = LEAN_THEOREM_RE
 
 
 def theorem_names(body: str) -> set[str]:

@@ -103,7 +103,10 @@ def _split_binders_and_goal(stmt: str) -> tuple[str, str]:
 
 
 def _theorem_names_in_order(body: str) -> list[str]:
-    return re.findall(r"^\s*(?:theorem|lemma)\s+([a-zA-Z0-9_]+)\s*", body, re.MULTILINE)
+    """Theorem names in declaration order via the canonical header regex."""
+    from fep_lean.lean_source import LEAN_THEOREM_RE
+
+    return LEAN_THEOREM_RE.findall(body)
 
 
 _LEAN_IDENTIFIER_RE = re.compile(

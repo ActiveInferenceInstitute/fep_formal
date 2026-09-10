@@ -6,13 +6,15 @@ import re
 from pathlib import Path
 
 from fep_lean.catalogue.registry import BODIES
-from fep_lean.lean_source import iter_lean_namespace_scopes, lean_code_without_comments
+from fep_lean.lean_source import (
+    LEAN_THEOREM_RE,
+    iter_lean_namespace_scopes,
+    lean_code_without_comments,
+)
 
 from .manifest import FORMAL_MODULES, FormalModuleRole, formal_resource_paths
 
-_THEOREM_RE = re.compile(
-    r"^\s*(?:theorem|lemma)\s+([A-Za-z][A-Za-z0-9_]*)", re.MULTILINE
-)
+_THEOREM_RE = LEAN_THEOREM_RE
 _TOP_LEVEL_DECLARATION_RE = re.compile(
     r"^(?:noncomputable\s+)?(?:theorem|lemma|def|abbrev|structure)\s+"
     r"[A-Za-z][A-Za-z0-9_]*",
