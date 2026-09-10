@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Run the complete strict verification command for selected topics."""
+"""Thin wrapper: 1:1 alias of `fep-lean verify` (Lean only; no Hermes/Gauss).
+
+Exists for auto-discovery environments that enumerate scripts/*.py; the
+public surface is the `fep-lean verify` verb itself.
+"""
 
 from __future__ import annotations
 
