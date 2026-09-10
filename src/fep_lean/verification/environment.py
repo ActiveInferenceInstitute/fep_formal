@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import time
+from collections import Counter
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -272,7 +273,7 @@ def _check_references_bib(project_root: Path) -> tuple[bool, str]:
     keys = [match.group("key") for match in matches]
     if not keys:
         return False, "manuscript/references.bib has no parseable BibTeX entries"
-    duplicates = sorted({key for key in keys if keys.count(key) > 1})
+    duplicates = sorted(key for key, count in Counter(keys).items() if count > 1)
     if duplicates:
         return False, "duplicate bibliography keys: " + ", ".join(duplicates)
     entry_lines = [line for line in text.splitlines() if line.lstrip().startswith("@")]
@@ -298,20 +299,12 @@ def _check_catalogue_import(project_root: Path) -> tuple[bool, str]:
     return _check_topics_yaml(project_root)
 
 
-def _check_dot_gauss_writable(project_root: Path | None = None) -> tuple[bool, str]:
-    return _check_gauss_config(project_root or Path.cwd())
-
-
 def _check_python_numpy_matplotlib() -> tuple[bool, str]:
     return _check_python_stack()
 
 
 def _check_manuscript_config(project_root: Path) -> tuple[bool, str]:
     return _check_file(project_root, "manuscript/config.yaml")
-
-
-def _check_scripts_tests(project_root: Path) -> tuple[bool, str]:
-    return _check_dirs(project_root)
 
 
 def run_validation_checks(project_root: Path, *, mode: str = "full") -> dict[str, Any]:

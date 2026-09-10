@@ -47,7 +47,6 @@ VerifyResult fields
 
 from __future__ import annotations
 
-import concurrent.futures
 import contextlib
 import logging
 import math
@@ -582,21 +581,15 @@ class LeanVerifier:
         """Verify multiple ``(topic_id, lean_code)`` pairs sequentially
         (max_workers=1 to avoid .olean race conditions)."""
         results: list[VerifyResult] = []
-        # Intentionally serialized (max_workers=1): concurrent `lake env lean`
-        # calls share the same .lake/build/ workspace and can race on .olean files,
-        # causing spurious "invalid .olean file" errors. Sequential execution is safe.
-        max_workers = 1
+        # Intentionally serialized: concurrent `lake env lean` calls share the
+        # same .lake/build/ workspace and can race on .olean files, causing
+        # spurious "invalid .olean file" errors.
         log.info(
             "Verifying %d Lean sketches sequentially (serialized for .olean safety)...",
             len(items),
         )
-        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-            futures = {
-                executor.submit(self.verify_sketch, topic_id, lean_code): topic_id
-                for topic_id, lean_code in items
-            }
-            for future in concurrent.futures.as_completed(futures):
-                results.append(future.result())
+        for topic_id, lean_code in items:
+            results.append(self.verify_sketch(topic_id, lean_code))
         assert all(r.topic_id for r in results), (
             "VerifyResult missing topic_id — cannot sort batch"
         )
