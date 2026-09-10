@@ -10,13 +10,13 @@ from __future__ import annotations
 import base64
 import binascii
 import hashlib
-import json
 import re
 from decimal import Decimal
 from fractions import Fraction
 from types import MappingProxyType
 from typing import Final
 
+from fep_lean.verification._jsonutil import load_strict_json
 from fep_lean.verification.gnn_artifact_proof import (
     ArtifactProofError,
     PymdpArtifactTables,
@@ -165,11 +165,14 @@ def extract_julia_embedded_tables(
         _reject("invalid_base64", "noncanonical base64 encoding")
     try:
         document = _object(
-            json.loads(
+            load_strict_json(
                 decoded.decode("utf-8"),
+                fail=lambda reason, detail: _reject(
+                    "duplicate_json_key" if "duplicate" in detail
+                    else "nonfinite_value",
+                    detail.split(": ", 1)[-1],
+                ),
                 parse_float=Decimal,
-                parse_constant=_nonfinite,
-                object_pairs_hook=_unique_object,
             ),
             "root",
         )

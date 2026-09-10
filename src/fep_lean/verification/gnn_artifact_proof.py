@@ -39,6 +39,7 @@ from pathlib import Path
 from typing import Any, Final
 
 from fep_lean.bridge.custody import contained_file
+from fep_lean.verification._jsonutil import load_strict_json
 
 __all__ = [
     "DISCRETE_BOOL_SHAPES",
@@ -776,16 +777,8 @@ def manifest_mismatches(
     """
     problems: list[str] = []
 
-    def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
-        result: dict[str, Any] = {}
-        for key, value in pairs:
-            if key in result:
-                raise ValueError(f"duplicate key {key}")
-            result[key] = value
-        return result
-
     try:
-        manifest = json.loads(manifest_text, object_pairs_hook=unique_object)
+        manifest = load_strict_json(manifest_text)
     except ValueError as error:
         return [f"manifest: malformed JSON ({error})"]
     if not isinstance(manifest, dict):

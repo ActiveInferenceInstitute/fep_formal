@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any, cast
 
 from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST
+from fep_lean.verification._jsonutil import load_strict_json
 from fep_lean.verification.numerical_witnesses import (
     NON_PROOF_EVIDENCE,
     NumericalCheck,
@@ -190,20 +191,8 @@ def _file(root: Path, relative: str) -> Path:
 
 
 def _json(data: bytes) -> dict[str, Any]:
-    def pairs(items: list[tuple[str, Any]]) -> dict[str, Any]:
-        result: dict[str, Any] = {}
-        for key, value in items:
-            _require(key not in result, "duplicate JSON key")
-            result[key] = value
-        return result
-
-    def invalid_constant(value: str) -> Any:
-        raise ValueError(f"nonfinite JSON number: {value}")
-
     try:
-        result = json.loads(
-            data, object_pairs_hook=pairs, parse_constant=invalid_constant
-        )
+        result = load_strict_json(data)
     except RecursionError as exc:
         raise ValueError("JSON nesting exceeds the parser limit") from exc
     _require(isinstance(result, dict), "JSON root must be an object")

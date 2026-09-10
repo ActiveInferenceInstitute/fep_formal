@@ -20,6 +20,8 @@ from fractions import Fraction
 from math import isfinite
 from typing import Any, NoReturn, cast
 
+from fep_lean.verification._jsonutil import load_strict_json
+
 TABLE_SHAPES = {
     "F_RAW": (1, 1),
     "H_RAW": (1, 1),
@@ -92,21 +94,9 @@ def canonical_json(value: object) -> str:
 
 def read_json_object(source: str | bytes) -> dict[str, Any]:
     """Reject ambiguous duplicate keys and nonstandard JSON constants."""
-
-    def pairs(items: list[tuple[str, Any]]) -> dict[str, Any]:
-        result: dict[str, Any] = {}
-        for key, value in items:
-            if key in result:
-                _fail("json", f"duplicate key {key}")
-            result[key] = value
-        return result
-
-    def constant(value: str) -> None:
-        _fail("json", f"nonstandard constant {value}")
-
     try:
-        result = json.loads(source, object_pairs_hook=pairs, parse_constant=constant)
-    except (json.JSONDecodeError, UnicodeDecodeError) as error:
+        result = load_strict_json(source, fail=_fail)
+    except (ValueError, UnicodeDecodeError) as error:
         raise ContinuousArtifactError("json", str(error)) from error
     if not isinstance(result, dict):
         _fail("json", "root must be an object")

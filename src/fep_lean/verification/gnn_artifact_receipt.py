@@ -21,6 +21,7 @@ from typing import Any
 
 from fep_lean.bridge.custody import contained_file, fingerprint, write_json
 from fep_lean.bridge.operations import DOCUMENTS, PIN, check_sources, emit
+from fep_lean.verification._jsonutil import load_strict_json
 from fep_lean.verification._subprocess import run_process_group
 from fep_lean.verification._toolchain import (
     find_executable,
@@ -265,19 +266,10 @@ class ArtifactVerifier:
         if self._canonical(actual) != self._canonical(expected):
             raise ValueError(f"{label} mismatch")
 
-    def _object_pairs(self, pairs: list[tuple[str, Any]]) -> dict[str, Any]:
-        result: dict[str, Any] = {}
-        for key, value in pairs:
-            if key in result:
-                raise ValueError(f"duplicate JSON key: {key}")
-            result[key] = value
-        return result
 
     def read_object(self, path: Path) -> dict[str, Any]:
         """Reject duplicate keys and non-standard numeric values in receipts."""
-        result = json.loads(
-            path.read_text(encoding="utf-8"), object_pairs_hook=self._object_pairs
-        )
+        result = load_strict_json(path.read_text(encoding="utf-8"))
         if not isinstance(result, dict):
             raise TypeError("JSON root must be an object")
         self._canonical(result)
