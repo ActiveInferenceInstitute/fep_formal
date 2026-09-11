@@ -117,7 +117,7 @@
       }
     }
   },
-  "extractor_sha256": "5baba98eaf2bf9be9a7de0eb7afb8cc38891bc20e02baddf3b78972dc15c06a1",
+  "extractor_sha256": "aa2493740bfb8ef0537bc6198a88f01718c67c4857a45bbf6319fb39ccdd08bc",
   "fixtures": {
     "pymdp_asymmetric_runner.py": "7b41393fd16db4083b26443c3498789257e5917874e06fb3f5ddb087e05b2212",
     "pymdp_symmetric_runner.py": "4b03623bdbf23affddd0cf8db109aae18cfb2f09fe4d7c1dbb134b489181af10"
