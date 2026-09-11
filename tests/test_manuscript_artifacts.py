@@ -981,7 +981,7 @@ def test_count_test_cases_is_content_addressed_over_production_parameters(
     assert _count_test_cases(tmp_path) == 2
     cache_path = tmp_path / "output" / ".cache" / "tests_collected.json"
     first_cache = json.loads(cache_path.read_text(encoding="utf-8"))
-    assert first_cache["schema_version"] == 4
+    assert first_cache["schema_version"] == 5
 
     parameter_source.write_text("alpha\nbeta\ngamma\n", encoding="utf-8")
 
@@ -1366,7 +1366,7 @@ def test_test_count_generation_is_hermetic_and_check_reuses_cache_read_only(
     assert environment["FEP_LEAN_LIVE_TESTS"] == "0"
     cache = tmp_path / "output" / ".cache" / "tests_collected.json"
     payload = json.loads(cache.read_text(encoding="utf-8"))
-    assert payload["schema_version"] == 4
+    assert payload["schema_version"] == 5
     assert payload["node_ids"] == ["tests/unit/test_sample.py::test_sample"]
     assert payload["collection_identity"]["plugin_distributions"]["pytest"]
     before = tuple(sorted(path.relative_to(tmp_path) for path in tmp_path.rglob("*")))
