@@ -328,12 +328,21 @@ class StatusReport:
         return "ok" if len(self.sections) == 4 else "error"
 
     def as_dict(self) -> dict[str, Any]:
+        # The top-level native_claim_ready flag must agree with the
+        # native_verification_receipt section's state: the sections are the
+        # authority, and a hardcoded False contradicted a claim_ready section
+        # (observed 2026-09-10 after the wave-2 evidence refresh).
+        native_ready = any(
+            section.name == "native_verification_receipt"
+            and section.state == "claim_ready"
+            for section in self.sections
+        )
         return {
             "schema_version": 1,
             "status": self.status,
             "evidence_plane": "evidence currency and provenance",
             "boundary": _STATUS_BOUNDARY,
-            "native_claim_ready": False,
+            "native_claim_ready": native_ready,
             "sections": [section.as_dict() for section in self.sections],
         }
 

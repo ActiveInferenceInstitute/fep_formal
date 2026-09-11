@@ -62,6 +62,42 @@ def test_report_has_all_sections_and_boundaries(tmp_path: Path) -> None:
         assert section["composes"], section["name"]
 
 
+def test_top_level_native_claim_ready_tracks_section_state(tmp_path: Path) -> None:
+    """The top-level flag must agree with the native section's state.
+
+    VI-7: ``as_dict`` hardcoded ``native_claim_ready: False``, so a
+    claim_ready section (fresh 155/155 receipt) surfaced as False at the
+    top level with an empty errors list -- a silent contradiction of the
+    section authority.
+    """
+    from fep_lean.cli import SectionReport, StatusReport
+
+    composes = ("fep_lean.output.evidence.validate_native_lean_receipt",)
+    claim_ready = SectionReport(
+        name="native_verification_receipt",
+        state="claim_ready",
+        findings=("native_claim_ready: True",),
+        composes=composes,
+        boundary="probe",
+    )
+    not_ready = SectionReport(
+        name="native_verification_receipt",
+        state="not_claim_ready",
+        findings=("native_claim_ready: False",),
+        composes=composes,
+        boundary="probe",
+    )
+    filler = SectionReport(
+        name="catalogue_build_products",
+        state="current",
+        findings=(),
+        composes=composes,
+        boundary="probe",
+    )
+    assert StatusReport((filler, claim_ready)).as_dict()["native_claim_ready"] is True
+    assert StatusReport((filler, not_ready)).as_dict()["native_claim_ready"] is False
+
+
 def test_report_json_round_trips(tmp_path: Path) -> None:
     payload = json.loads(json.dumps(build_status_report(tmp_path).as_dict()))
     assert payload["schema_version"] == 1
