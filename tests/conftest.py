@@ -37,9 +37,15 @@ def pytest_collection_modifyitems(
     must never run in parallel with each other; this makes the documented
     marker enforce that constraint instead of relying on serial-only runs.
     """
-    for item in items:
-        if item.get_closest_marker("serial_lean") is not None:
-            item.add_marker(pytest.mark.xdist_group("lean"))
+    # ``xdist_group`` is registered by pytest-xdist, which the hermetic
+    # Python-acceptance environment deliberately does not autoload (its
+    # plugin policy is pytest + pytest-timeout only). Pinning to a group is
+    # only meaningful when xdist is actually driving the run, so skip it
+    # there instead of failing collection with an unregistered marker.
+    if config.pluginmanager.hasplugin("xdist"):
+        for item in items:
+            if item.get_closest_marker("serial_lean") is not None:
+                item.add_marker(pytest.mark.xdist_group("lean"))
 
 
 def pytest_configure(config: pytest.Config) -> None:

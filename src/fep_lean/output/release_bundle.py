@@ -159,6 +159,12 @@ _PYTHON_ACCEPTANCE_ARGUMENTS: tuple[str, ...] = (
     "--color=no",
     "--strict-markers",
     "--tb=short",
+    # The serial_lean lane needs lake/lean on PATH (plus the pinned Mathlib
+    # tree); the hermetic acceptance environment deliberately strips PATH, so
+    # those probes cannot run there. The documented canonical command (CI and
+    # the AGENTS.md required checks) deselects them with the same marker.
+    "-m",
+    "not serial_lean",
     "--cov=src",
     "--cov-fail-under=89",
     "--cov-report=term",
