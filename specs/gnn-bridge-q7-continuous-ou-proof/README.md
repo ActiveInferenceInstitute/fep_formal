@@ -52,6 +52,25 @@ The retained P4b `NUM_TIMESTEPS=1` observes the prior and never exercises F or Q
 nonstationary belief or use at least two samples. The GNN three-step nonstationary regression exercises that runtime route.
 It remains execution evidence, distinct from the static coefficient proof.
 
+## Interpreter contract for the frozen scaffold
+
+`scaffold_digest` freezes `ast.dump(...)` output, whose formatting is CPython
+minor-version-sensitive: the accepted `expected.json` digest
+(`runner_ast_sha256`) was reviewed and pinned under CPython 3.14 and does not
+reproduce under other minor versions (the 3.12 dump differs). The accepted
+interpreter set for validating this scaffold is therefore exactly **CPython
+3.14**, the version `.python-version` pins for development and CI; no other
+CPython is accepted to re-validate the frozen digest until
+`FEP-SCAFFOLD-PORTABILITY` lands a version-stable canonical serialization,
+which requires a new reviewed scaffold and a coordinated custody re-pin rather
+than a unilateral `expected.json` regeneration. The focused test
+`tests/test_gnn_continuous_artifact_proof.py::test_frozen_scaffold_digest_reproduces_the_pinned_interpreter_contract`
+asserts that contract: the checkout pins 3.14, the validating interpreter IS
+3.14, and `scaffold_digest` of the retained runner reproduces the pinned
+`runner_ast_sha256` under it. Q5/Q6 runner custody is whole-file sha256 and
+already interpreter-independent; this contract governs only the Q7 AST
+scaffold digest.
+
 Acceptance requires focused extraction/custody-negative tests, current render
 provenance, exact probe regeneration, native compilation with no warnings or
 `sorryAx`, and axiom reports containing only the established standard axioms.

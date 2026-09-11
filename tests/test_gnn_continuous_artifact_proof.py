@@ -9,6 +9,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import sys
 from fractions import Fraction
 from pathlib import Path
 
@@ -319,6 +320,25 @@ def test_generator_is_read_only_and_manifest_does_not_claim_native_evidence():
     assert {
         path: (path.read_bytes(), path.stat().st_mtime_ns) for path in watched
     } == before
+    assert (
+        scaffold_digest(RUNNER.read_text())
+        == json.loads((SLICE / "expected.json").read_text())["runner_ast_sha256"]
+    )
+
+
+def test_frozen_scaffold_digest_reproduces_the_pinned_interpreter_contract():
+    """The accepted Q7 scaffold validates under exactly the pinned interpreter.
+
+    ``scaffold_digest`` freezes ``ast.dump`` output, which is CPython
+    minor-version-sensitive. The reviewed ``expected.json`` digest is pinned
+    under CPython 3.14 (the ``.python-version`` pin) and must be re-validated
+    on the same minor version; until FEP-SCAFFOLD-PORTABILITY records a
+    version-stable serialization with a new reviewed scaffold, no other
+    interpreter is accepted to reproduce ``runner_ast_sha256``.
+    """
+    pinned = (ROOT / ".python-version").read_text().strip()
+    assert pinned == "3.14"
+    assert ".".join(str(part) for part in sys.version_info[:2]) == pinned
     assert (
         scaffold_digest(RUNNER.read_text())
         == json.loads((SLICE / "expected.json").read_text())["runner_ast_sha256"]
