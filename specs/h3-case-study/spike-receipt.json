@@ -1,0 +1,159 @@
+{
+  "base_seed": 20260911,
+  "branch": "continuous",
+  "claim_boundary": "Feasibility evidence only: non-proof numerical evidence under the H2 witness discipline. Not an H3.6S acceptance verdict, not observed-data calibration, and not an empirical claim.",
+  "decision": "pass",
+  "digests": {
+    "specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json": "ad097e791e3f474d0842daa63184fc630ba10f7f418fc00c8bace3024dd3f6d8",
+    "src/fep_lean/formal/compositions/gaussian_control.lean": "76b2e36f840682df5adac654456d2d94c81c636778fbcd1efa39bc3cbfe3d3f0",
+    "src/fep_lean/formal/compositions/gaussian_filter.lean": "2b0ec699ab07e19800fb978157721e82420b650478479368aa3c4a7878ea156e",
+    "src/fep_lean/formal/compositions/smooth_reference_kernel.lean": "156464de9e7c33e16fa22bd6939fa64938b03ee4f5554fb3ecd48fbfaed6d397",
+    "src/fep_lean/formal/fin4_gaussian_semigroup.lean": "d8d15d0abdfe6eb53c9e1b94d6f1e90a076e97c9507a3532021aea090deb630b",
+    "src/fep_lean/formal/gaussian_precision_conditioning.lean": "be51dc0c06c28ee50331b561bd21df00b03215d2f397caf49a98100f83e8ec7b"
+  },
+  "fixture": {
+    "K_eigenmode_exactness": true,
+    "K_external_internal_zero": true,
+    "K_mul_Sigma_identity": true,
+    "Sigma_external_internal_one_over_24": true,
+    "conditional_covariance_zero": true,
+    "conditional_variance_one_quarter": true,
+    "eigenmodes_orthogonal_exact": true,
+    "perturbed_covariance_minus_one_fifteenth": true,
+    "scalar_projection_error": 0.0,
+    "scalar_projection_within_tolerance": true,
+    "semigroup_composition_error": 3.469446951953614e-18,
+    "semigroup_within_tolerance": true,
+    "sigma_exact_inverse_matches_named": true,
+    "stationarity_within_tolerance": true,
+    "stationary_covariance_error": 5.551115123125783e-17,
+    "stationary_covariance_from_rates": true
+  },
+  "frozen_tolerances": {
+    "coefficient_absolute": 0.02,
+    "diffusion_absolute": 0.25,
+    "float_semigroup_and_stationarity": 1e-12,
+    "intercept_absolute": 0.02,
+    "k_max_entry": 0.2,
+    "misspecification_detect_min": 0.005,
+    "rate_relative": 0.05,
+    "residual_absolute": 0.03
+  },
+  "gate": "H3.6S-feasibility-spike",
+  "gate_results": {
+    "fixture": true,
+    "negative_control_detected": true,
+    "rejections": true,
+    "settings": true
+  },
+  "n_pairs_per_setting": 200000,
+  "negative_control": {
+    "detectable_excess": 0.006027882675733509,
+    "exact_optimal_mse": 0.2857142857142857,
+    "exact_zero_mse": 0.2916666666666667,
+    "expected_coefficient": 0.14285714285714285,
+    "optimal_coefficient": 0.14389545069161336,
+    "optimal_mse": 0.2863117704253248,
+    "zero_covariance_mse": 0.2923396531010583
+  },
+  "rejection_boundaries": {
+    "raw_units": {
+      "reject_missing_offset": true,
+      "reject_missing_scale": true,
+      "reject_negative_scale": true,
+      "reject_zero_scale": true,
+      "round_trip_exact": true
+    },
+    "reordered_parameters": {
+      "axis_permutation_rejected": true,
+      "reordered_rate_pairing_rejected": true
+    }
+  },
+  "schema_version": 1,
+  "setting_a": {
+    "delta": 0.25,
+    "gates": {
+      "coefficients_within_tolerance": true,
+      "intercept_within_tolerance": true,
+      "residual_within_tolerance": true
+    },
+    "observed_axes": [
+      "sensory",
+      "active"
+    ],
+    "rates": {
+      "diffusion_estimates": [
+        1.997068041957614,
+        2.0271289051916903,
+        2.000837139865978,
+        2.0084438852561366
+      ],
+      "diffusion_within_tolerance": true,
+      "k_max_entry_error": 0.04152696501364339,
+      "k_within_tolerance": true,
+      "rate_relative_errors": [
+        0.0008445643248087276,
+        0.002474516143009531,
+        0.01169167789723069,
+        0.0016960927262294294
+      ],
+      "rate_within_tolerance": true,
+      "rates_hat": [
+        1.9983108713503825,
+        4.009898064572038,
+        4.046766711588923,
+        6.010176556357377
+      ]
+    },
+    "recognition": {
+      "coefficients": [
+        0.2533570393295014,
+        0.24853608015422213
+      ],
+      "intercept": 0.0005658460894728203,
+      "residual_variance": 0.2501451018236933
+    }
+  },
+  "setting_b": {
+    "delta": 0.5,
+    "gates": {
+      "coefficients_within_tolerance": true,
+      "intercept_within_tolerance": true,
+      "residual_within_tolerance": true
+    },
+    "observed_axes": [
+      "sensory"
+    ],
+    "rates": {
+      "diffusion_estimates": [
+        2.0974723519637384,
+        2.033220332378939,
+        2.0168500156989153,
+        1.982626169171847
+      ],
+      "diffusion_within_tolerance": true,
+      "k_max_entry_error": 0.1828846192422411,
+      "k_within_tolerance": true,
+      "rate_relative_errors": [
+        0.007970508046509228,
+        0.003761703551290241,
+        0.02097938721713488,
+        0.04247720285941877
+      ],
+      "rate_within_tolerance": true,
+      "rates_hat": [
+        1.9840589839069815,
+        4.015046814205161,
+        4.0839175488685395,
+        6.254863217156513
+      ]
+    },
+    "recognition": {
+      "coefficients": [
+        0.285213424208585
+      ],
+      "intercept": 0.0003958624381826434,
+      "residual_variance": 0.26876627081722837
+    }
+  }
+}
