@@ -2351,7 +2351,10 @@ def build_numerical_witness_receipt(project_root: Path) -> bytes:
         "config_sha256": report_config_digest(root),
         "witnesses": records,
     }
-    if payload["witness_count"] != RELEASE_SEAL["witnesses"] or payload["complete"] is not True:
+    if (
+        payload["witness_count"] != RELEASE_SEAL["witnesses"]
+        or payload["complete"] is not True
+    ):
         raise ReleaseBundleError(
             "the live numerical witness closure is not the accepted 15-witness release"
         )

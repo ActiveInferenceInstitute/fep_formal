@@ -410,9 +410,7 @@ def test_markdown_receipt_preserves_numerical_only_scope(
     ],
     ids=["duplicate-nested-key", "duplicate-top-level-key"],
 )
-def test_read_object_rejects_duplicate_keys(
-    tmp_path: Path, payload: str
-) -> None:
+def test_read_object_rejects_duplicate_keys(tmp_path: Path, payload: str) -> None:
     target = tmp_path / "pin.json"
     target.write_text(payload, encoding="utf-8")
     with pytest.raises(ValueError, match="duplicate JSON key"):
@@ -423,9 +421,7 @@ def test_read_object_rejects_duplicate_keys(
     "payload",
     ['{"x": NaN}', '{"x": Infinity}', '{"x": -Infinity}'],
 )
-def test_read_object_rejects_nonfinite_constants(
-    tmp_path: Path, payload: str
-) -> None:
+def test_read_object_rejects_nonfinite_constants(tmp_path: Path, payload: str) -> None:
     target = tmp_path / "pin.json"
     target.write_text(payload, encoding="utf-8")
     with pytest.raises(ValueError, match="non-finite JSON constant"):

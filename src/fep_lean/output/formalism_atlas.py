@@ -42,14 +42,10 @@ def build_formalism_atlas(project_root: Path) -> FormalismAtlas:
     return build_formalism_presentation(Path(project_root))
 
 
-
-
-
-
-
-
 def _status_summary(counts: Mapping[str, int]) -> str:
-    return " · ".join(f"{humanize_identifier(str(key))} {value}" for key, value in counts.items())
+    return " · ".join(
+        f"{humanize_identifier(str(key))} {value}" for key, value in counts.items()
+    )
 
 
 def _formal_alignment_summary(counts: Mapping[str, int]) -> str:
@@ -94,8 +90,6 @@ def _family_by_area(
         area.id: tuple(family for family in atlas.families if family.area == area.id)
         for area in atlas.areas
     }
-
-
 
 
 def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
@@ -614,8 +608,6 @@ def _render_formalism_atlas_mobile_svg(atlas: FormalismAtlas) -> str:
     return "\n".join(lines) + "\n"
 
 
-
-
 def _topic_table(atlas: FormalismAtlas) -> str:
     rows: list[str] = []
     for topic in atlas.topics:
@@ -889,7 +881,11 @@ def atlas_projection_drift(
     caller that validated several planes against one snapshot can thread it
     through without rebuilding it per call (SC-20). No output bytes change.
     """
-    atlas = build_formalism_atlas(Path(project_root)) if presentation is None else presentation
+    atlas = (
+        build_formalism_atlas(Path(project_root))
+        if presentation is None
+        else presentation
+    )
     svg_path, html_path = atlas_projection_paths(project_root, output_root=output_root)
     expected = {
         svg_path: render_formalism_atlas_svg(atlas),

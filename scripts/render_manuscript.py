@@ -219,7 +219,11 @@ def main(argv: list[str] | None = None) -> int:
         # opted out for an intentionally dry render.
         native_receipt = project_root / "output" / "native-verification.json"
         verify_block = variables.get("verify") if isinstance(variables, dict) else None
-        claim_ready = bool(verify_block.get("claim_ready")) if isinstance(verify_block, dict) else False
+        claim_ready = (
+            bool(verify_block.get("claim_ready"))
+            if isinstance(verify_block, dict)
+            else False
+        )
         if not claim_ready:
             print(
                 "ERROR: native verification receipt is absent or not claim-ready "

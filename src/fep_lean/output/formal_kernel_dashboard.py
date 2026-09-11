@@ -45,8 +45,6 @@ def build_formal_kernel_dashboard(project_root: Path) -> FormalKernelDashboard:
     return build_formalism_presentation(Path(project_root))
 
 
-
-
 def _text(value: object) -> str:
     return html.escape(str(value), quote=False)
 
@@ -55,8 +53,6 @@ def _scalar_text(value: Scalar) -> str:
     if isinstance(value, bool):
         return str(value).lower()
     return repr(value)
-
-
 
 
 def _formal_alignment_explanation(witness: NumericalWitness) -> str:
@@ -94,10 +90,6 @@ def _compact_number(value: float) -> str:
     if magnitude < 1e-3 or magnitude >= 1e4:
         return f"{value:.2e}"
     return f"{value:.4g}"
-
-
-
-
 
 
 def _numeric(value: Scalar) -> float | None:
@@ -185,7 +177,9 @@ def _coincident_marker_svg(
         f'data-marker-shape="{shape}" data-center-x="{center_x:.2f}" '
         f'data-center-y="{center_y:.2f}" data-visual-offset="0"{point}'
     )
-    title = f"<title>{escape_svg_text(series_key)} · identical shared-rail value</title>"
+    title = (
+        f"<title>{escape_svg_text(series_key)} · identical shared-rail value</title>"
+    )
     if shape == "ring":
         return (
             f'<circle {common} cx="{center_x:.2f}" cy="{center_y:.2f}" r="6" '
@@ -286,7 +280,8 @@ def _plot_elements(
         int(((width - 42) if stacked_legend else (legend_width - 18)) / 7),
     )
     legend_lines = tuple(
-        wrap_text(columns[key].label, legend_limit, lines=None) for key, _values in series
+        wrap_text(columns[key].label, legend_limit, lines=None)
+        for key, _values in series
     )
     coincident_with: list[str | None] = []
     for series_index, (_key, values) in enumerate(series):
@@ -1084,8 +1079,6 @@ def _detail_index(witnesses: tuple[NumericalWitness, ...]) -> str:
         "matching record automatically.</p>"
         f"<ol>{items}</ol></details></nav>"
     )
-
-
 
 
 def _mobile_plot_groups(

@@ -266,7 +266,6 @@ class ArtifactVerifier:
         if self._canonical(actual) != self._canonical(expected):
             raise ValueError(f"{label} mismatch")
 
-
     def read_object(self, path: Path) -> dict[str, Any]:
         """Reject duplicate keys and non-standard numeric values in receipts."""
         result = load_strict_json(path.read_text(encoding="utf-8"))

@@ -168,7 +168,8 @@ def extract_julia_embedded_tables(
             load_strict_json(
                 decoded.decode("utf-8"),
                 fail=lambda reason, detail: _reject(
-                    "duplicate_json_key" if "duplicate" in detail
+                    "duplicate_json_key"
+                    if "duplicate" in detail
                     else "nonfinite_value",
                     detail.split(": ", 1)[-1],
                 ),

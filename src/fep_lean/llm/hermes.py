@@ -173,8 +173,6 @@ _MAX_RESPONSE_CHUNK = 64 * 1024
 _MAX_RESPONSE_BYTES = 8 * 1024 * 1024
 
 
-
-
 @dataclass
 class HermesConfig:
     """Configuration for the Hermes LLM explainer.
