@@ -42,7 +42,7 @@ UNIFIED_FORMALISM_CATALOGUE_FILENAME = "09z_unified_formalism_catalogue.md"
 _RUN_BOUND_MANUSCRIPT_KEYS = frozenset(
     {"compile_rate", "full", "hermes", "source", "verify"}
 )
-_TEST_COLLECTION_CACHE_SCHEMA_VERSION = 4
+_TEST_COLLECTION_CACHE_SCHEMA_VERSION = 5
 _TEST_COLLECTION_PLUGIN_DISTRIBUTIONS = ("pytest", "pytest-timeout")
 _TEST_COLLECTION_EXPLICIT_PLUGINS = ("pytest_timeout",)
 _TEST_COLLECTION_ENVIRONMENT_POLICY = {
@@ -646,6 +646,12 @@ def collection_runtime_identity() -> dict[str, Any]:
                 for plugin in _TEST_COLLECTION_EXPLICIT_PLUGINS
                 for argument in ("-p", plugin)
             ),
+            # The canonical acceptance command deselects the serial_lean lane
+            # (hermetic PATH policy); the collection evidence must carry the
+            # same documented filter so the canonical count owner, the
+            # collected roster, and the acceptance JUnit roster all agree.
+            "-m",
+            "not serial_lean",
             "-o",
             "cache_dir=<temporary>",
             "-o",
@@ -694,6 +700,10 @@ def pytest_collection_command(cache_dir: Path) -> list[str]:
             for plugin in _TEST_COLLECTION_EXPLICIT_PLUGINS
             for argument in ("-p", plugin)
         ),
+        # Matches the canonical acceptance command's documented marker filter
+        # (see collection_runtime_identity).
+        "-m",
+        "not serial_lean",
         "-o",
         f"cache_dir={cache_dir}",
         "-o",
@@ -717,7 +727,8 @@ def pytest_collection_environment(temporary_root: Path) -> dict[str, str]:
 def parse_pytest_collection_stdout(stdout: str) -> tuple[str, ...]:
     """Parse the exact ordered node-id roster from quiet pytest output."""
     summary_pattern = re.compile(
-        r"(?:=+\s+)?([1-9]\d*) tests? collected in "
+        r"(?:=+\s+)?([1-9]\d*)(?:/([1-9]\d*))? tests? collected"
+        r"(?: \((\d+) deselected\))? in "
         r"[0-9]+(?:\.[0-9]+)?s(?:\s+=+)?"
     )
     stdout_lines = [line for line in stdout.splitlines() if line.strip()]
