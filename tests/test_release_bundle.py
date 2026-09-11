@@ -2157,6 +2157,7 @@ def test_python_acceptance_is_emitted_only_by_the_exact_stable_run(
     monkeypatch.setattr(bundle_module, "report_source_digest", lambda _root: "1" * 64)
     monkeypatch.setattr(bundle_module, "report_config_digest", lambda _root: "2" * 64)
     observed_runs: list[tuple[list[str], Mapping[str, str]]] = []
+    tool_bin_links: list[str] = []
 
     def completed_run(command: list[str], **kwargs: object) -> SimpleNamespace:
         environment = kwargs["env"]
@@ -2174,6 +2175,10 @@ def test_python_acceptance_is_emitted_only_by_the_exact_stable_run(
                 ),
                 stderr="",
             )
+        run_root = Path(environment["COVERAGE_FILE"]).parent
+        tool_bin_links.extend(
+            link.name for link in (run_root / "acceptance-tool-bin").iterdir()
+        )
         (output / "pytest.xml").write_text(
             '<testsuites><testsuite tests="1" failures="0" errors="0" '
             'skipped="0" time="0.1"><testcase classname="tests.test_fixture" '
@@ -2207,11 +2212,22 @@ def test_python_acceptance_is_emitted_only_by_the_exact_stable_run(
     assert len(receipt["executor"]["interpreter"]["executable_sha256"]) == 64
     assert "pytest-cov" in receipt["executor"]["plugin_distributions"]
     assert len(receipt["executor"]["external_executables"]["uv"]["sha256"]) == 64
-    assert all(
-        environment["PATH"] == receipt["executor"]["environment"]["PATH"]
-        for command, environment in observed_runs
-        if "--collect-only" not in command
+    assert tool_bin_links == ["fc-list", "git"]
+    tool_bin = Path(observed_runs[1][1]["COVERAGE_FILE"]).parent / (
+        "acceptance-tool-bin"
     )
+    for _command, environment in observed_runs:
+        if "--collect-only" in _command:
+            continue
+        assert environment["PATH"] == receipt["executor"]["environment"][
+            "PATH"
+        ].replace("<temporary>", str(tool_bin.parent))
+        assert environment["PATH"].split(os.pathsep)[2] == str(tool_bin)
+    assert set(receipt["executor"]["external_executables"]) == {
+        "fc-list",
+        "git",
+        "uv",
+    }
     assert receipt["coverage"]["source_records"] == [
         {
             "lines": [{"hits": 1, "number": 1}],

@@ -153,6 +153,26 @@ _PYTHON_ACCEPTANCE_DISTRIBUTIONS = (
     "pytest-httpserver",
     "pytest-timeout",
 )
+_PYTHON_ACCEPTANCE_EXTERNAL_TOOLS: tuple[str, ...] = (
+    # The two host mechanisms the suite's tool-dependent lanes need beyond the
+    # interpreter and uv directories: `git` (the bridge custody/pin lanes build
+    # throwaway sibling checkouts) and fontconfig (`fc-list`, the face-coverage
+    # probe the render-font lanes and the render preflight run). The
+    # PATH-controlled acceptance environment carries exactly these executables
+    # and nothing broader.
+    "git",
+    "fc-list",
+)
+_PYTHON_ACCEPTANCE_USER_FONT_DIRECTORIES: tuple[str, ...] = (
+    # The standard user font directories fontconfig resolves under $HOME. The
+    # acceptance environment redirects HOME into the temporary root, which
+    # would hide every user-installed face exactly when the font lanes must
+    # ask whether this host covers the manuscript; each present directory is
+    # mirrored as a symlink so the redirected HOME sees the same inventory.
+    ".fonts",
+    ".local/share/fonts",
+    "Library/Fonts",
+)
 _PYTHON_ACCEPTANCE_ARGUMENTS: tuple[str, ...] = (
     "tests",
     "-q",
@@ -2456,31 +2476,87 @@ def _python_acceptance_external_executable(name: str) -> dict[str, str]:
     return {"path": path.as_posix(), "sha256": _sha256(path.read_bytes())}
 
 
-def _controlled_python_acceptance_path(uv_path: str) -> str:
+def _controlled_python_acceptance_path(uv_path: str, tool_bin: str = "") -> str:
     directories = [Path(sys.executable).resolve().parent.as_posix()]
     directories.append(Path(uv_path).parent.as_posix())
+    if tool_bin:
+        directories.append(tool_bin)
     directories.extend(os.defpath.split(os.pathsep))
     return os.pathsep.join(dict.fromkeys(path for path in directories if path))
+
+
+def _python_acceptance_tool_bin(temporary_root: Path) -> Path:
+    """Materialize the allowlisted external tools under the temporary root.
+
+    One symlink per allowlisted executable keeps the carried set exact: adding
+    an upstream bin directory wholesale would expose every other tool it
+    holds. The links point at the resolved real executable, so the recorded
+    identity is stable while the temporary directory is not.
+    """
+    tool_bin = temporary_root / "acceptance-tool-bin"
+    tool_bin.mkdir(exist_ok=True)
+    for name in _PYTHON_ACCEPTANCE_EXTERNAL_TOOLS:
+        link = tool_bin / name
+        if link.is_symlink() or link.exists():
+            link.unlink()
+        os.symlink(_python_acceptance_external_executable(name)["path"], link)
+    return tool_bin
+
+
+def _python_acceptance_home_font_mirrors(temporary_root: Path) -> None:
+    """Mirror the host's user font directories under the redirected HOME.
+
+    The collection policy redirects HOME for isolation, and the host's
+    fontconfig configuration resolves user fonts under ``$HOME`` (``~/.fonts``,
+    ``~/.local/share/fonts``, ``~/Library/Fonts``). Left alone, the redirected
+    HOME would make every user-installed face invisible to the face-coverage
+    lanes exactly when they must verify this render host. System font
+    directories are absolute in the host's configuration and need no mirror.
+    """
+    home = temporary_root / "home"
+    real_home = Path.home()
+    for relative in _PYTHON_ACCEPTANCE_USER_FONT_DIRECTORIES:
+        source = real_home / relative
+        if not source.is_dir():
+            continue
+        target = home / relative
+        if target.is_symlink() or target.exists():
+            continue
+        target.parent.mkdir(parents=True, exist_ok=True)
+        os.symlink(source, target)
+
+
+def _python_acceptance_tool_identity() -> dict[str, dict[str, str]]:
+    return {
+        name: _python_acceptance_external_executable(name)
+        for name in ("uv", *_PYTHON_ACCEPTANCE_EXTERNAL_TOOLS)
+    }
 
 
 def _python_acceptance_environment(temporary_root: Path) -> dict[str, str]:
     environment = pytest_collection_environment(temporary_root)
     environment["COVERAGE_FILE"] = str(temporary_root / ".coverage")
+    _python_acceptance_home_font_mirrors(temporary_root)
     uv_identity = _python_acceptance_external_executable("uv")
-    environment["PATH"] = _controlled_python_acceptance_path(uv_identity["path"])
+    tool_bin = _python_acceptance_tool_bin(temporary_root)
+    environment["PATH"] = _controlled_python_acceptance_path(
+        uv_identity["path"], tool_bin.as_posix()
+    )
     return environment
 
 
 def _python_acceptance_runtime_identity() -> dict[str, Any]:
     collection_identity = collection_runtime_identity()
-    uv_identity = _python_acceptance_external_executable("uv")
     identity: dict[str, Any] = {
         "environment": {
             **collection_identity["environment"],
             "COVERAGE_FILE": "<temporary>/.coverage",
-            "PATH": _controlled_python_acceptance_path(uv_identity["path"]),
+            "PATH": _controlled_python_acceptance_path(
+                _python_acceptance_external_executable("uv")["path"],
+                "<temporary>/acceptance-tool-bin",
+            ),
         },
-        "external_executables": {"uv": uv_identity},
+        "external_executables": _python_acceptance_tool_identity(),
         "explicit_plugins": list(_PYTHON_ACCEPTANCE_EXPLICIT_PLUGINS),
         "interpreter": collection_identity["interpreter"],
         "plugin_distributions": {
