@@ -105,7 +105,7 @@ def test_render_manuscript_check_disables_test_count_cache(
     monkeypatch.setattr(module, "manuscript_projection_drift", lambda *a, **k: ())
     monkeypatch.setattr(module, "unresolved_placeholders", lambda *a, **k: ())
 
-    assert module.main(["--check"]) == 0
+    assert module.main(["--check", "--allow-unavailable-evidence"]) == 0
     assert cache_modes == [False]
 
 
