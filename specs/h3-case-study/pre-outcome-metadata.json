@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "branch": "continuous",
+  "outcomes_accessed": false,
+  "pre_outcome_basis": "Synthetic-only opening (specs/h3-case-study): no external dataset, license, or protected outcome is accessed at this stage. The selection rests on the accepted H2 source-bound carrier evidence (H2.7 terminal receipt decision=accepted; live source digests of the Fin4/conditioning/scalar carriers at research/h3-case-study base b992032) and the preregistered continuous draft in docs/design/fep-research-program/horizon-3-scientific-case-study.md. Real-data H3.0 preregistration remains closed.",
+  "finite_branch_considered": false
+}
