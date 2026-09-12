@@ -213,14 +213,6 @@ jobs:
             echo "Lean aggregate emitted warnings"
             exit 1
           fi
-      # render_manuscript.py --check verifies the manuscript's Mathlib
-      # citations against the pinned Mathlib checkout and fails closed when
-      # it is absent, so it can only run in this job, after the cache fetch
-      # has materialized lean/.lake/packages/mathlib.
-      - name: Verify the publication render path against the pinned Mathlib
-        run: |
-          uv run fep-lean catalogue
-          uv run python scripts/render_manuscript.py --check
       - name: Verify exact 155-topic native receipt
         run: |
           uv run fep-lean verify \
@@ -237,6 +229,17 @@ jobs:
           print(result)
           raise SystemExit(0 if result["native_claim_ready"] else 1)
           PY
+      # render_manuscript.py --check verifies the manuscript's Mathlib
+      # citations against the pinned Mathlib checkout and fails closed when
+      # it is absent, so it can only run in this job, after the cache fetch
+      # has materialized lean/.lake/packages/mathlib — and after the receipt
+      # step above, because its strict-default SC-19 gate fail-closes when
+      # the claim-ready native receipt does not exist yet in a fresh
+      # checkout (output/ is gitignored; the verify step writes it).
+      - name: Verify the publication render path against the pinned Mathlib
+        run: |
+          uv run fep-lean catalogue
+          uv run python scripts/render_manuscript.py --check
       - name: Audit formal declarations and axioms
         run: |
           uv run python scripts/audit_formalisms.py \

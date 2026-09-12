@@ -2216,7 +2216,7 @@ def test_python_acceptance_is_emitted_only_by_the_exact_stable_run(
     assert len(receipt["executor"]["interpreter"]["executable_sha256"]) == 64
     assert "pytest-cov" in receipt["executor"]["plugin_distributions"]
     assert len(receipt["executor"]["external_executables"]["uv"]["sha256"]) == 64
-    assert tool_bin_links == ["fc-list", "git"]
+    assert sorted(tool_bin_links) == ["fc-list", "git"]
     tool_bin = Path(observed_runs[1][1]["COVERAGE_FILE"]).parent / (
         "acceptance-tool-bin"
     )

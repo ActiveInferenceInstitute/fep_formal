@@ -47,7 +47,7 @@ FAKE_RASTERIZER = textwrap.dedent(
     case "${FAKE_RSVG_MODE:-ok}" in
         fail) echo "fake rsvg: cannot render" >&2; exit 1 ;;
         silent) exit 0 ;;
-        *) printf '%b' '\\x89PNG\\r\\n\\x1a\\nfake-png-bytes' > "$out"; exit 0 ;;
+        *) printf '\\211PNG\\r\\n\\032\\nfake-png-bytes' > "$out"; exit 0 ;;
     esac
     """
 )
@@ -116,7 +116,7 @@ def test_rasterize_fixed_width_is_stable(
         '    if [ "$prev" = "--output" ]; then out="$argument"; fi\n'
         '    prev="$argument"\n'
         "done\n"
-        "printf '%b' '\\x89PNG\\r\\n\\x1a\\nfake-png-bytes' > \"$out\"\n"
+        "printf '\\211PNG\\r\\n\\032\\nfake-png-bytes' > \"$out\"\n"
     )
     executable.parent.mkdir(parents=True, exist_ok=True)
     executable.write_text(script, encoding="utf-8")
