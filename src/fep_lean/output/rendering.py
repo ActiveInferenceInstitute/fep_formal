@@ -304,8 +304,12 @@ def render_manuscript(
 
     The entire source set is validated and staged before the renderer-owned
     destination tree is replaced. An error cannot leave a partial update, and
-    files removed from the source or its referenced-asset roster cannot remain
-    in a later publication.
+    files removed from the source or the asset roster cannot remain in a later
+    publication. Asset copying is roster-driven: the release bundle requires
+    every MANUSCRIPT_ASSETS destination to ship, and chapters hyperlink the
+    interactive companions through published-ref URLs rather than relative
+    asset paths, so a reference-only filter would silently drop assets the
+    bundle (and the offline reading promise) must carry.
     """
     source = Path(source_dir).resolve()
     destination = Path(destination_dir).resolve()
@@ -329,23 +333,24 @@ def render_manuscript(
         for source_path, content in source_contents.items()
     }
 
-    referenced_assets = {
-        reference: paths
-        for reference, paths in MANUSCRIPT_ASSETS.items()
-        if any(reference in content for content in rendered_contents.values())
-    }
+    # Copying is roster-driven, not reference-driven: the release bundle
+    # requires every MANUSCRIPT_ASSETS destination (release_bundle.py), and
+    # chapters hyperlink the interactive companions through published-ref
+    # URLs, so a referenced-only filter silently dropped assets the offline
+    # publication must ship. Fail closed when any roster source is absent.
     missing_assets = [
         str(source.parent / source_relative)
-        for source_relative, _destination_relative in referenced_assets.values()
+        for source_relative, _destination_relative in MANUSCRIPT_ASSETS.values()
         if not (source.parent / source_relative).is_file()
     ]
     if missing_assets:
         raise ManuscriptRenderError(
-            "referenced manuscript assets are missing:\n" + "\n".join(missing_assets)
+            "manuscript asset roster sources are missing:\n"
+            + "\n".join(missing_assets)
         )
     asset_contents = {
         destination_relative: (source.parent / source_relative).read_bytes()
-        for source_relative, destination_relative in referenced_assets.values()
+        for source_relative, destination_relative in MANUSCRIPT_ASSETS.values()
     }
     graphical_abstract_requested = any(
         "publication.graphical_abstract." in content
@@ -370,7 +375,7 @@ def render_manuscript(
         for reference, (
             _source_relative,
             destination_relative,
-        ) in referenced_assets.items():
+        ) in MANUSCRIPT_ASSETS.items():
             rendered_content = rendered_content.replace(
                 reference, destination_relative.as_posix()
             )

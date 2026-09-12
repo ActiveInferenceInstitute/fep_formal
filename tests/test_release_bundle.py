@@ -1119,6 +1119,10 @@ def test_release_rejects_manuscript_sources_that_escape_through_symlinks(
     outside.write_text("# Outside-root content\n", encoding="utf-8")
     (manuscript / "01_chapter.md").symlink_to(outside)
     (manuscript / "manuscript_vars.yaml").write_text("{}\n", encoding="utf-8")
+    for source_relative, _destination in bundle_module.MANUSCRIPT_ASSETS.values():
+        roster_source = project_root / source_relative
+        roster_source.parent.mkdir(parents=True, exist_ok=True)
+        roster_source.write_bytes(b"<fixture/>\n")
     bundle_module.render_manuscript(manuscript, rendered, {})
 
     errors = bundle_module._rendered_manuscript_errors(project_root)

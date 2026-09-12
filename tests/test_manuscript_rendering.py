@@ -20,6 +20,7 @@ from fep_lean.output.manuscript import (
     write_unified_formalism_appendix_markdown,
 )
 from fep_lean.output.rendering import (
+    MANUSCRIPT_ASSETS,
     ManuscriptRenderError,
     manuscript_source_files,
     render_manuscript,
@@ -57,7 +58,16 @@ def _write_graphical_abstract_render_fixture(project_root: Path) -> Path:
         "![Graphical abstract]({{publication.graphical_abstract.render_path}})\n",
         encoding="utf-8",
     )
+    _stage_asset_roster(project_root)
     return source
+
+
+def _stage_asset_roster(project_root: Path) -> None:
+    """Stage every MANUSCRIPT_ASSETS source; copying is roster-driven."""
+    for source_relative, _destination_relative in MANUSCRIPT_ASSETS.values():
+        source_path = project_root / source_relative
+        source_path.parent.mkdir(parents=True, exist_ok=True)
+        source_path.write_bytes(b"<fixture/>\n")
 
 
 def _copy_publication_metadata(project_root: Path) -> None:
@@ -305,6 +315,7 @@ def test_render_manuscript_copies_and_rewrites_visual_assets(
     docs = tmp_path / "docs"
     source.mkdir()
     docs.mkdir()
+    _stage_asset_roster(tmp_path)
     (source / "01_chapter.md").write_text(
         "![Atlas](../docs/formalism-atlas.svg)\n"
         "[Interactive](../docs/formalism-atlas.html)\n"
@@ -352,6 +363,7 @@ def test_rerender_replaces_the_owned_chapter_and_asset_roster(
     docs = tmp_path / "docs"
     source.mkdir()
     docs.mkdir()
+    _stage_asset_roster(tmp_path)
     (source / "01_keep.md").write_text(
         "![Atlas](../docs/formalism-atlas.svg)\n", encoding="utf-8"
     )
@@ -366,8 +378,11 @@ def test_rerender_replaces_the_owned_chapter_and_asset_roster(
     old.unlink()
     (source / "01_keep.md").write_text("Current chapter\n", encoding="utf-8")
     render_manuscript(source, destination, {})
-
-    assert tuple(path.name for path in destination.iterdir()) == ("01_keep.md",)
+    assert tuple(sorted(path.name for path in destination.iterdir())) == (
+        "01_keep.md",
+        "assets",
+    )
+    assert (destination / "assets" / "formalism-atlas.svg").is_file()
     assert (destination / "01_keep.md").read_text(encoding="utf-8") == (
         "Current chapter\n"
     )
