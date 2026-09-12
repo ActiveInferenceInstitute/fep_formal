@@ -1,51 +1,61 @@
 ## Unreleased — connected Horizon research program
 
 
-### Wave-2 coordinated refactor and partial evidence refresh (2026-09-10)
+### scope-wave2: FEP-CI-RENDER lane and evidence-currency close-out (2026-09-12)
 
-Code (all receipt-digest-shifting by design; one coordinated refresh):
+Commits (in order): `8ffbe2a` hermetic acceptance carries exactly git + fc-list
+and the real user font inventory; `2951557` Q7 scaffold records the CPython 3.14
+interpreter contract with a pinned-digest test; `f942ec9`/`dc29ecf`-chained
+custody re-pins bind the Q5/Q6 manifests and the bridge source pin to the
+current extractor bytes; `bb35bad` collection evidence carries the canonical
+marker filter and svg_raster coverage; `237fe02` bridge custody re-pin at
+`bb35bad`; `ffccdc0` collection-cache schema pins reconciled to 5 (the
+`bb35bad` cache-format bump intentionally invalidated old caches; the two
+hermetic tests pin the schema so a bump forces a conscious test update);
+`d818efb` the renderer carries the full manuscript asset roster; `f8cd645`
+bridge custody re-pin at `d818efb`.
 
-- Catalogue spine: `FEPTopicCatalogue` gained the sole validating
-  construction path (roster/order/vocabulary asserted in `__init__`,
-  `topics` frozen to a tuple); `from_yaml` delegates document/roster/family
-  metadata validation to `schema.load_catalogue_metadata` (new
-  `GENERATED_TOPIC_FIELDS` row-field set) and keeps only the
-  generated-projection checks; one canonical Lean theorem-header regex
-  (`LEAN_THEOREM_RE`) replaces five divergent copies.
-- Verification layer: bridge custody `read_object` rejects duplicate JSON
-  keys and non-finite constants; one strict-JSON loader
-  (`verification/_jsonutil.load_strict_json`) replaces five hand-rolled
-  parsers; `LeanVerifier` threads `lean_dir` into every subprocess
-  environment and now delegates tool resolution to the shared
-  `_toolchain` layer; Hermes preflight no longer mutates shared config
-  budgets (per-call probe budgets instead); the theorem-witness endpoint
-  dry-run found 89/125 edges failing a reviewed-primary-qualified rule —
-  recorded as a relations-ledger review, not a code loosening.
-- Output plane: shared `output/fsutil` primitives (atomic writes, digests);
-  manuscript's pytest-collection evidence functions promoted to public
-  names; a shared SVG presentation kernel serves atlas and dashboard; a
-  versioned `RELEASE_SEAL` (plus individual constants) is the single
-  definition site for the 155-topic release shape; the theorem-maturity
-  projection is importable (`catalogue/theorem_maturity_projection.py`),
-  removing the receipt validator's `runpy` execution of a script;
-  release-bundle prerequisite passes one built presentation through both
-  drift helpers; `render_manuscript` fails closed by default when the
-  native receipt is not claim-ready (`--allow-unavailable-evidence` opts
-  out); `summary.json` is written once (no hash-less crash window); the
-  CDP WebSocket handshake closes the socket when `sendall` fails.
-- Hygiene: `02_run_single_topic.py` requires an explicit topic id; the
-  interpreter contract (packaging floor vs accepted 3.14 runtime) is
-  documented in `src/fep_lean/README.md` and `docs/development.md`;
-  per-user ELAN tempdir; `settings.yaml` `api_key` rejected; `.aii` test
-  task runs under uv; the bare `index.md` gitignore is scoped to the root;
-  Hermes API responses are bounded (8 MiB cap) and the wall-clock deadline
-  now force-shuts the abandoned socket; `verify_batch` runs as a plain
-  sequential loop; references.bib duplicate detection uses `Counter`;
-  dead environment aliases removed; the status-pie palette asserts its
-  arity.
-
-## Unreleased — connected Horizon research program
-
+- Renderer contract (owner-visible decision): `render_manuscript` now copies
+  every `MANUSCRIPT_ASSETS` destination unconditionally (roster-driven),
+  failing closed when any roster source is absent. Rationale: the release
+  assembler requires the full roster, chapters hyperlink the interactive
+  companions through published-ref URLs by design (`d1c0530` replaced the
+  404ing relative links), and the appendix promises the offline HTML
+  "without requiring a network connection" — so a reference-only filter
+  silently dropped the SVG/HTML companions from the release bundle. The
+  referenced-only filter was the stale side of the contract.
+- Hermetic acceptance (granted final run on the converged tree): 0 failed /
+  0 errors; junit roster equals `manuscript_vars.tests.collected` at 1617
+  (1604 passed + 13 skipped); line coverage 0.891 against the 0.89 floor;
+  receipts retained under `output/` (pytest.xml, coverage.xml,
+  python-acceptance.json).
+- Deterministic release bundle: two `SOURCE_DATE_EPOCH=0` builds are
+  byte-identical, sha256 `ceb08c1811a7aa832245cba8cb7bd56adaaa6bdff8e8e8e8ecaeab7abfb8bb38`
+  (308 members), and `--check` validates the same bundle claim-ready against
+  the live roster.
+- Evidence currency: native verification receipt regenerated on the final
+  tree — 155/155 topics compile warning- and sorry-free; the formal two-arg
+  `validate_native_lean_receipt(receipt, project_root=...)` reports `valid`,
+  `source_bound`, and `native_claim_ready`. Bridge custody re-pinned
+  (`specs/gnn-bridge-w2-source-custody/source-pin.json` at `d818efb`; both
+  Q5 and Q6 freshness gates green). Formalism-audit receipt refreshed
+  (complete, zero errors, no sorry-axiom). Publication plane current
+  (catalogue, render-fonts, and the strict-default `render_manuscript
+  --check` all green) and the browser interaction receipt re-captured with
+  zero receipt errors against the live Chrome replay.
+- Evidence boundary: the report receipt validates in catalogue mode
+  (`valid`, `source_bound`; `claim_ready` is full-mode-only by definition —
+  a catalogue-mode report must never be read as provider evidence); native
+  compilation is claim-ready at 155/155 for the exact recorded digests; the
+  Hermes/OpenGauss provider plane remains historical (FEP-FULL-155 owns the
+  next full-mode run under its own credential and spend boundary).
+- Process lesson, recorded for the ledger: acceptance runs bind their input
+  snapshot, so the dependency chain is native → manuscript vars → render →
+  acceptance → bundle. An acceptance run launched concurrently with the
+  native re-seal completed before the native receipt landed and correctly
+  failed the bundle's input-snapshot gate; the binding run is the one
+  executed after the evidence plane converges. Manuscript vars were never
+  reverted to satisfy a gate — the claim-ready state is the published state.
 
 ### Wave-2 coordinated refactor and partial evidence refresh (2026-09-10)
 

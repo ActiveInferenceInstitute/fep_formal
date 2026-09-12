@@ -93,6 +93,84 @@ jobs:
       - run: uv run ruff format --check src tests scripts docs
       - run: git diff --check
 
+  # FEP-CI-RENDER: CI verifies only the committed docs/render-acceptance.json
+  # receipt, so every defect the acceptance exists to catch reaches main
+  # unopposed whenever a local render was skipped. This lane renders
+  # end-to-end behind the lean job (the manuscript fails closed without a
+  # claim-ready native receipt, and the lean job uploads exactly that one) and
+  # validates both fail-closed receipts against the same sources in the same
+  # run, so manuscript drift cannot survive between local renders.
+  render:
+    needs: lean
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+      - name: Download the native receipt the lean job produced
+        uses: actions/download-artifact@v7
+        with:
+          name: native-formal-evidence
+          path: output
+      - name: Check out the shared rendering template at its pinned ref
+        uses: actions/checkout@v7
+        with:
+          # render_publication.py resolves the template through
+          # FEP_LEAN_TEMPLATE_DIR and needs scripts/pipeline/stage_03_render.py
+          # in it. The template is a separate repository this project does not
+          # pin programmatically, so the ref is pinned here instead and must be
+          # re-pinned (and the committed render receipts refreshed) after a
+          # fresh local render whenever the template moves.
+          repository: docxology/template
+          ref: 5b3c0f43940f0322fbc6205b3be4c2854f99329d
+          path: render-template
+      - name: Install the XeLaTeX toolchain, pandoc, and the SVG rasterizer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-xetex texlive-latex-recommended texlive-latex-extra \
+            texlive-fonts-recommended fontconfig librsvg2-bin
+          # The apt pandoc trails the pinned release this document renders
+          # with; install the pinned upstream build instead.
+          curl -fsSL -o /tmp/pandoc.deb \
+            https://github.com/jgm/pandoc/releases/download/3.11/pandoc-3.11-1-amd64.deb
+          sudo dpkg -i /tmp/pandoc.deb
+          rm -f /tmp/pandoc.deb
+      - name: Install the two faces the preamble selects
+        run: |
+          # JuliaMono (the code face; no distribution package) and GNU
+          # FreeSerif (the main and Lean-unicode face), at pinned versions,
+          # into the user font directory fontconfig resolves under $HOME.
+          mkdir -p "$HOME/.fonts"
+          curl -fsSL -o /tmp/JuliaMono.tar.gz \
+            https://github.com/cormullion/juliamono/releases/download/v0.63.2/JuliaMono-ttf.tar.gz
+          tar -xzf /tmp/JuliaMono.tar.gz -C "$HOME/.fonts"
+          curl -fsSL -o /tmp/freefont.zip \
+            https://ftp.gnu.org/gnu/freefont/freefont-ttf-20120503.zip
+          unzip -j /tmp/freefont.zip 'freefont-20120503/FreeSerif*' \
+            -d "$HOME/.fonts"
+          rm -f /tmp/JuliaMono.tar.gz /tmp/freefont.zip
+          fc-cache -f
+      - name: Install the mermaid CLI
+        run: npm install -g "@mermaid-js/mermaid-cli@11.17.0"
+      - run: uv sync --locked --extra dev
+      # The glyph projection and the manuscript hydration both read the
+      # generated appendix (a gitignored build product), so the catalogue
+      # materializes it before anything below runs.
+      - run: uv run fep-lean catalogue
+      - name: Render the publication and accept it fail-closed
+        env:
+          FEP_LEAN_TEMPLATE_DIR: ${{ github.workspace }}/render-template
+        run: uv run python scripts/render_publication.py
+      - name: Validate the fresh render receipts against the same sources
+        run: |
+          uv run python scripts/build_render_fonts.py
+          uv run python scripts/build_render_fonts.py --check
+          uv run python scripts/check_render_log.py --verify-receipt
+
+
   lean:
     runs-on: ubuntu-latest
     timeout-minutes: 180
