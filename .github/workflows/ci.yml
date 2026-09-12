@@ -149,15 +149,6 @@ jobs:
           repository: docxology/template
           ref: 5b3c0f43940f0322fbc6205b3be4c2854f99329d
           path: render-template
-      - name: Generate the publication figure assets
-        run: |
-          # The renderer carries the full MANUSCRIPT_ASSETS roster, so every
-          # asset destination must exist here: the atlas/dashboard SVG+HTML
-          # projections under docs/, and the rasterized PNGs the catalogue
-          # does not produce, under output/figures/.
-          uv run python scripts/build_formalism_atlas.py
-          uv run python scripts/build_formal_kernel_dashboard.py
-          uv run python scripts/build_manuscript_figures.py
       - name: Install the XeLaTeX toolchain, pandoc, and the SVG rasterizer
         run: |
           sudo apt-get update
@@ -187,6 +178,15 @@ jobs:
           fc-cache -f
       - name: Install the mermaid CLI
         run: npm install -g "@mermaid-js/mermaid-cli@11.17.0"
+      - name: Generate the publication figure assets
+        run: |
+          # The renderer carries the full MANUSCRIPT_ASSETS roster, so every
+          # asset destination must exist here: the atlas/dashboard SVG+HTML
+          # projections under docs/, and the rasterized PNGs the catalogue
+          # does not produce, under output/figures/.
+          uv run python scripts/build_formalism_atlas.py
+          uv run python scripts/build_formal_kernel_dashboard.py
+          uv run python scripts/build_manuscript_figures.py
       - run: uv sync --locked --extra dev
       # The glyph projection and the manuscript hydration both read the
       # generated appendix (a gitignored build product), so the catalogue
