@@ -77,6 +77,16 @@ bridge custody re-pin at `d818efb`.
   owner's hand-edited copies were superseded by re-emitting both models from
   the wave sources (`fep-lean bridge emit`, finite + continuous); bridge
   status reports every check fresh and the Q5/Q6/geo gates stay green.
+- CI restoration record (2026-09-12): CI ruff round 2 formatted
+  `rendering.py` (`b399d45`, byte-level formatting only — the d818efb
+  contract is unchanged) and the render lane was restored to verify
+  identifiers against the pinned template checkout; CI rounds 3–5 are
+  workflow-only. The rostered byte shift invalidated the standing custody
+  and evidence bindings, so the chain was re-run and re-bound at the
+  formatted bytes: native verification recompiled 155/155 warning- and
+  sorry-free (two-arg gate triple-True), bridge custody re-sealed, the
+  publication plane re-rendered, and the hermetic acceptance plus the
+  deterministic release bundle were re-validated under the new receipts.
 
 ### Wave-2 coordinated refactor and partial evidence refresh (2026-09-10)
 
