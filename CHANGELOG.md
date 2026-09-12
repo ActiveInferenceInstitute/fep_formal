@@ -56,6 +56,16 @@ bridge custody re-pin at `d818efb`.
   failed the bundle's input-snapshot gate; the binding run is the one
   executed after the evidence plane converges. Manuscript vars were never
   reverted to satisfy a gate — the claim-ready state is the published state.
+- Merge record (2026-09-12): `origin/main` (`0da46d7`) merged over merge-base
+  `4bb32ec`; its delta touches the custody/spec plane only (two `gnn-input/`
+  topic documents, the w1 `syntax-pin.json`, and the w2 `source-pin.json`
+  re-seal) with zero `src/`/`scripts/` files, so the rostered source digest is
+  unchanged and the native receipt needed no re-run. The `source-pin.json`
+  conflict resolved to the wave side (`f8cd645` re-seal binds the current
+  roster bytes; origin's re-seal pinned pre-wave bytes), re-verified by the
+  Q5/Q6/geo freshness gates and bridge status after the merge. The owner's
+  newer pending re-seal branch `origin/repin6` is intentionally not merged
+  and remains on its own PR flow.
 
 ### Wave-2 coordinated refactor and partial evidence refresh (2026-09-10)
 
