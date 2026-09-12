@@ -109,6 +109,29 @@ jobs:
       - uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
+      - name: Cache the elan toolchain
+        uses: actions/cache@v6
+        with:
+          path: ~/.elan
+          key: elan-${{ hashFiles('lean/lean-toolchain') }}
+      - name: Install elan
+        run: |
+          # Pinned elan-init (leanprover/elan@0e36a07b, 2026-08-26); the
+          # identifier audit verifies Mathlib citations against the pinned
+          # checkout, so the render lane needs the same toolchain the lean
+          # job compiles with.
+          curl https://raw.githubusercontent.com/leanprover/elan/0e36a07b9bbcc5381fa6250df109f9a4f94d7bac/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Install pinned toolchain
+        run: elan toolchain install "$(cat lean/lean-toolchain)"
+      - name: Fetch pinned Mathlib cache for the identifier audit
+        working-directory: lean
+        shell: bash
+        run: |
+          if ! lake exe cache get; then
+            echo "Mathlib cache fetch failed; the identifier audit fails closed without the pinned checkout" >&2
+            exit 1
+          fi
       - name: Download the native receipt the lean job produced
         uses: actions/download-artifact@v7
         with:

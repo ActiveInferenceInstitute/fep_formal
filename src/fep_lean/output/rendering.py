@@ -345,8 +345,7 @@ def render_manuscript(
     ]
     if missing_assets:
         raise ManuscriptRenderError(
-            "manuscript asset roster sources are missing:\n"
-            + "\n".join(missing_assets)
+            "manuscript asset roster sources are missing:\n" + "\n".join(missing_assets)
         )
     asset_contents = {
         destination_relative: (source.parent / source_relative).read_bytes()
