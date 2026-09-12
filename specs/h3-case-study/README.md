@@ -5,7 +5,9 @@ recorded; H3.6S synthetic-recovery feasibility spike executed (decision:
 pass). No acceptance or exit-gate verdict is issued here — independent claim
 review is the next phase, and the open items in the last section are exactly
 what that review must adjudicate.** Base: `research/h3-case-study` @
-`b992032` (isolated worktree). Last updated: 2026-09-11.
+`b992032` (isolated worktree), rebased onto origin/main `32258cf` on
+2026-09-11 with a final-tree spike refresh (see "Final-tree spike refresh"
+below). Last updated: 2026-09-11.
 
 This spec executes the opening of the preregistered
 [Horizon 3 protocol](../../docs/design/fep-research-program/horizon-3-scientific-case-study.md)
@@ -309,6 +311,45 @@ No acceptance or exit-gate verdict is issued here. The reviewer must check:
 7. **Digest re-pinning** — the spike pins six source digests at `b992032`;
    any rebase, re-pin, or receipt re-seal invalidates them and requires a
    new frozen run (the executable rejects stale digests by construction).
+
+## Final-tree spike refresh (2026-09-11)
+
+The branch was rebased onto origin/main `32258cf` (the wave-2 evidence
+refresh: custody re-seals, gnn-input projection re-emission, and the
+renderer roster-contract fix) with no conflicts — every file on this branch
+is new under `specs/h3-case-study/`. The spike was then re-run per the
+procedure above (`uv`-only, from the rebased worktree root) against the
+final tree:
+
+- **Decision reproduced**: `decision: "pass"`, all four gate classes
+  (fixture, settings, rejections, negative-control) pass with the same
+  exactness classes and byte-identical numerics as the `b992032` run.
+- **Receipt refresh**: old receipt sha256
+  `6913b5b50c65d2b7e09e1fa7f69c96fa505b070914aff513f286822b9ef158a4` →
+  new receipt sha256
+  `6913b5b50c65d2b7e09e1fa7f69c96fa505b070914aff513f286822b9ef158a4`
+  (unchanged): the rerun's payload is byte-identical to the retained
+  `spike-receipt.json`, so the refresh is a verification, not a rewrite.
+- **Drift classes observed between `b992032` and `32258cf`** (18 files):
+  CI workflow, CHANGELOG/TODO records, gnn-input projection markdown,
+  artifact-proof manifests, gnn-bridge custody pins
+  (`specs/gnn-bridge-w2-source-custody/source-pin.json`,
+  `specs/gnn-bridge-q7-continuous-ou-proof/syntax-pin.json`), the
+  renderer/release-bundle modules (`src/fep_lean/output/{manuscript,
+  release_bundle,rendering}.py`), and their tests. **None of these
+  intersect the spike's six-pin set**: all five pinned Lean carrier/
+  composition sources and the H2.7 terminal receipt are byte-identical at
+  `32258cf`, so no pin or receipt value required updating.
+- **Residual re-verified**: the W2 eligibility validator still fails on the
+  live tree with exactly `{"status": "error", "error": "current
+  validator/diagnostic source mismatch"}` (re-run read-only at `32258cf`)
+  — the "precise residual" section above is unchanged by the rebase, as
+  none of its six named files drifted.
+
+The HARD STOP stands: this refresh is a feasibility-spike receipt refresh
+only (in-contract for a spike, unlike the repo's custody manifests, which
+were not touched). It issues no acceptance or exit-gate verdict and makes
+no study-completion claim; independent claim review remains the next phase.
 
 ## Boundary
 
