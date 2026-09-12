@@ -129,9 +129,12 @@ spike, and 146 of 147 native-map files. The residual, fully enumerated:
   consequence of the hardened validator inputs above.
 - **One predecessor record** —
   `readiness/repairs/07-gaussian-vfe-natural-gradient.json` no longer binds
-  its own captured maps for `src/fep_lean/formal/manifest.py` and
-  `tests/test_horizon2_gaussian_vfe_readiness.py` (same post-seal wave). The
-  other six predecessor records bind.
+  its own captured maps for `src/fep_lean/formal/manifest.py` (last changed
+  at `0b5d01e`, 2026-09-04, ~9h **before** the `f335724` seal) and
+  `tests/test_horizon2_gaussian_vfe_readiness.py` (last changed at the seal
+  commit `f335724` itself; `git log f335724..32258cf` over both paths is
+  empty) — a captured-map staleness relative to record capture, not a
+  post-seal drift wave. The other six predecessor records bind.
 
 By the terminal contract's own rule ("changes to the bound sources invalidate
 acceptance until new evidence is reviewed and sealed",
@@ -273,19 +276,22 @@ file (clean), the deterministic rerun, the live-tree digest proof, and the
 tampered-digest rejection proof.
 
 ## Open items for independent claim review (hard-stop boundary)
-
 No acceptance or exit-gate verdict is issued here. The reviewer must check:
 
 1. **H2.7 receipt residual** — adjudicate whether the continuous-branch G0
    selection stands on the carrier-bound evidence (every Lean carrier source
-   binds exactly; diagnostics recompute green) while the six-file
-   python-side source drift (SC-6/SC-8/SC-35 + conftest, plus the two files
-   inside the R0 predecessor map) is re-sealed under
-   `FEP-EVIDENCE-CURRENT`, or whether the H2.7 re-seal must precede G0
-   acceptance. The no-go alternative (switching to the finite branch) is not
-   evidence-improving: the H1.8 exit has no current digest-bound exit
-   receipt, and finite consideration requires a separate review that does
-   not exist.
+   binds exactly; diagnostics recompute green) while the python-side source
+   drift — exactly five `current_sources` files (latex.py, registry.py,
+   declarations.py, lean_source.py, horizon_acceptance.py) plus
+   tests/conftest.py in one R0 map, with the two stale-captured-map files in
+   the 07 predecessor record being record staleness rather than post-seal
+   drift — is re-sealed under the durable owner row `FEP-H27-RESEAL`
+   (main-tree TODO.md; acceptance probe: `validate_terminal_acceptance`
+   passes at the live tree with the receipt claim-ready), or whether the
+   H2.7 re-seal must precede G0 acceptance. The no-go alternative (switching
+   to the finite branch) is not evidence-improving: the H1.8 exit has no
+   current digest-bound exit receipt, and finite consideration requires a
+   separate review that does not exist.
 2. **W2 G0 machinery** — confirm the captured validator failure
    (`current validator/diagnostic source mismatch`) is the same residual as
    FEP-EVIDENCE-CURRENT's remaining Python-acceptance plane, and that no
