@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "d818efb88de481d102496e3293c0ecb861ef18f9",
+    "commit": "7520b81c7bf1174d068b8bf97a131baab27f2163",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e26aebb57ade584b0b0d9423fd496930d24b63344b7e84afcdc4da1af875d5a4",
@@ -132,7 +132,7 @@
       "src/fep_lean/output/release_bundle.py": "5fbb567aab1576c11e479d43ca21df1fc582c23fdf5b23095af5320f0331b016",
       "src/fep_lean/output/render_fonts.py": "c9b0f8b84a42ebbbc3726291aef365bc43688f04b26ed03c6ef1fe47f9b19594",
       "src/fep_lean/output/render_log.py": "f96c56254e898c2badebd239a1117d80a75027396dacd093588a750a13f4d857",
-      "src/fep_lean/output/rendering.py": "e118808c0677ef7330b3338c9fc3187cd182a3d2c3bf6cdffdf2dbae967be8af",
+      "src/fep_lean/output/rendering.py": "410883426457493151418f22494414682ac16b41cdc666ef9654cd52b8180eba",
       "src/fep_lean/output/reporter.py": "c57d3d173479fd26ac2cf22a83bb845a1fdfaad0fd187ae49525b2797ad1acd7",
       "src/fep_lean/output/svg_presentation.py": "d9ed41dc86a767b6f71db67da56c11bb673efffc52f25ff4c1d4a4ce3e498a92",
       "src/fep_lean/output/svg_raster.py": "0d946ec7eb451d5386417a6769707cab9e823cfee145ee686d67c6dfc4c2c512",
@@ -158,7 +158,7 @@
     }
   },
   "gnn": {
-    "commit": "7e6073484cc4278e03d9b353f66374b08fb3639a",
+    "commit": "7d8d2ef070af32cd015a6c71e36fd30652d925db",
     "owners": {
       "docs/gnn/gnn_syntax.md": "96e720455753c564cbdf72a70f9e9fbe6d28b96be420763cfe96cedaef262860",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -416,7 +416,7 @@
       "src/gnn/lsp/mcp.py": "62f78ce34895e9ab8a4b41f87b5640e618fb5b4780973303ebbd5d7f2aa55fa5",
       "src/gnn/main.py": "e7ff2ee85a27d74f02c912f0a109fd08a315f1f3754b1427e11a6be13a5f15e2",
       "src/gnn/manuscript/__init__.py": "3d81bf2b044251df29ca281425297b792ca10d0476307119b7516f0aa2592f92",
-      "src/gnn/manuscript/render_custody.py": "64825027cb5b03d19720f5c36ad200ecfab72aa2f53defdb618fe9159d9065bb",
+      "src/gnn/manuscript/render_custody.py": "8a5c7d3f21af2f1d26a72f32b5c5492fc0e411a2342839f9f6c967b31cfa67fe",
       "src/gnn/manuscript/variables.py": "5366e86ed4ad3fd5c1a188c62941eebf3da8438422644ca674b08cbb64d86b6d",
       "src/gnn/mcp/__init__.py": "29e6ee653772fc9aeca5d4b638b8f5b79de87da1b2a00c08ee4303977e472d0e",
       "src/gnn/mcp/cli.py": "92420f402b1ddb5b0a07e811f0b37bb7493934e4993b2848ae9d27442c88f1ac",
@@ -521,7 +521,7 @@
       "src/gnn/pipeline/health_check.py": "49e98cf144c2d7590e279264b1db2f4f6f8075da84fd76d4ed9a559d1a8ed113",
       "src/gnn/pipeline/logging_config.py": "a04c2e2276082408ed487b1939d99930d1b1d6af01edefabdccf26cdb9e50bbe",
       "src/gnn/pipeline/mcp.py": "9febb06b559aa562c24b6a6831c4fa3cdbfef55587669cb3fd8e64bf90b9474c",
-      "src/gnn/pipeline/model_family_acceptance.py": "b5e03ce061397f370fca866f8b65a10797b6d9fd5663f8393e5e0904dfdc757a",
+      "src/gnn/pipeline/model_family_acceptance.py": "a47c7b5700efc396de1cc955c94f3916f268f7a1f40ff074812b1ca696bd640e",
       "src/gnn/pipeline/pipeline_container_plan.py": "e95dfb16b4ef5a7b06b59b9d5a63c506f4f346c66d7f6ec01da8c23f9fc7c618",
       "src/gnn/pipeline/pipeline_runtime_validator.py": "b95d3b7c4f40e86c2a3acfec35e4bec2bcd73cad44308e4a2b5a461bccf2ee1b",
       "src/gnn/pipeline/pipeline_step_template.py": "d19e4381a4c0ae7886b604dfaa2fb093bcbd2aa034e3d367b5e3daea5cb4d2b2",
