@@ -149,6 +149,15 @@ jobs:
           repository: docxology/template
           ref: 5b3c0f43940f0322fbc6205b3be4c2854f99329d
           path: render-template
+      - name: Register this repository as the template's active project
+        run: |
+          # The template's render stage resolves projects/active/<name>
+          # (else projects/working/<name>); that directory is a machine-local
+          # symlink in real checkouts and is gitignored in the template, so
+          # CI must register this checkout the same way before the render
+          # stage runs.
+          mkdir -p render-template/projects/active
+          ln -s "$GITHUB_WORKSPACE" render-template/projects/active/fep_lean
       - name: Install the XeLaTeX toolchain, pandoc, and the SVG rasterizer
         run: |
           sudo apt-get update
