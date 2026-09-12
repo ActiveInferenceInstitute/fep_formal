@@ -121,7 +121,7 @@ Code (all receipt-digest-shifting by design; one coordinated refresh):
   dead environment aliases removed; the status-pie palette asserts its
   arity.
 
-Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody re-pinned; native verification receipt valid/source-bound/claim-ready (155/155, formal two-arg call); formalism audit zero errors; publication plane current including the strict-default render check; browser acceptance clean; `fep-lean status` reads all four sections current with the top-level `native_claim_ready` flag derived from the section state (VI-7 fix). The Python-acceptance plane is the remaining blocker: the hermetic environment cannot run the tool-dependent lanes (see TODO `FEP-EVIDENCE-CURRENT`), so that row stays open pending the owner's hermetic-policy decision. Owner roster bumped
+Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody re-pinned; native verification receipt valid/source-bound/claim-ready (155/155, formal two-arg call); formalism audit zero errors; publication plane current including the strict-default render check; browser acceptance clean; `fep-lean status` reads all four sections current with the top-level `native_claim_ready` flag derived from the section state (VI-7 fix). At this stamp the Python-acceptance plane was the remaining blocker (the hermetic environment could not run the tool-dependent lanes; see then-open TODO `FEP-EVIDENCE-CURRENT`) — superseded 2026-09-12: the owner authorized the hermetic-policy change (git + fc-list allowlist), and the close-out section above records the granted final acceptance run. Owner roster bumped
 15 → 17 for the new rostered modules.
 
 ### Evidence-currency status verb and GEO-INFER notation slice (2026-09-08)
