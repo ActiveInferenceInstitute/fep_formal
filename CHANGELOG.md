@@ -33,6 +33,10 @@ bridge custody re-pin at `d818efb`.
   byte-identical, sha256 `ceb08c1811a7aa832245cba8cb7bd56adaaa6bdff8e8e8e8ecaeab7abfb8bb38`
   (308 members), and `--check` validates the same bundle claim-ready against
   the live roster.
+  (run 6 against the 32258cf tree; superseded by the later reconciliations —
+  the final restoration chain's bundle is `f6ecc47136f895f01e502edd1b05e1c4c0859be8158b0e71d2759e9621ee61c2`,
+  also byte-identical ×2 and `--check` claim-ready, recorded in the
+  restoration-record section below)
 - Evidence currency: native verification receipt regenerated on the final
   tree — 155/155 topics compile warning- and sorry-free; the formal two-arg
   `validate_native_lean_receipt(receipt, project_root=...)` reports `valid`,
@@ -87,6 +91,12 @@ bridge custody re-pin at `d818efb`.
   sorry-free (two-arg gate triple-True), bridge custody re-sealed, the
   publication plane re-rendered, and the hermetic acceptance plus the
   deterministic release bundle were re-validated under the new receipts.
+
+- CI render lane accepted (2026-09-12): the `render` job passed end-to-end on
+  GitHub CI twice (runs 34680452819 and 34681926826 — lean, python, and render
+  all green; the render leg writes and validates fresh `docs/render-acceptance.json`
+  plus `docs/render-fonts.json` in the same run over the pinned template ref),
+  closing the FEP-CI-RENDER backlog row per its own probe.
 
 ### Wave-2 coordinated refactor and partial evidence refresh (2026-09-10)
 
