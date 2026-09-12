@@ -66,6 +66,17 @@ bridge custody re-pin at `d818efb`.
   Q5/Q6/geo freshness gates and bridge status after the merge. The owner's
   newer pending re-seal branch `origin/repin6` is intentionally not merged
   and remains on its own PR flow.
+- Merge record (2026-09-12, second reconciliation): `origin/main` (`03f7cd4`,
+  the owner's merged `repin6` re-seal) merged over the prior merge head. Its
+  delta again touches only the custody/spec plane (the two `gnn-input/`
+  projections, the w2 `source-pin.json`) with zero rostered source bytes, so
+  the native receipt needed no re-run. The `source-pin.json` conflict again
+  resolved to the wave re-seal: repin6 re-sealed against the origin lineage
+  whose owner bytes pre-date the wave commits and is stale for this tree. The
+  two `gnn-input/` documents are projections of the pinned sources, so the
+  owner's hand-edited copies were superseded by re-emitting both models from
+  the wave sources (`fep-lean bridge emit`, finite + continuous); bridge
+  status reports every check fresh and the Q5/Q6/geo gates stay green.
 
 ### Wave-2 coordinated refactor and partial evidence refresh (2026-09-10)
 
