@@ -145,7 +145,7 @@ workspace, and manuscript assets. From another directory, pass
 `--project-root /path/to/fep_lean` before the subcommand.
 
 ```bash
-uv sync --extra dev
+uv sync --locked --extra dev
 uv run python docs/pin_audit.py --check-latest
 uv run fep-lean catalogue
 uv run fep-lean atlas

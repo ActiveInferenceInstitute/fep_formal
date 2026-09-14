@@ -237,6 +237,8 @@ Opening any unchecked row requires a bounded spec slice per the
 [W2 source custody](../../../specs/gnn-bridge-w2-source-custody/README.md)
 owns the current operations contract. The previous W1 HEAD-refresh procedure
 is historical: committing a refresh moved HEAD and immediately staled itself.
+For the current canonical re-pin order, see
+[Re-pin runbook (canonical order)](#re-pin-runbook-canonical-order) below.
 
 Run from the fep_lean checkout, replacing `GNN_PATH` with the explicit GNN root:
 
@@ -273,3 +275,42 @@ entry points. P3 `certify.py` is a read-only historical numerical comparator
 unless `--output PATH` is supplied. Its retained reports are not silently
 rewritten by status. Package regression tests run without an adjacent GNN
 checkout; live bridge checks require the explicitly named pair.
+
+## Re-pin runbook (canonical order)
+
+When the paired GNN surface moves, re-pin in this exact order. The ordering
+carries the invariant: the GNN pair-pin bump is always the final commit.
+
+1. `uv run --project . fep-lean bridge status --gnn-root <gnn>` must be `ok`
+   before you start — or it explains the drift you are about to fix.
+2. On a branch, pin both models:
+
+   ```bash
+   uv run fep-lean bridge pin --model finite --gnn-root <gnn>
+   uv run fep-lean bridge pin --model continuous --gnn-root <gnn>
+   ```
+
+3. For both models, refresh the digests and emit:
+
+   ```bash
+   uv run fep-lean bridge emit --refresh-digests --model <m> --gnn-root <gnn> \
+     --results RESULTS.json --receipt RECEIPT.json --document DOCUMENT.md \
+     --fail-on-warnings
+   ```
+
+4. For both models, repeat step 3 with `--check` in place of
+   `--refresh-digests`; both runs must be `ok`.
+5. Commit the refreshed `specs/` files and the emitted artifacts, open a PR,
+   and merge.
+6. Only then bump `.github/fep-lean-pair.json` in the GNN repo to the merged
+   SHA — the final GNN commit, pushed once.
+
+Any GNN owner-file edit (`src/gnn/**/*.py`, `pyproject.toml`, `uv.lock`,
+`src/gnn/main.py`, the contract mirror, `docs/gnn/gnn_syntax.md`,
+`src/gnn/pipeline/step_registry.py`) after step 5 re-drifts the pair — land
+all GNN content edits BEFORE re-pinning.
+
+Mirror rule: `GeneralizedNotationNotation/docs/other/fep_lean/bridge-contract.md`
+(the GNN side) must stay byte-identical to
+`docs/design/gnn-bridge/bridge-contract.md` on this side; the bridge rejects
+divergence.

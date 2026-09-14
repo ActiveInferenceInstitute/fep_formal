@@ -85,6 +85,15 @@ promote the semantic disposition or prove the full FEP concept.
   `uv run fep-lean setup` and is bounded by `FEP_LEAN_SETUP_TIMEOUT_SEC`.
 - `preflight` JSON output is advisory subject to additive field changes between
   releases. Stable referential queries use the CLI exit code and `status` field.
+- `uv run fep-lean status` composes a read-only evidence-currency report from
+  existing checks; exit 0 means the report composed, not that evidence is
+  current.
+- `uv run fep-lean topic <id>` verifies one exact topic with the same workflow
+  choices as `run`.
+- `uv run fep-lean report` runs catalogue mode and emits a complete report.
+- Python 3.14 is the only accepted validator environment (see
+  `.python-version`); `requires-python >=3.10` in `pyproject.toml` is the
+  packaging floor, not the validator contract.
 
 ## Required checks
 
