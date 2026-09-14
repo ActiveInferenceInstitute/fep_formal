@@ -3,7 +3,7 @@
 ## Setup
 
 ```bash
-uv sync --extra dev
+uv sync --locked --extra dev
 uv run python -c "from fep_lean.catalogue import FEPTopicCatalogue; print(len(FEPTopicCatalogue.default().topics))"
 ```
 

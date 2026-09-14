@@ -32,6 +32,8 @@ uv run python docs/xref_audit.py
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
 uv run fep-lean catalogue
+uv run python scripts/build_render_fonts.py --check
+uv run python scripts/check_render_log.py --verify-receipt
 uv run python scripts/render_manuscript.py --check
 ```
 

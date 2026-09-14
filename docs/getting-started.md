@@ -7,7 +7,7 @@ installed `fep-lean` entry point outside that checkout, put
 `--project-root /path/to/fep_lean` before the subcommand.
 
 ```bash
-uv sync --extra dev
+uv sync --locked --extra dev
 uv run fep-lean catalogue
 uv run pytest tests/ -q
 ```

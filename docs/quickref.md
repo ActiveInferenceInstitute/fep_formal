@@ -1,7 +1,7 @@
 # Quick reference
 
 ```bash
-uv sync --extra dev
+uv sync --locked --extra dev
 uv run fep-lean catalogue
 uv run fep-lean setup
 uv run fep-lean verify
