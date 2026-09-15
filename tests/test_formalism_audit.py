@@ -14,7 +14,13 @@ from fep_lean.verification import formalism_audit
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_VERSION = (
-    "Lean (version 4.34.0, x86_64-unknown-linux-gnu, commit fixture, Release)"
+    "Lean (version "
+    + (PROJECT_ROOT / "lean" / "lean-toolchain")
+    .read_text()
+    .strip()
+    .rsplit(":", 1)[-1]
+    .lstrip("v")
+    + ", x86_64-unknown-linux-gnu, commit fixture, Release)"
 )
 
 
