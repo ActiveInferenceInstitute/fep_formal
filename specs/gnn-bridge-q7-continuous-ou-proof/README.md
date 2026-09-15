@@ -63,13 +63,19 @@ interpreter set for validating this scaffold is therefore exactly **CPython
 CPython is accepted to re-validate the frozen digest until
 `FEP-SCAFFOLD-PORTABILITY` lands a version-stable canonical serialization,
 which requires a new reviewed scaffold and a coordinated custody re-pin rather
-than a unilateral `expected.json` regeneration. The focused test
+than a unilateral `expected.json` regeneration. Since 2026-09-15 the
+contract is enforced in-module: `scaffold_digest` refuses to run before
+parsing under any interpreter outside the accepted set, raising
+`ContinuousArtifactError` with an `interpreter` reason that names both the
+accepted set and the running interpreter; the pinned digest is unchanged by
+the guard (no receipt re-seal). The focused test
 `tests/test_gnn_continuous_artifact_proof.py::test_frozen_scaffold_digest_reproduces_the_pinned_interpreter_contract`
-asserts that contract: the checkout pins 3.14, the validating interpreter IS
-3.14, and `scaffold_digest` of the retained runner reproduces the pinned
-`runner_ast_sha256` under it. Q5/Q6 runner custody is whole-file sha256 and
-already interpreter-independent; this contract governs only the Q7 AST
-scaffold digest.
+asserts the whole contract: the checkout pins 3.14, the validating
+interpreter IS 3.14, a non-accepted interpreter is refused with the clear
+error, an explicitly accepted interpreter proceeds, and `scaffold_digest` of
+the retained runner reproduces the pinned `runner_ast_sha256` under it. Q5/Q6
+runner custody is whole-file sha256 and already interpreter-independent; this
+contract governs only the Q7 AST scaffold digest.
 
 Acceptance requires focused extraction/custody-negative tests, current render
 provenance, exact probe regeneration, native compilation with no warnings or

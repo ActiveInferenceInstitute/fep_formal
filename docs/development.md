@@ -146,9 +146,15 @@ See [authorship-guide.md](authorship-guide.md), [testing.md](testing.md), and
 dev/evidence reality is narrower and pinned: `.python-version` pins CPython
 3.14 for development and CI, mypy models 3.12 (`[tool.mypy] python_version`),
 and the runtime test suite runs under 3.14 only. The declared 3.10/3.11 floor
-is evidentially unsupported until `FEP-SCAFFOLD-PORTABILITY` resolves:
-`scaffold_digest` freezes `ast.dump` output, which differs across CPython
-minor versions, so a scaffold accepted under one interpreter cannot be
-re-validated under another. Treat 3.14 as the only accepted runtime for
-verification runs until that TODO lands a version-stable serialization or an
-explicit multi-interpreter acceptance record.
+is evidentially unsupported: `scaffold_digest` freezes `ast.dump` output,
+which differs across CPython minor versions, so a scaffold accepted under one
+interpreter cannot be re-validated under another. The Q7 module now enforces
+this in code: `scaffold_digest` refuses to run before parsing under any
+interpreter outside the accepted set — exactly CPython 3.14, the
+`.python-version` pin — raising a `ContinuousArtifactError` naming the
+accepted set and the running interpreter. The pinned `runner_ast_sha256`
+digest is interpreter-contract-pinned to that set and is unchanged by the
+guard. The guard does not relax the 3.14-only rule: a version-stable
+serialization or an explicit multi-interpreter acceptance record still lands
+as a new reviewed scaffold via `FEP-SCAFFOLD-PORTABILITY` with a coordinated
+custody re-pin.

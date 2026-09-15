@@ -687,15 +687,27 @@ def _chrome_client(executable: Path) -> Iterator[tuple[_CdpClient, str]]:
                         "Chrome exited before CDP became available"
                     )
                 time.sleep(0.05)
-            try:
-                port_text, websocket_path = active_port.read_text(
-                    encoding="utf-8"
-                ).splitlines()[:2]
-                port = int(port_text)
-            except (OSError, ValueError, IndexError) as exc:
-                raise BrowserCaptureError(
-                    "Chrome did not publish a usable CDP port"
-                ) from exc
+            # Chrome creates DevToolsActivePort before writing its contents;
+            # a read in that window returns "" and int("") raises. Re-read
+            # until the first line parses as an int (bounded by the same
+            # start deadline), so the create-then-write race cannot surface
+            # as a failed capture.
+            port: int | None = None
+            websocket_path: str | None = None
+            while time.monotonic() < deadline:
+                if process.poll() is not None:
+                    raise BrowserCaptureError(
+                        "Chrome exited before CDP became available"
+                    )
+                try:
+                    first_two = active_port.read_text(encoding="utf-8").splitlines()[:2]
+                    port = int(first_two[0])
+                    websocket_path = first_two[1]
+                    break
+                except (OSError, ValueError, IndexError):
+                    time.sleep(0.05)
+            if port is None or websocket_path is None:
+                raise BrowserCaptureError("Chrome did not publish a usable CDP port")
             websocket = _WebSocket.connect("127.0.0.1", port, websocket_path)
             client = _CdpClient(websocket)
             target = client.call("Target.createTarget", {"url": "about:blank"})

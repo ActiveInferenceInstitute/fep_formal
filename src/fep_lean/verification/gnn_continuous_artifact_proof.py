@@ -13,6 +13,7 @@ import ast
 import hashlib
 import json
 import re
+import sys
 from collections.abc import Mapping
 from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
@@ -74,6 +75,13 @@ THEOREMS = (
     "scalar_joseph_identity",
 )
 NAMESPACE = "FEPProbe.Q7ContinuousOU"
+
+# The frozen scaffold digest pins ``ast.dump`` formatting, which is CPython
+# minor-version-sensitive: only accepted interpreters may digest or re-validate
+# the scaffold, and the guard runs before any parse.
+ACCEPTED_SCAFFOLD_INTERPRETERS: tuple[tuple[str, tuple[int, int]], ...] = (
+    ("cpython", (3, 14)),
+)
 
 
 class ContinuousArtifactError(ValueError):
@@ -217,8 +225,29 @@ def _assignments(tree: ast.Module) -> dict[str, ast.Assign]:
     return assignments
 
 
+def _require_accepted_scaffold_interpreter() -> None:
+    """Refuse scaffold digestion before parsing outside the accepted set."""
+    running = (sys.implementation.name.lower(), sys.version_info[:2])
+    if running in ACCEPTED_SCAFFOLD_INTERPRETERS:
+        return
+    accepted = ", ".join(
+        f"{name} {major}.{minor}"
+        for name, (major, minor) in ACCEPTED_SCAFFOLD_INTERPRETERS
+    )
+    _fail(
+        "interpreter",
+        f"scaffold_digest accepts only {accepted}; running "
+        f"{sys.implementation.name} {sys.version_info[0]}.{sys.version_info[1]}",
+    )
+
+
 def scaffold_digest(source: str) -> str:
-    """Candidate digest for explicit review/freezing; never approves a scaffold."""
+    """Candidate digest for explicit review/freezing; never approves a scaffold.
+
+    Refuses any interpreter outside the accepted set before parsing: the
+    frozen value is interpreter-contract-pinned to that set's ``ast.dump``.
+    """
+    _require_accepted_scaffold_interpreter()
     tree = _parse(source)
     assignments = _assignments(tree)
     for name in TABLE_SHAPES:

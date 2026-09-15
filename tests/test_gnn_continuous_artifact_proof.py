@@ -10,6 +10,7 @@ import copy
 import importlib.util
 import json
 import sys
+import types
 from fractions import Fraction
 from pathlib import Path
 
@@ -326,7 +327,9 @@ def test_generator_is_read_only_and_manifest_does_not_claim_native_evidence():
     )
 
 
-def test_frozen_scaffold_digest_reproduces_the_pinned_interpreter_contract():
+def test_frozen_scaffold_digest_reproduces_the_pinned_interpreter_contract(
+    monkeypatch: pytest.MonkeyPatch,
+):
     """The accepted Q7 scaffold validates under exactly the pinned interpreter.
 
     ``scaffold_digest`` freezes ``ast.dump`` output, which is CPython
@@ -334,12 +337,30 @@ def test_frozen_scaffold_digest_reproduces_the_pinned_interpreter_contract():
     under CPython 3.14 (the ``.python-version`` pin) and must be re-validated
     on the same minor version; until FEP-SCAFFOLD-PORTABILITY records a
     version-stable serialization with a new reviewed scaffold, no other
-    interpreter is accepted to reproduce ``runner_ast_sha256``.
+    interpreter is accepted to reproduce ``runner_ast_sha256``. The in-module
+    guard enforces that refuse-before-parse: any interpreter outside the
+    accepted set is rejected with a clear error naming the set and itself.
     """
     pinned = (ROOT / ".python-version").read_text().strip()
     assert pinned == "3.14"
     assert ".".join(str(part) for part in sys.version_info[:2]) == pinned
-    assert (
+    monkeypatch.setattr(
+        sys, "implementation", types.SimpleNamespace(name="pypy"), raising=True
+    )
+    monkeypatch.setattr(sys, "version_info", (3, 12, 9, "final", 0), raising=True)
+    with pytest.raises(ContinuousArtifactError) as refused:
         scaffold_digest(RUNNER.read_text())
+    assert refused.value.reason == "interpreter"
+    assert "cpython 3.14" in str(refused.value)
+    assert "pypy 3.12" in str(refused.value)
+    monkeypatch.setattr(
+        sys, "implementation", types.SimpleNamespace(name="cpython"), raising=True
+    )
+    monkeypatch.setattr(sys, "version_info", (3, 14, 2, "final", 0), raising=True)
+    accepted_digest = scaffold_digest(RUNNER.read_text())
+    monkeypatch.undo()
+    assert (
+        accepted_digest
+        == scaffold_digest(RUNNER.read_text())
         == json.loads((SLICE / "expected.json").read_text())["runner_ast_sha256"]
     )
