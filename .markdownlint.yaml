@@ -1,8 +1,0 @@
-# MarkdownLint configuration for FEP Lean
-default: true
-MD013: false
-MD033: false
-MD060: false
-MD041: false
-MD029: false
-MD049: false
