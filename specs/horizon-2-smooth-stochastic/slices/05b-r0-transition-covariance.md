@@ -94,7 +94,7 @@ edges. It does not mutate `readiness/acceptance.json`.
   `Q_0 = 0`, positive semidefiniteness for every nonnegative time, positive
   definiteness for positive time, and chronological covariance addition with
   the later/right evolution transporting the earlier/left covariance.
-- Direct Lean 4.33.1 compilation is warning-free. All four public theorems use
+- Direct Lean 4.34.0 compilation is warning-free. All four public theorems use
   only standard axioms; the exact `Fin 4` consumer instantiates the generic
   result without using its preregistered numeric eigenvalue proofs.
 - The source-bound append-only repair receipt records `go` while leaving the

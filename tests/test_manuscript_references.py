@@ -135,11 +135,11 @@ def test_hand_typed_module_cell_is_rejected(tmp_path: Path) -> None:
 def test_every_tabulated_row_prints_the_modules_its_body_imports() -> None:
     """The incidence relation, not a hint: fep-023's cell is its own import."""
     assert topic_import_modules("fep-023") == (
-        "Mathlib.MeasureTheory.Measure.MeasureSpace",
+        "Mathlib.MeasureTheory.Measure.Typeclasses.Probability",
     )
     assert (
         render_topic_import_modules(topic_import_modules("fep-023"))
-        == "`MeasureTheory.Measure.MeasureSpace`"
+        == "`MeasureTheory.Measure.Typeclasses.Probability`"
     )
     assert render_topic_import_modules(()) == "---"
     assert (

@@ -543,7 +543,7 @@ end FEP035
 """,
     "fep-039": """import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 
 namespace FEP039
 

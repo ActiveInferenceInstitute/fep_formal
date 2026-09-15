@@ -81,7 +81,7 @@ precision alone at this acceptance boundary.
   proof, and the center; covariance, dynamic PSD/positive-time PD, kernel
   normalization, Chapman--Kolmogorov, invariance, moments, and weak limits are
   derived.
-- Direct Lean 4.33.1 compilation is warning-free. All 25 public theorem axiom
+- Direct Lean 4.34.0 compilation is warning-free. All 25 public theorem axiom
   reports are parsed non-vacuously and contain only `propext`,
   `Classical.choice`, and `Quot.sound`.
 - The exact `Fin 1` transported kernel equals H2.5a with diffusion variance

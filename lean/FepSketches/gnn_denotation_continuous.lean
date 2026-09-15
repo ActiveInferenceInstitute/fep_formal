@@ -168,7 +168,7 @@ theorem diagonal_inv {n : Type*} [Fintype n] [DecidableEq n] (d : n → ℝ)
   by_cases h : i = j
   · subst h
     simp [hd i]
-  · rw [if_neg h, if_neg h]
+  · rw [ite_eq_right h, ite_eq_right h]
 
 /-! ## Fixed exemplar: the stochastic continuous dynamics document -/
 

@@ -51,10 +51,10 @@ AXES = ("external", "sensory", "active", "internal")
 # receipt. A mismatch rejects the run (stale theorem/source digests).
 PINNED_SOURCES: dict[str, str] = {
     "src/fep_lean/formal/fin4_gaussian_semigroup.lean": (
-        "d8d15d0abdfe6eb53c9e1b94d6f1e90a076e97c9507a3532021aea090deb630b"
+        "a7c14d2fdeb44c61ffa4012d6eccc8d00051be916ab536e2658f4ef3652d260c"
     ),
     "src/fep_lean/formal/gaussian_precision_conditioning.lean": (
-        "be51dc0c06c28ee50331b561bd21df00b03215d2f397caf49a98100f83e8ec7b"
+        "64afcf45cf2ef44b78db7e5b2fb2de02bd3af80cefda888523baae1043b37c38"
     ),
     "src/fep_lean/formal/compositions/smooth_reference_kernel.lean": (
         "156464de9e7c33e16fa22bd6939fa64938b03ee4f5554fb3ecd48fbfaed6d397"
@@ -66,7 +66,7 @@ PINNED_SOURCES: dict[str, str] = {
         "76b2e36f840682df5adac654456d2d94c81c636778fbcd1efa39bc3cbfe3d3f0"
     ),
     "specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json": (
-        "ad097e791e3f474d0842daa63184fc630ba10f7f418fc00c8bace3024dd3f6d8"
+        "a7910c40568b40b11170a236fbed76e8303229ca03879b55e94f26ce4773ee08"
     ),
 }
 

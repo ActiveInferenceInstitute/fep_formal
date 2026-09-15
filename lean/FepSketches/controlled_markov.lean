@@ -530,7 +530,7 @@ theorem bool_positiveEvidence_observation_eq_action
       boolActionTransition boolObservationKernel action observation) :
     observation = action := by
   by_contra hDifferent
-  rw [bool_actionEvidence_eq, if_neg hDifferent] at hEvidence
+  rw [bool_actionEvidence_eq, ite_eq_right hDifferent] at hEvidence
   exact (lt_irrefl 0) hEvidence
 
 /-- The positive-evidence Boolean Bayesian update is exactly its reachable
@@ -549,7 +549,7 @@ theorem bool_actionBeliefUpdate_eq (belief action observation : Bool)
   have hReconstruction := actionBeliefUpdate_reconstruction
     (boolBeliefInterpret belief) boolActionTransition boolObservationKernel
     action action hEvidence state
-  rw [bool_actionEvidence_eq, if_pos rfl, mul_one,
+  rw [bool_actionEvidence_eq, ite_eq_left rfl, mul_one,
     bool_actionPrediction_eq] at hReconstruction
   by_cases hState : state = action
   · subst state

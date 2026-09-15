@@ -27,7 +27,9 @@ from fep_lean.verification.lean_verifier import VerifyResult
 
 PROJ = Path(__file__).resolve().parent.parent
 LEAN_VERSION = (
-    "Lean (version 4.33.1, x86_64-unknown-linux-gnu, commit fixture, Release)"
+    "Lean (version "
+    + (PROJ / "lean" / "lean-toolchain").read_text().strip().rsplit(":", 1)[-1].lstrip("v")
+    + ", x86_64-unknown-linux-gnu, commit fixture, Release)"
 )
 
 

@@ -41,9 +41,9 @@
     }
   ],
   "source_sha256": {
-    "lean/lake-manifest.json": "e26aebb57ade584b0b0d9423fd496930d24b63344b7e84afcdc4da1af875d5a4",
-    "lean/lakefile.lean": "3b3ce8fa1b1f8cc1779e142b26426d65cdc7d81074da4459dbb6f1bfbd11a5bd",
-    "lean/lean-toolchain": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+    "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
+    "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
+    "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "specs/horizon-2-smooth-stochastic/readiness/pin_evidence.json": "51769d9bcacc7616c7cfb9210638bdc0fbc646d2a8601feaefeab48eac1ededc",
     "specs/horizon-2-smooth-stochastic/readiness/probes/01_api_surface.lean": "075eb69e02c2fbe320be8afc12d199c6c582c7d1ac74cd74f288d618dc878ad3",
     "specs/horizon-2-smooth-stochastic/readiness/probes/01_calculus.lean": "9e06bb5b8b0f351973e69c505d78118fb61cb87adaed65487d23140db827f4d4",

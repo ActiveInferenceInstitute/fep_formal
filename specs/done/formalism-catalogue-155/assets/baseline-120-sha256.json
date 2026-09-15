@@ -1,7 +1,7 @@
 {
   "encoding": "sha256 of length-prefixed UTF-8 canonical rows; body rows are topic_id + NUL + exact body",
   "topic_count": 120,
-  "body_digest": "e032cc13bd114021312aa37ab1afecdd733a569d7ab6e10e49b0b76ec11d8271",
+  "body_digest": "86fa947829c564c3a354f755329d5d1e92f7484ecbd7b1efa70017b1c42cfd57",
   "metadata_rows_digest": "248de2dd7e308e0d96f1570c201b1d98b10e3fba3599611656420f0f6ac478b3",
   "maturity_rows_digest": "3ec4802ca5bba80553c8921d63aa3fee199de22cb33ec74f59399f47840af778",
   "novelty_rows_digest": "89c668ca3b2e8fdcada5681192409529473a460495ef8f37a1c4be33395e2dff",

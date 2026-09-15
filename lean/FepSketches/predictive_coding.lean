@@ -69,10 +69,6 @@ theorem precisionEnergy_hasDerivAt (precision observation estimate : ℝ) :
   convert
     (((hasDerivAt_const estimate observation).sub
       (hasDerivAt_id estimate)).pow 2).const_mul (precision / 2) using 1
-  · apply AddCommGroup.ext
-    rfl
-  · apply Module.ext
-    rfl
   · funext candidate
     rfl
   · simp [predictionError]

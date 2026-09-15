@@ -8,7 +8,7 @@
     "tex_errors": 0,
     "uncaptioned_tables": 0
   },
-  "manuscript_source_digest": "39698efe54574630955bc441484118c1a3568b3b880665cf8378c0d30ccbb94f",
+  "manuscript_source_digest": "6a68c49d1609d2bfc7ddb29fb1d5fdb82640059726dcf21ecdcee4a20efed6f4",
   "pages": 350,
   "receipt_version": 1,
   "source_digests": {
@@ -31,7 +31,7 @@
     "04f_semantic_closure_and_validation.md": "803b5da9d3b919a440a0ecdfd0a1701500d76eceecdc0f6976bc48d6e7a910c4",
     "04g_finite_active_inference_kernel.md": "a712b25106f2fe6aa35523e60f66dcdaec5c00ef1a6c395622058093f3f3ee99",
     "04h_expanded_formalism_program.md": "0ba3fb49ca0e03e8600bd9b504ccbefeee2c45155a53436b49032da991cf81e2",
-    "04i_formalism_catalogue_155.md": "084972af49eb549f65d289906b0d7291d06d41285c719cb3a43215be052e970e",
+    "04i_formalism_catalogue_155.md": "8f6ca161563a9248926d58a51ab5a2983f7d1f657d119783c235fc57ca1f17bb",
     "04j_horizon2_smooth_stochastic_kernel.md": "15de94d5fe1fd321ddb7d1ed63b15780921b47561efc4363e9eab3200b8f3ded",
     "05a_mathlib_maturity.md": "7bc6207202fbe7533332b6d00e6441403ae16b765d96a54a0e06322e5620059b",
     "05b_execution_integrity.md": "62e8f6a1170f223f1763137849fe35a008edb3c9da8bff1a6b7d254e13d4c5cf",
@@ -41,7 +41,7 @@
     "06_conclusion.md": "3339d659607fb8e133af7fa5fd099ac5cd19a6293628556ece9f562f8256a6d8",
     "07_references.md": "b6132569eea5c54b542fff8754cee5c5d288873d8e920ce27c66a4a0318a7d94",
     "08_appendix_a_overview.md": "75bbd397cea0d9f532820c769da05b9913cd152043735b07a383748fe14a3292",
-    "09z_unified_formalism_catalogue.md": "386a10444362c7e6f3a2a70f9b27d9550e454176297a698815ba9443fddfface",
+    "09z_unified_formalism_catalogue.md": "2f1f40b7623d239b6b9be20239828bd4cdb85d3349a0bd173f58cc7333be7735",
     "preamble.md": "0ca6e7d06bf56f64e2e2850c96e7a802695f0225128d9a955ab9d1318651a6d9"
   }
 }

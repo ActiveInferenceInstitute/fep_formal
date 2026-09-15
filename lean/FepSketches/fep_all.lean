@@ -41,8 +41,9 @@ import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecificLimits.Normed
+import Mathlib.Basic.ENNReal.Inv
+import Mathlib.Basic.Real.Basic
 import Mathlib.Data.Bool.Basic
-import Mathlib.Data.ENNReal.Inv
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Max
@@ -50,7 +51,6 @@ import Mathlib.Data.Fintype.Basic
 import Mathlib.Data.List.Count
 import Mathlib.Data.Matrix.Mul
 import Mathlib.Data.Nat.Cast.Field
-import Mathlib.Data.Real.Basic
 import Mathlib.Dynamics.FixedPoints.Basic
 import Mathlib.InformationTheory.KullbackLeibler.Basic
 import Mathlib.InformationTheory.KullbackLeibler.ChainRule
@@ -58,7 +58,6 @@ import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
 import Mathlib.MeasureTheory.Integral.Lebesgue.Countable
 import Mathlib.MeasureTheory.MeasurableSpace.Basic
-import Mathlib.MeasureTheory.Measure.MeasureSpace
 import Mathlib.MeasureTheory.Measure.Typeclasses.Probability
 import Mathlib.Order.Bounds.Basic
 import Mathlib.Order.Monotone.Basic
@@ -443,7 +442,7 @@ theorem fep007_normalizedMessage_nonneg
     0 ≤ fep007_normalizedMessage ψ incoming neighbors i j := by
   classical
   by_cases hj : j ∈ neighbors
-  · rw [fep007_normalizedMessage, if_pos hj]
+  · rw [fep007_normalizedMessage, ite_eq_left hj]
     exact div_nonneg
       (mul_nonneg (hψ j hj).le (hincoming j hj).le)
       (fep007_messageNormalizer_pos
@@ -1621,7 +1620,7 @@ theorem fep028_softmax_nonneg (γ : ℝ) (G : Policy → ℝ) (policies : Finset
   have hsum : 0 < ∑ p' ∈ policies, Real.exp (-γ * G p') :=
     Finset.sum_pos (fun _ _ => Real.exp_pos _) hne
   by_cases hp : p ∈ policies
-  · rw [fep028_softmax, if_pos hp]
+  · rw [fep028_softmax, ite_eq_left hp]
     exact div_nonneg (Real.exp_nonneg _) hsum.le
   · simp [fep028_softmax, hp]
 
@@ -1634,7 +1633,7 @@ theorem fep028_softmax_le_one
   have hsum : 0 < ∑ p' ∈ policies, Real.exp (-γ * G p') :=
     Finset.sum_pos (fun _ _ => Real.exp_pos _) hne
   by_cases hp : p ∈ policies
-  · rw [fep028_softmax, if_pos hp]
+  · rw [fep028_softmax, ite_eq_left hp]
     apply (div_le_one hsum).2
     exact Finset.single_le_sum
       (fun q _ => Real.exp_nonneg (-γ * G q)) hp

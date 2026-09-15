@@ -33,7 +33,7 @@ This assessment covers the standalone repository boundary:
   generated YAML/Lean/documentation projections.
 - Python dependency installation, tests, coverage, type checking, and local
   subprocess/file/database behavior.
-- Exact Lean 4.33.1 and Mathlib `v4.33.1` acquisition and compilation, plus a
+- Exact Lean 4.34.0 and Mathlib `v4.33.1` acquisition and compilation, plus a
   fail-closed audit against the newest stable release pair.
 - Hermes, OpenGauss, SQLite session lifecycle, report provenance, and generated
   manuscript artifacts.

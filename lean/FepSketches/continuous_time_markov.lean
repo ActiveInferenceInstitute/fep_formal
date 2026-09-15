@@ -462,9 +462,9 @@ theorem refreshTransition_pos {time : ℝ} (hTime : 0 < time)
   have hUniform : 0 < refreshUniformMass (State := State) :=
     refreshUniformMass_pos (State := State)
   by_cases h : source = target
-  · simp only [refreshTransition, refreshDelta, h, if_true]
+  · simp only [refreshTransition, refreshDelta, h, ite_true]
     positivity
-  · simp only [refreshTransition, refreshDelta, h, if_false, mul_zero,
+  · simp only [refreshTransition, refreshDelta, h, ite_false, mul_zero,
       zero_add]
     positivity
 
@@ -1606,7 +1606,7 @@ theorem transition_stationary (rates : TwoStateRates) (time : ℝ)
     linarith
   cases target <;>
     simp only [Fintype.sum_bool, stationaryLaw,
-      transition, Bool.false_eq_true, if_false, if_true] <;>
+      transition, Bool.false_eq_true, ite_false, ite_true] <;>
     rw [hTrue] <;> ring
 
 theorem transition_detailedBalance (rates : TwoStateRates) (time : ℝ)

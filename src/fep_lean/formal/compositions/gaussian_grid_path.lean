@@ -80,7 +80,7 @@ noncomputable def initialGridLaw
 noncomputable instance initialGridLaw_isProbabilityMeasure
     (model : ScalarOUParameters) : IsProbabilityMeasure (initialGridLaw model) := by
   unfold initialGridLaw
-  exact Measure.isProbabilityMeasure_map (by fun_prop)
+  exact (Measure.isProbabilityMeasure_map_iff (by fun_prop)).mpr (by infer_instance)
 
 /-- Forward path law from the stationary singleton coordinate through the grid. -/
 noncomputable def forwardGridLaw
@@ -106,7 +106,7 @@ def reverseGridPath (n : ℕ) (path : GridPath n) : GridPath n :=
 
 /-- Coordinate reversal is measurable on the finite real product. -/
 theorem reverseGridPath_measurable (n : ℕ) : Measurable (reverseGridPath n) := by
-  refine measurable_pi_lambda _ fun i => ?_
+  refine Measurable.of_eval fun i => ?_
   change Measurable
     (fun path : GridPath n =>
       path ⟨n - i.1, mem_Iic.mpr (Nat.sub_le n i.1)⟩)
@@ -132,7 +132,8 @@ noncomputable instance reverseAlignedGridLaw_isProbabilityMeasure
     (model : ScalarOUParameters) (grid : TimeGrid) (n : ℕ) :
     IsProbabilityMeasure (reverseAlignedGridLaw model grid n) := by
   unfold reverseAlignedGridLaw
-  exact Measure.isProbabilityMeasure_map (reverseGridPath_measurable n).aemeasurable
+  exact (Measure.isProbabilityMeasure_map_iff
+    (reverseGridPath_measurable n).aemeasurable).mpr (by infer_instance)
 
 /-- The coordinate-reversed comparison law is normalized. -/
 theorem reverseAlignedGridLaw_normalized

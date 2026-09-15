@@ -49,10 +49,10 @@ noncomputable def blanketLaw (center : StandardizedState) : Measure Blanket :=
 noncomputable instance blanketLaw_isProbabilityMeasure
     (center : StandardizedState) : IsProbabilityMeasure (blanketLaw center) := by
   unfold blanketLaw
-  exact Measure.isProbabilityMeasure_map
+  exact (Measure.isProbabilityMeasure_map_iff
     (by
       unfold blanketCoordinates
-      fun_prop : Measurable blanketCoordinates).aemeasurable
+      fun_prop : Measurable blanketCoordinates).aemeasurable).mpr (by infer_instance)
 
 /-- The blanket-dependent displacement from either endpoint center. -/
 def conditionalOffset (center : StandardizedState) (blanket : Blanket) : ℝ :=
@@ -238,7 +238,7 @@ private noncomputable instance stationaryLaw_isGaussian_private
 private theorem centeredState_hasGaussianLaw (center : StandardizedState) :
     HasGaussianLaw (fun state : StandardizedState => state - center)
       (stationaryLaw center) :=
-  ⟨by infer_instance⟩
+  ⟨by fun_prop, by infer_instance⟩
 
 private def centeredCoordinate
     (center : StandardizedState) (axis : Axis) (state : StandardizedState) : ℝ :=
@@ -817,7 +817,8 @@ theorem externalCondDistrib_ae_eq (center : StandardizedState) :
           (stationaryLaw center)).map Prod.fst := by
     simpa only [blanketLaw] using
       (condDistrib_comp (μ := stationaryLaw center)
-        blanketCoordinates measurable_endpointCoordinates.aemeasurable
+        measurable_blanketCoordinates.aemeasurable
+        measurable_endpointCoordinates.aemeasurable
         (f := Prod.fst) measurable_fst)
   have hMap' :
       condDistrib (fun state : StandardizedState => state external)
@@ -847,7 +848,8 @@ theorem internalCondDistrib_ae_eq (center : StandardizedState) :
           (stationaryLaw center)).map Prod.snd := by
     simpa only [blanketLaw] using
       (condDistrib_comp (μ := stationaryLaw center)
-        blanketCoordinates measurable_endpointCoordinates.aemeasurable
+        measurable_blanketCoordinates.aemeasurable
+        measurable_endpointCoordinates.aemeasurable
         (f := Prod.snd) measurable_snd)
   have hMap' :
       condDistrib (fun state : StandardizedState => state internal)

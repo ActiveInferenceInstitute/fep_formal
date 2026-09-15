@@ -20,8 +20,8 @@ scope boundaries, not implementation accidents.
 
 ## Toolchain and evidence identity {#sec:catalogue_155_evidence_identity}
 
-The authoring workspace pins **`leanprover/lean4:v4.33.1`** and Mathlib
-**`v4.33.1`**, with the exact dependency revision recorded in
+The authoring workspace pins **`leanprover/lean4:v4.34.0`** and Mathlib
+**`v4.34.0`**, with the exact dependency revision recorded in
 `lean/lake-manifest.json`. Lean 4.33.0 introduced the relevant release line
 [@lean4330release], while the package uses the subsequent stable Lean patch
 [@lean4331release] and matching Mathlib release [@mathlib4331release]. A release

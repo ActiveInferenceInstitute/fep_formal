@@ -2,7 +2,7 @@
 
 **Version**: v1.1.0 | **Status**: Active | **Last Updated**: August 2026
 
-Lake package with full **Mathlib4 v4.33.1** dependency (see `lakefile.lean` / `lake-manifest.json`).
+Lake package with full **Mathlib4 v4.34.0** dependency (see `lakefile.lean` / `lake-manifest.json`).
 
 The exact Lean and Mathlib tags track the newest stable compatible release pair.
 The repository does not float to release candidates or nightlies;

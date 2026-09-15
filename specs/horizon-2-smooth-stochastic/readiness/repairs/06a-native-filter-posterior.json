@@ -1,27 +1,12 @@
 {
-  "schema_version": 1,
-  "gate": "H2.6a-R0",
-  "decision": "go",
-  "decision_scope": "open_H2.6a_implementation_only",
-  "historical_boundary": {
-    "acceptance_mutated": false,
-    "addendum_only": true,
-    "matrix_mutated": false,
-    "row_id": "native_filter_posterior",
-    "row_status_at_decision": "blocking_no_go"
-  },
   "compiler": {
     "lean_commit": "819816b2e0a3bf405af45ae5c7af2491d8f5bee6",
     "lean_version": "4.33.1",
     "mathlib_revision": "0df444a360eaa60ab8c11dca51a86af692955474",
     "mathlib_tag": "v4.33.1"
   },
-  "imports": [
-    "FepSketches.gaussian_information_geometry",
-    "FepSketches.scalar_gaussian_semigroup",
-    "Mathlib.Probability.Distributions.Gaussian.Real",
-    "Mathlib.Probability.Kernel.Posterior"
-  ],
+  "decision": "go",
+  "decision_scope": "open_H2.6a_implementation_only",
   "declarations": {
     "definitions": [
       "law",
@@ -56,81 +41,6 @@
       "closedFormPosterior_univ"
     ]
   },
-  "types": {
-    "state": "real",
-    "observation": "real",
-    "variance": "nonnegative real with strict-positivity certificate",
-    "prior": "mean plus accepted FixedVarianceGaussian family",
-    "model_raw_fields": [
-      "ScalarOUParameters dynamics",
-      "nonnegative stepDuration",
-      "positive FixedVarianceGaussian observationNoise"
-    ],
-    "observation_model": "unit-loading Gaussian location law Y = X + noise"
-  },
-  "proof_route": {
-    "exact_ou_prediction": "ScalarOUParameters.ouTransition_comp_gaussian",
-    "prediction_variance": "decay(stepDuration)^2 * priorVariance + transitionVariance(stepDuration)",
-    "innovation_variance": "predictedVariance + observationNoiseVariance",
-    "gain": "predictedVariance / innovationVariance",
-    "posterior_mean": "predictedMean + gain * (observation - predictedMean)",
-    "posterior_variance": "predictedVariance * observationNoiseVariance / innovationVariance",
-    "density_factorization": "pointwise Gaussian completion of the square, lifted from real PDFs to ENNReal PDFs",
-    "joint_measure_lift": "both joints represented as product volume withDensity, then related by lintegral_prod_swap",
-    "candidate_joint_coordinates": "observation,state",
-    "generative_joint_coordinates": "state,observation",
-    "evidence_identification": "fst marginal of the swapped joint equals the actual observation composition",
-    "native_posterior_uniqueness": "ProbabilityTheory.ae_eq_posterior_of_compProd_eq",
-    "posterior_equality_scope": "evidence_almost_everywhere",
-    "positive_evidence_claim": "strictly_positive_density_everywhere",
-    "singleton_evidence_mass": "zero",
-    "scope_substitution_used": false,
-    "stored_posterior_or_gain_certificate": false,
-    "zero_observation_noise_supported": false
-  },
-  "evidence": {
-    "compile_command": "cd lean && lake env lean ../specs/horizon-2-smooth-stochastic/spikes/06a_native_filter_posterior.lean",
-    "compiler_exit_code": 0,
-    "compiler_output": "",
-    "warning_count": 0,
-    "warning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "standard_axiom_audit": true,
-    "public_theorem_count": 14,
-    "axiom_audited_declarations": [
-      "predictionVariance_pos",
-      "predictionBelief_law_eq_ouTransition",
-      "observationKernel_apply",
-      "innovationVariance_pos",
-      "posteriorVariance_pos",
-      "gaussianPDF_factorization",
-      "gaussianEvidence_compProd_closedForm_eq_map_swap",
-      "evidenceLaw_eq_gaussian",
-      "closedFormPosterior_compProd_eq_map_swap",
-      "closedFormPosterior_ae_eq_native",
-      "evidenceDensity_pos",
-      "evidenceDensity_ne_zero",
-      "evidenceLaw_singleton_eq_zero",
-      "closedFormPosterior_univ"
-    ],
-    "allowed_axioms": [
-      "propext",
-      "Classical.choice",
-      "Quot.sound"
-    ],
-    "sorry_axiom_present": false,
-    "focused_test_command": "uv run pytest -q tests/test_horizon2_native_filter_posterior_readiness.py --no-cov --no-header --no-summary",
-    "focused_test_count": 8
-  },
-  "review": {
-    "independent_probability": "approved_no_mathematical_blocker",
-    "independent_review_scope": "scalar carrier, OU orientation, Gaussian normalizer and exponent algebra, withDensity joint lift, Prod.swap orientation, evidence marginal, native posterior uniqueness, density-versus-atom boundary, normalization, ownership, and downstream scope",
-    "reviewed_spike_sha256": "cd9bf8532d7748283f39148c3d80cea4ba49a276a69f21e7404d9fdb4c3e81d5",
-    "reviewed_pre_receipt_test_sha256": "13b987a1bedd46a398c9233e6d068a5e96032d489ecf243f70313d59be037988",
-    "post_review_test_change": "replaced the transitional receipt-absence assertion with source-bound final receipt validation; mathematical source unchanged",
-    "code_review": "focused_owned_surface_checks_green",
-    "choice_audit": "approved_no_hidden_decision_or_scope_expansion",
-    "gitnexus_confidence": "reduced_nested_graph_unavailable_source_review_used"
-  },
   "downstream": {
     "opened": [
       "H2.6a implementation"
@@ -147,6 +57,83 @@
       "accepted H2.6c finite-grid path law"
     ]
   },
+  "evidence": {
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "axiom_audited_declarations": [
+      "predictionVariance_pos",
+      "predictionBelief_law_eq_ouTransition",
+      "observationKernel_apply",
+      "innovationVariance_pos",
+      "posteriorVariance_pos",
+      "gaussianPDF_factorization",
+      "gaussianEvidence_compProd_closedForm_eq_map_swap",
+      "evidenceLaw_eq_gaussian",
+      "closedFormPosterior_compProd_eq_map_swap",
+      "closedFormPosterior_ae_eq_native",
+      "evidenceDensity_pos",
+      "evidenceDensity_ne_zero",
+      "evidenceLaw_singleton_eq_zero",
+      "closedFormPosterior_univ"
+    ],
+    "compile_command": "cd lean && lake env lean ../specs/horizon-2-smooth-stochastic/spikes/06a_native_filter_posterior.lean",
+    "compiler_exit_code": 0,
+    "compiler_output": "",
+    "focused_test_command": "uv run pytest -q tests/test_horizon2_native_filter_posterior_readiness.py --no-cov --no-header --no-summary",
+    "focused_test_count": 8,
+    "public_theorem_count": 14,
+    "sorry_axiom_present": false,
+    "standard_axiom_audit": true,
+    "warning_count": 0,
+    "warning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "gate": "H2.6a-R0",
+  "historical_boundary": {
+    "acceptance_mutated": false,
+    "addendum_only": true,
+    "matrix_mutated": false,
+    "row_id": "native_filter_posterior",
+    "row_status_at_decision": "blocking_no_go"
+  },
+  "imports": [
+    "FepSketches.gaussian_information_geometry",
+    "FepSketches.scalar_gaussian_semigroup",
+    "Mathlib.Probability.Distributions.Gaussian.Real",
+    "Mathlib.Probability.Kernel.Posterior"
+  ],
+  "proof_route": {
+    "candidate_joint_coordinates": "observation,state",
+    "density_factorization": "pointwise Gaussian completion of the square, lifted from real PDFs to ENNReal PDFs",
+    "evidence_identification": "fst marginal of the swapped joint equals the actual observation composition",
+    "exact_ou_prediction": "ScalarOUParameters.ouTransition_comp_gaussian",
+    "gain": "predictedVariance / innovationVariance",
+    "generative_joint_coordinates": "state,observation",
+    "innovation_variance": "predictedVariance + observationNoiseVariance",
+    "joint_measure_lift": "both joints represented as product volume withDensity, then related by lintegral_prod_swap",
+    "native_posterior_uniqueness": "ProbabilityTheory.ae_eq_posterior_of_compProd_eq",
+    "positive_evidence_claim": "strictly_positive_density_everywhere",
+    "posterior_equality_scope": "evidence_almost_everywhere",
+    "posterior_mean": "predictedMean + gain * (observation - predictedMean)",
+    "posterior_variance": "predictedVariance * observationNoiseVariance / innovationVariance",
+    "prediction_variance": "decay(stepDuration)^2 * priorVariance + transitionVariance(stepDuration)",
+    "scope_substitution_used": false,
+    "singleton_evidence_mass": "zero",
+    "stored_posterior_or_gain_certificate": false,
+    "zero_observation_noise_supported": false
+  },
+  "review": {
+    "choice_audit": "approved_no_hidden_decision_or_scope_expansion",
+    "code_review": "focused_owned_surface_checks_green",
+    "gitnexus_confidence": "reduced_nested_graph_unavailable_source_review_used",
+    "independent_probability": "approved_no_mathematical_blocker",
+    "independent_review_scope": "scalar carrier, OU orientation, Gaussian normalizer and exponent algebra, withDensity joint lift, Prod.swap orientation, evidence marginal, native posterior uniqueness, density-versus-atom boundary, normalization, ownership, and downstream scope",
+    "post_review_test_change": "replaced the transitional receipt-absence assertion with source-bound final receipt validation; mathematical source unchanged",
+    "reviewed_pre_receipt_test_sha256": "13b987a1bedd46a398c9233e6d068a5e96032d489ecf243f70313d59be037988",
+    "reviewed_spike_sha256": "cd9bf8532d7748283f39148c3d80cea4ba49a276a69f21e7404d9fdb4c3e81d5"
+  },
   "reviewed_no_go_edges": [
     "The historical H2.0 native_filter_posterior row remains blocking_no_go.",
     "This repair opens only the maintained H2.6a implementation and does not itself create a maintained owner.",
@@ -156,17 +143,30 @@
     "No multivariate observation matrix, nonlinear filter, SDE, Ito, Kalman--Bucy, or parameter-consistency claim is made.",
     "H2.6b and H2.7 remain closed pending maintained H2.6a acceptance."
   ],
+  "schema_version": 1,
   "source_sha256": {
-    "lean/lean-toolchain": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
-    "lean/lakefile.lean": "3b3ce8fa1b1f8cc1779e142b26426d65cdc7d81074da4459dbb6f1bfbd11a5bd",
-    "lean/lake-manifest.json": "e26aebb57ade584b0b0d9423fd496930d24b63344b7e84afcdc4da1af875d5a4",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "c5ab12778266bd6b476068ec1e5768e8671763fc64757b5aa51b4a4edadc054b",
+    "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
+    "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
+    "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
+    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "fb40a71308b9e8358a78c892ee016e817246c579a3490d072d407ba577e4b019",
     "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
     "specs/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean": "5c848021ad605cbfb628811ad7ef69846e7fde0b24437a3d4ce9a289f0e18fa3",
-    "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
-    "src/fep_lean/formal/scalar_gaussian_semigroup.lean": "d99665db1366fd8cfa58c43313fb85fc81f68d36eb70a768b26d4c2f9570a05e",
     "specs/horizon-2-smooth-stochastic/slices/06a-r0-native-posterior.md": "a315c5a2ac630e26d59ea2eade17d384597c6fb4811f5a287309f41fd4022b7e",
     "specs/horizon-2-smooth-stochastic/spikes/06a_native_filter_posterior.lean": "cd9bf8532d7748283f39148c3d80cea4ba49a276a69f21e7404d9fdb4c3e81d5",
+    "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
+    "src/fep_lean/formal/scalar_gaussian_semigroup.lean": "d99665db1366fd8cfa58c43313fb85fc81f68d36eb70a768b26d4c2f9570a05e",
     "tests/test_horizon2_native_filter_posterior_readiness.py": "3f19b9bb87e5ee58cf38128702665d4f7be717c476c54c6b648ff4cb52775a49"
+  },
+  "types": {
+    "model_raw_fields": [
+      "ScalarOUParameters dynamics",
+      "nonnegative stepDuration",
+      "positive FixedVarianceGaussian observationNoise"
+    ],
+    "observation": "real",
+    "observation_model": "unit-loading Gaussian location law Y = X + noise",
+    "prior": "mean plus accepted FixedVarianceGaussian family",
+    "state": "real",
+    "variance": "nonnegative real with strict-positivity certificate"
   }
 }
