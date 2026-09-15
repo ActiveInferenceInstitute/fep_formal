@@ -37,7 +37,11 @@ from scripts import verify_report_receipt as receipt_cli
 PROJ = Path(__file__).resolve().parent.parent
 LEAN_VERSION = (
     "Lean (version "
-    + (PROJ / "lean" / "lean-toolchain").read_text().strip().rsplit(":", 1)[-1].lstrip("v")
+    + (PROJ / "lean" / "lean-toolchain")
+    .read_text()
+    .strip()
+    .rsplit(":", 1)[-1]
+    .lstrip("v")
     + ", x86_64-unknown-linux-gnu, commit fixture, Release)"
 )
 
