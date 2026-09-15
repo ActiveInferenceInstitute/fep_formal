@@ -3389,20 +3389,31 @@
       ]
     },
     {
-      "module": "Mathlib.Data.Bool.Basic",
-      "topic_count": 2,
-      "topic_ids": [
-        "fep-020",
-        "fep-038"
-      ]
-    },
-    {
-      "module": "Mathlib.Data.ENNReal.Inv",
+      "module": "Mathlib.Basic.ENNReal.Inv",
       "topic_count": 3,
       "topic_ids": [
         "fep-003",
         "fep-021",
         "fep-033"
+      ]
+    },
+    {
+      "module": "Mathlib.Basic.Real.Basic",
+      "topic_count": 5,
+      "topic_ids": [
+        "fep-007",
+        "fep-008",
+        "fep-030",
+        "fep-039",
+        "fep-047"
+      ]
+    },
+    {
+      "module": "Mathlib.Data.Bool.Basic",
+      "topic_count": 2,
+      "topic_ids": [
+        "fep-020",
+        "fep-038"
       ]
     },
     {
@@ -3454,17 +3465,6 @@
       "topic_count": 1,
       "topic_ids": [
         "fep-036"
-      ]
-    },
-    {
-      "module": "Mathlib.Data.Real.Basic",
-      "topic_count": 5,
-      "topic_ids": [
-        "fep-007",
-        "fep-008",
-        "fep-030",
-        "fep-039",
-        "fep-047"
       ]
     },
     {
@@ -3520,17 +3520,11 @@
       ]
     },
     {
-      "module": "Mathlib.MeasureTheory.Measure.MeasureSpace",
-      "topic_count": 1,
-      "topic_ids": [
-        "fep-023"
-      ]
-    },
-    {
       "module": "Mathlib.MeasureTheory.Measure.Typeclasses.Probability",
-      "topic_count": 1,
+      "topic_count": 2,
       "topic_ids": [
-        "fep-002"
+        "fep-002",
+        "fep-023"
       ]
     },
     {
@@ -3633,7 +3627,7 @@
     "capability_nodes": 48,
     "composed_theorems": 226,
     "definitions": 716,
-    "distinct_mathlib_imports": 64,
+    "distinct_mathlib_imports": 63,
     "formal_module_dependency_edges": 120,
     "formal_module_import_edges": 199,
     "formal_modules": 56,
@@ -4649,7 +4643,7 @@
       "id": "fep-003",
       "imports": [
         "Mathlib.Algebra.Order.BigOperators.Group.Finset",
-        "Mathlib.Data.ENNReal.Inv"
+        "Mathlib.Basic.ENNReal.Inv"
       ],
       "invariant": "Finite-horizon pragmatic cost is the discounted ENNReal sum of stage costs; horizon extension exposes the exact terminal increment, costs are pointwise monotone, and horizon extension is monotone.",
       "mathlib_hints": [
@@ -4740,7 +4734,7 @@
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
         "Mathlib.Algebra.BigOperators.Field",
         "Mathlib.Algebra.Order.BigOperators.Group.Finset",
-        "Mathlib.Data.Real.Basic"
+        "Mathlib.Basic.Real.Basic"
       ],
       "invariant": "Strictly positive local factors and incoming messages over a nonempty finite neighbor support define a nonnegative normalized sum-product message with support mass exactly one.",
       "mathlib_hints": [
@@ -4763,7 +4757,7 @@
       "imports": [
         "Mathlib.Data.Finset.Basic",
         "Mathlib.Data.Finset.Max",
-        "Mathlib.Data.Real.Basic",
+        "Mathlib.Basic.Real.Basic",
         "Mathlib.Order.Bounds.Basic"
       ],
       "invariant": "A real-valued objective attains a minimum on a finite nonempty policy set.",
@@ -5048,7 +5042,7 @@
       "family": "core-active-inference",
       "id": "fep-021",
       "imports": [
-        "Mathlib.Data.ENNReal.Inv"
+        "Mathlib.Basic.ENNReal.Inv"
       ],
       "invariant": "Expected free energy is pragmatic expected cost minus epistemic information value in ENNReal; under epistemic value at most cost, adding information back reconstructs cost, while EFE is monotone in cost and antitone in information.",
       "mathlib_hints": [
@@ -5091,7 +5085,7 @@
       "family": "core-active-inference",
       "id": "fep-023",
       "imports": [
-        "Mathlib.MeasureTheory.Measure.MeasureSpace"
+        "Mathlib.MeasureTheory.Measure.Typeclasses.Probability"
       ],
       "invariant": "The distributional affordance set is the image of available policies under their outcome-law map; policy-set inclusion is monotone and normalization of every policy law transfers to every reachable law.",
       "mathlib_hints": [
@@ -5245,7 +5239,7 @@
       "imports": [
         "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
         "Mathlib.Algebra.BigOperators.Ring.Finset",
-        "Mathlib.Data.Real.Basic",
+        "Mathlib.Basic.Real.Basic",
         "Mathlib.Tactic"
       ],
       "invariant": "Binary Shannon entropy in nats is globally at most log 2, with equality exactly at probability one half.",
@@ -5310,7 +5304,7 @@
       "family": "core-active-inference",
       "id": "fep-033",
       "imports": [
-        "Mathlib.Data.ENNReal.Inv"
+        "Mathlib.Basic.ENNReal.Inv"
       ],
       "invariant": "A deterministic transition-aware finite-horizon value obeys an exact Bellman recursion with stage cost, discount, and terminal cost; it is monotone in both cost functions and has exact zero-cost and zero-discount boundaries.",
       "mathlib_hints": [
@@ -5446,7 +5440,7 @@
       "imports": [
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
         "Mathlib.Algebra.Order.BigOperators.Group.Finset",
-        "Mathlib.Data.Real.Basic"
+        "Mathlib.Basic.Real.Basic"
       ],
       "invariant": "Four local free-energy contributions aggregate additively and monotonically; under local nonnegativity, their global sum vanishes exactly when every local term vanishes.",
       "mathlib_hints": [
@@ -5625,7 +5619,7 @@
       "id": "fep-047",
       "imports": [
         "Mathlib.Data.Matrix.Mul",
-        "Mathlib.Data.Real.Basic"
+        "Mathlib.Basic.Real.Basic"
       ],
       "invariant": "Finite sum-product forward propagation is matrix--vector multiplication: it preserves nonnegativity and order under nonnegative factors, has zero and identity laws, and composes exactly by matrix multiplication.",
       "mathlib_hints": [

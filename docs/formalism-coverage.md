@@ -24,7 +24,7 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Formal-resource abbreviations | 21 |
 | Total abbreviations | 28 |
 | Formal-resource structures | 50 |
-| Distinct Mathlib imports | 64 |
+| Distinct Mathlib imports | 63 |
 | Topic-to-import edges | 212 |
 | Formal-resource import edges | 199 |
 | Internal formal-module dependencies | 120 |
@@ -513,8 +513,9 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse` | 1 | fep-018 |
 | `Mathlib.Analysis.SpecificLimits.Basic` | 1 | fep-036 |
 | `Mathlib.Analysis.SpecificLimits.Normed` | 3 | fep-020, fep-032, fep-037 |
+| `Mathlib.Basic.ENNReal.Inv` | 3 | fep-003, fep-021, fep-033 |
+| `Mathlib.Basic.Real.Basic` | 5 | fep-007, fep-008, fep-030, fep-039, fep-047 |
 | `Mathlib.Data.Bool.Basic` | 2 | fep-020, fep-038 |
-| `Mathlib.Data.ENNReal.Inv` | 3 | fep-003, fep-021, fep-033 |
 | `Mathlib.Data.Finset.Basic` | 3 | fep-005, fep-008, fep-028 |
 | `Mathlib.Data.Finset.Filter` | 1 | fep-005 |
 | `Mathlib.Data.Finset.Max` | 1 | fep-008 |
@@ -522,7 +523,6 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `Mathlib.Data.List.Count` | 1 | fep-042 |
 | `Mathlib.Data.Matrix.Mul` | 1 | fep-047 |
 | `Mathlib.Data.Nat.Cast.Field` | 1 | fep-036 |
-| `Mathlib.Data.Real.Basic` | 5 | fep-007, fep-008, fep-030, fep-039, fep-047 |
 | `Mathlib.Dynamics.FixedPoints.Basic` | 1 | fep-006 |
 | `Mathlib.InformationTheory.KullbackLeibler.Basic` | 4 | fep-001, fep-002, fep-024, fep-041 |
 | `Mathlib.InformationTheory.KullbackLeibler.ChainRule` | 1 | fep-014 |
@@ -530,8 +530,7 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `Mathlib.MeasureTheory.Constructions.BorelSpace.Basic` | 1 | fep-015 |
 | `Mathlib.MeasureTheory.Integral.Lebesgue.Countable` | 1 | fep-041 |
 | `Mathlib.MeasureTheory.MeasurableSpace.Basic` | 1 | fep-006 |
-| `Mathlib.MeasureTheory.Measure.MeasureSpace` | 1 | fep-023 |
-| `Mathlib.MeasureTheory.Measure.Typeclasses.Probability` | 1 | fep-002 |
+| `Mathlib.MeasureTheory.Measure.Typeclasses.Probability` | 2 | fep-002, fep-023 |
 | `Mathlib.Order.Bounds.Basic` | 1 | fep-008 |
 | `Mathlib.Order.Monotone.Basic` | 1 | fep-048 |
 | `Mathlib.Probability.Distributions.Binomial` | 1 | fep-036 |
