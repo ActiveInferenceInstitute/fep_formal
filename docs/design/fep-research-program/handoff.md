@@ -61,8 +61,10 @@ and proves exact bridges; it does not contradict or erase the no-go.
   graph-derived blast-radius confidence but not compiler or focused-test
   evidence.
 
-Broader native, Python, browser, manuscript, and release-bundle receipts remain
-owned by `FEP-EVIDENCE-CURRENT`. H1 exit evidence does not claim that the final
+The coordinated refresh that re-binds the broader native, Python, browser,
+manuscript, and release-bundle receipts completed deterministically on
+2026-09-12 (recorded in [CHANGELOG.md](../../../CHANGELOG.md)). H1 exit
+evidence does not claim that the final
 publication bundle is current after subsequent H2/H3 work.
 
 ## H2.0 exit

@@ -10,9 +10,11 @@ from here. Public names only — the private cross-module imports SC-16 flagged
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import tempfile
 from pathlib import Path
+from typing import Any
 
 __all__ = [
     "SHA256_HEX_RE",
@@ -20,6 +22,7 @@ __all__ = [
     "atomic_write_text",
     "sha256_bytes",
     "sha256_file",
+    "write_json",
 ]
 
 import re
@@ -55,3 +58,10 @@ def atomic_write_bytes(path: Path, data: bytes) -> None:
 def atomic_write_text(path: Path, text: str) -> None:
     """Write ``text`` to ``path`` atomically (tempfile + fsync + rename)."""
     atomic_write_bytes(path, text.encode("utf-8"))
+
+
+def write_json(path: Path, payload: Any) -> None:
+    """Serialize ``payload`` canonically (indent=2, sorted keys, no NaN) atomically."""
+    atomic_write_text(
+        path, json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n"
+    )

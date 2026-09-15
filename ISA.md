@@ -162,9 +162,9 @@ Chrome receipts remain historical evidence for those bytes. The accepted
 post-v1.1.0 Horizon 1/Horizon 2 and publication source wave changes formal
 resources, tests, manuscript inputs, and the source-owner roster, so none of
 those retained receipts currently binds the live checkout.
-[`FEP-EVIDENCE-CURRENT`](TODO.md) owns the coordinated refresh after the source
-wave settles; neither a stale nor a refreshed receipt changes a maturity
-disposition.
+The coordinated refresh completed deterministically on 2026-09-12 after the
+source wave settled (recorded in [CHANGELOG.md](CHANGELOG.md)); neither a
+stale nor a refreshed receipt changes a maturity disposition.
 
 The three provider reports created on 2026-08-20, including
 `output/reports/run_20260820_183143_709998`, remain historical evidence for
@@ -180,7 +180,9 @@ a physical theory or authorizes publication.
 The current source owns the 155-topic roster and the formal resources described
 above, but the retained native, formal-declaration, trusted-axiom, Python, and
 browser receipts do not validate these live bytes. Those current-source
-evidence claims remain open under `FEP-EVIDENCE-CURRENT`. The repository also
+evidence claims were re-bound by the coordinated refresh completed
+deterministically on 2026-09-12 (recorded in [CHANGELOG.md](CHANGELOG.md)).
+The repository also
 does not support a current 155-topic provider claim until ISA-06 and the
 provider-backed parts of ISA-07 have fresh evidence for these exact bytes.
 Historical receipts remain useful provenance but do not cross that boundary.

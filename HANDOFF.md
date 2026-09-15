@@ -143,11 +143,10 @@ terminal certificate is itself accepted: the terminal record validates 328
 mandatory cases, the enabled Fin4 supplement, and three source-bound reviews.
 Only read-only H3.G0 eligibility is open; H3.0--H3.7 remain closed.
 
-The canonical backlog row [`FEP-EVIDENCE-CURRENT`](TODO.md) owns the next
-coordinated projection and receipt refresh against the final current accepted
-owner roster. Until every validator is green against that roster, keep native,
-declaration, Python, browser, numerical, manuscript, and provider evidence
-planes separate.
+The coordinated projection and receipt refresh against the final current
+accepted owner roster completed deterministically on 2026-09-12 (recorded in
+[CHANGELOG.md](CHANGELOG.md)). Keep native, declaration, Python, browser,
+numerical, manuscript, and provider evidence planes separate.
 The 2026-08-20 Hermes/OpenGauss report likewise remains historical for its
 exact 50-topic source digest; current provider claims require a new,
 independently validated source-bound full report.

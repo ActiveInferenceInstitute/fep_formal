@@ -123,9 +123,11 @@ eligibility; no study metadata has been selected and H3.0--H3.7 remain closed.
 
 That formal exit is not current publication evidence. The retained exact-roster
 native, declaration/axiom, Python, and Chrome receipts validate the frozen
-v1.1.0 release snapshot only; their former counts and hashes remain historical
-until every live-source validator accepts a coordinated replacement.
-[`TODO.md`](TODO.md) retains that refresh as `FEP-EVIDENCE-CURRENT`. The local
+v1.1.0 release snapshot only; their former counts and hashes remain
+historical. The coordinated refresh that re-binds every live-source
+validator to the live roster completed deterministically on 2026-09-12
+(recorded in
+[CHANGELOG.md](CHANGELOG.md)). The local
 full-report
 path `output/reports/run_20260820_183143_709998/` was historical evidence
 for the earlier 50-topic source snapshot and does not bind the 155-topic

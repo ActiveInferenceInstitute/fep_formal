@@ -1,5 +1,26 @@
 ## Unreleased — connected Horizon research program
 
+### Docs pinning sweep and bridge re-pins #13/#14 (2026-09-14/15)
+
+Commits (in order): `d8ca59b` canonical bridge re-pin runbook
+(`docs/design/gnn-bridge/README.md` — status → pin both → emit
+`--refresh-digests` → emit `--check` → PR/merge → GNN pair-pin bump LAST,
+with the owner-file warning and mirror rule), the quickref bridge row, the
+AGENTS.md status/topic/report verbs, the 3.14-only validator note, and
+`uv sync --locked` quickstart alignment with CI; `942f836` docs pinning —
+`uv sync --locked` in quickref/getting-started/development (matching CI,
+README, and ISA-03) plus the two CI-enforced render acceptance gates
+(`build_render_fonts.py --check`, `check_render_log.py --verify-receipt`)
+added to the testing.md release-gate list; `1e398ee` (merged `8d8ef28`,
+PR #13) bridge re-pin after the GNN quality/render sweep (mypy
+`strict_equality` + `warn_unreachable` at 0, structural render specs, the
+logging single-entry contract, SC-22 re-render + re-record), sealed at GNN
+`b0865d32`; `33bc7da` (merged `dec6dce`, PR #14) bridge re-pin at the GNN
+final content state (ruff-format of the two issue-#111 render files +
+figures/SC-22 re-render), sealed at GNN `c2332212`. Both re-pins pass
+`bridge emit --check` finite + continuous with `--fail-on-warnings`. The
+GNN-side counterpart pin bump is `a4e73837a` (fep_lean source pin raised to
+the PR #14 merge head).
 
 ### scope-wave2: FEP-CI-RENDER lane and evidence-currency close-out (2026-09-12)
 

@@ -144,8 +144,11 @@ acceptance until new evidence is reviewed and sealed",
 (`specs/h3-reference-study/eligibility.py`) fails on the live tree with
 exactly `{"status": "error", "error": "current validator/diagnostic source
 mismatch"}` (captured during this study, read-only). Re-sealing that receipt
-is a `--write` lane on H2 evidence owned by the `FEP-EVIDENCE-CURRENT`
-Python-acceptance plane remainder, not by this study. No Lean carrier source
+is a `--write` lane on H2 evidence owned by the H2.7 re-seal backlog row
+(`FEP-H27-RESEAL` in [TODO.md](../../TODO.md)), not by this study; the
+broader Python-acceptance plane was re-bound by the coordinated refresh
+completed deterministically on 2026-09-12 (recorded in
+[CHANGELOG.md](../../CHANGELOG.md)). No Lean carrier source
 drifted: the residual is confined to post-seal python-side harness files.
 
 ## Frozen typed chain (consumed by this study)
@@ -294,7 +297,9 @@ No acceptance or exit-gate verdict is issued here. The reviewer must check:
    separate review that does not exist.
 2. **W2 G0 machinery** — confirm the captured validator failure
    (`current validator/diagnostic source mismatch`) is the same residual as
-   FEP-EVIDENCE-CURRENT's remaining Python-acceptance plane, and that no
+   the Python-acceptance plane remainder that the coordinated refresh
+   completed deterministically on 2026-09-12 re-bound (recorded in
+   [CHANGELOG.md](../../CHANGELOG.md)), and that no
    carrier repair is implied.
 3. **Spike promotion** — the feasibility spike is slice-local under
    `specs/h3-case-study/`; promoting it into

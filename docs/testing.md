@@ -13,6 +13,7 @@ integration tests; they do not manufacture successful execution results.
 Required release gates are:
 
 ```bash
+uv lock --check && uv pip check
 uv run python scripts/_maint_build_topics_catalogue.py --check
 uv run python scripts/_maint_build_fep_all_lean.py --check
 uv run python scripts/_maint_build_formal_modules.py --check
@@ -25,6 +26,7 @@ uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 uv run mypy src
 uv run ruff check src tests scripts docs
 uv run ruff format --check src tests scripts docs
+git diff --check
 uv run python docs/check_links.py --strict --include-root
 uv run python docs/md_hygiene.py --strict
 uv run python docs/pin_audit.py --check-latest
@@ -35,6 +37,8 @@ uv run fep-lean catalogue
 uv run python scripts/build_render_fonts.py --check
 uv run python scripts/check_render_log.py --verify-receipt
 uv run python scripts/render_manuscript.py --check
+uv run python scripts/build_manuscript_figures.py
+uv run python scripts/build_manuscript_figures.py --check
 ```
 
 Native formal acceptance additionally requires the pinned toolchain and

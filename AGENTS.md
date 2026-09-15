@@ -53,7 +53,9 @@ promote the semantic disposition or prove the full FEP concept.
   (`OWNER_MANIFEST_VERSION`, `SOURCE_OWNER_ROSTER`). New files under
   `src/fep_lean/**/*.py` or `scripts/*.py` fail report and native receipts
   fail-closed until reviewed into the roster; roster growth is a coordinated
-  evidence refresh (`FEP-EVIDENCE-CURRENT`), not a per-PR append. Sanctioned
+  evidence refresh (the completed refresh is recorded in
+  [CHANGELOG.md](CHANGELOG.md); a further roster change re-opens the
+  requirement), not a per-PR append. Sanctioned
   per-PR alternatives: fold new code into an existing owner or keep tooling
   slice-local under `specs/`.
 

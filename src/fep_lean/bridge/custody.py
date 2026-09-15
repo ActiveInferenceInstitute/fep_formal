@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
-import re
-import tempfile
+import os  # noqa: F401 -- tests patch custody.os.replace; custody and fsutil share
+import re  #        -- the os module, so the patch reaches the delegated write.
 from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
+
+from fep_lean.output.fsutil import atomic_write_text
 
 FRESH = "FRESH"
 STALE_CUSTODY = "STALE-CUSTODY (digest-only)"
@@ -114,17 +115,7 @@ def write_text(path: Path, content: str) -> None:
         raise ValueError("refusing to overwrite a symlink")
     if path.is_file() and path.read_text(encoding="utf-8") == content:
         return
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as stream:
-            stream.write(content)
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.replace(name, path)
-    finally:
-        if os.path.exists(name):
-            os.unlink(name)
+    atomic_write_text(path, content)
 
 
 def write_json(path: Path, payload: Any) -> None:

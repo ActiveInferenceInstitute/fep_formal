@@ -29,6 +29,7 @@ the first ten seven-topic expansion families, and
 roster from 120 to 155. Keep that last chapter source-grounded: the retained
 native, declaration, Python, and browser receipts bind the frozen v1.1.0
 release snapshot only — the accepted post-v1.1.0 Horizon 1/Horizon 2 source
-wave invalidated their current-source binding, and
-[`FEP-EVIDENCE-CURRENT`](../TODO.md) owns the coordinated refresh. The
+wave invalidated their current-source binding; the coordinated refresh
+completed deterministically on 2026-09-12 and is recorded in
+[CHANGELOG.md](../CHANGELOG.md). The
 retained 50-topic provider receipt remains historical.
