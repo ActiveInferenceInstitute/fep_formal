@@ -252,7 +252,12 @@ uv run fep-lean bridge emit --gnn-root GNN_PATH --model continuous --check
 uv run fep-lean bridge verify-document --gnn-root GNN_PATH --document PATH --fail-on-warnings
 ```
 
-Pin only after reviewing the settled owner changes. Pin and emit are explicit
+Pin only after reviewing the settled owner changes — on BOTH sides of the
+pair: any `src/fep_lean/**` owner-file change (this repo) invalidates an
+existing seal exactly as a GNN owner-file change does, so land fep_lean
+owner edits BEFORE starting the pin cycle, or the cycle must re-run after
+them (a pin sealed pre-change fails `bridge status` with
+"owner content changed" on the touched files). Pin and emit are explicit
 writes; status and `--check` never emit. A provenance-only migration uses
 `emit --refresh-digests`; content drift is rejected, not repaired. The pin
 records actual owner bytes separately from descriptive commit references.
