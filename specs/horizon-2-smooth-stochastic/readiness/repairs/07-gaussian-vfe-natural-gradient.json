@@ -1,25 +1,12 @@
 {
-  "schema_version": 1,
-  "gate": "H2.7-R0",
-  "decision": "go",
-  "decision_scope": "open_H2.7_implementation_only",
-  "historical_boundary": {
-    "acceptance_mutated": false,
-    "addendum_only": true,
-    "matrix_mutated": false,
-    "h2_0_row_statuses_mutated": false
-  },
   "compiler": {
     "lean_commit": "819816b2e0a3bf405af45ae5c7af2491d8f5bee6",
     "lean_version": "4.33.1",
     "mathlib_revision": "0df444a360eaa60ab8c11dca51a86af692955474",
     "mathlib_tag": "v4.33.1"
   },
-  "imports": [
-    "FepSketches.gaussian_information_geometry",
-    "FepSketches.smooth_information_geometry",
-    "FepSketches.compositions.gaussian_filter"
-  ],
+  "decision": "go",
+  "decision_scope": "open_H2.7_implementation_only",
   "declarations": {
     "definitions": [
       "evidenceSurprisal",
@@ -42,24 +29,21 @@
       "continuousGaussianVFE_naturalGradient"
     ]
   },
-  "proof_route": {
-    "evidence_reference": "Lebesgue density of the actual H2.6a evidence law",
-    "recognition_family": "fixed posterior variance with free mean",
-    "native_kl_orientation": "recognition_to_posterior",
-    "mean_fisher_coordinate": "inverse posterior variance",
-    "natural_gradient": "Fisher inverse applied to the VFE mean differential",
-    "descent_scope": "time-zero derivative along the local negative-natural-gradient line",
-    "scope_substitution_used": false,
-    "stored_derivative_or_strictness_certificate": false
+  "downstream": {
+    "opened": [
+      "H2.7 maintained implementation"
+    ],
+    "remains_closed": [
+      "H3.G0 pending accepted H2.7 terminal certificate",
+      "all H3 implementation"
+    ]
   },
   "evidence": {
-    "compile_command": "cd lean && lake env lean ../specs/horizon-2-smooth-stochastic/spikes/07_gaussian_vfe_natural_gradient.lean",
-    "compiler_exit_code": 0,
-    "compiler_output": "",
-    "compiler_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "warning_count": 0,
-    "typed_consumer_audit": true,
-    "standard_axiom_audit": true,
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
     "axiom_audited_declarations": [
       "evidenceLaw_eq_volume_withDensity",
       "evidenceDensity_ne_top",
@@ -74,38 +58,53 @@
       "gaussianVariationalFreeEnergy_naturalGradientFlow_deriv_neg",
       "continuousGaussianVFE_naturalGradient"
     ],
-    "allowed_axioms": [
-      "propext",
-      "Classical.choice",
-      "Quot.sound"
-    ],
-    "sorry_axiom_present": false,
+    "compile_command": "cd lean && lake env lean ../specs/horizon-2-smooth-stochastic/spikes/07_gaussian_vfe_natural_gradient.lean",
+    "compiler_exit_code": 0,
+    "compiler_output": "",
+    "compiler_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "focused_test_command": "uv run pytest -q tests/test_horizon2_gaussian_vfe_readiness.py --no-cov",
+    "focused_test_count": 7,
+    "owner_projection_parity": true,
     "public_definition_count": 4,
     "public_theorem_count": 12,
-    "owner_projection_parity": true,
-    "focused_test_command": "uv run pytest -q tests/test_horizon2_gaussian_vfe_readiness.py --no-cov",
-    "focused_test_count": 7
+    "sorry_axiom_present": false,
+    "standard_axiom_audit": true,
+    "typed_consumer_audit": true,
+    "warning_count": 0
+  },
+  "gate": "H2.7-R0",
+  "historical_boundary": {
+    "acceptance_mutated": false,
+    "addendum_only": true,
+    "h2_0_row_statuses_mutated": false,
+    "matrix_mutated": false
+  },
+  "imports": [
+    "FepSketches.gaussian_information_geometry",
+    "FepSketches.smooth_information_geometry",
+    "FepSketches.compositions.gaussian_filter"
+  ],
+  "proof_route": {
+    "descent_scope": "time-zero derivative along the local negative-natural-gradient line",
+    "evidence_reference": "Lebesgue density of the actual H2.6a evidence law",
+    "mean_fisher_coordinate": "inverse posterior variance",
+    "native_kl_orientation": "recognition_to_posterior",
+    "natural_gradient": "Fisher inverse applied to the VFE mean differential",
+    "recognition_family": "fixed posterior variance with free mean",
+    "scope_substitution_used": false,
+    "stored_derivative_or_strictness_certificate": false
   },
   "review": {
-    "independent_lean_api": "approved_no_api_or_proof_blocker",
-    "independent_information_geometry": "approved_no_scientific_blocker",
-    "independent_skeptical_claim_scope": "approved_fail_closed_source_bound_contract",
-    "reviewed_spike_sha256": "40a7bfd1e00f593c1bdab0f2872e8abbc140e68de61253508f1e32b1eed464c5",
-    "reviewed_slice_sha256": "3b41191f2a26c55ddad5eeb21982c145d814be259264330f97ca3ce731e802f7",
-    "reviewed_pre_receipt_test_sha256": "6d96b39290a822337d64cfde7c0f4a6b7a7c85c84e255fea71f0316e107b8ed8",
-    "review_scope": "Lean API and proof surface; Gaussian information geometry and claim scope; fail-closed source, owner, projection, toolchain, receipt, and downstream boundaries",
-    "code_review": "clean_no_stale_owner_or_stored_certificate",
     "choice_audit": "approved_no_hidden_substitution_or_scope_expansion",
-    "gitnexus_confidence": "reduced_nested_graph_unavailable_exact_source_and_import_review_used"
-  },
-  "downstream": {
-    "opened": [
-      "H2.7 maintained implementation"
-    ],
-    "remains_closed": [
-      "H3.G0 pending accepted H2.7 terminal certificate",
-      "all H3 implementation"
-    ]
+    "code_review": "clean_no_stale_owner_or_stored_certificate",
+    "gitnexus_confidence": "reduced_nested_graph_unavailable_exact_source_and_import_review_used",
+    "independent_information_geometry": "approved_no_scientific_blocker",
+    "independent_lean_api": "approved_no_api_or_proof_blocker",
+    "independent_skeptical_claim_scope": "approved_fail_closed_source_bound_contract",
+    "review_scope": "Lean API and proof surface; Gaussian information geometry and claim scope; fail-closed source, owner, projection, toolchain, receipt, and downstream boundaries",
+    "reviewed_pre_receipt_test_sha256": "6d96b39290a822337d64cfde7c0f4a6b7a7c85c84e255fea71f0316e107b8ed8",
+    "reviewed_slice_sha256": "3b41191f2a26c55ddad5eeb21982c145d814be259264330f97ca3ce731e802f7",
+    "reviewed_spike_sha256": "40a7bfd1e00f593c1bdab0f2872e8abbc140e68de61253508f1e32b1eed464c5"
   },
   "reviewed_no_go_claims": [
     "singleton-event surprisal",
@@ -117,23 +116,24 @@
     "unqualified Fisher-equals-covariance claim",
     "continuous H3 eligibility before accepted H2.7"
   ],
+  "schema_version": 1,
   "source_sha256": {
-    "lean/lean-toolchain": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
-    "lean/lakefile.lean": "3b3ce8fa1b1f8cc1779e142b26426d65cdc7d81074da4459dbb6f1bfbd11a5bd",
-    "lean/lake-manifest.json": "e26aebb57ade584b0b0d9423fd496930d24b63344b7e84afcdc4da1af875d5a4",
-    "pyproject.toml": "619e80e69dbaba470b1a5e7b1fc354aacda146a0a26458080f95f7eb8f5e2df1",
-    "uv.lock": "ee5039340168e0dabcfbdbc39e8efe688d2e86718828771c0ce1e7d74365408e",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "c5ab12778266bd6b476068ec1e5768e8671763fc64757b5aa51b4a4edadc054b",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
-    "src/fep_lean/formal/manifest.py": "9ac7bb2e188f23681c6992db4214a5113fbf821bf731f74a2dab2df22c0f0405",
-    "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
-    "lean/FepSketches/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
-    "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-    "lean/FepSketches/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-    "src/fep_lean/formal/compositions/gaussian_filter.lean": "2b0ec699ab07e19800fb978157721e82420b650478479368aa3c4a7878ea156e",
     "lean/FepSketches/compositions/gaussian_filter.lean": "2b0ec699ab07e19800fb978157721e82420b650478479368aa3c4a7878ea156e",
+    "lean/FepSketches/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
+    "lean/FepSketches/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
+    "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
+    "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
+    "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
+    "pyproject.toml": "619e80e69dbaba470b1a5e7b1fc354aacda146a0a26458080f95f7eb8f5e2df1",
+    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "fb40a71308b9e8358a78c892ee016e817246c579a3490d072d407ba577e4b019",
+    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
     "specs/horizon-2-smooth-stochastic/slices/07-r0-gaussian-vfe-natural-gradient.md": "3b41191f2a26c55ddad5eeb21982c145d814be259264330f97ca3ce731e802f7",
     "specs/horizon-2-smooth-stochastic/spikes/07_gaussian_vfe_natural_gradient.lean": "40a7bfd1e00f593c1bdab0f2872e8abbc140e68de61253508f1e32b1eed464c5",
-    "tests/test_horizon2_gaussian_vfe_readiness.py": "6d96b39290a822337d64cfde7c0f4a6b7a7c85c84e255fea71f0316e107b8ed8"
+    "src/fep_lean/formal/compositions/gaussian_filter.lean": "2b0ec699ab07e19800fb978157721e82420b650478479368aa3c4a7878ea156e",
+    "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
+    "src/fep_lean/formal/manifest.py": "9ac7bb2e188f23681c6992db4214a5113fbf821bf731f74a2dab2df22c0f0405",
+    "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
+    "tests/test_horizon2_gaussian_vfe_readiness.py": "6d96b39290a822337d64cfde7c0f4a6b7a7c85c84e255fea71f0316e107b8ed8",
+    "uv.lock": "ee5039340168e0dabcfbdbc39e8efe688d2e86718828771c0ce1e7d74365408e"
   }
 }

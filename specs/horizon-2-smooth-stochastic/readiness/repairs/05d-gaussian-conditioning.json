@@ -1,26 +1,32 @@
 {
-  "schema_version": 1,
-  "gate": "H2.5d-R0",
-  "decision": "go",
-  "decision_scope": "open_H2.5d_implementation_only",
-  "historical_boundary": {
-    "acceptance_mutated": false,
-    "addendum_only": true,
-    "matrix_mutated": false,
-    "row_id": "gaussian_conditioning_precision",
-    "row_status_at_decision": "blocking_no_go"
-  },
   "compiler": {
     "lean_commit": "819816b2e0a3bf405af45ae5c7af2491d8f5bee6",
     "lean_version": "4.33.1",
     "mathlib_revision": "0df444a360eaa60ab8c11dca51a86af692955474",
     "mathlib_tag": "v4.33.1"
   },
-  "imports": [
-    "FepSketches.fin4_gaussian_semigroup",
-    "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-    "Mathlib.Probability.Independence.Conditional"
-  ],
+  "conditional_formulas": {
+    "common_mean": "(sensory + active) / 4",
+    "endpoint_row": "externalConditionalKernel \u00d7\u2096 internalConditionalKernel",
+    "external_variance": "1 / 4",
+    "internal_variance": "1 / 4"
+  },
+  "coordinate_order": {
+    "blanket": [
+      "sensory",
+      "active"
+    ],
+    "endpoints": [
+      "external",
+      "internal"
+    ],
+    "partition": [
+      "blanket",
+      "endpoints"
+    ]
+  },
+  "decision": "go",
+  "decision_scope": "open_H2.5d_implementation_only",
   "declarations": {
     "abbreviations": [
       "Blanket",
@@ -51,26 +57,45 @@
       "fixed_precisionZero_covarianceNonzero_condIndep"
     ]
   },
-  "coordinate_order": {
-    "blanket": [
-      "sensory",
-      "active"
+  "downstream": {
+    "opened": [
+      "H2.5d implementation"
     ],
-    "endpoints": [
-      "external",
-      "internal"
-    ],
-    "partition": [
-      "blanket",
-      "endpoints"
+    "remains_closed": [
+      "H2.7 terminal filter/control clauses",
+      "continuous H3 eligibility"
     ]
   },
-  "conditional_formulas": {
-    "common_mean": "(sensory + active) / 4",
-    "external_variance": "1 / 4",
-    "internal_variance": "1 / 4",
-    "endpoint_row": "externalConditionalKernel \u00d7\u2096 internalConditionalKernel"
+  "evidence": {
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "compile_command": "cd lean && lake env lean ../specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean",
+    "compiler_exit_code": 0,
+    "compiler_output": "",
+    "focused_test_command": "uv run pytest tests/test_horizon2_gaussian_conditioning_readiness.py -q --no-cov",
+    "focused_test_count": 9,
+    "public_theorem_count": 12,
+    "sorry_axiom_present": false,
+    "standard_axiom_audit": true,
+    "warning_count": 0,
+    "warning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
   },
+  "gate": "H2.5d-R0",
+  "historical_boundary": {
+    "acceptance_mutated": false,
+    "addendum_only": true,
+    "matrix_mutated": false,
+    "row_id": "gaussian_conditioning_precision",
+    "row_status_at_decision": "blocking_no_go"
+  },
+  "imports": [
+    "FepSketches.fin4_gaussian_semigroup",
+    "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
+    "Mathlib.Probability.Independence.Conditional"
+  ],
   "proof_route": {
     "center": "0",
     "condDistrib_scope": "blanketLaw_almost_everywhere",
@@ -81,36 +106,10 @@
     "scope_substitution_used": false,
     "stationary_law": true
   },
-  "evidence": {
-    "compile_command": "cd lean && lake env lean ../specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean",
-    "compiler_exit_code": 0,
-    "compiler_output": "",
-    "warning_count": 0,
-    "warning_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "standard_axiom_audit": true,
-    "public_theorem_count": 12,
-    "allowed_axioms": [
-      "propext",
-      "Classical.choice",
-      "Quot.sound"
-    ],
-    "sorry_axiom_present": false,
-    "focused_test_command": "uv run pytest tests/test_horizon2_gaussian_conditioning_readiness.py -q --no-cov",
-    "focused_test_count": 9
-  },
   "review": {
     "independent_claim": "approved_scope_exact",
     "independent_gaussian_graphical_model": "approved_no_mathematical_blocker",
     "independent_lean_probability": "approved_no_mathematical_blocker"
-  },
-  "downstream": {
-    "opened": [
-      "H2.5d implementation"
-    ],
-    "remains_closed": [
-      "H2.7 terminal filter/control clauses",
-      "continuous H3 eligibility"
-    ]
   },
   "reviewed_no_go_claims": [
     "arbitrary-center conditioning",
@@ -125,16 +124,17 @@
     "H2.7 result",
     "H3 result"
   ],
+  "schema_version": 1,
   "source_sha256": {
-    "lean/lean-toolchain": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
-    "lean/lakefile.lean": "3b3ce8fa1b1f8cc1779e142b26426d65cdc7d81074da4459dbb6f1bfbd11a5bd",
-    "lean/lake-manifest.json": "e26aebb57ade584b0b0d9423fd496930d24b63344b7e84afcdc4da1af875d5a4",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "c5ab12778266bd6b476068ec1e5768e8671763fc64757b5aa51b4a4edadc054b",
+    "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
+    "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
+    "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
+    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "fb40a71308b9e8358a78c892ee016e817246c579a3490d072d407ba577e4b019",
     "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
     "specs/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean": "5c848021ad605cbfb628811ad7ef69846e7fde0b24437a3d4ce9a289f0e18fa3",
-    "src/fep_lean/formal/fin4_gaussian_semigroup.lean": "d8d15d0abdfe6eb53c9e1b94d6f1e90a076e97c9507a3532021aea090deb630b",
-    "specs/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md": "249d2aa0dc4e2ebfeaf12a521c0fbb7da81e5cff26f4319fa2469f0f9d497df1",
+    "specs/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md": "fe82ab041ca210dc629b59e0a12ce5cabc48513c64f3728f0e34d7442a9d10ce",
     "specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean": "551bcf412f037f0a1f4a5ca180b244074c3df910a6c502d8eaef8eed402a6df8",
+    "src/fep_lean/formal/fin4_gaussian_semigroup.lean": "a7c14d2fdeb44c61ffa4012d6eccc8d00051be916ab536e2658f4ef3652d260c",
     "tests/test_horizon2_gaussian_conditioning_readiness.py": "16562762a0c0a8fc06bde2858b26a5b0526164fcfe91c3d56ae39b4fe7b42ade"
   }
 }

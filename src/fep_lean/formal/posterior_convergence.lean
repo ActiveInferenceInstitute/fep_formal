@@ -121,8 +121,8 @@ noncomputable instance finiteObservationLaw_isProbabilityMeasure
     (n : ℕ) (hypothesis : MeanHypothesis) :
     IsProbabilityMeasure (finiteObservationLaw n hypothesis) := by
   unfold finiteObservationLaw
-  exact Measure.isProbabilityMeasure_map
-    (observationPrefix_measurable n).aemeasurable
+  exact (Measure.isProbabilityMeasure_map_iff
+    (observationPrefix_measurable n).aemeasurable).mpr (by infer_instance)
 
 noncomputable def finiteObservationKernel (n : ℕ) :
     Kernel MeanHypothesis (GaussianPrefix n) :=
@@ -133,8 +133,8 @@ noncomputable instance finiteObservationKernel_isMarkovKernel (n : ℕ) :
   refine ⟨fun hypothesis => ?_⟩
   unfold finiteObservationKernel
   rw [Kernel.map_apply _ (observationPrefix_measurable n)]
-  exact Measure.isProbabilityMeasure_map
-    (observationPrefix_measurable n).aemeasurable
+  exact (Measure.isProbabilityMeasure_map_iff
+    (observationPrefix_measurable n).aemeasurable).mpr (by infer_instance)
 
 noncomputable def finitePosteriorKernel (n : ℕ) :
     Kernel (GaussianPrefix n) MeanHypothesis :=
@@ -237,7 +237,8 @@ private theorem selectedJointLaw_map_observationPrefix (n : ℕ) :
         (selectedJointLaw.map
           (fun sample => (sample.1, observationPrefix n sample.2))).snd := by
       symm
-      exact Measure.snd_map_prodMk (by fun_prop)
+      exact Measure.snd_map_prodMk measurable_fst
+        ((observationPrefix_measurable n).comp measurable_snd)
     _ = (selectedMeanPrior ⊗ₘ finiteObservationKernel n).snd := by
       rw [selectedJointLaw_map_parameterPrefix]
     _ = finiteObservationKernel n ∘ₘ selectedMeanPrior :=
@@ -545,7 +546,7 @@ private theorem empiricalParameterIndicator_tendsto_ae :
     have hnot : ¬(1 / 2 : ℝ) < trajectoryEmpiricalMean n path :=
       not_lt_of_ge hn.le
     change (0 : ℝ) = if (1 / 2 : ℝ) < trajectoryEmpiricalMean n path then 1 else 0
-    rw [if_neg hnot]
+    rw [ite_eq_right hnot]
   · simp only [selectedMean] at hMean
     apply tendsto_const_nhds.congr'
     filter_upwards [hMean.eventually_const_lt (by norm_num : (1 / 2 : ℝ) < 1)]
@@ -553,7 +554,7 @@ private theorem empiricalParameterIndicator_tendsto_ae :
     have hpos : (1 / 2 : ℝ) < trajectoryEmpiricalMean n path := by
       simpa [sampleEmpiricalMean] using hn
     change (1 : ℝ) = if (1 / 2 : ℝ) < trajectoryEmpiricalMean n path then 1 else 0
-    rw [if_pos hpos]
+    rw [ite_eq_left hpos]
 
 private noncomputable def limitingObservationIndicator
     (sample : GaussianSample) : ℝ :=

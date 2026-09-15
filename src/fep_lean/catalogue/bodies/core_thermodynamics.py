@@ -168,7 +168,7 @@ end FEP025
 """,
     "fep-030": """import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
 import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Tactic
 
 namespace FEP030

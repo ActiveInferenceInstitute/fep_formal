@@ -1,6 +1,6 @@
 # Lean 4 workspace
 
-The workspace pins `leanprover/lean4:v4.33.1` and the matching Mathlib
+The workspace pins `leanprover/lean4:v4.34.0` and the matching Mathlib
 `v4.33.1` release. These are exact reproducibility pins for the newest stable
 Lean/Mathlib release pair, not floating aliases: release candidates and
 nightlies do not replace the stable line. The networked pin audit checks Lean's
@@ -13,7 +13,7 @@ The [v4.33.0 language-reference release notes](https://lean-lang.org/doc/referen
 describe the feature-bearing minor release. The workspace follows the newer
 [v4.33.1 stable patch](https://github.com/leanprover/lean4/releases/tag/v4.33.1)
 because Lean and the matching
-[Mathlib v4.33.1 release](https://github.com/leanprover-community/mathlib4/releases/tag/v4.33.1)
+[Mathlib4 v4.34.0 release](https://github.com/leanprover-community/mathlib4/releases/tag/v4.33.1)
 are both available. A documentation page lag never justifies downgrading an
 installed, verified stable patch.
 

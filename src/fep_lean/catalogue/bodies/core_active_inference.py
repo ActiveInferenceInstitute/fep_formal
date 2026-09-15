@@ -4,7 +4,7 @@ from __future__ import annotations
 
 BODIES: dict[str, str] = {
     "fep-003": """import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Data.ENNReal.Inv
+import Mathlib.Basic.ENNReal.Inv
 
 namespace FEP003
 
@@ -50,7 +50,7 @@ end FEP003
     "fep-007": """import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.BigOperators.Field
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 
 namespace FEP007
 
@@ -128,7 +128,7 @@ theorem fep007_normalizedMessage_nonneg
     0 ≤ fep007_normalizedMessage ψ incoming neighbors i j := by
   classical
   by_cases hj : j ∈ neighbors
-  · rw [fep007_normalizedMessage, if_pos hj]
+  · rw [fep007_normalizedMessage, ite_eq_left hj]
     exact div_nonneg
       (mul_nonneg (hψ j hj).le (hincoming j hj).le)
       (fep007_messageNormalizer_pos
@@ -167,7 +167,7 @@ end FEP007
 """,
     "fep-008": """import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Max
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Order.Bounds.Basic
 
 namespace FEP008
@@ -199,7 +199,7 @@ theorem fep008_min_is_lb (policies : Finset Policy) (G : Policy → ℝ)
 
 end FEP008
 """,
-    "fep-021": """import Mathlib.Data.ENNReal.Inv
+    "fep-021": """import Mathlib.Basic.ENNReal.Inv
 
 namespace FEP021
 
@@ -250,7 +250,7 @@ theorem fep021_efe_eq_zero_iff
 
 end FEP021
 """,
-    "fep-023": """import Mathlib.MeasureTheory.Measure.MeasureSpace
+    "fep-023": """import Mathlib.MeasureTheory.Measure.Typeclasses.Probability
 
 namespace FEP023
 
@@ -320,7 +320,7 @@ theorem fep028_softmax_nonneg (γ : ℝ) (G : Policy → ℝ) (policies : Finset
   have hsum : 0 < ∑ p' ∈ policies, Real.exp (-γ * G p') :=
     Finset.sum_pos (fun _ _ => Real.exp_pos _) hne
   by_cases hp : p ∈ policies
-  · rw [fep028_softmax, if_pos hp]
+  · rw [fep028_softmax, ite_eq_left hp]
     exact div_nonneg (Real.exp_nonneg _) hsum.le
   · simp [fep028_softmax, hp]
 
@@ -333,7 +333,7 @@ theorem fep028_softmax_le_one
   have hsum : 0 < ∑ p' ∈ policies, Real.exp (-γ * G p') :=
     Finset.sum_pos (fun _ _ => Real.exp_pos _) hne
   by_cases hp : p ∈ policies
-  · rw [fep028_softmax, if_pos hp]
+  · rw [fep028_softmax, ite_eq_left hp]
     apply (div_le_one hsum).2
     exact Finset.single_le_sum
       (fun q _ => Real.exp_nonneg (-γ * G q)) hp
@@ -395,7 +395,7 @@ theorem fep028_denominator_pos (γ : ℝ) (G : Policy → ℝ) (policies : Finse
 
 end FEP028
 """,
-    "fep-033": """import Mathlib.Data.ENNReal.Inv
+    "fep-033": """import Mathlib.Basic.ENNReal.Inv
 
 namespace FEP033
 
@@ -581,7 +581,7 @@ theorem fep041_expectedInformationGain_zero
 end FEP041
 """,
     "fep-047": """import Mathlib.Data.Matrix.Mul
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 
 namespace FEP047
 

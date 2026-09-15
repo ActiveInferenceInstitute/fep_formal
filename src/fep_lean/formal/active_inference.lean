@@ -700,7 +700,7 @@ theorem inferSelectActActionMarginal_eq_actionLaw
   apply Finset.sum_congr rfl
   intro policy _
   by_cases haction : action = interface.policyToAction policy
-  · simp only [if_pos haction, if_pos haction.symm]
+  · simp only [ite_eq_left haction, ite_eq_left haction.symm]
     rw [← Finset.mul_sum, (predictedState model policy).sum_one, mul_one]
   · have hreverse : interface.policyToAction policy ≠ action :=
       fun h => haction h.symm

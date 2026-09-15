@@ -316,7 +316,7 @@ private theorem staticJoint_map_triple_finite
       externalCoordinate, and_assoc]
   rw [FiniteLaw.map_mass]
   simp_rw [coordinate_eq]
-  simp only [Finset.sum_ite_eq', Finset.mem_univ, if_pos]
+  simp only [Finset.sum_ite_eq', Finset.mem_univ, ite_eq_left]
   change staticJoint model ((blanket, internal), external) =
     model.blanketLaw blanket *
       (model.internalGiven blanket internal *

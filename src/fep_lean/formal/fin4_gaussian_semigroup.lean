@@ -296,7 +296,7 @@ theorem Sigma_eq_entries :
     (1 : Matrix Axis Axis ℝ) row column
   rw [sum_axis]
   cases row <;> cases column <;>
-    norm_num [K, entries, Matrix.one_apply] <;> simp
+    norm_num [K, entries, Matrix.one_apply]
 
 /-- The exact derived covariance is symmetric. -/
 theorem Sigma_isSymm : Sigma.IsSymm := by

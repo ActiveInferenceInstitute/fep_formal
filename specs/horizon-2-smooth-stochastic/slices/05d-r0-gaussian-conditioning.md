@@ -3,7 +3,7 @@
 Status: **accepted; its append-only repair opened maintained H2.5d, which has
 subsequently exited**.
 
-Accepted evidence: warning-free Lean 4.33.1 compilation; 9 focused contracts;
+Accepted evidence: warning-free Lean 4.34.0 compilation; 9 focused contracts;
 an exact 2-abbreviation, 8-definition, 12-theorem public census; standard-only
 axiom reports; and independent Lean/probability plus Gaussian graphical-model
 review. The source-bound decision is recorded in

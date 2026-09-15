@@ -239,7 +239,7 @@ topics:
     costs exercise the boundaries.
   acceptance_probe: native Lean compile of fep003_pragmaticCost_zero, fep003_pragmaticCost_succ, fep003_pragmaticCost_mono,
     and fep003_pragmaticCost_horizon_succ.
-  lean_sketch: "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Data.ENNReal.Inv\n\nnamespace FEP003\n\
+  lean_sketch: "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Basic.ENNReal.Inv\n\nnamespace FEP003\n\
     \nopen scoped ENNReal\n\n/-- Discounted pragmatic expected-cost input to the EFE convention. -/\nnoncomputable def fep003_pragmaticCost\n\
     \    (discount : ENNReal) (stageCost : ℕ → ENNReal) (horizon : ℕ) : ENNReal :=\n  ∑ t ∈ Finset.range horizon, discount\
     \ ^ t * stageCost t\n\n/-- A zero planning horizon has zero pragmatic cost. -/\ntheorem fep003_pragmaticCost_zero\n  \
@@ -553,7 +553,7 @@ topics:
     genuinely nonuniform normalized message.
   acceptance_probe: native Lean compile of fep007_messageNormalizer_pos, fep007_normalizedMessage_nonneg, and fep007_normalizedMessage_sum_one.
   lean_sketch: "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Algebra.BigOperators.Field\nimport\
-    \ Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Data.Real.Basic\n\nnamespace FEP007\n\nopen Finset\n\
+    \ Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Basic.Real.Basic\n\nnamespace FEP007\n\nopen Finset\n\
     \n-- [proof strategy: mul_nonneg / Finset.sum_nonneg for positivity; Finset.sum_le_sum for monotone updates]\n\nabbrev\
     \ Node := Fin 8\n\n/-- Belief propagation: local potential products stay nonnegative when factors are. -/\ntheorem fep007_factorProduct_nonneg\
     \ (ψ : Node → Node → ℝ) (i j : Node)\n    (hψ : 0 ≤ ψ i j) (hj : 0 ≤ ψ j i) : 0 ≤ ψ i j * ψ j i := by\n  exact mul_nonneg\
@@ -579,15 +579,15 @@ topics:
     \ Normalized messages are nonnegative everywhere. -/\ntheorem fep007_normalizedMessage_nonneg\n    (ψ : Node → Node →\
     \ ℝ) (incoming : Node → ℝ)\n    (neighbors : Finset Node) (i j : Node)\n    (hne : neighbors.Nonempty)\n    (hψ : ∀ k\
     \ ∈ neighbors, 0 < ψ i k)\n    (hincoming : ∀ k ∈ neighbors, 0 < incoming k) :\n    0 ≤ fep007_normalizedMessage ψ incoming\
-    \ neighbors i j := by\n  classical\n  by_cases hj : j ∈ neighbors\n  · rw [fep007_normalizedMessage, if_pos hj]\n    exact\
-    \ div_nonneg\n      (mul_nonneg (hψ j hj).le (hincoming j hj).le)\n      (fep007_messageNormalizer_pos\n        ψ incoming\
-    \ neighbors i hne hψ hincoming).le\n  · simp [fep007_normalizedMessage, hj]\n\n/-- A normalized message has total mass\
-    \ one on its selected support. -/\ntheorem fep007_normalizedMessage_sum_one\n    (ψ : Node → Node → ℝ) (incoming : Node\
-    \ → ℝ)\n    (neighbors : Finset Node) (i : Node)\n    (hne : neighbors.Nonempty)\n    (hψ : ∀ j ∈ neighbors, 0 < ψ i j)\n\
-    \    (hincoming : ∀ j ∈ neighbors, 0 < incoming j) :\n    ∑ j ∈ neighbors,\n      fep007_normalizedMessage ψ incoming\
-    \ neighbors i j = 1 := by\n  classical\n  have hden : fep007_messageNormalizer ψ incoming neighbors i ≠ 0 :=\n    ne_of_gt\
-    \ (fep007_messageNormalizer_pos\n      ψ incoming neighbors i hne hψ hincoming)\n  calc\n    ∑ j ∈ neighbors,\n      \
-    \  fep007_normalizedMessage ψ incoming neighbors i j =\n        ∑ j ∈ neighbors,\n          fep007_unnormalizedMessage\
+    \ neighbors i j := by\n  classical\n  by_cases hj : j ∈ neighbors\n  · rw [fep007_normalizedMessage, ite_eq_left hj]\n\
+    \    exact div_nonneg\n      (mul_nonneg (hψ j hj).le (hincoming j hj).le)\n      (fep007_messageNormalizer_pos\n    \
+    \    ψ incoming neighbors i hne hψ hincoming).le\n  · simp [fep007_normalizedMessage, hj]\n\n/-- A normalized message\
+    \ has total mass one on its selected support. -/\ntheorem fep007_normalizedMessage_sum_one\n    (ψ : Node → Node → ℝ)\
+    \ (incoming : Node → ℝ)\n    (neighbors : Finset Node) (i : Node)\n    (hne : neighbors.Nonempty)\n    (hψ : ∀ j ∈ neighbors,\
+    \ 0 < ψ i j)\n    (hincoming : ∀ j ∈ neighbors, 0 < incoming j) :\n    ∑ j ∈ neighbors,\n      fep007_normalizedMessage\
+    \ ψ incoming neighbors i j = 1 := by\n  classical\n  have hden : fep007_messageNormalizer ψ incoming neighbors i ≠ 0 :=\n\
+    \    ne_of_gt (fep007_messageNormalizer_pos\n      ψ incoming neighbors i hne hψ hincoming)\n  calc\n    ∑ j ∈ neighbors,\n\
+    \        fep007_normalizedMessage ψ incoming neighbors i j =\n        ∑ j ∈ neighbors,\n          fep007_unnormalizedMessage\
     \ ψ incoming i j /\n            fep007_messageNormalizer ψ incoming neighbors i := by\n      apply Finset.sum_congr rfl\n\
     \      intro j hj\n      simp [fep007_normalizedMessage, hj]\n    _ = fep007_messageNormalizer ψ incoming neighbors i\
     \ /\n        fep007_messageNormalizer ψ incoming neighbors i := by\n      rw [← Finset.sum_div]\n      rfl\n    _ = 1\
@@ -693,18 +693,18 @@ topics:
     objectives exercise nonunique policies with equal minimum value.
   acceptance_probe: native Lean compile of fep008_exists_minG, fep008_min_agrees_on_value, and fep008_exists_maxG on finite
     nonempty policy sets.
-  lean_sketch: "import Mathlib.Data.Finset.Basic\nimport Mathlib.Data.Finset.Max\nimport Mathlib.Data.Real.Basic\nimport Mathlib.Order.Bounds.Basic\n\
-    \nnamespace FEP008\n\nabbrev Policy := Fin 14\n\n/-- Discrete active inference: some policy minimizes expected free energy\
-    \ on a finite set. -/\ntheorem fep008_exists_minG (policies : Finset Policy) (hne : policies.Nonempty) (G : Policy → ℝ)\
-    \ :\n    ∃ p ∈ policies, ∀ p' ∈ policies, G p ≤ G p' :=\n  Finset.exists_min_image policies G hne\n\n/-- Any two policy\
-    \ minimizers attain the same value (uniqueness of the minimum). -/\ntheorem fep008_min_agrees_on_value (policies : Finset\
-    \ Policy) (_hne : policies.Nonempty) (G : Policy → ℝ)\n    (p p' : Policy) (hp : p ∈ policies) (hp' : p' ∈ policies)\n\
-    \    (hmin : ∀ p'' ∈ policies, G p ≤ G p'') (hmin' : ∀ p'' ∈ policies, G p' ≤ G p'') :\n    G p = G p' :=\n  le_antisymm\
-    \ (hmin p' hp') (hmin' p hp)\n\n/-- Dual: some policy maximizes expected value on a finite nonempty set. -/\ntheorem fep008_exists_maxG\
-    \ (policies : Finset Policy) (hne : policies.Nonempty) (G : Policy → ℝ) :\n    ∃ p ∈ policies, ∀ p' ∈ policies, G p' ≤\
-    \ G p :=\n  Finset.exists_max_image policies G hne\n\n/-- Minimum is ≤ any evaluation in the policy set. -/\ntheorem fep008_min_is_lb\
-    \ (policies : Finset Policy) (G : Policy → ℝ)\n    (p : Policy) (_hp : p ∈ policies)\n    (hmin : ∀ p' ∈ policies, G p\
-    \ ≤ G p') :\n    ∀ p' ∈ policies, G p ≤ G p' := hmin\n\nend FEP008\n"
+  lean_sketch: "import Mathlib.Data.Finset.Basic\nimport Mathlib.Data.Finset.Max\nimport Mathlib.Basic.Real.Basic\nimport\
+    \ Mathlib.Order.Bounds.Basic\n\nnamespace FEP008\n\nabbrev Policy := Fin 14\n\n/-- Discrete active inference: some policy\
+    \ minimizes expected free energy on a finite set. -/\ntheorem fep008_exists_minG (policies : Finset Policy) (hne : policies.Nonempty)\
+    \ (G : Policy → ℝ) :\n    ∃ p ∈ policies, ∀ p' ∈ policies, G p ≤ G p' :=\n  Finset.exists_min_image policies G hne\n\n\
+    /-- Any two policy minimizers attain the same value (uniqueness of the minimum). -/\ntheorem fep008_min_agrees_on_value\
+    \ (policies : Finset Policy) (_hne : policies.Nonempty) (G : Policy → ℝ)\n    (p p' : Policy) (hp : p ∈ policies) (hp'\
+    \ : p' ∈ policies)\n    (hmin : ∀ p'' ∈ policies, G p ≤ G p'') (hmin' : ∀ p'' ∈ policies, G p' ≤ G p'') :\n    G p = G\
+    \ p' :=\n  le_antisymm (hmin p' hp') (hmin' p hp)\n\n/-- Dual: some policy maximizes expected value on a finite nonempty\
+    \ set. -/\ntheorem fep008_exists_maxG (policies : Finset Policy) (hne : policies.Nonempty) (G : Policy → ℝ) :\n    ∃ p\
+    \ ∈ policies, ∀ p' ∈ policies, G p' ≤ G p :=\n  Finset.exists_max_image policies G hne\n\n/-- Minimum is ≤ any evaluation\
+    \ in the policy set. -/\ntheorem fep008_min_is_lb (policies : Finset Policy) (G : Policy → ℝ)\n    (p : Policy) (_hp :\
+    \ p ∈ policies)\n    (hmin : ∀ p' ∈ policies, G p ≤ G p') :\n    ∀ p' ∈ policies, G p ≤ G p' := hmin\n\nend FEP008\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -1940,7 +1940,7 @@ topics:
     zero, and intermediate information lowers EFE without changing sign.
   acceptance_probe: native Lean compile of fep021_efe_epistemic_balance, fep021_efe_mono_pragmatic, fep021_efe_antitone_epistemic,
     and fep021_efe_eq_zero_iff.
-  lean_sketch: "import Mathlib.Data.ENNReal.Inv\n\nnamespace FEP021\n\nopen scoped ENNReal\n\n/-- Expected free energy convention:\
+  lean_sketch: "import Mathlib.Basic.ENNReal.Inv\n\nnamespace FEP021\n\nopen scoped ENNReal\n\n/-- Expected free energy convention:\
     \ pragmatic expected cost minus epistemic\ninformation value, truncated at zero in the extended nonnegative reals. -/\n\
     noncomputable def fep021_expectedFreeEnergy\n    (pragmaticCost epistemicValue : ENNReal) : ENNReal :=\n  pragmaticCost\
     \ - epistemicValue\n\n/-- Expected free energy is nonnegative in its native codomain. -/\ntheorem fep021_efe_nonneg (pragmaticCost\
@@ -2132,21 +2132,21 @@ topics:
     and a singleton set yields its single law.
   acceptance_probe: native Lean compile of fep023_policy_reachable, fep023_reachable_mono, fep023_reachable_normalized, and
     fep023_reachable_empty.
-  lean_sketch: "import Mathlib.MeasureTheory.Measure.MeasureSpace\n\nnamespace FEP023\n\nopen MeasureTheory\n\nvariable {Policy\
-    \ Outcome : Type*} [MeasurableSpace Outcome]\n\n/-- Distributional affordance set: outcome laws induced by available policies.\
-    \ -/\ndef fep023_reachableLaws\n    (policies : Set Policy) (law : Policy → Measure Outcome) :\n    Set (Measure Outcome)\
-    \ :=\n  law '' policies\n\n/-- Every available policy induces a reachable outcome law. -/\ntheorem fep023_policy_reachable\n\
-    \    (policies : Set Policy) (law : Policy → Measure Outcome)\n    {policy : Policy} (hpolicy : policy ∈ policies) :\n\
-    \    law policy ∈ fep023_reachableLaws policies law :=\n  ⟨policy, hpolicy, rfl⟩\n\n/-- Expanding the policy set can only\
-    \ enlarge the reachable-law set. -/\ntheorem fep023_reachable_mono\n    {policies₁ policies₂ : Set Policy} (law : Policy\
-    \ → Measure Outcome)\n    (hpolicies : policies₁ ⊆ policies₂) :\n    fep023_reachableLaws policies₁ law ⊆\n      fep023_reachableLaws\
-    \ policies₂ law := by\n  rintro _ ⟨policy, hpolicy, rfl⟩\n  exact ⟨policy, hpolicies hpolicy, rfl⟩\n\n/-- If each policy\
-    \ law is normalized, every reachable law is normalized. -/\ntheorem fep023_reachable_normalized\n    (policies : Set Policy)\
-    \ (law : Policy → Measure Outcome)\n    (hlaw : ∀ policy ∈ policies, law policy Set.univ = 1)\n    {μ : Measure Outcome}\
-    \ (hμ : μ ∈ fep023_reachableLaws policies law) :\n    μ Set.univ = 1 := by\n  rcases hμ with ⟨policy, hpolicy, rfl⟩\n\
-    \  exact hlaw policy hpolicy\n\n/-- No policy means no reachable law. -/\ntheorem fep023_reachable_empty (law : Policy\
-    \ → Measure Outcome) :\n    fep023_reachableLaws (∅ : Set Policy) law = ∅ := by\n  simp [fep023_reachableLaws]\n\nend\
-    \ FEP023\n"
+  lean_sketch: "import Mathlib.MeasureTheory.Measure.Typeclasses.Probability\n\nnamespace FEP023\n\nopen MeasureTheory\n\n\
+    variable {Policy Outcome : Type*} [MeasurableSpace Outcome]\n\n/-- Distributional affordance set: outcome laws induced\
+    \ by available policies. -/\ndef fep023_reachableLaws\n    (policies : Set Policy) (law : Policy → Measure Outcome) :\n\
+    \    Set (Measure Outcome) :=\n  law '' policies\n\n/-- Every available policy induces a reachable outcome law. -/\ntheorem\
+    \ fep023_policy_reachable\n    (policies : Set Policy) (law : Policy → Measure Outcome)\n    {policy : Policy} (hpolicy\
+    \ : policy ∈ policies) :\n    law policy ∈ fep023_reachableLaws policies law :=\n  ⟨policy, hpolicy, rfl⟩\n\n/-- Expanding\
+    \ the policy set can only enlarge the reachable-law set. -/\ntheorem fep023_reachable_mono\n    {policies₁ policies₂ :\
+    \ Set Policy} (law : Policy → Measure Outcome)\n    (hpolicies : policies₁ ⊆ policies₂) :\n    fep023_reachableLaws policies₁\
+    \ law ⊆\n      fep023_reachableLaws policies₂ law := by\n  rintro _ ⟨policy, hpolicy, rfl⟩\n  exact ⟨policy, hpolicies\
+    \ hpolicy, rfl⟩\n\n/-- If each policy law is normalized, every reachable law is normalized. -/\ntheorem fep023_reachable_normalized\n\
+    \    (policies : Set Policy) (law : Policy → Measure Outcome)\n    (hlaw : ∀ policy ∈ policies, law policy Set.univ =\
+    \ 1)\n    {μ : Measure Outcome} (hμ : μ ∈ fep023_reachableLaws policies law) :\n    μ Set.univ = 1 := by\n  rcases hμ\
+    \ with ⟨policy, hpolicy, rfl⟩\n  exact hlaw policy hpolicy\n\n/-- No policy means no reachable law. -/\ntheorem fep023_reachable_empty\
+    \ (law : Policy → Measure Outcome) :\n    fep023_reachableLaws (∅ : Set Policy) law = ∅ := by\n  simp [fep023_reachableLaws]\n\
+    \nend FEP023\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -2634,11 +2634,11 @@ topics:
     \ Softmax probabilities are nonneg over nonempty policy sets. -/\ntheorem fep028_softmax_nonneg (γ : ℝ) (G : Policy →\
     \ ℝ) (policies : Finset Policy) (p : Policy)\n    (hne : policies.Nonempty) : 0 ≤ fep028_softmax γ G policies p := by\n\
     \  classical\n  have hsum : 0 < ∑ p' ∈ policies, Real.exp (-γ * G p') :=\n    Finset.sum_pos (fun _ _ => Real.exp_pos\
-    \ _) hne\n  by_cases hp : p ∈ policies\n  · rw [fep028_softmax, if_pos hp]\n    exact div_nonneg (Real.exp_nonneg _) hsum.le\n\
-    \  · simp [fep028_softmax, hp]\n\n/-- Every support-aware softmax weight is at most one. -/\ntheorem fep028_softmax_le_one\n\
+    \ _) hne\n  by_cases hp : p ∈ policies\n  · rw [fep028_softmax, ite_eq_left hp]\n    exact div_nonneg (Real.exp_nonneg\
+    \ _) hsum.le\n  · simp [fep028_softmax, hp]\n\n/-- Every support-aware softmax weight is at most one. -/\ntheorem fep028_softmax_le_one\n\
     \    (γ : ℝ) (G : Policy → ℝ) (policies : Finset Policy) (p : Policy)\n    (hne : policies.Nonempty) :\n    fep028_softmax\
     \ γ G policies p ≤ 1 := by\n  classical\n  have hsum : 0 < ∑ p' ∈ policies, Real.exp (-γ * G p') :=\n    Finset.sum_pos\
-    \ (fun _ _ => Real.exp_pos _) hne\n  by_cases hp : p ∈ policies\n  · rw [fep028_softmax, if_pos hp]\n    apply (div_le_one\
+    \ (fun _ _ => Real.exp_pos _) hne\n  by_cases hp : p ∈ policies\n  · rw [fep028_softmax, ite_eq_left hp]\n    apply (div_le_one\
     \ hsum).2\n    exact Finset.single_le_sum\n      (fun q _ => Real.exp_nonneg (-γ * G q)) hp\n  · simp [fep028_softmax,\
     \ hp]\n\n/-- Softmax probabilities over a nonempty finite policy set sum to one. -/\ntheorem fep028_softmax_probs_sum_one\
     \ (γ : ℝ) (G : Policy → ℝ) (policies : Finset Policy)\n    (hne : policies.Nonempty) :\n    ∑ p ∈ policies, fep028_softmax\
@@ -2839,8 +2839,8 @@ topics:
   acceptance_probe: native Lean compile of fep030_binaryEntropy_max and fep030_binaryEntropy_eq_max_iff, plus the retained
     finite-uniform entropy calculation.
   lean_sketch: "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Algebra.BigOperators.Ring.Finset\n\
-    import Mathlib.Data.Real.Basic\nimport Mathlib.Tactic\n\nnamespace FEP030\n\nopen Real Finset\n\n-- [proof strategy: native\
-    \ binary-entropy maximum plus explicit finite-uniform calculation]\n\n/-- Binary Shannon entropy (in nats) is globally\
+    import Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic\n\nnamespace FEP030\n\nopen Real Finset\n\n-- [proof strategy:\
+    \ native binary-entropy maximum plus explicit finite-uniform calculation]\n\n/-- Binary Shannon entropy (in nats) is globally\
     \ bounded above by log 2. -/\ntheorem fep030_binaryEntropy_max (p : ℝ) :\n    Real.binEntropy p ≤ Real.log 2 :=\n  Real.binEntropy_le_log_two\n\
     \n/-- The binary entropy maximum is attained uniquely at probability one half. -/\ntheorem fep030_binaryEntropy_eq_max_iff\
     \ (p : ℝ) :\n    Real.binEntropy p = Real.log 2 ↔ p = (2 : ℝ)⁻¹ :=\n  Real.binEntropy_eq_log_two\n\n/-- A uniform scalar\
@@ -3104,7 +3104,7 @@ topics:
   non_vacuity: A nonconstant transition and positive discount propagate later-state terminal and stage costs, while zero discount
     isolates the immediate cost exactly.
   acceptance_probe: native Lean compile of fep033_bellman, fep033_value_mono, fep033_zeroCost, and fep033_zeroDiscount.
-  lean_sketch: "import Mathlib.Data.ENNReal.Inv\n\nnamespace FEP033\n\nopen scoped ENNReal\n\n/-- Transition-aware finite-horizon\
+  lean_sketch: "import Mathlib.Basic.ENNReal.Inv\n\nnamespace FEP033\n\nopen scoped ENNReal\n\n/-- Transition-aware finite-horizon\
     \ value with stage cost, discount, and\nterminal cost. -/\nnoncomputable def fep033_value {State : Type*}\n    (discount\
     \ : ENNReal) (stageCost : State → ENNReal)\n    (step : State → State) (terminalCost : State → ENNReal) :\n    ℕ → State\
     \ → ENNReal\n  | 0, state => terminalCost state\n  | horizon + 1, state =>\n      stageCost state +\n        discount\
@@ -3781,7 +3781,7 @@ topics:
   acceptance_probe: native Lean compile of fep039_global_nonneg, fep039_global_mono, fep039_global_add, fep039_global_eq_zero_iff,
     and FEPComposed.fep039_partitionEnergy_conservation.
   lean_sketch: "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Algebra.Order.BigOperators.Group.Finset\n\
-    import Mathlib.Data.Real.Basic\n\nnamespace FEP039\n\nopen Finset\n\n-- [proof strategy: Finset.sum_nonneg + sum_le_sum\
+    import Mathlib.Basic.Real.Basic\n\nnamespace FEP039\n\nopen Finset\n\n-- [proof strategy: Finset.sum_nonneg + sum_le_sum\
     \ + sum_const for global-vs-local FE]\n\n/-- Global free energy: ∑ local contributions over a partition. -/\ndef fep039_global_fe\
     \ (local_fe : Fin 4 → ℝ) : ℝ :=\n  ∑ i : Fin 4, local_fe i\n\n/-- Global FE is nonneg when all local contributions are\
     \ nonneg. -/\ntheorem fep039_global_nonneg (local_fe : Fin 4 → ℝ) (h : ∀ i, 0 ≤ local_fe i) :\n    0 ≤ fep039_global_fe\
@@ -4447,7 +4447,7 @@ topics:
     factors exercise nontrivial composed propagation.
   acceptance_probe: native Lean compile of fep047_forward_nonneg, fep047_forward_mono, fep047_zero_in, fep047_identity, and
     fep047_forward_compose using Mathlib Matrix.mulVec_mulVec.
-  lean_sketch: "import Mathlib.Data.Matrix.Mul\nimport Mathlib.Data.Real.Basic\n\nnamespace FEP047\n\nopen Finset\n\nabbrev\
+  lean_sketch: "import Mathlib.Data.Matrix.Mul\nimport Mathlib.Basic.Real.Basic\n\nnamespace FEP047\n\nopen Finset\n\nabbrev\
     \ State := Fin 7\nabbrev Factor := Matrix State State ℝ\n\n/-- A full finite sum-product forward pass is matrix--vector\
     \ multiplication. -/\ndef fep047_forward (factor : Factor) (incoming : State → ℝ) : State → ℝ :=\n  Matrix.mulVec factor\
     \ incoming\n\n/-- Forward message is nonneg when factors and incoming messages are nonneg. -/\ntheorem fep047_forward_nonneg\n\

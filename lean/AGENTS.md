@@ -6,8 +6,8 @@ Full **Lake** workspace with **Mathlib4** dependency for FEP theorem verificatio
 
 ## Toolchain
 
-- **Lean**: `leanprover/lean4:v4.33.1` (see `lean-toolchain`)
-- **Mathlib**: `v4.33.1` — see `lakefile.lean` and the exact revision in
+- **Lean**: `leanprover/lean4:v4.34.0` (see `lean-toolchain`)
+- **Mathlib**: `v4.34.0` — see `lakefile.lean` and the exact revision in
   `lake-manifest.json`
 
 ## Layout
@@ -31,7 +31,7 @@ bash scripts/_maint_bootstrap_lean_toolchain.sh
 
 # Or manually:
 cd lean
-lake update           # fetch Mathlib4 @ v4.33.1 (see `lakefile.lean`)
+lake update           # fetch Mathlib4 @ v4.34.0 (see `lakefile.lean`)
 lake exe cache get    # download ~3 GB prebuilt .olean cache
 lake build            # build FepSketches against Mathlib
 ```
