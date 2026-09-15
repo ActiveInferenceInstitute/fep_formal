@@ -131,7 +131,7 @@ recursive checkout snapshot. Adding a file under `src/fep_lean/**/*.py` or
 reviewed into the roster and `OWNER_MANIFEST_VERSION` is bumped. The bump
 orphans every retained receipt that pins the previous version, so roster
 growth is a coordinated evidence refresh (the completed refresh is recorded
-in [CHANGELOG.md](CHANGELOG.md); a further roster change re-opens the
+in [CHANGELOG.md](../CHANGELOG.md); a further roster change re-opens the
 requirement), not a per-PR append. Per-PR alternatives: fold the new code
 into an existing
 rostered owner (the status verb lives in `cli.py`), or keep tooling
