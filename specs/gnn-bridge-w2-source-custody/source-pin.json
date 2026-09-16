@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "63aac26b4d655deed1c0cec4bef1f799f4df5474",
+    "commit": "45df4bec7b1a20f6e7fb99346b3de5e3c67c3096",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -158,7 +158,7 @@
     }
   },
   "gnn": {
-    "commit": "40eda95f13988b771b4981bbfdd0fb833390bb78",
+    "commit": "250b7879c146a8eee7900aa42a46911d95cd841d",
     "owners": {
       "docs/gnn/gnn_syntax.md": "96e720455753c564cbdf72a70f9e9fbe6d28b96be420763cfe96cedaef262860",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -212,7 +212,7 @@
       "src/gnn/analysis/discopy/__init__.py": "cd3fce647aea97fbb8fbbf1e873a350f93e69fb248d769bc98238c3613f2ac04",
       "src/gnn/analysis/discopy/analyzer.py": "f91613389540a293ab1609db781d889853c024151afe4475c3b1bcac8b22b49f",
       "src/gnn/analysis/flat_payload_analyzer.py": "b45a08393f9c41e7e7f4eeaf27e297e0fb89f46ee5a13918e3e2dea9612ee97a",
-      "src/gnn/analysis/framework_common.py": "0fdd4ed481522ede30cf06ed93285142515ff624e1d117d7dda34b871f1bf569",
+      "src/gnn/analysis/framework_common.py": "c2d44c6ac434954ce482dfec08bab5c9b7ff4cb7684b1b1582a3a931f7749f49",
       "src/gnn/analysis/framework_comparison.py": "723d8694801ad485dc0698243be9f2a70450422a39486f31df36cdf3fe7b4d94",
       "src/gnn/analysis/framework_extractors.py": "4d38633e04e6094d853698681c0aa07e223a7310e9b68b5b2919418d995637f1",
       "src/gnn/analysis/generate_cross_model_report.py": "cbc10997d60980686cbab8e8c65793e9dc8d8f89e5c294b7431a616181bead67",
@@ -372,7 +372,7 @@
       "src/gnn/gui/oxdraw/processor.py": "7489f20a20b03955dac456bb5687ae714f6ca780619fc24a09d0bb23f1413a31",
       "src/gnn/gui/oxdraw/utils.py": "b23fcd1ea9ee30540c3f6368d3082e51a0c8c08382b7c9d6bbdb2d13a96fa1f2",
       "src/gnn/gui/processor.py": "7213acc1834dda5d861fce37eed0b156d003fce02f89e44a95d4c42b10e030ca",
-      "src/gnn/gui/runner.py": "ca678da3364391f616453c284b796a7c18c9632223529268af628e0303740928",
+      "src/gnn/gui/runner.py": "d99e69ebb37aa3a3dd37ae7332c7ebf1c885fa7d4aa40aa39d05086a75d125f3",
       "src/gnn/gui/websocket_bridge.py": "3c20813d195b40ba4a2689d1f2b8b6507e8095e8709f972417914a10a76a1bb4",
       "src/gnn/integration/__init__.py": "4fdff5966a0811eeca95730a8d6351b94c18aad491111c0d40011289465026ab",
       "src/gnn/integration/graph.py": "fbdf15c57ee330b3bce491bb3c37911f72d452e71d2e6cb32495fc55ca8a2cef",
@@ -394,7 +394,7 @@
       "src/gnn/intelligent_analysis/analyzer.py": "24cd2caec55367d2ca8921de462c0c8bfd7b210e29c5480d2b4d15c0ca88f2cf",
       "src/gnn/intelligent_analysis/history.py": "3743cc53f04ea2e01fd9cccc0ed1d722e574369d265b9a25126b603bb0a25293",
       "src/gnn/intelligent_analysis/mcp.py": "85fbe1f056740adaec3eed17cad0ab8c462d55ca038f8b2b2aa2e3b59409a3ab",
-      "src/gnn/intelligent_analysis/processor.py": "68f0588ea1516adcaa2c32241e766723dfaf057afe18ed9913f7bf54eda6152a",
+      "src/gnn/intelligent_analysis/processor.py": "216fecef3ee3fe2d7d45f808e50de7241dc376de7946fd2e43e2f3a8709b7bca",
       "src/gnn/intelligent_analysis/remediation.py": "98b0e7b0c633491b205fc1948207fe739f8b57a735fa9c5946d13c25a95f601b",
       "src/gnn/llm/__init__.py": "3d2c51eac6a364a9867c8d55f93e8fd22c5a231158624eb05862b4319df239cd",
       "src/gnn/llm/analyzer.py": "203207c7b41945efc6dde1e91ce8bcd9354c8a485ffab8f6fa6917647b65cc91",
@@ -510,13 +510,12 @@
       "src/gnn/parsers/yaml_parser.py": "73773c97355ad9e5cb974de332875d7d01a6a7dfbfb14e73a8ff12eebd6152db",
       "src/gnn/parsers/yaml_serializer.py": "5addbf37cc8e11e74b876bc421480833e69d7316539359984ee66189d0437343",
       "src/gnn/parsers/znotation_serializer.py": "fa3375bad47c5e087dde0cc03bf1281099f2936a7b6a80c1fa6cd9121ddef84c",
-      "src/gnn/pipeline/__init__.py": "9e18dc9289fe2eba3652bfddd86f855f10f4bf2ffa6226d05e4b3f0ae28a7419",
+      "src/gnn/pipeline/__init__.py": "77247437e7155308e992dd1d8f577fc476ff3434bd7286e7e02b64786cb21359",
       "src/gnn/pipeline/_io.py": "7a57ae261113f9269ffaca8e2ec639c41aef76f357f4b63d2bd25747ca1f7603",
       "src/gnn/pipeline/_version.py": "92467f686d1cee76c335e3583a8cd3c7b5b8750f5a761bc92f8060ad40f939f7",
       "src/gnn/pipeline/autonomous.py": "eda3248beeb42397dbc0570b49975620f170b83210175d4bb2e1329f1adfc090",
-      "src/gnn/pipeline/config.py": "6d706e8344b9a001e5cba6fc6108762cc404c525f94b51e2db857596e8d54711",
+      "src/gnn/pipeline/config.py": "798096afdece0dabd2c879a36cbc8795746c2ec0f7c7cb67c61d454767af30bf",
       "src/gnn/pipeline/container_plan.py": "3de13149a9937bb52ee6f51bd0898d8e8367a58bdb7db29acd4a9ed2cd0a8ed2",
-      "src/gnn/pipeline/context.py": "5a94f228d9a2a3195575c6f7b6edaaecf8fee3ccd206d82b1bcfef31dce7554f",
       "src/gnn/pipeline/cross_framework_reliability.py": "f541016765f8c2b843226c9127f011cc77a0e66cbad694e89853db59c6cd8101",
       "src/gnn/pipeline/dag.py": "1fc3071422a1b3cfdd724b7b9b93ef9ba7f0435b8b50459100a484d52df6f892",
       "src/gnn/pipeline/diagnostic_enhancer.py": "aae5b51124dfb456676be806a155a1253eb27f46cb37e804f9fc3c25b25e35ae",
@@ -536,7 +535,7 @@
       "src/gnn/pipeline/preflight.py": "2f30cd6a645836bca5b0bdc2ec0a106dac8e37b3616c4bdfaa6c74771e93eab5",
       "src/gnn/pipeline/run_manifest.py": "9e952aa459e82617c1a4f83917816cbe4c6fc4e73798eba9a0692773ae29f252",
       "src/gnn/pipeline/run_session.py": "1aac3f811a546b00eb49900700849eec3c0b4e0366c461fbd508a0632912dd00",
-      "src/gnn/pipeline/schemas.py": "54e634d7317849c2f8df00e2dc7db6206f80ac6ab0ed7091cedf7ff751b10dfc",
+      "src/gnn/pipeline/schemas.py": "ac559069a6ae9c82b26c897e2484ded4817ccfa23b822c5160a5f33d01377a7e",
       "src/gnn/pipeline/semantic_fidelity.py": "e5869bf76aea1ce07c8c3ab790f2d39f597fd2793d3daa6456afcaa2b83d18c6",
       "src/gnn/pipeline/session_acceptance.py": "34654e01b74a69bcc2cd896381511b0b9fddff6019477cd1c1f337aefb00fa70",
       "src/gnn/pipeline/step_executor.py": "97d620f5b18fa59b11d57c9c0baec6cf8120c911f59805a2e1aff57d3325f26d",
