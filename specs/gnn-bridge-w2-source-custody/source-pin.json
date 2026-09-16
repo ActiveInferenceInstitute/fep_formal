@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "6b9dfab9502852108e180e2f1ed251866c342d19",
+    "commit": "1e4d63443b4b15be5234180ac1bc5f756ec07d0a",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -158,7 +158,7 @@
     }
   },
   "gnn": {
-    "commit": "0b08a05b1751aaf27d71bac5cec22bf69911783e",
+    "commit": "52477764471fb7b0dbfe3fe4b4d0eff4c730a42f",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -285,7 +285,7 @@
       "src/gnn/execute/activeinference_jl/__init__.py": "953cafb57f60401a8e537a9080f933089cb55a9781d1421922454ce9c0ee5831",
       "src/gnn/execute/activeinference_jl/activeinference_runner.py": "d15b878614901cf2bb9e13d0b95d261851228fd2fc3918092b1f287e25d4e1f9",
       "src/gnn/execute/bnlearn/__init__.py": "4825088d05665f865579488987342212dee2285eaafdbff7c0549df088e5be7f",
-      "src/gnn/execute/bnlearn/bnlearn_runner.py": "8ea0329137e03703e673577a865cd98c43cc81cda518942c920adf098ceea482",
+      "src/gnn/execute/bnlearn/bnlearn_runner.py": "e2f6c2c25c8971915996e208fbf4c25c0370236a4d87d5b3c9606c159efd84cf",
       "src/gnn/execute/data_extractors.py": "05d71e4a45dc3b24409758a58073c5a5be3405cb1a55f3a66a05b845ccb84848",
       "src/gnn/execute/detection.py": "2a70748301715131089e2a2ba88f714849159e71d5ac3f0acf7dc421eeeea0e4",
       "src/gnn/execute/discopy/__init__.py": "d8ebaa036b34be632a228426763382395d490a9a7eadd2729fca1b8297d3e597",
@@ -788,7 +788,7 @@
       "src/gnn/validation/__init__.py": "8be5779dc4e9934843e69410dc701309a15e03b36172a95dcbdf7e13004a8add",
       "src/gnn/validation/consistency_checker.py": "52371f1a84a88aa1c897aa3b256ffe851485795d2ef494240387eb9bdf037de9",
       "src/gnn/validation/mcp.py": "912b13b3794a65b523f4b6cd78dd0310221d7bf5d62ee287f9d13ef4925944f5",
-      "src/gnn/validation/orientation.py": "ef1ec717f218f2ed5192d2c283369a452ccf1b4de12ead784eb2e40ab4231be5",
+      "src/gnn/validation/orientation.py": "e98265ba1ba40ff92c76640380a76d134f44b940838bdc53d68bec48e8973c3f",
       "src/gnn/validation/performance_profiler.py": "109cac2a5741f4d1a3af6655a0fa0653fbace0a450d10a18774a62b5dbb60ddc",
       "src/gnn/validation/semantic_validator.py": "575dda02acf01989a1bbc217923748dc180741dacb97e682e30e4323670aedfb",
       "src/gnn/validation/simple.py": "16b91ce224e86435d8c88e2ae035288c65589d72bd8a77213d91404d3db9139d",
