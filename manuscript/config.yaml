@@ -48,3 +48,5 @@ keywords:
 metadata:
   license: "CC-BY-4.0"
   language: "en"
+  documentclass: "extarticle"
+  fontsize: "9pt"
