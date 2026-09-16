@@ -76,7 +76,9 @@ For a canonical row, `real` means:
 
 It does **not** mean that the topic title is proved at its broadest reading, that assumptions hold in a biological system, or that the theorem is empirically adequate. For example, fep-028 directly proves finite softmax normalization, while fep-005 proves only properties of a supplied finite label assignment. Both are kernel-complete; their semantic reach differs.
 
-![Syntactic proof-status distribution across the {{total_topics}} catalogue rows. This figure reports `mathlib_status`, not semantic disposition; the separate coverage report supplies the semantic matrix.](../output/figures/status_distribution.png)
+![Syntactic proof-status distribution across the {{total_topics}} catalogue rows. This figure reports `mathlib_status`, not semantic disposition; the separate coverage report supplies the semantic matrix.](../output/figures/status_distribution.png){#fig:status_distribution}
+
+The tally in [@fig:status_distribution] is the machine-checked artifact of the compilation gate in [@sec:compilation_gate]; the worked example below shows what moving one row across it involves.
 
 ### Migration From `partial` to `real`: A Worked Example {#sec:migration_partial_to_real}
 

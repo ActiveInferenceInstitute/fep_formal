@@ -14,7 +14,7 @@ The kernel follows the finite-state presentation common in discrete active infer
 
 $$
 p(x)\ge 0,\qquad \sum_{x\in\alpha}p(x)=1.
-$$
+$$ {#eq:kernel_carrier_axioms}
 
 Point masses, uniform laws, independent products, marginals, and deterministic pushforwards preserve this carrier. `FEP.FiniteKernel α β` similarly stores normalized rows. Its identity kernel and sequential composition satisfy left identity, right identity, and associativity, while predictive propagation satisfies the matching identity and composition laws. Consequently, multi-step prediction is not a fresh normalization argument at each horizon; it is inherited from a checked kernel algebra.
 
@@ -22,9 +22,9 @@ The information layer uses Mathlib's zero-safe `Real.negMulLog` and `Information
 
 $$
 I(p\otimes q)=0
-$$
+$$ {#eq:kernel_mi_separation}
 
-holds without adding artificial positivity assumptions at zero-mass atoms.
+The separation in [@eq:kernel_mi_separation] holds without adding artificial positivity assumptions at zero-mass atoms.
 
 ### Variational inference and the evidence bound {#sec:finite_kernel_vfe}
 
@@ -33,7 +33,7 @@ A single `GenerativeModel Policy State Outcome` owns the initial state law, poli
 $$
 Q(s\mid o,\pi)P(o\mid\pi)
 =Q(s\mid\pi)P(o\mid s).
-$$
+$$ {#eq:kernel_bayes_reconstruction}
 
 For any recognition law $R$ and positive-evidence outcome, posterior-form variational free energy is
 
@@ -41,9 +41,9 @@ $$
 F[R,o,\pi]
 =D_{\mathrm{KL}}\!\left(R\,\middle\|\,P(s\mid o,\pi)\right)
 -\log P(o\mid\pi).
-$$
+$$ {#eq:kernel_vfe_posterior}
 
-The checked theorems prove $-\log P(o\mid\pi)\le F[R,o,\pi]$, equivalently $-F[R,o,\pi]\le\log P(o\mid\pi)$. The exact posterior attains the bound, and equality is equivalent to $R=P(s\mid o,\pi)$ even when the posterior has zero-mass states. Thus the package contains a genuine variational minimization result rather than only a definition named “free energy.”
+The checked theorems prove, from the definition in [@eq:kernel_vfe_posterior], $-\log P(o\mid\pi)\le F[R,o,\pi]$, equivalently $-F[R,o,\pi]\le\log P(o\mid\pi)$. The exact posterior attains the bound, and equality is equivalent to $R=P(s\mid o,\pi)$ even when the posterior has zero-mass states. Thus the package contains a genuine variational minimization result rather than only a definition named “free energy.”
 
 ### Expected free energy, policy selection, and planning {#sec:finite_kernel_efe}
 
@@ -52,7 +52,7 @@ The same model defines preference risk, likelihood ambiguity, epistemic value as
 $$
 G(\pi)=\text{pragmaticCost}(\pi)-\text{epistemicValue}(\pi)
 =\text{risk}(\pi)+\text{ambiguity}(\pi),
-$$
+$$ {#eq:kernel_efe_decomposition}
 
 and hence nonnegativity in this finite convention. The literature contains several EFE formulations whose equivalence depends on modeling assumptions [@millidge2021whence; @champion2026reframing]; the theorem therefore fixes its sign and support conventions in the type-checked statement rather than relying on terminology.
 
@@ -60,9 +60,9 @@ A prior-weighted Boltzmann law
 
 $$
 Q(\pi)\propto P(\pi)\exp[-\gamma G(\pi)]
-$$
+$$ {#eq:kernel_boltzmann_policy}
 
-has a strictly positive partition and a normalized posterior under full model support; a zero-mass preferred outcome is explicitly rejected before this surface is available. Equal-prior policies are ordered antitonically by EFE for nonnegative precision, a finite MAP policy exists, and an EFE minimizer exists. An action interface requires each emitted action to recover its policy's transition. The resulting infer--select--act joint is normalized, factors into posterior policy mass and action-state kernel mass, and has exactly the advertised policy and action marginals. A symmetric two-policy, two-state, two-observation model has uniform predictions, zero preference risk, and EFE equal to uniform Boolean entropy. Because both policies have equal EFE, changing the prior changes the posterior mass of `true` from $3/4$ to $1/4$ at every precision, pinning the prior term numerically.
+The law in [@eq:kernel_boltzmann_policy] has a strictly positive partition and a normalized posterior under full model support; a zero-mass preferred outcome is explicitly rejected before this surface is available. Equal-prior policies are ordered antitonically by EFE for nonnegative precision, a finite MAP policy exists, and an EFE minimizer exists. An action interface requires each emitted action to recover its policy's transition. The resulting infer--select--act joint is normalized, factors into posterior policy mass and action-state kernel mass, and has exactly the advertised policy and action marginals. A symmetric two-policy, two-state, two-observation model has uniform predictions, zero preference risk, and EFE equal to uniform Boolean entropy. Because both policies have equal EFE, changing the prior changes the posterior mass of `true` from $3/4$ to $1/4$ at every precision, pinning the prior term numerically.
 
 For temporal depth, a list of policies composes the transition kernels chronologically. Empty plans preserve the initial law; concatenated plans obey prefix--suffix prediction; and a positive-mass terminal observation yields an exact planned posterior reconstruction. A second recursion updates the predicted state law after every stage and accumulates stage-dependent EFE. Its value decomposes exactly at every plan concatenation and is nonnegative under a recursive stagewise support contract. This carrier is finite-horizon and open-loop. The controlled-Markov foundation first adds an exact two-stage observation-dependent feedback witness. The later `FEP.PolicyTrees` foundation defines arbitrary finite-depth observation-contingent trees on finite carriers, proves recursive Bellman optimality and optimizer existence, embeds open-loop plans, proves closed-loop weak dominance, and lifts the EFE decomposition treewise. It does not supply an infinite-horizon partially observed stochastic game or learn a posterior over trees.
 
@@ -72,7 +72,7 @@ The static blanket carrier constructs
 
 $$
 P(b,i,e)=P(b)P(i\mid b)P(e\mid b).
-$$
+$$ {#eq:kernel_blanket_factorization}
 
 At positive blanket mass, division by $P(b)$ yields the exact conditional product. Independently, the blanket-indexed conditional law has zero internal--external mutual information. This gives a concrete finite conditional-independence witness and strengthens the catalogue-level bridge between blanket partitions and conditional independence. The later `FEP.NativeBlanket` foundation embeds this carrier into native measures and kernels, transfers singleton masses, expectations, and prediction, and proves Mathlib's `CondIndepFun` for the embedded static joint plus measurable endpoint coarsening and rowwise factorized transitions. It still does not prove that arbitrary dynamics admit or preserve a blanket under arbitrary mixtures.
 

@@ -176,9 +176,9 @@ $$
 \underbrace{\operatorname{CE}\!\bigl(q_\pi(o),p_C(o)\bigr)}_{\text{pragmatic cost}}
 -
 \underbrace{I_{q_\pi}(S;O)}_{\text{epistemic value}} .
-$$
+$$ {#eq:ai_efe_pragmatic_epistemic}
 
-The production fep-003 sketch defines finite-horizon discounted pragmatic cost directly in `ENNReal`, proves its exact successor-horizon increment, and establishes monotonicity in both stage costs and horizon. fep-021 then combines that cost with an epistemic value under the package's explicit sign convention, and the composed theorem checks the balance. Those topic rows do not derive the probabilistic expression above; the maintained finite carrier does so separately for a real-valued one-step policy-conditioned joint under full support. See [@sec:finite_kernel_efe], [@sec:catalogue-fep-003] in Appendix B, and [@sec:eqs-fep-003] in [@sec:appendix_c_latex_equations].
+The production fep-003 sketch defines finite-horizon discounted pragmatic cost directly in `ENNReal`, proves its exact successor-horizon increment, and establishes monotonicity in both stage costs and horizon. fep-021 then combines that cost with an epistemic value under the package's explicit sign convention, and the composed theorem checks the balance. Those topic rows do not derive the probabilistic expression [@eq:ai_efe_pragmatic_epistemic]; the maintained finite carrier does so separately for a real-valued one-step policy-conditioned joint under full support. See [@sec:finite_kernel_efe], [@sec:catalogue-fep-003] in Appendix B, and [@sec:eqs-fep-003] in [@sec:appendix_c_latex_equations].
 
 **Representative formalization** — *Optimal Policy Existence (fep-008)*: On a nonempty finite policy set, EFE achieves its minimum. The sketch invokes `Finset.exists_min_image` (producing a certified minimizer) and then proves that any two minimizers agree on $G$ via `le_antisymm`. This turns the *soft* statement "some policy is best under $G$" into a compiler-verifiable existence theorem — a small but important piece of machinery for downstream results where the agent commits to a specific action. Note the discrete setting matches real active-inference implementations that enumerate a finite policy horizon. Typeset statements: [@sec:eqs-fep-008] in [@sec:appendix_c_latex_equations]; Lean: [@sec:catalogue-fep-008] in Appendix B.
 

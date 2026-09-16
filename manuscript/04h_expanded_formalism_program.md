@@ -15,7 +15,7 @@ $\mu\ll\nu$, the Radon--Nikodym derivative reconstructs the dominated measure,
 
 $$
 \nu\!\left[\frac{\mathrm d\mu}{\mathrm d\nu}\right]=\mu.
-$$
+$$ {#eq:expansion_rn_reconstruction}
 
 Posterior kernels then reconstruct the swapped prior--likelihood joint and,
 over standard Borel spaces, a conditional kernel disintegrates its joint
@@ -25,10 +25,10 @@ an evidence atom $y$ with positive predictive mass,
 
 $$
 q(x\mid y)\,q(y)=p(x)\,k(y\mid x).
-$$
+$$ {#eq:expansion_finite_bayes}
 
 The development keeps those two carriers connected without pretending that a
-finite pointwise quotient proves unrestricted regular conditional probability.
+finite pointwise quotient [@eq:expansion_finite_bayes] proves unrestricted regular conditional probability.
 
 ## Variational duality and information bounds
 
@@ -39,9 +39,9 @@ $q_f(x)\propto p(x)e^{f(x)}$:
 $$
 \log\sum_x p(x)e^{f(x)}
 =\sum_x q_f(x)f(x)-D_{\mathrm{KL}}(q_f\Vert p).
-$$
+$$ {#eq:expansion_gibbs_variational}
 
-This finite equality is the proof-relevant specialization of the variational
+This finite equality [@eq:expansion_gibbs_variational] is the proof-relevant specialization of the variational
 formula associated with Donsker and Varadhan [@donsker1975asymptotic]. It is
 not an asymptotic large-deviation theorem. The same family treats coordinate
 ELBO decomposition, mean-field coordinate minimization, channel data
