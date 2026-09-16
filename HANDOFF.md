@@ -229,11 +229,36 @@ snippet.
 
 `render_publication.py` belongs in that sequence rather than beside it: it is
 the only command that runs the fail-closed acceptance over a real render, and
-the only one that writes `docs/render-acceptance.json`. CI verifies that
-receipt but cannot produce one, because it does not render this manuscript --
-that needs a checkout of the shared template, XeLaTeX, pandoc,
-`rsvg-convert`, the mermaid CLI and the two faces the preamble selects. A
-publication run that skips it leaves CI red on the next manuscript change.
+the only one that writes `docs/render-acceptance.json`. CI's render lane
+(`.github/workflows/ci.yml`, FEP-CI-RENDER) renders end-to-end -- the shared
+template checkout, XeLaTeX, pandoc, `rsvg-convert`, the mermaid CLI, the two
+preamble faces, the catalogue, then `render_publication.py` -- and validates
+the fresh receipt against the same sources in the same run, but it cannot
+commit a refreshed receipt back: only a local acceptance run can rewrite the
+committed `docs/render-acceptance.json`. The fast lane verifies that
+committed receipt (`ci.yml` `check_render_log.py --verify-receipt`), so a
+chapter edited without a fresh local render leaves CI red there.
+
+### Reading `render_receipt_freshness: stale` from `uv run fep-lean status`
+
+One residue case is expected local behavior, not a defect. The committed
+receipt `docs/render-acceptance.json` binds the generated
+`manuscript/09z_unified_formalism_catalogue.md` (`.gitignore:58`). CI's
+render lane validates a fresh receipt in-run but cannot commit it back, so
+the committed receipt ages against local state: any local catalogue
+regeneration re-stales it, and a status run that reports
+`render_receipt_freshness: stale` naming ONLY
+`09z_unified_formalism_catalogue.md` is confirming that the shipped render
+predates the current generated catalogue -- the gitignored build product, not
+the maintained manuscript. Expected remediation is a full render acceptance
+run before publication, per the reproduction commands; while the residue is
+local-only it blocks nothing else.
+
+A REAL defect looks different: stale findings naming committed manuscript
+sources (chapters, the preamble, or other tracked `manuscript/*.md` files)
+mean the shipped render predates maintained text and must not be treated as
+current until `scripts/render_publication.py` re-runs over a real render and
+rewrites the receipt.
 
 ## Historical external stage
 
