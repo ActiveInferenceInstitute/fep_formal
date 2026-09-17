@@ -23,6 +23,15 @@ fixture normalization — the formalism-audit fixture now derives the Lean
 version from the pinned toolchain, the same form the reporter and
 native-evidence fixtures already used.
 
+Post-entry bridge re-pins recorded here for the same program: `2b51c3d` pin
+cycle #8 (GNN wave changed the sealed owner roster — framework_common.py
+fold, context deletion, intelligent_analysis repoint); `1e4d634` pin cycle #9
+(GNN wave-2 landed bnlearn executor + B-orientation diagnostics on the
+sealed rosters; syntax-pin rebound for gnn_syntax.md); `26955f3` pin cycle
+#10 (ruff-format reflowed two sealed owner files: bnlearn_runner.py,
+orientation.py). Each re-pin ran emit refresh + both-models
+`emit --check` green with `--fail-on-warnings`.
+
 ### Docs pinning sweep and bridge re-pins #13/#14 (2026-09-14/15)
 
 Commits (in order): `d8ca59b` canonical bridge re-pin runbook
