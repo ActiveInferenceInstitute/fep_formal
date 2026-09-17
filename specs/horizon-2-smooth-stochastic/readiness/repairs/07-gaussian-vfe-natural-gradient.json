@@ -124,7 +124,7 @@
     "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
     "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
     "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
-    "pyproject.toml": "619e80e69dbaba470b1a5e7b1fc354aacda146a0a26458080f95f7eb8f5e2df1",
+    "pyproject.toml": "7cf745e6679a5cb867424af26ea63723887e238f741abef5f47813b1e8c88668",
     "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "fb40a71308b9e8358a78c892ee016e817246c579a3490d072d407ba577e4b019",
     "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
     "specs/horizon-2-smooth-stochastic/slices/07-r0-gaussian-vfe-natural-gradient.md": "3b41191f2a26c55ddad5eeb21982c145d814be259264330f97ca3ce731e802f7",
@@ -134,6 +134,6 @@
     "src/fep_lean/formal/manifest.py": "9ac7bb2e188f23681c6992db4214a5113fbf821bf731f74a2dab2df22c0f0405",
     "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
     "tests/test_horizon2_gaussian_vfe_readiness.py": "6d96b39290a822337d64cfde7c0f4a6b7a7c85c84e255fea71f0316e107b8ed8",
-    "uv.lock": "ee5039340168e0dabcfbdbc39e8efe688d2e86718828771c0ce1e7d74365408e"
+    "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
   }
 }

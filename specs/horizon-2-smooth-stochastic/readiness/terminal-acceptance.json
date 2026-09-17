@@ -28,7 +28,7 @@
     "src/fep_lean/formal/declarations.py": "4e405d5a9ec228e9d85d0e90fd017224924a722835d9e4caf8a38cca746a0215",
     "src/fep_lean/lean_source.py": "56b3b0ad14245c91e183ad6765dfe73f73fbf717eeec632d683406c44bf5f3d5",
     "src/fep_lean/verification/_horizon_numerical_witnesses.py": "70944d232b67e194b00bbcd38090d2b8e38439e66dbb24e94f7be1ff02f50941",
-    "src/fep_lean/verification/horizon_acceptance.py": "0b9a96ee417e1a6190cd2a82a72454d350c9903c50098d877a0f95d56f55ba55",
+    "src/fep_lean/verification/horizon_acceptance.py": "89956e57913e8db8fc956e706b7d21fddce7be96784e46c3649ad95eb1b9c62f",
     "src/fep_lean/verification/numerical_witnesses.py": "a2097398104d01a8cc43d1c6bf3ae78a96619def4f793ed0112c7637848c173b",
     "tests/test_horizon_acceptance.py": "8a39a79bde83346948fe9b3d7f665db73f389fa1d9a876ab2189fe0694edbcc1",
     "tests/test_horizon_numerical_witnesses.py": "f5c2eb07b0dbb219cd5982eb3ffb31f7a940a2132f5878be4b328ca2c3815fae",
@@ -671,21 +671,21 @@
     "specs/horizon-2-smooth-stochastic/readiness/repairs/05d-gaussian-conditioning-lifecycle.json": "64e5abcfe7cbcaf5f5164378e65a230e8dd13904c3f1462aa4b73678338270d6",
     "specs/horizon-2-smooth-stochastic/readiness/repairs/05d-gaussian-conditioning.json": "a9d2708aa4caf7cd7c64a4340fe9d086dc6dde2eb93e1715b9937a165e0a624b",
     "specs/horizon-2-smooth-stochastic/readiness/repairs/06a-native-filter-posterior.json": "7022cece9e79f2c536e961c52da3650983251b4895a9058d5d41a68f43627d48",
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient-custody.json": "4cc67582934d98c78acbb46012269f917cb42272d9cdc7874465ec4f06098778",
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient.json": "c5abea8743442de7044db837f9ae06b0a0ea4af86ebed5bac85b0ad20b7cc87e"
+    "specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient-custody.json": "b88957c1705baa21a869d7a845e129a06e6c6feec8eb3ae4f1d5226023b17eef",
+    "specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient.json": "66f1a4881f815717abb63fb93a655d144e0fb0e5681e51ab13a3e0710f354be1"
   },
   "reviews": [
     {
       "path": "specs/horizon-2-smooth-stochastic/readiness/evidence/20260904-wave2/review-lean.json",
-      "sha256": "4dfaee9e2b9e07ff6032c9aafee91aba8cf8825579dfeaf4b7ec3e63525a72ca"
+      "sha256": "8ecd9861de52d183b9807e7c5df7613e400c30999e517daad791822e992e410f"
     },
     {
       "path": "specs/horizon-2-smooth-stochastic/readiness/evidence/20260904-wave2/review-domain.json",
-      "sha256": "cdd897debe4b3347ae2db92a846f785ac3023c04922511371bfe07598d6ec5a1"
+      "sha256": "8504c3d3d234cdcc3f8c370820e5b016f706939301875e8ab46f2ebe6392ff53"
     },
     {
       "path": "specs/horizon-2-smooth-stochastic/readiness/evidence/20260904-wave2/review-skeptical.json",
-      "sha256": "0d44fbebac75911d6c40f3490f6c76c533d3a89b0d38481da9fe7523ce6c46f2"
+      "sha256": "c55d071d7b215a3839027fde2781c5e5dfc45e904b029ce21682d2409e258969"
     }
   ],
   "schema_version": 1
