@@ -55,13 +55,23 @@ Generated Lean output is tracked and must be regeneration-identical. The formal
 resource manifest owns foundation, leaf-composition, and import-aggregate
 projections; wrapper scripts must not reconstruct that roster independently.
 
-`build_manuscript_figures.py` publishes the atlas/dashboard PNGs and graphical
-abstract the manuscript chapters cite, rasterizing the committed SVG
-projections; `--check` fails when a cited PNG is missing or older than its
-SVG source. The write pass must precede the check on a fresh checkout because
-`output/` is gitignored; CI runs exactly that pair after `fep-lean catalogue`.
-It reconstructs no roster: the cited-figure map lives in
-`fep_lean.output.svg_raster`.
+`build_manuscript_figures.py` publishes the atlas/dashboard PNGs (rasterized
+from the committed SVG projections) and the authored graphical-abstract asset
+the manuscript cites, copying each into `output/figures/`; `--check` fails
+when a cited PNG is missing or older than its source. The write pass must
+precede the check on a fresh checkout because `output/` is gitignored; CI
+runs exactly that pair after `fep-lean catalogue`. It reconstructs no roster:
+the cited-figure map lives in `fep_lean.output.svg_raster`.
+
+`build_graphical_abstract.py` is the graphical abstract's producer (thin
+wrapper over `fep_lean.output.graphical_abstract`): it regenerates the
+sha256-pinned canonical asset `manuscript/assets/graphical-abstract.png`
+byte-deterministically as an 8-bit non-interlaced RGB PNG, and `--check`
+validates the committed asset against its config pin without writing. A new
+digest must be recorded in `manuscript/config.yaml` in the same change; the
+validator fails closed on any mismatch. Never hand-edit the PNG or let any
+other tool write it: the pinned digest must keep describing pixels this
+producer generated.
 
 `verify_report_receipt.py` is a thin wrapper over
 `fep_lean.output.reporter.validate_report_receipt`: it recomputes a report

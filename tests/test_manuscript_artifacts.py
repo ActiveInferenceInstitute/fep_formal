@@ -17,6 +17,7 @@ import fep_lean.output.manuscript as manuscript_module
 from fep_lean.catalogue.coverage import build_formalism_coverage
 from fep_lean.catalogue.relations import EdgeKind
 from fep_lean.catalogue.topics import FEPTopicCatalogue
+from fep_lean.output.graphical_abstract import render_graphical_abstract
 from fep_lean.output.manuscript import (
     _SMALL_NUMBER_WORDS,
     UNIFIED_FORMALISM_CATALOGUE_FILENAME,
@@ -189,15 +190,44 @@ def test_build_manuscript_vars_validates_the_canonical_graphical_abstract(
         "media_type": "image/png",
         "width_px": 1536,
         "height_px": 1024,
-        "sha256": "969c7e959360545b3fff95963a9d88a8f7addb7f6d536a1b983da8032cbd9ccd",
+        "sha256": "91a1898d10a0d8416661183e8cac9d6348489f6039b362b7a573d30a657b3503",
         "alt_text": (
-            "Graphical abstract: a manifested Lean proof tree flows into a "
-            "four-region Markov-blanket model, then Gaussian geometry and a "
-            "stable stochastic flow, ending in solid synthetic-evidence and "
-            "dashed optional empirical branches. The diagram is a research-program "
-            "map, not a proof that all depicted links hold."
+            "Graphical abstract: the fep_lean verification pipeline. Maintained "
+            "GNN-typed authoring inputs join by stable topic ID into a 155-topic, "
+            "20-family catalogue with reviewed semantic dispositions; a pinned "
+            "Lean 4 and Mathlib compile of FepSketches with zero warnings and "
+            "zero sorry binds a source-digest-bound, claim-ready native evidence "
+            "receipt; a dashed optional full mode adds Hermes and OpenGauss "
+            "evidence behind its own independently validated receipt; a "
+            "fail-closed manuscript projection consumes both. A green build "
+            "proves a sketch compiles and never promotes a reviewed semantic "
+            "disposition."
         ),
     }
+
+
+def test_render_graphical_abstract_writes_canonical_deterministic_png(
+    tmp_path: Path,
+) -> None:
+    """The builder writes the exact canonical form the config pin validates."""
+
+    import hashlib
+    import struct
+
+    first = render_graphical_abstract(tmp_path)
+    data = first.read_bytes()
+    assert data[:8] == b"\x89PNG\r\n\x1a\n"
+    width, height = struct.unpack(">II", data[16:24])
+    assert (width, height) == (1536, 1024)
+    # 8-bit depth, RGB color type, no interlace.
+    assert data[24:29] == bytes((8, 2, 0, 0, 0))
+
+    second = render_graphical_abstract(tmp_path)
+    assert second.read_bytes() == data
+    assert (
+        hashlib.sha256(data).hexdigest()
+        == "91a1898d10a0d8416661183e8cac9d6348489f6039b362b7a573d30a657b3503"
+    )
 
 
 def test_build_manuscript_vars_can_disable_test_count_cache(

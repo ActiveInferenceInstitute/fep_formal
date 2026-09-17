@@ -990,7 +990,7 @@ def test_publication_html_shows_author_and_embeds_graphical_abstract(
     provenance = json.loads(rendered.provenance)
     inputs = {record["path"]: record for record in provenance["inputs"]}
     assert inputs["manuscript/assets/graphical-abstract.png"]["sha256"] == (
-        "969c7e959360545b3fff95963a9d88a8f7addb7f6d536a1b983da8032cbd9ccd"
+        "91a1898d10a0d8416661183e8cac9d6348489f6039b362b7a573d30a657b3503"
     )
 
 

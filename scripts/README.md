@@ -111,6 +111,19 @@ uv run python scripts/build_manuscript_figures.py
 uv run python scripts/build_manuscript_figures.py --check
 ```
 
+`build_graphical_abstract.py` is the graphical abstract's producer: it renders
+`manuscript/assets/graphical-abstract.png` (the sha256-pinned canonical asset)
+from `fep_lean.output.graphical_abstract` -- byte-deterministic, 8-bit RGB,
+no external rasterizer. Run it when the art changes, then record the new
+digest in `manuscript/config.yaml`; `--check` validates the committed asset
+against that pin without writing. The copy pass above republishes the asset
+under `output/figures/` for the combined render:
+
+```bash
+uv run python scripts/build_graphical_abstract.py
+uv run python scripts/build_graphical_abstract.py --check
+```
+
 `verify_report_receipt.py` independently validates a generated report bundle
 under `output/reports/run_...`: it recomputes the listed artifact hashes,
 reconciles the summary, run, and verification manifests, and compares stored

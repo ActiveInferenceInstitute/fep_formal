@@ -18,6 +18,11 @@ below are relative to the project root.
 - Formalism counts used in prose come from the `formalism` manuscript-variable
   block, which is itself projected from canonical coverage. Do not copy them as
   literals.
+- `assets/graphical-abstract.png` is an authored asset whose bytes are pinned
+  by `config.yaml`'s `sha256` and produced by
+  `scripts/build_graphical_abstract.py`; regenerate it there and record the
+  new digest in the same change. The template's title-page cover
+  (`paper.cover`) publishes the same artifact on page 1.
 
 The catalogue itself is a generated join. Stable metadata is maintained in
 `config/catalogue_metadata.yaml`, semantic scope in
