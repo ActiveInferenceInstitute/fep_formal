@@ -1,15 +1,15 @@
 {
   "fep_lean": {
-    "commit": "4f08f013c791e494972551c0bd00646760139e13",
+    "commit": "7886e3f418e9d03a7f8254bdf16589231bbcd483",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
       "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
       "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
-      "pyproject.toml": "619e80e69dbaba470b1a5e7b1fc354aacda146a0a26458080f95f7eb8f5e2df1",
+      "pyproject.toml": "7cf745e6679a5cb867424af26ea63723887e238f741abef5f47813b1e8c88668",
       "specs/gnn-bridge-p1-finite-spike/projection.py": "fbfc63d13d38a319bc8c54b4969a2fbb7c96b5bae4f2d2c80facc5cfe35a527b",
       "specs/gnn-bridge-p4b-continuous-emission/projection_continuous.py": "70d29ff7ff68df98d4fb327fcd92383b8167602e563b0d5d766f35cc9aa5b1ea",
-      "src/fep_lean/__init__.py": "71c6ad800554261a4d0f63030dfef66cb4df5d3332d20544401a130730a7c907",
+      "src/fep_lean/__init__.py": "b1720ed033d636e3e7b1ad1c1fd5cbe2c3267af1537660e8a592cffb8e4f373f",
       "src/fep_lean/_paths.py": "ad1f095e76592b4d2d5faaa7f1a9610018b6aa76b1c6f7d0ccb41edaf829ec26",
       "src/fep_lean/bridge/__init__.py": "8ec08fcdb4b9877dc1f61e67419b1bac92d946c5ca9619395c884f5862492587",
       "src/fep_lean/bridge/certificates.py": "1035429fa14684a558168d439c69fccf662be757e70eadb23ca82372def63866",
@@ -130,7 +130,7 @@
       "src/fep_lean/output/manuscript.py": "9ad8ac964424f80569a4adbd2e79429488d5cae62be5c4c37479a59fd1a68ecf",
       "src/fep_lean/output/provenance.py": "48fd8e92d416c41bb205689cdacf255894b48e27593b6f12d7f50686d23ff918",
       "src/fep_lean/output/publication_metadata.py": "cddd8d86547eef4af36b2f2ae4314c211e513b7336277cfcc730af1af66e4a4f",
-      "src/fep_lean/output/release_bundle.py": "5fbb567aab1576c11e479d43ca21df1fc582c23fdf5b23095af5320f0331b016",
+      "src/fep_lean/output/release_bundle.py": "7818abde4a189756e569cb309c4cee9837acb4bad6ef96a7fe4e6aecf2b83830",
       "src/fep_lean/output/render_fonts.py": "c9b0f8b84a42ebbbc3726291aef365bc43688f04b26ed03c6ef1fe47f9b19594",
       "src/fep_lean/output/render_log.py": "f96c56254e898c2badebd239a1117d80a75027396dacd093588a750a13f4d857",
       "src/fep_lean/output/rendering.py": "410883426457493151418f22494414682ac16b41cdc666ef9654cd52b8180eba",
@@ -155,15 +155,15 @@
       "src/fep_lean/verification/lean_verifier.py": "ae54ae02f869244b4779fc16c654a0d6b52c11e9da12c23d809faf08db6d550d",
       "src/fep_lean/verification/numerical_witnesses.py": "a2097398104d01a8cc43d1c6bf3ae78a96619def4f793ed0112c7637848c173b",
       "src/fep_lean/verification/preflight.py": "2b80ab8cefa2f93d7648f2b3d607fda18591d2b0294ffffea1cd45ad51441ebc",
-      "uv.lock": "ee5039340168e0dabcfbdbc39e8efe688d2e86718828771c0ce1e7d74365408e"
+      "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
     }
   },
   "gnn": {
-    "commit": "482a267b6595c7bb96f2472124cd97717bb73305",
+    "commit": "90f40bfd2f163f6910ab5813656299ccd683c7f3",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
-      "pyproject.toml": "38ee57f51498f60a50684a993227c9deeb14b14156d906990f97585addee5958",
+      "pyproject.toml": "a386a6e8cd82bf86b1fba418d672a701abd0ec9beb0832b13a252ea72302f97e",
       "src/gnn/0_template.py": "3783d0daafbe3a351440d7857b9a2d8f6f81c0653c42629579a91c2494663f76",
       "src/gnn/10_ontology.py": "28c538bf8d3f94f8b5d04d0a1672238bc9e256524ba42a355b53476e7aa37004",
       "src/gnn/11_render.py": "a64aa49932cc5c533eb21a23cb427da5d08d41cd29af0a9c0ffc3765ca351ed8",
@@ -189,7 +189,7 @@
       "src/gnn/7_export.py": "2e01bee650c4177c981ff9a348ec6529d04cc3e98ab7b9cca7005c78e2d981be",
       "src/gnn/8_visualization.py": "53691f132ec7640c17717172504f48086457ecfc88b0006f605e7e76cacacc13",
       "src/gnn/9_advanced_viz.py": "2fb308df2c5f67d5a82165f6f1b1423382bb2e4d6cffb9b409e272d83397d4c0",
-      "src/gnn/__init__.py": "f7fec7f9d555ee3465827a48038180d0e30d41c9170825ffd9d1d488a552d5cc",
+      "src/gnn/__init__.py": "9e84069f89b1ca686e3aeb41d04d11fe9813d902a3ca732823b8c9ebce30c046",
       "src/gnn/advanced_visualization/__init__.py": "4a01ece62af204fdbc76310bb94f4f53bf008bbf79b7c4d0c11731ccb4f29540",
       "src/gnn/advanced_visualization/_shared.py": "17129f62738492678eb66792c69f2ba5e25dbcec245d827964e3ba80719e7a2c",
       "src/gnn/advanced_visualization/_theme.py": "514448ceed632b22cc87b9885e85c3bbddf7fde205e392c2c959c280557a18fe",
@@ -246,7 +246,7 @@
       "src/gnn/analysis/viz_manifest.py": "d08413b855e86d59e3be24d86a3d63efd2ce363024b60b332e51570908380f11",
       "src/gnn/analysis/viz_plots.py": "10ded4228b0013926ca459bce74325c296accae73b654c5e8b5dc56a3be9f5b5",
       "src/gnn/analysis/viz_schema.py": "4da929b51278f791fe5d7a3b26c64acca52890388c40d5df97adde8dc65524b9",
-      "src/gnn/api/__init__.py": "e3f04c87accb48e6968198c80c5086978b169137c18beec875396e7b662202d6",
+      "src/gnn/api/__init__.py": "263026bab500ff44d5d6c3907325be1b011f0e257c3931e0cc030913c4c15233",
       "src/gnn/api/app.py": "4c0c9555a3d9914e8e8a07716593e951fd232be4288dd0f01558c49a1bcccf6f",
       "src/gnn/api/auth.py": "a1d24596834f4a9540698191cc9bbbb276882b487edd4f2f22c3fb9c4ba40fbc",
       "src/gnn/api/mcp.py": "e8c6084c3618d94a02e1408c3296f5336f79675fd90f18f2aefbb2c739b32e4c",
@@ -844,7 +844,7 @@
       "src/gnn/website/mcp.py": "b42bb50a12e4fdeb0cd6775ccb6cbfb135a54f324f30a6e5fbf4ffcd2ff8bcd6",
       "src/gnn/website/processor.py": "05d1764260a5b0ce9ab829c7a3a95197efa3a9e9c06cb9d40d7976100d8bdf47",
       "src/gnn/website/renderer.py": "c07c772d41ff272e37d793ad8d0f8766b07e4f19f8d0fc0a03fe1a560ec63831",
-      "uv.lock": "1e39a4e5d80ab0f20c5a7b0da1cddc93252cc13b021dc637a22c698b103c3d5a"
+      "uv.lock": "9baa7cb29d66bbfeb7c7e17a9215d5ede64ad703d2fddcf56d8bd7d646b519b7"
     }
   },
   "schema_version": 1
