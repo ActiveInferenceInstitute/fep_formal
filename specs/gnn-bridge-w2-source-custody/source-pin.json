@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "1e4d63443b4b15be5234180ac1bc5f756ec07d0a",
+    "commit": "cc4f1f89392dda1a4bc54c48f7ec474a5920678e",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -126,8 +126,9 @@
       "src/fep_lean/output/formalism_atlas.py": "1ab4bd189cddb77f8e8a6475a97c52544d5ccfa8523dac509a1acd0a69042ed3",
       "src/fep_lean/output/formalism_presentation.py": "60a283fdea6c9718e93c233394b60b12390794d2f15ec417321a2a27a8759e12",
       "src/fep_lean/output/fsutil.py": "61f0ded50a8d8528fd5602157f0ee0e6e84a3ffb397d185c8b822c5a40aaebd3",
+      "src/fep_lean/output/graphical_abstract.py": "46a4039bb84e844bda19a6ae4024df0da2c88e8b687c3eb6c0c650df39d93d6c",
       "src/fep_lean/output/manuscript.py": "9ad8ac964424f80569a4adbd2e79429488d5cae62be5c4c37479a59fd1a68ecf",
-      "src/fep_lean/output/provenance.py": "5d50b213054a97c1d13180123565aca5791dc78fe429a72690749cdbf34a1193",
+      "src/fep_lean/output/provenance.py": "48fd8e92d416c41bb205689cdacf255894b48e27593b6f12d7f50686d23ff918",
       "src/fep_lean/output/publication_metadata.py": "cddd8d86547eef4af36b2f2ae4314c211e513b7336277cfcc730af1af66e4a4f",
       "src/fep_lean/output/release_bundle.py": "5fbb567aab1576c11e479d43ca21df1fc582c23fdf5b23095af5320f0331b016",
       "src/fep_lean/output/render_fonts.py": "c9b0f8b84a42ebbbc3726291aef365bc43688f04b26ed03c6ef1fe47f9b19594",
@@ -158,7 +159,7 @@
     }
   },
   "gnn": {
-    "commit": "52477764471fb7b0dbfe3fe4b4d0eff4c730a42f",
+    "commit": "6c5a49dc1bf036432a49a9ad093215862a87a3f7",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -281,7 +282,7 @@
       "src/gnn/doc/__init__.py": "ead01e4d8ceb483187bad3caca48b69d6b3be1171402cc918d462ee0246164fd",
       "src/gnn/doc/mcp.py": "1847ccada378d7f165cdd6f94cd5147181d66ffe690af31c9e0144e85f90ab5e",
       "src/gnn/documentation/__init__.py": "d3c82918a08f54e2f708cecc12f0cc1024e217943c139b76e7a53a66d6898f70",
-      "src/gnn/execute/__init__.py": "8e38310961e4f901120a18d4aa4fcd0f6e276818b6415ad3418e86f6230dd4bc",
+      "src/gnn/execute/__init__.py": "05758248de870e3a29303e6355e0183c30c32621bfaca85055b5ccc15f50a4b4",
       "src/gnn/execute/activeinference_jl/__init__.py": "953cafb57f60401a8e537a9080f933089cb55a9781d1421922454ce9c0ee5831",
       "src/gnn/execute/activeinference_jl/activeinference_runner.py": "d15b878614901cf2bb9e13d0b95d261851228fd2fc3918092b1f287e25d4e1f9",
       "src/gnn/execute/bnlearn/__init__.py": "4825088d05665f865579488987342212dee2285eaafdbff7c0549df088e5be7f",
@@ -294,6 +295,7 @@
       "src/gnn/execute/discopy_translator_module/translator.py": "24b3e894c90c59c4ee32afb2457eb9c84dedce7354eb3e6d104c9f0d9f23ea5f",
       "src/gnn/execute/discopy_translator_module/visualize_jax_output.py": "c20f0d98f9b6f62c2db90d182978836d98ac9d9157bba1fe8ebee54874a480b6",
       "src/gnn/execute/distributed.py": "bda02ec2a878fbf32dcccd1a179a228a0471b37770ba14680b3b110b5b40b734",
+      "src/gnn/execute/doctor.py": "074e51f50b1717ea6596b7a00baa400863962e48cc3f5538fc4176796de0a452",
       "src/gnn/execute/executor.py": "4fd8fbb46d1f3db408b313617f3c84aa5ed4538bfa01c0f3faf118c7b2033f93",
       "src/gnn/execute/jax/__init__.py": "7b39d2cc6991b76e4511a9b1cd8e23199febdec54850e1889d777b6e7f1dfae3",
       "src/gnn/execute/jax/jax_results.py": "ac562389b3f72dfdea79f534cdbe98127fab1c04fa862d4166309b44284268ee",
@@ -304,7 +306,7 @@
       "src/gnn/execute/julia_setup.py": "8b85fe38a6642a836a73e1eb8aa8750aaabfc7c53ae3c06cfb22cf75a064873b",
       "src/gnn/execute/lean/__init__.py": "68e4d97b456325f5c96acf381c70ec8c4a5eb293a186e37147e38e8752606743",
       "src/gnn/execute/lean/lean_runner.py": "92c82ead7e7a154d5b6e8c82a775157caff8826694ab3d85a2c7d7136be06a11",
-      "src/gnn/execute/mcp.py": "b0cea898dad4afaa5810b249ecc10c49b70babfb486a3e66a470f004bf29862e",
+      "src/gnn/execute/mcp.py": "fd245d5fd7af69e4718901e406e40164b47269387fe2fa603a818a6773d29b22",
       "src/gnn/execute/metadata.py": "3133132b22b09c8f9ac1ef3e002c87306765e07cf41ef0747ec36b2fdfe50ae0",
       "src/gnn/execute/numpyro/__init__.py": "3ec236223481a1b67273ce2c321873f91243f3e25a17a41affbd4fb69bf8ef6f",
       "src/gnn/execute/numpyro/numpyro_runner.py": "e864544e5024b9a6b4b082c02bc2f57f57b89fe57d750293e47e5a656e78e530",
