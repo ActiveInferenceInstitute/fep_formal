@@ -18,8 +18,8 @@ authors:
     email: daniel@activeinference.institute
     orcid: "https://orcid.org/0000-0001-6232-9096"
     affiliation: Active Inference Institute
-version: "1.1.0"
-date-released: "2026-08-23"
+version: "1.2.0"
+date-released: "2026-09-17"
 repository-code: "https://github.com/ActiveInferenceInstitute/fep_lean"
 url: "https://github.com/ActiveInferenceInstitute/fep_lean"
 license: CC-BY-4.0

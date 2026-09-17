@@ -1,11 +1,11 @@
 # AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
 meta:
-  updated: '2026-08-23'
+  updated: '2026-09-17'
 repo:
   name: fep_lean
   slug: fep-lean
   full_name: ActiveInferenceInstitute/fep_lean
-  description: '> **Release v1.1.0** (2026-08-23) · Concept DOI [10.5281/zenodo.19699233](https://doi.org/10.5281/zenodo.19699233)
+  description: '> **Release v1.2.0** (2026-09-17) · Concept DOI [10.5281/zenodo.19699233](https://doi.org/10.5281/zenodo.19699233)
     · License [CC BY 4.0](LICENSE) > > **Cite as:** Friedman, D. A. (2026). *Towards
     Lean 4 Formalization of the Free Energy Principle:…'
 institute:

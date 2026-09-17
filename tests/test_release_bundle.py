@@ -2618,8 +2618,8 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
     )
     (project_root / "CITATION.cff").write_text(
         "cff-version: 1.2.0\n"
-        'version: "1.1.0"\n'
-        'date-released: "2026-08-23"\n'
+        'version: "1.2.0"\n'
+        'date-released: "2026-09-17"\n'
         "repository-code: https://github.com/ActiveInferenceInstitute/fep_lean\n"
         "url: https://github.com/ActiveInferenceInstitute/fep_lean\n"
         "license: CC-BY-4.0\n"
@@ -2640,8 +2640,8 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
     )
     (project_root / "manuscript/config.yaml").write_text(
         "paper:\n"
-        '  version: "1.1.0"\n'
-        '  date: "2026-08-23"\n'
+        '  version: "1.2.0"\n'
+        '  date: "2026-09-17"\n'
         "publication:\n"
         "  doi: 10.5281/zenodo.19699233\n"
         "  journal: Active Inference Journal\n"
@@ -2652,7 +2652,7 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
     (project_root / "pyproject.toml").write_text(
         '[build-system]\nrequires = ["setuptools>=77.0.3"]\n'
         'build-backend = "setuptools.build_meta"\n\n'
-        '[project]\nname = "fixture"\nversion = "1.1.0"\n'
+        '[project]\nname = "fixture"\nversion = "1.2.0"\n'
         'readme = "README.md"\n'
         'authors = [{ name = "Daniel Ari Friedman", email = "daniel@activeinference.institute" }]\n'
         'license = "CC-BY-4.0"\n',
@@ -2666,17 +2666,17 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
             '"Concept DOI" = "https://doi.org/10.5281/zenodo.19699233"\n'
         )
     (project_root / "src/fep_lean/__init__.py").write_text(
-        '__version__ = "1.1.0"\n', encoding="utf-8"
+        '__version__ = "1.2.0"\n', encoding="utf-8"
     )
     (project_root / "config/settings.yaml").write_text(
-        'project:\n  version: "1.1.0"\n', encoding="utf-8"
+        'project:\n  version: "1.2.0"\n', encoding="utf-8"
     )
     (project_root / ".aii/config.yaml").write_text(
         "meta:\n"
-        "  updated: '2026-08-23'\n"
+        "  updated: '2026-09-17'\n"
         "repo:\n"
         "  full_name: ActiveInferenceInstitute/fep_lean\n"
-        "  description: 'Release v1.1.0 (2026-08-23); concept DOI 10.5281/zenodo.19699233'\n"
+        "  description: 'Release v1.2.0 (2026-09-17); concept DOI 10.5281/zenodo.19699233'\n"
         "ecosystem:\n"
         "  links:\n"
         "    github: https://github.com/ActiveInferenceInstitute/fep_lean\n"
@@ -2692,12 +2692,12 @@ def test_release_metadata_rejects_a_stale_institute_sidecar(tmp_path: Path) -> N
     _write_release_metadata_fixture(tmp_path)
     sidecar = tmp_path / ".aii/config.yaml"
     sidecar.write_text(
-        sidecar.read_text(encoding="utf-8").replace("v1.1.0", "v1.0.0"),
+        sidecar.read_text(encoding="utf-8").replace("v1.2.0", "v1.0.0"),
         encoding="utf-8",
     )
 
     assert bundle_module._license_metadata_errors(tmp_path) == (
-        "InstituteOS sidecar description must identify release v1.1.0",
+        "InstituteOS sidecar description must identify release v1.2.0",
     )
 
 
@@ -2783,8 +2783,8 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
 
     (tmp_path / "manuscript/config.yaml").write_text(
         "paper:\n"
-        '  version: "1.1.0"\n'
-        '  date: "2026-08-23"\n'
+        '  version: "1.2.0"\n'
+        '  date: "2026-09-17"\n'
         "publication:\n"
         "  doi: 10.0000/wrong\n"
         "  journal: Active Inference Journal\n"
@@ -2798,8 +2798,8 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
 
     (tmp_path / "manuscript/config.yaml").write_text(
         "paper:\n"
-        '  version: "1.1.0"\n'
-        '  date: "2026-08-23"\n'
+        '  version: "1.2.0"\n'
+        '  date: "2026-09-17"\n'
         "publication:\n"
         "  doi: 10.5281/zenodo.19699233\n"
         "  journal: Other Journal\n"
@@ -2814,8 +2814,8 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
 
     (tmp_path / "manuscript/config.yaml").write_text(
         "paper:\n"
-        '  version: "1.1.0"\n'
-        '  date: "2026-08-23"\n'
+        '  version: "1.2.0"\n'
+        '  date: "2026-09-17"\n'
         "publication:\n"
         "  doi: 10.5281/zenodo.19699233\n"
         "  journal: Active Inference Journal\n"
@@ -2834,7 +2834,7 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
     assert bundle_module._license_metadata_errors(tmp_path) == (
         "Python build system must require setuptools>=77.0.3",
         "Python package license must be CC-BY-4.0",
-        "Python package version must be 1.1.0",
+        "Python package version must be 1.2.0",
     )
 
     _write_release_metadata_fixture(tmp_path)
@@ -2866,45 +2866,45 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
     [
         (
             "CITATION.cff",
-            'version: "1.1.0"',
             'version: "1.2.0"',
-            "CITATION.cff version must be 1.1.0",
+            'version: "1.3.0"',
+            "CITATION.cff version must be 1.2.0",
         ),
         (
             "CITATION.cff",
-            'date-released: "2026-08-23"',
-            'date-released: "2026-08-22"',
-            "CITATION.cff date-released must be 2026-08-23",
+            'date-released: "2026-09-17"',
+            'date-released: "2026-09-16"',
+            "CITATION.cff date-released must be 2026-09-17",
         ),
         (
             "manuscript/config.yaml",
-            'version: "1.1.0"',
             'version: "1.2.0"',
-            "manuscript paper version must be 1.1.0",
+            'version: "1.3.0"',
+            "manuscript paper version must be 1.2.0",
         ),
         (
             "manuscript/config.yaml",
-            'date: "2026-08-23"',
-            'date: "2026-08-22"',
-            "manuscript paper date must be 2026-08-23",
+            'date: "2026-09-17"',
+            'date: "2026-09-16"',
+            "manuscript paper date must be 2026-09-17",
         ),
         (
             "pyproject.toml",
-            'version = "1.1.0"',
             'version = "1.2.0"',
-            "Python package version must be 1.1.0",
+            'version = "1.3.0"',
+            "Python package version must be 1.2.0",
         ),
         (
             "src/fep_lean/__init__.py",
-            '__version__ = "1.1.0"',
             '__version__ = "1.2.0"',
-            "Python runtime version must be 1.1.0",
+            '__version__ = "1.3.0"',
+            "Python runtime version must be 1.2.0",
         ),
         (
             "config/settings.yaml",
-            'version: "1.1.0"',
             'version: "1.2.0"',
-            "runtime settings version must be 1.1.0",
+            'version: "1.3.0"',
+            "runtime settings version must be 1.2.0",
         ),
     ],
 )
@@ -2929,13 +2929,13 @@ def test_release_metadata_rejects_each_version_and_date_plane_independently(
     [
         (
             "pyproject.toml",
-            'version = "1.2.0"\n',
-            "Python package version must be 1.1.0",
+            'version = "1.3.0"\n',
+            "Python package version must be 1.2.0",
         ),
         (
             "src/fep_lean/__init__.py",
-            '__version__ = "1.2.0"\n',
-            "Python runtime version must be 1.1.0",
+            '__version__ = "1.3.0"\n',
+            "Python runtime version must be 1.2.0",
         ),
     ],
 )
@@ -2950,8 +2950,8 @@ def test_release_metadata_rejects_ambiguous_duplicate_runtime_versions(
     contents = path.read_text(encoding="utf-8")
     if relative == "pyproject.toml":
         contents = contents.replace(
-            'version = "1.1.0"\n',
-            'version = "1.1.0"\n' + duplicate,
+            'version = "1.2.0"\n',
+            'version = "1.2.0"\n' + duplicate,
             1,
         )
     else:

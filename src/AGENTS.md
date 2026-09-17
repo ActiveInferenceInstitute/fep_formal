@@ -1,6 +1,6 @@
 # fep_lean/src/
 
-**Version**: v1.1.0 | **Status**: Active | **Last Updated**: August 2026
+**Version**: v1.2.0 | **Status**: Active | **Last Updated**: September 2026
 
 The installable package is rooted at `src/fep_lean/`; `src/` is only the
 standard packaging layout and is not itself importable.

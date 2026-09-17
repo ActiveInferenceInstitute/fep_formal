@@ -13,8 +13,8 @@ exponential-family dual geometry, and exact two-state continuous time.
 
 ## Release
 
-Version `1.1.0` is the 155-topic publication cut. The canonical software
-release is [GitHub `v1.1.0`](https://github.com/ActiveInferenceInstitute/fep_lean/releases/tag/v1.1.0),
+Version `1.2.0` is the 155-topic publication cut. The canonical software
+release is [GitHub `v1.2.0`](https://github.com/ActiveInferenceInstitute/fep_lean/releases/tag/v1.2.0),
 and the evolving scholarly record is identified by the
 [Zenodo concept DOI](https://doi.org/10.5281/zenodo.19699233). The GitHub
 release notes cross-reference the immutable Zenodo version DOI and publish the

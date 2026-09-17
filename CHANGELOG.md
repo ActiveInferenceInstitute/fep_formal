@@ -1,4 +1,4 @@
-## Unreleased — connected Horizon research program
+## 1.2.0 — 2026-09-17 — connected Horizon research program
 
 ### Lean/Mathlib v4.34.0 toolchain program and pin cycle #7 (2026-09-15)
 

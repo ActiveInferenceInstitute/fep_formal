@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fep_lean"
-version = "1.1.0"
+version = "1.2.0"
 description = "FEP Lean4 catalogue, OpenGauss-oriented session model, manuscript artifacts"
 readme = "README.md"
 authors = [

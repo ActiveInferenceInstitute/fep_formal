@@ -6,8 +6,8 @@
 paper:
   title: "Towards Lean 4 Formalization of the Free Energy Principle"
   subtitle: "AI-Driven Theorem Sketching and Verification for Active Inference and Bayesian Mechanics"
-  version: "1.1.0"
-  date: "2026-08-23"
+  version: "1.2.0"
+  date: "2026-09-17"
   # The template's title-page cover slot points at the published graphical
   # abstract, so the cover page and the Graphical Abstract section carry one
   # artifact. The alt text is a literal: a config token would reach the cover
