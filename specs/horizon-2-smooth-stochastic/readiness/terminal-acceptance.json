@@ -37,7 +37,7 @@
   "decision": "accepted",
   "diagnostics": {
     "path": "specs/horizon-2-smooth-stochastic/readiness/evidence/20260904-wave2/diagnostics.json",
-    "sha256": "ad7d8b0cedd41c3a9f34917f1a8b4772b7839dc1e5bfd6cc0203ca391a12226a"
+    "sha256": "e6ce5d7fe5f59a8722e345324c3f9df9bffd12b412f136faab3ceca893fa869e"
   },
   "downstream": {
     "closed": [
