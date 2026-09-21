@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import re
-import shutil
-import subprocess
 import tempfile
 from fractions import Fraction
 from pathlib import Path
@@ -13,6 +11,9 @@ import pytest
 
 from fep_lean.formal import formal_projection_pairs
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -278,37 +279,8 @@ def _determinant(matrix: tuple[tuple[Fraction, ...], ...]) -> Fraction:
     )
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.5c native acceptance")
-    return lake
 
 
 def _parse_axiom_names(block: str) -> set[str]:
@@ -375,20 +347,15 @@ end FEP.Fin4GaussianCensusMutation
 """,
         encoding="utf-8",
     )
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.5c native acceptance",
+        ),
     )
     output = result.stdout + result.stderr
     assert result.returncode == 0, output
@@ -456,7 +423,7 @@ def test_h2_5c_is_manifested_and_projected_as_one_foundation() -> None:
 
 
 def test_h2_5c_derives_the_exact_precision_and_covariance() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     assert "def K : Matrix Axis Axis ℝ" in source
     for literal in (
@@ -508,7 +475,7 @@ def test_h2_5c_derives_the_exact_precision_and_covariance() -> None:
 
 
 def test_h2_5c_proves_four_nonvacuous_independent_eigenmodes() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     for name in (
         "eigenmodeTwo",
@@ -542,7 +509,7 @@ def test_h2_5c_proves_four_nonvacuous_independent_eigenmodes() -> None:
 
 
 def test_h2_5c_specializes_the_accepted_linear_gaussian_owner() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     assert "noncomputable def parameters (center : StandardizedState)" in source
     assert "FEP.LinearGaussianSemigroup.LinearGaussianParameters Axis" in source
@@ -590,7 +557,7 @@ def test_h2_5c_specializes_the_accepted_linear_gaussian_owner() -> None:
 
 
 def test_h2_5c_projects_the_normalized_all_ones_mode_to_h2_5a() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     assert "noncomputable def normalizedAllOnes : StandardizedState" in source
     assert "WithLp.toLp 2 (fun _ => (1 / 2 : ℝ))" in source
@@ -637,7 +604,7 @@ def test_h2_5c_projects_the_normalized_all_ones_mode_to_h2_5a() -> None:
 
 
 def test_h2_5c_public_surface_is_exact_nonvacuous_and_fail_closed() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     assert len(PUBLIC_DEFINITIONS) == 18
     assert len(PUBLIC_THEOREMS) == 42
@@ -667,22 +634,16 @@ def test_h2_5c_public_surface_is_exact_nonvacuous_and_fail_closed() -> None:
 def test_h2_5c_compiles_warning_free() -> None:
     with tempfile.TemporaryDirectory(prefix="fep-h2-5c-") as output_dir:
         output_path = Path(output_dir) / "fin4_gaussian_semigroup.olean"
-        result = subprocess.run(
-            [
-                _lake_executable(),
-                "env",
-                "lean",
-                "-R",
-                str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-                "-o",
-                str(output_path),
-                str(FOUNDATION),
-            ],
+        result = run_lean_compile_probe(
+            FOUNDATION,
             cwd=LEAN_ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=300,
+            import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+            output_path=output_path,
+            timeout_s=300,
+            executable=lake_executable(
+                missing="raise",
+                context="H2.5c native acceptance",
+            ),
         )
         assert output_path.is_file(), result.stdout + result.stderr
 
@@ -740,20 +701,15 @@ example :
         f"{source}\n{prints}\n#print prefix FEP.Fin4GaussianSemigroup\n{consumers}\n",
         encoding="utf-8",
     )
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.5c native acceptance",
+        ),
     )
 
     output = result.stdout + result.stderr

@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import re
-import shutil
-import subprocess
 from pathlib import Path
 
 import pytest
+
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -24,42 +26,10 @@ EXACT_IMPORTS = (
 )
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for H1.2 decision-risk tests")
-    return lake
-
-
-def _without_lean_comments(source: str) -> str:
-    """Remove nested block comments and line comments from Lean source."""
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def _declaration(source: str, name: str) -> str:
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
     match = re.search(
         rf"(?:theorem|lemma|def|noncomputable def)\s+{re.escape(name)}\b"
         rf"(?P<body>.*?)(?=\n(?:theorem|lemma|def|noncomputable def|end)\b|\Z)",
@@ -165,13 +135,11 @@ def test_native_mutual_information_garbling_uses_product_pushforward_dpi() -> No
 
 
 def test_decision_risk_foundation_compiles_warning_free() -> None:
-    result = subprocess.run(
-        [_lake_executable(), "env", "lean", str(FOUNDATION)],
+    result = run_lean_compile_probe(
+        FOUNDATION,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        timeout_s=300,
+        executable=lake_executable(),
     )
 
     output = result.stdout + result.stderr

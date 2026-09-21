@@ -13,6 +13,7 @@ from pathlib import Path
 import pytest
 
 from fep_lean.formal.manifest import FORMAL_MODULES
+from fep_lean.lean_source import lean_code_without_comments
 from tests._support.h2_r0_custody import (
     MANIFEST_PATH,
     PRIOR_PATH,
@@ -20,7 +21,12 @@ from tests._support.h2_r0_custody import (
     VALIDATOR_PATH,
     validate_h2_r0_custody,
 )
-from tests._support.lean_runner import run_lean_probe
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import (
+    run_lake_lean_probe,
+    run_lean_compile_probe,
+    run_lean_probe,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -113,41 +119,12 @@ ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
 NAMESPACE = "FEPProbe.H2_7GaussianVFE"
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.7-R0 native validation")
-    return lake
 
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def _parse_axiom_names(block: str) -> frozenset[str]:
@@ -366,13 +343,14 @@ def test_h2_7_r0_uses_the_pinned_lean_mathlib_environment() -> None:
     )
     assert mathlib["rev"] == "0df444a360eaa60ab8c11dca51a86af692955474"
     assert mathlib["inputRev"] == "v4.33.1"
-    result = subprocess.run(
-        [_lake_executable(), "env", "lean", "--version"],
+    result = run_lake_lean_probe(
+        ["env", "lean", "--version"],
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=30,
+        timeout_s=30,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.7-R0 native validation",
+        ),
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert result.stderr == ""
@@ -385,7 +363,7 @@ def test_h2_7_r0_uses_the_pinned_lean_mathlib_environment() -> None:
 
 
 def test_h2_7_r0_surface_and_orientation_are_exact_and_fail_closed() -> None:
-    source = _without_lean_comments(SPIKE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SPIKE.read_text(encoding="utf-8"))
     definitions = tuple(
         re.findall(r"(?m)^(?:noncomputable )?def ([A-Za-z_][A-Za-z0-9_']*)\b", source)
     )
@@ -450,13 +428,14 @@ def test_h2_7_r0_surface_and_orientation_are_exact_and_fail_closed() -> None:
 
 
 def test_h2_7_r0_compiles_warning_free() -> None:
-    result = subprocess.run(
-        [_lake_executable(), "env", "lean", str(SPIKE)],
+    result = run_lean_compile_probe(
+        SPIKE,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.7-R0 native validation",
+        ),
     )
     output = result.stdout + result.stderr
     assert result.returncode == 0, output

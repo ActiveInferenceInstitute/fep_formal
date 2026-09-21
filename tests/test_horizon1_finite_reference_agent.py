@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import re
-import shutil
-import subprocess
 from pathlib import Path
 
 import pytest
+
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
@@ -33,31 +35,10 @@ PUBLIC_THEOREMS = (
 )
 
 
-def _without_lean_comments(source: str) -> str:
-    """Remove nested block comments and line comments from Lean source."""
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def _declaration(source: str, kind: str, name: str) -> str:
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
     match = re.search(
         rf"(?m)^{kind}\s+{re.escape(name)}\b"
         rf"(?P<body>.*?)(?=\n(?:structure|theorem|lemma|def|noncomputable def|end)\b|\Z)",
@@ -66,17 +47,6 @@ def _declaration(source: str, kind: str, name: str) -> str:
     )
     assert match is not None, f"missing {kind} {name}"
     return match.group(0)
-
-
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for H1.8 finite reference-agent tests")
-    return lake
 
 
 def test_finite_reference_agent_owns_exact_import_and_namespace_contract() -> None:
@@ -93,7 +63,7 @@ def test_finite_reference_agent_owns_exact_import_and_namespace_contract() -> No
 
 def test_one_coherence_record_is_explicitly_uninhabited_by_current_carriers() -> None:
     source = COMPOSITION.read_text(encoding="utf-8")
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
     coherence = _declaration(source, "structure", "FiniteReferenceCoherence")
     posterior_blocker = _declaration(
         source, "theorem", "learnedPosterior_ne_boolBeliefInterpret"
@@ -277,22 +247,13 @@ def test_finite_reference_agent_compiles_warning_free_with_explicit_output(
     tmp_path: Path,
 ) -> None:
     output_path = tmp_path / "finite_reference_agent.olean"
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(FORMAL_ROOT),
-            "-o",
-            str(output_path),
-            str(COMPOSITION),
-        ],
+    result = run_lean_compile_probe(
+        COMPOSITION,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=FORMAL_ROOT,
+        output_path=output_path,
+        timeout_s=300,
+        executable=lake_executable(),
     )
 
     output = result.stdout + result.stderr
@@ -315,22 +276,13 @@ def test_public_theorems_have_only_standard_axioms(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     output_path = tmp_path / "finite_reference_agent_axioms.olean"
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(tmp_path),
-            "-o",
-            str(output_path),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=tmp_path,
+        output_path=output_path,
+        timeout_s=300,
+        executable=lake_executable(),
     )
 
     output = result.stdout + result.stderr

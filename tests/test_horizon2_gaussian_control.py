@@ -3,14 +3,15 @@
 from __future__ import annotations
 
 import re
-import shutil
-import subprocess
 from pathlib import Path
 
 import pytest
 
 from fep_lean.formal import formal_projection_pairs, render_formal_aggregate
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -76,37 +77,8 @@ PUBLIC_THEOREMS = (
 pytestmark = pytest.mark.serial_lean
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.6b native acceptance")
-    return lake
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def test_h2_6b_has_one_exact_composition_source_owner() -> None:
@@ -141,7 +113,7 @@ def test_h2_6b_is_manifested_projected_and_aggregated_once() -> None:
 
 
 def test_h2_6b_stores_only_raw_control_inputs() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
     model = re.search(
         r"structure FiniteGaussianControlModel \(Action : Type\*\) where\n"
         r"(?P<body>.*?)(?=\n\n)",
@@ -171,7 +143,7 @@ def test_h2_6b_stores_only_raw_control_inputs() -> None:
 
 
 def test_h2_6b_public_surface_is_exact_and_fail_closed() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
 
     assert (
         tuple(re.findall(r"(?m)^(?:noncomputable )?def (\w+)\b", source))
@@ -190,7 +162,7 @@ def test_h2_6b_public_surface_is_exact_and_fail_closed() -> None:
 
 
 def test_h2_6b_reuses_native_filter_transition_and_minimizer_owners() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
 
     assert "(control.dynamics action).ouTransition time" in source
     assert "NativeActionIndexedKernelSemigroup ℝ Action" in source
@@ -224,7 +196,7 @@ def test_h2_6b_reuses_native_filter_transition_and_minimizer_owners() -> None:
 
 
 def test_h2_6b_objective_is_the_actual_composed_gaussian_integral() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
     risk = re.search(
         r"def quadraticActionRisk\b(?P<body>.*?)"
         r"(?=\n\n(?:noncomputable )?def filteredQuadraticRisk)",
@@ -254,7 +226,7 @@ def test_h2_6b_objective_is_the_actual_composed_gaussian_integral() -> None:
 
 
 def test_h2_6b_native_posterior_and_selector_claims_are_evidence_ae() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
 
     assert re.search(
         r"actionTransition control action ∘ₘ\s*"
@@ -281,7 +253,7 @@ def test_h2_6b_native_posterior_and_selector_claims_are_evidence_ae() -> None:
 
 
 def test_h2_6b_boolean_witness_is_transition_derived_and_has_a_tie_boundary() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
 
     assert re.search(
         r"def boolWitnessPrior\b.*?mean := 0.*?variance := 1 / 2",
@@ -334,22 +306,16 @@ def test_h2_6b_boolean_witness_is_transition_derived_and_has_a_tie_boundary() ->
 
 def test_h2_6b_compiles_warning_free(tmp_path: Path) -> None:
     output_path = tmp_path / "gaussian_control.olean"
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            "-o",
-            str(output_path),
-            str(SOURCE),
-        ],
+    result = run_lean_compile_probe(
+        SOURCE,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        output_path=output_path,
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.6b native acceptance",
+        ),
     )
 
     output = result.stdout + result.stderr
@@ -365,20 +331,15 @@ def test_h2_6b_public_theorems_use_only_standard_axioms(tmp_path: Path) -> None:
         f"#print axioms FEPComposed.GaussianControl.{name}" for name in PUBLIC_THEOREMS
     )
     probe.write_text(f"{source}\n{prints}\n", encoding="utf-8")
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.6b native acceptance",
+        ),
     )
 
     output = result.stdout + result.stderr

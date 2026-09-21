@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import re
-import shutil
-import subprocess
 from pathlib import Path
 
 import pytest
+
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SOURCE = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "posterior_convergence.lean"
@@ -113,15 +114,6 @@ PUBLIC_ENVIRONMENT_DECLARATIONS = frozenset(
 )
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.3 native validation")
-    return lake
 
 
 def _declaration(source: str, name: str) -> str:
@@ -344,20 +336,15 @@ end FEP.PosteriorConvergenceCensusMutation
 """,
         encoding="utf-8",
     )
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(FORMAL_ROOT),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=FORMAL_ROOT,
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.3 native validation",
+        ),
     )
     output = result.stdout + result.stderr
     assert result.returncode == 0, output
@@ -396,20 +383,15 @@ def test_h2_3b_typed_consumers_reject_an_extra_theorem_premise(
     assert mutated != source
     probe = tmp_path / "PosteriorConvergenceExtraPremiseMutation.lean"
     probe.write_text(f"{mutated}\n{_h2_3b_typed_consumers()}\n", encoding="utf-8")
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(FORMAL_ROOT),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=FORMAL_ROOT,
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.3 native validation",
+        ),
     )
     output = result.stdout + result.stderr
 
@@ -656,22 +638,16 @@ def test_h2_3_has_no_assumed_identification_or_convergence_fields() -> None:
 @pytest.mark.serial_lean
 def test_h2_3_source_compiles_warning_free(tmp_path: Path) -> None:
     output_path = tmp_path / "posterior_convergence.olean"
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(FORMAL_ROOT),
-            "-o",
-            str(output_path),
-            str(SOURCE),
-        ],
+    result = run_lean_compile_probe(
+        SOURCE,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=FORMAL_ROOT,
+        output_path=output_path,
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.3 native validation",
+        ),
     )
     output = result.stdout + result.stderr
 
@@ -694,20 +670,15 @@ def test_h2_3_public_environment_axioms_and_h2_3b_exact_types(tmp_path: Path) ->
         f"#print prefix {DECLARATION_NAMESPACE}\n{_h2_3b_typed_consumers()}\n",
         encoding="utf-8",
     )
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(FORMAL_ROOT),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=FORMAL_ROOT,
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.3 native validation",
+        ),
     )
     output = result.stdout + result.stderr
 

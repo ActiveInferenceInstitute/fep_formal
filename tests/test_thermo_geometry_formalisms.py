@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import os
 import re
-import shutil
 import subprocess
 from pathlib import Path
 
@@ -14,6 +13,8 @@ from fep_lean.catalogue.bodies.geometric_optimization import (
     BODIES as GEOMETRY_BODIES,
 )
 from fep_lean.catalogue.bodies.path_thermodynamics import BODIES as THERMO_BODIES
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -45,25 +46,12 @@ GEOMETRY_TITLES = (
 pytestmark = pytest.mark.serial_lean
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for native Slice 05 boundary tests")
-    return lake
-
-
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [_lake_executable(), "env", "lean", str(source)],
+    return run_lean_compile_probe(
+        source,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        timeout_s=300,
+        executable=lake_executable(),
     )
 
 

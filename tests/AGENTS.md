@@ -23,10 +23,18 @@ internal implementation details.
 - Provider tests require explicit live-test selection and credentials. Their
   absence is an external-acceptance blocker, not a reason to fake results.
 
+## Missing tools
+
+Absence of `lake`/`lean`/`gauss` is handled deliberately per test file, not
+uniformly: boundary probes `pytest.skip`; acceptance probes raise
+`RuntimeError` and fail closed (see `tests/conftest.py`). Resolve shared
+executables through `tests/_support/lake.lake_executable` and run Lean
+compiles through the process-group-safe probes in `tests/_support/lean_runner`.
+
 ## Commands
 
 ```bash
-uv run pytest tests/ -q --cov=src --cov-fail-under=89
+uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 uv run pytest tests/ -q -n auto --dist loadgroup -m "not serial_lean"
 uv run pytest tests/ --collect-only -q
 FEP_LEAN_CATALOGUE_COMPILE_TEST=1 \

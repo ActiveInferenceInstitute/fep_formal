@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import re
-import shutil
-import subprocess
 import tempfile
 from pathlib import Path
 
@@ -12,6 +10,9 @@ import pytest
 
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.formal.projection import formal_projection_drift
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -132,37 +133,8 @@ example (family : FEP.GaussianInformationGeometry.FixedVarianceGaussian)
 """
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.2a native acceptance")
-    return lake
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def test_h2_2a_has_one_exact_foundation_owner() -> None:
@@ -185,7 +157,7 @@ def test_h2_2a_has_one_exact_foundation_owner() -> None:
 
 
 def test_h2_2a_public_surface_is_exact_and_has_no_parallel_geometry_hierarchy() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     assert (
         tuple(re.findall(r"(?m)^noncomputable def (\w+)\b", source))
@@ -203,7 +175,7 @@ def test_h2_2a_public_surface_is_exact_and_has_no_parallel_geometry_hierarchy() 
 
 
 def test_h2_2a_metric_duality_and_rank_boundary_are_theorem_visible() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     assert "family.naturalFisher natural" in source
     assert "family.meanFisher mean" in source
@@ -228,22 +200,16 @@ def test_h2_2a_projection_and_manifest_are_current() -> None:
 def test_h2_2a_foundation_compiles_warning_free() -> None:
     with tempfile.TemporaryDirectory(prefix="fep-h2-2a-") as output_dir:
         output_path = Path(output_dir) / "smooth_information_geometry.olean"
-        result = subprocess.run(
-            [
-                _lake_executable(),
-                "env",
-                "lean",
-                "-R",
-                str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-                "-o",
-                str(output_path),
-                str(FOUNDATION),
-            ],
+        result = run_lean_compile_probe(
+            FOUNDATION,
             cwd=LEAN_ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=300,
+            import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+            output_path=output_path,
+            timeout_s=300,
+            executable=lake_executable(
+                missing="raise",
+                context="H2.2a native acceptance",
+            ),
         )
         assert output_path.is_file(), result.stdout + result.stderr
 
@@ -260,20 +226,15 @@ def test_h2_2a_public_theorems_use_only_standard_axioms(tmp_path: Path) -> None:
         for name in PUBLIC_THEOREMS
     )
     probe.write_text(f"{source}\n{prints}\n{SCIENTIFIC_CONTRACTS}\n", encoding="utf-8")
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.2a native acceptance",
+        ),
     )
 
     output = result.stdout + result.stderr

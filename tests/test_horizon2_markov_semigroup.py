@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import re
-import shutil
-import subprocess
 import tempfile
 from pathlib import Path
 
@@ -12,6 +10,9 @@ import pytest
 
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.formal.projection import formal_projection_drift
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -64,37 +65,8 @@ SEMIGROUP_THEOREMS = (
 )
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.4a native acceptance")
-    return lake
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def test_h2_4a_extends_the_single_existing_embedding_owner() -> None:
@@ -110,7 +82,7 @@ def test_h2_4a_extends_the_single_existing_embedding_owner() -> None:
 
 
 def test_h2_4a_preserves_identity_and_chronological_composition_exactly() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     assert re.search(r"(?m)^theorem embeddedKernel_identity\b", source)
     assert re.search(r"(?m)^theorem embeddedKernel_comp\b", source)
@@ -126,7 +98,7 @@ def test_h2_4a_preserves_identity_and_chronological_composition_exactly() -> Non
 
 
 def test_h2_4a_reuses_the_embedding_and_existing_predictive_bridge() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
 
     assert len(re.findall(r"(?m)^noncomputable def embeddedLaw\b", source)) == 1
     assert len(re.findall(r"(?m)^noncomputable def embeddedKernel\b", source)) == 1
@@ -147,22 +119,16 @@ def test_h2_4a_projection_is_current() -> None:
 def test_h2_4a_native_owner_compiles_warning_free() -> None:
     with tempfile.TemporaryDirectory(prefix="fep-h2-4a-") as output_dir:
         output_path = Path(output_dir) / "native_blanket.olean"
-        result = subprocess.run(
-            [
-                _lake_executable(),
-                "env",
-                "lean",
-                "-R",
-                str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-                "-o",
-                str(output_path),
-                str(FOUNDATION),
-            ],
+        result = run_lean_compile_probe(
+            FOUNDATION,
             cwd=LEAN_ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=300,
+            import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+            output_path=output_path,
+            timeout_s=300,
+            executable=lake_executable(
+                missing="raise",
+                context="H2.4a native acceptance",
+            ),
         )
         assert output_path.is_file(), result.stdout + result.stderr
 
@@ -211,20 +177,15 @@ example :
     FEP.FiniteKernel.deterministic]
 """
     probe.write_text(f"{source}\n{prints}\n{orientation}\n", encoding="utf-8")
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.4a native acceptance",
+        ),
     )
 
     output = result.stdout + result.stderr
@@ -258,7 +219,9 @@ def test_h2_4b_has_one_exact_foundation_owner() -> None:
 
 
 def test_h2_4b_interface_stores_only_semigroup_laws() -> None:
-    source = _without_lean_comments(SEMIGROUP_FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(
+        SEMIGROUP_FOUNDATION.read_text(encoding="utf-8")
+    )
 
     native_match = re.search(
         r"structure NativeKernelSemigroup.*?where\n(?P<body>.*?)(?=\n(?:namespace|/--))",
@@ -286,7 +249,9 @@ def test_h2_4b_interface_stores_only_semigroup_laws() -> None:
 
 
 def test_h2_4b_lift_preserves_exact_action_time_and_carrier() -> None:
-    source = _without_lean_comments(SEMIGROUP_FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(
+        SEMIGROUP_FOUNDATION.read_text(encoding="utf-8")
+    )
 
     assert "FEP.ContinuousTimeMarkov.FiniteMarkovSemigroup" in source
     assert "FEP.ContinuousTimeMarkov.ActionIndexedSemigroup" in source
@@ -315,22 +280,16 @@ def test_h2_4b_projection_is_current() -> None:
 def test_h2_4b_foundation_compiles_warning_free() -> None:
     with tempfile.TemporaryDirectory(prefix="fep-h2-4b-") as output_dir:
         output_path = Path(output_dir) / "markov_semigroup.olean"
-        result = subprocess.run(
-            [
-                _lake_executable(),
-                "env",
-                "lean",
-                "-R",
-                str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-                "-o",
-                str(output_path),
-                str(SEMIGROUP_FOUNDATION),
-            ],
+        result = run_lean_compile_probe(
+            SEMIGROUP_FOUNDATION,
             cwd=LEAN_ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=300,
+            import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+            output_path=output_path,
+            timeout_s=300,
+            executable=lake_executable(
+                missing="raise",
+                context="H2.4a native acceptance",
+            ),
         )
         assert output_path.is_file(), result.stdout + result.stderr
 
@@ -401,20 +360,15 @@ example (earlier increment : ℝ≥0)
 """
     probe = tmp_path / "NativeMarkovSemigroup.lean"
     probe.write_text(f"{source}\n{prints}\n{contracts}\n", encoding="utf-8")
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            str(probe),
-        ],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.4a native acceptance",
+        ),
     )
 
     output = result.stdout + result.stderr

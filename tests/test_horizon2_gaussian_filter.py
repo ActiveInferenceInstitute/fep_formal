@@ -3,14 +3,15 @@
 from __future__ import annotations
 
 import re
-import shutil
-import subprocess
 from pathlib import Path
 
 import pytest
 
 from fep_lean.formal import formal_projection_pairs, render_formal_aggregate
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -70,43 +71,14 @@ PUBLIC_THEOREMS = (
 pytestmark = pytest.mark.serial_lean
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.6a native acceptance")
-    return lake
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def test_h2_6a_has_one_exact_maintained_source_owner() -> None:
     assert SOURCE.is_file()
     source = SOURCE.read_text(encoding="utf-8")
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
 
     assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
     assert "namespace FEPComposed.GaussianFilter\n" in source
@@ -136,7 +108,7 @@ def test_h2_6a_is_manifested_projected_and_aggregated_once() -> None:
 
 
 def test_h2_6a_reuses_exact_scalar_owners_and_stores_only_raw_inputs() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
     belief = re.search(
         r"structure ScalarGaussianBelief where\n(?P<body>.*?)(?=\n\n)",
         source,
@@ -177,7 +149,7 @@ def test_h2_6a_reuses_exact_scalar_owners_and_stores_only_raw_inputs() -> None:
 
 
 def test_h2_6a_public_surface_is_exact_and_fail_closed() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
 
     assert (
         tuple(re.findall(r"(?m)^(?:noncomputable )?def (\w+)\b", source))
@@ -202,7 +174,7 @@ def test_h2_6a_public_surface_is_exact_and_fail_closed() -> None:
 
 
 def test_h2_6a_prediction_observation_and_closed_parameters_are_exact() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
 
     assert "NNReal.mk (model.dynamics.decay model.stepDuration ^ 2)" in source
     assert "model.dynamics.transitionVariance model.stepDuration" in source
@@ -224,7 +196,7 @@ def test_h2_6a_prediction_observation_and_closed_parameters_are_exact() -> None:
 
 
 def test_h2_6a_closed_form_is_connected_to_the_native_posterior() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
 
     assert re.search(
         r"gaussianPDF predicted\.mean predicted\.family\.variance state \*\s*"
@@ -264,7 +236,7 @@ def test_h2_6a_closed_form_is_connected_to_the_native_posterior() -> None:
 
 
 def test_h2_6a_finite_recursion_reuses_the_proved_one_step_update() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
     model = re.search(
         r"structure ScalarGaussianFilterModel where\n(?P<body>.*?)(?=\n\n)",
         source,
@@ -294,22 +266,14 @@ def test_h2_6a_finite_recursion_reuses_the_proved_one_step_update() -> None:
 
 def test_h2_6a_compiles_warning_free(tmp_path: Path) -> None:
     output_path = tmp_path / "gaussian_filter.olean"
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            "-o",
-            str(output_path),
-            str(SOURCE),
-        ],
+    lake = lake_executable(missing="raise", context="H2.6a native acceptance")
+    result = run_lean_compile_probe(
+        SOURCE,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        output_path=output_path,
+        timeout_s=300,
+        executable=lake,
     )
 
     output = result.stdout + result.stderr
@@ -325,20 +289,13 @@ def test_h2_6a_public_theorems_use_only_standard_axioms(tmp_path: Path) -> None:
         f"#print axioms FEPComposed.GaussianFilter.{name}" for name in PUBLIC_THEOREMS
     )
     probe.write_text(f"{source}\n{prints}\n", encoding="utf-8")
-    result = subprocess.run(
-        [
-            _lake_executable(),
-            "env",
-            "lean",
-            "-R",
-            str(PROJECT_ROOT / "src" / "fep_lean" / "formal"),
-            str(probe),
-        ],
+    lake = lake_executable(missing="raise", context="H2.6a native acceptance")
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        timeout_s=300,
+        executable=lake,
     )
 
     output = result.stdout + result.stderr
