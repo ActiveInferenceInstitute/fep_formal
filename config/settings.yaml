@@ -7,14 +7,14 @@ project:
 
 gauss:
   home: ~/.gauss
+  # default_model is a pin_audit requirement, not a runtime default: it must
+  # equal hermes.model or `docs/pin_audit.py` fails the audit.
   default_model: "moonshotai/kimi-k2.6"
-  source: "fep_lean"
-  verify_lean: true
-  log_level: INFO
+  # Dead keys removed 2026-09-21 (unread by any code or test): gauss.source,
+  # gauss.verify_lean, gauss.log_level, output.report_dir.
 
 output:
   root: output
-  report_dir: output/reports
 
 hermes:
   enabled: true

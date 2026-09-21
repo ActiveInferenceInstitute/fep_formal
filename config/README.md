@@ -6,7 +6,7 @@
 
 | File | Purpose |
 | ---- | ------- |
-| `settings.yaml` | Hermes block + project metadata (read by `HermesConfig.from_settings`); `gauss.*` / `orchestration.*` are mostly defaults or notes—see [`../docs/configuration.md`](../docs/configuration.md) |
+| `settings.yaml` | Hermes block + project metadata (read by `HermesConfig.from_settings`); `gauss.default_model` is only a `docs/pin_audit.py` cross-check (must equal `hermes.model`), and orchestration is pipeline code (`src/fep_lean/pipeline/`), not config—see [`../docs/configuration.md`](../docs/configuration.md) |
 | `catalogue_metadata.yaml` | Schema-2 roster seal, family membership, title, area, Mathlib hints, and compile-maturity fields |
 | `theorem_maturity.yaml` | Maintained semantic review and primary theorem for every topic |
 | `formalism_novelty.yaml` | Maintained novelty contract for expansion rows and their required composition bridges |

@@ -64,7 +64,7 @@ filterwarnings = [
 
 [tool.coverage.run]
 source = ["src"]
-# Figure generation uses ProcessPoolExecutor (spawn); trace worker processes.
+# Figure generation uses matplotlib (Agg backend); trace worker processes.
 # Branch coverage: see docs/coverage-branch.md.
 concurrency = ["multiprocessing"]
 
