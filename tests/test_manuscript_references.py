@@ -16,6 +16,7 @@ from fep_lean.catalogue.references import (
     lean_names_introduced,
     mathlib_module_index,
     miscounted_area_labels,
+    unattributed_row_declarations,
     unknown_topic_import_modules,
     unresolved_manuscript_references,
     unverified_non_catalogue_identifiers,
@@ -219,3 +220,52 @@ def test_fep008_prose_names_the_row_not_a_bare_lemma() -> None:
     )
     assert "`fep008_min_agrees_on_value`" in prose
     assert "`min_agrees_on_value`" not in prose
+
+
+def test_a_known_declaration_beside_its_row_passes(tmp_path: Path) -> None:
+    """The strongest claim the prose makes: a real catalogue name, quoted."""
+    (tmp_path / "01_rows.md").write_text(
+        "# Rows\n\nRow fep-008 proves `fep008_min_is_lb`.\n",
+        encoding="utf-8",
+    )
+    assert unattributed_row_declarations(tmp_path) == ()
+
+
+def test_an_unattributed_row_declaration_is_rejected(tmp_path: Path) -> None:
+    """The shipped drift: the row's own theorem with the prefix stripped."""
+    (tmp_path / "01_rows.md").write_text(
+        "# Rows\n\nRow fep-008 proves `min_is_lb` via `PhantomLemma`.\n",
+        encoding="utf-8",
+    )
+    assert unattributed_row_declarations(tmp_path) == (
+        "01_rows.md:3: min_is_lb",
+        "01_rows.md:3: PhantomLemma",
+    )
+
+
+def test_reviewed_non_catalogue_identifiers_clear_the_row_audit(
+    tmp_path: Path,
+) -> None:
+    """Mathlib, local-formal, and record-field names beside a row pass."""
+    (tmp_path / "01_rows.md").write_text(
+        "# Rows\n\n"
+        "Row fep-001 leans on `sq_nonneg` and `FullSupport`; its record "
+        "field is `lean_sketch`.\n",
+        encoding="utf-8",
+    )
+    assert unattributed_row_declarations(tmp_path) == ()
+
+
+def test_additional_declarations_extend_the_known_set(tmp_path: Path) -> None:
+    """An out-of-band name passes only once it is declared additionally."""
+    (tmp_path / "01_rows.md").write_text(
+        "# Rows\n\nRow fep-042 composes `new_lemma_name`.\n",
+        encoding="utf-8",
+    )
+    assert unattributed_row_declarations(tmp_path) == ("01_rows.md:3: new_lemma_name",)
+    assert (
+        unattributed_row_declarations(
+            tmp_path, additional_declarations=("new_lemma_name",)
+        )
+        == ()
+    )
