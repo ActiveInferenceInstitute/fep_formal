@@ -40,9 +40,12 @@ tested acceptance no workflow invoked.
 
 The receipt is bound to a digest over every typeset manuscript source plus
 `manuscript/preamble.md`, so a chapter or a font selection changed without a
-fresh render fails CI. It is not bound to the values a `{{token}}` resolves
-to; `manuscript_projection_drift` and `stale_render_defects` own that surface
-and both run on the render path. A rejected render writes no receipt and
+fresh render fails CI. The digest binds the byte-exact generated appendix too
+(e.g. `09z_unified_formalism_catalogue.md`), so a `src/` count change that
+regenerates it via `fep-lean catalogue` moves the digest and stales the
+receipt; `manuscript_projection_drift` and `stale_render_defects` own the
+placeholder-resolution surface and both run on the render path. A rejected
+render writes no receipt and
 removes the standing one -- sources can drift out of a render without changing,
 so the digest alone would let a superseded receipt keep vouching. The digests
 are recorded per file, so a stale receipt names what moved.

@@ -43,11 +43,15 @@ def accepted_receipt_payload(manuscript_dir: Path) -> dict[str, object]:
 
 
 def manuscript_tree(root: Path) -> Path:
-    """Stage a minimal typeset manuscript under *root*."""
+    """Stage a minimal typeset manuscript, including the generated appendix
+    the render receipt covers and fails closed without, under *root*."""
     manuscript = root / "manuscript"
     manuscript.mkdir()
     (manuscript / "01_chapter.md").write_text("# Chapter\n\nText.\n")
     (manuscript / "preamble.md").write_text("\\usepackage{fontspec}\n")
+    (manuscript / "09z_unified_formalism_catalogue.md").write_text(
+        "Generated appendix.\n"
+    )
     return manuscript
 
 
