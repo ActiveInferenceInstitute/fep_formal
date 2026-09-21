@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "58ac923919f358cbeb9db70e6c89c124c47c4a0b",
+    "commit": "fd6b3c90256f0ab2543f9a4ceddefe7d563d83f1",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -159,7 +159,7 @@
     }
   },
   "gnn": {
-    "commit": "7e1a8199cb38579367ec8bf94bf2be39549fcde7",
+    "commit": "14edb451459c04364891c9cf1d15e7635b7f1ac2",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -357,15 +357,15 @@
       "src/gnn/frameworks.py": "5afeff1c10f005665cc41141ab0cfc7ce24a23b46b49004fcd8581aebcd96215",
       "src/gnn/grammars/__init__.py": "7c9abcf3a413d143604bdf7ba740191cf83fa70d54115f042347bd4718c8462e",
       "src/gnn/gui/__init__.py": "011a805315fd8b256dc4b90567678fa4602b07d4574eeb81776e191610f014b5",
-      "src/gnn/gui/backend.py": "878de0b3cb191fc0f8a8d6d481b7cd33f4dd0fb07edd8bd7c2568603a916e59f",
+      "src/gnn/gui/backend.py": "f9ecfcdcefd50f23beb149cd3429c56ac9a6480908e9ae2c0baab78e608dde07",
       "src/gnn/gui/gui_1/__init__.py": "5737933a5d5481c1de3290b8803d03e5f745bb14f1421f06a5e68a239bf1dedb",
       "src/gnn/gui/gui_1/markdown.py": "08a907c7270e1fb05114aeed5541aca9057fd76e8942af9faec662e1ab09f75f",
       "src/gnn/gui/gui_1/mcp.py": "da52524d4df18b528ad92efe083d7e4b97761204526f093bad6fe479e885559e",
-      "src/gnn/gui/gui_1/processor.py": "c46d3d37f31afa3483fba36918578346103ae87d88569b85c8dfcba6fb25cbe3",
+      "src/gnn/gui/gui_1/processor.py": "3be198d8d31bc39dcda99d51edd8186d1f654822af4e7a0b18045701d02c450f",
       "src/gnn/gui/gui_1/ui.py": "d8baa721a5e6981138e4334afbe10d7d47a92e0e1c4f093f2cd62823e03993ab",
       "src/gnn/gui/gui_2/__init__.py": "31e8feb619a9ac37cb2d579beb4b0afb185f4853dc829fdda7b6e918e0b42484",
       "src/gnn/gui/gui_2/matrix_editor.py": "dbc4e8dafe466b34f05bb83733f961105bf6612ac8e59ecbf9edea21017a92cf",
-      "src/gnn/gui/gui_2/processor.py": "2f579279f48512d477f0801cbc6299156f69bdae22976e3dd79d93551909fb4d",
+      "src/gnn/gui/gui_2/processor.py": "b47ed14462033db5d66611f515de9271af9fc21ab7ea30d6319f6e6940e6ac78",
       "src/gnn/gui/gui_2/ui.py": "4e11d21c72090178d46d1e1a862d8d4aca43b8d5d03aa12ca90ef94811fb8cb2",
       "src/gnn/gui/gui_3/__init__.py": "534c2f7d63089745935858c9ca9054c3718a36e577eb32e390f7379db68dce1a",
       "src/gnn/gui/gui_3/processor.py": "952ccec45445132402e5df5437c5c551cea09d3fd3801c463c100412511bb96b",
