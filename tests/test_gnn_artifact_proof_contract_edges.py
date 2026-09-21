@@ -351,7 +351,7 @@ def test_rehashing_an_unparseable_fixture_cannot_bless_payload_evidence(
     root, local, manifest = artifact_copy
     path = local / "fixtures/pymdp_symmetric_runner.py"
     path.write_text("def main():\n    A_data = [")
-    manifest["fixtures"][path.name] = proof.sha256_file(path)
+    manifest["fixtures"][path.name] = proof.sha256_file_strict(path)
     problems = proof.manifest_mismatches(
         json.dumps(manifest), repo_root=root, slice_root=local
     )

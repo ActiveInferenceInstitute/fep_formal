@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+
 from fep_lean.lean_source import lean_code_without_comments
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

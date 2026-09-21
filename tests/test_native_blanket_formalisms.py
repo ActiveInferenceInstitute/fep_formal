@@ -9,8 +9,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification import formalism_audit
 from fep_lean.lean_source import lean_code_without_comments
+from fep_lean.verification import formalism_audit
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 

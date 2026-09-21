@@ -340,7 +340,7 @@ def test_star_import_of_owned_module_stays_checked(
             head
             + "from fep_lean.verification.gnn_artifact_proof import *\n"
             + "try:\n"
-            + "    sha256_file  # star copy binds the checked buffer's public names\n"
+            + "    sha256_file_strict  # star copy binds the checked buffer's public names\n"
             + "except NameError:\n"
             + "    raise AssertionError('star import did not bind the checked buffer')\n"
             + "\n"

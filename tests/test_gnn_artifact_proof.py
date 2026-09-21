@@ -23,7 +23,7 @@ from fep_lean.verification.gnn_artifact_proof import (
     extract_pymdp_tables,
     manifest_mismatches,
     render_lean_probe,
-    sha256_file,
+    sha256_file_strict,
 )
 from tests._support.lean_runner import run_lean_probe
 
@@ -110,7 +110,7 @@ def _expect_rejection(source: str, reason: str) -> None:
 
 def test_symmetric_fixture_extracts_exact_tables() -> None:
     tables = extract_pymdp_tables(SYMMETRIC_FIXTURE.read_text(encoding="utf-8"))
-    assert tables.source_sha256 == sha256_file(SYMMETRIC_FIXTURE)
+    assert tables.source_sha256 == sha256_file_strict(SYMMETRIC_FIXTURE)
     for name, shape in DISCRETE_BOOL_SHAPES.items():
         assert tables.table(name).shape == shape, name
     a = tables.table("A_data")
@@ -286,7 +286,7 @@ def test_probe_render_is_deterministic_and_matches_committed_bytes() -> None:
             extract_pymdp_tables(SYMMETRIC_FIXTURE.read_text(encoding="utf-8")),
             variant="symmetric",
             fixture_name=SYMMETRIC_FIXTURE.name,
-            fixture_sha256=sha256_file(SYMMETRIC_FIXTURE),
+            fixture_sha256=sha256_file_strict(SYMMETRIC_FIXTURE),
         )
 
     assert render() == render()
@@ -333,15 +333,15 @@ def test_digests_unchanged_by_extraction_and_render() -> None:
         GENERATED / "probe_asymmetric.lean",
         MANIFEST,
     ]
-    before = {path: sha256_file(path) for path in watched}
+    before = {path: sha256_file_strict(path) for path in watched}
     extract_pymdp_tables(SYMMETRIC_FIXTURE.read_text(encoding="utf-8"))
     render_lean_probe(
         extract_pymdp_tables(ASYMMETRIC_FIXTURE.read_text(encoding="utf-8")),
         variant="asymmetric",
         fixture_name=ASYMMETRIC_FIXTURE.name,
-        fixture_sha256=sha256_file(ASYMMETRIC_FIXTURE),
+        fixture_sha256=sha256_file_strict(ASYMMETRIC_FIXTURE),
     )
-    after = {path: sha256_file(path) for path in watched}
+    after = {path: sha256_file_strict(path) for path in watched}
     assert before == after
 
 
