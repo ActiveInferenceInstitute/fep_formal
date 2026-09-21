@@ -147,24 +147,29 @@ class FEPPipeline:
         configured_root: Path | None = None
         if output_root is None:
             settings_path = self.project_root / "config" / "settings.yaml"
-            try:
+            if settings_path.is_file():
                 import yaml
 
-                settings = (
-                    yaml.safe_load(settings_path.read_text(encoding="utf-8")) or {}
-                )
-                configured = settings.get("output", {}).get("root")
-                if configured:
-                    configured_root = (self.project_root / str(configured)).resolve()
-            except (OSError, yaml.YAMLError, AttributeError) as exc:
+                try:
+                    settings = (
+                        yaml.safe_load(settings_path.read_text(encoding="utf-8"))
+                        or {}
+                    )
+                    configured = settings.get("output", {}).get("root")
+                    if configured:
+                        configured_root = (
+                            (self.project_root / str(configured)).resolve()
+                        )
+                except (OSError, yaml.YAMLError, AttributeError) as exc:
+                    raise ValueError(
+                        f"unreadable settings file {settings_path}: "
+                        f"{type(exc).__name__}: {exc}"
+                    ) from exc
+            else:
                 log.warning(
-                    "could not read output.root from %s (%s: %s); "
-                    "falling back to ./output",
+                    "no settings file at %s; falling back to ./output",
                     settings_path,
-                    type(exc).__name__,
-                    exc,
                 )
-                configured_root = None
         self.output_root = _resolve_output_root(
             self.project_root, output_root or configured_root
         )

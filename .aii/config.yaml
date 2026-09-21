@@ -52,5 +52,5 @@ capabilities:
 - documentation
 tasks:
   test:
-    cmd: uv run --extra dev python -m pytest
-    description: Run the test suite.
+    cmd: uv sync --locked --extra dev && uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
+    description: Run the test suite (mirror of the AGENTS.md required check).

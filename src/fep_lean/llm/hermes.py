@@ -270,6 +270,10 @@ class HermesConfig:
              ``OPENAI_BASE_URL``) — may come from the shell or ``~/.gauss/.env``
           4. Built-in defaults
 
+        A settings file that exists but cannot be read or parsed raises
+        ``ValueError`` naming the path; only the genuinely-absent file
+        silently falls back to built-in defaults.
+
         API keys (``OPENROUTER_API_KEY``, ``ANTHROPIC_API_KEY``,
         ``OPENAI_API_KEY``) follow the env-first convention and may be
         sourced from the shell OR ``~/.gauss/.env``; the ``hermes.api_key``
@@ -288,13 +292,22 @@ class HermesConfig:
         if settings_path is None and project_root is not None:
             settings_path = Path(project_root) / "config" / "settings.yaml"
         if settings_path and settings_path.is_file():
-            try:
-                import yaml  # available via PyYAML in project deps
+            import yaml  # available via PyYAML in project deps
 
-                raw = yaml.safe_load(settings_path.read_text(encoding="utf-8")) or {}
-                cfg = raw.get("hermes", {})
-            except Exception as exc:
-                log.warning("Could not load settings.yaml: %s", exc)
+            try:
+                raw = (
+                    yaml.safe_load(settings_path.read_text(encoding="utf-8")) or {}
+                )
+            except (OSError, UnicodeError, yaml.YAMLError) as exc:
+                raise ValueError(
+                    f"unreadable Hermes settings file {settings_path}: "
+                    f"{type(exc).__name__}: {exc}"
+                ) from exc
+            if not isinstance(raw, dict):
+                raise ValueError(
+                    f"Hermes settings file {settings_path} must be a mapping"
+                )
+            cfg = raw.get("hermes", {})
 
         raw_fallbacks = cfg.get("fallback_models") or []
         fallbacks = [str(m).strip() for m in raw_fallbacks if str(m).strip()]
