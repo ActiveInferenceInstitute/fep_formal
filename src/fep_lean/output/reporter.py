@@ -20,7 +20,7 @@ from fep_lean.llm.hermes import (
     lean_semantic_contract_sha256,
     preserves_lean_semantic_contract,
 )
-from fep_lean.output.fsutil import atomic_write_text
+from fep_lean.output.fsutil import atomic_write_text, sha256_bytes
 from fep_lean.output.provenance import (
     OWNER_MANIFEST_VERSION,
     catalogue_sources_digest,
@@ -294,11 +294,6 @@ def _report_projection_result(summary: dict[str, Any]) -> SimpleNamespace:
         ],
         stats=summary.get("stats", {}),
     )
-
-
-def _atomic_text(path: Path, text: str) -> None:
-    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
-    atomic_write_text(path, text)
 
 
 def validate_report_receipt(
@@ -1679,16 +1674,16 @@ class Reporter:
             ("validation.md", _render_validation_markdown(validation_evidence)),
             ("index.md", self._index_md(catalogue, projection_result, topics=topics)),
         ):
-            _atomic_text(root / name, content)
+            atomic_write_text(root / name, content)
         for row in topics:
             topic_id = str(row["topic_id"])
-            _atomic_text(root / "topics" / f"{topic_id}.md", self._topic_md(row))
+            atomic_write_text(root / "topics" / f"{topic_id}.md", self._topic_md(row))
         manifest = self.build_verification_manifest(topics)
-        _atomic_text(
+        atomic_write_text(
             root / "verification_manifest.json",
             json.dumps(manifest, indent=2, sort_keys=True) + "\n",
         )
-        _atomic_text(
+        atomic_write_text(
             root / "run_manifest.json",
             json.dumps(run_manifest, indent=2, sort_keys=True, default=str) + "\n",
         )
@@ -1697,12 +1692,12 @@ class Reporter:
         # nested per-topic files, and make the exclusion explicit in the key
         # name's surrounding schema rather than publishing a stale digest.
         hashes = {
-            p.relative_to(root).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+            p.relative_to(root).as_posix(): sha256_bytes(p.read_bytes())
             for p in sorted(root.rglob("*"))
             if p.is_file() and p.name != "summary.json"
         }
         summary["artifact_hashes"] = hashes
-        _atomic_text(
+        atomic_write_text(
             root / "summary.json",
             json.dumps(summary, indent=2, sort_keys=True, default=str) + "\n",
         )

@@ -51,7 +51,7 @@ __all__ = [
     "manifest_mismatches",
     "render_lean_probe",
     "render_manifest",
-    "sha256_file",
+    "sha256_file_strict",
 ]
 
 PYMDP_TABLE_NAMES: Final[tuple[str, ...]] = (
@@ -152,7 +152,7 @@ class PymdpArtifactTables:
         return self.tables[name]
 
 
-def sha256_file(path: Path) -> str:
+def sha256_file_strict(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
