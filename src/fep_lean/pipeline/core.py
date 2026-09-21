@@ -152,14 +152,13 @@ class FEPPipeline:
 
                 try:
                     settings = (
-                        yaml.safe_load(settings_path.read_text(encoding="utf-8"))
-                        or {}
+                        yaml.safe_load(settings_path.read_text(encoding="utf-8")) or {}
                     )
                     configured = settings.get("output", {}).get("root")
                     if configured:
                         configured_root = (
-                            (self.project_root / str(configured)).resolve()
-                        )
+                            self.project_root / str(configured)
+                        ).resolve()
                 except (OSError, yaml.YAMLError, AttributeError) as exc:
                     raise ValueError(
                         f"unreadable settings file {settings_path}: "

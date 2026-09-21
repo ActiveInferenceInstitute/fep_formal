@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "fd6b3c90256f0ab2543f9a4ceddefe7d563d83f1",
+    "commit": "09847b5fa738ad217327b781bca5aa620c731de1",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -114,10 +114,10 @@
       "src/fep_lean/gauss/__init__.py": "53316fb654a66f87432a4a5606ad66e1d35f05fd3674ac93c6a60c642e8fabd6",
       "src/fep_lean/gauss/cli.py": "9398ff727d57a763c71384ec6baf7429405989a6c47034d1a7ad64fe39c06512",
       "src/fep_lean/gauss/client.py": "3a9fa26de947e781b85d07340ed57dbdc156452d65cf3797539c153d20ccbc9c",
-      "src/fep_lean/gauss/runner.py": "69442d2bb55db5856b9c86dff372d4fcad2535f9f57fdd278b8afa0725f8ab36",
+      "src/fep_lean/gauss/runner.py": "38d0f6f07bf0389126c3af99d1d2e13bd22cd2df669e40e9fd91f20734f1f350",
       "src/fep_lean/lean_source.py": "56b3b0ad14245c91e183ad6765dfe73f73fbf717eeec632d683406c44bf5f3d5",
       "src/fep_lean/llm/__init__.py": "ae438b5778960193d24ee8e8cd43f75b698d4f7e283b9e8368d965e92dc581e8",
-      "src/fep_lean/llm/hermes.py": "6b50be3b41629f75ce68ef85d68b1ec0a47d6db11256dd8f1a0dbc161a7ed55b",
+      "src/fep_lean/llm/hermes.py": "c85ee82a7bd4e362ab28e7850221e528aa8a2741b4e65c2211bd32f1d2ef561e",
       "src/fep_lean/output/__init__.py": "3c03be9583354f04f8cd30cb98351e667636d9c2ebed4f5ac1e5f40bddd982ae",
       "src/fep_lean/output/browser_capture.py": "cba384247708997551930b9b526f3ee3fe04f6befbaccd9975959777c8777d41",
       "src/fep_lean/output/evidence.py": "6cc830b6c8c51b1f41792281e3f84ec9b98eac1e49312fc298ab4f69d3a230ec",
@@ -138,7 +138,7 @@
       "src/fep_lean/output/svg_presentation.py": "d9ed41dc86a767b6f71db67da56c11bb673efffc52f25ff4c1d4a4ce3e498a92",
       "src/fep_lean/output/svg_raster.py": "0d946ec7eb451d5386417a6769707cab9e823cfee145ee686d67c6dfc4c2c512",
       "src/fep_lean/pipeline/__init__.py": "2a42e4fe25bb867edee59c8c944fa24af46bf6720f6c8e3bb6c30bbb65b2dff0",
-      "src/fep_lean/pipeline/core.py": "bcf162cac5e6b3e91b0f066c211ac52b027783ba8a48b35b1a8b0e0085416653",
+      "src/fep_lean/pipeline/core.py": "2453d38897aa5ffdbdcca66daf45174e783b8278da6f06285c68a16b27f2bb80",
       "src/fep_lean/pipeline/orchestrator.py": "8fe40533580d16aa61c8cefa5c4db6148deb4fec7e0850066ecf3de52b834e3e",
       "src/fep_lean/verification/__init__.py": "1611904641ad8f129290bc1a8841e68c50b1c602abb91e4b0bd900a742d62686",
       "src/fep_lean/verification/_horizon_numerical_witnesses.py": "70944d232b67e194b00bbcd38090d2b8e38439e66dbb24e94f7be1ff02f50941",

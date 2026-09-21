@@ -295,9 +295,7 @@ class HermesConfig:
             import yaml  # available via PyYAML in project deps
 
             try:
-                raw = (
-                    yaml.safe_load(settings_path.read_text(encoding="utf-8")) or {}
-                )
+                raw = yaml.safe_load(settings_path.read_text(encoding="utf-8")) or {}
             except (OSError, UnicodeError, yaml.YAMLError) as exc:
                 raise ValueError(
                     f"unreadable Hermes settings file {settings_path}: "
