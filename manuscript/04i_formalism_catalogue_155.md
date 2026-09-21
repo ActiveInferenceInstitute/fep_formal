@@ -1,8 +1,8 @@
-# From 120 to 155: Risk, Feedback, Native Blankets, Dual Geometry, and Continuous Time {#sec:formalism_catalogue_155}
+# From {{topics_before_second_expansion}} to {{total_topics}}: Risk, Feedback, Native Blankets, Dual Geometry, and Continuous Time {#sec:formalism_catalogue_155}
 
-The second catalogue expansion adds thirty-five stable rows, `fep-121` through
-`fep-155`, in five seven-topic families. Its purpose is not numerical growth.
-Each family closes a boundary that was explicit in the preceding 120-topic
+The second catalogue expansion adds {{expansion_second_topics}} stable rows, `fep-121` through
+`fep-155`, in {{expansion_second_families}} families of {{expansion_family_size}} topics each. Its purpose is not numerical growth.
+Each family closes a boundary that was explicit in the preceding {{topics_before_second_expansion}}-topic
 snapshot: finite-sample control for the Laplace estimator, genuinely
 observation-contingent policy trees, a bridge from finite blanket factors to
 Mathlib's native conditional-independence predicate, a differentiable scalar
@@ -28,7 +28,7 @@ The authoring workspace pins **`leanprover/lean4:v4.34.0`** and Mathlib
 tag, source file, or successful one-file probe is not a catalogue receipt. A
 native claim for this expansion requires a fresh exact-roster receipt whose
 ordered IDs, source digests, actual compiler version, resolved Mathlib
-revision, warnings, and `sorry` count all reconcile against the live 155-topic
+revision, warnings, and `sorry` count all reconcile against the live {{total_topics}}-topic
 source.
 
 Four evidence planes must therefore be read separately:
@@ -42,12 +42,12 @@ Four evidence planes must therefore be read separately:
 : The four evidence planes, and the boundary of what each can and cannot establish.
 
 The v1.1.0 release-snapshot declaration/axiom, native, Python, and Chrome
-receipts bind the frozen 155-topic source that they hash. Active Horizon work
+receipts bind the frozen {{total_topics}}-topic source that they hash. Active Horizon work
 changes formal resources, tests, manuscript inputs, and the source-owner
 roster, so those retained receipts are historical rather than evidence for the
 live checkout until all corresponding validators accept coordinated
-replacements. The retained provider report binds an earlier 50-topic snapshot
-and is not silently promoted to live 155-topic
+replacements. The retained provider report binds an earlier {{base_topic_count}}-topic snapshot
+and is not silently promoted to live {{total_topics}}-topic
 provider evidence. At render time, `{{verify.claim_ready}}` and
 `{{full.claim_ready}}` report the independently validated native and full
 evidence states; unavailable evidence remains unavailable rather than being
@@ -274,7 +274,7 @@ generic finite-state CTMC construction, a nonequilibrium driven steady state,
 or an identification of the quadratic Lyapunov function with thermodynamic or
 variational free energy.
 
-## Composition ledger for the thirty-five rows {#sec:catalogue_155_composition_ledger}
+## Composition ledger for the {{expansion_second_topics}} rows {#sec:catalogue_155_composition_ledger}
 
 Each new row has a manifested leaf theorem that consumes the new topic and at
 least one earlier endpoint. The bridge names below are part of the novelty
@@ -298,7 +298,7 @@ actually derives or identifies its target.
 ## Validation and visualization contract {#sec:catalogue_155_validation_visualization}
 
 The dashboard now supplies one typed deterministic witness for each of the
-fifteen expansion families. The five new witnesses are not generic plots:
+{{expansion_families}} expansion families. The {{expansion_second_families}} new witnesses are not generic plots:
 
 | Witness | Exact checks and boundary |
 | --- | --- |
@@ -322,7 +322,7 @@ status, and names every formal witness. Agreement between the atlas and the
 dashboard is useful diagnostic evidence, but neither replaces an exact-roster
 native receipt or declaration/axiom audit.
 
-## Residual frontier after 155 topics {#sec:catalogue_155_residual_frontier}
+## Residual frontier after {{total_topics}} topics {#sec:catalogue_155_residual_frontier}
 
 The expansion changes the location of the open boundary. It is no longer
 accurate to say that the package has no finite-sample Laplace risk theorem, no
@@ -342,4 +342,4 @@ The remaining claims are broader and materially harder:
    nonequilibrium steady states, and an explicit physical free-energy model.
 
 Progress on these targets requires new carriers and witnessed seams, not a
-stronger gloss on the five finite families above.
+stronger gloss on the {{expansion_second_families}} finite families above.

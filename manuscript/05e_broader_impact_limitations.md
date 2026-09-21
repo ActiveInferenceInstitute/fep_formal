@@ -29,7 +29,7 @@ Hermes is an advisory commentary and drafting layer. A stronger model might prod
 
 ### Scope Limitations: {{total_topics}} Topics of Many {#sec:scope_limitations}
 
-The stable roster samples five areas but omits many important targets:
+The stable roster samples {{total_areas}} areas but omits many important targets:
 generic CTMC and continuous-state SDE/PDE existence, infinite-horizon or
 continuous-belief active inference, probability laws and learning over policy
 trees, generic blanket existence and arbitrary-mixture closure beyond H1's
