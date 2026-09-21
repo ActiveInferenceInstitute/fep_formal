@@ -2591,7 +2591,7 @@ def test_prerequisite_gate_reports_stale_projection_native_formal_and_browser_pl
     monkeypatch.setattr(
         bundle_module,
         "_browser_receipt_errors",
-        lambda _root: ("browser projection hash drifted",),
+        lambda _root, *, presentation=None: ("browser projection hash drifted",),
     )
     monkeypatch.setattr(bundle_module, "_pytest_receipt_errors", lambda _root: ())
 
