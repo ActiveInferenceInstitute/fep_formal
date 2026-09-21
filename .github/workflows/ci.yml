@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
   workflow_dispatch:
 
 permissions:
@@ -276,6 +279,13 @@ jobs:
         run: elan toolchain install "$(cat lean/lean-toolchain)"
       - name: Install Python package
         run: uv sync --locked --extra dev
+      # Only the aggregate's build directory: .lake/packages is materialized
+      # fresh by the Mathlib cache fetch below and must not be cached with it.
+      - name: Cache the Lean build directory
+        uses: actions/cache@v6
+        with:
+          path: lean/.lake/build
+          key: lean-build-${{ hashFiles('lean/lean-toolchain', 'lean/lakefile.lean', 'lean/lake-manifest.json', 'lean/FepSketches/fep_all.lean') }}
       - name: Fetch pinned Mathlib cache
         working-directory: lean
         shell: bash
