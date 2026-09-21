@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Mapping
 from pathlib import Path
-from types import ModuleType
+from types import MappingProxyType, ModuleType
+from typing import Final
 
 import pytest
 import yaml
@@ -365,16 +367,47 @@ def test_catalogue_latex_contains_no_unconverted_unicode() -> None:
     )
 
 
+def _flatten_row_joins(equation: str) -> str:
+    """Join wrapped LaTeX rows the way the rendering-contract pins expect."""
+    return equation.replace(" \\\\\n&", "")
+
+
+# Golden data pinning the theorem LaTeX rendering contract: each entry is the
+# pinned topic's rendered theorem LaTeX with the row-join flattening applied
+# exactly once, byte-identical to the previously inlined exact-string pins.
+THEOREM_LATEX_GOLDEN: Final[Mapping[str, str]] = MappingProxyType(
+    {
+        "fep155_twoStateLyapunov_exact": _flatten_row_joins(
+            THEOREM_LATEX[("fep-155", "fep155_twoStateLyapunov_exact")]
+        ),
+        "fep131_openLoopEmbedding_value": _flatten_row_joins(
+            THEOREM_LATEX[("fep-131", "fep131_openLoopEmbedding_value")]
+        ),
+        "fep131_openLoopEmbedding_leaf": _flatten_row_joins(
+            THEOREM_LATEX[("fep-131", "fep131_openLoopEmbedding_leaf")]
+        ),
+        "fep038_bernoulliMass_hasDerivAt": _flatten_row_joins(
+            THEOREM_LATEX[("fep-038", "fep038_bernoulliMass_hasDerivAt")]
+        ),
+        "fep001_variationalUpperBound_eq_iff": _flatten_row_joins(
+            THEOREM_LATEX[("fep-001", "fep001_variationalUpperBound_eq_iff")]
+        ),
+    }
+)
+
+
 def test_catalogue_latex_preserves_application_spacing_and_bounded_rows() -> None:
     from fep_lean.catalogue.registry import THEOREM_LATEX
 
     lyapunov = THEOREM_LATEX[("fep-155", "fep155_twoStateLyapunov_exact")]
-    flattened = lyapunov.replace(" \\\\\n&", "")
+    flattened = THEOREM_LATEX_GOLDEN["fep155_twoStateLyapunov_exact"]
 
-    assert r"\mathsf{rates.lyapunov}\,\mathsf{initial}\,\mathsf{time}" in flattened
-    assert r"\mathsf{rates.rho}" in lyapunov
-    assert r"\mathsf{time} ^ 2" in lyapunov
-    assert r"\cdot" in lyapunov
+    assert r"\mathsf{rates.lyapunov}\,\mathsf{initial}\,\mathsf{time}" in flattened, (
+        "fep155_twoStateLyapunov_exact"
+    )
+    assert r"\mathsf{rates.rho}" in lyapunov, "fep155_twoStateLyapunov_exact"
+    assert r"\mathsf{time} ^ 2" in lyapunov, "fep155_twoStateLyapunov_exact"
+    assert r"\cdot" in lyapunov, "fep155_twoStateLyapunov_exact"
     assert max(len(line) for line in lyapunov.splitlines()) <= 140
     assert all(
         max(len(line) for line in equation.splitlines()) <= 280
@@ -386,20 +419,25 @@ def test_theorem_latex_keeps_named_arguments_inside_the_statement() -> None:
     from fep_lean.catalogue.registry import THEOREM_LATEX
 
     value = THEOREM_LATEX[("fep-131", "fep131_openLoopEmbedding_value")]
-    leaf = THEOREM_LATEX[("fep-131", "fep131_openLoopEmbedding_leaf")]
-    flat_value = value.replace(" \\\\\n&", "")
-    flat_leaf = leaf.replace(" \\\\\n&", "")
+    flat_value = THEOREM_LATEX_GOLDEN["fep131_openLoopEmbedding_value"]
+    flat_leaf = THEOREM_LATEX_GOLDEN["fep131_openLoopEmbedding_leaf"]
 
-    assert r"\mathsf{Observation} := \mathsf{Observation}" in flat_value
-    assert r"\mathsf{openLoopValue}\,\mathsf{model}" in value
-    assert r"\mathsf{plan}\,\mathsf{belief}" in value
-    assert r"\mathsf{depth} := 0" in flat_leaf
-    assert r"\mathsf{PUnit.unit}" in flat_leaf
-    assert r"P\mathsf{Unit}" not in flat_leaf
-    assert r"\mathsf{OpenLoopPlan}\,\mathsf{Action}\,0" in flat_leaf
-    assert r"\mathsf{PolicyTree}" in flat_leaf
-    assert r"\mathsf{Action}" in flat_leaf
-    assert r"\mathsf{Observation}\,0" in flat_leaf
+    assert r"\mathsf{Observation} := \mathsf{Observation}" in flat_value, (
+        "fep131_openLoopEmbedding_value"
+    )
+    assert r"\mathsf{openLoopValue}\,\mathsf{model}" in value, (
+        "fep131_openLoopEmbedding_value"
+    )
+    assert r"\mathsf{plan}\,\mathsf{belief}" in value, "fep131_openLoopEmbedding_value"
+    assert r"\mathsf{depth} := 0" in flat_leaf, "fep131_openLoopEmbedding_leaf"
+    assert r"\mathsf{PUnit.unit}" in flat_leaf, "fep131_openLoopEmbedding_leaf"
+    assert r"P\mathsf{Unit}" not in flat_leaf, "fep131_openLoopEmbedding_leaf"
+    assert r"\mathsf{OpenLoopPlan}\,\mathsf{Action}\,0" in flat_leaf, (
+        "fep131_openLoopEmbedding_leaf"
+    )
+    assert r"\mathsf{PolicyTree}" in flat_leaf, "fep131_openLoopEmbedding_leaf"
+    assert r"\mathsf{Action}" in flat_leaf, "fep131_openLoopEmbedding_leaf"
+    assert r"\mathsf{Observation}\,0" in flat_leaf, "fep131_openLoopEmbedding_leaf"
 
 
 def test_theorem_latex_does_not_rewrite_identifier_suffixes() -> None:
@@ -415,12 +453,9 @@ def test_theorem_latex_does_not_rewrite_identifier_suffixes() -> None:
 
 
 def test_theorem_latex_spaces_applications_after_grouped_arguments() -> None:
-    from fep_lean.catalogue.registry import THEOREM_LATEX
+    flattened = THEOREM_LATEX_GOLDEN["fep038_bernoulliMass_hasDerivAt"]
 
-    derivative = THEOREM_LATEX[("fep-038", "fep038_bernoulliMass_hasDerivAt")]
-    flattened = derivative.replace(" \\\\\n&", "")
-
-    assert r"b)\,p" in flattened
+    assert r"b)\,p" in flattened, "fep038_bernoulliMass_hasDerivAt"
 
 
 def test_theorem_latex_renders_lean_identifiers_and_ascii_lambdas_unambiguously() -> (
@@ -428,21 +463,26 @@ def test_theorem_latex_renders_lean_identifiers_and_ascii_lambdas_unambiguously(
 ):
     from fep_lean.catalogue.registry import THEOREM_LATEX
 
-    variational = THEOREM_LATEX[("fep-001", "fep001_variationalUpperBound_eq_iff")]
     derivative = THEOREM_LATEX[("fep-038", "fep038_bernoulliMass_hasDerivAt")]
     wildcard = THEOREM_LATEX[("fep-069", "fep069_zeroCost_unitDesirability")]
-    flat_variational = variational.replace(" \\\\\n&", "")
-    flat_derivative = derivative.replace(" \\\\\n&", "")
+    flat_variational = THEOREM_LATEX_GOLDEN["fep001_variationalUpperBound_eq_iff"]
+    flat_derivative = THEOREM_LATEX_GOLDEN["fep038_bernoulliMass_hasDerivAt"]
 
-    assert r"\mathsf{fep001\_variationalUpperBound}" in flat_variational
-    assert r"[\mathsf{IsFiniteMeasure}\,\mathsf{posterior}]" in flat_variational
+    assert r"\mathsf{fep001\_variationalUpperBound}" in flat_variational, (
+        "fep001_variationalUpperBound_eq_iff"
+    )
+    assert r"[\mathsf{IsFiniteMeasure}\,\mathsf{posterior}]" in flat_variational, (
+        "fep001_variationalUpperBound_eq_iff"
+    )
     assert any(
         r"\lambda\,q \mapsto \mathsf{fep038\_bernoulliMass}" in line
         for line in derivative.splitlines()
+    ), "fep038_bernoulliMass_hasDerivAt"
+    assert r"\mapsto" in flat_derivative, "fep038_bernoulliMass_hasDerivAt"
+    assert "=>" not in flat_derivative, "fep038_bernoulliMass_hasDerivAt"
+    assert r"\lambda\,\mathord{\_} \mapsto" in wildcard, (
+        "fep069_zeroCost_unitDesirability"
     )
-    assert r"\mapsto" in flat_derivative
-    assert "=>" not in flat_derivative
-    assert r"\lambda\,\mathord{\_} \mapsto" in wildcard
 
 
 def test_catalogue_latex_keeps_short_binders_as_visual_units() -> None:
