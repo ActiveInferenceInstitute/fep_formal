@@ -5,7 +5,7 @@
 ## Scope
 
 The project validates the schema-2 155-topic YAML catalogue against a pinned
-Lean 4.34.0 and Mathlib 4.33.1 workspace. Exact pins track the newest stable
+Lean 4.34.0 and Mathlib 4.34.0 workspace. Exact pins track the newest stable
 Lean/Mathlib release pair; release candidates and nightlies remain opt-in and
 cannot silently replace the evidence compiler. It can also call the configured Hermes
 service, persist each session in SQLite, and generate deterministic manuscript

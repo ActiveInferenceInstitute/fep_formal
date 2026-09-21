@@ -9,7 +9,7 @@ abstract: >-
   sketch against Mathlib 4. The accompanying Python pipeline layers configured
   Hermes commentary and OpenGauss persistence atop the Lean 4 kernel as sole
   ground truth. Native Lean verification is accepted only after the pinned
-  Lean 4.33.1 / Mathlib 4.33.1 workspace compiles every row without proof
+  Lean 4.34.0 / Mathlib 4.34.0 workspace compiles every row without proof
   holes.
 authors:
   - &canonical-author
