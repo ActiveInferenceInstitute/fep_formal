@@ -54,6 +54,7 @@ def _project(tmp_path: Path, log: str) -> Path:
     manuscript.mkdir(parents=True)
     pdf.mkdir(parents=True)
     (pdf / "_combined_manuscript.log").write_text(log, encoding="utf-8")
+    (pdf / "_latex_stdout.log").write_text(log, encoding="utf-8")
     (pdf / "_combined_manuscript.md").write_text(
         "The catalogue holds 155 topic-scoped Lean bodies across every "
         "maintained area of the formalization.\n",
@@ -419,6 +420,9 @@ def test_a_rejected_render_withdraws_the_standing_receipt(tmp_path: Path) -> Non
     assert receipt.is_file()
 
     (project / "output" / "pdf" / "_combined_manuscript.log").write_text(
+        DIRTY_LOG, encoding="utf-8"
+    )
+    (project / "output" / "pdf" / "_latex_stdout.log").write_text(
         DIRTY_LOG, encoding="utf-8"
     )
     status = driver.render_publication(

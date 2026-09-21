@@ -164,7 +164,7 @@
     "specs/gnn-bridge-q6-activeinference-artifact/fixtures/activeinference_symmetric_runner.jl": "f2839a599301f0a26d6d382a7dc81ea666324c0af47c4e4648ccd37b995dbabf",
     "specs/gnn-bridge-q6-activeinference-artifact/generate_probe.py": "94a78e448b98987f3eacdf9953c80cc97c6ae40b0eacbbe3022027554d382d66",
     "specs/gnn-bridge-q6-activeinference-artifact/skeleton/canonical_bool_runner.jl.in": "e46d27f13cba5be938dd0b2e4f5717a076a6304c31d8c188851c4c7c2cb8fb52",
-    "src/fep_lean/verification/gnn_artifact_proof.py": "aa2493740bfb8ef0537bc6198a88f01718c67c4857a45bbf6319fb39ccdd08bc",
+    "src/fep_lean/verification/gnn_artifact_proof.py": "844bcc79086f3e00d259f23463f02eddb1b037db854dd54ba246aa817ef2967b",
     "src/fep_lean/verification/gnn_julia_artifact_proof.py": "e45860b83e52f97d3b7dc8c630fa7e9d379ab79708b7ef745888ac1eb53700d3"
   }
 }
