@@ -38,6 +38,18 @@ def test_create_session_returns_string(client: OpenGaussClient) -> None:
     assert "fep-001" in sid
 
 
+def test_create_session_rejects_empty_topic_id(client: OpenGaussClient) -> None:
+    with pytest.raises(ValueError, match="topic_id cannot be empty"):
+        client.create_session("", "FEP")
+
+
+def test_create_session_rejects_whitespace_topic_id(
+    client: OpenGaussClient,
+) -> None:
+    with pytest.raises(ValueError, match="topic_id cannot be empty"):
+        client.create_session("   ", "FEP")
+
+
 def test_update_session_stores_turns(client: OpenGaussClient) -> None:
     sid = client.create_session("fep-002", "ActiveInference", "sketch")
     client.update_session(sid, 0, "user", "Explain ELBO bound")

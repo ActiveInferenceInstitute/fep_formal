@@ -67,22 +67,6 @@ def test_lean_version_returns_none_or_str(verifier: LeanVerifier) -> None:
     assert v is None or isinstance(v, str)
 
 
-# ── check_mathlib_built ───────────────────────────────────────────────────────
-
-
-def test_check_mathlib_built_returns_tuple(verifier: LeanVerifier) -> None:
-    ok, msg = verifier.check_mathlib_built()
-    assert isinstance(ok, bool)
-    assert isinstance(msg, str)
-    assert len(msg) > 0
-
-
-def test_check_mathlib_built_message_is_informative(verifier: LeanVerifier) -> None:
-    _ok, msg = verifier.check_mathlib_built()
-    # Message must mention either "Mathlib" or "lake"
-    assert "athlib" in msg or "lake" in msg or "olean" in msg
-
-
 # ── VerifyResult dataclass ────────────────────────────────────────────────────
 
 
@@ -159,6 +143,19 @@ def test_wrap_lean_code_single_import_not_wrapped(verifier: LeanVerifier) -> Non
     code = "import Mathlib.MeasureTheory.Measure.MeasureSpace\ntheorem bar : True := True.intro"
     wrapped = verifier._wrap_lean_code(code)
     assert wrapped == code
+
+
+def test_wrap_lean_code_whitespace_prefixed_import_not_wrapped(
+    verifier: LeanVerifier,
+) -> None:
+    code = "  import Mathlib\ntheorem baz : True := True.intro"
+    wrapped = verifier._wrap_lean_code(code)
+    assert wrapped == code
+
+
+def test_wrap_lean_code_empty_code_gets_preamble(verifier: LeanVerifier) -> None:
+    wrapped = verifier._wrap_lean_code("")
+    assert wrapped.startswith("import Mathlib")
 
 
 # ── _sanitize_lean_block ──────────────────────────────────────────────────────

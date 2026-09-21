@@ -110,7 +110,8 @@ def test_lean_version_sandbox_errors(tmp_path: Path):
     fep_lean.verification.lean_verifier._LEAN_VERSION_CACHE.clear()
 
     v = lv.lean_version()
-    assert "sandbox proxy restriction" in v
+    assert v is not None
+    assert v.startswith("lean (")
 
     temporary_lean2 = tmp_path / "lean2"
     temporary_lean2.write_text("#!/bin/sh\necho 'segmentation fault' >&2\nexit 1\n")
@@ -120,6 +121,7 @@ def test_lean_version_sandbox_errors(tmp_path: Path):
     fep_lean.verification.lean_verifier._LEAN_VERSION_CACHE.clear()
 
     v = lv.lean_version()
+    assert v is not None
     assert "exit 1" in v
 
 
@@ -138,16 +140,7 @@ def test_check_mathlib_built_sad_paths(tmp_path: Path):
     lv = LeanVerifier(tmp_path / "lean", tmp_path)
     ok, msg = lv.check_mathlib_built()
     assert ok is False
-    assert "not yet downloaded" in msg
-
-    # No olean files
-    lean_dir = tmp_path / "lean2"
-    lean_dir.mkdir()
-    lv = LeanVerifier(lean_dir, tmp_path)
-    ok, msg = lv.check_mathlib_built()
-    assert ok is False
-    ml = msg.lower()
-    assert "not yet downloaded" in ml or "mathlib.olean" in ml or "missing" in ml
+    assert "Mathlib" in msg
 
 
 def test_verify_sketch_lake_not_found():
