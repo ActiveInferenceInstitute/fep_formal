@@ -20,12 +20,12 @@ structure FinitePolicyCertificate (Policy : Type) where
 def better {Policy : Type} (left right : Policy × Nat) : Policy × Nat :=
   if left.2 ≤ right.2 then left else right
 
-def select {Policy : Type} (certificate : FinitePolicyCertificate Policy) : Policy × Nat :=
+def select {Policy : Type} (certificate : FinitePolicyCertificate Policy) : Option (Policy × Nat) :=
   match certificate.candidates with
-  | [] => (Classical.choice (by simp [certificate.nonempty]), 0)
-  | candidate :: rest =>
-      rest.foldl (fun best next => better best (next, certificate.objective next))
-        (candidate, certificate.objective candidate)
+  | [] => none
+  | candidate :: rest => some <| rest.foldl
+      (fun best next => better best (next, certificate.objective next))
+      (candidate, certificate.objective candidate)
 
 /-- The declared coverage premise is the complete finite approximation input.
 The carrier is explicit, so no infinite or dependent choice principle is used.
