@@ -148,14 +148,14 @@
     "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
     "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
     "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "fb40a71308b9e8358a78c892ee016e817246c579a3490d072d407ba577e4b019",
+    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "7e1366e029386c601a4c04c432bf213f9bb3ff64126c841640035efab4d6ec55",
     "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
     "specs/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean": "5c848021ad605cbfb628811ad7ef69846e7fde0b24437a3d4ce9a289f0e18fa3",
     "specs/horizon-2-smooth-stochastic/slices/06a-r0-native-posterior.md": "a315c5a2ac630e26d59ea2eade17d384597c6fb4811f5a287309f41fd4022b7e",
     "specs/horizon-2-smooth-stochastic/spikes/06a_native_filter_posterior.lean": "cd9bf8532d7748283f39148c3d80cea4ba49a276a69f21e7404d9fdb4c3e81d5",
     "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
     "src/fep_lean/formal/scalar_gaussian_semigroup.lean": "d99665db1366fd8cfa58c43313fb85fc81f68d36eb70a768b26d4c2f9570a05e",
-    "tests/test_horizon2_native_filter_posterior_readiness.py": "3f19b9bb87e5ee58cf38128702665d4f7be717c476c54c6b648ff4cb52775a49"
+    "tests/test_horizon2_native_filter_posterior_readiness.py": "7a95dbc14439d5b0333fffd9bb1a649d12ea966619174c40d6f07e3d63a3562a"
   },
   "types": {
     "model_raw_fields": [
