@@ -37,6 +37,7 @@ from fep_lean.output.publication_metadata import (
     load_publication_author,
     load_repository_url,
 )
+from fep_lean.verification._toolchain import toolchain_identity
 
 UNIFIED_FORMALISM_CATALOGUE_FILENAME = "09z_unified_formalism_catalogue.md"
 # ``source`` carries the checkout identity and the wall-clock render date, so
@@ -188,34 +189,14 @@ def _source_stamp_vars(project_root: Path) -> dict[str, str]:
 
 
 def _read_toolchain_vars(project_root: Path) -> dict[str, str]:
-    lean_dir = Path(project_root) / "lean"
-    toolchain = (
-        (lean_dir / "lean-toolchain").read_text(encoding="utf-8").strip()
-        if (lean_dir / "lean-toolchain").is_file()
-        else ""
-    )
+    """Return the validated Lean/Mathlib identity for manuscript stamping."""
+    identity = toolchain_identity(Path(project_root) / "lean")
+    toolchain = identity["lean_toolchain"]
     lean_version = toolchain.rsplit(":", 1)[-1].removeprefix("v") if toolchain else ""
-    mathlib_tag = ""
-    lakefile = lean_dir / "lakefile.lean"
-    if lakefile.is_file():
-        text = lakefile.read_text(encoding="utf-8")
-        match = re.search(r'@\s*"([^"]+)"', text)
-        if match:
-            mathlib_tag = match.group(1)
-    manifest = lean_dir / "lake-manifest.json"
-    if not mathlib_tag and manifest.is_file():
-        try:
-            data = json.loads(manifest.read_text(encoding="utf-8"))
-            for package in data.get("packages", []):
-                if package.get("name") == "mathlib":
-                    mathlib_tag = str(package.get("inputRev", ""))
-                    break
-        except (OSError, ValueError, TypeError):
-            pass
     return {
         "lean_toolchain": toolchain,
         "lean_version": lean_version,
-        "mathlib_tag": mathlib_tag,
+        "mathlib_tag": identity["mathlib_tag"],
     }
 
 

@@ -37,7 +37,14 @@ def sha256_bytes(data: bytes) -> str:
 
 def sha256_file(path: Path) -> str:
     """Return the hex sha256 digest of a file, or the empty string if absent."""
-    return sha256_bytes(path.read_bytes()) if Path(path).is_file() else ""
+    file_path = Path(path)
+    if not file_path.is_file():
+        return ""
+    digest = hashlib.sha256()
+    with file_path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def atomic_write_bytes(path: Path, data: bytes) -> None:

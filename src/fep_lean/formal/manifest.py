@@ -19,23 +19,6 @@ class FormalModuleRole(str, Enum):
     AGGREGATE = "aggregate"
 
 
-_RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES = frozenset(
-    {
-        "compositions/core.lean",
-        "compositions/measure_variational.lean",
-        "compositions/control_temporal.lean",
-        "compositions/causal_predictive.lean",
-        "compositions/thermo_geometry.lean",
-        "compositions/collective_learning.lean",
-        "compositions/risk_calibration.lean",
-        "compositions/policy_trees.lean",
-        "compositions/native_blanket_transfer.lean",
-        "compositions/exponential_family.lean",
-        "compositions/continuous_time.lean",
-    }
-)
-
-
 @dataclass(frozen=True)
 class FormalModule:
     """One packaged Lean resource and its declaration ownership."""
@@ -415,6 +398,13 @@ FORMAL_MODULES: tuple[FormalModule, ...] = (
         role=FormalModuleRole.AGGREGATE,
         declaration_namespace=None,
     ),
+)
+
+_RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES = frozenset(
+    module.resource
+    for module in FORMAL_MODULES
+    if module.role is FormalModuleRole.COMPOSITION
+    and module.declaration_namespace == _RELEASED_SHARED_DECLARATION_NAMESPACE
 )
 
 

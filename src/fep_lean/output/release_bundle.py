@@ -69,9 +69,10 @@ from fep_lean.output.formalism_presentation import (
     RELEASE_SEAL,
     RELEASE_TOPICS,
     RELEASE_WITNESSES,
+    FormalismPresentation,
     build_formalism_presentation,
 )
-from fep_lean.output.fsutil import atomic_write_bytes, sha256_bytes
+from fep_lean.output.fsutil import atomic_write_bytes, sha256_bytes, sha256_file
 from fep_lean.output.manuscript import (
     collection_runtime_identity,
     manuscript_projection_drift,
@@ -362,7 +363,7 @@ def _tool_identity(executable: str, *, timeout: int = 30) -> dict[str, str]:
     return {
         "name": Path(executable).name,
         "version": first_line[0].strip(),
-        "binary_sha256": sha256_bytes(resolved.read_bytes()),
+        "binary_sha256": sha256_file(resolved),
     }
 
 
@@ -1302,7 +1303,11 @@ def _live_browser_identity(name: str, executable: Path) -> tuple[str, str]:
     return version, digest
 
 
-def _browser_receipt_errors(project_root: Path) -> tuple[str, ...]:
+def _browser_receipt_errors(
+    project_root: Path,
+    *,
+    presentation: FormalismPresentation | None = None,
+) -> tuple[str, ...]:
     root = Path(project_root).resolve()
     path = root / BROWSER_RECEIPT
     payload, error = _json_object(path, "browser receipt")
@@ -1414,7 +1419,8 @@ def _browser_receipt_errors(project_root: Path) -> tuple[str, ...]:
     if not isinstance(expected, dict) or observed != expected:
         errors.append("browser receipt observed and expected values must match exactly")
     try:
-        presentation = build_formalism_presentation(root)
+        if presentation is None:
+            presentation = build_formalism_presentation(root)
         required_counts = {
             "topics": len(presentation.topics),
             "families": len(presentation.families),
@@ -1897,14 +1903,19 @@ def _license_metadata_errors(project_root: Path) -> tuple[str, ...]:
     return tuple(errors)
 
 
-def _bounded_manuscript_projection_errors(project_root: Path) -> tuple[str, ...]:
+def _bounded_manuscript_projection_errors(
+    project_root: Path,
+    *,
+    presentation: FormalismPresentation | None = None,
+) -> tuple[str, ...]:
     """Validate canonical manuscript variables without launching test collection."""
     root = Path(project_root).resolve()
     try:
         variables = _manuscript_variables(root)
         catalogue = FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
         summary = catalogue.summary()
-        presentation = build_formalism_presentation(root)
+        if presentation is None:
+            presentation = build_formalism_presentation(root)
     except (OSError, TypeError, ValueError) as exc:
         return (f"manuscript variables cannot be validated: {exc}",)
     errors: list[str] = []
@@ -2232,7 +2243,11 @@ def _pytest_receipt_errors(
     return tuple(receipt_errors)
 
 
-def _base_prerequisite_errors(project_root: Path) -> tuple[str, ...]:
+def _base_prerequisite_errors(
+    project_root: Path,
+    *,
+    presentation: FormalismPresentation | None = None,
+) -> tuple[str, ...]:
     root = Path(project_root).resolve()
     errors: list[str] = []
     if not root.is_dir():
@@ -2244,7 +2259,8 @@ def _base_prerequisite_errors(project_root: Path) -> tuple[str, ...]:
             f"formalism coverage projection is stale: {path.relative_to(root)}"
             for path in formalism_coverage_drift(root)
         )
-        presentation = build_formalism_presentation(root)
+        if presentation is None:
+            presentation = build_formalism_presentation(root)
         errors.extend(
             f"formalism atlas projection is stale: {path.relative_to(root)}"
             for path in atlas_projection_drift(root, presentation=presentation)
@@ -2255,7 +2271,9 @@ def _base_prerequisite_errors(project_root: Path) -> tuple[str, ...]:
         )
     except (OSError, TypeError, ValueError) as exc:
         errors.append(f"canonical projections cannot be validated: {exc}")
-    errors.extend(_bounded_manuscript_projection_errors(root))
+    errors.extend(
+        _bounded_manuscript_projection_errors(root, presentation=presentation)
+    )
     errors.extend(_theorem_maturity_projection_errors(root))
     errors.extend(_rendered_manuscript_errors(root))
 
@@ -2279,7 +2297,7 @@ def _base_prerequisite_errors(project_root: Path) -> tuple[str, ...]:
             root / "output" / "formalism-audit.json", root
         )
     )
-    errors.extend(_browser_receipt_errors(root))
+    errors.extend(_browser_receipt_errors(root, presentation=presentation))
     errors.extend(_python_acceptance_receipt_errors(root))
     for relative, _evidence_class in _REQUIRED_STATIC_MEMBERS:
         if relative in {PUBLICATION_HTML.as_posix(), RENDERER_PROVENANCE.as_posix()}:
@@ -2296,9 +2314,20 @@ def release_bundle_prerequisite_errors(
     *,
     source_date_epoch: int | None = None,
     include_publication: bool = True,
+    presentation: FormalismPresentation | None = None,
 ) -> tuple[str, ...]:
-    """Return every current-source prerequisite failure without writing."""
-    errors = list(_base_prerequisite_errors(Path(project_root)))
+    """Return every current-source prerequisite failure without writing.
+
+    ``presentation`` optionally carries an already-built formalism join from
+    an earlier pass over the same root so repeated prerequisite validation
+    reuses one immutable snapshot instead of rebuilding it.
+    """
+    if presentation is None:
+        errors = list(_base_prerequisite_errors(Path(project_root)))
+    else:
+        errors = list(
+            _base_prerequisite_errors(Path(project_root), presentation=presentation)
+        )
     if include_publication:
         errors.extend(
             publication_manuscript_errors(
@@ -2372,6 +2401,29 @@ def build_numerical_witness_receipt(project_root: Path) -> bytes:
             "the live numerical witness closure is not the accepted 15-witness release"
         )
     return _canonical_json(payload)
+
+
+def write_numerical_witnesses(project_root: Path) -> Path:
+    """Build the live numerical-witness receipt and atomically retain it."""
+    root = Path(project_root).resolve()
+    destination = root / NUMERICAL_RECEIPT
+    if (root / "output").is_symlink():
+        raise ReleaseBundleError("numerical witness output directory is a symlink")
+    if destination.is_symlink() or (destination.exists() and not destination.is_file()):
+        raise ReleaseBundleError("numerical witness destination is not a regular file")
+    try:
+        data = build_numerical_witness_receipt(root)
+    except OSError as exc:
+        raise ReleaseBundleError(
+            f"cannot build numerical witness receipt: {exc}"
+        ) from exc
+    try:
+        atomic_write_bytes(destination, data)
+    except OSError as exc:
+        raise ReleaseBundleError(
+            f"cannot write numerical witness receipt: {exc}"
+        ) from exc
+    return destination
 
 
 def _python_test_records(project_root: Path) -> tuple[tuple[str, bytes], ...]:
@@ -2466,7 +2518,7 @@ def _python_acceptance_external_executable(name: str) -> dict[str, str]:
         raise ReleaseBundleError(
             f"Python acceptance executable is not a regular file: {name}"
         )
-    return {"path": path.as_posix(), "sha256": sha256_bytes(path.read_bytes())}
+    return {"path": path.as_posix(), "sha256": sha256_file(path)}
 
 
 def _controlled_python_acceptance_path(uv_path: str, tool_bin: str = "") -> str:
@@ -3324,8 +3376,16 @@ def build_release_bundle(
             "release bundle destination must be outside the project root"
         )
     epoch = _source_date_epoch(source_date_epoch)
+    presentation: FormalismPresentation | None = None
+    try:
+        presentation = build_formalism_presentation(root)
+    except (OSError, TypeError, ValueError):
+        presentation = None
     prerequisite_errors = release_bundle_prerequisite_errors(
-        root, source_date_epoch=epoch, include_publication=False
+        root,
+        source_date_epoch=epoch,
+        include_publication=False,
+        presentation=presentation,
     )
     if prerequisite_errors:
         raise ReleaseBundleError(
@@ -3350,7 +3410,9 @@ def build_release_bundle(
     ) as raw_stage:
         staged = Path(raw_stage) / destination.name
         _write_archive(staged, contents, epoch=epoch)
-        validation = validate_release_bundle(staged, project_root=root)
+        validation = validate_release_bundle(
+            staged, project_root=root, presentation=presentation
+        )
         if not validation.claim_ready:
             raise ReleaseBundleError(
                 "staged release bundle is not live claim-ready:\n"
@@ -3505,12 +3567,15 @@ def validate_release_bundle(
     archive_path: Path,
     *,
     project_root: Path | None = None,
+    presentation: FormalismPresentation | None = None,
 ) -> ReleaseBundleValidation:
     """Validate archive structure, bytes, and optionally the live checkout.
 
     Validation never extracts archive members.  Supplying ``project_root``
     additionally binds the archive to the current release inputs; that live
-    comparison is implemented by the high-level builder below.
+    comparison is implemented by the high-level builder below.  Supplying
+    ``presentation`` reuses an already-built formalism join so a builder that
+    validates twice against one root does not rebuild it per pass.
     """
     archive = Path(archive_path)
     contents, members, epoch, read_errors = _read_archive(archive)
@@ -3761,6 +3826,7 @@ def validate_release_bundle(
                 root,
                 source_date_epoch=epoch,
                 include_publication=True,
+                presentation=presentation,
             )
         )
         try:
@@ -3789,9 +3855,7 @@ def validate_release_bundle(
     unique_errors = tuple(dict.fromkeys(errors))
     try:
         archive_digest = (
-            sha256_bytes(archive.read_bytes())
-            if archive.stat().st_size <= _MAX_ARCHIVE_BYTES
-            else ""
+            sha256_file(archive) if archive.stat().st_size <= _MAX_ARCHIVE_BYTES else ""
         )
     except OSError:
         archive_digest = ""
@@ -3824,5 +3888,6 @@ __all__ = [
     "render_publication_manuscript",
     "run_python_acceptance",
     "validate_release_bundle",
+    "write_numerical_witnesses",
     "write_publication_manuscript",
 ]

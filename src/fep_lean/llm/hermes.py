@@ -128,9 +128,14 @@ def _hermes_429_max_retries() -> int:
         return 2
     try:
         n = int(raw, 10)
-        return max(0, min(n, 10))
     except ValueError:
+        log.warning(
+            "HERMES_429_MAX_RETRIES=%r is not a valid integer; "
+            "applying default 2 instead",
+            raw,
+        )
         return 2
+    return max(0, min(n, 10))
 
 
 def _hermes_network_max_retries() -> int:
@@ -140,9 +145,14 @@ def _hermes_network_max_retries() -> int:
         return 2
     try:
         n = int(raw, 10)
-        return max(0, min(n, 10))
     except ValueError:
+        log.warning(
+            "HERMES_NETWORK_MAX_RETRIES=%r is not a valid integer; "
+            "applying default 2 instead",
+            raw,
+        )
         return 2
+    return max(0, min(n, 10))
 
 
 # Models that return a `reasoning` field (extended thinking) and therefore

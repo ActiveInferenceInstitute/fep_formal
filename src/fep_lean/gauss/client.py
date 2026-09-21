@@ -159,7 +159,14 @@ def resolve_gauss_home(project_root: Path | None = None) -> str | None:
                 home = (raw.get("gauss") or {}).get("home")
                 if isinstance(home, str) and home.strip():
                     return home
-            except (OSError, yaml.YAMLError, AttributeError):
+            except (OSError, yaml.YAMLError, AttributeError) as exc:
+                log.warning(
+                    "could not read gauss.home from %s (%s: %s); "
+                    "sessions will fall back to ~/.gauss",
+                    settings_path,
+                    type(exc).__name__,
+                    exc,
+                )
                 return None
     return None
 

@@ -77,7 +77,6 @@ def _setup(root: Path) -> int:
             return 1
         bootstrap_env = dict(os.environ)
         elan_home = bootstrap_env.get("ELAN_HOME", str(Path.home() / ".elan"))
-        bootstrap_env["ELAN_HOME"] = elan_home
         bootstrap_env["PATH"] = (
             str(Path(elan_home) / "bin") + ":" + bootstrap_env.get("PATH", "")
         )
@@ -381,9 +380,7 @@ def catalogue_products_section(
             f"cache missing or stale ({exc})"
         )
     if stale:
-        findings.extend(
-            f"stale or missing: {_display(root, path)}" for path in stale
-        )
+        findings.extend(f"stale or missing: {_display(root, path)}" for path in stale)
     state = "stale" if stale else "current"
     return SectionReport(
         name="catalogue_build_products",

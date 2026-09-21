@@ -31,6 +31,7 @@ from fep_lean.llm.hermes import (
     lean_semantic_contract_sha256,
     restore_lean_structure_with_status,
 )
+from fep_lean.verification._toolchain import toolchain_identity
 from fep_lean.verification.lean_verifier import LeanVerifier, VerifyResult
 
 if TYPE_CHECKING:
@@ -71,22 +72,14 @@ def _toolchain_salt(project_root: Path) -> str:
 
     Folded into the Hermes cache key so a toolchain/Mathlib bump invalidates
     cached refined sketches that may no longer compile against the new
-    milestone.
+    milestone.  Built on the shared validated readers; a missing or malformed
+    component contributes no part, so an unusable toolchain still yields a
+    stable key distinct from any pinned one.
     """
-    parts: list[str] = []
-    toolchain = Path(project_root) / "lean" / "lean-toolchain"
-    if toolchain.is_file():
-        parts.append(toolchain.read_text(encoding="utf-8").strip())
-    manifest = Path(project_root) / "lean" / "lake-manifest.json"
-    if manifest.is_file():
-        try:
-            data = _json.loads(manifest.read_text(encoding="utf-8"))
-            for package in data.get("packages", []):
-                if package.get("name") == "mathlib":
-                    parts.append(str(package.get("inputRev", "")))
-                    break
-        except (OSError, ValueError, TypeError):
-            pass
+    identity = toolchain_identity(Path(project_root) / "lean")
+    parts = [
+        part for part in (identity["lean_toolchain"], identity["mathlib_tag"]) if part
+    ]
     return _hashlib.sha256("|".join(parts).encode()).hexdigest()[:12]
 
 

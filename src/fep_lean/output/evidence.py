@@ -31,7 +31,7 @@ from fep_lean.verification._toolchain import (
     actual_lean_semver,
     lean_version_matches_pin,
     pinned_lean_semver,
-    resolved_mathlib_revision,
+    toolchain_identity,
 )
 
 NATIVE_RECEIPT_SCHEMA_VERSION = 4
@@ -39,24 +39,8 @@ _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 def _toolchain_snapshot(project_root: Path) -> dict[str, str]:
-    root = Path(project_root)
-    toolchain_path = root / "lean" / "lean-toolchain"
-    lakefile = root / "lean" / "lakefile.lean"
-    toolchain = (
-        toolchain_path.read_text(encoding="utf-8").strip()
-        if toolchain_path.is_file()
-        else ""
-    )
-    mathlib_tag = ""
-    if lakefile.is_file():
-        match = re.search(r'@\s*"([^"]+)"', lakefile.read_text(encoding="utf-8"))
-        if match:
-            mathlib_tag = match.group(1)
-    return {
-        "lean_toolchain": toolchain,
-        "mathlib_tag": mathlib_tag,
-        "mathlib_revision": resolved_mathlib_revision(root / "lean"),
-    }
+    """Return the validated Lean/Mathlib identity of the Lean workspace."""
+    return toolchain_identity(Path(project_root) / "lean")
 
 
 def _live_topic_ids(project_root: Path) -> tuple[str, ...]:

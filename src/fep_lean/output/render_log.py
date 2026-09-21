@@ -542,9 +542,7 @@ def _missing_generated_sources(manuscript_dir: Path) -> tuple[str, ...]:
     """
 
     manuscript = Path(manuscript_dir)
-    return tuple(
-        name for name in VERBATIM_SOURCES if not (manuscript / name).is_file()
-    )
+    return tuple(name for name in VERBATIM_SOURCES if not (manuscript / name).is_file())
 
 
 def manuscript_source_digest(manuscript_dir: Path) -> str:
