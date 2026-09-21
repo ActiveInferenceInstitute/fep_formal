@@ -1,7 +1,7 @@
 # Tests
 
 ```bash
-uv run pytest tests/ -q --cov=src --cov-fail-under=89
+uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 ```
 
 The live collection is the authority for test counts:

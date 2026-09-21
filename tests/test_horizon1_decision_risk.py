@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import re
-import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
+
+from tests._support.lake import lake_executable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -22,17 +23,6 @@ EXACT_IMPORTS = (
     "Mathlib.Probability.Decision.BayesEstimator",
     "Mathlib.Probability.Decision.Risk.Basic",
 )
-
-
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for H1.2 decision-risk tests")
-    return lake
 
 
 def _without_lean_comments(source: str) -> str:
@@ -166,7 +156,7 @@ def test_native_mutual_information_garbling_uses_product_pushforward_dpi() -> No
 
 def test_decision_risk_foundation_compiles_warning_free() -> None:
     result = subprocess.run(
-        [_lake_executable(), "env", "lean", str(FOUNDATION)],
+        [lake_executable(), "env", "lean", str(FOUNDATION)],
         cwd=LEAN_ROOT,
         check=False,
         capture_output=True,

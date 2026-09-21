@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-import shutil
 import subprocess
 from pathlib import Path
 
@@ -11,6 +10,7 @@ import pytest
 
 from fep_lean.catalogue.bodies.controlled_markov import BODIES as CONTROL_BODIES
 from fep_lean.catalogue.bodies.temporal_inference import BODIES as TEMPORAL_BODIES
+from tests._support.lake import lake_executable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -22,20 +22,9 @@ TEMPORAL_IDS = tuple(f"fep-{number:03d}" for number in range(72, 79))
 pytestmark = pytest.mark.serial_lean
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for native formalism boundary tests")
-    return lake
-
-
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [_lake_executable(), "env", "lean", str(source)],
+        [lake_executable(), "env", "lean", str(source)],
         cwd=LEAN_ROOT,
         check=False,
         capture_output=True,
