@@ -115,13 +115,20 @@ def main(argv: list[str] | None = None) -> int:
     # this acceptance script free of the catalogue build.
     variables = None
     vars_path = manuscript_dir / "manuscript_vars.yaml"
-    if vars_path.is_file():
+    vars_present = vars_path.is_file()
+    if vars_present:
         variables = yaml.safe_load(vars_path.read_text(encoding="utf-8"))
     stale = stale_render_defects(manuscript_dir, pdf_dir, variables=variables)
     for line in stale:
         print(f"FAIL: {line}")
     if not stale:
-        print("OK: every manuscript source is typeset in the combined render")
+        if vars_present:
+            print("OK: every manuscript source is typeset in the combined render")
+        else:
+            print(
+                "WARN: manuscript_vars.yaml absent; placeholder-carrying lines "
+                "skipped from the staleness comparison"
+            )
     uncaptioned = uncaptioned_table_defects(pdf_dir)
     for line in uncaptioned:
         print(f"FAIL: {line}")
