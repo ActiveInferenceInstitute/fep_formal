@@ -517,16 +517,15 @@ class TestFromSettingsEdgeCases:
     def test_malformed_settings_yaml(
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        """Cover lines 178-179: YAML parse exception branch."""
+        """A settings file that exists but fails to parse fails closed."""
         bad_yaml = tmp_path / "settings.yaml"
         bad_yaml.write_text("hermes: { bad: [ yaml }", encoding="utf-8")
         monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         monkeypatch.setenv("GAUSS_HOME", "/tmp/__no_gauss__")
-        cfg = HermesConfig.from_settings(settings_path=bad_yaml)
-        # Should fall back to defaults without crashing
-        assert cfg.max_tokens == 16384
+        with pytest.raises(ValueError, match="unreadable Hermes settings file"):
+            HermesConfig.from_settings(settings_path=bad_yaml)
 
     def test_api_key_anthropic_fallback(self, monkeypatch: pytest.MonkeyPatch) -> None:
         """Cover lines 205-207: ANTHROPIC_API_KEY used when OPENROUTER absent."""

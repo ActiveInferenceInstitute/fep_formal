@@ -255,6 +255,70 @@ class GaussRunner:
         self._prefetch_hermes = None
         self._prefetch_next_topic = None
 
+    def _run_logged_topic(
+        self,
+        topic: TopicEntry,
+        *,
+        index: int,
+        total: int,
+        workflow: str,
+        results: list[TopicRunResult],
+        prefetch: bool = False,
+    ) -> None:
+        """Run one topic, append the result to ``results``, and log batch progress.
+
+        Shared per-topic body of ``run_topics_batch`` and
+        ``_run_topics_batch_prefetch``: run, classification, ETA log, and the
+        unhandled-exception result.  ``index`` is the 1-based batch position;
+        ``prefetch`` selects the ``prefetch-mode`` start-log variant.
+        """
+        mode = " prefetch-mode" if prefetch else ""
+        log.info(
+            "GaussRunner [%d/%d]%s: starting %s (workflow=%s)",
+            index,
+            total,
+            mode,
+            topic.id,
+            workflow,
+        )
+        try:
+            res = self.run_topic(topic, workflow=workflow)
+            results.append(res)
+            hermes_str = "hermes=ok" if res.hermes_success else "hermes=skip"
+            lean_str = (
+                "lean=warning"
+                if res.lean_warnings
+                else (
+                    "lean=ok"
+                    if (res.lean_compiles and not res.lean_has_sorry)
+                    else ("lean=sorry" if res.lean_has_sorry else "lean=fail")
+                )
+            )
+            done = len(results)
+            avg_s = sum(r.duration_s for r in results) / done
+            eta_s = avg_s * (total - done)
+            log.info(
+                "GaussRunner [%d/%d] %s  %s  %s  %.1fs  ETA ~%.0fs",
+                index,
+                total,
+                topic.id,
+                hermes_str,
+                lean_str,
+                res.duration_s,
+                eta_s,
+            )
+        except Exception as e:
+            log.exception("GaussRunner: unhandled exception in %s", topic.id)
+            results.append(
+                TopicRunResult(
+                    topic_id=topic.id,
+                    session_id="",
+                    success=False,
+                    status="error",
+                    error=f"Unhandled runner exception: {e}",
+                )
+            )
+
     def run_topics_batch(
         self,
         topics: list[TopicEntry],
@@ -281,50 +345,9 @@ class GaussRunner:
             workflow,
         )
         for i, t in enumerate(subset, 1):
-            log.info(
-                "GaussRunner [%d/%d]: starting %s (workflow=%s)",
-                i,
-                len(subset),
-                t.id,
-                workflow,
+            self._run_logged_topic(
+                t, index=i, total=len(subset), workflow=workflow, results=results
             )
-            try:
-                res = self.run_topic(t, workflow=workflow)
-                results.append(res)
-                hermes_str = "hermes=ok" if res.hermes_success else "hermes=skip"
-                lean_str = (
-                    "lean=warning"
-                    if res.lean_warnings
-                    else (
-                        "lean=ok"
-                        if (res.lean_compiles and not res.lean_has_sorry)
-                        else ("lean=sorry" if res.lean_has_sorry else "lean=fail")
-                    )
-                )
-                done = len(results)
-                avg_s = sum(r.duration_s for r in results) / done
-                eta_s = avg_s * (len(subset) - done)
-                log.info(
-                    "GaussRunner [%d/%d] %s  %s  %s  %.1fs  ETA ~%.0fs",
-                    i,
-                    len(subset),
-                    t.id,
-                    hermes_str,
-                    lean_str,
-                    res.duration_s,
-                    eta_s,
-                )
-            except Exception as e:
-                log.exception("GaussRunner: unhandled exception in %s", t.id)
-                results.append(
-                    TopicRunResult(
-                        topic_id=t.id,
-                        session_id="",
-                        success=False,
-                        status="error",
-                        error=f"Unhandled runner exception: {e}",
-                    )
-                )
         return results
 
     def _run_topics_batch_prefetch(
@@ -344,50 +367,14 @@ class GaussRunner:
                 self._prefetch_next_topic = (
                     subset[i + 1] if i + 1 < len(subset) else None
                 )
-                log.info(
-                    "GaussRunner [%d/%d] prefetch-mode: starting %s (workflow=%s)",
-                    i + 1,
-                    len(subset),
-                    t.id,
-                    workflow,
+                self._run_logged_topic(
+                    t,
+                    index=i + 1,
+                    total=len(subset),
+                    workflow=workflow,
+                    results=results,
+                    prefetch=True,
                 )
-                try:
-                    res = self.run_topic(t, workflow=workflow)
-                    results.append(res)
-                    hermes_str = "hermes=ok" if res.hermes_success else "hermes=skip"
-                    lean_str = (
-                        "lean=warning"
-                        if res.lean_warnings
-                        else (
-                            "lean=ok"
-                            if (res.lean_compiles and not res.lean_has_sorry)
-                            else ("lean=sorry" if res.lean_has_sorry else "lean=fail")
-                        )
-                    )
-                    done = len(results)
-                    avg_s = sum(r.duration_s for r in results) / done
-                    eta_s = avg_s * (len(subset) - done)
-                    log.info(
-                        "GaussRunner [%d/%d] %s  %s  %s  %.1fs  ETA ~%.0fs",
-                        i + 1,
-                        len(subset),
-                        t.id,
-                        hermes_str,
-                        lean_str,
-                        res.duration_s,
-                        eta_s,
-                    )
-                except Exception as e:
-                    log.exception("GaussRunner: unhandled exception in %s", t.id)
-                    results.append(
-                        TopicRunResult(
-                            topic_id=t.id,
-                            session_id="",
-                            success=False,
-                            status="error",
-                            error=f"Unhandled runner exception: {e}",
-                        )
-                    )
         finally:
             executor.shutdown(wait=True)
             self._clear_prefetch_state()
