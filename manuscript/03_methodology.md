@@ -99,7 +99,7 @@ For a full live run, configure an accepted credential, run `uv run fep-lean pref
 
 ## Area-Specific Methodological Constraints {#sec:area_specific_methodological_constraints}
 
-The five areas are organizational lenses, not five independent foundations. Each row declares its actual imports, primary theorem, assumptions, non-vacuity argument, acceptance probe, and semantic disposition in generated coverage. The following summaries state the present boundary rather than an aspirational one.
+The {{total_areas}} areas are organizational lenses, not five independent foundations. Each row declares its actual imports, primary theorem, assumptions, non-vacuity argument, acceptance probe, and semantic disposition in generated coverage. The following summaries state the present boundary rather than an aspirational one.
 
 ### FEP Methodology ({{areas.FEP.count}} topics) {#sec:fep_methodology}
 

@@ -1,8 +1,8 @@
 # Expanded Formalism Program {#sec:expanded_formalism_program}
 
-The first expansion from 50 to 120 topics is organized around ten theorem families rather than a
+The first expansion from {{base_topic_count}} to {{topics_before_second_expansion}} topics is organized around {{expansion_first_families}} theorem families rather than a
 flat list of adjacent vocabulary. Each family has one reusable formal owner,
-seven topic-scoped projections, a nontrivial finite or measure-theoretic
+{{expansion_family_size}} topic-scoped projections, a nontrivial finite or measure-theoretic
 witness, and at least one bridge to an earlier declaration. This organization
 matters mathematically: a normalization lemma, a variational equality, a
 contraction theorem, and a path-space identity answer different questions even
@@ -146,17 +146,17 @@ evidence that an FEP model fits a biological system.
 
 ## Evidence boundary
 
-For the preceding 120-topic snapshot, each family was assessed through four
+For the preceding {{topics_before_second_expansion}}-topic snapshot, each family was assessed through four
 independent checks: native Lean compilation with no `sorry`, a
 trusted-axiom/declaration audit, a deterministic numerical witness, and
 semantic review against the cited formulation. The current dashboard schema
 expresses numerical acceptance through typed checks with per-check tolerances.
 Those retained receipts remain historical for their exact source; this chapter
-does not promote them to evidence for the 155-topic roster. A numerical witness can reveal a sign error,
+does not promote them to evidence for the {{total_topics}}-topic roster. A numerical witness can reveal a sign error,
 normalization failure, rank boundary, or unstable parameter region. It cannot
 upgrade a scoped finite theorem into a physical law, and it is never counted as
 proof evidence.
 
-The five families that extend this program from 120 to 155 topics are treated
+The {{expansion_second_families}} families that extend this program from {{topics_before_second_expansion}} to {{total_topics}} topics are treated
 in [@sec:formalism_catalogue_155]; their local evidence does not
 retroactively change the receipts for this first expansion.

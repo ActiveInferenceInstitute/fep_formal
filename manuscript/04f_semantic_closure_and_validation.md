@@ -12,7 +12,7 @@ The [interactive offline atlas]({{publication.repository_url}}/blob/{{source.pub
 
 ### Established Core Theorem Strands {#sec:semantic_closure_strands}
 
-The original core is organized into the following ten mutually connected strands. The first ten expansion families and their distinct carriers are treated in [@sec:expanded_formalism_program]; the five families added for topics 121--155 are treated in [@sec:formalism_catalogue_155]. Neither expansion is compressed into this historical core table:
+The original core is organized into the following ten mutually connected strands. The first {{expansion_first_families}} expansion families and their distinct carriers are treated in [@sec:expanded_formalism_program]; the {{expansion_second_families}} families added in the second expansion are treated in [@sec:formalism_catalogue_155]. Neither expansion is compressed into this historical core table:
 
 | Strand | Direct objects and laws | Representative witnessed seams |
 | --- | --- | --- |

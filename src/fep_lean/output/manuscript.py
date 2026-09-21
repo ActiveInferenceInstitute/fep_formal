@@ -23,12 +23,14 @@ from fep_lean.catalogue.coverage import (
     render_topic_import_modules,
     topic_import_modules,
 )
+from fep_lean.catalogue.novelty import load_formalism_novelty
 from fep_lean.catalogue.relations import EdgeKind
 from fep_lean.catalogue.topics import FEPTopicCatalogue
 from fep_lean.output.evidence import (
     latest_claim_ready_full_report,
     validate_native_lean_receipt,
 )
+from fep_lean.output.fsutil import atomic_write_bytes, atomic_write_text
 from fep_lean.output.provenance import config_owner_paths, source_owner_paths
 from fep_lean.output.publication_metadata import (
     load_graphical_abstract,
@@ -764,7 +766,12 @@ def parse_pytest_collection_stdout(stdout: str) -> tuple[str, ...]:
 
 
 def _stage_bytes(path: Path, content: bytes) -> Path:
-    """Durably stage bytes beside ``path`` without altering the destination."""
+    """Durably stage bytes beside ``path`` without altering the destination.
+
+    The transactional projection writer must stage every destination before
+    installing any; fsutil's atomic-write pair installs immediately, so this
+    staging primitive stays local (SC-14 folded the single-file writers).
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary: Path | None = None
     try:
@@ -784,19 +791,6 @@ def _stage_bytes(path: Path, content: bytes) -> Path:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
         raise
-
-
-def _atomic_write_bytes(path: Path, content: bytes) -> None:
-    temporary = _stage_bytes(path, content)
-    try:
-        os.replace(temporary, path)
-    finally:
-        temporary.unlink(missing_ok=True)
-
-
-def _atomic_write_text(path: Path, content: str) -> None:
-    """Replace ``path`` only after a complete same-filesystem write."""
-    _atomic_write_bytes(path, content.encode("utf-8"))
 
 
 def _transactional_write_texts(writes: tuple[tuple[Path, str], ...]) -> None:
@@ -827,7 +821,7 @@ def _transactional_write_texts(writes: tuple[tuple[Path, str], ...]) -> None:
                 if previous is None:
                     destination.unlink(missing_ok=True)
                 else:
-                    _atomic_write_bytes(destination, previous)
+                    atomic_write_bytes(destination, previous)
             except BaseException as rollback_exc:
                 rollback_errors.append(f"{destination}: {rollback_exc}")
         if rollback_errors:
@@ -927,7 +921,7 @@ def _count_test_cases(project_root: Path, *, write_cache: bool = True) -> int:
     if post_identity != identity or post_fingerprint != fingerprint:
         raise ValueError("test collection inputs or runtime changed during collection")
     if write_cache:
-        _atomic_write_text(
+        atomic_write_text(
             cache,
             json.dumps(
                 {
@@ -982,6 +976,73 @@ def _rate_text(clean: int, total: int) -> str:
     if total <= 0:
         return "not verified"
     return f"{clean}/{total} ({100 * clean / total:.1f}%)"
+
+
+_SECOND_EXPANSION_FIRST_ID = "fep-121"
+
+
+def _expansion_family_vars(catalogue: FEPTopicCatalogue, root: Path) -> dict[str, int]:
+    """Derive structural expansion-family counts from the canonical roster.
+
+    Base versus expansion topics split at the novelty ledger's maintained
+    ``baseline_last_id``; the second expansion begins at
+    ``_SECOND_EXPANSION_FIRST_ID``, the boundary documented in
+    manuscript/04i_formalism_catalogue_155.md. Raises when a family straddles
+    either boundary or when expansion families differ in size, because the
+    manuscript asserts one uniform per-family topic count.
+    """
+    from fep_lean.formal.declarations import composed_theorem_sources
+
+    ledger = load_formalism_novelty(
+        root / "config" / "formalism_novelty.yaml",
+        [topic.id for topic in catalogue.topics],
+        composed_sources=composed_theorem_sources(root),
+    )
+    baseline_last = int(ledger.baseline_last_id.split("-", 1)[1])
+    second_first = int(_SECOND_EXPANSION_FIRST_ID.split("-", 1)[1])
+    family_ids: dict[str, list[int]] = {}
+    for topic in catalogue.topics:
+        family_ids.setdefault(topic.family, []).append(int(topic.id.split("-", 1)[1]))
+    base_topics = 0
+    first_families: list[str] = []
+    second_families: list[str] = []
+    for family in sorted(family_ids):
+        ids = family_ids[family]
+        if max(ids) <= baseline_last:
+            base_topics += len(ids)
+            continue
+        if min(ids) <= baseline_last:
+            raise ValueError(
+                f"family {family} straddles the novelty baseline "
+                f"{ledger.baseline_last_id}"
+            )
+        if min(ids) < second_first <= max(ids):
+            raise ValueError(
+                f"family {family} straddles the second-expansion boundary "
+                f"{_SECOND_EXPANSION_FIRST_ID}"
+            )
+        if max(ids) < second_first:
+            first_families.append(family)
+        else:
+            second_families.append(family)
+    sizes = {len(family_ids[family]) for family in first_families + second_families}
+    if len(sizes) != 1:
+        raise ValueError(
+            "expansion families are not uniformly sized; the manuscript asserts "
+            f"one per-family topic count: {sorted(sizes)}"
+        )
+    first_topics = sum(len(family_ids[family]) for family in first_families)
+    second_topics = sum(len(family_ids[family]) for family in second_families)
+    return {
+        "base_topic_count": base_topics,
+        "expansion_families": len(first_families) + len(second_families),
+        "expansion_family_topics": first_topics + second_topics,
+        "expansion_family_size": next(iter(sizes)),
+        "expansion_first_families": len(first_families),
+        "expansion_second_families": len(second_families),
+        "expansion_second_topics": second_topics,
+        "topics_before_second_expansion": base_topics + first_topics,
+    }
 
 
 def build_manuscript_vars(
@@ -1074,6 +1135,7 @@ def build_manuscript_vars(
         **summary,
         "areas": area_vars,
         "total_areas": len(summary["areas"]),
+        **_expansion_family_vars(catalogue, root),
         "topic_ids": [topic.id for topic in catalogue.topics],
         "topics": topics,
         "combined_info_bayes_count": combined_info_bayes,
@@ -1295,5 +1357,5 @@ def write_unified_formalism_appendix_markdown(
         root / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME,
         label="manuscript projection",
     )
-    _atomic_write_text(out, build_unified_formalism_appendix_markdown(cat, root))
+    atomic_write_text(out, build_unified_formalism_appendix_markdown(cat, root))
     return out
