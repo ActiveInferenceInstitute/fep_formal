@@ -19,10 +19,19 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+      # uv run (not bare python3): the validator contract is Python 3.14
+      # via uv; a bare python3 silently drifts to the runner's system
+      # interpreter, so the first non-stdlib import added to pin_audit.py
+      # would break this scheduled job. pin_audit.py is stdlib-only, so a
+      # --locked sync without extras suffices.
+      - run: uv sync --locked
       - name: Require the newest stable Lean-Mathlib release pair
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python3 docs/pin_audit.py --check-latest
+        run: uv run python docs/pin_audit.py --check-latest
       # This scheduled run is the only early warning that a new stable
       # Lean/Mathlib pair exists (the push-triggered ci.yml gate only catches
       # a pin that was already stale at push time). Without a consumer its

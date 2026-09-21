@@ -35,6 +35,13 @@ jobs:
           uv run python scripts/_maint_build_lean_landscape.py --check
           uv run python scripts/build_formalism_atlas.py --check
           uv run python scripts/build_formal_kernel_dashboard.py --check
+      # The frozen-custody bridge gates from AGENTS.md's required checks:
+      # both are --check validation of committed artifacts and pass on a
+      # fresh checkout without any sibling repo.
+      - name: Check the frozen-custody bridge gates
+        run: |
+          uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
+          uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
       - name: Generate and validate publication inputs
         run: |
           uv run fep-lean catalogue
@@ -74,7 +81,7 @@ jobs:
       # fails here.
       - name: Require the shipped render to have passed the acceptance
         run: uv run python scripts/check_render_log.py --verify-receipt
-      - run: uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"
+      - run: uv run pytest tests/ -q -n auto --dist loadgroup --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"
       - name: Upload coverage report
         if: always()
         uses: actions/upload-artifact@v7
@@ -93,6 +100,43 @@ jobs:
       - run: uv run ruff format --check src tests scripts docs
       - run: git diff --check
 
+  # The figure assets the render consumes (atlas/dashboard SVG+HTML
+  # projections under docs/ and the rasterized PNGs under output/figures/)
+  # are pure Python work that needs no Lean output, so they are generated
+  # here in parallel with lean and handed to render through an artifact.
+  # Runner-local installs (apt, fonts, mermaid CLI, elan/toolchain/Mathlib)
+  # cannot cross job boundaries, so they stay in the render job itself.
+  render-deps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+      - name: Install the SVG rasterizer
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends librsvg2-bin
+      - run: uv sync --locked --extra dev
+      - name: Generate the publication figure assets
+        run: |
+          # Same roster the render lane previously generated inline: the
+          # atlas/dashboard SVG+HTML projections under docs/, and the
+          # rasterized PNGs under output/figures/.
+          uv run python scripts/build_formalism_atlas.py
+          uv run python scripts/build_formal_kernel_dashboard.py
+          uv run python scripts/build_manuscript_figures.py
+      - name: Upload the publication figure assets
+        uses: actions/upload-artifact@v7
+        with:
+          name: render-figures
+          if-no-files-found: error
+          path: |
+            docs/formalism-atlas.svg
+            docs/formalism-atlas.html
+            docs/formal-kernel-dashboard.svg
+            docs/formal-kernel-dashboard.html
+            output/figures/
+
   # FEP-CI-RENDER: CI verifies only the committed docs/render-acceptance.json
   # receipt, so every defect the acceptance exists to catch reaches main
   # unopposed whenever a local render was skipped. This lane renders
@@ -101,7 +145,7 @@ jobs:
   # validates both fail-closed receipts against the same sources in the same
   # run, so manuscript drift cannot survive between local renders.
   render:
-    needs: lean
+    needs: [lean, render-deps]
     runs-on: ubuntu-latest
     timeout-minutes: 150
     steps:
@@ -137,6 +181,11 @@ jobs:
         with:
           name: native-formal-evidence
           path: output
+      - name: Download the publication figure assets the render-deps job produced
+        uses: actions/download-artifact@v7
+        with:
+          name: render-figures
+          path: .
       - name: Check out the shared rendering template at its pinned ref
         uses: actions/checkout@v7
         with:
@@ -187,15 +236,6 @@ jobs:
           fc-cache -f
       - name: Install the mermaid CLI
         run: npm install -g "@mermaid-js/mermaid-cli@11.17.0"
-      - name: Generate the publication figure assets
-        run: |
-          # The renderer carries the full MANUSCRIPT_ASSETS roster, so every
-          # asset destination must exist here: the atlas/dashboard SVG+HTML
-          # projections under docs/, and the rasterized PNGs the catalogue
-          # does not produce, under output/figures/.
-          uv run python scripts/build_formalism_atlas.py
-          uv run python scripts/build_formal_kernel_dashboard.py
-          uv run python scripts/build_manuscript_figures.py
       - run: uv sync --locked --extra dev
       # The glyph projection and the manuscript hydration both read the
       # generated appendix (a gitignored build product), so the catalogue
@@ -240,8 +280,13 @@ jobs:
         working-directory: lean
         shell: bash
         run: |
+          # Fail closed, like the render lane: a cache miss forces a full
+          # from-source Mathlib rebuild that cannot complete inside the
+          # 180-minute budget, so tolerating the miss only converts a clear
+          # failure into a masked timeout.
           if ! lake exe cache get; then
-            echo "Mathlib cache is not published for this release yet; building from source"
+            echo "Mathlib cache is not published for this toolchain yet; failing closed" >&2
+            exit 1
           fi
       - name: Compile warning-free aggregate
         working-directory: lean
@@ -254,6 +299,20 @@ jobs:
             echo "Lean aggregate emitted warnings"
             exit 1
           fi
+      # The serial_lean lane never runs in the python job (-m "not
+      # serial_lean"), so it runs here on the already-warm environment: the
+      # aggregate build above leaves lean/.lake fully populated (Mathlib
+      # cache + built FepSketches modules), which is exactly what these
+      # compile probes read. The gates below un-skip the opt-in compile
+      # tests (catalogue, slice04, slice05) that would otherwise silently
+      # skip; FEP_HEAVY_LEAN_PROBES stays off by design. No coverage here:
+      # the 89% gate stays with the python job.
+      - name: Run the serial_lean acceptance lane
+        env:
+          FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
+          FEP_LEAN_SLICE04_COMPILE_TEST: "1"
+          FEP_LEAN_SLICE05_COMPILE_TEST: "1"
+        run: uv run pytest tests/ -q -m serial_lean --dist loadgroup -n 4 --no-cov
       - name: Verify exact 155-topic native receipt
         run: |
           uv run fep-lean verify \
@@ -300,8 +359,10 @@ jobs:
           raise SystemExit(0 if not errors else 1)
           PY
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
           name: native-formal-evidence
+          if-no-files-found: warn
           path: |
             output/native-verification.json
             output/formalism-audit.json
