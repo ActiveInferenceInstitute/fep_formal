@@ -1,21 +1,23 @@
 # Lean 4 workspace
 
 The workspace pins `leanprover/lean4:v4.34.0` and the matching Mathlib
-`v4.33.1` release. These are exact reproducibility pins for the newest stable
-Lean/Mathlib release pair, not floating aliases: release candidates and
-nightlies do not replace the stable line. The networked pin audit checks Lean's
-stable releases in descending order and accepts only the newest release with a
-validated matching Mathlib tag. A newer Lean patch without that tag is reported
-as pending ecosystem support rather than installed into an incompatible
-workspace.
+`v4.34.0` release, with `lean/lake-manifest.json` recording the exact Mathlib
+revision those pins resolve to. These are exact reproducibility pins for the
+newest stable Lean/Mathlib release pair, not floating aliases: release
+candidates and nightlies do not replace the stable line. The networked pin
+audit re-derives the newest valid pair from the live ecosystem against that
+manifest: it checks Lean's stable releases in descending order and accepts
+only the newest release with a validated matching Mathlib tag, so the audited
+pins stay in step with what the workspace actually builds with. A newer Lean
+release without that tag is reported as pending ecosystem support rather
+than installed into an incompatible workspace.
 
-The [v4.33.0 language-reference release notes](https://lean-lang.org/doc/reference/latest/releases/v4.33.0/)
-describe the feature-bearing minor release. The workspace follows the newer
-[v4.33.1 stable patch](https://github.com/leanprover/lean4/releases/tag/v4.33.1)
+The [v4.34.0 release notes](https://lean-lang.org/doc/reference/latest/releases/v4.34.0/)
+describe the newest feature-bearing stable release. The workspace follows it
 because Lean and the matching
-[Mathlib4 v4.34.0 release](https://github.com/leanprover-community/mathlib4/releases/tag/v4.33.1)
+[Mathlib4 v4.34.0 release](https://github.com/leanprover-community/mathlib4/releases/tag/v4.34.0)
 are both available. A documentation page lag never justifies downgrading an
-installed, verified stable patch.
+installed, verified stable release.
 
 ```bash
 uv run fep-lean setup
