@@ -12,7 +12,17 @@ from typing import cast
 import pytest
 
 from fep_lean.catalogue.coverage import build_formalism_coverage
+from fep_lean.output import formal_kernel_dashboard, formalism_atlas
+from fep_lean.output.formal_kernel_dashboard import (
+    formal_kernel_dashboard_drift,
+    write_formal_kernel_dashboard,
+)
+from fep_lean.output.formalism_atlas import (
+    atlas_projection_drift,
+    write_formalism_atlas,
+)
 from fep_lean.output.formalism_presentation import (
+    FormalismPresentation,
     build_formalism_presentation,
     humanize_formalism_identifier,
 )
@@ -68,13 +78,57 @@ def test_presentation_join_conserves_canonical_sources_and_is_immutable() -> Non
         mutable_metrics["topics"] = 0
 
 
-def test_renderers_depend_only_on_the_shared_presentation_join() -> None:
-    output_root = PROJECT_ROOT / "src" / "fep_lean" / "output"
-    for name in ("formalism_atlas.py", "formal_kernel_dashboard.py"):
-        source = (output_root / name).read_text(encoding="utf-8")
-        assert "build_formalism_coverage" not in source
-        assert "evaluate_numerical_witnesses" not in source
-        assert "build_formalism_presentation" in source
+def test_renderers_depend_only_on_the_shared_presentation_join(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The atlas and dashboard must model everything through the shared join.
+
+    The join seam inside each renderer module returns a snapshot built before
+    the patch, while the canonical sources one layer below are wired to
+    explode. A renderer that reaches ``build_formalism_coverage`` or
+    ``evaluate_numerical_witnesses`` directly fails here, and a renderer that
+    stops fetching the join fails the seam record before its drift gate can
+    bless anything.
+    """
+    presentation = build_formalism_presentation(PROJECT_ROOT)
+    join_calls: list[Path] = []
+
+    def _poison_canonical_source(*_args: object, **_kwargs: object) -> object:
+        raise AssertionError(
+            "renderer reached a canonical source instead of the shared join"
+        )
+
+    def _join_stub(project_root: Path) -> FormalismPresentation:
+        join_calls.append(Path(project_root))
+        return presentation
+
+    monkeypatch.setattr(formalism_atlas, "build_formalism_presentation", _join_stub)
+    monkeypatch.setattr(
+        formal_kernel_dashboard, "build_formalism_presentation", _join_stub
+    )
+    monkeypatch.setattr(
+        "fep_lean.catalogue.coverage.build_formalism_coverage",
+        _poison_canonical_source,
+    )
+    monkeypatch.setattr(
+        "fep_lean.verification.numerical_witnesses.evaluate_numerical_witnesses",
+        _poison_canonical_source,
+    )
+
+    atlas_root = tmp_path / "atlas"
+    write_formalism_atlas(PROJECT_ROOT, output_root=atlas_root)
+    assert join_calls == [PROJECT_ROOT]
+    assert atlas_projection_drift(PROJECT_ROOT, output_root=atlas_root) == ()
+
+    join_calls.clear()
+    dashboard_root = tmp_path / "dashboard"
+    write_formal_kernel_dashboard(PROJECT_ROOT, output_root=dashboard_root)
+    assert join_calls == [PROJECT_ROOT]
+    assert (
+        formal_kernel_dashboard_drift(PROJECT_ROOT, output_root=dashboard_root)
+        == ()
+    )
 
 
 def test_family_summaries_conserve_witness_formal_alignment() -> None:
