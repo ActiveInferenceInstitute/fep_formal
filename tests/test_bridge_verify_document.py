@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import shutil
 import sys
 from collections.abc import Iterator
@@ -16,7 +17,10 @@ import pytest
 from fep_lean.bridge import cli, operations
 
 REPO = Path(__file__).resolve().parents[1]
-GNN_ROOT = REPO.parent / "GeneralizedNotationNotation"
+_DEFAULT_GNN_ROOT = REPO.parent / "GeneralizedNotationNotation"
+# FEP_LEAN_GNN_ROOT overrides the conventional sibling placement for
+# machines where the GNN checkout lives elsewhere.
+GNN_ROOT = Path(os.environ.get("FEP_LEAN_GNN_ROOT", str(_DEFAULT_GNN_ROOT)))
 LEAN_READY = bool(shutil.which("lake")) and (REPO / "lean" / "lakefile.lean").is_file()
 
 
