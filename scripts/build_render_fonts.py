@@ -25,6 +25,7 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
+from fep_lean.catalogue.generation import check_or_write
 from fep_lean.output.render_fonts import (
     FontProbeError,
     font_coverage_defects,
@@ -36,6 +37,18 @@ PROJECTION = Path("docs/render-fonts.json")
 
 def _rendered(project_root: Path) -> str:
     return json.dumps(render_font_projection(project_root), indent=2) + "\n"
+
+
+def _drift(project_root: Path) -> tuple[Path, ...]:
+    target = project_root / PROJECTION
+    current = target.read_text(encoding="utf-8") if target.is_file() else ""
+    return () if current == _rendered(project_root) else (target,)
+
+
+def _write(project_root: Path) -> tuple[Path, ...]:
+    target = project_root / PROJECTION
+    target.write_text(_rendered(project_root), encoding="utf-8")
+    return (target,)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -50,7 +63,6 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[1]
-    target = root / PROJECTION
     if args.probe:
         try:
             defects = font_coverage_defects(root)
@@ -64,24 +76,16 @@ def main(argv: list[str] | None = None) -> int:
         print("OK: every typeset codepoint is covered by an installed font")
         return 0
     try:
-        rendered = _rendered(root)
+        return check_or_write(
+            root,
+            _drift,
+            _write,
+            "the manuscript font requirement is current",
+            check=args.check,
+        )
     except FontProbeError as error:
         print(f"FAIL: {error}")
         return 1
-    if args.check:
-        current = target.read_text(encoding="utf-8") if target.is_file() else ""
-        if current != rendered:
-            print(f"STALE: {PROJECTION}")
-            print(
-                "  the manuscript's glyph set changed; regenerate on a host whose "
-                "fonts cover it (scripts/build_render_fonts.py --probe)"
-            )
-            return 1
-        print("OK: the manuscript font requirement is current")
-        return 0
-    target.write_text(rendered, encoding="utf-8")
-    print(f"Wrote {PROJECTION}")
-    return 0
 
 
 if __name__ == "__main__":
