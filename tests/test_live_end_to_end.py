@@ -58,7 +58,9 @@ def _lean_workspace_ready() -> bool:
     not _lean_workspace_ready(),
     reason="Lean workspace not built — run `uv run fep-lean setup` first",
 )
-def test_run_single_topic_full_mode_end_to_end(tmp_path: Path) -> None:
+def test_run_single_topic_full_mode_end_to_end(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     """Live full-mode run of fep-001 through the complete pipeline.
 
     Asserts structural properties of the result rather than ``complete``
@@ -67,11 +69,8 @@ def test_run_single_topic_full_mode_end_to_end(tmp_path: Path) -> None:
     with a populated topic result carrying Hermes and Lean outcome fields,
     and must not crash in any pipeline stage.
     """
-    os.environ["FEP_LEAN_OUTPUT_ROOT"] = str(tmp_path / "output")
-    try:
-        result = run_single_topic("fep-001", mode="full")
-    finally:
-        os.environ.pop("FEP_LEAN_OUTPUT_ROOT", None)
+    monkeypatch.setenv("FEP_LEAN_OUTPUT_ROOT", str(tmp_path / "output"))
+    result = run_single_topic("fep-001", mode="full")
 
     assert isinstance(result, PipelineResult)
     assert result.mode == "full"

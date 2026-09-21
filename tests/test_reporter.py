@@ -108,10 +108,6 @@ def report_paths(reporter: Reporter, tmp_path: Path) -> ReportPaths:
     return reporter.generate(TOPICS, result)
 
 
-def test_reporter_instantiates(reporter: Reporter) -> None:
-    assert reporter is not None
-
-
 def test_reporter_rejects_existing_run_directory(tmp_path: Path) -> None:
     """A repeated explicit run ID must not overwrite provenance artifacts."""
     reporter = Reporter(tmp_path, run_id="run_collision")
