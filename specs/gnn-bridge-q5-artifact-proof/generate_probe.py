@@ -29,7 +29,7 @@ from fep_lean.verification.gnn_artifact_proof import (
     manifest_mismatches,
     render_lean_probe,
     render_manifest,
-    sha256_file,
+    sha256_file_strict,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -60,7 +60,7 @@ def regenerate() -> tuple[dict[str, str], dict[str, object]]:
 
     texts: dict[str, str] = {}
     payload: dict[str, object] = {}
-    fixture_digests = {path.name: sha256_file(path) for path in FIXTURES.values()}
+    fixture_digests = {path.name: sha256_file_strict(path) for path in FIXTURES.values()}
     for variant, fixture_path in FIXTURES.items():
         source = fixture_path.read_text(encoding="utf-8")
         tables = extract_pymdp_tables(
@@ -75,7 +75,7 @@ def regenerate() -> tuple[dict[str, str], dict[str, object]]:
         payload[variant] = _expected_payload(tables)
     manifest = render_manifest(
         fixture_digests=fixture_digests,
-        extractor_sha256=sha256_file(EXTRACTOR),
+        extractor_sha256=sha256_file_strict(EXTRACTOR),
         generated={
             name: hashlib.sha256(text.encode("utf-8")).hexdigest()
             for name, text in texts.items()
