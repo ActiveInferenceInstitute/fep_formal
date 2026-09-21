@@ -15,7 +15,7 @@ uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 The `-m "not serial_lean"` deselect is what keeps this suite runnable on a
 checkout without a Lean toolchain: serial_lean-marked tests invoke `lake`
 unguarded and fail rather than skip, as recorded in
-[finding F1](../specs/fep-lean-review-2026-09-05/REPORT.md).
+[finding F1](../specs/done/fep-lean-review-2026-09-05/REPORT.md).
 
 Validate the maintained formal kernel and its two offline views without
 provider credentials:
