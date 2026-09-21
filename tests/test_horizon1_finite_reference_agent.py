@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import re
-import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
+
+from tests._support.lake import lake_executable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
@@ -66,17 +67,6 @@ def _declaration(source: str, kind: str, name: str) -> str:
     )
     assert match is not None, f"missing {kind} {name}"
     return match.group(0)
-
-
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for H1.8 finite reference-agent tests")
-    return lake
 
 
 def test_finite_reference_agent_owns_exact_import_and_namespace_contract() -> None:
@@ -279,7 +269,7 @@ def test_finite_reference_agent_compiles_warning_free_with_explicit_output(
     output_path = tmp_path / "finite_reference_agent.olean"
     result = subprocess.run(
         [
-            _lake_executable(),
+            lake_executable(),
             "env",
             "lean",
             "-R",
@@ -317,7 +307,7 @@ def test_public_theorems_have_only_standard_axioms(tmp_path: Path) -> None:
     output_path = tmp_path / "finite_reference_agent_axioms.olean"
     result = subprocess.run(
         [
-            _lake_executable(),
+            lake_executable(),
             "env",
             "lean",
             "-R",

@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import re
 import runpy
-import shutil
 import subprocess
 from pathlib import Path
 from typing import TypedDict, cast
 
 import pytest
+
+from tests._support.lake import lake_executable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -103,20 +104,9 @@ def _theorem_names(source: str) -> tuple[str, ...]:
     return tuple(re.findall(r"^theorem\s+([A-Za-z0-9_']+)", source, re.MULTILINE))
 
 
-def _lean_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for native formalism boundary tests")
-    return lake
-
-
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        [_lean_executable(), "env", "lean", str(source)],
+        [lake_executable(), "env", "lean", str(source)],
         cwd=LEAN_ROOT,
         check=False,
         capture_output=True,

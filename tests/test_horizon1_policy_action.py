@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import re
-import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
+
+from tests._support.lake import lake_executable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -64,17 +65,6 @@ def _declaration(source: str, name: str) -> str:
     )
     assert match is not None, f"missing declaration {name}"
     return match.group(0)
-
-
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for H1.4 policy/action tests")
-    return lake
 
 
 def test_policy_action_leaf_owns_exact_import_and_namespace_contract() -> None:
@@ -267,7 +257,7 @@ def test_leaf_keeps_epistemic_and_total_efe_garbling_out_of_scope() -> None:
 
 def test_finite_policy_action_leaf_compiles_warning_free() -> None:
     result = subprocess.run(
-        [_lake_executable(), "env", "lean", str(COMPOSITION)],
+        [lake_executable(), "env", "lean", str(COMPOSITION)],
         cwd=LEAN_ROOT,
         check=False,
         capture_output=True,

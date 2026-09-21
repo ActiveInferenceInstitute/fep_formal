@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-import shutil
 import subprocess
 from pathlib import Path
 
 import pytest
+
+from tests._support.lake import lake_executable
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -17,20 +18,9 @@ FORMAL_SOURCE = (
 pytestmark = pytest.mark.serial_lean
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        pytest.skip("lake is required for native finite-dynamics tests")
-    return lake
-
-
 def test_finite_markov_dynamics_compiles_warning_free() -> None:
     result = subprocess.run(
-        [_lake_executable(), "env", "lean", str(FORMAL_SOURCE)],
+        [lake_executable(), "env", "lean", str(FORMAL_SOURCE)],
         cwd=LEAN_ROOT,
         check=False,
         capture_output=True,

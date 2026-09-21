@@ -5,7 +5,6 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-import shutil
 import struct
 import zlib
 from dataclasses import replace
@@ -396,9 +395,24 @@ def test_cdp_product_must_corroborate_the_resolved_browser_version() -> None:
         )
 
 
+def _resolvable_browser() -> bool:
+    """True when the capture module resolves a supported browser itself."""
+    try:
+        capture_module.resolve_browser_executable()
+    except capture_module.BrowserCaptureError:
+        return False
+    return True
+
+
+_BROWSER_RESOLVABLE = _resolvable_browser()
+
+
 @pytest.mark.skipif(
-    shutil.which("google-chrome") is None,
-    reason="Google Chrome is unavailable for the live teardown regression",
+    not _BROWSER_RESOLVABLE,
+    reason=(
+        "capture_module.resolve_browser_executable() cannot resolve a "
+        "supported Chrome/Chromium executable on this host"
+    ),
 )
 def test_live_chrome_blocks_and_records_a_delayed_outbound_request(
     tmp_path: Path,
@@ -409,7 +423,7 @@ def test_live_chrome_blocks_and_records_a_delayed_outbound_request(
         "'https://example.invalid/delayed-resource'), 1000)</script>",
         encoding="utf-8",
     )
-    executable = Path(str(shutil.which("google-chrome"))).resolve()
+    executable = capture_module.resolve_browser_executable()[1]
 
     with (
         capture_module._chrome_client(executable) as (client, session_id),
@@ -422,8 +436,11 @@ def test_live_chrome_blocks_and_records_a_delayed_outbound_request(
 
 
 @pytest.mark.skipif(
-    shutil.which("google-chrome") is None,
-    reason="Google Chrome is unavailable for the live teardown regression",
+    not _BROWSER_RESOLVABLE,
+    reason=(
+        "capture_module.resolve_browser_executable() cannot resolve a "
+        "supported Chrome/Chromium executable on this host"
+    ),
 )
 def test_live_chrome_replay_terminates_every_profile_writer() -> None:
     project_root = Path(__file__).resolve().parents[1]

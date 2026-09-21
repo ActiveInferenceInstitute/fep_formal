@@ -11,6 +11,7 @@ Covers gaps found in the fep-tests coverage audit (2026-08-28):
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import pytest
@@ -105,10 +106,12 @@ def test_close_open_session_fails_open_session(tmp_path: Path) -> None:
     client.close_open_session(sid, error="boom")
     rec = client.export_session(sid)
     assert rec["status"] == "error"
-    rows = client._conn.execute(
-        "SELECT event FROM logs WHERE session_id=?", (sid,)
-    ).fetchall()
-    assert any(row["event"] == "session_cleanup_error" for row in rows)
+    ops_log = tmp_path / "g" / "fep_logs" / "operations.jsonl"
+    events = [json.loads(line) for line in ops_log.read_text().splitlines() if line]
+    assert any(
+        event["event"] == "session_cleanup_error" and event["session_id"] == sid
+        for event in events
+    )
     client.close() if hasattr(client, "close") else None
 
 

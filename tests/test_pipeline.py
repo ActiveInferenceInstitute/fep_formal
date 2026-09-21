@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
+from fep_lean.catalogue.topics import CatalogueValidationError, FEPTopicCatalogue
+from fep_lean.output.manuscript import _verify_block_from_manifest
 from fep_lean.pipeline.core import (
     FEPPipeline,
     PipelineResult,
@@ -69,6 +72,13 @@ def test_step_result_dataclass() -> None:
     assert step.status == "ok"
     assert step.message == "all fine"
     assert step.duration_s == 0.5
+    assert step.error is None
+
+
+def test_step_result_records_error() -> None:
+    step = StepResult("test_step", "error", "boom", 0.0, error="boom")
+    assert step.error == "boom"
+    assert step.status == "error"
 
 
 def test_filters_and_topic_cap(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
@@ -104,6 +114,7 @@ def test_stats_never_counts_catalogue_as_verified() -> None:
     )
     assert result.stats["topics_total"] == 50
     assert result.stats["topics_verified"] == 0
+    assert result.stats["stages_ok"] == 0
     assert result.lean_compile_ok == 0
 
 
@@ -156,3 +167,32 @@ def test_full_pipeline_rejects_compiling_topic_with_warnings(
 def test_invalid_mode_rejected() -> None:
     with pytest.raises(ValueError):
         FEPPipeline(PROJ).run(mode="invalid")  # type: ignore[arg-type]
+
+
+def test_empty_catalogue_is_rejected(tmp_path: Path) -> None:
+    yaml_path = tmp_path / "topics.yaml"
+    yaml_path.write_text("topics: []\n", encoding="utf-8")
+    with pytest.raises(CatalogueValidationError):
+        FEPTopicCatalogue.from_yaml(yaml_path)
+
+
+def test_verify_block_defaults_without_topics_keys(tmp_path: Path) -> None:
+    p = tmp_path / "verification_manifest.json"
+    p.write_text(json.dumps({"random_key": 42}), encoding="utf-8")
+    b = _verify_block_from_manifest(p)
+    assert b["manifest_present"] is True
+    assert b["verify_lean_ran"] is False
+    assert b["topics_with_result"] == 0
+
+
+def test_verify_block_non_integer_topics_falls_back_to_results_count(
+    tmp_path: Path,
+) -> None:
+    p = tmp_path / "verification_manifest.json"
+    p.write_text(
+        json.dumps({"topics_with_result": "fifty", "results": [{"compiles": True}]}),
+        encoding="utf-8",
+    )
+    b = _verify_block_from_manifest(p)
+    assert b["manifest_present"] is True
+    assert b["topics_with_result"] == 1

@@ -122,6 +122,20 @@ def test_mathlib_probe_rejects_a_partial_leaf_cache_without_running_lake(
     assert "Mathlib/Data/Real/Basic.olean" in message
 
 
+def test_mathlib_probe_reports_a_missing_root_olean_without_running_lake(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    verifier = _isolated_verifier(tmp_path, monkeypatch)
+    (verifier._lean_dir / ".lake" / "packages" / "mathlib").mkdir(parents=True)
+    build_root = verifier._lean_dir / ".lake/packages/mathlib/.lake/build/lib/lean"
+
+    ok, message = verifier.check_mathlib_built()
+
+    assert ok is False
+    assert str(build_root / "Mathlib.olean") in message
+
+
 def test_run_lake_lean_fails_closed_without_an_executable(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
