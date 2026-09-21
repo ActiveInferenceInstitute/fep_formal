@@ -66,7 +66,7 @@ PINNED_SOURCES: dict[str, str] = {
         "76b2e36f840682df5adac654456d2d94c81c636778fbcd1efa39bc3cbfe3d3f0"
     ),
     "specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json": (
-        "94724964a1e319c812017c2bff1b9e9c74b911f1919d5e49a2c9543d8bcd2936"
+        "d324e3d08220a7e69878842b73584be9468c8490b2f4481cf5f0e62e49e74bd9"
     ),
 }
 
