@@ -11,6 +11,7 @@ from fep_lean.output.release_bundle import (
     build_release_bundle,
     run_python_acceptance,
     validate_release_bundle,
+    write_numerical_witnesses,
 )
 
 
@@ -32,6 +33,14 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="run the exact full Python acceptance command and retain its receipts",
     )
+    actions.add_argument(
+        "--write-numerical-witnesses",
+        action="store_true",
+        help=(
+            "build the numerical-witness receipt and write "
+            "output/numerical-witnesses.json"
+        ),
+    )
     return parser
 
 
@@ -39,11 +48,22 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     project_root = Path(__file__).resolve().parents[1]
-    if not args.run_python_acceptance and args.output is None:
-        parser.error("--output is required unless --run-python-acceptance is used")
+    if (
+        not args.run_python_acceptance
+        and not args.write_numerical_witnesses
+        and args.output is None
+    ):
+        parser.error(
+            "--output is required unless --run-python-acceptance "
+            "or --write-numerical-witnesses is used"
+        )
     try:
         if args.run_python_acceptance:
             receipt = run_python_acceptance(project_root)
+            print(f"Wrote {receipt}")
+            return 0
+        if args.write_numerical_witnesses:
+            receipt = write_numerical_witnesses(project_root)
             print(f"Wrote {receipt}")
             return 0
         if args.check:

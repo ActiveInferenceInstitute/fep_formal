@@ -66,6 +66,30 @@ def read_mathlib_tag(lean_dir: Path) -> str | None:
     return matches[0]
 
 
+def mathlib_tag_from_lake_manifest(lean_dir: Path) -> str | None:
+    """Return the validated Mathlib tag from ``lake-manifest.json`` inputRev.
+
+    Fallback for workspaces whose ``lakefile.lean`` does not pin a single
+    valid Mathlib dependency tag.
+    """
+    path = Path(lean_dir) / "lake-manifest.json"
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return None
+    packages = payload.get("packages", []) if isinstance(payload, dict) else []
+    if not isinstance(packages, list):
+        return None
+    revisions = [
+        package.get("inputRev")
+        for package in packages
+        if isinstance(package, dict) and package.get("name") == "mathlib"
+    ]
+    if len(revisions) != 1 or not isinstance(revisions[0], str):
+        return None
+    return revisions[0] if _MATHLIB_TAG_RE.fullmatch(revisions[0]) else None
+
+
 def resolved_mathlib_revision(lean_dir: Path) -> str:
     """Return the exact Mathlib Git revision recorded by Lake."""
     path = Path(lean_dir) / "lake-manifest.json"
@@ -85,6 +109,22 @@ def resolved_mathlib_revision(lean_dir: Path) -> str:
         return ""
     revision = revisions[0]
     return revision if re.fullmatch(r"[0-9a-f]{40}", revision) else ""
+
+
+def toolchain_identity(lean_dir: Path) -> dict[str, str]:
+    """Return the validated Lean/Mathlib identity of a Lean workspace.
+
+    Built exclusively on the validated readers :func:`read_toolchain_pin`,
+    :func:`read_mathlib_tag` and :func:`resolved_mathlib_revision`; an
+    unreadable or malformed component is reported as an empty string.
+    """
+    return {
+        "lean_toolchain": read_toolchain_pin(lean_dir) or "",
+        "mathlib_tag": read_mathlib_tag(lean_dir)
+        or mathlib_tag_from_lake_manifest(lean_dir)
+        or "",
+        "mathlib_revision": resolved_mathlib_revision(lean_dir),
+    }
 
 
 def get_elan_home() -> Path:
@@ -202,13 +242,24 @@ def lake_version_matches_pin(version_output: str, toolchain: str) -> bool:
     return match is not None and f"v{match.group('version')}" in toolchain
 
 
+_CHILD_ENV_ALLOWLIST = frozenset({"HOME", "LANG", "PATH", "TMPDIR"})
+_CHILD_ENV_PREFIXES = ("LC_",)
+
+
 def subprocess_env(lean_dir: Path | None = None) -> dict[str, str]:
-    """Build an environment dict for lean/lake sub-processes.
+    """Build an allowlisted environment dict for lean/lake sub-processes.
 
     Sets ``ELAN_HOME`` to a writable location and optionally prepends the
-    direct toolchain ``bin/`` to ``PATH``.
+    direct toolchain ``bin/`` to ``PATH``.  Only the parent variables lean,
+    lake and the elan proxy actually need are forwarded, so parent secrets
+    (e.g. Hermes API keys loaded from ``~/.gauss/.env``) never reach
+    compiler children.
     """
-    env = dict(os.environ)
+    env = {
+        name: value
+        for name, value in os.environ.items()
+        if name in _CHILD_ENV_ALLOWLIST or name.startswith(_CHILD_ENV_PREFIXES)
+    }
     env["ELAN_HOME"] = get_writable_elan_home()
     ensure_writable_elan_home()
 

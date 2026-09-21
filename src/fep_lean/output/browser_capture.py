@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any, Protocol
 
 from fep_lean.output.formalism_presentation import build_formalism_presentation
-from fep_lean.output.fsutil import sha256_bytes
+from fep_lean.output.fsutil import sha256_bytes, sha256_file
 
 BROWSER_ASSET_ROOT = Path("specs/done/formalism-catalogue-155/assets")
 BROWSER_RECEIPT = BROWSER_ASSET_ROOT / "browser-interaction-receipt.json"
@@ -221,7 +221,7 @@ def _validate_browser_identity(browser: Mapping[str, str]) -> None:
     ):
         raise BrowserCaptureError("live Chrome executable path is not replayable")
     try:
-        digest = sha256_bytes(executable.read_bytes())
+        digest = sha256_file(executable)
     except OSError as exc:
         raise BrowserCaptureError("live Chrome executable is unreadable") from exc
     if browser["executable_sha256"] != digest:
@@ -376,7 +376,7 @@ def resolve_browser_executable(
             for raw_line in (completed.stdout, completed.stderr)
             if (line := raw_line.strip())
         )
-        digest = sha256_bytes(resolved.read_bytes())
+        digest = sha256_file(resolved)
     except (OSError, subprocess.SubprocessError) as exc:
         raise BrowserCaptureError(
             "cannot identify the local browser executable"
@@ -1308,7 +1308,7 @@ def build_browser_receipt(project_root: Path, replay: BrowserReplay) -> bytes:
     for key, relative in CANONICAL_BROWSER_PROJECTIONS.items():
         path = _canonical_projection_path(root, relative)
         _assert_offline_projection_source(path)
-        projections[key] = {"path": relative, "sha256": sha256_bytes(path.read_bytes())}
+        projections[key] = {"path": relative, "sha256": sha256_file(path)}
     screenshots = []
     for role, relative in sorted(
         CANONICAL_BROWSER_SCREENSHOTS.items(), key=lambda item: item[1]

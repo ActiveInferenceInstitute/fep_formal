@@ -30,7 +30,7 @@ from fep_lean.verification._toolchain import (
     resolved_mathlib_revision,
     subprocess_env,
 )
-from fep_lean.verification.formalism_audit import _parse_axiom_output
+from fep_lean.verification.formalism_audit import parse_axiom_output
 
 ENGINE_PATH = "src/fep_lean/verification/gnn_artifact_receipt.py"
 ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
@@ -711,7 +711,7 @@ class ArtifactVerifier:
     def _probe_record(self, variant: str, recorded: Any) -> dict[str, Any]:
         raw = self._raw_result(recorded)
         self._check_native_command(raw, self.toolchain_snapshot(), "probe", variant)
-        parsed, errors = _parse_axiom_output(
+        parsed, errors = parse_axiom_output(
             raw["stdout"] + "\n" + raw["stderr"],
             expected=self.contract.theorems[variant],
         )

@@ -172,7 +172,7 @@ def _declaration_sources(
     }
 
 
-def _parse_axiom_output(
+def parse_axiom_output(
     output: str,
     *,
     expected: tuple[str, ...] | None = None,
@@ -242,9 +242,14 @@ def _parse_axiom_output(
     return parsed, tuple(dict.fromkeys(errors))
 
 
+# Compatibility alias: tests and external callers historically imported the
+# private name; keep it importable until they migrate to ``parse_axiom_output``.
+_parse_axiom_output = parse_axiom_output
+
+
 def _axioms_by_declaration(output: str) -> dict[str, tuple[str, ...]]:
     """Compatibility projection of the strict parser's unambiguous records."""
-    parsed, _ = _parse_axiom_output(output)
+    parsed, _ = parse_axiom_output(output)
     return parsed
 
 
@@ -493,7 +498,7 @@ def run_formalism_audit(
             else "Lean declaration probe failed without a reported Lean error"
         )
     sorry_ax = "sorryAx" in output
-    axiom_map, axiom_parse_errors = _parse_axiom_output(
+    axiom_map, axiom_parse_errors = parse_axiom_output(
         output,
         expected=declarations,
     )
@@ -699,7 +704,7 @@ def validate_formalism_audit_receipt(path: Path, project_root: Path) -> tuple[st
     ):
         errors.append("receipt axiom_output must be a list of strings")
         raw_axiom_output = []
-    parsed_axioms, reparsed_errors = _parse_axiom_output(
+    parsed_axioms, reparsed_errors = parse_axiom_output(
         "\n".join(raw_axiom_output),
         expected=declarations,
     )

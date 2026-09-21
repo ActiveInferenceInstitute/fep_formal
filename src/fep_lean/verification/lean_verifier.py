@@ -493,6 +493,13 @@ class LeanVerifier:
         has_sorry = _has_sorry(full_code)
         sorry_occurrences = _count_sorry(full_code)
 
+        # Sweep stale probe files left by previous runs that were SIGKILLed or
+        # timed out before the finally-unlink below could run. Tolerant of
+        # unlink failures on files held by another process.
+        for stale in self._sketches_dir.glob("_verify_*.lean"):
+            with contextlib.suppress(OSError):
+                stale.unlink()
+
         tmp_file: Path | None = None
         try:
             # Write to a temp .lean file inside FepSketches/
