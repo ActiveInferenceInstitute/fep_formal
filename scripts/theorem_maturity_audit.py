@@ -19,6 +19,7 @@ OUTPUT_PATH = ROOT / "docs" / "theorem-maturity-audit.md"
 # importable module so the release-bundle validator no longer executes this
 # script's namespace with runpy. These re-exports keep the wrapper's public
 # behavior identical.
+from fep_lean.catalogue.generation import check_or_write
 from fep_lean.catalogue.theorem_maturity_projection import (
     render_markdown,
     validate_audit,
@@ -42,18 +43,21 @@ def main(argv: list[str] | None = None) -> int:
     if args.write:
         OUTPUT_PATH.write_text(render_markdown(data), encoding="utf-8")
         print(f"Wrote {OUTPUT_PATH}")
-    elif args.check:
+        return 0
+    if args.check:
         expected = render_markdown(data)
-        try:
-            current = OUTPUT_PATH.read_text(encoding="utf-8")
-        except OSError:
-            current = ""
-        if current != expected:
-            print(f"STALE: {OUTPUT_PATH.relative_to(ROOT)}", file=sys.stderr)
-            return 1
-        print("OK: theorem maturity projection is current")
-    else:
-        print(f"OK: {len(data['topics'])} theorem-maturity rows validated")
+
+        def _drift(_root: Path) -> tuple[Path, ...]:
+            try:
+                current = OUTPUT_PATH.read_text(encoding="utf-8")
+            except OSError:
+                current = ""
+            return () if current == expected else (OUTPUT_PATH,)
+
+        return check_or_write(
+            ROOT, _drift, None, "theorem maturity projection is current", check=True
+        )
+    print(f"OK: {len(data['topics'])} theorem-maturity rows validated")
     return 0
 
 

@@ -10,6 +10,7 @@ from fep_lean.catalogue.coverage import (
     formalism_coverage_drift,
     write_formalism_coverage,
 )
+from fep_lean.catalogue.generation import check_or_write
 
 
 def main() -> int:
@@ -17,18 +18,13 @@ def main() -> int:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
-    if args.check:
-        drift = formalism_coverage_drift(root)
-        if drift:
-            for path in drift:
-                print(f"STALE: {path.relative_to(root)}")
-            return 1
-        print("OK: formalism coverage projections are current")
-        return 0
-    paths = write_formalism_coverage(root)
-    for path in paths:
-        print(f"Wrote {path.relative_to(root)}")
-    return 0
+    return check_or_write(
+        root,
+        formalism_coverage_drift,
+        write_formalism_coverage,
+        "formalism coverage projections are current",
+        check=args.check,
+    )
 
 
 if __name__ == "__main__":

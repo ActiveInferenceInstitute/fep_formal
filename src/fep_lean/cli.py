@@ -18,6 +18,7 @@ from fep_lean.bridge import operations
 from fep_lean.bridge.custody import validate_binding
 from fep_lean.catalogue.generation import (
     catalogue_projection_drift,
+    check_or_write,
     fep_all_projection_drift,
 )
 from fep_lean.catalogue.topics import FEPTopicCatalogue
@@ -126,50 +127,34 @@ def _print_result(result: object) -> int:
     return 0 if getattr(result, "complete", False) else 1
 
 
+def _display(root: Path, path: Path) -> str:
+    """Render *path* for display, relative to *root* when possible."""
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
 def _atlas(root: Path, *, check: bool) -> int:
     """Write or fail-closed drift-check the formalism atlas projection."""
-    if check:
-        drift = atlas_projection_drift(root)
-        if drift:
-            for path in drift:
-                try:
-                    rendered = path.relative_to(root)
-                except ValueError:
-                    rendered = path
-                print(f"STALE: {rendered}")
-            return 1
-        print("OK: formalism atlas projections are current")
-        return 0
-    for path in write_formalism_atlas(root):
-        try:
-            rendered = path.relative_to(root)
-        except ValueError:
-            rendered = path
-        print(f"Wrote {rendered}")
-    return 0
+    return check_or_write(
+        root,
+        atlas_projection_drift,
+        write_formalism_atlas,
+        "formalism atlas projections are current",
+        check=check,
+    )
 
 
 def _dashboard(root: Path, *, check: bool) -> int:
     """Write or fail-closed drift-check the formal-kernel dashboard."""
-    if check:
-        drift = formal_kernel_dashboard_drift(root)
-        if drift:
-            for path in drift:
-                try:
-                    rendered = path.relative_to(root)
-                except ValueError:
-                    rendered = path
-                print(f"STALE: {rendered}")
-            return 1
-        print("OK: formal-kernel dashboard projections are current")
-        return 0
-    for path in write_formal_kernel_dashboard(root):
-        try:
-            rendered = path.relative_to(root)
-        except ValueError:
-            rendered = path
-        print(f"Wrote {rendered}")
-    return 0
+    return check_or_write(
+        root,
+        formal_kernel_dashboard_drift,
+        write_formal_kernel_dashboard,
+        "formal-kernel dashboard projections are current",
+        check=check,
+    )
 
 
 def _verify(
@@ -194,7 +179,7 @@ def _verify(
             topics = tuple(topic for topic in topics if topic.area == area)
         if not topics:
             raise ValueError("no catalogue topics matched the requested filters")
-    except Exception as exc:
+    except (OSError, KeyError, TypeError, ValueError) as exc:
         print(
             json.dumps(
                 {
@@ -397,8 +382,7 @@ def catalogue_products_section(
         )
     if stale:
         findings.extend(
-            f"stale or missing: {path.relative_to(root).as_posix() if path.is_relative_to(root) else path.as_posix()}"
-            for path in stale
+            f"stale or missing: {_display(root, path)}" for path in stale
         )
     state = "stale" if stale else "current"
     return SectionReport(

@@ -36,6 +36,7 @@ import sys
 from pathlib import Path
 
 from fep_lean.catalogue.generation import (
+    check_or_write,
     fep_all_projection_path,
     render_fep_all_lean,
 )
@@ -68,6 +69,10 @@ def aggregate_is_current(path: Path = FEP_ALL_PATH) -> bool:
         return False
 
 
+def _aggregate_drift(_root: Path) -> tuple[Path, ...]:
+    return () if aggregate_is_current() else (FEP_ALL_PATH,)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -78,14 +83,13 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         if args.check:
-            if aggregate_is_current():
-                print(f"OK: {FEP_ALL_PATH.relative_to(PROJECT_ROOT)} is current")
-                return 0
-            print(
-                f"STALE: {FEP_ALL_PATH.relative_to(PROJECT_ROOT)}; regenerate it",
-                file=sys.stderr,
+            return check_or_write(
+                PROJECT_ROOT,
+                _aggregate_drift,
+                None,
+                f"{FEP_ALL_PATH.relative_to(PROJECT_ROOT)} is current",
+                check=True,
             )
-            return 1
         fep_all_path, n = write_aggregate()
     except (ValueError, OSError) as exc:
         print(f"_maint_build_fep_all_lean: failed: {exc}", file=sys.stderr)
