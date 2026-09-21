@@ -21,15 +21,6 @@ from fep_lean.llm.hermes import (
 )
 
 PROJ = Path(__file__).resolve().parent.parent
-# _LIVE_TESTS_ENABLED retained for future live-API TestCallAPI variants;
-# the current TestCallAPI tests use local loopback servers and never skip.
-_FEP_LEAN_LIVE_VAR = os.environ.get("FEP_LEAN_LIVE_TESTS", "").lower()
-_HAS_API_KEY = bool(
-    os.environ.get("OPENROUTER_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
-)
-_LIVE_TESTS_ENABLED = _FEP_LEAN_LIVE_VAR in ("1", "true", "yes") or (
-    _HAS_API_KEY and _FEP_LEAN_LIVE_VAR not in ("0", "false", "no")
-)
 
 
 # ── Local HTTP server helpers (no external deps, no direct execution) ───────────────────
@@ -170,21 +161,24 @@ def _free_port() -> int:
 class TestLoadGaussDotenv:
     """Test HermesConfig._load_gauss_dotenv."""
 
-    def setup_method(self) -> None:
+    @pytest.fixture(autouse=True)
+    def _dotenv_keys(self, monkeypatch: pytest.MonkeyPatch) -> None:
         """Expand allowed dotenv keys for test coverage of arbitrary variables."""
-        from fep_lean.llm.hermes import HermesConfig
-
-        HermesConfig._ALLOWED_DOTENV_KEYS = frozenset(
-            {
-                "FOO_KEY",
-                "BAZ",
-                "EXISTING_VAR",
-                "VALID",
-                "Q1",
-                "Q2",
-                "X",
-            }
-            | HermesConfig._ALLOWED_DOTENV_KEYS
+        monkeypatch.setattr(
+            HermesConfig,
+            "_ALLOWED_DOTENV_KEYS",
+            frozenset(
+                {
+                    "FOO_KEY",
+                    "BAZ",
+                    "EXISTING_VAR",
+                    "VALID",
+                    "Q1",
+                    "Q2",
+                    "X",
+                }
+                | HermesConfig._ALLOWED_DOTENV_KEYS
+            ),
         )
 
     def test_loads_keys_from_dotenv(
