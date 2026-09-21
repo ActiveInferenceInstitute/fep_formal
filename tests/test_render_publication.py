@@ -207,8 +207,66 @@ def test_the_shared_render_lock_is_exclusive(tmp_path: Path) -> None:
 
     assert driver.acquire_lock(lock, timeout_s=0) is True
     assert driver.acquire_lock(lock, timeout_s=0) is False
-    lock.rmdir()
+    assert (lock / driver.HOLDER_PID_FILE).is_file()
+    driver.release_lock(lock)
+    assert not lock.exists()
     assert driver.acquire_lock(lock, timeout_s=0) is True
+
+
+def test_a_file_left_in_the_lock_does_not_mask_the_render_verdict(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A leftover in the lock dir costs a warning, never the render's exit code."""
+    driver = _driver()
+    template = tmp_path / "template"
+    (template / "scripts" / "pipeline").mkdir(parents=True)
+    (template / "scripts" / "pipeline" / "stage_03_render.py").write_text(
+        "", encoding="utf-8"
+    )
+    lock = tmp_path / "render.lock"
+    monkeypatch.setenv(driver.LOCK_ENVIRONMENT_VARIABLE, str(lock))
+    stray = lock / "left-by-a-crashed-render"
+
+    def the_render(*_args: object, **_kwargs: object) -> int:
+        stray.write_text("", encoding="utf-8")  # another process left files
+        return 7
+
+    monkeypatch.setattr(driver, "render_publication", the_render)
+
+    assert driver.main(["--template", str(template)]) == 7
+
+    captured = capsys.readouterr().out
+    assert driver.LOCK_ENVIRONMENT_VARIABLE in captured
+    assert stray.is_file()  # a foreign file is reported, not deleted
+
+
+def test_a_dead_lock_holder_warns_instead_of_waiting_silently(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """A crashed render's lock must be visible to the next render that waits."""
+    driver = _driver()
+    lock = tmp_path / "render.lock"
+    lock.mkdir()
+    dead_pid = 4_194_305  # above every platform's pid_max: never allocated
+    (lock / driver.HOLDER_PID_FILE).write_text(str(dead_pid), encoding="utf-8")
+
+    now = [0.0]
+    monkeypatch.setattr(driver.time, "monotonic", lambda: now[0])
+
+    sleeps: list[float] = []
+
+    def fake_sleep(seconds: float) -> None:
+        sleeps.append(seconds)
+        now[0] += seconds
+
+    monkeypatch.setattr(driver.time, "sleep", fake_sleep)
+
+    assert driver.acquire_lock(lock, timeout_s=10.0) is False
+
+    captured = capsys.readouterr().out
+    assert "appears dead" in captured
+    assert str(dead_pid) in captured
+    assert sleeps == [5.0, 5.0]  # the documented 5s cadence is unchanged
 
 
 def test_sources_that_will_not_render_stop_the_publication(tmp_path: Path) -> None:
@@ -260,6 +318,41 @@ def test_the_sources_are_hydrated_before_the_template_runs(tmp_path: Path) -> No
     )
 
     assert order == ["hydrate", "template"]
+
+
+def test_the_release_stamp_flag_reaches_the_hydration_call(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Default off keeps ``render_sources([])``; the flag adds the hard gate."""
+    driver = _driver()
+    assert driver.build_parser().parse_args([]).require_release_stamp is False
+    with_stamp = driver.build_parser().parse_args(["--require-release-stamp"])
+    assert with_stamp.require_release_stamp is True
+    project = _project(tmp_path, CLEAN_LOG)
+    seen: list[list[str]] = []
+
+    def spy(argv: list[str]) -> int:
+        seen.append(list(argv))
+        return 0
+
+    monkeypatch.setattr(driver, "render_sources", spy)
+
+    driver.render_publication(
+        project,
+        tmp_path / "template",
+        runner=_successful_template,
+        skip_probe=True,
+        require_release_stamp=True,
+    )
+    driver.render_publication(
+        project,
+        tmp_path / "template",
+        runner=_successful_template,
+        skip_probe=True,
+        require_release_stamp=False,
+    )
+
+    assert seen == [["--require-release-stamp"], []]
 
 
 def test_a_clean_render_writes_the_committed_receipt(tmp_path: Path) -> None:

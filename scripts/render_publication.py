@@ -25,6 +25,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import contextlib
 import os
 import subprocess  # nosec B404 - fixed argv, shell=False
 import sys
@@ -61,6 +62,7 @@ TEMPLATE_ENVIRONMENT_VARIABLE = "FEP_LEAN_TEMPLATE_DIR"
 # One template checkout serves several projects, and two concurrent renders
 # share its output tree. The lock is a directory because ``mkdir`` is atomic.
 LOCK_ENVIRONMENT_VARIABLE = "DOCXOLOGY_RENDER_LOCK"
+HOLDER_PID_FILE = "holder.pid"
 Runner = Callable[[Sequence[str], Path], int]
 Hydrator = Callable[[], int]
 
@@ -92,18 +94,87 @@ def resolve_template(explicit: Path | None) -> Path:
     )
 
 
+def _recorded_holder_pid(lock: Path) -> int | None:
+    """The pid the lock's holder recorded, when that file is present and valid."""
+
+    try:
+        return int((lock / HOLDER_PID_FILE).read_text(encoding="utf-8").strip())
+    except (OSError, ValueError):
+        return None
+
+
+def _process_is_alive(pid: int) -> bool:
+    """``os.kill(pid, 0)`` probes existence without delivering a signal."""
+
+    if pid <= 0:
+        return False
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True  # the process exists but is not ours to signal
+    except OSError:
+        return False
+    return True
+
+
 def acquire_lock(lock: Path, timeout_s: float) -> bool:
-    """Take the shared render lock, waiting up to ``timeout_s``."""
+    """Take the shared render lock, waiting up to ``timeout_s``.
+
+    The winner records its pid in ``HOLDER_PID_FILE`` so a waiter can tell a
+    live contender from a lock a crashed render left behind.
+    """
 
     deadline = time.monotonic() + timeout_s
+    stale_warned = False
     while True:
         try:
             lock.mkdir()
-            return True
         except FileExistsError:
+            holder = _recorded_holder_pid(lock)
+            if (
+                holder is not None
+                and not stale_warned
+                and not _process_is_alive(holder)
+            ):
+                print(
+                    f"WARNING: the holder of the shared render lock {lock} "
+                    f"(pid {holder}) appears dead; the lock looks stale, but "
+                    "the wait continues as configured"
+                )
+                stale_warned = True
             if time.monotonic() >= deadline:
                 return False
             time.sleep(5)
+        else:
+            (lock / HOLDER_PID_FILE).write_text(str(os.getpid()), encoding="utf-8")
+            return True
+
+
+def release_lock(lock: Path) -> None:
+    """Release the shared render lock without masking the render's verdict.
+
+    ``HOLDER_PID_FILE`` is ours to remove; anything else in the directory was
+    left by another process, so it is reported -- naming the override
+    environment variable -- instead of raised over. A release never raises:
+    the render ran to a verdict, and that verdict is the exit code.
+    """
+
+    # The marker is advisory; rmdir below reports real leftovers.
+    with contextlib.suppress(OSError):
+        (lock / HOLDER_PID_FILE).unlink()
+    try:
+        lock.rmdir()
+    except FileNotFoundError:
+        pass
+    except OSError:
+        print(
+            f"WARNING: the shared render lock {lock} looks stale; it still "
+            "holds files left by another process and they were left in place. "
+            f"Set {LOCK_ENVIRONMENT_VARIABLE} to a private path to point the "
+            "render at a different lock."
+        )
 
 
 def render_publication(
@@ -114,6 +185,7 @@ def render_publication(
     hydrator: Hydrator | None = None,
     project: str = PROJECT_NAME,
     skip_probe: bool = False,
+    require_release_stamp: bool = False,
 ) -> int:
     """Hydrate the sources, render through the template, then accept or reject.
 
@@ -147,7 +219,8 @@ def render_publication(
             )
             return 1
         print("OK: every typeset codepoint is covered by an installed font")
-    hydration = (hydrator or (lambda: render_sources([])))()
+    hydration_argv = ["--require-release-stamp"] if require_release_stamp else []
+    hydration = (hydrator or (lambda: render_sources(hydration_argv)))()
     if hydration != 0:
         print(
             "FAIL: the authored sources did not render; refusing to typeset "
@@ -209,6 +282,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="skip the installed-font preflight (for a host without fontconfig)",
     )
     parser.add_argument(
+        "--require-release-stamp",
+        action="store_true",
+        help="pass --require-release-stamp to the authored-source render, "
+        "making a checkout that moved past its stamped tag a hydration failure",
+    )
+    parser.add_argument(
         "--lock-timeout",
         type=float,
         default=1800.0,
@@ -245,10 +324,13 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     try:
         return render_publication(
-            project_root, template, skip_probe=args.skip_font_probe
+            project_root,
+            template,
+            require_release_stamp=args.require_release_stamp,
+            skip_probe=args.skip_font_probe,
         )
     finally:
-        lock.rmdir()
+        release_lock(lock)
 
 
 if __name__ == "__main__":
