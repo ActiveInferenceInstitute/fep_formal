@@ -238,10 +238,13 @@ The local working-tree source-bound evidence consists of:
 - `output/formalism-audit.json`: the complete 262-declaration closure, 243
   evidence declarations, one parsed axiom result per declaration, and only the
   trusted axiom set;
-- `output/reports/run_20260820_183143_709998`: independently validated full
-  execution for all fifty topics, fifty Hermes successes, fifty preserved
-  semantic contracts, fifty direct refined-source compilations, and 56
-  reconciled artifacts; and
+- a historical full run, `run_20260820_183143_709998` (the gitignored
+  `output/reports/` directory no longer exists; only its digest-only identity —
+  summary, run-manifest, and verification-manifest SHA-256 digests in
+  [acceptance-evidence.json](acceptance-evidence.json) — records it):
+  independently validated full execution for all fifty topics, fifty Hermes
+  successes, fifty preserved semantic contracts, fifty direct refined-source
+  compilations, and 56 reconciled artifacts; and
 - warning-free `lake build FepSketches` at 8,257 jobs, current deterministic
   projections, package-wheel isolation tests, documentation audits, and the
   repository's Python quality gates.

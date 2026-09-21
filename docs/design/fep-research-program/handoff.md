@@ -7,8 +7,12 @@ the [Horizon 1 handoff](../../../specs/done/horizon-1-finite-synthesis/HANDOFF.m
 and its audited design decisions—including the preserved first carrier
 no-go—live in the [choices ledger](../../../specs/done/horizon-1-finite-synthesis/choices.md).
 H2.0--H2.3b, H2.4a/b, H2.5a/b/c/d, H2.5b-R0, H2.5d-R0, H2.6a/b/c,
-H2.6a-R0, and H2.7-R0 have exited with explicit boundaries. H2.7 is the sole
-legal implementation slice; Horizon 3 remains closed.
+H2.6a-R0, and H2.7-R0 have exited with explicit boundaries. The H2.7
+terminal certificate is itself accepted: the
+[terminal receipt](../../../specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
+validates 328 mandatory cases, the enabled Fin4 supplement, and three
+source-bound reviews. Only read-only H3.G0 eligibility is open;
+H3.0--H3.7 remain closed.
 
 The accepted H1 terminal result is deliberately narrow. Starting from the
 selected Boolean sampling model, it reuses the exact two-observation posterior,
@@ -414,16 +418,15 @@ above.
 
 ## Next pickup
 
-Implement only
-[H2.7 smooth reference-kernel terminal merge](../../../specs/horizon-2-smooth-stochastic/slices/07-terminal-certificate.md).
-H2.2b remains optional and closed pending a proof-compression usefulness test.
-Connect exact accepted scalar predecessors and separately name the accepted
-Fin4/H2.5d export; do not widen it into global geometry, stochastic calculus,
-transition conditioning, or a causal blanket. H3 remains closed until H2.7's
-theorem and independent-review gates pass.
-H3.G0 remains read-only and post-H2-terminal: it may select continuous only
-after H2.7 succeeds, or finite only after an explicit reviewed H2 terminal
-no-go.
+The H2.7
+[terminal receipt](../../../specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
+is accepted: it validates 328 mandatory cases, the enabled Fin4 supplement,
+and three source-bound reviews. H2.2b remains optional and closed pending a
+proof-compression usefulness test. The remaining open item is read-only
+H3.G0 continuous eligibility, which requires actual pre-outcome study
+metadata under the
+[eligibility contract](../../../specs/h3-reference-study/README.md).
+H3.0--H3.7 remain closed.
 
 The scheduling authority is the [dependency map](dependency-map.md); evidence
 and review rules remain in the [research contract](research-contract.md).

@@ -33,3 +33,5 @@ wave invalidated their current-source binding; the coordinated refresh
 completed deterministically on 2026-09-12 and is recorded in
 [CHANGELOG.md](../CHANGELOG.md). The
 retained 50-topic provider receipt remains historical.
+`04j_horizon2_smooth_stochastic_kernel.md` completes the ordered sequence,
+carrying the kernel onto the Horizon-2 smooth and stochastic foundations.

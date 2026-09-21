@@ -5,22 +5,13 @@ current `fep-lean` CLI and pipeline contract. Every relative link must resolve
 from its owning Markdown file. Generated manuscript inputs are materialized by
 `uv run fep-lean catalogue` before cross-reference validation.
 
-Required documentation checks:
+Required documentation checks (the complete gate list is maintained as
+"Required release gates" in [testing.md](testing.md)):
 
 ```bash
 uv run python docs/check_links.py --strict --include-root
 uv run python docs/md_hygiene.py --strict
-uv run python docs/pin_audit.py --check-latest
 uv run python docs/xref_audit.py
-uv run python docs/theorem_ref_audit.py
-uv run python docs/citation_audit.py
-uv run python scripts/build_formalism_coverage.py --check
-uv run python scripts/build_formalism_atlas.py --check
-uv run python scripts/build_formal_kernel_dashboard.py --check
-uv run fep-lean catalogue
-uv run python scripts/render_manuscript.py --check
-uv run python scripts/build_render_fonts.py --check
-uv run python scripts/check_render_log.py --verify-receipt
 ```
 
 Claims about catalogue compilation must be backed by a current validated

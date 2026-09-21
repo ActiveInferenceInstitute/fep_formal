@@ -46,8 +46,10 @@
     "coverage_statements_covered": 5964
   },
   "native_receipt": {
-    "path": "../../../../output/native-verification.json",
+    "local_gitignored_path": "output/native-verification.json",
     "sha256": "b9de674afe7064072a8d281118f6f768c144523454d87ebd3157084fd7379952",
+    "historical": true,
+    "digest_pinned_only": true,
     "schema_version": 4,
     "valid": true,
     "source_bound": true,
@@ -61,8 +63,10 @@
     "mathlib_revision": "8a178386ffc0f5fef0b77738bb5449d50efeea95"
   },
   "formalism_audit": {
-    "path": "../../../../output/formalism-audit.json",
+    "local_gitignored_path": "output/formalism-audit.json",
     "sha256": "0b6123172474cf7024fa9738d99244b8a3585decd80ea7e723eb30e76ad76d13",
+    "historical": true,
+    "digest_pinned_only": true,
     "schema_version": 4,
     "valid": true,
     "complete": true,
@@ -87,7 +91,16 @@
   "external_provider": {
     "current_full_report_available": false,
     "provider_execution_performed_for_this_source": false,
-    "historical_full_report": "output/reports/run_20260820_183143_709998"
+    "historical_full_report": {
+      "historical": true,
+      "digest_pinned_only": true,
+      "run_id": "run_20260820_183143_709998",
+      "local_gitignored_path": "output/reports/run_20260820_183143_709998",
+      "summary_sha256": "4e35117a8dfc39eca583289394bd9676ba900759e44c7255a7c5a56af0f59e09",
+      "run_manifest_sha256": "4547d4afdb31b19e560b1fa29e4759b4051480aa7a24fd4339066778c87d477e",
+      "verification_manifest_sha256": "a303fd6b7802e67c799a2663428462d9cd788df3d399251142498692706857df",
+      "note": "Historical provider run; the gitignored run directory no longer exists. Only its digest-only identity above remains, as recorded in specs/done/active-inference-formal-depth/acceptance-evidence.json for this run id."
+    }
   },
   "git": {
     "committed": false,

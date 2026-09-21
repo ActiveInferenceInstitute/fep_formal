@@ -217,32 +217,13 @@ The operator command quick reference lives at
 
 ## Development checks
 
+The complete release-gate list is maintained as "Required release gates" in
+[`docs/testing.md`](docs/testing.md); the quick local dev checks are:
+
 ```bash
-uv lock --check && uv pip check
-uv run python scripts/_maint_build_topics_catalogue.py --check
-uv run python scripts/_maint_build_fep_all_lean.py --check
-uv run python scripts/_maint_build_formal_modules.py --check
-uv run python scripts/theorem_maturity_audit.py --check
-uv run python scripts/build_formalism_coverage.py --check
-uv run python scripts/_maint_build_lean_landscape.py --check
-uv run python scripts/build_formalism_atlas.py --check
-uv run python scripts/build_formal_kernel_dashboard.py --check
-uv run python scripts/audit_formalisms.py \
-  --receipt output/formalism-audit.json
-uv run python docs/theorem_ref_audit.py
-uv run python docs/citation_audit.py
-uv run fep-lean catalogue
-uv run python scripts/render_manuscript.py --check
-uv run python scripts/build_render_fonts.py --check
-uv run python scripts/check_render_log.py --verify-receipt
 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 uv run mypy src
 uv run ruff check src tests scripts docs
-uv run ruff format --check src tests scripts docs
-uv run python docs/check_links.py --strict --include-root
-uv run python docs/md_hygiene.py --strict
-uv run python docs/pin_audit.py --check-latest
-uv run python docs/xref_audit.py
 ```
 
 The reproducible build and publication gates (release-bundle determinism,

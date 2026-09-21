@@ -106,25 +106,13 @@ repository.
 
 ## Acceptance after cleanup
 
-Run the local acceptance surface after regeneration:
+The complete gate list is maintained as "Required release gates" in
+[testing.md](testing.md); the local acceptance surface after regeneration is:
 
 ```bash
 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 uv run mypy src
 uv run ruff check src tests scripts docs
-uv run ruff format --check src tests scripts docs
-uv run python docs/check_links.py --strict --include-root
-uv run python docs/md_hygiene.py --strict
-uv run python docs/pin_audit.py --check-latest
-uv run python docs/xref_audit.py
-uv run python docs/theorem_ref_audit.py
-uv run python docs/citation_audit.py
-uv run python scripts/build_formalism_coverage.py --check
-uv run python scripts/_maint_build_lean_landscape.py --check
-uv run python scripts/build_formalism_atlas.py --check
-uv run python scripts/build_formal_kernel_dashboard.py --check
-uv run fep-lean catalogue
-uv run python scripts/render_manuscript.py --check
 ```
 
 Finish by confirming that only intended generated projections changed with

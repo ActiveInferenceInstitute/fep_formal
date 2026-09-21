@@ -7,6 +7,7 @@
 - [GNN bridge](design/gnn-bridge/README.md) — cross-repo articulation with the GeneralizedNotationNotation pipeline (bridge CLI, Lean AST, source custody, v0.6).
 - [FEP research horizons](design/fep-research-program/README.md) — dependency-ordered finite synthesis, smooth/stochastic lifting, and an end-to-end scientific case study.
 - [155-topic expansion chapter](../manuscript/04i_formalism_catalogue_155.md) — finite risk, policy trees, native blankets, exponential-family duality, continuous time, and evidence boundaries.
+- [Horizon-2 smooth/stochastic kernel chapter](../manuscript/04j_horizon2_smooth_stochastic_kernel.md) — posterior convergence, native semigroups, precision conditioning, and smooth information geometry.
 - [Topic reference](topics-reference.md) — canonical owners, inspection, and receipt semantics.
 - [Pipeline](pipeline.md) — stages, modes, and result contract.
 - [Quick reference](quickref.md) — copy-paste command quick start for operator and maintenance runs.

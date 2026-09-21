@@ -3,7 +3,7 @@
 **Date:** 2026-09-07
 **Repository:** `ActiveInferenceInstitute/fep_lean`
 **Checkout:** this repository checkout (see the `origin` remote)
-**Release line:** `v1.1.0`
+**Release line:** `v1.2.0` released; next release open per `FEP-RELEASE-NEXT`
 
 ## Mission and evidence boundary
 
@@ -103,7 +103,7 @@ summarizing scientific completeness.
 ## Current source and evidence state
 
 The 155-topic release recorded native, declaration/axiom, Python, browser, and
-publication receipts for its exact source snapshot. The accepted post-v1.1.0
+publication receipts for its exact source snapshot. The accepted post-`1.1.0`
 Horizon 1/Horizon 2 source wave and publication-owner change have invalidated
 those receipts' current-source binding. They remain historical evidence and
 must not be summarized as validation of the working tree.
@@ -200,8 +200,8 @@ git diff --check
 
 release_a_dir="$(mktemp -d)"
 release_b_dir="$(mktemp -d)"
-archive_a="$release_a_dir/fep-lean-1.1.0-155.tar.gz"
-archive_b="$release_b_dir/fep-lean-1.1.0-155.tar.gz"
+archive_a="$release_a_dir/fep-lean-1.2.0-155.tar.gz"
+archive_b="$release_b_dir/fep-lean-1.2.0-155.tar.gz"
 SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
   --output "$archive_a"
 SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
