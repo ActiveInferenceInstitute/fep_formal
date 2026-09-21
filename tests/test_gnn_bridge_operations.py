@@ -186,6 +186,50 @@ def test_unrelated_head_movement_does_not_change_custody(
     assert operations.status(root, gnn)["status"] == "ok"
 
 
+def test_status_flags_unpinned_syntax_surface(pair: tuple[Path, Path]) -> None:
+    """Drift on either pinned syntax file must fail the W1 surface check."""
+    root, gnn = pair
+    (gnn / operations.SYNTAX_FILES[0]).write_text("drifted syntax\n")
+    before = snapshot(gnn)
+    report = operations.status(root, gnn)
+    assert report["checks"]["syntax_surface"] == {"passed": False}
+    assert report["status"] == "error"
+    assert snapshot(gnn) == before
+
+
+def test_status_fails_closed_on_missing_syntax_pin(pair: tuple[Path, Path]) -> None:
+    root, gnn = pair
+    (root / operations.SYNTAX_PIN).unlink()
+    report = operations.status(root, gnn)
+    assert report["checks"]["contracts"]["passed"] is False
+    assert report["checks"]["contracts"]["errors"]
+    assert report["status"] == "error"
+
+
+def test_status_fails_closed_on_missing_source_pin(pair: tuple[Path, Path]) -> None:
+    root, gnn = pair
+    (root / operations.PIN).unlink()
+    report = operations.status(root, gnn)
+    assert report["checks"]["source_binding"]["passed"] is False
+    assert report["checks"]["source_binding"]["errors"]
+    assert report["status"] == "error"
+
+
+def test_status_flags_stale_emitted_document(pair: tuple[Path, Path]) -> None:
+    """A mutated emitted document is stale, and status must not re-emit."""
+    root, gnn = pair
+    document = root / operations.DOCUMENTS["finite"]
+    document.write_text(document.read_text(encoding="utf-8") + "drift\n")
+    before = snapshot(root)
+    report = operations.status(root, gnn)
+    assert report["checks"]["finite_freshness"] == {
+        "passed": False,
+        "status": "STALE",
+    }
+    assert report["status"] == "error"
+    assert snapshot(root) == before
+
+
 @pytest.mark.parametrize("change", ["add", "delete", "change"])
 def test_relevant_roster_changes_are_rejected(
     pair: tuple[Path, Path], change: str
@@ -358,7 +402,8 @@ def test_emitter_ignores_unbound_bytecode(pair: tuple[Path, Path]) -> None:
 
 
 @pytest.mark.parametrize(
-    "operation", ["certify", "pin", "status", "verify-certificate"]
+    "operation",
+    ["certify", "pin", "status", "verify-certificate", "verify-document"],
 )
 @pytest.mark.parametrize("flag", ["--check", "--refresh-digests"])
 def test_emission_flags_reject_other_operations_without_writing(
