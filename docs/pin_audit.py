@@ -88,7 +88,7 @@ EXCLUDED_PATH_FRAGMENTS = (
 
 _RE_LEAN_TOOLCHAIN = re.compile(r"leanprover/lean4:v(\d+\.\d+\.\d+)")
 _RE_LEAN_PROSE = re.compile(r"\bLean(?:\s+4)?\s+v?(\d+\.\d+\.\d+)\b")
-_RE_MATHLIB = re.compile(r"\bMathlib\s?4?\s+v(\d+\.\d+\.\d+)\b")
+_RE_MATHLIB = re.compile(r"\bMathlib\s?4?\s+`?v(\d+\.\d+\.\d+)\b")
 _RE_KIMI = re.compile(r"moonshotai/kimi-k2\.\d+")
 _RE_LAKEFILE_MATHLIB = re.compile(r"mathlib4\.git\"\s*@\s*\"(v\d+\.\d+\.\d+)\"")
 _RE_STABLE_RELEASE_TAG = re.compile(r"^v\d+\.\d+\.\d+$")

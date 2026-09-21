@@ -6,10 +6,10 @@ Environment variables override secrets and operational limits.
 | Setting | Purpose |
 | --- | --- |
 | `gauss.home` / `GAUSS_HOME` | SQLite state, exported artifacts, and logs |
-| `gauss.default_model` | Hermes primary model when `hermes.model` is absent |
-| `gauss.verify_lean` | Require the Lean verification stage |
+| `gauss.default_model` | Not read at runtime: `docs/pin_audit.py` cross-checks it against `hermes.model` |
+| Lean verification | Not settings-driven: a fixed full-mode pipeline stage (`Gauss Sessions`); catalogue mode never verifies. `FEP_LEAN_VERIFY_TIMEOUT` bounds it |
 | `output.root` | Generated figures and reports root |
-| `hermes.model` | Primary Hermes model |
+| `hermes.model` | Primary Hermes model (`HERMES_MODEL` env overrides it; `GAUSS_DEFAULT_MODEL` env is the fallback when the yaml has no `model:` — `HermesConfig.from_settings`, `src/fep_lean/llm/hermes.py:308-311`) |
 | `hermes.fallback_models` | Ordered configured model chain |
 | `hermes.timeout_s` | Request deadline |
 | `hermes.cache_ttl_hours` | SQLite response-cache lifetime |

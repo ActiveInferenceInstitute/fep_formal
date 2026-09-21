@@ -1,7 +1,8 @@
 # Branch coverage
 
-Coverage is measured with `concurrency = ["multiprocessing"]` in `pyproject.toml`
-because `src/fep_lean/output/figures.py` uses `ProcessPoolExecutor` for chart generation.
+Coverage is measured with `concurrency = ["multiprocessing"]` in `pyproject.toml`.
+`src/fep_lean/output/figures.py` renders charts via matplotlib with the Agg
+backend only; it spawns no worker processes.
 The `multiprocessing` concurrency setting is incompatible with `--cov-branch`
 (a known pytest-cov limitation: branch data is not collected from worker processes).
 
