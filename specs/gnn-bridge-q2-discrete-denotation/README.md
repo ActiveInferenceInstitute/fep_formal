@@ -1,9 +1,10 @@
 # GNN bridge Q2 — discrete-family denotation over the finite carriers
 
-Status: **active; the denotation module `gnn_denotation.lean` is registered,
-the exemplar isomorphism-class statement is proved warning-free with no
-`sorry` and no new axioms, and the slice is verified end-to-end; see
-[REPORT.md](REPORT.md) for the evidence record**. Last updated: 2026-09-04.
+Status: **complete; Q2 accepted; the denotation module
+`gnn_denotation.lean` is registered, the exemplar isomorphism-class statement
+is proved warning-free with no `sorry` and no new axioms, and the slice is
+verified end-to-end; see [REPORT.md](REPORT.md) for the evidence record**.
+Last updated: 2026-09-04.
 
 This slice opens Direction 2 stage Q2 of the [GNN bridge
 program](../../docs/design/gnn-bridge/README.md) under the [bridge

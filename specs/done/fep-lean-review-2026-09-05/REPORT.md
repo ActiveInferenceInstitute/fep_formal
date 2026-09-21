@@ -1,5 +1,8 @@
 # fep_lean review — 2026-09-05
 
+Status: closed; findings landed on main (state self-pinned to `f335724`)
+Closed: 2026-09-05
+
 Deep review + improve + document cycle over the wave-2 delivery state.
 Method: scoped Python gates (pytest, ruff, mypy, manuscript/docs gate
 scripts) run by the parent, plus a four-lens read-only review pool

@@ -1,8 +1,9 @@
 # GNN bridge Q1 — syntax AST and decidable well-formedness
 
-Status: **active; the Q1 syntax surface is frozen below, the formal module
-`gnn_document.lean` is registered, and the slice is verified end-to-end; see
-[REPORT.md](REPORT.md) for the evidence record**. Last updated: 2026-09-03.
+Status: **complete; Q1 accepted; the Q1 syntax surface is frozen below, the
+formal module `gnn_document.lean` is registered, and the slice is verified
+end-to-end; see [REPORT.md](REPORT.md) for the evidence record**. Last
+updated: 2026-09-03.
 
 This slice opens Direction 2 stage Q1 of the [GNN bridge
 program](../../docs/design/gnn-bridge/README.md) under the [bridge

@@ -1,6 +1,6 @@
 # GNN bridge P1 finite spike
 
-Status: **active; P1 and P2 accepted 2026-09-03 (see Acceptance and
+Status: **complete; P1 and P2 accepted 2026-09-03 (see Acceptance and
 `REPORT.md`)**. This slice implements Phase P1 (single finite model:
 Lean expression -> GNN document -> validate -> render -> execute) and
 Phase P2 (deterministic regenerable projection with a freshness gate)
