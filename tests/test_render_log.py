@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -505,6 +506,10 @@ def _manuscript(tmp_path: Path) -> Path:
     (manuscript / "preamble.md").write_text(
         "\\setmonofont{JuliaMono}\n", encoding="utf-8"
     )
+    (manuscript / "09z_unified_formalism_catalogue.md").write_text(
+        "# Unified formalism catalogue\n\n155 topic-scoped Lean bodies.\n",
+        encoding="utf-8",
+    )
     (manuscript / "AGENTS.md").write_text("Contributor notes.\n", encoding="utf-8")
     return manuscript
 
@@ -519,7 +524,7 @@ def _pdf_dir(tmp_path: Path) -> Path:
 def test_contributor_documentation_is_not_a_typeset_source(tmp_path: Path) -> None:
     """The digest covers what the template typesets, not what lives beside it."""
     names = [path.name for path in rendered_manuscript_sources(_manuscript(tmp_path))]
-    assert names == ["01_abstract.md"]
+    assert names == ["01_abstract.md", "09z_unified_formalism_catalogue.md"]
 
 
 def test_the_preamble_is_part_of_the_digest(tmp_path: Path) -> None:
@@ -541,7 +546,11 @@ def test_the_preamble_is_part_of_the_digest(tmp_path: Path) -> None:
 def test_every_covered_file_carries_its_own_digest(tmp_path: Path) -> None:
     manuscript = _manuscript(tmp_path)
     digests = manuscript_source_digests(manuscript)
-    assert sorted(digests) == ["01_abstract.md", "preamble.md"]
+    assert sorted(digests) == [
+        "01_abstract.md",
+        "09z_unified_formalism_catalogue.md",
+        "preamble.md",
+    ]
 
 
 def test_a_clean_acceptance_receipt_covers_this_checkout(tmp_path: Path) -> None:
@@ -651,3 +660,210 @@ def test_building_a_receipt_without_every_check_is_refused(tmp_path: Path) -> No
             _pdf_dir(tmp_path),
             counts={"tex_errors": 0},
         )
+
+
+# ── receipt classification + fail-closed gaps (W2 regressions) ───────────
+
+
+def test_a_moved_generated_appendix_names_the_catalogue_remediation(
+    tmp_path: Path,
+) -> None:
+    """A build product's move names its regeneration command, not a re-render."""
+    manuscript = _manuscript(tmp_path)
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts=dict(CLEAN_COUNTS)
+    )
+    path = _write(tmp_path, "render-acceptance.json", json.dumps(receipt))
+    (manuscript / "09z_unified_formalism_catalogue.md").write_text(
+        "# Unified formalism catalogue, regenerated.\n", encoding="utf-8"
+    )
+    defects = receipt_defects(path, manuscript)
+    stale = [line for line in defects if "predates these sources" in line]
+    assert len(stale) == 1
+    assert "regenerate the build product with `uv run fep-lean catalogue`" in stale[0]
+    assert "re-run scripts/render_publication.py" not in stale[0]
+    assert "09z_unified_formalism_catalogue.md (generated appendix)" in stale[0]
+
+
+def test_a_moved_authored_chapter_keeps_the_render_remediation(
+    tmp_path: Path,
+) -> None:
+    """An authored chapter's move still names the render, not the catalogue."""
+    manuscript = _manuscript(tmp_path)
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts=dict(CLEAN_COUNTS)
+    )
+    path = _write(tmp_path, "render-acceptance.json", json.dumps(receipt))
+    (manuscript / "01_abstract.md").write_text(
+        "An abstract, revised after the render.\n", encoding="utf-8"
+    )
+    defects = receipt_defects(path, manuscript)
+    stale = [line for line in defects if "predates these sources" in line]
+    assert len(stale) == 1
+    assert "re-run scripts/render_publication.py" in stale[0]
+    assert "fep-lean catalogue" not in stale[0]
+    assert "changed since that render: 01_abstract.md" in stale[0]
+
+
+def test_mixed_moves_name_both_remediations(tmp_path: Path) -> None:
+    """Authored chapters keep the render remediation; appendices name theirs."""
+    manuscript = _manuscript(tmp_path)
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts=dict(CLEAN_COUNTS)
+    )
+    path = _write(tmp_path, "render-acceptance.json", json.dumps(receipt))
+    (manuscript / "01_abstract.md").write_text(
+        "An abstract, revised after the render.\n", encoding="utf-8"
+    )
+    (manuscript / "09z_unified_formalism_catalogue.md").write_text(
+        "# Unified formalism catalogue, regenerated.\n", encoding="utf-8"
+    )
+    defects = receipt_defects(path, manuscript)
+    stale = [line for line in defects if "predates these sources" in line]
+    assert len(stale) == 1
+    assert "re-run scripts/render_publication.py" in stale[0]
+    assert "changed since that render: 01_abstract.md" in stale[0]
+    assert "09z_unified_formalism_catalogue.md (generated appendix)" in stale[0]
+    appendix = [line for line in defects if "generated appendix 09z_" in line]
+    assert len(appendix) == 1
+    assert "regenerate it with `uv run fep-lean catalogue`" in appendix[0]
+
+
+def test_a_missing_generated_appendix_is_a_defect_even_when_the_digest_matches(
+    tmp_path: Path,
+) -> None:
+    """A receipt built over an unhydrated checkout cannot vouch for one."""
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+    (manuscript / "01_abstract.md").write_text("An abstract.\n", encoding="utf-8")
+    (manuscript / "preamble.md").write_text(
+        "\\setmonofont{JuliaMono}\n", encoding="utf-8"
+    )
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts=dict(CLEAN_COUNTS)
+    )
+    path = _write(tmp_path, "render-acceptance.json", json.dumps(receipt))
+    defects = receipt_defects(path, manuscript)
+    assert any(
+        "09z_unified_formalism_catalogue.md" in line
+        and "uv run fep-lean catalogue" in line
+        for line in defects
+    )
+    assert not any("predates these sources" in line for line in defects)
+
+
+def test_a_receipt_covering_a_now_absent_appendix_names_regeneration(
+    tmp_path: Path,
+) -> None:
+    """Deleting the build product stales the receipt and is its own defect."""
+    manuscript = _manuscript(tmp_path)
+    receipt = build_acceptance_receipt(
+        manuscript, _pdf_dir(tmp_path), counts=dict(CLEAN_COUNTS)
+    )
+    path = _write(tmp_path, "render-acceptance.json", json.dumps(receipt))
+    (manuscript / "09z_unified_formalism_catalogue.md").unlink()
+    defects = receipt_defects(path, manuscript)
+    assert any("predates these sources" in line for line in defects)
+    assert any(
+        "09z_unified_formalism_catalogue.md is missing" in line
+        and "uv run fep-lean catalogue" in line
+        for line in defects
+    )
+
+
+# ── log-coverage gaps (W2 regressions) ──────────────────────────────────
+
+
+def test_contents_overflow_scans_the_stdout_log_when_the_combined_log_is_absent(
+    tmp_path: Path,
+) -> None:
+    """A stdout-only render is judged from the stdout log, and the gap is named."""
+    _write(tmp_path, "_latex_stdout.log", CONTENTS_OVERFLOW_LOG)
+    defects = contents_number_overflow_defects(tmp_path)
+    assert len(defects) == 2
+    assert "_combined_manuscript.log" in defects[0]
+    assert "expected log is absent" in defects[0]
+    assert "_latex_stdout.log exists" in defects[0]
+    assert "contents number 15.100" in defects[1]
+
+
+def test_render_log_defects_reports_a_missing_expected_log_when_a_sibling_exists(
+    tmp_path: Path,
+) -> None:
+    """Half the compiler evidence must not read as a clean render."""
+    _write(tmp_path, "_latex_stdout.log", CLEAN_LOG)
+    results = render_log_defects(tmp_path)
+    assert len(results) == 2
+    assert results[0].log_path.name == "_combined_manuscript.log"
+    assert not results[0].clean
+    assert "compiler log not found" in results[0].tex_errors[0]
+    assert results[1].log_path.name == "_latex_stdout.log"
+    assert results[1].clean
+
+
+# ── acceptance script degraded mode (W2 regressions) ────────────────────
+
+
+def _check_render_log_module() -> Any:
+    """Load the acceptance script the way test_render_publication loads its driver."""
+    import importlib.util
+    import sys
+
+    scripts = Path(__file__).resolve().parent.parent / "scripts"
+    if str(scripts) not in sys.path:
+        sys.path.insert(0, str(scripts))
+    spec = importlib.util.spec_from_file_location(
+        "check_render_log_w2", scripts / "check_render_log.py"
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_absent_manuscript_vars_prints_a_degraded_staleness_line(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Without the variables projection the OK line would overstate coverage."""
+    manuscript = tmp_path / "manuscript"
+    pdf = tmp_path / "pdf"
+    manuscript.mkdir()
+    pdf.mkdir()
+    _write(pdf, "_combined_manuscript.log", CLEAN_LOG)
+    _write(pdf, "_latex_stdout.log", CLEAN_LOG)
+    (manuscript / "01_abstract.md").write_text("An abstract.\n", encoding="utf-8")
+    _write(pdf, "_combined_manuscript.md", "An abstract.\n")
+    module = _check_render_log_module()
+    status = module.main(
+        ["--pdf-dir", str(pdf), "--manuscript-dir", str(manuscript)]
+    )
+    out = capsys.readouterr().out
+    assert (
+        "WARN: manuscript_vars.yaml absent; placeholder-carrying lines "
+        "skipped from the staleness comparison" in out
+    )
+    assert "OK: every manuscript source is typeset in the combined render" not in out
+    assert status == 0
+
+
+def test_present_manuscript_vars_keeps_the_unconditional_ok_line(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """With the projection present the comparison is complete and says so."""
+    manuscript = tmp_path / "manuscript"
+    pdf = tmp_path / "pdf"
+    manuscript.mkdir()
+    pdf.mkdir()
+    _write(pdf, "_combined_manuscript.log", CLEAN_LOG)
+    _write(pdf, "_latex_stdout.log", CLEAN_LOG)
+    (manuscript / "01_abstract.md").write_text("An abstract.\n", encoding="utf-8")
+    _write(pdf, "_combined_manuscript.md", "An abstract.\n")
+    (manuscript / "manuscript_vars.yaml").write_text(
+        "topic_count: 155\n", encoding="utf-8"
+    )
+    module = _check_render_log_module()
+    module.main(["--pdf-dir", str(pdf), "--manuscript-dir", str(manuscript)])
+    out = capsys.readouterr().out
+    assert "OK: every manuscript source is typeset in the combined render" in out
+    assert "WARN: manuscript_vars.yaml absent" not in out

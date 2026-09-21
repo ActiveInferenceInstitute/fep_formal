@@ -165,16 +165,19 @@ def render_log_defects(
 ) -> list[RenderLogDefects]:
     """Scan every known compiler log under ``pdf_dir``.
 
-    Logs that were not written are skipped, except that an empty result set is
-    impossible to accept: the caller receives a defect for the first expected
-    name so a missing render cannot pass as clean.
+    A log that was not written is itself a defect once any expected log
+    exists: the acceptance cannot judge a render half of whose compiler
+    evidence is missing, so the absent name is scanned too and reported as
+    not found (:func:`scan_render_log`). A directory where no expected log
+    exists still yields a defect for the first expected name, so a render
+    that never ran cannot pass as clean.
     """
 
     pdf_dir = Path(pdf_dir)
     present = [pdf_dir / name for name in log_names if (pdf_dir / name).exists()]
     if not present:
         return [scan_render_log(pdf_dir / log_names[0])]
-    return [scan_render_log(path) for path in present]
+    return [scan_render_log(pdf_dir / name) for name in log_names]
 
 
 # A ``mermaid`` fence the renderer could not rasterize is replaced by a
@@ -403,14 +406,9 @@ _OVERFULL_RE = re.compile(r"^Overfull \\hbox \(([0-9.]+)pt too wide\)")
 _BARE_NUMBER_RE = re.compile(r"^\\[^ ]+ (?P<number>\d+(?:\.\d+)*)\s*$")
 
 
-def contents_number_overflow_defects(
-    pdf_dir: Path, log_name: str = "_combined_manuscript.log"
-) -> tuple[str, ...]:
-    """Return one line per contents entry whose number overflowed its box."""
+def _contents_overflow_lines(log_path: Path) -> tuple[str, ...]:
+    """Return the overflow lines recorded in one compiler log."""
 
-    log_path = Path(pdf_dir) / log_name
-    if not log_path.is_file():
-        return ()
     lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
     failures: list[str] = []
     for index, line in enumerate(lines):
@@ -428,6 +426,41 @@ def contents_number_overflow_defects(
     return tuple(failures)
 
 
+def contents_number_overflow_defects(
+    pdf_dir: Path, log_name: str = "_combined_manuscript.log"
+) -> tuple[str, ...]:
+    """Return one line per contents entry whose number overflowed its box.
+
+    The named log is scanned when present. When it is absent while a sibling
+    expected log (:data:`DEFAULT_LOG_NAMES`) exists, the sibling is scanned
+    and the absence is reported: half the compiler evidence cannot stand in
+    for the combined log, and silence would accept the render. A directory
+    where no expected log exists still has nothing to judge.
+    """
+
+    pdf_dir = Path(pdf_dir)
+    log_path = pdf_dir / log_name
+    if log_path.is_file():
+        return _contents_overflow_lines(log_path)
+    siblings = [
+        pdf_dir / name
+        for name in DEFAULT_LOG_NAMES
+        if name != log_name and (pdf_dir / name).is_file()
+    ]
+    if not siblings:
+        return ()
+    absent = tuple(
+        f"{log_path}: expected log is absent while {sibling.name} exists; the "
+        f"contents-number acceptance cannot judge the combined document "
+        f"without it -- re-run scripts/render_publication.py"
+        for sibling in siblings
+    )
+    scanned = tuple(
+        line for sibling in siblings for line in _contents_overflow_lines(sibling)
+    )
+    return absent + scanned
+
+
 # The acceptance above needs a real render to judge, and continuous
 # integration does not produce one: a render needs a checkout of the shared
 # template -- a separate repository this project does not pin -- plus XeLaTeX,
@@ -441,11 +474,15 @@ def contents_number_overflow_defects(
 # digest the checkout no longer has, and the verification below fails.
 #
 # Its boundary is stated rather than implied: it binds the acceptance to the
-# authored manuscript text and the LaTeX preamble, not to the values a
-# chapter's ``{{token}}`` resolves to. A change under ``src/`` that moves a
-# computed count leaves this receipt valid; ``manuscript_projection_drift``
-# and :func:`stale_render_defects` own that surface, and both run on the
-# render path.
+# authored manuscript text, the LaTeX preamble, and the byte-exact generated
+# appendix (``09z_unified_formalism_catalogue.md``). A change under ``src/``
+# that moves a computed count regenerates that appendix via
+# ``uv run fep-lean catalogue`` and moves its digest, so the receipt goes
+# stale and a fresh render is required. Only the values a chapter's
+# ``{{token}}`` resolves to inside the authored text stay outside the digest:
+# :func:`stale_render_defects` compares those against the render variables on
+# the render path, and ``manuscript_projection_drift`` owns the generated
+# projections against the catalogue.
 RECEIPT_VERSION = 1
 # Every check whose defect list must be empty for a render to be publishable.
 _RECEIPT_CHECKS = (
@@ -493,6 +530,21 @@ def manuscript_source_digests(manuscript_dir: Path) -> dict[str, str]:
             manuscript / "preamble.md",
         )
     }
+
+
+def _missing_generated_sources(manuscript_dir: Path) -> tuple[str, ...]:
+    """Return the generated sources that have not been materialized.
+
+    The generated appendices are build products of ``uv run fep-lean
+    catalogue``. A checkout that has not run it is missing required
+    manuscript inputs, and a digest that silently covered fewer files would
+    accept a render of an incomplete paper.
+    """
+
+    manuscript = Path(manuscript_dir)
+    return tuple(
+        name for name in VERBATIM_SOURCES if not (manuscript / name).is_file()
+    )
 
 
 def manuscript_source_digest(manuscript_dir: Path) -> str:
@@ -593,31 +645,65 @@ def receipt_defects(receipt_path: Path, manuscript_dir: Path) -> tuple[str, ...]
     expected = manuscript_source_digest(manuscript_dir)
     recorded = receipt.get("manuscript_source_digest")
     if recorded != expected:
+        moved = _moved_source_names(receipt.get("source_digests"), manuscript_dir)
+        generated = [name for name in moved if name in VERBATIM_SOURCES]
+        authored = [name for name in moved if name not in VERBATIM_SOURCES]
+        if authored or not moved:
+            remediation = "re-run scripts/render_publication.py"
+        else:
+            remediation = (
+                "regenerate the build product with `uv run fep-lean catalogue`"
+            )
         failures.append(
             f"{path}: covers manuscript sources {recorded!r} but this checkout "
             f"is {expected!r}; the shipped render predates these sources -- "
-            f"re-run scripts/render_publication.py"
+            f"{remediation}"
             + _moved_sources(receipt.get("source_digests"), manuscript_dir)
+        )
+        if generated and authored:
+            failures.append(
+                f"{path}: generated appendix {', '.join(generated)} changed "
+                f"since that render; regenerate it with `uv run fep-lean catalogue`"
+            )
+    for name in _missing_generated_sources(manuscript_dir):
+        failures.append(
+            f"{path}: generated appendix {name} is missing under "
+            f"{manuscript_dir}; the acceptance digest covers the generated "
+            f"appendix, so run `uv run fep-lean catalogue` first"
         )
     return tuple(failures)
 
 
-def _moved_sources(recorded: Any, manuscript_dir: Path, limit: int = 5) -> str:
-    """Return the names that differ, so a stale receipt says what changed."""
+def _moved_source_names(recorded: Any, manuscript_dir: Path) -> list[str]:
+    """Return the names whose digests differ between receipt and checkout."""
 
     if not isinstance(recorded, dict):
-        return ""
+        return []
     live = manuscript_source_digests(manuscript_dir)
-    moved = sorted(
+    return sorted(
         {
             name
             for name in set(recorded) | set(live)
             if recorded.get(name) != live.get(name)
         }
     )
+
+
+def _moved_sources(recorded: Any, manuscript_dir: Path, limit: int = 5) -> str:
+    """Return the names that differ, so a stale receipt says what changed.
+
+    Generated appendices (:data:`VERBATIM_SOURCES`) are build products, so
+    they are labeled as such: their remediation is regeneration, not a
+    re-render.
+    """
+
+    moved = _moved_source_names(recorded, manuscript_dir)
     if not moved:
         return ""
-    shown = ", ".join(moved[:limit])
+    shown = ", ".join(
+        f"{name} (generated appendix)" if name in VERBATIM_SOURCES else name
+        for name in moved[:limit]
+    )
     if len(moved) > limit:
         shown += f", and {len(moved) - limit} more"
     return f"; changed since that render: {shown}"
