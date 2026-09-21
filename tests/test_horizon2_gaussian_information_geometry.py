@@ -48,10 +48,6 @@ PUBLIC_THEOREMS = (
 )
 
 
-
-
-
-
 def test_h2_1a_owner_is_manifested_once_with_exact_imports_and_namespace() -> None:
     source = FOUNDATION.read_text(encoding="utf-8")
     owners = [

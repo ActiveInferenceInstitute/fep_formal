@@ -125,10 +125,7 @@ def test_renderers_depend_only_on_the_shared_presentation_join(
     dashboard_root = tmp_path / "dashboard"
     write_formal_kernel_dashboard(PROJECT_ROOT, output_root=dashboard_root)
     assert join_calls == [PROJECT_ROOT]
-    assert (
-        formal_kernel_dashboard_drift(PROJECT_ROOT, output_root=dashboard_root)
-        == ()
-    )
+    assert formal_kernel_dashboard_drift(PROJECT_ROOT, output_root=dashboard_root) == ()
 
 
 def test_family_summaries_conserve_witness_formal_alignment() -> None:

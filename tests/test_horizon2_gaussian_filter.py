@@ -71,10 +71,6 @@ PUBLIC_THEOREMS = (
 pytestmark = pytest.mark.serial_lean
 
 
-
-
-
-
 def test_h2_6a_has_one_exact_maintained_source_owner() -> None:
     assert SOURCE.is_file()
     source = SOURCE.read_text(encoding="utf-8")

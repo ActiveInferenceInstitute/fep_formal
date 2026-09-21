@@ -133,10 +133,6 @@ example (family : FEP.GaussianInformationGeometry.FixedVarianceGaussian)
 """
 
 
-
-
-
-
 def test_h2_2a_has_one_exact_foundation_owner() -> None:
     assert FOUNDATION.is_file()
     source = FOUNDATION.read_text(encoding="utf-8")

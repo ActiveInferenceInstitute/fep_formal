@@ -100,8 +100,6 @@ PUBLIC_ENVIRONMENT = frozenset((*PUBLIC_DEFINITIONS, *PUBLIC_THEOREMS))
 ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
 
 
-
-
 def _run_lean(source_text: str) -> subprocess.CompletedProcess[str]:
     with tempfile.TemporaryDirectory(prefix="lean_probe_") as temp_dir:
         probe = Path(temp_dir) / "LeanProbe.lean"

@@ -80,9 +80,7 @@ def test_the_selected_faces_cover_this_manuscript() -> None:
     try:
         mono_missing = uncovered_codepoints(fonts["mono"], required)
     except FontProbeError:
-        pytest.skip(
-            "no fc-list on this host, so no face coverage can be attested here"
-        )
+        pytest.skip("no fc-list on this host, so no face coverage can be attested here")
     else:
         if mono_missing == required:
             # The glyphless JuliaMono stub deterministically drops the entire
@@ -93,9 +91,7 @@ def test_the_selected_faces_cover_this_manuscript() -> None:
             defects = font_coverage_defects(PROJECT_ROOT)
             assert defects
             assert any(
-                defect.startswith(
-                    f"mono: installed {fonts['mono']} has no glyph"
-                )
+                defect.startswith(f"mono: installed {fonts['mono']} has no glyph")
                 for defect in defects
             )
             return

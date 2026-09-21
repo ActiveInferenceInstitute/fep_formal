@@ -72,8 +72,6 @@ def _bodies() -> dict[str, str]:
     return namespace["BODIES"]
 
 
-
-
 def _declaration(source: str, name: str) -> str:
     uncommented = lean_code_without_comments(source)
     match = re.search(

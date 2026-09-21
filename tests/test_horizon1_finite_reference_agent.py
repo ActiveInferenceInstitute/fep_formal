@@ -35,8 +35,6 @@ PUBLIC_THEOREMS = (
 )
 
 
-
-
 def _declaration(source: str, kind: str, name: str) -> str:
     uncommented = lean_code_without_comments(source)
     match = re.search(

@@ -50,8 +50,6 @@ INTRINSIC_OWNER_VOCABULARY = (
 )
 
 
-
-
 def _declaration(source: str, name: str) -> str:
     uncommented = lean_code_without_comments(source)
     match = re.search(

@@ -74,10 +74,6 @@ COORDINATE_THEOREMS = (
 )
 
 
-
-
-
-
 def test_h2_1b_extends_the_single_owner_with_exact_imports() -> None:
     source = FOUNDATION.read_text(encoding="utf-8")
     uncommented = lean_code_without_comments(source)

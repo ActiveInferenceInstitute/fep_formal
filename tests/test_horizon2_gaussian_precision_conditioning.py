@@ -131,12 +131,8 @@ PRESERVED_HASHES = {
 pytestmark = pytest.mark.serial_lean
 
 
-
-
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 
 
 def _parse_axiom_names(block: str) -> set[str]:

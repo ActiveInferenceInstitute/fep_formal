@@ -58,10 +58,6 @@ PUBLIC_THEOREMS = (
 )
 
 
-
-
-
-
 def test_h2_6c_has_one_exact_composition_owner() -> None:
     assert SOURCE.is_file()
     source = SOURCE.read_text(encoding="utf-8")

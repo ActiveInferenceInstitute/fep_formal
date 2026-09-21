@@ -37,7 +37,9 @@ def run_lake_lean_probe(
 ) -> subprocess.CompletedProcess[str]:
     """Run ``lake <arguments>`` (e.g. ``["env", "lean", "--version"]``) in its own process group."""
     command = [
-        executable if executable is not None else os.environ.get("FEP_LAKE_BIN", "lake"),
+        executable
+        if executable is not None
+        else os.environ.get("FEP_LAKE_BIN", "lake"),
         *arguments,
     ]
     return _run_process_group(command, cwd=cwd, timeout_s=timeout_s)

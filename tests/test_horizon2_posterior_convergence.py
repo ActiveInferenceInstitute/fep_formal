@@ -114,8 +114,6 @@ PUBLIC_ENVIRONMENT_DECLARATIONS = frozenset(
 )
 
 
-
-
 def _declaration(source: str, name: str) -> str:
     match = re.search(
         rf"(?m)^(?:private\s+)?(?:noncomputable\s+)?"

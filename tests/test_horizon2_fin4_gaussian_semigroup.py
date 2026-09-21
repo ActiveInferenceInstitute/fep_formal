@@ -279,10 +279,6 @@ def _determinant(matrix: tuple[tuple[Fraction, ...], ...]) -> Fraction:
     )
 
 
-
-
-
-
 def _parse_axiom_names(block: str) -> set[str]:
     return {
         token.strip().strip("'")

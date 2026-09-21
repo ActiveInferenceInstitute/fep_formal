@@ -835,9 +835,7 @@ def test_absent_manuscript_vars_prints_a_degraded_staleness_line(
     (manuscript / "01_abstract.md").write_text("An abstract.\n", encoding="utf-8")
     _write(pdf, "_combined_manuscript.md", "An abstract.\n")
     module = _check_render_log_module()
-    status = module.main(
-        ["--pdf-dir", str(pdf), "--manuscript-dir", str(manuscript)]
-    )
+    status = module.main(["--pdf-dir", str(pdf), "--manuscript-dir", str(manuscript)])
     out = capsys.readouterr().out
     assert (
         "WARN: manuscript_vars.yaml absent; placeholder-carrying lines "

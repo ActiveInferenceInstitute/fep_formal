@@ -11,8 +11,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FOUNDATION = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "variational_duality.lean"
 
 
-
-
 def _declaration(source: str, name: str) -> str:
     uncommented = lean_code_without_comments(source)
     match = re.search(

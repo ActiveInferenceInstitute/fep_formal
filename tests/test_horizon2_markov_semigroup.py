@@ -65,10 +65,6 @@ SEMIGROUP_THEOREMS = (
 )
 
 
-
-
-
-
 def test_h2_4a_extends_the_single_existing_embedding_owner() -> None:
     source = FOUNDATION.read_text(encoding="utf-8")
     owners = [module for module in FORMAL_MODULES if module.resource == FOUNDATION.name]

@@ -86,12 +86,8 @@ PUBLIC_THEOREMS = (
 pytestmark = pytest.mark.serial_lean
 
 
-
-
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 
 
 def test_h2_6a_r0_is_a_spike_without_a_maintained_owner() -> None:

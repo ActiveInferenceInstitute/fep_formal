@@ -67,8 +67,6 @@ ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
 pytestmark = pytest.mark.serial_lean
 
 
-
-
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 

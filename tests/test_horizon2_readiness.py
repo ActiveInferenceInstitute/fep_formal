@@ -73,8 +73,6 @@ def _validator() -> ModuleType:
     return module
 
 
-
-
 def test_canonical_acceptance_fails_closed_without_lake(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

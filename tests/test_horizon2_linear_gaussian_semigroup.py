@@ -103,10 +103,6 @@ def test_axiom_parser_accepts_lean_4_33_unquoted_names() -> None:
     }
 
 
-
-
-
-
 def test_h2_5b_has_exact_owner_imports_and_generic_axis() -> None:
     assert FOUNDATION.is_file()
     source = FOUNDATION.read_text(encoding="utf-8")

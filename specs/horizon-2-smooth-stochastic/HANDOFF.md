@@ -364,8 +364,10 @@ a separate fixed Fin2 model.
 
 ## H2.0 evidence
 
-- Exact pin: Lean/Mathlib `v4.33.1`, Mathlib revision
-  `0df444a360eaa60ab8c11dca51a86af692955474`.
+- Exact pin at acceptance (historical): the Lean/Mathlib pair pinned at the
+  time of the H2.0 run, Mathlib revision
+  `0df444a360eaa60ab8c11dca51a86af692955474` (superseded by the v4.34.0
+  program).
 - Decision distribution: 25 `go`, 13 `optional_no_go`, three
   `blocking_no_go`, and one `upstream_required`.
 - Canonical focused command: `uv run pytest -q
