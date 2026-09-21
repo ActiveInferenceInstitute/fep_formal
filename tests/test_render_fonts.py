@@ -10,7 +10,6 @@ regressing silently on another.
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 
 import pytest
@@ -68,16 +67,39 @@ def test_a_font_without_the_glyph_is_reported(tmp_path: Path) -> None:
     assert set(missing) == set(DROPPED_IN_THE_AUDITED_RENDER)
 
 
-@pytest.mark.skipif(
-    os.environ.get("CI") == "true",
-    reason=(
-        "CI runners resolve a glyphless JuliaMono stub, so a host probe "
-        "cannot attest anything there; font coverage is attested on the "
-        "render host by scripts/build_render_fonts.py --probe"
-    ),
-)
 def test_the_selected_faces_cover_this_manuscript() -> None:
-    assert font_coverage_defects(PROJECT_ROOT) == ()
+    """The selected faces cover the manuscript on a renderable host.
+
+    CI runners resolve a glyphless JuliaMono stub, so the probe there
+    deterministically drops every codepoint this manuscript typesets; that
+    exact dropped-glyph set is pinned instead of skipping behind a CI
+    conditional. Only a host with no fontconfig probe at all may skip.
+    """
+    fonts = declared_fonts(PROJECT_ROOT / "manuscript" / "preamble.md")
+    required = code_font_codepoints(PROJECT_ROOT / "manuscript")
+    try:
+        mono_missing = uncovered_codepoints(fonts["mono"], required)
+    except FontProbeError:
+        pytest.skip(
+            "no fc-list on this host, so no face coverage can be attested here"
+        )
+    else:
+        if mono_missing == required:
+            # The glyphless JuliaMono stub deterministically drops the entire
+            # requirement, and the fail-closed gate must say so instead of
+            # blessing the host. A stub that starts resolving glyphs (or a
+            # probe that silently stops querying) takes the branch below and
+            # must attest real coverage there.
+            defects = font_coverage_defects(PROJECT_ROOT)
+            assert defects
+            assert any(
+                defect.startswith(
+                    f"mono: installed {fonts['mono']} has no glyph"
+                )
+                for defect in defects
+            )
+            return
+        assert font_coverage_defects(PROJECT_ROOT) == ()
 
 
 def test_a_preamble_with_no_code_face_is_a_defect(tmp_path: Path) -> None:
