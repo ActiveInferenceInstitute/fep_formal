@@ -9,6 +9,7 @@ from pathlib import Path
 from fep_lean.catalogue.generation import (
     build_topics_data,
     catalogue_projection_drift,
+    check_or_write,
     write_topics_catalogues,
 )
 
@@ -23,13 +24,13 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[1]
     if args.check:
-        drift = catalogue_projection_drift(root)
-        if drift:
-            for path in drift:
-                print(f"stale: {path.relative_to(root)}")
-            return 1
-        print("OK: checkout and package topic catalogues are current")
-        return 0
+        return check_or_write(
+            root,
+            catalogue_projection_drift,
+            None,
+            "checkout and package topic catalogues are current",
+            check=True,
+        )
 
     paths = write_topics_catalogues(root)
     topic_count = len(build_topics_data(root)["topics"])

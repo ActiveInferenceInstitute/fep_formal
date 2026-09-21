@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Mapping
+from collections.abc import Callable, Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +20,44 @@ from .registry import (
 )
 from .schema import load_catalogue_metadata
 from .semantics import load_theorem_maturity, render_proxy_statement
+
+
+def _display_path(root: Path, path: Path) -> str:
+    """Render *path* for display, relative to *root* when possible."""
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
+def check_or_write(
+    root: Path,
+    drift_fn: Callable[[Path], Iterable[Path]],
+    write_fn: Callable[[Path], Iterable[Path]] | None,
+    label: str,
+    *,
+    check: bool,
+) -> int:
+    """Shared fail-closed ``--check``/write shell for generated projections.
+
+    With *check* set, print one ``STALE: <relative path>`` line per drifted
+    path and return 1, or ``OK: <label>`` and return 0 when current; *write_fn*
+    stays unused. Otherwise call *write_fn* and print one
+    ``Wrote <relative path>`` line per written path, returning 0.
+    """
+    if check:
+        drift = list(drift_fn(root))
+        for path in drift:
+            print(f"STALE: {_display_path(root, path)}")
+        if drift:
+            return 1
+        print(f"OK: {label}")
+        return 0
+    if write_fn is None:
+        raise ValueError("write_fn is required when check is False")
+    for path in write_fn(root):
+        print(f"Wrote {_display_path(root, path)}")
+    return 0
 
 
 def topics_header(topic_count: int) -> str:
