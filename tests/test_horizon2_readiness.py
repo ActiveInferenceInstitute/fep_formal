@@ -7,7 +7,6 @@ import importlib.util
 import json
 import re
 import shutil
-import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -16,6 +15,9 @@ from typing import cast
 
 import pytest
 import yaml
+
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SPEC_ROOT = PROJECT_ROOT / "specs" / "horizon-2-smooth-stochastic"
@@ -71,15 +73,6 @@ def _validator() -> ModuleType:
     return module
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for canonical H2.0 readiness acceptance")
-    return lake
 
 
 def test_canonical_acceptance_fails_closed_without_lake(
@@ -89,29 +82,23 @@ def test_canonical_acceptance_fails_closed_without_lake(
     monkeypatch.setattr(Path, "home", lambda: tmp_path)
 
     with pytest.raises(RuntimeError, match="lake is required"):
-        _lake_executable()
+        lake_executable(missing="raise", context="canonical H2.0 readiness acceptance")
 
 
 def _assert_probe_compiles_warning_free(relative_path: str) -> None:
     probe = SPEC_ROOT / relative_path
     with tempfile.TemporaryDirectory(prefix="fep-h2-probe-") as output_dir:
         output_path = Path(output_dir) / f"{probe.stem}.olean"
-        result = subprocess.run(
-            [
-                _lake_executable(),
-                "env",
-                "lean",
-                "-R",
-                str(PROJECT_ROOT),
-                "-o",
-                str(output_path),
-                str(probe),
-            ],
+        result = run_lean_compile_probe(
+            probe,
             cwd=LEAN_ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
-            timeout=300,
+            import_root=PROJECT_ROOT,
+            output_path=output_path,
+            timeout_s=300,
+            executable=lake_executable(
+                missing="raise",
+                context="canonical H2.0 readiness acceptance",
+            ),
         )
 
         assert output_path.is_file(), result.stdout + result.stderr

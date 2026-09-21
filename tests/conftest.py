@@ -51,7 +51,10 @@ def pytest_collection_modifyitems(
 def pytest_configure(config: pytest.Config) -> None:
     """Warn (not hard-exit) when gauss / lake / lean are not on PATH.
 
-    Individual tests that require these tools use ``pytest.skip`` themselves.
+    Missing-tool handling is deliberately two-stance, not uniform: boundary
+    probes use ``pytest.skip`` (see ``tests/_support/lake.py::
+    lake_executable(missing="skip", ...)``), while acceptance probes raise
+    ``RuntimeError`` and fail closed. Both stances are intentional.
     Sets FEP_LEAN_TOOLS_MISSING env var listing any absent tools.
     """
     missing = [name for name in ("gauss", "lake", "lean") if not shutil.which(name)]

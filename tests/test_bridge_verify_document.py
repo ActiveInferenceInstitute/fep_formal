@@ -59,6 +59,7 @@ def test_roster_matches_renamed_tree() -> None:
     assert roster == on_disk
 
 
+@pytest.mark.serial_lean
 @pytest.mark.skipif(
     not (LEAN_READY and GNN_ROOT.is_dir()),
     reason="Lean toolchain or GNN checkout unavailable",

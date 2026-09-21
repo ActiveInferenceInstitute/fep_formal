@@ -11,6 +11,7 @@ import pytest
 from fep_lean.catalogue.bodies.controlled_markov import BODIES as CONTROL_BODIES
 from fep_lean.catalogue.bodies.temporal_inference import BODIES as TEMPORAL_BODIES
 from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -23,13 +24,11 @@ pytestmark = pytest.mark.serial_lean
 
 
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        [lake_executable(), "env", "lean", str(source)],
+    return run_lean_compile_probe(
+        source,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        timeout_s=300,
+        executable=lake_executable(),
     )
 
 

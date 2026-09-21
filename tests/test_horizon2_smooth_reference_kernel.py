@@ -11,6 +11,7 @@ from pathlib import Path
 import pytest
 
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_lean.lean_source import lean_code_without_comments
 from tests._support.h2_r0_custody import validate_h2_r0_custody
 from tests._support.lean_runner import run_lean_probe
 
@@ -99,26 +100,6 @@ PUBLIC_ENVIRONMENT = frozenset((*PUBLIC_DEFINITIONS, *PUBLIC_THEOREMS))
 ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def _run_lean(source_text: str) -> subprocess.CompletedProcess[str]:
@@ -302,7 +283,7 @@ def test_h2_7_owns_one_terminal_composition_leaf() -> None:
 
 
 def test_h2_7_public_surface_is_exact_and_has_no_stored_certificate() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
     definitions = tuple(
         re.findall(r"(?m)^(?:noncomputable )?def ([A-Za-z_][A-Za-z0-9_']*)\b", source)
     )
@@ -325,7 +306,7 @@ def test_h2_7_public_surface_is_exact_and_has_no_stored_certificate() -> None:
 
 
 def test_h2_7_scalar_carrier_bridges_are_source_visible_and_fail_closed() -> None:
-    source = _without_lean_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
     assert "rate := 1" in source
     assert "diffusionVarianceRate := 2" in source
     assert "dynamics := selectedDynamics" in source

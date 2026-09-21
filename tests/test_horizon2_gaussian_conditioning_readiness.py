@@ -5,15 +5,15 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import shutil
-import subprocess
 from pathlib import Path
 
 import pytest
 
 from fep_lean.formal import formal_projection_pairs
 from fep_lean.formal.manifest import FORMAL_MODULES
-from tests._support.lean_runner import run_lean_probe
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe, run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -90,41 +90,12 @@ ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
 pytestmark = pytest.mark.serial_lean
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.5d-R0 native validation")
-    return lake
 
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def _parse_axiom_names(block: str) -> set[str]:
@@ -159,7 +130,7 @@ def test_h2_5d_r0_is_spike_only_and_not_projected() -> None:
 
 def test_h2_5d_r0_reuses_only_the_fixed_h2_5c_carrier() -> None:
     raw_source = SPIKE.read_text(encoding="utf-8")
-    source = _without_lean_comments(raw_source)
+    source = lean_code_without_comments(raw_source)
 
     assert tuple(re.findall(r"(?m)^import (\S+)$", raw_source)) == EXACT_IMPORTS
     assert "namespace FEPProbe.H2_5dGaussianConditioning\n" in raw_source
@@ -179,7 +150,7 @@ def test_h2_5d_r0_reuses_only_the_fixed_h2_5c_carrier() -> None:
 
 
 def test_h2_5d_r0_coordinates_and_gaussian_rows_are_exact() -> None:
-    source = _without_lean_comments(SPIKE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SPIKE.read_text(encoding="utf-8"))
 
     assert re.search(
         r"def blanketCoordinates \(state : StandardizedState\) : Blanket :=\s*"
@@ -225,7 +196,7 @@ def test_h2_5d_r0_coordinates_and_gaussian_rows_are_exact() -> None:
 
 
 def test_h2_5d_r0_native_factorization_and_conditional_surface_are_exact() -> None:
-    source = _without_lean_comments(SPIKE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SPIKE.read_text(encoding="utf-8"))
 
     assert re.search(
         r"theorem stationaryPartition_eq_compProd\s*:\s*"
@@ -269,7 +240,7 @@ def test_h2_5d_r0_native_factorization_and_conditional_surface_are_exact() -> No
 
 
 def test_h2_5d_r0_combined_boundary_is_typed_and_nonvacuous() -> None:
-    source = _without_lean_comments(SPIKE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SPIKE.read_text(encoding="utf-8"))
 
     assert re.search(
         r"theorem fixed_precisionZero_covarianceNonzero_condIndep\s*:\s*"
@@ -292,7 +263,7 @@ def test_h2_5d_r0_combined_boundary_is_typed_and_nonvacuous() -> None:
 
 
 def test_h2_5d_r0_public_surface_is_exact_and_fail_closed() -> None:
-    source = _without_lean_comments(SPIKE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SPIKE.read_text(encoding="utf-8"))
 
     assert tuple(re.findall(r"(?m)^abbrev (\w+)\b", source)) == (PUBLIC_ABBREVIATIONS)
     assert (
@@ -396,13 +367,14 @@ example :
         f"FEPProbe.H2_5dGaussianConditioning\n{consumers}\n",
         encoding="utf-8",
     )
-    result = subprocess.run(
-        [_lake_executable(), "env", "lean", str(probe)],
+    result = run_lean_compile_probe(
+        probe,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise",
+            context="H2.5d-R0 native validation",
+        ),
     )
 
     output = result.stdout + result.stderr

@@ -5,12 +5,12 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import shutil
 from pathlib import Path
 
 import pytest
 
 from fep_lean.formal.manifest import FORMAL_MODULES
+from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lean_runner import run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -86,41 +86,12 @@ PUBLIC_THEOREMS = (
 pytestmark = pytest.mark.serial_lean
 
 
-def _lake_executable() -> str:
-    lake = shutil.which("lake")
-    if lake is None:
-        candidate = Path.home() / ".elan" / "bin" / "lake"
-        if candidate.is_file():
-            lake = str(candidate)
-    if lake is None:
-        raise RuntimeError("lake is required for H2.6a-R0 native validation")
-    return lake
 
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _without_lean_comments(source: str) -> str:
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def test_h2_6a_r0_is_a_spike_without_a_maintained_owner() -> None:
@@ -130,7 +101,7 @@ def test_h2_6a_r0_is_a_spike_without_a_maintained_owner() -> None:
 
 def test_h2_6a_r0_reuses_exact_scalar_owners_and_stores_only_raw_inputs() -> None:
     source = SPIKE.read_text(encoding="utf-8")
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
 
     assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
     assert "namespace FEPProbe.H2_6aNativePosterior\n" in source
@@ -155,7 +126,7 @@ def test_h2_6a_r0_reuses_exact_scalar_owners_and_stores_only_raw_inputs() -> Non
 
 
 def test_h2_6a_r0_derives_the_exact_update_surface_fail_closed() -> None:
-    source = _without_lean_comments(SPIKE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SPIKE.read_text(encoding="utf-8"))
 
     assert (
         tuple(re.findall(r"(?m)^(?:noncomputable )?def (\w+)\b", source))
@@ -184,7 +155,7 @@ def test_h2_6a_r0_derives_the_exact_update_surface_fail_closed() -> None:
 
 
 def test_h2_6a_r0_public_theorems_encode_the_native_proof_ladder() -> None:
-    source = _without_lean_comments(SPIKE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(SPIKE.read_text(encoding="utf-8"))
 
     assert tuple(re.findall(r"(?m)^theorem (\w+)\b", source)) == PUBLIC_THEOREMS
     assert "ouTransition_comp_gaussian" in source
@@ -224,7 +195,7 @@ def test_h2_6a_r0_public_theorems_encode_the_native_proof_ladder() -> None:
 
 def test_h2_6a_r0_excludes_out_of_scope_and_atomic_evidence_claims() -> None:
     raw_source = SPIKE.read_text(encoding="utf-8")
-    source = _without_lean_comments(raw_source)
+    source = lean_code_without_comments(raw_source)
 
     assert "Source-only freeze:" in raw_source
     assert not re.search(

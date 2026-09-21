@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from fep_lean.lean_source import lean_code_without_comments
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SOURCE = (
@@ -48,31 +49,10 @@ INTRINSIC_OWNER_VOCABULARY = (
 )
 
 
-def _without_lean_comments(source: str) -> str:
-    """Remove nested block comments and line comments from Lean source."""
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def _declaration(source: str, name: str) -> str:
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
     match = re.search(
         rf"(?m)^(?:private\s+)?(?:theorem|def|noncomputable def)\s+"
         rf"{re.escape(name)}\b(?P<body>.*?)"
@@ -120,7 +100,7 @@ def test_h11_owns_only_cross_carrier_recognition_and_descent_predicates() -> Non
     for name in CROSS_CARRIER_PREDICATES:
         assert _declaration(source, name)
 
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
     assert "HasRecognitionMap" not in uncommented
     for name in INTRINSIC_OWNER_VOCABULARY:
         assert not re.search(

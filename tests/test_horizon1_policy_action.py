@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import re
-import subprocess
 from pathlib import Path
 
 import pytest
 
+from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
@@ -32,31 +33,10 @@ EXACT_IMPORTS = (
 )
 
 
-def _without_lean_comments(source: str) -> str:
-    """Remove nested block comments and line comments from Lean source."""
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def _declaration(source: str, name: str) -> str:
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
     match = re.search(
         rf"(?:theorem|lemma|def|noncomputable def)\s+{re.escape(name)}\b"
         rf"(?P<body>.*?)(?=\n(?:theorem|lemma|def|noncomputable def|end)\b|\Z)",
@@ -105,7 +85,7 @@ def test_selected_belief_index_is_the_exact_h13_posterior_and_updates_once() -> 
     assert re.search(
         r"inductive SelectedBeliefIndex\b.*?\| learned\b.*?"
         r"\| afterObservation \(observation : Bool\).*?deriving DecidableEq, Fintype",
-        _without_lean_comments(source),
+        lean_code_without_comments(source),
         flags=re.DOTALL,
     )
     assert "posteriorAfter selectedPrior (fun _ => true) 2" in interpret
@@ -221,7 +201,7 @@ def test_same_depth_tree_gibbs_law_reuses_normalized_control_posterior() -> None
 
 def test_leaf_keeps_epistemic_and_total_efe_garbling_out_of_scope() -> None:
     source = COMPOSITION.read_text(encoding="utf-8")
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
     prose = re.sub(r"\s+", " ", source)
 
     assert "No finite-to-native mutual-information bridge is maintained" in prose
@@ -256,13 +236,11 @@ def test_leaf_keeps_epistemic_and_total_efe_garbling_out_of_scope() -> None:
 
 
 def test_finite_policy_action_leaf_compiles_warning_free() -> None:
-    result = subprocess.run(
-        [lake_executable(), "env", "lean", str(COMPOSITION)],
+    result = run_lean_compile_probe(
+        COMPOSITION,
         cwd=LEAN_ROOT,
-        check=False,
-        capture_output=True,
-        text=True,
-        timeout=300,
+        timeout_s=300,
+        executable=lake_executable(),
     )
 
     output = result.stdout + result.stderr

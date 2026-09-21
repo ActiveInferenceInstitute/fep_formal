@@ -4,36 +4,16 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from fep_lean.lean_source import lean_code_without_comments
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FOUNDATION = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "variational_duality.lean"
 
 
-def _without_lean_comments(source: str) -> str:
-    """Remove nested block comments and line comments from Lean source."""
-    result: list[str] = []
-    index = 0
-    depth = 0
-    while index < len(source):
-        if source.startswith("/-", index):
-            depth += 1
-            index += 2
-        elif depth and source.startswith("-/", index):
-            depth -= 1
-            index += 2
-        elif depth:
-            index += 1
-        elif source.startswith("--", index):
-            newline = source.find("\n", index)
-            index = len(source) if newline == -1 else newline
-        else:
-            result.append(source[index])
-            index += 1
-    return "".join(result)
 
 
 def _declaration(source: str, name: str) -> str:
-    uncommented = _without_lean_comments(source)
+    uncommented = lean_code_without_comments(source)
     match = re.search(
         rf"(?:theorem|lemma|def|noncomputable def)\s+{re.escape(name)}\b"
         rf"(?P<body>.*?)(?=\n(?:theorem|lemma|def|noncomputable def|end)\b|\Z)",
@@ -75,11 +55,11 @@ def test_certificate_proves_existence_and_uniqueness_only_from_supplied_data() -
     assert "dvObjective_le_logPartition" in result
     assert "dvObjective_eq_logPartition_iff" in result
     assert "strongDuality" not in source
-    assert "slater" not in _without_lean_comments(source).lower()
+    assert "slater" not in lean_code_without_comments(source).lower()
 
 
 def test_temperature_reference_and_full_support_boundaries_are_explicit() -> None:
-    source = _without_lean_comments(FOUNDATION.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(FOUNDATION.read_text(encoding="utf-8"))
     certificate = source.split("structure ConstrainedEntropyCertificate", maxsplit=1)[
         1
     ].split("theorem constrainedEntropy_existsUnique_of_certificate", maxsplit=1)[0]
@@ -157,7 +137,7 @@ def test_horizon15_public_theorem_roster_is_exact() -> None:
     section = source.split("## Finite constrained maximum entropy", maxsplit=1)[
         1
     ].split("## Rate--distortion weak duality", maxsplit=1)[0]
-    section = _without_lean_comments(section)
+    section = lean_code_without_comments(section)
 
     assert tuple(re.findall(r"(?m)^theorem ([A-Za-z0-9_']+)", section)) == (
         "zeroTemperature_not_certified",
