@@ -221,7 +221,7 @@ def _validate_browser_identity(browser: Mapping[str, str]) -> None:
     ):
         raise BrowserCaptureError("live Chrome executable path is not replayable")
     try:
-        digest = _sha256(executable.read_bytes())
+        digest = sha256_bytes(executable.read_bytes())
     except OSError as exc:
         raise BrowserCaptureError("live Chrome executable is unreadable") from exc
     if browser["executable_sha256"] != digest:
@@ -302,11 +302,6 @@ def canonical_browser_observations(
     }
 
 
-def _sha256(data: bytes) -> str:
-    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
-    return sha256_bytes(data)
-
-
 def _project_counts(project_root: Path) -> dict[str, int]:
     presentation = build_formalism_presentation(Path(project_root))
     return {
@@ -335,10 +330,10 @@ def canonical_browser_capture_provenance(project_root: Path) -> dict[str, str]:
     return {
         "command": CAPTURE_COMMAND,
         "owner": CAPTURE_OWNER,
-        "owner_sha256": _sha256(owner),
+        "owner_sha256": sha256_bytes(owner),
         "protocol": "Chrome DevTools Protocol",
         "wrapper": CAPTURE_WRAPPER,
-        "wrapper_sha256": _sha256(wrapper),
+        "wrapper_sha256": sha256_bytes(wrapper),
     }
 
 
@@ -381,7 +376,7 @@ def resolve_browser_executable(
             for raw_line in (completed.stdout, completed.stderr)
             if (line := raw_line.strip())
         )
-        digest = _sha256(resolved.read_bytes())
+        digest = sha256_bytes(resolved.read_bytes())
     except (OSError, subprocess.SubprocessError) as exc:
         raise BrowserCaptureError(
             "cannot identify the local browser executable"
@@ -1313,7 +1308,7 @@ def build_browser_receipt(project_root: Path, replay: BrowserReplay) -> bytes:
     for key, relative in CANONICAL_BROWSER_PROJECTIONS.items():
         path = _canonical_projection_path(root, relative)
         _assert_offline_projection_source(path)
-        projections[key] = {"path": relative, "sha256": _sha256(path.read_bytes())}
+        projections[key] = {"path": relative, "sha256": sha256_bytes(path.read_bytes())}
     screenshots = []
     for role, relative in sorted(
         CANONICAL_BROWSER_SCREENSHOTS.items(), key=lambda item: item[1]
@@ -1324,7 +1319,7 @@ def build_browser_receipt(project_root: Path, replay: BrowserReplay) -> bytes:
             {
                 "role": role,
                 "path": relative,
-                "sha256": _sha256(data),
+                "sha256": sha256_bytes(data),
                 "width": width,
                 "height": height,
             }

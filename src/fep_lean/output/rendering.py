@@ -265,16 +265,6 @@ def substitute_placeholders(
     return PLACEHOLDER_RE.sub(replace, content)
 
 
-def _atomic_text(path: Path, text: str) -> None:
-    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
-    atomic_write_text(path, text)
-
-
-def _atomic_bytes(path: Path, data: bytes) -> None:
-    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
-    atomic_write_bytes(path, data)
-
-
 def _replace_render_tree(staged: Path, destination: Path) -> None:
     """Replace one renderer-owned destination tree, restoring it on failure."""
     backup: Path | None = None
@@ -392,9 +382,9 @@ def render_manuscript(
     )
     try:
         for source_path, rendered_content in rendered_contents.items():
-            _atomic_text(staged / source_path.name, rendered_content)
+            atomic_write_text(staged / source_path.name, rendered_content)
         for destination_relative, asset_data in asset_contents.items():
-            _atomic_bytes(staged / destination_relative, asset_data)
+            atomic_write_bytes(staged / destination_relative, asset_data)
         _replace_render_tree(staged, destination)
     finally:
         if staged.exists():

@@ -38,11 +38,6 @@ NATIVE_RECEIPT_SCHEMA_VERSION = 4
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
-def _sha256(path: Path) -> str:
-    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
-    return sha256_file(path)
-
-
 def _toolchain_snapshot(project_root: Path) -> dict[str, str]:
     root = Path(project_root)
     toolchain_path = root / "lean" / "lean-toolchain"
@@ -84,7 +79,7 @@ def _source_snapshot(
         "owner_manifest_version": OWNER_MANIFEST_VERSION,
         "source_digest": report_source_digest(root),
         "config_digest": report_config_digest(root),
-        "catalogue_sha256": _sha256(root / "config" / "topics.yaml"),
+        "catalogue_sha256": sha256_file(root / "config" / "topics.yaml"),
         "catalogue_sources_sha256": catalogue_sources_digest(root),
         "roster_sha256": topic_ids_sha256(roster),
         "live_catalogue_topics": len(roster),

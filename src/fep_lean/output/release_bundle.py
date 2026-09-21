@@ -283,11 +283,6 @@ class _BundleMember:
     evidence_class: str
 
 
-def _sha256(data: bytes) -> str:
-    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
-    return sha256_bytes(data)
-
-
 def _canonical_json(payload: Mapping[str, Any]) -> bytes:
     return (
         json.dumps(
@@ -313,11 +308,6 @@ def _source_date_epoch(value: int | None = None) -> int:
     if epoch < 0 or epoch > 0xFFFFFFFF:
         raise ReleaseBundleError("SOURCE_DATE_EPOCH must be between 0 and 4294967295")
     return epoch
-
-
-def _atomic_bytes(path: Path, data: bytes) -> None:
-    """Deprecated alias; shared implementation lives in ``output.fsutil``."""
-    atomic_write_bytes(path, data)
 
 
 def _relative_file_bytes(project_root: Path, relative: str) -> bytes:
@@ -372,7 +362,7 @@ def _tool_identity(executable: str, *, timeout: int = 30) -> dict[str, str]:
     return {
         "name": Path(executable).name,
         "version": first_line[0].strip(),
-        "binary_sha256": _sha256(resolved.read_bytes()),
+        "binary_sha256": sha256_bytes(resolved.read_bytes()),
     }
 
 
@@ -923,20 +913,20 @@ def render_publication_manuscript(
         "source_date_epoch": epoch,
         "source_sha256": source_digest,
         "inputs": [
-            {"path": path, "sha256": _sha256(data), "size": len(data)}
+            {"path": path, "sha256": sha256_bytes(data), "size": len(data)}
             for path, data in sorted(input_records)
         ],
         "html": {
             "current": True,
             "path": PUBLICATION_HTML.as_posix(),
-            "sha256": _sha256(html),
+            "sha256": sha256_bytes(html),
             "size": len(html),
             "status": html_status,
         },
         "pdf": {
             "current": pdf is not None,
             "path": PUBLICATION_PDF.as_posix() if pdf is not None else "",
-            "sha256": _sha256(pdf) if pdf is not None else "",
+            "sha256": sha256_bytes(pdf) if pdf is not None else "",
             "size": len(pdf) if pdf is not None else 0,
             "status": pdf_status,
         },
@@ -1039,7 +1029,7 @@ def _replace_publication_set(project_root: Path, desired: Mapping[Path, bytes]) 
                 raise ReleaseBundleError(
                     f"publication member has an invalid owner directory: {relative}"
                 )
-            _atomic_bytes(new_root / relative.name, data)
+            atomic_write_bytes(new_root / relative.name, data)
 
         transaction: list[tuple[Path, Path, Path, Path, bool]] = []
         for relative, _data in desired_records:
@@ -1473,7 +1463,7 @@ def _browser_receipt_errors(project_root: Path) -> tuple[str, ...]:
             errors.append(f"browser receipt projection hash is invalid: {key}")
             continue
         try:
-            actual = _sha256(_relative_file_bytes(root, canonical_path))
+            actual = sha256_bytes(_relative_file_bytes(root, canonical_path))
         except ReleaseBundleError as exc:
             errors.append(str(exc))
             continue
@@ -1527,7 +1517,7 @@ def _browser_receipt_errors(project_root: Path) -> tuple[str, ...]:
             continue
         try:
             screenshot_data = _relative_file_bytes(root, relative)
-            actual = _sha256(screenshot_data)
+            actual = sha256_bytes(screenshot_data)
             actual_width, actual_height = _png_dimensions(screenshot_data)
         except ReleaseBundleError as exc:
             errors.append(str(exc))
@@ -2228,7 +2218,10 @@ def _pytest_receipt_errors(
                         int(line.get("number", "0")) for line in node.iter("line")
                     ]
                 except ValueError:
-                    continue
+                    receipt_errors.append(
+                        "Python coverage receipt contains an invalid line record"
+                    )
+                    break
                 if len(line_numbers) != len(set(line_numbers)) or any(
                     number > line_count for number in line_numbers
                 ):
@@ -2473,7 +2466,7 @@ def _python_acceptance_external_executable(name: str) -> dict[str, str]:
         raise ReleaseBundleError(
             f"Python acceptance executable is not a regular file: {name}"
         )
-    return {"path": path.as_posix(), "sha256": _sha256(path.read_bytes())}
+    return {"path": path.as_posix(), "sha256": sha256_bytes(path.read_bytes())}
 
 
 def _controlled_python_acceptance_path(uv_path: str, tool_bin: str = "") -> str:
@@ -2565,7 +2558,7 @@ def _python_acceptance_runtime_identity() -> dict[str, Any]:
         },
         "pytest_arguments": _normalized_python_acceptance_command()[3:],
     }
-    identity["fingerprint_sha256"] = _sha256(_canonical_json(identity))
+    identity["fingerprint_sha256"] = sha256_bytes(_canonical_json(identity))
     return identity
 
 
@@ -2610,9 +2603,9 @@ def _python_input_snapshot(project_root: Path) -> dict[str, Any]:
         "config_sha256": report_config_digest(root),
         "test_tree_sha256": _digest_named_bytes(test_records),
         "test_file_count": len(test_records),
-        "test_count_owner_sha256": _sha256(test_count_owner),
+        "test_count_owner_sha256": sha256_bytes(test_count_owner),
     }
-    snapshot["fingerprint_sha256"] = _sha256(_canonical_json(snapshot))
+    snapshot["fingerprint_sha256"] = sha256_bytes(_canonical_json(snapshot))
     return snapshot
 
 
@@ -2644,7 +2637,7 @@ def _python_evidence_summary(project_root: Path) -> dict[str, Any]:
         coverage_records.append(
             {
                 "path": relative,
-                "source_sha256": _sha256(source_by_name[relative]),
+                "source_sha256": sha256_bytes(source_by_name[relative]),
                 "lines": [
                     {
                         "number": int(line.get("number", "0")),
@@ -2664,7 +2657,7 @@ def _python_evidence_summary(project_root: Path) -> dict[str, Any]:
             "errors": receipt_errors,
             "duration_seconds": duration,
             "junit_path": PYTEST_RECEIPT.as_posix(),
-            "junit_sha256": _sha256(junit_data),
+            "junit_sha256": sha256_bytes(junit_data),
         },
         "coverage": {
             "line_rate": float(coverage.get("line-rate", "nan")),
@@ -2672,7 +2665,7 @@ def _python_evidence_summary(project_root: Path) -> dict[str, Any]:
             "lines_valid": int(coverage.get("lines-valid", "0")),
             "lines_covered": int(coverage.get("lines-covered", "0")),
             "path": PYTHON_COVERAGE_RECEIPT.as_posix(),
-            "sha256": _sha256(coverage_data),
+            "sha256": sha256_bytes(coverage_data),
             "source_records": coverage_records,
         },
     }
@@ -2783,7 +2776,7 @@ def _restore_python_acceptance_files(
             if data is None:
                 path.unlink(missing_ok=True)
             else:
-                _atomic_bytes(path, data)
+                atomic_write_bytes(path, data)
         except OSError as exc:
             errors.append(f"{path}: {exc}")
     return tuple(errors)
@@ -2876,7 +2869,7 @@ def run_python_acceptance(project_root: Path) -> Path:
             "inputs": {"before": before, "after": after, "stable": True},
             **summary,
         }
-        _atomic_bytes(root / PYTHON_ACCEPTANCE_RECEIPT, _canonical_json(payload))
+        atomic_write_bytes(root / PYTHON_ACCEPTANCE_RECEIPT, _canonical_json(payload))
         validation_errors = _python_acceptance_receipt_errors(root)
         if validation_errors:
             raise ReleaseBundleError(
@@ -3186,38 +3179,38 @@ def _build_manifest(
             "native_lean": {
                 "current": True,
                 "path": "output/native-verification.json",
-                "sha256": _sha256(native),
+                "sha256": sha256_bytes(native),
             },
             "declaration_axiom_audit": {
                 "current": True,
                 "path": "output/formalism-audit.json",
-                "sha256": _sha256(formal),
+                "sha256": sha256_bytes(formal),
             },
             "browser_interaction": {
                 "current": True,
                 "path": BROWSER_RECEIPT.as_posix(),
-                "sha256": _sha256(browser),
+                "sha256": sha256_bytes(browser),
             },
             "numerical_witnesses": {
                 "current": True,
                 "path": NUMERICAL_RECEIPT.as_posix(),
-                "sha256": _sha256(numerical),
+                "sha256": sha256_bytes(numerical),
                 "evidence_kind": NON_PROOF_EVIDENCE,
             },
             "python_tests": {
                 "current": True,
                 "path": PYTEST_RECEIPT.as_posix(),
-                "sha256": _sha256(pytest_receipt),
+                "sha256": sha256_bytes(pytest_receipt),
             },
             "python_coverage": {
                 "current": True,
                 "path": PYTHON_COVERAGE_RECEIPT.as_posix(),
-                "sha256": _sha256(coverage_receipt),
+                "sha256": sha256_bytes(coverage_receipt),
             },
             "python_acceptance": {
                 "current": True,
                 "path": PYTHON_ACCEPTANCE_RECEIPT.as_posix(),
-                "sha256": _sha256(python_acceptance),
+                "sha256": sha256_bytes(python_acceptance),
             },
         },
         "external_full_mode": {
@@ -3239,7 +3232,7 @@ def _build_manifest(
         "members": [
             {
                 "path": member.path,
-                "sha256": _sha256(member.data),
+                "sha256": sha256_bytes(member.data),
                 "size": len(member.data),
                 "evidence_class": member.evidence_class,
             }
@@ -3260,7 +3253,7 @@ def _archive_contents(
     contents = {member.path: member.data for member in members}
     contents[MANIFEST_NAME] = manifest_bytes
     checksums = "".join(
-        f"{_sha256(contents[name])}  {name}\n" for name in sorted(contents)
+        f"{sha256_bytes(contents[name])}  {name}\n" for name in sorted(contents)
     ).encode("utf-8")
     contents[CHECKSUMS_NAME] = checksums
     return contents
@@ -3735,14 +3728,14 @@ def validate_release_bundle(
     for name in sorted(set(checksums) - expected_checksum_names):
         errors.append(f"unexpected checksum: {name}")
     for name in sorted(expected_checksum_names & set(checksums) & set(contents)):
-        if checksums[name] != _sha256(contents[name]):
+        if checksums[name] != sha256_bytes(contents[name]):
             errors.append(f"checksum mismatch: {name}")
     for name, record in manifest_members.items():
         digest = record.get("sha256")
         size = record.get("size")
         if not isinstance(digest, str) or _SHA256_RE.fullmatch(digest) is None:
             errors.append(f"manifest member has invalid sha256: {name}")
-        elif name in contents and digest != _sha256(contents[name]):
+        elif name in contents and digest != sha256_bytes(contents[name]):
             errors.append(f"manifest hash mismatch: {name}")
         if type(size) is not int or size < 0:
             errors.append(f"manifest member has invalid size: {name}")
@@ -3796,7 +3789,7 @@ def validate_release_bundle(
     unique_errors = tuple(dict.fromkeys(errors))
     try:
         archive_digest = (
-            _sha256(archive.read_bytes())
+            sha256_bytes(archive.read_bytes())
             if archive.stat().st_size <= _MAX_ARCHIVE_BYTES
             else ""
         )
