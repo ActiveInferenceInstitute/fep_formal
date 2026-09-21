@@ -1,3 +1,89 @@
+## Unreleased
+
+### Comprehensive improvement wave (2026-09-20/21) — SCOPE-2026-09-20
+
+A 7-lane read-only scoping swarm (Ledger, CI, SRC, DOCS, TESTS, ARTIFACTS,
+LEAN) over `1c3c627` produced `SCOPE-2026-09-20.md` (37 items). Execution ran
+as ten herdr project threads (t-0009..t-0018), after the parallel t-0005/6/7
+waves (docs+ledger hygiene, CI hardening, tests suite quality — landed
+earlier the same day) were restored onto the synced tip when a reset-to-origin
+dropped their merges (re-merged as `8e67751`, `ba1c582`, `2037b40`). Landed
+item groups:
+
+- **CI** (t-0009, rebased onto the restored `de62368` hardening): a
+  `lean/.lake/build` cache keyed on toolchain + lakefile + manifest +
+  `fep_all.lean`, and `pull_request` paths-ignore so doc-only PRs skip the
+  lean/render chain.
+- **Render receipt classification** (t-0010): `receipt_defects`/`_moved_sources`
+  now classify generated appendices — a moved `09z` remediates with
+  `fep-lean catalogue`, authored moves keep the render remediation; a missing
+  generated source fails closed via a receipt defect (the digest function
+  stays byte-stable, so committed custody receipts remain valid); the false
+  boundary docstring corrected; `check_render_log.py` prints a degraded-mode
+  WARN when `manuscript_vars.yaml` is absent; the contents-overflow scan
+  covers an absent combined log when a sibling log exists; nine regressions
+  in `tests/test_render_log.py`; the status-verb fixture stages the generated
+  appendix; the `scripts/AGENTS.md` receipt-boundary claim corrected.
+- **Render publication** (t-0011): `--require-release-stamp` pass-through
+  (default off); render-lock holder-pid file, dead-holder stale-lock warning,
+  and a guarded release that never masks the render exit code; tests.
+- **fsutil consolidation** (t-0012): the deprecated `_sha256`/`_atomic_text`/
+  `_atomic_bytes` shims removed across `browser_capture`/`evidence`/
+  `release_bundle`/`rendering`/`reporter` (callsites point at `fsutil`);
+  `reporter`'s inline digest → `sha256_bytes`; `release_bundle`'s
+  coverage-line parse fails closed on malformed records; the divergent
+  `gnn_artifact_proof.sha256_file` renamed `sha256_file_strict` (the Q5
+  probe, the star-copy pin, the contract-edge attribute, and the
+  regenerated `artifact_proof_manifest.json` aligned — 206 tests green on
+  the proof trio).
+- **Manuscript projections** (t-0013): `manuscript.py` atomic writes folded
+  into `fsutil`; hand-typed structural counts tokenized — areas via the
+  existing `{{total_areas}}`, expansion-family counts via new
+  `manuscript_vars` projections (`expansion_families`, `expansion_family_topics`,
+  second-wave boundary at `fep-121`); nine chapters updated; token-parity
+  tests added.
+- **check_or_write** (t-0014): one shared `--check`/write shell in
+  `catalogue/generation`; six script callers plus the `cli` `_atlas`/
+  `_dashboard` twins thinned; STALE wording unified (stdout); `cli`'s broad
+  except narrowed.
+- **Lean test adoption** (t-0015): raw `subprocess.run` lean compiles adopted
+  onto the process-group-safe probes (`tests/_support/lean_runner.py` +
+  the two-stance `tests/_support/lake.py`); 21 `_without_lean_comments`
+  copies deduped onto `fep_lean.lean_source.lean_code_without_comments`;
+  the bridge verify-document well-formedness test marked `serial_lean`; the
+  conftest two-stance missing-tool policy documented.
+- **Docs/config truth** (t-0016): `pin_audit` regex hardened for
+  backtick-quoted Mathlib tags; the `coverage-branch.md`/`pyproject.toml`
+  ProcessPoolExecutor claim corrected; the quickref bridge line gains the
+  required `--gnn-root`; dead settings keys removed (`gauss.source`,
+  `gauss.log_level`, `gauss.verify_lean`, `output.report_dir`) with
+  README/configuration rows corrected (`gauss.default_model` kept —
+  `pin_audit` cross-checks it against `hermes.model`).
+- **Lean/specs** (t-0017): `lean/build.sh` runs lake from its own directory
+  (root invocations previously failed); lean README/AGENTS version and
+  `ELAN_HOME` refs refreshed; three bridge spec READMEs moved from "active"
+  to accepted wording; the 2026-09-05 review spec moved under `specs/done/`
+  (the getting-started link updated); the geo-bridge and h3-reference
+  READMEs corrected.
+- **Test behavior** (t-0018): the renderer-layering test made behavioral
+  (monkeypatched probes replace source-text assertions); the font-coverage
+  CI-conditional skip replaced with a stub-aware expectation.
+
+Ledger truth pass (LED-1/LED-2/LED-3): `FEP-RELEASE-NEXT` re-anchored —
+v1.2.0 shipped and the native receipt already records the v4.34.0 pin
+(owner_manifest_version 18, 155 topics, 0 sorry); `FEP-H27-RESEAL`
+re-recorded live — `validate_terminal_acceptance` is red at the current
+tree on the native source capture (exactly the four tests-wave files:
+horizon1 decision_risk / finite_reference_agent / policy_action,
+native_blanket; receipt digest `d324e3d0` intact), so the native-evidence
+re-capture rides the H3.0-gated adjudication, whose record's open item 1 is
+flagged as predating the rebind chain.
+
+Known gate consequence: the nine tokenized chapters make the committed
+render-acceptance receipt stale until the next CI render (chapter bytes
+changed by design; the receipt's classification names the render
+remediation for authored moves).
+
 ## 1.2.0 — 2026-09-17 — connected Horizon research program
 
 ### Post-release custody program and Wave 2026-09-20 landing fold (2026-09-16/21)
