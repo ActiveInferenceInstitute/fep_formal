@@ -1,7 +1,8 @@
 # GEO-INFER notation bridge slice
 
-Status: opened 2026-09-08; documentation-level slice, no code outside its
-checker script and tests. Charter context:
+Status: core subset landed and accepted (checker and `data/notation-map.yaml`
+in); the slice remains open for row-by-row growth per fixed decision 5.
+Charter context:
 [GNN bridge design](../../docs/design/gnn-bridge/README.md).
 
 ## Goal

@@ -1,6 +1,6 @@
 # Lean workspace — FEP Sketches
 
-**Version**: v1.1.0 | **Status**: Active | **Last Updated**: August 2026
+**Version**: v1.2.0 | **Status**: Active | **Last Updated**: September 2026
 
 Lake package with full **Mathlib4 v4.34.0** dependency (see `lakefile.lean` / `lake-manifest.json`).
 
@@ -61,5 +61,5 @@ uv run python scripts/audit_formalisms.py \
 |---|---|
 | `FEP_LEAN_LAKE_EXE` | Override path to `lake` binary |
 | `FEP_LEAN_LEAN_EXE` | Override path to `lean` binary |
-| `ELAN_HOME` | Override elan home (default: `/tmp/fep_lean_elan`) |
+| `ELAN_HOME` | Override elan home (default: `<tmpdir>/fep_lean_elan_<uid>`, e.g. `/tmp/fep_lean_elan_501` on Linux, `$TMPDIR/fep_lean_elan_501` on macOS) |
 | `FEP_LEAN_VERIFY_TIMEOUT` | Compilation timeout in seconds (default: 300) |

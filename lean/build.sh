@@ -2,7 +2,7 @@
 # Capped-parallelism build wrapper for the Lean/Mathlib FepSketches build.
 # Prevents memory saturation: caps `lake build` at half the available cores,
 # always warms the cache first, and runs at nice 10.
-# Usage: ./build.sh [lake build args...]
+# Usage: ./lean/build.sh [lake build args...]  # callable from any directory
 set -u
 # Fail the wrapper when the left side of a pipe fails: without pipefail the
 # `| tee` pipelines below report tee's status, so a failed build exited 0.
@@ -19,6 +19,10 @@ mkdir -p "$(dirname "$LOGFILE")"
 
 echo "=== build.sh $(date) ===" | tee -a "$LOGFILE"
 echo "  cores=$CORES  build_jobs=$BUILD_JOBS  cwd=$PWD" | tee -a "$LOGFILE"
+# Resolve to the package dir before invoking lake: lake needs lakefile.lean in
+# its cwd, so a repo-root invocation would otherwise fail with
+# "no configuration file".
+cd "$SCRIPT_DIR"
 
 # Warm build cache (deterministic — pinned mathlib commit v4.33.1)
 echo "  lake exe cache get..." | tee -a "$LOGFILE"

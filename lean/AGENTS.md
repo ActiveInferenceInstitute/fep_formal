@@ -1,6 +1,6 @@
 # fep_lean/lean/
 
-**Version**: v1.1.0 | **Status**: Active | **Last Updated**: August 2026
+**Version**: v1.2.0 | **Status**: Active | **Last Updated**: September 2026
 
 Full **Lake** workspace with **Mathlib4** dependency for FEP theorem verification.
 
@@ -52,9 +52,10 @@ roster resolves its declared `import Mathlib.*` dependencies.
 The elan proxy may fail with `settings.toml: Operation not permitted`
 in sandboxed AI agent shells.  `LeanVerifier` bypasses this by:
 
-1. Setting `ELAN_HOME=/tmp/fep_lean_elan` (writable temp dir)
+1. Setting `ELAN_HOME` to a per-user writable tempdir
+   (`<tmpdir>/fep_lean_elan_<uid>`, e.g. `/tmp/fep_lean_elan_501` on Linux, `$TMPDIR/fep_lean_elan_501` on macOS)
 2. Resolving `lake`/`lean` via direct toolchain path:
-   `~/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake`
+   `~/.elan/toolchains/leanprover--lean4---v4.34.0/bin/lake`
 3. Respecting `FEP_LEAN_LAKE_EXE` / `FEP_LEAN_LEAN_EXE` env overrides
 
 ## Concurrency boundary
