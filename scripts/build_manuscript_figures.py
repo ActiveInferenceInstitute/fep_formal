@@ -25,6 +25,7 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
+from fep_lean.catalogue.generation import check_or_write
 from fep_lean.output.svg_raster import (
     SvgRasterError,
     manuscript_png_drift,
@@ -44,29 +45,31 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _drift(project_root: Path) -> tuple[Path, ...]:
+    # manuscript_png_drift reports human-readable defect lines; the shared
+    # shell prefixes each with "STALE: ".
+    return tuple(Path(item) for item in manuscript_png_drift(project_root))
+
+
+def _write(project_root: Path) -> tuple[Path, ...]:
+    produced = write_manuscript_figure_pngs(project_root)
+    return tuple(figure.png_path for figure in produced)
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     project_root = Path(__file__).resolve().parents[1]
-    if args.check:
-        drift = manuscript_png_drift(project_root)
-        if drift:
-            print("ERROR: stale or missing manuscript figure PNGs")
-            for item in drift:
-                print(f"  {item}")
-            return 1
-        print("OK: every cited manuscript figure PNG is current")
-        return 0
     try:
-        produced = write_manuscript_figure_pngs(project_root)
+        return check_or_write(
+            project_root,
+            _drift,
+            _write,
+            "every cited manuscript figure PNG is current",
+            check=args.check,
+        )
     except SvgRasterError as exc:
         print(f"ERROR: {exc}")
         return 1
-    for figure in produced:
-        relative = figure.png_path.relative_to(project_root)
-        print(
-            f"Wrote {relative} ({figure.byte_size} bytes) from {figure.svg_path.name}"
-        )
-    return 0
 
 
 if __name__ == "__main__":
