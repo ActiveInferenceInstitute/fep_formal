@@ -209,7 +209,7 @@ class HermesConfig:
         default_factory=threading.Lock, repr=False, compare=False
     )
     # Extra OpenRouter headers
-    http_referer: str = "https://github.com/ActiveInferenceInstitute/fep_lean"
+    http_referer: str = "https://github.com/ActiveInferenceInstitute/fep_formal"
     x_title: str = "FEP-Lean Formalization"
 
     _ALLOWED_DOTENV_KEYS = frozenset(

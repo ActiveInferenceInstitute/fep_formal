@@ -20,8 +20,8 @@ authors:
     affiliation: Active Inference Institute
 version: "1.2.0"
 date-released: "2026-09-17"
-repository-code: "https://github.com/ActiveInferenceInstitute/fep_lean"
-url: "https://github.com/ActiveInferenceInstitute/fep_lean"
+repository-code: "https://github.com/ActiveInferenceInstitute/fep_formal"
+url: "https://github.com/ActiveInferenceInstitute/fep_formal"
 license: CC-BY-4.0
 keywords:
   - Free Energy Principle

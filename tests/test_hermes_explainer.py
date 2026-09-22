@@ -53,7 +53,7 @@ def test_hermes_config_defaults() -> None:
     assert cfg.model
     assert cfg.timeout_s > 0
     assert cfg.max_tokens > 0
-    assert cfg.http_referer == "https://github.com/ActiveInferenceInstitute/fep_lean"
+    assert cfg.http_referer == "https://github.com/ActiveInferenceInstitute/fep_formal"
 
 
 def test_hermes_config_from_settings(

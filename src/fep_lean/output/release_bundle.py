@@ -122,7 +122,7 @@ _RESOURCE_MARKUP_RE = re.compile(
 _CANONICAL_LICENSE = "CC-BY-4.0"
 _CANONICAL_PUBLICATION_DOI = "10.5281/zenodo.19699233"
 _CANONICAL_PUBLICATION_JOURNAL = "Active Inference Journal"
-_CANONICAL_REPOSITORY_URL = "https://github.com/ActiveInferenceInstitute/fep_lean"
+_CANONICAL_REPOSITORY_URL = "https://github.com/ActiveInferenceInstitute/fep_formal"
 _CANONICAL_RELEASE_VERSION = "1.2.0"
 _CANONICAL_RELEASE_DATE = "2026-09-17"
 _MINIMUM_SPDX_SETUPTOOLS_REQUIREMENT = "setuptools>=77.0.3"
@@ -1872,11 +1872,11 @@ def _license_metadata_errors(project_root: Path) -> tuple[str, ...]:
                 f"{_CANONICAL_PUBLICATION_DOI}"
             )
         if not isinstance(repo, dict) or repo.get("full_name") != (
-            "ActiveInferenceInstitute/fep_lean"
+            "ActiveInferenceInstitute/fep_formal"
         ):
             errors.append(
                 "InstituteOS sidecar repository must be "
-                "ActiveInferenceInstitute/fep_lean"
+                "ActiveInferenceInstitute/fep_formal"
             )
         ecosystem = sidecar.get("ecosystem") if isinstance(sidecar, dict) else None
         links = ecosystem.get("links") if isinstance(ecosystem, dict) else None

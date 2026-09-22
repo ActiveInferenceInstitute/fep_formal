@@ -1,7 +1,7 @@
 # fep_lean formalism and publication handoff
 
 **Date:** 2026-09-07
-**Repository:** `ActiveInferenceInstitute/fep_lean`
+**Repository:** `ActiveInferenceInstitute/fep_formal`
 **Checkout:** this repository checkout (see the `origin` remote)
 **Release line:** `v1.2.0` released; next release open per `FEP-RELEASE-NEXT`
 
