@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "d9620a882fca2edec1473c20a1106b7f1d716424",
+    "commit": "cb7dbe22e8e1bc00a31ad27fdd3df5c2648f571d",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -159,11 +159,11 @@
     }
   },
   "gnn": {
-    "commit": "50e3bdae387e74cf01a2ef685611c60acb959424",
+    "commit": "4440024038e067aa6f4c81b2deace259f1c3d0b8",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
-      "pyproject.toml": "93ab121ce4588ce5d06efad97d5a5f4b24820abcc04c56b17c70f4151c7b7b09",
+      "pyproject.toml": "014db000e85bc3ae7bc13ddb06a0f64d86070cb22d41389961c0f536c10d940c",
       "src/gnn/0_template.py": "88773455461192c3bd20a1d477ba42082fc0525236eae8c52284d3910b720bbb",
       "src/gnn/10_ontology.py": "ccbfd4a328cf50d16b840f51fbb5c3d44b0e2468c0778ea7158ad7c29cb17101",
       "src/gnn/11_render.py": "604f2bc29d1f5bb3b491988337d6e5781b606d266b3c92f41465e0b7f4a9b0ca",
@@ -201,7 +201,7 @@
       "src/gnn/advanced_visualization/mcp.py": "d2a6e2f9a9cb26ab56aa69a649b6c91b4b586326a7e41863aa3564bed148738f",
       "src/gnn/advanced_visualization/network_viz.py": "c1e170abf55677f6440be887e05bfd3562f0fd2f616c2e840e58a8d3074e2519",
       "src/gnn/advanced_visualization/processor.py": "6cff279a006e961bcaf126d10bfb5390d342eda483ef039c7126f820c3e53422",
-      "src/gnn/advanced_visualization/statistical_viz.py": "1938af0f816de068303cc2ec848afa73b09e1001ce38d180fe3785d399713d18",
+      "src/gnn/advanced_visualization/statistical_viz.py": "e1bb21068400b8145e1218088dc7e42484bc3c6c35bc22c2e466d4ea56f0df9f",
       "src/gnn/advanced_visualization/visualizer.py": "d58607d3363caa056832b6fe122b6e56ba4af6726650476f1662102f09c2c6a0",
       "src/gnn/analysis/__init__.py": "bea8ae262f0d3b6e034c1365d36f7cb7f2c8fa3aefa5f6b09d453ea54e965c0f",
       "src/gnn/analysis/activeinference_jl/__init__.py": "59beacd13d61bda1ccc37b3601a389e546d4a9343b7765d671502e1b1040c4bd",
@@ -298,7 +298,7 @@
       "src/gnn/execute/discopy_translator_module/visualize_jax_output.py": "c20f0d98f9b6f62c2db90d182978836d98ac9d9157bba1fe8ebee54874a480b6",
       "src/gnn/execute/distributed.py": "39ce5277f59703fb06c10d59b1990ea375cc3d1cf632d4c82b48f232f5c828db",
       "src/gnn/execute/doctor.py": "c4bec759c1aecd4670bec4a581b4f7196cb630219bc76bcee60965af4ff958ca",
-      "src/gnn/execute/executor.py": "83dd1d084de596c92053966a703cb3a6e411611ddfc4338ddad5c72a781b6fb8",
+      "src/gnn/execute/executor.py": "a7d7ecd2fbfb39bdcac105dca43ab0fce4fb8377a8cf27c7cb87d0887ece5af8",
       "src/gnn/execute/jax/__init__.py": "7b39d2cc6991b76e4511a9b1cd8e23199febdec54850e1889d777b6e7f1dfae3",
       "src/gnn/execute/jax/jax_results.py": "ac562389b3f72dfdea79f534cdbe98127fab1c04fa862d4166309b44284268ee",
       "src/gnn/execute/jax/jax_runner.py": "1f18c25ed8d4b8b039edb40577a381d6b930a6780d96add83437d0ed89af0159",
@@ -810,7 +810,7 @@
       "src/gnn/website/mcp.py": "b42bb50a12e4fdeb0cd6775ccb6cbfb135a54f324f30a6e5fbf4ffcd2ff8bcd6",
       "src/gnn/website/processor.py": "05d1764260a5b0ce9ab829c7a3a95197efa3a9e9c06cb9d40d7976100d8bdf47",
       "src/gnn/website/renderer.py": "c07c772d41ff272e37d793ad8d0f8766b07e4f19f8d0fc0a03fe1a560ec63831",
-      "uv.lock": "395cce31ea83cdb5fb7688eb251f824e004db05b729de2da02d44cae1f3e9937"
+      "uv.lock": "a933c55b2b16dd5a580d0f4eb5b0686f188fb692679d44a9ec7dfdc9d3d05fb4"
     }
   },
   "schema_version": 1
