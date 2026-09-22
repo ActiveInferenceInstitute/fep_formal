@@ -46,12 +46,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 # Sibling scripts resolve through the sys.path bootstrap above at runtime;
 # mypy does not follow sys.path mutations, so bind the two entry points to
 # their concrete signatures instead of importing untyped top-level names.
-accept_render: Callable[[list[str] | None], int] = (
-    importlib.import_module("check_render_log").main
-)
-render_sources: Callable[[list[str] | None], int] = (
-    importlib.import_module("render_manuscript").main
-)
+accept_render: Callable[[list[str] | None], int] = importlib.import_module(
+    "check_render_log"
+).main
+render_sources: Callable[[list[str] | None], int] = importlib.import_module(
+    "render_manuscript"
+).main
 
 from fep_lean.output.render_fonts import (
     FontProbeError,
