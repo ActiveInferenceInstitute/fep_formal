@@ -43,8 +43,8 @@ PREDECESSORS = {
     BASE
     + "repairs/06a-native-filter-posterior.json": "c2395f37a750a1782cb6dfbcace02bf7db0e819ec071651418156f6a19c06fac",
     BASE
-    + "repairs/07-gaussian-vfe-natural-gradient.json": "7647d6fc222f73b9ede8759f9d9dff0b6db9b71cdb27bc910aeb0677175f16b7",
-    R0_SUCCESSOR: "6ec8caa084ad4f7bccd79852351071ee2e780df8e7f72ce9d0083366102d252e",
+    + "repairs/07-gaussian-vfe-natural-gradient.json": "6f9e48a590a69eddb5da3bc9ff5274f8f6c94ef6e284854748b702999bb9f128",
+    R0_SUCCESSOR: "7ae048cda4e3ad87fa70b474da85d97a3d538e72f2059ca4c63e8be12123d1b1",
 }
 MANDATORY_TEST_FILES = tuple(
     "tests/test_" + name + ".py"
