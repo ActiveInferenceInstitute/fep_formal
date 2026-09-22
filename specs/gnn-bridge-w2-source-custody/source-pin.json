@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "f5299a495952e79252cdba785776748b1b74f7a9",
+    "commit": "0a56565c4807b106a86d534f39e5a2ed66b0fc19",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -159,7 +159,7 @@
     }
   },
   "gnn": {
-    "commit": "c847c2610a22b1307c16f1a28c495580937cc3f5",
+    "commit": "f2fffe92357b983e106a82c4990c65ffddebf8a7",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -189,7 +189,7 @@
       "src/gnn/7_export.py": "9e6eaa507529963a29fc50388ddf1db49d34d7f41e50cd5ab5570ba3f227d53c",
       "src/gnn/8_visualization.py": "1d106e4cc4ebc40c8b2e9cf1be822a946e3f916085bbaa65427fb6ec3f531c9d",
       "src/gnn/9_advanced_viz.py": "4075a72b77f750cad9a6e8d952abab1e1145202065d400df81900d37db248314",
-      "src/gnn/__init__.py": "44a6bb107f737be074cc2415ae99ca41e90fc9068fb374c32ec8bdd68d66ab08",
+      "src/gnn/__init__.py": "1f17b155dfee649591e2cbf1b450a3f76459f30c9cabee0c7f24579d256e602f",
       "src/gnn/advanced_visualization/__init__.py": "4a01ece62af204fdbc76310bb94f4f53bf008bbf79b7c4d0c11731ccb4f29540",
       "src/gnn/advanced_visualization/_shared.py": "7b5e1d349f9e2171ae70b20fe1a51b6668bba92e79dee741579decbe5d0a3862",
       "src/gnn/advanced_visualization/_theme.py": "514448ceed632b22cc87b9885e85c3bbddf7fde205e392c2c959c280557a18fe",
@@ -234,7 +234,7 @@
       "src/gnn/analysis/rxinfer/__init__.py": "c55c302ca7c1de7bfe1ae337d15ba587753fbaf5443a139eb655093372bea0cd",
       "src/gnn/analysis/rxinfer/analyzer.py": "5063c5381966be55ee22425a42c59de3fc1e2c219d9e597fb46473a2f06fe74d",
       "src/gnn/analysis/rxinfer/animator.py": "2644996688f65ad44955ac6ad25fe954c2545a135455e8f671c92bd5d1487e96",
-      "src/gnn/analysis/rxinfer/cross_framework.py": "cba8f4074de4bbeac09998796341cb9cadef3d90798d991c2742e2831f767be3",
+      "src/gnn/analysis/rxinfer/cross_framework.py": "5112395af607c3575c62d7db2c682d1496c70b94443e579ecaa6a0cb1f098856",
       "src/gnn/analysis/rxinfer/dashboard.py": "44dddbf77b49b38975c8762681ab7d1c2b04a8e16b8c8066f95c9e696bd0736a",
       "src/gnn/analysis/rxinfer/gif_animator.py": "71bdb5680e3ea6fe8ac7f291f7c0e12dc1cf628cfbdfe2bb3ecf796e2df82366",
       "src/gnn/analysis/simulation_visualizations.py": "7be1651b41b04833d70a58cda6c398436a032535428fb622de4721ed8f1fea5a",
