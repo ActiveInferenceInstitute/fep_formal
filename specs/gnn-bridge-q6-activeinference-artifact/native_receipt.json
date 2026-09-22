@@ -10,9 +10,9 @@
   },
   "compiler_version": {
     "command": [
-      "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
+      "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
       "env",
-      "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean",
+      "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean",
       "--version"
     ],
     "returncode": 0,
@@ -87,7 +87,7 @@
   },
   "dependency_build": {
     "command": [
-      "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
+      "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
       "build",
       "FepSketches.gnn_denotation",
       "FepSketches.gnn_render_statements"
@@ -119,9 +119,9 @@
         ]
       },
       "command": [
-        "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
+        "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
         "env",
-        "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean",
+        "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean",
         "-R",
         "<workspace>/fep_lean/src/fep_lean/formal",
         "/var/folders/r8/m8m857h1659dmg4lz07tlj500000gn/T/fep_artifact_native_rvwt29es/probe_asymmetric.lean"
@@ -157,9 +157,9 @@
         ]
       },
       "command": [
-        "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
+        "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
         "env",
-        "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean",
+        "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean",
         "-R",
         "<workspace>/fep_lean/src/fep_lean/formal",
         "/var/folders/r8/m8m857h1659dmg4lz07tlj500000gn/T/fep_artifact_native_rvwt29es/probe_symmetric.lean"
@@ -1119,11 +1119,11 @@
   "toolchain": {
     "binaries": {
       "lake": {
-        "path": "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
+        "path": "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake",
         "sha256": "58261a1a2fa1a362376c71e02ca854a093e71cc5e6ea64b287a931cb2565273d"
       },
       "lean": {
-        "path": "/Users/hum/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean",
+        "path": "<home>/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean",
         "sha256": "1b370cfcbf44e80d1b004ab1b1ab9a4c73951f9f7c242140bcff9bc577576554"
       }
     },

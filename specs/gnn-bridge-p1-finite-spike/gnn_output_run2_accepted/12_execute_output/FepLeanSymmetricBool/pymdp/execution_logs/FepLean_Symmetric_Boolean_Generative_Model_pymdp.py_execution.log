@@ -19,7 +19,7 @@ STDERR:
 2026-09-03 16:05:48,823 - INFO - Executing PyMDP simulation (correlation_id: render_generated_script)
 2026-09-03 16:05:48,825 - INFO - Starting pymdp 1.0.0 rollout (JAX backend)
 2026-09-03 16:05:48,825 - INFO - Dimensions: No=2, Ns=2, Nu=2 | T=1, batch=1, policy_len=1
-2026-09-03 16:05:48,883 - INFO - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: dlopen(libtpu.so, 0x0001): tried: 'libtpu.so' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibtpu.so' (no such file), '/Users/hum/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/libtpu.so' (no such file), '/usr/lib/libtpu.so' (no such file, not in dyld cache), 'libtpu.so' (no such file)
+2026-09-03 16:05:48,883 - INFO - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: dlopen(libtpu.so, 0x0001): tried: 'libtpu.so' (no such file), '/System/Volumes/Preboot/Cryptexes/OSlibtpu.so' (no such file), '<home>/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/libtpu.so' (no such file), '/usr/lib/libtpu.so' (no such file, not in dyld cache), 'libtpu.so' (no such file)
 2026-09-03 16:05:49,757 - INFO - pymdp 1.0.0 Agent built (batch_size=1)
 2026-09-03 16:05:52,343 - INFO - t=00 obs=0 belief=[0.5, 0.5] action=1 next_state=0
 2026-09-03 16:05:52,344 - INFO - Saved simulation results to output/pymdp_simulations/FepLean Symmetric Boolean Generative Model/simulation_results.json
