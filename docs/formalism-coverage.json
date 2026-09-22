@@ -811,7 +811,13 @@
       "formal_dependencies": [],
       "id": "formal-module-finite-probability",
       "imports": [
-        "Mathlib"
+        "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+        "Mathlib.Algebra.BigOperators.Ring.Finset",
+        "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+        "Mathlib.Data.Fintype.BigOperators",
+        "Mathlib.Data.Fintype.Card",
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic"
       ],
       "lean_module": "FepSketches.finite_probability",
       "resource": "finite_probability.lean",
@@ -1318,7 +1324,15 @@
       "formal_dependencies": [],
       "id": "formal-module-predictive-coding",
       "imports": [
-        "Mathlib"
+        "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+        "Mathlib.Algebra.Order.Ring.Basic",
+        "Mathlib.Analysis.Calculus.Deriv.Add",
+        "Mathlib.Analysis.Calculus.Deriv.Mul",
+        "Mathlib.Analysis.Calculus.Deriv.Pow",
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Order.Filter.Tendsto",
+        "Mathlib.Topology.Algebra.Monoid",
+        "Mathlib.Tactic"
       ],
       "lean_module": "FepSketches.predictive_coding",
       "resource": "predictive_coding.lean",
@@ -1364,7 +1378,9 @@
       "formal_dependencies": [],
       "id": "formal-module-ness-flow",
       "imports": [
-        "Mathlib"
+        "Mathlib.Algebra.Order.Ring.Unbundled.Basic",
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic"
       ],
       "lean_module": "FepSketches.ness_flow",
       "resource": "ness_flow.lean",
@@ -3629,7 +3645,7 @@
     "definitions": 716,
     "distinct_mathlib_imports": 63,
     "formal_module_dependency_edges": 120,
-    "formal_module_import_edges": 199,
+    "formal_module_import_edges": 215,
     "formal_modules": 56,
     "formal_pairing_witnesses": 105,
     "formal_relation_witnesses": 20,

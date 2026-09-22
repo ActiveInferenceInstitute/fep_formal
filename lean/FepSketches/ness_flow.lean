@@ -1,5 +1,6 @@
-import Mathlib
-open Finset
+import Mathlib.Algebra.Order.Ring.Unbundled.Basic
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic
 
 /-!
 # Non-equilibrium steady-state (NESS) flow

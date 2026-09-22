@@ -1,4 +1,12 @@
-import Mathlib
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.Order.Ring.Basic
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.Deriv.Pow
+import Mathlib.Basic.Real.Basic
+import Mathlib.Order.Filter.Tendsto
+import Mathlib.Topology.Algebra.Monoid
+import Mathlib.Tactic
 
 /-!
 # Predictive coding and finite generalized coordinates
