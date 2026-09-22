@@ -2,7 +2,7 @@
   "framework": "pymdp",
   "model_name": "FepLeanSymmetricBool",
   "script_name": "FepLean_Symmetric_Boolean_Generative_Model_pymdp.py",
-  "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py",
+  "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py",
   "success": true,
   "return_code": 0,
   "execution_time": 9.771388,
@@ -30,11 +30,11 @@
   },
   "execution_benchmark_repeats": 1,
   "execution_metadata": {
-    "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+    "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
     "accelerator_type": "mps",
     "stdout_length": 41,
     "stderr_length": 1574,
-    "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pymdp"
+    "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pymdp"
   },
   "execution_time_mean": 9.771388,
   "execution_time_std": 0.0,
@@ -44,7 +44,7 @@
   "collected_outputs": {
     "visualizations": [],
     "simulation_data": [
-      "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pymdp/simulation_data/simulation_results.json"
+      "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pymdp/simulation_data/simulation_results.json"
     ],
     "traces": [],
     "other": []

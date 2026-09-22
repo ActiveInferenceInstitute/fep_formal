@@ -1,6 +1,6 @@
 {
   "timestamp": "2026-09-04T12:18:42.297428",
-  "source_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+  "source_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
   "model_name": "FepLean Continuous OU Linear-Gaussian Model",
   "pomdp_dimensions": {
     "num_states": 1,

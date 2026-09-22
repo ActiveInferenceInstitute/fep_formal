@@ -1,7 +1,7 @@
 {
   "timestamp": "2026-09-03T21:57:48.496393",
-  "source_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input",
-  "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output",
+  "source_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input",
+  "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output",
   "processing_config": {
     "recursive": true,
     "verbose": true,
@@ -82,9 +82,9 @@
   "processed_files": [
     {
       "file_name": "FepLeanSymmetricBool.md",
-      "file_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
+      "file_path": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
       "parse_success": true,
-      "parsed_model_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_parsed.json",
+      "parsed_model_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_parsed.json",
       "source_format": "markdown",
       "model_info": {
         "name": "FepLean Symmetric Boolean Generative Model",
@@ -96,112 +96,112 @@
       },
       "generated_formats": {
         "markdown": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_markdown.md",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_markdown.md",
           "file_size": 1904,
           "success": true
         },
         "scala": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_scala.scala",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_scala.scala",
           "file_size": 4942,
           "success": true
         },
         "lean": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_lean.lean",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_lean.lean",
           "file_size": 5958,
           "success": true
         },
         "coq": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_coq.v",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_coq.v",
           "file_size": 5717,
           "success": true
         },
         "python": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_python.py",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_python.py",
           "file_size": 9684,
           "success": true
         },
         "bnf": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_bnf.bnf",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_bnf.bnf",
           "file_size": 5928,
           "success": true
         },
         "ebnf": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_ebnf.ebnf",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_ebnf.ebnf",
           "file_size": 5928,
           "success": true
         },
         "isabelle": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_isabelle.thy",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_isabelle.thy",
           "file_size": 5735,
           "success": true
         },
         "maxima": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_maxima.max",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_maxima.max",
           "file_size": 5955,
           "success": true
         },
         "xml": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_xml.xml",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_xml.xml",
           "file_size": 9225,
           "success": true
         },
         "json": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_json.json",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_json.json",
           "file_size": 9130,
           "success": true
         },
         "protobuf": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_protobuf.proto",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_protobuf.proto",
           "file_size": 7404,
           "success": true
         },
         "yaml": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_yaml.yaml",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_yaml.yaml",
           "file_size": 5357,
           "success": true
         },
         "xsd": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_xsd.xsd",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_xsd.xsd",
           "file_size": 6650,
           "success": true
         },
         "asn1": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_asn1.asn1",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_asn1.asn1",
           "file_size": 9057,
           "success": true
         },
         "pkl": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_pkl.pkl",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_pkl.pkl",
           "file_size": 12001,
           "success": true
         },
         "alloy": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_alloy.als",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_alloy.als",
           "file_size": 8200,
           "success": true
         },
         "z_notation": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_z_notation.z",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_z_notation.z",
           "file_size": 6289,
           "success": true
         },
         "tla_plus": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_tla_plus.tla",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_tla_plus.tla",
           "file_size": 4623,
           "success": true
         },
         "agda": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_agda.agda",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_agda.agda",
           "file_size": 4629,
           "success": true
         },
         "haskell": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_haskell.hs",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_haskell.hs",
           "file_size": 5010,
           "success": true
         },
         "pickle": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_pickle.pickle",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/3_gnn_output/FepLeanSymmetricBool/FepLeanSymmetricBool_pickle.pickle",
           "file_size": 3868,
           "success": true
         }

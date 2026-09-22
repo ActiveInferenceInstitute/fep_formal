@@ -5,7 +5,7 @@ Benchmark repeats: 1
 Execution Time (median wall-clock): 24.92 seconds
 Model: FepLeanSymmetricBool
 Framework: rxinfer
-Output Directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/rxinfer
+Output Directory: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/rxinfer
 
 STDOUT:
 RxInfer.jl simulation wrote simulation_results.json

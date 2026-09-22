@@ -2,7 +2,7 @@
   "framework": "discopy",
   "model_name": "FepLeanSymmetricBool",
   "script_name": "FepLean_Symmetric_Boolean_Generative_Model_discopy.py",
-  "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy/FepLean_Symmetric_Boolean_Generative_Model_discopy.py",
+  "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy/FepLean_Symmetric_Boolean_Generative_Model_discopy.py",
   "success": true,
   "return_code": 0,
   "execution_time": 0.641195,
@@ -49,11 +49,11 @@
   },
   "execution_benchmark_repeats": 1,
   "execution_metadata": {
-    "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+    "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
     "accelerator_type": "mps",
     "stdout_length": 1469,
     "stderr_length": 0,
-    "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/discopy"
+    "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/discopy"
   },
   "execution_time_mean": 0.641195,
   "execution_time_std": 0.0,
@@ -63,8 +63,8 @@
   "collected_outputs": {
     "visualizations": [],
     "simulation_data": [
-      "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/discopy/simulation_data/circuit_analysis.json",
-      "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/discopy/simulation_data/circuit_info.json"
+      "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/discopy/simulation_data/circuit_analysis.json",
+      "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/discopy/simulation_data/circuit_info.json"
     ],
     "traces": [],
     "other": []

@@ -20,13 +20,13 @@ Processing Type: **POMDP-aware rendering**
 ## File Results
 
 - ✅ **FepLeanSymmetricBool.md** - Successfully processed
-  - ✅ pymdp: Generated pymdp 1.0.0 runner: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py
-  - ✅ rxinfer: Generated RxInfer.jl simulation script: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/rxinfer/FepLean_Symmetric_Boolean_Generative_Model_rxinfer.jl
+  - ✅ pymdp: Generated pymdp 1.0.0 runner: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py
+  - ✅ rxinfer: Generated RxInfer.jl simulation script: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/rxinfer/FepLean_Symmetric_Boolean_Generative_Model_rxinfer.jl
   - ✅ activeinference_jl: Successfully rendered ActiveInference.jl script to FepLean_Symmetric_Boolean_Generative_Model_activeinference.jl
   - ✅ jax: JAX model generated successfully.
-  - ✅ discopy: Generated DisCoPy categorical diagram script: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy/FepLean_Symmetric_Boolean_Generative_Model_discopy.py
-  - ✅ pytorch: PyTorch script generated: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pytorch/FepLean_Symmetric_Boolean_Generative_Model_pytorch.py
-  - ✅ numpyro: NumPyro script generated: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/numpyro/FepLean_Symmetric_Boolean_Generative_Model_numpyro.py
+  - ✅ discopy: Generated DisCoPy categorical diagram script: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy/FepLean_Symmetric_Boolean_Generative_Model_discopy.py
+  - ✅ pytorch: PyTorch script generated: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pytorch/FepLean_Symmetric_Boolean_Generative_Model_pytorch.py
+  - ✅ numpyro: NumPyro script generated: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/numpyro/FepLean_Symmetric_Boolean_Generative_Model_numpyro.py
   - ✅ stan: Stan discrete POMDP/HMM program generated: FepLean_Symmetric_Boolean_Generative_Model_stan.stan (+ driver FepLean_Symmetric_Boolean_Generative_Model_stan.py)
   - ✅ bnlearn: bnlearn code generated
 
@@ -36,7 +36,7 @@ Processing Type: **POMDP-aware rendering**
 The rendered files are organized in implementation-specific subfolders:
 
 ```
-/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/
+<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/
 ├── [model_name]/
 │   ├── pymdp/              # PyMDP Python simulations
 │   ├── rxinfer/            # RxInfer.jl Julia simulations

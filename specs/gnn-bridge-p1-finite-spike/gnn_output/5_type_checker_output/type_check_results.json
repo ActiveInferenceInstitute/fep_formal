@@ -5,7 +5,7 @@
   "errors": [],
   "validation_results": [
     {
-      "file_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
+      "file_path": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
       "file_name": "FepLeanSymmetricBool.md",
       "valid": true,
       "errors": [],
@@ -89,7 +89,7 @@
   ],
   "type_analysis": [
     {
-      "file_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
+      "file_path": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
       "file_name": "FepLeanSymmetricBool.md",
       "types_found": [
         {

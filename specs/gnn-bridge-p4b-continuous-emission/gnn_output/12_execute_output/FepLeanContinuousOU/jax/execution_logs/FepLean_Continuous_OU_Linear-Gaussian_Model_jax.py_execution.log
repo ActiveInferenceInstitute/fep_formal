@@ -7,11 +7,11 @@ Sample durations (s): [0.847151]
 Duration mean/std (s): 0.8472 / 0.0000
 Model: FepLeanContinuousOU
 Framework: jax
-Output Directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax
+Output Directory: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax
 
 STDOUT:
 jax continuous LGSSM simulation complete: 1 steps, rmse_vs_true=0.1204
-Results saved to: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax/simulation_data/simulation_results.json
+Results saved to: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax/simulation_data/simulation_results.json
 Validation: {'means_finite': True, 'posterior_cov_psd': True, 'rmse_finite': True, 'controls_finite': True, 'all_valid': True}
 
 

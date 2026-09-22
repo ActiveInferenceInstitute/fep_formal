@@ -2,7 +2,7 @@
   "framework": "numpyro",
   "model_name": "FepLeanContinuousOU",
   "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py",
-  "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py",
+  "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py",
   "success": true,
   "return_code": 0,
   "execution_time": 1.812961,
@@ -14,7 +14,7 @@
     "observations": [],
     "actions": [],
     "policy": [],
-    "raw_output": "numpyro continuous LGSSM simulation complete: 1 steps, rmse_vs_true=0.1204\nResults saved to: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro/simulation_data/simulation_results.json\nValidation: {'means_finite': True, 'posterior_cov_psd': True, 'rmse_finite': True, 'controls_finite': True, 'mcmc_finite': True, 'all_valid': True}\n",
+    "raw_output": "numpyro continuous LGSSM simulation complete: 1 steps, rmse_vs_true=0.1204\nResults saved to: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro/simulation_data/simulation_results.json\nValidation: {'means_finite': True, 'posterior_cov_psd': True, 'rmse_finite': True, 'controls_finite': True, 'mcmc_finite': True, 'all_valid': True}\n",
     "raw_error": "",
     "beliefs": [
       [
@@ -25,11 +25,11 @@
   },
   "execution_benchmark_repeats": 1,
   "execution_metadata": {
-    "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+    "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
     "accelerator_type": "mps",
     "stdout_length": 446,
     "stderr_length": 0,
-    "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro"
+    "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro"
   },
   "execution_time_mean": 1.812961,
   "execution_time_std": 0.0,

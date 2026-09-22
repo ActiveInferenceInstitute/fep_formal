@@ -1,6 +1,6 @@
 {
-  "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md": {
-    "file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+  "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md": {
+    "file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
     "model_name": "FepLeanContinuousOU",
     "memory_estimate": 0.0390625,
     "inference_estimate": 81.0,

@@ -1,7 +1,7 @@
 {
   "processed_files": 1,
   "reports": [
-    "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/10_ontology_output/FepLeanSymmetricBool_ontology_report.json"
+    "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/10_ontology_output/FepLeanSymmetricBool_ontology_report.json"
   ],
   "success": true,
   "errors": [],

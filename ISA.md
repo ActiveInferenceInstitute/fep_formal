@@ -43,7 +43,7 @@ This assessment covers the standalone repository boundary:
 ## Out of scope
 
 - Publishing, pushing, or merging changes to GitHub.
-- Changing the parent HumOS repository or any sibling repository.
+- Changing the parent repository or any sibling repository.
 - Treating catalogue mode, a cached response, or a generated manuscript value
   as proof that a theorem was verified.
 - Printing, inventing, or storing provider credentials.

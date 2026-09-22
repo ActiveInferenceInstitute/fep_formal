@@ -2,7 +2,7 @@
   "framework": "jax",
   "model_name": "FepLeanSymmetricBool",
   "script_name": "FepLean_Symmetric_Boolean_Generative_Model_jax.py",
-  "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/jax/FepLean_Symmetric_Boolean_Generative_Model_jax.py",
+  "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/jax/FepLean_Symmetric_Boolean_Generative_Model_jax.py",
   "success": true,
   "return_code": 0,
   "execution_time": 1.842694,
@@ -21,7 +21,7 @@
       0
     ],
     "policy": [],
-    "raw_output": "============================================================\nJAX Active Inference Model: FepLean_Symmetric_Boolean_Generative_Model\n============================================================\n\n\u2705 Model parameters created\n   A matrix shape: (2, 2)\n   B matrix shape: (2, 2, 2)\n   C vector shape: (2,)\n   D vector shape: (2,)\n\nFepLean_Symmetric_Boolean_Generative_Model Model Summary (Pure JAX Implementation):\n- Number of states: 2\n- Number of observations: 2\n- Number of actions: 2\n- Parameters: A matrix, B matrix, C vector, D vector\n\nKey Functions:\n- create_params(): Create model parameters\n- belief_update(): Bayesian belief update\n- compute_expected_free_energy(): Compute EFE for action\n- choose_action(): Choose action with minimum EFE\n- simulate_step(): One step of Active Inference\n- run_simulation(): Full simulation over observations\n\n\n\ud83e\uddea Running test simulation...\n\n\ud83d\udcca Simulation Results:\n   Initial belief: [0.5 0.5]\n   Updated belief: [0.5 0.5]\n   Selected action: 0\n   Expected free energy: 0.1931\n   EFE for all actions: [0.19314718 0.19314718]\n\n\ud83d\udd04 Running 1-step simulation...\n   Actions taken: [0]\n   Final belief: [0.5 0.5]\n   Average EFE: 0.1931\n\n\ud83d\udcbe Saved simulation results to: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/jax/simulation_data/simulation_results.json\n\n\u2705 JAX Active Inference model test successful!\n",
+    "raw_output": "============================================================\nJAX Active Inference Model: FepLean_Symmetric_Boolean_Generative_Model\n============================================================\n\n\u2705 Model parameters created\n   A matrix shape: (2, 2)\n   B matrix shape: (2, 2, 2)\n   C vector shape: (2,)\n   D vector shape: (2,)\n\nFepLean_Symmetric_Boolean_Generative_Model Model Summary (Pure JAX Implementation):\n- Number of states: 2\n- Number of observations: 2\n- Number of actions: 2\n- Parameters: A matrix, B matrix, C vector, D vector\n\nKey Functions:\n- create_params(): Create model parameters\n- belief_update(): Bayesian belief update\n- compute_expected_free_energy(): Compute EFE for action\n- choose_action(): Choose action with minimum EFE\n- simulate_step(): One step of Active Inference\n- run_simulation(): Full simulation over observations\n\n\n\ud83e\uddea Running test simulation...\n\n\ud83d\udcca Simulation Results:\n   Initial belief: [0.5 0.5]\n   Updated belief: [0.5 0.5]\n   Selected action: 0\n   Expected free energy: 0.1931\n   EFE for all actions: [0.19314718 0.19314718]\n\n\ud83d\udd04 Running 1-step simulation...\n   Actions taken: [0]\n   Final belief: [0.5 0.5]\n   Average EFE: 0.1931\n\n\ud83d\udcbe Saved simulation results to: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/jax/simulation_data/simulation_results.json\n\n\u2705 JAX Active Inference model test successful!\n",
     "raw_error": "",
     "beliefs": [
       [
@@ -33,11 +33,11 @@
   },
   "execution_benchmark_repeats": 1,
   "execution_metadata": {
-    "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+    "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
     "accelerator_type": "mps",
     "stdout_length": 1436,
     "stderr_length": 0,
-    "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/jax"
+    "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/jax"
   },
   "execution_time_mean": 1.842694,
   "execution_time_std": 0.0,

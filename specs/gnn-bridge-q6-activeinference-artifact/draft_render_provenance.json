@@ -1,5 +1,5 @@
 {
-  "input": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
+  "input": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
   "input_sha256": "2a3f5e07064aa0fefedcfd85962d3214ccb7fd9a7cad69aa794b8bb94608fbe7",
   "native_execution_verified": false,
   "owners_after": {

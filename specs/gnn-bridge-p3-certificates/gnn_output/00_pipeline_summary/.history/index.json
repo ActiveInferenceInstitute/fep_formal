@@ -1,10 +1,10 @@
 {
   "5b4ac1c31796": {
-    "summary_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/00_pipeline_summary/pipeline_execution_summary.json",
+    "summary_path": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/00_pipeline_summary/pipeline_execution_summary.json",
     "config": {
       "args": {
-        "target_dir": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input",
-        "output_dir": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output",
+        "target_dir": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input",
+        "output_dir": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output",
         "recursive": true,
         "verbose": true,
         "log_format": "human",
@@ -21,7 +21,7 @@
         "registry_path": null,
         "query_ontology": null,
         "ontology_terms_file": "src/ontology/act_inf_ontology_terms.json",
-        "pipeline_summary_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/00_pipeline_summary/pipeline_execution_summary.json",
+        "pipeline_summary_file": "<workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/00_pipeline_summary/pipeline_execution_summary.json",
         "llm_tasks": null,
         "llm_timeout": null,
         "website_html_filename": null,

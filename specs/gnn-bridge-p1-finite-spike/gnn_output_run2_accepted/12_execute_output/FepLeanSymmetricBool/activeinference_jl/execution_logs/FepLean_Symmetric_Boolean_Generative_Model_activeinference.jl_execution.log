@@ -7,7 +7,7 @@ Sample durations (s): [22.044857]
 Duration mean/std (s): 22.0449 / 0.0000
 Model: FepLeanSymmetricBool
 Framework: activeinference_jl
-Output Directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/activeinference_jl
+Output Directory: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/activeinference_jl
 
 STDOUT:
 ActiveInference.jl simulation wrote simulation_results.json

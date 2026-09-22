@@ -7,18 +7,18 @@ Sample durations (s): [11.741115]
 Duration mean/std (s): 11.7411 / 0.0000
 Model: FepLeanSymmetricBool
 Framework: stan
-Output Directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan
+Output Directory: <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan
 
 STDOUT:
 Stan HMM inference complete (NUTS via CmdStan (1 chain, 300 warmup, 300 draws)): T=2 S=2 O=2 U=2 rhat_max=1.010
-Results saved to: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan/simulation_data/simulation_results.json
+Results saved to: <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan/simulation_data/simulation_results.json
 Validation: {'beliefs_in_range': True, 'beliefs_sum_to_one': True, 'a_posterior_columns_sum_to_one': True, 'rhat_ok': True, 'observations_in_range': True, 'all_valid': True}
 
 
 STDERR:
-21:59:19 - cmdstanpy - INFO - compiling stan file /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan.stan to exe file /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan
-21:59:30 - cmdstanpy - INFO - compiled model executable: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan
-21:59:30 - cmdstanpy - INFO - created output directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan/simulation_data/cmdstan
+21:59:19 - cmdstanpy - INFO - compiling stan file <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan.stan to exe file <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan
+21:59:30 - cmdstanpy - INFO - compiled model executable: <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan
+21:59:30 - cmdstanpy - INFO - created output directory: <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan/simulation_data/cmdstan
 21:59:30 - cmdstanpy - INFO - CmdStan start processing
 21:59:30 - cmdstanpy - INFO - Chain [1] start processing
 21:59:30 - cmdstanpy - INFO - Chain [1] done processing

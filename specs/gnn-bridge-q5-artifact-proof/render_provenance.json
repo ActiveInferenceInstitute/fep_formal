@@ -7,7 +7,7 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.pomdp_extractor import extract_pomdp_from_file\nfrom render.pomdp_processor import POMDPRenderProcessor\nfrom render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'pymdp', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
+    "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
     "/var/folders/r8/m8m857h1659dmg4lz07tlj500000gn/T/q5_render_qgqggcls/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
@@ -873,6 +873,6 @@
   "returncode": 0,
   "schema_version": 1,
   "source_pin_sha256": "9e141615de66c4c30d96d186f0fefd59e871796562f7cd0d5d1894786290dbdd",
-  "stderr": "warning: `VIRTUAL_ENV=/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n",
+  "stderr": "warning: `VIRTUAL_ENV=<workspace>/fep_lean/.venv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead\n",
   "stdout": "Generated pymdp 1.0.0 runner: /var/folders/r8/m8m857h1659dmg4lz07tlj500000gn/T/q5_render_qgqggcls/rendered/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py\n"
 }

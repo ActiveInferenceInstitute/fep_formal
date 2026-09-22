@@ -31,12 +31,12 @@
 #     num_chains = 1 (Default)
 # id = 1 (Default)
 # data
-#   file = /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan/simulation_data/FepLean_Symmetric_Boolean_Generative_Model_stan_data.json
+#   file = <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan/simulation_data/FepLean_Symmetric_Boolean_Generative_Model_stan_data.json
 # init = 2 (Default)
 # random
 #   seed = 42
 # output
-#   file = /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan/simulation_data/cmdstan/FepLean_Symmetric_Boolean_Generative_Model_stan-20260903215930.csv
+#   file = <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/stan/simulation_data/cmdstan/FepLean_Symmetric_Boolean_Generative_Model_stan-20260903215930.csv
 #   diagnostic_file =  (Default)
 #   refresh = 100 (Default)
 #   sig_figs = 8 (Default)

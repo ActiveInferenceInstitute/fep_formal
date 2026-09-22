@@ -7,11 +7,11 @@ Sample durations (s): [1.561386]
 Duration mean/std (s): 1.5614 / 0.0000
 Model: FepLeanSymmetricBool
 Framework: numpyro
-Output Directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/numpyro
+Output Directory: <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/numpyro
 
 STDOUT:
 NumPyro POMDP simulation complete: 1 timesteps in 0.829s
-Results saved to: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/numpyro/simulation_data/simulation_results.json
+Results saved to: <workspace>/fep_lean/specs/gnn-bridge-p3-certificates/gnn_output/12_execute_output/FepLeanSymmetricBool/numpyro/simulation_data/simulation_results.json
 Validation: {'beliefs_in_range': True, 'beliefs_sum_to_one': True, 'actions_in_range': True, 'all_valid': True}
 
 

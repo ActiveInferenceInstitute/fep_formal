@@ -2,7 +2,7 @@
   "framework": "jax",
   "model_name": "FepLeanContinuousOU",
   "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py",
-  "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/jax/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py",
+  "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/jax/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py",
   "success": true,
   "return_code": 0,
   "execution_time": 0.847151,
@@ -14,7 +14,7 @@
     "observations": [],
     "actions": [],
     "policy": [],
-    "raw_output": "jax continuous LGSSM simulation complete: 1 steps, rmse_vs_true=0.1204\nResults saved to: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax/simulation_data/simulation_results.json\nValidation: {'means_finite': True, 'posterior_cov_psd': True, 'rmse_finite': True, 'controls_finite': True, 'all_valid': True}\n",
+    "raw_output": "jax continuous LGSSM simulation complete: 1 steps, rmse_vs_true=0.1204\nResults saved to: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax/simulation_data/simulation_results.json\nValidation: {'means_finite': True, 'posterior_cov_psd': True, 'rmse_finite': True, 'controls_finite': True, 'all_valid': True}\n",
     "raw_error": "",
     "beliefs": [
       [
@@ -25,11 +25,11 @@
   },
   "execution_benchmark_repeats": 1,
   "execution_metadata": {
-    "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+    "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
     "accelerator_type": "mps",
     "stdout_length": 417,
     "stderr_length": 0,
-    "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax"
+    "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax"
   },
   "execution_time_mean": 0.847151,
   "execution_time_std": 0.0,

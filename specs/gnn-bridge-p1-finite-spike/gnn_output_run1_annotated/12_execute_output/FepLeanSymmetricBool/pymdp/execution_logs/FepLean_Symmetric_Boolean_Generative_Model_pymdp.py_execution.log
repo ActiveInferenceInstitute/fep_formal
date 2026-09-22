@@ -7,7 +7,7 @@ Sample durations (s): [2.709027]
 Duration mean/std (s): 2.7090 / 0.0000
 Model: FepLeanSymmetricBool
 Framework: pymdp
-Output Directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pymdp
+Output Directory: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pymdp
 
 STDOUT:
 PyMDP 1.0.0+ detected (JAX-first Agent).

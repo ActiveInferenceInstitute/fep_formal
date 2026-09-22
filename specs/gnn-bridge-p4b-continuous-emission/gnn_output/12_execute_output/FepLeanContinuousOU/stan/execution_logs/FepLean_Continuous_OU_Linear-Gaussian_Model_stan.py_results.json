@@ -2,7 +2,7 @@
   "framework": "stan",
   "model_name": "FepLeanContinuousOU",
   "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py",
-  "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py",
+  "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py",
   "success": true,
   "return_code": 0,
   "execution_time": 12.413019,
@@ -14,16 +14,16 @@
     "observations": [],
     "actions": [],
     "policy": [],
-    "raw_output": "Stan LGSSM inference complete: T=1 n=1 m=1 rmse_vs_true=0.6900 rhat=0.997\nResults saved to: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan/simulation_data/simulation_results.json\nValidation: {'means_finite': True, 'posterior_cov_psd': True, 'rmse_finite': True, 'controls_finite': True, 'rhat_ok': True, 'all_valid': True}\n",
-    "raw_error": "12:19:01 - cmdstanpy - INFO - compiling stan file /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.stan to exe file /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan\n12:19:13 - cmdstanpy - INFO - compiled model executable: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan\n12:19:13 - cmdstanpy - INFO - created output directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan/simulation_data/cmdstan\n12:19:13 - cmdstanpy - INFO - CmdStan start processing\n12:19:13 - cmdstanpy - INFO - Chain [1] start processing\n12:19:13 - cmdstanpy - INFO - Chain [1] done processing\n"
+    "raw_output": "Stan LGSSM inference complete: T=1 n=1 m=1 rmse_vs_true=0.6900 rhat=0.997\nResults saved to: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan/simulation_data/simulation_results.json\nValidation: {'means_finite': True, 'posterior_cov_psd': True, 'rmse_finite': True, 'controls_finite': True, 'rhat_ok': True, 'all_valid': True}\n",
+    "raw_error": "12:19:01 - cmdstanpy - INFO - compiling stan file <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.stan to exe file <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan\n12:19:13 - cmdstanpy - INFO - compiled model executable: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan\n12:19:13 - cmdstanpy - INFO - created output directory: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan/simulation_data/cmdstan\n12:19:13 - cmdstanpy - INFO - CmdStan start processing\n12:19:13 - cmdstanpy - INFO - Chain [1] start processing\n12:19:13 - cmdstanpy - INFO - Chain [1] done processing\n"
   },
   "execution_benchmark_repeats": 1,
   "execution_metadata": {
-    "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+    "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
     "accelerator_type": "mps",
     "stdout_length": 438,
     "stderr_length": 1164,
-    "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan"
+    "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan"
   },
   "execution_time_mean": 12.413019,
   "execution_time_std": 0.0,

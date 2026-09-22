@@ -21,12 +21,12 @@ Processing Type: **POMDP-aware rendering**
 
 - ✅ **FepLeanContinuousOU.md** - Successfully processed
   - ❌ pymdp: continuous-state model: PyMDP supports discrete POMDPs only
-  - ✅ rxinfer: Generated RxInfer.jl simulation script: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl
+  - ✅ rxinfer: Generated RxInfer.jl simulation script: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl
   - ❌ activeinference_jl: continuous-state model: ActiveInference.jl supports discrete POMDPs only
   - ✅ jax: JAX continuous LGSSM generated successfully.
   - ❌ discopy: continuous-state model: DisCoPy supports discrete POMDPs only
-  - ✅ pytorch: PyTorch continuous LGSSM script generated: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch/FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py
-  - ✅ numpyro: NumPyro continuous LGSSM script generated: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py
+  - ✅ pytorch: PyTorch continuous LGSSM script generated: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch/FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py
+  - ✅ numpyro: NumPyro continuous LGSSM script generated: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py
   - ✅ stan: Stan continuous LGSSM program generated: FepLean_Continuous_OU_Linear-Gaussian_Model_stan.stan (+ driver FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py)
   - ❌ bnlearn: continuous-state model: bnlearn supports discrete POMDPs only
 
@@ -36,7 +36,7 @@ Processing Type: **POMDP-aware rendering**
 The rendered files are organized in implementation-specific subfolders:
 
 ```
-/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/
+<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/
 ├── [model_name]/
 │   ├── pymdp/              # PyMDP Python simulations
 │   ├── rxinfer/            # RxInfer.jl Julia simulations

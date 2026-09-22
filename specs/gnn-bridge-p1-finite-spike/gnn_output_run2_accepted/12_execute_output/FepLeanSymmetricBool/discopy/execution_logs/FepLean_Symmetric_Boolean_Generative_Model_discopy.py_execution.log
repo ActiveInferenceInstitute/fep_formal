@@ -7,7 +7,7 @@ Sample durations (s): [0.758232]
 Duration mean/std (s): 0.7582 / 0.0000
 Model: FepLeanSymmetricBool
 Framework: discopy
-Output Directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/discopy
+Output Directory: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/discopy
 
 STDOUT:
 ============================================================

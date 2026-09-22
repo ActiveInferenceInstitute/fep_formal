@@ -17,28 +17,28 @@
   "failed_framework_renderings": [],
   "unsupported_framework_renderings": [
     {
-      "file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+      "file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
       "framework": "pymdp",
       "message": "continuous-state model: PyMDP supports discrete POMDPs only"
     },
     {
-      "file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+      "file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
       "framework": "activeinference_jl",
       "message": "continuous-state model: ActiveInference.jl supports discrete POMDPs only"
     },
     {
-      "file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+      "file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
       "framework": "discopy",
       "message": "continuous-state model: DisCoPy supports discrete POMDPs only"
     },
     {
-      "file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+      "file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
       "framework": "bnlearn",
       "message": "continuous-state model: bnlearn supports discrete POMDPs only"
     }
   ],
   "file_results": {
-    "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md": {
+    "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md": {
       "overall_success": true,
       "framework_results": {
         "pymdp": {
@@ -51,11 +51,11 @@
         },
         "rxinfer": {
           "success": true,
-          "message": "Generated RxInfer.jl simulation script: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl",
+          "message": "Generated RxInfer.jl simulation script: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl"
+            "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 376,
@@ -76,9 +76,9 @@
           "success": true,
           "message": "JAX continuous LGSSM generated successfully.",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/jax/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/jax/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/jax",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/jax",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 143,
@@ -97,11 +97,11 @@
         },
         "pytorch": {
           "success": true,
-          "message": "PyTorch continuous LGSSM script generated: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch/FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py",
+          "message": "PyTorch continuous LGSSM script generated: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch/FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch/FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch/FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 139,
@@ -112,11 +112,11 @@
         },
         "numpyro": {
           "success": true,
-          "message": "NumPyro continuous LGSSM script generated: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py",
+          "message": "NumPyro continuous LGSSM script generated: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 169,
@@ -129,10 +129,10 @@
           "success": true,
           "message": "Stan continuous LGSSM program generated: FepLean_Continuous_OU_Linear-Gaussian_Model_stan.stan (+ driver FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py)",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py",
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.stan"
+            "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py",
+            "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.stan"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 137,
@@ -150,9 +150,9 @@
           "warnings": []
         }
       },
-      "summary_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/processing_summary.json",
-      "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU",
-      "base_output_dir": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU"
+      "summary_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/processing_summary.json",
+      "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU",
+      "base_output_dir": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU"
     }
   }
 }

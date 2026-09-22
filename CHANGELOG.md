@@ -4,7 +4,7 @@
 
 A 7-lane read-only scoping swarm (Ledger, CI, SRC, DOCS, TESTS, ARTIFACTS,
 LEAN) over `1c3c627` produced `SCOPE-2026-09-20.md` (37 items). Execution ran
-as ten herdr project threads (t-0009..t-0018), after the parallel t-0005/6/7
+as ten parallel project threads (t-0009..t-0018), after the parallel t-0005/6/7
 waves (docs+ledger hygiene, CI hardening, tests suite quality — landed
 earlier the same day) were restored onto the synced tip when a reset-to-origin
 dropped their merges (re-merged as `8e67751`, `ba1c582`, `2037b40`). Landed

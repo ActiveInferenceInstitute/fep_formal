@@ -1,7 +1,7 @@
 {
   "timestamp": "2026-09-04T12:18:41.314066",
-  "source_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input",
-  "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output",
+  "source_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input",
+  "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output",
   "processing_config": {
     "recursive": true,
     "verbose": true,
@@ -82,9 +82,9 @@
   "processed_files": [
     {
       "file_name": "FepLeanContinuousOU.md",
-      "file_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+      "file_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
       "parse_success": true,
-      "parsed_model_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_parsed.json",
+      "parsed_model_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_parsed.json",
       "source_format": "markdown",
       "model_info": {
         "name": "FepLean Continuous OU Linear-Gaussian Model",
@@ -96,112 +96,112 @@
       },
       "generated_formats": {
         "markdown": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_markdown.md",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_markdown.md",
           "file_size": 1754,
           "success": true
         },
         "scala": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_scala.scala",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_scala.scala",
           "file_size": 4494,
           "success": true
         },
         "lean": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_lean.lean",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_lean.lean",
           "file_size": 5326,
           "success": true
         },
         "coq": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_coq.v",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_coq.v",
           "file_size": 5099,
           "success": true
         },
         "python": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_python.py",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_python.py",
           "file_size": 8534,
           "success": true
         },
         "bnf": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_bnf.bnf",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_bnf.bnf",
           "file_size": 5458,
           "success": true
         },
         "ebnf": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_ebnf.ebnf",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_ebnf.ebnf",
           "file_size": 5458,
           "success": true
         },
         "isabelle": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_isabelle.thy",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_isabelle.thy",
           "file_size": 5103,
           "success": true
         },
         "maxima": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_maxima.max",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_maxima.max",
           "file_size": 5403,
           "success": true
         },
         "xml": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_xml.xml",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_xml.xml",
           "file_size": 8449,
           "success": true
         },
         "json": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_json.json",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_json.json",
           "file_size": 8379,
           "success": true
         },
         "protobuf": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_protobuf.proto",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_protobuf.proto",
           "file_size": 6867,
           "success": true
         },
         "yaml": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_yaml.yaml",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_yaml.yaml",
           "file_size": 4856,
           "success": true
         },
         "xsd": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_xsd.xsd",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_xsd.xsd",
           "file_size": 5959,
           "success": true
         },
         "asn1": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_asn1.asn1",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_asn1.asn1",
           "file_size": 8144,
           "success": true
         },
         "pkl": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_pkl.pkl",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_pkl.pkl",
           "file_size": 11432,
           "success": true
         },
         "alloy": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_alloy.als",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_alloy.als",
           "file_size": 7527,
           "success": true
         },
         "z_notation": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_z_notation.z",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_z_notation.z",
           "file_size": 5653,
           "success": true
         },
         "tla_plus": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_tla_plus.tla",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_tla_plus.tla",
           "file_size": 4233,
           "success": true
         },
         "agda": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_agda.agda",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_agda.agda",
           "file_size": 4231,
           "success": true
         },
         "haskell": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_haskell.hs",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_haskell.hs",
           "file_size": 4560,
           "success": true
         },
         "pickle": {
-          "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_pickle.pickle",
+          "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/3_gnn_output/FepLeanContinuousOU/FepLeanContinuousOU_pickle.pickle",
           "file_size": 3444,
           "success": true
         }

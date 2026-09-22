@@ -2,7 +2,7 @@
   "framework": "rxinfer",
   "model_name": "FepLeanContinuousOU",
   "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl",
-  "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl",
+  "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl",
   "success": true,
   "return_code": 0,
   "execution_time": 11.301861,
@@ -71,7 +71,7 @@
     "accelerator_type": "mps",
     "stdout_length": 197,
     "stderr_length": 0,
-    "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer"
+    "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer"
   },
   "execution_time_mean": 11.301861,
   "execution_time_std": 0.0,
@@ -81,7 +81,7 @@
   "collected_outputs": {
     "visualizations": [],
     "simulation_data": [
-      "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer/simulation_data/simulation_results.json"
+      "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer/simulation_data/simulation_results.json"
     ],
     "traces": [],
     "other": []

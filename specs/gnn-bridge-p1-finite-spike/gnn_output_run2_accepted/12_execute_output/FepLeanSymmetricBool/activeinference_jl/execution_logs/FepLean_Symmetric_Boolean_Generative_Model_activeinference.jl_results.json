@@ -2,7 +2,7 @@
   "framework": "activeinference_jl",
   "model_name": "FepLeanSymmetricBool",
   "script_name": "FepLean_Symmetric_Boolean_Generative_Model_activeinference.jl",
-  "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/activeinference_jl/FepLean_Symmetric_Boolean_Generative_Model_activeinference.jl",
+  "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/activeinference_jl/FepLean_Symmetric_Boolean_Generative_Model_activeinference.jl",
   "success": true,
   "return_code": 0,
   "execution_time": 22.044857,
@@ -77,7 +77,7 @@
     "accelerator_type": "mps",
     "stdout_length": 60,
     "stderr_length": 0,
-    "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/activeinference_jl"
+    "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/activeinference_jl"
   },
   "execution_time_mean": 22.044857,
   "execution_time_std": 0.0,
@@ -87,7 +87,7 @@
   "collected_outputs": {
     "visualizations": [],
     "simulation_data": [
-      "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/activeinference_jl/simulation_data/simulation_results.json"
+      "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/activeinference_jl/simulation_data/simulation_results.json"
     ],
     "traces": [],
     "other": []

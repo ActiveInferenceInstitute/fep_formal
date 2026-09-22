@@ -6,7 +6,7 @@ Average Inference Time: 81.00 units
 Average Storage: 2.84 KB
 
 ## FepLeanContinuousOU.md
-Path: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md
+Path: <workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md
 Memory Estimate: 0.04 KB
 Inference Estimate: 81.00 units
 Storage Estimate: 2.84 KB

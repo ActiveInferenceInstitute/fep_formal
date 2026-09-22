@@ -5,7 +5,7 @@
   "errors": [],
   "validation_results": [
     {
-      "file_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+      "file_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
       "file_name": "FepLeanContinuousOU.md",
       "valid": true,
       "errors": [],
@@ -265,7 +265,7 @@
   ],
   "type_analysis": [
     {
-      "file_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+      "file_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
       "file_name": "FepLeanContinuousOU.md",
       "types_found": [
         {

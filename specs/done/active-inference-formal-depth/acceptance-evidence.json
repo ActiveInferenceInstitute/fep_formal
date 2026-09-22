@@ -82,7 +82,7 @@
   "credential_scan": {
     "scope": [
       "repository_except_git_and_lake_build_cache",
-      "/home/trim/.gauss"
+      "<gauss-home>"
     ],
     "pattern_class": "OpenRouter live-shaped sk-or-v1 prefix followed by 64 hexadecimal characters",
     "matches": 0,

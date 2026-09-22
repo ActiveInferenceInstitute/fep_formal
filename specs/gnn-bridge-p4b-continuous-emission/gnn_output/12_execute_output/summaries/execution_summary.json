@@ -1,18 +1,18 @@
 {
   "timestamp": "2026-09-04T12:18:42.845765",
-  "target_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input",
-  "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output",
+  "target_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn-input",
+  "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output",
   "total_scripts_found": 5,
   "successful_executions": 4,
   "failed_executions": 0,
   "skipped_executions": 1,
   "execution_details": [
     {
-      "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/jax/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py",
+      "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/jax/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py",
       "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py",
       "framework": "jax",
       "model_name": "FepLeanContinuousOU",
-      "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+      "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
       "success": true,
       "skipped": false,
       "status": "success",
@@ -26,9 +26,9 @@
       "execution_time_samples": [
         0.847151
       ],
-      "structured_result_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py_results.json",
-      "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py_execution.log",
-      "implementation_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax",
+      "structured_result_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py_results.json",
+      "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_jax.py_execution.log",
+      "implementation_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/jax",
       "stdout_length": 417,
       "stderr_length": 0,
       "collected_outputs_summary": {
@@ -47,11 +47,11 @@
       }
     },
     {
-      "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py",
+      "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/numpyro/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py",
       "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py",
       "framework": "numpyro",
       "model_name": "FepLeanContinuousOU",
-      "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+      "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
       "success": true,
       "skipped": false,
       "status": "success",
@@ -65,9 +65,9 @@
       "execution_time_samples": [
         1.812961
       ],
-      "structured_result_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py_results.json",
-      "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py_execution.log",
-      "implementation_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro",
+      "structured_result_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py_results.json",
+      "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_numpyro.py_execution.log",
+      "implementation_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/numpyro",
       "stdout_length": 446,
       "stderr_length": 0,
       "collected_outputs_summary": {
@@ -86,11 +86,11 @@
       }
     },
     {
-      "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch/FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py",
+      "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/pytorch/FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py",
       "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_pytorch.py",
       "framework": "pytorch",
       "model_name": "FepLeanContinuousOU",
-      "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+      "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
       "success": false,
       "skipped": true,
       "status": "skipped",
@@ -105,7 +105,7 @@
       "stderr_length": 0
     },
     {
-      "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl",
+      "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/rxinfer/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl",
       "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl",
       "framework": "rxinfer",
       "model_name": "FepLeanContinuousOU",
@@ -123,9 +123,9 @@
       "execution_time_samples": [
         11.301861
       ],
-      "structured_result_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl_results.json",
-      "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl_execution.log",
-      "implementation_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer",
+      "structured_result_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl_results.json",
+      "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_rxinfer.jl_execution.log",
+      "implementation_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/rxinfer",
       "execution_metadata": {},
       "stdout_length": 197,
       "stderr_length": 0,
@@ -145,11 +145,11 @@
       }
     },
     {
-      "script_path": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py",
+      "script_path": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/11_render_output/FepLeanContinuousOU/stan/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py",
       "script_name": "FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py",
       "framework": "stan",
       "model_name": "FepLeanContinuousOU",
-      "executor": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/GeneralizedNotationNotation/.venv/bin/python",
+      "executor": "<workspace>/GeneralizedNotationNotation/.venv/bin/python",
       "success": true,
       "skipped": false,
       "status": "success",
@@ -163,9 +163,9 @@
       "execution_time_samples": [
         12.413019
       ],
-      "structured_result_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py_results.json",
-      "output_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py_execution.log",
-      "implementation_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan",
+      "structured_result_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py_results.json",
+      "output_file": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan/execution_logs/FepLean_Continuous_OU_Linear-Gaussian_Model_stan.py_execution.log",
+      "implementation_directory": "<workspace>/fep_lean/specs/gnn-bridge-p4b-continuous-emission/gnn_output/12_execute_output/FepLeanContinuousOU/stan",
       "stdout_length": 438,
       "stderr_length": 1164,
       "collected_outputs_summary": {

@@ -17,16 +17,16 @@
   "failed_framework_renderings": [],
   "unsupported_framework_renderings": [],
   "file_results": {
-    "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md": {
+    "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md": {
       "overall_success": true,
       "framework_results": {
         "pymdp": {
           "success": true,
-          "message": "Generated pymdp 1.0.0 runner: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py",
+          "message": "Generated pymdp 1.0.0 runner: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp/FepLean_Symmetric_Boolean_Generative_Model_pymdp.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pymdp",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 536,
@@ -37,11 +37,11 @@
         },
         "rxinfer": {
           "success": true,
-          "message": "Generated RxInfer.jl simulation script: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/rxinfer/FepLean_Symmetric_Boolean_Generative_Model_rxinfer.jl",
+          "message": "Generated RxInfer.jl simulation script: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/rxinfer/FepLean_Symmetric_Boolean_Generative_Model_rxinfer.jl",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/rxinfer/FepLean_Symmetric_Boolean_Generative_Model_rxinfer.jl"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/rxinfer/FepLean_Symmetric_Boolean_Generative_Model_rxinfer.jl"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/rxinfer",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/rxinfer",
           "warnings": [
             "rxinfer has limited multi-modality support"
           ],
@@ -56,9 +56,9 @@
           "success": true,
           "message": "Successfully rendered ActiveInference.jl script to FepLean_Symmetric_Boolean_Generative_Model_activeinference.jl",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/activeinference_jl/FepLean_Symmetric_Boolean_Generative_Model_activeinference.jl"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/activeinference_jl/FepLean_Symmetric_Boolean_Generative_Model_activeinference.jl"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/activeinference_jl",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/activeinference_jl",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 236,
@@ -71,9 +71,9 @@
           "success": true,
           "message": "JAX model generated successfully.",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/jax/FepLean_Symmetric_Boolean_Generative_Model_jax.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/jax/FepLean_Symmetric_Boolean_Generative_Model_jax.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/jax",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/jax",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 294,
@@ -84,11 +84,11 @@
         },
         "discopy": {
           "success": true,
-          "message": "Generated DisCoPy categorical diagram script: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy/FepLean_Symmetric_Boolean_Generative_Model_discopy.py",
+          "message": "Generated DisCoPy categorical diagram script: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy/FepLean_Symmetric_Boolean_Generative_Model_discopy.py",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy/FepLean_Symmetric_Boolean_Generative_Model_discopy.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy/FepLean_Symmetric_Boolean_Generative_Model_discopy.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/discopy",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 167,
@@ -99,11 +99,11 @@
         },
         "pytorch": {
           "success": true,
-          "message": "PyTorch script generated: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pytorch/FepLean_Symmetric_Boolean_Generative_Model_pytorch.py",
+          "message": "PyTorch script generated: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pytorch/FepLean_Symmetric_Boolean_Generative_Model_pytorch.py",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pytorch/FepLean_Symmetric_Boolean_Generative_Model_pytorch.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pytorch/FepLean_Symmetric_Boolean_Generative_Model_pytorch.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pytorch",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/pytorch",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 110,
@@ -114,11 +114,11 @@
         },
         "numpyro": {
           "success": true,
-          "message": "NumPyro script generated: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/numpyro/FepLean_Symmetric_Boolean_Generative_Model_numpyro.py",
+          "message": "NumPyro script generated: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/numpyro/FepLean_Symmetric_Boolean_Generative_Model_numpyro.py",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/numpyro/FepLean_Symmetric_Boolean_Generative_Model_numpyro.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/numpyro/FepLean_Symmetric_Boolean_Generative_Model_numpyro.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/numpyro",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/numpyro",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 123,
@@ -131,10 +131,10 @@
           "success": true,
           "message": "Stan discrete POMDP/HMM program generated: FepLean_Symmetric_Boolean_Generative_Model_stan.stan (+ driver FepLean_Symmetric_Boolean_Generative_Model_stan.py)",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan.py",
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan.stan"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan.py",
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/stan/FepLean_Symmetric_Boolean_Generative_Model_stan.stan"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/stan",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/stan",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 140,
@@ -147,9 +147,9 @@
           "success": true,
           "message": "bnlearn code generated",
           "output_files": [
-            "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/bnlearn/FepLean_Symmetric_Boolean_Generative_Model_bnlearn.py"
+            "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/bnlearn/FepLean_Symmetric_Boolean_Generative_Model_bnlearn.py"
           ],
-          "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/bnlearn",
+          "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/bnlearn",
           "warnings": [],
           "code_metrics": {
             "lines_of_code": 65,
@@ -159,9 +159,9 @@
           }
         }
       },
-      "summary_file": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/processing_summary.json",
-      "output_directory": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool",
-      "base_output_dir": "/Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool"
+      "summary_file": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool/processing_summary.json",
+      "output_directory": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool",
+      "base_output_dir": "<workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/11_render_output/FepLeanSymmetricBool"
     }
   }
 }

@@ -7,11 +7,11 @@ Sample durations (s): [1.113655]
 Duration mean/std (s): 1.1137 / 0.0000
 Model: FepLeanSymmetricBool
 Framework: pytorch
-Output Directory: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pytorch
+Output Directory: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pytorch
 
 STDOUT:
 PyTorch POMDP simulation complete: 1 timesteps in 0.019s
-Results saved to: /Users/hum/Documents/GitHub/HumOS/projects/outside_of_hum/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pytorch/simulation_data/simulation_results.json
+Results saved to: <workspace>/fep_lean/specs/gnn-bridge-p1-finite-spike/gnn_output/12_execute_output/FepLeanSymmetricBool/pytorch/simulation_data/simulation_results.json
 Validation: {'beliefs_in_range': True, 'beliefs_sum_to_one': True, 'actions_in_range': True, 'all_valid': True}
 
 
