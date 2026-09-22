@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import importlib
 import os
 import subprocess  # nosec B404 - fixed argv, shell=False
 import sys
@@ -42,8 +43,15 @@ if __name__ == "__main__":
 # file was loaded, so a test can drive the composition without a subprocess.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from check_render_log import main as accept_render
-from render_manuscript import main as render_sources
+# Sibling scripts resolve through the sys.path bootstrap above at runtime;
+# mypy does not follow sys.path mutations, so bind the two entry points to
+# their concrete signatures instead of importing untyped top-level names.
+accept_render: Callable[[list[str] | None], int] = (
+    importlib.import_module("check_render_log").main
+)
+render_sources: Callable[[list[str] | None], int] = (
+    importlib.import_module("render_manuscript").main
+)
 
 from fep_lean.output.render_fonts import (
     FontProbeError,
