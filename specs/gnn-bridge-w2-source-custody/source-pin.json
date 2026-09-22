@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "c1b1b343f9c46132046da2ff8edf88002575334e",
+    "commit": "9da3d972e71145116b752705b2eaea9293af1e3e",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -159,7 +159,7 @@
     }
   },
   "gnn": {
-    "commit": "222718d194d45387a34f88fa3c3a5fcc54bf96e9",
+    "commit": "f923cb59978ae4f8c2ec8692a711ab1bec308459",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
