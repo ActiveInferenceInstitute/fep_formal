@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "FEP_Lean: Towards Lean 4 Formalization of the Free Energy Principle"
+title: "fep_formal: Towards Lean 4 Formalization of the Free Energy Principle"
 abstract: >-
   A machine-checked catalogue of 155 Free Energy Principle topics spanning
   FEP foundations, Active Inference, Bayesian Mechanics, Information Geometry,
