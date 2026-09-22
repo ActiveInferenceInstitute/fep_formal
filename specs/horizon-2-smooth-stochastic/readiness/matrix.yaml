@@ -79,7 +79,7 @@ row_order:
   - continuous_path_measure_density
 acceptance_evidence: &acceptance_evidence
   receipt_path: specs/horizon-2-smooth-stochastic/readiness/acceptance.json
-  receipt_sha256: c5ab12778266bd6b476068ec1e5768e8671763fc64757b5aa51b4a4edadc054b
+  receipt_sha256: 7e1366e029386c601a4c04c432bf213f9bb3ff64126c841640035efab4d6ec55
 rows:
   - id: pin_identity
     criticality: fatal

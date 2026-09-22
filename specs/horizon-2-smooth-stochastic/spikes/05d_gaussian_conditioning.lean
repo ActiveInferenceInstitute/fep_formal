@@ -109,8 +109,8 @@ theorem measurable_partitionCoordinates : Measurable partitionCoordinates := by
 private noncomputable instance blanketLaw_isProbabilityMeasure :
     IsProbabilityMeasure blanketLaw := by
   unfold blanketLaw
-  exact Measure.isProbabilityMeasure_map
-    measurable_blanketCoordinates.aemeasurable
+  exact (Measure.isProbabilityMeasure_map_iff
+    measurable_blanketCoordinates.aemeasurable).mpr (by infer_instance)
 
 theorem externalConditionalKernel_apply (blanket : Blanket) :
     externalConditionalKernel blanket =
@@ -574,7 +574,8 @@ theorem externalCondDistrib_ae_eq :
           (stationaryLaw (0 : StandardizedState))).map Prod.fst := by
     simpa only [blanketLaw] using
       (condDistrib_comp (μ := stationaryLaw (0 : StandardizedState))
-        blanketCoordinates measurable_endpointCoordinates.aemeasurable
+        measurable_blanketCoordinates.aemeasurable
+        measurable_endpointCoordinates.aemeasurable
         (f := Prod.fst) measurable_fst)
   have hMap' :
       condDistrib (fun state : StandardizedState => state external)
@@ -603,7 +604,8 @@ theorem internalCondDistrib_ae_eq :
           (stationaryLaw (0 : StandardizedState))).map Prod.snd := by
     simpa only [blanketLaw] using
       (condDistrib_comp (μ := stationaryLaw (0 : StandardizedState))
-        blanketCoordinates measurable_endpointCoordinates.aemeasurable
+        measurable_blanketCoordinates.aemeasurable
+        measurable_endpointCoordinates.aemeasurable
         (f := Prod.snd) measurable_snd)
   have hMap' :
       condDistrib (fun state : StandardizedState => state internal)

@@ -111,7 +111,7 @@
     "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
     "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "7e1366e029386c601a4c04c432bf213f9bb3ff64126c841640035efab4d6ec55",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
+    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "5788f0c04220e046f76dc4823b4e1f555462e64b8e31dae9457159e23f1f5c7f",
     "specs/horizon-2-smooth-stochastic/readiness/probes/07_fin4_matrix_gaussian.lean": "d7a11fbf2f19f97d81ab1e833fb388a87deb7480d640f8391c4c6340c48c32bf",
     "specs/horizon-2-smooth-stochastic/slices/05b-r0-transition-covariance.md": "362e38493538c1d0f049678e11811009113f5a09686e8b2186c35dcfeb2cefd2",
     "specs/horizon-2-smooth-stochastic/spikes/05b_transition_covariance.lean": "6dbf96396535587a02fbbe95a24f1f0a35609d1ed8d26389cb5385765e62674f",

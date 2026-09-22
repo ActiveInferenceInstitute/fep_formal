@@ -28,7 +28,7 @@
     "src/fep_lean/formal/declarations.py": "4e405d5a9ec228e9d85d0e90fd017224924a722835d9e4caf8a38cca746a0215",
     "src/fep_lean/lean_source.py": "56b3b0ad14245c91e183ad6765dfe73f73fbf717eeec632d683406c44bf5f3d5",
     "src/fep_lean/verification/_horizon_numerical_witnesses.py": "70944d232b67e194b00bbcd38090d2b8e38439e66dbb24e94f7be1ff02f50941",
-    "src/fep_lean/verification/horizon_acceptance.py": "3b2d9f7eabce8ad070ef9f2cfd68c5f522e3a85ac50d8e7bd716007ab83fec6b",
+    "src/fep_lean/verification/horizon_acceptance.py": "e09424d4040b5ea428cbc5ae81f38e3e714a97954131881233fd8ee619b92d31",
     "src/fep_lean/verification/numerical_witnesses.py": "a2097398104d01a8cc43d1c6bf3ae78a96619def4f793ed0112c7637848c173b",
     "tests/test_horizon_acceptance.py": "8a39a79bde83346948fe9b3d7f665db73f389fa1d9a876ab2189fe0694edbcc1",
     "tests/test_horizon_numerical_witnesses.py": "f5c2eb07b0dbb219cd5982eb3ffb31f7a940a2132f5878be4b328ca2c3815fae",
@@ -37,7 +37,7 @@
   "decision": "accepted",
   "diagnostics": {
     "path": "specs/horizon-2-smooth-stochastic/readiness/evidence/20260904-wave2/diagnostics.json",
-    "sha256": "bdaee86fc0471ba545916648473b37026271f67d745177663a4c8845e7fe168f"
+    "sha256": "ff130829c13a2d6477c24b8b677ff98ab1d66c3356f44ae3ebd9fff0e8b3c3aa"
   },
   "downstream": {
     "closed": [
@@ -198,7 +198,7 @@
         "tests/test_horizon2_gaussian_filter.py": "9cf2db50c6f8099bd639458124ae049931313cc2ff553205a1591807ac261961",
         "tests/test_horizon2_gaussian_grid_path.py": "06c0d12f3edeb2513a1cd09cfb8727a19277914152b4e9e3194d7609f49dc2eb",
         "tests/test_horizon2_gaussian_information_geometry.py": "8588bfc8c672bf266692a0fcdd36f43c5f2366492e73d07ee9de75e54d4220dc",
-        "tests/test_horizon2_gaussian_precision_conditioning.py": "55c11e8541b8e610efd862ca6519be9f3a5ef8420123bcadc0417e1d82ff2ca1",
+        "tests/test_horizon2_gaussian_precision_conditioning.py": "515905ca97a3dbd011539de9b0e5369c732cea5efcd4a6bd50779a702e8b2749",
         "tests/test_horizon2_gaussian_vfe_readiness.py": "e499508739aa0d09daf816dd075a8808fafae7c29f2b8e2d220716faa7c52462",
         "tests/test_horizon2_linear_gaussian_semigroup.py": "5d0c5d5d5842f9e0b4416b21f9a03f3e4bbdcb144521b50df49328b11b719ea9",
         "tests/test_horizon2_markov_semigroup.py": "0579410e45349d7653fb7bc4350e6b3047f64d6d78d17126a78664965af062e1",
@@ -347,7 +347,7 @@
         "tests/test_horizon2_gaussian_filter.py": "9cf2db50c6f8099bd639458124ae049931313cc2ff553205a1591807ac261961",
         "tests/test_horizon2_gaussian_grid_path.py": "06c0d12f3edeb2513a1cd09cfb8727a19277914152b4e9e3194d7609f49dc2eb",
         "tests/test_horizon2_gaussian_information_geometry.py": "8588bfc8c672bf266692a0fcdd36f43c5f2366492e73d07ee9de75e54d4220dc",
-        "tests/test_horizon2_gaussian_precision_conditioning.py": "55c11e8541b8e610efd862ca6519be9f3a5ef8420123bcadc0417e1d82ff2ca1",
+        "tests/test_horizon2_gaussian_precision_conditioning.py": "515905ca97a3dbd011539de9b0e5369c732cea5efcd4a6bd50779a702e8b2749",
         "tests/test_horizon2_gaussian_vfe_readiness.py": "e499508739aa0d09daf816dd075a8808fafae7c29f2b8e2d220716faa7c52462",
         "tests/test_horizon2_linear_gaussian_semigroup.py": "5d0c5d5d5842f9e0b4416b21f9a03f3e4bbdcb144521b50df49328b11b719ea9",
         "tests/test_horizon2_markov_semigroup.py": "0579410e45349d7653fb7bc4350e6b3047f64d6d78d17126a78664965af062e1",
@@ -502,7 +502,7 @@
       "tests/test_horizon2_gaussian_filter.py": "9cf2db50c6f8099bd639458124ae049931313cc2ff553205a1591807ac261961",
       "tests/test_horizon2_gaussian_grid_path.py": "06c0d12f3edeb2513a1cd09cfb8727a19277914152b4e9e3194d7609f49dc2eb",
       "tests/test_horizon2_gaussian_information_geometry.py": "8588bfc8c672bf266692a0fcdd36f43c5f2366492e73d07ee9de75e54d4220dc",
-      "tests/test_horizon2_gaussian_precision_conditioning.py": "55c11e8541b8e610efd862ca6519be9f3a5ef8420123bcadc0417e1d82ff2ca1",
+      "tests/test_horizon2_gaussian_precision_conditioning.py": "515905ca97a3dbd011539de9b0e5369c732cea5efcd4a6bd50779a702e8b2749",
       "tests/test_horizon2_gaussian_vfe_readiness.py": "e499508739aa0d09daf816dd075a8808fafae7c29f2b8e2d220716faa7c52462",
       "tests/test_horizon2_linear_gaussian_semigroup.py": "5d0c5d5d5842f9e0b4416b21f9a03f3e4bbdcb144521b50df49328b11b719ea9",
       "tests/test_horizon2_markov_semigroup.py": "0579410e45349d7653fb7bc4350e6b3047f64d6d78d17126a78664965af062e1",
@@ -651,7 +651,7 @@
       "tests/test_horizon2_gaussian_filter.py": "9cf2db50c6f8099bd639458124ae049931313cc2ff553205a1591807ac261961",
       "tests/test_horizon2_gaussian_grid_path.py": "06c0d12f3edeb2513a1cd09cfb8727a19277914152b4e9e3194d7609f49dc2eb",
       "tests/test_horizon2_gaussian_information_geometry.py": "8588bfc8c672bf266692a0fcdd36f43c5f2366492e73d07ee9de75e54d4220dc",
-      "tests/test_horizon2_gaussian_precision_conditioning.py": "55c11e8541b8e610efd862ca6519be9f3a5ef8420123bcadc0417e1d82ff2ca1",
+      "tests/test_horizon2_gaussian_precision_conditioning.py": "515905ca97a3dbd011539de9b0e5369c732cea5efcd4a6bd50779a702e8b2749",
       "tests/test_horizon2_gaussian_vfe_readiness.py": "e499508739aa0d09daf816dd075a8808fafae7c29f2b8e2d220716faa7c52462",
       "tests/test_horizon2_linear_gaussian_semigroup.py": "5d0c5d5d5842f9e0b4416b21f9a03f3e4bbdcb144521b50df49328b11b719ea9",
       "tests/test_horizon2_markov_semigroup.py": "0579410e45349d7653fb7bc4350e6b3047f64d6d78d17126a78664965af062e1",
@@ -667,25 +667,25 @@
   },
   "predecessors": {
     "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "7e1366e029386c601a4c04c432bf213f9bb3ff64126c841640035efab4d6ec55",
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/05b-transition-covariance.json": "820166b70e8e8f35baa6e3493a197b91fee3eef54177d701b69c94716fc68752",
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/05d-gaussian-conditioning-lifecycle.json": "64e5abcfe7cbcaf5f5164378e65a230e8dd13904c3f1462aa4b73678338270d6",
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/05d-gaussian-conditioning.json": "e9402bae458fdeda13e0d2ef06d33b7a875cad59cadb6e7f7a99741ee0e72625",
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/06a-native-filter-posterior.json": "c6f58c41e4607f47bd8ff0203fa1ac78dcfb59f3d66bb4f20486517d28e2066f",
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient-custody.json": "1cc86ea976f1a718e25451d4cfe0568f0b905c167f3225bc835f4e7e6454bfdf",
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient.json": "d854a43bc412b67cf1c8485582ae2d27c52d0b279cb27cd1f69f0f184a18e629"
+    "specs/horizon-2-smooth-stochastic/readiness/repairs/05b-transition-covariance.json": "1a9c462f6b70dd814f38e6c6c564d6489a234613907e4591a7b8f6480ff7c491",
+    "specs/horizon-2-smooth-stochastic/readiness/repairs/05d-gaussian-conditioning-lifecycle.json": "f733c5698039d509d9b9e65a5f3d69c835005ed7b9b698a986803733ecbbdc78",
+    "specs/horizon-2-smooth-stochastic/readiness/repairs/05d-gaussian-conditioning.json": "8ade7f9f052b054150501ec85b81c26e0c68b06cedffef2bb90c6db7ac0eed67",
+    "specs/horizon-2-smooth-stochastic/readiness/repairs/06a-native-filter-posterior.json": "c2395f37a750a1782cb6dfbcace02bf7db0e819ec071651418156f6a19c06fac",
+    "specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient-custody.json": "6ec8caa084ad4f7bccd79852351071ee2e780df8e7f72ce9d0083366102d252e",
+    "specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient.json": "7647d6fc222f73b9ede8759f9d9dff0b6db9b71cdb27bc910aeb0677175f16b7"
   },
   "reviews": [
     {
       "path": "specs/horizon-2-smooth-stochastic/readiness/evidence/20260904-wave2/review-lean.json",
-      "sha256": "c08d3f3a5b7f6bc02922b05ebd0a04b76e24dbc33bb96e0be8f6eb0ee30abfed"
+      "sha256": "79e4dd3e2323d00f0285ab2526c6cbef0e760f8f018d136942de482afdad1072"
     },
     {
       "path": "specs/horizon-2-smooth-stochastic/readiness/evidence/20260904-wave2/review-domain.json",
-      "sha256": "cd9a3124a41cb2b17ee937a82b0bc2d7a07e81835f56ca9bc2515f2aad96367a"
+      "sha256": "60fef1e5f992facc520305ce2e2271ba34915d02672efc329a553cdd5d6c633a"
     },
     {
       "path": "specs/horizon-2-smooth-stochastic/readiness/evidence/20260904-wave2/review-skeptical.json",
-      "sha256": "688f29f799c5968179abc1a3eb4318f43a4804bbdc98cc381bbf7874d54040e4"
+      "sha256": "90501f67d6a7336203b21689b0ddbc44c4336ebe7da754aa73a4e62b865ae28f"
     }
   ],
   "schema_version": 1

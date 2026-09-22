@@ -10,8 +10,8 @@
   },
   "corrected_artifact": {
     "guard": "if not REPAIR.exists(): assert not MAINTAINED_OWNER.exists()",
-    "repair_sha256": "a7092b45672616fbb88144683ab99c0d29d29819459825c8f1740b4360573d5f",
-    "test_sha256": "16562762a0c0a8fc06bde2858b26a5b0526164fcfe91c3d56ae39b4fe7b42ade"
+    "repair_sha256": "8ade7f9f052b054150501ec85b81c26e0c68b06cedffef2bb90c6db7ac0eed67",
+    "test_sha256": "1828eaaec7538004989cddfb87ebdcd7f4da455f7991d8dfc454e59d80791b82"
   },
   "receipt_history": {
     "historical_receipt_sha256": null,
@@ -24,7 +24,7 @@
     "decision_changed": false,
     "fin4_source_sha256": "d8d15d0abdfe6eb53c9e1b94d6f1e90a076e97c9507a3532021aea090deb630b",
     "matrix_yaml_mutated": false,
-    "r0_spike_sha256": "551bcf412f037f0a1f4a5ca180b244074c3df910a6c502d8eaef8eed402a6df8",
+    "r0_spike_sha256": "51184185f3adfee7506e95457f352b56910cd127bd05f9140f21437c3d88e612",
     "scientific_claim_mutated": false
   },
   "supersession": {

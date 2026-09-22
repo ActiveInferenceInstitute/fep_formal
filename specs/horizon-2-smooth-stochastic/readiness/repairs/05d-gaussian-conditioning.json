@@ -130,10 +130,10 @@
     "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
     "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "7e1366e029386c601a4c04c432bf213f9bb3ff64126c841640035efab4d6ec55",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
+    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "5788f0c04220e046f76dc4823b4e1f555462e64b8e31dae9457159e23f1f5c7f",
     "specs/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean": "5c848021ad605cbfb628811ad7ef69846e7fde0b24437a3d4ce9a289f0e18fa3",
     "specs/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md": "fe82ab041ca210dc629b59e0a12ce5cabc48513c64f3728f0e34d7442a9d10ce",
-    "specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean": "551bcf412f037f0a1f4a5ca180b244074c3df910a6c502d8eaef8eed402a6df8",
+    "specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean": "51184185f3adfee7506e95457f352b56910cd127bd05f9140f21437c3d88e612",
     "src/fep_lean/formal/fin4_gaussian_semigroup.lean": "a7c14d2fdeb44c61ffa4012d6eccc8d00051be916ab536e2658f4ef3652d260c",
     "tests/test_horizon2_gaussian_conditioning_readiness.py": "1828eaaec7538004989cddfb87ebdcd7f4da455f7991d8dfc454e59d80791b82"
   }
