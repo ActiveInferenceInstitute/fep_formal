@@ -338,7 +338,12 @@ class TestCallAPI:
             assert exc_info.value.status_code == 404
             assert exc_info.value.transient is False
         finally:
+            # shutdown() only stops the serve_forever loop; without
+            # server_close() the listening socket leaks — one FD per server
+            # per test, which across a full-order run can exhaust the FD
+            # table and hang later socket binds (ambient-hang seam (a)).
             server.shutdown()
+            server.server_close()
 
     def test_call_api_url_error(self) -> None:
         """_call_api raises HermesAPIError("Network error: …") on connection refused.
@@ -382,6 +387,7 @@ class TestCallAPI:
             )
         finally:
             server.shutdown()
+            server.server_close()
 
     def test_call_api_wall_clock_deadline_aborts_slow_stream(self) -> None:
         """_make_request enforces a hard wall-clock deadline on slow responses.
@@ -419,6 +425,7 @@ class TestCallAPI:
             assert "Wall-clock timeout" in str(exc_info.value)
         finally:
             server.shutdown()
+            server.server_close()
 
 
 class TestHermesNetworkMaxRetriesEnv:

@@ -11,11 +11,10 @@ Coverage notes:
     only under explicit live-test selection with configured credentials.
 """
 
-from __future__ import annotations
-
 import os
 import shutil
 import sys
+from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
@@ -66,3 +65,35 @@ def pytest_configure(config: pytest.Config) -> None:
         os.environ["FEP_LEAN_TOOLS_MISSING"] = ",".join(still_missing)
     else:
         os.environ.setdefault("FEP_LEAN_REQUIRE_GAUSS", "1")
+
+
+@pytest.fixture(autouse=True, scope="session")
+def _hermetic_gauss_home(tmp_path_factory: pytest.TempPathFactory) -> Iterator[Path]:
+    """Point ``GAUSS_HOME`` at an empty scratch dir for the whole session.
+
+    ``HermesConfig.from_settings`` step 0 (``_load_gauss_dotenv``) reads
+    ``$GAUSS_HOME/.env`` — defaulting to the *real* host ``~/.gauss/.env`` when
+    ``GAUSS_HOME`` is unset — and writes allowlisted keys into ``os.environ``
+    (``hermes.py:240-241``). Left un-stubbed, tests inherit whatever the host
+    keeps in ``~/.gauss``, making full-order runs order-dependent on ambient
+    host state (TestsScout item-14 seam evidence (d)). The session-scoped
+    redirect closes that seam at the conftest level.
+
+    Deliberately host-only: tool-availability probes (``gauss``/``lake``/
+    ``lean`` on PATH) are untouched, so their skip semantics still hold, and
+    live-test runs (``FEP_LEAN_LIVE_TESTS=1``) opt back into real host state.
+    """
+    live_var = os.environ.get("FEP_LEAN_LIVE_TESTS", "").lower()
+    if live_var in ("1", "true", "yes"):
+        yield Path(os.environ.get("GAUSS_HOME", str(Path.home() / ".gauss")))
+        return
+    scratch = tmp_path_factory.mktemp("gauss-home")
+    saved = os.environ.get("GAUSS_HOME")
+    os.environ["GAUSS_HOME"] = str(scratch)
+    try:
+        yield scratch
+    finally:
+        if saved is None:
+            os.environ.pop("GAUSS_HOME", None)
+        else:
+            os.environ["GAUSS_HOME"] = saved
