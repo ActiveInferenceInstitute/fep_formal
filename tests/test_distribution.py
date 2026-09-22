@@ -55,11 +55,11 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
     )
     assert "Description-Content-Type: text/markdown\n" in wheel_metadata
     assert (
-        "Project-URL: Repository, https://github.com/ActiveInferenceInstitute/fep_lean\n"
+        "Project-URL: Repository, https://github.com/ActiveInferenceInstitute/fep_formal\n"
         in wheel_metadata
     )
     assert (
-        "Project-URL: Changelog, https://github.com/ActiveInferenceInstitute/fep_lean/blob/main/CHANGELOG.md\n"
+        "Project-URL: Changelog, https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CHANGELOG.md\n"
         in wheel_metadata
     )
     assert (

@@ -1,6 +1,6 @@
 # Mahakala Adversarial Review: fep_lean
 
-**Date:** 2026-07-31 | **Target:** `ActiveInferenceInstitute/fep_lean` @ `147c19b`
+**Date:** 2026-07-31 | **Target:** `ActiveInferenceInstitute/fep_formal` @ `147c19b`
 **Reviewers:** Mahakala dharmapala (Wave 1: Adversarial Critical Review, Wave 3: Deception + Process, Wave 4: 6 Persona Proxies) + direct test suite audit
 **Duration:** ~2h total across multi-wave dispatch
 
