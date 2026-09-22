@@ -35,16 +35,16 @@ PREDECESSORS = {
     BASE
     + "acceptance.json": "7e1366e029386c601a4c04c432bf213f9bb3ff64126c841640035efab4d6ec55",
     BASE
-    + "repairs/05b-transition-covariance.json": "820166b70e8e8f35baa6e3493a197b91fee3eef54177d701b69c94716fc68752",
+    + "repairs/05b-transition-covariance.json": "1a9c462f6b70dd814f38e6c6c564d6489a234613907e4591a7b8f6480ff7c491",
     BASE
-    + "repairs/05d-gaussian-conditioning.json": "e9402bae458fdeda13e0d2ef06d33b7a875cad59cadb6e7f7a99741ee0e72625",
+    + "repairs/05d-gaussian-conditioning.json": "8ade7f9f052b054150501ec85b81c26e0c68b06cedffef2bb90c6db7ac0eed67",
     BASE
-    + "repairs/05d-gaussian-conditioning-lifecycle.json": "64e5abcfe7cbcaf5f5164378e65a230e8dd13904c3f1462aa4b73678338270d6",
+    + "repairs/05d-gaussian-conditioning-lifecycle.json": "f733c5698039d509d9b9e65a5f3d69c835005ed7b9b698a986803733ecbbdc78",
     BASE
-    + "repairs/06a-native-filter-posterior.json": "c6f58c41e4607f47bd8ff0203fa1ac78dcfb59f3d66bb4f20486517d28e2066f",
+    + "repairs/06a-native-filter-posterior.json": "c2395f37a750a1782cb6dfbcace02bf7db0e819ec071651418156f6a19c06fac",
     BASE
-    + "repairs/07-gaussian-vfe-natural-gradient.json": "d854a43bc412b67cf1c8485582ae2d27c52d0b279cb27cd1f69f0f184a18e629",
-    R0_SUCCESSOR: "1cc86ea976f1a718e25451d4cfe0568f0b905c167f3225bc835f4e7e6454bfdf",
+    + "repairs/07-gaussian-vfe-natural-gradient.json": "7647d6fc222f73b9ede8759f9d9dff0b6db9b71cdb27bc910aeb0677175f16b7",
+    R0_SUCCESSOR: "6ec8caa084ad4f7bccd79852351071ee2e780df8e7f72ce9d0083366102d252e",
 }
 MANDATORY_TEST_FILES = tuple(
     "tests/test_" + name + ".py"

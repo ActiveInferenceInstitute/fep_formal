@@ -149,7 +149,7 @@
     "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
     "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
     "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "7e1366e029386c601a4c04c432bf213f9bb3ff64126c841640035efab4d6ec55",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "b4cd283051c02ca73ba0983479068194586d4d4aac8c5df07048cdd9381d4a4c",
+    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "5788f0c04220e046f76dc4823b4e1f555462e64b8e31dae9457159e23f1f5c7f",
     "specs/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean": "5c848021ad605cbfb628811ad7ef69846e7fde0b24437a3d4ce9a289f0e18fa3",
     "specs/horizon-2-smooth-stochastic/slices/06a-r0-native-posterior.md": "a315c5a2ac630e26d59ea2eade17d384597c6fb4811f5a287309f41fd4022b7e",
     "specs/horizon-2-smooth-stochastic/spikes/06a_native_filter_posterior.lean": "cd9bf8532d7748283f39148c3d80cea4ba49a276a69f21e7404d9fdb4c3e81d5",
