@@ -3671,7 +3671,7 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem specializes fep-004's finite positive-weight Fisher metric to the one-coordinate Bernoulli information weight computed by fep-038.",
+      "rationale": "The composed theorem specializes fep-004's finite positive-weight Fisher metric to the one-coordinate Bernoulli information weight computed by fep-038. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries both endpoints through their Fisher-metric definitions (`fep_fep004.FEP004.fep004_fisherMetric`, `fep_fep038.FEP038.fep038_fisherMetric`) without invoking either topic's reviewed theorems; the row stands unchanged.",
       "source": "fep-004",
       "target": "fep-038",
       "witness": "FEPComposed.fep004_bernoulliMetric_specialization"
@@ -3699,7 +3699,7 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law.",
+      "rationale": "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
       "source": "fep-012",
       "target": "fep-028",
       "witness": "FEPComposed.fep012_softmax_entropyRegularizedCost_le"
@@ -3755,7 +3755,7 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law.",
+      "rationale": "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
       "source": "fep-025",
       "target": "fep-049",
       "witness": "FEPComposed.fep025_current_dissipation_nonneg"
@@ -3811,7 +3811,7 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update.",
+      "rationale": "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
       "source": "fep-036",
       "target": "fep-045",
       "witness": "FEPComposed.fep036_empiricalPosterior_closed"
@@ -3825,7 +3825,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The composed theorem couples fep-038's positive Bernoulli Fisher tangent metric to fep-018's separating Fisher--Rao coordinate distance.",
+      "rationale": "The composed theorem couples fep-038's positive Bernoulli Fisher tangent metric to fep-018's separating Fisher--Rao coordinate distance. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_fisherMetric_pos` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
       "source": "fep-038",
       "target": "fep-018",
       "witness": "FEPComposed.fep038_fisherRao_separation"
@@ -3846,7 +3846,7 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating.",
+      "rationale": "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
       "source": "fep-042",
       "target": "fep-036",
       "witness": "FEPComposed.fep036_empiricalPosterior_closed"
@@ -3986,7 +3986,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The prior-weighted control posterior and the original support-aware softmax are both exactly normalized finite action selectors.",
+      "rationale": "The prior-weighted control posterior and the original support-aware softmax are both exactly normalized finite action selectors. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
       "source": "fep-070",
       "target": "fep-028",
       "witness": "FEPComposed.fep070_controlPosterior_refines_fep028_softmax"
@@ -4028,7 +4028,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "A prior-weighted variational state update and the original finite softmax both produce normalized exponential-tilt laws.",
+      "rationale": "A prior-weighted variational state update and the original finite softmax both produce normalized exponential-tilt laws. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
       "source": "fep-076",
       "target": "fep-028",
       "witness": "FEPComposed.fep076_variational_update_refines_fep028_softmax"
@@ -4049,7 +4049,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Finite blanket factorization is characterized by zero conditional mutual information, while fep-009 supplies the nonnegative product-mass primitive.",
+      "rationale": "Finite blanket factorization is characterized by zero conditional mutual information, while fep-009 supplies the nonnegative product-mass primitive. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_joint_product_nonneg` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
       "source": "fep-079",
       "target": "fep-009",
       "witness": "FEPComposed.fep079_blanket_cmi_refines_fep009"
@@ -4063,7 +4063,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Coupled blankets retain zero conditional mutual information within each conditional row, together with fep-009's product-mass nonnegativity.",
+      "rationale": "Coupled blankets retain zero conditional mutual information within each conditional row, together with fep-009's product-mass nonnegativity. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_joint_product_nonneg` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
       "source": "fep-081",
       "target": "fep-009",
       "witness": "FEPComposed.fep081_coupled_blanket_composes_fep009"
@@ -4077,7 +4077,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Ordered intervention preserves the named non-descendant marginal; fep-009 simultaneously records monotonicity for any nested measurable events.",
+      "rationale": "Ordered intervention preserves the named non-descendant marginal; fep-009 simultaneously records monotonicity for any nested measurable events. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_likelihood_mono` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
       "source": "fep-083",
       "target": "fep-009",
       "witness": "FEPComposed.fep083_intervention_invariance_refines_fep009"
@@ -4091,7 +4091,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The ordered finite carrier yields zero local mutual information at positive evidence, while fep-009 supplies an inhabited native conditional-independence boundary against the trivial sigma algebra.",
+      "rationale": "The ordered finite carrier yields zero local mutual information at positive evidence, while fep-009 supplies an inhabited native conditional-independence boundary against the trivial sigma algebra. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_condIndep_bot_right` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
       "source": "fep-085",
       "target": "fep-009",
       "witness": "FEPComposed.fep085_local_markov_refines_fep009"
@@ -4154,7 +4154,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Path entropy production is exactly finite KL, alongside the original nonnegative quadratic entropy-production certificate.",
+      "rationale": "Path entropy production is exactly finite KL, alongside the original nonnegative quadratic entropy-production certificate. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
       "source": "fep-094",
       "target": "fep-049",
       "witness": "FEPComposed.fep094_path_kl_refines_fep049_entropy_production"
@@ -4168,7 +4168,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The integral fluctuation normalization is paired with the original exact flux--force representation of nonnegative entropy production.",
+      "rationale": "The integral fluctuation normalization is paired with the original exact flux--force representation of nonnegative entropy production. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_flux_force_identity` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
       "source": "fep-096",
       "target": "fep-049",
       "witness": "FEPComposed.fep096_integral_fluctuation_refines_fep049"
@@ -4203,21 +4203,21 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Finite-matrix Fisher pullback composition extends the original scalar Bernoulli pullback identity without asserting a global chart theorem.",
+      "rationale": "Finite-matrix Fisher pullback composition extends the original scalar Bernoulli pullback identity without asserting a global chart theorem. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_fisherMetric_pullback` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
       "source": "fep-101",
       "target": "fep-038",
       "witness": "FEPComposed.fep101_fisher_pullback_extends_fep038"
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The finite scalar Cram\u00e9r--Rao certificate includes explicit score regularity, while fep-038 supplies its concrete centered Bernoulli score case.",
+      "rationale": "The finite scalar Cram\u00e9r--Rao certificate includes explicit score regularity, while fep-038 supplies its concrete centered Bernoulli score case. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_expectedScore_zero` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
       "source": "fep-102",
       "target": "fep-038",
       "witness": "FEPComposed.fep102_cramer_rao_uses_fep038_score_geometry"
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Natural-gradient equivariance under an invertible chart extends the original one-dimensional Fisher/natural-gradient duality.",
+      "rationale": "Natural-gradient equivariance under an invertible chart extends the original one-dimensional Fisher/natural-gradient duality. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_naturalGradient_duality` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
       "source": "fep-103",
       "target": "fep-038",
       "witness": "FEPComposed.fep103_natural_gradient_extends_fep038"
@@ -4238,7 +4238,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Replicator dynamics is a categorical natural gradient; the original Bernoulli natural-gradient duality and finite softmax normalization remain visible as its scalar and discrete-selection neighbors.",
+      "rationale": "Replicator dynamics is a categorical natural gradient; the original Bernoulli natural-gradient duality and finite softmax normalization remain visible as its scalar and discrete-selection neighbors. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_naturalGradient_duality` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
       "source": "fep-106",
       "target": "fep-038",
       "witness": "FEPComposed.fep106_replicator_links_fep028_fep038"
@@ -4266,7 +4266,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Positive-normalizer unit-weight product-of-experts pooling and nonempty-support softmax each expose exact finite normalization; the pairing does not identify their weighting conventions.",
+      "rationale": "Positive-normalizer unit-weight product-of-experts pooling and nonempty-support softmax each expose exact finite normalization; the pairing does not identify their weighting conventions. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
       "source": "fep-110",
       "target": "fep-028",
       "witness": "FEPComposed.fep110_product_of_experts_refines_fep028_normalization"
@@ -4294,7 +4294,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The finite-sample sub-Gaussian tail certificate is paired with the original strict positivity of a Laplace-smoothed empirical rate.",
+      "rationale": "The finite-sample sub-Gaussian tail certificate is paired with the original strict positivity of a Laplace-smoothed empirical rate. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_pos` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
       "source": "fep-114",
       "target": "fep-036",
       "witness": "FEPComposed.fep114_subgaussian_tail_refines_fep036_empirical_rate"
@@ -4343,21 +4343,21 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The exact finite-sample Laplace error decomposition and the earlier smoothed-rate identity are retained together without treating smoothing as an unbiased estimator.",
+      "rationale": "The exact finite-sample Laplace error decomposition and the earlier smoothed-rate identity are retained together without treating smoothing as an unbiased estimator. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_eq_shrunkEmpirical` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
       "source": "fep-121",
       "target": "fep-036",
       "witness": "FEPComposed.fep121_laplaceError_extends_fep036"
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The explicit pseudo-count bias bound and the earlier strict-positivity result jointly expose both the benefit and finite-sample offset of add-one smoothing.",
+      "rationale": "The explicit pseudo-count bias bound and the earlier strict-positivity result jointly expose both the benefit and finite-sample offset of add-one smoothing. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_mem_Ioo` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
       "source": "fep-122",
       "target": "fep-036",
       "witness": "FEPComposed.fep122_laplaceBias_extends_fep036"
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The deterministic absolute-error transfer is paired with the original smoothed-rate formula, with its empirical-error premise kept explicit.",
+      "rationale": "The deterministic absolute-error transfer is paired with the original smoothed-rate formula, with its empirical-error premise kept explicit. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_eq_shrunkEmpirical` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
       "source": "fep-123",
       "target": "fep-036",
       "witness": "FEPComposed.fep123_laplaceAbsoluteError_extends_fep036"
@@ -4511,7 +4511,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The derived exponential-family score is centered exactly, extending the abstract centered-score contract used by the earlier Fisher-geometry topic.",
+      "rationale": "The derived exponential-family score is centered exactly, extending the abstract centered-score contract used by the earlier Fisher-geometry topic. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_expectedScore_zero` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
       "source": "fep-145",
       "target": "fep-038",
       "witness": "FEPComposed.fep145_centeredScore_extends_fep038"
