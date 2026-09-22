@@ -2620,8 +2620,8 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
         "cff-version: 1.2.0\n"
         'version: "1.2.0"\n'
         'date-released: "2026-09-17"\n'
-        "repository-code: https://github.com/ActiveInferenceInstitute/fep_lean\n"
-        "url: https://github.com/ActiveInferenceInstitute/fep_lean\n"
+        "repository-code: https://github.com/ActiveInferenceInstitute/fep_formal\n"
+        "url: https://github.com/ActiveInferenceInstitute/fep_formal\n"
         "license: CC-BY-4.0\n"
         "authors:\n"
         "  - &canonical-author\n"
@@ -2661,8 +2661,8 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
     with (project_root / "pyproject.toml").open("a", encoding="utf-8") as handle:
         handle.write(
             "\n[project.urls]\n"
-            'Repository = "https://github.com/ActiveInferenceInstitute/fep_lean"\n'
-            'Changelog = "https://github.com/ActiveInferenceInstitute/fep_lean/blob/main/CHANGELOG.md"\n'
+            'Repository = "https://github.com/ActiveInferenceInstitute/fep_formal"\n'
+            'Changelog = "https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CHANGELOG.md"\n'
             '"Concept DOI" = "https://doi.org/10.5281/zenodo.19699233"\n'
         )
     (project_root / "src/fep_lean/__init__.py").write_text(
@@ -2675,11 +2675,11 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
         "meta:\n"
         "  updated: '2026-09-17'\n"
         "repo:\n"
-        "  full_name: ActiveInferenceInstitute/fep_lean\n"
+        "  full_name: ActiveInferenceInstitute/fep_formal\n"
         "  description: 'Release v1.2.0 (2026-09-17); concept DOI 10.5281/zenodo.19699233'\n"
         "ecosystem:\n"
         "  links:\n"
-        "    github: https://github.com/ActiveInferenceInstitute/fep_lean\n"
+        "    github: https://github.com/ActiveInferenceInstitute/fep_formal\n"
         "provenance:\n"
         "  license: CC-BY-4.0\n"
         "  citation:\n"
@@ -2706,14 +2706,14 @@ def test_release_metadata_rejects_a_misdirected_repository_url(tmp_path: Path) -
     citation = tmp_path / "CITATION.cff"
     citation.write_text(
         citation.read_text(encoding="utf-8").replace(
-            "repository-code: https://github.com/ActiveInferenceInstitute/fep_lean",
+            "repository-code: https://github.com/ActiveInferenceInstitute/fep_formal",
             "repository-code: https://github.com/example/wrong",
         ),
         encoding="utf-8",
     )
 
     assert bundle_module._license_metadata_errors(tmp_path) == (
-        "CITATION.cff repository-code must be https://github.com/ActiveInferenceInstitute/fep_lean",
+        "CITATION.cff repository-code must be https://github.com/ActiveInferenceInstitute/fep_formal",
     )
 
 
@@ -2722,14 +2722,14 @@ def test_release_metadata_rejects_a_misdirected_package_url(tmp_path: Path) -> N
     pyproject = tmp_path / "pyproject.toml"
     pyproject.write_text(
         pyproject.read_text(encoding="utf-8").replace(
-            'Repository = "https://github.com/ActiveInferenceInstitute/fep_lean"',
+            'Repository = "https://github.com/ActiveInferenceInstitute/fep_formal"',
             'Repository = "https://github.com/example/wrong"',
         ),
         encoding="utf-8",
     )
 
     assert bundle_module._license_metadata_errors(tmp_path) == (
-        "Python package Repository URL must be https://github.com/ActiveInferenceInstitute/fep_lean",
+        "Python package Repository URL must be https://github.com/ActiveInferenceInstitute/fep_formal",
     )
 
 
@@ -2826,8 +2826,8 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
     (tmp_path / "pyproject.toml").write_text(
         '[project]\nname = "fixture"\nreadme = "README.md"\n'
         'authors = [{ name = "Daniel Ari Friedman", email = "daniel@activeinference.institute" }]\n\n'
-        '[project.urls]\nRepository = "https://github.com/ActiveInferenceInstitute/fep_lean"\n'
-        'Changelog = "https://github.com/ActiveInferenceInstitute/fep_lean/blob/main/CHANGELOG.md"\n'
+        '[project.urls]\nRepository = "https://github.com/ActiveInferenceInstitute/fep_formal"\n'
+        'Changelog = "https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CHANGELOG.md"\n'
         '"Concept DOI" = "https://doi.org/10.5281/zenodo.19699233"\n',
         encoding="utf-8",
     )

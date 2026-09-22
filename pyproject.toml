@@ -35,8 +35,8 @@ dev = [
 fep-lean = "fep_lean.cli:main"
 
 [project.urls]
-Repository = "https://github.com/ActiveInferenceInstitute/fep_lean"
-Changelog = "https://github.com/ActiveInferenceInstitute/fep_lean/blob/main/CHANGELOG.md"
+Repository = "https://github.com/ActiveInferenceInstitute/fep_formal"
+Changelog = "https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CHANGELOG.md"
 "Concept DOI" = "https://doi.org/10.5281/zenodo.19699233"
 
 [tool.setuptools.packages.find]
