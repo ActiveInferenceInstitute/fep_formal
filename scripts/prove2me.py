@@ -31,7 +31,6 @@ if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
 from fep_lean.prove2me.client import Prove2meClient
-
 from fep_lean.prove2me.config import Prove2meConfig, Prove2meError
 from fep_lean.prove2me.missions import wait_for_verdict
 
@@ -82,6 +81,11 @@ def build_parser() -> argparse.ArgumentParser:
     search.add_argument("--sort", default=None, help="sort order")
     search.add_argument("--tags", default=None, help="comma-separated tags")
     _add_common(search)
+    theorem_show = subparsers.add_parser(
+        "theorem-show", help="show one theorem (GET /theorems/:id)"
+    )
+    theorem_show.add_argument("--id", required=True, help="theorem id to show")
+    _add_common(theorem_show)
 
     mission_list = subparsers.add_parser(
         "mission-list", help="list missions (GET /missions)"
@@ -119,6 +123,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--env", default=None, help="environment for the mission"
     )
     _add_common(proposal_create)
+    proposal_show = subparsers.add_parser(
+        "proposal-show",
+        help="show one proposal with milestones (GET /mission-proposals/:id)",
+    )
+    proposal_show.add_argument("--id", required=True, help="proposal id to show")
+    _add_common(proposal_show)
 
     submit = subparsers.add_parser(
         "submit", help="submit a Lean proof for verification (POST /verify)"
@@ -176,6 +186,8 @@ def _dispatch(client: Prove2meClient, args: argparse.Namespace) -> dict[str, Any
             sort=args.sort,
             tags=_split_tags(args.tags),
         )
+    if args.command == "theorem-show":
+        return client.get_theorem(args.id)
     if args.command == "mission-list":
         return client.list_missions(limit=args.limit, offset=args.offset)
     if args.command == "proposal-create":
@@ -186,6 +198,10 @@ def _dispatch(client: Prove2meClient, args: argparse.Namespace) -> dict[str, Any
             field_ids=args.field_ids,
             env=args.env,
         )
+    if args.command == "proposal-show":
+        proposal = client.get_proposal(args.id)
+        proposal["milestones"] = client.list_proposal_milestones(args.id)
+        return proposal
     if args.command == "submit":
         solution_lean = Path(args.file).read_text(encoding="utf-8")
         return client.submit_proof(

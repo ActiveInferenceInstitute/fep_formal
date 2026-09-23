@@ -362,6 +362,13 @@ class Prove2meClient:
             "GET", f"/mission-proposals/{urllib.parse.quote(proposal_id, safe='')}"
         )
 
+    def list_proposal_milestones(self, proposal_id: str) -> dict[str, Any]:
+        """List a proposal's milestones. GET /mission-proposals/:id/milestones"""
+        return self._request(
+            "GET",
+            f"/mission-proposals/{urllib.parse.quote(proposal_id, safe='')}/milestones",
+        )
+
     def update_proposal(
         self, proposal_id: str, fields: Mapping[str, Any]
     ) -> dict[str, Any]:

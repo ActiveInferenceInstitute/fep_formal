@@ -222,6 +222,21 @@ def test_get_endpoints_paths_and_params(
     assert urls[5].endswith("/mission-proposals/P-9")
 
 
+def test_list_proposal_milestones_hits_milestones_path(
+    scripted_client: tuple[Prove2meClient, FakeTransport],
+) -> None:
+    """Milestone listing GETs /mission-proposals/:id/milestones with quoted id."""
+    client, transport = scripted_client
+    transport.script_response(
+        "GET", "mission-proposals/P-9/milestones", 200, b'{"items": []}'
+    )
+
+    client.list_proposal_milestones("P-9")
+
+    (request,) = [r for r in transport.requests if r["method"] == "GET"]
+    assert request["url"].endswith("/mission-proposals/P-9/milestones")
+
+
 def test_json_post_patch_bodies(
     scripted_client: tuple[Prove2meClient, FakeTransport],
 ) -> None:

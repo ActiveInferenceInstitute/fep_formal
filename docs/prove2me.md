@@ -83,6 +83,8 @@ $ uv run python scripts/prove2me.py search --q "natural blankets" --status open 
 $ uv run python scripts/prove2me.py mission-list --limit 20 --offset 0
 $ uv run python scripts/prove2me.py proposal-create --name "Blanket missions" \
       --description "Batch of blanket theorems" --mission-type OpenProblem --field-id UUID
+$ uv run python scripts/prove2me.py theorem-show --id THEOREM-ID
+$ uv run python scripts/prove2me.py proposal-show --id PROPOSAL-ID
 $ uv run python scripts/prove2me.py submit --theorem-id THEOREM-ID --file solution.lean
 $ uv run python scripts/prove2me.py poll --submission-id SUBMISSION-ID --timeout-s 600 --poll-s 5
 ```
