@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "0f6f80e35496b5bf8d47875b9135f53edd311030",
+    "commit": "5de75c64b1e82a1a7b6d21f8bfd23f4fcbde7f2b",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -168,7 +168,7 @@
     }
   },
   "gnn": {
-    "commit": "f67307bace4d4218b1b2ba29a7cd796f9a3ff4a5",
+    "commit": "cfd1415f13893d85eb3f592f54bfb0a51214c1fc",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -550,7 +550,7 @@
       "src/gnn/pipeline/pipeline_container_plan.py": "be12677d6a63c3235350b52dc9abae933a8765a36ef53ec5583095b7390d1a63",
       "src/gnn/pipeline/pipeline_runtime_validator.py": "6b1d9e8e63eee3b42c0cdb24ce74cc0e2f8b7f8b0523da6bc5da344a5d03e029",
       "src/gnn/pipeline/preflight.py": "2f30cd6a645836bca5b0bdc2ec0a106dac8e37b3616c4bdfaa6c74771e93eab5",
-      "src/gnn/pipeline/run_manifest.py": "5945cda5420e45884f0e7984d5c2fccab6a16c19488d09104cb4559724a0127c",
+      "src/gnn/pipeline/run_manifest.py": "02875ac5ea91bc9c87463e66c013391fe28a4d3cf115a104e77e6a4652426f98",
       "src/gnn/pipeline/run_session.py": "1aac3f811a546b00eb49900700849eec3c0b4e0366c461fbd508a0632912dd00",
       "src/gnn/pipeline/run_session_wiring.py": "6d119952530756f510bbad93f4c6fee671fe75bb2ea7f1c86eea97d5a1ce6660",
       "src/gnn/pipeline/schemas.py": "ac559069a6ae9c82b26c897e2484ded4817ccfa23b822c5160a5f33d01377a7e",
