@@ -163,6 +163,7 @@ def test_401_twice_raises_auth_error() -> None:
     with pytest.raises(Prove2meAuthError) as excinfo:
         client.whoami()
     assert excinfo.value.status_code == 401
+    assert "API key expired" in str(excinfo.value)
     me_calls = [r for r in transport.requests if r["url"].endswith("/me")]
     assert len(me_calls) == 2
 

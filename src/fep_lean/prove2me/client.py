@@ -420,7 +420,8 @@ class Prove2meClient:
         status, raw = self._call_transport(method, url, headers, body)
         if status == 401:
             raise Prove2meAuthError(
-                "request rejected with HTTP 401 after a fresh token exchange",
+                "API key expired: request rejected with HTTP 401 even after a "
+                "fresh token exchange",
                 status_code=401,
             )
         return status, raw
