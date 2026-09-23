@@ -18,6 +18,7 @@
 - [Lean 4](lean4.md) — pinned workspace and aggregate generation.
 - [Lean landscape](lean-landscape.md) — generated dependency-ordered map of the formal modules.
 - [Hermes](hermes.md) — HTTP client, cache, retries, and response validation.
+- [Prove2me](prove2me.md) — Lean-formalization platform client: API-key auth, missions, proposals, and proof verification.
 - [OpenGauss](opengauss.md) — SQLite state and artifact persistence.
 - [Testing](testing.md) — local and CI validation.
 - [Cold start](cold-start-and-cleanup.md) — disposable output cleanup.
