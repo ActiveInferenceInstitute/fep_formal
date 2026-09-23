@@ -3,6 +3,8 @@ import FepSketches.finite_posterior_learning
 import FepSketches.measure_bayes
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
 import Mathlib.Probability.Independence.InfinitePi
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.Probability.Distributions.Gaussian.Fernique
 import Mathlib.Probability.Kernel.Composition.Lemmas
 import Mathlib.Probability.Kernel.CondDistrib
 import Mathlib.Probability.Martingale.Convergence
