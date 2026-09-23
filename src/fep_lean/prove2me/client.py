@@ -440,7 +440,8 @@ class Prove2meClient:
         )
         if status == 401:
             raise Prove2meAuthError(
-                "token exchange rejected with HTTP 401", status_code=401
+                "API key expired: token exchange rejected with HTTP 401",
+                status_code=401,
             )
         parsed = self._parse_json("POST", "/agent/refresh", status, raw)
         token = parsed.get("access_token")

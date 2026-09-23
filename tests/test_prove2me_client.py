@@ -174,8 +174,9 @@ def test_refresh_endpoint_failure_raises_auth_error() -> None:
     transport.script_response("POST", "agent/refresh", 401, b'{"error": "bad key"}')
     client = make_client(transport)
 
-    with pytest.raises(Prove2meAuthError):
+    with pytest.raises(Prove2meAuthError) as excinfo:
         client.refresh_token()
+    assert "API key expired" in str(excinfo.value)
 
 
 # ── endpoint paths, methods, payloads ─────────────────────────────────────────
