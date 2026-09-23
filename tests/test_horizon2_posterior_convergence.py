@@ -20,6 +20,8 @@ EXACT_IMPORTS = (
     "FepSketches.measure_bayes",
     "Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic",
     "Mathlib.Probability.Independence.InfinitePi",
+    "Mathlib.MeasureTheory.Measure.ProbabilityMeasure",
+    "Mathlib.Probability.Distributions.Gaussian.Fernique",
     "Mathlib.Probability.Kernel.Composition.Lemmas",
     "Mathlib.Probability.Kernel.CondDistrib",
     "Mathlib.Probability.Martingale.Convergence",
