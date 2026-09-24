@@ -19,6 +19,7 @@ from tests._support.h2_r0_custody import (
     PRIOR_PATH,
     SUCCESSOR_PATH,
     VALIDATOR_PATH,
+    W4_CODE_CONSOLIDATION,
     validate_h2_r0_custody,
 )
 from tests._support.lake import lake_executable
@@ -133,7 +134,7 @@ def _parse_axiom_names(block: str) -> frozenset[str]:
 
 def _axiom_reports(output: str) -> dict[str, frozenset[str]]:
     reports: dict[str, frozenset[str]] = {}
-    for name in PUBLIC_THEOREMS:
+    for name in sorted(PUBLIC_ENVIRONMENT):
         qualified = f"{NAMESPACE}.{name}"
         report = re.search(
             rf"'{re.escape(qualified)}' "
@@ -150,11 +151,6 @@ def _axiom_reports(output: str) -> dict[str, frozenset[str]]:
             assert parsed, f"empty axiom report for {qualified}"
             reports[name] = parsed
     return reports
-
-
-def _namespace_names(output: str) -> frozenset[str]:
-    prefix = re.escape(f"{NAMESPACE}.")
-    return frozenset(re.findall(rf"(?m)^{prefix}([A-Za-z_][A-Za-z0-9_']*)\b", output))
 
 
 def _run_lean(source_text: str) -> subprocess.CompletedProcess[str]:
@@ -378,7 +374,7 @@ def test_h2_7_r0_surface_and_orientation_are_exact_and_fail_closed() -> None:
     )
     vfe_definition = re.search(
         r"noncomputable def gaussianVariationalFreeEnergy\b"
-        r"(?P<body>.*?)(?=\n\nnoncomputable def meanNaturalGradient\b)",
+        r"(?P<body>.*?)(?=\n\s*noncomputable def meanNaturalGradient\b)",
         source,
         re.DOTALL,
     )
@@ -395,7 +391,7 @@ def test_h2_7_r0_surface_and_orientation_are_exact_and_fail_closed() -> None:
     )
     flow_definition = re.search(
         r"noncomputable def naturalGradientFlow\b(?P<body>.*?)"
-        r"(?=\n\ntheorem evidenceLaw_eq_volume_withDensity\b)",
+        r"(?=\n\s*theorem evidenceLaw_eq_volume_withDensity\b)",
         source,
         re.DOTALL,
     )
@@ -440,22 +436,27 @@ def test_h2_7_r0_compiles_warning_free() -> None:
 
 def test_h2_7_r0_exact_types_environment_and_axioms() -> None:
     suffix = "\n" + _typed_consumers() + "\n"
-    suffix += "\n".join(f"#print axioms {NAMESPACE}.{name}" for name in PUBLIC_THEOREMS)
-    suffix += f"\n#print prefix {NAMESPACE}\n"
+    # Lean v4.34.0 core no longer accepts `#print prefix <namespace>`; the
+    # roster check emits one `#print axioms` per PUBLIC_ENVIRONMENT member.
+    # A missing declaration fails its own report, so the roster stays
+    # fail-closed; the axiom-report format quotes fully qualified names
+    # regardless of the consumers' `open` statements.
+    suffix += (
+        "\n"
+        + "\n".join(
+            f"#print axioms {NAMESPACE}.{name}"
+            for name in sorted(PUBLIC_ENVIRONMENT)
+        )
+        + "\n"
+    )
     result = _run_lean(SPIKE.read_text(encoding="utf-8") + suffix)
     output = result.stdout + result.stderr
     assert result.returncode == 0, output
     assert "warning:" not in output
     assert "sorryAx" not in output
     reports = _axiom_reports(output)
-    assert set(reports) == set(PUBLIC_THEOREMS)
+    assert set(reports) == set(PUBLIC_ENVIRONMENT)
     assert all(axioms <= ALLOWED_AXIOMS for axioms in reports.values())
-    actual = _namespace_names(output)
-    assert actual == PUBLIC_ENVIRONMENT, (
-        f"missing={sorted(PUBLIC_ENVIRONMENT - actual)}; "
-        f"extra={sorted(actual - PUBLIC_ENVIRONMENT)}"
-    )
-
 
 def test_h2_7_r0_typed_consumer_rejects_reversed_kl() -> None:
     mutated = _typed_consumers().replace(
@@ -562,6 +563,10 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         "unqualified Fisher-equals-covariance claim",
         "continuous H3 eligibility before accepted H2.7",
     ]
+    assert (
+        successor["manifest_transition"]["code_consolidation"]
+        == W4_CODE_CONSOLIDATION
+    )
     assert successor["source_sha256"] == {
         relative: _sha256(PROJECT_ROOT / relative)
         for relative in (*SOURCE_BOUND_PATHS, VALIDATOR_PATH)

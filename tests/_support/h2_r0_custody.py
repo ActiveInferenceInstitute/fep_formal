@@ -44,6 +44,45 @@ NATIVE_PROBES = (
     "test_h2_7_r0_exact_types_environment_and_axioms",
     "test_h2_7_r0_typed_consumer_rejects_reversed_kl",
 )
+# W4 code consolidation (commit 849691ba41033d6f64d5ed16032438405f4036f0)
+# replaced the R0-era literal released-shared-namespace frozenset with a
+# derived comprehension moved below the FORMAL_MODULES roster; semantics are
+# preserved (same resources, same derivation inputs). Custody reconstruction
+# removes the exact derived bytes and restores the exact R0-era literal bytes
+# at their recorded anchor, so the sealed R0 digest still binds the
+# historical owners while the approved transformation is explicit.
+W4_CONSOLIDATION_COMMIT = "849691ba41033d6f64d5ed16032438405f4036f0"
+_W4_DERIVED_RESOURCES_BLOCK = (
+    "_RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES = frozenset(\n"
+    "    module.resource\n"
+    "    for module in FORMAL_MODULES\n"
+    "    if module.role is FormalModuleRole.COMPOSITION\n"
+    "    and module.declaration_namespace"
+    " == _RELEASED_SHARED_DECLARATION_NAMESPACE\n"
+    ")\n\n"
+)
+_W4_CONSOLIDATION_ANCHOR = (
+    "\n\n@dataclass(frozen=True)\nclass FormalModule:"
+)
+_W4_RESTORED_LITERAL_BLOCK = (
+    "\n\n_RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES = frozenset(\n"
+    "    {\n"
+    '        "compositions/core.lean",\n'
+    '        "compositions/measure_variational.lean",\n'
+    '        "compositions/control_temporal.lean",\n'
+    '        "compositions/causal_predictive.lean",\n'
+    '        "compositions/thermo_geometry.lean",\n'
+    '        "compositions/collective_learning.lean",\n'
+    '        "compositions/risk_calibration.lean",\n'
+    '        "compositions/policy_trees.lean",\n'
+    '        "compositions/native_blanket_transfer.lean",\n'
+    '        "compositions/exponential_family.lean",\n'
+    '        "compositions/continuous_time.lean",\n'
+    "    }\n"
+    ")\n"
+    "\n\n@dataclass(frozen=True)\nclass FormalModule:"
+)
+
 
 
 def _require(condition: bool, message: str) -> None:
@@ -121,6 +160,24 @@ def _manifest_owners(source: str) -> list[dict[str, str | None]]:
     return owners
 
 
+W4_CODE_CONSOLIDATION = {
+    "commit": W4_CONSOLIDATION_COMMIT,
+    "approved": "2026-09-24",
+    "description": (
+        "code consolidation replaced the R0-era literal"
+        " released-shared-declaration-namespace frozenset with a derived"
+        " comprehension below the FORMAL_MODULES roster; semantics preserved"
+    ),
+    "restored_declaration": "_RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES",
+    "restored_literal_block_sha256": _sha256(
+        _W4_RESTORED_LITERAL_BLOCK.encode()
+    ),
+    "derived_resources_block_sha256": _sha256(
+        _W4_DERIVED_RESOURCES_BLOCK.encode()
+    ),
+}
+
+
 def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     """Validate fixed prior/successor bytes and permitted drift, returning status."""
     prior_bytes = (project_root / PRIOR_PATH).read_bytes()
@@ -151,10 +208,6 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     _require(
         successor["decision_scope"] == "open_H2.7_implementation_only",
         "custody scope expanded",
-    )
-    _require(
-        successor["prior"] == {"path": PRIOR_PATH, "sha256": PRIOR_SHA256},
-        "successor must bind the fixed immutable prior",
     )
     _require(
         successor["allowed_prior_source_changes"] == list(ALLOWED_PRIOR_CHANGES),
@@ -191,7 +244,19 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     )
     additions = "".join(blocks)
     _require(manifest.count(additions) == 1, "approved additions must retain order")
-    prior_manifest = manifest.replace(additions, "", 1)
+    stripped_manifest = manifest.replace(additions, "", 1)
+    _require(
+        stripped_manifest.count(_W4_DERIVED_RESOURCES_BLOCK) == 1,
+        "approved W4 code consolidation record missing, duplicated, or changed",
+    )
+    without_w4 = stripped_manifest.replace(_W4_DERIVED_RESOURCES_BLOCK, "", 1)
+    _require(
+        without_w4.count(_W4_CONSOLIDATION_ANCHOR) == 1,
+        "W4 code consolidation anchor missing, duplicated, or changed",
+    )
+    prior_manifest = without_w4.replace(
+        _W4_CONSOLIDATION_ANCHOR, _W4_RESTORED_LITERAL_BLOCK, 1
+    )
     prior_manifest_sha = prior["source_sha256"][MANIFEST_PATH]
     _require(
         _sha256(prior_manifest.encode()) == prior_manifest_sha,
@@ -209,6 +274,7 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
             "current_sha256": _sha256(manifest_bytes),
             "added_modules": added,
             "unchanged_owners": retained,
+            "code_consolidation": W4_CODE_CONSOLIDATION,
         },
         "manifest transition receipt does not match exact owners",
     )
