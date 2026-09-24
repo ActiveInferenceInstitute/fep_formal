@@ -257,6 +257,7 @@ jobs:
 
   lean:
     runs-on: ubuntu-latest
+    needs: render-deps
     timeout-minutes: 180
     steps:
       - uses: actions/checkout@v7
@@ -317,12 +318,17 @@ jobs:
       # tests (catalogue, slice04, slice05) that would otherwise silently
       # skip; FEP_HEAVY_LEAN_PROBES stays off by design. No coverage here:
       # the 89% gate stays with the python job.
+      - name: Download the publication figure assets the render-deps job produced
+        uses: actions/download-artifact@v7
+        with:
+          name: render-figures
+          path: .
       - name: Run the serial_lean acceptance lane
         env:
           FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
           FEP_LEAN_SLICE04_COMPILE_TEST: "1"
           FEP_LEAN_SLICE05_COMPILE_TEST: "1"
-        run: uv run pytest tests/ -q -m serial_lean --dist loadgroup -n 4 --no-cov
+        run: uv run pytest tests/ -q -m serial_lean -n 1 --no-cov
       - name: Verify exact 155-topic native receipt
         run: |
           uv run fep-lean verify \
