@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "29d982739f0085f3e9f84615f786491e2273a3fb",
+    "commit": "03008b902c76d92be35be9be7576071f9abfe814",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -172,7 +172,7 @@
     }
   },
   "gnn": {
-    "commit": "480cb547414830dbcee7e02c78efc7bf38d5fef9",
+    "commit": "5c2bdb33a693accd5bf62e58f8ebc8d07680ae12",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -367,7 +367,7 @@
       "src/gnn/extract/__init__.py": "baedcbf88025e9ddc77a594f7df6c60c90b262422b55486ff0580349e0f5d3ab",
       "src/gnn/extract/__main__.py": "eb164f49b092dec754873bce34907a1bf569dac969d96a926c701788b6e53a29",
       "src/gnn/extract/mcp.py": "8f8715cb6f6ee9e072d0ad32f48cfa572936c2c5e4a85c4472afc209d9a447f7",
-      "src/gnn/extract/pomdp_extractor.py": "e8a00344355ce0c8d8e8f392112c1d08e9261a58397229564693492ac917db15",
+      "src/gnn/extract/pomdp_extractor.py": "d78e8f87da87eb7c5c7793f23b567614a09ed5dabfdc5092c2492195c479e2f2",
       "src/gnn/formal_specs/__init__.py": "d7950e023dabb5311a42dd70100241d9212b5836b3977956b33fb8b5ceefa82e",
       "src/gnn/frameworks.py": "a67b025a65c0e4d0fe8753f4fdf5037b4ff8f24194d873bb6fed110aec85e9aa",
       "src/gnn/grammars/__init__.py": "7c9abcf3a413d143604bdf7ba740191cf83fa70d54115f042347bd4718c8462e",
