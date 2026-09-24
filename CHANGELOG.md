@@ -1,4 +1,14 @@
 ## Unreleased
+### Coordinated evidence refresh: SOURCE_OWNER_ROSTER v21 (2026-09-24)
+
+`OWNER_MANIFEST_VERSION` 20 → 21 and six `src/fep_lean/custody/*` modules
+(`__init__`, `apply`, `census`, `cli`, `model`, `verify`) added to
+`SOURCE_OWNER_ROSTER`, landing the W19 custody layer as a coordinated
+evidence refresh per AGENTS.md. Prerequisite for `fep-lean verify`
+claim-readiness at any tip containing the custody package (the native
+capture fails post-compile otherwise); the next bridge pin cycle re-seals
+the roster-drifted source binding.
+
 
 ### Comprehensive improvement wave (2026-09-20/21) — SCOPE-2026-09-20
 
