@@ -4,7 +4,7 @@
   "claim_boundary": "Feasibility evidence only: non-proof numerical evidence under the H2 witness discipline. Not an H3.6S acceptance verdict, not observed-data calibration, and not an empirical claim.",
   "decision": "pass",
   "digests": {
-    "specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json": "0ced47f1a9fc934e205dfafa07680d83e47c6f1f8241e047f591a943f9043a3b",
+    "specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json": "dac2dac5dacef74d48657fed2e5f6e297635d8345e84fc9b62be02bfbbf05b45",
     "src/fep_lean/formal/compositions/gaussian_control.lean": "76b2e36f840682df5adac654456d2d94c81c636778fbcd1efa39bc3cbfe3d3f0",
     "src/fep_lean/formal/compositions/gaussian_filter.lean": "2b0ec699ab07e19800fb978157721e82420b650478479368aa3c4a7878ea156e",
     "src/fep_lean/formal/compositions/smooth_reference_kernel.lean": "156464de9e7c33e16fa22bd6939fa64938b03ee4f5554fb3ecd48fbfaed6d397",
