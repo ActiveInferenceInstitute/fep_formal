@@ -220,7 +220,7 @@ def _pin_evidence_errors(
         stable_ref = f"refs/tags/{tag}"
         if refs.get(stable_ref) != stable_pair.get(revision_key):
             errors.append(f"pin evidence stable revision mismatch: {repository_url}")
-        next_stable_ref = "refs/tags/v4.34.0"
+        next_stable_ref = "refs/tags/v4.35.0"
         if next_stable_ref in refs or next_stable_ref not in argv:
             errors.append(
                 f"pin evidence must query and exclude {next_stable_ref}: {repository_url}"

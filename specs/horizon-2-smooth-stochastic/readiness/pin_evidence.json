@@ -1,6 +1,6 @@
 {
-  "checked_at_utc": "2026-08-24T06:59:04Z",
-  "conclusion": "v4.33.1 is the latest stable matching Lean/Mathlib tag pair; v4.34.0 has release-candidate tags but no stable tag.",
+  "checked_at_utc": "2026-09-24T01:05:26Z",
+  "conclusion": "v4.34.0 is the latest stable matching Lean/Mathlib tag pair; v4.35.0 has release-candidate tags but no stable tag.",
   "repositories": [
     {
       "argv": [
@@ -8,14 +8,14 @@
         "ls-remote",
         "--tags",
         "https://github.com/leanprover/lean4.git",
-        "refs/tags/v4.33.1",
         "refs/tags/v4.34.0",
-        "refs/tags/v4.34.0-rc*"
+        "refs/tags/v4.35.0",
+        "refs/tags/v4.35.0-rc*"
       ],
       "refs": {
-        "refs/tags/v4.33.1": "819816b2e0a3bf405af45ae5c7af2491d8f5bee6",
-        "refs/tags/v4.34.0-rc1": "3447a668783dbce1a8fdb97101dd067687b2b418",
-        "refs/tags/v4.34.0-rc2": "6a10ac8c22beadecabdbb0919c2b50214762f91d"
+        "refs/tags/v4.34.0": "293d5d0c0c3f3dded4688b3ccd6a33939ac5102b",
+        "refs/tags/v4.35.0-rc1": "86c6347c75e39ec18c40e25ed2143b71a6e04a0a",
+        "refs/tags/v4.35.0-rc2": "11acb17ec6b07a8f9e9173e6845197929540936b"
       },
       "repository": "https://github.com/leanprover/lean4"
     },
@@ -25,22 +25,22 @@
         "ls-remote",
         "--tags",
         "https://github.com/leanprover-community/mathlib4.git",
-        "refs/tags/v4.33.1",
         "refs/tags/v4.34.0",
-        "refs/tags/v4.34.0-rc*"
+        "refs/tags/v4.35.0",
+        "refs/tags/v4.35.0-rc*"
       ],
       "refs": {
-        "refs/tags/v4.33.1": "0df444a360eaa60ab8c11dca51a86af692955474",
-        "refs/tags/v4.34.0-rc1": "de5ce8a9a66a4aa68a9bdbb35b63a06d34d9ca11",
-        "refs/tags/v4.34.0-rc2": "85e3a25e006c35636f0e53b0e9296caca2685bc0"
+        "refs/tags/v4.34.0": "5ed2965256430c3649e86755f9576b54eca72435",
+        "refs/tags/v4.35.0-rc1": "c32e1ec0d1eb5237ba344eee50162f45d5b0fc76",
+        "refs/tags/v4.35.0-rc2": "065356127b1dc0016f66b7283ce0ce2c4055aa55"
       },
       "repository": "https://github.com/leanprover-community/mathlib4"
     }
   ],
   "schema_version": 1,
   "stable_pair": {
-    "lean_revision": "819816b2e0a3bf405af45ae5c7af2491d8f5bee6",
-    "mathlib_revision": "0df444a360eaa60ab8c11dca51a86af692955474",
-    "tag": "v4.33.1"
+    "lean_revision": "293d5d0c0c3f3dded4688b3ccd6a33939ac5102b",
+    "mathlib_revision": "5ed2965256430c3649e86755f9576b54eca72435",
+    "tag": "v4.34.0"
   }
 }

@@ -117,7 +117,6 @@ AXIS_GENERATED_DECLARATIONS = (
     "Axis.sensory",
     "Axis.sensory.elim",
     "Axis.sensory.sizeOf_spec",
-    "Axis.toCtorIdx",
 )
 PUBLIC_ENVIRONMENT_DECLARATIONS = frozenset(
     (

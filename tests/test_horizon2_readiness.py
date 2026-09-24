@@ -28,9 +28,9 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 pytestmark = pytest.mark.serial_lean
 
 EXPECTED_TOOLCHAIN = {
-    "lean": "v4.33.1",
-    "mathlib_tag": "v4.33.1",
-    "mathlib_revision": "0df444a360eaa60ab8c11dca51a86af692955474",
+    "lean": "v4.34.0",
+    "mathlib_tag": "v4.34.0",
+    "mathlib_revision": "5ed2965256430c3649e86755f9576b54eca72435",
     "sources": {
         "lean_toolchain": "lean/lean-toolchain",
         "lakefile": "lean/lakefile.lean",
@@ -123,16 +123,16 @@ def test_readiness_pin_and_api_surface_probe_are_explicit() -> None:
     pin_evidence = json.loads(pin_evidence_path.read_text(encoding="utf-8"))
     assert pin_evidence["schema_version"] == 1
     assert pin_evidence["stable_pair"] == {
-        "lean_revision": "819816b2e0a3bf405af45ae5c7af2491d8f5bee6",
+        "lean_revision": "293d5d0c0c3f3dded4688b3ccd6a33939ac5102b",
         "mathlib_revision": EXPECTED_TOOLCHAIN["mathlib_revision"],
-        "tag": "v4.33.1",
+        "tag": "v4.34.0",
     }
     assert all(
-        "refs/tags/v4.34.0" not in repo["refs"] for repo in pin_evidence["repositories"]
+        "refs/tags/v4.35.0" not in repo["refs"] for repo in pin_evidence["repositories"]
     )
     assert (PROJECT_ROOT / "lean" / "lean-toolchain").read_text(
         encoding="utf-8"
-    ).strip() == "leanprover/lean4:v4.33.1"
+    ).strip() == "leanprover/lean4:v4.34.0"
     assert probe.is_file()
     source = probe.read_text(encoding="utf-8")
     assert re.search(r"(?m)^example\b", source)

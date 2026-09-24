@@ -20,7 +20,7 @@ SUCCESSOR_PATH = (
     "specs/horizon-2-smooth-stochastic/readiness/repairs/"
     "07-gaussian-vfe-natural-gradient-custody.json"
 )
-PRIOR_SHA256 = "792cae7f05cb5bb4d5a82d8561c317ebbb8ed4499660fc1f9e3825e27133a8d4"
+PRIOR_SHA256 = "b5637ff30690748ccf1db992e6fb7c34a267a3ed1a7b74daacb1bc9cac844d01"
 MANIFEST_PATH = "src/fep_lean/formal/manifest.py"
 READINESS_TEST_PATH = "tests/test_horizon2_gaussian_vfe_readiness.py"
 VALIDATOR_PATH = "tests/_support/h2_r0_custody.py"
