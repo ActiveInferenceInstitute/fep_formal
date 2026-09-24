@@ -195,7 +195,7 @@ def test_h2_6b_objective_is_the_actual_composed_gaussian_integral() -> None:
     source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
     risk = re.search(
         r"def quadraticActionRisk\b(?P<body>.*?)"
-        r"(?=\n\n(?:noncomputable )?def filteredQuadraticRisk)",
+        r"(?=\n(?:/--[^\n]*\n)?(?:noncomputable )?def filteredQuadraticRisk)",
         source,
         re.DOTALL,
     )
