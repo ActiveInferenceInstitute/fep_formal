@@ -576,6 +576,12 @@ def build_parser() -> argparse.ArgumentParser:
     from fep_lean.bridge.cli import add_arguments
 
     add_arguments(sub.add_parser("bridge", help="source-bound GNN bridge operations"))
+
+    from fep_lean.custody.cli import add_arguments
+
+    add_arguments(
+        sub.add_parser("custody", help="H2.7 evidence-custody census and apply")
+    )
     sub.add_parser("setup", help="explicitly acquire/build the pinned Lean workspace")
     sub.add_parser("preflight", help="run read-only full-mode capability checks")
     verify = sub.add_parser("verify", help="compile catalogue sketches with Lean only")
@@ -672,6 +678,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             from fep_lean.bridge.cli import run as run_bridge
 
             return run_bridge(root, args)
+        if args.command == "custody":
+            from fep_lean.custody.cli import run as run_custody
+
+            return run_custody(root, args)
         if args.command == "preflight":
             result = run_validation_checks(root, mode="full")
             print(json.dumps(result, indent=2))
