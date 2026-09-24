@@ -42,7 +42,7 @@
         "role": "foundation"
       }
     ],
-    "current_sha256": "f619ad885bcea22d588092ee3b33962e57aaf9200545c697dcd2b68106ec5e17",
+    "current_sha256": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
     "prior_sha256": "9ac7bb2e188f23681c6992db4214a5113fbf821bf731f74a2dab2df22c0f0405",
     "unchanged_owners": [
       {
@@ -357,7 +357,15 @@
         "resource": "composed.lean",
         "role": "aggregate"
       }
-    ]
+    ],
+    "code_consolidation": {
+      "commit": "849691ba41033d6f64d5ed16032438405f4036f0",
+      "approved": "2026-09-24",
+      "description": "code consolidation replaced the R0-era literal released-shared-declaration-namespace frozenset with a derived comprehension below the FORMAL_MODULES roster; semantics preserved",
+      "restored_declaration": "_RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES",
+      "restored_literal_block_sha256": "59c8cd0f46614cf7cd2aeae1eb02839132b3e38b070b60371eeb63dc2ce4e55c",
+      "derived_resources_block_sha256": "f874c1cf429a02e90d09cb7d76e83120696d68de5095ad7d2c1615072ab49505"
+    }
   },
   "native_evidence": {
     "historical_evidence_reused": false,
@@ -381,8 +389,8 @@
           "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
           "src/fep_lean/formal/manifest.py": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
           "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-          "tests/_support/h2_r0_custody.py": "08ae7a49a2706ce7563a2e18eaae9a6751ba28069cdd64c665fe42ae8038ec63",
-          "tests/test_horizon2_gaussian_vfe_readiness.py": "68b716667f115a18cafd3939137656944904d78b2a49300b09f7cb26080f3d80",
+          "tests/_support/h2_r0_custody.py": "f5112828a67646194991b4688adbc6576c03c0fbc4220d116c579893911360bc",
+          "tests/test_horizon2_gaussian_vfe_readiness.py": "4914988b319558f822ae6df4abd99b62a04b308e4248adbcc846eaebc7d19341",
           "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
         }
       },
@@ -405,8 +413,8 @@
           "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
           "src/fep_lean/formal/manifest.py": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
           "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-          "tests/_support/h2_r0_custody.py": "08ae7a49a2706ce7563a2e18eaae9a6751ba28069cdd64c665fe42ae8038ec63",
-          "tests/test_horizon2_gaussian_vfe_readiness.py": "68b716667f115a18cafd3939137656944904d78b2a49300b09f7cb26080f3d80",
+          "tests/_support/h2_r0_custody.py": "f5112828a67646194991b4688adbc6576c03c0fbc4220d116c579893911360bc",
+          "tests/test_horizon2_gaussian_vfe_readiness.py": "4914988b319558f822ae6df4abd99b62a04b308e4248adbcc846eaebc7d19341",
           "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
         }
       },
@@ -429,8 +437,8 @@
           "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
           "src/fep_lean/formal/manifest.py": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
           "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-          "tests/_support/h2_r0_custody.py": "08ae7a49a2706ce7563a2e18eaae9a6751ba28069cdd64c665fe42ae8038ec63",
-          "tests/test_horizon2_gaussian_vfe_readiness.py": "68b716667f115a18cafd3939137656944904d78b2a49300b09f7cb26080f3d80",
+          "tests/_support/h2_r0_custody.py": "f5112828a67646194991b4688adbc6576c03c0fbc4220d116c579893911360bc",
+          "tests/test_horizon2_gaussian_vfe_readiness.py": "4914988b319558f822ae6df4abd99b62a04b308e4248adbcc846eaebc7d19341",
           "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
         }
       }
@@ -458,8 +466,8 @@
     "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
     "src/fep_lean/formal/manifest.py": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
     "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-    "tests/_support/h2_r0_custody.py": "08ae7a49a2706ce7563a2e18eaae9a6751ba28069cdd64c665fe42ae8038ec63",
-    "tests/test_horizon2_gaussian_vfe_readiness.py": "68b716667f115a18cafd3939137656944904d78b2a49300b09f7cb26080f3d80",
+    "tests/_support/h2_r0_custody.py": "f5112828a67646194991b4688adbc6576c03c0fbc4220d116c579893911360bc",
+    "tests/test_horizon2_gaussian_vfe_readiness.py": "4914988b319558f822ae6df4abd99b62a04b308e4248adbcc846eaebc7d19341",
     "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
   }
 }
