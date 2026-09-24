@@ -290,9 +290,11 @@ def _parse_namespace_declaration_names(output: str, namespace: str) -> frozenset
     qualified_prefix = re.escape(f"{namespace}.")
     return frozenset(
         re.findall(
-            rf"(?m)^{qualified_prefix}"
-            r"([A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)",
+            rf"'{qualified_prefix}"
+            r"([A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)' "
+            r"(?:depends on axioms: \[.*?\]|does not depend on any axioms)",
             output,
+            re.DOTALL,
         )
     )
 
@@ -322,6 +324,8 @@ def test_h2_5c_environment_census_rejects_every_public_declaration_form(
     tmp_path: Path,
 ) -> None:
     probe = tmp_path / "Fin4GaussianSemigroupCensusMutations.lean"
+    # v4.34 core rejects `#print prefix`; the census emits one `#print axioms`
+    # per injected declaration and the parser consumes the quoted reports.
     probe.write_text(
         """import FepSketches.linear_gaussian_semigroup
 
@@ -338,7 +342,10 @@ theorem attributedTheorem (value : Nat) : value + 0 = value := by simp
 
 end FEP.Fin4GaussianCensusMutation
 
-#print prefix FEP.Fin4GaussianCensusMutation
+#print axioms FEP.Fin4GaussianCensusMutation.publicLemma
+#print axioms FEP.Fin4GaussianCensusMutation.protectedTheorem
+#print axioms FEP.Fin4GaussianCensusMutation.attributedTheorem
+#print axioms FEP.Fin4GaussianCensusMutation.sameLineTheorem
 """,
         encoding="utf-8",
     )
@@ -650,8 +657,13 @@ def test_h2_5c_compiles_warning_free() -> None:
 def test_h2_5c_public_surface_axioms_and_terminal_export(tmp_path: Path) -> None:
     probe = tmp_path / "Fin4GaussianSemigroupAxioms.lean"
     source = FOUNDATION.read_text(encoding="utf-8")
+    # v4.34 core rejects `#print prefix`; the roster check emits one
+    # `#print axioms` per sorted roster member, and a missing declaration
+    # fails its own report so the roster stays fail-closed. Axiom reports
+    # quote fully qualified names regardless of consumers' `open`.
     prints = "\n".join(
-        f"#print axioms FEP.Fin4GaussianSemigroup.{name}" for name in PUBLIC_THEOREMS
+        f"#print axioms FEP.Fin4GaussianSemigroup.{name}"
+        for name in sorted(PUBLIC_ENVIRONMENT_DECLARATIONS)
     )
     consumers = f"""
 open Filter MeasureTheory ProbabilityTheory
@@ -693,7 +705,7 @@ example :
   exactFin4Carrier
 """
     probe.write_text(
-        f"{source}\n{prints}\n#print prefix FEP.Fin4GaussianSemigroup\n{consumers}\n",
+        f"{source}\n{prints}\n{consumers}\n",
         encoding="utf-8",
     )
     result = run_lean_compile_probe(

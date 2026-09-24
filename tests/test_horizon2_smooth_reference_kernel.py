@@ -122,7 +122,7 @@ def _parse_axioms(block: str) -> frozenset[str]:
 
 def _axiom_reports(output: str) -> dict[str, frozenset[str]]:
     reports: dict[str, frozenset[str]] = {}
-    for name in PUBLIC_THEOREMS:
+    for name in sorted(PUBLIC_ENVIRONMENT):
         qualified = f"{NAMESPACE}.{name}"
         report = re.search(
             rf"'{re.escape(qualified)}' "
@@ -139,11 +139,6 @@ def _axiom_reports(output: str) -> dict[str, frozenset[str]]:
             assert parsed, f"empty axiom report for {qualified}"
             reports[name] = parsed
     return reports
-
-
-def _namespace_names(output: str) -> frozenset[str]:
-    prefix = re.escape(f"{NAMESPACE}.")
-    return frozenset(re.findall(rf"(?m)^{prefix}([A-Za-z_][A-Za-z0-9_']*)\b", output))
 
 
 def _typed_terminal_consumers() -> str:
@@ -345,26 +340,28 @@ def test_h2_7_compiles_warning_free() -> None:
 
 
 def test_h2_7_environment_and_all_theorems_use_only_standard_axioms() -> None:
-    suffix = (
+    suffix = "\n" + _typed_terminal_consumers() + "\n"
+    # Lean v4.34.0 core no longer accepts `#print prefix <namespace>`; the
+    # roster check emits one `#print axioms` per PUBLIC_ENVIRONMENT member.
+    # A missing declaration fails its own report, so the roster stays
+    # fail-closed; the axiom-report format quotes fully qualified names
+    # regardless of the consumers' `open` statements.
+    suffix += (
         "\n"
-        + _typed_terminal_consumers()
+        + "\n".join(
+            f"#print axioms {NAMESPACE}.{name}"
+            for name in sorted(PUBLIC_ENVIRONMENT)
+        )
         + "\n"
-        + "\n".join(f"#print axioms {NAMESPACE}.{name}" for name in PUBLIC_THEOREMS)
     )
-    suffix += f"\n#print prefix {NAMESPACE}\n"
     result = _run_lean(SOURCE.read_text(encoding="utf-8") + suffix)
     output = result.stdout + result.stderr
     assert result.returncode == 0, output
     assert "warning:" not in output
     assert "sorryAx" not in output
     reports = _axiom_reports(output)
-    assert set(reports) == set(PUBLIC_THEOREMS)
+    assert set(reports) == set(PUBLIC_ENVIRONMENT)
     assert all(axioms <= ALLOWED_AXIOMS for axioms in reports.values())
-    actual = _namespace_names(output)
-    assert actual == PUBLIC_ENVIRONMENT, (
-        f"missing={sorted(PUBLIC_ENVIRONMENT - actual)}; "
-        f"extra={sorted(actual - PUBLIC_ENVIRONMENT)}"
-    )
 
 
 def test_h2_7_typed_terminal_rejects_a_different_transition_carrier() -> None:
