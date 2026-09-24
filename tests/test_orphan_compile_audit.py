@@ -35,9 +35,7 @@ def _write_module(root: Path, resource: str, imports: tuple[str, ...] = ()) -> P
     """Write one canonical formal module with the given import lines."""
     path = root / "src" / "fep_lean" / "formal" / resource
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        "".join(f"import {name}\n" for name in imports), encoding="utf-8"
-    )
+    path.write_text("".join(f"import {name}\n" for name in imports), encoding="utf-8")
     return path
 
 
@@ -45,9 +43,7 @@ def _write_fep_all(root: Path, imports: tuple[str, ...]) -> None:
     """Write the generated aggregate with the given import lines."""
     path = root / "lean" / "FepSketches" / "fep_all.lean"
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        "".join(f"import {name}\n" for name in imports), encoding="utf-8"
-    )
+    path.write_text("".join(f"import {name}\n" for name in imports), encoding="utf-8")
 
 
 def _incident_fixture(root: Path) -> None:
@@ -161,7 +157,9 @@ def test_lake_invocation_uses_env_lean_from_lean_dir(
     script = _load_script()
     calls: list[tuple[tuple[object, ...], dict[str, object]]] = []
 
-    def fake_subprocess_run(*args: object, **kwargs: object) -> subprocess.CompletedProcess[str]:
+    def fake_subprocess_run(
+        *args: object, **kwargs: object
+    ) -> subprocess.CompletedProcess[str]:
         calls.append((args, kwargs))
         return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
@@ -186,7 +184,9 @@ def test_main_fails_closed_on_compile_error(
         return subprocess.CompletedProcess(
             args=[],
             returncode=1 if failing else 0,
-            stdout="error: unknown identifier 'ProbabilityMeasure'\n" if failing else "",
+            stdout="error: unknown identifier 'ProbabilityMeasure'\n"
+            if failing
+            else "",
             stderr="",
         )
 

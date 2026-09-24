@@ -678,8 +678,7 @@ def test_h2_3_public_environment_axioms_and_h2_3b_exact_types(tmp_path: Path) ->
         f"{DECLARATION_NAMESPACE}.{name}" for name in PUBLIC_THEOREMS
     )
     probe.write_text(
-        f"{SOURCE.read_text(encoding='utf-8')}\n{prints}\n"
-        f"{_h2_3b_typed_consumers()}\n",
+        f"{SOURCE.read_text(encoding='utf-8')}\n{prints}\n{_h2_3b_typed_consumers()}\n",
         encoding="utf-8",
     )
     result = run_lean_compile_probe(

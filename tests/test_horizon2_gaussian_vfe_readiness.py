@@ -444,8 +444,7 @@ def test_h2_7_r0_exact_types_environment_and_axioms() -> None:
     suffix += (
         "\n"
         + "\n".join(
-            f"#print axioms {NAMESPACE}.{name}"
-            for name in sorted(PUBLIC_ENVIRONMENT)
+            f"#print axioms {NAMESPACE}.{name}" for name in sorted(PUBLIC_ENVIRONMENT)
         )
         + "\n"
     )
@@ -457,6 +456,7 @@ def test_h2_7_r0_exact_types_environment_and_axioms() -> None:
     reports = _axiom_reports(output)
     assert set(reports) == set(PUBLIC_ENVIRONMENT)
     assert all(axioms <= ALLOWED_AXIOMS for axioms in reports.values())
+
 
 def test_h2_7_r0_typed_consumer_rejects_reversed_kl() -> None:
     mutated = _typed_consumers().replace(
@@ -564,8 +564,7 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         "continuous H3 eligibility before accepted H2.7",
     ]
     assert (
-        successor["manifest_transition"]["code_consolidation"]
-        == W4_CODE_CONSOLIDATION
+        successor["manifest_transition"]["code_consolidation"] == W4_CODE_CONSOLIDATION
     )
     assert successor["source_sha256"] == {
         relative: _sha256(PROJECT_ROOT / relative)

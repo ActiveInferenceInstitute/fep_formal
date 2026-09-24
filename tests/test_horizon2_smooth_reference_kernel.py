@@ -349,8 +349,7 @@ def test_h2_7_environment_and_all_theorems_use_only_standard_axioms() -> None:
     suffix += (
         "\n"
         + "\n".join(
-            f"#print axioms {NAMESPACE}.{name}"
-            for name in sorted(PUBLIC_ENVIRONMENT)
+            f"#print axioms {NAMESPACE}.{name}" for name in sorted(PUBLIC_ENVIRONMENT)
         )
         + "\n"
     )
