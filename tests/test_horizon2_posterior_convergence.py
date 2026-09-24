@@ -164,9 +164,11 @@ def _parse_namespace_declaration_names(output: str, namespace: str) -> frozenset
     qualified_prefix = re.escape(f"{namespace}.")
     return frozenset(
         re.findall(
-            rf"(?m)^{qualified_prefix}"
-            r"([A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)",
+            rf"'{qualified_prefix}"
+            r"([A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)' "
+            r"(?:depends on axioms: \[.*?\]|does not depend on any axioms)",
             output,
+            re.DOTALL,
         )
     )
 
@@ -316,6 +318,8 @@ def test_h2_3_environment_census_rejects_every_public_declaration_form(
     tmp_path: Path,
 ) -> None:
     probe = tmp_path / "PosteriorConvergenceCensusMutations.lean"
+    # v4.34 core rejects `#print prefix`; the census probe emits one `#print axioms`
+    # per injected declaration; the parser consumes the quoted axiom reports.
     probe.write_text(
         """import Mathlib
 
@@ -332,7 +336,10 @@ theorem attributedTheorem (value : Nat) : value + 0 = value := by simp
 
 end FEP.PosteriorConvergenceCensusMutation
 
-#print prefix FEP.PosteriorConvergenceCensusMutation
+#print axioms FEP.PosteriorConvergenceCensusMutation.publicLemma
+#print axioms FEP.PosteriorConvergenceCensusMutation.protectedTheorem
+#print axioms FEP.PosteriorConvergenceCensusMutation.attributedTheorem
+#print axioms FEP.PosteriorConvergenceCensusMutation.sameLineTheorem
 """,
         encoding="utf-8",
     )
@@ -659,15 +666,20 @@ def test_h2_3_source_compiles_warning_free(tmp_path: Path) -> None:
 @pytest.mark.serial_lean
 def test_h2_3_public_environment_axioms_and_h2_3b_exact_types(tmp_path: Path) -> None:
     probe = tmp_path / "PosteriorConvergenceAxioms.lean"
+    # v4.34 core rejects `#print prefix`; the roster check emits one
+    # `#print axioms` per roster member, so a missing declaration fails its own
+    # report and the roster stays fail-closed. Axiom reports quote fully
+    # qualified names regardless of consumers' `open`.
     prints = "\n".join(
-        f"#print axioms FEP.PosteriorConvergence.{name}" for name in PUBLIC_THEOREMS
+        f"#print axioms {DECLARATION_NAMESPACE}.{name}"
+        for name in sorted(PUBLIC_ENVIRONMENT_DECLARATIONS)
     )
     qualified_theorems = tuple(
         f"{DECLARATION_NAMESPACE}.{name}" for name in PUBLIC_THEOREMS
     )
     probe.write_text(
         f"{SOURCE.read_text(encoding='utf-8')}\n{prints}\n"
-        f"#print prefix {DECLARATION_NAMESPACE}\n{_h2_3b_typed_consumers()}\n",
+        f"{_h2_3b_typed_consumers()}\n",
         encoding="utf-8",
     )
     result = run_lean_compile_probe(

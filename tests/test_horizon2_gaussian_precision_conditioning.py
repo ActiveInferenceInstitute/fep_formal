@@ -147,9 +147,11 @@ def _parse_namespace_declaration_names(output: str, namespace: str) -> frozenset
     qualified_prefix = re.escape(f"{namespace}.")
     return frozenset(
         re.findall(
-            rf"(?m)^{qualified_prefix}"
-            r"([A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)",
+            rf"'{qualified_prefix}"
+            r"([A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)' "
+            r"(?:depends on axioms: \[.*?\]|does not depend on any axioms)",
             output,
+            re.DOTALL,
         )
     )
 
@@ -353,6 +355,8 @@ def test_h2_5d_environment_census_rejects_hidden_declaration_forms(
     tmp_path: Path,
 ) -> None:
     probe = tmp_path / "GaussianPrecisionConditioningCensusMutations.lean"
+    # v4.34 core rejects `#print prefix`, so the census emits one `#print axioms`
+    # per injected declaration; the parser consumes the quoted axiom reports.
     probe.write_text(
         """import FepSketches.fin4_gaussian_semigroup
 
@@ -369,7 +373,10 @@ theorem attributedTheorem (value : Nat) : value + 0 = value := by simp
 
 end FEP.GaussianPrecisionConditioningCensusMutation
 
-#print prefix FEP.GaussianPrecisionConditioningCensusMutation
+#print axioms FEP.GaussianPrecisionConditioningCensusMutation.publicLemma
+#print axioms FEP.GaussianPrecisionConditioningCensusMutation.protectedTheorem
+#print axioms FEP.GaussianPrecisionConditioningCensusMutation.attributedTheorem
+#print axioms FEP.GaussianPrecisionConditioningCensusMutation.sameLineTheorem
 """,
         encoding="utf-8",
     )
@@ -408,9 +415,13 @@ def test_h2_5d_canonical_source_compiles_warning_free() -> None:
 def test_h2_5d_public_axioms_census_and_typed_consumers(tmp_path: Path) -> None:
     probe = tmp_path / "GaussianPrecisionConditioningAudit.lean"
     source = SOURCE.read_text(encoding="utf-8")
+    # v4.34 core rejects `#print prefix`, so the roster check emits one
+    # `#print axioms` per roster member; a missing declaration fails its own
+    # report, keeping the roster fail-closed, and axiom reports quote the
+    # fully qualified name regardless of the consumers' `open`.
     prints = "\n".join(
         f"#print axioms FEP.GaussianPrecisionConditioning.{name}"
-        for name in PUBLIC_THEOREMS
+        for name in sorted(PUBLIC_ENVIRONMENT_DECLARATIONS)
     )
     consumers = r"""
 open MeasureTheory ProbabilityTheory
@@ -543,8 +554,7 @@ example : ¬ IndepFun perturbedExternal perturbedInternal perturbedEndpointLaw :
   perturbedEndpoint_external_not_indep_internal
 """
     probe.write_text(
-        f"{source}\n{prints}\n#print prefix "
-        f"FEP.GaussianPrecisionConditioning\n{consumers}\n",
+        f"{source}\n{prints}\n{consumers}\n",
         encoding="utf-8",
     )
     result = _run_lean(probe)

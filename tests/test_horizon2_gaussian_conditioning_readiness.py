@@ -106,9 +106,11 @@ def _parse_namespace_declaration_names(output: str) -> frozenset[str]:
     qualified_prefix = re.escape("FEPProbe.H2_5dGaussianConditioning.")
     return frozenset(
         re.findall(
-            rf"(?m)^{qualified_prefix}"
-            r"([A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)",
+            rf"'{qualified_prefix}"
+            r"([A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*)' "
+            r"(?:depends on axioms: \[.*?\]|does not depend on any axioms)",
             output,
+            re.DOTALL,
         )
     )
 
@@ -301,9 +303,12 @@ def test_h2_5d_r0_spike_compiles_warning_free(tmp_path: Path) -> None:
 def test_h2_5d_r0_public_axioms_census_and_typed_consumers(tmp_path: Path) -> None:
     probe = tmp_path / "H2_5dGaussianConditioningAudit.lean"
     source = SPIKE.read_text(encoding="utf-8")
+    # v4.34 migration: Lean core rejects `#print prefix`, so emit one
+    # `#print axioms` per roster member; a missing declaration fails its own
+    # report so the roster stays fail-closed, and reports quote full names.
     prints = "\n".join(
         f"#print axioms FEPProbe.H2_5dGaussianConditioning.{name}"
-        for name in PUBLIC_THEOREMS
+        for name in sorted(PUBLIC_ENVIRONMENT_DECLARATIONS)
     )
     consumers = r"""
 open MeasureTheory ProbabilityTheory
@@ -359,8 +364,7 @@ example :
   fixed_precisionZero_covarianceNonzero_condIndep
 """
     probe.write_text(
-        f"{source}\n{prints}\n#print prefix "
-        f"FEPProbe.H2_5dGaussianConditioning\n{consumers}\n",
+        f"{source}\n{prints}\n{consumers}\n",
         encoding="utf-8",
     )
     result = run_lean_compile_probe(
