@@ -309,6 +309,19 @@ jobs:
             echo "Lean aggregate emitted warnings"
             exit 1
           fi
+      - name: Compile orphaned formal modules
+        run: |
+          # b5e6a9d reached main with a broken orphaned formal module while
+          # the lean job never evaluated the tip (the runs at the adjacent
+          # commits were cancelled), and no CI step compiles the canonical
+          # src/fep_lean/formal/*.lean bytes: lake builds only the
+          # lean/FepSketches/ projections, and the serial_lean probes below
+          # compile a topic-driven subset. This gate enumerates the formal
+          # modules outside fep_all's import closure and recompiles their
+          # canonical sources from scratch (no incremental build state), so
+          # an import-narrowing break in an orphan (the b85cfe0 fix class)
+          # fails closed here.
+          uv run python docs/check_orphan_compiles.py
       # The serial_lean lane never runs in the python job (-m "not
       # serial_lean"), so it runs here on the already-warm environment: the
       # aggregate build above leaves lean/.lake fully populated (Mathlib

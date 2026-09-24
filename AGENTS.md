@@ -125,6 +125,7 @@ uv run python docs/check_links.py --strict --include-root
 uv run python docs/md_hygiene.py --strict
 uv run python docs/pin_audit.py --check-latest
 uv run python docs/xref_audit.py
+uv run python docs/check_orphan_compiles.py
 uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
 uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
 ```
