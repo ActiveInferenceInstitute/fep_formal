@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "0bac9f6173c26fc4213ba19d95b922246a2f460f",
+    "commit": "29d982739f0085f3e9f84615f786491e2273a3fb",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -172,7 +172,7 @@
     }
   },
   "gnn": {
-    "commit": "28dc5d46833ea10b4596ee398a9cd06d0bc5c630",
+    "commit": "480cb547414830dbcee7e02c78efc7bf38d5fef9",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
@@ -336,7 +336,7 @@
       "src/gnn/execute/pymdp/pymdp_runner.py": "d25debf577bc824d787ac948cc3c2a94029a69484667688a05ef7240c8b28ad2",
       "src/gnn/execute/pymdp/pymdp_simulation.py": "d76e813c05082c0d59849df27360df576c9df7fb3fa23229c926d0748aa1fdc9",
       "src/gnn/execute/pymdp/pymdp_utils.py": "85a29bfb54881e3045454096ddd8d83788048d7cd60f860198252e9b37918864",
-      "src/gnn/execute/pymdp/simulation.py": "12aa6ccb49424922d54f73ffda32155f2243c9776783d551f772f204a24ac54d",
+      "src/gnn/execute/pymdp/simulation.py": "ac99169cfff88c8da4586c4be30310e51d354f4b3fe538cb4ec0670d0f634631",
       "src/gnn/execute/pymdp/validator.py": "ba69a5fd2c04db65be88bc887a71d9ab95eeed092f65d709a0145e035086455b",
       "src/gnn/execute/pytorch/__init__.py": "1f463afe6fb5f417c48277a463d24228fc7c1e1ccd46638630877e73f5fc5ff5",
       "src/gnn/execute/pytorch/pytorch_runner.py": "024f83c1576af9b7f752da14a21e5b4f9e368f9b1b1acf6c342caf4ce89e026e",
@@ -593,7 +593,7 @@
       "src/gnn/render/health.py": "fb6aabe2196fbcd9dbd12027df227b02833beff96bf77f2693b2919025079815",
       "src/gnn/render/jax/__init__.py": "e4396c85eedc5a84e81336be7d4e78e919ea5aa717852ea5a866ef7cdaf0844c",
       "src/gnn/render/jax/gpu_utils.py": "753b4f37efe544f3584f6bc6b9543b9ac3050f6a28cacd5c8c3b4cceffb30e61",
-      "src/gnn/render/jax/jax_combined_generator.py": "9e5383b1479af3e730a2854cbf8b64ac862ab0186011793fc02718474798f7c1",
+      "src/gnn/render/jax/jax_combined_generator.py": "aa34a2308ce94fe31105dc6ead37b09ba04cf5c3e21639a63360fa096914bfe2",
       "src/gnn/render/jax/jax_factorized_generator.py": "a49a03d769311fef9ba83a67778a38ee434d42207210608ff1f389d845ed571d",
       "src/gnn/render/jax/jax_model_generator.py": "62c287e2bb9805c7b4cc3b7841e49441a18c4a4714df2a89fd1e51cacc10651b",
       "src/gnn/render/jax/jax_pomdp_generator.py": "2ae04757182957e7cbc9a7a47747c03fe0f6f8d50ee79f2b48ef88e7582af325",
@@ -704,7 +704,7 @@
       "src/gnn/type_checker/checking/core.py": "0e846c7af9ff186f5f8fb8335912fb4b7e88495789a2c0c16fc71cc99ee9146d",
       "src/gnn/type_checker/checking/dimensions.py": "5f3d005146f0e16318eb6574222f58fca39b4273b66ca7c931c45b456eb90613",
       "src/gnn/type_checker/checking/rules.py": "42664fe6282e4ce1fe6e35810711756322f7cc875ef12773a15624f381fe8e52",
-      "src/gnn/type_checker/checking/sections.py": "7102cf637c7160fc314b5845172126f164bbf26177473b90c5c1110ba9f57c79",
+      "src/gnn/type_checker/checking/sections.py": "f184d461764732d1cef46a90bcb5917096478d95fb6d1e4abf29e72766b5ffcf",
       "src/gnn/type_checker/checking/summary.py": "c56369de76e39ec4fda04587b96f0606e5e685e9151565069dfd9996838c2bb2",
       "src/gnn/type_checker/cli.py": "d399f341b3376e8e0c4d2c0e7b32689483d45d7b5d36b4c08660f5d139eaafa2",
       "src/gnn/type_checker/estimation/__init__.py": "b81d20ad1fba9fd78ca602fefaefa306abd43e614ffcfc859510d2e74a1b8cdb",
