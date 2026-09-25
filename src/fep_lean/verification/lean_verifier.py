@@ -86,6 +86,7 @@ FailureKind = Literal[
     "tactic_failure",
     "arity_mismatch",
     "timeout",
+    "killed",
     "other",
 ]
 
@@ -139,10 +140,32 @@ def _get_timeout() -> int:
     return int(os.environ.get("FEP_LEAN_VERIFY_TIMEOUT", str(_VERIFICATION_TIMEOUT)))
 
 
-def classify_failure_kind(stderr_out: str, *, timed_out: bool = False) -> FailureKind:
-    """Lightweight advisory classification from Lean stderr/stdout (regex)."""
+def _get_retry_killed() -> int:
+    """Read the killed-retry budget from env at call time (default 0 = off).
+
+    Any positive value enables at most ONE re-run of a signal-dead
+    (``returncode < 0``) compile; regex-classified failures and timeouts are
+    never retried. Default off keeps CI run-for-run deterministic.
+    """
+    return int(os.environ.get("FEP_LEAN_VERIFY_RETRY_KILLED", "0"))
+
+
+def classify_failure_kind(
+    stderr_out: str, *, timed_out: bool = False, returncode: int | None = None
+) -> FailureKind:
+    """Lightweight advisory classification from Lean stderr/stdout (regex).
+
+    Signal deaths beat regex text: a negative ``returncode`` on POSIX means
+    the compiler process was killed (e.g. OOM SIGKILL) and whatever output
+    survived is not a reliable classifier signal, so it classifies as
+    ``killed`` regardless of ``stderr_out`` content. The explicit
+    ``timed_out`` flag keeps precedence over ``returncode`` because a
+    deadline kill is reported as a timeout, not an infra death.
+    """
     if timed_out:
         return "timeout"
+    if returncode is not None and returncode < 0:
+        return "killed"
     s = stderr_out or ""
     if _RE_FAIL_KIND_TIMEOUT.search(s):
         return "timeout"
@@ -230,6 +253,7 @@ class VerifyResult:
     lean_file: Path | None = None
     skip_reason: str = ""  # non-empty when verification was skipped
     failure_kind: FailureKind = "other"
+    retries: int = 0  # 1 when a killed result was retried once (knob on)
 
     @property
     def status(self) -> str:
@@ -244,7 +268,7 @@ class VerifyResult:
 
     def as_dict(self) -> dict[str, object]:
         """Return serializable dict for reports and JSONL export."""
-        return {
+        payload: dict[str, object] = {
             "topic_id": self.topic_id,
             "compiles": self.compiles,
             "has_sorry": self.has_sorry,
@@ -258,6 +282,11 @@ class VerifyResult:
             "skip_reason": self.skip_reason,
             "failure_kind": self.failure_kind,
         }
+        # Emitted only when nonzero so knob-off receipts stay byte-identical
+        # to pre-knob output.
+        if self.retries:
+            payload["retries"] = self.retries
+        return payload
 
 
 class LeanVerifier:
@@ -523,12 +552,33 @@ class LeanVerifier:
             warnings = _RE_WARNING.findall(combined)
             compiles = result.returncode == 0
 
+            retries = 0
+            if not compiles and result.returncode < 0 and _get_retry_killed() > 0:
+                # Signal death (e.g. OOM SIGKILL): retry exactly once. The
+                # retry's outcome wins; the first attempt survives only as
+                # the ``retries`` marker and this log line. Regex-classified
+                # failures and timeouts never reach this branch.
+                log.warning(
+                    "verify_sketch %s: killed (returncode=%s); retrying once",
+                    topic_id,
+                    result.returncode,
+                )
+                t_retry = time.monotonic()
+                result = self._run_lake_lean(tmp_file)
+                elapsed += time.monotonic() - t_retry
+                retries = 1
+                combined = (result.stdout or "") + (result.stderr or "")
+                errors = _RE_ERROR.findall(combined)
+                warnings = _RE_WARNING.findall(combined)
+                compiles = result.returncode == 0
+
             log.info(
-                "verify_sketch %s: compiles=%s sorry=%s errors=%d (%.2fs)",
+                "verify_sketch %s: compiles=%s sorry=%s errors=%d retries=%d (%.2fs)",
                 topic_id,
                 compiles,
                 has_sorry,
                 len(errors),
+                retries,
                 elapsed,
             )
             if len(combined) > 8000:
@@ -540,7 +590,7 @@ class LeanVerifier:
                 )
             fk: FailureKind = "other"
             if not compiles:
-                fk = classify_failure_kind(combined)
+                fk = classify_failure_kind(combined, returncode=result.returncode)
             return VerifyResult(
                 topic_id=topic_id,
                 compiles=compiles,
@@ -553,6 +603,7 @@ class LeanVerifier:
                 lean_version=lv,
                 lean_file=tmp_file,
                 failure_kind=fk,
+                retries=retries,
             )
         except subprocess.TimeoutExpired as exc:
             t_used = _get_timeout()
