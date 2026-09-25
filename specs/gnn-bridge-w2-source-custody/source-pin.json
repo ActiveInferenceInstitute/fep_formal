@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "d6a731165062846ba7f98ad67d73ec66cbe53733",
+    "commit": "fd737d8bfeae0de5d4b52898c7026785956f62cf",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "bd6aba885f28b7d9968eb4eb5399b30aad039c30e73e453858837611362f8eac",
       "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
@@ -170,7 +170,7 @@
       "src/fep_lean/verification/gnn_artifact_receipt.py": "cc5f3cbc9889495576aa3550c2fb1791eb042024f97d7a1af56ba7eb1c855d79",
       "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "484f1eeaeaeecd54fd271734b4fd6d93fcc6d2794a26996fa8e125825f4a2e2d",
       "src/fep_lean/verification/gnn_julia_artifact_proof.py": "e45860b83e52f97d3b7dc8c630fa7e9d379ab79708b7ef745888ac1eb53700d3",
-      "src/fep_lean/verification/horizon_acceptance.py": "65ba288a670c941a312489aea7337c39d63b3c2d5b983a36b38f78d5a09eabda",
+      "src/fep_lean/verification/horizon_acceptance.py": "01510075113c2a3eb32ed376508af55e1fb98071a40512d991ff95a1d22beb60",
       "src/fep_lean/verification/lean_verifier.py": "8a849d5a34c1af6e17cf475507a8bc401fea656a817388f16ffe1eee718ca801",
       "src/fep_lean/verification/numerical_witnesses.py": "a2097398104d01a8cc43d1c6bf3ae78a96619def4f793ed0112c7637848c173b",
       "src/fep_lean/verification/preflight.py": "2b80ab8cefa2f93d7648f2b3d607fda18591d2b0294ffffea1cd45ad51441ebc",
@@ -178,7 +178,7 @@
     }
   },
   "gnn": {
-    "commit": "0f005624d2e4e407fc1f6955c26cfb6a8c8abe72",
+    "commit": "e1403d7d4d0c0fa49226092b07029c6bbd1c0131",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "239afcaa6315c9bfc4348aa252231ae32e8f07dfe1528d8040d46cc5d4c33100",
