@@ -1,11 +1,15 @@
-"""Custody apply-phase tests on /tmp specs copies.
+"""Custody apply-phase tests on isolated tmp_path fixture roots.
 
 Every pipeline run stages a ``shutil.copytree`` of the repo's ``specs/`` tree
-into ``tmp_path`` and flushes into a fresh output directory, so no test ever
-writes the real specs tree. The gate is driven through fixtures: injected
-``Census``/``Expectations`` objects per the evidence-fixture pattern, plus one
-real-census run over the copied tree that pins today's verified FEP-H27-RESEAL
-live-red classification.
+into ``tmp_path`` and flushes into a fresh output directory. Every drift
+injection lands on a ``tmp_path`` fixture root (see
+``tests/_support/custody_fixture_knobs.fixture_root``: a ``specs/`` copy plus
+byte-identical copies of every hashed non-specs surface), so no test ever
+writes the live tree. Gates are driven through injected
+``Census``/``Expectations`` objects per the evidence-fixture pattern, or the
+real census over the fixture when the fixture itself is the subject; every
+expected verdict derives from ``census``/``verify`` over the same tree, never
+from live custody state.
 """
 
 from __future__ import annotations
@@ -37,8 +41,17 @@ from fep_lean.custody.apply import (
     byte_replace,
     dump_json_bytes,
 )
+from fep_lean.custody.census import census as census_from_tree
 from fep_lean.custody.model import LIVE_RED, STALE, Census, CensusRecord
-from fep_lean.custody.verify import Expectations
+from fep_lean.custody.verify import Expectations, gate_expectations
+from fep_lean.custody.verify import verify as verify_gate
+from fep_lean.verification.horizon_acceptance import TERMINAL_RECEIPT
+from tests._support.custody_fixture_knobs import (
+    JSON_WHITESPACE_DRIFT,
+    drift_file,
+    fixture_root,
+    spec_path,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BASE = "specs/horizon-2-smooth-stochastic/readiness/"
@@ -122,6 +135,15 @@ def _rewrite_json(path: Path, mutate: object) -> None:
 
 def _assert_untouched(out: Path) -> None:
     assert not out.exists() or not any(out.iterdir())
+
+
+def _tree_snapshot(root: Path) -> dict[str, str]:
+    """Digest every file under ``root``; proves a CLI run wrote nothing."""
+    return {
+        path.relative_to(root).as_posix(): _sha(path.read_bytes())
+        for path in sorted(root.rglob("*"))
+        if path.is_file()
+    }
 
 
 def _sha(data: bytes) -> str:
@@ -217,18 +239,37 @@ def test_staged_view_put_is_idempotent(tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_gate_refuses_real_tree_live_red_classification(tmp_path: Path) -> None:
-    """The real census over a staged copy refuses today's verified residual."""
-    specs_dir = _stage_specs(tmp_path)
+@pytest.mark.parametrize(
+    "drift",
+    (
+        pytest.param("sealed", id="sealed_fixture_census_green"),
+        pytest.param("digest", id="successor_receipt_digest_drift"),
+        pytest.param("unlink", id="missing_predecessor_receipt"),
+    ),
+)
+def test_gate_refuses_real_tree_live_red_classification(
+    tmp_path: Path, drift: str
+) -> None:
+    """The real census over the staged copy classifies the injected drift."""
+    root = fixture_root(tmp_path)
+    specs_dir = root / "specs"
     out = _out_dir(tmp_path)
+    if drift == "digest":
+        drift_file(spec_path(root, SUCCESSOR_07), JSON_WHITESPACE_DRIFT)
+    elif drift == "unlink":
+        spec_path(root, PRIOR_07).unlink()
+    census_obj = census_from_tree(specs_dir, root)
+    ok, problems = verify_gate(census_obj, gate_expectations())
+    if drift == "sealed":
+        assert ok, problems
+        report = apply_refresh(specs_dir, root, out)
+        assert report.phases == ()
+        assert report.mutations == ()
+        return
+    assert not ok
     with pytest.raises(ApplyRefused) as excinfo:
-        apply_refresh(specs_dir, REPO_ROOT, out)
-    message = str(excinfo.value)
-    assert "native source capture stale or changed" in message
-    assert "PREDECESSORS constant no-drift violated" in message
-    assert SUCCESSOR_07 in message
-    for path in AUTHORIZED_RECAPTURE[:3]:
-        assert path in message
+        apply_refresh(specs_dir, root, out)
+    assert str(excinfo.value) == "custody verify gate refused: " + "; ".join(problems)
     _assert_untouched(out)
 
 
@@ -254,19 +295,40 @@ def test_gate_live_red_is_never_authorized(tmp_path: Path) -> None:
     _assert_untouched(out)
 
 
-def test_gate_all_clear_fixture_admits_the_pipeline(tmp_path: Path) -> None:
+@pytest.mark.parametrize("state", ("sealed", "forced"))
+def test_gate_all_clear_fixture_admits_the_pipeline(
+    tmp_path: Path, state: str
+) -> None:
     """A passing gate is not the blocker; the authorized pipeline completes."""
-    report = _apply(tmp_path, authorized=AUTHORIZED_RECAPTURE)
+    root = fixture_root(tmp_path)
+    specs_dir = root / "specs"
+    out = _out_dir(tmp_path)
+    census_obj = census_from_tree(specs_dir, root)
+    ok, problems = verify_gate(census_obj, gate_expectations())
+    assert ok, problems
+    if state == "sealed":
+        report = apply_refresh(specs_dir, root, out)
+        assert report.phases == ()
+        assert report.mutations == ()
+        return
+    # Forced-change residual: probe 08 drifts in the staged copy; the
+    # pipeline re-binds exactly the surfaces the receipt chain covers.
+    _mutate_probe(specs_dir)
+    report = apply_refresh(
+        specs_dir,
+        root,
+        out,
+        Expectations(),
+        census=Census(records=()),
+        authorized_changes=(PROBE_08,),
+    )
     assert report.phases[-1] == "h3_lockstep"
     assert report.files_written > 0
-    source = (
-        REPO_ROOT
-        / "specs"
-        / "horizon-2-smooth-stochastic"
-        / "readiness"
-        / "acceptance.json"
-    )
-    assert _sha(_out_bytes(_out_dir(tmp_path), ACCEPTANCE)) == _sha(source.read_bytes())
+    assert DIAGNOSTICS not in report.mutations
+    assert LIFECYCLE_05D in report.mutations
+    for relative in (DIAGNOSTICS, *REVIEW_FILES):
+        assert _out_bytes(out, relative) == spec_path(root, relative).read_bytes()
+    assert _out_bytes(out, ACCEPTANCE) != spec_path(root, ACCEPTANCE).read_bytes()
 
 
 # ---------------------------------------------------------------------------
@@ -514,8 +576,37 @@ def test_h3_roster_drift_refuses(tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_recapture_rebind_mutates_exactly_the_evidence_surfaces(tmp_path: Path) -> None:
-    report = _apply(tmp_path, authorized=AUTHORIZED_RECAPTURE)
+@pytest.mark.parametrize("state", ("sealed", "recapture"))
+def test_recapture_rebind_mutates_exactly_the_evidence_surfaces(
+    tmp_path: Path, state: str
+) -> None:
+    """The recapture residual is synthesized on the fixture, never the live tree."""
+    root = fixture_root(tmp_path)
+    out = _out_dir(tmp_path)
+    if state == "sealed":
+        report = apply_refresh(root / "specs", root, out)
+        assert report.phases == ()
+        assert report.mutations == ()
+        return
+    # Synthesized pre-chore residual: the successor receipt's PREDECESSORS
+    # pin predates its re-recorded bytes, and the reviews/diagnostics source
+    # planes drift on two Python surfaces. Python only: a lone Lean mirror
+    # edit trips the formal-projection drift check instead of a stale map.
+    drift_file(spec_path(root, SUCCESSOR_07), JSON_WHITESPACE_DRIFT)
+    drifted = (
+        "tests/test_horizon_acceptance.py",
+        "tests/test_numerical_witnesses.py",
+    )
+    for name in drifted:
+        drift_file(root / name)
+    report = apply_refresh(
+        root / "specs",
+        root,
+        out,
+        Expectations(),
+        census=Census(records=()),
+        authorized_changes=(*drifted, SUCCESSOR_07),
+    )
     assert report.phases == (
         "predecessors_patch",
         "reviews_reissue",
@@ -523,7 +614,6 @@ def test_recapture_rebind_mutates_exactly_the_evidence_surfaces(tmp_path: Path) 
         "terminal_packet_reissue",
         "h3_lockstep",
     )
-    out = _out_dir(tmp_path)
     assert set(report.mutations) == {
         *REVIEW_FILES,
         DIAGNOSTICS,
@@ -535,7 +625,7 @@ def test_recapture_rebind_mutates_exactly_the_evidence_surfaces(tmp_path: Path) 
     directive = report.directives[0]
     assert directive.path == HORIZON_ACCEPTANCE_MODULE
     assert directive.phase == "predecessors_patch"
-    live = (REPO_ROOT / HORIZON_ACCEPTANCE_MODULE).read_bytes()
+    live = (root / HORIZON_ACCEPTANCE_MODULE).read_bytes()
     assert live.count(directive.anchor) == 1
     assert _sha(_out_bytes(out, SUCCESSOR_07)).encode() in directive.replacement
     # diagnostics keeps insertion order; the packet keeps sorted keys.
@@ -585,18 +675,46 @@ def test_cascade_matrix_follows_acceptance_rebind(tmp_path: Path) -> None:
     assert matrix_text.count("receipt_sha256: ") == 1
 
 
-def test_cascade_serialization_discipline(tmp_path: Path) -> None:
-    report, out = _run_cascade(tmp_path)
+@pytest.mark.parametrize("drift_class", ("probe_rewrite", "diagnostics_stale"))
+def test_cascade_serialization_discipline(tmp_path: Path, drift_class: str) -> None:
+    """Per-file serialization discipline over whatever the cascade mutates."""
+    root = fixture_root(tmp_path)
+    specs_dir = root / "specs"
+    out = _out_dir(tmp_path)
+    if drift_class == "probe_rewrite":
+        _mutate_probe(specs_dir)
+        authorized: tuple[str, ...] = (PROBE_08,)
+    else:
+        drifted = (
+            "tests/test_horizon_acceptance.py",
+            "tests/test_numerical_witnesses.py",
+        )
+        for name in drifted:
+            drift_file(root / name)
+        authorized = drifted
+    report = apply_refresh(
+        specs_dir,
+        root,
+        out,
+        Expectations(),
+        census=Census(records=()),
+        authorized_changes=authorized,
+    )
     mutated_json = [
         relative for relative in report.mutations if relative.endswith(".json")
     ]
-    assert LIFECYCLE_05D in mutated_json
-    assert DIAGNOSTICS in mutated_json
+    if drift_class == "probe_rewrite":
+        assert LIFECYCLE_05D in mutated_json
+        assert DIAGNOSTICS not in report.mutations
+        assert (
+            _out_bytes(out, DIAGNOSTICS) == spec_path(root, DIAGNOSTICS).read_bytes()
+        )
+    else:
+        assert DIAGNOSTICS in mutated_json
     for relative in mutated_json:
         data = _out_bytes(out, relative)
         payload = json.loads(data)
-        name = relative.rsplit("/", 1)[-1]
-        if name in INSERTION_ORDER_FILES:
+        if relative.rsplit("/", 1)[-1] in INSERTION_ORDER_FILES:
             assert data == (json.dumps(payload, indent=2) + "\n").encode()
             assert (
                 data != (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode()
@@ -673,21 +791,27 @@ def test_dirty_output_dir_refuses(tmp_path: Path) -> None:
 
 
 def test_required_surface_never_authorized_by_allowed_stale(tmp_path: Path) -> None:
-    """A required terminal record reported stale must refuse even if allowed."""
-    specs_dir = _stage_specs(tmp_path)
+    """A required surface reported stale refuses; it is never laundered."""
+    root = fixture_root(tmp_path)
     out = _out_dir(tmp_path)
     terminal_record = CensusRecord(
         path=TERMINAL_PACKET, status=STALE, detail=TERMINAL_DETAIL
     )
-    expectations = Expectations(allowed_stale=frozenset({TERMINAL_PACKET}))
-    with pytest.raises(ApplyRefused):
-        apply_refresh(
-            specs_dir,
-            REPO_ROOT,
-            out,
-            expectations,
-            census=Census((terminal_record,)),
-        )
+    assert TERMINAL_PACKET == TERMINAL_RECEIPT
+    laundered = Expectations(
+        required_intact=(TERMINAL_PACKET,), allowed_stale=frozenset({TERMINAL_PACKET})
+    )
+    ok, problems = verify_gate(Census((terminal_record,)), laundered)
+    assert not ok
+    assert problems == [f"stale: {TERMINAL_PACKET}: {TERMINAL_DETAIL}"]
+    undeclared = Expectations(allowed_stale=frozenset({TERMINAL_PACKET}))
+    assert verify_gate(Census((terminal_record,)), undeclared) == (True, [])
+    census_obj = Census((terminal_record,))
+    ok, problems = verify_gate(census_obj, gate_expectations())
+    assert not ok
+    with pytest.raises(ApplyRefused) as excinfo:
+        apply_refresh(root / "specs", root, out, census=census_obj)
+    assert str(excinfo.value) == "custody verify gate refused: " + "; ".join(problems)
     _assert_untouched(out)
 
 
@@ -793,18 +917,41 @@ def test_pin_evidence_matrix_toolchain_mismatch_refuses(tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.parametrize("state", ("green", "residual"))
 def test_cli_census_report_composes_read_only(
-    capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+    state: str,
 ) -> None:
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(REPO_ROOT))
+    """The report composes the census over the patched fixture root."""
+    root = fixture_root(tmp_path)
+    if state == "residual":
+        drift_file(root / "tests/test_horizon2_gaussian_filter.py")
+        drift_file(spec_path(root, SUCCESSOR_07), JSON_WHITESPACE_DRIFT)
+    before = _tree_snapshot(root)
+    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(root))
     from fep_lean.cli import main as cli_main
 
     assert cli_main(["custody", "census"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "ok"
-    assert payload["gated"] is True
-    assert TERMINAL_PACKET in payload["stale"]
-    assert any(record["status"] == LIVE_RED for record in payload["records"])
+    derived = census_from_tree(root / "specs", root)
+    assert payload["gated"] == derived.is_gated()
+    assert payload["stale"] == [record.path for record in derived.stale()]
+    assert payload["live_red"] == [record.path for record in derived.live_red()]
+    assert [record["path"] for record in payload["records"]] == [
+        record.path for record in derived.records
+    ]
+    if state == "green":
+        assert payload["gated"] is False
+        assert payload["stale"] == []
+        assert payload["live_red"] == []
+    else:
+        assert payload["gated"] is True
+        assert TERMINAL_PACKET in payload["stale"]
+        assert SUCCESSOR_07 in payload["live_red"]
+    assert _tree_snapshot(root) == before
 
 
 def test_cli_apply_refuses_without_output_dir(
@@ -819,16 +966,32 @@ def test_cli_apply_refuses_without_output_dir(
     assert "requires --output-dir" in payload["error"]
 
 
+@pytest.mark.parametrize("state", ("sealed", "residual"))
 def test_cli_apply_gate_refusal_writes_nothing(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+    state: str,
 ) -> None:
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(REPO_ROOT))
+    """Exit codes and zero-effect write discipline on the fixture root."""
+    root = fixture_root(tmp_path)
+    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(root))
     out = _out_dir(tmp_path)
     from fep_lean.cli import main as cli_main
 
+    if state == "sealed":
+        assert cli_main(["custody", "apply", "--output-dir", str(out)]) == 0
+        payload = json.loads(capsys.readouterr().out)
+        assert payload["status"] == "ok"
+        assert payload["phases"] == []
+        assert payload["mutations"] == []
+        return
+    drift_file(spec_path(root, SUCCESSOR_07), JSON_WHITESPACE_DRIFT)
+    census_obj = census_from_tree(root / "specs", root)
+    ok, problems = verify_gate(census_obj, gate_expectations())
+    assert not ok
     assert cli_main(["custody", "apply", "--output-dir", str(out)]) == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "custody verify gate refused" in payload["error"]
-    assert "native source capture stale or changed" in payload["error"]
+    assert payload["error"] == "custody verify gate refused: " + "; ".join(problems)
     _assert_untouched(out)
