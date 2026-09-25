@@ -61,9 +61,7 @@ _W4_DERIVED_RESOURCES_BLOCK = (
     " == _RELEASED_SHARED_DECLARATION_NAMESPACE\n"
     ")\n\n"
 )
-_W4_CONSOLIDATION_ANCHOR = (
-    "\n\n@dataclass(frozen=True)\nclass FormalModule:"
-)
+_W4_CONSOLIDATION_ANCHOR = "\n\n@dataclass(frozen=True)\nclass FormalModule:"
 _W4_RESTORED_LITERAL_BLOCK = (
     "\n\n_RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES = frozenset(\n"
     "    {\n"
@@ -82,7 +80,6 @@ _W4_RESTORED_LITERAL_BLOCK = (
     ")\n"
     "\n\n@dataclass(frozen=True)\nclass FormalModule:"
 )
-
 
 
 def _require(condition: bool, message: str) -> None:
@@ -169,12 +166,8 @@ W4_CODE_CONSOLIDATION = {
         " comprehension below the FORMAL_MODULES roster; semantics preserved"
     ),
     "restored_declaration": "_RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES",
-    "restored_literal_block_sha256": _sha256(
-        _W4_RESTORED_LITERAL_BLOCK.encode()
-    ),
-    "derived_resources_block_sha256": _sha256(
-        _W4_DERIVED_RESOURCES_BLOCK.encode()
-    ),
+    "restored_literal_block_sha256": _sha256(_W4_RESTORED_LITERAL_BLOCK.encode()),
+    "derived_resources_block_sha256": _sha256(_W4_DERIVED_RESOURCES_BLOCK.encode()),
 }
 
 
