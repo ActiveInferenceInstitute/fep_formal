@@ -120,11 +120,11 @@
   "extractor_sha256": "844bcc79086f3e00d259f23463f02eddb1b037db854dd54ba246aa817ef2967b",
   "fixtures": {
     "pymdp_asymmetric_runner.py": "7b41393fd16db4083b26443c3498789257e5917874e06fb3f5ddb087e05b2212",
-    "pymdp_symmetric_runner.py": "4b03623bdbf23affddd0cf8db109aae18cfb2f09fe4d7c1dbb134b489181af10"
+    "pymdp_symmetric_runner.py": "d1faf57a54df862204876788dcb5761b98e703212ea6a4576d3969b2015c1151"
   },
   "generated": {
     "generated/probe_asymmetric.lean": "cee39cc8120ad2fcb270e0ee06df99b1c74419aaa4d11964522468c5941f2b4e",
-    "generated/probe_symmetric.lean": "a0addf81d5f8ce48df18f42165a10e3791569ff7b23164149f887257f28c67b3"
+    "generated/probe_symmetric.lean": "f0be8defb23ed4ea62072a117276a5cde9edfe39ac60ddb69fd0aaa7dc36a6c4"
   },
   "slice": "gnn-bridge-q5-artifact-proof"
 }
