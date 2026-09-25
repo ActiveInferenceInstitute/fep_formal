@@ -17,9 +17,9 @@ from fep_lean.bridge.operations import DOCUMENTS, PIN, check_sources, emit, owne
 RENDER_CODE = """
 import sys
 from pathlib import Path
-from gnn.pomdp_extractor import extract_pomdp_from_file
-from render.pomdp_processor import POMDPRenderProcessor
-from render.processor import render_gnn_spec
+from gnn.extract.pomdp_extractor import extract_pomdp_from_file
+from gnn.render.pomdp_processor import POMDPRenderProcessor
+from gnn.render.processor import render_gnn_spec
 source, output = map(Path, sys.argv[1:])
 model = extract_pomdp_from_file(source, strict_validation=True)
 if model is None:

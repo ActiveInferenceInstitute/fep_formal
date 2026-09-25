@@ -10,7 +10,6 @@ real pymdp 1.0.0 (JAX-first) under the hood.
 
 Model:        FepLean Symmetric Boolean Generative Model
 Description:  
-Generated:    2026-09-04 19:26:13
 
 State Space:
   - Hidden States: 2
@@ -82,7 +81,7 @@ except ImportError as e:
     )
     sys.exit(1)
 
-from execute.pymdp import execute_pymdp_simulation
+from gnn.execute.pymdp import execute_pymdp_simulation
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
@@ -282,6 +281,7 @@ def main() -> int:
                     "previous_state",
                     "action"
                 ],
+                "declared_order_explicit": False,
                 "claimed_slice_convention": None,
                 "detected_order": None,
                 "canonical_order": "next_state_previous_state_action",
@@ -389,6 +389,7 @@ def main() -> int:
                 "previous_state",
                 "action"
             ],
+            "declared_order_explicit": False,
             "claimed_slice_convention": None,
             "detected_order": None,
             "canonical_order": "next_state_previous_state_action",
