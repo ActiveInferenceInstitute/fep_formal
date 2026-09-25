@@ -37,14 +37,14 @@ PREDECESSORS = {
     BASE
     + "repairs/05b-transition-covariance.json": "b8bff635d95ab261255ceaf270745c05ddb0f29ca24377b82a4dfcd889f6d57b",
     BASE
-    + "repairs/05d-gaussian-conditioning.json": "70baa2ac83c857f5c6d007e84c0162f5aa93e51afed94b5159a44b111c80ce88",
+    + "repairs/05d-gaussian-conditioning.json": "1b7c8b41cb6ad4edc5149c1838dd72e3bf165c58f5ba81dc2b74ed05a126f260",
     BASE
-    + "repairs/05d-gaussian-conditioning-lifecycle.json": "dae5054e007965bcbeb5d72382a42fcea6754442014fdd55685bfc99c0b7e6f2",
+    + "repairs/05d-gaussian-conditioning-lifecycle.json": "a187bdc8d9793a321f333b08469e4d391cc33bb8c348f504d6f24c180907970c",
     BASE
     + "repairs/06a-native-filter-posterior.json": "8ccdb35e999c264454a6f595d65d366a1f6ac192b8bd5a22557f1adc3b214019",
     BASE
     + "repairs/07-gaussian-vfe-natural-gradient.json": "b5637ff30690748ccf1db992e6fb7c34a267a3ed1a7b74daacb1bc9cac844d01",
-    R0_SUCCESSOR: "775aef49fddd124d3e90deb73ba53ad5c5adea9408b51ca884f9946f06119729",
+    R0_SUCCESSOR: "629961d73c3605e3834a3b6f66e932ddf8c58648de446232539c36a15c7a9528",
 }
 MANDATORY_TEST_FILES = tuple(
     "tests/test_" + name + ".py"

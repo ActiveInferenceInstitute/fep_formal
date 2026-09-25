@@ -10,8 +10,8 @@
   },
   "corrected_artifact": {
     "guard": "if not REPAIR.exists(): assert not MAINTAINED_OWNER.exists()",
-    "repair_sha256": "70baa2ac83c857f5c6d007e84c0162f5aa93e51afed94b5159a44b111c80ce88",
-    "test_sha256": "1828eaaec7538004989cddfb87ebdcd7f4da455f7991d8dfc454e59d80791b82"
+    "repair_sha256": "1b7c8b41cb6ad4edc5149c1838dd72e3bf165c58f5ba81dc2b74ed05a126f260",
+    "test_sha256": "a6289b117e87a5aae7f7abbdc014a629cc0f431f0609321d0337b5e0bfb3953e"
   },
   "receipt_history": {
     "historical_receipt_sha256": null,

@@ -389,8 +389,8 @@
           "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
           "src/fep_lean/formal/manifest.py": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
           "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-          "tests/_support/h2_r0_custody.py": "f5112828a67646194991b4688adbc6576c03c0fbc4220d116c579893911360bc",
-          "tests/test_horizon2_gaussian_vfe_readiness.py": "4914988b319558f822ae6df4abd99b62a04b308e4248adbcc846eaebc7d19341",
+          "tests/_support/h2_r0_custody.py": "dcf6f7ac5752e9a05332aded0b509143204436a96b49c9cb1967a581761d0b4b",
+          "tests/test_horizon2_gaussian_vfe_readiness.py": "b3811b9ab1f115eeac83dc174779ed8d5a5c3dc3ffdbc7818c3007f21e4414b7",
           "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
         }
       },
@@ -413,8 +413,8 @@
           "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
           "src/fep_lean/formal/manifest.py": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
           "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-          "tests/_support/h2_r0_custody.py": "f5112828a67646194991b4688adbc6576c03c0fbc4220d116c579893911360bc",
-          "tests/test_horizon2_gaussian_vfe_readiness.py": "4914988b319558f822ae6df4abd99b62a04b308e4248adbcc846eaebc7d19341",
+          "tests/_support/h2_r0_custody.py": "dcf6f7ac5752e9a05332aded0b509143204436a96b49c9cb1967a581761d0b4b",
+          "tests/test_horizon2_gaussian_vfe_readiness.py": "b3811b9ab1f115eeac83dc174779ed8d5a5c3dc3ffdbc7818c3007f21e4414b7",
           "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
         }
       },
@@ -437,8 +437,8 @@
           "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
           "src/fep_lean/formal/manifest.py": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
           "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-          "tests/_support/h2_r0_custody.py": "f5112828a67646194991b4688adbc6576c03c0fbc4220d116c579893911360bc",
-          "tests/test_horizon2_gaussian_vfe_readiness.py": "4914988b319558f822ae6df4abd99b62a04b308e4248adbcc846eaebc7d19341",
+          "tests/_support/h2_r0_custody.py": "dcf6f7ac5752e9a05332aded0b509143204436a96b49c9cb1967a581761d0b4b",
+          "tests/test_horizon2_gaussian_vfe_readiness.py": "b3811b9ab1f115eeac83dc174779ed8d5a5c3dc3ffdbc7818c3007f21e4414b7",
           "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
         }
       }
@@ -466,8 +466,8 @@
     "src/fep_lean/formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
     "src/fep_lean/formal/manifest.py": "9b44aa9a489a72ac5a4040140ea0e1f9053ee3b73e0c3953704dbcddbab87358",
     "src/fep_lean/formal/smooth_information_geometry.lean": "571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8",
-    "tests/_support/h2_r0_custody.py": "f5112828a67646194991b4688adbc6576c03c0fbc4220d116c579893911360bc",
-    "tests/test_horizon2_gaussian_vfe_readiness.py": "4914988b319558f822ae6df4abd99b62a04b308e4248adbcc846eaebc7d19341",
+    "tests/_support/h2_r0_custody.py": "dcf6f7ac5752e9a05332aded0b509143204436a96b49c9cb1967a581761d0b4b",
+    "tests/test_horizon2_gaussian_vfe_readiness.py": "b3811b9ab1f115eeac83dc174779ed8d5a5c3dc3ffdbc7818c3007f21e4414b7",
     "uv.lock": "7f4f717e54045dbd35461991eefb143495e3a64b56ae8d0da93edab454dd37fa"
   }
 }

@@ -135,6 +135,6 @@
     "specs/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md": "fe82ab041ca210dc629b59e0a12ce5cabc48513c64f3728f0e34d7442a9d10ce",
     "specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean": "51184185f3adfee7506e95457f352b56910cd127bd05f9140f21437c3d88e612",
     "src/fep_lean/formal/fin4_gaussian_semigroup.lean": "a7c14d2fdeb44c61ffa4012d6eccc8d00051be916ab536e2658f4ef3652d260c",
-    "tests/test_horizon2_gaussian_conditioning_readiness.py": "1828eaaec7538004989cddfb87ebdcd7f4da455f7991d8dfc454e59d80791b82"
+    "tests/test_horizon2_gaussian_conditioning_readiness.py": "a6289b117e87a5aae7f7abbdc014a629cc0f431f0609321d0337b5e0bfb3953e"
   }
 }
