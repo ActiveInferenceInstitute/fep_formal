@@ -31,3 +31,34 @@ percentage points of line coverage for this codebase's error-handling patterns.
 ## Related
 
 - [`pyproject.toml`](../pyproject.toml) — coverage concurrency setting
+
+## 2026-09-25 — w23 serial-verdict: custody-settle delta table + TESTS-7 cadence receipts
+
+Delta: baseline `b2bb5fa` → integrated `5cc9938` (w22 fold lineage; spawn base origin/main; battery-green by coordinator receipt). Baseline reference: TASKS.md line 31 — TASKS.md is absent in this worktree and at the brief's stated repo path (reported per brief line 5); the facts below are the brief's ledger facts used verbatim.
+
+### Red-class delta
+
+| Class | At b2bb5fa | At 5cc9938 | Owner / disposition |
+| --- | --- | --- | --- |
+| `horizon_acceptance` custody-staleness | 6 | 0 | Self-healed post-w20: 38/38 at fd737d8. |
+| Fixture reds, state-flip class | 29 | 7 | 22 cleared with the pre-chore problem they asserted; 7 persist as W19-side green-state asserts needing state-parameterized re-issue — owned wave-2 class; NOT staleness regressions (`tests/test_custody_apply.py`). |
+| Staleness regressions from w20+w22 waves | — | 0 | None. |
+
+Receipts:
+
+- Battery at `5cc9938`: 11 gates + roster gate (0 errors) + pair gate (ok) — GREEN; G06/G07 healed by build-product regens (gitignored, zero tracked changes).
+- CI-side confirmation of the self-heal (python-lane FAILED, per-job `--log-failed`): 36 at `4a19297` (full pre-w20 custody-staleness class) → 7 at `970ee8a` → the same 7 at `5cc9938` (run 36144239624, python job 108101267417: "7 failed, 1771 passed, 14 skipped in 312.66s"). The exact surviving node set, all in `tests/test_custody_apply.py`: `test_cascade_serialization_discipline`, `test_cli_apply_gate_refusal_writes_nothing`, `test_cli_census_report_composes_read_only`, `test_gate_all_clear_fixture_admits_the_pipeline`, `test_gate_refuses_real_tree_live_red_classification`, `test_recapture_rebind_mutates_exactly_the_evidence_surfaces`, `test_required_surface_never_authorized_by_allowed_stale`. `test_manuscript_token_parity.py::test_manuscript_vars_yaml_is_current` PASSED at `5cc9938` (peer wave-6 fix in at head).
+- Peer-owned python red (wave-6): `test_manuscript_token_parity.py::test_manuscript_vars_yaml_is_current` — PASSED at `970ee8a`, FAILED at `97a6a18` (variables split moved `manuscript/manuscript_vars.yaml` without updating the test), PASSED again at `5cc9938`. Not this wave's surface; resolved at head by the peer's fix.
+- Lean-lane red (figures-infra class, not python): `tests/test_manuscript_rendering.py` — "manuscript asset roster sources are missing" (`status_distribution.png`, `topics_by_area.png`). Attempt 1 (job 108101499569) failed 13:57:39Z–14:21:00Z; the coordinator-authorized lean-job rerun (attempt 2, job 108112227271, 14:26:40Z–14:56:37Z) gives the per-test receipt: "1 failed, 527 passed, 5 skipped in 1426.83s" — the single failure `test_live_render_includes_author_block_and_canonical_graphical_abstract` raised `ManuscriptRenderError` for the same two figures, with the decisive delta that the rerun's step 12 ("Download the publication figure assets the render-deps job produced") succeeded yet both figures were still absent at render time: the saved render-deps artifact itself lacks them (render-deps output/roster mismatch), superseding the first-pass cache-ordering race as the sole explanation. Figures-infra owned; NOT a wave regression.
+- CI lineage at head sha `5cc9938` (check-runs API, total_count 4): attempt 1 = render-deps success (108101267083), python failure (108101267417), lean failure (108101499569), render skipped; attempt 2 = lean rerun job 108112227271 (failure, figures class only), render-deps carried success (108112227578), python not re-executed (108112269348 retains recorded failure), render skipped (108123458724). Only run 36144239624 exists at this head; main == `5cc9938` ("q5: re-regen native receipt against cycle #26 seal (fold-fixup)", 2026-09-25T13:43:42Z) — no newer green run; the no-green streak (`36075721520` → `36144239624`, 30+ attempts) is inherited figures-infra lineage, NOT a wave regression.
+
+### TESTS-7 cadence receipts
+
+- Definition (`SCOPE-2026-09-20.md:78`): "One serial-inclusive coverage run (no `-m` filter) after the wave lands; record per-module delta table in `docs/coverage-branch.md`. Requires the Lean toolchain; runs after the gate battery."
+- Gate battery at `5cc9938`: GREEN — 11 gates + roster gate (0 errors) + pair gate (ok); G06/G07 healed by build-product regens (gitignored, zero tracked changes).
+- Serial-inclusive plane: the local battery deselects `serial_lean`; the CI serial lane is the serial-inclusive receipt plane — run 36144239624 on `5cc9938`, lean serial lane 527 passed / 1 failed (attempt 1) and 527 passed / 1 failed on the attempt-2 rerun, both the same figures-infra node. The local serial-inclusive coverage run stays deferred to the next settled cadence (Lean-toolchain requirement; no local battery re-run authorized in-thread).
+- Per-module delta table: the red-class table above (module-attributed: `horizon_acceptance`, `tests/test_custody_apply.py`, `test_manuscript_token_parity.py`, `test_manuscript_rendering.py`).
+
+### Serial verdict
+
+The custody chain settled: capture fb201372 claim-ready, packet ec253d59 validate-green, Q5 receipt 81264af0 bound at the #26 seal, pair `970ee8a`↔`d07e55808` CI-verified. Zero new reds from the w20+w22 waves: the 35 custody-staleness reds at baseline `b2bb5fa` fully decompose into 6 self-healed `horizon_acceptance` reds (38/38 at `fd737d8`) and 29 state-flip fixture reds (22 cleared with the pre-chore problem they asserted, 7 persisting as W19-side green-state asserts owned wave-2), with CI independently confirming the self-heal (python lane 36 at `4a19297` → 7 at `970ee8a` → the same 7 at `5cc9938`; the peer wave-6 parity red that entered at `97a6a18` passed at `5cc9938`). Residual red classes are owned, not wave regressions: the 7 campaign-classified fixture-debt survivors (wave-2 seed, state-parameterized re-issue) and the inherited figures-infra lineage (`test_manuscript_rendering.py`, both CI attempts, render-deps output/roster mismatch). CI at `5cc9938` is receipted complete across both attempts — python lane = exactly the 7 fixture-debt survivors, lean attempt-2 rerun (job 108112227271) = the figures-infra node only with 527 serial-lane passes — so the serial-verdict receipt set is closed and the verdict stands on the battery + custody receipts plus the completed two-attempt CI receipts.
