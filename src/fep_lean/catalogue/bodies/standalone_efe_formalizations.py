@@ -1,4 +1,4 @@
-"""Canonical Lean bodies for the wave-3 standalone formalizations."""
+"""Canonical Lean bodies for the standalone EFE formalizations family."""
 
 from __future__ import annotations
 

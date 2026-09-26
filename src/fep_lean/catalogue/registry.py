@@ -30,7 +30,7 @@ from .bodies import (
     predictive_coding_generalized,
     temporal_inference,
     variational_duality,
-    wave3_standalone_formalizations,
+    standalone_efe_formalizations,
 )
 from .latex import build_theorem_latex, build_topic_latex_equations
 
@@ -132,8 +132,8 @@ BODY_MODULE_MANIFEST: tuple[BodyModule, ...] = (
         continuous_time_thermodynamics,
     ),
     BodyModule(
-        "wave3-standalone-formalizations",
-        wave3_standalone_formalizations,
+        "standalone-efe-formalizations",
+        standalone_efe_formalizations,
     ),
 )
 

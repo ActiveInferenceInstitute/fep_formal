@@ -800,10 +800,10 @@
     "measure-bayesian-inversion": 7,
     "path-space-stochastic-thermodynamics": 7,
     "predictive-coding-and-generalized-coordinates": 7,
+    "standalone-efe-formalizations": 4,
     "temporal-and-hierarchical-inference": 7,
     "two-state-continuous-time-thermodynamics": 7,
-    "variational-duality-and-information-bounds": 7,
-    "wave3-standalone-formalizations": 4
+    "variational-duality-and-information-bounds": 7
   },
   "formal_modules": [
     {
@@ -7999,7 +7999,7 @@
       "area": "ActiveInference",
       "assumption_review": "The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise value surface of the policy_tree module.",
       "definition_count": 0,
-      "family": "wave3-standalone-formalizations",
+      "family": "standalone-efe-formalizations",
       "id": "fep-156",
       "imports": [
         "FepSketches.efe_policy_selection"
@@ -8021,7 +8021,7 @@
       "area": "ActiveInference",
       "assumption_review": "The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim.",
       "definition_count": 0,
-      "family": "wave3-standalone-formalizations",
+      "family": "standalone-efe-formalizations",
       "id": "fep-157",
       "imports": [
         "FepSketches.perception_action_loop"
@@ -8043,7 +8043,7 @@
       "area": "FEP",
       "assumption_review": "The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic model-selection claim.",
       "definition_count": 0,
-      "family": "wave3-standalone-formalizations",
+      "family": "standalone-efe-formalizations",
       "id": "fep-158",
       "imports": [
         "FepSketches.bayesian_model_reduction"
@@ -8065,7 +8065,7 @@
       "area": "Thermodynamics",
       "assumption_review": "All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.",
       "definition_count": 0,
-      "family": "wave3-standalone-formalizations",
+      "family": "standalone-efe-formalizations",
       "id": "fep-159",
       "imports": [
         "FepSketches.efe_time_scale_separation"
