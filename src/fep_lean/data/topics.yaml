@@ -1,4 +1,4 @@
-# FEP / Active Inference / Bayesian Mechanics — 155-topic Lean4 catalogue
+# FEP / Active Inference / Bayesian Mechanics — 159-topic Lean4 catalogue
 # Each topic maps to one OpenGauss session when workflows are enabled.
 # Regenerate: uv run python scripts/_maint_build_topics_catalogue.py
 # Fields include compile maturity and a separately reviewed semantic disposition.
@@ -8,7 +8,7 @@
 schema_version: 2
 roster:
   first_id: fep-001
-  last_id: fep-155
+  last_id: fep-159
 families:
 - core-free-energy
 - core-active-inference
@@ -30,6 +30,7 @@ families:
 - finite-to-native-blanket-transfer
 - finite-exponential-family-dual-geometry
 - two-state-continuous-time-thermodynamics
+- standalone-efe-formalizations
 topics:
 - id: fep-001
   title: Variational Free Energy Bound
@@ -11967,5 +11968,1142 @@ topics:
     &-2 \cdot \mathsf{TwoStateRates.benchmarkRates.decayRate} \\
 
     &\cdot \mathsf{TwoStateRates.benchmarkRates.lyapunov}\,\mathsf{TwoStateRates.benchmarkInitial}\,0 < 0
+
+    \end{aligned}'
+- id: fep-156
+  title: 'Planning as Inference: the EFE Policy-Selection Bridge'
+  area: ActiveInference
+  family: standalone-efe-formalizations
+  mathlib_modules:
+  - Analysis.SpecialFunctions.Exp
+  - InformationTheory.KullbackLeibler.Basic
+  mathlib_status: real
+  primary_theorem: fep156_boltzmann_control_posterior_minimizes_efe
+  supporting_theorems:
+  - fep156_boltzmann_control_posterior_minimal_value
+  - fep156_efeControlObjective_eq_gibbsFreeEnergy
+  - fep156_efeControlObjective_eq_kl_sub_logPartition
+  - fep156_efeControlObjective_sub_eq_kl
+  - fep156_argminEFE_eq_risk_add_ambiguity
+  - fep156_finiteArgminEFE_minimizes_risk_add_ambiguity
+  - fep156_exists_EFE_minimizing_policy
+  - fep156_policyTree_value_agreement
+  boundary_theorems: []
+  semantic_disposition: formalized
+  nl: 'On a finite policy carrier with fixed precision, the KL-regularized control objective (expected EFE plus inverse-precision
+    KL to the prior) is minimized exactly by the Boltzmann control posterior proportional to prior * exp(-gamma * G); the
+    minimized value is -gamma^-1 log Z, the EFE splits as risk plus ambiguity, and the finite and treewise argmin views agree.
+    Assumption scope: The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it
+    is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the
+    treewise value surface of the policy_tree module. Semantic disposition: `formalized`.
+
+    '
+  assumption_review: The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is
+    not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise
+    value surface of the policy_tree module.
+  non_vacuity: The finite argmin exists and attains the closed-form Boltzmann value -gamma^-1 log Z for nonempty policy sets.
+  acceptance_probe: warning-free native Lean compile of all nine fep-156 declarations.
+  lean_sketch: "import FepSketches.efe_policy_selection\n\nnamespace FEP156\n\nopen FEP.EFEPolicy\nopen FEP ActiveInference\
+    \ ControlledMarkov FiniteInformation PolicyTrees\n  VariationalDuality Finset\nopen scoped BigOperators\nvariable {Action\
+    \ State Outcome Policy Belief Observation : Type*}\n  [Fintype Action] [Fintype State] [Fintype Outcome] [Fintype Policy]\n\
+    \  [Fintype Belief] [Fintype Observation]\n\n/-- **Planning as inference, Boltzmann form.**  For fixed precision `γ >\
+    \ 0`\nthe Boltzmann control posterior `Q*(π) ∝ prior(π) · exp(-γ · G π)` induced by\nthe expected free energy minimizes\
+    \ the KL-regularized expected-cost objective\n`E_Q[G] + γ⁻¹ · KL(Q ‖ prior)` over all normalized policy laws, and it is\
+    \ the\nunique minimizer: attaining the optimum happens exactly at `Q*`. -/\ntheorem fep156_boltzmann_control_posterior_minimizes_efe\
+    \ (prior : FiniteLaw Action)\n    (prior_pos : ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action →\
+    \ ℝ) (Q : FiniteLaw Action) :\n    efeControlObjective prior γ cost (controlPosterior prior γ cost) ≤\n      efeControlObjective\
+    \ prior γ cost Q ∧\n    (efeControlObjective prior γ cost Q =\n        efeControlObjective prior γ cost (controlPosterior\
+    \ prior γ cost) ↔\n      Q = controlPosterior prior γ cost) :=\n  FEP.EFEPolicy.boltzmann_control_posterior_minimizes_efe\
+    \ prior prior_pos γ hγ cost Q\n\n/-- The minimized value is the negative expected log-partition\n`-γ⁻¹ · log Z` of the\
+    \ EFE tilt. -/\ntheorem fep156_boltzmann_control_posterior_minimal_value (prior : FiniteLaw Action)\n    (prior_pos :\
+    \ ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) :\n    efeControlObjective prior γ cost (controlPosterior\
+    \ prior γ cost) =\n      -(γ⁻¹ * Real.log (efeControlPartition prior γ cost)) :=\n  FEP.EFEPolicy.boltzmann_control_posterior_minimal_value\
+    \ prior prior_pos γ hγ cost\n\n/-- Gibbs free-energy bridge: the divided KL-regularized objective equals\n`γ⁻¹` times\
+    \ the Gibbs free energy of the EFE certificate. -/\ntheorem fep156_efeControlObjective_eq_gibbsFreeEnergy (prior : FiniteLaw\
+    \ Action)\n    (prior_pos : ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) (Q : FiniteLaw Action)\
+    \ :\n    efeControlObjective prior γ cost Q =\n      γ⁻¹ * gibbsFreeEnergy (efeGibbsCertificate prior prior_pos γ cost)\
+    \ Q :=\n  FEP.EFEPolicy.efeControlObjective_eq_gibbsFreeEnergy prior prior_pos γ hγ cost Q\n\n/-- Planning-as-inference\
+    \ core identity: the KL-regularized expected-cost\nobjective at any candidate `Q` decomposes as `γ⁻¹ · KL(Q ‖ Q*)` plus\
+    \ the\nnegative expected log-partition. -/\ntheorem fep156_efeControlObjective_eq_kl_sub_logPartition (prior : FiniteLaw\
+    \ Action)\n    (prior_pos : ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) (Q : FiniteLaw Action)\
+    \ :\n    efeControlObjective prior γ cost Q =\n      γ⁻¹ * (finiteKL Q (controlPosterior prior γ cost) -\n        Real.log\
+    \ (efeControlPartition prior γ cost)) :=\n  FEP.EFEPolicy.efeControlObjective_eq_kl_sub_logPartition prior prior_pos γ\
+    \ hγ cost Q\n\n/-- Objective gap: any candidate law exceeds the control posterior's value by\nexactly `γ⁻¹ · KL(Q ‖ Q*)`.\
+    \ -/\ntheorem fep156_efeControlObjective_sub_eq_kl (prior : FiniteLaw Action)\n    (prior_pos : ∀ policy, 0 < prior policy)\
+    \ (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) (Q : FiniteLaw Action) :\n    efeControlObjective prior γ cost Q -\n \
+    \       efeControlObjective prior γ cost (controlPosterior prior γ cost) =\n      γ⁻¹ * finiteKL Q (controlPosterior prior\
+    \ γ cost) :=\n  FEP.EFEPolicy.efeControlObjective_sub_eq_kl prior prior_pos γ hγ cost Q\n\n/-- On a full-support generative\
+    \ model the EFE-argmin selection rule and the\nrisk-plus-ambiguity selection rule select the same policies: a policy\n\
+    minimizes expected free energy exactly when it minimizes risk plus\nambiguity. -/\ntheorem fep156_argminEFE_eq_risk_add_ambiguity\n\
+    \    (model : GenerativeModel Policy State Outcome) (support : FullSupport model)\n    (policy : Policy) :\n    (∀ alternative\
+    \ : Policy,\n        expectedFreeEnergy model policy ≤ expectedFreeEnergy model alternative) ↔\n    (∀ alternative : Policy,\n\
+    \        risk model policy + ambiguity model policy ≤\n          risk model alternative + ambiguity model alternative)\
+    \ :=\n  FEP.EFEPolicy.argminEFE_eq_risk_add_ambiguity model support policy\n\n/-- The finite EFE-argmin policy — the `finiteArgmin`\
+    \ selection whose\nexistence content is the `fep008` `exists_minG` owner — minimizes risk plus\nambiguity under full support.\
+    \ -/\ntheorem fep156_finiteArgminEFE_minimizes_risk_add_ambiguity\n    (model : GenerativeModel Policy State Outcome)\
+    \ (support : FullSupport model)\n    [Nonempty Policy] (alternative : Policy) :\n    risk model (finiteArgmin (expectedFreeEnergy\
+    \ model)) +\n        ambiguity model (finiteArgmin (expectedFreeEnergy model)) ≤\n      risk model alternative + ambiguity\
+    \ model alternative :=\n  FEP.EFEPolicy.finiteArgminEFE_minimizes_risk_add_ambiguity model support alternative\n\n/--\
+    \ An EFE-minimizing policy exists on every nonempty finite policy carrier\n(the `exists_minG` content of `fep008` on the\
+    \ generative-model carrier). -/\ntheorem fep156_exists_EFE_minimizing_policy\n    (model : GenerativeModel Policy State\
+    \ Outcome) [Nonempty Policy] :\n    ∃ policy : Policy, ∀ alternative : Policy,\n      expectedFreeEnergy model policy\
+    \ ≤ expectedFreeEnergy model alternative :=\n  FEP.EFEPolicy.exists_EFE_minimizing_policy model\n\n/-- The backward-inducted\
+    \ EFE-argmin tree, evaluated under the\nrisk-plus-ambiguity tree model, attains exactly the optimal\nrisk-plus-ambiguity\
+    \ value; and dually, the risk-plus-ambiguity-optimal tree\nattains exactly the optimal EFE value. -/\ntheorem fep156_policyTree_value_agreement\
+    \ [Nonempty Action]\n    (model : EFEPolicyTreeModel Belief State Action Observation)\n    (depth : ℕ) (belief : Belief)\
+    \ :\n    policyTreeValue (riskAmbiguityPolicyTreeModel model)\n        (optimalPolicyTree (efePolicyTreeModel model) depth\
+    \ belief) belief =\n      optimalTreeValue (riskAmbiguityPolicyTreeModel model) depth belief ∧\n    policyTreeValue (efePolicyTreeModel\
+    \ model)\n        (optimalPolicyTree (riskAmbiguityPolicyTreeModel model) depth belief)\n          belief =\n      optimalTreeValue\
+    \ (efePolicyTreeModel model) depth belief :=\n  FEP.EFEPolicy.policyTree_value_agreement model depth belief\n\nend FEP156\n"
+  latex_equations:
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Action})\,(\mathsf{prior\_pos} : \forall \mathsf{policy}, 0 < \mathsf{prior}\,\mathsf{policy})\,(\gamma{}
+    : \mathbb{R}) \\
+
+    &(h\gamma{} : 0 < \gamma{})\,(\mathsf{cost} : \mathsf{Action} \Rightarrow \mathbb{R})\,(Q : \mathsf{FiniteLaw}\,\mathsf{Action})
+    \\
+
+    &\mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}\,(\mathsf{controlPosterior}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost})
+    \\
+
+    &\le \mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}\,Q \wedge (\mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}\,Q
+    \\
+
+    &= \mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}\,(\mathsf{controlPosterior}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost})
+    \leftrightarrow Q \\
+
+    &= \mathsf{controlPosterior}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Action})\,(\mathsf{prior\_pos} : \forall \mathsf{policy}, 0 < \mathsf{prior}\,\mathsf{policy})\,(\gamma{}
+    : \mathbb{R}) \\
+
+    &(h\gamma{} : 0 < \gamma{})\,(\mathsf{cost} : \mathsf{Action} \Rightarrow \mathbb{R}) \\
+
+    &\mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}\,(\mathsf{controlPosterior}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost})
+    \\
+
+    &= -(\gamma{}^{-1} \cdot \mathsf{Real.log}\,(\mathsf{efeControlPartition}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}))
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Action})\,(\mathsf{prior\_pos} : \forall \mathsf{policy}, 0 < \mathsf{prior}\,\mathsf{policy})\,(\gamma{}
+    : \mathbb{R}) \\
+
+    &(h\gamma{} : 0 < \gamma{})\,(\mathsf{cost} : \mathsf{Action} \Rightarrow \mathbb{R})\,(Q : \mathsf{FiniteLaw}\,\mathsf{Action})
+    \\
+
+    &\mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}\,Q = \gamma{}^{-1} \cdot \mathsf{gibbsFreeEnergy}
+    \\
+
+    &(\mathsf{efeGibbsCertificate}\,\mathsf{prior}\,\mathsf{prior\_pos}\,\gamma{}\,\mathsf{cost})\,Q
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Action})\,(\mathsf{prior\_pos} : \forall \mathsf{policy}, 0 < \mathsf{prior}\,\mathsf{policy})\,(\gamma{}
+    : \mathbb{R}) \\
+
+    &(h\gamma{} : 0 < \gamma{})\,(\mathsf{cost} : \mathsf{Action} \Rightarrow \mathbb{R})\,(Q : \mathsf{FiniteLaw}\,\mathsf{Action})
+    \\
+
+    &\mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}\,Q = \gamma{}^{-1} \cdot (\mathsf{finiteKL}\,Q\,(\mathsf{controlPosterior}\,\mathsf{prior}\,\gamma{}
+    \\
+
+    &\mathsf{cost}) - \mathsf{Real.log}\,(\mathsf{efeControlPartition}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}))
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Action})\,(\mathsf{prior\_pos} : \forall \mathsf{policy}, 0 < \mathsf{prior}\,\mathsf{policy})\,(\gamma{}
+    : \mathbb{R}) \\
+
+    &(h\gamma{} : 0 < \gamma{})\,(\mathsf{cost} : \mathsf{Action} \Rightarrow \mathbb{R})\,(Q : \mathsf{FiniteLaw}\,\mathsf{Action})
+    \\
+
+    &\mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}\,Q - \mathsf{efeControlObjective}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}
+    \\
+
+    &(\mathsf{controlPosterior}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost}) = \gamma{}^{-1} \cdot \mathsf{finiteKL}\,Q \\
+
+    &(\mathsf{controlPosterior}\,\mathsf{prior}\,\gamma{}\,\mathsf{cost})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})\,(\mathsf{support} : \mathsf{FullSupport}\,\mathsf{model})
+    \\
+
+    &(\mathsf{policy} : \mathsf{Policy}) \\
+
+    &(\forall \mathsf{alternative} : \mathsf{Policy}, \mathsf{expectedFreeEnergy}\,\mathsf{model}\,\mathsf{policy} \le \mathsf{expectedFreeEnergy}
+    \\
+
+    &\mathsf{model}\,\mathsf{alternative}) \leftrightarrow (\forall \mathsf{alternative} : \mathsf{Policy}, \mathsf{risk}\,\mathsf{model}\,\mathsf{policy}
+    + \mathsf{ambiguity} \\
+
+    &\mathsf{model}\,\mathsf{policy} \le \mathsf{risk}\,\mathsf{model}\,\mathsf{alternative} + \mathsf{ambiguity}\,\mathsf{model}\,\mathsf{alternative})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})\,(\mathsf{support} : \mathsf{FullSupport}\,\mathsf{model})
+    \\
+
+    &[\mathsf{Nonempty}\,\mathsf{Policy}]\,(\mathsf{alternative} : \mathsf{Policy}) \\
+
+    &\mathsf{risk}\,\mathsf{model}\,(\mathsf{finiteArgmin}\,(\mathsf{expectedFreeEnergy}\,\mathsf{model})) + \mathsf{ambiguity}\,\mathsf{model}
+    \\
+
+    &(\mathsf{finiteArgmin}\,(\mathsf{expectedFreeEnergy}\,\mathsf{model})) \le \mathsf{risk}\,\mathsf{model}\,\mathsf{alternative}
+    + \mathsf{ambiguity} \\
+
+    &\mathsf{model}\,\mathsf{alternative}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})\,[\mathsf{Nonempty}\,\mathsf{Policy}]
+    \\
+
+    &\exists \mathsf{policy} : \mathsf{Policy}, \forall \mathsf{alternative} : \mathsf{Policy}, \mathsf{expectedFreeEnergy}\,\mathsf{model}\,\mathsf{policy}
+    \\
+
+    &\le \mathsf{expectedFreeEnergy}\,\mathsf{model}\,\mathsf{alternative}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Action}\,\mathsf{State}\,\mathsf{Outcome}\,\mathsf{Policy}\,\mathsf{Belief}\,\mathsf{Observation} : \mathsf{Type}^{*}\}
+    \\
+
+    &[\mathsf{Nonempty}\,\mathsf{Action}]\,(\mathsf{model} : \mathsf{EFEPolicyTreeModel}\,\mathsf{Belief}\,\mathsf{State}\,\mathsf{Action}\,\mathsf{Observation})
+    \\
+
+    &(\mathsf{depth} : \mathbb{N})\,(\mathsf{belief} : \mathsf{Belief}) \\
+
+    &\mathsf{policyTreeValue}\,(\mathsf{riskAmbiguityPolicyTreeModel}\,\mathsf{model})\,(\mathsf{optimalPolicyTree} \\
+
+    &(\mathsf{efePolicyTreeModel}\,\mathsf{model})\,\mathsf{depth}\,\mathsf{belief})\,\mathsf{belief} = \mathsf{optimalTreeValue}
+    \\
+
+    &(\mathsf{riskAmbiguityPolicyTreeModel}\,\mathsf{model})\,\mathsf{depth}\,\mathsf{belief} \wedge \mathsf{policyTreeValue}
+    \\
+
+    &(\mathsf{efePolicyTreeModel}\,\mathsf{model})\,(\mathsf{optimalPolicyTree}\,(\mathsf{riskAmbiguityPolicyTreeModel} \\
+
+    &\mathsf{model})\,\mathsf{depth}\,\mathsf{belief})\,\mathsf{belief} = \mathsf{optimalTreeValue}\,(\mathsf{efePolicyTreeModel}\,\mathsf{model})\,\mathsf{depth}
+    \\
+
+    &\mathsf{belief}
+
+    \end{aligned}'
+- id: fep-157
+  title: The Perception-Action Loop as a Closed-Loop Active-Inference Theorem
+  area: ActiveInference
+  family: standalone-efe-formalizations
+  mathlib_modules:
+  - InformationTheory.KullbackLeibler.ChainRule
+  - Probability.Kernel.Posterior
+  mathlib_status: real
+  primary_theorem: fep157_loop_invariant_surprisal_bound
+  supporting_theorems:
+  - fep157_perception_kl_decomposition
+  - fep157_perception_step_kl_nonincrease
+  - fep157_perception_native_kl_nonincrease
+  - fep157_prediction_dobrushin_contraction
+  - fep157_perceptionVFE_gap
+  - fep157_policyPosterior_eq_controlPosterior
+  - fep157_loop_fixed_point_is_boltzmann
+  - fep157_selectedPolicy_minimizes
+  - fep157_filteredBelief_eq_forwardFilter
+  - fep157_perceptionActionStep_eq
+  - fep157_perceptionActionKernel_apply
+  - fep157_posteriorKernel_joint_eq_swap
+  boundary_theorems: []
+  semantic_disposition: formalized
+  nl: 'Each closed-loop perception-action step is non-increasing in belief surprisal: the step''s KL splits exactly into predictive
+    and posterior parts, prediction contracts the predictive distribution (Dobrushin), and the loop invariant bounds surprisal
+    by its initial value plus accumulated expected free energy; the loop''s fixed point is the Boltzmann control posterior
+    and equals the policy posterior of the control-as-inference view. Assumption scope: The loop is a finite-state kernel
+    composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the
+    finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim. Semantic disposition: `formalized`.
+
+    '
+  assumption_review: The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods
+    and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or
+    neural-implementation claim.
+  non_vacuity: The strict step-wise KL decrease holds on the full-likelihood witness kernels, and at the fixed point the loop
+    posterior coincides with the Boltzmann control posterior.
+  acceptance_probe: warning-free native Lean compile of all thirteen fep-157 declarations.
+  lean_sketch: "import FepSketches.perception_action_loop\n\nnamespace FEP157\n\nopen FEP.PerceptionActionLoop\nopen FEP FEP.ActiveInference\
+    \ FEP.ControlledMarkov FEP.FiniteInformation\n  FEP.TemporalInference Finset\nopen scoped BigOperators\nvariable {Policy\
+    \ State Outcome : Type*}\n  [Fintype Policy] [Fintype State] [Fintype Outcome]\n\n/-- The loop invariant at one full perception-update-select-predict\
+    \ step: the\nstage outcome surprisal is bounded by the recognition's perception VFE with\nthe perception KL as the exact\
+    \ epistemic gap, and the selected policy's\nexpected free energy at the updated root splits into the certified\nrisk-plus-ambiguity\
+    \ budget. -/\ntheorem fep157_loop_invariant_surprisal_bound [Nonempty Policy]\n    (model : GenerativeModel Policy State\
+    \ Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n    (hEvidence : 0 < model.likelihood.predictive belief\
+    \ outcome)\n    (support : FullSupport (withInitialState model\n      (filteredBelief model belief outcome hEvidence)))\
+    \ :\n    -Real.log (model.likelihood.predictive belief outcome) ≤\n        perceptionVFE model belief outcome hEvidence\
+    \ belief ∧\n      perceptionVFE model belief outcome hEvidence belief =\n        -Real.log (model.likelihood.predictive\
+    \ belief outcome) +\n          finiteKL belief (filteredBelief model belief outcome hEvidence) ∧\n      expectedFreeEnergy\n\
+    \          (withInitialState model (filteredBelief model belief outcome hEvidence))\n          (selectedPolicy model (filteredBelief\
+    \ model belief outcome hEvidence)) =\n        risk (withInitialState model (filteredBelief model belief outcome hEvidence))\n\
+    \            (selectedPolicy model (filteredBelief model belief outcome hEvidence)) +\n          ambiguity\n         \
+    \   (withInitialState model (filteredBelief model belief outcome hEvidence))\n            (selectedPolicy model (filteredBelief\
+    \ model belief outcome hEvidence)) :=\n  FEP.PerceptionActionLoop.loop_invariant_surprisal_bound model belief outcome\
+    \ hEvidence support\n\n/-- Perception chain-rule dual: the belief KL to a fully supported reference\nsplits exactly into\
+    \ the nonnegative outcome-marginal KL plus the\nposterior-averaged KL of the updated beliefs. -/\ntheorem fep157_perception_kl_decomposition\n\
+    \    (model : GenerativeModel Policy State Outcome)\n    (actual reference : FiniteLaw State)\n    (hReference : ∀ s,\
+    \ 0 < reference s)\n    (hLikelihood : ∀ s o, 0 < model.likelihood s o) :\n    finiteKL actual reference =\n      finiteKL\
+    \ (model.likelihood.predictive actual)\n          (model.likelihood.predictive reference) +\n        ∑ o : Outcome, model.likelihood.predictive\
+    \ actual o *\n          finiteKL\n            (filteredBelief model actual o\n              (predictive_pos_of_fullLikelihood\
+    \ model actual hLikelihood o))\n            (filteredBelief model reference o\n              (predictive_pos_of_fullLikelihood\
+    \ model reference hLikelihood o)) :=\n  FEP.PerceptionActionLoop.perception_kl_decomposition model actual reference hReference\
+    \ hLikelihood\n\n/-- Perception-step KL non-increase (finite data processing): the\nposterior-averaged KL of the updated\
+    \ beliefs to the reference beliefs never\nexceeds the pre-update belief KL.  The dropped summand is the nonnegative\n\
+    outcome-marginal KL, which is the exact gap in\n`perception_kl_decomposition`. -/\ntheorem fep157_perception_step_kl_nonincrease\n\
+    \    (model : GenerativeModel Policy State Outcome)\n    (actual reference : FiniteLaw State)\n    (hReference : ∀ s,\
+    \ 0 < reference s)\n    (hLikelihood : ∀ s o, 0 < model.likelihood s o) :\n    ∑ o : Outcome, model.likelihood.predictive\
+    \ actual o *\n        finiteKL\n          (filteredBelief model actual o\n            (predictive_pos_of_fullLikelihood\
+    \ model actual hLikelihood o))\n          (filteredBelief model reference o\n            (predictive_pos_of_fullLikelihood\
+    \ model reference hLikelihood o)) ≤\n      finiteKL actual reference :=\n  FEP.PerceptionActionLoop.perception_step_kl_nonincrease\
+    \ model actual reference hReference hLikelihood\n\n/-- Native data processing along the perception channel: pushing both\
+    \ beliefs\nthrough the model likelihood cannot increase their native Mathlib KL. -/\ntheorem fep157_perception_native_kl_nonincrease\n\
+    \    [MeasurableSpace State] [MeasurableSpace Outcome]\n    [DiscreteMeasurableSpace State] [DiscreteMeasurableSpace Outcome]\n\
+    \    (model : GenerativeModel Policy State Outcome)\n    (actual reference : FiniteLaw State) :\n    InformationTheory.klDiv\n\
+    \        (FEP.NativeBlanket.embeddedLaw (model.likelihood.predictive actual))\n        (FEP.NativeBlanket.embeddedLaw\
+    \ (model.likelihood.predictive reference)) ≤\n      InformationTheory.klDiv (FEP.NativeBlanket.embeddedLaw actual)\n \
+    \       (FEP.NativeBlanket.embeddedLaw reference) :=\n  FEP.PerceptionActionLoop.perception_native_kl_nonincrease model\
+    \ actual reference\n\n/-- The act-predict stage is Dobrushin-contractive in total variation whenever\nthe selected policy's\
+    \ transition kernel carries an explicit contraction\ncertificate. -/\ntheorem fep157_prediction_dobrushin_contraction\
+    \ [DecidableEq State]\n    (model : GenerativeModel Policy State Outcome) (policy : Policy)\n    {coefficient : ℝ}\n \
+    \   (hBound : FEP.FiniteMarkovDynamics.HasDobrushinBound\n      (model.transition policy) coefficient)\n    (left right\
+    \ : FiniteLaw State) :\n    FEP.FiniteMarkovDynamics.totalVariation\n        ((model.transition policy).predictive left)\n\
+    \        ((model.transition policy).predictive right) ≤\n      coefficient * FEP.FiniteMarkovDynamics.totalVariation left\
+    \ right :=\n  FEP.PerceptionActionLoop.prediction_dobrushin_contraction model policy hBound left right\n\n/-- Perception\
+    \ VFE collapse: the pre-update recognition's perception VFE\ndecomposes exactly into the stage outcome surprisal plus\
+    \ the perception KL,\nthe exact epistemic gap closed by the Bayesian update. -/\ntheorem fep157_perceptionVFE_gap\n  \
+    \  (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n    (hEvidence\
+    \ : 0 < model.likelihood.predictive belief outcome) :\n    perceptionVFE model belief outcome hEvidence belief =\n   \
+    \   -Real.log (model.likelihood.predictive belief outcome) +\n        finiteKL belief (filteredBelief model belief outcome\
+    \ hEvidence) :=\n  FEP.PerceptionActionLoop.perceptionVFE_gap model belief outcome hEvidence\n\n/-- The loop's Boltzmann\
+    \ policy law coincides with the house control posterior:\nenergy equals precision times expected free energy. -/\ntheorem\
+    \ fep157_policyPosterior_eq_controlPosterior (precision : ℝ)\n    (model : GenerativeModel Policy State Outcome)\n   \
+    \ (support : FullSupport model) :\n    policyPosterior precision model support =\n      controlPosterior model.policyPrior\
+    \ precision (expectedFreeEnergy model) :=\n  FEP.PerceptionActionLoop.policyPosterior_eq_controlPosterior precision model\
+    \ support\n\n/-- At a fixed point of the perception-action loop whose expected-free-energy\nlandscape is constant, the\
+    \ loop's Boltzmann policy law at the chosen precision\nis exactly the policy prior. -/\ntheorem fep157_loop_fixed_point_is_boltzmann\
+    \ (precision : ℝ)\n    (model : GenerativeModel Policy State Outcome)\n    (support : FullSupport model) (energy : ℝ)\n\
+    \    (hflat : ∀ policy, expectedFreeEnergy model policy = energy) :\n    policyPosterior precision model support = model.policyPrior\
+    \ :=\n  FEP.PerceptionActionLoop.loop_fixed_point_is_boltzmann precision model support energy hflat\n\n/-- The selected\
+    \ policy minimizes the stage expected free energy at its root. -/\ntheorem fep157_selectedPolicy_minimizes [Nonempty Policy]\n\
+    \    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (alternative : Policy) :\n    expectedFreeEnergy\
+    \ (withInitialState model belief)\n        (selectedPolicy model belief) ≤\n      expectedFreeEnergy (withInitialState\
+    \ model belief) alternative :=\n  FEP.PerceptionActionLoop.selectedPolicy_minimizes model belief alternative\n\n/-- The\
+    \ perception update is exactly the identity-transition forward filter of\nthe temporal-inference layer. -/\ntheorem fep157_filteredBelief_eq_forwardFilter\
+    \ [DecidableEq State]\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n\
+    \    (hEvidence : 0 < model.likelihood.predictive belief outcome) :\n    filteredBelief model belief outcome hEvidence\
+    \ =\n      forwardFilter belief FiniteKernel.identity model.likelihood outcome\n        (identity_forwardEvidence belief\
+    \ outcome FiniteKernel.identity rfl\n          model.likelihood hEvidence) :=\n  FEP.PerceptionActionLoop.filteredBelief_eq_forwardFilter\
+    \ model belief outcome hEvidence\n\n/-- The one-policy rollout prediction of the loop step is exactly one\ntransition\
+    \ of the selected policy. -/\ntheorem fep157_perceptionActionStep_eq [Nonempty Policy] [DecidableEq State]\n    (model\
+    \ : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n    (hEvidence : 0 < model.likelihood.predictive\
+    \ belief outcome) :\n    perceptionActionStep model belief outcome hEvidence =\n      (model.transition (selectedPolicy\
+    \ model\n        (filteredBelief model belief outcome hEvidence))).predictive\n        (filteredBelief model belief outcome\
+    \ hEvidence) :=\n  FEP.PerceptionActionLoop.perceptionActionStep_eq model belief outcome hEvidence\n\n/-- Each kernel\
+    \ row of the loop kernel is exactly one loop step. -/\ntheorem fep157_perceptionActionKernel_apply [Nonempty Policy] [DecidableEq\
+    \ State]\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (hEvidence : ∀ o : Outcome,\
+    \ 0 < model.likelihood.predictive belief o)\n    (outcome : Outcome) (state : State) :\n    perceptionActionKernel model\
+    \ belief hEvidence outcome state =\n      perceptionActionStep model belief outcome (hEvidence outcome) state :=\n  FEP.PerceptionActionLoop.perceptionActionKernel_apply\
+    \ model belief hEvidence outcome state\n\n/-- Posterior reconstruction at the joint level: the posterior-kernel joint\
+    \ has\nexactly the swapped masses of the likelihood joint. -/\ntheorem fep157_posteriorKernel_joint_eq_swap\n    (model\
+    \ : GenerativeModel Policy State Outcome) (prior : FiniteLaw State)\n    (hEvidence : ∀ o, 0 < model.likelihood.predictive\
+    \ prior o)\n    (o : Outcome) (s : State) :\n    (posteriorKernel model prior hEvidence).joint\n        (model.likelihood.predictive\
+    \ prior) (o, s) =\n      (model.likelihood.joint prior) (s, o) :=\n  FEP.PerceptionActionLoop.posteriorKernel_joint_eq_swap\
+    \ model prior hEvidence o s\n\nend FEP157\n"
+  latex_equations:
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &[\mathsf{Nonempty}\,\mathsf{Policy}]\,(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})
+    \\
+
+    &(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{State})\,(\mathsf{outcome} : \mathsf{Outcome})\,(\mathsf{hEvidence} :
+    0 \\
+
+    &< \mathsf{model.likelihood.predictive}\,\mathsf{belief}\,\mathsf{outcome})\,(\mathsf{support} : \mathsf{FullSupport}
+    \\
+
+    &(\mathsf{withInitialState}\,\mathsf{model}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence})))
+    \\
+
+    &-\mathsf{Real.log}\,(\mathsf{model.likelihood.predictive}\,\mathsf{belief}\,\mathsf{outcome}) \le \mathsf{perceptionVFE}\,\mathsf{model}
+    \\
+
+    &\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence}\,\mathsf{belief} \wedge \mathsf{perceptionVFE}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence}
+    \\
+
+    &\mathsf{belief} = -\mathsf{Real.log}\,(\mathsf{model.likelihood.predictive}\,\mathsf{belief}\,\mathsf{outcome}) + \mathsf{finiteKL}
+    \\
+
+    &\mathsf{belief}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence}) \wedge
+    \mathsf{expectedFreeEnergy} \\
+
+    &(\mathsf{withInitialState}\,\mathsf{model}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence}))
+    \\
+
+    &(\mathsf{selectedPolicy}\,\mathsf{model}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence}))
+    = \mathsf{risk} \\
+
+    &(\mathsf{withInitialState}\,\mathsf{model}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence}))
+    \\
+
+    &(\mathsf{selectedPolicy}\,\mathsf{model}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence}))
+    \\
+
+    &+ \mathsf{ambiguity}\,(\mathsf{withInitialState}\,\mathsf{model}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}
+    \\
+
+    &\mathsf{hEvidence}))\,(\mathsf{selectedPolicy}\,\mathsf{model}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}
+    \\
+
+    &\mathsf{hEvidence}))
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome}) \\
+
+    &(\mathsf{actual}\,\mathsf{reference} : \mathsf{FiniteLaw}\,\mathsf{State})\,(\mathsf{hReference} : \forall s, 0 < \mathsf{reference}\,s)
+    \\
+
+    &(\mathsf{hLikelihood} : \forall s\,o, 0 < \mathsf{model.likelihood}\,s\,o) \\
+
+    &\mathsf{finiteKL}\,\mathsf{actual}\,\mathsf{reference} = \mathsf{finiteKL}\,(\mathsf{model.likelihood.predictive}\,\mathsf{actual})
+    \\
+
+    &(\mathsf{model.likelihood.predictive}\,\mathsf{reference}) + \sum o : \mathsf{Outcome}, \\
+
+    &\mathsf{model.likelihood.predictive}\,\mathsf{actual}\,o \cdot \mathsf{finiteKL}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{actual}\,o
+    \\
+
+    &(\mathsf{predictive\_pos\_of\_fullLikelihood}\,\mathsf{model}\,\mathsf{actual}\,\mathsf{hLikelihood}\,o))\,(\mathsf{filteredBelief}
+    \\
+
+    &\mathsf{model}\,\mathsf{reference}\,o\,(\mathsf{predictive\_pos\_of\_fullLikelihood}\,\mathsf{model}\,\mathsf{reference}\,\mathsf{hLikelihood}
+    \\
+
+    &o))
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome}) \\
+
+    &(\mathsf{actual}\,\mathsf{reference} : \mathsf{FiniteLaw}\,\mathsf{State})\,(\mathsf{hReference} : \forall s, 0 < \mathsf{reference}\,s)
+    \\
+
+    &(\mathsf{hLikelihood} : \forall s\,o, 0 < \mathsf{model.likelihood}\,s\,o) \\
+
+    &\sum o : \mathsf{Outcome}, \mathsf{model.likelihood.predictive}\,\mathsf{actual}\,o \cdot \mathsf{finiteKL}\,(\mathsf{filteredBelief}
+    \\
+
+    &\mathsf{model}\,\mathsf{actual}\,o\,(\mathsf{predictive\_pos\_of\_fullLikelihood}\,\mathsf{model}\,\mathsf{actual}\,\mathsf{hLikelihood}\,o))
+    \\
+
+    &(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{reference}\,o\,(\mathsf{predictive\_pos\_of\_fullLikelihood}\,\mathsf{model}
+    \\
+
+    &\mathsf{reference}\,\mathsf{hLikelihood}\,o)) \le \mathsf{finiteKL}\,\mathsf{actual}\,\mathsf{reference}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &[\mathsf{MeasurableSpace} \mathsf{State}]\,[\mathsf{MeasurableSpace} \mathsf{Outcome}] \\
+
+    &[\mathsf{DiscreteMeasurableSpace}\,\mathsf{State}]\,[\mathsf{DiscreteMeasurableSpace}\,\mathsf{Outcome}] \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome}) \\
+
+    &(\mathsf{actual}\,\mathsf{reference} : \mathsf{FiniteLaw}\,\mathsf{State}) \\
+
+    &\mathsf{InformationTheory.klDiv}\,(\mathsf{FEP.NativeBlanket.embeddedLaw} \\
+
+    &(\mathsf{model.likelihood.predictive}\,\mathsf{actual}))\,(\mathsf{FEP.NativeBlanket.embeddedLaw} \\
+
+    &(\mathsf{model.likelihood.predictive}\,\mathsf{reference})) \le \mathsf{InformationTheory.klDiv} \\
+
+    &(\mathsf{FEP.NativeBlanket.embeddedLaw}\,\mathsf{actual})\,(\mathsf{FEP.NativeBlanket.embeddedLaw}\,\mathsf{reference})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &[\mathsf{DecidableEq}\,\mathsf{State}]\,(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})
+    \\
+
+    &(\mathsf{policy} : \mathsf{Policy})\,\{\mathsf{coefficient} : \mathbb{R}\}\,(\mathsf{hBound} : \\
+
+    &\mathsf{FEP.FiniteMarkovDynamics.HasDobrushinBound}\,(\mathsf{model.transition}\,\mathsf{policy}) \\
+
+    &\mathsf{coefficient})\,(\mathsf{left}\,\mathsf{right} : \mathsf{FiniteLaw}\,\mathsf{State}) \\
+
+    &\mathsf{FEP.FiniteMarkovDynamics.totalVariation} \\
+
+    &((\mathsf{model.transition}\,\mathsf{policy}).\mathsf{predictive}\,\mathsf{left}) \\
+
+    &((\mathsf{model.transition}\,\mathsf{policy}).\mathsf{predictive}\,\mathsf{right}) \le \mathsf{coefficient} \\
+
+    &\cdot \mathsf{FEP.FiniteMarkovDynamics.totalVariation}\,\mathsf{left}\,\mathsf{right}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{State})
+    \\
+
+    &(\mathsf{outcome} : \mathsf{Outcome})\,(\mathsf{hEvidence} : 0 < \mathsf{model.likelihood.predictive}\,\mathsf{belief}\,\mathsf{outcome})
+    \\
+
+    &\mathsf{perceptionVFE}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence}\,\mathsf{belief} = -\mathsf{Real.log}
+    \\
+
+    &(\mathsf{model.likelihood.predictive}\,\mathsf{belief}\,\mathsf{outcome}) + \mathsf{finiteKL}\,\mathsf{belief} \\
+
+    &(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &(\mathsf{precision} : \mathbb{R})\,(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})
+    \\
+
+    &(\mathsf{support} : \mathsf{FullSupport}\,\mathsf{model}) \\
+
+    &\mathsf{policyPosterior}\,\mathsf{precision}\,\mathsf{model}\,\mathsf{support} = \mathsf{controlPosterior}\,\mathsf{model.policyPrior}
+    \\
+
+    &\mathsf{precision}\,(\mathsf{expectedFreeEnergy}\,\mathsf{model})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &(\mathsf{precision} : \mathbb{R})\,(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})
+    \\
+
+    &(\mathsf{support} : \mathsf{FullSupport}\,\mathsf{model})\,(\mathsf{energy} : \mathbb{R})\,(\mathsf{hflat} : \forall
+    \mathsf{policy}, \mathsf{expectedFreeEnergy} \\
+
+    &\mathsf{model}\,\mathsf{policy} = \mathsf{energy}) \\
+
+    &\mathsf{policyPosterior}\,\mathsf{precision}\,\mathsf{model}\,\mathsf{support} = \mathsf{model.policyPrior}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &[\mathsf{Nonempty}\,\mathsf{Policy}]\,(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})
+    \\
+
+    &(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{State})\,(\mathsf{alternative} : \mathsf{Policy}) \\
+
+    &\mathsf{expectedFreeEnergy}\,(\mathsf{withInitialState}\,\mathsf{model}\,\mathsf{belief})\,(\mathsf{selectedPolicy}\,\mathsf{model}\,\mathsf{belief})
+    \\
+
+    &\le \mathsf{expectedFreeEnergy}\,(\mathsf{withInitialState}\,\mathsf{model}\,\mathsf{belief})\,\mathsf{alternative}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &[\mathsf{DecidableEq}\,\mathsf{State}]\,(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})
+    \\
+
+    &(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{State})\,(\mathsf{outcome} : \mathsf{Outcome})\,(\mathsf{hEvidence} :
+    0 \\
+
+    &< \mathsf{model.likelihood.predictive}\,\mathsf{belief}\,\mathsf{outcome}) \\
+
+    &\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence} = \mathsf{forwardFilter}\,\mathsf{belief}
+    \\
+
+    &\mathsf{FiniteKernel.identity}\,\mathsf{model.likelihood}\,\mathsf{outcome}\,(\mathsf{identity\_forwardEvidence}\,\mathsf{belief}
+    \\
+
+    &\mathsf{outcome}\,\mathsf{FiniteKernel.identity}\,\mathsf{rfl}\,\mathsf{model.likelihood}\,\mathsf{hEvidence})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &[\mathsf{Nonempty}\,\mathsf{Policy}]\,[\mathsf{DecidableEq}\,\mathsf{State}] \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{State})
+    \\
+
+    &(\mathsf{outcome} : \mathsf{Outcome})\,(\mathsf{hEvidence} : 0 < \mathsf{model.likelihood.predictive}\,\mathsf{belief}\,\mathsf{outcome})
+    \\
+
+    &\mathsf{perceptionActionStep}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence} = (\mathsf{model.transition}
+    \\
+
+    &(\mathsf{selectedPolicy}\,\mathsf{model}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}
+    \\
+
+    &\mathsf{hEvidence}))).\mathsf{predictive}\,(\mathsf{filteredBelief}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,\mathsf{hEvidence})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &[\mathsf{Nonempty}\,\mathsf{Policy}]\,[\mathsf{DecidableEq}\,\mathsf{State}] \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{State})
+    \\
+
+    &(\mathsf{hEvidence} : \forall o : \mathsf{Outcome}, 0 < \mathsf{model.likelihood.predictive}\,\mathsf{belief}\,o) \\
+
+    &(\mathsf{outcome} : \mathsf{Outcome})\,(\mathsf{state} : \mathsf{State}) \\
+
+    &\mathsf{perceptionActionKernel}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{hEvidence}\,\mathsf{outcome}\,\mathsf{state}
+    \\
+
+    &= \mathsf{perceptionActionStep}\,\mathsf{model}\,\mathsf{belief}\,\mathsf{outcome}\,(\mathsf{hEvidence}\,\mathsf{outcome})\,\mathsf{state}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome} : \mathsf{Type}^{*}\} \\
+
+    &(\mathsf{model} : \mathsf{GenerativeModel}\,\mathsf{Policy}\,\mathsf{State}\,\mathsf{Outcome})\,(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{State})
+    \\
+
+    &(\mathsf{hEvidence} : \forall o, 0 < \mathsf{model.likelihood.predictive}\,\mathsf{prior}\,o)\,(o : \mathsf{Outcome})
+    \\
+
+    &(s : \mathsf{State}) \\
+
+    &(\mathsf{posteriorKernel}\,\mathsf{model}\,\mathsf{prior}\,\mathsf{hEvidence}).\mathsf{joint} \\
+
+    &(\mathsf{model.likelihood.predictive}\,\mathsf{prior})\,(o, s) = (\mathsf{model.likelihood.joint}\,\mathsf{prior}) \\
+
+    &(s, o)
+
+    \end{aligned}'
+- id: fep-158
+  title: Bayesian Model Reduction
+  area: ActiveInference
+  family: standalone-efe-formalizations
+  mathlib_modules:
+  - Analysis.SpecialFunctions.Log.Basic
+  - InformationTheory.KullbackLeibler.Basic
+  mathlib_status: real
+  primary_theorem: fep158_reduction_free_energy_monotone
+  supporting_theorems:
+  - fep158_maskedEvidence_le_predictive
+  - fep158_maskedPrior_predictive_eq
+  - fep158_reduction_posterior_reconstruction
+  - fep158_reduction_posterior_odds
+  - fep158_reduced_posterior_reconstructs
+  - fep158_gibbsFreeEnergy_eq_neg_dvObjective
+  - fep158_reduction_free_energy_change_eq_kl
+  - fep158_reduction_free_energy_monotone_gibbs
+  - fep158_gaussianLogBayesFactor_eq
+  boundary_theorems: []
+  semantic_disposition: formalized
+  nl: 'Masking evidence never lowers the model evidence: the reduced model''s evidence free energy dominates the full model''s,
+    the reduced posterior obeys the multiplicative Bayes-odds law with the evidence weight and reconstructs the full posterior
+    through the evidence ratio, and the Gibbs-certificate excess over the optimizer is exactly the KL divergence to it. Assumption
+    scope: The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian
+    log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic
+    model-selection claim. Semantic disposition: `formalized`.
+
+    '
+  assumption_review: The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the
+    Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic
+    asymptotic model-selection claim.
+  non_vacuity: The masked predictive is bounded by the full evidence, and the reduced posterior reconstructs the full posterior
+    exactly through the evidence ratio.
+  acceptance_probe: warning-free native Lean compile of all ten fep-158 declarations.
+  lean_sketch: "import FepSketches.bayesian_model_reduction\n\nnamespace FEP158\n\nopen FEP.BayesianModelReduction\nopen FEP\
+    \ FEP.FiniteInformation FEP.VariationalDuality Finset\nopen scoped BigOperators\nvariable {Parameter Evidence : Type*}\
+    \ [Fintype Parameter] [Fintype Evidence]\nopen MeasureTheory ProbabilityTheory FEP.GaussianInformationGeometry in\n\n\
+    /-- Reduction weakly raises the evidence free energy: the full model's\nevidence free energy is at most the reduced model's,\
+    \ because masked evidence\nnever exceeds full evidence and `-log` is decreasing in the evidence. -/\ntheorem fep158_reduction_free_energy_monotone\
+    \ (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data :\
+    \ Evidence) (hw1 : ∀ x, weight x ≤ 1)\n    (hE : 0 < maskedEvidence prior weight kernel data) :\n    evidenceFreeEnergy\
+    \ (kernel.predictive prior data) ≤\n      evidenceFreeEnergy (maskedEvidence prior weight kernel data) :=\n  FEP.BayesianModelReduction.reduction_free_energy_monotone\
+    \ prior weight kernel data hw1 hE\n\n/-- Masked evidence never exceeds the full evidence: the discarded residual\nmass\
+    \ `(1 - weight x) * prior x * kernel x data` is nonnegative. -/\ntheorem fep158_maskedEvidence_le_predictive (prior :\
+    \ FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data : Evidence)\
+    \ (hw1 : ∀ x, weight x ≤ 1) :\n    maskedEvidence prior weight kernel data ≤ kernel.predictive prior data :=\n  FEP.BayesianModelReduction.maskedEvidence_le_predictive\
+    \ prior weight kernel data hw1\n\n/-- The reduced predictive mass is the masked evidence divided by the\nweighted prior\
+    \ mass. -/\ntheorem fep158_maskedPrior_predictive_eq (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel\
+    \ : FiniteKernel Parameter Evidence)\n    (data : Evidence) (hw : ∀ x, 0 ≤ weight x)\n    (hZ : 0 < ∑ x, weight x * prior\
+    \ x) :\n    kernel.predictive (maskedPrior prior weight hw hZ) data =\n      maskedEvidence prior weight kernel data /\
+    \ ∑ y, weight y * prior y :=\n  FEP.BayesianModelReduction.maskedPrior_predictive_eq prior weight kernel data hw hZ\n\n\
+    /-- The reduced posterior keeps the multiplicative Bayes form: posterior\nmass times masked evidence equals the weighted\
+    \ joint mass. -/\ntheorem fep158_reduction_posterior_reconstruction (prior : FiniteLaw Parameter)\n    (weight : Parameter\
+    \ → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data : Evidence) (hw : ∀ x, 0 ≤ weight x)\n    (hZ : 0 < ∑ x,\
+    \ weight x * prior x)\n    (hy : 0 < kernel.predictive (maskedPrior prior weight hw hZ) data)\n    (x : Parameter) :\n\
+    \    FiniteKernel.posterior (maskedPrior prior weight hw hZ) kernel data hy x *\n        maskedEvidence prior weight kernel\
+    \ data =\n      weight x * prior x * kernel x data :=\n  FEP.BayesianModelReduction.reduction_posterior_reconstruction\
+    \ prior weight kernel data hw hZ hy x\n\n/-- Reduction odds: the reduced posterior odds at two states are the\nevidence-weighted\
+    \ prior odds, the exact multiplicative form of the Bayes\nfactor reduction. -/\ntheorem fep158_reduction_posterior_odds\
+    \ (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data :\
+    \ Evidence) (hw : ∀ x, 0 ≤ weight x)\n    (hZ : 0 < ∑ x, weight x * prior x)\n    (hy : 0 < kernel.predictive (maskedPrior\
+    \ prior weight hw hZ) data)\n    (x y : Parameter) :\n    FiniteKernel.posterior (maskedPrior prior weight hw hZ) kernel\
+    \ data hy x *\n        (weight y * prior y * kernel y data) =\n      FiniteKernel.posterior (maskedPrior prior weight\
+    \ hw hZ) kernel data hy y *\n        (weight x * prior x * kernel x data) :=\n  FEP.BayesianModelReduction.reduction_posterior_odds\
+    \ prior weight kernel data hw hZ hy x y\n\n/-- The reduced posterior reconstructs the full posterior through the\nevidence\
+    \ ratio: reduced posterior mass equals full posterior mass times the\nreduction weight times the ratio of full evidence\
+    \ to masked evidence.  This\nis the multiplicative conditional form of the reduction pushforward. -/\ntheorem fep158_reduced_posterior_reconstructs\
+    \ (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data :\
+    \ Evidence) (hw : ∀ x, 0 ≤ weight x)\n    (hZ : 0 < ∑ x, weight x * prior x)\n    (hP : 0 < kernel.predictive prior data)\n\
+    \    (hE : 0 < maskedEvidence prior weight kernel data)\n    (hy : 0 < kernel.predictive (maskedPrior prior weight hw\
+    \ hZ) data)\n    (x : Parameter) :\n    FiniteKernel.posterior (maskedPrior prior weight hw hZ) kernel data hy x =\n \
+    \     FiniteKernel.posterior prior kernel data hP x * weight x *\n        (kernel.predictive prior data /\n          maskedEvidence\
+    \ prior weight kernel data) :=\n  FEP.BayesianModelReduction.reduced_posterior_reconstructs prior weight kernel data hw\
+    \ hZ hP hE hy x\n\n/-- The Gibbs free energy is the negative Donsker--Varadhan objective. -/\ntheorem fep158_gibbsFreeEnergy_eq_neg_dvObjective\
+    \ (c : GibbsCertificate Parameter)\n    (cand : FiniteLaw Parameter) :\n    gibbsFreeEnergy c cand = -dvObjective c cand\
+    \ :=\n  FEP.BayesianModelReduction.gibbsFreeEnergy_eq_neg_dvObjective c cand\n\n/-- The free-energy change against the\
+    \ Gibbs optimizer is exactly the KL\ndivergence to the optimizer: the Donsker--Varadhan duality gap. -/\ntheorem fep158_reduction_free_energy_change_eq_kl\
+    \ (c : GibbsCertificate Parameter)\n    (cand : FiniteLaw Parameter) :\n    gibbsFreeEnergy c cand - gibbsFreeEnergy c\
+    \ c.optimizer =\n      finiteKL cand c.optimizer :=\n  FEP.BayesianModelReduction.reduction_free_energy_change_eq_kl c\
+    \ cand\n\n/-- Reduction to the Gibbs optimizer never lowers the free energy: the\ncandidate's free energy is at least\
+    \ the optimizer's, with the excess exactly\nthe KL divergence to the optimizer. -/\ntheorem fep158_reduction_free_energy_monotone_gibbs\n\
+    \    (c : GibbsCertificate Parameter) (cand : FiniteLaw Parameter) :\n    gibbsFreeEnergy c c.optimizer ≤ gibbsFreeEnergy\
+    \ c cand :=\n  FEP.BayesianModelReduction.reduction_free_energy_monotone_gibbs c cand\n\nopen MeasureTheory ProbabilityTheory\
+    \ FEP.GaussianInformationGeometry in\n/-- For the pinned fixed-variance Gaussian family, the log Bayes factor of\nthe\
+    \ natural-coordinate tilt against the zero-mean base law is the natural\ncoordinate times the datum minus the natural\
+    \ log partition: the Bayes\nfactor reduces to the natural-log-partition difference in the pinned\ncharts. -/\ntheorem\
+    \ fep158_gaussianLogBayesFactor_eq (family : FixedVarianceGaussian)\n    (natural x : ℝ) :\n    Real.log\n        (gaussianPDFReal\
+    \ (family.naturalToMean natural) family.variance x /\n          gaussianPDFReal 0 family.variance x) =\n      natural\
+    \ * x - family.naturalLogPartition natural :=\n  FEP.BayesianModelReduction.gaussianLogBayesFactor_eq family natural x\n\
+    \nend FEP158\n"
+  latex_equations:
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Parameter})\,(\mathsf{weight} : \mathsf{Parameter} \Rightarrow \mathbb{R})
+    \\
+
+    &(\mathsf{kernel} : \mathsf{FiniteKernel}\,\mathsf{Parameter}\,\mathsf{Evidence})\,(\mathsf{data} : \mathsf{Evidence})
+    \\
+
+    &(\mathsf{hw1} : \forall x, \mathsf{weight}\,x \le 1)\,(\mathsf{hE} : 0 < \mathsf{maskedEvidence}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{kernel}\,\mathsf{data})
+    \\
+
+    &\mathsf{evidenceFreeEnergy}\,(\mathsf{kernel.predictive}\,\mathsf{prior}\,\mathsf{data}) \le \mathsf{evidenceFreeEnergy}
+    \\
+
+    &(\mathsf{maskedEvidence}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{kernel}\,\mathsf{data})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Parameter})\,(\mathsf{weight} : \mathsf{Parameter} \Rightarrow \mathbb{R})
+    \\
+
+    &(\mathsf{kernel} : \mathsf{FiniteKernel}\,\mathsf{Parameter}\,\mathsf{Evidence})\,(\mathsf{data} : \mathsf{Evidence})
+    \\
+
+    &(\mathsf{hw1} : \forall x, \mathsf{weight}\,x \le 1) \\
+
+    &\mathsf{maskedEvidence}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{kernel}\,\mathsf{data} \le \mathsf{kernel.predictive}\,\mathsf{prior}\,\mathsf{data}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Parameter})\,(\mathsf{weight} : \mathsf{Parameter} \Rightarrow \mathbb{R})
+    \\
+
+    &(\mathsf{kernel} : \mathsf{FiniteKernel}\,\mathsf{Parameter}\,\mathsf{Evidence})\,(\mathsf{data} : \mathsf{Evidence})
+    \\
+
+    &(\mathsf{hw} : \forall x, 0 \le \mathsf{weight}\,x)\,(\mathsf{hZ} : 0 < \sum x, \mathsf{weight}\,x \cdot \mathsf{prior}\,x)
+    \\
+
+    &\mathsf{kernel.predictive}\,(\mathsf{maskedPrior}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{hw}\,\mathsf{hZ})\,\mathsf{data}
+    = \mathsf{maskedEvidence}\,\mathsf{prior} \\
+
+    &\mathsf{weight}\,\mathsf{kernel}\,\mathsf{data} / \sum y, \mathsf{weight}\,y \cdot \mathsf{prior}\,y
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Parameter})\,(\mathsf{weight} : \mathsf{Parameter} \Rightarrow \mathbb{R})
+    \\
+
+    &(\mathsf{kernel} : \mathsf{FiniteKernel}\,\mathsf{Parameter}\,\mathsf{Evidence})\,(\mathsf{data} : \mathsf{Evidence})
+    \\
+
+    &(\mathsf{hw} : \forall x, 0 \le \mathsf{weight}\,x)\,(\mathsf{hZ} : 0 < \sum x, \mathsf{weight}\,x \cdot \mathsf{prior}\,x)\,(\mathsf{hy}
+    : 0 \\
+
+    &< \mathsf{kernel.predictive}\,(\mathsf{maskedPrior}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{hw}\,\mathsf{hZ})\,\mathsf{data})\,(x
+    : \mathsf{Parameter}) \\
+
+    &\mathsf{FiniteKernel.posterior}\,(\mathsf{maskedPrior}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{hw}\,\mathsf{hZ})\,\mathsf{kernel}\,\mathsf{data}\,\mathsf{hy}\,x
+    \\
+
+    &\cdot \mathsf{maskedEvidence}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{kernel}\,\mathsf{data} = \mathsf{weight}\,x \cdot
+    \mathsf{prior}\,x \cdot \mathsf{kernel}\,x\,\mathsf{data}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Parameter})\,(\mathsf{weight} : \mathsf{Parameter} \Rightarrow \mathbb{R})
+    \\
+
+    &(\mathsf{kernel} : \mathsf{FiniteKernel}\,\mathsf{Parameter}\,\mathsf{Evidence})\,(\mathsf{data} : \mathsf{Evidence})
+    \\
+
+    &(\mathsf{hw} : \forall x, 0 \le \mathsf{weight}\,x)\,(\mathsf{hZ} : 0 < \sum x, \mathsf{weight}\,x \cdot \mathsf{prior}\,x)\,(\mathsf{hy}
+    : 0 \\
+
+    &< \mathsf{kernel.predictive}\,(\mathsf{maskedPrior}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{hw}\,\mathsf{hZ})\,\mathsf{data})\,(x\,y
+    : \mathsf{Parameter}) \\
+
+    &\mathsf{FiniteKernel.posterior}\,(\mathsf{maskedPrior}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{hw}\,\mathsf{hZ})\,\mathsf{kernel}\,\mathsf{data}\,\mathsf{hy}\,x
+    \\
+
+    &\cdot (\mathsf{weight}\,y \cdot \mathsf{prior}\,y \cdot \mathsf{kernel}\,y\,\mathsf{data}) = \mathsf{FiniteKernel.posterior}
+    \\
+
+    &(\mathsf{maskedPrior}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{hw}\,\mathsf{hZ})\,\mathsf{kernel}\,\mathsf{data}\,\mathsf{hy}\,y
+    \\
+
+    &\cdot (\mathsf{weight}\,x \cdot \mathsf{prior}\,x \cdot \mathsf{kernel}\,x\,\mathsf{data})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(\mathsf{prior} : \mathsf{FiniteLaw}\,\mathsf{Parameter})\,(\mathsf{weight} : \mathsf{Parameter} \Rightarrow \mathbb{R})
+    \\
+
+    &(\mathsf{kernel} : \mathsf{FiniteKernel}\,\mathsf{Parameter}\,\mathsf{Evidence})\,(\mathsf{data} : \mathsf{Evidence})
+    \\
+
+    &(\mathsf{hw} : \forall x, 0 \le \mathsf{weight}\,x)\,(\mathsf{hZ} : 0 < \sum x, \mathsf{weight}\,x \cdot \mathsf{prior}\,x)
+    \\
+
+    &(\mathsf{hP} : 0 < \mathsf{kernel.predictive}\,\mathsf{prior}\,\mathsf{data}) \\
+
+    &(\mathsf{hE} : 0 < \mathsf{maskedEvidence}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{kernel}\,\mathsf{data})\,(\mathsf{hy}
+    : 0 < \mathsf{kernel.predictive} \\
+
+    &(\mathsf{maskedPrior}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{hw}\,\mathsf{hZ})\,\mathsf{data})\,(x : \mathsf{Parameter})
+    \\
+
+    &\mathsf{FiniteKernel.posterior}\,(\mathsf{maskedPrior}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{hw}\,\mathsf{hZ})\,\mathsf{kernel}\,\mathsf{data}\,\mathsf{hy}\,x
+    \\
+
+    &= \mathsf{FiniteKernel.posterior}\,\mathsf{prior}\,\mathsf{kernel}\,\mathsf{data}\,\mathsf{hP}\,x \cdot \mathsf{weight}\,x
+    \cdot (\mathsf{kernel.predictive} \\
+
+    &\mathsf{prior}\,\mathsf{data} / \mathsf{maskedEvidence}\,\mathsf{prior}\,\mathsf{weight}\,\mathsf{kernel}\,\mathsf{data})
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(c : \mathsf{GibbsCertificate}\,\mathsf{Parameter})\,(\mathsf{cand} : \mathsf{FiniteLaw}\,\mathsf{Parameter}) \\
+
+    &\mathsf{gibbsFreeEnergy}\,c\,\mathsf{cand} = -\mathsf{dvObjective}\,c\,\mathsf{cand}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(c : \mathsf{GibbsCertificate}\,\mathsf{Parameter})\,(\mathsf{cand} : \mathsf{FiniteLaw}\,\mathsf{Parameter}) \\
+
+    &\mathsf{gibbsFreeEnergy}\,c\,\mathsf{cand} - \mathsf{gibbsFreeEnergy}\,c\,\mathsf{c.optimizer} = \mathsf{finiteKL}\,\mathsf{cand}
+    \\
+
+    &\mathsf{c.optimizer}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(c : \mathsf{GibbsCertificate}\,\mathsf{Parameter})\,(\mathsf{cand} : \mathsf{FiniteLaw}\,\mathsf{Parameter}) \\
+
+    &\mathsf{gibbsFreeEnergy}\,c\,\mathsf{c.optimizer} \le \mathsf{gibbsFreeEnergy}\,c\,\mathsf{cand}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Parameter}\,\mathsf{Evidence} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Parameter}]\,[\mathsf{Fintype}\,\mathsf{Evidence}]
+    \\
+
+    &(\mathsf{family} : \mathsf{FixedVarianceGaussian})\,(\mathsf{natural}\,x : \mathbb{R}) \\
+
+    &\mathsf{Real.log}\,(\mathsf{gaussianPDFReal}\,(\mathsf{family.naturalToMean}\,\mathsf{natural})\,\mathsf{family.variance}\,x
+    \\
+
+    &/ \mathsf{gaussianPDFReal}\,0\,\mathsf{family.variance}\,x) = \mathsf{natural} \cdot x \\
+
+    &- \mathsf{family.naturalLogPartition}\,\mathsf{natural}
+
+    \end{aligned}'
+- id: fep-159
+  title: EFE and Entropy-Production Time-Scale Separation
+  area: ActiveInference
+  family: standalone-efe-formalizations
+  mathlib_modules:
+  - Analysis.SpecialFunctions.ExpDeriv
+  - Probability.Kernel.Invariance
+  mathlib_status: real
+  primary_theorem: fep159_epistemic_gain_bounded_by_affinity
+  supporting_theorems:
+  - fep159_expectedFreeEnergy_le_productionRate_div_decayRate
+  - fep159_slow_fast_separation_statement
+  - fep159_fastRelaxation_epistemic_vanishes
+  - fep159_slicePath_entropyProduction_eq
+  - fep159_beliefAffinity_eq_localAffinity
+  - fep159_productionRate_nonneg
+  - fep159_twoStateModel_expectedFreeEnergy
+  - fep159_epistemicGain_rateScaling
+  boundary_theorems: []
+  semantic_disposition: formalized
+  nl: 'The two-state belief information gap is bounded by the entropy-production rate scaled by the relaxation time (gain
+    at most production/decay), the evolved gap contracts to the invariant measure no slower than the relaxation timescale,
+    the one-slice path-space entropy production equals (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved
+    gain after any fixed positive action time vanishes. Assumption scope: All statements are for the explicit two-state continuous-time
+    semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics
+    production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.
+    Semantic disposition: `formalized`.
+
+    '
+  assumption_review: All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter
+    family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space
+    theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.
+  non_vacuity: The bound is attained by the stationary law for the benchmark rates, and the fast-relaxation limit exhibits
+    the vanishing exactly.
+  acceptance_probe: warning-free native Lean compile of all nine fep-159 declarations.
+  lean_sketch: "import FepSketches.efe_time_scale_separation\n\nnamespace FEP159\n\nopen FEP.TimeScaleEFE\nopen FEP FEP.FiniteInformation\
+    \ FEP.ContinuousTimeMarkov FEP.PathThermodynamics\n  FEP.ActiveInference FEP.VariationalDuality Finset\nopen scoped BigOperators\n\
+    \n/-- **Theorem 1 (`epistemic_gain_bounded_by_affinity`).**  The policy-relevant\ninformation gap of the belief is bounded\
+    \ by the entropy-production rate\n`σ = J * A` scaled by the relaxation time `1 / decayRate`. -/\ntheorem fep159_epistemic_gain_bounded_by_affinity\
+    \ (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i) :\n    finiteKL belief rates.stationaryLaw\
+    \ ≤\n      productionRate rates belief / rates.decayRate :=\n  FEP.TimeScaleEFE.epistemic_gain_bounded_by_affinity rates\
+    \ belief hSupport\n\n/-- **Theorem 1, EFE form.**  The expected free energy of the two-state\nobserving agent is bounded\
+    \ by the entropy-production rate scaled by the\nrelaxation time. -/\ntheorem fep159_expectedFreeEnergy_le_productionRate_div_decayRate\
+    \ (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 ≤ time)\
+    \ (policy : Bool) :\n    expectedFreeEnergy (twoStateModel rates belief time hTime) policy ≤\n      productionRate rates\
+    \ belief / rates.decayRate :=\n  FEP.TimeScaleEFE.expectedFreeEnergy_le_productionRate_div_decayRate rates belief hSupport\
+    \ time hTime policy\n\n/-- **Theorem 2 (`slow_fast_separation_statement`).**  The evolved\npolicy-relevant information\
+    \ gap is bounded by the squared relaxation factor\ntimes the initial gap: information contracts to the invariant measure\
+    \ on the\nrelaxation timescale, so the information timescale is twice the mass\nrelaxation timescale. -/\ntheorem fep159_slow_fast_separation_statement\
+    \ (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (time : ℝ) (hTime : 0 ≤ time) :\n    epistemicGain rates belief\
+    \ time hTime ≤\n      rates.rho time ^ 2 *\n        ((belief true - rates.stationaryTrue) ^ 2 /\n          (rates.stationaryTrue\
+    \ * rates.stationaryFalse)) :=\n  FEP.TimeScaleEFE.slow_fast_separation_statement rates belief time hTime\n\n/-- **Theorem\
+    \ 2, limit form.**  Under the `1 / eps` rate scaling the\npolicy-relevant gain after a fixed positive action time vanishes\
+    \ as\n`eps → 0⁺`; on the tuned branch the explicit witness is\n`eps = decayRate * time / (-log (delta / chi0))`. -/\n\
+    theorem fep159_fastRelaxation_epistemic_vanishes (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (time : ℝ) (hpos\
+    \ : 0 < time) :\n    ∀ δ : ℝ, 0 < δ → ∃ eps : ℝ, 0 < eps ∧ ∀ (hTime : 0 ≤ time) (heps : 0 < eps),\n      epistemicGain\
+    \ (scaledRates rates eps heps) belief time hTime ≤ δ :=\n  FEP.TimeScaleEFE.fastRelaxation_epistemic_vanishes rates belief\
+    \ time hpos\n\n/-- **Theorem 3 (`slicePath_entropyProduction_eq`).**  The one-slice path-space\nentropy production of\
+    \ `FEP.PathThermodynamics` equals `(1 - rho time) * σ /\ndecayRate`: the generator entropy-production rate `σ = J * A`\
+    \ is exactly the\nper-unit-relaxation path-space dissipation rate. -/\ntheorem fep159_slicePath_entropyProduction_eq (rates\
+    \ : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 ≤ time) (hpos\
+    \ : 0 < time) :\n    entropyProduction (slicePathProtocol rates belief time hTime)\n      = (1 - rates.rho time) * productionRate\
+    \ rates belief / rates.decayRate :=\n  FEP.TimeScaleEFE.slicePath_entropyProduction_eq rates belief hSupport time hTime\
+    \ hpos\n\n/-- The generator affinity coincides with `FEP.PathThermodynamics.localAffinity`\nof the semigroup slice at\
+    \ every positive sampling time. -/\ntheorem fep159_beliefAffinity_eq_localAffinity (rates : TwoStateRates)\n    (belief\
+    \ : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 < time) :\n    beliefAffinity rates belief\
+    \ =\n      localAffinity belief (rates.certifiedSemigroup.kernel time hTime.le) false true :=\n  FEP.TimeScaleEFE.beliefAffinity_eq_localAffinity\
+    \ rates belief hSupport time hTime\n\n/-- The entropy-production rate is nonnegative at a fully supported belief. -/\n\
+    theorem fep159_productionRate_nonneg (rates : TwoStateRates) (belief : FiniteLaw Bool)\n    (hSupport : ∀ i, 0 < belief\
+    \ i) : 0 ≤ productionRate rates belief :=\n  FEP.TimeScaleEFE.productionRate_nonneg rates belief hSupport\n\n/-- For the\
+    \ two-state observing agent the expected free energy of every\npolicy is exactly the belief information gap: `risk` is\
+    \ the gap and the\nperfect-observation ambiguity vanishes. -/\ntheorem fep159_twoStateModel_expectedFreeEnergy (rates\
+    \ : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 ≤ time) (policy\
+    \ : Bool) :\n    expectedFreeEnergy (twoStateModel rates belief time hTime) policy =\n      epistemicGain rates belief\
+    \ time hTime :=\n  FEP.TimeScaleEFE.twoStateModel_expectedFreeEnergy rates belief hSupport time hTime policy\n\n/-- Under\
+    \ the `1 / eps` rate scaling the evolved gain is bounded by the squared\nscaled relaxation factor times the initial gap.\
+    \ -/\ntheorem fep159_epistemicGain_rateScaling (rates : TwoStateRates) (belief : FiniteLaw Bool)\n    (time : ℝ) (hTime\
+    \ : 0 ≤ time) (eps : ℝ) (heps : 0 < eps) :\n    epistemicGain (scaledRates rates eps heps) belief time hTime ≤\n     \
+    \ Real.exp (-(rates.decayRate / eps) * time) ^ 2 *\n        ((belief true - rates.stationaryTrue) ^ 2 /\n          (rates.stationaryTrue\
+    \ * rates.stationaryFalse)) :=\n  FEP.TimeScaleEFE.epistemicGain_rateScaling rates belief time hTime eps heps\n\nend FEP159\n"
+  latex_equations:
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{hSupport}
+    : \forall i, 0 < \mathsf{belief}\,i) \\
+
+    &\mathsf{finiteKL}\,\mathsf{belief}\,\mathsf{rates.stationaryLaw} \le \mathsf{productionRate}\,\mathsf{rates}\,\mathsf{belief}
+    \\
+
+    &/ \mathsf{rates.decayRate}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{hSupport}
+    : \forall i, 0 < \mathsf{belief}\,i) \\
+
+    &(\mathsf{time} : \mathbb{R})\,(\mathsf{hTime} : 0 \le \mathsf{time})\,(\mathsf{policy} : \mathsf{Bool}) \\
+
+    &\mathsf{expectedFreeEnergy}\,(\mathsf{twoStateModel}\,\mathsf{rates}\,\mathsf{belief}\,\mathsf{time}\,\mathsf{hTime})\,\mathsf{policy}
+    \\
+
+    &\le \mathsf{productionRate}\,\mathsf{rates}\,\mathsf{belief} / \mathsf{rates.decayRate}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{time} : \mathbb{R})\,(\mathsf{hTime}
+    : 0 \le \mathsf{time}) \\
+
+    &\mathsf{epistemicGain}\,\mathsf{rates}\,\mathsf{belief}\,\mathsf{time}\,\mathsf{hTime} \le \mathsf{rates.rho}\,\mathsf{time}
+    ^ 2 \cdot ((\mathsf{belief}\,\mathsf{true} \\
+
+    &- \mathsf{rates.stationaryTrue}) ^ 2 / (\mathsf{rates.stationaryTrue} \cdot \mathsf{rates.stationaryFalse}))
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{time} : \mathbb{R})\,(\mathsf{hpos}
+    : 0 < \mathsf{time}) \\
+
+    &\forall \delta{} : \mathbb{R}, 0 < \delta{} \Rightarrow \exists \mathsf{eps} : \mathbb{R}, 0 < \mathsf{eps} \wedge \forall
+    (\mathsf{hTime} : 0 \le \mathsf{time})\,(\mathsf{heps} : 0 < \mathsf{eps}), \\
+
+    &\mathsf{epistemicGain}\,(\mathsf{scaledRates}\,\mathsf{rates}\,\mathsf{eps}\,\mathsf{heps})\,\mathsf{belief}\,\mathsf{time}\,\mathsf{hTime}
+    \le \delta{}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{hSupport}
+    : \forall i, 0 < \mathsf{belief}\,i) \\
+
+    &(\mathsf{time} : \mathbb{R})\,(\mathsf{hTime} : 0 \le \mathsf{time})\,(\mathsf{hpos} : 0 < \mathsf{time}) \\
+
+    &\mathsf{entropyProduction}\,(\mathsf{slicePathProtocol}\,\mathsf{rates}\,\mathsf{belief}\,\mathsf{time}\,\mathsf{hTime})
+    \\
+
+    &= (1 - \mathsf{rates.rho}\,\mathsf{time}) \cdot \mathsf{productionRate}\,\mathsf{rates}\,\mathsf{belief} / \mathsf{rates.decayRate}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{hSupport}
+    : \forall i, 0 < \mathsf{belief}\,i) \\
+
+    &(\mathsf{time} : \mathbb{R})\,(\mathsf{hTime} : 0 < \mathsf{time}) \\
+
+    &\mathsf{beliefAffinity}\,\mathsf{rates}\,\mathsf{belief} = \mathsf{localAffinity}\,\mathsf{belief} \\
+
+    &(\mathsf{rates.certifiedSemigroup.kernel}\,\mathsf{time}\,\mathsf{hTime.le})\,\mathsf{false}\,\mathsf{true}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{hSupport}
+    : \forall i, 0 < \mathsf{belief}\,i) \\
+
+    &0 \le \mathsf{productionRate}\,\mathsf{rates}\,\mathsf{belief}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{hSupport}
+    : \forall i, 0 < \mathsf{belief}\,i) \\
+
+    &(\mathsf{time} : \mathbb{R})\,(\mathsf{hTime} : 0 \le \mathsf{time})\,(\mathsf{policy} : \mathsf{Bool}) \\
+
+    &\mathsf{expectedFreeEnergy}\,(\mathsf{twoStateModel}\,\mathsf{rates}\,\mathsf{belief}\,\mathsf{time}\,\mathsf{hTime})\,\mathsf{policy}
+    \\
+
+    &= \mathsf{epistemicGain}\,\mathsf{rates}\,\mathsf{belief}\,\mathsf{time}\,\mathsf{hTime}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{time} : \mathbb{R})\,(\mathsf{hTime}
+    : 0 \le \mathsf{time}) \\
+
+    &(\mathsf{eps} : \mathbb{R})\,(\mathsf{heps} : 0 < \mathsf{eps}) \\
+
+    &\mathsf{epistemicGain}\,(\mathsf{scaledRates}\,\mathsf{rates}\,\mathsf{eps}\,\mathsf{heps})\,\mathsf{belief}\,\mathsf{time}\,\mathsf{hTime}
+    \le \mathsf{Real.exp} \\
+
+    &(-(\mathsf{rates.decayRate} / \mathsf{eps}) \cdot \mathsf{time}) ^ 2 \cdot ((\mathsf{belief}\,\mathsf{true} - \mathsf{rates.stationaryTrue})
+    ^ 2 \\
+
+    &/ (\mathsf{rates.stationaryTrue} \cdot \mathsf{rates.stationaryFalse}))
 
     \end{aligned}'

@@ -16,6 +16,10 @@ import FepSketches.compositions.gaussian_filter
 import FepSketches.compositions.gaussian_control
 import FepSketches.compositions.gaussian_grid_path
 import FepSketches.compositions.smooth_reference_kernel
+import FepSketches.compositions.efe_policy_selection
+import FepSketches.compositions.perception_action_loop
+import FepSketches.compositions.bayesian_model_reduction
+import FepSketches.compositions.efe_time_scale_separation
 
 /-!
 This file is generated from the formal module manifest. Scientific cross-topic

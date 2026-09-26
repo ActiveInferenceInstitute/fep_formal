@@ -393,6 +393,30 @@ FORMAL_MODULES: tuple[FormalModule, ...] = (
         declaration_namespace="FEPComposed.SmoothReferenceKernel",
     ),
     FormalModule(
+        resource="compositions/efe_policy_selection.lean",
+        lean_module="FepSketches.compositions.efe_policy_selection",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed",
+    ),
+    FormalModule(
+        resource="compositions/perception_action_loop.lean",
+        lean_module="FepSketches.compositions.perception_action_loop",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed",
+    ),
+    FormalModule(
+        resource="compositions/bayesian_model_reduction.lean",
+        lean_module="FepSketches.compositions.bayesian_model_reduction",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed",
+    ),
+    FormalModule(
+        resource="compositions/efe_time_scale_separation.lean",
+        lean_module="FepSketches.compositions.efe_time_scale_separation",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed",
+    ),
+    FormalModule(
         resource="composed.lean",
         lean_module="FepSketches.composed",
         role=FormalModuleRole.AGGREGATE,
