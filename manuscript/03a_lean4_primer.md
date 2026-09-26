@@ -214,4 +214,4 @@ When translating FEP physics into Lean, compilation errors typically fall into t
 2. **Missing instance.** `failed to synthesize instance 'MeasurableSpace α'` — Lean refuses to integrate over a space that has not been declared measurable.
 3. **Unsolved goal.** `unsolved goals: ⊢ q ≪ p` — the theorem requires absolute continuity, but no proof or hypothesis supplies it.
 
-`LeanVerifier.classify_failure_kind` maps these patterns (plus `missing_import`, `renamed_identifier`, and `timeout`) onto the `FailureKind` enum carried inside every `VerifyResult`. These errors are not bugs in the pipeline; they are the compiler enforcing mathematical rigor.
+`LeanVerifier.classify_failure_kind` maps these patterns (plus `missing_import`, `renamed_identifier`, `timeout`, and the `killed` class — SIGKILL-style process death and out-of-memory kills, matched only after the timeout-specific patterns and kept distinct from the generic killed/OOM fallback) onto the `FailureKind` enum carried inside every `VerifyResult`. These errors are not bugs in the pipeline; they are the compiler enforcing mathematical rigor.
