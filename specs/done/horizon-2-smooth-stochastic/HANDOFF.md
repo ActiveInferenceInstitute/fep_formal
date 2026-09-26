@@ -373,7 +373,7 @@ a separate fixed Fin2 model.
 - Canonical focused command: `uv run pytest -q
   tests/test_horizon2_readiness.py --no-cov --no-header --no-summary`.
 - Static check: `uv run python
-  specs/horizon-2-smooth-stochastic/readiness/validate.py --check`.
+  specs/done/horizon-2-smooth-stochastic/readiness/validate.py --check`.
 - The validator binds toolchain/probe/test/validator bytes and rejects row,
   receipt, probe, source, and premature-H2-resource tampering.
 - H2.0 created no maintained formal resource, manifest row, projection,

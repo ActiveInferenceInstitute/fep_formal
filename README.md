@@ -95,7 +95,7 @@ carrier-merge no-go. It does not establish transition-aware planning,
 EFE-optimal control, physical or causal adequacy, empirical validation, or a
 universal FEP claim.
 
-The active [Horizon 2 spec](specs/horizon-2-smooth-stochastic/README.md) has
+The active [Horizon 2 spec](specs/done/horizon-2-smooth-stochastic/README.md) has
 accepted H2.0--H2.3b, H2.4a/b, H2.5a/b/c/d, H2.5b-R0, H2.5d-R0,
 H2.6a/b/c, and H2.6a-R0. The current smooth surface includes fixed-variance scalar Gaussian
 KL/information geometry, local coordinate duality, a same-joint native
@@ -115,7 +115,7 @@ every stationary center, proves blanket-a.e. pair and scalar conditional laws
 plus endpoint `CondIndepFun`, and derives a fixed bivariate precision
 perturbation with actual covariance `-1 / 15` and native non-independence.
 H2.7-R0 has accepted the continuous density-relative exact-posterior VFE and
-derived local natural-gradient seam. The [H2.7 terminal record](specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
+derived local natural-gradient seam. The [H2.7 terminal record](specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
 now validates 328 mandatory cases, the enabled Fin4 supplement, 180 bound
 source hashes, independent diagnostics, and three source-bound reviews. This
 opens only read-only H3.G0

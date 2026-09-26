@@ -50,7 +50,7 @@ from fep_lean.verification.horizon_acceptance import (
     native_source_paths,
 )
 
-BASE = "specs/horizon-2-smooth-stochastic/readiness/"
+BASE = "specs/done/horizon-2-smooth-stochastic/readiness/"
 ACCEPTANCE = BASE + "acceptance.json"
 MATRIX = BASE + "matrix.yaml"
 PIN_EVIDENCE = BASE + "pin_evidence.json"

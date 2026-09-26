@@ -331,10 +331,10 @@ def test_cli_refresh_gate_refusal_names_the_surface_and_writes_nothing(
 ) -> None:
     """Injected live-red on a staged copy: non-zero exit, real tree untouched."""
     specs_dir = _stage_specs(tmp_path)
-    receipt = specs_dir / "horizon-2-smooth-stochastic/readiness"
+    receipt = specs_dir / "done/horizon-2-smooth-stochastic/readiness"
     (receipt / "terminal-acceptance.json").write_bytes(b"{ not json")
     live_receipt = (
-        REPO_ROOT / "specs/horizon-2-smooth-stochastic/readiness/"
+        REPO_ROOT / "specs/done/horizon-2-smooth-stochastic/readiness/"
         "terminal-acceptance.json"
     )
     live_before = _sha(live_receipt.read_bytes())

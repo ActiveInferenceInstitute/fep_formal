@@ -28,9 +28,9 @@ from .bodies import (
     native_blanket_independence,
     path_thermodynamics,
     predictive_coding_generalized,
+    standalone_efe_formalizations,
     temporal_inference,
     variational_duality,
-    standalone_efe_formalizations,
 )
 from .latex import build_theorem_latex, build_topic_latex_equations
 

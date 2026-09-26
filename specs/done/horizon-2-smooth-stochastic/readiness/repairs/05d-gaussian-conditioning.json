@@ -72,7 +72,7 @@
       "Classical.choice",
       "Quot.sound"
     ],
-    "compile_command": "cd lean && lake env lean ../specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean",
+    "compile_command": "cd lean && lake env lean ../specs/done/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean",
     "compiler_exit_code": 0,
     "compiler_output": "",
     "focused_test_command": "uv run pytest tests/test_horizon2_gaussian_conditioning_readiness.py -q --no-cov",
@@ -129,12 +129,12 @@
     "lean/lake-manifest.json": "e9a540f10f3a2eb912ba357823556940acfbf82a8e7603e55f8d031d81aa2b0c",
     "lean/lakefile.lean": "b610f5279a448bf420bfa0fa2482ff4428a6761f6169014ca810ee619aec608b",
     "lean/lean-toolchain": "8733782dc070a99b312039cda424f601b80f3be6f6f512627da5ba25adc27632",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json": "8db075503e1429645d357234fb42016f053ea688acd2e92a0e76ebdc39750791",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml": "8be4f130395f1148048f27021eeeef010b0d51ab18f07aa520fac7a3c68e9067",
-    "specs/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean": "5c848021ad605cbfb628811ad7ef69846e7fde0b24437a3d4ce9a289f0e18fa3",
-    "specs/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md": "fe82ab041ca210dc629b59e0a12ce5cabc48513c64f3728f0e34d7442a9d10ce",
-    "specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean": "51184185f3adfee7506e95457f352b56910cd127bd05f9140f21437c3d88e612",
+    "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json": "18ec35609fb5e00c9f44a25c3769b193558127d29615969daf816bf0d029a3f5",
+    "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml": "940fc3d873f7a0f35c74ccc579b23689894f500adf7ba616da6e2f155867bec5",
+    "specs/done/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean": "5c848021ad605cbfb628811ad7ef69846e7fde0b24437a3d4ce9a289f0e18fa3",
+    "specs/done/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md": "fe82ab041ca210dc629b59e0a12ce5cabc48513c64f3728f0e34d7442a9d10ce",
+    "specs/done/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean": "51184185f3adfee7506e95457f352b56910cd127bd05f9140f21437c3d88e612",
     "src/fep_lean/formal/fin4_gaussian_semigroup.lean": "a7c14d2fdeb44c61ffa4012d6eccc8d00051be916ab536e2658f4ef3652d260c",
-    "tests/test_horizon2_gaussian_conditioning_readiness.py": "a6289b117e87a5aae7f7abbdc014a629cc0f431f0609321d0337b5e0bfb3953e"
+    "tests/test_horizon2_gaussian_conditioning_readiness.py": "e575c5597f0b3e7e945d4471aeb6caf4066da0ddcc38b13700963e96c32eb848"
   }
 }

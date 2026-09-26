@@ -1,11 +1,11 @@
 # FEP research program: Horizons 1, 2, and 3
 
 Status: **active implementation program; Horizon 1 exited, the
-[active H2 spec](../../../specs/horizon-2-smooth-stochastic/README.md) has
+[active H2 spec](../../../specs/done/horizon-2-smooth-stochastic/README.md) has
 accepted H2.0--H2.3b, H2.4a/b, H2.5a/b/c, H2.5b-R0, H2.5d-R0,
 H2.5d, H2.6a/b/c, H2.6a-R0, H2.7-R0, and H2.7; only read-only H3.G0
 eligibility is open, with H3.0--H3.7 closed**. The
-[terminal acceptance record](../../../specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
+[terminal acceptance record](../../../specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
 binds the actual native evidence, diagnostics, and three independent reviews.
 The accepted H1
 record preserves the first uninhabited carrier merge and separately proves the

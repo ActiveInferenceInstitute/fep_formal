@@ -265,7 +265,7 @@ snapshot, and neither repository HEAD changed. Later backend proofs, continuous
 semantics, wider H2 acceptance, H3, current-release/provider evidence, and
 publication retain their independent acceptance boundaries.
 
-Detailed evidence: [W2 operations](specs/gnn-bridge-w2-source-custody/REPORT.md), [Q5 proof](specs/gnn-bridge-q5-artifact-proof/REPORT.md), and [H2 audit](specs/horizon-2-smooth-stochastic/readiness/07-terminal-audit-20260904.md). The broader release criteria elsewhere in this ISA remain open.
+Detailed evidence: [W2 operations](specs/gnn-bridge-w2-source-custody/REPORT.md), [Q5 proof](specs/gnn-bridge-q5-artifact-proof/REPORT.md), and [H2 audit](specs/done/horizon-2-smooth-stochastic/readiness/07-terminal-audit-20260904.md). The broader release criteria elsewhere in this ISA remain open.
 
 ## Comprehensive continuation (2026-09-04, wave 2)
 

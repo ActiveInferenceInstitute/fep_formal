@@ -24,7 +24,7 @@ from fep_lean.verification.numerical_witnesses import (
     evaluate_numerical_witnesses,
 )
 
-BASE = "specs/horizon-2-smooth-stochastic/readiness/"
+BASE = "specs/done/horizon-2-smooth-stochastic/readiness/"
 TERMINAL_RECEIPT = BASE + "terminal-acceptance.json"
 R0_SUCCESSOR = BASE + "repairs/07-gaussian-vfe-natural-gradient-custody.json"
 # Immutable full frozen-source collection; includes all parameterized case IDs.
@@ -33,18 +33,18 @@ CAPTURED_COLLECTION_SHA256 = (
 )
 PREDECESSORS = {
     BASE
-    + "acceptance.json": "8db075503e1429645d357234fb42016f053ea688acd2e92a0e76ebdc39750791",
+    + "acceptance.json": "18ec35609fb5e00c9f44a25c3769b193558127d29615969daf816bf0d029a3f5",
     BASE
-    + "repairs/05b-transition-covariance.json": "b8bff635d95ab261255ceaf270745c05ddb0f29ca24377b82a4dfcd889f6d57b",
+    + "repairs/05b-transition-covariance.json": "625a26dada45f090ecfdd781338f025875c3a5acf60ef8b128f3cc01e7308750",
     BASE
-    + "repairs/05d-gaussian-conditioning.json": "1b7c8b41cb6ad4edc5149c1838dd72e3bf165c58f5ba81dc2b74ed05a126f260",
+    + "repairs/05d-gaussian-conditioning.json": "13a5577fa484cf63878a485e79b66d14f6fb7ae10d1ad91f997dcbc34c5a48db",
     BASE
-    + "repairs/05d-gaussian-conditioning-lifecycle.json": "a187bdc8d9793a321f333b08469e4d391cc33bb8c348f504d6f24c180907970c",
+    + "repairs/05d-gaussian-conditioning-lifecycle.json": "d46f6b9c0b7be2a83647440f2d8bbd345c77c448aa0d72a9b868f5d01c8f9bde",
     BASE
-    + "repairs/06a-native-filter-posterior.json": "8ccdb35e999c264454a6f595d65d366a1f6ac192b8bd5a22557f1adc3b214019",
+    + "repairs/06a-native-filter-posterior.json": "f45132628eba920b05bd5550e610598776b27e5f71996835dddfa1be2509a685",
     BASE
-    + "repairs/07-gaussian-vfe-natural-gradient.json": "b5637ff30690748ccf1db992e6fb7c34a267a3ed1a7b74daacb1bc9cac844d01",
-    R0_SUCCESSOR: "629961d73c3605e3834a3b6f66e932ddf8c58648de446232539c36a15c7a9528",
+    + "repairs/07-gaussian-vfe-natural-gradient.json": "6c654a45fcbb4d3b62a165619d847a31ecf7c56cb8e345cda1920fad4e9ce728",
+    R0_SUCCESSOR: "df54291c4e9f1e2f0373a9a6aebc1b0d187b569104a7379253cc30edff68b7ed",
 }
 MANDATORY_TEST_FILES = tuple(
     "tests/test_" + name + ".py"
@@ -96,7 +96,7 @@ CURRENT_FILES = (
     "tests/test_numerical_witnesses.py",
     "tests/test_horizon_numerical_witnesses.py",
     BASE + "terminal_acceptance.py",
-    "specs/horizon-2-smooth-stochastic/slices/07-terminal-certificate.md",
+    "specs/done/horizon-2-smooth-stochastic/slices/07-terminal-certificate.md",
     "src/fep_lean/catalogue/registry.py",
     "src/fep_lean/catalogue/latex.py",
     "src/fep_lean/catalogue/bodies/__init__.py",

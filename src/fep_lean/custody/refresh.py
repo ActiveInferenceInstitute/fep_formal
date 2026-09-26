@@ -194,7 +194,7 @@ def refresh(
 
     readiness = _load_module(
         root,
-        "specs/horizon-2-smooth-stochastic/readiness/validate.py",
+        "specs/done/horizon-2-smooth-stochastic/readiness/validate.py",
         "fep_lean_custody_readiness_validate",
     )
     h2_r0 = _load_module(

@@ -11,7 +11,7 @@ from pathlib import Path, PurePosixPath
 
 import yaml
 
-_SPEC_RELATIVE = Path("specs/horizon-2-smooth-stochastic")
+_SPEC_RELATIVE = Path("specs/done/horizon-2-smooth-stochastic")
 _MATRIX_RELATIVE = _SPEC_RELATIVE / "readiness/matrix.yaml"
 _EXPECTED_STATUS = "complete_with_boundaries"
 _EXPECTED_COMMAND = (
@@ -577,7 +577,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--project-root",
         type=Path,
-        default=Path(__file__).resolve().parents[3],
+        default=Path(__file__).resolve().parents[4],
     )
     return parser
 

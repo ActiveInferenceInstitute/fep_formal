@@ -13,14 +13,14 @@ from pathlib import Path
 from typing import Any
 
 PRIOR_PATH = (
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/"
+    "specs/done/horizon-2-smooth-stochastic/readiness/repairs/"
     "07-gaussian-vfe-natural-gradient.json"
 )
 SUCCESSOR_PATH = (
-    "specs/horizon-2-smooth-stochastic/readiness/repairs/"
+    "specs/done/horizon-2-smooth-stochastic/readiness/repairs/"
     "07-gaussian-vfe-natural-gradient-custody.json"
 )
-PRIOR_SHA256 = "b5637ff30690748ccf1db992e6fb7c34a267a3ed1a7b74daacb1bc9cac844d01"
+PRIOR_SHA256 = "6c654a45fcbb4d3b62a165619d847a31ecf7c56cb8e345cda1920fad4e9ce728"
 MANIFEST_PATH = "src/fep_lean/formal/manifest.py"
 READINESS_TEST_PATH = "tests/test_horizon2_gaussian_vfe_readiness.py"
 VALIDATOR_PATH = "tests/_support/h2_r0_custody.py"
@@ -43,6 +43,58 @@ NATIVE_PROBES = (
     "test_h2_7_r0_compiles_warning_free",
     "test_h2_7_r0_exact_types_environment_and_axioms",
     "test_h2_7_r0_typed_consumer_rejects_reversed_kl",
+)
+# Wave-3 expansion (commits a0f4ed304e0f8e3cc78f0eeca26bdea0f61395e6 and
+# c8471b94b25c93715e138a7305686f412b211947): four standalone-efe foundation
+# modules and four FEPComposed bridge composition modules joined the
+# FORMAL_MODULES roster AFTER the R0 seal. Both insertions are pure
+# contiguous 4-block additions (verified byte-exact); the reconstruction
+# removes them before the gnn strip and the W4 swap, so the sealed R0
+# digest still binds the historical owners while the approved roster
+# growth is explicit.
+WAVE3_FOUNDATION_ADDED_MODULES = (
+    (
+        "efe_policy_selection.lean",
+        "FepSketches.efe_policy_selection",
+        "FEP.EFEPolicy",
+    ),
+    (
+        "perception_action_loop.lean",
+        "FepSketches.perception_action_loop",
+        "FEP.PerceptionActionLoop",
+    ),
+    (
+        "bayesian_model_reduction.lean",
+        "FepSketches.bayesian_model_reduction",
+        "FEP.BayesianModelReduction",
+    ),
+    (
+        "efe_time_scale_separation.lean",
+        "FepSketches.efe_time_scale_separation",
+        "FEP.TimeScaleEFE",
+    ),
+)
+WAVE3_COMPOSITION_ADDED_MODULES = (
+    (
+        "compositions/efe_policy_selection.lean",
+        "FepSketches.compositions.efe_policy_selection",
+        "FEPComposed",
+    ),
+    (
+        "compositions/perception_action_loop.lean",
+        "FepSketches.compositions.perception_action_loop",
+        "FEPComposed",
+    ),
+    (
+        "compositions/bayesian_model_reduction.lean",
+        "FepSketches.compositions.bayesian_model_reduction",
+        "FEPComposed",
+    ),
+    (
+        "compositions/efe_time_scale_separation.lean",
+        "FepSketches.compositions.efe_time_scale_separation",
+        "FEPComposed",
+    ),
 )
 # W4 code consolidation (commit 849691ba41033d6f64d5ed16032438405f4036f0)
 # replaced the R0-era literal released-shared-namespace frozenset with a
@@ -213,14 +265,49 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     manifest_bytes = (project_root / MANIFEST_PATH).read_bytes()
     manifest = manifest_bytes.decode("utf-8")
     owners = _manifest_owners(manifest)
+
+    def _module_blocks(modules: tuple[tuple[str, str, str], ...], role: str) -> str:
+        return "".join(
+            "    FormalModule(\n"
+            f'        resource="{resource}",\n'
+            f'        lean_module="{module}",\n'
+            f"        role=FormalModuleRole.{role},\n"
+            f'        declaration_namespace="{namespace}",\n'
+            "    ),\n"
+            for resource, module, namespace in modules
+        )
+
+    wave3_foundations = _module_blocks(WAVE3_FOUNDATION_ADDED_MODULES, "FOUNDATION")
+    wave3_compositions = _module_blocks(WAVE3_COMPOSITION_ADDED_MODULES, "COMPOSITION")
+    _require(
+        manifest.count(wave3_compositions) == 1
+        and manifest.count(wave3_foundations) == 1,
+        "approved wave-3 roster additions missing, duplicated, or changed",
+    )
+    stripped_wave3 = manifest.replace(wave3_compositions, "", 1).replace(
+        wave3_foundations, "", 1
+    )
     added = [
         {
             "resource": resource,
             "lean_module": module,
-            "role": "foundation",
+            "role": role,
             "declaration_namespace": namespace,
         }
-        for resource, module, namespace in ADDED_MODULES
+        for resource, module, namespace, role in (
+            *(
+                (resource, module, namespace, "foundation")
+                for resource, module, namespace in ADDED_MODULES
+            ),
+            *(
+                (resource, module, namespace, "foundation")
+                for resource, module, namespace in WAVE3_FOUNDATION_ADDED_MODULES
+            ),
+            *(
+                (resource, module, namespace, "composition")
+                for resource, module, namespace in WAVE3_COMPOSITION_ADDED_MODULES
+            ),
+        )
     ]
     blocks = [
         "    FormalModule(\n"
@@ -232,12 +319,15 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
         for resource, module, namespace in ADDED_MODULES
     ]
     _require(
-        all(manifest.count(block) == 1 for block in blocks),
+        all(stripped_wave3.count(block) == 1 for block in blocks),
         "approved added owners missing, duplicated, or changed",
     )
     additions = "".join(blocks)
-    _require(manifest.count(additions) == 1, "approved additions must retain order")
-    stripped_manifest = manifest.replace(additions, "", 1)
+    _require(
+        stripped_wave3.count(additions) == 1,
+        "approved additions must retain order",
+    )
+    stripped_manifest = stripped_wave3.replace(additions, "", 1)
     _require(
         stripped_manifest.count(_W4_DERIVED_RESOURCES_BLOCK) == 1,
         "approved W4 code consolidation record missing, duplicated, or changed",

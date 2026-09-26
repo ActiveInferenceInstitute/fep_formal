@@ -21,7 +21,7 @@ wave invalidated their current-source binding; the deterministic refresh
 completed on 2026-09-12 and is recorded in [CHANGELOG.md](CHANGELOG.md).
 `FEP-H2-SMOOTH` left this backlog on 2026-09-07: H2.7
 and its R0 proof gate are accepted with terminal evidence in the
-[Horizon 2 spec](specs/horizon-2-smooth-stochastic/README.md), and the
+[Horizon 2 spec](specs/done/horizon-2-smooth-stochastic/README.md), and the
 remaining H3 work lives in `FEP-H3-SCIENCE`. Completed engineering tasks
 belong to repository history, not this open-only backlog.
 

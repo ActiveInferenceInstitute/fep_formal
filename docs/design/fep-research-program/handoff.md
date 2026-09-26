@@ -9,7 +9,7 @@ no-go—live in the [choices ledger](../../../specs/done/horizon-1-finite-synthe
 H2.0--H2.3b, H2.4a/b, H2.5a/b/c/d, H2.5b-R0, H2.5d-R0, H2.6a/b/c,
 H2.6a-R0, and H2.7-R0 have exited with explicit boundaries. The H2.7
 terminal certificate is itself accepted: the
-[terminal receipt](../../../specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
+[terminal receipt](../../../specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
 validates 328 mandatory cases, the enabled Fin4 supplement, and three
 source-bound reviews. Only read-only H3.G0 eligibility is open;
 H3.0--H3.7 remain closed.
@@ -419,7 +419,7 @@ above.
 ## Next pickup
 
 The H2.7
-[terminal receipt](../../../specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
+[terminal receipt](../../../specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json)
 is accepted: it validates 328 mandatory cases, the enabled Fin4 supplement,
 and three source-bound reviews. H2.2b remains optional and closed pending a
 proof-compression usefulness test. The remaining open item is read-only

@@ -32,6 +32,7 @@ H2_5C_SOURCE = (
 R0_SPIKE = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "spikes"
     / "05d_gaussian_conditioning.lean"
@@ -40,6 +41,7 @@ R0_TEST = PROJECT_ROOT / "tests" / "test_horizon2_gaussian_conditioning_readines
 R0_REPAIR = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "readiness"
     / "repairs"
@@ -47,7 +49,12 @@ R0_REPAIR = (
 )
 R0_LIFECYCLE = R0_REPAIR.with_name("05d-gaussian-conditioning-lifecycle.json")
 READINESS_VALIDATOR = (
-    PROJECT_ROOT / "specs" / "horizon-2-smooth-stochastic" / "readiness" / "validate.py"
+    PROJECT_ROOT
+    / "specs"
+    / "done"
+    / "horizon-2-smooth-stochastic"
+    / "readiness"
+    / "validate.py"
 )
 
 EXACT_IMPORTS = (
@@ -117,15 +124,15 @@ PUBLIC_ENVIRONMENT_DECLARATIONS = frozenset(
     )
 )
 ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
-R0_REPAIR_SHA256 = "1b7c8b41cb6ad4edc5149c1838dd72e3bf165c58f5ba81dc2b74ed05a126f260"
-R0_LIFECYCLE_SHA256 = "a187bdc8d9793a321f333b08469e4d391cc33bb8c348f504d6f24c180907970c"
+R0_REPAIR_SHA256 = "13a5577fa484cf63878a485e79b66d14f6fb7ae10d1ad91f997dcbc34c5a48db"
+R0_LIFECYCLE_SHA256 = "d46f6b9c0b7be2a83647440f2d8bbd345c77c448aa0d72a9b868f5d01c8f9bde"
 ORIGINAL_R0_TEST_SHA256 = (
     "0e7606ed93161751c945f459cd33aeed90a4829c4f886ba04461a909e9b8326f"
 )
 PRESERVED_HASHES = {
     H2_5C_SOURCE: "a7c14d2fdeb44c61ffa4012d6eccc8d00051be916ab536e2658f4ef3652d260c",
     R0_SPIKE: "51184185f3adfee7506e95457f352b56910cd127bd05f9140f21437c3d88e612",
-    R0_TEST: "a6289b117e87a5aae7f7abbdc014a629cc0f431f0609321d0337b5e0bfb3953e",
+    R0_TEST: "e575c5597f0b3e7e945d4471aeb6caf4066da0ddcc38b13700963e96c32eb848",
 }
 
 pytestmark = pytest.mark.serial_lean

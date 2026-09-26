@@ -20,6 +20,7 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 SPIKE = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "spikes"
     / "05d_gaussian_conditioning.lean"
@@ -27,6 +28,7 @@ SPIKE = (
 REPAIR = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "readiness"
     / "repairs"
@@ -43,12 +45,12 @@ SOURCE_BOUND_PATHS = (
     "lean/lean-toolchain",
     "lean/lakefile.lean",
     "lean/lake-manifest.json",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml",
-    "specs/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean",
+    "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json",
+    "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
+    "specs/done/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean",
     "src/fep_lean/formal/fin4_gaussian_semigroup.lean",
-    "specs/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md",
-    "specs/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean",
+    "specs/done/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md",
+    "specs/done/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean",
     "tests/test_horizon2_gaussian_conditioning_readiness.py",
 )
 

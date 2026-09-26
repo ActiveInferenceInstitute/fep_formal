@@ -119,7 +119,7 @@ that same carrier and kernel. This is not transition-aware planning,
 EFE-optimal control, physical thermodynamics, causal identification, empirical
 validation, or a universal FEP theorem.
 
-The active [Horizon 2 spec](specs/horizon-2-smooth-stochastic/README.md) has
+The active [Horizon 2 spec](specs/done/horizon-2-smooth-stochastic/README.md) has
 separately accepted H2.0--H2.3b, H2.4a/b, H2.5a/b/c/d, H2.5b-R0,
 H2.5d-R0, H2.6a/b/c, and H2.6a-R0. The maintained surface now includes scalar
 Gaussian/native-KL and coordinate owners, a same-joint native posterior

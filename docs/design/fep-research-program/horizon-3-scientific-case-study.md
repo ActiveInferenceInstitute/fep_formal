@@ -604,7 +604,7 @@ rebuilt, repaired, or copied into an H3 namespace:
    only VFE/natural-gradient surface is the accepted but non-maintained
    source-bound spike `FEPProbe.H2_7GaussianVFE`
    (`spikes/07_gaussian_vfe_natural_gradient.lean`, decision
-   `specs/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient.json`),
+   `specs/done/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient.json`),
    which may not be cited as a maintained owner by H3.
 
 No eligible acceptance record may substitute an arbitrary Hurwitz matrix, a

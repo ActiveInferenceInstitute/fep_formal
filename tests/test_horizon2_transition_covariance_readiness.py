@@ -15,6 +15,7 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 SPIKE = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "spikes"
     / "05b_transition_covariance.lean"
@@ -22,6 +23,7 @@ SPIKE = (
 FIN4_PROBE = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "readiness"
     / "probes"
@@ -30,6 +32,7 @@ FIN4_PROBE = (
 REPAIR = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "readiness"
     / "repairs"
@@ -39,13 +42,13 @@ SOURCE_BOUND_PATHS = (
     "lean/lean-toolchain",
     "lean/lakefile.lean",
     "lean/lake-manifest.json",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml",
-    "specs/horizon-2-smooth-stochastic/readiness/probes/07_fin4_matrix_gaussian.lean",
+    "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json",
+    "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
+    "specs/done/horizon-2-smooth-stochastic/readiness/probes/07_fin4_matrix_gaussian.lean",
     "src/fep_lean/formal/markov_semigroup.lean",
     "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
-    "specs/horizon-2-smooth-stochastic/slices/05b-r0-transition-covariance.md",
-    "specs/horizon-2-smooth-stochastic/spikes/05b_transition_covariance.lean",
+    "specs/done/horizon-2-smooth-stochastic/slices/05b-r0-transition-covariance.md",
+    "specs/done/horizon-2-smooth-stochastic/spikes/05b_transition_covariance.lean",
     "tests/test_horizon2_transition_covariance_readiness.py",
 )
 PUBLIC_DEFINITIONS = ("covariance", "evolution", "transitionCovariance")

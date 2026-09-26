@@ -54,7 +54,7 @@ from tests._support.custody_fixture_knobs import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-BASE = "specs/horizon-2-smooth-stochastic/readiness/"
+BASE = "specs/done/horizon-2-smooth-stochastic/readiness/"
 EVIDENCE = BASE + "evidence/20260904-wave2/"
 PROBE_08 = BASE + "probes/08_gaussian_conditioning.lean"
 REVIEW_FILES = tuple(
@@ -379,7 +379,7 @@ def test_byte_replace_abort_leaves_output_untouched(tmp_path: Path) -> None:
 
 def test_pin_evidence_toolchain_mismatch_refuses(tmp_path: Path) -> None:
     specs_dir = _stage_specs(tmp_path)
-    pin_path = specs_dir / "horizon-2-smooth-stochastic/readiness/pin_evidence.json"
+    pin_path = specs_dir / "done/horizon-2-smooth-stochastic/readiness/pin_evidence.json"
     _rewrite_json(
         pin_path, lambda record: record["stable_pair"].update({"tag": "v9.9.9"})
     )
@@ -392,7 +392,7 @@ def test_pin_evidence_toolchain_mismatch_refuses(tmp_path: Path) -> None:
 
 def test_pin_evidence_missing_repositories_refuses(tmp_path: Path) -> None:
     specs_dir = _stage_specs(tmp_path)
-    pin_path = specs_dir / "horizon-2-smooth-stochastic/readiness/pin_evidence.json"
+    pin_path = specs_dir / "done/horizon-2-smooth-stochastic/readiness/pin_evidence.json"
     _rewrite_json(pin_path, lambda record: record.pop("repositories"))
     out = _out_dir(tmp_path)
     census, expectations = _all_clear()
@@ -405,7 +405,7 @@ def test_missing_staged_receipt_refuses(tmp_path: Path) -> None:
     specs_dir = _stage_specs(tmp_path)
     (
         specs_dir
-        / "horizon-2-smooth-stochastic/readiness/repairs/06a-native-filter-posterior.json"
+        / "done/horizon-2-smooth-stochastic/readiness/repairs/06a-native-filter-posterior.json"
     ).unlink()
     out = _out_dir(tmp_path)
     census, expectations = _all_clear()
@@ -825,12 +825,12 @@ def test_structural_tampers_refuse(tmp_path: Path) -> None:
     """Missing/malformed structural fields fail closed with precise reasons."""
     cases: tuple[tuple[str, str, object], ...] = (
         (
-            "specs/horizon-2-smooth-stochastic/readiness/pin_evidence.json",
+            "specs/done/horizon-2-smooth-stochastic/readiness/pin_evidence.json",
             "stable_pair.tag missing",
             lambda record: record.pop("stable_pair"),
         ),
         (
-            "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml",
+            "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
             "unparseable YAML",
             None,  # handled below by truncation
         ),

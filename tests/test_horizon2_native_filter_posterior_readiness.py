@@ -18,6 +18,7 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 SPIKE = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "spikes"
     / "06a_native_filter_posterior.lean"
@@ -25,6 +26,7 @@ SPIKE = (
 REPAIR = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "readiness"
     / "repairs"
@@ -34,13 +36,13 @@ SOURCE_BOUND_PATHS = (
     "lean/lean-toolchain",
     "lean/lakefile.lean",
     "lean/lake-manifest.json",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml",
-    "specs/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean",
+    "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json",
+    "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
+    "specs/done/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean",
     "src/fep_lean/formal/gaussian_information_geometry.lean",
     "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
-    "specs/horizon-2-smooth-stochastic/slices/06a-r0-native-posterior.md",
-    "specs/horizon-2-smooth-stochastic/spikes/06a_native_filter_posterior.lean",
+    "specs/done/horizon-2-smooth-stochastic/slices/06a-r0-native-posterior.md",
+    "specs/done/horizon-2-smooth-stochastic/spikes/06a_native_filter_posterior.lean",
     "tests/test_horizon2_native_filter_posterior_readiness.py",
 )
 

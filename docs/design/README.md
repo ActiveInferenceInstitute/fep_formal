@@ -11,7 +11,7 @@ continues to describe the longer research dependency.
 
 | Program | Purpose | Status |
 | --- | --- | --- |
-| [FEP research horizons](fep-research-program/README.md) | Move from the released finite catalogue to a falsifiable, carrier-spanning, end-to-end scientific theorem chain | Active: [Horizon 1 accepted](../../specs/done/horizon-1-finite-synthesis/README.md); [H2.7 accepted](../../specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json); only read-only H3.G0 eligibility open |
+| [FEP research horizons](fep-research-program/README.md) | Move from the released finite catalogue to a falsifiable, carrier-spanning, end-to-end scientific theorem chain | Active: [Horizon 1 accepted](../../specs/done/horizon-1-finite-synthesis/README.md); [H2.7 accepted](../../specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json); only read-only H3.G0 eligibility open |
 | [GNN bridge](gnn-bridge/README.md) | Cross-repo articulation with the GNN pipeline: render and execute Lean-expressed generative models (Direction 1) and formalize GNN steps and methods in Lean (Direction 2) | Q1–Q4/P1–P4b implementation records retained; [W2 source custody](../../specs/gnn-bridge-w2-source-custody/REPORT.md) and [Q5 concrete artifact proof](../../specs/gnn-bridge-q5-artifact-proof/REPORT.md), [Q6 embedded Julia inputs](../../specs/gnn-bridge-q6-activeinference-artifact/REPORT.md), and [Q7 OU coefficient bounds](../../specs/gnn-bridge-q7-continuous-ou-proof/REPORT.md) verified |
 
 ## Lifecycle

@@ -26,7 +26,7 @@ extend `fin4_gaussian_semigroup.lean` under an H3 work package.
 
 ## Implementation authority and refined owner map
 
-The [active H2 spec](../../../specs/horizon-2-smooth-stochastic/README.md)
+The [active H2 spec](../../../specs/done/horizon-2-smooth-stochastic/README.md)
 owns implementation state, refined slice dependencies, exact probe evidence,
 provisional imports, and package-level stop/go decisions. This design owns the
 mathematical targets and scientific firewalls. If the two disagree, dependent
@@ -34,7 +34,7 @@ implementation stops until both documents are reconciled.
 
 H2.0 has frozen the pinned external API routes. Exact project direct imports
 remain provisional until each maintained slice starts. The
-[readiness matrix](../../../specs/horizon-2-smooth-stochastic/readiness/matrix.yaml)
+[readiness matrix](../../../specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml)
 and each active slice freeze the source-true import tuple before its maintained
 resource opens.
 

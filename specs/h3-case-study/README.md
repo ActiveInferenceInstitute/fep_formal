@@ -75,7 +75,7 @@ Each criterion of the draft preregistration
    `perturbedEndpoint_external_internal_covariance` (:959, exactly −1/15),
    `perturbedEndpoint_external_not_indep_internal` (:985).
 6. **H2.7 exit acceptance** —
-   `specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json`
+   `specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json`
    (sha256 `ad097e791e3f474d…`): `gate: H2.7`, `decision: accepted`, exactly
    three independent source-bound reviews (`lean`, `domain`, `skeptical`,
    all `approve`), the frozen 1771-node collection pin

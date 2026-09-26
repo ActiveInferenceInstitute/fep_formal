@@ -78,8 +78,8 @@ row_order:
   - girsanov_transform
   - continuous_path_measure_density
 acceptance_evidence: &acceptance_evidence
-  receipt_path: specs/horizon-2-smooth-stochastic/readiness/acceptance.json
-  receipt_sha256: 8db075503e1429645d357234fb42016f053ea688acd2e92a0e76ebdc39750791
+  receipt_path: specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json
+  receipt_sha256: 18ec35609fb5e00c9f44a25c3769b193558127d29615969daf816bf0d029a3f5
 rows:
   - id: pin_identity
     criticality: fatal

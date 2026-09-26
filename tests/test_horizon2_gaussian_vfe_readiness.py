@@ -34,6 +34,7 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 SPIKE = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "spikes"
     / "07_gaussian_vfe_natural_gradient.lean"
@@ -41,6 +42,7 @@ SPIKE = (
 SLICE = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "slices"
     / "07-r0-gaussian-vfe-natural-gradient.md"
@@ -48,6 +50,7 @@ SLICE = (
 REPAIR = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "readiness"
     / "repairs"
@@ -60,8 +63,8 @@ SOURCE_BOUND_PATHS = (
     "lean/lake-manifest.json",
     "pyproject.toml",
     "uv.lock",
-    "specs/horizon-2-smooth-stochastic/readiness/acceptance.json",
-    "specs/horizon-2-smooth-stochastic/readiness/matrix.yaml",
+    "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json",
+    "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
     "src/fep_lean/formal/manifest.py",
     "src/fep_lean/formal/gaussian_information_geometry.lean",
     "lean/FepSketches/gaussian_information_geometry.lean",
@@ -69,8 +72,8 @@ SOURCE_BOUND_PATHS = (
     "lean/FepSketches/smooth_information_geometry.lean",
     "src/fep_lean/formal/compositions/gaussian_filter.lean",
     "lean/FepSketches/compositions/gaussian_filter.lean",
-    "specs/horizon-2-smooth-stochastic/slices/07-r0-gaussian-vfe-natural-gradient.md",
-    "specs/horizon-2-smooth-stochastic/spikes/07_gaussian_vfe_natural_gradient.lean",
+    "specs/done/horizon-2-smooth-stochastic/slices/07-r0-gaussian-vfe-natural-gradient.md",
+    "specs/done/horizon-2-smooth-stochastic/spikes/07_gaussian_vfe_natural_gradient.lean",
     "tests/test_horizon2_gaussian_vfe_readiness.py",
 )
 OWNER_BINDINGS = {
@@ -512,7 +515,7 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
     assert repair["evidence"] == {
         "compile_command": (
             "cd lean && lake env lean "
-            "../specs/horizon-2-smooth-stochastic/spikes/"
+            "../specs/done/horizon-2-smooth-stochastic/spikes/"
             "07_gaussian_vfe_natural_gradient.lean"
         ),
         "compiler_exit_code": 0,

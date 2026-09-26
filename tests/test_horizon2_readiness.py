@@ -20,7 +20,7 @@ from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SPEC_ROOT = PROJECT_ROOT / "specs" / "horizon-2-smooth-stochastic"
+SPEC_ROOT = PROJECT_ROOT / "specs" / "done" / "horizon-2-smooth-stochastic"
 MATRIX_PATH = SPEC_ROOT / "readiness" / "matrix.yaml"
 VALIDATOR_PATH = SPEC_ROOT / "readiness" / "validate.py"
 LEAN_ROOT = PROJECT_ROOT / "lean"

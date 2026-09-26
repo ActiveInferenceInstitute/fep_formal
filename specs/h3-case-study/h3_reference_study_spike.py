@@ -65,8 +65,8 @@ PINNED_SOURCES: dict[str, str] = {
     "src/fep_lean/formal/compositions/gaussian_control.lean": (
         "76b2e36f840682df5adac654456d2d94c81c636778fbcd1efa39bc3cbfe3d3f0"
     ),
-    "specs/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json": (
-        "ec253d59d97973e421b2e2d50b89daac65b6eeb18a454fdc63246e0f466ca41c"
+    "specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json": (
+        "a55da19ba597d5f8c24403bc58c86b249e80527ed559fce8c1363caa325374b6"
     ),
 }
 

@@ -31,6 +31,7 @@ WORKSPACE_AGGREGATE = LEAN_ROOT / "FepSketches" / "composed.lean"
 R0_RECEIPT = (
     PROJECT_ROOT
     / "specs"
+    / "done"
     / "horizon-2-smooth-stochastic"
     / "readiness"
     / "repairs"
