@@ -115,6 +115,10 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         "gnn_denotation.lean",
         "gnn_denotation_continuous.lean",
         "gnn_render_statements.lean",
+        "efe_policy_selection.lean",
+        "perception_action_loop.lean",
+        "bayesian_model_reduction.lean",
+        "efe_time_scale_separation.lean",
     )
     released_composition_resources = (
         "compositions/core.lean",
@@ -138,6 +142,10 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         "compositions/gaussian_control.lean",
         "compositions/gaussian_grid_path.lean",
         "compositions/smooth_reference_kernel.lean",
+        "compositions/efe_policy_selection.lean",
+        "compositions/perception_action_loop.lean",
+        "compositions/bayesian_model_reduction.lean",
+        "compositions/efe_time_scale_separation.lean",
     )
     aggregate_resources = ("composed.lean",)
     resources = (
@@ -189,6 +197,10 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         "FEP.GnnDenotation",
         "FEP.GnnContinuous",
         "FEP.GnnRenderStatements",
+        "FEP.EFEPolicy",
+        "FEP.PerceptionActionLoop",
+        "FEP.BayesianModelReduction",
+        "FEP.TimeScaleEFE",
         *("FEPComposed",) * len(released_composition_resources),
         "FEPComposed.FiniteScientificImplications",
         "FEPComposed.FinitePolicyAction",
@@ -197,6 +209,10 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         "FEPComposed.GaussianControl",
         "FEPComposed.GaussianGridPath",
         "FEPComposed.SmoothReferenceKernel",
+        "FEPComposed",
+        "FEPComposed",
+        "FEPComposed",
+        "FEPComposed",
         None,
     )
     expected_resources_by_role = {

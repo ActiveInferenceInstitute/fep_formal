@@ -28,7 +28,7 @@ def test_theorem_maturity_audit_covers_native_source() -> None:
     )
     assert Counter(row["disposition"] for row in data["topics"]) == {
         "conditional_proxy": 13,
-        "formalized": 136,
+        "formalized": 140,
         "structural_proxy": 6,
     }
     assert (

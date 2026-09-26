@@ -447,6 +447,19 @@ capabilities:
       - fep_fep032.FEP032.fep032_quadraticUpdate_tendsto
       - fep_fep043.FEP043.fep043_quadratic_critical_iff
       - fep_fep043.FEP043.fep043_quadratic_unique_min
+  - id: cap-standalone-efe-theorems
+    title: Exact standalone EFE theorems
+    description: The Boltzmann-form control posterior minimizes the expected free energy with the stated uniqueness boundary; the perception-action loop admits an invariant surprisal bound through one controlled-kernel step; Bayesian model reduction never lowers evidence free energy under masked evidence; and the epistemic gain of an EFE time-scale separation is bounded by the log-affinity of its two-state carrier. Each result is a standalone Lean module bridged to its nearest catalogue topic; infinite-horizon, continuous-state, and physical entropy-production identification are not claimed.
+    status: satisfied
+    evidence:
+      - FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance
+      - FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel
+      - FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound
+      - FEPComposed.fep159_epistemicGain_extends_fep153_stationary
+      - fep_fep156.FEP156.fep156_boltzmann_control_posterior_minimizes_efe
+      - fep_fep157.FEP157.fep157_loop_invariant_surprisal_bound
+      - fep_fep158.FEP158.fep158_reduction_free_energy_monotone
+      - fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity
   - id: cap-statistical-manifold
     title: Statistical-manifold geometry
     description: The differentiable one-parameter Bernoulli family, its zero-mean score, Fisher information and positive tangent metric, inverse-metric natural gradient, Fisher--Rao coordinate distance, and pullback law.
@@ -1195,3 +1208,23 @@ edges:
     kind: formal_pairing
     rationale: Squared deviation from stationarity has an exact strictly negative benchmark derivative, paired with fep-032's discrete quadratic-descent certificate without calling either physical free energy.
     witness: FEPComposed.fep155_lyapunovDecay_extends_fep032
+  - source: fep-156
+    target: fep-021
+    kind: formal_pairing
+    rationale: The exact Boltzmann-form control posterior minimizes the expected free energy with its uniqueness certificate, paired with fep-021's truncated-EFE epistemic-plus-pragmatic balance as the sign-convention ancestor, without claiming continuous-state or infinite-action optimality.
+    witness: FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance
+  - source: fep-157
+    target: fep-065
+    kind: formal_pairing
+    rationale: The perception-action loop's invariant surprisal bound factors through one action-conditioned controlled-kernel step, paired with fep-065's row-normalization law, without claiming a general POMDP fixed-point theorem.
+    witness: FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel
+  - source: fep-158
+    target: fep-058
+    kind: formal_pairing
+    rationale: Masked evidence never lowers evidence free energy, paired with fep-058's exact Gibbs lower bound on the same finiteKL and gibbsFreeEnergy carriers, without claiming a variational characterization of arbitrary model reductions.
+    witness: FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound
+  - source: fep-159
+    target: fep-153
+    kind: formal_pairing
+    rationale: The finite KL divergence of the EFE time-scale separation is bounded by the log-affinity of its two-state rate carrier, paired with fep-153's nonuniform stationary semigroup law, without claiming a physical entropy-production identity.
+    witness: FEPComposed.fep159_epistemicGain_extends_fep153_stationary

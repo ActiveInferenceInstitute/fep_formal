@@ -11,31 +11,31 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Metric | Count |
 | --- | ---: |
 | Stable topics | 159 |
-| Maintained formal modules | 60 |
-| Foundation modules | 37 |
+| Maintained formal modules | 64 |
+| Foundation modules | 41 |
 | Topic theorem declarations | 528 |
-| Formal-resource theorem declarations | 1020 |
-| Foundation theorem declarations | 790 |
-| Total theorem declarations | 1548 |
+| Formal-resource theorem declarations | 1098 |
+| Foundation theorem declarations | 868 |
+| Total theorem declarations | 1626 |
 | Topic definitions | 91 |
-| Formal-resource definitions | 625 |
-| Total definitions | 716 |
+| Formal-resource definitions | 645 |
+| Total definitions | 736 |
 | Topic abbreviations | 7 |
 | Formal-resource abbreviations | 21 |
 | Total abbreviations | 28 |
 | Formal-resource structures | 50 |
 | Distinct Mathlib imports | 67 |
 | Topic-to-import edges | 216 |
-| Formal-resource import edges | 229 |
-| Internal formal-module dependencies | 124 |
-| Authored formalism relations | 133 |
+| Formal-resource import edges | 243 |
+| Internal formal-module dependencies | 142 |
+| Authored formalism relations | 137 |
 | Derivational formal relations | 20 |
-| Checked formal pairings | 105 |
-| All theorem-witnessed relations | 125 |
+| Checked formal pairings | 109 |
+| All theorem-witnessed relations | 129 |
 | Composed theorem declarations | 230 |
-| Capability nodes (retained history) | 48 |
+| Capability nodes (retained history) | 49 |
 | Unresolved capability nodes | 0 |
-| Satisfied capability nodes | 48 |
+| Satisfied capability nodes | 49 |
 
 ## Semantic disposition matrix
 
@@ -261,6 +261,10 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.gnn_denotation` | `foundation` | 7 | 16 | 2 | `FepSketches.active_inference`, `FepSketches.gnn_document` |
 | `FepSketches.gnn_denotation_continuous` | `foundation` | 9 | 12 | 2 | `FepSketches.gnn_document`, `FepSketches.linear_gaussian_semigroup` |
 | `FepSketches.gnn_render_statements` | `foundation` | 7 | 8 | 1 | `FepSketches.active_inference`, `FepSketches.finite_markov_dynamics`, `FepSketches.finite_probability`, `FepSketches.gnn_denotation`, `FepSketches.gnn_document` |
+| `FepSketches.efe_policy_selection` | `foundation` | 9 | 3 | 0 | `FepSketches.controlled_markov`, `FepSketches.policy_tree`, `FepSketches.variational_duality` |
+| `FepSketches.perception_action_loop` | `foundation` | 22 | 6 | 0 | `FepSketches.active_inference`, `FepSketches.continuous_time_markov`, `FepSketches.controlled_markov`, `FepSketches.finite_markov_dynamics`, `FepSketches.temporal_inference` |
+| `FepSketches.bayesian_model_reduction` | `foundation` | 10 | 3 | 0 | `FepSketches.gaussian_information_geometry`, `FepSketches.variational_duality` |
+| `FepSketches.efe_time_scale_separation` | `foundation` | 37 | 8 | 0 | `FepSketches.active_inference`, `FepSketches.continuous_time_markov`, `FepSketches.ness_flow`, `FepSketches.path_thermodynamics` |
 | `FepSketches.compositions.core` | `composition` | 22 | 1 | 0 | `FepSketches.active_inference`, `FepSketches.information_geometry`, `FepSketches.markov_blanket`, `FepSketches.statistical_convergence` |
 | `FepSketches.compositions.measure_variational` | `composition` | 14 | 0 | 0 | `FepSketches.measure_bayes`, `FepSketches.variational_duality` |
 | `FepSketches.compositions.control_temporal` | `composition` | 14 | 0 | 0 | `FepSketches.controlled_markov`, `FepSketches.temporal_inference` |
@@ -279,10 +283,10 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.compositions.gaussian_control` | `composition` | 19 | 17 | 1 | `FepSketches.compositions.gaussian_filter`, `FepSketches.controlled_markov`, `FepSketches.gaussian_information_geometry`, `FepSketches.markov_semigroup`, `FepSketches.scalar_gaussian_semigroup` |
 | `FepSketches.compositions.gaussian_grid_path` | `composition` | 11 | 7 | 1 | `FepSketches.scalar_gaussian_semigroup` |
 | `FepSketches.compositions.smooth_reference_kernel` | `composition` | 30 | 10 | 0 | `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.fin4_gaussian_semigroup`, `FepSketches.gaussian_information_geometry`, `FepSketches.gaussian_precision_conditioning`, `FepSketches.markov_semigroup`, `FepSketches.posterior_convergence`, `FepSketches.scalar_gaussian_semigroup`, `FepSketches.smooth_information_geometry` |
-| `FepSketches.compositions.efe_policy_selection` | `composition` | 1 | 0 | 0 | — |
-| `FepSketches.compositions.perception_action_loop` | `composition` | 1 | 0 | 0 | — |
-| `FepSketches.compositions.bayesian_model_reduction` | `composition` | 1 | 0 | 0 | — |
-| `FepSketches.compositions.efe_time_scale_separation` | `composition` | 1 | 0 | 0 | — |
+| `FepSketches.compositions.efe_policy_selection` | `composition` | 1 | 0 | 0 | `FepSketches.efe_policy_selection` |
+| `FepSketches.compositions.perception_action_loop` | `composition` | 1 | 0 | 0 | `FepSketches.perception_action_loop` |
+| `FepSketches.compositions.bayesian_model_reduction` | `composition` | 1 | 0 | 0 | `FepSketches.bayesian_model_reduction` |
+| `FepSketches.compositions.efe_time_scale_separation` | `composition` | 1 | 0 | 0 | `FepSketches.efe_time_scale_separation` |
 | `FepSketches.composed` | `aggregate` | 0 | 0 | 0 | `FepSketches.compositions.bayesian_model_reduction`, `FepSketches.compositions.causal_predictive`, `FepSketches.compositions.collective_learning`, `FepSketches.compositions.continuous_time`, `FepSketches.compositions.control_temporal`, `FepSketches.compositions.core`, `FepSketches.compositions.efe_policy_selection`, `FepSketches.compositions.efe_time_scale_separation`, `FepSketches.compositions.exponential_family`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_reference_agent`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.measure_variational`, `FepSketches.compositions.native_blanket_transfer`, `FepSketches.compositions.perception_action_loop`, `FepSketches.compositions.policy_trees`, `FepSketches.compositions.risk_calibration`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.compositions.thermo_geometry` |
 
 ## Authored formalism relations
@@ -424,6 +428,10 @@ These edges are maintained scientific review data. `conceptual` means explanator
 | fep-153 | `formal_pairing` | fep-010 | `FEPComposed.fep153_continuousDetailedBalance_extends_fep010` | The nonuniform stationary law satisfies exact continuous-time detailed balance, alongside the original native reversible-kernel stationarity theorem. |
 | fep-154 | `formal_pairing` | fep-020 | `FEPComposed.fep154_continuousRelaxation_extends_fep020` | Boolean true-state mass relaxes exponentially to stationarity, paired with the original discrete transition evolution without claiming a general mixing-rate theorem. |
 | fep-155 | `formal_pairing` | fep-032 | `FEPComposed.fep155_lyapunovDecay_extends_fep032` | Squared deviation from stationarity has an exact strictly negative benchmark derivative, paired with fep-032's discrete quadratic-descent certificate without calling either physical free energy. |
+| fep-156 | `formal_pairing` | fep-021 | `FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance` | The exact Boltzmann-form control posterior minimizes the expected free energy with its uniqueness certificate, paired with fep-021's truncated-EFE epistemic-plus-pragmatic balance as the sign-convention ancestor, without claiming continuous-state or infinite-action optimality. |
+| fep-157 | `formal_pairing` | fep-065 | `FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel` | The perception-action loop's invariant surprisal bound factors through one action-conditioned controlled-kernel step, paired with fep-065's row-normalization law, without claiming a general POMDP fixed-point theorem. |
+| fep-158 | `formal_pairing` | fep-058 | `FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound` | Masked evidence never lowers evidence free energy, paired with fep-058's exact Gibbs lower bound on the same finiteKL and gibbsFreeEnergy carriers, without claiming a variational characterization of arbitrary model reductions. |
+| fep-159 | `formal_pairing` | fep-153 | `FEPComposed.fep159_epistemicGain_extends_fep153_stationary` | The finite KL divergence of the EFE time-scale separation is bounded by the log-affinity of its two-state rate carrier, paired with fep-153's nonuniform stationary semigroup law, without claiming a physical entropy-production identity. |
 
 ## Capability roster
 
@@ -471,6 +479,7 @@ Satisfied nodes remain visible so resolved gaps retain auditable declaration evi
 | `cap-predictive-coding-dynamics` — Finite predictive-coding dynamics | `satisfied` | — | `FEP.PredictiveCoding.doubledPrecision_nontrivial_witness`, `FEP.PredictiveCoding.generalizedFlow_top_boundary`, `FEP.PredictiveCoding.halfStep_energy_witness`, `FEP.PredictiveCoding.hierarchicalEnergy_succ`, `FEP.PredictiveCoding.iteratePredictionError_tendsto_zero`, `FEP.PredictiveCoding.precisionEnergy_eq_zero_iff`, `FEP.PredictiveCoding.predictionEnergy_contraction`, `FEP.PredictiveCoding.shift_add` | Precision-weighted prediction energies prove exact zero-error separation, hierarchical decomposition, generalized-coordinate shift and correction laws, precision modulation, and quadratic contraction to zero, with terminal-coordinate, doubled-precision, and strict half-step witnesses. The finite-jet carrier is not presented as a continuous generalized-coordinate flow. |
 | `cap-probability-normalization` — Probability normalization | `satisfied` | — | `fep_fep017.FEP017.fep017_posterior_mass_one`, `fep_fep031.FEP031.fep031_gibbsProbability_nonneg`, `fep_fep031.FEP031.fep031_gibbsProbability_sum_one`, `fep_fep034.FEP034.fep034_filter_mass_one` | Finite or measure-valued weights with positive normalizer and a proof that the resulting posterior or Gibbs law has mass one. |
 | `cap-quadratic-optimization-dynamics` — Exact quadratic optimization dynamics | `satisfied` | — | `FEPComposed.fep032_update_is_fep043_gradientStep`, `fep_fep032.FEP032.fep032_quadraticEnergy_descent`, `fep_fep032.FEP032.fep032_quadraticUpdate_iterate`, `fep_fep032.FEP032.fep032_quadraticUpdate_tendsto`, `fep_fep043.FEP043.fep043_quadratic_critical_iff`, `fep_fep043.FEP043.fep043_quadratic_unique_min` | A positive-curvature quadratic with unique minimizer and critical point, plus exact gradient-descent iterates, energy descent, and global convergence on the stable step interval. |
+| `cap-standalone-efe-theorems` — Exact standalone EFE theorems | `satisfied` | — | `FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance`, `FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel`, `FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound`, `FEPComposed.fep159_epistemicGain_extends_fep153_stationary`, `fep_fep156.FEP156.fep156_boltzmann_control_posterior_minimizes_efe`, `fep_fep157.FEP157.fep157_loop_invariant_surprisal_bound`, `fep_fep158.FEP158.fep158_reduction_free_energy_monotone`, `fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity` | The Boltzmann-form control posterior minimizes the expected free energy with the stated uniqueness boundary; the perception-action loop admits an invariant surprisal bound through one controlled-kernel step; Bayesian model reduction never lowers evidence free energy under masked evidence; and the epistemic gain of an EFE time-scale separation is bounded by the log-affinity of its two-state carrier. Each result is a standalone Lean module bridged to its nearest catalogue topic; infinite-horizon, continuous-state, and physical entropy-production identification are not claimed. |
 | `cap-statistical-manifold` — Statistical-manifold geometry | `satisfied` | — | `FEPComposed.fep004_bernoulliMetric_specialization`, `FEPComposed.fep038_fisherRao_separation`, `fep_fep004.FEP004.fep004_fisherMetric_eq_zero_iff`, `fep_fep018.FEP018.fep018_fisherRaoDistance_triangle`, `fep_fep038.FEP038.fep038_bernoulliMass_hasDerivAt`, `fep_fep038.FEP038.fep038_expectedScore_zero`, `fep_fep038.FEP038.fep038_fisherInformation_eq`, `fep_fep038.FEP038.fep038_fisherMetric_coordinate`, `fep_fep038.FEP038.fep038_naturalGradient_duality` | The differentiable one-parameter Bernoulli family, its zero-mean score, Fisher information and positive tangent metric, inverse-metric natural gradient, Fisher--Rao coordinate distance, and pullback law. |
 | `cap-stick-breaking-simplex` — Finite stick-breaking mass conservation | `satisfied` | — | `fep_fep046.FEP046.fep046_mass_conservation`, `fep_fep046.FEP046.fep046_remainder_le_one`, `fep_fep046.FEP046.fep046_remainder_nonneg` | Recursive finite stick weights with an exact allocated-plus-residual mass identity and unit-interval bounds on the residual. |
 | `cap-stochastic-dynamics` — Stochastic dynamics and stationarity | `satisfied` | — | `FEPComposed.fep037_autocorrelation_tracks_fep020`, `fep_fep010.FEP010.fep010_identity_invariant`, `fep_fep010.FEP010.fep010_reversible_invariant`, `fep_fep020.FEP020.fep020_iterate_deviation`, `fep_fep020.FEP020.fep020_tendsto_uniform`, `fep_fep020.FEP020.fep020_transition_sum_one`, `fep_fep020.FEP020.fep020_uniform_stationary`, `fep_fep025.FEP025.fep025_cycleCurrent_nonzero`, `fep_fep025.FEP025.fep025_cycleCurrent_stationary`, `fep_fep025.FEP025.fep025_transitionCurrent_stationary`, `fep_fep037.FEP037.fep037_autocorrelation_tendsto_zero`, `fep_fep037.FEP037.fep037_response_eq` | A normalized two-state Markov transition, stationary uniform law, exact n-step evolution and convergence, plus native reversible-kernel invariance. |

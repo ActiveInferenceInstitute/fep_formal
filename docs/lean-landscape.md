@@ -50,10 +50,11 @@ roster and roles live in the manifest; this page projects them for navigation.
 | `markov_blanket` | foundation | `FEP.MarkovBlanket` | finite_information |
 | `variational_duality` | foundation | `FEP.VariationalDuality` | finite_information |
 
-## Layer 3 (9 modules)
+## Layer 3 (10 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
+| `bayesian_model_reduction` | foundation | `FEP.BayesianModelReduction` | variational_duality, gaussian_information_geometry |
 | `causal_dynamics` | foundation | `FEP.CausalDynamics` | markov_blanket |
 | `compositions.core` | composition | `FEPComposed` | fep_all, active_inference, information_geometry, markov_blanket, statistical_convergence |
 | `compositions.exponential_family` | composition | `FEPComposed` | fep_all, exponential_family |
@@ -64,10 +65,11 @@ roster and roles live in the manifest; this page projects them for navigation.
 | `native_blanket` | foundation | `FEP.NativeBlanket` | markov_blanket |
 | `path_thermodynamics` | foundation | `FEP.PathThermodynamics` | finite_markov_dynamics, variational_duality |
 
-## Layer 4 (10 modules)
+## Layer 4 (11 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
+| `compositions.bayesian_model_reduction` | composition | `FEPComposed` | fep_all, bayesian_model_reduction |
 | `compositions.causal_predictive` | composition | `FEPComposed` | fep_all, causal_dynamics, predictive_coding |
 | `compositions.collective_learning` | composition | `FEPComposed` | fep_all, collective_inference, learning_theory |
 | `compositions.finite_scientific_implications` | composition | `FEPComposed.FiniteScientificImplications` | finite_probability, causal_dynamics, finite_markov_dynamics, active_inference, information_geometry |
@@ -79,7 +81,7 @@ roster and roles live in the manifest; this page projects them for navigation.
 | `policy_tree` | foundation | `FEP.PolicyTrees` | controlled_markov |
 | `temporal_inference` | foundation | `FEP.TemporalInference` | controlled_markov |
 
-## Layer 5 (5 modules)
+## Layer 5 (6 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
@@ -87,22 +89,28 @@ roster and roles live in the manifest; this page projects them for navigation.
 | `compositions.policy_trees` | composition | `FEPComposed` | fep_all, policy_tree |
 | `compositions.risk_calibration` | composition | `FEPComposed` | fep_all, empirical_risk |
 | `continuous_time_markov` | foundation | `FEP.ContinuousTimeMarkov` | finite_markov_dynamics, active_inference, decision_risk, markov_blanket |
+| `efe_policy_selection` | foundation | `FEP.EFEPolicy` | controlled_markov, policy_tree, variational_duality |
 | `finite_posterior_learning` | foundation | `FEP.FinitePosteriorLearning` | learning_theory, statistical_convergence, native_blanket, decision_risk |
 
-## Layer 6 (4 modules)
+## Layer 6 (7 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
 | `compositions.continuous_time` | composition | `FEPComposed` | fep_all, continuous_time_markov |
+| `compositions.efe_policy_selection` | composition | `FEPComposed` | fep_all, efe_policy_selection |
 | `compositions.finite_policy_action` | composition | `FEPComposed.FinitePolicyAction` | policy_tree, active_inference, controlled_markov, decision_risk, finite_posterior_learning |
+| `efe_time_scale_separation` | foundation | `FEP.TimeScaleEFE` | continuous_time_markov, path_thermodynamics, active_inference, ness_flow |
 | `markov_semigroup` | foundation | `FEP.MarkovSemigroup` | continuous_time_markov, native_blanket |
+| `perception_action_loop` | foundation | `FEP.PerceptionActionLoop` | active_inference, controlled_markov, finite_markov_dynamics, temporal_inference, continuous_time_markov |
 | `posterior_convergence` | foundation | `FEP.PosteriorConvergence` | gaussian_information_geometry, finite_posterior_learning, measure_bayes |
 
-## Layer 7 (2 modules)
+## Layer 7 (4 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
+| `compositions.efe_time_scale_separation` | composition | `FEPComposed` | fep_all, efe_time_scale_separation |
 | `compositions.finite_reference_agent` | composition | `FEPComposed.FiniteReferenceAgent` | finite_posterior_learning, compositions.finite_policy_action, compositions.finite_scientific_implications, native_blanket, continuous_time_markov |
+| `compositions.perception_action_loop` | composition | `FEPComposed` | fep_all, perception_action_loop |
 | `scalar_gaussian_semigroup` | foundation | `FEP.ScalarGaussianSemigroup` | gaussian_information_geometry, markov_semigroup |
 
 ## Layer 8 (3 modules)
@@ -137,9 +145,9 @@ roster and roles live in the manifest; this page projects them for navigation.
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `composed` | aggregate | `—` | compositions.core, compositions.measure_variational, compositions.control_temporal, compositions.causal_predictive, compositions.thermo_geometry, compositions.collective_learning, compositions.risk_calibration, compositions.policy_trees, compositions.native_blanket_transfer, compositions.exponential_family, compositions.continuous_time, compositions.finite_scientific_implications, compositions.finite_policy_action, compositions.finite_reference_agent, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.smooth_reference_kernel |
+| `composed` | aggregate | `—` | compositions.core, compositions.measure_variational, compositions.control_temporal, compositions.causal_predictive, compositions.thermo_geometry, compositions.collective_learning, compositions.risk_calibration, compositions.policy_trees, compositions.native_blanket_transfer, compositions.exponential_family, compositions.continuous_time, compositions.finite_scientific_implications, compositions.finite_policy_action, compositions.finite_reference_agent, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.smooth_reference_kernel, compositions.efe_policy_selection, compositions.perception_action_loop, compositions.bayesian_model_reduction, compositions.efe_time_scale_separation |
 
-Total maintained formal modules: **56** across **13** dependency layers.
+Total maintained formal modules: **64** across **13** dependency layers.
 
 
 ## Reading order
