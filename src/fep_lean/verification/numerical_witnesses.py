@@ -1355,6 +1355,225 @@ def _two_state_master_equation() -> NumericalWitness:
         formal_alignment="theorem_instance",
     )
 
+def _standalone_efe_carrier() -> NumericalWitness:
+    """Evaluate the exact EFE floor, perception chain rule, and affinity bound."""
+    def binary_kl(
+        left: tuple[float, ...], right: tuple[float, ...]
+    ) -> float:
+        return sum(
+            mass * math.log(mass / base)
+            for mass, base in zip(left, right, strict=True)
+            if mass > 0.0
+        )
+
+    # Planning as inference: the Boltzmann EFE control posterior (fep-156).
+    prior = (0.6, 0.4)
+    precision = 2.0
+    cost = (0.0, 0.6)
+    weights = tuple(
+        mass * math.exp(-precision * value)
+        for mass, value in zip(prior, cost, strict=True)
+    )
+    partition = sum(weights)
+    control_posterior = tuple(weight / partition for weight in weights)
+    log_partition = math.log(partition)
+    control_floor = -log_partition / precision
+    floor_residual = abs(control_floor + log_partition / precision)
+
+    gap_residual = 0.0
+    duality_residual = 0.0
+    posterior_minimal = True
+    for candidate in (prior, (0.5, 0.5), (0.9, 0.1)):
+        expected_cost = sum(
+            mass * value for mass, value in zip(candidate, cost, strict=True)
+        )
+        objective = expected_cost + binary_kl(candidate, prior) / precision
+        kl_to_optimal = binary_kl(candidate, control_posterior)
+        gap_residual = max(
+            gap_residual,
+            abs(objective - control_floor - kl_to_optimal / precision),
+        )
+        # Donsker-Varadhan duality at the EFE Gibbs certificate (fep-158):
+        # G(candidate) - G(control posterior) = KL(candidate || control posterior),
+        # where G(Q) = KL(Q || prior) + precision * E_Q[cost] = precision * EFE(Q).
+        duality_residual = max(
+            duality_residual,
+            abs(
+                binary_kl(candidate, prior)
+                + precision * expected_cost
+                + log_partition
+                - kl_to_optimal
+            ),
+        )
+        posterior_minimal = posterior_minimal and (
+            objective >= control_floor - 1e-12
+        )
+
+    # Perception chain rule through a fully supported Boolean likelihood (fep-157).
+    likelihood = ((0.9, 0.1), (0.3, 0.7))
+    actual = (0.2, 0.8)
+    reference = (0.6, 0.4)
+    predictive = tuple(
+        sum(actual[source] * likelihood[source][outcome] for source in range(2))
+        for outcome in range(2)
+    )
+    reference_predictive = tuple(
+        sum(reference[source] * likelihood[source][outcome] for source in range(2))
+        for outcome in range(2)
+    )
+
+    def filtered(
+        law: tuple[float, ...], outcome: int
+    ) -> tuple[float, ...]:
+        evidence = sum(
+            law[source] * likelihood[source][outcome] for source in range(2)
+        )
+        return tuple(
+            law[source] * likelihood[source][outcome] / evidence
+            for source in range(2)
+        )
+
+    gap_total = binary_kl(actual, reference)
+    gap_marginal = binary_kl(predictive, reference_predictive)
+    gap_posterior = sum(
+        predictive[outcome]
+        * binary_kl(filtered(actual, outcome), filtered(reference, outcome))
+        for outcome in range(2)
+    )
+    chain_residual = abs(gap_total - (gap_marginal + gap_posterior))
+
+    # Time-scale-separated EFE: the epistemic gain is the KL to the invariant
+    # law, bounded by the affinity production rate (fep-159).
+    forward, backward = 0.7, 0.3
+    decay_rate = forward + backward
+    stationary_true = forward / decay_rate
+    stationary_false = backward / decay_rate
+    belief_true = 0.85
+    belief = (1.0 - belief_true, belief_true)
+    current = belief[0] * forward - belief[1] * backward
+    affinity = math.log(belief[0] * forward / (belief[1] * backward))
+    production_rate = current * affinity
+    affinity_bound = production_rate / decay_rate
+    initial_gap = binary_kl(belief, (stationary_false, stationary_true))
+    initial_gap_form = (belief_true - stationary_true) ** 2 / (
+        stationary_true * stationary_false
+    )
+    rows: list[WitnessRow] = []
+    production_violation = 0.0
+    envelope_violation = 0.0
+    for time in (0.0, 0.5, 1.0, 2.0):
+        rho = math.exp(-decay_rate * time)
+        evolved_true = stationary_true + rho * (belief_true - stationary_true)
+        evolved = (1.0 - evolved_true, evolved_true)
+        gain = binary_kl(evolved, (stationary_false, stationary_true))
+        envelope = rho**2 * initial_gap_form
+        production_violation = max(production_violation, gain - affinity_bound)
+        envelope_violation = max(envelope_violation, gain - envelope)
+        rows.append(
+            WitnessRow((time, rho, evolved_true, gain, envelope, affinity_bound))
+        )
+
+    return NumericalWitness(
+        id="boltzmann-efe-affinity-gap",
+        family="standalone-efe-formalizations",
+        title=(
+            "Exact Boltzmann EFE floor, perception chain rule, "
+            "and affinity-bounded gain"
+        ),
+        theorem_mirrors=(
+            "fep_fep156.FEP156.fep156_boltzmann_control_posterior_minimizes_efe",
+            "fep_fep156.FEP156.fep156_boltzmann_control_posterior_minimal_value",
+            "fep_fep156.FEP156.fep156_efeControlObjective_eq_kl_sub_logPartition",
+            "fep_fep156.FEP156.fep156_efeControlObjective_sub_eq_kl",
+            "fep_fep157.FEP157.fep157_perception_kl_decomposition",
+            "fep_fep157.FEP157.fep157_perception_step_kl_nonincrease",
+            "fep_fep158.FEP158.fep158_reduction_free_energy_change_eq_kl",
+            "fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity",
+            (
+                "fep_fep159.FEP159."
+                "fep159_expectedFreeEnergy_le_productionRate_div_decayRate"
+            ),
+            "fep_fep159.FEP159.fep159_slow_fast_separation_statement",
+            "fep_fep159.FEP159.fep159_productionRate_nonneg",
+        ),
+        invariant=(
+            "the KL-regularized EFE objective attains exactly the inverse-precision "
+            "log-partition floor at the Boltzmann control posterior with "
+            "inverse-precision KL gaps, the perception channel splits the belief "
+            "information gap exactly into outcome-marginal plus posterior-averaged "
+            "parts without increasing it, and the two-state epistemic gain is the "
+            "relaxation-decaying KL bounded by the affinity production rate"
+        ),
+        parameters=(
+            ("prior_true", prior[1]),
+            ("precision", precision),
+            ("cost_true", cost[1]),
+            ("control_partition", partition),
+            ("control_floor", control_floor),
+            ("actual_true", actual[1]),
+            ("reference_true", reference[1]),
+            ("forward_rate", forward),
+            ("backward_rate", backward),
+            ("belief_true", belief_true),
+            ("production_rate", production_rate),
+        ),
+        columns=_columns(
+            ("time", "Time"),
+            ("rho", "Relaxation factor"),
+            ("evolved_true", "Evolved true mass"),
+            ("epistemic_gain", "Epistemic gain"),
+            ("squared_relaxation_bound", "Squared relaxation envelope"),
+            ("affinity_bound", "Affinity production bound"),
+        ),
+        rows=tuple(rows),
+        checks=(
+            NumericalCheck("control-floor-identity", "eq", floor_residual, 0.0, 1e-12),
+            NumericalCheck("control-gap-identity", "eq", gap_residual, 0.0, 1e-12),
+            NumericalCheck("donsker-varadhan-gap", "eq", duality_residual, 0.0, 1e-12),
+            NumericalCheck(
+                "control-posterior-minimality",
+                "predicate",
+                posterior_minimal,
+                True,
+                0.0,
+            ),
+            NumericalCheck("perception-chain-rule", "eq", chain_residual, 0.0, 1e-12),
+            NumericalCheck(
+                "perception-nonincrease", "le", gap_posterior, gap_total, 1e-12
+            ),
+            NumericalCheck(
+                "affinity-production-bound", "le", production_violation, 0.0, 1e-12
+            ),
+            NumericalCheck(
+                "squared-relaxation-envelope", "le", envelope_violation, 0.0, 1e-12
+            ),
+            NumericalCheck(
+                "production-rate-nonnegative",
+                "predicate",
+                production_rate >= 0.0,
+                True,
+                0.0,
+            ),
+        ),
+        boundary_behavior=(
+            "At time zero the identity kernel returns the full belief gap "
+            "0.0610605352, the squared-relaxation envelope 0.1071428571 stays loose "
+            "by 0.0460823220, and the affinity bound 0.1330954793 leaves slack "
+            "0.0720349441."
+        ),
+        boundary_observed=(
+            abs(float(rows[0].values[3]) - initial_gap) <= 1e-12
+            and abs(initial_gap_form - initial_gap - 0.04608232195203506) <= 1e-15
+            and abs(affinity_bound - initial_gap - 0.07203494405931334) <= 1e-15
+        ),
+        plot=WitnessPlot(
+            "line",
+            "time",
+            ("epistemic_gain", "squared_relaxation_bound", "affinity_bound"),
+        ),
+        formal_alignment="theorem_instance",
+    )
+
 
 def evaluate_numerical_witnesses(
     project_root: Path | None = None,
@@ -1385,6 +1604,7 @@ def evaluate_numerical_witnesses(
         _native_blanket_transfer(),
         _exponential_family_duality(),
         _two_state_master_equation(),
+        _standalone_efe_carrier(),
         scalar_terminal_witness(),
         fin4_blanket_witness(),
     )

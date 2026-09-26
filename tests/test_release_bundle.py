@@ -105,17 +105,17 @@ def _valid_contents(payload: dict[str, bytes]) -> dict[str, bytes]:
         "kind": "fep-lean-evidence-bundle",
         "source_date_epoch": 0,
         "catalogue": {
-            "topics": 155,
-            "families": 20,
+            "topics": 159,
+            "families": 21,
             "areas": 5,
             "first_id": "fep-001",
-            "last_id": "fep-155",
+            "last_id": "fep-159",
         },
         "formalism": {
             "relations": 133,
             "capabilities": 48,
             "formal_modules": 1,
-            "numerical_witnesses": 15,
+            "numerical_witnesses": 16,
         },
         "toolchain": {
             "lean_toolchain": "leanprover/lean4:v4.33.1",
@@ -730,7 +730,7 @@ def test_archive_validator_rejects_self_consistent_semantic_manifest_tampering(
 
     assert validation.valid is False
     expected_errors = {
-        "manifest catalogue does not match the 155-topic release seal",
+        "manifest catalogue does not match the 159-topic release seal",
         "manifest formalism.relations is stale",
         "manifest formalism.formal_modules must be positive",
         "manifest Lean version does not match its toolchain pin",
@@ -1589,9 +1589,9 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             }
         )
     expected = {
-        "topics": 155,
-        "families": 20,
-        "witnesses": 15,
+        "topics": 159,
+        "families": 21,
+        "witnesses": 16,
         "relations": 133,
         "capabilities": 48,
         "external_requests": [],
@@ -1601,14 +1601,14 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "detailSections": 4,
             "detailsInitiallyOpen": 0,
             "escapeCleared": True,
-            "families": 20,
+            "families": 21,
             "fepVisible": 41,
             "pairingVisible": 105,
             "relationCards": 133,
             "relations": 133,
             "searchVisible": 1,
             "slashFocused": True,
-            "topics": 155,
+            "topics": 159,
         },
         "atlas_mobile": {
             "areas": 5,
@@ -1616,20 +1616,20 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "desktopSummaryHidden": True,
             "detailSections": 4,
             "detailsInitiallyOpen": 0,
-            "families": 20,
+            "families": 21,
             "mobileSummaryVisible": True,
             "relationCards": 133,
-            "topics": 155,
+            "topics": 159,
         },
         "dashboard": {
-            "acceptedVisible": 15,
-            "accessibleTables": 15,
+            "acceptedVisible": 16,
+            "accessibleTables": 16,
             "bodyFitsViewport": True,
-            "detailJumps": 15,
-            "detailRecords": 15,
+            "detailJumps": 16,
+            "detailRecords": 16,
             "detailsInitiallyOpen": 0,
             "escapeCleared": True,
-            "exactScrollRegions": 45,
+            "exactScrollRegions": 48,
             "familyVisible": 1,
             "filterOpened": 1,
             "jumpFocused": True,
@@ -1638,26 +1638,26 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "searchVisible": 1,
             "slashFocused": True,
             "structuralAnalogues": 1,
-            "theoremInstances": 14,
-            "witnesses": 15,
+            "theoremInstances": 15,
+            "witnesses": 16,
         },
         "dashboard_mobile": {
             "bodyFitsViewport": True,
             "compactDefaultHeight": True,
             "desktopOverviewHidden": True,
-            "detailJumps": 15,
-            "detailRecords": 15,
+            "detailJumps": 16,
+            "detailRecords": 16,
             "detailsInitiallyOpen": 0,
-            "exactScrollRegions": 45,
+            "exactScrollRegions": 48,
             "filterOpened": 1,
             "jumpFocused": True,
             "jumpOpened": True,
             "mobileOverviewInitiallyOpen": False,
             "mobileOverviewDisclosureVisible": True,
             "overviewHiddenByFilter": True,
-            "plotSummaries": 15,
+            "plotSummaries": 16,
             "recordCollectionInitiallyOpen": False,
-            "witnesses": 15,
+            "witnesses": 16,
         },
     }
     capture_provenance = {
@@ -1704,9 +1704,9 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
         bundle_module,
         "build_formalism_presentation",
         lambda _root: SimpleNamespace(
-            topics=(None,) * 155,
-            families=(None,) * 20,
-            witnesses=(None,) * 15,
+            topics=(None,) * 159,
+            families=(None,) * 21,
+            witnesses=(None,) * 16,
             relations=(None,) * 133,
             capabilities=(None,) * 48,
         ),
@@ -1865,7 +1865,7 @@ def test_numerical_receipt_preserves_every_typed_check_and_evidence_boundary() -
 
     assert payload["kind"] == "numerical-witness-receipt"
     assert payload["complete"] is True
-    assert payload["witness_count"] == 15
+    assert payload["witness_count"] == 16
     assert payload["check_count"] == sum(
         len(witness["checks"]) for witness in payload["witnesses"]
     )

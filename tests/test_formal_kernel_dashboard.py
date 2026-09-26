@@ -57,9 +57,9 @@ def test_dashboard_uses_all_typed_witnesses_from_the_shared_join() -> None:
     dashboard = build_formal_kernel_dashboard(PROJECT_ROOT)
 
     assert isinstance(dashboard, FormalismPresentation)
-    assert len(dashboard.witnesses) == 15
-    assert len({witness.id for witness in dashboard.witnesses}) == 15
-    assert len({witness.family for witness in dashboard.witnesses}) == 15
+    assert len(dashboard.witnesses) == 16
+    assert len({witness.id for witness in dashboard.witnesses}) == 16
+    assert len({witness.family for witness in dashboard.witnesses}) == 16
     assert all(witness.accepted for witness in dashboard.witnesses)
     assert all(
         witness.evidence_kind == NON_PROOF_EVIDENCE for witness in dashboard.witnesses
@@ -99,7 +99,7 @@ def test_dashboard_explicitly_distinguishes_witness_formal_alignment() -> None:
     assert "<code>structural_analogue</code>" in subgaussian_html.group(0)
     assert "does not discharge all formal premises" in subgaussian_html.group(0)
     assert html.count('data-formal-alignment="structural_analogue"') == 3
-    assert html.count('data-formal-alignment="theorem_instance"') == 42
+    assert html.count('data-formal-alignment="theorem_instance"') == 45
     assert ".overview-viewport{overflow:auto;max-height" not in html
 
 
@@ -147,10 +147,10 @@ def test_standalone_dashboard_uses_full_canvas_in_three_readable_columns() -> No
     assert root.attrib["width"] == str(int(view_width))
     assert root.attrib["height"] == str(int(view_height))
     assert root.attrib["data-column-count"] == "3"
-    assert view_width / view_height >= 0.55
+    assert view_width / view_height >= 0.45
     assert len(cards) == len(dashboard.witnesses)
     assert len({rectangle.attrib["x"] for rectangle in cards}) == 3
-    assert len({rectangle.attrib["y"] for rectangle in cards}) == 5
+    assert len({rectangle.attrib["y"] for rectangle in cards}) == 6
     assert min(float(rectangle.attrib["x"]) for rectangle in cards) <= 20
     assert (
         max(
@@ -388,7 +388,7 @@ def test_desktop_legend_lines_fit_inside_each_summary_card() -> None:
         if "data-witness-summary" in group.attrib
     ]
 
-    assert len(groups) == 15
+    assert len(groups) == 16
     for group in groups:
         card = next(
             rectangle
@@ -621,7 +621,7 @@ def test_narrow_workbench_has_a_single_column_summary_with_every_witness() -> No
         ".mobile-overview{display:block}"
     ) in html
     mobile_roots = _mobile_svg_roots(html)
-    assert len(mobile_roots) == 5
+    assert len(mobile_roots) == 6
     for mobile_root in mobile_roots:
         _, _, view_width, view_height = (
             float(value) for value in mobile_root.attrib["viewBox"].split()
@@ -644,7 +644,7 @@ def test_mobile_defaults_keep_counted_plot_groups_and_exact_records_collapsed() 
 
     assert (
         f'<div class="mobile-overview" data-summary-count="{len(dashboard.witnesses)}" '
-        'data-group-count="5">' in rendered
+        'data-group-count="6">' in rendered
     )
     assert rendered.count('class="mobile-plot-group" open') == 0
     assert "Groups start collapsed; use the index to open any group." in rendered
@@ -677,36 +677,37 @@ def test_mobile_overview_uses_counted_three_plot_groups_with_direct_navigation()
 
     assert (
         f'<div class="mobile-overview" data-summary-count="{len(dashboard.witnesses)}" '
-        'data-group-count="5">' in rendered
+        'data-group-count="6">' in rendered
     )
     assert '<details class="mobile-overview"' not in rendered
-    assert rendered.count('class="mobile-plot-group"') == 5
-    assert rendered.count('class="mobile-plot-viewport"') == 5
-    assert rendered.count('data-scroll-axis="vertical"') == 5
-    assert rendered.count('data-mobile-group-jump="') == 5
+    assert rendered.count('class="mobile-plot-group"') == 6
+    assert rendered.count('class="mobile-plot-viewport"') == 6
+    assert rendered.count('data-scroll-axis="vertical"') == 6
+    assert rendered.count('data-mobile-group-jump="') == 6
     assert rendered.count('class="mobile-plot-group" open') == 0
-    assert "15 plots in 5 groups · at most 3 plots per group" in rendered
+    assert "16 plots in 6 groups · at most 3 plots per group" in rendered
     assert "Scroll inside an open group for its three complete plots." in rendered
     assert (
         ".mobile-plot-viewport{max-height:min(52vh,560px);overflow-y:auto;"
         "overflow-x:hidden" in rendered
     )
-    assert len(groups) == 5
+    assert len(groups) == 6
     assert rendered.count('data-mobile-witness-summary="') == len(dashboard.witnesses)
+    group_sizes = []
     for group_index, group in enumerate(groups, 1):
         root = ElementTree.fromstring(group)
         _, _, width, height = (float(value) for value in root.attrib["viewBox"].split())
         assert width == 390
         assert height < 2600
         assert root.attrib["data-mobile-group"] == str(group_index)
-        assert root.attrib["data-mobile-group-count"] == "5"
-        assert (
+        assert root.attrib["data-mobile-group-count"] == "6"
+        group_sizes.append(
             sum(
                 "data-mobile-witness-summary" in element.attrib
                 for element in root.iter()
             )
-            == 3
         )
+    assert group_sizes == [3, 3, 3, 3, 3, 1]
     assert "mobilePlotGroups.forEach(group=>group.open=group===target)" in rendered
     assert 'target.querySelector("summary").focus()' in rendered
 
@@ -718,12 +719,18 @@ def test_mobile_group_index_exposes_every_group_without_horizontal_discovery() -
     index = re.search(r'<nav class="mobile-group-index".*?</nav>', rendered, re.DOTALL)
 
     assert index is not None
-    for group_index, start_index in enumerate(range(1, 16, 3), 1):
-        end_index = start_index + 2
+    expected_jumps = (
+        ("Plots 1 through 3, 3 plots", "Plots 1–3"),
+        ("Plots 4 through 6, 3 plots", "Plots 4–6"),
+        ("Plots 7 through 9, 3 plots", "Plots 7–9"),
+        ("Plots 10 through 12, 3 plots", "Plots 10–12"),
+        ("Plots 13 through 15, 3 plots", "Plots 13–15"),
+        ("Plots 16 through 16, 1 plots", "Plots 16–16"),
+    )
+    for group_index, (aria_label, link_text) in enumerate(expected_jumps, 1):
         assert (
             f'data-mobile-group-jump="{group_index}" '
-            f'aria-label="Plots {start_index} through {end_index}, 3 plots">'
-            f"Plots {start_index}–{end_index}</a>"
+            f'aria-label="{aria_label}">{link_text}</a>'
         ) in index.group(0)
     assert (
         ".mobile-group-index{display:grid;"
@@ -739,8 +746,9 @@ def test_mobile_groups_keep_a_persistent_vertical_scroll_affordance() -> None:
         build_formal_kernel_dashboard(PROJECT_ROOT)
     )
 
-    assert rendered.count('class="mobile-plot-scroll-cue"') == 5
+    assert rendered.count('class="mobile-plot-scroll-cue"') == 6
     assert rendered.count("Scroll within this group · 3 complete plots") == 5
+    assert rendered.count("Scroll within this group · 1 complete plots") == 1
     assert ".mobile-plot-viewport{max-height:min(52vh,560px);" in rendered
     assert "scrollbar-gutter:stable" in rendered
     assert "box-shadow:inset 0 18px 14px -20px #1e3a8a" in rendered
@@ -758,7 +766,7 @@ def test_mobile_group_footer_copy_is_complete_and_fitted_to_two_lines() -> None:
             if text.attrib.get("class") == "mobile-footer"
         ]
         assert footer_lines == [
-            f"Group {group_index} · 3 witnesses shown",
+            f"Group {group_index} · {3 if group_index <= 5 else 1} witnesses shown",
             "Exact values continue in accessible tables.",
         ]
         assert all("…" not in line for line in footer_lines)
@@ -855,7 +863,7 @@ def test_narrow_dashboard_heading_wraps_without_clipping_reader_title() -> None:
         if text.attrib.get("class") == "mobile-title"
     ]
 
-    assert len(headings) == 5
+    assert len(headings) == 6
     for heading in headings:
         lines = [
             child.text or ""
@@ -982,7 +990,7 @@ def test_embedded_desktop_and_mobile_svg_typography_is_scoped_per_layout() -> No
     )
 
     assert 'class="dashboard-svg"' in rendered
-    assert rendered.count('class="mobile-dashboard-svg"') == 5
+    assert rendered.count('class="mobile-dashboard-svg"') == 6
     assert ".dashboard-svg .axis-label{fill:#334155;font:750 16px" in rendered
     assert ".dashboard-svg .legend,.dashboard-svg .plot-note" in rendered
     assert ".mobile-dashboard-svg .axis-label{fill:#334155;font:750 15px" in rendered

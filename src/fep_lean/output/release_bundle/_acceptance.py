@@ -361,7 +361,8 @@ def build_numerical_witness_receipt(project_root: Path) -> bytes:
         or payload["complete"] is not True
     ):
         raise ReleaseBundleError(
-            "the live numerical witness closure is not the accepted 15-witness release"
+            f"the live numerical witness closure is not the accepted "
+            f"{RELEASE_SEAL['witnesses']}-witness release"
         )
     return _canonical_json(payload)
 

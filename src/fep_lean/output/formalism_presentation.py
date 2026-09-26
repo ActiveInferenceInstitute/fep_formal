@@ -34,11 +34,11 @@ NUMERICAL_EVIDENCE_BOUNDARY = (
 # count. Bump it deliberately with each catalogue release; every receipt
 # validator derives its expectations from this one definition.
 RELEASE_FIRST_ID: Final = "fep-001"
-RELEASE_LAST_ID: Final = "fep-155"
-RELEASE_TOPICS: Final = 155
-RELEASE_FAMILIES: Final = 20
+RELEASE_LAST_ID: Final = "fep-159"
+RELEASE_TOPICS: Final = 159
+RELEASE_FAMILIES: Final = 21
 RELEASE_AREAS: Final = 5
-RELEASE_WITNESSES: Final = 15
+RELEASE_WITNESSES: Final = 16
 RELEASE_RELATIONS: Final = 133
 RELEASE_CAPABILITIES: Final = 48
 

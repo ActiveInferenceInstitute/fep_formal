@@ -259,7 +259,9 @@ def _browser_receipt_errors(
         "relations": RELEASE_RELATIONS,
         "capabilities": RELEASE_CAPABILITIES,
     }:
-        errors.append("live presentation does not match the 155-topic release seal")
+        errors.append(
+            f"live presentation does not match the {RELEASE_TOPICS}-topic release seal"
+        )
     if isinstance(expected, dict):
         for key, value in required_counts.items():
             if expected.get(key) != value:

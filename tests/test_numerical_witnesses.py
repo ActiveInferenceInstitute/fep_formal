@@ -39,6 +39,7 @@ EXPECTED_IDS = (
     "native-blanket-transfer",
     "exponential-family-duality",
     "two-state-master-equation",
+    "boltzmann-efe-affinity-gap",
     "h2-scalar-terminal",
     "h2-fin4-blanket",
 )
