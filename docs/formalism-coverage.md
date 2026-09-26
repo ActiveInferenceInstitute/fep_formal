@@ -10,13 +10,13 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 
 | Metric | Count |
 | --- | ---: |
-| Stable topics | 155 |
+| Stable topics | 159 |
 | Maintained formal modules | 56 |
 | Foundation modules | 37 |
-| Topic theorem declarations | 487 |
+| Topic theorem declarations | 528 |
 | Formal-resource theorem declarations | 1016 |
 | Foundation theorem declarations | 790 |
-| Total theorem declarations | 1503 |
+| Total theorem declarations | 1544 |
 | Topic definitions | 91 |
 | Formal-resource definitions | 625 |
 | Total definitions | 716 |
@@ -24,8 +24,8 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Formal-resource abbreviations | 21 |
 | Total abbreviations | 28 |
 | Formal-resource structures | 50 |
-| Distinct Mathlib imports | 63 |
-| Topic-to-import edges | 212 |
+| Distinct Mathlib imports | 67 |
+| Topic-to-import edges | 216 |
 | Formal-resource import edges | 217 |
 | Internal formal-module dependencies | 120 |
 | Authored formalism relations | 133 |
@@ -43,12 +43,12 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 
 | Area | formalized | proxy | conditional_proxy | structural_proxy | scope_gap | assumption_gap | Total |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| ActiveInference | 27 | 0 | 1 | 3 | 0 | 0 | 31 |
+| ActiveInference | 29 | 0 | 1 | 3 | 0 | 0 | 33 |
 | BayesianMechanics | 34 | 0 | 6 | 1 | 0 | 0 | 41 |
-| FEP | 39 | 0 | 1 | 1 | 0 | 0 | 41 |
+| FEP | 40 | 0 | 1 | 1 | 0 | 0 | 42 |
 | InfoGeometry | 18 | 0 | 3 | 0 | 0 | 0 | 21 |
-| Thermodynamics | 18 | 0 | 2 | 1 | 0 | 0 | 21 |
-| **Total** | 136 | 0 | 13 | 6 | 0 | 0 | **155** |
+| Thermodynamics | 19 | 0 | 2 | 1 | 0 | 0 | 22 |
+| **Total** | 140 | 0 | 13 | 6 | 0 | 0 | **159** |
 
 ## Per-topic coverage
 
@@ -209,6 +209,10 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 | fep-153 | Thermodynamics | `fep153_twoStateSemigroup_stationary` | `formalized` | 2 | 0 | 1 |
 | fep-154 | Thermodynamics | `fep154_twoStateRelaxation_exact` | `formalized` | 2 | 0 | 1 |
 | fep-155 | Thermodynamics | `fep155_twoStateLyapunov_exact` | `formalized` | 3 | 0 | 1 |
+| fep-156 | ActiveInference | `fep156_boltzmann_control_posterior_minimizes_efe` | `formalized` | 9 | 0 | 1 |
+| fep-157 | ActiveInference | `fep157_loop_invariant_surprisal_bound` | `formalized` | 13 | 0 | 1 |
+| fep-158 | FEP | `fep158_reduction_free_energy_monotone` | `formalized` | 10 | 0 | 1 |
+| fep-159 | Thermodynamics | `fep159_epistemic_gain_bounded_by_affinity` | `formalized` | 9 | 0 | 1 |
 
 ## Open semantic obligations
 
@@ -478,10 +482,13 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 
 | Mathlib module | Topics | Topic IDs |
 | --- | ---: | --- |
+| `FepSketches.bayesian_model_reduction` | 1 | fep-158 |
 | `FepSketches.causal_dynamics` | 7 | fep-079, fep-080, fep-081, fep-082, fep-083, fep-084, fep-085 |
 | `FepSketches.collective_inference` | 7 | fep-107, fep-108, fep-109, fep-110, fep-111, fep-112, fep-113 |
 | `FepSketches.continuous_time_markov` | 7 | fep-149, fep-150, fep-151, fep-152, fep-153, fep-154, fep-155 |
 | `FepSketches.controlled_markov` | 7 | fep-065, fep-066, fep-067, fep-068, fep-069, fep-070, fep-071 |
+| `FepSketches.efe_policy_selection` | 1 | fep-156 |
+| `FepSketches.efe_time_scale_separation` | 1 | fep-159 |
 | `FepSketches.empirical_risk` | 7 | fep-121, fep-122, fep-123, fep-124, fep-125, fep-126, fep-127 |
 | `FepSketches.exponential_family` | 7 | fep-142, fep-143, fep-144, fep-145, fep-146, fep-147, fep-148 |
 | `FepSketches.geometric_optimization` | 7 | fep-100, fep-101, fep-102, fep-103, fep-104, fep-105, fep-106 |
@@ -489,6 +496,7 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `FepSketches.measure_bayes` | 7 | fep-051, fep-052, fep-053, fep-054, fep-055, fep-056, fep-057 |
 | `FepSketches.native_blanket` | 7 | fep-135, fep-136, fep-137, fep-138, fep-139, fep-140, fep-141 |
 | `FepSketches.path_thermodynamics` | 7 | fep-093, fep-094, fep-095, fep-096, fep-097, fep-098, fep-099 |
+| `FepSketches.perception_action_loop` | 1 | fep-157 |
 | `FepSketches.policy_tree` | 7 | fep-128, fep-129, fep-130, fep-131, fep-132, fep-133, fep-134 |
 | `FepSketches.predictive_coding` | 7 | fep-086, fep-087, fep-088, fep-089, fep-090, fep-091, fep-092 |
 | `FepSketches.temporal_inference` | 7 | fep-072, fep-073, fep-074, fep-075, fep-076, fep-077, fep-078 |

@@ -1,16 +1,16 @@
 {
   "area_counts": {
-    "ActiveInference": 31,
+    "ActiveInference": 33,
     "BayesianMechanics": 41,
-    "FEP": 41,
+    "FEP": 42,
     "InfoGeometry": 21,
-    "Thermodynamics": 21
+    "Thermodynamics": 22
   },
   "area_dispositions": {
     "ActiveInference": {
       "assumption_gap": 0,
       "conditional_proxy": 1,
-      "formalized": 27,
+      "formalized": 29,
       "proxy": 0,
       "scope_gap": 0,
       "structural_proxy": 3
@@ -26,7 +26,7 @@
     "FEP": {
       "assumption_gap": 0,
       "conditional_proxy": 1,
-      "formalized": 39,
+      "formalized": 40,
       "proxy": 0,
       "scope_gap": 0,
       "structural_proxy": 1
@@ -42,7 +42,7 @@
     "Thermodynamics": {
       "assumption_gap": 0,
       "conditional_proxy": 2,
-      "formalized": 18,
+      "formalized": 19,
       "proxy": 0,
       "scope_gap": 0,
       "structural_proxy": 1
@@ -778,7 +778,7 @@
   },
   "disposition_counts": {
     "conditional_proxy": 13,
-    "formalized": 136,
+    "formalized": 140,
     "structural_proxy": 6
   },
   "evidence_boundary": "Counts describe canonical source coverage. Compilation evidence and full external-run evidence are separate receipt contracts.",
@@ -802,7 +802,8 @@
     "predictive-coding-and-generalized-coordinates": 7,
     "temporal-and-hierarchical-inference": 7,
     "two-state-continuous-time-thermodynamics": 7,
-    "variational-duality-and-information-bounds": 7
+    "variational-duality-and-information-bounds": 7,
+    "wave3-standalone-formalizations": 4
   },
   "formal_modules": [
     {
@@ -3049,6 +3050,13 @@
   ],
   "mathlib_modules": [
     {
+      "module": "FepSketches.bayesian_model_reduction",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-158"
+      ]
+    },
+    {
       "module": "FepSketches.causal_dynamics",
       "topic_count": 7,
       "topic_ids": [
@@ -3098,6 +3106,20 @@
         "fep-069",
         "fep-070",
         "fep-071"
+      ]
+    },
+    {
+      "module": "FepSketches.efe_policy_selection",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-156"
+      ]
+    },
+    {
+      "module": "FepSketches.efe_time_scale_separation",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-159"
       ]
     },
     {
@@ -3189,6 +3211,13 @@
         "fep-097",
         "fep-098",
         "fep-099"
+      ]
+    },
+    {
+      "module": "FepSketches.perception_action_loop",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-157"
       ]
     },
     {
@@ -3645,7 +3674,7 @@
     "capability_nodes": 48,
     "composed_theorems": 226,
     "definitions": 716,
-    "distinct_mathlib_imports": 63,
+    "distinct_mathlib_imports": 67,
     "formal_module_dependency_edges": 120,
     "formal_module_import_edges": 217,
     "formal_modules": 56,
@@ -3660,12 +3689,12 @@
     "open_capabilities": 0,
     "satisfied_capabilities": 48,
     "theorem_witnessed_relations": 125,
-    "theorems": 1503,
+    "theorems": 1544,
     "topic_abbreviations": 7,
     "topic_definitions": 91,
-    "topic_import_edges": 212,
-    "topic_theorems": 487,
-    "topics": 155
+    "topic_import_edges": 216,
+    "topic_theorems": 528,
+    "topics": 159
   },
   "relation_counts": {
     "conceptual": 8,
@@ -7963,6 +7992,94 @@
       "semantic_disposition": "formalized",
       "theorem_count": 3,
       "title": "Exact Two-State Quadratic Lyapunov Decay"
+    },
+    {
+      "abbreviation_count": 0,
+      "acceptance_probe": "warning-free native Lean compile of all nine fep-156 declarations.",
+      "area": "ActiveInference",
+      "assumption_review": "The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise value surface of the policy_tree module.",
+      "definition_count": 0,
+      "family": "wave3-standalone-formalizations",
+      "id": "fep-156",
+      "imports": [
+        "FepSketches.efe_policy_selection"
+      ],
+      "invariant": "On a finite policy carrier with fixed precision, the KL-regularized control objective (expected EFE plus inverse-precision KL to the prior) is minimized exactly by the Boltzmann control posterior proportional to prior * exp(-gamma * G); the minimized value is -gamma^-1 log Z, the EFE splits as risk plus ambiguity, and the finite and treewise argmin views agree.",
+      "mathlib_hints": [
+        "Analysis.SpecialFunctions.Exp",
+        "InformationTheory.KullbackLeibler.Basic"
+      ],
+      "non_vacuity": "The finite argmin exists and attains the closed-form Boltzmann value -gamma^-1 log Z for nonempty policy sets.",
+      "primary_theorem": "fep156_boltzmann_control_posterior_minimizes_efe",
+      "semantic_disposition": "formalized",
+      "theorem_count": 9,
+      "title": "Planning as Inference: the EFE Policy-Selection Bridge"
+    },
+    {
+      "abbreviation_count": 0,
+      "acceptance_probe": "warning-free native Lean compile of all thirteen fep-157 declarations.",
+      "area": "ActiveInference",
+      "assumption_review": "The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim.",
+      "definition_count": 0,
+      "family": "wave3-standalone-formalizations",
+      "id": "fep-157",
+      "imports": [
+        "FepSketches.perception_action_loop"
+      ],
+      "invariant": "Each closed-loop perception-action step is non-increasing in belief surprisal: the step's KL splits exactly into predictive and posterior parts, prediction contracts the predictive distribution (Dobrushin), and the loop invariant bounds surprisal by its initial value plus accumulated expected free energy; the loop's fixed point is the Boltzmann control posterior and equals the policy posterior of the control-as-inference view.",
+      "mathlib_hints": [
+        "InformationTheory.KullbackLeibler.ChainRule",
+        "Probability.Kernel.Posterior"
+      ],
+      "non_vacuity": "The strict step-wise KL decrease holds on the full-likelihood witness kernels, and at the fixed point the loop posterior coincides with the Boltzmann control posterior.",
+      "primary_theorem": "fep157_loop_invariant_surprisal_bound",
+      "semantic_disposition": "formalized",
+      "theorem_count": 13,
+      "title": "The Perception-Action Loop as a Closed-Loop Active-Inference Theorem"
+    },
+    {
+      "abbreviation_count": 0,
+      "acceptance_probe": "warning-free native Lean compile of all ten fep-158 declarations.",
+      "area": "FEP",
+      "assumption_review": "The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic model-selection claim.",
+      "definition_count": 0,
+      "family": "wave3-standalone-formalizations",
+      "id": "fep-158",
+      "imports": [
+        "FepSketches.bayesian_model_reduction"
+      ],
+      "invariant": "Masking evidence never lowers the model evidence: the reduced model's evidence free energy dominates the full model's, the reduced posterior obeys the multiplicative Bayes-odds law with the evidence weight and reconstructs the full posterior through the evidence ratio, and the Gibbs-certificate excess over the optimizer is exactly the KL divergence to it.",
+      "mathlib_hints": [
+        "Analysis.SpecialFunctions.Log.Basic",
+        "InformationTheory.KullbackLeibler.Basic"
+      ],
+      "non_vacuity": "The masked predictive is bounded by the full evidence, and the reduced posterior reconstructs the full posterior exactly through the evidence ratio.",
+      "primary_theorem": "fep158_reduction_free_energy_monotone",
+      "semantic_disposition": "formalized",
+      "theorem_count": 10,
+      "title": "Bayesian Model Reduction"
+    },
+    {
+      "abbreviation_count": 0,
+      "acceptance_probe": "warning-free native Lean compile of all nine fep-159 declarations.",
+      "area": "Thermodynamics",
+      "assumption_review": "All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.",
+      "definition_count": 0,
+      "family": "wave3-standalone-formalizations",
+      "id": "fep-159",
+      "imports": [
+        "FepSketches.efe_time_scale_separation"
+      ],
+      "invariant": "The two-state belief information gap is bounded by the entropy-production rate scaled by the relaxation time (gain at most production/decay), the evolved gap contracts to the invariant measure no slower than the relaxation timescale, the one-slice path-space entropy production equals (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved gain after any fixed positive action time vanishes.",
+      "mathlib_hints": [
+        "Analysis.SpecialFunctions.ExpDeriv",
+        "Probability.Kernel.Invariance"
+      ],
+      "non_vacuity": "The bound is attained by the stationary law for the benchmark rates, and the fast-relaxation limit exhibits the vanishing exactly.",
+      "primary_theorem": "fep159_epistemic_gain_bounded_by_affinity",
+      "semantic_disposition": "formalized",
+      "theorem_count": 9,
+      "title": "EFE and Entropy-Production Time-Scale Separation"
     }
   ]
 }

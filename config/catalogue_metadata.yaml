@@ -3,7 +3,7 @@
 schema_version: 2
 roster:
   first_id: fep-001
-  last_id: fep-155
+  last_id: fep-159
 families:
 - core-free-energy
 - core-active-inference
@@ -25,6 +25,7 @@ families:
 - finite-to-native-blanket-transfer
 - finite-exponential-family-dual-geometry
 - two-state-continuous-time-thermodynamics
+- wave3-standalone-formalizations
 topics:
 - id: fep-001
   title: Variational Free Energy Bound
@@ -1154,4 +1155,36 @@ topics:
   family: two-state-continuous-time-thermodynamics
   mathlib_modules:
   - Analysis.SpecialFunctions.ExpDeriv
+  mathlib_status: real
+- id: fep-156
+  title: 'Planning as Inference: the EFE Policy-Selection Bridge'
+  area: ActiveInference
+  family: wave3-standalone-formalizations
+  mathlib_modules:
+  - Analysis.SpecialFunctions.Exp
+  - InformationTheory.KullbackLeibler.Basic
+  mathlib_status: real
+- id: fep-157
+  title: The Perception-Action Loop as a Closed-Loop Active-Inference Theorem
+  area: ActiveInference
+  family: wave3-standalone-formalizations
+  mathlib_modules:
+  - InformationTheory.KullbackLeibler.ChainRule
+  - Probability.Kernel.Posterior
+  mathlib_status: real
+- id: fep-158
+  title: Bayesian Model Reduction
+  area: FEP
+  family: wave3-standalone-formalizations
+  mathlib_modules:
+  - Analysis.SpecialFunctions.Log.Basic
+  - InformationTheory.KullbackLeibler.Basic
+  mathlib_status: real
+- id: fep-159
+  title: EFE and Entropy-Production Time-Scale Separation
+  area: Thermodynamics
+  family: wave3-standalone-formalizations
+  mathlib_modules:
+  - Analysis.SpecialFunctions.ExpDeriv
+  - Probability.Kernel.Invariance
   mathlib_status: real
