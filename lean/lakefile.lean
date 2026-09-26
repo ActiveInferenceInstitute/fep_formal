@@ -18,3 +18,6 @@ require mathlib from git
 @[default_target]
 lean_lib «FepSketches» where
   globs := #[.andSubmodules `FepSketches]
+
+lean_lib ACChoice where
+  globs := #[.andSubmodules `ACChoice]
