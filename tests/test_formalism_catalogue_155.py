@@ -43,6 +43,7 @@ NEW_CAPABILITY_IDS = {
     "cap-finite-exponential-family-geometry",
     "cap-finite-sample-risk-calibration",
     "cap-native-blanket-transfer",
+    "cap-standalone-efe-theorems",
 }
 H1_0_FEP014_ASSUMPTION = (
     "Self-divergence uses SigmaFinite; zero-characterization and the chain rule use "
