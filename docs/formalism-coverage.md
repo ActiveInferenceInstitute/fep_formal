@@ -43,11 +43,11 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 
 | Area | formalized | proxy | conditional_proxy | structural_proxy | scope_gap | assumption_gap | Total |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| ActiveInference | 29 | 0 | 1 | 3 | 0 | 0 | 33 |
+| ActiveInference | 31 | 0 | 1 | 3 | 0 | 0 | 35 |
 | BayesianMechanics | 34 | 0 | 6 | 1 | 0 | 0 | 41 |
-| FEP | 40 | 0 | 1 | 1 | 0 | 0 | 42 |
+| FEP | 39 | 0 | 1 | 1 | 0 | 0 | 41 |
 | InfoGeometry | 18 | 0 | 3 | 0 | 0 | 0 | 21 |
-| Thermodynamics | 19 | 0 | 2 | 1 | 0 | 0 | 22 |
+| Thermodynamics | 18 | 0 | 2 | 1 | 0 | 0 | 21 |
 | **Total** | 140 | 0 | 13 | 6 | 0 | 0 | **159** |
 
 ## Per-topic coverage
@@ -211,8 +211,8 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 | fep-155 | Thermodynamics | `fep155_twoStateLyapunov_exact` | `formalized` | 3 | 0 | 1 |
 | fep-156 | ActiveInference | `fep156_boltzmann_control_posterior_minimizes_efe` | `formalized` | 9 | 0 | 1 |
 | fep-157 | ActiveInference | `fep157_loop_invariant_surprisal_bound` | `formalized` | 13 | 0 | 1 |
-| fep-158 | FEP | `fep158_reduction_free_energy_monotone` | `formalized` | 10 | 0 | 1 |
-| fep-159 | Thermodynamics | `fep159_epistemic_gain_bounded_by_affinity` | `formalized` | 9 | 0 | 1 |
+| fep-158 | ActiveInference | `fep158_reduction_free_energy_monotone` | `formalized` | 10 | 0 | 1 |
+| fep-159 | ActiveInference | `fep159_epistemic_gain_bounded_by_affinity` | `formalized` | 9 | 0 | 1 |
 
 ## Open semantic obligations
 

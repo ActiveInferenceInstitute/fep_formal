@@ -1174,7 +1174,7 @@ topics:
   mathlib_status: real
 - id: fep-158
   title: Bayesian Model Reduction
-  area: FEP
+  area: ActiveInference
   family: standalone-efe-formalizations
   mathlib_modules:
   - Analysis.SpecialFunctions.Log.Basic
@@ -1182,7 +1182,7 @@ topics:
   mathlib_status: real
 - id: fep-159
   title: EFE and Entropy-Production Time-Scale Separation
-  area: Thermodynamics
+  area: ActiveInference
   family: standalone-efe-formalizations
   mathlib_modules:
   - Analysis.SpecialFunctions.ExpDeriv

@@ -1,16 +1,16 @@
 {
   "area_counts": {
-    "ActiveInference": 33,
+    "ActiveInference": 35,
     "BayesianMechanics": 41,
-    "FEP": 42,
+    "FEP": 41,
     "InfoGeometry": 21,
-    "Thermodynamics": 22
+    "Thermodynamics": 21
   },
   "area_dispositions": {
     "ActiveInference": {
       "assumption_gap": 0,
       "conditional_proxy": 1,
-      "formalized": 29,
+      "formalized": 31,
       "proxy": 0,
       "scope_gap": 0,
       "structural_proxy": 3
@@ -26,7 +26,7 @@
     "FEP": {
       "assumption_gap": 0,
       "conditional_proxy": 1,
-      "formalized": 40,
+      "formalized": 39,
       "proxy": 0,
       "scope_gap": 0,
       "structural_proxy": 1
@@ -42,7 +42,7 @@
     "Thermodynamics": {
       "assumption_gap": 0,
       "conditional_proxy": 2,
-      "formalized": 19,
+      "formalized": 18,
       "proxy": 0,
       "scope_gap": 0,
       "structural_proxy": 1
@@ -8040,7 +8040,7 @@
     {
       "abbreviation_count": 0,
       "acceptance_probe": "warning-free native Lean compile of all ten fep-158 declarations.",
-      "area": "FEP",
+      "area": "ActiveInference",
       "assumption_review": "The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic model-selection claim.",
       "definition_count": 0,
       "family": "standalone-efe-formalizations",
@@ -8062,7 +8062,7 @@
     {
       "abbreviation_count": 0,
       "acceptance_probe": "warning-free native Lean compile of all nine fep-159 declarations.",
-      "area": "Thermodynamics",
+      "area": "ActiveInference",
       "assumption_review": "All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.",
       "definition_count": 0,
       "family": "standalone-efe-formalizations",

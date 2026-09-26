@@ -35,6 +35,7 @@ NEW_FAMILY_AREAS = {
     "finite-to-native-blanket-transfer": "BayesianMechanics",
     "finite-exponential-family-dual-geometry": "InfoGeometry",
     "two-state-continuous-time-thermodynamics": "Thermodynamics",
+    "standalone-efe-formalizations": "ActiveInference",
 }
 NEW_CAPABILITY_IDS = {
     "cap-closed-loop-policy-trees",
@@ -105,11 +106,11 @@ def test_expansion_vii_has_exact_roster_family_and_area_ownership() -> None:
     for record in metadata:
         area_counts[record.area] = area_counts.get(record.area, 0) + 1
     assert area_counts == {
-        "FEP": 42,
-        "ActiveInference": 33,
+        "FEP": 41,
+        "ActiveInference": 35,
         "BayesianMechanics": 41,
         "InfoGeometry": 21,
-        "Thermodynamics": 22,
+        "Thermodynamics": 21,
     }
 
 

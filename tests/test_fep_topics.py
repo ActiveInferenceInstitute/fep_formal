@@ -16,11 +16,11 @@ SEALED_IDS = load_catalogue_metadata(
 ).topic_ids
 
 _EXPECTED_AREAS = {
-    "FEP": 42,
-    "ActiveInference": 33,
+    "FEP": 41,
+    "ActiveInference": 35,
     "BayesianMechanics": 41,
     "InfoGeometry": 21,
-    "Thermodynamics": 22,
+    "Thermodynamics": 21,
 }
 
 
