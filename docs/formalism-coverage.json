@@ -2999,12 +2999,87 @@
     {
       "abbreviation_count": 0,
       "definition_count": 0,
+      "formal_dependencies": [],
+      "id": "formal-module-efe-policy-selection",
+      "imports": [
+        "FepSketches.fep_all",
+        "FepSketches.efe_policy_selection"
+      ],
+      "lean_module": "FepSketches.compositions.efe_policy_selection",
+      "resource": "compositions/efe_policy_selection.lean",
+      "role": "composition",
+      "structure_count": 0,
+      "theorem_count": 1,
+      "theorems": [
+        "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 0,
+      "formal_dependencies": [],
+      "id": "formal-module-perception-action-loop",
+      "imports": [
+        "FepSketches.fep_all",
+        "FepSketches.perception_action_loop"
+      ],
+      "lean_module": "FepSketches.compositions.perception_action_loop",
+      "resource": "compositions/perception_action_loop.lean",
+      "role": "composition",
+      "structure_count": 0,
+      "theorem_count": 1,
+      "theorems": [
+        "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 0,
+      "formal_dependencies": [],
+      "id": "formal-module-bayesian-model-reduction",
+      "imports": [
+        "FepSketches.fep_all",
+        "FepSketches.bayesian_model_reduction"
+      ],
+      "lean_module": "FepSketches.compositions.bayesian_model_reduction",
+      "resource": "compositions/bayesian_model_reduction.lean",
+      "role": "composition",
+      "structure_count": 0,
+      "theorem_count": 1,
+      "theorems": [
+        "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 0,
+      "formal_dependencies": [],
+      "id": "formal-module-efe-time-scale-separation",
+      "imports": [
+        "FepSketches.fep_all",
+        "FepSketches.efe_time_scale_separation"
+      ],
+      "lean_module": "FepSketches.compositions.efe_time_scale_separation",
+      "resource": "compositions/efe_time_scale_separation.lean",
+      "role": "composition",
+      "structure_count": 0,
+      "theorem_count": 1,
+      "theorems": [
+        "FEPComposed.fep159_epistemicGain_extends_fep153_stationary"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 0,
       "formal_dependencies": [
+        "FepSketches.compositions.bayesian_model_reduction",
         "FepSketches.compositions.causal_predictive",
         "FepSketches.compositions.collective_learning",
         "FepSketches.compositions.continuous_time",
         "FepSketches.compositions.control_temporal",
         "FepSketches.compositions.core",
+        "FepSketches.compositions.efe_policy_selection",
+        "FepSketches.compositions.efe_time_scale_separation",
         "FepSketches.compositions.exponential_family",
         "FepSketches.compositions.finite_policy_action",
         "FepSketches.compositions.finite_reference_agent",
@@ -3014,6 +3089,7 @@
         "FepSketches.compositions.gaussian_grid_path",
         "FepSketches.compositions.measure_variational",
         "FepSketches.compositions.native_blanket_transfer",
+        "FepSketches.compositions.perception_action_loop",
         "FepSketches.compositions.policy_trees",
         "FepSketches.compositions.risk_calibration",
         "FepSketches.compositions.smooth_reference_kernel",
@@ -3038,7 +3114,11 @@
         "FepSketches.compositions.gaussian_filter",
         "FepSketches.compositions.gaussian_control",
         "FepSketches.compositions.gaussian_grid_path",
-        "FepSketches.compositions.smooth_reference_kernel"
+        "FepSketches.compositions.smooth_reference_kernel",
+        "FepSketches.compositions.efe_policy_selection",
+        "FepSketches.compositions.perception_action_loop",
+        "FepSketches.compositions.bayesian_model_reduction",
+        "FepSketches.compositions.efe_time_scale_separation"
       ],
       "lean_module": "FepSketches.composed",
       "resource": "composed.lean",
@@ -3672,24 +3752,24 @@
     "abbreviations": 28,
     "authored_relation_edges": 133,
     "capability_nodes": 48,
-    "composed_theorems": 226,
+    "composed_theorems": 230,
     "definitions": 716,
     "distinct_mathlib_imports": 67,
-    "formal_module_dependency_edges": 120,
-    "formal_module_import_edges": 217,
-    "formal_modules": 56,
+    "formal_module_dependency_edges": 124,
+    "formal_module_import_edges": 229,
+    "formal_modules": 60,
     "formal_pairing_witnesses": 105,
     "formal_relation_witnesses": 20,
     "formal_resource_abbreviations": 21,
     "formal_resource_definitions": 625,
     "formal_resource_structures": 50,
-    "formal_resource_theorems": 1016,
+    "formal_resource_theorems": 1020,
     "foundation_modules": 37,
     "foundation_theorems": 790,
     "open_capabilities": 0,
     "satisfied_capabilities": 48,
     "theorem_witnessed_relations": 125,
-    "theorems": 1544,
+    "theorems": 1548,
     "topic_abbreviations": 7,
     "topic_definitions": 91,
     "topic_import_edges": 216,
