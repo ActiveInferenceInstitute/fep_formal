@@ -1,6 +1,6 @@
 {
   "area_counts": {
-    "ActiveInference": 31,
+    "ActiveInference": 35,
     "BayesianMechanics": 41,
     "FEP": 41,
     "InfoGeometry": 21,
@@ -10,7 +10,7 @@
     "ActiveInference": {
       "assumption_gap": 0,
       "conditional_proxy": 1,
-      "formalized": 27,
+      "formalized": 31,
       "proxy": 0,
       "scope_gap": 0,
       "structural_proxy": 3
@@ -653,6 +653,23 @@
     },
     {
       "blocked_topics": [],
+      "description": "The Boltzmann-form control posterior minimizes the expected free energy with the stated uniqueness boundary; the perception-action loop admits an invariant surprisal bound through one controlled-kernel step; Bayesian model reduction never lowers evidence free energy under masked evidence; and the epistemic gain of an EFE time-scale separation is bounded by the log-affinity of its two-state carrier. Each result is a standalone Lean module bridged to its nearest catalogue topic; infinite-horizon, continuous-state, and physical entropy-production identification are not claimed.",
+      "evidence": [
+        "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance",
+        "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel",
+        "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound",
+        "FEPComposed.fep159_epistemicGain_extends_fep153_stationary",
+        "fep_fep156.FEP156.fep156_boltzmann_control_posterior_minimizes_efe",
+        "fep_fep157.FEP157.fep157_loop_invariant_surprisal_bound",
+        "fep_fep158.FEP158.fep158_reduction_free_energy_monotone",
+        "fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity"
+      ],
+      "id": "cap-standalone-efe-theorems",
+      "status": "satisfied",
+      "title": "Exact standalone EFE theorems"
+    },
+    {
+      "blocked_topics": [],
       "description": "The differentiable one-parameter Bernoulli family, its zero-mean score, Fisher information and positive tangent metric, inverse-metric natural gradient, Fisher--Rao coordinate distance, and pullback law.",
       "evidence": [
         "FEPComposed.fep004_bernoulliMetric_specialization",
@@ -774,11 +791,11 @@
     }
   ],
   "capability_status_counts": {
-    "satisfied": 48
+    "satisfied": 49
   },
   "disposition_counts": {
     "conditional_proxy": 13,
-    "formalized": 136,
+    "formalized": 140,
     "structural_proxy": 6
   },
   "evidence_boundary": "Counts describe canonical source coverage. Compilation evidence and full external-run evidence are separate receipt contracts.",
@@ -800,6 +817,7 @@
     "measure-bayesian-inversion": 7,
     "path-space-stochastic-thermodynamics": 7,
     "predictive-coding-and-generalized-coordinates": 7,
+    "standalone-efe-formalizations": 4,
     "temporal-and-hierarchical-inference": 7,
     "two-state-continuous-time-thermodynamics": 7,
     "variational-duality-and-information-bounds": 7
@@ -2359,6 +2377,176 @@
     },
     {
       "abbreviation_count": 0,
+      "definition_count": 3,
+      "formal_dependencies": [
+        "FepSketches.controlled_markov",
+        "FepSketches.policy_tree",
+        "FepSketches.variational_duality"
+      ],
+      "id": "formal-module-efe-policy-selection",
+      "imports": [
+        "FepSketches.controlled_markov",
+        "FepSketches.policy_tree",
+        "FepSketches.variational_duality"
+      ],
+      "lean_module": "FepSketches.efe_policy_selection",
+      "resource": "efe_policy_selection.lean",
+      "role": "foundation",
+      "structure_count": 0,
+      "theorem_count": 9,
+      "theorems": [
+        "FEP.EFEPolicy.argminEFE_eq_risk_add_ambiguity",
+        "FEP.EFEPolicy.boltzmann_control_posterior_minimal_value",
+        "FEP.EFEPolicy.boltzmann_control_posterior_minimizes_efe",
+        "FEP.EFEPolicy.efeControlObjective_eq_gibbsFreeEnergy",
+        "FEP.EFEPolicy.efeControlObjective_eq_kl_sub_logPartition",
+        "FEP.EFEPolicy.efeControlObjective_sub_eq_kl",
+        "FEP.EFEPolicy.exists_EFE_minimizing_policy",
+        "FEP.EFEPolicy.finiteArgminEFE_minimizes_risk_add_ambiguity",
+        "FEP.EFEPolicy.policyTree_value_agreement"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 6,
+      "formal_dependencies": [
+        "FepSketches.active_inference",
+        "FepSketches.continuous_time_markov",
+        "FepSketches.controlled_markov",
+        "FepSketches.finite_markov_dynamics",
+        "FepSketches.temporal_inference"
+      ],
+      "id": "formal-module-perception-action-loop",
+      "imports": [
+        "FepSketches.active_inference",
+        "FepSketches.controlled_markov",
+        "FepSketches.finite_markov_dynamics",
+        "FepSketches.temporal_inference",
+        "FepSketches.continuous_time_markov"
+      ],
+      "lean_module": "FepSketches.perception_action_loop",
+      "resource": "perception_action_loop.lean",
+      "role": "foundation",
+      "structure_count": 0,
+      "theorem_count": 22,
+      "theorems": [
+        "FEP.PerceptionActionLoop.actionEvidence_eq_predictive_of_identity",
+        "FEP.PerceptionActionLoop.filteredBelief_eq_actionBeliefUpdate",
+        "FEP.PerceptionActionLoop.filteredBelief_eq_forwardFilter",
+        "FEP.PerceptionActionLoop.finiteKL_joint_same_kernel",
+        "FEP.PerceptionActionLoop.finiteKL_swappedJoint_eq",
+        "FEP.PerceptionActionLoop.forwardEvidence_eq_predictive_of_identity",
+        "FEP.PerceptionActionLoop.identity_actionEvidence",
+        "FEP.PerceptionActionLoop.identity_forwardEvidence",
+        "FEP.PerceptionActionLoop.loop_fixed_point_is_boltzmann",
+        "FEP.PerceptionActionLoop.loop_invariant_surprisal_bound",
+        "FEP.PerceptionActionLoop.perceptionActionKernel_apply",
+        "FEP.PerceptionActionLoop.perceptionActionStep_eq",
+        "FEP.PerceptionActionLoop.perceptionVFE_gap",
+        "FEP.PerceptionActionLoop.perception_kl_decomposition",
+        "FEP.PerceptionActionLoop.perception_native_kl_nonincrease",
+        "FEP.PerceptionActionLoop.perception_step_kl_nonincrease",
+        "FEP.PerceptionActionLoop.policyPosterior_eq_controlPosterior",
+        "FEP.PerceptionActionLoop.posteriorKernel_joint_eq_swap",
+        "FEP.PerceptionActionLoop.posterior_pos_of_support",
+        "FEP.PerceptionActionLoop.prediction_dobrushin_contraction",
+        "FEP.PerceptionActionLoop.predictive_pos_of_fullLikelihood",
+        "FEP.PerceptionActionLoop.selectedPolicy_minimizes"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 3,
+      "formal_dependencies": [
+        "FepSketches.gaussian_information_geometry",
+        "FepSketches.variational_duality"
+      ],
+      "id": "formal-module-bayesian-model-reduction",
+      "imports": [
+        "FepSketches.variational_duality",
+        "FepSketches.gaussian_information_geometry"
+      ],
+      "lean_module": "FepSketches.bayesian_model_reduction",
+      "resource": "bayesian_model_reduction.lean",
+      "role": "foundation",
+      "structure_count": 0,
+      "theorem_count": 10,
+      "theorems": [
+        "FEP.BayesianModelReduction.gaussianLogBayesFactor_eq",
+        "FEP.BayesianModelReduction.gibbsFreeEnergy_eq_neg_dvObjective",
+        "FEP.BayesianModelReduction.maskedEvidence_le_predictive",
+        "FEP.BayesianModelReduction.maskedPrior_predictive_eq",
+        "FEP.BayesianModelReduction.reduced_posterior_reconstructs",
+        "FEP.BayesianModelReduction.reduction_free_energy_change_eq_kl",
+        "FEP.BayesianModelReduction.reduction_free_energy_monotone",
+        "FEP.BayesianModelReduction.reduction_free_energy_monotone_gibbs",
+        "FEP.BayesianModelReduction.reduction_posterior_odds",
+        "FEP.BayesianModelReduction.reduction_posterior_reconstruction"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 8,
+      "formal_dependencies": [
+        "FepSketches.active_inference",
+        "FepSketches.continuous_time_markov",
+        "FepSketches.ness_flow",
+        "FepSketches.path_thermodynamics"
+      ],
+      "id": "formal-module-efe-time-scale-separation",
+      "imports": [
+        "FepSketches.continuous_time_markov",
+        "FepSketches.path_thermodynamics",
+        "FepSketches.active_inference",
+        "FepSketches.ness_flow"
+      ],
+      "lean_module": "FepSketches.efe_time_scale_separation",
+      "resource": "efe_time_scale_separation.lean",
+      "role": "foundation",
+      "structure_count": 0,
+      "theorem_count": 37,
+      "theorems": [
+        "FEP.TimeScaleEFE.beliefAffinity_eq_localAffinity",
+        "FEP.TimeScaleEFE.beliefCurrent_eq",
+        "FEP.TimeScaleEFE.belief_sum_one",
+        "FEP.TimeScaleEFE.epistemicGain_initial_bound",
+        "FEP.TimeScaleEFE.epistemicGain_le_sqDiff",
+        "FEP.TimeScaleEFE.epistemicGain_rateScaling",
+        "FEP.TimeScaleEFE.epistemic_gain_bounded_by_affinity",
+        "FEP.TimeScaleEFE.evolved_true_eq_trueMass",
+        "FEP.TimeScaleEFE.expectedFreeEnergy_le_productionRate_div_decayRate",
+        "FEP.TimeScaleEFE.fastRelaxation_epistemic_vanishes",
+        "FEP.TimeScaleEFE.finiteKL_stationaryLaw_eq",
+        "FEP.TimeScaleEFE.predictive_support_of",
+        "FEP.TimeScaleEFE.productionRate_nonneg",
+        "FEP.TimeScaleEFE.residual_gain_bounded_by_affinity",
+        "FEP.TimeScaleEFE.rho_lt_one",
+        "FEP.TimeScaleEFE.scaledRates_decayRate_eq",
+        "FEP.TimeScaleEFE.scaledRates_rho_eq",
+        "FEP.TimeScaleEFE.scaledRates_stationaryFalse_eq",
+        "FEP.TimeScaleEFE.scaledRates_stationaryLaw_eq",
+        "FEP.TimeScaleEFE.scaledRates_stationaryTrue_eq",
+        "FEP.TimeScaleEFE.slicePath_entropyProduction_eq",
+        "FEP.TimeScaleEFE.slow_fast_separation_statement",
+        "FEP.TimeScaleEFE.stationaryLaw_false",
+        "FEP.TimeScaleEFE.stationaryLaw_pos",
+        "FEP.TimeScaleEFE.stationaryLaw_true",
+        "FEP.TimeScaleEFE.stationaryTrue_add_stationaryFalse",
+        "FEP.TimeScaleEFE.transition_diagonal_pos",
+        "FEP.TimeScaleEFE.transition_false_false",
+        "FEP.TimeScaleEFE.transition_false_true",
+        "FEP.TimeScaleEFE.transition_fullSupport_pos",
+        "FEP.TimeScaleEFE.transition_true_false",
+        "FEP.TimeScaleEFE.transition_true_true",
+        "FEP.TimeScaleEFE.twoStateModel_ambiguity_eq_zero",
+        "FEP.TimeScaleEFE.twoStateModel_expectedFreeEnergy",
+        "FEP.TimeScaleEFE.twoStateModel_fullSupport",
+        "FEP.TimeScaleEFE.twoStateModel_predictedOutcome",
+        "FEP.TimeScaleEFE.twoStateModel_predictedState"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
       "definition_count": 1,
       "formal_dependencies": [
         "FepSketches.active_inference",
@@ -2999,11 +3187,94 @@
       "abbreviation_count": 0,
       "definition_count": 0,
       "formal_dependencies": [
+        "FepSketches.efe_policy_selection"
+      ],
+      "id": "formal-module-efe-policy-selection",
+      "imports": [
+        "FepSketches.fep_all",
+        "FepSketches.efe_policy_selection"
+      ],
+      "lean_module": "FepSketches.compositions.efe_policy_selection",
+      "resource": "compositions/efe_policy_selection.lean",
+      "role": "composition",
+      "structure_count": 0,
+      "theorem_count": 1,
+      "theorems": [
+        "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 0,
+      "formal_dependencies": [
+        "FepSketches.perception_action_loop"
+      ],
+      "id": "formal-module-perception-action-loop",
+      "imports": [
+        "FepSketches.fep_all",
+        "FepSketches.perception_action_loop"
+      ],
+      "lean_module": "FepSketches.compositions.perception_action_loop",
+      "resource": "compositions/perception_action_loop.lean",
+      "role": "composition",
+      "structure_count": 0,
+      "theorem_count": 1,
+      "theorems": [
+        "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 0,
+      "formal_dependencies": [
+        "FepSketches.bayesian_model_reduction"
+      ],
+      "id": "formal-module-bayesian-model-reduction",
+      "imports": [
+        "FepSketches.fep_all",
+        "FepSketches.bayesian_model_reduction"
+      ],
+      "lean_module": "FepSketches.compositions.bayesian_model_reduction",
+      "resource": "compositions/bayesian_model_reduction.lean",
+      "role": "composition",
+      "structure_count": 0,
+      "theorem_count": 1,
+      "theorems": [
+        "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 0,
+      "formal_dependencies": [
+        "FepSketches.efe_time_scale_separation"
+      ],
+      "id": "formal-module-efe-time-scale-separation",
+      "imports": [
+        "FepSketches.fep_all",
+        "FepSketches.efe_time_scale_separation"
+      ],
+      "lean_module": "FepSketches.compositions.efe_time_scale_separation",
+      "resource": "compositions/efe_time_scale_separation.lean",
+      "role": "composition",
+      "structure_count": 0,
+      "theorem_count": 1,
+      "theorems": [
+        "FEPComposed.fep159_epistemicGain_extends_fep153_stationary"
+      ]
+    },
+    {
+      "abbreviation_count": 0,
+      "definition_count": 0,
+      "formal_dependencies": [
+        "FepSketches.compositions.bayesian_model_reduction",
         "FepSketches.compositions.causal_predictive",
         "FepSketches.compositions.collective_learning",
         "FepSketches.compositions.continuous_time",
         "FepSketches.compositions.control_temporal",
         "FepSketches.compositions.core",
+        "FepSketches.compositions.efe_policy_selection",
+        "FepSketches.compositions.efe_time_scale_separation",
         "FepSketches.compositions.exponential_family",
         "FepSketches.compositions.finite_policy_action",
         "FepSketches.compositions.finite_reference_agent",
@@ -3013,6 +3284,7 @@
         "FepSketches.compositions.gaussian_grid_path",
         "FepSketches.compositions.measure_variational",
         "FepSketches.compositions.native_blanket_transfer",
+        "FepSketches.compositions.perception_action_loop",
         "FepSketches.compositions.policy_trees",
         "FepSketches.compositions.risk_calibration",
         "FepSketches.compositions.smooth_reference_kernel",
@@ -3037,7 +3309,11 @@
         "FepSketches.compositions.gaussian_filter",
         "FepSketches.compositions.gaussian_control",
         "FepSketches.compositions.gaussian_grid_path",
-        "FepSketches.compositions.smooth_reference_kernel"
+        "FepSketches.compositions.smooth_reference_kernel",
+        "FepSketches.compositions.efe_policy_selection",
+        "FepSketches.compositions.perception_action_loop",
+        "FepSketches.compositions.bayesian_model_reduction",
+        "FepSketches.compositions.efe_time_scale_separation"
       ],
       "lean_module": "FepSketches.composed",
       "resource": "composed.lean",
@@ -3048,6 +3324,13 @@
     }
   ],
   "mathlib_modules": [
+    {
+      "module": "FepSketches.bayesian_model_reduction",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-158"
+      ]
+    },
     {
       "module": "FepSketches.causal_dynamics",
       "topic_count": 7,
@@ -3098,6 +3381,20 @@
         "fep-069",
         "fep-070",
         "fep-071"
+      ]
+    },
+    {
+      "module": "FepSketches.efe_policy_selection",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-156"
+      ]
+    },
+    {
+      "module": "FepSketches.efe_time_scale_separation",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-159"
       ]
     },
     {
@@ -3189,6 +3486,13 @@
         "fep-097",
         "fep-098",
         "fep-099"
+      ]
+    },
+    {
+      "module": "FepSketches.perception_action_loop",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-157"
       ]
     },
     {
@@ -3641,36 +3945,36 @@
   ],
   "metrics": {
     "abbreviations": 28,
-    "authored_relation_edges": 133,
-    "capability_nodes": 48,
-    "composed_theorems": 226,
-    "definitions": 716,
-    "distinct_mathlib_imports": 63,
-    "formal_module_dependency_edges": 120,
-    "formal_module_import_edges": 217,
-    "formal_modules": 56,
-    "formal_pairing_witnesses": 105,
+    "authored_relation_edges": 137,
+    "capability_nodes": 49,
+    "composed_theorems": 230,
+    "definitions": 736,
+    "distinct_mathlib_imports": 67,
+    "formal_module_dependency_edges": 142,
+    "formal_module_import_edges": 243,
+    "formal_modules": 64,
+    "formal_pairing_witnesses": 109,
     "formal_relation_witnesses": 20,
     "formal_resource_abbreviations": 21,
-    "formal_resource_definitions": 625,
+    "formal_resource_definitions": 645,
     "formal_resource_structures": 50,
-    "formal_resource_theorems": 1016,
-    "foundation_modules": 37,
-    "foundation_theorems": 790,
+    "formal_resource_theorems": 1098,
+    "foundation_modules": 41,
+    "foundation_theorems": 868,
     "open_capabilities": 0,
-    "satisfied_capabilities": 48,
-    "theorem_witnessed_relations": 125,
-    "theorems": 1503,
+    "satisfied_capabilities": 49,
+    "theorem_witnessed_relations": 129,
+    "theorems": 1626,
     "topic_abbreviations": 7,
     "topic_definitions": 91,
-    "topic_import_edges": 212,
-    "topic_theorems": 487,
-    "topics": 155
+    "topic_import_edges": 216,
+    "topic_theorems": 528,
+    "topics": 159
   },
   "relation_counts": {
     "conceptual": 8,
     "formal": 20,
-    "formal_pairing": 105
+    "formal_pairing": 109
   },
   "relations": [
     {
@@ -4603,6 +4907,34 @@
       "source": "fep-155",
       "target": "fep-032",
       "witness": "FEPComposed.fep155_lyapunovDecay_extends_fep032"
+    },
+    {
+      "kind": "formal_pairing",
+      "rationale": "The exact Boltzmann-form control posterior minimizes the expected free energy with its uniqueness certificate, paired with fep-021's truncated-EFE epistemic-plus-pragmatic balance as the sign-convention ancestor, without claiming continuous-state or infinite-action optimality.",
+      "source": "fep-156",
+      "target": "fep-021",
+      "witness": "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance"
+    },
+    {
+      "kind": "formal_pairing",
+      "rationale": "The perception-action loop's invariant surprisal bound factors through one action-conditioned controlled-kernel step, paired with fep-065's row-normalization law, without claiming a general POMDP fixed-point theorem.",
+      "source": "fep-157",
+      "target": "fep-065",
+      "witness": "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+    },
+    {
+      "kind": "formal_pairing",
+      "rationale": "Masked evidence never lowers evidence free energy, paired with fep-058's exact Gibbs lower bound on the same finiteKL and gibbsFreeEnergy carriers, without claiming a variational characterization of arbitrary model reductions.",
+      "source": "fep-158",
+      "target": "fep-058",
+      "witness": "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound"
+    },
+    {
+      "kind": "formal_pairing",
+      "rationale": "The finite KL divergence of the EFE time-scale separation is bounded by the log-affinity of its two-state rate carrier, paired with fep-153's nonuniform stationary semigroup law, without claiming a physical entropy-production identity.",
+      "source": "fep-159",
+      "target": "fep-153",
+      "witness": "FEPComposed.fep159_epistemicGain_extends_fep153_stationary"
     }
   ],
   "review_date": "2026-08-21",
@@ -7963,6 +8295,94 @@
       "semantic_disposition": "formalized",
       "theorem_count": 3,
       "title": "Exact Two-State Quadratic Lyapunov Decay"
+    },
+    {
+      "abbreviation_count": 0,
+      "acceptance_probe": "warning-free native Lean compile of all nine fep-156 declarations.",
+      "area": "ActiveInference",
+      "assumption_review": "The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise value surface of the policy_tree module.",
+      "definition_count": 0,
+      "family": "standalone-efe-formalizations",
+      "id": "fep-156",
+      "imports": [
+        "FepSketches.efe_policy_selection"
+      ],
+      "invariant": "On a finite policy carrier with fixed precision, the KL-regularized control objective (expected EFE plus inverse-precision KL to the prior) is minimized exactly by the Boltzmann control posterior proportional to prior * exp(-gamma * G); the minimized value is -gamma^-1 log Z, the EFE splits as risk plus ambiguity, and the finite and treewise argmin views agree.",
+      "mathlib_hints": [
+        "Analysis.SpecialFunctions.Exp",
+        "InformationTheory.KullbackLeibler.Basic"
+      ],
+      "non_vacuity": "The finite argmin exists and attains the closed-form Boltzmann value -gamma^-1 log Z for nonempty policy sets.",
+      "primary_theorem": "fep156_boltzmann_control_posterior_minimizes_efe",
+      "semantic_disposition": "formalized",
+      "theorem_count": 9,
+      "title": "Planning as Inference: the EFE Policy-Selection Bridge"
+    },
+    {
+      "abbreviation_count": 0,
+      "acceptance_probe": "warning-free native Lean compile of all thirteen fep-157 declarations.",
+      "area": "ActiveInference",
+      "assumption_review": "The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim.",
+      "definition_count": 0,
+      "family": "standalone-efe-formalizations",
+      "id": "fep-157",
+      "imports": [
+        "FepSketches.perception_action_loop"
+      ],
+      "invariant": "Each closed-loop perception-action step is non-increasing in belief surprisal: the step's KL splits exactly into predictive and posterior parts, prediction contracts the predictive distribution (Dobrushin), and the loop invariant bounds surprisal by its initial value plus accumulated expected free energy; the loop's fixed point is the Boltzmann control posterior and equals the policy posterior of the control-as-inference view.",
+      "mathlib_hints": [
+        "InformationTheory.KullbackLeibler.ChainRule",
+        "Probability.Kernel.Posterior"
+      ],
+      "non_vacuity": "The strict step-wise KL decrease holds on the full-likelihood witness kernels, and at the fixed point the loop posterior coincides with the Boltzmann control posterior.",
+      "primary_theorem": "fep157_loop_invariant_surprisal_bound",
+      "semantic_disposition": "formalized",
+      "theorem_count": 13,
+      "title": "The Perception-Action Loop as a Closed-Loop Active-Inference Theorem"
+    },
+    {
+      "abbreviation_count": 0,
+      "acceptance_probe": "warning-free native Lean compile of all ten fep-158 declarations.",
+      "area": "ActiveInference",
+      "assumption_review": "The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic model-selection claim.",
+      "definition_count": 0,
+      "family": "standalone-efe-formalizations",
+      "id": "fep-158",
+      "imports": [
+        "FepSketches.bayesian_model_reduction"
+      ],
+      "invariant": "Masking evidence never lowers the model evidence: the reduced model's evidence free energy dominates the full model's, the reduced posterior obeys the multiplicative Bayes-odds law with the evidence weight and reconstructs the full posterior through the evidence ratio, and the Gibbs-certificate excess over the optimizer is exactly the KL divergence to it.",
+      "mathlib_hints": [
+        "Analysis.SpecialFunctions.Log.Basic",
+        "InformationTheory.KullbackLeibler.Basic"
+      ],
+      "non_vacuity": "The masked predictive is bounded by the full evidence, and the reduced posterior reconstructs the full posterior exactly through the evidence ratio.",
+      "primary_theorem": "fep158_reduction_free_energy_monotone",
+      "semantic_disposition": "formalized",
+      "theorem_count": 10,
+      "title": "Bayesian Model Reduction"
+    },
+    {
+      "abbreviation_count": 0,
+      "acceptance_probe": "warning-free native Lean compile of all nine fep-159 declarations.",
+      "area": "ActiveInference",
+      "assumption_review": "All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.",
+      "definition_count": 0,
+      "family": "standalone-efe-formalizations",
+      "id": "fep-159",
+      "imports": [
+        "FepSketches.efe_time_scale_separation"
+      ],
+      "invariant": "The two-state belief information gap is bounded by the entropy-production rate scaled by the relaxation time (gain at most production/decay), the evolved gap contracts to the invariant measure no slower than the relaxation timescale, the one-slice path-space entropy production equals (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved gain after any fixed positive action time vanishes.",
+      "mathlib_hints": [
+        "Analysis.SpecialFunctions.ExpDeriv",
+        "Probability.Kernel.Invariance"
+      ],
+      "non_vacuity": "The bound is attained by the stationary law for the benchmark rates, and the fast-relaxation limit exhibits the vanishing exactly.",
+      "primary_theorem": "fep159_epistemic_gain_bounded_by_affinity",
+      "semantic_disposition": "formalized",
+      "theorem_count": 9,
+      "title": "EFE and Entropy-Production Time-Scale Separation"
     }
   ]
 }

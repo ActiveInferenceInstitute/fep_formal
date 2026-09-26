@@ -200,6 +200,7 @@ EXPANSION_CAPABILITY_BY_FAMILY = {
     "temporal-and-hierarchical-inference": "cap-temporal-inference",
     "two-state-continuous-time-thermodynamics": ("cap-continuous-time-thermodynamics"),
     "variational-duality-and-information-bounds": "cap-finite-variational-duality",
+    "standalone-efe-formalizations": "cap-standalone-efe-theorems",
 }
 
 EXPANSION_BOUNDARY_EVIDENCE = {
@@ -240,6 +241,9 @@ EXPANSION_BOUNDARY_EVIDENCE = {
     "cap-native-blanket-transfer": "FEP.NativeBlanket.correlatedBlanket_nonvacuous",
     "cap-predictive-coding-dynamics": (
         "FEP.PredictiveCoding.generalizedFlow_top_boundary"
+    ),
+    "cap-standalone-efe-theorems": (
+        "fep_fep158.FEP158.fep158_reduction_free_energy_monotone"
     ),
     "cap-temporal-inference": "FEP.TemporalInference.forwardEvidence_zero_boundary",
 }
@@ -283,7 +287,7 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
 
     assert Counter(edge.kind for edge in graph.edges) == {
         EdgeKind.FORMAL: 20,
-        EdgeKind.FORMAL_PAIRING: 105,
+        EdgeKind.FORMAL_PAIRING: 109,
         EdgeKind.CONCEPTUAL: 8,
     }
     assert all(edge.witness for edge in graph.edges if edge.kind.is_theorem_witnessed)

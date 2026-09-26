@@ -146,6 +146,10 @@ EXPECTED_EXPANSION_TITLES = (
     "Continuous-Time Stationarity and Detailed Balance",
     "Exact Two-State Exponential Relaxation",
     "Exact Two-State Quadratic Lyapunov Decay",
+    "Planning as Inference: the EFE Policy-Selection Bridge",
+    "The Perception-Action Loop as a Closed-Loop Active-Inference Theorem",
+    "Bayesian Model Reduction",
+    "EFE and Entropy-Production Time-Scale Separation",
 )
 
 
@@ -209,7 +213,7 @@ def test_historical_pre_cutover_body_ledger_remains_complete() -> None:
     )
     assert tuple(BODIES)[: len(expected)] == tuple(expected)
     assert tuple(BODIES)[len(expected) :] == tuple(
-        f"fep-{index:03d}" for index in range(51, 156)
+        f"fep-{index:03d}" for index in range(51, 160)
     )
 
 

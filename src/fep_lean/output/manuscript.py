@@ -960,6 +960,7 @@ def _rate_text(clean: int, total: int) -> str:
 
 
 _SECOND_EXPANSION_FIRST_ID = "fep-121"
+_THIRD_EXPANSION_FIRST_ID = "fep-156"
 
 
 def _expansion_family_vars(catalogue: FEPTopicCatalogue, root: Path) -> dict[str, int]:
@@ -967,10 +968,10 @@ def _expansion_family_vars(catalogue: FEPTopicCatalogue, root: Path) -> dict[str
 
     Base versus expansion topics split at the novelty ledger's maintained
     ``baseline_last_id``; the second expansion begins at
-    ``_SECOND_EXPANSION_FIRST_ID``, the boundary documented in
-    manuscript/04i_formalism_catalogue_155.md. Raises when a family straddles
-    either boundary or when expansion families differ in size, because the
-    manuscript asserts one uniform per-family topic count.
+    ``_SECOND_EXPANSION_FIRST_ID`` and the third at
+    ``_THIRD_EXPANSION_FIRST_ID``. Raises when a family straddles any
+    boundary or when the families of one wave differ in size, because the
+    manuscript asserts one uniform per-family topic count per wave.
     """
     from fep_lean.formal.declarations import composed_theorem_sources
 
@@ -981,12 +982,14 @@ def _expansion_family_vars(catalogue: FEPTopicCatalogue, root: Path) -> dict[str
     )
     baseline_last = int(ledger.baseline_last_id.split("-", 1)[1])
     second_first = int(_SECOND_EXPANSION_FIRST_ID.split("-", 1)[1])
+    third_first = int(_THIRD_EXPANSION_FIRST_ID.split("-", 1)[1])
     family_ids: dict[str, list[int]] = {}
     for topic in catalogue.topics:
         family_ids.setdefault(topic.family, []).append(int(topic.id.split("-", 1)[1]))
     base_topics = 0
     first_families: list[str] = []
     second_families: list[str] = []
+    third_families: list[str] = []
     for family in sorted(family_ids):
         ids = family_ids[family]
         if max(ids) <= baseline_last:
@@ -1002,27 +1005,49 @@ def _expansion_family_vars(catalogue: FEPTopicCatalogue, root: Path) -> dict[str
                 f"family {family} straddles the second-expansion boundary "
                 f"{_SECOND_EXPANSION_FIRST_ID}"
             )
+        if min(ids) < third_first <= max(ids):
+            raise ValueError(
+                f"family {family} straddles the third-expansion boundary "
+                f"{_THIRD_EXPANSION_FIRST_ID}"
+            )
         if max(ids) < second_first:
             first_families.append(family)
-        else:
+        elif max(ids) < third_first:
             second_families.append(family)
-    sizes = {len(family_ids[family]) for family in first_families + second_families}
-    if len(sizes) != 1:
+        else:
+            third_families.append(family)
+    first_second_sizes = {
+        len(family_ids[family]) for family in first_families + second_families
+    }
+    if len(first_second_sizes) != 1:
         raise ValueError(
             "expansion families are not uniformly sized; the manuscript asserts "
-            f"one per-family topic count: {sorted(sizes)}"
+            f"one per-family topic count: {sorted(first_second_sizes)}"
+        )
+    third_sizes = {len(family_ids[family]) for family in third_families}
+    if len(third_sizes) > 1:
+        raise ValueError(
+            "third-expansion families are not uniformly sized; the manuscript "
+            f"asserts one per-family topic count: {sorted(third_sizes)}"
         )
     first_topics = sum(len(family_ids[family]) for family in first_families)
     second_topics = sum(len(family_ids[family]) for family in second_families)
+    third_topics = sum(len(family_ids[family]) for family in third_families)
     return {
         "base_topic_count": base_topics,
-        "expansion_families": len(first_families) + len(second_families),
-        "expansion_family_topics": first_topics + second_topics,
-        "expansion_family_size": next(iter(sizes)),
+        "expansion_families": len(first_families)
+        + len(second_families)
+        + len(third_families),
+        "expansion_family_topics": first_topics + second_topics + third_topics,
+        "expansion_family_size": next(iter(first_second_sizes)),
         "expansion_first_families": len(first_families),
         "expansion_second_families": len(second_families),
         "expansion_second_topics": second_topics,
+        "expansion_third_families": len(third_families),
+        "expansion_third_topics": third_topics,
+        "expansion_third_family_size": next(iter(third_sizes)) if third_sizes else 0,
         "topics_before_second_expansion": base_topics + first_topics,
+        "topics_before_third_expansion": base_topics + first_topics + second_topics,
     }
 
 

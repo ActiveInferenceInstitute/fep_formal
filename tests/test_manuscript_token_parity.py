@@ -116,36 +116,70 @@ def test_expansion_family_vars_derive_from_canonical_roster(
         (PROJ / "config" / "formalism_novelty.yaml").read_text(encoding="utf-8")
     )
     baseline = int(ledger["baseline_last_id"].split("-", 1)[1])
-    boundary = int(manuscript_module._SECOND_EXPANSION_FIRST_ID.split("-", 1)[1])
-    base = {f: ids for f, ids in family_ids.items() if max(ids) <= baseline}
-    expansion = {f: ids for f, ids in family_ids.items() if min(ids) > baseline}
-    sizes = {len(ids) for ids in expansion.values()}
-    assert len(sizes) == 1, f"expansion families are not uniformly sized: {sizes}"
-    first = [f for f, ids in expansion.items() if max(ids) < boundary]
-    second = [f for f, ids in expansion.items() if min(ids) >= boundary]
-    assert len(first) + len(second) == len(expansion), "boundary splits a family"
-    assert variables["base_topic_count"] == sum(len(ids) for ids in base.values())
-    assert variables["expansion_families"] == len(first) + len(second)
-    assert variables["expansion_family_topics"] == sum(
-        len(ids) for ids in expansion.values()
+    second_boundary = int(
+        manuscript_module._SECOND_EXPANSION_FIRST_ID.split("-", 1)[1]
     )
-    assert variables["expansion_family_size"] == next(iter(sizes))
+    third_boundary = int(manuscript_module._THIRD_EXPANSION_FIRST_ID.split("-", 1)[1])
+    base = {f: ids for f, ids in family_ids.items() if max(ids) <= baseline}
+    first = {
+        f: ids
+        for f, ids in family_ids.items()
+        if min(ids) > baseline and max(ids) < second_boundary
+    }
+    second = {
+        f: ids
+        for f, ids in family_ids.items()
+        if min(ids) >= second_boundary and max(ids) < third_boundary
+    }
+    third = {f: ids for f, ids in family_ids.items() if min(ids) >= third_boundary}
+    assert len(base) + len(first) + len(second) + len(third) == len(family_ids), (
+        "an expansion boundary splits a family"
+    )
+    first_second_sizes = {len(ids) for ids in first.values()} | {
+        len(ids) for ids in second.values()
+    }
+    third_sizes = {len(ids) for ids in third.values()}
+    assert len(first_second_sizes) == 1, (
+        f"expansion families are not uniformly sized: {first_second_sizes}"
+    )
+    assert len(third_sizes) <= 1, (
+        f"third-expansion families are not uniformly sized: {third_sizes}"
+    )
+    assert variables["base_topic_count"] == sum(len(ids) for ids in base.values())
+    assert variables["expansion_families"] == len(first) + len(second) + len(third)
+    assert variables["expansion_family_topics"] == sum(
+        len(ids)
+        for ids in list(first.values()) + list(second.values()) + list(third.values())
+    )
+    assert variables["expansion_family_size"] == next(iter(first_second_sizes))
     assert variables["expansion_first_families"] == len(first)
     assert variables["expansion_second_families"] == len(second)
-    assert variables["expansion_second_topics"] == sum(
-        len(ids) for f, ids in expansion.items() if min(ids) >= boundary
+    assert variables["expansion_second_topics"] == sum(len(ids) for ids in second.values())
+    assert variables["expansion_third_families"] == len(third)
+    assert variables["expansion_third_topics"] == sum(len(ids) for ids in third.values())
+    assert variables["expansion_third_family_size"] == (
+        next(iter(third_sizes)) if third_sizes else 0
     )
     assert variables["topics_before_second_expansion"] == (
-        variables["base_topic_count"] + len(first) * next(iter(sizes))
+        variables["base_topic_count"] + sum(len(ids) for ids in first.values())
     )
-    # Calibrated structural pins for the sealed 155-topic roster (04h/04i):
-    # a 50-topic core, ten first-wave and five second-wave families of seven
-    # topics each, and a second expansion running from 120 to 155.
+    assert variables["topics_before_third_expansion"] == (
+        variables["topics_before_second_expansion"]
+        + variables["expansion_second_topics"]
+    )
+    # Calibrated structural pins for the sealed 159-topic roster: a 50-topic
+    # core, ten first-wave and five second-wave families of seven topics each,
+    # a second expansion running from 120 to 155, and the single wave-3
+    # standalone-EFE family holding exactly fep-156..159.
     assert variables["base_topic_count"] == 50
-    assert variables["expansion_families"] == 15
-    assert variables["expansion_family_topics"] == 105
+    assert variables["expansion_families"] == 16
+    assert variables["expansion_family_topics"] == 109
     assert variables["expansion_family_size"] == 7
     assert variables["expansion_first_families"] == 10
     assert variables["expansion_second_families"] == 5
     assert variables["expansion_second_topics"] == 35
+    assert variables["expansion_third_families"] == 1
+    assert variables["expansion_third_topics"] == 4
+    assert variables["expansion_third_family_size"] == 4
     assert variables["topics_before_second_expansion"] == 120
+    assert variables["topics_before_third_expansion"] == 155

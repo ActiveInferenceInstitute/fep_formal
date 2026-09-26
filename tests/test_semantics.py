@@ -54,7 +54,7 @@ def test_semantic_audit_has_complete_ordered_roster_and_conserved_counts() -> No
     assert [record.id for record in audit.records] == list(SEALED_IDS)
     assert audit.disposition_counts == {
         "conditional_proxy": 13,
-        "formalized": 136,
+        "formalized": 140,
         "structural_proxy": 6,
     }
     assert {
@@ -79,7 +79,7 @@ def test_static_metadata_roster_matches_semantic_roster() -> None:
     }
     assert Counter(record.area for record in metadata) == {
         "FEP": 41,
-        "ActiveInference": 31,
+        "ActiveInference": 35,
         "BayesianMechanics": 41,
         "InfoGeometry": 21,
         "Thermodynamics": 21,

@@ -96,7 +96,7 @@ def test_atlas_family_witness_summaries_distinguish_formal_alignment() -> None:
         f'data-mobile-family-summary="{learning_family.id}" '
         'data-formal-alignments="structural_analogue:1"'
     ) in html
-    assert "14 theorem instances · 1 structural analogue" in html
+    assert "15 theorem instances · 1 structural analogue" in html
 
 
 def test_standalone_svg_uses_a_tight_page_geometry_without_capture_bands() -> None:

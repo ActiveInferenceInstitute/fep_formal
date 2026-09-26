@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1226" viewBox="0 0 1600 1226" role="img" aria-labelledby="atlas-title atlas-description">
 <title id="atlas-title">Formalism composition atlas summary</title>
 <desc id="atlas-description">Five broad areas summarize canonical topic families and semantic dispositions. Authored relation counts are reported separately from formal-module code dependencies. Counts describe canonical source coverage. Compilation evidence and full external-run evidence are separate receipt contracts. Deterministic numerical witnesses are explanatory non-proof evidence. They can expose finite sign, normalization, support, rank, identity, and contraction errors; they are neither Lean proof receipts nor empirical validation of the Free Energy Principle.</desc>
-<metadata>{&quot;area_ids&quot;:[&quot;ActiveInference&quot;,&quot;BayesianMechanics&quot;,&quot;FEP&quot;,&quot;InfoGeometry&quot;,&quot;Thermodynamics&quot;],&quot;evidence_kind&quot;:&quot;deterministic_numerical_witness_non_proof_evidence&quot;,&quot;family_ids&quot;:[&quot;closed-loop-policy-trees-and-efe&quot;,&quot;collective-and-multiagent-active-inference&quot;,&quot;control-and-planning-as-inference&quot;,&quot;core-active-inference&quot;,&quot;causal-blankets-and-interventions&quot;,&quot;core-bayesian-mechanics&quot;,&quot;finite-to-native-blanket-transfer&quot;,&quot;measure-bayesian-inversion&quot;,&quot;temporal-and-hierarchical-inference&quot;,&quot;core-free-energy&quot;,&quot;finite-sample-risk-and-calibration&quot;,&quot;learning-concentration-and-model-evidence&quot;,&quot;predictive-coding-and-generalized-coordinates&quot;,&quot;variational-duality-and-information-bounds&quot;,&quot;core-information-geometry&quot;,&quot;finite-exponential-family-dual-geometry&quot;,&quot;information-geometry-and-geometric-optimization&quot;,&quot;core-thermodynamics&quot;,&quot;path-space-stochastic-thermodynamics&quot;,&quot;two-state-continuous-time-thermodynamics&quot;],&quot;formal_alignment_counts&quot;:{&quot;structural_analogue&quot;:1,&quot;theorem_instance&quot;:14},&quot;relation_counts&quot;:{&quot;conceptual&quot;:8,&quot;formal&quot;:20,&quot;formal_pairing&quot;:105},&quot;review_date&quot;:&quot;2026-08-21&quot;,&quot;schema_version&quot;:3,&quot;topic_count&quot;:155,&quot;witness_count&quot;:15}</metadata>
+<metadata>{&quot;area_ids&quot;:[&quot;ActiveInference&quot;,&quot;BayesianMechanics&quot;,&quot;FEP&quot;,&quot;InfoGeometry&quot;,&quot;Thermodynamics&quot;],&quot;evidence_kind&quot;:&quot;deterministic_numerical_witness_non_proof_evidence&quot;,&quot;family_ids&quot;:[&quot;closed-loop-policy-trees-and-efe&quot;,&quot;collective-and-multiagent-active-inference&quot;,&quot;control-and-planning-as-inference&quot;,&quot;core-active-inference&quot;,&quot;standalone-efe-formalizations&quot;,&quot;causal-blankets-and-interventions&quot;,&quot;core-bayesian-mechanics&quot;,&quot;finite-to-native-blanket-transfer&quot;,&quot;measure-bayesian-inversion&quot;,&quot;temporal-and-hierarchical-inference&quot;,&quot;core-free-energy&quot;,&quot;finite-sample-risk-and-calibration&quot;,&quot;learning-concentration-and-model-evidence&quot;,&quot;predictive-coding-and-generalized-coordinates&quot;,&quot;variational-duality-and-information-bounds&quot;,&quot;core-information-geometry&quot;,&quot;finite-exponential-family-dual-geometry&quot;,&quot;information-geometry-and-geometric-optimization&quot;,&quot;core-thermodynamics&quot;,&quot;path-space-stochastic-thermodynamics&quot;,&quot;two-state-continuous-time-thermodynamics&quot;],&quot;formal_alignment_counts&quot;:{&quot;structural_analogue&quot;:1,&quot;theorem_instance&quot;:15},&quot;relation_counts&quot;:{&quot;conceptual&quot;:8,&quot;formal&quot;:20,&quot;formal_pairing&quot;:109},&quot;review_date&quot;:&quot;2026-08-21&quot;,&quot;schema_version&quot;:3,&quot;topic_count&quot;:159,&quot;witness_count&quot;:16}</metadata>
 <style>
             .background{fill:#f8fafc}.title{fill:#0f172a;font:800 34px system-ui,sans-serif}
             .subtitle{fill:#475569;font:500 16px system-ui,sans-serif}.area-card{fill:#fff;stroke-width:2}
@@ -16,13 +16,13 @@
         </style>
 <rect class="background" width="1600" height="1226"/>
 <text class="title" x="40" y="55">Formalism composition atlas</text>
-<text class="subtitle" x="40" y="84">155 canonical topics · 20 joined families · 133 authored relations · 56 maintained modules</text>
+<text class="subtitle" x="40" y="84">159 canonical topics · 21 joined families · 137 authored relations · 64 maintained modules</text>
 <text class="subtitle" x="40" y="108">Data-driven family layout; full topic, relation, capability, and module records remain available in the companion accessible HTML tables.</text>
-<g data-area-summary="ActiveInference" role="group" aria-label="ActiveInference, 31 topics">
+<g data-area-summary="ActiveInference" role="group" aria-label="ActiveInference, 35 topics">
 <rect class="area-card" x="40" y="142" width="493" height="122" rx="14" style="stroke:#0f766e;fill:#ccfbf1"/>
 <text class="area-name" x="58" y="176" style="fill:#0f766e">Active Inference</text>
-<text class="area-count" x="58" y="204">31 topics · 4 families</text>
-<text class="area-count" x="58.0" y="230.0">Conditional Proxy 1 · Formalized 27 · Structural Proxy 3</text>
+<text class="area-count" x="58" y="204">35 topics · 5 families</text>
+<text class="area-count" x="58.0" y="230.0">Conditional Proxy 1 · Formalized 31 · Structural Proxy 3</text>
 </g>
 <g data-family-summary="closed-loop-policy-trees-and-efe" role="group" data-formal-alignments="theorem_instance:1" aria-label="closed-loop-policy-trees-and-efe, 7 topics">
 <rect class="family-card" x="40" y="278" width="493" height="56" rx="9"/>
@@ -43,6 +43,11 @@
 <rect class="family-card" x="40" y="476" width="493" height="56" rx="9"/>
 <text class="family-name" x="53.0" y="496.0">Core Active Inference</text>
 <text class="family-count" x="53" y="526">10 topics · 0 numerical witnesses</text>
+</g>
+<g data-family-summary="standalone-efe-formalizations" role="group" data-formal-alignments="theorem_instance:1" aria-label="standalone-efe-formalizations, 4 topics">
+<rect class="family-card" x="40" y="542" width="493" height="56" rx="9"/>
+<text class="family-name" x="53.0" y="562.0">Standalone EFE Formalizations</text>
+<text class="family-count" x="53" y="592">4 topics · 1 theorem instance</text>
 </g>
 <g data-area-summary="BayesianMechanics" role="group" aria-label="BayesianMechanics, 41 topics">
 <rect class="area-card" x="553" y="142" width="493" height="122" rx="14" style="stroke:#1d4ed8;fill:#dbeafe"/>
@@ -159,10 +164,10 @@
 <text class="relation-kind" x="303" y="1045">Formal</text>
 <text class="relation-count" x="303" y="1070">20 edges · 20 named witnesses</text>
 </g>
-<g data-relation-kind="formal_pairing" role="group" aria-label="formal_pairing, 105 relations">
+<g data-relation-kind="formal_pairing" role="group" aria-label="formal_pairing, 109 relations">
 <rect class="relation-card" x="538" y="1018" width="235" height="72" rx="10"/>
 <text class="relation-kind" x="552" y="1045">Formal Pairing</text>
-<text class="relation-count" x="552" y="1070">105 edges · 105 named witnesses</text>
+<text class="relation-count" x="552" y="1070">109 edges · 109 named witnesses</text>
 </g>
 <g data-semantic-status-key="true" role="group" aria-label="Semantic status key">
 <rect class="status-key" x="803" y="1018" width="757" height="72" rx="10"/>
@@ -170,12 +175,12 @@
 <circle cx="822.0" cy="1065" r="5" fill="#0f766e"/>
 <text class="status-label" x="835.0" y="1069">Conditional Proxy · 13</text>
 <circle cx="1065.0" cy="1065" r="5" fill="#2563eb"/>
-<text class="status-label" x="1078.0" y="1069">Formalized · 136</text>
+<text class="status-label" x="1078.0" y="1069">Formalized · 140</text>
 <circle cx="1308.0" cy="1065" r="5" fill="#7c3aed"/>
 <text class="status-label" x="1321.0" y="1069">Structural Proxy · 6</text>
 </g>
 <rect class="boundary" x="40" y="1122" width="1520" height="66" rx="10"/>
-<text class="boundary-title" x="58" y="1147">Numerical alignment · 14 theorem instances · 1 structural analogue</text>
-<text class="boundary-text" x="58" y="1170">Deterministic diagnostics only—not Lean proof receipts or empirical validation; 15 typed witnesses provide exact workbench values.</text>
+<text class="boundary-title" x="58" y="1147">Numerical alignment · 15 theorem instances · 1 structural analogue</text>
+<text class="boundary-text" x="58" y="1170">Deterministic diagnostics only—not Lean proof receipts or empirical validation; 16 typed witnesses provide exact workbench values.</text>
 <text class="footer" x="40" y="1212">Reviewed 2026-08-21 · Module-import dependencies are code structure, not authored scientific relations.</text>
 </svg>

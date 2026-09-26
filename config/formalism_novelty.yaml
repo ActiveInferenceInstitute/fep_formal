@@ -527,3 +527,23 @@ topics:
   new_invariant: Squared deviation from stationarity decays as exp(-2(a+b)t) and has derivative -2(a+b) times its current value.
   carrier_delta: Adds an exact scalar Lyapunov law and strict benchmark derivative without equating it with physical free energy or general entropy production.
   required_bridge: FEPComposed.fep155_lyapunovDecay_extends_fep032
+- id: fep-156
+  nearest_topics: [fep-021]
+  new_invariant: For fixed positive precision the Boltzmann control posterior minimizes the KL-regularized expected-cost objective over every normalized candidate law and is its unique minimizer.
+  carrier_delta: Adds an explicit finite policy prior, precision, and cost field so the truncated EFE convention's argmin content becomes an attained finite Gibbs optimizer with closed-form negative log-partition value.
+  required_bridge: FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance
+- id: fep-157
+  nearest_topics: [fep-065]
+  new_invariant: Each full perception-update-select-predict step bounds the stage outcome surprisal by the recognition's perception VFE with the perception KL as the exact epistemic gap and splits the selected policy's expected free energy into its certified risk-plus-ambiguity budget.
+  carrier_delta: Couples normalized action-conditioned transition rows to a positive-evidence filtered finite-belief carrier so the loop's predict stage is a controlled kernel step.
+  required_bridge: FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel
+- id: fep-158
+  nearest_topics: [fep-058]
+  new_invariant: Evidence weighting never lowers the model's evidence free energy because masked evidence never exceeds full evidence and negative log is decreasing in the evidence.
+  carrier_delta: Reinterprets the finite Gibbs variational lower bound as masking monotonicity over a pointwise weight between zero and one with the exact reduced-prior renormalization.
+  required_bridge: FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound
+- id: fep-159
+  nearest_topics: [fep-153]
+  new_invariant: The policy-relevant information gap of any fully supported two-state belief is bounded by the generator entropy-production rate scaled by the relaxation time one over the decay rate.
+  carrier_delta: Anchors the finite KL-to-stationarity functional on the exact two-state continuous-time semigroup whose stationary law is invariant at every time.
+  required_bridge: FEPComposed.fep159_epistemicGain_extends_fep153_stationary

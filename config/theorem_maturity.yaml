@@ -3213,3 +3213,132 @@ topics:
     warning-free native Lean compile of all three fep-155 declarations,
     including the strict benchmark derivative.
   disposition: formalized
+- id: fep-156
+  primary_theorem: fep156_boltzmann_control_posterior_minimizes_efe
+  supporting_theorems:
+  - fep156_boltzmann_control_posterior_minimal_value
+  - fep156_efeControlObjective_eq_gibbsFreeEnergy
+  - fep156_efeControlObjective_eq_kl_sub_logPartition
+  - fep156_efeControlObjective_sub_eq_kl
+  - fep156_argminEFE_eq_risk_add_ambiguity
+  - fep156_finiteArgminEFE_minimizes_risk_add_ambiguity
+  - fep156_exists_EFE_minimizing_policy
+  - fep156_policyTree_value_agreement
+  boundary_theorems: []
+  invariant: >-
+    On a finite policy carrier with fixed precision, the KL-regularized control
+    objective (expected EFE plus inverse-precision KL to the prior) is minimized
+    exactly by the Boltzmann control posterior proportional to
+    prior * exp(-gamma * G); the minimized value is -gamma^-1 log Z, the EFE
+    splits as risk plus ambiguity, and the finite and treewise argmin views
+    agree.
+  assumption_review: >-
+    The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the
+    EFE control objective; it is not a general planning algorithm or a
+    continuous-action result, and the policy-tree agreement is restricted to
+    the treewise value surface of the policy_tree module.
+  non_vacuity: >-
+    The finite argmin exists and attains the closed-form Boltzmann value
+    -gamma^-1 log Z for nonempty policy sets.
+  acceptance_probe: >-
+    warning-free native Lean compile of all nine fep-156 declarations.
+  disposition: formalized
+- id: fep-157
+  primary_theorem: fep157_loop_invariant_surprisal_bound
+  supporting_theorems:
+  - fep157_perception_kl_decomposition
+  - fep157_perception_step_kl_nonincrease
+  - fep157_perception_native_kl_nonincrease
+  - fep157_prediction_dobrushin_contraction
+  - fep157_perceptionVFE_gap
+  - fep157_policyPosterior_eq_controlPosterior
+  - fep157_loop_fixed_point_is_boltzmann
+  - fep157_selectedPolicy_minimizes
+  - fep157_filteredBelief_eq_forwardFilter
+  - fep157_perceptionActionStep_eq
+  - fep157_perceptionActionKernel_apply
+  - fep157_posteriorKernel_joint_eq_swap
+  boundary_theorems: []
+  invariant: >-
+    Each closed-loop perception-action step is non-increasing in belief
+    surprisal: the step's KL splits exactly into predictive and posterior
+    parts, prediction contracts the predictive distribution (Dobrushin), and
+    the loop invariant bounds surprisal by its initial value plus accumulated
+    expected free energy; the loop's fixed point is the Boltzmann control
+    posterior and equals the policy posterior of the control-as-inference
+    view.
+  assumption_review: >-
+    The loop is a finite-state kernel composition; positivity statements
+    assume full-support likelihoods and supporting posteriors, and the
+    contraction is the finite Dobrushin-coefficient statement, not a
+    continuous-state or neural-implementation claim.
+  non_vacuity: >-
+    The strict step-wise KL decrease holds on the full-likelihood witness
+    kernels, and at the fixed point the loop posterior coincides with the
+    Boltzmann control posterior.
+  acceptance_probe: >-
+    warning-free native Lean compile of all thirteen fep-157 declarations.
+  disposition: formalized
+- id: fep-158
+  primary_theorem: fep158_reduction_free_energy_monotone
+  supporting_theorems:
+  - fep158_maskedEvidence_le_predictive
+  - fep158_maskedPrior_predictive_eq
+  - fep158_reduction_posterior_reconstruction
+  - fep158_reduction_posterior_odds
+  - fep158_reduced_posterior_reconstructs
+  - fep158_gibbsFreeEnergy_eq_neg_dvObjective
+  - fep158_reduction_free_energy_change_eq_kl
+  - fep158_reduction_free_energy_monotone_gibbs
+  - fep158_gaussianLogBayesFactor_eq
+  boundary_theorems: []
+  invariant: >-
+    Masking evidence never lowers the model evidence: the reduced model's
+    evidence free energy dominates the full model's, the reduced posterior
+    obeys the multiplicative Bayes-odds law with the evidence weight and
+    reconstructs the full posterior through the evidence ratio, and the
+    Gibbs-certificate excess over the optimizer is exactly the KL divergence
+    to it.
+  assumption_review: >-
+    The reduction statements hold for finite measure spaces with the pinned
+    Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the
+    pinned natural chart of the information-geometry module and is not a
+    generic asymptotic model-selection claim.
+  non_vacuity: >-
+    The masked predictive is bounded by the full evidence, and the reduced
+    posterior reconstructs the full posterior exactly through the evidence
+    ratio.
+  acceptance_probe: >-
+    warning-free native Lean compile of all ten fep-158 declarations.
+  disposition: formalized
+- id: fep-159
+  primary_theorem: fep159_epistemic_gain_bounded_by_affinity
+  supporting_theorems:
+  - fep159_expectedFreeEnergy_le_productionRate_div_decayRate
+  - fep159_slow_fast_separation_statement
+  - fep159_fastRelaxation_epistemic_vanishes
+  - fep159_slicePath_entropyProduction_eq
+  - fep159_beliefAffinity_eq_localAffinity
+  - fep159_productionRate_nonneg
+  - fep159_twoStateModel_expectedFreeEnergy
+  - fep159_epistemicGain_rateScaling
+  boundary_theorems: []
+  invariant: >-
+    The two-state belief information gap is bounded by the entropy-production
+    rate scaled by the relaxation time (gain at most production/decay), the
+    evolved gap contracts to the invariant measure no slower than the
+    relaxation timescale, the one-slice path-space entropy production equals
+    (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved
+    gain after any fixed positive action time vanishes.
+  assumption_review: >-
+    All statements are for the explicit two-state continuous-time semigroup
+    and its scaled one-parameter family; the slice-path identity is the
+    one-slice restriction of the path-thermodynamics production, not a
+    general path-space theorem. The ness_flow import is an orphan-adoption
+    marker with no mathematical dependence.
+  non_vacuity: >-
+    The bound is attained by the stationary law for the benchmark rates, and
+    the fast-relaxation limit exhibits the vanishing exactly.
+  acceptance_probe: >-
+    warning-free native Lean compile of all nine fep-159 declarations.
+  disposition: formalized

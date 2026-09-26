@@ -277,7 +277,8 @@ def validate_release_bundle(
             "topics": RELEASE_SEAL["topics"],
         }:
             errors.append(
-                "manifest catalogue does not match the 155-topic release seal"
+                "manifest catalogue does not match the "
+                f"{RELEASE_SEAL['topics']}-topic release seal"
             )
         formalism = manifest.get("formalism")
         if not isinstance(formalism, dict):

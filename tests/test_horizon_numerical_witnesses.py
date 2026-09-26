@@ -16,7 +16,7 @@ from fep_lean.verification.numerical_witnesses import (
 
 def test_horizons_preserve_exact_catalogue_closure() -> None:
     witnesses = evaluate_numerical_witnesses()
-    assert len([w for w in witnesses if w.scope == "catalogue"]) == 15
+    assert len([w for w in witnesses if w.scope == "catalogue"]) == 16
     assert {w.id for w in witnesses if w.scope == "horizon2"} == {
         "h2-scalar-terminal",
         "h2-fin4-blanket",

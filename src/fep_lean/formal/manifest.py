@@ -285,6 +285,30 @@ FORMAL_MODULES: tuple[FormalModule, ...] = (
         declaration_namespace="FEP.GnnRenderStatements",
     ),
     FormalModule(
+        resource="efe_policy_selection.lean",
+        lean_module="FepSketches.efe_policy_selection",
+        role=FormalModuleRole.FOUNDATION,
+        declaration_namespace="FEP.EFEPolicy",
+    ),
+    FormalModule(
+        resource="perception_action_loop.lean",
+        lean_module="FepSketches.perception_action_loop",
+        role=FormalModuleRole.FOUNDATION,
+        declaration_namespace="FEP.PerceptionActionLoop",
+    ),
+    FormalModule(
+        resource="bayesian_model_reduction.lean",
+        lean_module="FepSketches.bayesian_model_reduction",
+        role=FormalModuleRole.FOUNDATION,
+        declaration_namespace="FEP.BayesianModelReduction",
+    ),
+    FormalModule(
+        resource="efe_time_scale_separation.lean",
+        lean_module="FepSketches.efe_time_scale_separation",
+        role=FormalModuleRole.FOUNDATION,
+        declaration_namespace="FEP.TimeScaleEFE",
+    ),
+    FormalModule(
         resource="compositions/core.lean",
         lean_module="FepSketches.compositions.core",
         role=FormalModuleRole.COMPOSITION,
@@ -391,6 +415,30 @@ FORMAL_MODULES: tuple[FormalModule, ...] = (
         lean_module="FepSketches.compositions.smooth_reference_kernel",
         role=FormalModuleRole.COMPOSITION,
         declaration_namespace="FEPComposed.SmoothReferenceKernel",
+    ),
+    FormalModule(
+        resource="compositions/efe_policy_selection.lean",
+        lean_module="FepSketches.compositions.efe_policy_selection",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed",
+    ),
+    FormalModule(
+        resource="compositions/perception_action_loop.lean",
+        lean_module="FepSketches.compositions.perception_action_loop",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed",
+    ),
+    FormalModule(
+        resource="compositions/bayesian_model_reduction.lean",
+        lean_module="FepSketches.compositions.bayesian_model_reduction",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed",
+    ),
+    FormalModule(
+        resource="compositions/efe_time_scale_separation.lean",
+        lean_module="FepSketches.compositions.efe_time_scale_separation",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed",
     ),
     FormalModule(
         resource="composed.lean",

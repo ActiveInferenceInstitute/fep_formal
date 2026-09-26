@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2784" viewBox="0 0 1600 2784" class="dashboard-svg" data-column-count="3" role="img" aria-labelledby="dashboard-title dashboard-description">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="3256" viewBox="0 0 1600 3256" class="dashboard-svg" data-column-count="3" role="img" aria-labelledby="dashboard-title dashboard-description">
 <title id="dashboard-title">Formalism numerical witness workbench</title>
 <desc id="dashboard-description">All typed deterministic numerical witnesses are plotted from their declared schemas with residual, tolerance, theorem-mirror, unit, and boundary summaries. The visible boundary label identifies these diagnostics as non-proof evidence.</desc>
 <style>
@@ -11,9 +11,9 @@
             .dashboard-svg .axis-label{fill:#334155;font:750 16px system-ui,sans-serif}.dashboard-svg .legend,.dashboard-svg .plot-note,.dashboard-svg .x-domain,.dashboard-svg .scale-zero,.dashboard-svg .scale-minimum,.dashboard-svg .scale-maximum{fill:#334155;font:650 15px system-ui,sans-serif}.dashboard-svg .exact-zero-key,.dashboard-svg .coincident-series-key{fill:#334155;font:700 14px system-ui,sans-serif}.dashboard-svg .category-tick{fill:#334155;font:800 15px system-ui,sans-serif}.dashboard-svg .category-key-item{fill:#334155;font:700 15px system-ui,sans-serif}.dashboard-svg .card-footer-rule{stroke:#e2e8f0;stroke-width:1}.dashboard-svg .alignment{fill:#334155;font:650 14px system-ui,sans-serif}
             .dashboard-svg .footer{fill:#475569;font:600 14px system-ui,sans-serif}
         </style>
-<rect class="background" width="1600" height="2784"/>
+<rect class="background" width="1600" height="3256"/>
 <text class="title" x="40" y="52">Formalism numerical witness workbench</text>
-<text class="subtitle" x="40" y="81">15 typed witnesses · 15 formal families · exact evaluated schemas</text>
+<text class="subtitle" x="40" y="81">16 typed witnesses · 16 formal families · exact evaluated schemas</text>
 <rect class="banner" x="40" y="101" width="1520" height="68" rx="9"/>
 <text class="banner-label" x="58" y="123">Evidence boundary</text>
 <text class="banner-line" x="58.0" y="143.0">Deterministic numerical witnesses are explanatory non-proof evidence. They can expose finite sign, normalization, support, rank,</text>
@@ -603,6 +603,50 @@
 <text class="legend" data-series-key="lyapunov_derivative" x="1422.00" y="2499"><title>lyapunov_derivative</title><tspan x="1422.00" y="2499.00">Exact Lyapunov</tspan><tspan x="1422.00" y="2517.00">derivative</tspan></text>
 </g>
 </g>
+<g class="witness-summary" data-witness-summary="boltzmann-efe-affinity-gap" data-witness-id="boltzmann-efe-affinity-gap" data-family="standalone-efe-formalizations" data-witness-status="accepted" data-check-count="9" data-max-check-residual="1.6653345369377348e-16" data-formal-alignment="theorem_instance" data-boundary-observed="true" data-footer-band-top="3110" role="listitem" tabindex="0" aria-label="Exact Boltzmann EFE floor, perception chain rule, and affinity-bounded gain, accepted, Theorem Instance">
+<title>Exact Boltzmann EFE floor, perception chain rule, and affinity-bounded gain · boltzmann-efe-affinity-gap · standalone-efe-formalizations</title>
+<desc>the KL-regularized EFE objective attains exactly the inverse-precision log-partition floor at the Boltzmann control posterior with inverse-precision KL gaps, the perception channel splits the belief information gap exactly into outcome-marginal plus posterior-averaged parts without increasing it, and the two-state epistemic gain is the relaxation-decaying KL bounded by the affinity production rate Boundary: At time zero the identity kernel returns the full belief gap 0.0610605352, the squared-relaxation envelope 0.1071428571 stays loose by 0.0460823220, and the affinity bound 0.1330954793 leaves slack 0.0720349441. Theorem mirrors: fep_fep156.FEP156.fep156_boltzmann_control_posterior_minimizes_efe, fep_fep156.FEP156.fep156_boltzmann_control_posterior_minimal_value, fep_fep156.FEP156.fep156_efeControlObjective_eq_kl_sub_logPartition, fep_fep156.FEP156.fep156_efeControlObjective_sub_eq_kl, fep_fep157.FEP157.fep157_perception_kl_decomposition, fep_fep157.FEP157.fep157_perception_step_kl_nonincrease, fep_fep158.FEP158.fep158_reduction_free_energy_change_eq_kl, fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity, fep_fep159.FEP159.fep159_expectedFreeEnergy_le_productionRate_div_decayRate, fep_fep159.FEP159.fep159_slow_fast_separation_statement, fep_fep159.FEP159.fep159_productionRate_nonneg Formal alignment: theorem_instance. Typed checks: control-floor-identity: eq(0.0, 0.0), tolerance 1e-12, residual 0.0, accepted; control-gap-identity: eq(5.551115123125783e-17, 0.0), tolerance 1e-12, residual 5.551115123125783e-17, accepted; donsker-varadhan-gap: eq(1.1102230246251565e-16, 0.0), tolerance 1e-12, residual 1.1102230246251565e-16, accepted; control-posterior-minimality: predicate(True, True), tolerance 0.0, residual 0.0, accepted; perception-chain-rule: eq(1.6653345369377348e-16, 0.0), tolerance 1e-12, residual 1.6653345369377348e-16, accepted; perception-nonincrease: le(0.2148611968468687, 0.3347952867143343), tolerance 1e-12, residual 0.0, accepted; affinity-production-bound: le(0.0, 0.0), tolerance 1e-12, residual 0.0, accepted; squared-relaxation-envelope: le(0.0, 0.0), tolerance 1e-12, residual 0.0, accepted; production-rate-nonnegative: predicate(True, True), tolerance 0.0, residual 0.0, accepted.</desc>
+<rect class="card" x="17" y="2704" width="510" height="460" rx="13"/>
+<text class="card-title" x="35" y="2777">Exact Boltzmann EFE floor, perception chain</text>
+<text class="card-title" x="35" y="2798">rule, and affinity-bounded gain</text>
+<text class="family" x="35" y="2819">standalone-efe-formalizations · 4 rows · line</text>
+<text class="metric" x="35" y="2839">9 typed checks · max residual 1.67e-16</text>
+<text class="check-passed" x="35" y="2729">TYPED CHECKS PASSED</text>
+<text class="non-proof" x="35" y="2749">NON-PROOF WITNESS</text>
+<line class="card-footer-rule" x1="35" y1="3110" x2="509" y2="3110"/>
+<text class="alignment" x="35" y="3128">Formal alignment · Theorem Instance</text>
+<text class="alignment" x="35" y="3146">Boundary observed · yes · 11 theorem mirrors</text>
+<g class="plot" data-plot-for="boltzmann-efe-affinity-gap" data-zero-baseline="false" data-y-min="0.0009944286418346916" data-y-max="0.1330954792501354" data-x-quantity="Time" data-x-unit="dimensionless" data-y-quantities="Epistemic gain | Squared relaxation envelope | Affinity production bound" data-y-unit="dimensionless" data-legend-layout="direct" data-native-plot-height="145" data-category-count="0" data-category-key-columns="0" data-annotation-band-bottom="3101.00">
+<text class="axis-label axis-y-label" x="37" y="2865"><tspan x="37" y="2865">y · Epistemic gain / Squared relaxation envelope /</tspan><tspan x="37" y="2884">Affinity production bound · unit: dimensionless</tspan></text>
+<line class="axis" x1="119" y1="3043" x2="328" y2="3043"/>
+<line class="axis" x1="119" y1="2898" x2="119" y2="3043"/>
+<text class="scale-minimum" x="37" y="3038">y min 0.000994</text>
+<text class="scale-maximum" x="37" y="2911">y max 0.133</text>
+<path data-series-key="epistemic_gain" data-overlap-role="independent" d="M 119.00 2977.07 L 171.25 3020.91 L 223.50 3035.82 L 328.00 3043.00" fill="none" stroke="#0f766e" stroke-width="2.8" vector-effect="non-scaling-stroke"/>
+<circle data-series-key="epistemic_gain" data-overlap-role="independent" cx="119.00" cy="2977.07" r="3.4" fill="#0f766e"><title>epistemic_gain</title></circle>
+<circle data-series-key="epistemic_gain" data-overlap-role="independent" cx="171.25" cy="3020.91" r="3.4" fill="#0f766e"><title>epistemic_gain</title></circle>
+<circle data-series-key="epistemic_gain" data-overlap-role="independent" cx="223.50" cy="3035.82" r="3.4" fill="#0f766e"><title>epistemic_gain</title></circle>
+<circle data-series-key="epistemic_gain" data-overlap-role="independent" cx="328.00" cy="3043.00" r="3.4" fill="#0f766e"><title>epistemic_gain</title></circle>
+<path data-series-key="squared_relaxation_bound" data-overlap-role="independent" d="M 119.00 2926.49 L 171.25 3000.83 L 223.50 3028.18 L 328.00 3041.94" fill="none" stroke="#2563eb" stroke-width="2.8" vector-effect="non-scaling-stroke"/>
+<circle data-series-key="squared_relaxation_bound" data-overlap-role="independent" cx="119.00" cy="2926.49" r="3.4" fill="#2563eb"><title>squared_relaxation_bound</title></circle>
+<circle data-series-key="squared_relaxation_bound" data-overlap-role="independent" cx="171.25" cy="3000.83" r="3.4" fill="#2563eb"><title>squared_relaxation_bound</title></circle>
+<circle data-series-key="squared_relaxation_bound" data-overlap-role="independent" cx="223.50" cy="3028.18" r="3.4" fill="#2563eb"><title>squared_relaxation_bound</title></circle>
+<circle data-series-key="squared_relaxation_bound" data-overlap-role="independent" cx="328.00" cy="3041.94" r="3.4" fill="#2563eb"><title>squared_relaxation_bound</title></circle>
+<path data-series-key="affinity_bound" data-overlap-role="independent" d="M 119.00 2898.00 L 171.25 2898.00 L 223.50 2898.00 L 328.00 2898.00" fill="none" stroke="#7c3aed" stroke-width="2.8" vector-effect="non-scaling-stroke"/>
+<circle data-series-key="affinity_bound" data-overlap-role="independent" cx="119.00" cy="2898.00" r="3.4" fill="#7c3aed"><title>affinity_bound</title></circle>
+<circle data-series-key="affinity_bound" data-overlap-role="independent" cx="171.25" cy="2898.00" r="3.4" fill="#7c3aed"><title>affinity_bound</title></circle>
+<circle data-series-key="affinity_bound" data-overlap-role="independent" cx="223.50" cy="2898.00" r="3.4" fill="#7c3aed"><title>affinity_bound</title></circle>
+<circle data-series-key="affinity_bound" data-overlap-role="independent" cx="328.00" cy="2898.00" r="3.4" fill="#7c3aed"><title>affinity_bound</title></circle>
+<text class="axis-label axis-x-label" x="119" y="3065"><tspan x="119" y="3065">x · Time · unit: dimensionless</tspan></text>
+<text class="x-domain" data-x-domain="Time: 0.0 · 0.5 · 1.0 · 2.0" x="119" y="3085"><tspan x="119" y="3085.00">Time: 0.0 · 0.5 · 1.0 · 2.0</tspan></text>
+<line class="legend-swatch" data-series-key="epistemic_gain" data-overlap-role="independent" x1="346" y1="2907" x2="356" y2="2907" stroke="#0f766e" stroke-width="2.8"/>
+<text class="legend" data-series-key="epistemic_gain" x="366.00" y="2911"><title>epistemic_gain</title><tspan x="366.00" y="2911.00">Epistemic gain</tspan></text>
+<line class="legend-swatch" data-series-key="squared_relaxation_bound" data-overlap-role="independent" x1="346" y1="2934" x2="356" y2="2934" stroke="#2563eb" stroke-width="2.8"/>
+<text class="legend" data-series-key="squared_relaxation_bound" x="366.00" y="2938"><title>squared_relaxation_bound</title><tspan x="366.00" y="2938.00">Squared relaxation</tspan><tspan x="366.00" y="2956.00">envelope</tspan></text>
+<line class="legend-swatch" data-series-key="affinity_bound" data-overlap-role="independent" x1="346" y1="2979" x2="356" y2="2979" stroke="#7c3aed" stroke-width="2.8"/>
+<text class="legend" data-series-key="affinity_bound" x="366.00" y="2983"><title>affinity_bound</title><tspan x="366.00" y="2983.00">Affinity production</tspan><tspan x="366.00" y="3001.00">bound</tspan></text>
 </g>
-<text class="footer" x="40" y="2754">Exact tables, theorem mirrors, parameters, typed checks, and boundary statements are preserved in the companion accessible HTML workbench.</text>
+</g>
+</g>
+<text class="footer" x="40" y="3226">Exact tables, theorem mirrors, parameters, typed checks, and boundary statements are preserved in the companion accessible HTML workbench.</text>
 </svg>
