@@ -1,4 +1,4 @@
 {
   "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
-  "src/gnn/pipeline/step_registry.py": "4e5604c5f0a077c60254286d046a874e5f74f442314a8af3e28586cb393246fc"
+  "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144"
 }

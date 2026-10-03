@@ -18,6 +18,7 @@ import tarfile
 import time
 import zlib
 from collections.abc import Mapping
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -1623,6 +1624,177 @@ def test_pdf_renderer_uses_two_xelatex_passes_per_isolated_render(
     assert all(wrapper.count("/tex/bin/xelatex") == 2 for wrapper in wrappers)
     assert len(drivers) == 2
     assert all("'/driver path/bin/xdvipdfmx' -q -E -o -" in body for body in drivers)
+
+
+def test_native_publication_pdf_is_reproducible_across_concurrent_private_jobs(
+    tmp_path: Path,
+) -> None:
+    if any(shutil.which(name) is None for name in ("pandoc", "xelatex", "mutool")):
+        pytest.skip("complete PDF renderer toolchain is unavailable")
+    _minimal_manuscript(tmp_path)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = [
+            pool.submit(render_publication_manuscript, tmp_path, source_date_epoch=0)
+            for _ in range(2)
+        ]
+        results = [future.result(timeout=180) for future in futures]
+    assert results[0].pdf is not None
+    assert results[0].pdf == results[1].pdf
+    assert results[0].provenance == results[1].provenance
+    assert all(
+        json.loads(result.provenance)["pdf"]["status"] == "reproducible"
+        for result in results
+    )
+
+
+@pytest.mark.parametrize("timeout", [0, -1, float("inf"), float("nan"), True])
+def test_render_budget_rejects_malformed_values_before_dispatch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, timeout: float
+) -> None:
+    def unexpected_dispatch(*args: object, **kwargs: object) -> None:
+        pytest.fail("invalid budget reached renderer dispatch")
+
+    monkeypatch.setattr(bundle_module, "_run_renderer", unexpected_dispatch)
+    with pytest.raises(bundle_module.ReleaseBundleError, match="finite and positive"):
+        bundle_module._render_twice(
+            ("unused",),
+            project_root=tmp_path,
+            epoch=0,
+            suffix=".pdf",
+            extra_args=(),
+            timeout=timeout,
+        )
+
+
+@pytest.mark.skipif(os.name != "posix", reason="process groups require POSIX")
+def test_renderer_timeout_reaps_parent_and_stops_pipe_holding_grandchild(
+    tmp_path: Path,
+) -> None:
+    pid_file = tmp_path / "owned-child.pid"
+    script = (
+        "import subprocess, sys, time\n"
+        "from pathlib import Path\n"
+        "child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
+        "Path(sys.argv[1]).write_text(str(child.pid))\n"
+        "time.sleep(60)\n"
+    )
+    started = time.monotonic()
+    with pytest.raises(bundle_module.ReleaseBundleError, match="deterministic budget"):
+        bundle_module._run_renderer(
+            (sys.executable, "-c", script, str(pid_file)),
+            project_root=tmp_path,
+            environment_root=tmp_path / "environment",
+            epoch=0,
+            timeout=0.5,
+        )
+    assert time.monotonic() - started < 5
+    assert pid_file.is_file()
+    status = subprocess.run(
+        ("ps", "-o", "stat=", "-p", pid_file.read_text()),
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=3,
+    )
+    assert not status.stdout.strip() or status.stdout.lstrip().startswith("Z")
+
+
+@pytest.mark.parametrize("normalize_pdf", [False, True])
+def test_two_render_passes_and_normalizer_share_one_deadline(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, normalize_pdf: bool
+) -> None:
+    clock = [100.0]
+    dispatched: list[tuple[str, ...]] = []
+    monkeypatch.setattr(
+        "fep_lean.output.release_bundle._manuscript.time",
+        SimpleNamespace(monotonic=lambda: clock[0]),
+    )
+
+    def consume_budget(command: tuple[str, ...], **kwargs: object) -> object:
+        dispatched.append(tuple(command))
+        output = next(
+            item.split("=", 1)[1] for item in command if item.startswith("--output=")
+        )
+        Path(output).write_bytes(b"complete first render")
+        clock[0] += 1.0
+        return SimpleNamespace(returncode=0)
+
+    monkeypatch.setattr(bundle_module, "_run_renderer", consume_budget)
+    with pytest.raises(bundle_module.ReleaseBundleError, match="deterministic budget"):
+        bundle_module._render_twice(
+            ("pandoc",),
+            project_root=tmp_path,
+            epoch=0,
+            suffix=".pdf",
+            extra_args=(),
+            timeout=1,
+            pdf_normalizer="mutool" if normalize_pdf else None,
+        )
+    assert len(dispatched) == 1
+    assert dispatched[0][0] == "pandoc"
+
+
+@pytest.mark.parametrize("late_phase", ["artifact", "normalizer", "cleanup"])
+def test_completed_renderer_cannot_publish_after_artifact_or_cleanup_deadline(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, late_phase: str
+) -> None:
+    clock = [100.0]
+    monkeypatch.setattr(
+        "fep_lean.output.release_bundle._manuscript.time",
+        SimpleNamespace(monotonic=lambda: clock[0]),
+    )
+    pdf = b"%PDF-1.4\n<< /ID [<" + b"0" * 32 + b"> <" + b"F" * 32 + b">] >>\n"
+
+    def complete_renderer(command: tuple[str, ...], **kwargs: object) -> object:
+        if command[0] == "mutool":
+            output = command[-1]
+        else:
+            output = next(
+                item.split("=", 1)[1]
+                for item in command
+                if item.startswith("--output=")
+            )
+        Path(output).write_bytes(pdf)
+        return SimpleNamespace(returncode=0)
+
+    original_read = Path.read_bytes
+
+    def delayed_artifact_read(path: Path) -> bytes:
+        data = original_read(path)
+        if (
+            late_phase == "artifact"
+            and path.name == "render-1.pdf"
+            or late_phase == "normalizer"
+            and path.name == "normalized.pdf"
+            and path.parent.name == "environment-1"
+        ):
+            clock[0] += 2.0
+        return data
+
+    directory_type = bundle_module.tempfile.TemporaryDirectory
+
+    class BudgetedDirectory(directory_type):
+        def __exit__(self, *args: object) -> None:
+            super().__exit__(*args)
+            if late_phase == "cleanup":
+                clock[0] += 2.0
+
+    monkeypatch.setattr(
+        "fep_lean.output.release_bundle._manuscript.tempfile",
+        SimpleNamespace(TemporaryDirectory=BudgetedDirectory),
+    )
+    monkeypatch.setattr(Path, "read_bytes", delayed_artifact_read)
+    monkeypatch.setattr(bundle_module, "_run_renderer", complete_renderer)
+    with pytest.raises(bundle_module.ReleaseBundleError, match="deterministic budget"):
+        bundle_module._render_twice(
+            ("pandoc",),
+            project_root=tmp_path,
+            epoch=0,
+            suffix=".pdf",
+            extra_args=(),
+            timeout=1,
+            pdf_normalizer="mutool" if late_phase == "normalizer" else None,
+        )
 
 
 def test_publication_renderer_numbers_sections_for_resolvable_references(

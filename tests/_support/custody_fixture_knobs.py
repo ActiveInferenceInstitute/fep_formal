@@ -18,6 +18,7 @@ import re
 import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from types import ModuleType
 from typing import Any
 
 import pytest
@@ -31,9 +32,42 @@ from fep_lean.verification.horizon_acceptance import (
     PIN_FILES,
     native_source_paths,
 )
-from tests._support import h2_r0_custody as r0
+from tests._support import h2_r0_custody as current_r0
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+# Keep the real pre-H3 validator as recorded source, rather than weakening the
+# current append-only custody rules to accept fabricated historical re-issues.
+HISTORICAL_R0_COMMIT = "99e5cdf0690bebf219a49b598d9d80ff1da075d5"
+HISTORICAL_R0_SOURCE = "tests/_support/h2_r0_custody.py"
+HISTORICAL_R0_RESOURCE = "tests/_support/resources/h2_r0_custody_99e5cdf.py.txt"
+HISTORICAL_R0_SHA256 = (
+    "5c9452c8f9120ba0ae53adf19e35f1929701281a3891d2ef0cd1b1bd9523aabb"
+)
+
+
+def _historical_r0_bytes(source_root: Path) -> bytes:
+    """Refuse any change to the frozen, explicitly test-only validator source."""
+    resource = source_root / HISTORICAL_R0_RESOURCE
+    assert resource.is_file() and not resource.is_symlink(), resource
+    data = resource.read_bytes()
+    assert hashlib.sha256(data).hexdigest() == HISTORICAL_R0_SHA256, (
+        "frozen historical R0 validator changed"
+    )
+    return data
+
+
+def _historical_r0_validator(source_root: Path) -> ModuleType:
+    """Load the byte-checked historical implementation under an isolated name."""
+    data = _historical_r0_bytes(source_root)
+    filename = str(source_root / HISTORICAL_R0_RESOURCE)
+    module = ModuleType("fep_lean_synthetic_pre_h3_r0_validator")
+    module.__file__ = filename
+    # Execute exactly the checked bytes, without a second filesystem read or
+    # any loader cache that could substitute a different implementation.
+    exec(compile(data, filename, "exec"), module.__dict__)  # noqa: S102 - pinned test resource
+    return module
+
 
 PY_DRIFT_MARKER = b"\n# custody fixture drift\n"
 
@@ -122,11 +156,16 @@ def _consumed_paths(record: Any) -> set[str]:
 
 def declared_closure(source_root: Path) -> tuple[str, ...]:
     """Bounded transitive dependencies explicitly consumed by custody validators."""
+    _historical_r0_bytes(source_root)
     pending = set(_SPEC_SEEDS) | set(acceptance.PREDECESSORS)
     pending |= set(PIN_FILES) | set(MANDATORY_TEST_FILES) | set(CURRENT_FILES)
     pending |= set(SOURCE_OWNER_FILES) | set(CONFIG_OWNER_FILES)
     pending |= set(native_source_paths(source_root)) | set(_CHECKOUT_ONLY_FILES)
-    pending |= {"tests/_support/custody_fixture_knobs.py", "docs/development.md"}
+    pending |= {
+        "tests/_support/custody_fixture_knobs.py",
+        "docs/development.md",
+        HISTORICAL_R0_RESOURCE,
+    }
     included: set[str] = set()
     while pending:
         relative = min(pending)
@@ -174,7 +213,7 @@ def _binding(root: Path, relative: str, name: str, value: Any) -> None:
     path.write_text(source.replace(old, json.dumps(value, indent=4), 1))
 
 
-def _synthetic_prior_manifest(manifest: str) -> str:
+def _synthetic_prior_manifest(manifest: str, r0: ModuleType) -> str:
     """Construct the test-only prior required by the real transition validator."""
     groups = (
         (r0.ADDED_MODULES, "FOUNDATION"),
@@ -206,7 +245,13 @@ def _synthetic_prior_manifest(manifest: str) -> str:
 
 def _synthetic_epoch(root: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Fabricate mutually bound unit inputs without asserting any real outcome."""
-    prior_manifest = _synthetic_prior_manifest((root / r0.MANIFEST_PATH).read_text())
+    r0 = _historical_r0_validator(root)
+    (root / apply_module.H2_R0_CUSTODY).write_bytes(_historical_r0_bytes(root))
+    manifest_path = root / r0.MANIFEST_PATH
+    manifest_path.write_text(
+        current_r0._strip_h3_owner_additions(manifest_path.read_text())
+    )
+    prior_manifest = _synthetic_prior_manifest(manifest_path.read_text(), r0)
     for relative in (
         apply_module.ACCEPTANCE,
         apply_module.REPAIR_05B,
@@ -266,7 +311,7 @@ def _synthetic_epoch(root: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     successor["prior"]["sha256"] = prior_sha
     successor["manifest_transition"]["prior_sha256"] = _sha(prior_manifest.encode())
     successor["manifest_transition"]["current_sha256"] = _sha(
-        (root / r0.MANIFEST_PATH).read_bytes()
+        manifest_path.read_bytes()
     )
     successor["manifest_transition"]["unchanged_owners"] = r0._manifest_owners(
         prior_manifest
@@ -400,6 +445,15 @@ def _synthetic_epoch(root: Path, monkeypatch: pytest.MonkeyPatch) -> None:
         {
             "kind": "SYNTHETIC-UNIT-FIXTURE",
             "real_native_or_scientific_acceptance": False,
+            "compiler": "SYNTHETIC-UNIT-FIXTURE-NO-COMPILER",
+            "epoch": {
+                "kind": "synthetic-pre-H3-custody",
+                "validator_commit": HISTORICAL_R0_COMMIT,
+                "validator_source": HISTORICAL_R0_SOURCE,
+                "validator_resource": HISTORICAL_R0_RESOURCE,
+                "validator_sha256": HISTORICAL_R0_SHA256,
+                "current_h3_owners_admitted": False,
+            },
             "boundary": "Rebound disposable source/receipt epoch. Reviews and JUnit outcomes fabricated solely to test fail-closed custody contracts.",
         },
     )

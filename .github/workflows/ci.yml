@@ -432,12 +432,13 @@ jobs:
           import hashlib
           import json
           import os
+          import stat
           import subprocess
           import sys
           from pathlib import Path
 
           from fep_lean.output.evidence import validate_native_lean_receipt
-          from fep_lean.output.release_bundle._core import _capture_regular_file
+          from fep_lean.output.release_bundle._core import _capture_parent_fd, _capture_regular_file
           from fep_lean.output.render_fonts import declared_fonts
           from fep_lean.output.render_log import receipt_defects, rendered_manuscript_sources
           from fep_lean.output.rendering import MANUSCRIPT_ASSETS
@@ -518,6 +519,9 @@ jobs:
           template = root / "render-template"
           template_sha = subprocess.check_output(["git", "-C", str(template), "rev-parse", "HEAD"], text=True).strip()
 
+          def template_file_identity(value):
+              return (value.st_dev, value.st_ino, value.st_mode, value.st_size, value.st_mtime_ns, value.st_ctime_ns)
+
           def template_manifest():
               if subprocess.check_output(["git", "-C", str(template), "rev-parse", "HEAD"], text=True).strip() != template_sha:
                   raise SystemExit("template checkout changed during evidence staging")
@@ -525,10 +529,77 @@ jobs:
               untracked = subprocess.check_output(["git", "-C", str(template), "ls-files", "--others", "--exclude-standard", "-z"])
               if changed or untracked:
                   raise SystemExit("template authored inputs differ from its recorded commit")
-              names = filter(None, subprocess.check_output(["git", "-C", str(template), "ls-tree", "-r", "--name-only", "-z", "HEAD"]).decode().split("\0"))
-              return {name: hashlib.sha256(_capture_regular_file(template / name)).hexdigest() for name in names}
+              object_format = subprocess.check_output(["git", "-C", str(template), "rev-parse", "--show-object-format"], text=True).strip()
+              if object_format not in {"sha1", "sha256"}:
+                  raise SystemExit("unsupported template Git object format")
+              tree = subprocess.check_output(["git", "-C", str(template), "ls-tree", "-r", "-z", "HEAD"])
+              entries = {}
+              for raw_entry in filter(None, tree.split(b"\0")):
+                  header, raw_name = raw_entry.split(b"\t", 1)
+                  mode, kind, oid = header.decode("ascii").split()
+                  name = os.fsdecode(raw_name)
+                  relative = Path(name)
+                  if relative.is_absolute() or any(part in {".", ".."} for part in relative.parts):
+                      raise SystemExit("unsafe template tree path")
+                  path = template / relative
+                  entry = {"mode": mode, "type": kind, "git_oid": oid}
+                  if (mode, kind) in {("100644", "blob"), ("100755", "blob")}:
+                      parent_fd = _capture_parent_fd(path)
+                      try:
+                          before = os.stat(path.name, dir_fd=parent_fd, follow_symlinks=False)
+                          if not stat.S_ISREG(before.st_mode) or bool(before.st_mode & stat.S_IXUSR) != (mode == "100755"):
+                              raise SystemExit(f"template regular-file mode differs from its Git tree: {name}")
+                          data = _capture_regular_file(path)
+                          after = os.stat(path.name, dir_fd=parent_fd, follow_symlinks=False)
+                          if template_file_identity(before) != template_file_identity(after):
+                              raise SystemExit(f"template regular file changed while reading: {name}")
+                      finally:
+                          os.close(parent_fd)
+                  elif (mode, kind) == ("120000", "blob"):
+                      parent_fd = _capture_parent_fd(path)
+                      try:
+                          before = os.stat(path.name, dir_fd=parent_fd, follow_symlinks=False)
+                          if not stat.S_ISLNK(before.st_mode):
+                              raise SystemExit(f"template symlink was replaced: {name}")
+                          data = os.readlink(os.fsencode(path.name), dir_fd=parent_fd)
+                          after = os.stat(path.name, dir_fd=parent_fd, follow_symlinks=False)
+                          if template_file_identity(before) != template_file_identity(after):
+                              raise SystemExit(f"template symlink changed while reading: {name}")
+                      finally:
+                          os.close(parent_fd)
+                      entry["target_hex"] = data.hex()
+                  elif (mode, kind) == ("160000", "commit"):
+                      parent_fd = _capture_parent_fd(path)
+                      directory_fd = None
+                      try:
+                          before = os.stat(path.name, dir_fd=parent_fd, follow_symlinks=False)
+                          if not stat.S_ISDIR(before.st_mode):
+                              raise SystemExit(f"template gitlink was replaced: {name}")
+                          directory_fd = os.open(path.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
+                          opened = os.fstat(directory_fd)
+                          if (before.st_dev, before.st_ino) != (opened.st_dev, opened.st_ino) or os.listdir(directory_fd):
+                              raise SystemExit(f"template gitlink has unbound checkout content: {name}")
+                          after = os.stat(path.name, dir_fd=parent_fd, follow_symlinks=False)
+                          if template_file_identity(before) != template_file_identity(after):
+                              raise SystemExit(f"template gitlink changed while reading: {name}")
+                          entry["checkout_state"] = "uninitialized-empty"
+                      finally:
+                          if directory_fd is not None:
+                              os.close(directory_fd)
+                          os.close(parent_fd)
+                      entries[name] = entry
+                      continue
+                  else:
+                      raise SystemExit(f"unsupported template tree mode/type: {mode} {kind} {name}")
+                  blob = b"blob " + str(len(data)).encode("ascii") + b"\0" + data
+                  if hashlib.new(object_format, blob).hexdigest() != oid:
+                      raise SystemExit(f"template captured bytes differ from its recorded Git object: {name}")
+                  entry["sha256"] = hashlib.sha256(data).hexdigest()
+                  entries[name] = entry
+              return entries
 
-          template_sources = template_manifest()
+          template_tree = template_manifest()
+          template_sources = {name: entry["sha256"] for name, entry in template_tree.items() if entry["mode"] in {"100644", "100755"}}
           validate_evidence()
           versions = {}
           for command in ("xelatex", "pandoc", "rsvg-convert", "mmdc"):
@@ -546,12 +617,12 @@ jobs:
               "schema_version": 1, "commit": sha,
               "workflow_run_id": os.environ["WORKFLOW_RUN_ID"],
               "workflow_run_attempt": os.environ["WORKFLOW_RUN_ATTEMPT"],
-              "template_commit": template_sha, "template_sources": template_sources,
+              "template_commit": template_sha, "template_sources": template_sources, "template_tree": template_tree,
               "python": sys.version, "tools": versions, "fonts": fonts,
           }
           def require_stable_snapshot():
               try:
-                  stable = source_manifest() == sources and artifact_bytes() == accepted_bytes and template_manifest() == template_sources and all(hashlib.sha256(_capture_regular_file(path)).hexdigest() == fonts[role]["sha256"] for role, path in font_files.items())
+                  stable = source_manifest() == sources and artifact_bytes() == accepted_bytes and template_manifest() == template_tree and all(hashlib.sha256(_capture_regular_file(path)).hexdigest() == fonts[role]["sha256"] for role, path in font_files.items())
               except SystemExit as error:
                   raise SystemExit(f"inputs changed during evidence staging: {error}") from error
               if not stable:

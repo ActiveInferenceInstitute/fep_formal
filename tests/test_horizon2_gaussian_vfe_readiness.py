@@ -15,6 +15,9 @@ import pytest
 from fep_lean.formal.manifest import FORMAL_MODULES
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.h2_r0_custody import (
+    H3_ADDED_OWNERS,
+    H3_ADDENDUM_PATH,
+    H3_OWNER_SOURCE_PATHS,
     MANIFEST_PATH,
     PRIOR_PATH,
     SUCCESSOR_PATH,
@@ -567,11 +570,23 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         "continuous H3 eligibility before accepted H2.7",
     ]
     assert (
-        successor["manifest_transition"]["code_consolidation"] == W4_CODE_CONSOLIDATION
+        successor["historical_custody"]["manifest_transition"]["code_consolidation"]
+        == W4_CODE_CONSOLIDATION
     )
     assert successor["source_sha256"] == {
         relative: _sha256(PROJECT_ROOT / relative)
-        for relative in (*SOURCE_BOUND_PATHS, VALIDATOR_PATH)
+        for relative in (*SOURCE_BOUND_PATHS, VALIDATOR_PATH, *H3_OWNER_SOURCE_PATHS)
+    }
+    assert successor["historical_custody"] == json.loads(
+        (PROJECT_ROOT / SUCCESSOR_PATH).read_text(encoding="utf-8")
+    )
+    assert (
+        successor["source_sha256"] != successor["historical_custody"]["source_sha256"]
+    )
+    assert successor["native_evidence"] == {
+        "status": "not_executed",
+        "historical_evidence_reused": False,
+        "probes": [],
     }
 
 
@@ -590,7 +605,14 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
     ),
 )
 def test_h2_7_r0_custody_rejects_tampering(tmp_path: Path, tamper: str) -> None:
-    for relative in (*SOURCE_BOUND_PATHS, VALIDATOR_PATH, PRIOR_PATH, SUCCESSOR_PATH):
+    for relative in (
+        *SOURCE_BOUND_PATHS,
+        VALIDATOR_PATH,
+        *H3_OWNER_SOURCE_PATHS,
+        PRIOR_PATH,
+        SUCCESSOR_PATH,
+        H3_ADDENDUM_PATH,
+    ):
         destination = tmp_path / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(PROJECT_ROOT / relative, destination)
@@ -654,5 +676,125 @@ def test_h2_7_r0_custody_rejects_tampering(tmp_path: Path, tamper: str) -> None:
         successor["source_sha256"][MANIFEST_PATH] = digest
         successor["manifest_transition"]["current_sha256"] = digest
     successor_path.write_text(json.dumps(successor), encoding="utf-8")
+    with pytest.raises(ValueError):
+        validate_h2_r0_custody(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "tamper",
+    (
+        "missing_h3_owner",
+        "unlisted_h3_owner",
+        "duplicate_h3_owner",
+        "reordered_h3_owner",
+        "changed_h3_role",
+        "changed_h3_namespace",
+        "manifest_code",
+        "h3_owner_source",
+        "addendum_prior",
+        "addendum_boolean_schema",
+        "addendum_modules",
+        "addendum_sources",
+        "addendum_historical_support",
+        "addendum_support_allowance",
+        "addendum_downstream",
+        "addendum_native",
+        "addendum_numeric_native_flag",
+    ),
+)
+def test_h2_7_h3_custody_addendum_rejects_tampering(
+    tmp_path: Path, tamper: str
+) -> None:
+    for relative in (
+        *SOURCE_BOUND_PATHS,
+        VALIDATOR_PATH,
+        *H3_OWNER_SOURCE_PATHS,
+        PRIOR_PATH,
+        SUCCESSOR_PATH,
+        H3_ADDENDUM_PATH,
+    ):
+        destination = tmp_path / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(PROJECT_ROOT / relative, destination)
+    addendum_path = tmp_path / H3_ADDENDUM_PATH
+    addendum = json.loads(addendum_path.read_text(encoding="utf-8"))
+    manifest_path = tmp_path / MANIFEST_PATH
+    manifest = manifest_path.read_text(encoding="utf-8")
+    block = (
+        "    FormalModule(\n"
+        '        resource="h3_reference_model.lean",\n'
+        '        lean_module="FepSketches.h3_reference_model",\n'
+        "        role=FormalModuleRole.FOUNDATION,\n"
+        '        declaration_namespace="FEP.H3ReferenceModel",\n'
+        "    ),\n"
+    )
+    assert manifest.count(block) == 1
+    if tamper == "missing_h3_owner":
+        manifest = manifest.replace(block, "", 1)
+    elif tamper == "unlisted_h3_owner":
+        manifest = manifest.replace(
+            block,
+            block
+            + block.replace("h3_reference_model", "unreviewed_h3_model").replace(
+                "H3ReferenceModel", "UnreviewedH3Model"
+            ),
+            1,
+        )
+    elif tamper == "duplicate_h3_owner":
+        manifest = manifest.replace(block, block + block, 1)
+    elif tamper == "reordered_h3_owner":
+        manifest = manifest.replace(block, "", 1).replace(
+            "FORMAL_MODULES: tuple[FormalModule, ...] = (\n",
+            "FORMAL_MODULES: tuple[FormalModule, ...] = (\n" + block,
+            1,
+        )
+    elif tamper == "changed_h3_role":
+        manifest = manifest.replace(
+            block, block.replace("FOUNDATION", "COMPOSITION"), 1
+        )
+    elif tamper == "changed_h3_namespace":
+        manifest = manifest.replace(
+            block, block.replace("FEP.H3ReferenceModel", "FEP.OtherH3Model"), 1
+        )
+    elif tamper == "manifest_code":
+        manifest = manifest.replace(
+            "Single explicit roster", "Tampered explicit roster", 1
+        )
+    elif tamper == "h3_owner_source":
+        path = tmp_path / H3_OWNER_SOURCE_PATHS[0]
+        path.write_bytes(path.read_bytes() + b"\n")
+    elif tamper == "addendum_prior":
+        addendum["prior_custody"]["sha256"] = "0" * 64
+    elif tamper == "addendum_boolean_schema":
+        addendum["schema_version"] = True
+    elif tamper == "addendum_modules":
+        addendum["manifest_transition"]["added_modules"] = [
+            dict(owner) for owner in reversed(H3_ADDED_OWNERS)
+        ]
+    elif tamper == "addendum_sources":
+        addendum["source_sha256"][VALIDATOR_PATH] = "0" * 64
+    elif tamper == "addendum_historical_support":
+        addendum["historical_support_source_sha256"][VALIDATOR_PATH] = "0" * 64
+    elif tamper == "addendum_support_allowance":
+        addendum["approved_custody_support_changes"].append("pyproject.toml")
+    elif tamper == "addendum_downstream":
+        addendum["downstream"]["opened"].append("H3 implementation")
+    elif tamper == "addendum_numeric_native_flag":
+        addendum["native_evidence"]["historical_evidence_reused"] = 0
+    else:
+        addendum["native_evidence"]["status"] = "verified"
+    if (
+        tamper.endswith("h3_owner")
+        or tamper.startswith("changed_h3_")
+        or tamper == "manifest_code"
+    ):
+        assert manifest != manifest_path.read_text(encoding="utf-8")
+        manifest_path.write_text(manifest, encoding="utf-8")
+        # A matching current digest cannot authorize different owner bytes,
+        # order, roles, or changes to any reconstructed historical code.
+        digest = _sha256(manifest_path)
+        addendum["source_sha256"][MANIFEST_PATH] = digest
+        addendum["manifest_transition"]["current_sha256"] = digest
+    addendum_path.write_text(json.dumps(addendum), encoding="utf-8")
     with pytest.raises(ValueError):
         validate_h2_r0_custody(tmp_path)

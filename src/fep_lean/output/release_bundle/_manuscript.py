@@ -1,6 +1,7 @@
 """Deterministic manuscript rendering and publication-set replacement."""
 
 import hashlib
+import math
 import os
 import re
 import shlex
@@ -8,6 +9,7 @@ import shutil
 import stat
 import subprocess
 import tempfile
+import time
 from collections.abc import (
     Mapping,
     Sequence,
@@ -423,7 +425,7 @@ def _run_renderer(
     project_root: Path,
     environment_root: Path,
     epoch: int,
-    timeout: int,
+    timeout: float,
     auxiliary_executables: Sequence[str] = (),
 ) -> subprocess.CompletedProcess[str]:
     # Keep imports lazy: the verification package also imports output owners.
@@ -487,6 +489,23 @@ def _render_twice(
     pdf_engine: str | None = None,
     pdf_driver: str | None = None,
 ) -> tuple[bytes | None, str]:
+    if (
+        isinstance(timeout, bool)
+        or not isinstance(timeout, (int, float))
+        or not math.isfinite(timeout)
+        or timeout <= 0
+    ):
+        raise ReleaseBundleError("renderer timeout must be finite and positive")
+    deadline = time.monotonic() + timeout
+
+    def remaining() -> float:
+        value = deadline - time.monotonic()
+        if value <= 0:
+            raise ReleaseBundleError(
+                f"renderer exceeded its {timeout}-second deterministic budget"
+            )
+        return value
+
     outputs: list[bytes] = []
     with tempfile.TemporaryDirectory(prefix="fep-lean-render-") as raw_directory:
         directory = Path(raw_directory)
@@ -540,7 +559,7 @@ def _render_twice(
                 project_root=project_root,
                 environment_root=run_root,
                 epoch=epoch,
-                timeout=timeout,
+                timeout=remaining(),
                 auxiliary_executables=auxiliary_executables,
             )
             if completed.returncode != 0 or not output.is_file():
@@ -553,7 +572,7 @@ def _render_twice(
                     project_root=project_root,
                     environment_root=run_root,
                     epoch=epoch,
-                    timeout=timeout,
+                    timeout=remaining(),
                     auxiliary_executables=auxiliary_executables,
                 )
                 if normalizer_result.returncode != 0 or not normalized.is_file():
@@ -566,7 +585,11 @@ def _render_twice(
                 except ReleaseBundleError:
                     return None, "pdf_identifier_not_canonicalizable"
             outputs.append(rendered_bytes)
-    if outputs[0] != outputs[1]:
+    reproducible = outputs[0] == outputs[1]
+    # Artifact reads, normalization, comparison and private-directory cleanup
+    # consume the same budget as subprocesses. Never publish late evidence.
+    remaining()
+    if not reproducible:
         return None, "renderer_output_not_reproducible"
     return outputs[0], "reproducible"
 

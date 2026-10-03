@@ -9,6 +9,8 @@ import shutil
 import subprocess
 import sys
 import zipfile
+from email import policy
+from email.parser import Parser
 from importlib.metadata import distribution
 from pathlib import Path
 
@@ -19,6 +21,84 @@ from fep_lean.output.render_log import build_acceptance_receipt
 from fep_lean.output.rendering import MANUSCRIPT_ASSETS
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+
+def _assert_wheel_metadata_headers(metadata_text: str) -> None:
+    metadata = Parser(policy=policy.strict).parsestr(metadata_text, headersonly=True)
+    assert not metadata.defects
+    expected = {
+        "License-Expression": ["CC-BY-4.0"],
+        "License-File": ["LICENSE"],
+        "Author-email": ["Daniel Ari Friedman <daniel@activeinference.institute>"],
+        "Description-Content-Type": ["text/markdown"],
+        "Project-URL": [
+            "Repository, https://github.com/ActiveInferenceInstitute/fep_formal",
+            "Changelog, https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CHANGELOG.md",
+            "Concept DOI, https://doi.org/10.5281/zenodo.19699233",
+        ],
+    }
+    for header, values in expected.items():
+        # Header order is irrelevant; complete values and multiplicity are exact.
+        assert sorted(metadata.get_all(header, [])) == sorted(values), header
+
+
+def _wheel_metadata_fixture() -> str:
+    return (
+        "Metadata-Version: 2.4\n"
+        "Name: fep_lean\n"
+        "License-Expression: CC-BY-4.0\n"
+        "License-File: LICENSE\n"
+        "Author-email: Daniel Ari Friedman <daniel@activeinference.institute>\n"
+        "Description-Content-Type: text/markdown\n"
+        "Project-URL: Repository, https://github.com/ActiveInferenceInstitute/fep_formal\n"
+        "Project-URL: Changelog, https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CHANGELOG.md\n"
+        "Project-URL: Concept DOI, https://doi.org/10.5281/zenodo.19699233\n"
+        "\nA package description.\n"
+    )
+
+
+@pytest.mark.parametrize("line_ending", ["\n", "\r\n"], ids=["LF", "CRLF"])
+def test_wheel_metadata_headers_accept_standard_line_endings(line_ending: str) -> None:
+    _assert_wheel_metadata_headers(_wheel_metadata_fixture().replace("\n", line_ending))
+
+
+@pytest.mark.parametrize("line_ending", ["\n", "\r\n"], ids=["LF", "CRLF"])
+@pytest.mark.parametrize(
+    "duplicate",
+    [
+        "License-Expression: CC-BY-4.0",
+        "License-File: LICENSE",
+        "Author-email: Daniel Ari Friedman <daniel@activeinference.institute>",
+        "Description-Content-Type: text/markdown",
+        "Project-URL: Concept DOI, https://doi.org/10.5281/zenodo.19699233",
+    ],
+)
+def test_wheel_metadata_headers_refuse_duplicate_values(
+    line_ending: str, duplicate: str
+) -> None:
+    metadata = _wheel_metadata_fixture().replace("\n\n", f"\n{duplicate}\n\n", 1)
+    with pytest.raises(AssertionError, match=duplicate.split(":", 1)[0]):
+        _assert_wheel_metadata_headers(metadata.replace("\n", line_ending))
+
+
+@pytest.mark.parametrize("line_ending", ["\n", "\r\n"], ids=["LF", "CRLF"])
+@pytest.mark.parametrize("failure", ["body_only_license", "wrong_project_url"])
+def test_wheel_metadata_headers_refuse_body_spoof_and_wrong_url(
+    line_ending: str, failure: str
+) -> None:
+    metadata = _wheel_metadata_fixture()
+    if failure == "body_only_license":
+        metadata = metadata.replace("License-Expression: CC-BY-4.0\n", "", 1)
+        metadata += "License-Expression: CC-BY-4.0\n"
+        header = "License-Expression"
+    else:
+        metadata = metadata.replace(
+            "Project-URL: Concept DOI, https://doi.org/10.5281/zenodo.19699233",
+            "Project-URL: Concept DOI, https://doi.org/10.5281/zenodo.1",
+        )
+        header = "Project-URL"
+    with pytest.raises(AssertionError, match=header):
+        _assert_wheel_metadata_headers(metadata.replace("\n", line_ending))
 
 
 def _package_namespace_digests(project_root: Path) -> dict[str, str]:
@@ -61,6 +141,24 @@ def test_distribution_exports_one_root_package_and_console_script() -> None:
     assert scripts == {"fep-lean": "fep_lean.cli:main"}
 
 
+def test_q7_scaffold_bytes_refuse_legacy_codepage_substitution() -> None:
+    """Wrong text decoding must not become accepted canonical AST evidence."""
+    from fep_lean.verification.gnn_continuous_artifact_proof import (
+        canonical_scaffold_bytes,
+    )
+
+    fixture_root = PROJECT_ROOT / "specs/gnn-bridge-q7-continuous-ou-proof"
+    source = fixture_root / "fixtures/continuous_ou_jax.py"
+    expected = json.loads((fixture_root / "expected.json").read_text(encoding="utf-8"))[
+        "runner_ast_sha256"
+    ]
+    utf8 = source.read_text(encoding="utf-8")
+    legacy = source.read_text(encoding="cp1252")
+    assert utf8 != legacy, "control requires the actual UTF-8 scaffold text"
+    assert hashlib.sha256(canonical_scaffold_bytes(utf8)).hexdigest() == expected
+    assert hashlib.sha256(canonical_scaffold_bytes(legacy)).hexdigest() != expected
+
+
 def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
     """Exercise the built bytes outside the checkout's import path."""
     uv = shutil.which("uv")
@@ -83,24 +181,7 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
             name for name in archive.namelist() if name.endswith(".dist-info/METADATA")
         )
         wheel_metadata = archive.read(metadata_name).decode("utf-8")
-    assert "License-Expression: CC-BY-4.0\n" in wheel_metadata
-    assert "License-File: LICENSE\n" in wheel_metadata
-    assert "Author-email: Daniel Ari Friedman <daniel@activeinference.institute>\n" in (
-        wheel_metadata
-    )
-    assert "Description-Content-Type: text/markdown\n" in wheel_metadata
-    assert (
-        "Project-URL: Repository, https://github.com/ActiveInferenceInstitute/fep_formal\n"
-        in wheel_metadata
-    )
-    assert (
-        "Project-URL: Changelog, https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CHANGELOG.md\n"
-        in wheel_metadata
-    )
-    assert (
-        "Project-URL: Concept DOI, https://doi.org/10.5281/zenodo.19699233\n"
-        in wheel_metadata
-    )
+    _assert_wheel_metadata_headers(wheel_metadata)
 
     environment = tmp_path / "venv"
     target_python = os.environ.get("FEP_DISTRIBUTION_PYTHON", sys.executable)
@@ -165,7 +246,7 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
                 "for path in installed_root.rglob('*') if path.is_file() and path.suffix in {'.py', '.lean', '.yaml'}}; "
                 "assert installed == expected, 'installed namespace roster or bytes differ'; "
                 "from fep_lean.verification.gnn_continuous_artifact_proof import ContinuousArtifactError, scaffold_digest, canonical_scaffold_bytes; "
-                f"q7_source = pathlib.Path({str(PROJECT_ROOT / 'specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py')!r}).read_text(); "
+                f"q7_source = pathlib.Path({str(PROJECT_ROOT / 'specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py')!r}).read_text(encoding='utf-8'); "
                 f"q7_expected = {json.loads((PROJECT_ROOT / 'specs/gnn-bridge-q7-continuous-ou-proof/expected.json').read_text())['runner_ast_sha256']!r}; "
                 "assert hashlib.sha256(canonical_scaffold_bytes(q7_source)).hexdigest() == q7_expected; "
                 "accepted = sys.implementation.name == 'cpython' and sys.version_info[:2] == (3, 14); "
@@ -567,6 +648,17 @@ def test_documentation_classifier_rejects_source_rename_into_prose(
         "retained_pdf_drift",
         "retained_read_source_drift",
         "retained_read_pdf_drift",
+        "template_symlink_replaced",
+        "template_symlink_retargeted",
+        "template_gitlink_populated",
+        "template_gitlink_replaced",
+        "during_template_symlink_drift",
+        "while_staging_template_symlink_drift",
+        "while_staging_template_gitlink_drift",
+        "template_gitlink_missing",
+        "template_gitlink_retargeted",
+        "during_template_link_read",
+        "during_template_mode_drift",
     ],
 )
 def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
@@ -642,7 +734,26 @@ def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
     template.mkdir()
     subprocess.run(["git", "init", "-q"], cwd=template, check=True)
     (template / "README.md").write_text("Pinned template source.\n")
+    template_link = template / "pointer.py"
+    external_target = tmp_path.parent / f"{tmp_path.name}-private-target.py"
+    external_target.write_bytes(b"private target bytes are not renderer inputs\n")
+    link_target = os.path.relpath(external_target, template)
+    if os.name == "posix":
+        template_link.symlink_to(link_target)
+    gitlink = template / "unused-submodule"
+    gitlink.mkdir()
     subprocess.run(["git", "add", "."], cwd=template, check=True)
+    subprocess.run(
+        [
+            "git",
+            "update-index",
+            "--add",
+            "--cacheinfo",
+            f"160000,{sha},unused-submodule",
+        ],
+        cwd=template,
+        check=True,
+    )
     subprocess.run(
         [
             "git",
@@ -657,7 +768,24 @@ def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
         env=git_env,
         check=True,
     )
-    if failure == "stale_receipt":
+    if failure == "template_gitlink_missing":
+        gitlink.rmdir()
+    elif failure == "template_gitlink_retargeted":
+        subprocess.run(
+            [
+                "git",
+                "update-index",
+                "--cacheinfo",
+                f"160000,{'1' * 40},unused-submodule",
+            ],
+            cwd=template,
+            check=True,
+        )
+    elif failure == "during_template_mode_drift":
+        subprocess.run(
+            ["git", "config", "core.filemode", "false"], cwd=template, check=True
+        )
+    elif failure == "stale_receipt":
         (manuscript / "01_abstract.md").write_text("Unaccepted change.\n")
     elif failure == "missing_pdf":
         (pdf / "fep_lean_combined.pdf").unlink()
@@ -665,6 +793,17 @@ def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
         (pdf / "fep_lean_combined.pdf").rename(pdf / "_combined_manuscript.pdf")
     elif failure == "source_drift":
         font.write_bytes(b"changed tracked input")
+    elif failure == "template_symlink_replaced" and os.name == "posix":
+        template_link.unlink()
+        template_link.write_text(link_target)
+    elif failure == "template_symlink_retargeted" and os.name == "posix":
+        template_link.unlink()
+        template_link.symlink_to("unaccepted-target")
+    elif failure == "template_gitlink_populated":
+        (gitlink / "unbound-owner.py").write_text("unbound source\n")
+    elif failure == "template_gitlink_replaced":
+        gitlink.rmdir()
+        gitlink.write_text("unbound replacement\n")
     elif failure == "untracked_chapter":
         (manuscript / "02_extra.md").write_text("An uncommitted accepted chapter.\n")
         receipt = build_acceptance_receipt(manuscript, pdf, counts=receipt["checks"])
@@ -677,19 +816,32 @@ def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
         "during_chapter_addition": "Path('manuscript/02_extra.md').write_text('Added during provenance discovery.\\n')",
         "during_pdf_drift": "Path('output/pdf/fep_lean_combined.pdf').write_bytes(b'%PDF-unaccepted replacement')",
         "during_template_drift": "Path('render-template/README.md').write_text('Uncommitted template mutation.\\n')",
+        "during_template_symlink_drift": "Path('render-template/pointer.py').unlink(); Path('render-template/pointer.py').symlink_to('unaccepted-target')",
+        "during_template_mode_drift": "Path('render-template/README.md').chmod(0o755)",
     }.get(failure, "pass")
     staged_mutation = {
         "while_staging_source_drift": "Path('manuscript/01_abstract.md').write_text('Changed while retaining evidence.\\n')",
         "while_staging_pdf_drift": "_real_write_bytes(Path('output/pdf/fep_lean_combined.pdf'), b'%PDF-changed while retaining evidence')",
         "retained_pdf_drift": "_real_write_bytes(path, b'%PDF-corrupted retained artifact')",
+        "while_staging_template_symlink_drift": "Path('render-template/pointer.py').unlink(); Path('render-template/pointer.py').symlink_to('unaccepted-target')",
+        "while_staging_template_gitlink_drift": "Path('render-template/unused-submodule/unbound-owner.py').write_text('unbound source\\n')",
     }.get(failure, "pass")
     retained_read_mutation = {
         "retained_read_source_drift": "Path('manuscript/01_abstract.md').write_text('Changed while verifying retained bytes.\\n')",
         "retained_read_pdf_drift": "_real_write_bytes(Path('output/pdf/fep_lean_combined.pdf'), b'%PDF-changed during retained read')",
     }.get(failure, "pass")
     script = (
+        "import os\n"
         "import subprocess\n"
         "from pathlib import Path\n"
+        "_real_readlink = os.readlink\n"
+        "def _pointer_read(path, **kwargs):\n"
+        "    data = _real_readlink(path, **kwargs)\n"
+        f"    if {failure == 'during_template_link_read'!r} and path == b'pointer.py':\n"
+        "        Path('render-template/pointer.py').unlink()\n"
+        "        Path('render-template/pointer.py').symlink_to('unaccepted-target')\n"
+        "    return data\n"
+        "os.readlink = _pointer_read\n"
         "import fep_lean.output.evidence as _native\n"
         "import fep_lean.verification.formalism_audit as _audit\n"
         f"_native.validate_native_lean_receipt = lambda *args, **kwargs: {{'native_claim_ready': {failure != 'native_stale'!r}}}\n"
@@ -716,6 +868,8 @@ def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
         "import fep_lean.output.release_bundle._core as _capture_owner\n"
         "_real_regular_read = _capture_owner._capture_regular_file\n"
         "def _retained_read(path):\n"
+        f"    if path == Path({str(external_target)!r}):\n"
+        "        raise AssertionError('template symlink target must never be read')\n"
         "    data = _real_regular_read(path)\n"
         "    if 'render-evidence' in path.parts and path.name == 'fep_lean_combined.pdf':\n"
         f"        {retained_read_mutation}\n"
@@ -741,6 +895,14 @@ def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
         check=False,
     )
     staged = tmp_path / "output/render-evidence"
+    if os.name != "posix" and (
+        "capture custody requires POSIX descriptor-relative reads" in result.stderr
+    ):
+        # Publication capture runs on Linux. This platform certifies the
+        # explicit custody refusal before the later POSIX mutation controls.
+        assert result.returncode != 0
+        assert not staged.exists()
+        return
     if failure:
         assert result.returncode != 0
         assert not staged.exists()
@@ -763,6 +925,17 @@ def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
             "retained_pdf_drift": "changed during evidence staging",
             "retained_read_source_drift": "changed during evidence staging",
             "retained_read_pdf_drift": "changed during evidence staging",
+            "template_symlink_replaced": "template authored inputs differ",
+            "template_symlink_retargeted": "template authored inputs differ",
+            "template_gitlink_populated": "gitlink has unbound checkout content",
+            "template_gitlink_replaced": "template authored inputs differ",
+            "during_template_symlink_drift": "changed during evidence staging",
+            "while_staging_template_symlink_drift": "changed during evidence staging",
+            "while_staging_template_gitlink_drift": "changed during evidence staging",
+            "template_gitlink_retargeted": "template authored inputs differ",
+            "template_gitlink_missing": "template authored inputs differ",
+            "during_template_link_read": "symlink changed while reading",
+            "during_template_mode_drift": "changed during evidence staging",
         }[failure]
         assert expected_error in result.stderr
     else:
@@ -777,6 +950,40 @@ def test_render_artifact_staging_refuses_unaccepted_or_unbound_inputs(
             )
         sources = json.loads((staged / "source-manifest.json").read_text())
         assert sources["commit"] == sha
+        provenance = json.loads((staged / "renderer-provenance.json").read_text())
+        template_tree = provenance["template_tree"]
+        assert template_tree["README.md"]["mode"] == "100644"
+        assert template_tree["README.md"]["type"] == "blob"
+        assert template_tree["unused-submodule"] == {
+            "mode": "160000",
+            "type": "commit",
+            "git_oid": sha,
+            "checkout_state": "uninitialized-empty",
+        }
+        if os.name == "posix":
+            pointer = template_tree["pointer.py"]
+            assert pointer["mode"] == "120000"
+            assert pointer["type"] == "blob"
+            assert bytes.fromhex(pointer["target_hex"]) == os.fsencode(link_target)
+            assert (
+                pointer["git_oid"]
+                == subprocess.check_output(
+                    ["git", "hash-object", "--stdin"],
+                    cwd=template,
+                    input=os.fsencode(link_target),
+                )
+                .decode()
+                .strip()
+            )
+            assert "pointer.py" not in provenance["template_sources"]
+        assert (
+            external_target.read_bytes()
+            == b"private target bytes are not renderer inputs\n"
+        )
+        assert (
+            b"private target bytes are not renderer inputs"
+            not in (staged / "renderer-provenance.json").read_bytes()
+        )
         assert (
             sources["sources"]["manuscript/01_abstract.md"]
             == hashlib.sha256((manuscript / "01_abstract.md").read_bytes()).hexdigest()

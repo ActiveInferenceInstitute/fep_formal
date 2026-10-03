@@ -743,14 +743,21 @@ def test_rejected_attempt_retains_completed_setting_and_nonfollowing_issues(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Failure-retention fixture bypasses native gates; no scientific RNG runs."""
+    protocol = copy.deepcopy(protocol)
+    environment = protocol["synthetic_acceptance"]["execution_environment"]
+    environment.update(python=study.platform.python_version(), numpy=np.__version__)
+    monkeypatch.setattr(study, "frozen_protocol", lambda *args: protocol)
     monkeypatch.setattr(study, "load_export", lambda *args: toy_export)
     outside = tmp_path / "outside.txt"
     outside.write_text("untouched")
     output = tmp_path.resolve() / "attempt"
 
+    calibration_calls: list[str] = []
+
     def failed_setting(
         setting: dict, sbc: dict, protocol: dict, p: dict, files: object
     ) -> dict:
+        calibration_calls.append(setting["id"])
         if setting["id"] == "A":
             ref = study.save_array(files, "toy_setting_a", np.asarray([0.0]))
             return {
@@ -763,8 +770,19 @@ def test_rejected_attempt_retains_completed_setting_and_nonfollowing_issues(
         raise study.StudyRejection("original second-setting failure")
 
     monkeypatch.setattr(study, "calibrate", failed_setting)
+    for runtime in ("python", "numpy"):
+        actual = environment[runtime]
+        environment[runtime] = "0.0.0"
+        with pytest.raises(
+            study.StudyRejection, match="frozen execution runtime mismatch"
+        ):
+            study.run_study(ROOT, output, "unused", "unused", "unused")
+        assert not output.exists()
+        assert calibration_calls == []
+        environment[runtime] = actual
     with pytest.raises(study.StudyRejection, match="original second-setting failure"):
         study.run_study(ROOT, output, "unused", "unused", "unused")
+    assert calibration_calls == ["A", "B"]
     receipt = json.loads((output / "acceptance.json").read_bytes())
     assert receipt["accepted"] is False
     assert receipt["failure"]["reason"] == "original second-setting failure"

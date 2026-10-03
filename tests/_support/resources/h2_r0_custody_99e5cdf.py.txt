@@ -20,39 +20,11 @@ SUCCESSOR_PATH = (
     "specs/done/horizon-2-smooth-stochastic/readiness/repairs/"
     "07-gaussian-vfe-natural-gradient-custody.json"
 )
-H3_ADDENDUM_PATH = (
-    "specs/done/horizon-2-smooth-stochastic/readiness/repairs/"
-    "07-gaussian-vfe-natural-gradient-h3-custody.json"
-)
 PRIOR_SHA256 = "06fa2f40cec8cc0174eb4583e1e86436ba6bb081db494ff1e2b5086e196d289a"
-SUCCESSOR_SHA256 = "6311a998b1a66bb31949e194eb9e36a2e361dfbfb0f0e7d715b3a17e3e396bae"
 MANIFEST_PATH = "src/fep_lean/formal/manifest.py"
 READINESS_TEST_PATH = "tests/test_horizon2_gaussian_vfe_readiness.py"
 VALIDATOR_PATH = "tests/_support/h2_r0_custody.py"
 ALLOWED_PRIOR_CHANGES = (MANIFEST_PATH, READINESS_TEST_PATH)
-H3_CUSTODY_SUPPORT_CHANGES = (VALIDATOR_PATH, READINESS_TEST_PATH)
-H3_OWNER_SOURCE_PATHS = (
-    "src/fep_lean/formal/h3_reference_model.lean",
-    "lean/FepSketches/h3_reference_model.lean",
-    "src/fep_lean/formal/compositions/h3_case_study.lean",
-    "lean/FepSketches/compositions/h3_case_study.lean",
-)
-H3_ADDED_OWNERS = (
-    {
-        "resource": "h3_reference_model.lean",
-        "lean_module": "FepSketches.h3_reference_model",
-        "role": "foundation",
-        "declaration_namespace": "FEP.H3ReferenceModel",
-        "insert_after": "law_weighted_split.lean",
-    },
-    {
-        "resource": "compositions/h3_case_study.lean",
-        "lean_module": "FepSketches.compositions.h3_case_study",
-        "role": "composition",
-        "declaration_namespace": "FEPComposed.H3CaseStudy",
-        "insert_after": "compositions/geometric_mechanics.lean",
-    },
-)
 ADDED_MODULES = (
     ("gnn_document.lean", "FepSketches.gnn_document", "FEP.GnnDocument"),
     ("gnn_denotation.lean", "FepSketches.gnn_denotation", "FEP.GnnDenotation"),
@@ -297,80 +269,12 @@ W4_CODE_CONSOLIDATION = {
 }
 
 
-def _strip_h3_owner_additions(manifest: str) -> str:
-    """Remove only the two exact, positioned post-custody H3 owner blocks."""
-    owners = _manifest_owners(manifest)
-    stripped = manifest
-    for addition in H3_ADDED_OWNERS:
-        owner = {key: value for key, value in addition.items() if key != "insert_after"}
-        _require(owners.count(owner) == 1, "H3 owner missing, duplicated, or changed")
-        anchor_owners = [
-            item for item in owners if item["resource"] == addition["insert_after"]
-        ]
-        _require(len(anchor_owners) == 1, "H3 owner insertion anchor changed")
-        block = _owner_block(owner)
-        anchor = _owner_block(anchor_owners[0])
-        _require(
-            stripped.count(block) == 1 and stripped.count(anchor + block) == 1,
-            "H3 owner bytes, role, or insertion order changed",
-        )
-        stripped = stripped.replace(block, "", 1)
-    return stripped
-
-
-def _owner_block(owner: dict[str, str | None]) -> str:
-    return (
-        "    FormalModule(\n"
-        f'        resource="{owner["resource"]}",\n'
-        f'        lean_module="{owner["lean_module"]}",\n'
-        f"        role=FormalModuleRole.{str(owner['role']).upper()},\n"
-        f'        declaration_namespace="{owner["declaration_namespace"]}",\n'
-        "    ),\n"
-    )
-
-
 def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
-    """Validate historical custody and its separately bound, non-native H3 addendum."""
+    """Validate fixed prior/successor bytes and permitted drift, returning status."""
     prior_bytes = (project_root / PRIOR_PATH).read_bytes()
     _require(_sha256(prior_bytes) == PRIOR_SHA256, "immutable R0 prior changed")
     prior = _read_json(project_root / PRIOR_PATH)
-    successor_bytes = (project_root / SUCCESSOR_PATH).read_bytes()
-    _require(
-        _sha256(successor_bytes) == SUCCESSOR_SHA256,
-        "immutable R0 custody successor changed",
-    )
     successor = _read_json(project_root / SUCCESSOR_PATH)
-    addendum = _read_json(project_root / H3_ADDENDUM_PATH)
-    _require(
-        set(addendum)
-        == {
-            "schema_version",
-            "gate",
-            "decision",
-            "decision_scope",
-            "prior_custody",
-            "approved_custody_support_changes",
-            "historical_support_source_sha256",
-            "manifest_transition",
-            "source_sha256",
-            "downstream",
-            "native_evidence",
-        },
-        "H3 custody addendum fields changed",
-    )
-    _require(
-        type(addendum["schema_version"]) is int
-        and addendum["schema_version"] == 1
-        and addendum["gate"] == "H2.7-R0-H3-custody"
-        and addendum["prior_custody"]
-        == {"path": SUCCESSOR_PATH, "sha256": SUCCESSOR_SHA256},
-        "H3 custody addendum does not bind the immutable successor",
-    )
-    _require(
-        addendum["approved_custody_support_changes"]
-        == list(H3_CUSTODY_SUPPORT_CHANGES),
-        "unreviewed H3 custody support-change allowance",
-    )
     _require(
         set(successor)
         == {
@@ -405,11 +309,7 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     )
 
     manifest_bytes = (project_root / MANIFEST_PATH).read_bytes()
-    manifest = _strip_h3_owner_additions(manifest_bytes.decode("utf-8"))
-    _require(
-        _sha256(manifest.encode()) == successor["source_sha256"][MANIFEST_PATH],
-        "H3 owner subtraction does not recover the historical custody manifest",
-    )
+    manifest = manifest_bytes.decode("utf-8")
     owners = _manifest_owners(manifest)
 
     def _module_blocks(modules: tuple[tuple[str, str, str], ...], role: str) -> str:
@@ -528,7 +428,7 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
         successor["manifest_transition"]
         == {
             "prior_sha256": prior_manifest_sha,
-            "current_sha256": _sha256(manifest.encode()),
+            "current_sha256": _sha256(manifest_bytes),
             "added_modules": added,
             "unchanged_owners": retained,
             "code_consolidation": W4_CODE_CONSOLIDATION,
@@ -540,25 +440,11 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     current = {
         path: _sha256((project_root / path).read_bytes()) for path in source_paths
     }
-    historical_sources = successor["source_sha256"]
-    _require(
-        set(historical_sources) == source_paths,
-        "historical custody source paths changed",
-    )
-    stable_sources = source_paths - set(H3_CUSTODY_SUPPORT_CHANGES) - {MANIFEST_PATH}
-    _require(
-        all(historical_sources[path] == current[path] for path in stable_sources),
-        "stale historical custody source digest",
-    )
-    _require(
-        addendum["historical_support_source_sha256"]
-        == {path: historical_sources[path] for path in H3_CUSTODY_SUPPORT_CHANGES},
-        "historical custody support digests changed",
-    )
+    _require(successor["source_sha256"] == current, "stale successor source digest")
     changed = {
         path
         for path, digest in prior["source_sha256"].items()
-        if historical_sources[path] != digest
+        if current[path] != digest
     }
     _require(changed == set(ALLOWED_PRIOR_CHANGES), "unapproved prior source drift")
     evidence = successor["native_evidence"]
@@ -582,49 +468,8 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
                 == {
                     "nodeid": f"{READINESS_TEST_PATH}::{name}",
                     "pytest_exit_code": 0,
-                    "source_sha256": historical_sources,
+                    "source_sha256": current,
                 },
-                "native probe does not bind historical source and exact passing test",
+                "native probe does not bind current source and exact passing test",
             )
-    current.update(
-        {
-            path: _sha256((project_root / path).read_bytes())
-            for path in H3_OWNER_SOURCE_PATHS
-        }
-    )
-    _require(addendum["source_sha256"] == current, "stale H3 addendum source digest")
-    _require(
-        addendum["manifest_transition"]
-        == {
-            "prior_sha256": historical_sources[MANIFEST_PATH],
-            "current_sha256": current[MANIFEST_PATH],
-            "historical_r0_sha256": prior_manifest_sha,
-            "added_modules": [
-                {
-                    **owner,
-                    "block_sha256": _sha256(_owner_block(owner).encode()),
-                }
-                for owner in H3_ADDED_OWNERS
-            ],
-            "unchanged_owners": owners,
-        },
-        "H3 manifest transition does not match the exact append-only owners",
-    )
-    _require(
-        addendum["decision"] == successor["decision"]
-        and addendum["decision_scope"] == successor["decision_scope"]
-        and addendum["downstream"] == successor["downstream"],
-        "H3 custody addendum expanded the historical decision or downstream scope",
-    )
-    _require(
-        isinstance(addendum["native_evidence"], dict)
-        and addendum["native_evidence"]
-        == {
-            "status": "not_executed",
-            "historical_evidence_reused": False,
-            "probes": [],
-        }
-        and addendum["native_evidence"]["historical_evidence_reused"] is False,
-        "H3 custody addendum cannot claim fresh or reused native execution",
-    )
-    return {**addendum, "historical_custody": successor}
+    return successor
