@@ -66,7 +66,7 @@ roster and roles live in the manifest; this page projects them for navigation.
 | `native_blanket` | foundation | `FEP.NativeBlanket` | markov_blanket |
 | `path_thermodynamics` | foundation | `FEP.PathThermodynamics` | finite_markov_dynamics, variational_duality |
 
-## Layer 4 (11 modules)
+## Layer 4 (10 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
@@ -74,7 +74,6 @@ roster and roles live in the manifest; this page projects them for navigation.
 | `compositions.causal_predictive` | composition | `FEPComposed` | fep_all, causal_dynamics, predictive_coding |
 | `compositions.collective_learning` | composition | `FEPComposed` | fep_all, collective_inference, learning_theory |
 | `compositions.finite_scientific_implications` | composition | `FEPComposed.FiniteScientificImplications` | finite_probability, causal_dynamics, finite_markov_dynamics, active_inference, information_geometry |
-| `compositions.native_blanket_transfer` | composition | `FEPComposed` | fep_all, native_blanket |
 | `compositions.thermo_geometry` | composition | `FEPComposed` | fep_all, path_thermodynamics, geometric_optimization |
 | `decision_risk` | foundation | `FEP.DecisionRisk` | native_blanket, finite_information |
 | `empirical_risk` | foundation | `FEP.EmpiricalRisk` | learning_theory |
@@ -141,10 +140,11 @@ roster and roles live in the manifest; this page projects them for navigation.
 | `gaussian_precision_conditioning` | foundation | `FEP.GaussianPrecisionConditioning` | fin4_gaussian_semigroup |
 | `h3_reference_model` | foundation | `FEP.H3ReferenceModel` | fin4_gaussian_semigroup, markov_semigroup |
 
-## Layer 11 (1 modules)
+## Layer 11 (2 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
+| `compositions.native_blanket_transfer` | composition | `FEPComposed` | fep_all, native_blanket, gaussian_precision_conditioning |
 | `compositions.smooth_reference_kernel` | composition | `FEPComposed.SmoothReferenceKernel` | gaussian_information_geometry, smooth_information_geometry, posterior_convergence, markov_semigroup, scalar_gaussian_semigroup, fin4_gaussian_semigroup, gaussian_precision_conditioning, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path |
 
 ## Layer 12 (1 modules)

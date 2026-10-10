@@ -60,8 +60,6 @@ READINESS_VALIDATOR = (
 EXACT_IMPORTS = (
     "FepSketches.fin4_gaussian_semigroup",
     "Mathlib.LinearAlgebra.Matrix.Notation",
-    "Mathlib.LinearAlgebra.Matrix.PosDef",
-    "Mathlib.LinearAlgebra.Matrix.SchurComplement",
     "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
     "Mathlib.Probability.Independence.Conditional",
 )
@@ -82,12 +80,6 @@ PUBLIC_DEFINITIONS = (
     "perturbedEndpointPrecision",
     "perturbedEndpointCovariance",
     "perturbedEndpointLaw",
-    "blanketConditionalPrecision",
-    "blanketConditionalCovariance",
-    "fin4BlanketIndex",
-    "fin4BlanketPrecision",
-    "perturbedBlanketIndex",
-    "nonSparseBlanketPrecision",
 )
 PUBLIC_INSTANCES = (
     "blanketLaw_isProbabilityMeasure",
@@ -122,19 +114,6 @@ PUBLIC_THEOREMS = (
     "perturbedEndpointCovariance_external_internal",
     "perturbedEndpoint_external_internal_covariance",
     "perturbedEndpoint_external_not_indep_internal",
-    "blanketConditionalPrecision_posDef",
-    "blanketConditionalCovariance_eq_inv",
-    "blanketPrecisionCrossZeroIff",
-    "blanketConditionalCovarianceCrossZeroIff",
-    "blanketSparsePrecisionConditionalCovarianceCrossZero",
-    "blanketNonSparsePrecisionConditionalCovarianceCrossNeZero",
-    "fin4BlanketIndex_injective",
-    "fin4BlanketPrecision_posDef",
-    "fin4BlanketPrecision_sparse",
-    "fin4_blanket_generic_instance",
-    "perturbedBlanketIndex_injective",
-    "nonSparseBlanketPrecision_posDef",
-    "nonSparseBlanket_conditionalCovariance_cross_ne_zero",
 )
 PUBLIC_ENVIRONMENT_DECLARATIONS = frozenset(
     (
@@ -227,11 +206,7 @@ def test_h2_5d_owner_imports_namespace_and_h2_5c_reuse_are_exact() -> None:
         source,
     )
     assert "Kernel.Posterior" not in source
-    # FORM-S14 admits Schur complements for the dimension-generic statement,
-    # which stays algebraic: measure-level Gaussian conditioning is a recorded
-    # Mathlib gap (docs/lean4.md#gaussian-conditioning-gap-memo).
-    assert "theorem blanketConditionalCovarianceCrossZeroIff" in source
-    assert "theorem fin4_blanket_generic_instance" in source
+    assert "Matrix.SchurComplement" not in source
     assert "05d_gaussian_conditioning" not in source
     assert not re.search(
         r"\b(?:causal|intervention|H2_7|H3|SDE|Ito|Itô|FokkerPlanck|"

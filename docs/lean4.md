@@ -198,4 +198,7 @@ covariance is its inverse, and its external--internal cross block vanishes
 exactly when `K_{ei} = 0`), recovers the fixed Fin4 theorem as an instance next
 to the existing measure-level `external_condIndep_internal_given_blanket`, and
 supplies a non-sparse countermodel. The measure-level generic theorem waits on
-the Gaussian conditional kernel rows above.
+the Gaussian conditional kernel rows above. These declarations live in
+`FEPComposed.GaussianBlanket` inside `compositions/native_blanket_transfer.lean`,
+because the Gaussian carrier modules they build on are hash-frozen by the H3
+custody record.

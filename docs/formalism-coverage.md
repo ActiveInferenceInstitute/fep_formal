@@ -15,7 +15,7 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Foundation modules | 45 |
 | Topic theorem declarations | 584 |
 | Formal-resource theorem declarations | 1601 |
-| Foundation theorem declarations | 1265 |
+| Foundation theorem declarations | 1252 |
 | Total theorem declarations | 2185 |
 | Topic definitions | 95 |
 | Formal-resource definitions | 897 |
@@ -26,13 +26,13 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Formal-resource structures | 55 |
 | Distinct Mathlib imports | 70 |
 | Topic-to-import edges | 225 |
-| Formal-resource import edges | 289 |
-| Internal formal-module dependencies | 169 |
+| Formal-resource import edges | 290 |
+| Internal formal-module dependencies | 170 |
 | Authored formalism relations | 150 |
 | Derivational formal relations | 24 |
 | Checked formal pairings | 118 |
 | All theorem-witnessed relations | 142 |
-| Composed theorem declarations | 336 |
+| Composed theorem declarations | 349 |
 | Capability nodes (retained history) | 50 |
 | Unresolved capability nodes | 0 |
 | Satisfied capability nodes | 50 |
@@ -262,7 +262,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.scalar_gaussian_semigroup` | `foundation` | 15 | 11 | 1 | `FepSketches.gaussian_information_geometry`, `FepSketches.markov_semigroup` |
 | `FepSketches.linear_gaussian_semigroup` | `foundation` | 25 | 13 | 1 | `FepSketches.markov_semigroup`, `FepSketches.scalar_gaussian_semigroup` |
 | `FepSketches.fin4_gaussian_semigroup` | `foundation` | 42 | 18 | 0 | `FepSketches.linear_gaussian_semigroup` |
-| `FepSketches.gaussian_precision_conditioning` | `foundation` | 38 | 21 | 0 | `FepSketches.fin4_gaussian_semigroup` |
+| `FepSketches.gaussian_precision_conditioning` | `foundation` | 25 | 15 | 0 | `FepSketches.fin4_gaussian_semigroup` |
 | `FepSketches.decision_risk` | `foundation` | 25 | 10 | 0 | `FepSketches.finite_information`, `FepSketches.native_blanket` |
 | `FepSketches.finite_posterior_learning` | `foundation` | 13 | 18 | 0 | `FepSketches.decision_risk`, `FepSketches.learning_theory`, `FepSketches.native_blanket`, `FepSketches.statistical_convergence` |
 | `FepSketches.posterior_convergence` | `foundation` | 26 | 22 | 0 | `FepSketches.finite_posterior_learning`, `FepSketches.gaussian_information_geometry`, `FepSketches.measure_bayes` |
@@ -286,7 +286,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.compositions.collective_learning` | `composition` | 14 | 0 | 0 | `FepSketches.collective_inference`, `FepSketches.learning_theory` |
 | `FepSketches.compositions.risk_calibration` | `composition` | 7 | 0 | 0 | `FepSketches.empirical_risk` |
 | `FepSketches.compositions.policy_trees` | `composition` | 7 | 0 | 0 | `FepSketches.policy_tree` |
-| `FepSketches.compositions.native_blanket_transfer` | `composition` | 7 | 0 | 0 | `FepSketches.native_blanket` |
+| `FepSketches.compositions.native_blanket_transfer` | `composition` | 20 | 6 | 0 | `FepSketches.gaussian_precision_conditioning`, `FepSketches.native_blanket` |
 | `FepSketches.compositions.exponential_family` | `composition` | 7 | 0 | 0 | `FepSketches.exponential_family` |
 | `FepSketches.compositions.continuous_time` | `composition` | 7 | 0 | 0 | `FepSketches.continuous_time_markov` |
 | `FepSketches.compositions.finite_scientific_implications` | `composition` | 6 | 15 | 0 | `FepSketches.active_inference`, `FepSketches.causal_dynamics`, `FepSketches.finite_markov_dynamics`, `FepSketches.finite_probability`, `FepSketches.information_geometry` |

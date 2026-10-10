@@ -11677,7 +11677,7 @@
     "formal/compositions/h3_case_study.lean": "7a8ba9346dc9ab700ac6276c26421b46c0437eabaab7cd448a2bc05998318849",
     "formal/compositions/helmholtz_ao_ness.lean": "b44ad9bed15bfa001f20de6fd4a6ada836054ded68608fd1010327cf620100da",
     "formal/compositions/measure_variational.lean": "b83d99c2d335ce3ecc1e5abbeced61cb0e90f71b75013963152652e526dec5a9",
-    "formal/compositions/native_blanket_transfer.lean": "0be9b922cf9f322adaefb6dbcd441b781da466b41f7ad82f1744ce943bd3c9df",
+    "formal/compositions/native_blanket_transfer.lean": "0cc6029a3c7199aaf68e920990b658227fa04420cd8b8e10c4ca58da959e1bd1",
     "formal/compositions/perception_action_loop.lean": "9b4061352a3e0ec3c5835a52efda326036b47676a69820c90af4c4b65a648294",
     "formal/compositions/policy_trees.lean": "98a74b0976bbac14a784887c38cdaf95db373a071667ecc66bd7f2b7ea657db4",
     "formal/compositions/risk_calibration.lean": "428430da8985d59619fe00975b79eff4151ccd90d3e078fbb10796c17f8cb455",
@@ -11697,7 +11697,7 @@
     "formal/finite_posterior_learning.lean": "c7b8e6bb97f33edc75ffb627cd03998c22943a2b2f34017d12ab5b1d24c86cc6",
     "formal/finite_probability.lean": "eb019691997b8c9a2e3dfbe127bf3336610c5dd12bb035e559dc1d77842c9a66",
     "formal/gaussian_information_geometry.lean": "cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c",
-    "formal/gaussian_precision_conditioning.lean": "5544cd30da1f5cc80cfda3d5176a6c1e4bb1e5d5953ef6e400e32f7fa5eb6025",
+    "formal/gaussian_precision_conditioning.lean": "64afcf45cf2ef44b78db7e5b2fb2de02bd3af80cefda888523baae1043b37c38",
     "formal/geometric_mechanics.lean": "8fa48e8f991e9f977f6a6018a1a3450470e06df4654ed6e9f35e9602b987a438",
     "formal/geometric_optimization.lean": "c5db1cacf6fdbfab8a1a776bd1ffe4bb9883a122f9f83b433eb04641cfdf6a2f",
     "formal/gnn_denotation.lean": "1ef46fd7b090115b36a392cdb69b4c87847ca63a99edd3e4bf5e706d7df5b2bd",
@@ -72096,776 +72096,6 @@
         "statement": "theorem zero_variance_excluded :\n    ¬ ∃ family : FixedVarianceGaussian, family.variance = 0",
         "statement_sha256": "6f8465d1768298e13bc84ce4070f1ff911261050477956d5db5a983aae0f6996"
       },
-      "FEP.GaussianPrecisionConditioning.blanketConditionalCovarianceCrossZeroIff": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "K"
-            ],
-            "role": "typed_binder",
-            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
-            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "hK"
-            ],
-            "role": "typed_binder",
-            "source": "(hK : K.PosDef)",
-            "type_source": "K.PosDef",
-            "visibility": "explicit"
-          }
-        ],
-        "conclusion": "(blanketConditionalCovariance K).toBlocks₁₂ = 0 ↔\n      ∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
-        "context_binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "E",
-              "I",
-              "B"
-            ],
-            "role": "typed_binder",
-            "source": "{E I B : Type*}",
-            "type_source": "Type*",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype E]",
-            "type_source": "Fintype E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype I]",
-            "type_source": "Fintype I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype B]",
-            "type_source": "Fintype B",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq E]",
-            "type_source": "DecidableEq E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq I]",
-            "type_source": "DecidableEq I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq B]",
-            "type_source": "DecidableEq B",
-            "visibility": "instance"
-          }
-        ],
-        "declaration_mentions": [
-          {
-            "identifier": "blanketConditionalCovariance_eq_inv",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.blanketConditionalCovariance_eq_inv",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "blanketConditionalPrecision_posDef",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.blanketConditionalPrecision_posDef",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "blanketPrecisionCrossZeroIff",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.blanketPrecisionCrossZeroIff",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [
-          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
-        ],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.blanketConditionalCovarianceCrossZeroIff",
-        "source_line": 1097,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem blanketConditionalCovarianceCrossZeroIff\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef) :\n    (blanketConditionalCovariance K).toBlocks₁₂ = 0 ↔\n      ∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
-        "statement_sha256": "82543d1c7ac500146dfb257e2e8bb67defcb5fdaba0abd8dbe8db5ea4a74e4f1"
-      },
-      "FEP.GaussianPrecisionConditioning.blanketConditionalCovariance_eq_inv": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "K"
-            ],
-            "role": "typed_binder",
-            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
-            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "hK"
-            ],
-            "role": "typed_binder",
-            "source": "(hK : K.PosDef)",
-            "type_source": "K.PosDef",
-            "visibility": "explicit"
-          }
-        ],
-        "conclusion": "blanketConditionalCovariance K = (blanketConditionalPrecision K)⁻¹",
-        "context_binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "E",
-              "I",
-              "B"
-            ],
-            "role": "typed_binder",
-            "source": "{E I B : Type*}",
-            "type_source": "Type*",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype E]",
-            "type_source": "Fintype E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype I]",
-            "type_source": "Fintype I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype B]",
-            "type_source": "Fintype B",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq E]",
-            "type_source": "DecidableEq E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq I]",
-            "type_source": "DecidableEq I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq B]",
-            "type_source": "DecidableEq B",
-            "visibility": "instance"
-          }
-        ],
-        "declaration_mentions": [
-          {
-            "identifier": "blanketConditionalPrecision_posDef",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.blanketConditionalPrecision_posDef",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [
-          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
-        ],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.blanketConditionalCovariance_eq_inv",
-        "source_line": 1026,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem blanketConditionalCovariance_eq_inv\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef) :\n    blanketConditionalCovariance K = (blanketConditionalPrecision K)⁻¹",
-        "statement_sha256": "41a5793ca3c56b197654caa762f5e99fa923d787685d5f80ef65c68d9c79c738"
-      },
-      "FEP.GaussianPrecisionConditioning.blanketConditionalPrecision_posDef": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "K"
-            ],
-            "role": "typed_binder",
-            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
-            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "hK"
-            ],
-            "role": "typed_binder",
-            "source": "(hK : K.PosDef)",
-            "type_source": "K.PosDef",
-            "visibility": "explicit"
-          }
-        ],
-        "conclusion": "(blanketConditionalPrecision K).PosDef",
-        "context_binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "E",
-              "I",
-              "B"
-            ],
-            "role": "typed_binder",
-            "source": "{E I B : Type*}",
-            "type_source": "Type*",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype E]",
-            "type_source": "Fintype E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype I]",
-            "type_source": "Fintype I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype B]",
-            "type_source": "Fintype B",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq E]",
-            "type_source": "DecidableEq E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq I]",
-            "type_source": "DecidableEq I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq B]",
-            "type_source": "DecidableEq B",
-            "visibility": "instance"
-          }
-        ],
-        "declaration_mentions": [],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [
-          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
-        ],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.blanketConditionalPrecision_posDef",
-        "source_line": 1019,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem blanketConditionalPrecision_posDef\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef) :\n    (blanketConditionalPrecision K).PosDef",
-        "statement_sha256": "cb5330b256e6651fc480b96b9c52b20958ca2e00b3e57b92afaca8ff19fe4edd"
-      },
-      "FEP.GaussianPrecisionConditioning.blanketNonSparsePrecisionConditionalCovarianceCrossNeZero": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "K"
-            ],
-            "role": "typed_binder",
-            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
-            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "hK"
-            ],
-            "role": "typed_binder",
-            "source": "(hK : K.PosDef)",
-            "type_source": "K.PosDef",
-            "visibility": "explicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "e"
-            ],
-            "role": "typed_binder",
-            "source": "{e : E}",
-            "type_source": "E",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "i"
-            ],
-            "role": "typed_binder",
-            "source": "{i : I}",
-            "type_source": "I",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "hNonSparse"
-            ],
-            "role": "typed_binder",
-            "source": "(hNonSparse : K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) ≠ 0)",
-            "type_source": "K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) ≠ 0",
-            "visibility": "explicit"
-          }
-        ],
-        "conclusion": "(blanketConditionalCovariance K).toBlocks₁₂ ≠ 0",
-        "context_binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "E",
-              "I",
-              "B"
-            ],
-            "role": "typed_binder",
-            "source": "{E I B : Type*}",
-            "type_source": "Type*",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype E]",
-            "type_source": "Fintype E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype I]",
-            "type_source": "Fintype I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype B]",
-            "type_source": "Fintype B",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq E]",
-            "type_source": "DecidableEq E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq I]",
-            "type_source": "DecidableEq I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq B]",
-            "type_source": "DecidableEq B",
-            "visibility": "instance"
-          }
-        ],
-        "declaration_mentions": [
-          {
-            "identifier": "blanketConditionalCovarianceCrossZeroIff",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.blanketConditionalCovarianceCrossZeroIff",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [
-          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
-        ],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.blanketNonSparsePrecisionConditionalCovarianceCrossNeZero",
-        "source_line": 1120,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem blanketNonSparsePrecisionConditionalCovarianceCrossNeZero\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef) {e : E} {i : I}\n    (hNonSparse : K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) ≠ 0) :\n    (blanketConditionalCovariance K).toBlocks₁₂ ≠ 0",
-        "statement_sha256": "e8253d323bff29d8bcfd74590671447efdc668579c63a49fc98993be3f338333"
-      },
-      "FEP.GaussianPrecisionConditioning.blanketPrecisionCrossZeroIff": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "P"
-            ],
-            "role": "typed_binder",
-            "source": "{P : Matrix (E ⊕ I) (E ⊕ I) ℝ}",
-            "type_source": "Matrix (E ⊕ I) (E ⊕ I) ℝ",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "hP"
-            ],
-            "role": "typed_binder",
-            "source": "(hP : P.PosDef)",
-            "type_source": "P.PosDef",
-            "visibility": "explicit"
-          }
-        ],
-        "conclusion": "P.toBlocks₁₂ = 0 ↔ P⁻¹.toBlocks₁₂ = 0",
-        "context_binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "E",
-              "I",
-              "B"
-            ],
-            "role": "typed_binder",
-            "source": "{E I B : Type*}",
-            "type_source": "Type*",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype E]",
-            "type_source": "Fintype E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype I]",
-            "type_source": "Fintype I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype B]",
-            "type_source": "Fintype B",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq E]",
-            "type_source": "DecidableEq E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq I]",
-            "type_source": "DecidableEq I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq B]",
-            "type_source": "DecidableEq B",
-            "visibility": "instance"
-          }
-        ],
-        "declaration_mentions": [],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [
-          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
-        ],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.blanketPrecisionCrossZeroIff",
-        "source_line": 1071,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem blanketPrecisionCrossZeroIff\n    {P : Matrix (E ⊕ I) (E ⊕ I) ℝ} (hP : P.PosDef) :\n    P.toBlocks₁₂ = 0 ↔ P⁻¹.toBlocks₁₂ = 0",
-        "statement_sha256": "2474fa4affe7ea8d3d04eb68e84f65c7da7a25520ec230cf22d4e11b9a073e21"
-      },
-      "FEP.GaussianPrecisionConditioning.blanketSparsePrecisionConditionalCovarianceCrossZero": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "K"
-            ],
-            "role": "typed_binder",
-            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
-            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "hK"
-            ],
-            "role": "typed_binder",
-            "source": "(hK : K.PosDef)",
-            "type_source": "K.PosDef",
-            "visibility": "explicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "hSparse"
-            ],
-            "role": "typed_binder",
-            "source": "(hSparse : ∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0)",
-            "type_source": "∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
-            "visibility": "explicit"
-          }
-        ],
-        "conclusion": "(blanketConditionalCovariance K).toBlocks₁₂ = 0",
-        "context_binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "E",
-              "I",
-              "B"
-            ],
-            "role": "typed_binder",
-            "source": "{E I B : Type*}",
-            "type_source": "Type*",
-            "visibility": "implicit"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype E]",
-            "type_source": "Fintype E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype I]",
-            "type_source": "Fintype I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[Fintype B]",
-            "type_source": "Fintype B",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq E]",
-            "type_source": "DecidableEq E",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq I]",
-            "type_source": "DecidableEq I",
-            "visibility": "instance"
-          },
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [],
-            "role": "instance_requirement",
-            "source": "[DecidableEq B]",
-            "type_source": "DecidableEq B",
-            "visibility": "instance"
-          }
-        ],
-        "declaration_mentions": [
-          {
-            "identifier": "blanketConditionalCovarianceCrossZeroIff",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.blanketConditionalCovarianceCrossZeroIff",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [
-          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
-        ],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.blanketSparsePrecisionConditionalCovarianceCrossZero",
-        "source_line": 1112,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem blanketSparsePrecisionConditionalCovarianceCrossZero\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef)\n    (hSparse : ∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0) :\n    (blanketConditionalCovariance K).toBlocks₁₂ = 0",
-        "statement_sha256": "fa63bd381bbd0ca7192dbb2b74b75ba39727078d362ec744d25a5d23a0f808ee"
-      },
       "FEP.GaussianPrecisionConditioning.endpointCondDistrib_ae_eq_product": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -72906,8 +72136,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -72916,7 +72144,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.endpointCondDistrib_ae_eq_product",
-        "source_line": 802,
+        "source_line": 800,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem endpointCondDistrib_ae_eq_product (center : StandardizedState) :\n    condDistrib endpointCoordinates blanketCoordinates (stationaryLaw center)\n      =ᵐ[blanketLaw center] endpointConditionalKernel center",
         "statement_sha256": "01c1d49bd8aac5d73dd37ca7b6bd4f96c20f3ba076b21e6d94f80386a4326121"
@@ -72965,8 +72193,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -72975,7 +72201,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.endpointConditionalKernel_apply",
-        "source_line": 203,
+        "source_line": 201,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem endpointConditionalKernel_apply\n    (center : StandardizedState) (blanket : Blanket) :\n    endpointConditionalKernel center blanket =\n      (gaussianReal (externalConditionalMean center blanket) (1 / 4)).prod\n        (gaussianReal (internalConditionalMean center blanket) (1 / 4))",
         "statement_sha256": "f34af84980b955750b4278967024a8e4a5d7d03e269fd05f816474b20f4a8ab0"
@@ -73008,8 +72234,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73018,7 +72242,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.externalCondDistrib_ae_eq",
-        "source_line": 811,
+        "source_line": 809,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem externalCondDistrib_ae_eq (center : StandardizedState) :\n    condDistrib (fun state : StandardizedState => state external)\n        blanketCoordinates (stationaryLaw center) =ᵐ[blanketLaw center]\n      externalConditionalKernel center",
         "statement_sha256": "81a129c27f5b9157dacfefef40ed336e8dff1fe6db036e328c9c9a8445ce67b5"
@@ -73054,8 +72278,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73064,7 +72286,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.externalConditionalKernel_apply",
-        "source_line": 191,
+        "source_line": 189,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem externalConditionalKernel_apply\n    (center : StandardizedState) (blanket : Blanket) :\n    externalConditionalKernel center blanket =\n      gaussianReal (externalConditionalMean center blanket) (1 / 4)",
         "statement_sha256": "522fd6db4eda33d743568eb6a3f88333f4f8db318371933b4598af0969bfbf7e"
@@ -73107,8 +72329,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73117,7 +72337,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.externalConditionalKernel_mean",
-        "source_line": 211,
+        "source_line": 209,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem externalConditionalKernel_mean\n    (center : StandardizedState) (blanket : Blanket) :\n    ∫ value, value ∂externalConditionalKernel center blanket =\n      externalConditionalMean center blanket",
         "statement_sha256": "8a87459182dbaab5fc6b0298ec931364db56e2e95143dc983b632b4d1835fe68"
@@ -73160,8 +72380,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73170,7 +72388,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.externalConditionalKernel_variance",
-        "source_line": 217,
+        "source_line": 215,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem externalConditionalKernel_variance\n    (center : StandardizedState) (blanket : Blanket) :\n    Var[id; externalConditionalKernel center blanket] = 1 / 4",
         "statement_sha256": "a723ec1dc2ad12e52d00dedebaee5f0f03cb9e24eb537afc4fc0aa7ca8b37c45"
@@ -73227,8 +72445,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73237,192 +72453,10 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.external_condIndep_internal_given_blanket",
-        "source_line": 873,
+        "source_line": 871,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem external_condIndep_internal_given_blanket\n    (center : StandardizedState) :\n    (fun state : StandardizedState => state external) ⟂ᵢ[\n      blanketCoordinates, measurable_blanketCoordinates; stationaryLaw center]\n      (fun state => state internal)",
         "statement_sha256": "3fac47f2de5fc5e02250843c34baa9a2203a30100ce2b1753689ef072b296884"
-      },
-      "FEP.GaussianPrecisionConditioning.fin4BlanketIndex_injective": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [],
-        "conclusion": "Function.Injective fin4BlanketIndex",
-        "context_binders": [],
-        "declaration_mentions": [],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.fin4BlanketIndex_injective",
-        "source_line": 1135,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem fin4BlanketIndex_injective : Function.Injective fin4BlanketIndex",
-        "statement_sha256": "2cd87498a1627b75b917ce381e20e1c7aad2d44c7915b73bdf9f19237da3e495"
-      },
-      "FEP.GaussianPrecisionConditioning.fin4BlanketPrecision_posDef": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [],
-        "conclusion": "fin4BlanketPrecision.PosDef",
-        "context_binders": [],
-        "declaration_mentions": [
-          {
-            "identifier": "fin4BlanketIndex_injective",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.fin4BlanketIndex_injective",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.fin4BlanketPrecision_posDef",
-        "source_line": 1144,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem fin4BlanketPrecision_posDef : fin4BlanketPrecision.PosDef",
-        "statement_sha256": "8ae06f7f600160a23f89df2793a4a89edbf4fa2649256d429fa2ef8ca0aa8aca"
-      },
-      "FEP.GaussianPrecisionConditioning.fin4BlanketPrecision_sparse": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [],
-        "conclusion": "∀ e i : Unit, fin4BlanketPrecision (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
-        "context_binders": [],
-        "declaration_mentions": [
-          {
-            "candidates": [
-              "FEP.Fin4GaussianSemigroup.K_external_internal"
-            ],
-            "identifier": "K_external_internal",
-            "resolution": "unresolved lexical scope",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.fin4BlanketPrecision_sparse",
-        "source_line": 1147,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem fin4BlanketPrecision_sparse :\n    ∀ e i : Unit, fin4BlanketPrecision (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
-        "statement_sha256": "abaf920b3ad07246792f367a4b980b6c4a985049de5a5b78e077f4a3a54ca9a0"
-      },
-      "FEP.GaussianPrecisionConditioning.fin4_blanket_generic_instance": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [
-          {
-            "hypothesis_status": "source syntax; proposition elaboration not performed",
-            "names": [
-              "center"
-            ],
-            "role": "typed_binder",
-            "source": "(center : StandardizedState)",
-            "type_source": "StandardizedState",
-            "visibility": "explicit"
-          }
-        ],
-        "conclusion": "(blanketConditionalCovariance fin4BlanketPrecision).toBlocks₁₂ = 0 ∧\n      ((fun state : StandardizedState => state external) ⟂ᵢ[\n        blanketCoordinates, measurable_blanketCoordinates; stationaryLaw center]\n        (fun state => state internal))",
-        "context_binders": [],
-        "declaration_mentions": [
-          {
-            "identifier": "measurable_blanketCoordinates",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.measurable_blanketCoordinates",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
-          },
-          {
-            "identifier": "blanketSparsePrecisionConditionalCovarianceCrossZero",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.blanketSparsePrecisionConditionalCovarianceCrossZero",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "external_condIndep_internal_given_blanket",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.external_condIndep_internal_given_blanket",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "fin4BlanketPrecision_posDef",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.fin4BlanketPrecision_posDef",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "fin4BlanketPrecision_sparse",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.fin4BlanketPrecision_sparse",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.fin4_blanket_generic_instance",
-        "source_line": 1154,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem fin4_blanket_generic_instance (center : StandardizedState) :\n    (blanketConditionalCovariance fin4BlanketPrecision).toBlocks₁₂ = 0 ∧\n      ((fun state : StandardizedState => state external) ⟂ᵢ[\n        blanketCoordinates, measurable_blanketCoordinates; stationaryLaw center]\n        (fun state => state internal))",
-        "statement_sha256": "ad5040d032db1b99c8c2f9abfae4f30da990e31ddb56764a70de2cd80c4f0e70"
       },
       "FEP.GaussianPrecisionConditioning.internalCondDistrib_ae_eq": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -73452,8 +72486,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73462,7 +72494,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.internalCondDistrib_ae_eq",
-        "source_line": 842,
+        "source_line": 840,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem internalCondDistrib_ae_eq (center : StandardizedState) :\n    condDistrib (fun state : StandardizedState => state internal)\n        blanketCoordinates (stationaryLaw center) =ᵐ[blanketLaw center]\n      internalConditionalKernel center",
         "statement_sha256": "a7d138e0e5f6e7235221484c530221cc57f68bc913cdd54bc7b6a500d291b702"
@@ -73498,8 +72530,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73508,7 +72538,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.internalConditionalKernel_apply",
-        "source_line": 197,
+        "source_line": 195,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem internalConditionalKernel_apply\n    (center : StandardizedState) (blanket : Blanket) :\n    internalConditionalKernel center blanket =\n      gaussianReal (internalConditionalMean center blanket) (1 / 4)",
         "statement_sha256": "dfe6c659447f074445072d220cacea5628386d399635489bc7ab3e5a39ffc441"
@@ -73551,8 +72581,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73561,7 +72589,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.internalConditionalKernel_mean",
-        "source_line": 223,
+        "source_line": 221,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem internalConditionalKernel_mean\n    (center : StandardizedState) (blanket : Blanket) :\n    ∫ value, value ∂internalConditionalKernel center blanket =\n      internalConditionalMean center blanket",
         "statement_sha256": "92ad94991717ec1d03774a9de45cd30ca3a8f4554d3c26d85d2e7c8c15224947"
@@ -73604,8 +72632,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73614,7 +72640,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.internalConditionalKernel_variance",
-        "source_line": 229,
+        "source_line": 227,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem internalConditionalKernel_variance\n    (center : StandardizedState) (blanket : Blanket) :\n    Var[id; internalConditionalKernel center blanket] = 1 / 4",
         "statement_sha256": "588474f9b98156d7226d2739a446d4cbe9060917ac7e12fee0d86af9555f3a34"
@@ -73629,8 +72655,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73639,7 +72663,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.measurable_blanketCoordinates",
-        "source_line": 179,
+        "source_line": 177,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem measurable_blanketCoordinates : Measurable blanketCoordinates",
         "statement_sha256": "ad39d083ebdaad2876683d131ea0fb4a0b29f347e7de052c1d2e18d81db35ff2"
@@ -73654,8 +72678,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73664,7 +72686,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.measurable_endpointCoordinates",
-        "source_line": 183,
+        "source_line": 181,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem measurable_endpointCoordinates : Measurable endpointCoordinates",
         "statement_sha256": "78407080cb6d317b7bd6a73da0e56b7fd2a5d3f962e97d8d26fd2bcc897fb237"
@@ -73686,8 +72708,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73696,129 +72716,10 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.measurable_partitionCoordinates",
-        "source_line": 187,
+        "source_line": 185,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem measurable_partitionCoordinates : Measurable partitionCoordinates",
         "statement_sha256": "26b607c0427ff651b4a4e218542ee7bf92dc78eb9a3ae8ababeb8fd992def581"
-      },
-      "FEP.GaussianPrecisionConditioning.nonSparseBlanketPrecision_posDef": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [],
-        "conclusion": "nonSparseBlanketPrecision.PosDef",
-        "context_binders": [],
-        "declaration_mentions": [
-          {
-            "identifier": "perturbedBlanketIndex_injective",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedBlanketIndex_injective",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.nonSparseBlanketPrecision_posDef",
-        "source_line": 1180,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem nonSparseBlanketPrecision_posDef : nonSparseBlanketPrecision.PosDef",
-        "statement_sha256": "20016aac06891f89662226a65ad92a2661b56338f27738d7a8efadca5367d609"
-      },
-      "FEP.GaussianPrecisionConditioning.nonSparseBlanket_conditionalCovariance_cross_ne_zero": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [],
-        "conclusion": "nonSparseBlanketPrecision (Sum.inl (Sum.inl ())) (Sum.inl (Sum.inr ())) ≠ 0 ∧\n      (blanketConditionalCovariance nonSparseBlanketPrecision).toBlocks₁₂ ≠ 0",
-        "context_binders": [],
-        "declaration_mentions": [
-          {
-            "identifier": "blanketNonSparsePrecisionConditionalCovarianceCrossNeZero",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.blanketNonSparsePrecisionConditionalCovarianceCrossNeZero",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "nonSparseBlanketPrecision_posDef",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.nonSparseBlanketPrecision_posDef",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "perturbedEndpointPrecision_external_internal",
-            "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedEndpointPrecision_external_internal",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.nonSparseBlanket_conditionalCovariance_cross_ne_zero",
-        "source_line": 1185,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem nonSparseBlanket_conditionalCovariance_cross_ne_zero :\n    nonSparseBlanketPrecision (Sum.inl (Sum.inl ())) (Sum.inl (Sum.inr ())) ≠ 0 ∧\n      (blanketConditionalCovariance nonSparseBlanketPrecision).toBlocks₁₂ ≠ 0",
-        "statement_sha256": "c43c8428f41b7489c95fffe7b7cbd84d1aa798a2c1c5d7687f38302ab4cac958"
-      },
-      "FEP.GaussianPrecisionConditioning.perturbedBlanketIndex_injective": {
-        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
-        "binders": [],
-        "conclusion": "Function.Injective perturbedBlanketIndex",
-        "context_binders": [],
-        "declaration_mentions": [],
-        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
-        "import_context": [
-          "FepSketches.fin4_gaussian_semigroup",
-          "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
-          "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
-          "Mathlib.Probability.Independence.Conditional"
-        ],
-        "line_coordinate_kind": "formal_resource_file",
-        "namespace": "FEP.GaussianPrecisionConditioning",
-        "namespace_variable_context": [],
-        "preceding_scope_directives": [
-          {
-            "directive": "omit",
-            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
-            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
-          }
-        ],
-        "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedBlanketIndex_injective",
-        "source_line": 1170,
-        "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
-        "statement": "theorem perturbedBlanketIndex_injective : Function.Injective perturbedBlanketIndex",
-        "statement_sha256": "fa57e71f87fe54cba54a8e879f7ad126217634e64e35d2f55c25ef2305c76601"
       },
       "FEP.GaussianPrecisionConditioning.perturbedEndpointCovariance_eq_entries": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -73830,8 +72731,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73840,7 +72739,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedEndpointCovariance_eq_entries",
-        "source_line": 937,
+        "source_line": 935,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem perturbedEndpointCovariance_eq_entries :\n    perturbedEndpointCovariance = !![4 / 15, -1 / 15; -1 / 15, 4 / 15]",
         "statement_sha256": "b6262e7a7f65f3c75473fee719b84410bac1e5e19c6487b2e5f29b67f4e3137c"
@@ -73862,8 +72761,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73872,7 +72769,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedEndpointCovariance_external_internal",
-        "source_line": 958,
+        "source_line": 956,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem perturbedEndpointCovariance_external_internal :\n    perturbedEndpointCovariance 0 1 = -1 / 15",
         "statement_sha256": "89d8e43293046048a053edd33e269b22874019a9d9103944c3f9c98ac45b8d27"
@@ -73887,8 +72784,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73897,7 +72792,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedEndpointCovariance_posDef",
-        "source_line": 950,
+        "source_line": 948,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem perturbedEndpointCovariance_posDef :\n    perturbedEndpointCovariance.PosDef",
         "statement_sha256": "4759f0388f1077e22858aba0ffcf28b34dc92215dbab22f489921c7ac86b6c64"
@@ -73912,8 +72807,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73922,7 +72815,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedEndpointPrecision_external_internal",
-        "source_line": 954,
+        "source_line": 952,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem perturbedEndpointPrecision_external_internal :\n    perturbedEndpointPrecision 0 1 = 1",
         "statement_sha256": "43b3ddfb85b4fa0a948d4422f821ea7d3f38313ee070e8941f76d8f798cbce70"
@@ -73937,8 +72830,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73947,7 +72838,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedEndpointPrecision_posDef",
-        "source_line": 933,
+        "source_line": 931,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem perturbedEndpointPrecision_posDef :\n    perturbedEndpointPrecision.PosDef",
         "statement_sha256": "cb126abcca1ec9104791247164a99f11aeb748c95402f7b56a9d2badec9fd9ae"
@@ -73969,8 +72860,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -73979,7 +72868,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedEndpoint_external_internal_covariance",
-        "source_line": 963,
+        "source_line": 961,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem perturbedEndpoint_external_internal_covariance :\n    cov[perturbedExternal, perturbedInternal; perturbedEndpointLaw] =\n      -1 / 15",
         "statement_sha256": "ca8e36a3f0c55faec68a7dc76c46e393d65bc4bfb3af7dad3d904ecc45128022"
@@ -74001,8 +72890,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -74011,7 +72898,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.perturbedEndpoint_external_not_indep_internal",
-        "source_line": 989,
+        "source_line": 987,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem perturbedEndpoint_external_not_indep_internal :\n    ¬ IndepFun perturbedExternal perturbedInternal perturbedEndpointLaw",
         "statement_sha256": "5128552577cd5bd700df13d4d7ed623dcc34a7c3d66a41d32a3d350b18fcefe2"
@@ -74070,8 +72957,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -74080,7 +72965,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.precisionZero_covarianceNonzero_condIndep",
-        "source_line": 919,
+        "source_line": 917,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem precisionZero_covarianceNonzero_condIndep\n    (center : StandardizedState) :\n    K external internal = 0 ∧\n      cov[fun state : StandardizedState => state external,\n        fun state => state internal; stationaryLaw center] = 1 / 24 ∧\n      cov[fun state : StandardizedState => state external,\n        fun state => state internal; stationaryLaw center] ≠ 0 ∧\n      ((fun state : StandardizedState => state external) ⟂ᵢ[\n        blanketCoordinates, measurable_blanketCoordinates; stationaryLaw center]\n        (fun state => state internal))",
         "statement_sha256": "3d6ce2667fffddf9948797f5de6f037883cfccedc3fc5e00532befca54b6a957"
@@ -74106,8 +72991,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -74116,7 +72999,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.stationaryPartition_eq_compProd",
-        "source_line": 771,
+        "source_line": 769,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem stationaryPartition_eq_compProd (center : StandardizedState) :\n    (stationaryLaw center).map partitionCoordinates =\n      blanketLaw center ⊗ₘ endpointConditionalKernel center",
         "statement_sha256": "08f28dd2b08bdd5e1e819f56f1f823c313b639a45260f169f25b5b621968d80a"
@@ -74151,8 +73034,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -74161,7 +73042,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.stationary_external_internal_covariance",
-        "source_line": 906,
+        "source_line": 904,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem stationary_external_internal_covariance (center : StandardizedState) :\n    cov[fun state : StandardizedState => state external,\n      fun state => state internal; stationaryLaw center] = 1 / 24",
         "statement_sha256": "db425238438a92428276316e802b168a4dbec375937afa5cc397831b50b34637"
@@ -74194,8 +73075,6 @@
         "import_context": [
           "FepSketches.fin4_gaussian_semigroup",
           "Mathlib.LinearAlgebra.Matrix.Notation",
-          "Mathlib.LinearAlgebra.Matrix.PosDef",
-          "Mathlib.LinearAlgebra.Matrix.SchurComplement",
           "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
           "Mathlib.Probability.Independence.Conditional"
         ],
@@ -74204,7 +73083,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.GaussianPrecisionConditioning.stationary_external_internal_covariance_ne_zero",
-        "source_line": 912,
+        "source_line": 910,
         "source_owner": "src/fep_lean/formal/gaussian_precision_conditioning.lean",
         "statement": "theorem stationary_external_internal_covariance_ne_zero\n    (center : StandardizedState) :\n    cov[fun state : StandardizedState => state external,\n      fun state => state internal; stationaryLaw center] ≠ 0",
         "statement_sha256": "8b6b706d4966bf5e9d882d9b4639cd7d6d2ec7d60650a7751d97f81683e84db5"
@@ -138107,6 +136986,1070 @@
         "statement": "theorem stationaryBlanket_doesNotImply_freeEnergyDescent :\n    FEP.FiniteMarkovDynamics.IsInvariant independentFairBlanket\n        pairIdentityKernel ∧\n      FEP.CausalDynamics.Factorizes independentStationaryBlanketModel ∧\n      independentStationaryBlanketModel.conditional () =\n        independentFairBlanket ∧\n      independentStationaryBlanketModel.blanketLaw () = 1 ∧\n      independentFairBlanket.fstMarginal =\n        predictedState (symmetricBoolModel fairBoolLaw) false ∧\n      posteriorState (symmetricBoolModel fairBoolLaw) false false\n        symmetricFalseEvidence = independentFairBlanket.fstMarginal ∧\n      ¬LocalFreeEnergyDescent stationaryPosteriorFreeEnergy 0 ∧\n      independentFairBlanket (false, false) = 1 / 4 ∧\n      independentFairBlanket (true, true) = 1 / 4",
         "statement_sha256": "cf95c4b2a9b1f4dcdf163c51a4ea76d7c1618088d0f6cb58af4bc9a77225d847"
       },
+      "FEPComposed.GaussianBlanket.blanketConditionalCovarianceCrossZeroIff": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "K"
+            ],
+            "role": "typed_binder",
+            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
+            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hK"
+            ],
+            "role": "typed_binder",
+            "source": "(hK : K.PosDef)",
+            "type_source": "K.PosDef",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(blanketConditionalCovariance K).toBlocks₁₂ = 0 ↔\n      ∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E",
+              "I",
+              "B"
+            ],
+            "role": "typed_binder",
+            "source": "{E I B : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype E]",
+            "type_source": "Fintype E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype I]",
+            "type_source": "Fintype I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype B]",
+            "type_source": "Fintype B",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq E]",
+            "type_source": "DecidableEq E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq I]",
+            "type_source": "DecidableEq I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq B]",
+            "type_source": "DecidableEq B",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "blanketConditionalCovariance_eq_inv",
+            "qualified_name": "FEPComposed.GaussianBlanket.blanketConditionalCovariance_eq_inv",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "blanketConditionalPrecision_posDef",
+            "qualified_name": "FEPComposed.GaussianBlanket.blanketConditionalPrecision_posDef",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "blanketPrecisionCrossZeroIff",
+            "qualified_name": "FEPComposed.GaussianBlanket.blanketPrecisionCrossZeroIff",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [
+          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
+        ],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.blanketConditionalCovarianceCrossZeroIff",
+        "source_line": 358,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem blanketConditionalCovarianceCrossZeroIff\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef) :\n    (blanketConditionalCovariance K).toBlocks₁₂ = 0 ↔\n      ∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
+        "statement_sha256": "82543d1c7ac500146dfb257e2e8bb67defcb5fdaba0abd8dbe8db5ea4a74e4f1"
+      },
+      "FEPComposed.GaussianBlanket.blanketConditionalCovariance_eq_inv": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "K"
+            ],
+            "role": "typed_binder",
+            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
+            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hK"
+            ],
+            "role": "typed_binder",
+            "source": "(hK : K.PosDef)",
+            "type_source": "K.PosDef",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "blanketConditionalCovariance K = (blanketConditionalPrecision K)⁻¹",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E",
+              "I",
+              "B"
+            ],
+            "role": "typed_binder",
+            "source": "{E I B : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype E]",
+            "type_source": "Fintype E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype I]",
+            "type_source": "Fintype I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype B]",
+            "type_source": "Fintype B",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq E]",
+            "type_source": "DecidableEq E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq I]",
+            "type_source": "DecidableEq I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq B]",
+            "type_source": "DecidableEq B",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "blanketConditionalPrecision_posDef",
+            "qualified_name": "FEPComposed.GaussianBlanket.blanketConditionalPrecision_posDef",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [
+          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
+        ],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.blanketConditionalCovariance_eq_inv",
+        "source_line": 287,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem blanketConditionalCovariance_eq_inv\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef) :\n    blanketConditionalCovariance K = (blanketConditionalPrecision K)⁻¹",
+        "statement_sha256": "41a5793ca3c56b197654caa762f5e99fa923d787685d5f80ef65c68d9c79c738"
+      },
+      "FEPComposed.GaussianBlanket.blanketConditionalPrecision_posDef": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "K"
+            ],
+            "role": "typed_binder",
+            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
+            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hK"
+            ],
+            "role": "typed_binder",
+            "source": "(hK : K.PosDef)",
+            "type_source": "K.PosDef",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(blanketConditionalPrecision K).PosDef",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E",
+              "I",
+              "B"
+            ],
+            "role": "typed_binder",
+            "source": "{E I B : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype E]",
+            "type_source": "Fintype E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype I]",
+            "type_source": "Fintype I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype B]",
+            "type_source": "Fintype B",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq E]",
+            "type_source": "DecidableEq E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq I]",
+            "type_source": "DecidableEq I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq B]",
+            "type_source": "DecidableEq B",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [
+          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
+        ],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.blanketConditionalPrecision_posDef",
+        "source_line": 280,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem blanketConditionalPrecision_posDef\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef) :\n    (blanketConditionalPrecision K).PosDef",
+        "statement_sha256": "cb5330b256e6651fc480b96b9c52b20958ca2e00b3e57b92afaca8ff19fe4edd"
+      },
+      "FEPComposed.GaussianBlanket.blanketNonSparsePrecisionConditionalCovarianceCrossNeZero": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "K"
+            ],
+            "role": "typed_binder",
+            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
+            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hK"
+            ],
+            "role": "typed_binder",
+            "source": "(hK : K.PosDef)",
+            "type_source": "K.PosDef",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "e"
+            ],
+            "role": "typed_binder",
+            "source": "{e : E}",
+            "type_source": "E",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "i"
+            ],
+            "role": "typed_binder",
+            "source": "{i : I}",
+            "type_source": "I",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hNonSparse"
+            ],
+            "role": "typed_binder",
+            "source": "(hNonSparse : K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) ≠ 0)",
+            "type_source": "K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) ≠ 0",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(blanketConditionalCovariance K).toBlocks₁₂ ≠ 0",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E",
+              "I",
+              "B"
+            ],
+            "role": "typed_binder",
+            "source": "{E I B : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype E]",
+            "type_source": "Fintype E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype I]",
+            "type_source": "Fintype I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype B]",
+            "type_source": "Fintype B",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq E]",
+            "type_source": "DecidableEq E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq I]",
+            "type_source": "DecidableEq I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq B]",
+            "type_source": "DecidableEq B",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "blanketConditionalCovarianceCrossZeroIff",
+            "qualified_name": "FEPComposed.GaussianBlanket.blanketConditionalCovarianceCrossZeroIff",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [
+          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
+        ],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.blanketNonSparsePrecisionConditionalCovarianceCrossNeZero",
+        "source_line": 381,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem blanketNonSparsePrecisionConditionalCovarianceCrossNeZero\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef) {e : E} {i : I}\n    (hNonSparse : K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) ≠ 0) :\n    (blanketConditionalCovariance K).toBlocks₁₂ ≠ 0",
+        "statement_sha256": "e8253d323bff29d8bcfd74590671447efdc668579c63a49fc98993be3f338333"
+      },
+      "FEPComposed.GaussianBlanket.blanketPrecisionCrossZeroIff": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "P"
+            ],
+            "role": "typed_binder",
+            "source": "{P : Matrix (E ⊕ I) (E ⊕ I) ℝ}",
+            "type_source": "Matrix (E ⊕ I) (E ⊕ I) ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hP"
+            ],
+            "role": "typed_binder",
+            "source": "(hP : P.PosDef)",
+            "type_source": "P.PosDef",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "P.toBlocks₁₂ = 0 ↔ P⁻¹.toBlocks₁₂ = 0",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E",
+              "I",
+              "B"
+            ],
+            "role": "typed_binder",
+            "source": "{E I B : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype E]",
+            "type_source": "Fintype E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype I]",
+            "type_source": "Fintype I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype B]",
+            "type_source": "Fintype B",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq E]",
+            "type_source": "DecidableEq E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq I]",
+            "type_source": "DecidableEq I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq B]",
+            "type_source": "DecidableEq B",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [
+          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
+        ],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.blanketPrecisionCrossZeroIff",
+        "source_line": 332,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem blanketPrecisionCrossZeroIff\n    {P : Matrix (E ⊕ I) (E ⊕ I) ℝ} (hP : P.PosDef) :\n    P.toBlocks₁₂ = 0 ↔ P⁻¹.toBlocks₁₂ = 0",
+        "statement_sha256": "2474fa4affe7ea8d3d04eb68e84f65c7da7a25520ec230cf22d4e11b9a073e21"
+      },
+      "FEPComposed.GaussianBlanket.blanketSparsePrecisionConditionalCovarianceCrossZero": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "K"
+            ],
+            "role": "typed_binder",
+            "source": "{K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ}",
+            "type_source": "Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hK"
+            ],
+            "role": "typed_binder",
+            "source": "(hK : K.PosDef)",
+            "type_source": "K.PosDef",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hSparse"
+            ],
+            "role": "typed_binder",
+            "source": "(hSparse : ∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0)",
+            "type_source": "∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(blanketConditionalCovariance K).toBlocks₁₂ = 0",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E",
+              "I",
+              "B"
+            ],
+            "role": "typed_binder",
+            "source": "{E I B : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype E]",
+            "type_source": "Fintype E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype I]",
+            "type_source": "Fintype I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype B]",
+            "type_source": "Fintype B",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq E]",
+            "type_source": "DecidableEq E",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq I]",
+            "type_source": "DecidableEq I",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq B]",
+            "type_source": "DecidableEq B",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "blanketConditionalCovarianceCrossZeroIff",
+            "qualified_name": "FEPComposed.GaussianBlanket.blanketConditionalCovarianceCrossZeroIff",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [
+          "{E I B : Type*} [Fintype E] [Fintype I] [Fintype B]\n  [DecidableEq E] [DecidableEq I] [DecidableEq B]"
+        ],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.blanketSparsePrecisionConditionalCovarianceCrossZero",
+        "source_line": 373,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem blanketSparsePrecisionConditionalCovarianceCrossZero\n    {K : Matrix ((E ⊕ I) ⊕ B) ((E ⊕ I) ⊕ B) ℝ} (hK : K.PosDef)\n    (hSparse : ∀ e i, K (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0) :\n    (blanketConditionalCovariance K).toBlocks₁₂ = 0",
+        "statement_sha256": "fa63bd381bbd0ca7192dbb2b74b75ba39727078d362ec744d25a5d23a0f808ee"
+      },
+      "FEPComposed.GaussianBlanket.fin4BlanketIndex_injective": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "Function.Injective fin4BlanketIndex",
+        "context_binders": [],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.fin4BlanketIndex_injective",
+        "source_line": 396,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem fin4BlanketIndex_injective : Function.Injective fin4BlanketIndex",
+        "statement_sha256": "2cd87498a1627b75b917ce381e20e1c7aad2d44c7915b73bdf9f19237da3e495"
+      },
+      "FEPComposed.GaussianBlanket.fin4BlanketPrecision_posDef": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "fin4BlanketPrecision.PosDef",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fin4BlanketIndex_injective",
+            "qualified_name": "FEPComposed.GaussianBlanket.fin4BlanketIndex_injective",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.fin4BlanketPrecision_posDef",
+        "source_line": 405,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem fin4BlanketPrecision_posDef : fin4BlanketPrecision.PosDef",
+        "statement_sha256": "8ae06f7f600160a23f89df2793a4a89edbf4fa2649256d429fa2ef8ca0aa8aca"
+      },
+      "FEPComposed.GaussianBlanket.fin4BlanketPrecision_sparse": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "∀ e i : Unit, fin4BlanketPrecision (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "candidates": [
+              "FEP.Fin4GaussianSemigroup.K_external_internal"
+            ],
+            "identifier": "K_external_internal",
+            "resolution": "unresolved lexical scope",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.fin4BlanketPrecision_sparse",
+        "source_line": 408,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem fin4BlanketPrecision_sparse :\n    ∀ e i : Unit, fin4BlanketPrecision (Sum.inl (Sum.inl e)) (Sum.inl (Sum.inr i)) = 0",
+        "statement_sha256": "abaf920b3ad07246792f367a4b980b6c4a985049de5a5b78e077f4a3a54ca9a0"
+      },
+      "FEPComposed.GaussianBlanket.fin4_blanket_generic_instance": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "center"
+            ],
+            "role": "typed_binder",
+            "source": "(center : StandardizedState)",
+            "type_source": "StandardizedState",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(blanketConditionalCovariance fin4BlanketPrecision).toBlocks₁₂ = 0 ∧\n      ((fun state : StandardizedState => state external) ⟂ᵢ[\n        blanketCoordinates, measurable_blanketCoordinates; stationaryLaw center]\n        (fun state => state internal))",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "candidates": [
+              "FEP.GaussianPrecisionConditioning.measurable_blanketCoordinates"
+            ],
+            "identifier": "measurable_blanketCoordinates",
+            "resolution": "unresolved lexical scope",
+            "role": "statement_reference"
+          },
+          {
+            "identifier": "blanketSparsePrecisionConditionalCovarianceCrossZero",
+            "qualified_name": "FEPComposed.GaussianBlanket.blanketSparsePrecisionConditionalCovarianceCrossZero",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "candidates": [
+              "FEP.GaussianPrecisionConditioning.external_condIndep_internal_given_blanket"
+            ],
+            "identifier": "external_condIndep_internal_given_blanket",
+            "resolution": "unresolved lexical scope",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fin4BlanketPrecision_posDef",
+            "qualified_name": "FEPComposed.GaussianBlanket.fin4BlanketPrecision_posDef",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fin4BlanketPrecision_sparse",
+            "qualified_name": "FEPComposed.GaussianBlanket.fin4BlanketPrecision_sparse",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.fin4_blanket_generic_instance",
+        "source_line": 415,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem fin4_blanket_generic_instance (center : StandardizedState) :\n    (blanketConditionalCovariance fin4BlanketPrecision).toBlocks₁₂ = 0 ∧\n      ((fun state : StandardizedState => state external) ⟂ᵢ[\n        blanketCoordinates, measurable_blanketCoordinates; stationaryLaw center]\n        (fun state => state internal))",
+        "statement_sha256": "ad5040d032db1b99c8c2f9abfae4f30da990e31ddb56764a70de2cd80c4f0e70"
+      },
+      "FEPComposed.GaussianBlanket.nonSparseBlanketPrecision_posDef": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "nonSparseBlanketPrecision.PosDef",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "perturbedBlanketIndex_injective",
+            "qualified_name": "FEPComposed.GaussianBlanket.perturbedBlanketIndex_injective",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.nonSparseBlanketPrecision_posDef",
+        "source_line": 441,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem nonSparseBlanketPrecision_posDef : nonSparseBlanketPrecision.PosDef",
+        "statement_sha256": "20016aac06891f89662226a65ad92a2661b56338f27738d7a8efadca5367d609"
+      },
+      "FEPComposed.GaussianBlanket.nonSparseBlanket_conditionalCovariance_cross_ne_zero": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "nonSparseBlanketPrecision (Sum.inl (Sum.inl ())) (Sum.inl (Sum.inr ())) ≠ 0 ∧\n      (blanketConditionalCovariance nonSparseBlanketPrecision).toBlocks₁₂ ≠ 0",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "blanketNonSparsePrecisionConditionalCovarianceCrossNeZero",
+            "qualified_name": "FEPComposed.GaussianBlanket.blanketNonSparsePrecisionConditionalCovarianceCrossNeZero",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "nonSparseBlanketPrecision_posDef",
+            "qualified_name": "FEPComposed.GaussianBlanket.nonSparseBlanketPrecision_posDef",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "candidates": [
+              "FEP.GaussianPrecisionConditioning.perturbedEndpointPrecision_external_internal"
+            ],
+            "identifier": "perturbedEndpointPrecision_external_internal",
+            "resolution": "unresolved lexical scope",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.nonSparseBlanket_conditionalCovariance_cross_ne_zero",
+        "source_line": 446,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem nonSparseBlanket_conditionalCovariance_cross_ne_zero :\n    nonSparseBlanketPrecision (Sum.inl (Sum.inl ())) (Sum.inl (Sum.inr ())) ≠ 0 ∧\n      (blanketConditionalCovariance nonSparseBlanketPrecision).toBlocks₁₂ ≠ 0",
+        "statement_sha256": "c43c8428f41b7489c95fffe7b7cbd84d1aa798a2c1c5d7687f38302ab4cac958"
+      },
+      "FEPComposed.GaussianBlanket.perturbedBlanketIndex_injective": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "Function.Injective perturbedBlanketIndex",
+        "context_binders": [],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.fep_all",
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed.GaussianBlanket",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [
+          {
+            "directive": "omit",
+            "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
+            "source": "omit [Fintype E] [Fintype I] [Fintype B] [DecidableEq E] [DecidableEq I] [DecidableEq B] in"
+          }
+        ],
+        "qualified_name": "FEPComposed.GaussianBlanket.perturbedBlanketIndex_injective",
+        "source_line": 431,
+        "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
+        "statement": "theorem perturbedBlanketIndex_injective : Function.Injective perturbedBlanketIndex",
+        "statement_sha256": "fa57e71f87fe54cba54a8e879f7ad126217634e64e35d2f55c25ef2305c76601"
+      },
       "FEPComposed.GaussianControl.actionTransition_comp_belief": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -162643,14 +162586,17 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.fep_all",
-          "FepSketches.native_blanket"
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep135_embeddedLaw_extends_fep017",
-        "source_line": 22,
+        "source_line": 25,
         "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
         "statement": "theorem fep135_embeddedLaw_extends_fep017\n    {State Observation : Type*}\n    [Fintype State] [Fintype Observation] [Nonempty State]\n    [MeasurableSpace State] [MeasurableSpace Observation]\n    [DiscreteMeasurableSpace State] [DiscreteMeasurableSpace Observation]\n    (law : FiniteLaw State) (kernel : FiniteKernel State Observation)\n    (observation : Observation) :\n    embeddedLaw law Set.univ = 1 ∧\n      fep_fep017.FEP017.fep017_posterior\n          (embeddedKernel kernel) (embeddedLaw law) observation Set.univ = 1",
         "statement_sha256": "252d74cdf1777e241537ee4239f364474356e5f1acbf8656e7b33339c6865335"
@@ -162764,14 +162710,17 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.fep_all",
-          "FepSketches.native_blanket"
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep136_embeddedExpectation_extends_fep015",
-        "source_line": 39,
+        "source_line": 42,
         "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
         "statement": "theorem fep136_embeddedExpectation_extends_fep015\n    {State : Type*} [Fintype State]\n    [MeasurableSpace State] [DiscreteMeasurableSpace State]\n    (law : FiniteLaw State)\n    (energy logApproximation logGenerative : State → ℝ)\n    (energyMeasurable : Measurable energy)\n    (approximationMeasurable : Measurable logApproximation)\n    (generativeMeasurable : Measurable logGenerative) :\n    (∫ state,\n        fep_fep015.FEP015.fep015_variationalIntegrand\n          energy logApproximation logGenerative state ∂embeddedLaw law) =\n          ∑ state, law state *\n            fep_fep015.FEP015.fep015_variationalIntegrand\n              energy logApproximation logGenerative state ∧\n      Measurable\n        (fep_fep015.FEP015.fep015_variationalIntegrand\n          energy logApproximation logGenerative)",
         "statement_sha256": "ca466817282444e6fc3a9f993b5560e481de7b528bef7a1010c776b47bf83dbe"
@@ -162878,14 +162827,17 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.fep_all",
-          "FepSketches.native_blanket"
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep137_embeddedPredictive_extends_fep019",
-        "source_line": 65,
+        "source_line": 68,
         "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
         "statement": "theorem fep137_embeddedPredictive_extends_fep019\n    {Input Output : Type*} [Fintype Input] [Fintype Output]\n    [MeasurableSpace Input] [MeasurableSpace Output]\n    [DiscreteMeasurableSpace Input] [DiscreteMeasurableSpace Output]\n    (prior : FiniteLaw Input) (kernel : FiniteKernel Input Output) :\n    embeddedLaw (kernel.predictive prior) =\n        embeddedKernel kernel ∘ₘ embeddedLaw prior ∧\n      fep_fep019.FEP019.fep019_priorPredictive\n          (embeddedKernel kernel) (embeddedLaw prior) Set.univ = 1",
         "statement_sha256": "313461519c783353cd95212112a297a7d5f94c6d6e14687c910a3ac6d7877a5e"
@@ -163062,14 +163014,17 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.fep_all",
-          "FepSketches.native_blanket"
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep138_rectangleFactorization_extends_fep079",
-        "source_line": 81,
+        "source_line": 84,
         "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
         "statement": "theorem fep138_rectangleFactorization_extends_fep079\n    {Internal Sensory Active External : Type*}\n    [Fintype Internal] [Fintype Sensory] [Fintype Active] [Fintype External]\n    [MeasurableSpace Internal] [MeasurableSpace Sensory]\n    [MeasurableSpace Active] [MeasurableSpace External]\n    [DiscreteMeasurableSpace Internal] [DiscreteMeasurableSpace Sensory]\n    [DiscreteMeasurableSpace Active] [DiscreteMeasurableSpace External]\n    (model : StaticModel Internal Sensory Active External)\n    (blanket : Blanket Sensory Active) (internal : Internal)\n    (external : External) :\n    embeddedLaw (staticJoint model)\n        (blanketCoordinate ⁻¹' {blanket} ∩\n          internalCoordinate ⁻¹' {internal} ∩\n          externalCoordinate ⁻¹' {external}) =\n        ENNReal.ofReal (model.blanketLaw blanket) *\n          ENNReal.ofReal (model.internalGiven blanket internal) *\n            ENNReal.ofReal (model.externalGiven blanket external) ∧\n      conditionalMutualInformation (ofStaticModel model) = 0",
         "statement_sha256": "a14a4b11ad13e2fe6e967dc87677da1f2dafc23753050ef4558a5b81038c86ab"
@@ -163232,14 +163187,17 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.fep_all",
-          "FepSketches.native_blanket"
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep139_nativeCondIndep_connects_fep009_fep079",
-        "source_line": 110,
+        "source_line": 113,
         "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
         "statement": "theorem fep139_nativeCondIndep_connects_fep009_fep079\n    {Internal Sensory Active External : Type*}\n    [Fintype Internal] [Fintype Sensory] [Fintype Active] [Fintype External]\n    [Nonempty Internal] [Nonempty External]\n    [MeasurableSpace Internal] [MeasurableSpace Sensory]\n    [MeasurableSpace Active] [MeasurableSpace External]\n    [DiscreteMeasurableSpace Internal] [DiscreteMeasurableSpace Sensory]\n    [DiscreteMeasurableSpace Active] [DiscreteMeasurableSpace External]\n    (model : StaticModel Internal Sensory Active External) :\n    CondIndepFun\n        (MeasurableSpace.comap blanketCoordinate inferInstance)\n        blanketCoordinate_measurable.comap_le\n        internalCoordinate externalCoordinate\n        (embeddedLaw (staticJoint model)) ∧\n      (CondIndep\n          (MeasurableSpace.comap blanketCoordinate inferInstance)\n          (MeasurableSpace.comap internalCoordinate inferInstance)\n          (MeasurableSpace.comap externalCoordinate inferInstance)\n          blanketCoordinate_measurable.comap_le\n          (embeddedLaw (staticJoint model)) →\n        CondIndep\n          (MeasurableSpace.comap blanketCoordinate inferInstance)\n          (MeasurableSpace.comap externalCoordinate inferInstance)\n          (MeasurableSpace.comap internalCoordinate inferInstance)\n          blanketCoordinate_measurable.comap_le\n          (embeddedLaw (staticJoint model)))",
         "statement_sha256": "d0532db8a77090aa05140a1197c3cec2f466332556883499c36b334e4fae0e77"
@@ -163460,14 +163418,17 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.fep_all",
-          "FepSketches.native_blanket"
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep140_measurableCoarsening_extends_fep009",
-        "source_line": 150,
+        "source_line": 153,
         "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
         "statement": "theorem fep140_measurableCoarsening_extends_fep009\n    {Internal Sensory Active External InternalImage ExternalImage : Type*}\n    [Fintype Internal] [Fintype Sensory] [Fintype Active] [Fintype External]\n    [Nonempty Internal] [Nonempty External]\n    [MeasurableSpace Internal] [MeasurableSpace Sensory]\n    [MeasurableSpace Active] [MeasurableSpace External]\n    [MeasurableSpace InternalImage] [MeasurableSpace ExternalImage]\n    [DiscreteMeasurableSpace Internal] [DiscreteMeasurableSpace Sensory]\n    [DiscreteMeasurableSpace Active] [DiscreteMeasurableSpace External]\n    (model : StaticModel Internal Sensory Active External)\n    (internalImage : Internal → InternalImage)\n    (externalImage : External → ExternalImage)\n    (internalMeasurable : Measurable internalImage)\n    (externalMeasurable : Measurable externalImage) :\n    CondIndepFun\n        (MeasurableSpace.comap blanketCoordinate inferInstance)\n        blanketCoordinate_measurable.comap_le\n        (internalImage ∘ internalCoordinate)\n        (externalImage ∘ externalCoordinate)\n        (embeddedLaw (staticJoint model)) ∧\n      (CondIndep\n          (MeasurableSpace.comap blanketCoordinate inferInstance)\n          (MeasurableSpace.comap (internalImage ∘ internalCoordinate) inferInstance)\n          (MeasurableSpace.comap (externalImage ∘ externalCoordinate) inferInstance)\n          blanketCoordinate_measurable.comap_le\n          (embeddedLaw (staticJoint model)) →\n        CondIndep\n          (MeasurableSpace.comap blanketCoordinate inferInstance)\n          (MeasurableSpace.comap (externalImage ∘ externalCoordinate) inferInstance)\n          (MeasurableSpace.comap (internalImage ∘ internalCoordinate) inferInstance)\n          blanketCoordinate_measurable.comap_le\n          (embeddedLaw (staticJoint model)))",
         "statement_sha256": "8d473bc9565030f7825ad70d72ccd80ff7c110b36f921565aaaf2094c6dbb7d5"
@@ -163681,14 +163642,17 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.fep_all",
-          "FepSketches.native_blanket"
+          "FepSketches.native_blanket",
+          "FepSketches.gaussian_precision_conditioning",
+          "Mathlib.LinearAlgebra.Matrix.PosDef",
+          "Mathlib.LinearAlgebra.Matrix.SchurComplement"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep141_blanketTransition_extends_fep080",
-        "source_line": 200,
+        "source_line": 203,
         "source_owner": "src/fep_lean/formal/compositions/native_blanket_transfer.lean",
         "statement": "theorem fep141_blanketTransition_extends_fep080\n    {Internal Sensory Active External : Type*}\n    [Fintype Internal] [Fintype Sensory] [Fintype Active] [Fintype External]\n    [Nonempty Internal] [Nonempty External]\n    [MeasurableSpace Internal] [MeasurableSpace Sensory]\n    [MeasurableSpace Active] [MeasurableSpace External]\n    [DiscreteMeasurableSpace Internal] [DiscreteMeasurableSpace Sensory]\n    [DiscreteMeasurableSpace Active] [DiscreteMeasurableSpace External]\n    (dynamics : Dynamics Internal Sensory Active External)\n    (current : DynamicState Internal Sensory Active External)\n    (weight : ℝ) (weightNonnegative : 0 ≤ weight) (weightAtMostOne : weight ≤ 1)\n    (left right : FiniteLaw (Blanket Sensory Active)) :\n    CondIndepFun\n        (MeasurableSpace.comap blanketCoordinate inferInstance)\n        blanketCoordinate_measurable.comap_le\n        internalCoordinate externalCoordinate\n        (embeddedLaw (staticJoint (nextStaticModel dynamics current))) ∧\n      (conditionalPairKernel (nextStaticModel dynamics current)).joint\n          (mixLaw weight weightNonnegative weightAtMostOne left right) =\n        mixLaw weight weightNonnegative weightAtMostOne\n          ((conditionalPairKernel (nextStaticModel dynamics current)).joint left)\n          ((conditionalPairKernel (nextStaticModel dynamics current)).joint right)",
         "statement_sha256": "0d8b9e99a4587e7a1524509bc1b92e9b1a7dfa614ff6416b939bc0b24409b765"

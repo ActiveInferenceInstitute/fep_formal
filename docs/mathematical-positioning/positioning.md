@@ -20026,7 +20026,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/h3_case_study.lean` | `7a8ba9346dc9ab700ac6276c26421b46c0437eabaab7cd448a2bc05998318849` |
 | `formal/compositions/helmholtz_ao_ness.lean` | `b44ad9bed15bfa001f20de6fd4a6ada836054ded68608fd1010327cf620100da` |
 | `formal/compositions/measure_variational.lean` | `b83d99c2d335ce3ecc1e5abbeced61cb0e90f71b75013963152652e526dec5a9` |
-| `formal/compositions/native_blanket_transfer.lean` | `0be9b922cf9f322adaefb6dbcd441b781da466b41f7ad82f1744ce943bd3c9df` |
+| `formal/compositions/native_blanket_transfer.lean` | `0cc6029a3c7199aaf68e920990b658227fa04420cd8b8e10c4ca58da959e1bd1` |
 | `formal/compositions/perception_action_loop.lean` | `9b4061352a3e0ec3c5835a52efda326036b47676a69820c90af4c4b65a648294` |
 | `formal/compositions/policy_trees.lean` | `98a74b0976bbac14a784887c38cdaf95db373a071667ecc66bd7f2b7ea657db4` |
 | `formal/compositions/risk_calibration.lean` | `428430da8985d59619fe00975b79eff4151ccd90d3e078fbb10796c17f8cb455` |
@@ -20046,7 +20046,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/finite_posterior_learning.lean` | `c7b8e6bb97f33edc75ffb627cd03998c22943a2b2f34017d12ab5b1d24c86cc6` |
 | `formal/finite_probability.lean` | `eb019691997b8c9a2e3dfbe127bf3336610c5dd12bb035e559dc1d77842c9a66` |
 | `formal/gaussian_information_geometry.lean` | `cb4d2a5d8c5bb5061e08c3d968d00cdafd7c60b2849b4ecc7c5efaae8f0bae1c` |
-| `formal/gaussian_precision_conditioning.lean` | `5544cd30da1f5cc80cfda3d5176a6c1e4bb1e5d5953ef6e400e32f7fa5eb6025` |
+| `formal/gaussian_precision_conditioning.lean` | `64afcf45cf2ef44b78db7e5b2fb2de02bd3af80cefda888523baae1043b37c38` |
 | `formal/geometric_mechanics.lean` | `8fa48e8f991e9f977f6a6018a1a3450470e06df4654ed6e9f35e9602b987a438` |
 | `formal/geometric_optimization.lean` | `c5db1cacf6fdbfab8a1a776bd1ffe4bb9883a122f9f83b433eb04641cfdf6a2f` |
 | `formal/gnn_denotation.lean` | `1ef46fd7b090115b36a392cdb69b4c87847ca63a99edd3e4bf5e706d7df5b2bd` |
