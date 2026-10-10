@@ -170,3 +170,35 @@ coverage map records distinct modules and topic-to-import edges. The metadata
 
 `LeanVerifier` writes only transient `_verify_*.lean` files beneath
 `lean/FepSketches/`; these are removed after each compilation.
+
+## Gaussian conditioning against Mathlib {#gaussian-conditioning-gap-memo}
+
+Gap memo for LEAN-14, probed against the pinned Mathlib under
+`lean/.lake/packages/mathlib`. Verdict: the algebraic (precision and
+covariance) route is feasible and is implemented in
+`gaussian_precision_conditioning.lean`; the generic measure-level conditional
+statement is a Mathlib gap.
+
+| Need | Status in pinned Mathlib |
+| --- | --- |
+| Multivariate Gaussian law `multivariateGaussian μ S`, covariance entries, marginal restriction | Present (`Gaussian/Multivariate.lean`) |
+| Uncorrelated jointly Gaussian coordinates are independent | Present (`HasGaussianLaw/Independence.lean`), unconditional only |
+| Block inverses, `det_fromBlocks₁₁/₂₂`, `invOf_fromBlocks₁₁_eq/₂₂_eq`, `inv_fromBlocks_zero₂₁_of_isUnit_iff` | Present (`SchurComplement.lean`) |
+| `PosSemidef.fromBlocks₁₁/₂₂` (positivity iff Schur complement) | Present (`PosDef.lean`), semidefinite only |
+| Principal submatrix and inverse of a `PosDef` matrix are `PosDef` | Present (`PosDef.submatrix`, `PosDef.inv`) |
+| `condIndepFun` and `condDistrib` characterisations | Present (`Independence/Conditional.lean`) |
+| Schur complement of the inverse equals inverse of the principal block (`Σ_xx - Σ_xb Σ_bb⁻¹ Σ_bx = (K_xx)⁻¹`) | Missing; proved here, about 40 lines |
+| Gaussian conditional kernel (`condDistrib` of a Gaussian given a coordinate block is Gaussian with Schur-complement covariance) | Missing; estimate several hundred lines (disintegration plus affine-shift decomposition) |
+| Gaussian conditional independence from block-sparse precision | Missing; follows from the previous row, same size class |
+| Block-diagonal covariance of a Gaussian gives independence of blocks (vector-valued) | Partly present (`diagonalStrongDualProd`); not stated for conditionals |
+
+FORM-S14 therefore proves the dimension-generic statement at the algebraic
+level (conditional precision is the interior principal block, conditional
+covariance is its inverse, and its external--internal cross block vanishes
+exactly when `K_{ei} = 0`), recovers the fixed Fin4 theorem as an instance next
+to the existing measure-level `external_condIndep_internal_given_blanket`, and
+supplies a non-sparse countermodel. The measure-level generic theorem waits on
+the Gaussian conditional kernel rows above. These declarations live in
+`FEPComposed.GaussianBlanket` inside `compositions/native_blanket_transfer.lean`,
+because the Gaussian carrier modules they build on are hash-frozen by the H3
+custody record.

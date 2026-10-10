@@ -5,7 +5,7 @@ disposition changes: each new statement awaits independent review against its
 theorem proxy, and compilation establishes only the exact Lean statements.
 Every addition builds warning-free at the pin (Lean v4.34.1) and depends only on
 `propext`, `Classical.choice` and `Quot.sound`. Lexical Lean declarations grow
-from 1,946 to 2,125.
+from 1,946 to 2,185.
 
 - Path thermodynamics: the Jarzynski normalisation follows from a pathwise
   Crooks relation and is strictly weaker than it ([#87](https://github.com/ActiveInferenceInstitute/fep_formal/issues/87)); Markov-chain path
@@ -23,6 +23,22 @@ from 1,946 to 2,125.
 - NESS flow: the Helmholtz-decomposed stationary current is divergence-free,
   so the Fokker–Planck rate vanishes; non-skew and rotation countermodels mark
   the hypotheses ([#98](https://github.com/ActiveInferenceInstitute/fep_formal/issues/98)).
+- Variational free energy from a joint model: surprisal is derived as the
+  negative log evidence of a prior and likelihood kernel, so VFE equals KL to
+  the exact posterior plus surprisal, with a strict-gap witness and a
+  zero-evidence boundary ([#84](https://github.com/ActiveInferenceInstitute/fep_formal/issues/84)).
+- Sophisticated inference with Bayesian updates: one generative model and its
+  filter instantiate both planners, which agree with the reachable-belief
+  POMDP optimum; the fep-134 witness is re-derived through the filter and an
+  observation-ignoring update is a countermodel ([#94](https://github.com/ActiveInferenceInstitute/fep_formal/issues/94)).
+- Dirichlet–categorical learning (stage 1): Pólya predictive, rising-factorial
+  sequence law, exchangeability and normalised row-wise A/B learning; `K = 2`
+  recovers the Bernoulli update and `α = 1` Laplace smoothing ([#95](https://github.com/ActiveInferenceInstitute/fep_formal/issues/95)).
+- Gaussian Markov blankets in any dimension: for positive-definite block
+  precision, the conditional external–internal covariance vanishes exactly
+  when `K_ei = 0`; the `Fin 4` theorem is an instance and a non-sparse precision
+  is a countermodel. Measure-level Gaussian conditioning is a recorded Mathlib
+  gap ([#97](https://github.com/ActiveInferenceInstitute/fep_formal/issues/97), [#112](https://github.com/ActiveInferenceInstitute/fep_formal/issues/112)).
 - Variational free energy: general finite maximum entropy and the constrained
   Gibbs maximiser ([#85](https://github.com/ActiveInferenceInstitute/fep_formal/issues/85)); Helmholtz free energy as the unique variational
   minimum with `dF/dT = −H` derived ([#86](https://github.com/ActiveInferenceInstitute/fep_formal/issues/86)).

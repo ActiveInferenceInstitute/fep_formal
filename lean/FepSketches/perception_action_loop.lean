@@ -1,6 +1,7 @@
 import FepSketches.active_inference
 import FepSketches.controlled_markov
 import FepSketches.finite_markov_dynamics
+import FepSketches.policy_tree
 import FepSketches.temporal_inference
 import FepSketches.continuous_time_markov
 
@@ -44,7 +45,7 @@ No new axioms are introduced; every theorem reuses the pinned foundation.
 namespace FEP.PerceptionActionLoop
 
 open FEP FEP.ActiveInference FEP.ControlledMarkov FEP.FiniteInformation
-  FEP.TemporalInference Finset
+  FEP.TemporalInference FEP.PolicyTrees Finset
 open scoped BigOperators
 
 variable {Policy State Outcome : Type*}
@@ -542,5 +543,577 @@ theorem loop_fixed_point_is_boltzmann (precision : ℝ)
     rw [policyPartition, hsum, ← Finset.sum_mul, model.policyPrior.sum_one, one_mul]
   rw [hweight candidate, hpart]
   field_simp
+
+/-! ## Bayesian instantiation of sophisticated and policy-tree planning
+
+`SophisticatedEFEModel` and `EFEPolicyTreeModel` accept an arbitrary
+`update`, so their risk-ambiguity optimum is silent about whether beliefs are
+actually filtered.  The carrier below fixes one generative model, indexes a
+finite family of beliefs by `interpret`, and requires the belief update to be
+the predict-then-`filteredBelief` posterior at every positive-evidence
+observation.  Both planners are then instantiated from this single carrier
+and proved to agree with each other and with the reachable-belief POMDP
+optimum.  A non-Bayesian update is shown to break the agreement. -/
+
+section BayesianPlanning
+
+variable {Belief Action : Type*} [Fintype Belief] [Fintype Action]
+
+/-- One generative model with a finite belief index family whose update is the
+Bayesian filter: after the action's transition, the observation conditions the
+predicted state law through the likelihood (`filteredBelief`). -/
+structure BayesianBeliefModel
+    (Belief State Action Outcome : Type*)
+    [Fintype Belief] [Fintype State] [Fintype Action] [Fintype Outcome] where
+  generative : GenerativeModel Action State Outcome
+  interpret : Belief → FiniteLaw State
+  update : Belief → Action → Outcome → Belief
+  update_filtered : ∀ (belief : Belief) (action : Action) (outcome : Outcome)
+      (hEvidence : 0 < generative.likelihood.predictive
+        (predictedState (withInitialState generative (interpret belief)) action)
+        outcome),
+    interpret (update belief action outcome) =
+      filteredBelief generative
+        (predictedState (withInitialState generative (interpret belief)) action)
+        outcome hEvidence
+
+/-- The generative model rooted at the belief denoted by an index. -/
+def bayesGenerative
+    (model : BayesianBeliefModel Belief State Action Outcome)
+    (belief : Belief) : GenerativeModel Action State Outcome :=
+  withInitialState model.generative (model.interpret belief)
+
+/-- The Bayesian update denotes the action-conditioned Bayesian posterior of
+the control layer at every positive-evidence observation. -/
+theorem bayesUpdate_eq_actionBeliefUpdate
+    (model : BayesianBeliefModel Belief State Action Outcome)
+    (belief : Belief) (action : Action) (outcome : Outcome)
+    (hEvidence : 0 < actionEvidence (model.interpret belief)
+      model.generative.transition model.generative.likelihood action outcome) :
+    model.interpret (model.update belief action outcome) =
+      actionBeliefUpdate (model.interpret belief) model.generative.transition
+        model.generative.likelihood action outcome hEvidence :=
+  model.update_filtered belief action outcome hEvidence
+
+/-- Sophisticated planner instantiated from the Bayesian carrier: the
+observation law is the generative model's predicted outcome, the stage cost is
+its expected free energy, and the update is the carrier's filter. -/
+noncomputable def bayesSophisticatedModel
+    (model : BayesianBeliefModel Belief State Action Outcome) :
+    SophisticatedEFEModel Belief Action Outcome where
+  observationLaw belief action := predictedOutcome (bayesGenerative model belief) action
+  update := model.update
+  stageEFE _ belief action := expectedFreeEnergy (bayesGenerative model belief) action
+
+/-- Policy-tree planner instantiated from the same Bayesian carrier, at full
+support. -/
+def bayesEFEPolicyTreeModel
+    (model : BayesianBeliefModel Belief State Action Outcome)
+    (support : ∀ belief, FullSupport (bayesGenerative model belief)) :
+    EFEPolicyTreeModel Belief State Action Outcome where
+  generative := bayesGenerative model
+  update := model.update
+  support := support
+
+/-- The reachable-belief POMDP of the Bayesian carrier, rooted at an initial
+index; its update soundness is the carrier's filter identity. -/
+noncomputable def bayesReachablePOMDP
+    (model : BayesianBeliefModel Belief State Action Outcome)
+    (initial : Belief) :
+    ReachableBeliefPOMDP Belief State Action Outcome where
+  initial := initial
+  reachable := Finset.univ
+  initial_mem := Finset.mem_univ initial
+  interpret := model.interpret
+  transition := model.generative.transition
+  emission := model.generative.likelihood
+  update := model.update
+  update_mem := fun belief _ action outcome _ =>
+    Finset.mem_univ (model.update belief action outcome)
+  update_sound := fun belief action outcome hEvidence =>
+    bayesUpdate_eq_actionBeliefUpdate model belief action outcome hEvidence
+
+/-- Policy-tree model of a reachable-belief POMDP with an arbitrary stage
+cost: observations follow the POMDP's observation law and beliefs follow its
+update. -/
+noncomputable def pomdpPolicyTreeModel
+    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)
+    (cost : ℕ → Belief → Action → ℝ) :
+    PolicyTreeModel Belief Action Outcome where
+  observationLaw belief action :=
+    actionObservationLaw (pomdp.interpret belief) pomdp.transition
+      pomdp.emission action
+  update := pomdp.update
+  stageCost := cost
+
+/-- The EFE tree model of the Bayesian carrier is the policy-tree model of its
+reachable-belief POMDP under the expected-free-energy stage cost. -/
+theorem bayesEFETree_eq_pomdpTree
+    (model : BayesianBeliefModel Belief State Action Outcome)
+    (support : ∀ belief, FullSupport (bayesGenerative model belief))
+    (initial : Belief) :
+    efePolicyTreeModel (bayesEFEPolicyTreeModel model support) =
+      pomdpPolicyTreeModel (bayesReachablePOMDP model initial)
+        (fun _ belief action =>
+          expectedFreeEnergy (bayesGenerative model belief) action) :=
+  rfl
+
+/-- The sophisticated recursion and the EFE policy-tree optimum coincide when
+both are instantiated from one Bayesian carrier. -/
+theorem bayesSophisticatedValue_eq_optimalTree [Nonempty Action]
+    (model : BayesianBeliefModel Belief State Action Outcome)
+    (support : ∀ belief, FullSupport (bayesGenerative model belief))
+    (depth : ℕ) (belief : Belief) :
+    sophisticatedEFEValue (bayesSophisticatedModel model) depth belief =
+      optimalTreeValue (efePolicyTreeModel (bayesEFEPolicyTreeModel model support))
+        depth belief := by
+  induction depth generalizing belief with
+  | zero => rfl
+  | succ depth inductionHypothesis =>
+      have hObjective :
+          (fun action =>
+            (bayesSophisticatedModel model).stageEFE depth belief action +
+              ∑ outcome,
+                (bayesSophisticatedModel model).observationLaw belief action
+                    outcome *
+                  sophisticatedEFEValue (bayesSophisticatedModel model) depth
+                    ((bayesSophisticatedModel model).update belief action
+                      outcome)) =
+            (fun action =>
+              (efePolicyTreeModel (bayesEFEPolicyTreeModel model support)).stageCost
+                  depth belief action +
+                ∑ outcome,
+                  (efePolicyTreeModel
+                      (bayesEFEPolicyTreeModel model support)).observationLaw
+                      belief action outcome *
+                    optimalTreeValue
+                      (efePolicyTreeModel (bayesEFEPolicyTreeModel model support))
+                      depth
+                      ((efePolicyTreeModel
+                        (bayesEFEPolicyTreeModel model support)).update belief
+                        action outcome)) := by
+        funext action
+        apply congrArg
+        apply Finset.sum_congr rfl
+        intro outcome _
+        exact congrArg _ (inductionHypothesis _)
+      change
+        (fun action =>
+            (bayesSophisticatedModel model).stageEFE depth belief action +
+              ∑ outcome,
+                (bayesSophisticatedModel model).observationLaw belief action
+                    outcome *
+                  sophisticatedEFEValue (bayesSophisticatedModel model) depth
+                    ((bayesSophisticatedModel model).update belief action
+                      outcome))
+          (finiteArgmin _) = _
+      rw [hObjective]
+      rfl
+
+/-- Pushforward expectation under a deterministic map. -/
+theorem finiteLawMapSum {α β : Type*} [DecidableEq β] [Fintype α] [Fintype β]
+    (f : α → β) (law : FiniteLaw α) (g : β → ℝ) :
+    ∑ y, law.map f y * g y = ∑ x, law x * g (f x) := by
+  simp only [FiniteLaw.map_mass, Finset.sum_mul]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro x _
+  simp [ite_mul]
+
+/-- Finite-horizon value of a belief-feedback policy on a reachable-belief
+POMDP, using its reachable-belief kernel and an arbitrary belief stage cost. -/
+noncomputable def beliefFeedbackValue [DecidableEq Belief]
+    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)
+    (cost : ℕ → Belief → Action → ℝ) (policy : ℕ → Belief → Action) :
+    ℕ → Belief → ℝ
+  | 0, _ => 0
+  | horizon + 1, belief =>
+      cost horizon belief (policy horizon belief) +
+        ∑ nextBelief,
+          reachableBeliefKernel pomdp (policy horizon belief) belief nextBelief *
+            beliefFeedbackValue pomdp cost policy horizon nextBelief
+
+/-- The reachable-belief kernel expectation is the observation-law expectation
+of the updated belief. -/
+theorem reachableBeliefKernel_sum [DecidableEq Belief]
+    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)
+    (action : Action) (belief : Belief) (continuation : Belief → ℝ) :
+    ∑ nextBelief,
+        reachableBeliefKernel pomdp action belief nextBelief *
+          continuation nextBelief =
+      ∑ outcome,
+        actionObservationLaw (pomdp.interpret belief) pomdp.transition
+            pomdp.emission action outcome *
+          continuation (pomdp.update belief action outcome) :=
+  finiteLawMapSum (pomdp.update belief action)
+    (actionObservationLaw (pomdp.interpret belief) pomdp.transition
+      pomdp.emission action) continuation
+
+/-- No belief-feedback policy beats the policy-tree optimum of the POMDP. -/
+theorem optimalTreeValue_le_beliefFeedback [Nonempty Action] [DecidableEq Belief]
+    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)
+    (cost : ℕ → Belief → Action → ℝ) (policy : ℕ → Belief → Action) :
+    ∀ (horizon : ℕ) (belief : Belief),
+      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief ≤
+        beliefFeedbackValue pomdp cost policy horizon belief
+  | 0, _ => le_rfl
+  | horizon + 1, belief => by
+      have hAction := optimalTreeAction_le (pomdpPolicyTreeModel pomdp cost)
+        horizon belief (policy horizon belief)
+      rw [optimalTreeValue_eq_min]
+      refine hAction.trans ?_
+      change
+        cost horizon belief (policy horizon belief) +
+            ∑ outcome,
+              actionObservationLaw (pomdp.interpret belief) pomdp.transition
+                  pomdp.emission (policy horizon belief) outcome *
+                optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon
+                  (pomdp.update belief (policy horizon belief) outcome) ≤
+          cost horizon belief (policy horizon belief) +
+            ∑ nextBelief,
+              reachableBeliefKernel pomdp (policy horizon belief) belief
+                  nextBelief *
+                beliefFeedbackValue pomdp cost policy horizon nextBelief
+      rw [reachableBeliefKernel_sum pomdp (policy horizon belief) belief
+        (beliefFeedbackValue pomdp cost policy horizon)]
+      apply add_le_add (le_refl _)
+      apply Finset.sum_le_sum
+      intro outcome _
+      exact mul_le_mul_of_nonneg_left
+        (optimalTreeValue_le_beliefFeedback pomdp cost policy horizon _)
+        ((actionObservationLaw (pomdp.interpret belief) pomdp.transition
+          pomdp.emission (policy horizon belief)).nonneg outcome)
+
+/-- The Bellman-optimal action policy of the POMDP's tree model attains the
+policy-tree optimum as a belief-feedback policy on the reachable-belief
+kernel. -/
+theorem optimalTreeValue_eq_beliefFeedback [Nonempty Action] [DecidableEq Belief]
+    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)
+    (cost : ℕ → Belief → Action → ℝ) :
+    ∀ (horizon : ℕ) (belief : Belief),
+      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief =
+        beliefFeedbackValue pomdp cost
+          (optimalTreeAction (pomdpPolicyTreeModel pomdp cost)) horizon belief
+  | 0, _ => rfl
+  | horizon + 1, belief => by
+      rw [optimalTreeValue_eq_min]
+      change
+        cost horizon belief
+              (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon belief) +
+            ∑ outcome,
+              actionObservationLaw (pomdp.interpret belief) pomdp.transition
+                  pomdp.emission
+                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon
+                    belief) outcome *
+                optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon
+                  (pomdp.update belief
+                    (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon
+                      belief) outcome) =
+          cost horizon belief
+              (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon belief) +
+            ∑ nextBelief,
+              reachableBeliefKernel pomdp
+                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon
+                    belief) belief nextBelief *
+                beliefFeedbackValue pomdp cost
+                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost)) horizon
+                  nextBelief
+      rw [reachableBeliefKernel_sum]
+      apply congrArg
+      apply Finset.sum_congr rfl
+      intro outcome _
+      rw [optimalTreeValue_eq_beliefFeedback pomdp cost horizon]
+
+/-- The sophisticated Bayesian recursion is the reachable-belief POMDP optimum:
+it never exceeds any belief-feedback policy's value and is attained by the
+Bellman-optimal one. -/
+theorem bayesSophisticatedValue_eq_pomdpOptimum [Nonempty Action] [DecidableEq Belief]
+    (model : BayesianBeliefModel Belief State Action Outcome)
+    (support : ∀ belief, FullSupport (bayesGenerative model belief))
+    (initial : Belief) :
+    (∀ (policy : ℕ → Belief → Action) (horizon : ℕ) (belief : Belief),
+      sophisticatedEFEValue (bayesSophisticatedModel model) horizon belief ≤
+        beliefFeedbackValue (bayesReachablePOMDP model initial)
+          (fun _ belief action =>
+            expectedFreeEnergy (bayesGenerative model belief) action)
+          policy horizon belief) ∧
+      ∃ policy : ℕ → Belief → Action, ∀ (horizon : ℕ) (belief : Belief),
+        sophisticatedEFEValue (bayesSophisticatedModel model) horizon belief =
+          beliefFeedbackValue (bayesReachablePOMDP model initial)
+            (fun _ belief action =>
+              expectedFreeEnergy (bayesGenerative model belief) action)
+            policy horizon belief := by
+  refine ⟨fun policy horizon belief => ?_,
+    optimalTreeAction (pomdpPolicyTreeModel (bayesReachablePOMDP model initial)
+      (fun _ belief action =>
+        expectedFreeEnergy (bayesGenerative model belief) action)),
+    fun horizon belief => ?_⟩
+  · rw [bayesSophisticatedValue_eq_optimalTree model support,
+      bayesEFETree_eq_pomdpTree model support initial]
+    exact optimalTreeValue_le_beliefFeedback _ _ policy horizon belief
+  · rw [bayesSophisticatedValue_eq_optimalTree model support,
+      bayesEFETree_eq_pomdpTree model support initial]
+    exact optimalTreeValue_eq_beliefFeedback _ _ horizon belief
+
+/-- On the Bayesian carrier the risk-ambiguity optimum holds for the filtered
+update, and equals the sophisticated recursion. -/
+theorem bayesRiskAmbiguity_eq_sophisticated [Nonempty Action]
+    (model : BayesianBeliefModel Belief State Action Outcome)
+    (support : ∀ belief, FullSupport (bayesGenerative model belief))
+    (depth : ℕ) (belief : Belief) :
+    sophisticatedEFEValue (bayesSophisticatedModel model) depth belief =
+      optimalTreeValue
+        (riskAmbiguityPolicyTreeModel (bayesEFEPolicyTreeModel model support))
+        depth belief := by
+  rw [bayesSophisticatedValue_eq_optimalTree model support]
+  exact optimalEFEValue_eq_riskAmbiguity _ depth belief
+
+end BayesianPlanning
+
+/-! ### The fep-134 Boolean feedback witness through the Bayesian filter -/
+
+section BooleanBayesianWitness
+
+/-- Fair latent Boolean state, identity transition, and identity likelihood. -/
+noncomputable def boolBayesGenerative : GenerativeModel Bool Bool Bool where
+  initialState := fairBoolLaw
+  transition _ := FiniteKernel.identity
+  likelihood := FiniteKernel.identity
+  preferences := fairBoolLaw
+  policyPrior := fairBoolLaw
+
+/-- `none` is the fair prior belief and `some state` the point-mass belief. -/
+noncomputable def boolBayesInterpret : Option Bool → FiniteLaw Bool
+  | none => fairBoolLaw
+  | some state => FiniteLaw.pointMass state
+
+/-- The reachable index after observing `outcome`. -/
+def boolBayesUpdate (_belief : Option Bool) (_action outcome : Bool) :
+    Option Bool :=
+  some outcome
+
+/-- A non-Bayesian update that ignores the observation and keeps the belief. -/
+def boolKeepPriorUpdate (belief : Option Bool) (_action _outcome : Bool) :
+    Option Bool :=
+  belief
+
+/-- The identity transition leaves every denoted belief unchanged. -/
+theorem boolBayes_predictedState (belief : Option Bool) (action : Bool) :
+    predictedState
+        (withInitialState boolBayesGenerative (boolBayesInterpret belief))
+        action = boolBayesInterpret belief :=
+  FiniteKernel.predictive_identity _
+
+/-- The identity likelihood makes the predicted outcome law the belief. -/
+theorem boolBayes_predictedOutcome (belief : Option Bool) (action : Bool) :
+    predictedOutcome
+        (withInitialState boolBayesGenerative (boolBayesInterpret belief))
+        action = boolBayesInterpret belief := by
+  change FiniteKernel.predictive
+      (predictedState
+        (withInitialState boolBayesGenerative (boolBayesInterpret belief))
+        action) FiniteKernel.identity = _
+  rw [boolBayes_predictedState]
+  exact FiniteKernel.predictive_identity _
+
+/-- Observing `outcome` through the Boolean filter yields the point mass. -/
+theorem boolBayes_filtered (belief : Option Bool) (action outcome : Bool)
+    (hEvidence : 0 < boolBayesGenerative.likelihood.predictive
+      (predictedState
+        (withInitialState boolBayesGenerative (boolBayesInterpret belief))
+        action) outcome) :
+    boolBayesInterpret (boolBayesUpdate belief action outcome) =
+      filteredBelief boolBayesGenerative
+        (predictedState
+          (withInitialState boolBayesGenerative (boolBayesInterpret belief))
+          action) outcome hEvidence := by
+  apply FiniteLaw.ext_mass
+  funext state
+  have hState := boolBayes_predictedState belief action
+  have hDen : boolBayesGenerative.likelihood.predictive
+      (predictedState
+        (withInitialState boolBayesGenerative (boolBayesInterpret belief))
+        action) outcome = boolBayesInterpret belief outcome := by
+    change FiniteKernel.predictive _ FiniteKernel.identity outcome = _
+    rw [hState, FiniteKernel.predictive_identity]
+  change FiniteLaw.pointMass outcome state =
+    (predictedState
+        (withInitialState boolBayesGenerative (boolBayesInterpret belief))
+        action) state * FiniteKernel.identity state outcome /
+      boolBayesGenerative.likelihood.predictive
+        (predictedState
+          (withInitialState boolBayesGenerative (boolBayesInterpret belief))
+          action) outcome
+  rw [hDen, hState]
+  rw [hDen] at hEvidence
+  cases belief with
+  | none =>
+      cases state <;> cases outcome <;>
+        norm_num [boolBayesInterpret, FiniteLaw.pointMass, fairBoolLaw,
+          FiniteKernel.identity, FiniteKernel.deterministic]
+  | some chosen =>
+      cases state <;> cases outcome <;> cases chosen <;>
+        simp_all [boolBayesInterpret, FiniteLaw.pointMass,
+          FiniteKernel.identity, FiniteKernel.deterministic]
+
+/-- The Boolean Bayesian carrier. -/
+noncomputable def boolBayesModel :
+    BayesianBeliefModel (Option Bool) Bool Bool Bool where
+  generative := boolBayesGenerative
+  interpret := boolBayesInterpret
+  update := boolBayesUpdate
+  update_filtered := boolBayes_filtered
+
+/-- Policy-tree model on the Boolean carrier with a terminal mismatch cost,
+for a chosen belief update. -/
+noncomputable def boolBeliefTreeModel
+    (update : Option Bool → Bool → Bool → Option Bool) :
+    PolicyTreeModel (Option Bool) Bool Bool where
+  observationLaw belief action :=
+    predictedOutcome (bayesGenerative boolBayesModel belief) action
+  update := update
+  stageCost depth belief action :=
+    if depth = 0 then
+      ∑ state, boolBayesInterpret belief state * boolMismatchCost state action
+    else 0
+
+/-- The root observation law is the fair law. -/
+theorem boolBayes_rootObservation (action : Bool) :
+    predictedOutcome (bayesGenerative boolBayesModel none) action =
+      fairBoolLaw :=
+  boolBayes_predictedOutcome none action
+
+/-- fep-134 re-derived: the Bayesian-filtered feedback tree has value zero. -/
+theorem boolBayesTree_value_zero :
+    policyTreeValue (boolBeliefTreeModel boolBayesUpdate) boolFeedbackTree none
+      = 0 := by
+  simp only [policyTreeValue, boolBeliefTreeModel, boolFeedbackTree,
+    boolBayes_rootObservation, Fintype.sum_bool]
+  norm_num [boolBayesUpdate, boolBayesInterpret, FiniteLaw.pointMass,
+    boolMismatchCost, fairBoolLaw]
+
+/-- Every fixed open-loop second action has value one half under the filter. -/
+theorem boolBayesOpenLoop_value_half (action : Bool) :
+    openLoopValue (boolBeliefTreeModel boolBayesUpdate)
+        (boolOpenLoopPlan action) none = 1 / 2 := by
+  cases action <;>
+    simp only [openLoopValue, boolBeliefTreeModel, boolOpenLoopPlan,
+      boolBayes_rootObservation, Fintype.sum_bool] <;>
+    norm_num [boolBayesUpdate, boolBayesInterpret, FiniteLaw.pointMass,
+      boolMismatchCost, fairBoolLaw]
+
+/-- The filtered Boolean witness re-derives fep-134: the filter's updates
+denote the point-mass beliefs of `boolFeedbackModel`, and the values are the
+same zero versus one half with strict feedback gain. -/
+theorem boolBayes_rederives_feedbackWitness (action : Bool) :
+    (∀ a o, boolBayesInterpret (boolBayesUpdate none a o) =
+        boolBeliefInterpret (boolFeedbackModel.update false a o)) ∧
+      policyTreeValue (boolBeliefTreeModel boolBayesUpdate) boolFeedbackTree
+          none =
+        policyTreeValue boolFeedbackModel boolFeedbackTree false ∧
+      policyTreeValue (boolBeliefTreeModel boolBayesUpdate) boolFeedbackTree
+          none <
+        openLoopValue (boolBeliefTreeModel boolBayesUpdate)
+          (boolOpenLoopPlan action) none := by
+  refine ⟨fun _ _ => rfl, ?_, ?_⟩
+  · rw [boolBayesTree_value_zero, boolFeedbackTree_value_zero]
+  · rw [boolBayesTree_value_zero, boolBayesOpenLoop_value_half]
+    norm_num
+
+/-- A non-Bayesian update (ignore the observation) is not the filter: it
+fails the Bayes-agreement identity at the first observation. -/
+theorem boolKeepPrior_not_bayesian :
+    ∃ (hEvidence : 0 < boolBayesGenerative.likelihood.predictive
+        (predictedState
+          (withInitialState boolBayesGenerative (boolBayesInterpret none))
+          false) true),
+      boolBayesInterpret (boolKeepPriorUpdate none false true) ≠
+        filteredBelief boolBayesGenerative
+          (predictedState
+            (withInitialState boolBayesGenerative (boolBayesInterpret none))
+            false) true hEvidence := by
+  have hEvidence : 0 < boolBayesGenerative.likelihood.predictive
+      (predictedState
+        (withInitialState boolBayesGenerative (boolBayesInterpret none))
+        false) true := by
+    change 0 < FiniteKernel.predictive _ FiniteKernel.identity true
+    rw [boolBayes_predictedState, FiniteKernel.predictive_identity]
+    norm_num [boolBayesInterpret, fairBoolLaw]
+  refine ⟨hEvidence, ?_⟩
+  rw [← boolBayes_filtered none false true hEvidence]
+  intro hEq
+  have hMass := congrArg (fun law : FiniteLaw Bool => law true) hEq
+  norm_num [boolKeepPriorUpdate, boolBayesUpdate, boolBayesInterpret,
+    fairBoolLaw, FiniteLaw.pointMass] at hMass
+
+/-- Under the non-Bayesian update the same feedback tree loses its gain: its
+value is one half, and the Bayesian optimum is strictly lower than the
+non-Bayesian optimum, so the claimed agreement fails. -/
+theorem boolKeepPrior_agreement_fails :
+    policyTreeValue (boolBeliefTreeModel boolKeepPriorUpdate)
+        boolFeedbackTree none = 1 / 2 ∧
+      optimalTreeValue (boolBeliefTreeModel boolBayesUpdate) 2 none <
+        optimalTreeValue (boolBeliefTreeModel boolKeepPriorUpdate) 2 none := by
+  have hLast : ∀ action, ∑ state,
+      boolBayesInterpret none state * boolMismatchCost state action = 1 / 2 := by
+    intro action
+    cases action <;>
+      norm_num [Fintype.sum_bool, boolBayesInterpret, fairBoolLaw,
+        boolMismatchCost]
+  have hOne : optimalTreeValue (boolBeliefTreeModel boolKeepPriorUpdate) 1
+      none = 1 / 2 := by
+    change (fun action =>
+        (boolBeliefTreeModel boolKeepPriorUpdate).stageCost 0 none action +
+          ∑ outcome,
+            (boolBeliefTreeModel boolKeepPriorUpdate).observationLaw none action
+                outcome *
+              optimalTreeValue (boolBeliefTreeModel boolKeepPriorUpdate) 0
+                ((boolBeliefTreeModel boolKeepPriorUpdate).update none action
+                  outcome))
+        (finiteArgmin _) = _
+    simp only [boolBeliefTreeModel, optimalTreeValue, mul_zero,
+      Finset.sum_const_zero, add_zero, ite_true]
+    exact hLast _
+  have hTwo : optimalTreeValue (boolBeliefTreeModel boolKeepPriorUpdate) 2
+      none = 1 / 2 := by
+    change (fun action =>
+        (boolBeliefTreeModel boolKeepPriorUpdate).stageCost 1 none action +
+          ∑ outcome,
+            (boolBeliefTreeModel boolKeepPriorUpdate).observationLaw none action
+                outcome *
+              optimalTreeValue (boolBeliefTreeModel boolKeepPriorUpdate) 1
+                ((boolBeliefTreeModel boolKeepPriorUpdate).update none action
+                  outcome))
+        (finiteArgmin _) = _
+    have hConst : ∀ action,
+        (boolBeliefTreeModel boolKeepPriorUpdate).stageCost 1 none action +
+          ∑ outcome,
+            (boolBeliefTreeModel boolKeepPriorUpdate).observationLaw none action
+                outcome *
+              optimalTreeValue (boolBeliefTreeModel boolKeepPriorUpdate) 1
+                ((boolBeliefTreeModel boolKeepPriorUpdate).update none action
+                  outcome) = 1 / 2 := by
+      intro action
+      have hStep : ∀ outcome,
+          optimalTreeValue (boolBeliefTreeModel boolKeepPriorUpdate) 1
+            ((boolBeliefTreeModel boolKeepPriorUpdate).update none action
+              outcome) = 1 / 2 := fun _ => hOne
+      simp only [hStep]
+      simp only [boolBeliefTreeModel, boolBayes_rootObservation,
+        Fintype.sum_bool]
+      norm_num [fairBoolLaw]
+    exact hConst _
+  refine ⟨?_, ?_⟩
+  · simp only [policyTreeValue, boolBeliefTreeModel, boolFeedbackTree,
+      boolBayes_rootObservation, Fintype.sum_bool, boolKeepPriorUpdate]
+    norm_num [boolBayesInterpret, boolMismatchCost, fairBoolLaw]
+  · rw [hTwo]
+    calc optimalTreeValue (boolBeliefTreeModel boolBayesUpdate) 2 none
+        ≤ policyTreeValue (boolBeliefTreeModel boolBayesUpdate)
+            boolFeedbackTree none := optimalTreeValue_le_tree _ _ _
+      _ = 0 := boolBayesTree_value_zero
+      _ < 1 / 2 := by norm_num
+
+end BooleanBayesianWitness
 
 end FEP.PerceptionActionLoop

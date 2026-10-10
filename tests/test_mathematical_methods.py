@@ -45,7 +45,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     data = packaged.as_dict()
     declarations = data["theorem_analysis"]["declarations"]
-    assert len(declarations) == 2125
+    assert len(declarations) == 2185
     assert "not a certified" not in data["theorem_analysis"]["analysis_boundary"]
     assert (
         "neither a certified translation"

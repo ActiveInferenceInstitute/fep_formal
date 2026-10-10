@@ -1492,4 +1492,157 @@ theorem helmholtz_bool_uniform_gt {T : ℝ} (hT : 0 < T) :
   have : -1 / T = -(1 / T) := by ring
   linarith
 
+/-! ## Joint-slice variational free energy with derived surprisal -/
+
+/-- Variational free energy of `q` against the unnormalised joint slice
+`x ↦ prior x * kernel x y` at observation `y`.  Surprisal is not an argument:
+it appears only after the slice is factored through the posterior. -/
+noncomputable def jointSliceVFE (prior : FiniteLaw α)
+    (kernel : FiniteKernel α β) (y : β) (q : FiniteLaw α) : ℝ :=
+  ∑ x, q x * (Real.log (q x) - Real.log (prior x * kernel x y))
+
+/-- Surprisal of `y`, derived as negative log predictive evidence. -/
+noncomputable def evidenceSurprisal (prior : FiniteLaw α)
+    (kernel : FiniteKernel α β) (y : β) : ℝ :=
+  -Real.log (kernel.predictive prior y)
+
+/-- Finite carrier, not the measure-theoretic route.  With a strictly positive
+joint slice and positive evidence, KL to the unnormalised joint slice equals
+KL to the exact Bayes posterior plus the derived surprisal. -/
+theorem jointSliceVFE_eq_kl_add_surprisal (prior : FiniteLaw α)
+    (kernel : FiniteKernel α β) (y : β)
+    (hy : 0 < kernel.predictive prior y)
+    (hjoint : ∀ x, 0 < prior x * kernel x y) (q : FiniteLaw α) :
+    jointSliceVFE prior kernel y q =
+      finiteKL q (kernel.posterior prior y hy) +
+        evidenceSurprisal prior kernel y := by
+  have hpost : ∀ x, 0 < kernel.posterior prior y hy x := fun x =>
+    div_pos (hjoint x) hy
+  rw [finiteKL_eq_crossEntropy_sub_entropy q _ hpost]
+  have hlog : ∀ x, Real.log (kernel.posterior prior y hy x) =
+      Real.log (prior x * kernel x y) -
+        Real.log (kernel.predictive prior y) := fun x =>
+    Real.log_div (hjoint x).ne' hy.ne'
+  unfold jointSliceVFE crossEntropy entropy evidenceSurprisal
+  simp_rw [hlog, Real.negMulLog_eq_neg]
+  have h1 : ∑ x, -(q x) * (Real.log (prior x * kernel x y) -
+        Real.log (kernel.predictive prior y)) =
+      ∑ x, (-(q x * Real.log (prior x * kernel x y))) +
+        (∑ x, q x) * Real.log (kernel.predictive prior y) := by
+    rw [Finset.sum_mul, ← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun x _ => by ring
+  rw [h1, q.sum_one]
+  have h2 : ∑ x, q x * (Real.log (q x) - Real.log (prior x * kernel x y)) =
+      ∑ x, (q x * Real.log (q x)) +
+        ∑ x, (-(q x * Real.log (prior x * kernel x y))) := by
+    rw [← Finset.sum_add_distrib]
+    exact Finset.sum_congr rfl fun x _ => by ring
+  rw [h2, Finset.sum_neg_distrib]
+  simp only [Finset.sum_neg_distrib]
+  ring
+
+/-- Joint-slice free energy bounds derived surprisal from above. -/
+theorem jointSliceVFE_ge_surprisal (prior : FiniteLaw α)
+    (kernel : FiniteKernel α β) (y : β)
+    (hy : 0 < kernel.predictive prior y)
+    (hjoint : ∀ x, 0 < prior x * kernel x y) (q : FiniteLaw α) :
+    evidenceSurprisal prior kernel y ≤ jointSliceVFE prior kernel y q := by
+  rw [jointSliceVFE_eq_kl_add_surprisal prior kernel y hy hjoint q]
+  linarith [finiteKL_nonneg q (kernel.posterior prior y hy)]
+
+/-- The bound is tight exactly at the Bayes posterior. -/
+theorem jointSliceVFE_eq_surprisal_iff (prior : FiniteLaw α)
+    (kernel : FiniteKernel α β) (y : β)
+    (hy : 0 < kernel.predictive prior y)
+    (hjoint : ∀ x, 0 < prior x * kernel x y) (q : FiniteLaw α) :
+    jointSliceVFE prior kernel y q = evidenceSurprisal prior kernel y ↔
+      q = kernel.posterior prior y hy := by
+  rw [jointSliceVFE_eq_kl_add_surprisal prior kernel y hy hjoint q,
+    ← finiteKL_eq_zero_iff]
+  constructor <;> intro h <;> linarith
+
+/-- A strictly positive joint slice forces positive evidence. -/
+theorem predictive_pos_of_jointSlice_pos [Nonempty α] (prior : FiniteLaw α)
+    (kernel : FiniteKernel α β) (y : β)
+    (hjoint : ∀ x, 0 < prior x * kernel x y) :
+    0 < kernel.predictive prior y := by
+  rw [FiniteKernel.predictive_mass]
+  exact Finset.sum_pos (fun x _ => hjoint x) Finset.univ_nonempty
+
+/-- Boolean witness kernel: emits the matching Boolean with probability `3/4`. -/
+noncomputable def vfeWitnessKernel : FiniteKernel Bool Bool where
+  mass x y := if x = y then 3 / 4 else 1 / 4
+  nonneg x y := by split_ifs <;> norm_num
+  sum_one x := by
+    cases x <;> rw [Fintype.sum_bool] <;> norm_num
+
+/-- Witness evidence at `true` under a fair prior is `1/2`. -/
+theorem vfeWitness_predictive_true :
+    vfeWitnessKernel.predictive (FiniteLaw.uniform : FiniteLaw Bool) true =
+      1 / 2 := by
+  rw [FiniteKernel.predictive_mass, Fintype.sum_bool]
+  simp [FiniteLaw.uniform, vfeWitnessKernel]
+  norm_num
+
+/-- Witness derived surprisal is `log 2`. -/
+theorem vfeWitness_surprisal :
+    evidenceSurprisal (FiniteLaw.uniform : FiniteLaw Bool) vfeWitnessKernel
+      true = Real.log 2 := by
+  rw [evidenceSurprisal, vfeWitness_predictive_true, one_div, Real.log_inv,
+    neg_neg]
+
+/-- Nonzero-gap witness: the fair prior against the Bayes posterior at `true`
+is strictly above derived surprisal. -/
+theorem vfeWitness_gap_pos :
+    evidenceSurprisal (FiniteLaw.uniform : FiniteLaw Bool) vfeWitnessKernel
+        true <
+      jointSliceVFE (FiniteLaw.uniform : FiniteLaw Bool) vfeWitnessKernel true
+        (FiniteLaw.uniform : FiniteLaw Bool) := by
+  have hy : 0 < vfeWitnessKernel.predictive
+      (FiniteLaw.uniform : FiniteLaw Bool) true := by
+    rw [vfeWitness_predictive_true]; norm_num
+  have hjoint : ∀ x : Bool,
+      0 < (FiniteLaw.uniform : FiniteLaw Bool) x * vfeWitnessKernel x true := by
+    intro x
+    cases x <;> simp [FiniteLaw.uniform, vfeWitnessKernel]
+  rw [jointSliceVFE_eq_kl_add_surprisal _ _ true hy hjoint]
+  have hne : (FiniteLaw.uniform : FiniteLaw Bool) ≠
+      vfeWitnessKernel.posterior (FiniteLaw.uniform : FiniteLaw Bool) true
+        hy := by
+    intro h
+    have h0 := congrArg (fun p : FiniteLaw Bool => p.mass true) h
+    simp only [FiniteKernel.posterior, FiniteLaw.uniform] at h0
+    simp [vfeWitnessKernel] at h0
+    norm_num at h0
+  have hpos : 0 < finiteKL (FiniteLaw.uniform : FiniteLaw Bool)
+      (vfeWitnessKernel.posterior (FiniteLaw.uniform : FiniteLaw Bool) true
+        hy) :=
+    lt_of_le_of_ne (finiteKL_nonneg _ _)
+      (fun h => hne ((finiteKL_eq_zero_iff _ _).mp h.symm))
+  linarith
+
+/-- Degenerate boundary kernel: always emits `false`. -/
+def vfeZeroEvidenceKernel : FiniteKernel Bool Bool :=
+  FiniteKernel.deterministic fun _ => false
+
+/-- Zero-evidence boundary: observing `true` has zero predictive mass, every
+joint-slice atom vanishes, and so neither the Bayes posterior nor the positive
+slice hypothesis of the identity is available. -/
+theorem vfeZeroEvidence_boundary :
+    vfeZeroEvidenceKernel.predictive (FiniteLaw.uniform : FiniteLaw Bool)
+        true = 0 ∧
+      (∀ x : Bool, (FiniteLaw.uniform : FiniteLaw Bool) x *
+        vfeZeroEvidenceKernel x true = 0) ∧
+      ¬ (0 < vfeZeroEvidenceKernel.predictive
+        (FiniteLaw.uniform : FiniteLaw Bool) true) := by
+  have hslice : ∀ x : Bool, (FiniteLaw.uniform : FiniteLaw Bool) x *
+      vfeZeroEvidenceKernel x true = 0 := by
+    intro x
+    simp [vfeZeroEvidenceKernel, FiniteKernel.deterministic]
+  have hzero : vfeZeroEvidenceKernel.predictive
+      (FiniteLaw.uniform : FiniteLaw Bool) true = 0 := by
+    rw [FiniteKernel.predictive_mass]
+    exact Finset.sum_eq_zero fun x _ => hslice x
+  exact ⟨hzero, hslice, by rw [hzero]; exact lt_irrefl _⟩
+
 end FEP.VariationalDuality

@@ -20026,7 +20026,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/h3_case_study.lean` | `7a8ba9346dc9ab700ac6276c26421b46c0437eabaab7cd448a2bc05998318849` |
 | `formal/compositions/helmholtz_ao_ness.lean` | `b44ad9bed15bfa001f20de6fd4a6ada836054ded68608fd1010327cf620100da` |
 | `formal/compositions/measure_variational.lean` | `b83d99c2d335ce3ecc1e5abbeced61cb0e90f71b75013963152652e526dec5a9` |
-| `formal/compositions/native_blanket_transfer.lean` | `0be9b922cf9f322adaefb6dbcd441b781da466b41f7ad82f1744ce943bd3c9df` |
+| `formal/compositions/native_blanket_transfer.lean` | `0cc6029a3c7199aaf68e920990b658227fa04420cd8b8e10c4ca58da959e1bd1` |
 | `formal/compositions/perception_action_loop.lean` | `9b4061352a3e0ec3c5835a52efda326036b47676a69820c90af4c4b65a648294` |
 | `formal/compositions/policy_trees.lean` | `98a74b0976bbac14a784887c38cdaf95db373a071667ecc66bd7f2b7ea657db4` |
 | `formal/compositions/risk_calibration.lean` | `428430da8985d59619fe00975b79eff4151ccd90d3e078fbb10796c17f8cb455` |
@@ -20038,7 +20038,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/declarations.py` | `26ca913d57a85a6ef744c8e72efcf678b5113a3c0de084b497a790fb452fdc16` |
 | `formal/efe_policy_selection.lean` | `7fe5a3da8b5fd42b0dd1604ddfc69b12ebc23f2ec149e7b1a548d54ee884f750` |
 | `formal/efe_time_scale_separation.lean` | `36ac0144659f2e6472d32778a37f987b93477c4f58fb07145cc97f593f482973` |
-| `formal/empirical_risk.lean` | `d1a9230237c237648c167bd677d347eb4aacbb3e70c93914bb6ab52498064067` |
+| `formal/empirical_risk.lean` | `ad7b177fb05adb7de51db99596287709429917359e6cda4c78667f9a8f039213` |
 | `formal/exponential_family.lean` | `5d12165f38e1d18b03f03869fcc907720a41aac243589d96a99a57e41601dbc9` |
 | `formal/fin4_gaussian_semigroup.lean` | `a7c14d2fdeb44c61ffa4012d6eccc8d00051be916ab536e2658f4ef3652d260c` |
 | `formal/finite_information.lean` | `8d5cae82d2c1046056dcf8d65c0758ebf04f6afef7d2d1edb795ec1be746989d` |
@@ -20066,7 +20066,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/native_blanket.lean` | `b6f99c2560e5c2ca9670caf7a4af887e7ea81befd465292aaacfbb7bb278bc2b` |
 | `formal/ness_flow.lean` | `80102f366d6e54604b7a76cdb663fe9dc2354bdfac0e2d671c20f73567c19890` |
 | `formal/path_thermodynamics.lean` | `75b63d5a506e98801475f23789fde02ef4c05c3fb72aae66d94969232c836f98` |
-| `formal/perception_action_loop.lean` | `e0fe4b34b6c5725e3a445024183ecf62c9cb17c277e31bc93b2ff722384619e1` |
+| `formal/perception_action_loop.lean` | `9a60e3d8166644e4ff265d92e2424ea081ca3c34d5b7d11e15970104119c101b` |
 | `formal/policy_tree.lean` | `2ac7813362f0c9e5c4a163ee9a56449409a6a6a08aaed0d8a5ad24220417bd88` |
 | `formal/posterior_convergence.lean` | `1449b1eb5eff7a709e08f96147597d4f662d0ce7b07d0c165c1d7fb0cf51ff20` |
 | `formal/predictive_coding.lean` | `2b4589e435d281a04ac123f0289a2ffca4f6306b683a36aa2dd32b0d1d051782` |
@@ -20074,7 +20074,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/smooth_information_geometry.lean` | `571789ed86eb4ca7516c47621d555b4c12a467fd61f3854a009484de4debf1f8` |
 | `formal/statistical_convergence.lean` | `6984bb60ec822da2af08d94472bdae67ac743aaa0b6ef8dec0c83538aa60ade0` |
 | `formal/temporal_inference.lean` | `04cbf77813427dda68a9aa03082cdb191cfffc980071e67e89cde6671baff7a2` |
-| `formal/variational_duality.lean` | `fdc4e5e2d22f0fc2a08cf5b1264c52b93ccd71dd25e1a72064acf632b331e8b0` |
+| `formal/variational_duality.lean` | `865f0315296a2432c50c48f612e1e71eb503f5881f433347582c8286f59c7c92` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
 | `inputs/formalism_relations.yaml` | `8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
