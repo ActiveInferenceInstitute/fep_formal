@@ -2,7 +2,7 @@
 title: fep_lean Ideal State Assessment
 status: active
 phase: verifying
-updated: 2026-10-02
+updated: 2026-10-11
 ---
 
 # fep_lean Ideal State Assessment
@@ -200,7 +200,7 @@ credential/spend authorization and independent live-source validation.
 
 ## Mathematical methods integration
 
-The `1.6.0` candidate makes mathematical location operational: an
+The `1.6.0` release (2026-10-07) makes mathematical location operational: an
 installed wheel can inspect every canonical topic contract, distinguish typed
 relations from editorial affinities, query explicit family features, evaluate
 bounded counterexamples, and export the same readable and visual model offline.
@@ -211,7 +211,8 @@ refresh; native/render receipts are acquired after the final source changes.
 [The slice acceptance criteria](specs/openai-math-methods/INTEGRATION.md) own
 concrete probes and failure cases. Topic count, semantic promotion, unchecked
 upstream proofs and the unopened H3 study are outside this integration.
-The current model retains 1,946 lexical declarations, twelve upstream source
+At release the model retained 1,946 lexical declarations (`main` now has
+2,185 after the unreleased formal-resource strengthening), twelve upstream source
 statements against 82 locked identities, and 34 comparison rows in 30 authored
 coordinates. Its export has 17 products and thirteen SVGs. Confirmed local
 evidence includes 112 focused mathematical tests, the final 168-topic native
@@ -234,8 +235,8 @@ source identity; version publication still requires the separate hosted gate.
 
 ## Release boundary
 
-`v1.5.0` (2026-10-06) is the current release of the 168-topic tree; the
-untagged 1.4.0 candidate ships within it. Releases require only the
+`v1.6.0` (2026-10-07) is the current release of the 168-topic tree; later
+formal-resource work is recorded under Unreleased in the changelog. Releases require only the
 [release gate](docs/release.md): version/date agreement, a dated changelog
 section and a green hosted CI run on the exact `main` commit. Research and
 evidence lanes are reported, not claimed. Historical receipts do not cross this

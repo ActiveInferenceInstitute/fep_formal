@@ -64,7 +64,12 @@ against the newest Lean/Mathlib pair ([#108](https://github.com/ActiveInferenceI
 every promised job, not only the run conclusion. `release_check.py --bump`
 rewrites every version-bearing source ([#131](https://github.com/ActiveInferenceInstitute/fep_formal/issues/131)), and `AGENTS.md` is the single,
 test-enforced owner of the required-check list ([#129](https://github.com/ActiveInferenceInstitute/fep_formal/issues/129), [#139](https://github.com/ActiveInferenceInstitute/fep_formal/issues/139)). Link and
-hygiene checks cover every maintained Markdown file ([#141](https://github.com/ActiveInferenceInstitute/fep_formal/issues/141)).
+hygiene checks cover every maintained Markdown file ([#141](https://github.com/ActiveInferenceInstitute/fep_formal/issues/141)). Pull
+requests run a nine-cell distribution matrix (3.10, 3.12 and 3.14 on each
+platform) while `main` keeps all 15, and the release gate now fails on any
+missing cell ([#134](https://github.com/ActiveInferenceInstitute/fep_formal/issues/134)). The dated scope baselines move from the root into
+`specs/comprehensive-science-improvement/` ([#143](https://github.com/ActiveInferenceInstitute/fep_formal/issues/143)), and merged head branches
+are deleted automatically ([#132](https://github.com/ActiveInferenceInstitute/fep_formal/issues/132)).
 
 ## 1.6.0 — 2026-10-07 — mathematical methods, positioning and manuscript supplement
 
@@ -543,7 +548,7 @@ transport behavior; provider, native and publication evidence remain separate.
 
 ### Main status and open-backlog reconciliation (2026-09-30)
 
-The [dated review](SCOPE-2026-09-30.md) checks `main`/remote parity at
+The [dated review](specs/comprehensive-science-improvement/SCOPE-2026-09-30.md) checks `main`/remote parity at
 `cd4a84c`, reconciles the 168-topic/22-family source with the tagged 1.3.0
 cut and latest published GitHub release 1.2.0, and scopes minor, medium,
 and major package/formalization improvements. Current overview documents

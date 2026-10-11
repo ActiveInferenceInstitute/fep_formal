@@ -10,8 +10,8 @@ import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 The original two-state construction remains as a closed-form regression
 instance.  The general layer records a finite rate generator and a certified
 Markov semigroup separately: the matrix exponential supplies the algebraic
-candidate, while stochasticity remains an explicit proved certificate until
-entrywise Metzler positivity is available at the pinned Mathlib revision.
+candidate, and `FiniteRateGenerator.semigroup` proves its stochasticity for
+every finite generator by uniformisation, so no external certificate is needed.
 -/
 
 namespace FEP.ContinuousTimeMarkov

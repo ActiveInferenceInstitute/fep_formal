@@ -136,6 +136,13 @@ def test_hosted_jobs_require_every_promised_lane_to_succeed() -> None:
         _jobs(**{"distribution (windows-latest, 3.10)": "failure"})
     )
     assert any("windows-latest, 3.10" in e for e in failed_cell)
+    # A reduced pull-request matrix is not release evidence.
+    reduced = [
+        job for job in _jobs() if not job["name"].endswith((", 3.11)", ", 3.13)"))
+    ]
+    missing = check.job_errors(reduced)
+    assert any("'distribution (macos-latest, 3.11)': missing" in e for e in missing)
+    assert len(missing) == 6
     only_python = [{"name": "python", "conclusion": "success"}]
     errors = check.job_errors(only_python)
     assert any("'lean': missing" in e for e in errors)

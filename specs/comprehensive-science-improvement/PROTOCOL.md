@@ -4,7 +4,7 @@ Owner: Daniel Ari Friedman; execution coordinator: this Codex chat.
 Locked for this implementation cycle: 2026-09-30 17:11 UTC.
 Baseline: main cd4a84cd91d884d6952b2b2f1b0289b2bdfd36ed, plus the preceding
 review's eight maintained Markdown edits. The original broad user objective
-and SCOPE-2026-09-30.md remain intact; passing a smaller subset is not completion.
+and [SCOPE-2026-09-30.md](SCOPE-2026-09-30.md) remain intact; passing a smaller subset is not completion.
 
 ## Research question and primary outcomes
 

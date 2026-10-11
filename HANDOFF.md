@@ -1,10 +1,11 @@
 # fep_lean formalism and publication handoff
 
-**Date:** 2026-10-07
+**Date:** 2026-10-11
 **Repository:** `ActiveInferenceInstitute/fep_formal`
 **Checkout:** this repository checkout (see the `origin` remote)
 **Release line:** `v1.6.0` (2026-10-07); the previous published release is
-`v1.5.0` (2026-10-06), which ships the untagged `1.4.0` candidate. Releases follow the short
+`v1.5.0` (2026-10-06). Formal-resource strengthening merged since `v1.6.0` is
+recorded under Unreleased in [CHANGELOG.md](CHANGELOG.md). Releases follow the short
 [release procedure](docs/release.md); research lanes below do not block them.
 
 ## Mathematical methods release line
@@ -16,8 +17,8 @@ define this scope; [the guide](docs/mathematical-methods.md) explains its use.
 The authored positioning policy is interpretive family context. Exact topic
 contracts and typed theorem relations retain their canonical owners. The
 OpenAI mathematics corpus is a pinned comparison source; none of its research
-code is executed by this integration. The model retains 1,946 lexical Lean
-declarations and twelve upstream statement passports against 82 locked file
+code is executed by this integration. At release the model retained 1,946
+lexical Lean declarations and twelve upstream statement passports against 82 locked file
 identities. Its common comparison has 34 rows in 30 authored coordinates;
 family context unions and individual upstream results retain distinct scope.
 The 17-product export includes thirteen SVGs. Focused mathematical
@@ -138,22 +139,9 @@ summarizing scientific completeness.
 
 ## Current source and evidence state
 
-Daniel resumed implementation on 2026-10-05 and authorized updating the scoped
-work and pushing verified versioned changes to main. The [open
-backlog](TODO.md) records separately governed evidence and research lanes
-and minor/medium/major future improvements. Each item retains its dependencies,
-acceptance criteria and claim boundary; resumption supplies no new acceptance.
-
-Source main was `14fe6bab8fdcf27b0d7d457e1fdb923afffba83b`, independently
-matching remote before these scoping documents. Its
-[hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/37376897900)
-completed with 19 successful jobs, one failed Python job and one skipped docs
-job. All 15 distribution cells passed 80 cases each. Hosted Python recorded
-2,483 passed, two failed, 15 skipped and 90.87% coverage; the two failures were
-Chrome startup without a usable CDP port within 15 seconds. Cause is unproved.
-Hosted Lean serial recorded 557 passed and five skipped. Native/audit/render
-passed in that run, but the whole run failed. Historical green `c99e933` and
-later focused results remain their original source epochs.
+The [open backlog](TODO.md) records separately governed evidence and research
+lanes and minor/medium/major future improvements. Each item retains its
+dependencies, acceptance criteria and claim boundary.
 
 The actual local r6 production capture closed naturally on
 2026-10-05 at 23:46:49 UTC, integer exit 1, no timeout, after 7,275.3362 seconds.
@@ -206,10 +194,10 @@ execution policy isolates the two Chrome probes after the parallel component;
 every selected case appears exactly once. This acceptance does not establish
 the cause of retained earlier startup failures. Fresh production browser
 capture remains open. The final release still requires full CI on its exact
-main commit and review of its actual artifacts. Do not blindly merge
-substantive PR44/45.
+main commit and review of its actual artifacts. Substantive PR44 review is
+tracked by [CUR-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58).
 
-Release `v1.5.0` publishes the 168-topic tree. H3 primary output
+Release `v1.6.0` publishes the 168-topic tree. H3 primary output
 has not been opened and its seeds remain unused. The
 [immutable protocol](specs/h3-reference-study/preregistration.yaml) and
 [implementation gates](specs/h3-reference-study/IMPLEMENTATION.md) require
@@ -369,56 +357,10 @@ later Q7 currency requirement for its recorded inputs without promoting earlier
 receipts; later owner changes require fresh validation.
 Later acceptance and publication progress is recorded in the program's
 execution ledger; the dated
-checkpoints above retain their original source epochs. Daniel has authorized
-committing and pushing reviewed changes to `main`; versioned releases follow
-the [release procedure](docs/release.md). The
+checkpoints above retain their original source epochs. Reviewed changes reach
+`main` through pull requests; versioned releases follow the
+[release procedure](docs/release.md). The
 [upcoming scopes](docs/design/fep-research-program/next-improvements.md) define
 future minor, medium and major package/formal work separately from current
 release obligations. Licensed-data access, provider routing/spend enforcement
 and account settings retain their separate boundaries.
-
-## Copyable continuation prompt
-
-> Continue FEP Formal from this handoff. Daniel resumed implementation and
-> authorized verified versioned changes to be pushed to main on 2026-10-05.
-> Read AGENTS.md, TODO.md, this handoff, the original nine-criterion protocol,
-> NEXT.md and the immutable H3 preregistration/freeze. Inspect actual main and
-> remote state, preserve concurrent edits and use native subagents with disjoint
-> ownership. The local operator handoff contains private closed packet copies;
-> keep them out of public Issues, commits and generated artifacts.
->
-> Settle both browser failures independently, then finish the bounded test and
-> guidance edits against the reviewed source candidates and actual diffs.
-> Preserve the fixed original 80-case matrix and separate nine-case additions.
-> Correct the complete tests-roster guard and obtain fresh independent review
-> before imports/planning/dispatch. Execute all seven real production stages
-> within original caps and independently validate two identical package archives.
-> Complete five local installed-wheel runtimes, 184-resource parity and installed
-> read-only status, preserving 15 GiB before launch and every cell. Run every
-> applicable AGENTS check and final-SHA hosted 15-cell/Python/Lean/docs/render
-> acceptance. Canonical validation remains CPython 3.14; no pin upgrade or
-> dependency acquisition belongs to read-only checks.
->
-> Bind accepted package/native/axiom/Q7 evidence to current H3 export and three
-> independent Lean/domain/statistical proof-role reviews. Only then execute the
-> unchanged frozen primary once: same continuous branch, seeds, counts, gates,
-> controls, budgets and 42-array roster. Retain complete acceptance or scientific
-> rejection, pure replay, three outcome reviews, two identical valid study
-> archives and clean installed reproduction. No rerun, reseed, threshold change,
-> carrier substitution or unsupported physical/empirical claim is allowed.
-> Outcome-prose changes need honest final-source capture without relabeling the
-> primary's actual package or repeating it. Empirical no-go is valid without
-> licensed data; optional provider execution retains its separate spend boundary.
->
-> Have an independent nonauthor map all nine criteria to exact final-source
-> receipts, including truthful static status and FORM-1–FORM-3 boundary/semantic
-> acceptance. Cut later versioned releases through docs/release.md
-> (`docs/release_check.py --hosted`); report unrun lanes as unrun. Do not change
-> account settings, force-push, erase history or touch active GNN work.
->
-> Activate future minor/medium/major Issues only after their stated predecessors
-> and concrete stop/go probes. Keep canonical owners, thin orchestration,
-> configurability, manuscript and accessible visuals unified; never infer
-> scientific disposition from compilation or numerical agreement. Report exact
-> changes, commands, results and deferred gates. Remove completed TODO rows only
-> after their own acceptance and record delivery facts in changelog/history.

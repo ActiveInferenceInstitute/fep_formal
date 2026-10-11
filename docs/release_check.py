@@ -27,6 +27,13 @@ WORKFLOW = "ci.yml"
 #: conclusion alone is not enough.
 REQUIRED_JOBS = ("python", "static", "lean", "render-deps", "render")
 DISTRIBUTION_PREFIX = "distribution ("
+# Pull requests run a reduced matrix; the release gate reads the push run on
+# main, which must carry every operating system and interpreter cell.
+DISTRIBUTION_CELLS = tuple(
+    f"distribution ({os}, {python})"
+    for os in ("ubuntu-latest", "macos-latest", "windows-latest")
+    for python in ("3.10", "3.11", "3.12", "3.13", "3.14")
+)
 #: InstituteOS sidecar: ``repo.description`` names ``Release vX.Y.Z`` and the
 #: date; ``meta.updated`` carries the release date.
 SIDECAR = ".aii/config.yaml"
@@ -248,6 +255,12 @@ def job_errors(jobs: list[dict[str, Any]]) -> tuple[str, ...]:
     cells = {n: c for n, c in conclusions.items() if n.startswith(DISTRIBUTION_PREFIX)}
     if not cells:
         errors.append(f"hosted {WORKFLOW} run has no distribution matrix jobs")
+    else:
+        errors += [
+            f"hosted {WORKFLOW} job {name!r}: missing"
+            for name in DISTRIBUTION_CELLS
+            if name not in cells
+        ]
     errors += [
         f"hosted {WORKFLOW} job {name!r}: {conclusion}"
         for name, conclusion in sorted(cells.items())
