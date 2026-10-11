@@ -48,7 +48,9 @@ installed API/catalogue loading, complete Lean/YAML resource parity, isolated
 imports, CLI help, explicit checkout selection, and Q7's refusal before parsing
 on unsupported validator interpreters. Runtime dependency resolution is
 independent of the validator's locked environment. It does not reuse the
-checkout or parent site-packages and does not compile Lean.
+checkout or parent site-packages and does not compile Lean. Pull requests run
+3.10, 3.12 and 3.14 on each platform (9 cells); pushes to `main` and manual
+dispatches run all 15, and the release gate requires every one of them.
 
 ```bash
 FEP_DISTRIBUTION_PYTHON=3.12 \

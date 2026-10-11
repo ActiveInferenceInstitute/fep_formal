@@ -47,8 +47,9 @@ the command list; run the tier that matches your change.
 
 ## Pull requests
 
-Branch from `main` (observed prefixes: `claude/`, `codex/`) and open a pull
-request; `main` history uses merge commits (`Merge pull request #N from ...`).
+Branch from `main` on a short-lived topic branch and open a pull request;
+`main` history uses merge commits (`Merge pull request #N from ...`), and the
+repository deletes the head branch after merge.
 Commit subjects are short and imperative, usually with a conventional-style
 prefix (`docs:`, `tooling:`, `bridge:`, `tests:`, `ci:`, `fix(ci):`); reference
 the issue number where one exists, for example

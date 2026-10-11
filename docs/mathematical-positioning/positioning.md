@@ -20032,7 +20032,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/risk_calibration.lean` | `428430da8985d59619fe00975b79eff4151ccd90d3e078fbb10796c17f8cb455` |
 | `formal/compositions/smooth_reference_kernel.lean` | `156464de9e7c33e16fa22bd6939fa64938b03ee4f5554fb3ecd48fbfaed6d397` |
 | `formal/compositions/thermo_geometry.lean` | `d4f5683ae70c9e3a20e849aa1c6446639e4e9ced08762cacb1d4564afdf83745` |
-| `formal/continuous_time_markov.lean` | `9c62314be4193b589d2c3911d274197db1089e6e07de57290e840f0f8cc022bf` |
+| `formal/continuous_time_markov.lean` | `257a39549faa0f9070e19b6ce2c10c1ce053b7b605790952b26df5cd0ce3005e` |
 | `formal/controlled_markov.lean` | `7cb9c18603f96adab7106f0930eb3d2870b42dd101fe1eff05fce9a8bf889652` |
 | `formal/decision_risk.lean` | `0b3142c0c85dbb99e5b8813440825996b65bb1ec0066057af152d4ef72e31689` |
 | `formal/declarations.py` | `26ca913d57a85a6ef744c8e72efcf678b5113a3c0de084b497a790fb452fdc16` |

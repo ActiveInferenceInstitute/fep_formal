@@ -30,11 +30,11 @@ promote the semantic disposition or prove the full FEP concept.
 | [CHANGELOG.md](CHANGELOG.md) | Release changes and their evidence boundary | Authoritative |
 | [docs/release.md](docs/release.md) | Release procedure and gate | Authoritative |
 | [SPEC.md](SPEC.md) | Functional specification of the validated catalogue | Authoritative |
-| [ISA.md](ISA.md) | Ideal state, anti-criteria and evidence gates (`status: active`, updated 2026-10-02) | Authoritative; dated in its front matter |
+| [ISA.md](ISA.md) | Ideal state, anti-criteria and evidence gates (`status: active`, updated 2026-10-11) | Authoritative; dated in its front matter |
 | [PAI.md](PAI.md) | Agent command interface | Authoritative |
 | [HANDOFF.md](HANDOFF.md) | Next-reviewer protocol and evidence receipt, dated 2026-10-07 | Dated snapshot |
-| [SCOPE-2026-09-30.md](SCOPE-2026-09-30.md) | Retained preimplementation baseline of that day's scope review | Dated snapshot |
-| [SCOPE-2026-10-08.md](SCOPE-2026-10-08.md) | Unfiled improvement candidates; a candidate becomes live work only when it enters `TODO.md` with an Issue | Dated snapshot |
+| [SCOPE-2026-09-30.md](specs/comprehensive-science-improvement/SCOPE-2026-09-30.md) | Retained preimplementation baseline of that day's scope review | Dated snapshot |
+| [SCOPE-2026-10-08.md](specs/comprehensive-science-improvement/SCOPE-2026-10-08.md) | Scope review of that day; every candidate is filed as an Issue and tracked in `TODO.md` | Dated snapshot |
 
 When a snapshot and an authoritative document disagree, the authoritative
 document wins.

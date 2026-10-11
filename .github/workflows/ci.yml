@@ -132,7 +132,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: ['3.10', '3.11', '3.12', '3.13', '3.14']
+        # Pull requests run the floor, a middle and the validator interpreter
+        # (9 cells); main and dispatch runs, which the release gate reads, run
+        # all 15.
+        python: ${{ fromJSON(github.event_name == 'pull_request' && '["3.10","3.12","3.14"]' || '["3.10","3.11","3.12","3.13","3.14"]') }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
