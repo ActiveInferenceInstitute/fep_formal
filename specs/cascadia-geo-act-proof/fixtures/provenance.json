@@ -1,13 +1,13 @@
 {
  "files": {
-  "smith_river_homing.domain.json": "7393aca35f83edfde08ce3d77b08c1abbd4504ce7352fe9c4659b68045f925ca",
-  "smith_river_homing.export.json": "beb4542e8c7fc371a9e97b451deeeb96841d30a6513116df335d13f868157b30",
+  "smith_river_homing.domain.json": "3ee10c681a1f72c3aaa3cc758f939dc9eaa3656a6ef96d29064a3f02fcb97e32",
+  "smith_river_homing.export.json": "ab78d657f992082c136c56ff6c2de4fcbca1f5b8aaafeac78555d0f6f1d786de",
   "smith_river_homing.geo-infer.json": "8217ca5703bf7198748d490e1e18e5f9db12a9626d500d82913172d1b5885a13",
   "smith_river_homing.gnn.md": "3ec03c4d1deb89e3d603395596db4b366b208fa090d0012cd0b3c048c4e7c399"
  },
- "geo_infer_branch": "cascadia-geo-act",
+ "geo_infer_branch": "main",
  "geo_infer_fixtures_dirty": false,
- "geo_infer_revision": "fdb8b71fe200b8cde61626839ab0774fa7c635a5",
+ "geo_infer_revision": "2e20fe2e86d19c1f5dfb6184ae88b5f224731a9c",
  "schema_version": "fep-lean/cascadia-fixtures/1",
  "source_directory": "GEO-INFER-ACT/examples/cascadia/data"
 }
