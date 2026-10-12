@@ -79,7 +79,7 @@ entries:
   correspondence: >-
     one_step_policy_terms computes each one-step policy's risk as the finite
     KL divergence of its predicted outcome law from the preference law
-    softmax(C), alongside ambiguity and pymdp 1.0.3's own score; fep-014
+    softmax(C), alongside ambiguity and pymdp 1.0.4's own score; fep-014
     proves Mathlib KL divergence nonnegative and zero exactly on equal finite
     measures. Correspondence of the KL risk construct only. The exact
     instance-level identity relating risk plus ambiguity to the pymdp score

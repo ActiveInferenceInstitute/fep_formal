@@ -13,7 +13,7 @@ Pacific up the lower Smith River (Del Norte County, California) to its natal
 tributary, Rowdy Creek, as one-factor categorical active inference over 26 H3
 resolution-8 cells traced from measured USGS NHDPlus HR flow lines. GEO-INFER
 renders the model as GNN v1 Markdown, GNN's strict exporter produces the
-`gnn-geo-infer/1` artifact, and GEO-INFER runs it through pymdp 1.0.3.
+`gnn-geo-infer/1` artifact, and GEO-INFER runs it through pymdp 1.0.4.
 
 This slice states and proves, in Lean, facts about **that exported artifact**:
 its tables are stochastic kernels, its transitions are local for the typed
@@ -57,7 +57,7 @@ General theory, `lean/CascadiaGeo/TypedGeospatial.lean`:
 | `reach_potential` | An `R`-1-Lipschitz potential `φ` satisfies `φ c ≤ φ c' + n` along every `n`-step reach |
 | `plannedState_eq_zero_of_potential` | If every start cell is farther than the plan is long, the plan predicts exactly zero mass at the target |
 | `plannedState_pos_of_chain` | A chain of positive steps gives positive predicted mass |
-| `risk_add_ambiguity_eq_logPartition_sub_pymdpNegEFE` | With preferences `softmax C`, risk plus ambiguity equals `log Σ exp C` minus pymdp 1.0.3's one-step score (expected utility plus state information gain), with no support hypothesis on states or outcomes |
+| `risk_add_ambiguity_eq_logPartition_sub_pymdpNegEFE` | With preferences `softmax C`, risk plus ambiguity equals `log Σ exp C` minus pymdp 1.0.4's one-step score (expected utility plus state information gain), with no support hypothesis on states or outcomes |
 | `riskAmbiguity_le_iff_pymdpNegEFE_le`, `controlPosterior_riskAmbiguity_eq_pymdp` | Policy rankings agree, and pymdp's policy posterior is the control posterior of risk plus ambiguity at every precision |
 
 Generated instance, `generated/SmithRiverHoming.lean`:

@@ -283,7 +283,7 @@ theorem first_posterior_sea :
   rw [hd, ha]
   norm_num
 
-/-! ## pymdp 1.0.3 bridge at every belief -/
+/-! ## pymdp 1.0.4 bridge at every belief -/
 
 /-- For every current belief `q`, risk plus ambiguity equals `log Σ exp C` minus
 pymdp's one-step negative expected free energy. -/

@@ -19,7 +19,7 @@ in this file depends on H3 geometry.
   positive predicted mass.
 * pymdp bridge (`risk_add_ambiguity_eq_logPartition_sub_pymdpNegEFE`): with
   preferences `softmax C`, risk plus ambiguity equals `log Σ exp C` minus the
-  one-step negative expected free energy that pymdp 1.0.3 computes (expected
+  one-step negative expected free energy that pymdp 1.0.4 computes (expected
   utility plus state information gain). No support hypothesis on predicted
   states or outcomes is needed, unlike the full-support decomposition
   `expectedFreeEnergy_eq_risk_add_ambiguity`; spatial beliefs are sparse.
@@ -189,7 +189,7 @@ theorem plannedState_pos_of_chain (model : GenerativeModel Policy Cell Outcome)
 
 end LightCone
 
-/-! ## Log-preferences and the pymdp 1.0.3 expected-free-energy bridge -/
+/-! ## Log-preferences and the pymdp 1.0.4 expected-free-energy bridge -/
 
 section Pymdp
 
@@ -222,7 +222,7 @@ theorem log_softmaxLaw (C : Outcome → ℝ) (o : Outcome) :
   rw [Real.log_div (Real.exp_pos _).ne' (expSum_pos C).ne', Real.log_exp]
   rfl
 
-/-- pymdp 1.0.3 one-step score: expected utility `Σ q(o) C(o)` plus state
+/-- pymdp 1.0.4 one-step score: expected utility `Σ q(o) C(o)` plus state
 information gain `H[q(o)] − ambiguity`. -/
 noncomputable def pymdpNegEFE (model : GenerativeModel Policy State Outcome)
     (C : Outcome → ℝ) (π : Policy) : ℝ :=
