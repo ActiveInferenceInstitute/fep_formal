@@ -1,0 +1,168 @@
+{
+ "bound_inputs": {
+  "lean/lake-manifest.json": "855273bd3ee957c16c4fc1f854bcf9c0e25f883fda5174eadbda60140eec397e",
+  "lean/lean-toolchain": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b",
+  "specs/cascadia-geo-act-proof/fixtures/smith_river_homing.domain.json": "7393aca35f83edfde08ce3d77b08c1abbd4504ce7352fe9c4659b68045f925ca",
+  "specs/cascadia-geo-act-proof/fixtures/smith_river_homing.geo-infer.json": "8217ca5703bf7198748d490e1e18e5f9db12a9626d500d82913172d1b5885a13",
+  "specs/cascadia-geo-act-proof/fixtures/smith_river_homing.gnn.md": "3ec03c4d1deb89e3d603395596db4b366b208fa090d0012cd0b3c048c4e7c399",
+  "specs/cascadia-geo-act-proof/generate_probe.py": "7994c8b8e978c14795b2eefc9c949a2ececd2bfd1c2a879039e3947b54afc02f",
+  "specs/cascadia-geo-act-proof/generated/SmithRiverHoming.lean": "632accb2481961c337ef47abcc4fa7beccf5166f0a84f99c444a2ff95c3f2595",
+  "specs/cascadia-geo-act-proof/generated/manifest.json": "b4742cc0fd3f5326d966d58ce3b8217150b9e64d7d51017efe2f730ebf3faab3",
+  "specs/cascadia-geo-act-proof/lean/CascadiaGeo/TypedGeospatial.lean": "58ec82d5270c1bb77f0c88213c98fcd9a544594ea17baf0acc0c61b06a01c631",
+  "specs/cascadia-geo-act-proof/verify_native.py": "fb20423bdf4d600a9fd7e9e3b9b5f5c2b11da1437042d2d8a4e601f875b116af"
+ },
+ "created_at": "2026-10-12T16:56:32+00:00",
+ "instance_compile": {
+  "command": [
+   "lake",
+   "env",
+   "lean",
+   "<tmp>/SmithRiverHomingProbe.lean"
+  ],
+  "exit_code": 0,
+  "seconds": 7.83,
+  "stderr": "",
+  "stdout": "'CascadiaGeo.reach_refl' does not depend on any axioms\n'CascadiaGeo.reach_succ_of_reach' does not depend on any axioms\n'CascadiaGeo.reach_mono' does not depend on any axioms\n'CascadiaGeo.reach_cons' does not depend on any axioms\n'CascadiaGeo.reach_potential' depends on axioms: [propext, Quot.sound]\n'CascadiaGeo.rolloutKernel_support' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.plannedState_support' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.plannedState_eq_zero_of_potential' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.rolloutKernel_pos_of_chain' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.plannedState_pos_of_chain' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.expSum_pos' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.softmaxLaw_pos' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.log_softmaxLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.risk_add_ambiguity_eq_logPartition_sub_pymdpNegEFE' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'CascadiaGeo.riskAmbiguity_le_iff_pymdpNegEFE_le' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.boltzmannPosterior_add_const' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.controlPosterior_riskAmbiguity_eq_pymdp' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.cellId_injective' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.landmark_ids' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.h3Adjacent_symm' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.h3Adjacent_irrefl' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.riverStep_h3Adjacent' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.homeDist_home' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.homeDist_lipschitz' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.bNum_col_sum' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.aNum_col_sum' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.dNum_sum' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.eNum_sum' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.bNum_local' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.dNum_far' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.cast_sum_div' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.transition_local' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.homing_lower_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.homingPlan_length' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.transition_pos' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.homingPlan_chain' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.homing_bound_tight' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.first_evidence' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.first_evidence_pos' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.first_posterior_sea' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.efe_bridge' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.policy_posterior_bridge' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.cascadiaDoc_wellFormed' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.cascadiaDoc_dims' depends on axioms: [propext, Classical.choice, Quot.sound]\n'CascadiaGeo.SmithRiverHoming.cascadiaDoc_logPreferences' depends on axioms: [propext]\n'CascadiaGeo.SmithRiverHoming.cascadiaDoc_not_discreteConforms' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+  "timed_out": false
+ },
+ "lean_version": "Lean (version 4.34.1, arm64-apple-darwin24.6.0, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)",
+ "mutations": {
+  "arrival_bound_too_strong": {
+   "command": [
+    "lake",
+    "env",
+    "lean",
+    "<tmp>/arrival_bound_too_strong.lean"
+   ],
+   "exit_code": 1,
+   "first_error": "<tmp>/arrival_bound_too_strong.lean:224:2: error: omega could not prove the goal:",
+   "seconds": 5.81,
+   "stderr": "",
+   "stdout": "<tmp>/arrival_bound_too_strong.lean:224:2: error: omega could not prove the goal:\na possible counterexample may satisfy the constraints\n  d \u2265 1\n  b \u2265 13\n  0 \u2264 a \u2264 13\n  a - b \u2265 0\nwhere\n a := \u2191plan.length\n b := \u2191(homeDist c)\n d := \u2191(dNum c)\n",
+   "timed_out": false
+  },
+  "h3_edge_removed": {
+   "command": [
+    "lake",
+    "env",
+    "lean",
+    "<tmp>/h3_edge_removed.lean"
+   ],
+   "exit_code": 1,
+   "first_error": "<tmp>/h3_edge_removed.lean:99:2: error: Tactic `decide` proved that the proposition",
+   "seconds": 5.69,
+   "stderr": "",
+   "stdout": "<tmp>/h3_edge_removed.lean:99:2: error: Tactic `decide` proved that the proposition\n  \u2200 (c c' : Cell), riverStep c c' = true \u2192 h3Adjacent c c' = true\nis false\n",
+   "timed_out": false
+  },
+  "transposed_b_axes": {
+   "command": [
+    "lake",
+    "env",
+    "lean",
+    "<tmp>/transposed_b_axes.lean"
+   ],
+   "exit_code": 1,
+   "first_error": "<tmp>/transposed_b_axes.lean:138:2: error: Tactic `decide` proved that the proposition",
+   "seconds": 5.08,
+   "stderr": "",
+   "stdout": "<tmp>/transposed_b_axes.lean:138:2: error: Tactic `decide` proved that the proposition\n  \u2200 (a : Act) (c : Cell), \u2211 c', bNum a c c' = 4\nis false\n<tmp>/transposed_b_axes.lean:239:25: error: Tactic `decide` proved that the proposition\n  bNum 2 outlet 2 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:57: error: Tactic `decide` proved that the proposition\n  bNum 2 2 3 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:89: error: Tactic `decide` proved that the proposition\n  bNum 2 3 4 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:121: error: Tactic `decide` proved that the proposition\n  bNum 2 4 5 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:153: error: Tactic `decide` proved that the proposition\n  bNum 2 5 6 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:185: error: Tactic `decide` proved that the proposition\n  bNum 2 6 7 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:217: error: Tactic `decide` proved that the proposition\n  bNum 2 7 8 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:249: error: Tactic `decide` proved that the proposition\n  bNum 2 8 9 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:282: error: Tactic `decide` proved that the proposition\n  bNum 2 9 10 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:315: error: Tactic `decide` proved that the proposition\n  bNum 3 10 22 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:348: error: Tactic `decide` proved that the proposition\n  bNum 2 22 23 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:381: error: Tactic `decide` proved that the proposition\n  bNum 2 23 24 \u2260 0\nis false\n<tmp>/transposed_b_axes.lean:239:414: error: Tactic `decide` proved that the proposition\n  bNum 2 24 25 \u2260 0\nis false\n",
+   "timed_out": false
+  },
+  "wrong_exact_posterior": {
+   "command": [
+    "lake",
+    "env",
+    "lean",
+    "<tmp>/wrong_exact_posterior.lean"
+   ],
+   "exit_code": 1,
+   "first_error": "<tmp>/wrong_exact_posterior.lean:278:2: error: 'show' tactic failed, pattern",
+   "seconds": 5.76,
+   "stderr": "",
+   "stdout": "<tmp>/wrong_exact_posterior.lean:278:2: error: 'show' tactic failed, pattern\n  \u2191(dNum sea) / 4 * (\u2191(aNum firstObs sea) / 64) /\n      (FiniteKernel.predictive model.initialState model.likelihood).mass firstObs =\n    18 / 19\nis not definitionally equal to target\n  (FiniteKernel.posterior model.initialState model.likelihood firstObs first_evidence_pos).mass sea = 19 / 20\n",
+   "timed_out": false
+  }
+ },
+ "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+ "schema_version": "fep-lean/cascadia-native-receipt/1",
+ "theorems": [
+  "CascadiaGeo.reach_refl",
+  "CascadiaGeo.reach_succ_of_reach",
+  "CascadiaGeo.reach_mono",
+  "CascadiaGeo.reach_cons",
+  "CascadiaGeo.reach_potential",
+  "CascadiaGeo.rolloutKernel_support",
+  "CascadiaGeo.plannedState_support",
+  "CascadiaGeo.plannedState_eq_zero_of_potential",
+  "CascadiaGeo.rolloutKernel_pos_of_chain",
+  "CascadiaGeo.plannedState_pos_of_chain",
+  "CascadiaGeo.expSum_pos",
+  "CascadiaGeo.softmaxLaw_pos",
+  "CascadiaGeo.log_softmaxLaw",
+  "CascadiaGeo.risk_add_ambiguity_eq_logPartition_sub_pymdpNegEFE",
+  "CascadiaGeo.riskAmbiguity_le_iff_pymdpNegEFE_le",
+  "CascadiaGeo.boltzmannPosterior_add_const",
+  "CascadiaGeo.controlPosterior_riskAmbiguity_eq_pymdp",
+  "CascadiaGeo.SmithRiverHoming.cellId_injective",
+  "CascadiaGeo.SmithRiverHoming.landmark_ids",
+  "CascadiaGeo.SmithRiverHoming.h3Adjacent_symm",
+  "CascadiaGeo.SmithRiverHoming.h3Adjacent_irrefl",
+  "CascadiaGeo.SmithRiverHoming.riverStep_h3Adjacent",
+  "CascadiaGeo.SmithRiverHoming.homeDist_home",
+  "CascadiaGeo.SmithRiverHoming.homeDist_lipschitz",
+  "CascadiaGeo.SmithRiverHoming.bNum_col_sum",
+  "CascadiaGeo.SmithRiverHoming.aNum_col_sum",
+  "CascadiaGeo.SmithRiverHoming.dNum_sum",
+  "CascadiaGeo.SmithRiverHoming.eNum_sum",
+  "CascadiaGeo.SmithRiverHoming.bNum_local",
+  "CascadiaGeo.SmithRiverHoming.dNum_far",
+  "CascadiaGeo.SmithRiverHoming.cast_sum_div",
+  "CascadiaGeo.SmithRiverHoming.transition_local",
+  "CascadiaGeo.SmithRiverHoming.homing_lower_bound",
+  "CascadiaGeo.SmithRiverHoming.homingPlan_length",
+  "CascadiaGeo.SmithRiverHoming.transition_pos",
+  "CascadiaGeo.SmithRiverHoming.homingPlan_chain",
+  "CascadiaGeo.SmithRiverHoming.homing_bound_tight",
+  "CascadiaGeo.SmithRiverHoming.first_evidence",
+  "CascadiaGeo.SmithRiverHoming.first_evidence_pos",
+  "CascadiaGeo.SmithRiverHoming.first_posterior_sea",
+  "CascadiaGeo.SmithRiverHoming.efe_bridge",
+  "CascadiaGeo.SmithRiverHoming.policy_posterior_bridge",
+  "CascadiaGeo.SmithRiverHoming.cascadiaDoc_wellFormed",
+  "CascadiaGeo.SmithRiverHoming.cascadiaDoc_dims",
+  "CascadiaGeo.SmithRiverHoming.cascadiaDoc_logPreferences",
+  "CascadiaGeo.SmithRiverHoming.cascadiaDoc_not_discreteConforms"
+ ],
+ "theory_compile": {
+  "command": [
+   "lake",
+   "env",
+   "lean",
+   "-R",
+   "<repo>/specs/cascadia-geo-act-proof/lean",
+   "-o",
+   "<repo>/output/cascadia-geo-act-proof/build/CascadiaGeo/TypedGeospatial.olean",
+   "<repo>/specs/cascadia-geo-act-proof/lean/CascadiaGeo/TypedGeospatial.lean"
+  ],
+  "exit_code": 0,
+  "seconds": 29.06,
+  "stderr": "",
+  "stdout": "",
+  "timed_out": false
+ },
+ "verdict": {
+  "claim_ready": true,
+  "instance_clean": true,
+  "missing_axiom_reports": [],
+  "mutations_rejected": {
+   "arrival_bound_too_strong": true,
+   "h3_edge_removed": true,
+   "transposed_b_axes": true,
+   "wrong_exact_posterior": true
+  },
+  "nonstandard_axioms": {},
+  "theorems_reported": 46,
+  "theory_clean": true
+ }
+}

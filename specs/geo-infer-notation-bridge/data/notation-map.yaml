@@ -44,6 +44,20 @@ entries:
     statistical family.
   reference: >-
     Amari (2016), "Information Geometry and Its Applications", Springer
+- concept: deterministic selection of an expected-free-energy minimizer
+  fep_lean:
+    topic_id: fep-008
+    symbol: fep008_exists_minG
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/runners/closed_loop.py::run_closed_loop
+  correspondence: >-
+    run_closed_loop drives the gnn-geo-infer/1 contract, whose pymdp step
+    selects the action with the largest policy posterior over a finite,
+    nonempty set of one-step policies; fep-008 proves that a real-valued
+    objective attains a minimum on such a set and that all minimizers agree
+    in value. Correspondence of the finite minimizer construct; habit
+    weighting and tie-breaking order are outside the row.
+  reference: >-
+    Friston, FitzGerald, Rigoli, Schwartenbeck & Pezzulo (2017), "Active inference: a process theory", Neural Computation 29(1)
 - concept: entropy-regularized policy cost
   fep_lean:
     topic_id: fep-012
@@ -57,6 +71,21 @@ entries:
     reward. The mapping is notation-level only.
   reference: >-
     Parr, Pezzulo & Friston (2022), Active Inference, MIT Press
+- concept: risk as KL divergence of predicted outcomes from the preference law
+  fep_lean:
+    topic_id: fep-014
+    symbol: fep014_kl_nonneg
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/efe_decomposition.py::one_step_policy_terms
+  correspondence: >-
+    one_step_policy_terms computes each one-step policy's risk as the finite
+    KL divergence of its predicted outcome law from the preference law
+    softmax(C), alongside ambiguity and pymdp 1.0.3's own score; fep-014
+    proves Mathlib KL divergence nonnegative and zero exactly on equal finite
+    measures. Correspondence of the KL risk construct only. The exact
+    instance-level identity relating risk plus ambiguity to the pymdp score
+    is proved separately in specs/cascadia-geo-act-proof, not by this row.
+  reference: >-
+    Da Costa, Parr, Sajid, Veselic, Neacsu & Friston (2020), "Active inference on discrete state-spaces: a synthesis", Journal of Mathematical Psychology 99
 - concept: posterior reconstruction under belief updating
   fep_lean:
     topic_id: fep-017
@@ -127,6 +156,20 @@ entries:
     exponentiated policy scores on a nonempty support form a nonnegative
     weight vector summing to one. Notation-level correspondence of the
     softmax construct.
+  reference: >-
+    Parr, Pezzulo & Friston (2022), Active Inference, MIT Press
+- concept: Gibbs preference law from log-preferences
+  fep_lean:
+    topic_id: fep-031
+    symbol: fep031_gibbsProbability_sum_one
+  geo_anchor: GEO-INFER-ACT/src/geo_infer_act/core/efe_decomposition.py::preference_law
+  correspondence: >-
+    preference_law maps GNN log-preferences C to softmax(C), the Gibbs law
+    with energies -C at unit inverse temperature; fep-031 proves that
+    positive exponential Gibbs weights normalize to a nonnegative mass
+    function summing to one on a nonempty finite support. Correspondence of
+    the normalization construct; the Python function evaluates floats and
+    claims no exactness.
   reference: >-
     Parr, Pezzulo & Friston (2022), Active Inference, MIT Press
 - concept: Fisher information as log-likelihood curvature

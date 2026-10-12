@@ -184,11 +184,12 @@ jobs:
           uv run python specs/openai-math-methods/generate_package_methods.py --check
           uv run fep-lean --project-root . methods check --output-root docs/mathematical-positioning
       # The frozen-custody bridge gates from AGENTS.md's required checks:
-      # both are --check validation of committed artifacts and pass on a
+      # each is --check validation of committed artifacts and passes on a
       # fresh checkout without any sibling repo.
       - name: Check the frozen-custody bridge gates
         run: |
           uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
+          uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
           uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
       - name: Generate and validate publication inputs
         run: |

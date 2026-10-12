@@ -1,5 +1,17 @@
 ## Unreleased
 
+- Spec slice `specs/cascadia-geo-act-proof`: a Lean 4 instance of the
+  GEO-INFER-ACT Cascadia river-homing artifact (26 H3 resolution-8 cells on
+  the lower Smith River, exported by GNN's strict `gnn-geo-infer/1` producer).
+  A slice-local theory proves light cones for local kernels, potential-based
+  arrival bounds and the exact identity between risk plus ambiguity and
+  pymdp 1.0.3's score without full-support hypotheses; the generated instance
+  proves stochasticity, H3 locality, a tight 13-step homing bound, an exact
+  18/19 first posterior and well-formedness of the transcribed GNN source.
+  Its native receipt is claim-ready and rejects four mutations. The catalogue
+  roster, aggregate and dispositions are unchanged. The GEO-INFER notation map
+  gains rows for `fep-008`, `fep-014` and `fep-031`.
+
 Formal-resource strengthening on the existing 168-topic roster. No semantic
 disposition changes: each new statement awaits independent review against its
 theorem proxy, and compilation establishes only the exact Lean statements.

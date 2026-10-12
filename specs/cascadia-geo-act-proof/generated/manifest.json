@@ -1,0 +1,45 @@
+{
+ "facts": {
+  "actions": 4,
+  "cells": 26,
+  "denominators": {
+   "A": 64,
+   "B": 4,
+   "D": 4,
+   "E": 8
+  },
+  "first_evidence": "57/128",
+  "first_observation": "marine|faint",
+  "first_posterior_sea": "18/19",
+  "home_lower_bound_steps": 13,
+  "homing_plan": [
+   "upstream",
+   "upstream",
+   "upstream",
+   "upstream",
+   "upstream",
+   "upstream",
+   "upstream",
+   "upstream",
+   "upstream",
+   "turn",
+   "upstream",
+   "upstream",
+   "upstream"
+  ],
+  "observations": 12
+ },
+ "generated": {
+  "generated/SmithRiverHoming.lean": "632accb2481961c337ef47abcc4fa7beccf5166f0a84f99c444a2ff95c3f2595"
+ },
+ "inputs": {
+  "smith_river_homing.domain.json": "7393aca35f83edfde08ce3d77b08c1abbd4504ce7352fe9c4659b68045f925ca",
+  "smith_river_homing.geo-infer.json": "8217ca5703bf7198748d490e1e18e5f9db12a9626d500d82913172d1b5885a13",
+  "smith_river_homing.gnn.md": "3ec03c4d1deb89e3d603395596db4b366b208fa090d0012cd0b3c048c4e7c399"
+ },
+ "schema_version": "fep-lean/cascadia-geo-act-proof/1",
+ "tooling": {
+  "generate_probe.py": "7994c8b8e978c14795b2eefc9c949a2ececd2bfd1c2a879039e3947b54afc02f",
+  "lean/CascadiaGeo/TypedGeospatial.lean": "58ec82d5270c1bb77f0c88213c98fcd9a544594ea17baf0acc0c61b06a01c631"
+ }
+}
