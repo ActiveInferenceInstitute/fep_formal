@@ -1,5 +1,9 @@
 ## Unreleased
 
+- Record the archived compile-maturity/scientific-scope ambiguity and its current
+  source contracts in [the publication consistency review](docs/publication-consistency-review.md).
+  No theorem disposition or native-evidence claim changes.
+
 - Refresh the explicit FEP/GNN source custody pair against GNN's pymdp 1.0.4
   dependency update and the current FEP owner bytes. Both finite and continuous
   emissions change only their Signature fields. This restores live source and
