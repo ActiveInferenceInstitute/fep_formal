@@ -1747,8 +1747,8 @@ def test_live_owned_guard_cannot_be_discharged_by_delivered_error(
         assert exited.wait(1), "socket controller did not finish teardown"
         control.join(timeout=1)
         worker.join(timeout=1)
+        broker.close()
         for group in groups:
             group.process.wait(timeout=1)
-        broker.close()
         listener.close()
     assert not control_errors and not control.is_alive()
