@@ -30,6 +30,7 @@ were preserved.
 | Check | Observed result |
 | --- | --- |
 | GEO numerical and adjacent regressions | 51 passed; four selected numerical modules 95.35% coverage, floor 90% |
+| ACT subsequent full owned runner | 771 passed, zero failures/errors/skips; separate [final recheck receipt](evidence/20261013-act-full-recheck.md) |
 | GNN export qualification and consumer compatibility | 20 passed; strict documentation audit passed |
 | FEP experiment slice and CI check inventory | 16 passed |
 | FEP process watchdog after teardown correction | 121 passed, two platform skips |
@@ -76,6 +77,13 @@ Local command transcripts are retained under GitVault's
 review records are in `.omo/evidence/cascadia-main-publication` in the FEP
 checkout. Failed receipts, earlier native evidence, environments and review
 checkouts are preserved. A full-suite pass is not asserted from narrower fixes.
+
+The subsequent ACT run used the earlier full attempt's explicit 1800-second
+budget and passed all 771 cases in 340.15 seconds. Its earlier failures remain
+historical failures. The runner reports `custody_complete: false`; the green
+test selection does not establish complete-workspace custody or promote the
+other broad gates to green. The final recheck record binds the source commit,
+run/attempt identifiers and retained result hashes.
 
 ## Mathematical and presentation scope
 
