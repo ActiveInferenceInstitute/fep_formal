@@ -135,6 +135,11 @@ tests check fixtures, generation, the GNN AST parser and the retained receipt.
 
 ## From one explanation to an assumption study
 
+The active [experiment change-review slice](../cascadia-experiments/README.md)
+compares candidate exact tables and carriers against these fixtures and emits
+a machine-readable proof-impact worksheet. It leaves this reference receipt
+intact and never promotes a variant to native claim readiness.
+
 The sibling GEO_INFER example now includes
 `GEO-INFER-ACT/examples/cascadia/cascadia_study.py`: a declared process-seed
 grid under the reference model, a uniform E, and an uninformative odor A.

@@ -144,6 +144,10 @@ uv run pytest specs/openai-math-methods/test_methods.py \
   specs/openai-math-methods/test_visualization.py -q --no-cov
 uv run ruff check specs/openai-math-methods
 uv run ruff format --check specs/openai-math-methods
+uv run pytest specs/cascadia-experiments/test_proof_impact.py -q --no-cov
+uv run pytest specs/cascadia-experiments/test_diagnostic_bounds.py -q --no-cov
+uv run ruff check specs/cascadia-experiments
+uv run ruff format --check specs/cascadia-experiments
 uv run python scripts/audit_formalisms.py \
   --receipt output/formalism-audit.json
 uv run python docs/theorem_ref_audit.py
@@ -180,6 +184,8 @@ and run in the hosted `lean` job:
 (cd lean && lake build FepSketches)
 uv run pytest tests/ -q -m serial_lean -n 1 --no-cov
 uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --compile output/cascadia-diagnostic-bounds
+uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --check output/cascadia-diagnostic-bounds
 ```
 
 Hosted CI also runs the `distribution` installed-wheel matrix, the isolated
