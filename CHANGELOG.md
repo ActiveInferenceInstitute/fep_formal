@@ -1,5 +1,11 @@
 ## Unreleased
 
+- Refresh the explicit FEP/GNN source custody pair against GNN's pymdp 1.0.4
+  dependency update and the current FEP owner bytes. Both finite and continuous
+  emissions change only their Signature fields. This restores live source and
+  artifact freshness; historical native and execution receipts retain their
+  original source epochs.
+
 - Spec slice `specs/cascadia-geo-act-proof`: a Lean 4 instance of the
   GEO-INFER-ACT Cascadia river-homing artifact (26 H3 resolution-8 cells on
   the lower Smith River, exported by GNN's strict `gnn-geo-infer/1` producer).
