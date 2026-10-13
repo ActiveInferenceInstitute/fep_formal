@@ -132,3 +132,59 @@ fixtures, `lean-toolchain` and `lake-manifest.json`. Any change to them makes
 Tests: [tests/test_cascadia_geo_act_proof.py](../../tests/test_cascadia_geo_act_proof.py).
 The `serial_lean` test recompiles natively in the hosted Lean job; the other
 tests check fixtures, generation, the GNN AST parser and the retained receipt.
+
+## From one explanation to an assumption study
+
+The sibling GEO_INFER example now includes
+`GEO-INFER-ACT/examples/cascadia/cascadia_study.py`: a declared process-seed
+grid under the reference model, a uniform E, and an uninformative odor A.
+Each condition has its own GNN-emitted artifact and retains every trajectory,
+including right-censored arrivals. Its qualification checks replay, numerical
+support and the float32 EFE identity. Those observations complement this
+slice's exact statements and do not extend its native receipt.
+
+The proof consequence of a change must be reviewed by carrier:
+
+| Change | Review required before a new native claim |
+| --- | --- |
+| Process seed or observation horizon only | Same finite tables; retain a new execution receipt, with no claim that Lean proves the sampled trajectory |
+| E (habit prior) | New eNum data/denominator and policy-posterior instance; preserve stochasticity witnesses |
+| A (odor/habitat likelihood) | New aNum data/denominator, Bayes evidence/posterior witnesses and score bridge instance |
+| C | New log-preference vector and bridge instance; C remains unnormalized and enters through softmax |
+| B, state order or network selection | New carrier, adjacency/relation data, locality, reachability bound and tight-plan witness |
+| Step seconds | New clock metadata; a step-count theorem does not automatically establish a physical-time bound |
+
+For a variant, retain a **new named slice** with the condition's source,
+ordered identifiers, domain, artifact and export record. Adapt the generated
+instance and its theorem roster to those inputs, compile it against the
+pinned toolchain, inspect axiom reports and include mutations that break its
+own normalization, locality, bound or posterior assertions. The current
+generator and refresh commands target the reference slice; they are not a
+generic variant-proof CLI. Do not overwrite these fixtures to make a study
+condition appear to inherit the 46-statement reference receipt.
+
+The type of a statement matters: an exact lower bound is universal over
+admissible action plans in the finite model; a seeded trajectory is one
+execution; a finite seed-grid arrival fraction is a descriptive summary.
+None establishes an ecological homing rate. The canonical experiment and
+censoring definitions live in GEO_INFER's
+`GEO-INFER-ACT/docs/cascadia_river_homing.md`; the GNN custody guide lives in
+`docs/other/geo_infer/cascadia_river_homing.md` of that repository.
+
+## Catalogue compile checkpoint, 2026-10-12
+
+The separate [retained catalogue receipt](catalogue_native_receipt_20261012.json)
+records native compilation of all 168 canonical topic bodies against Lean
+4.34.1 and the pinned Mathlib revision. Independent receipt validation reports
+`native_claim_ready: true` and `source_bound: true`, with zero warnings and
+zero `sorry` occurrences. It is a dated checkpoint, not a perpetual guarantee
+of freshness after source changes. Revalidate it against the named checkout:
+
+```bash
+uv run python -c 'from pathlib import Path; import json; from fep_lean.output.evidence import validate_native_lean_receipt; r = validate_native_lean_receipt(Path("specs/cascadia-geo-act-proof/catalogue_native_receipt_20261012.json"), project_root=Path.cwd()); print(json.dumps(r, indent=2)); raise SystemExit(not r["native_claim_ready"])'
+```
+
+This receipt has a different scope from the 46-statement Cascadia instance
+receipt. Neither is full Hermes/OpenGauss execution evidence, and neither
+promotes the catalogue's maintained semantic dispositions or proves the
+study's variant artifacts.
