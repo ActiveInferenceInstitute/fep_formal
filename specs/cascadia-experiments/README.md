@@ -108,6 +108,10 @@ establishes calibrated beliefs, homing success, or ecological validity.
 
 ## Checks
 
+The [cross-repository validation record](publication-validation.md) records
+the main-publication source identities, checks, retained failures and
+mathematical scope for the October 13 improvements.
+
 ```bash
 uv run pytest specs/cascadia-experiments/test_proof_impact.py -q --no-cov
 uv run pytest specs/cascadia-experiments/test_diagnostic_bounds.py -q --no-cov
