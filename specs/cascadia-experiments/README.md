@@ -55,6 +55,10 @@ schema validator or an independent GNN exporter.
 process transitions from agent belief predictions and identify which graph,
 score and policy hypotheses reopen under model mismatch.
 
+[Matrix proof obligations](matrix-proof-obligations.md) apply that distinction
+to configured case selections, shared seeds and horizons, including positive
+agent evidence for process-generated cues and retained impossible-cue failures.
+
 | Component | Mathematical review reopened |
 | --- | --- |
 | A | Likelihood stochasticity, exact evidence/posterior, score instance |
@@ -107,6 +111,9 @@ and tolerance are not proved to refine this definition, and no theorem here
 establishes calibrated beliefs, homing success, or ecological validity.
 
 ## Checks
+
+The [matrix validation record](matrix-validation.md) records the October 14
+configured matrix, strict receipt controls, actual replay and companion checks.
 
 The [cross-repository validation record](publication-validation.md) records
 the main-publication source identities, checks, retained failures and
