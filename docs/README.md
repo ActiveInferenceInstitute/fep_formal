@@ -42,6 +42,7 @@
 - [Architecture](architecture.md) — package layout and the data flow between catalogue, Lean, Hermes, and OpenGauss.
 - [Python API](api.md) — public package surface.
 - [Formalism authorship guide](authorship-guide.md) — strengthening a reviewed topic and deciding when a new formalism is warranted.
+- [Publication consistency review](publication-consistency-review.md) — reconciles archived publication wording with current theorem scope and evidence boundaries.
 - [Branch coverage](coverage-branch.md) — the declared coverage configuration and what the gate measures.
 - [Scaffold portability](scaffold-portability.md) — carrying the checkout kit and scaffold into another repository.
 - [Troubleshooting](troubleshooting.md) — preflight, setup, and run failures with their remedies.
