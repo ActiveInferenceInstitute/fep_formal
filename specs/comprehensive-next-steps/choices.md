@@ -369,7 +369,7 @@ following a shell comment; fresh independent review caught that parser defect.
 **Reach:** The existing inventory helper lexes comments and quoted operators
 before chain splitting. Actual positive/negative controls preserve quoted
 hashes/ampersands and reject copied commands, owner rows, mode definitions and
-missing links. The 51 canonical commands remain byte-identical. Enforcement
+missing links. The canonical command blocks remain byte-identical. Enforcement
 is confined to designated reference sections, preserving usage examples;
 it does not claim to detect arbitrary paraphrased duplication.
 
@@ -447,6 +447,29 @@ acceptance only, with final published-source reconciliation still required.
 **Verdict:** sound; preserve history while giving current facts one owner.
 **Confidence:** high for the reviewed reading paths, with no runtime or
 scientific acceptance inferred.
+
+## Keep current guidance explicit about each check epoch
+
+**When:** Final parent-branch reading-path reconciliation.
+
+**Choice:** Record the accepted `6aeea47` main workflow separately from pending
+feature branches. Bind D04's unchanged-command result to its reviewed
+`9b31783` epoch, then describe the later coordinated T01/P08 command updates.
+State G02's acceptance requirements without a stale claim that every review
+is still pending.
+
+**Gap:** An earlier correct byte-preservation result can become misleading
+when repeated as an unqualified current command inventory after later edits.
+Its shell-command count also included the `cd lean` setup prefix, which the
+tracked-gate lexer deliberately excludes. Retain the exact byte comparison
+without repeating an ambiguous count.
+
+**Reach:** No gate, evidence file, source profile or scientific disposition
+changes. Each check keeps its actual consumed bytes and acceptance plane.
+
+**Verdict:** keep source currency and completed historical checks distinct.
+**Confidence:** exact main workflow verified; current feature acceptance remains
+separate.
 
 ## Tooling scope follows active owners and preserves retained inputs
 

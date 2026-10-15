@@ -98,7 +98,8 @@ P01's C04 predecessor and the remaining L01 work stay open.
 [PR173](https://github.com/ActiveInferenceInstitute/fep_formal/pull/173)
 is merged at [`6aeea47`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/6aeea478b0643baaeab5af1e26ef4dd545890f24)
 after [all executed PR lanes passed](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38760058809)
-on `db020c5`. Its combined exact-main workflow remains a separate acceptance.
+on `db020c5`. Its [exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38769188125)
+also passed on `6aeea47`; that result does not qualify later feature-branch source.
 Re-read live PR state before integration; old green or failed runs retain their
 own exact source boundaries.
 
@@ -113,8 +114,14 @@ render acceptance remains required before closure. P02 removes only three
 demonstrably dead helpers and refreshes its current generated Q6 manifest;
 historical custody receipts remain unchanged. Its caller inventory also
 clarified the third source owner and corresponding checks in the new package.
-D04 has a reviewed root-owner consolidation and 23 passing inventory controls;
-the 51 canonical gate commands and dated evidence remain byte-identical.
+D04's reviewed root-owner consolidation at `9b31783` retained the canonical
+gate commands and passed 23 inventory controls; dated evidence remains unchanged.
+The later T01/P08 passes update the canonical command owner and CI together,
+with their own inventory controls and source epochs. T01 covers 341 active
+Python files with Ruff and 148 source/script/doc files with strict mypy.
+P08 prepares warning-log retention; actual measurement and filter narrowing
+remain open. Historical metadata replay, terminal-validator controls and
+hosted acceptance retain their distinct evidence boundaries.
 The methods projection is refreshed through its owner and retains meta-import
 context; theorem statements, semantic records and numerical content are unchanged.
 
