@@ -5,7 +5,9 @@ public import Mathlib.Algebra.Order.BigOperators.Group.Finset
 public import Mathlib.Data.Fintype.BigOperators
 public import Mathlib.Data.Fintype.Card
 public import Mathlib.Basic.Real.Basic
-public import Mathlib.Tactic
+public import Mathlib.Algebra.BigOperators.Field
+public import Mathlib.Tactic.Positivity
+public import Mathlib.Tactic.SimpRw
 
 @[expose] public section
 

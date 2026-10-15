@@ -5,7 +5,12 @@ public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 public import Mathlib.Analysis.Calculus.FDeriv.Pow
 public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 public import FepSketches.geometric_mechanics
-public import Mathlib.Tactic
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.FinCases
+public import Mathlib.Tactic.FunProp
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Ring
 
 @[expose] public section
 

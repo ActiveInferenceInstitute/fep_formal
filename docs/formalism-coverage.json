@@ -853,7 +853,9 @@
         "Mathlib.Data.Fintype.BigOperators",
         "Mathlib.Data.Fintype.Card",
         "Mathlib.Basic.Real.Basic",
-        "Mathlib.Tactic"
+        "Mathlib.Algebra.BigOperators.Field",
+        "Mathlib.Tactic.Positivity",
+        "Mathlib.Tactic.SimpRw"
       ],
       "lean_module": "FepSketches.finite_probability",
       "resource": "finite_probability.lean",
@@ -1029,7 +1031,11 @@
       ],
       "id": "formal-module-information-geometry",
       "imports": [
-        "FepSketches.finite_probability"
+        "FepSketches.finite_probability",
+        "Mathlib.LinearAlgebra.Matrix.NonsingularInverse",
+        "Mathlib.Tactic.FieldSimp",
+        "Mathlib.Tactic.NormNum",
+        "Mathlib.Tactic.Ring"
       ],
       "lean_module": "FepSketches.information_geometry",
       "resource": "information_geometry.lean",
@@ -1358,7 +1364,8 @@
       ],
       "id": "formal-module-finite-markov-dynamics",
       "imports": [
-        "FepSketches.finite_probability"
+        "FepSketches.finite_probability",
+        "Mathlib.Tactic.Ring"
       ],
       "lean_module": "FepSketches.finite_markov_dynamics",
       "resource": "finite_markov_dynamics.lean",
@@ -1456,7 +1463,15 @@
         "Mathlib.Order.Filter.Tendsto",
         "Mathlib.Probability.Distributions.Gaussian.Real",
         "Mathlib.Topology.Algebra.Monoid",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Convert",
+        "Mathlib.Tactic.FieldSimp",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.NormNum",
+        "Mathlib.Tactic.Positivity",
+        "Mathlib.Tactic.Ring",
+        "Mathlib.Tactic.SimpRw",
+        "Lean.Elab.Tactic.Omega",
+        "Lean.Meta.Tactic.NormCast"
       ],
       "lean_module": "FepSketches.predictive_coding",
       "resource": "predictive_coding.lean",
@@ -1527,7 +1542,12 @@
         "Mathlib.Analysis.Calculus.FDeriv.Pow",
         "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
         "FepSketches.geometric_mechanics",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.FieldSimp",
+        "Mathlib.Tactic.FinCases",
+        "Mathlib.Tactic.FunProp",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.NormNum",
+        "Mathlib.Tactic.Ring"
       ],
       "lean_module": "FepSketches.ness_flow",
       "resource": "ness_flow.lean",
@@ -2893,7 +2913,11 @@
       "imports": [
         "FepSketches.continuous_time_markov",
         "FepSketches.geometric_mechanics",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.NormNum",
+        "Mathlib.Tactic.Positivity",
+        "Mathlib.Tactic.Ring",
+        "Mathlib.Tactic.SimpRw"
       ],
       "lean_module": "FepSketches.helmholtz_ao_ness",
       "resource": "helmholtz_ao_ness.lean",
@@ -2931,7 +2955,14 @@
       "formal_dependencies": [],
       "id": "formal-module-geometric-mechanics",
       "imports": [
-        "Mathlib.Tactic"
+        "Mathlib.Algebra.BigOperators.Field",
+        "Mathlib.Algebra.BigOperators.Fin",
+        "Mathlib.Algebra.Order.BigOperators.Ring.Finset",
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic.FinCases",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.NormNum",
+        "Mathlib.Tactic.Ring"
       ],
       "lean_module": "FepSketches.geometric_mechanics",
       "resource": "geometric_mechanics.lean",
@@ -2987,7 +3018,12 @@
       "id": "formal-module-law-weighted-split",
       "imports": [
         "FepSketches.helmholtz_ao_ness",
-        "Mathlib.Tactic"
+        "Mathlib.Algebra.BigOperators.Fin",
+        "Mathlib.Data.Fin.VecNotation",
+        "Mathlib.Tactic.FinCases",
+        "Mathlib.Tactic.LinearCombination",
+        "Mathlib.Tactic.NormNum",
+        "Mathlib.Tactic.Positivity"
       ],
       "lean_module": "FepSketches.law_weighted_split",
       "resource": "law_weighted_split.lean",
@@ -4731,7 +4767,7 @@
     "definitions": 1032,
     "distinct_mathlib_imports": 70,
     "formal_module_dependency_edges": 170,
-    "formal_module_import_edges": 295,
+    "formal_module_import_edges": 331,
     "formal_modules": 71,
     "formal_pairing_witnesses": 118,
     "formal_relation_witnesses": 24,

@@ -1,7 +1,11 @@
 module
 public import FepSketches.continuous_time_markov
 public import FepSketches.geometric_mechanics
-public import Mathlib.Tactic
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Positivity
+public import Mathlib.Tactic.Ring
+public import Mathlib.Tactic.SimpRw
 
 @[expose] public section
 

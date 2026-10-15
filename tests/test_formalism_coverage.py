@@ -171,6 +171,45 @@ def test_coverage_writer_and_drift_check_are_deterministic(tmp_path: Path) -> No
     assert formalism_coverage_drift(tmp_path) == (markdown_path,)
 
 
+def test_formal_import_inventory_retains_meta_dependencies(tmp_path: Path) -> None:
+    _copy_coverage_sources(tmp_path)
+    before = build_formalism_coverage(tmp_path)
+    resource = tmp_path / "src" / "fep_lean" / "formal" / "finite_probability.lean"
+    source = resource.read_text(encoding="utf-8")
+    resource.write_text(
+        source.replace(
+            "module\n",
+            "module\n"
+            "public meta import Lean.Elab.Tactic.Omega\n"
+            "meta import Lean.Meta.Tactic.NormCast\n"
+            "/- public meta import Fake.CommentOnly -/\n",
+            1,
+        ),
+        encoding="utf-8",
+    )
+    after = build_formalism_coverage(tmp_path)
+    before_row = next(
+        row
+        for row in before["formal_modules"]
+        if row["resource"] == "finite_probability.lean"
+    )
+    after_row = next(
+        row
+        for row in after["formal_modules"]
+        if row["resource"] == "finite_probability.lean"
+    )
+
+    assert after_row["imports"] == [
+        "Lean.Elab.Tactic.Omega",
+        "Lean.Meta.Tactic.NormCast",
+        *before_row["imports"],
+    ]
+    assert after["metrics"]["formal_module_import_edges"] == (
+        before["metrics"]["formal_module_import_edges"] + 2
+    )
+    assert after_row["formal_dependencies"] == before_row["formal_dependencies"]
+
+
 def test_formal_inventory_and_counts_ignore_comment_only_lean_commands(
     tmp_path: Path,
 ) -> None:

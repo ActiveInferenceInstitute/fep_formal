@@ -1,5 +1,9 @@
 module
 public import FepSketches.finite_probability
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Ring
 
 @[expose] public section
 

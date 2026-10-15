@@ -12,7 +12,15 @@ public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 public import Mathlib.Order.Filter.Tendsto
 public import Mathlib.Probability.Distributions.Gaussian.Real
 public import Mathlib.Topology.Algebra.Monoid
-public import Mathlib.Tactic
+public import Mathlib.Tactic.Convert
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Positivity
+public import Mathlib.Tactic.Ring
+public import Mathlib.Tactic.SimpRw
+public meta import Lean.Elab.Tactic.Omega
+public meta import Lean.Meta.Tactic.NormCast
 
 @[expose] public section
 

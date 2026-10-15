@@ -1,5 +1,6 @@
 module
 public import FepSketches.finite_probability
+public import Mathlib.Tactic.Ring
 
 @[expose] public section
 

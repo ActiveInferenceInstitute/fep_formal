@@ -38,7 +38,9 @@ _DEFINITION_RE = re.compile(
 )
 _ABBREV_RE = re.compile(r"^\s*abbrev\s+([A-Za-z][A-Za-z0-9_]*)", re.MULTILINE)
 _STRUCTURE_RE = re.compile(r"^\s*structure\s+([A-Za-z][A-Za-z0-9_]*)", re.MULTILINE)
-_IMPORT_RE = re.compile(r"^\s*(?:public\s+)?import\s+(\S+)", re.MULTILINE)
+_IMPORT_RE = re.compile(
+    r"^[ \t]*(?:public[ \t]+)?(?:meta[ \t]+)?import[ \t]+(\S+)", re.MULTILINE
+)
 
 COVERAGE_JSON = Path("docs/formalism-coverage.json")
 COVERAGE_MARKDOWN = Path("docs/formalism-coverage.md")
