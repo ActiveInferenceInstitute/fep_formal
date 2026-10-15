@@ -324,9 +324,9 @@ jobs:
         if: ${{ !cancelled() }}
       - run: uv run python docs/xref_audit.py
         if: ${{ !cancelled() }}
-      - run: uv run mypy src
+      - run: uv run mypy src scripts docs
         if: ${{ !cancelled() }}
-      - run: uv run ruff check src tests scripts docs
+      - run: uv run ruff check .
         if: ${{ !cancelled() }}
       - run: uv run ruff format --check src tests scripts docs
         if: ${{ !cancelled() }}

@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import json
 import re
 import shlex
+import subprocess
+import sys
 from collections import Counter
 from pathlib import Path
 
@@ -313,7 +316,7 @@ def test_root_reference_sections_use_canonical_owners(relative: str) -> None:
         (
             "README.md",
             "Development checks",
-            "```bash\nuv run mypy src # copied gate\n```\n",
+            "```bash\nuv run mypy src scripts docs # copied gate\n```\n",
             "copies required checks",
         ),
         (
@@ -353,3 +356,54 @@ def test_setup_examples_outside_reference_sections_remain_allowed() -> None:
     text = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
     assert "uv sync --locked --extra dev\nuv run fep-lean catalogue" in text
     _assert_root_references("README.md", text, set(agents_commands()))
+
+
+def test_repository_lint_rejects_an_active_spec_unused_import(
+    tmp_path: Path,
+) -> None:
+    """Exercise the actual root scan and exclusions without editing real owners."""
+    (tmp_path / "pyproject.toml").write_bytes(
+        (PROJECT_ROOT / "pyproject.toml").read_bytes()
+    )
+    protected = [
+        tmp_path / "specs/done/prior/check.py",
+        tmp_path / "specs/current/evidence/capture/check.py",
+        tmp_path / "specs/current/gnn_output_run1/check.py",
+        tmp_path / "specs/current/gnn-input/check.py",
+        tmp_path / "specs/current/fixtures/check.py",
+    ]
+    for path in protected:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("import os\n", encoding="utf-8")
+    active = tmp_path / "specs/capture-roster-guard/check.py"
+    active.parent.mkdir(parents=True)
+    active.write_text("value = 1\n", encoding="utf-8")
+    before = {path: path.read_bytes() for path in protected}
+    command = [
+        sys.executable,
+        "-I",
+        "-B",
+        "-m",
+        "ruff",
+        "check",
+        ".",
+        "--no-cache",
+        "--output-format",
+        "json",
+    ]
+    valid = subprocess.run(
+        command, cwd=tmp_path, capture_output=True, text=True, timeout=30, check=False
+    )
+    assert valid.returncode == 0, valid.stdout + valid.stderr
+    assert json.loads(valid.stdout) == []
+
+    active.write_text("import os\n", encoding="utf-8")
+    invalid = subprocess.run(
+        command, cwd=tmp_path, capture_output=True, text=True, timeout=30, check=False
+    )
+    assert invalid.returncode == 1, invalid.stdout + invalid.stderr
+    findings = json.loads(invalid.stdout)
+    assert len(findings) == 1
+    assert findings[0]["code"] == "F401"
+    assert Path(findings[0]["filename"]) == active
+    assert {path: path.read_bytes() for path in protected} == before

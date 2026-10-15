@@ -1739,7 +1739,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/130"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Active Python tooling has explicit repository-wide lint/type coverage while immutable evidence remains byte-preserved.",
       "depends_on": [],
       "single_owner": "Existing pyproject.toml and CI/check-inventory owners; specs/scripts/docs keep their existing resource owners.",

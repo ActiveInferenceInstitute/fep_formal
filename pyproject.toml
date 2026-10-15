@@ -76,17 +76,31 @@ concurrency = ["multiprocessing"]
 fail_under = 89
 
 [tool.mypy]
-python_version = "3.12"
+# Evidence validation uses .python-version; wheel runtime compatibility remains
+# covered separately by the declared Python 3.10+ distribution matrix.
+python_version = "3.14"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
 mypy_path = ["src"]
 explicit_package_bases = true
 
+[tool.ruff]
+# Preserve the package's syntax floor while typing the validator at Python 3.14.
+target-version = "py310"
+# specs/AGENTS.md owns these historical records and generated/pinned inputs.
+# Lint every other active spec; never rewrite retained evidence to satisfy lint.
+extend-exclude = [
+    "specs/done/**",
+    "specs/**/evidence/**",
+    "specs/**/gnn_output*/**",
+    "specs/**/gnn-input/**",
+    "specs/**/fixtures/**",
+]
+
 [tool.ruff.lint]
-# Pinned rule set — keeps the gate stable across ruff versions. Extend
-# deliberately: every rule added here must pass clean on the full surface
-# (src, tests, scripts, docs).
+# Keep the locked Ruff defaults and existing extensions. Qualification binds
+# the effective rules to uv.lock; every active Python owner is in lint scope.
 extend-select = [
     "F",     # pyflakes (incl. F401/F811 fixed in the 2026-08-18 pass)
     "I",     # isort (import sorting; I001 fixed 2026-08-18)

@@ -447,3 +447,32 @@ acceptance only, with final published-source reconciliation still required.
 **Verdict:** sound; preserve history while giving current facts one owner.
 **Confidence:** high for the reviewed reading paths, with no runtime or
 scientific acceptance inferred.
+
+## Tooling scope follows active owners and preserves retained inputs
+
+**When:** T01 measured lint/type expansion.
+
+**Choice:** Scan the repository with Ruff while excluding only the historical,
+generated and pinned-input trees owned by `specs/AGENTS.md`. Type-check source,
+scripts and docs strictly at the accepted Python 3.14 validator target; retain
+Python 3.10 syntax and installed-runtime compatibility checks separately.
+
+**Gap:** The old gate covered 313 of 387 tracked Python files and omitted
+28 active spec files. A literal full scan found 227 diagnostics, mostly in
+retained outputs. The reviewed 341-file active scope had only three findings;
+typing the 31 scripts/docs entry files found one optional-local collision.
+
+**Reach:** All 46 protected Python files retain their exact measured hashes.
+Existing enabled Ruff rules remain identical. The link-audit local and one
+import gap are corrected; exact-line exceptions preserve the certifier's
+invalid-document exception and historical compatibility alias. CI and the
+canonical command inventory change together. An actual isolated root scan
+keeps hostile protected inputs excluded and rejects an active-spec F401
+mutation without editing a real owner.
+
+**Verdict:** bounded expansion through existing owners; no scientific program
+or source-custody acceptance is renewed by linting.
+**Confidence:** high after zero repository-wide Ruff findings, 148 files passing
+strict typing, 36 targeted tests, formatting, strict links and protected-byte
+readback. Fresh independent infrastructure review found no blockers at the
+eight recorded source hashes; hosted acceptance remains separate.
