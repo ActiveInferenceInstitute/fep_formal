@@ -266,7 +266,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/116"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "The installed wheel passes a real isolated positive typing smoke and rejects a deliberately invalid typed use.",
       "depends_on": [
         "C04"
@@ -294,12 +294,12 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/109"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Root and foundation imports use the narrow required Mathlib dependencies without changing theorem statements.",
       "depends_on": [],
       "single_owner": "Existing Lean foundations, body owners and their projection generators.",
       "stop_go_spike": "Compile one isolated owner after replacing a blanket import with measured dependencies.",
-      "go_condition": "Public consumers, exact headers and axioms remain unchanged.",
+      "go_condition": "Public theorem signatures/proofs and axioms remain unchanged; module/exposure conventions and generated-owner parity stay valid; consumers compile with narrowed imports.",
       "no_go_action": "Retain a justified import and block L01.import-narrowing for any unresolved elaboration dependency.",
       "target": "Remove unnecessary root Mathlib and blanket tactic imports through canonical owners.",
       "positive_witness": "Focused and aggregate consumers remain warning-free.",

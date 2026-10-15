@@ -1,5 +1,15 @@
 ## Unreleased
 
+- Check the installed wheel's public pipeline types with isolated positive and
+  negative mypy consumers. Reuse the existing wheel build and runtime environment.
+- Restore plain/public Lean import edges in the generated landscape and reject
+  import cycles. Its layers describe direct manifested dependencies; Lake owns
+  the complete build plan.
+- Remove the root library's unnecessary Mathlib re-export. Its existing theorem
+  is unchanged and needs only Lean's standard library; consumers should import
+  required Mathlib modules explicitly. Foundation/body import narrowing remains
+  separate work under [#109](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109).
+
 - Distinguish the published v1.6.0 tag from the accepted Lean 4.35 source
   checkpoint, and reconcile the remaining work in an explicit dependency plan.
   The plan preserves separate production-capture, runtime and research gates;
