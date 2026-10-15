@@ -1425,7 +1425,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/113"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Every tracked pytest-tmp evidence copy is either safely deduplicated under its owner contract or explicitly documented as retained.",
       "depends_on": [],
       "single_owner": "Maintained evidence inventory outside immutable specs/evidence trees; original evidence and H2 validators remain unchanged.",
@@ -1445,14 +1445,25 @@
         "documentation"
       ],
       "human_review": "Independent evidence-custody review; any deletion requires owner-specific authorization and identity-bound scope.",
-      "out_of_scope": "Broad cleanup, deleting cited failures or editing closed evidence/receipt bytes."
+      "out_of_scope": "Broad cleanup, deleting cited failures or editing closed evidence/receipt bytes.",
+      "acceptance": {
+        "source_commit": "f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2",
+        "exact_main_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071",
+        "independently_reviewed_equivalent_tree_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016",
+        "tested_tree": "887a29862ffb61da7724b8cfe7495792cf29f8a3",
+        "checks": [
+          "eight retained exceptions and all 25 historical artifact hashes reviewed",
+          "14 synthetic terminal-validator positive/fail-closed cases passed"
+        ],
+        "boundary": "Synthetic terminal controls and historical static replay do not reaccept historical terminal/native/scientific evidence."
+      }
     },
     {
       "id": "P02",
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/115"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Only demonstrated dead private code is removed without changing public behavior.",
       "depends_on": [],
       "single_owner": "Existing verification/lean_verifier.py, verification/environment.py and verification/gnn_julia_artifact_proof.py; the Q6 generator owns its current manifest.",
@@ -1475,7 +1486,18 @@
         "source custody"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "Public import removal, speculative dead-code deletion or silent old-receipt rebinding."
+      "out_of_scope": "Public import removal, speculative dead-code deletion or silent old-receipt rebinding.",
+      "acceptance": {
+        "source_commit": "f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2",
+        "exact_main_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071",
+        "independently_reviewed_equivalent_tree_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016",
+        "tested_tree": "887a29862ffb61da7724b8cfe7495792cf29f8a3",
+        "checks": [
+          "all five issue-named obsolete helpers absent; retained private helpers have actual test callers",
+          "80 environment/Julia cases passed; current Q6 extractor pin refreshed without changing probe or historical receipt bytes"
+        ],
+        "boundary": "No public compatibility removal or historical receipt rebinding."
+      }
     },
     {
       "id": "P03",
@@ -1739,7 +1761,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/130"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Active Python tooling has explicit repository-wide lint/type coverage while immutable evidence remains byte-preserved.",
       "depends_on": [],
       "single_owner": "Existing pyproject.toml and CI/check-inventory owners; specs/scripts/docs keep their existing resource owners.",
@@ -1760,14 +1782,25 @@
         "source custody"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "Reformatting frozen evidence, imposing unsupported runtime policy or claiming broad type coverage from src-only checks."
+      "out_of_scope": "Reformatting frozen evidence, imposing unsupported runtime policy or claiming broad type coverage from src-only checks.",
+      "acceptance": {
+        "source_commit": "f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2",
+        "exact_main_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071",
+        "independently_reviewed_equivalent_tree_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016",
+        "tested_tree": "887a29862ffb61da7724b8cfe7495792cf29f8a3",
+        "checks": [
+          "repository-wide Ruff and strict mypy src scripts docs passed",
+          "real active-spec unused-import negative control passed; all 46 protected Python files unchanged"
+        ],
+        "boundary": "Python 3.14 validator and Python 3.10 syntax/hosted compatibility remain distinct; no runtime profile change."
+      }
     },
     {
       "id": "D02",
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/140"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Remaining live manuscript/root-doc counts are generated or audited against their canonical source.",
       "depends_on": [],
       "single_owner": "Existing manuscript count inventory/rendering and docs audits using docs/formalism-coverage.json.",
@@ -1787,14 +1820,25 @@
         "publication"
       ],
       "human_review": "Independent documentation/source-owner review; a real source-bound render remains separate if typeset bytes change.",
-      "out_of_scope": "Hand-editing generated coverage, private operator counts or presenting offline catalogue mode as native acceptance."
+      "out_of_scope": "Hand-editing generated coverage, private operator counts or presenting offline catalogue mode as native acceptance.",
+      "acceptance": {
+        "source_commit": "f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2",
+        "exact_main_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071",
+        "independently_reviewed_equivalent_tree_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016",
+        "tested_tree": "887a29862ffb61da7724b8cfe7495792cf29f8a3",
+        "checks": [
+          "15 relevant count controls passed, including invalid README counts",
+          "validated caption placeholders and source-bound render accepted"
+        ],
+        "boundary": "Historical counts and semantic dispositions remain unchanged."
+      }
     },
     {
       "id": "D03",
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/144"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "The historical second-expansion chapter ending at topic 155 is distinguished accurately from the live 168-topic catalogue.",
       "depends_on": [],
       "single_owner": "Existing manuscript chapter/index and _maint_build_lean_landscape.py owner.",
@@ -1814,7 +1858,18 @@
         "publication"
       ],
       "human_review": "Independent manuscript/reference review; source-bound render validation remains its own evidence gate.",
-      "out_of_scope": "Renaming historical files merely for cosmetic count parity or editing generated pages by hand."
+      "out_of_scope": "Renaming historical files merely for cosmetic count parity or editing generated pages by hand.",
+      "acceptance": {
+        "source_commit": "f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2",
+        "exact_main_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071",
+        "independently_reviewed_equivalent_tree_workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016",
+        "tested_tree": "887a29862ffb61da7724b8cfe7495792cf29f8a3",
+        "checks": [
+          "xref, manuscript and generated landscape freshness checks passed",
+          "source-bound 388-page publication render accepted with all nine defect counters zero"
+        ],
+        "boundary": "Historical chapter filename/anchor and fixed topic-155 endpoint remain; the live catalogue is separately 168 topics."
+      }
     },
     {
       "id": "D04",
@@ -1885,5 +1940,25 @@
       "https://github.com/ActiveInferenceInstitute/fep_formal/issues/47",
       "https://github.com/ActiveInferenceInstitute/fep_formal/issues/48"
     ]
+  },
+  "inventory_scope": "Original 2026-10-15 inventory of 62 open Issues; retained after the five source-bound closures recorded below. This baseline count is historical, not a live GitHub query.",
+  "closure_publication": {
+    "accepted_packages": [
+      "D02",
+      "D03",
+      "G02",
+      "P02",
+      "T01"
+    ],
+    "issues_closed_by_this_publication": [
+      113,
+      115,
+      130,
+      140,
+      144
+    ],
+    "remaining_open_issues_after_publication": 57,
+    "remaining_unaccepted_packages": 58,
+    "scope": "Only the five accepted-source Issue rows leave TODO. All 63 contracts, prior dependencies and original inventory identities remain retained."
   }
 }
