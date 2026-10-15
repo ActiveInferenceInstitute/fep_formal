@@ -102,16 +102,27 @@ on `db020c5`. Its [exact-main workflow](https://github.com/ActiveInferenceInstit
 also passed on `6aeea47`; that result does not qualify later feature-branch source.
 Re-read live PR state before integration; old green or failed runs retain their
 own exact source boundaries.
+[PR177](https://github.com/ActiveInferenceInstitute/fep_formal/pull/177) is merged
+at [`6a80ff5`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/6a80ff5600292c66948e0f2ac8bb6ded934520a3).
+Its [final head workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38784700242)
+passed all 15 executed checks; the documentation-only lane was intentionally
+skipped. Python recorded 2951 passes, 20 skips, exact nonserial membership and
+91.64% coverage. Serial Lean recorded 575 passes and five skips; all 168 native
+topics were clean. The audit resolved 1875 declarations with 1744 evidence
+entries. The actual accepted render has 388 pages and all nine defect counters
+zero. Independently checked source manifests and Git tree equality bind these
+results to the merged tree. The new exact-main workflow remains a separate gate.
 
-The local L01 foundation pass replaced all six blanket tactic imports and
+The L01 foundation pass replaced all six blanket tactic imports and
 declared two newly exposed consumer dependencies. All 73 workspace modules
 compiled cleanly in a fresh output tree with old FEP artifacts excluded;
 per-topic native/axiom and publication receipts remain separate. Its coverage
 projection now also retains meta imports. The 21 topic bodies are the next
 narrowing scope and need coordinated catalogue/aggregate regeneration.
-D02/D03 have source corrections and mutation controls; real current-source
-render acceptance remains required before closure. P02 removes only three
-demonstrably dead helpers and refreshes its current generated Q6 manifest;
+D02/D03 have source corrections, mutation controls and accepted render evidence;
+Issue closure and open-only TODO cleanup await the new main gate. P02 removes
+only three demonstrably dead helpers and refreshes its current generated Q6
+manifest;
 historical custody receipts remain unchanged. Its caller inventory also
 clarified the third source owner and corresponding checks in the new package.
 D04's reviewed root-owner consolidation at `9b31783` retained the canonical
@@ -128,13 +139,15 @@ context; theorem statements, semantic records and numerical content are unchange
 R01's [attributed current-4.35 spike](spikes/finite_kernel_category.lean) and a
 separate importing consumer compile. All ten inspected declarations use only
 the standard three axioms at that feasibility epoch. The
-[prospective package port](spikes/finite-kernel-category-integration.md) adds a
-separately reviewed optional leaf, current projections and authenticated static
-historical controls. Its successor record binds the exact 72-resource roster;
-the historical live validator still rejects it. Current native/axiom, package,
-final hosted and C05 acceptance remain required before PR44/Issue58 closure.
-It is not a redundant cleanup item. A02 must demonstrate a residual
-query need. F09/F10/F13/F14 must inventory and compile the existing finite
+[prospective package port](spikes/finite-kernel-category-integration.md) in
+[PR179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179) retains
+attribution and adds a separately reviewed optional leaf, current projections
+and authenticated static historical controls. Its successor record binds the
+exact 72-resource roster; the historical live validator still rejects it.
+Current native/axiom, package, final hosted and C05 acceptance remain required
+before PR44/Issue58 closure. Neither PR is a redundant cleanup item. A02 must
+demonstrate a residual query need. F09/F10/F13/F14 must inventory and compile
+the existing finite
 MaxEnt/Gibbs, Helmholtz, DirichletCategorical and Euclidean-current theorems
 before adding any construction. Their remaining consumer, discretization and
 semantic obligations
