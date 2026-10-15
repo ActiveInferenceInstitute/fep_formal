@@ -1,5 +1,15 @@
 # Horizon 1: finite synthesis and falsification
 
+Horizon 1 exited at its retained
+[accepted handoff](../../../specs/done/horizon-1-finite-synthesis/HANDOFF.md).
+This guide preserves its mathematical contracts, countermodels and original
+implementation requirements. References below to new resources or prospective
+tests describe that implementation epoch, not instructions to repeat completed
+work. Its accepted evidence does not certify later source changes. The
+[H3 guide](horizon-3-scientific-case-study.md) owns the selected current cycle;
+[remaining acceptance](../../../specs/comprehensive-science-improvement/NEXT.md)
+owns execution and [upcoming scopes](next-improvements.md) owns new proposals.
+
 ## Outcome
 
 Horizon 1 ends with one finite, one-step reference-agent certificate whose

@@ -424,3 +424,26 @@ authorized by a baseline alone.
 **Verdict:** sound measurement interpretation; retain the serial default.
 **Confidence:** high for the retained intervals; no current performance or
 native-currency claim, and no experiment while resource reserves are unmet.
+
+## Current research guidance links to current owners
+
+**When:** G01 reading-path review before closing documentation work.
+
+**Choice:** Link the maintained release overview instead of repeating a stale
+current-release literal. Preserve the dated v1.5.0/untagged-candidate history.
+Scope the H1 design's original prospective instructions to its accepted source
+epoch and link current H3 execution separately. The documentation contract
+links the root required-check owner instead of defining another checklist.
+
+**Gap:** Passing link syntax did not detect a valid but outdated release claim
+or distinguish historical implementation instructions from new work.
+
+**Reach:** The H1 matrix, mathematics and no-go text remain byte-identical;
+historical receipts and scientific boundaries are unchanged. Fresh independent
+operator/source review found no blocker in the four exact changed guides.
+Strict links, Markdown hygiene and cross-references pass. This is guidance
+acceptance only, with final published-source reconciliation still required.
+
+**Verdict:** sound; preserve history while giving current facts one owner.
+**Confidence:** high for the reviewed reading paths, with no runtime or
+scientific acceptance inferred.
