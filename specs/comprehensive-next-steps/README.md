@@ -61,17 +61,32 @@ Source-review feasibility still needs actual compiling probes.
 ## Next Agent Prompt
 
 Read this README, the package matrix and the applicable owner contracts.
-Review the current diff before changing anything. Finish G01's documentation
-validation and independent review first; do not mark any other package accepted
-from this planning pass.
+Review the current diff before changing anything. G01's strict links, hygiene
+and pin checks passed locally; [PR175](https://github.com/ActiveInferenceInstitute/fep_formal/pull/175)
+retains its separate hosted review.
+
+The current implementation pass adds installed positive/negative typing checks,
+corrects plain/public dependency extraction and cycle rejection, and removes
+the root's unnecessary Mathlib re-export. Local development checks passed on
+Python 3.14.4: the existing isolated-wheel test and 45 source/projection tests.
+The root and a public consumer also compiled warning-free on Lean 4.35 with
+only its standard library available; the root depends on no axioms. Hosted
+acceptance remains separate. P01 and L01 are in progress, not closed.
+
+Continue L01 with the six blanket foundation imports before the 21 topic
+bodies. Use the corrected dependency map, actual compiler probes and owner
+regeneration; preserve theorem bodies and types. A02 must still demonstrate a
+residual consumer need because its portable semantic join already exists.
 
 Before native work or installed-runtime execution, satisfy the named resource
-profile; C04 requires 15 GiB free before launch and every cell. Recover the
-private r6 production streams and reviewed controller packet before closing
-C01/C02. Keep those private materials out of public artifacts.
+profile; C04 requires 15 GiB free before launch and every cell. C01/C02 require
+the bound private production streams and selected reviewed controller packet.
+Historical source-only reviews supply no current execution approval. Keep
+operator materials private and resolve the explicit successor and source-epoch
+gates before production execution.
 
-Run independent implementation lanes in isolated worktrees once capacity is
-available. Serialize native verification, preserve concurrent canonical work,
+Run independent implementation lanes in isolated worktrees or with explicit
+disjoint file ownership in the selected checkout. Serialize native verification, preserve concurrent canonical work,
 and keep each pass focused. Obtain the contract's distinct reviews before
 terminal theorem or primary gates. Update package status only with exact
 current-source acceptance, then continue to the next eligible package.
