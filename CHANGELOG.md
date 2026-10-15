@@ -1,5 +1,21 @@
 ## Unreleased
 
+- Accept the bounded retained-evidence, dead-helper, tooling and manuscript
+  scopes [#113](https://github.com/ActiveInferenceInstitute/fep_formal/issues/113),
+  [#115](https://github.com/ActiveInferenceInstitute/fep_formal/issues/115),
+  [#130](https://github.com/ActiveInferenceInstitute/fep_formal/issues/130),
+  [#140](https://github.com/ActiveInferenceInstitute/fep_formal/issues/140) and
+  [#144](https://github.com/ActiveInferenceInstitute/fep_formal/issues/144) at
+  `f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2`, after its
+  [exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071)
+  passed all executed checks. Remove only those five completed backlog rows;
+  retain the source-bound package contracts and all eight receipt-bound pytest
+  captures, including the failed attempt. Independent custody/API/documentation
+  reviews and positive/fail-closed controls retain their exact source epochs.
+  This supplies no production-capture, local-runtime, category-integration or
+  scientific acceptance; the broader guidance and dependent consolidation
+  scopes remain open.
+
 - Consolidate active root source-owner, execution and gate definitions in
   `AGENTS.md`; link the overview, specification and handoff to those owners.
   Preserve dated evidence and the exact prior reproduction sequence. Extend

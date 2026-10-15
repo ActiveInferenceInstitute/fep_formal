@@ -7,9 +7,9 @@ historical receipt, so none is eligible for deduplication under the
 [specification custody contract](../AGENTS.md). The `pytest-tmp` directory name
 does not make a captured, receipt-bound artifact disposable.
 
-This is a custody inventory checked on 2026-10-15. It adds no compiler run,
-scientific acceptance or renewal of the historical source epoch. G02 acceptance
-requires source-bound custody controls, independent review and published checks.
+This is a custody inventory checked on 2026-10-15. Its bounded documentation and
+validator acceptance is recorded below; the historical compiler results retain
+their original source epoch.
 
 ## Receipt and review consumers
 
@@ -73,19 +73,35 @@ These results were recorded on 2026-10-01. Their Lean compiler version is
 current Lean 4.35.0 source. This inventory preserves both attempts, all receipt
 bytes and the separate semantic review unchanged.
 
-## Acceptance still required
+## Bounded acceptance and prospective Issue closure
 
-The original issue permits documenting every retained copy instead of deleting
-one. The table supplies that eight-file mapping, and the linked receipt and
-review explain each exception. Closure additionally requires the appropriate
-positive and fail-closed controls for the H2 terminal validator, independent
-custody review and accepted publication checks. The positive terminal control
-in [test_horizon_acceptance.py](../../tests/test_horizon_acceptance.py) uses an
-explicitly synthetic source/evidence fixture; passing it does not reaccept a
-historical terminal receipt. Historical R0/H3 static-custody replay is a
-separate test plane and cannot substitute for terminal-validator controls.
+The original issue permits documenting every retained copy. The table supplies
+that eight-file mapping, and independent custody review rechecked all 25 author
+receipt artifact hashes. The [choices ledger](choices.md#retain-all-eight-receipt-bound-pytest-captures)
+records the retention decision. All eight captures, historical receipts and
+the separate semantic review retain their original bytes.
+
+Fresh authenticated Python evidence from head `d1d5403` in
+[workflow 38799938016](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016)
+records all 14 `test_terminal_*` cases in
+[test_horizon_acceptance.py](../../tests/test_horizon_acceptance.py) passing.
+They include the read-only positive control, actual roster growth, source and
+review tampering, input-mtime changes, and jointly rewritten collection/JUnit
+records. The positive control uses an explicitly synthetic source/evidence
+fixture. These passes establish validator behavior while historical terminal
+receipts retain their original acceptance epoch. Historical R0/H3 static-custody
+replay remains a separate plane.
+
+The tested PR merge and accepted main
+[`f5c39fe`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2)
+have the same reviewed source tree. Its
+[exact-main workflow 38807878071](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071)
+passed all 21 executed checks, including all 15 distribution cells. The
+[accepted checkpoint](../../ISA.md#current-assessment) and package matrix retain
+the source-bound evidence. This documentation publication records G02's bounded
+acceptance and prospectively closes Issue113 when its PR merges; the historical
+scientific results and execution boundaries remain unchanged.
 
 A correct live-source refusal must remain a refusal. This documentation
 supplies no permission to weaken a validator, rewrite a frozen receipt or
-claim a new native execution. The parent integration pass owns those distinct
-controls and the final G02/Issue disposition.
+claim a new native execution.

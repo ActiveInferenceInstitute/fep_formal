@@ -114,13 +114,11 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [LEAN-11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109) — Narrow blanket Mathlib.Tactic and root Mathlib imports | Minor | Independent | No blanket tactic import in `src/fep_lean/formal`; build stays warning-free. |
 | [LEAN-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110) — Move the finite KL bridge beside finiteKL and prepare a Mathlib PR | Medium | Independent | Bridge lemma compiles with only Mathlib imports and no FEP namespace; upstream draft prepared after checking current Mathlib. |
 | [LEAN-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/111) — Upstream candidates: Donsker–Varadhan and exponential-family score facts | Medium | Independent | A measure-level Donsker–Varadhan inequality proved without FEP types. |
-| [LEAN-15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/113) — Deduplicate tracked pytest-tmp evidence copies where hashes allow | Minor | Independent | Tracked `pytest-tmp` files reduced or each documented; the H2 terminal validator still passes. |
 
 ### Package infrastructure
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [PKG-2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/115) — Delete confirmed dead code | Minor | Independent | An AST scan finds no unreferenced private top-level names in those modules; tests, ruff and mypy pass. |
 | [PKG-3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/116) — Installed-wheel mypy smoke for the shipped `py.typed` | Minor | [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49) | A clean-venv installed wheel passes mypy on `from fep_lean import FEPPipeline`. |
 | [PKG-5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/118) — Consolidate atomic-write, hash and strict-JSON helpers | Medium | Independent | `mkstemp`/`os.replace` only in `fsutil` plus documented exceptions; existing tests pass. |
 | [PKG-6](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119) — Error base in the pinned GNN proof modules and every verb's failure path | Medium | [CORE-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/62) | `ArtifactProofError` and `ContinuousArtifactError` derive from `FepLeanError` after a coordinated Q5–Q7 evidence refresh, the `pinned` exclusion in `tests/test_cli.py` is empty, and the parametrised failure-schema test covers every verb. |
@@ -132,18 +130,10 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [PKG-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/126) — Thin cli.py to parse, dispatch and emit | Medium | [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73), [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64) | `cli.py` under ≈ 500 lines; every verb's JSON output byte-identical in CLI tests. |
 | [PKG-14](https://github.com/ActiveInferenceInstitute/fep_formal/issues/127) — Measure serial Lean verification before changing it | Major | Independent | Identical per-topic outcomes for 168 topics with measured elapsed times. |
 
-### Tooling, CI and release
-
-| Work | Size | Predecessors | Closure probe |
-| --- | --- | --- | --- |
-| [TOOL-5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/130) — Lint specs and type-check scripts and docs | Medium | Independent | `ruff check .` green in CI; an unused import in a linted spec fails. |
-
 ### Documentation and manuscript
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [DOC-4](https://github.com/ActiveInferenceInstitute/fep_formal/issues/140) — Tokenise the remaining manuscript count and audit root-doc counts | Medium | Independent | Changing a catalogue count in README fails the audit; `render_manuscript.py --check` passes. |
-| [DOC-8](https://github.com/ActiveInferenceInstitute/fep_formal/issues/144) — Clarify the '155' catalogue chapter beside a 168-topic catalogue | Minor | Independent | `xref_audit`, `render_manuscript --check` and the landscape `--check` pass. |
 | [DOC-11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/146) — One owner per topic across README, AGENTS, HANDOFF and SPEC | Major | [CORE-M2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63), [DOC-1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/138) | Each gate command defined once; README shorter; markdown gates pass. |
 
 ## Original requirement coverage and closure
