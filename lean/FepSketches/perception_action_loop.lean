@@ -1,9 +1,12 @@
-import FepSketches.active_inference
-import FepSketches.controlled_markov
-import FepSketches.finite_markov_dynamics
-import FepSketches.policy_tree
-import FepSketches.temporal_inference
-import FepSketches.continuous_time_markov
+module
+public import FepSketches.active_inference
+public import FepSketches.controlled_markov
+public import FepSketches.finite_markov_dynamics
+public import FepSketches.policy_tree
+public import FepSketches.temporal_inference
+public import FepSketches.continuous_time_markov
+
+@[expose] public section
 
 /-!
 # The perception-action loop as a closed-loop active-inference theorem
@@ -139,7 +142,6 @@ theorem filteredBelief_eq_forwardFilter [DecidableEq State]
         model.likelihood.predictive
           (FiniteKernel.predictive belief FiniteKernel.identity) outcome
   rw [FiniteKernel.predictive_identity]
-  try rfl
 
 /-- With the identity control kernel, the action-conditioned evidence is the
 model's predictive evidence. -/
@@ -189,7 +191,6 @@ theorem filteredBelief_eq_actionBeliefUpdate [DecidableEq State]
         model.likelihood.predictive
           (FiniteKernel.predictive belief (transition policy)) outcome
   rw [hIdentity policy, FiniteKernel.predictive_identity]
-  try rfl
 
 /-- The one-policy rollout prediction of the loop step is exactly one
 transition of the selected policy. -/

@@ -174,7 +174,7 @@ def test_descriptor_archive_reads_never_follow_or_block(
     assert original.read_bytes() == b"outside bytes remain untouched"
 
 
-def test_failed_assembly_retains_a_real_rejection_before_any_draw(
+def test_failed_assembly_retains_frozen_source_rejection_before_any_draw(
     bundle: ModuleType, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     def forbidden(*args: object, **kwargs: object) -> None:
@@ -185,7 +185,10 @@ def test_failed_assembly_retains_a_real_rejection_before_any_draw(
     monkeypatch.setattr(np.random, "Generator", forbidden)
     monkeypatch.setattr(bundle, "run_process_group", forbidden)
     output = tmp_path / "failed-assembly"
-    with pytest.raises(bundle.StudyRejection, match="missing input"):
+    with pytest.raises(
+        bundle.StudyRejection,
+        match=r"^stale input: src/fep_lean/formal/fin4_gaussian_semigroup\.lean$",
+    ):
         bundle.assemble(
             ROOT, "specs/h3-reference-study/output/absent-descriptor.json", output
         )

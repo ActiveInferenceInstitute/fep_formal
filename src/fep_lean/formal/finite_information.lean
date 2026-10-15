@@ -1,5 +1,8 @@
-import FepSketches.finite_probability
-import Mathlib.InformationTheory.KullbackLeibler.KLFun
+module
+public import FepSketches.finite_probability
+public import Mathlib.InformationTheory.KullbackLeibler.KLFun
+
+@[expose] public section
 
 /-!
 # Finite information theory

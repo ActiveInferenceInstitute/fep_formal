@@ -1,15 +1,18 @@
-import FepSketches.gaussian_information_geometry
-import FepSketches.finite_posterior_learning
-import FepSketches.measure_bayes
-import Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
-import Mathlib.Probability.Independence.InfinitePi
-import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
-import Mathlib.Probability.Distributions.Gaussian.Fernique
-import Mathlib.Probability.Kernel.Composition.Lemmas
-import Mathlib.Probability.Kernel.CondDistrib
-import Mathlib.Probability.Martingale.Convergence
-import Mathlib.Probability.Process.Adapted
-import Mathlib.Probability.StrongLaw
+module
+public import FepSketches.gaussian_information_geometry
+public import FepSketches.finite_posterior_learning
+public import FepSketches.measure_bayes
+public import Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
+public import Mathlib.Probability.Independence.InfinitePi
+public import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+public import Mathlib.Probability.Distributions.Gaussian.Fernique
+public import Mathlib.Probability.Kernel.Composition.Lemmas
+public import Mathlib.Probability.Kernel.CondDistrib
+public import Mathlib.Probability.Martingale.Convergence
+public import Mathlib.Probability.Process.Adapted
+public import Mathlib.Probability.StrongLaw
+
+@[expose] public section
 
 namespace FEP.PosteriorConvergence
 
@@ -105,7 +108,7 @@ def observation (index : ℕ) (sample : GaussianSample) : GaussianObservation :=
 def observationPrefix (n : ℕ) (path : GaussianTrajectory) : GaussianPrefix n :=
   fun index => path index
 
-private theorem observation_stronglyMeasurable (index : ℕ) :
+theorem observation_stronglyMeasurable (index : ℕ) :
     StronglyMeasurable (observation index) := by
   unfold observation
   fun_prop

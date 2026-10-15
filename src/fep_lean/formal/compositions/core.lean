@@ -1,13 +1,16 @@
-import FepSketches.fep_all
-import FepSketches.active_inference
-import FepSketches.information_geometry
-import FepSketches.markov_blanket
-import FepSketches.statistical_convergence
-import FepSketches.controlled_markov
-import FepSketches.temporal_inference
-import FepSketches.path_thermodynamics
-import FepSketches.geometric_optimization
-import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
+module
+public import FepSketches.fep_all
+public import FepSketches.active_inference
+public import FepSketches.information_geometry
+public import FepSketches.markov_blanket
+public import FepSketches.statistical_convergence
+public import FepSketches.controlled_markov
+public import FepSketches.temporal_inference
+public import FepSketches.path_thermodynamics
+public import FepSketches.geometric_optimization
+public import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
+
+@[expose] public section
 
 namespace FEPComposed
 

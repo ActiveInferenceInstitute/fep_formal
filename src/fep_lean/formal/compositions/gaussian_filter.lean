@@ -1,7 +1,11 @@
-import FepSketches.gaussian_information_geometry
-import FepSketches.scalar_gaussian_semigroup
-import Mathlib.Probability.Distributions.Gaussian.Real
-import Mathlib.Probability.Kernel.Posterior
+module
+public import FepSketches.gaussian_information_geometry
+public import FepSketches.scalar_gaussian_semigroup
+public import Mathlib.Probability.Distributions.Gaussian.Real
+public import Mathlib.Probability.Kernel.Composition.WithDensity
+public import Mathlib.Probability.Kernel.Posterior
+
+@[expose] public section
 
 /-!
 # Exact scalar Gaussian filtering

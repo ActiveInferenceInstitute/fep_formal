@@ -1,8 +1,11 @@
-import FepSketches.native_blanket
-import FepSketches.finite_information
-import Mathlib.InformationTheory.KullbackLeibler.DataProcessing
-import Mathlib.Probability.Decision.BayesEstimator
-import Mathlib.Probability.Decision.Risk.Basic
+module
+public import FepSketches.native_blanket
+public import FepSketches.finite_information
+public import Mathlib.InformationTheory.KullbackLeibler.DataProcessing
+public import Mathlib.Probability.Decision.BayesEstimator
+public import Mathlib.Probability.Decision.Risk.Basic
+
+@[expose] public section
 
 /-!
 # Native information and Bayesian decision risk

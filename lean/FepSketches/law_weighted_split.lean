@@ -1,5 +1,8 @@
-import FepSketches.helmholtz_ao_ness
-import Mathlib.Tactic
+module
+public import FepSketches.helmholtz_ao_ness
+public import Mathlib.Tactic
+
+@[expose] public section
 
 /-!
 # Uniqueness of the law-weighted reversible/circulation split (fep-166)

@@ -1,7 +1,10 @@
-import FepSketches.continuous_time_markov
-import FepSketches.native_blanket
-import Mathlib.InformationTheory.KullbackLeibler.DataProcessing
-import Mathlib.Probability.Kernel.Invariance
+module
+public import FepSketches.continuous_time_markov
+public import FepSketches.native_blanket
+public import Mathlib.InformationTheory.KullbackLeibler.DataProcessing
+public import Mathlib.Probability.Kernel.Invariance
+
+@[expose] public section
 
 /-!
 # Native Markov-semigroup bridge

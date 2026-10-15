@@ -1,9 +1,13 @@
-import Mathlib.Algebra.Order.Ring.Unbundled.Basic
-import Mathlib.Basic.Real.Basic
-import Mathlib.Analysis.Calculus.FDeriv.Symmetric
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import FepSketches.geometric_mechanics
-import Mathlib.Tactic
+module
+public import Mathlib.Algebra.Order.Ring.Unbundled.Basic
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+public import Mathlib.Analysis.Calculus.FDeriv.Pow
+public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+public import FepSketches.geometric_mechanics
+public import Mathlib.Tactic
+
+@[expose] public section
 
 /-!
 # Non-equilibrium steady-state (NESS) flow

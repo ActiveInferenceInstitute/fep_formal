@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.geometric_mechanics
+module
+public import FepSketches.fep_all
+public import FepSketches.geometric_mechanics
+
+@[expose] public section
 
 /-!
 # Geometric-mechanics topic compositions

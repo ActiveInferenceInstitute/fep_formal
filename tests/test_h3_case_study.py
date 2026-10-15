@@ -21,7 +21,9 @@ ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 
 def test_h3_composition_import_ownership_and_exact_projection() -> None:
     code = lean_code_without_comments(COMPOSITION.read_text())
-    imports = re.findall(r"(?m)^import (FepSketches\.\S+)$", code)
+    assert code.startswith("module\n")
+    assert "\n@[expose] public section\n" in code
+    imports = re.findall(r"(?m)^public import (FepSketches\.\S+)$", code)
     assert imports == [
         "FepSketches.h3_reference_model",
         "FepSketches.markov_blanket",

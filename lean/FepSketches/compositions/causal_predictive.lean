@@ -1,6 +1,9 @@
-import FepSketches.fep_all
-import FepSketches.causal_dynamics
-import FepSketches.predictive_coding
+module
+public import FepSketches.fep_all
+public import FepSketches.causal_dynamics
+public import FepSketches.predictive_coding
+
+@[expose] public section
 
 /-!
 # Causal and predictive-coding topic compositions

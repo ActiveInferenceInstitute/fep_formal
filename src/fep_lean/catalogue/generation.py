@@ -9,7 +9,7 @@ from typing import Any
 
 import yaml
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_lean.lean_source import lean_code_without_comments, lean_module_source
 
 from . import registry as _registry
 from .novelty import load_formalism_novelty
@@ -130,7 +130,7 @@ def render_fep_all_lean(sketches: Mapping[str, str] | None = None) -> str:
         namespace = topic_id_to_namespace(topic_id)
         body = strip_sketch_imports(source[topic_id]).rstrip()
         parts.extend((f"namespace {namespace}", "", body, "", f"end {namespace}", ""))
-    return "\n".join(parts).rstrip() + "\n"
+    return lean_module_source("\n".join(parts).rstrip() + "\n")
 
 
 def fep_all_projection_path(project_root: Path) -> Path:

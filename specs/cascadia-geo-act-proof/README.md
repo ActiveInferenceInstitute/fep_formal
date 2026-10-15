@@ -1,7 +1,7 @@
 # Cascadia river homing: a Lean 4 instance of a typed geospatial GNN artifact
 
 Status: **slice-local native proof with a retained claim-ready receipt.** The
-instance compiles warning-free at the pin (Lean v4.34.1, Mathlib v4.34.1), all
+instance compiled warning-free at the historical `v4.34.1` Lean/Mathlib pin, all
 46 theorems of the two files depend only on `propext`, `Classical.choice` and
 `Quot.sound`, and four mutated instances are rejected. Nothing here touches
 the sealed catalogue, its aggregate or the source-owner roster.

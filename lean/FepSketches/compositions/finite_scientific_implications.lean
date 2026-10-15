@@ -1,8 +1,11 @@
-import FepSketches.finite_probability
-import FepSketches.causal_dynamics
-import FepSketches.finite_markov_dynamics
-import FepSketches.active_inference
-import FepSketches.information_geometry
+module
+public import FepSketches.finite_probability
+public import FepSketches.causal_dynamics
+public import FepSketches.finite_markov_dynamics
+public import FepSketches.active_inference
+public import FepSketches.information_geometry
+
+@[expose] public section
 
 /-!
 # Finite scientific implication boundaries
@@ -224,7 +227,7 @@ private theorem independentStationaryBlanket_unit_mass :
     independentStationaryBlanketModel.blanketLaw () = 1 := by
   simp [independentStationaryBlanketModel, FiniteLaw.pointMass]
 
-private theorem symmetricFalseEvidence :
+theorem symmetricFalseEvidence :
     0 < predictedOutcome (symmetricBoolModel fairBoolLaw) false false := by
   rw [symmetricBoolModel_predictedOutcome]
   norm_num [fairBoolLaw]
@@ -368,11 +371,11 @@ Bernoulli probability coordinate at the fair point. -/
 noncomputable def scaledLogisticProbability (parameter : ℝ) : ℝ :=
   Real.exp (4 * parameter) / (1 + Real.exp (4 * parameter))
 
-private theorem scaledLogisticProbability_pos (parameter : ℝ) :
+theorem scaledLogisticProbability_pos (parameter : ℝ) :
     0 < scaledLogisticProbability parameter := by
   exact div_pos (Real.exp_pos _) (by positivity)
 
-private theorem scaledLogisticProbability_lt_one (parameter : ℝ) :
+theorem scaledLogisticProbability_lt_one (parameter : ℝ) :
     scaledLogisticProbability parameter < 1 := by
   apply (div_lt_one (by positivity)).2
   linarith [Real.exp_pos (4 * parameter)]
@@ -531,7 +534,7 @@ private theorem bernoulliEvidenceFreeEnergy_hasDerivAt :
 
 private def bernoulliEvidenceCovector : Fin 1 → ℝ := fun _ => -2
 
-private noncomputable def bernoulliNaturalTangent : Fin 1 → ℝ :=
+noncomputable def bernoulliNaturalTangent : Fin 1 → ℝ :=
   fun _ => -(1 / 2)
 
 private theorem bernoulliNaturalTangent_ne_zero :

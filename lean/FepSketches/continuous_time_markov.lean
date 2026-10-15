@@ -1,8 +1,12 @@
-import FepSketches.finite_markov_dynamics
-import FepSketches.active_inference
-import FepSketches.decision_risk
-import FepSketches.markov_blanket
-import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+module
+public import FepSketches.finite_markov_dynamics
+public import FepSketches.active_inference
+public import FepSketches.decision_risk
+public import FepSketches.markov_blanket
+public import Mathlib.Analysis.Matrix.Normed
+public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+
+@[expose] public section
 
 /-!
 # Certified finite continuous-time Markov dynamics
@@ -1073,7 +1077,7 @@ def boolBlanketAlternative :
 /-- One positive unit of refresh time. -/
 noncomputable def boolBlanketRefreshTime : ℝ := 1
 
-private theorem boolBlanketRefreshTime_pos : 0 < boolBlanketRefreshTime := by
+theorem boolBlanketRefreshTime_pos : 0 < boolBlanketRefreshTime := by
   norm_num [boolBlanketRefreshTime]
 
 /-- Boolean `false` holds the blanket state at time zero, while `true` selects

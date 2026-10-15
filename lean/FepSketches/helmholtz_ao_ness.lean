@@ -1,6 +1,9 @@
-import FepSketches.continuous_time_markov
-import FepSketches.geometric_mechanics
-import Mathlib.Tactic
+module
+public import FepSketches.continuous_time_markov
+public import FepSketches.geometric_mechanics
+public import Mathlib.Tactic
+
+@[expose] public section
 
 /-!
 # Helmholtz–Ao nonequilibrium steady-state decomposition

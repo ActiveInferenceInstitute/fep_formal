@@ -1,8 +1,11 @@
-import FepSketches.policy_tree
-import FepSketches.active_inference
-import FepSketches.controlled_markov
-import FepSketches.decision_risk
-import FepSketches.finite_posterior_learning
+module
+public import FepSketches.policy_tree
+public import FepSketches.active_inference
+public import FepSketches.controlled_markov
+public import FepSketches.decision_risk
+public import FepSketches.finite_posterior_learning
+
+@[expose] public section
 
 /-!
 # Finite variational inference and observation-contingent action

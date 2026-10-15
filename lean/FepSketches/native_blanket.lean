@@ -1,7 +1,10 @@
-import FepSketches.markov_blanket
-import Mathlib.MeasureTheory.Integral.Bochner.SumMeasure
-import Mathlib.Probability.Independence.Conditional
-import Mathlib.Probability.Kernel.Composition.Comp
+module
+public import FepSketches.markov_blanket
+public import Mathlib.MeasureTheory.Integral.Bochner.SumMeasure
+public import Mathlib.Probability.Independence.Conditional
+public import Mathlib.Probability.Kernel.Composition.Comp
+
+@[expose] public section
 
 /-!
 # Finite laws as native measures and native Markov blankets

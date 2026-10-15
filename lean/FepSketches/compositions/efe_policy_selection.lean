@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.efe_policy_selection
+module
+public import FepSketches.fep_all
+public import FepSketches.efe_policy_selection
+
+@[expose] public section
 
 /-!
 # EFE policy-selection topic compositions

@@ -1,8 +1,11 @@
-import FepSketches.learning_theory
-import FepSketches.statistical_convergence
-import FepSketches.native_blanket
-import FepSketches.decision_risk
-import Mathlib.Probability.Independence.InfinitePi
+module
+public import FepSketches.learning_theory
+public import FepSketches.statistical_convergence
+public import FepSketches.native_blanket
+public import FepSketches.decision_risk
+public import Mathlib.Probability.Independence.InfinitePi
+
+@[expose] public section
 
 /-!
 # Selected finite posterior learning
@@ -106,10 +109,10 @@ noncomputable def logLikelihoodRatio (observation : Observation) : ℝ :=
       selectedLikelihood truthHypothesis observation)
 
 /-- Lower endpoint of the selected Boolean log-likelihood ratio. -/
-private noncomputable def logLikelihoodRatioLower : ℝ := -Real.log 3
+noncomputable def logLikelihoodRatioLower : ℝ := -Real.log 3
 
 /-- Upper endpoint of the selected Boolean log-likelihood ratio. -/
-private noncomputable def logLikelihoodRatioUpper : ℝ := Real.log 3
+noncomputable def logLikelihoodRatioUpper : ℝ := Real.log 3
 
 /-- Positive expected per-observation separation of truth from the inferior
 hypothesis. -/
@@ -522,14 +525,14 @@ private theorem nonidentifiablePredictive_eq_half (prior : FiniteLaw Hypothesis)
   rw [← Finset.sum_mul, prior.sum_one]
   norm_num
 
-private theorem nonidentifiablePredictive_pos (prior : FiniteLaw Hypothesis)
+theorem nonidentifiablePredictive_pos (prior : FiniteLaw Hypothesis)
     (observation : Observation) :
     0 < nonidentifiableLikelihood.predictive prior observation := by
   rw [nonidentifiablePredictive_eq_half]
   norm_num
 
 /-- One observation from identical likelihood rows leaves every prior fixed. -/
-private noncomputable def nonidentifiablePosteriorUpdate
+noncomputable def nonidentifiablePosteriorUpdate
     (prior : FiniteLaw Hypothesis) (observation : Observation) :
     FiniteLaw Hypothesis :=
   nonidentifiableLikelihood.posterior prior observation

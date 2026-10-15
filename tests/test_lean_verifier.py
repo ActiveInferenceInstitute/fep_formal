@@ -136,13 +136,19 @@ def test_wrap_lean_code_adds_import_when_missing(verifier: LeanVerifier) -> None
 def test_wrap_lean_code_preserves_existing_imports(verifier: LeanVerifier) -> None:
     code = "import Mathlib\ntheorem foo : True := True.intro"
     wrapped = verifier._wrap_lean_code(code)
-    assert wrapped == code  # unchanged — no duplicate preamble
+    assert wrapped.startswith("module\npublic import Mathlib\n")
+    assert wrapped.count("import Mathlib") == 1
+    assert "@[expose] public section" in wrapped
+    assert wrapped.endswith("theorem foo : True := True.intro")
 
 
 def test_wrap_lean_code_single_import_not_wrapped(verifier: LeanVerifier) -> None:
     code = "import Mathlib.MeasureTheory.Measure.MeasureSpace\ntheorem bar : True := True.intro"
     wrapped = verifier._wrap_lean_code(code)
-    assert wrapped == code
+    assert wrapped.startswith(
+        "module\npublic import Mathlib.MeasureTheory.Measure.MeasureSpace\n"
+    )
+    assert wrapped.endswith("theorem bar : True := True.intro")
 
 
 def test_wrap_lean_code_whitespace_prefixed_import_not_wrapped(
@@ -150,12 +156,20 @@ def test_wrap_lean_code_whitespace_prefixed_import_not_wrapped(
 ) -> None:
     code = "  import Mathlib\ntheorem baz : True := True.intro"
     wrapped = verifier._wrap_lean_code(code)
-    assert wrapped == code
+    assert wrapped.startswith("module\n  public import Mathlib\n")
+    assert wrapped.endswith("theorem baz : True := True.intro")
 
 
 def test_wrap_lean_code_empty_code_gets_preamble(verifier: LeanVerifier) -> None:
     wrapped = verifier._wrap_lean_code("")
-    assert wrapped.startswith("import Mathlib")
+    assert wrapped.startswith("module\npublic import Mathlib")
+
+
+def test_wrap_preserves_explicit_module_visibility_after_comments(
+    verifier: LeanVerifier,
+) -> None:
+    code = "/- header -/\nmodule\nimport Mathlib\nprivate def hidden := 1\n"
+    assert verifier._wrap_lean_code(code) == code
 
 
 # ── _sanitize_lean_block ──────────────────────────────────────────────────────

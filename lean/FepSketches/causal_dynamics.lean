@@ -1,4 +1,7 @@
-import FepSketches.markov_blanket
+module
+public import FepSketches.markov_blanket
+
+@[expose] public section
 
 /-!
 # Finite causal blankets and intervention semantics

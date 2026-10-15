@@ -1,13 +1,16 @@
-import FepSketches.gaussian_information_geometry
-import FepSketches.smooth_information_geometry
-import FepSketches.posterior_convergence
-import FepSketches.markov_semigroup
-import FepSketches.scalar_gaussian_semigroup
-import FepSketches.fin4_gaussian_semigroup
-import FepSketches.gaussian_precision_conditioning
-import FepSketches.compositions.gaussian_filter
-import FepSketches.compositions.gaussian_control
-import FepSketches.compositions.gaussian_grid_path
+module
+public import FepSketches.gaussian_information_geometry
+public import FepSketches.smooth_information_geometry
+public import FepSketches.posterior_convergence
+public import FepSketches.markov_semigroup
+public import FepSketches.scalar_gaussian_semigroup
+public import FepSketches.fin4_gaussian_semigroup
+public import FepSketches.gaussian_precision_conditioning
+public import FepSketches.compositions.gaussian_filter
+public import FepSketches.compositions.gaussian_control
+public import FepSketches.compositions.gaussian_grid_path
+
+@[expose] public section
 
 /-!
 # Horizon 2 smooth reference kernel

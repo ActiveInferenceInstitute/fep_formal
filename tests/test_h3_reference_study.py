@@ -489,7 +489,7 @@ def test_native_export_rejects_dot_dot_before_any_write_or_process(
     assert not (tmp_path / "outside-attempt").exists()
 
 
-def test_frozen_inputs_and_missing_export_reject_before_any_generator(
+def test_migrated_source_rejects_frozen_study_before_any_generator(
     study: ModuleType, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     calls = []
@@ -499,7 +499,10 @@ def test_frozen_inputs_and_missing_export_reject_before_any_generator(
         raise AssertionError("scientific generator opened before native gates")
 
     monkeypatch.setattr(study.np.random, "Generator", forbidden_generator)
-    with pytest.raises(study.StudyRejection, match="missing input"):
+    with pytest.raises(
+        study.StudyRejection,
+        match=r"^stale input: src/fep_lean/formal/fin4_gaussian_semigroup\.lean$",
+    ):
         study.run_study(
             ROOT,
             tmp_path.resolve() / "attempt",

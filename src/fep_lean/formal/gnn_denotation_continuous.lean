@@ -1,8 +1,11 @@
-import FepSketches.gnn_document
-import FepSketches.linear_gaussian_semigroup
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.LinearAlgebra.Matrix.Notation
+module
+public import FepSketches.gnn_document
+public import FepSketches.linear_gaussian_semigroup
+public import Mathlib.Data.Fintype.Basic
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.LinearAlgebra.Matrix.Notation
+
+@[expose] public section
 
 /-!
 # GNN continuous-family denotation over the linear-Gaussian carrier

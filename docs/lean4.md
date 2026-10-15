@@ -1,7 +1,7 @@
 # Lean 4 workspace
 
-The workspace pins `leanprover/lean4:v4.34.1` and the matching Mathlib
-`v4.34.1` release, with `lean/lake-manifest.json` recording the exact Mathlib
+The workspace pins `leanprover/lean4:v4.35.0` and the matching Mathlib
+`v4.35.0` release, with `lean/lake-manifest.json` recording the exact Mathlib
 revision those pins resolve to. These are exact reproducibility pins for the
 newest stable Lean/Mathlib release pair, not floating aliases: release
 candidates and nightlies do not replace the stable line. The networked pin
@@ -12,12 +12,11 @@ pins stay in step with what the workspace actually builds with. A newer Lean
 release without that tag is reported as pending ecosystem support rather
 than installed into an incompatible workspace.
 
-The [v4.34.1 release notes](https://lean-lang.org/doc/reference/latest/releases/v4.34.1/)
-describe the newest feature-bearing stable release. The workspace follows it
-because Lean and the matching
-[Mathlib4 v4.34.1 release](https://github.com/leanprover-community/mathlib4/releases/tag/v4.34.1)
-are both available. A documentation page lag never justifies downgrading an
-installed, verified stable release.
+The [v4.35.0 release notes](https://lean-lang.org/doc/reference/latest/releases/v4.35.0/)
+describe the selected stable release. The workspace pairs it with the matching
+[Mathlib4 v4.35.0 release](https://github.com/leanprover-community/mathlib4/releases/tag/v4.35.0)
+which is available at the same version. A pin change alone does not establish
+native verification; rebuild and refresh receipts as described below.
 
 ```bash
 uv run fep-lean setup
@@ -28,6 +27,26 @@ cd lean
 lake build
 lake build FepSketches
 ```
+
+## Lean 4.35 migration boundary
+
+The migration introduces explicit modules, public imports and exposed public
+sections in maintained formal sources and generated probes. Supporting
+constants that occur in exported definitions are public. Mathematical theorem
+statements retain their original scope; Mathlib API adaptations and removal of
+obsolete tactic alternatives are checked by native compilation.
+
+Historical scientific freezes and custody receipts retain their original
+source and toolchain digests. Test-only reversal of enumerated formatting,
+import and visibility edits checks the historical byte contracts without
+renewing those approvals. The current H3 study remains rejected by its frozen
+source guard until a separately governed successor epoch is accepted.
+
+Catalogue generation changes the appendix when proof bodies change. The
+retained publication render receipt then fails its freshness check, even when
+Lean validation passes. Follow the real render procedure in
+[scripts/README.md](../scripts/README.md#3-render-and-accept) before renewing
+publication acceptance; do not replace receipt hashes by hand.
 
 ## Lock-preserving setup
 
@@ -108,6 +127,13 @@ parallel Lean compilation. One platform's result does not establish the
 other's. This smoke does not replace full native receipt validation.
 
 ## Deliberate toolchain upgrades
+
+The 4.35 workspace uses module headers and explicit public imports in the
+formal kernel and generated aggregates. Some Mathlib lemmas now require
+direct imports because their earlier transitive dependencies are private.
+The verifier converts legacy topic input to equivalent exposed module source;
+explicit module input keeps its declared visibility. Theorems and assumptions
+remain authored in their canonical owners, and projections must be regenerated.
 
 When a newer compatible stable pair appears, update both canonical pins, run
 `lake update` and the Mathlib cache acquisition, migrate every warning or

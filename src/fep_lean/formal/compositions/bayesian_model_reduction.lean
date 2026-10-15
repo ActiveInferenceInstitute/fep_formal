@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.bayesian_model_reduction
+module
+public import FepSketches.fep_all
+public import FepSketches.bayesian_model_reduction
+
+@[expose] public section
 
 /-!
 # Bayesian model reduction topic compositions

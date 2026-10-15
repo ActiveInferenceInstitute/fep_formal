@@ -18,148 +18,83 @@ roster and roles live in the manifest; this page projects them for navigation.
   [`formalism-atlas.html`](formalism-atlas.html); generated counts are in
   [`formalism-coverage.md`](formalism-coverage.md).
 
-## Layer 0 (6 modules)
+## Layer 0 (71 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
+| `active_inference` | foundation | `FEP.ActiveInference` | — |
+| `bayesian_model_reduction` | foundation | `FEP.BayesianModelReduction` | — |
+| `causal_dynamics` | foundation | `FEP.CausalDynamics` | — |
+| `collective_inference` | foundation | `FEP.CollectiveInference` | — |
+| `composed` | aggregate | `—` | — |
+| `compositions.bayesian_model_reduction` | composition | `FEPComposed` | — |
+| `compositions.causal_predictive` | composition | `FEPComposed` | — |
+| `compositions.collective_learning` | composition | `FEPComposed` | — |
+| `compositions.continuous_time` | composition | `FEPComposed` | — |
+| `compositions.control_temporal` | composition | `FEPComposed` | — |
+| `compositions.core` | composition | `FEPComposed` | — |
+| `compositions.efe_policy_selection` | composition | `FEPComposed` | — |
+| `compositions.efe_time_scale_separation` | composition | `FEPComposed` | — |
+| `compositions.exponential_family` | composition | `FEPComposed` | — |
+| `compositions.finite_policy_action` | composition | `FEPComposed.FinitePolicyAction` | — |
+| `compositions.finite_reference_agent` | composition | `FEPComposed.FiniteReferenceAgent` | — |
+| `compositions.finite_scientific_implications` | composition | `FEPComposed.FiniteScientificImplications` | — |
+| `compositions.gaussian_control` | composition | `FEPComposed.GaussianControl` | — |
+| `compositions.gaussian_filter` | composition | `FEPComposed.GaussianFilter` | — |
+| `compositions.gaussian_grid_path` | composition | `FEPComposed.GaussianGridPath` | — |
+| `compositions.geometric_mechanics` | composition | `FEPComposed` | — |
+| `compositions.h3_case_study` | composition | `FEPComposed.H3CaseStudy` | — |
+| `compositions.helmholtz_ao_ness` | composition | `FEPComposed` | — |
+| `compositions.measure_variational` | composition | `FEPComposed` | — |
+| `compositions.native_blanket_transfer` | composition | `FEPComposed` | — |
+| `compositions.perception_action_loop` | composition | `FEPComposed` | — |
+| `compositions.policy_trees` | composition | `FEPComposed` | — |
+| `compositions.risk_calibration` | composition | `FEPComposed` | — |
+| `compositions.smooth_reference_kernel` | composition | `FEPComposed.SmoothReferenceKernel` | — |
+| `compositions.thermo_geometry` | composition | `FEPComposed` | — |
+| `continuous_time_markov` | foundation | `FEP.ContinuousTimeMarkov` | — |
+| `controlled_markov` | foundation | `FEP.ControlledMarkov` | — |
+| `decision_risk` | foundation | `FEP.DecisionRisk` | — |
+| `efe_policy_selection` | foundation | `FEP.EFEPolicy` | — |
+| `efe_time_scale_separation` | foundation | `FEP.TimeScaleEFE` | — |
+| `empirical_risk` | foundation | `FEP.EmpiricalRisk` | — |
+| `exponential_family` | foundation | `FEP.ExponentialFamily` | — |
+| `fin4_gaussian_semigroup` | foundation | `FEP.Fin4GaussianSemigroup` | — |
+| `finite_information` | foundation | `FEP.FiniteInformation` | — |
+| `finite_markov_dynamics` | foundation | `FEP.FiniteMarkovDynamics` | — |
+| `finite_posterior_learning` | foundation | `FEP.FinitePosteriorLearning` | — |
 | `finite_probability` | foundation | `FEP` | — |
 | `gaussian_information_geometry` | foundation | `FEP.GaussianInformationGeometry` | — |
+| `gaussian_precision_conditioning` | foundation | `FEP.GaussianPrecisionConditioning` | — |
 | `geometric_mechanics` | foundation | `FEP.GeometricMechanics` | — |
+| `geometric_optimization` | foundation | `FEP.GeometricOptimization` | — |
+| `gnn_denotation` | foundation | `FEP.GnnDenotation` | — |
+| `gnn_denotation_continuous` | foundation | `FEP.GnnContinuous` | — |
 | `gnn_document` | foundation | `FEP.GnnDocument` | — |
+| `gnn_render_statements` | foundation | `FEP.GnnRenderStatements` | — |
+| `h3_reference_model` | foundation | `FEP.H3ReferenceModel` | — |
+| `helmholtz_ao_ness` | foundation | `FEP.HelmholtzAoNess` | — |
+| `information_geometry` | foundation | `FEP.InformationGeometry` | — |
+| `law_weighted_split` | foundation | `FEP.LawWeightedSplit` | — |
+| `learning_theory` | foundation | `FEP.LearningTheory` | — |
+| `linear_gaussian_semigroup` | foundation | `FEP.LinearGaussianSemigroup` | — |
+| `markov_blanket` | foundation | `FEP.MarkovBlanket` | — |
+| `markov_semigroup` | foundation | `FEP.MarkovSemigroup` | — |
+| `measure_bayes` | foundation | `FEP.MeasureBayes` | — |
+| `native_blanket` | foundation | `FEP.NativeBlanket` | — |
+| `ness_flow` | foundation | `FEP.NessFlow` | — |
+| `path_thermodynamics` | foundation | `FEP.PathThermodynamics` | — |
+| `perception_action_loop` | foundation | `FEP.PerceptionActionLoop` | — |
+| `policy_tree` | foundation | `FEP.PolicyTrees` | — |
+| `posterior_convergence` | foundation | `FEP.PosteriorConvergence` | — |
 | `predictive_coding` | foundation | `FEP.PredictiveCoding` | — |
+| `scalar_gaussian_semigroup` | foundation | `FEP.ScalarGaussianSemigroup` | — |
+| `smooth_information_geometry` | foundation | `FEP.SmoothInformationGeometry` | — |
 | `statistical_convergence` | foundation | `FEP.StatisticalConvergence` | — |
+| `temporal_inference` | foundation | `FEP.TemporalInference` | — |
+| `variational_duality` | foundation | `FEP.VariationalDuality` | — |
 
-## Layer 1 (7 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.geometric_mechanics` | composition | `FEPComposed` | fep_all, geometric_mechanics |
-| `finite_information` | foundation | `FEP.FiniteInformation` | finite_probability |
-| `finite_markov_dynamics` | foundation | `FEP.FiniteMarkovDynamics` | finite_probability |
-| `information_geometry` | foundation | `FEP.InformationGeometry` | finite_probability |
-| `measure_bayes` | foundation | `FEP.MeasureBayes` | finite_probability |
-| `ness_flow` | foundation | `FEP.NessFlow` | geometric_mechanics |
-| `smooth_information_geometry` | foundation | `FEP.SmoothInformationGeometry` | gaussian_information_geometry |
-
-## Layer 2 (6 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `active_inference` | foundation | `FEP.ActiveInference` | finite_information |
-| `collective_inference` | foundation | `FEP.CollectiveInference` | finite_information |
-| `exponential_family` | foundation | `FEP.ExponentialFamily` | finite_information |
-| `geometric_optimization` | foundation | `FEP.GeometricOptimization` | information_geometry |
-| `markov_blanket` | foundation | `FEP.MarkovBlanket` | finite_information |
-| `variational_duality` | foundation | `FEP.VariationalDuality` | finite_information |
-
-## Layer 3 (9 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `bayesian_model_reduction` | foundation | `FEP.BayesianModelReduction` | variational_duality, gaussian_information_geometry |
-| `causal_dynamics` | foundation | `FEP.CausalDynamics` | markov_blanket |
-| `compositions.exponential_family` | composition | `FEPComposed` | fep_all, exponential_family |
-| `compositions.measure_variational` | composition | `FEPComposed` | fep_all, measure_bayes, variational_duality |
-| `controlled_markov` | foundation | `FEP.ControlledMarkov` | active_inference |
-| `gnn_denotation` | foundation | `FEP.GnnDenotation` | gnn_document, active_inference |
-| `learning_theory` | foundation | `FEP.LearningTheory` | variational_duality |
-| `native_blanket` | foundation | `FEP.NativeBlanket` | markov_blanket |
-| `path_thermodynamics` | foundation | `FEP.PathThermodynamics` | finite_markov_dynamics, variational_duality |
-
-## Layer 4 (10 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.bayesian_model_reduction` | composition | `FEPComposed` | fep_all, bayesian_model_reduction |
-| `compositions.causal_predictive` | composition | `FEPComposed` | fep_all, causal_dynamics, predictive_coding |
-| `compositions.collective_learning` | composition | `FEPComposed` | fep_all, collective_inference, learning_theory |
-| `compositions.finite_scientific_implications` | composition | `FEPComposed.FiniteScientificImplications` | finite_probability, causal_dynamics, finite_markov_dynamics, active_inference, information_geometry |
-| `compositions.thermo_geometry` | composition | `FEPComposed` | fep_all, path_thermodynamics, geometric_optimization |
-| `decision_risk` | foundation | `FEP.DecisionRisk` | native_blanket, finite_information |
-| `empirical_risk` | foundation | `FEP.EmpiricalRisk` | learning_theory |
-| `gnn_render_statements` | foundation | `FEP.GnnRenderStatements` | gnn_document, gnn_denotation, active_inference, finite_probability, finite_markov_dynamics |
-| `policy_tree` | foundation | `FEP.PolicyTrees` | controlled_markov |
-| `temporal_inference` | foundation | `FEP.TemporalInference` | controlled_markov |
-
-## Layer 5 (7 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.control_temporal` | composition | `FEPComposed` | fep_all, controlled_markov, temporal_inference |
-| `compositions.core` | composition | `FEPComposed` | fep_all, active_inference, information_geometry, markov_blanket, statistical_convergence, controlled_markov, temporal_inference, path_thermodynamics, geometric_optimization |
-| `compositions.policy_trees` | composition | `FEPComposed` | fep_all, policy_tree |
-| `compositions.risk_calibration` | composition | `FEPComposed` | fep_all, empirical_risk |
-| `continuous_time_markov` | foundation | `FEP.ContinuousTimeMarkov` | finite_markov_dynamics, active_inference, decision_risk, markov_blanket |
-| `efe_policy_selection` | foundation | `FEP.EFEPolicy` | controlled_markov, policy_tree, variational_duality |
-| `finite_posterior_learning` | foundation | `FEP.FinitePosteriorLearning` | learning_theory, statistical_convergence, native_blanket, decision_risk |
-
-## Layer 6 (8 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.continuous_time` | composition | `FEPComposed` | fep_all, continuous_time_markov |
-| `compositions.efe_policy_selection` | composition | `FEPComposed` | fep_all, efe_policy_selection |
-| `compositions.finite_policy_action` | composition | `FEPComposed.FinitePolicyAction` | policy_tree, active_inference, controlled_markov, decision_risk, finite_posterior_learning |
-| `efe_time_scale_separation` | foundation | `FEP.TimeScaleEFE` | continuous_time_markov, path_thermodynamics, active_inference, ness_flow |
-| `helmholtz_ao_ness` | foundation | `FEP.HelmholtzAoNess` | continuous_time_markov, geometric_mechanics |
-| `markov_semigroup` | foundation | `FEP.MarkovSemigroup` | continuous_time_markov, native_blanket |
-| `perception_action_loop` | foundation | `FEP.PerceptionActionLoop` | active_inference, controlled_markov, finite_markov_dynamics, policy_tree, temporal_inference, continuous_time_markov |
-| `posterior_convergence` | foundation | `FEP.PosteriorConvergence` | gaussian_information_geometry, finite_posterior_learning, measure_bayes |
-
-## Layer 7 (6 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.efe_time_scale_separation` | composition | `FEPComposed` | fep_all, efe_time_scale_separation |
-| `compositions.finite_reference_agent` | composition | `FEPComposed.FiniteReferenceAgent` | finite_posterior_learning, compositions.finite_policy_action, compositions.finite_scientific_implications, native_blanket, continuous_time_markov |
-| `compositions.helmholtz_ao_ness` | composition | `FEPComposed` | fep_all, helmholtz_ao_ness |
-| `compositions.perception_action_loop` | composition | `FEPComposed` | fep_all, perception_action_loop |
-| `law_weighted_split` | foundation | `FEP.LawWeightedSplit` | helmholtz_ao_ness |
-| `scalar_gaussian_semigroup` | foundation | `FEP.ScalarGaussianSemigroup` | gaussian_information_geometry, markov_semigroup |
-
-## Layer 8 (3 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.gaussian_filter` | composition | `FEPComposed.GaussianFilter` | gaussian_information_geometry, scalar_gaussian_semigroup |
-| `compositions.gaussian_grid_path` | composition | `FEPComposed.GaussianGridPath` | scalar_gaussian_semigroup |
-| `linear_gaussian_semigroup` | foundation | `FEP.LinearGaussianSemigroup` | markov_semigroup, scalar_gaussian_semigroup |
-
-## Layer 9 (3 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.gaussian_control` | composition | `FEPComposed.GaussianControl` | compositions.gaussian_filter, controlled_markov, gaussian_information_geometry, markov_semigroup, scalar_gaussian_semigroup |
-| `fin4_gaussian_semigroup` | foundation | `FEP.Fin4GaussianSemigroup` | linear_gaussian_semigroup |
-| `gnn_denotation_continuous` | foundation | `FEP.GnnContinuous` | gnn_document, linear_gaussian_semigroup |
-
-## Layer 10 (2 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `gaussian_precision_conditioning` | foundation | `FEP.GaussianPrecisionConditioning` | fin4_gaussian_semigroup |
-| `h3_reference_model` | foundation | `FEP.H3ReferenceModel` | fin4_gaussian_semigroup, markov_semigroup |
-
-## Layer 11 (2 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.native_blanket_transfer` | composition | `FEPComposed` | fep_all, native_blanket, gaussian_precision_conditioning |
-| `compositions.smooth_reference_kernel` | composition | `FEPComposed.SmoothReferenceKernel` | gaussian_information_geometry, smooth_information_geometry, posterior_convergence, markov_semigroup, scalar_gaussian_semigroup, fin4_gaussian_semigroup, gaussian_precision_conditioning, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path |
-
-## Layer 12 (1 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `compositions.h3_case_study` | composition | `FEPComposed.H3CaseStudy` | h3_reference_model, markov_blanket, native_blanket, causal_dynamics, compositions.finite_scientific_implications, compositions.smooth_reference_kernel, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.finite_policy_action, path_thermodynamics |
-
-## Layer 13 (1 modules)
-
-| Module | Role | Namespace | Depends on |
-| --- | --- | --- | --- |
-| `composed` | aggregate | `—` | compositions.core, compositions.measure_variational, compositions.control_temporal, compositions.causal_predictive, compositions.thermo_geometry, compositions.collective_learning, compositions.risk_calibration, compositions.policy_trees, compositions.native_blanket_transfer, compositions.exponential_family, compositions.continuous_time, compositions.finite_scientific_implications, compositions.finite_policy_action, compositions.finite_reference_agent, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.smooth_reference_kernel, compositions.efe_policy_selection, compositions.perception_action_loop, compositions.bayesian_model_reduction, compositions.efe_time_scale_separation, compositions.helmholtz_ao_ness, compositions.geometric_mechanics, compositions.h3_case_study |
-
-Total maintained formal modules: **71** across **14** dependency layers.
+Total maintained formal modules: **71** across **1** dependency layers.
 
 
 ## Reading order

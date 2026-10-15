@@ -616,8 +616,6 @@ theorem fep043_quadratic_hasDerivAt (a x₀ c x : ℝ) :
   convert (((hasDerivAt_id x).sub_const x₀).pow 2).const_mul a |>.add_const c using 1
   all_goals
     first
-    | exact AddCommGroup.ext rfl
-    | exact Module.ext rfl
     | rfl
     | (simp [fep043_quadraticGradient] ; ring)
 
@@ -654,8 +652,6 @@ theorem fep043_quadraticGradient_hasDerivAt (a x₀ x : ℝ) :
   convert ((hasDerivAt_id x).sub_const x₀).const_mul (2 * a) using 1
   all_goals
     first
-    | exact AddCommGroup.ext rfl
-    | exact Module.ext rfl
     | rfl
     | simp
 

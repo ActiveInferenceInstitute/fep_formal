@@ -1219,11 +1219,11 @@ topics:
     \ simp only [fep013_helmholtz]; ring\n\n/-- Exact temperature derivative of `F(T) = U(T) - T S(T)`. -/\ntheorem fep013_helmholtz_hasDerivAt\n\
     \    {U S : ℝ → ℝ} {U' S' T : ℝ}\n    (hU : HasDerivAt U U' T) (hS : HasDerivAt S S' T) :\n    HasDerivAt (fun t => fep013_helmholtz\
     \ (U t) t (S t))\n      (U' - (S T + T * S')) T := by\n  convert HasDerivAt.sub hU (HasDerivAt.mul (hasDerivAt_id T) hS)\
-    \ using 1\n  all_goals\n    first\n    | exact AddCommGroup.ext rfl\n    | exact Module.ext rfl\n    | rfl\n    | simp\n\
-    \n/-- Under the equilibrium first-law identity `U'(T) = T S'(T)`, the\nHelmholtz derivative is exactly minus entropy.\
-    \ -/\ntheorem fep013_helmholtz_derivative_eq_neg_entropy\n    {U S : ℝ → ℝ} {U' S' T : ℝ}\n    (hU : HasDerivAt U U' T)\
-    \ (hS : HasDerivAt S S' T)\n    (hfirstLaw : U' = T * S') :\n    HasDerivAt (fun t => fep013_helmholtz (U t) t (S t))\
-    \ (-S T) T := by\n  convert fep013_helmholtz_hasDerivAt hU hS using 1\n  rw [hfirstLaw]\n  ring\n\nend FEP013\n"
+    \ using 1\n  all_goals\n    first\n    | rfl\n    | simp\n\n/-- Under the equilibrium first-law identity `U'(T) = T S'(T)`,\
+    \ the\nHelmholtz derivative is exactly minus entropy. -/\ntheorem fep013_helmholtz_derivative_eq_neg_entropy\n    {U S\
+    \ : ℝ → ℝ} {U' S' T : ℝ}\n    (hU : HasDerivAt U U' T) (hS : HasDerivAt S S' T)\n    (hfirstLaw : U' = T * S') :\n   \
+    \ HasDerivAt (fun t => fep013_helmholtz (U t) t (S t)) (-S T) T := by\n  convert fep013_helmholtz_hasDerivAt hU hS using\
+    \ 1\n  rw [hfirstLaw]\n  ring\n\nend FEP013\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -3663,39 +3663,39 @@ topics:
     \ ℝ\n  | false => -1\n  | true => 1\n\n/-- The Bernoulli family is differentiable in its scalar parameter. -/\ntheorem\
     \ fep038_bernoulliMass_hasDerivAt (p : ℝ) (b : Bool) :\n    HasDerivAt (fun q => fep038_bernoulliMass q b)\n      (fep038_bernoulliMassDeriv\
     \ b) p := by\n  cases b\n  · convert (hasDerivAt_const p (1 : ℝ)).sub (hasDerivAt_id p) using 1\n    all_goals\n     \
-    \ first\n      | exact AddCommGroup.ext rfl\n      | exact Module.ext rfl\n      | rfl\n      | norm_num [fep038_bernoulliMass,\
-    \ fep038_bernoulliMassDeriv]\n  · convert hasDerivAt_id p using 1\n    all_goals rfl\n\n/-- Bernoulli masses are normalized\
-    \ for every scalar parameter. Their\nprobabilistic interpretation additionally restricts `p` to `[0,1]`. -/\ntheorem fep038_bernoulliMass_sum_one\
-    \ (p : ℝ) :\n    ∑ b : Bool, fep038_bernoulliMass p b = 1 := by\n  simp [fep038_bernoulliMass]\n\n/-- Bernoulli score\
-    \ `∂ₚ log Pₚ(b)`, represented as `(∂ₚ Pₚ(b)) / Pₚ(b)`. -/\nnoncomputable def fep038_score (p : ℝ) (b : Bool) : ℝ :=\n\
-    \  fep038_bernoulliMassDeriv b / fep038_bernoulliMass p b\n\n/-- At an interior parameter the expected Bernoulli score\
-    \ vanishes. -/\ntheorem fep038_expectedScore_zero {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :\n    ∑ b : Bool, fep038_bernoulliMass\
-    \ p b * fep038_score p b = 0 := by\n  have hp : p ≠ 0 := ne_of_gt hp0\n  have h1p : 1 - p ≠ 0 := ne_of_gt (sub_pos.mpr\
-    \ hp1)\n  simp [fep038_bernoulliMass, fep038_score, fep038_bernoulliMassDeriv, hp]\n  field_simp [h1p]\n  ring\n\n/--\
-    \ Fisher information is the expected squared score. -/\nnoncomputable def fep038_fisherInformation (p : ℝ) : ℝ :=\n  ∑\
-    \ b : Bool,\n    fep038_bernoulliMass p b * fep038_score p b ^ 2\n\n/-- The Bernoulli Fisher information is `1 / (p(1-p))`\
-    \ in the interior. -/\ntheorem fep038_fisherInformation_eq {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_fisherInformation\
-    \ p = 1 / (p * (1 - p)) := by\n  have hp : p ≠ 0 := ne_of_gt hp0\n  have h1p : 1 - p ≠ 0 := ne_of_gt (sub_pos.mpr hp1)\n\
-    \  simp [fep038_fisherInformation, fep038_bernoulliMass, fep038_score,\n    fep038_bernoulliMassDeriv]\n  field_simp [hp,\
-    \ h1p]\n  ring\n\n/-- The one-dimensional Fisher metric applied to tangent coordinates. -/\nnoncomputable def fep038_fisherMetric\
-    \ (p v w : ℝ) : ℝ :=\n  fep038_fisherInformation p * v * w\n\n/-- The Bernoulli Fisher metric is positive definite in\
-    \ the interior. -/\ntheorem fep038_fisherMetric_pos {p v : ℝ} (hp0 : 0 < p) (hp1 : p < 1)\n    (hv : v ≠ 0) :\n    0 <\
-    \ fep038_fisherMetric p v v := by\n  rw [fep038_fisherMetric, fep038_fisherInformation_eq hp0 hp1]\n  have hden : 0 <\
-    \ p * (1 - p) := mul_pos hp0 (sub_pos.mpr hp1)\n  have hmetric : 0 < (1 / (p * (1 - p))) * (v * v) :=\n    mul_pos (one_div_pos.mpr\
-    \ hden) (mul_self_pos.mpr hv)\n  nlinarith\n\n/-- Inverse-metric natural gradient for the Bernoulli parameter. -/\ndef\
-    \ fep038_naturalGradient (p gradient : ℝ) : ℝ :=\n  p * (1 - p) * gradient\n\n/-- Applying the Fisher metric to its natural\
-    \ gradient recovers the covector. -/\ntheorem fep038_naturalGradient_duality {p gradient : ℝ}\n    (hp0 : 0 < p) (hp1\
-    \ : p < 1) :\n    fep038_fisherInformation p * fep038_naturalGradient p gradient = gradient := by\n  rw [fep038_fisherInformation_eq\
-    \ hp0 hp1]\n  have hp : p ≠ 0 := ne_of_gt hp0\n  have h1p : 1 - p ≠ 0 := ne_of_gt (sub_pos.mpr hp1)\n  simp only [fep038_naturalGradient]\n\
-    \  field_simp [hp, h1p]\n\n/-- Jacobian of the Bernoulli Fisher--Rao variance-stabilizing coordinate. -/\nnoncomputable\
-    \ def fep038_coordinateJacobian (p : ℝ) : ℝ :=\n  1 / Real.sqrt (p * (1 - p))\n\n/-- The Fisher information is the square\
-    \ of the Fisher--Rao coordinate\nJacobian, i.e. the metric is the pullback of the Euclidean metric. -/\ntheorem fep038_fisherMetric_coordinate\
-    \ {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_coordinateJacobian p ^ 2 = fep038_fisherInformation p := by\n  rw\
-    \ [fep038_fisherInformation_eq hp0 hp1]\n  have hprod : 0 ≤ p * (1 - p) := (mul_pos hp0 (sub_pos.mpr hp1)).le\n  simp\
-    \ [fep038_coordinateJacobian, Real.sq_sqrt hprod]\n\n/-- Tangent-vector form of the coordinate pullback law. -/\ntheorem\
-    \ fep038_fisherMetric_pullback {p v w : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_fisherMetric p v w =\n     \
-    \ (fep038_coordinateJacobian p * v) *\n        (fep038_coordinateJacobian p * w) := by\n  rw [fep038_fisherMetric]\n \
-    \ have hcoord := fep038_fisherMetric_coordinate hp0 hp1\n  rw [← hcoord]\n  ring\n\nend FEP038\n"
+    \ first\n      | rfl\n      | norm_num [fep038_bernoulliMass, fep038_bernoulliMassDeriv]\n  · convert hasDerivAt_id p\
+    \ using 1\n    all_goals rfl\n\n/-- Bernoulli masses are normalized for every scalar parameter. Their\nprobabilistic interpretation\
+    \ additionally restricts `p` to `[0,1]`. -/\ntheorem fep038_bernoulliMass_sum_one (p : ℝ) :\n    ∑ b : Bool, fep038_bernoulliMass\
+    \ p b = 1 := by\n  simp [fep038_bernoulliMass]\n\n/-- Bernoulli score `∂ₚ log Pₚ(b)`, represented as `(∂ₚ Pₚ(b)) / Pₚ(b)`.\
+    \ -/\nnoncomputable def fep038_score (p : ℝ) (b : Bool) : ℝ :=\n  fep038_bernoulliMassDeriv b / fep038_bernoulliMass p\
+    \ b\n\n/-- At an interior parameter the expected Bernoulli score vanishes. -/\ntheorem fep038_expectedScore_zero {p :\
+    \ ℝ} (hp0 : 0 < p) (hp1 : p < 1) :\n    ∑ b : Bool, fep038_bernoulliMass p b * fep038_score p b = 0 := by\n  have hp :\
+    \ p ≠ 0 := ne_of_gt hp0\n  have h1p : 1 - p ≠ 0 := ne_of_gt (sub_pos.mpr hp1)\n  simp [fep038_bernoulliMass, fep038_score,\
+    \ fep038_bernoulliMassDeriv, hp]\n  field_simp [h1p]\n  ring\n\n/-- Fisher information is the expected squared score.\
+    \ -/\nnoncomputable def fep038_fisherInformation (p : ℝ) : ℝ :=\n  ∑ b : Bool,\n    fep038_bernoulliMass p b * fep038_score\
+    \ p b ^ 2\n\n/-- The Bernoulli Fisher information is `1 / (p(1-p))` in the interior. -/\ntheorem fep038_fisherInformation_eq\
+    \ {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_fisherInformation p = 1 / (p * (1 - p)) := by\n  have hp : p ≠ 0 :=\
+    \ ne_of_gt hp0\n  have h1p : 1 - p ≠ 0 := ne_of_gt (sub_pos.mpr hp1)\n  simp [fep038_fisherInformation, fep038_bernoulliMass,\
+    \ fep038_score,\n    fep038_bernoulliMassDeriv]\n  field_simp [hp, h1p]\n  ring\n\n/-- The one-dimensional Fisher metric\
+    \ applied to tangent coordinates. -/\nnoncomputable def fep038_fisherMetric (p v w : ℝ) : ℝ :=\n  fep038_fisherInformation\
+    \ p * v * w\n\n/-- The Bernoulli Fisher metric is positive definite in the interior. -/\ntheorem fep038_fisherMetric_pos\
+    \ {p v : ℝ} (hp0 : 0 < p) (hp1 : p < 1)\n    (hv : v ≠ 0) :\n    0 < fep038_fisherMetric p v v := by\n  rw [fep038_fisherMetric,\
+    \ fep038_fisherInformation_eq hp0 hp1]\n  have hden : 0 < p * (1 - p) := mul_pos hp0 (sub_pos.mpr hp1)\n  have hmetric\
+    \ : 0 < (1 / (p * (1 - p))) * (v * v) :=\n    mul_pos (one_div_pos.mpr hden) (mul_self_pos.mpr hv)\n  nlinarith\n\n/--\
+    \ Inverse-metric natural gradient for the Bernoulli parameter. -/\ndef fep038_naturalGradient (p gradient : ℝ) : ℝ :=\n\
+    \  p * (1 - p) * gradient\n\n/-- Applying the Fisher metric to its natural gradient recovers the covector. -/\ntheorem\
+    \ fep038_naturalGradient_duality {p gradient : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_fisherInformation p *\
+    \ fep038_naturalGradient p gradient = gradient := by\n  rw [fep038_fisherInformation_eq hp0 hp1]\n  have hp : p ≠ 0 :=\
+    \ ne_of_gt hp0\n  have h1p : 1 - p ≠ 0 := ne_of_gt (sub_pos.mpr hp1)\n  simp only [fep038_naturalGradient]\n  field_simp\
+    \ [hp, h1p]\n\n/-- Jacobian of the Bernoulli Fisher--Rao variance-stabilizing coordinate. -/\nnoncomputable def fep038_coordinateJacobian\
+    \ (p : ℝ) : ℝ :=\n  1 / Real.sqrt (p * (1 - p))\n\n/-- The Fisher information is the square of the Fisher--Rao coordinate\n\
+    Jacobian, i.e. the metric is the pullback of the Euclidean metric. -/\ntheorem fep038_fisherMetric_coordinate {p : ℝ}\
+    \ (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_coordinateJacobian p ^ 2 = fep038_fisherInformation p := by\n  rw [fep038_fisherInformation_eq\
+    \ hp0 hp1]\n  have hprod : 0 ≤ p * (1 - p) := (mul_pos hp0 (sub_pos.mpr hp1)).le\n  simp [fep038_coordinateJacobian, Real.sq_sqrt\
+    \ hprod]\n\n/-- Tangent-vector form of the coordinate pullback law. -/\ntheorem fep038_fisherMetric_pullback {p v w :\
+    \ ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_fisherMetric p v w =\n      (fep038_coordinateJacobian p * v) *\n\
+    \        (fep038_coordinateJacobian p * w) := by\n  rw [fep038_fisherMetric]\n  have hcoord := fep038_fisherMetric_coordinate\
+    \ hp0 hp1\n  rw [← hcoord]\n  ring\n\nend FEP038\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -3881,21 +3881,19 @@ topics:
     \ : HasDerivAt (fun x => Real.log (constant * x))\n      (constant / (constant * v)) v := by\n    simpa using ((hasDerivAt_id\
     \ v).const_mul constant).log hargument\n  have hscaled := hlog.const_mul (1 / 2 : ℝ)\n  have hcoefficient :\n      (1\
     \ / 2 : ℝ) * (constant / (constant * v)) = 1 / (2 * v) := by\n    field_simp [hconstant, ne_of_gt hv]\n  rw [← hcoefficient]\n\
-    \  convert hscaled using 1\n  all_goals\n    first\n    | exact AddCommGroup.ext rfl\n    | exact Module.ext rfl\n   \
-    \ | rfl\n\n/-- Thermal variance scale `κT`. -/\ndef fep040_thermalVariance (κ T : ℝ) : ℝ := κ * T\n\n/-- Gaussian entropy\
-    \ as a function of absolute temperature. -/\nnoncomputable def fep040_thermalEntropy (κ T : ℝ) : ℝ :=\n  fep040_gaussianEntropy\
-    \ (fep040_thermalVariance κ T)\n\n/-- For positive scale and temperature, thermal entropy has derivative `1/(2T)`. -/\n\
-    theorem fep040_thermalEntropy_hasDerivAt\n    {κ T : ℝ} (hκ : 0 < κ) (hT : 0 < T) :\n    HasDerivAt (fep040_thermalEntropy\
-    \ κ) (1 / (2 * T)) T := by\n  have hvariance : 0 < fep040_thermalVariance κ T :=\n    mul_pos hκ hT\n  have houter :=\
-    \ fep040_gaussianEntropy_hasDerivAt hvariance\n  have hinner : HasDerivAt (fep040_thermalVariance κ) κ T := by\n    convert\
-    \ (hasDerivAt_id T).const_mul κ using 1\n    all_goals\n      first\n      | exact AddCommGroup.ext rfl\n      | exact\
-    \ Module.ext rfl\n      | rfl\n      | simp\n  have hcomp := houter.comp T hinner\n  have hcoefficient :\n      (1 / (2\
-    \ * fep040_thermalVariance κ T)) * κ = 1 / (2 * T) := by\n    simp only [fep040_thermalVariance]\n    field_simp [ne_of_gt\
-    \ hκ, ne_of_gt hT]\n  rw [← hcoefficient]\n  convert hcomp using 1\n  all_goals\n    first\n    | exact AddCommGroup.ext\
-    \ rfl\n    | exact Module.ext rfl\n    | rfl\n\n/-- Dimensionless constant-volume heat capacity `T ∂H/∂T`. -/\nnoncomputable\
-    \ def fep040_heatCapacity (T : ℝ) : ℝ :=\n  T * (1 / (2 * T))\n\n/-- The one-dimensional Gaussian thermal model has heat\
-    \ capacity `1/2`. -/\ntheorem fep040_heatCapacity_eq_half {T : ℝ} (hT : 0 < T) :\n    fep040_heatCapacity T = 1 / 2 :=\
-    \ by\n  unfold fep040_heatCapacity\n  field_simp [ne_of_gt hT]\n\nend FEP040\n"
+    \  convert hscaled using 1\n  all_goals\n    first\n    | rfl\n\n/-- Thermal variance scale `κT`. -/\ndef fep040_thermalVariance\
+    \ (κ T : ℝ) : ℝ := κ * T\n\n/-- Gaussian entropy as a function of absolute temperature. -/\nnoncomputable def fep040_thermalEntropy\
+    \ (κ T : ℝ) : ℝ :=\n  fep040_gaussianEntropy (fep040_thermalVariance κ T)\n\n/-- For positive scale and temperature, thermal\
+    \ entropy has derivative `1/(2T)`. -/\ntheorem fep040_thermalEntropy_hasDerivAt\n    {κ T : ℝ} (hκ : 0 < κ) (hT : 0 <\
+    \ T) :\n    HasDerivAt (fep040_thermalEntropy κ) (1 / (2 * T)) T := by\n  have hvariance : 0 < fep040_thermalVariance\
+    \ κ T :=\n    mul_pos hκ hT\n  have houter := fep040_gaussianEntropy_hasDerivAt hvariance\n  have hinner : HasDerivAt\
+    \ (fep040_thermalVariance κ) κ T := by\n    convert (hasDerivAt_id T).const_mul κ using 1\n    all_goals\n      first\n\
+    \      | rfl\n      | simp\n  have hcomp := houter.comp T hinner\n  have hcoefficient :\n      (1 / (2 * fep040_thermalVariance\
+    \ κ T)) * κ = 1 / (2 * T) := by\n    simp only [fep040_thermalVariance]\n    field_simp [ne_of_gt hκ, ne_of_gt hT]\n \
+    \ rw [← hcoefficient]\n  convert hcomp using 1\n  all_goals\n    first\n    | rfl\n\n/-- Dimensionless constant-volume\
+    \ heat capacity `T ∂H/∂T`. -/\nnoncomputable def fep040_heatCapacity (T : ℝ) : ℝ :=\n  T * (1 / (2 * T))\n\n/-- The one-dimensional\
+    \ Gaussian thermal model has heat capacity `1/2`. -/\ntheorem fep040_heatCapacity_eq_half {T : ℝ} (hT : 0 < T) :\n   \
+    \ fep040_heatCapacity T = 1 / 2 := by\n  unfold fep040_heatCapacity\n  field_simp [ne_of_gt hT]\n\nend FEP040\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -4129,21 +4127,20 @@ topics:
     \ - x₀) ^ 2 + c\n\n/-- Its gradient field. -/\ndef fep043_quadraticGradient (a x₀ x : ℝ) : ℝ :=\n  2 * a * (x - x₀)\n\n\
     /-- Exact first derivative of the quadratic free energy. -/\ntheorem fep043_quadratic_hasDerivAt (a x₀ c x : ℝ) :\n  \
     \  HasDerivAt (fep043_quadraticFreeEnergy a x₀ c)\n      (fep043_quadraticGradient a x₀ x) x := by\n  convert (((hasDerivAt_id\
-    \ x).sub_const x₀).pow 2).const_mul a |>.add_const c using 1\n  all_goals\n    first\n    | exact AddCommGroup.ext rfl\n\
-    \    | exact Module.ext rfl\n    | rfl\n    | (simp [fep043_quadraticGradient] ; ring)\n\n/-- Positive curvature makes\
-    \ the center the unique global minimizer. -/\ntheorem fep043_quadratic_unique_min\n    {a x₀ c x : ℝ} (ha : 0 < a) :\n\
-    \    fep043_quadraticFreeEnergy a x₀ c x =\n        fep043_quadraticFreeEnergy a x₀ c x₀ ↔\n      x = x₀ := by\n  constructor\n\
-    \  · intro h\n    have hcenter : fep043_quadraticFreeEnergy a x₀ c x₀ = c := by\n      simp [fep043_quadraticFreeEnergy]\n\
-    \    rw [hcenter] at h\n    rw [fep043_quadraticFreeEnergy] at h\n    have hsquare : (x - x₀) ^ 2 = 0 := by nlinarith\n\
-    \    nlinarith\n  · rintro rfl\n    rfl\n\n/-- For positive curvature, the unique critical point is the unique minimum.\
-    \ -/\ntheorem fep043_quadratic_critical_iff\n    {a x₀ c x : ℝ} (ha : 0 < a) :\n    deriv (fep043_quadraticFreeEnergy\
-    \ a x₀ c) x = 0 ↔ x = x₀ := by\n  rw [(fep043_quadratic_hasDerivAt a x₀ c x).deriv]\n  simp only [fep043_quadraticGradient]\n\
-    \  constructor <;> intro h\n  · nlinarith\n  · rw [h, sub_self, mul_zero]\n\n/-- The gradient derivative is the constant\
-    \ scalar Hessian `2a`. -/\ntheorem fep043_quadraticGradient_hasDerivAt (a x₀ x : ℝ) :\n    HasDerivAt (fep043_quadraticGradient\
-    \ a x₀) (2 * a) x := by\n  convert ((hasDerivAt_id x).sub_const x₀).const_mul (2 * a) using 1\n  all_goals\n    first\n\
-    \    | exact AddCommGroup.ext rfl\n    | exact Module.ext rfl\n    | rfl\n    | simp\n\n/-- Positive quadratic curvature\
-    \ gives a strictly positive Hessian. -/\ntheorem fep043_quadratic_hessian_pos {a : ℝ} (ha : 0 < a) :\n    0 < 2 * a :=\
-    \ by positivity\n\nend FEP043\n"
+    \ x).sub_const x₀).pow 2).const_mul a |>.add_const c using 1\n  all_goals\n    first\n    | rfl\n    | (simp [fep043_quadraticGradient]\
+    \ ; ring)\n\n/-- Positive curvature makes the center the unique global minimizer. -/\ntheorem fep043_quadratic_unique_min\n\
+    \    {a x₀ c x : ℝ} (ha : 0 < a) :\n    fep043_quadraticFreeEnergy a x₀ c x =\n        fep043_quadraticFreeEnergy a x₀\
+    \ c x₀ ↔\n      x = x₀ := by\n  constructor\n  · intro h\n    have hcenter : fep043_quadraticFreeEnergy a x₀ c x₀ = c\
+    \ := by\n      simp [fep043_quadraticFreeEnergy]\n    rw [hcenter] at h\n    rw [fep043_quadraticFreeEnergy] at h\n  \
+    \  have hsquare : (x - x₀) ^ 2 = 0 := by nlinarith\n    nlinarith\n  · rintro rfl\n    rfl\n\n/-- For positive curvature,\
+    \ the unique critical point is the unique minimum. -/\ntheorem fep043_quadratic_critical_iff\n    {a x₀ c x : ℝ} (ha :\
+    \ 0 < a) :\n    deriv (fep043_quadraticFreeEnergy a x₀ c) x = 0 ↔ x = x₀ := by\n  rw [(fep043_quadratic_hasDerivAt a x₀\
+    \ c x).deriv]\n  simp only [fep043_quadraticGradient]\n  constructor <;> intro h\n  · nlinarith\n  · rw [h, sub_self,\
+    \ mul_zero]\n\n/-- The gradient derivative is the constant scalar Hessian `2a`. -/\ntheorem fep043_quadraticGradient_hasDerivAt\
+    \ (a x₀ x : ℝ) :\n    HasDerivAt (fep043_quadraticGradient a x₀) (2 * a) x := by\n  convert ((hasDerivAt_id x).sub_const\
+    \ x₀).const_mul (2 * a) using 1\n  all_goals\n    first\n    | rfl\n    | simp\n\n/-- Positive quadratic curvature gives\
+    \ a strictly positive Hessian. -/\ntheorem fep043_quadratic_hessian_pos {a : ℝ} (ha : 0 < a) :\n    0 < 2 * a := by positivity\n\
+    \nend FEP043\n"
   latex_equations:
   - '\begin{aligned}
 

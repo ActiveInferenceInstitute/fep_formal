@@ -1,4 +1,7 @@
-import FepSketches.active_inference
+module
+public import FepSketches.active_inference
+
+@[expose] public section
 
 /-!
 # Controlled finite Markov models and planning as inference

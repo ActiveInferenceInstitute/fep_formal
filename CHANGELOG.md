@@ -1,5 +1,15 @@
 ## Unreleased
 
+- Upgrade the workspace pins to Lean/Mathlib `v4.35.0` and refresh the Lake
+  dependency lock. Migrate the formal kernel, generated aggregates and verifier
+  probes to the module system, declare newly required imports and public
+  support declarations, and remove obsolete tactic branches. Archived custody
+  unit tests use a frozen historical pin fixture. Retained native receipts
+  remain evidence for their original toolchain; this upgrade alone does not
+  renew their verification claims.
+  Rebuild the publication through its pinned renderer and refresh the render
+  acceptance receipt after source-bound native validation.
+
 - Record the archived compile-maturity/scientific-scope ambiguity and its current
   source contracts in [the publication consistency review](docs/publication-consistency-review.md).
   No theorem disposition or native-evidence claim changes.
@@ -25,7 +35,7 @@
 Formal-resource strengthening on the existing 168-topic roster. No semantic
 disposition changes: each new statement awaits independent review against its
 theorem proxy, and compilation establishes only the exact Lean statements.
-Every addition builds warning-free at the pin (Lean v4.34.1) and depends only on
+Every addition built warning-free at the then-current `v4.34.1` pin and depends only on
 `propext`, `Classical.choice` and `Quot.sound`. Lexical Lean declarations grow
 from 1,946 to 2,185.
 

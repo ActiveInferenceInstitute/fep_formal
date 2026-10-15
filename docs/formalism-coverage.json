@@ -1521,6 +1521,7 @@
         "Mathlib.Algebra.Order.Ring.Unbundled.Basic",
         "Mathlib.Basic.Real.Basic",
         "Mathlib.Analysis.Calculus.FDeriv.Symmetric",
+        "Mathlib.Analysis.Calculus.FDeriv.Pow",
         "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
         "FepSketches.geometric_mechanics",
         "Mathlib.Tactic"
@@ -2056,13 +2057,14 @@
         "FepSketches.active_inference",
         "FepSketches.decision_risk",
         "FepSketches.markov_blanket",
+        "Mathlib.Analysis.Matrix.Normed",
         "Mathlib.Analysis.Normed.Algebra.MatrixExponential"
       ],
       "lean_module": "FepSketches.continuous_time_markov",
       "resource": "continuous_time_markov.lean",
       "role": "foundation",
       "structure_count": 4,
-      "theorem_count": 97,
+      "theorem_count": 98,
       "theorems": [
         "FEP.ContinuousTimeMarkov.ActionIndexedSemigroup.selectedActionTransition_eq_sampledSemigroup",
         "FEP.ContinuousTimeMarkov.ActionIndexedSemigroup.toGenerativeModel_transition",
@@ -2129,6 +2131,7 @@
         "FEP.ContinuousTimeMarkov.boolBlanketGenerativeModel_transition",
         "FEP.ContinuousTimeMarkov.boolBlanketInitial_ne_uniform",
         "FEP.ContinuousTimeMarkov.boolBlanketInitial_not_invariant",
+        "FEP.ContinuousTimeMarkov.boolBlanketRefreshTime_pos",
         "FEP.ContinuousTimeMarkov.boolBlanketState_card",
         "FEP.ContinuousTimeMarkov.boolBlanketStationaryLaw_isStationary",
         "FEP.ContinuousTimeMarkov.boolBlanket_finiteKL_strict_decrease",
@@ -2197,7 +2200,7 @@
     },
     {
       "abbreviation_count": 0,
-      "definition_count": 11,
+      "definition_count": 12,
       "formal_dependencies": [
         "FepSketches.gaussian_information_geometry",
         "FepSketches.markov_semigroup"
@@ -2218,7 +2221,7 @@
       "resource": "scalar_gaussian_semigroup.lean",
       "role": "foundation",
       "structure_count": 1,
-      "theorem_count": 15,
+      "theorem_count": 16,
       "theorems": [
         "FEP.ScalarGaussianSemigroup.ScalarOUParameters.integral_ouTransition_tendsto_invariant",
         "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouKL_to_stationary_nonincrease",
@@ -2232,6 +2235,7 @@
         "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouTransition_zero",
         "FEP.ScalarGaussianSemigroup.ScalarOUParameters.stationaryLaw_invariant",
         "FEP.ScalarGaussianSemigroup.ScalarOUParameters.stationaryVariance_eq",
+        "FEP.ScalarGaussianSemigroup.ScalarOUParameters.stationaryVariance_pos",
         "FEP.ScalarGaussianSemigroup.ScalarOUParameters.transitionMean_zero",
         "FEP.ScalarGaussianSemigroup.ScalarOUParameters.transitionVariance_pos",
         "FEP.ScalarGaussianSemigroup.ScalarOUParameters.transitionVariance_zero"
@@ -2265,13 +2269,14 @@
       "resource": "linear_gaussian_semigroup.lean",
       "role": "foundation",
       "structure_count": 1,
-      "theorem_count": 25,
+      "theorem_count": 26,
       "theorems": [
         "FEP.LinearGaussianSemigroup.LinearGaussianParameters.covariance_mul_precision",
         "FEP.LinearGaussianSemigroup.LinearGaussianParameters.covariance_posDef",
         "FEP.LinearGaussianSemigroup.LinearGaussianParameters.evolution_add",
         "FEP.LinearGaussianSemigroup.LinearGaussianParameters.evolution_transpose",
         "FEP.LinearGaussianSemigroup.LinearGaussianParameters.evolution_zero",
+        "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOneState_measurable",
         "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOneTransition_eq_scalarOU",
         "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOne_transitionCovariance",
         "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOne_transitionMean",
@@ -2302,7 +2307,8 @@
       ],
       "id": "formal-module-fin4-gaussian-semigroup",
       "imports": [
-        "FepSketches.linear_gaussian_semigroup"
+        "FepSketches.linear_gaussian_semigroup",
+        "Mathlib.Probability.Distributions.Gaussian.Fernique"
       ],
       "lean_module": "FepSketches.fin4_gaussian_semigroup",
       "resource": "fin4_gaussian_semigroup.lean",
@@ -2364,6 +2370,7 @@
       "imports": [
         "FepSketches.fin4_gaussian_semigroup",
         "Mathlib.LinearAlgebra.Matrix.Notation",
+        "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Basic",
         "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
         "Mathlib.Probability.Independence.Conditional"
       ],
@@ -2450,7 +2457,7 @@
     },
     {
       "abbreviation_count": 3,
-      "definition_count": 18,
+      "definition_count": 21,
       "formal_dependencies": [
         "FepSketches.decision_risk",
         "FepSketches.learning_theory",
@@ -2469,12 +2476,13 @@
       "resource": "finite_posterior_learning.lean",
       "role": "foundation",
       "structure_count": 0,
-      "theorem_count": 13,
+      "theorem_count": 14,
       "theorems": [
         "FEP.FinitePosteriorLearning.centeredLogLikelihoodRatio_hasSubgaussianMGF",
         "FEP.FinitePosteriorLearning.empiricalLogLikelihoodRatio_strongLaw",
         "FEP.FinitePosteriorLearning.finiteSampleBadGap_probability_le",
         "FEP.FinitePosteriorLearning.nonidentifiablePosteriorAfter_eq_prior",
+        "FEP.FinitePosteriorLearning.nonidentifiablePredictive_pos",
         "FEP.FinitePosteriorLearning.posteriorAfter_two_true_witness",
         "FEP.FinitePosteriorLearning.posteriorAfter_zeroPrior",
         "FEP.FinitePosteriorLearning.posteriorBadMass_contraction_of_not_badGap",
@@ -2513,7 +2521,7 @@
       "resource": "posterior_convergence.lean",
       "role": "foundation",
       "structure_count": 0,
-      "theorem_count": 26,
+      "theorem_count": 27,
       "theorems": [
         "FEP.PosteriorConvergence.boundedContinuousPosteriorExpectation_tendsto_ae",
         "FEP.PosteriorConvergence.finiteObservationKernel_apply",
@@ -2523,6 +2531,7 @@
         "FEP.PosteriorConvergence.nonidentifiableObservationKernel_apply",
         "FEP.PosteriorConvergence.nonidentifiablePosterior_eq_prior_ae",
         "FEP.PosteriorConvergence.observationFiltration_eq_comapPrefix",
+        "FEP.PosteriorConvergence.observation_stronglyMeasurable",
         "FEP.PosteriorConvergence.parameterPosterior_tendsto_dirac_ae",
         "FEP.PosteriorConvergence.posteriorDecisionRisk_mem_Icc",
         "FEP.PosteriorConvergence.posteriorDecisionRisk_tendsto_zero_ae",
@@ -3421,7 +3430,7 @@
     },
     {
       "abbreviation_count": 0,
-      "definition_count": 15,
+      "definition_count": 16,
       "formal_dependencies": [
         "FepSketches.active_inference",
         "FepSketches.causal_dynamics",
@@ -3441,14 +3450,17 @@
       "resource": "compositions/finite_scientific_implications.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 6,
+      "theorem_count": 9,
       "theorems": [
         "FEPComposed.FiniteScientificImplications.blanketPosterior_and_flowAlignment_imply_localDescent",
         "FEPComposed.FiniteScientificImplications.factorizedProduct_invariant_under_pairedKernel",
         "FEPComposed.FiniteScientificImplications.observationalBlanket_doesNotIdentify_causalBlanket",
         "FEPComposed.FiniteScientificImplications.rowwiseBlanket_doesNotImply_stationaryBlanket",
+        "FEPComposed.FiniteScientificImplications.scaledLogisticProbability_lt_one",
+        "FEPComposed.FiniteScientificImplications.scaledLogisticProbability_pos",
         "FEPComposed.FiniteScientificImplications.sparseCoupling_doesNotImply_condIndep",
-        "FEPComposed.FiniteScientificImplications.stationaryBlanket_doesNotImply_freeEnergyDescent"
+        "FEPComposed.FiniteScientificImplications.stationaryBlanket_doesNotImply_freeEnergyDescent",
+        "FEPComposed.FiniteScientificImplications.symmetricFalseEvidence"
       ]
     },
     {
@@ -3532,6 +3544,7 @@
         "FepSketches.gaussian_information_geometry",
         "FepSketches.scalar_gaussian_semigroup",
         "Mathlib.Probability.Distributions.Gaussian.Real",
+        "Mathlib.Probability.Kernel.Composition.WithDensity",
         "Mathlib.Probability.Kernel.Posterior"
       ],
       "lean_module": "FepSketches.compositions.gaussian_filter",
@@ -3560,7 +3573,7 @@
     },
     {
       "abbreviation_count": 0,
-      "definition_count": 17,
+      "definition_count": 18,
       "formal_dependencies": [
         "FepSketches.compositions.gaussian_filter",
         "FepSketches.controlled_markov",
@@ -3832,8 +3845,8 @@
       ]
     },
     {
-      "abbreviation_count": 2,
-      "definition_count": 59,
+      "abbreviation_count": 3,
+      "definition_count": 91,
       "formal_dependencies": [
         "FepSketches.causal_dynamics",
         "FepSketches.compositions.finite_policy_action",
@@ -4679,27 +4692,27 @@
     }
   ],
   "metrics": {
-    "abbreviations": 38,
+    "abbreviations": 39,
     "authored_relation_edges": 150,
     "capability_nodes": 50,
-    "composed_theorems": 349,
-    "definitions": 992,
+    "composed_theorems": 352,
+    "definitions": 1030,
     "distinct_mathlib_imports": 70,
     "formal_module_dependency_edges": 170,
-    "formal_module_import_edges": 290,
+    "formal_module_import_edges": 295,
     "formal_modules": 71,
     "formal_pairing_witnesses": 118,
     "formal_relation_witnesses": 24,
-    "formal_resource_abbreviations": 31,
-    "formal_resource_definitions": 897,
+    "formal_resource_abbreviations": 32,
+    "formal_resource_definitions": 935,
     "formal_resource_structures": 55,
-    "formal_resource_theorems": 1601,
+    "formal_resource_theorems": 1609,
     "foundation_modules": 45,
-    "foundation_theorems": 1252,
+    "foundation_theorems": 1257,
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
     "theorem_witnessed_relations": 142,
-    "theorems": 2185,
+    "theorems": 2193,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
     "topic_import_edges": 225,

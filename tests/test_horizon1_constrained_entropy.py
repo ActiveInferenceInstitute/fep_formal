@@ -25,8 +25,10 @@ def _declaration(source: str, name: str) -> str:
 
 def test_constrained_entropy_preserves_its_existing_owner_imports() -> None:
     source = FOUNDATION.read_text(encoding="utf-8")
+    assert source.startswith("module\n")
+    assert "\n@[expose] public section\n" in source
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == (
+    assert tuple(re.findall(r"(?m)^public import (\S+)$", source)) == (
         "FepSketches.finite_information",
         "Mathlib.Analysis.Convex.SpecificFunctions.Basic",
         "Mathlib.Topology.Order.Compact",

@@ -108,7 +108,11 @@ H2_3B_PUBLIC_THEOREMS = (
     "nonidentifiableObservationKernel_apply",
     "nonidentifiablePosterior_eq_prior_ae",
 )
-PUBLIC_THEOREMS = H2_3A_PUBLIC_THEOREMS + H2_3B_PUBLIC_THEOREMS
+# Existing support for exposed observation-dependent definitions.
+EXPOSED_SUPPORT_THEOREMS = ("observation_stronglyMeasurable",)
+PUBLIC_THEOREMS = (
+    EXPOSED_SUPPORT_THEOREMS + H2_3A_PUBLIC_THEOREMS + H2_3B_PUBLIC_THEOREMS
+)
 STANDARD_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 DECLARATION_NAMESPACE = "FEP.PosteriorConvergence"
 PUBLIC_ENVIRONMENT_DECLARATIONS = frozenset(
@@ -413,8 +417,10 @@ def test_h2_3_source_owner_exists() -> None:
 
 def test_h2_3_exact_import_and_namespace_boundary() -> None:
     source = SOURCE.read_text(encoding="utf-8")
+    assert source.startswith("module\n")
+    assert "\n@[expose] public section\n" in source
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert tuple(re.findall(r"(?m)^public import (\S+)$", source)) == EXACT_IMPORTS
     assert source.count("namespace FEP.PosteriorConvergence\n") == 1
     assert source.rstrip().endswith("end FEP.PosteriorConvergence")
 
@@ -446,7 +452,8 @@ def test_h2_3_exact_public_theorem_roster_preserves_h2_3a_prefix() -> None:
     source = SOURCE.read_text(encoding="utf-8")
 
     assert tuple(re.findall(r"(?m)^theorem (\w+)\b", source)) == PUBLIC_THEOREMS
-    assert PUBLIC_THEOREMS[: len(H2_3A_PUBLIC_THEOREMS)] == H2_3A_PUBLIC_THEOREMS
+    scientific_theorems = PUBLIC_THEOREMS[len(EXPOSED_SUPPORT_THEOREMS) :]
+    assert scientific_theorems[: len(H2_3A_PUBLIC_THEOREMS)] == H2_3A_PUBLIC_THEOREMS
 
 
 def test_h2_3b_required_inference_steps_are_separately_named() -> None:
@@ -700,4 +707,4 @@ def test_h2_3_public_environment_axioms_and_h2_3b_exact_types(tmp_path: Path) ->
     _assert_exact_namespace_declarations(
         output, DECLARATION_NAMESPACE, PUBLIC_ENVIRONMENT_DECLARATIONS
     )
-    assert len(PUBLIC_ENVIRONMENT_DECLARATIONS) == 64
+    assert len(PUBLIC_ENVIRONMENT_DECLARATIONS) == 65

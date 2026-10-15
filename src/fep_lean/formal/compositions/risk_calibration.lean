@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.empirical_risk
+module
+public import FepSketches.fep_all
+public import FepSketches.empirical_risk
+
+@[expose] public section
 
 /-!
 # Finite risk and calibration topic compositions

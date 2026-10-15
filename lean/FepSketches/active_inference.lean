@@ -1,4 +1,7 @@
-import FepSketches.finite_information
+module
+public import FepSketches.finite_information
+
+@[expose] public section
 
 /-!
 # A shared finite active-inference model

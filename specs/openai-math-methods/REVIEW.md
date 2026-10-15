@@ -24,8 +24,8 @@ is unchecked. These are counts of source metadata, not independently accepted
 proofs. They are not comparable to FEP's topic count: a manuscript, family,
 proxy, supporting lemma, and selected main result are different units.
 
-The inspected toolchain and resolved Mathlib revision match FEP's current
-pins: Lean 4.34.1 and Mathlib
+The inspected toolchain and resolved Mathlib revision matched FEP's pins at
+review time: `4.34.1` for Lean and Mathlib
 `d13f23b723b8a846827a245b89c10fc7d3f11612`. The upstream resolved Lake
 manifest nevertheless contains 42 packages, and its Lake configuration
 contains dependency patching logic and hooks. Matching those two pins does

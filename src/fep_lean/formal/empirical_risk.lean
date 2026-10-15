@@ -1,4 +1,7 @@
-import FepSketches.learning_theory
+module
+public import FepSketches.learning_theory
+
+@[expose] public section
 
 /-!
 # Finite empirical risk and Laplace calibration

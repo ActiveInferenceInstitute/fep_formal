@@ -269,8 +269,6 @@ theorem fep038_bernoulliMass_hasDerivAt (p : ℝ) (b : Bool) :
   · convert (hasDerivAt_const p (1 : ℝ)).sub (hasDerivAt_id p) using 1
     all_goals
       first
-      | exact AddCommGroup.ext rfl
-      | exact Module.ext rfl
       | rfl
       | norm_num [fep038_bernoulliMass, fep038_bernoulliMassDeriv]
   · convert hasDerivAt_id p using 1

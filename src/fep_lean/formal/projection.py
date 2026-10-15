@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from fep_lean.lean_source import lean_module_source
+
 from .manifest import (
     FORMAL_MODULES,
     FormalModuleRole,
@@ -26,7 +28,7 @@ def render_formal_aggregate() -> str:
         f"import {module}"
         for module in formal_module_imports(FormalModuleRole.COMPOSITION)
     )
-    return f"{imports}\n\n{_AGGREGATE_NOTE}"
+    return lean_module_source(f"{imports}\n\n{_AGGREGATE_NOTE}")
 
 
 def _aggregate_path(project_root: Path) -> Path:

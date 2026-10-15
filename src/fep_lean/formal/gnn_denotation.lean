@@ -1,7 +1,10 @@
-import FepSketches.gnn_document
-import FepSketches.active_inference
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+module
+public import FepSketches.gnn_document
+public import FepSketches.active_inference
+public import Mathlib.Data.Fintype.Basic
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+
+@[expose] public section
 
 /-!
 # GNN discrete-family denotation over the finite active-inference carriers

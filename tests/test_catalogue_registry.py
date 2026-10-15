@@ -29,6 +29,7 @@ from fep_lean.catalogue.semantics import SemanticValidationError
 from fep_lean.lean_source import (
     lean_code_without_comments,
     lean_declaration_conclusion,
+    lean_module_source,
 )
 
 PROJ = Path(__file__).resolve().parent.parent
@@ -533,6 +534,28 @@ def test_theorem_latex_rejects_unknown_unicode_with_sorted_codepoints() -> None:
 
     with pytest.raises(ValueError, match=r"U\+219D, U\+2603"):
         build_theorem_latex(registry)
+
+
+def test_module_conversion_preserves_proofs_comments_and_explicit_visibility() -> None:
+    source = (
+        "/- import Fake.Comment -/\n"
+        "import Mathlib\n"
+        'def label := "import Fake.String"\n'
+        "theorem preserved : True := True.intro\n"
+    )
+    converted = lean_module_source(source)
+    assert converted.startswith(
+        "module\n/- import Fake.Comment -/\npublic import Mathlib\n"
+    )
+    assert converted.endswith(source[source.index("def label") :])
+    assert converted.count("@[expose] public section") == 1
+    assert lean_module_source(converted) == converted
+    explicit = "module\nimport Mathlib\nprivate def hidden := 1\n"
+    assert lean_module_source(explicit) == explicit
+    assert "suffix -/ public import Mathlib" in lean_module_source(
+        "/- prefix /- import Fake -/ suffix -/ import Mathlib\n"
+        "theorem preserved : True := True.intro\n"
+    )
 
 
 def test_lean_source_normalization_is_offset_preserving_and_import_safe() -> None:

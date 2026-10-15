@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.perception_action_loop
+module
+public import FepSketches.fep_all
+public import FepSketches.perception_action_loop
+
+@[expose] public section
 
 /-!
 # Perception-action-loop topic compositions

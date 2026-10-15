@@ -1,10 +1,13 @@
-import FepSketches.compositions.gaussian_filter
-import FepSketches.controlled_markov
-import FepSketches.gaussian_information_geometry
-import FepSketches.markov_semigroup
-import FepSketches.scalar_gaussian_semigroup
-import Mathlib.Probability.Distributions.Gaussian.Real
-import Mathlib.Probability.Kernel.Posterior
+module
+public import FepSketches.compositions.gaussian_filter
+public import FepSketches.controlled_markov
+public import FepSketches.gaussian_information_geometry
+public import FepSketches.markov_semigroup
+public import FepSketches.scalar_gaussian_semigroup
+public import Mathlib.Probability.Distributions.Gaussian.Real
+public import Mathlib.Probability.Kernel.Posterior
+
+@[expose] public section
 
 /-!
 # Filter-consuming finite Gaussian control
@@ -43,7 +46,7 @@ noncomputable def actionKernelFamily {Action : Type*}
     (action : Action) (time : ℝ≥0) : Kernel ℝ ℝ :=
   (control.dynamics action).ouTransition time
 
-private noncomputable instance actionKernelFamily_isMarkovKernel
+noncomputable instance actionKernelFamily_isMarkovKernel
     {Action : Type*} (control : FiniteGaussianControlModel Action)
     (action : Action) (time : ℝ≥0) :
     IsMarkovKernel (actionKernelFamily control action time) := by
@@ -356,7 +359,7 @@ theorem selectedAction_eq_of_strict {Action : Type*}
     (selectedAction control filter prior observation) hSelected
   exact (not_lt_of_ge hMinimum) hStrictSelected
 
-private noncomputable def boolDynamics
+noncomputable def boolDynamics
     (diffusionVarianceRate : ℝ≥0)
     (hDiffusionVarianceRate : 0 < diffusionVarianceRate) :
     ScalarOUParameters where

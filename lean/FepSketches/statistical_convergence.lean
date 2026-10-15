@@ -1,4 +1,7 @@
-import Mathlib.Probability.StrongLaw
+module
+public import Mathlib.Probability.StrongLaw
+
+@[expose] public section
 
 /-!
 # Statistical convergence for empirical finite laws

@@ -1,8 +1,11 @@
-import FepSketches.fep_all
-import FepSketches.native_blanket
-import FepSketches.gaussian_precision_conditioning
-import Mathlib.LinearAlgebra.Matrix.PosDef
-import Mathlib.LinearAlgebra.Matrix.SchurComplement
+module
+public import FepSketches.fep_all
+public import FepSketches.native_blanket
+public import FepSketches.gaussian_precision_conditioning
+public import Mathlib.LinearAlgebra.Matrix.PosDef
+public import Mathlib.LinearAlgebra.Matrix.SchurComplement
+
+@[expose] public section
 
 /-!
 # Finite-to-native blanket-transfer compositions

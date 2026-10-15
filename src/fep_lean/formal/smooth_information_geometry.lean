@@ -1,6 +1,9 @@
-import FepSketches.gaussian_information_geometry
-import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.Calculus.FDeriv.Pi
+module
+public import FepSketches.gaussian_information_geometry
+public import Mathlib.Analysis.Calculus.Deriv.Mul
+public import Mathlib.Analysis.Calculus.FDeriv.Pi
+
+@[expose] public section
 
 /-!
 # Scalar smooth information geometry

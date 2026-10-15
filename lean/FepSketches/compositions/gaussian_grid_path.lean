@@ -1,8 +1,11 @@
-import FepSketches.scalar_gaussian_semigroup
-import Mathlib.InformationTheory.KullbackLeibler.Basic
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.MeasureTheory.Measure.Decomposition.RadonNikodym
-import Mathlib.Probability.Kernel.IonescuTulcea.PartialTraj
+module
+public import FepSketches.scalar_gaussian_semigroup
+public import Mathlib.InformationTheory.KullbackLeibler.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Measure.Decomposition.RadonNikodym
+public import Mathlib.Probability.Kernel.IonescuTulcea.PartialTraj
+
+@[expose] public section
 
 /-!
 # Native finite-grid paths for the scalar Gaussian semigroup

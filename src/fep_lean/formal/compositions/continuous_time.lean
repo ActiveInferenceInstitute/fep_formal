@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.continuous_time_markov
+module
+public import FepSketches.fep_all
+public import FepSketches.continuous_time_markov
+
+@[expose] public section
 
 /-!
 # Exact two-state continuous-time topic compositions

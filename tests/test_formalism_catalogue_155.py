@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from collections.abc import Mapping
 from pathlib import Path
 
@@ -132,6 +133,37 @@ def _assert_released_body_and_maturity(
     assert baseline["topic_count"] == 120
 
     released_bodies = dict(bodies)
+    migration = json.loads(
+        (
+            PROJECT_ROOT / "tests/fixtures/lean435_catalogue_proof_migration.json"
+        ).read_text()
+    )
+    assert set(migration["topics"]) == {"fep-013", "fep-038", "fep-040", "fep-043"}
+    for topic_id, change in migration["topics"].items():
+        current_body = bodies[topic_id]
+        assert (
+            hashlib.sha256(current_body.encode()).hexdigest()
+            == change["migrated_sha256"]
+        )
+        restored, count = re.subn(
+            r"(?m)^( +)first\n( +)\| rfl$",
+            lambda match: (
+                match[1]
+                + "first\n"
+                + match[2]
+                + "| exact AddCommGroup.ext rfl\n"
+                + match[2]
+                + "| exact Module.ext rfl\n"
+                + match[2]
+                + "| rfl"
+            ),
+            current_body,
+        )
+        assert count == change["removed_pairs"]
+        assert (
+            hashlib.sha256(restored.encode()).hexdigest() == change["historical_sha256"]
+        )
+        released_bodies[topic_id] = restored
     for topic_id, change in deltas["body_changes"].items():
         released = change["released_body"]
         namespace_end = f"end FEP{topic_id[-3:]}\n"

@@ -1,4 +1,7 @@
-import FepSketches.information_geometry
+module
+public import FepSketches.information_geometry
+
+@[expose] public section
 
 /-!
 # Information geometry and geometric optimization

@@ -121,10 +121,10 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
 ) -> None:
     before = _production_snapshot()
     recorded_root = custody_root(REPO_ROOT, tmp_path)
-    assert (
-        current_r0.validate_h2_r0_custody(recorded_root)["native_evidence"]["status"]
-        == "not_executed"
-    )
+    # Even after the approved release-token reversal, the migrated Lean sources
+    # cannot be substituted into the immutable earlier custody epoch.
+    with pytest.raises(ValueError, match="stale historical custody source digest"):
+        current_r0.validate_h2_r0_custody(recorded_root)
     with pytest.raises(
         ValueError, match="current validator/diagnostic source mismatch"
     ):

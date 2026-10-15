@@ -1,28 +1,31 @@
-import FepSketches.compositions.core
-import FepSketches.compositions.measure_variational
-import FepSketches.compositions.control_temporal
-import FepSketches.compositions.causal_predictive
-import FepSketches.compositions.thermo_geometry
-import FepSketches.compositions.collective_learning
-import FepSketches.compositions.risk_calibration
-import FepSketches.compositions.policy_trees
-import FepSketches.compositions.native_blanket_transfer
-import FepSketches.compositions.exponential_family
-import FepSketches.compositions.continuous_time
-import FepSketches.compositions.finite_scientific_implications
-import FepSketches.compositions.finite_policy_action
-import FepSketches.compositions.finite_reference_agent
-import FepSketches.compositions.gaussian_filter
-import FepSketches.compositions.gaussian_control
-import FepSketches.compositions.gaussian_grid_path
-import FepSketches.compositions.smooth_reference_kernel
-import FepSketches.compositions.efe_policy_selection
-import FepSketches.compositions.perception_action_loop
-import FepSketches.compositions.bayesian_model_reduction
-import FepSketches.compositions.efe_time_scale_separation
-import FepSketches.compositions.helmholtz_ao_ness
-import FepSketches.compositions.geometric_mechanics
-import FepSketches.compositions.h3_case_study
+module
+public import FepSketches.compositions.core
+public import FepSketches.compositions.measure_variational
+public import FepSketches.compositions.control_temporal
+public import FepSketches.compositions.causal_predictive
+public import FepSketches.compositions.thermo_geometry
+public import FepSketches.compositions.collective_learning
+public import FepSketches.compositions.risk_calibration
+public import FepSketches.compositions.policy_trees
+public import FepSketches.compositions.native_blanket_transfer
+public import FepSketches.compositions.exponential_family
+public import FepSketches.compositions.continuous_time
+public import FepSketches.compositions.finite_scientific_implications
+public import FepSketches.compositions.finite_policy_action
+public import FepSketches.compositions.finite_reference_agent
+public import FepSketches.compositions.gaussian_filter
+public import FepSketches.compositions.gaussian_control
+public import FepSketches.compositions.gaussian_grid_path
+public import FepSketches.compositions.smooth_reference_kernel
+public import FepSketches.compositions.efe_policy_selection
+public import FepSketches.compositions.perception_action_loop
+public import FepSketches.compositions.bayesian_model_reduction
+public import FepSketches.compositions.efe_time_scale_separation
+public import FepSketches.compositions.helmholtz_ao_ness
+public import FepSketches.compositions.geometric_mechanics
+public import FepSketches.compositions.h3_case_study
+
+@[expose] public section
 
 /-!
 This file is generated from the formal module manifest. Scientific cross-topic

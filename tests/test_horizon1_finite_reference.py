@@ -166,9 +166,9 @@ def test_h11_projection_and_public_aggregate_are_byte_current() -> None:
     assert projection.read_bytes() == source.read_bytes()
     assert (
         tuple(
-            line.removeprefix("import ")
+            line.removeprefix("public import ")
             for line in source.read_text(encoding="utf-8").splitlines()
-            if line.startswith("import ")
+            if line.startswith("public import ")
         )
         == H11_IMPORTS
     )
@@ -191,7 +191,13 @@ def test_h11_public_declaration_boundary_is_exact() -> None:
         if declaration.startswith(prefix)
     }
 
-    assert declarations == H11_DECLARATIONS
+    # Exposed support is part of the public module API, not a new implication.
+    exposed_support = {
+        "symmetricFalseEvidence",
+        "scaledLogisticProbability_pos",
+        "scaledLogisticProbability_lt_one",
+    }
+    assert declarations == H11_DECLARATIONS | exposed_support
 
 
 def test_h12_foundation_projection_and_import_order_are_exact() -> None:
@@ -256,9 +262,9 @@ def test_h13_foundation_projection_and_import_order_are_exact() -> None:
     assert projection.read_bytes() == source.read_bytes()
     assert (
         tuple(
-            line.removeprefix("import ")
+            line.removeprefix("public import ")
             for line in source.read_text(encoding="utf-8").splitlines()
-            if line.startswith("import ")
+            if line.startswith("public import ")
         )
         == H13_IMPORTS
     )
@@ -286,7 +292,8 @@ def test_h13_public_theorem_owner_boundary_is_exact() -> None:
         and module == "FepSketches.finite_posterior_learning"
     }
 
-    assert declarations == H13_THEOREMS
+    # The exported posterior definition depends on this positivity proof.
+    assert declarations == H13_THEOREMS | {"nonidentifiablePredictive_pos"}
 
 
 def test_h14_projection_aggregate_and_import_boundary_are_exact() -> None:
@@ -309,9 +316,9 @@ def test_h14_projection_aggregate_and_import_boundary_are_exact() -> None:
     assert projection.read_bytes() == source.read_bytes()
     assert (
         tuple(
-            line.removeprefix("import ")
+            line.removeprefix("public import ")
             for line in source.read_text(encoding="utf-8").splitlines()
-            if line.startswith("import ")
+            if line.startswith("public import ")
         )
         == H14_IMPORTS
     )

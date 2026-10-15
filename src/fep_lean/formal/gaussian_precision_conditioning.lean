@@ -1,7 +1,11 @@
-import FepSketches.fin4_gaussian_semigroup
-import Mathlib.LinearAlgebra.Matrix.Notation
-import Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence
-import Mathlib.Probability.Independence.Conditional
+module
+public import FepSketches.fin4_gaussian_semigroup
+public import Mathlib.LinearAlgebra.Matrix.Notation
+public import Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Basic
+public import Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence
+public import Mathlib.Probability.Independence.Conditional
+
+@[expose] public section
 
 /-!
 # H2.5d Gaussian conditioning and precision

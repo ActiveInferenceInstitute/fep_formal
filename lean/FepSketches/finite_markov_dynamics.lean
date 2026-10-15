@@ -1,4 +1,7 @@
-import FepSketches.finite_probability
+module
+public import FepSketches.finite_probability
+
+@[expose] public section
 
 /-!
 # Finite Markov dynamics

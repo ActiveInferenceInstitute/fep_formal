@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.helmholtz_ao_ness
+module
+public import FepSketches.fep_all
+public import FepSketches.helmholtz_ao_ness
+
+@[expose] public section
 
 /-!
 # Helmholtz–Ao NESS topic composition

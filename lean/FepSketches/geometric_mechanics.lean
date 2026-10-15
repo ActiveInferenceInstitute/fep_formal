@@ -1,4 +1,7 @@
-import Mathlib.Tactic
+module
+public import Mathlib.Tactic
+
+@[expose] public section
 
 /-!
 # Geometric mechanics of the solenoidal term

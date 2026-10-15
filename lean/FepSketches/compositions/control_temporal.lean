@@ -1,6 +1,9 @@
-import FepSketches.fep_all
-import FepSketches.controlled_markov
-import FepSketches.temporal_inference
+module
+public import FepSketches.fep_all
+public import FepSketches.controlled_markov
+public import FepSketches.temporal_inference
+
+@[expose] public section
 
 /-!
 # Controlled and temporal topic compositions

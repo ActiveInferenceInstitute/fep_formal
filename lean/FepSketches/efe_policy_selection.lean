@@ -1,6 +1,9 @@
-import FepSketches.controlled_markov
-import FepSketches.policy_tree
-import FepSketches.variational_duality
+module
+public import FepSketches.controlled_markov
+public import FepSketches.policy_tree
+public import FepSketches.variational_duality
+
+@[expose] public section
 
 /-!
 # Planning as inference: the EFE policy-selection bridge

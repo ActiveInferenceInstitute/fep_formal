@@ -1,5 +1,8 @@
-import FepSketches.variational_duality
-import Mathlib.Probability.Moments.SubGaussian
+module
+public import FepSketches.variational_duality
+public import Mathlib.Probability.Moments.SubGaussian
+
+@[expose] public section
 
 /-!
 # Finite-sample learning, posterior concentration, and model evidence

@@ -97,6 +97,34 @@ def is_lean_qualified_name(value: str) -> bool:
     return re.fullmatch(_LEAN_QUALIFIED_NAME, value) is not None
 
 
+def lean_module_source(source: str) -> str:
+    """Preserve a legacy source's public surface under Lean's module system.
+
+    Only command lines outside comments and strings are rewritten. Existing
+    modules retain their declared visibility; theorem statements and proofs are
+    left byte-for-byte intact.
+    """
+    code = lean_code_without_comments(source)
+    if re.match(r"\s*module(?:\s|$)", code):
+        return source
+    lines = source.splitlines(keepends=True)
+    commands = code.splitlines(keepends=True)
+    imports = [
+        index
+        for index, line in enumerate(commands)
+        if re.match(r"^[ \t]*(?:public[ \t]+)?import[ \t]+", line)
+    ]
+    for index in imports:
+        if not re.match(r"^[ \t]*public[ \t]+import[ \t]+", commands[index]):
+            offset = commands[index].index("import")
+            lines[index] = lines[index][:offset] + "public " + lines[index][offset:]
+    end = imports[-1] + 1 if imports else 0
+    if end and not lines[end - 1].endswith("\n"):
+        lines[end - 1] += "\n"
+    lines.insert(end, "\n@[expose] public section\n")
+    return "module\n" + "".join(lines)
+
+
 def iter_lean_namespace_scopes(
     source: str,
 ) -> Iterator[tuple[str, tuple[str, ...], str | None]]:

@@ -1,0 +1,26 @@
+{
+  "source_commit": "5e1cc9095b5f0590772c739d27558c2c711f9a44",
+  "boundary": "Only obsolete AddCommGroup.ext and Module.ext tactic alternatives removed; theorem statements unchanged. Current bodies independently compiled under Lean 4.35.0.",
+  "topics": {
+    "fep-013": {
+      "historical_sha256": "edaec22eba89c58b0a519fd455c6be9f175d76629d2f29331227eab543565c50",
+      "migrated_sha256": "a5729dd5cd3b1711194fbc77f6805c6fb73518cf55a3188ba1d103b5d0d7dc0b",
+      "removed_pairs": 1
+    },
+    "fep-038": {
+      "historical_sha256": "b8c2b611aba30c065d914f3c869380c9a9f47921d607bf3eba9c34946755bc58",
+      "migrated_sha256": "be998f62b62e6818a4f7907e855c730eca833268babcb43db3c94efd881df444",
+      "removed_pairs": 1
+    },
+    "fep-040": {
+      "historical_sha256": "d86f8359cec8463accb2362bbd2aa8f1325df0a820d2fec22b6aee9ef14e3824",
+      "migrated_sha256": "4bf31a0f8062d7d12ebb7a0932d099aafa7dec91c383504581eb9b5525c3555e",
+      "removed_pairs": 3
+    },
+    "fep-043": {
+      "historical_sha256": "ad4db1709a07a32311680950664c955b40d6b96109deff1624193c4a4cbcd163",
+      "migrated_sha256": "9f046ffca4c1a5ff5cbe12b4adf72203f5053e6e7a463b8c4613f3e355ee2c87",
+      "removed_pairs": 2
+    }
+  }
+}

@@ -13,6 +13,7 @@ import yaml
 
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean435_migration import historical_carrier_bytes
 from tests._support.lean_runner import run_lean_compile_probe
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,7 +26,9 @@ ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 
 def test_h3_foundation_owns_intrinsic_imports_and_preserves_frozen_carrier() -> None:
     source = lean_code_without_comments(FOUNDATION.read_text())
-    assert re.findall(r"(?m)^import (\S+)$", source) == [
+    assert source.startswith("module\n")
+    assert "\n@[expose] public section\n" in source
+    assert re.findall(r"(?m)^public import (\S+)$", source) == [
         "FepSketches.fin4_gaussian_semigroup",
         "FepSketches.markov_semigroup",
     ]
@@ -39,8 +42,10 @@ def test_h3_foundation_owns_intrinsic_imports_and_preserves_frozen_carrier() -> 
         hashlib.sha256(PROTOCOL.read_bytes()).hexdigest()
         == freeze["protocol"]["sha256"]
     )
+    # Compare original source bytes without renewing the immutable freeze.
     for path, digest in freeze["carrier_sources"].items():
-        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == digest
+        historical = historical_carrier_bytes(path, (ROOT / path).read_bytes())
+        assert hashlib.sha256(historical).hexdigest() == digest, path
 
 
 @pytest.mark.serial_lean

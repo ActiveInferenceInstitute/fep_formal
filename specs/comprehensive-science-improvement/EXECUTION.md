@@ -7,7 +7,7 @@ boundaries. Coordinator owns H3 gates, local serialized setup, legacy cleanup,
 integration, source custody and final acceptance. No implementation is claimed
 complete at this checkpoint.
 
-Guarded setup completed: 8,995 Lake jobs; actual Lean v4.34.1 on macOS,
+Guarded setup completed: 8,995 Lake jobs; actual `v4.34.1` Lean on macOS,
 Mathlib d13f23b723b8a846827a245b89c10fc7d3f11612. All four pin
 SHA-256 values match the pre-setup snapshot. Log:
 /tmp/fep-formal-science-setup-20260930.log. This restores projected baseline

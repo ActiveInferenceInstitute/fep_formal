@@ -1,4 +1,7 @@
-import FepSketches.controlled_markov
+module
+public import FepSketches.controlled_markov
+
+@[expose] public section
 
 /-!
 # Finite temporal and hierarchical inference

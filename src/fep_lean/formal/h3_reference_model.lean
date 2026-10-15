@@ -1,5 +1,8 @@
-import FepSketches.fin4_gaussian_semigroup
-import FepSketches.markov_semigroup
+module
+public import FepSketches.fin4_gaussian_semigroup
+public import FepSketches.markov_semigroup
+
+@[expose] public section
 
 /-!
 # Frozen H3 continuous reference model

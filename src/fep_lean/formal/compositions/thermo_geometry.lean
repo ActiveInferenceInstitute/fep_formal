@@ -1,6 +1,9 @@
-import FepSketches.fep_all
-import FepSketches.path_thermodynamics
-import FepSketches.geometric_optimization
+module
+public import FepSketches.fep_all
+public import FepSketches.path_thermodynamics
+public import FepSketches.geometric_optimization
+
+@[expose] public section
 
 /-!
 # Path-thermodynamic and geometric topic compositions

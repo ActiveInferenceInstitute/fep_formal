@@ -1,6 +1,9 @@
-import FepSketches.finite_probability
-import Mathlib.Probability.Kernel.Disintegration.Integral
-import Mathlib.Probability.Kernel.Posterior
+module
+public import FepSketches.finite_probability
+public import Mathlib.Probability.Kernel.Disintegration.Integral
+public import Mathlib.Probability.Kernel.Posterior
+
+@[expose] public section
 
 /-!
 # Measure-theoretic and finite Bayesian inversion

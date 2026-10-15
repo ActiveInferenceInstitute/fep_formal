@@ -43,8 +43,6 @@ theorem fep013_helmholtz_hasDerivAt
   convert HasDerivAt.sub hU (HasDerivAt.mul (hasDerivAt_id T) hS) using 1
   all_goals
     first
-    | exact AddCommGroup.ext rfl
-    | exact Module.ext rfl
     | rfl
     | simp
 

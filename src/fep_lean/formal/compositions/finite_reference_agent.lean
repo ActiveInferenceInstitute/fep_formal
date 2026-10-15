@@ -1,8 +1,11 @@
-import FepSketches.finite_posterior_learning
-import FepSketches.compositions.finite_policy_action
-import FepSketches.compositions.finite_scientific_implications
-import FepSketches.native_blanket
-import FepSketches.continuous_time_markov
+module
+public import FepSketches.finite_posterior_learning
+public import FepSketches.compositions.finite_policy_action
+public import FepSketches.compositions.finite_scientific_implications
+public import FepSketches.native_blanket
+public import FepSketches.continuous_time_markov
+
+@[expose] public section
 
 /-!
 # Finite reference-agent coherence boundary

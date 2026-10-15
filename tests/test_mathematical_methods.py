@@ -45,7 +45,20 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     data = packaged.as_dict()
     declarations = data["theorem_analysis"]["declarations"]
-    assert len(declarations) == 2185
+    # The module migration exports eight existing support proofs; reviewed
+    # scientific statements and their semantic dispositions stay unchanged.
+    exposed_support = {
+        "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOneState_measurable",
+        "FEP.ScalarGaussianSemigroup.ScalarOUParameters.stationaryVariance_pos",
+        "FEP.PosteriorConvergence.observation_stronglyMeasurable",
+        "FEP.ContinuousTimeMarkov.boolBlanketRefreshTime_pos",
+        "FEP.FinitePosteriorLearning.nonidentifiablePredictive_pos",
+        "FEPComposed.FiniteScientificImplications.scaledLogisticProbability_lt_one",
+        "FEPComposed.FiniteScientificImplications.scaledLogisticProbability_pos",
+        "FEPComposed.FiniteScientificImplications.symmetricFalseEvidence",
+    }
+    assert exposed_support <= declarations.keys()
+    assert len(declarations.keys() - exposed_support) == 2185
     assert "not a certified" not in data["theorem_analysis"]["analysis_boundary"]
     assert (
         "neither a certified translation"

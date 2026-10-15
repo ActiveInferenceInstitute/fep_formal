@@ -1,4 +1,7 @@
-import Init
+module
+public import Init
+
+@[expose] public section
 /-!
 # GNN v1.1 document surface: typed AST and decidable well-formedness
 

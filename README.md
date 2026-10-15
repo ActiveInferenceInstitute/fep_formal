@@ -28,10 +28,13 @@ verification (`setup`, `verify`) and the strict full pipeline, follow
 [`docs/getting-started.md`](docs/getting-started.md); the complete command list
 is under [Quick start](#quick-start) below.
 
+The development workspace pins Lean/Mathlib `v4.35.0`; retained receipts below
+keep the versions they actually verified. See [the Lean upgrade procedure](docs/lean4.md#deliberate-toolchain-upgrades).
+
 ## Release
 
 The **v1.6.0 release line** (2026-10-07) retains the 168-topic catalogue in
-22 families on Lean/Mathlib `v4.34.1` and extends its mathematical methods and
+22 families on the `v4.34.1` Lean/Mathlib pair and extends its mathematical methods and
 manuscript. The previous published release is
 [`v1.5.0`](https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v1.5.0)
 (2026-10-06). It superseded the

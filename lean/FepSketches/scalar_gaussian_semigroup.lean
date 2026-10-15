@@ -1,12 +1,15 @@
-import FepSketches.gaussian_information_geometry
-import FepSketches.markov_semigroup
-import Mathlib.Analysis.SpecialFunctions.Exp
-import Mathlib.MeasureTheory.Measure.LevyConvergence
-import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
-import Mathlib.Order.Filter.AtTopBot.CountablyGenerated
-import Mathlib.Probability.Distributions.Gaussian.Real
-import Mathlib.Probability.Kernel.Composition.Comp
-import Mathlib.Topology.Instances.NNReal.Lemmas
+module
+public import FepSketches.gaussian_information_geometry
+public import FepSketches.markov_semigroup
+public import Mathlib.Analysis.SpecialFunctions.Exp
+public import Mathlib.MeasureTheory.Measure.LevyConvergence
+public import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+public import Mathlib.Order.Filter.AtTopBot.CountablyGenerated
+public import Mathlib.Probability.Distributions.Gaussian.Real
+public import Mathlib.Probability.Kernel.Composition.Comp
+public import Mathlib.Topology.Instances.NNReal.Lemmas
+
+@[expose] public section
 
 /-!
 # Scalar Gaussian Ornstein--Uhlenbeck transition semigroup
@@ -42,7 +45,7 @@ namespace ScalarOUParameters
 noncomputable def decay (model : ScalarOUParameters) (time : ℝ≥0) : ℝ :=
   Real.exp (-model.rate * (time : ℝ))
 
-private noncomputable def rateDenominator (model : ScalarOUParameters) : ℝ≥0 :=
+noncomputable def rateDenominator (model : ScalarOUParameters) : ℝ≥0 :=
   ⟨2 * model.rate, mul_nonneg (by norm_num) model.rate_pos.le⟩
 
 /-- Variance of the invariant Gaussian law, derived from the raw variance
@@ -80,7 +83,7 @@ private theorem decay_lt_one
   have hTimeReal : 0 < (time : ℝ) := by exact_mod_cast hTime
   exact mul_neg_of_neg_of_pos (neg_lt_zero.mpr model.rate_pos) hTimeReal
 
-private theorem stationaryVariance_pos (model : ScalarOUParameters) :
+theorem stationaryVariance_pos (model : ScalarOUParameters) :
     0 < model.stationaryVariance := by
   exact div_pos model.diffusionVarianceRate_pos (by
     change 0 < model.rateDenominator

@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.policy_tree
+module
+public import FepSketches.fep_all
+public import FepSketches.policy_tree
+
+@[expose] public section
 
 /-!
 # Closed-loop policy-tree topic compositions

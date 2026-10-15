@@ -308,6 +308,7 @@ def build_formalism_probe(
     evidence = _evidence_declarations(project_root)
     declarations = tuple(dict.fromkeys((*primary, *evidence)))
     lines = [
+        "module",
         *(f"import {module}" for module in formal_module_imports()),
         "",
     ]

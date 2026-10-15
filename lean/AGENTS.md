@@ -6,8 +6,8 @@ Full **Lake** workspace with **Mathlib4** dependency for FEP theorem verificatio
 
 ## Toolchain
 
-- **Lean**: `leanprover/lean4:v4.34.1` (see `lean-toolchain`)
-- **Mathlib**: `v4.34.1` — see `lakefile.lean` and the exact revision in
+- **Lean**: `leanprover/lean4:v4.35.0` (see `lean-toolchain`)
+- **Mathlib**: `v4.35.0` — see `lakefile.lean` and the exact revision in
   `lake-manifest.json`
 
 ## Layout
@@ -36,6 +36,11 @@ migration and fresh evidence.
 
 ## Verification Workflow
 
+The formal kernel and generated aggregates use Lean's module system. Preserve
+their `public import` dependencies and exposed public sections when regenerating.
+Canonical topic bodies remain the authored theorem inputs; `LeanVerifier` adds
+the equivalent module header for compilation without changing their statements.
+
 After setup, `LeanVerifier` in `src/fep_lean/verification/lean_verifier.py` calls:
 
 ```bash
@@ -53,7 +58,7 @@ in sandboxed AI agent shells.  `LeanVerifier` bypasses this by:
 1. Setting `ELAN_HOME` to a per-user writable tempdir
    (`<tmpdir>/fep_lean_elan_<uid>`, e.g. `/tmp/fep_lean_elan_501` on Linux, `$TMPDIR/fep_lean_elan_501` on macOS)
 2. Resolving `lake`/`lean` via direct toolchain path:
-   `~/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lake`
+   `~/.elan/toolchains/leanprover--lean4---v4.35.0/bin/lake`
 3. Respecting `FEP_LEAN_LAKE_EXE` / `FEP_LEAN_LEAN_EXE` env overrides
 
 ## Concurrency boundary

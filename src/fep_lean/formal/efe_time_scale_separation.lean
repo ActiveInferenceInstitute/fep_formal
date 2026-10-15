@@ -1,7 +1,10 @@
-import FepSketches.continuous_time_markov
-import FepSketches.path_thermodynamics
-import FepSketches.active_inference
-import FepSketches.ness_flow
+module
+public import FepSketches.continuous_time_markov
+public import FepSketches.path_thermodynamics
+public import FepSketches.active_inference
+public import FepSketches.ness_flow
+
+@[expose] public section
 
 /-!
 # EFE ↔ entropy-production time-scale separation

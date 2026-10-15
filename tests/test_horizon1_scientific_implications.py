@@ -72,10 +72,12 @@ def _statement(source: str, name: str) -> str:
 
 def test_h11_source_owns_exact_imports_and_namespace() -> None:
     source = SOURCE.read_text(encoding="utf-8")
+    assert source.startswith("module\n")
+    assert "\n@[expose] public section\n" in source
     imports = tuple(
-        line.removeprefix("import ")
+        line.removeprefix("public import ")
         for line in source.splitlines()
-        if line.startswith("import ")
+        if line.startswith("public import ")
     )
 
     assert imports == DIRECT_IMPORTS
@@ -86,8 +88,14 @@ def test_h11_source_owns_exact_imports_and_namespace() -> None:
 def test_h11_exposes_the_five_implication_boundaries_without_placeholders() -> None:
     source = SOURCE.read_text(encoding="utf-8")
 
+    # These existing support proofs must be public for exposed definitions.
     assert tuple(re.findall(r"(?m)^theorem\s+([A-Za-z0-9_]+)", source)) == (
-        TARGET_DECLARATIONS
+        *TARGET_DECLARATIONS[:3],
+        "symmetricFalseEvidence",
+        *TARGET_DECLARATIONS[3:5],
+        "scaledLogisticProbability_pos",
+        "scaledLogisticProbability_lt_one",
+        *TARGET_DECLARATIONS[5:],
     )
     assert not re.search(r"(?m)^\s*(?:axiom|opaque|unsafe\s+(?:def|theorem))\b", source)
     assert not re.search(r"\b(?:sorry|admit)\b|:\s*True\b", source)

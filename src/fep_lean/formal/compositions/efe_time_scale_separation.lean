@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.efe_time_scale_separation
+module
+public import FepSketches.fep_all
+public import FepSketches.efe_time_scale_separation
+
+@[expose] public section
 
 /-!
 # EFE time-scale-separation topic compositions

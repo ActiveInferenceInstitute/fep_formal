@@ -1,4 +1,8 @@
-import FepSketches.linear_gaussian_semigroup
+module
+public import FepSketches.linear_gaussian_semigroup
+public import Mathlib.Probability.Distributions.Gaussian.Fernique
+
+@[expose] public section
 
 /-!
 # Exact named-axis four-coordinate Gaussian carrier

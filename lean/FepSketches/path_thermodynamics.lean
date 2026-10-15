@@ -1,6 +1,9 @@
-import FepSketches.finite_markov_dynamics
-import FepSketches.variational_duality
-import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
+module
+public import FepSketches.finite_markov_dynamics
+public import FepSketches.variational_duality
+public import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
+
+@[expose] public section
 
 /-!
 # Finite path-space stochastic thermodynamics

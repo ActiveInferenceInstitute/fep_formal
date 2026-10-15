@@ -32,6 +32,9 @@ PUBLIC_DECLARATIONS = (
     "trajectoryCoordinates_iIndep",
     "trajectoryCoordinate_map",
     "logLikelihoodRatio",
+    # Exposed numeric bounds are support for the public subgaussian proof.
+    "logLikelihoodRatioLower",
+    "logLikelihoodRatioUpper",
     "identificationGap",
     "logLikelihoodRatioProxy",
     "centeredLogLikelihoodRatio",
@@ -49,6 +52,9 @@ PUBLIC_DECLARATIONS = (
     "posteriorAfter_two_true_witness",
     "posteriorAfter_zeroPrior",
     "nonidentifiableLikelihood",
+    # Existing support for the exposed posterior recursion.
+    "nonidentifiablePredictive_pos",
+    "nonidentifiablePosteriorUpdate",
     "nonidentifiablePosteriorAfter",
     "nonidentifiablePosteriorAfter_eq_prior",
     "trajectoryObservation",
@@ -72,8 +78,10 @@ def _declaration(source: str, name: str) -> str:
 
 def test_posterior_learning_owns_exact_import_and_namespace_contract() -> None:
     source = FOUNDATION.read_text(encoding="utf-8")
+    assert source.startswith("module\n")
+    assert "\n@[expose] public section\n" in source
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert tuple(re.findall(r"(?m)^public import (\S+)$", source)) == EXACT_IMPORTS
     assert "namespace FEP.FinitePosteriorLearning\n" in source
     assert source.rstrip().endswith("end FEP.FinitePosteriorLearning")
     assert (

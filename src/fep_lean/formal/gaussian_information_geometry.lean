@@ -1,6 +1,9 @@
-import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.InformationTheory.KullbackLeibler.Basic
-import Mathlib.Probability.Distributions.Gaussian.Real
+module
+public import Mathlib.Analysis.Calculus.Deriv.Mul
+public import Mathlib.InformationTheory.KullbackLeibler.Basic
+public import Mathlib.Probability.Distributions.Gaussian.Real
+
+@[expose] public section
 
 /-!
 # Fixed-variance scalar Gaussian information geometry

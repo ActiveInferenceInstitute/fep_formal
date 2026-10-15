@@ -60,6 +60,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Literal
 
+from fep_lean.lean_source import lean_code_without_comments, lean_module_source
 from fep_lean.verification._subprocess import run_process_group
 from fep_lean.verification._toolchain import (
     ensure_writable_elan_home as _ensure_elan_home,
@@ -672,7 +673,7 @@ class LeanVerifier:
     # ── Internal helpers ──────────────────────────────────────────────────────
 
     def _wrap_lean_code(self, lean_code: str) -> str:
-        """Prepend Mathlib import preamble if not already present.
+        """Use the module system, adding Mathlib when imports are absent.
 
         The preamble imports the core Mathlib modules used by the FEP
         catalogue, covering:
@@ -681,15 +682,16 @@ class LeanVerifier:
         - Analysis (special functions, inner products, derivatives)
         - Topology, LinearAlgebra, Geometry (manifolds, tangent bundles)
         """
-        if lean_code.strip().startswith("import "):
-            return lean_code
+        code = lean_code_without_comments(lean_code).lstrip()
+        if re.match(r"(?:module(?:\s|$)|(?:public\s+)?import\s)", code):
+            return lean_module_source(lean_code)
         preamble = (
             "import Mathlib\n"
             "-- Core Mathlib4 modules for FEP formalization\n"
             "open MeasureTheory ProbabilityTheory Real Nat Finset Set\n"
             "open scoped BigOperators\n\n"
         )
-        return preamble + lean_code
+        return lean_module_source(preamble + lean_code)
 
     def _run_lake_lean(self, lean_file: Path) -> subprocess.CompletedProcess[str]:
         """Run ``lake env lean <file>`` in the lakefile directory.

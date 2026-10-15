@@ -1,5 +1,8 @@
-import FepSketches.variational_duality
-import FepSketches.gaussian_information_geometry
+module
+public import FepSketches.variational_duality
+public import FepSketches.gaussian_information_geometry
+
+@[expose] public section
 
 /-!
 # Bayesian model reduction

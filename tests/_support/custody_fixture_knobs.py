@@ -559,6 +559,17 @@ def fixture_root(tmp_path: Path, monkeypatch: pytest.MonkeyPatch | None = None) 
         destination = root / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(REPO_ROOT / relative, destination)
+    # The archived custody matrix belongs to its original compiler epoch.
+    # Keep this synthetic unit fixture independent of live toolchain upgrades.
+    pins = json.loads(
+        (REPO_ROOT / "tests/fixtures/custody_toolchain_4_34_1.json").read_text()
+    )["files"]
+    for relative in (
+        "lean/lean-toolchain",
+        "lean/lakefile.lean",
+        "lean/lake-manifest.json",
+    ):
+        (root / relative).write_text(pins[relative])
     _synthetic_epoch(root, monkeypatch)
     return root
 

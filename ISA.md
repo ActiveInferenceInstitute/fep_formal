@@ -2,7 +2,7 @@
 title: fep_lean Ideal State Assessment
 status: active
 phase: verifying
-updated: 2026-10-11
+updated: 2026-10-14
 ---
 
 # fep_lean Ideal State Assessment
@@ -33,7 +33,7 @@ This assessment covers the standalone repository boundary:
   generated YAML/Lean/documentation projections.
 - Python dependency installation, tests, coverage, type checking, and local
   subprocess/file/database behavior.
-- Exact Lean/Mathlib `v4.34.1` acquisition and compilation, plus a
+- Exact Lean/Mathlib `v4.35.0` acquisition and compilation, plus a
   fail-closed audit against the newest stable release pair.
 - Hermes, OpenGauss, SQLite session lifecycle, report provenance, and generated
   manuscript artifacts.

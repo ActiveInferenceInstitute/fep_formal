@@ -18,6 +18,8 @@ from types import ModuleType
 
 import pytest
 
+from tests._support.lean435_migration import historical_carrier_bytes
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 H3_DIR = PROJECT_ROOT / "specs" / "h3-case-study"
 
@@ -77,6 +79,10 @@ def test_feasibility_pins_preserve_historical_terminal_epoch() -> None:
             )
             assert _sha256(historical) == digest
             assert _sha256(current) != digest
+        elif relative.startswith("src/fep_lean/formal/"):
+            historical_bytes = historical_carrier_bytes(relative, current.read_bytes())
+            assert hashlib.sha256(historical_bytes).hexdigest() == digest, relative
+            assert _sha256(current) != digest, relative
         else:
             assert _sha256(current) == digest, relative
     with pytest.raises(spike.SpikeRejection, match="stale source digest"):
@@ -107,4 +113,8 @@ def test_canonical_protocol_binds_real_pre_outcome_freeze_and_reviews() -> None:
         identities.add(review["reviewer_id"])
     assert len(identities) == 2
     for path, digest in freeze["carrier_sources"].items():
-        assert _sha256(PROJECT_ROOT / path) == digest
+        live = (PROJECT_ROOT / path).read_bytes()
+        assert (
+            hashlib.sha256(historical_carrier_bytes(path, live)).hexdigest() == digest
+        )
+        assert hashlib.sha256(live).hexdigest() != digest

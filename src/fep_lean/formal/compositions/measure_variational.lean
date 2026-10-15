@@ -1,6 +1,9 @@
-import FepSketches.fep_all
-import FepSketches.measure_bayes
-import FepSketches.variational_duality
+module
+public import FepSketches.fep_all
+public import FepSketches.measure_bayes
+public import FepSketches.variational_duality
+
+@[expose] public section
 
 /-!
 # Measure and variational topic compositions

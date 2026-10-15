@@ -106,7 +106,11 @@ def test_write_aggregate_hoists_exact_distinct_import_union(
     """The aggregate preserves the canonical narrow dependency surface."""
     fep_all_path, _ = generator_module.write_aggregate(out_dir=tmp_path)
     text = fep_all_path.read_text(encoding="utf-8")
-    import_lines = [ln for ln in text.splitlines() if ln.startswith("import ")]
+    import_lines = [
+        ln.removeprefix("public ")
+        for ln in text.splitlines()
+        if ln.startswith("public import ")
+    ]
     assert import_lines == list(hoisted_sketch_imports(BODIES))
     assert len(import_lines) == len(set(import_lines))
     assert "import Mathlib" not in import_lines

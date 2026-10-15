@@ -599,8 +599,6 @@ theorem fep040_gaussianEntropy_hasDerivAt
   convert hscaled using 1
   all_goals
     first
-    | exact AddCommGroup.ext rfl
-    | exact Module.ext rfl
     | rfl
 
 /-- Thermal variance scale `κT`. -/
@@ -621,8 +619,6 @@ theorem fep040_thermalEntropy_hasDerivAt
     convert (hasDerivAt_id T).const_mul κ using 1
     all_goals
       first
-      | exact AddCommGroup.ext rfl
-      | exact Module.ext rfl
       | rfl
       | simp
   have hcomp := houter.comp T hinner
@@ -634,8 +630,6 @@ theorem fep040_thermalEntropy_hasDerivAt
   convert hcomp using 1
   all_goals
     first
-    | exact AddCommGroup.ext rfl
-    | exact Module.ext rfl
     | rfl
 
 /-- Dimensionless constant-volume heat capacity `T ∂H/∂T`. -/

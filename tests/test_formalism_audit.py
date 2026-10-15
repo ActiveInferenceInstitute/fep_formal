@@ -125,7 +125,7 @@ def test_native_audit_rejects_duplicate_and_unknown_axiom_records(
 def test_probe_resolves_primaries_and_prints_evidence_axioms() -> None:
     probe, primary, evidence = formalism_audit.build_formalism_probe(PROJECT_ROOT)
     imports = formalism_audit.formal_module_imports()
-    assert probe.startswith(f"import {imports[0]}\n")
+    assert probe.startswith(f"module\nimport {imports[0]}\n")
     assert imports[0] == "FepSketches.finite_probability"
     assert imports[-1] == "FepSketches.composed"
     assert imports == tuple(module.lean_module for module in FORMAL_MODULES)

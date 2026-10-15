@@ -491,7 +491,9 @@ def test_every_bridge_consumes_endpoint_and_pre051_declarations() -> None:
 def test_composition_sources_have_only_proved_topic_theorems() -> None:
     forbidden = re.compile(r"\b(?:sorry|admit)\b|:\s*True\b")
     for filename, source in _sources().items():
-        assert source.startswith("import FepSketches.fep_all\n"), filename
+        assert source.startswith("module\npublic import FepSketches.fep_all\n"), (
+            filename
+        )
         assert "namespace FEPComposed\n" in source
         assert source.rstrip().endswith("end FEPComposed")
         assert forbidden.search(source) is None

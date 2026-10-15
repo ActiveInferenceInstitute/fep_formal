@@ -1,17 +1,20 @@
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Algebra.Order.Ring.Basic
-import Mathlib.Analysis.Calculus.Deriv.Add
-import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.Calculus.Deriv.Pow
-import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
-import Mathlib.Analysis.SpecialFunctions.ExpDeriv
-import Mathlib.Basic.Real.Basic
-import Mathlib.Analysis.Convex.SpecificFunctions.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Deriv
-import Mathlib.Order.Filter.Tendsto
-import Mathlib.Probability.Distributions.Gaussian.Real
-import Mathlib.Topology.Algebra.Monoid
-import Mathlib.Tactic
+module
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.Order.Ring.Basic
+public import Mathlib.Analysis.Calculus.Deriv.Add
+public import Mathlib.Analysis.Calculus.Deriv.Mul
+public import Mathlib.Analysis.Calculus.Deriv.Pow
+public import Mathlib.Analysis.Calculus.IteratedDeriv.Defs
+public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
+public import Mathlib.Order.Filter.Tendsto
+public import Mathlib.Probability.Distributions.Gaussian.Real
+public import Mathlib.Topology.Algebra.Monoid
+public import Mathlib.Tactic
+
+@[expose] public section
 
 /-!
 # Predictive coding and finite generalized coordinates

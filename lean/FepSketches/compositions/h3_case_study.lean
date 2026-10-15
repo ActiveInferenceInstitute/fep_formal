@@ -1,17 +1,20 @@
-import FepSketches.h3_reference_model
-import FepSketches.markov_blanket
-import FepSketches.native_blanket
-import FepSketches.causal_dynamics
-import FepSketches.compositions.finite_scientific_implications
-import FepSketches.compositions.smooth_reference_kernel
-import FepSketches.compositions.gaussian_filter
-import FepSketches.compositions.gaussian_control
-import FepSketches.compositions.gaussian_grid_path
-import FepSketches.compositions.finite_policy_action
-import FepSketches.path_thermodynamics
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.InformationTheory.KullbackLeibler.ChainRule
-import Mathlib.InformationTheory.KullbackLeibler.DataProcessing
+module
+public import FepSketches.h3_reference_model
+public import FepSketches.markov_blanket
+public import FepSketches.native_blanket
+public import FepSketches.causal_dynamics
+public import FepSketches.compositions.finite_scientific_implications
+public import FepSketches.compositions.smooth_reference_kernel
+public import FepSketches.compositions.gaussian_filter
+public import FepSketches.compositions.gaussian_control
+public import FepSketches.compositions.gaussian_grid_path
+public import FepSketches.compositions.finite_policy_action
+public import FepSketches.path_thermodynamics
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.InformationTheory.KullbackLeibler.ChainRule
+public import Mathlib.InformationTheory.KullbackLeibler.DataProcessing
+
+@[expose] public section
 
 /-!
 # Frozen H3 cross-domain case study
@@ -467,7 +470,7 @@ theorem batchPosteriorVariance_pos (n : ℕ) (noise : ℝ) (hNoise : 0 < noise) 
     0 < batchPosteriorVariance n noise :=
   div_pos hNoise (batchDenominator_pos n noise hNoise)
 
-private def batchErrorVector (n : ℕ) (noise : ℝ) : BatchState n :=
+def batchErrorVector (n : ℕ) (noise : ℝ) : BatchState n :=
   WithLp.toLp 2
     (Fin.cases (-2 * noise / (2 * noise + n)) (fun _ => 1 / (2 * noise + n)))
 
@@ -502,8 +505,8 @@ private theorem batchCentered_hasGaussianLaw (n : ℕ) (center noise : ℝ) :
       (batchSourceLaw n center noise) := ⟨by fun_prop, by infer_instance⟩
 
 theorem batchError_hasGaussianLaw (n : ℕ) (center noise : ℝ) :
-    HasGaussianLaw (batchError (n := n) center noise) (batchSourceLaw n center noise) :=
-  (batchCentered_hasGaussianLaw n center noise).map_fun
+    HasGaussianLaw (batchError (n := n) center noise) (batchSourceLaw n center noise) := by
+  exact (batchCentered_hasGaussianLaw n center noise).map_fun
     (innerSL ℝ (batchErrorVector n noise))
 
 theorem batchError_mean (n : ℕ) (center noise : ℝ) :
@@ -1121,7 +1124,7 @@ private theorem policy_secondRisk_integrable (noise : ℝ≥0) (hNoise : 0 < noi
       (evidenceLaw (firstFilter policy.first noise hNoise) (prior 0)) := by
   have hs : MeasurableSet {observation | policy.second observation = false} :=
     (measurableSet_singleton false).preimage policy.measurable_second
-  have hPiece := Integrable.piecewise hs
+  have hPiece := Integrable.piecewise hs.nullMeasurableSet
     (secondRisk_integrable policy.first false noise hNoise).integrableOn
     (secondRisk_integrable policy.first true noise hNoise).integrableOn
   apply hPiece.congr
@@ -1321,20 +1324,20 @@ private theorem gaussian_klDiv (mean referenceMean : ℝ)
   field_simp
   ring
 
-private def informationJoint (model : ScalarGaussianFilterModel)
+def informationJoint (model : ScalarGaussianFilterModel)
     (belief : ScalarGaussianBelief) : Measure (ℝ × ℝ) :=
   (predictionBelief model belief).law ⊗ₘ observationKernel model
 
-private def informationIndependent (model : ScalarGaussianFilterModel)
+def informationIndependent (model : ScalarGaussianFilterModel)
     (belief : ScalarGaussianBelief) : Measure (ℝ × ℝ) :=
   (predictionBelief model belief).law.prod (evidenceLaw model belief)
 
-private instance informationJoint_probability (model : ScalarGaussianFilterModel)
+instance informationJoint_probability (model : ScalarGaussianFilterModel)
     (belief : ScalarGaussianBelief) : IsProbabilityMeasure (informationJoint model belief) := by
   unfold informationJoint
   infer_instance
 
-private instance informationIndependent_probability (model : ScalarGaussianFilterModel)
+instance informationIndependent_probability (model : ScalarGaussianFilterModel)
     (belief : ScalarGaussianBelief) : IsProbabilityMeasure (informationIndependent model belief) := by
   unfold informationIndependent evidenceLaw
   infer_instance
@@ -1613,35 +1616,35 @@ theorem information_native_mutualInformation
 section SensoryClampNative
 open FEP.Fin4GaussianSemigroup FEP.Fin4GaussianSemigroup.Axis
 
-private instance sensoryStationary_isGaussian (center : StandardizedState) :
+instance sensoryStationary_isGaussian (center : StandardizedState) :
     IsGaussian (stationaryLaw center) := by
   rw [stationaryLaw_eq_gaussian]
   infer_instance
 
-private def sensoryEndpointAxis : Bool → Axis
+def sensoryEndpointAxis : Bool → Axis
   | false => external
   | true => internal
 
-private def sensoryVector : StandardizedState := EuclideanSpace.single sensory 1
+def sensoryVector : StandardizedState := EuclideanSpace.single sensory 1
 
-private def sensoryEndpointVector (index : Bool) : StandardizedState :=
+def sensoryEndpointVector (index : Bool) : StandardizedState :=
   EuclideanSpace.single (sensoryEndpointAxis index) 1 -
     (2 / 7 : ℝ) • sensoryVector
 
-private def sensoryCentered (center state : StandardizedState) : ℝ :=
+def sensoryCentered (center state : StandardizedState) : ℝ :=
   ⟪sensoryVector, state - center⟫
 
-private def sensoryResidual (center : StandardizedState) (index : Bool)
+def sensoryResidual (center : StandardizedState) (index : Bool)
     (state : StandardizedState) : ℝ :=
   ⟪sensoryEndpointVector index, state - center⟫
 
-private def sensoryResidualPair (center state : StandardizedState) : ℝ × ℝ :=
+def sensoryResidualPair (center state : StandardizedState) : ℝ × ℝ :=
   (sensoryResidual center false state, sensoryResidual center true state)
 
-private def sensoryEndpoints (state : StandardizedState) : ℝ × ℝ :=
+def sensoryEndpoints (state : StandardizedState) : ℝ × ℝ :=
   (state external, state internal)
 
-private def sensoryConditionalMean (center : StandardizedState) (index : Bool)
+def sensoryConditionalMean (center : StandardizedState) (index : Bool)
     (datum : ℝ) : ℝ :=
   center (sensoryEndpointAxis index) + (2 / 7 : ℝ) * (datum - center sensory)
 
@@ -1799,10 +1802,10 @@ private def sensoryDiagonalInverse (value : ℝ × ℝ) : ℝ × ℝ :=
 @[fun_prop] private theorem measurable_sensoryDiagonalInverse :
     Measurable sensoryDiagonalInverse := by unfold sensoryDiagonalInverse; fun_prop
 
-private def sensoryResidualLaw (center : StandardizedState) : Measure (ℝ × ℝ) :=
+def sensoryResidualLaw (center : StandardizedState) : Measure (ℝ × ℝ) :=
   (stationaryLaw center).map (sensoryResidualPair center)
 
-private instance sensoryResidualLaw_probability (center : StandardizedState) :
+instance sensoryResidualLaw_probability (center : StandardizedState) :
     IsProbabilityMeasure (sensoryResidualLaw center) := by
   unfold sensoryResidualLaw
   exact (Measure.isProbabilityMeasure_map_iff (by fun_prop)).mpr (by infer_instance)
@@ -1841,15 +1844,15 @@ private theorem sensoryResidualLaw_eq_diagonal (center : StandardizedState) :
       sensoryResidualDifferenceVector, inner_add_left, inner_sub_left, sensoryResidual]
     ring
 
-private def sensoryShift (center : StandardizedState) (value : ℝ × (ℝ × ℝ)) : ℝ × ℝ :=
+def sensoryShift (center : StandardizedState) (value : ℝ × (ℝ × ℝ)) : ℝ × ℝ :=
   (value.2.1 + sensoryConditionalMean center false value.1,
     value.2.2 + sensoryConditionalMean center true value.1)
 
 /-- A constructed Markov kernel from the actual residual law. -/
-private def sensoryConditionalKernel (center : StandardizedState) : Kernel ℝ (ℝ × ℝ) :=
+def sensoryConditionalKernel (center : StandardizedState) : Kernel ℝ (ℝ × ℝ) :=
   (Kernel.id ×ₖ Kernel.const ℝ (sensoryResidualLaw center)).map (sensoryShift center)
 
-private instance sensoryConditionalKernel_markov (center : StandardizedState) :
+instance sensoryConditionalKernel_markov (center : StandardizedState) :
     IsMarkovKernel (sensoryConditionalKernel center) :=
   Kernel.IsMarkovKernel.map _ (by unfold sensoryShift sensoryConditionalMean; fun_prop)
 
@@ -1952,27 +1955,27 @@ private theorem sensoryConditionalKernel_covariance (center : StandardizedState)
     covariance_add_const_right hR, sensory_residual_covariance]
 
 /- The surgery uses the explicit native/standard carrier equivalence. -/
-private def sensoryNativeClamp (state : StandardizedState) : StandardizedState :=
+def sensoryNativeClamp (state : StandardizedState) : StandardizedState :=
   FEP.H3ReferenceModel.toNativeState
     (clampActive 0 (FEP.H3ReferenceModel.fromNativeState state))
 
-private def sensoryClampedLaw (center : StandardizedState) : Measure StandardizedState :=
+def sensoryClampedLaw (center : StandardizedState) : Measure StandardizedState :=
   (stationaryLaw center).map sensoryNativeClamp
 
-private instance sensoryClampedLaw_probability (center : StandardizedState) :
+instance sensoryClampedLaw_probability (center : StandardizedState) :
     IsProbabilityMeasure (sensoryClampedLaw center) := by
   unfold sensoryClampedLaw
   exact (Measure.isProbabilityMeasure_map_iff
     (by unfold sensoryNativeClamp; fun_prop)).mpr (by infer_instance)
 
 private def sensoryEmbed (datum : ℝ) : ℝ × ℝ := (datum, 0)
-private def sensoryClampedBlanket (state : StandardizedState) : ℝ × ℝ :=
+def sensoryClampedBlanket (state : StandardizedState) : ℝ × ℝ :=
   (state sensory, state active)
-private def sensoryClampedConditionalKernel (center : StandardizedState) :
+def sensoryClampedConditionalKernel (center : StandardizedState) :
     Kernel (ℝ × ℝ) (ℝ × ℝ) :=
   (sensoryConditionalKernel center).comap Prod.fst measurable_fst
 
-private instance sensoryClampedConditionalKernel_markov (center : StandardizedState) :
+instance sensoryClampedConditionalKernel_markov (center : StandardizedState) :
     IsMarkovKernel (sensoryClampedConditionalKernel center) := by
   unfold sensoryClampedConditionalKernel
   infer_instance
@@ -2028,8 +2031,8 @@ No off-support conditional version or original observational A=0 event is claime
 theorem sensory_clamped_native_condDistrib (center : StandardizedState) :
     condDistrib sensoryEndpoints sensoryClampedBlanket (sensoryClampedLaw center)
       =ᵐ[(sensoryClampedLaw center).map sensoryClampedBlanket]
-        sensoryClampedConditionalKernel center :=
-  condDistrib_ae_eq_of_measure_eq_compProd_of_measurable
+        sensoryClampedConditionalKernel center := by
+  exact condDistrib_ae_eq_of_measure_eq_compProd_of_measurable
     (by unfold sensoryClampedBlanket; fun_prop) (by unfold sensoryEndpoints; fun_prop)
     (sensory_clamped_joint center)
 
@@ -2422,7 +2425,7 @@ theorem efe_risk_ordering (belief : ScalarGaussianBelief) (left right : Bool)
   have h := efe_risk_alignment belief left right noise hNoise
   constructor <;> constructor <;> intro hOrder <;> linarith
 
-private def preferenceCounterBelief (noise : ℝ≥0) (hNoise : 0 < noise) : ScalarGaussianBelief where
+def preferenceCounterBelief (noise : ℝ≥0) (hNoise : 0 < noise) : ScalarGaussianBelief where
   mean := 1
   family :=
     { variance := controlPosteriorVariance noise
@@ -2905,7 +2908,7 @@ private theorem selected_mode_integrable {H : Type*} [MeasurableSpace H]
               (if mode = external then 2 * actionCenter action else 0)) ^ 2) law :=
       (integrable_const _).add
         ((hInput.const_mul _).add (memLp_const _)).integrable_sq
-    have hPiece := Integrable.piecewise ((measurableSet_singleton true).preimage hSelect)
+    have hPiece := Integrable.piecewise ((measurableSet_singleton true).preimage hSelect).nullMeasurableSet
       (hFixed true).integrableOn (hFixed false).integrableOn
     apply hPiece.congr
     filter_upwards with history
@@ -3296,7 +3299,7 @@ private theorem nativeKL_prod {A B : Type*} [MeasurableSpace A] [MeasurableSpace
   simpa only [Measure.compProd_const] using
     klDiv_compProd_left right referenceRight (Kernel.const B left)
 
-private abbrev InformationTriple := (ℝ × ℝ) × ℝ
+abbrev InformationTriple := (ℝ × ℝ) × ℝ
 
 private def tripleReverse (value : InformationTriple) : InformationTriple :=
   ((value.2, value.1.2), value.1.1)
@@ -3336,14 +3339,14 @@ private def tripleInnovationEquiv (decay : ℝ) : InformationTriple ≃ᵐ Infor
   measurable_toFun := by change Measurable (tripleInnovations decay); unfold tripleInnovations; fun_prop
   measurable_invFun := by change Measurable (tripleFromInnovations decay); unfold tripleFromInnovations; fun_prop
 
-private def gaussianARStep (decay : ℝ) (noise : ℝ≥0) : Kernel ℝ ℝ where
+def gaussianARStep (decay : ℝ) (noise : ℝ≥0) : Kernel ℝ ℝ where
   toFun state := gaussianReal (decay * state) noise
   measurable' := by
     change Measurable (Function.uncurry gaussianReal ∘
       fun state : ℝ => (decay * state, noise))
     exact measurable_gaussianReal.comp (by fun_prop)
 
-private instance gaussianARStep_markov (decay : ℝ) (noise : ℝ≥0) :
+instance gaussianARStep_markov (decay : ℝ) (noise : ℝ≥0) :
     IsMarkovKernel (gaussianARStep decay noise) :=
   ⟨fun _ => by change IsProbabilityMeasure (gaussianReal _ _); infer_instance⟩
 
@@ -3370,12 +3373,12 @@ private theorem gaussianAR_compProd {A : Type*} [MeasurableSpace A]
 
 /-- A concrete native Markov joint, ready to be identified with the actual
 partialTraj/Iic representation, rather than a three-moment surrogate. -/
-private def gaussianARTripleLaw (initialMean : ℝ) (initialVariance : ℝ≥0)
+def gaussianARTripleLaw (initialMean : ℝ) (initialVariance : ℝ≥0)
     (decay : ℝ) (noise : ℝ≥0) : Measure InformationTriple :=
   ((gaussianReal initialMean initialVariance) ⊗ₘ gaussianARStep decay noise) ⊗ₘ
     (gaussianARStep decay noise).comap Prod.snd measurable_snd
 
-private def gaussianARInnovationLaw (initialMean : ℝ) (initialVariance : ℝ≥0)
+def gaussianARInnovationLaw (initialMean : ℝ) (initialVariance : ℝ≥0)
     (noise : ℝ≥0) : Measure InformationTriple :=
   ((gaussianReal initialMean initialVariance).prod (gaussianReal 0 noise)).prod
     (gaussianReal 0 noise)
@@ -3416,7 +3419,7 @@ private theorem gaussianARTripleLaw_innovation_map (initialMean : ℝ)
     exact (tripleInnovationEquiv decay).apply_symm_apply value
   rw [hInverse, Measure.map_id]
 
-private def frozenPathNoise : ℝ≥0 :=
+def frozenPathNoise : ℝ≥0 :=
   ⟨(1 - controlDecay ^ 2) / 2, by
     have h := controlDecay_bounds
     have hProduct : 0 < (1 - controlDecay) * (1 + controlDecay) :=
@@ -3430,7 +3433,7 @@ private theorem frozenPathNoise_pos : 0 < frozenPathNoise := by
     mul_pos (sub_pos.mpr h.2) (by linarith [h.1])
   nlinarith [hProduct]
 
-private def frozenForwardInnovations : Measure InformationTriple :=
+def frozenForwardInnovations : Measure InformationTriple :=
   gaussianARInnovationLaw 1 (1 / 2) frozenPathNoise
 
 private def frozenReverseInnovations : Measure InformationTriple :=
@@ -3538,15 +3541,15 @@ open FEP.Fin4GaussianSemigroup FEPComposed.GaussianGridPath Finset
 private def informationZeroIndex : Iic 0 := ⟨0, by simp⟩
 private def informationOneZero : Iic 1 := ⟨0, by simp⟩
 private def informationOneOne : Iic 1 := ⟨1, by simp⟩
-private def informationTwoZero : Iic 2 := ⟨0, by simp⟩
-private def informationTwoOne : Iic 2 := ⟨1, by simp⟩
-private def informationTwoTwo : Iic 2 := ⟨2, by simp⟩
+def informationTwoZero : Iic 2 := ⟨0, by simp⟩
+def informationTwoOne : Iic 2 := ⟨1, by simp⟩
+def informationTwoTwo : Iic 2 := ⟨2, by simp⟩
 
 private def informationPath0 (path : GridPath 0) : ℝ := path informationZeroIndex
 private def informationPath1 (path : GridPath 1) : ℝ × ℝ :=
   (path informationOneZero, path informationOneOne)
 
-private def informationPath2Equiv : GridPath 2 ≃ᵐ InformationTriple where
+def informationPath2Equiv : GridPath 2 ≃ᵐ InformationTriple where
   toFun path := ((path informationTwoZero, path informationTwoOne), path informationTwoTwo)
   invFun value index := if index.1 = 0 then value.1.1 else
     if index.1 = 1 then value.1.2 else value.2
@@ -3573,7 +3576,7 @@ private theorem informationPath2_reverse :
   funext path
   rfl
 
-private def informationGrid : TimeGrid where
+def informationGrid : TimeGrid where
   time n := (n : ℝ≥0) / 4
   monotone_time := by
     intro left right hOrder
@@ -3687,7 +3690,7 @@ private theorem information_scalar_three_time_joint :
       (by intro path; exact informationGrid_rows_one path), information_scalar_one]
   rfl
 
-private def informationFullInitial : Measure StandardizedState :=
+def informationFullInitial : Measure StandardizedState :=
   multivariateGaussian normalizedAllOnes FEP.Fin4GaussianSemigroup.Sigma
 
 private theorem information_full_initial_projection :
@@ -3710,7 +3713,7 @@ end ThreeTimeCarrierBinding
 
 section NativeReverseInnovationFactorization
 
-private def originalInnovationCoordinate (index : Fin 3) (value : InformationTriple) : ℝ :=
+def originalInnovationCoordinate (index : Fin 3) (value : InformationTriple) : ℝ :=
   ![value.1.1, value.1.2, value.2] index
 
 private def originalInnovationVariance (index : Fin 3) : ℝ≥0 :=
@@ -3718,11 +3721,11 @@ private def originalInnovationVariance (index : Fin 3) : ℝ≥0 :=
 
 private def originalInnovationMean (index : Fin 3) : ℝ := ![1, 0, 0] index
 
-private instance originalInnovation_isGaussian : IsGaussian frozenForwardInnovations := by
+instance originalInnovation_isGaussian : IsGaussian frozenForwardInnovations := by
   unfold frozenForwardInnovations gaussianARInnovationLaw
   infer_instance
 
-private instance originalInnovation_probability : IsProbabilityMeasure frozenForwardInnovations := by
+instance originalInnovation_probability : IsProbabilityMeasure frozenForwardInnovations := by
   unfold frozenForwardInnovations gaussianARInnovationLaw
   infer_instance
 
@@ -4094,8 +4097,8 @@ instance studyReverseLaw_probability (grid : TimeGrid) :
 AR joint at times 0,1/4,1/2, initialized at N(u,Sigma). -/
 theorem nonstationary_native_grid :
     (studyProjectedLaw informationGrid).map informationPath2Equiv =
-      gaussianARTripleLaw 1 (1 / 2) controlDecay frozenPathNoise :=
-  information_full_three_time_joint
+      gaussianARTripleLaw 1 (1 / 2) controlDecay frozenPathNoise := by
+  exact information_full_three_time_joint
 
 private theorem study_reverse_tuple (grid : TimeGrid) :
     (studyReverseLaw grid).map informationPath2Equiv =
@@ -4298,7 +4301,7 @@ private theorem controlConditionalLoss_history_integrable (policy : TwoStepPolic
         (controlHistoryLaw policy noise hNoise) :=
     (integrable_const _).add ((hInput.const_mul _).add (memLp_const _)).integrable_sq
   have hPiece := Integrable.piecewise
-    ((measurableSet_singleton true).preimage (policy.measurable_second.comp measurable_snd))
+    ((measurableSet_singleton true).preimage (policy.measurable_second.comp measurable_snd)).nullMeasurableSet
     (hFixed true).integrableOn (hFixed false).integrableOn
   apply hPiece.congr
   filter_upwards with history
@@ -4541,7 +4544,7 @@ theorem informationCovariance_posDef : informationCovariance.PosDef := by
       nlinarith [sq_nonneg (vector 0 + controlDecay * vector 1 + controlDecay ^ 2 * vector 2),
         sq_nonneg (vector 1 + controlDecay * vector 2)]
 
-private def informationInverse : Matrix (Fin 3) (Fin 3) ℝ :=
+def informationInverse : Matrix (Fin 3) (Fin 3) ℝ :=
   (frozenPathNoise : ℝ)⁻¹ •
     !![1, -controlDecay, 0;
       -controlDecay, 1 + controlDecay ^ 2, -controlDecay;
@@ -4559,8 +4562,8 @@ private theorem informationInverse_mul : informationInverse * informationCovaria
     ring
 
 /-- Exact inverse of the native covariance. -/
-theorem informationCovariance_inverse : informationCovariance⁻¹ = informationInverse :=
-  Matrix.inv_eq_left_inv informationInverse_mul
+theorem informationCovariance_inverse : informationCovariance⁻¹ = informationInverse := by
+  exact Matrix.inv_eq_left_inv informationInverse_mul
 
 /-- The actual forward mean differs from the coordinate-reversed mean. -/
 theorem information_mean_asymmetry : informationMean ≠ fun index => informationMean (2 - index) := by

@@ -1,4 +1,7 @@
-import Mathlib
+module
+public import Mathlib
+
+@[expose] public section
 
 /-- Root module for the FepSketches library. The lakefile declares
 `lean_lib «FepSketches»` with `globs := #[.andSubmodules 'FepSketches]`, so every

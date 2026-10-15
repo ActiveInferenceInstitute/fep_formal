@@ -21,6 +21,19 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     owners = formal_theorem_modules(PROJECT_ROOT)
+    # Eight existing support proofs are exported for exposed module definitions.
+    # Pin their identities as well as the per-owner declaration counts below.
+    exposed_support = {
+        "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOneState_measurable": "FepSketches.linear_gaussian_semigroup",
+        "FEP.ScalarGaussianSemigroup.ScalarOUParameters.stationaryVariance_pos": "FepSketches.scalar_gaussian_semigroup",
+        "FEP.PosteriorConvergence.observation_stronglyMeasurable": "FepSketches.posterior_convergence",
+        "FEP.ContinuousTimeMarkov.boolBlanketRefreshTime_pos": "FepSketches.continuous_time_markov",
+        "FEP.FinitePosteriorLearning.nonidentifiablePredictive_pos": "FepSketches.finite_posterior_learning",
+        "FEPComposed.FiniteScientificImplications.scaledLogisticProbability_lt_one": "FepSketches.compositions.finite_scientific_implications",
+        "FEPComposed.FiniteScientificImplications.scaledLogisticProbability_pos": "FepSketches.compositions.finite_scientific_implications",
+        "FEPComposed.FiniteScientificImplications.symmetricFalseEvidence": "FepSketches.compositions.finite_scientific_implications",
+    }
+    assert {name: owners[name] for name in exposed_support} == exposed_support
     modules_by_role = {
         role: tuple(module for module in FORMAL_MODULES if module.role is role)
         for role in FormalModuleRole
@@ -71,15 +84,15 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         "FepSketches.exponential_family": 23,
         "FepSketches.gaussian_information_geometry": 31,
         "FepSketches.smooth_information_geometry": 16,
-        "FepSketches.continuous_time_markov": 97,
+        "FepSketches.continuous_time_markov": 98,
         "FepSketches.markov_semigroup": 10,
-        "FepSketches.scalar_gaussian_semigroup": 15,
-        "FepSketches.linear_gaussian_semigroup": 25,
+        "FepSketches.scalar_gaussian_semigroup": 16,
+        "FepSketches.linear_gaussian_semigroup": 26,
         "FepSketches.fin4_gaussian_semigroup": 42,
         "FepSketches.gaussian_precision_conditioning": 25,
         "FepSketches.decision_risk": 25,
-        "FepSketches.finite_posterior_learning": 13,
-        "FepSketches.posterior_convergence": 26,
+        "FepSketches.finite_posterior_learning": 14,
+        "FepSketches.posterior_convergence": 27,
         "FepSketches.compositions.core": 26,
         "FepSketches.compositions.measure_variational": 14,
         "FepSketches.compositions.control_temporal": 14,
@@ -91,7 +104,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         "FepSketches.compositions.native_blanket_transfer": 20,
         "FepSketches.compositions.exponential_family": 7,
         "FepSketches.compositions.continuous_time": 7,
-        "FepSketches.compositions.finite_scientific_implications": 6,
+        "FepSketches.compositions.finite_scientific_implications": 9,
         "FepSketches.compositions.finite_policy_action": 12,
         "FepSketches.compositions.finite_reference_agent": 5,
         "FepSketches.compositions.gaussian_filter": 16,

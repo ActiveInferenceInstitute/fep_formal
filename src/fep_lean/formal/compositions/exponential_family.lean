@@ -1,5 +1,8 @@
-import FepSketches.fep_all
-import FepSketches.exponential_family
+module
+public import FepSketches.fep_all
+public import FepSketches.exponential_family
+
+@[expose] public section
 
 /-!
 # Finite exponential-family topic compositions

@@ -1,6 +1,9 @@
-import FepSketches.finite_information
-import Mathlib.Analysis.Convex.SpecificFunctions.Basic
-import Mathlib.Topology.Order.Compact
+module
+public import FepSketches.finite_information
+public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+public import Mathlib.Topology.Order.Compact
+
+@[expose] public section
 
 /-!
 # Finite variational duality and information bounds

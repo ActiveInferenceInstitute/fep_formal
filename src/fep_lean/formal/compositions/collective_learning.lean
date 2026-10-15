@@ -1,6 +1,9 @@
-import FepSketches.fep_all
-import FepSketches.collective_inference
-import FepSketches.learning_theory
+module
+public import FepSketches.fep_all
+public import FepSketches.collective_inference
+public import FepSketches.learning_theory
+
+@[expose] public section
 
 /-!
 # Collective-inference and learning-theory topic compositions

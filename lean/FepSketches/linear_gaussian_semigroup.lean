@@ -1,17 +1,20 @@
-import FepSketches.markov_semigroup
-import FepSketches.scalar_gaussian_semigroup
-import Mathlib.Analysis.Matrix.PosDef
-import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.Exponential
-import Mathlib.MeasureTheory.Measure.LevyConvergence
-import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
-import Mathlib.Order.Filter.AtTopBot.CountablyGenerated
-import Mathlib.Probability.Distributions.Gaussian.Multivariate
-import Mathlib.Probability.Kernel.Composition.Comp
-import Mathlib.Probability.Kernel.Composition.CompProd
-import Mathlib.Probability.Kernel.Composition.MapComap
-import Mathlib.Tactic.NoncommRing
-import Mathlib.Topology.Instances.NNReal.Lemmas
+module
+public import FepSketches.markov_semigroup
+public import FepSketches.scalar_gaussian_semigroup
+public import Mathlib.Analysis.Matrix.PosDef
+public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+public import Mathlib.Analysis.SpecialFunctions.Exponential
+public import Mathlib.MeasureTheory.Measure.LevyConvergence
+public import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+public import Mathlib.Order.Filter.AtTopBot.CountablyGenerated
+public import Mathlib.Probability.Distributions.Gaussian.Multivariate
+public import Mathlib.Probability.Kernel.Composition.Comp
+public import Mathlib.Probability.Kernel.Composition.CompProd
+public import Mathlib.Probability.Kernel.Composition.MapComap
+public import Mathlib.Tactic.NoncommRing
+public import Mathlib.Topology.Instances.NNReal.Lemmas
+
+@[expose] public section
 
 /-!
 # Symmetric-precision linear Gaussian transition semigroup
@@ -1168,7 +1171,7 @@ theorem integral_transition_tendsto_invariant
 noncomputable def finOneState (value : ℝ) : State (Fin 1) :=
   WithLp.toLp 2 (fun _ => value)
 
-private theorem finOneState_measurable : Measurable finOneState := by
+theorem finOneState_measurable : Measurable finOneState := by
   unfold finOneState
   fun_prop
 

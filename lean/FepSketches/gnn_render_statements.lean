@@ -1,8 +1,11 @@
-import FepSketches.gnn_document
-import FepSketches.gnn_denotation
-import FepSketches.active_inference
-import FepSketches.finite_probability
-import FepSketches.finite_markov_dynamics
+module
+public import FepSketches.gnn_document
+public import FepSketches.gnn_denotation
+public import FepSketches.active_inference
+public import FepSketches.finite_probability
+public import FepSketches.finite_markov_dynamics
+
+@[expose] public section
 
 /-!
 # GNN renderer and execution statements

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import json
 import shutil
@@ -187,7 +188,25 @@ def test_every_mutation_applies_exactly_once(verifier: ModuleType) -> None:
     assert all(text != instance for text in mutated.values())
 
 
-def test_retained_receipt_is_claim_ready_and_current() -> None:
+def test_retained_receipt_preserves_history_and_rejects_current_pins(
+    verifier: ModuleType,
+) -> None:
+    receipt = json.loads(RETAINED_RECEIPT.read_text(encoding="utf-8"))
+    historical_pins = json.loads(
+        (PROJECT_ROOT / "tests/fixtures/custody_toolchain_4_34_1.json").read_text()
+    )["files"]
+    changed_pins = {"lean/lean-toolchain", "lean/lake-manifest.json"}
+    assert set(receipt["bound_inputs"]) == set(verifier.bound_digests())
+    for name, digest in receipt["bound_inputs"].items():
+        source = (
+            historical_pins[name].encode("utf-8")
+            if name in changed_pins
+            else (PROJECT_ROOT / name).read_bytes()
+        )
+        assert hashlib.sha256(source).hexdigest() == digest, name
+    assert verifier.verdict(receipt) == receipt["verdict"]
+    assert receipt["verdict"]["claim_ready"] is True
+    assert receipt["verdict"]["theorems_reported"] == len(receipt["theorems"])
     result = subprocess.run(
         [
             sys.executable,
@@ -202,10 +221,13 @@ def test_retained_receipt_is_claim_ready_and_current() -> None:
         timeout=120,
         check=False,
     )
-    assert result.returncode == 0, result.stdout + result.stderr
-    receipt = json.loads(RETAINED_RECEIPT.read_text(encoding="utf-8"))
-    assert receipt["verdict"]["claim_ready"] is True
-    assert receipt["verdict"]["theorems_reported"] == len(receipt["theorems"])
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert result.stdout == ""
+    assert len(result.stderr.splitlines()) == len(changed_pins)
+    assert set(result.stderr.splitlines()) == {
+        f"STALE: {name}: bound digest differs from the current file"
+        for name in changed_pins
+    }
 
 
 def test_receipt_check_detects_a_tampered_verdict(
