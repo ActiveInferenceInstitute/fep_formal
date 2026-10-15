@@ -8,8 +8,8 @@ historical receipt, so none is eligible for deduplication under the
 does not make a captured, receipt-bound artifact disposable.
 
 This is a custody inventory checked on 2026-10-15. It adds no compiler run,
-scientific acceptance or renewal of the historical source epoch. G02 remains
-pending combined custody controls, independent review and published checks.
+scientific acceptance or renewal of the historical source epoch. G02 acceptance
+requires source-bound custody controls, independent review and published checks.
 
 ## Receipt and review consumers
 
