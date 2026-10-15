@@ -531,3 +531,28 @@ is renewed.
 **Confidence:** scoped local controls pass and fresh independent custody
 review found no source blocker at the three recorded source hashes. Final
 hosted acceptance remains a separate requirement.
+
+## Retain all eight receipt-bound pytest captures
+
+**When:** G02's exact file and consumer inventory.
+
+**Choice:** Document each retained file in a maintained inventory outside the
+immutable evidence tree. Preserve both the failed first consumer attempt and
+its successful repair, including separately bound empty stderr paths.
+
+**Gap:** Temporary-looking names and near-duplicate Lean text do not establish
+that an artifact lacks receipt or review consumers.
+
+**Reach:** All eight sizes and digests match the author receipt. The separate
+semantic review authenticates that receipt, so deleting a cited file or
+rewriting the receipt would break historical custody. Strict links and
+Markdown hygiene pass. The old compiler results retain their Lean 4.34.1
+epoch. Fresh independent custody review found no source blocker in the two
+documents and independently rechecked all 25 receipt artifact hashes.
+Terminal-validator positive/fail-closed controls, separate combined
+historical-custody controls and accepted publication remain required before
+G02 closes.
+
+**Verdict:** document the eight exceptions; retire none.
+**Confidence:** high for the hash/consumer inventory, with no new execution or
+scientific acceptance inferred.
