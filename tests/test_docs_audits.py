@@ -8,12 +8,14 @@ to a tmp fixture tree.
 ``xref_audit`` takes ``--root`` and needs no redirection. ``theorem_ref_audit``
 derives its root inline from ``__file__``, so redirecting it means patching
 that one module attribute; its canonical-name surfaces are read from packaged
-repo data, keeping the fixtures fully offline.
+repo data. Count-reference fixtures copy the maintained coverage projection and
+root documents, keeping the fixtures fully offline.
 """
 
 from __future__ import annotations
 
 import importlib.util
+import json
 import sys
 from pathlib import Path
 from types import ModuleType
@@ -205,11 +207,40 @@ def test_xref_audit_passes_resolved_crossref(
     assert "all resolve" in out
 
 
+def _write_count_references(root: Path) -> dict[str, int]:
+    """Use the maintained join, rather than a second expected-count inventory."""
+    coverage = json.loads(
+        (PROJECT_ROOT / "docs" / "formalism-coverage.json").read_text(encoding="utf-8")
+    )
+    projection = {
+        "metrics": {"topics": coverage["metrics"]["topics"]},
+        "topics": [
+            {"family": row["family"], "area": row["area"]} for row in coverage["topics"]
+        ],
+        "area_counts": coverage["area_counts"],
+    }
+    docs = root / "docs"
+    docs.mkdir(exist_ok=True)
+    (docs / "formalism-coverage.json").write_text(
+        json.dumps(projection), encoding="utf-8"
+    )
+    for name in ("README.md", "AGENTS.md", "SPEC.md", "HANDOFF.md"):
+        (root / name).write_text(
+            (PROJECT_ROOT / name).read_text(encoding="utf-8"), encoding="utf-8"
+        )
+    return {
+        "topics": coverage["metrics"]["topics"],
+        "families": len({row["family"] for row in coverage["topics"]}),
+        "areas": len(coverage["area_counts"]),
+    }
+
+
 def test_theorem_ref_audit_flags_unresolvable_manuscript_name(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
+    _write_count_references(tmp_path)
     manuscript = tmp_path / "manuscript"
     manuscript.mkdir()
     (manuscript / "chapter.md").write_text(
@@ -235,6 +266,7 @@ def test_theorem_ref_audit_passes_manuscript_without_references(
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
 ) -> None:
+    _write_count_references(tmp_path)
     manuscript = tmp_path / "manuscript"
     manuscript.mkdir()
     (manuscript / "chapter.md").write_text(
@@ -252,6 +284,227 @@ def test_theorem_ref_audit_passes_manuscript_without_references(
 
     assert code == 0
     assert "references resolve" in out
+
+
+@pytest.mark.parametrize("claim", ("intro", "current-boundary", "families", "areas"))
+def test_current_readme_count_mutation_fails_the_actual_audit_gate(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    claim: str,
+) -> None:
+    counts = _write_count_references(tmp_path)
+    (tmp_path / "manuscript").mkdir()
+    original = (tmp_path / "README.md").read_text(encoding="utf-8")
+    replacements = {
+        "intro": (
+            f"catalogue of {counts['topics']} ",
+            f"catalogue of {counts['topics'] + 1} ",
+        ),
+        "current-boundary": (
+            f"spans {counts['topics']} topics",
+            f"spans {counts['topics'] + 1} topics",
+        ),
+        "families": (
+            f"{counts['families']} reviewed families",
+            f"{counts['families'] + 1} reviewed families",
+        ),
+        # The actual area claim wraps across lines and spells out its count.
+        "areas": ("families in five\nareas", "families in six\nareas"),
+    }
+    before, after = replacements[claim]
+    assert before in original
+    (tmp_path / "README.md").write_text(
+        original.replace(before, after, 1), encoding="utf-8"
+    )
+
+    code, out = _run_script(
+        tmp_path,
+        monkeypatch,
+        capsys,
+        "theorem_ref_audit",
+        [],
+        redirect_root_from_file=True,
+    )
+
+    assert code == 1
+    assert "README.md:" in out
+    assert "current catalogue" in out
+    assert "disagrees with docs/formalism-coverage.json" in out
+
+
+@pytest.mark.parametrize(
+    ("name", "section", "unit"),
+    (
+        ("AGENTS.md", "Purpose", "topics"),
+        ("SPEC.md", "Scope", "topics"),
+        ("HANDOFF.md", "Current formal breadth and depth", "families"),
+    ),
+)
+def test_current_count_audit_covers_the_other_root_contracts(
+    tmp_path: Path, name: str, section: str, unit: str
+) -> None:
+    counts = _write_count_references(tmp_path)
+    (tmp_path / name).write_text(
+        f"# Contract\n\n## {section}\n\nThe catalogue has {counts[unit] + 1} {unit}.\n",
+        encoding="utf-8",
+    )
+    module = _load_docs_script("theorem_ref_audit")
+
+    failures = module.root_count_reference_failures(tmp_path)
+
+    assert len(failures) == 1
+    assert failures[0].startswith(f"{name}:5:")
+    assert f"current catalogue {unit} count" in failures[0]
+
+
+def test_count_audit_preserves_histories_subsets_and_non_prose(tmp_path: Path) -> None:
+    counts = _write_count_references(tmp_path)
+    (tmp_path / "README.md").write_text(
+        f"# Catalogue\n\nA catalogue of {counts['topics']} topics.\n"
+        "Its five second-expansion families form a subset.\n"
+        "[Example](/999-topic.md)\n"
+        "<!-- An abandoned draft said 999 topics. -->\n\n"
+        "```text\n## Formal depth\n999 topics in 999 families and 999 areas\n```\n"
+        "~~~~text\n999 topics in 999 families and 999 areas\n~~~~\n\n"
+        "## Release\n\nThe dated v0.1 release contained 50 topics in 7 families.\n"
+        "That release passed 2,404 tests; this total belongs to its source epoch.\n\n"
+        "## Formal depth\n\n"
+        f"The maintained catalogue spans {counts['topics']} topics in\n"
+        f"{counts['families']} reviewed families across {counts['areas']} areas.\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "HANDOFF.md").write_text(
+        "# Handoff\n\n## Historical external stage\n\n"
+        "The earlier snapshot had 50 topics in 7 families across 3 areas.\n",
+        encoding="utf-8",
+    )
+    module = _load_docs_script("theorem_ref_audit")
+
+    assert module.root_count_reference_failures(tmp_path) == ()
+
+
+@pytest.mark.parametrize(
+    "defect",
+    (
+        "missing",
+        "invalid-json",
+        "topic-total",
+        "area-total",
+        "top-level-type",
+        "metrics-type",
+        "row-type",
+    ),
+)
+def test_count_audit_rejects_missing_or_inconsistent_coverage(
+    tmp_path: Path, defect: str
+) -> None:
+    _write_count_references(tmp_path)
+    reference = tmp_path / "docs" / "formalism-coverage.json"
+    if defect == "missing":
+        reference.unlink()
+    elif defect == "invalid-json":
+        reference.write_text("{", encoding="utf-8")
+    else:
+        coverage = json.loads(reference.read_text(encoding="utf-8"))
+        if defect == "top-level-type":
+            coverage = []
+        elif defect == "metrics-type":
+            coverage["metrics"] = []
+        elif defect == "row-type":
+            coverage["topics"][0] = []
+        elif defect == "topic-total":
+            coverage["metrics"]["topics"] += 1
+        else:
+            first_area = next(iter(coverage["area_counts"]))
+            coverage["area_counts"][first_area] += 1
+        reference.write_text(json.dumps(coverage), encoding="utf-8")
+    module = _load_docs_script("theorem_ref_audit")
+
+    failures = module.root_count_reference_failures(tmp_path)
+
+    assert len(failures) == 1
+    assert failures[0].startswith(
+        "docs/formalism-coverage.json: cannot validate catalogue count references:"
+    )
+
+
+@pytest.mark.parametrize(
+    ("figure", "kind", "phrase"),
+    (
+        ("math_formal_relations", "formal", "The {count} edges"),
+        ("math_formal_pairings", "formal_pairing", "locates {count} checked pairings"),
+        (
+            "math_conceptual_relations",
+            "conceptual",
+            "orientation of {count} maintained associations",
+        ),
+    ),
+)
+def test_relation_captions_follow_the_canonical_counts_and_a_changed_count(
+    figure: str, kind: str, phrase: str
+) -> None:
+    from fep_lean.output.rendering import substitute_placeholders
+
+    coverage = json.loads(
+        (PROJECT_ROOT / "docs" / "formalism-coverage.json").read_text(encoding="utf-8")
+    )
+    source = (
+        PROJECT_ROOT / "manuscript" / "08b_mathematical_positioning_supplement.md"
+    ).read_text(encoding="utf-8")
+    caption = next(line for line in source.splitlines() if f"#fig:{figure} " in line)
+    count = coverage["relation_counts"][kind]
+    for expected in (count, count + 1):
+        rendered = substitute_placeholders(
+            caption, {"formalism": {"relation_counts": {kind: expected}}}
+        )
+        assert phrase.format(count=expected) in rendered
+
+
+def test_second_expansion_heading_does_not_grow_with_the_full_catalogue() -> None:
+    from fep_lean.output.rendering import substitute_placeholders
+
+    source = (PROJECT_ROOT / "manuscript" / "04i_formalism_catalogue_155.md").read_text(
+        encoding="utf-8"
+    )
+    heading = source.splitlines()[0]
+    # Distinct synthetic counts expose an accidental use of the live total
+    # instead of the endpoint owned by this particular expansion.
+    variables = {
+        "topics_before_second_expansion": 80,
+        "topics_before_third_expansion": 100,
+        "total_topics": 120,
+    }
+    rendered = substitute_placeholders(heading, variables)
+
+    assert "Second Expansion, from 80 to 100 Topics:" in rendered
+    assert "{#sec:formalism_catalogue_155}" in rendered
+    variables["total_topics"] = 140
+    assert substitute_placeholders(heading, variables) == rendered
+
+
+def test_second_expansion_current_toolchain_comes_from_workspace_variables() -> None:
+    from fep_lean.output.rendering import substitute_placeholders
+
+    source = (PROJECT_ROOT / "manuscript" / "04i_formalism_catalogue_155.md").read_text(
+        encoding="utf-8"
+    )
+    toolchain_paragraph = next(
+        paragraph
+        for paragraph in source.split("\n\n")
+        if paragraph.startswith("The authoring workspace pins")
+    )
+    rendered = substitute_placeholders(
+        toolchain_paragraph,
+        {
+            "lean_toolchain": "leanprover/lean4:v9.8.7",
+            "mathlib_tag": "v9.8.7",
+            "total_topics": 120,
+        },
+    )
+
+    assert "**`leanprover/lean4:v9.8.7`** and Mathlib\n**`v9.8.7`**" in rendered
+    assert "Earlier Lean and Mathlib releases provide historical" in rendered
 
 
 def _make_repo(tmp_path: Path) -> Path:
