@@ -14,10 +14,14 @@ no new native, production-capture, study or scientific acceptance.
 
 ## Package contracts and order
 
-[work-packages.json](work-packages.json) covers all 62 open Issues in the
-2026-10-15 inventory with 63 package contracts: H00 and H01 deliberately share
-Issue 55's migration/export obligation. The original 24 contracts remain intact;
-39 additional packages cover the previously unmapped Issues. Each records an
+[work-packages.json](work-packages.json) retains the 2026-10-15 inventory of
+62 then-open Issues and all 63 package contracts: H00 and H01 deliberately
+share Issue 55's migration/export obligation. The original 24 acceptance
+contracts are preserved; 39 additional packages cover the previously unmapped
+Issues. This publication records five accepted packages and prospectively closes
+their five Issues when its documentation PR merges, leaving 57 open Issues and
+58 unaccepted packages. All 63 contracts remain available with their source-bound
+dispositions. Each records an
 outcome, predecessors, owner, stop/go probe, no-go edge, target, witnesses,
 checks, evidence plane, review and excluded stronger claim. Issue links and
 [TODO.md](../../TODO.md) remain the open delivery inventory; this matrix owns
@@ -26,11 +30,13 @@ the implementation dependencies, not another scientific registry.
 G02's [retained pytest evidence inventory](retained-pytest-evidence.md) documents
 the eight receipt-bound copies and their individual retention decisions.
 
-1. Finish the source-bound publication of G01/P01/L01 and the independent
-   D02/D03 count/chapter corrections. Continue foundations before topic-body
-   import narrowing. Independent owner inventories can prepare L02/L03,
-   L05/L06, S03, G02, P02/P03/P06/P08/P09/P11 and T01; their compiling,
-   execution and review gates still apply.
+1. Reconcile the accepted G02/P02/T01/D02/D03 scopes through this publication.
+   G01 remains ongoing guidance maintenance; D04's delivered consolidation
+   retains its G01 dependency. P01 still requires C04's local runtime acceptance.
+   L01 still has 21 topic bodies to narrow after its accepted foundation pass,
+   with coordinated catalogue/aggregate regeneration. Independent owner
+   inventories can prepare L02/L03, L05/L06, S03 and P03/P06/P08/P09/P11;
+   their compiling, execution and review gates still apply.
 2. C01/C02 resolve the actual production DOM failure and explicitly approved
    successor membership. C03/C04 obtain actual capture/archive and local
    installed-runtime/status acceptance; C05 closes the complete current-source
@@ -49,8 +55,7 @@ the eight receipt-bound copies and their individual retention decisions.
    H03 binds outcomes, archives and reproduction. C06 independently audits all
    nine original criteria. F05/F06/F08 and F12 extend control, paths, fixed-truth
    learning and Bayes-sound updates only after their declared prerequisites.
-   D01/N01 retain their separate accessibility and numerical acceptance;
-   D04 consolidates maintained root guidance without rewriting dated history.
+   D01/N01 retain their separate accessibility and numerical acceptance.
 6. V01 provider execution, B01 generated-runner execution and E01 empirical
    research remain separately governed lanes. A broad request to address the
    backlog supplies no missing credential route, spend ceiling, isolated source
@@ -111,7 +116,34 @@ skipped. Python recorded 2951 passes, 20 skips, exact nonserial membership and
 topics were clean. The audit resolved 1875 declarations with 1744 evidence
 entries. The actual accepted render has 388 pages and all nine defect counters
 zero. Independently checked source manifests and Git tree equality bind these
-results to the merged tree. The new exact-main workflow remains a separate gate.
+results to the merged tree. Its
+[exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38793389679)
+subsequently passed on `6a80ff5`.
+
+[PR178](https://github.com/ActiveInferenceInstitute/fep_formal/pull/178) is merged
+at [`f5c39fe`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2).
+Its [PR workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016)
+passed all 15 executed checks on head `d1d5403`. The tested PR merge and actual
+main merge share tree `887a29862ffb61da7724b8cfe7495792cf29f8a3`.
+Independent artifact review confirmed 2952 Python passes, 20 skips, 91.64%
+coverage, 588 serial passes and five serial skips, 168 clean native topics,
+1875 resolved declarations with 1744 evidence entries, and a 388-page accepted
+render with all nine defect counters zero. The 14 synthetic terminal-validator
+controls passed without reaccepting historical terminal evidence. Its
+[exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071)
+also passed all 21 executed checks, including all 15 distribution cells; the
+documentation-only lane was intentionally skipped.
+
+G02/P02/T01/D02/D03 have bounded acceptance on `f5c39fe`. This documentation
+publication prospectively closes Issues
+[113](https://github.com/ActiveInferenceInstitute/fep_formal/issues/113),
+[115](https://github.com/ActiveInferenceInstitute/fep_formal/issues/115),
+[130](https://github.com/ActiveInferenceInstitute/fep_formal/issues/130),
+[140](https://github.com/ActiveInferenceInstitute/fep_formal/issues/140) and
+[144](https://github.com/ActiveInferenceInstitute/fep_formal/issues/144), and
+removes only those five open TODO rows when the PR merges. Broader G01/Issue63
+and dependent D04/Issue146 remain open. The package matrix retains the accepted
+contracts and their exact-source evidence.
 
 The L01 foundation pass replaced all six blanket tactic imports and
 declared two newly exposed consumer dependencies. All 73 workspace modules
@@ -119,10 +151,9 @@ compiled cleanly in a fresh output tree with old FEP artifacts excluded;
 per-topic native/axiom and publication receipts remain separate. Its coverage
 projection now also retains meta imports. The 21 topic bodies are the next
 narrowing scope and need coordinated catalogue/aggregate regeneration.
-D02/D03 have source corrections, mutation controls and accepted render evidence;
-Issue closure and open-only TODO cleanup await the new main gate. P02 removes
-only three demonstrably dead helpers and refreshes its current generated Q6
-manifest;
+D02/D03's count and chapter corrections have mutation controls and accepted
+render evidence at the parent checkpoint above. P02 removes only three
+demonstrably dead helpers and refreshes its current generated Q6 manifest;
 historical custody receipts remain unchanged. Its caller inventory also
 clarified the third source owner and corresponding checks in the new package.
 D04's reviewed root-owner consolidation at `9b31783` retained the canonical
@@ -130,20 +161,34 @@ gate commands and passed 23 inventory controls; dated evidence remains unchanged
 The later T01/P08 passes update the canonical command owner and CI together,
 with their own inventory controls and source epochs. T01 covers 341 active
 Python files with Ruff and 148 source/script/doc files with strict mypy.
-P08 prepares warning-log retention; actual measurement and filter narrowing
-remain open. Historical metadata replay, terminal-validator controls and
-hosted acceptance retain their distinct evidence boundaries.
-The methods projection is refreshed through its owner and retains meta-import
-context; theorem statements, semantic records and numerical content are unchanged.
+P08 retains warning logs. The parallel/Chrome observation at `21ae5c7` and the
+serial observation at `d1d5403` remain partial and source-bound. They do not
+establish resource-warning origins or complete the separate nested,
+supplemental and distribution inventories; filter narrowing and Issue124 remain
+open. Historical metadata replay, synthetic terminal controls and current
+execution retain their distinct evidence boundaries. The parent methods
+projection was refreshed through its owner and retains meta-import context;
+existing theorem statements, semantic records and numerical content are unchanged.
 
-R01's [attributed current-4.35 spike](spikes/finite_kernel_category.lean) and a
-separate importing consumer compile. All ten inspected declarations use only
-the standard three axioms. The spike is not a manifested package resource;
-PR44 still needs coordinated source-custody and independent formal/domain
-acceptance. Its [package successor PR179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179)
-retains attribution and requires its own native, package and final hosted
-acceptance; neither PR is a redundant cleanup item. A02 must demonstrate a
-residual query need. F09/F10/F13/F14 must inventory and compile the existing finite
+R01's [attributed current-4.35 spike](spikes/finite_kernel_category.lean) retains
+its feasibility epoch. Its
+[package successor PR179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179)
+has a separately reviewed 72-resource package port at head
+`787732223f592c0c1ef32cab583e23066b68d63d`.
+Its [PR workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38812190034)
+passed with independently authenticated 2953 Python passes, 20 skips, 91.64%
+coverage, 594 serial passes and five skips, 168 clean native topics, 1883
+resolved declarations with 1752 evidence entries, and a 388-page render with
+all nine defect counters zero. The source-bound, non-skipping consumer test and
+passing serial lane support an execution inference for its ten axiom reports;
+the raw ten reports were not retained.
+
+PR179 remains draft and unmerged. R01 requires C05, whose C03 production-capture
+and C04 local-runtime predecessors remain open; hosted CI does not supply those
+acceptances. PR44 and Issue58 therefore remain open, and neither PR is a
+redundant cleanup item. This port supplies no private DOM diagnosis, H3
+acceptance or controller approval. A02 must demonstrate a residual query need.
+F09/F10/F13/F14 must inventory and compile the existing finite
 MaxEnt/Gibbs, Helmholtz, DirichletCategorical and Euclidean-current theorems
 before adding any construction. Their remaining consumer, discretization and
 semantic obligations

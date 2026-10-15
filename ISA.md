@@ -57,7 +57,7 @@ This assessment covers the standalone repository boundary:
 | --- | --- | --- |
 | ISA-01 | The sealed topic roster and family registry are complete and parity-safe. | Registry/SSOT tests pass; the aggregate generator is deterministic and leaves no diff. |
 | ISA-02 | Offline mode is deterministic and honest. | `uv run fep-lean catalogue` completes, emits reproducible artifacts, and reports `verified_topics: 0`. |
-| ISA-03 | The local Python boundary is reproducible. | `uv sync --locked --extra dev`, `uv pip check`, the coverage gate, and `uv run mypy src` pass. |
+| ISA-03 | The local Python boundary is reproducible. | `uv sync --locked --extra dev`, `uv pip check`, the coverage gate, and the [canonical strict typing gate](AGENTS.md#required-checks) pass. |
 | ISA-04 | The pinned Lean workspace is real, not merely configured. | Direct pinned Lean/Lake version probes, Mathlib cache/build, `lake build FepSketches`, an exact sealed-roster native compile sweep, and the declaration/axiom audit pass. |
 | ISA-05 | Full mode is fail-closed. | Preflight requires Gauss, writable state, exact Lean/Lake/Mathlib, and Hermes credentials; any failure returns an error without a successful report. |
 | ISA-06 | The live full path is end-to-end. | A permitted Hermes provider answers a bounded smoke run, OpenGauss persists and closes sessions, Lean verifies each selected topic, and the report/manifest agree. |
@@ -105,7 +105,7 @@ uv run python scripts/_maint_build_lean_landscape.py --check
 uv run fep-lean atlas --check
 uv run fep-lean dashboard --check
 uv run python docs/pin_audit.py --check-latest
-uv run mypy src
+uv run mypy src scripts docs
 uv run fep-lean setup
 cd lean
 lake build FepSketches
@@ -149,16 +149,20 @@ open in [TODO.md](TODO.md).
 ## Current assessment
 
 The latest accepted integrated checkpoint is
-[`260ea72d7464c6d0eb608dbf98c450963adff34f`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/260ea72d7464c6d0eb608dbf98c450963adff34f).
-Its exact-main [hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38678683906)
-passed all 21 required jobs, including all 15 installed-wheel cells; the
-documentation-only alternative was intentionally skipped. Python acceptance
-retained 2,909 passes, 20 skips, complete 2,929-case membership, both live
-Chrome controls and 91.63% combined coverage. Serial Lean retained 575 passes
+[`f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2).
+Its exact-main [hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071)
+passed all 21 executed jobs, including all 15 installed-wheel cells; the
+documentation-only alternative was intentionally skipped. Its tree is
+identical to the independently reviewed `d1d5403` PR178 head and tested PR
+merge. That [source-bound artifact set](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016)
+retains 2,952 Python passes, 20 skips, complete 2,972-case membership, all eight
+browser/startup controls and 91.64% coverage. Serial Lean retained 588 passes
 and five skips. The Lean/Mathlib 4.35.0 native receipt verified all 168 topics
-without warnings or `sorry`; the audit resolved all 1,875 declarations with
-only the standard approved axioms. Its fresh 388-page render passed all nine
-acceptance counters, with source-bound artifacts retained by that run.
+without warnings or `sorry`; the audit resolved 1,875 declarations with 1,744
+evidence entries and only the standard approved axioms. The actual accepted
+388-page render passed all nine defect counters. These exact-source checks and
+independent reviews qualify the bounded G02/P02/T01/D02/D03 scopes recorded in
+the [changelog](CHANGELOG.md); they do not close the broader G01/D04 scopes.
 
 This checkpoint establishes those source-specific hosted lanes. Production
 seven-stage capture, local runtime/status acceptance and the frozen H3 study
@@ -230,8 +234,8 @@ refresh; native/render receipts are acquired after the final source changes.
 [The slice acceptance criteria](specs/openai-math-methods/INTEGRATION.md) own
 concrete probes and failure cases. Topic count, semantic promotion, unchecked
 upstream proofs and the unopened H3 study are outside this integration.
-At release the model retained 1,946 lexical declarations (`main` now has
-2,185 after the unreleased formal-resource strengthening), twelve upstream source
+At release the model retained 1,946 lexical declarations (live totals belong to
+the [generated coverage inventory](docs/formalism-coverage.md)), twelve upstream source
 statements against 82 locked identities, and 34 comparison rows in 30 authored
 coordinates. Its export has 17 products and thirteen SVGs. Confirmed local
 evidence includes 112 focused mathematical tests, the final 168-topic native
