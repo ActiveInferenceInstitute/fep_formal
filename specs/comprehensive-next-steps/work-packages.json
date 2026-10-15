@@ -698,6 +698,1192 @@
       ],
       "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning audits supply no approval.",
       "out_of_scope": "Assumed optimizer/multiplier certificates or finite attainment at every endpoint."
+    },
+    {
+      "id": "V01",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/50"
+      ],
+      "status": "planned",
+      "outcome": "An optional complete 168-topic strict full-mode report has independently validated current-source provenance.",
+      "depends_on": [],
+      "single_owner": "Existing llm/hermes, gauss, pipeline and output/reporter owners.",
+      "stop_go_spike": "Verify the selected credential/model route privately and establish an enforceable explicitly authorized spend ceiling before any provider execution.",
+      "go_condition": "Secure route, complete topic membership, persistence prerequisites and the specific spend boundary are approved and enforceable.",
+      "no_go_action": "Block V01.route-budget -> V01.full-run when a route or spend ceiling is unavailable; preserve refusal without paid fallback.",
+      "target": "Strict run plus validate_report_receipt(require_complete=True, project_root=...) returning valid, source_bound and claim_ready with no errors.",
+      "positive_witness": "All 168 actual live topic results validate with privately retained provider identity and usage and a safe public summary.",
+      "boundary_result": "Missing credentials, unavailable free route, partial topic selection, stale source and budget exhaustion reject.",
+      "test_surface": [
+        "existing Hermes/Gauss/report tests",
+        "actual bounded strict full-mode execution",
+        "independent report receipt validation"
+      ],
+      "evidence_plane": [
+        "provider/full mode",
+        "persistence"
+      ],
+      "human_review": "Operator approval of the exact route and concrete spend ceiling; independent provider/provenance review.",
+      "out_of_scope": "Secret disclosure, unbounded paid fallback, catalogue/native substitution or route availability as execution evidence."
+    },
+    {
+      "id": "R01",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/58"
+      ],
+      "status": "planned",
+      "outcome": "PR44 has an attributed current-base integration or evidence-backed disposition preserving its substantive mathematical delta.",
+      "depends_on": [
+        "C05"
+      ],
+      "single_owner": "Existing finite-probability/category consumers and formal manifest/maturity/novelty/relation owners; PR44 remains the attributed proposal.",
+      "stop_go_spike": "Read its exact head, inventory already-landed versus new statements and compile a minimal current Lean 4.35 category consumer before selecting ownership.",
+      "go_condition": "Carrier, qualified witnesses, conflict ownership and all six formal-resource facts are reviewed with coordinated source-custody handling.",
+      "no_go_action": "Block R01.current-carrier -> R01.integration for an uncompiled seam, unresolved ownership/conflict or missing domain/custody review; retain the substantive PR.",
+      "target": "A bounded current-base integration brief, followed by warning-free focused/aggregate, axiom and projection acceptance or a precise reviewed disposition.",
+      "positive_witness": "A named finite-kernel composition/identity consumer uses the exact proposed category structure.",
+      "boundary_result": "Superseded hunks are identified separately; dirty merges, guessed roster growth and automatic disposition promotion reject.",
+      "test_surface": [
+        "PR44 exact-head/current-base diff review",
+        "attributed current-pin Lean spike",
+        "formal manifest/projection/declaration and axiom checks"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "source custody"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Blind integration, closing PR44 as legacy cleanup, or publication of an unreviewed new formal owner."
+    },
+    {
+      "id": "C06",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/59"
+      ],
+      "status": "planned",
+      "outcome": "An independent final-source audit resolves all nine original criteria and their semantic/evidence boundaries.",
+      "depends_on": [
+        "C03",
+        "C04",
+        "C05",
+        "H03"
+      ],
+      "single_owner": "specs/comprehensive-science-improvement/PROTOCOL.md and existing requirement, maturity and evidence owners.",
+      "stop_go_spike": "Map every immutable criterion to exact consumed bytes, executed commands and actual receipts without reimplementing accepted mathematics.",
+      "go_condition": "All nine rows have complete applicable local/hosted/native/browser/render/package/study evidence and independent semantic adjudication.",
+      "no_go_action": "Block C06.criterion-map -> C06.final-closure for a missing, historical or substituted gate; retain the unresolved criterion.",
+      "target": "Final audit of truthful installed status, FORM-1 identity/coarsening, FORM-2 support/native information and FORM-3 feasibility/attainment/weak-dual boundaries.",
+      "positive_witness": "Each accepted row names its actual source epoch, positive witness and adverse control.",
+      "boundary_result": "No compilation/synthetic-to-physical or empirical promotion; optional provider and licensed-data lanes remain separate.",
+      "test_surface": [
+        "original nine-criterion requirement audit",
+        "installed status process/byte/mtime controls",
+        "maturity/native/axiom and package/study receipt validation"
+      ],
+      "evidence_plane": [
+        "semantic review",
+        "native",
+        "installed package",
+        "publication",
+        "synthetic"
+      ],
+      "human_review": "Independent nonauthor requirement audit plus the distinct semantic/protocol reviews each criterion requires.",
+      "out_of_scope": "Universal FEP validity, physical heat, general strong duality or empirical calibration inferred from weaker planes."
+    },
+    {
+      "id": "B01",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/61"
+      ],
+      "status": "planned",
+      "outcome": "An actual generated GNN runner executes on an explicitly named isolated source pair with source-bound outputs.",
+      "depends_on": [
+        "C05"
+      ],
+      "single_owner": "Existing bridge operations, runner-comparison and source-custody owners; active sibling work remains untouched.",
+      "stop_go_spike": "Select an isolated named pair and review bounded runtime/input/output/tool-version and custody contracts before running the generated code.",
+      "go_condition": "The exact pair, execution boundary, positive input and adverse controls are approved and available.",
+      "no_go_action": "Block B01.named-pair -> B01.runner-acceptance while the pair/runtime/custody protocol is unspecified or controls fail.",
+      "target": "Actual runner output/tool versions bound to both owner-byte sets, followed by strict numerical comparison receipts.",
+      "positive_witness": "Generated-runner output on the selected valid input matches the reviewed comparison convention.",
+      "boundary_result": "Malformed, missing, stale and replaced members reject; static Q7 acceptance never substitutes for execution.",
+      "test_surface": [
+        "existing bridge operations/custody/comparison tests",
+        "actual isolated generated-runner execution",
+        "positive/malformed/missing/stale/replacement controls"
+      ],
+      "evidence_plane": [
+        "generated-runner execution",
+        "numerical",
+        "source custody"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Mutating the active GNN checkout, broad sibling repair, historical Q5/Q6 promotion or conflating numerical output with native proof."
+    },
+    {
+      "id": "O01",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/62"
+      ],
+      "status": "planned",
+      "outcome": "One concise operator contract table matches current parser/API/installed-help behavior.",
+      "depends_on": [
+        "C04",
+        "C05"
+      ],
+      "single_owner": "Existing CLI, docs/api.md and docs/development.md; no second readiness owner.",
+      "stop_go_spike": "Compare status, preflight, verify, bridge and publication-capture inputs, mutation/process effects, support and exit meanings against actual signatures/help.",
+      "go_condition": "Each documented state leads to a concrete action and omitted sibling comparisons are explicitly unverified.",
+      "no_go_action": "Block O01.contract-table -> O01.closure for a parser/help/state mismatch; change behavior only in a separately bounded reviewed patch.",
+      "target": "Existing command contracts including additive preflight JSON, exit-zero report composition and POSIX-only strict capture.",
+      "positive_witness": "Installed examples use real supported options and distinguish current runtime acceptance from static readiness.",
+      "boundary_result": "Missing checkout, omitted sibling, stale receipt and unsupported capture platform remain distinct without acquisition/providers/subprocesses during status.",
+      "test_surface": [
+        "tests/test_cli.py",
+        "tests/test_status_verb.py",
+        "installed help/API comparison",
+        "strict Markdown checks"
+      ],
+      "evidence_plane": [
+        "documentation",
+        "API",
+        "installed package"
+      ],
+      "human_review": "Operator review of next actions and independent API review for any behavioral change.",
+      "out_of_scope": "Status repairing evidence, collecting tests, loading credentials or changing validator policy."
+    },
+    {
+      "id": "O02",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/73"
+      ],
+      "status": "planned",
+      "outcome": "Public configuration defaults and precedence have one verified interpretation in existing owners.",
+      "depends_on": [
+        "C05"
+      ],
+      "single_owner": "Existing CLI/settings/provider/output owners and docs/configuration.md.",
+      "stop_go_spike": "Inventory actual options/defaults/precedence for catalogue/status/verify/bridge/run/render/capture and demonstrate a gap before consolidation.",
+      "go_condition": "The inventory matches parser/settings behavior and every proposed behavioral change has a bounded compatibility contract.",
+      "no_go_action": "Block O02.defaults-inventory -> O02.behavior-change for an unproven gap or cycle; publish accurate prose alone when behavior is already correct.",
+      "target": "One operator table for environment/CLI precedence, empty filters, output roots and unsupported options; thin orchestration.",
+      "positive_witness": "A real conflicting environment/CLI input resolves according to the documented owner.",
+      "boundary_result": "Empty filters and unsupported options fail meaningfully; offline inspection remains process/provider-free without silent credential loading.",
+      "test_surface": [
+        "tests/test_cli.py",
+        "tests/test_environment_checks.py",
+        "configuration/API examples and strict Markdown checks"
+      ],
+      "evidence_plane": [
+        "API",
+        "documentation"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "A parallel configuration registry, global runtime override or unreviewed owner growth."
+    },
+    {
+      "id": "C07",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/66"
+      ],
+      "status": "planned",
+      "outcome": "Windows capture achieves equivalent handle custody and descendant containment or retains an explicit supported-scope no-go.",
+      "depends_on": [
+        "C03",
+        "C04",
+        "C05"
+      ],
+      "single_owner": "Existing output/fsutil, release_bundle and verification subprocess owners.",
+      "stop_go_spike": "Independently review a real Windows handle-relative no-follow and process-containment spike before enabling any execution.",
+      "go_condition": "Owned handles and containment demonstrate equivalent source/output membership, decreasing deadlines and writer closure.",
+      "no_go_action": "Block C07.handle-containment -> C07.Windows-capture on an unsupported filesystem or missing containment guarantee; retain pre-execution refusal.",
+      "target": "The same capture plan/journal/validator API, a real seven-stage Windows capture and two identical independently valid archives.",
+      "positive_witness": "Actual Windows runtime and installed/archive validation pass on the advertised matrix.",
+      "boundary_result": "Reparse/junction/ancestor swaps, streams/aliases/case collisions, sharing failures, interrupted writes and inherited/timeout descendants reject and leave no owned process.",
+      "test_surface": [
+        "tests/test_fsutil.py",
+        "tests/test_release_bundle.py",
+        "real Windows custody/descendant adversarial controls",
+        "actual Windows capture/archive acceptance"
+      ],
+      "evidence_plane": [
+        "runtime",
+        "source custody",
+        "publication"
+      ],
+      "human_review": "Fresh independent Windows security/infrastructure and process-supervision review before enabling execution.",
+      "out_of_scope": "Treating Windows imports/help as capture acceptance, relaxing validators, or success sentinels on unsupported hosts."
+    },
+    {
+      "id": "C08",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/67"
+      ],
+      "status": "planned",
+      "outcome": "Measured incremental capture reuses only validated immutable work within explicit owned resource budgets.",
+      "depends_on": [
+        "C03",
+        "A01"
+      ],
+      "single_owner": "Existing release_bundle plan/journal, strict validators and process supervisor.",
+      "stop_go_spike": "Measure a full capture, unchanged resume and one isolated input edit under the same policies; identify actual redundant work/resource leakage.",
+      "go_condition": "Strict reused-stage checks and fresh/resumed evidence equivalence hold with one decreasing deadline and exclusive attempts.",
+      "no_go_action": "Block C08.measured-reuse -> C08.rollout when an optimization weakens custody, hides failure or changes frozen-cycle budgets.",
+      "target": "Dependency reasons for reuse/invalidation, measured stage/time/resource peaks and identity-bound cleanup only after demonstrable writer closure.",
+      "positive_witness": "Fresh and resumed captures independently validate equivalent final evidence and archive bytes.",
+      "boundary_result": "Membership/restored-mtime/template/pin changes, killed relatives, partial journals, low storage and concurrent writers reject or invalidate exact descendants.",
+      "test_surface": [
+        "tests/test_release_bundle.py",
+        "real-child lifecycle/resume controls",
+        "full/resume/one-edit measurements and archive parity"
+      ],
+      "evidence_plane": [
+        "runtime",
+        "source custody",
+        "performance"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Cleanup by PID/path alone, deletion of shared caches/history, or speedup claims without measurements."
+    },
+    {
+      "id": "F08",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/70"
+      ],
+      "status": "planned",
+      "outcome": "A fixed-truth continuous static-latent posterior has derived consistency on an explicit infinite observation law.",
+      "depends_on": [
+        "H03"
+      ],
+      "single_owner": "Existing posterior_convergence.lean and a justified existing composition consumer.",
+      "stop_go_spike": "After H3 acceptance, bind finite prefixes of a conditionally iid Gaussian trajectory to the existing native posterior with identical units/orientation.",
+      "go_condition": "The probability law, positive prior/noise assumptions and native-prefix identity compile on the unchanged pin.",
+      "no_go_action": "Block F08.prefix-native-law -> F08.fixed-truth-consistency if the prefix/sufficiency seam fails; keep joint-law H3 results at their original scope.",
+      "target": "For each scalar truth, posterior mean consistency and variance collapse; almost-sure claims require an actual strong-law proof.",
+      "positive_witness": "Two distinct fixed truths with valid prior support recover the derived posterior behavior.",
+      "boundary_result": "No-information and excluded-noise cases retain their failed premises; wrong positive noise variance does not by itself imply point inconsistency.",
+      "test_surface": [
+        "posterior-convergence and Gaussian-filter focused consumers",
+        "infinite-prefix/native equality spike",
+        "warning-free native/axiom audit"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "semantic review"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "General hidden-state identifiability, OU sequential filtering, empirical calibration or changes to the frozen H3 claim matrix/seeds."
+    },
+    {
+      "id": "D01",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/74"
+      ],
+      "status": "planned",
+      "outcome": "Demonstrated offline accessibility/interpretation gaps are resolved through shared mathematical projection models.",
+      "depends_on": [
+        "C05",
+        "H03"
+      ],
+      "single_owner": "Existing atlas/dashboard/manuscript/browser owners and authored relation model.",
+      "stop_go_spike": "Identify an actual keyboard, text-alternative or interpretation failure in existing SVG/HTML/PDF before adding a visual enhancement.",
+      "go_condition": "The change preserves exact values/theorem/assumption/relation links and deterministic offline output.",
+      "no_go_action": "Block D01.demonstrated-gap -> D01.visual-acceptance if keyboard/text parity, offline behavior or source-bound render acceptance fails.",
+      "target": "Accessible labels/navigation and reproducible explanatory figures with real browser and font/PDF acceptance.",
+      "positive_witness": "Keyboard-only use and offline text/export alternatives expose the same exact content.",
+      "boundary_result": "External asset/network attempts, altered text values, stale screenshots and proof-like readings of numerical explanations reject.",
+      "test_surface": [
+        "tests/test_formalism_atlas.py",
+        "tests/test_numerical_witnesses.py",
+        "tests/test_browser_capture.py",
+        "render/font/freshness checks and real keyboard controls"
+      ],
+      "evidence_plane": [
+        "browser",
+        "publication",
+        "numerical"
+      ],
+      "human_review": "Independent accessibility/operator and scientific interpretation review.",
+      "out_of_scope": "Invented H3 figures, new mathematical data registries or treating explanatory visuals as proofs."
+    },
+    {
+      "id": "E01",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/77"
+      ],
+      "status": "planned",
+      "outcome": "A future empirical lane has licensed measurements and its own approved pre-outcome protocol, or a retained governed no-go.",
+      "depends_on": [
+        "H03"
+      ],
+      "single_owner": "Named data/domain owner and existing study/acquisition/claim owners.",
+      "stop_go_spike": "Verify real data license, provenance, units, sampling/access, interventions and held-out split before any transfer or acquisition.",
+      "go_condition": "Data-owner/statistical approval and an immutable separately reviewed protocol bind identifiable measurements to the exact mathematical carrier.",
+      "no_go_action": "Block E01.licensed-data-protocol -> E01.acquisition-analysis when any license/access/protocol/spend gate is missing; retain a documented no-go.",
+      "target": "Authorized reproducible acquisition and protocol-faithful held-out analysis with outcome-bound null/no-go claims.",
+      "positive_witness": "One licensed named dataset yields reproducible measurements under its preregistered split.",
+      "boundary_result": "Missing permission, ambiguous units, leakage, unidentifiable measurements and unapproved spending cannot unlock empirical claims.",
+      "test_surface": [
+        "license/provenance/access review",
+        "separate protocol and acquisition validation",
+        "held-out analysis and independent claim review"
+      ],
+      "evidence_plane": [
+        "empirical"
+      ],
+      "human_review": "Independent statistical reviewer and named data/domain owner; explicit transfer/access/spend authorization where required.",
+      "out_of_scope": "Invented data, private transfer without authorization, synthetic-to-empirical promotion or editing the current frozen H3 study."
+    },
+    {
+      "id": "F09",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/85"
+      ],
+      "status": "planned",
+      "outcome": "Existing finite maximum-entropy and constrained-Gibbs results receive exact current-source acceptance, with only demonstrated residual general-constraint, reduction or semantic work added.",
+      "depends_on": [
+        "S01"
+      ],
+      "single_owner": "Existing finite_information.lean entropy results, variational_duality.lean energy-Gibbs results and core thermodynamics/information consumers.",
+      "stop_go_spike": "Inventory entropy_le_log_card, entropy_eq_log_card_iff, energyGibbs_maxEntropy, energyGibbs_entropy_lt_of_ne and existing Boolean witnesses; compile qualified current-owner consumers before proposing any new construction or constraint/multiplier extension.",
+      "go_condition": "The delivered nonempty finite-law entropy bound/equality and supplied-beta mean-energy-matched Gibbs theorem compile under their actual assumptions; independent review identifies any residual general-constraint, fep030 reduction or 030/031 relation obligation.",
+      "no_go_action": "Block F09.current-owner-consumers -> F09.reduction-semantic-closure without current native/axiom/domain evidence; stage any prescribed-energy multiplier-existence extension separately instead of assuming it or reconstructing delivered mathematics.",
+      "target": "Reuse the existing H(p)<=log(card State) equality characterization and unique energyGibbs_maxEntropy result for laws matching that Gibbs law\u2019s mean energy; qualify only demonstrated residual consumers/relations, with prescribed-energy beta existence a separately reviewed scope.",
+      "positive_witness": "Consume the existing nonuniform entropy gap and boolBiased_entropy_lt_zeroEnergyGibbs strict feasible Boolean witness rather than construct another copy.",
+      "boundary_result": "Retain actual nonempty/support assumptions and strict off-Gibbs witnesses; a theorem supplied with beta does not establish a finite beta for every prescribed or boundary mean energy.",
+      "test_surface": [
+        "tests/test_measure_variational_formalisms.py",
+        "qualified existing finite-entropy/Gibbs and fep030 consumers",
+        "current native/axiom receipts and independent 030/031 semantic relation review"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "semantic review"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "A duplicate finite MaxEnt/Gibbs construction, automatic closure or maturity promotion from source inventory, or unproved multiplier existence for arbitrary prescribed/boundary constraints."
+    },
+    {
+      "id": "F10",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/86"
+      ],
+      "status": "planned",
+      "outcome": "Existing finite Helmholtz decomposition/minimum/derivative theorems receive exact current-source acceptance, with only demonstrated residual catalogue or relation work added.",
+      "depends_on": [
+        "S01"
+      ],
+      "single_owner": "Existing core_thermodynamics.py, variational_duality.lean and FEP158 reduction consumers.",
+      "stop_go_spike": "Inventory helmholtz_decomposition, helmholtzFreeEnergy_le, helmholtzFreeEnergy_eq_iff, hasDerivAt_helmholtzFreeEnergy and the Boolean witnesses already in variational_duality.lean; compile qualified current-owner consumers before proposing any new construction.",
+      "go_condition": "Existing results compile on the same nonempty finite-law carrier with fixed finite energies and T>0; independent domain review identifies any actual remaining catalogue/FEP158 or 013/002 relation obligation.",
+      "no_go_action": "Block F10.current-owner-consumers -> F10.catalogue-relation-closure without exact current native/axiom and domain evidence; preserve the delivered theorems and abstract fep013 statement rather than reconstruct or promote them.",
+      "target": "Qualify and reuse the existing KL-gap identity, unique Gibbs variational minimum and HasDerivAt temperature theorem on FiniteLaw; resolve only demonstrated fep013/FEP158 consumer or 013/002 relation gaps under compatibility review.",
+      "positive_witness": "Consume the existing helmholtzPartition_bool and helmholtz_bool_uniform_gt two-level witnesses together with the exact minimum and derivative statements.",
+      "boundary_result": "Zero/nonpositive temperature and changed energy conventions remain separately excluded or proved limiting cases.",
+      "test_surface": [
+        "tests/test_measure_variational_formalisms.py",
+        "qualified existing Helmholtz and thermodynamic/FEP158 consumers",
+        "current native/axiom receipts and independent 013/002 semantic relation review"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "semantic review"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "A duplicate Helmholtz construction, automatic closure from source inventory, physical/variational identification without reviewed units, or primary/disposition promotion without current native and domain evidence."
+    },
+    {
+      "id": "F11",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/93"
+      ],
+      "status": "planned",
+      "outcome": "Sum-product on a finite rooted tree computes the exact normalized marginal.",
+      "depends_on": [
+        "S01"
+      ],
+      "single_owner": "Existing active_inference.lean/finite_probability.lean and core_active_inference.py; a new resource requires the research contract six-fact review before implementation.",
+      "stop_go_spike": "Compile leaf elimination for a three-node tree with nonnegative potentials and positive partition function on arbitrary finite alphabets.",
+      "go_condition": "The factorization, message normalization and exact marginal equality use the same generative joint.",
+      "no_go_action": "Block F11.leaf-elimination -> F11.tree-correctness if normalization or tree induction fails; keep existing Fin8/Fin7 statements separately scoped.",
+      "target": "Generic finite-tree correctness with HMM forward-backward as a chain instance and reviewed 034/047 endpoint identification.",
+      "positive_witness": "A three-node example agrees with brute-force marginalization.",
+      "boundary_result": "A nondegenerate loopy three-cycle defeats the tree conclusion; zero normalizer and negative-potential inputs remain explicit failures.",
+      "test_surface": [
+        "tests/test_control_temporal_formalisms.py",
+        "new bounded tree/chain and loopy countermodel consumers",
+        "relation/native/axiom checks"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "numerical explanation"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Loopy-BP convergence, new topic IDs or new Python/script owners without coordinated provenance refresh."
+    },
+    {
+      "id": "F12",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/94"
+      ],
+      "status": "planned",
+      "outcome": "Sophisticated and policy-tree recursions use one Bayes-sound generative belief update.",
+      "depends_on": [
+        "F05",
+        "S01"
+      ],
+      "single_owner": "Existing controlled_markov.lean and policy_tree.lean.",
+      "stop_go_spike": "Instantiate the actual reachable-belief model with filteredBelief and compile the generative conditional-law identity.",
+      "go_condition": "Observation support, reachable beliefs and horizon costs are shared rather than assuming that an arbitrary update is Bayesian.",
+      "no_go_action": "Block F12.filteredBelief-identity -> F12.POMDP-optimum if generative/update agreement fails; retain the authored-update theorem unchanged.",
+      "target": "Agreement between sophisticated recursion, EFEPolicyTreeModel and the reachable-belief POMDP optimum on the reviewed finite horizon.",
+      "positive_witness": "Re-derive the fep134 Boolean witness through filteredBelief.",
+      "boundary_result": "A non-Bayesian update countermodel and zero-likelihood observation boundary prevent automatic Bayes interpretation.",
+      "test_surface": [
+        "tests/test_control_temporal_formalisms.py",
+        "tests/test_risk_policy_tree_formalisms.py",
+        "filteredBelief/Boolean and countermodel native consumers"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "semantic review"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Universal EFE/risk equivalence, assumed Bayesian update or unreviewed 071 invariant promotion."
+    },
+    {
+      "id": "F13",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/95"
+      ],
+      "status": "planned",
+      "outcome": "The existing Dirichlet-categorical count-level seam receives exact acceptance and only demonstrated residual extensions.",
+      "depends_on": [
+        "S01"
+      ],
+      "single_owner": "Existing empirical_risk.lean DirichletCategorical section and learning-theory/body consumers.",
+      "stop_go_spike": "Inventory the already delivered rising-factorial, Polya predictive, exchangeability and row-learning declarations against every issue95 clause before adding code.",
+      "go_condition": "Current qualified consumers establish count-level conjugacy and identify any genuinely missing A/B or catalogue reduction.",
+      "no_go_action": "Block F13.count-conjugacy -> F13.measure-stage while a separate pinned-library digamma/Dirichlet-measure probe has not passed; do not duplicate the existing owner.",
+      "target": "Stage 1 exact binary fep045 and alpha=1 fep121 recovery, exchangeability and normalized learned A/B rows; stage 2 is separately gated.",
+      "positive_witness": "K=2 and unit pseudocount consumers recover the released formulas exactly.",
+      "boundary_result": "Invalid/zero total pseudocount and impossible rows reject; count-level results do not imply a continuous Dirichlet density or variational update.",
+      "test_surface": [
+        "tests/test_collective_learning_formalisms.py",
+        "tests/test_risk_policy_tree_formalisms.py",
+        "existing DirichletCategorical consumers and native/axiom audit"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "semantic review"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Repeating the stale claim that no Dirichlet Lean exists, automatic issue closure, or measure/digamma claims without a library feasibility gate."
+    },
+    {
+      "id": "F14",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/98"
+      ],
+      "status": "planned",
+      "outcome": "Existing Euclidean current identities receive exact current-source acceptance, with the actual remaining fep163 discretization or semantic obligation isolated before any extension.",
+      "depends_on": [
+        "S01"
+      ],
+      "single_owner": "Existing ness_flow.lean and geometric_mechanics.lean.",
+      "stop_go_spike": "Inventory probCurrent_eq, qGradient_orthogonal, divergence_probCurrent_eq_zero, fpRate_eq_zero and the Gaussian/non-skew witnesses already in ness_flow.lean; compile qualified existing-owner consumers, then identify the precise missing fep163 discretization clause before any new construction.",
+      "go_condition": "Current results compile under their actual differentiability/skew assumptions and current sign conventions; domain review distinguishes arbitrary-constant-Gamma algebra from a symmetric-PSD diffusion interpretation and specifies any genuinely missing discretization target.",
+      "no_go_action": "Block F14.current-owner-consumers -> F14.discretization-semantic-closure without current native/axiom/domain evidence or a precise proved discretization relation; retain existing Euclidean and finite-difference theorems at their accepted scopes.",
+      "target": "Reuse the current Fin n Euclidean J=-p Q grad F, skew orthogonality, divergence-zero and fpRate-zero proofs; prove only a demonstrated missing relation to the selected fep163 finite-difference carrier and review its interpretation.",
+      "positive_witness": "Consume existing rotation_current_ne_zero_divergence_zero on the two-dimensional Gaussian with nonzero circulation; reuse its carrier rather than construct another witness.",
+      "boundary_result": "Retain existing nonSkew_divergence_ne_zero; missing regularity does not permit invoking the C2 theorem, and a finite difference is not identified with a derivative without the explicit bridge.",
+      "test_surface": [
+        "qualified existing NESS/geometric-mechanics current consumers",
+        "existing Gaussian/non-skew witnesses and any demonstrated discretization consumer",
+        "current native/axiom receipts and independent semantic review"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "semantic review"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "A duplicate Euclidean-current construction, automatic closure from source inspection, SDE/path-process existence, measured dissipation or an unproved finite-difference/derivative identification."
+    },
+    {
+      "id": "L04",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/102"
+      ],
+      "status": "planned",
+      "outcome": "H3 composition proof structure is factored without heartbeat overrides or public-declaration drift.",
+      "depends_on": [
+        "H01"
+      ],
+      "single_owner": "Existing compositions/h3_case_study.lean and specifically reviewed leaves; all six manifest/namespace facts precede any new Lean resource.",
+      "stop_go_spike": "After the prerequisite H01 epoch, isolate the Gaussian-integrability proof into named lemmas and compile it under default heartbeat limits.",
+      "go_condition": "The proof compiles without set_option and all released qualified declarations and exact owners remain accounted for.",
+      "no_go_action": "Block L04.integrability-factor -> L04.export-closure if default limits, signatures or reviewed source custody fail; preserve original frozen evidence.",
+      "target": "Reviewed re-exporting aggregate/leaves with no set_option in the formal tree and a fresh successor export for the changed bytes.",
+      "positive_witness": "An unchanged public H3 consumer and complete role export resolve after factoring.",
+      "boundary_result": "Missing exports, stale role/source hashes, altered axioms or an implicit reseal reject before primary execution.",
+      "test_surface": [
+        "tests/test_h3_case_study.py",
+        "H3 manifest/export/source-custody checks",
+        "focused and aggregate native/axiom acceptance"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "source custody"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Rewriting historical H3 freezes, treating the predecessor export as current after edits, or repeating the sole primary."
+    },
+    {
+      "id": "S02",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/103"
+      ],
+      "status": "planned",
+      "outcome": "Reviewed derivational edges cover the issue target without inventing relationships.",
+      "depends_on": [
+        "S01"
+      ],
+      "single_owner": "Existing config/formalism_relations.yaml and endpoint-adjudication document.",
+      "stop_go_spike": "Review actual endpoint statements family by family and compile one qualified derivation/identification before adding its edge.",
+      "go_condition": "Each proposed formal edge names a real consumed endpoint theorem and independently reviewed assumptions.",
+      "no_go_action": "Block S02.endpoint-witness -> S02.coverage-closure for a missing derivation; retain an honest conceptual/blocker relation rather than satisfy counts artificially.",
+      "target": "At most six families without a formal edge, using only genuine derivations and explicit endpoint-qualification notes.",
+      "positive_witness": "A previously uncovered family gains a checked qualified formal witness.",
+      "boundary_result": "Shared imports, theorem names, numerical agreement and mismatched conventions do not justify a formal edge.",
+      "test_surface": [
+        "tests/test_formalism_relations.py",
+        "tests/test_formalism_coverage.py",
+        "endpoint adjudication and native witness/axiom checks"
+      ],
+      "evidence_plane": [
+        "semantic review",
+        "formal",
+        "native"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Automatic semantic promotion, new topic IDs or count-driven fabricated edges."
+    },
+    {
+      "id": "S03",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/104"
+      ],
+      "status": "planned",
+      "outcome": "Pairing witnesses are retagged only where exact endpoint specialization or refinement is proved.",
+      "depends_on": [],
+      "single_owner": "Existing formalism_relations.yaml and its reviewed endpoint notes.",
+      "stop_go_spike": "Inventory the seven named specializes/refines/extends/bounds witnesses and inspect the actual theorem types and endpoint conventions.",
+      "go_condition": "Independent review establishes which witnesses genuinely consume an endpoint theorem rather than pair independent facts.",
+      "no_go_action": "Block S03.witness-review -> S03.retag for a non-implication or unmatched convention; preserve its pairing rationale.",
+      "target": "At least22 genuine formal edges with notes naming consumed endpoint theorems; retain pairings where conventions are not identified.",
+      "positive_witness": "One genuine specialization is witnessed by the exact qualified declaration and accepted as formal.",
+      "boundary_result": "A similarly named witness lacking endpoint identification remains a pairing.",
+      "test_surface": [
+        "tests/test_formalism_relations.py",
+        "endpoint-witness and projection review",
+        "native/axiom resolution of retagged witnesses"
+      ],
+      "evidence_plane": [
+        "semantic review",
+        "formal",
+        "native"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Retagging by name/count alone or presenting a pairing as an implication."
+    },
+    {
+      "id": "S04",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/105"
+      ],
+      "status": "planned",
+      "outcome": "Conceptual relations carry explicit missing obligations and one selected tree relation receives a proved pairing.",
+      "depends_on": [
+        "F11"
+      ],
+      "single_owner": "Existing relation schema/config and atlas projection owners.",
+      "stop_go_spike": "Specify blocked_by as required for conceptual edges while retaining the distinct existing blocker-edge kind; demonstrate deterministic atlas rendering.",
+      "go_condition": "Schema/API review distinguishes proof obligations from capability blockers and an accepted F11 witness supports the selected conversion.",
+      "no_go_action": "Block S04.obligation-schema -> S04.pairing-closure without a qualified accepted 034/047 witness; do not erase the obligation to satisfy the target.",
+      "target": "Every conceptual edge has a missing carrier lemma/Issue obligation; select the 034/047 conversion route through F11 for terminal acceptance.",
+      "positive_witness": "A conceptual edge renders its actual unresolved obligation; the tree witness justifies one reviewed pairing conversion.",
+      "boundary_result": "Missing/unknown obligation fields reject and imports/proximity do not become theorem relations.",
+      "test_surface": [
+        "tests/test_formalism_relations.py",
+        "tests/test_formalism_atlas.py",
+        "schema negatives, owner regeneration and pairing witness review"
+      ],
+      "evidence_plane": [
+        "semantic projection",
+        "browser",
+        "formal"
+      ],
+      "human_review": "Independent schema/API and semantic endpoint review; theorem quorum applies to any new terminal proof.",
+      "out_of_scope": "A second relation registry, hand-edited projections or converting an unproved conceptual edge."
+    },
+    {
+      "id": "N01",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/107"
+      ],
+      "status": "planned",
+      "outcome": "Core-family numerical explanations use shared helpers and meet the reviewed witness target.",
+      "depends_on": [
+        "D01"
+      ],
+      "single_owner": "Existing verification/numerical_witnesses.py and shared dashboard/methods helpers.",
+      "stop_go_spike": "Inventory current core-topic coverage and demonstrate a missing VFE/EFE/Fisher explanation before adding or deduplicating a witness.",
+      "go_condition": "Named exact values, source-theorem/assumption links and boundary controls are reviewed in the existing witness owner.",
+      "no_go_action": "Block N01.named-witness -> N01.dashboard-closure if numerical values, text alternatives or deterministic projection drift.",
+      "target": "At least22 catalogue witnesses with VFE-gap, EFE-decomposition and Fisher-metric core examples; remove only proved duplicate matrix helpers.",
+      "positive_witness": "A nontrivial core-topic witness produces matching numerical and accessible text/dashboard values.",
+      "boundary_result": "Invalid inputs, singular metrics and misleading proof labels reject; historical count assumptions are remeasured.",
+      "test_surface": [
+        "tests/test_numerical_witnesses.py",
+        "tests/test_horizon_numerical_witnesses.py",
+        "dashboard --check and deterministic text/projection controls"
+      ],
+      "evidence_plane": [
+        "numerical",
+        "publication"
+      ],
+      "human_review": "Independent numerical/domain and accessibility review.",
+      "out_of_scope": "Numerical proof or empirical validity, another witness registry, or new production owners without provenance review."
+    },
+    {
+      "id": "L05",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/110"
+      ],
+      "status": "planned",
+      "outcome": "The finite/native KL bridge has reviewed intrinsic ownership and an FEP-independent upstream draft.",
+      "depends_on": [],
+      "single_owner": "Existing finite_information.lean and decision_risk.lean; upstream candidate stays slice-local until accepted ownership is settled.",
+      "stop_go_spike": "Check the current pinned/upstream Mathlib API, then compile the weighted-Dirac Fintype corollary with Mathlib imports only.",
+      "go_condition": "Support/orientation/extended-value assumptions are explicit and released project consumers keep their exact qualified contract.",
+      "no_go_action": "Block L05.Mathlib-only-bridge -> L05.upstream-draft if a project namespace/type or unproved support premise remains; upstream submission stays a maintainer decision.",
+      "target": "A Fintype weighted-Dirac klDiv/finite-sum bridge with no FEP namespace, plus a reviewed ownership migration beside finiteKL.",
+      "positive_witness": "A supported asymmetric Boolean pair verifies KL orientation; zero atoms have explicit extended-value cases.",
+      "boundary_result": "Singular positive-versus-zero mass cannot be silently converted to finite real KL.",
+      "test_surface": [
+        "tests/test_horizon1_decision_risk.py",
+        "tests/test_native_blanket_formalisms.py",
+        "Mathlib-only compile and unchanged project-consumer/axiom checks"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "upstream feasibility"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Automatic upstream submission, loss of public declarations or erasing native infinite KL."
+    },
+    {
+      "id": "L06",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/111"
+      ],
+      "status": "planned",
+      "outcome": "An FEP-independent measure-level Donsker-Varadhan inequality is derived with explicit integrability/support assumptions.",
+      "depends_on": [],
+      "single_owner": "Existing variational_duality.lean and exponential_family.lean; FEP-independent candidates remain slice-local until ownership review.",
+      "stop_go_spike": "Probe pinned/current Measure.tilted, klDiv and cgf APIs and separate already available results from missing reusable lemmas.",
+      "go_condition": "The measure-theoretic entropy/exponential-normalizer inequality compiles without FEP types or assumed duality.",
+      "no_go_action": "Block L06.tilt-integrability -> L06.measure-DV if the law/support/integrability seam fails; retain a precise upstream prerequisite/no-go.",
+      "target": "Probability-measure DV inequality with the exact finite exponential normalizer and native extended KL; score/Fisher facts are separately scoped candidates.",
+      "positive_witness": "A bounded nonconstant tilt attains the correctly oriented inequality under its stated hypotheses.",
+      "boundary_result": "Singular laws and nonintegrable/exploding normalizers preserve extended-value or explicit exclusion boundaries.",
+      "test_surface": [
+        "tests/test_measure_variational_formalisms.py",
+        "exponential-family focused consumers",
+        "Mathlib-only measure probe and axiom review"
+      ],
+      "evidence_plane": [
+        "formal",
+        "native",
+        "upstream feasibility"
+      ],
+      "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
+      "out_of_scope": "Assumed equality, automatic exponential-family or empirical extrapolation, or upstream submission without a maintainer decision."
+    },
+    {
+      "id": "G02",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/113"
+      ],
+      "status": "planned",
+      "outcome": "Every tracked pytest-tmp evidence copy is either safely deduplicated under its owner contract or explicitly documented as retained.",
+      "depends_on": [],
+      "single_owner": "Maintained evidence inventory outside immutable specs/evidence trees; original evidence and H2 validators remain unchanged.",
+      "stop_go_spike": "Read-only inventory of the eight cited copies and every hash/link/validator consumer before considering any retirement.",
+      "go_condition": "Each file has a documented custody decision; documentation alone is valid acceptance when immutable evidence must remain.",
+      "no_go_action": "Block G02.hash-custody-inventory -> G02.deduplication for any receipt-bound or contract-immutable bytes; document the exception without rewriting evidence.",
+      "target": "Fewer eligible copies or an explicit retained exception for every copy, with the H2 terminal validator still passing.",
+      "positive_witness": "A reader can trace each retained copy to its historical owner/receipt and understand why it remains.",
+      "boundary_result": "Near-identical text is not byte equivalence or deletion authorization; hash-bound copies remain untouched.",
+      "test_surface": [
+        "read-only hash/link consumer inventory",
+        "H2 terminal validator",
+        "strict links for the maintained exception inventory"
+      ],
+      "evidence_plane": [
+        "source custody",
+        "documentation"
+      ],
+      "human_review": "Independent evidence-custody review; any deletion requires owner-specific authorization and identity-bound scope.",
+      "out_of_scope": "Broad cleanup, deleting cited failures or editing closed evidence/receipt bytes."
+    },
+    {
+      "id": "P02",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/115"
+      ],
+      "status": "in_progress",
+      "outcome": "Only demonstrated dead private code is removed without changing public behavior.",
+      "depends_on": [],
+      "single_owner": "Existing verification/lean_verifier.py, verification/environment.py and verification/gnn_julia_artifact_proof.py; the Q6 generator owns its current manifest.",
+      "stop_go_spike": "Inventory AST definitions and all literal/dynamic/test callers of the issue-named helpers before proposing deletion.",
+      "go_condition": "Only candidates proven unused across actual source/test/dynamic callers are removed; existing tests already use _check_python_stack directly.",
+      "no_go_action": "Block P02.caller-inventory -> P02.deletion for unresolved dynamic/public consumers; retain the helper with a documented caller.",
+      "target": "Remove confirmed dead private names; regenerate the current Q6 extractor pin without changing probe bytes or historical receipts, and schedule current-source acceptance.",
+      "positive_witness": "The surviving environment and Lean-verifier consumers produce identical results.",
+      "boundary_result": "Name absence or a zero graph result alone does not authorize deletion; imported/dynamic users remain protected.",
+      "test_surface": [
+        "tests/test_environment_checks.py",
+        "tests/test_environment_sad_paths.py",
+        "verification caller/AST audit",
+        "Ruff/mypy and affected tests",
+        "tests/test_gnn_julia_artifact_proof.py and exact strict-JSON rejection reasons",
+        "specs/gnn-bridge-q6-activeinference-artifact/generate_probe.py --check"
+      ],
+      "evidence_plane": [
+        "API",
+        "source custody"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Public import removal, speculative dead-code deletion or silent old-receipt rebinding."
+    },
+    {
+      "id": "P03",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/118"
+      ],
+      "status": "planned",
+      "outcome": "Equivalent atomic-write/hash/strict-JSON behavior has one existing owner per semantic contract.",
+      "depends_on": [],
+      "single_owner": "Existing output/fsutil.py and verification/_jsonutil.py plus their callers.",
+      "stop_go_spike": "Compare every helper copy for encoding, duplicate-key/nonfinite handling, permissions, durability and failure cleanup before migrating one caller.",
+      "go_condition": "Only truly identical semantics migrate; deliberate differences have explicit retained exceptions.",
+      "no_go_action": "Block P03.semantic-equivalence -> P03.caller-migration if atomicity, custody, strictness or failure cleanup differs.",
+      "target": "mkstemp/os.replace occur only in fsutil or documented justified exceptions; SHA/strict-JSON callers reuse the right existing contract.",
+      "positive_witness": "Real file replacement and strict valid JSON retain exact output bytes and behavior after migration.",
+      "boundary_result": "Duplicate/nonfinite/malformed JSON, interrupted writes and permission/replace failures remain fail-closed.",
+      "test_surface": [
+        "tests/test_fsutil.py",
+        "tests/test_release_bundle.py",
+        "existing JSON/evidence adverse controls",
+        "caller and exact-output review"
+      ],
+      "evidence_plane": [
+        "API",
+        "filesystem",
+        "source custody"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "A generic helper that weakens caller guarantees, new production modules without roster review or unreviewed immutable evidence changes."
+    },
+    {
+      "id": "P04",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/119"
+      ],
+      "status": "planned",
+      "outcome": "Every CLI verb has the same tested failure schema and pinned GNN exceptions join the existing error taxonomy.",
+      "depends_on": [
+        "O01"
+      ],
+      "single_owner": "Existing _paths.py FepLeanError, CLI _emit_failure and pinned GNN proof owners.",
+      "stop_go_spike": "Inventory already delivered error/emitter behavior and the remaining pinned exclusion before touching Q5-Q7 source bytes.",
+      "go_condition": "A coordinated Q5-Q7 custody/evidence refresh covers the exact inheritance changes while success JSON remains identical.",
+      "no_go_action": "Block P04.pinned-source-refresh -> P04.failure-schema-closure while any excluded verb or stale proof receipt remains; do not add a second error base.",
+      "target": "ArtifactProofError and ContinuousArtifactError derive from FepLeanError, the pinned exclusion is empty, and every verb failure returns the existing schema and exit 1.",
+      "positive_witness": "A parameterized real failure path for every verb has identical field/exit conventions.",
+      "boundary_result": "Unexpected exceptions, pinned source drift and success-output changes cannot be hidden by broad catch/skip behavior.",
+      "test_surface": [
+        "tests/test_cli.py",
+        "existing GNN artifact/source-pair/native proof checks",
+        "all-verb failure-schema and success-output parity controls"
+      ],
+      "evidence_plane": [
+        "API",
+        "source custody",
+        "native"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Inventing a new error taxonomy, bypassing pinned evidence or changing successful CLI JSON."
+    },
+    {
+      "id": "P05",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/120"
+      ],
+      "status": "planned",
+      "outcome": "Layer inversions and process-global configuration mutation are removed through reviewed existing API boundaries.",
+      "depends_on": [
+        "A01",
+        "O02"
+      ],
+      "single_owner": "Existing CLI, release_bundle, bridge, custody/refresh and pipeline owners.",
+      "stop_go_spike": "Inventory actual import cycles/private accesses/environment writes and demonstrate one acyclic owner/consumer replacement.",
+      "go_condition": "Readiness ownership and configuration precedence remain exact without new parallel validators or global environment mutation.",
+      "no_go_action": "Block P05.public-boundary -> P05.inversion-removal if receipt identity, import direction or runtime behavior changes without an explicit reviewed refresh.",
+      "target": "No fep_lean.cli import outside entry ownership, no private release_bundle access outside that owner and enforced import-direction checks.",
+      "positive_witness": "A real bridge/release caller uses a supported owner boundary and preserves exact output/receipt fields.",
+      "boundary_result": "Circular imports, ambient configuration leakage and stale owner digests fail focused controls.",
+      "test_surface": [
+        "tests/test_cli.py",
+        "tests/test_status_verb.py",
+        "tests/test_release_bundle.py",
+        "import-direction and environment-isolation checks"
+      ],
+      "evidence_plane": [
+        "API",
+        "source custody"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "File moves/new owners without provenance review or hiding private access with a compatibility alias."
+    },
+    {
+      "id": "P06",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/122"
+      ],
+      "status": "planned",
+      "outcome": "The largest functions are split in place with preserved outputs and an enforceable complexity ratchet.",
+      "depends_on": [],
+      "single_owner": "Existing package functions and pyproject.toml Ruff configuration; file ownership is unchanged.",
+      "stop_go_spike": "Measure both statement counts and source-line spans, name the top eight current functions and freeze their observable outputs before extraction.",
+      "go_condition": "PLR0915 and the separate issue 200-line target have independently measured baselines and bounded justified exceptions.",
+      "no_go_action": "Block P06.measured-function -> P06.extraction for changed output/control flow; do not equate PLR0915 statement counts with source lines.",
+      "target": "Ruff PLR0915 passes with reviewed per-file exceptions, selected named modules have no function over 200 lines, outputs remain unchanged.",
+      "positive_witness": "An extracted in-file helper preserves a representative success and adverse-control output byte-for-byte.",
+      "boundary_result": "Broad new ignores, file moves, lost cleanup/deadline behavior and changed errors reject.",
+      "test_surface": [
+        "Ruff PLR0915",
+        "measured function-span inventory",
+        "affected real-boundary tests and exact output comparisons"
+      ],
+      "evidence_plane": [
+        "API",
+        "maintainability"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "A cosmetic rename, moving files around the source roster or claiming a line cap from a statement-count rule alone."
+    },
+    {
+      "id": "P07",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/123"
+      ],
+      "status": "planned",
+      "outcome": "Test organization mirrors source owners without losing collection membership.",
+      "depends_on": [
+        "C02"
+      ],
+      "single_owner": "Existing tests/test_release_bundle.py and tests/test_formalism_catalogue_155.py under the approved test-membership owner.",
+      "stop_go_spike": "Collect the complete exact node-ID roster and review the proposed old-to-new bijection before any split/rename.",
+      "go_condition": "A complete mapping preserves parameterization, fixture semantics and all original controls with an explicitly approved successor membership.",
+      "no_go_action": "Block P07.node-id-bijection -> P07.layout-closure for dropped/duplicated cases or an unapproved membership change; renew C02 for the changed epoch.",
+      "target": "Split tests along existing owner seams and rename stale labels with identical collected cases modulo the reviewed renaming.",
+      "positive_witness": "Every old node maps to exactly one new node and executes the same real boundary.",
+      "boundary_result": "Lost markers, changed xdist grouping, missing parameter cases and automatic discovered-file baselines reject.",
+      "test_surface": [
+        "complete collection before/after and bijection audit",
+        "affected test modules",
+        "approved successor roster controls"
+      ],
+      "evidence_plane": [
+        "test membership",
+        "source custody"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Reducing the acceptance roster or treating a test rename as scientific completion."
+    },
+    {
+      "id": "P08",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/124"
+      ],
+      "status": "planned",
+      "outcome": "Blanket warning suppression is replaced by measured module-specific justified exceptions.",
+      "depends_on": [],
+      "single_owner": "pyproject.toml pytest warnings configuration and the affected test owners.",
+      "stop_go_spike": "Run a measured warning inventory without blanket filters before proposing targeted exceptions.",
+      "go_condition": "Every remaining ignore names the actual source/category/rationale and genuine project warnings are addressed.",
+      "no_go_action": "Block P08.warning-inventory -> P08.filter-closure without a complete measurement or when a broad ignore still hides unrelated warnings.",
+      "target": "The applicable suite passes with module-scoped ignores only, preserving warnings as useful regression signals.",
+      "positive_witness": "A known unavoidable dependency warning is narrowly ignored while an unrelated injected warning remains visible.",
+      "boundary_result": "Blanket UserWarning/PytestWarning/DeprecationWarning suppression and unmeasured warning-free claims reject.",
+      "test_surface": [
+        "measured suite warning inventory",
+        "module-scoped warning positive/negative controls",
+        "affected/full applicable pytest lanes"
+      ],
+      "evidence_plane": [
+        "test diagnostics"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Silencing warnings to claim acceptance or changing Lean warning policy."
+    },
+    {
+      "id": "P09",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/125"
+      ],
+      "status": "planned",
+      "outcome": "Coverage claims match measured coverage and each selected package has an enforceable measured floor.",
+      "depends_on": [],
+      "single_owner": "Existing pyproject.toml coverage configuration and docs/coverage-branch.md; any new checker remains docs-local.",
+      "stop_go_spike": "Measure one actual line/branch baseline and identify what the existing CI gate enforces before selecting per-package floors.",
+      "go_condition": "Documentation distinguishes line from branch coverage and a package-specific fault can fail independently of the global floor.",
+      "no_go_action": "Block P09.measured-baseline -> P09.floor-closure if the custody regression still passes or thresholds are invented/lowered without review.",
+      "target": "Accurate gate wording plus per-package checks, including an intentionally untested custody branch failing its applicable floor while global coverage passes.",
+      "positive_witness": "Clean measured evidence passes both global and selected package floors.",
+      "boundary_result": "Aggregate masking, missing package data and line/branch denominator conflation reject.",
+      "test_surface": [
+        "coverage baseline and floor checker controls",
+        "deliberately untested custody branch with global-pass control",
+        "CI/check-inventory parity"
+      ],
+      "evidence_plane": [
+        "coverage",
+        "CI"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Claiming branch enforcement from a line-only gate or adding a production checker owner outside provenance review."
+    },
+    {
+      "id": "P10",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/126"
+      ],
+      "status": "planned",
+      "outcome": "CLI is limited to parsing, dispatch and emission while existing owners retain verification/readiness behavior.",
+      "depends_on": [
+        "O02",
+        "A01"
+      ],
+      "single_owner": "Existing cli.py, verification and evidence owners; no unreviewed file or roster growth.",
+      "stop_go_spike": "Freeze every verb success/failure JSON and readiness provenance label; demonstrate one acyclic handler-table/owner extraction.",
+      "go_condition": "The proposed movement respects existing public readiness API, configuration precedence and receipt-source identity.",
+      "no_go_action": "Block P10.owner-extraction -> P10.thin-CLI-closure if any verb bytes/exit contract or source binding changes without reviewed migration.",
+      "target": "Approximately 500-line CLI with setup/verify in existing verification owners and byte-identical every-verb JSON.",
+      "positive_witness": "An installed CLI verb and its library handler produce the same exact result.",
+      "boundary_result": "Changed failure schema, dispatch defaults, process effects or readiness labels fail parity controls.",
+      "test_surface": [
+        "tests/test_cli.py",
+        "tests/test_status_verb.py",
+        "installed CLI/API parity and every-verb JSON controls"
+      ],
+      "evidence_plane": [
+        "API",
+        "installed package",
+        "source custody"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "A line-count refactor that changes behavior, introduces a cycle or invents a second readiness engine."
+    },
+    {
+      "id": "P11",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/127"
+      ],
+      "status": "planned",
+      "outcome": "Serial verification has a measured baseline and any parallel alternative preserves all 168 per-topic outcomes without races.",
+      "depends_on": [],
+      "single_owner": "Existing verification/lean_verifier.py and retained native duration receipts.",
+      "stop_go_spike": "Extract durations from an actual retained native receipt before considering a race-free experiment in an isolated owned clone.",
+      "go_condition": "The same168 topic bytes, pins, outcomes/warnings/axioms and bounded process lifecycle can be compared without the shared .lake tree.",
+      "no_go_action": "Block P11.duration-baseline -> P11.parallel-rollout if isolation, outcome equivalence or measured resource/deadline guarantees fail; retain canonical serial verification.",
+      "target": "Measured elapsed time/resource peaks and identical per-topic results for 168 topics; shared-workspace Lean execution stays serialized.",
+      "positive_witness": "Two executions on exact identical input rosters produce identical per-topic status/warning classifications.",
+      "boundary_result": "Shared .olean races, missing topics, warning loss, killed children and unsupported speed claims reject.",
+      "test_surface": [
+        "retained native duration analysis",
+        "isolated exact-roster verifier experiment if justified",
+        "real-child cleanup and per-topic outcome comparison"
+      ],
+      "evidence_plane": [
+        "native",
+        "performance"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Unmeasured speedup, parallelism against the canonical shared Lake tree or native acceptance inferred from timing alone."
+    },
+    {
+      "id": "T01",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/130"
+      ],
+      "status": "planned",
+      "outcome": "Active Python tooling has explicit repository-wide lint/type coverage while immutable evidence remains byte-preserved.",
+      "depends_on": [],
+      "single_owner": "Existing pyproject.toml and CI/check-inventory owners; specs/scripts/docs keep their existing resource owners.",
+      "stop_go_spike": "Inventory tracked Python paths and exact hash-bound exclusions, then measure Ruff/mypy compatibility before broadening the active scope.",
+      "go_condition": "Every active included file is covered and every excluded immutable artifact has an owner-bound rationale; canonical validator typing and compatibility lanes are explicit.",
+      "no_go_action": "Block T01.path-inventory -> T01.CI-scope when hash-bound evidence would be rewritten or active modules silently excluded.",
+      "target": "ruff check . in CI with narrow historical exclusions, useful script/docs typing and a reviewed 3.14 validator profile retaining declared minimum-version compatibility.",
+      "positive_witness": "An unused import deliberately added to an active spec fails the new lint boundary.",
+      "boundary_result": "Hash-bound evidence is excluded rather than reformatted; broad ignores and hidden active-file omissions fail.",
+      "test_surface": [
+        "repository-wide Ruff and active-spec negative control",
+        "script/docs mypy probes",
+        "tests/test_check_inventory.py and workflow parity"
+      ],
+      "evidence_plane": [
+        "CI",
+        "typing",
+        "source custody"
+      ],
+      "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
+      "out_of_scope": "Reformatting frozen evidence, imposing unsupported runtime policy or claiming broad type coverage from src-only checks."
+    },
+    {
+      "id": "D02",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/140"
+      ],
+      "status": "in_progress",
+      "outcome": "Remaining live manuscript/root-doc counts are generated or audited against their canonical source.",
+      "depends_on": [],
+      "single_owner": "Existing manuscript count inventory/rendering and docs audits using docs/formalism-coverage.json.",
+      "stop_go_spike": "Locate the actual checked-pairing caption/count owners and distinguish live counts from dated evidence before adding a validated placeholder/audit.",
+      "go_condition": "The shared count source drives both projection and root-doc audit without changing historical receipt prose.",
+      "no_go_action": "Block D02.count-owner -> D02.audit-closure if a changed README live count is accepted or an unregistered placeholder passes.",
+      "target": "Tokenized current caption plus a root-doc count audit; wrong catalogue count fails and render_manuscript --check passes.",
+      "positive_witness": "Current source-derived counts render identically in the manuscript and audited active root statements.",
+      "boundary_result": "Malformed placeholders, altered live counts and scientific/history counts treated as live data reject.",
+      "test_surface": [
+        "scripts/render_manuscript.py --check",
+        "validated placeholder inventory and incorrect-README-count control",
+        "strict Markdown checks"
+      ],
+      "evidence_plane": [
+        "documentation",
+        "publication"
+      ],
+      "human_review": "Independent documentation/source-owner review; a real source-bound render remains separate if typeset bytes change.",
+      "out_of_scope": "Hand-editing generated coverage, private operator counts or presenting offline catalogue mode as native acceptance."
+    },
+    {
+      "id": "D03",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/144"
+      ],
+      "status": "in_progress",
+      "outcome": "The historical second-expansion chapter ending at topic 155 is distinguished accurately from the live 168-topic catalogue.",
+      "depends_on": [],
+      "single_owner": "Existing manuscript chapter/index and _maint_build_lean_landscape.py owner.",
+      "stop_go_spike": "Review the chapter scope, actual anchors and inbound references before changing its displayed heading or label.",
+      "go_condition": "The wording distinguishes a historical fixed chapter from current generated catalogue scope without orphaning links.",
+      "no_go_action": "Block D03.scope-label -> D03.guidance-closure if anchors drift or freshness/xref checks fail; preserve filenames unless a coordinated migration is reviewed.",
+      "target": "Clear chapter/index labels and current generated landscape counts, accepted by xref/render/landscape freshness checks.",
+      "positive_witness": "A reader reaches the correctly scoped chapter and current catalogue from existing anchors.",
+      "boundary_result": "An anchor/file rename without a coordinated reference refresh or a stale literal live count rejects.",
+      "test_surface": [
+        "docs/xref_audit.py",
+        "scripts/render_manuscript.py --check",
+        "scripts/_maint_build_lean_landscape.py --check"
+      ],
+      "evidence_plane": [
+        "documentation",
+        "publication"
+      ],
+      "human_review": "Independent manuscript/reference review; source-bound render validation remains its own evidence gate.",
+      "out_of_scope": "Renaming historical files merely for cosmetic count parity or editing generated pages by hand."
+    },
+    {
+      "id": "D04",
+      "issues": [
+        "https://github.com/ActiveInferenceInstitute/fep_formal/issues/146"
+      ],
+      "status": "planned",
+      "outcome": "Active root guidance has one owner per topic and every gate command is defined once.",
+      "depends_on": [
+        "G01"
+      ],
+      "single_owner": "Existing README.md, AGENTS.md, SPEC.md and dated HANDOFF.md; authoritative instructions retain their declared owner.",
+      "stop_go_spike": "Inventory duplicate source-of-truth, execution and gate statements with inbound links; distinguish current guidance from immutable/detailed historical snapshots.",
+      "go_condition": "Each maintained fact has one authoritative owner and moved evidence-boundary sentences keep their complete meaning.",
+      "no_go_action": "Block D04.owner-map -> D04.consolidation for weakened firewalls, broken readers or any attempted historical rewrite; keep the separate DOC1 precedent separate.",
+      "target": "Shorter README and single definitions of gate commands with link-based projections; preserve the original dated handoff as history.",
+      "positive_witness": "A new reader follows one path to each actual command/contract without conflicting active instructions.",
+      "boundary_result": "Lost no-go/evidence distinctions, duplicate active commands and broken references reject.",
+      "test_surface": [
+        "strict links/hygiene/xref checks",
+        "root command/owner duplication audit",
+        "reading-path operator review"
+      ],
+      "evidence_plane": [
+        "documentation"
+      ],
+      "human_review": "Independent operator/documentation ownership review; no scientific acceptance is supplied by moving prose.",
+      "out_of_scope": "Weakening acceptance language, merging the separate DOC1 scope or deleting historical custody evidence."
     }
-  ]
+  ],
+  "inventory_as_of_utc": "2026-10-15T15:22:04.139634+00:00",
+  "tracked_open_issue_count": 62,
+  "dependency_policy": "depends_on names package acceptance gates, not permission to reuse stale receipts. Closed Issue predecessors remain historical links below, not new open delivery rows. Later edits to consumed source or test membership renew the affected acceptance at its selected epoch without repeating the frozen primary. Existing packages are preserved; issue URLs disambiguate reused historical scope labels.",
+  "historical_issue_dependencies": {
+    "D04": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/138"
+    ],
+    "F04": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/112"
+    ],
+    "F02": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/87",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/89"
+    ],
+    "O02": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/48"
+    ],
+    "G01": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/48"
+    ],
+    "C05": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/46",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/47",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/48"
+    ],
+    "C03": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/46",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/47",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/48"
+    ],
+    "C02": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/46",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/47",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/48"
+    ],
+    "C04": [
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/46",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/47",
+      "https://github.com/ActiveInferenceInstitute/fep_formal/issues/48"
+    ]
+  }
 }
