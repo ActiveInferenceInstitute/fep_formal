@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "kind": "lean435-serial-contract-repair-local-acceptance",
+  "captured_at": "2026-10-15T03:05:03.975912+00:00",
+  "parent_commit": "672fbdfed8ab17c613834cc68bf06d36eed8c86e",
+  "source_digest": "ba788f075bcffd6b92f227ad8852db0feb19de20085e7ad4d5d04cdc972af894",
+  "config_digest": "b52fef9063d32b3dd209fe053697ab3867a83c9faf24e7d549691522533e012f",
+  "production_config_owner_files_unchanged": 301,
+  "scope": "Tests, documentation, a historical unit fixture and its slice-local generator; production and frozen scientific records unchanged.",
+  "initial_hosted_run": {
+    "id": 38668279214,
+    "url": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38668279214",
+    "conclusion": "failure",
+    "python": {
+      "passed": 2909,
+      "skipped": 20,
+      "failures": 0,
+      "coverage_percent": 91.6,
+      "live_chrome_passed": 2,
+      "required_eight_passed_no_skip": true
+    },
+    "distribution_passed": 15,
+    "serial_lean": {
+      "failed": 47,
+      "passed": 514,
+      "skipped": 5
+    },
+    "aggregate_and_orphan_compilation": "passed",
+    "hosted_native_receipt_and_audit": "not reached",
+    "hosted_render": "skipped after serial failure"
+  },
+  "combined_local_regression": {
+    "passed": 108,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 64.05,
+    "coverage": "Every formerly failing function with full parameter families; strict headers and closures; existing custody epoch tests; historical positive, integrity and tampering controls."
+  },
+  "additional_checks": {
+    "import_static_cases_passed": 38,
+    "import_native_cases_passed": 17,
+    "historical_static_cases_passed": 85,
+    "h3_native_case_passed": 1,
+    "ruff": "passed",
+    "format": "385 files already formatted",
+    "strict_doc_links": "OK: 161 file(s) scanned (strict; anchors validated) \u2014 no broken links.",
+    "strict_doc_hygiene": "OK: 161 file(s) scanned \u2014 no hygiene issues.",
+    "historical_generator_offline_check": "passed"
+  },
+  "historical_fixture": {
+    "path": "tests/fixtures/historical_h3_custody_sources.json",
+    "bytes": 71474,
+    "sha256": "2e279ffd13826b1eb2a07a5652d8e07e52ce5e0e3590b041418ab46d8a126eb1",
+    "source_commit": "5e1cc9095b5f0590772c739d27558c2c711f9a44",
+    "archived_resources": 2,
+    "bound_source_files": 22,
+    "original_git_blob_comparison": "both exact",
+    "positive_unchanged_validator_required_before_each_tamper": true,
+    "r0_exact_guard_cases": 9,
+    "h3_exact_guard_cases": 25,
+    "additional_positive_integrity_drift_cases": 6,
+    "archived_sources_executed": false,
+    "current_source_refusal_checked_separately": true
+  },
+  "retained_source_acceptance": {
+    "native_receipt_source_bound_and_claim_ready": true,
+    "declaration_audit_valid": true,
+    "publication_receipt_matches_exact_manuscript_sources": true,
+    "new_bulk_build_performed": false
+  },
+  "independent_review": {
+    "import_surface_and_closures": "No findings; author excluded from verdict.",
+    "historical_custody_and_h3": "Masked-tamper P2 repaired; final review no findings; author excluded from verdict.",
+    "scientific_approval": "No new human scientific approval or semantic promotion."
+  },
+  "repair_input_sha256": {
+    "tests/_support/lean435_migration.py": "379c8c5fb9f3b0ea56e95629cdf2e2d0ffdaf5c2686fb3947384a8a788a59c15",
+    "tests/test_collective_learning_formalisms.py": "cfc309fb81582a1a60edd3b4211e6e0b3be3171a0cbda7f3fec93c2988d408e8",
+    "tests/test_control_temporal_formalisms.py": "6802566ef3b6da1c071fc86e6b17ae561a7a117ffb13825b87625afa989a513d",
+    "tests/test_geometry_continuous_time_formalisms.py": "044967e266b00df2879e8350512edd6e091de291aaf924800d35d7687badec0a",
+    "tests/test_h3_case_study.py": "801216c7d545bd26defb74b600e8e651233d8eb110436628defc5451c5b7f592",
+    "tests/test_horizon1_decision_risk.py": "6ba9b4ce176fa131860b6c50cfc770d46df9037f2989eb6485470484faf47c8b",
+    "tests/test_horizon1_finite_reference_agent.py": "3861b070ee1f57b0a160ad1a44ff57df5801276d4d84f20bf0b3b6b5376eee86",
+    "tests/test_horizon1_policy_action.py": "db9748c641a2584631e4e283b05dcfe151b15c6b712edf31efcdce979fdb39a7",
+    "tests/test_horizon2_fin4_gaussian_semigroup.py": "0a93e3e537ac6d5bebe9a0ff1666d7d84d8925b3e142879b574e5db069d52171",
+    "tests/test_horizon2_gaussian_conditioning_readiness.py": "058d818eeea94a5647a4678ad9f030195012a159f011875d375105a097d00f6b",
+    "tests/test_horizon2_gaussian_control.py": "a10d83cbe654f3365aafb9c0d9ae6cd476b1f2d8faf6e53e8137a5f50ca35ebb",
+    "tests/test_horizon2_gaussian_coordinates.py": "dbfe115cd30e1c79ef3119aad3f1e251c53e70c60dc20177fa8c092e5260c8f7",
+    "tests/test_horizon2_gaussian_filter.py": "a5f32b1c15a29305efaa25ee3c2bfe387df1976bd14ff81a81d55085f1705768",
+    "tests/test_horizon2_gaussian_grid_path.py": "e3192c3e7b8f05f072b5f7d1c7d8a61824fb6859a9fb5b6df2110f639ef0f0e1",
+    "tests/test_horizon2_gaussian_information_geometry.py": "77e4c5c603a6f1c9a73850a23c89192444c63915fa592c61c4c2f27ad90caa7b",
+    "tests/test_horizon2_gaussian_precision_conditioning.py": "4e89e549dad516ad449a6e746d6c6b789c4581dc8191b0e023461531caea1dac",
+    "tests/test_horizon2_gaussian_vfe_readiness.py": "1edd4551ecd8d14c115beb30f7517e945a8d755c32e0bfab1f78508256c55e03",
+    "tests/test_horizon2_linear_gaussian_semigroup.py": "f315ece957640c873884445cbb43aa9e975496a3b1ae3567dece464e25f61d88",
+    "tests/test_horizon2_markov_semigroup.py": "dec1d44e36c2217fddecb939606352ccbf84185061337460d5a9540e5e3f917b",
+    "tests/test_horizon2_native_filter_posterior_readiness.py": "cb7285bdb9e2c1f5de2f32435fd24f84bce092a4afedd27b6c4f850d236f1e9a",
+    "tests/test_horizon2_readiness.py": "8f5bb8dc4b287b3948187b6f7364fcbe21be2ec93dabf5b54e2f575547543974",
+    "tests/test_horizon2_scalar_gaussian_semigroup.py": "ebd9f14e2fe0a9b71ed7f8cf09194c0f74a1af3b6d037f3af9f440dd83c5a3d2",
+    "tests/test_horizon2_smooth_information_geometry.py": "647833e0aadd5e7c9cd2ac2fff3232c83f59baa607dd393cf719c86c202940ce",
+    "tests/test_horizon2_smooth_reference_kernel.py": "518dadcabc14363d75d345fa1d78026b3ef21cfcfd4450b2fb3063cd4342e1de",
+    "tests/test_horizon2_transition_covariance_readiness.py": "4cf92591bf346da44388522a997a08858a1328000ea7a17b6b9a23ddd9d844c6",
+    "tests/test_risk_policy_tree_formalisms.py": "aba128228c0811cf2334163408064cf75ecb1e218ad32000f0b3442a67c1cab4",
+    "tests/test_thermo_geometry_formalisms.py": "d4fae37bc175806d5258d1e68ef33329985bcb283212aa023c04bc9a8db8f023",
+    "tests/_support/lean_module_contract.py": "52109679d0a856568a74a50e2c1b01be4d056466d77e5fd901c5b187df782bed",
+    "tests/fixtures/historical_h3_custody_sources.json": "2e279ffd13826b1eb2a07a5652d8e07e52ce5e0e3590b041418ab46d8a126eb1",
+    "specs/support-aware-variational-methods/generate_historical_custody_fixture.py": "23654aa0f897b43c37b6c13bbf20fbfc74f2ee88f845ff3bfa251f1c8f4b7e94"
+  },
+  "evidence": [
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/original-failures.log",
+      "sha256": "b19452c86a1884dc4d976a3c556915504a07028b153383902d6e76a4d99ff70d"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/hosted-python.log",
+      "sha256": "f16cd0c8a6883e095c8197500fc627ea984534802861dc138e823de0eaab44da"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/combined-collection.log",
+      "sha256": "9520117556a463a5866d0f487220e9178bde4fcf478d795f36b8d26d679fb440"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/combined-regressions.log",
+      "sha256": "fbd84834c15a2e8a6911ab884392b6c99f09997dd81f9f9b97b7217dffceef0c"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/combined-regressions.xml",
+      "sha256": "cd1f8a3b45c85c349776da8de12ab1b931e0777c1d20a446cbb09fb9a8120d3a"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/combined-test-inputs.json",
+      "sha256": "d6fcaab0f54815bcba927af8e6593816a3261c15a171cc13edb0d846b2eff32e"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/import-closure-native.log",
+      "sha256": "868039c73088f437f0b74e2bcc34c3ae07bff4250b5413931299b2f6953f6520"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/ruff-check.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/ruff-format.log",
+      "sha256": "59bfabfcbb96102b6043e724434acc6cfc86ca2f11fb074c12b301695b13d211"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/links.log",
+      "sha256": "7e47e95b85704e3acfa739c2dc54f80d5f58f3b80ec998ecd3e78358c4bbb9a2"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/hygiene.log",
+      "sha256": "2baf26c1cf0f56ace7fc9ecde62b2cf1ccf032a1f3f474b8a13c99c13739e047"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/retained-native-validation.json",
+      "sha256": "3397427fcb5b4021e2a1df3b020368a755ba5cf085815cec0ae00529029c5335"
+    },
+    {
+      "local_gitignored_path": "output/lean435-ci-repair/retained-render-receipt.log",
+      "sha256": "7532858060b9f8a2e16f6d477a88263c96ac4ec52aa60de5c471d943d327a962"
+    }
+  ],
+  "boundaries": [
+    "This is local repair acceptance, not a passing subsequent hosted workflow.",
+    "Historical custody replay executes no archived Lean or test source and renews no native or scientific evidence.",
+    "Retained native, audit and render acceptance is independently validated against unchanged source bytes."
+  ]
+}

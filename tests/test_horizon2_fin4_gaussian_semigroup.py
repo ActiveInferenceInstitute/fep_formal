@@ -13,6 +13,7 @@ from fep_lean.formal import formal_projection_pairs
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -23,7 +24,10 @@ FOUNDATION = (
 
 pytestmark = pytest.mark.serial_lean
 
-EXACT_IMPORTS = ("FepSketches.linear_gaussian_semigroup",)
+EXACT_IMPORTS = (
+    "FepSketches.linear_gaussian_semigroup",
+    "Mathlib.Probability.Distributions.Gaussian.Fernique",
+)
 PUBLIC_DEFINITIONS = (
     "axisFin",
     "K",
@@ -385,7 +389,7 @@ def test_h2_5c_owns_the_named_axis_in_the_preregistered_order() -> None:
     assert FOUNDATION.is_file()
     source = FOUNDATION.read_text(encoding="utf-8")
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
     assert "namespace FEP.Fin4GaussianSemigroup\n" in source
     assert source.rstrip().endswith("end FEP.Fin4GaussianSemigroup")
     assert re.search(

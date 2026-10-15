@@ -11,6 +11,10 @@ import pytest
 from fep_lean.catalogue.bodies.controlled_markov import BODIES as CONTROL_BODIES
 from fep_lean.catalogue.bodies.temporal_inference import BODIES as TEMPORAL_BODIES
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import (
+    assert_exposed_module_header,
+    exposed_module_body,
+)
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -37,14 +41,13 @@ def _foundation_closure(tmp_path: Path, resource: str) -> Path:
     source = FORMAL_ROOT / resource
     if resource == "controlled_markov.lean":
         return source
-    import_line = "import FepSketches.controlled_markov\n"
     temporal = source.read_text(encoding="utf-8")
-    assert temporal.startswith(import_line)
+    temporal_body = exposed_module_body(temporal, ("FepSketches.controlled_markov",))
     closure = tmp_path / resource
     closure.write_text(
         (FORMAL_ROOT / "controlled_markov.lean").read_text(encoding="utf-8")
         + "\n"
-        + temporal.removeprefix(import_line),
+        + temporal_body,
         encoding="utf-8",
     )
     return closure
@@ -61,10 +64,11 @@ def _topic_closure(tmp_path: Path, topic_id: str, body: str) -> Path:
         controlled = (FORMAL_ROOT / "controlled_markov.lean").read_text(
             encoding="utf-8"
         )
-        temporal_import = "import FepSketches.controlled_markov\n"
         temporal = (FORMAL_ROOT / "temporal_inference.lean").read_text(encoding="utf-8")
-        assert temporal.startswith(temporal_import)
-        foundation = controlled + "\n" + temporal.removeprefix(temporal_import)
+        temporal_body = exposed_module_body(
+            temporal, ("FepSketches.controlled_markov",)
+        )
+        foundation = controlled + "\n" + temporal_body
         import_line = "import FepSketches.temporal_inference\n"
     assert body.startswith(import_line)
     source = tmp_path / f"{topic_id}.lean"
@@ -72,6 +76,44 @@ def _topic_closure(tmp_path: Path, topic_id: str, body: str) -> Path:
         foundation + "\n" + body.removeprefix(import_line), encoding="utf-8"
     )
     return source
+
+
+def test_exposed_module_body_keeps_only_the_verified_dependency_body() -> None:
+    body = "\nnamespace Example\ndef value : Nat := 1\nend Example\n"
+    source = "module\npublic import Mathlib\n\n@[expose] public section\n" + body
+    assert exposed_module_body(source, ("Mathlib",)) == body
+
+
+@pytest.mark.parametrize(
+    "source",
+    (
+        "import Mathlib\n\nnamespace Example\nend Example\n",
+        "module\nimport Mathlib\n\n@[expose] public section\n",
+        "module\npublic import Mathlib\n\npublic section\n",
+        "module\npublic import Other\n\n@[expose] public section\n",
+        "module\npublic import Mathlib\n\n@[expose] public section\nimport Other\n",
+        "module\npublic import Mathlib\n\n@[expose] public section\nmodule\n",
+    ),
+)
+def test_exposed_module_contract_rejects_changed_scope_or_imports(source: str) -> None:
+    with pytest.raises(AssertionError):
+        exposed_module_body(source, ("Mathlib",))
+
+
+def test_temporal_closures_retain_one_outer_module_and_exact_dependencies(
+    tmp_path: Path,
+) -> None:
+    foundation = _foundation_closure(tmp_path, "temporal_inference.lean")
+    closures = [foundation]
+    for topic_id, body in (
+        ("fep-065", CONTROL_BODIES["fep-065"]),
+        ("fep-072", TEMPORAL_BODIES["fep-072"]),
+    ):
+        closures.append(_topic_closure(tmp_path, topic_id, body))
+    for closure in closures:
+        assert_exposed_module_header(
+            closure.read_text(encoding="utf-8"), ("FepSketches.active_inference",)
+        )
 
 
 def test_slice03_body_modules_own_one_exact_ordered_roster() -> None:

@@ -17,6 +17,10 @@
   subnormal inputs; diagnostics distinguish true support failure from float
   underflow. Reuse the methods in the existing Gibbs numerical witness.
 - Pin uv `0.13.0` explicitly in project metadata and all setup-uv workflows.
+- Align the complete serial acceptance lane with Lean 4.35's exposed modules,
+  exact imports and exported support declarations. Preserve historical readiness
+  records and require their validators to reject the changed live epoch; retain
+  the H3 false-equality control without an unused-tactic warning.
 
 - Upgrade the workspace pins to Lean/Mathlib `v4.35.0` and refresh the Lake
   dependency lock. Migrate the formal kernel, generated aggregates and verifier

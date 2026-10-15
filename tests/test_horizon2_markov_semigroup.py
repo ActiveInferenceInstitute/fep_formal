@@ -12,6 +12,7 @@ from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.formal.projection import formal_projection_drift
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -74,7 +75,7 @@ def test_h2_4a_extends_the_single_existing_embedding_owner() -> None:
     assert owner.lean_module == "FepSketches.native_blanket"
     assert owner.role is FormalModuleRole.FOUNDATION
     assert owner.declaration_namespace == "FEP.NativeBlanket"
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
 
 
 def test_h2_4a_preserves_identity_and_chronological_composition_exactly() -> None:
@@ -209,7 +210,7 @@ def test_h2_4b_has_one_exact_foundation_owner() -> None:
     assert owner.lean_module == "FepSketches.markov_semigroup"
     assert owner.role is FormalModuleRole.FOUNDATION
     assert owner.declaration_namespace == "FEP.MarkovSemigroup"
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == SEMIGROUP_IMPORTS
+    assert_exposed_module_header(source, SEMIGROUP_IMPORTS)
     assert "namespace FEP.MarkovSemigroup\n" in source
     assert source.rstrip().endswith("end FEP.MarkovSemigroup")
 

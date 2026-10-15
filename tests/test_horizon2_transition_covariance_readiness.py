@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from tests._support.lean435_migration import assert_historical_repair_bindings
 from tests._support.lean_runner import run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -269,6 +270,17 @@ def test_h2_5b_r0_repair_is_source_bound_append_only_go() -> None:
         "H2.7",
         "continuous H3",
     ]
-    assert repair["source_sha256"] == {
-        relative: _sha256(PROJECT_ROOT / relative) for relative in SOURCE_BOUND_PATHS
-    }
+    # This immutable go decision belongs to its recorded compiler/source
+    # epoch. The inverse migration checks preserve its proof bytes; current
+    # toolchain and updated test bytes must not impersonate old acceptance.
+    assert_historical_repair_bindings(
+        PROJECT_ROOT,
+        REPAIR,
+        "f8ab366b0bf07c2bd21ca1b89c3cccf30a268272c68575337dd3e78e9144af5e",
+        SOURCE_BOUND_PATHS,
+        historical_tests={
+            "tests/test_horizon2_transition_covariance_readiness.py": (
+                "60054a8bad39c826131965c58aef789c1a5fcf55208087b3c7a8448ed115396e"
+            ),
+        },
+    )

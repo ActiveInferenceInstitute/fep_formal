@@ -16,6 +16,7 @@ from fep_lean.catalogue.bodies.exponential_family_geometry import (
     BODIES as EXPONENTIAL_FAMILY_BODIES,
 )
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -549,8 +550,7 @@ def test_slice04_composition_leaves_pin_exact_bridges_and_endpoint_proofs(
     bridges: tuple[tuple[str, str, str], ...],
 ) -> None:
     source = (COMPOSITIONS_ROOT / resource).read_text(encoding="utf-8")
-    assert source.startswith("import FepSketches.fep_all\n")
-    assert f"import {foundation}\n" in source
+    assert_exposed_module_header(source, ("FepSketches.fep_all", foundation))
     assert "namespace FEPComposed\n" in source
     assert source.rstrip().endswith("end FEPComposed")
     assert len(bridges) == 7
