@@ -569,8 +569,9 @@ that an artifact lacks receipt or review consumers.
 **Reach:** All eight sizes and digests match the author receipt. The separate
 semantic review authenticates that receipt, so deleting a cited file or
 rewriting the receipt would break historical custody. Strict links and
-Markdown hygiene pass. The old compiler results retain their Lean 4.34.1
-epoch. Fresh independent custody review found no source blocker in the two
+Markdown hygiene pass. The recorded Lean compiler version for those old
+results is `4.34.1`; the current source uses Lean 4.35.0. Fresh independent
+custody review found no source blocker in the two
 documents and independently rechecked all 25 receipt artifact hashes.
 Terminal-validator positive/fail-closed controls, separate combined
 historical-custody controls and accepted publication remain required before
