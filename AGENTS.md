@@ -33,7 +33,7 @@ promote the semantic disposition or prove the full FEP concept.
 | [ISA.md](ISA.md) | Ideal state, anti-criteria, evidence gates and accepted source checkpoints | Authoritative; dated in its front matter |
 | [Next-step campaign](specs/comprehensive-next-steps/README.md) | Active dependency graph, work-package contracts and current pickup point | Active implementation plan; acceptance remains package-specific |
 | [PAI.md](PAI.md) | Agent command interface | Authoritative |
-| [HANDOFF.md](HANDOFF.md) | Next-reviewer protocol and evidence receipt, dated 2026-10-07 | Dated snapshot |
+| [HANDOFF.md](HANDOFF.md) | Next-reviewer protocol and evidence receipt, dated 2026-10-11 | Dated snapshot |
 | [SCOPE-2026-09-30.md](specs/comprehensive-science-improvement/SCOPE-2026-09-30.md) | Retained preimplementation baseline of that day's scope review | Dated snapshot |
 | [SCOPE-2026-10-08.md](specs/comprehensive-science-improvement/SCOPE-2026-10-08.md) | Scope review of that day; every candidate is filed as an Issue and tracked in `TODO.md` | Dated snapshot |
 
@@ -53,10 +53,13 @@ document wins.
 - `config/formalism_relations.yaml` — maintained derivational-formal,
   theorem-pairing, conceptual, and blocker relations plus retained capability
   status/evidence. Never infer these from shared imports; both theorem-backed
-  kinds require qualified Lean witnesses.
+  kinds require qualified Lean witnesses. Shared imports never create
+  scientific-dependency edges.
 - `src/fep_lean/catalogue/bodies/*.py` — family-owned canonical Lean bodies.
 - `src/fep_lean/catalogue/registry.py` and `latex.py` — validated body registry
   and deterministic theorem-signature projection.
+- `src/fep_lean/catalogue/generation.py` — catalogue join for checkout and
+  package projections.
 - `config/topics.yaml` and `src/fep_lean/data/topics.yaml` — byte-identical,
   generated catalogue projections; never author either by hand.
 - `scripts/_maint_build_topics_catalogue.py` — YAML regeneration.
@@ -67,10 +70,18 @@ document wins.
   aggregate. `scripts/_maint_build_formal_modules.py` projects the manifest
   into the workspace.
 - `lean/FepSketches/fep_all.lean` — whole-catalogue Lean target.
+- `src/fep_lean/output/evidence.py` — native/full evidence policy and manuscript
+  claim sentences.
+- `src/fep_lean/verification/formalism_audit.py` — declaration and axiom audit
+  with typed receipts.
+- `src/fep_lean/output/formalism_atlas.py` — coverage-graph SVG/HTML renderer.
+- `manuscript/*.md` — authored chapters, rendered into `output/manuscript/`.
 - `ISA.md` — ideal-state criteria, anti-criteria, and evidence gates.
 - `TODO.md` — canonical open-only backlog; completed work is not retained as
   struck-through rows.
-- `HANDOFF.md` — next-reviewer protocol, evidence receipt, and remaining scope.
+- `HANDOFF.md` — dated next-reviewer protocol and evidence snapshots; the
+  [next-step campaign](specs/comprehensive-next-steps/README.md) owns the active
+  implementation graph and pickup point.
 - `src/fep_lean/output/provenance.py` — versioned source-owner roster
   (`OWNER_MANIFEST_VERSION`, `SOURCE_OWNER_ROSTER`). New files under
   `src/fep_lean/**/*.py` or `scripts/*.py` fail report and native receipts
@@ -81,23 +92,46 @@ document wins.
   per-PR alternatives: fold new code into an existing owner or keep tooling
   slice-local under `specs/`.
 
+Never hand-edit `config/topics.yaml`, `src/fep_lean/data/topics.yaml`,
+`lean/FepSketches/fep_all.lean`, any manifested `lean/FepSketches` formal resource,
+`docs/formalism-coverage.*`, `docs/formalism-atlas.*`, or generated manuscript
+output. Use the owner-provided generators and their `--check` modes.
+
 ## Execution contract
 
 - `uv run fep-lean catalogue` is explicit offline mode. It creates deterministic
-  catalogue artifacts and reports zero verified topics.
+  catalogue artifacts and reports zero verified topics. It performs strict
+  YAML/schema/source-parity validation and generates offline figures, manuscript
+  variables, the unified appendix, and a report. It records
+  `verified_topics: 0` and `capabilities.verification: false`.
 - `uv run fep-lean verify` is the Lean-only native compile path. It requires
   the built pinned Mathlib cache but does not call Hermes, OpenGauss, or the
   full pipeline. Use `--receipt PATH --fail-on-warnings` for publication-grade
-  native evidence.
+  native evidence. With `--receipt` it writes a typed, source-digest-bound receipt.
 - `uv run fep-lean atlas` projects the canonical coverage graph to offline SVG
-  and accessible HTML; `--check` is a non-mutating freshness gate.
+  and accessible HTML; `--check` is a non-mutating freshness gate. The graph distinguishes
+  derivational formal edges from checked formal pairings that place two endpoint
+  laws side by side without asserting implication. Both name qualified Lean
+  witnesses; conceptual and blocker edges remain visibly non-proof evidence.
+  It carries no compilation or full-run claim.
 - `uv run fep-lean dashboard` evaluates the typed numerical witnesses and
   projects their shared model to offline SVG and accessible HTML; it is
-  explanatory non-proof evidence, and `--check` is non-mutating.
+  explanatory non-proof evidence, and `--check` is non-mutating. It renders a
+  shared immutable model; every witness names theorem mirrors, parameters,
+  typed exact checks with per-check tolerances, and boundary behavior.
 - `uv run fep-lean run` is strict full mode. It requires configured Hermes,
-  OpenGauss, Lean, Lake, and a complete pinned Mathlib build.
+  OpenGauss, Lean, Lake, and a complete pinned Mathlib build. This is the default
+  for the programmatic API. It also requires `gauss doctor`, writable configured
+  output and persistence destinations, and Hermes credentials as defined in
+  [Configuration](docs/configuration.md). It executes one Hermes + Lean +
+  SQLite session per selected topic. Every selected row must compile without
+  `sorry` or Lean warnings, and a requested review workflow must complete its
+  post-compile review turn. A topic succeeds only when the Hermes-derived
+  sketch compiles without proof holes. Any failed capability or topic makes the
+  pipeline incomplete and prevents a successful report.
 - Missing capabilities, failed topics, or artifact errors produce a failed
-  result and no successful report.
+  result and no successful report. **Missing capability or incomplete stage →
+  `complete: false`, no report directory.**
 - A full-mode report's `complete: true` means all *selected* topics passed (via
   `FEP_LEAN_MAX_TOPICS` or the default full catalogue). It is publication-ready
   only when `validate_report_receipt(...).claim_ready` independently validates
@@ -107,6 +141,9 @@ document wins.
   the resolved Mathlib revision, and zero errors, warnings, or `sorry`.
 - `run_validation_checks` is read-only. Dependency acquisition belongs only to
   `uv run fep-lean setup` and is bounded by `FEP_LEAN_SETUP_TIMEOUT_SEC`.
+  It never downloads Mathlib, invokes a build, creates a database, or writes a
+  report. The explicit setup command performs dependency acquisition and
+  `lake build` with a bounded timeout.
 - `preflight` JSON output is advisory subject to additive field changes between
   releases. Stable referential queries use the CLI exit code and `status` field.
 - `uv run fep-lean status` composes a read-only evidence-currency report from
@@ -119,14 +156,23 @@ document wins.
   `.python-version`); `requires-python >=3.10` in `pyproject.toml` is the
   packaging floor, not the validator contract.
 
+These witnesses expose computational behavior and boundary cases but
+never replace native Lean or axiom-audit evidence. The declared test gate
+requires at least 89% line coverage. Branch coverage, hosted wheel
+compatibility, native compilation, and full-mode acceptance need their own
+scoped evidence.
+
 ## Required checks
 
 This block is the single owner of the required-check list. `docs/development.md`,
-`docs/testing.md` and the README link here instead of re-listing it, and
+`docs/testing.md` and the root overview/specification/handoff link here instead
+of re-listing it. Their source-owner and execution references also link to this
+document. Setup examples remain examples rather than a second gate list, and
 `tests/test_check_inventory.py` fails if a command below is neither executed in
 `.github/workflows/ci.yml` nor on that test's commented hosted-only/local-only
-allow-lists, or if CI runs a gate that is missing here. Add a check to CI and
-to this block in the same change.
+allow-lists, if CI runs a gate that is missing here, or if those reference
+sections duplicate the maintained definitions. Add a check to CI and to this
+block in the same change.
 
 ```bash
 uv lock --check && uv pip check

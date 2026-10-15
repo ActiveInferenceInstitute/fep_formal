@@ -1,5 +1,12 @@
 module
-public import Mathlib.Tactic
+public import Mathlib.Algebra.BigOperators.Field
+public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.Tactic.FinCases
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Ring
 
 @[expose] public section
 

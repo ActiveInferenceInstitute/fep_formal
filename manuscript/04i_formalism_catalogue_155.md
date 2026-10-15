@@ -1,4 +1,4 @@
-# From {{topics_before_second_expansion}} to {{total_topics}}: Risk, Feedback, Native Blankets, Dual Geometry, and Continuous Time {#sec:formalism_catalogue_155}
+# Second Expansion, from {{topics_before_second_expansion}} to {{topics_before_third_expansion}} Topics: Risk, Feedback, Native Blankets, Dual Geometry, and Continuous Time {#sec:formalism_catalogue_155}
 
 The second catalogue expansion adds {{expansion_second_topics}} stable rows, `fep-121` through
 `fep-155`, in {{expansion_second_families}} families of {{expansion_family_size}} topics each. Its purpose is not numerical growth.
@@ -20,11 +20,11 @@ scope boundaries, not implementation accidents.
 
 ## Toolchain and evidence identity {#sec:catalogue_155_evidence_identity}
 
-The authoring workspace pins **`leanprover/lean4:v4.34.0`** and Mathlib
-**`v4.34.0`**, with the exact dependency revision recorded in
-`lean/lake-manifest.json`. Lean 4.33.0 introduced the relevant release line
-[@lean4330release], while the package uses the subsequent stable Lean patch
-[@lean4331release] and matching Mathlib release [@mathlib4331release]. A release
+The authoring workspace pins **`{{lean_toolchain}}`** and Mathlib
+**`{{mathlib_tag}}`**, with the exact dependency revision recorded in
+`lean/lake-manifest.json`. Earlier Lean and Mathlib releases provide historical
+context [@lean4330release; @lean4331release; @mathlib4331release]; the workspace
+files identify the compiler and dependency used for a current claim. A release
 tag, source file, or successful one-file probe is not a catalogue receipt. A
 native claim for this expansion requires a fresh exact-roster receipt whose
 ordered IDs, source digests, actual compiler version, resolved Mathlib

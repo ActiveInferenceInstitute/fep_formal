@@ -81,26 +81,13 @@ source-bound full receipt can make a current Hermes/OpenGauss claim.
 
 ## Canonical ownership
 
-| Concept | Maintained owner | Generated projection |
-| --- | --- | --- |
-| Static topic metadata | `config/catalogue_metadata.yaml` | catalogue YAML/package rows |
-| Semantic review | `config/theorem_maturity.yaml` | package API, audit, manuscript |
-| Typed relations and capabilities | `config/formalism_relations.yaml` | coverage and atlas projections |
-| Lean bodies | `src/fep_lean/catalogue/bodies/*.py`, merged by `registry.py` | YAML and aggregate Lean |
-| Theorem equation signatures | `src/fep_lean/catalogue/latex.py` | Catalogue and manuscript equations |
-| Expansion novelty and bridges | `config/formalism_novelty.yaml` | Novelty audit and composition checks |
-| Formal resource roster | `src/fep_lean/formal/manifest.py` | Lean workspace projection |
-| Cross-topic theorems | `src/fep_lean/formal/compositions/*.lean` | Import aggregate and workspace leaves |
-| Catalogue join | `src/fep_lean/catalogue/generation.py` | checkout/package YAML |
-| Native/full evidence policy | `src/fep_lean/output/evidence.py` | manuscript claim sentences |
-| Declaration/axiom audit | `src/fep_lean/verification/formalism_audit.py` | typed audit receipt |
-| Formalism atlas renderer | `src/fep_lean/output/formalism_atlas.py` | standalone SVG/HTML |
-| Authored manuscript | `manuscript/*.md` | `output/manuscript/` |
-
-Never hand-edit `config/topics.yaml`, `src/fep_lean/data/topics.yaml`,
-`lean/FepSketches/fep_all.lean`, any manifested `lean/FepSketches` formal resource,
-`docs/formalism-coverage.*`, `docs/formalism-atlas.*`, or generated manuscript
-output. Use the owner-provided generators and their `--check` modes.
+The maintained [source-owner map](AGENTS.md#source-of-truth) and
+[execution contract](AGENTS.md#execution-contract) are authoritative. The
+[original ownership table](https://github.com/ActiveInferenceInstitute/fep_formal/blob/0a663fe60a5dc40447ce6dc242426cde508fd242/HANDOFF.md#canonical-ownership)
+remains available at the immutable pre-consolidation commit. The
+[next-step campaign](specs/comprehensive-next-steps/README.md) owns the active
+implementation graph and pickup point; the observations below retain their
+dated source epochs.
 
 ## Current formal breadth and depth
 
@@ -218,60 +205,16 @@ they never authorize repeating or relabeling the primary. The original
 
 ## Reproduction commands
 
-Run from the repository root:
+The [required-check inventory](AGENTS.md#required-checks) owns current gate
+commands. Use the [bounded publication capture runbook](docs/development.md#bounded-publication-capture)
+and [local render runbook](scripts/README.md#local-render-runbook) for execution
+order and prerequisites. The
+[original reproduction sequence](https://github.com/ActiveInferenceInstitute/fep_formal/blob/0a663fe60a5dc40447ce6dc242426cde508fd242/HANDOFF.md#reproduction-commands)
+is retained at the immutable pre-consolidation commit for historical inspection;
+it is not approval to execute a current provider run, primary study, or capture.
+The following receipt observations retain their dated scope.
 
-```bash
-uv sync --locked --extra dev
-uv lock --check
-uv pip check
-uv run python scripts/_maint_build_topics_catalogue.py --check
-uv run python scripts/_maint_build_fep_all_lean.py --check
-uv run python scripts/_maint_build_formal_modules.py --check
-uv run python scripts/theorem_maturity_audit.py --check
-uv run python scripts/build_formalism_coverage.py --check
-uv run python scripts/_maint_build_lean_landscape.py --check
-uv run python scripts/build_formalism_atlas.py --check
-uv run python scripts/build_formal_kernel_dashboard.py --check
-uv run python docs/pin_audit.py --check-latest
-uv run mypy src
-uv run ruff check src tests scripts docs
-uv run ruff format --check src tests scripts docs
-(cd lean && lake build FepSketches)
-uv run fep-lean verify --fail-on-warnings \
-  --receipt output/native-verification.json
-uv run python scripts/audit_formalisms.py \
-  --receipt output/formalism-audit.json
-uv run fep-lean catalogue
-uv run python scripts/build_render_fonts.py --check
-uv run python scripts/render_manuscript.py --check
-uv run python docs/theorem_ref_audit.py
-uv run python docs/citation_audit.py
-uv run python docs/check_links.py --strict --include-root
-uv run python docs/md_hygiene.py --strict
-uv run python docs/xref_audit.py
-uv run python scripts/capture_browser_acceptance.py
-FEP_LEAN_TEMPLATE_DIR=<template checkout> \
-  uv run python scripts/render_publication.py
-uv run python scripts/check_render_log.py --verify-receipt
-uv run python scripts/build_release_bundle.py --run-python-acceptance
-uv run fep-lean preflight
-git diff --check
-
-release_a_dir="$(mktemp -d)"
-release_b_dir="$(mktemp -d)"
-archive_a="$release_a_dir/fep-lean-candidate-168.tar.gz"
-archive_b="$release_b_dir/fep-lean-candidate-168.tar.gz"
-SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
-  --output "$archive_a"
-SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
-  --output "$archive_b"
-cmp "$archive_a" "$archive_b"
-sha256sum "$archive_a" "$archive_b"
-SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
-  --check --output "$archive_a"
-SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
-  --check --output "$archive_b"
-```
+## Dated receipt observations
 
 The canonical Python-acceptance command runs the exact collected suite and
 atomically writes `output/pytest.xml`, `output/coverage.xml`, and

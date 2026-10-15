@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import shlex
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -13,6 +14,27 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 AGENTS = PROJECT_ROOT / "AGENTS.md"
 CI = PROJECT_ROOT / ".github" / "workflows" / "ci.yml"
 SECONDARY_DOCS = ("docs/development.md", "docs/testing.md")
+ROOT_REFERENCES = {
+    "README.md": {
+        "Contract": ("AGENTS.md#execution-contract",),
+        "Source of truth": ("AGENTS.md#source-of-truth",),
+        "Development checks": ("AGENTS.md#required-checks",),
+    },
+    "SPEC.md": {
+        "Execution modes": (
+            "AGENTS.md#execution-contract",
+            "AGENTS.md#source-of-truth",
+        ),
+        "Validation": ("AGENTS.md#execution-contract", "AGENTS.md#required-checks"),
+    },
+    "HANDOFF.md": {
+        "Canonical ownership": (
+            "AGENTS.md#source-of-truth",
+            "AGENTS.md#execution-contract",
+        ),
+        "Reproduction commands": ("AGENTS.md#required-checks",),
+    },
+}
 
 #: AGENTS.md commands CI does not execute verbatim. Empty on purpose: a
 #: required check that hosted CI never runs is a drifted contract. Add an entry
@@ -50,10 +72,28 @@ HOSTED_ONLY = {
 _TRACKED_PREFIXES = ("uv run", "lake ", "git diff", "uv lock", "uv pip")
 
 
+def _shell_tokens(command: str) -> list[str]:
+    """Lex comments/operators while retaining quotes for later normalisation.
+
+    This inventory supports quoted arguments, ``&&`` chains, a parenthesised
+    ``cd`` prefix, pipelines and ``2>&1``; it does not evaluate shell syntax.
+    Non-POSIX lexing keeps a quoted ``'&&'`` distinct from the operator.
+    """
+    lexer = shlex.shlex(command, posix=False, punctuation_chars="&|")
+    lexer.whitespace_split = True
+    return list(lexer)
+
+
 def normalise(command: str) -> str:
-    """Canonical form: drop ``uv run [--locked]``, ``python -m``, redirections."""
-    command = re.split(r"\s+(?:2>&1|\|)\s*", command, maxsplit=1)[0]
-    tokens = shlex.split(command.strip().strip("()").strip())
+    """Drop runner prefixes, redirections and unquoted shell comments."""
+    raw = _shell_tokens(command)
+    for index, token in enumerate(raw):
+        if token in {"|", "||"} or raw[index : index + 3] == ["2>", "&", "1"]:
+            raw = raw[:index]
+            break
+    # Quotes must survive the split stage: stripping them earlier would turn a
+    # literal hash or ampersand into shell syntax in this second lexical pass.
+    tokens = shlex.split(" ".join(raw).strip().strip("()").strip(), comments=False)
     if tokens[:2] == ["uv", "run"]:
         tokens = tokens[2:]
         if tokens and tokens[0] == "--locked":
@@ -84,9 +124,13 @@ def split_commands(script: str) -> list[str]:
         if heredoc:
             heredoc_end = heredoc.group(1)
             continue  # inline python is not a repository command
-        line = line.strip("()")
-        for part in re.split(r"\s*&&\s*", line):
-            part = part.strip().strip("()").strip()
+        pending: list[str] = []
+        for token in [*_shell_tokens(line), "&&"]:
+            if token != "&&":
+                pending.append(token)
+                continue
+            part = " ".join(pending).strip().strip("()").strip()
+            pending = []
             if part.startswith("cd "):
                 continue
             if part.startswith(_TRACKED_PREFIXES):
@@ -124,6 +168,37 @@ def _covers(ci: str, required: str) -> bool:
     )
 
 
+def _assert_unique_commands(commands: list[str]) -> None:
+    duplicates = sorted(c for c, count in Counter(commands).items() if count > 1)
+    assert not duplicates, f"AGENTS.md repeats required checks: {duplicates}"
+
+
+def _assert_root_references(relative: str, text: str, required: set[str]) -> None:
+    """Keep designated reference sections as links, leaving usage examples alone.
+
+    Structured definitions (lists, tables, subheadings, fenced examples) belong
+    to AGENTS.md. This is a scoped ownership guard, not a natural-language audit
+    of historical observations or every command example in the repository.
+    """
+    for heading, owners in ROOT_REFERENCES[relative].items():
+        marker = f"## {heading}\n"
+        assert marker in text, f"{relative} is missing reference section {heading!r}"
+        section = text.split(marker, 1)[1].split("\n## ", 1)[0]
+        for owner in owners:
+            assert re.search(rf"\]\({re.escape(owner)}\)", section), (
+                f"{relative} {heading!r} must link to {owner}"
+            )
+        for block in re.findall(r"```bash\n(.*?)```", section, flags=re.DOTALL):
+            shared = [normalise(c) for c in split_commands(block)]
+            shared = [c for c in shared if c in required]
+            assert not shared, (
+                f"{relative} {heading!r} copies required checks: {shared}"
+            )
+        assert not re.search(r"(?m)^\s*(?:[-*+] |\||#{3,} |```|~~~)", section), (
+            f"{relative} {heading!r} duplicates a structured definition; link to AGENTS.md"
+        )
+
+
 def test_normaliser_handles_continuations_chains_and_prefixes() -> None:
     script = (
         "uv lock --check && uv pip check\n"
@@ -138,6 +213,40 @@ def test_normaliser_handles_continuations_chains_and_prefixes() -> None:
         "pytest a.py -q --no-cov",
         "lake build FepSketches",
     ]
+
+
+@pytest.mark.parametrize(
+    ("script", "expected"),
+    [
+        ("uv run harmless # note && uv run mypy src", ["harmless"]),
+        (
+            "uv run python -c 'print(\"# literal\")' && uv run mypy src",
+            ['python -c print("# literal")', "mypy src"],
+        ),
+        (
+            "uv run python -c 'print(\"&& literal\")' && uv run mypy src",
+            ['python -c print("&& literal")', "mypy src"],
+        ),
+        (
+            "uv run python -c \"print('# && literal')\" # note && uv run mypy src",
+            ["python -c print('# && literal')"],
+        ),
+    ],
+)
+def test_command_inventory_preserves_quoted_literals_and_ignores_comment_chains(
+    script: str, expected: list[str]
+) -> None:
+    assert [normalise(command) for command in split_commands(script)] == expected
+
+
+def test_required_check_inventory_has_no_duplicate_commands() -> None:
+    _assert_unique_commands(agents_commands())
+
+
+def test_duplicate_canonical_gate_is_rejected() -> None:
+    required = agents_commands()
+    with pytest.raises(AssertionError, match="repeats required checks"):
+        _assert_unique_commands([*required, required[0]])
 
 
 def test_every_required_check_is_executed_by_ci_or_explicitly_local() -> None:
@@ -190,3 +299,57 @@ def test_readme_points_at_the_owner_and_no_dangling_heading() -> None:
     readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
     assert "AGENTS.md#required-checks" in readme
     assert "Required release gates" not in readme
+
+
+@pytest.mark.parametrize("relative", ROOT_REFERENCES)
+def test_root_reference_sections_use_canonical_owners(relative: str) -> None:
+    text = (PROJECT_ROOT / relative).read_text(encoding="utf-8")
+    _assert_root_references(relative, text, set(agents_commands()))
+
+
+@pytest.mark.parametrize(
+    ("relative", "heading", "addition", "message"),
+    [
+        (
+            "README.md",
+            "Development checks",
+            "```bash\nuv run mypy src # copied gate\n```\n",
+            "copies required checks",
+        ),
+        (
+            "HANDOFF.md",
+            "Canonical ownership",
+            "| Static topic metadata | `config/catalogue_metadata.yaml` | rows |\n",
+            "duplicates a structured definition",
+        ),
+        (
+            "SPEC.md",
+            "Execution modes",
+            "### `catalogue`\n\nOffline mode writes a report.\n",
+            "duplicates a structured definition",
+        ),
+    ],
+)
+def test_root_reference_guard_rejects_restored_definitions(
+    relative: str, heading: str, addition: str, message: str
+) -> None:
+    text = (PROJECT_ROOT / relative).read_text(encoding="utf-8")
+    marker = f"## {heading}\n"
+    text = text.replace(marker, f"{marker}\n{addition}", 1)
+    with pytest.raises(AssertionError, match=message):
+        _assert_root_references(relative, text, set(agents_commands()))
+
+
+@pytest.mark.parametrize("relative", ROOT_REFERENCES)
+def test_root_reference_guard_rejects_missing_owner_links(relative: str) -> None:
+    text = (PROJECT_ROOT / relative).read_text(encoding="utf-8")
+    owner = next(iter(ROOT_REFERENCES[relative].values()))[0]
+    text = text.replace(f"]({owner})", "](AGENTS.md)")
+    with pytest.raises(AssertionError, match="must link to"):
+        _assert_root_references(relative, text, set(agents_commands()))
+
+
+def test_setup_examples_outside_reference_sections_remain_allowed() -> None:
+    text = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+    assert "uv sync --locked --extra dev\nuv run fep-lean catalogue" in text
+    _assert_root_references("README.md", text, set(agents_commands()))

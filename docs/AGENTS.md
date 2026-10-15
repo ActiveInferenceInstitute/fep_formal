@@ -4,15 +4,11 @@ All documentation is local to this checkout. Keep links relative to the file
 that owns them, keep toolchain/model claims synchronized with the canonical
 configuration, and mark generated values as generated data.
 
-The complete local check list is maintained in [testing.md](testing.md); the
-release gate is [release.md](release.md), checked by `release_check.py`. The
-documentation-specific gates from the project root are:
-
-```bash
-uv run python docs/check_links.py --strict --include-root
-uv run python docs/md_hygiene.py --strict --include-root
-uv run python docs/xref_audit.py
-```
+The [repository contract](../AGENTS.md#required-checks) owns the complete check
+list; [testing.md](testing.md) explains the validation tiers. The release gate
+is [release.md](release.md), checked by `release_check.py`. For documentation
+changes, run the strict link, Markdown hygiene and cross-reference checks from
+the canonical list at the project root.
 
 `--include-root` widens `check_links.py` and `md_hygiene.py` from `docs/**` to
 every root `*.md`, every `AGENTS.md` / `README.md` under `src/`, `tests/`,

@@ -949,11 +949,11 @@ assumptions before chaining. A transitive path in a drawing is therefore a
 candidate proof route whose middle objects must be checked, not a new theorem
 already certified by the graph.
 
-![Authored formal derivations aggregated by family. Rows denote source families and columns denote target families; each count records maintained topic edges with qualified witnesses. The 20 edges retain their exact endpoints in the accessible table. Family aggregation does not compose relations into new theorems.](../output/figures/mathematical-authored-relations-formal.png){#fig:math_formal_relations width=100%}
+![Authored formal derivations aggregated by family. Rows denote source families and columns denote target families; each count records maintained topic edges with qualified witnesses. The {{formalism.relation_counts.formal}} edges retain their exact endpoints in the accessible table. Family aggregation does not compose relations into new theorems.](../output/figures/mathematical-authored-relations-formal.png){#fig:math_formal_relations width=100%}
 
-![Authored formal pairings aggregated by family. The recorded source and target orientation locates 118 checked pairings; it does not turn a conjunction or co-location of endpoint results into a directed implication. Exact topic endpoints and qualified witnesses remain in the accessible edge table.](../output/figures/mathematical-authored-relations-formal-pairing.png){#fig:math_formal_pairings width=100%}
+![Authored formal pairings aggregated by family. The recorded source and target orientation locates {{formalism.relation_counts.formal_pairing}} checked pairings; it does not turn a conjunction or co-location of endpoint results into a directed implication. Exact topic endpoints and qualified witnesses remain in the accessible edge table.](../output/figures/mathematical-authored-relations-formal-pairing.png){#fig:math_formal_pairings width=100%}
 
-![Authored conceptual associations aggregated by family. Rows and columns retain the source and target orientation of eight maintained associations. These edges supply research context rather than theorem witnesses. Editorial upstream affinities remain separate from every maintained relation layer.](../output/figures/mathematical-authored-relations-conceptual.png){#fig:math_conceptual_relations width=100%}
+![Authored conceptual associations aggregated by family. Rows and columns retain the source and target orientation of {{formalism.relation_counts.conceptual}} maintained associations. These edges supply research context rather than theorem witnesses. Editorial upstream affinities remain separate from every maintained relation layer.](../output/figures/mathematical-authored-relations-conceptual.png){#fig:math_conceptual_relations width=100%}
 
 The same discipline resolves several common FEP associations. A state
 partition does not establish conditional independence. Rowwise blanket

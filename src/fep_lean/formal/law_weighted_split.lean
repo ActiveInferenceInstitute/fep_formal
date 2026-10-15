@@ -1,6 +1,11 @@
 module
 public import FepSketches.helmholtz_ao_ness
-public import Mathlib.Tactic
+public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.Data.Fin.VecNotation
+public import Mathlib.Tactic.FinCases
+public import Mathlib.Tactic.LinearCombination
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Positivity
 
 @[expose] public section
 

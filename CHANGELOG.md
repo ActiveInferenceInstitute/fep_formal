@@ -1,5 +1,33 @@
 ## Unreleased
 
+- Consolidate active root source-owner, execution and gate definitions in
+  `AGENTS.md`; link the overview, specification and handoff to those owners.
+  Preserve dated evidence and the exact prior reproduction sequence. Extend
+  the existing inventory guard with real duplication and shell-comment controls.
+
+- Replace all six foundation `Mathlib.Tactic` imports with explicit dependencies,
+  and declare the Ring/Matrix dependencies exposed in two consumers. Preserve
+  declaration and proof bodies; regenerate workspace and coverage projections.
+  A fresh serial compilation of all 73 workspace modules passed locally with
+  zero warnings. Topic-body narrowing and source-bound publication acceptance
+  remain separate gates for [#109](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109).
+- Include plain/public `meta import` dependencies in the existing coverage
+  inventory and lexical theorem context, with actual generated-model regression
+  controls. Refresh informational source hashes and line coordinates through
+  the methods exporter; all theorem statements and mathematical content remain
+  unchanged.
+- Derive relation captions from the validated count inventory and audit current
+  root catalogue counts against the coverage projection. Keep release/test
+  histories at their original epochs. Clarify the second-expansion chapter's
+  fixed endpoint and inject current toolchain pins without changing its anchor.
+- Remove three proven-dead private helpers while preserving test-used helpers
+  and strict JSON rejection behavior. Regenerate the current Q6 extractor pin;
+  generated Lean probes and historical native/render receipts are unchanged.
+- Reconcile every open Issue in the existing implementation graph. Retain an
+  attributed, slice-local Lean 4.35 category/functor feasibility spike for PR44,
+  including concrete Boolean consumers. Its local compile and standard-axiom
+  checks establish no package integration or scientific acceptance.
+
 - Check the installed wheel's public pipeline types with isolated positive and
   negative mypy consumers. Reuse the existing wheel build and runtime environment.
 - Restore plain/public Lean import edges in the generated landscape and reject

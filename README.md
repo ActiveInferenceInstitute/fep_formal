@@ -27,8 +27,8 @@ uv run fep-lean catalogue
 `uv run fep-lean catalogue` is explicit offline mode. It creates deterministic
 catalogue artifacts and reports zero verified topics. For native Lean
 verification (`setup`, `verify`) and the strict full pipeline, follow
-[`docs/getting-started.md`](docs/getting-started.md); the complete command list
-is under [Quick start](#quick-start) below.
+[`docs/getting-started.md`](docs/getting-started.md) and the
+[execution contract](AGENTS.md#execution-contract).
 
 The development workspace pins Lean/Mathlib `v4.35.0`; retained receipts below
 keep the versions they actually verified. See [the Lean upgrade procedure](docs/lean4.md#deliberate-toolchain-upgrades).
@@ -90,38 +90,10 @@ research corpus without adding a runtime dependency.
 
 ## Contract
 
-`full` execution is strict. It requires the pinned Lean/Lake/Mathlib workspace,
-the `gauss` executable, configured Hermes credentials, and writable SQLite
-state. Every selected row must compile without `sorry` or Lean warnings, and a
-requested review workflow must complete its post-compile review turn.
-**Missing capability or incomplete stage → `complete: false`, no report
-directory.**
-
-`catalogue` execution is deterministic and offline. It validates the complete
-YAML source and writes figures, manuscript variables, the unified appendix, and
-a report explicitly marked `catalogue`; it does not count topics as verified.
-
-`verify` execution is Lean-only. It runs the sealed-roster native compile sweep
-without Hermes or OpenGauss. Add `--receipt output/native-verification.json
---fail-on-warnings` to persist independently revalidatable native evidence.
-
-`atlas` execution is deterministic and offline. It projects the canonical
-coverage join into a standalone SVG and an interactive, keyboard-accessible
-HTML graph; `--check` fails on missing or stale bytes. The graph distinguishes
-derivational formal edges from checked formal pairings that place two endpoint
-laws side by side without asserting implication. Both name qualified Lean
-witnesses; conceptual and blocker edges remain visibly non-proof evidence.
-
-`dashboard` execution is also deterministic and offline. It renders static
-and interactive numerical witnesses for the expansion families. The
-first ten cover Bayesian inversion, variational duality, control, temporal
-inference, causal intervention, predictive coding, path thermodynamics,
-categorical Fisher geometry, consensus, and finite concentration; the next
-five cover Laplace/Brier risk transfer, policy-tree feedback, native blanket
-conditional independence, exponential-family duality, and a two-state master
-equation. Later witnesses cover standalone EFE and geometric mechanics.
-These witnesses expose computational behavior and boundary cases but
-never replace native Lean or axiom-audit evidence.
+The [execution contract](AGENTS.md#execution-contract) owns mode behavior,
+capability requirements, failure handling, runtime policy, and evidence claims.
+The [functional specification](SPEC.md#public-api) defines public result fields
+and validation behavior; [pipeline usage](docs/pipeline.md) explains workflows.
 
 ## Formal depth
 
@@ -233,60 +205,20 @@ commands deliberately require the checkout-owned configuration, Lean
 workspace, and manuscript assets. From another directory, pass
 `--project-root /path/to/fep_lean` before the subcommand.
 
-```bash
-uv sync --locked --extra dev
-uv run fep-lean catalogue
-uv run fep-lean atlas
-uv run fep-lean dashboard
-uv run fep-lean setup
-uv run fep-lean verify --fail-on-warnings \
-  --receipt output/native-verification.json
-uv run fep-lean preflight
-uv run fep-lean run
-```
-
 Use `uv run fep-lean --help` for filters, workflow selection, and the explicit
 checkout root. The equivalent maintained scripts are thin command wrappers in
 [`scripts/`](scripts/).
 
-The operator command quick reference lives at
-[`docs/quickref.md`](docs/quickref.md).
+Start with the offline example under [First run](#first-run), then use
+[getting started](docs/getting-started.md) and the
+[operator command quick reference](docs/quickref.md) for the intended workflow.
 
 ## Source of truth
 
-- [`config/catalogue_metadata.yaml`](config/catalogue_metadata.yaml) maintains
-  the stable roster's descriptive and Mathlib metadata.
-- [`config/theorem_maturity.yaml`](config/theorem_maturity.yaml) maintains the
-  semantic review independently of syntactic compilation maturity.
-- [`config/formalism_novelty.yaml`](config/formalism_novelty.yaml) records every
-  post-baseline topic's nearest predecessors, invariant, carrier delta, and
-  required composition theorem.
-- [`config/formalism_relations.yaml`](config/formalism_relations.yaml) maintains
-  reviewed formal, conceptual, and blocker relations plus retained open,
-  partial, and satisfied capability history. Shared imports never create
-  scientific-dependency edges.
-- [`src/fep_lean/catalogue/bodies/`](src/fep_lean/catalogue/bodies/) contains
-  the family-owned Lean bodies;
-  [`registry.py`](src/fep_lean/catalogue/registry.py) validates their canonical
-  order and [`latex.py`](src/fep_lean/catalogue/latex.py) derives theorem
-  signatures.
-- [`config/topics.yaml`](config/topics.yaml) and
-  [`src/fep_lean/data/topics.yaml`](src/fep_lean/data/topics.yaml) are generated,
-  byte-identical catalogue projections; regenerate them with
-  [`scripts/_maint_build_topics_catalogue.py`](scripts/_maint_build_topics_catalogue.py).
-- [`lean/FepSketches/fep_all.lean`](lean/FepSketches/fep_all.lean) is the tracked
-  aggregate generated by
-  [`scripts/_maint_build_fep_all_lean.py`](scripts/_maint_build_fep_all_lean.py).
-- [`src/fep_lean/formal/manifest.py`](src/fep_lean/formal/manifest.py) owns the
-  formal-resource roster. Canonical cross-topic proofs live in
-  [`formal/compositions/`](src/fep_lean/formal/compositions/), while
-  [`composed.lean`](src/fep_lean/formal/composed.lean) is the import-only
-  aggregate; all tracked Lake projections are generated by
-  [`scripts/_maint_build_formal_modules.py`](scripts/_maint_build_formal_modules.py).
-- [`docs/formalism-coverage.md`](docs/formalism-coverage.md),
-  [`docs/formalism-atlas.svg`](docs/formalism-atlas.svg), and
-  [`docs/formalism-atlas.html`](docs/formalism-atlas.html) are generated views
-  of the same canonical semantic graph.
+The maintained [owner and projection map](AGENTS.md#source-of-truth) identifies
+where to edit and which generator to use. Browse the generated
+[coverage report](docs/formalism-coverage.md) and
+[formalism atlas](docs/formalism-atlas.html) for the current graph.
 
 ## Review contracts
 
@@ -299,26 +231,22 @@ The operator command quick reference lives at
   states the five second-expansion families (`fep-121` to `fep-155`), theorem
   assumptions, non-vacuity witnesses,
   and evidence boundaries in one authored chapter.
-- [`HANDOFF.md`](HANDOFF.md) gives the next reviewer the operating protocol,
-  evidence pointers, and extension backlog.
+- [`HANDOFF.md`](HANDOFF.md) retains dated evidence and review observations;
+  the [next-step campaign](specs/comprehensive-next-steps/README.md) owns the
+  active implementation graph and pickup point.
 
 ## Development checks
 
 Contributor setup, check tiers and repository rules are in
 [`CONTRIBUTING.md`](CONTRIBUTING.md). The complete required-check list is
 maintained once, in the "Required checks" block of
-[`AGENTS.md`](AGENTS.md#required-checks); the quick local dev checks are:
-
-```bash
-uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
-uv run mypy src
-uv run ruff check src tests scripts docs
-uv run python docs/pin_audit.py --check-latest  # networked: queries upstream for newer pins
-```
+[`AGENTS.md`](AGENTS.md#required-checks).
 
 The reproducible build and publication gates (release-bundle determinism,
-browser acceptance capture, receipt validation) are documented in
-[`HANDOFF.md`](HANDOFF.md); setup and pipeline gates live in
+browser acceptance capture, receipt validation) are maintained in the
+[bounded publication capture runbook](docs/development.md#bounded-publication-capture);
+the [local render runbook](scripts/README.md#local-render-runbook) owns render
+preparation and stale-receipt diagnosis. Setup and pipeline usage live in
 [`docs/getting-started.md`](docs/getting-started.md) and
 [`docs/pipeline.md`](docs/pipeline.md).
 
