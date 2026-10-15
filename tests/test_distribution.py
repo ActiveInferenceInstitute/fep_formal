@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -205,7 +206,7 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
         key: value
         for key, value in os.environ.items()
         if key not in {"PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV"}
-        and not key.startswith("FEP_LEAN_")
+        and not key.startswith(("FEP_LEAN_", "MYPY"))
     }
     subprocess.run(
         [uv, "venv", "--python", target_python, str(environment)],
@@ -275,6 +276,7 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
                 "        raise AssertionError('unsupported Q7 interpreter accepted')\n"
                 "assert importlib.util.find_spec('catalogue') is None\n"
                 "print(sys.version, sys.platform)\n"
+                "print('distribution-python=' + '.'.join(map(str, sys.version_info[:2])))\n"
             ),
         ],
         cwd=tmp_path,
@@ -285,6 +287,107 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
     )
     assert probe.returncode == 0, probe.stderr or probe.stdout
     print("installed wheel runtime:", probe.stdout.strip())
+
+    # Run the locked validator's checker against the existing target environment.
+    # The checker is a development tool, never a runtime dependency of the wheel.
+    typing_config = tmp_path / "installed-typing.ini"
+    typing_config.write_text("[mypy]\n", encoding="utf-8")
+    valid_typing = tmp_path / "installed_typing_valid.py"
+    consumer = (
+        "from pathlib import Path\n"
+        "from typing_extensions import assert_type\n"
+        "from fep_lean import FEPPipeline, PipelineResult\n"
+        "\n"
+        "pipeline = FEPPipeline(Path('.'))\n"
+        "assert_type(pipeline, FEPPipeline)\n"
+        "result = pipeline.run(mode='catalogue')\n"
+        "assert_type(result, PipelineResult)\n"
+        "assert_type(result.catalogue_topics, int)\n"
+    )
+    valid_typing.write_text(consumer, encoding="utf-8")
+    target_versions = [
+        line.removeprefix("distribution-python=")
+        for line in probe.stdout.splitlines()
+        if line.startswith("distribution-python=")
+    ]
+    assert len(target_versions) == 1, probe.stdout
+    checker = [
+        sys.executable,
+        "-I",
+        "-m",
+        "mypy",
+        "--config-file",
+        str(typing_config),
+        "--python-executable",
+        str(python),
+        "--python-version",
+        target_versions[0],
+        "--strict",
+        "--disallow-any-expr",
+        "--disallow-any-unimported",
+        "--no-incremental",
+        "--cache-dir",
+        os.devnull,
+        "--no-pretty",
+        "--show-error-codes",
+        "--no-error-summary",
+        "--verbose",
+    ]
+    typed = subprocess.run(
+        [*checker, str(valid_typing)],
+        cwd=tmp_path,
+        env=clean_env,
+        timeout=120,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert typed.returncode == 0, typed.stdout + typed.stderr
+    resolved_modules = [
+        (module, Path(path).resolve())
+        for path, module in re.findall(
+            r"^LOG:\s+Parsing (.+) \((fep_lean(?:\.[A-Za-z_][A-Za-z_0-9]*)*)\)$",
+            typed.stderr,
+            re.MULTILINE,
+        )
+    ]
+    assert "fep_lean" in {module for module, _ in resolved_modules}, typed.stderr
+    assert "fep_lean.pipeline.core" in {module for module, _ in resolved_modules}, (
+        typed.stderr
+    )
+    assert all(
+        path.is_relative_to(environment.resolve()) for _, path in resolved_modules
+    ), resolved_modules
+
+    invalid_typing = tmp_path / "installed_typing_invalid.py"
+    invalid_typing.write_text(
+        consumer + "pipeline.run(mode='invalid-mode')\n", encoding="utf-8"
+    )
+    rejected = subprocess.run(
+        [*checker, str(invalid_typing)],
+        cwd=tmp_path,
+        env=clean_env,
+        timeout=120,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert rejected.returncode == 1, rejected.stdout + rejected.stderr
+    errors = [line for line in rejected.stdout.splitlines() if ": error:" in line]
+    assert len(errors) == 1, rejected.stdout + rejected.stderr
+    assert all(
+        expected in errors[0]
+        for expected in (
+            invalid_typing.name,
+            'Argument "mode"',
+            '"FEPPipeline"',
+            "incompatible type",
+            "invalid-mode",
+            "[arg-type]",
+        )
+    ), errors[0]
+    print("installed wheel typing: valid API accepted; invalid mode rejected")
+
     capture_probe = subprocess.run(
         [
             str(python),
