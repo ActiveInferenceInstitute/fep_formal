@@ -142,6 +142,32 @@ HISTORICAL_CUSTODY_ARCHIVE = "tests/fixtures/historical_h3_custody_sources.json"
 HISTORICAL_CUSTODY_ARCHIVE_SHA256 = (
     "2e279ffd13826b1eb2a07a5652d8e07e52ce5e0e3590b041418ab46d8a126eb1"
 )
+HISTORICAL_MANIFEST_ARCHIVE = "tests/fixtures/historical_h3_custody_manifest.json"
+HISTORICAL_MANIFEST_ARCHIVE_SHA256 = (
+    "5d44c38f15ae28b3bf7732ebe60edbcf2c6e27050dfb28fd6a466ebcdf890b18"
+)
+_HISTORICAL_MANIFEST_SHA256 = (
+    "c1dff5c5753162d1cf91fb27c5cb08777d385db4c606bd65a136d2c93acf07ce"
+)
+_CATEGORY_MANIFEST_SHA256 = (
+    "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157"
+)
+_CATEGORY_OWNER_BLOCK = (
+    b"    FormalModule(\n"
+    b'        resource="compositions/finite_kernel_category.lean",\n'
+    b'        lean_module="FepSketches.compositions.finite_kernel_category",\n'
+    b"        role=FormalModuleRole.COMPOSITION,\n"
+    b'        declaration_namespace="FEPComposed.FiniteKernelCategory",\n'
+    b"    ),\n"
+)
+_CATEGORY_OWNER_ANCHOR = (
+    b"    FormalModule(\n"
+    b'        resource="compositions/smooth_reference_kernel.lean",\n'
+    b'        lean_module="FepSketches.compositions.smooth_reference_kernel",\n'
+    b"        role=FormalModuleRole.COMPOSITION,\n"
+    b'        declaration_namespace="FEPComposed.SmoothReferenceKernel",\n'
+    b"    ),\n"
+)
 _HISTORICAL_CUSTODY_ORIGINALS = {
     "src/fep_lean/formal/compositions/h3_case_study.lean": (
         "7a8ba9346dc9ab700ac6276c26421b46c0437eabaab7cd448a2bc05998318849",
@@ -180,6 +206,62 @@ _HISTORICAL_CUSTODY_SOURCE_PATHS = frozenset(
         "tests/_support/h2_r0_custody.py",
     )
 )
+
+
+def historical_manifest_bytes(project_root: Path, live: bytes) -> bytes:
+    """Recover authenticated history only from the two exact recognized inputs.
+
+    Recognizing the prospective category manifest is a static input transition,
+    not approval of its mathematical API or execution. Unknown live changes
+    fail before decoding, and a changed companion fails before decoding too.
+    The historical validator and every existing archive remain unchanged.
+    """
+    live_digest = hashlib.sha256(live).hexdigest()
+    assert live_digest in {_HISTORICAL_MANIFEST_SHA256, _CATEGORY_MANIFEST_SHA256}, (
+        "unreviewed live custody manifest: src/fep_lean/formal/manifest.py"
+    )
+    predecessor = live
+    if live_digest == _CATEGORY_MANIFEST_SHA256:
+        assert live.count(_CATEGORY_OWNER_BLOCK) == 1
+        assert live.count(_CATEGORY_OWNER_ANCHOR + _CATEGORY_OWNER_BLOCK) == 1
+        predecessor = live.replace(_CATEGORY_OWNER_BLOCK, b"", 1)
+
+    raw = (project_root / HISTORICAL_MANIFEST_ARCHIVE).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == HISTORICAL_MANIFEST_ARCHIVE_SHA256, (
+        "historical custody manifest archive identity changed"
+    )
+    payload = json.loads(raw)
+    assert set(payload) == {
+        "schema_version",
+        "kind",
+        "source_commit",
+        "encoding",
+        "evidence_boundary",
+        "files",
+    }
+    assert type(payload["schema_version"]) is int and payload["schema_version"] == 1
+    assert payload["kind"] == "historical-h3-custody-manifest-companion"
+    assert payload["source_commit"] == "5e1cc9095b5f0590772c739d27558c2c711f9a44"
+    assert payload["encoding"] == "zlib+base64"
+    assert payload["evidence_boundary"] == (
+        "Original public manifest bytes for offline historical custody unit controls. "
+        "No Lean/test execution, current native acceptance, or renewed scientific approval."
+    )
+    relative = "src/fep_lean/formal/manifest.py"
+    assert set(payload["files"]) == {relative}
+    entry = payload["files"][relative]
+    assert set(entry) == {"sha256", "size", "data"}
+    assert entry["sha256"] == _HISTORICAL_MANIFEST_SHA256
+    assert type(entry["size"]) is int and entry["size"] == 22567
+    assert isinstance(entry["data"], str) and len(entry["data"]) == 4456
+    compressed = base64.b64decode(entry["data"], validate=True)
+    decoder = zlib.decompressobj()
+    data = decoder.decompress(compressed, entry["size"] + 1)
+    assert decoder.eof and not decoder.unused_data and not decoder.unconsumed_tail
+    assert len(data) == entry["size"]
+    assert hashlib.sha256(data).hexdigest() == _HISTORICAL_MANIFEST_SHA256
+    assert predecessor == data, "category owner subtraction changed historical bytes"
+    return data
 
 
 def historical_custody_sources(project_root: Path) -> dict[str, bytes]:
@@ -238,6 +320,7 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
     """
     from tests._support.h2_r0_custody import (
         H3_ADDENDUM_PATH,
+        MANIFEST_PATH,
         PRIOR_PATH,
         SUCCESSOR_PATH,
         VALIDATOR_PATH,
@@ -262,11 +345,15 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
     assert recorded_sources[VALIDATOR_PATH] == (
         "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53"
     )
+    live_manifest = (project_root / MANIFEST_PATH).read_bytes()
+    historical_manifest = historical_manifest_bytes(project_root, live_manifest)
     archived = historical_custody_sources(project_root)
     pins = historical_toolchain_files(project_root)
     for relative, digest in recorded_sources.items():
         canonical = relative.replace("lean/FepSketches/", "src/fep_lean/formal/", 1)
-        if canonical in archived:
+        if relative == MANIFEST_PATH:
+            data = historical_manifest
+        elif canonical in archived:
             data = archived[canonical]
         elif relative in pins:
             data = pins[relative]
@@ -298,6 +385,9 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
         "kind": "historical-static-custody-unit-control",
         "source_commit": "5e1cc9095b5f0590772c739d27558c2c711f9a44",
         "archive_sha256": HISTORICAL_CUSTODY_ARCHIVE_SHA256,
+        "manifest_archive_sha256": HISTORICAL_MANIFEST_ARCHIVE_SHA256,
+        "observed_manifest_sha256": hashlib.sha256(live_manifest).hexdigest(),
+        "restored_manifest_sha256": _HISTORICAL_MANIFEST_SHA256,
         "restored_source_paths": sorted(recorded_sources),
         "current_native_or_scientific_acceptance": False,
         "archived_source_execution": False,

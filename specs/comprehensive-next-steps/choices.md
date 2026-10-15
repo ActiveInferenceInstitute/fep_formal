@@ -424,3 +424,35 @@ authorized by a baseline alone.
 **Verdict:** sound measurement interpretation; retain the serial default.
 **Confidence:** high for the retained intervals; no current performance or
 native-currency claim, and no experiment while resource reserves are unmet.
+
+## The optional category port has a separate source transition
+
+**When:** R01 source integration preparation after the attributed feasibility spike.
+
+**Choice:** Manifest one optional composition leaf and regenerate its workspace,
+aggregate, coverage, landscape, atlas and methods projections through their
+existing owners. Bind the ordered 72-resource successor separately from the
+unchanged historical H2/H3 records. Keep every old live custody refusal.
+
+**Gap:** The authentic historical manifest is an input to static replay. Adding
+a current owner cannot be excused by extending the old validator's subtraction
+rules or relabeling an old native export. It needs its own source transition.
+
+**Reach:** A separate authenticated one-entry companion preserves the exact
+historical Git bytes. The preparer accepts only the exact predecessor or the
+exact successor with its positioned 266-byte insertion, verifies all 22 old
+inputs before writing, and labels the result historical/static/non-native.
+Sixteen historical/refusal/tampering controls and 24 formal source tests pass;
+the new native consumer remains unexecuted. Five owner freshness checks pass.
+Independent formal/API, domain and infrastructure/custody source assessments
+found no blockers at their recorded hashes. One subsequent test-message
+format change preserves its AST and keeps the earlier evidence binding.
+Removing one extra final line-feed from the leaf preserves all proof/import
+bytes; independent comparison and renewed owner projections bind that delta
+without relabeling prior executions.
+
+**Verdict:** sound source preparation; a historical positive control supplies
+no current native or scientific acceptance.
+**Confidence:** high for the measured static boundaries. Current compiler,
+ten-axiom, audit, installed-wheel, final-hosted and C05 acceptance remain open;
+neither PR44 nor Issue58 closes from this preparation.

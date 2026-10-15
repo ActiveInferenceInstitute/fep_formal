@@ -117,9 +117,13 @@ context; theorem statements, semantic records and numerical content are unchange
 
 R01's [attributed current-4.35 spike](spikes/finite_kernel_category.lean) and a
 separate importing consumer compile. All ten inspected declarations use only
-the standard three axioms. The spike is not a manifested package resource;
-PR44 still needs coordinated source-custody and independent formal/domain
-acceptance. It is not a redundant cleanup item. A02 must demonstrate a residual
+the standard three axioms at that feasibility epoch. The
+[prospective package port](spikes/finite-kernel-category-integration.md) adds a
+separately reviewed optional leaf, current projections and authenticated static
+historical controls. Its successor record binds the exact 72-resource roster;
+the historical live validator still rejects it. Current native/axiom, package,
+final hosted and C05 acceptance remain required before PR44/Issue58 closure.
+It is not a redundant cleanup item. A02 must demonstrate a residual
 query need. F09/F10/F13/F14 must inventory and compile the existing finite
 MaxEnt/Gibbs, Helmholtz, DirichletCategorical and Euclidean-current theorems
 before adding any construction. Their remaining consumer, discretization and

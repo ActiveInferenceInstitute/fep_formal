@@ -17,6 +17,7 @@ public import FepSketches.compositions.gaussian_filter
 public import FepSketches.compositions.gaussian_control
 public import FepSketches.compositions.gaussian_grid_path
 public import FepSketches.compositions.smooth_reference_kernel
+public import FepSketches.compositions.finite_kernel_category
 public import FepSketches.compositions.efe_policy_selection
 public import FepSketches.compositions.perception_action_loop
 public import FepSketches.compositions.bayesian_model_reduction

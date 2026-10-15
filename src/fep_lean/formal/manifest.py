@@ -441,6 +441,12 @@ FORMAL_MODULES: tuple[FormalModule, ...] = (
         declaration_namespace="FEPComposed.SmoothReferenceKernel",
     ),
     FormalModule(
+        resource="compositions/finite_kernel_category.lean",
+        lean_module="FepSketches.compositions.finite_kernel_category",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed.FiniteKernelCategory",
+    ),
+    FormalModule(
         resource="compositions/efe_policy_selection.lean",
         lean_module="FepSketches.compositions.efe_policy_selection",
         role=FormalModuleRole.COMPOSITION,
