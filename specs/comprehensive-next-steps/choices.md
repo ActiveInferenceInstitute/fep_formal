@@ -425,6 +425,84 @@ authorized by a baseline alone.
 **Confidence:** high for the retained intervals; no current performance or
 native-currency claim, and no experiment while resource reserves are unmet.
 
+## Current research guidance links to current owners
+
+**When:** G01 reading-path review before closing documentation work.
+
+**Choice:** Link the maintained release overview instead of repeating a stale
+current-release literal. Preserve the dated v1.5.0/untagged-candidate history.
+Scope the H1 design's original prospective instructions to its accepted source
+epoch and link current H3 execution separately. The documentation contract
+links the root required-check owner instead of defining another checklist.
+
+**Gap:** Passing link syntax did not detect a valid but outdated release claim
+or distinguish historical implementation instructions from new work.
+
+**Reach:** The H1 matrix, mathematics and no-go text remain byte-identical;
+historical receipts and scientific boundaries are unchanged. Fresh independent
+operator/source review found no blocker in the four exact changed guides.
+Strict links, Markdown hygiene and cross-references pass. This is guidance
+acceptance only, with final published-source reconciliation still required.
+
+**Verdict:** sound; preserve history while giving current facts one owner.
+**Confidence:** high for the reviewed reading paths, with no runtime or
+scientific acceptance inferred.
+
+## Tooling scope follows active owners and preserves retained inputs
+
+**When:** T01 measured lint/type expansion.
+
+**Choice:** Scan the repository with Ruff while excluding only the historical,
+generated and pinned-input trees owned by `specs/AGENTS.md`. Type-check source,
+scripts and docs strictly at the accepted Python 3.14 validator target; retain
+Python 3.10 syntax and installed-runtime compatibility checks separately.
+
+**Gap:** The old gate covered 313 of 387 tracked Python files and omitted
+28 active spec files. A literal full scan found 227 diagnostics, mostly in
+retained outputs. The reviewed 341-file active scope had only three findings;
+typing the 31 scripts/docs entry files found one optional-local collision.
+
+**Reach:** All 46 protected Python files retain their exact measured hashes.
+Existing enabled Ruff rules remain identical. The link-audit local and one
+import gap are corrected; exact-line exceptions preserve the certifier's
+invalid-document exception and historical compatibility alias. CI and the
+canonical command inventory change together. An actual isolated root scan
+keeps hostile protected inputs excluded and rejects an active-spec F401
+mutation without editing a real owner.
+
+**Verdict:** bounded expansion through existing owners; no scientific program
+or source-custody acceptance is renewed by linting.
+**Confidence:** high after zero repository-wide Ruff findings, 148 files passing
+strict typing, 36 targeted tests, formatting, strict links and protected-byte
+readback. Fresh independent infrastructure review found no blockers at the
+eight recorded source hashes; hosted acceptance remains separate.
+
+## Measure warnings during the existing hosted acceptance lanes
+
+**When:** P08 measurement preparation, before choosing narrower filters.
+
+**Choice:** Enable CLI warning visibility in the existing parallel, isolated
+Chrome and serial pytest components and retain their complete component logs.
+Use pipefail so logging cannot mask failed tests. Keep the current filters,
+selectors, coverage, environment settings and native zero-warning policy.
+
+**Gap:** Existing blanket ignores hide the warning baseline. JUnit alone does
+not retain a complete inventory, and present disk reserves do not support a
+new local broad suite. Measurement can accompany necessary hosted acceptance
+without adding a second execution lane or a separate bulk build.
+
+**Reach:** Exact installed/locked pytest source confirms CLI filters follow
+INI filters; item marks and pytest.warns retain their own controls. The new
+explicit logs join the existing always-uploaded artifacts. Fresh independent
+infrastructure review found no blocker in failure propagation, membership or
+retention. No narrower ignore is justified before actual observed messages.
+
+**Verdict:** sound measurement preparation, with P08 still open.
+**Confidence:** high for the reviewed command contracts; actual warning counts,
+uploaded logs and narrower exceptions remain unverified. Distribution,
+supplemental specs, nested/consumed warnings and the production controller are
+separate boundaries.
+
 ## The optional category port has a separate source transition
 
 **When:** R01 source integration preparation after the attributed feasibility spike.

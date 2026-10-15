@@ -26,7 +26,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         results = json.loads(args.results.read_text())
         if not isinstance(results, dict):
-            raise ValueError("results must be an object")
+            # Preserve the historical certifier's invalid-document exception.
+            raise ValueError("results must be an object")  # noqa: TRY004
         certificates, observations, ok = compare(results, args.tolerance)
         receipt = {"all_certificates_pass": ok, "certificates": certificates, "observations": observations, "tolerance": args.tolerance, "results_path": str(args.results), "source_bound": False, "native_claim_ready": False}
         if args.output is not None:

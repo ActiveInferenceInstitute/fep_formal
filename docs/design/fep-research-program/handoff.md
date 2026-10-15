@@ -9,8 +9,9 @@ frozen primary was unopened and H3's final scientific exit was not accepted.
 Later measured results belong to the source-bound execution and claim records;
 the canonical backlog owns subsequent delivery status.
 
-The current release is `v1.5.0` (2026-10-06), which ships the untagged
-`1.4.0` candidate through the [release procedure](../../release.md). The original
+Release history: `v1.5.0` (2026-10-06) shipped the untagged `1.4.0`
+candidate through the [release procedure](../../release.md). The
+[release overview](../../../README.md#release) owns the current release line. The original
 [nine-criterion program](../../../specs/comprehensive-science-improvement/PROTOCOL.md)
 remains binding; a successful subset or a new version cannot close it.
 [TODO.md](../../../TODO.md) owns the open-only backlog and
