@@ -502,3 +502,32 @@ retention. No narrower ignore is justified before actual observed messages.
 uploaded logs and narrower exceptions remain unverified. Distribution,
 supplemental specs, nested/consumed warnings and the production controller are
 separate boundaries.
+
+## Restore authenticated metadata for historical custody controls
+
+**When:** T01 integration exposed a metadata-bound historical-control failure.
+
+**Choice:** Keep the frozen validator, release adapter, receipts and existing
+archives unchanged. Add one authenticated companion containing the original
+public `pyproject.toml` bytes from `5e1cc9095b5f0590772c739d27558c2c711f9a44`.
+The preparer accepts only the exact reviewed predecessor or T01 metadata
+profile, with the pinned uv section and already approved root release tokens.
+The unchanged release-token owner recovers the recorded historical bytes.
+
+**Gap:** A combined category/tooling source run produced 11 passes and five
+failures because the old preparer correctly rejected the expanded Ruff/mypy
+configuration. Earlier passing subsets retain their own source epochs.
+
+**Reach:** Unknown live metadata and companion tampering refuse before
+decoding or temporary writes. All 22 original bound inputs still authenticate
+before restoration. A direct-map control now checks authenticated metadata
+instead of omitting it. Twenty-three focused controls passed on the tooling
+branch, including both approved profiles, release tokens, positive historical
+replay and adversarial metadata/source cases. The category successor still
+requires its own combined-source check; no old native or scientific evidence
+is renewed.
+
+**Verdict:** bounded historical static replay through authentic archived bytes.
+**Confidence:** scoped local controls pass and fresh independent custody
+review found no source blocker at the three recorded source hashes. Final
+hosted acceptance remains a separate requirement.
