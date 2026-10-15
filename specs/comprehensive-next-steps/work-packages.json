@@ -1628,7 +1628,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/124"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Blanket warning suppression is replaced by measured module-specific justified exceptions.",
       "depends_on": [],
       "single_owner": "pyproject.toml pytest warnings configuration and the affected test owners.",

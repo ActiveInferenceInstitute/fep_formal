@@ -182,6 +182,13 @@ syntax compatibility, and the installed-wheel matrix checks the packaging floor
 separately. Exceptions preserve declared error or compatibility contracts and
 must be justified at the affected line.
 
+Hosted Python, isolated Chrome and serial Lean pytest components retain their
+complete warning-inventory logs with CLI warning visibility enabled. This
+measurement precedes any narrowing of the existing filters; it does not turn
+warnings into errors or change Lean's zero-warning acceptance. Distribution,
+supplemental specs and nested/consumed warnings retain separate measurement
+boundaries. The production-capture executor is unchanged.
+
 ```bash
 uv lock --check && uv pip check
 uv run python scripts/_maint_build_topics_catalogue.py --check

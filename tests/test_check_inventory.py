@@ -64,7 +64,9 @@ HOSTED_ONLY = {
     "tests/test_browser_capture.py::"
     "test_live_chrome_replay_terminates_every_profile_writer -q -n 0 --cov=src "
     "--cov-append --cov-report=xml --cov-fail-under=89 "
-    "--junitxml=output/live-chrome-acceptance.xml": "isolated live Chrome component",
+    "--junitxml=output/live-chrome-acceptance.xml -W always --color=no": (
+        "isolated live Chrome component with measured warning visibility"
+    ),
     "python specs/publication-browser-acceptance/validate_acceptance.py "
     "--collection output/python-acceptance-collection.json "
     "--parallel-junit output/python-acceptance.xml "

@@ -476,3 +476,29 @@ or source-custody acceptance is renewed by linting.
 strict typing, 36 targeted tests, formatting, strict links and protected-byte
 readback. Fresh independent infrastructure review found no blockers at the
 eight recorded source hashes; hosted acceptance remains separate.
+
+## Measure warnings during the existing hosted acceptance lanes
+
+**When:** P08 measurement preparation, before choosing narrower filters.
+
+**Choice:** Enable CLI warning visibility in the existing parallel, isolated
+Chrome and serial pytest components and retain their complete component logs.
+Use pipefail so logging cannot mask failed tests. Keep the current filters,
+selectors, coverage, environment settings and native zero-warning policy.
+
+**Gap:** Existing blanket ignores hide the warning baseline. JUnit alone does
+not retain a complete inventory, and present disk reserves do not support a
+new local broad suite. Measurement can accompany necessary hosted acceptance
+without adding a second execution lane or a separate bulk build.
+
+**Reach:** Exact installed/locked pytest source confirms CLI filters follow
+INI filters; item marks and pytest.warns retain their own controls. The new
+explicit logs join the existing always-uploaded artifacts. Fresh independent
+infrastructure review found no blocker in failure propagation, membership or
+retention. No narrower ignore is justified before actual observed messages.
+
+**Verdict:** sound measurement preparation, with P08 still open.
+**Confidence:** high for the reviewed command contracts; actual warning counts,
+uploaded logs and narrower exceptions remain unverified. Distribution,
+supplemental specs, nested/consumed warnings and the production controller are
+separate boundaries.

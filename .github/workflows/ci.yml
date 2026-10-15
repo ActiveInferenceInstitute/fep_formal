@@ -237,22 +237,29 @@ jobs:
       # This changes scheduling, not Chrome's deadline or launch behavior.
       - name: Run the parallel Python acceptance component
         id: python_remainder
-        run: >-
-          uv run pytest tests/ -q -n auto --dist loadgroup
-          --cov=src --cov-report=xml --cov-fail-under=89
-          -m "not serial_lean"
-          --deselect=tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request
-          --deselect=tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer
-          --junitxml=output/python-acceptance.xml
+        run: |
+          set -o pipefail
+          mkdir -p output
+          uv run pytest tests/ -q -n auto --dist loadgroup \
+            --cov=src --cov-report=xml --cov-fail-under=89 \
+            -m "not serial_lean" \
+            --deselect=tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request \
+            --deselect=tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer \
+            --junitxml=output/python-acceptance.xml -W always --color=no \
+            2>&1 | tee output/python-warning-inventory.log
       - name: Run the isolated live Chrome acceptance component
         id: live_chrome
         if: ${{ !cancelled() && steps.python_remainder.outcome != 'skipped' }}
-        run: >-
-          uv run pytest
-          tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request
-          tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer
-          -q -n 0 --cov=src --cov-append --cov-report=xml
-          --cov-fail-under=89 --junitxml=output/live-chrome-acceptance.xml
+        run: |
+          set -o pipefail
+          mkdir -p output
+          uv run pytest \
+            tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request \
+            tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer \
+            -q -n 0 --cov=src --cov-append --cov-report=xml \
+            --cov-fail-under=89 --junitxml=output/live-chrome-acceptance.xml \
+            -W always --color=no \
+            2>&1 | tee output/live-chrome-warning-inventory.log
       - name: Require complete Python membership and all live Chrome controls
         if: ${{ !cancelled() && steps.python_remainder.outcome != 'skipped' && steps.live_chrome.outcome != 'skipped' }}
         run: >-
@@ -272,6 +279,8 @@ jobs:
             output/live-chrome-acceptance.xml
             output/python-acceptance-collection.json
             output/python-acceptance-summary.json
+            output/python-warning-inventory.log
+            output/live-chrome-warning-inventory.log
             coverage.xml
           if-no-files-found: error
       - name: Check mathematical context and numerical visualization boundaries
@@ -1017,7 +1026,11 @@ jobs:
           FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
           FEP_LEAN_SLICE04_COMPILE_TEST: "1"
           FEP_LEAN_SLICE05_COMPILE_TEST: "1"
-        run: uv run pytest tests/ -q -m serial_lean -n 1 --no-cov
+        run: |
+          set -o pipefail
+          mkdir -p output
+          uv run pytest tests/ -q -m serial_lean -n 1 --no-cov \
+            -W always --color=no 2>&1 | tee output/serial-lean-warning-inventory.log
       - name: Verify exact sealed-roster native receipt
         run: |
           uv run fep-lean verify \
@@ -1096,3 +1109,4 @@ jobs:
           path: |
             output/native-verification.json
             output/formalism-audit.json
+            output/serial-lean-warning-inventory.log
