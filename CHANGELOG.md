@@ -1,5 +1,10 @@
 ## Unreleased
 
+- Consolidate active root source-owner, execution and gate definitions in
+  `AGENTS.md`; link the overview, specification and handoff to those owners.
+  Preserve dated evidence and the exact prior reproduction sequence. Extend
+  the existing inventory guard with real duplication and shell-comment controls.
+
 - Replace all six foundation `Mathlib.Tactic` imports with explicit dependencies,
   and declare the Ring/Matrix dependencies exposed in two consumers. Preserve
   declaration and proof bodies; regenerate workspace and coverage projections.

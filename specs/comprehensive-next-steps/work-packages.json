@@ -1821,7 +1821,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/146"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Active root guidance has one owner per topic and every gate command is defined once.",
       "depends_on": [
         "G01"

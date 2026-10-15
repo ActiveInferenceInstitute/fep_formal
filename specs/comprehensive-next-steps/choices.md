@@ -351,3 +351,29 @@ the explicit successor and independent formal/domain reviews.
 **Verdict:** sound feasibility evidence; no automatic Issue/PR closure.
 **Confidence:** high for the compiled category laws and concrete consumer;
 package and scientific acceptance remain open.
+
+## Root reference sections link to maintained definitions
+
+**When:** D04 root ownership consolidation.
+
+**Choice:** AGENTS owns active source maps, execution requirements and gate
+definitions. README, SPEC and HANDOFF link to those sections. Move unique
+safeguards in full before removing their copies; retain dated HANDOFF evidence
+and immutable links to its original table and reproduction sequence.
+
+**Gap:** Repeated lists drifted across four roots. The old inventory guard
+covered only two secondary docs and could not reject restored root definitions.
+Comment stripping after chain splitting could also invent a gate from prose
+following a shell comment; fresh independent review caught that parser defect.
+
+**Reach:** The existing inventory helper lexes comments and quoted operators
+before chain splitting. Actual positive/negative controls preserve quoted
+hashes/ampersands and reject copied commands, owner rows, mode definitions and
+missing links. The 51 canonical commands remain byte-identical. Enforcement
+is confined to designated reference sections, preserving usage examples;
+it does not claim to detect arbitrary paraphrased duplication.
+
+**Verdict:** sound; README is shorter and all moved evidence boundaries remain.
+**Confidence:** high after 23 inventory tests, 49 documentation-audit tests,
+no-cache Ruff/format checks and fresh independent re-review. Hosted checks
+and publication acceptance retain their separate source boundaries.
