@@ -14,6 +14,7 @@ from fep_lean.catalogue.bodies.geometric_optimization import (
 )
 from fep_lean.catalogue.bodies.path_thermodynamics import BODIES as THERMO_BODIES
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -159,7 +160,7 @@ def test_path_thermodynamics_keeps_support_and_rate_boundaries_visible() -> None
 
 def test_geometric_optimization_extends_the_existing_fisher_carrier() -> None:
     source = (FORMAL_ROOT / "geometric_optimization.lean").read_text(encoding="utf-8")
-    assert source.startswith("import FepSketches.information_geometry\n")
+    assert_exposed_module_header(source, ("FepSketches.information_geometry",))
     assert "model : ScoreModel (Fin d) d" in source
     assert "fisherMetric model tangent tangent" in source
     assert "lowerTangent model tangent" in source

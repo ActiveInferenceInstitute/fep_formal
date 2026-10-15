@@ -13,6 +13,7 @@ from fep_lean.formal import formal_projection_pairs
 from fep_lean.formal.manifest import FORMAL_MODULES
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean435_migration import assert_historical_repair_bindings
 from tests._support.lean_runner import run_lean_compile_probe, run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -493,6 +494,17 @@ def test_h2_5d_r0_repair_is_source_bound_append_only_go() -> None:
         "H3 result",
     }
     assert required_no_go_claims <= set(repair["reviewed_no_go_claims"])
-    assert repair["source_sha256"] == {
-        relative: _sha256(PROJECT_ROOT / relative) for relative in SOURCE_BOUND_PATHS
-    }
+    # This immutable go decision belongs to its recorded compiler/source
+    # epoch. The inverse migration checks preserve its proof bytes; current
+    # toolchain and updated test bytes must not impersonate old acceptance.
+    assert_historical_repair_bindings(
+        PROJECT_ROOT,
+        REPAIR,
+        "e23cb39517cbadb3b9bac3d26e4d1969a994975f0f01f30499433ba7149d6fc9",
+        SOURCE_BOUND_PATHS,
+        historical_tests={
+            "tests/test_horizon2_gaussian_conditioning_readiness.py": (
+                "e575c5597f0b3e7e945d4471aeb6caf4066da0ddcc38b13700963e96c32eb848"
+            ),
+        },
+    )

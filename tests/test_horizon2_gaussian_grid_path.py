@@ -11,6 +11,7 @@ from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.formal.projection import formal_projection_drift
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -72,7 +73,7 @@ def test_h2_6c_has_one_exact_composition_owner() -> None:
     assert owner.lean_module == "FepSketches.compositions.gaussian_grid_path"
     assert owner.role is FormalModuleRole.COMPOSITION
     assert owner.declaration_namespace == "FEPComposed.GaussianGridPath"
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
 
 
 def test_h2_6c_reuses_native_ou_and_partial_trajectory_carriers() -> None:

@@ -30,7 +30,8 @@ promote the semantic disposition or prove the full FEP concept.
 | [CHANGELOG.md](CHANGELOG.md) | Release changes and their evidence boundary | Authoritative |
 | [docs/release.md](docs/release.md) | Release procedure and gate | Authoritative |
 | [SPEC.md](SPEC.md) | Functional specification of the validated catalogue | Authoritative |
-| [ISA.md](ISA.md) | Ideal state, anti-criteria and evidence gates (`status: active`, updated 2026-10-11) | Authoritative; dated in its front matter |
+| [ISA.md](ISA.md) | Ideal state, anti-criteria, evidence gates and accepted source checkpoints | Authoritative; dated in its front matter |
+| [Next-step campaign](specs/comprehensive-next-steps/README.md) | Active dependency graph, work-package contracts and current pickup point | Active implementation plan; acceptance remains package-specific |
 | [PAI.md](PAI.md) | Agent command interface | Authoritative |
 | [HANDOFF.md](HANDOFF.md) | Next-reviewer protocol and evidence receipt, dated 2026-10-07 | Dated snapshot |
 | [SCOPE-2026-09-30.md](specs/comprehensive-science-improvement/SCOPE-2026-09-30.md) | Retained preimplementation baseline of that day's scope review | Dated snapshot |

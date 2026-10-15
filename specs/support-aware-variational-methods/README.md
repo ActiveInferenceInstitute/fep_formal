@@ -132,3 +132,54 @@ from the open backlog. Other scientific/capture/runner lanes retain their own
 acceptance gates. Publication targets `ActiveInferenceInstitute/fep_formal`
 `main`; the publishing handoff reports its independently checked remote commit.
 A local snapshot does not assert hosted CI, a tagged release or an archive.
+
+## Hosted integration follow-up
+
+The first published commit, `672fbdfed8ab17c613834cc68bf06d36eed8c86e`,
+passed all 15 distribution cases and the complete hosted Python acceptance
+membership: 2,909 passed, 20 skipped, no failures and 91.60% combined coverage,
+including both live Chrome tests. Static checks, the warning-free Lean aggregate
+and orphaned-module compilation also passed in
+[run 38668279214](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38668279214).
+
+The serial lane returned 47 failures, 514 passes and five skips. Its failures
+exposed old import/header and public-surface assertions, historical receipts
+being compared with the new live epoch, and an unused-tactic warning inside an
+H3 expected-rejection probe. Hosted native receipt validation, declaration audit
+and the final render were not reached. The accepted local receipts above retain
+their exact-source scope.
+
+The follow-up repair is confined to tests and documentation. Current module
+headers and dependency lists remain exact; temporary compilation closures remove
+only a verified dependency header. Immutable historical receipt and validator
+bytes remain pinned, and current source must fail the old acceptance checks.
+Changing a test does not renew the scientific decision it once supported.
+
+Tampering tests use a separate historical unit fixture. It retains the original
+H3 case-study and VFE readiness source bytes from
+`5e1cc9095b5f0590772c739d27558c2c711f9a44`; the remaining inputs reuse the sealed
+pin fixture and exact enumerated migration reversals. Every reconstructed input
+must match the immutable addendum's 22 source hashes, and the historical
+validator must accept the baseline before a mutation is applied. Tests then
+require the specific earliest refusal, including immutable-record rejection
+where applicable. The live-source refusal remains a separate assertion.
+
+The archive is generated, never hand-edited. Its owning command is:
+
+```bash
+uv run python specs/support-aware-variational-methods/generate_historical_custody_fixture.py --check
+```
+
+Regeneration needs the original Git object above; ordinary tests use the
+digest-checked archive offline, including in shallow CI checkouts. This fixture
+does not execute the old proof or establish acceptance under the current compiler.
+
+The combined repair selection passed 108 tests, covering every formerly failing
+function and its full parameter family, the new header/closure regressions,
+historical controls and existing custody-epoch tests. All 301 production/config
+owner files matched the accepted native source before and after that run.
+Independent import/surface and custody reviews found no remaining issues; the
+review's masked-tamper finding was repaired before this combined check. Ruff,
+formatting and strict documentation checks passed. The
+[repair acceptance snapshot](ci-repair-acceptance.json) binds these local results;
+it does not assert that a subsequent hosted workflow passed.

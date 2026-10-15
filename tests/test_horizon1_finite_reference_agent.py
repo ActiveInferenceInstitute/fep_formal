@@ -9,6 +9,7 @@ import pytest
 
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -50,7 +51,7 @@ def _declaration(source: str, kind: str, name: str) -> str:
 def test_finite_reference_agent_owns_exact_import_and_namespace_contract() -> None:
     source = COMPOSITION.read_text(encoding="utf-8")
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
     assert "namespace FEPComposed.FiniteReferenceAgent\n" in source
     assert source.rstrip().endswith("end FEPComposed.FiniteReferenceAgent")
     assert not re.search(

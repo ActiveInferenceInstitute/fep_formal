@@ -11,6 +11,7 @@ from fep_lean.formal import formal_projection_pairs, render_formal_aggregate
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +47,7 @@ PUBLIC_DEFINITIONS = (
     "nativePosteriorQuadraticRisk",
     "selectedAction",
     "nativePosteriorSelectedAction",
+    "boolDynamics",
     "boolWitnessPrior",
     "boolWitnessFilter",
     "boolWitnessControl",
@@ -81,7 +83,7 @@ def test_h2_6b_has_one_exact_composition_source_owner() -> None:
     assert SOURCE.is_file()
     source = SOURCE.read_text(encoding="utf-8")
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
     assert "namespace FEPComposed.GaussianControl\n" in source
     assert source.rstrip().endswith("end FEPComposed.GaussianControl")
     assert "namespace FEPProbe" not in source
@@ -105,7 +107,12 @@ def test_h2_6b_is_manifested_projected_and_aggregated_once() -> None:
     assert projection.read_bytes() == SOURCE.read_bytes()
 
     aggregate = render_formal_aggregate()
-    assert aggregate.count("import FepSketches.compositions.gaussian_control\n") == 1
+    assert (
+        aggregate.splitlines().count(
+            "public import FepSketches.compositions.gaussian_control"
+        )
+        == 1
+    )
 
 
 def test_h2_6b_stores_only_raw_control_inputs() -> None:

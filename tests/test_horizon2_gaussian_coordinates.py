@@ -11,6 +11,7 @@ import pytest
 
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -78,7 +79,7 @@ def test_h2_1b_extends_the_single_owner_with_exact_imports() -> None:
     source = FOUNDATION.read_text(encoding="utf-8")
     uncommented = lean_code_without_comments(source)
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
     assert (
         tuple(
             name

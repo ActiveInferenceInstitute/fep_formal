@@ -42,7 +42,8 @@ gaps through Python and `fep-lean methods gibbs`.
 
 ## Release
 
-The **v1.6.0 release line** (2026-10-07) retains the 168-topic catalogue in
+The published **[v1.6.0 release](https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v1.6.0)**
+(release date 2026-10-07) retains the 168-topic catalogue in
 22 families on the `v4.34.1` Lean/Mathlib pair and extends its mathematical methods and
 manuscript. The previous published release is
 [`v1.5.0`](https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v1.5.0)
@@ -58,6 +59,12 @@ feature coordinates, an offline explorer, publication panels and an extended
 [Supplement A](manuscript/08b_mathematical_positioning_supplement.md).
 [The integration guide](docs/mathematical-methods.md) records the interfaces and
 mathematical transfer rules. Publication is bound to the release gate on the final integrated commit.
+
+The Lean/Mathlib 4.35 migration and support-aware variational extension are
+subsequent source changes, recorded under Unreleased. The
+[accepted source checkpoint](ISA.md#current-assessment) binds their hosted
+evidence to its exact commit. The [active next-step campaign](specs/comprehensive-next-steps/README.md)
+owns subsequent implementation; the published tag retains its original bytes.
 
 The evolving manuscript is identified by the
 [scholarly concept DOI](https://doi.org/10.5281/zenodo.19699233). GitHub releases

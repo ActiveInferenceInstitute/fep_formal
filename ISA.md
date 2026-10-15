@@ -2,7 +2,7 @@
 title: fep_lean Ideal State Assessment
 status: active
 phase: verifying
-updated: 2026-10-14
+updated: 2026-10-15
 ---
 
 # fep_lean Ideal State Assessment
@@ -147,6 +147,25 @@ available, record the exact preflight failure and leave the full-run criterion
 open in [TODO.md](TODO.md).
 
 ## Current assessment
+
+The latest accepted integrated checkpoint is
+[`260ea72d7464c6d0eb608dbf98c450963adff34f`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/260ea72d7464c6d0eb608dbf98c450963adff34f).
+Its exact-main [hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38678683906)
+passed all 21 required jobs, including all 15 installed-wheel cells; the
+documentation-only alternative was intentionally skipped. Python acceptance
+retained 2,909 passes, 20 skips, complete 2,929-case membership, both live
+Chrome controls and 91.63% combined coverage. Serial Lean retained 575 passes
+and five skips. The Lean/Mathlib 4.35.0 native receipt verified all 168 topics
+without warnings or `sorry`; the audit resolved all 1,875 declarations with
+only the standard approved axioms. Its fresh 388-page render passed all nine
+acceptance counters, with source-bound artifacts retained by that run.
+
+This checkpoint establishes those source-specific hosted lanes. Production
+seven-stage capture, local runtime/status acceptance and the frozen H3 study
+retain their separate gates. The
+[active implementation plan](specs/comprehensive-next-steps/README.md) reconciles
+those gates and future work; it does not rebind historical receipts to later
+source changes.
 
 The maintained schema-2 roster spans `fep-001` through `fep-168` in 22
 families. Canonical bodies are family-owned and formal resources are manifested

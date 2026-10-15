@@ -8,6 +8,11 @@ annotated, never rewritten.
 
 ## Acceptance-artifact conventions
 
+[`comprehensive-next-steps`](comprehensive-next-steps/README.md) owns the active
+minor, medium and major continuation graph. Its package matrix records exact
+go/no-go clauses and preserves the distinct capture, source, proof and H3
+acceptance planes. Planning and feasibility reviews are not execution receipts.
+
 [`openai-math-methods`](openai-math-methods/README.md) is an active, slice-local
 research analysis module. It owns a pinned upstream source review, authored
 mathematical family context, deterministic canonical contract projections,
