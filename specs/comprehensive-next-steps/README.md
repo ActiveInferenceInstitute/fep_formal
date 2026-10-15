@@ -23,6 +23,9 @@ checks, evidence plane, review and excluded stronger claim. Issue links and
 [TODO.md](../../TODO.md) remain the open delivery inventory; this matrix owns
 the implementation dependencies, not another scientific registry.
 
+G02's [retained pytest evidence inventory](retained-pytest-evidence.md) documents
+the eight receipt-bound copies and their individual retention decisions.
+
 1. Finish the source-bound publication of G01/P01/L01 and the independent
    D02/D03 count/chapter corrections. Continue foundations before topic-body
    import narrowing. Independent owner inventories can prepare L02/L03,
@@ -95,23 +98,41 @@ P01's C04 predecessor and the remaining L01 work stay open.
 [PR173](https://github.com/ActiveInferenceInstitute/fep_formal/pull/173)
 is merged at [`6aeea47`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/6aeea478b0643baaeab5af1e26ef4dd545890f24)
 after [all executed PR lanes passed](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38760058809)
-on `db020c5`. Its combined exact-main workflow remains a separate acceptance.
+on `db020c5`. Its [exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38769188125)
+also passed on `6aeea47`; that result does not qualify later feature-branch source.
 Re-read live PR state before integration; old green or failed runs retain their
 own exact source boundaries.
+[PR177](https://github.com/ActiveInferenceInstitute/fep_formal/pull/177) is merged
+at [`6a80ff5`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/6a80ff5600292c66948e0f2ac8bb6ded934520a3).
+Its [final head workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38784700242)
+passed all 15 executed checks; the documentation-only lane was intentionally
+skipped. Python recorded 2951 passes, 20 skips, exact nonserial membership and
+91.64% coverage. Serial Lean recorded 575 passes and five skips; all 168 native
+topics were clean. The audit resolved 1875 declarations with 1744 evidence
+entries. The actual accepted render has 388 pages and all nine defect counters
+zero. Independently checked source manifests and Git tree equality bind these
+results to the merged tree. The new exact-main workflow remains a separate gate.
 
-The local L01 foundation pass replaced all six blanket tactic imports and
+The L01 foundation pass replaced all six blanket tactic imports and
 declared two newly exposed consumer dependencies. All 73 workspace modules
 compiled cleanly in a fresh output tree with old FEP artifacts excluded;
 per-topic native/axiom and publication receipts remain separate. Its coverage
 projection now also retains meta imports. The 21 topic bodies are the next
 narrowing scope and need coordinated catalogue/aggregate regeneration.
-D02/D03 have source corrections and mutation controls; real current-source
-render acceptance remains required before closure. P02 removes only three
-demonstrably dead helpers and refreshes its current generated Q6 manifest;
+D02/D03 have source corrections, mutation controls and accepted render evidence;
+Issue closure and open-only TODO cleanup await the new main gate. P02 removes
+only three demonstrably dead helpers and refreshes its current generated Q6
+manifest;
 historical custody receipts remain unchanged. Its caller inventory also
 clarified the third source owner and corresponding checks in the new package.
-D04 has a reviewed root-owner consolidation and 23 passing inventory controls;
-the 51 canonical gate commands and dated evidence remain byte-identical.
+D04's reviewed root-owner consolidation at `9b31783` retained the canonical
+gate commands and passed 23 inventory controls; dated evidence remains unchanged.
+The later T01/P08 passes update the canonical command owner and CI together,
+with their own inventory controls and source epochs. T01 covers 341 active
+Python files with Ruff and 148 source/script/doc files with strict mypy.
+P08 prepares warning-log retention; actual measurement and filter narrowing
+remain open. Historical metadata replay, terminal-validator controls and
+hosted acceptance retain their distinct evidence boundaries.
 The methods projection is refreshed through its owner and retains meta-import
 context; theorem statements, semantic records and numerical content are unchanged.
 
@@ -119,8 +140,10 @@ R01's [attributed current-4.35 spike](spikes/finite_kernel_category.lean) and a
 separate importing consumer compile. All ten inspected declarations use only
 the standard three axioms. The spike is not a manifested package resource;
 PR44 still needs coordinated source-custody and independent formal/domain
-acceptance. It is not a redundant cleanup item. A02 must demonstrate a residual
-query need. F09/F10/F13/F14 must inventory and compile the existing finite
+acceptance. Its [package successor PR179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179)
+retains attribution and requires its own native, package and final hosted
+acceptance; neither PR is a redundant cleanup item. A02 must demonstrate a
+residual query need. F09/F10/F13/F14 must inventory and compile the existing finite
 MaxEnt/Gibbs, Helmholtz, DirichletCategorical and Euclidean-current theorems
 before adding any construction. Their remaining consumer, discretization and
 semantic obligations

@@ -205,17 +205,19 @@ def check_file(
 
         # Anchor validation for cross-file links (--strict only)
         if strict and anchor and target_path.suffix.lower() == ".md":
-            anchors = anchor_cache.get(target_path)
-            if anchors is None:
+            cached_anchors = anchor_cache.get(target_path)
+            if cached_anchors is None:
                 try:
-                    anchors = collect_anchors(target_path.read_text(encoding="utf-8"))
+                    cached_anchors = collect_anchors(
+                        target_path.read_text(encoding="utf-8")
+                    )
                 except OSError:
-                    anchors = set()
-                anchor_cache[target_path] = anchors
-            if anchor not in anchors:
+                    cached_anchors = set()
+                anchor_cache[target_path] = cached_anchors
+            if anchor not in cached_anchors:
                 issues.append(
                     f"{_label(filepath)}:{lineno}: anchor '#{anchor}' not found in "
-                    f"{target_path.name} (known: {len(anchors)} headings)"
+                    f"{target_path.name} (known: {len(cached_anchors)} headings)"
                 )
 
     return issues

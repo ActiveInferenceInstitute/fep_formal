@@ -369,7 +369,7 @@ following a shell comment; fresh independent review caught that parser defect.
 **Reach:** The existing inventory helper lexes comments and quoted operators
 before chain splitting. Actual positive/negative controls preserve quoted
 hashes/ampersands and reject copied commands, owner rows, mode definitions and
-missing links. The 51 canonical commands remain byte-identical. Enforcement
+missing links. The canonical command blocks remain byte-identical. Enforcement
 is confined to designated reference sections, preserving usage examples;
 it does not claim to detect arbitrary paraphrased duplication.
 
@@ -446,4 +446,137 @@ acceptance only, with final published-source reconciliation still required.
 
 **Verdict:** sound; preserve history while giving current facts one owner.
 **Confidence:** high for the reviewed reading paths, with no runtime or
+scientific acceptance inferred.
+
+## Keep current guidance explicit about each check epoch
+
+**When:** Final parent-branch reading-path reconciliation.
+
+**Choice:** Record the accepted `6aeea47` main workflow separately from pending
+feature branches. Bind D04's unchanged-command result to its reviewed
+`9b31783` epoch, then describe the later coordinated T01/P08 command updates.
+State G02's acceptance requirements without a stale claim that every review
+is still pending.
+
+**Gap:** An earlier correct byte-preservation result can become misleading
+when repeated as an unqualified current command inventory after later edits.
+Its shell-command count also included the `cd lean` setup prefix, which the
+tracked-gate lexer deliberately excludes. Retain the exact byte comparison
+without repeating an ambiguous count.
+
+**Reach:** No gate, evidence file, source profile or scientific disposition
+changes. Each check keeps its actual consumed bytes and acceptance plane.
+
+**Verdict:** keep source currency and completed historical checks distinct.
+**Confidence:** exact main workflow verified; current feature acceptance remains
+separate.
+
+## Tooling scope follows active owners and preserves retained inputs
+
+**When:** T01 measured lint/type expansion.
+
+**Choice:** Scan the repository with Ruff while excluding only the historical,
+generated and pinned-input trees owned by `specs/AGENTS.md`. Type-check source,
+scripts and docs strictly at the accepted Python 3.14 validator target; retain
+Python 3.10 syntax and installed-runtime compatibility checks separately.
+
+**Gap:** The old gate covered 313 of 387 tracked Python files and omitted
+28 active spec files. A literal full scan found 227 diagnostics, mostly in
+retained outputs. The reviewed 341-file active scope had only three findings;
+typing the 31 scripts/docs entry files found one optional-local collision.
+
+**Reach:** All 46 protected Python files retain their exact measured hashes.
+Existing enabled Ruff rules remain identical. The link-audit local and one
+import gap are corrected; exact-line exceptions preserve the certifier's
+invalid-document exception and historical compatibility alias. CI and the
+canonical command inventory change together. An actual isolated root scan
+keeps hostile protected inputs excluded and rejects an active-spec F401
+mutation without editing a real owner.
+
+**Verdict:** bounded expansion through existing owners; no scientific program
+or source-custody acceptance is renewed by linting.
+**Confidence:** high after zero repository-wide Ruff findings, 148 files passing
+strict typing, 36 targeted tests, formatting, strict links and protected-byte
+readback. Fresh independent infrastructure review found no blockers at the
+eight recorded source hashes; hosted acceptance remains separate.
+
+## Measure warnings during the existing hosted acceptance lanes
+
+**When:** P08 measurement preparation, before choosing narrower filters.
+
+**Choice:** Enable CLI warning visibility in the existing parallel, isolated
+Chrome and serial pytest components and retain their complete component logs.
+Use pipefail so logging cannot mask failed tests. Keep the current filters,
+selectors, coverage, environment settings and native zero-warning policy.
+
+**Gap:** Existing blanket ignores hide the warning baseline. JUnit alone does
+not retain a complete inventory, and present disk reserves do not support a
+new local broad suite. Measurement can accompany necessary hosted acceptance
+without adding a second execution lane or a separate bulk build.
+
+**Reach:** Exact installed/locked pytest source confirms CLI filters follow
+INI filters; item marks and pytest.warns retain their own controls. The new
+explicit logs join the existing always-uploaded artifacts. Fresh independent
+infrastructure review found no blocker in failure propagation, membership or
+retention. No narrower ignore is justified before actual observed messages.
+
+**Verdict:** sound measurement preparation, with P08 still open.
+**Confidence:** high for the reviewed command contracts; actual warning counts,
+uploaded logs and narrower exceptions remain unverified. Distribution,
+supplemental specs, nested/consumed warnings and the production controller are
+separate boundaries.
+
+## Restore authenticated metadata for historical custody controls
+
+**When:** T01 integration exposed a metadata-bound historical-control failure.
+
+**Choice:** Keep the frozen validator, release adapter, receipts and existing
+archives unchanged. Add one authenticated companion containing the original
+public `pyproject.toml` bytes from `5e1cc9095b5f0590772c739d27558c2c711f9a44`.
+The preparer accepts only the exact reviewed predecessor or T01 metadata
+profile, with the pinned uv section and already approved root release tokens.
+The unchanged release-token owner recovers the recorded historical bytes.
+
+**Gap:** A combined category/tooling source run produced 11 passes and five
+failures because the old preparer correctly rejected the expanded Ruff/mypy
+configuration. Earlier passing subsets retain their own source epochs.
+
+**Reach:** Unknown live metadata and companion tampering refuse before
+decoding or temporary writes. All 22 original bound inputs still authenticate
+before restoration. A direct-map control now checks authenticated metadata
+instead of omitting it. Twenty-three focused controls passed on the tooling
+branch, including both approved profiles, release tokens, positive historical
+replay and adversarial metadata/source cases. The category successor still
+requires its own combined-source check; no old native or scientific evidence
+is renewed.
+
+**Verdict:** bounded historical static replay through authentic archived bytes.
+**Confidence:** scoped local controls pass and fresh independent custody
+review found no source blocker at the three recorded source hashes. Final
+hosted acceptance remains a separate requirement.
+
+## Retain all eight receipt-bound pytest captures
+
+**When:** G02's exact file and consumer inventory.
+
+**Choice:** Document each retained file in a maintained inventory outside the
+immutable evidence tree. Preserve both the failed first consumer attempt and
+its successful repair, including separately bound empty stderr paths.
+
+**Gap:** Temporary-looking names and near-duplicate Lean text do not establish
+that an artifact lacks receipt or review consumers.
+
+**Reach:** All eight sizes and digests match the author receipt. The separate
+semantic review authenticates that receipt, so deleting a cited file or
+rewriting the receipt would break historical custody. Strict links and
+Markdown hygiene pass. The recorded Lean compiler version for those old
+results is `4.34.1`; the current source uses Lean 4.35.0. Fresh independent
+custody review found no source blocker in the two
+documents and independently rechecked all 25 receipt artifact hashes.
+Terminal-validator positive/fail-closed controls, separate combined
+historical-custody controls and accepted publication remain required before
+G02 closes.
+
+**Verdict:** document the eight exceptions; retire none.
+**Confidence:** high for the hash/consumer inventory, with no new execution or
 scientific acceptance inferred.

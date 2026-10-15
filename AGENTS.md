@@ -174,6 +174,21 @@ allow-lists, if CI runs a gate that is missing here, or if those reference
 sections duplicate the maintained definitions. Add a check to CI and to this
 block in the same change.
 
+Ruff checks all active Python tooling, including slice-local specs. The narrow
+historical/generated/pinned-input exclusions in `pyproject.toml` follow
+`specs/AGENTS.md`; their bytes remain unchanged. Strict mypy covers the package,
+scripts and docs at the Python 3.14 validator target. Ruff retains Python 3.10
+syntax compatibility, and the installed-wheel matrix checks the packaging floor
+separately. Exceptions preserve declared error or compatibility contracts and
+must be justified at the affected line.
+
+Hosted Python, isolated Chrome and serial Lean pytest components retain their
+complete warning-inventory logs with CLI warning visibility enabled. This
+measurement precedes any narrowing of the existing filters; it does not turn
+warnings into errors or change Lean's zero-warning acceptance. Distribution,
+supplemental specs and nested/consumed warnings retain separate measurement
+boundaries. The production-capture executor is unchanged.
+
 ```bash
 uv lock --check && uv pip check
 uv run python scripts/_maint_build_topics_catalogue.py --check
@@ -210,8 +225,8 @@ uv run ruff check specs/publication-browser-acceptance
 uv run ruff format --check specs/publication-browser-acceptance
 uv run python specs/publication-browser-acceptance/validate_acceptance.py --collect output/python-acceptance-collection.json
 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
-uv run mypy src
-uv run ruff check src tests scripts docs
+uv run mypy src scripts docs
+uv run ruff check .
 uv run ruff format --check src tests scripts docs
 git diff --check
 uv run python docs/check_links.py --strict --include-root

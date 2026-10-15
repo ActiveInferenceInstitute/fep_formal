@@ -1425,7 +1425,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/113"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Every tracked pytest-tmp evidence copy is either safely deduplicated under its owner contract or explicitly documented as retained.",
       "depends_on": [],
       "single_owner": "Maintained evidence inventory outside immutable specs/evidence trees; original evidence and H2 validators remain unchanged.",
@@ -1628,7 +1628,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/124"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Blanket warning suppression is replaced by measured module-specific justified exceptions.",
       "depends_on": [],
       "single_owner": "pyproject.toml pytest warnings configuration and the affected test owners.",
@@ -1739,7 +1739,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/130"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Active Python tooling has explicit repository-wide lint/type coverage while immutable evidence remains byte-preserved.",
       "depends_on": [],
       "single_owner": "Existing pyproject.toml and CI/check-inventory owners; specs/scripts/docs keep their existing resource owners.",

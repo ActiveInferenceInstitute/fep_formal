@@ -26,6 +26,7 @@ from typing import Any
 
 import yaml
 
+
 def _repo_root() -> Path:
     """Walk up to the checkout root: the directory holding pyproject.toml."""
     for candidate in Path(__file__).resolve().parents:

@@ -10,7 +10,8 @@ import argparse
 import json
 from pathlib import Path
 
-from fep_lean.bridge.custody import classify_document as _classify_diff
+# Retain the historical compatibility alias for existing import consumers.
+from fep_lean.bridge.custody import classify_document as _classify_diff  # noqa: F401
 from fep_lean.bridge.operations import emit, status
 
 FEP_LEAN_ROOT = Path(__file__).resolve().parents[2]
