@@ -11,8 +11,8 @@
     "unnumbered_equations": 0,
     "unresolved_references": 0
   },
-  "manuscript_source_digest": "db3eb4195b48826aec46ef8bac62fe08e5e69660c7689aad956e5ef034d25b1e",
-  "pages": 385,
+  "manuscript_source_digest": "eca36b81e1a8072a54d6f6d11ed2b81f0ec551ac666faac844092011c1a9c109",
+  "pages": 388,
   "receipt_version": 2,
   "source_digests": {
     "../CITATION.cff": "33ecb73cdb97ffd5c48e5dd2e159ae4ba399187326ee489094524763a3366a5c",
@@ -35,7 +35,7 @@
     "04f_semantic_closure_and_validation.md": "853fefd3ac214bddab000d4cdc80fcf2ecaa6ad5b051d52a6718b907f4fc84d5",
     "04g_finite_active_inference_kernel.md": "af43d01a2d8f099ba4ad98d013c6f765c57b6e16d4598780269169e8d91b45ed",
     "04h_expanded_formalism_program.md": "4903954dd01a55897344c1e79c147fc0da3b39227f4dd3111a7a3b7a86d1cc01",
-    "04i_formalism_catalogue_155.md": "713fc35e6715a19bbbd33dcdea4c5d9cae2d5cb4751569ef8f9b76ef0442b4e0",
+    "04i_formalism_catalogue_155.md": "c801fa6c18f84f1d0cde24e5a24b5b10e0c748a4e3472a2de82de1a5cd01628e",
     "04j_horizon2_smooth_stochastic_kernel.md": "15de94d5fe1fd321ddb7d1ed63b15780921b47561efc4363e9eab3200b8f3ded",
     "05a_mathlib_maturity.md": "7bc6207202fbe7533332b6d00e6441403ae16b765d96a54a0e06322e5620059b",
     "05b_execution_integrity.md": "62e8f6a1170f223f1763137849fe35a008edb3c9da8bff1a6b7d254e13d4c5cf",
@@ -45,7 +45,7 @@
     "06_conclusion.md": "b5b29168be218341a0ae070da94f02f5db9fcd8d2959b419195c820eaeab72db",
     "07_references.md": "b6132569eea5c54b542fff8754cee5c5d288873d8e920ce27c66a4a0318a7d94",
     "08_appendix_a_overview.md": "4954eb32f780051b09fb1f5a35d8ba00b894faca7fa8ace51dd423142749adbd",
-    "08b_mathematical_positioning_supplement.md": "1eb268182df8cab243204957a58e7161e62eb86f89ef224724410caae3ed9766",
+    "08b_mathematical_positioning_supplement.md": "17619eff24b93dbf9970d02f818ba6362a9f244eeb8faf3d5fa50d00afc8060d",
     "09z_unified_formalism_catalogue.md": "3c24e63b03a24ae6d514407661a0f323b99081ed2859db1a85ed6e55a44097f0",
     "config.yaml": "bb8be070839c1256a19b0a6e8e90e70fdfaa57f6dcc189aa9295ce264dab5fc3",
     "preamble.md": "0ca6e7d06bf56f64e2e2850c96e7a802695f0225128d9a955ab9d1318651a6d9",
