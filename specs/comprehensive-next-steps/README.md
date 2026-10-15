@@ -111,7 +111,23 @@ skipped. Python recorded 2951 passes, 20 skips, exact nonserial membership and
 topics were clean. The audit resolved 1875 declarations with 1744 evidence
 entries. The actual accepted render has 388 pages and all nine defect counters
 zero. Independently checked source manifests and Git tree equality bind these
-results to the merged tree. The new exact-main workflow remains a separate gate.
+results to the merged tree.
+
+Its [exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38793389679)
+subsequently passed on `6a80ff5`.
+[PR178](https://github.com/ActiveInferenceInstitute/fep_formal/pull/178) is merged
+at [`f5c39fe`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2).
+Its [exact-head workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016)
+passed all 15 executed checks on `d1d5403`; the tested PR merge and actual main
+merge have the same tree. Independent artifact review confirmed 2952 Python
+passes, 20 skips, 91.64% coverage, 588 serial passes and five serial skips,
+168 clean native topics and the accepted 388-page render with all nine defect
+counters zero. The 14 synthetic terminal-validator controls passed without
+reaccepting historical terminal evidence. Its new
+[main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071)
+remains pending. Final publication/TODO reconciliation is still required for
+the individually reviewed G02/P02/T01/D02/D03 Issue dispositions; broader G01
+and dependent D04 remain open.
 
 The L01 foundation pass replaced all six blanket tactic imports and
 declared two newly exposed consumer dependencies. All 73 workspace modules
@@ -120,19 +136,22 @@ per-topic native/axiom and publication receipts remain separate. Its coverage
 projection now also retains meta imports. The 21 topic bodies are the next
 narrowing scope and need coordinated catalogue/aggregate regeneration.
 D02/D03 have source corrections, mutation controls and accepted render evidence;
-Issue closure and open-only TODO cleanup await the new main gate. P02 removes
-only three demonstrably dead helpers and refreshes its current generated Q6
-manifest;
-historical custody receipts remain unchanged. Its caller inventory also
+Issue closure and open-only TODO cleanup retain their publication reconciliation.
+P02 removes only three demonstrably dead helpers and refreshes its current
+generated Q6 manifest; historical custody receipts remain unchanged. Its caller
+inventory also
 clarified the third source owner and corresponding checks in the new package.
 D04's reviewed root-owner consolidation at `9b31783` retained the canonical
 gate commands and passed 23 inventory controls; dated evidence remains unchanged.
 The later T01/P08 passes update the canonical command owner and CI together,
 with their own inventory controls and source epochs. T01 covers 341 active
 Python files with Ruff and 148 source/script/doc files with strict mypy.
-P08 prepares warning-log retention; actual measurement and filter narrowing
-remain open. Historical metadata replay, terminal-validator controls and
-hosted acceptance retain their distinct evidence boundaries.
+P08 retains warning logs. The parallel/Chrome observation at `21ae5c7` and the
+serial observation at `d1d5403` remain partial and source-bound. They do not
+establish resource-warning origins or complete the separate nested,
+supplemental and distribution inventories; filter narrowing remains open.
+Historical metadata replay, synthetic terminal
+controls and current execution retain their distinct evidence boundaries.
 The methods projection is refreshed through its owner and retains meta-import
 context; theorem statements, semantic records and numerical content are unchanged.
 
