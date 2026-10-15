@@ -12,6 +12,7 @@ from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.formal.projection import formal_projection_drift
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -36,6 +37,7 @@ EXACT_IMPORTS = (
 )
 PUBLIC_DEFINITIONS = (
     "decay",
+    "rateDenominator",
     "stationaryVariance",
     "transitionMean",
     "transitionVariance",
@@ -49,6 +51,7 @@ PUBLIC_DEFINITIONS = (
 )
 PUBLIC_THEOREMS = (
     "stationaryVariance_eq",
+    "stationaryVariance_pos",
     "transitionMean_zero",
     "transitionVariance_zero",
     "transitionVariance_pos",
@@ -76,7 +79,7 @@ def test_h2_5a_has_one_exact_foundation_owner() -> None:
     assert owner.lean_module == "FepSketches.scalar_gaussian_semigroup"
     assert owner.role is FormalModuleRole.FOUNDATION
     assert owner.declaration_namespace == "FEP.ScalarGaussianSemigroup"
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
     assert "namespace FEP.ScalarGaussianSemigroup\n" in source
     assert source.rstrip().endswith("end FEP.ScalarGaussianSemigroup")
 

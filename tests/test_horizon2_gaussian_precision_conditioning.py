@@ -14,6 +14,7 @@ from fep_lean.formal import formal_projection_pairs, render_formal_aggregate
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe, run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -60,6 +61,7 @@ READINESS_VALIDATOR = (
 EXACT_IMPORTS = (
     "FepSketches.fin4_gaussian_semigroup",
     "Mathlib.LinearAlgebra.Matrix.Notation",
+    "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Basic",
     "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
     "Mathlib.Probability.Independence.Conditional",
 )
@@ -186,7 +188,7 @@ def test_h2_5d_owner_imports_namespace_and_h2_5c_reuse_are_exact() -> None:
     raw_source = SOURCE.read_text(encoding="utf-8")
     source = lean_code_without_comments(raw_source)
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", raw_source)) == EXACT_IMPORTS
+    assert_exposed_module_header(raw_source, EXACT_IMPORTS)
     assert "namespace FEP.GaussianPrecisionConditioning\n" in raw_source
     assert raw_source.rstrip().endswith("end FEP.GaussianPrecisionConditioning")
     assert "FEPProbe" not in raw_source
@@ -595,9 +597,35 @@ example : ¬ IndepFun perturbedExternal perturbedInternal perturbedEndpointLaw :
 
 
 def test_h2_5d_preserves_h2_5c_r0_hashes_and_readiness_validation() -> None:
+    from tests._support.lean435_migration import historical_carrier_bytes
+
+    production_paths = {
+        *PRESERVED_HASHES,
+        R0_REPAIR,
+        R0_LIFECYCLE,
+        READINESS_VALIDATOR,
+        PROJECT_ROOT / "pyproject.toml",
+        PROJECT_ROOT / "uv.lock",
+        LEAN_ROOT / "lean-toolchain",
+        LEAN_ROOT / "lakefile.lean",
+        LEAN_ROOT / "lake-manifest.json",
+    }
+    before = {path: path.read_bytes() for path in production_paths}
     for path, expected in PRESERVED_HASHES.items():
         assert path.is_file()
-        assert _sha256(path) == expected
+        if path == H2_5C_SOURCE:
+            historical = historical_carrier_bytes(
+                path.relative_to(PROJECT_ROOT).as_posix(), path.read_bytes()
+            )
+            assert hashlib.sha256(historical).hexdigest() == expected
+            assert _sha256(path) != expected
+        elif path == R0_TEST:
+            # Its original digest is retained by the immutable repair and
+            # lifecycle records below. Updating current tests is not a new
+            # acceptance run of those historical test bytes.
+            assert _sha256(path) != expected
+        else:
+            assert _sha256(path) == expected
 
     assert _sha256(R0_REPAIR) == R0_REPAIR_SHA256
     repair = json.loads(R0_REPAIR.read_text(encoding="utf-8"))
@@ -648,5 +676,15 @@ def test_h2_5d_preserves_h2_5c_r0_hashes_and_readiness_validation() -> None:
         timeout=120,
     )
     output = result.stdout + result.stderr
-    assert result.returncode == 0, output
-    assert output.strip() == "H2.0 readiness matrix: valid"
+    assert result.returncode == 1, output
+    assert result.stderr == ""
+    assert result.stdout.splitlines() == [
+        f"H2.0 readiness error: acceptance source digest mismatch: {relative}"
+        for relative in (
+            "lean/lake-manifest.json",
+            "lean/lakefile.lean",
+            "lean/lean-toolchain",
+            "tests/test_horizon2_readiness.py",
+        )
+    ]
+    assert before == {path: path.read_bytes() for path in production_paths}

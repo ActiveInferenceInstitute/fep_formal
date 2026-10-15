@@ -17,6 +17,10 @@ import pytest
 import yaml
 
 from tests._support.lake import lake_executable
+from tests._support.lean435_migration import (
+    assert_historical_repair_bindings,
+    historical_toolchain_files,
+)
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -52,6 +56,16 @@ PROBE_ORDER = (
     "readiness/probes/09_finite_grid.lean",
     "readiness/probes/10_brownian_fdl.lean",
     "readiness/probes/11_unsupported_api_search.yaml",
+)
+
+CURRENT_EPOCH_ERRORS = tuple(
+    f"acceptance source digest mismatch: {relative}"
+    for relative in (
+        "lean/lake-manifest.json",
+        "lean/lakefile.lean",
+        "lean/lean-toolchain",
+        "tests/test_horizon2_readiness.py",
+    )
 )
 
 
@@ -130,9 +144,13 @@ def test_readiness_pin_and_api_surface_probe_are_explicit() -> None:
     assert all(
         "refs/tags/v4.35.0" not in repo["refs"] for repo in pin_evidence["repositories"]
     )
+    historical_pins = historical_toolchain_files(PROJECT_ROOT)
+    assert historical_pins["lean/lean-toolchain"] == b"leanprover/lean4:v4.34.1\n"
+    # The sealed readiness epoch retains its old pin; the current native
+    # probes deliberately run on the new pinned compiler instead.
     assert (PROJECT_ROOT / "lean" / "lean-toolchain").read_text(
         encoding="utf-8"
-    ).strip() == "leanprover/lean4:v4.34.1"
+    ).strip() == "leanprover/lean4:v4.35.0"
     assert probe.is_file()
     source = probe.read_text(encoding="utf-8")
     assert re.search(r"(?m)^example\b", source)
@@ -479,7 +497,10 @@ def test_readiness_validator_accepts_only_the_source_bound_sealed_matrix() -> No
     validator = _validator()
     payload = _matrix()
 
-    assert validator.readiness_errors(PROJECT_ROOT) == ()
+    # Original bound test bytes are required for a positive historical replay.
+    # Restoring the old three pins alone cannot authorize this updated test
+    # file or turn its fresh native checks into historical acceptance.
+    assert validator.readiness_errors(PROJECT_ROOT) == CURRENT_EPOCH_ERRORS
     assert payload["canonical_rows_sha256"] == validator.canonical_rows_sha256(
         payload["rows"]
     )
@@ -487,6 +508,17 @@ def test_readiness_validator_accepts_only_the_source_bound_sealed_matrix() -> No
         (SPEC_ROOT / "readiness" / "acceptance.json").read_text(encoding="utf-8")
     )
     assert receipt["canonical_rows_sha256"] == payload["canonical_rows_sha256"]
+    assert_historical_repair_bindings(
+        PROJECT_ROOT,
+        SPEC_ROOT / "readiness" / "acceptance.json",
+        "834aecf37e4a9392261fcc6838cd87b0b01043650e5cbec0aac6708c99dc9f3b",
+        tuple(receipt["source_sha256"]),
+        historical_tests={
+            "tests/test_horizon2_readiness.py": (
+                "cdab5f8e7172a845a1093b64a47ee6a0ba5a57c1fa64836bf58366e90b81ee2b"
+            ),
+        },
+    )
 
 
 @pytest.mark.parametrize(
@@ -591,4 +623,6 @@ def test_completed_readiness_evidence_survives_the_first_h2_resource() -> None:
         formal_resources=("gaussian_information_geometry.lean",),
     )
 
-    assert errors == ()
+    # A maintained owner does not add a new structural error to the sealed
+    # matrix. Source acceptance still refuses the explicitly changed epoch.
+    assert errors == CURRENT_EPOCH_ERRORS

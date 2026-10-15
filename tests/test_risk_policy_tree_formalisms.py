@@ -11,6 +11,7 @@ from typing import TypedDict, cast
 import pytest
 
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -271,7 +272,7 @@ def test_foundations_pin_finite_carriers_and_reuse_existing_owners() -> None:
     risk = (FORMAL_ROOT / "empirical_risk.lean").read_text(encoding="utf-8")
     policy = (FORMAL_ROOT / "policy_tree.lean").read_text(encoding="utf-8")
 
-    assert risk.startswith("import FepSketches.learning_theory\n")
+    assert_exposed_module_header(risk, ("FepSketches.learning_theory",))
     assert "FiniteLaw" in risk
     assert "VariationalDuality.expectation" in risk
     assert "def empiricalRate" in risk
@@ -279,7 +280,7 @@ def test_foundations_pin_finite_carriers_and_reuse_existing_owners() -> None:
     assert "def bernoulliBrierScore" in risk
     assert "def finiteEventProbability" in risk
 
-    assert policy.startswith("import FepSketches.controlled_markov\n")
+    assert_exposed_module_header(policy, ("FepSketches.controlled_markov",))
     assert "def PolicyTree" in policy
     assert "structure PolicyTreeModel" in policy
     assert "FiniteLaw" in policy
@@ -332,14 +333,14 @@ def test_composition_leaves_pin_exact_bridge_names_and_imports(resource: str) ->
     if resource == "risk_calibration.lean":
         foundation = "empirical_risk"
 
-    assert source.startswith(
-        f"import FepSketches.fep_all\nimport FepSketches.{foundation}\n"
+    assert_exposed_module_header(
+        source, ("FepSketches.fep_all", f"FepSketches.{foundation}")
     )
     assert tuple(re.findall(r"(?m)^theorem ([A-Za-z0-9_']+)", source)) == tuple(
         COMPOSITION_BRIDGES[resource]
     )
     source_without_required_aggregate = source.replace(
-        "import FepSketches.fep_all\n", "", 1
+        "public import FepSketches.fep_all\n", "", 1
     )
     assert FORBIDDEN_FORMAL_TOKENS.search(source_without_required_aggregate) is None
 

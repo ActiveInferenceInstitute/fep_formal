@@ -11,6 +11,7 @@ from fep_lean.formal import formal_projection_pairs, render_formal_aggregate
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +29,7 @@ EXACT_IMPORTS = (
     "FepSketches.gaussian_information_geometry",
     "FepSketches.scalar_gaussian_semigroup",
     "Mathlib.Probability.Distributions.Gaussian.Real",
+    "Mathlib.Probability.Kernel.Composition.WithDensity",
     "Mathlib.Probability.Kernel.Posterior",
 )
 
@@ -76,7 +78,7 @@ def test_h2_6a_has_one_exact_maintained_source_owner() -> None:
     source = SOURCE.read_text(encoding="utf-8")
     uncommented = lean_code_without_comments(source)
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
     assert "namespace FEPComposed.GaussianFilter\n" in source
     assert source.rstrip().endswith("end FEPComposed.GaussianFilter")
     assert "namespace FEPProbe" not in uncommented
@@ -100,7 +102,12 @@ def test_h2_6a_is_manifested_projected_and_aggregated_once() -> None:
     assert projection.read_bytes() == SOURCE.read_bytes()
 
     aggregate = render_formal_aggregate()
-    assert aggregate.count("import FepSketches.compositions.gaussian_filter\n") == 1
+    assert (
+        aggregate.splitlines().count(
+            "public import FepSketches.compositions.gaussian_filter"
+        )
+        == 1
+    )
 
 
 def test_h2_6a_reuses_exact_scalar_owners_and_stores_only_raw_inputs() -> None:

@@ -11,6 +11,7 @@ from typing import TypedDict, cast
 import pytest
 
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -190,7 +191,7 @@ def test_foundations_have_the_exact_required_theorem_inventory() -> None:
 def test_collective_foundation_exposes_independence_and_coupling_boundaries() -> None:
     source = (FORMAL_ROOT / "collective_inference.lean").read_text(encoding="utf-8")
 
-    assert source.startswith("import FepSketches.finite_information\n")
+    assert_exposed_module_header(source, ("FepSketches.finite_information",))
     assert "FiniteLaw.product" in source
     assert "FiniteInformation.finiteKL_product" in source
     assert "def productOfExpertsNormalizer" in source
@@ -219,7 +220,13 @@ def test_learning_foundation_exposes_probability_support_and_sample_assumptions(
 ):
     source = (FORMAL_ROOT / "learning_theory.lean").read_text(encoding="utf-8")
 
-    assert source.startswith("import FepSketches.variational_duality\n")
+    assert_exposed_module_header(
+        source,
+        (
+            "FepSketches.variational_duality",
+            "Mathlib.Probability.Moments.SubGaussian",
+        ),
+    )
     assert "Mathlib.Probability.Moments.SubGaussian" in source
     assert "measure_sum_ge_le_of_iIndepFun" in source
     assert "measureReal_iUnion_fintype_le" in source

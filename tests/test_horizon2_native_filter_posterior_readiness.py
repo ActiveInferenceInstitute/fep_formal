@@ -11,6 +11,7 @@ import pytest
 
 from fep_lean.formal.manifest import FORMAL_MODULES
 from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lean435_migration import assert_historical_repair_bindings
 from tests._support.lean_runner import run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -307,6 +308,17 @@ def test_h2_6a_r0_repair_is_source_bound_append_only_go() -> None:
         "H2.6b pending maintained H2.6a acceptance",
         "H2.7 terminal filter/control clauses",
     ]
-    assert repair["source_sha256"] == {
-        relative: _sha256(PROJECT_ROOT / relative) for relative in SOURCE_BOUND_PATHS
-    }
+    # This immutable go decision belongs to its recorded compiler/source
+    # epoch. The inverse migration checks preserve its proof bytes; current
+    # toolchain and updated test bytes must not impersonate old acceptance.
+    assert_historical_repair_bindings(
+        PROJECT_ROOT,
+        REPAIR,
+        "d52d1693cd9cb4afe1fce0d6ef9aca09786e7cb121bd38d57d24ec25dc18a8da",
+        SOURCE_BOUND_PATHS,
+        historical_tests={
+            "tests/test_horizon2_native_filter_posterior_readiness.py": (
+                "2f60f87c0109b549ac3cb7d0662694bfe549bb0b27837ca1f236e297eb49ae80"
+            ),
+        },
+    )

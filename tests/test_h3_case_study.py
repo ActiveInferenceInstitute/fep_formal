@@ -168,7 +168,7 @@ example (center : FEP.Fin4GaussianSemigroup.StandardizedState) (datum : ℝ) :
 
 #check_failure (show InformationTheory.klDiv (studyProjectedLaw repeatedStudyGrid)
   (studyReverseLaw repeatedStudyGrid) < ∞ from by rw [singular_grid_infinite_kl]; norm_num)
-#check_failure (show hiddenContrast = 0 from by apply hiddenContrast_ne_zero)
+#check_failure (show hiddenContrast = 0 from hiddenContrast_ne_zero)
 #check_failure (fun (policy : TwoStepPolicy) => policy.attainment)
 """
     protocol = yaml.safe_load(

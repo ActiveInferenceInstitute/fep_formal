@@ -13,6 +13,7 @@ import pytest
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.h2_r0_custody import validate_h2_r0_custody
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -271,7 +272,7 @@ example :
 def test_h2_7_owns_one_terminal_composition_leaf() -> None:
     assert SOURCE.is_file()
     source = SOURCE.read_text(encoding="utf-8")
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
     assert f"namespace {NAMESPACE}\n" in source
     assert source.rstrip().endswith(f"end {NAMESPACE}")
 
@@ -398,7 +399,7 @@ def test_h2_7_is_manifested_projected_and_aggregated_exactly_once() -> None:
     assert owner.role is FormalModuleRole.COMPOSITION
     assert owner.declaration_namespace == NAMESPACE
     assert PROJECTION.read_bytes() == SOURCE.read_bytes()
-    expected_import = "import FepSketches.compositions.smooth_reference_kernel"
+    expected_import = "public import FepSketches.compositions.smooth_reference_kernel"
     assert (
         AGGREGATE.read_text(encoding="utf-8").splitlines().count(expected_import) == 1
     )
@@ -406,8 +407,47 @@ def test_h2_7_is_manifested_projected_and_aggregated_exactly_once() -> None:
 
 
 def test_h2_7_consumes_only_an_accepted_source_bound_r0_decision() -> None:
-    successor = validate_h2_r0_custody(PROJECT_ROOT)
+    import hashlib
+
+    from tests._support.h2_r0_custody import (
+        H3_ADDENDUM_PATH,
+        PRIOR_PATH,
+        SUCCESSOR_PATH,
+        VALIDATOR_PATH,
+    )
+
+    records = (PRIOR_PATH, SUCCESSOR_PATH, H3_ADDENDUM_PATH)
+    paths = {VALIDATOR_PATH, *records}
+    for relative in records:
+        paths.update(
+            json.loads((PROJECT_ROOT / relative).read_bytes())["source_sha256"]
+        )
+    before = {relative: (PROJECT_ROOT / relative).read_bytes() for relative in paths}
+    # The historical go decision remains sealed. It cannot accept changed
+    # compiler/source bytes or the new metadata beyond its release-token rule.
+    with pytest.raises(
+        ValueError,
+        match=r"^release metadata has unlisted changes beyond the root version: pyproject\.toml$",
+    ):
+        validate_h2_r0_custody(PROJECT_ROOT)
+    assert hashlib.sha256((PROJECT_ROOT / VALIDATOR_PATH).read_bytes()).hexdigest() == (
+        "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53"
+    )
+    assert hashlib.sha256(
+        (PROJECT_ROOT / H3_ADDENDUM_PATH).read_bytes()
+    ).hexdigest() == (
+        "69279a2c2641a81799c272dca277d4c255a46eaa48c94cb86c1072aa0fa936c6"
+    )
+    successor = json.loads((PROJECT_ROOT / H3_ADDENDUM_PATH).read_bytes())
     assert successor["decision"] == "preserve_accepted_R0"
+    assert successor["native_evidence"] == {
+        "status": "not_executed",
+        "historical_evidence_reused": False,
+        "probes": [],
+    }
+    assert hashlib.sha256(R0_RECEIPT.read_bytes()).hexdigest() == (
+        "06fa2f40cec8cc0174eb4583e1e86436ba6bb081db494ff1e2b5086e196d289a"
+    )
     receipt = json.loads(R0_RECEIPT.read_text(encoding="utf-8"))
     assert receipt["gate"] == "H2.7-R0"
     assert receipt["decision"] == "go"
@@ -423,3 +463,6 @@ def test_h2_7_consumes_only_an_accepted_source_bound_r0_decision() -> None:
         "H3.G0 pending accepted H2.7 terminal certificate",
         "all H3 implementation",
     ]
+    assert before == {
+        relative: (PROJECT_ROOT / relative).read_bytes() for relative in paths
+    }

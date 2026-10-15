@@ -12,6 +12,7 @@ from fep_lean.formal import formal_projection_pairs
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -76,6 +77,7 @@ PUBLIC_THEOREMS = (
     "transition_covariance",
     "transitionProbability_tendsto_invariant",
     "integral_transition_tendsto_invariant",
+    "finOneState_measurable",
     "finOne_transitionMean",
     "finOne_transitionCovariance",
     "finOneTransition_eq_scalarOU",
@@ -107,7 +109,7 @@ def test_h2_5b_has_exact_owner_imports_and_generic_axis() -> None:
     assert FOUNDATION.is_file()
     source = FOUNDATION.read_text(encoding="utf-8")
 
-    assert tuple(re.findall(r"(?m)^import (\S+)$", source)) == EXACT_IMPORTS
+    assert_exposed_module_header(source, EXACT_IMPORTS)
     assert "namespace FEP.LinearGaussianSemigroup\n" in source
     assert source.rstrip().endswith("end FEP.LinearGaussianSemigroup")
     assert "{Axis : Type*} [Fintype Axis] [DecidableEq Axis]" in source
