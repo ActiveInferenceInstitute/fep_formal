@@ -93,7 +93,9 @@ Its exact head `0a663fe` passed [all executed hosted lanes](https://github.com/A
 including all 15 distribution cells, Python, Lean and the real render.
 P01's C04 predecessor and the remaining L01 work stay open.
 [PR173](https://github.com/ActiveInferenceInstitute/fep_formal/pull/173)
-was updated to head `db020c5` and awaits fresh CI for its action upgrades.
+is merged at [`6aeea47`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/6aeea478b0643baaeab5af1e26ef4dd545890f24)
+after [all executed PR lanes passed](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38760058809)
+on `db020c5`. Its combined exact-main workflow remains a separate acceptance.
 Re-read live PR state before integration; old green or failed runs retain their
 own exact source boundaries.
 
@@ -108,6 +110,10 @@ render acceptance remains required before closure. P02 removes only three
 demonstrably dead helpers and refreshes its current generated Q6 manifest;
 historical custody receipts remain unchanged. Its caller inventory also
 clarified the third source owner and corresponding checks in the new package.
+D04 has a reviewed root-owner consolidation and 23 passing inventory controls;
+the 51 canonical gate commands and dated evidence remain byte-identical.
+The methods projection is refreshed through its owner and retains meta-import
+context; theorem statements, semantic records and numerical content are unchanged.
 
 R01's [attributed current-4.35 spike](spikes/finite_kernel_category.lean) and a
 separate importing consumer compile. All ten inspected declarations use only

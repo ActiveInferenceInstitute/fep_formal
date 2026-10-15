@@ -359,7 +359,7 @@ def _cached_theorem_analysis(
         record["declaration_mentions"] = dependencies
         context = record.pop("source_context")
         record["import_context"] = re.findall(
-            r"(?m)^\s*(?:public\s+)?import\s+([^\n]+)",
+            r"(?m)^[ \t]*(?:public[ \t]+)?(?:meta[ \t]+)?import[ \t]+([^\n]+)",
             lean_code_without_comments(context),
         )
         record["preceding_scope_directives"] = [

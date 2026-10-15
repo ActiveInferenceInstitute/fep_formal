@@ -139,6 +139,33 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         analyze_topic(packaged, "fep-999")
 
 
+def test_theorem_import_context_retains_meta_imports_and_ignores_comments():
+    from fep_lean.methods import model as model_module
+
+    source = (
+        "module\n"
+        "import Mathlib.Data.Nat.Basic\n"
+        "public import Mathlib.Tactic.Ring\n"
+        "meta import Lean.Elab.Tactic.Omega\n"
+        "public meta import Lean.Meta.Tactic.NormCast\n"
+        "/- public meta import Fake.CommentOnly -/\n"
+        "namespace Example\n"
+        "theorem actual : True := by trivial\n"
+        "end Example\n"
+    )
+    records = json.loads(
+        model_module._cached_theorem_analysis((), (("formal/specimen.lean", source),))
+    )
+
+    assert records["Example.actual"]["import_context"] == [
+        "Mathlib.Data.Nat.Basic",
+        "Mathlib.Tactic.Ring",
+        "Lean.Elab.Tactic.Omega",
+        "Lean.Meta.Tactic.NormCast",
+    ]
+    assert records["Example.actual"]["statement"] == "theorem actual : True"
+
+
 def test_lean_signature_parser_retains_scopes_nested_binders_and_comment_offsets():
     source = """namespace Outer
 variable {α : Type*} [MeasurableSpace α]

@@ -1712,7 +1712,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/127"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Serial verification has a measured baseline and any parallel alternative preserves all 168 per-topic outcomes without races.",
       "depends_on": [],
       "single_owner": "Existing verification/lean_verifier.py and retained native duration receipts.",

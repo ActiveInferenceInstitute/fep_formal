@@ -12,7 +12,10 @@
   zero warnings. Topic-body narrowing and source-bound publication acceptance
   remain separate gates for [#109](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109).
 - Include plain/public `meta import` dependencies in the existing coverage
-  inventory, with an actual generated-model regression control.
+  inventory and lexical theorem context, with actual generated-model regression
+  controls. Refresh informational source hashes and line coordinates through
+  the methods exporter; all theorem statements and mathematical content remain
+  unchanged.
 - Derive relation captions from the validated count inventory and audit current
   root catalogue counts against the coverage projection. Keep release/test
   histories at their original epochs. Clarify the second-expansion chapter's

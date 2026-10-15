@@ -377,3 +377,50 @@ it does not claim to detect arbitrary paraphrased duplication.
 **Confidence:** high after 23 inventory tests, 49 documentation-audit tests,
 no-cache Ruff/format checks and fresh independent re-review. Hosted checks
 and publication acceptance retain their separate source boundaries.
+
+## Informational theorem context retains actual meta imports
+
+**When:** Hosted projection-drift diagnosis after L01.
+
+**Choice:** Refresh the existing mathematical-positioning artifacts through
+their CLI owner. Extend its lexical import-context recognizer to the same
+plain/public/meta forms used by current sources. Do not alter declaration
+parsing, statement hashes, cache identity or scientific classifications.
+
+**Gap:** Import narrowing changed source hashes, line positions and import
+context in generated informational records. Its separate context parser also
+omitted the two Lean meta imports, even after the coverage inventory was fixed.
+
+**Reach:** A real cached-index fixture preserves all four import forms and
+rejects comment-only imports. Structural comparison retains all 2,225
+declaration identities/statements/hashes and all mathematical/semantic content;
+only nine source hashes and 207 declarations' imports/line coordinates change.
+The 14 HTML/SVG outputs remain identical. The prospective category resource is
+held outside the live source epoch during this 71-resource regeneration.
+
+**Verdict:** sound; generated context follows its actual source without
+pretending to be elaborated proof dependencies.
+**Confidence:** high after focused tests, no-cache Ruff/format, model typing,
+owner drift check and fresh independent structural review.
+
+## Retained timings establish a baseline without a speedup comparison
+
+**When:** P11 duration review.
+
+**Choice:** Read retained native receipts and their corresponding actual log
+timestamps. Distinguish the sum of per-topic command intervals from observed
+loop wall time and the complete CLI lifetime.
+
+**Gap:** The intervals combine environment preparation, process startup,
+imports and elaboration. Neither first-topic time nor a clean status isolates
+startup. Different source/configuration digests prevent a speedup comparison.
+
+**Reach:** The retained runs conserve all 168 IDs and their logged outcomes,
+but remain evidence for their own epochs. Current source differs from their
+freezes. A future isolated serial repeat needs identical inputs and explicit
+end-to-end/resource/import controls; no shared-Lake parallel experiment is
+authorized by a baseline alone.
+
+**Verdict:** sound measurement interpretation; retain the serial default.
+**Confidence:** high for the retained intervals; no current performance or
+native-currency claim, and no experiment while resource reserves are unmet.
