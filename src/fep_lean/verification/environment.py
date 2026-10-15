@@ -21,7 +21,6 @@ from fep_lean.verification._subprocess import run_process_group
 from fep_lean.verification._toolchain import (
     find_executable,
     find_toolchain_bin,
-    get_writable_elan_home,
     lean_version_matches_pin,
     pinned_lean_semver,
     read_mathlib_tag,
@@ -53,10 +52,6 @@ FULL_VALIDATION_CHECK_NAMES: tuple[str, ...] = (
     "hermes_credentials",
 )
 _VERSION_TIMEOUT_S = 5.0
-
-
-def _get_elan_home() -> str:
-    return get_writable_elan_home()
 
 
 def _lean_subprocess_env() -> dict[str, str]:

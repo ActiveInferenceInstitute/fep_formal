@@ -77,20 +77,6 @@ def _reject(reason: str, detail: str) -> None:
     raise ArtifactProofError(reason, detail)
 
 
-def _unique_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
-    result: dict[str, object] = {}
-    for key, value in pairs:
-        if key in result:
-            _reject("duplicate_json_key", key)
-        result[key] = value
-    return result
-
-
-def _nonfinite(value: str) -> object:
-    _reject("nonfinite_value", value)
-    raise AssertionError("unreachable")
-
-
 def _object(value: object, name: str) -> dict[str, object]:
     if not isinstance(value, dict):
         _reject("invalid_document", f"{name} must be an object")
