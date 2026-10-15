@@ -1,5 +1,10 @@
 ## Unreleased
 
+- Distinguish the published v1.6.0 tag from the accepted Lean 4.35 source
+  checkpoint, and reconcile the remaining work in an explicit dependency plan.
+  The plan preserves separate production-capture, runtime and research gates;
+  its review adds no execution or scientific acceptance.
+
 - Extend the existing finite Gibbs construction with support preservation,
   candidate-relative-support duality, unique positive-precision minima and
   negative-precision maxima. Preserve released full-support signatures; add
