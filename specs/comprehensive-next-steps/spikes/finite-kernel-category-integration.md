@@ -151,6 +151,34 @@ their intended boundaries. An authenticated metadata transition is required
 before current integration or publication acceptance. The failed attempt is
 retained separately; the earlier passing subsets keep their original epochs.
 
+The repaired combined source uses a second, separate authenticated
+[metadata companion](../../../tests/fixtures/historical_h3_custody_metadata.json),
+SHA256 `8ae9aff5bdc2061bdae4d419ec8203dc5f10975a379f35c3000cff814ff71d5d`.
+It contains the authentic 3,105-byte metadata from Git `5e1cc909`, raw digest
+`a93635ab635881aac257efdc3a6d627f73bb7865c5626a83aaa6aa8d06b90737`.
+The existing release-token owner recovers the recorded 1.4 and frozen 1.3
+digests. Only the exact predecessor/T01 normalized profiles, pinned uv section
+and already approved root release tokens are admitted.
+
+The metadata profile and raw archive authenticate without decoding before
+manifest restoration begins. The manifest then authenticates and restores;
+metadata reauthenticates before its own parse/decode. This order preserves
+both companions' existing refusal-before-any-decode controls. All 22 original
+source digests still authenticate before temporary writes.
+
+On helper `b78e57ac9d8e156f63d613d32676711ad65968dfeb0aaa987c229b987712beee`
+and readiness test
+`25973425c908874557be683125ab9523defd93660ec2b6bf50143191f61cab12`,
+the renewed 16 historical/manifest controls and 13 metadata controls all
+passed. Two existing terminal-validator controls also passed separately:
+the read-only positive and post-capture roster-growth refusal. Those two use
+explicitly synthetic fixtures and do not reaccept historical terminal evidence.
+The successor record binds each group's actual results and exact source
+hashes. One admission refusal occurred before pytest launched; a later fresh
+resource check admitted its separate run with the same limits. It is not a
+test failure. No current native, package, final hosted or C05 acceptance is
+supplied by these 31 unit controls.
+
 ## Source-only independent reviews
 
 Independent AI reviewer `independent_pass_review` found no source blocker in
@@ -176,6 +204,13 @@ These are separate read-only AI source assessments, with exact bindings in
 the successor record and detailed assessments retained separately. None is a
 compiler result, current H3 approval, final integration acceptance or a named
 human's terminal approval.
+
+A fresh combined security/custody source and byte review found no blocker at
+the `b78e57ac…` / `25973425…` bindings above. It independently compared both
+parents, authenticated both companions against Git `5e1cc909`, and checked
+preserved historical bytes, decode ordering, direct-map recovery, provenance,
+all 22 pre-write checks and the retained live-72 refusal. It did not rerun the
+parent's controls and supplies no native or scientific acceptance.
 
 A separate skeptical mathematical/API assessment by
 `generic_maintenance_audit` found no blocker in the current canonical/projected

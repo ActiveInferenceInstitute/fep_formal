@@ -448,6 +448,29 @@ acceptance only, with final published-source reconciliation still required.
 **Confidence:** high for the reviewed reading paths, with no runtime or
 scientific acceptance inferred.
 
+## Compose custody restorations without weakening either refusal boundary
+
+**When:** Combine the optional category candidate with T01 metadata changes.
+
+**Choice:** Authenticate the live metadata profile and raw metadata companion
+without decoding before manifest restoration; then reauthenticate metadata
+for its own restoration. Retain both exact profile allow-lists, companion
+checks, size bounds, provenance groups and all 22 original pre-write digests.
+
+**Gap:** Calling either complete restoration first would decode before the
+other companion's tamper refusal, violating one of the existing controls.
+
+**Reach:** All 16 historical/manifest and 13 metadata controls now pass on the
+combined source. Two separate synthetic terminal-validator controls pass;
+neither reaccepts historical terminal evidence. Fresh independent combined
+source/byte review found no blocker at the recorded helper/test hashes. The
+earlier five failures and the later resource admission refusal remain separate
+observations, with no test process launched by the admission refusal.
+
+**Verdict:** preserve both boundaries through an explicit authentication phase.
+**Confidence:** high for these 31 source-bound unit controls and reviewed
+custody logic; current native, package, final hosted and C05 gates remain open.
+
 ## Tooling scope follows active owners and preserves retained inputs
 
 **When:** T01 measured lint/type expansion.
@@ -534,3 +557,57 @@ no current native or scientific acceptance.
 **Confidence:** high for the measured static boundaries. Current compiler,
 ten-axiom, audit, installed-wheel, final-hosted and C05 acceptance remain open;
 neither PR44 nor Issue58 closes from this preparation.
+
+## Restore authenticated metadata for historical custody controls
+
+**When:** T01 integration exposed a metadata-bound historical-control failure.
+
+**Choice:** Keep the frozen validator, release adapter, receipts and existing
+archives unchanged. Add one authenticated companion containing the original
+public `pyproject.toml` bytes from `5e1cc9095b5f0590772c739d27558c2c711f9a44`.
+The preparer accepts only the exact reviewed predecessor or T01 metadata
+profile, with the pinned uv section and already approved root release tokens.
+The unchanged release-token owner recovers the recorded historical bytes.
+
+**Gap:** A combined category/tooling source run produced 11 passes and five
+failures because the old preparer correctly rejected the expanded Ruff/mypy
+configuration. Earlier passing subsets retain their own source epochs.
+
+**Reach:** Unknown live metadata and companion tampering refuse before
+decoding or temporary writes. All 22 original bound inputs still authenticate
+before restoration. A direct-map control now checks authenticated metadata
+instead of omitting it. Twenty-three focused controls passed on the tooling
+branch, including both approved profiles, release tokens, positive historical
+replay and adversarial metadata/source cases. The category successor still
+requires its own combined-source check; no old native or scientific evidence
+is renewed.
+
+**Verdict:** bounded historical static replay through authentic archived bytes.
+**Confidence:** scoped local controls pass and fresh independent custody
+review found no source blocker at the three recorded source hashes. Final
+hosted acceptance remains a separate requirement.
+
+## Retain all eight receipt-bound pytest captures
+
+**When:** G02's exact file and consumer inventory.
+
+**Choice:** Document each retained file in a maintained inventory outside the
+immutable evidence tree. Preserve both the failed first consumer attempt and
+its successful repair, including separately bound empty stderr paths.
+
+**Gap:** Temporary-looking names and near-duplicate Lean text do not establish
+that an artifact lacks receipt or review consumers.
+
+**Reach:** All eight sizes and digests match the author receipt. The separate
+semantic review authenticates that receipt, so deleting a cited file or
+rewriting the receipt would break historical custody. Strict links and
+Markdown hygiene pass. The old compiler results retain their Lean 4.34.1
+epoch. Fresh independent custody review found no source blocker in the two
+documents and independently rechecked all 25 receipt artifact hashes.
+Terminal-validator positive/fail-closed controls, separate combined
+historical-custody controls and accepted publication remain required before
+G02 closes.
+
+**Verdict:** document the eight exceptions; retire none.
+**Confidence:** high for the hash/consumer inventory, with no new execution or
+scientific acceptance inferred.

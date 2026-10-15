@@ -1425,7 +1425,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/113"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Every tracked pytest-tmp evidence copy is either safely deduplicated under its owner contract or explicitly documented as retained.",
       "depends_on": [],
       "single_owner": "Maintained evidence inventory outside immutable specs/evidence trees; original evidence and H2 validators remain unchanged.",

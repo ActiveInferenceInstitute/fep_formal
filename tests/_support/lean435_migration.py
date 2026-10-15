@@ -168,6 +168,20 @@ _CATEGORY_OWNER_ANCHOR = (
     b'        declaration_namespace="FEPComposed.SmoothReferenceKernel",\n'
     b"    ),\n"
 )
+HISTORICAL_METADATA_ARCHIVE = "tests/fixtures/historical_h3_custody_metadata.json"
+HISTORICAL_METADATA_ARCHIVE_SHA256 = (
+    "8ae9aff5bdc2061bdae4d419ec8203dc5f10975a379f35c3000cff814ff71d5d"
+)
+_ARCHIVED_METADATA_SHA256 = (
+    "a93635ab635881aac257efdc3a6d627f73bb7865c5626a83aaa6aa8d06b90737"
+)
+_RECORDED_METADATA_SHA256 = (
+    "f8f2b0a7e575237fe75041d836d0c30a545b2efb3bc9a9e1a91f2c16abb44b96"
+)
+_T01_NORMALIZED_METADATA_SHA256 = (
+    "388f3415107f756bf9bac21712e48e4a3a3a37b99b77ee068802f254aaeee2f1"
+)
+_UV_REQUIREMENT = b'\n[tool.uv]\nrequired-version = "==0.13.0"\n'
 _HISTORICAL_CUSTODY_ORIGINALS = {
     "src/fep_lean/formal/compositions/h3_case_study.lean": (
         "7a8ba9346dc9ab700ac6276c26421b46c0437eabaab7cd448a2bc05998318849",
@@ -264,6 +278,104 @@ def historical_manifest_bytes(project_root: Path, live: bytes) -> bytes:
     return data
 
 
+def _recorded_pyproject_release(data: bytes) -> bytes:
+    """Apply only root release tokens already allowed by the unchanged owner."""
+    from tests._support.h2_r0_custody import RELEASE_METADATA_REPLACEMENTS
+    from tests._support.release_lineage import LATER_RELEASE_VERSIONS
+
+    historical, recorded = (
+        token.encode() for token in RELEASE_METADATA_REPLACEMENTS["pyproject.toml"]
+    )
+    candidates = [
+        recorded,
+        *(
+            recorded.replace(b'"1.4.0"', f'"{v}"'.encode())
+            for v in LATER_RELEASE_VERSIONS
+        ),
+    ]
+    present = [token for token in candidates if token in data]
+    assert len(present) == 1 and data.count(present[0]) == 1, (
+        "unreviewed root release token: pyproject.toml"
+    )
+    assert historical not in data, "unreviewed root release token: pyproject.toml"
+    return data.replace(present[0], recorded, 1)
+
+
+def _authenticated_metadata_archive(project_root: Path, live: bytes) -> bytes:
+    """Authenticate the live metadata profile and raw companion without decoding.
+
+    The combined constructor runs this before manifest restoration so a bad
+    metadata input cannot cause any other archived source to be decoded.
+    """
+    assert live.count(_UV_REQUIREMENT) == 1, "unreviewed uv requirement: pyproject.toml"
+    normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
+    assert hashlib.sha256(normalized).hexdigest() in {
+        _RECORDED_METADATA_SHA256,
+        _T01_NORMALIZED_METADATA_SHA256,
+    }, "unreviewed normalized metadata: pyproject.toml"
+
+    raw = (project_root / HISTORICAL_METADATA_ARCHIVE).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == HISTORICAL_METADATA_ARCHIVE_SHA256, (
+        "historical custody metadata archive identity changed"
+    )
+    return raw
+
+
+def historical_metadata_bytes(project_root: Path, live: bytes) -> bytes:
+    """Restore authenticated metadata for exact predecessor/T01 profiles only.
+
+    Live input must retain the pinned uv section and an approved root release
+    token. Unknown normalized metadata fails before archive parsing/decoding;
+    changed companion bytes fail before parsing/decoding too. Returned bytes
+    preserve historical static custody, never current execution or approval.
+    """
+    raw = _authenticated_metadata_archive(project_root, live)
+    payload = json.loads(raw)
+    assert set(payload) == {
+        "schema_version",
+        "kind",
+        "source_commit",
+        "encoding",
+        "evidence_boundary",
+        "files",
+    }
+    assert type(payload["schema_version"]) is int and payload["schema_version"] == 1
+    assert payload["kind"] == "historical-h3-custody-metadata-companion"
+    assert payload["source_commit"] == "5e1cc9095b5f0590772c739d27558c2c711f9a44"
+    assert payload["encoding"] == "zlib+base64"
+    assert payload["evidence_boundary"] == (
+        "Original public metadata bytes for offline historical custody unit controls. "
+        "Only the unchanged release-token owner recovers the recorded historical metadata. "
+        "No archived execution, current native acceptance, or renewed scientific approval."
+    )
+    assert set(payload["files"]) == {"pyproject.toml"}
+    entry = payload["files"]["pyproject.toml"]
+    assert set(entry) == {"sha256", "size", "data"}
+    assert entry["sha256"] == _ARCHIVED_METADATA_SHA256
+    assert type(entry["size"]) is int and entry["size"] == 3105
+    assert isinstance(entry["data"], str) and len(entry["data"]) == 2100
+    compressed = base64.b64decode(entry["data"], validate=True)
+    decoder = zlib.decompressobj()
+    original = decoder.decompress(compressed, entry["size"] + 1)
+    assert decoder.eof and not decoder.unused_data and not decoder.unconsumed_tail
+    assert len(original) == entry["size"]
+    assert hashlib.sha256(original).hexdigest() == _ARCHIVED_METADATA_SHA256
+    recorded = _recorded_pyproject_release(original)
+    assert hashlib.sha256(recorded).hexdigest() == _RECORDED_METADATA_SHA256
+    # The frozen validator still owns its exact recorded 1.4 -> 1.3 transition.
+    from tests._support.h2_r0_custody import RELEASE_METADATA_REPLACEMENTS
+
+    historical_token, recorded_token = (
+        token.encode() for token in RELEASE_METADATA_REPLACEMENTS["pyproject.toml"]
+    )
+    assert hashlib.sha256(
+        recorded.replace(recorded_token, historical_token, 1)
+    ).hexdigest() == (
+        "71af4247c0daccfbec4f8ba7670bc217cda3647f58501c7a58d46d8a4852b9bc"
+    )
+    return recorded
+
+
 def historical_custody_sources(project_root: Path) -> dict[str, bytes]:
     """Decode only the two sealed original resources, never execute either.
 
@@ -345,29 +457,27 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
     assert recorded_sources[VALIDATOR_PATH] == (
         "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53"
     )
+    live_metadata = (project_root / "pyproject.toml").read_bytes()
+    # Authenticate metadata before either companion can be parsed or decoded.
+    _authenticated_metadata_archive(project_root, live_metadata)
     live_manifest = (project_root / MANIFEST_PATH).read_bytes()
     historical_manifest = historical_manifest_bytes(project_root, live_manifest)
+    historical_metadata = historical_metadata_bytes(project_root, live_metadata)
     archived = historical_custody_sources(project_root)
     pins = historical_toolchain_files(project_root)
     for relative, digest in recorded_sources.items():
         canonical = relative.replace("lean/FepSketches/", "src/fep_lean/formal/", 1)
         if relative == MANIFEST_PATH:
             data = historical_manifest
+        elif relative == "pyproject.toml":
+            data = historical_metadata
         elif canonical in archived:
             data = archived[canonical]
         elif relative in pins:
             data = pins[relative]
         else:
             data = (project_root / relative).read_bytes()
-            if relative == "pyproject.toml":
-                uv_pin = b'\n[tool.uv]\nrequired-version = "==0.13.0"\n'
-                assert data.count(uv_pin) == 1
-                data = data.replace(uv_pin, b"", 1)
-                current = b'[project]\nname = "fep_lean"\nversion = "1.6.0"\n'
-                historical = current.replace(b'"1.6.0"', b'"1.4.0"')
-                assert data.count(current) == 1
-                data = data.replace(current, historical, 1)
-            elif relative == "uv.lock":
+            if relative == "uv.lock":
                 current = b'[[package]]\nname = "fep-lean"\nversion = "1.6.0"\n'
                 historical = current.replace(b'"1.6.0"', b'"1.4.0"')
                 assert data.count(current) == 1
@@ -388,6 +498,9 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
         "manifest_archive_sha256": HISTORICAL_MANIFEST_ARCHIVE_SHA256,
         "observed_manifest_sha256": hashlib.sha256(live_manifest).hexdigest(),
         "restored_manifest_sha256": _HISTORICAL_MANIFEST_SHA256,
+        "metadata_archive_sha256": HISTORICAL_METADATA_ARCHIVE_SHA256,
+        "observed_pyproject_sha256": hashlib.sha256(live_metadata).hexdigest(),
+        "restored_pyproject_sha256": _RECORDED_METADATA_SHA256,
         "restored_source_paths": sorted(recorded_sources),
         "current_native_or_scientific_acceptance": False,
         "archived_source_execution": False,

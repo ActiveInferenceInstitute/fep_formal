@@ -14,7 +14,7 @@
   },
   "source_scope": {
     "candidate_commit": null,
-    "boundary": "The listed path hashes bind this uncommitted transition. They are not a final-commit, release, native or scientific acceptance receipt.",
+    "boundary": "The listed path hashes bind this source candidate. They are not a final-commit, release, native or scientific acceptance receipt.",
     "feasibility_spike": {
       "path": "specs/comprehensive-next-steps/spikes/finite_kernel_category.lean",
       "size": 6100,
@@ -728,7 +728,37 @@
       "test": "tests/test_formal_composition.py::test_category_roster_growth_is_rejected_by_historical_custody"
     },
     "historical_execution_reused": false,
-    "archived_lean_or_test_source_executed": false
+    "archived_lean_or_test_source_executed": false,
+    "metadata_companion": {
+      "path": "tests/fixtures/historical_h3_custody_metadata.json",
+      "size": 2708,
+      "sha256": "8ae9aff5bdc2061bdae4d419ec8203dc5f10975a379f35c3000cff814ff71d5d",
+      "kind": "historical-h3-custody-metadata-companion",
+      "source_commit": "5e1cc9095b5f0590772c739d27558c2c711f9a44",
+      "decoded_path": "pyproject.toml",
+      "decoded_size": 3105,
+      "decoded_sha256": "a93635ab635881aac257efdc3a6d627f73bb7865c5626a83aaa6aa8d06b90737",
+      "encoded_payload_size": 2100,
+      "recorded_metadata_sha256": "f8f2b0a7e575237fe75041d836d0c30a545b2efb3bc9a9e1a91f2c16abb44b96",
+      "historical_1_3_metadata_sha256": "71af4247c0daccfbec4f8ba7670bc217cda3647f58501c7a58d46d8a4852b9bc",
+      "approved_normalized_live_profiles": [
+        "f8f2b0a7e575237fe75041d836d0c30a545b2efb3bc9a9e1a91f2c16abb44b96",
+        "388f3415107f756bf9bac21712e48e4a3a3a37b99b77ee068802f254aaeee2f1"
+      ],
+      "approved_root_versions": [
+        "1.4.0",
+        "1.5.0",
+        "1.6.0"
+      ],
+      "required_uv": "0.13.0"
+    },
+    "combined_authentication_order": [
+      "authenticate live metadata and raw metadata companion without parsing/decoding",
+      "authenticate and restore recognized manifest",
+      "reauthenticate and restore metadata",
+      "authenticate all 22 historical inputs",
+      "write static control only after every digest passes"
+    ]
   },
   "local_python_controls": {
     "status": "passed_scoped_local",
@@ -794,7 +824,8 @@
       "tests/test_horizon2_smooth_reference_kernel.py::test_h2_7_consumes_only_an_accepted_source_bound_r0_decision",
       "tests/test_formal_composition.py::test_category_roster_growth_is_rejected_by_historical_custody"
     ],
-    "boundary": "Focused static historical replay/refusal/tampering controls; not the full Python suite, current native execution or scientific approval."
+    "boundary": "Focused static historical replay/refusal/tampering controls; not the full Python suite, current native execution or scientific approval.",
+    "source_epoch_note": "Earlier pre-T01 result retained at its original explicit source bindings; the combined-source rounds below are separate observations."
   },
   "independent_reviews": [
     {
@@ -930,6 +961,26 @@
       "execution_performed": false,
       "human_terminal_approval": false,
       "public_scope_reference": "specs/comprehensive-next-steps/spikes/finite-kernel-category-integration.md#source-only-independent-reviews"
+    },
+    {
+      "role": "combined_security_custody",
+      "reviewer_kind": "independent_AI",
+      "status": "source_assessment_no_blockers",
+      "source_bindings": [
+        {
+          "path": "tests/_support/lean435_migration.py",
+          "size": 23617,
+          "sha256": "b78e57ac9d8e156f63d613d32676711ad65968dfeb0aaa987c229b987712beee"
+        },
+        {
+          "path": "tests/test_horizon2_gaussian_vfe_readiness.py",
+          "size": 53967,
+          "sha256": "25973425c908874557be683125ab9523defd93660ec2b6bf50143191f61cab12"
+        }
+      ],
+      "scope": "Independent comparison against both parents, archive authenticity against Git5e1cc909, preserved frozen bytes, authentication/decode ordering, all22beforewrites, retained tamper/direct-map/provenance/refusal controls.",
+      "tests_independently_rerun": false,
+      "native_or_scientific_acceptance": false
     }
   ],
   "current_pin": {
@@ -1026,6 +1077,10 @@
       {
         "command": [
           "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "ruff",
           "check",
           "--no-cache",
           "src/fep_lean/formal/manifest.py",
@@ -1040,6 +1095,10 @@
       {
         "command": [
           "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "ruff",
           "format",
           "--check",
           "--no-cache",
@@ -1055,6 +1114,10 @@
       {
         "command": [
           "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "mypy",
           "--cache-dir=/dev/null",
           "src/fep_lean/formal/manifest.py"
         ],
@@ -1063,12 +1126,17 @@
       {
         "command": [
           "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "python",
           "docs/theorem_ref_audit.py"
         ],
         "returncode": 0
       }
     ],
-    "boundary": "Ruff lint/format, manifest mypy and theorem-reference source audit; not a native declaration/axiom audit."
+    "boundary": "Ruff lint/format, manifest mypy and theorem-reference source audit; not a native declaration/axiom audit.",
+    "command_recording_correction": "Restore the missing tool names and offline/no-sync uv wrapper from retained tool-argument records; no command is re-executed by this correction. Earlier results keep their source epoch."
   },
   "existing_enforcers": {
     "formal_owner_roster_namespace_and_projection": [
@@ -1083,5 +1151,150 @@
     "current_installed_package": "tests/test_distribution.py",
     "final_source_checks_and_hosted_artifacts": "AGENTS.md#required-checks and C05",
     "boundary": "This data record adds no production successor validator and waives none of these existing enforcers."
+  },
+  "combined_source_control_rounds": {
+    "failed_predecessor": {
+      "commit": "1cb593727700d098a4d01abee1d550e8efd7b24c",
+      "passed": 11,
+      "failed": 5,
+      "result_sha256": "23df2126274da1f6b7f38db3007aff0b5d5a394b4c6a0292af43eb85d08d23fb",
+      "junit_sha256": "12f8c1207c7caee77c05765f6dda92e7bdf8438ec4e39905295e11fd2fbbbc0e",
+      "cause": "Historical preparer rejected the T01 pyproject.toml delta; later tamper controls could not reach their intended boundary."
+    },
+    "repaired_candidate": {
+      "status": "passed_scoped_local",
+      "code_predecessor": "29a8f8dcbf9a434a11affa859b2f7309b6b237d2",
+      "merged_parent": "f368fd892e8670322c18b89ff1815f4ce151cb32",
+      "python": "3.14.4",
+      "uv": "0.13.0",
+      "offline": true,
+      "dependency_sync": false,
+      "source_sha256": {
+        "lean/FepSketches/compositions/finite_kernel_category.lean": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47",
+        "pyproject.toml": "ab94d6fa723dbb547e3e73f70d826060ab63e873e812922cbb30ef090d7d3d3e",
+        "src/fep_lean/formal/compositions/finite_kernel_category.lean": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47",
+        "src/fep_lean/formal/manifest.py": "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157",
+        "src/fep_lean/verification/horizon_acceptance.py": "b1e25d40ee6c42c9a661e1d2fa23f3814365c50cbdc04276da929b54ff62958d",
+        "tests/_support/custody_fixture_knobs.py": "0f04097ad5709c1b0de080092eb9c7ca80bb91d6a90802308d770cb923472af3",
+        "tests/_support/h2_r0_custody.py": "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53",
+        "tests/_support/lean435_migration.py": "b78e57ac9d8e156f63d613d32676711ad65968dfeb0aaa987c229b987712beee",
+        "tests/_support/release_lineage.py": "d3675c8bb360c399e2f868411535d0f7bfc95d94d8b48abed6365a48d3006d7e",
+        "tests/fixtures/custody_toolchain_4_34_1.json": "9916471b29cec86a3a77b2983f854207be112b8b87d233c202bfbcd160f4158c",
+        "tests/fixtures/historical_h3_custody_manifest.json": "5d44c38f15ae28b3bf7732ebe60edbcf2c6e27050dfb28fd6a466ebcdf890b18",
+        "tests/fixtures/historical_h3_custody_metadata.json": "8ae9aff5bdc2061bdae4d419ec8203dc5f10975a379f35c3000cff814ff71d5d",
+        "tests/fixtures/historical_h3_custody_sources.json": "2e279ffd13826b1eb2a07a5652d8e07e52ce5e0e3590b041418ab46d8a126eb1",
+        "tests/test_formal_composition.py": "6fe5da9b1a561519e36783c351220cc3e1c210509169361943785fdae57cbe20",
+        "tests/test_horizon2_gaussian_vfe_readiness.py": "25973425c908874557be683125ab9523defd93660ec2b6bf50143191f61cab12",
+        "tests/test_horizon2_smooth_reference_kernel.py": "58ad496b8115cf9c3af1b48261ea76ff1ce494133620bf9de2f463e025f20f25",
+        "tests/test_horizon_acceptance.py": "2a59dd436023ffed7deca7086ef60da6ae10692ce410fdbbb368ebdd42864d08"
+      },
+      "historical_static_controls_passed": 29,
+      "separate_synthetic_terminal_controls_passed": 2,
+      "groups": {
+        "historical-and-manifest": {
+          "status": "passed_scoped_local",
+          "passed": 16,
+          "failed": 0,
+          "skipped": 0,
+          "elapsed_seconds": 8.855382542009465,
+          "result_sha256": "47ed93be9e74d7fd16c56bacf35790bf48842da6f8e1568034b1f07ffd81594a",
+          "junit_sha256": "40aa4d789064bded827695454b610687a17d85e774711224e6970bde92a5bf10",
+          "stdout_sha256": "04dddcf29fff3377d8a2fd047e1d14651b6903d6b61ad8db9730e56c886fd855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_stable": true,
+          "minimum_scratch_free_bytes": 16118423552,
+          "observed_peak_owned_growth_bytes": 19726336,
+          "nodeids": [
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_r0_repair_is_source_bound_append_only_go",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_is_positive_and_explicitly_non_native",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[append]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[metadata]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[payload]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[append]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[metadata]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[payload]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[spike]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[owner]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[manifest]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[category_role]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_r0_custody_rejects_tampering[unlisted_owner]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_h3_custody_addendum_rejects_tampering[missing_h3_owner]",
+            "tests/test_horizon2_smooth_reference_kernel.py::test_h2_7_consumes_only_an_accepted_source_bound_r0_decision",
+            "tests/test_formal_composition.py::test_category_roster_growth_is_rejected_by_historical_custody"
+          ]
+        },
+        "metadata": {
+          "status": "passed_scoped_local",
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "elapsed_seconds": 2.331340625009034,
+          "result_sha256": "1c72436dd40e5f988e79b1afbf8795a894f89f0f94253436dbee3bfcf3ec8532",
+          "junit_sha256": "9c240a1960e5711bcd67ac6270c33feaa3849acbb6245ca56e2410e2bce23726",
+          "stdout_sha256": "e58e0b422aea98af07f9c6e7188af9260525aeae5338ab02a6185011f1ea1b05",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_stable": true,
+          "minimum_scratch_free_bytes": 16127913984,
+          "observed_peak_owned_growth_bytes": 10145792,
+          "nodeids": [
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.4.0-predecessor]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.4.0-T01]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.5.0-predecessor]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.5.0-T01]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.6.0-predecessor]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.6.0-T01]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_metadata_companion_tampering_refuses_before_parse_decode_and_writing[append]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_metadata_companion_tampering_refuses_before_parse_decode_and_writing[metadata]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_metadata_companion_tampering_refuses_before_parse_decode_and_writing[payload]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[metadata_dependency]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[metadata_unknown_release]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[metadata_duplicate_root]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[metadata_uv_pin]"
+          ]
+        },
+        "synthetic-terminal-positive": {
+          "status": "passed_scoped_local",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0,
+          "elapsed_seconds": 89.73530212498736,
+          "result_sha256": "c6087dffe34ea144eb97064138eb8d271532b04eaee40e0ac6caed6652146868",
+          "junit_sha256": "f7537728d0aaa4382d3d53c07b8a8f3adc2dd4cba83068ca1514fc9daf31de36",
+          "stdout_sha256": "27a2b46876777b85bdad424cc33ce5e2d54e8c52b92497bfd63ce04afa385422",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_stable": true,
+          "minimum_scratch_free_bytes": 16126005248,
+          "observed_peak_owned_growth_bytes": 12005376,
+          "nodeids": [
+            "tests/test_horizon_acceptance.py::test_terminal_validation_is_read_only_and_does_not_promote_h3"
+          ]
+        },
+        "synthetic-terminal-growth-refusal": {
+          "status": "passed_scoped_local",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0,
+          "elapsed_seconds": 10.4517985410057,
+          "result_sha256": "fd989cb20b86628038ded267865213bad18e29982cca1ec3f969f46bd8ceaeb7",
+          "junit_sha256": "480c2cebf1f99b5318efb49e48dd72bfaf9d751b093e3126da75bfd846f3e6e8",
+          "stdout_sha256": "90d1e9b8e36cbd719019114fa3b049fd37da5b3e34b8292bce8751d546783197",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_stable": true,
+          "minimum_scratch_free_bytes": 16122728448,
+          "observed_peak_owned_growth_bytes": 12013568,
+          "nodeids": [
+            "tests/test_horizon_acceptance.py::test_terminal_rejects_actual_roster_growth_after_capture"
+          ]
+        }
+      },
+      "boundary": "Historical replay/refusal and explicitly synthetic terminal-validator unit controls only. No historical terminal reacceptance, native execution, final hosted, C05 or scientific acceptance."
+    },
+    "resource_admission_no_start": {
+      "group": "synthetic-terminal-growth-refusal",
+      "pytest_started": false,
+      "assertion_or_test_failure": false,
+      "event_sha256": "c4ae87318fda91706833127f25f896711c5f0109fffff6da962f8835feeff7c3",
+      "boundary": "Admission refused before launching pytest. A later fresh resource check admitted the separately recorded run without lowering either limit."
+    }
   }
 }

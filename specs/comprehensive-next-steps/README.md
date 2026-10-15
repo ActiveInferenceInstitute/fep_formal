@@ -23,6 +23,9 @@ checks, evidence plane, review and excluded stronger claim. Issue links and
 [TODO.md](../../TODO.md) remain the open delivery inventory; this matrix owns
 the implementation dependencies, not another scientific registry.
 
+G02's [retained pytest evidence inventory](retained-pytest-evidence.md) documents
+the eight receipt-bound copies and their individual retention decisions.
+
 1. Finish the source-bound publication of G01/P01/L01 and the independent
    D02/D03 count/chapter corrections. Continue foundations before topic-body
    import narrowing. Independent owner inventories can prepare L02/L03,
