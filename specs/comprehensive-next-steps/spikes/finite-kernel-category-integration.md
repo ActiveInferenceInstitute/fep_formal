@@ -143,6 +143,14 @@ Historical H3 native exports separately bind their old aggregate and manifest;
 the new aggregate requires its own current-source acceptance. A successful
 historical static control cannot satisfy that gate.
 
+After combining the separately reviewed tooling and warning-measurement
+changes, the same 16 controls at commit `1cb5937` produced 11 passes and five
+failures. The historical preparer correctly rejected the changed
+`pyproject.toml`; positive and downstream tampering controls could not reach
+their intended boundaries. An authenticated metadata transition is required
+before current integration or publication acceptance. The failed attempt is
+retained separately; the earlier passing subsets keep their original epochs.
+
 ## Source-only independent reviews
 
 Independent AI reviewer `independent_pass_review` found no source blocker in
