@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "kind": "support-aware-variational-methods-local-acceptance",
+  "captured_at": "2026-10-15T01:48:57.972405+00:00",
+  "baseline_commit": "50a4a9578e661ff61fbd729c5d546b30ecf209d5",
+  "source_digest": "ba788f075bcffd6b92f227ad8852db0feb19de20085e7ad4d5d04cdc972af894",
+  "config_digest": "b52fef9063d32b3dd209fe053697ab3867a83c9faf24e7d549691522533e012f",
+  "lean_toolchain": "leanprover/lean4:v4.35.0",
+  "mathlib_tag": "v4.35.0",
+  "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+  "uv_required_version": "==0.13.0",
+  "scope": {
+    "new_public_theorems": 32,
+    "released_signatures_preserved_in_edited_modules": 122,
+    "topics": 168,
+    "families": 22,
+    "formal_modules": 71,
+    "semantic_dispositions_changed": false,
+    "new_production_python_owners": 0
+  },
+  "native": {
+    "build_jobs": 9120,
+    "verified_topics": 168,
+    "source_bound": true,
+    "native_claim_ready": true,
+    "declarations_resolved": 1875,
+    "evidence_count": 1744,
+    "warnings": 0,
+    "sorry_ax_detected": false,
+    "targeted_native_tests_passed": 8,
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "python": {
+    "initial_full_nonserial_session": {
+      "selected": 2929,
+      "passed": 2914,
+      "failed": 5,
+      "errors": 0,
+      "skipped": 10
+    },
+    "measured_coverage_percent": 91.53,
+    "coverage_floor_percent": 89,
+    "initial_failures": [
+      "custody historical rejection ordering",
+      "documentation index membership",
+      "composition identity inventory",
+      "foundation declaration inventory",
+      "release-test TOML mutation target"
+    ],
+    "resolution": "All five affected modules were rerun after correction: 61 passed. Production/config owner bytes were unchanged; this is a full selection followed by focused rechecks, not a second clean full-suite session.",
+    "affected_modules_recheck": {
+      "selected": 61,
+      "passed": 61,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "additional_focused_recheck": {
+      "selected": 59,
+      "passed": 59,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "new_numerical_tests_passed": 46,
+    "isolated_wheel_api_and_cli": "passed in tests/test_mathematical_methods.py during the full nonserial session",
+    "spec_contract_tests_passed": 167,
+    "unresolved_local_failures": []
+  },
+  "publication": {
+    "accepted": true,
+    "pages": 385,
+    "checks": {
+      "contents_number_overflows": 0,
+      "mermaid_fallbacks": 0,
+      "missing_characters": 0,
+      "publication_cover": 0,
+      "stale_sources": 0,
+      "tex_errors": 0,
+      "uncaptioned_tables": 0,
+      "unnumbered_equations": 0,
+      "unresolved_references": 0
+    },
+    "post_render_tests_passed": 3,
+    "template_commit": "5b3c0f43940f0322fbc6205b3be4c2854f99329d"
+  },
+  "independent_review": {
+    "kind": "agent code and mathematical review; no human scientific approval",
+    "formal_gibbs": "No findings; 39 released signatures preserved; support and sign boundaries checked.",
+    "formal_paths": "No findings; 83 released signatures preserved; actual marginals and endpoint boundary checked.",
+    "numerical_and_ci": "An 80-digit tiny-tail defect was corrected with 700 digits and independently rechecked against 1,100-digit oracles; all 10 setup-uv pins were reviewed.",
+    "integration": "Exactly 71 composition identities, four owner-count deltas, TOML release-test targeting and FORM-S6 closure were reviewed; no findings.",
+    "custody": "historical metadata/source refusal retained; production metadata added to no-mutation snapshot"
+  },
+  "boundaries": [
+    "No semantic disposition or catalogue-roster promotion.",
+    "Frozen scientific records and primary seeds remain unchanged.",
+    "No provider execution, generated GNN runner, H3 primary study or human scientific acceptance is asserted.",
+    "This local snapshot asserts no hosted CI, tagged release, archive publication or deployment result.",
+    "Local artifact pointers below are historical digest-bound captures; later contents must match the stored digest before reuse."
+  ],
+  "evidence": [
+    {
+      "name": "source-freeze.json",
+      "local_gitignored_path": "output/variational-extension-validation/source-freeze.json",
+      "sha256": "f957689787f4800c766a0081d11f21354549dfa05d27bd5155b323c0eb07fa53"
+    },
+    {
+      "name": "native-build.log",
+      "local_gitignored_path": "output/variational-extension-validation/native-build.log",
+      "sha256": "dc6d8d14ad67eb94fa7b3039ef4d15a36520e9d1a8ffbdc5cb2f37a8647e8a4c"
+    },
+    {
+      "name": "native-verification.json",
+      "local_gitignored_path": "output/variational-extension-validation/native-verification.json",
+      "sha256": "663bc0835f82a54a811a6ff79a20486c0fb9d53be5d124762778f1045343296c"
+    },
+    {
+      "name": "native-validation.json",
+      "local_gitignored_path": "output/variational-extension-validation/native-validation.json",
+      "sha256": "53018847347a0d01893b86ad5259a39fac210b2e672bc3a6a603c286e1e3b3e9"
+    },
+    {
+      "name": "formalism-audit.json",
+      "local_gitignored_path": "output/variational-extension-validation/formalism-audit.json",
+      "sha256": "38398bf65f2756e431c556306bfaef9908c0b808275c7ecc0e8c8b6fa71daa0c"
+    },
+    {
+      "name": "native-contracts.log",
+      "local_gitignored_path": "output/variational-extension-validation/native-contracts.log",
+      "sha256": "d53e035b43c37b34107764966366389cc90fadcb7ec52b92b195774e78ec9896"
+    },
+    {
+      "name": "python-nonserial.log",
+      "local_gitignored_path": "output/variational-extension-validation/python-nonserial.log",
+      "sha256": "d0aaa06b4145e47fb8c86d1594fbcdb00a85950c573962f9e0f0487087bcaca3"
+    },
+    {
+      "name": "python-nonserial.xml",
+      "local_gitignored_path": "output/variational-extension-validation/python-nonserial.xml",
+      "sha256": "eb3c2e6a5638dc70fc722051e3f258d5a3660fb2230cf1891a758c01cee38a5f"
+    },
+    {
+      "name": "regressions-final.log",
+      "local_gitignored_path": "output/variational-extension-validation/regressions-final.log",
+      "sha256": "15a8641c98de9e65ac8c6c35e07c6815608531ab200be9a59696c6c14bf9ccfa"
+    },
+    {
+      "name": "regressions-final.xml",
+      "local_gitignored_path": "output/variational-extension-validation/regressions-final.xml",
+      "sha256": "58da57b0173e2cdb74b0a6ce0159dac3dc4aaef77c2815f849bcb2ab74c2cfbe"
+    },
+    {
+      "name": "focused-final.log",
+      "local_gitignored_path": "output/variational-extension-validation/focused-final.log",
+      "sha256": "8c49b6bd760a357d43cf7b738d0f9488c5b4f7f9c5d77d30145c23928580c01a"
+    },
+    {
+      "name": "focused-final.xml",
+      "local_gitignored_path": "output/variational-extension-validation/focused-final.xml",
+      "sha256": "90d78ddcfdfc4dd5f64ca00a26539d29f69655dc35af94893b6bb156d457e2d8"
+    },
+    {
+      "name": "render.log",
+      "local_gitignored_path": "output/variational-extension-validation/render.log",
+      "sha256": "4a86fb4964d59b5423aeb8e8004f1621b5f67921bda89f1c2b85940c4125610c"
+    },
+    {
+      "name": "render-acceptance.json",
+      "local_gitignored_path": "output/variational-extension-validation/render-acceptance.json",
+      "sha256": "b37546d7468035679eded7836eb0303046150ac342d8c942cbf614ca2045fc0a"
+    },
+    {
+      "name": "render-receipt.log",
+      "local_gitignored_path": "output/variational-extension-validation/render-receipt.log",
+      "sha256": "7532858060b9f8a2e16f6d477a88263c96ac4ec52aa60de5c471d943d327a962"
+    },
+    {
+      "name": "render-final-tests.log",
+      "local_gitignored_path": "output/variational-extension-validation/render-final-tests.log",
+      "sha256": "49f37ca8e8a3ba70b348725af0b0918fd80ade3dc47ab602e6841c261da6f23c"
+    },
+    {
+      "name": "publication.pdf",
+      "local_gitignored_path": "output/variational-extension-validation/publication.pdf",
+      "sha256": "f8ca8a842c419445e98155993471c400a82c4b2b6cc1e5bbda5e49a489cb8f19"
+    },
+    {
+      "name": "spec-contracts.log",
+      "local_gitignored_path": "output/variational-extension-validation/spec-contracts.log",
+      "sha256": "ce91ad67515e8f51a3e0e2d5dcb712319775b3a0e4f85e3b520709c42fddb8a1"
+    },
+    {
+      "name": "checks.json",
+      "local_gitignored_path": "output/variational-extension-validation/checks.json",
+      "sha256": "648dd7749f4dfa2c2cbd1781c417ef5e59187f05035349551954318dd113a156"
+    },
+    {
+      "name": "format-final.log",
+      "local_gitignored_path": "output/variational-extension-validation/format-final.log",
+      "sha256": "c08cb44deef3bd5e6aceb013d76f19020ed4f70d4eea0e35334c33d2a0dc94ff"
+    },
+    {
+      "name": "mypy.log",
+      "local_gitignored_path": "output/variational-extension-validation/mypy.log",
+      "sha256": "b7ee2c0bfb540427b2b4b941da1f3c080ce42fa8a487523ebdd76f6f53fea9f2"
+    },
+    {
+      "name": "pins.log",
+      "local_gitignored_path": "output/variational-extension-validation/pins.log",
+      "sha256": "ef4078fb3ed7d8de9263dc6108344321f911a6273930f05c759f7b20b764fdc1"
+    },
+    {
+      "name": "cascadia-diagnostic-native.log",
+      "local_gitignored_path": "output/variational-extension-validation/cascadia-diagnostic-native.log",
+      "sha256": "2cf0df8fa82b6df01a6f76bb05df4ab45abd2ac009fade9e7adc6754022eb425"
+    },
+    {
+      "name": "cascadia-diagnostic-check.log",
+      "local_gitignored_path": "output/variational-extension-validation/cascadia-diagnostic-check.log",
+      "sha256": "169f368eb2f6dafb524925b74a4dc8a4ebbd327427fced37577848e945e11dff"
+    },
+    {
+      "name": "python-acceptance-final-collection.json",
+      "local_gitignored_path": "output/variational-extension-validation/python-acceptance-final-collection.json",
+      "sha256": "e8512b7dec5927368e210380ab1298e76c3b3a04cf79bfe9a17625b3281a3c71"
+    },
+    {
+      "name": "final-checks.json",
+      "local_gitignored_path": "output/variational-extension-validation/final-checks.json",
+      "sha256": "6ce96b79c4e57e4b62de8cf40dbe33865773e512da7e6d486f00d0919554bcf6"
+    },
+    {
+      "name": "links-final.log",
+      "local_gitignored_path": "output/variational-extension-validation/links-final.log",
+      "sha256": "7e47e95b85704e3acfa739c2dc54f80d5f58f3b80ec998ecd3e78358c4bbb9a2"
+    },
+    {
+      "name": "hygiene-final.log",
+      "local_gitignored_path": "output/variational-extension-validation/hygiene-final.log",
+      "sha256": "2baf26c1cf0f56ace7fc9ecde62b2cf1ccf032a1f3f474b8a13c99c13739e047"
+    },
+    {
+      "name": "pins-final.log",
+      "local_gitignored_path": "output/variational-extension-validation/pins-final.log",
+      "sha256": "00e806301c87218432710dc3ca15c7e143585597d25c339ab50ad4bafed1fc95"
+    },
+    {
+      "name": "ruff-final.log",
+      "local_gitignored_path": "output/variational-extension-validation/ruff-final.log",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "diff-final.log",
+      "local_gitignored_path": "output/variational-extension-validation/diff-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

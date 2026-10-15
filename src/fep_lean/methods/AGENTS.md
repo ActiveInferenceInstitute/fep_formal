@@ -3,8 +3,9 @@
 - `model.py` owns source resolution (installed package data or an explicit
   checkout), strict YAML loading, policy and cross-corpus validation, the
   immutable `MathematicalPositioning` model, and the exact-query functions.
-- `probes.py` owns the deterministic numerical boundary probes and the
-  fixed-precision `classical_mds`. It imports nothing from `fep_lean`.
+- `probes.py` owns deterministic numerical boundary probes, reusable finite
+  Gibbs methods and the fixed-precision `classical_mds`. Its only internal
+  dependency is the shared `FepLeanError` base; it performs no source discovery.
 - `projection.py` owns the JSON and Markdown renderers, the combined artifact
   byte map, atomic export, and the non-mutating drift check.
 - `visualization.py` owns the visual model, SVG panels, and the offline
@@ -38,12 +39,16 @@ from fep_lean.methods import (
     classical_mds,
     cross_corpus_embedding,
     evaluate_boundary_probes,
+    exponential_tilt,
     export_mathematical_positioning,
     extended_kl,
+    finite_expectation,
     finite_kl_totalized,
+    gibbs_duality_diagnostics,
     inspect_family,
     inspect_theorem,
     inspect_topic,
+    log_partition,
     mathematical_positioning_bytes,
     mathematical_positioning_drift,
     package_resource_drift,
@@ -51,13 +56,24 @@ from fep_lean.methods import (
 )
 ```
 
-The CLI branch is `fep-lean methods {inspect,neighbors,probe,analyze,theorem,embedding,export,check}`.
+The CLI branch is `fep-lean methods {inspect,neighbors,probe,gibbs,analyze,theorem,embedding,export,check}`.
 It needs no checkout (installed data is used); `export` writes only under
 `--output-root`, and `check` is read-only. Test in
 `tests/test_mathematical_methods.py` (import surface also in
 `tests/test_subpackage_imports.py`; slice tests in
 `specs/openai-math-methods/test_*.py`). The existing export tests write to
 `tmp_path`; follow that.
+
+The arbitrary-input Gibbs CLI requires JSON arrays for `--candidate`,
+`--reference` and `--potential`. It does not load a positioning model or claim
+source validation. Scalar helpers retain accepted literal masses; diagnostics
+normalize explicitly and report original mass sums. Keep true reference zeros
+separate from floating optimizer underflow, and calculate the gap against
+analytic log weights. Preserve the existing totalized/extended KL conventions.
+Finite unrepresentable outputs fail explicitly; true extended-domain infinities
+are JSON strings. Numerical identity residuals are not proof certificates.
+Independent arithmetic contracts live in
+`tests/test_generic_variational_methods.py`.
 
 See [README.md](README.md), [../AGENTS.md](../AGENTS.md),
 [../../../docs/mathematical-methods.md](../../../docs/mathematical-methods.md),

@@ -17,6 +17,8 @@ from typing import Literal
 
 from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST
 from fep_lean.formal.declarations import all_formal_theorem_declarations
+from fep_lean.methods.probes import exponential_tilt, finite_expectation
+from fep_lean.methods.probes import log_partition as finite_log_partition
 
 Scalar = str | int | float | bool
 PlotKind = Literal["line", "scatter", "bar"]
@@ -331,15 +333,10 @@ def _measure_bayes_reconstruction() -> NumericalWitness:
 def _gibbs_duality_gap() -> NumericalWitness:
     reference = (0.2, 0.3, 0.5)
     potential = (-0.4, 0.2, 0.8)
-    unnormalized = tuple(
-        mass * math.exp(value) for mass, value in zip(reference, potential, strict=True)
-    )
-    partition = sum(unnormalized)
-    optimizer = tuple(weight / partition for weight in unnormalized)
-    log_partition = math.log(partition)
-    expected_potential = sum(
-        mass * value for mass, value in zip(optimizer, potential, strict=True)
-    )
+    optimizer = exponential_tilt(reference, potential)
+    log_partition = finite_log_partition(reference, potential)
+    partition = math.exp(log_partition)
+    expected_potential = finite_expectation(optimizer, potential)
     kl = sum(
         mass * math.log(mass / base)
         for mass, base in zip(optimizer, reference, strict=True)

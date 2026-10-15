@@ -155,6 +155,26 @@ theorem fep099_reversible_kl_dissipation_links_fep010_fep014
       fep_fep010.FEP010.fep010_reversible_invariant
         nativeKernel nativeStationary hNativeReversible⟩
 
+/-- The actual one-step reversible path production is the endpoint KL drop;
+the existing fep-099 theorem supplies the qualified dissipation inequality. -/
+theorem fep099_markov_path_KL_drop_reduction
+    {State : Type*} [Fintype State] [DecidableEq State] [Nonempty State]
+    (actual stationary : FiniteLaw State) (kernel : FiniteKernel State State)
+    (hActual : ∀ state, 0 < actual state)
+    (hStationary : ∀ state, 0 < stationary state)
+    (hKernel : ∀ source target, 0 < kernel source target)
+    (hReversible : IsReversible stationary kernel) :
+    entropyProduction (markovPathProtocol kernel actual kernel
+        (kernel.predictive actual) 1) =
+        finiteKL actual stationary - finiteKL (kernel.predictive actual) stationary ∧
+      finiteKL (kernel.predictive actual) stationary ≤ finiteKL actual stationary := by
+  constructor
+  · simpa [kernelPower, FiniteKernel.predictive_comp, FiniteKernel.predictive_identity] using
+      entropyProduction_markov_reversible_KL_drop kernel actual stationary
+        hActual hStationary hKernel hReversible 1
+  · exact fep_fep099.FEP099.fep099_reversibleChain_oneStep_KL_dissipation
+      actual stationary kernel hActual hStationary hKernel hReversible
+
 /-- Full-support categorical Fisher positivity strengthens the original
 diagonal Fisher metric's positive-semidefinite certificate. -/
 theorem fep100_categorical_fisher_refines_fep004

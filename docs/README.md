@@ -1,6 +1,7 @@
 # Documentation map
 
 - [Mathematical methods](mathematical-methods.md) — portable topic contracts, research context and mathematical transfer rules.
+- [Support-aware variational methods](support-aware-variational-methods.md) — sparse Gibbs optimization, finite-path marginals, reversible KL drop and numerical API boundaries.
 - [Mathematical positioning explorer](mathematical-positioning/mathematical-map.html) — offline searchable contracts, typed associations and numerical boundary panels.
 - [Getting started](getting-started.md) — install, catalogue mode, and strict mode.
 - [FEP background](fep-background.md) — conceptual orientation with explicit formalization boundaries.

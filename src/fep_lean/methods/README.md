@@ -19,7 +19,7 @@ records its `SourceOrigin` and the SHA-256 of every byte read. Queries
 (`inspect_topic`, `inspect_family`, `inspect_theorem`, `analyze_topic`,
 `positioning_neighbors`, `cross_corpus_embedding`) return detached copies.
 
-Use `uv run fep-lean methods --help`. `inspect`, `neighbors`, `probe`,
+Use `uv run fep-lean methods --help`. `inspect`, `neighbors`, `probe`, `gibbs`,
 `analyze`, `theorem`, `embedding`, and `check` perform no writes; `export`
 writes the artifact tree under `--output-root` (default
 `output/mathematical-methods`). Failures print a JSON error and exit 1.
@@ -29,6 +29,15 @@ KL support boundary, Fisher chart degeneracy, descent without identification)
 and a deterministic two-dimensional classical MDS over binary feature vectors,
 computed in 80-digit `Decimal` arithmetic so artifact bytes do not depend on
 LAPACK or platform libm.
+
+The same owner exposes `finite_expectation`, `log_partition`,
+`exponential_tilt` and `gibbs_duality_diagnostics` for arbitrary finite inputs.
+The expectation accumulates products exactly before rounding. Gibbs weights
+use supported, centered high-precision arithmetic; diagnostics distinguish
+reference zeros from numerical underflow and report normalization explicitly.
+The `gibbs` CLI accepts three required JSON arrays and works without loading a
+catalogue model. See the [numerical API guide](../../../docs/mathematical-methods.md#reusable-finite-variational-methods)
+for conventions, examples and range boundaries.
 
 Everything here is explanatory context, not proof. Source validation is text
 analysis, not Lean elaboration; family domains are editorial unions; feature

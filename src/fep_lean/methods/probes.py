@@ -4,6 +4,17 @@ from __future__ import annotations
 
 import math
 from collections.abc import Sequence
+from decimal import (
+    ROUND_HALF_EVEN,
+    Context,
+    Decimal,
+    DivisionByZero,
+    InvalidOperation,
+    Overflow,
+    localcontext,
+)
+from fractions import Fraction
+from numbers import Real
 from typing import Any
 
 from fep_lean._paths import FepLeanError
@@ -11,6 +22,271 @@ from fep_lean._paths import FepLeanError
 
 class BoundaryProbeError(ValueError, FepLeanError):
     """A probability, support, or floating-point range contract failed."""
+
+
+def _finite_vector(values: Sequence[float], label: str) -> tuple[float, ...]:
+    if not isinstance(values, Sequence) or not values:
+        raise BoundaryProbeError(
+            f"{label} needs a nonempty sequence of finite real numbers"
+        )
+    converted: list[float] = []
+    for value in values:
+        if isinstance(value, bool) or not isinstance(value, Real):
+            raise BoundaryProbeError(
+                f"{label} needs finite real numbers, excluding bool"
+            )
+        try:
+            number = float(value)
+        except (ValueError, OverflowError) as exc:
+            raise BoundaryProbeError(f"{label} exceeds the finite float range") from exc
+        if not math.isfinite(number):
+            raise BoundaryProbeError(f"{label} needs finite real numbers")
+        converted.append(number)
+    return tuple(converted)
+
+
+def _finite_law(values: Sequence[float], label: str) -> tuple[float, ...]:
+    law = _finite_vector(values, label)
+    if any(mass < 0 or mass > 1 + 1e-12 for mass in law) or not math.isclose(
+        math.fsum(law), 1, rel_tol=0, abs_tol=1e-12
+    ):
+        raise BoundaryProbeError(f"{label} must be normalized and nonnegative")
+    return law
+
+
+def _law_potential(
+    law: Sequence[float], potential: Sequence[float], label: str
+) -> tuple[tuple[float, ...], tuple[float, ...]]:
+    masses = _finite_law(law, label)
+    values = _finite_vector(potential, "potential")
+    if len(masses) != len(values):
+        raise BoundaryProbeError("law and potential need equal nonempty supports")
+    return masses, values
+
+
+def _finite_float(value: Fraction | Decimal, label: str) -> float:
+    try:
+        result = float(value)
+    except (ValueError, OverflowError) as exc:
+        raise BoundaryProbeError(f"{label} exceeds the finite float range") from exc
+    if not math.isfinite(result):
+        raise BoundaryProbeError(f"{label} exceeds the finite float range")
+    return result
+
+
+def _decimal_fraction(value: Fraction) -> Decimal:
+    return Decimal(value.numerator) / Decimal(value.denominator)
+
+
+def _gibbs_context() -> Context:
+    # Binary64 inputs span about 632 decimal orders when a subnormal mass
+    # weights an extreme potential. Near-one logarithms also need the small
+    # mass tail retained before cancellation. 700 digits cover both; 80 would
+    # silently erase representable partition/KL values at those boundaries.
+    return Context(
+        prec=700,
+        rounding=ROUND_HALF_EVEN,
+        Emin=-999999,
+        Emax=999999,
+        traps=[InvalidOperation, DivisionByZero, Overflow],
+    )
+
+
+def _fraction_expectation(
+    masses: Sequence[Fraction], values: Sequence[Fraction]
+) -> Fraction:
+    return sum(
+        (mass * value for mass, value in zip(masses, values, strict=True)), Fraction(0)
+    )
+
+
+def finite_expectation(law: Sequence[float], potential: Sequence[float]) -> float:
+    """Sum supplied binary-float masses times potentials, rounding only the result.
+
+    Laws must sum to one within ``1e-12``; accepted masses are used literally.
+    Exact rational accumulation preserves subnormal products and cancellation.
+    An unrepresentable final result raises :class:`BoundaryProbeError`.
+    """
+    masses, values = _law_potential(law, potential, "law")
+    return _finite_float(
+        _fraction_expectation(
+            tuple(map(Fraction.from_float, masses)),
+            tuple(map(Fraction.from_float, values)),
+        ),
+        "finite expectation",
+    )
+
+
+def _log_tilt(
+    reference: Sequence[Fraction], potential: Sequence[Fraction]
+) -> tuple[Fraction, Decimal, tuple[Decimal | None, ...], tuple[float, ...]]:
+    """Center before adding log masses; callers supply the Decimal context."""
+    center = max(
+        value for mass, value in zip(reference, potential, strict=True) if mass
+    )
+    weights = tuple(
+        _decimal_fraction(mass).ln() + _decimal_fraction(value - center)
+        if mass
+        else None
+        for mass, value in zip(reference, potential, strict=True)
+    )
+    weight_center = max(value for value in weights if value is not None)
+    partition = sum(
+        ((value - weight_center).exp() for value in weights if value is not None),
+        Decimal(0),
+    )
+    centered_log_partition = weight_center + partition.ln()
+    log_tilt = tuple(
+        value - centered_log_partition if value is not None else None
+        for value in weights
+    )
+    optimizer = tuple(
+        float(value.exp()) if value is not None else 0.0 for value in log_tilt
+    )
+    return center, centered_log_partition, log_tilt, optimizer
+
+
+def log_partition(reference: Sequence[float], potential: Sequence[float]) -> float:
+    """Evaluate ``log(sum(q_i * exp(v_i)))`` stably on positive reference support.
+
+    Accepted reference masses are used literally. Zero-reference potentials
+    cannot determine the numerical center. The result is numerical, not proof.
+    """
+    masses, values = _law_potential(reference, potential, "reference")
+    with localcontext(_gibbs_context()):
+        center, centered, _, _ = _log_tilt(
+            tuple(map(Fraction.from_float, masses)),
+            tuple(map(Fraction.from_float, values)),
+        )
+        return _finite_float(_decimal_fraction(center) + centered, "log partition")
+
+
+def exponential_tilt(
+    reference: Sequence[float], potential: Sequence[float]
+) -> tuple[float, ...]:
+    """Return normalized Gibbs weights, with true zero reference atoms preserved.
+
+    A positive mathematical weight can round to zero. Use
+    :func:`gibbs_duality_diagnostics` to distinguish that underflow from a true
+    support boundary; KL against the rounded weights can be misleading.
+    """
+    masses, values = _law_potential(reference, potential, "reference")
+    with localcontext(_gibbs_context()):
+        return _log_tilt(
+            tuple(map(Fraction.from_float, masses)),
+            tuple(map(Fraction.from_float, values)),
+        )[3]
+
+
+def gibbs_duality_diagnostics(
+    candidate: Sequence[float],
+    reference: Sequence[float],
+    potential: Sequence[float],
+) -> dict[str, Any]:
+    """Compare finite Gibbs duality quantities with explicit numerical boundaries.
+
+    Accepted candidate/reference laws are normalized by their exact binary
+    rational mass sums. Original sums and residuals are reported. The gap is
+    evaluated with centered 700-digit arithmetic; its KL comparison uses analytic
+    log weights, never the underflow-truncated optimizer. True support failure
+    uses JSON-safe infinity strings and leaves identity comparisons unset.
+    Finite outputs outside binary64 range raise :class:`BoundaryProbeError`.
+    Neither the residual nor its roundoff allowance certifies a Lean theorem.
+    """
+    reference_values, values = _law_potential(reference, potential, "reference")
+    candidate_values = _finite_law(candidate, "candidate")
+    if len(candidate_values) != len(reference_values):
+        raise BoundaryProbeError("candidate and reference need equal nonempty supports")
+    p_raw = tuple(map(Fraction.from_float, candidate_values))
+    q_raw = tuple(map(Fraction.from_float, reference_values))
+    p_sum, q_sum = sum(p_raw), sum(q_raw)
+    p = tuple(mass / p_sum for mass in p_raw)
+    q = tuple(mass / q_sum for mass in q_raw)
+    v = tuple(map(Fraction.from_float, values))
+    zeros = [index for index, mass in enumerate(q) if not mass]
+    outside = [index for index in zeros if p[index]]
+    sums = {
+        "candidate": math.fsum(candidate_values),
+        "reference": math.fsum(reference_values),
+    }
+    with localcontext(_gibbs_context()):
+        center, centered_partition, log_tilt, optimizer = _log_tilt(q, v)
+        expectation = _fraction_expectation(p, v)
+        centered_expectation = _fraction_expectation(
+            p, tuple(value - center for value in v)
+        )
+        report: dict[str, Any] = {
+            "evidence_boundary": "Numerical non-proof diagnostics; no native or scientific acceptance.",
+            "input_mass_sums": sums,
+            "input_mass_residuals": {name: mass - 1.0 for name, mass in sums.items()},
+            "normalization_convention": (
+                "Diagnostics normalize accepted candidate/reference masses by their exact "
+                "binary rational sums; scalar helpers use supplied masses literally."
+            ),
+            "reference_zero_indices": zeros,
+            "candidate_outside_reference_indices": outside,
+            "tilt_underflow_indices": [
+                index for index, mass in enumerate(q) if mass and optimizer[index] == 0
+            ],
+            "optimizer": list(optimizer),
+            "log_partition": _finite_float(
+                _decimal_fraction(center) + centered_partition, "log partition"
+            ),
+            "expected_potential": _finite_float(expectation, "expected potential"),
+            "centered_log_partition": _finite_float(
+                centered_partition, "centered log partition"
+            ),
+            "centered_expected_potential": _finite_float(
+                centered_expectation, "centered expected potential"
+            ),
+        }
+        if outside:
+            report.update(
+                kl_candidate_reference="infinity",
+                dv_objective="-infinity",
+                duality_gap="infinity",
+                kl_candidate_log_tilt="infinity",
+                identity_residual=None,
+                roundoff_allowance=None,
+                identity_within_roundoff=None,
+            )
+            return report
+        kl = Decimal(0)
+        kl_tilt = Decimal(0)
+        for index, mass in enumerate(p):
+            if mass:
+                weight = _decimal_fraction(mass)
+                log_mass = weight.ln()
+                kl += weight * (log_mass - _decimal_fraction(q[index]).ln())
+                log_optimizer = log_tilt[index]
+                assert log_optimizer is not None  # positive p has positive q above
+                kl_tilt += weight * (log_mass - log_optimizer)
+        gap = centered_partition - _decimal_fraction(centered_expectation) + kl
+        residual = gap - kl_tilt
+        report.update(
+            kl_candidate_reference=_finite_float(kl, "candidate/reference KL"),
+            dv_objective=_finite_float(
+                _decimal_fraction(expectation) - kl, "DV objective"
+            ),
+            duality_gap=_finite_float(gap, "duality gap"),
+            kl_candidate_log_tilt=_finite_float(kl_tilt, "candidate/log-tilt KL"),
+            identity_residual=_finite_float(residual, "identity residual"),
+        )
+        allowance = 8 * math.fsum(
+            math.ulp(report[key])
+            for key in (
+                "centered_log_partition",
+                "centered_expected_potential",
+                "kl_candidate_reference",
+                "duality_gap",
+                "kl_candidate_log_tilt",
+            )
+        )
+        report.update(
+            roundoff_allowance=allowance,
+            identity_within_roundoff=abs(report["identity_residual"]) <= allowance,
+        )
+        return report
 
 
 def bernoulli_fisher(parameter: float) -> float:
@@ -133,16 +409,6 @@ def classical_mds(vectors: Sequence[Sequence[int]]) -> dict[str, Any]:
     places with half-even rounding. Neither LAPACK nor platform libm determines
     these artifact bytes. Repeated axes remain interpretation-ambiguous.
     """
-    from decimal import (
-        ROUND_HALF_EVEN,
-        Context,
-        Decimal,
-        DivisionByZero,
-        InvalidOperation,
-        Overflow,
-        localcontext,
-    )
-
     if not vectors or not vectors[0]:
         raise BoundaryProbeError("MDS requires nonempty rows and coordinates")
     width = len(vectors[0])

@@ -14,6 +14,11 @@ mathematical family context, deterministic canonical contract projections,
 and numerical boundary diagnostics. Its artifacts are analysis evidence;
 native or scientific acceptance remains separate.
 
+[`support-aware-variational-methods`](support-aware-variational-methods/README.md)
+extends existing Gibbs and finite-path proof owners alongside reusable numerical
+methods. Its work-package matrix keeps native, numerical, publication and
+scientific evidence separate.
+
 Future spec acceptance artifacts MUST use bundle-backed durable copies and/or
 the `local_gitignored_path` field naming. Pointing a curated spec asset at a
 mutable gitignored `output/` path as if its current content were the accepted

@@ -241,6 +241,40 @@ theorem boltzmannPosterior_mul_partition (prior : FiniteLaw Action)
       boltzmannWeight prior energy action := by
   exact div_mul_cancel₀ _ (ne_of_gt (boltzmannPartition_pos prior energy))
 
+/-- A finite exponential tilt preserves the zero atoms of its prior exactly.
+The positive exponential weight cannot create or destroy support. -/
+theorem boltzmannPosterior_eq_zero_iff (prior : FiniteLaw Action)
+    (energy : Action → ℝ) (action : Action) :
+    boltzmannPosterior prior energy action = 0 ↔ prior action = 0 := by
+  change prior action * Real.exp (-energy action) /
+      boltzmannPartition prior energy = 0 ↔ prior action = 0
+  simp [div_eq_zero_iff, mul_eq_zero,
+    (boltzmannPartition_pos prior energy).ne', (Real.exp_pos _).ne']
+
+/-- Positive support of a finite exponential tilt is exactly positive prior
+support; no full-support assumption is needed. -/
+theorem boltzmannPosterior_pos_iff (prior : FiniteLaw Action)
+    (energy : Action → ℝ) (action : Action) :
+    0 < boltzmannPosterior prior energy action ↔ 0 < prior action := by
+  change 0 < prior action * Real.exp (-energy action) /
+      boltzmannPartition prior energy ↔ 0 < prior action
+  rw [div_pos_iff_of_pos_right (boltzmannPartition_pos prior energy),
+    mul_pos_iff_of_pos_right (Real.exp_pos _)]
+
+/-- The logarithm of a finite exponential tilt is a log density on positive
+prior atoms. The support hypothesis is essential with totalized real logs. -/
+theorem log_boltzmannPosterior (prior : FiniteLaw Action)
+    (energy : Action → ℝ) (action : Action) (hprior : 0 < prior action) :
+    Real.log (boltzmannPosterior prior energy action) =
+      Real.log (prior action) - energy action -
+        Real.log (boltzmannPartition prior energy) := by
+  change Real.log (prior action * Real.exp (-energy action) /
+      boltzmannPartition prior energy) = _
+  rw [Real.log_div (mul_pos hprior (Real.exp_pos _)).ne'
+    (boltzmannPartition_pos prior energy).ne',
+    Real.log_mul hprior.ne' (Real.exp_pos _).ne', Real.log_exp]
+  ring
+
 /-- A zero energy leaves every normalized prior unchanged. -/
 theorem boltzmannPosterior_zero_energy (prior : FiniteLaw Action) :
     boltzmannPosterior prior (fun _ => 0) = prior := by

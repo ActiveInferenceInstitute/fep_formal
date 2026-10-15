@@ -977,6 +977,18 @@ def build_parser() -> argparse.ArgumentParser:
         "probe", help="evaluate deterministic non-proof boundary probes"
     )
     probe.add_argument("name", nargs="?")
+    gibbs = methods_sub.add_parser(
+        "gibbs", help="evaluate finite Gibbs duality with numerical support diagnostics"
+    )
+    gibbs.add_argument(
+        "--candidate", required=True, help="candidate law as a JSON array"
+    )
+    gibbs.add_argument(
+        "--reference", required=True, help="reference law as a JSON array"
+    )
+    gibbs.add_argument(
+        "--potential", required=True, help="finite potential as a JSON array"
+    )
     analysis = methods_sub.add_parser(
         "analyze", help="read source-grounded Lean statement and maintained prose"
     )
@@ -1090,12 +1102,14 @@ def build_parser() -> argparse.ArgumentParser:
 
 def _methods(args: argparse.Namespace, root: Path | None) -> int:
     """Portable methods branch; no checkout is required for installed resources."""
+    from fep_lean import __version__
     from fep_lean.methods import (
         analyze_topic,
         build_mathematical_positioning,
         cross_corpus_embedding,
         evaluate_boundary_probes,
         export_mathematical_positioning,
+        gibbs_duality_diagnostics,
         inspect_family,
         inspect_theorem,
         inspect_topic,
@@ -1105,6 +1119,26 @@ def _methods(args: argparse.Namespace, root: Path | None) -> int:
     )
 
     try:
+        if args.methods_operation == "gibbs":
+            diagnostic = gibbs_duality_diagnostics(
+                json.loads(args.candidate),
+                json.loads(args.reference),
+                json.loads(args.potential),
+            )
+            print(
+                json.dumps(
+                    {
+                        "status": "ok",
+                        "package_version": __version__,
+                        "source_origin": "numerical-input",
+                        "evidence_boundary": diagnostic["evidence_boundary"],
+                        "result": diagnostic,
+                    },
+                    indent=2,
+                    allow_nan=False,
+                )
+            )
+            return 0
         if root is not None and args.methods_operation == "check":
             resources = package_resource_drift(root)
             if resources:

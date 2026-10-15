@@ -464,17 +464,21 @@ def test_expansion_compositions_pin_exact_ids_names_and_file_ownership() -> None
         "thermo_geometry.lean",
     )
 
+    # A second proved composition for one topic must preserve the first one's
+    # identity instead of overwriting it in a topic-keyed dictionary.
     actual = {
-        int(name[3:6]): (filename, name)
+        (int(name[3:6]), filename, name)
         for filename, source in sources.items()
         for name in THEOREM_RE.findall(source)
     }
     expected = {
-        topic_id: (filename, theorem_name)
+        (topic_id, filename, theorem_name)
         for topic_id, (filename, theorem_name, _, _) in BRIDGES.items()
     }
+    expected.add((99, "thermo_geometry.lean", "fep099_markov_path_KL_drop_reduction"))
     assert actual == expected
-    assert sum(len(THEOREM_RE.findall(source)) for source in sources.values()) == 70
+    assert len(expected) == 71
+    assert sum(len(THEOREM_RE.findall(source)) for source in sources.values()) == 71
 
 
 def test_every_bridge_consumes_endpoint_and_pre051_declarations() -> None:

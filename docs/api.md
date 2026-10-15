@@ -102,6 +102,28 @@ interfaces produce/read exactly the same JSON, Markdown, HTML and SVG model;
 checks do not repair drift. See [mathematical methods](mathematical-methods.md)
 for all public commands, mathematical scope and maintenance ownership.
 
+The development checkout adds four reusable finite numerical methods:
+
+```python
+from fep_lean.methods import (
+    finite_expectation,
+    log_partition,
+    exponential_tilt,
+    gibbs_duality_diagnostics,
+)
+
+q, potential = (0.5, 0.5), (0.0, -1000.0)
+mean = finite_expectation(q, potential)
+log_z = log_partition(q, potential)
+optimizer = exponential_tilt(q, potential)
+diagnostic = gibbs_duality_diagnostics(q, q, potential)
+```
+
+These functions operate on numerical inputs without building a positioning
+model. The [numerical contract](mathematical-methods.md#reusable-finite-variational-methods)
+defines literal versus normalized masses, exact weighted accumulation,
+supported log-domain scaling, true support failure and optimizer underflow.
+
 ## Pipeline
 
 ```python

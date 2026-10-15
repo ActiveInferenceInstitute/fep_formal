@@ -44,6 +44,13 @@ The current foundation surface includes:
   backward master equations, stationarity, detailed balance, relaxation, and
   quadratic Lyapunov decay.
 
+The [support-aware variational extension](../../../docs/support-aware-variational-methods.md)
+strengthens the existing Gibbs construction with exact support preservation,
+relative-support gaps and signed-precision optimization. General-horizon path
+proofs now establish actual coordinate/stage marginals, reduce production to
+endpoint/stage laws, prove stationary linear growth, and identify reversible
+endpoint KL loss with a qualified one-step fep-099 bridge.
+
 The exact resource list is the typed manifest, rather than this synopsis. The
 remaining support, positivity, independence, and invertibility premises in the
 declarations are part of the results, not removable prose.

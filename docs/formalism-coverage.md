@@ -14,12 +14,12 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Maintained formal modules | 71 |
 | Foundation modules | 45 |
 | Topic theorem declarations | 584 |
-| Formal-resource theorem declarations | 1609 |
-| Foundation theorem declarations | 1257 |
-| Total theorem declarations | 2193 |
+| Formal-resource theorem declarations | 1641 |
+| Foundation theorem declarations | 1288 |
+| Total theorem declarations | 2225 |
 | Topic definitions | 95 |
-| Formal-resource definitions | 935 |
-| Total definitions | 1030 |
+| Formal-resource definitions | 937 |
+| Total definitions | 1032 |
 | Topic abbreviations | 7 |
 | Formal-resource abbreviations | 32 |
 | Total abbreviations | 39 |
@@ -32,7 +32,7 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Derivational formal relations | 24 |
 | Checked formal pairings | 118 |
 | All theorem-witnessed relations | 142 |
-| Composed theorem declarations | 352 |
+| Composed theorem declarations | 353 |
 | Capability nodes (retained history) | 50 |
 | Unresolved capability nodes | 0 |
 | Satisfied capability nodes | 50 |
@@ -241,13 +241,13 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.statistical_convergence` | `foundation` | 7 | 8 | 0 | — |
 | `FepSketches.measure_bayes` | `foundation` | 12 | 0 | 0 | `FepSketches.finite_probability` |
 | `FepSketches.variational_duality` | `foundation` | 82 | 42 | 3 | `FepSketches.finite_information` |
-| `FepSketches.controlled_markov` | `foundation` | 30 | 28 | 2 | `FepSketches.active_inference` |
+| `FepSketches.controlled_markov` | `foundation` | 33 | 28 | 2 | `FepSketches.active_inference` |
 | `FepSketches.temporal_inference` | `foundation` | 52 | 38 | 1 | `FepSketches.controlled_markov` |
 | `FepSketches.finite_markov_dynamics` | `foundation` | 17 | 6 | 0 | `FepSketches.finite_probability` |
 | `FepSketches.causal_dynamics` | `foundation` | 34 | 18 | 2 | `FepSketches.markov_blanket` |
 | `FepSketches.predictive_coding` | `foundation` | 47 | 13 | 1 | — |
 | `FepSketches.ness_flow` | `foundation` | 25 | 19 | 0 | `FepSketches.geometric_mechanics` |
-| `FepSketches.path_thermodynamics` | `foundation` | 69 | 23 | 2 | `FepSketches.finite_markov_dynamics`, `FepSketches.variational_duality` |
+| `FepSketches.path_thermodynamics` | `foundation` | 81 | 23 | 2 | `FepSketches.finite_markov_dynamics`, `FepSketches.variational_duality` |
 | `FepSketches.geometric_optimization` | `foundation` | 25 | 17 | 3 | `FepSketches.information_geometry` |
 | `FepSketches.collective_inference` | `foundation` | 41 | 26 | 0 | `FepSketches.finite_information` |
 | `FepSketches.learning_theory` | `foundation` | 12 | 9 | 0 | `FepSketches.variational_duality` |
@@ -270,7 +270,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.gnn_denotation` | `foundation` | 7 | 16 | 2 | `FepSketches.active_inference`, `FepSketches.gnn_document` |
 | `FepSketches.gnn_denotation_continuous` | `foundation` | 9 | 12 | 2 | `FepSketches.gnn_document`, `FepSketches.linear_gaussian_semigroup` |
 | `FepSketches.gnn_render_statements` | `foundation` | 7 | 8 | 1 | `FepSketches.active_inference`, `FepSketches.finite_markov_dynamics`, `FepSketches.finite_probability`, `FepSketches.gnn_denotation`, `FepSketches.gnn_document` |
-| `FepSketches.efe_policy_selection` | `foundation` | 9 | 3 | 0 | `FepSketches.controlled_markov`, `FepSketches.policy_tree`, `FepSketches.variational_duality` |
+| `FepSketches.efe_policy_selection` | `foundation` | 25 | 5 | 0 | `FepSketches.controlled_markov`, `FepSketches.policy_tree`, `FepSketches.variational_duality` |
 | `FepSketches.perception_action_loop` | `foundation` | 40 | 18 | 1 | `FepSketches.active_inference`, `FepSketches.continuous_time_markov`, `FepSketches.controlled_markov`, `FepSketches.finite_markov_dynamics`, `FepSketches.policy_tree`, `FepSketches.temporal_inference` |
 | `FepSketches.bayesian_model_reduction` | `foundation` | 10 | 3 | 0 | `FepSketches.gaussian_information_geometry`, `FepSketches.variational_duality` |
 | `FepSketches.efe_time_scale_separation` | `foundation` | 37 | 8 | 0 | `FepSketches.active_inference`, `FepSketches.continuous_time_markov`, `FepSketches.ness_flow`, `FepSketches.path_thermodynamics` |
@@ -282,7 +282,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.compositions.measure_variational` | `composition` | 14 | 0 | 0 | `FepSketches.measure_bayes`, `FepSketches.variational_duality` |
 | `FepSketches.compositions.control_temporal` | `composition` | 14 | 0 | 0 | `FepSketches.controlled_markov`, `FepSketches.temporal_inference` |
 | `FepSketches.compositions.causal_predictive` | `composition` | 14 | 0 | 0 | `FepSketches.causal_dynamics`, `FepSketches.predictive_coding` |
-| `FepSketches.compositions.thermo_geometry` | `composition` | 14 | 0 | 0 | `FepSketches.geometric_optimization`, `FepSketches.path_thermodynamics` |
+| `FepSketches.compositions.thermo_geometry` | `composition` | 15 | 0 | 0 | `FepSketches.geometric_optimization`, `FepSketches.path_thermodynamics` |
 | `FepSketches.compositions.collective_learning` | `composition` | 14 | 0 | 0 | `FepSketches.collective_inference`, `FepSketches.learning_theory` |
 | `FepSketches.compositions.risk_calibration` | `composition` | 7 | 0 | 0 | `FepSketches.empirical_risk` |
 | `FepSketches.compositions.policy_trees` | `composition` | 7 | 0 | 0 | `FepSketches.policy_tree` |

@@ -57,8 +57,43 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         "FEPComposed.FiniteScientificImplications.scaledLogisticProbability_pos",
         "FEPComposed.FiniteScientificImplications.symmetricFalseEvidence",
     }
-    assert exposed_support <= declarations.keys()
-    assert len(declarations.keys() - exposed_support) == 2185
+    variational_extension = {
+        "FEP.ControlledMarkov.boltzmannPosterior_eq_zero_iff",
+        "FEP.ControlledMarkov.boltzmannPosterior_pos_iff",
+        "FEP.ControlledMarkov.log_boltzmannPosterior",
+        "FEP.EFEPolicy.controlPosterior_relativeSupport",
+        "FEP.EFEPolicy.efeControl_scaled_objective_eq_kl_sub_logPartition",
+        "FEP.EFEPolicy.efeControlObjective_eq_kl_sub_logPartition_of_relativeSupport",
+        "FEP.EFEPolicy.efeControlObjective_optimizer_value",
+        "FEP.EFEPolicy.efeControlObjective_sub_eq_kl_of_relativeSupport",
+        "FEP.EFEPolicy.efeControlObjective_eq_optimizer_iff_of_relativeSupport",
+        "FEP.EFEPolicy.boltzmann_control_posterior_minimizes_efe_of_relativeSupport",
+        "FEP.EFEPolicy.efeControlObjective_optimizer_lt_of_relativeSupport",
+        "FEP.EFEPolicy.boltzmann_control_posterior_maximizes_efe_of_negative_precision",
+        "FEP.EFEPolicy.efeControlObjective_lt_optimizer_of_negative_precision",
+        "FEP.EFEPolicy.sparseGibbs_partition",
+        "FEP.EFEPolicy.sparseGibbs_posterior_mass",
+        "FEP.EFEPolicy.sparseGibbs_supported_strict_gap",
+        "FEP.EFEPolicy.sparseGibbs_negative_precision_strict_gap",
+        "FEP.EFEPolicy.zeroReference_unsupported_candidate_beats_posterior",
+        "FEP.EFEPolicy.zeroPrecision_prior_not_minimizer",
+        "FEP.PathThermodynamics.markovPathLaw_sum_snoc",
+        "FEP.PathThermodynamics.markovPathLaw_sum_coordinate",
+        "FEP.PathThermodynamics.markovPathLaw_sum_stage",
+        "FEP.PathThermodynamics.markovPathLaw_map_coordinate",
+        "FEP.PathThermodynamics.markovPathLaw_map_stage",
+        "FEP.PathThermodynamics.entropyProduction_markov_marginal_decomposition",
+        "FEP.PathThermodynamics.kernelPower_predictive_pos",
+        "FEP.PathThermodynamics.entropyProduction_markov_stationary_horizon",
+        "FEP.PathThermodynamics.pathwiseEntropyProduction_markov_reversible",
+        "FEP.PathThermodynamics.entropyProduction_markov_reversible_KL_drop",
+        "FEP.PathThermodynamics.biasedCycle_entropyProduction_horizon",
+        "FEP.PathThermodynamics.biasedCycle_entropyProduction_horizon_pos",
+        "FEPComposed.fep099_markov_path_KL_drop_reduction",
+    }
+    assert len(variational_extension) == 32
+    assert exposed_support | variational_extension <= declarations.keys()
+    assert len(declarations.keys() - exposed_support - variational_extension) == 2185
     assert "not a certified" not in data["theorem_analysis"]["analysis_boundary"]
     assert (
         "neither a certified translation"
@@ -694,12 +729,19 @@ def test_installed_wheel_methods_run_without_checkout_or_sibling_imports(tmp_pat
     probe = f"""
 import json, pathlib, sys, fep_lean
 from fep_lean.methods import build_mathematical_positioning, inspect_topic, export_mathematical_positioning, mathematical_positioning_drift
+from fep_lean.methods import finite_expectation, log_partition, exponential_tilt, gibbs_duality_diagnostics
 assert pathlib.Path(fep_lean.__file__).is_relative_to(pathlib.Path({str(environment)!r}))
 assert not any(p and pathlib.Path(p).is_relative_to(pathlib.Path({str(ROOT)!r})) for p in sys.path)
 model = build_mathematical_positioning()
 assert model.origin.value == 'installed_package'
 assert len(model.metadata.topic_ids) == 168
 assert inspect_topic(model, 'fep-038')['primary_theorem_qualified'].startswith('fep_fep038.FEP038.')
+assert finite_expectation((0.25, 0.75), (0.0, 4.0)) == 3.0
+assert log_partition((0.25, 0.75), (0.0, 0.0)) == 0.0
+assert exponential_tilt((0.25, 0.75), (0.0, 0.0)) == (0.25, 0.75)
+diagnostic = gibbs_duality_diagnostics((0.25, 0.75), (0.25, 0.75), (0.0, 0.0))
+assert abs(diagnostic['duality_gap']) < 1e-14
+assert diagnostic['identity_within_roundoff'] is True
 root = pathlib.Path({str(output)!r})
 paths = export_mathematical_positioning(model, root)
 assert mathematical_positioning_drift(model, root) == ()
@@ -723,6 +765,28 @@ print(json.dumps({{'topics':len(model.metadata.topic_ids), 'artifacts':len(paths
         text=True,
     )
     assert json.loads(result.stdout)["source_origin"] == "installed_package"
+    gibbs_result = subprocess.run(
+        [
+            str(console),
+            "methods",
+            "gibbs",
+            "--candidate",
+            "[0.25, 0.75]",
+            "--reference",
+            "[0.25, 0.75]",
+            "--potential",
+            "[0.0, 0.0]",
+        ],
+        cwd=tmp_path,
+        env=clean_env,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    gibbs_report = json.loads(gibbs_result.stdout)
+    assert gibbs_report["source_origin"] == "numerical-input"
+    assert gibbs_report["result"]["identity_within_roundoff"] is True
+    assert abs(gibbs_report["result"]["duality_gap"]) < 1e-14
     before = {
         path.relative_to(output): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in output.rglob("*")

@@ -2,7 +2,7 @@
 
 The only public command is `fep-lean`.
 
-`methods` reads portable installed resources without a checkout. The other
+`methods` supports portable installed resources and numerical inputs without a checkout. The other
 substantive commands are source-checkout-bound and reject a
 `site-packages` ancestor or incomplete directory with a structured error. Use
 `fep-lean --project-root /path/to/fep_lean COMMAND` when the current process is
@@ -119,3 +119,18 @@ interpreting input hashes. `check` compares existing export bytes without
 repair; generation and probes establish neither native proof nor scientific
 acceptance. [The guide](mathematical-methods.md) explains the interfaces and
 mathematical transfer rules.
+
+The development checkout also provides arbitrary-input Gibbs diagnostics:
+
+```bash
+fep-lean methods gibbs \
+  --candidate '[0.5, 0.5]' \
+  --reference '[0.5, 0.5]' \
+  --potential '[0.0, -1000.0]'
+```
+
+All three JSON arrays are required. This operation reports the
+`numerical-input` origin and uses the supplied vectors independently of
+`--project-root`; it requires no valid checkout and writes no artifacts. Its support,
+normalization and underflow fields follow the
+[numerical API contract](mathematical-methods.md#reusable-finite-variational-methods).

@@ -16,6 +16,8 @@ standalone EFE and geometric-mechanics families.
 
 Python 3.14 is the only accepted validator environment (see `.python-version`);
 [uv](https://docs.astral.sh/uv/) provisions it.
+Project metadata and CI pin uv `0.13.0`; `uvx uv==0.13.0` can run the commands
+below when the host's uv binary differs.
 
 ```bash
 uv sync --locked --extra dev
@@ -30,6 +32,13 @@ is under [Quick start](#quick-start) below.
 
 The development workspace pins Lean/Mathlib `v4.35.0`; retained receipts below
 keep the versions they actually verified. See [the Lean upgrade procedure](docs/lean4.md#deliberate-toolchain-upgrades).
+
+The [support-aware variational extension](docs/support-aware-variational-methods.md)
+adds sparse-prior Gibbs optimization with explicit precision signs, actual
+Markov-path marginal reductions and reversible endpoint KL-drop identities.
+Four reusable [numerical methods](docs/mathematical-methods.md#reusable-finite-variational-methods)
+expose stable expectations, log partitions, exponential tilts and diagnostic
+gaps through Python and `fep-lean methods gibbs`.
 
 ## Release
 

@@ -55,7 +55,12 @@ def test_repository_metadata_agrees_on_one_release() -> None:
 @pytest.mark.parametrize(
     ("relative", "old", "new", "message"),
     [
-        ("pyproject.toml", 'version = "', 'version = "9.9.9" #', "pyproject.toml"),
+        (
+            "pyproject.toml",
+            '\nversion = "',
+            '\nversion = "9.9.9" #',
+            "pyproject.toml",
+        ),
         (
             "src/fep_lean/__init__.py",
             '__version__ = "',

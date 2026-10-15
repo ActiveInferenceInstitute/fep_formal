@@ -49,15 +49,15 @@
 <text class="legend" data-series-key="posterior" x="327.00" y="410"><title>posterior</title><tspan x="327.00" y="410.00">Posterior mass</tspan></text>
 </g>
 </g>
-<g class="witness-summary" data-witness-summary="gibbs-duality-gap" data-witness-id="gibbs-duality-gap" data-family="variational-duality-and-information-bounds" data-witness-status="accepted" data-check-count="1" data-max-check-residual="1.6653345369377348e-16" data-formal-alignment="theorem_instance" data-boundary-observed="true" data-footer-band-top="622" role="listitem" tabindex="0" aria-label="Finite Gibbs optimizer closes the variational gap, accepted, Theorem Instance">
+<g class="witness-summary" data-witness-summary="gibbs-duality-gap" data-witness-id="gibbs-duality-gap" data-family="variational-duality-and-information-bounds" data-witness-status="accepted" data-check-count="1" data-max-check-residual="5.551115123125783e-17" data-formal-alignment="theorem_instance" data-boundary-observed="true" data-footer-band-top="622" role="listitem" tabindex="0" aria-label="Finite Gibbs optimizer closes the variational gap, accepted, Theorem Instance">
 <title>Finite Gibbs optimizer closes the variational gap · gibbs-duality-gap · variational-duality-and-information-bounds</title>
-<desc>log partition = optimizer expectation - KL(optimizer || reference) Boundary: All reference atoms are strictly positive. Theorem mirrors: FEP.VariationalDuality.dvObjective_eq_logPartition_sub_kl, FEP.VariationalDuality.dvObjective_optimizer, fep_fep059.FEP059.fep059_donskerVaradhan_optimizer Formal alignment: theorem_instance. Typed checks: duality-identity: eq(0.47825406368083134, 0.4782540636808312), tolerance 1e-12, residual 1.6653345369377348e-16, accepted.</desc>
+<desc>log partition = optimizer expectation - KL(optimizer || reference) Boundary: All reference atoms are strictly positive. Theorem mirrors: FEP.VariationalDuality.dvObjective_eq_logPartition_sub_kl, FEP.VariationalDuality.dvObjective_optimizer, fep_fep059.FEP059.fep059_donskerVaradhan_optimizer Formal alignment: theorem_instance. Typed checks: duality-identity: eq(0.47825406368083123, 0.4782540636808312), tolerance 1e-12, residual 5.551115123125783e-17, accepted.</desc>
 <rect class="card" x="545" y="186" width="510" height="490" rx="13"/>
 <text class="card-title" x="563.0" y="259.0">Finite Gibbs optimizer closes the</text>
 <text class="card-title" x="563.0" y="282.0">variational gap</text>
 <text class="family" x="563.0" y="305.0">variational-duality-and-information-bounds · 3</text>
 <text class="family" x="563.0" y="325.0">rows · bar</text>
-<text class="metric" x="563" y="345">1 typed checks · max residual 1.67e-16</text>
+<text class="metric" x="563" y="345">1 typed checks · max residual 5.55e-17</text>
 <text class="check-passed" x="563" y="211">TYPED CHECKS PASSED</text>
 <text class="non-proof" x="563" y="231">NON-PROOF WITNESS</text>
 <line class="card-footer-rule" x1="563" y1="622" x2="1037" y2="622"/>
@@ -73,7 +73,7 @@
 <rect class="plot-bar" data-category-index="1" data-series-key="reference" data-value="0.3" data-zero-value="false" x="712.17" y="492.94" width="19.83" height="63.06" fill="#0f766e" opacity="0.82"><title>reference</title></rect>
 <rect class="plot-bar" data-category-index="2" data-series-key="reference" data-value="0.5" data-zero-value="false" x="768.83" y="450.89" width="19.83" height="105.11" fill="#0f766e" opacity="0.82"><title>reference</title></rect>
 <rect class="plot-bar" data-category-index="0" data-series-key="optimizer" data-value="0.08310154575795851" data-zero-value="false" x="675.33" y="538.53" width="19.83" height="17.47" fill="#2563eb" opacity="0.82"><title>optimizer</title></rect>
-<rect class="plot-bar" data-category-index="1" data-series-key="optimizer" data-value="0.22713133330063248" data-zero-value="false" x="732.00" y="508.25" width="19.83" height="47.75" fill="#2563eb" opacity="0.82"><title>optimizer</title></rect>
+<rect class="plot-bar" data-category-index="1" data-series-key="optimizer" data-value="0.2271313333006325" data-zero-value="false" x="732.00" y="508.25" width="19.83" height="47.75" fill="#2563eb" opacity="0.82"><title>optimizer</title></rect>
 <rect class="plot-bar" data-category-index="2" data-series-key="optimizer" data-value="0.689767120941409" data-zero-value="false" x="788.67" y="411.00" width="19.83" height="145.00" fill="#2563eb" opacity="0.82"><title>optimizer</title></rect>
 <text class="axis-label axis-x-label" x="647" y="578"><tspan x="647" y="578">x · State · unit: dimensionless</tspan></text>
 <text class="x-domain" data-x-domain="State: 0 · 1 · 2" x="647" y="600"><tspan x="647" y="600.00">State: 0 · 1 · 2</tspan></text>

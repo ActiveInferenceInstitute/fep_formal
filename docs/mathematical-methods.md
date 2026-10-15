@@ -91,6 +91,80 @@ weights. It is neither a learned embedding nor a proof dependency, metric on
 the underlying stochastic models, categorical equivalence or scientific
 similarity claim.
 
+## Reusable finite variational methods
+
+The development checkout's four public helpers evaluate arbitrary finite laws and potentials without
+loading the positioning model or invoking a compiler:
+
+```python
+import math
+from fep_lean.methods import (
+    finite_expectation,
+    log_partition,
+    exponential_tilt,
+    gibbs_duality_diagnostics,
+)
+
+reference = (0.5, 0.5, 0.0)
+potential = (0.0, math.log(3.0), 7.0)
+optimizer = exponential_tilt(reference, potential)  # approximately (0.25, 0.75, 0)
+value = log_partition(reference, potential)  # approximately log(2)
+expected = finite_expectation(reference, potential)
+report = gibbs_duality_diagnostics(reference, reference, potential)
+```
+
+```bash
+fep-lean methods gibbs \
+  --candidate '[0.5, 0.5, 0.0]' \
+  --reference '[0.5, 0.5, 0.0]' \
+  --potential '[0.0, 1.0986122886681098, 7.0]'
+```
+
+The CLI returns the usual JSON envelope with `source_origin: numerical-input`.
+It accepts no proof or scientific disposition flag. Candidate input is required;
+malformed JSON and domain/range errors produce a JSON error and exit 1. Missing
+required arguments retain argparse's exit 2.
+
+| Helper | Meaning | Numerical contract |
+| --- | --- | --- |
+| `finite_expectation(law, potential)` | Sum of supplied mass times potential | Exact accumulation of binary rational products, followed by one float rounding; preserves subnormal sums and severe cancellation. |
+| `log_partition(reference, potential)` | Log of the reference-weighted exponential sum | Center on positive reference support before adding log masses, then use a second log-sum-exp center. |
+| `exponential_tilt(reference, potential)` | Normalized reference-weighted Gibbs law | Preserve true zero reference atoms; a very small positive output can round to zero. |
+| `gibbs_duality_diagnostics(candidate, reference, potential)` | Compare log partition minus the DV objective with KL to the mathematical tilt | Explicitly normalize accepted input laws; use centered 700-digit arithmetic and analytic log weights for the KL comparison. |
+
+Inputs must be equal-length, nonempty sequences of finite real numbers.
+Laws must be nonnegative and sum to one within `1e-12`; booleans and numeric
+strings are rejected. The scalar helpers use accepted masses literally.
+Diagnostics instead normalize by the exact binary rational sums and expose
+`input_mass_sums`, `input_mass_residuals` and `normalization_convention`. This
+prevents a tolerated mass residual from becoming a large artificial gap under
+a large constant potential shift. Existing `finite_kl_totalized` and
+`extended_kl` retain their earlier conventions.
+The displayed sums and residuals use float summation; the internal
+normalization retains smaller exact mass tails even when that displayed sum
+rounds to one.
+
+`reference_zero_indices` records true support zeros.
+`candidate_outside_reference_indices` identifies an extended-KL support failure;
+the report uses `"infinity"` for KL and the duality gap, `"-infinity"` for the
+DV objective, and `null` identity comparisons. `tilt_underflow_indices` instead
+records positive reference atoms whose computed optimizer mass rounds to zero.
+For example, reference and candidate `(0.5, 0.5)` with potential `(0, -1000)`
+have a finite gap of approximately `500 - log(2)`, even though the returned
+optimizer is `(1, 0)`. Computing KL against that rounded optimizer would lose
+the distinction. The private 700-digit context also retains tiny mass tails
+beside a mass of one, where 80-digit addition would erase representable log
+partitions and KL values. It does not inherit the caller's Decimal settings.
+
+The report includes the expected potential, centered quantities, DV objective,
+both gap evaluations, identity residual and a float roundoff allowance. Finite
+reported values outside binary64 range raise `BoundaryProbeError`; an
+unrepresentable intermediate potential difference alone does not cause failure
+when its weighted result is representable. A small residual checks arithmetic
+consistency, not an interval-certified bound or Lean proof. Exact theorem
+premises and signed-precision optimization are described in the
+[formal extension guide](support-aware-variational-methods.md).
+
 ## Lean statements and natural-language analysis
 
 `analyze` joins the exact Lean declaration with its maintained invariant,

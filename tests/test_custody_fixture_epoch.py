@@ -23,6 +23,8 @@ def _production_snapshot() -> dict[str, bytes]:
         acceptance.native_source_paths(REPO_ROOT)
     )
     paths |= {
+        "pyproject.toml",
+        "uv.lock",
         apply_module.PRIOR_07,
         apply_module.SUCCESSOR_07,
         current_r0.H3_ADDENDUM_PATH,
@@ -121,8 +123,20 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
 ) -> None:
     before = _production_snapshot()
     recorded_root = custody_root(REPO_ROOT, tmp_path)
-    # Even after the approved release-token reversal, the migrated Lean sources
-    # cannot be substituted into the immutable earlier custody epoch.
+    # The standalone uv pin is a real metadata change beyond the approved
+    # release-token reversal, so the historical validator refuses it first.
+    with pytest.raises(
+        ValueError,
+        match="release metadata has unlisted changes beyond the root version: pyproject.toml",
+    ):
+        current_r0.validate_h2_r0_custody(recorded_root)
+    # Remove only that exact new block from the disposable copy to reach the
+    # next guard. The migrated formal sources must still fail the old epoch.
+    metadata = recorded_root / "pyproject.toml"
+    current = metadata.read_text()
+    uv_pin = '\n[tool.uv]\nrequired-version = "==0.13.0"\n'
+    assert current.count(uv_pin) == 1
+    metadata.write_text(current.replace(uv_pin, "", 1))
     with pytest.raises(ValueError, match="stale historical custody source digest"):
         current_r0.validate_h2_r0_custody(recorded_root)
     with pytest.raises(
