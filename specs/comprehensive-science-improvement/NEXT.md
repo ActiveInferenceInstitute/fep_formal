@@ -2,12 +2,18 @@
 
 Daniel resumed implementation on 2026-10-05 and authorized verified changes to
 be pushed to main. Dependencies and acceptance gates remain binding.
-[TODO.md](../../TODO.md) is the canonical open inventory with 30 linked GitHub Issues;
-[HANDOFF.md](../../HANDOFF.md) supplies current evidence and a continuation
-prompt. [EXECUTION.md](EXECUTION.md) retains dated checkpoints;
+[TODO.md](../../TODO.md) is the canonical open inventory;
+the [active next-step campaign](../comprehensive-next-steps/README.md) supplies
+the current pickup point and dependency contracts.
+[HANDOFF.md](../../HANDOFF.md) and [EXECUTION.md](EXECUTION.md) retain dated checkpoints;
 [PROTOCOL.md](PROTOCOL.md) retains all nine original criteria.
 
-Main `14fe6bab` hosted [run 37376897900](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/37376897900)
+The current integrated hosted checkpoint is recorded once in
+[ISA.md](../../ISA.md#current-assessment). Its accepted Lean 4.35 native,
+Python, distribution and render lanes do not close the separate production
+capture, local runtime or H3 gates below.
+
+At the historical `14fe6bab` checkpoint, hosted [run 37376897900](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/37376897900)
 failed Python on two Chrome startup cases; all 15 wheel cells passed, while
 docs was skipped. The closed local r6 production attempt accepted five stages,
 then failed canonical DOM browser validation; bundle was unattempted. Its local
@@ -21,9 +27,10 @@ All failed/historical evidence is preserved.
 
 Execution order:
 
-1. Resolve hosted startup (CUR-01) and obtain fresh production browser acceptance
-   (CUR-15) independently. The reviewed browser repairs passed local focused
-   tests; hosted acceptance remains open. The nine-case PR45 port (CUR-02) and
+1. Hosted startup (CUR-01) has accepted evidence recorded in TODO. Obtain fresh
+   production browser acceptance (CUR-15), including diagnosis bound to the
+   closed production failure. Current live-browser test acceptance does not
+   supply that production receipt. The nine-case PR45 port (CUR-02) and
    guidance corrections (CUR-04) passed their bounded acceptance and leave TODO;
    their local evidence does not establish package, native or hosted acceptance.
 2. Correct the r7-r1 materializer REVISE finding (CUR-03): explicitly approve the
@@ -37,7 +44,9 @@ Execution order:
    15 GiB prerequisite before launch and every cell. Complete every declared
    check and exact-SHA hosted 15-cell/native/audit/Python/docs/render artifacts
    (CUR-07); no green subset or historical receipt substitutes.
-4. Refresh H3 export and three independent proof-role reviews (CUR-08) against
+4. Resolve the Lean migration's frozen-carrier preflight through an explicit
+   reviewed successor or migration contract; preserve the original freeze and
+   unopened primary. Then refresh H3 export and three independent proof-role reviews (CUR-08) against
    accepted current package/native/axiom/Q7 evidence, retaining science 293,
    24 proof roles, 33 supplements and 12 parameter witnesses.
 5. After every prerequisite, execute the unchanged frozen primary once and
