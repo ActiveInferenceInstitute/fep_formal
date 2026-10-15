@@ -13,6 +13,10 @@ from fep_lean.custody import apply as apply_module
 from fep_lean.verification import horizon_acceptance as acceptance
 from tests._support import custody_fixture_knobs as fixtures
 from tests._support import h2_r0_custody as current_r0
+from tests._support.lean435_migration import (
+    historical_manifest_bytes,
+    historical_metadata_bytes,
+)
 from tests._support.release_lineage import custody_root
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -111,7 +115,10 @@ def test_synthetic_epoch_uses_real_isolated_historical_validator(
     current_owners = current_r0._manifest_owners(
         (REPO_ROOT / current_r0.MANIFEST_PATH).read_text()
     )
-    assert len(owners) == 69 and len(current_owners) == 71
+    assert len(owners) == 69 and len(current_owners) == 72
+    category_resource = "compositions/finite_kernel_category.lean"
+    assert category_resource in {owner["resource"] for owner in current_owners}
+    assert category_resource not in {owner["resource"] for owner in owners}
     assert before == _production_snapshot()
     # The current validator refuses synthetic rewrites of the immutable past.
     with pytest.raises(ValueError, match="immutable R0 prior changed"):
@@ -123,20 +130,33 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
 ) -> None:
     before = _production_snapshot()
     recorded_root = custody_root(REPO_ROOT, tmp_path)
-    # The standalone uv pin is a real metadata change beyond the approved
-    # release-token reversal, so the historical validator refuses it first.
+    # The current category owner is outside the frozen manifest transition.
+    with pytest.raises(
+        ValueError,
+        match=r"^H3 owner subtraction does not recover the historical custody manifest$",
+    ):
+        current_r0.validate_h2_r0_custody(recorded_root)
+    # Restore only the disposable manifest from its authenticated companion
+    # to reach the independent metadata and migrated-source guards below.
+    manifest = recorded_root / current_r0.MANIFEST_PATH
+    manifest.write_bytes(historical_manifest_bytes(REPO_ROOT, manifest.read_bytes()))
+    addendum = json.loads((REPO_ROOT / current_r0.H3_ADDENDUM_PATH).read_bytes())
+    recorded_manifest_digest = addendum["source_sha256"][current_r0.MANIFEST_PATH]
+    assert hashlib.sha256(manifest.read_bytes()).hexdigest() == recorded_manifest_digest
+    # The uv pin and reviewed tooling scope are real metadata changes beyond
+    # the approved release-token reversal; the historical validator refuses.
     with pytest.raises(
         ValueError,
         match="release metadata has unlisted changes beyond the root version: pyproject.toml",
     ):
         current_r0.validate_h2_r0_custody(recorded_root)
-    # Remove only that exact new block from the disposable copy to reach the
-    # next guard. The migrated formal sources must still fail the old epoch.
+    # Authenticate the exact reviewed live profile and historical companion
+    # before restoring only the disposable metadata to its recorded 1.4 epoch.
+    # The migrated formal sources must still fail the next historical guard.
     metadata = recorded_root / "pyproject.toml"
-    current = metadata.read_text()
-    uv_pin = '\n[tool.uv]\nrequired-version = "==0.13.0"\n'
-    assert current.count(uv_pin) == 1
-    metadata.write_text(current.replace(uv_pin, "", 1))
+    metadata.write_bytes(historical_metadata_bytes(REPO_ROOT, metadata.read_bytes()))
+    recorded_digest = addendum["source_sha256"]["pyproject.toml"]
+    assert hashlib.sha256(metadata.read_bytes()).hexdigest() == recorded_digest
     with pytest.raises(ValueError, match="stale historical custody source digest"):
         current_r0.validate_h2_r0_custody(recorded_root)
     with pytest.raises(

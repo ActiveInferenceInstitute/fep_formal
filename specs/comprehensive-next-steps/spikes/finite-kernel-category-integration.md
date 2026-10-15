@@ -243,6 +243,26 @@ extra insertion, mismatched canonical/projection pair, stale native evidence,
 changed historical record or missing review. It must never broaden the old
 validator's subtraction rules or relabel historical evidence as live.
 
+## Accepted tooling base integration
+
+PR178 is merged at `f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2`.
+Its independently checked Python, native/audit and render artifacts qualify
+the identical tested tooling tree, not this category successor's source.
+Integrating that base exposed two stale synthetic-fixture assumptions: the
+current owner count was still 71, and the refusal test expected metadata to
+fail before the earlier manifest guard.
+
+The fixture now uses the existing authenticated historical-manifest helper
+before stripping the two H3 owners, preserving the exact synthetic 69-owner
+epoch. The test checks current 72-owner membership and the category leaf's
+absence from that historical epoch. The live-source control first requires
+the category manifest's exact refusal; only its disposable manifest is then
+restored and checked against the original addendum digest before the separate
+metadata and stale-source refusal controls. Frozen validators, archives,
+receipts, mathematical owners and production inputs remain unchanged.
+These integration controls require fresh exact-head hosted execution; the
+parent's passing tests do not establish their outcome.
+
 ## Acceptance and disposition
 
 R01 still depends on C05 and its exact-source check/artifact acceptance. C05

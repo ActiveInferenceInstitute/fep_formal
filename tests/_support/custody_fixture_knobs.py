@@ -34,6 +34,7 @@ from fep_lean.verification.horizon_acceptance import (
     native_source_paths,
 )
 from tests._support import h2_r0_custody as current_r0
+from tests._support.lean435_migration import historical_manifest_bytes
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
@@ -337,8 +338,13 @@ def _synthetic_epoch(root: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     r0 = _historical_r0_validator(root)
     (root / apply_module.H2_R0_CUSTODY).write_bytes(_historical_r0_bytes(root))
     manifest_path = root / r0.MANIFEST_PATH
+    # This synthetic pre-H3 epoch keeps its recorded roster even when the
+    # current manifest adds a separately reviewed category resource.
+    historical_manifest = historical_manifest_bytes(
+        REPO_ROOT, manifest_path.read_bytes()
+    )
     manifest_path.write_text(
-        current_r0._strip_h3_owner_additions(manifest_path.read_text())
+        current_r0._strip_h3_owner_additions(historical_manifest.decode("utf-8"))
     )
     prior_manifest = _synthetic_prior_manifest(manifest_path.read_text(), r0)
     for relative in (

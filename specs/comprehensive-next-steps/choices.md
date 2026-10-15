@@ -624,8 +624,9 @@ that an artifact lacks receipt or review consumers.
 **Reach:** All eight sizes and digests match the author receipt. The separate
 semantic review authenticates that receipt, so deleting a cited file or
 rewriting the receipt would break historical custody. Strict links and
-Markdown hygiene pass. The old compiler results retain their Lean 4.34.1
-epoch. Fresh independent custody review found no source blocker in the two
+Markdown hygiene pass. The recorded Lean compiler version for those old
+results is `4.34.1`; the current source uses Lean 4.35.0. Fresh independent
+custody review found no source blocker in the two
 documents and independently rechecked all 25 receipt artifact hashes.
 Terminal-validator positive/fail-closed controls, separate combined
 historical-custody controls and accepted publication remain required before
@@ -634,3 +635,28 @@ G02 closes.
 **Verdict:** document the eight exceptions; retire none.
 **Confidence:** high for the hash/consumer inventory, with no new execution or
 scientific acceptance inferred.
+
+## Keep the synthetic custody epoch separate from category roster growth
+
+**When:** Integrating accepted tooling main into the category successor.
+
+**Choice:** Reuse the authenticated historical-manifest companion before
+constructing the disposable pre-H3 fixture. Its 69-owner roster remains fixed;
+the current manifest has 72 owners and separately contains the category leaf.
+The live-source refusal control first checks the actual manifest refusal, then
+authenticates and restores only its disposable manifest to reach the distinct
+metadata and migrated-source refusals. Production inputs remain unchanged.
+
+**Gap:** A stale current-owner count and a metadata-first expectation concealed
+the earlier manifest boundary. Merely changing 71 to 72 would leave a fabricated
+70-owner historical fixture and would not preserve the intended epoch.
+
+**Reach:** The existing helper owns exact profile recognition, archive
+authentication and predecessor recovery. No validator, archive, receipt,
+mathematical source or controller limit changes. The category's current native,
+package and final hosted acceptance remain separate requirements.
+
+**Verdict:** preserve the exact historical roster and exercise every refusal in
+its real order, without admitting the new leaf into historical evidence.
+**Confidence:** static source and independent custody review are required at
+the final patch; runtime controls await the category's exact-head hosted run.
