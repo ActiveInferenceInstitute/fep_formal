@@ -5,7 +5,7 @@ The only public command is `fep-lean`.
 `methods` supports portable installed resources and numerical inputs without a checkout. The other
 substantive commands are source-checkout-bound and reject a
 `site-packages` ancestor or incomplete directory with a structured error. Use
-`fep-lean --project-root /path/to/fep_lean COMMAND` when the current process is
+`fep-lean --project-root /path/to/fep_formal COMMAND` when the current process is
 outside the checkout.
 
 ```text
@@ -21,6 +21,8 @@ fep-lean report      Generate the offline catalogue report.
 fep-lean bridge      Inspect, pin, emit, certify, or verify GNN bridge custody.
 fep-lean status      Read-only evidence-currency report over existing checks.
 fep-lean methods     Analyze portable mathematical contracts and visualizations.
+fep-lean custody     Census, staged apply and guarded custody refresh.
+fep-lean publication-capture  Plan or run bounded publication evidence capture.
 ```
 
 `bridge` operates on an explicit sibling GNN checkout (`--gnn-root PATH` is
@@ -29,7 +31,7 @@ required for every verb). The current bridge surface is contract v0.6;
 `verify-certificate`, and `verify-document` are read-only; `pin` and `emit`
 write receipts; `certify` writes one only with `--receipt PATH` and is
 read-only without it. `certify` requires `--results PATH` -- the executed
-results JSON under the fep_lean checkout -- and `verify-certificate`
+results JSON under the FEP_Formal checkout -- and `verify-certificate`
 requires `--receipt PATH`. `--model {finite,continuous}` (default
 `finite`) selects the model family for `emit` and `verify-document`.
 `verify-document --document PATH` checks one emitted GNN document against
@@ -52,7 +54,7 @@ For a generated report bundle, the read-only receipt checker is:
 uv run python scripts/verify_report_receipt.py output/reports/run_...
 uv run python scripts/verify_report_receipt.py output/reports/run_... --require-complete
 uv run python scripts/verify_report_receipt.py output/reports/run_... \
-  --project-root /path/to/fep_lean --require-complete
+  --project-root /path/to/fep_formal --require-complete
 ```
 
 It recomputes the listed artifact hashes, reconciles the summary, run, and
@@ -93,9 +95,27 @@ as a verification failure.
 
 Exit status is zero only for a complete result. A full-mode capability failure,
 topic warning, review failure, artifact failure, or unresolved report state
-returns non-zero. The exception is `status`, whose documented boundary is the
-report itself: it exits 0 whenever the report composes, even when sections
-report stale evidence.
+returns non-zero. `status` and `custody census` instead exit 0 when their report
+composes, even when it reports stale or gated evidence. Inspect the structured
+findings rather than treating those exit codes as acceptance.
+
+## Custody and publication orchestration
+
+`custody census` inspects existing evidence; `custody apply` requires an
+explicit staging `--output-dir`; `custody refresh` composes guarded refresh
+steps. Its mutually exclusive `--plan`, `--fixpoint` and `--resume` modes have
+different write and terminal-state boundaries. In particular, custody planning
+writes a journal even though it launches no test/audit subprocesses. The
+[custody runbook](development.md#custody-refresh-orchestration) owns the
+authorized-owner, source-freeze and render-acceptance requirements.
+
+`publication-capture --template PATH` orchestrates the fixed seven-stage
+capture. `--plan` prints policy without creating a journal or running tools;
+execution writes bounded evidence, and `--resume` revalidates an existing
+journal. The [capture runbook](development.md#bounded-publication-capture)
+owns dependency order, invalidation and receipt interpretation. These generic
+capabilities do not override a governed production protocol's controller
+limits or prohibition on resume.
 
 ## Portable mathematical methods
 

@@ -1,11 +1,14 @@
-# Contributing
+# Contributing to FEP_Formal
 
 The agent and contributor contract is [AGENTS.md](AGENTS.md); this page is the
 short human entry point and links to it rather than copying it.
 
 ## Environment
 
-Python 3.14 is the only accepted validator environment (`.python-version`).
+Use the validator Python selected by [`.python-version`](.python-version)
+(currently 3.14) and the exact uv version declared in
+[`pyproject.toml`](pyproject.toml). The packaging floor is a compatibility
+boundary, not an alternative validator environment.
 
 ```bash
 uv sync --locked --extra dev
@@ -22,8 +25,8 @@ the command list; run the tier that matches your change.
 
 | Tier | When | What to run |
 | --- | --- | --- |
-| Docs-only | Markdown edits | `uv run python docs/check_links.py --strict --include-root`, `uv run python docs/md_hygiene.py --strict`, `uv run python docs/pin_audit.py` |
-| Static | Python, config or generator edits | The docs-only tier plus the generator `--check` commands, `uv run ruff check src tests scripts docs`, `uv run ruff format --check src tests scripts docs`, `uv run mypy src` |
+| Docs-only | Markdown edits | The canonical strict link, root-inclusive Markdown hygiene, pin/latest-stable and cross-reference checks; materialize manuscript inputs before checking their references. |
+| Static | Python, config or generator edits | The docs-only tier plus affected projection checks, repository-wide Ruff lint, formatting and mypy over `src`, `scripts` and `docs`, using the exact commands in the canonical list. |
 | Full | Before requesting merge of code, Lean or manuscript changes | Everything in "Required checks", including the `pytest` coverage run; hosted `ci.yml` repeats it and a green run on the exact commit is the release gate ([release procedure](docs/release.md)) |
 
 ## Rules that bite

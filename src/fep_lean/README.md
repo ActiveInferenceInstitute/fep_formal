@@ -1,47 +1,36 @@
-# `fep_lean`
+# `fep_lean` — FEP_Formal Python package
 
-The installable Python namespace for the FEP Lean catalogue and verification
-pipeline.
+The installable namespace for FEP_Formal's catalogue, reusable methods and
+verification pipeline. The namespace and `fep-lean` console name remain stable
+independently of the project-facing name.
 
-- `catalogue/`: family-owned canonical bodies, validated registry, typed
-  semantic review, package data, and deterministic coverage projections
-- `formal/`: packaged foundations, leaf cross-topic compositions, import
-  aggregate, and exact Lake projection
-- `verification/`: pinned Lean/Lake checks, native compilation, and
-  declaration/axiom auditing
-- `llm/`: Hermes provider client
-- `gauss/`: SQLite session storage and per-topic runner
-- `pipeline/`: catalogue and strict full-mode orchestration
-- `output/`: evidence receipts, reports, figures, manuscript variables,
-  fail-closed rendering, the offline formalism atlas, and the formal-kernel
-  validation dashboard
-
-Use public imports such as:
+The [source guide](../README.md) describes package responsibilities. Each
+subpackage's `__init__.py` is the public export owner; the root
+[`__init__.py`](__init__.py) resolves selected high-level exports lazily.
 
 ```python
 from fep_lean.catalogue import FEPTopicCatalogue
-from fep_lean.output import (
-    build_formal_kernel_dashboard,
-    build_formalism_atlas,
-    validate_native_lean_receipt,
-)
-from fep_lean.verification import LeanVerifier, run_formalism_audit
+from fep_lean.methods import build_mathematical_positioning, inspect_topic
+from fep_lean.verification import LeanVerifier
 ```
 
-The wheel intentionally provides no obsolete top-level compatibility modules.
+## Interpreter and resource contracts
 
-## Interpreter contract
+The packaging floor lives in [pyproject.toml](../../pyproject.toml). Development
+and evidence validation use the interpreter declared by
+[.python-version](../../.python-version); the strict mypy target is declared in
+the same project configuration. The accepted validator profile is CPython 3.14,
+and minimum-version compatibility has its own installed-wheel CI lanes.
+See [testing](../../docs/testing.md) for their scope and
+[ISA.md](../../ISA.md#current-assessment) for accepted source checkpoints.
 
-`requires-python = ">=3.10"` declares the packaging floor. The isolated wheel
-checks install real dependencies into fresh environments outside the checkout,
-verify API/resource parity and CLI behavior, and exercise CPython 3.10–3.14.
-The 2026-09-30 local macOS checks pass that interpreter set; Ubuntu and Windows
-use the declared CI matrix and need their own hosted result before a platform
-acceptance claim. See [development](../../docs/development.md) for the boundary.
+Portable catalogue and mathematical-methods APIs read installed resources.
+Checkout-bound operator workflows validate their required assets rather than
+treating a `site-packages` ancestor as a project root. The package intentionally
+installs no obsolete top-level compatibility modules.
 
-Development and evidence validation remain pinned to CPython 3.14 in
-`.python-version`; mypy's 3.12 target is a separate static setting. Q7's current
-`ast.dump` scaffold contract explicitly refuses unsupported interpreters before
-parsing. That guard limits Q7 evidence validation, not installation or ordinary
-catalogue API use. The authorized version-stable scaffold replacement and
-coordinated custody re-pin remain open in [TODO.md](../../TODO.md).
+Q7's current `ast.dump` scaffold contract refuses unsupported interpreters
+before parsing. That guard limits Q7 evidence validation, not ordinary package
+installation or catalogue use. The corresponding open work remains in
+[TODO.md](../../TODO.md); a Python-version change needs a reviewed source and
+custody migration rather than a documentation-only pin change.

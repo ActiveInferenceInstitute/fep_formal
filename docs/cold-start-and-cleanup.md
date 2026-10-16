@@ -54,8 +54,13 @@ removal.
 | `lean/.lake/` | pinned dependency checkout and compiled Lake cache | `fep-lean setup` |
 
 `output/reports/` may contain the only copy of a full-run receipt. Deleting it
-is recoverable only by repeating the provider-backed run, so it is not routine
-cache cleanup.
+requires preserving that evidence first; repeating the provider-backed run
+produces a new observation, not the original receipt. It is not routine cache
+cleanup. The [retained pytest inventory](../specs/comprehensive-next-steps/retained-pytest-evidence.md)
+also records evidence under temporary-looking names. A `pytest` or `tmp` name
+does not establish that a directory is disposable. Check named consumers and
+active worktrees before touching shared caches; this checkout's cleanup scope
+does not authorize clearing another checkout's dependencies or private captures.
 
 ## Rebuild the deterministic surfaces
 
@@ -106,14 +111,11 @@ repository.
 
 ## Acceptance after cleanup
 
-The complete gate list is maintained as "Required release gates" in
-[testing.md](testing.md); the local acceptance surface after regeneration is:
-
-```bash
-uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
-uv run mypy src
-uv run ruff check src tests scripts docs
-```
+The [root required-check inventory](../AGENTS.md#required-checks) owns the
+complete gate list. [Testing](testing.md) explains credential-free selection,
+serial Lean scheduling and local/hosted evidence boundaries. Rebuilding a
+cache does not refresh source-bound receipts; rerun each affected acceptance
+owner only after its inputs are settled.
 
 Finish by confirming that only intended generated projections changed with
 `git status --short` and `git diff --check`.

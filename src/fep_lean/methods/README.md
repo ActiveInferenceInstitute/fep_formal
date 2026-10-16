@@ -1,6 +1,6 @@
 # `fep_lean.methods`
 
-Portable, offline mathematical positioning of the FEP Formal catalogue. The
+Portable, offline mathematical positioning of the FEP_Formal catalogue. The
 package validates the canonical topic, maturity, relation, and positioning
 inputs, then answers exact queries and renders deterministic artifacts: a JSON
 and Markdown projection, a visual model, SVG panels, and a self-contained
@@ -24,11 +24,11 @@ Use `uv run fep-lean methods --help`. `inspect`, `neighbors`, `probe`, `gibbs`,
 writes the artifact tree under `--output-root` (default
 `output/mathematical-methods`). Failures print a JSON error and exit 1.
 
-`probes.py` holds four finite diagnostic examples (Bernoulli Fisher interior,
+`probes.py` owns finite diagnostic examples (Bernoulli Fisher interior,
 KL support boundary, Fisher chart degeneracy, descent without identification)
 and a deterministic two-dimensional classical MDS over binary feature vectors,
-computed in 80-digit `Decimal` arithmetic so artifact bytes do not depend on
-LAPACK or platform libm.
+computed with its declared fixed-precision `Decimal` contract so artifact bytes
+do not depend on LAPACK or platform libm.
 
 The same owner exposes `finite_expectation`, `log_partition`,
 `exponential_tilt` and `gibbs_duality_diagnostics` for arbitrary finite inputs.

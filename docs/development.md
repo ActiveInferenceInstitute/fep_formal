@@ -72,6 +72,9 @@ Never inject credentials into source, tests, or generated evidence.
 | --- | --- | --- |
 | Catalogue | `src/fep_lean/catalogue/` | typed authoring, loading, audits, coverage |
 | Formal kernel | `src/fep_lean/formal/` | reusable finite carriers, cross-topic proofs, and exact Lake projection |
+| Bridge | `src/fep_lean/bridge/` | typed cross-repository interchange, AST analysis and custody validation |
+| Custody | `src/fep_lean/custody/` | census, staged refresh and bounded orchestration |
+| Methods | `src/fep_lean/methods/` | portable mathematical contracts, positioning and transfer diagnostics |
 | Verification | `src/fep_lean/verification/` | read-only capability probes, Lean subprocesses, declaration/axiom audit |
 | Hermes | `src/fep_lean/llm/` | provider request, retry, and response validation |
 | Sessions | `src/fep_lean/gauss/` | SQLite ownership and per-topic runner |
@@ -136,8 +139,9 @@ cache regression retains orphan files and checks both build routes.
 See the [uv build contract](https://docs.astral.sh/uv/concepts/projects/build/).
 
 The development and evidence harness remains pinned to CPython 3.14 by
-`.python-version`; mypy models 3.12. Installed-package compatibility does not
-extend the validator contract. Q7's `scaffold_digest` uses the reviewed canonical
+`.python-version`; mypy also targets 3.14 in `pyproject.toml`.
+Installed-package compatibility does not extend the validator contract.
+Q7's `scaffold_digest` uses the reviewed canonical
 AST serialization and accepts evidence validation only on CPython 3.14.
 Unsupported validator interpreters refuse before parsing with a
 `ContinuousArtifactError` naming the accepted set and running interpreter.
@@ -209,7 +213,8 @@ different checkout SHA, a stale/rejecting receipt, or a changed retained copy
 rejects staging and removes its partial directory. Failed renders produce no
 accepted artifact.
 
-The version-1 render receipt binds manuscript sources and acceptance findings;
+The version-2 render receipt binds manuscript sources, cover configuration,
+bibliography and acceptance findings;
 it does not itself contain a PDF hash. The retained artifact manifest binds
 the PDF bytes kept by this stable staging interval. Neither record establishes
 an atomic filesystem snapshot or substitutes for a physical render.

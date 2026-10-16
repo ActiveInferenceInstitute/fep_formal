@@ -1,15 +1,17 @@
 # `lean/FepSketches/` contract
 
-Generated Lean library root. Do not hand-edit any `.lean` file here.
+Generated `FepSketches` library for FEP_Formal. Do not hand-edit `.lean` files.
 
-- `fep_all.lean` — whole-catalogue target, built from the body registry by
+- `fep_all.lean` is projected from the canonical topic-body registry by
   `scripts/_maint_build_fep_all_lean.py`.
-  Check: `uv run python scripts/_maint_build_fep_all_lean.py --check`
-- `composed.lean`, `compositions/*.lean`, and the foundation/leaf modules — byte-exact
-  projections of the manifested package resources (`src/fep_lean/formal/manifest.py`),
-  built by `scripts/_maint_build_formal_modules.py`.
-  Check: `uv run python scripts/_maint_build_formal_modules.py --check`
+- The formal resource manifest selects foundation, composition and aggregate
+  resources projected by `scripts/_maint_build_formal_modules.py`.
 
-Change the owning body, manifest, or generator, then regenerate. Verifier-owned
-temporary probes (`_verify_*.lean`) are created and removed by `LeanVerifier`; never
-commit them. See [../AGENTS.md](../AGENTS.md) for the workspace contract.
+Change the canonical body, resource, manifest or generator, then regenerate and
+inspect its projection. Preserve required public/meta imports and declaration
+visibility. The [root required-check inventory](../../AGENTS.md#required-checks)
+owns freshness, build, orphan and native audit commands.
+
+Verifier-owned `_verify_*.lean` files are created and removed by `LeanVerifier`;
+never commit them or delete another operation's probes. Follow the
+[workspace contract](../AGENTS.md).

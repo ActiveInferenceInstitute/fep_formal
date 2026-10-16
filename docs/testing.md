@@ -3,12 +3,15 @@
 Run from the project root:
 
 ```bash
-uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
+FEP_LEAN_LIVE_TESTS=0 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 ```
 
 The suite uses real temporary files, SQLite databases, subprocesses, and local
 HTTP servers. Environment variables isolate secrets and expensive external
 integration tests; they do not manufacture successful execution results.
+Set `FEP_LEAN_LIVE_TESTS=0` for credential-free runs: the Gauss runner live
+family otherwise also enables itself when a provider key is present. Hermes
+and end-to-end live families require explicit opt-in and credentials.
 
 The full required-check list lives in one place, the "Required checks" block
 of [`AGENTS.md`](../AGENTS.md#required-checks); it is not repeated here.
@@ -89,9 +92,9 @@ endpoint. A failed diagnostic body preserves an already observed HTTP status
 and its authentication/rate-limit policy. Failures without a known HTTP error
 status remain typed transient transport failures.
 
-Gauss doctor and Lean/Lake version checks use the existing process-group runner
+The isolated `gauss --version` and Lean/Lake version checks use the existing process-group runner
 on POSIX. Real child/grandchild probes verify that deadlines stop both
-generations and release inherited pipes, while preserving the optional-doctor
+generations and release inherited pipes, while preserving the optional-Gauss
 result policy. These process-tree probes do not establish Windows native
 acceptance.
 

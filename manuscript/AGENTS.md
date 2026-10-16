@@ -1,4 +1,4 @@
-# fep_lean/manuscript/
+# FEP_Formal manuscript contract
 
 Authored paper sections, bibliography, and static Pandoc configuration. Paths
 below are relative to the project root.
@@ -45,20 +45,11 @@ The catalogue itself is a generated join. Stable metadata is maintained in
 
 ## Required publication checks
 
-```bash
-uv run fep-lean catalogue
-uv run fep-lean atlas --check
-uv run fep-lean dashboard --check
-uv run python scripts/audit_formalisms.py \
-  --receipt output/formalism-audit.json
-uv run python scripts/render_manuscript.py --check
-uv run python docs/theorem_ref_audit.py
-uv run python docs/citation_audit.py
-uv run python docs/pin_audit.py
-uv run python docs/xref_audit.py
-uv run python docs/check_links.py --strict --include-root
-uv run python scripts/build_render_fonts.py --check
-```
+The [root required-check inventory](../AGENTS.md#required-checks) owns the
+complete command list. The [render runbook](../scripts/README.md) explains
+publication orchestration and independent receipt acceptance. Materialize
+catalogue-derived manuscript inputs before cross-reference and render checks;
+font projections and installed-font acceptance remain separate checks.
 
 Order matters before publishing. The native receipt binds every maintained
 Python source (`fep_lean.output.provenance.SOURCE_OWNER_ROSTER`), so editing

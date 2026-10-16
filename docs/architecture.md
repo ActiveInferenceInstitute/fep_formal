@@ -22,11 +22,14 @@ flowchart TD
   X --> W[deterministic numerical witness dashboard]
 ```
 
-The installable `fep_lean` namespace is split into seven principal packages:
+FEP_Formal's installable `fep_lean` namespace separates these responsibilities:
 
 - `catalogue` validates YAML and source parity;
 - `formal` packages the manifested foundations and leaf cross-topic
   compositions, plus an import-only aggregate, and projects them into Lake;
+- `bridge` validates cross-repository interchange and source custody;
+- `custody` coordinates census and staged refresh without silently rewriting owners;
+- `methods` exposes portable mathematical contracts and positioning diagnostics;
 - `verification` probes the pinned Lean workspace without building it;
 - `llm` performs configured Hermes HTTP calls;
 - `gauss` persists sessions and runs per-topic verification;

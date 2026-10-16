@@ -1,5 +1,8 @@
 # Documentation map
 
+FEP_Formal is the project name. The installed Python namespace remains
+`fep_lean`, and the command remains `fep-lean`.
+
 - [Mathematical methods](mathematical-methods.md) — portable topic contracts, research context and mathematical transfer rules.
 - [Support-aware variational methods](support-aware-variational-methods.md) — sparse Gibbs optimization, finite-path marginals, reversible KL drop and numerical API boundaries.
 - [Mathematical positioning explorer](mathematical-positioning/mathematical-map.html) — offline searchable contracts, typed associations and numerical boundary panels.
@@ -35,7 +38,7 @@
 - [Interactive formal-kernel dashboard](formal-kernel-dashboard.html) — deterministic numerical witnesses for selected checked laws.
 - [Static formal-kernel dashboard](formal-kernel-dashboard.svg) — publication-safe projection of the numerical witness view.
 - [Quality-gate decision](quality.md) — blocking Ruff lint and formatting policy.
-- [Publication](development.md) — documentation, rendered-artifact, and projection-freshness gates (release-bundle and receipt validation live in `../HANDOFF.md`).
+- [Publication](development.md#bounded-publication-capture) — bounded documentation, rendered-artifact and projection-freshness capture; [report validation](reporter.md) and the [render runbook](../scripts/README.md) own their current receipt procedures.
 
 ## Reference
 

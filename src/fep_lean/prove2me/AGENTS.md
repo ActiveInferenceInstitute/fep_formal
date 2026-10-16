@@ -79,10 +79,10 @@ Inject a fake `Prove2meTransport` and fake `now`/`sleep` clocks; pass
 environment or home directory is read. Real-transport tests use a loopback
 `pytest_httpserver` only.
 
-```bash
-uv run pytest tests/test_prove2me_client.py \
-  tests/test_prove2me_config.py -q --no-cov
-```
+Focused contracts live in `tests/test_prove2me_client.py` and
+`tests/test_prove2me_config.py`. Use the
+[root required-check inventory](../../../AGENTS.md#required-checks) for project
+acceptance; a remote platform operation needs its own explicit authorization.
 
 See [README.md](README.md), [../llm/AGENTS.md](../llm/AGENTS.md),
 [../AGENTS.md](../AGENTS.md), and [Prove2me operations](../../../docs/prove2me.md).

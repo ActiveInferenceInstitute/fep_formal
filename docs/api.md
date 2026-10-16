@@ -1,10 +1,10 @@
 # Public Python API
 
 **Version:** 1.6.0
-**Last reviewed:** 2026-10-05
+**Last reviewed:** 2026-10-15
 
-The installed distribution exposes one root namespace, `fep_lean`. Generic
-top-level names such as `catalogue`, `pipeline`, and `output` are not packages
+FEP_Formal's installed distribution exposes one root namespace, `fep_lean`.
+Generic top-level names such as `catalogue`, `pipeline`, and `output` are not packages
 and have no compatibility aliases. The root package re-exports the stable
 operator-facing types and functions listed in `fep_lean.__all__`; direct
 submodule imports make ownership clearest in application code.
@@ -376,27 +376,17 @@ provider.
 
 ## Command-line API
 
-The installed console script is `fep-lean`:
-
-```text
-fep-lean setup
-fep-lean preflight
-fep-lean bridge {status,pin,emit,certify,verify-certificate,verify-document} --gnn-root PATH
-fep-lean verify [--area AREA] [--topic ID] [--fail-on-warnings] [--receipt PATH]
-fep-lean catalogue [--area AREA] [--topic ID]
-fep-lean atlas [--check]
-fep-lean dashboard [--check]
-fep-lean run [--area AREA] [--topic ID] [--workflow verify|draft|prove|review]
-fep-lean topic ID [--workflow verify|draft|prove|review]
-fep-lean report
-fep-lean status [--gnn-root PATH]
-```
+The installed console script is `fep-lean`. The
+[CLI reference](cli-reference.md) owns the command inventory and command-specific
+write, exit-status and evidence boundaries, including bridge, custody, methods
+and publication capture. Use `fep-lean --help` for the installed parser surface.
 
 The wheel provides imports, packaged catalogue and manifested formal resources,
-and CLI help independently. Operator subcommands require a complete source checkout
-because configuration, the Lean workspace, manuscript inputs, and output
+and CLI help independently. The portable `methods` commands use installed
+resources or numerical inputs; other substantive operator commands require a
+complete source checkout because configuration, the Lean workspace, manuscript inputs, and output
 ownership are intentionally not duplicated into the wheel. Invoke
-`fep-lean --project-root /path/to/fep_lean COMMAND` outside that checkout.
+`fep-lean --project-root /path/to/fep_formal COMMAND` outside that checkout.
 `review` is a two-turn workflow: refinement, compilation, then prose-only
 review of the exact compiled source; either provider turn can fail the result.
 

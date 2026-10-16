@@ -1,15 +1,15 @@
 ---
-title: fep_lean Ideal State Assessment
+title: FEP_Formal Ideal State Assessment
 status: active
 phase: verifying
 updated: 2026-10-15
 ---
 
-# fep_lean Ideal State Assessment
+# FEP_Formal Ideal State Assessment
 
 ## Problem
 
-`fep_lean` combines a 168-row catalogue, generated Lean source, a pinned
+FEP_Formal combines a 168-row catalogue, generated Lean source, a pinned
 Lean/Mathlib workspace, Hermes model calls, OpenGauss persistence, manuscript
 projections, and strict run reports. The repository must distinguish a
 deterministic offline catalogue from real theorem verification. A green local
@@ -149,20 +149,22 @@ open in [TODO.md](TODO.md).
 ## Current assessment
 
 The latest accepted integrated checkpoint is
-[`f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/f5c39fe6768b4e36296cbf2cd4d8a08ae25bbef2).
-Its exact-main [hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38807878071)
+[`bea6b9c5ed4dc5b978b314a69d041055be295e5e`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/bea6b9c5ed4dc5b978b314a69d041055be295e5e).
+Its exact-main [hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38825444108)
 passed all 21 executed jobs, including all 15 installed-wheel cells; the
 documentation-only alternative was intentionally skipped. Its tree is
-identical to the independently reviewed `d1d5403` PR178 head and tested PR
-merge. That [source-bound artifact set](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38799938016)
+identical to the independently reviewed `c1419e7` PR180 head and tested PR
+merge. That [source-bound artifact set](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38819590194)
 retains 2,952 Python passes, 20 skips, complete 2,972-case membership, all eight
 browser/startup controls and 91.64% coverage. Serial Lean retained 588 passes
 and five skips. The Lean/Mathlib 4.35.0 native receipt verified all 168 topics
 without warnings or `sorry`; the audit resolved 1,875 declarations with 1,744
 evidence entries and only the standard approved axioms. The actual accepted
 388-page render passed all nine defect counters. These exact-source checks and
-independent reviews qualify the bounded G02/P02/T01/D02/D03 scopes recorded in
-the [changelog](CHANGELOG.md); they do not close the broader G01/D04 scopes.
+independent reviews retain the bounded G02/P02/T01/D02/D03 implementation
+acceptance at `f5c39fe` and its documentation/Issue closure at `bea6b9c`, as
+recorded in the [changelog](CHANGELOG.md). They do not close the broader G01/D04
+scopes or qualify later source changes automatically.
 
 This checkpoint establishes those source-specific hosted lanes. Production
 seven-stage capture, local runtime/status acceptance and the frozen H3 study

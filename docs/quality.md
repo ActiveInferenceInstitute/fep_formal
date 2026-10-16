@@ -1,10 +1,20 @@
-# Quality-gate decision record (updated 2026-10-05)
+# Quality-gate decision record (updated 2026-10-15)
 
 **Decision date:** 2026-08-19<br>
 **Owner:** fep_lean repository maintainers<br>
 **Decision:** Ruff lint and formatting are both blocking zero-debt gates.
 
-## Current policy — 2026-10-05
+## Current policy — 2026-10-15
+
+Ruff lint and formatting remain blocking zero-debt gates. The
+[root required-check inventory](../AGENTS.md#required-checks) owns their exact
+commands: lint covers the repository with the reviewed exclusions in
+[`pyproject.toml`](../pyproject.toml), while formatting covers `src`, `tests`,
+`scripts` and `docs`. Mypy checks `src`, `scripts` and `docs` with the declared
+3.14 target. The earlier narrower lint command below records its source epoch;
+it is not the current command owner.
+
+## Recorded policy — 2026-10-05 (superseded command scope)
 
 CI now runs both `ruff check src tests scripts docs` and
 `ruff format --check src tests scripts docs` without `--exit-zero` or a shell
