@@ -150,7 +150,11 @@ class _UrllibTransport:
         if resp is None:
             return
         with contextlib.suppress(OSError, ValueError, AttributeError):
-            fp = getattr(resp, "fp", None)
+            # HTTPError wraps the HTTPResponse, adding one level before the
+            # buffered reader. Shut down its socket before close can wait on
+            # a worker holding the reader lock.
+            response = resp.fp if isinstance(resp, urllib.error.HTTPError) else resp
+            fp = getattr(response, "fp", None)
             raw = getattr(fp, "raw", None) or fp
             sock_obj = getattr(raw, "_sock", None)
             if sock_obj is not None:

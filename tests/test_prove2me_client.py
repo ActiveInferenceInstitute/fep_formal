@@ -23,6 +23,7 @@ from typing import Any
 
 import pytest
 from pytest_httpserver import HTTPServer
+from werkzeug.wrappers import Response
 
 from fep_lean.prove2me import client as client_module
 from fep_lean.prove2me.client import (
@@ -512,6 +513,35 @@ def test_slow_http_error_body_obeys_wall_clock_and_closes_reader(
         )
     assert time.monotonic() - before < 1.5
     assert started.is_set() and body.closed and finished.wait(1)
+
+
+def test_streaming_loopback_http_error_shutdown_precedes_blocking_close(
+    httpserver: HTTPServer,
+) -> None:
+    def response(_request: object) -> Response:
+        def chunks():
+            # Each chunk arrives within the socket timeout, while the whole
+            # response exceeds the wall deadline and one read waits for EOF.
+            for _ in range(60):
+                yield b"x"
+                time.sleep(0.04)
+
+        return Response(chunks(), status=503)
+
+    httpserver.expect_request("/slow-error", method="GET").respond_with_handler(
+        response
+    )
+    before_threads = {id(thread) for thread in threading.enumerate()}
+    before = time.monotonic()
+    with pytest.raises(Prove2meTransportError, match="wall-clock timeout"):
+        client_module._UrllibTransport().send(
+            "GET", httpserver.url_for("/slow-error"), {}, None, 0.2
+        )
+    assert time.monotonic() - before < 1.5
+    for worker in threading.enumerate():
+        if worker.name == "prove2me-http" and id(worker) not in before_threads:
+            worker.join(timeout=1)
+            assert not worker.is_alive()
 
 
 # ── poll timeout ─────────────────────────────────────────────────────────────
