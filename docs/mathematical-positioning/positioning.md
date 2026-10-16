@@ -20074,7 +20074,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/smooth_information_geometry.lean` | `1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04` |
 | `formal/statistical_convergence.lean` | `6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf` |
 | `formal/temporal_inference.lean` | `25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b` |
-| `formal/variational_duality.lean` | `47aaedf83edbebd9f10bd3dec7350856a898eb003dd513b94f79b9f716d4e24e` |
+| `formal/variational_duality.lean` | `b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
 | `inputs/formalism_relations.yaml` | `8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |

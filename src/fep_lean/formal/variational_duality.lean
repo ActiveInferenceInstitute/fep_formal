@@ -1675,7 +1675,7 @@ theorem nativeKL_tilted_gap
     (InformationTheory.klDiv μ (ν.tilted f)).toReal =
       (InformationTheory.klDiv μ ν).toReal - (∫ x, f x ∂μ) +
         Real.log (∫ x, Real.exp (f x) ∂ν) := by
-  letI : IsProbabilityMeasure (ν.tilted f) := isProbabilityMeasure_tilted hexp
+  let : IsProbabilityMeasure (ν.tilted f) := isProbabilityMeasure_tilted hexp
   have hμtilt : μ ≪ ν.tilted f := hμν.trans (absolutelyContinuous_tilted hexp)
   have hllrtilt : Integrable (llr μ (ν.tilted f)) μ :=
     integrable_llr_tilted_right hμν hf hllr hexp
