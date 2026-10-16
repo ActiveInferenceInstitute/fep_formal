@@ -237,6 +237,8 @@ jobs:
       # This changes scheduling, not Chrome's deadline or launch behavior.
       - name: Run the parallel Python acceptance component
         id: python_remainder
+        env:
+          FEP_LEAN_COVERAGE_FLOOR_EVIDENCE: "1"
         run: |
           set -o pipefail
           mkdir -p output
@@ -260,6 +262,12 @@ jobs:
             --cov-fail-under=89 --junitxml=output/live-chrome-acceptance.xml \
             -W always --color=no \
             2>&1 | tee output/live-chrome-warning-inventory.log
+      - name: Require measured package line coverage floors
+        if: ${{ !cancelled() && steps.python_remainder.outcome != 'skipped' && steps.live_chrome.outcome != 'skipped' }}
+        run: |
+          set -o pipefail
+          uv run python docs/check_coverage_floors.py --coverage coverage.xml \
+            | tee output/coverage-floor-summary.json
       - name: Require complete Python membership and all live Chrome controls
         if: ${{ !cancelled() && steps.python_remainder.outcome != 'skipped' && steps.live_chrome.outcome != 'skipped' }}
         run: >-
@@ -281,6 +289,9 @@ jobs:
             output/python-acceptance-summary.json
             output/python-warning-inventory.log
             output/live-chrome-warning-inventory.log
+            output/coverage-floor-summary.json
+            output/coverage-floor-control-one.log
+            output/coverage-floor-control-both.log
             coverage.xml
           if-no-files-found: error
       - name: Check mathematical context and numerical visualization boundaries
@@ -1026,6 +1037,7 @@ jobs:
           FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
           FEP_LEAN_SLICE04_COMPILE_TEST: "1"
           FEP_LEAN_SLICE05_COMPILE_TEST: "1"
+          FEP_LEAN_NATIVE_ENTROPY_EVIDENCE: "1"
         run: |
           set -o pipefail
           mkdir -p output
@@ -1110,3 +1122,4 @@ jobs:
             output/native-verification.json
             output/formalism-audit.json
             output/serial-lean-warning-inventory.log
+            output/native-entropy-consumer.log

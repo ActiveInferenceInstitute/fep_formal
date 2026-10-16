@@ -799,7 +799,7 @@ def test_historical_custody_archive_tampering_is_rejected_before_decode(
     assert before == _production_custody_snapshot()
 
 
-@pytest.mark.parametrize("profile", ("predecessor", "T01"))
+@pytest.mark.parametrize("profile", ("predecessor", "T01", "P09"))
 @pytest.mark.parametrize("version", ("1.4.0", *LATER_RELEASE_VERSIONS))
 def test_historical_metadata_preserves_only_explicit_release_profiles(
     profile: str, version: str
@@ -823,8 +823,25 @@ def test_historical_metadata_preserves_only_explicit_release_profiles(
         )
     else:
         assert hashlib.sha256(live).hexdigest() == (
-            "ab94d6fa723dbb547e3e73f70d826060ab63e873e812922cbb30ef090d7d3d3e"
+            "bd0c17f95d13206cee7f55b7bdaa45745da0a7aa0ae0d9a8d9bfe3ae717eafae"
         )
+        if profile == "T01":
+            reviewed_note = (
+                b"# Aggregate line coverage only; branch arcs are not enabled or gated here.\n"
+                b"# docs/coverage-floors.json owns additional measured package line floors.\n"
+            )
+            assert live.count(reviewed_note) == 1
+            live = live.replace(
+                reviewed_note,
+                b"# Line coverage ~91%; combined line+branch ~89.6% with current Hermes/network branches.\n",
+                1,
+            )
+        expected_live_digest = (
+            "ab94d6fa723dbb547e3e73f70d826060ab63e873e812922cbb30ef090d7d3d3e"
+            if profile == "T01"
+            else "bd0c17f95d13206cee7f55b7bdaa45745da0a7aa0ae0d9a8d9bfe3ae717eafae"
+        )
+        assert hashlib.sha256(live).hexdigest() == expected_live_digest
         assert live.count(current_token) == 1
         data = live.replace(current_token, recorded_token, 1)
     token = recorded_token.replace(b'"1.4.0"', f'"{version}"'.encode())
@@ -833,6 +850,22 @@ def test_historical_metadata_preserves_only_explicit_release_profiles(
         == historical
     )
     assert before == _production_custody_snapshot()
+
+
+def test_unknown_metadata_comment_fails_before_companion_parsing(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from tests._support import lean435_migration as migration
+
+    root = Path(__file__).resolve().parents[1]
+    live = (root / "pyproject.toml").read_bytes()
+
+    def forbidden_parse(*args: object, **kwargs: object) -> None:
+        pytest.fail("unknown live metadata must fail before companion parsing")
+
+    monkeypatch.setattr(migration.json, "loads", forbidden_parse)
+    with pytest.raises(AssertionError, match="unreviewed normalized metadata"):
+        historical_metadata_bytes(root, live + b"\n# unreviewed coverage profile\n")
 
 
 @pytest.mark.parametrize("tamper", ("append", "metadata", "payload"))

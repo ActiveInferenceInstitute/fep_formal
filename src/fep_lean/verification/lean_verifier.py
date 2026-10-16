@@ -683,7 +683,10 @@ class LeanVerifier:
         - Topology, LinearAlgebra, Geometry (manifolds, tangent bundles)
         """
         code = lean_code_without_comments(lean_code).lstrip()
-        if re.match(r"(?:module(?:\s|$)|(?:public\s+)?import\s)", code):
+        if re.match(
+            r"(?:module(?:\s|$)|(?:public[ \t]+)?(?:meta[ \t]+)?import[ \t]+)",
+            code,
+        ):
             return lean_module_source(lean_code)
         preamble = (
             "import Mathlib\n"

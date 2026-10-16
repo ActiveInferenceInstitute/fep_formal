@@ -189,6 +189,11 @@ requires at least 89% line coverage. Branch coverage, hosted wheel
 compatibility, native compilation, and full-mode acceptance need their own
 scoped evidence.
 
+The same split Python/Chrome coverage XML must also pass the measured package
+line floors in [docs/coverage-floors.json](docs/coverage-floors.json). The
+[coverage guide](docs/coverage-branch.md) records their baseline and scope.
+These floors do not measure branch arcs or supply native/scientific acceptance.
+
 ## Required checks
 
 This block is the single owner of the required-check list. `docs/development.md`,
@@ -255,7 +260,8 @@ uv run pytest specs/publication-browser-acceptance/test_validate_acceptance.py -
 uv run ruff check specs/publication-browser-acceptance
 uv run ruff format --check specs/publication-browser-acceptance
 uv run python specs/publication-browser-acceptance/validate_acceptance.py --collect output/python-acceptance-collection.json
-uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
+uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"
+uv run python docs/check_coverage_floors.py --coverage coverage.xml
 uv run mypy src scripts docs
 uv run ruff check .
 uv run ruff format --check src tests scripts docs

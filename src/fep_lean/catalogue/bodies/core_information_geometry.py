@@ -4,7 +4,8 @@ from __future__ import annotations
 
 BODIES: dict[str, str] = {
     "fep-004": """import Mathlib.Algebra.Order.BigOperators.Group.Finset
-import Mathlib.Tactic
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.Ring
 
 namespace FEP004
 
@@ -97,7 +98,8 @@ end FEP014
 """,
     "fep-018": """import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
 import Mathlib.Analysis.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 namespace FEP018
 
@@ -200,7 +202,9 @@ theorem fep024_klRegularizedObjective_exact
 end FEP024
 """,
     "fep-029": """import Mathlib.Analysis.Convex.Basic
-import Mathlib.Tactic
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 namespace FEP029
 
@@ -247,7 +251,11 @@ end FEP029
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Bool.Basic
 import Mathlib.Analysis.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib.Tactic.Convert
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 namespace FEP038
 
@@ -362,7 +370,9 @@ theorem fep038_fisherMetric_pullback {p v w : ℝ}
 end FEP038
 """,
     "fep-044": """import Mathlib.Analysis.Real.Sqrt
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 namespace FEP044
 

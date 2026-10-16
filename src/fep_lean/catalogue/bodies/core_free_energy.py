@@ -429,7 +429,8 @@ theorem fep026_priorComplexity_strictAnti
 end FEP026
 """,
     "fep-032": """import Mathlib.Analysis.SpecificLimits.Normed
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 namespace FEP032
 
@@ -591,7 +592,10 @@ end FEP039
     "fep-043": """import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.Convert
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 namespace FEP043
 
@@ -663,7 +667,7 @@ end FEP043
 """,
     "fep-048": """import Mathlib.Order.Monotone.Basic
 import Mathlib.Topology.MetricSpace.Contracting
-import Mathlib.Tactic
+import Mathlib.Tactic.NormNum
 
 namespace FEP048
 

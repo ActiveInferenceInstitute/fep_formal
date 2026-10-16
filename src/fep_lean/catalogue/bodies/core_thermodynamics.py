@@ -5,7 +5,9 @@ from __future__ import annotations
 BODIES: dict[str, str] = {
     "fep-013": """import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Tactic
+import Mathlib.Tactic.Convert
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 namespace FEP013
 
@@ -61,7 +63,11 @@ end FEP013
 """,
     "fep-025": """import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.LinearAlgebra.Matrix.Notation
-import Mathlib.Tactic
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.FinCases
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
 
 namespace FEP025
 
@@ -167,7 +173,9 @@ end FEP025
     "fep-030": """import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Basic.Real.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
+meta import Lean.Meta.Tactic.NormCast
 
 namespace FEP030
 
@@ -263,7 +271,9 @@ theorem fep031_gibbsProbability_sum_one (β : ℝ) (n : ℕ) (E : Fin n → ℝ)
 end FEP031
 """,
     "fep-037": """import Mathlib.Analysis.SpecificLimits.Normed
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 namespace FEP037
 
@@ -341,7 +351,8 @@ end FEP037
 """,
     "fep-049": """import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 namespace FEP049
 
@@ -435,7 +446,8 @@ theorem fep049_edgeProduction_eq_zero_iff
 end FEP049
 """,
     "fep-050": """import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
 
 namespace FEP050
 

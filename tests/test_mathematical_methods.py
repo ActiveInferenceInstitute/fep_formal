@@ -92,8 +92,28 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         "FEPComposed.fep099_markov_path_KL_drop_reduction",
     }
     assert len(variational_extension) == 32
-    assert exposed_support | variational_extension <= declarations.keys()
-    assert len(declarations.keys() - exposed_support - variational_extension) == 2185
+    measure_entropy_extension = {
+        "FEP.VariationalDuality.nativeKL_tilted_gap",
+        "FEP.VariationalDuality.nativeEntropy_le_klDiv",
+        "FEP.VariationalDuality.nativeCgf_le_klDiv",
+    }
+    assert len(measure_entropy_extension) == 3
+    assert (
+        exposed_support | variational_extension | measure_entropy_extension
+        <= declarations.keys()
+    )
+    assert {
+        declarations[name]["source_owner"] for name in measure_entropy_extension
+    } == {"src/fep_lean/formal/variational_duality.lean"}
+    assert (
+        len(
+            declarations.keys()
+            - exposed_support
+            - variational_extension
+            - measure_entropy_extension
+        )
+        == 2185
+    )
     assert "not a certified" not in data["theorem_analysis"]["analysis_boundary"]
     assert (
         "neither a certified translation"

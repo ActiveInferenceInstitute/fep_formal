@@ -75,8 +75,17 @@ public import Mathlib.Probability.Independence.Conditional
 public import Mathlib.Probability.Kernel.Composition.MeasureComp
 public import Mathlib.Probability.Kernel.Invariance
 public import Mathlib.Probability.Kernel.Posterior
-public import Mathlib.Tactic
+public import Mathlib.Tactic.Convert
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.FinCases
+public import Mathlib.Tactic.GCongr
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Positivity
+public import Mathlib.Tactic.Ring
 public import Mathlib.Topology.MetricSpace.Contracting
+public meta import Lean.Elab.Tactic.Omega
+public meta import Lean.Meta.Tactic.NormCast
 
 @[expose] public section
 

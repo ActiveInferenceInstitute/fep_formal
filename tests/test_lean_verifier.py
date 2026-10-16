@@ -165,6 +165,23 @@ def test_wrap_lean_code_empty_code_gets_preamble(verifier: LeanVerifier) -> None
     assert wrapped.startswith("module\npublic import Mathlib")
 
 
+@pytest.mark.parametrize("visibility", ["", "public ", "meta ", "public meta "])
+def test_wrap_preserves_explicit_import_kind_without_fallback(
+    verifier: LeanVerifier, visibility: str
+) -> None:
+    code = (
+        "/- header /- nested -/ -/\n"
+        f"{visibility}import Lean.Elab.Tactic.Omega -- dependency\n"
+        "theorem imported : True := True.intro\n"
+    )
+    wrapped = verifier._wrap_lean_code(code)
+    expected = "public meta " if "meta" in visibility else "public "
+    assert f"{expected}import Lean.Elab.Tactic.Omega -- dependency\n" in wrapped
+    assert "import Mathlib" not in wrapped
+    assert wrapped.endswith("theorem imported : True := True.intro\n")
+    assert verifier._wrap_lean_code(wrapped) == wrapped
+
+
 def test_wrap_preserves_explicit_module_visibility_after_comments(
     verifier: LeanVerifier,
 ) -> None:
