@@ -98,14 +98,16 @@ noncomputable def fair : Measure Bool :=
     (1 / 2 : NNReal) • Measure.dirac false
 
 instance : IsProbabilityMeasure fair where
-  measure_univ := by norm_num [fair]
+  measure_univ := by
+    norm_num [fair]
+    exact ENNReal.inv_two_add_inv_two
 
 noncomputable def potential (b : Bool) : ℝ := if b then Real.log 3 else 0
 
 theorem fair_integral (g : Bool → ℝ) :
     (∫ b, g b ∂fair) = (g true + g false) / 2 := by
   rw [fair, integral_add_measure (Integrable.of_finite) (Integrable.of_finite)]
-  norm_num [integral_smul_nnreal_measure, smul_eq_mul]; ring
+  norm_num [integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_mul]; ring
 
 theorem normalizer : (∫ b, Real.exp (potential b) ∂fair) = 2 := by
   rw [fair_integral]
@@ -117,16 +119,26 @@ noncomputable instance : IsProbabilityMeasure (fair.tilted potential) :=
 theorem tilted_true : fair.tilted potential {true} = 3 / 4 := by
   rw [tilted_apply' _ _ (MeasurableSet.singleton true), lintegral_singleton, normalizer]
   norm_num [potential, fair, Real.exp_log (by norm_num : (0 : ℝ) < 3)]
+  apply (ENNReal.toReal_eq_toReal_iff'
+    (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.inv_ne_top.mpr (by norm_num)))
+    (ENNReal.div_ne_top (by norm_num) (by norm_num))).mp
+  norm_num [ENNReal.toReal_mul]
 
 theorem tilted_false : fair.tilted potential {false} = 1 / 4 := by
   rw [tilted_apply' _ _ (MeasurableSet.singleton false), lintegral_singleton, normalizer]
   norm_num [potential, fair]
+  apply (ENNReal.toReal_eq_toReal_iff'
+    (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.inv_ne_top.mpr (by norm_num)))
+    (ENNReal.inv_ne_top.mpr (by norm_num))).mp
+  norm_num [ENNReal.toReal_mul]
 
 theorem tilted_ne_fair : fair.tilted potential ≠ fair := by
   intro h
   have hmass := congrArg (fun μ : Measure Bool => μ {true}) h
   rw [tilted_true] at hmass
   norm_num [fair] at hmass
+  have hreal := congrArg ENNReal.toReal hmass
+  norm_num at hreal
 
 theorem tilted_potential :
     (∫ b, potential b ∂fair.tilted potential) = 3 / 4 * Real.log 3 := by
