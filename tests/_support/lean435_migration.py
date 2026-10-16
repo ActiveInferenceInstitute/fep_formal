@@ -336,7 +336,7 @@ def _authenticated_metadata_archive(project_root: Path, live: bytes) -> bytes:
 
 
 def historical_metadata_bytes(project_root: Path, live: bytes) -> bytes:
-    """Restore authenticated metadata for exact predecessor/T01 profiles only.
+    """Restore only the exact authenticated predecessor/T01/P09/P08 unit profiles.
 
     Live input must retain the pinned uv section and an approved root release
     token. Unknown normalized metadata fails before archive parsing/decoding;

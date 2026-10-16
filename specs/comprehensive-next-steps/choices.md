@@ -728,3 +728,18 @@ Independent Lean/domain and skeptical source reviews establish feasibility;
 compilation, scientific approval and production/runtime acceptance remain
 separate. Bounded static generation under current disk reserves authorizes no
 local native or broad-test launch.
+
+
+## 2026-10-16 — operator-directed integration and cleanup
+
+The operator explicitly requested all reviewed work be pushed to main and legacy
+branches/worktrees removed, after excluding private historical packet recovery.
+Integrate the validated PR182/184/185 fixes and attributed PR179 category successor;
+the earlier R01 integration hold is superseded for code integration by that
+request. Preserve all original scientific/production evidence boundaries and
+frozen artifacts. Do not close unimplemented research scopes merely to empty the
+tracker. The [complete issue review](open-issue-review-20261016.md) records every
+open scope and its remaining work. Delete repository-owned branches only after
+their tips are ancestors of main; remove worktrees only after checking tracked
+and nonignored untracked changes. External contributor branches are not owned by
+this repository and are not cleanup targets.

@@ -7,9 +7,11 @@ positive acceptance, failure controls and claim boundary. Size means
 implementation scope, not a version or schedule promise.
 
 The [2026-10-16 publication handoff](WORK_STATUS.md) records pushed work and
-remaining acceptance. LEAN-11, LEAN-13 and PKG-12 remain open while
-[PR182](https://github.com/ActiveInferenceInstitute/fep_formal/pull/182) completes
-its exact-source gates.
+remaining acceptance. [PR182](https://github.com/ActiveInferenceInstitute/fep_formal/pull/182) has passed
+all 15 hosted jobs and is integrated. The
+[complete issue review](specs/comprehensive-next-steps/open-issue-review-20261016.md)
+records implemented fixes, exact-source evidence and remaining acceptance;
+backlog rows remain open until their scope is accepted.
 
 ## Release gate
 
