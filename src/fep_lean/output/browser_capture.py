@@ -1287,6 +1287,48 @@ def _png_dimensions(data: bytes) -> tuple[int, int]:
     return struct.unpack(">II", data[16:24])
 
 
+def _dom_difference_summary(
+    expected: Mapping[str, Any], observed: Mapping[str, Any]
+) -> str:
+    """Describe bounded DOM differences without logging page text or URLs."""
+    differences: list[str] = []
+
+    def describe(value: Any) -> str:
+        if type(value) in (bool, int) or value is None:
+            return repr(value)[:80]
+        if isinstance(value, (Mapping, list, str)):
+            return f"{type(value).__name__}(length={len(value)})"
+        return type(value).__name__
+
+    def compare(
+        wanted: Mapping[str, Any], found: Mapping[str, Any], prefix: str
+    ) -> None:
+        for key in sorted(wanted):
+            path = f"{prefix}.{key}" if prefix else key
+            if key not in found:
+                differences.append(
+                    f"{path}: missing (expected {describe(wanted[key])})"
+                )
+            elif isinstance(wanted[key], Mapping) and isinstance(found[key], Mapping):
+                compare(wanted[key], found[key], path)
+            elif wanted[key] != found[key]:
+                differences.append(
+                    f"{path}: expected {describe(wanted[key])}, "
+                    f"observed {describe(found[key])}"
+                )
+        # Unexpected names and their values can be page-controlled. Report
+        # their count, not arbitrary page text or external-request URLs.
+        unexpected = len(found.keys() - wanted.keys())
+        if unexpected:
+            differences.append(f"{prefix or 'root'}: {unexpected} unexpected field(s)")
+
+    compare(expected, observed, "")
+    summary = "; ".join(differences[:16])
+    if len(differences) > 16:
+        summary += f"; {len(differences) - 16} additional difference(s)"
+    return summary
+
+
 def build_browser_receipt(project_root: Path, replay: BrowserReplay) -> bytes:
     """Serialize a replay only when every live observation meets the contract."""
     root = Path(project_root).resolve()
@@ -1294,7 +1336,10 @@ def build_browser_receipt(project_root: Path, replay: BrowserReplay) -> bytes:
     expected = canonical_browser_observations(counts)
     _validate_browser_identity(replay.browser)
     if replay.observations != expected:
-        raise BrowserCaptureError("live Chrome DOM observations are not canonical")
+        raise BrowserCaptureError(
+            "live Chrome DOM observations are not canonical: "
+            + _dom_difference_summary(expected, replay.observations)
+        )
     if set(replay.interactions) != set(REQUIRED_BROWSER_INTERACTIONS) or not all(
         replay.interactions.values()
     ):

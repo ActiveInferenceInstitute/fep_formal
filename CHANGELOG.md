@@ -1,5 +1,13 @@
 ## Unreleased
 
+- Report bounded field-level differences when live browser DOM acceptance
+  rejects a capture, including missing fields and expected/observed counts or
+  flags. Keep page text, unexpected field names and external-request URLs out
+  of the diagnostic. Preserve the canonical comparison and existing evidence
+  on rejection. This improves current diagnostics for
+  [#51](https://github.com/ActiveInferenceInstitute/fep_formal/issues/51);
+  it does not identify the historical r6 failure or accept a production bundle.
+
 - Present the project as FEP_Formal while preserving the `fep_lean` Python and
   `fep-lean` CLI interfaces. Make root README the overview source and generate
   its GitHub presentation with rebased links and a missing/stale projection
