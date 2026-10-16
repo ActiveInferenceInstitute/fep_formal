@@ -445,9 +445,40 @@ def test_capture_rejects_noncanonical_dom_without_replacing_evidence(
     before = {path: path.read_bytes() for path in paths}
     with pytest.raises(
         capture_module.BrowserCaptureError, match="DOM observations are not canonical"
-    ):
+    ) as failure:
         capture_module.capture_browser_acceptance(tmp_path)
+    assert f"{section}.{field}: expected " in str(failure.value)
+    assert f"observed {value!r}" in str(failure.value)
     assert {path: path.read_bytes() for path in paths} == before
+
+
+def test_dom_rejection_identifies_missing_fields_without_logging_page_content(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    replay = _stubbed_capture(tmp_path, monkeypatch)
+    del replay.observations["atlas"]["topics"]
+    replay.observations["external_requests"] = ["https://example.test/private-token"]
+    replay.observations["private-page-text"] = "private value"
+    with pytest.raises(capture_module.BrowserCaptureError) as failure:
+        capture_module.build_browser_receipt(tmp_path, replay)
+    message = str(failure.value)
+    assert "atlas.topics: missing (expected 155)" in message
+    assert (
+        "external_requests: expected list(length=0), observed list(length=1)" in message
+    )
+    assert "root: 1 unexpected field(s)" in message
+    assert "private" not in message
+    assert not (tmp_path / capture_module.BROWSER_RECEIPT).exists()
+
+
+def test_dom_rejection_bounds_the_difference_inventory() -> None:
+    expected = {f"field{index:02}": True for index in range(20)}
+    observed = dict.fromkeys(expected, False)
+    message = capture_module._dom_difference_summary(expected, observed)
+    assert "field00: expected True, observed False" in message
+    assert "field15: expected True, observed False" in message
+    assert "field16" not in message
+    assert message.endswith("4 additional difference(s)")
 
 
 def test_capture_command_emits_source_bound_receipt_and_exact_screenshot_bytes(
