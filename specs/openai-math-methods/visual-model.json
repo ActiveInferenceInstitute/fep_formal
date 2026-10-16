@@ -11631,7 +11631,7 @@
     "catalogue/bodies/continuous_time_thermodynamics.py": "d233e8e33bcdb3f7ece4c7af61707a27a339039ddc560340ede0818c616e2959",
     "catalogue/bodies/controlled_markov.py": "0717b3e72f966d93767cc1f359c4b0f6608714b849306bbe3e67c0248a5445e0",
     "catalogue/bodies/core_active_inference.py": "9efae270dc2516b16ccf20572a0964980e5e41fe254fab111ab52fc99d133e99",
-    "catalogue/bodies/core_bayesian_mechanics.py": "a9383fe30c55c384c33a86057f8bcc99a9757281d1dee9695068e88f61926b63",
+    "catalogue/bodies/core_bayesian_mechanics.py": "0e200577408bfd817161b4622c11bd156f2d7516414eed9e8f99390171f2d88a",
     "catalogue/bodies/core_free_energy.py": "060486982f126bbfb515272530574702ee33eec897eaf85bd65411eeefb0938c",
     "catalogue/bodies/core_information_geometry.py": "0b6c247455728d498ddf68e606296e8546c6b7f9b0de330e4cab94605dace783",
     "catalogue/bodies/core_thermodynamics.py": "937e6de554759c9e3c5fe0090d605f64a0181eb0e636c4af6ffd35d4a249f2f4",
@@ -187552,6 +187552,7 @@
         "import_context": [
           "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
           "Mathlib.Basic.Real.Basic",
+          "Mathlib.Data.Fintype.Basic",
           "Mathlib.Tactic.FieldSimp",
           "Mathlib.Tactic.Ring"
         ],
@@ -187560,7 +187561,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep045.FEP045.fep045_bernoulli_posterior_closed",
-        "source_line": 49,
+        "source_line": 50,
         "source_owner": "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py",
         "statement": "theorem fep045_bernoulli_posterior_closed\n    {p l₀ l₁ : ℝ} (hZ : fep045_evidence p l₀ l₁ ≠ 0) (b : Bool) :\n    fep045_bernoulliMass (fep045_posteriorParameter p l₀ l₁) b =\n      fep045_bernoulliMass p b * fep045_binaryLikelihood l₀ l₁ b /\n        fep045_evidence p l₀ l₁",
         "statement_sha256": "f98b85e18c1887c931d7d2f7fe44fde19f3988b9cb0e62e8e5991383ed9c283b"
@@ -187628,6 +187629,7 @@
         "import_context": [
           "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
           "Mathlib.Basic.Real.Basic",
+          "Mathlib.Data.Fintype.Basic",
           "Mathlib.Tactic.FieldSimp",
           "Mathlib.Tactic.Ring"
         ],
@@ -187636,7 +187638,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep045.FEP045.fep045_evidence_pos",
-        "source_line": 27,
+        "source_line": 28,
         "source_owner": "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py",
         "statement": "theorem fep045_evidence_pos\n    {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ : 0 < l₁) :\n    0 < fep045_evidence p l₀ l₁",
         "statement_sha256": "a099e05f23a8e329ca84a459e7598d67ee5297349e047a67d0f6a5c8dcbf9fed"
@@ -187711,6 +187713,7 @@
         "import_context": [
           "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
           "Mathlib.Basic.Real.Basic",
+          "Mathlib.Data.Fintype.Basic",
           "Mathlib.Tactic.FieldSimp",
           "Mathlib.Tactic.Ring"
         ],
@@ -187719,7 +187722,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep045.FEP045.fep045_posteriorParameter_mem_unit",
-        "source_line": 34,
+        "source_line": 35,
         "source_owner": "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py",
         "statement": "theorem fep045_posteriorParameter_mem_unit\n    {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ : 0 < l₁) :\n    0 ≤ fep045_posteriorParameter p l₀ l₁ ∧\n      fep045_posteriorParameter p l₀ l₁ ≤ 1",
         "statement_sha256": "562f7782a59e7dc3b04555e8f4a8fa403d054af621974b3a5d67e8b51b1d1bd9"
@@ -187747,6 +187750,7 @@
         "import_context": [
           "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
           "Mathlib.Basic.Real.Basic",
+          "Mathlib.Data.Fintype.Basic",
           "Mathlib.Tactic.FieldSimp",
           "Mathlib.Tactic.Ring"
         ],
@@ -187755,7 +187759,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep045.FEP045.fep045_posterior_mass_one",
-        "source_line": 64,
+        "source_line": 65,
         "source_owner": "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py",
         "statement": "theorem fep045_posterior_mass_one (p l₀ l₁ : ℝ) :\n    ∑ b : Bool, fep045_bernoulliMass (fep045_posteriorParameter p l₀ l₁) b = 1",
         "statement_sha256": "f1e7223b249418248556274c50aa5bda976b62d4103281622993d9738ffa9445"
@@ -219567,7 +219571,7 @@
       "area": "BayesianMechanics",
       "body_source": "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py",
       "body_theorem_count": 4,
-      "canonical_body_sha256": "0023a7da900fbe2eda4beea4ee1507fb278a36c876fb4e3f81df7e0530e61907",
+      "canonical_body_sha256": "a1a2a072db600b245fed50f6a05f657240788fd64c081a883daa96917ae7af6a",
       "canonical_namespace": "FEP045",
       "family": "core-bayesian-mechanics",
       "id": "fep-045",

@@ -25,7 +25,7 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Total abbreviations | 39 |
 | Formal-resource structures | 55 |
 | Distinct Mathlib imports | 79 |
-| Topic-to-import edges | 265 |
+| Topic-to-import edges | 266 |
 | Formal-resource import edges | 333 |
 | Internal formal-module dependencies | 170 |
 | Authored formalism relations | 150 |
@@ -98,7 +98,7 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 | fep-042 | BayesianMechanics | `fep042_likelihood_eq_of_stat_eq` | `formalized` | 2 | 4 | 3 |
 | fep-043 | FEP | `fep043_quadratic_critical_iff` | `formalized` | 6 | 2 | 7 |
 | fep-044 | InfoGeometry | `fep044_hellingerSq_eq_zero_iff` | `formalized` | 4 | 1 | 4 |
-| fep-045 | BayesianMechanics | `fep045_bernoulli_posterior_closed` | `formalized` | 4 | 4 | 4 |
+| fep-045 | BayesianMechanics | `fep045_bernoulli_posterior_closed` | `formalized` | 4 | 4 | 5 |
 | fep-046 | BayesianMechanics | `fep046_mass_conservation` | `formalized` | 3 | 2 | 4 |
 | fep-047 | ActiveInference | `fep047_forward_compose` | `formalized` | 5 | 1 | 2 |
 | fep-048 | FEP | `fep048_contraction_unique` | `formalized` | 8 | 1 | 3 |
@@ -575,7 +575,7 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `Mathlib.Data.Finset.Basic` | 3 | fep-005, fep-008, fep-028 |
 | `Mathlib.Data.Finset.Filter` | 1 | fep-005 |
 | `Mathlib.Data.Finset.Max` | 1 | fep-008 |
-| `Mathlib.Data.Fintype.Basic` | 1 | fep-005 |
+| `Mathlib.Data.Fintype.Basic` | 2 | fep-005, fep-045 |
 | `Mathlib.Data.List.Count` | 1 | fep-042 |
 | `Mathlib.Data.Matrix.Mul` | 1 | fep-047 |
 | `Mathlib.Data.Nat.Cast.Field` | 1 | fep-036 |

@@ -4605,9 +4605,10 @@
     },
     {
       "module": "Mathlib.Data.Fintype.Basic",
-      "topic_count": 1,
+      "topic_count": 2,
       "topic_ids": [
-        "fep-005"
+        "fep-005",
+        "fep-045"
       ]
     },
     {
@@ -4882,7 +4883,7 @@
     "theorems": 2228,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
-    "topic_import_edges": 265,
+    "topic_import_edges": 266,
     "topic_theorems": 584,
     "topics": 168
   },
@@ -6966,6 +6967,7 @@
       "imports": [
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
         "Mathlib.Basic.Real.Basic",
+        "Mathlib.Data.Fintype.Basic",
         "Mathlib.Tactic.FieldSimp",
         "Mathlib.Tactic.Ring"
       ],

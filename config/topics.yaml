@@ -4299,28 +4299,28 @@ topics:
     likelihoods leave the prior parameter unchanged algebraically.
   acceptance_probe: native Lean compile of fep045_evidence_pos, fep045_posteriorParameter_mem_unit, fep045_bernoulli_posterior_closed,
     and fep045_posterior_mass_one.
-  lean_sketch: "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.FieldSimp\n\
-    import Mathlib.Tactic.Ring\n\nnamespace FEP045\n\n/-- Bernoulli mass function with `true` parameter `p`. -/\ndef fep045_bernoulliMass\
-    \ (p : ℝ) : Bool → ℝ\n  | false => 1 - p\n  | true => p\n\n/-- Binary evidence likelihood, indexed by the latent Boolean\
-    \ hypothesis. -/\ndef fep045_binaryLikelihood (l₀ l₁ : ℝ) : Bool → ℝ\n  | false => l₀\n  | true => l₁\n\n/-- Evidence\
-    \ normalizer for a Bernoulli prior and binary likelihood. -/\ndef fep045_evidence (p l₀ l₁ : ℝ) : ℝ :=\n  p * l₁ + (1\
-    \ - p) * l₀\n\n/-- Updated Bernoulli parameter after observing the binary evidence. -/\nnoncomputable def fep045_posteriorParameter\
-    \ (p l₀ l₁ : ℝ) : ℝ :=\n  p * l₁ / fep045_evidence p l₀ l₁\n\n/-- Interior priors and positive likelihoods have positive\
-    \ evidence. -/\ntheorem fep045_evidence_pos\n    {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ :\
-    \ 0 < l₁) :\n    0 < fep045_evidence p l₀ l₁ := by\n  exact add_pos (mul_pos hp₀ hl₁) (mul_pos (sub_pos.mpr hp₁) hl₀)\n\
-    \n/-- The updated Bernoulli parameter remains in the unit interval. -/\ntheorem fep045_posteriorParameter_mem_unit\n \
-    \   {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ : 0 < l₁) :\n    0 ≤ fep045_posteriorParameter\
-    \ p l₀ l₁ ∧\n      fep045_posteriorParameter p l₀ l₁ ≤ 1 := by\n  have hZ : 0 < fep045_evidence p l₀ l₁ :=\n    fep045_evidence_pos\
-    \ hp₀ hp₁ hl₀ hl₁\n  constructor\n  · exact div_nonneg (mul_nonneg hp₀.le hl₁.le) hZ.le\n  · apply (div_le_one hZ).2\n\
-    \    simp only [fep045_evidence]\n    exact le_add_of_nonneg_right (mul_nonneg (sub_nonneg.mpr hp₁.le) hl₀.le)\n\n/--\
-    \ Pointwise Bayes closure: normalized likelihood-times-prior mass is exactly\nthe Bernoulli family at the updated parameter.\
-    \ -/\ntheorem fep045_bernoulli_posterior_closed\n    {p l₀ l₁ : ℝ} (hZ : fep045_evidence p l₀ l₁ ≠ 0) (b : Bool) :\n \
-    \   fep045_bernoulliMass (fep045_posteriorParameter p l₀ l₁) b =\n      fep045_bernoulliMass p b * fep045_binaryLikelihood\
-    \ l₀ l₁ b /\n        fep045_evidence p l₀ l₁ := by\n  cases b\n  · simp only [fep045_bernoulliMass, fep045_binaryLikelihood,\n\
-    \      fep045_posteriorParameter]\n    field_simp [fep045_evidence]\n    simp only [fep045_evidence]\n    ring\n  · simp\
-    \ [fep045_bernoulliMass, fep045_binaryLikelihood,\n      fep045_posteriorParameter]\n\n/-- The conjugate posterior Bernoulli\
-    \ mass function remains normalized. -/\ntheorem fep045_posterior_mass_one (p l₀ l₁ : ℝ) :\n    ∑ b : Bool, fep045_bernoulliMass\
-    \ (fep045_posteriorParameter p l₀ l₁) b = 1 := by\n  simp [fep045_bernoulliMass]\n\nend FEP045\n"
+  lean_sketch: "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Fintype.Basic\n\
+    import Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.Ring\n\nnamespace FEP045\n\n/-- Bernoulli mass function with `true`\
+    \ parameter `p`. -/\ndef fep045_bernoulliMass (p : ℝ) : Bool → ℝ\n  | false => 1 - p\n  | true => p\n\n/-- Binary evidence\
+    \ likelihood, indexed by the latent Boolean hypothesis. -/\ndef fep045_binaryLikelihood (l₀ l₁ : ℝ) : Bool → ℝ\n  | false\
+    \ => l₀\n  | true => l₁\n\n/-- Evidence normalizer for a Bernoulli prior and binary likelihood. -/\ndef fep045_evidence\
+    \ (p l₀ l₁ : ℝ) : ℝ :=\n  p * l₁ + (1 - p) * l₀\n\n/-- Updated Bernoulli parameter after observing the binary evidence.\
+    \ -/\nnoncomputable def fep045_posteriorParameter (p l₀ l₁ : ℝ) : ℝ :=\n  p * l₁ / fep045_evidence p l₀ l₁\n\n/-- Interior\
+    \ priors and positive likelihoods have positive evidence. -/\ntheorem fep045_evidence_pos\n    {p l₀ l₁ : ℝ} (hp₀ : 0\
+    \ < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ : 0 < l₁) :\n    0 < fep045_evidence p l₀ l₁ := by\n  exact add_pos (mul_pos\
+    \ hp₀ hl₁) (mul_pos (sub_pos.mpr hp₁) hl₀)\n\n/-- The updated Bernoulli parameter remains in the unit interval. -/\ntheorem\
+    \ fep045_posteriorParameter_mem_unit\n    {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ : 0 < l₁)\
+    \ :\n    0 ≤ fep045_posteriorParameter p l₀ l₁ ∧\n      fep045_posteriorParameter p l₀ l₁ ≤ 1 := by\n  have hZ : 0 < fep045_evidence\
+    \ p l₀ l₁ :=\n    fep045_evidence_pos hp₀ hp₁ hl₀ hl₁\n  constructor\n  · exact div_nonneg (mul_nonneg hp₀.le hl₁.le)\
+    \ hZ.le\n  · apply (div_le_one hZ).2\n    simp only [fep045_evidence]\n    exact le_add_of_nonneg_right (mul_nonneg (sub_nonneg.mpr\
+    \ hp₁.le) hl₀.le)\n\n/-- Pointwise Bayes closure: normalized likelihood-times-prior mass is exactly\nthe Bernoulli family\
+    \ at the updated parameter. -/\ntheorem fep045_bernoulli_posterior_closed\n    {p l₀ l₁ : ℝ} (hZ : fep045_evidence p l₀\
+    \ l₁ ≠ 0) (b : Bool) :\n    fep045_bernoulliMass (fep045_posteriorParameter p l₀ l₁) b =\n      fep045_bernoulliMass p\
+    \ b * fep045_binaryLikelihood l₀ l₁ b /\n        fep045_evidence p l₀ l₁ := by\n  cases b\n  · simp only [fep045_bernoulliMass,\
+    \ fep045_binaryLikelihood,\n      fep045_posteriorParameter]\n    field_simp [fep045_evidence]\n    simp only [fep045_evidence]\n\
+    \    ring\n  · simp [fep045_bernoulliMass, fep045_binaryLikelihood,\n      fep045_posteriorParameter]\n\n/-- The conjugate\
+    \ posterior Bernoulli mass function remains normalized. -/\ntheorem fep045_posterior_mass_one (p l₀ l₁ : ℝ) :\n    ∑ b\
+    \ : Bool, fep045_bernoulliMass (fep045_posteriorParameter p l₀ l₁) b = 1 := by\n  simp [fep045_bernoulliMass]\n\nend FEP045\n"
   latex_equations:
   - '\begin{aligned}
 

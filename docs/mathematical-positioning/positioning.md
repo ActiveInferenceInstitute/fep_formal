@@ -19980,7 +19980,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `catalogue/bodies/continuous_time_thermodynamics.py` | `d233e8e33bcdb3f7ece4c7af61707a27a339039ddc560340ede0818c616e2959` |
 | `catalogue/bodies/controlled_markov.py` | `0717b3e72f966d93767cc1f359c4b0f6608714b849306bbe3e67c0248a5445e0` |
 | `catalogue/bodies/core_active_inference.py` | `9efae270dc2516b16ccf20572a0964980e5e41fe254fab111ab52fc99d133e99` |
-| `catalogue/bodies/core_bayesian_mechanics.py` | `a9383fe30c55c384c33a86057f8bcc99a9757281d1dee9695068e88f61926b63` |
+| `catalogue/bodies/core_bayesian_mechanics.py` | `0e200577408bfd817161b4622c11bd156f2d7516414eed9e8f99390171f2d88a` |
 | `catalogue/bodies/core_free_energy.py` | `060486982f126bbfb515272530574702ee33eec897eaf85bd65411eeefb0938c` |
 | `catalogue/bodies/core_information_geometry.py` | `0b6c247455728d498ddf68e606296e8546c6b7f9b0de330e4cab94605dace783` |
 | `catalogue/bodies/core_thermodynamics.py` | `937e6de554759c9e3c5fe0090d605f64a0181eb0e636c4af6ffd35d4a249f2f4` |

@@ -94,18 +94,18 @@ open MeasureTheory InformationTheory
 open scoped ENNReal
 
 noncomputable def fair : Measure Bool :=
-  (1 / 2 : ℝ≥0) • Measure.dirac true +
-    (1 / 2 : ℝ≥0) • Measure.dirac false
+  (1 / 2 : NNReal) • Measure.dirac true +
+    (1 / 2 : NNReal) • Measure.dirac false
 
 instance : IsProbabilityMeasure fair where
   measure_univ := by norm_num [fair]
 
-def potential (b : Bool) : ℝ := if b then Real.log 3 else 0
+noncomputable def potential (b : Bool) : ℝ := if b then Real.log 3 else 0
 
 theorem fair_integral (g : Bool → ℝ) :
     (∫ b, g b ∂fair) = (g true + g false) / 2 := by
   rw [fair, integral_add_measure (Integrable.of_finite) (Integrable.of_finite)]
-  norm_num [integral_smul_nnreal_measure, smul_eq_mul] <;> ring
+  norm_num [integral_smul_nnreal_measure, smul_eq_mul]; ring
 
 theorem normalizer : (∫ b, Real.exp (potential b) ∂fair) = 2 := by
   rw [fair_integral]
@@ -131,12 +131,12 @@ theorem tilted_ne_fair : fair.tilted potential ≠ fair := by
 theorem tilted_potential :
     (∫ b, potential b ∂fair.tilted potential) = 3 / 4 * Real.log 3 := by
   rw [integral_tilted, normalizer, fair_integral]
-  norm_num [potential, Real.exp_log (by norm_num : (0 : ℝ) < 3), smul_eq_mul] <;> ring
+  norm_num [potential, Real.exp_log (by norm_num : (0 : ℝ) < 3), smul_eq_mul]; ring
 
 theorem attained_real_gap :
     (klDiv (fair.tilted potential) fair).toReal =
       3 / 4 * Real.log 3 - Real.log 2 := by
-  have h := nativeKL_tilted_gap (fair.tilted potential) fair
+  have h := nativeKL_tilted_gap (fair.tilted potential) fair (f := potential)
     (tilted_absolutelyContinuous fair potential) (Integrable.of_finite)
     (Integrable.of_finite) (Integrable.of_finite)
   rw [klDiv_self, ENNReal.toReal_zero, tilted_potential, normalizer] at h
@@ -154,7 +154,8 @@ theorem cgf_bound :
       ProbabilityTheory.cgf potential fair 1) ≤
         klDiv (fair.tilted potential) fair := by
   simpa only [one_mul] using nativeCgf_le_klDiv
-    (fair.tilted potential) fair 1 (Integrable.of_finite) (Integrable.of_finite)
+    (fair.tilted potential) fair (X := potential) 1
+    (Integrable.of_finite) (Integrable.of_finite)
 
 theorem clipped_equality_without_tilt :
     ENNReal.ofReal ((∫ b, potential b ∂fair) -
@@ -185,7 +186,7 @@ theorem singular_kl :
   intro h
   have hzero : (Measure.dirac false : Measure Bool) {true} = 0 := by simp
   have hactual := h hzero
-  simpa using hactual
+  simp at hactual
 
 theorem singular_extended_bound :
     ENNReal.ofReal (Real.log 3) ≤

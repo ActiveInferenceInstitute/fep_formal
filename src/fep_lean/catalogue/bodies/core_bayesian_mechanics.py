@@ -703,6 +703,7 @@ end FEP042
 """,
     "fep-045": """import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 
