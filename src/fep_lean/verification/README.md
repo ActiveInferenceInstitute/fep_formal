@@ -1,8 +1,9 @@
 # `fep_lean.verification`
 
-Lean compilation and read-only capability validation for the standalone
-package. This layer does not import the LLM or pipeline packages and never
-downloads or builds dependencies during validation.
+Lean compilation and read-only capability validation for FEP_Formal's Python
+package. Ordinary package import does not load the pipeline. Full-mode
+credential inspection lazily reads Hermes configuration without making a
+provider request. Validation never downloads or builds dependencies.
 
 ## Modules
 
@@ -40,19 +41,14 @@ warnings, records `sorry`, and removes the temporary source before returning.
 Lake build tree.
 
 `check_mathlib_built()` returns `(ok, message)`, not compilation evidence. The
-native CLI receipt is the full-catalogue evidence boundary:
-
-```bash
-uv run fep-lean verify --fail-on-warnings \
-  --receipt output/native-verification.json
-uv run python scripts/audit_formalisms.py \
-  --receipt output/formalism-audit.json
-```
+native CLI receipt is the full-catalogue evidence boundary. Its invocation and
+the independent axiom audit are owned by the
+[root required-check inventory](../../../AGENTS.md#required-checks).
 
 The native catalogue receipt and formalism audit answer different questions.
 The former compiles all exact topic bodies; the latter resolves every primary
-and graph-evidence declaration through the topic aggregate and the manifested
-foundation/composition resources imported by `composed.lean`, and
+and graph-evidence declaration through the topic aggregate and manifest-selected
+foundation/composition imports, and
 requires a parsed `#print axioms` result for each declaration. Process success
 without complete axiom output, actual compiler/pin parity, an exact resolved
 Mathlib revision, or live projection parity makes the audit incomplete.
@@ -64,12 +60,9 @@ Warnings, `sorryAx`, and any axiom outside the versioned trusted set
 Mathlib, and credential requirements. Callers must inspect the returned status
 and rows; the number of checks is not an API constant.
 
-Dependency acquisition is explicit:
-
-```bash
-uv run fep-lean setup
-uv run fep-lean preflight
-```
+Dependency acquisition belongs to explicit `fep-lean setup`; `fep-lean preflight`
+only inspects capabilities. The [Lean workspace guide](../../../lean/README.md)
+explains the pins, setup and generated-resource ownership.
 
 See the local [agent contract](AGENTS.md) and the package-level
 [API reference](../../../docs/api.md).
@@ -77,7 +70,7 @@ See the local [agent contract](AGENTS.md) and the package-level
 ## Scoped numerical diagnostics
 
 `evaluate_numerical_witnesses(project_root, scope=None)` evaluates the shared
-typed registry. `scope="catalogue"` selects the existing 17 family witnesses;
+typed registry. `scope="catalogue"` selects the registered family witnesses;
 `scope="horizon2"` selects the scalar terminal and Fin4 blanket diagnostics.
 The atlas/dashboard and release witness receipt explicitly select catalogue
 scope. H2 acceptance consumes the two horizon witnesses through the same

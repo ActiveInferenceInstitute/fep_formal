@@ -1,5 +1,13 @@
 ## Unreleased
 
+- Present the project as FEP_Formal while preserving the `fep_lean` Python and
+  `fep-lean` CLI interfaces. Make root README the overview source and generate
+  its GitHub presentation with rebased links and a missing/stale projection
+  gate. Include maintained `.github` Markdown in strict link and hygiene scans.
+  Reconcile operator, module and agent documentation with current source owners,
+  validator typing, native timeouts, receipt schemas and credential-safe probes;
+  preserve dated evidence, release identities and scientific acceptance limits.
+
 - Accept the bounded retained-evidence, dead-helper, tooling and manuscript
   scopes [#113](https://github.com/ActiveInferenceInstitute/fep_formal/issues/113),
   [#115](https://github.com/ActiveInferenceInstitute/fep_formal/issues/115),

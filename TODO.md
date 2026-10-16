@@ -1,4 +1,4 @@
-# fep_lean — canonical open backlog
+# FEP_Formal — canonical open backlog
 
 Rescoped on 2026-10-06. Only open work belongs here; completed delivery and
 dated acceptance belong in [CHANGELOG.md](CHANGELOG.md) and retained history.

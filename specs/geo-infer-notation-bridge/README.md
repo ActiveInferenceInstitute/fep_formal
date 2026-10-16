@@ -8,7 +8,7 @@ Charter context:
 ## Goal
 
 Record, as reviewable data, the notation-level correspondence between
-fep_lean's maintained theorem proxies (the reviewed invariant rows of
+FEP_Formal's maintained theorem proxies (the reviewed invariant rows of
 `config/theorem_maturity.yaml`) and the implemented Active Inference surface
 of GEO-INFER-ACT (`src/geo_infer_act/` in the sibling GEO-INFER checkout).
 The mapping states correspondence of symbols and constructs between the two
@@ -17,7 +17,7 @@ repositories; it does not translate proofs, run code, or compare numbers.
 ## Fixed decisions (adapted from the GNN bridge charter)
 
 1. **Documentation-only.** The map is a documentation artifact. NO row may
-   claim that any GEO-INFER implementation is verified or proved by fep_lean,
+   claim that any GEO-INFER implementation is verified or proved by FEP_Formal,
    and no Lean proof claim is promoted by a notation row. Evidence planes
    stay distinct: Lean native compilation, semantic review, numerical
    witnesses, and Python execution remain separate evidence classes.

@@ -1,77 +1,57 @@
-# fep_lean/src/
+# FEP_Formal Python source
 
-**Version**: v1.6.0 | **Status**: Active | **Last Updated**: October 2026
+This directory contains the installable `fep_lean` package. The project is
+FEP_Formal; Python imports remain `fep_lean.*` and the console remains
+`fep-lean`. Public export definitions live in each package's `__init__.py`,
+with selected high-level operations exposed lazily by the package root.
 
-This directory contains the installable `fep_lean` package. Its eleven domain subpackages drive the FEP Lean
-pipeline. The layer runs end-to-end per-topic formalization sessions (LLM
-explanation + Lean 4 compilation + SQLite session capture), and emits the
-artifacts consumed by the manuscript stage (`manuscript_vars.yaml`, figures,
-per-topic markdown reports).
+## Package navigation
 
-## Subpackages
+| Package | Responsibility |
+| --- | --- |
+| [catalogue](fep_lean/catalogue/) | Maintained metadata, canonical family bodies, semantic review and deterministic catalogue projections. |
+| [methods](fep_lean/methods/) | Portable mathematical queries, source-text analysis, numerical boundary diagnostics and offline visual projections. |
+| [formal](fep_lean/formal/) | Canonical Lean foundations, composition leaves and the explicit resource manifest. |
+| [data](fep_lean/data/) | Generated catalogue and methods inputs installed with the wheel. |
+| [verification](fep_lean/verification/) | Environment probes, native Lean compilation, declaration/axiom audits and scoped receipt validation. |
+| [llm](fep_lean/llm/) | Explicit Hermes configuration and bounded provider requests. |
+| [gauss](fep_lean/gauss/) | SQLite session storage and strict per-topic orchestration. |
+| [output](fep_lean/output/) | Evidence receipts, reports, figures, manuscript rendering and release bundles. |
+| [pipeline](fep_lean/pipeline/) | Offline catalogue and credentialed full-mode orchestration. |
+| [bridge](fep_lean/bridge/) | Explicit GNN source custody, interchange and numerical comparison. |
+| [custody](fep_lean/custody/) | Evidence census, strict gates, staged refresh and committed-candidate resume. |
+| [prove2me](fep_lean/prove2me/) | Separately authorized remote formalization queries and submissions. |
 
-| Subpackage | Role | Key public API |
-| ---------- | ---- | -------------- |
-| [`fep_lean/catalogue/`](fep_lean/catalogue/) | Load the packaged sealed roster, family-owned bodies, and semantic review. | `FEPTopicCatalogue`, `TopicEntry`, `SemanticDisposition` |
-| [`fep_lean/methods/`](fep_lean/methods/) | Portable mathematical contracts, taxonomy, numerical boundaries and visual projections. | `build_mathematical_positioning`, `inspect_topic`, `export_mathematical_positioning` |
-| [`fep_lean/formal/`](fep_lean/formal/) | Manifested FEP/active-inference foundations, leaf composition proofs, import aggregate, and Lake projection. | `FORMAL_MODULES`, `formal_projection_drift`, `write_formal_projections` |
-| [`fep_lean/verification/`](fep_lean/verification/) | Lean 4 toolchain, workspace, declaration, and axiom checks. | `LeanVerifier`, `run_validation_checks`, `run_formalism_audit` |
-| [`fep_lean/llm/`](fep_lean/llm/) | Hermes LLM explainer (OpenRouter / Anthropic) with a configured fallback chain. | `HermesConfig`, `HermesExplainer`, `HermesResult`, `HermesAPIError` |
-| [`fep_lean/gauss/`](fep_lean/gauss/) | SQLite-backed session store and per-topic orchestrator. | `OpenGaussClient`, `SessionRecord`, `GaussRunner`, `TopicRunResult` |
-| [`fep_lean/output/`](fep_lean/output/) | Evidence receipts, source-preserving rendering, atlas, figures, and reports. | `validate_native_lean_receipt`, `build_formalism_atlas`, `Reporter` |
-| [`fep_lean/pipeline/`](fep_lean/pipeline/) | 4-stage FEP pipeline DAG + entry-point wrappers. | `FEPPipeline`, `PipelineResult`, `StepResult`, `run_pipeline`, `run_single_topic` |
-| [`fep_lean/bridge/`](fep_lean/bridge/) | Explicit GNN source pinning, emission and numerical comparison. | `pin_sources`, `check_sources`, `emit`, `verify_document` |
-| [`fep_lean/custody/`](fep_lean/custody/) | Evidence census, strict gates, staged refresh and committed-candidate resume. | `census`, `verify`, `Census`, `Expectations` |
-| [`fep_lean/prove2me/`](fep_lean/prove2me/) | Explicit authenticated remote formalization operations. | `Prove2meConfig`, `Prove2meClient`, `submit_solution`, `wait_for_verdict` |
+## Execution and evidence
 
-## Package boundaries
+The [root execution contract](../AGENTS.md#execution-contract) defines the CLI
+modes. Catalogue mode generates offline artifacts with no verified-topic claim;
+native verification compiles identified Lean sources; full mode additionally
+requires provider, persistence and workflow completion. Numerical comparisons,
+source-text analysis and visualizations keep their own explanatory boundaries.
 
-- `catalogue/` owns typed catalogue and publication-authoring policy. Its
-  coverage join resolves the `formal/` manifest and declarations; maintained
-  YAML and the validated family-body registry remain the named source owners.
-- `formal/` owns the reusable carriers and laws plus manifested leaf
-  composition modules; its workspace copies and import aggregate are generated,
-  never authored.
-- `verification/` consumes catalogue/formal declarations, bridge custody and
-  numerical witnesses. Environment validation checks Gauss availability;
-  explicit native verification owns Lean subprocesses.
-- `llm/` imports `catalogue.topics.TopicEntry` under `TYPE_CHECKING` only; at
-  runtime it depends only on `urllib` and `yaml`.
-- `gauss/` wires `llm/` + `verification/` + `catalogue/` into a per-topic
-  orchestration loop; this is the only module that owns the SQLite file.
-- `output/` consumes catalogue/formal models and upstream result dataclasses.
-  Explicit browser/publication acceptance can start bounded browser and renderer
-  processes; ordinary source/receipt freshness checks remain read-only.
-- `pipeline/` is the top-level DAG: it composes the runtime sibling packages and
-  exposes `run_pipeline()` / `run_single_topic()` for the console command and
-  thin checkout scripts.
-- `bridge/` validates an explicitly named sibling checkout. Numerical comparison
-  and native artifact verification have separate acceptance contracts.
-- `custody/` composes receipt validators and staged evidence refresh. A dependency
-  re-bind preserves recorded observations; it is not new execution evidence.
-- `prove2me/` owns authenticated remote proposals/submissions. Those operations
-  require their own explicit authorization and never run in catalogue mode.
+`gauss/client.py` owns SQLite state. Provider clients do not compile Lean or
+write sessions, and verification does not acquire dependencies during ordinary
+validation. Explicit setup owns dependency acquisition. The package contracts
+explain these seams and the ownership of generated outputs.
 
-## Import convention
+## Imports and installed use
 
-Internal modules prefer qualified subpackage paths, e.g.
+Use a narrow public import:
 
 ```python
 from fep_lean.catalogue import FEPTopicCatalogue
-from fep_lean.verification import LeanVerifier
-from fep_lean.gauss import GaussRunner
+
+catalogue = FEPTopicCatalogue.default()
 ```
 
-The package root (`fep_lean/__init__.py`) re-exports stable high-level symbols;
-subpackages remain the preferred narrow import surface. Obsolete top-level
-module names are intentionally not installed.
+The wheel installs the Python namespace, generated catalogue/methods data and
+formal Lean resources. Portable catalogue and methods APIs use those resources
+without a checkout. Operator workflows also need checkout-owned configuration,
+Lean and manuscript assets; the CLI validates those markers and accepts an
+explicit `--project-root` or `FEP_LEAN_PROJECT_ROOT` where applicable.
 
-The installed wheel owns imports plus packaged catalogue and formal Lean
-resources. Operator commands also need checkout-owned configuration, Lean, and
-manuscript assets; the console validates those markers and accepts an explicit
-`--project-root` instead of guessing that `site-packages` is a checkout.
-
-See [`AGENTS.md`](AGENTS.md) for the full export list, contract notes, and
-run-time wiring. The 4 recorded pipeline stages are documented in
-[`fep_lean/pipeline/README.md`](fep_lean/pipeline/README.md): Load Catalogue → Environment
-Validation → Gauss Sessions → Manuscript Artifacts.
+The [package guide](fep_lean/README.md) explains the interpreter and installed
+resource boundaries. The [source contract](AGENTS.md) and
+[root check inventory](../AGENTS.md#required-checks) govern changes; the
+[pipeline guide](fep_lean/pipeline/README.md) explains its recorded stages.

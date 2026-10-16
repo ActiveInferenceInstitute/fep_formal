@@ -1,4 +1,4 @@
-# fep_lean functional specification
+# FEP_Formal functional specification
 
 ## Scope
 
@@ -28,6 +28,9 @@ receipt interpretation are maintained in the
 generated projections.
 
 ## Public API
+
+FEP_Formal is the project name; `fep_lean` remains the Python distribution and
+import namespace, and `fep-lean` remains the installed command.
 
 ```python
 from fep_lean.pipeline.core import FEPPipeline

@@ -580,3 +580,23 @@ G02 closes.
 **Verdict:** document the eight exceptions; retire none.
 **Confidence:** high for the hash/consumer inventory, with no new execution or
 scientific acceptance inferred.
+
+## Canonical project identity and GitHub README projection
+
+**Choice:** use FEP_Formal for project-facing prose, retain the real `fep_lean`
+Python distribution/import and `fep-lean` CLI, and author the project overview
+once in root `README.md`. Generate `.github/README.md` from that source with
+local Markdown destinations rebased for the `.github` location.
+
+**Reason:** the package identifier had become the public project heading, and
+maintaining two authored landing pages would allow the displayed page and the
+packaging overview to drift. The existing link auditor owns deterministic
+projection and missing/stale refusal; its normal `--include-root` gate also
+covers maintained GitHub Markdown. The hygiene scanner uses the same scope.
+
+**Boundaries:** code examples, import paths, environment variables, external
+integration names, citation versions, generated scientific projections and
+historical evidence retain their actual identities. This documentation work
+changes no carrier, theorem, scientific disposition, capture controller or
+production/runtime acceptance requirement. New gate controls require source
+review and actual hosted execution; static inspection is not a test pass.

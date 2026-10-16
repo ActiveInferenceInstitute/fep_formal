@@ -1,8 +1,10 @@
 # Packaged data contract
 
-This directory contains generated package resources only. Edit canonical
-metadata, theorem-maturity review, novelty review, or family-owned Lean bodies and then run
-`scripts/_maint_build_topics_catalogue.py`.
+This directory contains generated package resources. Follow the canonical owner
+mapping in [README.md](README.md): catalogue projection and portable methods
+inputs have different generators. Regenerate through the appropriate owner and
+check its drift mode after changing maintained inputs.
 
-The checkout and packaged YAML projections must remain byte-identical. Do not
-add runtime secrets, local paths, receipts, or hand-maintained overrides here.
+Checkout and packaged projections must remain byte-identical to their owners.
+Do not add runtime secrets, local paths, receipts or hand-maintained overrides.
+A packaged resource is source data, not native or scientific acceptance.

@@ -1,8 +1,9 @@
 # `fep_lean.llm`
 
-This package owns the provider-facing Hermes client. It uses the standard
-library HTTP stack, returns structured `HermesResult` values, and has no import
-or network side effects.
+This package owns FEP_Formal's provider-facing Hermes client. It uses the
+standard-library HTTP stack and returns structured `HermesResult` values.
+Importing it reads no credentials and makes no request; explicit client
+operations perform bounded provider calls.
 
 ## Public API
 
@@ -19,6 +20,9 @@ from fep_lean.llm import (
 budgets, fallbacks, cache lifetime, and credentials. Environment variables
 override checkout settings. The optional `GAUSS_HOME/.env` reader accepts only
 an explicit allowlist and never overrides an existing environment value.
+Its default hydration can fill missing process-environment values;
+`hydrate_environment=False` uses a private effective mapping for read-only
+configuration inspection. Neither configuration path sends a provider request.
 
 `HermesExplainer.explain_topic(topic, preamble=...)` returns a result containing
 the explanation, refined Lean block, reasoning text, model, token count,

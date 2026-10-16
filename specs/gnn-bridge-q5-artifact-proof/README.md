@@ -100,7 +100,7 @@ fail. That native rejection test passed; exact results are recorded in the deliv
 
 ## Reproduction and retained checks
 
-Run from the `fep_lean` repository root. Set `GNN_ROOT` to the actual GNN
+Run from the FEP_Formal repository root. Set `GNN_ROOT` to the actual GNN
 checkout. An existing current source pin and finite input are prerequisites;
 these commands do not silently re-pin or reinterpret stale inputs.
 

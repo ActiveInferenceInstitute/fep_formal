@@ -83,7 +83,7 @@ uv run python scripts/verify_report_receipt.py output/reports/run_...
 uv run python scripts/verify_report_receipt.py \
   output/reports/run_... --require-complete
 uv run python scripts/verify_report_receipt.py \
-  output/reports/run_... --project-root /path/to/fep_lean --require-complete
+  output/reports/run_... --project-root /path/to/fep_formal --require-complete
 ```
 
 The validator:

@@ -18,9 +18,8 @@ no new native, production-capture, study or scientific acceptance.
 62 then-open Issues and all 63 package contracts: H00 and H01 deliberately
 share Issue 55's migration/export obligation. The original 24 acceptance
 contracts are preserved; 39 additional packages cover the previously unmapped
-Issues. This publication records five accepted packages and prospectively closes
-their five Issues when its documentation PR merges, leaving 57 open Issues and
-58 unaccepted packages. All 63 contracts remain available with their source-bound
+Issues. The accepted documentation publication closed five Issues, leaving 57 open
+Issues and 58 unaccepted packages at that checkpoint. All 63 contracts remain available with their source-bound
 dispositions. Each records an
 outcome, predecessors, owner, stop/go probe, no-go edge, target, witnesses,
 checks, evidence plane, review and excluded stronger claim. Issue links and
@@ -134,16 +133,19 @@ controls passed without reaccepting historical terminal evidence. Its
 also passed all 21 executed checks, including all 15 distribution cells; the
 documentation-only lane was intentionally skipped.
 
-G02/P02/T01/D02/D03 have bounded acceptance on `f5c39fe`. This documentation
-publication prospectively closes Issues
+G02/P02/T01/D02/D03 have bounded acceptance on `f5c39fe`. Their documentation
+publication merged as `bea6b9c` and closed Issues
 [113](https://github.com/ActiveInferenceInstitute/fep_formal/issues/113),
 [115](https://github.com/ActiveInferenceInstitute/fep_formal/issues/115),
 [130](https://github.com/ActiveInferenceInstitute/fep_formal/issues/130),
 [140](https://github.com/ActiveInferenceInstitute/fep_formal/issues/140) and
 [144](https://github.com/ActiveInferenceInstitute/fep_formal/issues/144), and
-removes only those five open TODO rows when the PR merges. Broader G01/Issue63
+removed only those five accepted TODO rows. Broader G01/Issue63
 and dependent D04/Issue146 remain open. The package matrix retains the accepted
 contracts and their exact-source evidence.
+[PR180](https://github.com/ActiveInferenceInstitute/fep_formal/pull/180) and its
+[exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38825444108)
+record the accepted documentation publication; all 21 executed checks passed.
 
 The L01 foundation pass replaced all six blanket tactic imports and
 declared two newly exposed consumer dependencies. All 73 workspace modules
@@ -174,8 +176,9 @@ R01's [attributed current-4.35 spike](spikes/finite_kernel_category.lean) retain
 its feasibility epoch. Its
 [package successor PR179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179)
 has a separately reviewed 72-resource package port at head
-`787732223f592c0c1ef32cab583e23066b68d63d`.
-Its [PR workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38812190034)
+`58429a3f2a5098264416ac617317ba8b7b1b23ca`, integrating the accepted main
+documentation without changing the category proof or projection bytes from
+`7877322`. Its [PR workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38826047779)
 passed with independently authenticated 2953 Python passes, 20 skips, 91.64%
 coverage, 594 serial passes and five skips, 168 clean native topics, 1883
 resolved declarations with 1752 evidence entries, and a 388-page render with

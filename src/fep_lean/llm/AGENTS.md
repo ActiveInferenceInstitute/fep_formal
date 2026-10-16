@@ -20,13 +20,12 @@ readiness.
 - A refined code block is candidate source, not proof. The Gauss/verification
   layers own compilation and provenance.
 
-## Focused gates
+## Verification
 
-```bash
-uv run pytest tests/test_hermes_comprehensive.py \
-  tests/test_hermes_error_paths.py \
-  tests/test_hermes_explainer.py -q --no-cov
-```
+The focused fixture contracts live in `tests/test_hermes_comprehensive.py`,
+`tests/test_hermes_error_paths.py` and `tests/test_hermes_explainer.py`.
+Use the [root required-check inventory](../../../AGENTS.md#required-checks)
+for project acceptance.
 
 Live provider tests require an explicitly supplied credential and are not part
 of ordinary local acceptance.

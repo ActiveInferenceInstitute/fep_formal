@@ -1,4 +1,4 @@
-# Configuration authoring contract
+# FEP_Formal configuration authoring contract
 
 Edit only the file that owns the intended concept:
 
@@ -43,16 +43,14 @@ topic generator, inspect both checkout and package-data projections, and use
   coverage and live configuration.
 - Never store provider credentials in YAML.
 
-## Focused gates
+## Maintenance checks
 
-```bash
-uv run python scripts/_maint_build_topics_catalogue.py --check
-uv run python scripts/theorem_maturity_audit.py --check
-uv run python scripts/build_formalism_coverage.py --check
-uv run fep-lean atlas --check
-uv run pytest tests/test_fep_topics.py tests/test_semantics.py \
-  tests/test_formalism_relations.py tests/test_formalism_coverage.py -q --no-cov
-```
+Use the [root required-check inventory](../AGENTS.md#required-checks) for
+projection, semantic, coverage and Markdown gates. The focused source contracts
+are exercised by `tests/test_fep_topics.py`, `tests/test_semantics.py`,
+`tests/test_formalism_relations.py` and `tests/test_formalism_coverage.py`.
+Portable methods inputs have a separate generated-package owner, described in
+[the packaged-data guide](../src/fep_lean/data/README.md).
 
 See [README.md](README.md) for the file schema and [SPEC.md](SPEC.md) for the
 ownership model.

@@ -61,7 +61,7 @@ A Lean definition is projectable when the projection is mechanical:
 
 ## Pipeline stages
 
-fep_lean side (evidence commands per `docs/cli-reference.md`):
+FEP_Formal side (evidence commands per `docs/cli-reference.md`):
 
 ```bash
 uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json

@@ -6,7 +6,7 @@ that census, and a staged, dependency-ordered refresh that re-binds stale
 evidence without touching the live `specs/` tree.
 
 ```text
-census → verify gate → apply (14 phases, staged) → verify set → optional native capture
+census → verify gate → apply (staged dependency order) → verify set → optional native capture
 ```
 
 ## Census
@@ -38,7 +38,7 @@ Use `uv run fep-lean custody --help`. The `--project-root` option selects the
 repository; `--specs-dir` defaults to `<project-root>/specs`.
 
 - `census` prints a JSON drift report and writes nothing.
-- `apply --output-dir DIR` gates, then walks the settled 14-phase order
+- `apply --output-dir DIR` gates, then walks the settled dependency order
   (`PHASE_ORDER`) and flushes a staged copy of the specs tree into `DIR`.
   `DIR` must be empty and must not be the live specs tree. Repo-side surfaces
   are never written; they come back as byte-replacement directives for the
@@ -46,7 +46,9 @@ repository; `--specs-dir` defaults to `<project-root>/specs`.
 - `refresh --reason TEXT` composes census, stop-gate, apply, the read-only
   verify set, the pre-capture owner gate, and, with `--native`, the native Lean
   capture. Capture needs a committed clean tip and fails closed.
-  - `--plan` is a read-only planning pass that journals state `planned`.
+  - `--plan` leaves the input tree unchanged and skips apply/test/audit
+    subprocesses. It writes a plan journal in state `planned`, so it is not a
+    filesystem-write-free inspection.
   - `--fixpoint --output-dir DIR` runs a bounded staged fixpoint
     (`--max-rounds`, default 4) and journals state `awaiting-commit`.
   - `--resume JOURNAL-DIR --output-dir DIR` completes a journal against the
@@ -67,3 +69,6 @@ ok, problems = verify(census(specs_dir, repo_root), GATE_EXPECTATIONS)
 
 Tests (`tests/test_custody_*.py`) build synthetic, hermetic epochs under
 `tmp_path`; they do not reaccept historical evidence or run the compiler.
+
+Follow the [local contract](AGENTS.md) and the
+[root required-check inventory](../../../AGENTS.md#required-checks).

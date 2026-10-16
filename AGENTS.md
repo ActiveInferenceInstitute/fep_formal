@@ -1,11 +1,14 @@
-# AGENTS.md — fep_lean
+# AGENTS.md — FEP_Formal
 
 ## Purpose
 
-Standalone 168-topic FEP / Active Inference / Bayesian Mechanics / Information
-Geometry / Thermodynamics catalogue with Lean 4 source, Hermes integration,
-OpenGauss SQLite persistence, deterministic manuscript artifacts, and strict
-reports.
+FEP_Formal is a standalone 168-topic FEP / Active Inference / Bayesian
+Mechanics / Information Geometry / Thermodynamics catalogue with Lean 4 source,
+Hermes integration, OpenGauss SQLite persistence, deterministic manuscript
+artifacts and strict reports. The repository is `fep_formal`; the Python
+distribution/import namespace is `fep_lean` and the executable is `fep-lean`.
+Preserve those package, CLI, environment-variable and Lean namespace interfaces
+when updating project-facing prose.
 
 ## Terminology
 
@@ -23,6 +26,7 @@ promote the semantic disposition or prove the full FEP concept.
 | Document | Role | Status |
 | --- | --- | --- |
 | [README.md](README.md) | Project overview, first run, release line, contracts | Authoritative |
+| [.github/README.md](.github/README.md) | GitHub landing projection of the root README, with rebased local links | Generated; edit the root README |
 | [AGENTS.md](AGENTS.md) | This agent contract; per-directory `AGENTS.md` files refine it | Authoritative |
 | [CLAUDE.md](CLAUDE.md) | Claude Code entry point that imports this contract | Authoritative (pointer) |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Environment, check tiers, repository rules, PR conventions | Authoritative |
@@ -97,6 +101,28 @@ Never hand-edit `config/topics.yaml`, `src/fep_lean/data/topics.yaml`,
 `docs/formalism-coverage.*`, `docs/formalism-atlas.*`, or generated manuscript
 output. Use the owner-provided generators and their `--check` modes.
 
+## Maintaining documentation
+
+Use **FEP_Formal** for the project and `fep_formal` for the checkout/repository.
+Use `fep_lean` for the real Python distribution/import namespace and `fep-lean`
+for the CLI. Historical titles, external integration paths, environment
+variables, citation versions and accepted receipts retain their exact identities.
+
+Root `README.md` is the canonical project overview and packaging long description.
+`.github/README.md` is its generated GitHub presentation, with local links rebased
+from the `.github` directory. After editing the root overview, regenerate it with
+`uv run python docs/check_links.py --write-github-readme`; do not edit the mirror
+by hand. The existing strict `--include-root` link check also refuses missing or
+stale mirror bytes and scans maintained `.github` Markdown. See
+[.github/AGENTS.md](.github/AGENTS.md) for repository presentation and workflow rules.
+
+Directory READMEs explain responsibility and entry points; their AGENTS files
+state local ownership and verification constraints. Keep the required-check list
+below as its single owner, and link to canonical configuration or generated
+inventories rather than copying changing rosters. Audit maintained prose against
+actual source behavior. Mark dated reviews as dated, and preserve frozen specs,
+receipt-bound captures and generated outputs under their existing contracts.
+
 ## Execution contract
 
 - `uv run fep-lean catalogue` is explicit offline mode. It creates deterministic
@@ -121,9 +147,10 @@ output. Use the owner-provided generators and their `--check` modes.
   typed exact checks with per-check tolerances, and boundary behavior.
 - `uv run fep-lean run` is strict full mode. It requires configured Hermes,
   OpenGauss, Lean, Lake, and a complete pinned Mathlib build. This is the default
-  for the programmatic API. It also requires `gauss doctor`, writable configured
-  output and persistence destinations, and Hermes credentials as defined in
-  [Configuration](docs/configuration.md). It executes one Hermes + Lean +
+  for the programmatic API. It also requires the isolated `gauss --version` availability probe,
+  writable configured output and persistence destinations, and Hermes
+  credentials as defined in [Configuration](docs/configuration.md). The
+  [OpenGauss guide](docs/opengauss.md) owns the credential-safe probe behavior. It executes one Hermes + Lean +
   SQLite session per selected topic. Every selected row must compile without
   `sorry` or Lean warnings, and a requested review workflow must complete its
   post-compile review turn. A topic succeeds only when the Hermes-derived
@@ -181,6 +208,10 @@ scripts and docs at the Python 3.14 validator target. Ruff retains Python 3.10
 syntax compatibility, and the installed-wheel matrix checks the packaging floor
 separately. Exceptions preserve declared error or compatibility contracts and
 must be justified at the affected line.
+
+For credential-free local test runs, set `FEP_LEAN_LIVE_TESTS=0` explicitly.
+The [test contract](tests/AGENTS.md) explains the provider families whose
+selection can otherwise depend on ambient credentials.
 
 Hosted Python, isolated Chrome and serial Lean pytest components retain their
 complete warning-inventory logs with CLI warning visibility enabled. This
