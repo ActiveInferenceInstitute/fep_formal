@@ -515,6 +515,43 @@ def test_slow_http_error_body_obeys_wall_clock_and_closes_reader(
     assert started.is_set() and body.closed and finished.wait(1)
 
 
+def test_response_arriving_after_deadline_is_closed_without_reading(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    opened, release, closed = threading.Event(), threading.Event(), threading.Event()
+    reads: list[int] = []
+
+    class LateBody(io.BytesIO):
+        def read(self, size: int = -1) -> bytes:
+            reads.append(size)
+            return super().read(size)
+
+        def close(self) -> None:
+            super().close()
+            closed.set()
+
+    with LateBody(b"late error body") as body:
+
+        def late_response(*_args: object, **_kwargs: object) -> object:
+            opened.set()
+            assert release.wait(2)
+            raise urllib.error.HTTPError(
+                "https://example.invalid", 503, "error", None, body
+            )
+
+        monkeypatch.setattr(client_module.urllib.request, "urlopen", late_response)
+        try:
+            with pytest.raises(Prove2meTransportError, match="wall-clock timeout"):
+                client_module._UrllibTransport().send(
+                    "GET", "https://example.invalid", {}, None, 0.2
+                )
+            assert opened.wait(1)
+        finally:
+            release.set()
+        assert closed.wait(1)
+        assert reads == []
+
+
 def test_streaming_loopback_http_error_shutdown_precedes_blocking_close(
     httpserver: HTTPServer,
 ) -> None:

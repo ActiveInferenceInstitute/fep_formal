@@ -99,6 +99,7 @@ class _UrllibTransport:
         )
         result: dict[str, Any] = {}
         response_holder: list[Any] = []
+        cancelled = threading.Event()
 
         def _do_request() -> None:
             try:
@@ -110,6 +111,8 @@ class _UrllibTransport:
                     response = error_response
                 with response as resp:
                     response_holder.append(resp)
+                    if cancelled.is_set():
+                        return
                     result["status"] = int(resp.status)
                     chunks: list[bytes] = []
                     total = 0
@@ -135,6 +138,7 @@ class _UrllibTransport:
         worker.start()
         worker.join(timeout=timeout_s)
         if worker.is_alive():
+            cancelled.set()
             # Release the parked worker's socket buffer instead of letting it
             # accumulate until the endpoint closes the stream (see hermes.py).
             self._shutdown_response(response_holder[0] if response_holder else None)

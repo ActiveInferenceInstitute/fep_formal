@@ -4,7 +4,8 @@
   Python and Chrome warning inventories. Register the shared fixture owner for
   assertion rewriting before ordinary imports, and close HTTP error responses
   in the pin checker and Prove2me transport. Error bodies now use the same
-  worker deadline and byte cap as successful responses. Real HTTP 401 responses
+  worker deadline and byte cap as successful responses; late responses close
+  before any body read after cancellation. Real HTTP 401 responses
   now follow the existing single re-exchange policy. Preserve typed API errors
   and credential redaction; regression controls cover response
   closure, oversized and stalled error bodies, and real plugin import order.
