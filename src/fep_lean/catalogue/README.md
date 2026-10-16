@@ -1,7 +1,8 @@
 # `fep_lean.catalogue`
 
-Typed catalogue ownership and deterministic projections for the schema-2
-168-topic formalism roster.
+Typed catalogue ownership and deterministic projections for FEP_Formal's
+schema-2 roster. The maintained roster seal is owned by
+[`catalogue_metadata.yaml`](../../../config/catalogue_metadata.yaml).
 
 ## Authoring graph
 
@@ -54,3 +55,8 @@ resolves both kinds plus capability witnesses. Its rows are not copied into
 Edit only the maintained inputs, then run the project-root generators and
 their `--check` modes. Never hand-edit a generated YAML, aggregate Lean file,
 audit table, coverage projection, or atlas.
+
+The [root source map](../../../AGENTS.md#source-of-truth) owns the complete
+projection chain and its [required checks](../../../AGENTS.md#required-checks).
+Portable methods package copies have a separate generator; see the
+[packaged-data contract](../data/AGENTS.md).

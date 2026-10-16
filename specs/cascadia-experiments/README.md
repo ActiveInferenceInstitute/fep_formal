@@ -22,10 +22,13 @@ Cross-checkout paths above are prose references. No foreign package is imported.
 
 ## Generate a worksheet
 
-Use the mounted GitVault checkout and `TMPDIR` / `UV_CACHE_DIR` task directories
-on that volume outside the repository, with `UV_LINK_MODE=copy`. Installed-wheel
-and catalogue isolation tests require temporary projects outside the source
-checkout. These are environment bindings, not model assumptions or proof inputs.
+Use a writable checkout with sufficient free space and task-owned `TMPDIR` /
+`UV_CACHE_DIR` directories on the intended workspace volume, outside the
+repository. Use `UV_LINK_MODE=copy` when the filesystem or isolation policy
+requires it. Installed-wheel and catalogue isolation tests require temporary
+projects outside the source checkout. Respect the selected controller's resource
+prerequisites; these environment bindings do not change model assumptions or
+proof inputs.
 
 From this checkout, pass one retained condition directory containing the GNN
 source, artifact, and domain sidecar:

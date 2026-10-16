@@ -1,18 +1,23 @@
-# Packaged catalogue data
+# FEP_Formal packaged data
 
-`topics.yaml` is the wheel-readable, byte-identical projection of the checkout
-`config/topics.yaml`. It is generated from metadata, theorem maturity, the
-validated novelty ledger, and canonical family-owned Lean bodies; never edit it
-by hand.
+These YAML resources let the installed package load the catalogue and portable
+methods inputs without relying on a checkout.
 
-`FEPTopicCatalogue.default()` reads this resource through `importlib.resources`
-so the installed package does not depend on the source checkout.
+- `topics.yaml` is the byte-identical generated projection of
+  `config/topics.yaml`. Its canonical metadata, semantic review, novelty ledger
+  and family-owned bodies are joined by
+  [`_maint_build_topics_catalogue.py`](../../../scripts/_maint_build_topics_catalogue.py).
+- The remaining portable methods inputs are exact copies of maintained
+  configuration and positioning policy. Their complete owner mapping is
+  `RESOURCES` in
+  [`generate_package_methods.py`](../../../specs/openai-math-methods/generate_package_methods.py).
 
-## Freshness boundary (SC-40)
+Use each generator's `--check` mode to inspect freshness. Never edit a package
+copy to hide drift in its canonical input.
 
-Byte-identity between this packaged copy and `config/topics.yaml` is enforced
-at write time by the generator and in CI (`_maint_build_topics_catalogue.py
---check`), but there is **no runtime drift probe**: `FEPTopicCatalogue.default()`
-trusts the packaged bytes as loaded. Outside a checkout, a stale packaged copy
-is invisible to the catalogue loader — checkout-as-truth remains the model,
-and the CI check is the only freshness guarantee.
+`FEPTopicCatalogue.default()` validates the packaged catalogue it reads; it does
+not compare it with an external checkout. Generator checks establish that
+checkout/package byte parity at a named source epoch. Methods analysis has its
+own source/runtime consistency checks, described in the
+[methods contract](../methods/AGENTS.md). Schema validity, projection freshness
+and native evidence remain separate facts.

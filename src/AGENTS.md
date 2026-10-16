@@ -1,41 +1,30 @@
-# fep_lean/src/
+# FEP_Formal source contract
 
-**Version**: v1.6.0 | **Status**: Active | **Last Updated**: October 2026
+The installable namespace is `fep_lean`; `src/` is the packaging layout, not an
+importable package. Keep the `fep-lean` console name and existing public Python
+imports stable when changing project-facing documentation.
 
-The installable package is rooted at `src/fep_lean/`; `src/` is only the
-standard packaging layout and is not itself importable.
+The [source guide](README.md) owns package navigation. Each subpackage's
+`__init__.py` owns its public exports; the root
+[`fep_lean/__init__.py`](fep_lean/__init__.py) lazily exposes selected high-level
+operations. Use qualified `fep_lean.*` imports rather than recreating obsolete
+top-level packages such as `catalogue`, `pipeline` or `output`.
 
-## Directory Structure
-The package is divided into eleven domain subpackages. The public root
-`fep_lean/__init__.py` re-exports the stable high-level entrypoints. There are
-no compatibility modules named `catalogue`, `pipeline`, or `output`.
+## Maintenance boundaries
 
-| Subpackage | Responsibility | Key Exports |
-|---|---|---|
-| `fep_lean/catalogue/` | Typed semantic and catalogue model | `FEPTopicCatalogue`, `SemanticDisposition` |
-| `fep_lean/methods/` | Portable mathematical positioning and boundary diagnostics | `build_mathematical_positioning`, `inspect_topic` |
-| `fep_lean/formal/` | Packaged cross-topic Lean resources | `formal_projection_drift` |
-| `fep_lean/verification/` | Lean 4 / Lake verification and declaration audit | `LeanVerifier`, `run_formalism_audit` |
-| `fep_lean/gauss/` | OpenGauss SQLite & Runner | `OpenGaussClient`, `GaussRunner` |
-| `fep_lean/llm/` | LLM API interface (Hermes) | `HermesExplainer`, `HermesConfig` |
-| `fep_lean/output/` | Evidence and artifact generation | `validate_native_lean_receipt`, `build_formalism_atlas`, `Reporter` |
-| `fep_lean/pipeline/` | Orchestration (4-stage DAG) | `FEPPipeline`, `run_pipeline`, `run_single_topic` |
-| `fep_lean/bridge/` | Explicit GNN custody and interchange | `pin_sources`, `emit`, `verify_document` |
-| `fep_lean/custody/` | Evidence census, staged refresh and resume | `census`, `verify`, `Census` |
-| `fep_lean/prove2me/` | Explicit authenticated remote formalization | `Prove2meConfig`, `Prove2meClient` |
+- Follow the [package contract](fep_lean/AGENTS.md) and the affected module's
+  local contract before editing an owner.
+- Keep generated package data and Lake projections synchronized through their
+  declared generators. Edit their canonical inputs rather than their copies.
+- Preserve offline catalogue use, explicit provider operations and native
+  verification as separate execution paths.
+- Source/import consistency, native receipts, full-mode reports and scientific
+  acceptance have different validators. A successful import supplies none of
+  the latter claims.
+- Public API or packaged-resource changes require import-surface and isolated
+  wheel verification; project checks remain owned by the
+  [root required-check inventory](../AGENTS.md#required-checks).
 
-## Imports
-
-Internal modules use qualified subpackage imports for modularity:
-
-```python
-from fep_lean.catalogue import FEPTopicCatalogue
-from fep_lean.verification import LeanVerifier
-```
-
-The `fep_lean.*` namespace is required both from a checkout and an installed
-wheel. Tests include an isolated wheel/import/CLI smoke to pin that contract.
-
-## See also
-
-- [../AGENTS.md](../AGENTS.md)
+The [root source map](../AGENTS.md#source-of-truth) owns executable/formal source
+rosters and their coordinated evidence-refresh policy. New source files must
+follow that policy before a receipt can bind them.

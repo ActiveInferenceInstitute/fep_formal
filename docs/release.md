@@ -22,7 +22,8 @@ acceptance probes. They are reported honestly in release notes, never claimed:
 
 - the frozen H3 study (export, single primary run, outcome reviews);
 - full seven-stage publication capture and two-archive parity;
-- the installed-wheel runtime matrix and read-only status controls;
+- additional runtime investigations and read-only status controls beyond the
+  required installed-wheel matrix;
 - Q7 generated-runner execution and GNN bridge work;
 - optional provider (Hermes/OpenGauss) runs;
 - the nine-criterion closure audit.
@@ -48,8 +49,8 @@ A release changes no scientific claim. Unrun lanes stay described as unrun.
 6. Tag and publish:
 
    ```bash
-   git tag -a vX.Y.Z -m "fep_lean vX.Y.Z" && git push origin vX.Y.Z
-   gh release create vX.Y.Z dist/* --title "FEP_Lean vX.Y.Z — title" \
+   git tag -a vX.Y.Z -m "FEP_Formal vX.Y.Z" && git push origin vX.Y.Z
+   gh release create vX.Y.Z dist/* --title "FEP_Formal vX.Y.Z — title" \
      --notes-file /tmp/notes.md
    ```
 

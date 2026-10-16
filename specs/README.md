@@ -6,6 +6,21 @@ was verified at acceptance time and stay as they were accepted. Editing a
 closed spec's evidence values is prohibited; historical receipts are
 annotated, never rewritten.
 
+## Reading specifications
+
+Use the [active campaign](comprehensive-next-steps/README.md) for the current
+implementation order and [open backlog](../TODO.md) for delivery status. A
+slice README can retain its original design, recorded acceptance or failed
+attempt even when its directory is outside `done/`. Read its dated status,
+source bindings and report before treating a statement as current execution.
+Current project naming is FEP_Formal; historical `fep_lean` names and foreign
+integration paths remain valid identities for their recorded epochs.
+
+Maintained operational guidance belongs to the [repository contract](../AGENTS.md)
+and [documentation index](../docs/README.md). Receipt-bound captures, frozen
+study material and generated integration outputs retain their owner contracts;
+refreshing the landing page does not authorize altering them.
+
 ## Acceptance-artifact conventions
 
 [`comprehensive-next-steps`](comprehensive-next-steps/README.md) owns the active

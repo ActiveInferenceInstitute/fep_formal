@@ -188,7 +188,7 @@ byte-identical. The strict loader checks the generated schema before execution.
 Use the canonical local commands above. Editor integrations should invoke the
 same pinned Lake workspace rather than a separately discovered compiler.
 
-## Mathlib4 modules used in fep_lean {#mathlib4-modules-used-in-fep_lean}
+## Mathlib4 modules used in FEP_Formal {#mathlib4-modules-used-in-fep_lean}
 
 Each canonical body declares the narrow Mathlib modules it needs; the generated
 coverage map records distinct modules and topic-to-import edges. The metadata

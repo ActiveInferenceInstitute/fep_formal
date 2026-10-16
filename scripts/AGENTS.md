@@ -48,9 +48,9 @@ end-to-end render in the `render` job, and between renders on the committed
 receipt alone. The committed receipt is the gate that keeps a source change
 edited without a fresh render from merging.
 
-The receipt is bound to a digest over every typeset manuscript source plus
-`manuscript/preamble.md`, so a chapter or a font selection changed without a
-fresh render fails CI. The digest binds the byte-exact generated appendix too
+The version-2 receipt binds every typeset manuscript source, including
+`manuscript/preamble.md`, plus the cover configuration and bibliography, so
+changing these inputs without a fresh render fails CI. The digest binds the byte-exact generated appendix too
 (e.g. `09z_unified_formalism_catalogue.md`), so a `src/` count change that
 regenerates it via `fep-lean catalogue` moves the digest and stales the
 receipt; `manuscript_projection_drift` and `stale_render_defects` own the

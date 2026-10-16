@@ -4,6 +4,10 @@ Status: locally accepted. Baseline: `50a4a9578e661ff61fbd729c5d546b30ecf209d5`
 (verified Lean/Mathlib migration). Lean/Mathlib: `v4.35.0`; Mathlib revision
 `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 
+The [accepted integrated checkpoint](../../ISA.md#current-assessment) owns the
+latest main-branch acceptance. The local and hosted records below retain their
+original source epochs, including the failed migration attempt and its repairs.
+
 ## Outcome and scope
 
 Strengthen existing finite variational/control and path-space foundations,

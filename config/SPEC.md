@@ -1,4 +1,4 @@
-# Configuration specification
+# FEP_Formal configuration specification
 
 The `config/` directory contains runtime settings and maintained publication
 inputs. It does not contain executable code.
@@ -23,7 +23,9 @@ inputs and write both checkout and package-data YAML.
 
 - Topic IDs match the `catalogue_metadata.yaml` roster seal, are ordered and
   unique, and belong to exactly one declared family.
-- Maintained mappings reject missing and unknown fields.
+- Catalogue and semantic review schemas reject missing and unknown fields.
+  Runtime settings use their named consumer contracts; they are not validated
+  by the catalogue row schema.
 - A primary theorem must resolve in its canonical Lean body.
 - Semantic disposition is independent of `mathlib_status` and compilation.
 - Relation edges require a rationale; `blocked_by` targets capabilities, while
@@ -41,13 +43,10 @@ inputs and write both checkout and package-data YAML.
   `FEPComposed` bridge in a manifested leaf composition module.
 - Runtime settings never contain provider credentials.
 
-## Projection checks
+## Projection maintenance
 
-```bash
-uv run python scripts/_maint_build_topics_catalogue.py --check
-uv run python scripts/theorem_maturity_audit.py --check
-uv run python scripts/build_formalism_coverage.py --check
-uv run fep-lean atlas --check
-```
-
-Remove `--check` only after intentionally changing a maintained owner.
+Follow the generator ownership in [README.md](README.md) and use the
+[root required-check inventory](../AGENTS.md#required-checks). A generator write
+pass is an explicit owner update; its `--check` mode inspects drift without
+repairing it. Packaged methods resources have the separate owner mapping in
+[the data guide](../src/fep_lean/data/README.md).

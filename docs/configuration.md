@@ -6,7 +6,7 @@ Environment variables override secrets and operational limits.
 | Setting | Purpose |
 | --- | --- |
 | `gauss.home` / `GAUSS_HOME` | SQLite state, exported artifacts, and logs |
-| `gauss.default_model` | Not read at runtime: `docs/pin_audit.py` cross-checks it against `hermes.model` |
+| `gauss.default_model` | YAML policy value cross-checked against `hermes.model` by `docs/pin_audit.py`; not a runtime input. The separate `GAUSS_DEFAULT_MODEL` environment variable is a runtime model fallback. |
 | Lean verification | Not settings-driven: a fixed full-mode pipeline stage (`Gauss Sessions`); catalogue mode never verifies. `FEP_LEAN_VERIFY_TIMEOUT` bounds it |
 | `output.root` / `FEP_LEAN_OUTPUT_ROOT` | Generated figures and reports root; explicit API argument wins, then a nonblank environment override, then settings, then `project_root/output` |
 | `hermes.model` | Primary Hermes model: a nonempty `HERMES_MODEL` overrides YAML; a truthy YAML `hermes.model` wins over `GAUSS_DEFAULT_MODEL`; otherwise a nonempty `GAUSS_DEFAULT_MODEL` is used before the built-in default. See [`HermesConfig.from_settings`](../src/fep_lean/llm/hermes.py) |

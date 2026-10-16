@@ -20,8 +20,8 @@ Check `GAUSS_HOME`, `FEP_LEAN_VERIFY_TIMEOUT`, `FEP_LEAN_LAKE_EXE`,
 
 ## Documentation checks fail
 
-Run the documentation and generated-projection commands in
-[`testing.md`](testing.md) from the project root. Materialize generated
-manuscript inputs before `xref_audit.py`; regenerate the atlas and dashboard
+Run the documentation and generated-projection commands in the
+[root required-check inventory](../AGENTS.md#required-checks) from the project
+root. Materialize generated manuscript inputs before `xref_audit.py`; regenerate the atlas and dashboard
 only from their canonical builders when their drift checks identify stale
 outputs.

@@ -45,4 +45,10 @@ projections from it.
 Import from `fep_lean.catalogue`; do not add compatibility packages or dynamic
 imports from `scripts/`.
 
-See [README.md](README.md) and [../../AGENTS.md](../../AGENTS.md).
+When an import header changes, preserve module-system visibility and include
+actual importing consumers in the review. The coverage parser retains public
+and meta imports; source-text edges still supply no native or scientific
+acceptance.
+
+See [README.md](README.md), the [package contract](../AGENTS.md) and the
+[root required checks](../../../AGENTS.md#required-checks).

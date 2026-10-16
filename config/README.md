@@ -1,6 +1,4 @@
-# fep_lean/config — Configuration Reference
-
-**Version**: v1.6.0 | **Status**: Active | **Last Updated**: October 2026
+# FEP_Formal configuration
 
 ## Files
 
@@ -19,43 +17,36 @@ Authoritative fields live in the checked-in file. Highlights:
 
 - `project.version` should match `pyproject.toml` and `manuscript/config.yaml`.
 - `hermes.*` is loaded by `HermesConfig.from_settings()` in `fep_lean/llm/hermes.py` (env overrides apply).
-- `GAUSS_HOME` and API keys come from the environment or `~/.gauss/.env`; SQLite paths use `fep_lean/gauss/client.py` (defaults described in [`../docs/opengauss.md`](../docs/opengauss.md)).
+- SQLite state uses `resolve_gauss_home()` in `fep_lean/gauss/client.py`:
+  `GAUSS_HOME` takes precedence over checkout `gauss.home`, then the caller's
+  default. Hermes separately reads allowlisted keys from the environment or
+  `$GAUSS_HOME/.env` (`~/.gauss/.env` when unset), independently of the checkout
+  `gauss.home` setting. See [configuration](../docs/configuration.md)
+  and [OpenGauss](../docs/opengauss.md) for those distinct resolution paths.
+- `output.root` belongs to `resolve_output_root()` in `fep_lean/_paths.py`.
+  An explicit API `output_root` takes precedence over `FEP_LEAN_OUTPUT_ROOT`,
+  the checkout setting and the default. Methods projection `--output-root`
+  selects its own export destination; ordinary catalogue/run commands use
+  the environment or checkout setting.
+
+Project-facing documentation uses FEP_Formal. Existing package, CLI and runtime
+configuration identifiers remain as declared in their owners.
 
 ## Config override examples
 
 ```bash
-# From the project root
-
-GAUSS_HOME=/tmp/test-gauss uv run python scripts/01_fep_catalogue_and_figures.py
-
-OPENROUTER_API_KEY="" uv run python scripts/01_fep_catalogue_and_figures.py
-
-GAUSS_LOG_LEVEL=DEBUG uv run python scripts/02_run_single_topic.py fep-001
+# From the project root; explicit offline artifact generation
+FEP_LEAN_OUTPUT_ROOT=/tmp/fep-formal-catalogue uv run fep-lean catalogue
 ```
 
 ## topics.yaml — Topic format
 
-Every topic must include:
-
-```yaml
-- id: fep-NNN           # unique and ordered within the maintained roster seal
-  title: ...
-  area: FEP             # FEP | ActiveInference | BayesianMechanics | InfoGeometry | Thermodynamics
-  family: ...
-  mathlib_modules: [...]
-  mathlib_status: ...   # real | partial | aspirational
-  primary_theorem: ...
-  supporting_theorems: [...]
-  boundary_theorems: [...]
-  semantic_disposition: ...
-  nl: ...
-  assumption_review: ...
-  non_vacuity: ...
-  acceptance_probe: ...
-  lean_sketch: |
-    ...
-  latex_equations: [...]
-```
+The complete row fields and validation rules live in
+[`schema.py`](../src/fep_lean/catalogue/schema.py),
+[`semantics.py`](../src/fep_lean/catalogue/semantics.py) and
+[`topics.py`](../src/fep_lean/catalogue/topics.py). The generated `lean_sketch`
+field keeps its compatibility name; its content comes from canonical topic
+bodies. Compilation maturity and semantic disposition remain separate fields.
 
 Do not hand-edit generated topic rows. Edit `catalogue_metadata.yaml`,
 `theorem_maturity.yaml`, the applicable `formalism_novelty.yaml` row, or the
@@ -81,6 +72,6 @@ module. It is an authored semantic ledger, not a generated similarity score.
 
 ## Navigation
 
-- **AGENTS.md**: [AGENTS.md](AGENTS.md)
-- **Parent project**: [../README.md](../README.md)
-- **Source layout**: [../src/README.md](../src/README.md)
+- [Authoring contract](AGENTS.md) and [configuration specification](SPEC.md)
+- [Required checks](../AGENTS.md#required-checks)
+- [Source layout](../src/README.md) and [project overview](../README.md)

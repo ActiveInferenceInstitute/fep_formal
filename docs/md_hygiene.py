@@ -46,7 +46,7 @@ PROJECT_ROOT = DOCS_DIR.parent
 # --- Scan scope (kept identical in ``check_links.py`` and ``md_hygiene.py``) ---
 # ``--include-root`` widens the scan from ``docs/**`` to the whole repository's
 # authored Markdown: every root ``*.md``, every ``AGENTS.md`` / ``README.md``
-# under the subtrees below, and the non-historical documents under ``specs/``.
+# under the subtrees below, and maintained ``specs/`` / ``.github/`` Markdown.
 CONTRACT_SUBTREES = ("src", "tests", "config", "scripts", "lean", "manuscript")
 CONTRACT_NAMES = frozenset({"AGENTS.md", "README.md"})
 # Historical / retained trees: ``specs/done/**`` and per-spec ``evidence/**``
@@ -101,10 +101,10 @@ def discover_files(docs_dir: Path, *, include_root: bool) -> list[Path]:
     extra: set[Path] = set(root.glob("*.md"))
     for sub in CONTRACT_SUBTREES:
         extra.update(_walk_md(root / sub, names=CONTRACT_NAMES))
-    specs = root / "specs"
-    for path in _walk_md(specs, names=None):
-        if not _is_historical(path.relative_to(specs).parts):
-            extra.add(path)
+    for subtree in (root / "specs", root / ".github"):
+        for path in _walk_md(subtree, names=None):
+            if not _is_historical(path.relative_to(subtree).parts):
+                extra.add(path)
     return files + sorted(extra - set(files))
 
 
@@ -249,7 +249,7 @@ def main() -> int:
     parser.add_argument(
         "--include-root",
         action="store_true",
-        help="Also lint repo-root *.md, every AGENTS.md/README.md under src/ tests/ config/ scripts/ lean/ manuscript/, and non-historical specs/ docs.",
+        help="Also lint root/subtree contracts and maintained specs/.github Markdown.",
     )
     parser.add_argument(
         "-v",

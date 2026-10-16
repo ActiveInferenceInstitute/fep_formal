@@ -1,6 +1,6 @@
 # `fep_lean.prove2me`
 
-A standard-library client for the [Prove2me](https://prove2.me) Lean 4
+A standard-library client in FEP_Formal for the [Prove2me](https://prove2.me) Lean 4
 formalization platform. It is explicit and authenticated: nothing here runs as
 part of catalogue mode or the pipeline, and every call needs an API key you
 supply.
@@ -16,7 +16,8 @@ caches it until shortly before expiry, and re-exchanges once on a 401 (a second
 401 raises `Prove2meAuthError`). It covers `whoami`, field and theorem search,
 mission listing, mission-proposal create/read/update, multipart proof
 submission, and submission lookup. The transport is injectable
-(`Prove2meTransport`), so tests never touch the network.
+(`Prove2meTransport`), so ordinary tests use fake responses. Real-transport
+tests use a loopback HTTP server rather than the remote platform.
 
 `missions.py` adds small helpers: `draft_proposal`, `add_theorem_item`,
 `submit_solution`, and `wait_for_verdict`, which polls until a status other than

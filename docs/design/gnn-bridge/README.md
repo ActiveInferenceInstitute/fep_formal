@@ -9,6 +9,13 @@ The [bridge contract](bridge-contract.md) owns the shared scientific and custody
 boundaries. Current open acceptance work belongs in
 [`TODO.md`](../../../TODO.md), not a completed-stage checklist.
 
+FEP_Formal is this repository's current project name; `fep_lean` remains its
+Python namespace, serialized custody key and historical GNN mirror identity.
+The mirrored version-0.6 contract retains its 2026-09-06 source epoch and
+155-topic baseline. Use the [current source owners](../../../AGENTS.md#source-of-truth)
+for the live catalogue; changing that shared contract requires coordinated
+review and publication on both sides.
+
 The [design lifecycle](../README.md) governs bounded implementation slices. The
 active catalogue program lives in
 [FEP research horizons](../fep-research-program/README.md); this bridge adds no
@@ -21,7 +28,7 @@ their retained receipts are current for a changed source pair.
 
 GNN is a text-based notation for Active Inference generative models. Its
 `docs/gnn/gnn_syntax.md` and `src/gnn/pipeline/step_registry.py` define its
-syntax and processing surface. fep_lean states and proves invariants about
+syntax and processing surface. FEP_Formal states and proves invariants about
 the same objects in Lean 4. The comparative manuscript chapter names the gap:
 
 > Executable Active-Inference tools and notations such as pymdp or GNN
@@ -41,7 +48,7 @@ both layers and makes their agreement checkable instead of asserted.
 
 | Party | Role in the bridge |
 | --- | --- |
-| fep_lean | Lean 4 semantic authority: laws, kernels, blankets, free-energy and decision quantities, and their proofs; the pinned workspace is the compilation authority |
+| FEP_Formal | Lean 4 semantic authority: laws, kernels, blankets, free-energy and decision quantities, and their proofs; the pinned workspace is the compilation authority |
 | GNN | Notation and tooling authority: GNN document syntax, the pipeline step registry, render targets, and execution semantics |
 | Interchange artifact | GNN document files carrying mandatory provenance back to the Lean source |
 
@@ -62,7 +69,7 @@ and the reverse direction:
 GNN syntax and step inventory (docs/gnn/gnn_syntax.md; src/gnn/pipeline/step_registry.py)
   -> Lean AST and decidable well-formedness
   -> static and dynamic semantics
-  -> denotations reusing fep_lean carriers (FiniteLaw, FiniteKernel, FiniteHMM, LinearGaussianParameters)
+  -> denotations reusing FEP_Formal carriers (FiniteLaw, FiniteKernel, FiniteHMM, LinearGaussianParameters)
   -> FEP instantiation and renderer-preservation statements
 ```
 
@@ -76,7 +83,7 @@ requires judgment calls is a finding to resolve, not a pipeline stage.
   toolchain renders and executes, with certificates back to Lean.
 - [Direction 2 — formalize GNN steps and methods](direction-2-gnn-to-lean.md):
   from the frozen GNN syntax surface and step registry to Lean ASTs, decidable
-  well-formedness, dynamic semantics, and alignment theorems on fep_lean
+  well-formedness, dynamic semantics, and alignment theorems on FEP_Formal
   carriers.
 - [Bridge contract](bridge-contract.md): the shared, mirrored agreement both
   sides edit and honor.
@@ -85,7 +92,7 @@ requires judgment calls is a finding to resolve, not a pipeline stage.
 
 The bridge aligns the two supported model kinds on each side:
 
-| GNN model kind | fep_lean counterpart |
+| GNN model kind | FEP_Formal counterpart |
 | --- | --- |
 | Discrete POMDP family: `A` likelihood, `B` transition ordered `(next_state, previous_state, action)`, `C` preferences, `D` initial prior, optional `E` habit, `F[1]` variational-free-energy readout | finite carrier family: `lean/FepSketches/active_inference.lean` (`GenerativeModel`), `lean/FepSketches/finite_probability.lean` (`FiniteLaw`, `FiniteKernel`), `lean/FepSketches/temporal_inference.lean` (`FiniteHMM`) |
 | Continuous linear-Gaussian family: `F/H/Q/R` with `prior_mean`/`prior_cov`, `x_t = F x_{t-1} + u_{t-1} + N(0,Q)`, `y_t = H x_t + N(0,R)` | smooth/stochastic carrier family: `lean/FepSketches/linear_gaussian_semigroup.lean`, `lean/FepSketches/scalar_gaussian_semigroup.lean`, `lean/FepSketches/continuous_time_markov.lean` |
@@ -167,7 +174,7 @@ describes the package operations contract, whose current implementation is
 defined by the CLI and operations sources linked above. For the re-pin order, see
 [Re-pin runbook (canonical order)](#re-pin-runbook-canonical-order) below.
 
-Run from the fep_lean checkout, replacing `GNN_PATH` with the explicit GNN root:
+Run from the FEP_Formal checkout, replacing `GNN_PATH` with the explicit GNN root:
 
 ```bash
 uv run fep-lean bridge pin --gnn-root GNN_PATH
@@ -182,7 +189,7 @@ uv run fep-lean bridge verify-document --gnn-root GNN_PATH --model MODEL \
 
 Pin only after reviewing the settled owner changes — on BOTH sides of the
 pair: any `src/fep_lean/**` owner-file change (this repo) invalidates an
-existing seal exactly as a GNN owner-file change does, so land fep_lean
+existing seal exactly as a GNN owner-file change does, so land FEP_Formal
 owner edits BEFORE starting the pin cycle, or the cycle must re-run after
 them (a pin sealed pre-change fails `bridge status` with
 "owner content changed" on the touched files). Pin and emit are explicit
@@ -247,7 +254,7 @@ verification, not a separate source-owner seal.
    repository's normal process; owner hashes and descriptive commit references
    remain distinct.
 6. Update `.github/fep-lean-pair.json` in the GNN repository only after the
-   intended fep_lean publication SHA is settled. Its pair reference is the final
+   intended FEP_Formal publication SHA is settled. Its pair reference is the final
    GNN publication change; it does not promote old evidence.
 
 Any GNN owner-file edit (`src/gnn/**/*.py`, `pyproject.toml`, `uv.lock`,

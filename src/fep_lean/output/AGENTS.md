@@ -24,15 +24,12 @@ non-mutating drift check.
   native, declaration, projection, browser, numerical, and manuscript inputs
   independently bind to the live checkout.
 
-## Focused checks
+## Verification
 
-```bash
-uv run python -m pytest tests/test_formalism_atlas.py \
-  tests/test_formal_kernel_dashboard.py tests/test_manuscript_artifacts.py \
-  tests/test_reporter.py -q --no-cov
-uv run fep-lean atlas --check
-uv run fep-lean dashboard --check
-uv run python scripts/render_manuscript.py --check
-SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
-  --check --output /tmp/fep_lean-candidate-evidence-bundle.tar.gz
-```
+The [root required-check inventory](../../../AGENTS.md#required-checks) owns
+projection and publication commands. Focused artifact contracts live in
+`tests/test_formalism_atlas.py`, `tests/test_formal_kernel_dashboard.py`,
+`tests/test_manuscript_artifacts.py`, `tests/test_reporter.py` and the release
+bundle tests. Drift-check modes inspect existing outputs; they do not create
+missing figures, archives or acceptance evidence. A real render and its retained
+source/provenance artifacts have their own acceptance gate.
