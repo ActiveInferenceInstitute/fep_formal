@@ -99,11 +99,20 @@ class _UrllibTransport:
         )
         result: dict[str, Any] = {}
         response_holder: list[Any] = []
+        cancelled = threading.Event()
 
         def _do_request() -> None:
             try:
-                with urllib.request.urlopen(req, timeout=timeout_s) as resp:
+                try:
+                    response = urllib.request.urlopen(req, timeout=timeout_s)
+                except urllib.error.HTTPError as error_response:
+                    # HTTPError is also an open response. Consume it under
+                    # the same deadline, byte cap and cleanup as a 2xx body.
+                    response = error_response
+                with response as resp:
                     response_holder.append(resp)
+                    if cancelled.is_set():
+                        return
                     result["status"] = int(resp.status)
                     chunks: list[bytes] = []
                     total = 0
@@ -119,6 +128,8 @@ class _UrllibTransport:
                             )
                             return
                         chunks.append(chunk)
+                    # Return HTTP status through the transport protocol so
+                    # real 401s use the client's existing one-retry policy.
                     result["raw"] = b"".join(chunks)
             except BaseException as inner_exc:  # re-raised on the calling thread
                 result["exc"] = inner_exc
@@ -127,6 +138,7 @@ class _UrllibTransport:
         worker.start()
         worker.join(timeout=timeout_s)
         if worker.is_alive():
+            cancelled.set()
             # Release the parked worker's socket buffer instead of letting it
             # accumulate until the endpoint closes the stream (see hermes.py).
             self._shutdown_response(response_holder[0] if response_holder else None)
@@ -142,7 +154,11 @@ class _UrllibTransport:
         if resp is None:
             return
         with contextlib.suppress(OSError, ValueError, AttributeError):
-            fp = getattr(resp, "fp", None)
+            # HTTPError wraps the HTTPResponse, adding one level before the
+            # buffered reader. Shut down its socket before close can wait on
+            # a worker holding the reader lock.
+            response = resp.fp if isinstance(resp, urllib.error.HTTPError) else resp
+            fp = getattr(response, "fp", None)
             raw = getattr(fp, "raw", None) or fp
             sock_obj = getattr(raw, "_sock", None)
             if sock_obj is not None:
@@ -156,12 +172,12 @@ class _UrllibTransport:
         if isinstance(exc, Prove2meError):
             return exc
         if isinstance(exc, urllib.error.HTTPError):
-            try:
-                body_text = exc.read().decode("utf-8", errors="replace")
-            except OSError:
-                body_text = ""
+            # Defensive classification of an HTTPError raised while consuming
+            # another response must not start an unguarded read on the caller.
+            with contextlib.suppress(OSError, ValueError):
+                exc.close()
             return Prove2meAPIError(
-                f"HTTP {exc.code}: {exc.reason} — {body_text[:_SNIPPET_CHARS]}",
+                f"HTTP {exc.code}: {exc.reason}",
                 status_code=exc.code,
             )
         if isinstance(exc, urllib.error.URLError):

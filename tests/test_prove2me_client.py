@@ -13,14 +13,19 @@ loopback; the default ``https://prove2.me`` base URL is never contacted.
 
 from __future__ import annotations
 
+import io
 import json
+import threading
 import time
+import urllib.error
 from collections.abc import Mapping
 from typing import Any
 
 import pytest
 from pytest_httpserver import HTTPServer
+from werkzeug.wrappers import Response
 
+from fep_lean.prove2me import client as client_module
 from fep_lean.prove2me.client import (
     Prove2meClient,
     Prove2meTransport,
@@ -393,6 +398,187 @@ def test_loopback_http_error_maps_to_api_error(httpserver: HTTPServer) -> None:
     with pytest.raises(Prove2meAPIError) as excinfo:
         client.whoami()
     assert excinfo.value.status_code == 418
+
+
+@pytest.mark.parametrize("status", [401, 404, 503])
+def test_http_error_body_is_read_in_worker_and_closed(
+    monkeypatch: pytest.MonkeyPatch, status: int
+) -> None:
+    readers: list[int] = []
+
+    class Body(io.BytesIO):
+        def read(self, size: int = -1) -> bytes:
+            assert 0 < size <= client_module._MAX_RESPONSE_CHUNK
+            readers.append(threading.get_ident())
+            return super().read(size)
+
+    body = Body(b'{"error": "nope"}')
+
+    def fail(*_args: object, **_kwargs: object) -> object:
+        raise urllib.error.HTTPError(
+            "https://example.invalid", status, "error", None, body
+        )
+
+    monkeypatch.setattr(client_module.urllib.request, "urlopen", fail)
+    result = client_module._UrllibTransport().send(
+        "GET", "https://example.invalid", {}, None, 2
+    )
+    assert result == (status, b'{"error": "nope"}')
+    assert body.closed and readers
+    assert all(reader != threading.get_ident() for reader in readers)
+
+
+@pytest.mark.parametrize("retry_status", [200, 401])
+def test_loopback_http_401_reexchanges_once_and_never_loops(
+    httpserver: HTTPServer, retry_status: int
+) -> None:
+    for token, status in [
+        ("first-fake-token", 401),
+        ("second-fake-token", retry_status),
+    ]:
+        httpserver.expect_ordered_request(
+            "/api/v1/agent/refresh", method="POST"
+        ).respond_with_json(
+            {"access_token": token, "expires_at": time.time() + 3600, "version": "v3"}
+        )
+        httpserver.expect_ordered_request("/api/v1/me", method="GET").respond_with_json(
+            {"agent": "loop"} if status == 200 else {"error": "revoked"}, status=status
+        )
+    client = Prove2meClient(_loopback_config(httpserver))
+    if retry_status == 200:
+        assert client.whoami() == {"agent": "loop"}
+    else:
+        with pytest.raises(Prove2meAuthError) as failure:
+            client.whoami()
+        assert failure.value.status_code == 401
+    assert len(httpserver.log) == 4
+    assert httpserver.log[1][0].headers["Authorization"] == "Bearer first-fake-token"
+    assert httpserver.log[3][0].headers["Authorization"] == "Bearer second-fake-token"
+
+
+def test_oversized_http_error_body_obeys_response_cap(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    body = io.BytesIO(b"x" * 129)
+
+    def fail(*_args: object, **_kwargs: object) -> object:
+        raise urllib.error.HTTPError(
+            "https://example.invalid", 503, "error", None, body
+        )
+
+    monkeypatch.setattr(client_module.urllib.request, "urlopen", fail)
+    monkeypatch.setattr(client_module, "_MAX_RESPONSE_BYTES", 128)
+    monkeypatch.setattr(client_module, "_MAX_RESPONSE_CHUNK", 32)
+    with pytest.raises(Prove2meTransportError, match="response exceeds 128 bytes"):
+        client_module._UrllibTransport().send(
+            "GET", "https://example.invalid", {}, None, 2
+        )
+    assert body.closed
+
+
+def test_slow_http_error_body_obeys_wall_clock_and_closes_reader(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    started, released, finished = (
+        threading.Event(),
+        threading.Event(),
+        threading.Event(),
+    )
+
+    class SlowBody(io.BytesIO):
+        def read(self, size: int = -1) -> bytes:
+            started.set()
+            try:
+                assert released.wait(2), "error reader was not closed at the deadline"
+                return b""
+            finally:
+                finished.set()
+
+        def close(self) -> None:
+            released.set()
+            super().close()
+
+    body = SlowBody(b"error body")
+
+    def fail(*_args: object, **_kwargs: object) -> object:
+        raise urllib.error.HTTPError(
+            "https://example.invalid", 503, "error", None, body
+        )
+
+    monkeypatch.setattr(client_module.urllib.request, "urlopen", fail)
+    before = time.monotonic()
+    with pytest.raises(Prove2meTransportError, match="wall-clock timeout"):
+        client_module._UrllibTransport().send(
+            "GET", "https://example.invalid", {}, None, 0.2
+        )
+    assert time.monotonic() - before < 1.5
+    assert started.is_set() and body.closed and finished.wait(1)
+
+
+def test_response_arriving_after_deadline_is_closed_without_reading(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    opened, release, closed = threading.Event(), threading.Event(), threading.Event()
+    reads: list[int] = []
+
+    class LateBody(io.BytesIO):
+        def read(self, size: int = -1) -> bytes:
+            reads.append(size)
+            return super().read(size)
+
+        def close(self) -> None:
+            super().close()
+            closed.set()
+
+    with LateBody(b"late error body") as body:
+
+        def late_response(*_args: object, **_kwargs: object) -> object:
+            opened.set()
+            assert release.wait(2)
+            raise urllib.error.HTTPError(
+                "https://example.invalid", 503, "error", None, body
+            )
+
+        monkeypatch.setattr(client_module.urllib.request, "urlopen", late_response)
+        try:
+            with pytest.raises(Prove2meTransportError, match="wall-clock timeout"):
+                client_module._UrllibTransport().send(
+                    "GET", "https://example.invalid", {}, None, 0.2
+                )
+            assert opened.wait(1)
+        finally:
+            release.set()
+        assert closed.wait(1)
+        assert reads == []
+
+
+def test_streaming_loopback_http_error_shutdown_precedes_blocking_close(
+    httpserver: HTTPServer,
+) -> None:
+    def response(_request: object) -> Response:
+        def chunks():
+            # Each chunk arrives within the socket timeout, while the whole
+            # response exceeds the wall deadline and one read waits for EOF.
+            for _ in range(60):
+                yield b"x"
+                time.sleep(0.04)
+
+        return Response(chunks(), status=503)
+
+    httpserver.expect_request("/slow-error", method="GET").respond_with_handler(
+        response
+    )
+    before_threads = {id(thread) for thread in threading.enumerate()}
+    before = time.monotonic()
+    with pytest.raises(Prove2meTransportError, match="wall-clock timeout"):
+        client_module._UrllibTransport().send(
+            "GET", httpserver.url_for("/slow-error"), {}, None, 0.2
+        )
+    assert time.monotonic() - before < 1.5
+    for worker in threading.enumerate():
+        if worker.name == "prove2me-http" and id(worker) not in before_threads:
+            worker.join(timeout=1)
+            assert not worker.is_alive()
 
 
 # ── poll timeout ─────────────────────────────────────────────────────────────

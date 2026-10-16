@@ -1,5 +1,20 @@
 ## Unreleased
 
+- Remove the three blanket pytest warning filters after inspecting the retained
+  Python and Chrome warning inventories. Register the shared fixture owner for
+  assertion rewriting before ordinary imports, and close HTTP error responses
+  in the pin checker and Prove2me transport. Error bodies now use the same
+  worker deadline and byte cap as successful responses; late responses close
+  before any body read after cancellation. Real HTTP 401 responses
+  now follow the existing single re-exchange policy. Preserve typed API errors
+  and credential redaction; regression controls cover response
+  closure, oversized and stalled error bodies, and real plugin import order.
+  Admit only the exact warning-policy metadata profile in historical unit
+  controls, retaining authenticated predecessors and unchanged frozen bytes.
+  Broader warning and exact-source acceptance for
+  [#124](https://github.com/ActiveInferenceInstitute/fep_formal/issues/124)
+  remains subject to the full test and hosted gates.
+
 - Prepare native probability-measure entropy and CGF inequalities in the existing
   variational foundation, preserving explicit integrability and infinite KL.
   Add a single-source Mathlib-only consumer with a nonconstant attained tilt,

@@ -11,6 +11,9 @@ if that redirect is removed.
 from __future__ import annotations
 
 import os
+import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 _REAL_GAUSS_HOME = (Path.home() / ".gauss").resolve()
@@ -25,3 +28,44 @@ def test_gauss_home_defaults_to_hermetic_scratch() -> None:
     assert not (resolved / ".env").is_file(), (
         "the hermetic GAUSS_HOME scratch dir must hold no dotenv"
     )
+
+
+def test_fixture_plugin_is_rewritten_before_ordinary_test_import(
+    tmp_path: Path,
+) -> None:
+    tests = tmp_path / "tests"
+    support = tests / "_support"
+    support.mkdir(parents=True)
+    (tests / "__init__.py").touch()
+    (support / "__init__.py").touch()
+    shutil.copy2(Path(__file__).with_name("conftest.py"), tests / "conftest.py")
+    (tmp_path / "pytest.ini").write_text("[pytest]\n")
+    (support / "catalogue_project.py").write_text(
+        "def compare():\n    left, right = 1, 2\n    assert left == right\n"
+    )
+    (tests / "test_import_order.py").write_text(
+        "import pytest\n"
+        "from tests._support.catalogue_project import compare\n"
+        "pytest_plugins = ['tests._support.catalogue_project']\n"
+        "def test_rewritten_assertion():\n"
+        "    with pytest.raises(AssertionError, match='assert 1 == 2'):\n"
+        "        compare()\n"
+    )
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "-q",
+            "-W",
+            "error::pytest.PytestAssertRewriteWarning",
+        ],
+        cwd=tmp_path,
+        env={**os.environ, "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1"},
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "1 passed" in result.stdout

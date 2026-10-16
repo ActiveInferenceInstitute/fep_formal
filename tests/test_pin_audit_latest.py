@@ -372,3 +372,31 @@ def test_fetch_json_does_not_retry_a_not_found_answer(
     with pytest.raises(urllib.error.HTTPError):
         audit._fetch_json("https://example.invalid")
     assert calls == 1
+
+
+@pytest.mark.parametrize("status", [404, 503])
+def test_fetch_json_closes_error_responses_before_retry_or_reraise(
+    monkeypatch: pytest.MonkeyPatch, status: int
+) -> None:
+    import urllib.error
+
+    audit = _audit_module()
+    bodies: list[io.BytesIO] = []
+
+    def fail(*_args: object, **_kwargs: object) -> object:
+        body = io.BytesIO(b"error body")
+        bodies.append(body)
+        raise urllib.error.HTTPError(
+            "https://example.invalid", status, "error", None, body
+        )
+
+    def sleep(_seconds: float) -> None:
+        assert all(body.closed for body in bodies)
+
+    monkeypatch.setattr(audit.urllib.request, "urlopen", fail)
+    monkeypatch.setattr(audit.time, "sleep", sleep)
+    with pytest.raises(urllib.error.HTTPError) as failure:
+        audit._fetch_json("https://example.invalid")
+    assert failure.value.code == status
+    assert len(bodies) == (1 if status == 404 else audit._FETCH_ATTEMPTS)
+    assert all(body.closed for body in bodies)

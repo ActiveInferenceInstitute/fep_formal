@@ -19,6 +19,10 @@ from pathlib import Path
 
 import pytest
 
+# Several test modules import this fixture owner before registering its
+# pytest plugin. Mark it for rewriting before that first ordinary import.
+pytest.register_assert_rewrite("tests._support.catalogue_project")
+
 os.environ.setdefault("MPLBACKEND", "Agg")
 
 ROOT = Path(__file__).resolve().parent.parent
