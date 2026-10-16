@@ -72,7 +72,8 @@ source = ["src"]
 concurrency = ["multiprocessing"]
 
 [tool.coverage.report]
-# Line coverage ~91%; combined line+branch ~89.6% with current Hermes/network branches.
+# Aggregate line coverage only; branch arcs are not enabled or gated here.
+# docs/coverage-floors.json owns additional measured package line floors.
 fail_under = 89
 
 [tool.mypy]

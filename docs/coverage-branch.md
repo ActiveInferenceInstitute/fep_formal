@@ -6,6 +6,47 @@ coverage and requires at least 89%; branch coverage is a separate diagnostic.
 Use Python 3.14, selected by [`.python-version`](../.python-version), for
 repository validation. The packaging floor does not change that requirement.
 
+## Measured package line floors
+
+The [policy](coverage-floors.json) additionally gates each of the 14 nonempty
+direct packages in coverage.py's XML. A subpackage has its own floor; its lines
+are not counted again under its parent package. CI checks the XML after the
+parallel Python component and isolated Chrome component have both contributed,
+retaining the result beside their acceptance evidence. The exact command lives
+in the [required-check inventory](../AGENTS.md#required-checks).
+
+The baseline is the actual PR181 run
+[38834310995](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38834310995),
+head `2893bed22d084183e81b02ab2ce68a71aab8df75`, tested merge
+`f739e4bfcf32fe58ed8a701dbead0d9f8f0fe0df`. Its tree
+`26447d4324a1ada590c20496c6e552e7f78de165` also identifies main checkpoint
+`4208d589a00c5eeaed5a36d8760153bad8805ef1`. Authenticated coverage artifact
+`12019210437` contains 17,197 covered lines out of 18,765 executable lines.
+The policy retains the ZIP/XML SHA-256 digests, exact package denominators,
+and the selection rule: `floor(100 * covered / valid)` for each nonempty
+package. No threshold is inferred from the rounded XML display rate. The
+pre-existing aggregate requirement stays at 89%.
+
+`fep_lean.data` has zero executable lines at this checkpoint. It is explicitly
+listed as empty rather than credited with a perfect coverage percentage; adding
+executable lines there requires a measured floor. Missing or unexpected packages,
+duplicate file/line records, malformed rates/counts, path mismatches, and aggregate
+count disagreement fail closed. Threshold comparisons use exact integer ratios.
+Changes to package membership or floors require review and a new measured
+baseline, rather than deleting the failing package or lowering its threshold.
+
+The regression control copies the actual custody model into an isolated tree,
+inserts a marked conditional arm in `Census.status_of`, and traces the copy with
+coverage.py. The one-arm control leaves those added lines uncovered: the global
+89% line gate still passes, while the measured custody line floor fails. The
+positive control also exercises the inserted arm. CI retains the original and
+instrumented source, command, XML and evaluated counts for each control.
+This demonstrates uncovered branch-body line detection in an instrumented
+production-source copy. It changes no live custody source, measures no branch
+arcs, and does not show that every possible decision edge was exercised.
+Fresh hosted checks must qualify the new checker and controls before acceptance
+of their source epoch. The retained baseline alone does not do that.
+
 ## Measuring branch coverage
 
 An optional branch measurement can use the existing diagnostic command:

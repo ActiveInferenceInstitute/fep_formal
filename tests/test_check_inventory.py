@@ -288,6 +288,52 @@ def test_allow_lists_carry_no_dead_entries() -> None:
     assert not [c for c in LOCAL_ONLY if c not in agents]
 
 
+def test_package_line_floor_gate_consumes_complete_split_coverage() -> None:
+    workflow = yaml.safe_load(CI.read_text(encoding="utf-8"))
+    steps = workflow["jobs"]["python"]["steps"]
+    parallel = next(
+        i for i, step in enumerate(steps) if step.get("id") == "python_remainder"
+    )
+    chrome = next(i for i, step in enumerate(steps) if step.get("id") == "live_chrome")
+    floor = next(
+        i
+        for i, step in enumerate(steps)
+        if step.get("name") == "Require measured package line coverage floors"
+    )
+    membership = next(
+        i
+        for i, step in enumerate(steps)
+        if step.get("name")
+        == "Require complete Python membership and all live Chrome controls"
+    )
+    assert parallel < chrome < floor < membership
+    command = "python docs/check_coverage_floors.py --coverage coverage.xml"
+    assert command in agents_commands() and command in ci_commands()
+    assert "pipefail" in steps[floor]["run"]
+    assert "output/coverage-floor-summary.json" in steps[floor]["run"]
+    assert "steps.python_remainder.outcome != 'skipped'" in steps[floor]["if"]
+    assert "steps.live_chrome.outcome != 'skipped'" in steps[floor]["if"]
+    for index in (parallel, chrome):
+        assert "--cov=src" in steps[index]["run"]
+        assert "--cov-report=xml" in steps[index]["run"]
+        assert "--cov-fail-under=89" in steps[index]["run"]
+        assert "--cov-branch" not in steps[index]["run"]
+    assert "--cov-append" not in steps[parallel]["run"]
+    assert "--cov-append" in steps[chrome]["run"]
+    assert steps[parallel]["env"]["FEP_LEAN_COVERAGE_FLOOR_EVIDENCE"] == "1"
+    retained = next(
+        step
+        for step in steps
+        if step.get("name") == "Retain actual Python acceptance results and coverage"
+    )
+    assert "output/coverage-floor-summary.json" in retained["with"]["path"].splitlines()
+    for mode in ("one", "both"):
+        assert (
+            f"output/coverage-floor-control-{mode}.log"
+            in retained["with"]["path"].splitlines()
+        )
+
+
 @pytest.mark.parametrize("relative", SECONDARY_DOCS)
 def test_secondary_docs_link_to_the_owner_instead_of_copying_the_list(
     relative: str,

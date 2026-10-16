@@ -155,6 +155,11 @@ _RECORDED_METADATA_SHA256 = (
 _T01_NORMALIZED_METADATA_SHA256 = (
     "388f3415107f756bf9bac21712e48e4a3a3a37b99b77ee068802f254aaeee2f1"
 )
+# P09 changes only the misleading coverage comment; exact metadata is still
+# authenticated before the unchanged historical companion can be decoded.
+_P09_NORMALIZED_METADATA_SHA256 = (
+    "863aa12a02252166d024eace543f6edde6b8e8a1a16fbd3e27ecc37c4df708ad"
+)
 _UV_REQUIREMENT = b'\n[tool.uv]\nrequired-version = "==0.13.0"\n'
 _HISTORICAL_CUSTODY_ORIGINALS = {
     "src/fep_lean/formal/compositions/h3_case_study.lean": (
@@ -220,7 +225,7 @@ def _recorded_pyproject_release(data: bytes) -> bytes:
 
 
 def historical_metadata_bytes(project_root: Path, live: bytes) -> bytes:
-    """Restore authenticated metadata for exact predecessor/T01 profiles only.
+    """Restore authenticated metadata for exact predecessor/T01/P09 profiles only.
 
     Live input must retain the pinned uv section and an approved root release
     token. Unknown normalized metadata fails before archive parsing/decoding;
@@ -232,6 +237,7 @@ def historical_metadata_bytes(project_root: Path, live: bytes) -> bytes:
     assert hashlib.sha256(normalized).hexdigest() in {
         _RECORDED_METADATA_SHA256,
         _T01_NORMALIZED_METADATA_SHA256,
+        _P09_NORMALIZED_METADATA_SHA256,
     }, "unreviewed normalized metadata: pyproject.toml"
 
     raw = (project_root / HISTORICAL_METADATA_ARCHIVE).read_bytes()
