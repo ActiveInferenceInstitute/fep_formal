@@ -14,9 +14,9 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Maintained formal modules | 71 |
 | Foundation modules | 45 |
 | Topic theorem declarations | 584 |
-| Formal-resource theorem declarations | 1641 |
-| Foundation theorem declarations | 1288 |
-| Total theorem declarations | 2225 |
+| Formal-resource theorem declarations | 1644 |
+| Foundation theorem declarations | 1291 |
+| Total theorem declarations | 2228 |
 | Topic definitions | 95 |
 | Formal-resource definitions | 937 |
 | Total definitions | 1032 |
@@ -24,9 +24,9 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Formal-resource abbreviations | 32 |
 | Total abbreviations | 39 |
 | Formal-resource structures | 55 |
-| Distinct Mathlib imports | 70 |
-| Topic-to-import edges | 225 |
-| Formal-resource import edges | 331 |
+| Distinct Mathlib imports | 79 |
+| Topic-to-import edges | 265 |
+| Formal-resource import edges | 333 |
 | Internal formal-module dependencies | 170 |
 | Authored formalism relations | 150 |
 | Derivational formal relations | 24 |
@@ -57,7 +57,7 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 | fep-001 | FEP | `fep001_variationalUpperBound_eq_iff` | `formalized` | 3 | 2 | 1 |
 | fep-002 | FEP | `fep002_vfe_ge_surprisal` | `formalized` | 5 | 1 | 2 |
 | fep-003 | ActiveInference | `fep003_pragmaticCost_succ` | `formalized` | 4 | 1 | 2 |
-| fep-004 | InfoGeometry | `fep004_fisherMetric_eq_zero_iff` | `formalized` | 3 | 1 | 2 |
+| fep-004 | InfoGeometry | `fep004_fisherMetric_eq_zero_iff` | `formalized` | 3 | 1 | 3 |
 | fep-005 | BayesianMechanics | `fep005_existsUnique_block` | `formalized` | 4 | 1 | 3 |
 | fep-006 | FEP | `fep006_iterateFlow_add` | `formalized` | 4 | 1 | 2 |
 | fep-007 | ActiveInference | `fep007_normalizedMessage_sum_one` | `formalized` | 7 | 3 | 4 |
@@ -66,44 +66,44 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 | fep-010 | BayesianMechanics | `fep010_reversible_invariant` | `formalized` | 5 | 0 | 1 |
 | fep-011 | FEP | `fep011_surprise_eq_zero_iff` | `formalized` | 7 | 1 | 1 |
 | fep-012 | FEP | `fep012_entropyRegularizedCost_le_expectedCost` | `formalized` | 7 | 3 | 4 |
-| fep-013 | Thermodynamics | `fep013_helmholtz_derivative_eq_neg_entropy` | `formalized` | 6 | 1 | 3 |
+| fep-013 | Thermodynamics | `fep013_helmholtz_derivative_eq_neg_entropy` | `formalized` | 6 | 1 | 5 |
 | fep-014 | InfoGeometry | `fep014_kl_chain_rule` | `formalized` | 4 | 0 | 1 |
 | fep-015 | FEP | `fep015_variationalIntegrand_measurable` | `formalized` | 3 | 1 | 1 |
 | fep-016 | FEP | `fep016_laplaceKernel_integral` | `formalized` | 7 | 1 | 1 |
 | fep-017 | BayesianMechanics | `fep017_posterior_joint_reconstruction` | `formalized` | 4 | 1 | 1 |
-| fep-018 | InfoGeometry | `fep018_fisherRaoDistance_eq_zero_iff` | `formalized` | 4 | 2 | 3 |
+| fep-018 | InfoGeometry | `fep018_fisherRaoDistance_eq_zero_iff` | `formalized` | 4 | 2 | 4 |
 | fep-019 | BayesianMechanics | `fep019_priorPredictive_assoc` | `formalized` | 3 | 1 | 1 |
-| fep-020 | BayesianMechanics | `fep020_tendsto_uniform` | `formalized` | 7 | 2 | 4 |
+| fep-020 | BayesianMechanics | `fep020_tendsto_uniform` | `formalized` | 7 | 2 | 5 |
 | fep-021 | ActiveInference | `fep021_efe_epistemic_balance` | `formalized` | 5 | 1 | 1 |
-| fep-022 | BayesianMechanics | `fep022_brier_eq_optimum_iff` | `formalized` | 4 | 3 | 2 |
+| fep-022 | BayesianMechanics | `fep022_brier_eq_optimum_iff` | `formalized` | 4 | 3 | 3 |
 | fep-023 | ActiveInference | `fep023_reachable_normalized` | `formalized` | 4 | 1 | 1 |
 | fep-024 | InfoGeometry | `fep024_klRegularizedObjective_exact` | `formalized` | 4 | 1 | 1 |
-| fep-025 | Thermodynamics | `fep025_cycleCurrent_stationary` | `formalized` | 8 | 6 | 3 |
+| fep-025 | Thermodynamics | `fep025_cycleCurrent_stationary` | `formalized` | 8 | 6 | 7 |
 | fep-026 | FEP | `fep026_priorComplexity_eq_zero_iff` | `formalized` | 7 | 1 | 1 |
 | fep-027 | BayesianMechanics | `fep027_hierarchical_assoc` | `formalized` | 4 | 1 | 1 |
 | fep-028 | ActiveInference | `fep028_softmax_sum_univ` | `formalized` | 7 | 1 | 2 |
-| fep-029 | InfoGeometry | `fep029_quadraticBregman_eq_zero_iff` | `formalized` | 7 | 1 | 2 |
-| fep-030 | Thermodynamics | `fep030_binaryEntropy_max` | `formalized` | 6 | 0 | 4 |
+| fep-029 | InfoGeometry | `fep029_quadraticBregman_eq_zero_iff` | `formalized` | 7 | 1 | 4 |
+| fep-030 | Thermodynamics | `fep030_binaryEntropy_max` | `formalized` | 6 | 0 | 6 |
 | fep-031 | Thermodynamics | `fep031_gibbsProbability_sum_one` | `formalized` | 5 | 1 | 1 |
-| fep-032 | FEP | `fep032_quadraticUpdate_tendsto` | `formalized` | 5 | 1 | 2 |
+| fep-032 | FEP | `fep032_quadraticUpdate_tendsto` | `formalized` | 5 | 1 | 3 |
 | fep-033 | ActiveInference | `fep033_bellman` | `formalized` | 4 | 1 | 1 |
 | fep-034 | ActiveInference | `fep034_filter_joint_reconstruction` | `formalized` | 4 | 2 | 1 |
 | fep-035 | FEP | `fep035_log_jensen_two_strict` | `formalized` | 7 | 0 | 1 |
-| fep-036 | BayesianMechanics | `fep036_smoothedRate_tendsto_of_empiricalRate` | `formalized` | 8 | 4 | 4 |
-| fep-037 | Thermodynamics | `fep037_response_eq` | `formalized` | 5 | 3 | 2 |
-| fep-038 | InfoGeometry | `fep038_fisherInformation_eq` | `formalized` | 8 | 7 | 5 |
+| fep-036 | BayesianMechanics | `fep036_smoothedRate_tendsto_of_empiricalRate` | `formalized` | 8 | 4 | 8 |
+| fep-037 | Thermodynamics | `fep037_response_eq` | `formalized` | 5 | 3 | 4 |
+| fep-038 | InfoGeometry | `fep038_fisherInformation_eq` | `formalized` | 8 | 7 | 9 |
 | fep-039 | FEP | `fep039_global_eq_zero_iff` | `formalized` | 5 | 1 | 3 |
-| fep-040 | BayesianMechanics | `fep040_thermalEntropy_hasDerivAt` | `formalized` | 7 | 5 | 3 |
+| fep-040 | BayesianMechanics | `fep040_thermalEntropy_hasDerivAt` | `formalized` | 7 | 5 | 6 |
 | fep-041 | ActiveInference | `fep041_expectedInformationGain_zero` | `formalized` | 3 | 2 | 2 |
-| fep-042 | BayesianMechanics | `fep042_likelihood_eq_of_stat_eq` | `formalized` | 2 | 4 | 2 |
-| fep-043 | FEP | `fep043_quadratic_critical_iff` | `formalized` | 6 | 2 | 4 |
-| fep-044 | InfoGeometry | `fep044_hellingerSq_eq_zero_iff` | `formalized` | 4 | 1 | 2 |
-| fep-045 | BayesianMechanics | `fep045_bernoulli_posterior_closed` | `formalized` | 4 | 4 | 2 |
-| fep-046 | BayesianMechanics | `fep046_mass_conservation` | `formalized` | 3 | 2 | 2 |
+| fep-042 | BayesianMechanics | `fep042_likelihood_eq_of_stat_eq` | `formalized` | 2 | 4 | 3 |
+| fep-043 | FEP | `fep043_quadratic_critical_iff` | `formalized` | 6 | 2 | 7 |
+| fep-044 | InfoGeometry | `fep044_hellingerSq_eq_zero_iff` | `formalized` | 4 | 1 | 4 |
+| fep-045 | BayesianMechanics | `fep045_bernoulli_posterior_closed` | `formalized` | 4 | 4 | 4 |
+| fep-046 | BayesianMechanics | `fep046_mass_conservation` | `formalized` | 3 | 2 | 4 |
 | fep-047 | ActiveInference | `fep047_forward_compose` | `formalized` | 5 | 1 | 2 |
 | fep-048 | FEP | `fep048_contraction_unique` | `formalized` | 8 | 1 | 3 |
-| fep-049 | Thermodynamics | `fep049_entropyProduction_eq_zero_iff` | `formalized` | 5 | 4 | 3 |
-| fep-050 | Thermodynamics | `fep050_landauer_work_bound` | `formalized` | 5 | 6 | 2 |
+| fep-049 | Thermodynamics | `fep049_entropyProduction_eq_zero_iff` | `formalized` | 5 | 4 | 4 |
+| fep-050 | Thermodynamics | `fep050_landauer_work_bound` | `formalized` | 5 | 6 | 3 |
 | fep-051 | BayesianMechanics | `fep051_likelihoodRatio_reconstruction` | `formalized` | 2 | 0 | 1 |
 | fep-052 | BayesianMechanics | `fep052_posterior_density_tilt` | `conditional_proxy` | 2 | 0 | 1 |
 | fep-053 | BayesianMechanics | `fep053_kernelBayes_joint_reconstruction` | `formalized` | 2 | 0 | 1 |
@@ -240,7 +240,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.information_geometry` | `foundation` | 33 | 14 | 1 | `FepSketches.finite_probability` |
 | `FepSketches.statistical_convergence` | `foundation` | 7 | 8 | 0 | — |
 | `FepSketches.measure_bayes` | `foundation` | 12 | 0 | 0 | `FepSketches.finite_probability` |
-| `FepSketches.variational_duality` | `foundation` | 82 | 42 | 3 | `FepSketches.finite_information` |
+| `FepSketches.variational_duality` | `foundation` | 85 | 42 | 3 | `FepSketches.finite_information` |
 | `FepSketches.controlled_markov` | `foundation` | 33 | 28 | 2 | `FepSketches.active_inference` |
 | `FepSketches.temporal_inference` | `foundation` | 52 | 38 | 1 | `FepSketches.controlled_markov` |
 | `FepSketches.finite_markov_dynamics` | `foundation` | 17 | 6 | 0 | `FepSketches.finite_probability` |
@@ -547,6 +547,8 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `FepSketches.predictive_coding` | 7 | fep-086, fep-087, fep-088, fep-089, fep-090, fep-091, fep-092 |
 | `FepSketches.temporal_inference` | 7 | fep-072, fep-073, fep-074, fep-075, fep-076, fep-077, fep-078 |
 | `FepSketches.variational_duality` | 7 | fep-058, fep-059, fep-060, fep-061, fep-062, fep-063, fep-064 |
+| `Lean.Elab.Tactic.Omega` | 1 | fep-036 |
+| `Lean.Meta.Tactic.NormCast` | 2 | fep-030, fep-036 |
 | `Mathlib.Algebra.BigOperators.Field` | 1 | fep-007 |
 | `Mathlib.Algebra.BigOperators.Group.Finset.Basic` | 7 | fep-007, fep-012, fep-020, fep-025, fep-038, fep-039, fep-045 |
 | `Mathlib.Algebra.BigOperators.Ring.Finset` | 1 | fep-030 |
@@ -568,7 +570,7 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `Mathlib.Analysis.SpecificLimits.Basic` | 1 | fep-036 |
 | `Mathlib.Analysis.SpecificLimits.Normed` | 3 | fep-020, fep-032, fep-037 |
 | `Mathlib.Basic.ENNReal.Inv` | 3 | fep-003, fep-021, fep-033 |
-| `Mathlib.Basic.Real.Basic` | 5 | fep-007, fep-008, fep-030, fep-039, fep-047 |
+| `Mathlib.Basic.Real.Basic` | 11 | fep-004, fep-007, fep-008, fep-025, fep-029, fep-030, fep-039, fep-042, fep-045, fep-046, fep-047 |
 | `Mathlib.Data.Bool.Basic` | 2 | fep-020, fep-038 |
 | `Mathlib.Data.Finset.Basic` | 3 | fep-005, fep-008, fep-028 |
 | `Mathlib.Data.Finset.Filter` | 1 | fep-005 |
@@ -593,5 +595,12 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `Mathlib.Probability.Kernel.Composition.MeasureComp` | 3 | fep-019, fep-022, fep-027 |
 | `Mathlib.Probability.Kernel.Invariance` | 1 | fep-010 |
 | `Mathlib.Probability.Kernel.Posterior` | 2 | fep-017, fep-034 |
-| `Mathlib.Tactic` | 21 | fep-004, fep-013, fep-018, fep-020, fep-022, fep-025, fep-029, fep-030, fep-032, fep-036, fep-037, fep-038, fep-040, fep-042, fep-043, fep-044, fep-045, fep-046, fep-048, fep-049, fep-050 |
+| `Mathlib.Tactic.Convert` | 4 | fep-013, fep-038, fep-040, fep-043 |
+| `Mathlib.Tactic.FieldSimp` | 5 | fep-030, fep-036, fep-038, fep-040, fep-045 |
+| `Mathlib.Tactic.FinCases` | 1 | fep-025 |
+| `Mathlib.Tactic.GCongr` | 2 | fep-036, fep-040 |
+| `Mathlib.Tactic.Linarith` | 14 | fep-013, fep-018, fep-020, fep-022, fep-025, fep-029, fep-032, fep-037, fep-038, fep-043, fep-044, fep-046, fep-049, fep-050 |
+| `Mathlib.Tactic.NormNum` | 4 | fep-025, fep-038, fep-048, fep-050 |
+| `Mathlib.Tactic.Positivity` | 5 | fep-036, fep-037, fep-040, fep-043, fep-044 |
+| `Mathlib.Tactic.Ring` | 17 | fep-004, fep-013, fep-018, fep-020, fep-022, fep-025, fep-029, fep-030, fep-032, fep-037, fep-038, fep-042, fep-043, fep-044, fep-045, fep-046, fep-049 |
 | `Mathlib.Topology.MetricSpace.Contracting` | 1 | fep-048 |

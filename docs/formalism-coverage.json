@@ -1143,13 +1143,15 @@
       "imports": [
         "FepSketches.finite_information",
         "Mathlib.Analysis.Convex.SpecificFunctions.Basic",
+        "Mathlib.InformationTheory.KullbackLeibler.Basic",
+        "Mathlib.Probability.Moments.Basic",
         "Mathlib.Topology.Order.Compact"
       ],
       "lean_module": "FepSketches.variational_duality",
       "resource": "variational_duality.lean",
       "role": "foundation",
       "structure_count": 3,
-      "theorem_count": 82,
+      "theorem_count": 85,
       "theorems": [
         "FEP.VariationalDuality.boolBiased_entropy_lt_zeroEnergyGibbs",
         "FEP.VariationalDuality.boolFeasible_information_pos",
@@ -1215,6 +1217,9 @@
         "FEP.VariationalDuality.meanFieldCoordinate_optimum_iff",
         "FEP.VariationalDuality.mutualInformationOfMasses_eq",
         "FEP.VariationalDuality.mutualInformation_eq_entropy_marginals_without_support",
+        "FEP.VariationalDuality.nativeCgf_le_klDiv",
+        "FEP.VariationalDuality.nativeEntropy_le_klDiv",
+        "FEP.VariationalDuality.nativeKL_tilted_gap",
         "FEP.VariationalDuality.neg_logPartition_le_gibbsFreeEnergy",
         "FEP.VariationalDuality.predictive_pos_of_jointSlice_pos",
         "FEP.VariationalDuality.rateDistortionDual_bddBelow",
@@ -4364,6 +4369,21 @@
       ]
     },
     {
+      "module": "Lean.Elab.Tactic.Omega",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-036"
+      ]
+    },
+    {
+      "module": "Lean.Meta.Tactic.NormCast",
+      "topic_count": 2,
+      "topic_ids": [
+        "fep-030",
+        "fep-036"
+      ]
+    },
+    {
       "module": "Mathlib.Algebra.BigOperators.Field",
       "topic_count": 1,
       "topic_ids": [
@@ -4537,12 +4557,18 @@
     },
     {
       "module": "Mathlib.Basic.Real.Basic",
-      "topic_count": 5,
+      "topic_count": 11,
       "topic_ids": [
+        "fep-004",
         "fep-007",
         "fep-008",
+        "fep-025",
+        "fep-029",
         "fep-030",
         "fep-039",
+        "fep-042",
+        "fep-045",
+        "fep-046",
         "fep-047"
       ]
     },
@@ -4725,8 +4751,85 @@
       ]
     },
     {
-      "module": "Mathlib.Tactic",
-      "topic_count": 21,
+      "module": "Mathlib.Tactic.Convert",
+      "topic_count": 4,
+      "topic_ids": [
+        "fep-013",
+        "fep-038",
+        "fep-040",
+        "fep-043"
+      ]
+    },
+    {
+      "module": "Mathlib.Tactic.FieldSimp",
+      "topic_count": 5,
+      "topic_ids": [
+        "fep-030",
+        "fep-036",
+        "fep-038",
+        "fep-040",
+        "fep-045"
+      ]
+    },
+    {
+      "module": "Mathlib.Tactic.FinCases",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-025"
+      ]
+    },
+    {
+      "module": "Mathlib.Tactic.GCongr",
+      "topic_count": 2,
+      "topic_ids": [
+        "fep-036",
+        "fep-040"
+      ]
+    },
+    {
+      "module": "Mathlib.Tactic.Linarith",
+      "topic_count": 14,
+      "topic_ids": [
+        "fep-013",
+        "fep-018",
+        "fep-020",
+        "fep-022",
+        "fep-025",
+        "fep-029",
+        "fep-032",
+        "fep-037",
+        "fep-038",
+        "fep-043",
+        "fep-044",
+        "fep-046",
+        "fep-049",
+        "fep-050"
+      ]
+    },
+    {
+      "module": "Mathlib.Tactic.NormNum",
+      "topic_count": 4,
+      "topic_ids": [
+        "fep-025",
+        "fep-038",
+        "fep-048",
+        "fep-050"
+      ]
+    },
+    {
+      "module": "Mathlib.Tactic.Positivity",
+      "topic_count": 5,
+      "topic_ids": [
+        "fep-036",
+        "fep-037",
+        "fep-040",
+        "fep-043",
+        "fep-044"
+      ]
+    },
+    {
+      "module": "Mathlib.Tactic.Ring",
+      "topic_count": 17,
       "topic_ids": [
         "fep-004",
         "fep-013",
@@ -4737,18 +4840,14 @@
         "fep-029",
         "fep-030",
         "fep-032",
-        "fep-036",
         "fep-037",
         "fep-038",
-        "fep-040",
         "fep-042",
         "fep-043",
         "fep-044",
         "fep-045",
         "fep-046",
-        "fep-048",
-        "fep-049",
-        "fep-050"
+        "fep-049"
       ]
     },
     {
@@ -4765,25 +4864,25 @@
     "capability_nodes": 50,
     "composed_theorems": 353,
     "definitions": 1032,
-    "distinct_mathlib_imports": 70,
+    "distinct_mathlib_imports": 79,
     "formal_module_dependency_edges": 170,
-    "formal_module_import_edges": 331,
+    "formal_module_import_edges": 333,
     "formal_modules": 71,
     "formal_pairing_witnesses": 118,
     "formal_relation_witnesses": 24,
     "formal_resource_abbreviations": 32,
     "formal_resource_definitions": 937,
     "formal_resource_structures": 55,
-    "formal_resource_theorems": 1641,
+    "formal_resource_theorems": 1644,
     "foundation_modules": 45,
-    "foundation_theorems": 1288,
+    "foundation_theorems": 1291,
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
     "theorem_witnessed_relations": 142,
-    "theorems": 2225,
+    "theorems": 2228,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
-    "topic_import_edges": 225,
+    "topic_import_edges": 265,
     "topic_theorems": 584,
     "topics": 168
   },
@@ -5922,7 +6021,8 @@
       "id": "fep-004",
       "imports": [
         "Mathlib.Algebra.Order.BigOperators.Group.Finset",
-        "Mathlib.Tactic"
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "A finite diagonal Fisher metric is symmetric and positive semidefinite under nonnegative information weights, and becomes positive definite under strictly positive weights.",
       "mathlib_hints": [
@@ -6126,7 +6226,9 @@
       "imports": [
         "Mathlib.Analysis.Calculus.Deriv.Add",
         "Mathlib.Analysis.Calculus.Deriv.Mul",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Convert",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "For differentiable U(T) and S(T), Helmholtz free energy has derivative U'\u2212S\u2212TS'; under the equilibrium first-law identity U'=TS', this reduces exactly to dF/dT=\u2212S.",
       "mathlib_hints": [
@@ -6233,7 +6335,8 @@
       "imports": [
         "Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse",
         "Mathlib.Analysis.Real.Sqrt",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "The Bernoulli Fisher--Rao coordinate distance is nonnegative, symmetric, separating on the probability interval, and satisfies the triangle inequality.",
       "mathlib_hints": [
@@ -6278,7 +6381,8 @@
         "Mathlib.Analysis.SpecificLimits.Normed",
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
         "Mathlib.Data.Bool.Basic",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "A normalized symmetric two-state transition has the uniform stationary law; its exact n-step deviation is (1-2\u03b1)^n times the initial deviation and converges to zero for 0 < \u03b1 < 1.",
       "mathlib_hints": [
@@ -6321,7 +6425,8 @@
       "id": "fep-022",
       "imports": [
         "Mathlib.Probability.Kernel.Composition.MeasureComp",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "Markov posterior and likelihood kernels compose into normalized posterior-predictive fibres, and expected Bernoulli Brier loss is uniquely minimized by the true event probability.",
       "mathlib_hints": [
@@ -6386,7 +6491,11 @@
       "imports": [
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
         "Mathlib.LinearAlgebra.Matrix.Notation",
-        "Mathlib.Tactic"
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic.FinCases",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.NormNum",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "For flux \u03c0\u1d62P\u1d62\u2c7c, forward-minus-reverse current is antisymmetric; row normalization plus \u03c0-stationarity derives zero divergence. A directed three-state transition with uniform stationary law has a nonzero divergence-free current.",
       "mathlib_hints": [
@@ -6473,7 +6582,9 @@
       "id": "fep-029",
       "imports": [
         "Mathlib.Analysis.Convex.Basic",
-        "Mathlib.Tactic"
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "The scalar Bregman divergence generated by \u03c6(x)=x\u00b2 equals (x-y)\u00b2, is nonnegative, and vanishes exactly when x=y.",
       "mathlib_hints": [
@@ -6497,7 +6608,9 @@
         "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
         "Mathlib.Algebra.BigOperators.Ring.Finset",
         "Mathlib.Basic.Real.Basic",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.FieldSimp",
+        "Mathlib.Tactic.Ring",
+        "Lean.Meta.Tactic.NormCast"
       ],
       "invariant": "Binary Shannon entropy in nats is globally at most log 2, with equality exactly at probability one half.",
       "mathlib_hints": [
@@ -6540,7 +6653,8 @@
       "id": "fep-032",
       "imports": [
         "Mathlib.Analysis.SpecificLimits.Normed",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "Gradient descent on the centered scalar quadratic has an exact n-step iterate, nonincreasing energy for step sizes in [0,2], and converges globally to the center for steps in (0,2).",
       "mathlib_hints": [
@@ -6627,7 +6741,11 @@
         "Mathlib.Analysis.SpecificLimits.Basic",
         "Mathlib.Data.Nat.Cast.Field",
         "Mathlib.Probability.Distributions.Binomial",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.FieldSimp",
+        "Mathlib.Tactic.GCongr",
+        "Mathlib.Tactic.Positivity",
+        "Lean.Meta.Tactic.NormCast",
+        "Lean.Elab.Tactic.Omega"
       ],
       "invariant": "A Mathlib finite binomial sampling law supplies admissible success counts; Laplace smoothing maps every outcome to an interior Bernoulli prior, is monotone in successes, and preserves the limit of any convergent empirical-frequency sequence.",
       "mathlib_hints": [
@@ -6649,7 +6767,9 @@
       "id": "fep-037",
       "imports": [
         "Mathlib.Analysis.SpecificLimits.Normed",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Positivity",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "For the symmetric two-state relaxation eigenvalue 1-2\u03b1, stationary autocorrelation obeys an exact recurrence and decays for 0<\u03b1<1; the discrete fluctuation--response kernel equals 2\u03b2\u03b1 variance times the same geometric mode and also decays.",
       "mathlib_hints": [
@@ -6674,7 +6794,11 @@
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
         "Mathlib.Data.Bool.Basic",
         "Mathlib.Analysis.Real.Sqrt",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Convert",
+        "Mathlib.Tactic.FieldSimp",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.NormNum",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines a dual natural gradient and is the pullback of the Euclidean metric along the Fisher--Rao coordinate.",
       "mathlib_hints": [
@@ -6720,7 +6844,10 @@
       "imports": [
         "Mathlib.Analysis.SpecialFunctions.Log.Deriv",
         "Mathlib.Probability.Distributions.Gaussian.Real",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Convert",
+        "Mathlib.Tactic.FieldSimp",
+        "Mathlib.Tactic.GCongr",
+        "Mathlib.Tactic.Positivity"
       ],
       "invariant": "Mathlib's real Gaussian law is normalized with its stated mean and variance; the one-dimensional closed-form entropy is strictly variance-monotone, differentiable with derivative 1/(2v), and under v=\u03baT has derivative 1/(2T) and heat capacity 1/2.",
       "mathlib_hints": [
@@ -6764,7 +6891,8 @@
       "id": "fep-042",
       "imports": [
         "Mathlib.Data.List.Count",
-        "Mathlib.Tactic"
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "The Bernoulli sequence likelihood factorizes exactly through success and failure counts, so samples with equal count statistics have identical likelihood for every parameter.",
       "mathlib_hints": [
@@ -6788,7 +6916,10 @@
         "Mathlib.Analysis.Calculus.Deriv.Mul",
         "Mathlib.Analysis.Calculus.Deriv.Pow",
         "Mathlib.Analysis.Calculus.LocalExtr.Basic",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Convert",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Positivity",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "Fermat's theorem makes every local minimum critical; for an exact positive-curvature quadratic, the derivative is the stated gradient, the center is the unique critical point and global minimizer, and the scalar Hessian is strictly positive.",
       "mathlib_hints": [
@@ -6810,7 +6941,9 @@
       "id": "fep-044",
       "imports": [
         "Mathlib.Analysis.Real.Sqrt",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Positivity",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "The squared Hellinger divergence between Bernoulli laws is nonnegative, symmetric, invariant under success/failure relabeling, and separates parameters on [0,1].",
       "mathlib_hints": [
@@ -6832,7 +6965,9 @@
       "id": "fep-045",
       "imports": [
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
-        "Mathlib.Tactic"
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic.FieldSimp",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "For a nonzero evidence normalizer, likelihood-times-Bernoulli-prior mass normalizes pointwise to another Bernoulli law at the Bayes-updated parameter.",
       "mathlib_hints": [
@@ -6854,7 +6989,9 @@
       "id": "fep-046",
       "imports": [
         "Mathlib.Algebra.BigOperators.Ring.List",
-        "Mathlib.Tactic"
+        "Mathlib.Basic.Real.Basic",
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "For every finite stick-breaking sequence, allocated weights plus residual mass equal exactly one; unit-interval breaks keep the residual in [0,1].",
       "mathlib_hints": [
@@ -6899,7 +7036,7 @@
       "imports": [
         "Mathlib.Order.Monotone.Basic",
         "Mathlib.Topology.MetricSpace.Contracting",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.NormNum"
       ],
       "invariant": "Mathlib's global ContractingWith contract gives a unique fixed point on \u211d, and iterations of the concrete halving update converge to zero.",
       "mathlib_hints": [
@@ -6923,7 +7060,8 @@
       "imports": [
         "Mathlib.Algebra.Order.BigOperators.Group.Finset",
         "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.Ring"
       ],
       "invariant": "Under J\u1d62=L\u1d62X\u1d62, the flux--force pairing is a nonnegative quadratic form that separates equilibrium for L\u1d62>0. Independently, positive forward/reverse edge fluxes have production (f-r)log(f/r)\u22650, with equality exactly at detailed balance.",
       "mathlib_hints": [
@@ -6945,7 +7083,8 @@
       "id": "fep-050",
       "imports": [
         "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
-        "Mathlib.Tactic"
+        "Mathlib.Tactic.Linarith",
+        "Mathlib.Tactic.NormNum"
       ],
       "invariant": "A noninjective reset maps an unbiased bit to a pure state and loses exactly kB log 2 entropy; nonnegative total entropy at positive temperature derives the corresponding heat bound, and work above heat derives the work bound.",
       "mathlib_hints": [

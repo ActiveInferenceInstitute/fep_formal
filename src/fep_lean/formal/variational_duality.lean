@@ -1,17 +1,25 @@
 module
 public import FepSketches.finite_information
 public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
+public import Mathlib.InformationTheory.KullbackLeibler.Basic
+public import Mathlib.Probability.Moments.Basic
 public import Mathlib.Topology.Order.Compact
 
 @[expose] public section
 
 /-!
-# Finite variational duality and information bounds
+# Finite and measure-native variational information bounds
 
 The results here use the normalized `FiniteLaw`/`FiniteKernel` substrate.  All
 logarithmic identities expose full-support premises.  In particular, no result
 identifies the existing totalized real-valued KL with an extended divergence at
 zero reference mass.
+
+The separate native entropy inequality uses probability measures, an
+integrable potential under the candidate, and an integrable exponential under
+the reference. Its `ℝ≥0∞` bound retains infinite native KL. Equality after
+`ENNReal.ofReal` clipping is not an optimizer characterization; the finite real
+tilt identity records the actual gap.
 -/
 
 namespace FEP.VariationalDuality
@@ -1647,5 +1655,73 @@ theorem vfeZeroEvidence_boundary :
     rw [FiniteKernel.predictive_mass]
     exact Finset.sum_eq_zero fun x _ => hslice x
   exact ⟨hzero, hslice, by rw [hzero]; exact lt_irrefl _⟩
+
+/- L06_MATHLIB_ONLY_BEGIN -/
+section NativeEntropy
+
+open MeasureTheory
+open scoped ENNReal
+
+variable {Ω : Type*} [MeasurableSpace Ω]
+
+/-- Finite native KL has an exact real gap against the normalized exponential
+tilt. Absolute continuity and likelihood-ratio integrability are explicit;
+this identity never converts infinite KL into a real entropy bound. -/
+theorem nativeKL_tilted_gap
+    (μ ν : Measure Ω) [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
+    {f : Ω → ℝ} (hμν : μ ≪ ν) (hf : Integrable f μ)
+    (hexp : Integrable (fun x => Real.exp (f x)) ν)
+    (hllr : Integrable (llr μ ν) μ) :
+    (InformationTheory.klDiv μ (ν.tilted f)).toReal =
+      (InformationTheory.klDiv μ ν).toReal - (∫ x, f x ∂μ) +
+        Real.log (∫ x, Real.exp (f x) ∂ν) := by
+  letI : IsProbabilityMeasure (ν.tilted f) := isProbabilityMeasure_tilted hexp
+  have hμtilt : μ ≪ ν.tilted f := hμν.trans (absolutelyContinuous_tilted hexp)
+  have hllrtilt : Integrable (llr μ (ν.tilted f)) μ :=
+    integrable_llr_tilted_right hμν hf hllr hexp
+  rw [InformationTheory.toReal_klDiv hμtilt hllrtilt,
+    InformationTheory.toReal_klDiv hμν hllr]
+  simp only [probReal_univ, add_sub_cancel_right]
+  exact integral_llr_tilted_right hμν hf hexp hllr
+
+/-- Measure-level entropy inequality with native extended KL. Singular laws
+and nonintegrable likelihood ratios keep the infinite right-hand side.
+Exponential integrability is essential because the Bochner normalizer is
+otherwise totalized to zero. The clipped left-hand side has no optimizer iff. -/
+theorem nativeEntropy_le_klDiv
+    (μ ν : Measure Ω) [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
+    {f : Ω → ℝ} (hf : Integrable f μ)
+    (hexp : Integrable (fun x => Real.exp (f x)) ν) :
+    ENNReal.ofReal ((∫ x, f x ∂μ) - Real.log (∫ x, Real.exp (f x) ∂ν)) ≤
+      InformationTheory.klDiv μ ν := by
+  by_cases htop : InformationTheory.klDiv μ ν = ∞
+  · simp [htop]
+  obtain ⟨hμν, hllr⟩ := InformationTheory.klDiv_ne_top_iff.mp htop
+  have hgap := nativeKL_tilted_gap μ ν hμν hf hexp hllr
+  have hnonneg : 0 ≤ (InformationTheory.klDiv μ (ν.tilted f)).toReal :=
+    ENNReal.toReal_nonneg
+  have hle : (∫ x, f x ∂μ) - Real.log (∫ x, Real.exp (f x) ∂ν) ≤
+      (InformationTheory.klDiv μ ν).toReal := by
+    linarith
+  calc
+    ENNReal.ofReal ((∫ x, f x ∂μ) - Real.log (∫ x, Real.exp (f x) ∂ν)) ≤
+        ENNReal.ofReal (InformationTheory.klDiv μ ν).toReal :=
+      ENNReal.ofReal_le_ofReal hle
+    _ = InformationTheory.klDiv μ ν := ENNReal.ofReal_toReal htop
+
+/-- The entropy inequality for a cumulant-generating function. The parameter
+may have either sign; the exponential moment must be integrable at that exact
+parameter, and no finite-real interpretation of singular KL is asserted. -/
+theorem nativeCgf_le_klDiv
+    (μ ν : Measure Ω) [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
+    {X : Ω → ℝ} (t : ℝ) (hX : Integrable X μ)
+    (hexp : Integrable (fun x => Real.exp (t * X x)) ν) :
+    ENNReal.ofReal (t * (∫ x, X x ∂μ) - ProbabilityTheory.cgf X ν t) ≤
+      InformationTheory.klDiv μ ν := by
+  simpa only [ProbabilityTheory.cgf, ProbabilityTheory.mgf, integral_const_mul] using
+    nativeEntropy_le_klDiv μ ν (hX.const_mul t) hexp
+
+end NativeEntropy
+/- L06_MATHLIB_ONLY_END -/
 
 end FEP.VariationalDuality
