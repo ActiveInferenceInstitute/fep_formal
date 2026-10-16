@@ -177,8 +177,9 @@ def _fetch_json(url: str) -> Any:
         except urllib.error.HTTPError as exc:
             # A 404 is an answer (no matching Mathlib tag), not a transient
             # failure; only server-side errors are retried.
-            if exc.code < 500 or attempt == _FETCH_ATTEMPTS:
-                raise
+            with exc:
+                if exc.code < 500 or attempt == _FETCH_ATTEMPTS:
+                    raise
         except (http.client.HTTPException, urllib.error.URLError, TimeoutError) as exc:
             # IncompleteRead and other HTTPException subclasses are not
             # OSError; surface them as OSError so callers report a readable

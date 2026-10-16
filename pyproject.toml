@@ -59,11 +59,6 @@ markers = [
 ]
 timeout = 900
 timeout_method = "thread"
-filterwarnings = [
-    "ignore::UserWarning",
-    "ignore::pytest.PytestWarning",
-    "ignore::DeprecationWarning",
-]
 
 [tool.coverage.run]
 source = ["src"]

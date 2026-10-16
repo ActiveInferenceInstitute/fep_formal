@@ -1,5 +1,17 @@
 ## Unreleased
 
+- Remove the three blanket pytest warning filters after inspecting the retained
+  Python and Chrome warning inventories. Register the shared fixture owner for
+  assertion rewriting before ordinary imports, and close HTTP error responses
+  in the pin checker and Prove2me transport. Error bodies now use the same
+  worker deadline and byte cap as successful responses. Real HTTP 401 responses
+  now follow the existing single re-exchange policy. Preserve typed API errors
+  and credential redaction; regression controls cover response
+  closure, oversized and stalled error bodies, and real plugin import order.
+  Broader warning and exact-source acceptance for
+  [#124](https://github.com/ActiveInferenceInstitute/fep_formal/issues/124)
+  remains subject to the full test and hosted gates.
+
 - Present the project as FEP_Formal while preserving the `fep_lean` Python and
   `fep-lean` CLI interfaces. Make root README the overview source and generate
   its GitHub presentation with rebased links and a missing/stale projection

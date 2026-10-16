@@ -102,7 +102,13 @@ class _UrllibTransport:
 
         def _do_request() -> None:
             try:
-                with urllib.request.urlopen(req, timeout=timeout_s) as resp:
+                try:
+                    response = urllib.request.urlopen(req, timeout=timeout_s)
+                except urllib.error.HTTPError as error_response:
+                    # HTTPError is also an open response. Consume it under
+                    # the same deadline, byte cap and cleanup as a 2xx body.
+                    response = error_response
+                with response as resp:
                     response_holder.append(resp)
                     result["status"] = int(resp.status)
                     chunks: list[bytes] = []
@@ -119,6 +125,8 @@ class _UrllibTransport:
                             )
                             return
                         chunks.append(chunk)
+                    # Return HTTP status through the transport protocol so
+                    # real 401s use the client's existing one-retry policy.
                     result["raw"] = b"".join(chunks)
             except BaseException as inner_exc:  # re-raised on the calling thread
                 result["exc"] = inner_exc
@@ -156,12 +164,12 @@ class _UrllibTransport:
         if isinstance(exc, Prove2meError):
             return exc
         if isinstance(exc, urllib.error.HTTPError):
-            try:
-                body_text = exc.read().decode("utf-8", errors="replace")
-            except OSError:
-                body_text = ""
+            # Defensive classification of an HTTPError raised while consuming
+            # another response must not start an unguarded read on the caller.
+            with contextlib.suppress(OSError, ValueError):
+                exc.close()
             return Prove2meAPIError(
-                f"HTTP {exc.code}: {exc.reason} — {body_text[:_SNIPPET_CHARS]}",
+                f"HTTP {exc.code}: {exc.reason}",
                 status_code=exc.code,
             )
         if isinstance(exc, urllib.error.URLError):
