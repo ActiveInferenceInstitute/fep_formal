@@ -2,7 +2,7 @@
 title: FEP_Formal Ideal State Assessment
 status: active
 phase: verifying
-updated: 2026-10-15
+updated: 2026-10-16
 ---
 
 # FEP_Formal Ideal State Assessment
@@ -148,7 +148,15 @@ open in [TODO.md](TODO.md).
 
 ## Current assessment
 
-The latest accepted integrated checkpoint is
+The latest integrated checkpoint with a successful exact-main workflow is
+[`4208d589`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/4208d589a00c5eeaed5a36d8760153bad8805ef1).
+Its [exact-main run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38839512633)
+passed all 21 executed jobs, including all 15 installed-wheel cells; the
+documentation-only alternative was intentionally skipped. The later
+[publication handoff](WORK_STATUS.md) distinguishes pushed candidate work from
+accepted main and preserves its remaining gates.
+
+The earlier accepted integrated checkpoint
 [`bea6b9c5ed4dc5b978b314a69d041055be295e5e`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/bea6b9c5ed4dc5b978b314a69d041055be295e5e).
 Its exact-main [hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38825444108)
 passed all 21 executed jobs, including all 15 installed-wheel cells; the

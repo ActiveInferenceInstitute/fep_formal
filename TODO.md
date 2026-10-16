@@ -6,6 +6,11 @@ Each linked GitHub Issue contains its owner, detailed scope, dependencies,
 positive acceptance, failure controls and claim boundary. Size means
 implementation scope, not a version or schedule promise.
 
+The [2026-10-16 publication handoff](WORK_STATUS.md) records pushed work and
+remaining acceptance. LEAN-11, LEAN-13 and PKG-12 remain open while
+[PR182](https://github.com/ActiveInferenceInstitute/fep_formal/pull/182) completes
+its exact-source gates.
+
 ## Release gate
 
 Releases follow the short [release procedure](docs/release.md): one version
@@ -111,7 +116,7 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [LEAN-6](https://github.com/ActiveInferenceInstitute/fep_formal/issues/104) — Consumed-endpoint review notes on every `formal` edge | Minor | Independent | A reviewed seal delta applies the five pairing-rationale rewrites in `docs/relations-endpoint-adjudication.md`, and every `formal` edge's rationale names its consumed endpoint theorem. |
 | [LEAN-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105) — Obligation records for conceptual relations | Minor | Independent | A schema test requires `blocked_by` on every conceptual edge; at least one converted to a pairing (034↔047 via FORM-S10 or 016↔032). |
 | [LEAN-9](https://github.com/ActiveInferenceInstitute/fep_formal/issues/107) — Numerical witnesses for the core families | Medium | [CORE-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74) | At least 22 catalogue witnesses; dashboard `--check` and witness tests pass. |
-| [LEAN-11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109) — Narrow blanket Mathlib.Tactic and root Mathlib imports | Minor | Independent | No blanket tactic import in `src/fep_lean/formal`; build stays warning-free. |
+| [LEAN-11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109) — Narrow blanket Mathlib.Tactic and root Mathlib imports | Minor | Independent | No blanket tactic import in the formal tree or the 21 narrowed canonical topic bodies; preserve proof tails and public/meta imports; generated parity, isolated/aggregate native and axiom checks pass. |
 | [LEAN-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110) — Move the finite KL bridge beside finiteKL and prepare a Mathlib PR | Medium | Independent | Bridge lemma compiles with only Mathlib imports and no FEP namespace; upstream draft prepared after checking current Mathlib. |
 | [LEAN-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/111) — Upstream candidates: Donsker–Varadhan and exponential-family score facts | Medium | Independent | A measure-level Donsker–Varadhan inequality proved without FEP types. |
 
@@ -126,7 +131,7 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [PKG-9](https://github.com/ActiveInferenceInstitute/fep_formal/issues/122) — Ratchet function length | Medium | Independent | `ruff check` clean with the rule; no function in the named modules over 200 lines; outputs unchanged. |
 | [PKG-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/123) — Mirror the test layout to the source split | Minor | [CUR-03](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52) | Identical collected node-id set modulo renames. |
 | [PKG-11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/124) — Narrow blanket pytest warning filters | Minor | Independent | Suite passes with module-scoped ignores only. |
-| [PKG-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/125) — Coverage gate wording and per-package floors | Medium | Independent | A deliberately untested branch in `custody/` fails its floor while the global gate passes. |
+| [PKG-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/125) — Coverage gate wording and per-package floors | Medium | Independent | Uncovered executable lines in an isolated custody conditional arm fail its measured package line floor while the global gate passes; the clean control passes. This does not measure branch arcs. |
 | [PKG-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/126) — Thin cli.py to parse, dispatch and emit | Medium | [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73), [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64) | `cli.py` under ≈ 500 lines; every verb's JSON output byte-identical in CLI tests. |
 | [PKG-14](https://github.com/ActiveInferenceInstitute/fep_formal/issues/127) — Measure serial Lean verification before changing it | Major | Independent | Identical per-topic outcomes for 168 topics with measured elapsed times. |
 
