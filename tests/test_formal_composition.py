@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
@@ -20,6 +21,9 @@ from fep_lean.formal import (
     write_formal_projections,
 )
 from fep_lean.formal import manifest as formal_manifest
+from tests._support.h2_r0_custody import validate_h2_r0_custody
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -146,6 +150,7 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         "compositions/gaussian_control.lean",
         "compositions/gaussian_grid_path.lean",
         "compositions/smooth_reference_kernel.lean",
+        "compositions/finite_kernel_category.lean",
         "compositions/efe_policy_selection.lean",
         "compositions/perception_action_loop.lean",
         "compositions/bayesian_model_reduction.lean",
@@ -220,6 +225,7 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         "FEPComposed.GaussianControl",
         "FEPComposed.GaussianGridPath",
         "FEPComposed.SmoothReferenceKernel",
+        "FEPComposed.FiniteKernelCategory",
         "FEPComposed",
         "FEPComposed",
         "FEPComposed",
@@ -453,3 +459,104 @@ def test_public_composition_aggregate_is_manifest_generated(tmp_path: Path) -> N
 def test_checkout_formal_projection_is_current() -> None:
     assert formal_aggregate_drift(PROJECT_ROOT) == ()
     assert formal_projection_drift(PROJECT_ROOT) == ()
+
+
+def test_category_roster_growth_is_rejected_by_historical_custody() -> None:
+    # A current category resource cannot be presented as unchanged H2/H3 history.
+    # Keep this refusal when separately reviewing a prospective successor epoch.
+    with pytest.raises(
+        ValueError,
+        match="H3 owner subtraction does not recover the historical custody manifest",
+    ):
+        validate_h2_r0_custody(PROJECT_ROOT)
+
+
+@pytest.mark.serial_lean
+def test_finite_kernel_category_public_consumer_and_axioms(tmp_path: Path) -> None:
+    namespace = "FEPComposed.FiniteKernelCategory"
+    targets = (
+        "finiteKernelCategory",
+        "finKernCat_id_comp",
+        "finKernCat_comp_id",
+        "finKernCat_assoc",
+        "predictiveFunctor",
+        "bool_predictive_identity",
+        "bool_flip_true",
+        "bool_flip_false",
+        "bool_predictive_composition",
+        "bool_predictive_flip_twice",
+    )
+    consumer = tmp_path / "FiniteKernelCategoryConsumer.lean"
+    consumer.write_text(
+        """module
+public import FepSketches.compositions.finite_kernel_category
+
+@[expose] public section
+
+open CategoryTheory FEP FEPComposed.FiniteKernelCategory
+
+example (X Y : FinKernCat) (kernel : FiniteKernel X.α Y.α) : X ⟶ Y := kernel
+
+example (X Y : FinKernCat) (kernel : X ⟶ Y) : 𝟙 X ≫ kernel = kernel :=
+  finKernCat_id_comp X Y kernel
+
+example (X Y : FinKernCat) (kernel : X ⟶ Y) : kernel ≫ 𝟙 Y = kernel :=
+  finKernCat_comp_id X Y kernel
+
+example (W X Y Z : FinKernCat) (f : W ⟶ X) (g : X ⟶ Y) (h : Y ⟶ Z) :
+    (f ≫ g) ≫ h = f ≫ (g ≫ h) :=
+  finKernCat_assoc W X Y Z f g h
+
+example : predictiveFunctor.obj boolObject = FiniteLaw Bool := rfl
+
+example (X Y : FinKernCat) (kernel : X ⟶ Y) (prior : FiniteLaw X.α) :
+    predictiveFunctor.map kernel prior = FiniteKernel.predictive prior kernel := rfl
+
+example : predictiveFunctor.map (𝟙 boolObject) (FiniteLaw.pointMass true) =
+    FiniteLaw.pointMass true := bool_predictive_identity
+
+example : predictiveFunctor.map boolFlip (FiniteLaw.pointMass true) =
+    FiniteLaw.pointMass false := bool_flip_true
+
+example : predictiveFunctor.map boolFlip (FiniteLaw.pointMass false) =
+    FiniteLaw.pointMass true := bool_flip_false
+
+example : predictiveFunctor.map (boolFlip ≫ boolFlip) (FiniteLaw.pointMass true) =
+    predictiveFunctor.map boolFlip
+      (predictiveFunctor.map boolFlip (FiniteLaw.pointMass true)) :=
+  bool_predictive_composition
+
+example : predictiveFunctor.map (boolFlip ≫ boolFlip) (FiniteLaw.pointMass true) =
+    FiniteLaw.pointMass true := bool_predictive_flip_twice
+
+"""
+        + "\n".join(f"#print axioms {namespace}.{target}" for target in targets)
+        + "\n",
+        encoding="utf-8",
+    )
+    result = run_lean_probe(
+        consumer,
+        import_root=tmp_path,
+        cwd=PROJECT_ROOT / "lean",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise", context="finite-kernel category acceptance"
+        ),
+    )
+    output = result.stdout + result.stderr
+    assert result.returncode == 0, output
+    assert "warning:" not in output.lower(), output
+    for target in targets:
+        reports = re.findall(
+            rf"'{re.escape(namespace)}\.{target}' depends on axioms: \[(.*?)\]",
+            output,
+            re.DOTALL,
+        )
+        assert len(reports) == 1, (
+            f"missing or duplicate axiom report: {target}\n{output}"
+        )
+        assert {name.strip() for name in reports[0].split(",")} == {
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+        }, f"unexpected axioms: {target}\n{output}"

@@ -448,6 +448,29 @@ acceptance only, with final published-source reconciliation still required.
 **Confidence:** high for the reviewed reading paths, with no runtime or
 scientific acceptance inferred.
 
+## Compose custody restorations without weakening either refusal boundary
+
+**When:** Combine the optional category candidate with T01 metadata changes.
+
+**Choice:** Authenticate the live metadata profile and raw metadata companion
+without decoding before manifest restoration; then reauthenticate metadata
+for its own restoration. Retain both exact profile allow-lists, companion
+checks, size bounds, provenance groups and all 22 original pre-write digests.
+
+**Gap:** Calling either complete restoration first would decode before the
+other companion's tamper refusal, violating one of the existing controls.
+
+**Reach:** All 16 historical/manifest and 13 metadata controls now pass on the
+combined source. Two separate synthetic terminal-validator controls pass;
+neither reaccepts historical terminal evidence. Fresh independent combined
+source/byte review found no blocker at the recorded helper/test hashes. The
+earlier five failures and the later resource admission refusal remain separate
+observations, with no test process launched by the admission refusal.
+
+**Verdict:** preserve both boundaries through an explicit authentication phase.
+**Confidence:** high for these 31 source-bound unit controls and reviewed
+custody logic; current native, package, final hosted and C05 gates remain open.
+
 ## Keep current guidance explicit about each check epoch
 
 **When:** Final parent-branch reading-path reconciliation.
@@ -526,6 +549,38 @@ uploaded logs and narrower exceptions remain unverified. Distribution,
 supplemental specs, nested/consumed warnings and the production controller are
 separate boundaries.
 
+## The optional category port has a separate source transition
+
+**When:** R01 source integration preparation after the attributed feasibility spike.
+
+**Choice:** Manifest one optional composition leaf and regenerate its workspace,
+aggregate, coverage, landscape, atlas and methods projections through their
+existing owners. Bind the ordered 72-resource successor separately from the
+unchanged historical H2/H3 records. Keep every old live custody refusal.
+
+**Gap:** The authentic historical manifest is an input to static replay. Adding
+a current owner cannot be excused by extending the old validator's subtraction
+rules or relabeling an old native export. It needs its own source transition.
+
+**Reach:** A separate authenticated one-entry companion preserves the exact
+historical Git bytes. The preparer accepts only the exact predecessor or the
+exact successor with its positioned 266-byte insertion, verifies all 22 old
+inputs before writing, and labels the result historical/static/non-native.
+Sixteen historical/refusal/tampering controls and 24 formal source tests pass;
+the new native consumer remains unexecuted. Five owner freshness checks pass.
+Independent formal/API, domain and infrastructure/custody source assessments
+found no blockers at their recorded hashes. One subsequent test-message
+format change preserves its AST and keeps the earlier evidence binding.
+Removing one extra final line-feed from the leaf preserves all proof/import
+bytes; independent comparison and renewed owner projections bind that delta
+without relabeling prior executions.
+
+**Verdict:** sound source preparation; a historical positive control supplies
+no current native or scientific acceptance.
+**Confidence:** high for the measured static boundaries. Current compiler,
+ten-axiom, audit, installed-wheel, final-hosted and C05 acceptance remain open;
+neither PR44 nor Issue58 closes from this preparation.
+
 ## Restore authenticated metadata for historical custody controls
 
 **When:** T01 integration exposed a metadata-bound historical-control failure.
@@ -580,6 +635,31 @@ G02 closes.
 **Verdict:** document the eight exceptions; retire none.
 **Confidence:** high for the hash/consumer inventory, with no new execution or
 scientific acceptance inferred.
+
+## Keep the synthetic custody epoch separate from category roster growth
+
+**When:** Integrating accepted tooling main into the category successor.
+
+**Choice:** Reuse the authenticated historical-manifest companion before
+constructing the disposable pre-H3 fixture. Its 69-owner roster remains fixed;
+the current manifest has 72 owners and separately contains the category leaf.
+The live-source refusal control first checks the actual manifest refusal, then
+authenticates and restores only its disposable manifest to reach the distinct
+metadata and migrated-source refusals. Production inputs remain unchanged.
+
+**Gap:** A stale current-owner count and a metadata-first expectation concealed
+the earlier manifest boundary. Merely changing 71 to 72 would leave a fabricated
+70-owner historical fixture and would not preserve the intended epoch.
+
+**Reach:** The existing helper owns exact profile recognition, archive
+authentication and predecessor recovery. No validator, archive, receipt,
+mathematical source or controller limit changes. The category's current native,
+package and final hosted acceptance remain separate requirements.
+
+**Verdict:** preserve the exact historical roster and exercise every refusal in
+its real order, without admitting the new leaf into historical evidence.
+**Confidence:** static source and independent custody review are required at
+the final patch; runtime controls await the category's exact-head hosted run.
 
 ## Canonical project identity and GitHub README projection
 

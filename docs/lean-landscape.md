@@ -31,10 +31,11 @@ The exact roster and roles live in the manifest; this page projects them for nav
 | `predictive_coding` | foundation | `FEP.PredictiveCoding` | — |
 | `statistical_convergence` | foundation | `FEP.StatisticalConvergence` | — |
 
-## Layer 1 (7 modules)
+## Layer 1 (8 modules)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
+| `compositions.finite_kernel_category` | composition | `FEPComposed.FiniteKernelCategory` | finite_probability |
 | `compositions.geometric_mechanics` | composition | `FEPComposed` | fep_all, geometric_mechanics |
 | `finite_information` | foundation | `FEP.FiniteInformation` | finite_probability |
 | `finite_markov_dynamics` | foundation | `FEP.FiniteMarkovDynamics` | finite_probability |
@@ -159,9 +160,9 @@ The exact roster and roles live in the manifest; this page projects them for nav
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `composed` | aggregate | `—` | compositions.core, compositions.measure_variational, compositions.control_temporal, compositions.causal_predictive, compositions.thermo_geometry, compositions.collective_learning, compositions.risk_calibration, compositions.policy_trees, compositions.native_blanket_transfer, compositions.exponential_family, compositions.continuous_time, compositions.finite_scientific_implications, compositions.finite_policy_action, compositions.finite_reference_agent, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.smooth_reference_kernel, compositions.efe_policy_selection, compositions.perception_action_loop, compositions.bayesian_model_reduction, compositions.efe_time_scale_separation, compositions.helmholtz_ao_ness, compositions.geometric_mechanics, compositions.h3_case_study |
+| `composed` | aggregate | `—` | compositions.core, compositions.measure_variational, compositions.control_temporal, compositions.causal_predictive, compositions.thermo_geometry, compositions.collective_learning, compositions.risk_calibration, compositions.policy_trees, compositions.native_blanket_transfer, compositions.exponential_family, compositions.continuous_time, compositions.finite_scientific_implications, compositions.finite_policy_action, compositions.finite_reference_agent, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.smooth_reference_kernel, compositions.finite_kernel_category, compositions.efe_policy_selection, compositions.perception_action_loop, compositions.bayesian_model_reduction, compositions.efe_time_scale_separation, compositions.helmholtz_ao_ness, compositions.geometric_mechanics, compositions.h3_case_study |
 
-Total maintained formal modules: **71** across **14** dependency layers.
+Total maintained formal modules: **72** across **14** dependency layers.
 
 
 ## Reading order

@@ -1,0 +1,1300 @@
+{
+  "schema_version": 1,
+  "kind": "prospective-formal-source-transition",
+  "recorded_on": "2026-10-15",
+  "status": "pending_final_source_acceptance",
+  "work_package": "R01",
+  "integration_predecessor_commit": "b65c14f9473517cf42f615d3a3d901e7a853f480",
+  "attributed_proposal": {
+    "pull_request": "https://github.com/ActiveInferenceInstitute/fep_formal/pull/44",
+    "issue": "https://github.com/ActiveInferenceInstitute/fep_formal/issues/58",
+    "contributor": "jhashemi",
+    "source_head": "df4bc773e0c0ddb4e4f80920903e711ed287beb4",
+    "adapted_delta": "Bundled finite objects, categorical kernel composition and three category-law witnesses. The unrestricted duplicate functor wrapper is replaced by the standard Mathlib predictive-law functor."
+  },
+  "source_scope": {
+    "candidate_commit": null,
+    "boundary": "The listed path hashes bind this source candidate. They are not a final-commit, release, native or scientific acceptance receipt.",
+    "feasibility_spike": {
+      "path": "specs/comprehensive-next-steps/spikes/finite_kernel_category.lean",
+      "size": 6100,
+      "sha256": "845bbae7682cbecb5ddd638ff8617425f2856de7100d7de894365fdc8efe84ad"
+    },
+    "production_leaf": {
+      "path": "src/fep_lean/formal/compositions/finite_kernel_category.lean",
+      "size": 5584,
+      "sha256": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47"
+    },
+    "finite_probability_carrier": {
+      "path": "src/fep_lean/formal/finite_probability.lean",
+      "size": 10539,
+      "sha256": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380"
+    },
+    "formal_tests": [
+      {
+        "path": "tests/test_formal_composition.py",
+        "size": 20493,
+        "sha256": "6fe5da9b1a561519e36783c351220cc3e1c210509169361943785fdae57cbe20"
+      },
+      {
+        "path": "tests/test_formal_foundations.py",
+        "size": 16898,
+        "sha256": "1f347bd026596e81f960b41c0a50830144aa106b0123102543c67a5970d7b470"
+      }
+    ],
+    "spike_epoch_note": "The unchanged spike comment describes its earlier 71-module feasibility epoch; the manifested candidate has 72 modules.",
+    "nonsemantic_format_transition": {
+      "path": "tests/test_formal_composition.py",
+      "reviewed_and_tested_sha256": "cb757c9fc75ebb0bbf58269af379954b170bf1e175b933c6b6b89c36d87838c7",
+      "current_sha256": "6fe5da9b1a561519e36783c351220cc3e1c210509169361943785fdae57cbe20",
+      "change": "Parenthesize the unchanged long assertion message.",
+      "ast_equal_observed": true,
+      "review_or_execution_renewed": false,
+      "boundary": "Completed source reviews and prior Python results retain their pre-format source binding."
+    },
+    "nonsemantic_eof_transition": {
+      "canonical_path": "src/fep_lean/formal/compositions/finite_kernel_category.lean",
+      "projected_path": "lean/FepSketches/compositions/finite_kernel_category.lean",
+      "reviewed_sha256": "c14f8c432e254f7d92a2ca5cb75ecece31cc36d8a82ab2089e9c0962f1238bdd",
+      "current_sha256": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47",
+      "change": "Remove exactly one extra LF at end of file to satisfy git diff --check; imports, declarations and proofs otherwise byte-identical.",
+      "independent_source_comparison": "generic_methods_design: exact one-byte removal verified; original domain findings unchanged.",
+      "execution_renewed": false,
+      "boundary": "Earlier reviews and Python results retain their original exact source bindings. Current native and final-source acceptance remain pending."
+    }
+  },
+  "manifest_transition": {
+    "path": "src/fep_lean/formal/manifest.py",
+    "predecessor": {
+      "size": 22567,
+      "sha256": "c1dff5c5753162d1cf91fb27c5cb08777d385db4c606bd65a136d2c93acf07ce",
+      "module_count": 71,
+      "proposal_recovery_base_commit": "9b31783d686594bd5bcf5e62b2cd2a1a56e73237"
+    },
+    "successor": {
+      "size": 22833,
+      "sha256": "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157",
+      "module_count": 72
+    },
+    "delta": {
+      "kind": "one_exact_positioned_owner_insertion",
+      "owner": {
+        "resource": "compositions/finite_kernel_category.lean",
+        "lean_module": "FepSketches.compositions.finite_kernel_category",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.FiniteKernelCategory"
+      },
+      "insert_after_resource": "compositions/smooth_reference_kernel.lean",
+      "block_utf8": "    FormalModule(\n        resource=\"compositions/finite_kernel_category.lean\",\n        lean_module=\"FepSketches.compositions.finite_kernel_category\",\n        role=FormalModuleRole.COMPOSITION,\n        declaration_namespace=\"FEPComposed.FiniteKernelCategory\",\n    ),\n",
+      "block_size": 266,
+      "block_sha256": "eecc52be5e3ae75cce1a138609c84487e81e8eb709b82443bc38e4f7cdcc1bff",
+      "anchor_utf8": "    FormalModule(\n        resource=\"compositions/smooth_reference_kernel.lean\",\n        lean_module=\"FepSketches.compositions.smooth_reference_kernel\",\n        role=FormalModuleRole.COMPOSITION,\n        declaration_namespace=\"FEPComposed.SmoothReferenceKernel\",\n    ),\n",
+      "anchor_sha256": "9b7249c4597abb66d2802b860795099f1a1f8f5ac063ba057fc028b1403db381",
+      "static_exact_predecessor_recovery": true,
+      "static_retained_owner_fields_and_order": true
+    },
+    "ordered_successor_roster": [
+      {
+        "resource": "finite_probability.lean",
+        "lean_module": "FepSketches.finite_probability",
+        "role": "foundation",
+        "declaration_namespace": "FEP"
+      },
+      {
+        "resource": "finite_information.lean",
+        "lean_module": "FepSketches.finite_information",
+        "role": "foundation",
+        "declaration_namespace": "FEP.FiniteInformation"
+      },
+      {
+        "resource": "active_inference.lean",
+        "lean_module": "FepSketches.active_inference",
+        "role": "foundation",
+        "declaration_namespace": "FEP.ActiveInference"
+      },
+      {
+        "resource": "markov_blanket.lean",
+        "lean_module": "FepSketches.markov_blanket",
+        "role": "foundation",
+        "declaration_namespace": "FEP.MarkovBlanket"
+      },
+      {
+        "resource": "information_geometry.lean",
+        "lean_module": "FepSketches.information_geometry",
+        "role": "foundation",
+        "declaration_namespace": "FEP.InformationGeometry"
+      },
+      {
+        "resource": "statistical_convergence.lean",
+        "lean_module": "FepSketches.statistical_convergence",
+        "role": "foundation",
+        "declaration_namespace": "FEP.StatisticalConvergence"
+      },
+      {
+        "resource": "measure_bayes.lean",
+        "lean_module": "FepSketches.measure_bayes",
+        "role": "foundation",
+        "declaration_namespace": "FEP.MeasureBayes"
+      },
+      {
+        "resource": "variational_duality.lean",
+        "lean_module": "FepSketches.variational_duality",
+        "role": "foundation",
+        "declaration_namespace": "FEP.VariationalDuality"
+      },
+      {
+        "resource": "controlled_markov.lean",
+        "lean_module": "FepSketches.controlled_markov",
+        "role": "foundation",
+        "declaration_namespace": "FEP.ControlledMarkov"
+      },
+      {
+        "resource": "temporal_inference.lean",
+        "lean_module": "FepSketches.temporal_inference",
+        "role": "foundation",
+        "declaration_namespace": "FEP.TemporalInference"
+      },
+      {
+        "resource": "finite_markov_dynamics.lean",
+        "lean_module": "FepSketches.finite_markov_dynamics",
+        "role": "foundation",
+        "declaration_namespace": "FEP.FiniteMarkovDynamics"
+      },
+      {
+        "resource": "causal_dynamics.lean",
+        "lean_module": "FepSketches.causal_dynamics",
+        "role": "foundation",
+        "declaration_namespace": "FEP.CausalDynamics"
+      },
+      {
+        "resource": "predictive_coding.lean",
+        "lean_module": "FepSketches.predictive_coding",
+        "role": "foundation",
+        "declaration_namespace": "FEP.PredictiveCoding"
+      },
+      {
+        "resource": "ness_flow.lean",
+        "lean_module": "FepSketches.ness_flow",
+        "role": "foundation",
+        "declaration_namespace": "FEP.NessFlow"
+      },
+      {
+        "resource": "path_thermodynamics.lean",
+        "lean_module": "FepSketches.path_thermodynamics",
+        "role": "foundation",
+        "declaration_namespace": "FEP.PathThermodynamics"
+      },
+      {
+        "resource": "geometric_optimization.lean",
+        "lean_module": "FepSketches.geometric_optimization",
+        "role": "foundation",
+        "declaration_namespace": "FEP.GeometricOptimization"
+      },
+      {
+        "resource": "collective_inference.lean",
+        "lean_module": "FepSketches.collective_inference",
+        "role": "foundation",
+        "declaration_namespace": "FEP.CollectiveInference"
+      },
+      {
+        "resource": "learning_theory.lean",
+        "lean_module": "FepSketches.learning_theory",
+        "role": "foundation",
+        "declaration_namespace": "FEP.LearningTheory"
+      },
+      {
+        "resource": "empirical_risk.lean",
+        "lean_module": "FepSketches.empirical_risk",
+        "role": "foundation",
+        "declaration_namespace": "FEP.EmpiricalRisk"
+      },
+      {
+        "resource": "policy_tree.lean",
+        "lean_module": "FepSketches.policy_tree",
+        "role": "foundation",
+        "declaration_namespace": "FEP.PolicyTrees"
+      },
+      {
+        "resource": "native_blanket.lean",
+        "lean_module": "FepSketches.native_blanket",
+        "role": "foundation",
+        "declaration_namespace": "FEP.NativeBlanket"
+      },
+      {
+        "resource": "exponential_family.lean",
+        "lean_module": "FepSketches.exponential_family",
+        "role": "foundation",
+        "declaration_namespace": "FEP.ExponentialFamily"
+      },
+      {
+        "resource": "gaussian_information_geometry.lean",
+        "lean_module": "FepSketches.gaussian_information_geometry",
+        "role": "foundation",
+        "declaration_namespace": "FEP.GaussianInformationGeometry"
+      },
+      {
+        "resource": "smooth_information_geometry.lean",
+        "lean_module": "FepSketches.smooth_information_geometry",
+        "role": "foundation",
+        "declaration_namespace": "FEP.SmoothInformationGeometry"
+      },
+      {
+        "resource": "continuous_time_markov.lean",
+        "lean_module": "FepSketches.continuous_time_markov",
+        "role": "foundation",
+        "declaration_namespace": "FEP.ContinuousTimeMarkov"
+      },
+      {
+        "resource": "markov_semigroup.lean",
+        "lean_module": "FepSketches.markov_semigroup",
+        "role": "foundation",
+        "declaration_namespace": "FEP.MarkovSemigroup"
+      },
+      {
+        "resource": "scalar_gaussian_semigroup.lean",
+        "lean_module": "FepSketches.scalar_gaussian_semigroup",
+        "role": "foundation",
+        "declaration_namespace": "FEP.ScalarGaussianSemigroup"
+      },
+      {
+        "resource": "linear_gaussian_semigroup.lean",
+        "lean_module": "FepSketches.linear_gaussian_semigroup",
+        "role": "foundation",
+        "declaration_namespace": "FEP.LinearGaussianSemigroup"
+      },
+      {
+        "resource": "fin4_gaussian_semigroup.lean",
+        "lean_module": "FepSketches.fin4_gaussian_semigroup",
+        "role": "foundation",
+        "declaration_namespace": "FEP.Fin4GaussianSemigroup"
+      },
+      {
+        "resource": "gaussian_precision_conditioning.lean",
+        "lean_module": "FepSketches.gaussian_precision_conditioning",
+        "role": "foundation",
+        "declaration_namespace": "FEP.GaussianPrecisionConditioning"
+      },
+      {
+        "resource": "decision_risk.lean",
+        "lean_module": "FepSketches.decision_risk",
+        "role": "foundation",
+        "declaration_namespace": "FEP.DecisionRisk"
+      },
+      {
+        "resource": "finite_posterior_learning.lean",
+        "lean_module": "FepSketches.finite_posterior_learning",
+        "role": "foundation",
+        "declaration_namespace": "FEP.FinitePosteriorLearning"
+      },
+      {
+        "resource": "posterior_convergence.lean",
+        "lean_module": "FepSketches.posterior_convergence",
+        "role": "foundation",
+        "declaration_namespace": "FEP.PosteriorConvergence"
+      },
+      {
+        "resource": "gnn_document.lean",
+        "lean_module": "FepSketches.gnn_document",
+        "role": "foundation",
+        "declaration_namespace": "FEP.GnnDocument"
+      },
+      {
+        "resource": "gnn_denotation.lean",
+        "lean_module": "FepSketches.gnn_denotation",
+        "role": "foundation",
+        "declaration_namespace": "FEP.GnnDenotation"
+      },
+      {
+        "resource": "gnn_denotation_continuous.lean",
+        "lean_module": "FepSketches.gnn_denotation_continuous",
+        "role": "foundation",
+        "declaration_namespace": "FEP.GnnContinuous"
+      },
+      {
+        "resource": "gnn_render_statements.lean",
+        "lean_module": "FepSketches.gnn_render_statements",
+        "role": "foundation",
+        "declaration_namespace": "FEP.GnnRenderStatements"
+      },
+      {
+        "resource": "efe_policy_selection.lean",
+        "lean_module": "FepSketches.efe_policy_selection",
+        "role": "foundation",
+        "declaration_namespace": "FEP.EFEPolicy"
+      },
+      {
+        "resource": "perception_action_loop.lean",
+        "lean_module": "FepSketches.perception_action_loop",
+        "role": "foundation",
+        "declaration_namespace": "FEP.PerceptionActionLoop"
+      },
+      {
+        "resource": "bayesian_model_reduction.lean",
+        "lean_module": "FepSketches.bayesian_model_reduction",
+        "role": "foundation",
+        "declaration_namespace": "FEP.BayesianModelReduction"
+      },
+      {
+        "resource": "efe_time_scale_separation.lean",
+        "lean_module": "FepSketches.efe_time_scale_separation",
+        "role": "foundation",
+        "declaration_namespace": "FEP.TimeScaleEFE"
+      },
+      {
+        "resource": "helmholtz_ao_ness.lean",
+        "lean_module": "FepSketches.helmholtz_ao_ness",
+        "role": "foundation",
+        "declaration_namespace": "FEP.HelmholtzAoNess"
+      },
+      {
+        "resource": "geometric_mechanics.lean",
+        "lean_module": "FepSketches.geometric_mechanics",
+        "role": "foundation",
+        "declaration_namespace": "FEP.GeometricMechanics"
+      },
+      {
+        "resource": "law_weighted_split.lean",
+        "lean_module": "FepSketches.law_weighted_split",
+        "role": "foundation",
+        "declaration_namespace": "FEP.LawWeightedSplit"
+      },
+      {
+        "resource": "h3_reference_model.lean",
+        "lean_module": "FepSketches.h3_reference_model",
+        "role": "foundation",
+        "declaration_namespace": "FEP.H3ReferenceModel"
+      },
+      {
+        "resource": "compositions/core.lean",
+        "lean_module": "FepSketches.compositions.core",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/measure_variational.lean",
+        "lean_module": "FepSketches.compositions.measure_variational",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/control_temporal.lean",
+        "lean_module": "FepSketches.compositions.control_temporal",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/causal_predictive.lean",
+        "lean_module": "FepSketches.compositions.causal_predictive",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/thermo_geometry.lean",
+        "lean_module": "FepSketches.compositions.thermo_geometry",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/collective_learning.lean",
+        "lean_module": "FepSketches.compositions.collective_learning",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/risk_calibration.lean",
+        "lean_module": "FepSketches.compositions.risk_calibration",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/policy_trees.lean",
+        "lean_module": "FepSketches.compositions.policy_trees",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/native_blanket_transfer.lean",
+        "lean_module": "FepSketches.compositions.native_blanket_transfer",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/exponential_family.lean",
+        "lean_module": "FepSketches.compositions.exponential_family",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/continuous_time.lean",
+        "lean_module": "FepSketches.compositions.continuous_time",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/finite_scientific_implications.lean",
+        "lean_module": "FepSketches.compositions.finite_scientific_implications",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.FiniteScientificImplications"
+      },
+      {
+        "resource": "compositions/finite_policy_action.lean",
+        "lean_module": "FepSketches.compositions.finite_policy_action",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.FinitePolicyAction"
+      },
+      {
+        "resource": "compositions/finite_reference_agent.lean",
+        "lean_module": "FepSketches.compositions.finite_reference_agent",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.FiniteReferenceAgent"
+      },
+      {
+        "resource": "compositions/gaussian_filter.lean",
+        "lean_module": "FepSketches.compositions.gaussian_filter",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.GaussianFilter"
+      },
+      {
+        "resource": "compositions/gaussian_control.lean",
+        "lean_module": "FepSketches.compositions.gaussian_control",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.GaussianControl"
+      },
+      {
+        "resource": "compositions/gaussian_grid_path.lean",
+        "lean_module": "FepSketches.compositions.gaussian_grid_path",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.GaussianGridPath"
+      },
+      {
+        "resource": "compositions/smooth_reference_kernel.lean",
+        "lean_module": "FepSketches.compositions.smooth_reference_kernel",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.SmoothReferenceKernel"
+      },
+      {
+        "resource": "compositions/finite_kernel_category.lean",
+        "lean_module": "FepSketches.compositions.finite_kernel_category",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.FiniteKernelCategory"
+      },
+      {
+        "resource": "compositions/efe_policy_selection.lean",
+        "lean_module": "FepSketches.compositions.efe_policy_selection",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/perception_action_loop.lean",
+        "lean_module": "FepSketches.compositions.perception_action_loop",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/bayesian_model_reduction.lean",
+        "lean_module": "FepSketches.compositions.bayesian_model_reduction",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/efe_time_scale_separation.lean",
+        "lean_module": "FepSketches.compositions.efe_time_scale_separation",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/helmholtz_ao_ness.lean",
+        "lean_module": "FepSketches.compositions.helmholtz_ao_ness",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/geometric_mechanics.lean",
+        "lean_module": "FepSketches.compositions.geometric_mechanics",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed"
+      },
+      {
+        "resource": "compositions/h3_case_study.lean",
+        "lean_module": "FepSketches.compositions.h3_case_study",
+        "role": "composition",
+        "declaration_namespace": "FEPComposed.H3CaseStudy"
+      },
+      {
+        "resource": "composed.lean",
+        "lean_module": "FepSketches.composed",
+        "role": "aggregate",
+        "declaration_namespace": null
+      }
+    ]
+  },
+  "formal_interface": {
+    "namespace": "FEPComposed.FiniteKernelCategory",
+    "public_imports": [
+      "FepSketches.finite_probability",
+      "Mathlib.CategoryTheory.Functor.Basic",
+      "Mathlib.CategoryTheory.Types.Basic"
+    ],
+    "carriers": [
+      "FEP.FiniteLaw",
+      "FEP.FiniteKernel"
+    ],
+    "composition": "Categorical f \u226b g is FiniteKernel.comp g f.",
+    "object_map": "FinKernCat X maps to FiniteLaw X.\u03b1.",
+    "morphism_map": "A kernel maps a finite prior to FiniteKernel.predictive prior kernel.",
+    "named_theorem_count": 8,
+    "required_axiom_targets": [
+      "FEPComposed.FiniteKernelCategory.finiteKernelCategory",
+      "FEPComposed.FiniteKernelCategory.finKernCat_id_comp",
+      "FEPComposed.FiniteKernelCategory.finKernCat_comp_id",
+      "FEPComposed.FiniteKernelCategory.finKernCat_assoc",
+      "FEPComposed.FiniteKernelCategory.predictiveFunctor",
+      "FEPComposed.FiniteKernelCategory.bool_predictive_identity",
+      "FEPComposed.FiniteKernelCategory.bool_flip_true",
+      "FEPComposed.FiniteKernelCategory.bool_flip_false",
+      "FEPComposed.FiniteKernelCategory.bool_predictive_composition",
+      "FEPComposed.FiniteKernelCategory.bool_predictive_flip_twice"
+    ],
+    "required_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "scientific_relation_change": false,
+    "semantic_disposition_change": false
+  },
+  "projection_bindings": {
+    "status": "owner_regenerated_and_five_freshness_checks_passed",
+    "leaf": [
+      {
+        "path": "src/fep_lean/formal/compositions/finite_kernel_category.lean",
+        "size": 5584,
+        "sha256": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47"
+      },
+      {
+        "path": "lean/FepSketches/compositions/finite_kernel_category.lean",
+        "size": 5584,
+        "sha256": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47"
+      }
+    ],
+    "aggregate": [
+      {
+        "path": "src/fep_lean/formal/composed.lean",
+        "size": 1742,
+        "sha256": "b150366a325e7c2b4046aac1c359182a5200a6031381e401dc7dc70553b0fc74"
+      },
+      {
+        "path": "lean/FepSketches/composed.lean",
+        "size": 1742,
+        "sha256": "b150366a325e7c2b4046aac1c359182a5200a6031381e401dc7dc70553b0fc74"
+      }
+    ],
+    "source_bindings_log_sha256": "1b4bc08c4c5c72b64dae1ce5053a804124ed444ead4a966e16d9d6931521f6c5",
+    "owner_results_log_sha256": "de5a7b736eb32bb149701c542cbb7b62e05b6552d6c52b4ebce863120f332ead",
+    "freshness_checks": [
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "python",
+          "scripts/_maint_build_formal_modules.py",
+          "--check"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "python",
+          "scripts/build_formalism_coverage.py",
+          "--check"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "python",
+          "scripts/_maint_build_lean_landscape.py",
+          "--check"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "python",
+          "scripts/build_formalism_atlas.py",
+          "--check"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "fep-lean",
+          "--project-root",
+          ".",
+          "methods",
+          "check",
+          "--output-root",
+          "docs/mathematical-positioning"
+        ],
+        "returncode": 0
+      }
+    ],
+    "evidence_boundary": "Source/projection freshness only; no native compilation, declaration/axiom audit, installed-wheel, H3 or final hosted acceptance."
+  },
+  "historical_custody": {
+    "status": "historical_static_controls_only",
+    "unchanged_bound_artifacts": [
+      {
+        "path": "tests/_support/h2_r0_custody.py",
+        "size": 26227,
+        "sha256": "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53"
+      },
+      {
+        "path": "tests/_support/release_lineage.py",
+        "size": 2224,
+        "sha256": "d3675c8bb360c399e2f868411535d0f7bfc95d94d8b48abed6365a48d3006d7e"
+      },
+      {
+        "path": "tests/fixtures/historical_h3_custody_sources.json",
+        "size": 71474,
+        "sha256": "2e279ffd13826b1eb2a07a5652d8e07e52ce5e0e3590b041418ab46d8a126eb1"
+      },
+      {
+        "path": "tests/fixtures/custody_toolchain_4_34_1.json",
+        "size": 4624,
+        "sha256": "9916471b29cec86a3a77b2983f854207be112b8b87d233c202bfbcd160f4158c"
+      },
+      {
+        "path": "specs/h3-reference-study/freeze.json",
+        "size": 1595,
+        "sha256": "dadbbf4a5f06d5b143dd87c6fb9f7eaca6f9db69b1351e32cad842ab1c8556d5"
+      },
+      {
+        "path": "specs/done/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient.json",
+        "size": 7172,
+        "sha256": "06fa2f40cec8cc0174eb4583e1e86436ba6bb081db494ff1e2b5086e196d289a"
+      },
+      {
+        "path": "specs/done/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient-custody.json",
+        "size": 26238,
+        "sha256": "6311a998b1a66bb31949e194eb9e36a2e361dfbfb0f0e7d715b3a17e3e396bae"
+      },
+      {
+        "path": "specs/done/horizon-2-smooth-stochastic/readiness/repairs/07-gaussian-vfe-natural-gradient-h3-custody.json",
+        "size": 20761,
+        "sha256": "69279a2c2641a81799c272dca277d4c255a46eaa48c94cb86c1072aa0fa936c6"
+      }
+    ],
+    "historical_source_map_sizes": {
+      "prior": 17,
+      "custody_successor": 18,
+      "h3_addendum": 22
+    },
+    "composed_aggregate_in_these_source_maps": false,
+    "manifest_companion": {
+      "path": "tests/fixtures/historical_h3_custody_manifest.json",
+      "size": 5001,
+      "sha256": "5d44c38f15ae28b3bf7732ebe60edbcf2c6e27050dfb28fd6a466ebcdf890b18",
+      "kind": "historical-h3-custody-manifest-companion",
+      "source_commit": "5e1cc9095b5f0590772c739d27558c2c711f9a44",
+      "decoded_path": "src/fep_lean/formal/manifest.py",
+      "decoded_size": 22567,
+      "decoded_sha256": "c1dff5c5753162d1cf91fb27c5cb08777d385db4c606bd65a136d2c93acf07ce",
+      "encoding": "zlib+base64",
+      "encoded_payload_size": 4456
+    },
+    "input_policy": "Only the exact c1 predecessor or e99 successor with its one positioned 266-byte block may use the authenticated historical manifest. Unknown live drift and changed companion bytes refuse before temporary writes.",
+    "live_successor_refusal": {
+      "exception": "ValueError",
+      "exact_message": "H3 owner subtraction does not recover the historical custody manifest",
+      "test": "tests/test_formal_composition.py::test_category_roster_growth_is_rejected_by_historical_custody"
+    },
+    "historical_execution_reused": false,
+    "archived_lean_or_test_source_executed": false,
+    "metadata_companion": {
+      "path": "tests/fixtures/historical_h3_custody_metadata.json",
+      "size": 2708,
+      "sha256": "8ae9aff5bdc2061bdae4d419ec8203dc5f10975a379f35c3000cff814ff71d5d",
+      "kind": "historical-h3-custody-metadata-companion",
+      "source_commit": "5e1cc9095b5f0590772c739d27558c2c711f9a44",
+      "decoded_path": "pyproject.toml",
+      "decoded_size": 3105,
+      "decoded_sha256": "a93635ab635881aac257efdc3a6d627f73bb7865c5626a83aaa6aa8d06b90737",
+      "encoded_payload_size": 2100,
+      "recorded_metadata_sha256": "f8f2b0a7e575237fe75041d836d0c30a545b2efb3bc9a9e1a91f2c16abb44b96",
+      "historical_1_3_metadata_sha256": "71af4247c0daccfbec4f8ba7670bc217cda3647f58501c7a58d46d8a4852b9bc",
+      "approved_normalized_live_profiles": [
+        "f8f2b0a7e575237fe75041d836d0c30a545b2efb3bc9a9e1a91f2c16abb44b96",
+        "388f3415107f756bf9bac21712e48e4a3a3a37b99b77ee068802f254aaeee2f1"
+      ],
+      "approved_root_versions": [
+        "1.4.0",
+        "1.5.0",
+        "1.6.0"
+      ],
+      "required_uv": "0.13.0"
+    },
+    "combined_authentication_order": [
+      "authenticate live metadata and raw metadata companion without parsing/decoding",
+      "authenticate and restore recognized manifest",
+      "reauthenticate and restore metadata",
+      "authenticate all 22 historical inputs",
+      "write static control only after every digest passes"
+    ]
+  },
+  "local_python_controls": {
+    "status": "passed_scoped_local",
+    "observed_on": "2026-10-15",
+    "python": "3.14.4",
+    "uv": "0.13.0",
+    "offline": true,
+    "dependency_sync": false,
+    "native_execution": false,
+    "tests_passed": 16,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "elapsed_seconds": 5.53,
+    "junit_sha256": "b4d28b2163b20475af1469409ef878a0f389b7fd93e6c0471da1cf1ccb61e752",
+    "log_sha256": "8ee59f2d444368bf130ee5de6121042a12f7d2cc98a580f44b04b44044f9ad1e",
+    "source_bindings": [
+      {
+        "path": "tests/_support/lean435_migration.py",
+        "size": 18429,
+        "sha256": "13cba3949e6fc3aa4a388082076ed4b8bd882ff9ef6235db18248c81139bded9"
+      },
+      {
+        "path": "tests/test_horizon2_gaussian_vfe_readiness.py",
+        "size": 48659,
+        "sha256": "02f99635fe20827bf336cbb433a8f1891e7466ac0889855109888fa3c974c626"
+      },
+      {
+        "path": "tests/test_horizon2_smooth_reference_kernel.py",
+        "size": 20299,
+        "sha256": "58ad496b8115cf9c3af1b48261ea76ff1ce494133620bf9de2f463e025f20f25"
+      },
+      {
+        "path": "tests/test_formal_composition.py",
+        "size": 20469,
+        "sha256": "cb757c9fc75ebb0bbf58269af379954b170bf1e175b933c6b6b89c36d87838c7"
+      },
+      {
+        "path": "src/fep_lean/formal/manifest.py",
+        "size": 22833,
+        "sha256": "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157"
+      },
+      {
+        "path": "tests/fixtures/historical_h3_custody_manifest.json",
+        "size": 5001,
+        "sha256": "5d44c38f15ae28b3bf7732ebe60edbcf2c6e27050dfb28fd6a466ebcdf890b18"
+      }
+    ],
+    "nodeids": [
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_r0_repair_is_source_bound_append_only_go",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_is_positive_and_explicitly_non_native",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[append]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[metadata]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[payload]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[append]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[metadata]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[payload]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[spike]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[owner]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[manifest]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[category_role]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_r0_custody_rejects_tampering[unlisted_owner]",
+      "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_h3_custody_addendum_rejects_tampering[missing_h3_owner]",
+      "tests/test_horizon2_smooth_reference_kernel.py::test_h2_7_consumes_only_an_accepted_source_bound_r0_decision",
+      "tests/test_formal_composition.py::test_category_roster_growth_is_rejected_by_historical_custody"
+    ],
+    "boundary": "Focused static historical replay/refusal/tampering controls; not the full Python suite, current native execution or scientific approval.",
+    "source_epoch_note": "Earlier pre-T01 result retained at its original explicit source bindings; the combined-source rounds below are separate observations."
+  },
+  "independent_reviews": [
+    {
+      "role": "formal_api",
+      "reviewer_kind": "independent_AI",
+      "reviewer_role": "independent_pass_review",
+      "status": "source_assessment_no_blockers",
+      "source_bindings": [
+        {
+          "path": "src/fep_lean/formal/compositions/finite_kernel_category.lean",
+          "size": 5585,
+          "sha256": "c14f8c432e254f7d92a2ca5cb75ecece31cc36d8a82ab2089e9c0962f1238bdd"
+        },
+        {
+          "path": "src/fep_lean/formal/manifest.py",
+          "size": 22833,
+          "sha256": "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157"
+        },
+        {
+          "path": "tests/test_formal_composition.py",
+          "size": 20469,
+          "sha256": "cb757c9fc75ebb0bbf58269af379954b170bf1e175b933c6b6b89c36d87838c7"
+        },
+        {
+          "path": "tests/test_formal_foundations.py",
+          "size": 16898,
+          "sha256": "1f347bd026596e81f960b41c0a50830144aa106b0123102543c67a5970d7b470"
+        }
+      ],
+      "scope": "Category/functor typing, universes, empty carriers, composition orientation, existing predictive-law coherence and the ten-target native-test contract.",
+      "execution_performed": false,
+      "human_terminal_approval": false,
+      "public_scope_reference": "specs/comprehensive-next-steps/spikes/finite-kernel-category-integration.md#source-only-independent-reviews"
+    },
+    {
+      "role": "domain",
+      "reviewer_kind": "independent_AI",
+      "reviewer_role": "generic_methods_design",
+      "status": "source_assessment_no_blockers",
+      "source_bindings": [
+        {
+          "path": "src/fep_lean/formal/compositions/finite_kernel_category.lean",
+          "size": 5585,
+          "sha256": "c14f8c432e254f7d92a2ca5cb75ecece31cc36d8a82ab2089e9c0962f1238bdd"
+        },
+        {
+          "path": "specs/comprehensive-next-steps/spikes/finite_kernel_category.lean",
+          "size": 6100,
+          "sha256": "845bbae7682cbecb5ddd638ff8617425f2856de7100d7de894365fdc8efe84ad"
+        }
+      ],
+      "scope": "Finite normalized prediction, valid empty law spaces, functor into Type, actual Boolean point-mass identity/flip/involution witnesses and explicit absence of new scientific claims.",
+      "execution_performed": false,
+      "human_terminal_approval": false,
+      "public_scope_reference": "specs/comprehensive-next-steps/spikes/finite-kernel-category-integration.md#source-only-independent-reviews"
+    },
+    {
+      "role": "infrastructure_custody",
+      "reviewer_kind": "independent_AI",
+      "reviewer_role": "generic_maintenance_audit",
+      "status": "source_assessment_no_blockers",
+      "execution_performed": false,
+      "human_terminal_approval": false,
+      "public_scope_reference": "specs/comprehensive-next-steps/spikes/finite-kernel-category-integration.md#historical-static-control-transition",
+      "source_bindings": [
+        {
+          "path": "tests/_support/lean435_migration.py",
+          "size": 18429,
+          "sha256": "13cba3949e6fc3aa4a388082076ed4b8bd882ff9ef6235db18248c81139bded9"
+        },
+        {
+          "path": "tests/fixtures/historical_h3_custody_manifest.json",
+          "size": 5001,
+          "sha256": "5d44c38f15ae28b3bf7732ebe60edbcf2c6e27050dfb28fd6a466ebcdf890b18"
+        },
+        {
+          "path": "tests/test_horizon2_gaussian_vfe_readiness.py",
+          "size": 48659,
+          "sha256": "02f99635fe20827bf336cbb433a8f1891e7466ac0889855109888fa3c974c626"
+        },
+        {
+          "path": "tests/test_horizon2_smooth_reference_kernel.py",
+          "size": 20299,
+          "sha256": "58ad496b8115cf9c3af1b48261ea76ff1ce494133620bf9de2f463e025f20f25"
+        },
+        {
+          "path": "tests/_support/h2_r0_custody.py",
+          "size": 26227,
+          "sha256": "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53"
+        }
+      ],
+      "scope": "Independent static inspection of the exact two live manifest inputs, positioned 266-byte predecessor recovery, companion authentication before parsing/decoding, bounded decompression and EOF/tail/hash checks, all 22 original sources before writes, unchanged historical records, LIVE72 refusal and absence of production callers.",
+      "author_tests_independently_rerun": false
+    },
+    {
+      "role": "skeptical_mathematical_api",
+      "reviewer_kind": "independent_AI",
+      "reviewer_role": "generic_maintenance_audit",
+      "status": "source_assessment_no_blockers",
+      "source_bindings": [
+        {
+          "path": "src/fep_lean/formal/compositions/finite_kernel_category.lean",
+          "size": 5585,
+          "sha256": "c14f8c432e254f7d92a2ca5cb75ecece31cc36d8a82ab2089e9c0962f1238bdd"
+        },
+        {
+          "path": "lean/FepSketches/compositions/finite_kernel_category.lean",
+          "size": 5585,
+          "sha256": "c14f8c432e254f7d92a2ca5cb75ecece31cc36d8a82ab2089e9c0962f1238bdd"
+        },
+        {
+          "path": "src/fep_lean/formal/manifest.py",
+          "size": 22833,
+          "sha256": "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157"
+        },
+        {
+          "path": "src/fep_lean/formal/composed.lean",
+          "size": 1742,
+          "sha256": "b150366a325e7c2b4046aac1c359182a5200a6031381e401dc7dc70553b0fc74"
+        },
+        {
+          "path": "lean/FepSketches/composed.lean",
+          "size": 1742,
+          "sha256": "b150366a325e7c2b4046aac1c359182a5200a6031381e401dc7dc70553b0fc74"
+        },
+        {
+          "path": "tests/test_formal_composition.py",
+          "size": 20493,
+          "sha256": "6fe5da9b1a561519e36783c351220cc3e1c210509169361943785fdae57cbe20"
+        }
+      ],
+      "scope": "Separate skeptical inspection of composition/prediction orientation, universes and empty carriers, normalized Boolean witnesses, source ownership, imports and instance uniqueness, scientific claim limits, and retained C05/current-source acceptance requirements.",
+      "execution_performed": false,
+      "human_terminal_approval": false,
+      "public_scope_reference": "specs/comprehensive-next-steps/spikes/finite-kernel-category-integration.md#source-only-independent-reviews"
+    },
+    {
+      "role": "combined_security_custody",
+      "reviewer_kind": "independent_AI",
+      "status": "source_assessment_no_blockers",
+      "source_bindings": [
+        {
+          "path": "tests/_support/lean435_migration.py",
+          "size": 23617,
+          "sha256": "b78e57ac9d8e156f63d613d32676711ad65968dfeb0aaa987c229b987712beee"
+        },
+        {
+          "path": "tests/test_horizon2_gaussian_vfe_readiness.py",
+          "size": 53967,
+          "sha256": "25973425c908874557be683125ab9523defd93660ec2b6bf50143191f61cab12"
+        }
+      ],
+      "scope": "Independent comparison against both parents, archive authenticity against Git5e1cc909, preserved frozen bytes, authentication/decode ordering, all22beforewrites, retained tamper/direct-map/provenance/refusal controls.",
+      "tests_independently_rerun": false,
+      "native_or_scientific_acceptance": false
+    }
+  ],
+  "current_pin": {
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "source_bindings": [
+      {
+        "path": "lean/lean-toolchain",
+        "size": 25,
+        "sha256": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c"
+      },
+      {
+        "path": "lean/lakefile.lean",
+        "size": 648,
+        "sha256": "7d6f59fa176297445f47fe29397cbfa0880fd2993fbe49991997a4e2f071bb3a"
+      },
+      {
+        "path": "lean/lake-manifest.json",
+        "size": 3129,
+        "sha256": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a"
+      }
+    ],
+    "compiler_execution_in_this_record": false
+  },
+  "remaining_acceptance": {
+    "current_projected_leaf_and_public_consumer": "pending",
+    "ten_exact_axiom_reports": "pending",
+    "warning_free_aggregate_and_native_receipt": "pending",
+    "full_declaration_and_axiom_audit": "pending",
+    "installed_wheel_resource_parity": "pending",
+    "final_source_hosted_ci_and_artifact_validation": "pending",
+    "C05": {
+      "status": "required_predecessor_not_satisfied_by_this_record",
+      "issue": "https://github.com/ActiveInferenceInstitute/fep_formal/issues/54",
+      "depends_on": [
+        "C03",
+        "C04"
+      ],
+      "required_outcome": "All applicable current-source checks and exact-SHA hosted artifacts accepted after production/local gates.",
+      "no_go": "Block C05.current-acceptance -> S01.review/H01.export while a required evidence plane is incomplete.",
+      "R01_depends_on": [
+        "C05"
+      ]
+    },
+    "independent_custody_implementation_source_review": "source_assessment_no_blockers; final integration/source binding remains required",
+    "independent_skeptical_review": "source_assessment_no_blockers; current execution and final-source acceptance remain required"
+  },
+  "closed_boundaries": [
+    "No renewal of historical H2 execution or scientific acceptance.",
+    "No H3 carrier-freeze migration, opened seeds/outcomes, primary rerun or empirical promotion.",
+    "No topic-body, theorem-maturity, novelty or scientific-relation promotion.",
+    "No terminal-horizon human approval is claimed; this ordinary category API still requires independent formal/domain/skeptical/custody review.",
+    "No PR44/issue58 closure or publication acceptance follows from this record."
+  ],
+  "acceptance": {
+    "decision": "pending",
+    "publication_ready": false,
+    "current_native_accepted": false,
+    "scientific_approval": false,
+    "human_terminal_approval": false,
+    "historical_acceptance_expanded": false
+  },
+  "local_formal_source_tests": {
+    "status": "passed_scoped_non_native",
+    "tests_passed": 24,
+    "native_consumer_deselected": 1,
+    "elapsed_seconds": 10.86,
+    "source_bindings": [
+      {
+        "path": "tests/test_formal_composition.py",
+        "size": 20469,
+        "sha256": "cb757c9fc75ebb0bbf58269af379954b170bf1e175b933c6b6b89c36d87838c7"
+      },
+      {
+        "path": "tests/test_formal_foundations.py",
+        "size": 16898,
+        "sha256": "1f347bd026596e81f960b41c0a50830144aa106b0123102543c67a5970d7b470"
+      },
+      {
+        "path": "src/fep_lean/formal/manifest.py",
+        "size": 22833,
+        "sha256": "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157"
+      }
+    ],
+    "junit_sha256": "f8a651085e21d17135e510279ba591602f1e514a80d91357e08cd81b50c35bb9",
+    "results_sha256": "c2a4b2e5988b7ea1cc572782a0d9bf9c64ca1b2444374b264f42f78cd25e1e2a",
+    "native_execution": false,
+    "boundary": "The current projected-category native consumer was deliberately deselected; this run establishes no compiler or axiom result."
+  },
+  "local_static_checks": {
+    "status": "passed_scoped_local",
+    "results_sha256": "04b3bcf9b3ff9aafb98ee7b40548b3927ab37a8dab79103da9c7bb68561cd7eb",
+    "checks": [
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "ruff",
+          "check",
+          "--no-cache",
+          "src/fep_lean/formal/manifest.py",
+          "tests/test_formal_composition.py",
+          "tests/test_formal_foundations.py",
+          "tests/_support/lean435_migration.py",
+          "tests/test_horizon2_gaussian_vfe_readiness.py",
+          "tests/test_horizon2_smooth_reference_kernel.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "ruff",
+          "format",
+          "--check",
+          "--no-cache",
+          "src/fep_lean/formal/manifest.py",
+          "tests/test_formal_composition.py",
+          "tests/test_formal_foundations.py",
+          "tests/_support/lean435_migration.py",
+          "tests/test_horizon2_gaussian_vfe_readiness.py",
+          "tests/test_horizon2_smooth_reference_kernel.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "mypy",
+          "--cache-dir=/dev/null",
+          "src/fep_lean/formal/manifest.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "command": [
+          "uv",
+          "run",
+          "--offline",
+          "--no-sync",
+          "python",
+          "docs/theorem_ref_audit.py"
+        ],
+        "returncode": 0
+      }
+    ],
+    "boundary": "Ruff lint/format, manifest mypy and theorem-reference source audit; not a native declaration/axiom audit.",
+    "command_recording_correction": "Restore the missing tool names and offline/no-sync uv wrapper from retained tool-argument records; no command is re-executed by this correction. Earlier results keep their source epoch."
+  },
+  "existing_enforcers": {
+    "formal_owner_roster_namespace_and_projection": [
+      "tests/test_formal_composition.py",
+      "tests/test_formal_foundations.py",
+      "scripts/_maint_build_formal_modules.py --check"
+    ],
+    "historical_static_control_preparation": "tests/_support/lean435_migration.py",
+    "unchanged_historical_validator": "tests/_support/h2_r0_custody.py",
+    "current_native_consumer": "tests/test_formal_composition.py::test_finite_kernel_category_public_consumer_and_axioms",
+    "current_declaration_and_axiom_audit": "scripts/audit_formalisms.py",
+    "current_installed_package": "tests/test_distribution.py",
+    "final_source_checks_and_hosted_artifacts": "AGENTS.md#required-checks and C05",
+    "boundary": "This data record adds no production successor validator and waives none of these existing enforcers."
+  },
+  "combined_source_control_rounds": {
+    "failed_predecessor": {
+      "commit": "1cb593727700d098a4d01abee1d550e8efd7b24c",
+      "passed": 11,
+      "failed": 5,
+      "result_sha256": "23df2126274da1f6b7f38db3007aff0b5d5a394b4c6a0292af43eb85d08d23fb",
+      "junit_sha256": "12f8c1207c7caee77c05765f6dda92e7bdf8438ec4e39905295e11fd2fbbbc0e",
+      "cause": "Historical preparer rejected the T01 pyproject.toml delta; later tamper controls could not reach their intended boundary."
+    },
+    "repaired_candidate": {
+      "status": "passed_scoped_local",
+      "code_predecessor": "29a8f8dcbf9a434a11affa859b2f7309b6b237d2",
+      "merged_parent": "f368fd892e8670322c18b89ff1815f4ce151cb32",
+      "python": "3.14.4",
+      "uv": "0.13.0",
+      "offline": true,
+      "dependency_sync": false,
+      "source_sha256": {
+        "lean/FepSketches/compositions/finite_kernel_category.lean": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47",
+        "pyproject.toml": "ab94d6fa723dbb547e3e73f70d826060ab63e873e812922cbb30ef090d7d3d3e",
+        "src/fep_lean/formal/compositions/finite_kernel_category.lean": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47",
+        "src/fep_lean/formal/manifest.py": "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157",
+        "src/fep_lean/verification/horizon_acceptance.py": "b1e25d40ee6c42c9a661e1d2fa23f3814365c50cbdc04276da929b54ff62958d",
+        "tests/_support/custody_fixture_knobs.py": "0f04097ad5709c1b0de080092eb9c7ca80bb91d6a90802308d770cb923472af3",
+        "tests/_support/h2_r0_custody.py": "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53",
+        "tests/_support/lean435_migration.py": "b78e57ac9d8e156f63d613d32676711ad65968dfeb0aaa987c229b987712beee",
+        "tests/_support/release_lineage.py": "d3675c8bb360c399e2f868411535d0f7bfc95d94d8b48abed6365a48d3006d7e",
+        "tests/fixtures/custody_toolchain_4_34_1.json": "9916471b29cec86a3a77b2983f854207be112b8b87d233c202bfbcd160f4158c",
+        "tests/fixtures/historical_h3_custody_manifest.json": "5d44c38f15ae28b3bf7732ebe60edbcf2c6e27050dfb28fd6a466ebcdf890b18",
+        "tests/fixtures/historical_h3_custody_metadata.json": "8ae9aff5bdc2061bdae4d419ec8203dc5f10975a379f35c3000cff814ff71d5d",
+        "tests/fixtures/historical_h3_custody_sources.json": "2e279ffd13826b1eb2a07a5652d8e07e52ce5e0e3590b041418ab46d8a126eb1",
+        "tests/test_formal_composition.py": "6fe5da9b1a561519e36783c351220cc3e1c210509169361943785fdae57cbe20",
+        "tests/test_horizon2_gaussian_vfe_readiness.py": "25973425c908874557be683125ab9523defd93660ec2b6bf50143191f61cab12",
+        "tests/test_horizon2_smooth_reference_kernel.py": "58ad496b8115cf9c3af1b48261ea76ff1ce494133620bf9de2f463e025f20f25",
+        "tests/test_horizon_acceptance.py": "2a59dd436023ffed7deca7086ef60da6ae10692ce410fdbbb368ebdd42864d08"
+      },
+      "historical_static_controls_passed": 29,
+      "separate_synthetic_terminal_controls_passed": 2,
+      "groups": {
+        "historical-and-manifest": {
+          "status": "passed_scoped_local",
+          "passed": 16,
+          "failed": 0,
+          "skipped": 0,
+          "elapsed_seconds": 8.855382542009465,
+          "result_sha256": "47ed93be9e74d7fd16c56bacf35790bf48842da6f8e1568034b1f07ffd81594a",
+          "junit_sha256": "40aa4d789064bded827695454b610687a17d85e774711224e6970bde92a5bf10",
+          "stdout_sha256": "04dddcf29fff3377d8a2fd047e1d14651b6903d6b61ad8db9730e56c886fd855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_stable": true,
+          "minimum_scratch_free_bytes": 16118423552,
+          "observed_peak_owned_growth_bytes": 19726336,
+          "nodeids": [
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_r0_repair_is_source_bound_append_only_go",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_is_positive_and_explicitly_non_native",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[append]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[metadata]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_archive_tampering_is_rejected_before_decode[payload]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[append]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[metadata]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_manifest_companion_tampering_refuses_before_decode_and_writing[payload]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[spike]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[owner]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[manifest]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[category_role]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_r0_custody_rejects_tampering[unlisted_owner]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_h2_7_h3_custody_addendum_rejects_tampering[missing_h3_owner]",
+            "tests/test_horizon2_smooth_reference_kernel.py::test_h2_7_consumes_only_an_accepted_source_bound_r0_decision",
+            "tests/test_formal_composition.py::test_category_roster_growth_is_rejected_by_historical_custody"
+          ]
+        },
+        "metadata": {
+          "status": "passed_scoped_local",
+          "passed": 13,
+          "failed": 0,
+          "skipped": 0,
+          "elapsed_seconds": 2.331340625009034,
+          "result_sha256": "1c72436dd40e5f988e79b1afbf8795a894f89f0f94253436dbee3bfcf3ec8532",
+          "junit_sha256": "9c240a1960e5711bcd67ac6270c33feaa3849acbb6245ca56e2410e2bce23726",
+          "stdout_sha256": "e58e0b422aea98af07f9c6e7188af9260525aeae5338ab02a6185011f1ea1b05",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_stable": true,
+          "minimum_scratch_free_bytes": 16127913984,
+          "observed_peak_owned_growth_bytes": 10145792,
+          "nodeids": [
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.4.0-predecessor]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.4.0-T01]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.5.0-predecessor]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.5.0-T01]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.6.0-predecessor]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_metadata_preserves_only_explicit_release_profiles[1.6.0-T01]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_metadata_companion_tampering_refuses_before_parse_decode_and_writing[append]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_metadata_companion_tampering_refuses_before_parse_decode_and_writing[metadata]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_metadata_companion_tampering_refuses_before_parse_decode_and_writing[payload]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[metadata_dependency]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[metadata_unknown_release]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[metadata_duplicate_root]",
+            "tests/test_horizon2_gaussian_vfe_readiness.py::test_historical_custody_control_refuses_source_drift_before_writing[metadata_uv_pin]"
+          ]
+        },
+        "synthetic-terminal-positive": {
+          "status": "passed_scoped_local",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0,
+          "elapsed_seconds": 89.73530212498736,
+          "result_sha256": "c6087dffe34ea144eb97064138eb8d271532b04eaee40e0ac6caed6652146868",
+          "junit_sha256": "f7537728d0aaa4382d3d53c07b8a8f3adc2dd4cba83068ca1514fc9daf31de36",
+          "stdout_sha256": "27a2b46876777b85bdad424cc33ce5e2d54e8c52b92497bfd63ce04afa385422",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_stable": true,
+          "minimum_scratch_free_bytes": 16126005248,
+          "observed_peak_owned_growth_bytes": 12005376,
+          "nodeids": [
+            "tests/test_horizon_acceptance.py::test_terminal_validation_is_read_only_and_does_not_promote_h3"
+          ]
+        },
+        "synthetic-terminal-growth-refusal": {
+          "status": "passed_scoped_local",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0,
+          "elapsed_seconds": 10.4517985410057,
+          "result_sha256": "fd989cb20b86628038ded267865213bad18e29982cca1ec3f969f46bd8ceaeb7",
+          "junit_sha256": "480c2cebf1f99b5318efb49e48dd72bfaf9d751b093e3126da75bfd846f3e6e8",
+          "stdout_sha256": "90d1e9b8e36cbd719019114fa3b049fd37da5b3e34b8292bce8751d546783197",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "source_stable": true,
+          "minimum_scratch_free_bytes": 16122728448,
+          "observed_peak_owned_growth_bytes": 12013568,
+          "nodeids": [
+            "tests/test_horizon_acceptance.py::test_terminal_rejects_actual_roster_growth_after_capture"
+          ]
+        }
+      },
+      "boundary": "Historical replay/refusal and explicitly synthetic terminal-validator unit controls only. No historical terminal reacceptance, native execution, final hosted, C05 or scientific acceptance."
+    },
+    "resource_admission_no_start": {
+      "group": "synthetic-terminal-growth-refusal",
+      "pytest_started": false,
+      "assertion_or_test_failure": false,
+      "event_sha256": "c4ae87318fda91706833127f25f896711c5f0109fffff6da962f8835feeff7c3",
+      "boundary": "Admission refused before launching pytest. A later fresh resource check admitted the separately recorded run without lowering either limit."
+    }
+  }
+}

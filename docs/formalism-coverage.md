@@ -11,28 +11,28 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Metric | Count |
 | --- | ---: |
 | Stable topics | 168 |
-| Maintained formal modules | 71 |
+| Maintained formal modules | 72 |
 | Foundation modules | 45 |
 | Topic theorem declarations | 584 |
-| Formal-resource theorem declarations | 1644 |
+| Formal-resource theorem declarations | 1652 |
 | Foundation theorem declarations | 1291 |
-| Total theorem declarations | 2228 |
+| Total theorem declarations | 2236 |
 | Topic definitions | 95 |
-| Formal-resource definitions | 937 |
-| Total definitions | 1032 |
+| Formal-resource definitions | 940 |
+| Total definitions | 1035 |
 | Topic abbreviations | 7 |
 | Formal-resource abbreviations | 32 |
 | Total abbreviations | 39 |
-| Formal-resource structures | 55 |
+| Formal-resource structures | 56 |
 | Distinct Mathlib imports | 79 |
 | Topic-to-import edges | 266 |
-| Formal-resource import edges | 333 |
-| Internal formal-module dependencies | 170 |
+| Formal-resource import edges | 337 |
+| Internal formal-module dependencies | 172 |
 | Authored formalism relations | 150 |
 | Derivational formal relations | 24 |
 | Checked formal pairings | 118 |
 | All theorem-witnessed relations | 142 |
-| Composed theorem declarations | 353 |
+| Composed theorem declarations | 361 |
 | Capability nodes (retained history) | 50 |
 | Unresolved capability nodes | 0 |
 | Satisfied capability nodes | 50 |
@@ -296,6 +296,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.compositions.gaussian_control` | `composition` | 19 | 18 | 1 | `FepSketches.compositions.gaussian_filter`, `FepSketches.controlled_markov`, `FepSketches.gaussian_information_geometry`, `FepSketches.markov_semigroup`, `FepSketches.scalar_gaussian_semigroup` |
 | `FepSketches.compositions.gaussian_grid_path` | `composition` | 11 | 7 | 1 | `FepSketches.scalar_gaussian_semigroup` |
 | `FepSketches.compositions.smooth_reference_kernel` | `composition` | 30 | 10 | 0 | `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.fin4_gaussian_semigroup`, `FepSketches.gaussian_information_geometry`, `FepSketches.gaussian_precision_conditioning`, `FepSketches.markov_semigroup`, `FepSketches.posterior_convergence`, `FepSketches.scalar_gaussian_semigroup`, `FepSketches.smooth_information_geometry` |
+| `FepSketches.compositions.finite_kernel_category` | `composition` | 8 | 3 | 1 | `FepSketches.finite_probability` |
 | `FepSketches.compositions.efe_policy_selection` | `composition` | 1 | 0 | 0 | `FepSketches.efe_policy_selection` |
 | `FepSketches.compositions.perception_action_loop` | `composition` | 1 | 0 | 0 | `FepSketches.perception_action_loop` |
 | `FepSketches.compositions.bayesian_model_reduction` | `composition` | 1 | 0 | 0 | `FepSketches.bayesian_model_reduction` |
@@ -303,7 +304,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.compositions.helmholtz_ao_ness` | `composition` | 2 | 0 | 0 | `FepSketches.helmholtz_ao_ness` |
 | `FepSketches.compositions.geometric_mechanics` | `composition` | 7 | 0 | 0 | `FepSketches.geometric_mechanics` |
 | `FepSketches.compositions.h3_case_study` | `composition` | 93 | 91 | 1 | `FepSketches.causal_dynamics`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.h3_reference_model`, `FepSketches.markov_blanket`, `FepSketches.native_blanket`, `FepSketches.path_thermodynamics` |
-| `FepSketches.composed` | `aggregate` | 0 | 0 | 0 | `FepSketches.compositions.bayesian_model_reduction`, `FepSketches.compositions.causal_predictive`, `FepSketches.compositions.collective_learning`, `FepSketches.compositions.continuous_time`, `FepSketches.compositions.control_temporal`, `FepSketches.compositions.core`, `FepSketches.compositions.efe_policy_selection`, `FepSketches.compositions.efe_time_scale_separation`, `FepSketches.compositions.exponential_family`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_reference_agent`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.geometric_mechanics`, `FepSketches.compositions.h3_case_study`, `FepSketches.compositions.helmholtz_ao_ness`, `FepSketches.compositions.measure_variational`, `FepSketches.compositions.native_blanket_transfer`, `FepSketches.compositions.perception_action_loop`, `FepSketches.compositions.policy_trees`, `FepSketches.compositions.risk_calibration`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.compositions.thermo_geometry` |
+| `FepSketches.composed` | `aggregate` | 0 | 0 | 0 | `FepSketches.compositions.bayesian_model_reduction`, `FepSketches.compositions.causal_predictive`, `FepSketches.compositions.collective_learning`, `FepSketches.compositions.continuous_time`, `FepSketches.compositions.control_temporal`, `FepSketches.compositions.core`, `FepSketches.compositions.efe_policy_selection`, `FepSketches.compositions.efe_time_scale_separation`, `FepSketches.compositions.exponential_family`, `FepSketches.compositions.finite_kernel_category`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_reference_agent`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.geometric_mechanics`, `FepSketches.compositions.h3_case_study`, `FepSketches.compositions.helmholtz_ao_ness`, `FepSketches.compositions.measure_variational`, `FepSketches.compositions.native_blanket_transfer`, `FepSketches.compositions.perception_action_loop`, `FepSketches.compositions.policy_trees`, `FepSketches.compositions.risk_calibration`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.compositions.thermo_geometry` |
 
 ## Authored formalism relations
 

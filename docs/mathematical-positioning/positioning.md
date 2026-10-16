@@ -20006,7 +20006,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/bayesian_model_reduction.lean` | `721c1e39ffcfe5557c0138134cac5fb5c1b78669ac475cd99465401653fa441f` |
 | `formal/causal_dynamics.lean` | `a87844ec42f395cb8532fa96c7d5b6b956731e1b0f6069f748d512e43add686c` |
 | `formal/collective_inference.lean` | `f6d29044c0e890f97ea063e689291399f00c361c132f3970ba55b425f3a43a90` |
-| `formal/composed.lean` | `752397f80515ba9e198b7c22c410e2f91b61bd9e2dcbef97776032a3dccf0420` |
+| `formal/composed.lean` | `b150366a325e7c2b4046aac1c359182a5200a6031381e401dc7dc70553b0fc74` |
 | `formal/compositions/bayesian_model_reduction.lean` | `116422859cf81c6d87779a3bee51a3bfe4c7caae64b187441c276cd1faf2dcc5` |
 | `formal/compositions/causal_predictive.lean` | `1490d0d16e9f5809c8b29de65c74d57c885ffe8fd580ee15e78e26f4268e988a` |
 | `formal/compositions/collective_learning.lean` | `28ae93f953157f7b47f392606e66d0ae7bd28527dd7bb5e45888d095d883baa3` |
@@ -20016,6 +20016,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/efe_policy_selection.lean` | `f307a6252797dd73bdd6a2d3310e4a92bc7c9ddd335454f3e85bde0ca8beae5a` |
 | `formal/compositions/efe_time_scale_separation.lean` | `c038ee484356b4bbd63e3867e6a082cbb44ade654927effc5a521acf26354971` |
 | `formal/compositions/exponential_family.lean` | `94e6948533671377200c54a496fef5a5221eb0ce3866be6b4db9d4834b156b3a` |
+| `formal/compositions/finite_kernel_category.lean` | `b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47` |
 | `formal/compositions/finite_policy_action.lean` | `106954b5d9ae27f1f37e472cda108526bc9b5937ac272616ac35daab37dae566` |
 | `formal/compositions/finite_reference_agent.lean` | `9227a72c143a2d6ef5f8a04b2c9a475d4588cdb47671d13ba4c7cd8642325b1a` |
 | `formal/compositions/finite_scientific_implications.lean` | `e45a35a2de0b1b746b07daca1d675b840a26d276f47646025592773be19147b0` |
@@ -20059,7 +20060,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/law_weighted_split.lean` | `ee743a2aa98403b9dd3a30046c7e53638328eb5c666865595657e86e56e79eda` |
 | `formal/learning_theory.lean` | `f39bf2504d47de1f76399fce0471396c0b546ddc25872572e8efa853b2e75582` |
 | `formal/linear_gaussian_semigroup.lean` | `d4373ff6c120d2b55bf717338b2a4a210f34d89c44a73fd98562f0226098985d` |
-| `formal/manifest.py` | `c1dff5c5753162d1cf91fb27c5cb08777d385db4c606bd65a136d2c93acf07ce` |
+| `formal/manifest.py` | `e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157` |
 | `formal/markov_blanket.lean` | `6e214ee37ba6525d1ca5b44130ceaf4b410e03a0bb18d9b3070c4f8b90280011` |
 | `formal/markov_semigroup.lean` | `03284d5d473fdb3b6a2af5ae43ca2970e6f46af1b3b8915f8d0c123c177f6c02` |
 | `formal/measure_bayes.lean` | `e2fa1b071381bbf684625e7317a02a357337df80596f95d9084d6e721a719c51` |

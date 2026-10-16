@@ -28,11 +28,14 @@ from tests._support.h2_r0_custody import (
 from tests._support.lake import lake_executable
 from tests._support.lean435_migration import (
     HISTORICAL_CUSTODY_ARCHIVE,
+    HISTORICAL_MANIFEST_ARCHIVE,
+    HISTORICAL_MANIFEST_ARCHIVE_SHA256,
     HISTORICAL_METADATA_ARCHIVE,
     HISTORICAL_METADATA_ARCHIVE_SHA256,
     historical_carrier_bytes,
     historical_custody_root,
     historical_custody_sources,
+    historical_manifest_bytes,
     historical_metadata_bytes,
     historical_toolchain_files,
 )
@@ -179,6 +182,7 @@ def _production_custody_snapshot() -> dict[str, bytes]:
         VALIDATOR_PATH,
         *records,
         HISTORICAL_CUSTODY_ARCHIVE,
+        HISTORICAL_MANIFEST_ARCHIVE,
         HISTORICAL_METADATA_ARCHIVE,
         "tests/fixtures/custody_toolchain_4_34_1.json",
     }
@@ -194,6 +198,7 @@ def _copy_historical_custody_inputs(source: Path, destination: Path) -> None:
     for relative in {
         *custody_paths(source),
         HISTORICAL_CUSTODY_ARCHIVE,
+        HISTORICAL_MANIFEST_ARCHIVE,
         HISTORICAL_METADATA_ARCHIVE,
         "tests/fixtures/custody_toolchain_4_34_1.json",
     }:
@@ -557,11 +562,11 @@ def test_h2_7_r0_typed_consumer_rejects_reversed_kl() -> None:
 
 def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
     before = _production_custody_snapshot()
-    # The explicit uv requirement is outside the frozen release-token delta;
-    # correct live refusal is not a failure of the current native theorem.
+    # The category owner is outside the frozen manifest transition. Its earlier
+    # refusal must not be mistaken for failure of the current native theorem.
     with pytest.raises(
         ValueError,
-        match=r"^release metadata has unlisted changes beyond the root version: pyproject\.toml$",
+        match=r"^H3 owner subtraction does not recover the historical custody manifest$",
     ):
         validate_h2_r0_custody(PROJECT_ROOT)
     assert _sha256(PROJECT_ROOT / VALIDATOR_PATH) == (
@@ -680,6 +685,9 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         *H3_OWNER_SOURCE_PATHS,
     }
     historical_pins = historical_toolchain_files(Path(__file__).resolve().parents[1])
+    historical_manifest = historical_manifest_bytes(
+        Path(__file__).resolve().parents[1], (PROJECT_ROOT / MANIFEST_PATH).read_bytes()
+    )
     historical_metadata = historical_metadata_bytes(
         Path(__file__).resolve().parents[1],
         (PROJECT_ROOT / "pyproject.toml").read_bytes(),
@@ -700,6 +708,8 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         live = (PROJECT_ROOT / relative).read_bytes()
         if relative in historical_pins:
             historical = historical_pins[relative]
+        elif relative == MANIFEST_PATH:
+            historical = historical_manifest
         elif relative == "pyproject.toml":
             historical = historical_metadata
         elif relative in migrated_sources:
@@ -717,7 +727,10 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         relative
         for relative, digest in successor["source_sha256"].items()
         if _sha256(PROJECT_ROOT / relative) != digest
-    } == set(historical_pins) | migrated_sources | historical_only | {"pyproject.toml"}
+    } == set(historical_pins) | migrated_sources | historical_only | {
+        MANIFEST_PATH,
+        "pyproject.toml",
+    }
     assert successor["historical_custody"] == json.loads(
         (PROJECT_ROOT / SUCCESSOR_PATH).read_text(encoding="utf-8")
     )
@@ -752,11 +765,20 @@ def test_historical_custody_control_is_positive_and_explicitly_non_native(
     for relative, data in originals.items():
         assert (restored / relative).read_bytes() == data
         assert (root / relative).read_bytes() != data
+    manifest = (restored / MANIFEST_PATH).read_bytes()
+    assert historical_manifest_bytes(root, manifest) == manifest
+    assert (
+        historical_manifest_bytes(root, (root / MANIFEST_PATH).read_bytes()) == manifest
+    )
     marker = json.loads(
         (restored / "output/historical-custody-unit-control.json").read_bytes()
     )
     assert marker["source_commit"] == "5e1cc9095b5f0590772c739d27558c2c711f9a44"
     assert marker["restored_source_paths"] == sorted(result["source_sha256"])
+    assert marker["manifest_archive_sha256"] == HISTORICAL_MANIFEST_ARCHIVE_SHA256
+    assert marker["observed_manifest_sha256"] == _sha256(root / MANIFEST_PATH)
+    assert marker["restored_manifest_sha256"] == _sha256(restored / MANIFEST_PATH)
+    assert marker["observed_manifest_sha256"] != marker["restored_manifest_sha256"]
     assert marker["metadata_archive_sha256"] == HISTORICAL_METADATA_ARCHIVE_SHA256
     assert marker["observed_pyproject_sha256"] == _sha256(root / "pyproject.toml")
     assert marker["restored_pyproject_sha256"] == _sha256(restored / "pyproject.toml")
@@ -796,6 +818,43 @@ def test_historical_custody_archive_tampering_is_rejected_before_decode(
         AssertionError, match="historical custody archive identity changed"
     ):
         historical_custody_sources(tmp_path)
+    assert before == _production_custody_snapshot()
+
+
+@pytest.mark.parametrize("tamper", ("append", "metadata", "payload"))
+def test_historical_manifest_companion_tampering_refuses_before_decode_and_writing(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, tamper: str
+) -> None:
+    from tests._support import lean435_migration as migration
+
+    root = Path(__file__).resolve().parents[1]
+    before = _production_custody_snapshot()
+    source = tmp_path / "changed-input"
+    destination = tmp_path / "historical-control"
+    destination.mkdir()
+    _copy_historical_custody_inputs(root, source)
+    resource = source / HISTORICAL_MANIFEST_ARCHIVE
+    raw = resource.read_bytes()
+    if tamper == "append":
+        changed = raw + b"\n"
+    else:
+        payload = json.loads(raw)
+        if tamper == "metadata":
+            payload["source_commit"] = "0" * 40
+        else:
+            payload["files"][MANIFEST_PATH]["data"] = "not-archived-source"
+        changed = json.dumps(payload).encode()
+    resource.write_bytes(changed)
+
+    def forbidden_decode() -> None:
+        pytest.fail("a changed companion must fail before any source decoding")
+
+    monkeypatch.setattr(migration.zlib, "decompressobj", forbidden_decode)
+    with pytest.raises(
+        AssertionError, match="historical custody manifest archive identity changed"
+    ):
+        historical_custody_root(source, destination)
+    assert not any(destination.iterdir())
     assert before == _production_custody_snapshot()
 
 
@@ -911,6 +970,8 @@ def test_metadata_companion_tampering_refuses_before_parse_decode_and_writing(
     (
         "spike",
         "owner",
+        "manifest",
+        "category_role",
         "metadata_dependency",
         "metadata_unknown_release",
         "metadata_duplicate_root",
@@ -929,10 +990,20 @@ def test_historical_custody_control_refuses_source_drift_before_writing(
     relative = {
         "spike": "specs/done/horizon-2-smooth-stochastic/spikes/07_gaussian_vfe_natural_gradient.lean",
         "owner": "src/fep_lean/formal/gaussian_information_geometry.lean",
+        "manifest": MANIFEST_PATH,
+        "category_role": MANIFEST_PATH,
     }.get(tamper, "pyproject.toml")
     changed = source / relative
     data = changed.read_bytes()
-    if tamper.startswith("metadata_"):
+    if tamper == "category_role":
+        owner = (
+            b'        resource="compositions/finite_kernel_category.lean",\n'
+            b'        lean_module="FepSketches.compositions.finite_kernel_category",\n'
+            b"        role=FormalModuleRole.COMPOSITION,\n"
+        )
+        assert data.count(owner) == 1
+        data = data.replace(owner, owner.replace(b"COMPOSITION", b"FOUNDATION"), 1)
+    elif tamper.startswith("metadata_"):
         from tests._support import lean435_migration as migration
 
         def forbidden_decode() -> None:

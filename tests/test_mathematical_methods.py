@@ -91,6 +91,24 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         "FEP.PathThermodynamics.biasedCycle_entropyProduction_horizon_pos",
         "FEPComposed.fep099_markov_path_KL_drop_reduction",
     }
+    # Pin the optional leaf's exact theorem inventory separately from the
+    # prior declarations; new category names must not hide baseline drift.
+    category_extension = {
+        "FEPComposed.FiniteKernelCategory.finKernCat_id_comp",
+        "FEPComposed.FiniteKernelCategory.finKernCat_comp_id",
+        "FEPComposed.FiniteKernelCategory.finKernCat_assoc",
+        "FEPComposed.FiniteKernelCategory.bool_predictive_identity",
+        "FEPComposed.FiniteKernelCategory.bool_flip_true",
+        "FEPComposed.FiniteKernelCategory.bool_flip_false",
+        "FEPComposed.FiniteKernelCategory.bool_predictive_composition",
+        "FEPComposed.FiniteKernelCategory.bool_predictive_flip_twice",
+    }
+    assert {
+        name
+        for name, record in declarations.items()
+        if record["source_owner"]
+        == "src/fep_lean/formal/compositions/finite_kernel_category.lean"
+    } == category_extension
     assert len(variational_extension) == 32
     measure_entropy_extension = {
         "FEP.VariationalDuality.nativeKL_tilted_gap",
@@ -99,7 +117,10 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     }
     assert len(measure_entropy_extension) == 3
     assert (
-        exposed_support | variational_extension | measure_entropy_extension
+        exposed_support
+        | variational_extension
+        | measure_entropy_extension
+        | category_extension
         <= declarations.keys()
     )
     assert {
@@ -111,6 +132,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - exposed_support
             - variational_extension
             - measure_entropy_extension
+            - category_extension
         )
         == 2185
     )

@@ -424,10 +424,10 @@ def test_h2_7_consumes_only_an_accepted_source_bound_r0_decision() -> None:
         )
     before = {relative: (PROJECT_ROOT / relative).read_bytes() for relative in paths}
     # The historical go decision remains sealed. It cannot accept changed
-    # compiler/source bytes or the new metadata beyond its release-token rule.
+    # compiler/source bytes or category owner beyond its exact manifest rule.
     with pytest.raises(
         ValueError,
-        match=r"^release metadata has unlisted changes beyond the root version: pyproject\.toml$",
+        match=r"^H3 owner subtraction does not recover the historical custody manifest$",
     ):
         validate_h2_r0_custody(PROJECT_ROOT)
     assert hashlib.sha256((PROJECT_ROOT / VALIDATOR_PATH).read_bytes()).hexdigest() == (
