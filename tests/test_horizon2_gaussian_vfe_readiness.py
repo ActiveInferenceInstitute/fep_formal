@@ -799,7 +799,7 @@ def test_historical_custody_archive_tampering_is_rejected_before_decode(
     assert before == _production_custody_snapshot()
 
 
-@pytest.mark.parametrize("profile", ("predecessor", "T01"))
+@pytest.mark.parametrize("profile", ("predecessor", "T01", "P08"))
 @pytest.mark.parametrize("version", ("1.4.0", *LATER_RELEASE_VERSIONS))
 def test_historical_metadata_preserves_only_explicit_release_profiles(
     profile: str, version: str
@@ -823,8 +823,24 @@ def test_historical_metadata_preserves_only_explicit_release_profiles(
         )
     else:
         assert hashlib.sha256(live).hexdigest() == (
-            "ab94d6fa723dbb547e3e73f70d826060ab63e873e812922cbb30ef090d7d3d3e"
+            "7cddff7d00c626e1838f955480c425f187ea04d10b049708ee22366828cc7282"
         )
+        if profile == "T01":
+            # Reconstruct and authenticate the exact predecessor, rather than
+            # admitting arbitrary metadata under a generic warning-policy edit.
+            marker = b'timeout_method = "thread"\n'
+            filters = (
+                b"filterwarnings = [\n"
+                b'    "ignore::UserWarning",\n'
+                b'    "ignore::pytest.PytestWarning",\n'
+                b'    "ignore::DeprecationWarning",\n'
+                b"]\n"
+            )
+            assert live.count(marker) == 1
+            live = live.replace(marker, marker + filters, 1)
+            assert hashlib.sha256(live).hexdigest() == (
+                "ab94d6fa723dbb547e3e73f70d826060ab63e873e812922cbb30ef090d7d3d3e"
+            )
         assert live.count(current_token) == 1
         data = live.replace(current_token, recorded_token, 1)
     token = recorded_token.replace(b'"1.4.0"', f'"{version}"'.encode())

@@ -8,6 +8,8 @@
   now follow the existing single re-exchange policy. Preserve typed API errors
   and credential redaction; regression controls cover response
   closure, oversized and stalled error bodies, and real plugin import order.
+  Admit only the exact warning-policy metadata profile in historical unit
+  controls, retaining authenticated predecessors and unchanged frozen bytes.
   Broader warning and exact-source acceptance for
   [#124](https://github.com/ActiveInferenceInstitute/fep_formal/issues/124)
   remains subject to the full test and hosted gates.
