@@ -11,7 +11,11 @@ from typing import Final
 import pytest
 import yaml
 
-from fep_lean.catalogue.generation import hoisted_sketch_imports, strip_sketch_imports
+from fep_lean.catalogue.generation import (
+    hoisted_sketch_imports,
+    render_fep_all_lean,
+    strip_sketch_imports,
+)
 from fep_lean.catalogue.latex import build_theorem_latex, build_topic_latex_equations
 from fep_lean.catalogue.registry import (
     BODIES,
@@ -588,6 +592,147 @@ def test_lean_source_normalization_is_offset_preserving_and_import_safe() -> Non
             "theorem paired (h : True ∧ True) : True := by trivial"
         )
         == "True"
+    )
+
+
+@pytest.mark.parametrize("visibility", ["", "public ", "meta ", "public meta "])
+def test_module_conversion_preserves_import_kind_and_proof_bytes(
+    visibility: str,
+) -> None:
+    proof = "theorem preserved : True := True.intro\n"
+    source = f"  {visibility}import Mathlib.Tactic.NormNum\n{proof}"
+    exported = "public meta " if "meta" in visibility else "public "
+    converted = lean_module_source(source)
+
+    assert converted == (
+        f"module\n  {exported}import Mathlib.Tactic.NormNum\n"
+        f"\n@[expose] public section\n{proof}"
+    )
+    assert lean_module_source(converted) == converted
+    explicit = f"module\n{source}private def hidden := 1\n"
+    assert lean_module_source(explicit) == explicit
+
+
+def test_aggregate_hoists_meta_and_value_imports_before_namespaces() -> None:
+    proof = "theorem preserved : True := True.intro\n"
+    body = (
+        "/- outer\n/- public meta import Fake.Nested -/\n-/\n"
+        "import Mathlib.Data.Real.Basic\n"
+        "meta\timport\tMathlib.Tactic.NormNum\n"
+        "public meta import Mathlib.Tactic.NormNum\n"
+        "public import Mathlib.Tactic.NormNum\n"
+        'def label := "public meta import Fake.String"\n'
+        f"{proof}"
+    )
+    sketches = {
+        "fep-002": "meta import Mathlib.Tactic.NormNum\n" + proof,
+        "fep-001": body,
+    }
+    assert hoisted_sketch_imports(sketches) == (
+        "import Mathlib.Data.Real.Basic",
+        "meta import Mathlib.Tactic.NormNum",
+        "public import Mathlib.Tactic.NormNum",
+        "public meta import Mathlib.Tactic.NormNum",
+    )
+    generated = render_fep_all_lean(sketches)
+    header, body_blocks = generated.split("namespace fep_fep001", maxsplit=1)
+    assert "public import Mathlib.Data.Real.Basic\n" in header
+    assert "public import Mathlib.Tactic.NormNum\n" in header
+    assert "public meta import Mathlib.Tactic.NormNum\n" in header
+    assert "Mathlib." not in body_blocks
+    assert "/- public meta import Fake.Nested -/" in body_blocks
+    assert 'def label := "public meta import Fake.String"\n' in body_blocks
+    assert body_blocks.count(proof) == 2
+    assert render_fep_all_lean(dict(reversed(tuple(sketches.items())))) == generated
+
+
+@pytest.mark.parametrize("newline", ["\n", "\r\n"])
+def test_import_projection_does_not_swallow_neighboring_commands(newline: str) -> None:
+    source = newline.join(
+        (
+            "meta import Mathlib.Tactic.NormNum",
+            "import",
+            "theorem preserved : True := True.intro",
+            "meta import Mathlib.Data.Real.Basic def retained := 1",
+            "public import",
+            "def last := 2",
+        )
+    )
+    assert hoisted_sketch_imports({"fep-001": source}) == (
+        "meta import Mathlib.Tactic.NormNum",
+    )
+    assert strip_sketch_imports(source) == source.split(newline, maxsplit=1)[1]
+    converted = lean_module_source(source)
+    assert "import" + newline + "theorem preserved : True := True.intro" in converted
+    assert "public import" + newline + "def last := 2" in converted
+    assert "public meta import Mathlib.Tactic.NormNum" in converted
+
+
+@pytest.mark.parametrize("module", ["Mathlib.«Basic».Real.Basic", "Example.Δ"])
+@pytest.mark.parametrize("visibility", ["", "public ", "meta ", "public meta "])
+def test_module_conversion_preserves_general_module_identifiers(
+    module: str, visibility: str
+) -> None:
+    source = f"{visibility}import {module}\ntheorem preserved : True := True.intro\n"
+    exported = "public meta " if "meta" in visibility else "public "
+    assert lean_module_source(source) == (
+        f"module\n{exported}import {module}\n"
+        "\n@[expose] public section\ntheorem preserved : True := True.intro\n"
+    )
+
+
+@pytest.mark.parametrize("visibility", ["", "meta ", "public meta "])
+@pytest.mark.parametrize("separator", ["\n", " "])
+def test_module_conversion_exposes_declarations_after_trailing_nested_comment(
+    visibility: str, separator: str
+) -> None:
+    comment = "/- note\n/- nested -/\ncontinued\n-/"
+    proof = "theorem exported : True := True.intro\n"
+    source = f"{visibility}import Example.«Quoted».Δ {comment}{separator}{proof}"
+    exported = "public meta " if "meta" in visibility else "public "
+    converted = lean_module_source(source)
+
+    assert converted == (
+        f"module\n{exported}import Example.«Quoted».Δ {comment}"
+        f"\n\n@[expose] public section\n{separator}{proof}"
+    )
+    assert comment in converted
+    assert converted.endswith(separator + proof)
+    assert "@[expose] public section" in lean_code_without_comments(converted)
+    assert lean_module_source(converted) == converted
+    explicit = "module\n" + source
+    assert lean_module_source(explicit) == explicit
+
+
+def test_module_conversion_preserves_unterminated_trailing_comment() -> None:
+    source = "meta import Lean.Elab.Tactic.Omega /- unterminated\n/- nested -/\n"
+    assert lean_module_source(source) == source
+
+
+def test_import_projection_preserves_comment_boundaries_on_import_lines() -> None:
+    body = (
+        "/- prefix\n/- meta import Fake.Nested -/\n"
+        "-/ meta import Mathlib.Tactic.NormNum /- suffix\n"
+        "public import Fake.Comment\n-/\n"
+        "theorem preserved : True := True.intro\n"
+    )
+    stripped = strip_sketch_imports(body)
+    assert "-/    /- suffix\n" in stripped
+    assert "/- meta import Fake.Nested -/" in stripped
+    assert "public import Fake.Comment\n-/\n" in stripped
+    assert lean_code_without_comments(stripped).strip() == (
+        "theorem preserved : True := True.intro"
+    )
+    assert hoisted_sketch_imports({"fep-001": body}) == (
+        "meta import Mathlib.Tactic.NormNum",
+    )
+
+
+def test_module_conversion_terminates_a_final_meta_import_line() -> None:
+    converted = lean_module_source("meta import Mathlib.Tactic.NormNum")
+    assert converted == (
+        "module\npublic meta import Mathlib.Tactic.NormNum\n"
+        "\n@[expose] public section\n"
     )
 
 

@@ -600,3 +600,51 @@ historical evidence retain their actual identities. This documentation work
 changes no carrier, theorem, scientific disposition, capture controller or
 production/runtime acceptance requirement. New gate controls require source
 review and actual hosted execution; static inspection is not a test pass.
+
+## Preserve import meaning while narrowing topic dependencies
+
+**Choice:** narrow the 21 remaining blanket topic tactic imports in their family
+owners. Share the canonical simple-module import grammar between hoisting and
+stripping, preserve public/meta kind and nested comment delimiters, and keep
+user-sketch Unicode/quoted module names in conversion. The theorem/proof tails
+remain byte-identical. Owner generators refresh catalogues and aggregates.
+
+**Boundary:** this lexer is not a complete Lean parser. Malformed trailing
+comments remain for Lean to reject. Static dependency existence and unchanged
+proof text do not establish elaboration, native or axiom acceptance.
+
+## Derive package line floors from authenticated coverage
+
+**Choice:** use the retained PR181 coverage XML, whose tested tree matches main
+`4208d589`, to set each nonempty direct package floor to its whole-percent lower
+bound. Check exact integer ratios and all package/file/line records. Keep the
+aggregate 89% line floor unchanged and the zero-executable-line package explicit.
+No branch-arc collection or branch percentage is claimed.
+
+**Reason:** aggregate coverage can mask an uncovered custody conditional arm.
+The control instruments an isolated copy of the actual custody model and traces
+both its failing and clean forms. It retains original/instrumented source, XML
+and counts without changing live production custody code. The checker lives
+under docs, outside the production owner roster. Reject duplicate/malformed
+records, unknown inventories, nonfinite/fractional policy numbers and rounded
+false passes. The comment-only metadata change has one exact replay profile;
+unknown profiles still refuse before decoding the unchanged historical archive.
+Fresh independent infrastructure/custody review resolved the float-overflow
+finding. Hosted controls and current XML remain required for completion.
+
+## Keep native entropy independent and extended-valued
+
+**Choice:** derive the measure-level entropy and signed CGF inequalities from
+pinned Mathlib tilted-measure/LLR identities and native KL. Require exact
+potential/exponential integrability; guard finite-real conversions by absolute
+continuity and LLR integrability. Preserve the native infinite-KL branch.
+
+**Reason:** clipping a negative objective with `ENNReal.ofReal` can create
+equality at a law that is not the tilt. Positive nonconstant, clipped-equality
+and singular-law consumers expose that distinction. Extract the same authored
+proof block for the Mathlib-only probe rather than maintain a second proof.
+Retain its actual source, command and three raw axiom reports before assertions.
+Independent Lean/domain and skeptical source reviews establish feasibility;
+compilation, scientific approval and production/runtime acceptance remain
+separate. Bounded static generation under current disk reserves authorizes no
+local native or broad-test launch.

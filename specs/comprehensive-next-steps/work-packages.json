@@ -1397,7 +1397,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/111"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "An FEP-independent measure-level Donsker-Varadhan inequality is derived with explicit integrability/support assumptions.",
       "depends_on": [],
       "single_owner": "Existing variational_duality.lean and exponential_family.lean; FEP-independent candidates remain slice-local until ownership review.",
@@ -1676,7 +1676,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/125"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "Coverage claims match measured coverage and each selected package has an enforceable measured floor.",
       "depends_on": [],
       "single_owner": "Existing pyproject.toml coverage configuration and docs/coverage-branch.md; any new checker remains docs-local.",

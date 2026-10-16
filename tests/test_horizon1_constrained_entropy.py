@@ -31,6 +31,8 @@ def test_constrained_entropy_preserves_its_existing_owner_imports() -> None:
     assert tuple(re.findall(r"(?m)^public import (\S+)$", source)) == (
         "FepSketches.finite_information",
         "Mathlib.Analysis.Convex.SpecificFunctions.Basic",
+        "Mathlib.InformationTheory.KullbackLeibler.Basic",
+        "Mathlib.Probability.Moments.Basic",
         "Mathlib.Topology.Order.Compact",
     )
     assert "namespace FEP.VariationalDuality\n" in source

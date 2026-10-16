@@ -14,6 +14,15 @@ commands: lint covers the repository with the reviewed exclusions in
 3.14 target. The earlier narrower lint command below records its source epoch;
 it is not the current command owner.
 
+The aggregate coverage gate remains at 89% **line** coverage. Additional
+[package line floors](coverage-floors.json) use the authenticated baseline and
+selection rule in the [coverage guide](coverage-branch.md). CI checks the same
+split-suite XML after isolated Chrome appends its data; a high aggregate cannot
+mask a package below its floor. Missing package evidence rejects. The temporary
+custody-model control traces an isolated, instrumented copy of production source
+and retains both control reports. It demonstrates uncovered branch-body line
+sensitivity, not branch-arc enforcement or a change to live custody code.
+
 ## Recorded policy — 2026-10-05 (superseded command scope)
 
 CI now runs both `ruff check src tests scripts docs` and

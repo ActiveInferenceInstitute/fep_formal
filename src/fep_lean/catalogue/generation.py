@@ -2,14 +2,17 @@
 
 from __future__ import annotations
 
-import re
 from collections.abc import Callable, Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from fep_lean.lean_source import lean_code_without_comments, lean_module_source
+from fep_lean.lean_source import (
+    LEAN_IMPORT_RE,
+    lean_code_without_comments,
+    lean_module_source,
+)
 
 from . import registry as _registry
 from .novelty import load_formalism_novelty
@@ -68,19 +71,26 @@ def topics_header(topic_count: int) -> str:
     )
 
 
-_IMPORT_RE = re.compile(r"^import\s+\S+.*$", re.MULTILINE)
-
-
 def strip_sketch_imports(body: str) -> str:
     """Remove imports that the aggregate projection hoists to its header."""
     code = lean_code_without_comments(body)
-    return "".join(
-        raw_line
-        for raw_line, code_line in zip(
-            body.splitlines(keepends=True), code.splitlines(keepends=True), strict=True
-        )
-        if _IMPORT_RE.match(code_line) is None
-    ).lstrip("\n")
+    lines: list[str] = []
+    for raw_line, code_line in zip(
+        body.splitlines(keepends=True), code.splitlines(keepends=True), strict=True
+    ):
+        if LEAN_IMPORT_RE.match(code_line) is None:
+            lines.append(raw_line)
+        elif raw_line != code_line:
+            # Keep comment delimiters even when an import shares their line.
+            # Dropping that whole line could open or close a different block.
+            lines.append(
+                "".join(
+                    raw
+                    for raw, clean in zip(raw_line, code_line, strict=True)
+                    if clean.isspace()
+                )
+            )
+    return "".join(lines).lstrip("\n")
 
 
 def hoisted_sketch_imports(sketches: Mapping[str, str]) -> tuple[str, ...]:
@@ -88,9 +98,9 @@ def hoisted_sketch_imports(sketches: Mapping[str, str]) -> tuple[str, ...]:
     return tuple(
         sorted(
             {
-                import_line.strip()
+                " ".join(match.group().split())
                 for body in sketches.values()
-                for import_line in _IMPORT_RE.findall(lean_code_without_comments(body))
+                for match in LEAN_IMPORT_RE.finditer(lean_code_without_comments(body))
             }
         )
     )

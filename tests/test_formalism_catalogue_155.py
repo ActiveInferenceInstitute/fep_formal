@@ -27,6 +27,96 @@ BASELINE_PATH = (
 REVIEWED_DELTAS_PATH = (
     PROJECT_ROOT / "tests" / "fixtures" / "formalism_catalogue_155_reviewed_deltas.json"
 )
+# Exact old/new import prefixes for the 21 L01 topic bodies. Reversing only
+# these reviewed prefixes leaves every declaration/proof byte subject to the
+# original immutable historical digest gates below.
+REVIEWED_IMPORT_HEADERS: dict[str, tuple[str, str]] = {
+    "fep-004": (
+        "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-013": (
+        "import Mathlib.Analysis.Calculus.Deriv.Add\nimport Mathlib.Analysis.Calculus.Deriv.Mul\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.Calculus.Deriv.Add\nimport Mathlib.Analysis.Calculus.Deriv.Mul\nimport Mathlib.Tactic.Convert\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-018": (
+        "import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-020": (
+        "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Data.Bool.Basic\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Data.Bool.Basic\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-022": (
+        "import Mathlib.Probability.Kernel.Composition.MeasureComp\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Probability.Kernel.Composition.MeasureComp\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-025": (
+        "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.LinearAlgebra.Matrix.Notation\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.LinearAlgebra.Matrix.Notation\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.FinCases\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.NormNum\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-029": (
+        "import Mathlib.Analysis.Convex.Basic\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.Convex.Basic\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-030": (
+        "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Algebra.BigOperators.Ring.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Algebra.BigOperators.Ring.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.Ring\nmeta import Lean.Meta.Tactic.NormCast\n\n",
+    ),
+    "fep-032": (
+        "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-036": (
+        "import Mathlib.Analysis.SpecificLimits.Basic\nimport Mathlib.Data.Nat.Cast.Field\nimport Mathlib.Probability.Distributions.Binomial\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.SpecificLimits.Basic\nimport Mathlib.Data.Nat.Cast.Field\nimport Mathlib.Probability.Distributions.Binomial\nimport Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.GCongr\nimport Mathlib.Tactic.Positivity\nmeta import Lean.Meta.Tactic.NormCast\nmeta import Lean.Elab.Tactic.Omega\n\n",
+    ),
+    "fep-037": (
+        "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Positivity\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-038": (
+        "import Mathlib.Analysis.Calculus.Deriv.Add\nimport Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Data.Bool.Basic\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.Calculus.Deriv.Add\nimport Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Data.Bool.Basic\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic.Convert\nimport Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.NormNum\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-040": (
+        "import Mathlib.Analysis.SpecialFunctions.Log.Deriv\nimport Mathlib.Probability.Distributions.Gaussian.Real\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.SpecialFunctions.Log.Deriv\nimport Mathlib.Probability.Distributions.Gaussian.Real\nimport Mathlib.Tactic.Convert\nimport Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.GCongr\nimport Mathlib.Tactic.Positivity\n\n",
+    ),
+    "fep-042": (
+        "import Mathlib.Data.List.Count\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Data.List.Count\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-043": (
+        "import Mathlib.Analysis.Calculus.Deriv.Mul\nimport Mathlib.Analysis.Calculus.Deriv.Pow\nimport Mathlib.Analysis.Calculus.LocalExtr.Basic\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.Calculus.Deriv.Mul\nimport Mathlib.Analysis.Calculus.Deriv.Pow\nimport Mathlib.Analysis.Calculus.LocalExtr.Basic\nimport Mathlib.Tactic.Convert\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Positivity\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-044": (
+        "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Positivity\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-045": (
+        "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Fintype.Basic\nimport Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-046": (
+        "import Mathlib.Algebra.BigOperators.Ring.List\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Algebra.BigOperators.Ring.List\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-048": (
+        "import Mathlib.Order.Monotone.Basic\nimport Mathlib.Topology.MetricSpace.Contracting\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Order.Monotone.Basic\nimport Mathlib.Topology.MetricSpace.Contracting\nimport Mathlib.Tactic.NormNum\n\n",
+    ),
+    "fep-049": (
+        "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Analysis.SpecialFunctions.Log.Basic\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Analysis.SpecialFunctions.Log.Basic\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\n",
+    ),
+    "fep-050": (
+        "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Tactic\n\n",
+        "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.NormNum\n\n",
+    ),
+}
+
 REVIEWED_MATURITY_FIELDS = {
     "fep-063": {
         "supporting_theorems",
@@ -133,6 +223,10 @@ def _assert_released_body_and_maturity(
     assert baseline["topic_count"] == 120
 
     released_bodies = dict(bodies)
+    for topic_id, (released_header, reviewed_header) in REVIEWED_IMPORT_HEADERS.items():
+        current = released_bodies[topic_id]
+        assert current.startswith(reviewed_header), topic_id
+        released_bodies[topic_id] = released_header + current[len(reviewed_header) :]
     migration = json.loads(
         (
             PROJECT_ROOT / "tests/fixtures/lean435_catalogue_proof_migration.json"
@@ -140,7 +234,7 @@ def _assert_released_body_and_maturity(
     )
     assert set(migration["topics"]) == {"fep-013", "fep-038", "fep-040", "fep-043"}
     for topic_id, change in migration["topics"].items():
-        current_body = bodies[topic_id]
+        current_body = released_bodies[topic_id]
         assert (
             hashlib.sha256(current_body.encode()).hexdigest()
             == change["migrated_sha256"]
@@ -175,7 +269,7 @@ def _assert_released_body_and_maturity(
         )
         # Exact additive reconstruction protects the released primary statements
         # and the approved new theorems; an arbitrary replacement is rejected.
-        assert bodies[topic_id] == expected, topic_id
+        assert released_bodies[topic_id] == expected, topic_id
         released_bodies[topic_id] = released
     assert (
         _length_prefixed_sha256(
@@ -326,6 +420,9 @@ def test_expansion_vii_preserves_released_rows_except_reviewed_deltas() -> None:
     "mutation",
     [
         "released_primary_body",
+        "narrowed_import_changed",
+        "narrowed_import_added",
+        "narrowed_proof_changed",
         "reviewed_identity_body",
         "reviewed_attainment_body",
         "unreviewed_body",
@@ -337,7 +434,17 @@ def test_expansion_vii_preserves_released_rows_except_reviewed_deltas() -> None:
 def test_reviewed_deltas_reject_unapproved_changes(mutation: str) -> None:
     bodies = dict(BODIES)
     maturity = [dict(row) for row in _yaml("theorem_maturity.yaml")["topics"][:120]]
-    if mutation == "released_primary_body":
+    if mutation == "narrowed_import_changed":
+        bodies["fep-013"] = bodies["fep-013"].replace(
+            "Mathlib.Tactic.Convert", "Mathlib.Tactic", 1
+        )
+    elif mutation == "narrowed_import_added":
+        bodies["fep-013"] = "import Mathlib.Tactic\n" + bodies["fep-013"]
+    elif mutation == "narrowed_proof_changed":
+        bodies["fep-013"] = bodies["fep-013"].replace(
+            "namespace FEP013", "namespace Unreviewed", 1
+        )
+    elif mutation == "released_primary_body":
         bodies["fep-063"] = bodies["fep-063"].replace(
             "theorem fep063_finiteChannel_klDataProcessing",
             "theorem changed_primary",

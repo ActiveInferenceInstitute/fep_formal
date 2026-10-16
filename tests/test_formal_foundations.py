@@ -34,6 +34,14 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         "FEPComposed.FiniteScientificImplications.symmetricFalseEvidence": "FepSketches.compositions.finite_scientific_implications",
     }
     assert {name: owners[name] for name in exposed_support} == exposed_support
+    native_entropy_support = {
+        "FEP.VariationalDuality.nativeKL_tilted_gap": "FepSketches.variational_duality",
+        "FEP.VariationalDuality.nativeEntropy_le_klDiv": "FepSketches.variational_duality",
+        "FEP.VariationalDuality.nativeCgf_le_klDiv": "FepSketches.variational_duality",
+    }
+    assert {
+        name: owners[name] for name in native_entropy_support
+    } == native_entropy_support
     modules_by_role = {
         role: tuple(module for module in FORMAL_MODULES if module.role is role)
         for role in FormalModuleRole
@@ -67,7 +75,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         "FepSketches.information_geometry": 33,
         "FepSketches.statistical_convergence": 7,
         "FepSketches.measure_bayes": 12,
-        "FepSketches.variational_duality": 82,
+        "FepSketches.variational_duality": 85,
         "FepSketches.controlled_markov": 33,
         "FepSketches.temporal_inference": 52,
         "FepSketches.finite_markov_dynamics": 17,

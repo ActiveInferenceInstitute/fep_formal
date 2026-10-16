@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "package-line-coverage-floors",
+  "metric": "line",
+  "aggregate_line_floor": 89,
+  "baseline": {
+    "repository": "ActiveInferenceInstitute/fep_formal",
+    "head_commit": "2893bed22d084183e81b02ab2ce68a71aab8df75",
+    "tested_commit": "f739e4bfcf32fe58ed8a701dbead0d9f8f0fe0df",
+    "tested_tree": "26447d4324a1ada590c20496c6e552e7f78de165",
+    "main_same_tree_commit": "4208d589a00c5eeaed5a36d8760153bad8805ef1",
+    "workflow_run_id": 38834310995,
+    "coverage_artifact_id": 12019210437,
+    "coverage_artifact_zip_sha256": "42524469bb8fcbf63e8807f19182360e06c160c04b37d20d9033a400eac16603",
+    "coverage_xml_sha256": "3ac1d72e4f4d36ce5b1b737fb4717b86dcc0e8fa89ee2ead9819e789c7394d79",
+    "coverage_version": "7.15.2",
+    "lines_covered": 17197,
+    "lines_valid": 18765,
+    "selection": "Each nonempty direct XML package floor is floor(100 * baseline_lines_covered / baseline_lines_valid). Subpackages have separate, non-overlapping floors. The existing aggregate line floor remains 89. No branch-arc floor is asserted."
+  },
+  "packages": {
+    "fep_lean": {"line_floor": 92, "baseline_lines_covered": 665, "baseline_lines_valid": 718},
+    "fep_lean.bridge": {"line_floor": 99, "baseline_lines_covered": 449, "baseline_lines_valid": 453},
+    "fep_lean.catalogue": {"line_floor": 90, "baseline_lines_covered": 1495, "baseline_lines_valid": 1661},
+    "fep_lean.catalogue.bodies": {"line_floor": 100, "baseline_lines_covered": 44, "baseline_lines_valid": 44},
+    "fep_lean.custody": {"line_floor": 93, "baseline_lines_covered": 1229, "baseline_lines_valid": 1311},
+    "fep_lean.formal": {"line_floor": 95, "baseline_lines_covered": 166, "baseline_lines_valid": 173},
+    "fep_lean.gauss": {"line_floor": 91, "baseline_lines_covered": 459, "baseline_lines_valid": 499},
+    "fep_lean.llm": {"line_floor": 90, "baseline_lines_covered": 566, "baseline_lines_valid": 623},
+    "fep_lean.methods": {"line_floor": 92, "baseline_lines_covered": 1323, "baseline_lines_valid": 1425},
+    "fep_lean.output": {"line_floor": 93, "baseline_lines_covered": 4199, "baseline_lines_valid": 4489},
+    "fep_lean.output.release_bundle": {"line_floor": 86, "baseline_lines_covered": 2616, "baseline_lines_valid": 3022},
+    "fep_lean.pipeline": {"line_floor": 92, "baseline_lines_covered": 184, "baseline_lines_valid": 198},
+    "fep_lean.prove2me": {"line_floor": 83, "baseline_lines_covered": 300, "baseline_lines_valid": 358},
+    "fep_lean.verification": {"line_floor": 92, "baseline_lines_covered": 3502, "baseline_lines_valid": 3791}
+  },
+  "empty_packages": ["fep_lean.data"]
+}

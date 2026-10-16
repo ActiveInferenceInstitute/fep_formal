@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
+import os
 import re
 import runpy
 import subprocess
@@ -9,6 +12,7 @@ from pathlib import Path
 
 import pytest
 
+from fep_lean.verification import formalism_audit
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 
@@ -61,6 +65,214 @@ def test_variational_duality_foundation_compiles_warning_free() -> None:
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert "warning:" not in (result.stdout + result.stderr).lower()
+
+
+def test_native_entropy_mathlib_only_consumers_compile(tmp_path: Path) -> None:
+    """Compile the authored proof once without FEP imports, plus native controls."""
+    foundation_path = FORMAL_ROOT / "variational_duality.lean"
+    foundation_bytes = foundation_path.read_bytes()
+    foundation = foundation_bytes.decode("utf-8")
+    begin = "/- L06_MATHLIB_ONLY_BEGIN -/"
+    end = "/- L06_MATHLIB_ONLY_END -/"
+    assert foundation.count(begin) == foundation.count(end) == 1
+    proof = foundation.split(begin, 1)[1].split(end, 1)[0]
+    assert "FEP" not in proof
+    declarations = (
+        "nativeKL_tilted_gap",
+        "nativeEntropy_le_klDiv",
+        "nativeCgf_le_klDiv",
+    )
+    consumer = tmp_path / "native_entropy_mathlib_only.lean"
+    consumer.write_text(
+        "import Mathlib.InformationTheory.KullbackLeibler.Basic\n"
+        "import Mathlib.Probability.Moments.Basic\n"
+        "import Mathlib.Tactic\n"
+        + proof
+        + """
+namespace NativeEntropyConsumer
+open MeasureTheory InformationTheory
+open scoped ENNReal
+
+noncomputable def fair : Measure Bool :=
+  (1 / 2 : NNReal) • Measure.dirac true +
+    (1 / 2 : NNReal) • Measure.dirac false
+
+instance : IsProbabilityMeasure fair where
+  measure_univ := by
+    norm_num [fair]
+    exact ENNReal.inv_two_add_inv_two
+
+noncomputable def potential (b : Bool) : ℝ := if b then Real.log 3 else 0
+
+theorem fair_integral (g : Bool → ℝ) :
+    (∫ b, g b ∂fair) = (g true + g false) / 2 := by
+  rw [fair, integral_add_measure (Integrable.of_finite) (Integrable.of_finite)]
+  norm_num [integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_mul]; ring
+
+theorem normalizer : (∫ b, Real.exp (potential b) ∂fair) = 2 := by
+  rw [fair_integral]
+  norm_num [potential, Real.exp_log (by norm_num : (0 : ℝ) < 3)]
+
+noncomputable instance : IsProbabilityMeasure (fair.tilted potential) :=
+  isProbabilityMeasure_tilted (Integrable.of_finite)
+
+theorem tilted_true : fair.tilted potential {true} = 3 / 4 := by
+  rw [tilted_apply' _ _ (MeasurableSet.singleton true), lintegral_singleton, normalizer]
+  norm_num [potential, fair, Real.exp_log (by norm_num : (0 : ℝ) < 3)]
+  apply (ENNReal.toReal_eq_toReal_iff'
+    (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.inv_ne_top.mpr (by norm_num)))
+    (ENNReal.div_ne_top (by norm_num) (by norm_num))).mp
+  norm_num [ENNReal.toReal_mul]
+
+theorem tilted_false : fair.tilted potential {false} = 1 / 4 := by
+  rw [tilted_apply' _ _ (MeasurableSet.singleton false), lintegral_singleton, normalizer]
+  norm_num [potential, fair]
+  apply (ENNReal.toReal_eq_toReal_iff'
+    (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.inv_ne_top.mpr (by norm_num)))
+    (ENNReal.inv_ne_top.mpr (by norm_num))).mp
+  norm_num [ENNReal.toReal_mul]
+
+theorem tilted_ne_fair : fair.tilted potential ≠ fair := by
+  intro h
+  have hmass := congrArg (fun μ : Measure Bool => μ {true}) h
+  rw [tilted_true] at hmass
+  norm_num [fair] at hmass
+  have hreal := congrArg ENNReal.toReal hmass
+  norm_num at hreal
+
+theorem tilted_potential :
+    (∫ b, potential b ∂fair.tilted potential) = 3 / 4 * Real.log 3 := by
+  rw [integral_tilted, normalizer, fair_integral]
+  norm_num [potential, Real.exp_log (by norm_num : (0 : ℝ) < 3), smul_eq_mul]; ring
+
+theorem attained_real_gap :
+    (klDiv (fair.tilted potential) fair).toReal =
+      3 / 4 * Real.log 3 - Real.log 2 := by
+  have h := nativeKL_tilted_gap (fair.tilted potential) fair (f := potential)
+    (tilted_absolutelyContinuous fair potential) (Integrable.of_finite)
+    (Integrable.of_finite) (Integrable.of_finite)
+  rw [klDiv_self, ENNReal.toReal_zero, tilted_potential, normalizer] at h
+  linarith
+
+theorem attained_native_bound :
+    ENNReal.ofReal (3 / 4 * Real.log 3 - Real.log 2) =
+      klDiv (fair.tilted potential) fair := by
+  rw [← attained_real_gap]
+  exact ENNReal.ofReal_toReal (klDiv_ne_top
+    (tilted_absolutelyContinuous fair potential) (Integrable.of_finite))
+
+theorem cgf_bound :
+    ENNReal.ofReal ((∫ b, potential b ∂fair.tilted potential) -
+      ProbabilityTheory.cgf potential fair 1) ≤
+        klDiv (fair.tilted potential) fair := by
+  simpa only [one_mul] using nativeCgf_le_klDiv
+    (fair.tilted potential) fair (X := potential) 1
+    (Integrable.of_finite) (Integrable.of_finite)
+
+theorem clipped_equality_without_tilt :
+    ENNReal.ofReal ((∫ b, potential b ∂fair) -
+        Real.log (∫ b, Real.exp (potential b) ∂fair)) = klDiv fair fair ∧
+      fair ≠ fair.tilted potential ∧
+      (∫ b, potential b ∂fair) - Real.log (∫ b, Real.exp (potential b) ∂fair) ≠
+        (klDiv fair fair).toReal := by
+  have hlogFour : Real.log (4 : ℝ) = 2 * Real.log 2 := by
+    rw [show (4 : ℝ) = 2 * 2 by norm_num,
+      Real.log_mul (by norm_num) (by norm_num)]
+    ring
+  have hlog : Real.log (3 : ℝ) < 2 * Real.log 2 := by
+    rw [← hlogFour]
+    exact Real.log_lt_log (by norm_num) (by norm_num)
+  have hnegative : (∫ b, potential b ∂fair) -
+      Real.log (∫ b, Real.exp (potential b) ∂fair) < 0 := by
+    rw [fair_integral, normalizer]
+    norm_num [potential]
+    linarith
+  refine ⟨?_, Ne.symm tilted_ne_fair, ?_⟩
+  · rw [klDiv_self]
+    exact ENNReal.ofReal_eq_zero.mpr hnegative.le
+  · simpa only [klDiv_self, ENNReal.toReal_zero] using hnegative.ne
+
+theorem singular_kl :
+    klDiv (Measure.dirac true : Measure Bool) (Measure.dirac false) = ∞ := by
+  apply klDiv_of_not_ac
+  intro h
+  have hzero : (Measure.dirac false : Measure Bool) {true} = 0 := by simp
+  have hactual := h hzero
+  simp at hactual
+
+theorem singular_extended_bound :
+    ENNReal.ofReal (Real.log 3) ≤
+      klDiv (Measure.dirac true : Measure Bool) (Measure.dirac false) := by
+  simpa [potential] using nativeEntropy_le_klDiv
+    (Measure.dirac true : Measure Bool) (Measure.dirac false)
+    (f := potential) (Integrable.of_finite) (Integrable.of_finite)
+
+theorem singular_real_bound_fails :
+    ¬ Real.log 3 ≤
+      (klDiv (Measure.dirac true : Measure Bool) (Measure.dirac false)).toReal := by
+  rw [singular_kl, ENNReal.toReal_top]
+  exact not_le_of_gt (Real.log_pos (by norm_num))
+
+end NativeEntropyConsumer
+"""
+        + "\n".join(f"#print axioms {name}" for name in declarations)
+        + "\n",
+        encoding="utf-8",
+    )
+    consumer_bytes = consumer.read_bytes()
+    result = run_lean_compile_probe(
+        consumer,
+        cwd=LEAN_ROOT,
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise", context="the Mathlib-only native entropy acceptance probe"
+        ),
+    )
+    if os.environ.get("FEP_LEAN_NATIVE_ENTROPY_EVIDENCE") == "1":
+        evidence = PROJECT_ROOT / "output" / "native-entropy-consumer.log"
+        evidence.parent.mkdir(parents=True, exist_ok=True)
+        evidence.write_text(
+            json.dumps(
+                {
+                    "schema": "fep-formal.native-entropy-consumer.v1",
+                    "canonical_source": foundation_path.relative_to(
+                        PROJECT_ROOT
+                    ).as_posix(),
+                    "canonical_source_sha256": hashlib.sha256(
+                        foundation_bytes
+                    ).hexdigest(),
+                    "canonical_proof_block_sha256": hashlib.sha256(
+                        proof.encode("utf-8")
+                    ).hexdigest(),
+                    "consumer_source_sha256": hashlib.sha256(
+                        consumer_bytes
+                    ).hexdigest(),
+                    "consumer_source": consumer_bytes.decode("utf-8"),
+                    "expected_axiom_declarations": declarations,
+                    "argv": result.args,
+                    "cwd": str(LEAN_ROOT),
+                    "timeout_sec": 300,
+                    "returncode": result.returncode,
+                    "stdout": result.stdout,
+                    "stderr": result.stderr,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+    output = result.stdout + result.stderr
+    assert result.returncode == 0, output
+    assert "warning:" not in output.lower()
+    parsed, errors = formalism_audit.parse_axiom_output(output, expected=declarations)
+    assert errors == ()
+    assert tuple(parsed) == declarations
+    for declaration, axioms in parsed.items():
+        assert set(axioms) <= {"propext", "Classical.choice", "Quot.sound"}, (
+            declaration,
+            axioms,
+        )
 
 
 def test_measure_bayesian_inversion_family_owns_ordered_standalone_bodies() -> None:
