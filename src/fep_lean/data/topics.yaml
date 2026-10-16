@@ -327,23 +327,23 @@ topics:
     excludes every nonzero coordinate direction.
   acceptance_probe: native Lean compile of fep004_fisherMetric_symm, fep004_fisherMetric_nonneg, fep004_fisherMetric_eq_zero_iff,
     and FEPComposed.fep004_bernoulliMetric_specialization.
-  lean_sketch: "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Tactic\n\nnamespace FEP004\n\nopen\
-    \ Finset\n\n/-- A finite diagonal Fisher metric with explicitly supplied information\nweights.  Statistical models such\
-    \ as fep-038 compute these weights from\nexpected squared scores. -/\ndef fep004_fisherMetric {ι : Type*} [Fintype ι]\n\
-    \    (information u v : ι → ℝ) : ℝ :=\n  ∑ i, information i * u i * v i\n\n/-- The finite Fisher metric is symmetric.\
-    \ -/\ntheorem fep004_fisherMetric_symm {ι : Type*} [Fintype ι]\n    (information u v : ι → ℝ) :\n    fep004_fisherMetric\
-    \ information u v =\n      fep004_fisherMetric information v u := by\n  apply Finset.sum_congr rfl\n  intro i _\n  ring\n\
-    \n/-- Nonnegative information weights make every tangent self-pairing\nnonnegative. -/\ntheorem fep004_fisherMetric_nonneg\
-    \ {ι : Type*} [Fintype ι]\n    (information v : ι → ℝ) (hinformation : ∀ i, 0 ≤ information i) :\n    0 ≤ fep004_fisherMetric\
-    \ information v v := by\n  exact Finset.sum_nonneg fun i _ => by\n    simpa [mul_assoc] using\n      mul_nonneg (hinformation\
-    \ i) (mul_self_nonneg (v i))\n\n/-- Strictly positive information weights make the metric positive definite:\nzero tangent\
-    \ norm is equivalent to the zero tangent vector. -/\ntheorem fep004_fisherMetric_eq_zero_iff {ι : Type*} [Fintype ι]\n\
-    \    (information v : ι → ℝ) (hinformation : ∀ i, 0 < information i) :\n    fep004_fisherMetric information v v = 0 ↔\
-    \ ∀ i, v i = 0 := by\n  constructor\n  · intro hzero i\n    have hterm : information i * v i * v i = 0 :=\n      (Finset.sum_eq_zero_iff_of_nonneg\n\
-    \        (fun j _ => by\n          simpa [mul_assoc] using\n            mul_nonneg (hinformation j).le (mul_self_nonneg\
-    \ (v j)))).mp\n        hzero i (Finset.mem_univ i)\n    have hvv : v i * v i = 0 := by\n      apply (mul_eq_zero.mp (by\
-    \ simpa [mul_assoc] using hterm)).resolve_left\n      exact ne_of_gt (hinformation i)\n    exact mul_self_eq_zero.mp hvv\n\
-    \  · intro hv\n    simp [fep004_fisherMetric, hv]\n\nend FEP004\n"
+  lean_sketch: "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Ring\n\
+    \nnamespace FEP004\n\nopen Finset\n\n/-- A finite diagonal Fisher metric with explicitly supplied information\nweights.\
+    \  Statistical models such as fep-038 compute these weights from\nexpected squared scores. -/\ndef fep004_fisherMetric\
+    \ {ι : Type*} [Fintype ι]\n    (information u v : ι → ℝ) : ℝ :=\n  ∑ i, information i * u i * v i\n\n/-- The finite Fisher\
+    \ metric is symmetric. -/\ntheorem fep004_fisherMetric_symm {ι : Type*} [Fintype ι]\n    (information u v : ι → ℝ) :\n\
+    \    fep004_fisherMetric information u v =\n      fep004_fisherMetric information v u := by\n  apply Finset.sum_congr\
+    \ rfl\n  intro i _\n  ring\n\n/-- Nonnegative information weights make every tangent self-pairing\nnonnegative. -/\ntheorem\
+    \ fep004_fisherMetric_nonneg {ι : Type*} [Fintype ι]\n    (information v : ι → ℝ) (hinformation : ∀ i, 0 ≤ information\
+    \ i) :\n    0 ≤ fep004_fisherMetric information v v := by\n  exact Finset.sum_nonneg fun i _ => by\n    simpa [mul_assoc]\
+    \ using\n      mul_nonneg (hinformation i) (mul_self_nonneg (v i))\n\n/-- Strictly positive information weights make the\
+    \ metric positive definite:\nzero tangent norm is equivalent to the zero tangent vector. -/\ntheorem fep004_fisherMetric_eq_zero_iff\
+    \ {ι : Type*} [Fintype ι]\n    (information v : ι → ℝ) (hinformation : ∀ i, 0 < information i) :\n    fep004_fisherMetric\
+    \ information v v = 0 ↔ ∀ i, v i = 0 := by\n  constructor\n  · intro hzero i\n    have hterm : information i * v i * v\
+    \ i = 0 :=\n      (Finset.sum_eq_zero_iff_of_nonneg\n        (fun j _ => by\n          simpa [mul_assoc] using\n     \
+    \       mul_nonneg (hinformation j).le (mul_self_nonneg (v j)))).mp\n        hzero i (Finset.mem_univ i)\n    have hvv\
+    \ : v i * v i = 0 := by\n      apply (mul_eq_zero.mp (by simpa [mul_assoc] using hterm)).resolve_left\n      exact ne_of_gt\
+    \ (hinformation i)\n    exact mul_self_eq_zero.mp hvv\n  · intro hv\n    simp [fep004_fisherMetric, hv]\n\nend FEP004\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -1205,25 +1205,26 @@ topics:
   non_vacuity: The fep-040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at every positive temperature, yielding
     a compiled nonconstant physical witness.
   acceptance_probe: native Lean compile of fep013_helmholtz_hasDerivAt, fep013_helmholtz_derivative_eq_neg_entropy, and FEPComposed.fep013_gaussianHelmholtz_derivative.
-  lean_sketch: "import Mathlib.Analysis.Calculus.Deriv.Add\nimport Mathlib.Analysis.Calculus.Deriv.Mul\nimport Mathlib.Tactic\n\
-    \nnamespace FEP013\n\n-- [proof strategy: simp / ring for algebraic rewrites; linarith for entropy-monotone bounds]\n\n\
-    /-- Helmholtz free energy: F = U - TS defines the thermodynamic potential. -/\nnoncomputable def fep013_helmholtz (U T\
-    \ S : ℝ) : ℝ := U - T * S\n\n/-- At zero temperature, Helmholtz free energy equals internal energy. -/\ntheorem fep013_helmholtz_at_zero_temp\
-    \ (U S : ℝ) : fep013_helmholtz U 0 S = U := by\n  simp [fep013_helmholtz]\n\n/-- Helmholtz free energy is monotone decreasing\
-    \ in entropy at positive temperature. -/\ntheorem fep013_helmholtz_mono_entropy (U T : ℝ) (S₁ S₂ : ℝ) (hT : 0 < T) (h\
-    \ : S₁ ≤ S₂) :\n    fep013_helmholtz U T S₂ ≤ fep013_helmholtz U T S₁ := by\n  simp only [fep013_helmholtz]\n  linarith\
-    \ [mul_le_mul_of_nonneg_left h (le_of_lt hT)]\n\n/-- Helmholtz free energy is monotone increasing in internal energy.\
-    \ -/\ntheorem fep013_helmholtz_mono_U (U₁ U₂ T S : ℝ) (h : U₁ ≤ U₂) :\n    fep013_helmholtz U₁ T S ≤ fep013_helmholtz\
-    \ U₂ T S := by\n  simp only [fep013_helmholtz]; linarith\n\n/-- Helmholtz difference: ΔF = ΔU - TΔS. -/\ntheorem fep013_delta_F\
-    \ (U₁ U₂ T S₁ S₂ : ℝ) :\n    fep013_helmholtz U₂ T S₂ - fep013_helmholtz U₁ T S₁ = (U₂ - U₁) - T * (S₂ - S₁) := by\n \
-    \ simp only [fep013_helmholtz]; ring\n\n/-- Exact temperature derivative of `F(T) = U(T) - T S(T)`. -/\ntheorem fep013_helmholtz_hasDerivAt\n\
-    \    {U S : ℝ → ℝ} {U' S' T : ℝ}\n    (hU : HasDerivAt U U' T) (hS : HasDerivAt S S' T) :\n    HasDerivAt (fun t => fep013_helmholtz\
-    \ (U t) t (S t))\n      (U' - (S T + T * S')) T := by\n  convert HasDerivAt.sub hU (HasDerivAt.mul (hasDerivAt_id T) hS)\
-    \ using 1\n  all_goals\n    first\n    | rfl\n    | simp\n\n/-- Under the equilibrium first-law identity `U'(T) = T S'(T)`,\
-    \ the\nHelmholtz derivative is exactly minus entropy. -/\ntheorem fep013_helmholtz_derivative_eq_neg_entropy\n    {U S\
-    \ : ℝ → ℝ} {U' S' T : ℝ}\n    (hU : HasDerivAt U U' T) (hS : HasDerivAt S S' T)\n    (hfirstLaw : U' = T * S') :\n   \
-    \ HasDerivAt (fun t => fep013_helmholtz (U t) t (S t)) (-S T) T := by\n  convert fep013_helmholtz_hasDerivAt hU hS using\
-    \ 1\n  rw [hfirstLaw]\n  ring\n\nend FEP013\n"
+  lean_sketch: "import Mathlib.Analysis.Calculus.Deriv.Add\nimport Mathlib.Analysis.Calculus.Deriv.Mul\nimport Mathlib.Tactic.Convert\n\
+    import Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\nnamespace FEP013\n\n-- [proof strategy: simp / ring for\
+    \ algebraic rewrites; linarith for entropy-monotone bounds]\n\n/-- Helmholtz free energy: F = U - TS defines the thermodynamic\
+    \ potential. -/\nnoncomputable def fep013_helmholtz (U T S : ℝ) : ℝ := U - T * S\n\n/-- At zero temperature, Helmholtz\
+    \ free energy equals internal energy. -/\ntheorem fep013_helmholtz_at_zero_temp (U S : ℝ) : fep013_helmholtz U 0 S = U\
+    \ := by\n  simp [fep013_helmholtz]\n\n/-- Helmholtz free energy is monotone decreasing in entropy at positive temperature.\
+    \ -/\ntheorem fep013_helmholtz_mono_entropy (U T : ℝ) (S₁ S₂ : ℝ) (hT : 0 < T) (h : S₁ ≤ S₂) :\n    fep013_helmholtz U\
+    \ T S₂ ≤ fep013_helmholtz U T S₁ := by\n  simp only [fep013_helmholtz]\n  linarith [mul_le_mul_of_nonneg_left h (le_of_lt\
+    \ hT)]\n\n/-- Helmholtz free energy is monotone increasing in internal energy. -/\ntheorem fep013_helmholtz_mono_U (U₁\
+    \ U₂ T S : ℝ) (h : U₁ ≤ U₂) :\n    fep013_helmholtz U₁ T S ≤ fep013_helmholtz U₂ T S := by\n  simp only [fep013_helmholtz];\
+    \ linarith\n\n/-- Helmholtz difference: ΔF = ΔU - TΔS. -/\ntheorem fep013_delta_F (U₁ U₂ T S₁ S₂ : ℝ) :\n    fep013_helmholtz\
+    \ U₂ T S₂ - fep013_helmholtz U₁ T S₁ = (U₂ - U₁) - T * (S₂ - S₁) := by\n  simp only [fep013_helmholtz]; ring\n\n/-- Exact\
+    \ temperature derivative of `F(T) = U(T) - T S(T)`. -/\ntheorem fep013_helmholtz_hasDerivAt\n    {U S : ℝ → ℝ} {U' S'\
+    \ T : ℝ}\n    (hU : HasDerivAt U U' T) (hS : HasDerivAt S S' T) :\n    HasDerivAt (fun t => fep013_helmholtz (U t) t (S\
+    \ t))\n      (U' - (S T + T * S')) T := by\n  convert HasDerivAt.sub hU (HasDerivAt.mul (hasDerivAt_id T) hS) using 1\n\
+    \  all_goals\n    first\n    | rfl\n    | simp\n\n/-- Under the equilibrium first-law identity `U'(T) = T S'(T)`, the\n\
+    Helmholtz derivative is exactly minus entropy. -/\ntheorem fep013_helmholtz_derivative_eq_neg_entropy\n    {U S : ℝ →\
+    \ ℝ} {U' S' T : ℝ}\n    (hU : HasDerivAt U U' T) (hS : HasDerivAt S S' T)\n    (hfirstLaw : U' = T * S') :\n    HasDerivAt\
+    \ (fun t => fep013_helmholtz (U t) t (S t)) (-S T) T := by\n  convert fep013_helmholtz_hasDerivAt hU hS using 1\n  rw\
+    \ [hfirstLaw]\n  ring\n\nend FEP013\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -1683,26 +1684,26 @@ topics:
   acceptance_probe: native Lean compile of fep018_fisherRaoDistance_nonneg, fep018_fisherRaoDistance_symm, fep018_fisherRaoDistance_triangle,
     and fep018_fisherRaoDistance_eq_zero_iff.
   lean_sketch: "import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse\nimport Mathlib.Analysis.Real.Sqrt\nimport\
-    \ Mathlib.Tactic\n\nnamespace FEP018\n\n/-- Variance-stabilizing Fisher--Rao coordinate for the Bernoulli family. -/\n\
-    noncomputable def fep018_fisherCoordinate (p : ℝ) : ℝ :=\n  2 * Real.arcsin (Real.sqrt p)\n\n/-- Closed-form coordinate\
-    \ distance on the Bernoulli probability interval. -/\nnoncomputable def fep018_fisherRaoDistance (p q : ℝ) : ℝ :=\n  |fep018_fisherCoordinate\
-    \ p - fep018_fisherCoordinate q|\n\n/-- Fisher--Rao coordinate distance is nonnegative. -/\ntheorem fep018_fisherRaoDistance_nonneg\
-    \ (p q : ℝ) :\n    0 ≤ fep018_fisherRaoDistance p q :=\n  abs_nonneg _\n\n/-- Fisher--Rao coordinate distance is symmetric.\
-    \ -/\ntheorem fep018_fisherRaoDistance_symm (p q : ℝ) :\n    fep018_fisherRaoDistance p q = fep018_fisherRaoDistance q\
-    \ p := by\n  exact abs_sub_comm _ _\n\n/-- The coordinate distance satisfies the triangle inequality. -/\ntheorem fep018_fisherRaoDistance_triangle\
-    \ (p q r : ℝ) :\n    fep018_fisherRaoDistance p r ≤\n      fep018_fisherRaoDistance p q + fep018_fisherRaoDistance q r\
-    \ := by\n  calc\n    |fep018_fisherCoordinate p - fep018_fisherCoordinate r| =\n        |(fep018_fisherCoordinate p -\
-    \ fep018_fisherCoordinate q) +\n          (fep018_fisherCoordinate q - fep018_fisherCoordinate r)| := by\n           \
-    \ congr 1\n            ring\n    _ ≤ |fep018_fisherCoordinate p - fep018_fisherCoordinate q| +\n          |fep018_fisherCoordinate\
-    \ q - fep018_fisherCoordinate r| :=\n      abs_add_le _ _\n\n/-- On the probability interval, zero Fisher--Rao distance\
-    \ characterizes\nequality of Bernoulli parameters. -/\ntheorem fep018_fisherRaoDistance_eq_zero_iff\n    {p q : ℝ} (hp\
-    \ : p ∈ Set.Icc (0 : ℝ) 1) (hq : q ∈ Set.Icc (0 : ℝ) 1) :\n    fep018_fisherRaoDistance p q = 0 ↔ p = q := by\n  constructor\n\
-    \  · intro h\n    have hcoord : fep018_fisherCoordinate p = fep018_fisherCoordinate q :=\n      sub_eq_zero.mp (abs_eq_zero.mp\
-    \ h)\n    have harcsin : Real.arcsin (Real.sqrt p) = Real.arcsin (Real.sqrt q) := by\n      simp only [fep018_fisherCoordinate]\
-    \ at hcoord\n      linarith\n    have hsqrt : Real.sqrt p = Real.sqrt q :=\n      (Real.arcsin_inj\n        (by linarith\
-    \ [Real.sqrt_nonneg p]) (Real.sqrt_le_one.mpr hp.2)\n        (by linarith [Real.sqrt_nonneg q]) (Real.sqrt_le_one.mpr\
-    \ hq.2)).mp harcsin\n    exact (Real.sqrt_inj hp.1 hq.1).mp hsqrt\n  · rintro rfl\n    simp [fep018_fisherRaoDistance]\n\
-    \nend FEP018\n"
+    \ Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\nnamespace FEP018\n\n/-- Variance-stabilizing Fisher--Rao coordinate\
+    \ for the Bernoulli family. -/\nnoncomputable def fep018_fisherCoordinate (p : ℝ) : ℝ :=\n  2 * Real.arcsin (Real.sqrt\
+    \ p)\n\n/-- Closed-form coordinate distance on the Bernoulli probability interval. -/\nnoncomputable def fep018_fisherRaoDistance\
+    \ (p q : ℝ) : ℝ :=\n  |fep018_fisherCoordinate p - fep018_fisherCoordinate q|\n\n/-- Fisher--Rao coordinate distance is\
+    \ nonnegative. -/\ntheorem fep018_fisherRaoDistance_nonneg (p q : ℝ) :\n    0 ≤ fep018_fisherRaoDistance p q :=\n  abs_nonneg\
+    \ _\n\n/-- Fisher--Rao coordinate distance is symmetric. -/\ntheorem fep018_fisherRaoDistance_symm (p q : ℝ) :\n    fep018_fisherRaoDistance\
+    \ p q = fep018_fisherRaoDistance q p := by\n  exact abs_sub_comm _ _\n\n/-- The coordinate distance satisfies the triangle\
+    \ inequality. -/\ntheorem fep018_fisherRaoDistance_triangle (p q r : ℝ) :\n    fep018_fisherRaoDistance p r ≤\n      fep018_fisherRaoDistance\
+    \ p q + fep018_fisherRaoDistance q r := by\n  calc\n    |fep018_fisherCoordinate p - fep018_fisherCoordinate r| =\n  \
+    \      |(fep018_fisherCoordinate p - fep018_fisherCoordinate q) +\n          (fep018_fisherCoordinate q - fep018_fisherCoordinate\
+    \ r)| := by\n            congr 1\n            ring\n    _ ≤ |fep018_fisherCoordinate p - fep018_fisherCoordinate q| +\n\
+    \          |fep018_fisherCoordinate q - fep018_fisherCoordinate r| :=\n      abs_add_le _ _\n\n/-- On the probability\
+    \ interval, zero Fisher--Rao distance characterizes\nequality of Bernoulli parameters. -/\ntheorem fep018_fisherRaoDistance_eq_zero_iff\n\
+    \    {p q : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1) (hq : q ∈ Set.Icc (0 : ℝ) 1) :\n    fep018_fisherRaoDistance p q = 0 ↔ p =\
+    \ q := by\n  constructor\n  · intro h\n    have hcoord : fep018_fisherCoordinate p = fep018_fisherCoordinate q :=\n  \
+    \    sub_eq_zero.mp (abs_eq_zero.mp h)\n    have harcsin : Real.arcsin (Real.sqrt p) = Real.arcsin (Real.sqrt q) := by\n\
+    \      simp only [fep018_fisherCoordinate] at hcoord\n      linarith\n    have hsqrt : Real.sqrt p = Real.sqrt q :=\n\
+    \      (Real.arcsin_inj\n        (by linarith [Real.sqrt_nonneg p]) (Real.sqrt_le_one.mpr hp.2)\n        (by linarith\
+    \ [Real.sqrt_nonneg q]) (Real.sqrt_le_one.mpr hq.2)).mp harcsin\n    exact (Real.sqrt_inj hp.1 hq.1).mp hsqrt\n  · rintro\
+    \ rfl\n    simp [fep018_fisherRaoDistance]\n\nend FEP018\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -1836,30 +1837,30 @@ topics:
   acceptance_probe: native Lean compile of fep020_transition_nonneg, fep020_transition_sum_one, fep020_uniform_stationary,
     fep020_iterate_deviation, and fep020_tendsto_uniform.
   lean_sketch: "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport\
-    \ Mathlib.Data.Bool.Basic\nimport Mathlib.Tactic\n\nnamespace FEP020\n\n/-- Symmetric two-state Markov transition with\
-    \ switching probability `α`. -/\ndef fep020_transition (α : ℝ) : Bool → Bool → ℝ\n  | false, false => 1 - α\n  | false,\
-    \ true => α\n  | true, false => α\n  | true, true => 1 - α\n\n/-- The transition entries are nonnegative when `α` is a\
-    \ probability. -/\ntheorem fep020_transition_nonneg\n    {α : ℝ} (hα0 : 0 ≤ α) (hα1 : α ≤ 1) (source target : Bool) :\n\
-    \    0 ≤ fep020_transition α source target := by\n  cases source <;> cases target <;> simp [fep020_transition] <;> linarith\n\
-    \n/-- Every transition row sums to one. -/\ntheorem fep020_transition_sum_one (α : ℝ) (source : Bool) :\n    ∑ target\
-    \ : Bool, fep020_transition α source target = 1 := by\n  cases source <;> simp [fep020_transition]\n\n/-- Evolution of\
-    \ the probability of state `true` under the transition law. -/\ndef fep020_evolve (α p : ℝ) : ℝ :=\n  (1 - p) * fep020_transition\
-    \ α false true +\n    p * fep020_transition α true true\n\n/-- The two-state master equation is an affine relaxation map.\
-    \ -/\ntheorem fep020_evolve_affine (α p : ℝ) :\n    fep020_evolve α p = α + (1 - 2 * α) * p := by\n  simp [fep020_evolve,\
-    \ fep020_transition]\n  ring\n\n/-- The uniform law is stationary under the symmetric transition. -/\ntheorem fep020_uniform_stationary\
-    \ (α : ℝ) :\n    fep020_evolve α (1 / 2 : ℝ) = 1 / 2 := by\n  rw [fep020_evolve_affine]\n  ring\n\n/-- One transition\
-    \ scales deviation from equilibrium by `1 - 2α`. -/\ntheorem fep020_deviation_step (α p : ℝ) :\n    fep020_evolve α p\
-    \ - 1 / 2 = (1 - 2 * α) * (p - 1 / 2) := by\n  rw [fep020_evolve_affine]\n  ring\n\n/-- Exact deviation after `n` Markov\
-    \ steps. -/\ntheorem fep020_iterate_deviation (α p : ℝ) (n : ℕ) :\n    ((fep020_evolve α)^[n]) p - 1 / 2 =\n      (1 -\
-    \ 2 * α) ^ n * (p - 1 / 2) := by\n  induction n with\n  | zero => simp\n  | succ n ih =>\n      rw [Function.iterate_succ_apply']\n\
-    \      rw [fep020_deviation_step, ih, pow_succ]\n      ring\n\n/-- With a strictly interior switching probability, every\
-    \ initial mass\nconverges to the stationary uniform law. -/\ntheorem fep020_tendsto_uniform\n    {α : ℝ} (hα0 : 0 < α)\
-    \ (hα1 : α < 1) (p : ℝ) :\n    Filter.Tendsto (fun n => ((fep020_evolve α)^[n]) p)\n      Filter.atTop (nhds (1 / 2 :\
-    \ ℝ)) := by\n  have habs : |1 - 2 * α| < 1 := by\n    rw [abs_lt]\n    constructor <;> linarith\n  have hpow : Filter.Tendsto\
-    \ (fun n : ℕ => (1 - 2 * α) ^ n)\n      Filter.atTop (nhds 0) :=\n    tendsto_pow_atTop_nhds_zero_of_abs_lt_one habs\n\
-    \  have hdev : Filter.Tendsto\n      (fun n : ℕ => ((fep020_evolve α)^[n]) p - 1 / 2)\n      Filter.atTop (nhds 0) :=\
-    \ by\n    simpa only [fep020_iterate_deviation, zero_mul] using\n      hpow.mul_const (p - 1 / 2)\n  simpa only [sub_add_cancel,\
-    \ zero_add] using hdev.add_const (1 / 2 : ℝ)\n\nend FEP020\n"
+    \ Mathlib.Data.Bool.Basic\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\nnamespace FEP020\n\n/-- Symmetric\
+    \ two-state Markov transition with switching probability `α`. -/\ndef fep020_transition (α : ℝ) : Bool → Bool → ℝ\n  |\
+    \ false, false => 1 - α\n  | false, true => α\n  | true, false => α\n  | true, true => 1 - α\n\n/-- The transition entries\
+    \ are nonnegative when `α` is a probability. -/\ntheorem fep020_transition_nonneg\n    {α : ℝ} (hα0 : 0 ≤ α) (hα1 : α\
+    \ ≤ 1) (source target : Bool) :\n    0 ≤ fep020_transition α source target := by\n  cases source <;> cases target <;>\
+    \ simp [fep020_transition] <;> linarith\n\n/-- Every transition row sums to one. -/\ntheorem fep020_transition_sum_one\
+    \ (α : ℝ) (source : Bool) :\n    ∑ target : Bool, fep020_transition α source target = 1 := by\n  cases source <;> simp\
+    \ [fep020_transition]\n\n/-- Evolution of the probability of state `true` under the transition law. -/\ndef fep020_evolve\
+    \ (α p : ℝ) : ℝ :=\n  (1 - p) * fep020_transition α false true +\n    p * fep020_transition α true true\n\n/-- The two-state\
+    \ master equation is an affine relaxation map. -/\ntheorem fep020_evolve_affine (α p : ℝ) :\n    fep020_evolve α p = α\
+    \ + (1 - 2 * α) * p := by\n  simp [fep020_evolve, fep020_transition]\n  ring\n\n/-- The uniform law is stationary under\
+    \ the symmetric transition. -/\ntheorem fep020_uniform_stationary (α : ℝ) :\n    fep020_evolve α (1 / 2 : ℝ) = 1 / 2 :=\
+    \ by\n  rw [fep020_evolve_affine]\n  ring\n\n/-- One transition scales deviation from equilibrium by `1 - 2α`. -/\ntheorem\
+    \ fep020_deviation_step (α p : ℝ) :\n    fep020_evolve α p - 1 / 2 = (1 - 2 * α) * (p - 1 / 2) := by\n  rw [fep020_evolve_affine]\n\
+    \  ring\n\n/-- Exact deviation after `n` Markov steps. -/\ntheorem fep020_iterate_deviation (α p : ℝ) (n : ℕ) :\n    ((fep020_evolve\
+    \ α)^[n]) p - 1 / 2 =\n      (1 - 2 * α) ^ n * (p - 1 / 2) := by\n  induction n with\n  | zero => simp\n  | succ n ih\
+    \ =>\n      rw [Function.iterate_succ_apply']\n      rw [fep020_deviation_step, ih, pow_succ]\n      ring\n\n/-- With\
+    \ a strictly interior switching probability, every initial mass\nconverges to the stationary uniform law. -/\ntheorem\
+    \ fep020_tendsto_uniform\n    {α : ℝ} (hα0 : 0 < α) (hα1 : α < 1) (p : ℝ) :\n    Filter.Tendsto (fun n => ((fep020_evolve\
+    \ α)^[n]) p)\n      Filter.atTop (nhds (1 / 2 : ℝ)) := by\n  have habs : |1 - 2 * α| < 1 := by\n    rw [abs_lt]\n    constructor\
+    \ <;> linarith\n  have hpow : Filter.Tendsto (fun n : ℕ => (1 - 2 * α) ^ n)\n      Filter.atTop (nhds 0) :=\n    tendsto_pow_atTop_nhds_zero_of_abs_lt_one\
+    \ habs\n  have hdev : Filter.Tendsto\n      (fun n : ℕ => ((fep020_evolve α)^[n]) p - 1 / 2)\n      Filter.atTop (nhds\
+    \ 0) := by\n    simpa only [fep020_iterate_deviation, zero_mul] using\n      hpow.mul_const (p - 1 / 2)\n  simpa only\
+    \ [sub_add_cancel, zero_add] using hdev.add_const (1 / 2 : ℝ)\n\nend FEP020\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -2039,12 +2040,12 @@ topics:
     q distinct from p incurs the strictly positive squared regret (q-p)^2.
   acceptance_probe: native Lean compile of fep022_posteriorPredictive_mass_one, fep022_brier_decomposition, fep022_brier_eq_optimum_iff,
     and fep022_predictive_brier_decomposition.
-  lean_sketch: "import Mathlib.Probability.Kernel.Composition.MeasureComp\nimport Mathlib.Tactic\n\nnamespace FEP022\n\nopen\
-    \ MeasureTheory ProbabilityTheory\nopen scoped ENNReal\n\nvariable {\U0001D4D2 Ω \U0001D4E7 : Type*}\nvariable [MeasurableSpace\
-    \ \U0001D4D2] [MeasurableSpace Ω] [MeasurableSpace \U0001D4E7]\n\n/-- A posterior-predictive kernel composes a context-indexed\
-    \ posterior with a\nlatent-state likelihood kernel. -/\nnoncomputable def fep022_posteriorPredictive\n    (posterior :\
-    \ Kernel \U0001D4D2 Ω) (likelihood : Kernel Ω \U0001D4E7) : Kernel \U0001D4D2 \U0001D4E7 :=\n  likelihood ∘ₖ posterior\n\
-    \n/-- Markov posterior and likelihood kernels yield normalized predictive fibres. -/\ntheorem fep022_posteriorPredictive_mass_one\n\
+  lean_sketch: "import Mathlib.Probability.Kernel.Composition.MeasureComp\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\
+    \nnamespace FEP022\n\nopen MeasureTheory ProbabilityTheory\nopen scoped ENNReal\n\nvariable {\U0001D4D2 Ω \U0001D4E7 :\
+    \ Type*}\nvariable [MeasurableSpace \U0001D4D2] [MeasurableSpace Ω] [MeasurableSpace \U0001D4E7]\n\n/-- A posterior-predictive\
+    \ kernel composes a context-indexed posterior with a\nlatent-state likelihood kernel. -/\nnoncomputable def fep022_posteriorPredictive\n\
+    \    (posterior : Kernel \U0001D4D2 Ω) (likelihood : Kernel Ω \U0001D4E7) : Kernel \U0001D4D2 \U0001D4E7 :=\n  likelihood\
+    \ ∘ₖ posterior\n\n/-- Markov posterior and likelihood kernels yield normalized predictive fibres. -/\ntheorem fep022_posteriorPredictive_mass_one\n\
     \    (posterior : Kernel \U0001D4D2 Ω) (likelihood : Kernel Ω \U0001D4E7)\n    [IsMarkovKernel posterior] [IsMarkovKernel\
     \ likelihood] (c : \U0001D4D2) :\n    fep022_posteriorPredictive posterior likelihood c Set.univ = 1 := by\n  change (likelihood\
     \ ∘ₖ posterior) c Set.univ = 1\n  exact measure_univ\n\n/-- Expected Bernoulli Brier loss at true mass `p` and forecast\
@@ -2317,9 +2318,10 @@ topics:
   acceptance_probe: native Lean compile of fep025_transitionCurrent_stationary, fep025_cycleTransition_row, fep025_cycleStationary_invariant,
     fep025_cycleCurrent_stationary, and fep025_cycleCurrent_nonzero.
   lean_sketch: "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.LinearAlgebra.Matrix.Notation\nimport\
-    \ Mathlib.Tactic\n\nnamespace FEP025\n\nopen Finset\n\n/-- Net probability current is forward flow minus reverse flow.\
-    \ -/\ndef fep025_probabilityCurrent {n : ℕ}\n    (flow : Matrix (Fin n) (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ :=\n  fun\
-    \ i j => flow i j - flow j i\n\n/-- Probability current is antisymmetric under edge reversal. -/\ntheorem fep025_probabilityCurrent_antisymm\
+    \ Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.FinCases\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.NormNum\n\
+    import Mathlib.Tactic.Ring\n\nnamespace FEP025\n\nopen Finset\n\n/-- Net probability current is forward flow minus reverse\
+    \ flow. -/\ndef fep025_probabilityCurrent {n : ℕ}\n    (flow : Matrix (Fin n) (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ :=\n\
+    \  fun i j => flow i j - flow j i\n\n/-- Probability current is antisymmetric under edge reversal. -/\ntheorem fep025_probabilityCurrent_antisymm\
     \ {n : ℕ}\n    (flow : Matrix (Fin n) (Fin n) ℝ) (i j : Fin n) :\n    fep025_probabilityCurrent flow i j =\n      -fep025_probabilityCurrent\
     \ flow j i := by\n  simp only [fep025_probabilityCurrent]\n  ring\n\n/-- A probability current has no diagonal self-current.\
     \ -/\ntheorem fep025_probabilityCurrent_diag_zero {n : ℕ}\n    (flow : Matrix (Fin n) (Fin n) ℝ) (i : Fin n) :\n    fep025_probabilityCurrent\
@@ -2748,20 +2750,21 @@ topics:
     function, projection theorem, or mirror-descent convergence is claimed.
   non_vacuity: At x=1 and y=0 the divergence equals 1; at x=y it equals 0.
   acceptance_probe: native Lean compile of the quadratic identity, nonnegativity, and zero-characterization theorems.
-  lean_sketch: "import Mathlib.Analysis.Convex.Basic\nimport Mathlib.Tactic\n\nnamespace FEP029\n\n/-- Bregman divergence\
-    \ prerequisite: convex functions satisfy the secant inequality. -/\ntheorem fep029_secant_ineq (a b t : ℝ) (ht0 : 0 ≤\
-    \ t) (_ht1 : t ≤ 1) (hab : a ≤ b) :\n    (1 - t) * a + t * b ≥ a := by\n  nlinarith\n\n/-- Weighted midpoint lies between\
-    \ endpoints (convex combination). -/\ntheorem fep029_convex_combo_bound (a b t : ℝ) (_ht0 : 0 ≤ t) (ht1 : t ≤ 1) (hab\
-    \ : a ≤ b) :\n    (1 - t) * a + t * b ≤ b := by\n  nlinarith\n\n/-- Endpoints of convex combination: t = 0 gives a. -/\n\
-    theorem fep029_combo_t_zero (a b : ℝ) : (1 - 0) * a + 0 * b = a := by ring\n\n/-- Endpoints of convex combination: t =\
-    \ 1 gives b. -/\ntheorem fep029_combo_t_one (a b : ℝ) : (1 - 1) * a + 1 * b = b := by ring\n\n/-- The Bregman divergence\
-    \ generated by φ(x) = x², whose derivative at y is 2y. -/\ndef fep029_quadraticBregman (x y : ℝ) : ℝ :=\n  x ^ 2 - y ^\
-    \ 2 - (2 * y) * (x - y)\n\n/-- The quadratic Bregman divergence is exactly squared Euclidean distance. -/\ntheorem fep029_quadraticBregman_eq_sq\
-    \ (x y : ℝ) :\n    fep029_quadraticBregman x y = (x - y) ^ 2 := by\n  simp [fep029_quadraticBregman]\n  ring\n\n/-- The\
-    \ quadratic Bregman divergence is nonnegative. -/\ntheorem fep029_bregman_quadratic_nonneg (x y : ℝ) :\n    0 ≤ fep029_quadraticBregman\
-    \ x y := by\n  rw [fep029_quadraticBregman_eq_sq]\n  exact sq_nonneg _\n\n/-- The quadratic Bregman divergence separates\
-    \ points. -/\ntheorem fep029_quadraticBregman_eq_zero_iff (x y : ℝ) :\n    fep029_quadraticBregman x y = 0 ↔ x = y :=\
-    \ by\n  rw [fep029_quadraticBregman_eq_sq, sq_eq_zero_iff, sub_eq_zero]\n\nend FEP029\n"
+  lean_sketch: "import Mathlib.Analysis.Convex.Basic\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Linarith\nimport\
+    \ Mathlib.Tactic.Ring\n\nnamespace FEP029\n\n/-- Bregman divergence prerequisite: convex functions satisfy the secant\
+    \ inequality. -/\ntheorem fep029_secant_ineq (a b t : ℝ) (ht0 : 0 ≤ t) (_ht1 : t ≤ 1) (hab : a ≤ b) :\n    (1 - t) * a\
+    \ + t * b ≥ a := by\n  nlinarith\n\n/-- Weighted midpoint lies between endpoints (convex combination). -/\ntheorem fep029_convex_combo_bound\
+    \ (a b t : ℝ) (_ht0 : 0 ≤ t) (ht1 : t ≤ 1) (hab : a ≤ b) :\n    (1 - t) * a + t * b ≤ b := by\n  nlinarith\n\n/-- Endpoints\
+    \ of convex combination: t = 0 gives a. -/\ntheorem fep029_combo_t_zero (a b : ℝ) : (1 - 0) * a + 0 * b = a := by ring\n\
+    \n/-- Endpoints of convex combination: t = 1 gives b. -/\ntheorem fep029_combo_t_one (a b : ℝ) : (1 - 1) * a + 1 * b =\
+    \ b := by ring\n\n/-- The Bregman divergence generated by φ(x) = x², whose derivative at y is 2y. -/\ndef fep029_quadraticBregman\
+    \ (x y : ℝ) : ℝ :=\n  x ^ 2 - y ^ 2 - (2 * y) * (x - y)\n\n/-- The quadratic Bregman divergence is exactly squared Euclidean\
+    \ distance. -/\ntheorem fep029_quadraticBregman_eq_sq (x y : ℝ) :\n    fep029_quadraticBregman x y = (x - y) ^ 2 := by\n\
+    \  simp [fep029_quadraticBregman]\n  ring\n\n/-- The quadratic Bregman divergence is nonnegative. -/\ntheorem fep029_bregman_quadratic_nonneg\
+    \ (x y : ℝ) :\n    0 ≤ fep029_quadraticBregman x y := by\n  rw [fep029_quadraticBregman_eq_sq]\n  exact sq_nonneg _\n\n\
+    /-- The quadratic Bregman divergence separates points. -/\ntheorem fep029_quadraticBregman_eq_zero_iff (x y : ℝ) :\n \
+    \   fep029_quadraticBregman x y = 0 ↔ x = y := by\n  rw [fep029_quadraticBregman_eq_sq, sq_eq_zero_iff, sub_eq_zero]\n\
+    \nend FEP029\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -2841,25 +2844,26 @@ topics:
   acceptance_probe: native Lean compile of fep030_binaryEntropy_max and fep030_binaryEntropy_eq_max_iff, plus the retained
     finite-uniform entropy calculation.
   lean_sketch: "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Algebra.BigOperators.Ring.Finset\n\
-    import Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic\n\nnamespace FEP030\n\nopen Real Finset\n\n-- [proof strategy:\
-    \ native binary-entropy maximum plus explicit finite-uniform calculation]\n\n/-- Binary Shannon entropy (in nats) is globally\
-    \ bounded above by log 2. -/\ntheorem fep030_binaryEntropy_max (p : ℝ) :\n    Real.binEntropy p ≤ Real.log 2 :=\n  Real.binEntropy_le_log_two\n\
-    \n/-- The binary entropy maximum is attained uniquely at probability one half. -/\ntheorem fep030_binaryEntropy_eq_max_iff\
-    \ (p : ℝ) :\n    Real.binEntropy p = Real.log 2 ↔ p = (2 : ℝ)⁻¹ :=\n  Real.binEntropy_eq_log_two\n\n/-- A uniform scalar\
-    \ weight is nonnegative. -/\ntheorem fep030_uniform_nonneg (n : ℕ) (_hn : 0 < n) : 0 ≤ (1 : ℝ) / n :=\n  div_nonneg zero_le_one\
-    \ (Nat.cast_nonneg' (n := n))\n\n/-- Uniform weights on a positive finite range sum to one. -/\ntheorem fep030_uniform_sum_one\
-    \ (n : ℕ) (hn : 0 < n) :\n    ∑ _ ∈ Finset.range n, (1 : ℝ) / n = 1 := by\n  rw [Finset.sum_const, Finset.card_range,\
-    \ nsmul_eq_mul]\n  have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.ne_of_gt hn)\n  field_simp [hn0]\n\n/-- The logarithm\
-    \ of a positive natural cardinality is nonnegative. -/\ntheorem fep030_log_card_nonneg (n : ℕ) (hn : 1 ≤ n) : 0 ≤ Real.log\
-    \ n := by\n  apply Real.log_nonneg\n  exact_mod_cast hn\n\n/-- The explicit uniform-weight entropy expression equals log\
-    \ n; maximality is not proved. -/\ntheorem fep030_entropy_eq_log (n : ℕ) (hn : 0 < n) :\n    -∑ _ ∈ Finset.range n, (1\
-    \ : ℝ) / n * Real.log ((1 : ℝ) / n)\n    = Real.log n := by\n  have hnR : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.ne_of_gt\
-    \ hn)\n  have hlog : Real.log ((1 : ℝ) / n) = - Real.log n := by\n    rw [Real.log_div (one_ne_zero' ℝ) hnR, Real.log_one,\
-    \ zero_sub]\n  have hsum : ∑ _ ∈ Finset.range n, (1 : ℝ) / n * Real.log ((1 : ℝ) / n) = - Real.log n := by\n    calc\n\
-    \      ∑ _ ∈ Finset.range n, (1 : ℝ) / n * Real.log ((1 : ℝ) / n)\n          = ∑ _ ∈ Finset.range n, (1 : ℝ) / n * (-\
-    \ Real.log n) :=\n            Finset.sum_congr rfl fun _ _ => by rw [hlog]\n      _ = (∑ _ ∈ Finset.range n, (1 : ℝ) /\
-    \ n) * (- Real.log n) := by rw [← Finset.sum_mul]\n      _ = 1 * (- Real.log n) := by rw [fep030_uniform_sum_one n hn]\n\
-    \      _ = - Real.log n := by ring\n  rw [hsum, neg_neg]\n\nend FEP030\n"
+    import Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.Ring\nmeta import Lean.Meta.Tactic.NormCast\n\
+    \nnamespace FEP030\n\nopen Real Finset\n\n-- [proof strategy: native binary-entropy maximum plus explicit finite-uniform\
+    \ calculation]\n\n/-- Binary Shannon entropy (in nats) is globally bounded above by log 2. -/\ntheorem fep030_binaryEntropy_max\
+    \ (p : ℝ) :\n    Real.binEntropy p ≤ Real.log 2 :=\n  Real.binEntropy_le_log_two\n\n/-- The binary entropy maximum is\
+    \ attained uniquely at probability one half. -/\ntheorem fep030_binaryEntropy_eq_max_iff (p : ℝ) :\n    Real.binEntropy\
+    \ p = Real.log 2 ↔ p = (2 : ℝ)⁻¹ :=\n  Real.binEntropy_eq_log_two\n\n/-- A uniform scalar weight is nonnegative. -/\n\
+    theorem fep030_uniform_nonneg (n : ℕ) (_hn : 0 < n) : 0 ≤ (1 : ℝ) / n :=\n  div_nonneg zero_le_one (Nat.cast_nonneg' (n\
+    \ := n))\n\n/-- Uniform weights on a positive finite range sum to one. -/\ntheorem fep030_uniform_sum_one (n : ℕ) (hn\
+    \ : 0 < n) :\n    ∑ _ ∈ Finset.range n, (1 : ℝ) / n = 1 := by\n  rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n\
+    \  have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.ne_of_gt hn)\n  field_simp [hn0]\n\n/-- The logarithm of a positive\
+    \ natural cardinality is nonnegative. -/\ntheorem fep030_log_card_nonneg (n : ℕ) (hn : 1 ≤ n) : 0 ≤ Real.log n := by\n\
+    \  apply Real.log_nonneg\n  exact_mod_cast hn\n\n/-- The explicit uniform-weight entropy expression equals log n; maximality\
+    \ is not proved. -/\ntheorem fep030_entropy_eq_log (n : ℕ) (hn : 0 < n) :\n    -∑ _ ∈ Finset.range n, (1 : ℝ) / n * Real.log\
+    \ ((1 : ℝ) / n)\n    = Real.log n := by\n  have hnR : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.ne_of_gt hn)\n  have hlog\
+    \ : Real.log ((1 : ℝ) / n) = - Real.log n := by\n    rw [Real.log_div (one_ne_zero' ℝ) hnR, Real.log_one, zero_sub]\n\
+    \  have hsum : ∑ _ ∈ Finset.range n, (1 : ℝ) / n * Real.log ((1 : ℝ) / n) = - Real.log n := by\n    calc\n      ∑ _ ∈\
+    \ Finset.range n, (1 : ℝ) / n * Real.log ((1 : ℝ) / n)\n          = ∑ _ ∈ Finset.range n, (1 : ℝ) / n * (- Real.log n)\
+    \ :=\n            Finset.sum_congr rfl fun _ _ => by rw [hlog]\n      _ = (∑ _ ∈ Finset.range n, (1 : ℝ) / n) * (- Real.log\
+    \ n) := by rw [← Finset.sum_mul]\n      _ = 1 * (- Real.log n) := by rw [fep030_uniform_sum_one n hn]\n      _ = - Real.log\
+    \ n := by ring\n  rw [hsum, neg_neg]\n\nend FEP030\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -3013,21 +3017,21 @@ topics:
     step and the endpoints expose the non-strict boundary.
   acceptance_probe: native Lean compile of fep032_quadraticUpdate_deviation, fep032_quadraticUpdate_iterate, fep032_quadraticEnergy_descent,
     fep032_quadraticUpdate_tendsto, and FEPComposed.fep032_update_is_fep043_gradientStep.
-  lean_sketch: "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic\n\nnamespace FEP032\n\n/-- Gradient-descent\
-    \ update for the centered quadratic energy\n`(x - center)² / 2`. -/\ndef fep032_quadraticUpdate (step center x : ℝ) :\
-    \ ℝ :=\n  x - step * (x - center)\n\n/-- One descent step scales displacement from the minimizer exactly. -/\ntheorem\
-    \ fep032_quadraticUpdate_deviation (step center x : ℝ) :\n    fep032_quadraticUpdate step center x - center =\n      (1\
-    \ - step) * (x - center) := by\n  simp only [fep032_quadraticUpdate]\n  ring\n\n/-- The minimizer is a fixed point for\
-    \ every step size. -/\ntheorem fep032_quadraticUpdate_fixed (step center : ℝ) :\n    fep032_quadraticUpdate step center\
-    \ center = center := by\n  simp [fep032_quadraticUpdate]\n\n/-- Closed form for every finite gradient-descent iterate.\
-    \ -/\ntheorem fep032_quadraticUpdate_iterate (step center x : ℝ) (n : ℕ) :\n    ((fep032_quadraticUpdate step center)^[n])\
-    \ x - center =\n      (1 - step) ^ n * (x - center) := by\n  induction n with\n  | zero => simp\n  | succ n ih =>\n  \
-    \    rw [Function.iterate_succ_apply']\n      rw [fep032_quadraticUpdate_deviation, ih, pow_succ]\n      ring\n\n/-- Step\
-    \ sizes in `[0,2]` cannot increase the centered quadratic energy. -/\ntheorem fep032_quadraticEnergy_descent\n    {step\
-    \ center x : ℝ} (hstep0 : 0 ≤ step) (hstep2 : step ≤ 2) :\n    (fep032_quadraticUpdate step center x - center) ^ 2 ≤\n\
-    \      (x - center) ^ 2 := by\n  rw [fep032_quadraticUpdate_deviation]\n  have hfactor : (1 - step) ^ 2 ≤ 1 := by nlinarith\n\
-    \  have hscaled :=\n    mul_le_mul_of_nonneg_right hfactor (sq_nonneg (x - center))\n  nlinarith\n\n/-- Every strictly\
-    \ stable step size converges to the unique quadratic\nminimizer from every initial state. -/\ntheorem fep032_quadraticUpdate_tendsto\n\
+  lean_sketch: "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\
+    \nnamespace FEP032\n\n/-- Gradient-descent update for the centered quadratic energy\n`(x - center)² / 2`. -/\ndef fep032_quadraticUpdate\
+    \ (step center x : ℝ) : ℝ :=\n  x - step * (x - center)\n\n/-- One descent step scales displacement from the minimizer\
+    \ exactly. -/\ntheorem fep032_quadraticUpdate_deviation (step center x : ℝ) :\n    fep032_quadraticUpdate step center\
+    \ x - center =\n      (1 - step) * (x - center) := by\n  simp only [fep032_quadraticUpdate]\n  ring\n\n/-- The minimizer\
+    \ is a fixed point for every step size. -/\ntheorem fep032_quadraticUpdate_fixed (step center : ℝ) :\n    fep032_quadraticUpdate\
+    \ step center center = center := by\n  simp [fep032_quadraticUpdate]\n\n/-- Closed form for every finite gradient-descent\
+    \ iterate. -/\ntheorem fep032_quadraticUpdate_iterate (step center x : ℝ) (n : ℕ) :\n    ((fep032_quadraticUpdate step\
+    \ center)^[n]) x - center =\n      (1 - step) ^ n * (x - center) := by\n  induction n with\n  | zero => simp\n  | succ\
+    \ n ih =>\n      rw [Function.iterate_succ_apply']\n      rw [fep032_quadraticUpdate_deviation, ih, pow_succ]\n      ring\n\
+    \n/-- Step sizes in `[0,2]` cannot increase the centered quadratic energy. -/\ntheorem fep032_quadraticEnergy_descent\n\
+    \    {step center x : ℝ} (hstep0 : 0 ≤ step) (hstep2 : step ≤ 2) :\n    (fep032_quadraticUpdate step center x - center)\
+    \ ^ 2 ≤\n      (x - center) ^ 2 := by\n  rw [fep032_quadraticUpdate_deviation]\n  have hfactor : (1 - step) ^ 2 ≤ 1 :=\
+    \ by nlinarith\n  have hscaled :=\n    mul_le_mul_of_nonneg_right hfactor (sq_nonneg (x - center))\n  nlinarith\n\n/--\
+    \ Every strictly stable step size converges to the unique quadratic\nminimizer from every initial state. -/\ntheorem fep032_quadraticUpdate_tendsto\n\
     \    {step : ℝ} (hstep0 : 0 < step) (hstep2 : step < 2)\n    (center x : ℝ) :\n    Filter.Tendsto\n      (fun n => ((fep032_quadraticUpdate\
     \ step center)^[n]) x)\n      Filter.atTop (nhds center) := by\n  have habs : |1 - step| < 1 := by\n    rw [abs_lt]\n\
     \    constructor <;> linarith\n  have hpow : Filter.Tendsto (fun n : ℕ => (1 - step) ^ n)\n      Filter.atTop (nhds 0)\
@@ -3417,33 +3421,35 @@ topics:
   acceptance_probe: native Lean compile of fep036_binomialModel_apply, fep036_empiricalPrior_mem_Ioo, fep036_smoothedRate_mono,
     fep036_smoothedRate_eq_shrunkEmpirical, and fep036_smoothedRate_tendsto_of_empiricalRate, plus composed posterior closure.
   lean_sketch: "import Mathlib.Analysis.SpecificLimits.Basic\nimport Mathlib.Data.Nat.Cast.Field\nimport Mathlib.Probability.Distributions.Binomial\n\
-    import Mathlib.Tactic\n\nnamespace FEP036\n\n/-- Laplace-smoothed empirical success rate from `successes` of `trials`.\
-    \ -/\nnoncomputable def fep036_smoothedRate (successes trials : ℕ) : ℝ :=\n  ((successes + 1 : ℕ) : ℝ) / ((trials + 2\
-    \ : ℕ) : ℝ)\n\n/-- Convert a bounded nonnegative parameter into Mathlib's unit interval. -/\nnoncomputable def fep036_unitInterval\n\
-    \    (p : NNReal) (hp : p ≤ 1) : unitInterval :=\n  ⟨p, p.2, by exact_mod_cast hp⟩\n\n/-- Binomial sampling measure for\
-    \ a cohort success count. -/\nnoncomputable def fep036_binomialModel\n    (p : NNReal) (hp : p ≤ 1) (trials : ℕ) : MeasureTheory.Measure\
-    \ ℕ :=\n  ProbabilityTheory.binomial trials (fep036_unitInterval p hp)\n\n/-- Data-dependent Bernoulli prior obtained\
-    \ from one admissible cohort count. -/\nnoncomputable def fep036_empiricalPrior\n    (trials : ℕ) (sample : Fin (trials\
-    \ + 1)) : ℝ :=\n  fep036_smoothedRate sample trials\n\n/-- The project sampling law is exactly Mathlib's binomial measure.\
-    \ -/\ntheorem fep036_binomialModel_apply (p : NNReal) (hp : p ≤ 1) (trials : ℕ)\n    (sample : ℕ) :\n    (fep036_binomialModel\
-    \ p hp trials).real {sample} =\n      (trials.choose sample : ℝ) * (p : ℝ) ^ sample *\n        (1 - (p : ℝ)) ^ (trials\
-    \ - sample) := by\n  simpa [fep036_binomialModel, fep036_unitInterval] using\n    ProbabilityTheory.binomial_real_singleton\
-    \ trials sample\n      (fep036_unitInterval p hp)\n\n/-- Laplace smoothing makes the empirical prior parameter strictly\
-    \ positive. -/\ntheorem fep036_smoothedRate_pos (successes trials : ℕ) :\n    0 < fep036_smoothedRate successes trials\
-    \ := by\n  simp only [fep036_smoothedRate]\n  positivity\n\n/-- A valid success count yields a smoothed parameter strictly\
-    \ below one. -/\ntheorem fep036_smoothedRate_lt_one\n    {successes trials : ℕ} (h : successes ≤ trials) :\n    fep036_smoothedRate\
-    \ successes trials < 1 := by\n  have hden : (0 : ℝ) < (trials + 2 : ℕ) := by positivity\n  apply (div_lt_one hden).2\n\
-    \  exact_mod_cast (show successes + 1 < trials + 2 by omega)\n\n/-- The smoothed empirical prior lies in the interior\
-    \ probability interval. -/\ntheorem fep036_smoothedRate_mem_Ioo\n    {successes trials : ℕ} (h : successes ≤ trials) :\n\
-    \    fep036_smoothedRate successes trials ∈ Set.Ioo (0 : ℝ) 1 :=\n  ⟨fep036_smoothedRate_pos successes trials,\n    fep036_smoothedRate_lt_one\
-    \ h⟩\n\n/-- Every possible binomial cohort outcome produces an interior prior. -/\ntheorem fep036_empiricalPrior_mem_Ioo\n\
-    \    (trials : ℕ) (sample : Fin (trials + 1)) :\n    fep036_empiricalPrior trials sample ∈ Set.Ioo (0 : ℝ) 1 := by\n \
-    \ apply fep036_smoothedRate_mem_Ioo\n  exact Nat.le_of_lt_succ sample.isLt\n\n/-- At fixed trial count, the smoothed empirical\
-    \ rate is monotone in successes. -/\ntheorem fep036_smoothedRate_mono\n    {s₁ s₂ trials : ℕ} (h : s₁ ≤ s₂) :\n    fep036_smoothedRate\
-    \ s₁ trials ≤ fep036_smoothedRate s₂ trials := by\n  simp only [fep036_smoothedRate]\n  gcongr\n\n/-- Laplace smoothing\
-    \ is the raw empirical rate multiplied by a shrinkage\nfactor, plus a vanishing pseudocount offset. -/\ntheorem fep036_smoothedRate_eq_shrunkEmpirical\n\
-    \    {successes trials : ℕ} (htrials : 0 < trials) :\n    fep036_smoothedRate successes trials =\n      ((successes :\
-    \ ℝ) / trials) * ((trials : ℝ) / (trials + 2)) +\n        1 / ((trials : ℝ) + 2) := by\n  have hn : (trials : ℝ) ≠ 0 :=\n\
+    import Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.GCongr\nimport Mathlib.Tactic.Positivity\nmeta import Lean.Meta.Tactic.NormCast\n\
+    meta import Lean.Elab.Tactic.Omega\n\nnamespace FEP036\n\n/-- Laplace-smoothed empirical success rate from `successes`\
+    \ of `trials`. -/\nnoncomputable def fep036_smoothedRate (successes trials : ℕ) : ℝ :=\n  ((successes + 1 : ℕ) : ℝ) /\
+    \ ((trials + 2 : ℕ) : ℝ)\n\n/-- Convert a bounded nonnegative parameter into Mathlib's unit interval. -/\nnoncomputable\
+    \ def fep036_unitInterval\n    (p : NNReal) (hp : p ≤ 1) : unitInterval :=\n  ⟨p, p.2, by exact_mod_cast hp⟩\n\n/-- Binomial\
+    \ sampling measure for a cohort success count. -/\nnoncomputable def fep036_binomialModel\n    (p : NNReal) (hp : p ≤\
+    \ 1) (trials : ℕ) : MeasureTheory.Measure ℕ :=\n  ProbabilityTheory.binomial trials (fep036_unitInterval p hp)\n\n/--\
+    \ Data-dependent Bernoulli prior obtained from one admissible cohort count. -/\nnoncomputable def fep036_empiricalPrior\n\
+    \    (trials : ℕ) (sample : Fin (trials + 1)) : ℝ :=\n  fep036_smoothedRate sample trials\n\n/-- The project sampling\
+    \ law is exactly Mathlib's binomial measure. -/\ntheorem fep036_binomialModel_apply (p : NNReal) (hp : p ≤ 1) (trials\
+    \ : ℕ)\n    (sample : ℕ) :\n    (fep036_binomialModel p hp trials).real {sample} =\n      (trials.choose sample : ℝ) *\
+    \ (p : ℝ) ^ sample *\n        (1 - (p : ℝ)) ^ (trials - sample) := by\n  simpa [fep036_binomialModel, fep036_unitInterval]\
+    \ using\n    ProbabilityTheory.binomial_real_singleton trials sample\n      (fep036_unitInterval p hp)\n\n/-- Laplace\
+    \ smoothing makes the empirical prior parameter strictly positive. -/\ntheorem fep036_smoothedRate_pos (successes trials\
+    \ : ℕ) :\n    0 < fep036_smoothedRate successes trials := by\n  simp only [fep036_smoothedRate]\n  positivity\n\n/-- A\
+    \ valid success count yields a smoothed parameter strictly below one. -/\ntheorem fep036_smoothedRate_lt_one\n    {successes\
+    \ trials : ℕ} (h : successes ≤ trials) :\n    fep036_smoothedRate successes trials < 1 := by\n  have hden : (0 : ℝ) <\
+    \ (trials + 2 : ℕ) := by positivity\n  apply (div_lt_one hden).2\n  exact_mod_cast (show successes + 1 < trials + 2 by\
+    \ omega)\n\n/-- The smoothed empirical prior lies in the interior probability interval. -/\ntheorem fep036_smoothedRate_mem_Ioo\n\
+    \    {successes trials : ℕ} (h : successes ≤ trials) :\n    fep036_smoothedRate successes trials ∈ Set.Ioo (0 : ℝ) 1 :=\n\
+    \  ⟨fep036_smoothedRate_pos successes trials,\n    fep036_smoothedRate_lt_one h⟩\n\n/-- Every possible binomial cohort\
+    \ outcome produces an interior prior. -/\ntheorem fep036_empiricalPrior_mem_Ioo\n    (trials : ℕ) (sample : Fin (trials\
+    \ + 1)) :\n    fep036_empiricalPrior trials sample ∈ Set.Ioo (0 : ℝ) 1 := by\n  apply fep036_smoothedRate_mem_Ioo\n  exact\
+    \ Nat.le_of_lt_succ sample.isLt\n\n/-- At fixed trial count, the smoothed empirical rate is monotone in successes. -/\n\
+    theorem fep036_smoothedRate_mono\n    {s₁ s₂ trials : ℕ} (h : s₁ ≤ s₂) :\n    fep036_smoothedRate s₁ trials ≤ fep036_smoothedRate\
+    \ s₂ trials := by\n  simp only [fep036_smoothedRate]\n  gcongr\n\n/-- Laplace smoothing is the raw empirical rate multiplied\
+    \ by a shrinkage\nfactor, plus a vanishing pseudocount offset. -/\ntheorem fep036_smoothedRate_eq_shrunkEmpirical\n  \
+    \  {successes trials : ℕ} (htrials : 0 < trials) :\n    fep036_smoothedRate successes trials =\n      ((successes : ℝ)\
+    \ / trials) * ((trials : ℝ) / (trials + 2)) +\n        1 / ((trials : ℝ) + 2) := by\n  have hn : (trials : ℝ) ≠ 0 :=\n\
     \    Nat.cast_ne_zero.mpr (Nat.ne_of_gt htrials)\n  simp only [fep036_smoothedRate, Nat.cast_add, Nat.cast_one, Nat.cast_ofNat]\n\
     \  field_simp [hn]\n\n/-- Any consistent empirical-frequency sequence remains consistent after\nLaplace smoothing.  The\
     \ sampling-law convergence premise is explicit. -/\ntheorem fep036_smoothedRate_tendsto_of_empiricalRate\n    (successes\
@@ -3554,32 +3560,33 @@ topics:
     decay geometrically by 1/2.
   acceptance_probe: native Lean compile of fep037_autocorrelation_recurrence, fep037_autocorrelation_tendsto_zero, fep037_response_eq,
     fep037_response_nonneg, and fep037_response_tendsto_zero.
-  lean_sketch: "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic\n\nnamespace FEP037\n\n/-- Relaxation\
-    \ eigenvalue of the symmetric two-state Markov transition. -/\ndef fep037_relaxation (α : ℝ) : ℝ := 1 - 2 * α\n\n/-- Stationary\
-    \ autocorrelation at lag `n` with equilibrium variance `variance`. -/\ndef fep037_autocorrelation (α variance : ℝ) (n\
-    \ : ℕ) : ℝ :=\n  variance * fep037_relaxation α ^ n\n\n/-- The autocorrelation obeys the Markov relaxation recurrence.\
-    \ -/\ntheorem fep037_autocorrelation_recurrence (α variance : ℝ) (n : ℕ) :\n    fep037_autocorrelation α variance (n +\
-    \ 1) =\n      fep037_relaxation α * fep037_autocorrelation α variance n := by\n  simp only [fep037_autocorrelation, pow_succ]\n\
-    \  ring\n\n/-- For a strictly interior switching probability, equilibrium correlations\ndecay to zero. -/\ntheorem fep037_autocorrelation_tendsto_zero\n\
-    \    {α : ℝ} (hα0 : 0 < α) (hα1 : α < 1) (variance : ℝ) :\n    Filter.Tendsto (fep037_autocorrelation α variance)\n  \
-    \    Filter.atTop (nhds 0) := by\n  have habs : |fep037_relaxation α| < 1 := by\n    rw [fep037_relaxation, abs_lt]\n\
-    \    constructor <;> linarith\n  have hpow : Filter.Tendsto (fun n : ℕ => fep037_relaxation α ^ n)\n      Filter.atTop\
-    \ (nhds 0) :=\n    tendsto_pow_atTop_nhds_zero_of_abs_lt_one habs\n  change Filter.Tendsto (fun n : ℕ => variance * fep037_relaxation\
-    \ α ^ n)\n    Filter.atTop (nhds 0)\n  simpa only [mul_zero] using hpow.const_mul variance\n\n/-- Discrete fluctuation--response\
-    \ law: inverse temperature times the\none-step loss of stationary autocorrelation. -/\ndef fep037_response (β α variance\
-    \ : ℝ) (n : ℕ) : ℝ :=\n  β * (fep037_autocorrelation α variance n -\n    fep037_autocorrelation α variance (n + 1))\n\n\
-    /-- Closed form of the discrete response kernel. -/\ntheorem fep037_response_eq (β α variance : ℝ) (n : ℕ) :\n    fep037_response\
-    \ β α variance n =\n      2 * β * α * variance * fep037_relaxation α ^ n := by\n  rw [fep037_response, fep037_autocorrelation_recurrence]\n\
-    \  simp only [fep037_autocorrelation, fep037_relaxation]\n  ring\n\n/-- For nonnegative inverse temperature and variance,\
-    \ and switching no faster\nthan one half, the response kernel is nonnegative. -/\ntheorem fep037_response_nonneg\n   \
-    \ {β α variance : ℝ} (hβ : 0 ≤ β) (hα0 : 0 ≤ α) (hαhalf : α ≤ 1 / 2)\n    (hvariance : 0 ≤ variance) (n : ℕ) :\n    0\
-    \ ≤ fep037_response β α variance n := by\n  rw [fep037_response_eq]\n  have hrelax : 0 ≤ fep037_relaxation α := by\n \
-    \   rw [fep037_relaxation]\n    linarith\n  positivity\n\n/-- The discrete response also relaxes to zero. -/\ntheorem\
-    \ fep037_response_tendsto_zero\n    {α : ℝ} (hα0 : 0 < α) (hα1 : α < 1) (β variance : ℝ) :\n    Filter.Tendsto (fun n\
-    \ => fep037_response β α variance n)\n      Filter.atTop (nhds 0) := by\n  have habs : |fep037_relaxation α| < 1 := by\n\
-    \    rw [fep037_relaxation, abs_lt]\n    constructor <;> linarith\n  have hpow : Filter.Tendsto (fun n : ℕ => fep037_relaxation\
-    \ α ^ n)\n      Filter.atTop (nhds 0) :=\n    tendsto_pow_atTop_nhds_zero_of_abs_lt_one habs\n  simpa only [fep037_response_eq,\
-    \ mul_zero] using\n    hpow.const_mul (2 * β * α * variance)\n\nend FEP037\n"
+  lean_sketch: "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Positivity\n\
+    import Mathlib.Tactic.Ring\n\nnamespace FEP037\n\n/-- Relaxation eigenvalue of the symmetric two-state Markov transition.\
+    \ -/\ndef fep037_relaxation (α : ℝ) : ℝ := 1 - 2 * α\n\n/-- Stationary autocorrelation at lag `n` with equilibrium variance\
+    \ `variance`. -/\ndef fep037_autocorrelation (α variance : ℝ) (n : ℕ) : ℝ :=\n  variance * fep037_relaxation α ^ n\n\n\
+    /-- The autocorrelation obeys the Markov relaxation recurrence. -/\ntheorem fep037_autocorrelation_recurrence (α variance\
+    \ : ℝ) (n : ℕ) :\n    fep037_autocorrelation α variance (n + 1) =\n      fep037_relaxation α * fep037_autocorrelation\
+    \ α variance n := by\n  simp only [fep037_autocorrelation, pow_succ]\n  ring\n\n/-- For a strictly interior switching\
+    \ probability, equilibrium correlations\ndecay to zero. -/\ntheorem fep037_autocorrelation_tendsto_zero\n    {α : ℝ} (hα0\
+    \ : 0 < α) (hα1 : α < 1) (variance : ℝ) :\n    Filter.Tendsto (fep037_autocorrelation α variance)\n      Filter.atTop\
+    \ (nhds 0) := by\n  have habs : |fep037_relaxation α| < 1 := by\n    rw [fep037_relaxation, abs_lt]\n    constructor <;>\
+    \ linarith\n  have hpow : Filter.Tendsto (fun n : ℕ => fep037_relaxation α ^ n)\n      Filter.atTop (nhds 0) :=\n    tendsto_pow_atTop_nhds_zero_of_abs_lt_one\
+    \ habs\n  change Filter.Tendsto (fun n : ℕ => variance * fep037_relaxation α ^ n)\n    Filter.atTop (nhds 0)\n  simpa\
+    \ only [mul_zero] using hpow.const_mul variance\n\n/-- Discrete fluctuation--response law: inverse temperature times the\n\
+    one-step loss of stationary autocorrelation. -/\ndef fep037_response (β α variance : ℝ) (n : ℕ) : ℝ :=\n  β * (fep037_autocorrelation\
+    \ α variance n -\n    fep037_autocorrelation α variance (n + 1))\n\n/-- Closed form of the discrete response kernel. -/\n\
+    theorem fep037_response_eq (β α variance : ℝ) (n : ℕ) :\n    fep037_response β α variance n =\n      2 * β * α * variance\
+    \ * fep037_relaxation α ^ n := by\n  rw [fep037_response, fep037_autocorrelation_recurrence]\n  simp only [fep037_autocorrelation,\
+    \ fep037_relaxation]\n  ring\n\n/-- For nonnegative inverse temperature and variance, and switching no faster\nthan one\
+    \ half, the response kernel is nonnegative. -/\ntheorem fep037_response_nonneg\n    {β α variance : ℝ} (hβ : 0 ≤ β) (hα0\
+    \ : 0 ≤ α) (hαhalf : α ≤ 1 / 2)\n    (hvariance : 0 ≤ variance) (n : ℕ) :\n    0 ≤ fep037_response β α variance n := by\n\
+    \  rw [fep037_response_eq]\n  have hrelax : 0 ≤ fep037_relaxation α := by\n    rw [fep037_relaxation]\n    linarith\n\
+    \  positivity\n\n/-- The discrete response also relaxes to zero. -/\ntheorem fep037_response_tendsto_zero\n    {α : ℝ}\
+    \ (hα0 : 0 < α) (hα1 : α < 1) (β variance : ℝ) :\n    Filter.Tendsto (fun n => fep037_response β α variance n)\n     \
+    \ Filter.atTop (nhds 0) := by\n  have habs : |fep037_relaxation α| < 1 := by\n    rw [fep037_relaxation, abs_lt]\n   \
+    \ constructor <;> linarith\n  have hpow : Filter.Tendsto (fun n : ℕ => fep037_relaxation α ^ n)\n      Filter.atTop (nhds\
+    \ 0) :=\n    tendsto_pow_atTop_nhds_zero_of_abs_lt_one habs\n  simpa only [fep037_response_eq, mul_zero] using\n    hpow.const_mul\
+    \ (2 * β * α * variance)\n\nend FEP037\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -3657,7 +3664,8 @@ topics:
   acceptance_probe: native Lean compile of fep038_bernoulliMass_hasDerivAt, fep038_expectedScore_zero, fep038_fisherInformation_eq,
     fep038_fisherMetric_pos, fep038_naturalGradient_duality, and fep038_fisherMetric_coordinate.
   lean_sketch: "import Mathlib.Analysis.Calculus.Deriv.Add\nimport Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport\
-    \ Mathlib.Data.Bool.Basic\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n\nnamespace FEP038\n\n/-- Bernoulli\
+    \ Mathlib.Data.Bool.Basic\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic.Convert\nimport Mathlib.Tactic.FieldSimp\n\
+    import Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.NormNum\nimport Mathlib.Tactic.Ring\n\nnamespace FEP038\n\n/-- Bernoulli\
     \ probability mass with success parameter `p`. -/\ndef fep038_bernoulliMass (p : ℝ) : Bool → ℝ\n  | false => 1 - p\n \
     \ | true => p\n\n/-- Pointwise parameter derivative of the Bernoulli mass. -/\ndef fep038_bernoulliMassDeriv : Bool →\
     \ ℝ\n  | false => -1\n  | true => 1\n\n/-- The Bernoulli family is differentiable in its scalar parameter. -/\ntheorem\
@@ -3860,9 +3868,10 @@ topics:
   acceptance_probe: native Lean compile of fep040_gaussian_mass_one, fep040_gaussian_mean, fep040_gaussian_variance, fep040_gaussianEntropy_hasDerivAt,
     fep040_thermalEntropy_hasDerivAt, and fep040_heatCapacity_eq_half.
   lean_sketch: "import Mathlib.Analysis.SpecialFunctions.Log.Deriv\nimport Mathlib.Probability.Distributions.Gaussian.Real\n\
-    import Mathlib.Tactic\n\nnamespace FEP040\n\nopen MeasureTheory ProbabilityTheory\n\n/-- Mathlib's normalized real Gaussian\
-    \ law. -/\nnoncomputable def fep040_gaussianLaw (mean : ℝ) (variance : NNReal) : Measure ℝ :=\n  ProbabilityTheory.gaussianReal\
-    \ mean variance\n\n/-- Every Gaussian law, including the zero-variance Dirac boundary, has mass one. -/\ntheorem fep040_gaussian_mass_one\
+    import Mathlib.Tactic.Convert\nimport Mathlib.Tactic.FieldSimp\nimport Mathlib.Tactic.GCongr\nimport Mathlib.Tactic.Positivity\n\
+    \nnamespace FEP040\n\nopen MeasureTheory ProbabilityTheory\n\n/-- Mathlib's normalized real Gaussian law. -/\nnoncomputable\
+    \ def fep040_gaussianLaw (mean : ℝ) (variance : NNReal) : Measure ℝ :=\n  ProbabilityTheory.gaussianReal mean variance\n\
+    \n/-- Every Gaussian law, including the zero-variance Dirac boundary, has mass one. -/\ntheorem fep040_gaussian_mass_one\
     \ (mean : ℝ) (variance : NNReal) :\n    fep040_gaussianLaw mean variance Set.univ = 1 := by\n  change ProbabilityTheory.gaussianReal\
     \ mean variance Set.univ = 1\n  exact measure_univ\n\n/-- The native Gaussian's expectation is its mean parameter. -/\n\
     theorem fep040_gaussian_mean (mean : ℝ) (variance : NNReal) :\n    ∫ x, x ∂fep040_gaussianLaw mean variance = mean :=\
@@ -4055,21 +4064,22 @@ topics:
     with different success counts generally differ for interior p.
   acceptance_probe: native Lean compile of fep042_likelihood_factorizes and fep042_likelihood_eq_of_stat_eq on permuted Boolean
     samples.
-  lean_sketch: "import Mathlib.Data.List.Count\nimport Mathlib.Tactic\n\nnamespace FEP042\n\n/-- Number of observed Bernoulli\
-    \ successes. -/\ndef fep042_successCount (data : List Bool) : ℕ :=\n  data.count true\n\n/-- Number of observed Bernoulli\
-    \ failures. -/\ndef fep042_failureCount (data : List Bool) : ℕ :=\n  data.count false\n\n/-- The two-count statistic used\
-    \ by the Bernoulli likelihood factorization. -/\ndef fep042_sufficientStatistic (data : List Bool) : ℕ × ℕ :=\n  (fep042_successCount\
-    \ data, fep042_failureCount data)\n\n/-- Bernoulli sequence likelihood, with `true` mass `p`. -/\ndef fep042_bernoulliLikelihood\
-    \ (p : ℝ) : List Bool → ℝ\n  | [] => 1\n  | b :: data => (if b then p else 1 - p) * fep042_bernoulliLikelihood p data\n\
-    \n/-- Fisher--Neyman factorization through success and failure counts. -/\ntheorem fep042_likelihood_factorizes (p : ℝ)\
-    \ (data : List Bool) :\n    fep042_bernoulliLikelihood p data =\n      p ^ fep042_successCount data * (1 - p) ^ fep042_failureCount\
-    \ data := by\n  induction data with\n  | nil => simp [fep042_bernoulliLikelihood, fep042_successCount, fep042_failureCount]\n\
-    \  | cons b data ih =>\n      cases b <;>\n        simp [fep042_bernoulliLikelihood, fep042_successCount,\n          fep042_failureCount,\
-    \ ih, pow_succ] <;>\n        ring\n\n/-- Equal sufficient statistics imply equal likelihoods for every parameter. -/\n\
-    theorem fep042_likelihood_eq_of_stat_eq\n    (p : ℝ) (xs ys : List Bool)\n    (h : fep042_sufficientStatistic xs = fep042_sufficientStatistic\
-    \ ys) :\n    fep042_bernoulliLikelihood p xs = fep042_bernoulliLikelihood p ys := by\n  have hs : fep042_successCount\
-    \ xs = fep042_successCount ys :=\n    congrArg Prod.fst h\n  have hf : fep042_failureCount xs = fep042_failureCount ys\
-    \ :=\n    congrArg Prod.snd h\n  rw [fep042_likelihood_factorizes, fep042_likelihood_factorizes, hs, hf]\n\nend FEP042\n"
+  lean_sketch: "import Mathlib.Data.List.Count\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Ring\n\nnamespace FEP042\n\
+    \n/-- Number of observed Bernoulli successes. -/\ndef fep042_successCount (data : List Bool) : ℕ :=\n  data.count true\n\
+    \n/-- Number of observed Bernoulli failures. -/\ndef fep042_failureCount (data : List Bool) : ℕ :=\n  data.count false\n\
+    \n/-- The two-count statistic used by the Bernoulli likelihood factorization. -/\ndef fep042_sufficientStatistic (data\
+    \ : List Bool) : ℕ × ℕ :=\n  (fep042_successCount data, fep042_failureCount data)\n\n/-- Bernoulli sequence likelihood,\
+    \ with `true` mass `p`. -/\ndef fep042_bernoulliLikelihood (p : ℝ) : List Bool → ℝ\n  | [] => 1\n  | b :: data => (if\
+    \ b then p else 1 - p) * fep042_bernoulliLikelihood p data\n\n/-- Fisher--Neyman factorization through success and failure\
+    \ counts. -/\ntheorem fep042_likelihood_factorizes (p : ℝ) (data : List Bool) :\n    fep042_bernoulliLikelihood p data\
+    \ =\n      p ^ fep042_successCount data * (1 - p) ^ fep042_failureCount data := by\n  induction data with\n  | nil =>\
+    \ simp [fep042_bernoulliLikelihood, fep042_successCount, fep042_failureCount]\n  | cons b data ih =>\n      cases b <;>\n\
+    \        simp [fep042_bernoulliLikelihood, fep042_successCount,\n          fep042_failureCount, ih, pow_succ] <;>\n  \
+    \      ring\n\n/-- Equal sufficient statistics imply equal likelihoods for every parameter. -/\ntheorem fep042_likelihood_eq_of_stat_eq\n\
+    \    (p : ℝ) (xs ys : List Bool)\n    (h : fep042_sufficientStatistic xs = fep042_sufficientStatistic ys) :\n    fep042_bernoulliLikelihood\
+    \ p xs = fep042_bernoulliLikelihood p ys := by\n  have hs : fep042_successCount xs = fep042_successCount ys :=\n    congrArg\
+    \ Prod.fst h\n  have hf : fep042_failureCount xs = fep042_failureCount ys :=\n    congrArg Prod.snd h\n  rw [fep042_likelihood_factorizes,\
+    \ fep042_likelihood_factorizes, hs, hf]\n\nend FEP042\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -4121,26 +4131,27 @@ topics:
   acceptance_probe: native Lean compile of fep043_localMin_deriv_zero, fep043_quadratic_hasDerivAt, fep043_quadratic_unique_min,
     fep043_quadratic_critical_iff, and fep043_quadratic_hessian_pos.
   lean_sketch: "import Mathlib.Analysis.Calculus.Deriv.Mul\nimport Mathlib.Analysis.Calculus.Deriv.Pow\nimport Mathlib.Analysis.Calculus.LocalExtr.Basic\n\
-    import Mathlib.Tactic\n\nnamespace FEP043\n\n/-- Fermat's theorem: the derivative vanishes at every local minimum. -/\n\
-    theorem fep043_localMin_deriv_zero\n    {f : ℝ → ℝ} {x₀ : ℝ} (hmin : IsLocalMin f x₀) :\n    deriv f x₀ = 0 :=\n  hmin.deriv_eq_zero\n\
-    \n/-- Exact scalar quadratic free-energy landscape. -/\ndef fep043_quadraticFreeEnergy (a x₀ c x : ℝ) : ℝ :=\n  a * (x\
-    \ - x₀) ^ 2 + c\n\n/-- Its gradient field. -/\ndef fep043_quadraticGradient (a x₀ x : ℝ) : ℝ :=\n  2 * a * (x - x₀)\n\n\
-    /-- Exact first derivative of the quadratic free energy. -/\ntheorem fep043_quadratic_hasDerivAt (a x₀ c x : ℝ) :\n  \
-    \  HasDerivAt (fep043_quadraticFreeEnergy a x₀ c)\n      (fep043_quadraticGradient a x₀ x) x := by\n  convert (((hasDerivAt_id\
-    \ x).sub_const x₀).pow 2).const_mul a |>.add_const c using 1\n  all_goals\n    first\n    | rfl\n    | (simp [fep043_quadraticGradient]\
-    \ ; ring)\n\n/-- Positive curvature makes the center the unique global minimizer. -/\ntheorem fep043_quadratic_unique_min\n\
-    \    {a x₀ c x : ℝ} (ha : 0 < a) :\n    fep043_quadraticFreeEnergy a x₀ c x =\n        fep043_quadraticFreeEnergy a x₀\
-    \ c x₀ ↔\n      x = x₀ := by\n  constructor\n  · intro h\n    have hcenter : fep043_quadraticFreeEnergy a x₀ c x₀ = c\
-    \ := by\n      simp [fep043_quadraticFreeEnergy]\n    rw [hcenter] at h\n    rw [fep043_quadraticFreeEnergy] at h\n  \
-    \  have hsquare : (x - x₀) ^ 2 = 0 := by nlinarith\n    nlinarith\n  · rintro rfl\n    rfl\n\n/-- For positive curvature,\
-    \ the unique critical point is the unique minimum. -/\ntheorem fep043_quadratic_critical_iff\n    {a x₀ c x : ℝ} (ha :\
-    \ 0 < a) :\n    deriv (fep043_quadraticFreeEnergy a x₀ c) x = 0 ↔ x = x₀ := by\n  rw [(fep043_quadratic_hasDerivAt a x₀\
-    \ c x).deriv]\n  simp only [fep043_quadraticGradient]\n  constructor <;> intro h\n  · nlinarith\n  · rw [h, sub_self,\
-    \ mul_zero]\n\n/-- The gradient derivative is the constant scalar Hessian `2a`. -/\ntheorem fep043_quadraticGradient_hasDerivAt\
-    \ (a x₀ x : ℝ) :\n    HasDerivAt (fep043_quadraticGradient a x₀) (2 * a) x := by\n  convert ((hasDerivAt_id x).sub_const\
-    \ x₀).const_mul (2 * a) using 1\n  all_goals\n    first\n    | rfl\n    | simp\n\n/-- Positive quadratic curvature gives\
-    \ a strictly positive Hessian. -/\ntheorem fep043_quadratic_hessian_pos {a : ℝ} (ha : 0 < a) :\n    0 < 2 * a := by positivity\n\
-    \nend FEP043\n"
+    import Mathlib.Tactic.Convert\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Positivity\nimport Mathlib.Tactic.Ring\n\
+    \nnamespace FEP043\n\n/-- Fermat's theorem: the derivative vanishes at every local minimum. -/\ntheorem fep043_localMin_deriv_zero\n\
+    \    {f : ℝ → ℝ} {x₀ : ℝ} (hmin : IsLocalMin f x₀) :\n    deriv f x₀ = 0 :=\n  hmin.deriv_eq_zero\n\n/-- Exact scalar\
+    \ quadratic free-energy landscape. -/\ndef fep043_quadraticFreeEnergy (a x₀ c x : ℝ) : ℝ :=\n  a * (x - x₀) ^ 2 + c\n\n\
+    /-- Its gradient field. -/\ndef fep043_quadraticGradient (a x₀ x : ℝ) : ℝ :=\n  2 * a * (x - x₀)\n\n/-- Exact first derivative\
+    \ of the quadratic free energy. -/\ntheorem fep043_quadratic_hasDerivAt (a x₀ c x : ℝ) :\n    HasDerivAt (fep043_quadraticFreeEnergy\
+    \ a x₀ c)\n      (fep043_quadraticGradient a x₀ x) x := by\n  convert (((hasDerivAt_id x).sub_const x₀).pow 2).const_mul\
+    \ a |>.add_const c using 1\n  all_goals\n    first\n    | rfl\n    | (simp [fep043_quadraticGradient] ; ring)\n\n/-- Positive\
+    \ curvature makes the center the unique global minimizer. -/\ntheorem fep043_quadratic_unique_min\n    {a x₀ c x : ℝ}\
+    \ (ha : 0 < a) :\n    fep043_quadraticFreeEnergy a x₀ c x =\n        fep043_quadraticFreeEnergy a x₀ c x₀ ↔\n      x =\
+    \ x₀ := by\n  constructor\n  · intro h\n    have hcenter : fep043_quadraticFreeEnergy a x₀ c x₀ = c := by\n      simp\
+    \ [fep043_quadraticFreeEnergy]\n    rw [hcenter] at h\n    rw [fep043_quadraticFreeEnergy] at h\n    have hsquare : (x\
+    \ - x₀) ^ 2 = 0 := by nlinarith\n    nlinarith\n  · rintro rfl\n    rfl\n\n/-- For positive curvature, the unique critical\
+    \ point is the unique minimum. -/\ntheorem fep043_quadratic_critical_iff\n    {a x₀ c x : ℝ} (ha : 0 < a) :\n    deriv\
+    \ (fep043_quadraticFreeEnergy a x₀ c) x = 0 ↔ x = x₀ := by\n  rw [(fep043_quadratic_hasDerivAt a x₀ c x).deriv]\n  simp\
+    \ only [fep043_quadraticGradient]\n  constructor <;> intro h\n  · nlinarith\n  · rw [h, sub_self, mul_zero]\n\n/-- The\
+    \ gradient derivative is the constant scalar Hessian `2a`. -/\ntheorem fep043_quadraticGradient_hasDerivAt (a x₀ x : ℝ)\
+    \ :\n    HasDerivAt (fep043_quadraticGradient a x₀) (2 * a) x := by\n  convert ((hasDerivAt_id x).sub_const x₀).const_mul\
+    \ (2 * a) using 1\n  all_goals\n    first\n    | rfl\n    | simp\n\n/-- Positive quadratic curvature gives a strictly\
+    \ positive Hessian. -/\ntheorem fep043_quadratic_hessian_pos {a : ℝ} (ha : 0 < a) :\n    0 < 2 * a := by positivity\n\n\
+    end FEP043\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -4216,21 +4227,21 @@ topics:
   non_vacuity: Equal Bernoulli parameters have zero divergence, while the endpoint laws p = 0 and q = 1 are separated.
   acceptance_probe: native Lean compile of fep044_hellingerSq_nonneg, fep044_hellingerSq_symm, fep044_hellingerSq_eq_zero_iff,
     and fep044_hellingerSq_complement.
-  lean_sketch: "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n\nnamespace FEP044\n\n/-- Squared Hellinger divergence\
-    \ between Bernoulli laws, including the\nconventional factor `1/2`. -/\nnoncomputable def fep044_hellingerSq (p q : ℝ)\
-    \ : ℝ :=\n  ((Real.sqrt p - Real.sqrt q) ^ 2 +\n      (Real.sqrt (1 - p) - Real.sqrt (1 - q)) ^ 2) / 2\n\n/-- Squared\
-    \ Hellinger divergence is nonnegative. -/\ntheorem fep044_hellingerSq_nonneg (p q : ℝ) :\n    0 ≤ fep044_hellingerSq p\
-    \ q := by\n  unfold fep044_hellingerSq\n  positivity\n\n/-- Squared Hellinger divergence is symmetric. -/\ntheorem fep044_hellingerSq_symm\
-    \ (p q : ℝ) :\n    fep044_hellingerSq p q = fep044_hellingerSq q p := by\n  unfold fep044_hellingerSq\n  ring\n\n/-- On\
-    \ the probability interval, zero squared Hellinger divergence\ncharacterizes equality of Bernoulli parameters. -/\ntheorem\
-    \ fep044_hellingerSq_eq_zero_iff\n    {p q : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1) (hq : q ∈ Set.Icc (0 : ℝ) 1) :\n    fep044_hellingerSq\
-    \ p q = 0 ↔ p = q := by\n  constructor\n  · intro hzero\n    rw [fep044_hellingerSq] at hzero\n    have hfirst_sq : (Real.sqrt\
-    \ p - Real.sqrt q) ^ 2 = 0 := by\n      nlinarith [sq_nonneg (Real.sqrt (1 - p) - Real.sqrt (1 - q))]\n    have hfirst\
-    \ : Real.sqrt p - Real.sqrt q = 0 := by\n      nlinarith\n    have hsqrt : Real.sqrt p = Real.sqrt q := sub_eq_zero.mp\
-    \ hfirst\n    exact (Real.sqrt_inj hp.1 hq.1).mp hsqrt\n  · rintro rfl\n    simp [fep044_hellingerSq]\n\n/-- Relabeling\
-    \ Bernoulli success and failure leaves Hellinger divergence\nunchanged. -/\ntheorem fep044_hellingerSq_complement (p q\
-    \ : ℝ) :\n    fep044_hellingerSq (1 - p) (1 - q) = fep044_hellingerSq p q := by\n  unfold fep044_hellingerSq\n  congr\
-    \ 1\n  ring_nf\n\nend FEP044\n"
+  lean_sketch: "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Positivity\nimport\
+    \ Mathlib.Tactic.Ring\n\nnamespace FEP044\n\n/-- Squared Hellinger divergence between Bernoulli laws, including the\n\
+    conventional factor `1/2`. -/\nnoncomputable def fep044_hellingerSq (p q : ℝ) : ℝ :=\n  ((Real.sqrt p - Real.sqrt q) ^\
+    \ 2 +\n      (Real.sqrt (1 - p) - Real.sqrt (1 - q)) ^ 2) / 2\n\n/-- Squared Hellinger divergence is nonnegative. -/\n\
+    theorem fep044_hellingerSq_nonneg (p q : ℝ) :\n    0 ≤ fep044_hellingerSq p q := by\n  unfold fep044_hellingerSq\n  positivity\n\
+    \n/-- Squared Hellinger divergence is symmetric. -/\ntheorem fep044_hellingerSq_symm (p q : ℝ) :\n    fep044_hellingerSq\
+    \ p q = fep044_hellingerSq q p := by\n  unfold fep044_hellingerSq\n  ring\n\n/-- On the probability interval, zero squared\
+    \ Hellinger divergence\ncharacterizes equality of Bernoulli parameters. -/\ntheorem fep044_hellingerSq_eq_zero_iff\n \
+    \   {p q : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1) (hq : q ∈ Set.Icc (0 : ℝ) 1) :\n    fep044_hellingerSq p q = 0 ↔ p = q := by\n\
+    \  constructor\n  · intro hzero\n    rw [fep044_hellingerSq] at hzero\n    have hfirst_sq : (Real.sqrt p - Real.sqrt q)\
+    \ ^ 2 = 0 := by\n      nlinarith [sq_nonneg (Real.sqrt (1 - p) - Real.sqrt (1 - q))]\n    have hfirst : Real.sqrt p -\
+    \ Real.sqrt q = 0 := by\n      nlinarith\n    have hsqrt : Real.sqrt p = Real.sqrt q := sub_eq_zero.mp hfirst\n    exact\
+    \ (Real.sqrt_inj hp.1 hq.1).mp hsqrt\n  · rintro rfl\n    simp [fep044_hellingerSq]\n\n/-- Relabeling Bernoulli success\
+    \ and failure leaves Hellinger divergence\nunchanged. -/\ntheorem fep044_hellingerSq_complement (p q : ℝ) :\n    fep044_hellingerSq\
+    \ (1 - p) (1 - q) = fep044_hellingerSq p q := by\n  unfold fep044_hellingerSq\n  congr 1\n  ring_nf\n\nend FEP044\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -4288,28 +4299,28 @@ topics:
     likelihoods leave the prior parameter unchanged algebraically.
   acceptance_probe: native Lean compile of fep045_evidence_pos, fep045_posteriorParameter_mem_unit, fep045_bernoulli_posterior_closed,
     and fep045_posterior_mass_one.
-  lean_sketch: "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Tactic\n\nnamespace FEP045\n\n/-- Bernoulli\
-    \ mass function with `true` parameter `p`. -/\ndef fep045_bernoulliMass (p : ℝ) : Bool → ℝ\n  | false => 1 - p\n  | true\
-    \ => p\n\n/-- Binary evidence likelihood, indexed by the latent Boolean hypothesis. -/\ndef fep045_binaryLikelihood (l₀\
-    \ l₁ : ℝ) : Bool → ℝ\n  | false => l₀\n  | true => l₁\n\n/-- Evidence normalizer for a Bernoulli prior and binary likelihood.\
-    \ -/\ndef fep045_evidence (p l₀ l₁ : ℝ) : ℝ :=\n  p * l₁ + (1 - p) * l₀\n\n/-- Updated Bernoulli parameter after observing\
-    \ the binary evidence. -/\nnoncomputable def fep045_posteriorParameter (p l₀ l₁ : ℝ) : ℝ :=\n  p * l₁ / fep045_evidence\
-    \ p l₀ l₁\n\n/-- Interior priors and positive likelihoods have positive evidence. -/\ntheorem fep045_evidence_pos\n  \
-    \  {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ : 0 < l₁) :\n    0 < fep045_evidence p l₀ l₁ :=\
-    \ by\n  exact add_pos (mul_pos hp₀ hl₁) (mul_pos (sub_pos.mpr hp₁) hl₀)\n\n/-- The updated Bernoulli parameter remains\
-    \ in the unit interval. -/\ntheorem fep045_posteriorParameter_mem_unit\n    {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n\
-    \    (hl₀ : 0 < l₀) (hl₁ : 0 < l₁) :\n    0 ≤ fep045_posteriorParameter p l₀ l₁ ∧\n      fep045_posteriorParameter p l₀\
-    \ l₁ ≤ 1 := by\n  have hZ : 0 < fep045_evidence p l₀ l₁ :=\n    fep045_evidence_pos hp₀ hp₁ hl₀ hl₁\n  constructor\n \
-    \ · exact div_nonneg (mul_nonneg hp₀.le hl₁.le) hZ.le\n  · apply (div_le_one hZ).2\n    simp only [fep045_evidence]\n\
-    \    exact le_add_of_nonneg_right (mul_nonneg (sub_nonneg.mpr hp₁.le) hl₀.le)\n\n/-- Pointwise Bayes closure: normalized\
-    \ likelihood-times-prior mass is exactly\nthe Bernoulli family at the updated parameter. -/\ntheorem fep045_bernoulli_posterior_closed\n\
-    \    {p l₀ l₁ : ℝ} (hZ : fep045_evidence p l₀ l₁ ≠ 0) (b : Bool) :\n    fep045_bernoulliMass (fep045_posteriorParameter\
-    \ p l₀ l₁) b =\n      fep045_bernoulliMass p b * fep045_binaryLikelihood l₀ l₁ b /\n        fep045_evidence p l₀ l₁ :=\
-    \ by\n  cases b\n  · simp only [fep045_bernoulliMass, fep045_binaryLikelihood,\n      fep045_posteriorParameter]\n   \
-    \ field_simp [fep045_evidence]\n    simp only [fep045_evidence]\n    ring\n  · simp [fep045_bernoulliMass, fep045_binaryLikelihood,\n\
-    \      fep045_posteriorParameter]\n\n/-- The conjugate posterior Bernoulli mass function remains normalized. -/\ntheorem\
-    \ fep045_posterior_mass_one (p l₀ l₁ : ℝ) :\n    ∑ b : Bool, fep045_bernoulliMass (fep045_posteriorParameter p l₀ l₁)\
-    \ b = 1 := by\n  simp [fep045_bernoulliMass]\n\nend FEP045\n"
+  lean_sketch: "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.FieldSimp\n\
+    import Mathlib.Tactic.Ring\n\nnamespace FEP045\n\n/-- Bernoulli mass function with `true` parameter `p`. -/\ndef fep045_bernoulliMass\
+    \ (p : ℝ) : Bool → ℝ\n  | false => 1 - p\n  | true => p\n\n/-- Binary evidence likelihood, indexed by the latent Boolean\
+    \ hypothesis. -/\ndef fep045_binaryLikelihood (l₀ l₁ : ℝ) : Bool → ℝ\n  | false => l₀\n  | true => l₁\n\n/-- Evidence\
+    \ normalizer for a Bernoulli prior and binary likelihood. -/\ndef fep045_evidence (p l₀ l₁ : ℝ) : ℝ :=\n  p * l₁ + (1\
+    \ - p) * l₀\n\n/-- Updated Bernoulli parameter after observing the binary evidence. -/\nnoncomputable def fep045_posteriorParameter\
+    \ (p l₀ l₁ : ℝ) : ℝ :=\n  p * l₁ / fep045_evidence p l₀ l₁\n\n/-- Interior priors and positive likelihoods have positive\
+    \ evidence. -/\ntheorem fep045_evidence_pos\n    {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ :\
+    \ 0 < l₁) :\n    0 < fep045_evidence p l₀ l₁ := by\n  exact add_pos (mul_pos hp₀ hl₁) (mul_pos (sub_pos.mpr hp₁) hl₀)\n\
+    \n/-- The updated Bernoulli parameter remains in the unit interval. -/\ntheorem fep045_posteriorParameter_mem_unit\n \
+    \   {p l₀ l₁ : ℝ} (hp₀ : 0 < p) (hp₁ : p < 1)\n    (hl₀ : 0 < l₀) (hl₁ : 0 < l₁) :\n    0 ≤ fep045_posteriorParameter\
+    \ p l₀ l₁ ∧\n      fep045_posteriorParameter p l₀ l₁ ≤ 1 := by\n  have hZ : 0 < fep045_evidence p l₀ l₁ :=\n    fep045_evidence_pos\
+    \ hp₀ hp₁ hl₀ hl₁\n  constructor\n  · exact div_nonneg (mul_nonneg hp₀.le hl₁.le) hZ.le\n  · apply (div_le_one hZ).2\n\
+    \    simp only [fep045_evidence]\n    exact le_add_of_nonneg_right (mul_nonneg (sub_nonneg.mpr hp₁.le) hl₀.le)\n\n/--\
+    \ Pointwise Bayes closure: normalized likelihood-times-prior mass is exactly\nthe Bernoulli family at the updated parameter.\
+    \ -/\ntheorem fep045_bernoulli_posterior_closed\n    {p l₀ l₁ : ℝ} (hZ : fep045_evidence p l₀ l₁ ≠ 0) (b : Bool) :\n \
+    \   fep045_bernoulliMass (fep045_posteriorParameter p l₀ l₁) b =\n      fep045_bernoulliMass p b * fep045_binaryLikelihood\
+    \ l₀ l₁ b /\n        fep045_evidence p l₀ l₁ := by\n  cases b\n  · simp only [fep045_bernoulliMass, fep045_binaryLikelihood,\n\
+    \      fep045_posteriorParameter]\n    field_simp [fep045_evidence]\n    simp only [fep045_evidence]\n    ring\n  · simp\
+    \ [fep045_bernoulliMass, fep045_binaryLikelihood,\n      fep045_posteriorParameter]\n\n/-- The conjugate posterior Bernoulli\
+    \ mass function remains normalized. -/\ntheorem fep045_posterior_mass_one (p l₀ l₁ : ℝ) :\n    ∑ b : Bool, fep045_bernoulliMass\
+    \ (fep045_posteriorParameter p l₀ l₁) b = 1 := by\n  simp [fep045_bernoulliMass]\n\nend FEP045\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -4371,14 +4382,15 @@ topics:
     of one exhausts all subsequent residual mass.
   acceptance_probe: native Lean compile of fep046_mass_conservation, fep046_remainder_nonneg, and fep046_remainder_le_one
     on empty, singleton, and multi-break lists.
-  lean_sketch: "import Mathlib.Algebra.BigOperators.Ring.List\nimport Mathlib.Tactic\n\nnamespace FEP046\n\n/-- Finite stick-breaking\
-    \ weights.  The head receives fraction `v`; all later\nweights are scaled by the retained fraction `1-v`. -/\ndef fep046_stickWeights\
-    \ : List ℝ → List ℝ\n  | [] => []\n  | v :: breaks =>\n      v :: (fep046_stickWeights breaks).map (fun weight => (1 -\
-    \ v) * weight)\n\n/-- Mass remaining after every listed break. -/\ndef fep046_remainder : List ℝ → ℝ\n  | [] => 1\n  |\
-    \ v :: breaks => (1 - v) * fep046_remainder breaks\n\n/-- Allocated weights plus residual mass equal exactly one after\
-    \ any finite\nsequence of breaks.  This algebraic conservation law needs no inequalities. -/\ntheorem fep046_mass_conservation\
-    \ (breaks : List ℝ) :\n    (fep046_stickWeights breaks).sum + fep046_remainder breaks = 1 := by\n  induction breaks with\n\
-    \  | nil => simp [fep046_stickWeights, fep046_remainder]\n  | cons v breaks ih =>\n      have hscaled :\n          ((fep046_stickWeights\
+  lean_sketch: "import Mathlib.Algebra.BigOperators.Ring.List\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Linarith\n\
+    import Mathlib.Tactic.Ring\n\nnamespace FEP046\n\n/-- Finite stick-breaking weights.  The head receives fraction `v`;\
+    \ all later\nweights are scaled by the retained fraction `1-v`. -/\ndef fep046_stickWeights : List ℝ → List ℝ\n  | []\
+    \ => []\n  | v :: breaks =>\n      v :: (fep046_stickWeights breaks).map (fun weight => (1 - v) * weight)\n\n/-- Mass\
+    \ remaining after every listed break. -/\ndef fep046_remainder : List ℝ → ℝ\n  | [] => 1\n  | v :: breaks => (1 - v) *\
+    \ fep046_remainder breaks\n\n/-- Allocated weights plus residual mass equal exactly one after any finite\nsequence of\
+    \ breaks.  This algebraic conservation law needs no inequalities. -/\ntheorem fep046_mass_conservation (breaks : List\
+    \ ℝ) :\n    (fep046_stickWeights breaks).sum + fep046_remainder breaks = 1 := by\n  induction breaks with\n  | nil =>\
+    \ simp [fep046_stickWeights, fep046_remainder]\n  | cons v breaks ih =>\n      have hscaled :\n          ((fep046_stickWeights\
     \ breaks).map\n            (fun weight => (1 - v) * weight)).sum =\n            (1 - v) * (fep046_stickWeights breaks).sum\
     \ := by\n        simpa using\n          (List.sum_map_mul_left\n            (l := fep046_stickWeights breaks)\n      \
     \      (f := id) (r := 1 - v))\n      simp only [fep046_stickWeights, fep046_remainder, List.sum_cons]\n      rw [hscaled]\n\
@@ -4542,7 +4554,7 @@ topics:
     iterates converging to zero from every real start.
   acceptance_probe: native Lean compile of the native uniqueness wrapper, halving contraction, unique-zero, and iterate-convergence
     theorems.
-  lean_sketch: "import Mathlib.Order.Monotone.Basic\nimport Mathlib.Topology.MetricSpace.Contracting\nimport Mathlib.Tactic\n\
+  lean_sketch: "import Mathlib.Order.Monotone.Basic\nimport Mathlib.Topology.MetricSpace.Contracting\nimport Mathlib.Tactic.NormNum\n\
     \nnamespace FEP048\n\nopen Topology\n\n-- [proof strategy: native Mathlib ContractingWith and fixed-point API]\n\n/--\
     \ Sync update: both components advance together, total is nonneg. -/\ntheorem fep048_sync_nonneg (a b : ℝ) (ha : 0 ≤ a)\
     \ (hb : 0 ≤ b) : 0 ≤ a + b :=\n  add_nonneg ha hb\n\n/-- Async update: sequential composition preserves monotonicity.\
@@ -4644,22 +4656,22 @@ topics:
   acceptance_probe: native Lean compile of fep049_flux_force_identity, fep049_entropyProduction_nonneg, fep049_entropyProduction_eq_zero_iff,
     fep049_edgeProduction_nonneg, and fep049_edgeProduction_eq_zero_iff.
   lean_sketch: "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Analysis.SpecialFunctions.Log.Basic\n\
-    import Mathlib.Tactic\n\nnamespace FEP049\n\nopen Finset\n\n/-- Diagonal linear constitutive law `Jᵢ = Lᵢ Xᵢ`. -/\ndef\
-    \ fep049_linearFlux {ι : Type*}\n    (conductance force : ι → ℝ) (i : ι) : ℝ :=\n  conductance i * force i\n\n/-- Entropy\
-    \ production generated by diagonal conductances and forces. -/\ndef fep049_entropyProduction {ι : Type*} [Fintype ι]\n\
-    \    (conductance force : ι → ℝ) : ℝ :=\n  ∑ i, conductance i * force i ^ 2\n\n/-- The flux--force pairing is exactly\
-    \ the entropy-production quadratic form. -/\ntheorem fep049_flux_force_identity {ι : Type*} [Fintype ι]\n    (conductance\
-    \ force : ι → ℝ) :\n    (∑ i, force i * fep049_linearFlux conductance force i) =\n      fep049_entropyProduction conductance\
-    \ force := by\n  apply Finset.sum_congr rfl\n  intro i _\n  simp only [fep049_linearFlux]\n  ring\n\n/-- Nonnegative conductances\
-    \ imply nonnegative entropy production. -/\ntheorem fep049_entropyProduction_nonneg {ι : Type*} [Fintype ι]\n    (conductance\
-    \ force : ι → ℝ)\n    (hconductance : ∀ i, 0 ≤ conductance i) :\n    0 ≤ fep049_entropyProduction conductance force :=\
-    \ by\n  exact Finset.sum_nonneg fun i _ =>\n    mul_nonneg (hconductance i) (sq_nonneg (force i))\n\n/-- With strictly\
-    \ positive conductances, entropy production vanishes exactly\nat thermodynamic equilibrium (all forces zero). -/\ntheorem\
-    \ fep049_entropyProduction_eq_zero_iff {ι : Type*} [Fintype ι]\n    (conductance force : ι → ℝ)\n    (hconductance : ∀\
-    \ i, 0 < conductance i) :\n    fep049_entropyProduction conductance force = 0 ↔\n      ∀ i, force i = 0 := by\n  constructor\n\
-    \  · intro hzero i\n    have hterm : conductance i * force i ^ 2 = 0 :=\n      (Finset.sum_eq_zero_iff_of_nonneg\n   \
-    \     (fun j _ => mul_nonneg (hconductance j).le (sq_nonneg (force j)))).mp\n        hzero i (Finset.mem_univ i)\n   \
-    \ have hsquare : force i ^ 2 = 0 :=\n      (mul_eq_zero.mp hterm).resolve_left (ne_of_gt (hconductance i))\n    nlinarith\n\
+    import Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\nnamespace FEP049\n\nopen Finset\n\n/-- Diagonal linear constitutive\
+    \ law `Jᵢ = Lᵢ Xᵢ`. -/\ndef fep049_linearFlux {ι : Type*}\n    (conductance force : ι → ℝ) (i : ι) : ℝ :=\n  conductance\
+    \ i * force i\n\n/-- Entropy production generated by diagonal conductances and forces. -/\ndef fep049_entropyProduction\
+    \ {ι : Type*} [Fintype ι]\n    (conductance force : ι → ℝ) : ℝ :=\n  ∑ i, conductance i * force i ^ 2\n\n/-- The flux--force\
+    \ pairing is exactly the entropy-production quadratic form. -/\ntheorem fep049_flux_force_identity {ι : Type*} [Fintype\
+    \ ι]\n    (conductance force : ι → ℝ) :\n    (∑ i, force i * fep049_linearFlux conductance force i) =\n      fep049_entropyProduction\
+    \ conductance force := by\n  apply Finset.sum_congr rfl\n  intro i _\n  simp only [fep049_linearFlux]\n  ring\n\n/-- Nonnegative\
+    \ conductances imply nonnegative entropy production. -/\ntheorem fep049_entropyProduction_nonneg {ι : Type*} [Fintype\
+    \ ι]\n    (conductance force : ι → ℝ)\n    (hconductance : ∀ i, 0 ≤ conductance i) :\n    0 ≤ fep049_entropyProduction\
+    \ conductance force := by\n  exact Finset.sum_nonneg fun i _ =>\n    mul_nonneg (hconductance i) (sq_nonneg (force i))\n\
+    \n/-- With strictly positive conductances, entropy production vanishes exactly\nat thermodynamic equilibrium (all forces\
+    \ zero). -/\ntheorem fep049_entropyProduction_eq_zero_iff {ι : Type*} [Fintype ι]\n    (conductance force : ι → ℝ)\n \
+    \   (hconductance : ∀ i, 0 < conductance i) :\n    fep049_entropyProduction conductance force = 0 ↔\n      ∀ i, force\
+    \ i = 0 := by\n  constructor\n  · intro hzero i\n    have hterm : conductance i * force i ^ 2 = 0 :=\n      (Finset.sum_eq_zero_iff_of_nonneg\n\
+    \        (fun j _ => mul_nonneg (hconductance j).le (sq_nonneg (force j)))).mp\n        hzero i (Finset.mem_univ i)\n\
+    \    have hsquare : force i ^ 2 = 0 :=\n      (mul_eq_zero.mp hterm).resolve_left (ne_of_gt (hconductance i))\n    nlinarith\n\
     \  · intro hforce\n    simp [fep049_entropyProduction, hforce]\n\n/-- Thermodynamic affinity of a directed edge from positive\
     \ forward and\nreverse stationary fluxes. -/\nnoncomputable def fep049_edgeAffinity (forward reverse : ℝ) : ℝ :=\n  Real.log\
     \ (forward / reverse)\n\n/-- Edge entropy production is current times affinity. -/\nnoncomputable def fep049_edgeProduction\
@@ -4751,29 +4763,30 @@ topics:
     equality in the environmental balance saturates the Landauer threshold.
   acceptance_probe: native Lean compile of fep050_erasure_not_injective, fep050_erasureEntropyLoss_eq, fep050_landauer_heat_bound,
     fep050_landauer_work_bound, and fep050_landauerBound_pos.
-  lean_sketch: "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Tactic\n\nnamespace FEP050\n\n/-- Logical\
-    \ reset of a binary memory to `false`. -/\ndef fep050_erasure (_bit : Bool) : Bool := false\n\n/-- Reset is logically\
-    \ irreversible because it is not injective. -/\ntheorem fep050_erasure_not_injective :\n    ¬Function.Injective fep050_erasure\
-    \ := by\n  intro hinjective\n  have hfalse_true : false = true := hinjective (by rfl)\n  simp at hfalse_true\n\n/-- Thermodynamic\
-    \ bit entropy in nats with Boltzmann constant `kB`. -/\nnoncomputable def fep050_bitEntropy (kB p : ℝ) : ℝ :=\n  kB *\
-    \ Real.binEntropy p\n\n/-- Entropy lost when an unbiased bit is reset to a pure state. -/\nnoncomputable def fep050_erasureEntropyLoss\
-    \ (kB : ℝ) : ℝ :=\n  fep050_bitEntropy kB (2 : ℝ)⁻¹ - fep050_bitEntropy kB 0\n\n/-- Resetting an unbiased bit loses exactly\
-    \ `kB log 2` entropy. -/\ntheorem fep050_erasureEntropyLoss_eq (kB : ℝ) :\n    fep050_erasureEntropyLoss kB = kB * Real.log\
-    \ 2 := by\n  simp [fep050_erasureEntropyLoss, fep050_bitEntropy]\n\n/-- Environmental entropy gain from heat `Q` delivered\
-    \ at temperature `T`. -/\nnoncomputable def fep050_environmentEntropyChange (Q T : ℝ) : ℝ := Q / T\n\n/-- Total entropy\
-    \ change for one-bit erasure. -/\nnoncomputable def fep050_totalEntropyChange (Q T kB : ℝ) : ℝ :=\n  fep050_environmentEntropyChange\
-    \ Q T - fep050_erasureEntropyLoss kB\n\n/-- Landauer threshold `kB T log 2`. -/\nnoncomputable def fep050_landauerBound\
-    \ (kB T : ℝ) : ℝ :=\n  kB * T * Real.log 2\n\n/-- The second-law entropy balance derives the Landauer heat bound; the\n\
-    threshold inequality is a conclusion rather than an input. -/\ntheorem fep050_landauer_heat_bound\n    {Q T kB : ℝ} (hT\
-    \ : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB) :\n    fep050_landauerBound kB T ≤ Q := by\n  have\
-    \ hratio : kB * Real.log 2 ≤ Q / T := by\n    rw [fep050_totalEntropyChange, fep050_environmentEntropyChange,\n      fep050_erasureEntropyLoss_eq]\
-    \ at hsecondLaw\n    exact sub_nonneg.mp hsecondLaw\n  have hheat : (kB * Real.log 2) * T ≤ Q :=\n    (le_div_iff₀ hT).mp\
-    \ hratio\n  rw [fep050_landauerBound]\n  nlinarith\n\n/-- If supplied work dominates dissipated heat, the heat bound yields\
-    \ the\nLandauer work bound. -/\ntheorem fep050_landauer_work_bound\n    {W Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw :\
-    \ 0 ≤ fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q ≤ W) :\n    fep050_landauerBound kB T ≤ W :=\n  (fep050_landauer_heat_bound\
-    \ hT hsecondLaw).trans hworkHeat\n\n/-- The Landauer threshold is positive for positive `kB` and temperature. -/\ntheorem\
-    \ fep050_landauerBound_pos\n    {kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T) :\n    0 < fep050_landauerBound kB T := by\n  exact\
-    \ mul_pos (mul_pos hkB hT)\n    (Real.log_pos (by norm_num : (1 : ℝ) < 2))\n\nend FEP050\n"
+  lean_sketch: "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.NormNum\n\
+    \nnamespace FEP050\n\n/-- Logical reset of a binary memory to `false`. -/\ndef fep050_erasure (_bit : Bool) : Bool :=\
+    \ false\n\n/-- Reset is logically irreversible because it is not injective. -/\ntheorem fep050_erasure_not_injective :\n\
+    \    ¬Function.Injective fep050_erasure := by\n  intro hinjective\n  have hfalse_true : false = true := hinjective (by\
+    \ rfl)\n  simp at hfalse_true\n\n/-- Thermodynamic bit entropy in nats with Boltzmann constant `kB`. -/\nnoncomputable\
+    \ def fep050_bitEntropy (kB p : ℝ) : ℝ :=\n  kB * Real.binEntropy p\n\n/-- Entropy lost when an unbiased bit is reset\
+    \ to a pure state. -/\nnoncomputable def fep050_erasureEntropyLoss (kB : ℝ) : ℝ :=\n  fep050_bitEntropy kB (2 : ℝ)⁻¹ -\
+    \ fep050_bitEntropy kB 0\n\n/-- Resetting an unbiased bit loses exactly `kB log 2` entropy. -/\ntheorem fep050_erasureEntropyLoss_eq\
+    \ (kB : ℝ) :\n    fep050_erasureEntropyLoss kB = kB * Real.log 2 := by\n  simp [fep050_erasureEntropyLoss, fep050_bitEntropy]\n\
+    \n/-- Environmental entropy gain from heat `Q` delivered at temperature `T`. -/\nnoncomputable def fep050_environmentEntropyChange\
+    \ (Q T : ℝ) : ℝ := Q / T\n\n/-- Total entropy change for one-bit erasure. -/\nnoncomputable def fep050_totalEntropyChange\
+    \ (Q T kB : ℝ) : ℝ :=\n  fep050_environmentEntropyChange Q T - fep050_erasureEntropyLoss kB\n\n/-- Landauer threshold\
+    \ `kB T log 2`. -/\nnoncomputable def fep050_landauerBound (kB T : ℝ) : ℝ :=\n  kB * T * Real.log 2\n\n/-- The second-law\
+    \ entropy balance derives the Landauer heat bound; the\nthreshold inequality is a conclusion rather than an input. -/\n\
+    theorem fep050_landauer_heat_bound\n    {Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T\
+    \ kB) :\n    fep050_landauerBound kB T ≤ Q := by\n  have hratio : kB * Real.log 2 ≤ Q / T := by\n    rw [fep050_totalEntropyChange,\
+    \ fep050_environmentEntropyChange,\n      fep050_erasureEntropyLoss_eq] at hsecondLaw\n    exact sub_nonneg.mp hsecondLaw\n\
+    \  have hheat : (kB * Real.log 2) * T ≤ Q :=\n    (le_div_iff₀ hT).mp hratio\n  rw [fep050_landauerBound]\n  nlinarith\n\
+    \n/-- If supplied work dominates dissipated heat, the heat bound yields the\nLandauer work bound. -/\ntheorem fep050_landauer_work_bound\n\
+    \    {W Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q ≤ W) :\n\
+    \    fep050_landauerBound kB T ≤ W :=\n  (fep050_landauer_heat_bound hT hsecondLaw).trans hworkHeat\n\n/-- The Landauer\
+    \ threshold is positive for positive `kB` and temperature. -/\ntheorem fep050_landauerBound_pos\n    {kB T : ℝ} (hkB :\
+    \ 0 < kB) (hT : 0 < T) :\n    0 < fep050_landauerBound kB T := by\n  exact mul_pos (mul_pos hkB hT)\n    (Real.log_pos\
+    \ (by norm_num : (1 : ℝ) < 2))\n\nend FEP050\n"
   latex_equations:
   - \neg{}\mathsf{Function.Injective}\,\mathsf{fep050\_erasure}
   - '\begin{aligned}

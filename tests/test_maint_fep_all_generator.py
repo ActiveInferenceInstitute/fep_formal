@@ -109,11 +109,14 @@ def test_write_aggregate_hoists_exact_distinct_import_union(
     import_lines = [
         ln.removeprefix("public ")
         for ln in text.splitlines()
-        if ln.startswith("public import ")
+        if ln.startswith(("public import ", "public meta import "))
     ]
     assert import_lines == list(hoisted_sketch_imports(BODIES))
     assert len(import_lines) == len(set(import_lines))
     assert "import Mathlib" not in import_lines
+    assert "import Mathlib.Tactic" not in import_lines
+    assert "meta import Lean.Meta.Tactic.NormCast" in import_lines
+    assert "meta import Lean.Elab.Tactic.Omega" in import_lines
     assert "import Mathlib.Probability.Kernel.Invariance" in import_lines
     assert "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy" in import_lines
 

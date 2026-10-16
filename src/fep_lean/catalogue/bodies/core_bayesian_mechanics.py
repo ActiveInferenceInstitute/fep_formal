@@ -241,7 +241,8 @@ end FEP019
     "fep-020": """import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Bool.Basic
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 namespace FEP020
 
@@ -319,7 +320,8 @@ theorem fep020_tendsto_uniform
 end FEP020
 """,
     "fep-022": """import Mathlib.Probability.Kernel.Composition.MeasureComp
-import Mathlib.Tactic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 namespace FEP022
 
@@ -427,7 +429,11 @@ end FEP027
     "fep-036": """import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Data.Nat.Cast.Field
 import Mathlib.Probability.Distributions.Binomial
-import Mathlib.Tactic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.GCongr
+import Mathlib.Tactic.Positivity
+meta import Lean.Meta.Tactic.NormCast
+meta import Lean.Elab.Tactic.Omega
 
 namespace FEP036
 
@@ -537,7 +543,10 @@ end FEP036
 """,
     "fep-040": """import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Probability.Distributions.Gaussian.Real
-import Mathlib.Tactic
+import Mathlib.Tactic.Convert
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.GCongr
+import Mathlib.Tactic.Positivity
 
 namespace FEP040
 
@@ -645,7 +654,8 @@ theorem fep040_heatCapacity_eq_half {T : ℝ} (hT : 0 < T) :
 end FEP040
 """,
     "fep-042": """import Mathlib.Data.List.Count
-import Mathlib.Tactic
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.Ring
 
 namespace FEP042
 
@@ -692,7 +702,9 @@ theorem fep042_likelihood_eq_of_stat_eq
 end FEP042
 """,
     "fep-045": """import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Tactic
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 namespace FEP045
 
@@ -759,7 +771,9 @@ theorem fep045_posterior_mass_one (p l₀ l₁ : ℝ) :
 end FEP045
 """,
     "fep-046": """import Mathlib.Algebra.BigOperators.Ring.List
-import Mathlib.Tactic
+import Mathlib.Basic.Real.Basic
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
 
 namespace FEP046
 
