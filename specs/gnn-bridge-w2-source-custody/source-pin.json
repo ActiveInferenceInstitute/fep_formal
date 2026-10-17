@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "32353e836ad07e39b4eedefe0cd0663fe70bc42e",
+    "commit": "5c4a3b258208fe47a8f46cfb06bf405e75e1e999",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -202,7 +202,7 @@
     }
   },
   "gnn": {
-    "commit": "013829c36656543f850e2336892e48d1e8ba7784",
+    "commit": "671394736006c0201f6c980d3739c2030e367a92",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
@@ -496,7 +496,7 @@
       "src/gnn/llm/defaults.py": "b12010acea6f1ee787296b43654c34fcab81f6dd4758932af7f1ca958ccc2610",
       "src/gnn/llm/generator.py": "9e6432f80fab6b5f45e146cb52c11df966cd7617ce06d4185b01cf05bb241e07",
       "src/gnn/llm/llm_operations.py": "2655ce0643378e194989df552635109ac1ca184a3ec66301fcd7daf4e3becdef",
-      "src/gnn/llm/llm_processor.py": "1ec2911805444fcab2b8a89fb931ba335bd1f4b6f2b246c3033bea64f209e85b",
+      "src/gnn/llm/llm_processor.py": "01845ff7d450a538053898c511968fe1d540526abe176af77b0640a5216a8b16",
       "src/gnn/llm/mcp.py": "3200ea74db822142303c867fc22bdd403e2d4e46b9061dcc8a168903f83bcc4d",
       "src/gnn/llm/processor.py": "de9e4d21a9165198280c1c4df1468e131512fb3ae11d3d98ec32706b16d97875",
       "src/gnn/llm/prompt_batch.py": "08ada5712faddeae80080a5be61facf29dbd26d69626bfaa1fde9ff7c12152cc",
@@ -504,7 +504,7 @@
       "src/gnn/llm/provider_identity.py": "400eb58c2a58deee95d7ca5180874061d8dd418f7544e9025cb64d4fa4e8e2fe",
       "src/gnn/llm/providers/__init__.py": "6d937101ddb38c2eb6eebb3c8a8107e7a0704ce40acaa779ddb782eff28685e3",
       "src/gnn/llm/providers/base_provider.py": "887b17ba582c9f863f6f3df3904819512a7fa1234ea0445aeab8f6847359c8a5",
-      "src/gnn/llm/providers/ollama_provider.py": "62485438d1e9532f267c2f7e18c5d6b0a657f11c647f4bad2660a1a1bf24239e",
+      "src/gnn/llm/providers/ollama_provider.py": "df44b6dc09f8935d67bebab2b1964262086b44b6867437de9245c8b63f77bd09",
       "src/gnn/llm/providers/openai_provider.py": "0d3c41b6aaf70b55919170297430115cf33f03d108c7cece054f50c7127b77d8",
       "src/gnn/llm/providers/openrouter_provider.py": "5227c18b09f63c341e9a6c7f57482930660e4601fbe9a36922e29c63a6ab5d46",
       "src/gnn/llm/providers/perplexity_provider.py": "11abb313732b827d8b4b1761dbda24258ff9a51d9e0ad54c9b2983746f9295f3",
