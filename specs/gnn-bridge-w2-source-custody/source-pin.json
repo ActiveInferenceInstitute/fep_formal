@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "219c9d3a9a60a30edadda1a88ec740596d131bc0",
+    "commit": "28a1c01c509469531430913cf593afe601c732ce",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -202,7 +202,7 @@
     }
   },
   "gnn": {
-    "commit": "d6f7a985836093d4b6ffbf43ffa1c9092f15c556",
+    "commit": "9767b48d11b22f6e2bd7a155c9007d59a0ea6603",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
@@ -497,7 +497,7 @@
       "src/gnn/llm/generator.py": "9e6432f80fab6b5f45e146cb52c11df966cd7617ce06d4185b01cf05bb241e07",
       "src/gnn/llm/llm_operations.py": "2655ce0643378e194989df552635109ac1ca184a3ec66301fcd7daf4e3becdef",
       "src/gnn/llm/llm_processor.py": "1ec2911805444fcab2b8a89fb931ba335bd1f4b6f2b246c3033bea64f209e85b",
-      "src/gnn/llm/mcp.py": "3502fe6620c2ce546a949a3763f06e4b6c51a9879048650e80b6a1784cf014c6",
+      "src/gnn/llm/mcp.py": "3200ea74db822142303c867fc22bdd403e2d4e46b9061dcc8a168903f83bcc4d",
       "src/gnn/llm/processor.py": "8fdf413d5e2a426adf3db3d646ac69dd493a3d9f4a2d0b6c5c2429d84bf1eb24",
       "src/gnn/llm/prompt_batch.py": "e3004b8da3f14cf578dde1cf2f17356caf4f4af7095e308c246764579e5659db",
       "src/gnn/llm/prompts.py": "afdd6e4b947ecf3acf387baf54b666e44eb119f12a5c1e5a553bbcf17bb20ee0",
