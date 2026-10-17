@@ -27,6 +27,8 @@ _GENERATED_MANUSCRIPT_FILES = frozenset(
 _COLLECTION_RESOURCE_FILES = (
     "specs/geo-infer-notation-bridge/check_geo_notation_bridge.py",
     "specs/gnn-bridge-q6-activeinference-artifact/skeleton/canonical_bool_runner.jl.in",
+    "specs/lean-workspace/test_workspace.py",
+    "specs/lean-workspace/workspace.py",
 )
 
 
@@ -38,7 +40,7 @@ def copy_catalogue_project(source: Path, destination: Path) -> Path:
         raise ValueError("catalogue fixture must be outside its source checkout")
     paths = {*source_owner_paths(source), *config_owner_paths(source)}
     paths.update(source / relative for relative in ("CITATION.cff", ".python-version"))
-    # Two tests load these authored inputs at collection time. Keep that
+    # Tests load these authored inputs at collection time. Keep that
     # genuine full collection, without copying any bridge receipts or runs.
     paths.update(source / relative for relative in _COLLECTION_RESOURCE_FILES)
     paths.update(
