@@ -1,0 +1,40 @@
+[
+  {
+    "status": "ok",
+    "valid": true,
+    "native_claim_ready": true,
+    "source_bound": true,
+    "receipt": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-native-verification.json",
+    "live_catalogue_topics": 168,
+    "selected_topics": 168,
+    "verified_topics": 168,
+    "warning_count": 0,
+    "sorry_count": 0,
+    "sorry_occurrences": 0,
+    "duration_s": 543.811,
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_tag": "v4.35.0",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "errors": []
+  },
+  {
+    "status": "ok",
+    "valid": true,
+    "native_claim_ready": true,
+    "source_bound": true,
+    "receipt": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-p11-native-second.json",
+    "live_catalogue_topics": 168,
+    "selected_topics": 168,
+    "verified_topics": 168,
+    "warning_count": 0,
+    "sorry_count": 0,
+    "sorry_occurrences": 0,
+    "duration_s": 723.187,
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_tag": "v4.35.0",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "errors": []
+  }
+]

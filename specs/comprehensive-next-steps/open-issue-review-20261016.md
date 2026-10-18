@@ -347,7 +347,7 @@ Packages: `P10`.
 
 ### [#127: PKG-14 Measure serial Lean verification before changing it](https://github.com/ActiveInferenceInstitute/fep_formal/issues/127)
 
-Authenticated hosted serial baseline extracted: all 168 clean results, sum 370.173 s, median 2.256 s, min 1.504 s, max 2.608 s. No parallel outcome comparison or speedup is claimed.
+Authenticated hosted serial baseline extracted: all 168 clean results, sum 370.173 s, median 2.256 s, min 1.504 s, max 2.608 s. No parallel outcome comparison or speedup is claimed. The [current exact-source serial comparison](spikes/serial-native-20261018/README.md) is accepted: both source-bound 168-topic receipts validate with identical outcomes and warnings. Per-topic interval sums are 543.811 s and 723.187 s; actual repeat CLI time is 729.47 s. Resource observations cover only the repeat. Canonical serialization remains; no speedup or parallel-safety claim follows.
 
 Packages: `P11`.
 

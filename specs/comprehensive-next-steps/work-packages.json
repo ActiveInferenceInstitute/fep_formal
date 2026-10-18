@@ -1795,7 +1795,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/127"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Serial verification has a measured baseline and any parallel alternative preserves all 168 per-topic outcomes without races.",
       "depends_on": [],
       "single_owner": "Existing verification/lean_verifier.py and retained native duration receipts.",
@@ -1815,7 +1815,19 @@
         "performance"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "Unmeasured speedup, parallelism against the canonical shared Lake tree or native acceptance inferred from timing alone."
+      "out_of_scope": "Unmeasured speedup, parallelism against the canonical shared Lake tree or native acceptance inferred from timing alone.",
+      "acceptance_evidence": {
+        "source_commit": "009b0676f0e2d1d50b2c73ed6c830e31c65fa199",
+        "record": "spikes/serial-native-20261018/README.md",
+        "scope": "Narrow serial measurement only; canonical serialization retained",
+        "checks": [
+          "Both source-bound owner receipts validate for identical 168-topic input identities",
+          "All 168 per-topic outcomes and warning classifications match",
+          "Actual command timing and repeat resource observations retained",
+          "Tracked source bytes preserved; no parallel rollout or speedup claim"
+        ],
+        "future_parallel_gate": "Any future parallel proposal still requires isolated workspaces, outcome equivalence, resource bounds and real-child cleanup; this acceptance does not waive that gate."
+      }
     },
     {
       "id": "T01",

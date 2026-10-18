@@ -130,7 +130,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [PKG-9](https://github.com/ActiveInferenceInstitute/fep_formal/issues/122) — Ratchet function length | Medium | Independent | `ruff check` clean with the rule; no function in the named modules over 200 lines; outputs unchanged. |
 | [PKG-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/123) — Mirror the test layout to the source split | Minor | [CUR-03](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52) | Identical collected node-id set modulo renames. |
 | [PKG-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/126) — Thin cli.py to parse, dispatch and emit | Medium | [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73), [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64) | `cli.py` under ≈ 500 lines; every verb's JSON output byte-identical in CLI tests. |
-| [PKG-14](https://github.com/ActiveInferenceInstitute/fep_formal/issues/127) — Measure serial Lean verification before changing it | Major | Independent | Identical per-topic outcomes for 168 topics with measured elapsed times. |
 
 ### Documentation and manuscript
 

@@ -1,0 +1,26 @@
+{
+  "state": "passed",
+  "returncode": 0,
+  "commit": "009b0676f0e2d1d50b2c73ed6c830e31c65fa199",
+  "baseline_sha256": "ed87486d3c1c21f79d31df1774e3a5700ed898524bc66852902aeb861741412d",
+  "log": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-p11-native-second.log",
+  "second_receipt_sha256": "c51748d24d144349d1487a590e61b4549bd0eeacf0d2a3562972472aa6e5681e",
+  "baseline_seconds": 543.811,
+  "second_seconds": 723.187,
+  "identical_per_topic_outcomes": 168,
+  "scope": "Two serial executions with identical exact168-topic input/source/toolchain identities and outcomes. Canonical shared Lake tree remains serialized. No parallel rollout or speedup claim; resource observations retained only for actual measured run.",
+  "orchestration_elapsed_seconds_including_lease_wait": 729.579,
+  "actual_cli_time_seconds": {
+    "real": 729.47,
+    "user": 266.89,
+    "sys": 394.78
+  },
+  "observed_maximum_resident_set_size_bytes": 1534607360,
+  "resource_scope": "Actual /usr/bin/time -l observation for second command only; no first-run resource comparison, per-topic resource attribution, or isolated import/startup estimate.",
+  "owner_validation_sha256": "5dfb29678b8e80d7a621d096cb5c6a19f3dd0ba635318a8c8531c3d34748e048",
+  "qualification_finalized_after_strict_owner_validation_json_parse": true,
+  "independent_review_fixes": [
+    "Validation JSON uses chr(10) and is parsed before acceptance",
+    "Pre-lease timing labeled orchestration elapsed; actual CLI lifetime from time -l"
+  ]
+}

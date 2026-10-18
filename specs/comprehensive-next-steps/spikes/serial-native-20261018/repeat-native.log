@@ -1,0 +1,2554 @@
+2026-10-17 21:09:43,094 INFO fep_lean.verification.lean_verifier: Verifying 168 Lean sketches sequentially (serialized for .olean safety)...
+2026-10-17 21:10:01,568 INFO fep_lean.verification.lean_verifier: verify_sketch fep-001: compiles=True sorry=False errors=0 retries=0 (18.13s)
+2026-10-17 21:10:06,985 INFO fep_lean.verification.lean_verifier: verify_sketch fep-002: compiles=True sorry=False errors=0 retries=0 (5.41s)
+2026-10-17 21:10:10,821 INFO fep_lean.verification.lean_verifier: verify_sketch fep-003: compiles=True sorry=False errors=0 retries=0 (3.83s)
+2026-10-17 21:10:14,747 INFO fep_lean.verification.lean_verifier: verify_sketch fep-004: compiles=True sorry=False errors=0 retries=0 (3.92s)
+2026-10-17 21:10:18,413 INFO fep_lean.verification.lean_verifier: verify_sketch fep-005: compiles=True sorry=False errors=0 retries=0 (3.66s)
+2026-10-17 21:10:22,604 INFO fep_lean.verification.lean_verifier: verify_sketch fep-006: compiles=True sorry=False errors=0 retries=0 (4.19s)
+2026-10-17 21:10:27,213 INFO fep_lean.verification.lean_verifier: verify_sketch fep-007: compiles=True sorry=False errors=0 retries=0 (4.61s)
+2026-10-17 21:10:31,091 INFO fep_lean.verification.lean_verifier: verify_sketch fep-008: compiles=True sorry=False errors=0 retries=0 (3.88s)
+2026-10-17 21:10:35,854 INFO fep_lean.verification.lean_verifier: verify_sketch fep-009: compiles=True sorry=False errors=0 retries=0 (4.76s)
+2026-10-17 21:10:39,976 INFO fep_lean.verification.lean_verifier: verify_sketch fep-010: compiles=True sorry=False errors=0 retries=0 (4.12s)
+2026-10-17 21:10:45,309 INFO fep_lean.verification.lean_verifier: verify_sketch fep-011: compiles=True sorry=False errors=0 retries=0 (5.33s)
+2026-10-17 21:10:52,438 INFO fep_lean.verification.lean_verifier: verify_sketch fep-012: compiles=True sorry=False errors=0 retries=0 (7.13s)
+2026-10-17 21:10:56,726 INFO fep_lean.verification.lean_verifier: verify_sketch fep-013: compiles=True sorry=False errors=0 retries=0 (4.29s)
+2026-10-17 21:11:02,149 INFO fep_lean.verification.lean_verifier: verify_sketch fep-014: compiles=True sorry=False errors=0 retries=0 (5.42s)
+2026-10-17 21:11:05,713 INFO fep_lean.verification.lean_verifier: verify_sketch fep-015: compiles=True sorry=False errors=0 retries=0 (3.56s)
+2026-10-17 21:11:10,090 INFO fep_lean.verification.lean_verifier: verify_sketch fep-016: compiles=True sorry=False errors=0 retries=0 (4.38s)
+2026-10-17 21:11:15,372 INFO fep_lean.verification.lean_verifier: verify_sketch fep-017: compiles=True sorry=False errors=0 retries=0 (5.28s)
+2026-10-17 21:11:19,547 INFO fep_lean.verification.lean_verifier: verify_sketch fep-018: compiles=True sorry=False errors=0 retries=0 (4.17s)
+2026-10-17 21:11:23,507 INFO fep_lean.verification.lean_verifier: verify_sketch fep-019: compiles=True sorry=False errors=0 retries=0 (3.96s)
+2026-10-17 21:11:27,163 INFO fep_lean.verification.lean_verifier: verify_sketch fep-020: compiles=True sorry=False errors=0 retries=0 (3.65s)
+2026-10-17 21:11:30,599 INFO fep_lean.verification.lean_verifier: verify_sketch fep-021: compiles=True sorry=False errors=0 retries=0 (3.43s)
+2026-10-17 21:11:34,572 INFO fep_lean.verification.lean_verifier: verify_sketch fep-022: compiles=True sorry=False errors=0 retries=0 (3.97s)
+2026-10-17 21:11:38,176 INFO fep_lean.verification.lean_verifier: verify_sketch fep-023: compiles=True sorry=False errors=0 retries=0 (3.60s)
+2026-10-17 21:11:42,355 INFO fep_lean.verification.lean_verifier: verify_sketch fep-024: compiles=True sorry=False errors=0 retries=0 (4.18s)
+2026-10-17 21:11:45,887 INFO fep_lean.verification.lean_verifier: verify_sketch fep-025: compiles=True sorry=False errors=0 retries=0 (3.53s)
+2026-10-17 21:11:49,848 INFO fep_lean.verification.lean_verifier: verify_sketch fep-026: compiles=True sorry=False errors=0 retries=0 (3.96s)
+2026-10-17 21:11:53,705 INFO fep_lean.verification.lean_verifier: verify_sketch fep-027: compiles=True sorry=False errors=0 retries=0 (3.86s)
+2026-10-17 21:11:57,225 INFO fep_lean.verification.lean_verifier: verify_sketch fep-028: compiles=True sorry=False errors=0 retries=0 (3.52s)
+2026-10-17 21:12:01,234 INFO fep_lean.verification.lean_verifier: verify_sketch fep-029: compiles=True sorry=False errors=0 retries=0 (4.01s)
+2026-10-17 21:12:05,864 INFO fep_lean.verification.lean_verifier: verify_sketch fep-030: compiles=True sorry=False errors=0 retries=0 (4.63s)
+2026-10-17 21:12:09,978 INFO fep_lean.verification.lean_verifier: verify_sketch fep-031: compiles=True sorry=False errors=0 retries=0 (4.11s)
+2026-10-17 21:12:13,948 INFO fep_lean.verification.lean_verifier: verify_sketch fep-032: compiles=True sorry=False errors=0 retries=0 (3.97s)
+2026-10-17 21:12:18,686 INFO fep_lean.verification.lean_verifier: verify_sketch fep-033: compiles=True sorry=False errors=0 retries=0 (4.74s)
+2026-10-17 21:12:24,359 INFO fep_lean.verification.lean_verifier: verify_sketch fep-034: compiles=True sorry=False errors=0 retries=0 (5.67s)
+2026-10-17 21:12:30,811 INFO fep_lean.verification.lean_verifier: verify_sketch fep-035: compiles=True sorry=False errors=0 retries=0 (6.45s)
+2026-10-17 21:12:35,992 INFO fep_lean.verification.lean_verifier: verify_sketch fep-036: compiles=True sorry=False errors=0 retries=0 (5.18s)
+2026-10-17 21:12:39,646 INFO fep_lean.verification.lean_verifier: verify_sketch fep-037: compiles=True sorry=False errors=0 retries=0 (3.65s)
+2026-10-17 21:12:43,702 INFO fep_lean.verification.lean_verifier: verify_sketch fep-038: compiles=True sorry=False errors=0 retries=0 (4.05s)
+2026-10-17 21:12:46,765 INFO fep_lean.verification.lean_verifier: verify_sketch fep-039: compiles=True sorry=False errors=0 retries=0 (3.06s)
+2026-10-17 21:12:51,703 INFO fep_lean.verification.lean_verifier: verify_sketch fep-040: compiles=True sorry=False errors=0 retries=0 (4.94s)
+2026-10-17 21:12:55,825 INFO fep_lean.verification.lean_verifier: verify_sketch fep-041: compiles=True sorry=False errors=0 retries=0 (4.12s)
+2026-10-17 21:12:58,987 INFO fep_lean.verification.lean_verifier: verify_sketch fep-042: compiles=True sorry=False errors=0 retries=0 (3.16s)
+2026-10-17 21:13:03,365 INFO fep_lean.verification.lean_verifier: verify_sketch fep-043: compiles=True sorry=False errors=0 retries=0 (4.37s)
+2026-10-17 21:13:07,358 INFO fep_lean.verification.lean_verifier: verify_sketch fep-044: compiles=True sorry=False errors=0 retries=0 (3.99s)
+2026-10-17 21:13:10,396 INFO fep_lean.verification.lean_verifier: verify_sketch fep-045: compiles=True sorry=False errors=0 retries=0 (3.04s)
+2026-10-17 21:13:13,855 INFO fep_lean.verification.lean_verifier: verify_sketch fep-046: compiles=True sorry=False errors=0 retries=0 (3.46s)
+2026-10-17 21:13:17,099 INFO fep_lean.verification.lean_verifier: verify_sketch fep-047: compiles=True sorry=False errors=0 retries=0 (3.24s)
+2026-10-17 21:13:20,664 INFO fep_lean.verification.lean_verifier: verify_sketch fep-048: compiles=True sorry=False errors=0 retries=0 (3.56s)
+2026-10-17 21:13:24,433 INFO fep_lean.verification.lean_verifier: verify_sketch fep-049: compiles=True sorry=False errors=0 retries=0 (3.77s)
+2026-10-17 21:13:28,890 INFO fep_lean.verification.lean_verifier: verify_sketch fep-050: compiles=True sorry=False errors=0 retries=0 (4.45s)
+2026-10-17 21:13:33,780 INFO fep_lean.verification.lean_verifier: verify_sketch fep-051: compiles=True sorry=False errors=0 retries=0 (4.89s)
+2026-10-17 21:13:38,325 INFO fep_lean.verification.lean_verifier: verify_sketch fep-052: compiles=True sorry=False errors=0 retries=0 (4.54s)
+2026-10-17 21:13:42,895 INFO fep_lean.verification.lean_verifier: verify_sketch fep-053: compiles=True sorry=False errors=0 retries=0 (4.57s)
+2026-10-17 21:13:47,603 INFO fep_lean.verification.lean_verifier: verify_sketch fep-054: compiles=True sorry=False errors=0 retries=0 (4.71s)
+2026-10-17 21:13:52,317 INFO fep_lean.verification.lean_verifier: verify_sketch fep-055: compiles=True sorry=False errors=0 retries=0 (4.71s)
+2026-10-17 21:13:56,690 INFO fep_lean.verification.lean_verifier: verify_sketch fep-056: compiles=True sorry=False errors=0 retries=0 (4.37s)
+2026-10-17 21:14:00,590 INFO fep_lean.verification.lean_verifier: verify_sketch fep-057: compiles=True sorry=False errors=0 retries=0 (3.90s)
+2026-10-17 21:14:05,089 INFO fep_lean.verification.lean_verifier: verify_sketch fep-058: compiles=True sorry=False errors=0 retries=0 (4.50s)
+2026-10-17 21:14:09,378 INFO fep_lean.verification.lean_verifier: verify_sketch fep-059: compiles=True sorry=False errors=0 retries=0 (4.29s)
+2026-10-17 21:14:13,667 INFO fep_lean.verification.lean_verifier: verify_sketch fep-060: compiles=True sorry=False errors=0 retries=0 (4.29s)
+2026-10-17 21:14:17,898 INFO fep_lean.verification.lean_verifier: verify_sketch fep-061: compiles=True sorry=False errors=0 retries=0 (4.23s)
+2026-10-17 21:14:22,533 INFO fep_lean.verification.lean_verifier: verify_sketch fep-062: compiles=True sorry=False errors=0 retries=0 (4.63s)
+2026-10-17 21:14:27,373 INFO fep_lean.verification.lean_verifier: verify_sketch fep-063: compiles=True sorry=False errors=0 retries=0 (4.84s)
+2026-10-17 21:14:31,897 INFO fep_lean.verification.lean_verifier: verify_sketch fep-064: compiles=True sorry=False errors=0 retries=0 (4.52s)
+2026-10-17 21:14:35,895 INFO fep_lean.verification.lean_verifier: verify_sketch fep-065: compiles=True sorry=False errors=0 retries=0 (4.00s)
+2026-10-17 21:14:40,210 INFO fep_lean.verification.lean_verifier: verify_sketch fep-066: compiles=True sorry=False errors=0 retries=0 (4.31s)
+2026-10-17 21:14:44,877 INFO fep_lean.verification.lean_verifier: verify_sketch fep-067: compiles=True sorry=False errors=0 retries=0 (4.67s)
+2026-10-17 21:14:49,347 INFO fep_lean.verification.lean_verifier: verify_sketch fep-068: compiles=True sorry=False errors=0 retries=0 (4.47s)
+2026-10-17 21:14:53,959 INFO fep_lean.verification.lean_verifier: verify_sketch fep-069: compiles=True sorry=False errors=0 retries=0 (4.61s)
+2026-10-17 21:14:58,064 INFO fep_lean.verification.lean_verifier: verify_sketch fep-070: compiles=True sorry=False errors=0 retries=0 (4.10s)
+2026-10-17 21:15:02,131 INFO fep_lean.verification.lean_verifier: verify_sketch fep-071: compiles=True sorry=False errors=0 retries=0 (4.07s)
+2026-10-17 21:15:06,415 INFO fep_lean.verification.lean_verifier: verify_sketch fep-072: compiles=True sorry=False errors=0 retries=0 (4.28s)
+2026-10-17 21:15:10,576 INFO fep_lean.verification.lean_verifier: verify_sketch fep-073: compiles=True sorry=False errors=0 retries=0 (4.16s)
+2026-10-17 21:15:15,179 INFO fep_lean.verification.lean_verifier: verify_sketch fep-074: compiles=True sorry=False errors=0 retries=0 (4.60s)
+2026-10-17 21:15:19,660 INFO fep_lean.verification.lean_verifier: verify_sketch fep-075: compiles=True sorry=False errors=0 retries=0 (4.48s)
+2026-10-17 21:15:23,356 INFO fep_lean.verification.lean_verifier: verify_sketch fep-076: compiles=True sorry=False errors=0 retries=0 (3.69s)
+2026-10-17 21:15:26,855 INFO fep_lean.verification.lean_verifier: verify_sketch fep-077: compiles=True sorry=False errors=0 retries=0 (3.50s)
+2026-10-17 21:15:30,841 INFO fep_lean.verification.lean_verifier: verify_sketch fep-078: compiles=True sorry=False errors=0 retries=0 (3.98s)
+2026-10-17 21:15:34,757 INFO fep_lean.verification.lean_verifier: verify_sketch fep-079: compiles=True sorry=False errors=0 retries=0 (3.91s)
+2026-10-17 21:15:38,986 INFO fep_lean.verification.lean_verifier: verify_sketch fep-080: compiles=True sorry=False errors=0 retries=0 (4.23s)
+2026-10-17 21:15:43,446 INFO fep_lean.verification.lean_verifier: verify_sketch fep-081: compiles=True sorry=False errors=0 retries=0 (4.46s)
+2026-10-17 21:15:47,606 INFO fep_lean.verification.lean_verifier: verify_sketch fep-082: compiles=True sorry=False errors=0 retries=0 (4.16s)
+2026-10-17 21:15:51,989 INFO fep_lean.verification.lean_verifier: verify_sketch fep-083: compiles=True sorry=False errors=0 retries=0 (4.38s)
+2026-10-17 21:15:56,323 INFO fep_lean.verification.lean_verifier: verify_sketch fep-084: compiles=True sorry=False errors=0 retries=0 (4.33s)
+2026-10-17 21:16:00,814 INFO fep_lean.verification.lean_verifier: verify_sketch fep-085: compiles=True sorry=False errors=0 retries=0 (4.49s)
+2026-10-17 21:16:06,143 INFO fep_lean.verification.lean_verifier: verify_sketch fep-086: compiles=True sorry=False errors=0 retries=0 (5.33s)
+2026-10-17 21:16:11,488 INFO fep_lean.verification.lean_verifier: verify_sketch fep-087: compiles=True sorry=False errors=0 retries=0 (5.34s)
+2026-10-17 21:16:16,775 INFO fep_lean.verification.lean_verifier: verify_sketch fep-088: compiles=True sorry=False errors=0 retries=0 (5.29s)
+2026-10-17 21:16:22,289 INFO fep_lean.verification.lean_verifier: verify_sketch fep-089: compiles=True sorry=False errors=0 retries=0 (5.51s)
+2026-10-17 21:16:27,483 INFO fep_lean.verification.lean_verifier: verify_sketch fep-090: compiles=True sorry=False errors=0 retries=0 (5.19s)
+2026-10-17 21:16:32,341 INFO fep_lean.verification.lean_verifier: verify_sketch fep-091: compiles=True sorry=False errors=0 retries=0 (4.86s)
+2026-10-17 21:16:37,415 INFO fep_lean.verification.lean_verifier: verify_sketch fep-092: compiles=True sorry=False errors=0 retries=0 (5.07s)
+2026-10-17 21:16:42,445 INFO fep_lean.verification.lean_verifier: verify_sketch fep-093: compiles=True sorry=False errors=0 retries=0 (5.03s)
+2026-10-17 21:16:47,811 INFO fep_lean.verification.lean_verifier: verify_sketch fep-094: compiles=True sorry=False errors=0 retries=0 (5.36s)
+2026-10-17 21:16:53,146 INFO fep_lean.verification.lean_verifier: verify_sketch fep-095: compiles=True sorry=False errors=0 retries=0 (5.33s)
+2026-10-17 21:16:58,579 INFO fep_lean.verification.lean_verifier: verify_sketch fep-096: compiles=True sorry=False errors=0 retries=0 (5.43s)
+2026-10-17 21:17:03,656 INFO fep_lean.verification.lean_verifier: verify_sketch fep-097: compiles=True sorry=False errors=0 retries=0 (5.08s)
+2026-10-17 21:17:08,675 INFO fep_lean.verification.lean_verifier: verify_sketch fep-098: compiles=True sorry=False errors=0 retries=0 (5.02s)
+2026-10-17 21:17:14,138 INFO fep_lean.verification.lean_verifier: verify_sketch fep-099: compiles=True sorry=False errors=0 retries=0 (5.46s)
+2026-10-17 21:17:18,576 INFO fep_lean.verification.lean_verifier: verify_sketch fep-100: compiles=True sorry=False errors=0 retries=0 (4.44s)
+2026-10-17 21:17:24,139 INFO fep_lean.verification.lean_verifier: verify_sketch fep-101: compiles=True sorry=False errors=0 retries=0 (5.56s)
+2026-10-17 21:17:28,993 INFO fep_lean.verification.lean_verifier: verify_sketch fep-102: compiles=True sorry=False errors=0 retries=0 (4.85s)
+2026-10-17 21:17:32,971 INFO fep_lean.verification.lean_verifier: verify_sketch fep-103: compiles=True sorry=False errors=0 retries=0 (3.98s)
+2026-10-17 21:17:37,146 INFO fep_lean.verification.lean_verifier: verify_sketch fep-104: compiles=True sorry=False errors=0 retries=0 (4.17s)
+2026-10-17 21:17:41,284 INFO fep_lean.verification.lean_verifier: verify_sketch fep-105: compiles=True sorry=False errors=0 retries=0 (4.14s)
+2026-10-17 21:17:45,212 INFO fep_lean.verification.lean_verifier: verify_sketch fep-106: compiles=True sorry=False errors=0 retries=0 (3.93s)
+2026-10-17 21:17:49,706 INFO fep_lean.verification.lean_verifier: verify_sketch fep-107: compiles=True sorry=False errors=0 retries=0 (4.49s)
+2026-10-17 21:17:54,095 INFO fep_lean.verification.lean_verifier: verify_sketch fep-108: compiles=True sorry=False errors=0 retries=0 (4.39s)
+2026-10-17 21:17:58,936 INFO fep_lean.verification.lean_verifier: verify_sketch fep-109: compiles=True sorry=False errors=0 retries=0 (4.84s)
+2026-10-17 21:18:04,364 INFO fep_lean.verification.lean_verifier: verify_sketch fep-110: compiles=True sorry=False errors=0 retries=0 (5.43s)
+2026-10-17 21:18:09,301 INFO fep_lean.verification.lean_verifier: verify_sketch fep-111: compiles=True sorry=False errors=0 retries=0 (4.94s)
+2026-10-17 21:18:13,725 INFO fep_lean.verification.lean_verifier: verify_sketch fep-112: compiles=True sorry=False errors=0 retries=0 (4.42s)
+2026-10-17 21:18:17,965 INFO fep_lean.verification.lean_verifier: verify_sketch fep-113: compiles=True sorry=False errors=0 retries=0 (4.24s)
+2026-10-17 21:18:22,628 INFO fep_lean.verification.lean_verifier: verify_sketch fep-114: compiles=True sorry=False errors=0 retries=0 (4.66s)
+2026-10-17 21:18:27,526 INFO fep_lean.verification.lean_verifier: verify_sketch fep-115: compiles=True sorry=False errors=0 retries=0 (4.90s)
+2026-10-17 21:18:31,704 INFO fep_lean.verification.lean_verifier: verify_sketch fep-116: compiles=True sorry=False errors=0 retries=0 (4.18s)
+2026-10-17 21:18:37,471 INFO fep_lean.verification.lean_verifier: verify_sketch fep-117: compiles=True sorry=False errors=0 retries=0 (5.77s)
+2026-10-17 21:18:46,224 INFO fep_lean.verification.lean_verifier: verify_sketch fep-118: compiles=True sorry=False errors=0 retries=0 (8.75s)
+2026-10-17 21:18:50,302 INFO fep_lean.verification.lean_verifier: verify_sketch fep-119: compiles=True sorry=False errors=0 retries=0 (4.08s)
+2026-10-17 21:18:54,173 INFO fep_lean.verification.lean_verifier: verify_sketch fep-120: compiles=True sorry=False errors=0 retries=0 (3.87s)
+2026-10-17 21:18:57,582 INFO fep_lean.verification.lean_verifier: verify_sketch fep-121: compiles=True sorry=False errors=0 retries=0 (3.41s)
+2026-10-17 21:19:00,587 INFO fep_lean.verification.lean_verifier: verify_sketch fep-122: compiles=True sorry=False errors=0 retries=0 (3.00s)
+2026-10-17 21:19:03,481 INFO fep_lean.verification.lean_verifier: verify_sketch fep-123: compiles=True sorry=False errors=0 retries=0 (2.89s)
+2026-10-17 21:19:06,837 INFO fep_lean.verification.lean_verifier: verify_sketch fep-124: compiles=True sorry=False errors=0 retries=0 (3.35s)
+2026-10-17 21:19:10,408 INFO fep_lean.verification.lean_verifier: verify_sketch fep-125: compiles=True sorry=False errors=0 retries=0 (3.57s)
+2026-10-17 21:19:14,775 INFO fep_lean.verification.lean_verifier: verify_sketch fep-126: compiles=True sorry=False errors=0 retries=0 (4.37s)
+2026-10-17 21:19:22,579 INFO fep_lean.verification.lean_verifier: verify_sketch fep-127: compiles=True sorry=False errors=0 retries=0 (7.80s)
+2026-10-17 21:19:26,065 INFO fep_lean.verification.lean_verifier: verify_sketch fep-128: compiles=True sorry=False errors=0 retries=0 (3.48s)
+2026-10-17 21:19:29,899 INFO fep_lean.verification.lean_verifier: verify_sketch fep-129: compiles=True sorry=False errors=0 retries=0 (3.83s)
+2026-10-17 21:19:35,323 INFO fep_lean.verification.lean_verifier: verify_sketch fep-130: compiles=True sorry=False errors=0 retries=0 (5.42s)
+2026-10-17 21:19:38,683 INFO fep_lean.verification.lean_verifier: verify_sketch fep-131: compiles=True sorry=False errors=0 retries=0 (3.36s)
+2026-10-17 21:19:41,480 INFO fep_lean.verification.lean_verifier: verify_sketch fep-132: compiles=True sorry=False errors=0 retries=0 (2.80s)
+2026-10-17 21:19:44,322 INFO fep_lean.verification.lean_verifier: verify_sketch fep-133: compiles=True sorry=False errors=0 retries=0 (2.84s)
+2026-10-17 21:19:47,060 INFO fep_lean.verification.lean_verifier: verify_sketch fep-134: compiles=True sorry=False errors=0 retries=0 (2.74s)
+2026-10-17 21:19:50,063 INFO fep_lean.verification.lean_verifier: verify_sketch fep-135: compiles=True sorry=False errors=0 retries=0 (3.00s)
+2026-10-17 21:19:52,948 INFO fep_lean.verification.lean_verifier: verify_sketch fep-136: compiles=True sorry=False errors=0 retries=0 (2.88s)
+2026-10-17 21:19:56,740 INFO fep_lean.verification.lean_verifier: verify_sketch fep-137: compiles=True sorry=False errors=0 retries=0 (3.79s)
+2026-10-17 21:20:00,828 INFO fep_lean.verification.lean_verifier: verify_sketch fep-138: compiles=True sorry=False errors=0 retries=0 (4.09s)
+2026-10-17 21:20:03,783 INFO fep_lean.verification.lean_verifier: verify_sketch fep-139: compiles=True sorry=False errors=0 retries=0 (2.95s)
+2026-10-17 21:20:06,688 INFO fep_lean.verification.lean_verifier: verify_sketch fep-140: compiles=True sorry=False errors=0 retries=0 (2.90s)
+2026-10-17 21:20:09,796 INFO fep_lean.verification.lean_verifier: verify_sketch fep-141: compiles=True sorry=False errors=0 retries=0 (3.11s)
+2026-10-17 21:20:12,753 INFO fep_lean.verification.lean_verifier: verify_sketch fep-142: compiles=True sorry=False errors=0 retries=0 (2.96s)
+2026-10-17 21:20:15,605 INFO fep_lean.verification.lean_verifier: verify_sketch fep-143: compiles=True sorry=False errors=0 retries=0 (2.85s)
+2026-10-17 21:20:18,860 INFO fep_lean.verification.lean_verifier: verify_sketch fep-144: compiles=True sorry=False errors=0 retries=0 (3.25s)
+2026-10-17 21:20:22,271 INFO fep_lean.verification.lean_verifier: verify_sketch fep-145: compiles=True sorry=False errors=0 retries=0 (3.41s)
+2026-10-17 21:20:25,380 INFO fep_lean.verification.lean_verifier: verify_sketch fep-146: compiles=True sorry=False errors=0 retries=0 (3.11s)
+2026-10-17 21:20:28,562 INFO fep_lean.verification.lean_verifier: verify_sketch fep-147: compiles=True sorry=False errors=0 retries=0 (3.18s)
+2026-10-17 21:20:31,871 INFO fep_lean.verification.lean_verifier: verify_sketch fep-148: compiles=True sorry=False errors=0 retries=0 (3.31s)
+2026-10-17 21:20:35,442 INFO fep_lean.verification.lean_verifier: verify_sketch fep-149: compiles=True sorry=False errors=0 retries=0 (3.57s)
+2026-10-17 21:20:39,417 INFO fep_lean.verification.lean_verifier: verify_sketch fep-150: compiles=True sorry=False errors=0 retries=0 (3.97s)
+2026-10-17 21:20:43,598 INFO fep_lean.verification.lean_verifier: verify_sketch fep-151: compiles=True sorry=False errors=0 retries=0 (4.18s)
+2026-10-17 21:20:47,429 INFO fep_lean.verification.lean_verifier: verify_sketch fep-152: compiles=True sorry=False errors=0 retries=0 (3.83s)
+2026-10-17 21:20:51,413 INFO fep_lean.verification.lean_verifier: verify_sketch fep-153: compiles=True sorry=False errors=0 retries=0 (3.98s)
+2026-10-17 21:20:55,494 INFO fep_lean.verification.lean_verifier: verify_sketch fep-154: compiles=True sorry=False errors=0 retries=0 (4.08s)
+2026-10-17 21:20:59,916 INFO fep_lean.verification.lean_verifier: verify_sketch fep-155: compiles=True sorry=False errors=0 retries=0 (4.42s)
+2026-10-17 21:21:04,175 INFO fep_lean.verification.lean_verifier: verify_sketch fep-156: compiles=True sorry=False errors=0 retries=0 (4.26s)
+2026-10-17 21:21:09,187 INFO fep_lean.verification.lean_verifier: verify_sketch fep-157: compiles=True sorry=False errors=0 retries=0 (5.01s)
+2026-10-17 21:21:12,963 INFO fep_lean.verification.lean_verifier: verify_sketch fep-158: compiles=True sorry=False errors=0 retries=0 (3.77s)
+2026-10-17 21:21:16,536 INFO fep_lean.verification.lean_verifier: verify_sketch fep-159: compiles=True sorry=False errors=0 retries=0 (3.57s)
+2026-10-17 21:21:20,572 INFO fep_lean.verification.lean_verifier: verify_sketch fep-160: compiles=True sorry=False errors=0 retries=0 (4.03s)
+2026-10-17 21:21:23,404 INFO fep_lean.verification.lean_verifier: verify_sketch fep-161: compiles=True sorry=False errors=0 retries=0 (2.83s)
+2026-10-17 21:21:26,604 INFO fep_lean.verification.lean_verifier: verify_sketch fep-162: compiles=True sorry=False errors=0 retries=0 (3.20s)
+2026-10-17 21:21:29,855 INFO fep_lean.verification.lean_verifier: verify_sketch fep-163: compiles=True sorry=False errors=0 retries=0 (3.25s)
+2026-10-17 21:21:32,802 INFO fep_lean.verification.lean_verifier: verify_sketch fep-164: compiles=True sorry=False errors=0 retries=0 (2.95s)
+2026-10-17 21:21:36,008 INFO fep_lean.verification.lean_verifier: verify_sketch fep-165: compiles=True sorry=False errors=0 retries=0 (3.21s)
+2026-10-17 21:21:40,459 INFO fep_lean.verification.lean_verifier: verify_sketch fep-166: compiles=True sorry=False errors=0 retries=0 (4.45s)
+2026-10-17 21:21:43,610 INFO fep_lean.verification.lean_verifier: verify_sketch fep-167: compiles=True sorry=False errors=0 retries=0 (3.15s)
+2026-10-17 21:21:46,925 INFO fep_lean.verification.lean_verifier: verify_sketch fep-168: compiles=True sorry=False errors=0 retries=0 (3.31s)
+{
+  "status": "ok",
+  "mode": "lean-only",
+  "complete": true,
+  "catalogue_topics": 168,
+  "verified_topics": 168,
+  "compiled_without_sorry_topics": 168,
+  "warning_count": 0,
+  "sorry_count": 0,
+  "mathlib": "Mathlib built (`Mathlib.olean` and required leaves present)",
+  "receipt": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-p11-native-second.json",
+  "native_claim_ready": true,
+  "results": [
+    {
+      "topic_id": "fep-001",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 18.132,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-002",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.414,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-003",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.834,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-004",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.924,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-005",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.663,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-006",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.189,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-007",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.605,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-008",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.876,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-009",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.76,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-010",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.12,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-011",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.331,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-012",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 7.127,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-013",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.287,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-014",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.421,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-015",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.563,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-016",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.375,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-017",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.28,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-018",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.172,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-019",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.959,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-020",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.654,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-021",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.434,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-022",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.97,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-023",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.603,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-024",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.177,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-025",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.53,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-026",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.958,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-027",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.856,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-028",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.517,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-029",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.007,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-030",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.628,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-031",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.113,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-032",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.967,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-033",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.736,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-034",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.672,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-035",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 6.449,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-036",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.179,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-037",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.651,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-038",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.054,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-039",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.061,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-040",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.935,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-041",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.119,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-042",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.16,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-043",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.375,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-044",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.991,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-045",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.036,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-046",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.457,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-047",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.242,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-048",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.564,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-049",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.766,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-050",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.455,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-051",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.889,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-052",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.543,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-053",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.569,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-054",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.706,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-055",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.712,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-056",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.371,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-057",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.898,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-058",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.498,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-059",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.287,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-060",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.287,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-061",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.23,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-062",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.633,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-063",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.839,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-064",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.521,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-065",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.996,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-066",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.313,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-067",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.666,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-068",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.468,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-069",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.61,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-070",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.104,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-071",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.066,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-072",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.282,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-073",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.16,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-074",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.601,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-075",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.48,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-076",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.694,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-077",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.497,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-078",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.984,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-079",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.915,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-080",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.227,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-081",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.459,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-082",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.158,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-083",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.381,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-084",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.333,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-085",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.489,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-086",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.328,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-087",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.343,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-088",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.285,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-089",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.512,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-090",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.192,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-091",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.857,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-092",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.071,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-093",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.028,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-094",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.364,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-095",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.334,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-096",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.432,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-097",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.075,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-098",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.016,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-099",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.462,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-100",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.436,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-101",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.562,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-102",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.853,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-103",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.975,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-104",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.172,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-105",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.137,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-106",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.926,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-107",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.492,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-108",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.387,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-109",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.839,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-110",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.427,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-111",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.936,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-112",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.421,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-113",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.239,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-114",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.661,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-115",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.896,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-116",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.175,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-117",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.766,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-118",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 8.751,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-119",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.077,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-120",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.869,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-121",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.408,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-122",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.003,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-123",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.893,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-124",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.355,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-125",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.569,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-126",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.366,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-127",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 7.802,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-128",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.484,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-129",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.833,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-130",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.422,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-131",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.358,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-132",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.796,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-133",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.841,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-134",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.737,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-135",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.003,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-136",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.884,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-137",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.79,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-138",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.087,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-139",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.954,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-140",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.903,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-141",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.107,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-142",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.955,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-143",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.852,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-144",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.254,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-145",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.41,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-146",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.107,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-147",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.182,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-148",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.308,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-149",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.57,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-150",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.974,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-151",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.179,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-152",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.83,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-153",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.983,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-154",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.079,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-155",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.42,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-156",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.257,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-157",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 5.007,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-158",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.773,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-159",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.571,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-160",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.033,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-161",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.831,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-162",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.198,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-163",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.248,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-164",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 2.945,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-165",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.206,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-166",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 4.448,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-167",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.149,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    },
+    {
+      "topic_id": "fep-168",
+      "compiles": true,
+      "has_sorry": false,
+      "sorry_occurrences": 0,
+      "status": "compiles_clean",
+      "errors": [],
+      "warnings": [],
+      "duration_s": 3.313,
+      "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+      "lean_file": null,
+      "skip_reason": "",
+      "failure_kind": "other"
+    }
+  ]
+}
+      729.47 real       266.89 user       394.78 sys
+          1534607360  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+            33502252  page reclaims
+              241388  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                 336  messages sent
+                 672  messages received
+                   0  signals received
+               61271  voluntary context switches
+             1848013  involuntary context switches
+         75235773783  instructions retired
+         26232732361  cycles elapsed
+            55411288  peak memory footprint

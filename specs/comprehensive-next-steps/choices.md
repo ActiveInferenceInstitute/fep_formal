@@ -743,3 +743,26 @@ open scope and its remaining work. Delete repository-owned branches only after
 their tips are ancestors of main; remove worktrees only after checking tracked
 and nonignored untracked changes. External contributor branches are not owned by
 this repository and are not cleanup targets.
+
+## Exact-source serial repeat closes measurement only
+
+**When:** 2026-10-18 P11 acceptance.
+
+**Choice:** Compare two actual source-bound serial runs with the same 168-topic
+roster, configuration, compiler and Mathlib identities. Preserve every outcome
+and warning classification, both raw receipts and actual repeat timing/resource
+output. Keep canonical verification serialized.
+
+**Reach:** All 168 outcomes match. Per-topic interval sums are 543.811 s and 723.187 s;
+repeat CLI lifetime is 729.47 s. Orchestration including lease waiting is 729.579 s.
+The repeat resource observation does not supply first-run or per-topic resource
+comparisons. These intervals combine startup, imports and elaboration; cache
+and machine load are not controlled.
+
+**Verdict:** Accept the narrow serial measurement. No speedup, parallel safety,
+import-startup isolation or new axiom-audit claim follows. A future parallel
+proposal still needs independent isolation, exact outcomes, resource bounds
+and real-child cleanup controls.
+
+**Confidence:** High for the retained identical-input/outcome comparison and
+actual timing observations, after strict owner-validation JSON parsing.

@@ -36,7 +36,9 @@ the eight receipt-bound copies and their individual retention decisions.
    L01/P08/P09 are accepted for their narrow source-bound software scopes in
    [the quality acceptance receipt](software-quality-acceptance-20261018.json).
    Independent owner inventories can prepare L02/L03, L05/L06, S03 and
-   P03/P06/P11; their compiling, execution and review gates still apply.
+   P03/P06; their compiling, execution and review gates still apply.
+   P11 is accepted for the [exact-source serial measurement](spikes/serial-native-20261018/README.md);
+   canonical serialization and all future parallel-proposal gates remain.
 2. C01/C02 resolve the actual production DOM failure and explicitly approved
    successor membership. C03 obtains actual capture/archive acceptance; C04 local
    installed-runtime/status acceptance is separately recorded above; C05 closes the complete current-source

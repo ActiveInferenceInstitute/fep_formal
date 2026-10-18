@@ -1,5 +1,11 @@
 ## Unreleased
 
+- Accept [#127](https://github.com/ActiveInferenceInstitute/fep_formal/issues/127)'s
+  exact-source serial measurement: all 168 topic outcomes and warning classes
+  match across two valid native receipts. Retain actual timing and repeat
+  resource observations. Canonical verification stays serialized; no speedup,
+  parallel-safety or new scientific acceptance is claimed.
+
 - Retain a fresh strict native category consumer, all ten raw axiom reports and
   independent domain/custody review for the attributed PR44/PR179 integration.
   The reports use only the standard three axioms. This records completed
