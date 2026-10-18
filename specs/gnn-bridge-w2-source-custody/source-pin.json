@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "34a2d25ffaf5f34de7ec409d7ad965fad3c14f6a",
+    "commit": "a4dbe02bcfc962ef44b8f913584dc8c8ad6cb0d7",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -202,7 +202,7 @@
     }
   },
   "gnn": {
-    "commit": "d4e8941db6923dbfc5222c44c396654c17f7a92d",
+    "commit": "f840c8939b3bee6919280286cd9849587ccf894d",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
@@ -652,12 +652,14 @@
       "src/gnn/pipeline/step_timeouts.py": "80ac0459c0a59258b8596fa183566328ae9a756db5bb298311168ee6f51188d1",
       "src/gnn/pipeline/summary_wiring.py": "5ae6ee8949beceba766da6ea43603d60f78eed4b214e8e2d492c4b9ae862a497",
       "src/gnn/pipeline/verify_pipeline.py": "f8c3d2831fddc875a293de1fbf6ab96ca098ecd3dbd2887c35c503b4cc718423",
-      "src/gnn/processing/__init__.py": "2b7592614ac75ab53fe47302166b7d3d066e065fa739a197f8f31fc2872921d3",
+      "src/gnn/processing/__init__.py": "12ce67e5066487ee7bf2544b4d4d5f3b2b26ebc09942a5028ec9cbd493fe6de0",
+      "src/gnn/processing/__main__.py": "26688274244e4d20b182070f6749058d775485e89c0b48ea7cabdcf2893572e7",
       "src/gnn/processing/core_processor.py": "aa360fcd273eecfd85516b797d116fd4a5124d72e799884cf5ac4da389d35360",
       "src/gnn/processing/discovery.py": "6d50331e2965f32141241554db0d8f96f3175e1ce5c83140ff9e615c9ec67d78",
       "src/gnn/processing/mcp.py": "19caf6f9275c2d229717d20701085dfceb2e56873e91bca170d6a9be03dc1831",
       "src/gnn/processing/multi_format_processor.py": "2fa9f8900c727e418771358928a1843df09310f340045d0fffdb3c2423ebf4c7",
-      "src/gnn/processing/processor.py": "2d45dcd57272f218f591eede40eb5d0f9f31453a01aee25d0874494444e1a4b0",
+      "src/gnn/processing/processor.py": "c4db24d262e3a6f0c671c85825aebb2a73bc1cc528b20a8fb7ba87e553d1a67a",
+      "src/gnn/processing/profiling.py": "f9c25aa12d04f93541d9ad3ed92a8390a4dcdb3f475e9c0f57cbbc3af27ba9f3",
       "src/gnn/render/__init__.py": "2b29e84496e32ac3da0ed7b6fd86845695ccc718d34f10f2dd5ca0cf1aca4010",
       "src/gnn/render/activeinference_jl/__init__.py": "d12841fdc6ed86eb350eed46d0098aa6d02a7a4c4a0fdace880a4b53f8e2d386",
       "src/gnn/render/activeinference_jl/activeinference_renderer.py": "2b48d9884e6c03cc2cc83ccc026973647d7bc060b3d9a1972f1a8721a151786f",
