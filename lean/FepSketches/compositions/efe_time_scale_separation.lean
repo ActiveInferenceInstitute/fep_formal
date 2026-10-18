@@ -1,5 +1,6 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.continuous_time_thermodynamics
+public import FepSketches.families.standalone_efe_formalizations
 public import FepSketches.efe_time_scale_separation
 
 @[expose] public section

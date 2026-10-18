@@ -1,5 +1,6 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.core_active_inference
+public import FepSketches.families.standalone_efe_formalizations
 public import FepSketches.efe_policy_selection
 
 @[expose] public section

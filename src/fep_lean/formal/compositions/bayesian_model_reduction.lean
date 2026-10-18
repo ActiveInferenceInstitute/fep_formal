@@ -1,5 +1,6 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.standalone_efe_formalizations
+public import FepSketches.families.variational_duality
 public import FepSketches.bayesian_model_reduction
 
 @[expose] public section

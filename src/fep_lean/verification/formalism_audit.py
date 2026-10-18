@@ -12,7 +12,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from fep_lean.catalogue.generation import fep_all_projection_drift
-from fep_lean.catalogue.registry import body_source_relative_paths
+from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST, body_source_relative_paths
 from fep_lean.catalogue.relations import EdgeKind, load_formalism_graph
 from fep_lean.catalogue.semantics import load_theorem_maturity
 from fep_lean.formal import (
@@ -44,6 +44,7 @@ _DIGEST_PATHS = (
     "config/formalism_relations.yaml",
     "src/fep_lean/catalogue/registry.py",
     *body_source_relative_paths(),
+    *(entry.lean_projection_relative_path for entry in BODY_MODULE_MANIFEST),
     "lean/lean-toolchain",
     "lean/lakefile.lean",
     "lean/lake-manifest.json",
@@ -269,6 +270,25 @@ def _canonical_axiom_output(
     return tuple(lines)
 
 
+def _declaration_module(declaration: str, formal_modules: dict[str, str]) -> str:
+    """Resolve actual declaration ownership, not the compatibility import facade."""
+    if declaration in formal_modules:
+        return formal_modules[declaration]
+    prefix = declaration.partition(".")[0]
+    if prefix.startswith("fep_fep"):
+        topic = "fep-" + prefix.removeprefix("fep_fep")
+        for entry in BODY_MODULE_MANIFEST:
+            if topic in entry.bodies:
+                return (
+                    entry.lean_projection_relative_path.removeprefix("lean/")
+                    .removesuffix(".lean")
+                    .replace("/", ".")
+                )
+    raise ValueError(
+        f"native declaration has no manifested module owner: {declaration}"
+    )
+
+
 def _declaration_records(
     project_root: Path,
     *,
@@ -291,7 +311,7 @@ def _declaration_records(
                 declaration=declaration,
                 source_roles=tuple(role for role, _ in pairs),
                 source_ids=tuple(source_id for _, source_id in pairs),
-                formal_module=formal_modules.get(declaration, "FepSketches.fep_all"),
+                formal_module=_declaration_module(declaration, formal_modules),
                 resolved=probe_succeeded and declaration in axiom_map,
                 axioms=axioms,
                 uses_sorry_ax=uses_sorry,
@@ -661,7 +681,7 @@ def validate_formalism_audit_receipt(path: Path, project_root: Path) -> tuple[st
             errors.append(f"receipt source roles drifted for {declaration}")
         if record.get("source_ids") != [source_id for _, source_id in expected_pairs]:
             errors.append(f"receipt source IDs drifted for {declaration}")
-        expected_module = formal_modules.get(declaration, "FepSketches.fep_all")
+        expected_module = _declaration_module(declaration, formal_modules)
         if record.get("formal_module") != expected_module:
             errors.append(f"receipt formal module drifted for {declaration}")
         if not isinstance(record.get("resolved"), bool):

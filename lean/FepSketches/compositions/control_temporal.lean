@@ -1,5 +1,9 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.controlled_markov
+public import FepSketches.families.core_active_inference
+public import FepSketches.families.core_bayesian_mechanics
+public import FepSketches.families.core_thermodynamics
+public import FepSketches.families.temporal_inference
 public import FepSketches.controlled_markov
 public import FepSketches.temporal_inference
 

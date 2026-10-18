@@ -3133,7 +3133,12 @@
       ],
       "id": "formal-module-core",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.core_active_inference",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_free_energy",
+        "FepSketches.families.core_information_geometry",
+        "FepSketches.families.core_thermodynamics",
+        "FepSketches.families.geometric_optimization",
         "FepSketches.active_inference",
         "FepSketches.information_geometry",
         "FepSketches.markov_blanket",
@@ -3187,7 +3192,12 @@
       ],
       "id": "formal-module-measure-variational",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.core_active_inference",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_free_energy",
+        "FepSketches.families.core_information_geometry",
+        "FepSketches.families.measure_bayesian_inversion",
+        "FepSketches.families.variational_duality",
         "FepSketches.measure_bayes",
         "FepSketches.variational_duality"
       ],
@@ -3222,7 +3232,11 @@
       ],
       "id": "formal-module-control-temporal",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.controlled_markov",
+        "FepSketches.families.core_active_inference",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_thermodynamics",
+        "FepSketches.families.temporal_inference",
         "FepSketches.controlled_markov",
         "FepSketches.temporal_inference"
       ],
@@ -3257,7 +3271,11 @@
       ],
       "id": "formal-module-causal-predictive",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.causal_blankets_interventions",
+        "FepSketches.families.core_active_inference",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_free_energy",
+        "FepSketches.families.predictive_coding_generalized",
         "FepSketches.causal_dynamics",
         "FepSketches.predictive_coding"
       ],
@@ -3292,7 +3310,12 @@
       ],
       "id": "formal-module-thermo-geometry",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.core_active_inference",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_information_geometry",
+        "FepSketches.families.core_thermodynamics",
+        "FepSketches.families.geometric_optimization",
+        "FepSketches.families.path_thermodynamics",
         "FepSketches.path_thermodynamics",
         "FepSketches.geometric_optimization"
       ],
@@ -3328,7 +3351,12 @@
       ],
       "id": "formal-module-collective-learning",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.collective_inference",
+        "FepSketches.families.core_active_inference",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_free_energy",
+        "FepSketches.families.core_thermodynamics",
+        "FepSketches.families.learning_theory",
         "FepSketches.collective_inference",
         "FepSketches.learning_theory"
       ],
@@ -3362,7 +3390,9 @@
       ],
       "id": "formal-module-risk-calibration",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.finite_sample_risk_calibration",
+        "FepSketches.families.learning_theory",
         "FepSketches.empirical_risk"
       ],
       "lean_module": "FepSketches.compositions.risk_calibration",
@@ -3388,7 +3418,9 @@
       ],
       "id": "formal-module-policy-trees",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.closed_loop_policy_trees",
+        "FepSketches.families.controlled_markov",
+        "FepSketches.families.core_active_inference",
         "FepSketches.policy_tree"
       ],
       "lean_module": "FepSketches.compositions.policy_trees",
@@ -3415,7 +3447,10 @@
       ],
       "id": "formal-module-native-blanket-transfer",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.causal_blankets_interventions",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_free_energy",
+        "FepSketches.families.native_blanket_independence",
         "FepSketches.native_blanket",
         "FepSketches.gaussian_precision_conditioning",
         "Mathlib.LinearAlgebra.Matrix.PosDef",
@@ -3457,7 +3492,12 @@
       ],
       "id": "formal-module-exponential-family",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_free_energy",
+        "FepSketches.families.core_information_geometry",
+        "FepSketches.families.core_thermodynamics",
+        "FepSketches.families.exponential_family_geometry",
+        "FepSketches.families.geometric_optimization",
         "FepSketches.exponential_family"
       ],
       "lean_module": "FepSketches.compositions.exponential_family",
@@ -3483,7 +3523,9 @@
       ],
       "id": "formal-module-continuous-time",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.continuous_time_thermodynamics",
+        "FepSketches.families.core_bayesian_mechanics",
+        "FepSketches.families.core_free_energy",
         "FepSketches.continuous_time_markov"
       ],
       "lean_module": "FepSketches.compositions.continuous_time",
@@ -3826,7 +3868,8 @@
       ],
       "id": "formal-module-efe-policy-selection",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.core_active_inference",
+        "FepSketches.families.standalone_efe_formalizations",
         "FepSketches.efe_policy_selection"
       ],
       "lean_module": "FepSketches.compositions.efe_policy_selection",
@@ -3846,7 +3889,8 @@
       ],
       "id": "formal-module-perception-action-loop",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.controlled_markov",
+        "FepSketches.families.standalone_efe_formalizations",
         "FepSketches.perception_action_loop"
       ],
       "lean_module": "FepSketches.compositions.perception_action_loop",
@@ -3866,7 +3910,8 @@
       ],
       "id": "formal-module-bayesian-model-reduction",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.standalone_efe_formalizations",
+        "FepSketches.families.variational_duality",
         "FepSketches.bayesian_model_reduction"
       ],
       "lean_module": "FepSketches.compositions.bayesian_model_reduction",
@@ -3886,7 +3931,8 @@
       ],
       "id": "formal-module-efe-time-scale-separation",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.continuous_time_thermodynamics",
+        "FepSketches.families.standalone_efe_formalizations",
         "FepSketches.efe_time_scale_separation"
       ],
       "lean_module": "FepSketches.compositions.efe_time_scale_separation",
@@ -3906,7 +3952,8 @@
       ],
       "id": "formal-module-helmholtz-ao-ness",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.core_thermodynamics",
+        "FepSketches.families.standalone_efe_formalizations",
         "FepSketches.helmholtz_ao_ness"
       ],
       "lean_module": "FepSketches.compositions.helmholtz_ao_ness",
@@ -3927,7 +3974,9 @@
       ],
       "id": "formal-module-geometric-mechanics",
       "imports": [
-        "FepSketches.fep_all",
+        "FepSketches.families.core_thermodynamics",
+        "FepSketches.families.geometric_mechanics",
+        "FepSketches.families.standalone_efe_formalizations",
         "FepSketches.geometric_mechanics"
       ],
       "lean_module": "FepSketches.compositions.geometric_mechanics",
@@ -4897,7 +4946,7 @@
     "definitions": 1035,
     "distinct_mathlib_imports": 79,
     "formal_module_dependency_edges": 172,
-    "formal_module_import_edges": 337,
+    "formal_module_import_edges": 386,
     "formal_modules": 72,
     "formal_pairing_witnesses": 118,
     "formal_relation_witnesses": 24,

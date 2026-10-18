@@ -1,0 +1,11 @@
+✔ [3531/3541] Built FepSketches.families.core_free_energy (3.1s)
+✔ [3532/3541] Built FepSketches.fep_all (4.2s)
+✔ [3533/3541] Built FepSketches.compositions.measure_variational (4.3s)
+✔ [3534/3541] Built FepSketches.compositions.exponential_family (4.7s)
+✔ [3535/3541] Built FepSketches.compositions.collective_learning (4.7s)
+✔ [3536/3541] Built FepSketches.compositions.causal_predictive (4.8s)
+✔ [3537/3541] Built FepSketches.compositions.continuous_time (4.8s)
+✔ [3538/3541] Built FepSketches.compositions.native_blanket_transfer (5.3s)
+✔ [3539/3541] Built FepSketches.compositions.core (6.5s)
+✔ [3540/3541] Built FepSketches.composed (2.2s)
+Build completed successfully (3541 jobs).

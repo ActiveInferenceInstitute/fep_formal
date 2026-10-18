@@ -1,5 +1,9 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.causal_blankets_interventions
+public import FepSketches.families.core_active_inference
+public import FepSketches.families.core_bayesian_mechanics
+public import FepSketches.families.core_free_energy
+public import FepSketches.families.predictive_coding_generalized
 public import FepSketches.causal_dynamics
 public import FepSketches.predictive_coding
 

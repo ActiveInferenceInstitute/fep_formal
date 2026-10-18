@@ -67,3 +67,69 @@ def test_validation_reports_the_selected_output_target(
     )
     assert implicit_output["ok"] is False
     assert str(selected) in implicit_output["message"]
+
+
+@pytest.mark.parametrize(
+    ("banner", "toolchain", "expected"),
+    [
+        (
+            "Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0)",
+            "leanprover/lean4:v4.35.0",
+            True,
+        ),
+        (
+            "Lake version 5.0.0-src+eb6cafb (Lean version 4.35.0)",
+            "leanprover--lean4---v4.35.0",
+            True,
+        ),
+        (
+            "Lake version 5.0.0 (Lean version 4.35.0)\n",
+            "leanprover/lean4:v4.35.0",
+            True,
+        ),
+        (
+            "Lean (version 4.35.0, arm64-apple-darwin, Release)",
+            "leanprover/lean4:v4.35.0",
+            False,
+        ),
+        (
+            "Lake version 4.35.0 (Lean version 4.34.0)",
+            "leanprover/lean4:v4.35.0",
+            False,
+        ),
+        (
+            "Lake version 5.0.0 (Lean version 4.350.0)",
+            "leanprover--lean4---v4.35.0",
+            False,
+        ),
+        (
+            "Lake version 5.0.0 (Lean version 4.35.0-rc1)",
+            "leanprover/lean4:v4.35.0",
+            False,
+        ),
+        (
+            "not Lake version 5.0.0 (Lean version 4.35.0)",
+            "leanprover/lean4:v4.35.0",
+            False,
+        ),
+        (
+            "noise\nLake version 5.0.0 (Lean version 4.35.0)",
+            "leanprover/lean4:v4.35.0",
+            False,
+        ),
+        ("", "leanprover/lean4:v4.35.0", False),
+        ("Lake version 5.0.0 (Lean version 4.35.0)", "other/lean4:v4.35.0", False),
+        (
+            "Lake version 5.0.0 (Lean version 4.35.0)",
+            "leanprover--lean4---v4.35.0-extra",
+            False,
+        ),
+        ("Lake version 5.0.0 (Lean version 4.35.0)", "v4.35.0", False),
+    ],
+)
+def test_lake_banner_requires_the_pinned_embedded_lean_version(
+    banner: str, toolchain: str, expected: bool
+) -> None:
+    from fep_lean.verification._toolchain import lake_version_matches_pin
+
+    assert lake_version_matches_pin(banner, toolchain) is expected

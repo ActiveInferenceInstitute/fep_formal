@@ -1,5 +1,7 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.closed_loop_policy_trees
+public import FepSketches.families.controlled_markov
+public import FepSketches.families.core_active_inference
 public import FepSketches.policy_tree
 
 @[expose] public section

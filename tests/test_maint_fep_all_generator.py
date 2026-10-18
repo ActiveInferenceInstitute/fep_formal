@@ -19,11 +19,16 @@ import pytest
 import yaml
 
 from fep_lean.catalogue.generation import (
+    fep_all_projection_sources,
     hoisted_sketch_imports,
     render_fep_all_lean,
     topic_id_to_namespace,
 )
 from fep_lean.catalogue.registry import BODIES
+from tests._support.lean_module_contract import (
+    topic_projection_sources,
+    topic_projection_text,
+)
 
 PROJ = Path(__file__).resolve().parent.parent
 SCRIPTS = PROJ / "scripts"
@@ -60,7 +65,7 @@ def test_write_aggregate_emits_the_sealed_topic_namespaces(
     assert n == expected_count
     assert fep_all_path.is_file()
 
-    text = fep_all_path.read_text(encoding="utf-8")
+    text = topic_projection_text(fep_all_path)
     namespaces = {f"fep-{m.group(1)}" for m in _NS_RE.finditer(text)}
     assert len(namespaces) == expected_count, (
         f"expected {expected_count} fep_fepNNN namespaces, got {len(namespaces)}: "
@@ -72,7 +77,7 @@ def test_write_aggregate_covers_every_yaml_topic(
     tmp_path: Path, generator_module
 ) -> None:
     fep_all_path, _ = generator_module.write_aggregate(out_dir=tmp_path)
-    text = fep_all_path.read_text(encoding="utf-8")
+    text = topic_projection_text(fep_all_path)
     lean_ids = {f"fep-{m.group(1)}" for m in _NS_RE.finditer(text)}
     yaml_ids = _yaml_topic_ids()
 
@@ -88,7 +93,7 @@ def test_write_aggregate_covers_every_yaml_topic(
 
 def test_write_aggregate_no_non_comment_sorry(tmp_path: Path, generator_module) -> None:
     fep_all_path, _ = generator_module.write_aggregate(out_dir=tmp_path)
-    text = fep_all_path.read_text(encoding="utf-8")
+    text = topic_projection_text(fep_all_path)
     offending: list[str] = []
     for i, line in enumerate(text.splitlines(), 1):
         if line.lstrip().startswith("--"):
@@ -105,14 +110,22 @@ def test_write_aggregate_hoists_exact_distinct_import_union(
 ) -> None:
     """The aggregate preserves the canonical narrow dependency surface."""
     fep_all_path, _ = generator_module.write_aggregate(out_dir=tmp_path)
-    text = fep_all_path.read_text(encoding="utf-8")
-    import_lines = [
-        ln.removeprefix("public ")
-        for ln in text.splitlines()
-        if ln.startswith(("public import ", "public meta import "))
-    ]
+    text = topic_projection_text(fep_all_path)
+    import_lines = sorted(
+        {
+            ln.removeprefix("public ")
+            for ln in text.splitlines()
+            if ln.startswith(("public import ", "public meta import "))
+        }
+    )
     assert import_lines == list(hoisted_sketch_imports(BODIES))
-    assert len(import_lines) == len(set(import_lines))
+    for _, source in topic_projection_sources(fep_all_path):
+        imports = [
+            line
+            for line in source.splitlines()
+            if line.startswith(("public import ", "public meta import "))
+        ]
+        assert len(imports) == len(set(imports))
     assert "import Mathlib" not in import_lines
     assert "import Mathlib.Tactic" not in import_lines
     assert "meta import Lean.Meta.Tactic.NormCast" in import_lines
@@ -121,10 +134,10 @@ def test_write_aggregate_hoists_exact_distinct_import_union(
     assert "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy" in import_lines
 
 
-def test_regenerated_aggregate_is_the_only_library_target(
+def test_regenerated_aggregate_is_the_single_compatibility_root(
     tmp_path: Path, generator_module
 ) -> None:
-    """The generator emits one canonical aggregate and no companion library."""
+    """The generator emits one compatibility aggregate and its imported topic shards."""
     path, _ = generator_module.write_aggregate(out_dir=tmp_path)
     assert path.name == "fep_all.lean"
     assert not (tmp_path / "Basic.lean").exists()
@@ -147,5 +160,83 @@ def test_build_aggregate_rejects_empty_body_registry() -> None:
 def test_aggregate_is_current_detects_drift(tmp_path: Path, generator_module) -> None:
     path, _ = generator_module.write_aggregate(out_dir=tmp_path)
     assert generator_module.aggregate_is_current(path)
+    assert not generator_module.aggregate_is_current(tmp_path / "other.lean")
     path.write_text(path.read_text(encoding="utf-8") + "-- drift\n", encoding="utf-8")
     assert not generator_module.aggregate_is_current(path)
+
+
+@pytest.mark.parametrize("mutation", ["missing", "tampered", "unexpected", "symlink"])
+def test_family_projection_freshness_rejects_real_output_mutations(
+    tmp_path: Path, generator_module, mutation: str
+) -> None:
+    aggregate, _ = generator_module.write_aggregate(out_dir=tmp_path)
+    shard = topic_projection_sources(aggregate)[0][0]
+    if mutation == "missing":
+        shard.unlink()
+    elif mutation == "tampered":
+        shard.write_text(
+            shard.read_text(encoding="utf-8") + "-- changed\n", encoding="utf-8"
+        )
+    elif mutation == "unexpected":
+        (shard.parent / "unmanifested.lean").write_text(
+            "theorem extra : True := True.intro\n"
+        )
+    else:
+        target = tmp_path / "outside-source.txt"
+        shard.rename(target)
+        shard.symlink_to(target)
+    assert not generator_module.aggregate_is_current(aggregate)
+
+
+def test_partial_body_projection_names_only_its_real_family() -> None:
+    sources = fep_all_projection_sources({"fep-001": BODIES["fep-001"]})
+    assert set(sources) == {
+        Path("fep_all.lean"),
+        Path("families/core_free_energy.lean"),
+    }
+    assert (
+        "public import FepSketches.families.core_free_energy"
+        in sources[Path("fep_all.lean")]
+    )
+    shard = sources[Path("families/core_free_energy.lean")]
+    assert _NS_RE.findall(shard) == ["001"]
+
+
+@pytest.mark.parametrize(
+    "bodies", [{}, {"fep-999": "theorem invented : True := True.intro"}]
+)
+def test_family_projection_refuses_empty_or_unowned_topics(
+    bodies: dict[str, str],
+) -> None:
+    with pytest.raises(ValueError, match="empty|no manifested family owner"):
+        fep_all_projection_sources(bodies)
+
+
+@pytest.mark.parametrize("mutation", ["unexpected", "symlink", "directory-symlink"])
+def test_family_writer_preserves_foreign_or_symlinked_output(
+    tmp_path: Path, generator_module, mutation: str
+) -> None:
+    aggregate, _ = generator_module.write_aggregate(out_dir=tmp_path)
+    shard = topic_projection_sources(aggregate)[0][0]
+    if mutation == "unexpected":
+        foreign = shard.parent / "foreign.lean"
+        foreign.write_text("-- independently owned output\n")
+        expected = foreign.read_bytes()
+    elif mutation == "symlink":
+        foreign = tmp_path / "external-source.txt"
+        expected = shard.read_bytes()
+        shard.rename(foreign)
+        shard.symlink_to(foreign)
+    else:
+        foreign = tmp_path / "outside-families"
+        shard.parent.rename(foreign)
+        (tmp_path / "families").symlink_to(foreign, target_is_directory=True)
+        expected = (foreign / shard.name).read_bytes()
+    aggregate_before = aggregate.read_bytes()
+    with pytest.raises(ValueError, match="unmanifested|symlinked"):
+        generator_module.write_aggregate(out_dir=tmp_path)
+    assert aggregate.read_bytes() == aggregate_before
+    if mutation == "directory-symlink":
+        assert (foreign / shard.name).read_bytes() == expected
+    else:
+        assert foreign.read_bytes() == expected

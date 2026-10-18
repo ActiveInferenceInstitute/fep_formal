@@ -19,6 +19,9 @@ _PINNED_LEAN_VERSION_RE = re.compile(r"^leanprover/lean4:v(?P<version>\d+\.\d+\.
 _ACTUAL_LEAN_VERSION_RE = re.compile(
     r"^Lean(?:\s+\(|\s+)version\s+(?P<version>\d+\.\d+\.\d+)(?:[,)]|$)"
 )
+_ACTUAL_LAKE_VERSION_RE = re.compile(
+    r"^Lake version [^\s()]+ \(Lean version (?P<version>\d+\.\d+\.\d+)\)$"
+)
 _MATHLIB_TAG_RE = re.compile(r"^v(?P<version>\d+\.\d+\.\d+)$")
 _MATHLIB_DEPENDENCY_RE = re.compile(r'mathlib4\.git"\s*@\s*"(?P<tag>v\d+\.\d+\.\d+)"')
 
@@ -235,11 +238,18 @@ def find_executable(name: str, lean_dir: Path | None = None) -> str | None:
 
 
 def lake_version_matches_pin(version_output: str, toolchain: str) -> bool:
-    """Return whether a ``lake --version`` line carries the pinned Lean version."""
-    match = _ACTUAL_LEAN_VERSION_RE.match(
+    """Match the embedded Lean version against a canonical or elan-style pin."""
+    normalized = toolchain.strip()
+    if normalized.startswith("leanprover--lean4---"):
+        normalized = "leanprover/lean4:" + normalized.removeprefix(
+            "leanprover--lean4---"
+        )
+    pinned = pinned_lean_semver(normalized)
+    first_line = (
         version_output.strip().splitlines()[0] if version_output.strip() else ""
     )
-    return match is not None and f"v{match.group('version')}" in toolchain
+    match = _ACTUAL_LAKE_VERSION_RE.fullmatch(first_line)
+    return pinned is not None and match is not None and match.group("version") == pinned
 
 
 _CHILD_ENV_ALLOWLIST = frozenset({"HOME", "LANG", "PATH", "TMPDIR"})

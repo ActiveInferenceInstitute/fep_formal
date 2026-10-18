@@ -1,0 +1,70 @@
+{
+  "state": "passed_source_restored",
+  "base": "b3e21f6690a22a98cc68b609a818817247fd6868",
+  "topic": "fep-001",
+  "perturbation": "One reversible additional public True theorem in one topic through its canonical generator. Existing declarations/proofs are unchanged. Timing is a local observation, not a benchmark generalization.",
+  "aggregate_sha256": "b44f5908e38b17d8adf462c9a9438a2c6d494f9146b374ab6386f8b484cc1f97",
+  "checks": [
+    {
+      "name": "warm-control",
+      "returncode": 0,
+      "seconds": 6.200403416994959,
+      "log_sha256": "651d8ed70c6dc2e7064249c47bdcbe933b6174922839502d81fdd79d396895f2",
+      "rebuilt": []
+    },
+    {
+      "name": "one-topic-public-witness",
+      "returncode": 0,
+      "seconds": 26.765071625006385,
+      "log_sha256": "a446f1d75e9381ded316a782129790bdc7aba17845b26ff10190f79b77bf086a",
+      "rebuilt": [
+        "\u2714 [3500/3519] Built FepSketches.fep_all (13s)",
+        "\u2714 [3501/3519] Built FepSketches.compositions.thermo_geometry (5.1s)",
+        "\u2714 [3502/3519] Built FepSketches.compositions.bayesian_model_reduction (5.2s)",
+        "\u2714 [3503/3519] Built FepSketches.compositions.efe_time_scale_separation (5.2s)",
+        "\u2714 [3504/3519] Built FepSketches.compositions.collective_learning (5.3s)",
+        "\u2714 [3505/3519] Built FepSketches.compositions.perception_action_loop (5.3s)",
+        "\u2714 [3506/3519] Built FepSketches.compositions.helmholtz_ao_ness (5.3s)",
+        "\u2714 [3507/3519] Built FepSketches.compositions.control_temporal (5.5s)",
+        "\u2714 [3508/3519] Built FepSketches.compositions.geometric_mechanics (5.4s)",
+        "\u2714 [3509/3519] Built FepSketches.compositions.continuous_time (5.4s)",
+        "\u2714 [3510/3519] Built FepSketches.compositions.causal_predictive (5.4s)",
+        "\u2714 [3511/3519] Built FepSketches.compositions.policy_trees (5.6s)",
+        "\u2714 [3512/3519] Built FepSketches.compositions.risk_calibration (5.7s)",
+        "\u2714 [3513/3519] Built FepSketches.compositions.measure_variational (5.7s)",
+        "\u2714 [3514/3519] Built FepSketches.compositions.native_blanket_transfer (6.1s)",
+        "\u2714 [3515/3519] Built FepSketches.compositions.core (7.0s)",
+        "\u2714 [3516/3519] Built FepSketches.compositions.efe_policy_selection (2.4s)",
+        "\u2714 [3517/3519] Built FepSketches.compositions.exponential_family (2.4s)",
+        "\u2714 [3518/3519] Built FepSketches.composed (2.5s)"
+      ]
+    },
+    {
+      "name": "restored",
+      "returncode": 0,
+      "seconds": 20.262363292000373,
+      "log_sha256": "d3f2d93977977fc2745062a5b57c904ee1cf0c55c2851c13fc4f09407b2a0763",
+      "rebuilt": [
+        "\u2714 [3500/3519] Built FepSketches.fep_all (6.6s)",
+        "\u2714 [3501/3519] Built FepSketches.compositions.exponential_family (6.3s)",
+        "\u2714 [3502/3519] Built FepSketches.compositions.thermo_geometry (6.3s)",
+        "\u2714 [3503/3519] Built FepSketches.compositions.risk_calibration (6.4s)",
+        "\u2714 [3504/3519] Built FepSketches.compositions.perception_action_loop (6.5s)",
+        "\u2714 [3505/3519] Built FepSketches.compositions.control_temporal (6.5s)",
+        "\u2714 [3506/3519] Built FepSketches.compositions.measure_variational (6.5s)",
+        "\u2714 [3507/3519] Built FepSketches.compositions.continuous_time (6.7s)",
+        "\u2714 [3508/3519] Built FepSketches.compositions.bayesian_model_reduction (6.6s)",
+        "\u2714 [3509/3519] Built FepSketches.compositions.collective_learning (6.7s)",
+        "\u2714 [3510/3519] Built FepSketches.compositions.efe_time_scale_separation (6.7s)",
+        "\u2714 [3511/3519] Built FepSketches.compositions.geometric_mechanics (6.8s)",
+        "\u2714 [3512/3519] Built FepSketches.compositions.causal_predictive (6.9s)",
+        "\u2714 [3513/3519] Built FepSketches.compositions.helmholtz_ao_ness (6.8s)",
+        "\u2714 [3514/3519] Built FepSketches.compositions.policy_trees (6.9s)",
+        "\u2714 [3515/3519] Built FepSketches.compositions.native_blanket_transfer (7.5s)",
+        "\u2714 [3516/3519] Built FepSketches.compositions.core (8.6s)",
+        "\u2714 [3517/3519] Built FepSketches.compositions.efe_policy_selection (2.5s)",
+        "\u2714 [3518/3519] Built FepSketches.composed (2.3s)"
+      ]
+    }
+  ]
+}

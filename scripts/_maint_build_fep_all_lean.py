@@ -1,32 +1,16 @@
-"""Regenerate ``lean/FepSketches/fep_all.lean`` from the body registry.
+"""Regenerate the import-only Lean topic aggregate and its family shards.
 
-The aggregate Lake file is the whole-workspace compilation target used by
-``lake build FepSketches`` and the CI proof-quality gate. It is tracked so a
-fresh clone contains the same canonical Lean input used by the tests.
+Canonical bodies live in ``src/fep_lean/catalogue/bodies``. The explicit body
+manifest fixes one generated ``lean/FepSketches/families/*.lean`` file per
+family. Each shard preserves topic namespaces and hoists exactly its own
+body imports; ``fep_all.lean`` publicly imports those shards for compatibility.
+Compositions import only the families whose topic namespaces they reference.
 
-This script is the single regenerator. It reads the canonical bodies from
-:mod:`fep_lean.catalogue.registry` (the same source the catalogue YAML is built
-from) and emits one file:
+``--check`` checks the aggregate and every manifested shard, rejecting missing,
+tampered, unexpected or symlinked family outputs without writing. Write mode
+refuses foreign or symlinked outputs rather than overwriting them.
 
-* ``lean/FepSketches/fep_all.lean`` — every topic wrapped in
-  ``namespace fep_fepNNN ... end fep_fepNNN``. Per-sketch ``import Mathlib.*``
-  lines are deduplicated and hoisted verbatim, preserving the exact dependency
-  surface used by standalone verification and the coverage projection.
-
-The aggregate's outer ``namespace fep_fepNNN`` (lowercase, ``fep_`` prefix)
-differs deliberately from each sketch's inner ``namespace FEPNNN``: the outer
-wrapper exists only to namespace-isolate identically-named helpers across
-topics during a single batch compile, while the inner namespaces preserve the
-per-topic theorem qualified names used in the manuscript and tests.
-
-Usage
------
-::
-
-    uv run python scripts/_maint_build_fep_all_lean.py
-
-Exit code 0 on success, non-zero if the body registry is empty or the Lean output
-directory cannot be created.
+Run ``uv run python scripts/_maint_build_fep_all_lean.py`` to regenerate.
 """
 
 from __future__ import annotations
@@ -37,8 +21,9 @@ from pathlib import Path
 
 from fep_lean.catalogue.generation import (
     check_or_write,
+    fep_all_output_drift,
     fep_all_projection_path,
-    render_fep_all_lean,
+    fep_all_projection_sources,
 )
 from fep_lean.catalogue.registry import BODIES
 
@@ -48,29 +33,34 @@ FEP_ALL_PATH = fep_all_projection_path(PROJECT_ROOT)
 
 
 def write_aggregate(out_dir: Path | None = None) -> tuple[Path, int]:
-    """Write ``fep_all.lean`` under *out_dir* and return its topic count."""
+    """Write aggregate and family shards; return compatibility path and topic count."""
     out_dir = out_dir or LEAN_OUT_DIR
     out_dir.mkdir(parents=True, exist_ok=True)
 
     bodies = dict(BODIES)
-    text = render_fep_all_lean(bodies)
-
+    sources = fep_all_projection_sources(bodies)
+    expected = {out_dir / relative for relative in sources}
+    for path in expected:
+        if path.is_symlink() or path.parent.is_symlink():
+            raise ValueError(f"refusing symlinked projection: {path}")
+    unexpected = set((out_dir / "families").rglob("*.lean")) - expected
+    if unexpected:
+        raise ValueError(f"unmanifested family projections: {sorted(unexpected)}")
+    for relative, text in sources.items():
+        path = out_dir / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
     fep_all_path = out_dir / "fep_all.lean"
-    fep_all_path.write_text(text, encoding="utf-8")
     return fep_all_path, len(bodies)
 
 
 def aggregate_is_current(path: Path = FEP_ALL_PATH) -> bool:
     """Return whether *path* exactly matches the canonical sketch projection."""
-    expected = render_fep_all_lean(BODIES)
-    try:
-        return path.read_text(encoding="utf-8") == expected
-    except OSError:
-        return False
+    return path.name == "fep_all.lean" and not fep_all_output_drift(path.parent)
 
 
 def _aggregate_drift(_root: Path) -> tuple[Path, ...]:
-    return () if aggregate_is_current() else (FEP_ALL_PATH,)
+    return fep_all_output_drift(FEP_ALL_PATH.parent)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -78,7 +68,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--check",
         action="store_true",
-        help="fail without writing when the tracked aggregate is stale",
+        help="fail without writing when the aggregate or any family shard is stale",
     )
     args = parser.parse_args(argv)
     try:
@@ -94,7 +84,7 @@ def main(argv: list[str] | None = None) -> int:
     except (ValueError, OSError) as exc:
         print(f"_maint_build_fep_all_lean: failed: {exc}", file=sys.stderr)
         return 1
-    print(f"wrote {n} topic namespaces to {fep_all_path}")
+    print(f"wrote {n} topic namespaces to family shards imported by {fep_all_path}")
     return 0
 
 

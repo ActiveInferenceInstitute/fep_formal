@@ -8,12 +8,13 @@ actual plain/public `import FepSketches.*` statements in the workspace sources.
 The exact roster and roles live in the manifest; this page projects them for navigation.
 
 - **Layer N** modules directly import manifested modules only from lower layers.
-  Unmanifested generated aggregates such as `fep_all` are listed without
-  expansion. Lake owns the complete build plan.
+  Generated topic family shards and the compatibility aggregate are listed
+  without formal-manifest layer expansion. Lake owns the complete build plan.
 - Cycles among manifested modules stop generation with the cycle path.
 - Topic bodies (168 catalogue rows) live in family modules under
   [`src/fep_lean/catalogue/bodies/`](../src/fep_lean/catalogue/bodies/), not
-  here; the aggregate `fep_all.lean` covers all of them.
+  here; generated Lean family shards own their topic namespaces, and the
+  import-only `fep_all.lean` remains their compatibility aggregate.
 - Regenerate with `uv run python scripts/_maint_build_lean_landscape.py`;
   `--check` is the non-mutating freshness gate.
 - The interactive relation graph over these modules is
@@ -36,7 +37,7 @@ The exact roster and roles live in the manifest; this page projects them for nav
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
 | `compositions.finite_kernel_category` | composition | `FEPComposed.FiniteKernelCategory` | finite_probability |
-| `compositions.geometric_mechanics` | composition | `FEPComposed` | fep_all, geometric_mechanics |
+| `compositions.geometric_mechanics` | composition | `FEPComposed` | families.core_thermodynamics, families.geometric_mechanics, families.standalone_efe_formalizations, geometric_mechanics |
 | `finite_information` | foundation | `FEP.FiniteInformation` | finite_probability |
 | `finite_markov_dynamics` | foundation | `FEP.FiniteMarkovDynamics` | finite_probability |
 | `information_geometry` | foundation | `FEP.InformationGeometry` | finite_probability |
@@ -61,8 +62,8 @@ The exact roster and roles live in the manifest; this page projects them for nav
 | --- | --- | --- | --- |
 | `bayesian_model_reduction` | foundation | `FEP.BayesianModelReduction` | variational_duality, gaussian_information_geometry |
 | `causal_dynamics` | foundation | `FEP.CausalDynamics` | markov_blanket |
-| `compositions.exponential_family` | composition | `FEPComposed` | fep_all, exponential_family |
-| `compositions.measure_variational` | composition | `FEPComposed` | fep_all, measure_bayes, variational_duality |
+| `compositions.exponential_family` | composition | `FEPComposed` | families.core_bayesian_mechanics, families.core_free_energy, families.core_information_geometry, families.core_thermodynamics, families.exponential_family_geometry, families.geometric_optimization, exponential_family |
+| `compositions.measure_variational` | composition | `FEPComposed` | families.core_active_inference, families.core_bayesian_mechanics, families.core_free_energy, families.core_information_geometry, families.measure_bayesian_inversion, families.variational_duality, measure_bayes, variational_duality |
 | `controlled_markov` | foundation | `FEP.ControlledMarkov` | active_inference |
 | `gnn_denotation` | foundation | `FEP.GnnDenotation` | gnn_document, active_inference |
 | `learning_theory` | foundation | `FEP.LearningTheory` | variational_duality |
@@ -73,11 +74,11 @@ The exact roster and roles live in the manifest; this page projects them for nav
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `compositions.bayesian_model_reduction` | composition | `FEPComposed` | fep_all, bayesian_model_reduction |
-| `compositions.causal_predictive` | composition | `FEPComposed` | fep_all, causal_dynamics, predictive_coding |
-| `compositions.collective_learning` | composition | `FEPComposed` | fep_all, collective_inference, learning_theory |
+| `compositions.bayesian_model_reduction` | composition | `FEPComposed` | families.standalone_efe_formalizations, families.variational_duality, bayesian_model_reduction |
+| `compositions.causal_predictive` | composition | `FEPComposed` | families.causal_blankets_interventions, families.core_active_inference, families.core_bayesian_mechanics, families.core_free_energy, families.predictive_coding_generalized, causal_dynamics, predictive_coding |
+| `compositions.collective_learning` | composition | `FEPComposed` | families.collective_inference, families.core_active_inference, families.core_bayesian_mechanics, families.core_free_energy, families.core_thermodynamics, families.learning_theory, collective_inference, learning_theory |
 | `compositions.finite_scientific_implications` | composition | `FEPComposed.FiniteScientificImplications` | finite_probability, causal_dynamics, finite_markov_dynamics, active_inference, information_geometry |
-| `compositions.thermo_geometry` | composition | `FEPComposed` | fep_all, path_thermodynamics, geometric_optimization |
+| `compositions.thermo_geometry` | composition | `FEPComposed` | families.core_active_inference, families.core_bayesian_mechanics, families.core_information_geometry, families.core_thermodynamics, families.geometric_optimization, families.path_thermodynamics, path_thermodynamics, geometric_optimization |
 | `decision_risk` | foundation | `FEP.DecisionRisk` | native_blanket, finite_information |
 | `empirical_risk` | foundation | `FEP.EmpiricalRisk` | learning_theory |
 | `gnn_render_statements` | foundation | `FEP.GnnRenderStatements` | gnn_document, gnn_denotation, active_inference, finite_probability, finite_markov_dynamics |
@@ -88,10 +89,10 @@ The exact roster and roles live in the manifest; this page projects them for nav
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `compositions.control_temporal` | composition | `FEPComposed` | fep_all, controlled_markov, temporal_inference |
-| `compositions.core` | composition | `FEPComposed` | fep_all, active_inference, information_geometry, markov_blanket, statistical_convergence, controlled_markov, temporal_inference, path_thermodynamics, geometric_optimization |
-| `compositions.policy_trees` | composition | `FEPComposed` | fep_all, policy_tree |
-| `compositions.risk_calibration` | composition | `FEPComposed` | fep_all, empirical_risk |
+| `compositions.control_temporal` | composition | `FEPComposed` | families.controlled_markov, families.core_active_inference, families.core_bayesian_mechanics, families.core_thermodynamics, families.temporal_inference, controlled_markov, temporal_inference |
+| `compositions.core` | composition | `FEPComposed` | families.core_active_inference, families.core_bayesian_mechanics, families.core_free_energy, families.core_information_geometry, families.core_thermodynamics, families.geometric_optimization, active_inference, information_geometry, markov_blanket, statistical_convergence, controlled_markov, temporal_inference, path_thermodynamics, geometric_optimization |
+| `compositions.policy_trees` | composition | `FEPComposed` | families.closed_loop_policy_trees, families.controlled_markov, families.core_active_inference, policy_tree |
+| `compositions.risk_calibration` | composition | `FEPComposed` | families.core_bayesian_mechanics, families.finite_sample_risk_calibration, families.learning_theory, empirical_risk |
 | `continuous_time_markov` | foundation | `FEP.ContinuousTimeMarkov` | finite_markov_dynamics, active_inference, decision_risk, markov_blanket |
 | `efe_policy_selection` | foundation | `FEP.EFEPolicy` | controlled_markov, policy_tree, variational_duality |
 | `finite_posterior_learning` | foundation | `FEP.FinitePosteriorLearning` | learning_theory, statistical_convergence, native_blanket, decision_risk |
@@ -100,8 +101,8 @@ The exact roster and roles live in the manifest; this page projects them for nav
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `compositions.continuous_time` | composition | `FEPComposed` | fep_all, continuous_time_markov |
-| `compositions.efe_policy_selection` | composition | `FEPComposed` | fep_all, efe_policy_selection |
+| `compositions.continuous_time` | composition | `FEPComposed` | families.continuous_time_thermodynamics, families.core_bayesian_mechanics, families.core_free_energy, continuous_time_markov |
+| `compositions.efe_policy_selection` | composition | `FEPComposed` | families.core_active_inference, families.standalone_efe_formalizations, efe_policy_selection |
 | `compositions.finite_policy_action` | composition | `FEPComposed.FinitePolicyAction` | policy_tree, active_inference, controlled_markov, decision_risk, finite_posterior_learning |
 | `efe_time_scale_separation` | foundation | `FEP.TimeScaleEFE` | continuous_time_markov, path_thermodynamics, active_inference, ness_flow |
 | `helmholtz_ao_ness` | foundation | `FEP.HelmholtzAoNess` | continuous_time_markov, geometric_mechanics |
@@ -113,10 +114,10 @@ The exact roster and roles live in the manifest; this page projects them for nav
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `compositions.efe_time_scale_separation` | composition | `FEPComposed` | fep_all, efe_time_scale_separation |
+| `compositions.efe_time_scale_separation` | composition | `FEPComposed` | families.continuous_time_thermodynamics, families.standalone_efe_formalizations, efe_time_scale_separation |
 | `compositions.finite_reference_agent` | composition | `FEPComposed.FiniteReferenceAgent` | finite_posterior_learning, compositions.finite_policy_action, compositions.finite_scientific_implications, native_blanket, continuous_time_markov |
-| `compositions.helmholtz_ao_ness` | composition | `FEPComposed` | fep_all, helmholtz_ao_ness |
-| `compositions.perception_action_loop` | composition | `FEPComposed` | fep_all, perception_action_loop |
+| `compositions.helmholtz_ao_ness` | composition | `FEPComposed` | families.core_thermodynamics, families.standalone_efe_formalizations, helmholtz_ao_ness |
+| `compositions.perception_action_loop` | composition | `FEPComposed` | families.controlled_markov, families.standalone_efe_formalizations, perception_action_loop |
 | `law_weighted_split` | foundation | `FEP.LawWeightedSplit` | helmholtz_ao_ness |
 | `scalar_gaussian_semigroup` | foundation | `FEP.ScalarGaussianSemigroup` | gaussian_information_geometry, markov_semigroup |
 
@@ -147,7 +148,7 @@ The exact roster and roles live in the manifest; this page projects them for nav
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `compositions.native_blanket_transfer` | composition | `FEPComposed` | fep_all, native_blanket, gaussian_precision_conditioning |
+| `compositions.native_blanket_transfer` | composition | `FEPComposed` | families.causal_blankets_interventions, families.core_bayesian_mechanics, families.core_free_energy, families.native_blanket_independence, native_blanket, gaussian_precision_conditioning |
 | `compositions.smooth_reference_kernel` | composition | `FEPComposed.SmoothReferenceKernel` | gaussian_information_geometry, smooth_information_geometry, posterior_convergence, markov_semigroup, scalar_gaussian_semigroup, fin4_gaussian_semigroup, gaussian_precision_conditioning, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path |
 
 ## Layer 12 (1 module)

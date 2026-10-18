@@ -1,5 +1,10 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.core_active_inference
+public import FepSketches.families.core_bayesian_mechanics
+public import FepSketches.families.core_free_energy
+public import FepSketches.families.core_information_geometry
+public import FepSketches.families.measure_bayesian_inversion
+public import FepSketches.families.variational_duality
 public import FepSketches.measure_bayes
 public import FepSketches.variational_duality
 

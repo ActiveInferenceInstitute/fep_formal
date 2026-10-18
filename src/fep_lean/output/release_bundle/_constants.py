@@ -4,6 +4,7 @@ import re
 from collections.abc import Mapping
 from pathlib import Path
 
+from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST
 from fep_lean.output.browser_capture import BROWSER_RECEIPT
 from fep_lean.output.rendering import _RENDER_METADATA_FILES
 
@@ -193,5 +194,6 @@ _STATIC_REQUIRED_BUNDLE_PATHS = frozenset(
         NUMERICAL_RECEIPT.as_posix(),
         PYTHON_ACCEPTANCE_RECEIPT.as_posix(),
         "lean/FepSketches/fep_all.lean",
+        *(entry.lean_projection_relative_path for entry in BODY_MODULE_MANIFEST),
     }
 )

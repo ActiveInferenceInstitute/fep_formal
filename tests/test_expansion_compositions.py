@@ -5,6 +5,9 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
+from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lean_module_contract import topic_namespace_owner_modules
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 COMPOSITIONS_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "compositions"
 
@@ -494,10 +497,22 @@ def test_every_bridge_consumes_endpoint_and_pre051_declarations() -> None:
 
 def test_composition_sources_have_only_proved_topic_theorems() -> None:
     forbidden = re.compile(r"\b(?:sorry|admit)\b|:\s*True\b")
+    owners = topic_namespace_owner_modules(
+        PROJECT_ROOT / "lean/FepSketches/fep_all.lean"
+    )
     for filename, source in _sources().items():
-        assert source.startswith("module\npublic import FepSketches.fep_all\n"), (
+        assert source.startswith("module\npublic import FepSketches.families."), (
             filename
         )
+        code = lean_code_without_comments(source)
+        assert "import FepSketches.fep_all" not in code
+        namespaces = set(re.findall(r"\bfep_fep\d+\b", code))
+        expected = {owners[namespace] for namespace in namespaces}
+        imported = re.findall(
+            r"(?m)^public import (FepSketches\.families\.[a-z0-9_]+)$", code
+        )
+        assert len(imported) == len(set(imported))
+        assert set(imported) == expected, filename
         assert "namespace FEPComposed\n" in source
         assert source.rstrip().endswith("end FEPComposed")
         assert forbidden.search(source) is None
