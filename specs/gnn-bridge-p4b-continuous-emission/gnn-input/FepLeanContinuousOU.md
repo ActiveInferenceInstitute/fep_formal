@@ -137,7 +137,7 @@ v0.2 rounding. One-step horizon, passive (no control input).
 
 ## Signature
 source_repository: fep_lean
-source_commit: d894ea1d817fe2e5d2175a0c3e4ab4900d5b2c90
+source_commit: f145aad73d709dd830977f12808029e6d6abb730
 pipeline_repository: GeneralizedNotationNotation
 pipeline_commit: 1390898cd6df1a382bf7a1a81c11f20cab093b11
 lean_module: lean/FepSketches/compositions/smooth_reference_kernel.lean
