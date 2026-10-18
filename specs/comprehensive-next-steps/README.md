@@ -30,8 +30,10 @@ G02's [retained pytest evidence inventory](retained-pytest-evidence.md) document
 the eight receipt-bound copies and their individual retention decisions.
 
 1. Reconcile the accepted G02/P02/T01/D02/D03 scopes through this publication.
-   G01 remains ongoing guidance maintenance; D04's delivered consolidation
-   retains its G01 dependency. C04/P01 are accepted for the source-bound five-runtime profile in
+   G01 remains ongoing guidance maintenance. D04 is accepted for the
+   [root ownership consolidation](doc11-acceptance-20261018.json); its original
+   G01 dependency is explicitly resolved against the satisfied root-map and
+   reading-path prerequisite subset, without closing broader G01. C04/P01 are accepted for the source-bound five-runtime profile in
    [the local acceptance receipt](local-runtime-acceptance-20261018.json).
    L01/P08/P09 are accepted for their narrow source-bound software scopes in
    [the quality acceptance receipt](software-quality-acceptance-20261018.json).

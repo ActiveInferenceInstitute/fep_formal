@@ -1,0 +1,42 @@
+{
+  "state": "accepted_documentation_scope",
+  "issue": 146,
+  "package": "D04",
+  "source_commit": "3a382d43f675e86d66a1a91e6354a5ee239ad8ce",
+  "owner_sources": {
+    "README.md": "bf2ff312176b91c2c587c6c539162200c903f4b94aa14e726eb367686bc5da02",
+    "AGENTS.md": "6da869ec6cf23e465476d11b5dffae6e04d14968b30e400da5ed671c7553f844",
+    "HANDOFF.md": "230199999b57d2da5dc3fd509bd59e089fd3956ed9a18cae026d4965a7c4169b",
+    "SPEC.md": "6cf0b644dbd4a4372ff228dd17280007070d4c9bd3da0322a879154002a44e11",
+    "tests/test_check_inventory.py": "8270bf9e74119cacc47a5e813fdfa4914817452dcb1d1e8349da76058da58480"
+  },
+  "actual_checks": {
+    "inventory_tests": {
+      "result": "25 passed",
+      "log_sha256": "57b33e21e0e940ca0d727b285ea06c93e556081db5db255fc9462372f6da84f0"
+    },
+    "strict_links": {
+      "result": "174 files; zero broken links",
+      "log_sha256": "56d2fdb93375089fdf40f472b2eb3d86a43e2ac5e0cb7cfa7e6110d73ab959d2"
+    },
+    "strict_hygiene": {
+      "result": "174 files; zero findings",
+      "log_sha256": "872bd10892ae08259749046a84defc6f27a7b229b152028cf17216896dc5a923"
+    },
+    "cross_references": {
+      "result": "30 rendered files,1346 anchors,104 references; all resolve",
+      "log_sha256": "7cde092e2969280a6be191368c3224e25a06188cb958e0b0b12603e9115cb4f5"
+    }
+  },
+  "independent_review": {
+    "reviewer": "fep_patch_review",
+    "source_review": "Root authoritative owners, caller links, historical preservation and adversarial command-inventory controls reviewed; no residual DOC11 source defect. README reduced from344 to272 lines in9b31783, now187.",
+    "dependency_review": "G01 is an acceptance dependency, not advisory. Its root ownership/reading-path prerequisite subset is satisfied at this source epoch; continuing guidance/retirement upkeep remains open as G01/#63."
+  },
+  "dependency_resolution": {
+    "original_dependency": "G01",
+    "resolution": "Replace the coarse continuing-maintenance gate with the accepted root owner-map and reading-path prerequisite subset, reviewed at the bound source commit.",
+    "broader_G01_state": "open; no completion inferred"
+  },
+  "boundary": "Documentation ownership and reading-path acceptance only. No scientific, production, native, provider, publication or other issue acceptance; historical bytes and evidence limitations remain intact."
+}

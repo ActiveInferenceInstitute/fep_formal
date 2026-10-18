@@ -766,3 +766,22 @@ and real-child cleanup controls.
 
 **Confidence:** High for the retained identical-input/outcome comparison and
 actual timing observations, after strict owner-validation JSON parsing.
+
+## DOC-11 dependency acceptance at the root owner map
+
+**When:** 2026-10-18, source `3a382d43f675e86d66a1a91e6354a5ee239ad8ce`.
+
+**Choice:** Resolve D04's original G01 acceptance edge against its delivered
+root ownership and reading-path prerequisite subset, rather than require
+completion of continuing guidance maintenance. G01 / Issue63 remains open.
+The original relationship and independent rationale are retained in
+[the acceptance receipt](doc11-acceptance-20261018.json); the package now has
+no outstanding acceptance predecessor for this narrow delivered scope.
+
+**Evidence:** The independent operator/documentation review finds no remaining
+DOC-11 gap. All25 current inventory tests, strict links/hygiene and crossrefs
+pass. README/SPEC/HANDOFF link to AGENTS for canonical contracts. Historical
+HANDOFF observations and their evidence limitations remain unchanged.
+
+**Boundary:** No other package closes, no historical receipt becomes current,
+and no private-recovery waiver supplies scientific or production acceptance.

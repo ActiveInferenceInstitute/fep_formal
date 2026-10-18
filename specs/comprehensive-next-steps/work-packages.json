@@ -1949,11 +1949,9 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/146"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Active root guidance has one owner per topic and every gate command is defined once.",
-      "depends_on": [
-        "G01"
-      ],
+      "depends_on": [],
       "single_owner": "Existing README.md, AGENTS.md, SPEC.md and dated HANDOFF.md; authoritative instructions retain their declared owner.",
       "stop_go_spike": "Inventory duplicate source-of-truth, execution and gate statements with inbound links; distinguish current guidance from immutable/detailed historical snapshots.",
       "go_condition": "Each maintained fact has one authoritative owner and moved evidence-boundary sentences keep their complete meaning.",
@@ -1970,7 +1968,22 @@
         "documentation"
       ],
       "human_review": "Independent operator/documentation ownership review; no scientific acceptance is supplied by moving prose.",
-      "out_of_scope": "Weakening acceptance language, merging the separate DOC1 scope or deleting historical custody evidence."
+      "out_of_scope": "Weakening acceptance language, merging the separate DOC1 scope or deleting historical custody evidence.",
+      "dependency_resolution": {
+        "original_dependency": "G01",
+        "resolution": "Replace the coarse continuing-maintenance gate with the accepted root owner-map and reading-path prerequisite subset, reviewed at the bound source commit.",
+        "broader_G01_state": "open; no completion inferred"
+      },
+      "acceptance": {
+        "source_commit": "3a382d43f675e86d66a1a91e6354a5ee239ad8ce",
+        "receipt": "doc11-acceptance-20261018.json",
+        "checks": [
+          "25 inventory tests",
+          "strict links/hygiene/xrefs",
+          "independent root owner-map and dependency review"
+        ],
+        "boundary": "Documentation ownership and reading-path acceptance only. No scientific, production, native, provider, publication or other issue acceptance; historical bytes and evidence limitations remain intact."
+      }
     }
   ],
   "inventory_as_of_utc": "2026-10-15T15:22:04.139634+00:00",

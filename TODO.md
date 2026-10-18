@@ -135,7 +135,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [DOC-11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/146) — One owner per topic across README, AGENTS, HANDOFF and SPEC | Major | [CORE-M2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63), [DOC-1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/138) | Each gate command defined once; README shorter; markdown gates pass. |
 
 ## Original requirement coverage and closure
 

@@ -353,6 +353,6 @@ Packages: `P11`.
 
 ### [#146: DOC-11 One owner per topic across README, AGENTS, HANDOFF and SPEC](https://github.com/ActiveInferenceInstitute/fep_formal/issues/146)
 
-The campaign records an earlier root-owner consolidation, but G01/operator reading-path review remains open. Strict links/hygiene/xrefs pass at the current source.
+Accepted on2026-10-18 at the bound current source: authoritative ownership links, shorter README, preserved historical evidence boundaries and25 inventory controls pass fresh strict Markdown gates and independent review. The original G01 dependency is explicitly resolved for the delivered root-map/reading-path subset; G01/#63 remains open. See [the scoped acceptance receipt](doc11-acceptance-20261018.json). No other acceptance follows.
 
 Packages: `D04`.

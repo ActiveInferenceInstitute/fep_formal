@@ -1,5 +1,11 @@
 ## Unreleased
 
+- Accept [DOC-11 / #146](https://github.com/ActiveInferenceInstitute/fep_formal/issues/146)
+  for the independently reviewed root documentation ownership consolidation.
+  Fresh command-inventory and strict Markdown gates pass; historical evidence
+  boundaries are retained. The original G01 dependency is resolved only for
+  its delivered root-map prerequisite; continuing guidance upkeep remains open.
+
 - Accept [#127](https://github.com/ActiveInferenceInstitute/fep_formal/issues/127)'s
   exact-source serial measurement: all 168 topic outcomes and warning classes
   match across two valid native receipts. Retain actual timing and repeat
