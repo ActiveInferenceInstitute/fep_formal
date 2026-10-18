@@ -351,13 +351,23 @@ def main() -> int:
         if args.vault is None:
             parser.error("--vault is required for guarded builds")
         sys.path.insert(0, str(args.vault.resolve() / "_tools"))
-        from vaultlib import configuration, operation
+        from vault_locks import repository_operation
+        from vaultlib import configuration
 
         cfg = configuration(args.vault.resolve() / "vault.toml")
-        with operation(cfg, "lean-workspace-build", repository_writes=True):
-            results = [
-                build_project(p, log_dir, args.elan, args.timeout) for p in projects
-            ]
+        results = []
+        for project in projects:
+            if project["mode"] != "account":
+                results.append(build_project(project, log_dir, args.elan, args.timeout))
+                continue
+            with repository_operation(
+                cfg,
+                project["repository"],
+                "lean-workspace-build",
+                working_copy=Path(project["repository_path"]),
+                wait=True,
+            ):
+                results.append(build_project(project, log_dir, args.elan, args.timeout))
     missing = [
         r["nameWithOwner"] for r in data["repositories"] if r["state"] != "scanned"
     ]
