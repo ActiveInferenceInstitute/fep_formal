@@ -1,5 +1,11 @@
 ## Unreleased
 
+- Recognize the embedded Lean version in the actual Lake banner. A healthy
+  Lake 5.0 / Lean 4.35 toolchain no longer reports unavailable because its
+  banner was parsed as compiler output. Require the exact pinned version and
+  reject wrong-tool, malformed and mismatched banners; preserve error, warning
+  and sorry classification.
+
 - Split the generated topic aggregate into 22 manifest-owned family shards.
   Preserve all 168 topic bodies and 17 composition proof bodies; compositions
   import their referenced families while public names and the compatibility
