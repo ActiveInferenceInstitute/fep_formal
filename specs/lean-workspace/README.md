@@ -31,8 +31,9 @@ success, and they remain excluded from builds. Non-Lake sources are inventoried 
 they are not silently represented as successfully built projects. A compiler
 installation is not a project proof.
 
-Builds acquire GitVault's real operation lock and migration guard. They refuse
-an active sync instead of modifying a repository while it is being synchronized.
+Builds acquire GitVault's repository and Git common-store leases with the
+migration guard. They wait for a conflicting repository lease, including a sync,
+while independent repositories can proceed.
 Builds serialize packages, because nested packages can share dependency trees.
 The exact compiler is selected through Elan, and `lake --wfail build` rejects
 warnings, including open proof obligations and empty default builds. Logs retain
@@ -76,3 +77,8 @@ without rewriting portable source requirements:
 
 Exact project pins and explicit Elan selection are documented at:
 <https://lean-lang.org/doc/reference/latest/Build-Tools-and-Distribution/Managing-Toolchains-with-Elan/>
+
+Workspace builds use GitVault repository leases, one package at a time. Each
+lease protects the repository identity and Git common store while the locked
+snapshot is checked and built. Other repositories can continue independently.
+Reference mirrors are reported without acquiring a write lease or building.
