@@ -959,6 +959,8 @@ jobs:
         run: elan toolchain install "$(cat lean/lean-toolchain)"
       - name: Install Python package
         run: uv sync --locked --extra dev
+      - name: Install the SVG rasterizer for private rendering tests
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends librsvg2-bin
       # Only the aggregate's build directory: .lake/packages is materialized
       # fresh by the Mathlib cache fetch below and must not be cached with it.
       #
