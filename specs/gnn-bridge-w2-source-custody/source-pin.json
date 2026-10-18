@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "b3e21f6690a22a98cc68b609a818817247fd6868",
+    "commit": "8b7aeef6c063ce37af81c3c06987ae297f61609a",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -202,7 +202,7 @@
     }
   },
   "gnn": {
-    "commit": "d660342d9af91f80d07e74dfc40c2b0422af2806",
+    "commit": "4f86988e9a8ddc5f11d0f73dc0d346e37340d73b",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
@@ -672,7 +672,7 @@
       "src/gnn/render/contracts.py": "45703540cf67690fed47adc6404340cd7877f5ab642ac1e822b74ae7b6eb72c3",
       "src/gnn/render/cpomdp/__init__.py": "8d6c4d6aca41df14366518fac1d1860fb97656fe863a556acfb8dac607bab778",
       "src/gnn/render/cpomdp/admission.py": "783a9501feda0388c5e6a24bc7136e041448c9b170d637a1fcd4a129d2bc3bfc",
-      "src/gnn/render/cpomdp/cpomdp_renderer.py": "7a3ab1d2444b1b9b1e2ec664f09215703fe763c366d7d2c7117ca2f56ecb2f25",
+      "src/gnn/render/cpomdp/cpomdp_renderer.py": "1483653774baf6ab755f0147a315a59333b589d63abb2f6fb45893fdb5ed78e5",
       "src/gnn/render/cpomdp/finite_controls.py": "44c52fd1870184d4cf62ea91c968122c9abcd635ede61d55c1bd14495bd82f52",
       "src/gnn/render/cpomdp/script_template.py": "bf859cbc0dae066c81b5f20556c4ad4044fd9ba713bbe4bfe47798edf46d237b",
       "src/gnn/render/discopy/__init__.py": "4ea5d67181ebf8181b14b911469158264bcbfdf1a39063441a6870b3a6954d13",
