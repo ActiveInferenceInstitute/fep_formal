@@ -1,5 +1,7 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.core_bayesian_mechanics
+public import FepSketches.families.finite_sample_risk_calibration
+public import FepSketches.families.learning_theory
 public import FepSketches.empirical_risk
 
 @[expose] public section

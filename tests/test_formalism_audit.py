@@ -291,7 +291,7 @@ def test_declaration_evidence_records_preserve_semantic_source_roles(
     primary = records["fep_fep017.FEP017.fep017_posterior_joint_reconstruction"]
     assert primary.source_roles == ("topic_primary",)
     assert primary.source_ids == ("fep-017",)
-    assert primary.formal_module == "FepSketches.fep_all"
+    assert primary.formal_module == "FepSketches.families.core_bayesian_mechanics"
     composed = records["FEPComposed.fep002_vfe_compProd_chain_rule"]
     assert composed.source_roles == ("formal_module", "formal_relation")
     assert composed.source_ids == (
@@ -467,3 +467,10 @@ def test_audit_receipt_validation_rejects_live_projection_drift(
     assert "live whole-catalogue Lean projection is stale" in errors
     assert "live formal composition aggregate is stale" in errors
     assert "live formal Lean workspace projection is stale" in errors
+
+
+def test_native_declaration_owner_rejects_unmanifested_topics() -> None:
+    with pytest.raises(ValueError, match="no manifested module owner"):
+        formalism_audit._declaration_module("fep_fep999.FEP999.invented", {})
+    with pytest.raises(ValueError, match="no manifested module owner"):
+        formalism_audit._declaration_module("Unowned.invented", {})

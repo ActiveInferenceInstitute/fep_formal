@@ -60,3 +60,14 @@ The [root source map](../../../AGENTS.md#source-of-truth) owns the complete
 projection chain and its [required checks](../../../AGENTS.md#required-checks).
 Portable methods package copies have a separate generator; see the
 [packaged-data contract](../data/AGENTS.md).
+
+## Lean family projections
+
+The explicit body manifest owns one generated module per family under
+`lean/FepSketches/families/`. These modules keep the existing `fep_fepNNN.FEPNNN`
+public names and exact topic bodies. `lean/FepSketches/fep_all.lean` is the
+import-only compatibility aggregate. Canonical composition leaves import the
+family modules whose topic namespaces they use; source imports establish no
+scientific relation. Regenerate through `scripts/_maint_build_fep_all_lean.py`
+and verify all outputs with `--check`. Missing, changed, unexpected or symlinked
+shards fail freshness; write mode preserves foreign and symlinked files.

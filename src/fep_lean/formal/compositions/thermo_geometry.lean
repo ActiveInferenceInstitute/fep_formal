@@ -1,5 +1,10 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.core_active_inference
+public import FepSketches.families.core_bayesian_mechanics
+public import FepSketches.families.core_information_geometry
+public import FepSketches.families.core_thermodynamics
+public import FepSketches.families.geometric_optimization
+public import FepSketches.families.path_thermodynamics
 public import FepSketches.path_thermodynamics
 public import FepSketches.geometric_optimization
 

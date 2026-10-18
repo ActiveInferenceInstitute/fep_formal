@@ -1,5 +1,7 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.core_thermodynamics
+public import FepSketches.families.geometric_mechanics
+public import FepSketches.families.standalone_efe_formalizations
 public import FepSketches.geometric_mechanics
 
 @[expose] public section

@@ -1,5 +1,20 @@
 ## Unreleased
 
+- Recognize the embedded Lean version in the actual Lake banner. A healthy
+  Lake 5.0 / Lean 4.35 toolchain no longer reports unavailable because its
+  banner was parsed as compiler output. Require the exact pinned version and
+  reject wrong-tool, malformed and mismatched banners; preserve error, warning
+  and sorry classification.
+
+- Split the generated topic aggregate into 22 manifest-owned family shards.
+  Preserve all 168 topic bodies and 17 composition proof bodies; compositions
+  import their referenced families while public names and the compatibility
+  aggregate remain available. Freshness checks cover missing, changed, unexpected
+  and symlinked outputs. A retained local one-topic public-declaration experiment
+  rebuilt 10 modules in 18.858 seconds, compared with 19 in 26.765 seconds before
+  the split; these are single local observations, not a general speed claim.
+  See [the measured scope](specs/lean-family-shards/README.md).
+
 - Split release-bundle tests into source-owner leaves and shared fixtures; rename
   the stale catalogue test filename. Preserve all 134 test and 11 helper function
   ASTs, all 3,714 cases and their markers; 301 IDs change only by filename.

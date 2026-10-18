@@ -71,6 +71,12 @@ class BodyModule:
         return "src/" + self.import_name.replace(".", "/") + ".py"
 
     @property
+    def lean_projection_relative_path(self) -> str:
+        """Return the stable generated Lean shard owned by this body family."""
+        name = self.import_name.rsplit(".", 1)[-1]
+        return f"lean/FepSketches/families/{name}.lean"
+
+    @property
     def bodies(self) -> Mapping[str, str]:
         """Return the module's sole canonical body mapping."""
         value = getattr(self.module, "BODIES", None)

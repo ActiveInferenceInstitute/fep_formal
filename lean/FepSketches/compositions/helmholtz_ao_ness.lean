@@ -1,5 +1,6 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.core_thermodynamics
+public import FepSketches.families.standalone_efe_formalizations
 public import FepSketches.helmholtz_ao_ness
 
 @[expose] public section

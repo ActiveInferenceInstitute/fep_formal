@@ -16,6 +16,7 @@ from pathlib import Path
 import pytest
 
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from tests._support.lean_module_contract import topic_namespace_owner_modules
 
 PROJ = Path(__file__).resolve().parent.parent
 SCRIPT = PROJ / "scripts" / "_maint_build_lean_landscape.py"
@@ -79,6 +80,10 @@ def test_workspace_imports_ignore_nested_comments_and_string_literals(
 def test_layers_are_respected_by_real_imports() -> None:
     module = _load_module()
     layer, deps = module._layers(PROJ)
+    topic_owners = topic_namespace_owner_modules(PROJ / "lean/FepSketches/fep_all.lean")
+    topic_modules = {
+        value.removeprefix("FepSketches.") for value in topic_owners.values()
+    }
     assert set(layer) == {
         m.lean_module.removeprefix("FepSketches.") for m in FORMAL_MODULES
     }
@@ -88,10 +93,12 @@ def test_layers_are_respected_by_real_imports() -> None:
     assert max(layer.values()) > 0
     for name, dep_names in deps.items():
         assert name in layer
+        if name.startswith("compositions."):
+            assert "fep_all" not in dep_names
         for dep in dep_names:
             if dep not in layer:
-                # Generated aggregates (fep_all) are not manifested modules.
-                assert dep == "fep_all", (name, dep)
+                # Only actual generated topic owners may sit outside the formal manifest.
+                assert dep in topic_modules, (name, dep)
                 continue
             assert layer[dep] < layer[name], (name, dep)
 

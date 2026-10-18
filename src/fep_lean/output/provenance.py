@@ -13,10 +13,10 @@ import hashlib
 from collections.abc import Iterable
 from pathlib import Path
 
-from fep_lean.catalogue.registry import body_source_relative_paths
+from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST, body_source_relative_paths
 from fep_lean.formal.manifest import FORMAL_MODULES, formal_resource_relative_paths
 
-OWNER_MANIFEST_VERSION = 25
+OWNER_MANIFEST_VERSION = 26
 
 # Globs are discovery rules only. They must never define the digest roster:
 # deleting a source file would otherwise silently delete it from the claimed
@@ -152,6 +152,7 @@ SOURCE_OWNER_ROSTER: tuple[str, ...] = (
 SOURCE_OWNER_FILES: tuple[str, ...] = (
     *SOURCE_OWNER_ROSTER,
     "lean/FepSketches/fep_all.lean",
+    *(entry.lean_projection_relative_path for entry in BODY_MODULE_MANIFEST),
 )
 
 CONFIG_OWNER_FILES: tuple[str, ...] = (
