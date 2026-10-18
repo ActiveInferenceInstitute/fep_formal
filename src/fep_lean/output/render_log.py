@@ -39,6 +39,7 @@ from itertools import accumulate, groupby
 from pathlib import Path
 from typing import Any
 
+from fep_lean.output.fsutil import sha256_bytes
 from fep_lean.output.rendering import (
     PLACEHOLDER_RE,
     SOURCE_EXCLUDES,
@@ -866,7 +867,7 @@ def manuscript_source_digests(manuscript_dir: Path) -> dict[str, str]:
     # in config.yaml. Both owners must invalidate an earlier render receipt.
     sources["../CITATION.cff"] = manuscript.parent / "CITATION.cff"
     return {
-        name: hashlib.sha256(path.read_bytes() if path.is_file() else b"").hexdigest()
+        name: sha256_bytes(path.read_bytes() if path.is_file() else b"")
         for name, path in sources.items()
     }
 

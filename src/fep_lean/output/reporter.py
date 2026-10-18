@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import datetime
-import hashlib
 import json
 import logging
 import math
@@ -199,9 +198,7 @@ def _bind_canonical_topic_evidence(
         final_source = final if isinstance(final, str) else ""
         computed_preserved = preserves_lean_semantic_contract(final_source, canonical)
         recorded_preserved = row.get("semantic_contract_preserved")
-        row["canonical_source_sha256"] = hashlib.sha256(
-            canonical.encode("utf-8")
-        ).hexdigest()
+        row["canonical_source_sha256"] = sha256_bytes(canonical.encode("utf-8"))
         row["semantic_contract_sha256"] = lean_semantic_contract_sha256(canonical)
         row["semantic_contract_preserved"] = computed_preserved and (
             recorded_preserved is not False
@@ -488,7 +485,7 @@ def _validate_artifact_hashes(
         if not isinstance(expected, str) or not _SHA256_RE.fullmatch(expected):
             errors.append(f"invalid SHA-256 digest for artifact: {raw_relative}")
             continue
-        actual = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        actual = sha256_bytes(artifact.read_bytes())
         facts.checked_artifacts += 1
         facts.seen_artifacts.add(relative.as_posix())
         if actual != expected:
@@ -1258,10 +1255,7 @@ def _validate_full_completion(
             errors.append(
                 f"complete full-mode {topic_id} must record compiled source digest"
             )
-        elif (
-            final
-            and compiled_digest != hashlib.sha256(final.encode("utf-8")).hexdigest()
-        ):
+        elif final and compiled_digest != sha256_bytes(final.encode("utf-8")):
             errors.append(
                 f"complete full-mode {topic_id} compiled source digest disagrees"
             )
@@ -1411,9 +1405,7 @@ def _validate_live_binding(
                 facts.source_bound = False
                 continue
             canonical = live_by_id[live_topic_id].lean_sketch
-            expected_canonical_digest = hashlib.sha256(
-                canonical.encode("utf-8")
-            ).hexdigest()
+            expected_canonical_digest = sha256_bytes(canonical.encode("utf-8"))
             expected_contract_digest = lean_semantic_contract_sha256(canonical)
             if row.get("canonical_source_sha256") != expected_canonical_digest:
                 facts.source_bound = False
@@ -1811,9 +1803,9 @@ class Reporter:
                 )
             final_source = normalized.get("final_lean_sketch")
             if isinstance(final_source, str) and final_source:
-                normalized["compiled_source_sha256"] = hashlib.sha256(
+                normalized["compiled_source_sha256"] = sha256_bytes(
                     final_source.encode("utf-8")
-                ).hexdigest()
+                )
             return normalized
 
         direct = getattr(result, "topic_results", [])

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import subprocess
 from pathlib import Path
@@ -21,6 +20,7 @@ from fep_lean.bridge.custody import (
     write_json,
     write_text,
 )
+from fep_lean.output.fsutil import sha256_bytes
 
 PIN = "specs/gnn-bridge-w2-source-custody/source-pin.json"
 EMITTERS = {
@@ -154,7 +154,7 @@ def check_sources(root: Path, gnn: Path, pin: dict[str, Any]) -> list[str]:
 def _emitter(root: Path, model: str, expected_digest: str) -> ModuleType:
     path = contained_file(root, EMITTERS[model])
     source = path.read_bytes()
-    if hashlib.sha256(source).hexdigest() != expected_digest:
+    if sha256_bytes(source) != expected_digest:
         raise ValueError("emitter source changed after custody validation")
     # Execute exactly the verified source, never timestamp-valid cached bytecode.
     module = ModuleType(f"bridge_{model}_emitter")
@@ -494,7 +494,7 @@ def verify_document(
     if not document.is_file():
         raise FileNotFoundError(f"document not found: {document}")
 
-    document_sha = hashlib.sha256(document.read_bytes()).hexdigest()
+    document_sha = sha256_bytes(document.read_bytes())
 
     # Render-route extraction (pinned: gnn.extract.pomdp_extractor, strict).
     gnn_src = gnn.resolve() / "src"
