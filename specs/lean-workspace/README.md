@@ -24,8 +24,10 @@ contain private repository names and absolute paths: keep them local and out
 of public Git history.
 
 Inventory scans every page of the current GitVault manifest. A changing scope,
-missing repository, failed inspection or nonmatching pin cannot produce a
-successful whole-collection check. Non-Lake sources are inventoried separately;
+missing repository, failed inspection or nonmatching account-package pin prevents
+a successful account-package check. Reference mirrors report `reference-only`
+with their actual alignment and problems; their pins do not gate account-package
+success, and they remain excluded from builds. Non-Lake sources are inventoried separately;
 they are not silently represented as successfully built projects. A compiler
 installation is not a project proof.
 

@@ -222,7 +222,14 @@ def check_project(project: dict) -> dict:
         problems.append(type(exc).__name__)
     return {
         "id": project["id"],
-        "state": "aligned" if not problems else "not-aligned",
+        "state": (
+            "reference-only"
+            if project["mode"] != "account"
+            else "aligned"
+            if not problems
+            else "not-aligned"
+        ),
+        "alignment": "aligned" if not problems else "not-aligned",
         "problems": problems,
     }
 

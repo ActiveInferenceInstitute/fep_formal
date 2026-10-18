@@ -56,6 +56,18 @@ class WorkspaceTests(unittest.TestCase):
     def test_aligned_core_needs_no_mathlib(self):
         self.assertEqual(workspace.check_project(self.lock())["state"], "aligned")
 
+    def test_pinned_reference_reports_drift_without_building(self):
+        self.repo["mode"] = "mirror-pinned"
+        lock = self.lock()
+        (self.project / "lean-toolchain").write_text("leanprover/lean4:v4.33.0\n")
+        checked = workspace.check_project(lock)
+        self.assertEqual(checked["state"], "reference-only")
+        self.assertEqual(checked["alignment"], "not-aligned")
+        self.assertIn("toolchain is not exact 4.35.0", checked["problems"])
+        built = workspace.build_project(lock, self.root / "logs", "/missing/elan", 5)
+        self.assertEqual(built["state"], "reference-only")
+        self.assertFalse((self.root / "logs").exists())
+
     def test_added_tracked_source_fails(self):
         lock = self.lock()
         (self.project / "Additional.lean").write_text(

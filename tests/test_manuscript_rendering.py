@@ -17,7 +17,13 @@ import pytest
 import yaml
 
 from fep_lean.catalogue import FEPTopicCatalogue
+from fep_lean.methods import (
+    build_mathematical_positioning,
+    export_mathematical_positioning,
+)
 from fep_lean.output import manuscript as manuscript_module
+from fep_lean.output.formal_kernel_dashboard import write_formal_kernel_dashboard
+from fep_lean.output.formalism_atlas import write_formalism_atlas
 from fep_lean.output.manuscript import (
     build_manuscript_vars,
     manuscript_projection_drift,
@@ -34,8 +40,11 @@ from fep_lean.output.rendering import (
     unreproducible_command_blocks,
     unresolved_placeholders,
 )
+from fep_lean.output.svg_raster import write_manuscript_figure_pngs
+from fep_lean.pipeline import FEPPipeline
 
 PROJ = Path(__file__).resolve().parent.parent
+pytest_plugins = ["tests._support.catalogue_project"]
 
 
 def _graphical_abstract_variables() -> dict[str, object]:
@@ -190,13 +199,31 @@ def test_all_authored_manuscript_placeholders_are_in_typed_projection() -> None:
 
 @pytest.mark.serial_lean
 def test_live_render_includes_author_block_and_canonical_graphical_abstract(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, catalogue_project: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _: 0)
-    catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
-    variables = build_manuscript_vars(catalogue, PROJ)
+    # Produce the real assets in a private checkout; a clean source tree has no
+    # pre-existing output/figures, and shared report state is not a fixture.
+    monkeypatch.setenv("GAUSS_HOME", str(tmp_path / "gauss"))
+    result = FEPPipeline(
+        catalogue_project, output_root=catalogue_project / "output"
+    ).run(mode="catalogue")
+    assert result.complete
+    assert result.verified_topics == 0
+    write_formalism_atlas(catalogue_project)
+    write_formal_kernel_dashboard(catalogue_project)
+    export_mathematical_positioning(
+        build_mathematical_positioning(catalogue_project),
+        catalogue_project / "docs/mathematical-positioning",
+    )
+    write_manuscript_figure_pngs(catalogue_project)
+    catalogue = FEPTopicCatalogue.from_yaml(
+        catalogue_project / "config" / "topics.yaml"
+    )
+    variables = build_manuscript_vars(catalogue, catalogue_project)
 
-    rendered = render_manuscript(PROJ / "manuscript", tmp_path / "build", variables)
+    rendered = render_manuscript(
+        catalogue_project / "manuscript", tmp_path / "build", variables
+    )
 
     assert rendered[0].name == "00_front_matter.md"
     front_matter = rendered[0].read_text(encoding="utf-8")
