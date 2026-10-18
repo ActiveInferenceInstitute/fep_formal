@@ -1,5 +1,7 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.continuous_time_thermodynamics
+public import FepSketches.families.core_bayesian_mechanics
+public import FepSketches.families.core_free_energy
 public import FepSketches.continuous_time_markov
 
 @[expose] public section

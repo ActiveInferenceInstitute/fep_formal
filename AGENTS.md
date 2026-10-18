@@ -67,13 +67,16 @@ document wins.
 - `config/topics.yaml` and `src/fep_lean/data/topics.yaml` — byte-identical,
   generated catalogue projections; never author either by hand.
 - `scripts/_maint_build_topics_catalogue.py` — YAML regeneration.
-- `scripts/_maint_build_fep_all_lean.py` — tracked aggregate regeneration.
+- `scripts/_maint_build_fep_all_lean.py` — tracked family-shard and compatibility
+  aggregate regeneration. Its check covers every manifest-owned output.
 - `src/fep_lean/formal/manifest.py` — explicit foundation, leaf-composition,
   and aggregate resource roster. Cross-topic proofs live in
   `formal/compositions/*.lean`; `formal/composed.lean` is the import-only
   aggregate. `scripts/_maint_build_formal_modules.py` projects the manifest
   into the workspace.
-- `lean/FepSketches/fep_all.lean` — whole-catalogue Lean target.
+- `lean/FepSketches/families/*.lean` — generated family topic modules with
+  unchanged public namespaces; composition leaves import their actual families.
+- `lean/FepSketches/fep_all.lean` — import-only whole-catalogue compatibility target.
 - `src/fep_lean/output/evidence.py` — native/full evidence policy and manuscript
   claim sentences.
 - `src/fep_lean/verification/formalism_audit.py` — declaration and axiom audit

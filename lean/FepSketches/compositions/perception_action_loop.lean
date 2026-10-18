@@ -1,5 +1,6 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.controlled_markov
+public import FepSketches.families.standalone_efe_formalizations
 public import FepSketches.perception_action_loop
 
 @[expose] public section

@@ -34,12 +34,13 @@ actual plain/public `import FepSketches.*` statements in the workspace sources.
 The exact roster and roles live in the manifest; this page projects them for navigation.
 
 - **Layer N** modules directly import manifested modules only from lower layers.
-  Unmanifested generated aggregates such as `fep_all` are listed without
-  expansion. Lake owns the complete build plan.
+  Generated topic family shards and the compatibility aggregate are listed
+  without formal-manifest layer expansion. Lake owns the complete build plan.
 - Cycles among manifested modules stop generation with the cycle path.
 - Topic bodies (@TOPIC_COUNT@ catalogue rows) live in family modules under
   [`src/fep_lean/catalogue/bodies/`](../src/fep_lean/catalogue/bodies/), not
-  here; the aggregate `fep_all.lean` covers all of them.
+  here; generated Lean family shards own their topic namespaces, and the
+  import-only `fep_all.lean` remains their compatibility aggregate.
 - Regenerate with `uv run python scripts/_maint_build_lean_landscape.py`;
   `--check` is the non-mutating freshness gate.
 - The interactive relation graph over these modules is
@@ -86,8 +87,8 @@ def _layers(project_root: Path) -> tuple[dict[str, int], dict[str, list[str]]]:
     manifest_names = set(deps)
 
     def depth(name: str, seen: tuple[str, ...]) -> int:
-        # Generated aggregates (fep_all.lean) may be imported by compositions
-        # without being manifested; they carry no layer of their own.
+        # Generated topic shards are outside the formal-resource manifest; their
+        # complete native dependency plan is owned by Lake, not this projection.
         if name not in manifest_names or name in layer:
             return layer.get(name, 0)
         if name in seen:

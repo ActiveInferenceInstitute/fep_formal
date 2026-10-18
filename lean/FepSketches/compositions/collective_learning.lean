@@ -1,5 +1,10 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.collective_inference
+public import FepSketches.families.core_active_inference
+public import FepSketches.families.core_bayesian_mechanics
+public import FepSketches.families.core_free_energy
+public import FepSketches.families.core_thermodynamics
+public import FepSketches.families.learning_theory
 public import FepSketches.collective_inference
 public import FepSketches.learning_theory
 

@@ -1,5 +1,8 @@
 module
-public import FepSketches.fep_all
+public import FepSketches.families.causal_blankets_interventions
+public import FepSketches.families.core_bayesian_mechanics
+public import FepSketches.families.core_free_energy
+public import FepSketches.families.native_blanket_independence
 public import FepSketches.native_blanket
 public import FepSketches.gaussian_precision_conditioning
 public import Mathlib.LinearAlgebra.Matrix.PosDef

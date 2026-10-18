@@ -228,3 +228,12 @@ the Gaussian conditional kernel rows above. These declarations live in
 `FEPComposed.GaussianBlanket` inside `compositions/native_blanket_transfer.lean`,
 because the Gaussian carrier modules they build on are hash-frozen by the H3
 custody record.
+
+The topic projection is split into manifest-owned modules under
+`lean/FepSketches/families/`. Their public topic names are unchanged;
+`fep_all.lean` is an import-only compatibility aggregate. Composition leaves
+import the families they actually reference. The generator's `--check` covers
+every shard as well as the aggregate and rejects unexpected or unsafe outputs.
+
+The [family-shard scope and local measurement](../specs/lean-family-shards/README.md)
+records the reversible public-declaration experiment and its limits.
