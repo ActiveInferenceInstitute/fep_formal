@@ -108,7 +108,7 @@ failed reuse and recapture, and two-archive parity with strict validator control
 Planning is tested with process creation forbidden, including the public CLI.
 
 ```bash
-uv run python -m pytest tests/test_release_bundle.py -q \
+uv run python -m pytest tests/test_publication_capture.py -q \
   -k publication_capture --no-cov
 uv run python -m pytest tests/test_subprocess_watchdog.py -q --no-cov
 ```

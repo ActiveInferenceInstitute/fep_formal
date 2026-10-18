@@ -1,5 +1,11 @@
 ## Unreleased
 
+- Split release-bundle tests into source-owner leaves and shared fixtures; rename
+  the stale catalogue test filename. Preserve all 134 test and 11 helper function
+  ASTs, all 3,714 cases and their markers; 301 IDs change only by filename.
+  The explicit current software membership and acceptance record retain historical
+  capture freezes and scientific claim boundaries.
+
 - Consolidate 25 equivalent SHA-256 byte digests in eight output/bridge owners
   through the existing shared primitive. Preserve strict-file guards, canonical
   bytes, public wrappers and PDF identifiers. The complete P03 audit documents
