@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "kind": "source-bound-software-quality-acceptance",
+  "source_commit": "aeecc0af859bd133a43dc72c572cf8d031cbaca8",
+  "packages": [
+    "L01",
+    "P08",
+    "P09"
+  ],
+  "issues": [
+    109,
+    124,
+    125
+  ],
+  "application_qualification_sha256": "f3d2fb9bff2c026273d7f1bda566761b47ef0fe6b35ac674304052bb5dbf3b22",
+  "hosted_workflows": [
+    "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39085605192",
+    "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39089312579"
+  ],
+  "source_sha256": {
+    "docs/check_coverage_floors.py": "d322ade511afbfc281e23647b57f4114bd866e7f8c03d040afb7104eb47f11aa",
+    "docs/coverage-floors.json": "00a40b3e5c05b31b60f963fcadbb879bcb8f4fc91cca0cfda3d12e0f43d3d4b5",
+    "tests/test_coverage_floors.py": "71dfead31cf495ee845de0c8167c05b93c7a751096ba2641847ead319410af65",
+    "pyproject.toml": "7b3109accc06616e9cb2fffe50babbe4216ddfc9a8bc154a0a0be09376084e2c"
+  },
+  "accepted_checks": {
+    "L01": "Independent comparison of all 21 changed canonical topic bodies: only import declarations changed; theorem statements/proofs unchanged. No blanket Mathlib.Tactic/root Mathlib imports in live formal/body/aggregate sources. Generator exposure controls, actual native compilation and declaration/axiom audit passed.",
+    "P08": "All three blanket pytest warning filters removed. Fixture rewriting and actual HTTP error-response cleanup address warning sources; bounded error reads, actual 401 retry limits, worker deadlines and late-response cleanup are tested. Full warning-visible application/Chrome qualification and hosted checks passed.",
+    "P09": "All 14 measured package line floors pass in retained coverage XML. Actual traced uncovered executable lines in an isolated custody conditional arm fail its package floor while the global89% floor passes; clean controls pass, malformed/missing evidence rejects. This is line coverage, not branch-arc enforcement."
+  },
+  "independent_review": "No actionable dependency/axiom, infrastructure/API or security/custody findings; relevant current source hashes and all six component log hashes match retained application qualification.",
+  "scope": "Software quality and dependency/diagnostic acceptance only. No broader scientific, relation, production-capture, provider, publication or research acceptance."
+}

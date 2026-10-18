@@ -1,5 +1,14 @@
 ## Unreleased
 
+- Accept the completed narrow-import, warning-policy and measured package line
+  coverage scopes for [#109](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109),
+  [#124](https://github.com/ActiveInferenceInstitute/fep_formal/issues/124) and
+  [#125](https://github.com/ActiveInferenceInstitute/fep_formal/issues/125).
+  Fresh independent review confirms unchanged theorem/proof text, removal of
+  blanket warning filters, and all 14 measured package floors. The actual
+  uncovered custody-arm control fails its package floor while the global
+  line floor passes. No branch-arc or broader scientific acceptance is claimed.
+
 - Accept the five actual local Python 3.10–3.14 installed-wheel cells and
   installed read-only status/typing controls for [#49](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49)
   and [#116](https://github.com/ActiveInferenceInstitute/fep_formal/issues/116).
@@ -19,9 +28,9 @@
   closure, oversized and stalled error bodies, and real plugin import order.
   Admit only the exact warning-policy metadata profile in historical unit
   controls, retaining authenticated predecessors and unchanged frozen bytes.
-  Broader warning and exact-source acceptance for
+  Full warning-visible and hosted acceptance for
   [#124](https://github.com/ActiveInferenceInstitute/fep_formal/issues/124)
-  remains subject to the full test and hosted gates.
+  is recorded in the software quality receipt.
 
 - Prepare native probability-measure entropy and CGF inequalities in the existing
   variational foundation, preserving explicit integrability and infinite KL.
@@ -32,14 +41,16 @@
 - Narrow blanket tactic imports in 21 canonical topic bodies while preserving
   theorem and proof tails. Preserve public/meta imports and nested comment
   boundaries in shared Lean projection, and refresh all affected owner exports.
-  Exact-source native and behavioral acceptance remains required for
-  [#109](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109).
+  Exact-source native and behavioral acceptance for
+  [#109](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109)
+  is recorded in the software quality receipt.
 - Add measured package line coverage floors from authenticated coverage XML,
   retaining the aggregate 89% line gate and an explicit empty package. Reject
   malformed coverage and policy records; add actual traced conditional controls,
   CI artifact retention and a narrowly authenticated historical metadata profile.
-  This supplies no branch-arc enforcement; hosted acceptance remains required
-  for [#125](https://github.com/ActiveInferenceInstitute/fep_formal/issues/125).
+  This supplies no branch-arc enforcement; executed and hosted acceptance
+  for [#125](https://github.com/ActiveInferenceInstitute/fep_formal/issues/125)
+  is recorded in the software quality receipt.
 - Report bounded field-level differences when live browser DOM acceptance
   rejects a capture, including missing fields and expected/observed counts or
   flags. Keep page text, unexpected field names and external-request URLs out

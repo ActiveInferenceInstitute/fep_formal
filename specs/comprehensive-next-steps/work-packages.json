@@ -320,7 +320,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/109"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Root and foundation imports use the narrow required Mathlib dependencies without changing theorem statements.",
       "depends_on": [],
       "single_owner": "Existing Lean foundations, body owners and their projection generators.",
@@ -340,7 +340,15 @@
         "native"
       ],
       "human_review": "Independent Lean dependency/axiom review.",
-      "out_of_scope": "Guessing imports or editing generated Lean copies by hand."
+      "out_of_scope": "Guessing imports or editing generated Lean copies by hand.",
+      "acceptance": {
+        "source_commit": "aeecc0af859bd133a43dc72c572cf8d031cbaca8",
+        "receipt": "software-quality-acceptance-20261018.json",
+        "checks": [
+          "Independent comparison of all 21 changed canonical topic bodies: only import declarations changed; theorem statements/proofs unchanged. No blanket Mathlib.Tactic/root Mathlib imports in live formal/body/aggregate sources. Generator exposure controls, actual native compilation and declaration/axiom audit passed."
+        ],
+        "boundary": "Software quality and dependency/diagnostic acceptance only. No broader scientific, relation, production-capture, provider, publication or research acceptance."
+      }
     },
     {
       "id": "A01",
@@ -1676,7 +1684,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/124"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Blanket warning suppression is replaced by measured module-specific justified exceptions.",
       "depends_on": [],
       "single_owner": "pyproject.toml pytest warnings configuration and the affected test owners.",
@@ -1695,14 +1703,22 @@
         "test diagnostics"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "Silencing warnings to claim acceptance or changing Lean warning policy."
+      "out_of_scope": "Silencing warnings to claim acceptance or changing Lean warning policy.",
+      "acceptance": {
+        "source_commit": "aeecc0af859bd133a43dc72c572cf8d031cbaca8",
+        "receipt": "software-quality-acceptance-20261018.json",
+        "checks": [
+          "All three blanket pytest warning filters removed. Fixture rewriting and actual HTTP error-response cleanup address warning sources; bounded error reads, actual 401 retry limits, worker deadlines and late-response cleanup are tested. Full warning-visible application/Chrome qualification and hosted checks passed."
+        ],
+        "boundary": "Software quality and dependency/diagnostic acceptance only. No broader scientific, relation, production-capture, provider, publication or research acceptance."
+      }
     },
     {
       "id": "P09",
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/125"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "Coverage claims match measured coverage and each selected package has an enforceable measured floor.",
       "depends_on": [],
       "single_owner": "Existing pyproject.toml coverage configuration and docs/coverage-branch.md; any new checker remains docs-local.",
@@ -1722,7 +1738,15 @@
         "CI"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "Claiming branch enforcement from a line-only gate or adding a production checker owner outside provenance review."
+      "out_of_scope": "Claiming branch enforcement from a line-only gate or adding a production checker owner outside provenance review.",
+      "acceptance": {
+        "source_commit": "aeecc0af859bd133a43dc72c572cf8d031cbaca8",
+        "receipt": "software-quality-acceptance-20261018.json",
+        "checks": [
+          "All 14 measured package line floors pass in retained coverage XML. Actual traced uncovered executable lines in an isolated custody conditional arm fail its package floor while the global89% floor passes; clean controls pass, malformed/missing evidence rejects. This is line coverage, not branch-arc enforcement."
+        ],
+        "boundary": "Software quality and dependency/diagnostic acceptance only. No broader scientific, relation, production-capture, provider, publication or research acceptance."
+      }
     },
     {
       "id": "P10",

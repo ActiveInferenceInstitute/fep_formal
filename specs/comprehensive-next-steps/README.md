@@ -33,10 +33,10 @@ the eight receipt-bound copies and their individual retention decisions.
    G01 remains ongoing guidance maintenance; D04's delivered consolidation
    retains its G01 dependency. C04/P01 are accepted for the source-bound five-runtime profile in
    [the local acceptance receipt](local-runtime-acceptance-20261018.json).
-   L01's 21-topic successor is source-prepared after its accepted foundation pass,
-   with coordinated catalogue/aggregate regeneration; its new native gate is
-   pending. Independent owner inventories can prepare L02/L03, L05/L06, S03 and P03/P06/P08/P09/P11;
-   their compiling, execution and review gates still apply.
+   L01/P08/P09 are accepted for their narrow source-bound software scopes in
+   [the quality acceptance receipt](software-quality-acceptance-20261018.json).
+   Independent owner inventories can prepare L02/L03, L05/L06, S03 and
+   P03/P06/P11; their compiling, execution and review gates still apply.
 2. C01/C02 resolve the actual production DOM failure and explicitly approved
    successor membership. C03 obtains actual capture/archive acceptance; C04 local
    installed-runtime/status acceptance is separately recorded above; C05 closes the complete current-source
@@ -92,21 +92,22 @@ or authorize a second primary.
 ## Next Agent Prompt
 
 Read the package matrix, applicable owner contracts and current diff first.
-The accepted default-branch checkpoint is
+The earlier accepted default-branch checkpoint was
 [`4208d589`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/4208d589a00c5eeaed5a36d8760153bad8805ef1).
 Its [exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38839512633)
 passed all 21 executed checks, including 15 installed-wheel cells; the alternative
 documentation-only lane was intentionally skipped. The
 [delivery ledger](delivery-ledger.md) retains earlier source-bound results.
 
-The next publication prepares three independent contracts. None is accepted by
-source review alone:
+The following successor contracts retain their original acceptance boundaries.
+L01/P09 now have executed source-bound acceptance in the quality receipt above;
+L06 retains its separate scientific/domain review requirements:
 
 | Package | Prepared change | Required acceptance |
 | --- | --- | --- |
-| L01 / Issue109 | Narrow imports in 21 canonical topic bodies; preserve theorem/proof tails; retain public/meta imports and comment boundaries in shared projection | Exact-source Python controls, generated parity, focused/aggregate Lean, native and axiom checks |
+| L01 / Issue109 | Accepted: narrow imports in 21 canonical topic bodies; theorem/proof tails and public/meta exposure preserved | Exact-source Python controls, generated parity, native and axiom checks passed; see the quality receipt |
 | L06 / Issue111 | Native probability-measure entropy and CGF bounds, with explicit integrability and infinite KL; derive a Mathlib-only consumer from the single authored proof block | Warning-free compilation, nonconstant attained tilt, clipping and singular-law controls, three retained axiom reports and distinct source/domain review |
-| P09 / Issue125 | Measured line floors for 14 packages, an explicit empty package and unchanged aggregate 89% floor; strict artifact checker and exact historical metadata profile | Complete split Python/Chrome XML passes; actual traced uncovered custody arm fails its package floor while global passes; clean control, malformed inputs and custody replay refuse/accept as specified |
+| P09 / Issue125 | Accepted: measured line floors for 14 packages, an explicit empty package and unchanged aggregate 89% floor | Split Python/Chrome XML, traced custody-arm rejection, clean and malformed-input controls passed; see the quality receipt |
 
 L06's extracted proposition uses no FEP types or assumed duality. Its
 `ENNReal.ofReal` bound preserves native infinity; clipped equality is not an
@@ -122,25 +123,24 @@ come from their owners. Recheck exact hashes and actual hosted artifacts before
 closing any Issue or removing its TODO row. Earlier passing receipts do not
 qualify these new source bytes.
 
-[PR179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179) remains
-**draft and unmerged** at head `4e5c041087260cbc105ca7852e2dc82c78c5d13d`.
-Its [workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38840270358)
-passed all 15 executed lanes for tested tree
-`548ba41b9739d6a2bbae420a2979faf5f7d0b880`.
-R01 still requires C05, whose actual C03 production-capture and C04 local
-installed-runtime/status predecessors remain open. Hosted CI supplies neither.
+[PR179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179) merged
+at `c066f4c774ce74f5c796a03160e83965eac2c33e` on 2026-10-16.
 The original attributed [PR44](https://github.com/ActiveInferenceInstitute/fep_formal/pull/44)
-and Issue58 remain open. Its ten consumer axiom reports have an execution
-inference from the passing mandatory serial test, but their raw reports were
-not retained. Keep that limit distinct from L06's new raw-report retention.
+was closed as superseded on that date. Issue58/R01 retains its broader acceptance
+obligations; PR disposition alone does not close them. C04 local installed-runtime
+acceptance is complete. C03 production capture and the complete C05 gate remain
+separate. The ten original consumer axiom reports have an execution inference
+from the passing mandatory serial test, but their raw reports were not retained.
+Keep that limit distinct from L06's newer raw-report retention.
 
 Before native or installed-runtime execution, satisfy the named resource
 profile. C04 requires 15 GiB free before launch and every cell; the private
 native controller also reserves primary-volume space. Current source-only
 preparation and bounded static projections do not waive either limit. Preserve
 shared dependencies, private operator materials and receipt-bound caches.
-C01/C02 need the existing private production streams and selected reviewed
-controller packet; historical source-only review supplies no execution approval.
+The user waived recovering private production streams and the private controller
+packet for this local integration campaign. This removes that dependency from
+current local work; it supplies no missing production-capture or scientific evidence.
 
 Use isolated worktrees or explicit disjoint file ownership, serialize native
 verification and preserve concurrent canonical work. Publish accepted slices,

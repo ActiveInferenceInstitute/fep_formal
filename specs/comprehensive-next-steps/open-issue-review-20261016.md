@@ -7,7 +7,7 @@ The operator requested review of every open Issue and PR, then integration into 
 - PR182: narrow topic imports, native measure entropy/CGF bounds, measured package coverage floors, regenerated render receipt and repaired historical import controls. All 15 hosted jobs passed at `cfd7d656c40c5025e1a5e78a779e680908f52d46` in workflow 38974041746.
 - PR184: bounded DOM mismatch diagnostics, preserving rejection and evidence atomicity. All 15 hosted jobs passed at `a217d200c4b6b7402b2755cc05e8be4948abe37b` in workflow 38971659371.
 - PR185: bounded HTTP error body handling, real single-401 recovery, timeout/late-response closure and warning-policy repair. Full local combined run at `42ff39cde3d52219ba84bfcbd1d6ffc0494d58d8`: 3067 passed, 18 skipped, zero reported warnings under `-W always`; 17257/18798 lines covered; all measured package floors passed.
-- PR179: current-pin finite-kernel category and predictive-law functor, adapted from jhashemi's PR44 (`df4bc773e0c0ddb4e4f80920903e711ed287beb4`). Preserve attribution and dispose of PR44 as superseded only after its successor is integrated. Existing native/category and hosted acceptance retain their exact source epochs.
+- PR179: current-pin finite-kernel category and predictive-law functor, adapted from jhashemi's PR44 (`df4bc773e0c0ddb4e4f80920903e711ed287beb4`). PR179 merged at c066f4c774ce74f5c796a03160e83965eac2c33e and PR44 closed as superseded on 2026-10-16, preserving attribution. Existing native/category and hosted acceptance retain their exact source epochs.
 
 Conflicting generated projections were regenerated through their owning scripts. Test conflicts preserve both the explicit metadata profiles and the category manifest companion, and check the three new native entropy declarations and eight category declarations separately from the unchanged prior inventory. Frozen artifacts and scientific relation dispositions are unchanged.
 
@@ -71,7 +71,7 @@ Packages: `H03`.
 
 ### [#58: CUR-13 Review substantive PR44 against current formal and ownership contracts](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58)
 
-PR44 is conflicting and remains substantive. PR179 is the attributed current-pin successor, still draft; hosted success is not the missing local/full-capture acceptance.
+PR179 is the attributed current-pin successor and merged at c066f4c774ce74f5c796a03160e83965eac2c33e on 2026-10-16. PR44 closed as superseded. This satisfies PR disposition; Issue58/R01 retains its distinct broader acceptance obligations. C04 local runtime acceptance is complete; no missing production or scientific evidence is inferred from integration.
 
 Packages: `R01`.
 
@@ -275,7 +275,7 @@ Packages: `N01`.
 
 ### [#109: LEAN-11 Narrow blanket Mathlib.Tactic and root Mathlib imports](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109)
 
-PR182 contains the final 21-body narrowing and generators. No blanket Mathlib.Tactic/root Mathlib import was found in the inspected formal tree or root aggregate; predecessor native evidence validates, all 15 successor hosted jobs passed and the change is integrated.
+Accepted on 2026-10-18 after current source-bound qualification and fresh independent review. Independent comparison of all 21 changed canonical topic bodies: only import declarations changed; theorem statements/proofs unchanged. No blanket Mathlib.Tactic/root Mathlib imports in live formal/body/aggregate sources. Generator exposure controls, actual native compilation and declaration/axiom audit passed. See [the quality acceptance receipt](software-quality-acceptance-20261018.json). Broader research and production gates remain separate.
 
 Packages: `L01`.
 
@@ -329,13 +329,13 @@ Packages: `P07`.
 
 ### [#124: PKG-11 Narrow blanket pytest warning filters](https://github.com/ActiveInferenceInstitute/fep_formal/issues/124)
 
-PR185 removes all three blanket warning filters, registers fixture assertion rewriting early, closes HTTP error responses and brings error-body reads under the worker deadline/byte cap. Real HTTP 401s now follow the existing single-refresh policy. Focused tests pass with the observed warning categories promoted to errors. PR185 is stacked on PR182 and authenticates the exact combined metadata profile; complete source-bound acceptance remains separately measured.
+Accepted on 2026-10-18 after current source-bound qualification and fresh independent review. All three blanket pytest warning filters removed. Fixture rewriting and actual HTTP error-response cleanup address warning sources; bounded error reads, actual 401 retry limits, worker deadlines and late-response cleanup are tested. Full warning-visible application/Chrome qualification and hosted checks passed. See [the quality acceptance receipt](software-quality-acceptance-20261018.json). Broader research and production gates remain separate.
 
 Packages: `P08`.
 
 ### [#125: PKG-12 Coverage gate wording and per-package floors](https://github.com/ActiveInferenceInstitute/fep_formal/issues/125)
 
-PR182 has measured direct-package line floors and adversarial controls. Its corrected full local run passed 3055 cases with 18 skips and 17240/18791 = 91.75% coverage. All package floors passed. The two retained isolated real-custody-arm controls passed, including package failure while aggregate passes. No branch-arc coverage is claimed; hosted acceptance remains separate.
+Accepted on 2026-10-18 after current source-bound qualification and fresh independent review. All 14 measured package line floors pass in retained coverage XML. Actual traced uncovered executable lines in an isolated custody conditional arm fail its package floor while the global89% floor passes; clean controls pass, malformed/missing evidence rejects. This is line coverage, not branch-arc enforcement. See [the quality acceptance receipt](software-quality-acceptance-20261018.json). Broader research and production gates remain separate.
 
 Packages: `P09`.
 
