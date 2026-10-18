@@ -15,8 +15,12 @@ from fep_lean.catalogue.bodies.continuous_time_thermodynamics import (
 from fep_lean.catalogue.bodies.exponential_family_geometry import (
     BODIES as EXPONENTIAL_FAMILY_BODIES,
 )
+from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
-from tests._support.lean_module_contract import assert_exposed_module_header
+from tests._support.lean_module_contract import (
+    assert_exposed_module_header,
+    topic_namespace_owner_modules,
+)
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -550,7 +554,15 @@ def test_slice04_composition_leaves_pin_exact_bridges_and_endpoint_proofs(
     bridges: tuple[tuple[str, str, str], ...],
 ) -> None:
     source = (COMPOSITIONS_ROOT / resource).read_text(encoding="utf-8")
-    assert_exposed_module_header(source, ("FepSketches.fep_all", foundation))
+    owners = topic_namespace_owner_modules(
+        PROJECT_ROOT / "lean/FepSketches/fep_all.lean"
+    )
+    code = lean_code_without_comments(source)
+    namespaces = set(re.findall(r"\bfep_fep\d+\b", code))
+    families = tuple(sorted({owners[namespace] for namespace in namespaces}))
+    assert families
+    assert "FepSketches.fep_all" not in code
+    assert_exposed_module_header(source, (*families, foundation))
     assert "namespace FEPComposed\n" in source
     assert source.rstrip().endswith("end FEPComposed")
     assert len(bridges) == 7
