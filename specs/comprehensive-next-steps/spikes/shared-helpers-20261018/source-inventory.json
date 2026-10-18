@@ -1,0 +1,1258 @@
+{
+  "kind": "dated_static_helper_inventory_not_execution_evidence",
+  "settled_owner_commit": "4f86b6dd55d2afbf22fc2d2f1758c783bc274b67",
+  "remaining_one_shot_sites": [
+    {
+      "path": "src/fep_lean/__init__.py",
+      "line": 32,
+      "expression": "_runtime_hashlib.sha256(\n            path.read_bytes()\n        ).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/catalogue/schema.py",
+      "line": 49,
+      "expression": "hashlib.sha256((\"\\n\".join(topic_ids) + \"\\n\").encode(\"utf-8\")).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/apply.py",
+      "line": 198,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/apply.py",
+      "line": 212,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/apply.py",
+      "line": 189,
+      "expression": "hashlib.sha256(self.read(relative)).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/census.py",
+      "line": 54,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 567,
+      "expression": "hashlib.sha256(payload.encode(\"utf-8\")).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 675,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 810,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 814,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 999,
+      "expression": "hashlib.sha256(committed).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 1083,
+      "expression": "hashlib.sha256(receipt_bytes).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 1084,
+      "expression": "hashlib.sha256(provenance_bytes).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 673,
+      "expression": "hashlib.sha256(path.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 556,
+      "expression": "hashlib.sha256(path.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "line": 245,
+      "expression": "hashlib.sha256((root / owner).read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/client.py",
+      "line": 118,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "line": 101,
+      "expression": "_hashlib.sha256(raw.encode()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "line": 107,
+      "expression": "_hashlib.sha256(payload.encode(\"utf-8\")).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "line": 83,
+      "expression": "_hashlib.sha256(\"|\".join(parts).encode()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "line": 156,
+      "expression": "_hashlib.sha256(self.final_lean_sketch.encode(\"utf-8\")).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "line": 764,
+      "expression": "_hashlib.sha256(\n                lean_sketch.encode(\"utf-8\")\n            ).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "line": 512,
+      "expression": "_hashlib.sha256(lean_sketch.encode()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "line": 687,
+      "expression": "_hashlib.sha256(refined.encode()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "line": 542,
+      "expression": "_hashlib.sha256(lean_sketch.encode()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/llm/hermes.py",
+      "line": 1271,
+      "expression": "hashlib.sha256(payload.encode(\"utf-8\")).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/methods/model.py",
+      "line": 862,
+      "expression": "hashlib.sha256(path.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/methods/model.py",
+      "line": 276,
+      "expression": "hashlib.sha256(statement.encode()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/methods/model.py",
+      "line": 1062,
+      "expression": "hashlib.sha256(\n                    _registry.BODIES[topic_id].encode()\n                ).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/methods/visualization.py",
+      "line": 415,
+      "expression": "hashlib.sha256(Path(__file__).read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/methods/visualization.py",
+      "line": 445,
+      "expression": "hashlib.sha256(font.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/output/fsutil.py",
+      "line": 35,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/_subprocess.py",
+      "line": 479,
+      "expression": "hashlib.sha256(\n                    _frame_bytes(response)\n                ).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/_subprocess.py",
+      "line": 979,
+      "expression": "hashlib.sha256(_frame_bytes(result)).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_artifact_proof.py",
+      "line": 156,
+      "expression": "hashlib.sha256(path.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_artifact_proof.py",
+      "line": 827,
+      "expression": "hashlib.sha256(path.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_artifact_proof.py",
+      "line": 847,
+      "expression": "hashlib.sha256(extractor_path.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_artifact_proof.py",
+      "line": 466,
+      "expression": "hashlib.sha256(source_text.encode(\"utf-8\")).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_artifact_receipt.py",
+      "line": 260,
+      "expression": "hashlib.sha256(value).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_continuous_artifact_proof.py",
+      "line": 169,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_julia_artifact_proof.py",
+      "line": 136,
+      "expression": "hashlib.sha256(skeleton_text.encode()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_julia_artifact_proof.py",
+      "line": 190,
+      "expression": "hashlib.sha256(source_bytes).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/horizon_acceptance.py",
+      "line": 211,
+      "expression": "hashlib.sha256(path.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/horizon_acceptance.py",
+      "line": 764,
+      "expression": "hashlib.sha256(before[1]).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/horizon_acceptance.py",
+      "line": 249,
+      "expression": "hashlib.sha256(data).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/horizon_acceptance.py",
+      "line": 601,
+      "expression": "hashlib.sha256(collection).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/horizon_acceptance.py",
+      "line": 529,
+      "expression": "hashlib.sha256(file.read_bytes()).hexdigest()"
+    },
+    {
+      "path": "src/fep_lean/verification/horizon_acceptance.py",
+      "line": 686,
+      "expression": "hashlib.sha256(file.read_bytes()).hexdigest()"
+    }
+  ],
+  "inventory": [
+    {
+      "path": "src/fep_lean/__init__.py",
+      "sha256": "30c91435dec20f793171b3ffc79a95d2affc3b8419968f98546329483b4f7b91",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 32
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/bridge/cli.py",
+      "sha256": "2a9d1f99d0c5fbcc36f5a8572b027e2e3ef6a7549159e6cf4a4473046bbb4ca5",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 116
+        },
+        {
+          "call": "json.dumps",
+          "line": 119
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/bridge/custody.py",
+      "sha256": "e7d774fc9609b26648200175652fdbed2a106d6adff3e1d546584fac6d4019e8",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 122
+        },
+        {
+          "call": "json.dumps",
+          "line": 55
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/bridge/operations.py",
+      "sha256": "da3f75967781d429270c05a65217a521c7b22bebd620126f5db214b55cb88301",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 108
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/catalogue/coverage.py",
+      "sha256": "3085d6dc199a1e9adb800645fca009fe2a2e8c846605b32d62dfb1797fae6a95",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 606
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/catalogue/schema.py",
+      "sha256": "5bfad0a7aff944410faa2d18621b1bae3dd4cf245d3ff7ef81172a8c9ed2ddf4",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 49
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/cli.py",
+      "sha256": "cfe70bf080be0017b7f88565f58564ecde3195d2b6c9b905c83aca76877ad723",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 945
+        },
+        {
+          "call": "json.loads",
+          "line": 96
+        },
+        {
+          "call": "json.dumps",
+          "line": 216
+        },
+        {
+          "call": "json.dumps",
+          "line": 228
+        },
+        {
+          "call": "json.dumps",
+          "line": 337
+        },
+        {
+          "call": "json.dumps",
+          "line": 291
+        },
+        {
+          "call": "json.dumps",
+          "line": 1192
+        },
+        {
+          "call": "json.loads",
+          "line": 1124
+        },
+        {
+          "call": "json.loads",
+          "line": 1125
+        },
+        {
+          "call": "json.loads",
+          "line": 1126
+        },
+        {
+          "call": "json.dumps",
+          "line": 1129
+        },
+        {
+          "call": "json.dumps",
+          "line": 1250
+        },
+        {
+          "call": "json.dumps",
+          "line": 1311
+        },
+        {
+          "call": "json.dumps",
+          "line": 1303
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/custody/apply.py",
+      "sha256": "10966829413a7824e03ab5dc04c68b706101949a023368a739e98fd542de3f77",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 110
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 198
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 212
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 189
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/custody/census.py",
+      "sha256": "30370b4ba83a54eec03418ffaec40859cc89abe2b76dcf312667840574e39816",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/custody/cli.py",
+      "sha256": "b1bc2cd0e7c93f43c0c59dc9cae26f546b6d5b2edaf1ed99f89b6f7771af5023",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 134
+        },
+        {
+          "call": "json.dumps",
+          "line": 364
+        },
+        {
+          "call": "json.dumps",
+          "line": 287
+        },
+        {
+          "call": "json.dumps",
+          "line": 351
+        },
+        {
+          "call": "json.dumps",
+          "line": 394
+        },
+        {
+          "call": "json.dumps",
+          "line": 304
+        },
+        {
+          "call": "json.dumps",
+          "line": 318
+        },
+        {
+          "call": "json.dumps",
+          "line": 334
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/custody/refresh.py",
+      "sha256": "fee94978bfdf36e2ece129c169ca1d9a2fa9547ce1e4bb1d756cf33cd1681600",
+      "sites": [
+        {
+          "call": "os.replace",
+          "line": 594
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 676
+        },
+        {
+          "call": "os.replace",
+          "line": 1039
+        },
+        {
+          "call": "json.loads",
+          "line": 236
+        },
+        {
+          "call": "json.dumps",
+          "line": 592
+        },
+        {
+          "call": "json.dumps",
+          "line": 1037
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 567
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 675
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 810
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 814
+        },
+        {
+          "call": "json.loads",
+          "line": 934
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 999
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 1083
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 1084
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 673
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 556
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 245
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/gauss/client.py",
+      "sha256": "3a9fa26de947e781b85d07340ed57dbdc156452d65cf3797539c153d20ccbc9c",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 382
+        },
+        {
+          "call": "json.dumps",
+          "line": 430
+        },
+        {
+          "call": "json.dumps",
+          "line": 437
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 118
+        },
+        {
+          "call": "os.replace",
+          "line": 390
+        },
+        {
+          "call": "json.loads",
+          "line": 478
+        },
+        {
+          "call": "json.dumps",
+          "line": 419
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "sha256": "38d0f6f07bf0389126c3af99d1d2e13bd22cd2df669e40e9fd91f20734f1f350",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 106
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 101
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 107
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 83
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 156
+        },
+        {
+          "call": "json.dumps",
+          "line": 511
+        },
+        {
+          "call": "json.dumps",
+          "line": 686
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 764
+        },
+        {
+          "call": "json.dumps",
+          "line": 541
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 512
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 687
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 542
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/llm/hermes.py",
+      "sha256": "3880e8b519652894b31efaf3c13aa80ef328ce10a10f9701c2eaef6105c9b22d",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 1266
+        },
+        {
+          "call": "json.loads",
+          "line": 137
+        },
+        {
+          "call": "json.loads",
+          "line": 1104
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 1271
+        },
+        {
+          "call": "json.dumps",
+          "line": 977
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/methods/model.py",
+      "sha256": "e95371643dc94823982cccbbc82663893c456c987b3096d41248c90de45d459e",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 379
+        },
+        {
+          "call": "json.loads",
+          "line": 299
+        },
+        {
+          "call": "json.loads",
+          "line": 796
+        },
+        {
+          "call": "json.dumps",
+          "line": 1141
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 862
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 276
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 1062
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/methods/projection.py",
+      "sha256": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 98
+        },
+        {
+          "call": "json.dumps",
+          "line": 176
+        },
+        {
+          "call": "json.dumps",
+          "line": 318
+        },
+        {
+          "call": "json.dumps",
+          "line": 240
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/methods/visualization.py",
+      "sha256": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 1305
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 415
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 445
+        },
+        {
+          "call": "json.dumps",
+          "line": 1558
+        },
+        {
+          "call": "json.dumps",
+          "line": 1327
+        },
+        {
+          "call": "json.dumps",
+          "line": 1687
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/browser_capture.py",
+      "sha256": "f3c09a6569b750e4fe1947199254124570b34479fd6aae327726d17d860bd80e",
+      "sites": [
+        {
+          "call": "os.replace",
+          "line": 1422
+        },
+        {
+          "call": "json.dumps",
+          "line": 1388
+        },
+        {
+          "call": "os.replace",
+          "line": 1420
+        },
+        {
+          "call": "json.dumps",
+          "line": 463
+        },
+        {
+          "call": "json.loads",
+          "line": 501
+        },
+        {
+          "call": "os.replace",
+          "line": 1430
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/evidence.py",
+      "sha256": "6cc830b6c8c51b1f41792281e3f84ec9b98eac1e49312fc298ab4f69d3a230ec",
+      "sites": [
+        {
+          "call": "tempfile.mkstemp",
+          "line": 171
+        },
+        {
+          "call": "os.replace",
+          "line": 180
+        },
+        {
+          "call": "json.loads",
+          "line": 196
+        },
+        {
+          "call": "json.dump",
+          "line": 176
+        },
+        {
+          "call": "json.loads",
+          "line": 486
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/figures.py",
+      "sha256": "c70fed46a022bcdeb27045fa5b0be3fb65541aa936095cb2f56ea046fb6134b2",
+      "sites": [
+        {
+          "call": "tempfile.mkstemp",
+          "line": 41
+        },
+        {
+          "call": "os.replace",
+          "line": 45
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/formalism_atlas.py",
+      "sha256": "1ab4bd189cddb77f8e8a6475a97c52544d5ccfa8523dac509a1acd0a69042ed3",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 150
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/fsutil.py",
+      "sha256": "2d895d2c2bfa97782895b3f7a67176b45e96220938f2c46ec17a8413a92a9bc9",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 43
+        },
+        {
+          "call": "tempfile.mkstemp",
+          "line": 53
+        },
+        {
+          "call": "os.replace",
+          "line": 59
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 35
+        },
+        {
+          "call": "json.dumps",
+          "line": 73
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/manuscript.py",
+      "sha256": "721200f8afa801a4f4e6f629ed4320dc2e7bc2dce059e1d6bb5d36e2e462dd10",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 666
+        },
+        {
+          "call": "json.loads",
+          "line": 280
+        },
+        {
+          "call": "json.loads",
+          "line": 385
+        },
+        {
+          "call": "json.loads",
+          "line": 472
+        },
+        {
+          "call": "os.replace",
+          "line": 810
+        },
+        {
+          "call": "json.loads",
+          "line": 856
+        },
+        {
+          "call": "json.dumps",
+          "line": 668
+        },
+        {
+          "call": "json.dumps",
+          "line": 924
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/provenance.py",
+      "sha256": "56ce530de37f19cdab60fc3e5df931cbcec98111f740a50f4158193bb018d101",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 212
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/release_bundle/_assemble.py",
+      "sha256": "d7b080904af9861a6df879d22eec247fef79a91448075d8f6db67c50aa2d710c",
+      "sites": [
+        {
+          "call": "tempfile.mkstemp",
+          "line": 426
+        },
+        {
+          "call": "json.loads",
+          "line": 198
+        },
+        {
+          "call": "json.loads",
+          "line": 276
+        },
+        {
+          "call": "json.loads",
+          "line": 281
+        },
+        {
+          "call": "os.replace",
+          "line": 460
+        },
+        {
+          "call": "os.replace",
+          "line": 536
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/release_bundle/_core.py",
+      "sha256": "bc8c64f0104a22c32b6e00964b73ffdfd680d5e4deeb67149b3263a03ac7e56c",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 113
+        },
+        {
+          "call": "json.loads",
+          "line": 145
+        },
+        {
+          "call": "json.dumps",
+          "line": 69
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/release_bundle/_manuscript.py",
+      "sha256": "f78e2085bd8e242941ac17873452a2e944251d96e81ef1a03a7ad7cac1bfc8b8",
+      "sites": [
+        {
+          "call": "os.replace",
+          "line": 945
+        },
+        {
+          "call": "os.replace",
+          "line": 943
+        },
+        {
+          "call": "os.replace",
+          "line": 965
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/release_bundle/_validate.py",
+      "sha256": "a438b62c1ec25825039adc73024c205c0209c8010e012c08a5e07b7d26e22f4e",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 136
+        },
+        {
+          "call": "json.dumps",
+          "line": 144
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/render_log.py",
+      "sha256": "2d505f4dab85120a316c92aff14bff7980031af71eaffa3748bca39051489bed",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 891
+        },
+        {
+          "call": "json.loads",
+          "line": 956
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/rendering.py",
+      "sha256": "718a1b5691f1e270aeb79c3adceffd8891a20d6fc97dfabf30a9385fb0e81dd9",
+      "sites": [
+        {
+          "call": "os.replace",
+          "line": 338
+        },
+        {
+          "call": "os.replace",
+          "line": 340
+        },
+        {
+          "call": "os.replace",
+          "line": 343
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/output/reporter.py",
+      "sha256": "d641b238dfd68e6b6e527737234811c68e28e73c27d12cc530c8556905e4ef56",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 1484
+        },
+        {
+          "call": "json.dumps",
+          "line": 1764
+        },
+        {
+          "call": "json.dumps",
+          "line": 1768
+        },
+        {
+          "call": "json.dumps",
+          "line": 1782
+        },
+        {
+          "call": "json.dumps",
+          "line": 1873
+        },
+        {
+          "call": "json.dumps",
+          "line": 1971
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/prove2me/client.py",
+      "sha256": "e1d6257049a76fb185807b713d653163346895160de36b9952761ee6fd238cd6",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 530
+        },
+        {
+          "call": "json.dumps",
+          "line": 459
+        },
+        {
+          "call": "json.dumps",
+          "line": 415
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/prove2me/config.py",
+      "sha256": "62c4bdc609df1a3746f7dbb615b79e7ecd9f847741bc21ea6e89947631f8346f",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 182
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/_jsonutil.py",
+      "sha256": "8e389db30143881d795eecc8786df2ff5d9c21dd2fc1592e92e501991cee8e9d",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 57
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/_subprocess.py",
+      "sha256": "482a19898e0c3ffc1f2a4e71d83727715ced1ce1db4f211a06b6caf26a0aedef",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 113
+        },
+        {
+          "call": "json.dumps",
+          "line": 87
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 479
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 979
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/_toolchain.py",
+      "sha256": "932bb7655aeb214baff62df9e0b7bde58d4f31feccb2f57a1334b305eff5af96",
+      "sites": [
+        {
+          "call": "json.loads",
+          "line": 77
+        },
+        {
+          "call": "json.loads",
+          "line": 97
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/formalism_audit.py",
+      "sha256": "b2c063da51abd94ee5b8500aea9a5867eb009991a7e91ebc253d983cc6ecb76e",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 323
+        },
+        {
+          "call": "tempfile.mkstemp",
+          "line": 468
+        },
+        {
+          "call": "tempfile.mkstemp",
+          "line": 575
+        },
+        {
+          "call": "os.replace",
+          "line": 584
+        },
+        {
+          "call": "json.loads",
+          "line": 594
+        },
+        {
+          "call": "json.dump",
+          "line": 580
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_artifact_proof.py",
+      "sha256": "844bcc79086f3e00d259f23463f02eddb1b037db854dd54ba246aa817ef2967b",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 749
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 156
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 827
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 847
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 466
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_artifact_receipt.py",
+      "sha256": "cc5f3cbc9889495576aa3550c2fb1791eb042024f97d7a1af56ba7eb1c855d79",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 263
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 260
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_continuous_artifact_proof.py",
+      "sha256": "f6b557fc4b094abe525388e83a00210e4608dd2c9d985b6721542af56ded9aa3",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 173
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 169
+        },
+        {
+          "call": "json.dumps",
+          "line": 396
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/gnn_julia_artifact_proof.py",
+      "sha256": "c3963e31367fa1b1deac5de0dd561cf742da38b7a24c1bbbb8e7d8014b006e3c",
+      "sites": [
+        {
+          "call": "hashlib.sha256",
+          "line": 136
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 190
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/horizon_acceptance.py",
+      "sha256": "b1e25d40ee6c42c9a661e1d2fa23f3814365c50cbdc04276da929b54ff62958d",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 807
+        },
+        {
+          "call": "json.loads",
+          "line": 493
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 211
+        },
+        {
+          "call": "json.dumps",
+          "line": 493
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 764
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 249
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 601
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 529
+        },
+        {
+          "call": "hashlib.sha256",
+          "line": 686
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/lean_verifier.py",
+      "sha256": "9779513aeb49734c1de299e2a116420c990982924b5698fcdbb62a51b2408067",
+      "sites": [
+        {
+          "call": "tempfile.mkstemp",
+          "line": 531
+        }
+      ]
+    },
+    {
+      "path": "src/fep_lean/verification/preflight.py",
+      "sha256": "2b80ab8cefa2f93d7648f2b3d607fda18591d2b0294ffffea1cd45ad51441ebc",
+      "sites": [
+        {
+          "call": "json.dumps",
+          "line": 32
+        }
+      ]
+    }
+  ],
+  "retained_contracts": "See ../../shared-helper-audit-20261018.md; lower-layer deferrals are deliberate scope boundaries, not universal impossibility claims.",
+  "import_aliases_resolved": true
+}

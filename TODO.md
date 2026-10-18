@@ -124,7 +124,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [PKG-5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/118) — Consolidate atomic-write, hash and strict-JSON helpers | Medium | Independent | `mkstemp`/`os.replace` only in `fsutil` plus documented exceptions; existing tests pass. |
 | [PKG-6](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119) — Error base in the pinned GNN proof modules and every verb's failure path | Medium | [CORE-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/62) | `ArtifactProofError` and `ContinuousArtifactError` derive from `FepLeanError` after a coordinated Q5–Q7 evidence refresh, the `pinned` exclusion in `tests/test_cli.py` is empty, and the parametrised failure-schema test covers every verb. |
 | [PKG-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/120) — Remove layer inversions and global environment mutation | Medium | [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64), [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73) | No `from fep_lean.cli` outside the console entry; no private release_bundle access outside its owner; an import-direction test. |
 | [PKG-9](https://github.com/ActiveInferenceInstitute/fep_formal/issues/122) — Ratchet function length | Medium | Independent | `ruff check` clean with the rule; no function in the named modules over 200 lines; outputs unchanged. |

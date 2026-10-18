@@ -81,3 +81,12 @@ bridge custody evidence where those owners participate. Prior failed runs and
 historical receipts remain unchanged and retain their original source epochs.
 This document records the implementation/audit boundary; acceptance requires
 actual checks and a reviewed final source snapshot.
+
+The [acceptance receipt](shared-helper-acceptance-20261018.json) binds the
+reviewed runtime owners, actual software/native/declaration evidence and
+Signature-only current-pair refresh. The
+[static inventory](spikes/shared-helpers-20261018/source-inventory.json)
+records all48 remaining one-shot sites and the retained atomic/JSON call sites.
+Clean-head hosted serial, render and distribution qualification remains an
+integration prerequisite. Historical bridge proof and production receipts are
+not renewed by the source-pair refresh.

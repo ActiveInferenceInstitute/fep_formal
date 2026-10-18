@@ -1549,7 +1549,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/118"
       ],
-      "status": "planned",
+      "status": "accepted",
       "outcome": "Equivalent atomic-write/hash/strict-JSON behavior has one existing owner per semantic contract.",
       "depends_on": [],
       "single_owner": "Existing output/fsutil.py and verification/_jsonutil.py plus their callers.",
@@ -1571,7 +1571,18 @@
         "source custody"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "A generic helper that weakens caller guarantees, new production modules without roster review or unreviewed immutable evidence changes."
+      "out_of_scope": "A generic helper that weakens caller guarantees, new production modules without roster review or unreviewed immutable evidence changes.",
+      "acceptance": {
+        "source_commit": "4f86b6dd55d2afbf22fc2d2f1758c783bc274b67",
+        "receipt": "shared-helper-acceptance-20261018.json",
+        "checks": [
+          "25 equivalent byte-digest sites consolidated; complete retained atomic/JSON/import-layer exception audit.",
+          "Full nonserial suite, real Chrome pair, all14 package floors, strict typing/static gates,168-topic native receipt and1886-declaration audit passed.",
+          "Independent API/integrity/custody review; current pair pin and Signature-only refresh checked without mathematical drift."
+        ],
+        "boundary": "Bounded helper/API/filesystem/source-custody acceptance. Historical native bridge, production capture and research receipts retain their original source epochs; no frozen primary is repeated or promoted.",
+        "integration_condition": "Final clean-head hosted serial pytest, distribution and actual render gates must pass before integration. Reconcile the GNN pair reference only after the final FEP publication SHA is settled."
+      }
     },
     {
       "id": "P04",
