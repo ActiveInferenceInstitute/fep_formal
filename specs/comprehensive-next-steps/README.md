@@ -31,14 +31,15 @@ the eight receipt-bound copies and their individual retention decisions.
 
 1. Reconcile the accepted G02/P02/T01/D02/D03 scopes through this publication.
    G01 remains ongoing guidance maintenance; D04's delivered consolidation
-   retains its G01 dependency. P01 still requires C04's local runtime acceptance.
+   retains its G01 dependency. C04/P01 are accepted for the source-bound five-runtime profile in
+   [the local acceptance receipt](local-runtime-acceptance-20261018.json).
    L01's 21-topic successor is source-prepared after its accepted foundation pass,
    with coordinated catalogue/aggregate regeneration; its new native gate is
    pending. Independent owner inventories can prepare L02/L03, L05/L06, S03 and P03/P06/P08/P09/P11;
    their compiling, execution and review gates still apply.
 2. C01/C02 resolve the actual production DOM failure and explicitly approved
-   successor membership. C03/C04 obtain actual capture/archive and local
-   installed-runtime/status acceptance; C05 closes the complete current-source
+   successor membership. C03 obtains actual capture/archive acceptance; C04 local
+   installed-runtime/status acceptance is separately recorded above; C05 closes the complete current-source
    check/artifact gate. H00 resolves the frozen-carrier migration meaning.
 3. After their stated predecessors, O01/O02 reconcile operator/configuration
    contracts; A01/A02 expose demonstrated readiness/query gaps; P04/P05/P10

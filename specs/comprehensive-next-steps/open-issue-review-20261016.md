@@ -17,7 +17,7 @@ The following are source-based assessments and outstanding work, not declaration
 
 ### [#49: CUR-06 Accept five local installed-wheel runtimes and read-only status](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49)
 
-Five actual local installed-wheel runtime cells passed 84 distribution cases each, and 30 installed status controls passed with API/CLI parity, process/network sentinels and unchanged consumed bytes/mtimes. Every cell passed the 15 GiB prerequisite. Current wheel inventory is 194 resources; historical 184-resource prose is not the current inventory. Formal package/issue closure remains separate from these retained current component results.
+Accepted on 2026-10-18 after a fresh source-bound run: all five actual Python 3.10–3.14 cells passed 84 distribution tests each and all 30 installed read-only API/console-script controls passed. The exact namespace contains 194 resource members plus the empty py.typed marker. Every cell passed its 15 GiB fence; six forged/stale prerequisites were rejected. See [the current acceptance receipt](local-runtime-acceptance-20261018.json). This does not close production, scientific or publication gates.
 
 Packages: `C04`.
 
@@ -293,7 +293,7 @@ Packages: `L06`.
 
 ### [#116: PKG-3 Ship py.typed](https://github.com/ActiveInferenceInstitute/fep_formal/issues/116)
 
-src/fep_lean/py.typed already exists. Distribution tests verify its empty wheel member, real installed mypy resolution, valid API acceptance and invalid-mode rejection; the issue is acceptance work, not a missing marker.
+Accepted on 2026-10-18 with C04: the real installed wheel in every runtime passes strict mypy resolution, valid FEPPipeline API acceptance, invalid-mode rejection and no-Any controls. The empty py.typed marker and complete 195-member namespace are verified. See [the source-bound acceptance receipt](local-runtime-acceptance-20261018.json).
 
 Packages: `P01`.
 

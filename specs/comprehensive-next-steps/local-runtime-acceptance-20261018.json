@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "kind": "local-installed-runtime-and-typing-acceptance",
+  "source_commit": "31cfd7307aa6dd655265aba77061c0a13e1e4741",
+  "accepted_equivalent_package_head": "af699e94e9100e8f1426e337f411f4d9512d7cd4",
+  "run_id": "954289e8-5b27-4cae-bc83-e8313720a7b5",
+  "validator": "3.14.8",
+  "runtime_versions": [
+    "3.10.22 (main, Oct  9 2026, 15:10:41) [Clang 22.1.3 ]",
+    "3.11.17 (main, Oct 14 2026, 00:55:17) [Clang 23.1.3 ]",
+    "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]",
+    "3.13.11 (main, Jan 27 2026, 23:31:20) [Clang 21.1.4 ]",
+    "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]"
+  ],
+  "distribution_tests_per_runtime": 84,
+  "distribution_test_total": 420,
+  "installed_status_controls_per_runtime": 6,
+  "installed_status_control_total": 30,
+  "namespace": {
+    "python": 117,
+    "lean": 72,
+    "yaml": 5,
+    "empty_py_typed": 1,
+    "total_members": 195
+  },
+  "roster_reconciliation": "194 executable/resource members plus the empty py.typed marker equals195 wheel namespace members. Historical184-resource/80-test prose is retained as an older epoch, not used to reduce current coverage. Current84 tests run in each of five real runtimes.",
+  "minimum_free_bytes": 16106127360,
+  "free_space_checks": "Before launch and every distribution cell; before every installed status cell.",
+  "source_snapshot_sha256": "5d3dee64522de7f388f37e300193bdecf46b0c350945f128eaaeeaf9af3f1687",
+  "runtime_binding_sha256": "244701d050f3eb45d0a90e2806e49847b833f7b65ea24fcc38d870cbb2b3d2d7",
+  "prerequisite_rejection_controls": [
+    "missing-cell",
+    "duplicate-cell",
+    "failed-cell",
+    "wrong-source",
+    "changed-log-hash",
+    "stale-run-time"
+  ],
+  "independent_review": "No actionable source findings; all30controls required before acceptance, now complete.",
+  "harness_sha256": {
+    "bind_fep_runtime_acceptance.py": "ac6813907f7d9962a85086645e062679f1682fa5030ceb3ac9183d2dcb5bbf15",
+    "qualify_fep_bound_installed_status.py": "caddddf0d4b4fbac3c77894dbf94df151fbb6332b8ce646224b080264b75715b",
+    "probe_fep_installed_status.py": "d0c2facea8c0fb114d58281a0c8f214cf365a92dde32fab49f2267883a564866",
+    "fep-current-runtime-bound-acceptance.json": "244701d050f3eb45d0a90e2806e49847b833f7b65ea24fcc38d870cbb2b3d2d7"
+  },
+  "distribution_logs": [
+    {
+      "version": "3.10",
+      "sha256": "b04852d628584194f29dccb8691d8deed0ccc940575fecace8e5d9a6660493ff"
+    },
+    {
+      "version": "3.11",
+      "sha256": "f02937c6fa2ff4e01410bf4cda2a200c5b496a7652da43f1ada4af8dd6cbc692"
+    },
+    {
+      "version": "3.12",
+      "sha256": "6044912e85b972a2ccae5ecd4c2c4322d8ddd5d7b4c4a428143cbdd91cedd9d1"
+    },
+    {
+      "version": "3.13",
+      "sha256": "4d230fc05d7fbe0cc75dcd5aca3b20a5b9c729937f318e02f2c33d87f9c2399c"
+    },
+    {
+      "version": "3.14",
+      "sha256": "5c4003bdea63699bfa951fe453a1088e3185de883f962b741de8c7c6ab0adee7"
+    }
+  ],
+  "status_logs": [
+    {
+      "version": "3.10",
+      "sha256": "e9864cf64c9dceb60c54104a62edb328ce32bce49dfcd9738494d2dbbad63f03"
+    },
+    {
+      "version": "3.11",
+      "sha256": "e9864cf64c9dceb60c54104a62edb328ce32bce49dfcd9738494d2dbbad63f03"
+    },
+    {
+      "version": "3.12",
+      "sha256": "e9864cf64c9dceb60c54104a62edb328ce32bce49dfcd9738494d2dbbad63f03"
+    },
+    {
+      "version": "3.13",
+      "sha256": "e9864cf64c9dceb60c54104a62edb328ce32bce49dfcd9738494d2dbbad63f03"
+    },
+    {
+      "version": "3.14",
+      "sha256": "e9864cf64c9dceb60c54104a62edb328ce32bce49dfcd9738494d2dbbad63f03"
+    }
+  ],
+  "typing_controls": "Real isolated wheel: empty py.typed marker, installed strict mypy valid FEPPipeline import/API acceptance, invalid mode rejection and no Any leakage.",
+  "status_controls": [
+    "missing source pin",
+    "malformed source pin and render receipt",
+    "stale source owner and render digest",
+    "omitted sibling",
+    "explicit absent sibling",
+    "matching named source pair"
+  ],
+  "status_invariants": [
+    "Actual installed API and installed console-script JSON agree",
+    "Complete installed namespace unchanged before/after",
+    "Consumed fixture bytes and mtimes unchanged",
+    "Process and network acquisition denied and counted",
+    "No runtime execution, bundle parity, publication or scientific claim inferred from source currency"
+  ],
+  "reproduce": "Run tests/test_distribution.py with the Python3.14 validator and FEP_DISTRIBUTION_PYTHON pointing to each actual Python3.10\u20133.14 interpreter; use installed isolated wheel for the six status cases."
+}

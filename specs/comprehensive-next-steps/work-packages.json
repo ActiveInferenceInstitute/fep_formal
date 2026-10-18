@@ -120,7 +120,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/49"
       ],
-      "status": "planned",
+      "status": "accepted",
       "outcome": "Five actual local installed-wheel runtimes and installed read-only status controls accepted for a reviewed successor resource roster.",
       "depends_on": [],
       "single_owner": "Existing distribution/status harness and reviewed wheel controllers.",
@@ -140,7 +140,20 @@
         "runtime"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration.",
-      "out_of_scope": "Substituting hosted cells for local acceptance or changing the canonical validator runtime."
+      "out_of_scope": "Substituting hosted cells for local acceptance or changing the canonical validator runtime.",
+      "acceptance": {
+        "source_commit": "31cfd7307aa6dd655265aba77061c0a13e1e4741",
+        "equivalent_package_head": "af699e94e9100e8f1426e337f411f4d9512d7cd4",
+        "receipt": "local-runtime-acceptance-20261018.json",
+        "checks": [
+          "Five actual runtime cells:420 distribution tests total",
+          "30 installed API/console-script read-only controls",
+          "195 exact namespace members including empty py.typed",
+          "Six forged/stale prerequisites rejected",
+          "Fresh independent infrastructure/API review"
+        ],
+        "boundary": "Installed runtime/source-currency/typing acceptance only; no production capture, provider, scientific, proof-role or publication acceptance."
+      }
     },
     {
       "id": "C05",
@@ -266,7 +279,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/116"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "The installed wheel passes a real isolated positive typing smoke and rejects a deliberately invalid typed use.",
       "depends_on": [
         "C04"
@@ -287,7 +300,20 @@
         "typing"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration.",
-      "out_of_scope": "A second wheel builder or claiming the existing marker is missing."
+      "out_of_scope": "A second wheel builder or claiming the existing marker is missing.",
+      "acceptance": {
+        "source_commit": "31cfd7307aa6dd655265aba77061c0a13e1e4741",
+        "equivalent_package_head": "af699e94e9100e8f1426e337f411f4d9512d7cd4",
+        "receipt": "local-runtime-acceptance-20261018.json",
+        "checks": [
+          "Five actual runtime cells:420 distribution tests total",
+          "30 installed API/console-script read-only controls",
+          "195 exact namespace members including empty py.typed",
+          "Six forged/stale prerequisites rejected",
+          "Fresh independent infrastructure/API review"
+        ],
+        "boundary": "Installed runtime/source-currency/typing acceptance only; no production capture, provider, scientific, proof-role or publication acceptance."
+      }
     },
     {
       "id": "L01",

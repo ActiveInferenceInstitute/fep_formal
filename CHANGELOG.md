@@ -1,5 +1,13 @@
 ## Unreleased
 
+- Accept the five actual local Python 3.10–3.14 installed-wheel cells and
+  installed read-only status/typing controls for [#49](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49)
+  and [#116](https://github.com/ActiveInferenceInstitute/fep_formal/issues/116).
+  All 420 distribution tests and 30 installed API/console-script controls passed;
+  the exact namespace is 194 resource members plus the empty py.typed marker.
+  Retain source-bound logs, 15 GiB fences and independent review. This closes
+  these software acceptance scopes only.
+
 - Remove the three blanket pytest warning filters after inspecting the retained
   Python and Chrome warning inventories. Register the shared fixture owner for
   assertion rewriting before ordinary imports, and close HTTP error responses
