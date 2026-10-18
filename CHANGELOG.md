@@ -1,5 +1,11 @@
 ## Unreleased
 
+- Consolidate 25 equivalent SHA-256 byte digests in eight output/bridge owners
+  through the existing shared primitive. Preserve strict-file guards, canonical
+  bytes, public wrappers and PDF identifiers. The complete P03 audit documents
+  retained transaction/text-JSON/parser-error and import-layer boundaries;
+  historical source-bound receipts retain their original epochs.
+
 - Accept [DOC-11 / #146](https://github.com/ActiveInferenceInstitute/fep_formal/issues/146)
   for the independently reviewed root documentation ownership consolidation.
   Fresh command-inventory and strict Markdown gates pass; historical evidence

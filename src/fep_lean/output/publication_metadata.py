@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import os
 import re
 import struct
@@ -13,6 +12,7 @@ from typing import Any
 import yaml
 
 from fep_lean._paths import FepLeanError
+from fep_lean.output.fsutil import sha256_bytes
 
 
 class PublicationMetadataError(ValueError, FepLeanError):
@@ -301,7 +301,7 @@ def load_graphical_abstract(project_root: Path) -> GraphicalAbstractAsset:
         project_root, source_path, label="graphical abstract asset"
     )
     data = path.read_bytes()
-    actual_sha256 = hashlib.sha256(data).hexdigest()
+    actual_sha256 = sha256_bytes(data)
     if actual_sha256 != expected_sha256:
         raise PublicationMetadataError(
             "graphical abstract sha256 does not match manuscript/config.yaml"

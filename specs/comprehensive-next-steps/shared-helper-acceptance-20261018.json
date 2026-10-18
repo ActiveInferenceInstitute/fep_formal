@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "kind": "source-bound-shared-helper-consolidation-acceptance",
+  "recorded_at": "2026-10-18T15:49:24.273107+00:00",
+  "baseline_commit": "982bd478e367fc68ba2a4923262ecea1bfc96043",
+  "settled_owner_commit": "4f86b6dd55d2afbf22fc2d2f1758c783bc274b67",
+  "packages": [
+    "P03"
+  ],
+  "issues": [
+    118
+  ],
+  "source_sha256": {
+    "src/fep_lean/bridge/custody.py": "e7d774fc9609b26648200175652fdbed2a106d6adff3e1d546584fac6d4019e8",
+    "src/fep_lean/bridge/operations.py": "da3f75967781d429270c05a65217a521c7b22bebd620126f5db214b55cb88301",
+    "src/fep_lean/output/manuscript.py": "721200f8afa801a4f4e6f629ed4320dc2e7bc2dce059e1d6bb5d36e2e462dd10",
+    "src/fep_lean/output/publication_metadata.py": "87cc80a29d5de58f7d332774d45b5ec3ed36d9540dac1838914d04503d7f311d",
+    "src/fep_lean/output/release_bundle/_core.py": "bc8c64f0104a22c32b6e00964b73ffdfd680d5e4deeb67149b3263a03ac7e56c",
+    "src/fep_lean/output/release_bundle/_manuscript.py": "f78e2085bd8e242941ac17873452a2e944251d96e81ef1a03a7ad7cac1bfc8b8",
+    "src/fep_lean/output/render_log.py": "2d505f4dab85120a316c92aff14bff7980031af71eaffa3748bca39051489bed",
+    "src/fep_lean/output/reporter.py": "d641b238dfd68e6b6e527737234811c68e28e73c27d12cc530c8556905e4ef56"
+  },
+  "changes": {
+    "equivalent_one_shot_hash_sites_consolidated": 25,
+    "changed_runtime_owners": 8,
+    "new_runtime_owners": 0,
+    "remaining_one_shot_sites": 48,
+    "atomic_and_json_behavior_changes": false
+  },
+  "software_evidence": {
+    "complete_nonserial": {
+      "passed": 3088,
+      "skipped": 13,
+      "serial_deselected": 613,
+      "log_sha256": "590a2d328ff6bb3c7229c9a338f5a19c29a0312632cdc5b78d163cc502d30710"
+    },
+    "isolated_real_chrome": {
+      "passed": 2,
+      "log_sha256": "7e16aeb9195d3759fc793070bf2c190ccd872b62ac0e0e2fc8736cd1037a8f6b",
+      "note": "Reruns the two browser nodes skipped by the first component before its browser PATH was supplied; do not double count those nodes."
+    },
+    "combined_line_coverage_percent": 92.1,
+    "all_14_measured_package_line_floors_passed": true,
+    "strict_mypy_files": 149,
+    "final_static_and_native_log_sha256": "9c87180590110c9e007da9af20796a0758da18564b380b15439b397b733b49b2",
+    "serial_lean": {
+      "passed": 572,
+      "skipped": 41,
+      "duration_seconds": 519.05,
+      "log_sha256": "2a3a4278f3daecfb2da63c8368531716ea68c9a3e2e55ec063fa7352b9d3b68d"
+    },
+    "default_FepSketches_build_passed": true,
+    "actual_Cascadia_diagnostic_compile_and_receipt_check_passed": true,
+    "strict_manuscript_and_current_render_receipt_check_passed": true,
+    "additional_candidate_checks": [
+      {
+        "name": "catalogue",
+        "returncode": 0,
+        "log_sha256": "2f721b02f16374271d6716148b7214f13aa41306902d28d15ef97a9b944e7b8c"
+      },
+      {
+        "name": "strict-manuscript",
+        "returncode": 0,
+        "log_sha256": "04bb60143c5a6692b226fe0d7ecce321f18de72d0cacc640546630cc69699a9c"
+      },
+      {
+        "name": "render-receipt",
+        "returncode": 0,
+        "log_sha256": "10d1d5da453dfa3d598e1ef2cd00673a16d633694b27abc6eddf9625d60983ed"
+      },
+      {
+        "name": "links",
+        "returncode": 0,
+        "log_sha256": "1ef01a3a45e730c9e35cbefb6a19919d32e87da65ff3bfa0e370ac9df2a3331c"
+      },
+      {
+        "name": "hygiene",
+        "returncode": 0,
+        "log_sha256": "3bf9a6cc22c2c78aac1255dd59cfef90337180d09536765d28e41508b91c9d22"
+      },
+      {
+        "name": "whitespace",
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "default-native-build",
+        "returncode": 0,
+        "log_sha256": "651d8ed70c6dc2e7064249c47bdcbe933b6174922839502d81fdd79d396895f2"
+      },
+      {
+        "name": "serial-pytest",
+        "returncode": 0,
+        "log_sha256": "2a3a4278f3daecfb2da63c8368531716ea68c9a3e2e55ec063fa7352b9d3b68d"
+      },
+      {
+        "name": "cascadia-compile",
+        "returncode": 0,
+        "log_sha256": "c55105ee96f12a9804e8e988409f9dee1265c452f257d0fb0b3838422a1b144c"
+      },
+      {
+        "name": "cascadia-check",
+        "returncode": 0,
+        "log_sha256": "169f368eb2f6dafb524925b74a4dc8a4ebbd327427fced37577848e945e11dff"
+      }
+    ]
+  },
+  "native_evidence": {
+    "receipt": "spikes/shared-helpers-20261018/shared-helper-native-verification.json",
+    "receipt_sha256": "c09fa798fdc2c90edf0392d3a453a9f4e3008a58f8ee4b4e95da9e0d7beccc2a",
+    "verified_topics": 168,
+    "warnings": 0,
+    "sorry_count": 0,
+    "source_digest": "37122adb1d708bc3e3bdef061d052a96eb7252ea88a48bb09e8fc4e191ab8527",
+    "scope": "Exact canonical topic bodies only; no promotion of scientific concept proxies."
+  },
+  "declaration_evidence": {
+    "receipt": "spikes/shared-helpers-20261018/shared-helper-formalism-audit.json",
+    "receipt_sha256": "ea8a7c2f40830add6ff44ee44255d9230ac521ab5d1708f0f5fffa24216a0fc2",
+    "resolved_declarations": 1886,
+    "evidence_count": 1755,
+    "warnings": 0,
+    "sorry_ax_detected": false
+  },
+  "bridge_custody": {
+    "gnn_reference": "447b641302aba816ea54a0a88c1fe47111140af2",
+    "fep_owner_count": 197,
+    "gnn_owner_count": 769,
+    "gnn_owner_bytes_changed": false,
+    "changed_fep_owner_paths": [
+      "src/fep_lean/bridge/custody.py",
+      "src/fep_lean/bridge/operations.py",
+      "src/fep_lean/output/manuscript.py",
+      "src/fep_lean/output/publication_metadata.py",
+      "src/fep_lean/output/release_bundle/_core.py",
+      "src/fep_lean/output/release_bundle/_manuscript.py",
+      "src/fep_lean/output/render_log.py",
+      "src/fep_lean/output/reporter.py"
+    ],
+    "pin_sha256": "f37a97977b956da0a96cdb79ca9d4b9ddbe76a212e541fcedf253ca1195eae3d",
+    "finite_and_continuous_signature_only_refresh": true,
+    "read_only_status": "ok",
+    "native_claim_ready": false,
+    "independent_refresh_diff_sha256": "b9b12b2a9f1c58006ea8543e34dc894fc555dd2ba3d873557915bec8c7579e13"
+  },
+  "independent_reviews": {
+    "infrastructure_api": "25 AST substitutions plus explicit bytes(zeroed); all other executable logic preserved. Audit exception roster accepted.",
+    "integrity_security_custody": "No actionable findings; guards, captured byte sources, replay ordering, PDF IDs, parser policies and transaction lifetimes unchanged.",
+    "source_diff_sha256": "f0708856e8b55793ea7de0108ba6b0b6c60c60445732b635f98bec119090d1f1"
+  },
+  "integration_condition": "Final clean-head hosted serial pytest, distribution and actual render gates must pass before integration. Reconcile the GNN pair reference only after the final FEP publication SHA is settled.",
+  "boundary": "Bounded helper/API/filesystem/source-custody acceptance. Historical native bridge, production capture and research receipts retain their original source epochs; no frozen primary is repeated or promoted."
+}

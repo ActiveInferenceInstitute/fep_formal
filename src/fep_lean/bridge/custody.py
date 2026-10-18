@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os  # noqa: F401 -- tests patch custody.os.replace; custody and fsutil share
 import re  #        -- the os module, so the patch reaches the delegated write.
@@ -10,7 +9,7 @@ from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
-from fep_lean.output.fsutil import atomic_write_text
+from fep_lean.output.fsutil import atomic_write_text, sha256_bytes
 
 FRESH = "FRESH"
 STALE_CUSTODY = "STALE-CUSTODY (digest-only)"
@@ -46,15 +45,15 @@ def contained_file(root: Path, relative: str) -> Path:
 def fingerprint(root: Path, paths: Iterable[str]) -> dict[str, str]:
     """Hash an explicit owner roster; absent owners are errors, not omissions."""
     return {
-        name: hashlib.sha256(contained_file(root, name).read_bytes()).hexdigest()
+        name: sha256_bytes(contained_file(root, name).read_bytes())
         for name in sorted(set(paths))
     }
 
 
 def binding_digest(binding: Mapping[str, str]) -> str:
-    return hashlib.sha256(
+    return sha256_bytes(
         json.dumps(dict(binding), sort_keys=True, separators=(",", ":")).encode()
-    ).hexdigest()
+    )
 
 
 def validate_binding(

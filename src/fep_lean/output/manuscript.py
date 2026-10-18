@@ -31,7 +31,7 @@ from fep_lean.output.evidence import (
     latest_claim_ready_full_report,
     validate_native_lean_receipt,
 )
-from fep_lean.output.fsutil import atomic_write_bytes, atomic_write_text
+from fep_lean.output.fsutil import atomic_write_bytes, atomic_write_text, sha256_bytes
 from fep_lean.output.provenance import config_owner_paths, source_owner_paths
 from fep_lean.output.publication_metadata import (
     load_graphical_abstract,
@@ -630,7 +630,7 @@ def collection_runtime_identity() -> dict[str, Any]:
         "interpreter": {
             "cache_tag": sys.implementation.cache_tag,
             "executable": executable.as_posix(),
-            "executable_sha256": hashlib.sha256(executable.read_bytes()).hexdigest(),
+            "executable_sha256": sha256_bytes(executable.read_bytes()),
             "implementation": sys.implementation.name,
             "version": sys.version,
         },

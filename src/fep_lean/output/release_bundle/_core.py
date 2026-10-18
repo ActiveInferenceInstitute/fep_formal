@@ -24,6 +24,7 @@ from pathlib import (
 from typing import Any
 
 from fep_lean._paths import FepLeanError
+from fep_lean.output.fsutil import sha256_bytes
 from fep_lean.output.release_bundle._constants import (
     _PROVIDER_MEMBER_PREFIXES,
 )
@@ -303,10 +304,7 @@ def _capture_regular_file(path: Path) -> bytes:
 
 
 def _capture_snapshot(paths: Sequence[str]) -> dict[str, str]:
-    return {
-        name: hashlib.sha256(_capture_regular_file(Path(name))).hexdigest()
-        for name in paths
-    }
+    return {name: sha256_bytes(_capture_regular_file(Path(name))) for name in paths}
 
 
 _CAPTURE_EXCLUDED_DIRECTORIES = frozenset(
@@ -499,9 +497,9 @@ def _capture_stage_snapshot(stage: PublicationCaptureStage) -> dict[str, str]:
         ]
         if len(owners) != 1:
             raise ReleaseBundleError("capture resource link needs one explicit owner")
-        snapshot[name] = hashlib.sha256(
+        snapshot[name] = sha256_bytes(
             _capture_link_bytes(Path(name), target, owners[0])
-        ).hexdigest()
+        )
     _capture_check_rosters(stage)
     return snapshot
 
@@ -779,7 +777,7 @@ def run_publication_capture(
     if journal.resolve().is_relative_to(Path(plan.project_root)):
         raise ReleaseBundleError("capture journal must be outside the project root")
     policy = plan.record()
-    policy_digest = hashlib.sha256(_canonical_json(policy)).hexdigest()
+    policy_digest = sha256_bytes(_canonical_json(policy))
     header = {
         "schema_version": 1,
         "kind": "publication-capture-journal",
@@ -899,10 +897,7 @@ def run_publication_capture(
             for name, digest in values.items():
                 rel = f"{prefix}/{stage.outputs.index(name):04d}.bin"
                 expected_files.add(rel)
-                if (
-                    hashlib.sha256(_capture_regular_file(attempt / rel)).hexdigest()
-                    != digest
-                ):
+                if sha256_bytes(_capture_regular_file(attempt / rel)) != digest:
                     raise ReleaseBundleError(
                         "capture retained artifact bytes were changed"
                     )
@@ -913,10 +908,7 @@ def run_publication_capture(
             raise ReleaseBundleError("capture retained stream map is invalid")
         for name, digest in record["streams"].items():
             expected_files.add(name)
-            if (
-                hashlib.sha256(_capture_regular_file(attempt / name)).hexdigest()
-                != digest
-            ):
+            if sha256_bytes(_capture_regular_file(attempt / name)) != digest:
                 raise ReleaseBundleError("capture retained streams were changed")
         live_files = {
             p.relative_to(attempt).as_posix() for p in attempt.rglob("*") if p.is_file()
@@ -942,7 +934,7 @@ def run_publication_capture(
                 expected_files.add(rel)
                 if (
                     name in record["outputs"]
-                    and hashlib.sha256(_capture_regular_file(attempt / rel)).hexdigest()
+                    and sha256_bytes(_capture_regular_file(attempt / rel))
                     != record["outputs"][name]
                 ):
                     raise ReleaseBundleError("capture producer artifact was changed")
@@ -990,13 +982,13 @@ def run_publication_capture(
                 reusable = _capture_stage_snapshot(stage) == old[
                     "inputs_before"
                 ] and all(
-                    hashlib.sha256(
+                    sha256_bytes(
                         _capture_regular_file(
                             _capture_output_path(
                                 name, attempts / old["artifact_attempt"]
                             )
                         )
-                    ).hexdigest()
+                    )
                     == digest
                     for name, digest in old["outputs"].items()
                 )
@@ -1066,7 +1058,7 @@ def run_publication_capture(
                         )
                     if path.exists():
                         data = _capture_regular_file(path)
-                        prior[name] = hashlib.sha256(data).hexdigest()
+                        prior[name] = sha256_bytes(data)
                         _capture_new_file(attempt / f"prior/{index:04d}.bin", data)
                 if mode == "capture":
                     completed = execute(stage.command)
@@ -1089,7 +1081,7 @@ def run_publication_capture(
                     data = _capture_regular_file(
                         _capture_output_path(name, artifact_attempt)
                     )
-                    outputs[name] = hashlib.sha256(data).hexdigest()
+                    outputs[name] = sha256_bytes(data)
                     _capture_new_file(attempt / f"artifacts/{index:04d}.bin", data)
                 after = _capture_stage_snapshot(stage)
                 if before != after:
@@ -1097,11 +1089,11 @@ def run_publication_capture(
                         "capture inputs changed during execution or validation"
                     )
                 if any(
-                    hashlib.sha256(
+                    sha256_bytes(
                         _capture_regular_file(
                             _capture_output_path(name, artifact_attempt)
                         )
-                    ).hexdigest()
+                    )
                     != digest
                     for name, digest in outputs.items()
                 ):
@@ -1142,7 +1134,7 @@ def run_publication_capture(
                         data = _capture_regular_file(
                             _capture_output_path(name, artifact_attempt)
                         )
-                        outputs[name] = hashlib.sha256(data).hexdigest()
+                        outputs[name] = sha256_bytes(data)
                         _capture_new_file(attempt / f"artifacts/{index:04d}.bin", data)
                     except (OSError, ReleaseBundleError) as exc:
                         errors.append(str(exc))
@@ -1179,10 +1171,7 @@ def run_publication_capture(
                 "inputs_after": after,
                 "outputs": outputs,
                 "prior_outputs": prior,
-                "streams": {
-                    name: hashlib.sha256(data).hexdigest()
-                    for name, data in streams.items()
-                },
+                "streams": {name: sha256_bytes(data) for name, data in streams.items()},
                 "returncode": returncode,
                 "check_returncode": check_returncode,
                 "timed_out": timed_out,

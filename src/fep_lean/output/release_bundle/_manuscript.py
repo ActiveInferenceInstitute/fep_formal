@@ -1,6 +1,5 @@
 """Deterministic manuscript rendering and publication-set replacement."""
 
-import hashlib
 import os
 import re
 import shlex
@@ -493,7 +492,7 @@ def _canonical_pdf_identifier(data: bytes) -> bytes:
     for group in (1, 2):
         start, end = match.span(group)
         zeroed[start:end] = b"0" * (end - start)
-    identifier = hashlib.sha256(zeroed).hexdigest()[:32].upper().encode("ascii")
+    identifier = sha256_bytes(bytes(zeroed))[:32].upper().encode("ascii")
     canonical = bytearray(data)
     for group in (1, 2):
         start, end = match.span(group)

@@ -785,3 +785,21 @@ HANDOFF observations and their evidence limitations remain unchanged.
 
 **Boundary:** No other package closes, no historical receipt becomes current,
 and no private-recovery waiver supplies scientific or production acceptance.
+
+## P03 shared primitives preserve their byte and import contracts
+
+**When:** 2026-10-18, source `982bd478e367fc68ba2a4923262ecea1bfc96043`.
+
+**Choice:** Delegate 25 equivalent one-shot byte digests in eight output/bridge
+owners to the existing helper, retaining byte-producing expressions and public
+wrappers. Preserve independently reviewed text-JSON, transaction, streaming,
+bootstrap/import-layer and parser-error contracts.
+
+**Evidence:** The [complete audit](shared-helper-audit-20261018.md) records the
+retained exceptions and deliberate lower-layer deferrals. Independent AST
+review confirms the intended substitutions; the mutable PDF-ID buffer gets an
+explicit bytes conversion. Source-bound qualification is renewed for changed
+owners; historical receipts retain their original epochs.
+
+**Boundary:** This is a bounded consolidation, with no scientific promotion,
+parser-policy change, public API removal or package-layer redesign.
