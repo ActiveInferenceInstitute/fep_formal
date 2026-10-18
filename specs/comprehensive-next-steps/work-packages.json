@@ -765,7 +765,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/58"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "PR44 has an attributed current-base integration or evidence-backed disposition preserving its substantive mathematical delta.",
       "depends_on": [
         "C05"
@@ -788,7 +788,18 @@
         "source custody"
       ],
       "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
-      "out_of_scope": "Blind integration, closing PR44 as legacy cleanup, or publication of an unreviewed new formal owner."
+      "out_of_scope": "Blind integration, closing PR44 as legacy cleanup, or publication of an unreviewed new formal owner.",
+      "component_evidence": {
+        "source_commit": "65215813fe92e94a960fb28cba113d0edb3c7580",
+        "record": "spikes/category-native-20261018/README.md",
+        "checks": [
+          "Actual strict native public category/functor consumer passed",
+          "All ten raw standard-axiom reports retained",
+          "Independent Lean/domain/skeptical/custody review finds no component blocker",
+          "PR44 attribution and reviewed PR179 disposition preserved"
+        ],
+        "remaining": "C05 predecessor acceptance remains separate; no terminal/scientific or issue closure."
+      }
     },
     {
       "id": "C06",

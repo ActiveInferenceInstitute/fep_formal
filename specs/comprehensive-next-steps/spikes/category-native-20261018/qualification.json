@@ -1,0 +1,67 @@
+{
+  "state": "passed",
+  "head": "65215813fe92e94a960fb28cba113d0edb3c7580",
+  "seconds": 14.43,
+  "source_sha256": {
+    "tests/test_formal_composition.py": "6fe5da9b1a561519e36783c351220cc3e1c210509169361943785fdae57cbe20",
+    "lean/FepSketches/compositions/finite_kernel_category.lean": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47",
+    "src/fep_lean/formal/compositions/finite_kernel_category.lean": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47",
+    "lean/lean-toolchain": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c",
+    "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a"
+  },
+  "probe_sha256": "8e9605a9228dcc9e221e10921fd46b25af92dc477648fc36d375bd169b4cde8f",
+  "raw_log_sha256": "2d96c377c62b2fdf6568c7533801fe0e9ed115f19c5c26daf86df007446cafa5",
+  "reports": {
+    "finiteKernelCategory": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "finKernCat_id_comp": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "finKernCat_comp_id": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "finKernCat_assoc": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "predictiveFunctor": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "bool_predictive_identity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "bool_flip_true": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "bool_flip_false": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "bool_predictive_composition": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "bool_predictive_flip_twice": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "scope": "Actual strict native public finite-kernel category/functor consumer and all10 raw axiom reports. No independent domain/skeptical review or broader R01/C05 scientific acceptance inferred."
+}

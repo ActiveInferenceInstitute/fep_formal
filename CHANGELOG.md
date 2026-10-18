@@ -1,5 +1,10 @@
 ## Unreleased
 
+- Retain a fresh strict native category consumer, all ten raw axiom reports and
+  independent domain/custody review for the attributed PR44/PR179 integration.
+  The reports use only the standard three axioms. This records completed
+  component evidence; Issue58/R01 remains open for its C05 predecessor.
+
 - Accept the completed narrow-import, warning-policy and measured package line
   coverage scopes for [#109](https://github.com/ActiveInferenceInstitute/fep_formal/issues/109),
   [#124](https://github.com/ActiveInferenceInstitute/fep_formal/issues/124) and

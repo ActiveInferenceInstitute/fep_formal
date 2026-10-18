@@ -71,7 +71,7 @@ Packages: `H03`.
 
 ### [#58: CUR-13 Review substantive PR44 against current formal and ownership contracts](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58)
 
-PR179 is the attributed current-pin successor and merged at c066f4c774ce74f5c796a03160e83965eac2c33e on 2026-10-16. PR44 closed as superseded. This satisfies PR disposition; Issue58/R01 retains its distinct broader acceptance obligations. C04 local runtime acceptance is complete; no missing production or scientific evidence is inferred from integration.
+PR179 is the attributed current-pin successor and merged at c066f4c774ce74f5c796a03160e83965eac2c33e on 2026-10-16. PR44 closed as superseded. This satisfies PR disposition; Issue58/R01 retains its distinct broader acceptance obligations. C04 local runtime acceptance is complete; no missing production or scientific evidence is inferred from integration. A [fresh current native component](spikes/category-native-20261018/README.md) retains the actual public consumer, all ten raw standard-axiom reports and independent domain/custody review. C05 remains the explicit R01 predecessor.
 
 Packages: `R01`.
 

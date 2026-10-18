@@ -1,0 +1,12 @@
+'FEPComposed.FiniteKernelCategory.finiteKernelCategory' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FEPComposed.FiniteKernelCategory.finKernCat_id_comp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FEPComposed.FiniteKernelCategory.finKernCat_comp_id' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FEPComposed.FiniteKernelCategory.finKernCat_assoc' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FEPComposed.FiniteKernelCategory.predictiveFunctor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FEPComposed.FiniteKernelCategory.bool_predictive_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FEPComposed.FiniteKernelCategory.bool_flip_true' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FEPComposed.FiniteKernelCategory.bool_flip_false' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FEPComposed.FiniteKernelCategory.bool_predictive_composition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FEPComposed.FiniteKernelCategory.bool_predictive_flip_twice' depends on axioms: [propext, Classical.choice, Quot.sound]

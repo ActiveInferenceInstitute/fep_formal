@@ -132,6 +132,9 @@ acceptance is complete. C03 production capture and the complete C05 gate remain
 separate. The ten original consumer axiom reports have an execution inference
 from the passing mandatory serial test, but their raw reports were not retained.
 Keep that limit distinct from L06's newer raw-report retention.
+A [fresh current category component](spikes/category-native-20261018/README.md) now retains all ten raw reports
+and independent domain/custody review. It supplies current native component
+evidence while Issue58/R01 retains its C05 predecessor.
 
 Before native or installed-runtime execution, satisfy the named resource
 profile. C04 requires 15 GiB free before launch and every cell; the private
