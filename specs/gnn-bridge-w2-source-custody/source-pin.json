@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "4f86b6dd55d2afbf22fc2d2f1758c783bc274b67",
+    "commit": "b3e21f6690a22a98cc68b609a818817247fd6868",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -202,7 +202,7 @@
     }
   },
   "gnn": {
-    "commit": "447b641302aba816ea54a0a88c1fe47111140af2",
+    "commit": "d660342d9af91f80d07e74dfc40c2b0422af2806",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
@@ -671,9 +671,10 @@
       "src/gnn/render/continuous_script.py": "562bee486bb4a238a815a2c95297efd2f9247d98e7499e59174f449745ab537c",
       "src/gnn/render/contracts.py": "45703540cf67690fed47adc6404340cd7877f5ab642ac1e822b74ae7b6eb72c3",
       "src/gnn/render/cpomdp/__init__.py": "8d6c4d6aca41df14366518fac1d1860fb97656fe863a556acfb8dac607bab778",
-      "src/gnn/render/cpomdp/admission.py": "be2ab011c6037d467afd68a781171fc6a24ef6a5059dfc77e9f070b7c3abdc9b",
-      "src/gnn/render/cpomdp/cpomdp_renderer.py": "e64a365d6eb5ce44b1bbdc4efa1093d9e0d82d47f8f06c940f3acbeea408afed",
-      "src/gnn/render/cpomdp/script_template.py": "06c0fc3194231f910be543435beff13cde30d64bb744f5b4877388a4d5923d43",
+      "src/gnn/render/cpomdp/admission.py": "783a9501feda0388c5e6a24bc7136e041448c9b170d637a1fcd4a129d2bc3bfc",
+      "src/gnn/render/cpomdp/cpomdp_renderer.py": "7a3ab1d2444b1b9b1e2ec664f09215703fe763c366d7d2c7117ca2f56ecb2f25",
+      "src/gnn/render/cpomdp/finite_controls.py": "44c52fd1870184d4cf62ea91c968122c9abcd635ede61d55c1bd14495bd82f52",
+      "src/gnn/render/cpomdp/script_template.py": "bf859cbc0dae066c81b5f20556c4ad4044fd9ba713bbe4bfe47798edf46d237b",
       "src/gnn/render/discopy/__init__.py": "4ea5d67181ebf8181b14b911469158264bcbfdf1a39063441a6870b3a6954d13",
       "src/gnn/render/discopy/bootstrap.py": "1df91fe01c6dcb7c2c4799a57293e21bc4351f97274bf0010e5c255fa1049440",
       "src/gnn/render/discopy/code_templates.py": "092d0c1e8a141a940c39f819e11bd3f7a35484b4434daa2151e7e73fb8f2358d",
@@ -685,8 +686,8 @@
       "src/gnn/render/discopy/symmetry.py": "50884b7c208993968ff7a302013f68246ec0e2251ceaeabe83bb305a44f70505",
       "src/gnn/render/discopy/translator.py": "c115ba65ff95f15d12639625904769dcb2875518ca1ec50ab167b3ec55384617",
       "src/gnn/render/emitted_artifact_checks.py": "ce156a11673ba1c6f582d3fd3eccbaac99343518935324d050e29dc32a1a6948",
-      "src/gnn/render/execution_contracts.py": "571de347ec101d5d47642a60861eaa4dc42ef62de145e089413a9e437e7cec15",
-      "src/gnn/render/framework_registry.py": "baab0f951725f7034af16b17d237513713a203cd222e271b1c912ffdb1dd6033",
+      "src/gnn/render/execution_contracts.py": "b47698f811bf168a37753ce811e6e5fdc79ed6e061bbaafb6bc222f4f1229f4e",
+      "src/gnn/render/framework_registry.py": "b934336e544ca069da84223368fec6129f0abe30dede3144ba5bb7c4bfd7d9ec",
       "src/gnn/render/generators.py": "475ab457024fd3315f8ec3487cff6d6d6e86cf1cc72cab43daf2b667621367ac",
       "src/gnn/render/health.py": "5da1773df773b2b98c9aa9e1032a43c153911a669f0a8f0a38a656e9e6e028c7",
       "src/gnn/render/jax/__init__.py": "e4396c85eedc5a84e81336be7d4e78e919ea5aa717852ea5a866ef7cdaf0844c",
@@ -695,7 +696,7 @@
       "src/gnn/render/jax/jax_factorized_generator.py": "a49a03d769311fef9ba83a67778a38ee434d42207210608ff1f389d845ed571d",
       "src/gnn/render/jax/jax_model_generator.py": "26ffa06727be7b3e4d909b855d81b492789d6bdd28682486e5350f3d366687f0",
       "src/gnn/render/jax/jax_pomdp_generator.py": "2ae04757182957e7cbc9a7a47747c03fe0f6f8d50ee79f2b48ef88e7582af325",
-      "src/gnn/render/jax/jax_renderer.py": "7d1e9557e1784820611856b210c64b4bc9a2348397d9067704ade0962f0521e0",
+      "src/gnn/render/jax/jax_renderer.py": "c65077dc9491d19236f3497822ab14b84f5f6281079f033a686a29db06bdd125",
       "src/gnn/render/jax/jax_spec_extract.py": "ce35b8d93540898d6d5cc8080fa9da4f56df682f741632dbbfd9f68ad6b1b36e",
       "src/gnn/render/jax/templates/__init__.py": "eaf142c034df1e658a62fd72703ccf3f0eb61d1be555dfb665739081384fb6cd",
       "src/gnn/render/jax/templates/combined_template.py": "2b33341d3ad954d8a481b0e38d87d21c03d4865291361a6b4a8cf0011e029fc5",
@@ -720,7 +721,7 @@
       "src/gnn/render/pomdp_processor/_routes.py": "7e97c5771aeb561702183a10a58bebf1e74668c9f76465372177c4981c465e1a",
       "src/gnn/render/pomdp_processor/_spec_generation.py": "ee1808038eb74cdc4494a64f3fce820bcdefe6f2bd19458a9b935c6deff3833b",
       "src/gnn/render/pomdp_processor/_support.py": "ce2b21b43e6fec4f3b2291ddcd29326548fa4688cac931dc19d2199c886cd026",
-      "src/gnn/render/pomdp_processor/_validation.py": "c10de652aa871d8e8d9ccb806a47abb0ba1d87dbe54c1ef5963cd15ef7e86e45",
+      "src/gnn/render/pomdp_processor/_validation.py": "494fbf3b49c7314d737f052eb3cbd3dc6da23ea9c8d58aa7a2263378a93e8789",
       "src/gnn/render/processor/__init__.py": "6653953caaef35fef0de5e29ebfe69d8bc7893018ce7e6913d0709e492a253e9",
       "src/gnn/render/processor/metadata.py": "ced2fe696874d52dcb21b1bf2d453dc582a8b74d8635d3204bc6c671a81b3f2d",
       "src/gnn/render/processor/parsing.py": "783fabd46f553734be85e20c3a2e092652ca27e8964c06d4913d6ce0414c96e4",
