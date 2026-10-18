@@ -31,7 +31,7 @@ fallback. Both checks must pass under the pinned development dependency before
 acceptance is recorded for a source epoch.
 Exceptions require a reviewed `pyproject.toml` rule policy or a narrowly scoped,
 justified line-local suppression. The two `S102` suppressions currently in
-[`tests/test_release_bundle.py`](../tests/test_release_bundle.py) execute only
+[`tests/test_release_bundle_manuscript.py`](../tests/test_release_bundle_manuscript.py) execute only
 allowlisted functions from held local workflow syntax. A separate suppression
 in [tests/_support/custody_fixture_knobs.py](../tests/_support/custody_fixture_knobs.py)
 loads the byte-checked historical validator for a synthetic, disposable test

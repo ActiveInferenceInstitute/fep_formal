@@ -803,3 +803,13 @@ owners; historical receipts retain their original epochs.
 
 **Boundary:** This is a bounded consolidation, with no scientific promotion,
 parser-policy change, public API removal or package-layer redesign.
+
+## 2026-10-18 — P07 current software membership
+
+The user instructed us to drop the missing private browser-stream/controller
+packet dependency and focus on work available here. For the test-layout
+maintenance, seal the explicit current 3,714-node software roster and its
+reviewed 301-node filename-only bijection. Preserve test/helper bodies, markers,
+fixture semantics and the complete runtime selection. C02 remains open for
+production-capture approval; this software acceptance does not approve a private
+controller freeze, rewrite historical rosters or authorize a second primary.

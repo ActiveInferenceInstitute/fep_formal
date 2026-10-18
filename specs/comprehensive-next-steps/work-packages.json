@@ -1677,15 +1677,13 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/123"
       ],
-      "status": "planned",
+      "status": "accepted",
       "outcome": "Test organization mirrors source owners without losing collection membership.",
-      "depends_on": [
-        "C02"
-      ],
+      "depends_on": [],
       "single_owner": "Existing tests/test_release_bundle.py and tests/test_formalism_catalogue_155.py under the approved test-membership owner.",
       "stop_go_spike": "Collect the complete exact node-ID roster and review the proposed old-to-new bijection before any split/rename.",
       "go_condition": "A complete mapping preserves parameterization, fixture semantics and all original controls with an explicitly approved successor membership.",
-      "no_go_action": "Block P07.node-id-bijection -> P07.layout-closure for dropped/duplicated cases or an unapproved membership change; renew C02 for the changed epoch.",
+      "no_go_action": "Block P07.node-id-bijection -> P07.layout-closure for dropped/duplicated cases, changed markers/fixture semantics or an unreviewed software membership epoch. C02 retains its separate production-capture approval boundary.",
       "target": "Split tests along existing owner seams and rename stale labels with identical collected cases modulo the reviewed renaming.",
       "positive_witness": "Every old node maps to exactly one new node and executes the same real boundary.",
       "boundary_result": "Lost markers, changed xdist grouping, missing parameter cases and automatic discovered-file baselines reject.",
@@ -1699,7 +1697,24 @@
         "source custody"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "Reducing the acceptance roster or treating a test rename as scientific completion."
+      "out_of_scope": "Reducing the acceptance roster or treating a test rename as scientific completion.",
+      "acceptance": {
+        "receipt": "test-layout-acceptance-20261018.json",
+        "membership": "spikes/test-layout-20261018/membership.json",
+        "checks": [
+          "All 3,714 nodes and markers preserved by an explicit 301-node filename-only bijection.",
+          "All 134 test and 11 helper ASTs are identical; 413 moved/doc controls and 3,090 full Python cases passed.",
+          "All 14 package floors and static gates passed; current software membership independently reviewed."
+        ],
+        "boundary": "P07 software-only layout closure under the user instruction to drop the missing private-stream/controller-packet dependency. C02 production-capture approval remains open; no historical roster, private controller freeze, native proof, production execution or scientific result is renewed by a rename.",
+        "integration_condition": "Fresh exact-head hosted software, serial, distribution and actual rendering gates must pass before merge. Final evidence review is required."
+      },
+      "dependency_resolution": {
+        "original_dependency": "C02",
+        "original_no_go_action": "Block P07.node-id-bijection -> P07.layout-closure for dropped/duplicated cases or an unapproved membership change; renew C02 for the changed epoch.",
+        "resolution": "The user waived the unavailable private browser-stream/controller-packet dependency for this software maintenance. Replace the coarse production-capture predecessor with the explicit independently reviewed current 3,714-node software membership, preserved 301-node filename-only bijection and passing full software controls.",
+        "broader_C02_state": "open; production-capture membership approval and historical rosters are unchanged"
+      }
     },
     {
       "id": "P08",

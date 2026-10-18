@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "source-bound-test-layout-software-acceptance",
+  "packages": [
+    "P07"
+  ],
+  "issues": [
+    123
+  ],
+  "baseline_commit": "c72bfccb5c8eab2203eac9bf806d2b30eabb275a",
+  "membership_receipt": "spikes/test-layout-20261018/membership.json",
+  "membership_sha256": "686764511db7db2ba26f9edfc28455135d4abcb215f52b676bea310e00bc99e3",
+  "test_function_asts_identical": 134,
+  "helper_function_asts_identical": 11,
+  "catalogue_rename_byte_identical": true,
+  "collected_cases": 3714,
+  "filename_only_renamed_cases": 301,
+  "markers_preserved": true,
+  "runtime_package_source_changes": false,
+  "focused_runtime": {
+    "passed": 413,
+    "skipped": 3,
+    "seconds": 36.75,
+    "log_sha256": "cf312b6d337f7ac46f1fd83c3afb5572894848c86b84b67cae3006cdf7dac047"
+  },
+  "complete_nonserial": {
+    "passed": 3090,
+    "skipped": 11,
+    "serial_excluded": 613,
+    "seconds": 294.49,
+    "line_coverage_percent": 92.09,
+    "workers": 4,
+    "distribution": "loadgroup",
+    "real_chrome_pair_included": true,
+    "log_sha256": "6715409883af65686a48ce1560683db852f8790b0d71bcc7c230204922c3a52d"
+  },
+  "all_14_measured_package_line_floors_passed": true,
+  "static_gates": [
+    {
+      "name": "package-floors",
+      "returncode": 0,
+      "log_sha256": "29bd7384954290c885f151559cd4f7a08a66108edba0e151311ea7c6561b8ae4"
+    },
+    {
+      "name": "ruff",
+      "returncode": 0,
+      "log_sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "name": "format",
+      "returncode": 0,
+      "log_sha256": "63f2ee884ff1be3c1b912135a80cf38432a9e4e9bba412cf74e420719ebadc6a"
+    },
+    {
+      "name": "typing",
+      "returncode": 0,
+      "log_sha256": "e0882189711bb25ec70ba990a19f0fd4a9bc195cd7cd2484ec95ec37251d583c"
+    },
+    {
+      "name": "links",
+      "returncode": 0,
+      "log_sha256": "1ef01a3a45e730c9e35cbefb6a19919d32e87da65ff3bfa0e370ac9df2a3331c"
+    },
+    {
+      "name": "hygiene",
+      "returncode": 0,
+      "log_sha256": "3bf9a6cc22c2c78aac1255dd59cfef90337180d09536765d28e41508b91c9d22"
+    },
+    {
+      "name": "whitespace",
+      "returncode": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "independent_source_review": "No actionable regression; exact function ASTs, collection bijection/markers, helper globals, root resolution and monkeypatch targets checked. Helpers contain no assertions.",
+  "integration_condition": "Fresh exact-head hosted software, serial, distribution and actual rendering gates must pass before merge. Final evidence review is required.",
+  "boundary": "P07 software-only layout closure under the user instruction to drop the missing private-stream/controller-packet dependency. C02 production-capture approval remains open; no historical roster, private controller freeze, native proof, production execution or scientific result is renewed by a rename."
+}

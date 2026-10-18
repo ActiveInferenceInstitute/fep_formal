@@ -50,8 +50,9 @@ the eight receipt-bound copies and their individual retention decisions.
 3. After their stated predecessors, O01/O02 reconcile operator/configuration
    contracts; A01/A02 expose demonstrated readiness/query gaps; P04/P05/P10
    complete error, import-direction and CLI boundaries. R01 adjudicates PR44;
-   C07/C08 require their real custody/lifecycle probes. P07 test movement needs
-   a reviewed node-ID bijection and renewed membership for its source epoch.
+   C07/C08 require their real custody/lifecycle probes. P07 has a reviewed
+   filename-only bijection and explicit current software membership; its
+   production-capture boundary is recorded below.
 4. F01 and S01 review exact primary statements before the dependent proof
    packages. F02/F03/F04/F09/F10/F11/F13/F14 cover thermodynamics, Boolean
    distortion, Gaussian blankets, MaxEnt, Helmholtz, tree messages, count-level
@@ -91,8 +92,9 @@ Source-review feasibility still needs actual compiling probes.
 Closed Issue predecessors are retained in the matrix's historical dependency
 map instead of becoming new open packages. Issue URLs disambiguate reused
 historical scope labels. Later H3 refactoring (L04) needs a fresh successor
-export before primary execution; later test movement (P07) needs renewed C02
-membership. These source-epoch renewals do not create a circular delivery graph
+export before primary execution. P07 seals the current software roster under
+the user waiver below; C02 still governs production-capture membership. These
+source-epoch renewals do not create a circular delivery graph
 or authorize a second primary.
 
 ## Next Agent Prompt
@@ -155,3 +157,9 @@ Use isolated worktrees or explicit disjoint file ownership, serialize native
 verification and preserve concurrent canonical work. Publish accepted slices,
 verify the actual remote merge and exact-main result, reconcile only genuinely
 completed Issue/TODO contracts, then continue with the next eligible package.
+
+P07 has [bounded current software layout acceptance](test-layout-acceptance-20261018.json)
+and an [explicit reviewed 3,714-node membership](spikes/test-layout-20261018/membership.json).
+The user waived the unavailable private capture/controller prerequisite for this
+maintenance. Historical rosters and C02 production-capture approval remain
+separate; the rename establishes no new research or production execution.
