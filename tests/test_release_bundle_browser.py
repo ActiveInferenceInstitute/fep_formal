@@ -7,6 +7,7 @@ import json
 import subprocess
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any
 
 import pytest
 
@@ -16,6 +17,26 @@ from tests._support.release_bundle import (
 )
 
 PROJ = Path(__file__).resolve().parents[1]
+
+
+def _assert_stale_pairing_count_rejected(
+    project_root: Path,
+    receipt_path: Path,
+    receipt: dict[str, Any],
+    observations: dict[str, Any],
+) -> None:
+    # A self-consistent old-count receipt and replay still violate the current
+    # reviewed contract; matching those two objects must not rebind the seal.
+    observations["atlas"]["pairingVisible"] = 118
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    assert "browser receipt detailed DOM observations are not canonical" in (
+        bundle_module._browser_receipt_errors(project_root, check_runtime=False)
+    )
+    observations["atlas"]["pairingVisible"] = 119
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    assert (
+        bundle_module._browser_receipt_errors(project_root, check_runtime=False) == ()
+    )
 
 
 def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
@@ -87,7 +108,7 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "escapeCleared": True,
             "families": 22,
             "fepVisible": 41,
-            "pairingVisible": 118,
+            "pairingVisible": 119,
             "relationCards": 150,
             "relations": 150,
             "searchVisible": 1,
@@ -318,6 +339,8 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
         in bundle_module._browser_receipt_errors(tmp_path)
     )
     replay.screenshot_bytes = captured_screenshots
+
+    _assert_stale_pairing_count_rejected(tmp_path, receipt_path, receipt, expected)
 
     del expected["atlas"]["slashFocused"]
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
