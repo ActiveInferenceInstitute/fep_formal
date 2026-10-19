@@ -76,7 +76,7 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
         "topics": 168,
         "families": 22,
         "witnesses": 22,
-        "relations": 146,
+        "relations": 150,
         "capabilities": 50,
         "external_requests": [],
         "atlas": {
@@ -88,8 +88,8 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "families": 22,
             "fepVisible": 41,
             "pairingVisible": 118,
-            "relationCards": 146,
-            "relations": 146,
+            "relationCards": 150,
+            "relations": 150,
             "searchVisible": 1,
             "slashFocused": True,
             "topics": 168,
@@ -102,7 +102,7 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "detailsInitiallyOpen": 0,
             "families": 22,
             "mobileSummaryVisible": True,
-            "relationCards": 146,
+            "relationCards": 150,
             "topics": 168,
         },
         "dashboard": {
@@ -191,7 +191,7 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             topics=(None,) * 168,
             families=(None,) * 22,
             witnesses=(None,) * 22,
-            relations=(None,) * 146,
+            relations=(None,) * 150,
             capabilities=(None,) * 50,
         ),
     )

@@ -522,7 +522,7 @@
     },
     {
       "blocked_topics": [],
-      "description": "A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability.",
+      "description": "A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability. The actual derivative of the interior Bernoulli Fisher\u2013Rao coordinate is additionally identified with the topic Jacobian, giving the stated one-dimensional metric pullback; no global chart or path-length theorem is inferred.",
       "evidence": [
         "FEP.InformationGeometry.bernoulliScoreModel_fullSupport",
         "FEP.InformationGeometry.bernoulliScoreModel_identifiable",
@@ -544,7 +544,9 @@
         "FEP.InformationGeometry.naturalGradient_metric_duality",
         "FEP.InformationGeometry.naturalGradient_unique",
         "FEP.InformationGeometry.pullbackMetric_comp",
-        "FEP.InformationGeometry.pullbackMetric_pos"
+        "FEP.InformationGeometry.pullbackMetric_pos",
+        "FEPComposed.fep018_coordinate_derivative_is_fep038",
+        "FEPComposed.fep018_fep038_actual_metric_pullback"
       ],
       "id": "cap-multidimensional-information-geometry",
       "status": "satisfied",
@@ -3129,7 +3131,8 @@
         "FepSketches.markov_blanket",
         "FepSketches.path_thermodynamics",
         "FepSketches.statistical_convergence",
-        "FepSketches.temporal_inference"
+        "FepSketches.temporal_inference",
+        "FepSketches.variational_duality"
       ],
       "id": "formal-module-core",
       "imports": [
@@ -3147,13 +3150,16 @@
         "FepSketches.temporal_inference",
         "FepSketches.path_thermodynamics",
         "FepSketches.geometric_optimization",
-        "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+        "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+        "FepSketches.variational_duality",
+        "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+        "Mathlib.Analysis.SpecialFunctions.Sqrt"
       ],
       "lean_module": "FepSketches.compositions.core",
       "resource": "compositions/core.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 26,
+      "theorem_count": 33,
       "theorems": [
         "FEPComposed.activeInference_expectedFreeEnergy_to_fep021",
         "FEPComposed.fep002_vfe_compProd_chain_rule",
@@ -3162,6 +3168,8 @@
         "FEPComposed.fep007_normalizedMessage_is_fep028_softmax",
         "FEPComposed.fep012_softmax_entropyRegularizedCost_le",
         "FEPComposed.fep013_gaussianHelmholtz_derivative",
+        "FEPComposed.fep018_coordinate_derivative_is_fep038",
+        "FEPComposed.fep018_fep038_actual_metric_pullback",
         "FEPComposed.fep021_informationGain_balance",
         "FEPComposed.fep022_predictive_is_hierarchical_marginal",
         "FEPComposed.fep024_regularizer_is_fep014_kl",
@@ -3169,6 +3177,11 @@
         "FEPComposed.fep026_priorComplexity_is_fep011_surprise",
         "FEPComposed.fep027_priorPredictive_is_fep019",
         "FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance",
+        "FEPComposed.fep030_fep031_binary_maxEntropy",
+        "FEPComposed.fep030_fep031_finite_maxEntropy",
+        "FEPComposed.fep030_fin2_entropy_eq_binEntropy",
+        "FEPComposed.fep030_finite_binary_entropy_bound",
+        "FEPComposed.fep031_energyGibbs_is_topicProbability",
         "FEPComposed.fep031_zeroBeta_binary_maxEntropy",
         "FEPComposed.fep031_zeroBeta_binary_uniform",
         "FEPComposed.fep032_update_is_fep043_gradientStep",
@@ -4942,24 +4955,24 @@
     "abbreviations": 39,
     "authored_relation_edges": 150,
     "capability_nodes": 50,
-    "composed_theorems": 361,
+    "composed_theorems": 368,
     "definitions": 1035,
     "distinct_mathlib_imports": 79,
-    "formal_module_dependency_edges": 172,
-    "formal_module_import_edges": 386,
+    "formal_module_dependency_edges": 173,
+    "formal_module_import_edges": 389,
     "formal_modules": 72,
-    "formal_pairing_witnesses": 118,
+    "formal_pairing_witnesses": 119,
     "formal_relation_witnesses": 24,
     "formal_resource_abbreviations": 32,
     "formal_resource_definitions": 940,
     "formal_resource_structures": 56,
-    "formal_resource_theorems": 1652,
+    "formal_resource_theorems": 1659,
     "foundation_modules": 45,
     "foundation_theorems": 1291,
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
-    "theorem_witnessed_relations": 142,
-    "theorems": 2236,
+    "theorem_witnessed_relations": 143,
+    "theorems": 2243,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
     "topic_import_edges": 266,
@@ -4967,9 +4980,9 @@
     "topics": 168
   },
   "relation_counts": {
-    "conceptual": 8,
+    "conceptual": 7,
     "formal": 24,
-    "formal_pairing": 118
+    "formal_pairing": 119
   },
   "relations": [
     {
@@ -5106,11 +5119,11 @@
       "witness": "FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance"
     },
     {
-      "kind": "conceptual",
-      "rationale": "A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem.",
+      "kind": "formal_pairing",
+      "rationale": "The full-support binary Gibbs masses of fep031 are exactly energyGibbsLaw, and its finite entropy is exactly the Real.binEntropy carrier used by fep030. At a supplied matched mean energy, this law uniquely maximizes that binary entropy; the witness also retains fep030\u2019s bound/equality characterization on the same normalized candidate law. This is an exact finite carrier identification and constrained specialization, not a derivation of arbitrary Gibbs laws from the binary entropy bound or existence of a temperature for every target mean.",
       "source": "fep-030",
       "target": "fep-031",
-      "witness": null
+      "witness": "FEPComposed.fep030_fep031_binary_maxEntropy"
     },
     {
       "kind": "formal",

@@ -90,7 +90,7 @@ The exact roster and roles live in the manifest; this page projects them for nav
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
 | `compositions.control_temporal` | composition | `FEPComposed` | families.controlled_markov, families.core_active_inference, families.core_bayesian_mechanics, families.core_thermodynamics, families.temporal_inference, controlled_markov, temporal_inference |
-| `compositions.core` | composition | `FEPComposed` | families.core_active_inference, families.core_bayesian_mechanics, families.core_free_energy, families.core_information_geometry, families.core_thermodynamics, families.geometric_optimization, active_inference, information_geometry, markov_blanket, statistical_convergence, controlled_markov, temporal_inference, path_thermodynamics, geometric_optimization |
+| `compositions.core` | composition | `FEPComposed` | families.core_active_inference, families.core_bayesian_mechanics, families.core_free_energy, families.core_information_geometry, families.core_thermodynamics, families.geometric_optimization, active_inference, information_geometry, markov_blanket, statistical_convergence, controlled_markov, temporal_inference, path_thermodynamics, geometric_optimization, variational_duality |
 | `compositions.policy_trees` | composition | `FEPComposed` | families.closed_loop_policy_trees, families.controlled_markov, families.core_active_inference, policy_tree |
 | `compositions.risk_calibration` | composition | `FEPComposed` | families.core_bayesian_mechanics, families.finite_sample_risk_calibration, families.learning_theory, empirical_risk |
 | `continuous_time_markov` | foundation | `FEP.ContinuousTimeMarkov` | finite_markov_dynamics, active_inference, decision_risk, markov_blanket |

@@ -560,3 +560,67 @@ example : predictiveFunctor.map (boolFlip ≫ boolFlip) (FiniteLaw.pointMass tru
             "Classical.choice",
             "Quot.sound",
         }, f"unexpected axioms: {target}\n{output}"
+
+
+@pytest.mark.serial_lean
+def test_scalar_bridge_public_consumer_and_axioms(tmp_path: Path) -> None:
+    source = (
+        PROJECT_ROOT
+        / "specs/comprehensive-next-steps/spikes/scalar-bridges-20261019/positive-consumer.lean"
+    )
+    probe = tmp_path / "ScalarBridgeConsumer.lean"
+    probe.write_bytes(source.read_bytes())
+    result = run_lean_probe(
+        probe,
+        import_root=tmp_path,
+        cwd=PROJECT_ROOT / "lean",
+        timeout_s=300,
+        executable=lake_executable(missing="raise", context="scalar bridge acceptance"),
+    )
+    output = result.stdout + result.stderr
+    assert result.returncode == 0 and "warning:" not in output.lower(), output
+    reports = re.findall(r"depends on axioms: \[(.*?)\]", output, re.DOTALL)
+    assert len(reports) == 9, output
+    assert all(
+        {a.strip() for a in report.split(",")}
+        == {"propext", "Classical.choice", "Quot.sound"}
+        for report in reports
+    ), output
+
+
+@pytest.mark.serial_lean
+@pytest.mark.parametrize(
+    "case", ["reject-zero-endpoint", "reject-omitted-energy-match"]
+)
+def test_scalar_bridge_imported_consumers_refuse_missing_premises(
+    tmp_path: Path, case: str
+) -> None:
+    source = (
+        PROJECT_ROOT
+        / f"specs/comprehensive-next-steps/spikes/scalar-bridges-20261019/{case}.lean"
+    )
+    probe = tmp_path / "RejectedScalarConsumer.lean"
+    probe.write_bytes(source.read_bytes())
+    result = run_lean_probe(
+        probe,
+        import_root=tmp_path,
+        cwd=PROJECT_ROOT / "lean",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise", context="scalar bridge refusal control"
+        ),
+    )
+    output = result.stdout + result.stderr
+    assert (
+        result.returncode != 0
+        and "error:" in output
+        and "unknown" not in output.lower()
+    ), output
+    if case == "reject-zero-endpoint":
+        assert "unsolved goals" in output and "⊢ False" in output, output
+    else:
+        assert (
+            "projection" in output.lower()
+            and "function" in output.lower()
+            and "fep030_fep031_finite_maxEntropy" in output
+        ), output

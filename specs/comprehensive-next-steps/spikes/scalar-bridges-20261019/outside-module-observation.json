@@ -1,0 +1,71 @@
+{
+  "owned_candidate_sha256": "0e178e79b5f9c90c16cdaa3cf6744677e22aea9902f5a5c2a8fea45bb8bf1446",
+  "checks": [
+    {
+      "name": "positive-and-proper-support",
+      "command": [
+        "/opt/homebrew/bin/elan",
+        "run",
+        "leanprover/lean4:v4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "-E",
+        "warning",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-scalar-bridges-proposal/positive-and-proper-support.lean"
+      ],
+      "returncode": 0,
+      "expected_rejection": false,
+      "seconds": 4.181588833016576,
+      "source_sha256": "4fb229f03708ebe575e8b18d5c192721627ad6afff9203a39ec261bbbd440d6d",
+      "log_sha256": "197d29254611dfff4a04de6a5717e0ca438a1ce23c228db0fab12f928259d6f0",
+      "warnings": 0,
+      "sorry_axioms": 0
+    },
+    {
+      "name": "reject-zero-endpoint",
+      "command": [
+        "/opt/homebrew/bin/elan",
+        "run",
+        "leanprover/lean4:v4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "-E",
+        "warning",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-scalar-bridges-proposal/reject-zero-endpoint.lean"
+      ],
+      "returncode": 1,
+      "expected_rejection": true,
+      "seconds": 4.194413916004123,
+      "source_sha256": "c9684071787f130b3212974a01a116360219c6ef08d61b18a5a0be464338d4ce",
+      "log_sha256": "ef7736b4fccbdc61977c87c0f0a7280e9d7efca218affafb94f5bc9174f8f372",
+      "warnings": 0,
+      "sorry_axioms": 0
+    },
+    {
+      "name": "reject-omitted-energy-match",
+      "command": [
+        "/opt/homebrew/bin/elan",
+        "run",
+        "leanprover/lean4:v4.35.0",
+        "lake",
+        "env",
+        "lean",
+        "-E",
+        "warning",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-scalar-bridges-proposal/reject-omitted-energy-match.lean"
+      ],
+      "returncode": 1,
+      "expected_rejection": true,
+      "seconds": 4.0594949160004035,
+      "source_sha256": "ccf951ec66ca49e7b08729b2a8316ef2ae7bbb54ec3db732c9b4d18f95ac6355",
+      "log_sha256": "72b01a69699cb379b0c5596ec7b1281a4bd87db5f55c30695274f5cacfd90592",
+      "warnings": 0,
+      "sorry_axioms": 0
+    }
+  ],
+  "complete": true,
+  "passed": true,
+  "boundary": "Outside proposed existing-core module observation against pinned imports; N source not integrated. Fresh owner generation/full native/runtime/custody/publication still required."
+}

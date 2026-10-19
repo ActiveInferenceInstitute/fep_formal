@@ -463,8 +463,134 @@ _RELATION_RATIONALE_REVIEW_SHA256 = (
 )
 
 
+_SCALAR_REVIEW_PATH = (
+    PROJECT_ROOT / "tests/fixtures/scalar_bridges_review_20261019.json"
+)
+_SCALAR_REVIEW_SHA256 = (
+    "728214c856f86560a8ff1d3a91e8f1b141bc98dbd57c34cb0f00713b99e7355a"
+)
+
+
+def _scalar_review() -> dict[str, object]:
+    raw = _SCALAR_REVIEW_PATH.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _SCALAR_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1 and review["new_theorems"] == 7
+    return review
+
+
+def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, object]]:
+    change = _scalar_review()["edge_change"]
+    result = []
+    seen = 0
+    for edge in edges:
+        if (edge["source"], edge["target"]) == ("fep-030", "fep-031"):
+            assert edge == change["reviewed"]
+            result.append(dict(change["released"]))
+            seen += 1
+        else:
+            result.append(dict(edge))
+    assert seen == 1
+    return result
+
+
+def _reverse_scalar_capabilities(
+    caps: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    change = _scalar_review()["capability_change"]
+    result = []
+    seen = 0
+    for cap in caps:
+        if cap["id"] == change["reviewed"]["id"]:
+            assert cap == change["reviewed"]
+            result.append(dict(change["released"]))
+            seen += 1
+        else:
+            result.append(dict(cap))
+    assert seen == 1
+    return result
+
+
+def _assert_scalar_model_preimage(model: dict[str, object]) -> None:
+    restored = dict(model)
+    restored["edges"] = _reverse_scalar_edges(model["edges"])
+    restored["capabilities"] = _reverse_scalar_capabilities(model["capabilities"])
+    assert (
+        hashlib.sha256(_canonical(restored).encode()).hexdigest()
+        == _scalar_review()["released_model_canonical_sha256"]
+    )
+
+
+def _assert_scalar_core_preimage(source: str) -> None:
+    review = _scalar_review()
+    for key in ["added_public_imports", "added_core_block"]:
+        assert source.count(review[key]) == 1
+        source = source.replace(review[key], "")
+    assert hashlib.sha256(source.encode()).hexdigest() == review["released_core_sha256"]
+
+
+def test_scalar_bridges_preserve_exact_existing_proofs_and_relation_model() -> None:
+    _assert_scalar_model_preimage(_yaml("formalism_relations.yaml"))
+    _assert_scalar_core_preimage(
+        (PROJECT_ROOT / "src/fep_lean/formal/compositions/core.lean").read_text()
+    )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["kind", "witness", "capability", "other_edge", "old_proof", "new_proof"],
+)
+def test_scalar_bridge_review_rejects_unapproved_changes(mutation: str) -> None:
+    if mutation in {"old_proof", "new_proof"}:
+        source = (
+            PROJECT_ROOT / "src/fep_lean/formal/compositions/core.lean"
+        ).read_text()
+        old = (
+            "namespace FEPComposed"
+            if mutation == "old_proof"
+            else "theorem fep018_coordinate_derivative_is_fep038"
+        )
+        assert old in source
+        with pytest.raises(AssertionError):
+            _assert_scalar_core_preimage(source.replace(old, "unreviewed", 1))
+        return
+    model = _yaml("formalism_relations.yaml")
+    edge = next(
+        e
+        for e in model["edges"]
+        if (e["source"], e["target"]) == ("fep-030", "fep-031")
+    )
+    if mutation == "kind":
+        edge["kind"] = "formal"
+    elif mutation == "witness":
+        edge["witness"] = "FEPComposed.unreviewed"
+    elif mutation == "capability":
+        next(
+            c
+            for c in model["capabilities"]
+            if c["id"] == "cap-multidimensional-information-geometry"
+        )["evidence"][0] = "unreviewed"
+    else:
+        model["edges"][0]["rationale"] = "unreviewed"
+    with pytest.raises(AssertionError):
+        _assert_scalar_model_preimage(model)
+
+
+def test_scalar_bridge_review_rejects_modified_fixture(
+    tmp_path: Path, monkeypatch
+) -> None:
+    tampered = tmp_path / "tampered.json"
+    tampered.write_bytes(_SCALAR_REVIEW_PATH.read_bytes() + b" ")
+    monkeypatch.setattr(
+        __import__(__name__, fromlist=["unused"]), "_SCALAR_REVIEW_PATH", tampered
+    )
+    with pytest.raises(AssertionError):
+        _scalar_review()
+
+
 def _assert_released_relation_rows(edges: list[dict[str, object]]) -> None:
     """Reverse only the exact reviewed prose delta before the immutable seal."""
+    edges = _reverse_scalar_edges(edges)
     raw = _RELATION_RATIONALE_REVIEW_PATH.read_bytes()
     assert hashlib.sha256(raw).hexdigest() == _RELATION_RATIONALE_REVIEW_SHA256
     review = json.loads(raw)
@@ -521,7 +647,7 @@ def test_expansion_vii_preserves_released_rows_except_reviewed_deltas() -> None:
         _length_prefixed_sha256(
             [
                 _canonical(row)
-                for row in relations["capabilities"]
+                for row in _reverse_scalar_capabilities(relations["capabilities"])
                 if row["id"] not in NEW_CAPABILITY_IDS
             ]
         )

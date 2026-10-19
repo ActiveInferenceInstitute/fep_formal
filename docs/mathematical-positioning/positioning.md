@@ -3678,7 +3678,7 @@ Invariant: Finite-horizon pragmatic cost is the discounted ENNReal sum of stage 
 
 Assumptions: All costs and the discount live in ENNReal, so nonnegativity and infinity are represented directly. This is the pragmatic-cost input to EFE; epistemic value and its sign are owned by fep-021.
 
-Non-vacuity: A positive stage cost at the newly exposed time adds the nonzero increment γ^T c_T; a zero horizon and pointwise-equal costs exercise the boundaries.
+Non-vacuity: For positive discount and positive new stage cost, the terminal increment is nonzero; strict growth of the total additionally requires the previous accumulated cost to be finite. Discount zero at positive horizons exposes the zero-increment boundary.
 
 Canonical acceptance probe: native Lean compile of fep003_pragmaticCost_zero, fep003_pragmaticCost_succ, fep003_pragmaticCost_mono, and fep003_pragmaticCost_horizon_succ.
 
@@ -4554,7 +4554,7 @@ Invariant: For differentiable U(T) and S(T), Helmholtz free energy has derivativ
 
 Assumptions: The derivative law is conditional on pointwise differentiability and the explicitly stated equilibrium identity. It is a thermodynamic calculus identity, not a derivation of the first law or an identification with variational free energy.
 
-Non-vacuity: The fep-040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at every positive temperature, yielding a compiled nonconstant physical witness.
+Non-vacuity: The fep040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at positive scale and temperature, yielding a nonconstant mathematical model with explicit dimensionless units.
 
 Canonical acceptance probe: native Lean compile of fep013_helmholtz_hasDerivAt, fep013_helmholtz_derivative_eq_neg_entropy, and FEPComposed.fep013_gaussianHelmholtz_derivative.
 
@@ -4936,7 +4936,7 @@ Body owner: `src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py`; canonica
 
 Invariant: Mathlib's posterior is a Markov kernel whose composition with the predictive law reconstructs the swapped prior-likelihood joint law; for a Markov likelihood it also recovers the prior.
 
-Assumptions: Conditional on standard-Borel and nonempty latent structure plus finite prior and likelihood kernel. The Radon--Nikodym Bayes formula additionally uses countability of the latent space and standard-Borel observation structure. This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors.
+Assumptions: Conditional on standard-Borel and nonempty latent structure plus finite prior and likelihood kernel. The Radon--Nikodym Bayes formula additionally uses countability of the latent space and standard-Borel observation structure. This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors. The Bayes-density formula additionally assumes countable latent and nonempty standard-Borel observation structure and holds only almost everywhere under the predictive law. Every selected posterior fibre is normalized, including version choices at null observations.
 
 Non-vacuity: Every posterior fibre has mass one, and the identity Markov kernel supplies a concrete prior-recovery witness; non-deterministic finite kernels exercise a nontrivial reconstructed joint law.
 
@@ -5740,7 +5740,7 @@ Body owner: `src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py`; canonica
 
 Invariant: A parent measure and child kernel form a normalized hierarchical joint whose marginals recover the parent and prior predictive, and whose three-level factorization is associative up to product reassociation.
 
-Assumptions: Joint normalization requires a probability parent and Markov child; first- and second-marginal identities require the stated finite-kernel classes. The associativity theorem is exact for Mathlib composition products and does not impose causal identifiability.
+Assumptions: Joint normalization requires a probability parent and Markov child. First marginal requires an SFinite parent and Markov child; second marginal requires an SFinite parent and SFinite child. Associativity is the native compProd identity; no causal identifiability is imposed.
 
 Non-vacuity: A non-Dirac finite parent and state-dependent non-deterministic Markov child give a dependent normalized joint with distinct parent and predictive marginals; a third kernel exercises nontrivial reassociation.
 
@@ -5826,7 +5826,7 @@ Invariant: Exponentiated policy scores on a nonempty selected support define a n
 
 Assumptions: Only support nonemptiness is required; inverse temperature and costs may be arbitrary reals. This proves an exact stochastic policy law but not optimality, sampling behavior, or a temperature limit.
 
-Non-vacuity: A two-policy support with unequal costs gives unequal positive weights, while excluded policies have exact zero mass and the full ten-policy vector remains normalized.
+Non-vacuity: With positive inverse temperature and a two-policy support of unequal costs, lower cost receives a strictly larger positive weight. At inverse temperature zero the law is uniform on support; excluded policies have zero mass. The full ten-policy vector remains normalized.
 
 Canonical acceptance probe: native Lean compile of fep028_softmax_nonneg, fep028_softmax_le_one, fep028_softmax_support, fep028_softmax_probs_sum_one, and fep028_softmax_sum_univ.
 
@@ -6031,9 +6031,9 @@ Body owner: `src/fep_lean/catalogue/bodies/core_thermodynamics.py`; canonical na
 
 Invariant: Positive exponential Gibbs weights normalize to a nonnegative mass function summing to one on any nonempty finite support.
 
-Assumptions: Conditional only on a nonempty selected support; β and energies are arbitrary reals. The row does not derive Gibbs weights from maximum entropy or bundle the result as a measure.
+Assumptions: Conditional only on a nonempty selected support; β and energies are arbitrary reals. The row does not derive Gibbs weights from maximum entropy or bundle the result as a measure. The expression sums to one only over the selected support and is not zero outside it. A support subtype or full support is required for an ambient normalized law.
 
-Non-vacuity: A singleton support has normalized mass one, while two unequal energies produce distinct positive normalized weights.
+Non-vacuity: A singleton selected support has mass one on that support. Two unequal energies give distinct weights when beta is nonzero, with lower energy receiving higher weight for positive beta; beta zero yields uniform supported weights.
 
 Canonical acceptance probe: native Lean compile of partition positivity, pointwise nonnegativity, and support normalization.
 
@@ -6350,7 +6350,7 @@ Body owner: `src/fep_lean/catalogue/bodies/core_active_inference.py`; canonical 
 
 Invariant: A transition-composed predictive prior and native observation posterior reconstruct the swapped predicted-state/observation joint law, with probability mass one in every posterior fibre.
 
-Assumptions: Conditional on standard-Borel nonempty latent structure, a finite prior, and finite transition and observation kernels; prediction preserves total mass when the transition is Markov, and posterior recovery additionally requires a Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem.
+Assumptions: Conditional on standard-Borel nonempty latent structure, a finite prior, and finite transition and observation kernels; prediction preserves total mass when the transition is Markov, and posterior recovery additionally requires a Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem. Posterior normalization holds in every fibre of the selected Markov version; Bayes reconstruction identifies the version only relative to the predictive observation law, so no unique pointwise Bayes ratio at null observations is asserted.
 
 Non-vacuity: A nonidentity finite Markov transition followed by a noisy observation kernel yields a nontrivial predictive prior and posterior; each posterior fibre has mass one rather than merely nonnegative unnormalized weight.
 
@@ -6683,7 +6683,7 @@ Invariant: For the symmetric two-state relaxation eigenvalue 1-2α, stationary a
 
 Assumptions: Response is defined as inverse temperature times the one-step autocorrelation loss. Nonnegativity additionally restricts α≤1/2 and nonnegative inverse temperature and variance. This is an exact discrete two-state response law, not a microscopic Kubo derivation for general dynamics.
 
-Non-vacuity: For α=1/4, positive β, and nonzero variance, lag-zero response is positive and both correlation and response decay geometrically by 1/2.
+Non-vacuity: For alpha=1/4, positive beta and strictly positive variance, lag-zero response is positive and both defined correlation and response decay geometrically by1/2.
 
 Canonical acceptance probe: native Lean compile of fep037_autocorrelation_recurrence, fep037_autocorrelation_tendsto_zero, fep037_response_eq, fep037_response_nonneg, and fep037_response_tendsto_zero.
 
@@ -6751,9 +6751,9 @@ Primary theorem: `fep_fep038.FEP038.fep038_fisherInformation_eq`.
 
 Body owner: `src/fep_lean/catalogue/bodies/core_information_geometry.py`; canonical namespace `FEP038`.
 
-Invariant: The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines a dual natural gradient and is the pullback of the Euclidean metric along the Fisher--Rao coordinate.
+Invariant: The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines a dual natural gradient. The supplied coordinate-Jacobian expression squares to Fisher information and factorizes the metric.
 
-Assumptions: Metric positivity, inverse-metric duality, and the coordinate law require an interior Bernoulli parameter 0 < p < 1. This is a complete one-dimensional Bernoulli information geometry, not a general finite- or infinite-dimensional statistical manifold.
+Assumptions: Metric positivity, inverse-metric duality and the coordinate-Jacobian algebra require 0 < p < 1. Identification of that supplied expression with the derivative of the authored 2*arcsin(sqrt p) coordinate requires the separately reviewed interior HasDerivAt bridge. No path-length theorem or general statistical manifold is asserted by the current topic declarations.
 
 Non-vacuity: At p = 1/2 the Fisher information is 4, every nonzero tangent has positive metric norm, and the natural-gradient map rescales nonzero covectors by 1/4.
 
@@ -7164,7 +7164,7 @@ Body owner: `src/fep_lean/catalogue/bodies/core_free_energy.py`; canonical names
 
 Invariant: Fermat's theorem makes every local minimum critical; for an exact positive-curvature quadratic, the derivative is the stated gradient, the center is the unique critical point and global minimizer, and the scalar Hessian is strictly positive.
 
-Assumptions: The general derivative-zero theorem uses Mathlib's local-minimum notion. Uniqueness and positive second derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable objectives.
+Assumptions: The general derivative-zero theorem uses Mathlib's local-minimum notion. Uniqueness and positive second derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable objectives. The general deriv = 0 wrapper uses Mathlib's totalized derivative, which is zero also at nondifferentiable points; only the explicit quadratic HasDerivAt declarations establish differentiability here.
 
 Non-vacuity: Every positive a and noncenter x has nonzero gradient and strictly larger energy than the center, while the Hessian 2a is nonzero everywhere.
 
@@ -7314,11 +7314,11 @@ Primary theorem: `fep_fep045.FEP045.fep045_bernoulli_posterior_closed`.
 
 Body owner: `src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py`; canonical namespace `FEP045`.
 
-Invariant: For a nonzero evidence normalizer, likelihood-times-Bernoulli-prior mass normalizes pointwise to another Bernoulli law at the Bayes-updated parameter.
+Invariant: For nonzero evidence, likelihood-times-prior masses have the Bernoulli mass-vector form at the updated parameter. A probability-law interpretation additionally requires a prior in [0,1], nonnegative likelihoods and positive evidence.
 
 Assumptions: Closure is exact for a binary latent hypothesis and binary evidence likelihood. Interior prior and positive likelihood assumptions prove positive evidence and keep the updated parameter in [0,1]. This is a finite Bernoulli conjugate family, not Beta-density conjugacy.
 
-Non-vacuity: Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one; equal likelihoods leave the prior parameter unchanged algebraically.
+Non-vacuity: Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one. Equal nonzero likelihoods preserve the prior; both zero expose the refused evidence boundary.
 
 Canonical acceptance probe: native Lean compile of fep045_evidence_pos, fep045_posteriorParameter_mem_unit, fep045_bernoulli_posterior_closed, and fep045_posterior_mass_one.
 
@@ -7459,7 +7459,7 @@ Body owner: `src/fep_lean/catalogue/bodies/core_active_inference.py`; canonical 
 
 Invariant: Finite sum-product forward propagation is matrix--vector multiplication: it preserves nonnegativity and order under nonnegative factors, has zero and identity laws, and composes exactly by matrix multiplication.
 
-Assumptions: Nonnegativity and monotonicity require entrywise nonnegative factors and inputs. Identity and composition are unconditional algebraic laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence.
+Assumptions: Nonnegativity preservation requires nonnegative factors and inputs. Order monotonicity requires nonnegative factors and pointwise ordered inputs, which may themselves be negative. Identity/composition are unconditional algebraic laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence.
 
 Non-vacuity: Nonidentity dense matrices and nonconstant incoming vectors exercise genuine cross-state aggregation; two distinct factors exercise nontrivial composed propagation.
 
@@ -7529,7 +7529,7 @@ Primary theorem: `fep_fep048.FEP048.fep048_contraction_unique`.
 
 Body owner: `src/fep_lean/catalogue/bodies/core_free_energy.py`; canonical namespace `FEP048`.
 
-Invariant: Mathlib's global ContractingWith contract gives a unique fixed point on ℝ, and iterations of the concrete halving update converge to zero.
+Invariant: Any two fixed points of a global ContractingWith map on ℝ coincide; the concrete halving map has unique fixed point zero and its iterates converge to zero.
 
 Assumptions: ContractingWith packages a nonnegative Lipschitz coefficient strictly below one. Completeness and nonemptiness of ℝ discharge the Banach fixed-point assumptions; no claim is made for arbitrary noncontractive policy updates.
 
@@ -7828,7 +7828,7 @@ Invariant: A native Radon–Nikodym derivative reconstructs a target measure fro
 
 Assumptions: Both results require a measurable carrier and a HaveLebesgueDecomposition instance. The forward reconstruction additionally assumes target ≪ reference; the equivalence proves that this is the exact support condition and does not erase a singular component.
 
-Non-vacuity: Taking target equal to reference supplies a reconstructible case, while any target with a nonzero singular component lies on the theorem's explicit failure boundary.
+Non-vacuity: Equal finite reference/target laws supply a concrete reconstructible case with the required decomposition instance; a nonzero singular component gives the explicit failure boundary.
 
 Canonical acceptance probe: native Lean compile of fep051_likelihoodRatio_reconstruction and fep051_reconstruction_iff_absoluteContinuous with the absolute-continuity premise visible.
 
@@ -8692,7 +8692,7 @@ Invariant: A finite joint ELBO separates exactly into a prior-coordinate score m
 
 Assumptions: The decomposition assumes every reference-prior and reference-kernel atom is strictly positive so all logarithmic rewrites are sound. Conditional KL nonnegativity is proved for the project's totalized finite divergence, but no zero-reference extended-real interpretation is claimed.
 
-Non-vacuity: Distinct actual and reference kernels yield a positive conditional remainder; matching kernels collapse only that coordinate penalty while leaving the prior-coordinate score visible.
+Non-vacuity: If actual and reference rows differ at a latent state of positive actual-prior mass, the conditional remainder is positive. Differences confined to zero-prior rows need not contribute. Matching kernels make this coordinate penalty zero while leaving the prior score visible.
 
 Canonical acceptance probe: native Lean compile of fep060_coordinateELBO_decomposition and fep060_coordinateKL_nonnegative with reference support hypotheses exposed.
 
@@ -8890,7 +8890,7 @@ Invariant: For a positive fixed sample count and positive weights, the IID produ
 
 Assumptions: The carrier is finite, NeZero excludes sample count zero, and every weight is strictly positive before Real.log is used. The positive-expectation witness additionally assumes a nonempty carrier and full-support sampling law.
 
-Non-vacuity: Nonconstant positive importance weights on a nonempty finite carrier give a genuinely random positive sample mean; a one-sample law recovers the base finite Jensen inequality.
+Non-vacuity: A sampling law assigning positive probability to two different weight values gives a genuinely random sample mean. Nonconstant weights off the sampling support do not. A one-sample law recovers finite weighted Jensen.
 
 Canonical acceptance probe: native Lean compile of fep062_iidProduct_importanceJensen, fep062_fixedSample_importanceJensen, and fep062_expectedImportanceWeight_positive for positive weights.
 
@@ -9768,7 +9768,7 @@ Invariant: A prior-weighted exponential action score normalizes to a control pos
 
 Assumptions: The action carrier is finite, precision and costs are real, and positivity of the exponential partition is supplied by the finite Boltzmann construction. The result is an exact algebraic posterior but does not derive its cost from a full generative observation model.
 
-Non-vacuity: Unequal action costs and a supported prior reweight actions nonuniformly; identically zero costs return the prior exactly for every precision.
+Non-vacuity: For nonzero precision and two positive-prior actions with distinct costs, their posterior odds differ from prior odds. Zero precision or constant supported costs preserves the prior; zero cost does so for every precision.
 
 Canonical acceptance probe: native Lean compile of fep070_controlPosterior_normalized, fep070_controlPosterior_reconstruction, and fep070_zeroCost_posterior_eq_prior.
 
@@ -9861,7 +9861,7 @@ Body owner: `src/fep_lean/catalogue/bodies/controlled_markov.py`; canonical name
 
 Invariant: Finite sophisticated expected-free-energy recursion reoptimizes after each observation-dependent belief update, and a two-stage witness strictly separates feedback from every fixed open-loop second action.
 
-Assumptions: Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning.
+Assumptions: Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately.
 
 Non-vacuity: In the witness, false and true observations choose different continuation actions, and the resulting expected cost is strictly below that of either fixed Boolean continuation.
 
@@ -10079,7 +10079,7 @@ Invariant: Finite backward information messages obey the exact future-observatio
 
 Assumptions: State and observation carriers are finite and transition and emission rows are normalized. Nonnegativity requires the supplied next message to be pointwise nonnegative; the theorem does not normalize messages or assert a limiting smoother.
 
-Non-vacuity: A nonempty future-observation list and nonconstant emission kernel produce a state-dependent backward message rather than only the terminal unit message.
+Non-vacuity: An identity transition with differing likelihoods of the observed symbol gives a state-dependent backward message. Identical transition rows may erase that dependence even when emission rows differ.
 
 Canonical acceptance probe: native Lean compile of fep073_backward_message_recursion and fep073_backward_message_nonnegative for arbitrary finite future lists.
 
@@ -10187,7 +10187,7 @@ Invariant: At positive normalizer, a finite smoothing marginal factors into forw
 
 Assumptions: The forward law is normalized, the backward message is nonnegative, and its weighted normalizer is strictly positive. The statement covers a finite factorization and does not assert positivity when all backward weights vanish.
 
-Non-vacuity: Nonconstant backward messages reweight a nondegenerate forward law, while the evidence-agreement theorem connects independently expressed forward and backward one-step calculations.
+Non-vacuity: Backward weights differing at two positive-forward-mass states reweight their odds; differences confined to zero-forward-mass states do not affect the normalized law.
 
 Canonical acceptance probe: native Lean compile of fep074_forwardBackward_smoothing_factorization and fep074_forward_backward_evidence_agreement.
 
@@ -10389,7 +10389,7 @@ Invariant: A finite prior-weighted exponential energy tilt is normalized and rec
 
 Assumptions: The state carrier is finite and the real exponential makes the partition positive without a separate support premise. This is one exact normalized update, not convergence of a variational optimization algorithm.
 
-Non-vacuity: Nonconstant energies reweight any prior with supported alternatives, whereas the zero-energy boundary leaves every prior law unchanged.
+Non-vacuity: Energy values differing on two positive-prior-mass states change their odds. Energies constant on prior support, including nonzero constants, leave the prior unchanged.
 
 Canonical acceptance probe: native Lean compile of fep076_variational_state_update_normalized, fep076_variational_state_update_reconstruction, and fep076_zeroEnergy_update_eq_prior.
 
@@ -11193,7 +11193,7 @@ Body owner: `src/fep_lean/catalogue/bodies/causal_blankets_interventions.py`; ca
 
 Invariant: In the ordered four-node carrier, conditioning on the outcome's two parents factorizes the outcome from its non-parent predecessor root and forces their finite mutual information to zero.
 
-Assumptions: All carriers are finite and mediator evidence must be strictly positive. The result is a local statement for one authored ordering and parent set; it is not a proof of general d-separation, faithfulness, or native measurable conditional independence.
+Assumptions: All carriers are finite and mediator evidence must be strictly positive. The authored local product row is defined even at a null non-descendant value; interpreting it as an identified conditional on the joint parent event additionally requires positive non-descendant mass. Existing reconstruction recovers the ordered joint atom after multiplying by both parent-evidence factors. This is one maintained ordering, not general d-separation, faithfulness or native measurable conditional independence.
 
 Non-vacuity: The Boolean model conditions on a mediator event of positive half mass and obtains zero mutual information, while a separate theorem marks zero mediator evidence as outside the conditional construction.
 
@@ -11514,7 +11514,7 @@ Body owner: `src/fep_lean/catalogue/bodies/predictive_coding_generalized.py`; ca
 
 Invariant: Natural-number shifts on a finite generalized-coordinate jet compose associatively, with the highest retained coordinate shifting into an explicit zero truncation boundary.
 
-Assumptions: Generalized coordinates are finite jets represented by finitely supported coefficients. The semigroup is discrete and exact; no analytic infinite jet, time derivative, or continuous-flow convergence is claimed.
+Assumptions: Generalized coordinates are finite truncated coefficient jets. The primary semigroup is discrete; the existing functionJet bridge identifies shifted iterated derivatives below the truncation boundary, while top derivative information is discarded. This does not establish analytic infinite jets, ordinary coordinate-time differentiation without regularity, or continuous-flow convergence.
 
 Non-vacuity: A first-order jet moves velocity into the position coordinate while its terminal velocity coordinate becomes zero, visibly exercising the truncation.
 
@@ -11800,7 +11800,7 @@ Body owner: `src/fep_lean/catalogue/bodies/predictive_coding_generalized.py`; ca
 
 Invariant: Exact scalar quadratic prediction updates contract energy by the squared factor one minus step size, strictly decrease positive-precision nonzero error for step sizes in the open interval zero to two, and drive error to zero.
 
-Assumptions: Convergence requires 0 < stepSize < 2; strict descent additionally requires positive precision and unequal target and estimate. The result is scalar and exact-quadratic, not a convergence theorem for nonlinear predictive-coding networks.
+Assumptions: Convergence requires 0 < stepSize < 2 for the authored residual update; strict descent also needs positive precision and unequal target and estimate. A raw negative-gradient step with learning rate alpha has effective stepSize alpha*precision. The theorem is scalar exact-quadratic and does not prove stability of coupled finite-jet or nonlinear predictive-coding updates.
 
 Non-vacuity: At precision two and half-step size, a unit error has energy one, moves to estimate one half, and drops to energy one quarter.
 
@@ -12228,7 +12228,7 @@ Invariant: A normalized finite exponential-work protocol has work average equal 
 
 Assumptions: HasJarzynskiNormalization explicitly packages positive beta and the identity that the expectation of exp(-beta times (work minus free-energy difference)) equals one. The theorem algebraically extracts Jarzynski's equality from this normalization; it does not derive that premise from microscopic reversibility.
 
-Non-vacuity: Nonconstant finite work values can satisfy the normalization after choosing a compatible free-energy difference, while beta positivity excludes the zero-temperature-parameter collapse.
+Non-vacuity: The actual nonconstant Boolean Crooks work witness satisfies the normalization at beta=1 and deltaFreeEnergy=0. Positive beta excludes the zero inverse-temperature parameter boundary; no physical temperature or unit identification is inferred without an explicit convention.
 
 Canonical acceptance probe: native Lean compile of fep097_finiteJarzynski_equality with the explicit beta, work, free-energy, and normalization certificate.
 
@@ -12418,7 +12418,7 @@ Invariant: One strictly positive reversible finite Markov step cannot increase K
 
 Assumptions: State is finite and nonempty, actual and stationary laws have full support, every transition atom is positive, and detailed balance supplies stationarity. The result is one-step dissipation, not strict contraction for every nonidentity kernel or a continuous-time entropy-production theorem.
 
-Non-vacuity: The identity kernel proves the exact reversible equality boundary, while the unequal full-support Boolean path witness proves strictly positive production away from reversibility.
+Non-vacuity: A strictly positive symmetric mixing kernel supplies an instance of the main dissipation theorem. The separately proved identity equality lies outside its positive-transition class on multi-state carriers. Unequal full-support Boolean path laws prove positive path divergence; the existing stationary biased three-cycle separately proves nonreversibility and positive production at every positive finite horizon.
 
 Canonical acceptance probe: native Lean compile of fep099_reversibleChain_oneStep_KL_dissipation, fep099_reversibleEquality_boundary, and fep099_irreversiblePositiveProduction_witness.
 
@@ -12934,7 +12934,7 @@ Invariant: The algebraic Bregman expression associated with supplied potential a
 
 Assumptions: The coordinate carrier is finite and potential and gradient are arbitrary supplied functions. The identity is algebraic and assumes neither convexity nor that the gradient is the derivative of the potential; those extra properties are required before interpreting every term as a nonnegative divergence or an algorithmic descent guarantee.
 
-Non-vacuity: Distinct left, middle, and right vectors with a nonconstant supplied gradient give nonzero pairing and divergence differences while retaining exact equality.
+Non-vacuity: For Fin1 quadratic potential x0^2/2 and true gradient x0, the points left=2,middle=1,right=0 give divergence difference 2-1/2-1/2=1 and pairing1. This exercises the identity without asserting convexity or derivative compatibility for arbitrary supplied data.
 
 Canonical acceptance probe: native Lean compile of fep104_mirrorDescent_threePoint_identity for arbitrary finite-dimensional potential and gradient data.
 
@@ -13029,7 +13029,7 @@ Body owner: `src/fep_lean/catalogue/bodies/geometric_optimization.py`; canonical
 
 Invariant: An affine projection certificate yields exact Bregman Pythagorean splitting, and a nonnegative residual divergence makes the certified projection a minimizer over the maintained affine set.
 
-Assumptions: AffineBregmanProjection explicitly supplies projection membership and gradient-difference orthogonality for every candidate. Minimization separately assumes residual Bregman nonnegativity. Existence, uniqueness, convexity, and differentiability of the projection are not derived.
+Assumptions: AffineBregmanProjection supplies membership and gradient-difference orthogonality for every candidate in a named Set; no IsAffine or convexity predicate is required. Splitting holds under that certificate. The minimization comparison additionally assumes residual Bregman nonnegativity for the selected candidate; obtaining a minimizer over the whole set requires this for all candidates. Existence, uniqueness, derivative compatibility and convexity are not derived.
 
 Non-vacuity: Candidates distinct from the projection can have a positive residual term, producing a strict objective gap; zero residual gives the exact equality boundary without proving uniqueness.
 
@@ -13630,7 +13630,7 @@ Invariant: The unit-weight finite product-of-experts pool is the normalized poin
 
 Assumptions: The state carrier is finite and the pointwise-product normalizer must be strictly positive. Disjoint supports are excluded. This unit-weight product uses exponents one, not the one-half exponents of an equal-weight logarithmic pool, and no externally Bayesian pooling property is claimed.
 
-Non-vacuity: Two distinct overlapping laws produce a pooled distribution different from either input; the positive-overlap premise visibly excludes the disjoint point mass boundary.
+Non-vacuity: For Boolean laws with true masses3/4 and2/3, the product normalizer is7/12 and the pool true mass is6/7, different from both inputs. Disjoint opposite point masses have zero normalizer and are excluded. Distinct overlap alone does not guarantee both inputs change.
 
 Canonical acceptance probe: native Lean compile of fep110_unitWeightProductOfExpertsPool_normalized and fep110_unitWeightProductOfExpertsPool_mass with a strictly positive pointwise-product normalizer.
 
@@ -14123,7 +14123,7 @@ Invariant: Per-symbol empirical-frequency failure bounds combine by a finite uni
 
 Assumptions: The sampling measure is a probability measure, the alphabet is finite with decidable equality, sample count is nonzero, and every symbol has the supplied probability bound. No independence or concentration rate is inferred beyond those per-symbol premises.
 
-Non-vacuity: A multi-symbol alphabet and positive sample count make the union contain genuinely distinct two-sided normalized-count deviation events.
+Non-vacuity: With one uniform Fin3 observation, target mass1/3 at each symbol and deviation1/2, the three count-deviation events are distinct singletons, each with probability1/3, and their union has probability1. Boolean complementary frequencies can instead have identical deviation events; union-bound distinctness is not assumed by the theorem.
 
 Canonical acceptance probe: native Lean compile of fep115_simultaneous_frequency_bound and fep115_frequencyDeviationEvent_membership with the exact finite-count event.
 
@@ -14497,7 +14497,7 @@ Invariant: At positive evidence, posterior odds equal prior odds times the likel
 
 Assumptions: Hypothesis and evidence carriers are finite. Total evidence, the reference prior mass, and the reference likelihood must be strictly positive before forming ordinary real odds. The zero-prior theorem marks lack of posterior support rather than permitting recovery by conditioning.
 
-Non-vacuity: Unequal positive likelihoods move the favored-to-reference odds multiplicatively, while a separate zero-prior hypothesis remains exactly absent from the posterior.
+Non-vacuity: Positive equal favored/reference prior masses and likelihoods3/4 versus1/4 update odds1 to3. A separate zero-prior favored hypothesis remains absent despite unequal positive likelihoods. Reference-prior/reference-likelihood and total-evidence support remain explicit.
 
 Canonical acceptance probe: native Lean compile of fep117_posteriorOdds_recursion and fep117_zero_prior_boundary with all denominator-support premises.
 
@@ -15651,7 +15651,7 @@ Invariant: A smoothed deviation beyond the transferred threshold is contained in
 
 Assumptions: Sample count is positive, success counts are bounded, the target is in the unit interval, and a raw event-probability bound is supplied. The theorem composes with concentration results but does not derive their assumptions or rates itself.
 
-Non-vacuity: The smoothed and raw events are distinct whenever the shrinkage and offset change the threshold, and the finite-law monotonicity result applies to any nonzero failure bound.
+Non-vacuity: For n=2,target=1/2,error=0, a uniform Boolean sampling law with success counts1 and0 gives raw bad-event probability1/2 and an empty smoothed event, because the smoothed deviations are0 and exactly1/4. This is a strict-containment instance. Constant count1 gives both events empty despite distinct thresholds; event distinctness is not required by the theorem.
 
 Canonical acceptance probe: warning-free native Lean compile of fep127_laplaceBadEvent_subset and fep127_laplaceBadEvent_probability_le.
 
@@ -16475,7 +16475,7 @@ Body owner: `src/fep_lean/catalogue/bodies/closed_loop_policy_trees.py`; canonic
 
 Invariant: The one-step full-support expected-free-energy identity lifts through every branch of a finite policy tree, and the corresponding optimal values agree.
 
-Assumptions: Every belief-indexed finite generative model satisfies the maintained FullSupport contract. Belief updates and horizons are finite; the theorem transports the existing risk-plus-ambiguity identity and does not establish its empirical adequacy.
+Assumptions: Every belief-indexed generative model satisfies FullSupport and supplies actual model-derived EFE, risk and ambiguity. The generic update is an arbitrary function and need not be the preceding model's Bayesian posterior. The separate BayesianBeliefModel/update_filtered specialization and its policy-tree/POMDP/risk-ambiguity bridges establish that stronger filtered interpretation under their explicit support premises. All horizons/carriers remain finite; empirical adequacy is not established.
 
 Non-vacuity: The induction ranges over observation-contingent continuations and the optimal-value theorem compares independently constructed minimizing trees.
 
@@ -17538,7 +17538,7 @@ Body owner: `src/fep_lean/catalogue/bodies/exponential_family_geometry.py`; cano
 
 Invariant: The scalar score is the sufficient statistic centered by its family mean and therefore has exactly zero expectation.
 
-Assumptions: The score is defined on the finite full-support exponential family. This is a natural-parameter derivative identity, not a general score-regularity theorem for arbitrary likelihoods.
+Assumptions: The centered score is defined on the finite full-support exponential family. The primary unfolds that definition and the supporting theorem proves zero mean. The existing law_hasDerivAt establishes mass derivative=mass*score, so positivity supports the natural-parameter log-derivative interpretation. This does not establish score regularity for arbitrary likelihoods.
 
 Non-vacuity: A nonconstant statistic yields positive and negative centered scores across outcomes while their normalized weighted mean cancels exactly.
 
@@ -17769,7 +17769,7 @@ Invariant: Positive statistic variance throughout a closed interval makes the na
 
 Assumptions: Variance positivity is an explicit interval premise. The theorem is local to a stated scalar interval and does not assert global dual-flat coordinates or positivity for degenerate statistics.
 
-Non-vacuity: The three-state family supplies a strictly positive variance point, while the constant-statistic boundary shows why the positivity premise matters.
+Non-vacuity: The three-state family has variance2/3 at0, and constant statistics show why positivity is required. A concrete nontrivial interval instance additionally needs variance positivity throughout that interval, derived either from continuity near0 or from full support and a nonconstant statistic; the retained point witness alone is not that interval certificate.
 
 Canonical acceptance probe: warning-free native Lean compile of fep148_meanParameter_strictMono and fep148_meanParameter_injective under the interval variance premise.
 
@@ -18000,7 +18000,7 @@ Body owner: `src/fep_lean/catalogue/bodies/continuous_time_thermodynamics.py`; c
 
 Invariant: The exact two-state transition matrices satisfy the Chapman–Kolmogorov additive semigroup law entrywise.
 
-Assumptions: Both times are nonnegative and rates are strictly positive. Composition is the finite Boolean matrix sum and no path-space or general generator existence theorem is inferred.
+Assumptions: Rates are strictly positive. The entrywise additive matrix identity holds for arbitrary real times; restricting both times to be nonnegative supplies its probability-kernel interpretation. No continuous-path or PDE existence theorem is inferred from this identity.
 
 Non-vacuity: Positive unequal rates and positive times produce nonidentity kernels whose matrix product still equals the transition at summed time.
 
@@ -18428,9 +18428,9 @@ Body owner: `src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py`; ca
 
 Invariant: On a finite policy carrier with fixed precision, the KL-regularized control objective (expected EFE plus inverse-precision KL to the prior) is minimized exactly by the Boltzmann control posterior proportional to prior * exp(-gamma * G); the minimized value is -gamma^-1 log Z, the EFE splits as risk plus ambiguity, and the finite and treewise argmin views agree.
 
-Assumptions: The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise value surface of the policy_tree module.
+Assumptions: The primary Boltzmann-law minimization assumes a normalized finite full-support prior and gamma>0 and minimizes expected supplied real cost plus gamma^-1 KL to the prior over normalized candidate laws. Identifying that cost with model-derived EFE is a separate specialization. Deterministic finite-policy and finite-tree EFE/risk-ambiguity argmin statements are separate declarations. No continuous-action or general planning algorithm is claimed; supported sparse-prior and negative/zero-precision boundaries remain separately scoped foundation results.
 
-Non-vacuity: The finite argmin exists and attains the closed-form Boltzmann value -gamma^-1 log Z for nonempty policy sets.
+Non-vacuity: A full-support finite prior, positive precision and nonconstant finite cost give a nondegenerate Boltzmann probability law attaining the unique KL-regularized objective minimum -gamma^-1 log Z. Separately, a nonempty finite policy carrier has a deterministic EFE argmin and the treewise declarations preserve finite optimal values; that deterministic argmin is not identified with the Boltzmann law or its regularized objective value.
 
 Canonical acceptance probe: warning-free native Lean compile of all nine fep-156 declarations.
 
@@ -18548,11 +18548,11 @@ Primary theorem: `fep_fep157.FEP157.fep157_loop_invariant_surprisal_bound`.
 
 Body owner: `src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py`; canonical namespace `FEP157`.
 
-Invariant: Each closed-loop perception-action step is non-increasing in belief surprisal: the step's KL splits exactly into predictive and posterior parts, prediction contracts the predictive distribution (Dobrushin), and the loop invariant bounds surprisal by its initial value plus accumulated expected free energy; the loop's fixed point is the Boltzmann control posterior and equals the policy posterior of the control-as-inference view.
+Invariant: For one positive-evidence observation, outcome surprisal is bounded by perception VFE, whose exact gap is finite KL from the belief to its filtered posterior; the selected filtered-model policy has EFE equal to risk plus ambiguity under FullSupport. Supporting declarations give the finite observation-averaged posterior-KL chain bound, native predictive KL data processing, a Dobrushin total-variation bound under an explicit coefficient, Bayesian-filter/kernel reconstruction and selected-policy minimization. Flat policy EFE makes the policy posterior equal its prior. No realized-observation monotonicity, accumulated trajectory bound or dynamical fixed-point/convergence theorem is asserted.
 
-Assumptions: The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim.
+Assumptions: Policy, state and outcome carriers are finite; beliefs are normalized laws on the finite state carrier, not an assumed finite space of all beliefs. The primary needs positive observation evidence and FullSupport at the filtered model; finite posterior-KL decomposition additionally needs a positive reference law and full likelihood support. The native predictive DPI is separately stated on discrete measurable carriers. Prediction uses an explicit HasDobrushinBound; strict TV contraction additionally needs a coefficient below one and a nonzero initial distance. The flat-EFE posterior identity is algebraic and is not an iterated-loop fixed-point theorem.
 
-Non-vacuity: The strict step-wise KL decrease holds on the full-likelihood witness kernels, and at the fixed point the loop posterior coincides with the Boltzmann control posterior.
+Non-vacuity: Nonuniform supported beliefs and informative likelihoods can instantiate the exact VFE gap and the observation-averaged KL decomposition. The selected-policy and filter/kernel equalities are actual finite operations. The flat-EFE case yields posterior=prior, an algebraic boundary; these declarations do not supply a strict realized-step surprisal-decrease or dynamical fixed-point witness.
 
 Canonical acceptance probe: warning-free native Lean compile of all thirteen fep-157 declarations.
 
@@ -18686,11 +18686,11 @@ Primary theorem: `fep_fep158.FEP158.fep158_reduction_free_energy_monotone`.
 
 Body owner: `src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py`; canonical namespace `FEP158`.
 
-Invariant: Masking evidence never lowers the model evidence: the reduced model's evidence free energy dominates the full model's, the reduced posterior obeys the multiplicative Bayes-odds law with the evidence weight and reconstructs the full posterior through the evidence ratio, and the Gibbs-certificate excess over the optimizer is exactly the KL divergence to it.
+Invariant: Weights bounded above by one make positive unnormalized masked evidence no greater than full predictive evidence, so its negative-log evidence free energy is no smaller. For a nonnegative mask with positive prior normalizer, the normalized reduced-prior predictive equals maskedEvidence divided by that normalizer; no universal direction relative to full predictive evidence is claimed for this normalized quantity. Supported reduced posteriors obey exact weighted reconstruction and cross-multiplied odds identities. Separately, the Gibbs objective gap to its optimizer equals finite KL, and the fixed-variance Gaussian natural-chart log ratio is explicit.
 
-Assumptions: The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic model-selection claim.
+Assumptions: Parameters and evidence use finite normalized law/kernel carriers. The primary free-energy comparison assumes weight<=1 pointwise and positive masked evidence. Normalized masked-prior/posterior statements additionally require nonnegative weights, positive prior mask normalizer and positive relevant evidence; ordinary log/ratio clauses retain their support assumptions. GibbsCertificate optimizer-gap identities and the fixed-variance Gaussian log Bayes factor are separate statements, with no general asymptotic model-selection or automatic full/reduced evidence monotonicity claim.
 
-Non-vacuity: The masked predictive is bounded by the full evidence, and the reduced posterior reconstructs the full posterior exactly through the evidence ratio.
+Non-vacuity: With prior masses(1/2,1/2), likelihoods(9/10,1/10) and mask(1,0), full evidence is1/2, unnormalized masked evidence9/20, mask normalizer1/2 and normalized reduced-prior evidence9/10. Positive support permits exact posterior reweighting. This exercises both evidence notions without reversing the proved comparison.
 
 Canonical acceptance probe: warning-free native Lean compile of all ten fep-158 declarations.
 
@@ -18801,11 +18801,11 @@ Primary theorem: `fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity`.
 
 Body owner: `src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py`; canonical namespace `FEP159`.
 
-Invariant: The two-state belief information gap is bounded by the entropy-production rate scaled by the relaxation time (gain at most production/decay), the evolved gap contracts to the invariant measure no slower than the relaxation timescale, the one-slice path-space entropy production equals (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved gain after any fixed positive action time vanishes.
+Invariant: For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the retained theorem gives, for each positive tolerance, existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon or Tendsto theorem is not asserted by that declaration.
 
 Assumptions: All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.
 
-Non-vacuity: The bound is attained by the stationary law for the benchmark rates, and the fast-relaxation limit exhibits the vanishing exactly.
+Non-vacuity: At the stationary law the gap and production rate both vanish, providing an equality boundary. A full-support nonstationary belief supplies nonzero deviation and current-affinity production for the positive rates, and the explicit rate-scaling envelope gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations do not separately state the full right-limit quantifier.
 
 Canonical acceptance probe: warning-free native Lean compile of all nine fep-159 declarations.
 
@@ -19335,11 +19335,11 @@ Primary theorem: `fep_fep165.FEP165.fep165_witness_drop_fails`.
 
 Body owner: `src/fep_lean/catalogue/bodies/geometric_mechanics.py`; canonical namespace `FEP165`.
 
-Invariant: For the exact 2-node transport matrix [[0,1],[-1,0]] and gradient (1,0) the candidate current is (0,-1), the discrete divergence of the transport field is (2,-2), the node divergence of the current is (1,-1), and in particular equals 1 at node 0: the unconditional solenoidal drop is false, and neither the orthogonality nor the constant-Q hypothesis is available on this witness.
+Invariant: For the exact two-node skew transport matrix[[0,1],[-1,0]] and gradient(1,0), the node vector Qg is(0,-1), graph node divergence of Q is(2,-2), and graph node divergence of currentOf(Q,g) is(1,-1), hence1 at node0. This refutes an unconditional zero graph-current-divergence claim. No H,DQ or dlogp data are supplied here; the separate fep-163 remainder witness addresses its derivative-data carrier.
 
-Assumptions: A concrete finite counterexample only; it shows the manuscript's honesty guard is necessary rather than decorative and claims nothing about systems satisfying the extra hypotheses of fep-163.
+Assumptions: This is a concrete finite graph counterexample with outflow-minus-inflow node divergence and edge current Qij*g_j. It does not assert that fep-163 orthogonality or spatially constant-Q directional-derivative hypotheses fail: those involve separately supplied DQ data. Identifying graph divergence with analytic or fep-163 weighted derivative divergence would require a separate proved bridge.
 
-Non-vacuity: The witness evaluates to exactly 1 at node 0, refuting the unconditional drop on its exact hypothesis class.
+Non-vacuity: The exact graph witness evaluates nodeDiv(currentOf Q g) at node0 to1 despite plain skew Q. It is nonvacuous for that graph claim. On the derivative-data carrier, the same pointwise Q and g can instead be paired with H=0,DQ=0,dlogp=-g and have weightedDivergence=0; the two divergence notions are not identified.
 
 Canonical acceptance probe: warning-free native Lean compile of all five fep-165 declarations.
 
@@ -19667,69 +19667,69 @@ Boundary theorems: none recorded.
 
 Every edge is retained in authored order and with its original kind, rationale, and witness. `formal` and `formal_pairing` remain distinct; a conceptual edge does not gain a witness through this taxonomy. Capabilities and evidence lists are preserved completely in JSON.
 
-- `fep-002` → `fep-014` (formal): The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule. Witness: `FEPComposed.fep002_vfe_compProd_chain_rule`.
+- `fep-002` → `fep-014` (formal): The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_chain_rule. Witness: `FEPComposed.fep002_vfe_compProd_chain_rule`.
 
-- `fep-003` → `fep-021` (formal): The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance. Witness: `FEPComposed.fep003_pragmaticCost_efe_balance`.
+- `fep-003` → `fep-021` (formal): The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The epistemic balance requires the explicit hvalue premise that information value does not exceed pragmatic cost. Witness: `FEPComposed.fep003_pragmaticCost_efe_balance`.
 
-- `fep-004` → `fep-038` (formal): The composed theorem specializes fep-004's finite positive-weight Fisher metric to the one-coordinate Bernoulli information weight computed by fep-038. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries both endpoints through their Fisher-metric definitions (`fep_fep004.FEP004.fep004_fisherMetric`, `fep_fep038.FEP038.fep038_fisherMetric`) without invoking either topic's reviewed theorems; the row stands unchanged. Witness: `FEPComposed.fep004_bernoulliMetric_specialization`.
+- `fep-004` → `fep-038` (formal): The composed theorem identifies fep-004's Unit-coordinate weighted quadratic form with fep-038's Bernoulli Fisher-metric definition, using fep038_fisherInformation p as the supplied weight. It unfolds both metric definitions rather than invoking endpoint theorems. The identity holds for every real p; positivity as a statistical metric additionally requires 0 < p < 1 and the relevant nonzero-tangent premise. Witness: `FEPComposed.fep004_bernoulliMetric_specialization`.
 
 - `fep-005` → `fep-009` (conceptual): The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge.
 
-- `fep-007` → `fep-028` (formal): With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106). Witness: `FEPComposed.fep007_normalizedMessage_is_fep028_softmax`.
+- `fep-007` → `fep-028` (formal): With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemma: fep_fep007.FEP007.fep007_normalizedMessage_sum_one. Witness: `FEPComposed.fep007_normalizedMessage_is_fep028_softmax`.
 
 - `fep-008` → `fep-028` (conceptual): Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers.
 
-- `fep-011` → `fep-026` (formal): The composed theorem identifies self-information and scalar prior complexity as the same negative-log functional, fixing their shared sign convention. Witness: `FEPComposed.fep026_priorComplexity_is_fep011_surprise`.
+- `fep-011` → `fep-026` (formal): The composed theorem identifies fep_fep026.FEP026.fep026_priorComplexity and fep_fep011.FEP011.fep011_surprise by their identical real negative-log definition. This fixes a sign convention for all real inputs under totalized Real.log; probability interpretation requires its separate domain assumptions. Witness: `FEPComposed.fep026_priorComplexity_is_fep011_surprise`.
 
-- `fep-012` → `fep-028` (formal): The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged. Witness: `FEPComposed.fep012_softmax_entropyRegularizedCost_le`.
+- `fep-012` → `fep-028` (formal): The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep012.FEP012.fep012_entropyRegularizedCost_le_expectedCost, fep_fep028.FEP028.fep028_softmax_le_one, fep_fep028.FEP028.fep028_softmax_nonneg. The proof consumes unit-interval supporting lemmas, not the primary sum-univ theorem; nonempty support and nonnegative temperature are explicit. Witness: `FEPComposed.fep012_softmax_entropyRegularizedCost_le`.
 
 - `fep-013` → `fep-002` (conceptual): Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition.
 
-- `fep-013` → `fep-040` (formal): The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2. Witness: `FEPComposed.fep013_gaussianHelmholtz_derivative`.
+- `fep-013` → `fep-040` (formal): The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2. Actual consumed endpoint lemmas: fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy, fep_fep040.FEP040.fep040_thermalEntropy_hasDerivAt. Witness: `FEPComposed.fep013_gaussianHelmholtz_derivative`.
 
 - `fep-016` → `fep-032` (conceptual): A nonnegative quadratic residual and a scalar descent contraction are complementary local pieces of a quadratic optimization argument.
 
 - `fep-017` → `fep-045` (conceptual): The native posterior-kernel laws provide normalized Bayesian semantics, while fep-045 must still prove closure of a named conjugate family.
 
-- `fep-021` → `fep-041` (formal): The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance. Witness: `FEPComposed.fep021_informationGain_balance`.
+- `fep-021` → `fep-041` (formal): The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The explicit hvalue upper bound on information gain is required; the identity is not an unconditional untruncated EFE decomposition. Witness: `FEPComposed.fep021_informationGain_balance`.
 
-- `fep-022` → `fep-027` (formal): The composed theorem realizes the posterior-predictive kernel as a hierarchical child kernel and identifies its marginal with sequential prediction. Witness: `FEPComposed.fep022_predictive_is_hierarchical_marginal`.
+- `fep-022` → `fep-027` (formal): The composed theorem instantiates fep027_hierarchicalJoint with fep022_posteriorPredictive and proves its child marginal equals likelihood composed with posterior composed with the base measure, using Measure.snd_compProd and Measure.comp_assoc. It assumes an SFinite base measure and SFinite kernels, not normalized posterior or likelihood kernels. Witness: `FEPComposed.fep022_predictive_is_hierarchical_marginal`.
 
-- `fep-024` → `fep-014` (formal): The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law. Witness: `FEPComposed.fep024_regularizer_is_fep014_kl`.
+- `fep-024` → `fep-014` (formal): The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_nonneg. Witness: `FEPComposed.fep024_regularizer_is_fep014_kl`.
 
-- `fep-025` → `fep-049` (formal): The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged. Witness: `FEPComposed.fep025_current_dissipation_nonneg`.
+- `fep-025` → `fep-049` (formal): The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged. Actual consumed endpoint lemma: fep_fep049.FEP049.fep049_entropyProduction_nonneg. Nonnegative resistance is an explicit premise; no physical current conservation or calibrated constitutive law is inferred. Witness: `FEPComposed.fep025_current_dissipation_nonneg`.
 
-- `fep-027` → `fep-019` (formal): The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition. Witness: `FEPComposed.fep027_priorPredictive_is_fep019`.
+- `fep-027` → `fep-019` (formal): The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition. Actual consumed endpoint lemma: fep_fep027.FEP027.fep027_hierarchical_snd. Witness: `FEPComposed.fep027_priorPredictive_is_fep019`.
 
 - `fep-029` → `fep-044` (conceptual): The explicit quadratic Bregman instance and the alpha-divergence proxy are neighboring but mathematically distinct divergence families.
 
-- `fep-029` → `fep-104` (formal): fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106). Witness: `FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance`.
+- `fep-029` → `fep-104` (formal): fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemma: fep_fep104.FEP104.fep104_mirrorDescent_threePoint_identity. Witness: `FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance`.
 
-- `fep-030` → `fep-031` (conceptual): A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem.
+- `fep-030` → `fep-031` (formal_pairing): The full-support binary Gibbs masses of fep031 are exactly energyGibbsLaw, and its finite entropy is exactly the Real.binEntropy carrier used by fep030. At a supplied matched mean energy, this law uniquely maximizes that binary entropy; the witness also retains fep030’s bound/equality characterization on the same normalized candidate law. This is an exact finite carrier identification and constrained specialization, not a derivation of arbitrary Gibbs laws from the binary entropy bound or existence of a temperature for every target mean. Witness: `FEPComposed.fep030_fep031_binary_maxEntropy`.
 
-- `fep-031` → `fep-030` (formal): The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization. Witness: `FEPComposed.fep031_zeroBeta_binary_maxEntropy`.
+- `fep-031` → `fep-030` (formal): The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization. Actual consumed endpoint lemma: fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff. Witness: `FEPComposed.fep031_zeroBeta_binary_maxEntropy`.
 
-- `fep-032` → `fep-043` (formal): The composed theorem identifies a gradient step on fep-043's exact quadratic landscape with fep-032's globally convergent centered update at effective step size 2aη. Witness: `FEPComposed.fep032_update_is_fep043_gradientStep`.
+- `fep-032` → `fep-043` (formal): The composed theorem identifies one gradient step on fep_fep043.FEP043.fep043_quadraticGradient with fep_fep032.FEP032.fep032_quadraticUpdate at effective step 2*a*eta, by unfolding the two definitions and ring algebra. The identity holds for arbitrary real parameters. Convergence is not proved here; invoking fep032_quadraticUpdate_tendsto additionally requires 0 < 2*a*eta and 2*a*eta < 2. Witness: `FEPComposed.fep032_update_is_fep043_gradientStep`.
 
 - `fep-034` → `fep-047` (conceptual): The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.
 
-- `fep-034` → `fep-017` (formal): The composed theorem identifies the transition-observation filter with fep-017's native posterior at the transition-predicted prior. Witness: `FEPComposed.fep034_filter_is_fep017_posterior`.
+- `fep-034` → `fep-017` (formal): The composed theorem identifies fep_fep034.FEP034.fep034_filter definitionally with fep_fep017.FEP017.fep017_posterior at the transition-predicted prior. It retains standard-Borel/nonempty state and finite-measure/finite-kernel assumptions; no new pointwise Bayes identity at null observations is asserted. Witness: `FEPComposed.fep034_filter_is_fep017_posterior`.
 
-- `fep-036` → `fep-045` (formal): The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Witness: `FEPComposed.fep036_empiricalPosterior_closed`.
+- `fep-036` → `fep-045` (formal): The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos, fep_fep045.FEP045.fep045_bernoulli_posterior_closed, fep_fep045.FEP045.fep045_evidence_pos. Positive binary likelihoods and the smoothed count bounds establish nonzero evidence; no asymptotic empirical-rate theorem is consumed. Witness: `FEPComposed.fep036_empiricalPosterior_closed`.
 
-- `fep-037` → `fep-020` (formal): The composed theorem identifies fep-037's autocorrelation mode with the exact deviation mode of fep-020's normalized two-state Markov evolution. Witness: `FEPComposed.fep037_autocorrelation_tracks_fep020`.
+- `fep-037` → `fep-020` (formal): The composed theorem applies fep_fep020.FEP020.fep020_iterate_deviation and unfolds fep037_autocorrelation/fep037_relaxation to identify twice the centered two-state evolution with the unit-variance autocorrelation expression. This is an exact algebraic identity for real alpha; normalized Markov or relaxation semantics require their separate parameter-domain assumptions. Witness: `FEPComposed.fep037_autocorrelation_tracks_fep020`.
 
 - `fep-038` → `fep-018` (formal_pairing): The composed theorem couples fep-038's positive Bernoulli Fisher tangent metric to fep-018's separating Fisher--Rao coordinate distance. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_fisherMetric_pos` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged. Witness: `FEPComposed.fep038_fisherRao_separation`.
 
-- `fep-039` → `fep-005` (formal): The composed theorem aggregates state energies over fep-005's four unique partition fibres and proves that fep-039's local-energy sum conserves total state energy. Witness: `FEPComposed.fep039_partitionEnergy_conservation`.
+- `fep-039` → `fep-005` (formal): The composed theorem unfolds fep039_global_fe, fep005_blockEnergy and fep005_partitionCover and applies Finset.sum_fiberwise: summing the four partition-fibre energies equals the original sum over Fin 20 for arbitrary real state energies. This is finite partition aggregation, not dynamical energy conservation or conditional independence. Witness: `FEPComposed.fep039_partitionEnergy_conservation`.
 
-- `fep-041` → `fep-014` (formal): The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law. Witness: `FEPComposed.fep041_informationGain_is_fep014_kl`.
+- `fep-041` → `fep-014` (formal): The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_eq_zero_iff. Witness: `FEPComposed.fep041_informationGain_is_fep014_kl`.
 
-- `fep-042` → `fep-036` (formal): The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Witness: `FEPComposed.fep036_empiricalPosterior_closed`.
+- `fep-042` → `fep-036` (formal): The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos. The success count enters definitionally; List.count_le_length and the two smoothed-rate supporting lemmas establish interiority, not empirical-rate convergence. Witness: `FEPComposed.fep036_empiricalPosterior_closed`.
 
-- `fep-046` → `fep-045` (formal): A single stick-breaking fraction is the Bernoulli law of fep-045 (allocated weight is the true mass, residual is the false mass), and fep-046's mass-conservation theorem derives the normalization of fep-045's conjugate posterior mass function at the posterior parameter. One break only; no Dirichlet-process or infinite-series claim. Added 2026-10-08 (LEAN-8, issue 106). Witness: `FEPComposed.fep046_single_break_is_fep045_bernoulli`.
+- `fep-046` → `fep-045` (formal): For a single stick fraction chosen as fep045_posteriorParameter, the composed theorem identifies allocated and residual weights with the true and false Bernoulli-mass definitions and uses fep_fep046.FEP046.fep046_mass_conservation to derive their sum-one identity. This algebra holds for arbitrary real inputs; nonnegative probability interpretation additionally needs a posterior in [0,1]. No general Dirichlet-process or infinite-series claim follows. Witness: `FEPComposed.fep046_single_break_is_fep045_bernoulli`.
 
-- `fep-050` → `fep-049` (formal): Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Witness: `FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production`.
+- `fep-050` → `fep-049` (formal): Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem. Witness: `FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production`.
 
 - `fep-051` → `fep-017` (formal_pairing): Radon--Nikodym reconstruction and posterior joint reconstruction are the measure-level reconstruction laws on either side of Bayesian inversion. Witness: `FEPComposed.fep051_rn_reconstruction_refines_fep017`.
 
@@ -19737,7 +19737,7 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-053` → `fep-017` (formal_pairing): Kernel Bayes and fep-017 reconstruct the same swapped joint law, with the new topic keeping the native posterior notation visible. Witness: `FEPComposed.fep053_joint_reconstruction_extends_fep017`.
 
-- `fep-054` → `fep-017` (formal_pairing): Native double Bayesian inversion recovers the original likelihood almost everywhere, while the fep-017 posterior recovers the prior after a Markov likelihood; the pairing keeps these two sides of involution distinct. Witness: `FEPComposed.fep054_involution_of_fep017_posterior`.
+- `fep-054` → `fep-017` (formal_pairing): The witness pairs the Bayesian inversion involution with posterior reconstruction under the stated native assumptions; neither endpoint law is derived from the other. Witness: `FEPComposed.fep054_involution_of_fep017_posterior`.
 
 - `fep-055` → `fep-019` (formal_pairing): Composite Bayesian inversion uses exactly the chronological predictive law identified by fep-019's measure--kernel associativity theorem. Witness: `FEPComposed.fep055_composite_inversion_uses_fep019`.
 
@@ -19749,13 +19749,13 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-059` → `fep-001` (formal_pairing): Equality in the finite Donsker--Varadhan bound and zero native KL each separate the relevant optimizer, with their distinct support regimes visible. Witness: `FEPComposed.fep059_dv_equality_is_fep001_exactness`.
 
-- `fep-060` → `fep-002` (formal): The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound. Witness: `FEPComposed.fep060_coordinate_elbo_refines_fep002`.
+- `fep-060` → `fep-002` (formal): The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound. Actual consumed endpoint lemmas: fep_fep002.FEP002.fep002_elbo_bound, fep_fep060.FEP060.fep060_coordinateELBO_decomposition, fep_fep060.FEP060.fep060_coordinateKL_nonnegative. Finite normalized laws/kernels and strictly positive reference prior/kernel support are explicit; the bound uses the nonnegative conditional-KL remainder. Witness: `FEPComposed.fep060_coordinate_elbo_refines_fep002`.
 
 - `fep-061` → `fep-014` (formal_pairing): Finite mean-field optimality and measure-native KL exactness are recorded together while preserving their intentionally different zero-mass semantics. Witness: `FEPComposed.fep061_meanField_gap_is_fep014_kl`.
 
 - `fep-062` → `fep-035` (formal_pairing): The fixed-sample IWAE inequality and fep-035's strict two-point Jensen law expose respectively the weak and strict finite logarithmic boundaries. Witness: `FEPComposed.fep062_iwae_jensen_uses_fep035`.
 
-- `fep-063` → `fep-014` (formal_pairing): Finite-channel contraction is paired with the native nonnegativity of the pre-channel KL quantity; no unsupported finite-to-measure identification is introduced. Witness: `FEPComposed.fep063_channel_dpi_bounds_fep014`.
+- `fep-063` → `fep-014` (formal_pairing): The witness pairs finite channel KL contraction with native KL nonnegativity for separately supplied measures; no finite/native identification is proved. Witness: `FEPComposed.fep063_channel_dpi_bounds_fep014`.
 
 - `fep-064` → `fep-041` (formal_pairing): Rate--distortion weak duality is accompanied by the measure-native nonnegativity law for the mutual-information ingredient's KL semantics. Witness: `FEPComposed.fep064_rateDistortion_uses_fep041_mutualInformation`.
 
@@ -19813,7 +19813,7 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-091` → `fep-016` (formal_pairing): Precision modulation is monotone in the predictive energy and specializes fep-016's nonnegative weighted quadratic at the lower precision. Witness: `FEPComposed.fep091_precision_modulation_refines_fep016`.
 
-- `fep-092` → `fep-032` (formal_pairing): On the shared stability interval, predictive error tends to zero and the equivalent centered quadratic iteration from fep-032 tends to its target. Witness: `FEPComposed.fep092_quadratic_convergence_specializes_fep032`.
+- `fep-092` → `fep-032` (formal_pairing): The witness pairs separately proved convergence statements; it does not identify their update maps or establish equivalence of iterations. Witness: `FEPComposed.fep092_quadratic_convergence_specializes_fep032`.
 
 - `fep-093` → `fep-010` (formal_pairing): The supported forward/reverse ratio reconstructs path mass, while the identity kernel supplies the original catalogue's concrete reversibility witness on an arbitrary measure carrier. Witness: `FEPComposed.fep093_path_ratio_extends_fep010_reversal`.
 
@@ -19859,9 +19859,9 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-114` → `fep-036` (formal_pairing): The finite-sample sub-Gaussian tail certificate is paired with the original strict positivity of a Laplace-smoothed empirical rate. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_pos` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Witness: `FEPComposed.fep114_subgaussian_tail_refines_fep036_empirical_rate`.
 
-- `fep-115` → `fep-042` (formal_pairing): The simultaneous finite-alphabet frequency bound is paired with the original exact Bernoulli likelihood factorization through finite counts. Witness: `FEPComposed.fep115_frequency_union_bound_extends_fep042_counts`.
+- `fep-115` → `fep-042` (formal_pairing): The witness pairs the finite event union bound with Bernoulli count-likelihood factorization; neither conjunct is derived from the other. Witness: `FEPComposed.fep115_frequency_union_bound_extends_fep042_counts`.
 
-- `fep-116` → `fep-001` (formal_pairing): The finite posterior loss-gap bound, conditional on a certified log-MGF budget, is paired with fep-001's measure-native variational upper bound without equating finite real KL and native extended KL. Witness: `FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound`.
+- `fep-116` → `fep-001` (formal_pairing): The witness pairs a finite PAC-Bayes bound with an independent native variational-bound instance; the latter is not a consequence of the former. Witness: `FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound`.
 
 - `fep-117` → `fep-017` (formal_pairing): Finite posterior odds obey Bayes multiplication, while the measure-native fep-017 posterior reconstructs its complete swapped joint law. Witness: `FEPComposed.fep117_posterior_odds_extends_fep017_bayes`.
 
@@ -19973,16 +19973,16 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 
 | Source | SHA-256 |
 | --- | --- |
-| `__init__.py` | `30c91435dec20f793171b3ffc79a95d2affc3b8419968f98546329483b4f7b91` |
+| `__init__.py` | `b722a174c3331217ce1d32b16367245f3c1b9ccdb8fe3101e4df6185391ada56` |
 | `catalogue/bodies/causal_blankets_interventions.py` | `392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99` |
 | `catalogue/bodies/closed_loop_policy_trees.py` | `66e4396290f1128c0f35b5b9211469a426ebaf4d0e13790467c431251c17780b` |
 | `catalogue/bodies/collective_inference.py` | `fa0b3a94bb49d43a310da37c324e5452f44141cc009c44d487b9ebef78690e80` |
 | `catalogue/bodies/continuous_time_thermodynamics.py` | `d233e8e33bcdb3f7ece4c7af61707a27a339039ddc560340ede0818c616e2959` |
 | `catalogue/bodies/controlled_markov.py` | `0717b3e72f966d93767cc1f359c4b0f6608714b849306bbe3e67c0248a5445e0` |
 | `catalogue/bodies/core_active_inference.py` | `9efae270dc2516b16ccf20572a0964980e5e41fe254fab111ab52fc99d133e99` |
-| `catalogue/bodies/core_bayesian_mechanics.py` | `0e200577408bfd817161b4622c11bd156f2d7516414eed9e8f99390171f2d88a` |
+| `catalogue/bodies/core_bayesian_mechanics.py` | `7b5f11269989240e4903956bb76ccecda9c5dd620ede02dd164b2903f5996c57` |
 | `catalogue/bodies/core_free_energy.py` | `060486982f126bbfb515272530574702ee33eec897eaf85bd65411eeefb0938c` |
-| `catalogue/bodies/core_information_geometry.py` | `0b6c247455728d498ddf68e606296e8546c6b7f9b0de330e4cab94605dace783` |
+| `catalogue/bodies/core_information_geometry.py` | `b848e656aa42a8dc85a36efa483c3d617ae72a8b857c69a4740d05460e18cd36` |
 | `catalogue/bodies/core_thermodynamics.py` | `937e6de554759c9e3c5fe0090d605f64a0181eb0e636c4af6ffd35d4a249f2f4` |
 | `catalogue/bodies/exponential_family_geometry.py` | `a3c02b9733044f0f1ae3b289bd9ff955de19f0d4acb114044bc4825c1dce4708` |
 | `catalogue/bodies/finite_sample_risk_calibration.py` | `332880b4c4ed76ba1c7660b819e88bcd5ed0f0d1cd9b9f24f1c73780b9351e42` |
@@ -20012,7 +20012,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/collective_learning.lean` | `a7eaa3e827a2996a398c4ff827dfddef641f1f084be38e0a0fcd8dc378c0f8d1` |
 | `formal/compositions/continuous_time.lean` | `bc88c44e1603d9ce859fcf9704ce4e745ffc1ae5904fb8485aa859c6ec0a56bb` |
 | `formal/compositions/control_temporal.lean` | `f9a0a2bf4e80d8d5981b129d6bddce1b5c2f170a4e294efa0d7e72e3bd322943` |
-| `formal/compositions/core.lean` | `3461b456ffd598281f0c7881bd06e121db038b9f3753f99549d6dba90459326f` |
+| `formal/compositions/core.lean` | `0e178e79b5f9c90c16cdaa3cf6744677e22aea9902f5a5c2a8fea45bb8bf1446` |
 | `formal/compositions/efe_policy_selection.lean` | `d543a4e0bf779d2dfe10976b573cbba17d45ee1fe234ebfceec788fa5877d9cc` |
 | `formal/compositions/efe_time_scale_separation.lean` | `deaf0ae9abf3ad40c53304c186e354c8ee0855380be862c71466fa7112cb4066` |
 | `formal/compositions/exponential_family.lean` | `8726c522ebec4d0417c3caab742f8f8f60e14e285e94fbd637037200fee48c62` |
@@ -20077,9 +20077,9 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/temporal_inference.lean` | `25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b` |
 | `formal/variational_duality.lean` | `b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
-| `inputs/formalism_relations.yaml` | `8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d` |
+| `inputs/formalism_relations.yaml` | `4be4d4e572bdcd62a55420279bcd8a8ff503d22a8375fc3fcf64b130b5e315c7` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
-| `inputs/theorem_maturity.yaml` | `7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded` |
+| `inputs/theorem_maturity.yaml` | `554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383` |
 | `lean_source.py` | `0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104` |
 | `methods/__init__.py` | `7246bb68d195e00200fef71eec65bf91f538e1a673e6f4b4ff86ddbdcb121d72` |
 | `methods/model.py` | `e95371643dc94823982cccbbc82663893c456c987b3096d41248c90de45d459e` |

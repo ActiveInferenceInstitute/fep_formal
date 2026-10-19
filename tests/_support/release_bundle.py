@@ -125,7 +125,7 @@ def _valid_contents(payload: dict[str, bytes]) -> dict[str, bytes]:
             "last_id": "fep-168",
         },
         "formalism": {
-            "relations": 146,
+            "relations": 150,
             "capabilities": 50,
             "formal_modules": 1,
             "numerical_witnesses": 22,
