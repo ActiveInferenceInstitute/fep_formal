@@ -64,12 +64,15 @@ The authored semantic graph contains **{{formalism.metrics.authored_relation_edg
 
 Hermes commentary is optional and has no bearing on native Lean acceptance. Manuscript Hermes metrics are exposed only from an independently validated, claim-ready full report. At render time, full-run claim readiness is `{{full.claim_ready}}`.
 
+<!-- Keep optional string cells out of code spans: empty backtick pairs can
+consume intervening table rows in Pandoc. -->
+
 | Full-run field | Value |
 | --- | --- |
-| Report run ID | `{{hermes.run_id}}` |
+| Report run ID | {{hermes.run_id}} |
 | Processed topics | {{hermes.processed}} |
 | Successful Hermes calls | {{hermes.success_count}} |
-| Primary model | `{{hermes.primary_model}}` |
+| Primary model | {{hermes.primary_model}} |
 | Models used | {{hermes.models_used}} |
 | Model-chain advances | {{hermes.model_fallback_count}} |
 | Same-model network retries | {{hermes.network_retry_count}} |

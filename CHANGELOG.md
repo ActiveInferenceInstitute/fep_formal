@@ -1,5 +1,10 @@
 ## Unreleased
 
+- Preserve all ten Hermes metric-table rows when full-run identifiers are
+  unavailable. Keep the two optional string cells out of inline code spans,
+  whose empty delimiters otherwise consume intervening rows in Pandoc.
+  Typed variables, unavailable-evidence states and numerical values are unchanged.
+
 - Recognize the embedded Lean version in the actual Lake banner. A healthy
   Lake 5.0 / Lean 4.35 toolchain no longer reports unavailable because its
   banner was parsed as compiler output. Require the exact pinned version and
