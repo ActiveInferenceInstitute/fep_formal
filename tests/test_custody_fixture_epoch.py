@@ -15,6 +15,7 @@ from tests._support import custody_fixture_knobs as fixtures
 from tests._support import h2_r0_custody as current_r0
 from tests._support.lean435_migration import (
     bridge_dev_lock_predecessor,
+    function_ratchet_metadata_predecessor,
     historical_manifest_bytes,
     historical_metadata_bytes,
 )
@@ -173,4 +174,43 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
         ValueError, match="current validator/diagnostic source mismatch"
     ):
         acceptance.validate_terminal_acceptance(REPO_ROOT)
+    assert before == _production_snapshot()
+
+
+@pytest.mark.parametrize("tamper", ("none", "append", "ceiling", "exception", "rule"))
+def test_function_ratchet_metadata_reversal_authenticates_complete_profile(
+    tamper: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from tests._support import lean435_migration as migration
+
+    before = _production_snapshot()
+    live = (REPO_ROOT / "pyproject.toml").read_bytes()
+    predecessor = function_ratchet_metadata_predecessor(live)
+    assert hashlib.sha256(predecessor).hexdigest() == (
+        "734fc9d2bf373242030d38f16bd64439c752ce3f59f5319f83ddec8c5c696705"
+    )
+    if tamper == "none":
+        assert function_ratchet_metadata_predecessor(predecessor) == predecessor
+        assert historical_metadata_bytes(REPO_ROOT, live) == historical_metadata_bytes(
+            REPO_ROOT, predecessor
+        )
+    else:
+        changed = {
+            "append": live + b"\n# unreviewed metadata\n",
+            "ceiling": live.replace(b"max-statements = 100", b"max-statements = 101"),
+            "exception": live + b'"tests/extra.py" = ["PLR0915"]\n',
+            "rule": live.replace(
+                b'    "PLR0915", # statement complexity;',
+                b'    "PLR0914", # statement complexity;',
+            ),
+        }[tamper]
+        assert changed != live
+        assert function_ratchet_metadata_predecessor(changed) == changed
+
+        def forbidden_parse(*args: object, **kwargs: object) -> None:
+            pytest.fail("unknown metadata must fail before companion parsing")
+
+        monkeypatch.setattr(migration.json, "loads", forbidden_parse)
+        with pytest.raises(AssertionError, match="unreviewed normalized metadata"):
+            historical_metadata_bytes(REPO_ROOT, changed)
     assert before == _production_snapshot()
