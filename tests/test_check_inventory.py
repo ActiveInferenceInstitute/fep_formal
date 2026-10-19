@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import json
 import re
 import shlex
@@ -455,3 +456,132 @@ def test_repository_lint_rejects_an_active_spec_unused_import(
     assert findings[0]["code"] == "F401"
     assert Path(findings[0]["filename"]) == active
     assert {path: path.read_bytes() for path in protected} == before
+
+
+# Existing debt only. Ruff's per-file escape hatch is narrowed here to these
+# exact functions and ceilings; additions, renamed exceptions and growth fail.
+_STATEMENT_DEBT = {
+    ("specs/h3-reference-study/bundle_study.py", "reproduce"): 141,
+    ("specs/h3-reference-study/export_native.py", "export_native"): 114,
+    ("src/fep_lean/catalogue/latex.py", "_convert_lean_expr"): 114,
+    ("src/fep_lean/output/evidence.py", "validate_native_lean_receipt"): 131,
+    (
+        "src/fep_lean/output/release_bundle/_acceptance.py",
+        "_pytest_receipt_errors",
+    ): 111,
+    (
+        "src/fep_lean/output/release_bundle/_identity.py",
+        "_license_metadata_errors",
+    ): 137,
+    ("src/fep_lean/output/reporter.py", "_validate_full_completion"): 146,
+    ("src/fep_lean/verification/_subprocess.py", "_Broker.run"): 168,
+    (
+        "src/fep_lean/verification/formalism_audit.py",
+        "validate_formalism_audit_receipt",
+    ): 118,
+    ("tests/test_distribution.py", "_exercise_render_artifact_staging"): 247,
+    (
+        "tests/test_distribution_supplemental.py",
+        "_exercise_render_artifact_staging",
+    ): 247,
+    (
+        "tests/test_h3_reference_study.py",
+        "test_export_attempt_retains_real_child_failure_and_rejects_source_race",
+    ): 166,
+    (
+        "tests/test_h3_study_bundle.py",
+        "test_reproduction_parent_snapshots_and_final_seal_fail_closed",
+    ): 114,
+}
+_FUNCTION_SPAN_OWNERS = (
+    "catalogue/coverage.py",
+    "gauss/runner.py",
+    "output/formal_kernel_dashboard.py",
+    "output/release_bundle/_browser.py",
+    "output/release_bundle/_core.py",
+    "output/release_bundle/_validate.py",
+    "verification/numerical_witnesses.py",
+)
+
+
+def test_refactored_function_spans_remain_bounded() -> None:
+    violations = []
+    for owner in _FUNCTION_SPAN_OWNERS:
+        tree = ast.parse((PROJECT_ROOT / "src/fep_lean" / owner).read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                assert node.end_lineno is not None
+                span = node.end_lineno - node.lineno + 1
+                if span > 200:
+                    violations.append((owner, node.name, span))
+    assert not violations, violations
+
+
+def _qualified_function_names(tree: ast.AST) -> dict[int, str]:
+    names: dict[int, str] = {}
+
+    def visit(node: ast.AST, parents: tuple[str, ...]) -> None:
+        if isinstance(node, (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+            parents = (*parents, node.name)
+            if not isinstance(node, ast.ClassDef):
+                names[node.lineno] = ".".join(parents)
+        for child in ast.iter_child_nodes(node):
+            visit(child, parents)
+
+    visit(tree, ())
+    return names
+
+
+def test_statement_debt_names_distinguish_unrelated_methods() -> None:
+    tree = ast.parse(
+        "def retained(): pass\nclass Unrelated:\n    def retained(self): pass\n"
+    )
+    assert _qualified_function_names(tree) == {
+        1: "retained",
+        3: "Unrelated.retained",
+    }
+
+
+def test_statement_exceptions_cannot_expand() -> None:
+    config = (PROJECT_ROOT / "pyproject.toml").read_text()
+    exceptions = re.findall(r'^"([^"\n]+)" = \["PLR0915"\]$', config, re.MULTILINE)
+    assert set(exceptions) == {owner for owner, _name in _STATEMENT_DEBT}
+    assert config.count('"PLR0915"') == len(exceptions) + 1
+    assert "max-statements = 100" in config
+    # Isolated lint deliberately bypasses the configured per-file ignores.
+    command = [
+        sys.executable,
+        "-I",
+        "-B",
+        "-m",
+        "ruff",
+        "check",
+        "--isolated",
+        "--select",
+        "PLR0915",
+        "--config",
+        "lint.pylint.max-statements=100",
+        "--output-format",
+        "json",
+        *sorted({owner for owner, _name in _STATEMENT_DEBT}),
+    ]
+    result = subprocess.run(
+        command,
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
+    assert result.returncode in (0, 1), result.stdout + result.stderr
+    for finding in json.loads(result.stdout):
+        path = Path(finding["filename"])
+        owner = path.relative_to(PROJECT_ROOT).as_posix()
+        names = _qualified_function_names(ast.parse(path.read_text()))
+        name = names.get(finding["location"]["row"])
+        assert name is not None, finding
+        key = (owner, name)
+        count = re.search(r"\((\d+) >", finding["message"])
+        assert count is not None, finding
+        assert key in _STATEMENT_DEBT, key
+        assert int(count[1]) <= _STATEMENT_DEBT[key], finding

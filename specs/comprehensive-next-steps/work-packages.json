@@ -1442,7 +1442,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/111"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "An FEP-independent measure-level Donsker-Varadhan inequality is derived with explicit integrability/support assumptions.",
       "depends_on": [],
       "single_owner": "Existing variational_duality.lean and exponential_family.lean; FEP-independent candidates remain slice-local until ownership review.",
@@ -1463,7 +1463,18 @@
         "upstream feasibility"
       ],
       "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
-      "out_of_scope": "Assumed equality, automatic exponential-family or empirical extrapolation, or upstream submission without a maintainer decision."
+      "out_of_scope": "Assumed equality, automatic exponential-family or empirical extrapolation, or upstream submission without a maintainer decision.",
+      "acceptance": {
+        "receipt": "native-entropy-acceptance-20261019.json",
+        "checks": [
+          "Exact authored block compiles with Mathlib-only imports and no FEP types.",
+          "Nonconstant attained tilt, clipped-equality counterexample and singular extended-KL controls compile.",
+          "Actual stdout retains all three standard-axiom reports; returncode zero and no compiler warning/error.",
+          "Independent component Lean/domain/skeptical source review supports the bounded acceptance."
+        ],
+        "boundary": "Measure-level entropy/CGF component only. No terminal horizon human quorum, scientific promotion, score/Fisher acceptance or upstream submission approval. Reviewer inspected retained actual evidence without executing Lean or independently downloading artifacts.",
+        "integration_condition": "Review the acceptance documentation and publish normally before closing Issue111; preserve all broader research/production gates."
+      }
     },
     {
       "id": "G02",
@@ -1650,7 +1661,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/122"
       ],
-      "status": "planned",
+      "status": "in_progress",
       "outcome": "The largest functions are split in place with preserved outputs and an enforceable complexity ratchet.",
       "depends_on": [],
       "single_owner": "Existing package functions and pyproject.toml Ruff configuration; file ownership is unchanged.",

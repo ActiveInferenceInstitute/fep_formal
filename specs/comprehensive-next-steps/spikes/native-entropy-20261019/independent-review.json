@@ -1,0 +1,24 @@
+{
+  "base": "2b0654713fc128940d109ddfd89c08696e9876f1",
+  "issue": 111,
+  "work_package": "L06",
+  "decision": "component_acceptance_supported",
+  "findings": [],
+  "bindings": {
+    "source": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "L06_MATHLIB_ONLY_block": "c40870732bf724346cb50da7b00fdc2575c2d55239218dd0d07899039cbaa1f2",
+    "consumer": "df3fffdc6eeefd85364a2a54a6afed7140420d9132289f95993fbf99cbcc6de4",
+    "hosted_log": "495c95ec04d53ba4462fac118f86e2a9ebd21104d4a705790f58ff232aa3eb48"
+  },
+  "review_lenses": [
+    "Lean source and dependencies",
+    "mathematical assumptions and orientation",
+    "skeptical stronger-reading and negative-control review"
+  ],
+  "boundary": "Independent component review only; no terminal horizon quorum, human approval, upstream submission, score/Fisher or universal FEP acceptance.",
+  "limitations": [
+    "No Lean/subprocess tests or subject code executed by reviewer.",
+    "Inspected retained hosted log; did not independently download or rerun hosted job.",
+    "Issue remains open and current delivery prose/status needs a separate reviewed update before closure."
+  ]
+}

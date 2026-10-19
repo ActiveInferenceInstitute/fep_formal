@@ -117,7 +117,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [LEAN-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105) — Obligation records for conceptual relations | Minor | Independent | A schema test requires `blocked_by` on every conceptual edge; at least one converted to a pairing (034↔047 via FORM-S10 or 016↔032). |
 | [LEAN-9](https://github.com/ActiveInferenceInstitute/fep_formal/issues/107) — Numerical witnesses for the core families | Medium | [CORE-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74) | At least 22 catalogue witnesses; dashboard `--check` and witness tests pass. |
 | [LEAN-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110) — Move the finite KL bridge beside finiteKL and prepare a Mathlib PR | Medium | Independent | Bridge lemma compiles with only Mathlib imports and no FEP namespace; upstream draft prepared after checking current Mathlib. |
-| [LEAN-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/111) — Upstream candidates: Donsker–Varadhan and exponential-family score facts | Medium | Independent | A measure-level Donsker–Varadhan inequality proved without FEP types. |
 
 ### Package infrastructure
 

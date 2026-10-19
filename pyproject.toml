@@ -103,6 +103,7 @@ extend-select = [
     "I",     # isort (import sorting; I001 fixed 2026-08-18)
     "UP",    # pyupgrade (incl. UP035/UP037 fixed 2026-08-18)
     "SIM",   # flake8-simplify (incl. SIM105/SIM201 fixed 2026-08-18)
+    "PLR0915", # statement complexity; source-line spans have a separate ratchet
 ]
 ignore = [
     "RUF001",  # Ambiguous unicode chars in strings — intentional Lean math notation
@@ -112,3 +113,25 @@ ignore = [
                # exception to produce a structured result rather than crash.
     "EXE001",  # Shebang-not-executable — scripts are imported, not directly execed.
 ]
+
+# A statement is not a source line. Keep a 100-statement ceiling for active
+# Python and separately enforce the issue's 200-line limit in the seven
+# refactored owners. Existing exceptions below are bounded by function name
+# and statement count in test_check_inventory.py; new or larger exceptions fail.
+[tool.ruff.lint.pylint]
+max-statements = 100
+
+[tool.ruff.lint.per-file-ignores]
+"specs/h3-reference-study/bundle_study.py" = ["PLR0915"]
+"specs/h3-reference-study/export_native.py" = ["PLR0915"]
+"src/fep_lean/catalogue/latex.py" = ["PLR0915"]
+"src/fep_lean/output/evidence.py" = ["PLR0915"]
+"src/fep_lean/output/release_bundle/_acceptance.py" = ["PLR0915"]
+"src/fep_lean/output/release_bundle/_identity.py" = ["PLR0915"]
+"src/fep_lean/output/reporter.py" = ["PLR0915"]
+"src/fep_lean/verification/_subprocess.py" = ["PLR0915"]
+"src/fep_lean/verification/formalism_audit.py" = ["PLR0915"]
+"tests/test_distribution.py" = ["PLR0915"]
+"tests/test_distribution_supplemental.py" = ["PLR0915"]
+"tests/test_h3_reference_study.py" = ["PLR0915"]
+"tests/test_h3_study_bundle.py" = ["PLR0915"]

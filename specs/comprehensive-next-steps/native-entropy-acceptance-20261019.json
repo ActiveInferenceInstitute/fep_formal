@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "kind": "native-entropy-component-acceptance",
+  "issue": 111,
+  "package": "L06",
+  "source_commit": "d0624caf6a07e491c9166d2fbe6e0fb2624ef08a",
+  "same_source_on_main": "2b0654713fc128940d109ddfd89c08696e9876f1",
+  "workflow": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39270308107",
+  "test": "tests/test_measure_variational_formalisms.py::test_native_entropy_mathlib_only_consumers_compile",
+  "canonical_source": "src/fep_lean/formal/variational_duality.lean",
+  "bindings": {
+    "source": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "L06_MATHLIB_ONLY_block": "c40870732bf724346cb50da7b00fdc2575c2d55239218dd0d07899039cbaa1f2",
+    "consumer": "df3fffdc6eeefd85364a2a54a6afed7140420d9132289f95993fbf99cbcc6de4",
+    "hosted_log": "495c95ec04d53ba4462fac118f86e2a9ebd21104d4a705790f58ff232aa3eb48"
+  },
+  "retained_actual_upload": "spikes/native-entropy-20261019/hosted-consumer.json",
+  "original_artifact_member": "native-formal-evidence/native-entropy-consumer.log",
+  "review": "spikes/native-entropy-20261019/independent-review.json",
+  "checks": [
+    "Exact authored block compiles with Mathlib-only imports and no FEP types.",
+    "Nonconstant attained tilt, clipped-equality counterexample and singular extended-KL controls compile.",
+    "Actual stdout retains all three standard-axiom reports; returncode zero and no compiler warning/error.",
+    "Independent component Lean/domain/skeptical source review supports the bounded acceptance."
+  ],
+  "boundary": "Measure-level entropy/CGF component only. No terminal horizon human quorum, scientific promotion, score/Fisher acceptance or upstream submission approval. Reviewer inspected retained actual evidence without executing Lean or independently downloading artifacts."
+}
