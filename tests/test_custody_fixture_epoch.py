@@ -14,6 +14,7 @@ from fep_lean.verification import horizon_acceptance as acceptance
 from tests._support import custody_fixture_knobs as fixtures
 from tests._support import h2_r0_custody as current_r0
 from tests._support.lean435_migration import (
+    bridge_dev_lock_predecessor,
     historical_manifest_bytes,
     historical_metadata_bytes,
 )
@@ -157,6 +158,15 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
     metadata.write_bytes(historical_metadata_bytes(REPO_ROOT, metadata.read_bytes()))
     recorded_digest = addendum["source_sha256"]["pyproject.toml"]
     assert hashlib.sha256(metadata.read_bytes()).hexdigest() == recorded_digest
+    # The new locked dev parser is also real source drift; authenticate and
+    # reverse only that exact delta in this disposable historical control.
+    with pytest.raises(
+        ValueError,
+        match="release metadata has unlisted changes beyond the root version: uv.lock",
+    ):
+        current_r0.validate_h2_r0_custody(recorded_root)
+    lock = recorded_root / "uv.lock"
+    lock.write_bytes(bridge_dev_lock_predecessor(lock.read_bytes()))
     with pytest.raises(ValueError, match="stale historical custody source digest"):
         current_r0.validate_h2_r0_custody(recorded_root)
     with pytest.raises(

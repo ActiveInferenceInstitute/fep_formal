@@ -1,12 +1,12 @@
 {
   "fep_lean": {
-    "commit": "cae6293cf33405903ba96ebf2292ca9767a91fd3",
+    "commit": "d5f09e1fc115837967532b98110912f0d7fc1634",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
       "lean/lakefile.lean": "7d6f59fa176297445f47fe29397cbfa0880fd2993fbe49991997a4e2f071bb3a",
       "lean/lean-toolchain": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c",
-      "pyproject.toml": "7b3109accc06616e9cb2fffe50babbe4216ddfc9a8bc154a0a0be09376084e2c",
+      "pyproject.toml": "734fc9d2bf373242030d38f16bd64439c752ce3f59f5319f83ddec8c5c696705",
       "specs/gnn-bridge-p1-finite-spike/projection.py": "fbfc63d13d38a319bc8c54b4969a2fbb7c96b5bae4f2d2c80facc5cfe35a527b",
       "specs/gnn-bridge-p4b-continuous-emission/projection_continuous.py": "70d29ff7ff68df98d4fb327fcd92383b8167602e563b0d5d766f35cc9aa5b1ea",
       "src/fep_lean/__init__.py": "30c91435dec20f793171b3ffc79a95d2affc3b8419968f98546329483b4f7b91",
@@ -198,11 +198,11 @@
       "src/fep_lean/verification/lean_verifier.py": "9779513aeb49734c1de299e2a116420c990982924b5698fcdbb62a51b2408067",
       "src/fep_lean/verification/numerical_witnesses.py": "3c1d1a498835e76ded2304c1c6c83a01f34f3e28ccd667963bc3d7b8963be12b",
       "src/fep_lean/verification/preflight.py": "2b80ab8cefa2f93d7648f2b3d607fda18591d2b0294ffffea1cd45ad51441ebc",
-      "uv.lock": "a63b4f59ad21b2f8376fd6faeea5f94f4266988e58dee86bcad490f887e52b88"
+      "uv.lock": "b8c54ac9d66c570bdd3c8e50f10234ac785dc078bcfa5e52c9749161ab82e252"
     }
   },
   "gnn": {
-    "commit": "be80431c471a3dd30fc93d690069a588b979ab26",
+    "commit": "9a94853e9fceb568dea3b91d11336c4ede6dcf7b",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",

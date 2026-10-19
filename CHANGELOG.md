@@ -1,5 +1,12 @@
 ## Unreleased
 
+- Declare the safe XML parser required by the real-GNN bridge tests in the
+  development profile, matching the named GNN owner's dependency contract.
+  Prefer the current GNN checkout name while retaining the legacy layout.
+  Preserve core runtime dependencies, test membership and all Lean bodies.
+  Authenticate the exact dependency-only metadata predecessor for historical
+  controls, and make the counting review fixture obey prose-only requests.
+
 - Preserve all ten Hermes metric-table rows when full-run identifiers are
   unavailable. Keep the two optional string cells out of inline code spans,
   whose empty delimiters otherwise consume intervening rows in Pandoc.

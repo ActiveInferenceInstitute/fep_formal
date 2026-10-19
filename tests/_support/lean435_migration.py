@@ -312,6 +312,64 @@ def _recorded_pyproject_release(data: bytes) -> bytes:
     return data.replace(present[0], recorded, 1)
 
 
+def bridge_dev_metadata_predecessor(live: bytes) -> bytes:
+    """Reverse only the exact reviewed safe-XML dev dependency addition.
+
+    Release normalization remains the existing enumerated policy. Unknown
+    metadata changes survive and fail the unchanged historical profile gate;
+    neither archives nor production validators are changed.
+    """
+    if live.count(_UV_REQUIREMENT) != 1:
+        return live
+    normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
+    if hashlib.sha256(normalized).hexdigest() != (
+        "bb9aec5b3afcdb31a0aea57cc220a178bb20824d633e5ac9e5f69fc2c296dc9a"
+    ):
+        return live
+    addition = b'    "defusedxml>=0.7.1",\n'
+    assert live.count(addition) == 1
+    predecessor = live.replace(addition, b"", 1)
+    restored = _recorded_pyproject_release(predecessor.replace(_UV_REQUIREMENT, b"", 1))
+    assert hashlib.sha256(restored).hexdigest() == _P08_P09_NORMALIZED_METADATA_SHA256
+    return predecessor
+
+
+def bridge_dev_lock_predecessor(live: bytes) -> bytes:
+    """Reverse the exact locked safe-XML addition for historical controls only."""
+    from tests._support.release_lineage import LATER_RELEASE_VERSIONS
+
+    anchor = b'[[package]]\nname = "fep-lean"\nversion = '
+    current = anchor + b'"1.6.0"\n'
+    tokens = [
+        anchor + f'"{version}"\n'.encode()
+        for version in ("1.4.0", *LATER_RELEASE_VERSIONS)
+    ]
+    present = [token for token in tokens if token in live]
+    if len(present) != 1 or live.count(present[0]) != 1:
+        return live
+    normalized = live.replace(present[0], current, 1)
+    if (
+        hashlib.sha256(normalized).hexdigest()
+        != "b8c54ac9d66c570bdd3c8e50f10234ac785dc078bcfa5e52c9749161ab82e252"
+    ):
+        return live
+    start = normalized.index(b'[[package]]\nname = "defusedxml"\n')
+    end = normalized.index(b"[[package]]\n", start + 1)
+    package = normalized[start:end]
+    dependency = b'    { name = "defusedxml" },\n'
+    requirement = b'    { name = "defusedxml", marker = "extra == \'dev\'", specifier = ">=0.7.1" },\n'
+    for addition in (package, dependency, requirement):
+        assert normalized.count(addition) == 1
+        normalized = normalized.replace(addition, b"", 1)
+    assert normalized.count(b"revision = 5\n") == 1
+    normalized = normalized.replace(b"revision = 5\n", b"revision = 3\n", 1)
+    assert (
+        hashlib.sha256(normalized).hexdigest()
+        == "a63b4f59ad21b2f8376fd6faeea5f94f4266988e58dee86bcad490f887e52b88"
+    )
+    return normalized.replace(current, present[0], 1)
+
+
 def _authenticated_metadata_archive(project_root: Path, live: bytes) -> bytes:
     """Authenticate the live metadata profile and raw companion without decoding.
 
@@ -319,7 +377,9 @@ def _authenticated_metadata_archive(project_root: Path, live: bytes) -> bytes:
     metadata input cannot cause any other archived source to be decoded.
     """
     assert live.count(_UV_REQUIREMENT) == 1, "unreviewed uv requirement: pyproject.toml"
-    normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
+    normalized = _recorded_pyproject_release(
+        bridge_dev_metadata_predecessor(live).replace(_UV_REQUIREMENT, b"", 1)
+    )
     assert hashlib.sha256(normalized).hexdigest() in {
         _RECORDED_METADATA_SHA256,
         _T01_NORMALIZED_METADATA_SHA256,
@@ -492,6 +552,7 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
         else:
             data = (project_root / relative).read_bytes()
             if relative == "uv.lock":
+                data = bridge_dev_lock_predecessor(data)
                 current = b'[[package]]\nname = "fep-lean"\nversion = "1.6.0"\n'
                 historical = current.replace(b'"1.6.0"', b'"1.4.0"')
                 assert data.count(current) == 1

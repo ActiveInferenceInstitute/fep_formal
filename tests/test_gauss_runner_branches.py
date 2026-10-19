@@ -157,7 +157,7 @@ class _CountingHermes(HermesExplainer):
             success=True,
             model_used="fixture",
             explanation="fixture explanation",
-            refined_lean_sketch=topic.lean_sketch,
+            refined_lean_sketch=topic.lean_sketch if request_lean else "",
             topic_id=topic.id,
         )
 
