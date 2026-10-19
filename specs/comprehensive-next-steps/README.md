@@ -37,8 +37,10 @@ the eight receipt-bound copies and their individual retention decisions.
    [the local acceptance receipt](local-runtime-acceptance-20261018.json).
    L01/P08/P09 are accepted for their narrow source-bound software scopes in
    [the quality acceptance receipt](software-quality-acceptance-20261018.json).
-   Independent owner inventories can prepare L02/L03, L05/L06, S03 and
-   P06; its compiling, execution and review gates still apply. P03 is accepted
+   P06 has [bounded function-ratchet acceptance](function-ratchet-acceptance-20261019.json)
+   from complete local Python/native execution and independent source review.
+   Final render and fifteen-cell publication remain separate. Independent owner
+   inventories can prepare L02/L03, L05 and S03. P03 is accepted
    for the [bounded shared-helper consolidation](shared-helper-acceptance-20261018.json),
    with explicit retained contract exceptions and current bridge source custody.
    P11 is accepted for the [exact-source serial measurement](spikes/serial-native-20261018/README.md);

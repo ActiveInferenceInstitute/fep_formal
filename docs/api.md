@@ -396,6 +396,9 @@ so every operator command shares the same project-root and logging contract.
 into one evidence-currency report and exits 0 whenever the report composes.
 See the status section in [CLI reference](cli-reference.md) for each
 section's capability boundary.
+The [operator support table](cli-reference.md#operator-support-and-exit-contracts)
+separates required inputs, persistent writes, subprocesses, platform support and
+exit interpretation for the inspection and execution paths.
 
 ## GNN bridge
 

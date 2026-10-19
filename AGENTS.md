@@ -224,7 +224,9 @@ selection can otherwise depend on ambient credentials.
 Hosted Python, isolated Chrome and serial Lean pytest components retain their
 complete warning-inventory logs with CLI warning visibility enabled. This
 measurement precedes any narrowing of the existing filters; it does not turn
-warnings into errors or change Lean's zero-warning acceptance. Distribution,
+warnings into errors or change Lean's zero-warning acceptance. The serial lane
+also retains its per-case JUnit file so actual compiler-review outcomes and
+skip reasons remain independently inspectable. Distribution,
 supplemental specs and nested/consumed warnings retain separate measurement
 boundaries. The production-capture executor is unchanged.
 

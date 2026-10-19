@@ -1661,7 +1661,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/122"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "The largest functions are split in place with preserved outputs and an enforceable complexity ratchet.",
       "depends_on": [],
       "single_owner": "Existing package functions and pyproject.toml Ruff configuration; file ownership is unchanged.",
@@ -1681,7 +1681,12 @@
         "maintainability"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "A cosmetic rename, moving files around the source roster or claiming a line cap from a statement-count rule alone."
+      "out_of_scope": "A cosmetic rename, moving files around the source roster or claiming a line cap from a statement-count rule alone.",
+      "acceptance": {
+        "receipt": "function-ratchet-acceptance-20261019.json",
+        "scope": "Bounded seven-owner function ratchet, exact observable parity and complete local Python/native execution.",
+        "remaining": "Final source-bound render and normal fifteen-cell head/main publication; broader CLI/API and scientific packages remain separate."
+      }
     },
     {
       "id": "P07",

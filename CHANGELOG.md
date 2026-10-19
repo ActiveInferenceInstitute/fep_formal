@@ -11,9 +11,10 @@
   preserving numerical records, dashboard SVG/HTML, coverage projections and
   capture-plan bytes. Enforce a separate 200-source-line bound in the seven
   affected modules and Ruff's 100-statement ceiling with thirteen existing,
-  function-bounded exceptions. Full current-source acceptance for
-  [#122](https://github.com/ActiveInferenceInstitute/fep_formal/issues/122)
-  remains pending.
+  function-bounded exceptions. Record the complete local Python/native and
+  source-review component acceptance for
+  [#122](https://github.com/ActiveInferenceInstitute/fep_formal/issues/122);
+  final render and fifteen-cell head/main publication remain separate.
 
 - Retain the exact selected font binaries with their render artifact hashes and
   all six sealed Python package metadata files in hosted acceptance uploads.

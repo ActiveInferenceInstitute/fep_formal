@@ -1078,6 +1078,7 @@ jobs:
           set -o pipefail
           mkdir -p output
           uv run pytest tests/ -q -m serial_lean -n 1 --no-cov \
+            --junitxml=output/serial-lean-acceptance.xml \
             -W always --color=no 2>&1 | tee output/serial-lean-warning-inventory.log
       - name: Verify exact sealed-roster native receipt
         run: |
@@ -1158,4 +1159,5 @@ jobs:
             output/native-verification.json
             output/formalism-audit.json
             output/serial-lean-warning-inventory.log
+            output/serial-lean-acceptance.xml
             output/native-entropy-consumer.log

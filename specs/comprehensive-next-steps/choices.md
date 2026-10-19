@@ -860,3 +860,23 @@ independently reviewed before regeneration. The complete Lean probe and every
 historical native receipt remain byte-identical. Fresh source-bound native
 capture and adverse controls are required separately. Rendering and parser
 parity do not execute the generated model runner or close Issue61/B01.
+
+## Bounded function-ratchet acceptance
+
+**When:** P06 source-bound execution, 2026-10-19.
+
+**Choice:** Keep seven existing owners and split the eight measured largest
+functions in place. Enforce the 200-source-line bound independently of the
+100-statement Ruff rule; retain thirteen named historical statement exceptions
+under qualified-function assertions.
+
+**Evidence:** [The component receipt](function-ratchet-acceptance-20261019.json)
+binds owner bytes, independent review and complete local Python/native results.
+Earlier overloaded failed runs remain failed observations; unchanged-budget
+fresh complete execution passes.
+
+**Reach:** This accepts the selected maintainability component. It adds no
+scientific, production-capture, generated-runner or final publication claim.
+
+**Verdict:** bounded acceptance; final render and fifteen-cell head/main gates
+remain explicit.

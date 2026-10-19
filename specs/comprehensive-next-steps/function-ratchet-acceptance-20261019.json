@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "package": "P06",
+  "issue": 122,
+  "status": "accepted_bounded_local_component",
+  "runtime_source_commit": "da68c49d1dca6c69ef04836e2e72181d2330f6ef",
+  "base_commit": "2b0654713fc128940d109ddfd89c08696e9876f1",
+  "scope": "Eight largest baseline functions split in place across seven existing owners; no global 200-line claim.",
+  "owners": [
+    {
+      "path": "src/fep_lean/catalogue/coverage.py",
+      "sha256": "bbbeecc966b2d38bdeebb8ca713708f368383474414ecea568bbac4d140aa8fe",
+      "maximum_function_source_lines": 197
+    },
+    {
+      "path": "src/fep_lean/gauss/runner.py",
+      "sha256": "fc6e28495112416a149ebdf8a8ee5f1b60109144c6e14582cfc6e69a00e14aa7",
+      "maximum_function_source_lines": 193
+    },
+    {
+      "path": "src/fep_lean/output/formal_kernel_dashboard.py",
+      "sha256": "c81873a601dcf937597eecc5e66ccd9471ddbdc749d63c1f9605339480f7597c",
+      "maximum_function_source_lines": 195
+    },
+    {
+      "path": "src/fep_lean/output/release_bundle/_browser.py",
+      "sha256": "c4c79a0adcb470b68ec5711e727f6f9d519726e8bdeb063fd7b8920a271c7aa1",
+      "maximum_function_source_lines": 181
+    },
+    {
+      "path": "src/fep_lean/output/release_bundle/_core.py",
+      "sha256": "15e2dc3add93a960c0803f8c284252cdbdf205966525b9c102bcdd34d4a9ec6b",
+      "maximum_function_source_lines": 197
+    },
+    {
+      "path": "src/fep_lean/output/release_bundle/_validate.py",
+      "sha256": "d35a5cc7963ee14ea79c1e5829422f258d0f4ca3a30aff1ba278f11ec2d3f6d3",
+      "maximum_function_source_lines": 141
+    },
+    {
+      "path": "src/fep_lean/verification/numerical_witnesses.py",
+      "sha256": "73f27cdd784142e676928831060a34999190023a8213f11031fc96ba3f13cd68",
+      "maximum_function_source_lines": 188
+    }
+  ],
+  "ratchets": {
+    "source_lines": 200,
+    "ruff_PLR0915_statements": 100,
+    "qualified_existing_statement_exceptions": 13
+  },
+  "source_review": {
+    "patch_sha256": "eac6e0c1d428207d8540c54b020379b3d1071d6aa1d01f2587d722ff69a398bc",
+    "decision": "approve_sole_ratchet_delta_preserving_v2_approvals",
+    "must_fix_findings": 0
+  },
+  "execution": {
+    "python": {
+      "passed": 3134,
+      "skipped": 6,
+      "coverage_percent": 92.21,
+      "qualification_sha256": "d482ddc13f4dd47414e9db0ad4082c99cadb47d1e2eeac0b0a5cad5ee5d940ff"
+    },
+    "serial_lean": {
+      "passed": 612,
+      "skipped": 2,
+      "actual_gauss_compiler_review_passed": true
+    },
+    "native_topics": 168,
+    "native_warning_count": 0,
+    "native_sorry_count": 0,
+    "native_qualification_sha256": "e679ad5734c0ce40c6cf4fe542036600ed9028d3dc248a8e7855afa7ab0b37c2"
+  },
+  "hosted_component": {
+    "url": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39301554028",
+    "profile": "Early nine compatibility cells; all executed jobs passed; not final fifteen-cell head/main acceptance."
+  },
+  "boundaries": [
+    "Earlier overloaded failed attempts remain failures; fresh complete run passed unchanged budgets.",
+    "Controlled output parity is not live production capture.",
+    "Final render and fifteen-cell head/main publication remain separate gates.",
+    "No new Lean bodies, scientific or generated-runner execution acceptance."
+  ]
+}
