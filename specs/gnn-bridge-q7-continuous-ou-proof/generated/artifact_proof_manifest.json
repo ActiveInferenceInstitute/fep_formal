@@ -81,14 +81,14 @@
   "expected_contract_sha256": "ceae6f1dc34cc581166b364fb3440eccbe487509ce56d76cabf5f080b4b8626e",
   "inputs": {
     "specs/gnn-bridge-q7-continuous-ou-proof/expected.json": "ceae6f1dc34cc581166b364fb3440eccbe487509ce56d76cabf5f080b4b8626e",
-    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "9c77ebbb6573291765843f792c15ee419f6c9699a2446983e4b5c813fb6275dc",
+    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "a6166e9d948c959399355cd4b7c8edfcc939b9ba360030946866039c47e496ae",
     "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py": "630a67a12843096a5ef13de3e5fc3258886abec8716a7a6597de09634a575b53",
     "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "609191d65130dd15d5c6229aca711da19429862907f23d9361c393e21befd661",
     "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-canonical.json": "0cf5e8b1afbfa7b82cd3c3cbaa5c22ba0931738030ed83195b944936a3a8b4ce",
     "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-runtime-parity.json": "54303b768bc693626f7da3415372926be0a7fc392091d2d62a483d46f96fa38b",
     "specs/gnn-bridge-q7-continuous-ou-proof/probe.template.lean": "4ca4dd970d49b09563b3cf3d7b63f1ee14278f0dd49a4ffc45611b599fdb453a",
     "specs/gnn-bridge-q7-continuous-ou-proof/refresh_render.py": "8c87d71db852a2f0db61d640603d5669f06bce9e3f2924e0b646ea99a330f6e7",
-    "specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "853f4d758c74d6c530396adadff99dd7d592982c29af78f65cb9e15f165ebf9b",
+    "specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "aac4087efc393bcddad0d93373aa1aededf3afe7abf4990d36328d8b97f77361",
     "specs/gnn-bridge-q7-continuous-ou-proof/scaffold-serialization.md": "541d408dccaa8b383aa6cac45c33d5d9d9e072ad93e985f747c58b5a77dc4ea5",
     "src/fep_lean/verification/_jsonutil.py": "8e389db30143881d795eecc8786df2ff5d9c21dd2fc1592e92e501991cee8e9d",
     "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "f6b557fc4b094abe525388e83a00210e4608dd2c9d985b6721542af56ded9aa3"

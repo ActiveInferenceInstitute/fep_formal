@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-04vqq_z8/FepLeanContinuousOU.md",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-04vqq_z8/rendered"
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-qjvdo4hc/FepLeanContinuousOU.md",
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-qjvdo4hc/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "9c77ebbb6573291765843f792c15ee419f6c9699a2446983e4b5c813fb6275dc"
+    "sha256": "a6166e9d948c959399355cd4b7c8edfcc939b9ba360030946866039c47e496ae"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -168,7 +168,7 @@
       "src/fep_lean/methods/projection.py": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
       "src/fep_lean/methods/visualization.py": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a",
       "src/fep_lean/output/__init__.py": "33723735799c344c1a9d6a720da20a83c3fecb1b525a754d3f986952397f315b",
-      "src/fep_lean/output/browser_capture.py": "ed28c4aef5abcabb3f6877d5336a6e483ec4b5ca6f19d3ca16fcf674830b97e6",
+      "src/fep_lean/output/browser_capture.py": "c2204bc7d79795651763efa9d89fbe1af1e42adfb972cf344112a3bfcf8ba681",
       "src/fep_lean/output/evidence.py": "cf24333d3f9ac7c0943f587e7b43fe6997940a631831435b00d5d134e9a70fe3",
       "src/fep_lean/output/figures.py": "c70fed46a022bcdeb27045fa5b0be3fb65541aa936095cb2f56ea046fb6134b2",
       "src/fep_lean/output/formal_kernel_dashboard.py": "c072864e88f3172e2e4c5414b1b773c9b16f8e83045423c73242ebbd8938aecb",
@@ -1142,7 +1142,7 @@
       "src/fep_lean/methods/projection.py": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
       "src/fep_lean/methods/visualization.py": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a",
       "src/fep_lean/output/__init__.py": "33723735799c344c1a9d6a720da20a83c3fecb1b525a754d3f986952397f315b",
-      "src/fep_lean/output/browser_capture.py": "ed28c4aef5abcabb3f6877d5336a6e483ec4b5ca6f19d3ca16fcf674830b97e6",
+      "src/fep_lean/output/browser_capture.py": "c2204bc7d79795651763efa9d89fbe1af1e42adfb972cf344112a3bfcf8ba681",
       "src/fep_lean/output/evidence.py": "cf24333d3f9ac7c0943f587e7b43fe6997940a631831435b00d5d134e9a70fe3",
       "src/fep_lean/output/figures.py": "c70fed46a022bcdeb27045fa5b0be3fb65541aa936095cb2f56ea046fb6134b2",
       "src/fep_lean/output/formal_kernel_dashboard.py": "c072864e88f3172e2e4c5414b1b773c9b16f8e83045423c73242ebbd8938aecb",
@@ -1974,7 +1974,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "2a07ea52d99ffea75c0d83012dcd0f5312be3c554c0cf14f1527c677b625552c",
+  "source_pin_sha256": "34b0ef06b096a26c43b1d4eb78b800f2fbe9d1446b7fa88e16c487bf081ced91",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- constraint-dependencies\nwarning: Using incompatible environment (`/Users/friedman/Documents/Git/gitvault/Username/ActiveInferenceInstitute/Public/Generalized_Notation_Notation/.venv`) due to `--no-sync` (The project environment's Python version does not satisfy the request: `Python 3.14`)\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
