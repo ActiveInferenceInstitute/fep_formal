@@ -6,6 +6,14 @@ Run from the project root:
 FEP_LEAN_LIVE_TESTS=0 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 ```
 
+The development extra includes `defusedxml` for the conditional tests that
+load the real GNN extractor from an explicitly named sibling checkout. Its
+version is resolved in the FEP lockfile and the joint profile is qualified
+against that checkout; the extra does not install GNN or its full optional
+dependency graph.
+Peer discovery prefers the current `Generalized_Notation_Notation` checkout
+name and retains `GeneralizedNotationNotation` for older local layouts.
+
 The suite uses real temporary files, SQLite databases, subprocesses, and local
 HTTP servers. Environment variables isolate secrets and expensive external
 integration tests; they do not manufacture successful execution results.

@@ -16,7 +16,9 @@ import pytest
 from fep_lean.bridge import cli, operations
 
 REPO = Path(__file__).resolve().parents[1]
-GNN_ROOT = REPO.parent / "GeneralizedNotationNotation"
+GNN_ROOT = REPO.parent / "Generalized_Notation_Notation"
+if not GNN_ROOT.is_dir():
+    GNN_ROOT = REPO.parent / "GeneralizedNotationNotation"
 LEAN_READY = bool(shutil.which("lake")) and (REPO / "lean" / "lakefile.lean").is_file()
 
 
