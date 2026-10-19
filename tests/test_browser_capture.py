@@ -407,7 +407,7 @@ def test_canonical_dom_passes_the_interaction_summary() -> None:
     assert all(capture_module._interactions(observations).values())
 
 
-@pytest.mark.parametrize("pairings", [0, 105, 117, 119, 146])
+@pytest.mark.parametrize("pairings", [0, 105, 117, 118, 120, 146])
 def test_interactions_reject_incorrect_pairing_counts(pairings: int) -> None:
     root = Path(__file__).resolve().parents[1]
     observations = capture_module.canonical_browser_observations(

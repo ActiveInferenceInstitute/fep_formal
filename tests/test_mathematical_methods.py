@@ -126,6 +126,21 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     assert {
         declarations[name]["source_owner"] for name in measure_entropy_extension
     } == {"src/fep_lean/formal/variational_duality.lean"}
+    # The seven reviewed additions must resolve to their actual existing owner,
+    # while the full historical declaration count below stays unchanged.
+    scalar_bridges = {
+        "FEPComposed.fep031_energyGibbs_is_topicProbability",
+        "FEPComposed.fep030_fep031_finite_maxEntropy",
+        "FEPComposed.fep030_fin2_entropy_eq_binEntropy",
+        "FEPComposed.fep030_finite_binary_entropy_bound",
+        "FEPComposed.fep030_fep031_binary_maxEntropy",
+        "FEPComposed.fep018_coordinate_derivative_is_fep038",
+        "FEPComposed.fep018_fep038_actual_metric_pullback",
+    }
+    assert scalar_bridges <= declarations.keys()
+    assert {declarations[name]["source_owner"] for name in scalar_bridges} == {
+        "src/fep_lean/formal/compositions/core.lean"
+    }
     assert (
         len(
             declarations.keys()
@@ -133,6 +148,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - variational_extension
             - measure_entropy_extension
             - category_extension
+            - scalar_bridges
         )
         == 2185
     )
