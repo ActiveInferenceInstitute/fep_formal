@@ -4,6 +4,8 @@
   all six sealed Python package metadata files in hosted acceptance uploads.
   Keep font/source drift refusal and clarify that semantic disposition belongs
   to the separate audit rather than the compiler-result object.
+  Run the actual Lean review fixture in the existing serialized native lane,
+  preserving its assertions and actual compiler execution.
 
 - Declare the safe XML parser required by the real-GNN bridge tests in the
   development profile, matching the named GNN owner's dependency contract.
