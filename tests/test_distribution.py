@@ -1418,6 +1418,11 @@ def _exercise_render_artifact_staging(
         from fep_lean.output.release_bundle._core import _capture_link_bytes
 
         provenance = json.loads((staged / "renderer-provenance.json").read_text())
+        for role, selected in provenance["fonts"].items():
+            retained_font = selected["artifact_path"]
+            assert retained_font == f"fonts/{role}/{selected_font.name}"
+            assert (staged / retained_font).read_bytes() == selected_font.read_bytes()
+            assert manifest["files"][retained_font] == selected["sha256"]
         template_sources = provenance["template_sources"]
         object_format = subprocess.check_output(
             ["git", "rev-parse", "--show-object-format"], cwd=template, text=True

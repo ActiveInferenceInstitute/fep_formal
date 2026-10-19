@@ -34,7 +34,7 @@ Executable discovery respects explicit overrides and the toolchain named by `lea
 | `has_sorry` | The source admitted an unproved goal |
 | `warnings` | Lean accepted the file but reported a quality or migration issue |
 | semantic disposition | Human-reviewed relationship between theorem and topic claim |
-: The dimensions `VerifyResult` keeps separate, and why none of them is collapsed into process exit status.
+: Compiler-result dimensions and the separate semantic audit, which must not be collapsed into process exit status.
 
 ### Aggressive Mathlib4 Caching {#sec:aggressive_mathlib_caching}
 

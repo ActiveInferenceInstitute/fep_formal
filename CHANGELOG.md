@@ -1,5 +1,10 @@
 ## Unreleased
 
+- Retain the exact selected font binaries with their render artifact hashes and
+  all six sealed Python package metadata files in hosted acceptance uploads.
+  Keep font/source drift refusal and clarify that semantic disposition belongs
+  to the separate audit rather than the compiler-result object.
+
 - Declare the safe XML parser required by the real-GNN bridge tests in the
   development profile, matching the named GNN owner's dependency contract.
   Prefer the current GNN checkout name while retaining the legacy layout.
