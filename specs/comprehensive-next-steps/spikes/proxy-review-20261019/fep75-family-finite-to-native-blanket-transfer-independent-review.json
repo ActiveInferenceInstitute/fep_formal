@@ -1,0 +1,388 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "finite-to-native-blanket-transfer",
+  "roster_verified_against": "config/catalogue_metadata.yaml",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-135",
+    "fep-136",
+    "fep-137",
+    "fep-138",
+    "fep-139",
+    "fep-140",
+    "fep-141"
+  ],
+  "combined_issue75_audit_count": 148,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/native_blanket_independence.py": "717738bb35ff451cf7a2e984328559ec23dfdaff1d547bf4f2948c9a8ded930d",
+    "lean/FepSketches/families/native_blanket_independence.lean": "0405aa18ec214ec3df80b17804453f2bfb7e7dbeedbffc41cbae7889a050dbee",
+    "src/fep_lean/formal/native_blanket.lean": "7af052b9a067be0391097a9e201e367639edc3698204a701f5663340ec9f5a11",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/information_geometry.lean": "0b9fddad4758c9e165e9fe13f0fe4ddca57d71d025c92d85068b93835acab88f",
+    "src/fep_lean/formal/geometric_optimization.lean": "7b3a6c0313946b9708a472dcbe43e8678cec1f33e36c3b8873dcd29b57a4e1b0",
+    "src/fep_lean/formal/markov_blanket.lean": "6e214ee37ba6525d1ca5b44130ceaf4b410e03a0bb18d9b3070c4f8b90280011",
+    "src/fep_lean/formal/causal_dynamics.lean": "a87844ec42f395cb8532fa96c7d5b6b956731e1b0f6069f748d512e43add686c",
+    "src/fep_lean/formal/compositions/native_blanket_transfer.lean": "24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-135",
+      "title": "Finite-Law Measure Embedding",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "dbb7bb949236264d31b0782af0e9912d2b9b8de66d4bcbabd129ec4d19c9c2c8",
+      "maturity_record": {
+        "id": "fep-135",
+        "primary_theorem": "fep135_embeddedLaw_apply_singleton",
+        "supporting_theorems": [
+          "fep135_embeddedLaw_normalized"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A normalized finite law embeds as a weighted sum of Dirac measures that preserves every singleton mass and has native measure mass one.",
+        "assumption_review": "The carrier is finite with its discrete measurable space. Finite real masses enter the native nonnegative-extended-real measure through ENNReal.ofReal; normalization and nonnegativity are inherited from FiniteLaw.",
+        "non_vacuity": "Any nonuniform finite law gives distinct native singleton masses while the full measure remains normalized.",
+        "acceptance_probe": "warning-free native Lean compile of fep135_embeddedLaw_apply_singleton and fep135_embeddedLaw_normalized for an arbitrary finite law.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep135_embeddedLaw_apply_singleton": "theorem fep135_embeddedLaw_apply_singleton\n    (law : FiniteLaw State) (state : State) :\n    FEP.NativeBlanket.embeddedLaw law {state} = ENNReal.ofReal (law state)",
+        "fep135_embeddedLaw_normalized": "theorem fep135_embeddedLaw_normalized (law : FiniteLaw State) :\n    FEP.NativeBlanket.embeddedLaw law Set.univ = 1"
+      },
+      "statement_review": "The finite law is embedded as a finite sum of ENNReal.ofReal(mass) scaled Dirac measures. Singleton equality preserves each atom, and total mass1 gives an actual IsProbabilityMeasure instance.",
+      "assumptions_and_scope": "Discrete measurability and finite nonnegative normalized masses are essential for faithful singleton semantics. This is an exact finite measure embedding, not approximation of arbitrary continuous measures or a statement about physical blanket discovery.",
+      "positive_witness_specification_unexecuted": "Embed a Boolean law true3/4,false1/4; obtain distinct native singleton masses and native mass1.",
+      "adverse_witness_specification_unexecuted": "Embedding arbitrary signed unnormalized weights through ofReal would discard negatives and fail the finite-law contract; that operation is not this API.",
+      "nearest_topic_distinction": "017 native posterior and027 native hierarchical law are earlier native consumers.135 supplies an actual probability carrier map rather than authoring an unrelated native law; its named endpoint relation remains a pairing with017.",
+      "novelty_record": {
+        "id": "fep-135",
+        "nearest_topics": [
+          "fep-017",
+          "fep-027"
+        ],
+        "new_invariant": "Weighted Dirac embedding preserves every finite-law singleton mass and normalization as a native Mathlib probability measure.",
+        "carrier_delta": "Adds an injective finite-real to native-measure carrier map under discrete measurable structure instead of using a separately authored measure law.",
+        "required_bridge": "FEPComposed.fep135_embeddedLaw_extends_fep017"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-135",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Weighted Dirac embedding preserves every finite singleton mass and total mass, while fep-017 supplies the native posterior reconstruction law on an arbitrary measure carrier.",
+          "witness": "FEPComposed.fep135_embeddedLaw_extends_fep017"
+        }
+      ]
+    },
+    {
+      "id": "fep-136",
+      "title": "Finite-Law Embedding Injectivity and Expectation Transfer",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "2c91fe60104125349d74a20a55fecf7c8178e7e4fd626a5908a3007ca66d266d",
+      "maturity_record": {
+        "id": "fep-136",
+        "primary_theorem": "fep136_embeddedLaw_injective",
+        "supporting_theorems": [
+          "fep136_embeddedLaw_expectation"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Equality of native weighted-Dirac measures reflects equality of the source finite laws, and native integration agrees exactly with the finite weighted expectation sum.",
+        "assumption_review": "The carrier is finite and discretely measurable and observables are real-valued. Finiteness supplies integrability; no general integration or measure-equivalence theorem is inferred.",
+        "non_vacuity": "Distinct point masses remain distinguishable by singleton evaluation and a nonconstant observable produces the same nontrivial expectation on both carriers.",
+        "acceptance_probe": "warning-free native Lean compile of fep136_embeddedLaw_injective and fep136_embeddedLaw_expectation.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep136_embeddedLaw_injective": "theorem fep136_embeddedLaw_injective :\n    Function.Injective\n      (FEP.NativeBlanket.embeddedLaw : FiniteLaw State → Measure State)",
+        "fep136_embeddedLaw_expectation": "theorem fep136_embeddedLaw_expectation\n    (law : FiniteLaw State) (observable : State → ℝ) :\n    ∫ state, observable state ∂FEP.NativeBlanket.embeddedLaw law =\n      ∑ state, law state * observable state"
+      },
+      "statement_review": "Equal embedded measures imply equal finite laws by real singleton recovery; every real observable integrates exactly to its finite weighted sum. Finiteness/discrete structure supplies integrability.",
+      "assumptions_and_scope": "The proof does not merely compare two unrelated expectations: it uses the exact same law and observable. A nonconstant observable can still have expectation0, so nontriviality should be demonstrated by chosen values rather than implied universally. No arbitrary continuous integration equivalence is proved.",
+      "positive_witness_specification_unexecuted": "Boolean true3/4,false1/4 and indicator true have native and finite expectation3/4; distinct point masses are separated by that observable/singleton.",
+      "adverse_witness_specification_unexecuted": "Constant observables cannot distinguish distinct probability laws, although equality of the entire measures does. Equality of one expectation alone is weaker than embedding injectivity.",
+      "nearest_topic_distinction": "015 only measurable energy ingredients and057 native tower expectations are distinct claims.136 closes a real finite/native integration seam on the shared discrete carrier.",
+      "novelty_record": {
+        "id": "fep-136",
+        "nearest_topics": [
+          "fep-015",
+          "fep-057"
+        ],
+        "new_invariant": "Equality of embedded measures reflects equality of finite laws, and native integration agrees exactly with finite weighted expectation.",
+        "carrier_delta": "Connects atomwise finite probabilities to native Bochner integration on the same finite discrete carrier.",
+        "required_bridge": "FEPComposed.fep136_embeddedExpectation_extends_fep015"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-136",
+          "target": "fep-015",
+          "kind": "formal_pairing",
+          "rationale": "Native integration of an embedded finite law equals its weighted sum, paired with fep-015's measurable variational-integrand surface on the native carrier.",
+          "witness": "FEPComposed.fep136_embeddedExpectation_extends_fep015"
+        }
+      ]
+    },
+    {
+      "id": "fep-137",
+      "title": "Embedded Finite-Kernel Composition",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "55f3f602a6acb373deeb26a8bd084a976804289e683eac4f3263d7b8ba2a1377",
+      "maturity_record": {
+        "id": "fep-137",
+        "primary_theorem": "fep137_embeddedPredictive_eq_comp",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "Embedding finite prediction equals native composition of the embedded finite kernel with the embedded prior measure.",
+        "assumption_review": "Input and output carriers are finite and discretely measurable and each kernel row is normalized. The theorem is a carrier-transport identity, not a general disintegration or arbitrary-kernel approximation result.",
+        "non_vacuity": "A nondegenerate prior and a state-dependent finite kernel yield a genuine mixture whose native singleton masses agree with finite prediction.",
+        "acceptance_probe": "warning-free native Lean compile of fep137_embeddedPredictive_eq_comp on arbitrary normalized finite priors and kernels.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep137_embeddedPredictive_eq_comp": "theorem fep137_embeddedPredictive_eq_comp\n    (prior : FiniteLaw Input) (kernel : FiniteKernel Input Output) :\n    FEP.NativeBlanket.embeddedLaw (kernel.predictive prior) =\n      FEP.NativeBlanket.embeddedKernel kernel ∘ₘ\n        FEP.NativeBlanket.embeddedLaw prior"
+      },
+      "statement_review": "Embedding kernel.predictive(prior) equals native embeddedKernel composition with embeddedLaw(prior). Row normalization supplies a native Markov kernel; singleton calculations prove the measure equality.",
+      "assumptions_and_scope": "Both finite input/output spaces are discrete. This is a genuine commuting square, not merely conjunction with a native associativity statement. The foundation also already proves embeddedKernel composition and finite joint=compProd, so those transport seams are delivered.",
+      "positive_witness_specification_unexecuted": "A nonuniform Boolean prior and state-dependent noisy kernel give a nontrivial mixture; evaluate both native composite singleton masses.",
+      "adverse_witness_specification_unexecuted": "A coarse/non-discrete measurable structure would not preserve singleton recovery under the current contract. This does not imply a general disintegration approximation theorem.",
+      "nearest_topic_distinction": "019 native prediction and055 reversed posterior composition are neighbors.137 identifies finite prediction with native composition; it does not automatically identify posterior versions at null evidence.",
+      "novelty_record": {
+        "id": "fep-137",
+        "nearest_topics": [
+          "fep-019",
+          "fep-055"
+        ],
+        "new_invariant": "Embedding a finite predictive law equals native composition of the embedded finite kernel and embedded prior measure.",
+        "carrier_delta": "Provides a proved commuting square between finite kernel prediction and Mathlib measure-kernel composition.",
+        "required_bridge": "FEPComposed.fep137_embeddedPredictive_extends_fep019"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-137",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "The finite-to-native predictive commuting square and fep-019's native sequential-prediction associativity are checked together without hiding either kernel orientation.",
+          "witness": "FEPComposed.fep137_embeddedPredictive_extends_fep019"
+        }
+      ]
+    },
+    {
+      "id": "fep-138",
+      "title": "Markov-Blanket Rectangle Factorization",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "db310fa47dd4edb73d69efb55ce6946337b1def9c7daaefa2d780119db94bf9d",
+      "maturity_record": {
+        "id": "fep-138",
+        "primary_theorem": "fep138_staticJoint_rectangle_factorization",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "Every singleton rectangle of blanket, internal, and external coordinates in the embedded static joint has the exact blanket-marginal times two conditional-mass factorization.",
+        "assumption_review": "All four carriers are finite and discretely measurable and the static model supplies normalized blanket and conditional laws. The theorem covers the discrete singleton generator and does not by itself state Mathlib conditional independence.",
+        "non_vacuity": "The correlated Boolean model contains two distinct positive blanket/joint atoms while retaining point-mass internal and external conditional rows.",
+        "acceptance_probe": "warning-free native Lean compile of fep138_staticJoint_rectangle_factorization on every finite coordinate atom.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep138_staticJoint_rectangle_factorization": "theorem fep138_staticJoint_rectangle_factorization\n    (model : StaticModel Internal Sensory Active External)\n    (blanket : Blanket Sensory Active) (internal : Internal)\n    (external : External) :\n    FEP.NativeBlanket.embeddedLaw (staticJoint model)\n        (FEP.NativeBlanket.blanketCoordinate ⁻¹' {blanket} ∩\n          FEP.NativeBlanket.internalCoordinate ⁻¹' {internal} ∩\n          FEP.NativeBlanket.externalCoordinate ⁻¹' {external}) =\n      ENNReal.ofReal (model.blanketLaw blanket) *\n        ENNReal.ofReal (model.internalGiven blanket internal) *\n          ENNReal.ofReal (model.externalGiven blanket external)"
+      },
+      "statement_review": "The embedded static joint mass on the actual blanket/internal/external singleton rectangle equals blanket mass times the two conditional masses, all converted to ENNReal. This directly transports authored static product rows.",
+      "assumptions_and_scope": "The row itself is atomic rectangle factorization, not CondIndepFun. The foundation additionally proves complete joint=blanket marginal compProd product kernels, which139 uses; do not say only atomic evidence exists. Null blanket rows have0 joint mass and need not determine unique conditional versions.",
+      "positive_witness_specification_unexecuted": "Reuse correlatedBlanketModel: two diagonal blanket/joint atoms have mass1/2, off-diagonal blanket atoms0.",
+      "adverse_witness_specification_unexecuted": "Without product conditional rows, a correlated internal/external row at positive blanket mass fails the factorization. Full-support blanket law is not required for the constructed static model.",
+      "nearest_topic_distinction": "079 finite CMI characterization has full-support requirements for its general iff.138 proves the embedded structural factorization, and its paired finite zero-CMI statement is not used as a substitute for native conditional-distribution proof.",
+      "novelty_record": {
+        "id": "fep-138",
+        "nearest_topics": [
+          "fep-079"
+        ],
+        "new_invariant": "Every discrete blanket-internal-external singleton rectangle has the exact embedded blanket and conditional product mass.",
+        "carrier_delta": "Transfers the authored finite blanket factorization into native measure evaluation before invoking any conditional-distribution theorem.",
+        "required_bridge": "FEPComposed.fep138_rectangleFactorization_extends_fep079"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-138",
+          "target": "fep-079",
+          "kind": "formal_pairing",
+          "rationale": "Native singleton-rectangle factorization is paired with the finite conditional-factorization characterization from which its embedded masses are constructed.",
+          "witness": "FEPComposed.fep138_rectangleFactorization_extends_fep079"
+        }
+      ]
+    },
+    {
+      "id": "fep-139",
+      "title": "Native Markov-Blanket Conditional Independence",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "20abd300651bbef9ba59dc44b6a3dd8df80cfe9a7eaf13ad434fc4c793691c36",
+      "maturity_record": {
+        "id": "fep-139",
+        "primary_theorem": "fep139_staticJoint_condIndepFun",
+        "supporting_theorems": [
+          "fep139_correlatedBlanket_nonvacuous"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The embedded finite blanket factorization satisfies Mathlib's native CondIndepFun predicate for internal and external coordinates conditioned on the sensory-active blanket coordinate.",
+        "assumption_review": "Internal and external carriers are nonempty; all carriers are finite, standard Borel through their discrete measurable structures, and the static model supplies exact normalized factorized rows. The proof identifies authored kernels with native conditional distributions and does not infer the result from zero finite mutual information.",
+        "non_vacuity": "A Boolean model has two positive correlated blanket regimes and two distinct positive joint atoms; conditional independence is therefore not obtained by collapsing the whole measure to one point.",
+        "acceptance_probe": "warning-free native Lean compile of fep139_staticJoint_condIndepFun and fep139_correlatedBlanket_nonvacuous, plus declaration-level trusted-axiom inspection.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep139_staticJoint_condIndepFun": "theorem fep139_staticJoint_condIndepFun\n    (model : StaticModel Internal Sensory Active External) :\n    CondIndepFun\n      (MeasurableSpace.comap FEP.NativeBlanket.blanketCoordinate inferInstance)\n      FEP.NativeBlanket.blanketCoordinate_measurable.comap_le\n      FEP.NativeBlanket.internalCoordinate\n      FEP.NativeBlanket.externalCoordinate\n      (FEP.NativeBlanket.embeddedLaw (staticJoint model))",
+        "fep139_correlatedBlanket_nonvacuous": "theorem fep139_correlatedBlanket_nonvacuous :\n    letI : MeasurableSpace Bool"
+      },
+      "statement_review": "Actual Mathlib CondIndepFun holds for internal/external coordinate maps conditioned on the blanket sigma algebra under the embedded static joint. The proof identifies authored endpoint kernels with condDistrib almost everywhere, then applies native joint-product characterization.",
+      "assumptions_and_scope": "Finite discrete carriers provide required standard-Borel/measurability facts; internal/external are explicitly nonempty. No positive blanket support is required because conditional distributions are identified only blanket-marginal almost everywhere. Null blanket kernels are authored versions, not identified pointwise by observations. Native CI does not establish causality or independence without conditioning.",
+      "positive_witness_specification_unexecuted": "The supplied two-regime Boolean model has two positive joint atoms, correlated internal/external marginals and native conditional independence given blanket.",
+      "adverse_witness_specification_unexecuted": "Forget the blanket in that same correlated model: internal=external fair Bool are unconditionally dependent. Changing authored conditional versions only at null blanket atoms cannot be inferred from the measure.",
+      "nearest_topic_distinction": "009 is native symmetry;079 finite CMI.139 provides the substantive finite-factorized-static-model to native-predicate transfer without identifying arbitrary zero CMI with arbitrary native CI.",
+      "novelty_record": {
+        "id": "fep-139",
+        "nearest_topics": [
+          "fep-009",
+          "fep-079"
+        ],
+        "new_invariant": "The embedded static blanket joint satisfies Mathlib CondIndepFun for the actual internal and external coordinates conditioned on the blanket coordinate.",
+        "carrier_delta": "Identifies finite conditional rows with native conditional distributions under discrete standard-Borel hypotheses and closes the prior sigma-algebra transfer gap.",
+        "required_bridge": "FEPComposed.fep139_nativeCondIndep_connects_fep009_fep079"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-139",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "The embedded blanket joint satisfies Mathlib CondIndepFun for its actual coordinates, and fep-009 supplies the native symmetry law for that conditional-independence predicate.",
+          "witness": "FEPComposed.fep139_nativeCondIndep_connects_fep009_fep079"
+        }
+      ]
+    },
+    {
+      "id": "fep-140",
+      "title": "Conditional Independence under Measurable Coarsening",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "14048b2c104a57bf5d4300beb116e89025aba34e4e10b992e0242243494c9c9f",
+      "maturity_record": {
+        "id": "fep-140",
+        "primary_theorem": "fep140_condIndepFun_measurableImages",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "Native blanket conditional independence is preserved under measurable images of both internal and external coordinates.",
+        "assumption_review": "The source blanket theorem retains its finite, discrete, nonempty endpoint hypotheses and both image maps are explicitly measurable. The result is Mathlib's composition law and does not cover transformations of the conditioning coordinate.",
+        "non_vacuity": "Identity maps recover fep-139, while noninjective measurable coarsenings can merge endpoint states without invalidating conditional independence.",
+        "acceptance_probe": "warning-free native Lean compile of fep140_condIndepFun_measurableImages with arbitrary measurable endpoint maps.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep140_condIndepFun_measurableImages": "theorem fep140_condIndepFun_measurableImages\n    {InternalImage ExternalImage : Type*}\n    [MeasurableSpace InternalImage] [MeasurableSpace ExternalImage]\n    (model : StaticModel Internal Sensory Active External)\n    (internalImage : Internal → InternalImage)\n    (externalImage : External → ExternalImage)\n    (internalMeasurable : Measurable internalImage)\n    (externalMeasurable : Measurable externalImage) :\n    CondIndepFun\n      (MeasurableSpace.comap FEP.NativeBlanket.blanketCoordinate inferInstance)\n      FEP.NativeBlanket.blanketCoordinate_measurable.comap_le\n      (internalImage ∘ FEP.NativeBlanket.internalCoordinate)\n      (externalImage ∘ FEP.NativeBlanket.externalCoordinate)\n      (FEP.NativeBlanket.embeddedLaw (staticJoint model))"
+      },
+      "statement_review": "Measurable images of the endpoint coordinate maps preserve139 native CondIndepFun via Mathlib composition. Image types need not be finite, because measurable maps from the finite source are used.",
+      "assumptions_and_scope": "The conditioning blanket sigma algebra is held fixed. Noninjective endpoint coarsening is allowed; coarsening/removing the conditioning coordinate is a different and generally false inference. This does not assert retained information, invertibility or causal sufficiency of the images.",
+      "positive_witness_specification_unexecuted": "Identity endpoint images recover139; a noninjective finite map merges endpoint states while retaining the same blanket conditioning.",
+      "adverse_witness_specification_unexecuted": "In correlatedBlanketModel, replacing blanket conditioning by a constant loses conditional separation and exposes the fair diagonal endpoint dependence.",
+      "nearest_topic_distinction": "009 symmetry concerns swapping endpoints,140 concerns measurable endpoint maps. It is an actual native preservation law, not evidence that arbitrary blanket coarse-graining preserves a blanket.",
+      "novelty_record": {
+        "id": "fep-140",
+        "nearest_topics": [
+          "fep-009"
+        ],
+        "new_invariant": "Measurable images of internal and external coordinates preserve the proved native blanket conditional independence.",
+        "carrier_delta": "Applies Mathlib's CondIndepFun composition law to arbitrary measurable endpoint coarsenings while keeping the conditioning coordinate fixed.",
+        "required_bridge": "FEPComposed.fep140_measurableCoarsening_extends_fep009"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-140",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "Measurable endpoint coarsenings preserve native blanket CondIndepFun, alongside fep-009's general conditional-independence symmetry theorem.",
+          "witness": "FEPComposed.fep140_measurableCoarsening_extends_fep009"
+        }
+      ]
+    },
+    {
+      "id": "fep-141",
+      "title": "Native Blanket-Transition Closure",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "28bdc1d06b1f6ba2c097fece95c3dd06151b87ed8efbe94c55fb5603d8220e8c",
+      "maturity_record": {
+        "id": "fep-141",
+        "primary_theorem": "fep141_prediction_preserves_nativeBlanket",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "Every authored factorized transition row induces a next-state embedded law whose internal and external coordinates are natively conditionally independent given its next blanket.",
+        "assumption_review": "All carriers are finite and discretely measurable and internal and external carriers are nonempty. The theorem is rowwise for one supplied current state; arbitrary mixtures over current-state uncertainty require additional hypotheses and are not claimed.",
+        "non_vacuity": "A transition row may assign multiple positive next blanket regimes and nonconstant conditional endpoint laws while retaining the proved rowwise factorization.",
+        "acceptance_probe": "warning-free native Lean compile of fep141_prediction_preserves_nativeBlanket for an arbitrary factorized dynamics row and current state.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep141_prediction_preserves_nativeBlanket": "theorem fep141_prediction_preserves_nativeBlanket\n    (dynamics : Dynamics Internal Sensory Active External)\n    (current : DynamicState Internal Sensory Active External) :\n    CondIndepFun\n      (MeasurableSpace.comap FEP.NativeBlanket.blanketCoordinate inferInstance)\n      FEP.NativeBlanket.blanketCoordinate_measurable.comap_le\n      FEP.NativeBlanket.internalCoordinate\n      FEP.NativeBlanket.externalCoordinate\n      (FEP.NativeBlanket.embeddedLaw\n        (staticJoint (nextStaticModel dynamics current)))"
+      },
+      "statement_review": "For each supplied current state, nextStaticModel has authored factorized next-state rows and embeds into a native law with internal/external CondIndepFun given next blanket. This follows the genuine static theorem139.",
+      "assumptions_and_scope": "The conclusion is rowwise. A prior mixture over current states can create latent common-cause dependence between next endpoints even when every row factorizes. No closure for arbitrary uncertain-state prediction, invariant measure, repeated dynamics or physical intervention follows.",
+      "positive_witness_specification_unexecuted": "Choose a current state whose next blanket has multiple positive regimes and whose endpoint conditionals vary by blanket; apply139 to that exact nextStaticModel.",
+      "adverse_witness_specification_unexecuted": "Use two equally likely current states, constant next blanket, and deterministic next internal=external=current-state bit. Each row is product and natively CI, but mixture is a fair diagonal law and not CI given constant blanket.",
+      "nearest_topic_distinction": "080 shared-conditional mixture and081 correlated blanket composition have additional compatibility structure.141→080 pairing does not silently supply those hypotheses to arbitrary mixtures.",
+      "novelty_record": {
+        "id": "fep-141",
+        "nearest_topics": [
+          "fep-080",
+          "fep-081"
+        ],
+        "new_invariant": "Every authored factorized transition row embeds as a predicted native law with internal-external conditional independence given the next blanket.",
+        "carrier_delta": "Connects the static native blanket theorem to the maintained sensory-active transition row, explicitly retaining the rowwise rather than arbitrary-mixture boundary.",
+        "required_bridge": "FEPComposed.fep141_blanketTransition_extends_fep080"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-141",
+          "target": "fep-080",
+          "kind": "formal_pairing",
+          "rationale": "Every factorized transition row inherits native blanket conditional independence, while fep-080 retains the separate finite shared-mixture prediction law.",
+          "witness": "FEPComposed.fep141_blanketTransition_extends_fep080"
+        }
+      ]
+    }
+  ],
+  "findings": [],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "141 rowwise versus uncertain-state mixture control",
+      "owner": "src/fep_lean/formal/native_blanket.lean",
+      "seam": "Use existing embedding/native CI and finite shared-conditional mixture laws to prove closure only with compatible endpoint mechanisms. Author the constant-next-blanket diagonal-mixture countermodel for arbitrary-mixture refusal, without duplicating delivered rowwise transfer.",
+      "estimate": "1–3 days",
+      "positive": "shared next conditional kernels with mixed blanket weights",
+      "adverse": "latent current bit makes next endpoints correlated under a constant blanket"
+    },
+    {
+      "rank": 2,
+      "scope": "136/137 exact-source consumer renewal",
+      "owner": "src/fep_lean/formal/native_blanket.lean",
+      "seam": "Reuse weighted Dirac integral, joint compProd, predictive composition and embeddedKernel_comp, with explicit nonuniform/noisy laws. Any later posterior/KL transport must separately bind support and version semantics.",
+      "estimate": "0.5–1.5 days",
+      "positive": "nonuniform Boolean expectation3/4 and nontrivial predictive mixture",
+      "adverse": "one observable expectation does not imply equal measures; null posterior rows unidentifiable"
+    },
+    {
+      "rank": 3,
+      "scope": "140 conditioning-coarsening boundary",
+      "owner": "src/fep_lean/formal/native_blanket.lean",
+      "seam": "Endpoint composition is already proved. A separate theorem for changing blanket conditioning needs sufficient-statistic/conditional-kernel invariance hypotheses; use correlatedBlanketModel to reject arbitrary removal of blanket information.",
+      "estimate": "0.5–1 day adverse consumer; positive sufficient-condition theorem1–3 days",
+      "positive": "invertible conditioning relabeling or unchanged generated sigma algebra",
+      "adverse": "constant conditioning exposes diagonal endpoint dependence"
+    }
+  ],
+  "limitations": [
+    "Static exact-source semantic review only; no S edits or subject/Lean/test execution. Positive/adverse specifications are unexecuted and existing named source facts are not new runtime observations.",
+    "No general continuous/native KL, arbitrary uncertain-state blanket closure, causal intervention, multidimensional dual geometry, scientific or terminal acceptance inferred.",
+    "Remaining20 topics plus active dependencies/seals/projections/custody/publication gates remain open."
+  ]
+}

@@ -1,0 +1,105 @@
+# Issue75 independent control-and-planning-as-inference audit
+
+Exactly7rows;preserve currentnarrowdispositions. Combinedaudits78/168.
+
+## fep-065 — Controlled-Kernel Normalization
+
+retain_formalized_for_exact_narrow_scope
+
+Everyaction/sourceselectsFiniteLawrowandsums1byControlledKernelcontract.
+
+Normalizationprovidedbycarrier,notderivedfromphysicaldynamics/controllability/policystationarity.
+
+Positive/adverse(unexecuted): Boolactionsidentityvsflip produce distinctnormalizedrows; rawallones2x2matrixnotFiniteKernel.
+
+Nearesttopics: 066actionBayesactualupdate;067beliefreduction;033deterministicstepdifferent.
+
+## fep-066 — Action-Conditioned Bayesian Belief Update
+
+retain_formalized_for_exact_narrow_scope
+
+Actionprediction+emissionpositiveevidenceBayesmassreconstruction/normalization;zeroevidenceexplicitnegatedpremise.
+
+Oneactualfilterstepnotpolicyoptimality. Differentactionsneednotyielddifferentposteriorsifprior/emissioneraseeffect.
+
+Positive/adverse(unexecuted): ChooseBoolidentity/flipwithasymmetricpriorandnoisyemission; zeroobservedlikelihoodcolumngivesnoevidence.
+
+Nearesttopics: 072isno-actionHMMspecialization;034nativekernelposteriorrequiresfiniteembeddingrelation,notjustsameformula.
+
+## fep-067 — Reachable Finite-Belief POMDP Reduction
+
+retain_structural_proxy_for_exact_narrow_scope
+
+Indexedfinitebeliefcarrierhasinterpret/updateclosure/update_soundasfields; primarypreservespolicyvaluewhenexpandingstageexpectation. Boolupdate_soundactualexample.
+
+Two recursivevalues share samebelieftransitionoperator; no derivedfullPOMDPlatentpathvalueequivalenceorfiniteenumerationofsimplex. Soundupdateisinputnotprovedforallmodels.
+
+Positive/adverse(unexecuted): BooltwobeliefmodelactualpositiveBayesupdate; arbitraryunclosedindexmapcannotbuildcontract; continuousbeliefsetnotclaimedfinite.
+
+Nearesttopics: 071genericobservationalupdateandBayesianBeliefModelstrongersemanticsseparate;retainstructural_proxy.
+
+## fep-068 — Soft Bellman Recursion
+
+retain_formalized_for_exact_narrow_scope
+
+PositiveT,nonemptyactions:softpartitionpositive,successorlogsumexpidentityandsoftvalue<=everyhardactionenergy.
+
+No infinitehorizonfixedpoint/convergence/zeroTlimit. RealdivisionatT0definesalgebraicbackupnotphysicalhardminlimit.
+
+Positive/adverse(unexecuted): Twoequalzeroactionenergiesgives-Tlog2<0whilehardmin0; T0totalizedbackup0evennonzerocostnotlimit; emptyactionsetexcluded.
+
+Nearesttopics: 070priorweightedBoltzmannposterior vs068countingactionlogsum;012entropyobjectivecanbridgewithuniformreferenceconstants.
+
+## fep-069 — KL-Control Desirability Recursion
+
+retain_structural_proxy_for_exact_narrow_scope
+
+Defineddesirabilitystep exp(-cost)*passiveexpecteddesirability;nonnegativityfrominput>=0; cost0/desirability1fixed.
+
+No KLcontroloptimalityderivation/optimaltransition/exponentialtransformofactualBellman proved; structural_proxyappropriate.
+
+Positive/adverse(unexecuted): PassiveBoolnoisykernel,costlog2,desirability1gives1/2; negativedesirabilitycannegative; generalcostnonzero breaksunitfixedpoint.
+
+Nearesttopics: 068softBellmanandpathThermodynamicKLdifferentobjective/scale; latentpassivekernelactualnotgenericarbitrarylinearoperator.
+
+## fep-070 — Control-as-Inference Policy Posterior
+
+retain_structural_proxy_for_exact_narrow_scope
+
+Priorweightedpositiveexponentialtilt isFiniteLaw; mass*partition=score; cost0returnspriorforanyprecision.
+
+Priorzerosremainzero; costs/precisionarbitraryreal; precision0returnsprior despiteunequalcosts,notguaranteeunequalposteriorweights.
+
+Positive/adverse(unexecuted): Two positiveprioratomsanddistinctcostswithprecision1changepriorodds; pointmasspriorunchanged; negativeprecisionreversescostpreference.
+
+Nearesttopics: 028uniformsupportsoftmaxonlywithchosenprioridentification;076sametiltforstates;fullgenerativecostderivationelsewhere.
+
+## fep-071 — Sophisticated Expected-Free-Energy Backward Induction
+
+retain_conditional_proxy_for_exact_narrow_scope
+
+Backwardfiniteargminreoptimizesexpectedcontinuationaftereachauthoredupdate; Booleanfeedbackwitnessbeatsfixedopenloopsecondaction.
+
+SophisticatedEFEModelstageEFEarbitraryrealfieldandupdateauthored,nointrinsicBayessoundness. ExistingBayesianBeliefModel/ActiveInference/policytreefoundationssupplyseparateactualmodelderivedspecializations; notallutilitiesBayesian.
+
+Positive/adverse(unexecuted): Booldifferentobservationschoosematchingactionsstrictlybeatbothfixedactions; constantobservationorupdatecanerasegain; keep-priorupdatecountermodeldeliveredelsewhere.
+
+Nearesttopics: 071genericrecursionvsperception_action_loopBayesmodel/riskambiguityandfeedbacksemantics;retainconditional_proxy.
+
+## Findings
+
+fep-071: GenericstageEFE/updateauthoredfieldsnotnecessarilymodelderivedEFEorBayesconsistent. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately.
+
+fep-070: Unequalcostsdo notreweightatprecision0; support/prioroddsconditionsshouldexplicit. For nonzero precision and two positive-prior actions with distinct costs, their posterior odds differ from prior odds. Zero precision or constant supported costs preserves the prior; zero cost does so for every precision.
+
+## Ranked followups
+
+1. 071Bayes/model-derivedspecializationconsumerand070precisionwording: Reuseexistingperception_action_loopBayesianBeliefModel andbayesRiskAmbiguity_eq_sophisticated;no duplicategenerativemodelderivation. Seam: ExistingbayesSophisticatedModel/update_filtered/ActiveInference.expectedFreeEnergy andown071primary. Estimate: 0.5-1.5daysnamedendpointconsumer/rawaxiomreview.
+
+2. 069actualKLcontrolGibbsvariationalbackup: DerivepassivekernelstatewiseKLregularizedcontrolminimumwithdeclaredtemperature/referenceandpositivepassivedesirability;currentoperatoralonenotoptimality. Seam: ExistingfiniteGibbsCertificate/energytilt/finiteKL;supportandnegative-logdesirabilitybridge. Estimate: 2-4daysboundedone-stepcomposition;noinfinitehorizonpromise.
+
+3. 068hardsofttemperaturelimit/finiteentropyobjective: OptionalexactentropyregularizedBellmanminimumforcommonactioncarrierusingexistingfiniteHelmholtzfoundation;nolimitinferredfromrflrecursion. Seam: VariationalDuality.helmholtz_decomposition/uniqueGibbsminimum,finiteArgmin/logsumexpbound. Estimate: 1-3daysone-stepbridge;temperaturelimitseparate.
+
+4. 067latentpath-valueequivalence: Currentinterpretedsame-belieftransitionvalueequalitydoesnotprovefullPOMDPlatentpathreduction; optionalderiveusingactualupdate_soundandpathjoint. Seam: ReachableBeliefPOMDP.update_sound,controlledfinitepathrollout/policytrees. Estimate: 2-5daysafterexactobservable/pathcontract.
+
+Exactprimary/support/boundarycontractsandhashesinJSON. No S editsorcompilation;remaining90topics/dependenciesopen.

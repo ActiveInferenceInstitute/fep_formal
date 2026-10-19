@@ -1,0 +1,127 @@
+# Issue75 independent core-active-inference family review
+
+Exactly10rows reviewed; retain narrow formalized dispositions with four metadata precision corrections. Existing finiteMI/riskambiguity mathematics is recognized, not marked missing.
+
+## fep-003 — Discounted Pragmatic Cost
+
+Primary finitehorizonterminalincrement exactsum_range_succ; supporting zero,pointwisecostmonotonicity,horizonmonotonicity followENNRealorder.
+
+DiscountarbitraryENNRealnotnecessarily<1; costs supplied not derivedexpectations; no infinitehorizonconvergence. Positivecostalone doesnotguaranteepositiveincrementatdiscount0,T>0.
+
+Positive/adverse(unexecuted): discount1/2,costconstant1,horizon2gives1.5then1.75; discount0horizon≥1haslaterincrement0; accumulated∞blocksstrictincrease.
+
+Nearesttopics: 021owns truncation;033state-transitionvalue; existingActiveInferencefoundationderivesmodelcrossentropy/MIseparately.
+
+## fep-007 — Normalized Finite Sum-Product Message
+
+Primary normalization onnonemptyFin8support understrictpositivefactors/incoming; supporting nonnegative,aggregatemonotone andnormalizerpositive exact.
+
+One row ofnormalizedfactor-messageweights; not globalBP marginalcorrectness,treeprooforloopyconvergence. Strictpositivity sufficientbutnotnecessary whenatleastonepositiveproduct.
+
+Positive/adverse(unexecuted): Two neighborproducts1and3yield1/4,3/4; excludednodezero; empty/allzeroproductsupporttotal0; negativeproductsinvalidateprobability.
+
+Nearesttopics: 047Fin7unnormalizedmatrixpropagation andPTreetreerecursiondistinct;007→028realexponentialunitincomingbridge exactspecializationnotgeneralBP/softmaxequivalence.
+
+## fep-008 — Finite Policy Objective Minimizer
+
+Primary realobjectiveargmin onfinite nonemptyFin14subset; supporting maxandminimizer-valueequalitycorrect; min_is_lb repeatsassumedminproperty.
+
+No uniquenessofpolicy/tie-breakalgorithm,computability,model-derivedG orglobalinfinitepolicyminimizer.
+
+Positive/adverse(unexecuted): Policies0,1scores2,1select1; tiedconstantGmanyminimizerssamevalue; emptysetnoexistentialwitness.
+
+Nearesttopics: 028normalizesFin10stochasticweights,notargminselection; bridge needscommoncarrier/embeddingandγconditions,notretagfromnormalizationalone.
+
+## fep-021 — EFE Epistemic–Pragmatic Balance
+
+Primary ENNRealtruncatedsubtraction reconstructionunderinformation<=cost; monotonecost/antitoneinformation andzeroiff correct including∞conventions.
+
+Inputs supplied; itselfdoesnotderiveMIor riskambiguity. ExistingfiniteActiveInferencemodelalreadyderivesMI/riskambiguityunderFullSupport andofRealbridgeexplicitlytruncates negativevalues.
+
+Positive/adverse(unexecuted): cost3/info1=>EFE2; info3=>0; info4=>0andbalancefails3=4; at∞cost finite/infinitealgebra needsENNRealinterpretationnotrealcancellation.
+
+Nearesttopics: 003discountedcost,041nativeposteriorKL and ActiveInference.modelMIareseparatetypedinputs; existingcomposedbridgecoversofReal,notblanketnative/finiteexpectedgainidentity.
+
+## fep-023 — Policy-Indexed Reachable Laws
+
+Primary transfersassumedmassonealongpolicy-lawimage; supportingmembership,imageinclusion,emptyimageexact.
+
+Normalizationpremise explicit; law arbitraryMeasure notderiveddynamics; no reachabilitysupport/topology/controllability/uniqueinvertiblepolicy-map.
+
+Positive/adverse(unexecuted): BoolpoliciesinducedtwoDiracoutcomelawsnontrivialimage; constantlawcollapsespolicies; emptysetnoaffordances; zeroMeasurelawrejectsmassone.
+
+Nearesttopics: ControlledMarkovrolloutactualpolicytooutcomelawelsewhere; thisrowisextensionalimagecontractnotacausalfeasibilitytheorem.
+
+## fep-028 — Support-Aware Finite Softmax Policy
+
+Primary globalFin10normalization useszeroextensionfromselectednonemptysupport; supportingbounds,zeroforsupportexcluded andpositivedenominatorcorrectforallrealγcost.
+
+γcan0ornegative; nonemptyrequiredfornormalization. No optimization,temperaturelimit,samplingbehavior. Unequalcostsonlygiveunequalweightsifγ≠0.
+
+Positive/adverse(unexecuted): Support{0,1},G0=0,G1=1,γ1yieldsunequalpositiveweights; γ0uniformevenunequalcosts; γnegativefavorshighercost; emptysupportallzero.
+
+Nearesttopics: 012entropyregularizationneedsnormalizedlaw;031Gibbsproper-supportexpressiondoesnotzerooutsideSwhereas028does; mustnotidentifyambientvectorswithoutrestriction.
+
+## fep-033 — Finite-Horizon Bellman Recursion
+
+Primary deterministic finitehorizonBellmanrecursionisrflbutstate-threadinggenuine; supporting costmonotonicity/zero/discount0correct.
+
+Supplieddeterministicstep,noactionargmin/expectation/controlpolicy; arbitraryENNRealdiscountnotinfinitehorizonsummability.
+
+Positive/adverse(unexecuted): Boolfliptransition,terminalcostdifferentstates,discount1propagatesoppositevalueathorizon1; discount0removesfuture; stage0terminalvaluebasecase.
+
+Nearesttopics: 003timeindexcostsumcouldidentifyalongiteratepathwithexplicitterminalterm; ControlledMarkov/policytreesstochasticoptimizationdifferentcontractalreadyexists.
+
+## fep-034 — Normalized Bayesian Filtering
+
+Primary nativepredictive/observationjointreconstructionfromMathlibposterior; supportingpredictionmassrequiresMarkovtransition, fibre normalizationfinitekernels, priorrecoveryrequiresMarkovobservation.
+
+StandardBorelnonemptylatent,finiteprior/transition/observation explicit. NullobservationposteriorstillMarkovchosenfibre; normalizationdoesnotmeanuniqueBayesratioatnullpoint. No asymptoticfilterconsistency.
+
+Positive/adverse(unexecuted): FiniteBoolfliptransitionwithnoisypositiveobservation nontrivialposterior; zeroobservationslikelihoodpredictive-mass0allowsarbitraryposteriorversion; nonMarkovtransitionneednotpreservemass.
+
+Nearesttopics: 017posteriordefinitionidentity exact;047Fin7matrixforward differentcarrier/normalization. External93one-edgetreebridge doesnotcomplete034→047nativekernelidentification.
+
+## fep-041 — Expected Information Gain via Measure KL
+
+Primary AEposterior=prior plusSigmaFiniteprior implieszero lintegralnativeKL. Supporting finite-measureseparation/nonnegativeextendedKLcorrect.
+
+Posteriorfunctionandpredictivemeasuresupplied,notnecessarilyBayesconsistent/measurablekernel. No expectedgainpositiveiffinformative,mutualinformationidentity orintegrability/finitenessclaimed.
+
+Positive/adverse(unexecuted): Constantpriorposteriorgain0; unequalfiniteBernoullipairpositiveKL; changeonlypredictive-nullobservationstillsameexpectedgain; predictivezeromeasurehidesallchanges; singularsupportnative∞.
+
+Nearesttopics: 014nativeKLsamefunctional,021usesinformationasinput; finiteInformation/ActiveInferenceMIalreadydeliveredbutnativeexpectedBayesianposteriorKLidentificationrequiresactualjoint/referencebridge.
+
+## fep-047 — Compositional Finite Sum-Product Propagation
+
+Primary matrixmulVeccomposition unconditionalrealalgebra; supportingidentity/zero andentrynonnegativepreservation/ordermonotonicitycorrect.
+
+ForwardunnormalizedFin7weights. Monotonicityonlyneedsnonnegativefactorandorderedinputs,notnonnegativeinputs. NoBayesnormalization,Markovcolumnsum,roworientationorloopyfixedpoint.
+
+Positive/adverse(unexecuted): Identityforwardpreserves; denseallonesfactor mapsunitbasis toallones,total7notprobability; noncommutingfactorsexposeouter*innerorder; negativefactorbreaksmonotonicity.
+
+Nearesttopics: 007localnormalizedFin8 vs047fullFin7;034nativefilterconceptionrequiresfiniteembedding/transitiontranspose/likelihoodnormalization/positiveevidencebeforeformalrelationupgrade.
+
+## Findings
+
+fep-003: Positive newlyexposedstagecostalone neednotproduce nonzerodiscountedincrement:discount0,horizon>0annihilatesit. For positive discount and positive new stage cost, the terminal increment is nonzero; strict growth of the total additionally requires the previous accumulated cost to be finite. Discount zero at positive horizons exposes the zero-increment boundary.
+
+fep-028: Unequalcostsneednotyieldunequalweightsatγ0. With positive inverse temperature and a two-policy support of unequal costs, lower cost receives a strictly larger positive weight. At inverse temperature zero the law is uniform on support; excluded policies have zero mass.
+
+fep-034: Everyfibremassoneincludesarbitraryposteriorversionsonnullobservations; makethisboundaryexplicit. Posterior normalization holds in every fibre of the selected Markov version; Bayes reconstruction identifies the version only relative to the predictive observation law, so no unique pointwise Bayes ratio at null observations is asserted.
+
+fep-047: Currentwordingoverrestrictsmonotonicitybyrequiringnonnegativeinputs. Nonnegativity preservation requires nonnegative factors and inputs. Order monotonicity requires nonnegative factors and pointwise ordered inputs, which may themselves be negative. Identity/composition are unconditional algebraic laws.
+
+## Ranked bounded followups
+
+1. 003discountboundary and028temperatureboundarymetadata: Correctnonvacuitywordingandaddboundednamedexactboundarywitnessesifdesired; no strongerstatementpromotion. Libraryseam: ENNReal.zero_pow/sum_range_succ; Real.exp_zero andFinsetsum_const. Estimate: 2-4hoursplusmetadata/projectionchecks.
+
+2. 034→047exactfinite/nativefilterbridge: Useonefinitecarrier,actualnativeembeddingandMarkovtransitionorientation,likelihoodweightingandpositivepredictiveevidence; identifyunnormalizedforwardthenposteriornormalization. ExternaloneedgePTreeequalitydoesnotprovidethisnativebridge. Libraryseam: ProbabilityTheory.posterior_eq_withDensity/compProd_posterior_eq_map_swap; existingFiniteKernel.posterior andembeddedfinite/nativecarrierbridge in decision_risk. Estimate: 2-4daysboundedfinitecomposition; firstprototypeexactkernelorientation.
+
+3. 041nativeexpectedposteriorKL-to-finiteMIidentification: Do notduplicatefiniteMI/riskambiguityalreadyinfinite_information/active_inference. ProveexactexpectednativeposteriorKLidentityforfinitefullsupportBayesmodelusingactualembeddedlaws andpredictiveweights. Libraryseam: ExistingFiniteKernel.posterior,DecisionRisk.weightedDirac_klDiv_eq_finiteKL_of_relativeSupport,FiniteInformation.mutualInformation andjointchainrules. Estimate: 2-4dayssourceboundfinitebridge; no generalmeasurableclaimwithoutadditionalkernelmeasurability.
+
+4. 008→028softmaxargminorderingcommoncarrier: Actualfiniteorderingrelationwithγ>0andexplicitFin14→Fin10restriction/subtype or sharedsmallerselectedset. Existingnormalizationdoesnotimplyargminlimit. Libraryseam: Real.exp_lt_exp,positivedenominator,Finset.exists_min_image; existingGibbsvariationalfoundationforentropyobjective. Estimate: 0.5-1.5daysorderingbridge; separatetemperature-limitproofifneeded.
+
+5. 007sparse-supportnormalizationgeneralization: Replaceoverstrongstrictpositivitywithnonnegativeproductsandpositiveactualnormalizer; retainoldAPIwrappers. ThisextendsactualcarrierwithoutloopyBPclaim. Libraryseam: Finset.sum_nonneg/div_nonneg/div_self andpositive-sumwitness. Estimate: 0.5-1dayincludingoldwrapperparity.
+
+JSON binds exactprimary/supportstatements,perbodyhashes,maturityrecords,nearestrecords andfoundations. No all168acceptance, S edits or compilation.

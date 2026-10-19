@@ -19,6 +19,13 @@ Important environment variables include `OPENROUTER_API_KEY`,
 `FEP_LEAN_LAKE_EXE`, `FEP_LEAN_LEAN_EXE`, `FEP_LEAN_VERIFY_TIMEOUT`,
 `FEP_LEAN_MAX_TOPICS`, and `FEP_LEAN_OUTPUT_ROOT`.
 
+Project-root selection uses explicit CLI `--project-root`, then the current
+`project_root_context(root)`, then `FEP_LEAN_PROJECT_ROOT`, then the installed
+package's checkout fallback. Context selection does not change `os.environ`
+and resets after errors. New threads and OS processes require explicit roots;
+the publication-capture owner copies its selected root into child environments.
+See [the public caller-root API](api.md#explicit-caller-roots-and-native-operations).
+
 Relative `output.root` settings are resolved from the project checkout. Relative
 explicit API paths and `FEP_LEAN_OUTPUT_ROOT` paths retain their caller working
 directory semantics. The selected output directory, or its nearest existing

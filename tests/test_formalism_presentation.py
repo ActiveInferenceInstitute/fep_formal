@@ -62,7 +62,7 @@ def test_presentation_join_conserves_canonical_sources_and_is_immutable() -> Non
     assert len(presentation.topics) == 168
     assert len(presentation.areas) == 5
     assert len(presentation.families) == 22
-    assert len(presentation.witnesses) == 17
+    assert len(presentation.witnesses) == 22
     assert presentation.unmatched_witness_families == ()
     assert all(
         witness.evidence_kind == NON_PROOF_EVIDENCE

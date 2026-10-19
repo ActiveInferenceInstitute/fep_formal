@@ -875,7 +875,7 @@ def test_live_chrome_replay_terminates_every_profile_writer(
     for layout in mobile_layouts:
         assert layout["viewport"] == [390, 844]
         assert layout["scrollHeight"] <= 2 * layout["viewport"][1]
-        assert len(layout["summaryHeights"]) == 6
+        assert len(layout["summaryHeights"]) == 8
         assert min(layout["summaryHeights"]) >= 44
     assert (
         first.observations["dashboard_mobile"]["mobileOverviewInitiallyOpen"] is False

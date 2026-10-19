@@ -43,6 +43,11 @@ EXPECTED_IDS = (
     "geometric-solenoidal-drop",
     "h2-scalar-terminal",
     "h2-fin4-blanket",
+    "core-vfe-native-gap",
+    "core-efe-truncated-convention",
+    "core-bernoulli-bayes-reconstruction",
+    "core-bernoulli-fisher-interior",
+    "core-binary-entropy-maximum",
 )
 
 
@@ -153,7 +158,7 @@ def test_witness_registry_rejects_family_substitution(
     monkeypatch.setattr(
         witness_module,
         "_measure_bayes_reconstruction",
-        lambda: replace(original, family="core-free-energy"),
+        lambda: replace(original, family="unregistered-expanded-family"),
     )
 
     with pytest.raises(ValueError, match="family closure"):
@@ -383,3 +388,53 @@ def test_family_witnesses_exercise_nontrivial_boundaries() -> None:
     assert any(
         check.id == "lyapunov-derivative-negative" for check in continuous.checks
     )
+
+
+def test_core_extension_has_twenty_two_catalogue_and_preserves_old_id_prefix() -> None:
+    from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST
+
+    witnesses = evaluate_numerical_witnesses()
+    catalogue = evaluate_numerical_witnesses(scope="catalogue")
+    assert len(witnesses) == 24 and len(catalogue) == 22
+    assert tuple(item.id for item in witnesses[:19]) == EXPECTED_IDS[:19]
+    assert {item.family for item in catalogue} == {
+        item.family for item in BODY_MODULE_MANIFEST
+    }
+    assert all(item.scope == "catalogue" for item in witnesses[19:])
+    assert all(item.evidence_kind == NON_PROOF_EVIDENCE for item in witnesses[19:])
+
+
+def test_core_boundary_checks_are_not_infinite_table_values() -> None:
+    records = numerical_witness_by_id()
+    for identifier in EXPECTED_IDS[19:]:
+        witness = records[identifier]
+        assert witness.accepted and witness.boundary_observed
+        assert all(
+            math.isfinite(float(value)) for row in witness.rows for value in row.values
+        )
+    vfe = records["core-vfe-native-gap"]
+    assert any(
+        check.id == "singular-native-boundary" and check.accepted
+        for check in vfe.checks
+    )
+    efe = records["core-efe-truncated-convention"]
+    assert efe.rows[-1].values[1] == 0.0
+    fisher = records["core-bernoulli-fisher-interior"]
+    assert any(
+        check.id == "endpoint-refusal" and check.lhs == 2 for check in fisher.checks
+    )
+
+
+def test_manifest_core_family_cannot_be_silently_dropped(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from dataclasses import replace
+
+    original = witness_module._core_efe_truncation
+    monkeypatch.setattr(
+        witness_module,
+        "_core_efe_truncation",
+        lambda: replace(original(), family="unreviewed-core-family"),
+    )
+    with pytest.raises(ValueError, match="family closure mismatch"):
+        evaluate_numerical_witnesses()

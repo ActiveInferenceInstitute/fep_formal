@@ -1,6 +1,6 @@
 # Verification package contract
 
-This folder owns three different surfaces:
+This folder owns four different surfaces:
 
 1. `run_validation_checks` is a read-only capability probe. It must not fetch a
    toolchain, build Mathlib, create a database, or write a report.
@@ -16,6 +16,10 @@ This folder owns three different surfaces:
    and fails on missing evidence, stale projections, warnings, compiler errors,
    `sorryAx`, or any axiom outside the versioned trusted set (`propext`,
    `Classical.choice`, and `Quot.sound`).
+
+4. `setup_workspace` explicitly acquires/builds the pinned workspace with a
+   single total deadline, allowlisted compiler environment and exact pin
+   preimages. It is separate from read-only capability inspection.
 
 `preflight.py` is an adapter for `fep-lean preflight`; it is not a second public
 console script. Installation and dependency acquisition belong to

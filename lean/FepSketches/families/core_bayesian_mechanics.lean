@@ -109,7 +109,7 @@ variable {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
 
 -- [proof strategy: zero_le for ENNReal; measure_mono for likelihood ordering]
 
-/-- Generative model: joint mass factors as product of marginals (independence). -/
+/-- The product of two nonnegative measure values is nonnegative; no joint factorization or independence is asserted. -/
 theorem fep009_joint_product_nonneg (μ : Measure α) (ν : Measure β) (s : Set α) (t : Set β) :
     0 ≤ μ s * ν t :=
   bot_le

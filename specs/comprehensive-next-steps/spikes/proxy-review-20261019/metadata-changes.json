@@ -1,0 +1,702 @@
+{
+  "state": "OUTSIDE_REPOSITORY_PROPOSED_METADATA_CORRECTIONS_REVIEW_PENDING",
+  "source_head": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "source_sha256": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+  "proposed_sha256": "554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383",
+  "reviewed_rows": 168,
+  "reports": [
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-causal-blankets-and-interventions-independent-review.json",
+      "sha256": "8fd6c76353df9d2127c1a1a5873e09d4964cfb22dc2e4178a15eee0f2599f63a",
+      "ids": [
+        "fep-079",
+        "fep-080",
+        "fep-081",
+        "fep-082",
+        "fep-083",
+        "fep-084",
+        "fep-085"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-closed-loop-policy-trees-and-efe-independent-review.json",
+      "sha256": "fe2883e288ca68a59d1f2204d2d922298b83927c9a55541979fc8e043f970c53",
+      "ids": [
+        "fep-128",
+        "fep-129",
+        "fep-130",
+        "fep-131",
+        "fep-132",
+        "fep-133",
+        "fep-134"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-collective-and-multiagent-active-inference-independent-review.json",
+      "sha256": "438f1972e320050fd974b374f904a98fcbd0c60aa546e2a5dd52f5995369f9a3",
+      "ids": [
+        "fep-107",
+        "fep-108",
+        "fep-109",
+        "fep-110",
+        "fep-111",
+        "fep-112",
+        "fep-113"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-control-and-planning-as-inference-independent-review.json",
+      "sha256": "52e5288e96754f7348c01428946529b92daa460a305444b99658ee8f8f89ec9d",
+      "ids": [
+        "fep-065",
+        "fep-066",
+        "fep-067",
+        "fep-068",
+        "fep-069",
+        "fep-070",
+        "fep-071"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-core-active-inference-independent-review.json",
+      "sha256": "624eb29bfd5fb46cf520c88cc1a50e42d359353db41f33af9c33d570a07f3a60",
+      "ids": [
+        "fep-003",
+        "fep-007",
+        "fep-008",
+        "fep-021",
+        "fep-023",
+        "fep-028",
+        "fep-033",
+        "fep-034",
+        "fep-041",
+        "fep-047"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-core-bayesian-mechanics-independent-review.json",
+      "sha256": "236e8eb84e6567a7adadbe668ca770648029293a39633b1b18c5eecfa5376a99",
+      "ids": [
+        "fep-005",
+        "fep-009",
+        "fep-010",
+        "fep-017",
+        "fep-019",
+        "fep-020",
+        "fep-022",
+        "fep-027",
+        "fep-036",
+        "fep-040",
+        "fep-042",
+        "fep-045",
+        "fep-046"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-core-free-energy-independent-review.json",
+      "sha256": "18abbee287550756a76b77c85833eba81d0aad41d6a604e376b9681c73dee982",
+      "ids": [
+        "fep-001",
+        "fep-002",
+        "fep-006",
+        "fep-011",
+        "fep-012",
+        "fep-015",
+        "fep-016",
+        "fep-026",
+        "fep-032",
+        "fep-035",
+        "fep-039",
+        "fep-043",
+        "fep-048"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-core-information-geometry-independent-review.json",
+      "sha256": "b5b53b8fb6819d012bc953d93eeb3c1e5d26fe05cdf12ef041024083c9a80a90",
+      "ids": [
+        "fep-004",
+        "fep-014",
+        "fep-018",
+        "fep-024",
+        "fep-029",
+        "fep-038",
+        "fep-044"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-core-thermodynamics-independent-review.json",
+      "sha256": "51cd166910c345809eef33f4d23e26d74d7e383b8a5f1eed9f263b4ae8c53813",
+      "ids": [
+        "fep-013",
+        "fep-025",
+        "fep-030",
+        "fep-031",
+        "fep-037",
+        "fep-049",
+        "fep-050"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-finite-exponential-family-dual-geometry-independent-review.json",
+      "sha256": "d6bb77f30ba3a2f8ac593b7cb89c6aba474135315ce405b07b4a06ee29912187",
+      "ids": [
+        "fep-142",
+        "fep-143",
+        "fep-144",
+        "fep-145",
+        "fep-146",
+        "fep-147",
+        "fep-148"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-finite-sample-risk-and-calibration-independent-review.json",
+      "sha256": "76aa4de611285ec6570b33f29eadd0440f3df94038d37555ddda5287bb6f05ff",
+      "ids": [
+        "fep-121",
+        "fep-122",
+        "fep-123",
+        "fep-124",
+        "fep-125",
+        "fep-126",
+        "fep-127"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-finite-to-native-blanket-transfer-independent-review.json",
+      "sha256": "4aca8a214c2fad159aabc6b13ebfcc7ecbf70d186f1a4ca3422de46a0a456f9c",
+      "ids": [
+        "fep-135",
+        "fep-136",
+        "fep-137",
+        "fep-138",
+        "fep-139",
+        "fep-140",
+        "fep-141"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-geometric-mechanics-notation-independent-review.json",
+      "sha256": "3d0dc843238c4e5fedff7b54b80c51b2a4d3c5f083a9cbb1a64de2744c3f1a7f",
+      "ids": [
+        "fep-161",
+        "fep-162",
+        "fep-163",
+        "fep-164",
+        "fep-165",
+        "fep-167",
+        "fep-168"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-information-geometry-and-geometric-optimization-independent-review.json",
+      "sha256": "f0463cda5bf7671be746c8ab4cd59b3dea55c326e2efa2479f6c2be07e7fe5ae",
+      "ids": [
+        "fep-100",
+        "fep-101",
+        "fep-102",
+        "fep-103",
+        "fep-104",
+        "fep-105",
+        "fep-106"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-learning-concentration-and-model-evidence-independent-review.json",
+      "sha256": "50843ae3454465554bb7987b56021b9f426b82ce74de2471303577161dd0413d",
+      "ids": [
+        "fep-114",
+        "fep-115",
+        "fep-116",
+        "fep-117",
+        "fep-118",
+        "fep-119",
+        "fep-120"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-measure-bayesian-inversion-independent-review.json",
+      "sha256": "be02db71679a92026f11147dbf225f9b3910647127539ffddf4938505e2d325d",
+      "ids": [
+        "fep-051",
+        "fep-052",
+        "fep-053",
+        "fep-054",
+        "fep-055",
+        "fep-056",
+        "fep-057"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-path-space-stochastic-thermodynamics-independent-review.json",
+      "sha256": "9c2afd44dc52e89aafd122222f7ed3b450908d02d0803d01f3cd84141114e53e",
+      "ids": [
+        "fep-093",
+        "fep-094",
+        "fep-095",
+        "fep-096",
+        "fep-097",
+        "fep-098",
+        "fep-099"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-predictive-coding-and-generalized-coordinates-independent-review.json",
+      "sha256": "adb0177c16254b58dc116346e273b301cc921a4ae95ed41a453d524f0656a150",
+      "ids": [
+        "fep-086",
+        "fep-087",
+        "fep-088",
+        "fep-089",
+        "fep-090",
+        "fep-091",
+        "fep-092"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-standalone-efe-formalizations-independent-review.json",
+      "sha256": "5a8abaaed5a48069eaf6475c20ba6f22611504d34acff460f54b5e815478c51a",
+      "ids": [
+        "fep-156",
+        "fep-157",
+        "fep-158",
+        "fep-159",
+        "fep-160",
+        "fep-166"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-temporal-and-hierarchical-inference-independent-review.json",
+      "sha256": "77861eb0a03de9daedaf088304b7256a72d04d210efa3f42c38bee92e35090af",
+      "ids": [
+        "fep-072",
+        "fep-073",
+        "fep-074",
+        "fep-075",
+        "fep-076",
+        "fep-077",
+        "fep-078"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-two-state-continuous-time-thermodynamics-independent-review.json",
+      "sha256": "f552c612779cf40ea3d56bd1542de31ca22cd79b800ae501334f4b4c74da11fa",
+      "ids": [
+        "fep-149",
+        "fep-150",
+        "fep-151",
+        "fep-152",
+        "fep-153",
+        "fep-154",
+        "fep-155"
+      ]
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-family-variational-duality-and-information-bounds-independent-review.json",
+      "sha256": "96e304b4b8c058d03b6618f4efd0b1529447549d03a50bf709ba523aee2bec47",
+      "ids": [
+        "fep-058",
+        "fep-059",
+        "fep-060",
+        "fep-061",
+        "fep-062",
+        "fep-063",
+        "fep-064"
+      ]
+    }
+  ],
+  "changes": [
+    {
+      "id": "fep-003",
+      "field": "non_vacuity",
+      "released": "A positive stage cost at the newly exposed time adds the nonzero increment γ^T c_T; a zero horizon and pointwise-equal costs exercise the boundaries.",
+      "reviewed": "For positive discount and positive new stage cost, the terminal increment is nonzero; strict growth of the total additionally requires the previous accumulated cost to be finite. Discount zero at positive horizons exposes the zero-increment boundary."
+    },
+    {
+      "id": "fep-013",
+      "field": "non_vacuity",
+      "released": "The fep-040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at every positive temperature, yielding a compiled nonconstant physical witness.",
+      "reviewed": "The fep040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at positive scale and temperature, yielding a nonconstant mathematical model with explicit dimensionless units."
+    },
+    {
+      "id": "fep-017",
+      "field": "assumption_review",
+      "released": "Conditional on standard-Borel and nonempty latent structure plus finite prior and likelihood kernel. The Radon--Nikodym Bayes formula additionally uses countability of the latent space and standard-Borel observation structure. This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors.",
+      "reviewed": "Conditional on standard-Borel and nonempty latent structure plus finite prior and likelihood kernel. The Radon--Nikodym Bayes formula additionally uses countability of the latent space and standard-Borel observation structure. This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors. The Bayes-density formula additionally assumes countable latent and nonempty standard-Borel observation structure and holds only almost everywhere under the predictive law. Every selected posterior fibre is normalized, including version choices at null observations."
+    },
+    {
+      "id": "fep-027",
+      "field": "assumption_review",
+      "released": "Joint normalization requires a probability parent and Markov child; first- and second-marginal identities require the stated finite-kernel classes. The associativity theorem is exact for Mathlib composition products and does not impose causal identifiability.",
+      "reviewed": "Joint normalization requires a probability parent and Markov child. First marginal requires an SFinite parent and Markov child; second marginal requires an SFinite parent and SFinite child. Associativity is the native compProd identity; no causal identifiability is imposed."
+    },
+    {
+      "id": "fep-028",
+      "field": "non_vacuity",
+      "released": "A two-policy support with unequal costs gives unequal positive weights, while excluded policies have exact zero mass and the full ten-policy vector remains normalized.",
+      "reviewed": "With positive inverse temperature and a two-policy support of unequal costs, lower cost receives a strictly larger positive weight. At inverse temperature zero the law is uniform on support; excluded policies have zero mass. The full ten-policy vector remains normalized."
+    },
+    {
+      "id": "fep-031",
+      "field": "assumption_review",
+      "released": "Conditional only on a nonempty selected support; β and energies are arbitrary reals. The row does not derive Gibbs weights from maximum entropy or bundle the result as a measure.",
+      "reviewed": "Conditional only on a nonempty selected support; β and energies are arbitrary reals. The row does not derive Gibbs weights from maximum entropy or bundle the result as a measure. The expression sums to one only over the selected support and is not zero outside it. A support subtype or full support is required for an ambient normalized law."
+    },
+    {
+      "id": "fep-031",
+      "field": "non_vacuity",
+      "released": "A singleton support has normalized mass one, while two unequal energies produce distinct positive normalized weights.",
+      "reviewed": "A singleton selected support has mass one on that support. Two unequal energies give distinct weights when beta is nonzero, with lower energy receiving higher weight for positive beta; beta zero yields uniform supported weights."
+    },
+    {
+      "id": "fep-034",
+      "field": "assumption_review",
+      "released": "Conditional on standard-Borel nonempty latent structure, a finite prior, and finite transition and observation kernels; prediction preserves total mass when the transition is Markov, and posterior recovery additionally requires a Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem.",
+      "reviewed": "Conditional on standard-Borel nonempty latent structure, a finite prior, and finite transition and observation kernels; prediction preserves total mass when the transition is Markov, and posterior recovery additionally requires a Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem. Posterior normalization holds in every fibre of the selected Markov version; Bayes reconstruction identifies the version only relative to the predictive observation law, so no unique pointwise Bayes ratio at null observations is asserted."
+    },
+    {
+      "id": "fep-037",
+      "field": "non_vacuity",
+      "released": "For α=1/4, positive β, and nonzero variance, lag-zero response is positive and both correlation and response decay geometrically by 1/2.",
+      "reviewed": "For alpha=1/4, positive beta and strictly positive variance, lag-zero response is positive and both defined correlation and response decay geometrically by1/2."
+    },
+    {
+      "id": "fep-038",
+      "field": "assumption_review",
+      "released": "Metric positivity, inverse-metric duality, and the coordinate law require an interior Bernoulli parameter 0 < p < 1. This is a complete one-dimensional Bernoulli information geometry, not a general finite- or infinite-dimensional statistical manifold.",
+      "reviewed": "Metric positivity, inverse-metric duality and the coordinate-Jacobian algebra require 0 < p < 1. Identification of that supplied expression with the derivative of the authored 2*arcsin(sqrt p) coordinate requires the separately reviewed interior HasDerivAt bridge. No path-length theorem or general statistical manifold is asserted by the current topic declarations."
+    },
+    {
+      "id": "fep-038",
+      "field": "invariant",
+      "released": "The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines a dual natural gradient and is the pullback of the Euclidean metric along the Fisher--Rao coordinate.",
+      "reviewed": "The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines a dual natural gradient. The supplied coordinate-Jacobian expression squares to Fisher information and factorizes the metric."
+    },
+    {
+      "id": "fep-043",
+      "field": "assumption_review",
+      "released": "The general derivative-zero theorem uses Mathlib's local-minimum notion. Uniqueness and positive second derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable objectives.",
+      "reviewed": "The general derivative-zero theorem uses Mathlib's local-minimum notion. Uniqueness and positive second derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable objectives. The general deriv = 0 wrapper uses Mathlib's totalized derivative, which is zero also at nondifferentiable points; only the explicit quadratic HasDerivAt declarations establish differentiability here."
+    },
+    {
+      "id": "fep-045",
+      "field": "invariant",
+      "released": "For a nonzero evidence normalizer, likelihood-times-Bernoulli-prior mass normalizes pointwise to another Bernoulli law at the Bayes-updated parameter.",
+      "reviewed": "For nonzero evidence, likelihood-times-prior masses have the Bernoulli mass-vector form at the updated parameter. A probability-law interpretation additionally requires a prior in [0,1], nonnegative likelihoods and positive evidence."
+    },
+    {
+      "id": "fep-045",
+      "field": "non_vacuity",
+      "released": "Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one; equal likelihoods leave the prior parameter unchanged algebraically.",
+      "reviewed": "Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one. Equal nonzero likelihoods preserve the prior; both zero expose the refused evidence boundary."
+    },
+    {
+      "id": "fep-047",
+      "field": "assumption_review",
+      "released": "Nonnegativity and monotonicity require entrywise nonnegative factors and inputs. Identity and composition are unconditional algebraic laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence.",
+      "reviewed": "Nonnegativity preservation requires nonnegative factors and inputs. Order monotonicity requires nonnegative factors and pointwise ordered inputs, which may themselves be negative. Identity/composition are unconditional algebraic laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence."
+    },
+    {
+      "id": "fep-048",
+      "field": "invariant",
+      "released": "Mathlib's global ContractingWith contract gives a unique fixed point on ℝ, and iterations of the concrete halving update converge to zero.",
+      "reviewed": "Any two fixed points of a global ContractingWith map on ℝ coincide; the concrete halving map has unique fixed point zero and its iterates converge to zero."
+    },
+    {
+      "id": "fep-051",
+      "field": "non_vacuity",
+      "released": "Taking target equal to reference supplies a reconstructible case, while any target with a nonzero singular component lies on the theorem's explicit failure boundary.",
+      "reviewed": "Equal finite reference/target laws supply a concrete reconstructible case with the required decomposition instance; a nonzero singular component gives the explicit failure boundary."
+    },
+    {
+      "id": "fep-060",
+      "field": "non_vacuity",
+      "released": "Distinct actual and reference kernels yield a positive conditional remainder; matching kernels collapse only that coordinate penalty while leaving the prior-coordinate score visible.",
+      "reviewed": "If actual and reference rows differ at a latent state of positive actual-prior mass, the conditional remainder is positive. Differences confined to zero-prior rows need not contribute. Matching kernels make this coordinate penalty zero while leaving the prior score visible."
+    },
+    {
+      "id": "fep-062",
+      "field": "non_vacuity",
+      "released": "Nonconstant positive importance weights on a nonempty finite carrier give a genuinely random positive sample mean; a one-sample law recovers the base finite Jensen inequality.",
+      "reviewed": "A sampling law assigning positive probability to two different weight values gives a genuinely random sample mean. Nonconstant weights off the sampling support do not. A one-sample law recovers finite weighted Jensen."
+    },
+    {
+      "id": "fep-070",
+      "field": "non_vacuity",
+      "released": "Unequal action costs and a supported prior reweight actions nonuniformly; identically zero costs return the prior exactly for every precision.",
+      "reviewed": "For nonzero precision and two positive-prior actions with distinct costs, their posterior odds differ from prior odds. Zero precision or constant supported costs preserves the prior; zero cost does so for every precision."
+    },
+    {
+      "id": "fep-071",
+      "field": "assumption_review",
+      "released": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning.",
+      "reviewed": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately."
+    },
+    {
+      "id": "fep-073",
+      "field": "non_vacuity",
+      "released": "A nonempty future-observation list and nonconstant emission kernel produce a state-dependent backward message rather than only the terminal unit message.",
+      "reviewed": "An identity transition with differing likelihoods of the observed symbol gives a state-dependent backward message. Identical transition rows may erase that dependence even when emission rows differ."
+    },
+    {
+      "id": "fep-074",
+      "field": "non_vacuity",
+      "released": "Nonconstant backward messages reweight a nondegenerate forward law, while the evidence-agreement theorem connects independently expressed forward and backward one-step calculations.",
+      "reviewed": "Backward weights differing at two positive-forward-mass states reweight their odds; differences confined to zero-forward-mass states do not affect the normalized law."
+    },
+    {
+      "id": "fep-076",
+      "field": "non_vacuity",
+      "released": "Nonconstant energies reweight any prior with supported alternatives, whereas the zero-energy boundary leaves every prior law unchanged.",
+      "reviewed": "Energy values differing on two positive-prior-mass states change their odds. Energies constant on prior support, including nonzero constants, leave the prior unchanged."
+    },
+    {
+      "id": "fep-085",
+      "field": "assumption_review",
+      "released": "All carriers are finite and mediator evidence must be strictly positive. The result is a local statement for one authored ordering and parent set; it is not a proof of general d-separation, faithfulness, or native measurable conditional independence.",
+      "reviewed": "All carriers are finite and mediator evidence must be strictly positive. The authored local product row is defined even at a null non-descendant value; interpreting it as an identified conditional on the joint parent event additionally requires positive non-descendant mass. Existing reconstruction recovers the ordered joint atom after multiplying by both parent-evidence factors. This is one maintained ordering, not general d-separation, faithfulness or native measurable conditional independence."
+    },
+    {
+      "id": "fep-089",
+      "field": "assumption_review",
+      "released": "Generalized coordinates are finite jets represented by finitely supported coefficients. The semigroup is discrete and exact; no analytic infinite jet, time derivative, or continuous-flow convergence is claimed.",
+      "reviewed": "Generalized coordinates are finite truncated coefficient jets. The primary semigroup is discrete; the existing functionJet bridge identifies shifted iterated derivatives below the truncation boundary, while top derivative information is discarded. This does not establish analytic infinite jets, ordinary coordinate-time differentiation without regularity, or continuous-flow convergence."
+    },
+    {
+      "id": "fep-092",
+      "field": "assumption_review",
+      "released": "Convergence requires 0 < stepSize < 2; strict descent additionally requires positive precision and unequal target and estimate. The result is scalar and exact-quadratic, not a convergence theorem for nonlinear predictive-coding networks.",
+      "reviewed": "Convergence requires 0 < stepSize < 2 for the authored residual update; strict descent also needs positive precision and unequal target and estimate. A raw negative-gradient step with learning rate alpha has effective stepSize alpha*precision. The theorem is scalar exact-quadratic and does not prove stability of coupled finite-jet or nonlinear predictive-coding updates."
+    },
+    {
+      "id": "fep-097",
+      "field": "non_vacuity",
+      "released": "Nonconstant finite work values can satisfy the normalization after choosing a compatible free-energy difference, while beta positivity excludes the zero-temperature-parameter collapse.",
+      "reviewed": "The actual nonconstant Boolean Crooks work witness satisfies the normalization at beta=1 and deltaFreeEnergy=0. Positive beta excludes the zero inverse-temperature parameter boundary; no physical temperature or unit identification is inferred without an explicit convention."
+    },
+    {
+      "id": "fep-099",
+      "field": "non_vacuity",
+      "released": "The identity kernel proves the exact reversible equality boundary, while the unequal full-support Boolean path witness proves strictly positive production away from reversibility.",
+      "reviewed": "A strictly positive symmetric mixing kernel supplies an instance of the main dissipation theorem. The separately proved identity equality lies outside its positive-transition class on multi-state carriers. Unequal full-support Boolean path laws prove positive path divergence; the existing stationary biased three-cycle separately proves nonreversibility and positive production at every positive finite horizon."
+    },
+    {
+      "id": "fep-104",
+      "field": "non_vacuity",
+      "released": "Distinct left, middle, and right vectors with a nonconstant supplied gradient give nonzero pairing and divergence differences while retaining exact equality.",
+      "reviewed": "For Fin1 quadratic potential x0^2/2 and true gradient x0, the points left=2,middle=1,right=0 give divergence difference 2-1/2-1/2=1 and pairing1. This exercises the identity without asserting convexity or derivative compatibility for arbitrary supplied data."
+    },
+    {
+      "id": "fep-105",
+      "field": "assumption_review",
+      "released": "AffineBregmanProjection explicitly supplies projection membership and gradient-difference orthogonality for every candidate. Minimization separately assumes residual Bregman nonnegativity. Existence, uniqueness, convexity, and differentiability of the projection are not derived.",
+      "reviewed": "AffineBregmanProjection supplies membership and gradient-difference orthogonality for every candidate in a named Set; no IsAffine or convexity predicate is required. Splitting holds under that certificate. The minimization comparison additionally assumes residual Bregman nonnegativity for the selected candidate; obtaining a minimizer over the whole set requires this for all candidates. Existence, uniqueness, derivative compatibility and convexity are not derived."
+    },
+    {
+      "id": "fep-110",
+      "field": "non_vacuity",
+      "released": "Two distinct overlapping laws produce a pooled distribution different from either input; the positive-overlap premise visibly excludes the disjoint point mass boundary.",
+      "reviewed": "For Boolean laws with true masses3/4 and2/3, the product normalizer is7/12 and the pool true mass is6/7, different from both inputs. Disjoint opposite point masses have zero normalizer and are excluded. Distinct overlap alone does not guarantee both inputs change."
+    },
+    {
+      "id": "fep-115",
+      "field": "non_vacuity",
+      "released": "A multi-symbol alphabet and positive sample count make the union contain genuinely distinct two-sided normalized-count deviation events.",
+      "reviewed": "With one uniform Fin3 observation, target mass1/3 at each symbol and deviation1/2, the three count-deviation events are distinct singletons, each with probability1/3, and their union has probability1. Boolean complementary frequencies can instead have identical deviation events; union-bound distinctness is not assumed by the theorem."
+    },
+    {
+      "id": "fep-117",
+      "field": "non_vacuity",
+      "released": "Unequal positive likelihoods move the favored-to-reference odds multiplicatively, while a separate zero-prior hypothesis remains exactly absent from the posterior.",
+      "reviewed": "Positive equal favored/reference prior masses and likelihoods3/4 versus1/4 update odds1 to3. A separate zero-prior favored hypothesis remains absent despite unequal positive likelihoods. Reference-prior/reference-likelihood and total-evidence support remain explicit."
+    },
+    {
+      "id": "fep-127",
+      "field": "non_vacuity",
+      "released": "The smoothed and raw events are distinct whenever the shrinkage and offset change the threshold, and the finite-law monotonicity result applies to any nonzero failure bound.",
+      "reviewed": "For n=2,target=1/2,error=0, a uniform Boolean sampling law with success counts1 and0 gives raw bad-event probability1/2 and an empty smoothed event, because the smoothed deviations are0 and exactly1/4. This is a strict-containment instance. Constant count1 gives both events empty despite distinct thresholds; event distinctness is not required by the theorem."
+    },
+    {
+      "id": "fep-133",
+      "field": "assumption_review",
+      "released": "Every belief-indexed finite generative model satisfies the maintained FullSupport contract. Belief updates and horizons are finite; the theorem transports the existing risk-plus-ambiguity identity and does not establish its empirical adequacy.",
+      "reviewed": "Every belief-indexed generative model satisfies FullSupport and supplies actual model-derived EFE, risk and ambiguity. The generic update is an arbitrary function and need not be the preceding model's Bayesian posterior. The separate BayesianBeliefModel/update_filtered specialization and its policy-tree/POMDP/risk-ambiguity bridges establish that stronger filtered interpretation under their explicit support premises. All horizons/carriers remain finite; empirical adequacy is not established."
+    },
+    {
+      "id": "fep-145",
+      "field": "assumption_review",
+      "released": "The score is defined on the finite full-support exponential family. This is a natural-parameter derivative identity, not a general score-regularity theorem for arbitrary likelihoods.",
+      "reviewed": "The centered score is defined on the finite full-support exponential family. The primary unfolds that definition and the supporting theorem proves zero mean. The existing law_hasDerivAt establishes mass derivative=mass*score, so positivity supports the natural-parameter log-derivative interpretation. This does not establish score regularity for arbitrary likelihoods."
+    },
+    {
+      "id": "fep-148",
+      "field": "non_vacuity",
+      "released": "The three-state family supplies a strictly positive variance point, while the constant-statistic boundary shows why the positivity premise matters.",
+      "reviewed": "The three-state family has variance2/3 at0, and constant statistics show why positivity is required. A concrete nontrivial interval instance additionally needs variance positivity throughout that interval, derived either from continuity near0 or from full support and a nonconstant statistic; the retained point witness alone is not that interval certificate."
+    },
+    {
+      "id": "fep-151",
+      "field": "assumption_review",
+      "released": "Both times are nonnegative and rates are strictly positive. Composition is the finite Boolean matrix sum and no path-space or general generator existence theorem is inferred.",
+      "reviewed": "Rates are strictly positive. The entrywise additive matrix identity holds for arbitrary real times; restricting both times to be nonnegative supplies its probability-kernel interpretation. No continuous-path or PDE existence theorem is inferred from this identity."
+    },
+    {
+      "id": "fep-156",
+      "field": "assumption_review",
+      "released": "The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise value surface of the policy_tree module.",
+      "reviewed": "The primary Boltzmann-law minimization assumes a normalized finite full-support prior and gamma>0 and minimizes expected supplied real cost plus gamma^-1 KL to the prior over normalized candidate laws. Identifying that cost with model-derived EFE is a separate specialization. Deterministic finite-policy and finite-tree EFE/risk-ambiguity argmin statements are separate declarations. No continuous-action or general planning algorithm is claimed; supported sparse-prior and negative/zero-precision boundaries remain separately scoped foundation results."
+    },
+    {
+      "id": "fep-156",
+      "field": "non_vacuity",
+      "released": "The finite argmin exists and attains the closed-form Boltzmann value -gamma^-1 log Z for nonempty policy sets.",
+      "reviewed": "A full-support finite prior, positive precision and nonconstant finite cost give a nondegenerate Boltzmann probability law attaining the unique KL-regularized objective minimum -gamma^-1 log Z. Separately, a nonempty finite policy carrier has a deterministic EFE argmin and the treewise declarations preserve finite optimal values; that deterministic argmin is not identified with the Boltzmann law or its regularized objective value."
+    },
+    {
+      "id": "fep-157",
+      "field": "assumption_review",
+      "released": "The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim.",
+      "reviewed": "Policy, state and outcome carriers are finite; beliefs are normalized laws on the finite state carrier, not an assumed finite space of all beliefs. The primary needs positive observation evidence and FullSupport at the filtered model; finite posterior-KL decomposition additionally needs a positive reference law and full likelihood support. The native predictive DPI is separately stated on discrete measurable carriers. Prediction uses an explicit HasDobrushinBound; strict TV contraction additionally needs a coefficient below one and a nonzero initial distance. The flat-EFE posterior identity is algebraic and is not an iterated-loop fixed-point theorem."
+    },
+    {
+      "id": "fep-157",
+      "field": "invariant",
+      "released": "Each closed-loop perception-action step is non-increasing in belief surprisal: the step's KL splits exactly into predictive and posterior parts, prediction contracts the predictive distribution (Dobrushin), and the loop invariant bounds surprisal by its initial value plus accumulated expected free energy; the loop's fixed point is the Boltzmann control posterior and equals the policy posterior of the control-as-inference view.",
+      "reviewed": "For one positive-evidence observation, outcome surprisal is bounded by perception VFE, whose exact gap is finite KL from the belief to its filtered posterior; the selected filtered-model policy has EFE equal to risk plus ambiguity under FullSupport. Supporting declarations give the finite observation-averaged posterior-KL chain bound, native predictive KL data processing, a Dobrushin total-variation bound under an explicit coefficient, Bayesian-filter/kernel reconstruction and selected-policy minimization. Flat policy EFE makes the policy posterior equal its prior. No realized-observation monotonicity, accumulated trajectory bound or dynamical fixed-point/convergence theorem is asserted."
+    },
+    {
+      "id": "fep-157",
+      "field": "non_vacuity",
+      "released": "The strict step-wise KL decrease holds on the full-likelihood witness kernels, and at the fixed point the loop posterior coincides with the Boltzmann control posterior.",
+      "reviewed": "Nonuniform supported beliefs and informative likelihoods can instantiate the exact VFE gap and the observation-averaged KL decomposition. The selected-policy and filter/kernel equalities are actual finite operations. The flat-EFE case yields posterior=prior, an algebraic boundary; these declarations do not supply a strict realized-step surprisal-decrease or dynamical fixed-point witness."
+    },
+    {
+      "id": "fep-158",
+      "field": "assumption_review",
+      "released": "The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic model-selection claim.",
+      "reviewed": "Parameters and evidence use finite normalized law/kernel carriers. The primary free-energy comparison assumes weight<=1 pointwise and positive masked evidence. Normalized masked-prior/posterior statements additionally require nonnegative weights, positive prior mask normalizer and positive relevant evidence; ordinary log/ratio clauses retain their support assumptions. GibbsCertificate optimizer-gap identities and the fixed-variance Gaussian log Bayes factor are separate statements, with no general asymptotic model-selection or automatic full/reduced evidence monotonicity claim."
+    },
+    {
+      "id": "fep-158",
+      "field": "invariant",
+      "released": "Masking evidence never lowers the model evidence: the reduced model's evidence free energy dominates the full model's, the reduced posterior obeys the multiplicative Bayes-odds law with the evidence weight and reconstructs the full posterior through the evidence ratio, and the Gibbs-certificate excess over the optimizer is exactly the KL divergence to it.",
+      "reviewed": "Weights bounded above by one make positive unnormalized masked evidence no greater than full predictive evidence, so its negative-log evidence free energy is no smaller. For a nonnegative mask with positive prior normalizer, the normalized reduced-prior predictive equals maskedEvidence divided by that normalizer; no universal direction relative to full predictive evidence is claimed for this normalized quantity. Supported reduced posteriors obey exact weighted reconstruction and cross-multiplied odds identities. Separately, the Gibbs objective gap to its optimizer equals finite KL, and the fixed-variance Gaussian natural-chart log ratio is explicit."
+    },
+    {
+      "id": "fep-158",
+      "field": "non_vacuity",
+      "released": "The masked predictive is bounded by the full evidence, and the reduced posterior reconstructs the full posterior exactly through the evidence ratio.",
+      "reviewed": "With prior masses(1/2,1/2), likelihoods(9/10,1/10) and mask(1,0), full evidence is1/2, unnormalized masked evidence9/20, mask normalizer1/2 and normalized reduced-prior evidence9/10. Positive support permits exact posterior reweighting. This exercises both evidence notions without reversing the proved comparison."
+    },
+    {
+      "id": "fep-159",
+      "field": "invariant",
+      "released": "The two-state belief information gap is bounded by the entropy-production rate scaled by the relaxation time (gain at most production/decay), the evolved gap contracts to the invariant measure no slower than the relaxation timescale, the one-slice path-space entropy production equals (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved gain after any fixed positive action time vanishes.",
+      "reviewed": "For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the retained theorem gives, for each positive tolerance, existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon or Tendsto theorem is not asserted by that declaration."
+    },
+    {
+      "id": "fep-159",
+      "field": "non_vacuity",
+      "released": "The bound is attained by the stationary law for the benchmark rates, and the fast-relaxation limit exhibits the vanishing exactly.",
+      "reviewed": "At the stationary law the gap and production rate both vanish, providing an equality boundary. A full-support nonstationary belief supplies nonzero deviation and current-affinity production for the positive rates, and the explicit rate-scaling envelope gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations do not separately state the full right-limit quantifier."
+    },
+    {
+      "id": "fep-165",
+      "field": "assumption_review",
+      "released": "A concrete finite counterexample only; it shows the manuscript's honesty guard is necessary rather than decorative and claims nothing about systems satisfying the extra hypotheses of fep-163.",
+      "reviewed": "This is a concrete finite graph counterexample with outflow-minus-inflow node divergence and edge current Qij*g_j. It does not assert that fep-163 orthogonality or spatially constant-Q directional-derivative hypotheses fail: those involve separately supplied DQ data. Identifying graph divergence with analytic or fep-163 weighted derivative divergence would require a separate proved bridge."
+    },
+    {
+      "id": "fep-165",
+      "field": "invariant",
+      "released": "For the exact 2-node transport matrix [[0,1],[-1,0]] and gradient (1,0) the candidate current is (0,-1), the discrete divergence of the transport field is (2,-2), the node divergence of the current is (1,-1), and in particular equals 1 at node 0: the unconditional solenoidal drop is false, and neither the orthogonality nor the constant-Q hypothesis is available on this witness.",
+      "reviewed": "For the exact two-node skew transport matrix[[0,1],[-1,0]] and gradient(1,0), the node vector Qg is(0,-1), graph node divergence of Q is(2,-2), and graph node divergence of currentOf(Q,g) is(1,-1), hence1 at node0. This refutes an unconditional zero graph-current-divergence claim. No H,DQ or dlogp data are supplied here; the separate fep-163 remainder witness addresses its derivative-data carrier."
+    },
+    {
+      "id": "fep-165",
+      "field": "non_vacuity",
+      "released": "The witness evaluates to exactly 1 at node 0, refuting the unconditional drop on its exact hypothesis class.",
+      "reviewed": "The exact graph witness evaluates nodeDiv(currentOf Q g) at node0 to1 despite plain skew Q. It is nonvacuous for that graph claim. On the derivative-data carrier, the same pointwise Q and g can instead be paired with H=0,DQ=0,dlogp=-g and have weightedDivergence=0; the two divergence notions are not identified."
+    }
+  ],
+  "top_level_changes": [
+    {
+      "field": "review_date",
+      "released": "2026-08-21",
+      "reviewed": "2026-10-19",
+      "meaning": "Static168topicsemanticreviewdate; no execution or disposition promotion."
+    }
+  ],
+  "non_metadata_or_manually_handled_findings": [
+    {
+      "priority": "P2",
+      "row": "fep-009",
+      "path": "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py",
+      "finding": "joint_product_nonnegdocstring saysjointmassfactorsasproduct, butstatementonlyprovesnonnegativityofproductoftwomeasurevalues.",
+      "exact_correction": "The product of two nonnegative measure values is nonnegative; no joint factorization or independence is asserted."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-045",
+      "field": "invariant/non_vacuity",
+      "finding": "Z≠0closureisrealmass-vectoridentity,notprobabilitylawwithoutdomainconditions; equallikelihoodzero doesnotpreserveprior.",
+      "exact_correction": "For nonzero evidence, likelihood-times-prior masses have the Bernoulli mass-vector form at the updated parameter. Probability-law interpretation additionally requires a prior in [0,1] and nonnegative likelihoods with positive evidence. Equal nonzero likelihoods preserve the prior; both zero expose the refused evidence boundary."
+    },
+    {
+      "priority": "P2",
+      "path": "config/formalism_relations.yaml",
+      "line": 668,
+      "rows": [
+        "fep-032",
+        "fep-043"
+      ],
+      "finding": "Current032→043rationale attributesglobalconvergence to unrestrictedalgebraicidentity; effective2aeta stableinterval absent.",
+      "recommendation": "Apply independentlyreviewedIssue104rationale/docstringcorrection with exactseal/projectioncontrols; never inferconvergencefromidentityalone."
+    },
+    {
+      "priority": "P3",
+      "path": "config/theorem_maturity.yaml",
+      "line": 848,
+      "rows": [
+        "fep-043"
+      ],
+      "finding": "Clarifytotalizedderiv in generalFermatwrapper; currenttheoremdoesnotestablishdifferentiability.",
+      "recommendation": "Append assumptionreview: The general deriv=0 wrapper uses Mathlib’s totalized derivative, which is zero also at nondifferentiable points; only the explicit quadratic HasDerivAt declarations establish differentiability here."
+    },
+    {
+      "priority": "P3",
+      "path": "config/theorem_maturity.yaml",
+      "line": 942,
+      "rows": [
+        "fep-048"
+      ],
+      "finding": "Primarywrapperprovesfixedpointuniquenessconditionalontwofixedpoints; genericexistenceisimportednativeAPI,notseparatelywrapped.",
+      "recommendation": "Prefer invariant wording: Any two fixed points of a global ContractingWith map on R coincide; the concrete halving map has unique fixed point0anditeratesconverge. Or addnativegenericexistencewrapperbeforeclaiminggenericexistenceasowneddeclaration."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-038",
+      "field": "invariant/assumption_review",
+      "finding": "Currentcoordinatepullbackwordinghasnoprovenderivativeidentificationof018coordinate; candidateJacobianisdefineddirectly.",
+      "exact_correction": "The supplied coordinate-Jacobian expression squares to Fisher information and factorizes the metric. Its identification with the derivative of 2*arcsin(sqrt p) requires an additional interior HasDerivAt bridge; no path-length theorem is asserted."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-029",
+      "field": "secant_ineqdocstring",
+      "finding": "Elementaryendpointconvexcombinationlowerbounddoesnotproveconvexfunctionsecantinequality.",
+      "exact_correction": "A convex combination of ordered real endpoints is at least the lower endpoint for nonnegative weight; no general convex function is involved."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-031",
+      "field": "assumption_review/non_vacuity",
+      "finding": "SelectedsupportnormalizationdoesnotzerooutsideS; unequalenergiesweightsnotdistinctatβ0.",
+      "exact_correction": "The expression sums to one only over the selected support; it is not zero outside that support. Use a support subtype or full support for an ambient law. Unequal energies give unequal weights when beta is nonzero (and lower energy receives higher weight when beta is positive)."
+    }
+  ],
+  "all_other_data_identical": true,
+  "dispositions_changed": false,
+  "boundary": "Fresh cumulative semantic review and exact reviewed-delta historical reversal controls required before integration. Outside calculus proof not integrated; source projections/runtime/main remain pending."
+}

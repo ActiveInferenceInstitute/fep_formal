@@ -1040,50 +1040,13 @@ def _rewrite_journal(journal: dict[str, Any], journal_path: Path) -> None:
 
 
 def _validate_render_acceptance(root: Path) -> dict[str, str]:
-    """Require source-bound acceptance and independently reproduce publication.
-
-    A repeated resume is not evidence that rendering ran. The committed
-    acceptance receipt must cover the live manuscript, and the strict
-    publication validator must reproduce its installed outputs. This stage
-    uses the renderer's existing deadlines and never writes publication files.
-    """
+    """Reuse the release owner's complete source-stable acceptance barrier."""
     from fep_lean.output import release_bundle
-    from fep_lean.output.render_log import manuscript_source_digest, receipt_defects
 
-    receipt = root / "docs/render-acceptance.json"
     try:
-        receipt_bytes = release_bundle._relative_file_bytes(
-            root, "docs/render-acceptance.json"
-        )
-    except (OSError, ValueError) as exc:
-        raise RefreshRefused(f"render-acceptance barrier: {exc}") from exc
-    source_digest = manuscript_source_digest(root / "manuscript")
-    problems = list(receipt_defects(receipt, root / "manuscript"))
-    if not problems:
-        problems.extend(release_bundle._rendered_manuscript_errors(root))
-    if not problems:
-        problems.extend(release_bundle.publication_manuscript_errors(root))
-    if problems:
-        raise RefreshRefused(
-            "render-acceptance barrier: current render acceptance refused: "
-            + "; ".join(problems)
-        )
-    if (
-        release_bundle._relative_file_bytes(root, "docs/render-acceptance.json")
-        != receipt_bytes
-        or manuscript_source_digest(root / "manuscript") != source_digest
-    ):
-        raise RefreshRefused(
-            "render-acceptance barrier: inputs changed during acceptance validation"
-        )
-    provenance_bytes = release_bundle._relative_file_bytes(
-        root, release_bundle.RENDERER_PROVENANCE.as_posix()
-    )
-    return {
-        "receipt_sha256": hashlib.sha256(receipt_bytes).hexdigest(),
-        "renderer_provenance_sha256": hashlib.sha256(provenance_bytes).hexdigest(),
-        "manuscript_source_digest": source_digest,
-    }
+        return release_bundle.validate_render_acceptance_barrier(root)
+    except release_bundle.ReleaseBundleError as exc:
+        raise RefreshRefused(str(exc)) from exc
 
 
 def resume_refresh(

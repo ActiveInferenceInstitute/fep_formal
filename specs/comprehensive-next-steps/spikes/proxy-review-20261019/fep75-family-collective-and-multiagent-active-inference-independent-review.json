@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "collective-and-multiagent-active-inference",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-107",
+    "fep-108",
+    "fep-109",
+    "fep-110",
+    "fep-111",
+    "fep-112",
+    "fep-113"
+  ],
+  "combined_issue75_audit_count": 120,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/collective_inference.py": "fa0b3a94bb49d43a310da37c324e5452f44141cc009c44d487b9ebef78690e80",
+    "lean/FepSketches/families/collective_inference.lean": "f69fc5e8888ecf487a6123dcbcb8b5d7b3e1c95d075186547532f1d90c80168b",
+    "src/fep_lean/formal/collective_inference.lean": "f6d29044c0e890f97ea063e689291399f00c361c132f3970ba55b425f3a43a90",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "src/fep_lean/formal/active_inference.lean": "260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07",
+    "src/fep_lean/formal/empirical_risk.lean": "6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1",
+    "src/fep_lean/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
+    "src/fep_lean/formal/compositions/collective_learning.lean": "a7eaa3e827a2996a398c4ff827dfddef641f1f084be38e0a0fcd8dc378c0f8d1",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-107",
+      "title": "Product-Agent Generative Law",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "401425197ca2143a209c4e8f05ca1eb5449328dbf94d0ce1bcc1cb75124d6638",
+      "maturity_record": {
+        "id": "fep-107",
+        "primary_theorem": "fep107_productAgent_generative_mass",
+        "supporting_theorems": [
+          "fep107_productKernel_normalized"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Independent product priors and product observation kernels yield a normalized joint kernel whose generative mass factors exactly into the two agent-level generative masses.",
+        "assumption_review": "Both state and observation carriers are finite and each component law and kernel is normalized. Independence is built into FiniteLaw.product and the productKernel coordinate definition; the theorem does not infer independence from an arbitrary coupled multiagent law.",
+        "non_vacuity": "Nondegenerate component priors and nonconstant component kernels make all four coordinates contribute to joint mass while product-kernel normalization still requires summing over every paired observation.",
+        "acceptance_probe": "native Lean compile of fep107_productAgent_generative_mass and fep107_productKernel_normalized on arbitrary finite component laws and kernels.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep107_productAgent_generative_mass": "theorem fep107_productAgent_generative_mass\n    (priorLeft : FiniteLaw State₁) (priorRight : FiniteLaw State₂)\n    (kernelLeft : FiniteKernel State₁ Observation₁)\n    (kernelRight : FiniteKernel State₂ Observation₂)\n    (stateLeft : State₁) (stateRight : State₂)\n    (observationLeft : Observation₁) (observationRight : Observation₂) :\n    (FEP.CollectiveInference.productKernel kernelLeft kernelRight).joint\n        (FiniteLaw.product priorLeft priorRight)\n        ((stateLeft, stateRight), (observationLeft, observationRight)) =\n      kernelLeft.joint priorLeft (stateLeft, observationLeft) *\n        kernelRight.joint priorRight (stateRight, observationRight)",
+        "fep107_productKernel_normalized": "theorem fep107_productKernel_normalized\n    (left : FiniteKernel State₁ Observation₁)\n    (right : FiniteKernel State₂ Observation₂)\n    (state : State₁ × State₂) :\n    ∑ observation,\n      FEP.CollectiveInference.productKernel left right state observation = 1"
+      },
+      "statement_review": "The product prior and coordinatewise product observation kernel give pointwise product generative mass and normalized observation rows. This is a genuine finite product construction, not an empirically inferred independence fact.",
+      "assumptions_and_scope": "Independence is authored at both prior and conditional mechanism. No actions, interacting beliefs, shared observations, communication or empirical collective agency are present in this row. Correlated priors can break the generative factorization even if both kernels remain product.",
+      "positive_witness_specification_unexecuted": "Use two fair Boolean priors with deterministic identity observation kernels; each matching four-coordinate atom has mass1/4 and observation rows normalize.",
+      "adverse_witness_specification_unexecuted": "Replace the product prior by a diagonal correlated Boolean joint: the two matched generative factors no longer reconstruct its mass1/2 using marginal products1/4.",
+      "nearest_topic_distinction": "027 is native hierarchical law construction and019 native sequential prediction; the current bridge pairs product mass with native hierarchy normalization, not an embedding equality.",
+      "novelty_record": {
+        "id": "fep-107",
+        "nearest_topics": [
+          "fep-027",
+          "fep-019"
+        ],
+        "new_invariant": "Independent product-agent priors and kernels factor generative mass and preserve kernel normalization.",
+        "carrier_delta": "Pairs two finite state–observation systems with coordinatewise product laws rather than one hierarchical latent chain.",
+        "required_bridge": "FEPComposed.fep107_product_agent_extends_fep027_hierarchy"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-107",
+          "target": "fep-027",
+          "kind": "formal_pairing",
+          "rationale": "Independent product-agent generative mass factorizes pointwise, while the original native hierarchical joint remains normalized under probability and Markov assumptions.",
+          "witness": "FEPComposed.fep107_product_agent_extends_fep027_hierarchy"
+        }
+      ]
+    },
+    {
+      "id": "fep-108",
+      "title": "Additive Collective Variational Free Energy",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "3683d02b54773dee28599d1024a128d86ed31b461ae8ff70a78ca07c066fdab1",
+      "maturity_record": {
+        "id": "fep-108",
+        "primary_theorem": "fep108_collectiveVFE_additive",
+        "supporting_theorems": [
+          "fep108_productCost_additive"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Variational free energy of independent product laws with additive cost is exactly the sum of the two agent-level free energies.",
+        "assumption_review": "State carriers are finite, both reference factors have full support, actual and reference joint laws are products, and joint cost is additive. The result does not discard a dependence or interaction term for a coupled law or nonadditive cost.",
+        "non_vacuity": "Unequal actual and reference factors with nonconstant component costs make both KL and expectation terms contribute, while the separate product-cost theorem isolates the expectation part of additivity.",
+        "acceptance_probe": "native Lean compile of fep108_collectiveVFE_additive and fep108_productCost_additive with both reference-support hypotheses.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep108_collectiveVFE_additive": "theorem fep108_collectiveVFE_additive\n    (actualLeft referenceLeft : FiniteLaw State₁)\n    (actualRight referenceRight : FiniteLaw State₂)\n    (leftCost : State₁ → ℝ) (rightCost : State₂ → ℝ)\n    (referenceLeftPositive : ∀ state, 0 < referenceLeft state)\n    (referenceRightPositive : ∀ state, 0 < referenceRight state) :\n    FEP.CollectiveInference.collectiveVFE\n        actualLeft referenceLeft actualRight referenceRight leftCost rightCost =\n      FEP.CollectiveInference.variationalFreeEnergy\n          actualLeft referenceLeft leftCost +\n        FEP.CollectiveInference.variationalFreeEnergy\n          actualRight referenceRight rightCost",
+        "fep108_productCost_additive": "theorem fep108_productCost_additive\n    (left : FiniteLaw State₁) (right : FiniteLaw State₂)\n    (leftCost : State₁ → ℝ) (rightCost : State₂ → ℝ) :\n    FEP.CollectiveInference.expectedCost (FiniteLaw.product left right)\n        (fun state => leftCost state.1 + rightCost state.2) =\n      FEP.CollectiveInference.expectedCost left leftCost +\n        FEP.CollectiveInference.expectedCost right rightCost"
+      },
+      "statement_review": "Finite KL of product actual/reference laws plus the expectation of an additive cost equals the sum of individual objectives. Actual laws may have zeros; the reference factors must have full support.",
+      "assumptions_and_scope": "The named VFE is defined as KL(actual||reference)+expected supplied cost. No posterior/surprisal relation, physical energy units or optimization process follows without another bridge. Arbitrary real costs may be negative and cost offsets can cancel KL.",
+      "positive_witness_specification_unexecuted": "Use nonuniform actual Boolean factors, uniform positive references and positive nonconstant costs with positive actual support, so both component KL and expectation terms are nonzero.",
+      "adverse_witness_specification_unexecuted": "A correlated diagonal actual joint against a uniform product reference has extra dependence KL that is absent from the sum of marginal KLs. A cross-coordinate interaction cost also defeats the additive formula.",
+      "nearest_topic_distinction": "039 is arbitrary four-block scalar additivity;001 is measure-native variational upper bound. This row proves product KL/expectation additivity, with no identity to001 implied by naming.",
+      "novelty_record": {
+        "id": "fep-108",
+        "nearest_topics": [
+          "fep-039",
+          "fep-001"
+        ],
+        "new_invariant": "Product-law variational free energy with additive cost equals the sum of agent-level free energies.",
+        "carrier_delta": "Adds two full-support reference factors and explicitly separates independent product KL and expected-cost components.",
+        "required_bridge": "FEPComposed.fep108_collective_vfe_extends_fep039_additivity"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-108",
+          "target": "fep-039",
+          "kind": "formal_pairing",
+          "rationale": "Product-law collective VFE additivity extends the original four-block global free-energy additivity law without identifying their scalar models.",
+          "witness": "FEPComposed.fep108_collective_vfe_extends_fep039_additivity"
+        }
+      ]
+    },
+    {
+      "id": "fep-109",
+      "title": "Independent-Agent Expected-Free-Energy Additivity",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "b7918e89df603060e113f9500906716e8ed9eac54bc6d97a7701b0fd1f056426",
+      "maturity_record": {
+        "id": "fep-109",
+        "primary_theorem": "fep109_independentEFE_additive",
+        "supporting_theorems": [
+          "fep109_additiveAmbiguity_expectation"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Expected free energy of product predictive and preference laws with additive ambiguity equals the sum of independent agent-level expected free energies.",
+        "assumption_review": "Both finite preference factors have full support, predictive and preference joint laws are products, and ambiguity is coordinate-additive. No additivity is claimed for statistically coupled agents, shared outcomes, or a nonseparable ambiguity functional.",
+        "non_vacuity": "Distinct predictive and preference factors yield nonzero risk terms, while nonconstant ambiguity functions make both component expectations contribute to the collective value.",
+        "acceptance_probe": "native Lean compile of fep109_independentEFE_additive and fep109_additiveAmbiguity_expectation with preference support explicit.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep109_independentEFE_additive": "theorem fep109_independentEFE_additive\n    (predictiveLeft preferenceLeft : FiniteLaw State₁)\n    (predictiveRight preferenceRight : FiniteLaw State₂)\n    (ambiguityLeft : State₁ → ℝ) (ambiguityRight : State₂ → ℝ)\n    (preferenceLeftPositive : ∀ state, 0 < preferenceLeft state)\n    (preferenceRightPositive : ∀ state, 0 < preferenceRight state) :\n    FEP.CollectiveInference.independentCollectiveEFE\n        predictiveLeft preferenceLeft predictiveRight preferenceRight\n        ambiguityLeft ambiguityRight =\n      FEP.CollectiveInference.expectedFreeEnergy\n          predictiveLeft preferenceLeft ambiguityLeft +\n        FEP.CollectiveInference.expectedFreeEnergy\n          predictiveRight preferenceRight ambiguityRight",
+        "fep109_additiveAmbiguity_expectation": "theorem fep109_additiveAmbiguity_expectation\n    (left : FiniteLaw State₁) (right : FiniteLaw State₂)\n    (ambiguityLeft : State₁ → ℝ) (ambiguityRight : State₂ → ℝ) :\n    FEP.CollectiveInference.expectedCost (FiniteLaw.product left right)\n        (fun state => ambiguityLeft state.1 + ambiguityRight state.2) =\n      FEP.CollectiveInference.expectedCost left ambiguityLeft +\n        FEP.CollectiveInference.expectedCost right ambiguityRight"
+      },
+      "statement_review": "The defined risk-plus-expected-supplied-ambiguity objective is additive for product predictive/preference laws and additive ambiguity. Full preference support enables ordinary finite KL product decomposition.",
+      "assumptions_and_scope": "Ambiguity is an arbitrary real statewise function here, not proved to be an observation-kernel conditional entropy. The foundation active_inference already has actual model-derived risk/ambiguity and epistemic identities; those require a separate model-specific common-carrier integration before attaching them to these supplied functions.",
+      "positive_witness_specification_unexecuted": "Use distinct positive predictive/preference factors and explicitly nonnegative nonconstant ambiguity costs positive on predictive support.",
+      "adverse_witness_specification_unexecuted": "Correlated predictive joint against product preferences includes dependence risk; nonadditive ambiguity creates an interaction expectation. A supplied negative ambiguity need not have an entropy interpretation.",
+      "nearest_topic_distinction": "021 is ENNReal truncated pragmatic-minus-epistemic balance and041 native posterior information gain. The current relation pairs the real additivity identity with021 under its own balance premise, not equality of the objectives.",
+      "novelty_record": {
+        "id": "fep-109",
+        "nearest_topics": [
+          "fep-021",
+          "fep-041"
+        ],
+        "new_invariant": "Product predictive and preference laws with additive ambiguity give additive expected free energy.",
+        "carrier_delta": "Extends one-agent epistemic–pragmatic balance to two independent finite agents with full-support preferences.",
+        "required_bridge": "FEPComposed.fep109_independent_efe_extends_fep021"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-109",
+          "target": "fep-021",
+          "kind": "formal_pairing",
+          "rationale": "Independent-agent EFE additivity is paired with the original truncated EFE sign convention and its exact epistemic-balance premise.",
+          "witness": "FEPComposed.fep109_independent_efe_extends_fep021"
+        }
+      ]
+    },
+    {
+      "id": "fep-110",
+      "title": "Unit-Weight Product-of-Experts Pool Normalization",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "80ede1c61d228190420034c53d147d2143a7568eb93cc0b8f513de4922f0fa4e",
+      "maturity_record": {
+        "id": "fep-110",
+        "primary_theorem": "fep110_unitWeightProductOfExpertsPool_normalized",
+        "supporting_theorems": [
+          "fep110_unitWeightProductOfExpertsPool_mass"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The unit-weight finite product-of-experts pool is the normalized pointwise product of two laws and has total mass one whenever its normalizer is positive.",
+        "assumption_review": "The state carrier is finite and the pointwise-product normalizer must be strictly positive. Disjoint supports are excluded. This unit-weight product uses exponents one, not the one-half exponents of an equal-weight logarithmic pool, and no externally Bayesian pooling property is claimed.",
+        "non_vacuity": "Two distinct overlapping laws produce a pooled distribution different from either input; the positive-overlap premise visibly excludes the disjoint point mass boundary.",
+        "acceptance_probe": "native Lean compile of fep110_unitWeightProductOfExpertsPool_normalized and fep110_unitWeightProductOfExpertsPool_mass with a strictly positive pointwise-product normalizer.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep110_unitWeightProductOfExpertsPool_normalized": "theorem fep110_unitWeightProductOfExpertsPool_normalized\n    (left right : FiniteLaw State)\n    (normalizerPositive :\n      0 < FEP.CollectiveInference.productOfExpertsNormalizer left right) :\n    ∑ state,\n        FEP.CollectiveInference.unitWeightProductOfExpertsPool\n          left right normalizerPositive state = 1",
+        "fep110_unitWeightProductOfExpertsPool_mass": "theorem fep110_unitWeightProductOfExpertsPool_mass\n    (left right : FiniteLaw State)\n    (normalizerPositive :\n      0 < FEP.CollectiveInference.productOfExpertsNormalizer left right)\n    (state : State) :\n    FEP.CollectiveInference.unitWeightProductOfExpertsPool\n        left right normalizerPositive state =\n      left state * right state /\n        FEP.CollectiveInference.productOfExpertsNormalizer left right"
+      },
+      "statement_review": "A strictly positive pointwise-product normalizer defines a normalized law with masses proportional to left*right. The exponents are1 and1; this differs from equal-weight logarithmic pooling with exponents1/2,1/2.",
+      "assumptions_and_scope": "Positive overlap excludes disjoint supports but does not force the pool to differ from both inputs. Existing linearPool and logPool KL decompositions, minima and uniqueness are delivered in the same foundation under their explicit support/weight contracts. The logPool exp(sum weighted logs) definition has totalized behavior at zero expert mass; its geometric/KL interpretation requires the theorem full-support premises.",
+      "positive_witness_specification_unexecuted": "Bool true masses3/4 and2/3 yield product true1/2,false1/12,Z7/12 and pooled true6/7, different from both inputs.",
+      "adverse_witness_specification_unexecuted": "Uniform left with nonuniform right produces pool=right despite distinct overlapping laws. Disjoint opposite point masses give Z0 and cannot construct this pool.",
+      "nearest_topic_distinction": "028 softmax and031 Gibbs normalization are nearby normalizers, not equivalences or external Bayesian pooling. Keep unit-weight product distinct from the separately available normalized weighted log-pool.",
+      "novelty_record": {
+        "id": "fep-110",
+        "nearest_topics": [
+          "fep-028",
+          "fep-031"
+        ],
+        "new_invariant": "A positive-normalizer unit-weight product-of-experts pool is the normalized pointwise product of two finite laws.",
+        "carrier_delta": "Replaces one prior-weighted softmax with two peer laws, exponent one on each factor, and an explicit pointwise-product normalizer; it is not an equal-weight logarithmic pool.",
+        "required_bridge": "FEPComposed.fep110_product_of_experts_refines_fep028_normalization"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-110",
+          "target": "fep-028",
+          "kind": "formal_pairing",
+          "rationale": "Positive-normalizer unit-weight product-of-experts pooling and nonempty-support softmax each expose exact finite normalization; the pairing does not identify their weighting conventions. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+          "witness": "FEPComposed.fep110_product_of_experts_refines_fep028_normalization"
+        }
+      ]
+    },
+    {
+      "id": "fep-111",
+      "title": "Consensus Mass Conservation",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "05498c2f2f166e2a1844337f873d8728b969b4118932bfa790c393cd57c3b2a7",
+      "maturity_record": {
+        "id": "fep-111",
+        "primary_theorem": "fep111_consensus_pointwise_mass_conserved",
+        "supporting_theorems": [
+          "fep111_consensus_total_mass_two"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The specified doubly stochastic two-agent consensus update conserves combined mass at every state and therefore preserves total combined mass two.",
+        "assumption_review": "The state carrier is finite and both inputs are normalized FiniteLaw values. Conservation is for the maintained two-agent mixing operator; it does not establish consensus, stationarity, or conservation for arbitrary interaction matrices.",
+        "non_vacuity": "Unequal input laws redistribute statewise mass between agents while the exact pointwise sum remains fixed and the two output laws each remain normalized.",
+        "acceptance_probe": "native Lean compile of fep111_consensus_pointwise_mass_conserved and fep111_consensus_total_mass_two for arbitrary finite input laws.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep111_consensus_pointwise_mass_conserved": "theorem fep111_consensus_pointwise_mass_conserved\n    (left right : FiniteLaw State) (state : State) :\n    FEP.CollectiveInference.consensusLeft left right state +\n        FEP.CollectiveInference.consensusRight left right state =\n      left state + right state",
+        "fep111_consensus_total_mass_two": "theorem fep111_consensus_total_mass_two\n    (left right : FiniteLaw State) :\n    (∑ state, FEP.CollectiveInference.consensusLeft left right state) +\n        ∑ state, FEP.CollectiveInference.consensusRight left right state = 2"
+      },
+      "statement_review": "The fixed symmetric stochastic mixing matrix[[3/4,1/4],[1/4,3/4]] preserves the sum of two agent masses at every state. Each output is a FiniteLaw, hence combined total2.",
+      "assumptions_and_scope": "Normalization alone does not establish pointwise two-agent conservation; doubly stochastic structure of this specified matrix does. It does not itself prove convergence, correctness of beliefs or arbitrary-network conservation.",
+      "positive_witness_specification_unexecuted": "Opposite Boolean point masses become true masses3/4 and1/4, preserving initial combined true mass1 and moving mass between agents.",
+      "adverse_witness_specification_unexecuted": "A merely row-stochastic matrix with both rows copying agent1 normalizes both output laws but generally changes the combined pointwise mass.",
+      "nearest_topic_distinction": "025 antisymmetric total divergence conservation and046 stick-breaking allocation are different conservation carriers; the present bridge is a pairing with025, not a dynamical equivalence.",
+      "novelty_record": {
+        "id": "fep-111",
+        "nearest_topics": [
+          "fep-025",
+          "fep-046"
+        ],
+        "new_invariant": "The maintained doubly stochastic two-agent update conserves pointwise and total combined belief mass.",
+        "carrier_delta": "Moves conservation from one nonequilibrium current or stick-breaking law to redistribution across two normalized agents.",
+        "required_bridge": "FEPComposed.fep111_consensus_mass_extends_fep025_conservation"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-111",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The two-agent consensus step conserves pointwise mass; the original antisymmetric-current theorem conserves total divergence.",
+          "witness": "FEPComposed.fep111_consensus_mass_extends_fep025_conservation"
+        }
+      ]
+    },
+    {
+      "id": "fep-112",
+      "title": "Contractive Belief-Consensus Convergence",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "c9f183bff8d047884d788ffb534d54e0ac22b0a3fb6ff36bb2607de020778685",
+      "maturity_record": {
+        "id": "fep-112",
+        "primary_theorem": "fep112_consensus_converges",
+        "supporting_theorems": [
+          "fep112_consensus_half_contraction"
+        ],
+        "boundary_theorems": [
+          "fep112_bool_nonzero_strict_witness"
+        ],
+        "invariant": "Iterating the maintained strictly stochastic two-agent update halves each atomwise belief gap and drives pointwise disagreement to zero.",
+        "assumption_review": "State is finite and consensus uses the fixed one-quarter/three-quarter mixing matrix encoded by consensusLeft and consensusRight. Convergence is pointwise for two agents; no arbitrary network topology, time-varying weights, or rate in a global probability metric is claimed.",
+        "non_vacuity": "Opposite Boolean point masses begin with unit gap, retain positive gap one half after one update, and satisfy a strict decrease rather than a zero-gap tautology.",
+        "acceptance_probe": "native Lean compile of fep112_consensus_converges, fep112_consensus_half_contraction, and fep112_bool_nonzero_strict_witness.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep112_consensus_converges": "theorem fep112_consensus_converges\n    (left right : FiniteLaw State) (state : State) :\n    Tendsto\n      (fun iterations =>\n        FEP.CollectiveInference.beliefGap\n          (FEP.CollectiveInference.consensusIterate\n            (left, right) iterations).1\n          (FEP.CollectiveInference.consensusIterate\n            (left, right) iterations).2 state)\n      atTop (nhds 0)",
+        "fep112_consensus_half_contraction": "theorem fep112_consensus_half_contraction\n    (left right : FiniteLaw State) (state : State) :\n    FEP.CollectiveInference.beliefGap\n        (FEP.CollectiveInference.consensusLeft left right)\n        (FEP.CollectiveInference.consensusRight left right) state =\n      (1 / 2 : ℝ) *\n        FEP.CollectiveInference.beliefGap left right state",
+        "fep112_bool_nonzero_strict_witness": "theorem fep112_bool_nonzero_strict_witness :\n    FEP.CollectiveInference.beliefGap\n        (FiniteLaw.pointMass true) (FiniteLaw.pointMass false) true = 1 ∧\n      FEP.CollectiveInference.beliefGap\n          (FEP.CollectiveInference.consensusLeft\n            (FiniteLaw.pointMass true) (FiniteLaw.pointMass false))\n          (FEP.CollectiveInference.consensusRight\n            (FiniteLaw.pointMass true) (FiniteLaw.pointMass false)) true = 1 / 2 ∧\n      0 < FEP.CollectiveInference.beliefGap\n          (FEP.CollectiveInference.consensusLeft\n            (FiniteLaw.pointMass true) (FiniteLaw.pointMass false))\n          (FEP.CollectiveInference.consensusRight\n            (FiniteLaw.pointMass true) (FiniteLaw.pointMass false)) true ∧\n      FEP.CollectiveInference.beliefGap\n          (FEP.CollectiveInference.consensusLeft\n            (FiniteLaw.pointMass true) (FiniteLaw.pointMass false))\n          (FEP.CollectiveInference.consensusRight\n            (FiniteLaw.pointMass true) (FiniteLaw.pointMass false)) true <\n        FEP.CollectiveInference.beliefGap\n          (FiniteLaw.pointMass true) (FiniteLaw.pointMass false) true"
+      },
+      "statement_review": "Under the fixed synchronous two-agent operator, every absolute atomwise difference is multiplied by1/2, so its nth iterate equals(1/2)^n times its initial value and tends0. The opposite-Boolean witness remains positive after one step.",
+      "assumptions_and_scope": "This row proves disagreement convergence, not that the shared limit is a true external-state belief. Existing foundation Dobrushin spread contraction, asymmetric3-agent positive-scrambling witness and identity noncontraction control already extend beyond the fixed matrix; do not call all general finite mixing absent. A theorem for arbitrary time-varying networks/agent belief laws still needs normalization and uniform mixing hypotheses.",
+      "positive_witness_specification_unexecuted": "Reuse the actual opposite-Boolean strict witness; combine conserved pointwise sums with vanishing gaps to specify convergence of each agent to the initial arithmetic mean.",
+      "adverse_witness_specification_unexecuted": "Identity mixing is already proved not to contract; a swap matrix can perpetually alternate. Row stochasticity alone cannot imply convergence.",
+      "nearest_topic_distinction": "048 half-map convergence and020 symmetric two-state recurrence share scalar contraction structure. Current edge conjoins these instances rather than proving a general network theorem.",
+      "novelty_record": {
+        "id": "fep-112",
+        "nearest_topics": [
+          "fep-048",
+          "fep-020"
+        ],
+        "new_invariant": "Fixed two-agent consensus halves each atomwise gap and converges pointwise to zero disagreement.",
+        "carrier_delta": "Instantiates contractive iteration on a pair of finite laws and adds an explicit nonzero strict Boolean witness.",
+        "required_bridge": "FEPComposed.fep112_consensus_convergence_extends_fep048_contraction"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-112",
+          "target": "fep-048",
+          "kind": "formal_pairing",
+          "rationale": "Atomwise consensus disagreement converges to zero, extending the original concrete halving-contraction convergence witness.",
+          "witness": "FEPComposed.fep112_consensus_convergence_extends_fep048_contraction"
+        }
+      ]
+    },
+    {
+      "id": "fep-113",
+      "title": "Coupled-Agent Potential Descent",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "21f6de5347045c8bd74ba42c93901845db566e918b95f9b61823b8ecd2c025d3",
+      "maturity_record": {
+        "id": "fep-113",
+        "primary_theorem": "fep113_coupledPotential_strict_descent",
+        "supporting_theorems": [
+          "fep113_coupledPotential_contracts"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The maintained consensus coupling quarters atomwise quadratic disagreement potential and decreases it strictly whenever the two input masses differ at that atom.",
+        "assumption_review": "State is finite and the potential is the exact scalar square of the two-agent atomwise gap under the fixed consensus operator. Strictness requires explicit separation; the theorem does not cover a general coupled free-energy functional or nonlinear multiagent dynamics.",
+        "non_vacuity": "Any state at which the two laws assign unequal mass has positive initial potential and a strictly smaller positive quarter-potential after one update.",
+        "acceptance_probe": "native Lean compile of fep113_coupledPotential_strict_descent and fep113_coupledPotential_contracts with the separated-atom premise.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep113_coupledPotential_strict_descent": "theorem fep113_coupledPotential_strict_descent\n    (left right : FiniteLaw State) (state : State)\n    (separated : left state ≠ right state) :\n    FEP.CollectiveInference.coupledPotential\n        (FEP.CollectiveInference.consensusLeft left right)\n        (FEP.CollectiveInference.consensusRight left right) state <\n      FEP.CollectiveInference.coupledPotential left right state",
+        "fep113_coupledPotential_contracts": "theorem fep113_coupledPotential_contracts\n    (left right : FiniteLaw State) (state : State) :\n    FEP.CollectiveInference.coupledPotential\n        (FEP.CollectiveInference.consensusLeft left right)\n        (FEP.CollectiveInference.consensusRight left right) state =\n      (1 / 4 : ℝ) *\n        FEP.CollectiveInference.coupledPotential left right state"
+      },
+      "statement_review": "The atomwise squared difference contracts by1/4 under the same fixed consensus step and is strictly smaller precisely at an explicitly separated atom.",
+      "assumptions_and_scope": "This is a quadratic disagreement potential, not a general coupled VFE or game potential. Equal mass at one atom has0 potential there even if agents differ elsewhere; no empirical multiagent performance follows.",
+      "positive_witness_specification_unexecuted": "Opposite Boolean point masses have potential1 at true and post-step1/4, with both values positive.",
+      "adverse_witness_specification_unexecuted": "Identical laws give equality0. Arbitrary noncontractive coupling can conserve total mass without decreasing disagreement.",
+      "nearest_topic_distinction": "112 is absolute gap convergence;113 is squared-gap one-step strict descent.032 scalar quadratic energy descent is paired at its own stable-step range, not a new collective objective derivation.",
+      "novelty_record": {
+        "id": "fep-113",
+        "nearest_topics": [
+          "fep-032",
+          "fep-112"
+        ],
+        "new_invariant": "Consensus quarters quadratic disagreement potential and strictly descends at every separated atom.",
+        "carrier_delta": "Recasts scalar quadratic descent as a coupled two-law potential under the maintained stochastic consensus operator.",
+        "required_bridge": "FEPComposed.fep113_coupled_potential_refines_fep032_descent"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-113",
+          "target": "fep-032",
+          "kind": "formal_pairing",
+          "rationale": "Nonzero consensus disagreement gives strict coupled-potential descent, alongside the original stable-step quadratic-energy descent law.",
+          "witness": "FEPComposed.fep113_coupled_potential_refines_fep032_descent"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-110",
+      "field": "non_vacuity",
+      "finding": "Distinct overlapping laws can pool to one input, e.g. one input uniform.",
+      "proposed_text": "For Boolean laws with true masses3/4 and2/3, the product normalizer is7/12 and the pool true mass is6/7, different from both inputs. Disjoint opposite point masses have zero normalizer and are excluded. Distinct overlap alone does not guarantee both inputs change."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "110 concrete pooling/source bindings",
+      "owner": "src/fep_lean/formal/collective_inference.lean",
+      "seam": "Reuse existing positive-normalizer unit-weight pool and weighted KL-optimal linear/log-pool theorems. Add typed6/7 and uniform-input/disjoint-support consumers, retaining exponents and full-support requirements; do not duplicate existing variational pooling.",
+      "estimate": "0.5–1 day",
+      "positive": "3/4 and2/3 pool to6/7",
+      "adverse": "uniform left leaves right unchanged; disjoint point masses refused"
+    },
+    {
+      "rank": 2,
+      "scope": "112 consensus limit law/global finite metric",
+      "owner": "src/fep_lean/formal/collective_inference.lean",
+      "seam": "Combine pointwise sum conservation and exact gap recurrence to prove each agent converges to arithmetic mean; sum finite atomwise gaps to obtain a named finite L1/TV rate. Existing Dobrushin spread inequality and3-agent example are already present.",
+      "estimate": "1–2 days",
+      "positive": "opposite Boolean point masses converge to uniform",
+      "adverse": "identity/swap matrices fail contraction"
+    },
+    {
+      "rank": 3,
+      "scope": "109 actual model-derived ambiguity specialization",
+      "owner": "src/fep_lean/formal/collective_inference.lean",
+      "seam": "Use existing active_inference generative-model ambiguity/risk and actual product kernels; prove ambiguity additivity/identify supplied cost functions on matching state-observation carriers. Explicit finite support remains; no empirical multiagent dynamics.",
+      "estimate": "2–4 days",
+      "positive": "independent nontrivial observation channels",
+      "adverse": "shared/correlated observations or nonseparable costs"
+    }
+  ],
+  "limitations": [
+    "Static exact-source semantic review; no Lean/tests/subject execution or S modifications. Examples are unexecuted specifications; existing named source theorems are not newly executed evidence.",
+    "No empirical multiagent, arbitrary network, full Dirichlet measure conjugacy, high-probability PAC generalization, scientific or terminal acceptance inferred.",
+    "Remaining48 topics and active dependency/metadata seal/projection/custody/publication gates remain open."
+  ]
+}

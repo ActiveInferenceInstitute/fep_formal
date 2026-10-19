@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "closed-loop-policy-trees-and-efe",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-128",
+    "fep-129",
+    "fep-130",
+    "fep-131",
+    "fep-132",
+    "fep-133",
+    "fep-134"
+  ],
+  "combined_issue75_audit_count": 134,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/closed_loop_policy_trees.py": "66e4396290f1128c0f35b5b9211469a426ebaf4d0e13790467c431251c17780b",
+    "lean/FepSketches/families/closed_loop_policy_trees.lean": "7ef92620feaec332b7f6635cb839d3790c4da8e210c9d05ea199e7a45029973b",
+    "src/fep_lean/formal/policy_tree.lean": "f88e5063dede806e31f4f7106b825ee7b3832bcc66cf17346e24b98cd9361176",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/active_inference.lean": "260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07",
+    "src/fep_lean/formal/controlled_markov.lean": "6cf6aa0a04704074d38dba03663349833544ef24fda92e7ad0c6ae6e77eb659a",
+    "src/fep_lean/formal/perception_action_loop.lean": "f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a",
+    "src/fep_lean/formal/learning_theory.lean": "f39bf2504d47de1f76399fce0471396c0b546ddc25872572e8efa853b2e75582",
+    "src/fep_lean/formal/compositions/policy_trees.lean": "e44660569781cb4012a50f263bf8137854f11abfe0829e2c4386d5836dddfaff",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-128",
+      "title": "Observation-Contingent Policy-Tree Recursion",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "443ac7fd78dc4638df33daf08e5803607ac3458ed042351561d6b95142ec1789",
+      "maturity_record": {
+        "id": "fep-128",
+        "primary_theorem": "fep128_policyTreeValue_node",
+        "supporting_theorems": [
+          "fep128_policyTreeValue_leaf"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A finite policy-tree node equals its stage cost plus the observation-law weighted values of observation-contingent continuation trees.",
+        "assumption_review": "Belief, action, and observation carriers are finite and the horizon is a natural-number depth. Observation laws and deterministic belief updates are supplied by the model; no infinite-horizon or continuous-belief claim is made.",
+        "non_vacuity": "A successor node can choose different continuation trees after different observations, whereas the depth-zero carrier has exactly zero value.",
+        "acceptance_probe": "warning-free native Lean compile of fep128_policyTreeValue_node and fep128_policyTreeValue_leaf.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep128_policyTreeValue_node": "theorem fep128_policyTreeValue_node\n    {Belief Action Observation : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation]\n    (model : PolicyTreeModel Belief Action Observation)\n    {depth : ℕ} (action : Action)\n    (continuation : Observation → PolicyTree Action Observation depth)\n    (belief : Belief) :\n    policyTreeValue (depth",
+        "fep128_policyTreeValue_leaf": "theorem fep128_policyTreeValue_leaf\n    {Belief Action Observation : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation]\n    (model : PolicyTreeModel Belief Action Observation) (belief : Belief) :\n    policyTreeValue (depth"
+      },
+      "statement_review": "A depth-indexed tree chooses an action then a distinct continuation per observation; node value is stageCost at remaining depth plus observation-weighted continuation, leaf value0. Primary recursion is definitional but exposes an actual contingent carrier.",
+      "assumptions_and_scope": "PolicyTreeModel supplies normalized observation laws, arbitrary deterministic belief updates and arbitrary real stage costs. It does not require Bayesian update soundness or physically derived observations/costs. Finiteness is explicit; no discount/stationarity is assumed.",
+      "positive_witness_specification_unexecuted": "Use boolFeedbackTree depth2: its continuation picks the observed Bool; compare leaf0 and terminal mismatch costs.",
+      "adverse_witness_specification_unexecuted": "An update ignoring observations satisfies generic PolicyTreeModel, so generic recursion cannot imply Bayesian filtering. Missing observations/empty action at positive depth is a carrier boundary, not an infinite planning theorem.",
+      "nearest_topic_distinction": "071 already supplies sophisticated observation-contingent recursion;128 additionally makes the depth-indexed tree object explicit. The current bridge conjoins two supplied models rather than asserting their equality.",
+      "novelty_record": {
+        "id": "fep-128",
+        "nearest_topics": [
+          "fep-071"
+        ],
+        "new_invariant": "A finite policy-tree node selects an action and then evaluates observation-indexed continuation trees under the predictive observation law.",
+        "carrier_delta": "Replaces a fixed policy sequence with a depth-indexed, observation-contingent tree over finite belief, action, and observation carriers.",
+        "required_bridge": "FEPComposed.fep128_policyTreeRecursion_extends_fep071"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-128",
+          "target": "fep-071",
+          "kind": "formal_pairing",
+          "rationale": "Observation-contingent policy-tree recursion and sophisticated-EFE backward recursion both expose finite-horizon continuation values while retaining distinct model carriers.",
+          "witness": "FEPComposed.fep128_policyTreeRecursion_extends_fep071"
+        }
+      ]
+    },
+    {
+      "id": "fep-129",
+      "title": "Finite Policy-Tree Bellman Minimum",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "ca39e81f27a6bc4814a551ad5a047d53d521abcaa82cc20dac36595b728d6d1e",
+      "maturity_record": {
+        "id": "fep-129",
+        "primary_theorem": "fep129_optimalTreeValue_eq_min",
+        "supporting_theorems": [
+          "fep129_optimalTreeAction_le"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Backward induction exposes an exact finite-action Bellman minimum of stage cost plus observation-weighted optimal continuation.",
+        "assumption_review": "The action carrier is finite and nonempty, and belief and observation carriers are finite. The result is one finite-horizon recursion, not a contraction or fixed-point theorem.",
+        "non_vacuity": "The selected action is proved no worse than every explicit alternative at each node rather than merely being named as an argmin.",
+        "acceptance_probe": "warning-free native Lean compile of fep129_optimalTreeValue_eq_min and fep129_optimalTreeAction_le.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep129_optimalTreeValue_eq_min": "theorem fep129_optimalTreeValue_eq_min\n    {Belief Action Observation : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation] [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation)\n    (depth : ℕ) (belief : Belief) :\n    optimalTreeValue model (depth + 1) belief =\n      model.stageCost depth belief (optimalTreeAction model depth belief) +\n        ∑ observation,\n          model.observationLaw belief (optimalTreeAction model depth belief)\n              observation *\n            optimalTreeValue model depth\n              (model.update belief (optimalTreeAction model depth belief)\n                observation)",
+        "fep129_optimalTreeAction_le": "theorem fep129_optimalTreeAction_le\n    {Belief Action Observation : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation] [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation)\n    (depth : ℕ) (belief : Belief) (alternative : Action) :\n    model.stageCost depth belief (optimalTreeAction model depth belief) +\n        ∑ observation,\n          model.observationLaw belief (optimalTreeAction model depth belief)\n              observation *\n            optimalTreeValue model depth\n              (model.update belief (optimalTreeAction model depth belief)\n                observation) ≤\n      model.stageCost depth belief alternative +\n        ∑ observation,\n          model.observationLaw belief alternative observation *\n            optimalTreeValue model depth\n              (model.update belief alternative observation)"
+      },
+      "statement_review": "finiteArgmin selects an action attaining the stage-plus-weighted-optimal-continuation objective; supporting inequality compares it to every action. This is actual finite Bellman minimization, not just an argmin name.",
+      "assumptions_and_scope": "Actions finite/nonempty; observation weights nonnegative normalized; belief/update/costs supplied. Stage index is remaining depth, not automatically elapsed time. Neither Bellman contraction nor infinite-horizon stationary policy is proved, and minimizers need not be unique.",
+      "positive_witness_specification_unexecuted": "One-stage Boolean actions with costs0 and1 give selected value0 and alternative comparison; tied costs permit any minimizing action.",
+      "adverse_witness_specification_unexecuted": "An empty action type cannot meet the existence contract. Negative stage costs are allowed at finite depth and do not by themselves invalidate minimization, but no infinite-horizon boundedness follows.",
+      "nearest_topic_distinction": "033 is deterministic discounted ENNReal rollout,071 a real sophisticated recursion.129 is finite action minimization in the explicit tree setting; current relations keep these value carriers separate.",
+      "novelty_record": {
+        "id": "fep-129",
+        "nearest_topics": [
+          "fep-033",
+          "fep-071"
+        ],
+        "new_invariant": "Backward induction exposes an exact finite-action Bellman minimum at every policy-tree node.",
+        "carrier_delta": "Adds belief-dependent observation-weighted continuation values to the earlier scalar dynamic-programming and sophisticated-EFE recursions.",
+        "required_bridge": "FEPComposed.fep129_policyTreeBellman_extends_fep033"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-129",
+          "target": "fep-033",
+          "kind": "formal_pairing",
+          "rationale": "Exact finite-action tree minimization extends the earlier scalar Bellman recursion with belief and observation-contingent continuation structure.",
+          "witness": "FEPComposed.fep129_policyTreeBellman_extends_fep033"
+        }
+      ]
+    },
+    {
+      "id": "fep-130",
+      "title": "Optimal Finite Policy-Tree Existence",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "b5b5a93bb570882c7e1f8c6c8a1da5d078692550980a3232c8ab8c5a37ac2121",
+      "maturity_record": {
+        "id": "fep-130",
+        "primary_theorem": "fep130_exists_optimalPolicyTree",
+        "supporting_theorems": [
+          "fep130_policyTree_carrier_finite"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Every finite-depth, finite-carrier policy-tree problem with a nonempty action set has a concrete backward-inducted tree attaining the recursive optimum.",
+        "assumption_review": "All carriers and the horizon are finite and the action carrier is nonempty. Existence does not extend to unbounded horizon, arbitrary measurable policy spaces, or continuous beliefs.",
+        "non_vacuity": "The witness is an actual depth-indexed tree and is compared with every other tree on the same finite carrier.",
+        "acceptance_probe": "warning-free native Lean compile of fep130_exists_optimalPolicyTree and fep130_policyTree_carrier_finite.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep130_exists_optimalPolicyTree": "theorem fep130_exists_optimalPolicyTree\n    {Belief Action Observation : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation] [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation)\n    (depth : ℕ) (belief : Belief) :\n    ∃ tree : PolicyTree Action Observation depth,\n      policyTreeValue model tree belief = optimalTreeValue model depth belief ∧\n        ∀ alternative : PolicyTree Action Observation depth,\n          policyTreeValue model tree belief ≤\n            policyTreeValue model alternative belief",
+        "fep130_policyTree_carrier_finite": "theorem fep130_policyTree_carrier_finite\n    {Action Observation : Type*}\n    [Fintype Action] [Fintype Observation] (depth : ℕ) :\n    Finite (PolicyTree Action Observation depth)"
+      },
+      "statement_review": "The recursively built optimalPolicyTree attains optimalTreeValue and is below every alternative at equal finite depth. Tree carrier finiteness is separately established. This is a real attaining existence result.",
+      "assumptions_and_scope": "Construction is noncomputable finiteArgmin/classical choice, not a certified efficient executable planner. No uniqueness, infinite-depth optimum, complete continuous-belief simplex enumeration or empirical plan adequacy follows. The theorem does not just assert a supplied optimum.",
+      "positive_witness_specification_unexecuted": "For boolFeedbackModel at depth2, the explicit feedback tree value0 and nonnegative mismatch cost provide a nontrivial attaining minimum; generic theorem compares all same-depth trees.",
+      "adverse_witness_specification_unexecuted": "Tied action costs allow multiple distinct optimal trees. Unbounded horizon with negative per-step costs has no finite real minimum promised by this theorem.",
+      "nearest_topic_distinction": "008 is a fixed finite one-step argmin;130 lifts finite selection through every observation branch and compares all finite trees.",
+      "novelty_record": {
+        "id": "fep-130",
+        "nearest_topics": [
+          "fep-008",
+          "fep-071"
+        ],
+        "new_invariant": "Every finite-depth policy-tree problem with a nonempty finite action carrier has a concrete attaining optimal tree.",
+        "carrier_delta": "Lifts one finite argmin to an explicitly finite depth-indexed tree constructed by backward induction.",
+        "required_bridge": "FEPComposed.fep130_optimalPolicyTree_extends_fep008"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-130",
+          "target": "fep-008",
+          "kind": "formal_pairing",
+          "rationale": "A concrete attaining finite policy tree is paired with the original finite policy minimizer, making the stronger depth-indexed carrier and its nonempty-action premise explicit.",
+          "witness": "FEPComposed.fep130_optimalPolicyTree_extends_fep008"
+        }
+      ]
+    },
+    {
+      "id": "fep-131",
+      "title": "Open-Loop Plan Embedding into Policy Trees",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "54261374ba94b0b3e875ce4ae9840dd29916f5c029ba039e38136ae76788bee8",
+      "maturity_record": {
+        "id": "fep-131",
+        "primary_theorem": "fep131_openLoopEmbedding_value",
+        "supporting_theorems": [
+          "fep131_openLoopEmbedding_leaf"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Reusing the same continuation after every observation embeds an open-loop action plan into the policy-tree carrier without changing its recursive value.",
+        "assumption_review": "The comparison uses the same model, belief, and finite depth. Open-loop plans ignore observations by construction; the theorem does not identify arbitrary state-feedback policies with open-loop sequences.",
+        "non_vacuity": "At positive depth the embedding duplicates a common continuation across all observation branches; at depth zero both carriers reduce to their unique leaf.",
+        "acceptance_probe": "warning-free native Lean compile of fep131_openLoopEmbedding_value and fep131_openLoopEmbedding_leaf.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep131_openLoopEmbedding_value": "theorem fep131_openLoopEmbedding_value\n    {Belief Action Observation : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation]\n    (model : PolicyTreeModel Belief Action Observation)\n    {depth : ℕ} (plan : OpenLoopPlan Action depth) (belief : Belief) :\n    policyTreeValue model\n        (openLoopEmbedding (Observation",
+        "fep131_openLoopEmbedding_leaf": "theorem fep131_openLoopEmbedding_leaf\n    {Action Observation : Type*} :\n    openLoopEmbedding (depth"
+      },
+      "statement_review": "OpenLoopPlan embeds by reusing one continuation across all observation branches; its recursive value equals the corresponding tree value at the same model, belief and depth.",
+      "assumptions_and_scope": "Actions ignore observation history, but the model's belief update and expectation still follow observations during evaluation; open-loop does not mean freeze belief. Same-depth/model hypotheses matter.",
+      "positive_witness_specification_unexecuted": "Use a two-action depth2 plan and at least two observations; show identical action continuation on both branches while belief-dependent costs remain evaluated.",
+      "adverse_witness_specification_unexecuted": "A feedback tree choosing opposite second actions for different observations is not the image of a single fixed second-action plan. It may nevertheless have equal value in an observation-irrelevant model.",
+      "nearest_topic_distinction": "033 rollout is not automatically this open-loop expected-belief recursion; current relation pairs it, whereas131 gives an actual embedding into128 carrier.",
+      "novelty_record": {
+        "id": "fep-131",
+        "nearest_topics": [
+          "fep-033",
+          "fep-071"
+        ],
+        "new_invariant": "Reusing one continuation after every observation embeds an open-loop action plan into the closed-loop tree carrier without changing its value.",
+        "carrier_delta": "Adds a value-preserving map between observation-ignoring plans and observation-contingent policy trees at equal finite depth.",
+        "required_bridge": "FEPComposed.fep131_openLoopEmbedding_extends_fep033"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-131",
+          "target": "fep-033",
+          "kind": "formal_pairing",
+          "rationale": "The value-preserving embedding of a fixed action plan into a policy tree is paired with the earlier dynamic-programming recursion at equal finite horizon.",
+          "witness": "FEPComposed.fep131_openLoopEmbedding_extends_fep033"
+        }
+      ]
+    },
+    {
+      "id": "fep-132",
+      "title": "Closed-Loop Policy-Tree Dominance over Open Loop",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "e4f421f6d341549632d9966b81e87d36160a8c61f5de848b7cade4f693e7d5cb",
+      "maturity_record": {
+        "id": "fep-132",
+        "primary_theorem": "fep132_optimalTree_le_openLoop",
+        "supporting_theorems": [
+          "fep132_finite_horizon_depth"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The optimal observation-contingent finite policy tree is no worse than every open-loop plan embedded at the same depth.",
+        "assumption_review": "Actions are finite and nonempty, all other carriers are finite, and both sides share one finite horizon and cost model. No infinite-horizon POMDP dominance is claimed.",
+        "non_vacuity": "The strict Boolean witness in fep-134 demonstrates that the inequality can be strict rather than only equality under an observation-irrelevant model.",
+        "acceptance_probe": "warning-free native Lean compile of fep132_optimalTree_le_openLoop with an arbitrary same-depth open-loop plan.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep132_optimalTree_le_openLoop": "theorem fep132_optimalTree_le_openLoop\n    {Belief Action Observation : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation] [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation)\n    {depth : ℕ} (plan : OpenLoopPlan Action depth) (belief : Belief) :\n    optimalTreeValue model depth belief ≤ openLoopValue model plan belief",
+        "fep132_finite_horizon_depth": "theorem fep132_finite_horizon_depth (depth : ℕ) : depth < depth + 1"
+      },
+      "statement_review": "The globally minimizing finite tree is no worse than any value-preserving embedded same-depth open-loop plan. This follows from inclusion of that plan in the larger policy class.",
+      "assumptions_and_scope": "This is weak dominance for one cost/observation/update model; strict advantage is possible, not universal. Finitely many actions and finite horizon remain; the depth<depth+1 supporting theorem merely records natural-depth arithmetic and adds no planning evidence.",
+      "positive_witness_specification_unexecuted": "Use134 to show0<1/2 strict advantage for the explicit feedback example.",
+      "adverse_witness_specification_unexecuted": "At depth0, constant costs or observation-irrelevant continuation, equality holds. Altering model/horizon between sides breaks the comparison guarantee.",
+      "nearest_topic_distinction": "071 also had finite feedback-vs-fixed-plan content;132 now has a universal same-depth plan embedding/optimal-tree dominance, not an infinite-horizon POMDP claim.",
+      "novelty_record": {
+        "id": "fep-132",
+        "nearest_topics": [
+          "fep-071"
+        ],
+        "new_invariant": "The optimal finite closed-loop policy-tree value is no greater than every embedded same-depth open-loop plan value.",
+        "carrier_delta": "Turns the open-loop embedding into a finite-horizon dominance theorem and leaves infinite-horizon POMDP optimality outside scope.",
+        "required_bridge": "FEPComposed.fep132_closedLoopDominance_extends_fep071"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-132",
+          "target": "fep-071",
+          "kind": "formal_pairing",
+          "rationale": "Closed-loop tree optimality dominates every embedded open-loop plan, while fep-071 supplies the earlier two-stage feedback-sensitive EFE recursion.",
+          "witness": "FEPComposed.fep132_closedLoopDominance_extends_fep071"
+        }
+      ]
+    },
+    {
+      "id": "fep-133",
+      "title": "Treewise Expected-Free-Energy Decomposition",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "9f1d294df477281f873ad5b84f7bc6b9e63c6d99780c3a9fd9e30e526396b01f",
+      "maturity_record": {
+        "id": "fep-133",
+        "primary_theorem": "fep133_policyTree_efe_eq_risk_add_ambiguity",
+        "supporting_theorems": [
+          "fep133_optimalValues_agree"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The one-step full-support expected-free-energy identity lifts through every branch of a finite policy tree, and the corresponding optimal values agree.",
+        "assumption_review": "Every belief-indexed finite generative model satisfies the maintained FullSupport contract. Belief updates and horizons are finite; the theorem transports the existing risk-plus-ambiguity identity and does not establish its empirical adequacy.",
+        "non_vacuity": "The induction ranges over observation-contingent continuations and the optimal-value theorem compares independently constructed minimizing trees.",
+        "acceptance_probe": "warning-free native Lean compile of fep133_policyTree_efe_eq_risk_add_ambiguity and fep133_optimalValues_agree.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep133_policyTree_efe_eq_risk_add_ambiguity": "theorem fep133_policyTree_efe_eq_risk_add_ambiguity\n    {Belief State Action Observation : Type*}\n    [Fintype Belief] [Fintype State] [Fintype Action] [Fintype Observation]\n    (model : EFEPolicyTreeModel Belief State Action Observation)\n    {depth : ℕ} (tree : PolicyTree Action Observation depth)\n    (belief : Belief) :\n    policyTreeValue (efePolicyTreeModel model) tree belief =\n      policyTreeValue (riskAmbiguityPolicyTreeModel model) tree belief",
+        "fep133_optimalValues_agree": "theorem fep133_optimalValues_agree\n    {Belief State Action Observation : Type*}\n    [Fintype Belief] [Fintype State] [Fintype Action] [Fintype Observation]\n    [Nonempty Action]\n    (model : EFEPolicyTreeModel Belief State Action Observation)\n    (depth : ℕ) (belief : Belief) :\n    optimalTreeValue (efePolicyTreeModel model) depth belief =\n      optimalTreeValue (riskAmbiguityPolicyTreeModel model) depth belief"
+      },
+      "statement_review": "Stage costs are actual finite generative-model expectedFreeEnergy and actual risk+ambiguity, with predictedOutcome observation laws and full support. The existing one-step equality is lifted branchwise; all tree values and corresponding minima agree.",
+      "assumptions_and_scope": "EFEPolicyTreeModel generative is supplied separately for each belief and update is arbitrary. FullSupport does not require the next generative model to be the Bayesian posterior of the previous one. Existing BayesianBeliefModel/update_filtered and bayesEFETree_eq_pomdpTree, bayesSophisticatedValue_eq_optimalTree, bayesRiskAmbiguity_eq_sophisticated provide a genuine supported specialization; do not claim that bridge absent.",
+      "positive_witness_specification_unexecuted": "Use an explicitly full-support finite generative family at every reachable belief and a nontrivial contingent tree; consume equality for the same tree then equal optima. Separately instantiate the existing Bayesian carrier theorem with its full-support premise.",
+      "adverse_witness_specification_unexecuted": "Keeping the prior after informative observations is allowed by the generic update field but is rejected as Bayesian by the existing boolKeepPrior_not_bayesian control. Support alone cannot certify Bayes soundness. The sparse Boolean mismatch witness does not automatically satisfy this full-support EFE contract.",
+      "nearest_topic_distinction": "021 ENNReal truncated EFE is only paired via ofReal with explicit balance;133 uses a real, model-derived EFE identity and true finite tree induction. No scientific adequacy follows.",
+      "novelty_record": {
+        "id": "fep-133",
+        "nearest_topics": [
+          "fep-021",
+          "fep-071"
+        ],
+        "new_invariant": "The full-support risk-plus-ambiguity expected-free-energy identity lifts branchwise through finite policy trees and preserves their optima.",
+        "carrier_delta": "Extends a one-step finite EFE decomposition to belief-indexed generative models and observation-contingent recursive planning.",
+        "required_bridge": "FEPComposed.fep133_treewiseEFE_extends_fep021"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-133",
+          "target": "fep-021",
+          "kind": "formal_pairing",
+          "rationale": "The risk-plus-ambiguity EFE identity is lifted through every finite policy-tree branch and paired with the earlier one-step expected-free-energy balance.",
+          "witness": "FEPComposed.fep133_treewiseEFE_extends_fep021"
+        }
+      ]
+    },
+    {
+      "id": "fep-134",
+      "title": "Strict Boolean Feedback Advantage",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "1ee11c28263316c28024c8f0cbf210dd6619a9472431435fe6102fbbdedaf8f4",
+      "maturity_record": {
+        "id": "fep-134",
+        "primary_theorem": "fep134_boolFeedback_strictlyBetter",
+        "supporting_theorems": [
+          "fep134_feedback_continuation_changes"
+        ],
+        "boundary_theorems": [],
+        "invariant": "In the explicit two-step Boolean model, observation-contingent feedback has value zero while every fixed open-loop second action has value one half.",
+        "assumption_review": "This is a finite exact counterexample on fair Boolean observations and a mismatch terminal cost. It demonstrates possible feedback advantage, not a universal quantitative gap for active-inference agents.",
+        "non_vacuity": "The continuation action provably differs between false and true observations and the strict gap is exactly one half.",
+        "acceptance_probe": "warning-free native Lean compile of fep134_boolFeedback_strictlyBetter and fep134_feedback_continuation_changes with both Boolean actions.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep134_boolFeedback_strictlyBetter": "theorem fep134_boolFeedback_strictlyBetter (action : Bool) :\n    policyTreeValue boolFeedbackModel boolFeedbackTree false = 0 ∧\n      openLoopValue boolFeedbackModel (boolOpenLoopPlan action) false = 1 / 2 ∧\n      policyTreeValue boolFeedbackModel boolFeedbackTree false <\n        openLoopValue boolFeedbackModel (boolOpenLoopPlan action) false",
+        "fep134_feedback_continuation_changes": "theorem fep134_feedback_continuation_changes :\n    (boolFeedbackTree.2 false).1 ≠ (boolFeedbackTree.2 true).1"
+      },
+      "statement_review": "The concrete depth2 Bool feedback continuation changes its second action with the first observation, giving value0 against1/2 for each fixed second action in boolOpenLoopPlan. This is exact nonvacuous possible feedback advantage.",
+      "assumptions_and_scope": "The fair first observation and terminal mismatch objective are authored; generic boolFeedbackModel is a supplied belief/update model. Existing boolBayes_rederives_feedbackWitness separately realizes the same values via an actual finite Bayesian filter, with support/scope specific to that construction. Do not describe all content as merely an unsupported toy, or identify it with every full-support EFE policy.",
+      "positive_witness_specification_unexecuted": "Consume actual continuation inequality and0 versus1/2 values; reuse the existing filtered Boolean witness and update-agreement theorem as a separate source-qualified specialization.",
+      "adverse_witness_specification_unexecuted": "If observation conveys no useful variable for terminal cost or both actions have equal cost, strict feedback advantage disappears. A keep-prior update fails the delivered Bayes agreement control.",
+      "nearest_topic_distinction": "071 supplied feedback example is a neighbor;134 owns the explicit tree and continuation-change fact. The Bayesian perception-action foundation adds a substantive actual carrier bridge without proving empirical benefit.",
+      "novelty_record": {
+        "id": "fep-134",
+        "nearest_topics": [
+          "fep-071"
+        ],
+        "new_invariant": "An explicit two-step Boolean policy tree attains zero mismatch cost while every fixed open-loop continuation costs one half.",
+        "carrier_delta": "Supplies a nonvacuous exact feedback-advantage witness whose second action changes with the observed Boolean outcome.",
+        "required_bridge": "FEPComposed.fep134_feedbackWitness_extends_fep071"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-134",
+          "target": "fep-071",
+          "kind": "formal_pairing",
+          "rationale": "The exact Boolean policy-tree witness proves a strict one-half feedback advantage and is paired with fep-071's independent two-stage feedback witness.",
+          "witness": "FEPComposed.fep134_feedbackWitness_extends_fep071"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-133",
+      "field": "assumption_review",
+      "finding": "The generic full-support EFE model still permits arbitrary belief updates; the existing Bayesian specialization should be named separately.",
+      "proposed_text": "Every belief-indexed generative model satisfies FullSupport and supplies actual model-derived EFE, risk and ambiguity. The generic update is an arbitrary function and need not be the preceding model's Bayesian posterior. The separate BayesianBeliefModel/update_filtered specialization and its policy-tree/POMDP/risk-ambiguity bridges establish that stronger filtered interpretation under their explicit support premises. All horizons/carriers remain finite; empirical adequacy is not established."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "133/134 current Bayesian consumer renewal",
+      "owner": "src/fep_lean/formal/perception_action_loop.lean",
+      "seam": "Reuse existing bayesEFETree_eq_pomdpTree, bayesSophisticatedValue_eq_optimalTree, bayesRiskAmbiguity_eq_sophisticated and boolBayes_rederives_feedbackWitness; no duplicate carrier or missing-bridge claim. Keep full-support EFE specialization separate from sparse Boolean filtered mismatch witness.",
+      "estimate": "0.5–1.5 days",
+      "positive": "actual filtered-model value equality and strict Boolean witness",
+      "adverse": "existing boolKeepPrior_not_bayesian"
+    },
+    {
+      "rank": 2,
+      "scope": "finite tree minimizer/embedding boundary consumers",
+      "owner": "src/fep_lean/formal/policy_tree.lean",
+      "seam": "Instantiate nontrivial tied/strict action objectives; preserve tree depth and same model in comparisons. An actual efficient executable algorithm/complexity certificate would be a separate addition to noncomputable finiteArgmin construction.",
+      "estimate": "0.5–1.5 days consumers; runtime algorithm scope separate",
+      "positive": "attaining feedback tree and equal-depth open-loop bound",
+      "adverse": "ties/nonunique optima and depth0 equality"
+    },
+    {
+      "rank": 3,
+      "scope": "continuous belief or infinite horizon research boundary",
+      "owner": "src/fep_lean/formal/policy_tree.lean",
+      "seam": "Requires actual reachable-belief or measurable policy carrier and matching value bridge; infinite horizon needs discounted/other convergence and boundedness hypotheses. Finite existence does not supply these. Existing finite Bayesian reachable-belief machinery must be reused before proposing a new carrier.",
+      "estimate": "bounded finite specialization1–3 days; continuous/infinite extension requires a separate library feasibility spike"
+    }
+  ],
+  "limitations": [
+    "Static source-only semantic review; no S edits or Lean/tests/subject execution. Positive/adverse examples are unexecuted specifications; source theorems named as existing content are not newly executed observations.",
+    "No empirical generalization/calibration, full Dirichlet measure conjugacy, continuous/infinite policy optimality, scientific or terminal acceptance inferred.",
+    "Remaining34 topics plus active dependencies/metadata seals/projections/custody/publication gates remain open."
+  ]
+}

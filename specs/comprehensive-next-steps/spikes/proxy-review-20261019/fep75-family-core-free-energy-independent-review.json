@@ -1,0 +1,1290 @@
+{
+  "schema_version": 1,
+  "decision": "13row_family_semantic_audit_complete_retain_narrow_dispositions_with_documentation_findings",
+  "scope": "core-free-energyonly13rows;notall168Issue75acceptance",
+  "source_head": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "row_ids": [
+    "fep-001",
+    "fep-002",
+    "fep-006",
+    "fep-011",
+    "fep-012",
+    "fep-015",
+    "fep-016",
+    "fep-026",
+    "fep-032",
+    "fep-035",
+    "fep-039",
+    "fep-043",
+    "fep-048"
+  ],
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/core_free_energy.py": "060486982f126bbfb515272530574702ee33eec897eaf85bd65411eeefb0938c",
+    "lean/FepSketches/families/core_free_energy.lean": "3d4a8b45569cc1f114d644f51336e0b82f247568bbcdaccbfcb004e1828a99e5",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "src/fep_lean/formal/compositions/core.lean": "3461b456ffd598281f0c7881bd06e121db038b9f3753f99549d6dba90459326f",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665"
+  },
+  "pinned_library_sha256": {
+    "Mathlib/Analysis/Calculus/LocalExtr/Basic.lean": "9f3acf2dc69bc4990fbc0f10a125bd9d19f1608d284ef2cbcb0d37f4507f2820",
+    "Mathlib/Topology/MetricSpace/Contracting.lean": "078df008c514927dd5f581a458cf95f5d66823f5324173db816ddbd1bf4ebcc5",
+    "Mathlib/Analysis/SpecialFunctions/Gaussian/GaussianIntegral.lean": "4378f161cf5d482be77941cc9aea0195d2e83fe54eeb51b2ab33db1a318ccb9c"
+  },
+  "rows": [
+    {
+      "id": "fep-001",
+      "title": "Variational Free Energy Bound",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep001_variationalUpperBound_eq_iff",
+      "supporting": [
+        "fep001_variationalUpperBound_ge",
+        "fep001_variationalGap_eq_zero_iff"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep001_variationalUpperBound_eq_iff": "theorem fep001_variationalUpperBound_eq_iff\n    (approximation posterior : Measure \u03b1)\n    [IsFiniteMeasure approximation] [IsFiniteMeasure posterior]\n    {surprisal : ENNReal} (hsurprisal : surprisal \u2260 \u221e) :\n    fep001_variationalUpperBound approximation posterior surprisal = surprisal \u2194\n      approximation = posterior",
+        "fep001_variationalUpperBound_ge": "theorem fep001_variationalUpperBound_ge\n    (approximation posterior : Measure \u03b1) (surprisal : ENNReal) :\n    surprisal \u2264\n      fep001_variationalUpperBound approximation posterior surprisal",
+        "fep001_variationalGap_eq_zero_iff": "theorem fep001_variationalGap_eq_zero_iff\n    (approximation posterior : Measure \u03b1)\n    [IsFiniteMeasure approximation] [IsFiniteMeasure posterior] :\n    fep001_variationalGap approximation posterior = 0 \u2194\n      approximation = posterior"
+      },
+      "body_sha256": "08f829c94658a4fff1a9eef73e245f5c641da6e46a8ea6db8b580612221ba892",
+      "maturity_record": {
+        "id": "fep-001",
+        "primary_theorem": "fep001_variationalUpperBound_eq_iff",
+        "supporting_theorems": [
+          "fep001_variationalUpperBound_ge",
+          "fep001_variationalGap_eq_zero_iff"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Surprisal plus Mathlib's native measure KL upper-bounds surprisal; for finite measures and finite surprisal, equality holds exactly when the approximate and exact posterior laws coincide.",
+        "assumption_review": "The inequality is unconditional in ENNReal. Gap separation requires finite measures, and bound equality additionally requires surprisal below infinity so additive cancellation is sound.",
+        "non_vacuity": "Matching finite posterior laws attain equality, while any unequal finite pair has a nonzero KL gap and hence a strict finite-surprisal remainder.",
+        "acceptance_probe": "native Lean compile of fep001_variationalUpperBound_ge, fep001_variationalGap_eq_zero_iff, and fep001_variationalUpperBound_eq_iff.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary finite-surprisal equalityiff uses ENNReal additive cancellation and native finite-measure KL separation, not assumed scalarKLnonneg. Supporting upperbound is unconditional; gapzeroiff finite-measures.",
+      "premise_and_scope_boundary": "Surprisal\u221e makes equality trivial even for unequal laws; no generative evidence/posterior derivation or negative continuous-density surprisal represented.",
+      "positive_adverse_witness_specification_not_new_execution": "Equal probability laws on Bool with surprisal0 attain; distinct Bernoulli laws at finite surprisal have positivegap; disjoint pointmasses give\u221e.",
+      "nearest_topic_distinction": "002 shares the native-gap definition;001 adds equalityiff/separation, not a distinct scientificprinciple.058/059/116 pairings do not identify finite/native carriers.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-058",
+          "nearest_topics": [
+            "fep-001",
+            "fep-031"
+          ],
+          "new_invariant": "Finite Gibbs free energy has an attained lower bound at an explicit full-support optimizer.",
+          "carrier_delta": "Adds a certified finite potential, reference law, log partition, and normalized Gibbs optimizer.",
+          "required_bridge": "FEPComposed.fep058_gibbs_gap_is_fep001_kl"
+        },
+        {
+          "id": "fep-059",
+          "nearest_topics": [
+            "fep-001",
+            "fep-035"
+          ],
+          "new_invariant": "The finite Donsker\u2013Varadhan upper bound is attained uniquely by the certified Gibbs optimizer.",
+          "carrier_delta": "Reorients the Gibbs KL gap as a variational dual objective under explicit full-support log identities.",
+          "required_bridge": "FEPComposed.fep059_dv_equality_is_fep001_exactness"
+        },
+        {
+          "id": "fep-108",
+          "nearest_topics": [
+            "fep-039",
+            "fep-001"
+          ],
+          "new_invariant": "Product-law variational free energy with additive cost equals the sum of agent-level free energies.",
+          "carrier_delta": "Adds two full-support reference factors and explicitly separates independent product KL and expected-cost components.",
+          "required_bridge": "FEPComposed.fep108_collective_vfe_extends_fep039_additivity"
+        },
+        {
+          "id": "fep-116",
+          "nearest_topics": [
+            "fep-001",
+            "fep-059"
+          ],
+          "new_invariant": "A Gibbs loss-gap certificate and log-MGF budget imply a finite-posterior population-loss bound with empirical loss, KL complexity, confidence, and inverse temperature.",
+          "carrier_delta": "Adds finite empirical and population losses, positive inverse temperature, a loss-gap potential identity, a full-support prior reference, and a conditional log-MGF confidence budget.",
+          "required_bridge": "FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-058",
+          "target": "fep-001",
+          "kind": "formal_pairing",
+          "rationale": "The finite Gibbs lower bound and fep-001's native KL upper bound expose the same nonnegative-gap architecture without equating their scalar carriers.",
+          "witness": "FEPComposed.fep058_gibbs_gap_is_fep001_kl"
+        },
+        {
+          "source": "fep-059",
+          "target": "fep-001",
+          "kind": "formal_pairing",
+          "rationale": "Equality in the finite Donsker--Varadhan bound and zero native KL each separate the relevant optimizer, with their distinct support regimes visible.",
+          "witness": "FEPComposed.fep059_dv_equality_is_fep001_exactness"
+        },
+        {
+          "source": "fep-116",
+          "target": "fep-001",
+          "kind": "formal_pairing",
+          "rationale": "The finite posterior loss-gap bound, conditional on a certified log-MGF budget, is paired with fep-001's measure-native variational upper bound without equating finite real KL and native extended KL.",
+          "witness": "FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound"
+        }
+      ]
+    },
+    {
+      "id": "fep-002",
+      "title": "Variational Evidence Bound via KL Divergence",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep002_vfe_ge_surprisal",
+      "supporting": [
+        "fep002_prob_measure_univ",
+        "fep002_prob_compl",
+        "fep002_elbo_bound",
+        "fep002_vfe_exact_at_posterior"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep002_vfe_ge_surprisal": "theorem fep002_vfe_ge_surprisal (q posterior : Measure \u03b1) (surprisal : ENNReal) :\n    surprisal \u2264 fep002_variationalFreeEnergy q posterior surprisal",
+        "fep002_prob_measure_univ": "theorem fep002_prob_measure_univ (\u03bc : Measure \u03b1) [IsProbabilityMeasure \u03bc] :\n    \u03bc Set.univ = 1",
+        "fep002_prob_compl": "theorem fep002_prob_compl (\u03bc : Measure \u03b1) [IsProbabilityMeasure \u03bc] {s : Set \u03b1}\n    (hs : MeasurableSet s) (hfin : \u03bc s \u2260 \u22a4) :\n    \u03bc s\u1d9c = 1 - \u03bc s",
+        "fep002_elbo_bound": "theorem fep002_elbo_bound (logEvidence freeEnergy klDiv : \u211d)\n    (h_decomp : logEvidence = freeEnergy + klDiv)\n    (h_kl_nonneg : 0 \u2264 klDiv) :\n    freeEnergy \u2264 logEvidence",
+        "fep002_vfe_exact_at_posterior": "theorem fep002_vfe_exact_at_posterior (posterior : Measure \u03b1)\n    [SigmaFinite posterior] (surprisal : ENNReal) :\n    fep002_variationalFreeEnergy posterior posterior surprisal = surprisal"
+      },
+      "body_sha256": "b71cc98895024671592846057d44e3826f45e353e1e32707363636d1f504dbb3",
+      "maturity_record": {
+        "id": "fep-002",
+        "primary_theorem": "fep002_vfe_ge_surprisal",
+        "supporting_theorems": [
+          "fep002_prob_measure_univ",
+          "fep002_prob_compl",
+          "fep002_elbo_bound",
+          "fep002_vfe_exact_at_posterior"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Variational free energy, defined as surprisal plus Mathlib KL divergence, upper-bounds surprisal and is exact at the posterior.",
+        "assumption_review": "The bound is unconditional over measures in a measurable space; exactness uses Mathlib's SigmaFinite assumption for KL self-divergence. The codomain is ENNReal, so infinite divergences are represented without a finiteness side condition.",
+        "non_vacuity": "Any sigma-finite posterior supplies the equality witness q = posterior, while distinct measures can produce a nonzero or infinite KL remainder.",
+        "acceptance_probe": "native Lean compile of fep002_vfe_ge_surprisal and fep002_vfe_exact_at_posterior, using Mathlib's InformationTheory.klDiv rather than an assumed scalar.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary native VFE>=surprisal is exact by ENNReal addition. Exactatposterior uses SigmaFinite. Probabilityuniv/complement and scalarELBObound are correctly separate supportinglaws.",
+      "premise_and_scope_boundary": "Surprisal is a supplied nonnegative extendedvalue; posterior is supplied, not derived byconditioning. Scalar realELBOdecomposition is a premise, not densityidentity.",
+      "positive_adverse_witness_specification_not_new_execution": "q=posterior equality; singularBool pointmasses\u221e; scalarELBOexample logEvidence3/freeEnergy2/KL1 satisfies bound.",
+      "nearest_topic_distinction": "001 is equalitycharacterization;014 owns nativeKLchainrule;060 supplies actualfiniteELBOremainder.013thermodynamic relation remains conceptual with units/codomain gap.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-060",
+          "nearest_topics": [
+            "fep-002",
+            "fep-014"
+          ],
+          "new_invariant": "Joint ELBO splits into a prior-coordinate term and an expected conditional KL penalty.",
+          "carrier_delta": "Adds paired finite kernels and pointwise reference support to the earlier single-law evidence decomposition.",
+          "required_bridge": "FEPComposed.fep060_coordinate_elbo_refines_fep002"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-002",
+          "target": "fep-014",
+          "kind": "formal",
+          "rationale": "The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule.",
+          "witness": "FEPComposed.fep002_vfe_compProd_chain_rule"
+        },
+        {
+          "source": "fep-013",
+          "target": "fep-002",
+          "kind": "conceptual",
+          "rationale": "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition."
+        },
+        {
+          "source": "fep-060",
+          "target": "fep-002",
+          "kind": "formal",
+          "rationale": "The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound.",
+          "witness": "FEPComposed.fep060_coordinate_elbo_refines_fep002"
+        }
+      ]
+    },
+    {
+      "id": "fep-006",
+      "title": "Measurable Discrete-Time Flow",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep006_iterateFlow_add",
+      "supporting": [
+        "fep006_iterateFlow_measurable",
+        "fep006_iterateFlow_zero",
+        "fep006_iterateFlow_fixed"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep006_iterateFlow_add": "theorem fep006_iterateFlow_add (step : \u03b1 \u2192 \u03b1) (m n : \u2115) (state : \u03b1) :\n    fep006_iterateFlow step (m + n) state =\n      fep006_iterateFlow step m (fep006_iterateFlow step n state)",
+        "fep006_iterateFlow_measurable": "theorem fep006_iterateFlow_measurable\n    [MeasurableSpace \u03b1] {step : \u03b1 \u2192 \u03b1} (hstep : Measurable step) (time : \u2115) :\n    Measurable (fep006_iterateFlow step time)",
+        "fep006_iterateFlow_zero": "theorem fep006_iterateFlow_zero (step : \u03b1 \u2192 \u03b1) :\n    fep006_iterateFlow step 0 = id",
+        "fep006_iterateFlow_fixed": "theorem fep006_iterateFlow_fixed\n    (step : \u03b1 \u2192 \u03b1) {state : \u03b1} (hfixed : Function.IsFixedPt step state)\n    (time : \u2115) :\n    fep006_iterateFlow step time state = state"
+      },
+      "body_sha256": "b91bbe2b61ff3a354d6af75df90f9c3d492d9e6a01063e85822d1fb92dbd9eff",
+      "maturity_record": {
+        "id": "fep-006",
+        "primary_theorem": "fep006_iterateFlow_add",
+        "supporting_theorems": [
+          "fep006_iterateFlow_measurable",
+          "fep006_iterateFlow_zero",
+          "fep006_iterateFlow_fixed"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Iteration of one measurable state update defines a measurable discrete-time flow with identity at time zero, an exact additive semigroup law, and persistence of fixed points.",
+        "assumption_review": "Measurability of each time slice requires the one-step map to be measurable. The algebraic semigroup and fixed-point laws require no topology, invariant measure, differentiability, or continuous-time interpolation.",
+        "non_vacuity": "Identity, constant, and nontrivial measurable maps instantiate the flow; the additive law constrains every pair of horizons rather than a single composition.",
+        "acceptance_probe": "native Lean compile of fep006_iterateFlow_measurable, fep006_iterateFlow_zero, fep006_iterateFlow_add, and fep006_iterateFlow_fixed.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary exact natural-time semigrouplaw follows iteration of one map. Measurable slice requires measurablemap; zero/fixed laws hold algebraically.",
+      "premise_and_scope_boundary": "No invariantprobability, Markovkernel, stochasticprocess, continuousflow or ODEexistence claimed.",
+      "positive_adverse_witness_specification_not_new_execution": "Translation x\u2192x+1 gives nonidentityflow; identityfixedpoint and constantmap cases; two arbitrary noncommutingmaps are not one autonomousiterateflow.",
+      "nearest_topic_distinction": "089jets and150/151real-time semigroups remain distinctcarriers/pairings; do not upgrade discreteiteration to physicalflow.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-089",
+          "nearest_topics": [
+            "fep-006"
+          ],
+          "new_invariant": "Finite generalized-coordinate shifts form a natural-number semigroup with explicit terminal truncation.",
+          "carrier_delta": "Replaces a measurable discrete-time state flow with finitely supported jet coefficients and a nil terminal shift.",
+          "required_bridge": "FEPComposed.fep089_finite_jet_shift_specializes_fep006"
+        },
+        {
+          "id": "fep-150",
+          "nearest_topics": [
+            "fep-006",
+            "fep-020"
+          ],
+          "new_invariant": "The exact two-state continuous-time transition matrix is the identity at time zero.",
+          "carrier_delta": "Instantiates the semigroup identity boundary with four explicit Boolean transition entries.",
+          "required_bridge": "FEPComposed.fep150_semigroupZero_extends_fep006"
+        },
+        {
+          "id": "fep-151",
+          "nearest_topics": [
+            "fep-006",
+            "fep-020"
+          ],
+          "new_invariant": "Two-state transitions satisfy the Chapman\u2013Kolmogorov additive semigroup law entrywise.",
+          "carrier_delta": "Replaces natural-number kernel powers with a real-time exponential semigroup on the exact Boolean carrier.",
+          "required_bridge": "FEPComposed.fep151_semigroupAdd_extends_fep006"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-089",
+          "target": "fep-006",
+          "kind": "formal_pairing",
+          "rationale": "Finite-jet shifts satisfy their native additive law and instantiate fep-006's generic discrete-flow semigroup under one-degree shifting.",
+          "witness": "FEPComposed.fep089_finite_jet_shift_specializes_fep006"
+        },
+        {
+          "source": "fep-150",
+          "target": "fep-006",
+          "kind": "formal_pairing",
+          "rationale": "The exact real-time Boolean semigroup is the identity at zero, alongside fep-006's general natural-time iterate identity.",
+          "witness": "FEPComposed.fep150_semigroupZero_extends_fep006"
+        },
+        {
+          "source": "fep-151",
+          "target": "fep-006",
+          "kind": "formal_pairing",
+          "rationale": "Chapman--Kolmogorov addition for the explicit real-time semigroup is paired with the original natural-time iterate addition law.",
+          "witness": "FEPComposed.fep151_semigroupAdd_extends_fep006"
+        }
+      ]
+    },
+    {
+      "id": "fep-011",
+      "title": "Surprise and Self-Information",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep011_surprise_eq_zero_iff",
+      "supporting": [
+        "fep011_log_nonneg_on_ge_one",
+        "fep011_surprise_nonneg",
+        "fep011_surprise_additive",
+        "fep011_surprise_cert",
+        "fep011_surprise_mono",
+        "fep011_surprise_strictAnti"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep011_surprise_eq_zero_iff": "theorem fep011_surprise_eq_zero_iff {p : \u211d} (hp : 0 < p) :\n    fep011_surprise p = 0 \u2194 p = 1",
+        "fep011_log_nonneg_on_ge_one": "theorem fep011_log_nonneg_on_ge_one {x : \u211d} (hx : 1 \u2264 x) : 0 \u2264 Real.log x",
+        "fep011_surprise_nonneg": "theorem fep011_surprise_nonneg {u : \u211d} (hu : 0 < u) (hu1 : u \u2264 1) :\n    0 \u2264 fep011_surprise u",
+        "fep011_surprise_additive": "theorem fep011_surprise_additive {a b : \u211d} (ha : 0 < a) (hb : 0 < b) :\n    fep011_surprise (a * b) = fep011_surprise a + fep011_surprise b",
+        "fep011_surprise_cert": "theorem fep011_surprise_cert : fep011_surprise 1 = 0",
+        "fep011_surprise_mono": "theorem fep011_surprise_mono {p q : \u211d} (hp : 0 < p) (h : p \u2264 q) :\n    fep011_surprise q \u2264 fep011_surprise p",
+        "fep011_surprise_strictAnti": "theorem fep011_surprise_strictAnti {p q : \u211d} (hp : 0 < p) (hpq : p < q) :\n    fep011_surprise q < fep011_surprise p"
+      },
+      "body_sha256": "79a1af603c1e4bfff4cf715cd3b723d2112f3a8f6c3a4e81d3710338d9dcf03c",
+      "maturity_record": {
+        "id": "fep-011",
+        "primary_theorem": "fep011_surprise_eq_zero_iff",
+        "supporting_theorems": [
+          "fep011_log_nonneg_on_ge_one",
+          "fep011_surprise_nonneg",
+          "fep011_surprise_additive",
+          "fep011_surprise_cert",
+          "fep011_surprise_mono",
+          "fep011_surprise_strictAnti"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Negative-log self-information is nonnegative on positive probabilities at most one, additive on positive products, strictly antitone, and zero exactly at certainty.",
+        "assumption_review": "Positivity excludes the logarithmic boundary, and the probability interpretation additionally uses p\u22641. Additivity is scalar and corresponds to product probabilities; no independence relation is inferred by the theorem.",
+        "non_vacuity": "Every p in (0,1) has strictly positive surprise, p=1 is the unique zero, and two positive factors exercise the additive law.",
+        "acceptance_probe": "native Lean compile of fep011_surprise_nonneg, fep011_surprise_additive, fep011_surprise_eq_zero_iff, and fep011_surprise_strictAnti.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary positivepzeroiff1 and supporting nonnegative(0,1],positiveproductadditivity,strictantitone match exactnegativelog laws.",
+      "premise_and_scope_boundary": "Real.log is totalized; p0 also has -log0=0 but excluded. Additivity doesnotprove probabilisticindependence.",
+      "positive_adverse_witness_specification_not_new_execution": "p1certainzero,p1/2positive,p1/4higher; p0 refutes unguardedzeroiff; p2 has negativecost outside probabilitydomain.",
+      "nearest_topic_distinction": "026 has samefunctionaldefinition but density/complexityinterpretation; no new mathematicalnovelty from the name.014relativeKL distinct.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relation_rows": [
+        {
+          "source": "fep-011",
+          "target": "fep-026",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies self-information and scalar prior complexity as the same negative-log functional, fixing their shared sign convention.",
+          "witness": "FEPComposed.fep026_priorComplexity_is_fep011_surprise"
+        }
+      ]
+    },
+    {
+      "id": "fep-012",
+      "title": "Finite Policy Shannon Entropy Regularization",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep012_entropyRegularizedCost_le_expectedCost",
+      "supporting": [
+        "fep012_policyEntropy_nonneg",
+        "fep012_policyEntropy_pointMass",
+        "fep012_entropyRegularizedCost_zeroTemperature",
+        "fep012_gibbsPartition_nonneg",
+        "fep012_gibbsPartition_pos",
+        "fep012_gibbs_mono"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep012_entropyRegularizedCost_le_expectedCost": "theorem fep012_entropyRegularizedCost_le_expectedCost\n    (q cost : Policy \u2192 \u211d) (\u03c4 : \u211d)\n    (h\u03c4 : 0 \u2264 \u03c4) (hq : \u2200 p, q p \u2208 Set.Icc (0 : \u211d) 1) :\n    fep012_entropyRegularizedCost q cost \u03c4 \u2264 fep012_expectedCost q cost",
+        "fep012_policyEntropy_nonneg": "theorem fep012_policyEntropy_nonneg (q : Policy \u2192 \u211d)\n    (hq : \u2200 p, q p \u2208 Set.Icc (0 : \u211d) 1) :\n    0 \u2264 fep012_policyEntropy q",
+        "fep012_policyEntropy_pointMass": "theorem fep012_policyEntropy_pointMass (chosen : Policy) :\n    fep012_policyEntropy (fun p => if p = chosen then 1 else 0) = 0",
+        "fep012_entropyRegularizedCost_zeroTemperature": "theorem fep012_entropyRegularizedCost_zeroTemperature\n    (q cost : Policy \u2192 \u211d) :\n    fep012_entropyRegularizedCost q cost 0 = fep012_expectedCost q cost",
+        "fep012_gibbsPartition_nonneg": "theorem fep012_gibbsPartition_nonneg (G : Policy \u2192 \u211d) (s : Finset Policy) :\n    0 \u2264 \u2211 p \u2208 s, Real.exp (-G p)",
+        "fep012_gibbsPartition_pos": "theorem fep012_gibbsPartition_pos (G : Policy \u2192 \u211d) (s : Finset Policy) (hne : s.Nonempty) :\n    0 < \u2211 p \u2208 s, Real.exp (-G p)",
+        "fep012_gibbs_mono": "theorem fep012_gibbs_mono (G\u2081 G\u2082 : Policy) (G : Policy \u2192 \u211d) (h : G G\u2081 \u2264 G G\u2082) :\n    Real.exp (-G G\u2082) \u2264 Real.exp (-G G\u2081)"
+      },
+      "body_sha256": "8fd07baaeb4ce29f5bbeb8257c4b3867614e34bcd7a0f1cf06632fd7ddf25eb4",
+      "maturity_record": {
+        "id": "fep-012",
+        "primary_theorem": "fep012_entropyRegularizedCost_le_expectedCost",
+        "supporting_theorems": [
+          "fep012_policyEntropy_nonneg",
+          "fep012_policyEntropy_pointMass",
+          "fep012_entropyRegularizedCost_zeroTemperature",
+          "fep012_gibbsPartition_nonneg",
+          "fep012_gibbsPartition_pos",
+          "fep012_gibbs_mono"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Finite Shannon policy entropy is nonnegative on unit-interval weights, vanishes for point policies, and at nonnegative temperature lowers expected cost by exactly its entropy reward.",
+        "assumption_review": "Entropy nonnegativity only requires each weight in [0,1]; normalization is supplied separately by a policy law such as fep-028 softmax. The theorem compares objectives and does not claim that softmax is the unique optimizer.",
+        "non_vacuity": "A point mass has zero entropy while a multi-policy interior law has positive terms; positive temperature yields a nonzero objective correction whenever entropy is positive.",
+        "acceptance_probe": "native Lean compile of fep012_policyEntropy_nonneg, fep012_policyEntropy_pointMass, fep012_entropyRegularizedCost_le_expectedCost, and FEPComposed.fep012_softmax_entropyRegularizedCost_le.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary expectedcost-minus-temperatureentropy<=expectedcost requires temperature>=0 and each qin[0,1]. Supportingpointmasszero andzero-temperatureidentity match.",
+      "premise_and_scope_boundary": "Normalization not needed for inequality but required for callingqapolicylaw; no uniqueoptimizer or softmaxderivation proved. Fin10 is fixedcarrier.",
+      "positive_adverse_witness_specification_not_new_execution": "Pointmass correction0; uniform10law entropylog10 gives strictcorrectionatT>0; negativeT reversesgenericreward; weight2 makes negativeentropyterm.",
+      "nearest_topic_distinction": "028 supplies normalizedsoftmax; finite_information/variational_duality alreadyown finiteGibbsoptimization. Any strengthening shouldbridgeowners,notduplicateMaxEnt.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-068",
+          "nearest_topics": [
+            "fep-033",
+            "fep-012"
+          ],
+          "new_invariant": "On a nonempty finite action carrier, the positive-temperature Bellman partition is positive, gives the exact log-sum-exp recursion, and bounds the soft value by every hard action energy.",
+          "carrier_delta": "Replaces hard finite minimization with temperature-scaled exponential aggregation over controlled transitions while retaining an explicit actionwise hard/soft comparison.",
+          "required_bridge": "FEPComposed.fep068_softBellman_extends_fep033"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-012",
+          "target": "fep-028",
+          "kind": "formal",
+          "rationale": "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+          "witness": "FEPComposed.fep012_softmax_entropyRegularizedCost_le"
+        }
+      ]
+    },
+    {
+      "id": "fep-015",
+      "title": "Measurable Variational Integrand",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep015_variationalIntegrand_measurable",
+      "supporting": [
+        "fep015_variationalIntegrand_comp_measurable",
+        "fep015_variationalIntegrand_add_const_measurable"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep015_variationalIntegrand_measurable": "theorem fep015_variationalIntegrand_measurable\n    {energy logApproximation logGenerative : \u03b1 \u2192 \u211d}\n    (henergy : Measurable energy)\n    (happroximation : Measurable logApproximation)\n    (hgenerative : Measurable logGenerative) :\n    Measurable\n      (fep015_variationalIntegrand energy logApproximation logGenerative)",
+        "fep015_variationalIntegrand_comp_measurable": "theorem fep015_variationalIntegrand_comp_measurable\n    {\u03b2 : Type*} [MeasurableSpace \u03b2]\n    {energy logApproximation logGenerative : \u03b1 \u2192 \u211d}\n    {reparameterize : \u03b2 \u2192 \u03b1}\n    (henergy : Measurable energy)\n    (happroximation : Measurable logApproximation)\n    (hgenerative : Measurable logGenerative)\n    (hreparameterize : Measurable reparameterize) :\n    Measurable\n      (fep015_variationalIntegrand energy logApproximation logGenerative \u2218\n        reparameterize)",
+        "fep015_variationalIntegrand_add_const_measurable": "theorem fep015_variationalIntegrand_add_const_measurable\n    {energy logApproximation logGenerative : \u03b1 \u2192 \u211d}\n    (henergy : Measurable energy)\n    (happroximation : Measurable logApproximation)\n    (hgenerative : Measurable logGenerative) (baseline : \u211d) :\n    Measurable (fun state =>\n      fep015_variationalIntegrand energy logApproximation logGenerative state +\n        baseline)"
+      },
+      "body_sha256": "d0af067922e62342d9b8701bb70f8d0295bd825bd772559a1cee5678215e51d4",
+      "maturity_record": {
+        "id": "fep-015",
+        "primary_theorem": "fep015_variationalIntegrand_measurable",
+        "supporting_theorems": [
+          "fep015_variationalIntegrand_comp_measurable",
+          "fep015_variationalIntegrand_add_const_measurable"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A pointwise variational integrand built from measurable energy, approximate log density, and generative log density is measurable and remains so under measurable reparameterization and baseline shifts.",
+        "assumption_review": "All three real-valued ingredients and any reparameterization are assumed measurable. Measurability does not imply integrability, finite expectation, or existence of an optimizer, none of which is claimed.",
+        "non_vacuity": "Nonconstant measurable coordinate functions instantiate all three terms, and a nonidentity measurable reparameterization exercises the composition theorem.",
+        "acceptance_probe": "native Lean compile of fep015_variationalIntegrand_measurable, fep015_variationalIntegrand_comp_measurable, and fep015_variationalIntegrand_add_const_measurable.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary measurability closure of supplied realenergy+logapprox-loggenerative, supporting measurablecomposition/baselineshifts exact.",
+      "premise_and_scope_boundary": "No normalizeddensities,logvalidity,integrability,finiteexpectation,reparameterizationgradient or optimizerexistence. Energy+logterms may encode any measurablefunctions.",
+      "positive_adverse_witness_specification_not_new_execution": "OnR choose energyx/logapproxx\u00b2/loggenerative0 with continuouscomponents and nonidentityx\u21922x; measurable nonintegrable observables show missingintegrationpremise.",
+      "nearest_topic_distinction": "057tower requires integrableobservable beyond thisrow;136finiteembeddedexpectation independent. Metadataalreadydiscloses onlymeasurableintegrand.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-057",
+          "nearest_topics": [
+            "fep-015",
+            "fep-027"
+          ],
+          "new_invariant": "Nested conditional and marginal integration equals joint integration.",
+          "carrier_delta": "Adds integrable real and measurable extended-nonnegative observables over a disintegrated native joint measure.",
+          "required_bridge": "FEPComposed.fep057_tower_integrates_fep015"
+        },
+        {
+          "id": "fep-136",
+          "nearest_topics": [
+            "fep-015",
+            "fep-057"
+          ],
+          "new_invariant": "Equality of embedded measures reflects equality of finite laws, and native integration agrees exactly with finite weighted expectation.",
+          "carrier_delta": "Connects atomwise finite probabilities to native Bochner integration on the same finite discrete carrier.",
+          "required_bridge": "FEPComposed.fep136_embeddedExpectation_extends_fep015"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-057",
+          "target": "fep-015",
+          "kind": "formal_pairing",
+          "rationale": "The conditional-expectation tower integrates any integrable observable; fep-015 supplies measurability for its canonical variational integrand.",
+          "witness": "FEPComposed.fep057_tower_integrates_fep015"
+        },
+        {
+          "source": "fep-136",
+          "target": "fep-015",
+          "kind": "formal_pairing",
+          "rationale": "Native integration of an embedded finite law equals its weighted sum, paired with fep-015's measurable variational-integrand surface on the native carrier.",
+          "witness": "FEPComposed.fep136_embeddedExpectation_extends_fep015"
+        }
+      ]
+    },
+    {
+      "id": "fep-016",
+      "title": "Exact Scalar Quadratic Laplace Kernel",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep016_laplaceKernel_integral",
+      "supporting": [
+        "fep016_quadratic_min",
+        "fep016_quadratic_at_mode",
+        "fep016_precision_weighted",
+        "fep016_quadratic_sym",
+        "fep016_quadratic_expand",
+        "fep016_laplaceKernel_integrable"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep016_laplaceKernel_integral": "theorem fep016_laplaceKernel_integral\n    {precision : \u211d} (hprecision : 0 < precision) :\n    (\u222b x : \u211d, fep016_laplaceKernel precision x) =\n      Real.sqrt (Real.pi / (precision / 2))",
+        "fep016_quadratic_min": "theorem fep016_quadratic_min (x : \u211d) : 0 \u2264 x ^ 2",
+        "fep016_quadratic_at_mode": "theorem fep016_quadratic_at_mode (\u03bc : \u211d) : (\u03bc - \u03bc) ^ 2 = 0",
+        "fep016_precision_weighted": "theorem fep016_precision_weighted (prec x \u03bc : \u211d) (hp : 0 \u2264 prec) :\n    0 \u2264 prec * (x - \u03bc) ^ 2",
+        "fep016_quadratic_sym": "theorem fep016_quadratic_sym (x \u03bc : \u211d) : (x - \u03bc) ^ 2 = (\u03bc - x) ^ 2",
+        "fep016_quadratic_expand": "theorem fep016_quadratic_expand (x \u03bc : \u211d) :\n    (x - \u03bc) ^ 2 = x ^ 2 - 2 * \u03bc * x + \u03bc ^ 2",
+        "fep016_laplaceKernel_integrable": "theorem fep016_laplaceKernel_integrable\n    {precision : \u211d} (hprecision : 0 < precision) :\n    MeasureTheory.Integrable (fep016_laplaceKernel precision)"
+      },
+      "body_sha256": "5338337e544aa5e5df57b196dfba20f437f86d137b41d8dd73c278525fe326c5",
+      "maturity_record": {
+        "id": "fep-016",
+        "primary_theorem": "fep016_laplaceKernel_integral",
+        "supporting_theorems": [
+          "fep016_quadratic_min",
+          "fep016_quadratic_at_mode",
+          "fep016_precision_weighted",
+          "fep016_quadratic_sym",
+          "fep016_quadratic_expand",
+          "fep016_laplaceKernel_integrable"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A positive-precision scalar quadratic exponential is integrable and has the exact Gaussian normalizing integral sqrt(\u03c0/(precision/2)).",
+        "assumption_review": "Precision is strictly positive for the scientific integrability result. This is the exact scalar quadratic case underlying Laplace approximation; no approximation-error or higher-dimensional determinant theorem is claimed.",
+        "non_vacuity": "At precision two the kernel is exp(\u2212x\u00b2) with normalizer sqrt(\u03c0), and every positive precision gives a nonconstant integrable density kernel.",
+        "acceptance_probe": "native Lean compile of fep016_precision_weighted, fep016_laplaceKernel_integrable, and fep016_laplaceKernel_integral against Mathlib's Gaussian integral.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary exact scalarGaussianintegral with positiveprecision and supporting integrability/nonnegativequadratics match claimedexactquadraticLaplacekernel.",
+      "premise_and_scope_boundary": "Centered scalar kernel, not asymptoticLaplaceapproximation of arbitrarydensity. No higherdimensiondeterminant,errorrate or evidenceapproximation.",
+      "positive_adverse_witness_specification_not_new_execution": "precision2 gives exp(-x\u00b2),sqrtpi; precision0constant1notintegrableonR,negativeprecisiongrowth.",
+      "nearest_topic_distinction": "032quadraticdescent relates shape but not densitynormalization;086/091predictionenergies nonnegativequadraticpairings. No falseprobabilityclaim.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-086",
+          "nearest_topics": [
+            "fep-016"
+          ],
+          "new_invariant": "Positive precision makes scalar prediction-error energy nonnegative and separating.",
+          "carrier_delta": "Reinterprets the exact quadratic carrier as observation-minus-estimate error with an explicit precision parameter.",
+          "required_bridge": "FEPComposed.fep086_precision_energy_refines_fep016"
+        },
+        {
+          "id": "fep-087",
+          "nearest_topics": [
+            "fep-039",
+            "fep-016"
+          ],
+          "new_invariant": "Finite hierarchical prediction-error energy decomposes by level and stays nonnegative under nonnegative precision.",
+          "carrier_delta": "Replaces four named additive blocks with an arbitrary finite level carrier of precision-weighted scalar errors.",
+          "required_bridge": "FEPComposed.fep087_hierarchical_energy_extends_fep039"
+        },
+        {
+          "id": "fep-088",
+          "nearest_topics": [
+            "fep-043",
+            "fep-016"
+          ],
+          "new_invariant": "The estimate derivative of precision-weighted error is exactly its named prediction-error gradient.",
+          "carrier_delta": "Specializes scalar derivative and curvature machinery to observation, estimate, precision, and signed prediction error.",
+          "required_bridge": "FEPComposed.fep088_prediction_gradient_extends_fep043"
+        },
+        {
+          "id": "fep-091",
+          "nearest_topics": [
+            "fep-016",
+            "fep-086"
+          ],
+          "new_invariant": "Increasing nonnegative precision raises fixed-error energy and scales its exact gradient linearly.",
+          "carrier_delta": "Varies precision itself on the scalar quadratic prediction-error carrier and adds a strict doubling witness.",
+          "required_bridge": "FEPComposed.fep091_precision_modulation_refines_fep016"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-016",
+          "target": "fep-032",
+          "kind": "conceptual",
+          "rationale": "A nonnegative quadratic residual and a scalar descent contraction are complementary local pieces of a quadratic optimization argument."
+        },
+        {
+          "source": "fep-086",
+          "target": "fep-016",
+          "kind": "formal_pairing",
+          "rationale": "Precision energy is nonnegative both in the predictive-coding definition and in fep-016's unhalved weighted-quadratic primitive.",
+          "witness": "FEPComposed.fep086_precision_energy_refines_fep016"
+        },
+        {
+          "source": "fep-091",
+          "target": "fep-016",
+          "kind": "formal_pairing",
+          "rationale": "Precision modulation is monotone in the predictive energy and specializes fep-016's nonnegative weighted quadratic at the lower precision.",
+          "witness": "FEPComposed.fep091_precision_modulation_refines_fep016"
+        }
+      ]
+    },
+    {
+      "id": "fep-026",
+      "title": "Negative-Log Prior Complexity",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep026_priorComplexity_eq_zero_iff",
+      "supporting": [
+        "fep026_log_monotone",
+        "fep026_log_div",
+        "fep026_complexity_increases",
+        "fep026_complexity_zero_at_one",
+        "fep026_complexity_additive",
+        "fep026_priorComplexity_strictAnti"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep026_priorComplexity_eq_zero_iff": "theorem fep026_priorComplexity_eq_zero_iff {p : \u211d} (hp : 0 < p) :\n    fep026_priorComplexity p = 0 \u2194 p = 1",
+        "fep026_log_monotone": "theorem fep026_log_monotone {a b : \u211d} (ha : 0 < a) (hab : a \u2264 b) :\n    Real.log a \u2264 Real.log b",
+        "fep026_log_div": "theorem fep026_log_div {a b : \u211d} (ha : 0 < a) (hb : 0 < b) :\n    Real.log (a / b) = Real.log a - Real.log b",
+        "fep026_complexity_increases": "theorem fep026_complexity_increases {p q : \u211d} (hp : 0 < p) (_hq : 0 < q) (h : p \u2264 q) :\n    fep026_priorComplexity q \u2264 fep026_priorComplexity p",
+        "fep026_complexity_zero_at_one": "theorem fep026_complexity_zero_at_one : fep026_priorComplexity 1 = 0",
+        "fep026_complexity_additive": "theorem fep026_complexity_additive {a b : \u211d} (ha : 0 < a) (hb : 0 < b) :\n    fep026_priorComplexity (a * b) =\n      fep026_priorComplexity a + fep026_priorComplexity b",
+        "fep026_priorComplexity_strictAnti": "theorem fep026_priorComplexity_strictAnti\n    {p q : \u211d} (hp : 0 < p) (hpq : p < q) :\n    fep026_priorComplexity q < fep026_priorComplexity p"
+      },
+      "body_sha256": "93dfa116f821e97d2be49cee3c840440b6627303c5c4780d59a6ee5f07fb4485",
+      "maturity_record": {
+        "id": "fep-026",
+        "primary_theorem": "fep026_priorComplexity_eq_zero_iff",
+        "supporting_theorems": [
+          "fep026_log_monotone",
+          "fep026_log_div",
+          "fep026_complexity_increases",
+          "fep026_complexity_zero_at_one",
+          "fep026_complexity_additive",
+          "fep026_priorComplexity_strictAnti"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Negative-log prior complexity is additive on positive product densities, strictly antitone, and zero exactly at unit density.",
+        "assumption_review": "The input is a positive scalar prior-density value, not a normalized prior measure. Product additivity is exact; measure-valued relative complexity is owned by fep-014 and fep-024.",
+        "non_vacuity": "Every density in (0,1) has positive complexity, unit density is the unique positive zero, and unequal positive values exercise strict antitonicity.",
+        "acceptance_probe": "native Lean compile of fep026_complexity_additive, fep026_priorComplexity_eq_zero_iff, fep026_priorComplexity_strictAnti, and FEPComposed.fep026_priorComplexity_is_fep011_surprise.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary positiveprior-densityzeroiffunit, strictantitone/productadditivity/logquotient all exact.",
+      "premise_and_scope_boundary": "Densitynotprobabilitymass: may exceed1 andnegativecomplexity is legitimate; density depends onreferenceunits. No expectedKLregularizer claimed.",
+      "positive_adverse_witness_specification_not_new_execution": "density1zero,1/2positive,2negative; p0totalizedzero excluded; positiveproducts exerciseadditivity.",
+      "nearest_topic_distinction": "011samefunctional;014/024nativeexpectedrelativeKL distinct;119mixturepriorpenalty and143ratios are qualifiedpairings notnewpriornormalization.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-119",
+          "nearest_topics": [
+            "fep-026",
+            "fep-058"
+          ],
+          "new_invariant": "Bayesian-mixture log loss is bounded by selected-model log loss plus exact negative-log-prior regret.",
+          "carrier_delta": "Connects finite nonnegative mixture evidence to a supported selected component and its explicit complexity penalty.",
+          "required_bridge": "FEPComposed.fep119_mixture_log_loss_refines_fep026_complexity"
+        },
+        {
+          "id": "fep-143",
+          "nearest_topics": [
+            "fep-026",
+            "fep-058"
+          ],
+          "new_invariant": "The supported log-density ratio between two family parameters is affine in the sufficient statistic and log-partition difference.",
+          "carrier_delta": "Adds ordinary finite logarithmic density identities backed by strict base-weight support rather than totalized zero-mass conventions.",
+          "required_bridge": "FEPComposed.fep143_logDensityRatio_extends_fep026"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-011",
+          "target": "fep-026",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies self-information and scalar prior complexity as the same negative-log functional, fixing their shared sign convention.",
+          "witness": "FEPComposed.fep026_priorComplexity_is_fep011_surprise"
+        },
+        {
+          "source": "fep-119",
+          "target": "fep-026",
+          "kind": "formal_pairing",
+          "rationale": "Mixture log-loss regret exposes the selected model's prior penalty, and fep-026 proves that negative-log complexity is additive for the same positive prior-likelihood product.",
+          "witness": "FEPComposed.fep119_mixture_log_loss_refines_fep026_complexity"
+        },
+        {
+          "source": "fep-143",
+          "target": "fep-026",
+          "kind": "formal_pairing",
+          "rationale": "Supported exponential-family log-density ratios have an exact affine form, while fep-026 retains the separate negative-log product-complexity identity.",
+          "witness": "FEPComposed.fep143_logDensityRatio_extends_fep026"
+        }
+      ]
+    },
+    {
+      "id": "fep-032",
+      "title": "Exact Quadratic Gradient-Descent Dynamics",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep032_quadraticUpdate_tendsto",
+      "supporting": [
+        "fep032_quadraticUpdate_deviation",
+        "fep032_quadraticUpdate_fixed",
+        "fep032_quadraticUpdate_iterate",
+        "fep032_quadraticEnergy_descent"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep032_quadraticUpdate_tendsto": "theorem fep032_quadraticUpdate_tendsto\n    {step : \u211d} (hstep0 : 0 < step) (hstep2 : step < 2)\n    (center x : \u211d) :\n    Filter.Tendsto\n      (fun n => ((fep032_quadraticUpdate step center)^[n]) x)\n      Filter.atTop (nhds center)",
+        "fep032_quadraticUpdate_deviation": "theorem fep032_quadraticUpdate_deviation (step center x : \u211d) :\n    fep032_quadraticUpdate step center x - center =\n      (1 - step) * (x - center)",
+        "fep032_quadraticUpdate_fixed": "theorem fep032_quadraticUpdate_fixed (step center : \u211d) :\n    fep032_quadraticUpdate step center center = center",
+        "fep032_quadraticUpdate_iterate": "theorem fep032_quadraticUpdate_iterate (step center x : \u211d) (n : \u2115) :\n    ((fep032_quadraticUpdate step center)^[n]) x - center =\n      (1 - step) ^ n * (x - center)",
+        "fep032_quadraticEnergy_descent": "theorem fep032_quadraticEnergy_descent\n    {step center x : \u211d} (hstep0 : 0 \u2264 step) (hstep2 : step \u2264 2) :\n    (fep032_quadraticUpdate step center x - center) ^ 2 \u2264\n      (x - center) ^ 2"
+      },
+      "body_sha256": "1bf2b95276564dbd264f61fa3ed22714c6c6c443ab50eaa9d18fb84894098ed0",
+      "maturity_record": {
+        "id": "fep-032",
+        "primary_theorem": "fep032_quadraticUpdate_tendsto",
+        "supporting_theorems": [
+          "fep032_quadraticUpdate_deviation",
+          "fep032_quadraticUpdate_fixed",
+          "fep032_quadraticUpdate_iterate",
+          "fep032_quadraticEnergy_descent"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Gradient descent on the centered scalar quadratic has an exact n-step iterate, nonincreasing energy for step sizes in [0,2], and converges globally to the center for steps in (0,2).",
+        "assumption_review": "The closed form is unconditional. Energy descent uses 0\u2264\u03b7\u22642 and convergence uses the strict stability interval 0<\u03b7<2. This is an exact quadratic model, not a theorem for arbitrary smooth or convex objectives.",
+        "non_vacuity": "At \u03b7=1/2 every displacement halves, producing nontrivial geometric convergence; \u03b7=1 reaches the center in one step and the endpoints expose the non-strict boundary.",
+        "acceptance_probe": "native Lean compile of fep032_quadraticUpdate_deviation, fep032_quadraticUpdate_iterate, fep032_quadraticEnergy_descent, fep032_quadraticUpdate_tendsto, and FEPComposed.fep032_update_is_fep043_gradientStep.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary globalconvergencetoquadraticcenter requires0<step<2; exactiterate/deviationunconditional; energynonincreasing permitsclosed[0,2].",
+      "premise_and_scope_boundary": "No convergenceatendpoints or arbitrarynonconvexobjective; effective2aeta relation identity byitself lacksstableinterval.",
+      "positive_adverse_witness_specification_not_new_execution": "step1/2halves,1oneshot; step0staysnoncenter,2alternates,3divergesfornoncenter.",
+      "nearest_topic_distinction": "043landscape/gradient has effective2aeta map; currentrelationgloballyconvergentwordingoverclaims unrestrictedidentity andrequiresseparatefix.092/113/155remaincarrier-specificpairings.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-092",
+          "nearest_topics": [
+            "fep-032",
+            "fep-048"
+          ],
+          "new_invariant": "Exact scalar predictive updates contract energy and converge to zero error for step size between zero and two.",
+          "carrier_delta": "Instantiates quadratic descent as an iterated prediction update with explicit strict-descent and convergence boundaries.",
+          "required_bridge": "FEPComposed.fep092_quadratic_convergence_specializes_fep032"
+        },
+        {
+          "id": "fep-113",
+          "nearest_topics": [
+            "fep-032",
+            "fep-112"
+          ],
+          "new_invariant": "Consensus quarters quadratic disagreement potential and strictly descends at every separated atom.",
+          "carrier_delta": "Recasts scalar quadratic descent as a coupled two-law potential under the maintained stochastic consensus operator.",
+          "required_bridge": "FEPComposed.fep113_coupled_potential_refines_fep032_descent"
+        },
+        {
+          "id": "fep-155",
+          "nearest_topics": [
+            "fep-032",
+            "fep-049"
+          ],
+          "new_invariant": "Squared deviation from stationarity decays as exp(-2(a+b)t) and has derivative -2(a+b) times its current value.",
+          "carrier_delta": "Adds an exact scalar Lyapunov law and strict benchmark derivative without equating it with physical free energy or general entropy production.",
+          "required_bridge": "FEPComposed.fep155_lyapunovDecay_extends_fep032"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-016",
+          "target": "fep-032",
+          "kind": "conceptual",
+          "rationale": "A nonnegative quadratic residual and a scalar descent contraction are complementary local pieces of a quadratic optimization argument."
+        },
+        {
+          "source": "fep-032",
+          "target": "fep-043",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies a gradient step on fep-043's exact quadratic landscape with fep-032's globally convergent centered update at effective step size 2a\u03b7.",
+          "witness": "FEPComposed.fep032_update_is_fep043_gradientStep"
+        },
+        {
+          "source": "fep-092",
+          "target": "fep-032",
+          "kind": "formal_pairing",
+          "rationale": "On the shared stability interval, predictive error tends to zero and the equivalent centered quadratic iteration from fep-032 tends to its target.",
+          "witness": "FEPComposed.fep092_quadratic_convergence_specializes_fep032"
+        },
+        {
+          "source": "fep-113",
+          "target": "fep-032",
+          "kind": "formal_pairing",
+          "rationale": "Nonzero consensus disagreement gives strict coupled-potential descent, alongside the original stable-step quadratic-energy descent law.",
+          "witness": "FEPComposed.fep113_coupled_potential_refines_fep032_descent"
+        },
+        {
+          "source": "fep-155",
+          "target": "fep-032",
+          "kind": "formal_pairing",
+          "rationale": "Squared deviation from stationarity has an exact strictly negative benchmark derivative, paired with fep-032's discrete quadratic-descent certificate without calling either physical free energy.",
+          "witness": "FEPComposed.fep155_lyapunovDecay_extends_fep032"
+        }
+      ]
+    },
+    {
+      "id": "fep-035",
+      "title": "Jensen's Inequality for Log",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep035_log_jensen_two_strict",
+      "supporting": [
+        "fep035_log_strictConcave",
+        "fep035_log_mul",
+        "fep035_log_pow",
+        "fep035_log_exp",
+        "fep035_log_mono",
+        "fep035_log_one"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep035_log_jensen_two_strict": "theorem fep035_log_jensen_two_strict\n    {x y a b : \u211d} (hx : 0 < x) (hy : 0 < y) (hxy : x \u2260 y)\n    (ha : 0 < a) (hb : 0 < b) (hab : a + b = 1) :\n    a * Real.log x + b * Real.log y < Real.log (a * x + b * y)",
+        "fep035_log_strictConcave": "theorem fep035_log_strictConcave :\n    StrictConcaveOn \u211d (Set.Ioi 0) Real.log",
+        "fep035_log_mul": "theorem fep035_log_mul {a b : \u211d} (ha : 0 < a) (hb : 0 < b) :\n    Real.log (a * b) = Real.log a + Real.log b",
+        "fep035_log_pow": "theorem fep035_log_pow {a : \u211d} (_ha : 0 < a) (n : \u2115) : Real.log (a ^ n) = n * Real.log a",
+        "fep035_log_exp": "theorem fep035_log_exp (x : \u211d) : Real.log (Real.exp x) = x",
+        "fep035_log_mono": "theorem fep035_log_mono {a b : \u211d} (ha : 0 < a) (h : a \u2264 b) :\n    Real.log a \u2264 Real.log b",
+        "fep035_log_one": "theorem fep035_log_one : Real.log (1 : \u211d) = 0"
+      },
+      "body_sha256": "d82e138b6a35d8c686c8a6a6cda7c32b22282c10977fee68820f21637893b5e7",
+      "maturity_record": {
+        "id": "fep-035",
+        "primary_theorem": "fep035_log_jensen_two_strict",
+        "supporting_theorems": [
+          "fep035_log_strictConcave",
+          "fep035_log_mul",
+          "fep035_log_pow",
+          "fep035_log_exp",
+          "fep035_log_mono",
+          "fep035_log_one"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For distinct positive inputs and strictly positive weights summing to one, the weighted average of logarithms is strictly below the logarithm of the weighted average.",
+        "assumption_review": "Conditional on x,y > 0, x \u2260 y, a,b > 0, and a+b=1. This is the exact two-point strict Jensen law; finite-family and measure-integral variants are not claimed.",
+        "non_vacuity": "Witnessed by x = 1, y = 2, and a = b = 1/2.",
+        "acceptance_probe": "native Lean compile of fep035_log_strictConcave and fep035_log_jensen_two_strict with an interior-weight witness.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary strict2pointJensen consumes positiveinputs,distinctness,positiveweights sumone. Supportingnative strictconcavity/loglaws correct.",
+      "premise_and_scope_boundary": "No generalfiniteintegralJensen or expectationbounds claimed; equalinputs/zeroweight permit equality so strictpremisesessential.",
+      "positive_adverse_witness_specification_not_new_execution": "x1,y2,a=b1/2 strict; x=y1 equality; a0,b1 equality; negative/zeroinputsoutsidepositivity.",
+      "nearest_topic_distinction": "062IWAEweakfixedsamplebound separate; no genericvariationalELBOderivation fromstrict2pointtheorem.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-059",
+          "nearest_topics": [
+            "fep-001",
+            "fep-035"
+          ],
+          "new_invariant": "The finite Donsker\u2013Varadhan upper bound is attained uniquely by the certified Gibbs optimizer.",
+          "carrier_delta": "Reorients the Gibbs KL gap as a variational dual objective under explicit full-support log identities.",
+          "required_bridge": "FEPComposed.fep059_dv_equality_is_fep001_exactness"
+        },
+        {
+          "id": "fep-062",
+          "nearest_topics": [
+            "fep-035"
+          ],
+          "new_invariant": "Positive fixed-count IID importance weights satisfy a log sample-mean Jensen bound.",
+          "carrier_delta": "Replaces a single scalar Jensen argument with an explicit positive sample count and finite IID product law.",
+          "required_bridge": "FEPComposed.fep062_iwae_jensen_uses_fep035"
+        },
+        {
+          "id": "fep-114",
+          "nearest_topics": [
+            "fep-036",
+            "fep-035"
+          ],
+          "new_invariant": "Independent finite sub-Gaussian observables satisfy an explicit exponential empirical-mean upper-tail bound.",
+          "carrier_delta": "Replaces a deterministic empirical Bernoulli estimate with a probability measure, finite sample index, independence, and MGF certificates.",
+          "required_bridge": "FEPComposed.fep114_subgaussian_tail_refines_fep036_empirical_rate"
+        },
+        {
+          "id": "fep-115",
+          "nearest_topics": [
+            "fep-042",
+            "fep-035"
+          ],
+          "new_invariant": "Per-symbol normalized-count deviation bounds lift to a simultaneous finite-alphabet guarantee.",
+          "carrier_delta": "Adds a nonzero finite sample, decidable alphabet, concrete two-sided frequency events, and a probability union bound.",
+          "required_bridge": "FEPComposed.fep115_frequency_union_bound_extends_fep042_counts"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-062",
+          "target": "fep-035",
+          "kind": "formal_pairing",
+          "rationale": "The fixed-sample IWAE inequality and fep-035's strict two-point Jensen law expose respectively the weak and strict finite logarithmic boundaries.",
+          "witness": "FEPComposed.fep062_iwae_jensen_uses_fep035"
+        }
+      ]
+    },
+    {
+      "id": "fep-039",
+      "title": "Four-Block Additive Free Energy",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep039_global_eq_zero_iff",
+      "supporting": [
+        "fep039_global_nonneg",
+        "fep039_global_mono",
+        "fep039_global_zero",
+        "fep039_global_add"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep039_global_eq_zero_iff": "theorem fep039_global_eq_zero_iff (local_fe : Fin 4 \u2192 \u211d)\n    (hnonneg : \u2200 i, 0 \u2264 local_fe i) :\n    fep039_global_fe local_fe = 0 \u2194 \u2200 i, local_fe i = 0",
+        "fep039_global_nonneg": "theorem fep039_global_nonneg (local_fe : Fin 4 \u2192 \u211d) (h : \u2200 i, 0 \u2264 local_fe i) :\n    0 \u2264 fep039_global_fe local_fe",
+        "fep039_global_mono": "theorem fep039_global_mono (f g : Fin 4 \u2192 \u211d) (h : \u2200 i, f i \u2264 g i) :\n    fep039_global_fe f \u2264 fep039_global_fe g",
+        "fep039_global_zero": "theorem fep039_global_zero : fep039_global_fe (fun _ => 0) = 0",
+        "fep039_global_add": "theorem fep039_global_add (f g : Fin 4 \u2192 \u211d) :\n    fep039_global_fe (fun i => f i + g i) = fep039_global_fe f + fep039_global_fe g"
+      },
+      "body_sha256": "b3f3e090e905d7897a29d04425b64c403a79d14edd337405422a2263af40e4a8",
+      "maturity_record": {
+        "id": "fep-039",
+        "primary_theorem": "fep039_global_eq_zero_iff",
+        "supporting_theorems": [
+          "fep039_global_nonneg",
+          "fep039_global_mono",
+          "fep039_global_zero",
+          "fep039_global_add"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Four local free-energy contributions aggregate additively and monotonically; under local nonnegativity, their global sum vanishes exactly when every local term vanishes.",
+        "assumption_review": "Additivity is unconditional over four real components. Zero separation requires each local term to be nonnegative. The composed partition theorem ties those four components to fep-005's exact state blocks.",
+        "non_vacuity": "A single positive local contribution makes the global quantity positive, while independent nonzero contributions exercise exact additivity.",
+        "acceptance_probe": "native Lean compile of fep039_global_nonneg, fep039_global_mono, fep039_global_add, fep039_global_eq_zero_iff, and FEPComposed.fep039_partitionEnergy_conservation.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary zero-globaliffalllocalzero requires4nonnegativerealterms; supporting sumlinearity/monotonicity correct.",
+      "premise_and_scope_boundary": "Freeenergyis an authoredlabel for4scalars,not derivedfactorizedVFE/blanketindependence/thermodynamicconservation.",
+      "positive_adverse_witness_specification_not_new_execution": "local(1,0,0,0)positive; (1,-1,0,0)sumzero violatesnonnegativepremise andrefutesunguardedseparation.",
+      "nearest_topic_distinction": "005partitionfibre sumidentity is exactfiniteaggregation;108collectiveVFEadditivity separate and explicitlydoesnotidentifyrealmodels.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-087",
+          "nearest_topics": [
+            "fep-039",
+            "fep-016"
+          ],
+          "new_invariant": "Finite hierarchical prediction-error energy decomposes by level and stays nonnegative under nonnegative precision.",
+          "carrier_delta": "Replaces four named additive blocks with an arbitrary finite level carrier of precision-weighted scalar errors.",
+          "required_bridge": "FEPComposed.fep087_hierarchical_energy_extends_fep039"
+        },
+        {
+          "id": "fep-108",
+          "nearest_topics": [
+            "fep-039",
+            "fep-001"
+          ],
+          "new_invariant": "Product-law variational free energy with additive cost equals the sum of agent-level free energies.",
+          "carrier_delta": "Adds two full-support reference factors and explicitly separates independent product KL and expected-cost components.",
+          "required_bridge": "FEPComposed.fep108_collective_vfe_extends_fep039_additivity"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-039",
+          "target": "fep-005",
+          "kind": "formal",
+          "rationale": "The composed theorem aggregates state energies over fep-005's four unique partition fibres and proves that fep-039's local-energy sum conserves total state energy.",
+          "witness": "FEPComposed.fep039_partitionEnergy_conservation"
+        },
+        {
+          "source": "fep-087",
+          "target": "fep-039",
+          "kind": "formal_pairing",
+          "rationale": "A hierarchical prediction-error sum decomposes by level, while fep-039 certifies additivity of a four-block global free energy.",
+          "witness": "FEPComposed.fep087_hierarchical_energy_extends_fep039"
+        },
+        {
+          "source": "fep-108",
+          "target": "fep-039",
+          "kind": "formal_pairing",
+          "rationale": "Product-law collective VFE additivity extends the original four-block global free-energy additivity law without identifying their scalar models.",
+          "witness": "FEPComposed.fep108_collective_vfe_extends_fep039_additivity"
+        }
+      ]
+    },
+    {
+      "id": "fep-043",
+      "title": "Fermat Criticality and Quadratic Curvature",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep043_quadratic_critical_iff",
+      "supporting": [
+        "fep043_localMin_deriv_zero",
+        "fep043_quadratic_hasDerivAt",
+        "fep043_quadratic_unique_min",
+        "fep043_quadraticGradient_hasDerivAt",
+        "fep043_quadratic_hessian_pos"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep043_quadratic_critical_iff": "theorem fep043_quadratic_critical_iff\n    {a x\u2080 c x : \u211d} (ha : 0 < a) :\n    deriv (fep043_quadraticFreeEnergy a x\u2080 c) x = 0 \u2194 x = x\u2080",
+        "fep043_localMin_deriv_zero": "theorem fep043_localMin_deriv_zero\n    {f : \u211d \u2192 \u211d} {x\u2080 : \u211d} (hmin : IsLocalMin f x\u2080) :\n    deriv f x\u2080 = 0",
+        "fep043_quadratic_hasDerivAt": "theorem fep043_quadratic_hasDerivAt (a x\u2080 c x : \u211d) :\n    HasDerivAt (fep043_quadraticFreeEnergy a x\u2080 c)\n      (fep043_quadraticGradient a x\u2080 x) x",
+        "fep043_quadratic_unique_min": "theorem fep043_quadratic_unique_min\n    {a x\u2080 c x : \u211d} (ha : 0 < a) :\n    fep043_quadraticFreeEnergy a x\u2080 c x =\n        fep043_quadraticFreeEnergy a x\u2080 c x\u2080 \u2194\n      x = x\u2080",
+        "fep043_quadraticGradient_hasDerivAt": "theorem fep043_quadraticGradient_hasDerivAt (a x\u2080 x : \u211d) :\n    HasDerivAt (fep043_quadraticGradient a x\u2080) (2 * a) x",
+        "fep043_quadratic_hessian_pos": "theorem fep043_quadratic_hessian_pos {a : \u211d} (ha : 0 < a) :\n    0 < 2 * a"
+      },
+      "body_sha256": "47589d8dfa79d34e3ce9c1113e02a9edd6c6fecbf9ae02ebe3b6deed32e9c3ac",
+      "maturity_record": {
+        "id": "fep-043",
+        "primary_theorem": "fep043_quadratic_critical_iff",
+        "supporting_theorems": [
+          "fep043_localMin_deriv_zero",
+          "fep043_quadratic_hasDerivAt",
+          "fep043_quadratic_unique_min",
+          "fep043_quadraticGradient_hasDerivAt",
+          "fep043_quadratic_hessian_pos"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Fermat's theorem makes every local minimum critical; for an exact positive-curvature quadratic, the derivative is the stated gradient, the center is the unique critical point and global minimizer, and the scalar Hessian is strictly positive.",
+        "assumption_review": "The general derivative-zero theorem uses Mathlib's local-minimum notion. Uniqueness and positive second derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable objectives.",
+        "non_vacuity": "Every positive a and noncenter x has nonzero gradient and strictly larger energy than the center, while the Hessian 2a is nonzero everywhere.",
+        "acceptance_probe": "native Lean compile of fep043_localMin_deriv_zero, fep043_quadratic_hasDerivAt, fep043_quadratic_unique_min, fep043_quadratic_critical_iff, and fep043_quadratic_hessian_pos.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary derivativezeroiffcenter and supporting HasDerivAt/gradientderivative/positiveHessian exactpositivecurvaturequadratic. General localMin theoremreturns Mathlibtotalizedderiv0.",
+      "premise_and_scope_boundary": "General localMin wrapperdoesnotassertDifferentiableAt. Nondifferentiable localmin canhavederiv0bydefinition. Unique_min lemmaestablishescenterlevelset equalityiff; global lowerbound followspositivea*square but isnot separatelynamed.",
+      "positive_adverse_witness_specification_not_new_execution": "a1,x0centeruniquecritical; a0allpointscritical; a-1centerglobalmaximum. absx at0 is nondifferentiablelocalmin with totalizedderiv0.",
+      "nearest_topic_distinction": "032ownsiterationnotcurvature;088/090predictiongradientpairings distinct. Currentcompositiondocstringpositivecurvature has nopremiseandisalreadyflaggedIssue104.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-088",
+          "nearest_topics": [
+            "fep-043",
+            "fep-016"
+          ],
+          "new_invariant": "The estimate derivative of precision-weighted error is exactly its named prediction-error gradient.",
+          "carrier_delta": "Specializes scalar derivative and curvature machinery to observation, estimate, precision, and signed prediction error.",
+          "required_bridge": "FEPComposed.fep088_prediction_gradient_extends_fep043"
+        },
+        {
+          "id": "fep-090",
+          "nearest_topics": [
+            "fep-043",
+            "fep-089"
+          ],
+          "new_invariant": "A finite-jet Euler correction combines truncated shift with a certified coordinate energy gradient.",
+          "carrier_delta": "Adds step size, coordinate precision, target and estimate jets, exact derivatives, and a visible top-coordinate boundary.",
+          "required_bridge": "FEPComposed.fep090_generalized_correction_combines_fep043"
+        },
+        {
+          "id": "fep-104",
+          "nearest_topics": [
+            "fep-024",
+            "fep-043"
+          ],
+          "new_invariant": "Supplied potential and gradient data satisfy the exact Bregman three-point identity.",
+          "carrier_delta": "Moves from scalar KL regularization to arbitrary finite coordinate potentials, gradient fields, and three comparison points.",
+          "required_bridge": "FEPComposed.fep104_mirror_descent_refines_fep024"
+        },
+        {
+          "id": "fep-144",
+          "nearest_topics": [
+            "fep-040",
+            "fep-043"
+          ],
+          "new_invariant": "The derivative of the finite log-partition potential equals the mean sufficient statistic.",
+          "carrier_delta": "Differentiates a positive finite exponential sum exactly and connects a named statistical potential to the earlier scalar derivative machinery.",
+          "required_bridge": "FEPComposed.fep144_logPartitionGradient_extends_fep040"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-032",
+          "target": "fep-043",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies a gradient step on fep-043's exact quadratic landscape with fep-032's globally convergent centered update at effective step size 2a\u03b7.",
+          "witness": "FEPComposed.fep032_update_is_fep043_gradientStep"
+        },
+        {
+          "source": "fep-088",
+          "target": "fep-043",
+          "kind": "formal_pairing",
+          "rationale": "The predictive-error derivative and fep-043's quadratic derivative are the same scalar geometry at curvature `precision / 2`.",
+          "witness": "FEPComposed.fep088_prediction_gradient_extends_fep043"
+        },
+        {
+          "source": "fep-090",
+          "target": "fep-043",
+          "kind": "formal_pairing",
+          "rationale": "A generalized-filter correction exposes its shift-minus-gradient equation; the same coordinate gradient is backed by fep-043's exact quadratic derivative.",
+          "witness": "FEPComposed.fep090_generalized_correction_combines_fep043"
+        }
+      ]
+    },
+    {
+      "id": "fep-048",
+      "title": "Contractive Policy Update Uniqueness",
+      "disposition": "retain_formalized_for_exact_declared_proxy",
+      "primary": "fep048_contraction_unique",
+      "supporting": [
+        "fep048_sync_nonneg",
+        "fep048_async_mono",
+        "fep048_halfUpdate_contracts",
+        "fep048_halfUpdate_unique_fixed_point",
+        "fep048_halfUpdate_iterates_converge",
+        "fep048_id_mono",
+        "fep048_add_mono"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep048_contraction_unique": "theorem fep048_contraction_unique (f : \u211d \u2192 \u211d) (c : NNReal)\n    (hcontract : ContractingWith c f) (x y : \u211d)\n    (hfx : Function.IsFixedPt f x) (hfy : Function.IsFixedPt f y) : x = y",
+        "fep048_sync_nonneg": "theorem fep048_sync_nonneg (a b : \u211d) (ha : 0 \u2264 a) (hb : 0 \u2264 b) : 0 \u2264 a + b",
+        "fep048_async_mono": "theorem fep048_async_mono (f g : \u211d \u2192 \u211d) (hf : Monotone f) (hg : Monotone g) :\n    Monotone (g \u2218 f)",
+        "fep048_halfUpdate_contracts": "theorem fep048_halfUpdate_contracts :\n    ContractingWith (1 / 2 : NNReal) fep048_halfUpdate",
+        "fep048_halfUpdate_unique_fixed_point": "theorem fep048_halfUpdate_unique_fixed_point (x : \u211d)\n    (hx : Function.IsFixedPt fep048_halfUpdate x) : x = 0",
+        "fep048_halfUpdate_iterates_converge": "theorem fep048_halfUpdate_iterates_converge (x : \u211d) :\n    Filter.Tendsto (fun n \u21a6 fep048_halfUpdate^[n] x) Filter.atTop (\ud835\udcdd 0)",
+        "fep048_id_mono": "theorem fep048_id_mono : Monotone (id : \u211d \u2192 \u211d)",
+        "fep048_add_mono": "theorem fep048_add_mono (f g : \u211d \u2192 \u211d) (hf : Monotone f) (hg : Monotone g) :\n    Monotone (fun x => f x + g x)"
+      },
+      "body_sha256": "cad7c99c83719b89c85b04f2944c3ef9c2530725ced1e966a42ad6f98fd91269",
+      "maturity_record": {
+        "id": "fep-048",
+        "primary_theorem": "fep048_contraction_unique",
+        "supporting_theorems": [
+          "fep048_sync_nonneg",
+          "fep048_async_mono",
+          "fep048_halfUpdate_contracts",
+          "fep048_halfUpdate_unique_fixed_point",
+          "fep048_halfUpdate_iterates_converge",
+          "fep048_id_mono",
+          "fep048_add_mono"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Mathlib's global ContractingWith contract gives a unique fixed point on \u211d, and iterations of the concrete halving update converge to zero.",
+        "assumption_review": "ContractingWith packages a nonnegative Lipschitz coefficient strictly below one. Completeness and nonemptiness of \u211d discharge the Banach fixed-point assumptions; no claim is made for arbitrary noncontractive policy updates.",
+        "non_vacuity": "The nonconstant update x \u21a6 x/2 is certified with coefficient 1/2, has zero as its unique fixed point, and has iterates converging to zero from every real start.",
+        "acceptance_probe": "native Lean compile of the native uniqueness wrapper, halving contraction, unique-zero, and iterate-convergence theorems.",
+        "disposition": "formalized"
+      },
+      "primary_support_review": "Primary anytwofixedpointscoincide under globalContractingWith onR; nativeAPI containsgenericexistence withcompleteR. Supportinghalfmapcontractive,uniquefixedzero anditeratesconverge exact.",
+      "premise_and_scope_boundary": "Primarywrapperitselfisatmostone,notexistenceclaim; concretehalfmapisnonvacuous. Monotoneupdatesalone do notcontract/converge; no asynchronouspolicyconvergence theorem.",
+      "positive_adverse_witness_specification_not_new_execution": "x\u2192x/2nonconstant contracts andconverges; identity1Lipschitzhasmanyfixedpoints; x\u2192x+1monotonehasnone.",
+      "nearest_topic_distinction": "112consensusfinitecarrierconvergencedistinct;006iterateflowalgebra and032stablescalarquadraticnotgenericpolicycontraction.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-092",
+          "nearest_topics": [
+            "fep-032",
+            "fep-048"
+          ],
+          "new_invariant": "Exact scalar predictive updates contract energy and converge to zero error for step size between zero and two.",
+          "carrier_delta": "Instantiates quadratic descent as an iterated prediction update with explicit strict-descent and convergence boundaries.",
+          "required_bridge": "FEPComposed.fep092_quadratic_convergence_specializes_fep032"
+        },
+        {
+          "id": "fep-112",
+          "nearest_topics": [
+            "fep-048",
+            "fep-020"
+          ],
+          "new_invariant": "Fixed two-agent consensus halves each atomwise gap and converges pointwise to zero disagreement.",
+          "carrier_delta": "Instantiates contractive iteration on a pair of finite laws and adds an explicit nonzero strict Boolean witness.",
+          "required_bridge": "FEPComposed.fep112_consensus_convergence_extends_fep048_contraction"
+        }
+      ],
+      "touching_relation_rows": [
+        {
+          "source": "fep-112",
+          "target": "fep-048",
+          "kind": "formal_pairing",
+          "rationale": "Atomwise consensus disagreement converges to zero, extending the original concrete halving-contraction convergence witness.",
+          "witness": "FEPComposed.fep112_consensus_convergence_extends_fep048_contraction"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "path": "config/formalism_relations.yaml",
+      "line": 668,
+      "rows": [
+        "fep-032",
+        "fep-043"
+      ],
+      "finding": "Current032\u2192043rationale attributesglobalconvergence to unrestrictedalgebraicidentity; effective2aeta stableinterval absent.",
+      "recommendation": "Apply independentlyreviewedIssue104rationale/docstringcorrection with exactseal/projectioncontrols; never inferconvergencefromidentityalone."
+    },
+    {
+      "priority": "P3",
+      "path": "config/theorem_maturity.yaml",
+      "line": 848,
+      "rows": [
+        "fep-043"
+      ],
+      "finding": "Clarifytotalizedderiv in generalFermatwrapper; currenttheoremdoesnotestablishdifferentiability.",
+      "recommendation": "Append assumptionreview: The general deriv=0 wrapper uses Mathlib\u2019s totalized derivative, which is zero also at nondifferentiable points; only the explicit quadratic HasDerivAt declarations establish differentiability here."
+    },
+    {
+      "priority": "P3",
+      "path": "config/theorem_maturity.yaml",
+      "line": 942,
+      "rows": [
+        "fep-048"
+      ],
+      "finding": "Primarywrapperprovesfixedpointuniquenessconditionalontwofixedpoints; genericexistenceisimportednativeAPI,notseparatelywrapped.",
+      "recommendation": "Prefer invariant wording: Any two fixed points of a global ContractingWith map on R coincide; the concrete halving map has unique fixed point0anditeratesconverge. Or addnativegenericexistencewrapperbeforeclaiminggenericexistenceasowneddeclaration."
+    }
+  ],
+  "ranked_followups": [
+    {
+      "rank": 1,
+      "scope": "043deriv/048metadata precision and032relationcorrection",
+      "missing_content": "No broadmathematicalgap; scopedclaimdocumentation mustdistinguish totalizedderivative/atmostone/conditionalconvergence.",
+      "owner": "existingmaturity/relations/corecomposition",
+      "positive": "quadratic HasDerivAt andhalfmap",
+      "adverse": "absxlocalmin;identitymanyfixedpoints;step2alternation",
+      "library_seam": "IsLocalMin.hasDerivAt_eq_zero versus deriv_zero_of_not_differentiableAt; ContractingWith.fixedPoint_isFixedPt",
+      "estimate": "2-4hoursplussealedmetadataqualification",
+      "acceptance": "Exactrevieweddelta, deterministicprojections, typedpositive/adverseconsumers/rawaxioms; noautomaticpromotion"
+    },
+    {
+      "rank": 2,
+      "scope": "043explicitglobalminimumlowerbound and048genericfixedpointexistence",
+      "missing_content": "SmallnamedAPIlemmas make alreadyavailablefacts explicit; notnewscientifictheory.",
+      "owner": "existingcore_free_energy.pyandgeneratedfamily",
+      "positive": "a>0centerlowerbound; genericcontractingf fixedPointwitness",
+      "adverse": "a<0failsminimum; noncontractiveidentityfailsuniqueexistence",
+      "library_seam": "sq_nonneg,mul_nonneg; ContractingWith.fixedPoint_isFixedPt/fixedPoint_unique",
+      "estimate": "0.5dayincludingconsumers",
+      "acceptance": "Exactexistingownersandqualifiedsupport declarations; warningfreecompile/rawaxioms/supportreview"
+    },
+    {
+      "rank": 3,
+      "scope": "015integrablevariationalintegrand",
+      "missing_content": "AddIntegrableclosureunderexplicitmeasureandthreeIntegrableingredients; existingmeasurabilitydoesnotprovidefiniteexpectation.",
+      "owner": "existingbodyandcompositiononly",
+      "positive": "finitecarrierorboundedfunctionsunderfiniteprobability",
+      "adverse": "measurable1/xon(0,1]notintegrable; noexpectationclaimedwithoutpremise",
+      "library_seam": "MeasureTheory.Integrable.add/sub, compositionmeasurechange requiresseparatehypotheses",
+      "estimate": "0.5-1dayboundedclosure;moreforreparameterizationintegration",
+      "acceptance": "Typednonconstantpositive/actualnonintegrableboundary; exactnative/rawaxiom/domainreview"
+    },
+    {
+      "rank": 4,
+      "scope": "012finitepolicyobjectivebridge",
+      "missing_content": "Bridge existingFin10entropyobjective to existingFiniteLaw/Gibbsfreeenergyoptimizer; do notduplicatealreadydeliveredfoundation.",
+      "owner": "existingcompositionleaf",
+      "positive": "uniform/softmaxfullsupport,T>0uniqueminimum",
+      "adverse": "unnormalizedweightsin[0,1]satisfycurrentinequalitybutarenotlaw; T0uniquenessfailsforconstantcost",
+      "library_seam": "FiniteInformation.FiniteLaw,VariationalDuality.helmholtz_decomposition/helmholtzFreeEnergy_eq_iff plus exactFin10entropyidentity",
+      "estimate": "1-2daysincludingcarrierconsumer",
+      "acceptance": "Exactsupport/temperature/unitpremises, adversecountermodel, namedrelationonlyaftersemanticreview"
+    },
+    {
+      "rank": 5,
+      "scope": "016generalLaplaceapproximation",
+      "missing_content": "Generalnonquadraticasymptoticerror/multivariatedeterminantrequiresnewanalyticalwork; currentexactGaussianisnotit.",
+      "owner": "existingfoundationifseparatelyscoped",
+      "positive": "exactquadraticbaseline",
+      "adverse": "flat/degenerateHessian, multiplemodes, nontaildominateddensity",
+      "library_seam": "PinnedGaussianintegralplusgenuineTaylorremainderanddominatedrescaling/localization; notestablishedbycurrentimports",
+      "estimate": "multiweekresearchspike; noresponsibleboundedclosureestimate",
+      "acceptance": "Firstlibraryprobeandpreciseanalyticcontract; noimplementationassumednecessaryforcurrentnarrowrow"
+    }
+  ],
+  "novelty_boundary": "Original1-50topics have no ownrecords in expansionnoveltyledger; nearest expansionrecords are included perrowwhereapplicable. No novelty inferred from names orduplicatefunctionalforms.",
+  "remaining": [
+    "Issue54/68dependenciesandwhole168familyreviewsremainopen",
+    "Noautomaticmaturity/roster/sourcechange; eachboundedfollowupneedsnative/axiom/domainreview anddeterministicprojections",
+    "Existingfullnative168/audit1886iscompilationevidence,separatefromthis13rowsemanticreview"
+  ],
+  "limitations": [
+    "Staticcanonicalbody/maturity/metadata/relations/pinnedlibraryread only; no Leanorwriterexecution/S changes",
+    "Positive/adverseexamples here are sourcelevelmathematicalspecifications,notnewexecutedprobes",
+    "All13boundarytheoremarrayscurrentlyempty; thisreportdoesnotfabricatenamedexecutedboundarydeclarations",
+    "Nearestotherfamilyrecordsarecomparisoncontext,notfullauditofthosefamilies"
+  ]
+}

@@ -1,0 +1,427 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "causal-blankets-and-interventions",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-079",
+    "fep-080",
+    "fep-081",
+    "fep-082",
+    "fep-083",
+    "fep-084",
+    "fep-085"
+  ],
+  "combined_issue75_audit_count": 92,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
+    "lean/FepSketches/families/causal_blankets_interventions.lean": "5484dbf519647e4c8335ec0590572de3bd9dc2e2148621dd141a66a33ec095cf",
+    "src/fep_lean/formal/causal_dynamics.lean": "a87844ec42f395cb8532fa96c7d5b6b956731e1b0f6069f748d512e43add686c",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/markov_blanket.lean": "6e214ee37ba6525d1ca5b44130ceaf4b410e03a0bb18d9b3070c4f8b90280011",
+    "src/fep_lean/formal/compositions/causal_predictive.lean": "c71060d75bed0f8a5283fdf9ecdb08f18ae9a8b0c63dcda5fe6e1aa9144e1d4e",
+    "src/fep_lean/formal/compositions/native_blanket_transfer.lean": "24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7",
+    "src/fep_lean/formal/compositions/finite_scientific_implications.lean": "e45a35a2de0b1b746b07daca1d675b840a26d276f47646025592773be19147b0",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-079",
+      "title": "Blanket Factorization and Conditional-Mutual-Information Equivalence",
+      "decision": "retain_conditional_proxy_for_exact_narrow_scope",
+      "canonical_body_sha256": "d4cab6ebf78ca38987b75bad41a00a20d4ce8a5f5e201dd056bc24957b0dbbbc",
+      "maturity_record": {
+        "id": "fep-079",
+        "primary_theorem": "fep079_blanketFactorization_iff_conditionalMutualInformation_zero",
+        "supporting_theorems": [
+          "fep079_staticBlanket_conditionalMutualInformation_zero"
+        ],
+        "boundary_theorems": [],
+        "invariant": "On a finite conditional-blanket carrier with full blanket support, vanishing conditional mutual information is equivalent to pointwise internal–external factorization.",
+        "assumption_review": "Blanket, internal, and external carriers are finite and every blanket atom is strictly positive for the equivalence. The static-model specialization proves zero conditional mutual information even with null blanket atoms, but the theorem does not identify a general physical Markov blanket.",
+        "non_vacuity": "Static finite blanket models instantiate exact conditional product rows, and the full-support premise ensures that no nonfactorizing row is hidden behind a zero blanket probability.",
+        "acceptance_probe": "native Lean compile of fep079_blanketFactorization_iff_conditionalMutualInformation_zero and fep079_staticBlanket_conditionalMutualInformation_zero.",
+        "disposition": "conditional_proxy"
+      },
+      "qualified_declaration_statements": {
+        "fep079_blanketFactorization_iff_conditionalMutualInformation_zero": "theorem fep079_blanketFactorization_iff_conditionalMutualInformation_zero\n    (model : ConditionalBlanketModel Blanket Internal External)\n    (hBlanket : ∀ blanket, 0 < model.blanketLaw blanket) :\n    conditionalMutualInformation model = 0 ↔ Factorizes model",
+        "fep079_staticBlanket_conditionalMutualInformation_zero": "theorem fep079_staticBlanket_conditionalMutualInformation_zero\n    (model : StaticModel Internal Sensory Active External) :\n    conditionalMutualInformation (ofStaticModel model) = 0"
+      },
+      "statement_review": "The weighted sum of finite row mutual informations vanishes iff every row factorizes when every blanket atom is positive. StaticModel already constructs product rows; its specialization remains zero on null blanket atoms. This is not causal identification.",
+      "assumptions_and_scope": "The finite real mutual-information carrier and full blanket support matter; dropping full support permits arbitrary nonfactorizing zero-weight rows. Existing native static-blanket transfer in topics138/139 is real additional content, not absent.",
+      "positive_witness_specification_unexecuted": "Use a full-support Boolean blanket with independent conditional rows; contrast a positive-weight correlated diagonal row.",
+      "adverse_witness_specification_unexecuted": "Use a point-mass blanket and a correlated conditional row at its null atom: average CMI is zero but pointwise Factorizes fails.",
+      "nearest_topic_distinction": "009 is native conditional independence symmetry; this finite zero-CMI characterization is distinct. The declared edge is a pairing with product-mass nonnegativity, not an equivalence to the native predicate.",
+      "novelty_record": {
+        "id": "fep-079",
+        "nearest_topics": [
+          "fep-009",
+          "fep-014"
+        ],
+        "new_invariant": "Full-support blanket rows factorize exactly when conditional mutual information vanishes.",
+        "carrier_delta": "Adds a finite blanket law and a family of internal–external conditional joint laws with visible null-row scope.",
+        "required_bridge": "FEPComposed.fep079_blanket_cmi_refines_fep009"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-079",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "Finite blanket factorization is characterized by zero conditional mutual information, while fep-009 supplies the nonnegative product-mass primitive. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_joint_product_nonneg` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
+          "witness": "FEPComposed.fep079_blanket_cmi_refines_fep009"
+        },
+        {
+          "source": "fep-138",
+          "target": "fep-079",
+          "kind": "formal_pairing",
+          "rationale": "Native singleton-rectangle factorization is paired with the finite conditional-factorization characterization from which its embedded masses are constructed.",
+          "witness": "FEPComposed.fep138_rectangleFactorization_extends_fep079"
+        }
+      ]
+    },
+    {
+      "id": "fep-080",
+      "title": "Shared-Conditional Mixture Preservation",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "ea01e6504a75cac38b53c9d0c7df4d30e9bbd1dd9847e544971f7d5caa901006",
+      "maturity_record": {
+        "id": "fep-080",
+        "primary_theorem": "fep080_sharedConditional_mixture_preservation",
+        "supporting_theorems": [
+          "fep080_boolHalfMixture_nonvacuity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Convex mixing of two finite input laws commutes exactly with forming their joint laws when both components share the same conditional kernel.",
+        "assumption_review": "Input and output carriers are finite, the mixing weight lies in the closed unit interval, and both components use one identical normalized kernel. The result does not cover mixtures whose conditional mechanisms differ.",
+        "non_vacuity": "The half-mixture witness assigns mass one half to each Boolean atom, and distinct component laws may still produce a genuinely mixed joint after the shared kernel is applied.",
+        "acceptance_probe": "native Lean compile of fep080_sharedConditional_mixture_preservation and fep080_boolHalfMixture_nonvacuity with both convex-weight bounds.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep080_sharedConditional_mixture_preservation": "theorem fep080_sharedConditional_mixture_preservation\n    (weight : ℝ) (hWeightNonneg : 0 ≤ weight)\n    (hWeightLeOne : weight ≤ 1)\n    (left right : FiniteLaw Input) (kernel : FiniteKernel Input Output) :\n    kernel.joint (mixLaw weight hWeightNonneg hWeightLeOne left right) =\n      mixLaw weight hWeightNonneg hWeightLeOne\n        (kernel.joint left) (kernel.joint right)",
+        "fep080_boolHalfMixture_nonvacuity": "theorem fep080_boolHalfMixture_nonvacuity :\n    boolHalfMixture false = 1 / 2 ∧ boolHalfMixture true = 1 / 2"
+      },
+      "statement_review": "Joint formation is affine in the input law for one fixed normalized conditional kernel. The weight bounds construct a probability mixture; the algebraic equality itself is distributivity.",
+      "assumptions_and_scope": "Sharing a conditional mechanism is substantive. Arbitrary mixtures of product distributions need not factorize; causal_dynamics already proves the diagonal-Boolean adverse example and shared-left/right sufficient conditions.",
+      "positive_witness_specification_unexecuted": "Mix distinct Boolean point masses with weight1/2 through a deterministic identity kernel; both input and joint are genuinely mixed.",
+      "adverse_witness_specification_unexecuted": "Mix the two matched Boolean product point masses: the resulting diagonal law has positive mutual information and is not product.",
+      "nearest_topic_distinction": "019 is native sequential prediction associativity. This new statement concerns convex mixing, and its relation remains a conjunction, not a finite/native embedding proof.",
+      "novelty_record": {
+        "id": "fep-080",
+        "nearest_topics": [
+          "fep-019"
+        ],
+        "new_invariant": "Joint-law formation preserves convex mixtures that share one conditional kernel.",
+        "carrier_delta": "Adds two input laws and a closed-unit-interval mixture weight while holding the conditional mechanism fixed.",
+        "required_bridge": "FEPComposed.fep080_shared_mixture_preserves_fep019_prediction"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-080",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "Mixing a shared finite conditional law commutes with joint formation, alongside fep-019's native sequential-prediction associativity.",
+          "witness": "FEPComposed.fep080_shared_mixture_preserves_fep019_prediction"
+        },
+        {
+          "source": "fep-141",
+          "target": "fep-080",
+          "kind": "formal_pairing",
+          "rationale": "Every factorized transition row inherits native blanket conditional independence, while fep-080 retains the separate finite shared-mixture prediction law.",
+          "witness": "FEPComposed.fep141_blanketTransition_extends_fep080"
+        }
+      ]
+    },
+    {
+      "id": "fep-081",
+      "title": "Coupled-Subsystem Blanket Composition",
+      "decision": "retain_structural_proxy_for_exact_narrow_scope",
+      "canonical_body_sha256": "2b145cce117b01ffa47a461e61dc9eef1fea57bec98f1c25f51d5e36b03ce4c5",
+      "maturity_record": {
+        "id": "fep-081",
+        "primary_theorem": "fep081_coupledSubsystem_blanketComposition",
+        "supporting_theorems": [
+          "fep081_correlatedBlanket_nonvacuity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Two conditionally factorized subsystems retain zero paired-row mutual information under an arbitrarily coupled joint blanket law.",
+        "assumption_review": "Every carrier is finite and subsystem internal and external kernels factor by their own blanket coordinates. The conclusion is rowwise conditional mutual information for paired variables; it does not assert that the joint blanket factorizes or that the complete subsystems are marginally independent.",
+        "non_vacuity": "A diagonal Boolean blanket law has zero cross mass and strictly positive blanket mutual information, demonstrating genuine coupling despite exact within-row conditional factorization.",
+        "acceptance_probe": "native Lean compile of fep081_coupledSubsystem_blanketComposition and fep081_correlatedBlanket_nonvacuity on a correlated blanket witness.",
+        "disposition": "structural_proxy"
+      },
+      "qualified_declaration_statements": {
+        "fep081_coupledSubsystem_blanketComposition": "theorem fep081_coupledSubsystem_blanketComposition\n    (blanketLaw : FiniteLaw (Blanket₁ × Blanket₂))\n    (internal₁ : FiniteKernel Blanket₁ Internal₁)\n    (internal₂ : FiniteKernel Blanket₂ Internal₂)\n    (external₁ : FiniteKernel Blanket₁ External₁)\n    (external₂ : FiniteKernel Blanket₂ External₂)\n    (blanket : Blanket₁ × Blanket₂) :\n    mutualInformation\n        (conditionalJoint\n          (coupledBlanketModel blanketLaw internal₁ internal₂ external₁ external₂)\n          blanket) = 0",
+        "fep081_correlatedBlanket_nonvacuity": "theorem fep081_correlatedBlanket_nonvacuity :\n    correlatedBoolBlanket (false, false) = 1 / 2 ∧\n      correlatedBoolBlanket (true, true) = 1 / 2 ∧\n      0 < mutualInformation correlatedBoolBlanket"
+      },
+      "statement_review": "A constructed paired StaticModel has independent paired internal/external conditional rows even when the joint blanket distribution is correlated. The diagonal blanket witness has strictly positive blanket MI.",
+      "assumptions_and_scope": "The paired internal and paired external kernels are authored products across subsystem coordinates. This proves the maintained structural composition, not arbitrary subsystem coupling or marginal subsystem independence.",
+      "positive_witness_specification_unexecuted": "Use the supplied correlatedBoolBlanket and nonconstant deterministic subsystem kernels; retain blanket dependence while checking row product.",
+      "adverse_witness_specification_unexecuted": "Let internal and external variables both copy the common correlated blanket: marginal dependence persists although their conditional rows factorize.",
+      "nearest_topic_distinction": "079 characterizes general finite conditional rows;081 supplies a particular product-row composition allowing correlated blanket coordinates. Retain structural_proxy.",
+      "novelty_record": {
+        "id": "fep-081",
+        "nearest_topics": [
+          "fep-009",
+          "fep-079"
+        ],
+        "new_invariant": "Rowwise blanket factorization survives an arbitrarily correlated joint blanket law.",
+        "carrier_delta": "Couples two subsystem blanket coordinates without imposing a product law and retains paired conditional product rows.",
+        "required_bridge": "FEPComposed.fep081_coupled_blanket_composes_fep009"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-081",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "Coupled blankets retain zero conditional mutual information within each conditional row, together with fep-009's product-mass nonnegativity. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_joint_product_nonneg` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
+          "witness": "FEPComposed.fep081_coupled_blanket_composes_fep009"
+        }
+      ]
+    },
+    {
+      "id": "fep-082",
+      "title": "Finite Intervention-Kernel Normalization",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "cb51f81e10ff9ba0aa3e3fbe79d9f4cbde504dcca51a7fc8a0ea026b22a683df",
+      "maturity_record": {
+        "id": "fep-082",
+        "primary_theorem": "fep082_interventionKernel_normalization",
+        "supporting_theorems": [
+          "fep082_interventionKernel_chosen_mass"
+        ],
+        "boundary_theorems": [
+          "fep082_interventionKernel_other_mass"
+        ],
+        "invariant": "A hard finite intervention kernel places unit mass on the chosen value, zero mass on every distinct value, and remains normalized in every context.",
+        "assumption_review": "Context and value carriers are finite and value equality is decidable. The kernel represents a deterministic do-assignment only; it does not by itself encode graph surgery, confounding assumptions, or interventional identifiability.",
+        "non_vacuity": "On any value carrier with two distinct elements, one receives mass one and the other mass zero independently of context, exercising both sides of the hard intervention.",
+        "acceptance_probe": "native Lean compile of fep082_interventionKernel_normalization, fep082_interventionKernel_chosen_mass, and fep082_interventionKernel_other_mass.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep082_interventionKernel_normalization": "theorem fep082_interventionKernel_normalization\n    (chosen : Value) (context : Context) :\n    ∑ value, interventionKernel (Context",
+        "fep082_interventionKernel_chosen_mass": "theorem fep082_interventionKernel_chosen_mass\n    (chosen : Value) (context : Context) :\n    interventionKernel (Context",
+        "fep082_interventionKernel_other_mass": "theorem fep082_interventionKernel_other_mass\n    (chosen other : Value) (hOther : other ≠ chosen) (context : Context) :\n    interventionKernel (Context"
+      },
+      "statement_review": "The deterministic context-ignoring kernel assigns chosen value mass1 and alternatives0, and normalizes. It is a bounded do-assignment primitive.",
+      "assumptions_and_scope": "A chosen value inhabits the value carrier; a context is needed to evaluate a row. No graph surgery, observational identification or confounder exclusion follows from kernel normalization.",
+      "positive_witness_specification_unexecuted": "Bool values and Bool contexts, choose true, exercise true/false masses for both contexts.",
+      "adverse_witness_specification_unexecuted": "An observational conditional can depend on context whereas this kernel cannot; normalization alone does not imply it is an empirically justified intervention.",
+      "nearest_topic_distinction": "023 is normalization of a supplied reachable native measure. Pairing two normalized objects does not identify their semantics.",
+      "novelty_record": {
+        "id": "fep-082",
+        "nearest_topics": [
+          "fep-023"
+        ],
+        "new_invariant": "A hard finite intervention assigns unit chosen mass, zero alternative mass, and normalized rows.",
+        "carrier_delta": "Adds a context-indexed deterministic do-kernel with decidable finite intervention values.",
+        "required_bridge": "FEPComposed.fep082_intervention_normalization_extends_fep023"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-082",
+          "target": "fep-023",
+          "kind": "formal_pairing",
+          "rationale": "Every hard intervention row is normalized, as is every reachable law under the original fep-023 normalization premise.",
+          "witness": "FEPComposed.fep082_intervention_normalization_extends_fep023"
+        }
+      ]
+    },
+    {
+      "id": "fep-083",
+      "title": "Non-Descendant Intervention Invariance",
+      "decision": "retain_conditional_proxy_for_exact_narrow_scope",
+      "canonical_body_sha256": "1fe7dda498e7396623a92ba7d5f0ee8a651567c3885e3e2861542bf9637982bb",
+      "maturity_record": {
+        "id": "fep-083",
+        "primary_theorem": "fep083_nonDescendant_intervention_invariance",
+        "supporting_theorems": [
+          "fep083_fourNode_descendantChange_nonDescendantPreservation"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Intervening on the root of the maintained ordered four-node model preserves the named non-descendant marginal while permitting a descendant marginal to change.",
+        "assumption_review": "The result is scoped to OrderedFourNodeModel with finite carriers and a decidable root; the non-descendant is structurally assigned an independent root law. It does not prove intervention invariance for arbitrary DAGs or derive the graph from observational conditional independences.",
+        "non_vacuity": "In the Boolean witness, changing the root intervention moves the mediator's true mass from zero to one while the non-descendant marginal remains exactly unchanged.",
+        "acceptance_probe": "native Lean compile of fep083_nonDescendant_intervention_invariance and fep083_fourNode_descendantChange_nonDescendantPreservation.",
+        "disposition": "conditional_proxy"
+      },
+      "qualified_declaration_statements": {
+        "fep083_nonDescendant_intervention_invariance": "theorem fep083_nonDescendant_intervention_invariance\n    (model : OrderedFourNodeModel Root NonDescendant Mediator Outcome)\n    (root : Root) :\n    nonDescendantMarginal (interventionalJoint model root) =\n      model.nonDescendantLaw",
+        "fep083_fourNode_descendantChange_nonDescendantPreservation": "theorem fep083_fourNode_descendantChange_nonDescendantPreservation :\n    mediatorMarginal (interventionalJoint boolOrderedModel false) true = 0 ∧\n      mediatorMarginal (interventionalJoint boolOrderedModel true) true = 1 ∧\n      nonDescendantMarginal (interventionalJoint boolOrderedModel false) =\n        nonDescendantMarginal (interventionalJoint boolOrderedModel true)"
+      },
+      "statement_review": "Replacing rootLaw by a point mass in OrderedFourNodeModel preserves the independent named non-descendant root law, while the Boolean mediator changes from0 to1.",
+      "assumptions_and_scope": "The authored parent structure has independent root/non-descendant laws, mediator depending only on root and outcome only on non-descendant/mediator. This is a genuine finite intervention calculation conditional on that structure, not inferred from observational CI.",
+      "positive_witness_specification_unexecuted": "Consume boolOrderedModel under false/true interventions and compare mediator and non-descendant marginals.",
+      "adverse_witness_specification_unexecuted": "The retained finite_scientific_implications countermodel has equal observational mediator marginals but unequal intervention mediator marginals. Its observed equality is this marginal, not equality of the complete four-node joint.",
+      "nearest_topic_distinction": "082 is the deterministic intervention primitive;083 integrates a replacement root law into a normalized causal carrier. The009 relation is only a pairing with event monotonicity. Retain conditional_proxy.",
+      "novelty_record": {
+        "id": "fep-083",
+        "nearest_topics": [
+          "fep-009",
+          "fep-082"
+        ],
+        "new_invariant": "Root intervention preserves a named non-descendant while changing a descendant in an exact witness.",
+        "carrier_delta": "Adds an explicitly ordered four-node causal carrier with observational and interventional joint laws.",
+        "required_bridge": "FEPComposed.fep083_intervention_invariance_refines_fep009"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-083",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "Ordered intervention preserves the named non-descendant marginal; fep-009 simultaneously records monotonicity for any nested measurable events. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_likelihood_mono` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
+          "witness": "FEPComposed.fep083_intervention_invariance_refines_fep009"
+        }
+      ]
+    },
+    {
+      "id": "fep-084",
+      "title": "Ordered Finite Causal Factorization",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "695dc1c5e662577dfbc2128badfb1e83165ca8a17a9ee1165892a3b8b186bb8d",
+      "maturity_record": {
+        "id": "fep-084",
+        "primary_theorem": "fep084_orderedFiniteCausal_factorization",
+        "supporting_theorems": [
+          "fep084_orderedFiniteCausal_normalization"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The maintained four-node observational law is exactly its ordered product of two root laws and two parent-conditioned kernels, and that product normalizes.",
+        "assumption_review": "Root, non-descendant, mediator, and outcome carriers are finite and every component is a normalized finite law or kernel. The carrier records one fixed parent order rather than a general acyclic-graph factorization calculus.",
+        "non_vacuity": "Nondegenerate root laws and nonconstant mediator and outcome kernels yield a dependent joint whose normalization requires summing every ordered factor.",
+        "acceptance_probe": "native Lean compile of fep084_orderedFiniteCausal_factorization and fep084_orderedFiniteCausal_normalization on the four-node carrier.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep084_orderedFiniteCausal_factorization": "theorem fep084_orderedFiniteCausal_factorization\n    (model : OrderedFourNodeModel Root NonDescendant Mediator Outcome)\n    (root : Root) (nonDescendant : NonDescendant)\n    (mediator : Mediator) (outcome : Outcome) :\n    orderedJoint model (((root, nonDescendant), mediator), outcome) =\n      ((model.rootLaw root * model.nonDescendantLaw nonDescendant) *\n          model.mediatorGivenRoot root mediator) *\n        model.outcomeGivenParents (nonDescendant, mediator) outcome",
+        "fep084_orderedFiniteCausal_normalization": "theorem fep084_orderedFiniteCausal_normalization\n    (model : OrderedFourNodeModel Root NonDescendant Mediator Outcome) :\n    ∑ state, orderedJoint model state = 1"
+      },
+      "statement_review": "The normalized ordered joint expands exactly to the product of two root laws and the two prescribed parent kernels. The factorization is definitional; normalization follows constructed law/kernel contracts.",
+      "assumptions_and_scope": "This is one four-node ordering with independent exogenous root laws, not a general DAG factorization or discovery theorem. Nonconstant off-support mechanisms alone do not guarantee observed dependence.",
+      "positive_witness_specification_unexecuted": "Use independent fair roots, mediator copying root, and XOR outcome; the joint is normalized and has actual dependency.",
+      "adverse_witness_specification_unexecuted": "Allow correlated exogenous roots: the current product-root carrier cannot represent that law without changing the model contract.",
+      "nearest_topic_distinction": "027 provides native hierarchical associativity. The current bridge pairs it with this finite factorization; no automatic carrier identification. Retain formalized for the named finite statement.",
+      "novelty_record": {
+        "id": "fep-084",
+        "nearest_topics": [
+          "fep-027",
+          "fep-083"
+        ],
+        "new_invariant": "A four-node causal law equals its ordered parent factorization and normalizes globally.",
+        "carrier_delta": "Specializes hierarchical kernels to two roots, a root-conditioned mediator, and a two-parent outcome kernel.",
+        "required_bridge": "FEPComposed.fep084_ordered_factorization_extends_fep027"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-084",
+          "target": "fep-027",
+          "kind": "formal_pairing",
+          "rationale": "The finite ordered four-node density and the native three-level hierarchy both expose their complete product factorization.",
+          "witness": "FEPComposed.fep084_ordered_factorization_extends_fep027"
+        }
+      ]
+    },
+    {
+      "id": "fep-085",
+      "title": "Local Markov Property from Ordered Factorization",
+      "decision": "retain_conditional_proxy_for_exact_narrow_scope",
+      "canonical_body_sha256": "4a5dbac8f48fbcc8c98577aa0f5efb22129e8ce480bf8d6b7cabbb935b2ff9bd",
+      "maturity_record": {
+        "id": "fep-085",
+        "primary_theorem": "fep085_localMarkov_factorization_from_ordered",
+        "supporting_theorems": [
+          "fep085_localMarkov_mutualInformation_zero",
+          "fep085_bool_localMarkov_nonvacuity"
+        ],
+        "boundary_theorems": [
+          "fep085_zeroEvidence_boundary"
+        ],
+        "invariant": "In the ordered four-node carrier, conditioning on the outcome's two parents factorizes the outcome from its non-parent predecessor root and forces their finite mutual information to zero.",
+        "assumption_review": "All carriers are finite and mediator evidence must be strictly positive. The result is a local statement for one authored ordering and parent set; it is not a proof of general d-separation, faithfulness, or native measurable conditional independence.",
+        "non_vacuity": "The Boolean model conditions on a mediator event of positive half mass and obtains zero mutual information, while a separate theorem marks zero mediator evidence as outside the conditional construction.",
+        "acceptance_probe": "native Lean compile of fep085_localMarkov_factorization_from_ordered, fep085_localMarkov_mutualInformation_zero, fep085_bool_localMarkov_nonvacuity, and fep085_zeroEvidence_boundary.",
+        "disposition": "conditional_proxy"
+      },
+      "qualified_declaration_statements": {
+        "fep085_localMarkov_factorization_from_ordered": "theorem fep085_localMarkov_factorization_from_ordered\n    (model : OrderedFourNodeModel Root NonDescendant Mediator Outcome)\n    (nonDescendant : NonDescendant) (mediator : Mediator)\n    (hEvidence : 0 < mediatorEvidence model mediator) :\n    localMarkovConditional model nonDescendant mediator hEvidence =\n      (model.mediatorGivenRoot.posterior model.rootLaw mediator hEvidence).product\n        (model.outcomeGivenParents.row (nonDescendant, mediator))",
+        "fep085_localMarkov_mutualInformation_zero": "theorem fep085_localMarkov_mutualInformation_zero\n    (model : OrderedFourNodeModel Root NonDescendant Mediator Outcome)\n    (nonDescendant : NonDescendant) (mediator : Mediator)\n    (hEvidence : 0 < mediatorEvidence model mediator) :\n    mutualInformation\n        (localMarkovConditional model nonDescendant mediator hEvidence) = 0",
+        "fep085_bool_localMarkov_nonvacuity": "theorem fep085_bool_localMarkov_nonvacuity :\n    mutualInformation\n        (localMarkovConditional boolOrderedModel false true\n          (by rw [boolMediatorEvidence_true]; norm_num)) = 0",
+        "fep085_zeroEvidence_boundary": "theorem fep085_zeroEvidence_boundary\n    (model : OrderedFourNodeModel Root NonDescendant Mediator Outcome)\n    (mediator : Mediator) (hZero : mediatorEvidence model mediator = 0) :\n    ¬0 < mediatorEvidence model mediator"
+      },
+      "statement_review": "localMarkovConditional is defined as the root posterior product the outcome parent-row; primary factorization is rfl and MI zero follows product MI. Importantly the existing reconstruction theorem multiplies by nonDescendantLaw(n)*mediatorEvidence(m) and recovers the actual ordered joint atom.",
+      "assumptions_and_scope": "Positive mediator evidence is required. The named non-descendant value may have zero probability: the construction still specifies a normalized structural row there, but the joint parent event is null. Calling it a uniquely identified conditional distribution requires positive nonDescendantLaw(n) as well. No general d-separation, faithfulness or native CI follows.",
+      "positive_witness_specification_unexecuted": "Use boolOrderedModel at n=false,m=true, each parent factor1/2, total parent mass1/4; consume reconstruction and zero MI.",
+      "adverse_witness_specification_unexecuted": "Choose nonDescendantLaw a point mass, evaluate the other n. Mediator evidence remains positive while joint parent evidence is0; reconstruction is0=0 and cannot identify a unique conditional at that event.",
+      "nearest_topic_distinction": "079 concerns all rows/full blanket support;085 specializes a prescribed ordered local parent structure. The009 pairing uses trivial-sigma-algebra CI, not an embedding equivalence. Retain conditional_proxy.",
+      "novelty_record": {
+        "id": "fep-085",
+        "nearest_topics": [
+          "fep-009",
+          "fep-014",
+          "fep-084"
+        ],
+        "new_invariant": "Ordered factorization implies a supported local Markov product and zero finite mutual information.",
+        "carrier_delta": "Adds positive mediator conditioning on the maintained four-node order without claiming general d-separation.",
+        "required_bridge": "FEPComposed.fep085_local_markov_refines_fep009"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-085",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "The ordered finite carrier yields zero local mutual information at positive evidence, while fep-009 supplies an inhabited native conditional-independence boundary against the trivial sigma algebra. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_condIndep_bot_right` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
+          "witness": "FEPComposed.fep085_local_markov_refines_fep009"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-085",
+      "field": "assumption_review",
+      "finding": "Positive mediator evidence does not imply positive joint parent evidence; nonDescendantLaw may vanish at the selected parent. Reconstruction is available but vacuous on that null event.",
+      "proposed_text": "All carriers are finite and mediator evidence must be strictly positive. The authored local product row is defined even at a null non-descendant value; interpreting it as an identified conditional on the joint parent event additionally requires positive non-descendant mass. Existing reconstruction recovers the ordered joint atom after multiplying by both parent-evidence factors. This is one maintained ordering, not general d-separation, faithfulness or native measurable conditional independence."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "085 positive-parent-event consumer",
+      "owner": "src/fep_lean/formal/causal_dynamics.lean",
+      "seam": "Use existing localMarkovConditional_reconstruction and positive nonDescendantLaw to prove a ratio/uniqueness statement on the actual joint parent event; no new carrier.",
+      "estimate": "0.5–1.5 days including typed positive/null controls",
+      "positive": "Boolean parent event mass1/4",
+      "adverse": "null non-descendant with positive mediator evidence"
+    },
+    {
+      "rank": 2,
+      "scope": "079 support-sensitive characterization",
+      "owner": "src/fep_lean/formal/causal_dynamics.lean",
+      "seam": "Prove weighted CMI zero iff Factorizes on positive blanket atoms using existing finite sum nonnegativity; full-support theorem becomes a corollary. Existing static/native transfer is already present.",
+      "estimate": "0.5–1.5 days",
+      "positive": "full support specializes existing equivalence",
+      "adverse": "null correlated row"
+    },
+    {
+      "rank": 3,
+      "scope": "causal claim preservation",
+      "owner": "src/fep_lean/formal/compositions/finite_scientific_implications.lean",
+      "seam": "Reuse existing observational mediator-marginal countermodel; do not propose an unneeded duplicate or claim equality of complete observed joint laws. Any stronger identifiability theorem needs explicitly observed variables and structural hypotheses.",
+      "estimate": "review/typed consumer0.5–1 day; general DAG extension is separate research scope"
+    }
+  ],
+  "limitations": [
+    "Static source semantic review only; no Lean, tests, provider, model or browser executed. Witness specifications are unexecuted, not actual evidence.",
+    "No disposition promotion, general causal/state-estimation/scientific claim, terminal quorum, issue closure or upstream acceptance.",
+    "Remaining76 topics and active dependency/metadata-seal/projection/custody/publication gates remain open; these reports cover only14 additional rows."
+  ]
+}

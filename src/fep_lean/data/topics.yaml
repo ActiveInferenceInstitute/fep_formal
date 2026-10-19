@@ -237,8 +237,9 @@ topics:
     '
   assumption_review: All costs and the discount live in ENNReal, so nonnegativity and infinity are represented directly. This
     is the pragmatic-cost input to EFE; epistemic value and its sign are owned by fep-021.
-  non_vacuity: A positive stage cost at the newly exposed time adds the nonzero increment γ^T c_T; a zero horizon and pointwise-equal
-    costs exercise the boundaries.
+  non_vacuity: For positive discount and positive new stage cost, the terminal increment is nonzero; strict growth of the
+    total additionally requires the previous accumulated cost to be finite. Discount zero at positive horizons exposes the
+    zero-increment boundary.
   acceptance_probe: native Lean compile of fep003_pragmaticCost_zero, fep003_pragmaticCost_succ, fep003_pragmaticCost_mono,
     and fep003_pragmaticCost_horizon_succ.
   lean_sketch: "import Mathlib.Algebra.Order.BigOperators.Group.Finset\nimport Mathlib.Basic.ENNReal.Inv\n\nnamespace FEP003\n\
@@ -785,15 +786,15 @@ topics:
     \ is inhabited: any σ-algebra is conditionally\nindependent of the trivial σ-algebra. -/\ntheorem fep009_condIndep_bot_right\n\
     \    (m' m₁ : MeasurableSpace Ω) (hm' : m' ≤ mΩ)\n    (μ : @Measure Ω mΩ) [IsFiniteMeasure μ] :\n    CondIndep m' m₁ ⊥\
     \ hm' μ :=\n  condIndep_bot_right m₁\n\nvariable {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]\n\n-- [proof strategy:\
-    \ zero_le for ENNReal; measure_mono for likelihood ordering]\n\n/-- Generative model: joint mass factors as product of\
-    \ marginals (independence). -/\ntheorem fep009_joint_product_nonneg (μ : Measure α) (ν : Measure β) (s : Set α) (t : Set\
-    \ β) :\n    0 ≤ μ s * ν t :=\n  bot_le\n\n/-- Likelihood monotonicity: larger sets yield larger likelihoods. -/\ntheorem\
-    \ fep009_likelihood_mono {μ : Measure α} {s t : Set α} (h : s ⊆ t) :\n    μ s ≤ μ t :=\n  measure_mono h\n\n/-- Marginalization\
-    \ via measure.map preserves non-negativity. -/\ntheorem fep009_map_nonneg (μ : Measure α) {f : α → β} (_hf : Measurable\
-    \ f) (s : Set β) :\n    0 ≤ μ.map f s :=\n  bot_le\n\n/-- Likelihood on empty event is zero. -/\ntheorem fep009_empty_zero\
-    \ (μ : Measure α) : μ ∅ = 0 :=\n  measure_empty\n\n/-- Union bound on likelihoods (subadditivity of generative model mass).\
-    \ -/\ntheorem fep009_union_le (μ : Measure α) (s t : Set α) :\n    μ (s ∪ t) ≤ μ s + μ t :=\n  measure_union_le s t\n\n\
-    end FEP009\n"
+    \ zero_le for ENNReal; measure_mono for likelihood ordering]\n\n/-- The product of two nonnegative measure values is nonnegative;\
+    \ no joint factorization or independence is asserted. -/\ntheorem fep009_joint_product_nonneg (μ : Measure α) (ν : Measure\
+    \ β) (s : Set α) (t : Set β) :\n    0 ≤ μ s * ν t :=\n  bot_le\n\n/-- Likelihood monotonicity: larger sets yield larger\
+    \ likelihoods. -/\ntheorem fep009_likelihood_mono {μ : Measure α} {s t : Set α} (h : s ⊆ t) :\n    μ s ≤ μ t :=\n  measure_mono\
+    \ h\n\n/-- Marginalization via measure.map preserves non-negativity. -/\ntheorem fep009_map_nonneg (μ : Measure α) {f\
+    \ : α → β} (_hf : Measurable f) (s : Set β) :\n    0 ≤ μ.map f s :=\n  bot_le\n\n/-- Likelihood on empty event is zero.\
+    \ -/\ntheorem fep009_empty_zero (μ : Measure α) : μ ∅ = 0 :=\n  measure_empty\n\n/-- Union bound on likelihoods (subadditivity\
+    \ of generative model mass). -/\ntheorem fep009_union_le (μ : Measure α) (s t : Set α) :\n    μ (s ∪ t) ≤ μ s + μ t :=\n\
+    \  measure_union_le s t\n\nend FEP009\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -1202,8 +1203,8 @@ topics:
   assumption_review: The derivative law is conditional on pointwise differentiability and the explicitly stated equilibrium
     identity. It is a thermodynamic calculus identity, not a derivation of the first law or an identification with variational
     free energy.
-  non_vacuity: The fep-040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at every positive temperature, yielding
-    a compiled nonconstant physical witness.
+  non_vacuity: The fep040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at positive scale and temperature,
+    yielding a nonconstant mathematical model with explicit dimensionless units.
   acceptance_probe: native Lean compile of fep013_helmholtz_hasDerivAt, fep013_helmholtz_derivative_eq_neg_entropy, and FEPComposed.fep013_gaussianHelmholtz_derivative.
   lean_sketch: "import Mathlib.Analysis.Calculus.Deriv.Add\nimport Mathlib.Analysis.Calculus.Deriv.Mul\nimport Mathlib.Tactic.Convert\n\
     import Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Ring\n\nnamespace FEP013\n\n-- [proof strategy: simp / ring for\
@@ -1569,12 +1570,16 @@ topics:
     joint law; for a Markov likelihood it also recovers the prior. Assumption scope: Conditional on standard-Borel and nonempty
     latent structure plus finite prior and likelihood kernel. The Radon--Nikodym Bayes formula additionally uses countability
     of the latent space and standard-Borel observation structure. This is a regular posterior-kernel theorem, not a claim
-    about learned or approximate posteriors. Semantic disposition: `formalized`.
+    about learned or approximate posteriors. The Bayes-density formula additionally assumes countable latent and nonempty
+    standard-Borel observation structure and holds only almost everywhere under the predictive law. Every selected posterior
+    fibre is normalized, including version choices at null observations. Semantic disposition: `formalized`.
 
     '
   assumption_review: Conditional on standard-Borel and nonempty latent structure plus finite prior and likelihood kernel.
     The Radon--Nikodym Bayes formula additionally uses countability of the latent space and standard-Borel observation structure.
-    This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors.
+    This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors. The Bayes-density formula
+    additionally assumes countable latent and nonempty standard-Borel observation structure and holds only almost everywhere
+    under the predictive law. Every selected posterior fibre is normalized, including version choices at null observations.
   non_vacuity: Every posterior fibre has mass one, and the identity Markov kernel supplies a concrete prior-recovery witness;
     non-deterministic finite kernels exercise a nontrivial reconstructed joint law.
   acceptance_probe: native Lean compile of fep017_posterior_mass_one, fep017_posterior_joint_reconstruction, fep017_posterior_recovers_prior,
@@ -2526,14 +2531,14 @@ topics:
   semantic_disposition: formalized
   nl: 'A parent measure and child kernel form a normalized hierarchical joint whose marginals recover the parent and prior
     predictive, and whose three-level factorization is associative up to product reassociation. Assumption scope: Joint normalization
-    requires a probability parent and Markov child; first- and second-marginal identities require the stated finite-kernel
-    classes. The associativity theorem is exact for Mathlib composition products and does not impose causal identifiability.
-    Semantic disposition: `formalized`.
+    requires a probability parent and Markov child. First marginal requires an SFinite parent and Markov child; second marginal
+    requires an SFinite parent and SFinite child. Associativity is the native compProd identity; no causal identifiability
+    is imposed. Semantic disposition: `formalized`.
 
     '
-  assumption_review: Joint normalization requires a probability parent and Markov child; first- and second-marginal identities
-    require the stated finite-kernel classes. The associativity theorem is exact for Mathlib composition products and does
-    not impose causal identifiability.
+  assumption_review: Joint normalization requires a probability parent and Markov child. First marginal requires an SFinite
+    parent and Markov child; second marginal requires an SFinite parent and SFinite child. Associativity is the native compProd
+    identity; no causal identifiability is imposed.
   non_vacuity: A non-Dirac finite parent and state-dependent non-deterministic Markov child give a dependent normalized joint
     with distinct parent and predictive marginals; a third kernel exercises nontrivial reassociation.
   acceptance_probe: native Lean compile of fep027_hierarchical_mass_one, fep027_hierarchical_fst, fep027_hierarchical_snd,
@@ -2627,8 +2632,9 @@ topics:
     '
   assumption_review: Only support nonemptiness is required; inverse temperature and costs may be arbitrary reals. This proves
     an exact stochastic policy law but not optimality, sampling behavior, or a temperature limit.
-  non_vacuity: A two-policy support with unequal costs gives unequal positive weights, while excluded policies have exact
-    zero mass and the full ten-policy vector remains normalized.
+  non_vacuity: With positive inverse temperature and a two-policy support of unequal costs, lower cost receives a strictly
+    larger positive weight. At inverse temperature zero the law is uniform on support; excluded policies have zero mass. The
+    full ten-policy vector remains normalized.
   acceptance_probe: native Lean compile of fep028_softmax_nonneg, fep028_softmax_le_one, fep028_softmax_support, fep028_softmax_probs_sum_one,
     and fep028_softmax_sum_univ.
   lean_sketch: "import Mathlib.Data.Finset.Basic\nimport Mathlib.Analysis.SpecialFunctions.Exp\n\nnamespace FEP028\n\nopen\
@@ -2751,20 +2757,20 @@ topics:
   non_vacuity: At x=1 and y=0 the divergence equals 1; at x=y it equals 0.
   acceptance_probe: native Lean compile of the quadratic identity, nonnegativity, and zero-characterization theorems.
   lean_sketch: "import Mathlib.Analysis.Convex.Basic\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Tactic.Linarith\nimport\
-    \ Mathlib.Tactic.Ring\n\nnamespace FEP029\n\n/-- Bregman divergence prerequisite: convex functions satisfy the secant\
-    \ inequality. -/\ntheorem fep029_secant_ineq (a b t : ℝ) (ht0 : 0 ≤ t) (_ht1 : t ≤ 1) (hab : a ≤ b) :\n    (1 - t) * a\
-    \ + t * b ≥ a := by\n  nlinarith\n\n/-- Weighted midpoint lies between endpoints (convex combination). -/\ntheorem fep029_convex_combo_bound\
-    \ (a b t : ℝ) (_ht0 : 0 ≤ t) (ht1 : t ≤ 1) (hab : a ≤ b) :\n    (1 - t) * a + t * b ≤ b := by\n  nlinarith\n\n/-- Endpoints\
-    \ of convex combination: t = 0 gives a. -/\ntheorem fep029_combo_t_zero (a b : ℝ) : (1 - 0) * a + 0 * b = a := by ring\n\
-    \n/-- Endpoints of convex combination: t = 1 gives b. -/\ntheorem fep029_combo_t_one (a b : ℝ) : (1 - 1) * a + 1 * b =\
-    \ b := by ring\n\n/-- The Bregman divergence generated by φ(x) = x², whose derivative at y is 2y. -/\ndef fep029_quadraticBregman\
-    \ (x y : ℝ) : ℝ :=\n  x ^ 2 - y ^ 2 - (2 * y) * (x - y)\n\n/-- The quadratic Bregman divergence is exactly squared Euclidean\
-    \ distance. -/\ntheorem fep029_quadraticBregman_eq_sq (x y : ℝ) :\n    fep029_quadraticBregman x y = (x - y) ^ 2 := by\n\
-    \  simp [fep029_quadraticBregman]\n  ring\n\n/-- The quadratic Bregman divergence is nonnegative. -/\ntheorem fep029_bregman_quadratic_nonneg\
-    \ (x y : ℝ) :\n    0 ≤ fep029_quadraticBregman x y := by\n  rw [fep029_quadraticBregman_eq_sq]\n  exact sq_nonneg _\n\n\
-    /-- The quadratic Bregman divergence separates points. -/\ntheorem fep029_quadraticBregman_eq_zero_iff (x y : ℝ) :\n \
-    \   fep029_quadraticBregman x y = 0 ↔ x = y := by\n  rw [fep029_quadraticBregman_eq_sq, sq_eq_zero_iff, sub_eq_zero]\n\
-    \nend FEP029\n"
+    \ Mathlib.Tactic.Ring\n\nnamespace FEP029\n\n/-- A convex combination of ordered real endpoints is at least the lower\
+    \ endpoint for nonnegative weight; no general convex function is involved. -/\ntheorem fep029_secant_ineq (a b t : ℝ)\
+    \ (ht0 : 0 ≤ t) (_ht1 : t ≤ 1) (hab : a ≤ b) :\n    (1 - t) * a + t * b ≥ a := by\n  nlinarith\n\n/-- Weighted midpoint\
+    \ lies between endpoints (convex combination). -/\ntheorem fep029_convex_combo_bound (a b t : ℝ) (_ht0 : 0 ≤ t) (ht1 :\
+    \ t ≤ 1) (hab : a ≤ b) :\n    (1 - t) * a + t * b ≤ b := by\n  nlinarith\n\n/-- Endpoints of convex combination: t = 0\
+    \ gives a. -/\ntheorem fep029_combo_t_zero (a b : ℝ) : (1 - 0) * a + 0 * b = a := by ring\n\n/-- Endpoints of convex combination:\
+    \ t = 1 gives b. -/\ntheorem fep029_combo_t_one (a b : ℝ) : (1 - 1) * a + 1 * b = b := by ring\n\n/-- The Bregman divergence\
+    \ generated by φ(x) = x², whose derivative at y is 2y. -/\ndef fep029_quadraticBregman (x y : ℝ) : ℝ :=\n  x ^ 2 - y ^\
+    \ 2 - (2 * y) * (x - y)\n\n/-- The quadratic Bregman divergence is exactly squared Euclidean distance. -/\ntheorem fep029_quadraticBregman_eq_sq\
+    \ (x y : ℝ) :\n    fep029_quadraticBregman x y = (x - y) ^ 2 := by\n  simp [fep029_quadraticBregman]\n  ring\n\n/-- The\
+    \ quadratic Bregman divergence is nonnegative. -/\ntheorem fep029_bregman_quadratic_nonneg (x y : ℝ) :\n    0 ≤ fep029_quadraticBregman\
+    \ x y := by\n  rw [fep029_quadraticBregman_eq_sq]\n  exact sq_nonneg _\n\n/-- The quadratic Bregman divergence separates\
+    \ points. -/\ntheorem fep029_quadraticBregman_eq_zero_iff (x y : ℝ) :\n    fep029_quadraticBregman x y = 0 ↔ x = y :=\
+    \ by\n  rw [fep029_quadraticBregman_eq_sq, sq_eq_zero_iff, sub_eq_zero]\n\nend FEP029\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -2925,13 +2931,16 @@ topics:
   semantic_disposition: formalized
   nl: 'Positive exponential Gibbs weights normalize to a nonnegative mass function summing to one on any nonempty finite support.
     Assumption scope: Conditional only on a nonempty selected support; β and energies are arbitrary reals. The row does not
-    derive Gibbs weights from maximum entropy or bundle the result as a measure. Semantic disposition: `formalized`.
+    derive Gibbs weights from maximum entropy or bundle the result as a measure. The expression sums to one only over the
+    selected support and is not zero outside it. A support subtype or full support is required for an ambient normalized law.
+    Semantic disposition: `formalized`.
 
     '
   assumption_review: Conditional only on a nonempty selected support; β and energies are arbitrary reals. The row does not
-    derive Gibbs weights from maximum entropy or bundle the result as a measure.
-  non_vacuity: A singleton support has normalized mass one, while two unequal energies produce distinct positive normalized
-    weights.
+    derive Gibbs weights from maximum entropy or bundle the result as a measure. The expression sums to one only over the
+    selected support and is not zero outside it. A support subtype or full support is required for an ambient normalized law.
+  non_vacuity: A singleton selected support has mass one on that support. Two unequal energies give distinct weights when
+    beta is nonzero, with lower energy receiving higher weight for positive beta; beta zero yields uniform supported weights.
   acceptance_probe: native Lean compile of partition positivity, pointwise nonnegativity, and support normalization.
   lean_sketch: "import Mathlib.Analysis.SpecialFunctions.Exp\n\nnamespace FEP031\n\n/-- Boltzmann weight exp(-βE) is strictly\
     \ positive. -/\ntheorem fep031_gibbs_weight_pos (β E : ℝ) : 0 < Real.exp (-β * E) :=\n  Real.exp_pos _\n\n/-- Gibbs weight\
@@ -3212,12 +3221,16 @@ topics:
     joint law, with probability mass one in every posterior fibre. Assumption scope: Conditional on standard-Borel nonempty
     latent structure, a finite prior, and finite transition and observation kernels; prediction preserves total mass when
     the transition is Markov, and posterior recovery additionally requires a Markov observation kernel. This is a one-step
-    exact filter, not a convergence or learned-state theorem. Semantic disposition: `formalized`.
+    exact filter, not a convergence or learned-state theorem. Posterior normalization holds in every fibre of the selected
+    Markov version; Bayes reconstruction identifies the version only relative to the predictive observation law, so no unique
+    pointwise Bayes ratio at null observations is asserted. Semantic disposition: `formalized`.
 
     '
   assumption_review: Conditional on standard-Borel nonempty latent structure, a finite prior, and finite transition and observation
     kernels; prediction preserves total mass when the transition is Markov, and posterior recovery additionally requires a
-    Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem.
+    Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem. Posterior normalization
+    holds in every fibre of the selected Markov version; Bayes reconstruction identifies the version only relative to the
+    predictive observation law, so no unique pointwise Bayes ratio at null observations is asserted.
   non_vacuity: A nonidentity finite Markov transition followed by a noisy observation kernel yields a nontrivial predictive
     prior and posterior; each posterior fibre has mass one rather than merely nonnegative unnormalized weight.
   acceptance_probe: native Lean compile of fep034_predictive_mass, fep034_filter_mass_one, fep034_filter_joint_reconstruction,
@@ -3556,8 +3569,8 @@ topics:
   assumption_review: Response is defined as inverse temperature times the one-step autocorrelation loss. Nonnegativity additionally
     restricts α≤1/2 and nonnegative inverse temperature and variance. This is an exact discrete two-state response law, not
     a microscopic Kubo derivation for general dynamics.
-  non_vacuity: For α=1/4, positive β, and nonzero variance, lag-zero response is positive and both correlation and response
-    decay geometrically by 1/2.
+  non_vacuity: For alpha=1/4, positive beta and strictly positive variance, lag-zero response is positive and both defined
+    correlation and response decay geometrically by1/2.
   acceptance_probe: native Lean compile of fep037_autocorrelation_recurrence, fep037_autocorrelation_tendsto_zero, fep037_response_eq,
     fep037_response_nonneg, and fep037_response_tendsto_zero.
   lean_sketch: "import Mathlib.Analysis.SpecificLimits.Normed\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.Positivity\n\
@@ -3650,15 +3663,16 @@ topics:
   boundary_theorems: []
   semantic_disposition: formalized
   nl: 'The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines
-    a dual natural gradient and is the pullback of the Euclidean metric along the Fisher--Rao coordinate. Assumption scope:
-    Metric positivity, inverse-metric duality, and the coordinate law require an interior Bernoulli parameter 0 < p < 1. This
-    is a complete one-dimensional Bernoulli information geometry, not a general finite- or infinite-dimensional statistical
-    manifold. Semantic disposition: `formalized`.
+    a dual natural gradient. The supplied coordinate-Jacobian expression squares to Fisher information and factorizes the
+    metric. Assumption scope: Metric positivity, inverse-metric duality and the coordinate-Jacobian algebra require 0 < p
+    < 1. Identification of that supplied expression with the derivative of the authored 2*arcsin(sqrt p) coordinate requires
+    the separately reviewed interior HasDerivAt bridge. No path-length theorem or general statistical manifold is asserted
+    by the current topic declarations. Semantic disposition: `formalized`.
 
     '
-  assumption_review: Metric positivity, inverse-metric duality, and the coordinate law require an interior Bernoulli parameter
-    0 < p < 1. This is a complete one-dimensional Bernoulli information geometry, not a general finite- or infinite-dimensional
-    statistical manifold.
+  assumption_review: Metric positivity, inverse-metric duality and the coordinate-Jacobian algebra require 0 < p < 1. Identification
+    of that supplied expression with the derivative of the authored 2*arcsin(sqrt p) coordinate requires the separately reviewed
+    interior HasDerivAt bridge. No path-length theorem or general statistical manifold is asserted by the current topic declarations.
   non_vacuity: At p = 1/2 the Fisher information is 4, every nonzero tangent has positive metric norm, and the natural-gradient
     map rescales nonzero covectors by 1/4.
   acceptance_probe: native Lean compile of fep038_bernoulliMass_hasDerivAt, fep038_expectedScore_zero, fep038_fisherInformation_eq,
@@ -4121,11 +4135,14 @@ topics:
     the stated gradient, the center is the unique critical point and global minimizer, and the scalar Hessian is strictly
     positive. Assumption scope: The general derivative-zero theorem uses Mathlib''s local-minimum notion. Uniqueness and positive
     second derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable
-    objectives. Semantic disposition: `formalized`.
+    objectives. The general deriv = 0 wrapper uses Mathlib''s totalized derivative, which is zero also at nondifferentiable
+    points; only the explicit quadratic HasDerivAt declarations establish differentiability here. Semantic disposition: `formalized`.
 
     '
   assumption_review: The general derivative-zero theorem uses Mathlib's local-minimum notion. Uniqueness and positive second
     derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable objectives.
+    The general deriv = 0 wrapper uses Mathlib's totalized derivative, which is zero also at nondifferentiable points; only
+    the explicit quadratic HasDerivAt declarations establish differentiability here.
   non_vacuity: Every positive a and noncenter x has nonzero gradient and strictly larger energy than the center, while the
     Hessian 2a is nonzero everywhere.
   acceptance_probe: native Lean compile of fep043_localMin_deriv_zero, fep043_quadratic_hasDerivAt, fep043_quadratic_unique_min,
@@ -4286,17 +4303,18 @@ topics:
   - fep045_posterior_mass_one
   boundary_theorems: []
   semantic_disposition: formalized
-  nl: 'For a nonzero evidence normalizer, likelihood-times-Bernoulli-prior mass normalizes pointwise to another Bernoulli
-    law at the Bayes-updated parameter. Assumption scope: Closure is exact for a binary latent hypothesis and binary evidence
-    likelihood. Interior prior and positive likelihood assumptions prove positive evidence and keep the updated parameter
-    in [0,1]. This is a finite Bernoulli conjugate family, not Beta-density conjugacy. Semantic disposition: `formalized`.
+  nl: 'For nonzero evidence, likelihood-times-prior masses have the Bernoulli mass-vector form at the updated parameter. A
+    probability-law interpretation additionally requires a prior in [0,1], nonnegative likelihoods and positive evidence.
+    Assumption scope: Closure is exact for a binary latent hypothesis and binary evidence likelihood. Interior prior and positive
+    likelihood assumptions prove positive evidence and keep the updated parameter in [0,1]. This is a finite Bernoulli conjugate
+    family, not Beta-density conjugacy. Semantic disposition: `formalized`.
 
     '
   assumption_review: Closure is exact for a binary latent hypothesis and binary evidence likelihood. Interior prior and positive
     likelihood assumptions prove positive evidence and keep the updated parameter in [0,1]. This is a finite Bernoulli conjugate
     family, not Beta-density conjugacy.
-  non_vacuity: Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one; equal
-    likelihoods leave the prior parameter unchanged algebraically.
+  non_vacuity: Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one. Equal
+    nonzero likelihoods preserve the prior; both zero expose the refused evidence boundary.
   acceptance_probe: native Lean compile of fep045_evidence_pos, fep045_posteriorParameter_mem_unit, fep045_bernoulli_posterior_closed,
     and fep045_posterior_mass_one.
   lean_sketch: "import Mathlib.Algebra.BigOperators.Group.Finset.Basic\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Fintype.Basic\n\
@@ -4447,13 +4465,14 @@ topics:
   semantic_disposition: formalized
   nl: 'Finite sum-product forward propagation is matrix--vector multiplication: it preserves nonnegativity and order under
     nonnegative factors, has zero and identity laws, and composes exactly by matrix multiplication. Assumption scope: Nonnegativity
-    and monotonicity require entrywise nonnegative factors and inputs. Identity and composition are unconditional algebraic
-    laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence. Semantic disposition:
-    `formalized`.
+    preservation requires nonnegative factors and inputs. Order monotonicity requires nonnegative factors and pointwise ordered
+    inputs, which may themselves be negative. Identity/composition are unconditional algebraic laws. The row proves exact
+    finite propagation, not normalization or loopy fixed-point convergence. Semantic disposition: `formalized`.
 
     '
-  assumption_review: Nonnegativity and monotonicity require entrywise nonnegative factors and inputs. Identity and composition
-    are unconditional algebraic laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence.
+  assumption_review: Nonnegativity preservation requires nonnegative factors and inputs. Order monotonicity requires nonnegative
+    factors and pointwise ordered inputs, which may themselves be negative. Identity/composition are unconditional algebraic
+    laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence.
   non_vacuity: Nonidentity dense matrices and nonconstant incoming vectors exercise genuine cross-state aggregation; two distinct
     factors exercise nontrivial composed propagation.
   acceptance_probe: native Lean compile of fep047_forward_nonneg, fep047_forward_mono, fep047_zero_in, fep047_identity, and
@@ -4542,10 +4561,10 @@ topics:
   - fep048_add_mono
   boundary_theorems: []
   semantic_disposition: formalized
-  nl: 'Mathlib''s global ContractingWith contract gives a unique fixed point on ℝ, and iterations of the concrete halving
-    update converge to zero. Assumption scope: ContractingWith packages a nonnegative Lipschitz coefficient strictly below
-    one. Completeness and nonemptiness of ℝ discharge the Banach fixed-point assumptions; no claim is made for arbitrary noncontractive
-    policy updates. Semantic disposition: `formalized`.
+  nl: 'Any two fixed points of a global ContractingWith map on ℝ coincide; the concrete halving map has unique fixed point
+    zero and its iterates converge to zero. Assumption scope: ContractingWith packages a nonnegative Lipschitz coefficient
+    strictly below one. Completeness and nonemptiness of ℝ discharge the Banach fixed-point assumptions; no claim is made
+    for arbitrary noncontractive policy updates. Semantic disposition: `formalized`.
 
     '
   assumption_review: ContractingWith packages a nonnegative Lipschitz coefficient strictly below one. Completeness and nonemptiness
@@ -4842,8 +4861,8 @@ topics:
   assumption_review: Both results require a measurable carrier and a HaveLebesgueDecomposition instance. The forward reconstruction
     additionally assumes target ≪ reference; the equivalence proves that this is the exact support condition and does not
     erase a singular component.
-  non_vacuity: Taking target equal to reference supplies a reconstructible case, while any target with a nonzero singular
-    component lies on the theorem's explicit failure boundary.
+  non_vacuity: Equal finite reference/target laws supply a concrete reconstructible case with the required decomposition instance;
+    a nonzero singular component gives the explicit failure boundary.
   acceptance_probe: native Lean compile of fep051_likelihoodRatio_reconstruction and fep051_reconstruction_iff_absoluteContinuous
     with the absolute-continuity premise visible.
   lean_sketch: "import FepSketches.measure_bayes\n\nnamespace FEP051\n\nopen MeasureTheory\n\nvariable {Ω : Type*} [MeasurableSpace\
@@ -5476,8 +5495,9 @@ topics:
   assumption_review: The decomposition assumes every reference-prior and reference-kernel atom is strictly positive so all
     logarithmic rewrites are sound. Conditional KL nonnegativity is proved for the project's totalized finite divergence,
     but no zero-reference extended-real interpretation is claimed.
-  non_vacuity: Distinct actual and reference kernels yield a positive conditional remainder; matching kernels collapse only
-    that coordinate penalty while leaving the prior-coordinate score visible.
+  non_vacuity: If actual and reference rows differ at a latent state of positive actual-prior mass, the conditional remainder
+    is positive. Differences confined to zero-prior rows need not contribute. Matching kernels make this coordinate penalty
+    zero while leaving the prior score visible.
   acceptance_probe: native Lean compile of fep060_coordinateELBO_decomposition and fep060_coordinateKL_nonnegative with reference
     support hypotheses exposed.
   lean_sketch: "import FepSketches.variational_duality\n\nnamespace FEP060\n\nopen FEP FEP.FiniteInformation FEP.VariationalDuality\n\
@@ -5608,8 +5628,8 @@ topics:
     '
   assumption_review: The carrier is finite, NeZero excludes sample count zero, and every weight is strictly positive before
     Real.log is used. The positive-expectation witness additionally assumes a nonempty carrier and full-support sampling law.
-  non_vacuity: Nonconstant positive importance weights on a nonempty finite carrier give a genuinely random positive sample
-    mean; a one-sample law recovers the base finite Jensen inequality.
+  non_vacuity: A sampling law assigning positive probability to two different weight values gives a genuinely random sample
+    mean. Nonconstant weights off the sampling support do not. A one-sample law recovers finite weighted Jensen.
   acceptance_probe: native Lean compile of fep062_iidProduct_importanceJensen, fep062_fixedSample_importanceJensen, and fep062_expectedImportanceWeight_positive
     for positive weights.
   lean_sketch: "import FepSketches.variational_duality\n\nnamespace FEP062\n\nopen FEP FEP.VariationalDuality Finset\nopen\
@@ -6445,8 +6465,8 @@ topics:
   assumption_review: The action carrier is finite, precision and costs are real, and positivity of the exponential partition
     is supplied by the finite Boltzmann construction. The result is an exact algebraic posterior but does not derive its cost
     from a full generative observation model.
-  non_vacuity: Unequal action costs and a supported prior reweight actions nonuniformly; identically zero costs return the
-    prior exactly for every precision.
+  non_vacuity: For nonzero precision and two positive-prior actions with distinct costs, their posterior odds differ from
+    prior odds. Zero precision or constant supported costs preserves the prior; zero cost does so for every precision.
   acceptance_probe: native Lean compile of fep070_controlPosterior_normalized, fep070_controlPosterior_reconstruction, and
     fep070_zeroCost_posterior_eq_prior.
   lean_sketch: "import FepSketches.controlled_markov\n\nnamespace FEP070\n\nopen FEP FEP.ControlledMarkov Finset\nopen scoped\
@@ -6514,12 +6534,16 @@ topics:
     a two-stage witness strictly separates feedback from every fixed open-loop second action. Assumption scope: Belief, action,
     and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon
     recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated
-    planning. Semantic disposition: `conditional_proxy`.
+    planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion
+    does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel
+    and generative-model specializations provide those stronger contracts separately. Semantic disposition: `conditional_proxy`.
 
     '
   assumption_review: Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists.
     The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state
-    or infinite-horizon sophisticated planning.
+    or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed
+    update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information.
+    Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately.
   non_vacuity: In the witness, false and true observations choose different continuation actions, and the resulting expected
     cost is strictly below that of either fixed Boolean continuation.
   acceptance_probe: native Lean compile of fep071_sophisticatedEFE_backward_step, fep071_twoStage_feedback_changes_action,
@@ -6684,8 +6708,8 @@ topics:
   assumption_review: State and observation carriers are finite and transition and emission rows are normalized. Nonnegativity
     requires the supplied next message to be pointwise nonnegative; the theorem does not normalize messages or assert a limiting
     smoother.
-  non_vacuity: A nonempty future-observation list and nonconstant emission kernel produce a state-dependent backward message
-    rather than only the terminal unit message.
+  non_vacuity: An identity transition with differing likelihoods of the observed symbol gives a state-dependent backward message.
+    Identical transition rows may erase that dependence even when emission rows differ.
   acceptance_probe: native Lean compile of fep073_backward_message_recursion and fep073_backward_message_nonnegative for arbitrary
     finite future lists.
   lean_sketch: "import FepSketches.temporal_inference\n\nnamespace FEP073\n\nopen FEP FEP.TemporalInference\n\nvariable {State\
@@ -6756,8 +6780,8 @@ topics:
     '
   assumption_review: The forward law is normalized, the backward message is nonnegative, and its weighted normalizer is strictly
     positive. The statement covers a finite factorization and does not assert positivity when all backward weights vanish.
-  non_vacuity: Nonconstant backward messages reweight a nondegenerate forward law, while the evidence-agreement theorem connects
-    independently expressed forward and backward one-step calculations.
+  non_vacuity: Backward weights differing at two positive-forward-mass states reweight their odds; differences confined to
+    zero-forward-mass states do not affect the normalized law.
   acceptance_probe: native Lean compile of fep074_forwardBackward_smoothing_factorization and fep074_forward_backward_evidence_agreement.
   lean_sketch: "import FepSketches.temporal_inference\n\nnamespace FEP074\n\nopen FEP FEP.TemporalInference\n\nvariable {State\
     \ : Type*} [Fintype State]\n\n/-- At positive normalizer, a smoothing marginal factors exactly into its\nforward law and\
@@ -6903,8 +6927,8 @@ topics:
     '
   assumption_review: The state carrier is finite and the real exponential makes the partition positive without a separate
     support premise. This is one exact normalized update, not convergence of a variational optimization algorithm.
-  non_vacuity: Nonconstant energies reweight any prior with supported alternatives, whereas the zero-energy boundary leaves
-    every prior law unchanged.
+  non_vacuity: Energy values differing on two positive-prior-mass states change their odds. Energies constant on prior support,
+    including nonzero constants, leave the prior unchanged.
   acceptance_probe: native Lean compile of fep076_variational_state_update_normalized, fep076_variational_state_update_reconstruction,
     and fep076_zeroEnergy_update_eq_prior.
   lean_sketch: "import FepSketches.temporal_inference\n\nnamespace FEP076\n\nopen FEP FEP.TemporalInference FEP.ControlledMarkov\
@@ -7468,12 +7492,17 @@ topics:
   semantic_disposition: conditional_proxy
   nl: 'In the ordered four-node carrier, conditioning on the outcome''s two parents factorizes the outcome from its non-parent
     predecessor root and forces their finite mutual information to zero. Assumption scope: All carriers are finite and mediator
-    evidence must be strictly positive. The result is a local statement for one authored ordering and parent set; it is not
-    a proof of general d-separation, faithfulness, or native measurable conditional independence. Semantic disposition: `conditional_proxy`.
+    evidence must be strictly positive. The authored local product row is defined even at a null non-descendant value; interpreting
+    it as an identified conditional on the joint parent event additionally requires positive non-descendant mass. Existing
+    reconstruction recovers the ordered joint atom after multiplying by both parent-evidence factors. This is one maintained
+    ordering, not general d-separation, faithfulness or native measurable conditional independence. Semantic disposition:
+    `conditional_proxy`.
 
     '
-  assumption_review: All carriers are finite and mediator evidence must be strictly positive. The result is a local statement
-    for one authored ordering and parent set; it is not a proof of general d-separation, faithfulness, or native measurable
+  assumption_review: All carriers are finite and mediator evidence must be strictly positive. The authored local product row
+    is defined even at a null non-descendant value; interpreting it as an identified conditional on the joint parent event
+    additionally requires positive non-descendant mass. Existing reconstruction recovers the ordered joint atom after multiplying
+    by both parent-evidence factors. This is one maintained ordering, not general d-separation, faithfulness or native measurable
     conditional independence.
   non_vacuity: The Boolean model conditions on a mediator event of positive half mass and obtains zero mutual information,
     while a separate theorem marks zero mediator evidence as outside the conditional construction.
@@ -7751,13 +7780,16 @@ topics:
   - fep089_finiteJet_terminal_boundary
   semantic_disposition: formalized
   nl: 'Natural-number shifts on a finite generalized-coordinate jet compose associatively, with the highest retained coordinate
-    shifting into an explicit zero truncation boundary. Assumption scope: Generalized coordinates are finite jets represented
-    by finitely supported coefficients. The semigroup is discrete and exact; no analytic infinite jet, time derivative, or
-    continuous-flow convergence is claimed. Semantic disposition: `formalized`.
+    shifting into an explicit zero truncation boundary. Assumption scope: Generalized coordinates are finite truncated coefficient
+    jets. The primary semigroup is discrete; the existing functionJet bridge identifies shifted iterated derivatives below
+    the truncation boundary, while top derivative information is discarded. This does not establish analytic infinite jets,
+    ordinary coordinate-time differentiation without regularity, or continuous-flow convergence. Semantic disposition: `formalized`.
 
     '
-  assumption_review: Generalized coordinates are finite jets represented by finitely supported coefficients. The semigroup
-    is discrete and exact; no analytic infinite jet, time derivative, or continuous-flow convergence is claimed.
+  assumption_review: Generalized coordinates are finite truncated coefficient jets. The primary semigroup is discrete; the
+    existing functionJet bridge identifies shifted iterated derivatives below the truncation boundary, while top derivative
+    information is discarded. This does not establish analytic infinite jets, ordinary coordinate-time differentiation without
+    regularity, or continuous-flow convergence.
   non_vacuity: A first-order jet moves velocity into the position coordinate while its terminal velocity coordinate becomes
     zero, visibly exercising the truncation.
   acceptance_probe: native Lean compile of fep089_finiteJet_shift_semigroup, fep089_finiteJet_terminal_boundary, and fep089_firstOrder_shift_nonvacuity.
@@ -7979,14 +8011,16 @@ topics:
   semantic_disposition: formalized
   nl: 'Exact scalar quadratic prediction updates contract energy by the squared factor one minus step size, strictly decrease
     positive-precision nonzero error for step sizes in the open interval zero to two, and drive error to zero. Assumption
-    scope: Convergence requires 0 < stepSize < 2; strict descent additionally requires positive precision and unequal target
-    and estimate. The result is scalar and exact-quadratic, not a convergence theorem for nonlinear predictive-coding networks.
-    Semantic disposition: `formalized`.
+    scope: Convergence requires 0 < stepSize < 2 for the authored residual update; strict descent also needs positive precision
+    and unequal target and estimate. A raw negative-gradient step with learning rate alpha has effective stepSize alpha*precision.
+    The theorem is scalar exact-quadratic and does not prove stability of coupled finite-jet or nonlinear predictive-coding
+    updates. Semantic disposition: `formalized`.
 
     '
-  assumption_review: Convergence requires 0 < stepSize < 2; strict descent additionally requires positive precision and unequal
-    target and estimate. The result is scalar and exact-quadratic, not a convergence theorem for nonlinear predictive-coding
-    networks.
+  assumption_review: Convergence requires 0 < stepSize < 2 for the authored residual update; strict descent also needs positive
+    precision and unequal target and estimate. A raw negative-gradient step with learning rate alpha has effective stepSize
+    alpha*precision. The theorem is scalar exact-quadratic and does not prove stability of coupled finite-jet or nonlinear
+    predictive-coding updates.
   non_vacuity: At precision two and half-step size, a unit error has energy one, moves to estimate one half, and drops to
     energy one quarter.
   acceptance_probe: native Lean compile of fep092_quadraticPredictiveCoding_contraction, fep092_quadraticPredictiveCoding_strictDecrease,
@@ -8337,8 +8371,9 @@ topics:
   assumption_review: HasJarzynskiNormalization explicitly packages positive beta and the identity that the expectation of
     exp(-beta times (work minus free-energy difference)) equals one. The theorem algebraically extracts Jarzynski's equality
     from this normalization; it does not derive that premise from microscopic reversibility.
-  non_vacuity: Nonconstant finite work values can satisfy the normalization after choosing a compatible free-energy difference,
-    while beta positivity excludes the zero-temperature-parameter collapse.
+  non_vacuity: The actual nonconstant Boolean Crooks work witness satisfies the normalization at beta=1 and deltaFreeEnergy=0.
+    Positive beta excludes the zero inverse-temperature parameter boundary; no physical temperature or unit identification
+    is inferred without an explicit convention.
   acceptance_probe: native Lean compile of fep097_finiteJarzynski_equality with the explicit beta, work, free-energy, and
     normalization certificate.
   lean_sketch: "import FepSketches.path_thermodynamics\n\nnamespace FEP097\n\nopen FEP FEP.PathThermodynamics\n\nvariable\
@@ -8447,8 +8482,10 @@ topics:
   assumption_review: State is finite and nonempty, actual and stationary laws have full support, every transition atom is
     positive, and detailed balance supplies stationarity. The result is one-step dissipation, not strict contraction for every
     nonidentity kernel or a continuous-time entropy-production theorem.
-  non_vacuity: The identity kernel proves the exact reversible equality boundary, while the unequal full-support Boolean path
-    witness proves strictly positive production away from reversibility.
+  non_vacuity: A strictly positive symmetric mixing kernel supplies an instance of the main dissipation theorem. The separately
+    proved identity equality lies outside its positive-transition class on multi-state carriers. Unequal full-support Boolean
+    path laws prove positive path divergence; the existing stationary biased three-cycle separately proves nonreversibility
+    and positive production at every positive finite horizon.
   acceptance_probe: native Lean compile of fep099_reversibleChain_oneStep_KL_dissipation, fep099_reversibleEquality_boundary,
     and fep099_irreversiblePositiveProduction_witness.
   lean_sketch: "import FepSketches.path_thermodynamics\n\nnamespace FEP099\n\nopen FEP FEP.FiniteInformation FEP.FiniteMarkovDynamics\n\
@@ -8814,8 +8851,9 @@ topics:
   assumption_review: The coordinate carrier is finite and potential and gradient are arbitrary supplied functions. The identity
     is algebraic and assumes neither convexity nor that the gradient is the derivative of the potential; those extra properties
     are required before interpreting every term as a nonnegative divergence or an algorithmic descent guarantee.
-  non_vacuity: Distinct left, middle, and right vectors with a nonconstant supplied gradient give nonzero pairing and divergence
-    differences while retaining exact equality.
+  non_vacuity: For Fin1 quadratic potential x0^2/2 and true gradient x0, the points left=2,middle=1,right=0 give divergence
+    difference 2-1/2-1/2=1 and pairing1. This exercises the identity without asserting convexity or derivative compatibility
+    for arbitrary supplied data.
   acceptance_probe: native Lean compile of fep104_mirrorDescent_threePoint_identity for arbitrary finite-dimensional potential
     and gradient data.
   lean_sketch: "import FepSketches.geometric_optimization\n\nnamespace FEP104\n\nopen FEP.GeometricOptimization\n\nvariable\
@@ -8862,15 +8900,18 @@ topics:
   boundary_theorems: []
   semantic_disposition: conditional_proxy
   nl: 'An affine projection certificate yields exact Bregman Pythagorean splitting, and a nonnegative residual divergence
-    makes the certified projection a minimizer over the maintained affine set. Assumption scope: AffineBregmanProjection explicitly
-    supplies projection membership and gradient-difference orthogonality for every candidate. Minimization separately assumes
-    residual Bregman nonnegativity. Existence, uniqueness, convexity, and differentiability of the projection are not derived.
-    Semantic disposition: `conditional_proxy`.
+    makes the certified projection a minimizer over the maintained affine set. Assumption scope: AffineBregmanProjection supplies
+    membership and gradient-difference orthogonality for every candidate in a named Set; no IsAffine or convexity predicate
+    is required. Splitting holds under that certificate. The minimization comparison additionally assumes residual Bregman
+    nonnegativity for the selected candidate; obtaining a minimizer over the whole set requires this for all candidates. Existence,
+    uniqueness, derivative compatibility and convexity are not derived. Semantic disposition: `conditional_proxy`.
 
     '
-  assumption_review: AffineBregmanProjection explicitly supplies projection membership and gradient-difference orthogonality
-    for every candidate. Minimization separately assumes residual Bregman nonnegativity. Existence, uniqueness, convexity,
-    and differentiability of the projection are not derived.
+  assumption_review: AffineBregmanProjection supplies membership and gradient-difference orthogonality for every candidate
+    in a named Set; no IsAffine or convexity predicate is required. Splitting holds under that certificate. The minimization
+    comparison additionally assumes residual Bregman nonnegativity for the selected candidate; obtaining a minimizer over
+    the whole set requires this for all candidates. Existence, uniqueness, derivative compatibility and convexity are not
+    derived.
   non_vacuity: Candidates distinct from the projection can have a positive residual term, producing a strict objective gap;
     zero residual gives the exact equality boundary without proving uniqueness.
   acceptance_probe: native Lean compile of fep105_affineProjection_bregmanPythagorean and fep105_affineProjection_minimizes
@@ -9292,8 +9333,9 @@ topics:
   assumption_review: The state carrier is finite and the pointwise-product normalizer must be strictly positive. Disjoint
     supports are excluded. This unit-weight product uses exponents one, not the one-half exponents of an equal-weight logarithmic
     pool, and no externally Bayesian pooling property is claimed.
-  non_vacuity: Two distinct overlapping laws produce a pooled distribution different from either input; the positive-overlap
-    premise visibly excludes the disjoint point mass boundary.
+  non_vacuity: For Boolean laws with true masses3/4 and2/3, the product normalizer is7/12 and the pool true mass is6/7, different
+    from both inputs. Disjoint opposite point masses have zero normalizer and are excluded. Distinct overlap alone does not
+    guarantee both inputs change.
   acceptance_probe: native Lean compile of fep110_unitWeightProductOfExpertsPool_normalized and fep110_unitWeightProductOfExpertsPool_mass
     with a strictly positive pointwise-product normalizer.
   lean_sketch: "import FepSketches.collective_inference\n\n/-! # Unit-Weight Product-of-Experts Pool Normalization -/\nnamespace\
@@ -9684,8 +9726,9 @@ topics:
   assumption_review: The sampling measure is a probability measure, the alphabet is finite with decidable equality, sample
     count is nonzero, and every symbol has the supplied probability bound. No independence or concentration rate is inferred
     beyond those per-symbol premises.
-  non_vacuity: A multi-symbol alphabet and positive sample count make the union contain genuinely distinct two-sided normalized-count
-    deviation events.
+  non_vacuity: With one uniform Fin3 observation, target mass1/3 at each symbol and deviation1/2, the three count-deviation
+    events are distinct singletons, each with probability1/3, and their union has probability1. Boolean complementary frequencies
+    can instead have identical deviation events; union-bound distinctness is not assumed by the theorem.
   acceptance_probe: native Lean compile of fep115_simultaneous_frequency_bound and fep115_frequencyDeviationEvent_membership
     with the exact finite-count event.
   lean_sketch: "import FepSketches.learning_theory\n\n/-! # Simultaneous Finite-Alphabet Frequency Bound -/\nnamespace FEP115\n\
@@ -9863,8 +9906,9 @@ topics:
   assumption_review: Hypothesis and evidence carriers are finite. Total evidence, the reference prior mass, and the reference
     likelihood must be strictly positive before forming ordinary real odds. The zero-prior theorem marks lack of posterior
     support rather than permitting recovery by conditioning.
-  non_vacuity: Unequal positive likelihoods move the favored-to-reference odds multiplicatively, while a separate zero-prior
-    hypothesis remains exactly absent from the posterior.
+  non_vacuity: Positive equal favored/reference prior masses and likelihoods3/4 versus1/4 update odds1 to3. A separate zero-prior
+    favored hypothesis remains absent despite unequal positive likelihoods. Reference-prior/reference-likelihood and total-evidence
+    support remain explicit.
   acceptance_probe: native Lean compile of fep117_posteriorOdds_recursion and fep117_zero_prior_boundary with all denominator-support
     premises.
   lean_sketch: "import FepSketches.learning_theory\n\n/-! # Posterior-Odds Multiplicative Recursion -/\nnamespace FEP117\n\
@@ -10536,8 +10580,9 @@ topics:
     '
   assumption_review: Sample count is positive, success counts are bounded, the target is in the unit interval, and a raw event-probability
     bound is supplied. The theorem composes with concentration results but does not derive their assumptions or rates itself.
-  non_vacuity: The smoothed and raw events are distinct whenever the shrinkage and offset change the threshold, and the finite-law
-    monotonicity result applies to any nonzero failure bound.
+  non_vacuity: For n=2,target=1/2,error=0, a uniform Boolean sampling law with success counts1 and0 gives raw bad-event probability1/2
+    and an empty smoothed event, because the smoothed deviations are0 and exactly1/4. This is a strict-containment instance.
+    Constant count1 gives both events empty despite distinct thresholds; event distinctness is not required by the theorem.
   acceptance_probe: warning-free native Lean compile of fep127_laplaceBadEvent_subset and fep127_laplaceBadEvent_probability_le.
   lean_sketch: "import FepSketches.empirical_risk\n\n/-! # Concentration-Event Transfer Through Smoothing -/\nnamespace FEP127\n\
     \nopen FEP FEP.EmpiricalRisk\n\n/-- A smoothed deviation beyond the transferred threshold is contained in the\ncorresponding\
@@ -10964,14 +11009,18 @@ topics:
   boundary_theorems: []
   semantic_disposition: formalized
   nl: 'The one-step full-support expected-free-energy identity lifts through every branch of a finite policy tree, and the
-    corresponding optimal values agree. Assumption scope: Every belief-indexed finite generative model satisfies the maintained
-    FullSupport contract. Belief updates and horizons are finite; the theorem transports the existing risk-plus-ambiguity
-    identity and does not establish its empirical adequacy. Semantic disposition: `formalized`.
+    corresponding optimal values agree. Assumption scope: Every belief-indexed generative model satisfies FullSupport and
+    supplies actual model-derived EFE, risk and ambiguity. The generic update is an arbitrary function and need not be the
+    preceding model''s Bayesian posterior. The separate BayesianBeliefModel/update_filtered specialization and its policy-tree/POMDP/risk-ambiguity
+    bridges establish that stronger filtered interpretation under their explicit support premises. All horizons/carriers remain
+    finite; empirical adequacy is not established. Semantic disposition: `formalized`.
 
     '
-  assumption_review: Every belief-indexed finite generative model satisfies the maintained FullSupport contract. Belief updates
-    and horizons are finite; the theorem transports the existing risk-plus-ambiguity identity and does not establish its empirical
-    adequacy.
+  assumption_review: Every belief-indexed generative model satisfies FullSupport and supplies actual model-derived EFE, risk
+    and ambiguity. The generic update is an arbitrary function and need not be the preceding model's Bayesian posterior. The
+    separate BayesianBeliefModel/update_filtered specialization and its policy-tree/POMDP/risk-ambiguity bridges establish
+    that stronger filtered interpretation under their explicit support premises. All horizons/carriers remain finite; empirical
+    adequacy is not established.
   non_vacuity: The induction ranges over observation-contingent continuations and the optimal-value theorem compares independently
     constructed minimizing trees.
   acceptance_probe: warning-free native Lean compile of fep133_policyTree_efe_eq_risk_add_ambiguity and fep133_optimalValues_agree.
@@ -11618,12 +11667,16 @@ topics:
   boundary_theorems: []
   semantic_disposition: formalized
   nl: 'The scalar score is the sufficient statistic centered by its family mean and therefore has exactly zero expectation.
-    Assumption scope: The score is defined on the finite full-support exponential family. This is a natural-parameter derivative
-    identity, not a general score-regularity theorem for arbitrary likelihoods. Semantic disposition: `formalized`.
+    Assumption scope: The centered score is defined on the finite full-support exponential family. The primary unfolds that
+    definition and the supporting theorem proves zero mean. The existing law_hasDerivAt establishes mass derivative=mass*score,
+    so positivity supports the natural-parameter log-derivative interpretation. This does not establish score regularity for
+    arbitrary likelihoods. Semantic disposition: `formalized`.
 
     '
-  assumption_review: The score is defined on the finite full-support exponential family. This is a natural-parameter derivative
-    identity, not a general score-regularity theorem for arbitrary likelihoods.
+  assumption_review: The centered score is defined on the finite full-support exponential family. The primary unfolds that
+    definition and the supporting theorem proves zero mean. The existing law_hasDerivAt establishes mass derivative=mass*score,
+    so positivity supports the natural-parameter log-derivative interpretation. This does not establish score regularity for
+    arbitrary likelihoods.
   non_vacuity: A nonconstant statistic yields positive and negative centered scores across outcomes while their normalized
     weighted mean cancels exactly.
   acceptance_probe: warning-free native Lean compile of fep145_score_eq_statistic_sub_mean and fep145_score_mean_zero.
@@ -11824,8 +11877,9 @@ topics:
     '
   assumption_review: Variance positivity is an explicit interval premise. The theorem is local to a stated scalar interval
     and does not assert global dual-flat coordinates or positivity for degenerate statistics.
-  non_vacuity: The three-state family supplies a strictly positive variance point, while the constant-statistic boundary shows
-    why the positivity premise matters.
+  non_vacuity: The three-state family has variance2/3 at0, and constant statistics show why positivity is required. A concrete
+    nontrivial interval instance additionally needs variance positivity throughout that interval, derived either from continuity
+    near0 or from full support and a nonconstant statistic; the retained point witness alone is not that interval certificate.
   acceptance_probe: warning-free native Lean compile of fep148_meanParameter_strictMono and fep148_meanParameter_injective
     under the interval variance premise.
   lean_sketch: "import FepSketches.exponential_family\n\nnamespace FEP148\n\nopen FEP FEP.ExponentialFamily\n\nvariable {Outcome\
@@ -11965,12 +12019,14 @@ topics:
   boundary_theorems: []
   semantic_disposition: formalized
   nl: 'The exact two-state transition matrices satisfy the Chapman–Kolmogorov additive semigroup law entrywise. Assumption
-    scope: Both times are nonnegative and rates are strictly positive. Composition is the finite Boolean matrix sum and no
-    path-space or general generator existence theorem is inferred. Semantic disposition: `formalized`.
+    scope: Rates are strictly positive. The entrywise additive matrix identity holds for arbitrary real times; restricting
+    both times to be nonnegative supplies its probability-kernel interpretation. No continuous-path or PDE existence theorem
+    is inferred from this identity. Semantic disposition: `formalized`.
 
     '
-  assumption_review: Both times are nonnegative and rates are strictly positive. Composition is the finite Boolean matrix
-    sum and no path-space or general generator existence theorem is inferred.
+  assumption_review: Rates are strictly positive. The entrywise additive matrix identity holds for arbitrary real times; restricting
+    both times to be nonnegative supplies its probability-kernel interpretation. No continuous-path or PDE existence theorem
+    is inferred from this identity.
   non_vacuity: Positive unequal rates and positive times produce nonidentity kernels whose matrix product still equals the
     transition at summed time.
   acceptance_probe: warning-free native Lean compile of fep151_twoStateSemigroup_add for all Boolean source and target states.
@@ -12224,15 +12280,22 @@ topics:
   nl: 'On a finite policy carrier with fixed precision, the KL-regularized control objective (expected EFE plus inverse-precision
     KL to the prior) is minimized exactly by the Boltzmann control posterior proportional to prior * exp(-gamma * G); the
     minimized value is -gamma^-1 log Z, the EFE splits as risk plus ambiguity, and the finite and treewise argmin views agree.
-    Assumption scope: The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it
-    is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the
-    treewise value surface of the policy_tree module. Semantic disposition: `formalized`.
+    Assumption scope: The primary Boltzmann-law minimization assumes a normalized finite full-support prior and gamma>0 and
+    minimizes expected supplied real cost plus gamma^-1 KL to the prior over normalized candidate laws. Identifying that cost
+    with model-derived EFE is a separate specialization. Deterministic finite-policy and finite-tree EFE/risk-ambiguity argmin
+    statements are separate declarations. No continuous-action or general planning algorithm is claimed; supported sparse-prior
+    and negative/zero-precision boundaries remain separately scoped foundation results. Semantic disposition: `formalized`.
 
     '
-  assumption_review: The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is
-    not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise
-    value surface of the policy_tree module.
-  non_vacuity: The finite argmin exists and attains the closed-form Boltzmann value -gamma^-1 log Z for nonempty policy sets.
+  assumption_review: The primary Boltzmann-law minimization assumes a normalized finite full-support prior and gamma>0 and
+    minimizes expected supplied real cost plus gamma^-1 KL to the prior over normalized candidate laws. Identifying that cost
+    with model-derived EFE is a separate specialization. Deterministic finite-policy and finite-tree EFE/risk-ambiguity argmin
+    statements are separate declarations. No continuous-action or general planning algorithm is claimed; supported sparse-prior
+    and negative/zero-precision boundaries remain separately scoped foundation results.
+  non_vacuity: A full-support finite prior, positive precision and nonconstant finite cost give a nondegenerate Boltzmann
+    probability law attaining the unique KL-regularized objective minimum -gamma^-1 log Z. Separately, a nonempty finite policy
+    carrier has a deterministic EFE argmin and the treewise declarations preserve finite optimal values; that deterministic
+    argmin is not identified with the Boltzmann law or its regularized objective value.
   acceptance_probe: warning-free native Lean compile of all nine fep-156 declarations.
   lean_sketch: "import FepSketches.efe_policy_selection\n\nnamespace FEP156\n\nopen FEP.EFEPolicy\nopen FEP ActiveInference\
     \ ControlledMarkov FiniteInformation PolicyTrees\n  VariationalDuality Finset\nopen scoped BigOperators\nvariable {Action\
@@ -12481,19 +12544,30 @@ topics:
   - fep157_posteriorKernel_joint_eq_swap
   boundary_theorems: []
   semantic_disposition: formalized
-  nl: 'Each closed-loop perception-action step is non-increasing in belief surprisal: the step''s KL splits exactly into predictive
-    and posterior parts, prediction contracts the predictive distribution (Dobrushin), and the loop invariant bounds surprisal
-    by its initial value plus accumulated expected free energy; the loop''s fixed point is the Boltzmann control posterior
-    and equals the policy posterior of the control-as-inference view. Assumption scope: The loop is a finite-state kernel
-    composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the
-    finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim. Semantic disposition: `formalized`.
+  nl: 'For one positive-evidence observation, outcome surprisal is bounded by perception VFE, whose exact gap is finite KL
+    from the belief to its filtered posterior; the selected filtered-model policy has EFE equal to risk plus ambiguity under
+    FullSupport. Supporting declarations give the finite observation-averaged posterior-KL chain bound, native predictive
+    KL data processing, a Dobrushin total-variation bound under an explicit coefficient, Bayesian-filter/kernel reconstruction
+    and selected-policy minimization. Flat policy EFE makes the policy posterior equal its prior. No realized-observation
+    monotonicity, accumulated trajectory bound or dynamical fixed-point/convergence theorem is asserted. Assumption scope:
+    Policy, state and outcome carriers are finite; beliefs are normalized laws on the finite state carrier, not an assumed
+    finite space of all beliefs. The primary needs positive observation evidence and FullSupport at the filtered model; finite
+    posterior-KL decomposition additionally needs a positive reference law and full likelihood support. The native predictive
+    DPI is separately stated on discrete measurable carriers. Prediction uses an explicit HasDobrushinBound; strict TV contraction
+    additionally needs a coefficient below one and a nonzero initial distance. The flat-EFE posterior identity is algebraic
+    and is not an iterated-loop fixed-point theorem. Semantic disposition: `formalized`.
 
     '
-  assumption_review: The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods
-    and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or
-    neural-implementation claim.
-  non_vacuity: The strict step-wise KL decrease holds on the full-likelihood witness kernels, and at the fixed point the loop
-    posterior coincides with the Boltzmann control posterior.
+  assumption_review: Policy, state and outcome carriers are finite; beliefs are normalized laws on the finite state carrier,
+    not an assumed finite space of all beliefs. The primary needs positive observation evidence and FullSupport at the filtered
+    model; finite posterior-KL decomposition additionally needs a positive reference law and full likelihood support. The
+    native predictive DPI is separately stated on discrete measurable carriers. Prediction uses an explicit HasDobrushinBound;
+    strict TV contraction additionally needs a coefficient below one and a nonzero initial distance. The flat-EFE posterior
+    identity is algebraic and is not an iterated-loop fixed-point theorem.
+  non_vacuity: Nonuniform supported beliefs and informative likelihoods can instantiate the exact VFE gap and the observation-averaged
+    KL decomposition. The selected-policy and filter/kernel equalities are actual finite operations. The flat-EFE case yields
+    posterior=prior, an algebraic boundary; these declarations do not supply a strict realized-step surprisal-decrease or
+    dynamical fixed-point witness.
   acceptance_probe: warning-free native Lean compile of all thirteen fep-157 declarations.
   lean_sketch: "import FepSketches.perception_action_loop\n\nnamespace FEP157\n\nopen FEP.PerceptionActionLoop\nopen FEP FEP.ActiveInference\
     \ FEP.ControlledMarkov FEP.FiniteInformation\n  FEP.TemporalInference Finset\nopen scoped BigOperators\nvariable {Policy\
@@ -12889,19 +12963,27 @@ topics:
   - fep158_gaussianLogBayesFactor_eq
   boundary_theorems: []
   semantic_disposition: formalized
-  nl: 'Masking evidence never lowers the model evidence: the reduced model''s evidence free energy dominates the full model''s,
-    the reduced posterior obeys the multiplicative Bayes-odds law with the evidence weight and reconstructs the full posterior
-    through the evidence ratio, and the Gibbs-certificate excess over the optimizer is exactly the KL divergence to it. Assumption
-    scope: The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian
-    log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic
-    model-selection claim. Semantic disposition: `formalized`.
+  nl: 'Weights bounded above by one make positive unnormalized masked evidence no greater than full predictive evidence, so
+    its negative-log evidence free energy is no smaller. For a nonnegative mask with positive prior normalizer, the normalized
+    reduced-prior predictive equals maskedEvidence divided by that normalizer; no universal direction relative to full predictive
+    evidence is claimed for this normalized quantity. Supported reduced posteriors obey exact weighted reconstruction and
+    cross-multiplied odds identities. Separately, the Gibbs objective gap to its optimizer equals finite KL, and the fixed-variance
+    Gaussian natural-chart log ratio is explicit. Assumption scope: Parameters and evidence use finite normalized law/kernel
+    carriers. The primary free-energy comparison assumes weight<=1 pointwise and positive masked evidence. Normalized masked-prior/posterior
+    statements additionally require nonnegative weights, positive prior mask normalizer and positive relevant evidence; ordinary
+    log/ratio clauses retain their support assumptions. GibbsCertificate optimizer-gap identities and the fixed-variance Gaussian
+    log Bayes factor are separate statements, with no general asymptotic model-selection or automatic full/reduced evidence
+    monotonicity claim. Semantic disposition: `formalized`.
 
     '
-  assumption_review: The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the
-    Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic
-    asymptotic model-selection claim.
-  non_vacuity: The masked predictive is bounded by the full evidence, and the reduced posterior reconstructs the full posterior
-    exactly through the evidence ratio.
+  assumption_review: Parameters and evidence use finite normalized law/kernel carriers. The primary free-energy comparison
+    assumes weight<=1 pointwise and positive masked evidence. Normalized masked-prior/posterior statements additionally require
+    nonnegative weights, positive prior mask normalizer and positive relevant evidence; ordinary log/ratio clauses retain
+    their support assumptions. GibbsCertificate optimizer-gap identities and the fixed-variance Gaussian log Bayes factor
+    are separate statements, with no general asymptotic model-selection or automatic full/reduced evidence monotonicity claim.
+  non_vacuity: With prior masses(1/2,1/2), likelihoods(9/10,1/10) and mask(1,0), full evidence is1/2, unnormalized masked
+    evidence9/20, mask normalizer1/2 and normalized reduced-prior evidence9/10. Positive support permits exact posterior reweighting.
+    This exercises both evidence notions without reversing the proved comparison.
   acceptance_probe: warning-free native Lean compile of all ten fep-158 declarations.
   lean_sketch: "import FepSketches.bayesian_model_reduction\n\nnamespace FEP158\n\nopen FEP.BayesianModelReduction\nopen FEP\
     \ FEP.FiniteInformation FEP.VariationalDuality Finset\nopen scoped BigOperators\nvariable {Parameter Evidence : Type*}\
@@ -13168,20 +13250,24 @@ topics:
   - fep159_epistemicGain_rateScaling
   boundary_theorems: []
   semantic_disposition: formalized
-  nl: 'The two-state belief information gap is bounded by the entropy-production rate scaled by the relaxation time (gain
-    at most production/decay), the evolved gap contracts to the invariant measure no slower than the relaxation timescale,
-    the one-slice path-space entropy production equals (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved
-    gain after any fixed positive action time vanishes. Assumption scope: All statements are for the explicit two-state continuous-time
-    semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics
-    production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.
-    Semantic disposition: `formalized`.
+  nl: 'For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A
+    specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded
+    by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported
+    source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the retained
+    theorem gives, for each positive tolerance, existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon
+    or Tendsto theorem is not asserted by that declaration. Assumption scope: All statements are for the explicit two-state
+    continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of
+    the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker
+    with no mathematical dependence. Semantic disposition: `formalized`.
 
     '
   assumption_review: All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter
     family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space
     theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.
-  non_vacuity: The bound is attained by the stationary law for the benchmark rates, and the fast-relaxation limit exhibits
-    the vanishing exactly.
+  non_vacuity: At the stationary law the gap and production rate both vanish, providing an equality boundary. A full-support
+    nonstationary belief supplies nonzero deviation and current-affinity production for the positive rates, and the explicit
+    rate-scaling envelope gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations
+    do not separately state the full right-limit quantifier.
   acceptance_probe: warning-free native Lean compile of all nine fep-159 declarations.
   lean_sketch: "import FepSketches.efe_time_scale_separation\n\nnamespace FEP159\n\nopen FEP.TimeScaleEFE\nopen FEP FEP.FiniteInformation\
     \ FEP.ContinuousTimeMarkov FEP.PathThermodynamics\n  FEP.ActiveInference FEP.VariationalDuality Finset\nopen scoped BigOperators\n\
@@ -13902,17 +13988,22 @@ topics:
   - fep165_witness_divergence
   boundary_theorems: []
   semantic_disposition: formalized
-  nl: 'For the exact 2-node transport matrix [[0,1],[-1,0]] and gradient (1,0) the candidate current is (0,-1), the discrete
-    divergence of the transport field is (2,-2), the node divergence of the current is (1,-1), and in particular equals 1
-    at node 0: the unconditional solenoidal drop is false, and neither the orthogonality nor the constant-Q hypothesis is
-    available on this witness. Assumption scope: A concrete finite counterexample only; it shows the manuscript''s honesty
-    guard is necessary rather than decorative and claims nothing about systems satisfying the extra hypotheses of fep-163.
-    Semantic disposition: `formalized`.
+  nl: 'For the exact two-node skew transport matrix[[0,1],[-1,0]] and gradient(1,0), the node vector Qg is(0,-1), graph node
+    divergence of Q is(2,-2), and graph node divergence of currentOf(Q,g) is(1,-1), hence1 at node0. This refutes an unconditional
+    zero graph-current-divergence claim. No H,DQ or dlogp data are supplied here; the separate fep-163 remainder witness addresses
+    its derivative-data carrier. Assumption scope: This is a concrete finite graph counterexample with outflow-minus-inflow
+    node divergence and edge current Qij*g_j. It does not assert that fep-163 orthogonality or spatially constant-Q directional-derivative
+    hypotheses fail: those involve separately supplied DQ data. Identifying graph divergence with analytic or fep-163 weighted
+    derivative divergence would require a separate proved bridge. Semantic disposition: `formalized`.
 
     '
-  assumption_review: A concrete finite counterexample only; it shows the manuscript's honesty guard is necessary rather than
-    decorative and claims nothing about systems satisfying the extra hypotheses of fep-163.
-  non_vacuity: The witness evaluates to exactly 1 at node 0, refuting the unconditional drop on its exact hypothesis class.
+  assumption_review: 'This is a concrete finite graph counterexample with outflow-minus-inflow node divergence and edge current
+    Qij*g_j. It does not assert that fep-163 orthogonality or spatially constant-Q directional-derivative hypotheses fail:
+    those involve separately supplied DQ data. Identifying graph divergence with analytic or fep-163 weighted derivative divergence
+    would require a separate proved bridge.'
+  non_vacuity: The exact graph witness evaluates nodeDiv(currentOf Q g) at node0 to1 despite plain skew Q. It is nonvacuous
+    for that graph claim. On the derivative-data carrier, the same pointwise Q and g can instead be paired with H=0,DQ=0,dlogp=-g
+    and have weightedDivergence=0; the two divergence notions are not identified.
   acceptance_probe: warning-free native Lean compile of all five fep-165 declarations.
   lean_sketch: "import FepSketches.geometric_mechanics\n\nnamespace FEP165\n\nopen FEP.GeometricMechanics\n\n/-- The manuscript\
     \ honesty-guard transport matrix is skew. -/\ntheorem fep165_witnessQ_skew : SkewSymmetric witnessQ :=\n  FEP.GeometricMechanics.witnessQ_skew\n\

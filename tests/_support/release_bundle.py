@@ -128,7 +128,7 @@ def _valid_contents(payload: dict[str, bytes]) -> dict[str, bytes]:
             "relations": 146,
             "capabilities": 50,
             "formal_modules": 1,
-            "numerical_witnesses": 17,
+            "numerical_witnesses": 22,
         },
         "toolchain": {
             "lean_toolchain": "leanprover/lean4:v4.33.1",

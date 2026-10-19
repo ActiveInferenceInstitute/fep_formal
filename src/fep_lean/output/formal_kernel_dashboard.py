@@ -846,7 +846,7 @@ def _render_formal_kernel_dashboard_desktop_svg(
 ) -> str:
     """Render the wide dashboard with either full or compact evidence context."""
     columns = 3
-    card_width = 510
+    card_width = 600 if len(dashboard.witnesses) > 18 else 510
     gap_x = 18
     gap_y = 12
     left = 17
@@ -875,7 +875,7 @@ def _render_formal_kernel_dashboard_desktop_svg(
     for row_height in row_heights:
         row_tops.append(next_row_top)
         next_row_top += row_height + gap_y
-    width = 1600
+    width = 2 * left + columns * card_width + (columns - 1) * gap_x
     height = top + sum(row_heights) + max(0, rows - 1) * gap_y + 92
     lines = [
         (
@@ -1221,7 +1221,7 @@ def _render_formal_kernel_dashboard_mobile_svg(
             "</g>",
             (
                 f'<text class="mobile-footer" x="10" y="{height - 38}">'
-                f"Group {group_index} · {len(witnesses)} witnesses shown</text>"
+                f"Group {group_index} · {len(witnesses)} {'witness' if len(witnesses) == 1 else 'witnesses'} shown</text>"
             ),
             (
                 f'<text class="mobile-footer" x="10" y="{height - 19}">'
@@ -1397,7 +1397,7 @@ def render_formal_kernel_dashboard_html(dashboard: FormalKernelDashboard) -> str
         f'<a href="#mobile-plot-group-{group_index}" '
         f'data-mobile-group-jump="{group_index}" '
         f'aria-label="Plots {start_index} through {end_index}, '
-        f'{len(witnesses)} plots">Plots {start_index}–{end_index}</a>'
+        f'{len(witnesses)} {"plot" if len(witnesses) == 1 else "plots"}">Plots {start_index}–{end_index}</a>'
         for group_index, (start_index, end_index, witnesses) in enumerate(
             mobile_groups, 1
         )
@@ -1407,9 +1407,9 @@ def render_formal_kernel_dashboard_html(dashboard: FormalKernelDashboard) -> str
         f' data-summary-count="{len(witnesses)}" data-first-index="{start_index}" '
         f'data-last-index="{end_index}"><summary><span>Plots {start_index}–'
         f"{end_index} of {len(dashboard.witnesses)}</span>"
-        f"<small>{len(witnesses)} witnesses · open one group at a time</small></summary>"
+        f"<small>{len(witnesses)} {'witness' if len(witnesses) == 1 else 'witnesses'} · open one group at a time</small></summary>"
         f'<p class="mobile-plot-scroll-cue">↕ Scroll within this group · '
-        f"{len(witnesses)} complete plots</p>"
+        f"{len(witnesses)} complete {'plot' if len(witnesses) == 1 else 'plots'}</p>"
         f'<div class="mobile-plot-viewport" role="region" tabindex="0" '
         f'data-scroll-axis="vertical" aria-label="Scrollable plots {start_index} '
         f'through {end_index}">{mobile_svg}</div></details>'
@@ -1423,7 +1423,7 @@ def render_formal_kernel_dashboard_html(dashboard: FormalKernelDashboard) -> str
         f'<p class="mobile-overview-intro">{len(dashboard.witnesses)} plots in '
         f"{mobile_group_count} groups · at most {_MOBILE_PLOTS_PER_GROUP} plots per group. Groups start "
         "collapsed; use the index to open any group. Scroll inside an open "
-        "group for its three complete plots.</p>"
+        "group for its complete plots.</p>"
         '<nav class="mobile-group-index" aria-label="Mobile plot groups">'
         f"{mobile_group_index}</nav>{mobile_group_sections}</div>"
     )
@@ -1459,7 +1459,7 @@ dt{color:var(--muted);font-weight:700}dd{margin:3px 0 0;overflow-wrap:anywhere}.
 th,td{padding:9px;border-top:1px solid #e2e8f0;text-align:left;vertical-align:top;overflow-wrap:anywhere}thead th{background:#e2e8f0}.witness-workbench,.witness-workbench>*{min-width:0;max-width:100%}.witness-workbench code{font-size:.87em;overflow-wrap:anywhere;word-break:break-word}.witness-workbench li{overflow-wrap:anywhere;word-break:break-word}[hidden]{display:none!important}
 .witness-workbench .exact-table th,.witness-workbench .exact-table td,.witness-workbench .exact-table code{white-space:nowrap;overflow-wrap:normal;word-break:normal;font-variant-numeric:tabular-nums}
 @media (max-width: 900px){.controls{grid-template-columns:1fr 1fr}.controls .search{grid-column:1/-1}.diagnostics{grid-template-columns:1fr 1fr}.workbench-grid{grid-template-columns:1fr}}
-@media (max-width: 760px){.desktop-overview{display:none}.mobile-overview{display:block}.mobile-plot-group>summary{padding:10px 16px}body>header,main{padding:14px}h1{font-size:1.55rem;line-height:1.2}.controls{position:static;gap:10px}.detail-index ol{grid-template-columns:1fr;padding-left:36px}.witness-detail-summary{display:block}.summary-meta{display:block;margin-top:5px;text-align:left}.diagnostics{grid-template-columns:1fr}.witness-workbench{padding:14px}.witness-workbench>header{display:block}.badges{align-items:flex-start;margin-top:10px}.badge{display:inline-block;white-space:normal}.table-scroll-hint{display:block}.exact-scroll{border-color:#60a5fa;box-shadow:inset -20px 0 16px -20px #1e3a8a}}
+@media (max-width: 760px){.desktop-overview{display:none}.mobile-overview{display:block}.mobile-plot-group>summary{padding:6px 16px}body>header,main{padding:14px}h1{font-size:1.55rem;line-height:1.2}.controls{position:static;gap:10px}.detail-index ol{grid-template-columns:1fr;padding-left:36px}.witness-detail-summary{display:block}.summary-meta{display:block;margin-top:5px;text-align:left}.diagnostics{grid-template-columns:1fr}.witness-workbench{padding:14px}.witness-workbench>header{display:block}.badges{align-items:flex-start;margin-top:10px}.badge{display:inline-block;white-space:normal}.table-scroll-hint{display:block}.exact-scroll{border-color:#60a5fa;box-shadow:inset -20px 0 16px -20px #1e3a8a}}
 @media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>

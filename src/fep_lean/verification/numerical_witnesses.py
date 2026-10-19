@@ -13,11 +13,17 @@ from dataclasses import dataclass
 from fractions import Fraction
 from itertools import pairwise
 from pathlib import Path
-from typing import Literal
+from typing import Literal, cast
 
 from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST
 from fep_lean.formal.declarations import all_formal_theorem_declarations
-from fep_lean.methods.probes import exponential_tilt, finite_expectation
+from fep_lean.methods.probes import (
+    BoundaryProbeError,
+    bernoulli_fisher,
+    exponential_tilt,
+    extended_kl,
+    finite_expectation,
+)
 from fep_lean.methods.probes import log_partition as finite_log_partition
 
 Scalar = str | int | float | bool
@@ -1212,6 +1218,52 @@ def _exponential_family_duality() -> NumericalWitness:
     )
 
 
+# Shared private helpers for the fixed diagnostic carriers.
+# The matrix2 helpers deliberately retain the two-state arithmetic order.
+def _matrix2_mul(
+    left: tuple[tuple[float, float], tuple[float, float]],
+    right: tuple[tuple[float, float], tuple[float, float]],
+) -> tuple[tuple[float, float], tuple[float, float]]:
+    return (
+        (
+            left[0][0] * right[0][0] + left[0][1] * right[1][0],
+            left[0][0] * right[0][1] + left[0][1] * right[1][1],
+        ),
+        (
+            left[1][0] * right[0][0] + left[1][1] * right[1][0],
+            left[1][0] * right[0][1] + left[1][1] * right[1][1],
+        ),
+    )
+
+
+def _matrix_dot(v: tuple[float, ...], w: tuple[float, ...]) -> float:
+    return sum(a * b for a, b in zip(v, w, strict=True))
+
+
+def _matrix_mul_vec(
+    m: tuple[tuple[float, ...], ...], v: tuple[float, ...]
+) -> tuple[float, ...]:
+    return tuple(sum(m[i][k] * v[k] for k in range(len(v))) for i in range(len(v)))
+
+
+def _matrix_trace(m: tuple[tuple[float, ...], ...]) -> float:
+    return sum(m[i][i] for i in range(len(m)))
+
+
+def _matrix_node_div(w: tuple[tuple[float, ...], ...], i: int) -> float:
+    return sum(w[i][j] - w[j][i] for j in range(len(w)))
+
+
+def _matrix2_frobenius_sq(m: tuple[tuple[float, ...], ...]) -> float:
+    return sum(m[i][j] ** 2 for i in range(2) for j in range(2))
+
+
+def _matrix2_subtract(
+    a: tuple[tuple[float, ...], ...], b: tuple[tuple[float, ...], ...]
+) -> tuple[tuple[float, ...], ...]:
+    return tuple(tuple(a[i][j] - b[i][j] for j in range(2)) for i in range(2))
+
+
 def _two_state_master_equation() -> NumericalWitness:
     forward = 0.7
     backward = 0.3
@@ -1229,21 +1281,6 @@ def _two_state_master_equation() -> NumericalWitness:
             (
                 stationary_false * (1.0 - rho),
                 stationary_true + stationary_false * rho,
-            ),
-        )
-
-    def matmul(
-        left: tuple[tuple[float, float], tuple[float, float]],
-        right: tuple[tuple[float, float], tuple[float, float]],
-    ) -> tuple[tuple[float, float], tuple[float, float]]:
-        return (
-            (
-                left[0][0] * right[0][0] + left[0][1] * right[1][0],
-                left[0][0] * right[0][1] + left[0][1] * right[1][1],
-            ),
-            (
-                left[1][0] * right[0][0] + left[1][1] * right[1][0],
-                left[1][0] * right[0][1] + left[1][1] * right[1][1],
             ),
         )
 
@@ -1267,7 +1304,7 @@ def _two_state_master_equation() -> NumericalWitness:
         rows.append(WitnessRow((time, matrix[0][1], true_mass, lyapunov, derivative)))
 
     semigroup_left = transition(0.4 + 0.7)
-    semigroup_right = matmul(transition(0.4), transition(0.7))
+    semigroup_right = _matrix2_mul(transition(0.4), transition(0.7))
     semigroup_error = max(
         abs(semigroup_left[i][j] - semigroup_right[i][j])
         for i in range(2)
@@ -1275,8 +1312,8 @@ def _two_state_master_equation() -> NumericalWitness:
     )
     master_time = 0.6
     master_matrix = transition(master_time)
-    q_times_p = matmul(generator, master_matrix)
-    p_times_q = matmul(master_matrix, generator)
+    q_times_p = _matrix2_mul(generator, master_matrix)
+    p_times_q = _matrix2_mul(master_matrix, generator)
     rho = math.exp(-decay * master_time)
     derivative_matrix = (
         (-forward * rho, forward * rho),
@@ -1851,21 +1888,6 @@ class _GeometricSolenoidalData:
 def _geometric_solenoidal_data() -> _GeometricSolenoidalData:
     """Evaluate the skew cancellations, expansion remainder, and witness current."""
 
-    # Plain-matrix helpers mirroring the Lean carrier definitions.
-    def dot(v: tuple[float, ...], w: tuple[float, ...]) -> float:
-        return sum(a * b for a, b in zip(v, w, strict=True))
-
-    def mul_vec(
-        m: tuple[tuple[float, ...], ...], v: tuple[float, ...]
-    ) -> tuple[float, ...]:
-        return tuple(sum(m[i][k] * v[k] for k in range(len(v))) for i in range(len(v)))
-
-    def trace_of(m: tuple[tuple[float, ...], ...]) -> float:
-        return sum(m[i][i] for i in range(len(m)))
-
-    def node_div(w: tuple[tuple[float, ...], ...], i: int) -> float:
-        return sum(w[i][j] - w[j][i] for j in range(len(w)))
-
     # The manuscript honesty-guard carrier: Q = [[0,1],[-1,0]], g = (1,0).
     witness_q = ((0.0, 1.0), (-1.0, 0.0))
     witness_g = (1.0, 0.0)
@@ -1877,20 +1899,17 @@ def _geometric_solenoidal_data() -> _GeometricSolenoidalData:
         witness_q[i][j] == -witness_q[j][i] for i in range(2) for j in range(2)
     )
     sym_h = all(witness_h[i][j] == witness_h[j][i] for i in range(2) for j in range(2))
-    q_h_product = tuple(
-        tuple(
-            sum(witness_q[i][k] * witness_h[k][j] for k in range(2)) for j in range(2)
-        )
-        for i in range(2)
+    q_h_product = _matrix2_mul(witness_q, witness_h)
+    trace_residual = abs(_matrix_trace(q_h_product))
+    quadratic_residual = abs(
+        _matrix_dot(witness_g, _matrix_mul_vec(witness_q, witness_g))
     )
-    trace_residual = abs(trace_of(q_h_product))
-    quadratic_residual = abs(dot(witness_g, mul_vec(witness_q, witness_g)))
-    witness_current = mul_vec(witness_q, witness_g)
+    witness_current = _matrix_mul_vec(witness_q, witness_g)
     current_matches = witness_current == (0.0, -1.0)
-    div_q = tuple(node_div(witness_q, i) for i in range(2))
+    div_q = tuple(_matrix_node_div(witness_q, i) for i in range(2))
     div_q_matches = div_q == (2.0, -2.0)
     current_divergence = tuple(
-        node_div(
+        _matrix_node_div(
             tuple(
                 tuple(witness_q[i][j] * witness_g[j] for j in range(2))
                 for i in range(2)
@@ -1903,7 +1922,7 @@ def _geometric_solenoidal_data() -> _GeometricSolenoidalData:
 
     # The expansion remainder slot: (div Q)^T g with divQ from DQ data.
     div_q_field = tuple(sum(remainder_dq[k][l] for k in range(2)) for l in range(2))
-    remainder_value = dot(div_q_field, remainder_g)
+    remainder_value = _matrix_dot(div_q_field, remainder_g)
 
     symmetrized = tuple(
         tuple((witness_h[i][j] + witness_h[j][i]) / 2 for j in range(2))
@@ -1919,24 +1938,16 @@ def _geometric_solenoidal_data() -> _GeometricSolenoidalData:
     # residual datum [[0, 1], [0, 0]] against every step-1/4 symmetric grid
     # competitor.
 
-    def frobenius_sq(m: tuple[tuple[float, ...], ...]) -> float:
-        return sum(m[i][j] ** 2 for i in range(2) for j in range(2))
-
-    def sub_matrix(
-        a: tuple[tuple[float, ...], ...], b: tuple[tuple[float, ...], ...]
-    ) -> tuple[tuple[float, ...], ...]:
-        return tuple(tuple(a[i][j] - b[i][j] for j in range(2)) for i in range(2))
-
     fep167_h = ((0.5, 0.5), (0.5, -1.0))
     fep167_sym_h = tuple(
         tuple((fep167_h[i][j] + fep167_h[j][i]) / 2 for j in range(2)) for i in range(2)
     )
     fep167_s = fep167_sym_h
     fep167_pythagoras_residual = abs(
-        frobenius_sq(sub_matrix(fep167_h, fep167_s))
+        _matrix2_frobenius_sq(_matrix2_subtract(fep167_h, fep167_s))
         - (
-            frobenius_sq(sub_matrix(fep167_h, fep167_sym_h))
-            + frobenius_sq(sub_matrix(fep167_sym_h, fep167_s))
+            _matrix2_frobenius_sq(_matrix2_subtract(fep167_h, fep167_sym_h))
+            + _matrix2_frobenius_sq(_matrix2_subtract(fep167_sym_h, fep167_s))
         )
     )
     fep167_residual_h = ((0.0, 1.0), (0.0, 0.0))
@@ -1944,18 +1955,22 @@ def _geometric_solenoidal_data() -> _GeometricSolenoidalData:
         tuple((fep167_residual_h[i][j] + fep167_residual_h[j][i]) / 2 for j in range(2))
         for i in range(2)
     )
-    fep167_residual_sq = frobenius_sq(
-        sub_matrix(fep167_residual_h, fep167_residual_sym)
+    fep167_residual_sq = _matrix2_frobenius_sq(
+        _matrix2_subtract(fep167_residual_h, fep167_residual_sym)
     )
     fep167_grid = [k / 4 for k in range(-8, 9)]
-    fep167_target = frobenius_sq(sub_matrix(fep167_residual_h, fep167_residual_sym))
+    fep167_target = _matrix2_frobenius_sq(
+        _matrix2_subtract(fep167_residual_h, fep167_residual_sym)
+    )
     fep167_minimality_violation = -math.inf
     fep167_attainers: list[tuple[tuple[float, ...], ...]] = []
     for s00 in fep167_grid:
         for s11 in fep167_grid:
             for off in fep167_grid:
                 candidate = ((s00, off), (off, s11))  # symmetric competitor
-                sq = frobenius_sq(sub_matrix(fep167_residual_h, candidate))
+                sq = _matrix2_frobenius_sq(
+                    _matrix2_subtract(fep167_residual_h, candidate)
+                )
                 fep167_minimality_violation = max(
                     fep167_minimality_violation, fep167_target - sq
                 )
@@ -1971,26 +1986,23 @@ def _geometric_solenoidal_data() -> _GeometricSolenoidalData:
     # on Q = witnessQ, H = diag(1, 2), DQ = remainderDQ (divQ = (1, 0)), and
     # the pinned gradient remainderG = (1, 1) under the coupling dlogp = -g.
     fep168_h = ((1.0, 0.0), (0.0, 2.0))
-    fep168_q_h = tuple(
-        tuple(sum(witness_q[i][k] * fep168_h[k][j] for k in range(2)) for j in range(2))
-        for i in range(2)
-    )
-    fep168_trace = trace_of(fep168_q_h)
-    fep168_quadratic = dot(remainder_g, mul_vec(witness_q, remainder_g))
+    fep168_q_h = _matrix2_mul(witness_q, fep168_h)
+    fep168_trace = _matrix_trace(fep168_q_h)
+    fep168_quadratic = _matrix_dot(remainder_g, _matrix_mul_vec(witness_q, remainder_g))
     fep168_r = div_q_field
-    fep168_wd = fep168_trace - fep168_quadratic + dot(fep168_r, remainder_g)
-    fep168_identity_residual = abs(fep168_wd - dot(fep168_r, remainder_g))
-    fep168_cs_violation = dot(fep168_r, remainder_g) ** 2 - dot(
+    fep168_wd = fep168_trace - fep168_quadratic + _matrix_dot(fep168_r, remainder_g)
+    fep168_identity_residual = abs(fep168_wd - _matrix_dot(fep168_r, remainder_g))
+    fep168_cs_violation = _matrix_dot(fep168_r, remainder_g) ** 2 - _matrix_dot(
         fep168_r, fep168_r
-    ) * dot(remainder_g, remainder_g)
+    ) * _matrix_dot(remainder_g, remainder_g)
     fep168_aligned_g = (1.0, 0.0)
-    fep168_aligned_gap = dot(fep168_r, fep168_aligned_g) ** 2 - dot(
+    fep168_aligned_gap = _matrix_dot(fep168_r, fep168_aligned_g) ** 2 - _matrix_dot(
         fep168_r, fep168_r
-    ) * dot(fep168_aligned_g, fep168_aligned_g)
-    fep168_aligned_nonzero = dot(fep168_aligned_g, fep168_aligned_g) != 0.0
+    ) * _matrix_dot(fep168_aligned_g, fep168_aligned_g)
+    fep168_aligned_nonzero = _matrix_dot(fep168_aligned_g, fep168_aligned_g) != 0.0
     fep168_remainder_g_gap = (
-        dot(fep168_r, fep168_r) * dot(remainder_g, remainder_g)
-        - dot(fep168_r, remainder_g) ** 2
+        _matrix_dot(fep168_r, fep168_r) * _matrix_dot(remainder_g, remainder_g)
+        - _matrix_dot(fep168_r, remainder_g) ** 2
     )
 
     return _GeometricSolenoidalData(
@@ -2191,6 +2203,281 @@ def _geometric_solenoidal() -> NumericalWitness:
     )
 
 
+def _core_vfe_gap() -> NumericalWitness:
+    posterior = (0.4, 0.6)
+    surprisal = 0.7
+    rows = []
+    for mass in (0.1, 0.4, 0.7, 0.9):
+        gap = extended_kl((mass, 1.0 - mass), posterior)
+        rows.append(WitnessRow((mass, surprisal, gap, surprisal + gap)))
+    singular = math.isinf(extended_kl((1.0, 0.0), (0.0, 1.0)))
+    return NumericalWitness(
+        id="core-vfe-native-gap",
+        family="core-free-energy",
+        title="Finite supplied-posterior VFE gap",
+        theorem_mirrors=(
+            "fep_fep002.FEP002.fep002_vfe_ge_surprisal",
+            "fep_fep002.FEP002.fep002_vfe_exact_at_posterior",
+        ),
+        invariant="For a supplied finite posterior, VFE = surprisal + native KL.",
+        parameters=(("posterior_true", posterior[0]), ("surprisal", surprisal)),
+        columns=_columns(
+            ("candidate_true", "Candidate mass"),
+            ("surprisal", "Surprisal"),
+            ("gap", "KL gap (nats)"),
+            ("vfe", "VFE (nats)"),
+        ),
+        rows=tuple(rows),
+        checks=(
+            NumericalCheck(
+                "vfe-bound",
+                "ge",
+                min(cast(float, row.values[2]) for row in rows),
+                0.0,
+                1e-12,
+            ),
+            NumericalCheck(
+                "posterior-exactness",
+                "eq",
+                extended_kl(posterior, posterior),
+                0.0,
+                1e-12,
+            ),
+            NumericalCheck(
+                "singular-native-boundary", "predicate", singular, True, 0.0
+            ),
+        ),
+        boundary_behavior="Positive candidate mass at zero reference remains infinite native KL; infinity is only a boundary predicate, never a finite plotted value. The posterior is supplied, not inferred from a generative model.",
+        boundary_observed=singular,
+        plot=WitnessPlot("line", "candidate_true", ("gap", "vfe")),
+        formal_alignment="theorem_instance",
+    )
+
+
+def _core_efe_truncation() -> NumericalWitness:
+    cost = 0.6
+    information = (0.0, 0.2, 0.6, 0.9)
+    values = tuple(max(0.0, cost - value) for value in information)
+    return NumericalWitness(
+        id="core-efe-truncated-convention",
+        family="core-active-inference",
+        title="Supplied pragmatic-cost minus information-value convention",
+        theorem_mirrors=(
+            "fep_fep021.FEP021.fep021_efe_epistemic_balance",
+            "fep_fep021.FEP021.fep021_efe_eq_zero_iff",
+            "fep_fep021.FEP021.fep021_efe_antitone_epistemic",
+        ),
+        invariant="Nonnegative finite inputs use max(0, pragmatic cost - information value).",
+        parameters=(("pragmatic_cost", cost),),
+        columns=_columns(
+            ("information_value", "Supplied information value"),
+            ("efe", "Truncated EFE convention"),
+        ),
+        rows=tuple(
+            WitnessRow((value, efe))
+            for value, efe in zip(information, values, strict=True)
+        ),
+        checks=(
+            NumericalCheck("nonnegative-convention", "ge", min(values), 0.0, 0.0),
+            NumericalCheck(
+                "epistemic-balance", "eq", values[1] + information[1], cost, 1e-12
+            ),
+            NumericalCheck(
+                "antitone-value",
+                "predicate",
+                all(a >= b for a, b in pairwise(values)),
+                True,
+                0.0,
+            ),
+            NumericalCheck("covering-value-zero", "eq", values[-1], 0.0, 0.0),
+        ),
+        boundary_behavior="Information value above cost truncates to zero: adding it back no longer reconstructs cost. This mirrors the actual scalar ENNReal convention; no mutual-information or generative EFE decomposition is inferred.",
+        boundary_observed=values[-1] == 0.0 and values[-1] + information[-1] != cost,
+        plot=WitnessPlot("line", "information_value", ("efe",)),
+        formal_alignment="theorem_instance",
+    )
+
+
+def _core_bernoulli_bayes() -> NumericalWitness:
+    likelihood = (0.9, 0.1)
+    rows = []
+    residuals = []
+    for mass in (0.2, 0.5, 0.8):
+        prior = (mass, 1.0 - mass)
+        evidence = finite_expectation(prior, likelihood)
+        posterior = prior[0] * likelihood[0] / evidence
+        residual = abs(posterior * evidence - prior[0] * likelihood[0])
+        residuals.append(residual)
+        rows.append(WitnessRow((mass, evidence, posterior, residual)))
+    zero_evidence = finite_expectation((0.4, 0.6), (0.0, 0.0))
+    return NumericalWitness(
+        id="core-bernoulli-bayes-reconstruction",
+        family="core-bayesian-mechanics",
+        title="Finite Bernoulli posterior reconstruction",
+        theorem_mirrors=(
+            "fep_fep045.FEP045.fep045_bernoulli_posterior_closed",
+            "fep_fep045.FEP045.fep045_posterior_mass_one",
+        ),
+        invariant="At nonzero evidence the posterior atom equals prior times likelihood divided by evidence.",
+        parameters=(
+            ("likelihood_true", likelihood[0]),
+            ("likelihood_false", likelihood[1]),
+        ),
+        columns=_columns(
+            ("prior_true", "Prior true mass"),
+            ("evidence", "Evidence"),
+            ("posterior_true", "Posterior true mass"),
+            ("residual", "Reconstruction residual"),
+        ),
+        rows=tuple(rows),
+        checks=(
+            NumericalCheck("reconstruction", "eq", max(residuals), 0.0, 1e-12),
+            NumericalCheck(
+                "posterior-probability",
+                "predicate",
+                all(0 < cast(float, row.values[2]) < 1 for row in rows),
+                True,
+                0.0,
+            ),
+            NumericalCheck(
+                "positive-evidence",
+                "predicate",
+                all(cast(float, row.values[1]) > 0 for row in rows),
+                True,
+                0.0,
+            ),
+            NumericalCheck("zero-evidence-exclusion", "eq", zero_evidence, 0.0, 0.0),
+        ),
+        boundary_behavior="All-zero likelihood gives zero evidence, so no posterior division is attempted. A normalized likelihood-only value 0.9 differs from the first actual posterior and is not silently treated as Bayes with a nonuniform prior.",
+        boundary_observed=zero_evidence == 0.0
+        and abs(cast(float, rows[0].values[2]) - 0.9) > 0.1,
+        plot=WitnessPlot("line", "prior_true", ("posterior_true",)),
+        formal_alignment="theorem_instance",
+    )
+
+
+def _core_bernoulli_fisher() -> NumericalWitness:
+    rows = []
+    score_residuals = []
+    information_residuals = []
+    for parameter in (0.1, 0.25, 0.5, 0.75, 0.9):
+        law = (1.0 - parameter, parameter)
+        scores = (-1.0 / (1.0 - parameter), 1.0 / parameter)
+        mean_score = finite_expectation(law, scores)
+        information = finite_expectation(law, tuple(value * value for value in scores))
+        expected = bernoulli_fisher(parameter)
+        score_residuals.append(abs(mean_score))
+        information_residuals.append(abs(information - expected))
+        rows.append(WitnessRow((parameter, information, information * 0.3 * 0.3)))
+    rejected = 0
+    for endpoint in (0.0, 1.0):
+        try:
+            bernoulli_fisher(endpoint)
+        except BoundaryProbeError:
+            rejected += 1
+    return NumericalWitness(
+        id="core-bernoulli-fisher-interior",
+        family="core-information-geometry",
+        title="Interior Bernoulli expected-score Fisher metric",
+        theorem_mirrors=(
+            "fep_fep038.FEP038.fep038_expectedScore_zero",
+            "fep_fep038.FEP038.fep038_fisherInformation_eq",
+            "fep_fep038.FEP038.fep038_fisherMetric_pos",
+        ),
+        invariant="For 0 < p < 1, expected score is 0 and Fisher information is 1/(p(1-p)); a nonzero tangent has positive metric.",
+        parameters=(("tangent", 0.3),),
+        columns=_columns(
+            ("parameter", "Bernoulli parameter"),
+            ("information", "Fisher information"),
+            ("metric", "Tangent self metric"),
+        ),
+        rows=tuple(rows),
+        checks=(
+            NumericalCheck("mean-score-zero", "eq", max(score_residuals), 0.0, 1e-12),
+            NumericalCheck(
+                "expected-score-square", "eq", max(information_residuals), 0.0, 1e-12
+            ),
+            NumericalCheck(
+                "positive-metric",
+                "predicate",
+                all(cast(float, row.values[2]) > 0 for row in rows),
+                True,
+                0.0,
+            ),
+            NumericalCheck("endpoint-refusal", "eq", rejected, 2, 0.0),
+        ),
+        boundary_behavior="Both singular endpoints are refused by the existing Bernoulli Fisher helper. No zero/infinite endpoint metric or general multidimensional statistical Fisher claim is plotted.",
+        boundary_observed=rejected == 2,
+        plot=WitnessPlot("line", "parameter", ("information", "metric")),
+        formal_alignment="theorem_instance",
+    )
+
+
+def _core_binary_entropy_maximum() -> NumericalWitness:
+    rows = []
+    for parameter in (0.1, 0.25, 0.5, 0.75, 0.9):
+        entropy = -sum(
+            value * math.log(value) for value in (parameter, 1.0 - parameter)
+        )
+        rows.append(WitnessRow((parameter, entropy, math.log(2.0) - entropy)))
+    invalid_law_refused = False
+    try:
+        finite_expectation((-0.1, 1.1), (0.0, 0.0))
+    except BoundaryProbeError:
+        invalid_law_refused = True
+    return NumericalWitness(
+        id="core-binary-entropy-maximum",
+        family="core-thermodynamics",
+        title="Binary Shannon entropy maximum in nats",
+        theorem_mirrors=(
+            "fep_fep030.FEP030.fep030_binaryEntropy_max",
+            "fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff",
+        ),
+        invariant="For sampled probability parameters, entropy is bounded by log(2) nats and peaks at one half.",
+        parameters=(("log_cardinality", math.log(2.0)),),
+        columns=_columns(
+            ("parameter", "Probability parameter"),
+            ("entropy", "Binary entropy (nats)"),
+            ("gap", "Gap to log(2) (nats)"),
+        ),
+        rows=tuple(rows),
+        checks=(
+            NumericalCheck(
+                "entropy-bound",
+                "ge",
+                min(cast(float, row.values[2]) for row in rows),
+                0.0,
+                1e-12,
+            ),
+            NumericalCheck(
+                "fair-attainment", "eq", cast(float, rows[2].values[2]), 0.0, 1e-12
+            ),
+            NumericalCheck(
+                "offuniform-strict",
+                "predicate",
+                all(
+                    cast(float, row.values[2]) > 0
+                    for index, row in enumerate(rows)
+                    if index != 2
+                ),
+                True,
+                0.0,
+            ),
+            NumericalCheck(
+                "invalid-probability-refusal",
+                "predicate",
+                invalid_law_refused,
+                True,
+                0.0,
+            ),
+        ),
+        boundary_behavior="Negative mass is refused by the existing finite-law numerical helper. This is the probability-domain Bernoulli theorem, not general constrained MaxEnt or Real.binEntropy's total extension outside [0, 1].",
+        boundary_observed=invalid_law_refused and cast(float, rows[0].values[2]) > 0,
+        plot=WitnessPlot("line", "parameter", ("entropy", "gap")),
+        formal_alignment="theorem_instance",
+    )
+
+
 def evaluate_numerical_witnesses(
     project_root: Path | None = None,
     *,
@@ -2224,18 +2511,19 @@ def evaluate_numerical_witnesses(
         _geometric_solenoidal(),
         scalar_terminal_witness(),
         fin4_blanket_witness(),
+        _core_vfe_gap(),
+        _core_efe_truncation(),
+        _core_bernoulli_bayes(),
+        _core_bernoulli_fisher(),
+        _core_binary_entropy_maximum(),
     )
     identifiers = tuple(witness.id for witness in witnesses)
     families = tuple(witness.family for witness in witnesses)
     if len(identifiers) != len(set(identifiers)):
         raise ValueError("numerical witness IDs must be unique")
     if len(families) != len(set(families)):
-        raise ValueError("every expanded formal family must own exactly one witness")
-    expected_families = frozenset(
-        entry.family
-        for entry in BODY_MODULE_MANIFEST
-        if any(int(topic_id.removeprefix("fep-")) > 50 for topic_id in entry.bodies)
-    )
+        raise ValueError("every formal family must own exactly one witness")
+    expected_families = frozenset(entry.family for entry in BODY_MODULE_MANIFEST)
     actual_families = frozenset(w.family for w in witnesses if w.scope == "catalogue")
     if actual_families != expected_families:
         raise ValueError(

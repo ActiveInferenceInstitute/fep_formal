@@ -56,7 +56,9 @@ the eight receipt-bound copies and their individual retention decisions.
    filename-only bijection and explicit current software membership; its
    production-capture boundary is recorded below.
 4. F01 and S01 review exact primary statements before the dependent proof
-   packages. F02/F03/F04/F09/F10/F11/F13/F14 cover thermodynamics, Boolean
+   packages. F01 has [all168 static semantic reviews](spikes/proxy-review-20261019/README.md)
+   with exact metadata corrections and preserved dispositions. Current-source
+   integration and publication acceptance remain separate. F02/F03/F04/F09/F10/F11/F13/F14 cover thermodynamics, Boolean
    distortion, Gaussian blankets, MaxEnt, Helmholtz, tree messages, count-level
    conjugacy and stationary currents. S02/S03/S04 govern actual relation
    witnesses; F07 follows F03 through its separate strong-duality library gate.

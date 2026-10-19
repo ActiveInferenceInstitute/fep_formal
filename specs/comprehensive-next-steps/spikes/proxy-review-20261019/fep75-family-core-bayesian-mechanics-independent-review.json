@@ -1,0 +1,1597 @@
+{
+  "schema_version": 1,
+  "decision": "13row_family_semantic_audit_complete_retain_narrow_dispositions_with_prose_corrections",
+  "scope": "core-bayesian-mechanicsonly13rows;notall168Issue75acceptance",
+  "source_head": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "row_ids": [
+    "fep-005",
+    "fep-009",
+    "fep-010",
+    "fep-017",
+    "fep-019",
+    "fep-020",
+    "fep-022",
+    "fep-027",
+    "fep-036",
+    "fep-040",
+    "fep-042",
+    "fep-045",
+    "fep-046"
+  ],
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py": "0e200577408bfd817161b4622c11bd156f2d7516414eed9e8f99390171f2d88a",
+    "lean/FepSketches/families/core_bayesian_mechanics.lean": "75118623e304a2c39dad4ad01e55d4d173a67da80a6f866f7c234c42f6599180",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "src/fep_lean/formal/compositions/core.lean": "3461b456ffd598281f0c7881bd06e121db038b9f3753f99549d6dba90459326f",
+    "src/fep_lean/formal/empirical_risk.lean": "6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1",
+    "src/fep_lean/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665"
+  },
+  "pinned_library_sha256": {
+    "Mathlib/Probability/Kernel/Posterior.lean": "bb883efb79b9d8e27576b95c571dd0d3009741c4707b3694e613b20664f86309",
+    "Mathlib/Probability/Kernel/Invariance.lean": "7b93a347f9fde6e9f5a835c5051175caaf531f11be1b0985fbe4c36980407221",
+    "Mathlib/Probability/Distributions/Gaussian/Real.lean": "9edebfff169cb577b6dab1a7912f2e8fec0e70a8dac39db105263e1a0f31b383"
+  },
+  "rows": [
+    {
+      "id": "fep-005",
+      "title": "Four-Block State Partition",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep005_existsUnique_block",
+      "supporting": [
+        "fep005_disjoint",
+        "fep005_total_cover",
+        "fep005_mem_iff"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep005_existsUnique_block": "theorem fep005_existsUnique_block (assign : Fin 20 \u2192 BlkPart) (s : Fin 20) :\n    \u2203! k : BlkPart, s \u2208 fep005_partitionCover assign k",
+        "fep005_disjoint": "theorem fep005_disjoint (assign : Fin 20 \u2192 BlkPart) (i j : BlkPart) (hij : i \u2260 j) :\n    Disjoint (fep005_partitionCover assign i) (fep005_partitionCover assign j)",
+        "fep005_total_cover": "theorem fep005_total_cover (assign : Fin 20 \u2192 BlkPart) :\n    \u2200 s : Fin 20, \u2203 k : BlkPart, s \u2208 fep005_partitionCover assign k",
+        "fep005_mem_iff": "theorem fep005_mem_iff (assign : Fin 20 \u2192 BlkPart) (s : Fin 20) (k : BlkPart) :\n    s \u2208 fep005_partitionCover assign k \u2194 assign s = k"
+      },
+      "body_sha256": "746b2db5f9e11f4b38445a085d58a4d756e97e1daa3f03b952729d61cf99ebf4",
+      "maturity_record": {
+        "id": "fep-005",
+        "primary_theorem": "fep005_existsUnique_block",
+        "supporting_theorems": [
+          "fep005_disjoint",
+          "fep005_total_cover",
+          "fep005_mem_iff"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A function-valued assignment partitions a 20-state finite space into four pairwise-disjoint blocks, and every state belongs to exactly one block.",
+        "assumption_review": "Unconditional for any assignment Fin 20 \u2192 Fin 4. This establishes an exact finite partition only; it does not infer conditional independence or identify any block as a learned Markov blanket.",
+        "non_vacuity": "Constant and nonconstant assignments both instantiate the partition, while unique membership rules out overlap for every state.",
+        "acceptance_probe": "native Lean compile of fep005_disjoint, fep005_mem_iff, and fep005_existsUnique_block, plus a concrete nonconstant assignment witness.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary uniqueassignmentfibre membership; supporting disjoint/cover/membershipiff exact forarbitraryFin20\u2192Fin4.",
+      "premise_scope_boundary": "No conditionalindependence,dynamicalblanket,nonnullblocks orphysicalinternal/sensory/active/external identification.",
+      "positive_adverse_unexecuted_specs": "assignstate modulo4nonemptyblocks; constantassignment3emptyblocks stillvalidpartition; overlaprequiresnonfunctionalsetassignmentoutsidecontract.",
+      "nearest_topic_distinction": "009conditionalindependence and079finiteCMIfactorizationnotimpliedby005partition;039aggregationisstaticfibreidentity.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-005",
+          "target": "fep-009",
+          "kind": "conceptual",
+          "rationale": "The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge."
+        },
+        {
+          "source": "fep-039",
+          "target": "fep-005",
+          "kind": "formal",
+          "rationale": "The composed theorem aggregates state energies over fep-005's four unique partition fibres and proves that fep-039's local-energy sum conserves total state energy.",
+          "witness": "FEPComposed.fep039_partitionEnergy_conservation"
+        }
+      ]
+    },
+    {
+      "id": "fep-009",
+      "title": "Conditional Independence Laws",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep009_condIndep_symm",
+      "supporting": [
+        "fep009_condIndep_bot_right",
+        "fep009_joint_product_nonneg",
+        "fep009_likelihood_mono",
+        "fep009_map_nonneg",
+        "fep009_empty_zero",
+        "fep009_union_le"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep009_condIndep_symm": "theorem fep009_condIndep_symm\n    (m' m\u2081 m\u2082 : MeasurableSpace \u03a9) (hm' : m' \u2264 m\u03a9)\n    (\u03bc : @Measure \u03a9 m\u03a9) [IsFiniteMeasure \u03bc]\n    (h : CondIndep m' m\u2081 m\u2082 hm' \u03bc) :\n    CondIndep m' m\u2082 m\u2081 hm' \u03bc",
+        "fep009_condIndep_bot_right": "theorem fep009_condIndep_bot_right\n    (m' m\u2081 : MeasurableSpace \u03a9) (hm' : m' \u2264 m\u03a9)\n    (\u03bc : @Measure \u03a9 m\u03a9) [IsFiniteMeasure \u03bc] :\n    CondIndep m' m\u2081 \u22a5 hm' \u03bc",
+        "fep009_joint_product_nonneg": "theorem fep009_joint_product_nonneg (\u03bc : Measure \u03b1) (\u03bd : Measure \u03b2) (s : Set \u03b1) (t : Set \u03b2) :\n    0 \u2264 \u03bc s * \u03bd t",
+        "fep009_likelihood_mono": "theorem fep009_likelihood_mono {\u03bc : Measure \u03b1} {s t : Set \u03b1} (h : s \u2286 t) :\n    \u03bc s \u2264 \u03bc t",
+        "fep009_map_nonneg": "theorem fep009_map_nonneg (\u03bc : Measure \u03b1) {f : \u03b1 \u2192 \u03b2} (_hf : Measurable f) (s : Set \u03b2) :\n    0 \u2264 \u03bc.map f s",
+        "fep009_empty_zero": "theorem fep009_empty_zero (\u03bc : Measure \u03b1) : \u03bc \u2205 = 0",
+        "fep009_union_le": "theorem fep009_union_le (\u03bc : Measure \u03b1) (s t : Set \u03b1) :\n    \u03bc (s \u222a t) \u2264 \u03bc s + \u03bc t"
+      },
+      "body_sha256": "64378d0569fc90460fd6a81062c35374ff5e72a5f80866dde827fd682ac1e393",
+      "maturity_record": {
+        "id": "fep-009",
+        "primary_theorem": "fep009_condIndep_symm",
+        "supporting_theorems": [
+          "fep009_condIndep_bot_right",
+          "fep009_joint_product_nonneg",
+          "fep009_likelihood_mono",
+          "fep009_map_nonneg",
+          "fep009_empty_zero",
+          "fep009_union_le"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Conditional independence of two \u03c3-algebras given a third is symmetric under Mathlib's conditional-expectation-kernel definition.",
+        "assumption_review": "Conditional on a standard Borel measurable space, a finite measure, a conditioning \u03c3-algebra below the ambient one, and the stated conditional-independence relation. The theorem is a law of conditional independence, not a learned Markov-blanket factorization.",
+        "non_vacuity": "fep009_condIndep_bot_right proves that every \u03c3-algebra is conditionally independent of the trivial \u03c3-algebra, so the relation is inhabited.",
+        "acceptance_probe": "native Lean compile of fep009_condIndep_symm and fep009_condIndep_bot_right.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary CondIndep symmetry preservesgivenrelation underStandardBorel/finite\u03bc/conditioning\u2264ambient. Trivial\u03c3algebra witness establishesinhabitation,notnontrivialblanket. Supportingmeasuremonotonicity/unionbound/nonnegativeproducts arebasicmeasurefacts.",
+      "premise_scope_boundary": "joint_product_nonneg provesonly0<=\u03bcs*\u03bdt,notjointfactorizationorindependence; names/docstringmustnotpromoteit.",
+      "positive_adverse_unexecuted_specs": "IndependentBoolcoordinatesunderproductlaw caninstantiateCI; trivial\u03c3algebracontrol; same nontrivialBernoullivariabletwice notindependentunconditionally; \u03bcs\u03bdt nonnegativeevenforcorrelatedjoint.",
+      "nearest_topic_distinction": "005finitepartitionvs009conditionalindependence;079/081/083/085actualfactorization/invariancehaveadditionalcontracts,notdeducedfromproductnonnegativity.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-079",
+          "nearest_topics": [
+            "fep-009",
+            "fep-014"
+          ],
+          "new_invariant": "Full-support blanket rows factorize exactly when conditional mutual information vanishes.",
+          "carrier_delta": "Adds a finite blanket law and a family of internal\u2013external conditional joint laws with visible null-row scope.",
+          "required_bridge": "FEPComposed.fep079_blanket_cmi_refines_fep009"
+        },
+        {
+          "id": "fep-081",
+          "nearest_topics": [
+            "fep-009",
+            "fep-079"
+          ],
+          "new_invariant": "Rowwise blanket factorization survives an arbitrarily correlated joint blanket law.",
+          "carrier_delta": "Couples two subsystem blanket coordinates without imposing a product law and retains paired conditional product rows.",
+          "required_bridge": "FEPComposed.fep081_coupled_blanket_composes_fep009"
+        },
+        {
+          "id": "fep-083",
+          "nearest_topics": [
+            "fep-009",
+            "fep-082"
+          ],
+          "new_invariant": "Root intervention preserves a named non-descendant while changing a descendant in an exact witness.",
+          "carrier_delta": "Adds an explicitly ordered four-node causal carrier with observational and interventional joint laws.",
+          "required_bridge": "FEPComposed.fep083_intervention_invariance_refines_fep009"
+        },
+        {
+          "id": "fep-085",
+          "nearest_topics": [
+            "fep-009",
+            "fep-014",
+            "fep-084"
+          ],
+          "new_invariant": "Ordered factorization implies a supported local Markov product and zero finite mutual information.",
+          "carrier_delta": "Adds positive mediator conditioning on the maintained four-node order without claiming general d-separation.",
+          "required_bridge": "FEPComposed.fep085_local_markov_refines_fep009"
+        },
+        {
+          "id": "fep-139",
+          "nearest_topics": [
+            "fep-009",
+            "fep-079"
+          ],
+          "new_invariant": "The embedded static blanket joint satisfies Mathlib CondIndepFun for the actual internal and external coordinates conditioned on the blanket coordinate.",
+          "carrier_delta": "Identifies finite conditional rows with native conditional distributions under discrete standard-Borel hypotheses and closes the prior sigma-algebra transfer gap.",
+          "required_bridge": "FEPComposed.fep139_nativeCondIndep_connects_fep009_fep079"
+        },
+        {
+          "id": "fep-140",
+          "nearest_topics": [
+            "fep-009"
+          ],
+          "new_invariant": "Measurable images of internal and external coordinates preserve the proved native blanket conditional independence.",
+          "carrier_delta": "Applies Mathlib's CondIndepFun composition law to arbitrary measurable endpoint coarsenings while keeping the conditioning coordinate fixed.",
+          "required_bridge": "FEPComposed.fep140_measurableCoarsening_extends_fep009"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-005",
+          "target": "fep-009",
+          "kind": "conceptual",
+          "rationale": "The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge."
+        },
+        {
+          "source": "fep-079",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "Finite blanket factorization is characterized by zero conditional mutual information, while fep-009 supplies the nonnegative product-mass primitive. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_joint_product_nonneg` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
+          "witness": "FEPComposed.fep079_blanket_cmi_refines_fep009"
+        },
+        {
+          "source": "fep-081",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "Coupled blankets retain zero conditional mutual information within each conditional row, together with fep-009's product-mass nonnegativity. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_joint_product_nonneg` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
+          "witness": "FEPComposed.fep081_coupled_blanket_composes_fep009"
+        },
+        {
+          "source": "fep-083",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "Ordered intervention preserves the named non-descendant marginal; fep-009 simultaneously records monotonicity for any nested measurable events. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_likelihood_mono` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
+          "witness": "FEPComposed.fep083_intervention_invariance_refines_fep009"
+        },
+        {
+          "source": "fep-085",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "The ordered finite carrier yields zero local mutual information at positive evidence, while fep-009 supplies an inhabited native conditional-independence boundary against the trivial sigma algebra. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-009 through its reviewed supporting theorem `fep_fep009.FEP009.fep009_condIndep_bot_right` rather than the primary `fep_fep009.FEP009.fep009_condIndep_symm`; the row stands unchanged.",
+          "witness": "FEPComposed.fep085_local_markov_refines_fep009"
+        },
+        {
+          "source": "fep-139",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "The embedded blanket joint satisfies Mathlib CondIndepFun for its actual coordinates, and fep-009 supplies the native symmetry law for that conditional-independence predicate.",
+          "witness": "FEPComposed.fep139_nativeCondIndep_connects_fep009_fep079"
+        },
+        {
+          "source": "fep-140",
+          "target": "fep-009",
+          "kind": "formal_pairing",
+          "rationale": "Measurable endpoint coarsenings preserve native blanket CondIndepFun, alongside fep-009's general conditional-independence symmetry theorem.",
+          "witness": "FEPComposed.fep140_measurableCoarsening_extends_fep009"
+        }
+      ]
+    },
+    {
+      "id": "fep-010",
+      "title": "Detailed Balance Implies Invariance",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep010_reversible_invariant",
+      "supporting": [
+        "fep010_identity_reversible",
+        "fep010_identity_invariant",
+        "fep010_invariant_def",
+        "fep010_invariant_comp"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep010_reversible_invariant": "theorem fep010_reversible_invariant (\u03ba : Kernel \u03b1 \u03b1) (\u03c0 : Measure \u03b1)\n    [IsMarkovKernel \u03ba] (hrev : Kernel.IsReversible \u03ba \u03c0) :\n    Kernel.Invariant \u03ba \u03c0",
+        "fep010_identity_reversible": "theorem fep010_identity_reversible (\u03c0 : Measure \u03b1) :\n    Kernel.IsReversible (Kernel.id : Kernel \u03b1 \u03b1) \u03c0",
+        "fep010_identity_invariant": "theorem fep010_identity_invariant (\u03c0 : Measure \u03b1) :\n    Kernel.Invariant (Kernel.id : Kernel \u03b1 \u03b1) \u03c0",
+        "fep010_invariant_def": "theorem fep010_invariant_def (\u03ba : Kernel \u03b1 \u03b1) (\u03c0 : Measure \u03b1)\n    (hinv : Kernel.Invariant \u03ba \u03c0) :\n    \u03c0.bind \u03ba = \u03c0",
+        "fep010_invariant_comp": "theorem fep010_invariant_comp (\u03ba \u03b7 : Kernel \u03b1 \u03b1) (\u03c0 : Measure \u03b1)\n    (h\u03ba : Kernel.Invariant \u03ba \u03c0) (h\u03b7 : Kernel.Invariant \u03b7 \u03c0) :\n    Kernel.Invariant (\u03ba \u2218\u2096 \u03b7) \u03c0"
+      },
+      "body_sha256": "83a256f871bca849bef9c01effef893bc7f375b2a4fa66801dfae9039d3d7422",
+      "maturity_record": {
+        "id": "fep-010",
+        "primary_theorem": "fep010_reversible_invariant",
+        "supporting_theorems": [
+          "fep010_identity_reversible",
+          "fep010_identity_invariant",
+          "fep010_invariant_def",
+          "fep010_invariant_comp"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A Markov kernel satisfying measure-theoretic detailed balance leaves its reference measure invariant.",
+        "assumption_review": "Conditional on Mathlib's IsMarkovKernel instance and IsReversible flow equality over all measurable set pairs. This proves stationarity, not a path-space fluctuation theorem or convergence to equilibrium.",
+        "non_vacuity": "fep010_identity_reversible and fep010_identity_invariant provide a concrete reversible Markov-kernel witness for every measure.",
+        "acceptance_probe": "native Lean compile of reversible-implies-invariant plus the identity-kernel reversibility and invariance witnesses.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary nativeMarkovreversibility\u21d2invariance; identityreversibleandinvariantforanymeasure; commoninvariantmeasurepreservedbykernelcomposition.",
+      "premise_scope_boundary": "No uniqueness,ergodicity,relaxationrate,pathfluctuationlaw orconverseofreversibility. Compositioninvariantdoesnotclaimcomposedkernelreversible.",
+      "positive_adverse_unexecuted_specs": "FairBooldeterministicflip reversibleandstationaryyetperiod2doesnotconverge; identityhasmanyinvariantlaws; directed3cycleuniforminvariantbutnotreversible.",
+      "nearest_topic_distinction": "020explicitmixingBoolchain;paththermodynamicreversal/fluctuationstatementsandAoNESSnonequilibriumcurrentsdistinct.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-093",
+          "nearest_topics": [
+            "fep-010",
+            "fep-025"
+          ],
+          "new_invariant": "Supported forward mass is reconstructed by a reverse-aligned path law and involutive path ratio.",
+          "carrier_delta": "Lifts statewise reversibility and currents to normalized finite laws on complete paths with an explicit reversal map.",
+          "required_bridge": "FEPComposed.fep093_path_ratio_extends_fep010_reversal"
+        },
+        {
+          "id": "fep-095",
+          "nearest_topics": [
+            "fep-010",
+            "fep-049"
+          ],
+          "new_invariant": "Reverse path mass times exponential entropy production reconstructs forward mass and reverses sign under exchange.",
+          "carrier_delta": "Adds full-support aligned path laws plus an involution that explicitly exchanges forward and reverse probabilities.",
+          "required_bridge": "FEPComposed.fep095_fluctuation_symmetry_extends_fep010_reversibility"
+        },
+        {
+          "id": "fep-099",
+          "nearest_topics": [
+            "fep-010",
+            "fep-014",
+            "fep-049"
+          ],
+          "new_invariant": "One strictly positive reversible Markov step dissipates KL to stationarity with equality and irreversible witnesses.",
+          "carrier_delta": "Combines full-support finite-channel data processing, detailed-balance stationarity, and explicit path production.",
+          "required_bridge": "FEPComposed.fep099_reversible_kl_dissipation_links_fep010_fep014"
+        },
+        {
+          "id": "fep-153",
+          "nearest_topics": [
+            "fep-010",
+            "fep-098"
+          ],
+          "new_invariant": "The exact two-state stationary law is invariant at every nonnegative time and satisfies entrywise detailed balance.",
+          "carrier_delta": "Extends discrete reversible-kernel laws to an explicit continuous-time semigroup with unequal positive rates.",
+          "required_bridge": "FEPComposed.fep153_continuousDetailedBalance_extends_fep010"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-093",
+          "target": "fep-010",
+          "kind": "formal_pairing",
+          "rationale": "The supported forward/reverse ratio reconstructs path mass, while the identity kernel supplies the original catalogue's concrete reversibility witness on an arbitrary measure carrier.",
+          "witness": "FEPComposed.fep093_path_ratio_extends_fep010_reversal"
+        },
+        {
+          "source": "fep-095",
+          "target": "fep-010",
+          "kind": "formal_pairing",
+          "rationale": "Detailed finite fluctuation symmetry and native kernel reversibility each recover their corresponding forward or invariant law.",
+          "witness": "FEPComposed.fep095_fluctuation_symmetry_extends_fep010_reversibility"
+        },
+        {
+          "source": "fep-153",
+          "target": "fep-010",
+          "kind": "formal_pairing",
+          "rationale": "The nonuniform stationary law satisfies exact continuous-time detailed balance, alongside the original native reversible-kernel stationarity theorem.",
+          "witness": "FEPComposed.fep153_continuousDetailedBalance_extends_fep010"
+        }
+      ]
+    },
+    {
+      "id": "fep-017",
+      "title": "Posterior Kernel Reconstruction",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep017_posterior_joint_reconstruction",
+      "supporting": [
+        "fep017_posterior_mass_one",
+        "fep017_posterior_recovers_prior",
+        "fep017_posterior_bayes_density"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep017_posterior_joint_reconstruction": "theorem fep017_posterior_joint_reconstruction\n    (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9)\n    [StandardBorelSpace \u03a9] [Nonempty \u03a9]\n    [IsFiniteMeasure \u03bc] [IsFiniteKernel \u03ba] :\n    (\u03ba \u2218\u2098 \u03bc) \u2297\u2098 fep017_posterior \u03ba \u03bc = (\u03bc \u2297\u2098 \u03ba).map Prod.swap",
+        "fep017_posterior_mass_one": "theorem fep017_posterior_mass_one\n    (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9)\n    [StandardBorelSpace \u03a9] [Nonempty \u03a9]\n    [IsFiniteMeasure \u03bc] [IsFiniteKernel \u03ba]\n    (x : \ud835\udce7) :\n    fep017_posterior \u03ba \u03bc x Set.univ = 1",
+        "fep017_posterior_recovers_prior": "theorem fep017_posterior_recovers_prior\n    (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9)\n    [StandardBorelSpace \u03a9] [Nonempty \u03a9]\n    [IsFiniteMeasure \u03bc] [IsMarkovKernel \u03ba] :\n    fep017_posterior \u03ba \u03bc \u2218\u2098 \u03ba \u2218\u2098 \u03bc = \u03bc",
+        "fep017_posterior_bayes_density": "theorem fep017_posterior_bayes_density\n    [Countable \u03a9] [StandardBorelSpace \u03a9] [Nonempty \u03a9]\n    [StandardBorelSpace \ud835\udce7] [Nonempty \ud835\udce7]\n    (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9) [IsFiniteMeasure \u03bc] [IsFiniteKernel \u03ba] :\n    \u2200\u1d50 x \u2202(\u03ba \u2218\u2098 \u03bc),\n      fep017_posterior \u03ba \u03bc x =\n        \u03bc.withDensity (fun \u03c9 \u21a6 (\u03ba \u03c9).rnDeriv (\u03ba \u2218\u2098 \u03bc) x)"
+      },
+      "body_sha256": "72bcf690afc832b46642161d2e750b001aaeca7a965a91d9c12dd37e13378677",
+      "maturity_record": {
+        "id": "fep-017",
+        "primary_theorem": "fep017_posterior_joint_reconstruction",
+        "supporting_theorems": [
+          "fep017_posterior_mass_one",
+          "fep017_posterior_recovers_prior",
+          "fep017_posterior_bayes_density"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Mathlib's posterior is a Markov kernel whose composition with the predictive law reconstructs the swapped prior-likelihood joint law; for a Markov likelihood it also recovers the prior.",
+        "assumption_review": "Conditional on standard-Borel and nonempty latent structure plus finite prior and likelihood kernel. The Radon--Nikodym Bayes formula additionally uses countability of the latent space and standard-Borel observation structure. This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors.",
+        "non_vacuity": "Every posterior fibre has mass one, and the identity Markov kernel supplies a concrete prior-recovery witness; non-deterministic finite kernels exercise a nontrivial reconstructed joint law.",
+        "acceptance_probe": "native Lean compile of fep017_posterior_mass_one, fep017_posterior_joint_reconstruction, fep017_posterior_recovers_prior, and fep017_posterior_bayes_density.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary posteriorjointreconstruction withnativefinitekernels; posteriorMarkovmassoneeveryfibre; priorrecoveryMarkovlikelihood; densityformulaAEPredictive withCountablelatent plusStandardBorelnonemptyobservation.",
+      "premise_scope_boundary": "Pointwisefiber-normalizationdoesnotuniquelydetermineposterioratnullobservation. GeneralBayesRNformulaisaeandversiondependent; noapproximate/learnedposteriorclaim.",
+      "positive_adverse_unexecuted_specs": "Boolpriorwithnoisypositivekernel giveschangedposterior; deterministicobservationnulloutcomesarbitraryversion; nonMarkovlikelihoodpriorrecoveryunavailable.",
+      "nearest_topic_distinction": "034posterioraftertransitionexactdefinition;051RNACreconstructionand054Bayesinvolutiondistinctsupportclaims;045finiteBooleanratiorequirespositiveevidencebridge.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-051",
+          "nearest_topics": [
+            "fep-017"
+          ],
+          "new_invariant": "Radon\u2013Nikodym reconstruction is equivalent to absolute continuity.",
+          "carrier_delta": "Replaces finite posterior atoms with native measures and exposes the singular-component boundary.",
+          "required_bridge": "FEPComposed.fep051_rn_reconstruction_refines_fep017"
+        },
+        {
+          "id": "fep-052",
+          "nearest_topics": [
+            "fep-017",
+            "fep-034"
+          ],
+          "new_invariant": "Posterior kernels equal likelihood-ratio tilts for predictive-almost-every observation.",
+          "carrier_delta": "Adds native finite kernels, standard-Borel hypotheses, domination, and almost-everywhere equality.",
+          "required_bridge": "FEPComposed.fep052_posterior_tilt_is_fep017_posterior"
+        },
+        {
+          "id": "fep-053",
+          "nearest_topics": [
+            "fep-017"
+          ],
+          "new_invariant": "Bayesian inversion reconstructs the complete swapped joint measure and every supported finite atom.",
+          "carrier_delta": "Lifts posterior reconstruction from a selected update to native joint measures with a finite-law bridge.",
+          "required_bridge": "FEPComposed.fep053_joint_reconstruction_extends_fep017"
+        },
+        {
+          "id": "fep-054",
+          "nearest_topics": [
+            "fep-017"
+          ],
+          "new_invariant": "Double Bayesian inversion recovers a Markov likelihood prior-almost-everywhere.",
+          "carrier_delta": "Adds standard-Borel observation structure and version-sensitive almost-everywhere kernel equality.",
+          "required_bridge": "FEPComposed.fep054_involution_of_fep017_posterior"
+        },
+        {
+          "id": "fep-055",
+          "nearest_topics": [
+            "fep-017",
+            "fep-019"
+          ],
+          "new_invariant": "Inversion reverses two-kernel composition under the final predictive law.",
+          "carrier_delta": "Extends one-step posterior kernels to a parameter\u2013intermediate\u2013observation chain with a.e. composition.",
+          "required_bridge": "FEPComposed.fep055_composite_inversion_uses_fep019"
+        },
+        {
+          "id": "fep-056",
+          "nearest_topics": [
+            "fep-017"
+          ],
+          "new_invariant": "A standard-Borel conditional kernel reconstructs every finite joint measure.",
+          "carrier_delta": "Moves from an authored Bayes kernel to Mathlib disintegration with explicit finiteness and standard-Borel scope.",
+          "required_bridge": "FEPComposed.fep056_disintegration_supplies_fep017"
+        },
+        {
+          "id": "fep-117",
+          "nearest_topics": [
+            "fep-017",
+            "fep-053"
+          ],
+          "new_invariant": "Supported posterior odds equal prior odds times likelihood ratio and preserve zero prior support.",
+          "carrier_delta": "Extends posterior atom reconstruction to a favored/reference ratio with three explicit positive-denominator boundaries.",
+          "required_bridge": "FEPComposed.fep117_posterior_odds_extends_fep017_bayes"
+        },
+        {
+          "id": "fep-135",
+          "nearest_topics": [
+            "fep-017",
+            "fep-027"
+          ],
+          "new_invariant": "Weighted Dirac embedding preserves every finite-law singleton mass and normalization as a native Mathlib probability measure.",
+          "carrier_delta": "Adds an injective finite-real to native-measure carrier map under discrete measurable structure instead of using a separately authored measure law.",
+          "required_bridge": "FEPComposed.fep135_embeddedLaw_extends_fep017"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-017",
+          "target": "fep-045",
+          "kind": "conceptual",
+          "rationale": "The native posterior-kernel laws provide normalized Bayesian semantics, while fep-045 must still prove closure of a named conjugate family."
+        },
+        {
+          "source": "fep-034",
+          "target": "fep-017",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies the transition-observation filter with fep-017's native posterior at the transition-predicted prior.",
+          "witness": "FEPComposed.fep034_filter_is_fep017_posterior"
+        },
+        {
+          "source": "fep-051",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Radon--Nikodym reconstruction and posterior joint reconstruction are the measure-level reconstruction laws on either side of Bayesian inversion.",
+          "witness": "FEPComposed.fep051_rn_reconstruction_refines_fep017"
+        },
+        {
+          "source": "fep-052",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "On a countable latent carrier, both topic surfaces certify the same predictive-almost-everywhere likelihood-ratio representation.",
+          "witness": "FEPComposed.fep052_posterior_tilt_is_fep017_posterior"
+        },
+        {
+          "source": "fep-053",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Kernel Bayes and fep-017 reconstruct the same swapped joint law, with the new topic keeping the native posterior notation visible.",
+          "witness": "FEPComposed.fep053_joint_reconstruction_extends_fep017"
+        },
+        {
+          "source": "fep-054",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Native double Bayesian inversion recovers the original likelihood almost everywhere, while the fep-017 posterior recovers the prior after a Markov likelihood; the pairing keeps these two sides of involution distinct.",
+          "witness": "FEPComposed.fep054_involution_of_fep017_posterior"
+        },
+        {
+          "source": "fep-056",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Standard-Borel disintegration reconstructs its joint, while fep-017 certifies the corresponding posterior reconstruction for an arbitrary finite likelihood model.",
+          "witness": "FEPComposed.fep056_disintegration_supplies_fep017"
+        },
+        {
+          "source": "fep-117",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Finite posterior odds obey Bayes multiplication, while the measure-native fep-017 posterior reconstructs its complete swapped joint law.",
+          "witness": "FEPComposed.fep117_posterior_odds_extends_fep017_bayes"
+        },
+        {
+          "source": "fep-135",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Weighted Dirac embedding preserves every finite singleton mass and total mass, while fep-017 supplies the native posterior reconstruction law on an arbitrary measure carrier.",
+          "witness": "FEPComposed.fep135_embeddedLaw_extends_fep017"
+        }
+      ]
+    },
+    {
+      "id": "fep-019",
+      "title": "Prior-Predictive Kernel Composition",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep019_priorPredictive_assoc",
+      "supporting": [
+        "fep019_priorPredictive_mass",
+        "fep019_priorPredictive_mass_one"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep019_priorPredictive_assoc": "theorem fep019_priorPredictive_assoc\n    (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03b7 : Kernel \ud835\udce7 \ud835\udce8) (\u03bc : Measure \u03a9) :\n    \u03b7 \u2218\u2098 fep019_priorPredictive \u03ba \u03bc =\n      fep019_priorPredictive (\u03b7 \u2218\u2096 \u03ba) \u03bc",
+        "fep019_priorPredictive_mass": "theorem fep019_priorPredictive_mass\n    (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9) [IsMarkovKernel \u03ba] :\n    fep019_priorPredictive \u03ba \u03bc Set.univ = \u03bc Set.univ",
+        "fep019_priorPredictive_mass_one": "theorem fep019_priorPredictive_mass_one\n    (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9)\n    [IsProbabilityMeasure \u03bc] [IsMarkovKernel \u03ba] :\n    fep019_priorPredictive \u03ba \u03bc Set.univ = 1"
+      },
+      "body_sha256": "7891e99d767d03ce42f0d3d3dc11a2cda282ba161374b5e1a7bf3dcc33ad9b81",
+      "maturity_record": {
+        "id": "fep-019",
+        "primary_theorem": "fep019_priorPredictive_assoc",
+        "supporting_theorems": [
+          "fep019_priorPredictive_mass",
+          "fep019_priorPredictive_mass_one"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The native prior-predictive law preserves total mass for a Markov likelihood and sequential prediction equals measure composition by the composed kernels.",
+        "assumption_review": "Mass preservation requires a Markov likelihood; probability mass one additionally requires a probability prior. The associativity law is structural measure-kernel composition and does not assert model calibration or identifiability.",
+        "non_vacuity": "A probability prior and non-deterministic finite Markov likelihood yield a normalized non-Dirac predictive law; a second kernel exercises genuine sequential composition.",
+        "acceptance_probe": "native Lean compile of fep019_priorPredictive_mass, fep019_priorPredictive_mass_one, and fep019_priorPredictive_assoc.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary sequentialnativepredictionassociativity; supportingmasspreservationMarkov\u03ba,probabilitywhenpriorprobability exact.",
+      "premise_scope_boundary": "Arbitrarykernelscomposewithoutclaimnormalization; no posteriorlearning/calibration/modelidentifiability.",
+      "positive_adverse_unexecuted_specs": "NonDiracBoolprior/noisykernelandsecondkernelgenerateactualmixture; zerokernelmass0refutesunguardednormalization; unitkernelidentitycontrol.",
+      "nearest_topic_distinction": "022contextposterior-predictivekernel;027hierarchicalsecondmarginalidentifies019;034usestransitionpriorbeforeconditioning.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-055",
+          "nearest_topics": [
+            "fep-017",
+            "fep-019"
+          ],
+          "new_invariant": "Inversion reverses two-kernel composition under the final predictive law.",
+          "carrier_delta": "Extends one-step posterior kernels to a parameter\u2013intermediate\u2013observation chain with a.e. composition.",
+          "required_bridge": "FEPComposed.fep055_composite_inversion_uses_fep019"
+        },
+        {
+          "id": "fep-063",
+          "nearest_topics": [
+            "fep-014",
+            "fep-019"
+          ],
+          "new_invariant": "A shared strictly positive finite channel cannot increase KL divergence.",
+          "carrier_delta": "Adds two full-support input laws, a normalized finite channel, and predictive-law support propagation.",
+          "required_bridge": "FEPComposed.fep063_channel_dpi_bounds_fep014"
+        },
+        {
+          "id": "fep-077",
+          "nearest_topics": [
+            "fep-027",
+            "fep-019"
+          ],
+          "new_invariant": "Two-level hierarchical prediction equals prediction through composed normalized kernels.",
+          "carrier_delta": "Instantiates hierarchical factorization with an explicit upper\u2013middle\u2013observation finite kernel chain.",
+          "required_bridge": "FEPComposed.fep077_hierarchical_predictive_extends_fep027"
+        },
+        {
+          "id": "fep-078",
+          "nearest_topics": [
+            "fep-019",
+            "fep-022"
+          ],
+          "new_invariant": "Bayesian model averaging is a normalized prior-weighted mixture of model predictive laws.",
+          "carrier_delta": "Treats the model index as a finite latent carrier and adds a nonuniform informative Boolean mixture witness.",
+          "required_bridge": "FEPComposed.fep078_model_average_composes_fep019"
+        },
+        {
+          "id": "fep-080",
+          "nearest_topics": [
+            "fep-019"
+          ],
+          "new_invariant": "Joint-law formation preserves convex mixtures that share one conditional kernel.",
+          "carrier_delta": "Adds two input laws and a closed-unit-interval mixture weight while holding the conditional mechanism fixed.",
+          "required_bridge": "FEPComposed.fep080_shared_mixture_preserves_fep019_prediction"
+        },
+        {
+          "id": "fep-107",
+          "nearest_topics": [
+            "fep-027",
+            "fep-019"
+          ],
+          "new_invariant": "Independent product-agent priors and kernels factor generative mass and preserve kernel normalization.",
+          "carrier_delta": "Pairs two finite state\u2013observation systems with coordinatewise product laws rather than one hierarchical latent chain.",
+          "required_bridge": "FEPComposed.fep107_product_agent_extends_fep027_hierarchy"
+        },
+        {
+          "id": "fep-120",
+          "nearest_topics": [
+            "fep-019",
+            "fep-117"
+          ],
+          "new_invariant": "Factorized Bayes factors multiply and sequential model-odds updates equal a product-evidence update.",
+          "carrier_delta": "Adds two sequential favored/reference evidence pairs, ordinary nonzero denominators, and a zero-denominator totalization boundary.",
+          "required_bridge": "FEPComposed.fep120_bayes_factor_update_extends_fep019_prediction"
+        },
+        {
+          "id": "fep-137",
+          "nearest_topics": [
+            "fep-019",
+            "fep-055"
+          ],
+          "new_invariant": "Embedding a finite predictive law equals native composition of the embedded finite kernel and embedded prior measure.",
+          "carrier_delta": "Provides a proved commuting square between finite kernel prediction and Mathlib measure-kernel composition.",
+          "required_bridge": "FEPComposed.fep137_embeddedPredictive_extends_fep019"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-027",
+          "target": "fep-019",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition.",
+          "witness": "FEPComposed.fep027_priorPredictive_is_fep019"
+        },
+        {
+          "source": "fep-055",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "Composite Bayesian inversion uses exactly the chronological predictive law identified by fep-019's measure--kernel associativity theorem.",
+          "witness": "FEPComposed.fep055_composite_inversion_uses_fep019"
+        },
+        {
+          "source": "fep-078",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "Finite Bayesian model averaging and native sequential prediction each make their mixture/composition law explicit.",
+          "witness": "FEPComposed.fep078_model_average_composes_fep019"
+        },
+        {
+          "source": "fep-080",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "Mixing a shared finite conditional law commutes with joint formation, alongside fep-019's native sequential-prediction associativity.",
+          "witness": "FEPComposed.fep080_shared_mixture_preserves_fep019_prediction"
+        },
+        {
+          "source": "fep-120",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "Multiplicative Bayes factors agree with sequential odds updates, while fep-019 records associativity for the corresponding native predictive chain.",
+          "witness": "FEPComposed.fep120_bayes_factor_update_extends_fep019_prediction"
+        },
+        {
+          "source": "fep-137",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "The finite-to-native predictive commuting square and fep-019's native sequential-prediction associativity are checked together without hiding either kernel orientation.",
+          "witness": "FEPComposed.fep137_embeddedPredictive_extends_fep019"
+        }
+      ]
+    },
+    {
+      "id": "fep-020",
+      "title": "Two-State Markov Relaxation",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep020_tendsto_uniform",
+      "supporting": [
+        "fep020_transition_nonneg",
+        "fep020_transition_sum_one",
+        "fep020_evolve_affine",
+        "fep020_uniform_stationary",
+        "fep020_deviation_step",
+        "fep020_iterate_deviation"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep020_tendsto_uniform": "theorem fep020_tendsto_uniform\n    {\u03b1 : \u211d} (h\u03b10 : 0 < \u03b1) (h\u03b11 : \u03b1 < 1) (p : \u211d) :\n    Filter.Tendsto (fun n => ((fep020_evolve \u03b1)^[n]) p)\n      Filter.atTop (nhds (1 / 2 : \u211d))",
+        "fep020_transition_nonneg": "theorem fep020_transition_nonneg\n    {\u03b1 : \u211d} (h\u03b10 : 0 \u2264 \u03b1) (h\u03b11 : \u03b1 \u2264 1) (source target : Bool) :\n    0 \u2264 fep020_transition \u03b1 source target",
+        "fep020_transition_sum_one": "theorem fep020_transition_sum_one (\u03b1 : \u211d) (source : Bool) :\n    \u2211 target : Bool, fep020_transition \u03b1 source target = 1",
+        "fep020_evolve_affine": "theorem fep020_evolve_affine (\u03b1 p : \u211d) :\n    fep020_evolve \u03b1 p = \u03b1 + (1 - 2 * \u03b1) * p",
+        "fep020_uniform_stationary": "theorem fep020_uniform_stationary (\u03b1 : \u211d) :\n    fep020_evolve \u03b1 (1 / 2 : \u211d) = 1 / 2",
+        "fep020_deviation_step": "theorem fep020_deviation_step (\u03b1 p : \u211d) :\n    fep020_evolve \u03b1 p - 1 / 2 = (1 - 2 * \u03b1) * (p - 1 / 2)",
+        "fep020_iterate_deviation": "theorem fep020_iterate_deviation (\u03b1 p : \u211d) (n : \u2115) :\n    ((fep020_evolve \u03b1)^[n]) p - 1 / 2 =\n      (1 - 2 * \u03b1) ^ n * (p - 1 / 2)"
+      },
+      "body_sha256": "b5c555d2f2bfdf84c99c999b69964554e197fd88409705f6436f1fb7e982e2fd",
+      "maturity_record": {
+        "id": "fep-020",
+        "primary_theorem": "fep020_tendsto_uniform",
+        "supporting_theorems": [
+          "fep020_transition_nonneg",
+          "fep020_transition_sum_one",
+          "fep020_evolve_affine",
+          "fep020_uniform_stationary",
+          "fep020_deviation_step",
+          "fep020_iterate_deviation"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A normalized symmetric two-state transition has the uniform stationary law; its exact n-step deviation is (1-2\u03b1)^n times the initial deviation and converges to zero for 0 < \u03b1 < 1.",
+        "assumption_review": "Transition nonnegativity uses \u03b1 in [0,1], while convergence uses the strict interior so |1-2\u03b1| < 1. This is an exact finite-state Markov relaxation model, not a discretized Langevin diffusion.",
+        "non_vacuity": "For \u03b1 = 1/4 and any nonstationary initial mass, deviations contract geometrically by 1/2 at every step; at \u03b1 = 1 the chain instead alternates and the strict-interior convergence premise excludes it.",
+        "acceptance_probe": "native Lean compile of fep020_transition_nonneg, fep020_transition_sum_one, fep020_uniform_stationary, fep020_iterate_deviation, and fep020_tendsto_uniform.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary exactgeometricconvergenceunder0<\u03b1<1; rownonnegative[0,1],rowmassonealgebraicallreal\u03b1,closedform/allrealp exact.",
+      "premise_scope_boundary": "Initialpanyrealtheorem,butprobabilityinterpretationrequiresp\u2208[0,1]. NoLangevindiffusionorPDElimit.",
+      "positive_adverse_unexecuted_specs": "\u03b11/4deviationfactor1/2; \u03b11/2one-stepuniform; \u03b10identity; \u03b11period2; \u03b12negativeentriesdespiterowsum1.",
+      "nearest_topic_distinction": "037autocorrelationfinite-modeidentity;032scalarquadraticiteration;150-155realtimeMarkovsemigroupdifferentclock/carrier.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-069",
+          "nearest_topics": [
+            "fep-031",
+            "fep-020"
+          ],
+          "new_invariant": "A KL-control desirability backup is an exponential cost tilt of passive prediction.",
+          "carrier_delta": "Adds a passive finite Markov kernel and nonnegative desirability field to Boltzmann weighting.",
+          "required_bridge": "FEPComposed.fep069_desirability_combines_fep031_weights"
+        },
+        {
+          "id": "fep-112",
+          "nearest_topics": [
+            "fep-048",
+            "fep-020"
+          ],
+          "new_invariant": "Fixed two-agent consensus halves each atomwise gap and converges pointwise to zero disagreement.",
+          "carrier_delta": "Instantiates contractive iteration on a pair of finite laws and adds an explicit nonzero strict Boolean witness.",
+          "required_bridge": "FEPComposed.fep112_consensus_convergence_extends_fep048_contraction"
+        },
+        {
+          "id": "fep-149",
+          "nearest_topics": [
+            "fep-020"
+          ],
+          "new_invariant": "Positive forward and backward rates generate an explicit nonnegative two-state transition matrix with row sum one for nonnegative time.",
+          "carrier_delta": "Adds an exact continuous-time Boolean kernel and nonuniform stationary law to the earlier discrete finite dynamics.",
+          "required_bridge": "FEPComposed.fep149_continuousKernel_extends_fep020"
+        },
+        {
+          "id": "fep-150",
+          "nearest_topics": [
+            "fep-006",
+            "fep-020"
+          ],
+          "new_invariant": "The exact two-state continuous-time transition matrix is the identity at time zero.",
+          "carrier_delta": "Instantiates the semigroup identity boundary with four explicit Boolean transition entries.",
+          "required_bridge": "FEPComposed.fep150_semigroupZero_extends_fep006"
+        },
+        {
+          "id": "fep-151",
+          "nearest_topics": [
+            "fep-006",
+            "fep-020"
+          ],
+          "new_invariant": "Two-state transitions satisfy the Chapman\u2013Kolmogorov additive semigroup law entrywise.",
+          "carrier_delta": "Replaces natural-number kernel powers with a real-time exponential semigroup on the exact Boolean carrier.",
+          "required_bridge": "FEPComposed.fep151_semigroupAdd_extends_fep006"
+        },
+        {
+          "id": "fep-152",
+          "nearest_topics": [
+            "fep-020",
+            "fep-025"
+          ],
+          "new_invariant": "Every transition entry is differentiable and solves both the forward and backward finite master equations.",
+          "carrier_delta": "Adds an explicit rate generator, real-time derivatives, and left/right matrix products without claiming a general CTMC existence theorem.",
+          "required_bridge": "FEPComposed.fep152_masterEquation_extends_fep020"
+        },
+        {
+          "id": "fep-154",
+          "nearest_topics": [
+            "fep-020"
+          ],
+          "new_invariant": "Any initial true-state mass relaxes toward stationarity by the exact factor exp(-(a+b)t).",
+          "carrier_delta": "Adds closed-form continuous-time mixing for the Boolean carrier and a concrete nonstationary benchmark point mass.",
+          "required_bridge": "FEPComposed.fep154_continuousRelaxation_extends_fep020"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-037",
+          "target": "fep-020",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies fep-037's autocorrelation mode with the exact deviation mode of fep-020's normalized two-state Markov evolution.",
+          "witness": "FEPComposed.fep037_autocorrelation_tracks_fep020"
+        },
+        {
+          "source": "fep-149",
+          "target": "fep-020",
+          "kind": "formal_pairing",
+          "rationale": "Positive rates generate a normalized nonnegative Boolean continuous-time kernel, paired with the original discrete-time Markov evolution law.",
+          "witness": "FEPComposed.fep149_continuousKernel_extends_fep020"
+        },
+        {
+          "source": "fep-152",
+          "target": "fep-020",
+          "kind": "formal_pairing",
+          "rationale": "Every Boolean transition entry solves the two-sided continuous-time master equation, paired with the earlier discrete finite-state evolution contract.",
+          "witness": "FEPComposed.fep152_masterEquation_extends_fep020"
+        },
+        {
+          "source": "fep-154",
+          "target": "fep-020",
+          "kind": "formal_pairing",
+          "rationale": "Boolean true-state mass relaxes exponentially to stationarity, paired with the original discrete transition evolution without claiming a general mixing-rate theorem.",
+          "witness": "FEPComposed.fep154_continuousRelaxation_extends_fep020"
+        }
+      ]
+    },
+    {
+      "id": "fep-022",
+      "title": "Posterior-Predictive Kernel and Brier Properness",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep022_brier_eq_optimum_iff",
+      "supporting": [
+        "fep022_posteriorPredictive_mass_one",
+        "fep022_brier_decomposition",
+        "fep022_predictive_brier_decomposition"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep022_brier_eq_optimum_iff": "theorem fep022_brier_eq_optimum_iff (p q : \u211d) :\n    fep022_brierScore p q = p * (1 - p) \u2194 q = p",
+        "fep022_posteriorPredictive_mass_one": "theorem fep022_posteriorPredictive_mass_one\n    (posterior : Kernel \ud835\udcd2 \u03a9) (likelihood : Kernel \u03a9 \ud835\udce7)\n    [IsMarkovKernel posterior] [IsMarkovKernel likelihood] (c : \ud835\udcd2) :\n    fep022_posteriorPredictive posterior likelihood c Set.univ = 1",
+        "fep022_brier_decomposition": "theorem fep022_brier_decomposition (p q : \u211d) :\n    fep022_brierScore p q = p * (1 - p) + (q - p) ^ 2",
+        "fep022_predictive_brier_decomposition": "theorem fep022_predictive_brier_decomposition\n    (posterior : Kernel \ud835\udcd2 \u03a9) (likelihood : Kernel \u03a9 Bool) (c : \ud835\udcd2) (p : \u211d) :\n    fep022_brierScore p (fep022_predictiveTrueMass posterior likelihood c) =\n      p * (1 - p) +\n        (fep022_predictiveTrueMass posterior likelihood c - p) ^ 2"
+      },
+      "body_sha256": "64ec7d1fbe3616faf40bdfa7048e14694f4f9ffddbccf88420ff761bfd251226",
+      "maturity_record": {
+        "id": "fep-022",
+        "primary_theorem": "fep022_brier_eq_optimum_iff",
+        "supporting_theorems": [
+          "fep022_posteriorPredictive_mass_one",
+          "fep022_brier_decomposition",
+          "fep022_predictive_brier_decomposition"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Markov posterior and likelihood kernels compose into normalized posterior-predictive fibres, and expected Bernoulli Brier loss is uniquely minimized by the true event probability.",
+        "assumption_review": "Kernel normalization requires both components to be Markov. Brier properness is an exact real-algebra identity whose probabilistic interpretation restricts true and forecast masses to [0,1]. It is a proper one-event discrepancy, not an empirical calibration-frequency theorem.",
+        "non_vacuity": "Non-deterministic posterior and likelihood kernels produce nontrivial predictive true-event mass; every forecast q distinct from p incurs the strictly positive squared regret (q-p)^2.",
+        "acceptance_probe": "native Lean compile of fep022_posteriorPredictive_mass_one, fep022_brier_decomposition, fep022_brier_eq_optimum_iff, and fep022_predictive_brier_decomposition.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary Brierequalityifftrueparameter; squaredregretdecompositionprovesuniquemininrealq. NativeMarkovposterior/likelihoodcompositionnormalizedseparately.",
+      "premise_scope_boundary": "p,q\u2208[0,1]forproperprobabilityscore; predictiveTrueMass.toRealwithoutMarkovassumptionscanbeunphysical/infinite\u21920. Noempiricalcalibrationfrequencyclaim.",
+      "positive_adverse_unexecuted_specs": "p1/3,q2/3regret1/9; q=pexact; p2baselinep(1-p)negativeoutsideprobabilitydomain; unnormalized/infinitepredictivemeasurecannotbeprobabilityfromtoRealalone.",
+      "nearest_topic_distinction": "019predictivemeasure,027jointcompositionandfiniteSampleBrierriskboundsdistinct. Linkingnativepredictivetoproperriskneedsnormalizationnotjustalgebra.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-066",
+          "nearest_topics": [
+            "fep-034",
+            "fep-022"
+          ],
+          "new_invariant": "A supported action-conditioned Bayes update normalizes and reconstructs its joint atom.",
+          "carrier_delta": "Inserts a chosen control action and controlled state prediction before the observation update.",
+          "required_bridge": "FEPComposed.fep066_action_update_refines_fep034_filter"
+        },
+        {
+          "id": "fep-078",
+          "nearest_topics": [
+            "fep-019",
+            "fep-022"
+          ],
+          "new_invariant": "Bayesian model averaging is a normalized prior-weighted mixture of model predictive laws.",
+          "carrier_delta": "Treats the model index as a finite latent carrier and adds a nonuniform informative Boolean mixture witness.",
+          "required_bridge": "FEPComposed.fep078_model_average_composes_fep019"
+        },
+        {
+          "id": "fep-125",
+          "nearest_topics": [
+            "fep-022"
+          ],
+          "new_invariant": "Bernoulli Brier excess risk is exactly squared probability-forecast error.",
+          "carrier_delta": "Adds a proper-score identity on scalar Bernoulli forecasts alongside the earlier preference-risk decomposition.",
+          "required_bridge": "FEPComposed.fep125_brierExcess_refines_fep022"
+        },
+        {
+          "id": "fep-126",
+          "nearest_topics": [
+            "fep-022",
+            "fep-036"
+          ],
+          "new_invariant": "Finite-law expected Brier excess for a Laplace-smoothed forecast obeys the inherited squared-error transfer bound.",
+          "carrier_delta": "Combines normalized finite sampling, add-one prediction, and Brier scoring without claiming observed calibration data.",
+          "required_bridge": "FEPComposed.fep126_laplaceBrierRisk_combines_fep022_fep036"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-022",
+          "target": "fep-027",
+          "kind": "formal",
+          "rationale": "The composed theorem realizes the posterior-predictive kernel as a hierarchical child kernel and identifies its marginal with sequential prediction.",
+          "witness": "FEPComposed.fep022_predictive_is_hierarchical_marginal"
+        },
+        {
+          "source": "fep-125",
+          "target": "fep-022",
+          "kind": "formal_pairing",
+          "rationale": "Exact Bernoulli Brier excess equals squared forecast error, while fep-022 retains the separate preference-risk decomposition used by the earlier active-inference carrier.",
+          "witness": "FEPComposed.fep125_brierExcess_refines_fep022"
+        },
+        {
+          "source": "fep-126",
+          "target": "fep-022",
+          "kind": "formal_pairing",
+          "rationale": "Expected Laplace-smoothed Brier excess inherits the finite squared-risk bound and is paired with fep-022's one-step risk decomposition without conflating their carriers.",
+          "witness": "FEPComposed.fep126_laplaceBrierRisk_combines_fep022_fep036"
+        }
+      ]
+    },
+    {
+      "id": "fep-027",
+      "title": "Hierarchical Kernel Factorization",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep027_hierarchical_assoc",
+      "supporting": [
+        "fep027_hierarchical_mass_one",
+        "fep027_hierarchical_fst",
+        "fep027_hierarchical_snd"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep027_hierarchical_assoc": "theorem fep027_hierarchical_assoc\n    (\u03bc : Measure \u03b1) (\u03ba : Kernel \u03b1 \u03b2) (\u03b7 : Kernel (\u03b1 \u00d7 \u03b2) \u03b3) :\n    (fep027_hierarchicalJoint \u03bc \u03ba \u2297\u2098 \u03b7).map MeasurableEquiv.prodAssoc =\n      fep027_hierarchicalJoint \u03bc (\u03ba \u2297\u2096 \u03b7)",
+        "fep027_hierarchical_mass_one": "theorem fep027_hierarchical_mass_one\n    (\u03bc : Measure \u03b1) (\u03ba : Kernel \u03b1 \u03b2)\n    [IsProbabilityMeasure \u03bc] [IsMarkovKernel \u03ba] :\n    fep027_hierarchicalJoint \u03bc \u03ba Set.univ = 1",
+        "fep027_hierarchical_fst": "theorem fep027_hierarchical_fst\n    (\u03bc : Measure \u03b1) (\u03ba : Kernel \u03b1 \u03b2) [SFinite \u03bc] [IsMarkovKernel \u03ba] :\n    (fep027_hierarchicalJoint \u03bc \u03ba).fst = \u03bc",
+        "fep027_hierarchical_snd": "theorem fep027_hierarchical_snd\n    (\u03bc : Measure \u03b1) (\u03ba : Kernel \u03b1 \u03b2) [SFinite \u03bc] [IsSFiniteKernel \u03ba] :\n    (fep027_hierarchicalJoint \u03bc \u03ba).snd = \u03ba \u2218\u2098 \u03bc"
+      },
+      "body_sha256": "6641bcc8ae5f5e6c5aa4097dc5f49ddddd0397cfb72be69710cddb4bc4741e40",
+      "maturity_record": {
+        "id": "fep-027",
+        "primary_theorem": "fep027_hierarchical_assoc",
+        "supporting_theorems": [
+          "fep027_hierarchical_mass_one",
+          "fep027_hierarchical_fst",
+          "fep027_hierarchical_snd"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A parent measure and child kernel form a normalized hierarchical joint whose marginals recover the parent and prior predictive, and whose three-level factorization is associative up to product reassociation.",
+        "assumption_review": "Joint normalization requires a probability parent and Markov child; first- and second-marginal identities require the stated finite-kernel classes. The associativity theorem is exact for Mathlib composition products and does not impose causal identifiability.",
+        "non_vacuity": "A non-Dirac finite parent and state-dependent non-deterministic Markov child give a dependent normalized joint with distinct parent and predictive marginals; a third kernel exercises nontrivial reassociation.",
+        "acceptance_probe": "native Lean compile of fep027_hierarchical_mass_one, fep027_hierarchical_fst, fep027_hierarchical_snd, and fep027_hierarchical_assoc.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary nativecompProdreassociationexact; normalizationprobabilityparent/Markovchild; fstrequiresSFiniteparentandMarkov\u03ba; sndrequiresSFiniteparent/SFinite\u03ba.",
+      "premise_scope_boundary": "Definitionnormalizedhierarchicaljointonlyunderseparatetheorempremises; no causalidentification/interventionsemantics. MetadatafinitekernelclassesneedexactSFinite/Markovwording.",
+      "positive_adverse_unexecuted_specs": "NonDiracBoolparentstate-dependentchilddependentjoint; nonMarkovchildtotal2doublesfirstmarginal; zerochildjoint0.",
+      "nearest_topic_distinction": "019secondmarginaland022sequentialpredictiveformalidentities;hierarchicalcausalDAGsemanticsnotinferredfromproductreassociation.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-057",
+          "nearest_topics": [
+            "fep-015",
+            "fep-027"
+          ],
+          "new_invariant": "Nested conditional and marginal integration equals joint integration.",
+          "carrier_delta": "Adds integrable real and measurable extended-nonnegative observables over a disintegrated native joint measure.",
+          "required_bridge": "FEPComposed.fep057_tower_integrates_fep015"
+        },
+        {
+          "id": "fep-077",
+          "nearest_topics": [
+            "fep-027",
+            "fep-019"
+          ],
+          "new_invariant": "Two-level hierarchical prediction equals prediction through composed normalized kernels.",
+          "carrier_delta": "Instantiates hierarchical factorization with an explicit upper\u2013middle\u2013observation finite kernel chain.",
+          "required_bridge": "FEPComposed.fep077_hierarchical_predictive_extends_fep027"
+        },
+        {
+          "id": "fep-084",
+          "nearest_topics": [
+            "fep-027",
+            "fep-083"
+          ],
+          "new_invariant": "A four-node causal law equals its ordered parent factorization and normalizes globally.",
+          "carrier_delta": "Specializes hierarchical kernels to two roots, a root-conditioned mediator, and a two-parent outcome kernel.",
+          "required_bridge": "FEPComposed.fep084_ordered_factorization_extends_fep027"
+        },
+        {
+          "id": "fep-107",
+          "nearest_topics": [
+            "fep-027",
+            "fep-019"
+          ],
+          "new_invariant": "Independent product-agent priors and kernels factor generative mass and preserve kernel normalization.",
+          "carrier_delta": "Pairs two finite state\u2013observation systems with coordinatewise product laws rather than one hierarchical latent chain.",
+          "required_bridge": "FEPComposed.fep107_product_agent_extends_fep027_hierarchy"
+        },
+        {
+          "id": "fep-135",
+          "nearest_topics": [
+            "fep-017",
+            "fep-027"
+          ],
+          "new_invariant": "Weighted Dirac embedding preserves every finite-law singleton mass and normalization as a native Mathlib probability measure.",
+          "carrier_delta": "Adds an injective finite-real to native-measure carrier map under discrete measurable structure instead of using a separately authored measure law.",
+          "required_bridge": "FEPComposed.fep135_embeddedLaw_extends_fep017"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-022",
+          "target": "fep-027",
+          "kind": "formal",
+          "rationale": "The composed theorem realizes the posterior-predictive kernel as a hierarchical child kernel and identifies its marginal with sequential prediction.",
+          "witness": "FEPComposed.fep022_predictive_is_hierarchical_marginal"
+        },
+        {
+          "source": "fep-027",
+          "target": "fep-019",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition.",
+          "witness": "FEPComposed.fep027_priorPredictive_is_fep019"
+        },
+        {
+          "source": "fep-077",
+          "target": "fep-027",
+          "kind": "formal_pairing",
+          "rationale": "Finite two-level predictive composition and native three-level composition both expose the same associativity seam without conflating their carriers.",
+          "witness": "FEPComposed.fep077_hierarchical_predictive_extends_fep027"
+        },
+        {
+          "source": "fep-084",
+          "target": "fep-027",
+          "kind": "formal_pairing",
+          "rationale": "The finite ordered four-node density and the native three-level hierarchy both expose their complete product factorization.",
+          "witness": "FEPComposed.fep084_ordered_factorization_extends_fep027"
+        },
+        {
+          "source": "fep-107",
+          "target": "fep-027",
+          "kind": "formal_pairing",
+          "rationale": "Independent product-agent generative mass factorizes pointwise, while the original native hierarchical joint remains normalized under probability and Markov assumptions.",
+          "witness": "FEPComposed.fep107_product_agent_extends_fep027_hierarchy"
+        }
+      ]
+    },
+    {
+      "id": "fep-036",
+      "title": "Laplace-Smoothed Empirical Bernoulli Prior",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep036_smoothedRate_tendsto_of_empiricalRate",
+      "supporting": [
+        "fep036_binomialModel_apply",
+        "fep036_smoothedRate_pos",
+        "fep036_smoothedRate_lt_one",
+        "fep036_smoothedRate_mem_Ioo",
+        "fep036_empiricalPrior_mem_Ioo",
+        "fep036_smoothedRate_mono",
+        "fep036_smoothedRate_eq_shrunkEmpirical"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep036_smoothedRate_tendsto_of_empiricalRate": "theorem fep036_smoothedRate_tendsto_of_empiricalRate\n    (successes : \u2115 \u2192 \u2115) (p : \u211d)\n    (hraw : Filter.Tendsto (fun n : \u2115 => (successes n : \u211d) / n)\n      Filter.atTop (nhds p)) :\n    Filter.Tendsto (fun n : \u2115 => fep036_smoothedRate (successes n) n)\n      Filter.atTop (nhds p)",
+        "fep036_binomialModel_apply": "theorem fep036_binomialModel_apply (p : NNReal) (hp : p \u2264 1) (trials : \u2115)\n    (sample : \u2115) :\n    (fep036_binomialModel p hp trials).real {sample} =\n      (trials.choose sample : \u211d) * (p : \u211d) ^ sample *\n        (1 - (p : \u211d)) ^ (trials - sample)",
+        "fep036_smoothedRate_pos": "theorem fep036_smoothedRate_pos (successes trials : \u2115) :\n    0 < fep036_smoothedRate successes trials",
+        "fep036_smoothedRate_lt_one": "theorem fep036_smoothedRate_lt_one\n    {successes trials : \u2115} (h : successes \u2264 trials) :\n    fep036_smoothedRate successes trials < 1",
+        "fep036_smoothedRate_mem_Ioo": "theorem fep036_smoothedRate_mem_Ioo\n    {successes trials : \u2115} (h : successes \u2264 trials) :\n    fep036_smoothedRate successes trials \u2208 Set.Ioo (0 : \u211d) 1",
+        "fep036_empiricalPrior_mem_Ioo": "theorem fep036_empiricalPrior_mem_Ioo\n    (trials : \u2115) (sample : Fin (trials + 1)) :\n    fep036_empiricalPrior trials sample \u2208 Set.Ioo (0 : \u211d) 1",
+        "fep036_smoothedRate_mono": "theorem fep036_smoothedRate_mono\n    {s\u2081 s\u2082 trials : \u2115} (h : s\u2081 \u2264 s\u2082) :\n    fep036_smoothedRate s\u2081 trials \u2264 fep036_smoothedRate s\u2082 trials",
+        "fep036_smoothedRate_eq_shrunkEmpirical": "theorem fep036_smoothedRate_eq_shrunkEmpirical\n    {successes trials : \u2115} (htrials : 0 < trials) :\n    fep036_smoothedRate successes trials =\n      ((successes : \u211d) / trials) * ((trials : \u211d) / (trials + 2)) +\n        1 / ((trials : \u211d) + 2)"
+      },
+      "body_sha256": "757cedd5596fd9ece529cbae72329ef49d23e3aa7b75c2580585b45a69cf4037",
+      "maturity_record": {
+        "id": "fep-036",
+        "primary_theorem": "fep036_smoothedRate_tendsto_of_empiricalRate",
+        "supporting_theorems": [
+          "fep036_binomialModel_apply",
+          "fep036_smoothedRate_pos",
+          "fep036_smoothedRate_lt_one",
+          "fep036_smoothedRate_mem_Ioo",
+          "fep036_empiricalPrior_mem_Ioo",
+          "fep036_smoothedRate_mono",
+          "fep036_smoothedRate_eq_shrunkEmpirical"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A Mathlib finite binomial sampling law supplies admissible success counts; Laplace smoothing maps every outcome to an interior Bernoulli prior, is monotone in successes, and preserves the limit of any convergent empirical-frequency sequence.",
+        "assumption_review": "The finite sampling law requires p in [0,1]. Interiority uses the intrinsic count bound, and consistency transfer explicitly assumes convergence of the raw empirical frequency. The row does not prove the binomial law of large numbers, a finite-sample risk bound, or marginal-likelihood hyperparameter optimality.",
+        "non_vacuity": "Every count in Fin (n+1) is admitted by the estimator; zero successes in zero trials gives 1/2, nontrivial counts vary within (0,1), and the shrinkage factor tends to one while the pseudocount offset tends to zero.",
+        "acceptance_probe": "native Lean compile of fep036_binomialModel_apply, fep036_empiricalPrior_mem_Ioo, fep036_smoothedRate_mono, fep036_smoothedRate_eq_shrunkEmpirical, and fep036_smoothedRate_tendsto_of_empiricalRate, plus composed posterior closure.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary consistencytransferassumesrawempiricalratioTendsto; binomialmassformula/unitintervalparameter andinteriorityforvalidcount,monotoneshrinkagesupportexact.",
+      "premise_scope_boundary": "No iid/SLLNfromthistopic alone; existingStatisticalConvergencefoundation/composedstronglawprovidesactualsamplingcontract. Notmarginal-likelihoodempiricalBayeshyperparameteroptimum.",
+      "positive_adverse_unexecuted_specs": "n0success0gives1/2; valid0..nstrictinterior; successn+2canexceed1; oscillatingrawratiohasnorequiredlimit; binomialp0or1restrictspositiveprobabilitysamples.",
+      "nearest_topic_distinction": "042countsfeed036;045posteriorclosurepositiveevidence;121finiteLaplaceerrorand095Polyaallonesbridgealreadydeliverednotnewmissingtheory.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-114",
+          "nearest_topics": [
+            "fep-036",
+            "fep-035"
+          ],
+          "new_invariant": "Independent finite sub-Gaussian observables satisfy an explicit exponential empirical-mean upper-tail bound.",
+          "carrier_delta": "Replaces a deterministic empirical Bernoulli estimate with a probability measure, finite sample index, independence, and MGF certificates.",
+          "required_bridge": "FEPComposed.fep114_subgaussian_tail_refines_fep036_empirical_rate"
+        },
+        {
+          "id": "fep-121",
+          "nearest_topics": [
+            "fep-036"
+          ],
+          "new_invariant": "Add-one forecast error is an exact affine contraction of empirical error plus a target-dependent offset.",
+          "carrier_delta": "Adds explicit finite success counts, positive sample size, target probability, shrinkage coefficient, and pseudo-count bias to the earlier smoothed empirical rate.",
+          "required_bridge": "FEPComposed.fep121_laplaceError_extends_fep036"
+        },
+        {
+          "id": "fep-122",
+          "nearest_topics": [
+            "fep-036"
+          ],
+          "new_invariant": "The absolute Laplace offset is bounded by one pseudo-count over the smoothed sample size and is explicitly nonzero at a boundary target.",
+          "carrier_delta": "Separates the deterministic target-dependent offset from empirical sampling error instead of treating smoothing as an unqualified consistency device.",
+          "required_bridge": "FEPComposed.fep122_laplaceBias_extends_fep036"
+        },
+        {
+          "id": "fep-123",
+          "nearest_topics": [
+            "fep-036"
+          ],
+          "new_invariant": "A certified empirical absolute-error bound transfers through Laplace smoothing with exact shrinkage and offset terms.",
+          "carrier_delta": "Adds a pointwise error tolerance and finite-sample transfer inequality without assuming a probabilistic concentration rate.",
+          "required_bridge": "FEPComposed.fep123_laplaceAbsoluteError_extends_fep036"
+        },
+        {
+          "id": "fep-124",
+          "nearest_topics": [
+            "fep-036",
+            "fep-114"
+          ],
+          "new_invariant": "Pointwise squared-error transfer integrates under every normalized finite sampling law.",
+          "carrier_delta": "Moves from a deterministic empirical rate and a separate sub-Gaussian tail theorem to an explicit finite-law risk functional with a conservative factor-two bound.",
+          "required_bridge": "FEPComposed.fep124_laplaceSquaredRisk_combines_fep036_fep114"
+        },
+        {
+          "id": "fep-126",
+          "nearest_topics": [
+            "fep-022",
+            "fep-036"
+          ],
+          "new_invariant": "Finite-law expected Brier excess for a Laplace-smoothed forecast obeys the inherited squared-error transfer bound.",
+          "carrier_delta": "Combines normalized finite sampling, add-one prediction, and Brier scoring without claiming observed calibration data.",
+          "required_bridge": "FEPComposed.fep126_laplaceBrierRisk_combines_fep022_fep036"
+        },
+        {
+          "id": "fep-127",
+          "nearest_topics": [
+            "fep-036",
+            "fep-114"
+          ],
+          "new_invariant": "The transferred smoothed-deviation event is contained in the raw empirical-deviation event, so every supplied finite-law tail bound transfers monotonically.",
+          "carrier_delta": "Connects deterministic Laplace error transfer to finite concentration through explicit event inclusion rather than an unrestricted posterior-contraction claim.",
+          "required_bridge": "FEPComposed.fep127_laplaceConcentration_combines_fep036_fep114"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-036",
+          "target": "fep-045",
+          "kind": "formal",
+          "rationale": "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep036_empiricalPosterior_closed"
+        },
+        {
+          "source": "fep-042",
+          "target": "fep-036",
+          "kind": "formal",
+          "rationale": "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep036_empiricalPosterior_closed"
+        },
+        {
+          "source": "fep-114",
+          "target": "fep-036",
+          "kind": "formal_pairing",
+          "rationale": "The finite-sample sub-Gaussian tail certificate is paired with the original strict positivity of a Laplace-smoothed empirical rate. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_pos` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep114_subgaussian_tail_refines_fep036_empirical_rate"
+        },
+        {
+          "source": "fep-121",
+          "target": "fep-036",
+          "kind": "formal_pairing",
+          "rationale": "The exact finite-sample Laplace error decomposition and the earlier smoothed-rate identity are retained together without treating smoothing as an unbiased estimator. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_eq_shrunkEmpirical` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep121_laplaceError_extends_fep036"
+        },
+        {
+          "source": "fep-122",
+          "target": "fep-036",
+          "kind": "formal_pairing",
+          "rationale": "The explicit pseudo-count bias bound and the earlier strict-positivity result jointly expose both the benefit and finite-sample offset of add-one smoothing. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_mem_Ioo` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep122_laplaceBias_extends_fep036"
+        },
+        {
+          "source": "fep-123",
+          "target": "fep-036",
+          "kind": "formal_pairing",
+          "rationale": "The deterministic absolute-error transfer is paired with the original smoothed-rate formula, with its empirical-error premise kept explicit. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_eq_shrunkEmpirical` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep123_laplaceAbsoluteError_extends_fep036"
+        }
+      ]
+    },
+    {
+      "id": "fep-040",
+      "title": "Native Gaussian Law and Thermal Entropy Response",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep040_thermalEntropy_hasDerivAt",
+      "supporting": [
+        "fep040_gaussian_mass_one",
+        "fep040_gaussian_mean",
+        "fep040_gaussian_variance",
+        "fep040_gaussianEntropy_strictMono",
+        "fep040_gaussianEntropy_hasDerivAt",
+        "fep040_heatCapacity_eq_half"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep040_thermalEntropy_hasDerivAt": "theorem fep040_thermalEntropy_hasDerivAt\n    {\u03ba T : \u211d} (h\u03ba : 0 < \u03ba) (hT : 0 < T) :\n    HasDerivAt (fep040_thermalEntropy \u03ba) (1 / (2 * T)) T",
+        "fep040_gaussian_mass_one": "theorem fep040_gaussian_mass_one (mean : \u211d) (variance : NNReal) :\n    fep040_gaussianLaw mean variance Set.univ = 1",
+        "fep040_gaussian_mean": "theorem fep040_gaussian_mean (mean : \u211d) (variance : NNReal) :\n    \u222b x, x \u2202fep040_gaussianLaw mean variance = mean",
+        "fep040_gaussian_variance": "theorem fep040_gaussian_variance (mean : \u211d) (variance : NNReal) :\n    ProbabilityTheory.variance id (fep040_gaussianLaw mean variance) = variance",
+        "fep040_gaussianEntropy_strictMono": "theorem fep040_gaussianEntropy_strictMono\n    {v\u2081 v\u2082 : \u211d} (hv\u2081 : 0 < v\u2081) (hv : v\u2081 < v\u2082) :\n    fep040_gaussianEntropy v\u2081 < fep040_gaussianEntropy v\u2082",
+        "fep040_gaussianEntropy_hasDerivAt": "theorem fep040_gaussianEntropy_hasDerivAt\n    {v : \u211d} (hv : 0 < v) :\n    HasDerivAt fep040_gaussianEntropy (1 / (2 * v)) v",
+        "fep040_heatCapacity_eq_half": "theorem fep040_heatCapacity_eq_half {T : \u211d} (hT : 0 < T) :\n    fep040_heatCapacity T = 1 / 2"
+      },
+      "body_sha256": "7f207e3839ce385a29843570df449c3b593af5418c01e2f1f16732c97139d97b",
+      "maturity_record": {
+        "id": "fep-040",
+        "primary_theorem": "fep040_thermalEntropy_hasDerivAt",
+        "supporting_theorems": [
+          "fep040_gaussian_mass_one",
+          "fep040_gaussian_mean",
+          "fep040_gaussian_variance",
+          "fep040_gaussianEntropy_strictMono",
+          "fep040_gaussianEntropy_hasDerivAt",
+          "fep040_heatCapacity_eq_half"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Mathlib's real Gaussian law is normalized with its stated mean and variance; the one-dimensional closed-form entropy is strictly variance-monotone, differentiable with derivative 1/(2v), and under v=\u03baT has derivative 1/(2T) and heat capacity 1/2.",
+        "assumption_review": "The native probability, mean, and variance theorems include the zero-variance Dirac boundary. Entropy monotonicity and derivatives require positive variance, and the thermal relation requires \u03ba,T>0. The closed-form entropy is specified directly rather than rederived here as an integral of negative log density.",
+        "non_vacuity": "For unit scale and positive temperature, the Gaussian law is nondegenerate, its entropy response is nonzero, and the dimensionless heat capacity is exactly 1/2.",
+        "acceptance_probe": "native Lean compile of fep040_gaussian_mass_one, fep040_gaussian_mean, fep040_gaussian_variance, fep040_gaussianEntropy_hasDerivAt, fep040_thermalEntropy_hasDerivAt, and fep040_heatCapacity_eq_half.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary derivativeofdefinedthermalentropyat\u03ba,T>0; nativeGaussianmass/mean/varianceincludevariance0Dirac; closedformvarianceentropyderivative/strictmonotone anddimensionlessheatcapacity algebraexact.",
+      "premise_scope_boundary": "Closedformentropyisdefinednotderivedintegral-logdensity. Diracvariance0lawexistsbutLebesguedifferentialentropyformulaisnotvalidthere. PhysicalheatcapacityrequireskB/energy/tempconventions,notmereT*formula.",
+      "positive_adverse_unexecuted_specs": "\u03ba1,T1nondegenerate; variance2entropygreaterthan1; variance0Diracmean/variancevalidbutentropyformulatotalizedlog0=0notactualdensityentropy; T0heatcapacitydefinition0not1/2.",
+      "nearest_topic_distinction": "016Gaussianintegralnormalizerdistinct;013composedU(T)=T/2firstlawderivativelink;thermodynamicunits/reference/singularitystilldeclared.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-144",
+          "nearest_topics": [
+            "fep-040",
+            "fep-043"
+          ],
+          "new_invariant": "The derivative of the finite log-partition potential equals the mean sufficient statistic.",
+          "carrier_delta": "Differentiates a positive finite exponential sum exactly and connects a named statistical potential to the earlier scalar derivative machinery.",
+          "required_bridge": "FEPComposed.fep144_logPartitionGradient_extends_fep040"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-013",
+          "target": "fep-040",
+          "kind": "formal",
+          "rationale": "The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2.",
+          "witness": "FEPComposed.fep013_gaussianHelmholtz_derivative"
+        },
+        {
+          "source": "fep-144",
+          "target": "fep-040",
+          "kind": "formal_pairing",
+          "rationale": "The finite log-partition derivative equals the mean sufficient statistic, paired with fep-040's exact Gaussian thermodynamic derivative on its distinct carrier.",
+          "witness": "FEPComposed.fep144_logPartitionGradient_extends_fep040"
+        }
+      ]
+    },
+    {
+      "id": "fep-042",
+      "title": "Bernoulli Sufficient-Statistic Factorization",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep042_likelihood_eq_of_stat_eq",
+      "supporting": [
+        "fep042_likelihood_factorizes"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep042_likelihood_eq_of_stat_eq": "theorem fep042_likelihood_eq_of_stat_eq\n    (p : \u211d) (xs ys : List Bool)\n    (h : fep042_sufficientStatistic xs = fep042_sufficientStatistic ys) :\n    fep042_bernoulliLikelihood p xs = fep042_bernoulliLikelihood p ys",
+        "fep042_likelihood_factorizes": "theorem fep042_likelihood_factorizes (p : \u211d) (data : List Bool) :\n    fep042_bernoulliLikelihood p data =\n      p ^ fep042_successCount data * (1 - p) ^ fep042_failureCount data"
+      },
+      "body_sha256": "63669d5063789c1b2dfe2f763cb08239bf57927f01cdca428e1d13d37692d0c1",
+      "maturity_record": {
+        "id": "fep-042",
+        "primary_theorem": "fep042_likelihood_eq_of_stat_eq",
+        "supporting_theorems": [
+          "fep042_likelihood_factorizes"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The Bernoulli sequence likelihood factorizes exactly through success and failure counts, so samples with equal count statistics have identical likelihood for every parameter.",
+        "assumption_review": "The theorem is finite-sample and algebraic over a Boolean observation list. Its probabilistic interpretation restricts p to [0,1]; no completeness, asymptotic efficiency, or non-Bernoulli family is claimed.",
+        "non_vacuity": "Distinct orderings such as [true,false] and [false,true] have the same statistic and likelihood, while samples with different success counts generally differ for interior p.",
+        "acceptance_probe": "native Lean compile of fep042_likelihood_factorizes and fep042_likelihood_eq_of_stat_eq on permuted Boolean samples.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary equalsufficientcountstats\u21d2equallikelihood\u2200realp; recursiveBernoullilikelihoodfactorssuccess/failurepowers exact.",
+      "premise_scope_boundary": "Probabilisticinterpretationrestrictsp\u2208[0,1]; no generaldominatedstatistical-sufficiency\u03c3algebra,minimalsufficiency/completeness/efficiencytheorem.",
+      "positive_adverse_unexecuted_specs": "PermutedTF/FTsamecounts; p1/4TTvsFFdifferent; p1/2allequallengthsequencestieevendifferentcounts,so conversefalse.",
+      "nearest_topic_distinction": "036smoothedcountsand095exchangeablePolya countlikelihooddifferentmodels;115unionboundsstatisticalnotderivedfromthisfactorization.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-115",
+          "nearest_topics": [
+            "fep-042",
+            "fep-035"
+          ],
+          "new_invariant": "Per-symbol normalized-count deviation bounds lift to a simultaneous finite-alphabet guarantee.",
+          "carrier_delta": "Adds a nonzero finite sample, decidable alphabet, concrete two-sided frequency events, and a probability union bound.",
+          "required_bridge": "FEPComposed.fep115_frequency_union_bound_extends_fep042_counts"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-042",
+          "target": "fep-036",
+          "kind": "formal",
+          "rationale": "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep036_empiricalPosterior_closed"
+        },
+        {
+          "source": "fep-115",
+          "target": "fep-042",
+          "kind": "formal_pairing",
+          "rationale": "The simultaneous finite-alphabet frequency bound is paired with the original exact Bernoulli likelihood factorization through finite counts.",
+          "witness": "FEPComposed.fep115_frequency_union_bound_extends_fep042_counts"
+        }
+      ]
+    },
+    {
+      "id": "fep-045",
+      "title": "Finite Bernoulli Conjugate Closure",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep045_bernoulli_posterior_closed",
+      "supporting": [
+        "fep045_evidence_pos",
+        "fep045_posteriorParameter_mem_unit",
+        "fep045_posterior_mass_one"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep045_bernoulli_posterior_closed": "theorem fep045_bernoulli_posterior_closed\n    {p l\u2080 l\u2081 : \u211d} (hZ : fep045_evidence p l\u2080 l\u2081 \u2260 0) (b : Bool) :\n    fep045_bernoulliMass (fep045_posteriorParameter p l\u2080 l\u2081) b =\n      fep045_bernoulliMass p b * fep045_binaryLikelihood l\u2080 l\u2081 b /\n        fep045_evidence p l\u2080 l\u2081",
+        "fep045_evidence_pos": "theorem fep045_evidence_pos\n    {p l\u2080 l\u2081 : \u211d} (hp\u2080 : 0 < p) (hp\u2081 : p < 1)\n    (hl\u2080 : 0 < l\u2080) (hl\u2081 : 0 < l\u2081) :\n    0 < fep045_evidence p l\u2080 l\u2081",
+        "fep045_posteriorParameter_mem_unit": "theorem fep045_posteriorParameter_mem_unit\n    {p l\u2080 l\u2081 : \u211d} (hp\u2080 : 0 < p) (hp\u2081 : p < 1)\n    (hl\u2080 : 0 < l\u2080) (hl\u2081 : 0 < l\u2081) :\n    0 \u2264 fep045_posteriorParameter p l\u2080 l\u2081 \u2227\n      fep045_posteriorParameter p l\u2080 l\u2081 \u2264 1",
+        "fep045_posterior_mass_one": "theorem fep045_posterior_mass_one (p l\u2080 l\u2081 : \u211d) :\n    \u2211 b : Bool, fep045_bernoulliMass (fep045_posteriorParameter p l\u2080 l\u2081) b = 1"
+      },
+      "body_sha256": "a1a2a072db600b245fed50f6a05f657240788fd64c081a883daa96917ae7af6a",
+      "maturity_record": {
+        "id": "fep-045",
+        "primary_theorem": "fep045_bernoulli_posterior_closed",
+        "supporting_theorems": [
+          "fep045_evidence_pos",
+          "fep045_posteriorParameter_mem_unit",
+          "fep045_posterior_mass_one"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For a nonzero evidence normalizer, likelihood-times-Bernoulli-prior mass normalizes pointwise to another Bernoulli law at the Bayes-updated parameter.",
+        "assumption_review": "Closure is exact for a binary latent hypothesis and binary evidence likelihood. Interior prior and positive likelihood assumptions prove positive evidence and keep the updated parameter in [0,1]. This is a finite Bernoulli conjugate family, not Beta-density conjugacy.",
+        "non_vacuity": "Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one; equal likelihoods leave the prior parameter unchanged algebraically.",
+        "acceptance_probe": "native Lean compile of fep045_evidence_pos, fep045_posteriorParameter_mem_unit, fep045_bernoulli_posterior_closed, and fep045_posterior_mass_one.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary pointwiseBayesmass-vectorclosureunderZ\u22600; interiorpriorpositivelikelihoodensureZ>0andposterior[0,1]; totalmassonealgebraically\u2200realparameters.",
+      "premise_scope_boundary": "NonzeroZalone doesnotensureprobabilitynonnegativity. ZeroZtotalizedparam0givesdegenerateBernoullimasssumonebutnotnormalizedBayesratio. Equallikelihoodpriorunchangedrequirescommonlikelihoodnonzero.",
+      "positive_adverse_unexecuted_specs": "p1/3,l0=1/4,l1=3/4posterior3/5; bothlikelihood0Z0posterior0notp; p2,l0=l1=1hasnegativefalsemassdespitesum1.",
+      "nearest_topic_distinction": "095PolyaBayesparameterbridgecountlevelnotBeta-densityconjugacy;017nativeBayesneedsfiniteembeddingandpositiveevidencenocodomainshortcut.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-118",
+          "nearest_topics": [
+            "fep-045",
+            "fep-117"
+          ],
+          "new_invariant": "A per-observation likelihood gap gives exponential finite-sample concentration of inferior posterior weight.",
+          "carrier_delta": "Iterates two scalar hypothesis likelihood weights over sample count with explicit support, gap, and exact posterior witness.",
+          "required_bridge": "FEPComposed.fep118_posterior_concentration_extends_fep045_update"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-017",
+          "target": "fep-045",
+          "kind": "conceptual",
+          "rationale": "The native posterior-kernel laws provide normalized Bayesian semantics, while fep-045 must still prove closure of a named conjugate family."
+        },
+        {
+          "source": "fep-036",
+          "target": "fep-045",
+          "kind": "formal",
+          "rationale": "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep036_empiricalPosterior_closed"
+        },
+        {
+          "source": "fep-046",
+          "target": "fep-045",
+          "kind": "formal",
+          "rationale": "A single stick-breaking fraction is the Bernoulli law of fep-045 (allocated weight is the true mass, residual is the false mass), and fep-046's mass-conservation theorem derives the normalization of fep-045's conjugate posterior mass function at the posterior parameter. One break only; no Dirichlet-process or infinite-series claim. Added 2026-10-08 (LEAN-8, issue 106).",
+          "witness": "FEPComposed.fep046_single_break_is_fep045_bernoulli"
+        },
+        {
+          "source": "fep-118",
+          "target": "fep-045",
+          "kind": "formal_pairing",
+          "rationale": "A finite likelihood gap bounds inferior posterior mass exponentially, while the original Bernoulli update remains normalized for every parameter.",
+          "witness": "FEPComposed.fep118_posterior_concentration_extends_fep045_update"
+        }
+      ]
+    },
+    {
+      "id": "fep-046",
+      "title": "Finite Stick-Breaking Mass Conservation",
+      "disposition": "retain_formalized_for_narrow_proxy_with_wording_findings",
+      "primary": "fep046_mass_conservation",
+      "supporting": [
+        "fep046_remainder_nonneg",
+        "fep046_remainder_le_one"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep046_mass_conservation": "theorem fep046_mass_conservation (breaks : List \u211d) :\n    (fep046_stickWeights breaks).sum + fep046_remainder breaks = 1",
+        "fep046_remainder_nonneg": "theorem fep046_remainder_nonneg (breaks : List \u211d)\n    (hbreaks : \u2200 v \u2208 breaks, v \u2208 Set.Icc (0 : \u211d) 1) :\n    0 \u2264 fep046_remainder breaks",
+        "fep046_remainder_le_one": "theorem fep046_remainder_le_one (breaks : List \u211d)\n    (hbreaks : \u2200 v \u2208 breaks, v \u2208 Set.Icc (0 : \u211d) 1) :\n    fep046_remainder breaks \u2264 1"
+      },
+      "body_sha256": "4d114a8250d9d2a26110000b6e8bbabfb2cb899c03864f735afd0d5fa06836fd",
+      "maturity_record": {
+        "id": "fep-046",
+        "primary_theorem": "fep046_mass_conservation",
+        "supporting_theorems": [
+          "fep046_remainder_nonneg",
+          "fep046_remainder_le_one"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For every finite stick-breaking sequence, allocated weights plus residual mass equal exactly one; unit-interval breaks keep the residual in [0,1].",
+        "assumption_review": "Mass conservation is a purely algebraic identity with no bounds. Residual nonnegativity and the unit upper bound require every break fraction in [0,1]. No infinite-series exhaustion or random-process law is claimed.",
+        "non_vacuity": "Multiple unequal interior breaks allocate several positive weights and a positive remainder, while a break of one exhausts all subsequent residual mass.",
+        "acceptance_probe": "native Lean compile of fep046_mass_conservation, fep046_remainder_nonneg, and fep046_remainder_le_one on empty, singleton, and multi-break lists.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary finiteallocatedweights+remainder1unconditionalrealalgebra; supportingremainderboundsneedallbreaks[0,1].",
+      "premise_scope_boundary": "No randomBeta/Dirichletprocess, infiniteexhaustion,allocatedweightsnonnegtheoremorprobabilitydistributioncarrierprovided; thosearenotclaimedbymaturity.",
+      "positive_adverse_unexecuted_specs": "breaks[1/2,1/3]weights[1/2,1/6],residual1/3; break1killslaterresidual; breaks[2]allocated2residual-1stillconserves1; allzeroresidual1neverexhausts.",
+      "nearest_topic_distinction": "045singlebreakBernoullimassidentityexactalgebra;095countconjugacyseparate;Stage2productBetaDirichletpushforwardneedsadditionalmeasurability/normalizerwork.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-111",
+          "nearest_topics": [
+            "fep-025",
+            "fep-046"
+          ],
+          "new_invariant": "The maintained doubly stochastic two-agent update conserves pointwise and total combined belief mass.",
+          "carrier_delta": "Moves conservation from one nonequilibrium current or stick-breaking law to redistribution across two normalized agents.",
+          "required_bridge": "FEPComposed.fep111_consensus_mass_extends_fep025_conservation"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-046",
+          "target": "fep-045",
+          "kind": "formal",
+          "rationale": "A single stick-breaking fraction is the Bernoulli law of fep-045 (allocated weight is the true mass, residual is the false mass), and fep-046's mass-conservation theorem derives the normalization of fep-045's conjugate posterior mass function at the posterior parameter. One break only; no Dirichlet-process or infinite-series claim. Added 2026-10-08 (LEAN-8, issue 106).",
+          "witness": "FEPComposed.fep046_single_break_is_fep045_bernoulli"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "row": "fep-009",
+      "path": "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py",
+      "finding": "joint_product_nonnegdocstring saysjointmassfactorsasproduct, butstatementonlyprovesnonnegativityofproductoftwomeasurevalues.",
+      "exact_correction": "The product of two nonnegative measure values is nonnegative; no joint factorization or independence is asserted."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-045",
+      "field": "invariant/non_vacuity",
+      "finding": "Z\u22600closureisrealmass-vectoridentity,notprobabilitylawwithoutdomainconditions; equallikelihoodzero doesnotpreserveprior.",
+      "exact_correction": "For nonzero evidence, likelihood-times-prior masses have the Bernoulli mass-vector form at the updated parameter. Probability-law interpretation additionally requires a prior in [0,1] and nonnegative likelihoods with positive evidence. Equal nonzero likelihoods preserve the prior; both zero expose the refused evidence boundary."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-027",
+      "field": "assumption_review",
+      "finding": "finite-kernelclasses wording obscuresactualSFinite/Markov distinctions.",
+      "exact_correction": "First marginal: SFinite parent and Markov child. Second marginal: SFinite parent and SFinite child. Probability normalization: probability parent and Markov child. Associativity is the native compProd identity."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-017",
+      "field": "assumption_review",
+      "finding": "ClarifyAEposteriorversionboundary andobservationnonemptyoncountabledensityformula.",
+      "exact_correction": "The Bayes-density formula additionally assumes countable latent and nonempty standard-Borel observation structure and holds only almost everywhere under the predictive law. Every selected posterior fibre is normalized, including version choices at null observations."
+    }
+  ],
+  "ranked_existing_owner_followups": [
+    {
+      "rank": 1,
+      "scope": "009docstring/045probabilityscope/027classes/017versionclarifications",
+      "missing_content": "Correctstrongerthanstatementprose; preserveallproofbytes/dispositions.",
+      "positive": "actualprovidedconditionaltheorems",
+      "adverse": "correlatedjointproductnonneg; p2Bernoullinegativefalsemass; zeroevidence",
+      "library_seam": "No newlibraryneeded;exactstatementmetadata",
+      "estimate": "0.5dayplussealedprojectionreview"
+    },
+    {
+      "rank": 2,
+      "scope": "045boundaryandstronger-domainprobabilitywrapper",
+      "missing_content": "Wrapperallowp\u2208[0,1],nonnegative-likelihoodswithZ>0, ratherthanstrictpositiveonly; namedzeroevidenceadverse.",
+      "positive": "endpointpriorp0withl0>0; onezerolikelihoodwithpositiveevidence",
+      "adverse": "Z0doesnotBayesnormalize; negativepriormass",
+      "library_seam": "div_nonneg/div_le_one,existingBernoulliMass andFiniteLawcarrier; preserveoldstrictwrapper",
+      "estimate": "0.5-1daynativepositive/adverse/rawaxiomreview"
+    },
+    {
+      "rank": 3,
+      "scope": "040closedformentropy-to-actualGaussianlogdensity",
+      "missing_content": "ProvepositivevarianceintegrabilityofnegativeGaussianlogdensityanditsGaussianexpectationequaldefinedclosedform; nogeneralentropyreimplementation.",
+      "positive": "mean0variance1/positivevariances",
+      "adverse": "variance0DiracnotLebesguedensityentropy; referenceunitrescalingchangescost",
+      "library_seam": "gaussianPDFReal_pos/definition,integral_id_gaussianReal,variance_id_gaussianReal andquadraticmoment/integrableGaussian APIs; explicitreferenceLebesguemeasure",
+      "estimate": "2-4daysfirstsourceboundprobe; integrabilityseamqualifybeforepromise"
+    },
+    {
+      "rank": 4,
+      "scope": "010nontrivialreversibilityconsumer",
+      "missing_content": "ReplaceidentityonlynonvacuitypacketwithactualBoolflip/noisychainnativekernel; noabsenceofmathematicsclaimed.",
+      "positive": "fairBoolflipreversibleanduniforminvariant",
+      "adverse": "periodicitypreventsconvergence; directed3cycleinvariantnotreversible",
+      "library_seam": "Kernel.IsReversible/Invariant;existingfiniteMarkov/nativeembeddedkernelowners",
+      "estimate": "1-2dayswithactualcountermodel/nativeaxioms"
+    },
+    {
+      "rank": 5,
+      "scope": "046allocatedweightsnonnegativeandnormalizedfiniteextension",
+      "missing_content": "Proveeveryallocatedweight>=0underunitbreaksandpackageweightsplusresidualasexistingFiniteLaw;finiteonly.",
+      "positive": "[1/2,1/3]positiveweightsresidual",
+      "adverse": "break2givesnegative residual; infinitezerosnoexhaustion",
+      "library_seam": "Listinduction/mapmembership,existingFiniteLawmasssumoneandmassconservation",
+      "estimate": "0.5-1.5days; noDirichletprocessclosure"
+    }
+  ],
+  "remaining": [
+    "Issue75remainingfamiliesand54/68dependencydispositionopen",
+    "Noautomaticpromotion/newtopic/rosterchange; eachauthoredfollowupneedsqualifiednative/axiom/domainreview/projections",
+    "Currentnative168/audit1886notusedassubstituteforsemanticreasoning"
+  ],
+  "limitations": [
+    "Staticcanonicalsourceandnearestmetadata/foundation/libraryinspection; no Leanexecution/S mutations",
+    "All13boundaryarrayscurrentlyempty; adverseexampleshereareunexecutedsemanticwitnessspecifications",
+    "Nearestotherfamilyrowsarecomparisoncontextnotcompleteaudits"
+  ]
+}

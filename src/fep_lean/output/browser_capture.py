@@ -277,7 +277,7 @@ def canonical_browser_observations(
             "searchVisible": 1,
             "slashFocused": True,
             "structuralAnalogues": 1,
-            "theoremInstances": 16,
+            "theoremInstances": counts["witnesses"] - 1,
             "jumpFocused": True,
             "jumpOpened": True,
             "witnesses": counts["witnesses"],

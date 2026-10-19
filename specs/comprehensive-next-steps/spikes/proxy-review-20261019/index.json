@@ -1,0 +1,331 @@
+{
+  "state": "all168_static_semantic_rows_independently_reviewed_exact_source",
+  "topic_count": 168,
+  "families": 22,
+  "source_head": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "reports": [
+    {
+      "file": "fep75-family-causal-blankets-and-interventions-independent-review.json",
+      "sha256": "8fd6c76353df9d2127c1a1a5873e09d4964cfb22dc2e4178a15eee0f2599f63a",
+      "row_ids": [
+        "fep-079",
+        "fep-080",
+        "fep-081",
+        "fep-082",
+        "fep-083",
+        "fep-084",
+        "fep-085"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-closed-loop-policy-trees-and-efe-independent-review.json",
+      "sha256": "fe2883e288ca68a59d1f2204d2d922298b83927c9a55541979fc8e043f970c53",
+      "row_ids": [
+        "fep-128",
+        "fep-129",
+        "fep-130",
+        "fep-131",
+        "fep-132",
+        "fep-133",
+        "fep-134"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-collective-and-multiagent-active-inference-independent-review.json",
+      "sha256": "438f1972e320050fd974b374f904a98fcbd0c60aa546e2a5dd52f5995369f9a3",
+      "row_ids": [
+        "fep-107",
+        "fep-108",
+        "fep-109",
+        "fep-110",
+        "fep-111",
+        "fep-112",
+        "fep-113"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-control-and-planning-as-inference-independent-review.json",
+      "sha256": "52e5288e96754f7348c01428946529b92daa460a305444b99658ee8f8f89ec9d",
+      "row_ids": [
+        "fep-065",
+        "fep-066",
+        "fep-067",
+        "fep-068",
+        "fep-069",
+        "fep-070",
+        "fep-071"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-core-active-inference-independent-review.json",
+      "sha256": "624eb29bfd5fb46cf520c88cc1a50e42d359353db41f33af9c33d570a07f3a60",
+      "row_ids": [
+        "fep-003",
+        "fep-007",
+        "fep-008",
+        "fep-021",
+        "fep-023",
+        "fep-028",
+        "fep-033",
+        "fep-034",
+        "fep-041",
+        "fep-047"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-core-bayesian-mechanics-independent-review.json",
+      "sha256": "236e8eb84e6567a7adadbe668ca770648029293a39633b1b18c5eecfa5376a99",
+      "row_ids": [
+        "fep-005",
+        "fep-009",
+        "fep-010",
+        "fep-017",
+        "fep-019",
+        "fep-020",
+        "fep-022",
+        "fep-027",
+        "fep-036",
+        "fep-040",
+        "fep-042",
+        "fep-045",
+        "fep-046"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-core-free-energy-independent-review.json",
+      "sha256": "18abbee287550756a76b77c85833eba81d0aad41d6a604e376b9681c73dee982",
+      "row_ids": [
+        "fep-001",
+        "fep-002",
+        "fep-006",
+        "fep-011",
+        "fep-012",
+        "fep-015",
+        "fep-016",
+        "fep-026",
+        "fep-032",
+        "fep-035",
+        "fep-039",
+        "fep-043",
+        "fep-048"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-core-information-geometry-independent-review.json",
+      "sha256": "b5b53b8fb6819d012bc953d93eeb3c1e5d26fe05cdf12ef041024083c9a80a90",
+      "row_ids": [
+        "fep-004",
+        "fep-014",
+        "fep-018",
+        "fep-024",
+        "fep-029",
+        "fep-038",
+        "fep-044"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-core-thermodynamics-independent-review.json",
+      "sha256": "51cd166910c345809eef33f4d23e26d74d7e383b8a5f1eed9f263b4ae8c53813",
+      "row_ids": [
+        "fep-013",
+        "fep-025",
+        "fep-030",
+        "fep-031",
+        "fep-037",
+        "fep-049",
+        "fep-050"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-finite-exponential-family-dual-geometry-independent-review.json",
+      "sha256": "d6bb77f30ba3a2f8ac593b7cb89c6aba474135315ce405b07b4a06ee29912187",
+      "row_ids": [
+        "fep-142",
+        "fep-143",
+        "fep-144",
+        "fep-145",
+        "fep-146",
+        "fep-147",
+        "fep-148"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-finite-sample-risk-and-calibration-independent-review.json",
+      "sha256": "76aa4de611285ec6570b33f29eadd0440f3df94038d37555ddda5287bb6f05ff",
+      "row_ids": [
+        "fep-121",
+        "fep-122",
+        "fep-123",
+        "fep-124",
+        "fep-125",
+        "fep-126",
+        "fep-127"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-finite-to-native-blanket-transfer-independent-review.json",
+      "sha256": "4aca8a214c2fad159aabc6b13ebfcc7ecbf70d186f1a4ca3422de46a0a456f9c",
+      "row_ids": [
+        "fep-135",
+        "fep-136",
+        "fep-137",
+        "fep-138",
+        "fep-139",
+        "fep-140",
+        "fep-141"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-geometric-mechanics-notation-independent-review.json",
+      "sha256": "3d0dc843238c4e5fedff7b54b80c51b2a4d3c5f083a9cbb1a64de2744c3f1a7f",
+      "row_ids": [
+        "fep-161",
+        "fep-162",
+        "fep-163",
+        "fep-164",
+        "fep-165",
+        "fep-167",
+        "fep-168"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-information-geometry-and-geometric-optimization-independent-review.json",
+      "sha256": "f0463cda5bf7671be746c8ab4cd59b3dea55c326e2efa2479f6c2be07e7fe5ae",
+      "row_ids": [
+        "fep-100",
+        "fep-101",
+        "fep-102",
+        "fep-103",
+        "fep-104",
+        "fep-105",
+        "fep-106"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-learning-concentration-and-model-evidence-independent-review.json",
+      "sha256": "50843ae3454465554bb7987b56021b9f426b82ce74de2471303577161dd0413d",
+      "row_ids": [
+        "fep-114",
+        "fep-115",
+        "fep-116",
+        "fep-117",
+        "fep-118",
+        "fep-119",
+        "fep-120"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-measure-bayesian-inversion-independent-review.json",
+      "sha256": "be02db71679a92026f11147dbf225f9b3910647127539ffddf4938505e2d325d",
+      "row_ids": [
+        "fep-051",
+        "fep-052",
+        "fep-053",
+        "fep-054",
+        "fep-055",
+        "fep-056",
+        "fep-057"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-path-space-stochastic-thermodynamics-independent-review.json",
+      "sha256": "9c2afd44dc52e89aafd122222f7ed3b450908d02d0803d01f3cd84141114e53e",
+      "row_ids": [
+        "fep-093",
+        "fep-094",
+        "fep-095",
+        "fep-096",
+        "fep-097",
+        "fep-098",
+        "fep-099"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-predictive-coding-and-generalized-coordinates-independent-review.json",
+      "sha256": "adb0177c16254b58dc116346e273b301cc921a4ae95ed41a453d524f0656a150",
+      "row_ids": [
+        "fep-086",
+        "fep-087",
+        "fep-088",
+        "fep-089",
+        "fep-090",
+        "fep-091",
+        "fep-092"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-standalone-efe-formalizations-independent-review.json",
+      "sha256": "5a8abaaed5a48069eaf6475c20ba6f22611504d34acff460f54b5e815478c51a",
+      "row_ids": [
+        "fep-156",
+        "fep-157",
+        "fep-158",
+        "fep-159",
+        "fep-160",
+        "fep-166"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-temporal-and-hierarchical-inference-independent-review.json",
+      "sha256": "77861eb0a03de9daedaf088304b7256a72d04d210efa3f42c38bee92e35090af",
+      "row_ids": [
+        "fep-072",
+        "fep-073",
+        "fep-074",
+        "fep-075",
+        "fep-076",
+        "fep-077",
+        "fep-078"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-two-state-continuous-time-thermodynamics-independent-review.json",
+      "sha256": "f552c612779cf40ea3d56bd1542de31ca22cd79b800ae501334f4b4c74da11fa",
+      "row_ids": [
+        "fep-149",
+        "fep-150",
+        "fep-151",
+        "fep-152",
+        "fep-153",
+        "fep-154",
+        "fep-155"
+      ],
+      "source_binding_passed": true
+    },
+    {
+      "file": "fep75-family-variational-duality-and-information-bounds-independent-review.json",
+      "sha256": "96e304b4b8c058d03b6618f4efd0b1529447549d03a50bf709ba523aee2bec47",
+      "row_ids": [
+        "fep-058",
+        "fep-059",
+        "fep-060",
+        "fep-061",
+        "fep-062",
+        "fep-063",
+        "fep-064"
+      ],
+      "source_binding_passed": true
+    }
+  ],
+  "boundary": "Static statement/assumption/nonvacuity/disposition audit only. Proposed metadata corrections, current projections/custody/native/runtime/main acceptance and Issue75 closure pending. Positive/adverse proof proposals remain explicitly unexecuted unless separately supported by actual receipts."
+}

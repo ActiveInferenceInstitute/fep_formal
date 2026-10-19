@@ -1,0 +1,803 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_semantic_audit_complete_retain_narrow_dispositions_with_precision_findings",
+  "scope": "core-information-geometryonly7rows;collectiveauditsnow50originalrowsnotall168",
+  "source_head": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "row_ids": [
+    "fep-004",
+    "fep-014",
+    "fep-018",
+    "fep-024",
+    "fep-029",
+    "fep-038",
+    "fep-044"
+  ],
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/core_information_geometry.py": "0b6c247455728d498ddf68e606296e8546c6b7f9b0de330e4cab94605dace783",
+    "lean/FepSketches/families/core_information_geometry.lean": "a3e9be0d7b21b77da0c7c330c992a55592552fd7872a5671d1a9c46be6f7fd03",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "src/fep_lean/formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/compositions/thermo_geometry.lean": "da7e8302780b6aac77e9fd06c6eb1c1417042bacd9bb7d9954994c21b0751427",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665"
+  },
+  "rows": [
+    {
+      "id": "fep-004",
+      "title": "Finite Diagonal Fisher Metric",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep004_fisherMetric_eq_zero_iff",
+      "supporting": [
+        "fep004_fisherMetric_symm",
+        "fep004_fisherMetric_nonneg"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep004_fisherMetric_eq_zero_iff": "theorem fep004_fisherMetric_eq_zero_iff {\u03b9 : Type*} [Fintype \u03b9]\n    (information v : \u03b9 \u2192 \u211d) (hinformation : \u2200 i, 0 < information i) :\n    fep004_fisherMetric information v v = 0 \u2194 \u2200 i, v i = 0",
+        "fep004_fisherMetric_symm": "theorem fep004_fisherMetric_symm {\u03b9 : Type*} [Fintype \u03b9]\n    (information u v : \u03b9 \u2192 \u211d) :\n    fep004_fisherMetric information u v =\n      fep004_fisherMetric information v u",
+        "fep004_fisherMetric_nonneg": "theorem fep004_fisherMetric_nonneg {\u03b9 : Type*} [Fintype \u03b9]\n    (information v : \u03b9 \u2192 \u211d) (hinformation : \u2200 i, 0 \u2264 information i) :\n    0 \u2264 fep004_fisherMetric information v v"
+      },
+      "body_sha256": "9101abb2cf0073571db62dc6adef6b77623434c4d2a25c6ae8241b393d470d95",
+      "maturity_record": {
+        "id": "fep-004",
+        "primary_theorem": "fep004_fisherMetric_eq_zero_iff",
+        "supporting_theorems": [
+          "fep004_fisherMetric_symm",
+          "fep004_fisherMetric_nonneg"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A finite diagonal Fisher metric is symmetric and positive semidefinite under nonnegative information weights, and becomes positive definite under strictly positive weights.",
+        "assumption_review": "The information weights are explicit inputs rather than derived from a statistical family in this row. Positive definiteness requires every coordinate weight to be strictly positive; fep-038 computes the one-dimensional Bernoulli weight and the composed theorem identifies that specialization.",
+        "non_vacuity": "Any strictly positive nonconstant weight vector and nonzero tangent has positive norm, while the zero-characterization excludes every nonzero coordinate direction.",
+        "acceptance_probe": "native Lean compile of fep004_fisherMetric_symm, fep004_fisherMetric_nonneg, fep004_fisherMetric_eq_zero_iff, and FEPComposed.fep004_bernoulliMetric_specialization.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Supplied finite diagonalweights give symmetry/nonnegativepairing and strictlypositiveweights givezeroiffzerovector.",
+      "premise_scope_boundary": "StatisticalFisheroriginnotderived; degeneratezero/negativeweightsnotpositivegeometry.",
+      "positive_adverse_unexecuted_specs": "weights(1,2),tangent(1,0)positive; zerooneweightandnonzerotangentinnullcoordinate giveszero.",
+      "nearest_topic_distinction": "038suppliesBernoulliweight;101pullbacks/100simplexgeometrydifferentmodels.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-100",
+          "nearest_topics": [
+            "fep-004",
+            "fep-038"
+          ],
+          "new_invariant": "The inherited categorical Fisher metric is positive on nonzero simplex tangents; a genuine Fin 2 carrier spans every tangent by (1,-1) and gives that direction energy four, while a duplicated-score model supplies an explicit null-rank boundary.",
+          "carrier_delta": "Extends diagonal Fisher examples to a ScoreModel-linked full-support categorical carrier with derived centered-score and lowering identities, a concrete full-rank Fin 2 tangent-space witness, and a separate rank-deficient model.",
+          "required_bridge": "FEPComposed.fep100_categorical_fisher_refines_fep004"
+        },
+        {
+          "id": "fep-101",
+          "nearest_topics": [
+            "fep-038",
+            "fep-004"
+          ],
+          "new_invariant": "Fisher pullback composes under finite reparameterization and remains positive semidefinite.",
+          "carrier_delta": "Adds arbitrary finite Jacobian matrices between the existing ScoreModel Fisher carrier and new chart coordinates.",
+          "required_bridge": "FEPComposed.fep101_fisher_pullback_extends_fep038"
+        },
+        {
+          "id": "fep-103",
+          "nearest_topics": [
+            "fep-038",
+            "fep-004"
+          ],
+          "new_invariant": "Natural gradients transform equivariantly under an invertible full-rank finite chart.",
+          "carrier_delta": "Adds invertible Fisher and chart matrices plus explicit vector and covector coordinate transports.",
+          "required_bridge": "FEPComposed.fep103_natural_gradient_extends_fep038"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-004",
+          "target": "fep-038",
+          "kind": "formal",
+          "rationale": "The composed theorem specializes fep-004's finite positive-weight Fisher metric to the one-coordinate Bernoulli information weight computed by fep-038. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries both endpoints through their Fisher-metric definitions (`fep_fep004.FEP004.fep004_fisherMetric`, `fep_fep038.FEP038.fep038_fisherMetric`) without invoking either topic's reviewed theorems; the row stands unchanged.",
+          "witness": "FEPComposed.fep004_bernoulliMetric_specialization"
+        },
+        {
+          "source": "fep-100",
+          "target": "fep-004",
+          "kind": "formal_pairing",
+          "rationale": "Full-support categorical Fisher positivity strengthens the original diagonal Fisher metric's positive-semidefinite certificate.",
+          "witness": "FEPComposed.fep100_categorical_fisher_refines_fep004"
+        }
+      ]
+    },
+    {
+      "id": "fep-014",
+      "title": "KL Divergence: Non-Negativity, Identity, and Chain Rule",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep014_kl_chain_rule",
+      "supporting": [
+        "fep014_kl_nonneg",
+        "fep014_kl_self",
+        "fep014_kl_eq_zero_iff"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep014_kl_chain_rule": "theorem fep014_kl_chain_rule (\u03bc \u03bd : Measure \u03b1) (\u03ba \u03b7 : Kernel \u03b1 \u03b2)\n    [IsFiniteMeasure \u03bc] [IsFiniteMeasure \u03bd]\n    [IsMarkovKernel \u03ba] [IsMarkovKernel \u03b7] :\n    InformationTheory.klDiv (\u03bc \u2297\u2098 \u03ba) (\u03bd \u2297\u2098 \u03b7) =\n      InformationTheory.klDiv \u03bc \u03bd +\n        InformationTheory.klDiv (\u03bc \u2297\u2098 \u03ba) (\u03bc \u2297\u2098 \u03b7)",
+        "fep014_kl_nonneg": "theorem fep014_kl_nonneg (\u03bc \u03bd : Measure \u03b1) :\n    0 \u2264 InformationTheory.klDiv \u03bc \u03bd",
+        "fep014_kl_self": "theorem fep014_kl_self (\u03bc : Measure \u03b1) [SigmaFinite \u03bc] :\n    InformationTheory.klDiv \u03bc \u03bc = 0",
+        "fep014_kl_eq_zero_iff": "theorem fep014_kl_eq_zero_iff (\u03bc \u03bd : Measure \u03b1)\n    [IsFiniteMeasure \u03bc] [IsFiniteMeasure \u03bd] :\n    InformationTheory.klDiv \u03bc \u03bd = 0 \u2194 \u03bc = \u03bd"
+      },
+      "body_sha256": "800cd64392da359f1df69785fcf1d08403ae3d7c2a89119b10091b2c3128d0ee",
+      "maturity_record": {
+        "id": "fep-014",
+        "primary_theorem": "fep014_kl_chain_rule",
+        "supporting_theorems": [
+          "fep014_kl_nonneg",
+          "fep014_kl_self",
+          "fep014_kl_eq_zero_iff"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Mathlib KL divergence is nonnegative, vanishes exactly on equal finite measures, and obeys the composition-product chain rule for Markov kernels.",
+        "assumption_review": "Self-divergence uses SigmaFinite; zero-characterization and the chain rule use finite measures; the chain rule additionally requires Markov kernels. The pin separately exposes native measure-KL data processing under a Markov kernel as InformationTheory.klDiv_comp_right_le; fep-014 does not include that theorem in its maintained theorem surface.",
+        "non_vacuity": "Equal finite measures witness zero KL, unequal finite measures exercise the zero-characterization, and distinct Markov kernels give a nontrivial conditional term in the chain rule.",
+        "acceptance_probe": "native Lean compile of fep014_kl_nonneg, fep014_kl_self, fep014_kl_eq_zero_iff, and fep014_kl_chain_rule against Mathlib.InformationTheory.KullbackLeibler.ChainRule.",
+        "disposition": "formalized"
+      },
+      "statement_review": "NativeENNRealKLchainrule forfinite\u03bc\u03bd andMarkov\u03ba\u03b7;selfzeroSigmaFinite,separationfinite exact.",
+      "premise_scope_boundary": "Notbarefiniteprobabilitysumwithoutsupport;singularactual/reference can\u221e; noownedDPIwrapperthoughpinnednativeDPIexists.",
+      "positive_adverse_unexecuted_specs": "Equalmeasureszero,unequalfinitepositive,singularDirac\u221e; productMarkovkernelconditionalKLtermnontrivial.",
+      "nearest_topic_distinction": "001/002/024/041reuseKL;063finiteDPIseparate;110genericweightedDiracproposalnotyetintegrated.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-060",
+          "nearest_topics": [
+            "fep-002",
+            "fep-014"
+          ],
+          "new_invariant": "Joint ELBO splits into a prior-coordinate term and an expected conditional KL penalty.",
+          "carrier_delta": "Adds paired finite kernels and pointwise reference support to the earlier single-law evidence decomposition.",
+          "required_bridge": "FEPComposed.fep060_coordinate_elbo_refines_fep002"
+        },
+        {
+          "id": "fep-061",
+          "nearest_topics": [
+            "fep-014",
+            "fep-024"
+          ],
+          "new_invariant": "A fixed-factor mean-field coordinate objective is zero exactly at its supported target law.",
+          "carrier_delta": "Specializes KL regularization to an exact one-coordinate variational optimum with the other factor held fixed.",
+          "required_bridge": "FEPComposed.fep061_meanField_gap_is_fep014_kl"
+        },
+        {
+          "id": "fep-063",
+          "nearest_topics": [
+            "fep-014",
+            "fep-019"
+          ],
+          "new_invariant": "A shared strictly positive finite channel cannot increase KL divergence.",
+          "carrier_delta": "Adds two full-support input laws, a normalized finite channel, and predictive-law support propagation.",
+          "required_bridge": "FEPComposed.fep063_channel_dpi_bounds_fep014"
+        },
+        {
+          "id": "fep-064",
+          "nearest_topics": [
+            "fep-041",
+            "fep-014"
+          ],
+          "new_invariant": "Certified rate and distortion lower bounds combine by weak Lagrangian duality.",
+          "carrier_delta": "Adds a finite source\u2013code joint law, distortion function, and explicit nonnegative multiplier without optimizer existence.",
+          "required_bridge": "FEPComposed.fep064_rateDistortion_uses_fep041_mutualInformation"
+        },
+        {
+          "id": "fep-079",
+          "nearest_topics": [
+            "fep-009",
+            "fep-014"
+          ],
+          "new_invariant": "Full-support blanket rows factorize exactly when conditional mutual information vanishes.",
+          "carrier_delta": "Adds a finite blanket law and a family of internal\u2013external conditional joint laws with visible null-row scope.",
+          "required_bridge": "FEPComposed.fep079_blanket_cmi_refines_fep009"
+        },
+        {
+          "id": "fep-085",
+          "nearest_topics": [
+            "fep-009",
+            "fep-014",
+            "fep-084"
+          ],
+          "new_invariant": "Ordered factorization implies a supported local Markov product and zero finite mutual information.",
+          "carrier_delta": "Adds positive mediator conditioning on the maintained four-node order without claiming general d-separation.",
+          "required_bridge": "FEPComposed.fep085_local_markov_refines_fep009"
+        },
+        {
+          "id": "fep-094",
+          "nearest_topics": [
+            "fep-049",
+            "fep-014"
+          ],
+          "new_invariant": "Mean path entropy production is finite path KL and expands to an expected log ratio under full support.",
+          "carrier_delta": "Replaces constitutive flux\u2013force production with a normalized forward-versus-reverse path-law divergence.",
+          "required_bridge": "FEPComposed.fep094_path_kl_refines_fep049_entropy_production"
+        },
+        {
+          "id": "fep-096",
+          "nearest_topics": [
+            "fep-049",
+            "fep-014"
+          ],
+          "new_invariant": "The forward expectation of exponential negative path entropy production is exactly one.",
+          "carrier_delta": "Integrates supported pointwise path ratios over a normalized finite forward path law.",
+          "required_bridge": "FEPComposed.fep096_integral_fluctuation_refines_fep049"
+        },
+        {
+          "id": "fep-099",
+          "nearest_topics": [
+            "fep-010",
+            "fep-014",
+            "fep-049"
+          ],
+          "new_invariant": "One strictly positive reversible Markov step dissipates KL to stationarity with equality and irreversible witnesses.",
+          "carrier_delta": "Combines full-support finite-channel data processing, detailed-balance stationarity, and explicit path production.",
+          "required_bridge": "FEPComposed.fep099_reversible_kl_dissipation_links_fep010_fep014"
+        },
+        {
+          "id": "fep-147",
+          "nearest_topics": [
+            "fep-014",
+            "fep-104"
+          ],
+          "new_invariant": "Finite KL within the supported scalar exponential family equals the oriented Bregman divergence of its log-partition potential.",
+          "carrier_delta": "Identifies the existing finite KL carrier with a derived statistical Bregman geometry under explicit full support.",
+          "required_bridge": "FEPComposed.fep147_KLBregman_connects_fep014_fep104"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-002",
+          "target": "fep-014",
+          "kind": "formal",
+          "rationale": "The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule.",
+          "witness": "FEPComposed.fep002_vfe_compProd_chain_rule"
+        },
+        {
+          "source": "fep-024",
+          "target": "fep-014",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law.",
+          "witness": "FEPComposed.fep024_regularizer_is_fep014_kl"
+        },
+        {
+          "source": "fep-041",
+          "target": "fep-014",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law.",
+          "witness": "FEPComposed.fep041_informationGain_is_fep014_kl"
+        },
+        {
+          "source": "fep-061",
+          "target": "fep-014",
+          "kind": "formal_pairing",
+          "rationale": "Finite mean-field optimality and measure-native KL exactness are recorded together while preserving their intentionally different zero-mass semantics.",
+          "witness": "FEPComposed.fep061_meanField_gap_is_fep014_kl"
+        },
+        {
+          "source": "fep-063",
+          "target": "fep-014",
+          "kind": "formal_pairing",
+          "rationale": "Finite-channel contraction is paired with the native nonnegativity of the pre-channel KL quantity; no unsupported finite-to-measure identification is introduced.",
+          "witness": "FEPComposed.fep063_channel_dpi_bounds_fep014"
+        },
+        {
+          "source": "fep-099",
+          "target": "fep-014",
+          "kind": "formal_pairing",
+          "rationale": "Reversible finite-channel KL dissipation is accompanied by both native KL nonnegativity and the native reversible-kernel stationarity consequence.",
+          "witness": "FEPComposed.fep099_reversible_kl_dissipation_links_fep010_fep014"
+        },
+        {
+          "source": "fep-147",
+          "target": "fep-014",
+          "kind": "formal_pairing",
+          "rationale": "Supported finite KL inside the exponential family equals an oriented log-partition Bregman divergence, paired with the original native KL separation theorem.",
+          "witness": "FEPComposed.fep147_KLBregman_connects_fep014_fep104"
+        }
+      ]
+    },
+    {
+      "id": "fep-018",
+      "title": "Bernoulli Fisher\u2013Rao Coordinate Distance",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep018_fisherRaoDistance_eq_zero_iff",
+      "supporting": [
+        "fep018_fisherRaoDistance_nonneg",
+        "fep018_fisherRaoDistance_symm",
+        "fep018_fisherRaoDistance_triangle"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep018_fisherRaoDistance_eq_zero_iff": "theorem fep018_fisherRaoDistance_eq_zero_iff\n    {p q : \u211d} (hp : p \u2208 Set.Icc (0 : \u211d) 1) (hq : q \u2208 Set.Icc (0 : \u211d) 1) :\n    fep018_fisherRaoDistance p q = 0 \u2194 p = q",
+        "fep018_fisherRaoDistance_nonneg": "theorem fep018_fisherRaoDistance_nonneg (p q : \u211d) :\n    0 \u2264 fep018_fisherRaoDistance p q",
+        "fep018_fisherRaoDistance_symm": "theorem fep018_fisherRaoDistance_symm (p q : \u211d) :\n    fep018_fisherRaoDistance p q = fep018_fisherRaoDistance q p",
+        "fep018_fisherRaoDistance_triangle": "theorem fep018_fisherRaoDistance_triangle (p q r : \u211d) :\n    fep018_fisherRaoDistance p r \u2264\n      fep018_fisherRaoDistance p q + fep018_fisherRaoDistance q r"
+      },
+      "body_sha256": "3c9455cc9264f076d9937f80d8579de977590dc3a8c292a6fd58dfc287f59df3",
+      "maturity_record": {
+        "id": "fep-018",
+        "primary_theorem": "fep018_fisherRaoDistance_eq_zero_iff",
+        "supporting_theorems": [
+          "fep018_fisherRaoDistance_nonneg",
+          "fep018_fisherRaoDistance_symm",
+          "fep018_fisherRaoDistance_triangle"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The Bernoulli Fisher--Rao coordinate distance is nonnegative, symmetric, separating on the probability interval, and satisfies the triangle inequality.",
+        "assumption_review": "Separation is restricted to Bernoulli parameters in [0,1], where square root and arcsine are injective. This is the closed-form one-dimensional Fisher--Rao distance, not a general geodesic-existence theorem for arbitrary statistical manifolds.",
+        "non_vacuity": "The endpoint parameters p = 0 and q = 1 have distinct coordinates, while every equal pair has zero distance.",
+        "acceptance_probe": "native Lean compile of fep018_fisherRaoDistance_nonneg, fep018_fisherRaoDistance_symm, fep018_fisherRaoDistance_triangle, and fep018_fisherRaoDistance_eq_zero_iff.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Absolute differenceof2arcsin(sqrt p) givesnonnegative/symmetric/triangleunconditionally;separation[0,1] via injectivesqrt/arcsin.",
+      "premise_scope_boundary": "Metricdistanceonclosedprobabilityintervalisproved; notvariationalpathlength/geodesicminimality. Derivativeidentificationwith038candidateJacobianmissing.",
+      "positive_adverse_unexecuted_specs": "p0,q1distancepi;equalzero;p-1,q-2bothsqrt0collapseoutsideinterval.",
+      "nearest_topic_distinction": "038statisticalmetriclocalinformationvs018globalcoordinateformula;044Hellingerchordaldistance distinct.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-038",
+          "target": "fep-018",
+          "kind": "formal_pairing",
+          "rationale": "The composed theorem couples fep-038's positive Bernoulli Fisher tangent metric to fep-018's separating Fisher--Rao coordinate distance. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_fisherMetric_pos` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
+          "witness": "FEPComposed.fep038_fisherRao_separation"
+        }
+      ]
+    },
+    {
+      "id": "fep-024",
+      "title": "KL Regularization in Objectives",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep024_klRegularizedObjective_exact",
+      "supporting": [
+        "fep024_klRegularizedObjective_ge",
+        "fep024_klRegularizedObjective_zeroWeight",
+        "fep024_klRegularizedObjective_monoWeight"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep024_klRegularizedObjective_exact": "theorem fep024_klRegularizedObjective_exact\n    (base weight : ENNReal) (prior : Measure \u03b1) [SigmaFinite prior] :\n    fep024_klRegularizedObjective base weight prior prior = base",
+        "fep024_klRegularizedObjective_ge": "theorem fep024_klRegularizedObjective_ge\n    (base weight : ENNReal) (approximation prior : Measure \u03b1) :\n    base \u2264 fep024_klRegularizedObjective base weight approximation prior",
+        "fep024_klRegularizedObjective_zeroWeight": "theorem fep024_klRegularizedObjective_zeroWeight\n    (base : ENNReal) (approximation prior : Measure \u03b1) :\n    fep024_klRegularizedObjective base 0 approximation prior = base",
+        "fep024_klRegularizedObjective_monoWeight": "theorem fep024_klRegularizedObjective_monoWeight\n    (base : ENNReal) {weight\u2081 weight\u2082 : ENNReal}\n    (hweight : weight\u2081 \u2264 weight\u2082) (approximation prior : Measure \u03b1) :\n    fep024_klRegularizedObjective base weight\u2081 approximation prior \u2264\n      fep024_klRegularizedObjective base weight\u2082 approximation prior"
+      },
+      "body_sha256": "640c98f38ede2f124f5bfd8d1b6f9601c88984bf3bd810ca4b175251bdace224",
+      "maturity_record": {
+        "id": "fep-024",
+        "primary_theorem": "fep024_klRegularizedObjective_exact",
+        "supporting_theorems": [
+          "fep024_klRegularizedObjective_ge",
+          "fep024_klRegularizedObjective_zeroWeight",
+          "fep024_klRegularizedObjective_monoWeight"
+        ],
+        "boundary_theorems": [],
+        "invariant": "An ENNReal objective regularized by a nonnegative weight times native measure KL upper-bounds its base, is monotone in weight, recovers the base at zero weight, and is exact when approximation equals a sigma-finite prior.",
+        "assumption_review": "The codomain explicitly admits infinite objectives and KL values. Exactness at the prior uses sigma-finiteness; no differentiability or optimizer-existence claim is made.",
+        "non_vacuity": "Positive weight and unequal finite laws contribute a nonzero regularizer, while zero weight and matching laws independently exercise both exactness mechanisms.",
+        "acceptance_probe": "native Lean compile of fep024_klRegularizedObjective_ge, fep024_klRegularizedObjective_zeroWeight, fep024_klRegularizedObjective_monoWeight, and fep024_klRegularizedObjective_exact.",
+        "disposition": "formalized"
+      },
+      "statement_review": "NativeKLweightedobjectiveexactatmatchingSigmaFiniteprior;upperbound/zeroweight/weightmonotonicity exactENNReal.",
+      "premise_scope_boundary": "Nooptimizer/differentiability/proximalalgorithm. 0*\u221e=0 is explicitENNRealconvention; base\u221ecanhideanyregularizationchange.",
+      "positive_adverse_unexecuted_specs": "finitebase,weight1,distinctlawsnonzerogap; weight0singularKLstillbase;prior=approxzeroKL.",
+      "nearest_topic_distinction": "026pointnegative-logdensitynotexpectedrelativeKL;014nativeKL;001/002surprisalplusgapdifferentbaseinterpretation.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-061",
+          "nearest_topics": [
+            "fep-014",
+            "fep-024"
+          ],
+          "new_invariant": "A fixed-factor mean-field coordinate objective is zero exactly at its supported target law.",
+          "carrier_delta": "Specializes KL regularization to an exact one-coordinate variational optimum with the other factor held fixed.",
+          "required_bridge": "FEPComposed.fep061_meanField_gap_is_fep014_kl"
+        },
+        {
+          "id": "fep-104",
+          "nearest_topics": [
+            "fep-024",
+            "fep-043"
+          ],
+          "new_invariant": "Supplied potential and gradient data satisfy the exact Bregman three-point identity.",
+          "carrier_delta": "Moves from scalar KL regularization to arbitrary finite coordinate potentials, gradient fields, and three comparison points.",
+          "required_bridge": "FEPComposed.fep104_mirror_descent_refines_fep024"
+        },
+        {
+          "id": "fep-105",
+          "nearest_topics": [
+            "fep-044",
+            "fep-024"
+          ],
+          "new_invariant": "Affine gradient orthogonality yields Bregman Pythagorean splitting and conditional minimization.",
+          "carrier_delta": "Adds an affine-set projection certificate and separates exact orthogonality from residual-divergence nonnegativity.",
+          "required_bridge": "FEPComposed.fep105_bregman_projection_extends_fep044"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-024",
+          "target": "fep-014",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law.",
+          "witness": "FEPComposed.fep024_regularizer_is_fep014_kl"
+        },
+        {
+          "source": "fep-104",
+          "target": "fep-024",
+          "kind": "formal_pairing",
+          "rationale": "The mirror-descent three-point identity is paired with the original native KL-regularized lower bound without identifying Bregman and KL divergences.",
+          "witness": "FEPComposed.fep104_mirror_descent_refines_fep024"
+        }
+      ]
+    },
+    {
+      "id": "fep-029",
+      "title": "Quadratic Bregman Divergence",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep029_quadraticBregman_eq_zero_iff",
+      "supporting": [
+        "fep029_secant_ineq",
+        "fep029_convex_combo_bound",
+        "fep029_combo_t_zero",
+        "fep029_combo_t_one",
+        "fep029_quadraticBregman_eq_sq",
+        "fep029_bregman_quadratic_nonneg"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep029_quadraticBregman_eq_zero_iff": "theorem fep029_quadraticBregman_eq_zero_iff (x y : \u211d) :\n    fep029_quadraticBregman x y = 0 \u2194 x = y",
+        "fep029_secant_ineq": "theorem fep029_secant_ineq (a b t : \u211d) (ht0 : 0 \u2264 t) (_ht1 : t \u2264 1) (hab : a \u2264 b) :\n    (1 - t) * a + t * b \u2265 a",
+        "fep029_convex_combo_bound": "theorem fep029_convex_combo_bound (a b t : \u211d) (_ht0 : 0 \u2264 t) (ht1 : t \u2264 1) (hab : a \u2264 b) :\n    (1 - t) * a + t * b \u2264 b",
+        "fep029_combo_t_zero": "theorem fep029_combo_t_zero (a b : \u211d) : (1 - 0) * a + 0 * b = a",
+        "fep029_combo_t_one": "theorem fep029_combo_t_one (a b : \u211d) : (1 - 1) * a + 1 * b = b",
+        "fep029_quadraticBregman_eq_sq": "theorem fep029_quadraticBregman_eq_sq (x y : \u211d) :\n    fep029_quadraticBregman x y = (x - y) ^ 2",
+        "fep029_bregman_quadratic_nonneg": "theorem fep029_bregman_quadratic_nonneg (x y : \u211d) :\n    0 \u2264 fep029_quadraticBregman x y"
+      },
+      "body_sha256": "37e07426b925405bf2d0c405a827deb1755c623dfd77f2ac57db947780dcb1c0",
+      "maturity_record": {
+        "id": "fep-029",
+        "primary_theorem": "fep029_quadraticBregman_eq_zero_iff",
+        "supporting_theorems": [
+          "fep029_secant_ineq",
+          "fep029_convex_combo_bound",
+          "fep029_combo_t_zero",
+          "fep029_combo_t_one",
+          "fep029_quadraticBregman_eq_sq",
+          "fep029_bregman_quadratic_nonneg"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The scalar Bregman divergence generated by \u03c6(x)=x\u00b2 equals (x-y)\u00b2, is nonnegative, and vanishes exactly when x=y.",
+        "assumption_review": "Unconditional over real x and y for the explicit quadratic generator; no general differentiable convex function, projection theorem, or mirror-descent convergence is claimed.",
+        "non_vacuity": "At x=1 and y=0 the divergence equals 1; at x=y it equals 0.",
+        "acceptance_probe": "native Lean compile of the quadratic identity, nonnegativity, and zero-characterization theorems.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Explicit\u03c6=x\u00b2Bregman is(x-y)\u00b2,nonnegative,separating; elementaryconvexcombinationendpointbounds exact.",
+      "premise_scope_boundary": "No generalconvexfunctionBregman/triangle/projectionconvergence. secantlemmahasnospecificconvexfunctiondespitecomment.",
+      "positive_adverse_unexecuted_specs": "x1,y0divergence1; squared-distancefailsordinarytriangleat0,1,2:4>1+1.",
+      "nearest_topic_distinction": "104genericthreepointcompositionexactd1identification;044Hellinger/alphadivergence notsamefamilygeneraltheorem.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-029",
+          "target": "fep-044",
+          "kind": "conceptual",
+          "rationale": "The explicit quadratic Bregman instance and the alpha-divergence proxy are neighboring but mathematically distinct divergence families."
+        },
+        {
+          "source": "fep-029",
+          "target": "fep-104",
+          "kind": "formal",
+          "rationale": "fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106).",
+          "witness": "FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance"
+        }
+      ]
+    },
+    {
+      "id": "fep-038",
+      "title": "Bernoulli Fisher Information and Natural Gradient",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep038_fisherInformation_eq",
+      "supporting": [
+        "fep038_bernoulliMass_hasDerivAt",
+        "fep038_bernoulliMass_sum_one",
+        "fep038_expectedScore_zero",
+        "fep038_fisherMetric_pos",
+        "fep038_naturalGradient_duality",
+        "fep038_fisherMetric_coordinate",
+        "fep038_fisherMetric_pullback"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep038_fisherInformation_eq": "theorem fep038_fisherInformation_eq {p : \u211d} (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_fisherInformation p = 1 / (p * (1 - p))",
+        "fep038_bernoulliMass_hasDerivAt": "theorem fep038_bernoulliMass_hasDerivAt (p : \u211d) (b : Bool) :\n    HasDerivAt (fun q => fep038_bernoulliMass q b)\n      (fep038_bernoulliMassDeriv b) p",
+        "fep038_bernoulliMass_sum_one": "theorem fep038_bernoulliMass_sum_one (p : \u211d) :\n    \u2211 b : Bool, fep038_bernoulliMass p b = 1",
+        "fep038_expectedScore_zero": "theorem fep038_expectedScore_zero {p : \u211d} (hp0 : 0 < p) (hp1 : p < 1) :\n    \u2211 b : Bool, fep038_bernoulliMass p b * fep038_score p b = 0",
+        "fep038_fisherMetric_pos": "theorem fep038_fisherMetric_pos {p v : \u211d} (hp0 : 0 < p) (hp1 : p < 1)\n    (hv : v \u2260 0) :\n    0 < fep038_fisherMetric p v v",
+        "fep038_naturalGradient_duality": "theorem fep038_naturalGradient_duality {p gradient : \u211d}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_fisherInformation p * fep038_naturalGradient p gradient = gradient",
+        "fep038_fisherMetric_coordinate": "theorem fep038_fisherMetric_coordinate {p : \u211d} (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_coordinateJacobian p ^ 2 = fep038_fisherInformation p",
+        "fep038_fisherMetric_pullback": "theorem fep038_fisherMetric_pullback {p v w : \u211d}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    fep038_fisherMetric p v w =\n      (fep038_coordinateJacobian p * v) *\n        (fep038_coordinateJacobian p * w)"
+      },
+      "body_sha256": "011667f26dd6249c84ea21f41b135a652a453e2d77e9dc152015c6b64f0b1ff5",
+      "maturity_record": {
+        "id": "fep-038",
+        "primary_theorem": "fep038_fisherInformation_eq",
+        "supporting_theorems": [
+          "fep038_bernoulliMass_hasDerivAt",
+          "fep038_bernoulliMass_sum_one",
+          "fep038_expectedScore_zero",
+          "fep038_fisherMetric_pos",
+          "fep038_naturalGradient_duality",
+          "fep038_fisherMetric_coordinate",
+          "fep038_fisherMetric_pullback"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines a dual natural gradient and is the pullback of the Euclidean metric along the Fisher--Rao coordinate.",
+        "assumption_review": "Metric positivity, inverse-metric duality, and the coordinate law require an interior Bernoulli parameter 0 < p < 1. This is a complete one-dimensional Bernoulli information geometry, not a general finite- or infinite-dimensional statistical manifold.",
+        "non_vacuity": "At p = 1/2 the Fisher information is 4, every nonzero tangent has positive metric norm, and the natural-gradient map rescales nonzero covectors by 1/4.",
+        "acceptance_probe": "native Lean compile of fep038_bernoulliMass_hasDerivAt, fep038_expectedScore_zero, fep038_fisherInformation_eq, fep038_fisherMetric_pos, fep038_naturalGradient_duality, and fep038_fisherMetric_coordinate.",
+        "disposition": "formalized"
+      },
+      "statement_review": "DifferentiatedBernoullimass,expectedscore0,expectedscore\u00b2=1/(p(1-p)),positiveinteriormetric,inversemetricduality exact. CandidateJacobian\u00b2=informationandpairingfactorization arealgebraic.",
+      "premise_scope_boundary": "NoactualHasDerivAt018coordinate=038candidateJacobian declaration. Callingthisalreadyprovedcoordinatepullbackoverstatescurrenttypedcontract;endpointtotalizedscoreisnotlimitFisher.",
+      "positive_adverse_unexecuted_specs": "p1/2information4,tangent1metric4,naturalgradient1/4; p0totalizedscoreyieldsinformation1notinfinityandexpectedscore-1not0.",
+      "nearest_topic_distinction": "004supplieddiagonalmetric vs038computedstatisticalweight;018actualcoordinatefunction needsderivativebridge;101/102generalpullback/CramerRao scopesdistinct.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-100",
+          "nearest_topics": [
+            "fep-004",
+            "fep-038"
+          ],
+          "new_invariant": "The inherited categorical Fisher metric is positive on nonzero simplex tangents; a genuine Fin 2 carrier spans every tangent by (1,-1) and gives that direction energy four, while a duplicated-score model supplies an explicit null-rank boundary.",
+          "carrier_delta": "Extends diagonal Fisher examples to a ScoreModel-linked full-support categorical carrier with derived centered-score and lowering identities, a concrete full-rank Fin 2 tangent-space witness, and a separate rank-deficient model.",
+          "required_bridge": "FEPComposed.fep100_categorical_fisher_refines_fep004"
+        },
+        {
+          "id": "fep-101",
+          "nearest_topics": [
+            "fep-038",
+            "fep-004"
+          ],
+          "new_invariant": "Fisher pullback composes under finite reparameterization and remains positive semidefinite.",
+          "carrier_delta": "Adds arbitrary finite Jacobian matrices between the existing ScoreModel Fisher carrier and new chart coordinates.",
+          "required_bridge": "FEPComposed.fep101_fisher_pullback_extends_fep038"
+        },
+        {
+          "id": "fep-102",
+          "nearest_topics": [
+            "fep-038"
+          ],
+          "new_invariant": "Unbiasedness, unit score covariance, and positive Fisher information imply the scalar Cram\u00e9r\u2013Rao product bound.",
+          "carrier_delta": "Adds a finite estimator and a score-regularity certificate to the one-parameter ScoreModel carrier.",
+          "required_bridge": "FEPComposed.fep102_cramer_rao_uses_fep038_score_geometry"
+        },
+        {
+          "id": "fep-103",
+          "nearest_topics": [
+            "fep-038",
+            "fep-004"
+          ],
+          "new_invariant": "Natural gradients transform equivariantly under an invertible full-rank finite chart.",
+          "carrier_delta": "Adds invertible Fisher and chart matrices plus explicit vector and covector coordinate transports.",
+          "required_bridge": "FEPComposed.fep103_natural_gradient_extends_fep038"
+        },
+        {
+          "id": "fep-106",
+          "nearest_topics": [
+            "fep-028",
+            "fep-038"
+          ],
+          "new_invariant": "The categorical replicator field is the inherited natural gradient of centered fitness, conserves simplex mass, and is explicitly nonzero for a nonconstant Fin 2 fitness witness.",
+          "carrier_delta": "Couples a full-support finite law, ScoreModel lowering map, centered fitness covector, and tangent replicator vector, then instantiates them on the genuine Fin 2 categorical carrier.",
+          "required_bridge": "FEPComposed.fep106_replicator_links_fep028_fep038"
+        },
+        {
+          "id": "fep-145",
+          "nearest_topics": [
+            "fep-038"
+          ],
+          "new_invariant": "The natural-parameter score is the sufficient statistic minus its family mean and has exactly zero expectation.",
+          "carrier_delta": "Derives a centered score from an explicit finite exponential family rather than assuming the abstract ScoreModel centering law.",
+          "required_bridge": "FEPComposed.fep145_centeredScore_extends_fep038"
+        },
+        {
+          "id": "fep-146",
+          "nearest_topics": [
+            "fep-038",
+            "fep-100"
+          ],
+          "new_invariant": "The derivative of the mean coordinate equals statistic variance, which equals scalar Fisher information, with positive three-state and zero constant-statistic boundaries.",
+          "carrier_delta": "Adds a smooth finite-family derivation of Fisher information and distinguishes genuine nonconstant curvature from a degenerate statistic.",
+          "required_bridge": "FEPComposed.fep146_fisherVariance_extends_fep100"
+        },
+        {
+          "id": "fep-148",
+          "nearest_topics": [
+            "fep-038",
+            "fep-103"
+          ],
+          "new_invariant": "Strictly positive variance on a closed interval makes the natural-to-mean parameter map strictly monotone and injective there.",
+          "carrier_delta": "Adds a scalar coordinate-chart result with an explicit positivity interval while withholding arbitrary-manifold or global dual-flatness claims.",
+          "required_bridge": "FEPComposed.fep148_meanCoordinate_extends_fep103"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-004",
+          "target": "fep-038",
+          "kind": "formal",
+          "rationale": "The composed theorem specializes fep-004's finite positive-weight Fisher metric to the one-coordinate Bernoulli information weight computed by fep-038. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries both endpoints through their Fisher-metric definitions (`fep_fep004.FEP004.fep004_fisherMetric`, `fep_fep038.FEP038.fep038_fisherMetric`) without invoking either topic's reviewed theorems; the row stands unchanged.",
+          "witness": "FEPComposed.fep004_bernoulliMetric_specialization"
+        },
+        {
+          "source": "fep-038",
+          "target": "fep-018",
+          "kind": "formal_pairing",
+          "rationale": "The composed theorem couples fep-038's positive Bernoulli Fisher tangent metric to fep-018's separating Fisher--Rao coordinate distance. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_fisherMetric_pos` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
+          "witness": "FEPComposed.fep038_fisherRao_separation"
+        },
+        {
+          "source": "fep-101",
+          "target": "fep-038",
+          "kind": "formal_pairing",
+          "rationale": "Finite-matrix Fisher pullback composition extends the original scalar Bernoulli pullback identity without asserting a global chart theorem. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_fisherMetric_pullback` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
+          "witness": "FEPComposed.fep101_fisher_pullback_extends_fep038"
+        },
+        {
+          "source": "fep-102",
+          "target": "fep-038",
+          "kind": "formal_pairing",
+          "rationale": "The finite scalar Cram\u00e9r--Rao certificate includes explicit score regularity, while fep-038 supplies its concrete centered Bernoulli score case. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_expectedScore_zero` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
+          "witness": "FEPComposed.fep102_cramer_rao_uses_fep038_score_geometry"
+        },
+        {
+          "source": "fep-103",
+          "target": "fep-038",
+          "kind": "formal_pairing",
+          "rationale": "Natural-gradient equivariance under an invertible chart extends the original one-dimensional Fisher/natural-gradient duality. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_naturalGradient_duality` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
+          "witness": "FEPComposed.fep103_natural_gradient_extends_fep038"
+        },
+        {
+          "source": "fep-106",
+          "target": "fep-038",
+          "kind": "formal_pairing",
+          "rationale": "Replicator dynamics is a categorical natural gradient; the original Bernoulli natural-gradient duality and finite softmax normalization remain visible as its scalar and discrete-selection neighbors. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_naturalGradient_duality` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
+          "witness": "FEPComposed.fep106_replicator_links_fep028_fep038"
+        },
+        {
+          "source": "fep-145",
+          "target": "fep-038",
+          "kind": "formal_pairing",
+          "rationale": "The derived exponential-family score is centered exactly, extending the abstract centered-score contract used by the earlier Fisher-geometry topic. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_expectedScore_zero` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
+          "witness": "FEPComposed.fep145_centeredScore_extends_fep038"
+        }
+      ]
+    },
+    {
+      "id": "fep-044",
+      "title": "Bernoulli Squared Hellinger Divergence",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep044_hellingerSq_eq_zero_iff",
+      "supporting": [
+        "fep044_hellingerSq_nonneg",
+        "fep044_hellingerSq_symm",
+        "fep044_hellingerSq_complement"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep044_hellingerSq_eq_zero_iff": "theorem fep044_hellingerSq_eq_zero_iff\n    {p q : \u211d} (hp : p \u2208 Set.Icc (0 : \u211d) 1) (hq : q \u2208 Set.Icc (0 : \u211d) 1) :\n    fep044_hellingerSq p q = 0 \u2194 p = q",
+        "fep044_hellingerSq_nonneg": "theorem fep044_hellingerSq_nonneg (p q : \u211d) :\n    0 \u2264 fep044_hellingerSq p q",
+        "fep044_hellingerSq_symm": "theorem fep044_hellingerSq_symm (p q : \u211d) :\n    fep044_hellingerSq p q = fep044_hellingerSq q p",
+        "fep044_hellingerSq_complement": "theorem fep044_hellingerSq_complement (p q : \u211d) :\n    fep044_hellingerSq (1 - p) (1 - q) = fep044_hellingerSq p q"
+      },
+      "body_sha256": "2ccd0ff00667bcc811c24cce39f19fd4ab916fb55cafe479b605be889d136e19",
+      "maturity_record": {
+        "id": "fep-044",
+        "primary_theorem": "fep044_hellingerSq_eq_zero_iff",
+        "supporting_theorems": [
+          "fep044_hellingerSq_nonneg",
+          "fep044_hellingerSq_symm",
+          "fep044_hellingerSq_complement"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The squared Hellinger divergence between Bernoulli laws is nonnegative, symmetric, invariant under success/failure relabeling, and separates parameters on [0,1].",
+        "assumption_review": "Nonnegativity and symmetry are unconditional for the real-valued formula; the probability-divergence interpretation and separation theorem restrict both parameters to [0,1]. This is the Hellinger member of the alpha-divergence family, not a theorem for every alpha.",
+        "non_vacuity": "Equal Bernoulli parameters have zero divergence, while the endpoint laws p = 0 and q = 1 are separated.",
+        "acceptance_probe": "native Lean compile of fep044_hellingerSq_nonneg, fep044_hellingerSq_symm, fep044_hellingerSq_eq_zero_iff, and fep044_hellingerSq_complement.",
+        "disposition": "formalized"
+      },
+      "statement_review": "DefinedBernoulliHellinger\u00b2withfactor1/2,nonnegative/symmetric/complementinvariant;separation[0,1]exact.",
+      "premise_scope_boundary": "Notallalpha-divergences; squaredHellingerisnotitselftrianglemetric,ordinaryHellingersqrtneedsseparatetheorem.",
+      "positive_adverse_unexecuted_specs": "p0,q1divergence1;equalzero; p0,r1,q1/2has1>twoHellinger\u00b2legs,so squaredtrianglefalse.",
+      "nearest_topic_distinction": "018arc-lengthcoordinatevs044chordalformula,029quadraticBregmanonly; noautomaticmetric/geodesic/alphaparametergeneralization.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-105",
+          "nearest_topics": [
+            "fep-044",
+            "fep-024"
+          ],
+          "new_invariant": "Affine gradient orthogonality yields Bregman Pythagorean splitting and conditional minimization.",
+          "carrier_delta": "Adds an affine-set projection certificate and separates exact orthogonality from residual-divergence nonnegativity.",
+          "required_bridge": "FEPComposed.fep105_bregman_projection_extends_fep044"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-029",
+          "target": "fep-044",
+          "kind": "conceptual",
+          "rationale": "The explicit quadratic Bregman instance and the alpha-divergence proxy are neighboring but mathematically distinct divergence families."
+        },
+        {
+          "source": "fep-105",
+          "target": "fep-044",
+          "kind": "formal_pairing",
+          "rationale": "The affine Bregman projection satisfies its exact Pythagorean identity, while fep-044 records nonnegativity for the concrete Bernoulli Hellinger case.",
+          "witness": "FEPComposed.fep105_bregman_projection_extends_fep044"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "row": "fep-038",
+      "field": "invariant/assumption_review",
+      "finding": "Currentcoordinatepullbackwordinghasnoprovenderivativeidentificationof018coordinate; candidateJacobianisdefineddirectly.",
+      "exact_correction": "The supplied coordinate-Jacobian expression squares to Fisher information and factorizes the metric. Its identification with the derivative of 2*arcsin(sqrt p) requires an additional interior HasDerivAt bridge; no path-length theorem is asserted."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-029",
+      "field": "secant_ineqdocstring",
+      "finding": "Elementaryendpointconvexcombinationlowerbounddoesnotproveconvexfunctionsecantinequality.",
+      "exact_correction": "A convex combination of ordered real endpoints is at least the lower endpoint for nonnegative weight; no general convex function is involved."
+    }
+  ],
+  "ranked_existing_owner_followups": [
+    {
+      "rank": 1,
+      "scope": "018/038actualcoordinateJacobianderivative",
+      "missing_content": "HasDerivAt (2arcsin(sqrt p)) (1/sqrt(p*(1-p))) for0<p<1,thenactualtypedmetricpullback. No newstatisticalmanifoldneeded.",
+      "positive": "p1/2derivative2,square4; interiorpnonconstant",
+      "adverse": "p0/1singularderivative/endpoints cannotreuseinteriortheorem",
+      "library_seam": "Real.hasDerivAt_arcsin in Trigonometric/InverseDeriv,Real.hasDerivAt_sqrt in SpecialFunctions/Sqrt,chainrule,sqrt_mul",
+      "estimate": "0.5-1.5daysincludingexactconsumer/rawaxioms"
+    },
+    {
+      "rank": 2,
+      "scope": "014ownednativeDPI",
+      "missing_content": "NarrowwrapperactualpinnedklDiv_comp_right_lewithitsrealhypotheses;do notassumemissingMathlibDPI.",
+      "positive": "nontrivialMarkovcoarseningreducesKL",
+      "adverse": "nonMarkovmapandfinite/nativeunsupportedidentificationrefused",
+      "library_seam": "InformationTheory.klDiv_comp_right_le; inspectexactpinnedcontractbeforeauthoring",
+      "estimate": "0.5-1daywithsourceboundconsumers"
+    },
+    {
+      "rank": 3,
+      "scope": "044Hellingermetric/018relation",
+      "missing_content": "DefineordinarysqrtHellingerdistanceandprovetriangleorBernoullichord-angleboundusingactualsqrtprobabilityembedding. Squaredtrianglefalse.",
+      "positive": "endpointdistance1andmiddleBernoullilaw",
+      "adverse": "0,1/2,1squaredtrianglecountermodel",
+      "library_seam": "Euclideannormtriangle,existingBernoullirootembedding; noallalphaextension",
+      "estimate": "1-3daysboundedcarrierproof"
+    }
+  ],
+  "remaining": [
+    "Remaining118topicsand54/68dependenciesunreviewedbythisfamilyreport",
+    "No automaticroster/dispositionpromotion; actualqualifiednative/axiom/semantic/projection/seal/custodyreviewforeachauthoredfollowup"
+  ],
+  "limitations": [
+    "Staticcanonicalsource/metadata/foundationinspection;no S changesorLeanexecution",
+    "All7boundaryarrayscurrentlyempty; exampleshereunexecutedsourcelevelspecifications",
+    "ExistingMaxEnt/Helmholtzfoundationreviewnotasubstitutefortopicendpointcarrierbridge"
+  ]
+}

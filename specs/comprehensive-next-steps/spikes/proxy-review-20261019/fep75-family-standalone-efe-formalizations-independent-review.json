@@ -1,0 +1,554 @@
+{
+  "schema_version": 1,
+  "decision": "family_static_semantic_audit_complete_metadata_corrections_required_before_broad_acceptance",
+  "family": "standalone-efe-formalizations",
+  "roster_verified_against": "config/catalogue_metadata.yaml",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-156",
+    "fep-157",
+    "fep-158",
+    "fep-159",
+    "fep-160",
+    "fep-166"
+  ],
+  "combined_issue75_static_audit_count": 168,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py": "9eabd06eb78704a3be4f14188533ec06a6d78ec612813dfcd7d56b18e82f71eb",
+    "lean/FepSketches/families/standalone_efe_formalizations.lean": "c7dbf9acb26fbaf6ab6dd10ca2b1009ae455274942c2a76eb365ab5fceef9076",
+    "src/fep_lean/formal/continuous_time_markov.lean": "1294732d3ddd6bd3711a00b6895e09fff45dd720cddb8d9db8e78ad458b10ea4",
+    "src/fep_lean/formal/efe_policy_selection.lean": "ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555",
+    "src/fep_lean/formal/perception_action_loop.lean": "f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a",
+    "src/fep_lean/formal/bayesian_model_reduction.lean": "721c1e39ffcfe5557c0138134cac5fb5c1b78669ac475cd99465401653fa441f",
+    "src/fep_lean/formal/efe_time_scale_separation.lean": "5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1",
+    "src/fep_lean/formal/helmholtz_ao_ness.lean": "652e8dbbeb5267523b58a3b9682ac1f8b14850aac48e693ea3954b5161f1eb98",
+    "src/fep_lean/formal/law_weighted_split.lean": "ee743a2aa98403b9dd3a30046c7e53638328eb5c666865595657e86e56e79eda",
+    "src/fep_lean/formal/geometric_mechanics.lean": "75df7b794ffde405e7f596dbc06070aa518b522cb714cdd328526cc4fb2de2aa",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/native_blanket.lean": "7af052b9a067be0391097a9e201e367639edc3698204a701f5663340ec9f5a11",
+    "src/fep_lean/formal/decision_risk.lean": "1a34dd85015ecb421bfbe91b3995e8c2c2d9991122618e9f25db17c4d46f2251",
+    "src/fep_lean/formal/policy_tree.lean": "f88e5063dede806e31f4f7106b825ee7b3832bcc66cf17346e24b98cd9361176",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-156",
+      "title": "Planning as Inference: the EFE Policy-Selection Bridge",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "99527b5d9e0f1930f622a786ee2258a50f371fed6facbfc06e76cd31c6987e90",
+      "maturity_record": {
+        "id": "fep-156",
+        "primary_theorem": "fep156_boltzmann_control_posterior_minimizes_efe",
+        "supporting_theorems": [
+          "fep156_boltzmann_control_posterior_minimal_value",
+          "fep156_efeControlObjective_eq_gibbsFreeEnergy",
+          "fep156_efeControlObjective_eq_kl_sub_logPartition",
+          "fep156_efeControlObjective_sub_eq_kl",
+          "fep156_argminEFE_eq_risk_add_ambiguity",
+          "fep156_finiteArgminEFE_minimizes_risk_add_ambiguity",
+          "fep156_exists_EFE_minimizing_policy",
+          "fep156_policyTree_value_agreement"
+        ],
+        "boundary_theorems": [],
+        "invariant": "On a finite policy carrier with fixed precision, the KL-regularized control objective (expected EFE plus inverse-precision KL to the prior) is minimized exactly by the Boltzmann control posterior proportional to prior * exp(-gamma * G); the minimized value is -gamma^-1 log Z, the EFE splits as risk plus ambiguity, and the finite and treewise argmin views agree.",
+        "assumption_review": "The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise value surface of the policy_tree module.",
+        "non_vacuity": "The finite argmin exists and attains the closed-form Boltzmann value -gamma^-1 log Z for nonempty policy sets.",
+        "acceptance_probe": "warning-free native Lean compile of all nine fep-156 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep156_boltzmann_control_posterior_minimizes_efe": "theorem fep156_boltzmann_control_posterior_minimizes_efe (prior : FiniteLaw Action)\n    (prior_pos : ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) (Q : FiniteLaw Action) :\n    efeControlObjective prior γ cost (controlPosterior prior γ cost) ≤\n      efeControlObjective prior γ cost Q ∧\n    (efeControlObjective prior γ cost Q =\n        efeControlObjective prior γ cost (controlPosterior prior γ cost) ↔\n      Q = controlPosterior prior γ cost)",
+        "fep156_boltzmann_control_posterior_minimal_value": "theorem fep156_boltzmann_control_posterior_minimal_value (prior : FiniteLaw Action)\n    (prior_pos : ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) :\n    efeControlObjective prior γ cost (controlPosterior prior γ cost) =\n      -(γ⁻¹ * Real.log (efeControlPartition prior γ cost))",
+        "fep156_efeControlObjective_eq_gibbsFreeEnergy": "theorem fep156_efeControlObjective_eq_gibbsFreeEnergy (prior : FiniteLaw Action)\n    (prior_pos : ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) (Q : FiniteLaw Action) :\n    efeControlObjective prior γ cost Q =\n      γ⁻¹ * gibbsFreeEnergy (efeGibbsCertificate prior prior_pos γ cost) Q",
+        "fep156_efeControlObjective_eq_kl_sub_logPartition": "theorem fep156_efeControlObjective_eq_kl_sub_logPartition (prior : FiniteLaw Action)\n    (prior_pos : ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) (Q : FiniteLaw Action) :\n    efeControlObjective prior γ cost Q =\n      γ⁻¹ * (finiteKL Q (controlPosterior prior γ cost) -\n        Real.log (efeControlPartition prior γ cost))",
+        "fep156_efeControlObjective_sub_eq_kl": "theorem fep156_efeControlObjective_sub_eq_kl (prior : FiniteLaw Action)\n    (prior_pos : ∀ policy, 0 < prior policy) (γ : ℝ) (hγ : 0 < γ)\n    (cost : Action → ℝ) (Q : FiniteLaw Action) :\n    efeControlObjective prior γ cost Q -\n        efeControlObjective prior γ cost (controlPosterior prior γ cost) =\n      γ⁻¹ * finiteKL Q (controlPosterior prior γ cost)",
+        "fep156_argminEFE_eq_risk_add_ambiguity": "theorem fep156_argminEFE_eq_risk_add_ambiguity\n    (model : GenerativeModel Policy State Outcome) (support : FullSupport model)\n    (policy : Policy) :\n    (∀ alternative : Policy,\n        expectedFreeEnergy model policy ≤ expectedFreeEnergy model alternative) ↔\n    (∀ alternative : Policy,\n        risk model policy + ambiguity model policy ≤\n          risk model alternative + ambiguity model alternative)",
+        "fep156_finiteArgminEFE_minimizes_risk_add_ambiguity": "theorem fep156_finiteArgminEFE_minimizes_risk_add_ambiguity\n    (model : GenerativeModel Policy State Outcome) (support : FullSupport model)\n    [Nonempty Policy] (alternative : Policy) :\n    risk model (finiteArgmin (expectedFreeEnergy model)) +\n        ambiguity model (finiteArgmin (expectedFreeEnergy model)) ≤\n      risk model alternative + ambiguity model alternative",
+        "fep156_exists_EFE_minimizing_policy": "theorem fep156_exists_EFE_minimizing_policy\n    (model : GenerativeModel Policy State Outcome) [Nonempty Policy] :\n    ∃ policy : Policy, ∀ alternative : Policy,\n      expectedFreeEnergy model policy ≤ expectedFreeEnergy model alternative",
+        "fep156_policyTree_value_agreement": "theorem fep156_policyTree_value_agreement [Nonempty Action]\n    (model : EFEPolicyTreeModel Belief State Action Observation)\n    (depth : ℕ) (belief : Belief) :\n    policyTreeValue (riskAmbiguityPolicyTreeModel model)\n        (optimalPolicyTree (efePolicyTreeModel model) depth belief) belief =\n      optimalTreeValue (riskAmbiguityPolicyTreeModel model) depth belief ∧\n    policyTreeValue (efePolicyTreeModel model)\n        (optimalPolicyTree (riskAmbiguityPolicyTreeModel model) depth belief)\n          belief =\n      optimalTreeValue (efePolicyTreeModel model) depth belief"
+      },
+      "statement_review": "For full-support finite prior and precision gamma>0, the Boltzmann law is the unique minimizer over probability laws of expected supplied cost plus KL(Q||prior)/gamma; optimum value is-logZ/gamma. Separate declarations establish deterministic EFE argmin/risk+ambiguity agreement and finite tree value agreement.",
+      "assumptions_and_scope": "The main cost is an arbitrary real function, not automatically derived EFE. Deterministic finiteArgmin of EFE is not the Boltzmann probability law and does not attain the same KL-regularized objective value. The owner already has supported sparse-prior extensions, negative-precision maximum and zero/unsupported controls; released row is the full-support positive-precision case.",
+      "positive_witness_specification_unexecuted": "Uniform two-policy prior with costs0,1 and gamma1 gives a nondegenerate Boltzmann law; compare its regularized optimum-log((1+exp(-1))/2) with deterministic zero-cost selection penaltylog2.",
+      "adverse_witness_specification_unexecuted": "Negative precision reverses divided-objective optimization and unsupported candidates can exploit totalized KL; actual source controls already show these boundaries. Zero precision removes the KL penalty and does not have the same unique minimum reading.",
+      "nearest_topic_distinction": "008 deterministic finite minimization,028 normalized softmax and059 Gibbs/DV objective are distinct operations linked here under explicit premises;133 tree agreement remains finite/model-derived.",
+      "novelty_record": {
+        "id": "fep-156",
+        "nearest_topics": [
+          "fep-021"
+        ],
+        "new_invariant": "For fixed positive precision the Boltzmann control posterior minimizes the KL-regularized expected-cost objective over every normalized candidate law and is its unique minimizer.",
+        "carrier_delta": "Adds an explicit finite policy prior, precision, and cost field so the truncated EFE convention's argmin content becomes an attained finite Gibbs optimizer with closed-form negative log-partition value.",
+        "required_bridge": "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-156",
+          "target": "fep-021",
+          "kind": "formal_pairing",
+          "rationale": "The exact Boltzmann-form control posterior minimizes the expected free energy with its uniqueness certificate, paired with fep-021's truncated-EFE epistemic-plus-pragmatic balance as the sign-convention ancestor, without claiming continuous-state or infinite-action optimality.",
+          "witness": "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance"
+        }
+      ]
+    },
+    {
+      "id": "fep-157",
+      "title": "The Perception-Action Loop as a Closed-Loop Active-Inference Theorem",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "aefbafc073adf0165e7ee7a5773bde98e8af7ea6659c194de5daac597d5c5307",
+      "maturity_record": {
+        "id": "fep-157",
+        "primary_theorem": "fep157_loop_invariant_surprisal_bound",
+        "supporting_theorems": [
+          "fep157_perception_kl_decomposition",
+          "fep157_perception_step_kl_nonincrease",
+          "fep157_perception_native_kl_nonincrease",
+          "fep157_prediction_dobrushin_contraction",
+          "fep157_perceptionVFE_gap",
+          "fep157_policyPosterior_eq_controlPosterior",
+          "fep157_loop_fixed_point_is_boltzmann",
+          "fep157_selectedPolicy_minimizes",
+          "fep157_filteredBelief_eq_forwardFilter",
+          "fep157_perceptionActionStep_eq",
+          "fep157_perceptionActionKernel_apply",
+          "fep157_posteriorKernel_joint_eq_swap"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Each closed-loop perception-action step is non-increasing in belief surprisal: the step's KL splits exactly into predictive and posterior parts, prediction contracts the predictive distribution (Dobrushin), and the loop invariant bounds surprisal by its initial value plus accumulated expected free energy; the loop's fixed point is the Boltzmann control posterior and equals the policy posterior of the control-as-inference view.",
+        "assumption_review": "The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim.",
+        "non_vacuity": "The strict step-wise KL decrease holds on the full-likelihood witness kernels, and at the fixed point the loop posterior coincides with the Boltzmann control posterior.",
+        "acceptance_probe": "warning-free native Lean compile of all thirteen fep-157 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep157_loop_invariant_surprisal_bound": "theorem fep157_loop_invariant_surprisal_bound [Nonempty Policy]\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n    (hEvidence : 0 < model.likelihood.predictive belief outcome)\n    (support : FullSupport (withInitialState model\n      (filteredBelief model belief outcome hEvidence))) :\n    -Real.log (model.likelihood.predictive belief outcome) ≤\n        perceptionVFE model belief outcome hEvidence belief ∧\n      perceptionVFE model belief outcome hEvidence belief =\n        -Real.log (model.likelihood.predictive belief outcome) +\n          finiteKL belief (filteredBelief model belief outcome hEvidence) ∧\n      expectedFreeEnergy\n          (withInitialState model (filteredBelief model belief outcome hEvidence))\n          (selectedPolicy model (filteredBelief model belief outcome hEvidence)) =\n        risk (withInitialState model (filteredBelief model belief outcome hEvidence))\n            (selectedPolicy model (filteredBelief model belief outcome hEvidence)) +\n          ambiguity\n            (withInitialState model (filteredBelief model belief outcome hEvidence))\n            (selectedPolicy model (filteredBelief model belief outcome hEvidence))",
+        "fep157_perception_kl_decomposition": "theorem fep157_perception_kl_decomposition\n    (model : GenerativeModel Policy State Outcome)\n    (actual reference : FiniteLaw State)\n    (hReference : ∀ s, 0 < reference s)\n    (hLikelihood : ∀ s o, 0 < model.likelihood s o) :\n    finiteKL actual reference =\n      finiteKL (model.likelihood.predictive actual)\n          (model.likelihood.predictive reference) +\n        ∑ o : Outcome, model.likelihood.predictive actual o *\n          finiteKL\n            (filteredBelief model actual o\n              (predictive_pos_of_fullLikelihood model actual hLikelihood o))\n            (filteredBelief model reference o\n              (predictive_pos_of_fullLikelihood model reference hLikelihood o))",
+        "fep157_perception_step_kl_nonincrease": "theorem fep157_perception_step_kl_nonincrease\n    (model : GenerativeModel Policy State Outcome)\n    (actual reference : FiniteLaw State)\n    (hReference : ∀ s, 0 < reference s)\n    (hLikelihood : ∀ s o, 0 < model.likelihood s o) :\n    ∑ o : Outcome, model.likelihood.predictive actual o *\n        finiteKL\n          (filteredBelief model actual o\n            (predictive_pos_of_fullLikelihood model actual hLikelihood o))\n          (filteredBelief model reference o\n            (predictive_pos_of_fullLikelihood model reference hLikelihood o)) ≤\n      finiteKL actual reference",
+        "fep157_perception_native_kl_nonincrease": "theorem fep157_perception_native_kl_nonincrease\n    [MeasurableSpace State] [MeasurableSpace Outcome]\n    [DiscreteMeasurableSpace State] [DiscreteMeasurableSpace Outcome]\n    (model : GenerativeModel Policy State Outcome)\n    (actual reference : FiniteLaw State) :\n    InformationTheory.klDiv\n        (FEP.NativeBlanket.embeddedLaw (model.likelihood.predictive actual))\n        (FEP.NativeBlanket.embeddedLaw (model.likelihood.predictive reference)) ≤\n      InformationTheory.klDiv (FEP.NativeBlanket.embeddedLaw actual)\n        (FEP.NativeBlanket.embeddedLaw reference)",
+        "fep157_prediction_dobrushin_contraction": "theorem fep157_prediction_dobrushin_contraction [DecidableEq State]\n    (model : GenerativeModel Policy State Outcome) (policy : Policy)\n    {coefficient : ℝ}\n    (hBound : FEP.FiniteMarkovDynamics.HasDobrushinBound\n      (model.transition policy) coefficient)\n    (left right : FiniteLaw State) :\n    FEP.FiniteMarkovDynamics.totalVariation\n        ((model.transition policy).predictive left)\n        ((model.transition policy).predictive right) ≤\n      coefficient * FEP.FiniteMarkovDynamics.totalVariation left right",
+        "fep157_perceptionVFE_gap": "theorem fep157_perceptionVFE_gap\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n    (hEvidence : 0 < model.likelihood.predictive belief outcome) :\n    perceptionVFE model belief outcome hEvidence belief =\n      -Real.log (model.likelihood.predictive belief outcome) +\n        finiteKL belief (filteredBelief model belief outcome hEvidence)",
+        "fep157_policyPosterior_eq_controlPosterior": "theorem fep157_policyPosterior_eq_controlPosterior (precision : ℝ)\n    (model : GenerativeModel Policy State Outcome)\n    (support : FullSupport model) :\n    policyPosterior precision model support =\n      controlPosterior model.policyPrior precision (expectedFreeEnergy model)",
+        "fep157_loop_fixed_point_is_boltzmann": "theorem fep157_loop_fixed_point_is_boltzmann (precision : ℝ)\n    (model : GenerativeModel Policy State Outcome)\n    (support : FullSupport model) (energy : ℝ)\n    (hflat : ∀ policy, expectedFreeEnergy model policy = energy) :\n    policyPosterior precision model support = model.policyPrior",
+        "fep157_selectedPolicy_minimizes": "theorem fep157_selectedPolicy_minimizes [Nonempty Policy]\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (alternative : Policy) :\n    expectedFreeEnergy (withInitialState model belief)\n        (selectedPolicy model belief) ≤\n      expectedFreeEnergy (withInitialState model belief) alternative",
+        "fep157_filteredBelief_eq_forwardFilter": "theorem fep157_filteredBelief_eq_forwardFilter [DecidableEq State]\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n    (hEvidence : 0 < model.likelihood.predictive belief outcome) :\n    filteredBelief model belief outcome hEvidence =\n      forwardFilter belief FiniteKernel.identity model.likelihood outcome\n        (identity_forwardEvidence belief outcome FiniteKernel.identity rfl\n          model.likelihood hEvidence)",
+        "fep157_perceptionActionStep_eq": "theorem fep157_perceptionActionStep_eq [Nonempty Policy] [DecidableEq State]\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n    (hEvidence : 0 < model.likelihood.predictive belief outcome) :\n    perceptionActionStep model belief outcome hEvidence =\n      (model.transition (selectedPolicy model\n        (filteredBelief model belief outcome hEvidence))).predictive\n        (filteredBelief model belief outcome hEvidence)",
+        "fep157_perceptionActionKernel_apply": "theorem fep157_perceptionActionKernel_apply [Nonempty Policy] [DecidableEq State]\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (hEvidence : ∀ o : Outcome, 0 < model.likelihood.predictive belief o)\n    (outcome : Outcome) (state : State) :\n    perceptionActionKernel model belief hEvidence outcome state =\n      perceptionActionStep model belief outcome (hEvidence outcome) state",
+        "fep157_posteriorKernel_joint_eq_swap": "theorem fep157_posteriorKernel_joint_eq_swap\n    (model : GenerativeModel Policy State Outcome) (prior : FiniteLaw State)\n    (hEvidence : ∀ o, 0 < model.likelihood.predictive prior o)\n    (o : Outcome) (s : State) :\n    (posteriorKernel model prior hEvidence).joint\n        (model.likelihood.predictive prior) (o, s) =\n      (model.likelihood.joint prior) (s, o)"
+      },
+      "statement_review": "Primary is a single positive-evidence outcome surprisal bound by perceptionVFE, exact VFE=surprisal+KL to its filtered belief, plus selected-policy EFE=risk+ambiguity at the filtered model. Supporting finite KL chain decomposition bounds an observation-averaged posterior KL, native DPI bounds predictive KL, and Dobrushin bounds TV under an explicit coefficient.",
+      "assumptions_and_scope": "There is no declared trajectory sum or theorem that each realized observation reduces surprisal/KL. The named fixed-point theorem only states that flat EFE across policies makes policyPosterior=prior; no iterated-loop fixed-point convergence is proved. Dobrushin strict contraction needs coefficient<1, not merely a supplied bound. Existing Bayesian planning/update and exact feedback specializations are real additional content, but do not establish the stronger metadata claims.",
+      "positive_witness_specification_unexecuted": "Use a full-support likelihood/prior instance to consume the exact averaged chain rule and one-step VFE gap; separately take constant policy EFE for posterior=prior.",
+      "adverse_witness_specification_unexecuted": "Individual observations can increase posterior KL even when its predictive average is bounded. An identity transition admits coefficient1 and no strict TV decrease. Flat policy EFE is not proof of a dynamical fixed point.",
+      "nearest_topic_distinction": "017 posterior/forward filter and021/071 model-derived policy planning are genuinely connected through actual operations; aggregate loop monotonicity and accumulated expected-EFE accounting require a new trajectory-level theorem, not compilation.",
+      "novelty_record": {
+        "id": "fep-157",
+        "nearest_topics": [
+          "fep-065"
+        ],
+        "new_invariant": "Each full perception-update-select-predict step bounds the stage outcome surprisal by the recognition's perception VFE with the perception KL as the exact epistemic gap and splits the selected policy's expected free energy into its certified risk-plus-ambiguity budget.",
+        "carrier_delta": "Couples normalized action-conditioned transition rows to a positive-evidence filtered finite-belief carrier so the loop's predict stage is a controlled kernel step.",
+        "required_bridge": "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-157",
+          "target": "fep-065",
+          "kind": "formal_pairing",
+          "rationale": "The perception-action loop's invariant surprisal bound factors through one action-conditioned controlled-kernel step, paired with fep-065's row-normalization law, without claiming a general POMDP fixed-point theorem.",
+          "witness": "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+        }
+      ]
+    },
+    {
+      "id": "fep-158",
+      "title": "Bayesian Model Reduction",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "44393b67feb0b234e1efae4d21fc485049b950683c6d6a445e7dc58f37add32d",
+      "maturity_record": {
+        "id": "fep-158",
+        "primary_theorem": "fep158_reduction_free_energy_monotone",
+        "supporting_theorems": [
+          "fep158_maskedEvidence_le_predictive",
+          "fep158_maskedPrior_predictive_eq",
+          "fep158_reduction_posterior_reconstruction",
+          "fep158_reduction_posterior_odds",
+          "fep158_reduced_posterior_reconstructs",
+          "fep158_gibbsFreeEnergy_eq_neg_dvObjective",
+          "fep158_reduction_free_energy_change_eq_kl",
+          "fep158_reduction_free_energy_monotone_gibbs",
+          "fep158_gaussianLogBayesFactor_eq"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Masking evidence never lowers the model evidence: the reduced model's evidence free energy dominates the full model's, the reduced posterior obeys the multiplicative Bayes-odds law with the evidence weight and reconstructs the full posterior through the evidence ratio, and the Gibbs-certificate excess over the optimizer is exactly the KL divergence to it.",
+        "assumption_review": "The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic model-selection claim.",
+        "non_vacuity": "The masked predictive is bounded by the full evidence, and the reduced posterior reconstructs the full posterior exactly through the evidence ratio.",
+        "acceptance_probe": "warning-free native Lean compile of all ten fep-158 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep158_reduction_free_energy_monotone": "theorem fep158_reduction_free_energy_monotone (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data : Evidence) (hw1 : ∀ x, weight x ≤ 1)\n    (hE : 0 < maskedEvidence prior weight kernel data) :\n    evidenceFreeEnergy (kernel.predictive prior data) ≤\n      evidenceFreeEnergy (maskedEvidence prior weight kernel data)",
+        "fep158_maskedEvidence_le_predictive": "theorem fep158_maskedEvidence_le_predictive (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data : Evidence) (hw1 : ∀ x, weight x ≤ 1) :\n    maskedEvidence prior weight kernel data ≤ kernel.predictive prior data",
+        "fep158_maskedPrior_predictive_eq": "theorem fep158_maskedPrior_predictive_eq (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data : Evidence) (hw : ∀ x, 0 ≤ weight x)\n    (hZ : 0 < ∑ x, weight x * prior x) :\n    kernel.predictive (maskedPrior prior weight hw hZ) data =\n      maskedEvidence prior weight kernel data / ∑ y, weight y * prior y",
+        "fep158_reduction_posterior_reconstruction": "theorem fep158_reduction_posterior_reconstruction (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data : Evidence) (hw : ∀ x, 0 ≤ weight x)\n    (hZ : 0 < ∑ x, weight x * prior x)\n    (hy : 0 < kernel.predictive (maskedPrior prior weight hw hZ) data)\n    (x : Parameter) :\n    FiniteKernel.posterior (maskedPrior prior weight hw hZ) kernel data hy x *\n        maskedEvidence prior weight kernel data =\n      weight x * prior x * kernel x data",
+        "fep158_reduction_posterior_odds": "theorem fep158_reduction_posterior_odds (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data : Evidence) (hw : ∀ x, 0 ≤ weight x)\n    (hZ : 0 < ∑ x, weight x * prior x)\n    (hy : 0 < kernel.predictive (maskedPrior prior weight hw hZ) data)\n    (x y : Parameter) :\n    FiniteKernel.posterior (maskedPrior prior weight hw hZ) kernel data hy x *\n        (weight y * prior y * kernel y data) =\n      FiniteKernel.posterior (maskedPrior prior weight hw hZ) kernel data hy y *\n        (weight x * prior x * kernel x data)",
+        "fep158_reduced_posterior_reconstructs": "theorem fep158_reduced_posterior_reconstructs (prior : FiniteLaw Parameter)\n    (weight : Parameter → ℝ) (kernel : FiniteKernel Parameter Evidence)\n    (data : Evidence) (hw : ∀ x, 0 ≤ weight x)\n    (hZ : 0 < ∑ x, weight x * prior x)\n    (hP : 0 < kernel.predictive prior data)\n    (hE : 0 < maskedEvidence prior weight kernel data)\n    (hy : 0 < kernel.predictive (maskedPrior prior weight hw hZ) data)\n    (x : Parameter) :\n    FiniteKernel.posterior (maskedPrior prior weight hw hZ) kernel data hy x =\n      FiniteKernel.posterior prior kernel data hP x * weight x *\n        (kernel.predictive prior data /\n          maskedEvidence prior weight kernel data)",
+        "fep158_gibbsFreeEnergy_eq_neg_dvObjective": "theorem fep158_gibbsFreeEnergy_eq_neg_dvObjective (c : GibbsCertificate Parameter)\n    (cand : FiniteLaw Parameter) :\n    gibbsFreeEnergy c cand = -dvObjective c cand",
+        "fep158_reduction_free_energy_change_eq_kl": "theorem fep158_reduction_free_energy_change_eq_kl (c : GibbsCertificate Parameter)\n    (cand : FiniteLaw Parameter) :\n    gibbsFreeEnergy c cand - gibbsFreeEnergy c c.optimizer =\n      finiteKL cand c.optimizer",
+        "fep158_reduction_free_energy_monotone_gibbs": "theorem fep158_reduction_free_energy_monotone_gibbs\n    (c : GibbsCertificate Parameter) (cand : FiniteLaw Parameter) :\n    gibbsFreeEnergy c c.optimizer ≤ gibbsFreeEnergy c cand",
+        "fep158_gaussianLogBayesFactor_eq": "theorem fep158_gaussianLogBayesFactor_eq (family : FixedVarianceGaussian)\n    (natural x : ℝ) :\n    Real.log\n        (gaussianPDFReal (family.naturalToMean natural) family.variance x /\n          gaussianPDFReal 0 family.variance x) =\n      natural * x - family.naturalLogPartition natural"
+      },
+      "statement_review": "For weights<=1 and positive maskedEvidence, the unnormalized masked evidence is<=full predictive evidence, hence its negative log free energy is>=the full one. Normalizing the masked prior instead yields maskedEvidence/Z, a different quantity that can exceed full evidence. Posterior reweighting/reconstruction and Gibbs optimizer gap are separately proved.",
+      "assumptions_and_scope": "Posterior clauses require nonnegative weights, positive prior mask normalizer and positive conditioned evidence; the primary free-energy inequality itself only assumes upper weight bound plus positive masked evidence. Finite carriers are used, not arbitrary finite measure spaces. Gaussian fixed-variance log ratio and Gibbs free-energy/KL gap do not identify reduction with general DV/statistical model selection.",
+      "positive_witness_specification_unexecuted": "Uniform two-parameter prior and likelihood(.9,.1), mask(1,0): full evidence.5, masked unnormalized.45 (lower), normalized reduced-prior evidence.9 (higher). This separates the two meanings.",
+      "adverse_witness_specification_unexecuted": "No universal monotonic direction for normalized reduced-model evidence follows from mask<=1. A mask eliminating all evidence fails positivity and cannot support ordinary logarithmic posterior reconstruction.",
+      "nearest_topic_distinction": "026 scalar log complexity and058/059 Gibbs duality are bounded neighboring facts.158 supports exact finite reweighting and specified evidence comparisons, not the reversed sentence that masking never lowers evidence.",
+      "novelty_record": {
+        "id": "fep-158",
+        "nearest_topics": [
+          "fep-058"
+        ],
+        "new_invariant": "Evidence weighting never lowers the model's evidence free energy because masked evidence never exceeds full evidence and negative log is decreasing in the evidence.",
+        "carrier_delta": "Reinterprets the finite Gibbs variational lower bound as masking monotonicity over a pointwise weight between zero and one with the exact reduced-prior renormalization.",
+        "required_bridge": "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-158",
+          "target": "fep-058",
+          "kind": "formal_pairing",
+          "rationale": "Masked evidence never lowers evidence free energy, paired with fep-058's exact Gibbs lower bound on the same finiteKL and gibbsFreeEnergy carriers, without claiming a variational characterization of arbitrary model reductions.",
+          "witness": "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound"
+        }
+      ]
+    },
+    {
+      "id": "fep-159",
+      "title": "EFE and Entropy-Production Time-Scale Separation",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "24b4e52697bb495edf468edff5c1bc48deb12afb4b98b502477f94f6fd4e07ea",
+      "maturity_record": {
+        "id": "fep-159",
+        "primary_theorem": "fep159_epistemic_gain_bounded_by_affinity",
+        "supporting_theorems": [
+          "fep159_expectedFreeEnergy_le_productionRate_div_decayRate",
+          "fep159_slow_fast_separation_statement",
+          "fep159_fastRelaxation_epistemic_vanishes",
+          "fep159_slicePath_entropyProduction_eq",
+          "fep159_beliefAffinity_eq_localAffinity",
+          "fep159_productionRate_nonneg",
+          "fep159_twoStateModel_expectedFreeEnergy",
+          "fep159_epistemicGain_rateScaling"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The two-state belief information gap is bounded by the entropy-production rate scaled by the relaxation time (gain at most production/decay), the evolved gap contracts to the invariant measure no slower than the relaxation timescale, the one-slice path-space entropy production equals (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved gain after any fixed positive action time vanishes.",
+        "assumption_review": "All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.",
+        "non_vacuity": "The bound is attained by the stationary law for the benchmark rates, and the fast-relaxation limit exhibits the vanishing exactly.",
+        "acceptance_probe": "warning-free native Lean compile of all nine fep-159 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep159_epistemic_gain_bounded_by_affinity": "theorem fep159_epistemic_gain_bounded_by_affinity (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i) :\n    finiteKL belief rates.stationaryLaw ≤\n      productionRate rates belief / rates.decayRate",
+        "fep159_expectedFreeEnergy_le_productionRate_div_decayRate": "theorem fep159_expectedFreeEnergy_le_productionRate_div_decayRate (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 ≤ time) (policy : Bool) :\n    expectedFreeEnergy (twoStateModel rates belief time hTime) policy ≤\n      productionRate rates belief / rates.decayRate",
+        "fep159_slow_fast_separation_statement": "theorem fep159_slow_fast_separation_statement (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (time : ℝ) (hTime : 0 ≤ time) :\n    epistemicGain rates belief time hTime ≤\n      rates.rho time ^ 2 *\n        ((belief true - rates.stationaryTrue) ^ 2 /\n          (rates.stationaryTrue * rates.stationaryFalse))",
+        "fep159_fastRelaxation_epistemic_vanishes": "theorem fep159_fastRelaxation_epistemic_vanishes (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :\n    ∀ δ : ℝ, 0 < δ → ∃ eps : ℝ, 0 < eps ∧ ∀ (hTime : 0 ≤ time) (heps : 0 < eps),\n      epistemicGain (scaledRates rates eps heps) belief time hTime ≤ δ",
+        "fep159_slicePath_entropyProduction_eq": "theorem fep159_slicePath_entropyProduction_eq (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 ≤ time) (hpos : 0 < time) :\n    entropyProduction (slicePathProtocol rates belief time hTime)\n      = (1 - rates.rho time) * productionRate rates belief / rates.decayRate",
+        "fep159_beliefAffinity_eq_localAffinity": "theorem fep159_beliefAffinity_eq_localAffinity (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 < time) :\n    beliefAffinity rates belief =\n      localAffinity belief (rates.certifiedSemigroup.kernel time hTime.le) false true",
+        "fep159_productionRate_nonneg": "theorem fep159_productionRate_nonneg (rates : TwoStateRates) (belief : FiniteLaw Bool)\n    (hSupport : ∀ i, 0 < belief i) : 0 ≤ productionRate rates belief",
+        "fep159_twoStateModel_expectedFreeEnergy": "theorem fep159_twoStateModel_expectedFreeEnergy (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 ≤ time) (policy : Bool) :\n    expectedFreeEnergy (twoStateModel rates belief time hTime) policy =\n      epistemicGain rates belief time hTime",
+        "fep159_epistemicGain_rateScaling": "theorem fep159_epistemicGain_rateScaling (rates : TwoStateRates) (belief : FiniteLaw Bool)\n    (time : ℝ) (hTime : 0 ≤ time) (eps : ℝ) (heps : 0 < eps) :\n    epistemicGain (scaledRates rates eps heps) belief time hTime ≤\n      Real.exp (-(rates.decayRate / eps) * time) ^ 2 *\n        ((belief true - rates.stationaryTrue) ^ 2 /\n          (rates.stationaryTrue * rates.stationaryFalse))"
+      },
+      "statement_review": "For full-support Bool belief, KL to the two-state invariant law is bounded by productionRate/decayRate; a specific perfect-observation, policy-independent semigroup model has EFE equal to the evolved information gap. The gap has an explicit squared-exponential upper bound, and a supported positive-time source-target slice has exact production(1-rho)*productionRate/decayRate.",
+      "assumptions_and_scope": "epistemicGain here is KL(evolved belief||stationary), not generic epistemic mutual information. Every policy shares the same transition; likelihood is identity and preferences stationary. The declared fastRelaxation theorem proves for each positive tolerance there exists one positive epsilon attaining the bound, not a forall sufficiently-small epsilon/Tendsto statement. The exponential envelope makes such a stronger result feasible but it has not been stated in these declarations.",
+      "positive_witness_specification_unexecuted": "Choose full-support nonstationary belief for positive current-affinity production; use exact scaling bound and one-slice identity. Stationary belief gives equality0=0 only.",
+      "adverse_witness_specification_unexecuted": "At stationarity generic perfect-observation mutual information can be positive although the KL gap/production are0; thus universal MI<=production/decay is false. Existence of one good epsilon is weaker than a right-limit theorem.",
+      "nearest_topic_distinction": "149–155 exact semigroup and094 finite path production are actually instantiated. This is one-slice reweighting, not arbitrary horizon path action, physical time-scale separation or generic policy-dependent information gain.",
+      "novelty_record": {
+        "id": "fep-159",
+        "nearest_topics": [
+          "fep-153"
+        ],
+        "new_invariant": "The policy-relevant information gap of any fully supported two-state belief is bounded by the generator entropy-production rate scaled by the relaxation time one over the decay rate.",
+        "carrier_delta": "Anchors the finite KL-to-stationarity functional on the exact two-state continuous-time semigroup whose stationary law is invariant at every time.",
+        "required_bridge": "FEPComposed.fep159_epistemicGain_extends_fep153_stationary"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-159",
+          "target": "fep-153",
+          "kind": "formal_pairing",
+          "rationale": "The finite KL divergence of the EFE time-scale separation is bounded by the log-affinity of its two-state rate carrier, paired with fep-153's nonuniform stationary semigroup law, without claiming a physical entropy-production identity.",
+          "witness": "FEPComposed.fep159_epistemicGain_extends_fep153_stationary"
+        }
+      ]
+    },
+    {
+      "id": "fep-160",
+      "title": "Helmholtz–Ao Decomposition of Nonequilibrium Steady Currents",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "bda3a4b5f541dd90bb2312e75a217ca36a7662240fbe46445c44722b64576a35",
+      "maturity_record": {
+        "id": "fep-160",
+        "primary_theorem": "fep160_aoDecomposition",
+        "supporting_theorems": [
+          "fep160_skewQuadratic_eq_zero",
+          "fep160_skewTrace_eq_zero",
+          "fep160_circulationPart_skew",
+          "fep160_symmetricPart_reversible",
+          "fep160_current_eq_twice_circulation",
+          "fep160_probabilityCurrent_eq_twice_circulation",
+          "fep160_symmetricPart_current_eq_zero",
+          "fep160_detailedBalanced_iff_circulation_eq_zero",
+          "fep160_forceSplit",
+          "fep160_stationaryCurrent_divergence_zero",
+          "fep160_circulation_divergence_zero",
+          "fep160_cycle_ao_ness"
+        ],
+        "boundary_theorems": [],
+        "invariant": "On a finite state space with a full-support stationary law, every rate field decomposes exactly into a reversible part (detailed-balanced relative to the law) plus a circulation part (skew in the law-weighted sense); the stationary edge current equals twice the law-weighted circulation part, the reversible part carries no current, removing the circulation part is exactly detailed balance, the log-affinity splits into the Ao-potential drop plus the skew force, stationarity makes the node divergence of the stationary current vanish, and the directed three-cycle witness is stationary, divergence-free, and circulating.",
+        "assumption_review": "All statements are finite-carrier algebra: the Ao potential is the pointwise -log p* mass field and is deliberately distinct from the thermodynamic Helmholtz free energy of fep-013; the continuum Fokker-Planck equation, a state-dependent diffusion matrix field, and SDE noise are not formalized. Stationarity and the probability current reuse the established FEP.ContinuousTimeMarkov generator contract.",
+        "non_vacuity": "The decomposition is unconditional for every rate field under the full-support hypothesis, and the directed three-cycle exhibits a genuine NESS whose circulation part is 1/2 at the forward edge.",
+        "acceptance_probe": "warning-free native Lean compile of all thirteen fep-160 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep160_aoDecomposition": "theorem fep160_aoDecomposition {rate : State → State → ℝ}\n    {law : FiniteLaw State} (hSupport : ∀ i, 0 < law i) (i j : State) :\n    rate i j = symmetricPart rate law i j + circulationPart rate law i j",
+        "fep160_skewQuadratic_eq_zero": "theorem fep160_skewQuadratic_eq_zero {n : ℕ} (Q : Fin n → Fin n → ℝ)\n    (g : Fin n → ℝ) (hQ : SkewSymmetric Q) : dot g (mulVec Q g) = 0",
+        "fep160_skewTrace_eq_zero": "theorem fep160_skewTrace_eq_zero {n : ℕ} (Q H : Fin n → Fin n → ℝ)\n    (hQ : SkewSymmetric Q) (hH : SymmetricOf H) : traceOf (mulOf Q H) = 0",
+        "fep160_circulationPart_skew": "theorem fep160_circulationPart_skew {rate : State → State → ℝ}\n    {law : FiniteLaw State} (hSupport : ∀ i, 0 < law i) (i j : State) :\n    law i * circulationPart rate law i j =\n      -(law j * circulationPart rate law j i)",
+        "fep160_symmetricPart_reversible": "theorem fep160_symmetricPart_reversible {rate : State → State → ℝ}\n    {law : FiniteLaw State} (hSupport : ∀ i, 0 < law i) (i j : State) :\n    law i * symmetricPart rate law i j =\n      law j * symmetricPart rate law j i",
+        "fep160_current_eq_twice_circulation": "theorem fep160_current_eq_twice_circulation {rate : State → State → ℝ}\n    {law : FiniteLaw State} (hSupport : ∀ i, 0 < law i) (i j : State) :\n    circulationNum rate law i j =\n      2 * law i * circulationPart rate law i j",
+        "fep160_probabilityCurrent_eq_twice_circulation": "theorem fep160_probabilityCurrent_eq_twice_circulation\n    (generator : FiniteRateGenerator State) (law : FiniteLaw State)\n    (hSupport : ∀ i, 0 < law i) (i j : State) :\n    generator.probabilityCurrent law i j =\n      2 * law i * circulationPart generator.rate law i j",
+        "fep160_symmetricPart_current_eq_zero": "theorem fep160_symmetricPart_current_eq_zero {rate : State → State → ℝ}\n    {law : FiniteLaw State} (hSupport : ∀ i, 0 < law i) (i j : State) :\n    law i * symmetricPart rate law i j -\n      law j * symmetricPart rate law j i = 0",
+        "fep160_detailedBalanced_iff_circulation_eq_zero": "theorem fep160_detailedBalanced_iff_circulation_eq_zero\n    {rate : State → State → ℝ} {law : FiniteLaw State}\n    (hSupport : ∀ i, 0 < law i) :\n    (∀ i j, law i * rate i j = law j * rate j i) ↔\n      ∀ i j, circulationPart rate law i j = 0",
+        "fep160_forceSplit": "theorem fep160_forceSplit {rate : State → State → ℝ} {law : FiniteLaw State}\n    (hSupport : ∀ i, 0 < law i) {i j : State}\n    (hij : 0 < rate i j) (hji : 0 < rate j i) :\n    Real.log (law i * rate i j / (law j * rate j i)) =\n      aoPotential law j - aoPotential law i +\n        Real.log (rate i j / rate j i)",
+        "fep160_stationaryCurrent_divergence_zero": "theorem fep160_stationaryCurrent_divergence_zero\n    (generator : FiniteRateGenerator State) (law : FiniteLaw State)\n    (hStat : generator.IsStationary law) (i : State) :\n    ∑ j, generator.probabilityCurrent law j i = 0",
+        "fep160_circulation_divergence_zero": "theorem fep160_circulation_divergence_zero\n    (generator : FiniteRateGenerator State) (law : FiniteLaw State)\n    (hStat : generator.IsStationary law) (hSupport : ∀ i, 0 < law i)\n    (i : State) :\n    ∑ j, 2 * law j * circulationPart generator.rate law j i = 0",
+        "fep160_cycle_ao_ness": "theorem fep160_cycle_ao_ness :\n    threeCycleGenerator.IsStationary threeCycleStationaryLaw ∧\n      (∀ i : Fin 3,\n        ∑ j, threeCycleGenerator.probabilityCurrent\n            threeCycleStationaryLaw j i = 0) ∧\n      circulationPart threeCycleGenerator.rate threeCycleStationaryLaw\n          (0 : Fin 3) (1 : Fin 3) ≠ 0"
+      },
+      "statement_review": "Every real rate field splits algebraically relative to a positive law into reversible symmetricPart and law-weighted skew circulationPart. Current=2*law*circulation, reversible current0 and detailed-balance iff circulation0 are proved. Actual finite-generator stationarity gives zero node divergence; directed3-cycle is a nonzero-current stationary witness.",
+      "assumptions_and_scope": "Stationarity is not needed for algebraic splitting but is needed for stationary divergence. Law-weighted skewness is not ordinary matrix skewness except with uniform law. ForceSplit requires positive opposing rates and positive law; one-way cycle does not instantiate its log-affinity premise. Circulation entries need not be nonnegative generator rates;166 explicitly shows a negative entry. No continuum SDE/PDE or physical Helmholtz identity follows.",
+      "positive_witness_specification_unexecuted": "Reuse stationary directed3-cycle current1/3 and circulation1/2; separately use bidirectional supported rates for forceSplit.",
+      "adverse_witness_specification_unexecuted": "A positive-law arbitrary rate field can fail stationarity; then current divergence need not vanish. Do not apply ordinary Q-transpose=-Q cancellation to an unscaled law-weighted-skew field.",
+      "nearest_topic_distinction": "013 Helmholtz U-TS is deliberately distinct from Ao potential-log stationary mass;161 plain skew algebra and160 weighted reversible split require exact carrier identification before combination.",
+      "novelty_record": {
+        "id": "fep-160",
+        "nearest_topics": [
+          "fep-025"
+        ],
+        "new_invariant": "Every rate field on a finite state space with full-support stationary law splits exactly into a detailed-balanced reversible part plus a law-weighted-skew circulation part, and the stationary edge current is carried entirely by the circulation part.",
+        "carrier_delta": "Replaces the manuscript's constant-diffusion drift ansatz by an unconditional finite decomposition of the rate field itself, with the explicit stationarity divergence check and a directed three-cycle NESS witness.",
+        "required_bridge": "FEPComposed.fep160_aoNess_extends_fep025_current"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-160",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The Helmholtz–Ao decomposition's stationary current is carried entirely by the circulation part and its node divergence vanishes under stationarity, paired with fep-025's edge-current divergence law and nonzero cycle current, without identifying the finite rate-field ansatz with a continuum Fokker-Planck solution.",
+          "witness": "FEPComposed.fep160_aoNess_extends_fep025_current"
+        },
+        {
+          "source": "fep-161",
+          "target": "fep-160",
+          "kind": "formal_pairing",
+          "rationale": "The plain-matrix trace and quadratic cancellations are paired with the rate-field decomposition whose skew clause they justify, without deriving the finite carrier's law-weighted skewness from the plain pointwise property.",
+          "witness": "FEPComposed.fep161_skewCancellation_extends_fep160_aoNess"
+        },
+        {
+          "source": "fep-166",
+          "target": "fep-160",
+          "kind": "formal_pairing",
+          "rationale": "The competing-pair uniqueness of the law-weighted split is paired with fep-160's unconditional existence decomposition, so on the same finite rate-field carrier the canonical split exists and any constraint-satisfying competitor coincides with it, without introducing a stationarity hypothesis or a nonnegativity claim for the circulation part.",
+          "witness": "FEPComposed.fep166_splitUnique_extends_fep160_aoNess"
+        }
+      ]
+    },
+    {
+      "id": "fep-166",
+      "title": "Uniqueness of the Law-Weighted Reversible/Circulation Split",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "d8d624e56974056f21ebb5ebc311bd11d9d57a007cf82dcbc019db92a5668108",
+      "maturity_record": {
+        "id": "fep-166",
+        "primary_theorem": "fep166_split_unique",
+        "supporting_theorems": [
+          "fep166_reversible_split_unique",
+          "fep166_twoByTwo_support",
+          "fep166_twoByTwo_predicates",
+          "fep166_twoByTwo_split_canonical",
+          "fep166_twoByTwo_circulation_nonzero",
+          "fep166_twoByTwo_circulation_negative"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Any competing pair S, A with W = S + A, p-weighted reversibility of S and p-weighted skewness of A coincides pointwise with the canonical symmetricPart and circulationPart of the rate field; the reversible boundary is in uniqueness form (a p-reversible field has the split (W, 0)), and on the concrete two-state datum the constraint-satisfying split is the canonical one with genuinely nonzero forward circulation 1/2 and strictly negative reverse entry -1/4.",
+        "assumption_review": "Positivity of the finite law is the only analytic input and licenses the divisions; no stationarity hypothesis, no generator contract, and no nonnegativity claim for the circulation part enter the statements.",
+        "non_vacuity": "The t-0060 datum with weight law p = (1/3, 2/3) and rate entries 1, 5/2, 3/4, and -1 satisfies every constraint clause, its split is forced to be the canonical one, and the circulation entries 1/2 and -1/4 are computed exactly, so the uniqueness characterization is exercised on nontrivial data.",
+        "acceptance_probe": "warning-free native Lean compile of all seven fep-166 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep166_split_unique": "theorem fep166_split_unique\n    (hSupport : ∀ i, 0 < law i)\n    (hS : ∀ i j, law i * S i j = law j * S j i)\n    (hA : ∀ i j, law i * A i j = -(law j * A j i))\n    (hSum : ∀ i j, rate i j = S i j + A i j) :\n    S = symmetricPart rate law ∧ A = circulationPart rate law",
+        "fep166_reversible_split_unique": "theorem fep166_reversible_split_unique\n    (hSupport : ∀ i, 0 < law i)\n    (hRev : ∀ i j, law i * rate i j = law j * rate j i) :\n    rate = symmetricPart rate law ∧ (∀ i j, circulationPart rate law i j = 0)",
+        "fep166_twoByTwo_support": "theorem fep166_twoByTwo_support (i : Fin 2) :\n    0 < twoByTwoLaw i",
+        "fep166_twoByTwo_predicates": "theorem fep166_twoByTwo_predicates :\n    (∀ i j : Fin 2, twoByTwoLaw i * twoByTwoS i j = twoByTwoLaw j * twoByTwoS j i) ∧\n      (∀ i j : Fin 2,\n        twoByTwoLaw i * twoByTwoA i j = -(twoByTwoLaw j * twoByTwoA j i)) ∧\n      (∀ i j : Fin 2, twoByTwoW i j = twoByTwoS i j + twoByTwoA i j)",
+        "fep166_twoByTwo_split_canonical": "theorem fep166_twoByTwo_split_canonical :\n    twoByTwoS = symmetricPart twoByTwoW twoByTwoLaw ∧\n      twoByTwoA = circulationPart twoByTwoW twoByTwoLaw",
+        "fep166_twoByTwo_circulation_nonzero": "theorem fep166_twoByTwo_circulation_nonzero :\n    circulationPart twoByTwoW twoByTwoLaw (0 : Fin 2) (1 : Fin 2) = 1 / 2",
+        "fep166_twoByTwo_circulation_negative": "theorem fep166_twoByTwo_circulation_negative :\n    circulationPart twoByTwoW twoByTwoLaw (1 : Fin 2) (0 : Fin 2) = -1 / 4"
+      },
+      "statement_review": "Given a positive finite law and any competing split rate=S+A with weighted-reversible S and weighted-skew A, both parts equal the canonical split. A concrete2-state field exercises all predicates with circulation1/2 and-1/4.",
+      "assumptions_and_scope": "No stationarity, row-sum-zero generator or nonnegative circulation is assumed. This is uniqueness of a weighted linear algebra decomposition, not uniqueness of a stochastic dynamics/NESS/physical Ao ansatz. Negative circulation makes a sum-of-independent-Markov-generators reading invalid.",
+      "positive_witness_specification_unexecuted": "Consume the actual p(1/3,2/3) datum, canonical uniqueness and both signed circulation entries.",
+      "adverse_witness_specification_unexecuted": "Without positive law, division-based uniqueness need not hold at zero-weight states. A different normalization/weighting changes the decomposition, and circulation alone need not be a generator.",
+      "nearest_topic_distinction": "160 constructs the split;166 proves competing-pair uniqueness, a substantive addition.161 ordinary skew and167 Frobenius projection remain distinct weight/metric contracts.",
+      "novelty_record": {
+        "id": "fep-166",
+        "nearest_topics": [
+          "fep-160"
+        ],
+        "new_invariant": "Any competing pair S′, A′ with W = S′ + A′, p-weighted reversibility of S′ and p-weighted skewness of A′ coincides pointwise with symmetricPart W p and circulationPart W p; the diagonal of A′ vanishes and a p-reversible W has the unique split (W, 0).",
+        "carrier_delta": "Adds the competing-pair uniqueness characterization to fep-160's existence decomposition; positivity licenses the division; no stationarity input.",
+        "required_bridge": "FEPComposed.fep166_splitUnique_extends_fep160_aoNess"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-166",
+          "target": "fep-160",
+          "kind": "formal_pairing",
+          "rationale": "The competing-pair uniqueness of the law-weighted split is paired with fep-160's unconditional existence decomposition, so on the same finite rate-field carrier the canonical split exists and any constraint-satisfying competitor coincides with it, without introducing a stationarity hypothesis or a nonnegativity claim for the circulation part.",
+          "witness": "FEPComposed.fep166_splitUnique_extends_fep160_aoNess"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "row": "fep-156",
+      "file": "config/theorem_maturity.yaml",
+      "field": "non_vacuity",
+      "finding": "Deterministic finite argmin and the regularized Boltzmann distribution are conflated.",
+      "exact_replacement_field_text": "A full-support finite prior, positive precision and nonconstant finite cost give a nondegenerate Boltzmann probability law attaining the unique KL-regularized objective minimum -gamma^-1 log Z. Separately, a nonempty finite policy carrier has a deterministic EFE argmin and the treewise declarations preserve finite optimal values; that deterministic argmin is not identified with the Boltzmann law or its regularized objective value."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-156",
+      "file": "config/theorem_maturity.yaml",
+      "field": "assumption_review",
+      "finding": "Main theorem requires full prior support and positive precision, while cost is supplied; these must remain explicit.",
+      "exact_replacement_field_text": "The primary Boltzmann-law minimization assumes a normalized finite full-support prior and gamma>0 and minimizes expected supplied real cost plus gamma^-1 KL to the prior over normalized candidate laws. Identifying that cost with model-derived EFE is a separate specialization. Deterministic finite-policy and finite-tree EFE/risk-ambiguity argmin statements are separate declarations. No continuous-action or general planning algorithm is claimed; supported sparse-prior and negative/zero-precision boundaries remain separately scoped foundation results."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-157",
+      "file": "config/theorem_maturity.yaml",
+      "field": "invariant",
+      "finding": "Current invariant claims realized-step surprisal monotonicity, an accumulated trajectory bound and a dynamical fixed point that its declarations do not state.",
+      "exact_replacement_field_text": "For one positive-evidence observation, outcome surprisal is bounded by perception VFE, whose exact gap is finite KL from the belief to its filtered posterior; the selected filtered-model policy has EFE equal to risk plus ambiguity under FullSupport. Supporting declarations give the finite observation-averaged posterior-KL chain bound, native predictive KL data processing, a Dobrushin total-variation bound under an explicit coefficient, Bayesian-filter/kernel reconstruction and selected-policy minimization. Flat policy EFE makes the policy posterior equal its prior. No realized-observation monotonicity, accumulated trajectory bound or dynamical fixed-point/convergence theorem is asserted."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-157",
+      "file": "config/theorem_maturity.yaml",
+      "field": "assumption_review",
+      "finding": "Average KL and coefficient-dependent TV facts do not imply strict realized-step loop decrease.",
+      "exact_replacement_field_text": "All belief, policy, state and outcome carriers are finite. The primary needs positive observation evidence and FullSupport at the filtered model; finite posterior-KL decomposition additionally needs a positive reference law and full likelihood support. The native predictive DPI is separately stated on discrete measurable carriers. Prediction uses an explicit HasDobrushinBound; strict TV contraction additionally needs a coefficient below one and a nonzero initial distance. The flat-EFE posterior identity is algebraic and is not an iterated-loop fixed-point theorem."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-157",
+      "file": "config/theorem_maturity.yaml",
+      "field": "non_vacuity",
+      "finding": "No concrete strict loop/surprisal trajectory witness is supplied by these thirteen declarations.",
+      "exact_replacement_field_text": "Nonuniform supported beliefs and informative likelihoods can instantiate the exact VFE gap and the observation-averaged KL decomposition. The selected-policy and filter/kernel equalities are actual finite operations. The flat-EFE case yields posterior=prior, an algebraic boundary; these declarations do not supply a strict realized-step surprisal-decrease or dynamical fixed-point witness."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-158",
+      "file": "config/theorem_maturity.yaml",
+      "field": "invariant",
+      "finding": "Masking evidence direction is reversed and normalized reduced-prior evidence must be distinguished.",
+      "exact_replacement_field_text": "Weights bounded above by one make positive unnormalized masked evidence no greater than full predictive evidence, so its negative-log evidence free energy is no smaller. For a nonnegative mask with positive prior normalizer, the normalized reduced-prior predictive equals maskedEvidence divided by that normalizer; no universal direction relative to full predictive evidence is claimed for this normalized quantity. Supported reduced posteriors obey exact weighted reconstruction and cross-multiplied odds identities. Separately, the Gibbs objective gap to its optimizer equals finite KL, and the fixed-variance Gaussian natural-chart log ratio is explicit."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-158",
+      "file": "config/theorem_maturity.yaml",
+      "field": "assumption_review",
+      "finding": "Finite-law masking is not a generic finite-measure/DV model reduction theorem.",
+      "exact_replacement_field_text": "Parameters and evidence use finite normalized law/kernel carriers. The primary free-energy comparison assumes weight<=1 pointwise and positive masked evidence. Normalized masked-prior/posterior statements additionally require nonnegative weights, positive prior mask normalizer and positive relevant evidence; ordinary log/ratio clauses retain their support assumptions. GibbsCertificate optimizer-gap identities and the fixed-variance Gaussian log Bayes factor are separate statements, with no general asymptotic model-selection or automatic full/reduced evidence monotonicity claim."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-158",
+      "file": "config/theorem_maturity.yaml",
+      "field": "non_vacuity",
+      "finding": "Use a concrete mask that separates unnormalized and normalized evidence meanings.",
+      "exact_replacement_field_text": "With prior masses(1/2,1/2), likelihoods(9/10,1/10) and mask(1,0), full evidence is1/2, unnormalized masked evidence9/20, mask normalizer1/2 and normalized reduced-prior evidence9/10. Positive support permits exact posterior reweighting. This exercises both evidence notions without reversing the proved comparison."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-159",
+      "file": "config/theorem_maturity.yaml",
+      "field": "invariant",
+      "finding": "The declared fast-relaxation result supplies one good epsilon per tolerance, not a right-limit quantifier; quantity is KL gap, not generic MI.",
+      "exact_replacement_field_text": "For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the retained theorem gives, for each positive tolerance, existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon or Tendsto theorem is not asserted by that declaration."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-159",
+      "file": "config/theorem_maturity.yaml",
+      "field": "non_vacuity",
+      "finding": "Stationary equality is a zero-gap boundary, not a positive time-scale separation witness.",
+      "exact_replacement_field_text": "At the stationary law the gap and production rate both vanish, providing an equality boundary. A full-support nonstationary belief supplies nonzero deviation and current-affinity production for the positive rates, and the explicit rate-scaling envelope gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations do not separately state the full right-limit quantifier."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "metadata corrections156–159",
+      "owner": "config/theorem_maturity.yaml",
+      "seam": "Apply exact replacement fields with unchanged dispositions, preserve original historical metadata and fail-closed epoch normalization. No stronger theorem may be inferred from theorem names.",
+      "estimate": "0.5–1 day plus source-owner projections/seal controls",
+      "positive": "exact statement-aligned records",
+      "adverse": "old reversed evidence/trajectory/fixedpoint claims rejected"
+    },
+    {
+      "rank": 2,
+      "scope": "159 actual epsilon-right-limit theorem",
+      "owner": "src/fep_lean/formal/efe_time_scale_separation.lean",
+      "seam": "Use existing scaled exponential envelope plus positivity/nonnegativity to prove forall epsilon in(0,epsilon0), gap<=delta, or Tendsto at nhdsWithin0(Ioi0). Current exists-one-epsilon theorem is weaker.",
+      "estimate": "1–2 days",
+      "positive": "supported nonstationary belief and fixed positive action time",
+      "adverse": "time0 gap persists; generic epistemic MI not bounded by stationary production"
+    },
+    {
+      "rank": 3,
+      "scope": "157 trajectory invariant only if separately intended",
+      "owner": "src/fep_lean/formal/perception_action_loop.lean",
+      "seam": "Define an actual repeated observation/action path and conditional probability law, then prove an expected telescope or supermartingale with exact policy/transition assumptions. Existing single-step averaged KL does not imply realized-step monotonicity or accumulated EFE accounting. Preserve existing Bayesian model/tree bridges.",
+      "estimate": "3–7 day feasibility spike, not a routine metadata acceptance",
+      "positive": "precisely specified expectation-level telescope",
+      "adverse": "rare observation posterior KL increase; Dobrushin coefficient1"
+    },
+    {
+      "rank": 4,
+      "scope": "160/166 weighted split consumers",
+      "owner": "src/fep_lean/formal/law_weighted_split.lean",
+      "seam": "Reuse actual signed circulation and stationary cycle witnesses. Any identification with plain skew algebra needs law weighting/similarity-transform bridge; do not assume circulation itself a nonnegative generator.",
+      "estimate": "0.5–2 days",
+      "positive": "weighted split uniqueness and current identity",
+      "adverse": "negative circulation entry and nonstationary arbitrary rate field"
+    }
+  ],
+  "limitations": [
+    "All168 topics now have a scoped static family audit; this is not broad Issue75 or scientific/terminal acceptance. Concrete metadata corrections and dependencies remain.",
+    "No S edits, Lean/tests/subject execution or delegation. Positive/adverse examples are unexecuted specifications; existing named source facts are not newly executed observations.",
+    "Current dispositions are retained only for exact narrowed mathematical statements. Pending metadata seals/projections/source-pair custody/integration and research acceptance remain distinct."
+  ]
+}

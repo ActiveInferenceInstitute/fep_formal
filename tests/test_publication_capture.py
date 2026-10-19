@@ -108,9 +108,9 @@ def test_publication_capture_missing_projection_pair_rejects_before_tools(
 def test_publication_capture_native_rejection_preserves_projection_pair(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, boundary: str
 ) -> None:
-    from fep_lean import cli
     from fep_lean.output import evidence, manuscript
     from fep_lean.output.release_bundle._core import _publication_capture_worker
+    from fep_lean.verification import lean_verifier as verifier_module
 
     directory = tmp_path / "manuscript"
     directory.mkdir()
@@ -129,7 +129,13 @@ def test_publication_capture_native_rejection_preserves_projection_pair(
             "alias": "valid",
         }[boundary]
         validation[key] = 1 if boundary == "alias" else False
-    monkeypatch.setattr(cli, "main", lambda _args: 7 if boundary == "exit" else 0)
+    monkeypatch.setattr(
+        verifier_module,
+        "verify_catalogue",
+        lambda *_args, **_kwargs: verifier_module.CatalogueVerification(
+            {}, 7 if boundary == "exit" else 0, 2
+        ),
+    )
     monkeypatch.setattr(
         evidence, "validate_native_lean_receipt", lambda *_args, **_kwargs: validation
     )
@@ -151,10 +157,10 @@ def test_publication_capture_native_rejection_preserves_projection_pair(
 def test_publication_capture_projects_final_native_values_and_rejects_stale_values(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
 ) -> None:
-    from fep_lean import cli
     from fep_lean.catalogue.topics import FEPTopicCatalogue
     from fep_lean.output import evidence, manuscript
     from fep_lean.output.release_bundle._core import _publication_capture_worker
+    from fep_lean.verification import lean_verifier as verifier_module
 
     (tmp_path / "manuscript").mkdir()
     (tmp_path / "output/.cache").mkdir(parents=True)
@@ -200,11 +206,11 @@ def test_publication_capture_projects_final_native_values_and_rejects_stale_valu
     manuscript.write_manuscript_vars(tmp_path)
     old = (tmp_path / "manuscript/manuscript_vars.yaml").read_bytes()
 
-    def final_native(_args):
+    def final_native(*_args, **_kwargs):
         receipt.write_text(json.dumps({"duration_s": 17.875}))
-        return 0
+        return verifier_module.CatalogueVerification({}, 0, 2)
 
-    monkeypatch.setattr(cli, "main", final_native)
+    monkeypatch.setattr(verifier_module, "verify_catalogue", final_native)
     assert (
         _publication_capture_worker(
             "native", "produce", str(tmp_path), str(tmp_path), str(tmp_path), "0"
@@ -241,11 +247,15 @@ def test_publication_capture_projects_final_native_values_and_rejects_stale_valu
 def test_publication_capture_projection_failure_is_fatal(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean import cli
     from fep_lean.output import evidence, manuscript
     from fep_lean.output.release_bundle._core import _publication_capture_worker
+    from fep_lean.verification import lean_verifier as verifier_module
 
-    monkeypatch.setattr(cli, "main", lambda _args: 0)
+    monkeypatch.setattr(
+        verifier_module,
+        "verify_catalogue",
+        lambda *_args, **_kwargs: verifier_module.CatalogueVerification({}, 0, 2),
+    )
     monkeypatch.setattr(
         evidence,
         "validate_native_lean_receipt",
@@ -1465,3 +1475,26 @@ def test_publication_capture_unsupported_platform_refuses_before_journal_or_proc
     with pytest.raises(bundle_module.ReleaseBundleError, match="requires POSIX"):
         _core.run_publication_capture(plan, journal)
     assert not journal.exists()
+
+
+def test_publication_capture_result_serialization_preserves_cli_contract(
+    tmp_path: Path,
+) -> None:
+    from fep_lean.output.release_bundle._core import PublicationCaptureResult
+
+    result = PublicationCaptureResult(
+        False, tmp_path / "journal", ("native",), (), "render", ("rejected",)
+    )
+    assert json.dumps(result.as_dict(), indent=2) == json.dumps(
+        {
+            "status": "error",
+            "complete": False,
+            "journal": str(tmp_path / "journal"),
+            "accepted_stages": ("native",),
+            "reused_stages": (),
+            "failed_stage": "render",
+            "errors": ("rejected",),
+            "evidence_plane": "local capture; no provider, hosted CI or publication action",
+        },
+        indent=2,
+    )

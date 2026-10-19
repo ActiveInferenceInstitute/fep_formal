@@ -1,0 +1,157 @@
+# Issue75 independent core-bayesian-mechanics family review
+
+Exactly13rows reviewed. Retain current narrowedformalizeddispositions withprosecorrections; noscientificpromotion.
+
+## fep-005 — Four-Block State Partition
+
+Primary uniqueassignmentfibre membership; supporting disjoint/cover/membershipiff exact forarbitraryFin20→Fin4.
+
+No conditionalindependence,dynamicalblanket,nonnullblocks orphysicalinternal/sensory/active/external identification.
+
+Positive/adverse(unexecuted): assignstate modulo4nonemptyblocks; constantassignment3emptyblocks stillvalidpartition; overlaprequiresnonfunctionalsetassignmentoutsidecontract.
+
+Nearesttopics: 009conditionalindependence and079finiteCMIfactorizationnotimpliedby005partition;039aggregationisstaticfibreidentity.
+
+## fep-009 — Conditional Independence Laws
+
+Primary CondIndep symmetry preservesgivenrelation underStandardBorel/finiteμ/conditioning≤ambient. Trivialσalgebra witness establishesinhabitation,notnontrivialblanket. Supportingmeasuremonotonicity/unionbound/nonnegativeproducts arebasicmeasurefacts.
+
+joint_product_nonneg provesonly0<=μs*νt,notjointfactorizationorindependence; names/docstringmustnotpromoteit.
+
+Positive/adverse(unexecuted): IndependentBoolcoordinatesunderproductlaw caninstantiateCI; trivialσalgebracontrol; same nontrivialBernoullivariabletwice notindependentunconditionally; μsνt nonnegativeevenforcorrelatedjoint.
+
+Nearesttopics: 005finitepartitionvs009conditionalindependence;079/081/083/085actualfactorization/invariancehaveadditionalcontracts,notdeducedfromproductnonnegativity.
+
+## fep-010 — Detailed Balance Implies Invariance
+
+Primary nativeMarkovreversibility⇒invariance; identityreversibleandinvariantforanymeasure; commoninvariantmeasurepreservedbykernelcomposition.
+
+No uniqueness,ergodicity,relaxationrate,pathfluctuationlaw orconverseofreversibility. Compositioninvariantdoesnotclaimcomposedkernelreversible.
+
+Positive/adverse(unexecuted): FairBooldeterministicflip reversibleandstationaryyetperiod2doesnotconverge; identityhasmanyinvariantlaws; directed3cycleuniforminvariantbutnotreversible.
+
+Nearesttopics: 020explicitmixingBoolchain;paththermodynamicreversal/fluctuationstatementsandAoNESSnonequilibriumcurrentsdistinct.
+
+## fep-017 — Posterior Kernel Reconstruction
+
+Primary posteriorjointreconstruction withnativefinitekernels; posteriorMarkovmassoneeveryfibre; priorrecoveryMarkovlikelihood; densityformulaAEPredictive withCountablelatent plusStandardBorelnonemptyobservation.
+
+Pointwisefiber-normalizationdoesnotuniquelydetermineposterioratnullobservation. GeneralBayesRNformulaisaeandversiondependent; noapproximate/learnedposteriorclaim.
+
+Positive/adverse(unexecuted): Boolpriorwithnoisypositivekernel giveschangedposterior; deterministicobservationnulloutcomesarbitraryversion; nonMarkovlikelihoodpriorrecoveryunavailable.
+
+Nearesttopics: 034posterioraftertransitionexactdefinition;051RNACreconstructionand054Bayesinvolutiondistinctsupportclaims;045finiteBooleanratiorequirespositiveevidencebridge.
+
+## fep-019 — Prior-Predictive Kernel Composition
+
+Primary sequentialnativepredictionassociativity; supportingmasspreservationMarkovκ,probabilitywhenpriorprobability exact.
+
+Arbitrarykernelscomposewithoutclaimnormalization; no posteriorlearning/calibration/modelidentifiability.
+
+Positive/adverse(unexecuted): NonDiracBoolprior/noisykernelandsecondkernelgenerateactualmixture; zerokernelmass0refutesunguardednormalization; unitkernelidentitycontrol.
+
+Nearesttopics: 022contextposterior-predictivekernel;027hierarchicalsecondmarginalidentifies019;034usestransitionpriorbeforeconditioning.
+
+## fep-020 — Two-State Markov Relaxation
+
+Primary exactgeometricconvergenceunder0<α<1; rownonnegative[0,1],rowmassonealgebraicallrealα,closedform/allrealp exact.
+
+Initialpanyrealtheorem,butprobabilityinterpretationrequiresp∈[0,1]. NoLangevindiffusionorPDElimit.
+
+Positive/adverse(unexecuted): α1/4deviationfactor1/2; α1/2one-stepuniform; α0identity; α1period2; α2negativeentriesdespiterowsum1.
+
+Nearesttopics: 037autocorrelationfinite-modeidentity;032scalarquadraticiteration;150-155realtimeMarkovsemigroupdifferentclock/carrier.
+
+## fep-022 — Posterior-Predictive Kernel and Brier Properness
+
+Primary Brierequalityifftrueparameter; squaredregretdecompositionprovesuniquemininrealq. NativeMarkovposterior/likelihoodcompositionnormalizedseparately.
+
+p,q∈[0,1]forproperprobabilityscore; predictiveTrueMass.toRealwithoutMarkovassumptionscanbeunphysical/infinite→0. Noempiricalcalibrationfrequencyclaim.
+
+Positive/adverse(unexecuted): p1/3,q2/3regret1/9; q=pexact; p2baselinep(1-p)negativeoutsideprobabilitydomain; unnormalized/infinitepredictivemeasurecannotbeprobabilityfromtoRealalone.
+
+Nearesttopics: 019predictivemeasure,027jointcompositionandfiniteSampleBrierriskboundsdistinct. Linkingnativepredictivetoproperriskneedsnormalizationnotjustalgebra.
+
+## fep-027 — Hierarchical Kernel Factorization
+
+Primary nativecompProdreassociationexact; normalizationprobabilityparent/Markovchild; fstrequiresSFiniteparentandMarkovκ; sndrequiresSFiniteparent/SFiniteκ.
+
+Definitionnormalizedhierarchicaljointonlyunderseparatetheorempremises; no causalidentification/interventionsemantics. MetadatafinitekernelclassesneedexactSFinite/Markovwording.
+
+Positive/adverse(unexecuted): NonDiracBoolparentstate-dependentchilddependentjoint; nonMarkovchildtotal2doublesfirstmarginal; zerochildjoint0.
+
+Nearesttopics: 019secondmarginaland022sequentialpredictiveformalidentities;hierarchicalcausalDAGsemanticsnotinferredfromproductreassociation.
+
+## fep-036 — Laplace-Smoothed Empirical Bernoulli Prior
+
+Primary consistencytransferassumesrawempiricalratioTendsto; binomialmassformula/unitintervalparameter andinteriorityforvalidcount,monotoneshrinkagesupportexact.
+
+No iid/SLLNfromthistopic alone; existingStatisticalConvergencefoundation/composedstronglawprovidesactualsamplingcontract. Notmarginal-likelihoodempiricalBayeshyperparameteroptimum.
+
+Positive/adverse(unexecuted): n0success0gives1/2; valid0..nstrictinterior; successn+2canexceed1; oscillatingrawratiohasnorequiredlimit; binomialp0or1restrictspositiveprobabilitysamples.
+
+Nearesttopics: 042countsfeed036;045posteriorclosurepositiveevidence;121finiteLaplaceerrorand095Polyaallonesbridgealreadydeliverednotnewmissingtheory.
+
+## fep-040 — Native Gaussian Law and Thermal Entropy Response
+
+Primary derivativeofdefinedthermalentropyatκ,T>0; nativeGaussianmass/mean/varianceincludevariance0Dirac; closedformvarianceentropyderivative/strictmonotone anddimensionlessheatcapacity algebraexact.
+
+Closedformentropyisdefinednotderivedintegral-logdensity. Diracvariance0lawexistsbutLebesguedifferentialentropyformulaisnotvalidthere. PhysicalheatcapacityrequireskB/energy/tempconventions,notmereT*formula.
+
+Positive/adverse(unexecuted): κ1,T1nondegenerate; variance2entropygreaterthan1; variance0Diracmean/variancevalidbutentropyformulatotalizedlog0=0notactualdensityentropy; T0heatcapacitydefinition0not1/2.
+
+Nearesttopics: 016Gaussianintegralnormalizerdistinct;013composedU(T)=T/2firstlawderivativelink;thermodynamicunits/reference/singularitystilldeclared.
+
+## fep-042 — Bernoulli Sufficient-Statistic Factorization
+
+Primary equalsufficientcountstats⇒equallikelihood∀realp; recursiveBernoullilikelihoodfactorssuccess/failurepowers exact.
+
+Probabilisticinterpretationrestrictsp∈[0,1]; no generaldominatedstatistical-sufficiencyσalgebra,minimalsufficiency/completeness/efficiencytheorem.
+
+Positive/adverse(unexecuted): PermutedTF/FTsamecounts; p1/4TTvsFFdifferent; p1/2allequallengthsequencestieevendifferentcounts,so conversefalse.
+
+Nearesttopics: 036smoothedcountsand095exchangeablePolya countlikelihooddifferentmodels;115unionboundsstatisticalnotderivedfromthisfactorization.
+
+## fep-045 — Finite Bernoulli Conjugate Closure
+
+Primary pointwiseBayesmass-vectorclosureunderZ≠0; interiorpriorpositivelikelihoodensureZ>0andposterior[0,1]; totalmassonealgebraically∀realparameters.
+
+NonzeroZalone doesnotensureprobabilitynonnegativity. ZeroZtotalizedparam0givesdegenerateBernoullimasssumonebutnotnormalizedBayesratio. Equallikelihoodpriorunchangedrequirescommonlikelihoodnonzero.
+
+Positive/adverse(unexecuted): p1/3,l0=1/4,l1=3/4posterior3/5; bothlikelihood0Z0posterior0notp; p2,l0=l1=1hasnegativefalsemassdespitesum1.
+
+Nearesttopics: 095PolyaBayesparameterbridgecountlevelnotBeta-densityconjugacy;017nativeBayesneedsfiniteembeddingandpositiveevidencenocodomainshortcut.
+
+## fep-046 — Finite Stick-Breaking Mass Conservation
+
+Primary finiteallocatedweights+remainder1unconditionalrealalgebra; supportingremainderboundsneedallbreaks[0,1].
+
+No randomBeta/Dirichletprocess, infiniteexhaustion,allocatedweightsnonnegtheoremorprobabilitydistributioncarrierprovided; thosearenotclaimedbymaturity.
+
+Positive/adverse(unexecuted): breaks[1/2,1/3]weights[1/2,1/6],residual1/3; break1killslaterresidual; breaks[2]allocated2residual-1stillconserves1; allzeroresidual1neverexhausts.
+
+Nearesttopics: 045singlebreakBernoullimassidentityexactalgebra;095countconjugacyseparate;Stage2productBetaDirichletpushforwardneedsadditionalmeasurability/normalizerwork.
+
+## Findings
+
+fep-009: joint_product_nonnegdocstring saysjointmassfactorsasproduct, butstatementonlyprovesnonnegativityofproductoftwomeasurevalues. The product of two nonnegative measure values is nonnegative; no joint factorization or independence is asserted.
+
+fep-045: Z≠0closureisrealmass-vectoridentity,notprobabilitylawwithoutdomainconditions; equallikelihoodzero doesnotpreserveprior. For nonzero evidence, likelihood-times-prior masses have the Bernoulli mass-vector form at the updated parameter. Probability-law interpretation additionally requires a prior in [0,1] and nonnegative likelihoods with positive evidence. Equal nonzero likelihoods preserve the prior; both zero expose the refused evidence boundary.
+
+fep-027: finite-kernelclasses wording obscuresactualSFinite/Markov distinctions. First marginal: SFinite parent and Markov child. Second marginal: SFinite parent and SFinite child. Probability normalization: probability parent and Markov child. Associativity is the native compProd identity.
+
+fep-017: ClarifyAEposteriorversionboundary andobservationnonemptyoncountabledensityformula. The Bayes-density formula additionally assumes countable latent and nonempty standard-Borel observation structure and holds only almost everywhere under the predictive law. Every selected posterior fibre is normalized, including version choices at null observations.
+
+## Ranked bounded followups
+
+1. 009docstring/045probabilityscope/027classes/017versionclarifications: Correctstrongerthanstatementprose; preserveallproofbytes/dispositions. Libraryseam: No newlibraryneeded;exactstatementmetadata. Estimate: 0.5dayplussealedprojectionreview.
+
+2. 045boundaryandstronger-domainprobabilitywrapper: Wrapperallowp∈[0,1],nonnegative-likelihoodswithZ>0, ratherthanstrictpositiveonly; namedzeroevidenceadverse. Libraryseam: div_nonneg/div_le_one,existingBernoulliMass andFiniteLawcarrier; preserveoldstrictwrapper. Estimate: 0.5-1daynativepositive/adverse/rawaxiomreview.
+
+3. 040closedformentropy-to-actualGaussianlogdensity: ProvepositivevarianceintegrabilityofnegativeGaussianlogdensityanditsGaussianexpectationequaldefinedclosedform; nogeneralentropyreimplementation. Libraryseam: gaussianPDFReal_pos/definition,integral_id_gaussianReal,variance_id_gaussianReal andquadraticmoment/integrableGaussian APIs; explicitreferenceLebesguemeasure. Estimate: 2-4daysfirstsourceboundprobe; integrabilityseamqualifybeforepromise.
+
+4. 010nontrivialreversibilityconsumer: ReplaceidentityonlynonvacuitypacketwithactualBoolflip/noisychainnativekernel; noabsenceofmathematicsclaimed. Libraryseam: Kernel.IsReversible/Invariant;existingfiniteMarkov/nativeembeddedkernelowners. Estimate: 1-2dayswithactualcountermodel/nativeaxioms.
+
+5. 046allocatedweightsnonnegativeandnormalizedfiniteextension: Proveeveryallocatedweight>=0underunitbreaksandpackageweightsplusresidualasexistingFiniteLaw;finiteonly. Libraryseam: Listinduction/mapmembership,existingFiniteLawmasssumoneandmassconservation. Estimate: 0.5-1.5days; noDirichletprocessclosure.
+
+JSON binds exactper-rowprimary/supportstatementstrings,maturity/metadata,sourcebody/libraryhashesandnearestrelations. Thisis13rowsnotall168;no S edits/compilation.

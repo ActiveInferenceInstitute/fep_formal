@@ -11,6 +11,7 @@ from pathlib import Path
 import pytest
 
 from fep_lean import cli
+from fep_lean.catalogue import generation as catalogue_generation
 from fep_lean.catalogue.generation import render_topics_yaml
 from fep_lean.cli import (
     RENDER_RECEIPT,
@@ -20,8 +21,20 @@ from fep_lean.cli import (
     catalogue_products_section,
     render_receipt_section,
 )
+from fep_lean.output import evidence, render_log
 from fep_lean.output import manuscript as manuscript_module
+from fep_lean.output.browser_capture import CANONICAL_BROWSER_SCREENSHOTS
 from fep_lean.output.render_log import RECEIPT_VERSION, manuscript_source_digest
+
+
+def _projection_owner(name: str):
+    return {
+        "catalogue_projection_drift": catalogue_generation,
+        "fep_all_projection_drift": catalogue_generation,
+        "build_manuscript_vars": manuscript_module,
+        "manuscript_projection_drift": manuscript_module,
+    }[name]
+
 
 SECTION_NAMES = (
     "catalogue_build_products",
@@ -257,8 +270,10 @@ def matching_projection_checks(monkeypatch: pytest.MonkeyPatch) -> None:
         "fep_all_projection_drift",
         "manuscript_projection_drift",
     ):
-        monkeypatch.setattr(cli, name, lambda *_args, **_kwargs: ())
-    monkeypatch.setattr(cli, "build_manuscript_vars", lambda *_args, **_kwargs: {})
+        monkeypatch.setattr(_projection_owner(name), name, lambda *_args, **_kwargs: ())
+    monkeypatch.setattr(
+        manuscript_module, "build_manuscript_vars", lambda *_args, **_kwargs: {}
+    )
     monkeypatch.setattr(cli.FEPTopicCatalogue, "from_yaml", lambda _path: catalogue)
 
 
@@ -282,7 +297,7 @@ def test_unavailable_comparison_never_reports_current(
     def unavailable(*_args: object, **_kwargs: object) -> tuple[Path, ...]:
         raise error
 
-    monkeypatch.setattr(cli, failed_check, unavailable)
+    monkeypatch.setattr(_projection_owner(failed_check), failed_check, unavailable)
     section = catalogue_products_section(tmp_path)
     assert section.state == "unverified"
     assert any(str(error) in finding for finding in section.findings)
@@ -294,13 +309,15 @@ def test_actual_drift_remains_stale_with_an_unavailable_comparison(
     matching_projection_checks: None,
 ) -> None:
     monkeypatch.setattr(
-        cli, "fep_all_projection_drift", lambda _root: (tmp_path / "aggregate.lean",)
+        catalogue_generation,
+        "fep_all_projection_drift",
+        lambda _root: (tmp_path / "aggregate.lean",),
     )
 
     def missing_census(*_args: object, **_kwargs: object) -> dict[str, object]:
         raise ValueError("test collection cache is missing")
 
-    monkeypatch.setattr(cli, "build_manuscript_vars", missing_census)
+    monkeypatch.setattr(manuscript_module, "build_manuscript_vars", missing_census)
     section = catalogue_products_section(tmp_path)
     assert section.state == "stale"
     assert any("aggregate.lean" in finding for finding in section.findings)
@@ -412,7 +429,7 @@ def test_valid_census_reaches_real_manuscript_builder_without_processes(
     )
     assert manuscript_module._count_test_cases(tmp_path, write_cache=False) == 1
     captured: list[dict[str, object]] = []
-    actual_builder = cli.build_manuscript_vars
+    actual_builder = manuscript_module.build_manuscript_vars
 
     def capture_builder(*args: object, **kwargs: object) -> dict[str, object]:
         values = actual_builder(*args, **kwargs)
@@ -422,7 +439,7 @@ def test_valid_census_reaches_real_manuscript_builder_without_processes(
     def forbid_process(*_args: object, **_kwargs: object) -> None:
         pytest.fail("valid-census status started a subprocess")
 
-    monkeypatch.setattr(cli, "build_manuscript_vars", capture_builder)
+    monkeypatch.setattr(manuscript_module, "build_manuscript_vars", capture_builder)
     monkeypatch.setattr(subprocess, "run", forbid_process)
     monkeypatch.setattr(subprocess, "Popen", forbid_process)
     before = {
@@ -488,7 +505,7 @@ def test_source_changes_during_status_block_readiness(
         snapshot_calls += 1
         return {"source": "before" if snapshot_calls == 1 else "after"}, ()
 
-    monkeypatch.setattr(cli, "_readiness_input_snapshot", changed_source)
+    monkeypatch.setattr(evidence, "_readiness_input_snapshot", changed_source)
     readiness = build_status_report(tmp_path).as_dict()["publication_readiness"]
     stability = readiness["sections"][-1]
     assert stability["name"] == "input_stability"
@@ -500,7 +517,7 @@ def test_source_changes_during_status_block_readiness(
 @pytest.mark.parametrize(
     "relative",
     [
-        next(iter(cli.CANONICAL_BROWSER_SCREENSHOTS.values())),
+        next(iter(CANONICAL_BROWSER_SCREENSHOTS.values())),
         "output/.cache/tests_collected.json",
         "output/manuscript/01_chapter.md",
         next(iter(cli.release_bundle._MANUSCRIPT_FIGURE_REFERENCES.values())),
@@ -536,7 +553,18 @@ def test_consumed_screenshot_and_census_mutations_block_input_stability(
 def test_statically_matching_planes_still_require_runtime_and_bundle_gates() -> None:
     sections = tuple(
         cli.SectionReport(name, "current", (), ("existing.owner",), "static boundary")
-        for name in cli._PUBLICATION_PLANES
+        for name in (
+            "catalogue_build_products",
+            "render_receipt_freshness",
+            "bridge_source_pin",
+            "native_verification_receipt",
+            "formalism_audit_receipt",
+            "python_acceptance_receipt",
+            "browser_acceptance_receipt",
+            "publication_inputs",
+            "publication_bundle",
+            "input_stability",
+        )
     )
     readiness = cli.PublicationReadinessReport(sections)
     assert readiness.state == "unverified"
@@ -572,10 +600,144 @@ def test_unavailable_receipt_comparison_keeps_report_composed_and_blocks_readine
     def unreadable(*_args: object, **_kwargs: object) -> tuple[str, ...]:
         raise OSError("source bytes became unreadable")
 
-    monkeypatch.setattr(cli, failed_validator, unreadable)
+    monkeypatch.setattr(
+        (
+            {"receipt_defects": render_log, "validate_native_lean_receipt": evidence}[
+                failed_validator
+            ]
+        ),
+        failed_validator,
+        unreadable,
+    )
     payload = build_status_report(tmp_path).as_dict()
     section = payload["sections"][section_index]
     assert payload["status"] == "ok"
     assert section["state"] == "error"
     assert "source bytes became unreadable" in section["findings"][0]
     assert payload["publication_readiness"]["claim_ready"] is False
+
+
+def test_public_readiness_types_retain_cli_identity_and_projection() -> None:
+    from dataclasses import FrozenInstanceError
+
+    from fep_lean import PublicationReadinessReport, SectionReport, StatusReport, output
+    from fep_lean.output import evidence
+
+    assert cli.SectionReport is evidence.SectionReport is SectionReport
+    assert cli.PublicationReadinessReport is PublicationReadinessReport
+    assert cli.StatusReport is output.StatusReport is StatusReport
+    section = SectionReport("example", "current", (), (), "fixture boundary")
+    report = StatusReport((section,))
+    assert (
+        cli.report_to_json(report)
+        == '{\n  "schema_version": 1,\n  "status": "error",\n  "evidence_plane": "evidence currency and provenance",\n  "boundary": "status composes existing read-only checks; exit 0 means the report composed, never that the evidence is current. Each section\'s state and boundary are the authority. Nothing here compiles Lean, runs Hermes or OpenGauss, executes the test suite, writes bytes, or repairs drift.",\n  "native_claim_ready": false,\n  "sections": [\n    {\n      "name": "example",\n      "state": "current",\n      "findings": [],\n      "composes": [],\n      "boundary": "fixture boundary"\n    }\n  ]\n}'
+    )
+    with pytest.raises(FrozenInstanceError):
+        report.sections = ()
+    unknown = PublicationReadinessReport((section,), True, True)
+    assert unknown.state == "blocked" and not unknown.claim_ready
+    assert not PublicationReadinessReport(()).claim_ready
+
+
+def test_public_inspection_rejects_unknown_plane_before_reading(tmp_path: Path) -> None:
+    from fep_lean.output import release_bundle
+
+    with pytest.raises(ValueError, match="unknown stored publication evidence plane"):
+        release_bundle.inspect_stored_publication_evidence(
+            tmp_path / "absent", "unknown"
+        )
+    assert not list(tmp_path.iterdir())
+
+
+def test_caller_root_context_nests_and_explicitly_projects_child_environment(
+    tmp_path: Path,
+) -> None:
+    import os
+
+    from fep_lean._paths import (
+        project_child_environment,
+        project_root,
+        project_root_context,
+    )
+
+    original = dict(os.environ)
+    base = {"FEP_LEAN_PROJECT_ROOT": "caller-base", "SENTINEL": "unchanged"}
+    before = dict(base)
+    with project_root_context(tmp_path / "one"):
+        assert project_root() == (tmp_path / "one").resolve()
+        assert project_child_environment(base)["FEP_LEAN_PROJECT_ROOT"] == str(
+            project_root()
+        )
+        with project_root_context(tmp_path / "two"):
+            assert project_root() == (tmp_path / "two").resolve()
+        assert project_root() == (tmp_path / "one").resolve()
+    assert base == before
+    assert project_child_environment(base) == base
+    assert dict(os.environ) == original
+
+
+def test_caller_root_context_isolated_between_contexts(tmp_path: Path) -> None:
+    from contextvars import copy_context
+
+    from fep_lean._paths import project_root, project_root_context
+
+    outer = project_root()
+
+    def inspect() -> Path:
+        with project_root_context(tmp_path):
+            return project_root()
+
+    assert copy_context().run(inspect) == tmp_path.resolve()
+    assert project_root() == outer
+
+
+def test_caller_root_context_restores_after_error(tmp_path: Path) -> None:
+    from fep_lean._paths import project_root, project_root_context
+
+    previous = project_root()
+    with pytest.raises(RuntimeError, match="control"), project_root_context(tmp_path):
+        raise RuntimeError("control")
+    assert project_root() == previous
+
+
+def test_caller_roots_do_not_cross_independent_contexts(tmp_path: Path) -> None:
+    from contextvars import copy_context
+
+    from fep_lean._paths import project_root, project_root_context
+
+    first, second = copy_context(), copy_context()
+    with project_root_context(tmp_path / "outer"):
+
+        def enter(root: Path) -> Path:
+            with project_root_context(root):
+                return project_root()
+
+        assert first.run(enter, tmp_path / "first") == (tmp_path / "first").resolve()
+        assert second.run(enter, tmp_path / "second") == (tmp_path / "second").resolve()
+        assert project_root() == (tmp_path / "outer").resolve()
+
+
+def test_public_snapshot_builder_has_one_owner_and_starts_no_tools(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import os
+
+    from fep_lean import build_status_report as public_builder
+    from fep_lean import output
+
+    assert public_builder is output.build_status_report is evidence.build_status_report
+    assert cli.build_status_report is public_builder
+
+    def forbidden(*_args: object, **_kwargs: object) -> None:
+        pytest.fail("a static readiness snapshot must not start a tool")
+
+    monkeypatch.setattr(subprocess, "run", forbidden)
+    monkeypatch.setattr(subprocess, "Popen", forbidden)
+    environment = dict(os.environ)
+    files = sorted(tmp_path.rglob("*"))
+    report = public_builder(tmp_path)
+    assert isinstance(report, evidence.StatusReport)
+    assert report.publication_readiness is not None
+    assert report.publication_readiness.claim_ready is False
+    assert dict(os.environ) == environment
+    assert sorted(tmp_path.rglob("*")) == files

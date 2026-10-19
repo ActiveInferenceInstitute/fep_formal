@@ -1,0 +1,105 @@
+# Issue75 independent temporal-and-hierarchical-inference audit
+
+Exactly7rows;preserve currentnarrowdispositions. Combinedaudits78/168.
+
+## fep-072 — Hidden-Markov Forward Filtering Recursion
+
+retain_formalized_for_exact_narrow_scope
+
+ActualfiniteHMMprediction/emissionpositiveevidencefilterreconstructsone-stepjoint;Boolposterior20/23;zeroevidenceoutsideconstructor.
+
+No filteringconvergence/continuousKalmanBucylimit/nativemeasureidentityautomatically.
+
+Positive/adverse(unexecuted): AsymmetricBoolprior/stickynoisegives20/23; impossibleobservationgivesZ0; identityemissionpointposteriorpossible.
+
+Nearesttopics: 066action-conditionedgeneralization;034nativeposteriornotderivedfromsameformulaalone.
+
+## fep-073 — Backward Information-Message Recursion
+
+retain_formalized_for_exact_narrow_scope
+
+Backwardmessageoverfuturelistrecursesbytransition*emission*nextMessage; nonnegativeweightspropagated.
+
+Messagesnotnormalizedandnotautomaticallystate-dependentfromnonconstantemissionsalone; transitioncanwashoutstatedependence.
+
+Positive/adverse(unexecuted): Identitytransitionwithdistinctobservedlikelihoodsstate-dependent; identicaltransitionrowsgiveconstantbackwardmessageevenemissioninformative; zerofutureterminal1.
+
+Nearesttopics: 047Fin7matrixforwardalgebravs073chronologicalfuturelikelihoodrecursion;075normalizedsmootheraddspositiveZ.
+
+## fep-074 — Forward–Backward Smoothing Factorization
+
+retain_formalized_for_exact_narrow_scope
+
+SuppliedforwardFiniteLaw/nonnegativebackwardmessageandpositiveZyieldexactnormalizedproductfactorization;one-stepforward/backwardevidenceagreement actualfiniteHMMsummation.
+
+Doesnotbyitselfshowarbitrarybackwardmessageequalsfullfuturelikelihoodorsmootherisactualfullpathconditionalmarginal.
+
+Positive/adverse(unexecuted): Forward(1/2,1/2),backward(1,3)gives(1/4,3/4); backwarddifferenceonlyoffforwardsupportnoeffect; allzerobackwardZ0.
+
+Nearesttopics: 075normalizationofsametilt; fullfiniteHMMpathmarginalbridgewouldstrengthenexistingcarrierwithoutnewtopic.
+
+## fep-075 — Smoothing-Marginal Normalization
+
+retain_formalized_for_exact_narrow_scope
+
+Smoothermasssum1underbackward>=0andpositiveweightedZ;Bool7/46+39/46actualnontrivialnormalizedpacket;Z0refused.
+
+Carrierprobabilitylawconditionalonsuppliedweights; nofallbackatZ0,noasymptotics/unboundedhorizonclaim.
+
+Positive/adverse(unexecuted): ActualBoolunequalpositivemasses; zerooronlypositivebackwardatzeropriorstatesZ0; negativebackwardcannotbuildlaw.
+
+Nearesttopics: 074factorizationand076exponentialtiltareseparatewaysofsupplyingweights.
+
+## fep-076 — One-Step Normalized Variational State Update
+
+retain_formalized_for_exact_narrow_scope
+
+Priorweightedexponentialenergytilt normalizes,reconstructsweights,andzeroenergyreturnsprior. Partitionpositivefromsomepositivepriormass.
+
+Notoptimizer/variationalgradientconvergence; energiesdifferingonlyoffpriorsupportdonotchangeprior. No strictfullsupportneeded,zeroatomsretained.
+
+Positive/adverse(unexecuted): Positiveprioratomswithdifferentenergieschangeodds; pointmasspriorunchangedforanyenergy; constantnonzeroenergyalsocancels.
+
+Nearesttopics: 070sameBoltzmannoperationdifferentsemanticindex;058Gibbsfreeenergyoptimizationrequiressupport/objectivebridge.
+
+## fep-077 — Two-Level Hierarchical Predictive Factorization
+
+retain_formalized_for_exact_narrow_scope
+
+TwolevelpredictionequalcomposedFiniteKernellower∘upperpredictive; chronologyandnormalizationbuiltcarrier.
+
+No identifiablelatentlevels/causalgraph/unboundedhierarchy. Associativitycanbestructuralbutnontrivialsumsactuallypresent.
+
+Positive/adverse(unexecuted): Nonidentity2x2upper/lowerwithnonDiractopgenuineintermediateaveraging; collapsingmiddleonepointlosesinformationwithoutviolatingidentity.
+
+Nearesttopics: 027nativehierarchicaljointand019predictionanaloguesneedexactembeddingforformalcarrierbridge;077isfiniteonly.
+
+## fep-078 — Bayesian Model-Averaging Predictive Law
+
+retain_formalized_for_exact_narrow_scope
+
+Finiteprior-weightedmodelpredictivemixtureformula,normalization,andactualBool13/20witness.
+
+Prior modelweights suppliednotposteriorselectedbyobserveddata; noBayesianmodelselection/continuousmodelclass/convergence.
+
+Positive/adverse(unexecuted): NonuniformBoolprior/informativekernel13/20; identicalpredictivesdifferentmodelweightsunidentifiable;pointmassweightsselectsinglemodel.
+
+Nearesttopics: 119mixtureloglossboundsandmodelreduction158differentclaims;078predictiveaverageonly.
+
+## Findings
+
+fep-073: Nonconstantemissionandnonemptyfuturealone donotguaranteestate-dependentbackwardmessage. An identity transition with differing likelihoods of the observed symbol gives a state-dependent backward message. Identical transition rows may erase that dependence even when emission rows differ.
+
+fep-074: Nonconstantbackwardmessagemustdifferonpositiveforwardmassstatestoreweightlaw. Backward weights differing at two positive-forward-mass states reweight their odds; differences confined to zero-forward-mass states do not affect the normalized law.
+
+fep-076: Nonconstantenergycanvaryonlyoffpriorsupport. Energy values differing on two positive-prior-mass states change their odds. Energies constant on prior support, including nonzero constants, leave the prior unchanged.
+
+## Ranked followups
+
+1. 073/074/076support-sensitivewitnessprecision: Metadataqualificationplusactualconstant/zero-supportwitnesses;no newgeneralinferenceproofneeded. Seam: FiniteKernelnormalization/finitesum andBoltzmannpriorzeros. Estimate: 0.5dayplussealedmetadatagates.
+
+2. 074/075fullfinite-pathsmoothingmarginalbridge: IdentifybackwardMessagewithsummedfuturepathlikelihoodandnormalizedforwardbackwardproductwithactualjointconditionalstateatcut;currentlyfactorizationforsuppliedweights. Seam: ExistingFiniteHMM/backwardrecursion,finitepathproduct-sumFubini,FiniteKernel.posterior;reusefiniteLawcarrier. Estimate: 2-4daysboundedfinitehorizoninduction/consumers.
+
+3. 077finite/nativehierarchicalcomposition: Exactfiniteembeddingidentificationwith027nativecompProd/marginalsifcross-carrierrelationneeded;do notduplicatefiniteassociativity. Seam: FiniteKernel.comp,predictive,existingnativeembeddingandMeasure.comp_assoc. Estimate: 1-3dayscommoncarrierbridge.
+
+Exactprimary/support/boundarycontractsandhashesinJSON. No S editsorcompilation;remaining90topics/dependenciesopen.

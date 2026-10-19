@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "decision": "family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "two-state-continuous-time-thermodynamics",
+  "roster_verified_against": "config/catalogue_metadata.yaml",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-149",
+    "fep-150",
+    "fep-151",
+    "fep-152",
+    "fep-153",
+    "fep-154",
+    "fep-155"
+  ],
+  "combined_issue75_static_audit_count": 168,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/continuous_time_thermodynamics.py": "d233e8e33bcdb3f7ece4c7af61707a27a339039ddc560340ede0818c616e2959",
+    "lean/FepSketches/families/continuous_time_thermodynamics.lean": "e884ea8ab005eea946ffa2155debfd9f031ba3c40ac6d7425d24a2a3056ad078",
+    "src/fep_lean/formal/continuous_time_markov.lean": "1294732d3ddd6bd3711a00b6895e09fff45dd720cddb8d9db8e78ad458b10ea4",
+    "src/fep_lean/formal/efe_policy_selection.lean": "ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555",
+    "src/fep_lean/formal/perception_action_loop.lean": "f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a",
+    "src/fep_lean/formal/bayesian_model_reduction.lean": "721c1e39ffcfe5557c0138134cac5fb5c1b78669ac475cd99465401653fa441f",
+    "src/fep_lean/formal/efe_time_scale_separation.lean": "5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1",
+    "src/fep_lean/formal/helmholtz_ao_ness.lean": "652e8dbbeb5267523b58a3b9682ac1f8b14850aac48e693ea3954b5161f1eb98",
+    "src/fep_lean/formal/law_weighted_split.lean": "ee743a2aa98403b9dd3a30046c7e53638328eb5c666865595657e86e56e79eda",
+    "src/fep_lean/formal/geometric_mechanics.lean": "75df7b794ffde405e7f596dbc06070aa518b522cb714cdd328526cc4fb2de2aa",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/native_blanket.lean": "7af052b9a067be0391097a9e201e367639edc3698204a701f5663340ec9f5a11",
+    "src/fep_lean/formal/decision_risk.lean": "1a34dd85015ecb421bfbe91b3995e8c2c2d9991122618e9f25db17c4d46f2251",
+    "src/fep_lean/formal/policy_tree.lean": "f88e5063dede806e31f4f7106b825ee7b3832bcc66cf17346e24b98cd9361176",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-149",
+      "title": "Two-State Continuous-Time Markov Kernel",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "adf32afc3ea56e0b85cd3af1dd15b6ec6842ca67ea434a87df8db2e2b99ed63a",
+      "maturity_record": {
+        "id": "fep-149",
+        "primary_theorem": "fep149_twoStateSemigroup_rowSum",
+        "supporting_theorems": [
+          "fep149_twoStateSemigroup_nonnegative",
+          "fep149_benchmarkRates_exact"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Positive two-state rates define a nonnegative transition matrix with every row summing to one for nonnegative time.",
+        "assumption_review": "The state carrier is Boolean, both rates are strictly positive, and time is nonnegative. This is an exact two-state kernel rather than a general continuous-time Markov-chain construction.",
+        "non_vacuity": "The benchmark rates seven tenths and three tenths give decay rate one and a nonuniform stationary law.",
+        "acceptance_probe": "warning-free native Lean compile of all three fep-149 declarations for both source states and arbitrary nonnegative time.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep149_twoStateSemigroup_rowSum": "theorem fep149_twoStateSemigroup_rowSum\n    (rates : TwoStateRates) (time : ℝ) (source : Bool) :\n    ∑ target, rates.transition time source target = 1",
+        "fep149_twoStateSemigroup_nonnegative": "theorem fep149_twoStateSemigroup_nonnegative\n    (rates : TwoStateRates) {time : ℝ} (hTime : 0 ≤ time)\n    (source target : Bool) :\n    0 ≤ rates.transition time source target",
+        "fep149_benchmarkRates_exact": "theorem fep149_benchmarkRates_exact :\n    TwoStateRates.benchmarkRates.forward = 0.7 ∧\n      TwoStateRates.benchmarkRates.backward = 0.3"
+      },
+      "statement_review": "Explicit positive Bool jump rates a,b give stationary masses b/(a+b),a/(a+b) and transition entries built from rho=exp(-(a+b)t). Row sums1 hold for all real t; nonnegativity requires t>=0. Benchmark a=.7,b=.3 has decay1 and stationary true mass.7.",
+      "assumptions_and_scope": "The row is an exact two-state probability kernel for nonnegative time. The owner additionally already constructs a general finite-rate-generator matrix-exponential semigroup by uniformisation, proves nonnegativity/master equations, and identifies its two-state specialization with these formulas; do not call general finite-state semigroup construction absent. Continuous path-process existence is different.",
+      "positive_witness_specification_unexecuted": "At benchmark rates and t=log2, rho1/2: false→true7/20 and true→false3/20, with both rows normalized.",
+      "adverse_witness_specification_unexecuted": "For t<0 rho>1 and off-diagonal entries become negative although row sums1 remain. Zero rates lie outside TwoStateRates even if some limiting chains exist.",
+      "nearest_topic_distinction": "010 native reversible kernels and finite149 explicit analytic transitions are distinct; its foundation now includes a proved general finite-generator identification, not a PDE theorem.",
+      "novelty_record": {
+        "id": "fep-149",
+        "nearest_topics": [
+          "fep-020"
+        ],
+        "new_invariant": "Positive forward and backward rates generate an explicit nonnegative two-state transition matrix with row sum one for nonnegative time.",
+        "carrier_delta": "Adds an exact continuous-time Boolean kernel and nonuniform stationary law to the earlier discrete finite dynamics.",
+        "required_bridge": "FEPComposed.fep149_continuousKernel_extends_fep020"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-149",
+          "target": "fep-020",
+          "kind": "formal_pairing",
+          "rationale": "Positive rates generate a normalized nonnegative Boolean continuous-time kernel, paired with the original discrete-time Markov evolution law.",
+          "witness": "FEPComposed.fep149_continuousKernel_extends_fep020"
+        }
+      ]
+    },
+    {
+      "id": "fep-150",
+      "title": "Continuous-Time Identity at Zero",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "60bc21df3a2c009e2eb6b63a6e749f77597b5559af8c0b77adbaf2b3cd593ec5",
+      "maturity_record": {
+        "id": "fep-150",
+        "primary_theorem": "fep150_twoStateSemigroup_zero",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "The exact two-state continuous-time transition matrix is the identity at time zero.",
+        "assumption_review": "Both rates remain strictly positive through the maintained rate structure. The equality is entrywise on the Boolean carrier.",
+        "non_vacuity": "Diagonal entries equal one and off-diagonal entries equal zero, so the result distinguishes all four transition entries.",
+        "acceptance_probe": "warning-free native Lean compile of fep150_twoStateSemigroup_zero for every Boolean source and target.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep150_twoStateSemigroup_zero": "theorem fep150_twoStateSemigroup_zero\n    (rates : TwoStateRates) (source target : Bool) :\n    rates.transition 0 source target = if source = target then 1 else 0"
+      },
+      "statement_review": "All four transition entries at time0 are Kronecker identity: diagonals1,offdiagonals0.",
+      "assumptions_and_scope": "This proves the semigroup identity element, not stationarity of every initial law at positive time or a full-support kernel at zero time. Rates remain strictly positive through TwoStateRates.",
+      "positive_witness_specification_unexecuted": "Evaluate both diagonal/offdiagonal Bool entries at benchmark rates.",
+      "adverse_witness_specification_unexecuted": "The identity at0 has zero offdiagonals, so positive-time full-support theorems cannot be instantiated at0 on Bool.",
+      "nearest_topic_distinction": "149 normalization/nonnegativity do not alone imply zero-time identity;150 explicitly certifies it.",
+      "novelty_record": {
+        "id": "fep-150",
+        "nearest_topics": [
+          "fep-006",
+          "fep-020"
+        ],
+        "new_invariant": "The exact two-state continuous-time transition matrix is the identity at time zero.",
+        "carrier_delta": "Instantiates the semigroup identity boundary with four explicit Boolean transition entries.",
+        "required_bridge": "FEPComposed.fep150_semigroupZero_extends_fep006"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-150",
+          "target": "fep-006",
+          "kind": "formal_pairing",
+          "rationale": "The exact real-time Boolean semigroup is the identity at zero, alongside fep-006's general natural-time iterate identity.",
+          "witness": "FEPComposed.fep150_semigroupZero_extends_fep006"
+        }
+      ]
+    },
+    {
+      "id": "fep-151",
+      "title": "Two-State Chapman–Kolmogorov Semigroup",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "b3f2bc69d9c46994a3d4868497e5c572ad953cbf54129fe5fcecc4e01910ba69",
+      "maturity_record": {
+        "id": "fep-151",
+        "primary_theorem": "fep151_twoStateSemigroup_add",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "The exact two-state transition matrices satisfy the Chapman–Kolmogorov additive semigroup law entrywise.",
+        "assumption_review": "Both times are nonnegative and rates are strictly positive. Composition is the finite Boolean matrix sum and no path-space or general generator existence theorem is inferred.",
+        "non_vacuity": "Positive unequal rates and positive times produce nonidentity kernels whose matrix product still equals the transition at summed time.",
+        "acceptance_probe": "warning-free native Lean compile of fep151_twoStateSemigroup_add for all Boolean source and target states.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep151_twoStateSemigroup_add": "theorem fep151_twoStateSemigroup_add\n    (rates : TwoStateRates) (left right : ℝ) (source target : Bool) :\n    rates.transition (left + right) source target =\n      ∑ middle,\n        rates.transition left source middle *\n          rates.transition right middle target"
+      },
+      "statement_review": "The closed-form transition satisfies entrywise Chapman–Kolmogorov for all real left/right times; nonnegative times give the probability-kernel semigroup interpretation.",
+      "assumptions_and_scope": "The current maturity assumption unnecessarily restricts the algebraic statement to nonnegative times. Negative times retain the matrix group identity but lose positivity. Existing certifiedSemigroup and uniformised_transition_eq bind the finite-generator semigroup; no sample-path or PDE inference follows.",
+      "positive_witness_specification_unexecuted": "Benchmark rates at two positive times log2 have rho factors1/2,1/2 and summed-time rho1/4; actual nonidentity kernels compose.",
+      "adverse_witness_specification_unexecuted": "A generic normalized family of kernels need not satisfy additive semigroup composition. Negative-time entries can be negative despite the identity.",
+      "nearest_topic_distinction": "006 discrete iterate semigroup and151 real-time analytic matrix law are different carriers; conversion must use actual semigroup/selected-time definitions.",
+      "novelty_record": {
+        "id": "fep-151",
+        "nearest_topics": [
+          "fep-006",
+          "fep-020"
+        ],
+        "new_invariant": "Two-state transitions satisfy the Chapman–Kolmogorov additive semigroup law entrywise.",
+        "carrier_delta": "Replaces natural-number kernel powers with a real-time exponential semigroup on the exact Boolean carrier.",
+        "required_bridge": "FEPComposed.fep151_semigroupAdd_extends_fep006"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-151",
+          "target": "fep-006",
+          "kind": "formal_pairing",
+          "rationale": "Chapman--Kolmogorov addition for the explicit real-time semigroup is paired with the original natural-time iterate addition law.",
+          "witness": "FEPComposed.fep151_semigroupAdd_extends_fep006"
+        }
+      ]
+    },
+    {
+      "id": "fep-152",
+      "title": "Two-State Continuous-Time Master Equation",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "f3dd536b4cc43bcaec1fa311f1364e65f55b64eede686c58c7717441ab28ab6a",
+      "maturity_record": {
+        "id": "fep-152",
+        "primary_theorem": "fep152_twoStateSemigroup_hasDerivAt",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "Every transition entry is differentiable and its derivative equals both the generator-times-transition and transition-times-generator finite sums.",
+        "assumption_review": "The generator and transition matrices are the maintained explicit Boolean formulas. This proves the forward and backward master equations for one two-state semigroup, not a general CTMC existence theorem.",
+        "non_vacuity": "Positive unequal rates give nonzero off-diagonal derivatives away from stationarity and exercise both left and right generator products.",
+        "acceptance_probe": "warning-free native Lean compile of fep152_twoStateSemigroup_hasDerivAt for all four entries.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep152_twoStateSemigroup_hasDerivAt": "theorem fep152_twoStateSemigroup_hasDerivAt\n    (rates : TwoStateRates) (time : ℝ) (source target : Bool) :\n    HasDerivAt (fun candidate ↦ rates.transition candidate source target)\n        (∑ middle,\n          rates.generator source middle * rates.transition time middle target)\n        time ∧\n      HasDerivAt (fun candidate ↦ rates.transition candidate source target)\n        (∑ middle,\n          rates.transition time source middle * rates.generator middle target)\n        time"
+      },
+      "statement_review": "Each actual transition entry has HasDerivAt equal to both Q*P(t) and P(t)*Q, with the stated finite matrix index order. It holds for real t, including0.",
+      "assumptions_and_scope": "These are explicit forward/backward master equations, not supplied symbolic vector fields. Row-generator convention and multiplication order must be preserved. The existing general matrix-exponential finite-generator owner supplies further actual content, but no continuous-state Fokker–Planck/PDE theorem is asserted.",
+      "positive_witness_specification_unexecuted": "At time0, false→true derivative a=.7 and true→false derivative b=.3, diagonals their negative row rates.",
+      "adverse_witness_specification_unexecuted": "Transposing row-generator convention changes products/distribution evolution; arbitrary supplied Q/P do not satisfy these derivatives merely from row normalization.",
+      "nearest_topic_distinction": "043 scalar derivative certificates and152 matrix-entry analytic derivatives are related techniques, not a carrier-free equivalence.",
+      "novelty_record": {
+        "id": "fep-152",
+        "nearest_topics": [
+          "fep-020",
+          "fep-025"
+        ],
+        "new_invariant": "Every transition entry is differentiable and solves both the forward and backward finite master equations.",
+        "carrier_delta": "Adds an explicit rate generator, real-time derivatives, and left/right matrix products without claiming a general CTMC existence theorem.",
+        "required_bridge": "FEPComposed.fep152_masterEquation_extends_fep020"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-152",
+          "target": "fep-020",
+          "kind": "formal_pairing",
+          "rationale": "Every Boolean transition entry solves the two-sided continuous-time master equation, paired with the earlier discrete finite-state evolution contract.",
+          "witness": "FEPComposed.fep152_masterEquation_extends_fep020"
+        }
+      ]
+    },
+    {
+      "id": "fep-153",
+      "title": "Continuous-Time Stationarity and Detailed Balance",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "7f493ed3806ad7c993b0a8221583b40f3e5c3f0d5e8e8b7abc9292c16c96e2b4",
+      "maturity_record": {
+        "id": "fep-153",
+        "primary_theorem": "fep153_twoStateSemigroup_stationary",
+        "supporting_theorems": [
+          "fep153_twoStateSemigroup_detailedBalance"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The explicit stationary law is invariant under every nonnegative-time transition and satisfies detailed balance entrywise.",
+        "assumption_review": "Both rates are strictly positive and time is nonnegative. Reversibility is proved only for this exact two-state family and does not cover driven or nonequilibrium generators.",
+        "non_vacuity": "Unequal benchmark rates produce a nonuniform stationary law while still balancing the two opposing fluxes.",
+        "acceptance_probe": "warning-free native Lean compile of fep153_twoStateSemigroup_stationary and fep153_twoStateSemigroup_detailedBalance.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep153_twoStateSemigroup_stationary": "theorem fep153_twoStateSemigroup_stationary\n    (rates : TwoStateRates) (time : ℝ) (target : Bool) :\n    (∑ source,\n        rates.stationaryLaw source * rates.transition time source target) =\n      rates.stationaryLaw target",
+        "fep153_twoStateSemigroup_detailedBalance": "theorem fep153_twoStateSemigroup_detailedBalance\n    (rates : TwoStateRates) (time : ℝ) (source target : Bool) :\n    rates.stationaryLaw source * rates.transition time source target =\n      rates.stationaryLaw target * rates.transition time target source"
+      },
+      "statement_review": "The explicit stationary law is invariant and satisfies detailed balance for every real-time transition formula; probability interpretation uses t>=0.",
+      "assumptions_and_scope": "Positive rates imply unique nonzero stationary masses in this model. This is a reversible equilibrium family, not a driven NESS or arbitrary-generator detailed-balance theorem. Algebraic stationarity at negative t does not make a probability transition.",
+      "positive_witness_specification_unexecuted": "At benchmark rates, opposing stationary infinitesimal fluxes .3*.7 and .7*.3 agree, and both finite-time transitions balance.",
+      "adverse_witness_specification_unexecuted": "A directed3-cycle generator elsewhere is stationary but not detailed balanced. Stationarity alone cannot imply these pairwise identities.",
+      "nearest_topic_distinction": "010 reversibility⇒invariance is generic native content;153 supplies an actual analytic two-state family and explicit invariant law.",
+      "novelty_record": {
+        "id": "fep-153",
+        "nearest_topics": [
+          "fep-010",
+          "fep-098"
+        ],
+        "new_invariant": "The exact two-state stationary law is invariant at every nonnegative time and satisfies entrywise detailed balance.",
+        "carrier_delta": "Extends discrete reversible-kernel laws to an explicit continuous-time semigroup with unequal positive rates.",
+        "required_bridge": "FEPComposed.fep153_continuousDetailedBalance_extends_fep010"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-153",
+          "target": "fep-010",
+          "kind": "formal_pairing",
+          "rationale": "The nonuniform stationary law satisfies exact continuous-time detailed balance, alongside the original native reversible-kernel stationarity theorem.",
+          "witness": "FEPComposed.fep153_continuousDetailedBalance_extends_fep010"
+        },
+        {
+          "source": "fep-159",
+          "target": "fep-153",
+          "kind": "formal_pairing",
+          "rationale": "The finite KL divergence of the EFE time-scale separation is bounded by the log-affinity of its two-state rate carrier, paired with fep-153's nonuniform stationary semigroup law, without claiming a physical entropy-production identity.",
+          "witness": "FEPComposed.fep159_epistemicGain_extends_fep153_stationary"
+        }
+      ]
+    },
+    {
+      "id": "fep-154",
+      "title": "Exact Two-State Exponential Relaxation",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "8722d3c3fa8eabcd1d5f97d7f68f6149fcc42e46eb66cf018ccaa6e41bda13d8",
+      "maturity_record": {
+        "id": "fep-154",
+        "primary_theorem": "fep154_twoStateRelaxation_exact",
+        "supporting_theorems": [
+          "fep154_benchmarkInitial_nonstationary"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The true-state mass of any initial Boolean law relaxes toward stationarity by the exact factor exp(-(a+b)t).",
+        "assumption_review": "Rates are positive, time is nonnegative, and prediction uses the explicit two-state transition. This is exact finite-state relaxation, not a mixing theorem for arbitrary chains.",
+        "non_vacuity": "The benchmark point mass differs from the nonuniform stationary law, so the decaying deviation starts nonzero.",
+        "acceptance_probe": "warning-free native Lean compile of fep154_twoStateRelaxation_exact and fep154_benchmarkInitial_nonstationary.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep154_twoStateRelaxation_exact": "theorem fep154_twoStateRelaxation_exact\n    (rates : TwoStateRates) (initial : FiniteLaw Bool) (time : ℝ) :\n    rates.trueMass initial time - rates.stationaryTrue =\n      rates.rho time * (initial true - rates.stationaryTrue)",
+        "fep154_benchmarkInitial_nonstationary": "theorem fep154_benchmarkInitial_nonstationary :\n    TwoStateRates.benchmarkInitial true ≠\n      TwoStateRates.benchmarkRates.stationaryTrue"
+      },
+      "statement_review": "For any initial Bool law and real time, true-mass deviation from stationaryTrue equals rho(t) times its initial deviation. This is an exact relaxation identity; natively normalized prediction uses nonnegative time.",
+      "assumptions_and_scope": "Positive decay gives forward-time exponential relaxation, not an arbitrary-chain mixing-rate result. At negative time the algebraic mass formula may leave[0,1]. The benchmark initial point mass is genuinely nonstationary.",
+      "positive_witness_specification_unexecuted": "Benchmark initial false point mass has initial deviation-7/10; at t=log2 deviation-7/20.",
+      "adverse_witness_specification_unexecuted": "Initial=stationary gives zero deviation at every time. Negative time magnifies rather than relaxes deviation.",
+      "nearest_topic_distinction": "020 discrete recurrence has a geometric iteration factor;154 gives the explicit continuous-time exponential factor on the same two-state-style scope without automatic timescale identification.",
+      "novelty_record": {
+        "id": "fep-154",
+        "nearest_topics": [
+          "fep-020"
+        ],
+        "new_invariant": "Any initial true-state mass relaxes toward stationarity by the exact factor exp(-(a+b)t).",
+        "carrier_delta": "Adds closed-form continuous-time mixing for the Boolean carrier and a concrete nonstationary benchmark point mass.",
+        "required_bridge": "FEPComposed.fep154_continuousRelaxation_extends_fep020"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-154",
+          "target": "fep-020",
+          "kind": "formal_pairing",
+          "rationale": "Boolean true-state mass relaxes exponentially to stationarity, paired with the original discrete transition evolution without claiming a general mixing-rate theorem.",
+          "witness": "FEPComposed.fep154_continuousRelaxation_extends_fep020"
+        }
+      ]
+    },
+    {
+      "id": "fep-155",
+      "title": "Exact Two-State Quadratic Lyapunov Decay",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "1b7073996bdaed2a093c8f579ba210c4e1ee13d83eae24dd0c2c9703d371999e",
+      "maturity_record": {
+        "id": "fep-155",
+        "primary_theorem": "fep155_twoStateLyapunov_exact",
+        "supporting_theorems": [
+          "fep155_twoStateLyapunov_hasDerivAt",
+          "fep155_benchmarkLyapunov_strictlyDecreasing"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Squared deviation from stationarity decays by exp(-2(a+b)t), and its exact derivative is minus twice the decay rate times the Lyapunov value.",
+        "assumption_review": "The Lyapunov function is the scalar square of the true-state mass deviation for the explicit two-state semigroup. It is not a general entropy-production or physical free-energy theorem.",
+        "non_vacuity": "The benchmark nonstationary point mass has a strictly negative Lyapunov derivative at time zero.",
+        "acceptance_probe": "warning-free native Lean compile of all three fep-155 declarations, including the strict benchmark derivative.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep155_twoStateLyapunov_exact": "theorem fep155_twoStateLyapunov_exact\n    (rates : TwoStateRates) (initial : FiniteLaw Bool) (time : ℝ) :\n    rates.lyapunov initial time =\n      rates.rho time ^ 2 *\n        (initial true - rates.stationaryTrue) ^ 2",
+        "fep155_twoStateLyapunov_hasDerivAt": "theorem fep155_twoStateLyapunov_hasDerivAt\n    (rates : TwoStateRates) (initial : FiniteLaw Bool) (time : ℝ) :\n    HasDerivAt (rates.lyapunov initial)\n      (-2 * rates.decayRate * rates.lyapunov initial time) time",
+        "fep155_benchmarkLyapunov_strictlyDecreasing": "theorem fep155_benchmarkLyapunov_strictlyDecreasing :\n    -2 * TwoStateRates.benchmarkRates.decayRate *\n        TwoStateRates.benchmarkRates.lyapunov\n          TwoStateRates.benchmarkInitial 0 < 0"
+      },
+      "statement_review": "Squared true-mass deviation equals rho(t)^2 times initial squared deviation and has derivative -2*(a+b)*V(t). Benchmark initial false point mass gives V0=49/100 and derivative-49/50.",
+      "assumptions_and_scope": "The function is a quadratic Lyapunov diagnostic, not physical entropy, thermodynamic free energy or a universal entropy-production rate. At stationary initial law derivative0, so strictness needs nonstationarity.",
+      "positive_witness_specification_unexecuted": "Consume actual benchmark negative derivative; at t=log2 the value is49/400.",
+      "adverse_witness_specification_unexecuted": "Stationary initial law gives constant0 and no strict decrease. A different potential cannot inherit this derivative without a chain-rule/identity proof.",
+      "nearest_topic_distinction": "032 quadratic discrete descent and155 analytic exact decay have related scalar geometry but distinct step/time contracts.",
+      "novelty_record": {
+        "id": "fep-155",
+        "nearest_topics": [
+          "fep-032",
+          "fep-049"
+        ],
+        "new_invariant": "Squared deviation from stationarity decays as exp(-2(a+b)t) and has derivative -2(a+b) times its current value.",
+        "carrier_delta": "Adds an exact scalar Lyapunov law and strict benchmark derivative without equating it with physical free energy or general entropy production.",
+        "required_bridge": "FEPComposed.fep155_lyapunovDecay_extends_fep032"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-155",
+          "target": "fep-032",
+          "kind": "formal_pairing",
+          "rationale": "Squared deviation from stationarity has an exact strictly negative benchmark derivative, paired with fep-032's discrete quadratic-descent certificate without calling either physical free energy.",
+          "witness": "FEPComposed.fep155_lyapunovDecay_extends_fep032"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-151",
+      "file": "config/theorem_maturity.yaml",
+      "field": "assumption_review",
+      "finding": "The exact semigroup identity is proved for all real times; positivity/probability interpretation is the nonnegative-time restriction.",
+      "exact_replacement_field_text": "Rates are strictly positive. The entrywise additive matrix identity holds for arbitrary real times; restricting both times to be nonnegative supplies its probability-kernel interpretation. No continuous-path or PDE existence theorem is inferred from this identity."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "finite-generator/two-state actual consumers",
+      "owner": "src/fep_lean/formal/continuous_time_markov.lean",
+      "seam": "Reuse existing uniformisation nonnegativity, exponential semigroup, master equations and uniformised_transition_eq; do not duplicate delivered general finite generator construction. Typed positive/negative-time controls preserve probability boundaries.",
+      "estimate": "0.5–1.5 days",
+      "positive": "benchmark positive-time semigroup and exact decay",
+      "adverse": "negative time gives negative offdiagonals; stationary initial derivative0"
+    },
+    {
+      "rank": 2,
+      "scope": "155 meaning/units specialization",
+      "owner": "src/fep_lean/formal/continuous_time_markov.lean",
+      "seam": "Any proposed physical free-energy/entropy-production interpretation must prove a matching functional identity and scale convention. Existing quadratic decay alone does not supply one.",
+      "estimate": "bounded functional-specific spike1–3 days",
+      "positive": "explicit dimensionless Lyapunov identity",
+      "adverse": "different entropy functional has different derivative"
+    }
+  ],
+  "limitations": [
+    "All168 topics now have a scoped static family audit; this is not broad Issue75 or scientific/terminal acceptance. Concrete metadata corrections and dependencies remain.",
+    "No S edits, Lean/tests/subject execution or delegation. Positive/adverse examples are unexecuted specifications; existing named source facts are not newly executed observations.",
+    "Current dispositions are retained only for exact narrowed mathematical statements. Pending metadata seals/projections/source-pair custody/integration and research acceptance remain distinct."
+  ]
+}

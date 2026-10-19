@@ -155,3 +155,115 @@ def test_pipeline_imports():
     from fep_lean.pipeline.core import FEPPipeline
 
     assert FEPPipeline is not None
+
+
+def _layer_import_violations(source: str, *, release_owner: bool = False) -> list[str]:
+    import ast
+
+    tree = ast.parse(source)
+    violations = []
+    bundle_aliases = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom):
+            module = node.module or ""
+            if module == "fep_lean.cli" or (
+                module == "fep_lean"
+                and any(alias.name == "cli" for alias in node.names)
+            ):
+                violations.append("CLI dependency")
+            if not release_owner and (
+                module.startswith("fep_lean.output.release_bundle._")
+                or (
+                    module == "fep_lean.output.release_bundle"
+                    and any(alias.name.startswith("_") for alias in node.names)
+                )
+            ):
+                violations.append("private release import")
+            if module == "fep_lean.output":
+                bundle_aliases.update(
+                    alias.asname or alias.name
+                    for alias in node.names
+                    if alias.name == "release_bundle"
+                )
+        elif isinstance(node, ast.Import):
+            for alias in node.names:
+                if alias.name == "fep_lean.cli":
+                    violations.append("CLI dependency")
+                if not release_owner and alias.name.startswith(
+                    "fep_lean.output.release_bundle._"
+                ):
+                    violations.append("private release import")
+                if alias.name == "fep_lean.output.release_bundle" and alias.asname:
+                    bundle_aliases.add(alias.asname)
+    if not release_owner:
+        for node in ast.walk(tree):
+            if (
+                isinstance(node, ast.Attribute)
+                and (
+                    ast.unparse(node.value) in bundle_aliases
+                    or ast.unparse(node.value) == "fep_lean.output.release_bundle"
+                )
+                and node.attr.startswith("_")
+            ):
+                violations.append("private release attribute")
+            if (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Name)
+                and node.func.id == "getattr"
+                and len(node.args) >= 2
+            ):
+                owner, attribute = node.args[:2]
+                if (
+                    (
+                        ast.unparse(owner) in bundle_aliases
+                        or ast.unparse(owner) == "fep_lean.output.release_bundle"
+                    )
+                    and isinstance(attribute, ast.Constant)
+                    and isinstance(attribute.value, str)
+                    and attribute.value.startswith("_")
+                ):
+                    violations.append("private release getattr")
+    return violations
+
+
+def test_production_layers_do_not_import_cli_or_private_release_owners() -> None:
+    package = PROJECT_ROOT / "src/fep_lean"
+    violations = {}
+    for path in package.rglob("*.py"):
+        relative = path.relative_to(package)
+        found = _layer_import_violations(
+            path.read_text(encoding="utf-8"),
+            release_owner=relative.parts[:2] == ("output", "release_bundle"),
+        )
+        if found:
+            violations[str(relative)] = found
+    assert not violations
+
+
+def test_import_direction_guard_rejects_local_alias_and_private_access() -> None:
+    candidates = [
+        "def worker():\n from fep_lean.cli import main",
+        "from fep_lean import cli as console",
+        "import fep_lean.cli as console",
+        "from fep_lean.output.release_bundle._core import private",
+        "from fep_lean.output.release_bundle import _native_receipt_errors",
+        "from fep_lean.output import release_bundle as rb\nrb._native_receipt_errors()",
+        "import fep_lean.output.release_bundle as rb\ngetattr(rb, '_secret')()",
+        "import fep_lean.output.release_bundle\nfep_lean.output.release_bundle._secret()",
+    ]
+    assert all(_layer_import_violations(source) for source in candidates)
+    assert not _layer_import_violations(
+        "from fep_lean.output.release_bundle import publication_input_snapshot"
+    )
+    assert not _layer_import_violations(
+        "from fep_lean.output.release_bundle._core import private", release_owner=True
+    )
+
+
+def test_verification_subpackage_exports_canonical_operations() -> None:
+    from fep_lean import verification
+    from fep_lean.verification import environment, lean_verifier
+
+    assert verification.setup_workspace is environment.setup_workspace
+    assert verification.verify_catalogue is lean_verifier.verify_catalogue
+    assert verification.CatalogueVerification is lean_verifier.CatalogueVerification

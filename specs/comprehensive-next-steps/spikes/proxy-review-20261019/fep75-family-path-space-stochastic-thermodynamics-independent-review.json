@@ -1,0 +1,415 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "path-space-stochastic-thermodynamics",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-093",
+    "fep-094",
+    "fep-095",
+    "fep-096",
+    "fep-097",
+    "fep-098",
+    "fep-099"
+  ],
+  "combined_issue75_audit_count": 106,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/path_thermodynamics.py": "8f326e4eacaba27c0ad70d5d127e079a4818749d41fd3c3c8f52a60617d44904",
+    "lean/FepSketches/families/path_thermodynamics.lean": "988016733e0d567b16f41a9808d05dc208afa8b251d8ed6cc096caf26dfd66d4",
+    "src/fep_lean/formal/path_thermodynamics.lean": "9ab79dbfaccc14291a04b95339fc0f50acaf4bf3914acdf622d0b4e3d4024629",
+    "src/fep_lean/formal/information_geometry.lean": "0b9fddad4758c9e165e9fe13f0fe4ddca57d71d025c92d85068b93835acab88f",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/finite_markov_dynamics.lean": "69c8600e5a40d48cfc01b1b8bb36004d60b40655d620794d0b0e94ec1c8c6784",
+    "src/fep_lean/formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "src/fep_lean/formal/compositions/thermo_geometry.lean": "da7e8302780b6aac77e9fd06c6eb1c1417042bacd9bb7d9954994c21b0751427",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-093",
+      "title": "Forward and Reverse Finite Path-Law Ratio",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "b548d065443ea48dea3b209905c3b04a2dc35c9059d70c1123421eb30588d08f",
+      "maturity_record": {
+        "id": "fep-093",
+        "primary_theorem": "fep093_forward_reverse_pathLaw_ratio",
+        "supporting_theorems": [
+          "fep093_pathLaws_normalized",
+          "fep093_pathReversal_involutive"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A finite forward path law is reconstructed pointwise from its supported reverse-aligned law and likelihood ratio, while both path laws normalize and path reversal is involutive.",
+        "assumption_review": "The path carrier is finite and reverse-aligned mass must be strictly positive for the ratio reconstruction. FinitePathProtocol stores normalized laws and an involution; it does not derive reversal or reverse dynamics from a microscopic process.",
+        "non_vacuity": "Unequal full-support forward and reverse-aligned laws yield nonunit path ratios, while an involution with a two-path swap exercises a genuine reversal.",
+        "acceptance_probe": "native Lean compile of fep093_forward_reverse_pathLaw_ratio, fep093_pathLaws_normalized, and fep093_pathReversal_involutive.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep093_forward_reverse_pathLaw_ratio": "theorem fep093_forward_reverse_pathLaw_ratio\n    (protocol : FinitePathProtocol Path)\n    (hReverse : ∀ path, 0 < protocol.reverseAligned path) (path : Path) :\n    pathRatio protocol path * protocol.reverseAligned path =\n      protocol.forward path",
+        "fep093_pathLaws_normalized": "theorem fep093_pathLaws_normalized\n    (protocol : FinitePathProtocol Path) :\n    (∑ path, protocol.forward path = 1) ∧\n      ∑ path, protocol.reverseAligned path = 1",
+        "fep093_pathReversal_involutive": "theorem fep093_pathReversal_involutive\n    (protocol : FinitePathProtocol Path) (path : Path) :\n    protocol.reversal (protocol.reversal path) = path"
+      },
+      "statement_review": "A supported denominator reconstructs forward mass by division cancellation; normalization and involution are explicit carrier fields. Forward support is not needed for this primary identity. The reversal need not exchange laws.",
+      "assumptions_and_scope": "FinitePathProtocol by itself supplies two arbitrary normalized laws and an independent involution. Actual homogeneous Markov path masses, normalized laws, finite reversal and endpoint marginal identities are already implemented in path_thermodynamics; do not label them absent. No continuous-path existence or microscopic reverse-process identification follows.",
+      "positive_witness_specification_unexecuted": "Boolean masses forward(1/4,3/4), reverse(3/4,1/4), with Bool.not reversal produce ratios1/3 and3 and a genuine swap.",
+      "adverse_witness_specification_unexecuted": "Identity reversal and unequal laws are permitted; this does not imply exchange or entropy-production antisymmetry. At zero reverse mass the totalized ratio is0 and reconstructing positive forward mass fails.",
+      "nearest_topic_distinction": "010 is native reversible-kernel stationarity;025 oriented currents. The093 relation pairs the finite ratio with native identity reversibility, not an equivalence of dynamic carriers.",
+      "novelty_record": {
+        "id": "fep-093",
+        "nearest_topics": [
+          "fep-010",
+          "fep-025"
+        ],
+        "new_invariant": "Supported forward mass is reconstructed by a reverse-aligned path law and involutive path ratio.",
+        "carrier_delta": "Lifts statewise reversibility and currents to normalized finite laws on complete paths with an explicit reversal map.",
+        "required_bridge": "FEPComposed.fep093_path_ratio_extends_fep010_reversal"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-093",
+          "target": "fep-010",
+          "kind": "formal_pairing",
+          "rationale": "The supported forward/reverse ratio reconstructs path mass, while the identity kernel supplies the original catalogue's concrete reversibility witness on an arbitrary measure carrier.",
+          "witness": "FEPComposed.fep093_path_ratio_extends_fep010_reversal"
+        }
+      ]
+    },
+    {
+      "id": "fep-094",
+      "title": "Entropy Production as Path KL",
+      "decision": "retain_structural_proxy_for_exact_narrow_scope",
+      "canonical_body_sha256": "1bc841201a47800e61451b394038ca7feccf9f8719a77caad41c74698abfdc3d",
+      "maturity_record": {
+        "id": "fep-094",
+        "primary_theorem": "fep094_entropyProduction_as_pathKL",
+        "supporting_theorems": [
+          "fep094_entropyProduction_expected_logRatio",
+          "fep094_entropyProduction_nonnegative"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Mean finite path entropy production is the KL divergence from the forward to reverse-aligned path law, is nonnegative, and under full support equals the forward expectation of the pointwise log ratio.",
+        "assumption_review": "The primary equality is the maintained definition of entropyProduction. Expected-log-ratio expansion requires strict support of both path laws, and the project's totalized real KL is not an extended divergence at zero reverse mass.",
+        "non_vacuity": "The compiled irreversible Boolean protocol has unequal full-support path laws and therefore supplies positive, rather than merely nonnegative, production in the later dissipation topic.",
+        "acceptance_probe": "native Lean compile of fep094_entropyProduction_as_pathKL, fep094_entropyProduction_expected_logRatio, and fep094_entropyProduction_nonnegative.",
+        "disposition": "structural_proxy"
+      },
+      "qualified_declaration_statements": {
+        "fep094_entropyProduction_as_pathKL": "theorem fep094_entropyProduction_as_pathKL\n    (protocol : FinitePathProtocol Path) :\n    entropyProduction protocol =\n      finiteKL protocol.forward protocol.reverseAligned",
+        "fep094_entropyProduction_expected_logRatio": "theorem fep094_entropyProduction_expected_logRatio\n    (protocol : FinitePathProtocol Path)\n    (hForward : ∀ path, 0 < protocol.forward path)\n    (hReverse : ∀ path, 0 < protocol.reverseAligned path) :\n    entropyProduction protocol =\n      ∑ path, protocol.forward path * pathwiseEntropyProduction protocol path",
+        "fep094_entropyProduction_nonnegative": "theorem fep094_entropyProduction_nonnegative\n    (protocol : FinitePathProtocol Path) :\n    0 ≤ entropyProduction protocol"
+      },
+      "statement_review": "Entropy production equals finiteKL by definition; nonnegativity is proved for that finite carrier. Under full support it equals the forward expected natural-log likelihood ratio. Retain structural_proxy.",
+      "assumptions_and_scope": "finiteKL is the project's totalized real expression, not native extended KL on singular laws. Entropy production/log ratios are dimensionless nats unless additional physical constants/units are supplied. Existing Markov expected edge-affinity and boundary entropy decompositions, reversible endpoint-KL drop and explicit irreversible3-cycle are delivered extra content.",
+      "positive_witness_specification_unexecuted": "Use unequal full-support Boolean protocol and consume strict positivity plus expected-log-ratio equality.",
+      "adverse_witness_specification_unexecuted": "Disjoint point masses expose finite totalized KL versus native infinite divergence; unsupported real log-ratio identities must not be applied. A physical heat interpretation additionally needs local detailed balance with declared units.",
+      "nearest_topic_distinction": "049 is a supplied conductance/force quadratic;014 native extended KL. The current relation is a pairing and does not identify either with arbitrary physical entropy production.",
+      "novelty_record": {
+        "id": "fep-094",
+        "nearest_topics": [
+          "fep-049",
+          "fep-014"
+        ],
+        "new_invariant": "Mean path entropy production is finite path KL and expands to an expected log ratio under full support.",
+        "carrier_delta": "Replaces constitutive flux–force production with a normalized forward-versus-reverse path-law divergence.",
+        "required_bridge": "FEPComposed.fep094_path_kl_refines_fep049_entropy_production"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-094",
+          "target": "fep-049",
+          "kind": "formal_pairing",
+          "rationale": "Path entropy production is exactly finite KL, alongside the original nonnegative quadratic entropy-production certificate. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
+          "witness": "FEPComposed.fep094_path_kl_refines_fep049_entropy_production"
+        }
+      ]
+    },
+    {
+      "id": "fep-095",
+      "title": "Detailed Fluctuation Symmetry",
+      "decision": "retain_conditional_proxy_for_exact_narrow_scope",
+      "canonical_body_sha256": "e6f5748da3b24f4a676529860817adf6a537d3a01ac721e6f0f03e0308620f21",
+      "maturity_record": {
+        "id": "fep-095",
+        "primary_theorem": "fep095_detailedFluctuation_symmetry",
+        "supporting_theorems": [
+          "fep095_entropyProduction_reversal_antisymmetry"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Under full path support, reverse-aligned mass times exponential pointwise entropy production reconstructs forward mass, and an exchanging reversal makes entropy production antisymmetric.",
+        "assumption_review": "Forward and reverse-aligned laws are strictly positive. Antisymmetry further assumes that the recorded involution exchanges the two aligned laws in both directions; these exchange laws are not derived from protocol dynamics.",
+        "non_vacuity": "A two-path protocol with swapped unequal full-support masses has nonzero pointwise entropy production whose sign reverses on the paired path.",
+        "acceptance_probe": "native Lean compile of fep095_detailedFluctuation_symmetry and fep095_entropyProduction_reversal_antisymmetry with both exchange hypotheses.",
+        "disposition": "conditional_proxy"
+      },
+      "qualified_declaration_statements": {
+        "fep095_detailedFluctuation_symmetry": "theorem fep095_detailedFluctuation_symmetry\n    (protocol : FinitePathProtocol Path)\n    (hForward : ∀ path, 0 < protocol.forward path)\n    (hReverse : ∀ path, 0 < protocol.reverseAligned path) (path : Path) :\n    protocol.reverseAligned path *\n        Real.exp (pathwiseEntropyProduction protocol path) =\n      protocol.forward path",
+        "fep095_entropyProduction_reversal_antisymmetry": "theorem fep095_entropyProduction_reversal_antisymmetry\n    (protocol : FinitePathProtocol Path)\n    (hForward : ∀ path, 0 < protocol.forward path)\n    (hReverse : ∀ path, 0 < protocol.reverseAligned path)\n    (hExchangeForward : ∀ path,\n      protocol.forward (protocol.reversal path) = protocol.reverseAligned path)\n    (hExchangeReverse : ∀ path,\n      protocol.reverseAligned (protocol.reversal path) = protocol.forward path)\n    (path : Path) :\n    pathwiseEntropyProduction protocol (protocol.reversal path) =\n      -pathwiseEntropyProduction protocol path"
+      },
+      "statement_review": "For positive forward/reverse masses, exp(log ratio) reconstructs the forward mass. Reversal antisymmetry further requires both exchange laws; involution alone is insufficient.",
+      "assumptions_and_scope": "The main identity is likelihood-ratio algebra, not a derived law of microscopic reversibility. The stored irreversibleBoolProtocol has identity reversal and unequal laws; it proves positive production but does not satisfy the exchange hypotheses. A separate swapped-law protocol can.",
+      "positive_witness_specification_unexecuted": "Use forward true3/4,false1/4, reverse masses swapped and Bool.not reversal; sigma(true)=log3 and sigma(false)=-log3.",
+      "adverse_witness_specification_unexecuted": "Take the same unequal masses with identity reversal: sigma at a point is nonzero and does not become its negative on reversal.",
+      "nearest_topic_distinction": "093 adds ratio reconstruction without forward positivity;095 adds supported exponential identity and optional exchange-specific antisymmetry. Native010 stationarity is only paired, not used to derive exchange.",
+      "novelty_record": {
+        "id": "fep-095",
+        "nearest_topics": [
+          "fep-010",
+          "fep-049"
+        ],
+        "new_invariant": "Reverse path mass times exponential entropy production reconstructs forward mass and reverses sign under exchange.",
+        "carrier_delta": "Adds full-support aligned path laws plus an involution that explicitly exchanges forward and reverse probabilities.",
+        "required_bridge": "FEPComposed.fep095_fluctuation_symmetry_extends_fep010_reversibility"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-095",
+          "target": "fep-010",
+          "kind": "formal_pairing",
+          "rationale": "Detailed finite fluctuation symmetry and native kernel reversibility each recover their corresponding forward or invariant law.",
+          "witness": "FEPComposed.fep095_fluctuation_symmetry_extends_fep010_reversibility"
+        }
+      ]
+    },
+    {
+      "id": "fep-096",
+      "title": "Integral Fluctuation Theorem",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "d131f1f1349e311c2c9afe46d3fb99050722b0dad4e2f6973c72906f9308a02b",
+      "maturity_record": {
+        "id": "fep-096",
+        "primary_theorem": "fep096_integralFluctuation_theorem",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "The forward expectation of exponential negative pointwise entropy production equals one for normalized finite full-support forward and reverse path laws.",
+        "assumption_review": "The path carrier is finite and both path laws have strict support, so the likelihood ratio and logarithm are ordinary real values. The theorem does not treat singular path measures or continuous-time trajectories.",
+        "non_vacuity": "Unequal full-support path laws produce nonconstant entropy-production values whose weighted exponentials still normalize exactly to one.",
+        "acceptance_probe": "native Lean compile of fep096_integralFluctuation_theorem with forward and reverse full-support premises.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep096_integralFluctuation_theorem": "theorem fep096_integralFluctuation_theorem\n    (protocol : FinitePathProtocol Path)\n    (hForward : ∀ path, 0 < protocol.forward path)\n    (hReverse : ∀ path, 0 < protocol.reverseAligned path) :\n    ∑ path, protocol.forward path *\n        Real.exp (-pathwiseEntropyProduction protocol path) = 1"
+      },
+      "statement_review": "Finite forward expectation of exp(-log(forward/reverse)) is reverse-law total mass1. Both strict-support hypotheses are explicit and sufficient; reversal does not enter the proof.",
+      "assumptions_and_scope": "This is a normalized finite change-of-measure identity, not singular-path or continuous-time stochastic-process existence. Full support is stronger than necessary but cannot be silently removed from the current theorem.",
+      "positive_witness_specification_unexecuted": "The swapped unequal Boolean laws yield forward-weighted exponentials1/4+3/4=1.",
+      "adverse_witness_specification_unexecuted": "With forward point mass at true and reverse uniform, the totalized forward expectation is1/2, not1; null forward atoms carry reverse mass omitted by the expectation.",
+      "nearest_topic_distinction": "095 is pointwise reconstruction;096 sums the inverse reweighting.049 flux/force expression remains an independent pairing.",
+      "novelty_record": {
+        "id": "fep-096",
+        "nearest_topics": [
+          "fep-049",
+          "fep-014"
+        ],
+        "new_invariant": "The forward expectation of exponential negative path entropy production is exactly one.",
+        "carrier_delta": "Integrates supported pointwise path ratios over a normalized finite forward path law.",
+        "required_bridge": "FEPComposed.fep096_integral_fluctuation_refines_fep049"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-096",
+          "target": "fep-049",
+          "kind": "formal_pairing",
+          "rationale": "The integral fluctuation normalization is paired with the original exact flux--force representation of nonnegative entropy production. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_flux_force_identity` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
+          "witness": "FEPComposed.fep096_integral_fluctuation_refines_fep049"
+        }
+      ]
+    },
+    {
+      "id": "fep-097",
+      "title": "Finite Jarzynski Equality",
+      "decision": "retain_conditional_proxy_for_exact_narrow_scope",
+      "canonical_body_sha256": "049daa7481266c47ce6f8341c42e494466419da61cf5b93d0ac015561c5f85f4",
+      "maturity_record": {
+        "id": "fep-097",
+        "primary_theorem": "fep097_finiteJarzynski_equality",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "A normalized finite exponential-work protocol has work average equal to the exponential of negative inverse temperature times free-energy difference.",
+        "assumption_review": "HasJarzynskiNormalization explicitly packages positive beta and the identity that the expectation of exp(-beta times (work minus free-energy difference)) equals one. The theorem algebraically extracts Jarzynski's equality from this normalization; it does not derive that premise from microscopic reversibility.",
+        "non_vacuity": "Nonconstant finite work values can satisfy the normalization after choosing a compatible free-energy difference, while beta positivity excludes the zero-temperature-parameter collapse.",
+        "acceptance_probe": "native Lean compile of fep097_finiteJarzynski_equality with the explicit beta, work, free-energy, and normalization certificate.",
+        "disposition": "conditional_proxy"
+      },
+      "qualified_declaration_statements": {
+        "fep097_finiteJarzynski_equality": "theorem fep097_finiteJarzynski_equality\n    (law : FiniteLaw Path) (beta deltaFreeEnergy : ℝ)\n    (work : Path → ℝ)\n    (hNormalization :\n      HasJarzynskiNormalization law beta deltaFreeEnergy work) :\n    exponentialWorkAverage law beta work =\n      Real.exp (-beta * deltaFreeEnergy)"
+      },
+      "statement_review": "The primary extracts exponentialWorkAverage=exp(-beta*deltaF) from an explicitly assumed normalization with beta>0. This is accurately conditional_proxy, not a derivation of that physical premise.",
+      "assumptions_and_scope": "The foundation already derives normalization and Jarzynski from the per-path HasCrooksRelation, constructs a nonconstant Boolean work witness and proves normalization without Crooks is possible. Defining work=deltaF+sigma/beta supplies a formal Crooks instance but does not identify mechanical work. Beta has inverse-energy meaning only with explicit unit convention; beta0 is zero inverse temperature, conventionally an infinite-temperature limit, not zero temperature.",
+      "positive_witness_specification_unexecuted": "Reuse irreversibleBool_crooks at beta1,deltaF0 and work ±log3, then finiteJarzynski_of_crooks.",
+      "adverse_witness_specification_unexecuted": "Reuse jarzynski_without_crooks (zero work normalizes but fails pathwise relation) and irreversibleForward_unitWork_not_jarzynski. Do not assume arbitrary supplied work satisfies normalization.",
+      "nearest_topic_distinction": "013 algebraic Helmholtz difference and097 exponential work remain separate in the bridge; no equality of deltaF with that Helmholtz difference is proved.",
+      "novelty_record": {
+        "id": "fep-097",
+        "nearest_topics": [
+          "fep-013",
+          "fep-049"
+        ],
+        "new_invariant": "Explicit finite exponential-work normalization implies the Jarzynski work–free-energy equality.",
+        "carrier_delta": "Adds positive inverse temperature, a path work observable, free-energy difference, and a named normalization certificate.",
+        "required_bridge": "FEPComposed.fep097_jarzynski_extends_fep013_helmholtz"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-097",
+          "target": "fep-013",
+          "kind": "formal_pairing",
+          "rationale": "The finite Jarzynski normalization and the original Helmholtz difference identity are retained as separate assumptions, avoiding a microscopic-energy identification that neither theorem proves.",
+          "witness": "FEPComposed.fep097_jarzynski_extends_fep013_helmholtz"
+        }
+      ]
+    },
+    {
+      "id": "fep-098",
+      "title": "Local Detailed Balance and Current Cancellation",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "268a7a347d7f635eb31ccc607d423b924431eb8332f94fc9ec6bd9a388baddd6",
+      "maturity_record": {
+        "id": "fep-098",
+        "primary_theorem": "fep098_localDetailedBalance_currentCancellation",
+        "supporting_theorems": [],
+        "boundary_theorems": [
+          "fep098_zeroReverseRate_boundary"
+        ],
+        "invariant": "Detailed balance cancels every oriented finite probability current, while a zero reverse rate is exposed as a totalized-log affinity boundary.",
+        "assumption_review": "The law and transition kernel are normalized finite carriers and current cancellation assumes IsReversible. The zero-rate theorem reports the project's real-log value zero and must not be read as a finite extended-real affinity.",
+        "non_vacuity": "Symmetric positive bidirectional transitions give exact zero current under a reversible law, whereas a one-way edge exercises the separately labeled zero-reverse-rate boundary.",
+        "acceptance_probe": "native Lean compile of fep098_localDetailedBalance_currentCancellation and fep098_zeroReverseRate_boundary with the support interpretation separated.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep098_localDetailedBalance_currentCancellation": "theorem fep098_localDetailedBalance_currentCancellation\n    (law : FiniteLaw State) (kernel : FiniteKernel State State)\n    (hReversible : IsReversible law kernel) (source target : State) :\n    probabilityCurrent law kernel source target = 0",
+        "fep098_zeroReverseRate_boundary": "theorem fep098_zeroReverseRate_boundary\n    (law : FiniteLaw State) (kernel : FiniteKernel State State)\n    (source target : State) (hZero : kernel target source = 0) :\n    localAffinity law kernel source target = 0"
+      },
+      "statement_review": "Detailed balance law(i)K(i,j)=law(j)K(j,i) makes every oriented current0. A zero reverse transition makes localAffinity0 under Lean's totalized real division/logarithm.",
+      "assumptions_and_scope": "This is finite detailed-balance current cancellation, not generic local thermodynamic heat balance, PDE Fokker–Planck existence or a meaningful finite physical affinity at a one-way edge. Positive flux support is needed for ordinary log-affinity interpretation.",
+      "positive_witness_specification_unexecuted": "Use a full-support symmetric two-state chain and uniform law; both oriented currents vanish.",
+      "adverse_witness_specification_unexecuted": "Use the existing positive stationary biased3-cycle: it is invariant but not reversible and has nonzero edge current. A one-way edge yields the explicitly labeled totalized affinity0 rather than extended +infinity.",
+      "nearest_topic_distinction": "025 is arbitrary antisymmetric matrix flow;098 instantiates current from a normalized law/kernel and assumes detailed balance. Existing current/affinity path decomposition is already implemented.",
+      "novelty_record": {
+        "id": "fep-098",
+        "nearest_topics": [
+          "fep-025",
+          "fep-049"
+        ],
+        "new_invariant": "Detailed balance cancels every local current and exposes zero reverse rate as a totalized-log boundary.",
+        "carrier_delta": "Connects a reversible finite law and kernel to oriented transition currents and local affinity.",
+        "required_bridge": "FEPComposed.fep098_local_current_refines_fep025"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-098",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "Finite detailed balance cancels local current, while the original matrix current remains antisymmetric on every oriented edge.",
+          "witness": "FEPComposed.fep098_local_current_refines_fep025"
+        }
+      ]
+    },
+    {
+      "id": "fep-099",
+      "title": "Reversible-Chain One-Step KL Dissipation",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "3df41a1d1403ef1db884407279c6aee1d70fbd7fd6dfa8d2ae2d48cd6a356331",
+      "maturity_record": {
+        "id": "fep-099",
+        "primary_theorem": "fep099_reversibleChain_oneStep_KL_dissipation",
+        "supporting_theorems": [
+          "fep099_irreversiblePositiveProduction_witness"
+        ],
+        "boundary_theorems": [
+          "fep099_reversibleEquality_boundary"
+        ],
+        "invariant": "One strictly positive reversible finite Markov step cannot increase KL to its stationary law; the identity transition saturates equality and an explicit irreversible path protocol has positive entropy production.",
+        "assumption_review": "State is finite and nonempty, actual and stationary laws have full support, every transition atom is positive, and detailed balance supplies stationarity. The result is one-step dissipation, not strict contraction for every nonidentity kernel or a continuous-time entropy-production theorem.",
+        "non_vacuity": "The identity kernel proves the exact reversible equality boundary, while the unequal full-support Boolean path witness proves strictly positive production away from reversibility.",
+        "acceptance_probe": "native Lean compile of fep099_reversibleChain_oneStep_KL_dissipation, fep099_reversibleEquality_boundary, and fep099_irreversiblePositiveProduction_witness.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep099_reversibleChain_oneStep_KL_dissipation": "theorem fep099_reversibleChain_oneStep_KL_dissipation\n    [Nonempty State]\n    (actual stationary : FiniteLaw State)\n    (kernel : FiniteKernel State State)\n    (hActual : ∀ state, 0 < actual state)\n    (hStationary : ∀ state, 0 < stationary state)\n    (hKernel : ∀ source target, 0 < kernel source target)\n    (hReversible : IsReversible stationary kernel) :\n    finiteKL (kernel.predictive actual) stationary ≤\n      finiteKL actual stationary",
+        "fep099_irreversiblePositiveProduction_witness": "theorem fep099_irreversiblePositiveProduction_witness :\n    0 < entropyProduction irreversibleBoolProtocol",
+        "fep099_reversibleEquality_boundary": "theorem fep099_reversibleEquality_boundary [DecidableEq State]\n    (actual stationary : FiniteLaw State) :\n    finiteKL\n        ((FiniteKernel.identity : FiniteKernel State State).predictive actual)\n        stationary = finiteKL actual stationary"
+      },
+      "statement_review": "Full-support finite-channel DPI plus detailed-balance stationarity proves a one-step KL nonincrease. The identity equality theorem is separate and imposes no strict transition support. A distinct supplied unequal path-law witness has positive production.",
+      "assumptions_and_scope": "On a state space with at least2 elements identity has zero off-diagonal entries and does not instantiate hKernel. Positive path production alone does not certify a nonreversible transition process; the separate biasedCycleKernel supplies that stronger finite-chain witness. Existing entropyProduction_markov_reversible_KL_drop and composed one-step reduction identify actual path production with endpoint KL loss at every supported finite horizon.",
+      "positive_witness_specification_unexecuted": "Use a strictly positive symmetric Boolean mixing kernel with stationary uniform and nonuniform positive actual law; compare one-step KL. For actual nonreversibility reuse biasedCycle_not_reversible and horizon-positive production.",
+      "adverse_witness_specification_unexecuted": "Identity equality lies outside the main theorem support class for multi-state spaces. At actual=stationary even a strictly positive nonidentity kernel has equality, so nonidentity alone does not yield strict dissipation.",
+      "nearest_topic_distinction": "010 provides stationarity;014 nativeKL. The original composition is a conjunction, whereas the separate fep099_markov_path_KL_drop_reduction is a genuine same-carrier reduction. No strict contraction, rate or infinite-time entropy result is claimed.",
+      "novelty_record": {
+        "id": "fep-099",
+        "nearest_topics": [
+          "fep-010",
+          "fep-014",
+          "fep-049"
+        ],
+        "new_invariant": "One strictly positive reversible Markov step dissipates KL to stationarity with equality and irreversible witnesses.",
+        "carrier_delta": "Combines full-support finite-channel data processing, detailed-balance stationarity, and explicit path production.",
+        "required_bridge": "FEPComposed.fep099_reversible_kl_dissipation_links_fep010_fep014"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-099",
+          "target": "fep-014",
+          "kind": "formal_pairing",
+          "rationale": "Reversible finite-channel KL dissipation is accompanied by both native KL nonnegativity and the native reversible-kernel stationarity consequence.",
+          "witness": "FEPComposed.fep099_reversible_kl_dissipation_links_fep010_fep014"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-097",
+      "field": "non_vacuity",
+      "finding": "Zero beta means zero inverse temperature, not zero physical temperature.",
+      "proposed_text": "The actual nonconstant Boolean Crooks work witness satisfies the normalization at beta=1 and deltaFreeEnergy=0. Positive beta excludes the zero inverse-temperature parameter boundary; no physical temperature or unit identification is inferred without an explicit convention."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-099",
+      "field": "non_vacuity",
+      "finding": "The identity kernel equality boundary is outside the strictly positive-transition main theorem on multi-state carriers; unequal arbitrary path laws alone do not certify irreversible transition dynamics.",
+      "proposed_text": "A strictly positive symmetric mixing kernel supplies an instance of the main dissipation theorem. The separately proved identity equality lies outside its positive-transition class on multi-state carriers. Unequal full-support Boolean path laws prove positive path divergence; the existing stationary biased three-cycle separately proves nonreversibility and positive production at every positive finite horizon."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "source-bound positive/adverse consumer renewal",
+      "owner": "src/fep_lean/formal/path_thermodynamics.lean",
+      "seam": "Reuse existing Markov path normalization, Crooks witness, reversible endpoint KL drop and stationary biased-cycle horizon theorems. No missing finite-path implementation should be invented.",
+      "estimate": "0.5–1.5 days",
+      "positive": "supported nontrivial Markov path, exact n*log2/4 stationary production",
+      "adverse": "beta0 and singular reverse support; distinguish main theorem from identity boundary"
+    },
+    {
+      "rank": 2,
+      "scope": "support-sensitive finite path expectation",
+      "owner": "src/fep_lean/formal/path_thermodynamics.lean",
+      "seam": "Existing relative-support finiteKL identity is already used by ErasureModel. A new supported likelihood identity may weaken full-support to actual forward support, with reverse lost mass accounted explicitly for the integral fluctuation identity.",
+      "estimate": "1–3 days",
+      "positive": "common support with null ambient paths",
+      "adverse": "reverse mass on forward-null paths gives expectation below1"
+    },
+    {
+      "rank": 3,
+      "scope": "native extended path-KL embedding",
+      "owner": "src/fep_lean/formal/path_thermodynamics.lean",
+      "seam": "Reuse existing finite/native weighted-Dirac ownership rather than creating another probability carrier; prove finite path KL agrees with native KL only with explicit support and conversion hypotheses. Continuous path/PDE limits need a separate measure/process construction, not a routine completion of093–099.",
+      "estimate": "2–5 days bounded embedding; continuous-path work requires separate research spike"
+    }
+  ],
+  "limitations": [
+    "Static exact-source semantic review only; no Lean/tests/subject code executed, no S changes. Positive/adverse examples are unexecuted specifications unless explicitly named existing source theorems; source existence is not a new runtime qualification.",
+    "No compilation-driven promotion, physical units/process/PDE/empirical/terminal-human/upstream acceptance or issue closure.",
+    "Remaining62 topics, active dependency scope, metadata seal, generated projections, source-pair custody and publication gates remain open."
+  ]
+}

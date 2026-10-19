@@ -1,0 +1,433 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "predictive-coding-and-generalized-coordinates",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-086",
+    "fep-087",
+    "fep-088",
+    "fep-089",
+    "fep-090",
+    "fep-091",
+    "fep-092"
+  ],
+  "combined_issue75_audit_count": 92,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/predictive_coding_generalized.py": "dfec6d770726c94bb8daa93f892cb1ffec3d35827eb024f5fd09bc697920a707",
+    "lean/FepSketches/families/predictive_coding_generalized.lean": "1a320f48514a130057b345fc9217ae45b53a9ce3ed5255610e8d3933756cbc79",
+    "src/fep_lean/formal/predictive_coding.lean": "a3ed3678f775fb58e18885784b3c8255ea0bbcb4205c9629508e0069ab1934a0",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/markov_blanket.lean": "6e214ee37ba6525d1ca5b44130ceaf4b410e03a0bb18d9b3070c4f8b90280011",
+    "src/fep_lean/formal/compositions/causal_predictive.lean": "c71060d75bed0f8a5283fdf9ecdb08f18ae9a8b0c63dcda5fe6e1aa9144e1d4e",
+    "src/fep_lean/formal/compositions/native_blanket_transfer.lean": "24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7",
+    "src/fep_lean/formal/compositions/finite_scientific_implications.lean": "e45a35a2de0b1b746b07daca1d675b840a26d276f47646025592773be19147b0",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-086",
+      "title": "Precision-Weighted Prediction-Error Energy",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "0b23e2affbc6962b69f77c4c408d8c65d59fc6194e9da1520925011e46d7826c",
+      "maturity_record": {
+        "id": "fep-086",
+        "primary_theorem": "fep086_precisionWeighted_zero_iff_exactPrediction",
+        "supporting_theorems": [
+          "fep086_precisionWeighted_predictionError_nonnegative",
+          "fep086_unitError_nonvacuity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Nonnegative precision yields nonnegative scalar prediction-error energy, and under positive precision zero energy occurs exactly at exact prediction.",
+        "assumption_review": "The carrier is scalar real arithmetic. Nonnegativity needs precision at least zero and separation needs precision strictly positive; zero precision cannot distinguish any estimate from the observation.",
+        "non_vacuity": "Observation one, estimate zero, and precision two have exact unit energy, so the energy and its separating zero condition are not vacuous.",
+        "acceptance_probe": "native Lean compile of fep086_precisionWeighted_predictionError_nonnegative, fep086_precisionWeighted_zero_iff_exactPrediction, and fep086_unitError_nonvacuity.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep086_precisionWeighted_zero_iff_exactPrediction": "theorem fep086_precisionWeighted_zero_iff_exactPrediction\n    {precision : ℝ} (hPrecision : 0 < precision)\n    (observation estimate : ℝ) :\n    precisionEnergy precision observation estimate = 0 ↔\n      estimate = observation",
+        "fep086_precisionWeighted_predictionError_nonnegative": "theorem fep086_precisionWeighted_predictionError_nonnegative\n    {precision : ℝ} (hPrecision : 0 ≤ precision)\n    (observation estimate : ℝ) :\n    0 ≤ precisionEnergy precision observation estimate",
+        "fep086_unitError_nonvacuity": "theorem fep086_unitError_nonvacuity : precisionEnergy 2 1 0 = 1"
+      },
+      "statement_review": "Precision/2 times squared signed error is nonnegative for precision>=0 and separates exact prediction for precision>0. Unit error at precision2 has energy1.",
+      "assumptions_and_scope": "Precision0 makes every error invisible; negative precision loses energy nonnegativity. This alone is not a likelihood, decoder or stochastic estimation model.",
+      "positive_witness_specification_unexecuted": "Use precision2, observation1, estimate0 and exact estimate1.",
+      "adverse_witness_specification_unexecuted": "At precision0 observation1 estimate0 energy is0; at precision-2 it is-1.",
+      "nearest_topic_distinction": "016 supplied scalar weighted quadratic has the same bounded geometry. No missing general nonlinear estimator should be attributed to this row.",
+      "novelty_record": {
+        "id": "fep-086",
+        "nearest_topics": [
+          "fep-016"
+        ],
+        "new_invariant": "Positive precision makes scalar prediction-error energy nonnegative and separating.",
+        "carrier_delta": "Reinterprets the exact quadratic carrier as observation-minus-estimate error with an explicit precision parameter.",
+        "required_bridge": "FEPComposed.fep086_precision_energy_refines_fep016"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-086",
+          "target": "fep-016",
+          "kind": "formal_pairing",
+          "rationale": "Precision energy is nonnegative both in the predictive-coding definition and in fep-016's unhalved weighted-quadratic primitive.",
+          "witness": "FEPComposed.fep086_precision_energy_refines_fep016"
+        }
+      ]
+    },
+    {
+      "id": "fep-087",
+      "title": "Hierarchical Predictive-Coding Energy Decomposition",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "1ea75a42a0b7b8d8b5e0fb2f52291c119fd0db979ad6807bd83967698eb2b630",
+      "maturity_record": {
+        "id": "fep-087",
+        "primary_theorem": "fep087_hierarchicalPredictiveCoding_decomposition",
+        "supporting_theorems": [
+          "fep087_hierarchicalPredictiveCoding_nonnegative",
+          "fep087_twoLevel_decomposition_nonvacuity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Finite hierarchical predictive-coding energy decomposes into the zeroth precision-weighted error plus all successor-level errors and is nonnegative when every precision is nonnegative.",
+        "assumption_review": "The hierarchy is finite and energies are explicit scalar quadratics. Nonnegativity requires pointwise nonnegative precision; the result does not model neural implementation, learned precision, or an infinite hierarchy.",
+        "non_vacuity": "A concrete two-level hierarchy has both levels contribute and evaluates to eleven, ruling out a decomposition that silently drops the upper level.",
+        "acceptance_probe": "native Lean compile of fep087_hierarchicalPredictiveCoding_decomposition, fep087_hierarchicalPredictiveCoding_nonnegative, and fep087_twoLevel_decomposition_nonvacuity.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep087_hierarchicalPredictiveCoding_decomposition": "theorem fep087_hierarchicalPredictiveCoding_decomposition {depth : ℕ}\n    (precision error : Fin (depth + 1) → ℝ) :\n    hierarchicalEnergy precision error =\n      precision 0 / 2 * error 0 ^ 2 +\n        ∑ level : Fin depth,\n          precision level.succ / 2 * error level.succ ^ 2",
+        "fep087_hierarchicalPredictiveCoding_nonnegative": "theorem fep087_hierarchicalPredictiveCoding_nonnegative\n    {Level : Type*} [Fintype Level]\n    (precision error : Level → ℝ)\n    (hPrecision : ∀ level, 0 ≤ precision level) :\n    0 ≤ hierarchicalEnergy precision error",
+        "fep087_twoLevel_decomposition_nonvacuity": "theorem fep087_twoLevel_decomposition_nonvacuity :\n    hierarchicalEnergy\n      (fun level : Fin 2 => if level = 0 then 2 else 4)\n      (fun level : Fin 2 => if level = 0 then 3 else 1) = 11"
+      },
+      "statement_review": "A finite successor-index sum splits into level0 plus all successors; nonnegative precisions give a nonnegative hierarchy energy. The2-level energy11 exercises both terms.",
+      "assumptions_and_scope": "Errors and precisions are supplied scalars, not generated by nonlinear interlevel maps. Existing gaussianChainEnergy_eq_neg_log_prod identifies the normalized Gaussian-density product up to explicit normalizer constants for positive variances; do not call the likelihood bridge absent.",
+      "positive_witness_specification_unexecuted": "Use precisions2,4 and errors3,1: contributions9 and2.",
+      "adverse_witness_specification_unexecuted": "Use negative precision at a nonzero-error coordinate to obtain negative energy; arbitrary correlated Gaussian density is not the product modeled here.",
+      "nearest_topic_distinction": "039 has four arbitrary additive blocks;087 has arbitrary finite level-indexed quadratic structure. Its bridge is an additive pairing.",
+      "novelty_record": {
+        "id": "fep-087",
+        "nearest_topics": [
+          "fep-039",
+          "fep-016"
+        ],
+        "new_invariant": "Finite hierarchical prediction-error energy decomposes by level and stays nonnegative under nonnegative precision.",
+        "carrier_delta": "Replaces four named additive blocks with an arbitrary finite level carrier of precision-weighted scalar errors.",
+        "required_bridge": "FEPComposed.fep087_hierarchical_energy_extends_fep039"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-087",
+          "target": "fep-039",
+          "kind": "formal_pairing",
+          "rationale": "A hierarchical prediction-error sum decomposes by level, while fep-039 certifies additivity of a four-block global free energy.",
+          "witness": "FEPComposed.fep087_hierarchical_energy_extends_fep039"
+        }
+      ]
+    },
+    {
+      "id": "fep-088",
+      "title": "Prediction-Error Gradient Identity",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "3119580a8e1de5fff3d1c1a042d07fc8c796b0bde9df7419d6b14ae5b86b2459",
+      "maturity_record": {
+        "id": "fep-088",
+        "primary_theorem": "fep088_predictionError_gradient_identity",
+        "supporting_theorems": [
+          "fep088_namedGradient_hasDerivAt",
+          "fep088_gradient_nonvacuity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Differentiating scalar precision-weighted prediction-error energy with respect to the estimate gives exactly minus precision times signed prediction error.",
+        "assumption_review": "The theorem is an exact HasDerivAt statement for a scalar quadratic and requires no positivity assumption for differentiation. It does not assert a gradient for a nonlinear decoder, a vector network, or a stochastic process.",
+        "non_vacuity": "At precision two, observation one, and estimate zero, the named gradient is exactly minus two and therefore drives a nontrivial correction.",
+        "acceptance_probe": "native Lean compile of fep088_predictionError_gradient_identity, fep088_namedGradient_hasDerivAt, and fep088_gradient_nonvacuity.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep088_predictionError_gradient_identity": "theorem fep088_predictionError_gradient_identity\n    (precision observation estimate : ℝ) :\n    HasDerivAt (fun candidate => precisionEnergy precision observation candidate)\n      (-precision * predictionError observation estimate) estimate",
+        "fep088_namedGradient_hasDerivAt": "theorem fep088_namedGradient_hasDerivAt\n    (precision observation estimate : ℝ) :\n    HasDerivAt (fun candidate => precisionEnergy precision observation candidate)\n      (precisionEnergyGradient precision observation estimate) estimate",
+        "fep088_gradient_nonvacuity": "theorem fep088_gradient_nonvacuity :\n    precisionEnergyGradient 2 1 0 = -2"
+      },
+      "statement_review": "Actual HasDerivAt certifies derivative with respect to estimate equal minus precision*(observation-estimate), with a matching named gradient. It holds for any real precision.",
+      "assumptions_and_scope": "Positivity is unnecessary for differentiation but necessary for positive energy interpretation. The identity is for the scalar identity decoder, not the gradient of a generic nonlinear observation map.",
+      "positive_witness_specification_unexecuted": "Use precision2,observation1,estimate0: derivative-2; subtracting positive-rate gradient raises the estimate.",
+      "adverse_witness_specification_unexecuted": "For nonlinear prediction g(x)=x^2, derivative needs the decoder Jacobian and differs from the present identity at generic x.",
+      "nearest_topic_distinction": "043 is a centered quadratic derivative with coefficient precision/2; carrier identification is valid but current relation is formal_pairing and makes no convergence claim.",
+      "novelty_record": {
+        "id": "fep-088",
+        "nearest_topics": [
+          "fep-043",
+          "fep-016"
+        ],
+        "new_invariant": "The estimate derivative of precision-weighted error is exactly its named prediction-error gradient.",
+        "carrier_delta": "Specializes scalar derivative and curvature machinery to observation, estimate, precision, and signed prediction error.",
+        "required_bridge": "FEPComposed.fep088_prediction_gradient_extends_fep043"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-088",
+          "target": "fep-043",
+          "kind": "formal_pairing",
+          "rationale": "The predictive-error derivative and fep-043's quadratic derivative are the same scalar geometry at curvature `precision / 2`.",
+          "witness": "FEPComposed.fep088_prediction_gradient_extends_fep043"
+        }
+      ]
+    },
+    {
+      "id": "fep-089",
+      "title": "Finite Generalized-Coordinate Shift Semigroup",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "15cc89956aa7b9518c16368621ea98e998b771cce93455ab29359a964f5864a0",
+      "maturity_record": {
+        "id": "fep-089",
+        "primary_theorem": "fep089_finiteJet_shift_semigroup",
+        "supporting_theorems": [
+          "fep089_firstOrder_shift_nonvacuity"
+        ],
+        "boundary_theorems": [
+          "fep089_finiteJet_terminal_boundary"
+        ],
+        "invariant": "Natural-number shifts on a finite generalized-coordinate jet compose associatively, with the highest retained coordinate shifting into an explicit zero truncation boundary.",
+        "assumption_review": "Generalized coordinates are finite jets represented by finitely supported coefficients. The semigroup is discrete and exact; no analytic infinite jet, time derivative, or continuous-flow convergence is claimed.",
+        "non_vacuity": "A first-order jet moves velocity into the position coordinate while its terminal velocity coordinate becomes zero, visibly exercising the truncation.",
+        "acceptance_probe": "native Lean compile of fep089_finiteJet_shift_semigroup, fep089_finiteJet_terminal_boundary, and fep089_firstOrder_shift_nonvacuity.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep089_finiteJet_shift_semigroup": "theorem fep089_finiteJet_shift_semigroup {order : ℕ}\n    (first second : ℕ) (jet : FiniteJet order) :\n    shift (first + second) jet = shift first (shift second jet)",
+        "fep089_firstOrder_shift_nonvacuity": "theorem fep089_firstOrder_shift_nonvacuity (value velocity : ℝ) :\n    (shift 1 (firstOrderJet value velocity)).coefficient 0 = velocity ∧\n      (shift 1 (firstOrderJet value velocity)).coefficient 1 = 0",
+        "fep089_finiteJet_terminal_boundary": "theorem fep089_finiteJet_terminal_boundary {order : ℕ}\n    (jet : FiniteJet order) :\n    (shift 1 jet).coefficient order = 0"
+      },
+      "statement_review": "Natural-number shifts of finitely truncated coefficient sequences compose additively, with terminal coordinate0. Existing functionJet/shift_functionJet gives an actual iteratedDeriv identification below k+m<=order; exp_jet_shift_witness is nonzero and exhibits the top mismatch.",
+      "assumptions_and_scope": "The primary is a discrete shift semigroup. IteratedDeriv is totalized and the existing identification alone does not establish HasDerivAt in time of each coordinate without smoothness. It is inaccurate to say there is no derivative-related content at all.",
+      "positive_witness_specification_unexecuted": "Use firstOrderJet(value,nonzero velocity); also use the existing exponential functionJet to exercise actual derivative coordinates.",
+      "adverse_witness_specification_unexecuted": "At the top exponential jet coordinate shifted value is0 whereas the jet of deriv exp retains exp(t)>0; full untruncated derivative equality fails.",
+      "nearest_topic_distinction": "006 is generic natural iterate semigroup. Current bridge conjoins its one-step-shift iteration law, rather than proving an analytic continuous flow.",
+      "novelty_record": {
+        "id": "fep-089",
+        "nearest_topics": [
+          "fep-006"
+        ],
+        "new_invariant": "Finite generalized-coordinate shifts form a natural-number semigroup with explicit terminal truncation.",
+        "carrier_delta": "Replaces a measurable discrete-time state flow with finitely supported jet coefficients and a nil terminal shift.",
+        "required_bridge": "FEPComposed.fep089_finite_jet_shift_specializes_fep006"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-089",
+          "target": "fep-006",
+          "kind": "formal_pairing",
+          "rationale": "Finite-jet shifts satisfy their native additive law and instantiate fep-006's generic discrete-flow semigroup under one-degree shifting.",
+          "witness": "FEPComposed.fep089_finite_jet_shift_specializes_fep006"
+        }
+      ]
+    },
+    {
+      "id": "fep-090",
+      "title": "Finite-Jet Generalized-Filtering Correction Equation",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "2386ba8cf67e112184b2a4a3b7a18d7ea7e24eaadeb5b07b8d8d98d89c9056f9",
+      "maturity_record": {
+        "id": "fep-090",
+        "primary_theorem": "fep090_finiteJet_generalizedFiltering_correctionEquation",
+        "supporting_theorems": [
+          "fep090_finiteJet_coordinateGradient_hasDerivAt",
+          "fep090_firstOrder_correction_nonvacuity"
+        ],
+        "boundary_theorems": [
+          "fep090_finiteJet_truncation_visible"
+        ],
+        "invariant": "One finite-jet generalized-filtering Euler step equals the current coordinate plus a truncated shift minus the certified quadratic energy gradient.",
+        "assumption_review": "Step size and coordinate precisions are real and the jet order is finite. The pointwise correction has an exact scalar derivative witness, but the theorem does not identify an infinite generalized flow or prove stability of repeated coupled-jet updates.",
+        "non_vacuity": "A concrete first-order half-step gives exact nonzero corrections 3/2 and 1/2 at the two retained coordinates, while the top-coordinate theorem removes the truncated shift term.",
+        "acceptance_probe": "native Lean compile of fep090_finiteJet_generalizedFiltering_correctionEquation, fep090_finiteJet_coordinateGradient_hasDerivAt, fep090_finiteJet_truncation_visible, and fep090_firstOrder_correction_nonvacuity.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep090_finiteJet_generalizedFiltering_correctionEquation": "theorem fep090_finiteJet_generalizedFiltering_correctionEquation\n    {order : ℕ} (stepSize : ℝ) (precision : ℕ → ℝ)\n    (target estimate : FiniteJet order) (degree : ℕ) :\n    (generalizedFilteringStep stepSize precision target estimate).coefficient degree =\n      estimate.coefficient degree + stepSize *\n        ((shift 1 estimate).coefficient degree -\n          precisionEnergyGradient (precision degree)\n            (target.coefficient degree) (estimate.coefficient degree))",
+        "fep090_finiteJet_coordinateGradient_hasDerivAt": "theorem fep090_finiteJet_coordinateGradient_hasDerivAt\n    {order : ℕ} (precision : ℕ → ℝ)\n    (target estimate : FiniteJet order) (degree : ℕ) :\n    HasDerivAt\n      (fun candidate =>\n        precisionEnergy (precision degree) (target.coefficient degree) candidate)\n      (precisionEnergyGradient (precision degree)\n        (target.coefficient degree) (estimate.coefficient degree))\n      (estimate.coefficient degree)",
+        "fep090_firstOrder_correction_nonvacuity": "theorem fep090_firstOrder_correction_nonvacuity :\n    let corrected",
+        "fep090_finiteJet_truncation_visible": "theorem fep090_finiteJet_truncation_visible\n    {order : ℕ} (precision : ℕ → ℝ)\n    (target estimate : FiniteJet order) :\n    (generalizedFlow precision target estimate).coefficient order =\n      -precisionEnergyGradient (precision order)\n        (target.coefficient order) (estimate.coefficient order)"
+      },
+      "statement_review": "The explicit Euler step is estimate + stepSize*(truncated shift - exact coordinate quadratic gradient); each coordinate has a real HasDerivAt witness and top shift is absent. The concrete corrections3/2 and1/2 are exact.",
+      "assumptions_and_scope": "No sign restrictions are needed for this algebra. Repeated coupled-jet stability, state estimation optimality and continuous differential equation solutions are not proved by the one-step identity. Existing functionJet bridge must be recognized rather than duplicated.",
+      "positive_witness_specification_unexecuted": "Use existing firstOrderCorrection_witness with target(2,0),estimate(0,1),precision1,half step.",
+      "adverse_witness_specification_unexecuted": "Order0,target0,precision1,step3 sends estimate1 to-2 and raises quadratic energy; arbitrary step sizes cannot imply descent. Coupled shift can change the stability analysis even when each coordinate gradient is correct.",
+      "nearest_topic_distinction": "089 supplies the actual shift;088/043 supply exact gradients. This composition is stronger than a purely symbolic placeholder but remains a finite authored update.",
+      "novelty_record": {
+        "id": "fep-090",
+        "nearest_topics": [
+          "fep-043",
+          "fep-089"
+        ],
+        "new_invariant": "A finite-jet Euler correction combines truncated shift with a certified coordinate energy gradient.",
+        "carrier_delta": "Adds step size, coordinate precision, target and estimate jets, exact derivatives, and a visible top-coordinate boundary.",
+        "required_bridge": "FEPComposed.fep090_generalized_correction_combines_fep043"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-090",
+          "target": "fep-043",
+          "kind": "formal_pairing",
+          "rationale": "A generalized-filter correction exposes its shift-minus-gradient equation; the same coordinate gradient is backed by fep-043's exact quadratic derivative.",
+          "witness": "FEPComposed.fep090_generalized_correction_combines_fep043"
+        }
+      ]
+    },
+    {
+      "id": "fep-091",
+      "title": "Precision Modulation of Prediction Error",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "bf6852e497ffe025aa59bad662bb71777760c8d8e918e828abb93b6f15e4e300",
+      "maturity_record": {
+        "id": "fep-091",
+        "primary_theorem": "fep091_precisionModulation_energy_mono",
+        "supporting_theorems": [
+          "fep091_precisionModulation_gradient_scale",
+          "fep091_doubledPrecision_nonvacuity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Increasing nonnegative precision cannot decrease a fixed scalar prediction-error energy, and scaling precision scales its exact gradient by the same factor.",
+        "assumption_review": "Energy monotonicity assumes a nonnegative lower precision and an ordered upper precision. Gradient scaling is algebraic for arbitrary real scale, including negative values, but only nonnegative precision retains an energy weighting interpretation.",
+        "non_vacuity": "Doubling precision from one to two at a unit prediction error exactly doubles the energy and makes the inequality strict.",
+        "acceptance_probe": "native Lean compile of fep091_precisionModulation_energy_mono, fep091_precisionModulation_gradient_scale, and fep091_doubledPrecision_nonvacuity.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep091_precisionModulation_energy_mono": "theorem fep091_precisionModulation_energy_mono\n    {lower upper : ℝ} (hLowerNonneg : 0 ≤ lower)\n    (hPrecision : lower ≤ upper)\n    (observation estimate : ℝ) :\n    0 ≤ precisionEnergy lower observation estimate ∧\n      precisionEnergy lower observation estimate ≤\n        precisionEnergy upper observation estimate",
+        "fep091_precisionModulation_gradient_scale": "theorem fep091_precisionModulation_gradient_scale\n    (scale precision observation estimate : ℝ) :\n    precisionEnergyGradient (scale * precision) observation estimate =\n      scale * precisionEnergyGradient precision observation estimate",
+        "fep091_doubledPrecision_nonvacuity": "theorem fep091_doubledPrecision_nonvacuity :\n    precisionEnergy 2 1 0 = 2 * precisionEnergy 1 1 0 ∧\n      precisionEnergy 1 1 0 < precisionEnergy 2 1 0"
+      },
+      "statement_review": "For fixed error, ordered nonnegative precision gives monotone energy; the named gradient scales algebraically by any real factor. Actual unit-error doubling is strict.",
+      "assumptions_and_scope": "Strict energy increase needs upper>lower and error nonzero; equality at exact prediction is valid. Gradient scaling for a negative factor does not preserve precision/energy interpretation. Existing precisionFreeEnergy normalizer, unique optimum and zero-error unboundedness are genuine extra content in the foundation.",
+      "positive_witness_specification_unexecuted": "Use error1 lower1 upper2 and verify strict doubling.",
+      "adverse_witness_specification_unexecuted": "At error0 raising precision does not raise energy; negative precision gives negative energy. Modulation alone does not infer precision from data.",
+      "nearest_topic_distinction": "086 establishes separation at fixed precision;091 varies precision. Existing inferred-precision theorems are separate and should not be conflated with this monotonicity primary.",
+      "novelty_record": {
+        "id": "fep-091",
+        "nearest_topics": [
+          "fep-016",
+          "fep-086"
+        ],
+        "new_invariant": "Increasing nonnegative precision raises fixed-error energy and scales its exact gradient linearly.",
+        "carrier_delta": "Varies precision itself on the scalar quadratic prediction-error carrier and adds a strict doubling witness.",
+        "required_bridge": "FEPComposed.fep091_precision_modulation_refines_fep016"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-091",
+          "target": "fep-016",
+          "kind": "formal_pairing",
+          "rationale": "Precision modulation is monotone in the predictive energy and specializes fep-016's nonnegative weighted quadratic at the lower precision.",
+          "witness": "FEPComposed.fep091_precision_modulation_refines_fep016"
+        }
+      ]
+    },
+    {
+      "id": "fep-092",
+      "title": "Quadratic Predictive-Coding Convergence",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "9a68fbb6dc65ccae2de83661319d204e6d54ced9e71bb6e5ebe0ec5127f3fab9",
+      "maturity_record": {
+        "id": "fep-092",
+        "primary_theorem": "fep092_quadraticPredictiveCoding_error_tendsto_zero",
+        "supporting_theorems": [
+          "fep092_quadraticPredictiveCoding_contraction",
+          "fep092_quadraticPredictiveCoding_strictDecrease",
+          "fep092_halfStep_decrease_nonvacuity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Exact scalar quadratic prediction updates contract energy by the squared factor one minus step size, strictly decrease positive-precision nonzero error for step sizes in the open interval zero to two, and drive error to zero.",
+        "assumption_review": "Convergence requires 0 < stepSize < 2; strict descent additionally requires positive precision and unequal target and estimate. The result is scalar and exact-quadratic, not a convergence theorem for nonlinear predictive-coding networks.",
+        "non_vacuity": "At precision two and half-step size, a unit error has energy one, moves to estimate one half, and drops to energy one quarter.",
+        "acceptance_probe": "native Lean compile of fep092_quadraticPredictiveCoding_contraction, fep092_quadraticPredictiveCoding_strictDecrease, fep092_quadraticPredictiveCoding_error_tendsto_zero, and fep092_halfStep_decrease_nonvacuity.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep092_quadraticPredictiveCoding_error_tendsto_zero": "theorem fep092_quadraticPredictiveCoding_error_tendsto_zero\n    {stepSize : ℝ} (hStepPositive : 0 < stepSize)\n    (hStepBelowTwo : stepSize < 2) (target estimate : ℝ) :\n    Tendsto\n      (fun iterations => predictionError target\n        (iteratePredictionUpdate stepSize target iterations estimate))\n      atTop (nhds 0)",
+        "fep092_quadraticPredictiveCoding_contraction": "theorem fep092_quadraticPredictiveCoding_contraction\n    (precision stepSize target estimate : ℝ) :\n    precisionEnergy precision target\n        (predictionUpdate stepSize target estimate) =\n      (1 - stepSize) ^ 2 * precisionEnergy precision target estimate",
+        "fep092_quadraticPredictiveCoding_strictDecrease": "theorem fep092_quadraticPredictiveCoding_strictDecrease\n    {precision stepSize target estimate : ℝ}\n    (hPrecision : 0 < precision) (hStepPositive : 0 < stepSize)\n    (hStepBelowTwo : stepSize < 2) (hError : target ≠ estimate) :\n    precisionEnergy precision target (predictionUpdate stepSize target estimate) <\n      precisionEnergy precision target estimate",
+        "fep092_halfStep_decrease_nonvacuity": "theorem fep092_halfStep_decrease_nonvacuity :\n    precisionEnergy 2 1 0 = 1 ∧\n      predictionUpdate (1 / 2) 1 0 = 1 / 2 ∧\n      precisionEnergy 2 1 (predictionUpdate (1 / 2) 1 0) = 1 / 4"
+      },
+      "statement_review": "The scalar residual update x+=stepSize*(target-x) has exact energy multiplier(1-stepSize)^2 and zero-error convergence for0<stepSize<2; strict descent additionally needs positive precision and nonzero error.",
+      "assumptions_and_scope": "The stepSize is a residual-update rate. For raw negative-gradient descent with learning rate alpha, its effective rate is alpha*precision; the stability interval must be imposed on that product. This is not convergence of090 coupled finite-jet updates or nonlinear filtering.",
+      "positive_witness_specification_unexecuted": "Use precision2,step1/2,target1,estimate0: energy1 becomes1/4 and iterate error tends0.",
+      "adverse_witness_specification_unexecuted": "Step0 is stationary, step2 alternates residual with unchanged energy, step3 diverges for nonzero residual. With alpha1.5,precision2 the effective residual rate3 diverges despite alpha<2.",
+      "nearest_topic_distinction": "032 has the same centered scalar recurrence;048 is broader contraction uniqueness. Retain current finite scalar formalized disposition without transferring it to generalized filtering.",
+      "novelty_record": {
+        "id": "fep-092",
+        "nearest_topics": [
+          "fep-032",
+          "fep-048"
+        ],
+        "new_invariant": "Exact scalar predictive updates contract energy and converge to zero error for step size between zero and two.",
+        "carrier_delta": "Instantiates quadratic descent as an iterated prediction update with explicit strict-descent and convergence boundaries.",
+        "required_bridge": "FEPComposed.fep092_quadratic_convergence_specializes_fep032"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-092",
+          "target": "fep-032",
+          "kind": "formal_pairing",
+          "rationale": "On the shared stability interval, predictive error tends to zero and the equivalent centered quadratic iteration from fep-032 tends to its target.",
+          "witness": "FEPComposed.fep092_quadratic_convergence_specializes_fep032"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-089",
+      "field": "assumption_review",
+      "finding": "The row primary is a discrete semigroup, but the foundation already has an exact functionJet iterated-derivative bridge. Avoid reading no time derivative as absence of that delivered content.",
+      "proposed_text": "Generalized coordinates are finite truncated coefficient jets. The primary semigroup is discrete; the existing functionJet bridge identifies shifted iterated derivatives below the truncation boundary, while top derivative information is discarded. This does not establish analytic infinite jets, ordinary coordinate-time differentiation without regularity, or continuous-flow convergence."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-092",
+      "field": "assumption_review",
+      "finding": "Clarify residual-update rate versus raw-gradient learning rate before reusing this result for precision-dependent descent.",
+      "proposed_text": "Convergence requires 0 < stepSize < 2 for the authored residual update; strict descent also needs positive precision and unequal target and estimate. A raw negative-gradient step with learning rate alpha has effective stepSize alpha*precision. The theorem is scalar exact-quadratic and does not prove stability of coupled finite-jet or nonlinear predictive-coding updates."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "092 raw-gradient rate bridge",
+      "owner": "src/fep_lean/formal/predictive_coding.lean",
+      "seam": "Algebraically identify estimate-alpha*precisionEnergyGradient with predictionUpdate(alpha*precision), then instantiate existing descent/convergence with0<alpha*precision<2. No new analytic library required.",
+      "estimate": "0.5–1 day",
+      "positive": "alpha1/4 precision2 gives effective1/2",
+      "adverse": "alpha1.5 precision2 gives effective3"
+    },
+    {
+      "rank": 2,
+      "scope": "089 regular function-jet time derivative",
+      "owner": "src/fep_lean/formal/predictive_coding.lean",
+      "seam": "Use existing functionJet/iteratedDeriv bridge with explicit smoothness and Mathlib iterated-derivative HasDerivAt APIs; retain terminal mismatch. Do not duplicate existing shift_functionJet.",
+      "estimate": "1–3 days after pinned API probe",
+      "positive": "Real.exp below truncation",
+      "adverse": "top exponential coordinate mismatch"
+    },
+    {
+      "rank": 3,
+      "scope": "090 repeated coupled-jet stability",
+      "owner": "src/fep_lean/formal/predictive_coding.lean",
+      "seam": "Existing finite triangular linear recurrence from shift minus diagonal precision; requires explicit positive precision/effective eigenvalue step bounds and treatment of off-diagonal/Jordan terms. Scalar092 alone is insufficient. Start order1 exact recurrence before a general matrix spectral theorem.",
+      "estimate": "2–5 days bounded order1; general order separate spike",
+      "positive": "stable diagonal coefficients and decaying shift coupling",
+      "adverse": "order0 effective rate3 divergence"
+    }
+  ],
+  "limitations": [
+    "Static source semantic review only; no Lean, tests, provider, model or browser executed. Witness specifications are unexecuted, not actual evidence.",
+    "No disposition promotion, general causal/state-estimation/scientific claim, terminal quorum, issue closure or upstream acceptance.",
+    "Remaining76 topics and active dependency/metadata-seal/projection/custody/publication gates remain open; these reports cover only14 additional rows."
+  ]
+}

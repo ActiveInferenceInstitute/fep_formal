@@ -305,8 +305,9 @@ theorem fep013_gaussianHelmholtz_derivative
   exact fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy
     hU hS hfirstLaw
 
-/-- A gradient step on fep-043's positive-curvature quadratic is exactly
-fep-032's centered update with effective step size `2aη`. -/
+/-- A gradient step on fep-043's quadratic is exactly fep-032's centered
+update with effective step size 2*a*eta. This identity has no curvature
+or stable-step premise. -/
 theorem fep032_update_is_fep043_gradientStep
     (η a center x : ℝ) :
     x - η * fep_fep043.FEP043.fep043_quadraticGradient a center x =

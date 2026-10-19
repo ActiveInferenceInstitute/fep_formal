@@ -1,7 +1,7 @@
 # Public Python API
 
 **Version:** 1.6.0
-**Last reviewed:** 2026-10-15
+**Last reviewed:** 2026-10-19
 
 FEP_Formal's installed distribution exposes one root namespace, `fep_lean`.
 Generic top-level names such as `catalogue`, `pipeline`, and `output` are not packages
@@ -373,6 +373,73 @@ or Hermes-derived.
 Provider-backed calls occur only in full mode with valid credentials. Imports,
 catalogue mode, native verification, and receipt validation do not call a
 provider.
+
+## Readiness snapshots
+
+The root and `fep_lean.output` export the same frozen `SectionReport`,
+`PublicationReadinessReport` and `StatusReport` types, owned by
+`fep_lean.output.evidence`. The public builder composes existing validators:
+
+```python
+from pathlib import Path
+from fep_lean import build_status_report, report_to_json
+
+root = Path("/path/to/fep_formal")
+snapshot = build_status_report(root, gnn_root=None)
+print(report_to_json(snapshot))
+```
+
+Snapshot inspection starts no process and writes no consumed input. Findings,
+source bindings and named evidence planes retain their individual states.
+Omitting the sibling checkout leaves that comparison unverified. The immutable
+nested publication report distinguishes static currency from runtime execution
+and two-archive parity; static all-green results remain unverified. The CLI
+serializes this same snapshot. Its legacy imports remain the same objects.
+New input-stability records name the public
+`fep_lean.output.release_bundle.publication_input_snapshot` owner; historical
+receipts keep their original provenance.
+
+The release owner also exposes `inspect_stored_publication_evidence(root, plane)`
+for exactly `publication_inputs`, `python_acceptance_receipt` and
+`browser_acceptance_receipt`; unknown planes reject before inspection. These
+are stored-evidence checks. The separate
+`validate_render_acceptance_barrier(root)` performs the existing strict source
+and reproduction checks, including bounded child processes and temporary
+render work; it preserves publication files.
+
+## Explicit caller roots and native operations
+
+```python
+from fep_lean import project_root_context
+from fep_lean.verification import setup_workspace, verify_catalogue
+
+with project_root_context(root):
+    snapshot = build_status_report(root)
+
+# Explicit acquisition/build, with the existing total deadline and pin checks:
+setup_exit = setup_workspace(root)
+# Explicit native execution, independent of CLI parsing or provider calls:
+outcome = verify_catalogue(
+    root,
+    ["fep-001"],
+    None,
+    receipt_path=root / "output/native-verification.json",
+    fail_on_warnings=True,
+)
+print(outcome.to_json())
+verify_exit = outcome.exit_code
+```
+
+Project-root precedence is explicit CLI `--project-root`, then caller context,
+then `FEP_LEAN_PROJECT_ROOT`, then the package checkout fallback. The context
+resets on exit or error and does not mutate the process environment. It applies
+to the current execution context; pass roots explicitly to new threads and
+OS processes. The capture owner explicitly projects the caller root into a
+copied child environment. Compiler children retain their separate allowlist.
+`CatalogueVerification` carries a result mapping, canonical JSON indentation
+and exit status; its mapping is an ordinary result value. Receipt validation,
+warning/admission counts and failure exits match the CLI. Read-only preflight
+remains separate from setup acquisition and native compilation.
 
 ## Command-line API
 
