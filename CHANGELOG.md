@@ -1,5 +1,28 @@
 ## Unreleased
 
+- Document one canonical operator contract table for status, preflight, native
+  verification, bridge checks and publication capture, including required inputs,
+  process/mutation effects, platform support and concrete exit-state next actions.
+  Retain independent operator review and actual installed-help comparisons for
+  [#62](https://github.com/ActiveInferenceInstitute/fep_formal/issues/62); runtime
+  behavior and broader production-capture acceptance are unchanged.
+
+- Refresh the active source pair and emitted signatures after the eight reviewed
+  owner changes. Bind the current Q7 renderer's quoted model-title docstring to
+  its independently reviewed exact scaffold digest; preserve every executable
+  statement, parameter table and historical native receipt. Regenerate the
+  five-runtime parser evidence through its owner. New native component evidence
+  remains separate from parser parity and generated-runner execution.
+
+- Split the eight measured largest functions within their existing owners,
+  preserving numerical records, dashboard SVG/HTML, coverage projections and
+  capture-plan bytes. Enforce a separate 200-source-line bound in the seven
+  affected modules and Ruff's 100-statement ceiling with thirteen existing,
+  function-bounded exceptions. Record the complete local Python/native and
+  source-review component acceptance for
+  [#122](https://github.com/ActiveInferenceInstitute/fep_formal/issues/122);
+  final render and fifteen-cell head/main publication remain separate.
+
 - Retain the exact selected font binaries with their render artifact hashes and
   all six sealed Python package metadata files in hosted acceptance uploads.
   Keep font/source drift refusal and clarify that semantic disposition belongs
@@ -98,9 +121,12 @@
 - Prepare native probability-measure entropy and CGF inequalities in the existing
   variational foundation, preserving explicit integrability and infinite KL.
   Add a single-source Mathlib-only consumer with a nonconstant attained tilt,
-  clipping and singular-law controls, and retained raw axiom output. Source
-  review is complete; warning-free hosted elaboration remains required for
+  clipping and singular-law controls, and retained raw axiom output. Actual
+  hosted elaboration and independent component review support acceptance for
   [#111](https://github.com/ActiveInferenceInstitute/fep_formal/issues/111).
+  Retain the actual warning-free hosted consumer and all three raw axiom
+  reports in the native entropy component receipt. No terminal horizon or
+  score/Fisher acceptance, scientific promotion or upstream submission follows.
 - Narrow blanket tactic imports in 21 canonical topic bodies while preserving
   theorem and proof tails. Preserve public/meta imports and nested comment
   boundaries in shared Lean projection, and refresh all affected owner exports.

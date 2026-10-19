@@ -21,7 +21,7 @@ from pathlib import (
     Path,
     PurePosixPath,
 )
-from typing import Any
+from typing import Any, Protocol
 
 from fep_lean._paths import FepLeanError
 from fep_lean.output.fsutil import sha256_bytes
@@ -747,62 +747,31 @@ def _capture_read_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def run_publication_capture(
-    plan: PublicationCapturePlan,
-    journal: Path,
-    *,
-    resume: bool = False,
-) -> PublicationCaptureResult:
-    """Execute or resume a fixed DAG with immutable, independently checked history.
+class _CaptureProcessRunner(Protocol):
+    def __call__(
+        self,
+        command: Sequence[str],
+        *,
+        cwd: str | os.PathLike[str],
+        env: Mapping[str, str],
+        timeout: float,
+    ) -> subprocess.CompletedProcess[str]: ...
 
-    Only this explicit action starts processes. Existing producers own their
-    declared project outputs; the manager writes only its chosen journal. A
-    rejected stage stops the DAG, while earlier accepted output copies remain.
-    Every reused stage runs its strict check again under the same finite bound.
-    """
-    from fep_lean.verification._subprocess import run_process_group
 
-    _capture_validate_plan(plan)
-    if os.name != "posix":
-        raise ReleaseBundleError(
-            "publication capture requires POSIX input custody and process supervision"
-        )
-    for stage in plan.stages:
-        _capture_check_rosters(stage)
-    journal = Path(journal).absolute()
-    if journal.resolve() != journal:
-        raise ReleaseBundleError("capture journal path must be canonical")
-    if any(p.is_symlink() for p in (journal, *journal.parents)):
-        raise ReleaseBundleError("capture journal must not traverse a symlink")
-    if journal.resolve().is_relative_to(Path(plan.project_root)):
-        raise ReleaseBundleError("capture journal must be outside the project root")
-    policy = plan.record()
-    policy_digest = sha256_bytes(_canonical_json(policy))
-    header = {
-        "schema_version": 1,
-        "kind": "publication-capture-journal",
-        "policy": policy,
-        "policy_sha256": policy_digest,
-    }
-    if resume:
-        retained_header = _capture_read_json(journal / "journal.json")
-        if (
-            type(retained_header.get("schema_version")) is not int
-            or retained_header != header
-        ):
-            raise ReleaseBundleError(
-                "capture resume policy differs from the retained journal"
-            )
-    else:
-        _capture_mkdir(journal, parents=True)
-        _capture_new_file(journal / "journal.json", _canonical_json(header))
-        _capture_mkdir(journal / "attempts")
-    attempts = journal / "attempts"
-    if attempts.is_symlink() or not attempts.is_dir():
-        raise ReleaseBundleError("capture attempt directory is missing or a symlink")
-    if {p.name for p in journal.iterdir()} != {"journal.json", "attempts"}:
-        raise ReleaseBundleError("capture journal has unexpected top-level files")
-    stage_by_name = {s.name: s for s in plan.stages}
+@dataclass(frozen=True)
+class _CaptureAttemptOutcome:
+    before: dict[str, str]
+    after: dict[str, str]
+    errors: tuple[str, ...]
+    timed_out: bool
+
+
+def _capture_read_history(
+    attempts: Path,
+    stage_by_name: dict[str, PublicationCaptureStage],
+    policy_digest: str,
+) -> tuple[dict[str, tuple[Path, dict[str, Any]]], int]:
+    """Validate every retained byte before offering accepted stages for reuse."""
     previous: dict[str, tuple[Path, dict[str, Any]]] = {}
     known_artifacts: dict[str, dict[str, Any]] = {}
     number = 0
@@ -964,6 +933,236 @@ def run_publication_capture(
                 )
             previous[stage_name] = (attempt, record)
             known_artifacts[attempt.name] = record
+    return previous, number
+
+
+def _capture_run_attempt(
+    plan: PublicationCapturePlan,
+    stage: PublicationCaptureStage,
+    attempt: Path,
+    artifact_attempt: Path,
+    *,
+    stage_deadline: float,
+    policy_digest: str,
+    mode: str,
+    candidate: tuple[Path, dict[str, Any]] | None,
+    environment: dict[str, str],
+    process_runner: _CaptureProcessRunner,
+) -> _CaptureAttemptOutcome:
+    """Execute and durably close one attempt under the caller's unchanged deadline."""
+    before: dict[str, str] = {}
+    after: dict[str, str] = {}
+    outputs: dict[str, str] = {}
+    prior: dict[str, str] = {}
+    errors: list[str] = []
+    stdout = b""
+    stderr = b""
+    returncode: int | None = None
+    check_returncode: int | None = None
+    timed_out = False
+
+    def execute(
+        command: tuple[str, ...],
+        *,
+        execution_deadline: float = stage_deadline,
+        current_attempt: Path = attempt,
+        current_artifact_attempt: Path = artifact_attempt,
+    ) -> subprocess.CompletedProcess[str]:
+        bound = execution_deadline - time.monotonic()
+        if bound <= 0:
+            raise subprocess.TimeoutExpired(list(command), 0)
+        arguments = [
+            str(current_attempt)
+            if a == "{attempt}"
+            else str(current_artifact_attempt)
+            if a == "{artifact_attempt}"
+            else a
+            for a in command
+        ]
+        return process_runner(
+            arguments, cwd=plan.project_root, env=environment, timeout=bound
+        )
+
+    try:
+        before = _capture_stage_snapshot(stage)
+        for index, name in enumerate(stage.outputs):
+            path = _capture_output_path(name, artifact_attempt)
+            if any(p.is_symlink() for p in (path, *path.parents)):
+                raise ReleaseBundleError(
+                    "capture producer destination traverses a symlink"
+                )
+            if path.exists():
+                data = _capture_regular_file(path)
+                prior[name] = sha256_bytes(data)
+                _capture_new_file(attempt / f"prior/{index:04d}.bin", data)
+        if mode == "capture":
+            completed = execute(stage.command)
+            returncode = completed.returncode
+            stdout += completed.stdout.encode()
+            stderr += completed.stderr.encode()
+            if returncode:
+                raise ReleaseBundleError(
+                    "capture producer returned a rejecting exit code"
+                )
+        completed = execute(stage.check_command)
+        check_returncode = completed.returncode
+        stdout += completed.stdout.encode()
+        stderr += completed.stderr.encode()
+        if check_returncode:
+            raise ReleaseBundleError(
+                "capture strict owner check rejected its artifacts"
+            )
+        for index, name in enumerate(stage.outputs):
+            data = _capture_regular_file(_capture_output_path(name, artifact_attempt))
+            outputs[name] = sha256_bytes(data)
+            _capture_new_file(attempt / f"artifacts/{index:04d}.bin", data)
+        after = _capture_stage_snapshot(stage)
+        if before != after:
+            raise ReleaseBundleError(
+                "capture inputs changed during execution or validation"
+            )
+        if any(
+            sha256_bytes(
+                _capture_regular_file(_capture_output_path(name, artifact_attempt))
+            )
+            != digest
+            for name, digest in outputs.items()
+        ):
+            raise ReleaseBundleError(
+                "capture artifacts changed while they were retained"
+            )
+        if mode == "reuse" and candidate and outputs != candidate[1]["outputs"]:
+            raise ReleaseBundleError(
+                "capture reuse check changed previously accepted artifacts"
+            )
+    except subprocess.TimeoutExpired as exc:
+        timed_out = True
+        stdout += (
+            exc.stdout if isinstance(exc.stdout, bytes) else (exc.stdout or "").encode()
+        )
+        stderr += (
+            exc.stderr if isinstance(exc.stderr, bytes) else (exc.stderr or "").encode()
+        )
+        errors.append("capture stage exceeded its finite deadline")
+    except (OSError, ValueError, TypeError) as exc:
+        errors.append(str(exc))
+    try:
+        after = _capture_stage_snapshot(stage)
+    except (OSError, ReleaseBundleError):
+        errors.append("capture inputs could not be rechecked after the attempt")
+    # Even a rejected producer may have emitted partial or unchanged
+    # artifacts. Preserve their actual bytes without granting approval.
+    for index, name in enumerate(stage.outputs):
+        if (
+            name not in outputs
+            and _capture_output_path(name, artifact_attempt).exists()
+        ):
+            try:
+                data = _capture_regular_file(
+                    _capture_output_path(name, artifact_attempt)
+                )
+                outputs[name] = sha256_bytes(data)
+                _capture_new_file(attempt / f"artifacts/{index:04d}.bin", data)
+            except (OSError, ReleaseBundleError) as exc:
+                errors.append(str(exc))
+    streams = {"stdout.log": stdout, "stderr.log": stderr}
+    for name, data in streams.items():
+        _capture_new_file(attempt / name, data)
+    expected_files = {
+        "intent.json",
+        *streams,
+        *(f"artifacts/{stage.outputs.index(name):04d}.bin" for name in outputs),
+        *(f"prior/{stage.outputs.index(name):04d}.bin" for name in prior),
+        *(
+            name.removeprefix("{attempt}/")
+            for name in stage.outputs
+            if name.startswith("{attempt}/")
+            and artifact_attempt == attempt
+            and name in outputs
+        ),
+    }
+    if {
+        p.relative_to(attempt).as_posix() for p in attempt.rglob("*") if p.is_file()
+    } != expected_files or any(p.is_symlink() for p in attempt.rglob("*")):
+        errors.append("capture attempt has unexpected files or symlinks")
+    record = {
+        "schema_version": 1,
+        "stage": stage.name,
+        "policy_sha256": policy_digest,
+        "mode": mode,
+        "artifact_attempt": artifact_attempt.name,
+        "accepted": not errors,
+        "inputs_before": before,
+        "inputs_after": after,
+        "outputs": outputs,
+        "prior_outputs": prior,
+        "streams": {name: sha256_bytes(data) for name, data in streams.items()},
+        "returncode": returncode,
+        "check_returncode": check_returncode,
+        "timed_out": timed_out,
+        "errors": errors,
+    }
+    _capture_new_file(attempt / "result.json", _canonical_json(record))
+    return _CaptureAttemptOutcome(before, after, tuple(errors), timed_out)
+
+
+def run_publication_capture(
+    plan: PublicationCapturePlan,
+    journal: Path,
+    *,
+    resume: bool = False,
+) -> PublicationCaptureResult:
+    """Execute or resume a fixed DAG with immutable, independently checked history.
+
+    Only this explicit action starts processes. Existing producers own their
+    declared project outputs; the manager writes only its chosen journal. A
+    rejected stage stops the DAG, while earlier accepted output copies remain.
+    Every reused stage runs its strict check again under the same finite bound.
+    """
+    from fep_lean.verification._subprocess import run_process_group
+
+    _capture_validate_plan(plan)
+    if os.name != "posix":
+        raise ReleaseBundleError(
+            "publication capture requires POSIX input custody and process supervision"
+        )
+    for stage in plan.stages:
+        _capture_check_rosters(stage)
+    journal = Path(journal).absolute()
+    if journal.resolve() != journal:
+        raise ReleaseBundleError("capture journal path must be canonical")
+    if any(p.is_symlink() for p in (journal, *journal.parents)):
+        raise ReleaseBundleError("capture journal must not traverse a symlink")
+    if journal.resolve().is_relative_to(Path(plan.project_root)):
+        raise ReleaseBundleError("capture journal must be outside the project root")
+    policy = plan.record()
+    policy_digest = sha256_bytes(_canonical_json(policy))
+    header = {
+        "schema_version": 1,
+        "kind": "publication-capture-journal",
+        "policy": policy,
+        "policy_sha256": policy_digest,
+    }
+    if resume:
+        retained_header = _capture_read_json(journal / "journal.json")
+        if (
+            type(retained_header.get("schema_version")) is not int
+            or retained_header != header
+        ):
+            raise ReleaseBundleError(
+                "capture resume policy differs from the retained journal"
+            )
+    else:
+        _capture_mkdir(journal, parents=True)
+        _capture_new_file(journal / "journal.json", _canonical_json(header))
+        _capture_mkdir(journal / "attempts")
+    attempts = journal / "attempts"
+    if attempts.is_symlink() or not attempts.is_dir():
+        raise ReleaseBundleError("capture attempt directory is missing or a symlink")
+    if {p.name for p in journal.iterdir()} != {"journal.json", "attempts"}:
+        raise ReleaseBundleError("capture journal has unexpected top-level files")
+    stage_by_name = {s.name: s for s in plan.stages}
+    previous, number = _capture_read_history(attempts, stage_by_name, policy_digest)
     deadline = time.monotonic() + plan.timeout_s
     accepted: list[str] = []
     reused: list[str] = []
@@ -1015,171 +1214,24 @@ def run_publication_capture(
                 if mode == "reuse" and candidate
                 else attempt
             )
-            before: dict[str, str] = {}
-            after: dict[str, str] = {}
-            outputs: dict[str, str] = {}
-            prior: dict[str, str] = {}
-            errors: list[str] = []
-            stdout = b""
-            stderr = b""
-            returncode: int | None = None
-            check_returncode: int | None = None
-            timed_out = False
-
-            def execute(
-                command: tuple[str, ...],
-                *,
-                execution_deadline: float = stage_deadline,
-                current_attempt: Path = attempt,
-                current_artifact_attempt: Path = artifact_attempt,
-            ) -> subprocess.CompletedProcess[str]:
-                bound = execution_deadline - time.monotonic()
-                if bound <= 0:
-                    raise subprocess.TimeoutExpired(list(command), 0)
-                arguments = [
-                    str(current_attempt)
-                    if a == "{attempt}"
-                    else str(current_artifact_attempt)
-                    if a == "{artifact_attempt}"
-                    else a
-                    for a in command
-                ]
-                return run_process_group(
-                    arguments, cwd=plan.project_root, env=environment, timeout=bound
-                )
-
-            try:
-                before = _capture_stage_snapshot(stage)
-                for index, name in enumerate(stage.outputs):
-                    path = _capture_output_path(name, artifact_attempt)
-                    if any(p.is_symlink() for p in (path, *path.parents)):
-                        raise ReleaseBundleError(
-                            "capture producer destination traverses a symlink"
-                        )
-                    if path.exists():
-                        data = _capture_regular_file(path)
-                        prior[name] = sha256_bytes(data)
-                        _capture_new_file(attempt / f"prior/{index:04d}.bin", data)
-                if mode == "capture":
-                    completed = execute(stage.command)
-                    returncode = completed.returncode
-                    stdout += completed.stdout.encode()
-                    stderr += completed.stderr.encode()
-                    if returncode:
-                        raise ReleaseBundleError(
-                            "capture producer returned a rejecting exit code"
-                        )
-                completed = execute(stage.check_command)
-                check_returncode = completed.returncode
-                stdout += completed.stdout.encode()
-                stderr += completed.stderr.encode()
-                if check_returncode:
-                    raise ReleaseBundleError(
-                        "capture strict owner check rejected its artifacts"
-                    )
-                for index, name in enumerate(stage.outputs):
-                    data = _capture_regular_file(
-                        _capture_output_path(name, artifact_attempt)
-                    )
-                    outputs[name] = sha256_bytes(data)
-                    _capture_new_file(attempt / f"artifacts/{index:04d}.bin", data)
-                after = _capture_stage_snapshot(stage)
-                if before != after:
-                    raise ReleaseBundleError(
-                        "capture inputs changed during execution or validation"
-                    )
-                if any(
-                    sha256_bytes(
-                        _capture_regular_file(
-                            _capture_output_path(name, artifact_attempt)
-                        )
-                    )
-                    != digest
-                    for name, digest in outputs.items()
-                ):
-                    raise ReleaseBundleError(
-                        "capture artifacts changed while they were retained"
-                    )
-                if mode == "reuse" and candidate and outputs != candidate[1]["outputs"]:
-                    raise ReleaseBundleError(
-                        "capture reuse check changed previously accepted artifacts"
-                    )
-            except subprocess.TimeoutExpired as exc:
-                timed_out = True
-                stdout += (
-                    exc.stdout
-                    if isinstance(exc.stdout, bytes)
-                    else (exc.stdout or "").encode()
-                )
-                stderr += (
-                    exc.stderr
-                    if isinstance(exc.stderr, bytes)
-                    else (exc.stderr or "").encode()
-                )
-                errors.append("capture stage exceeded its finite deadline")
-            except (OSError, ValueError, TypeError) as exc:
-                errors.append(str(exc))
-            try:
-                after = _capture_stage_snapshot(stage)
-            except (OSError, ReleaseBundleError):
-                errors.append("capture inputs could not be rechecked after the attempt")
-            # Even a rejected producer may have emitted partial or unchanged
-            # artifacts. Preserve their actual bytes without granting approval.
-            for index, name in enumerate(stage.outputs):
+            outcome = _capture_run_attempt(
+                plan,
+                stage,
+                attempt,
+                artifact_attempt,
+                stage_deadline=stage_deadline,
+                policy_digest=policy_digest,
+                mode=mode,
+                candidate=candidate,
+                environment=environment,
+                process_runner=run_process_group,
+            )
+            if outcome.errors:
                 if (
-                    name not in outputs
-                    and _capture_output_path(name, artifact_attempt).exists()
+                    mode == "reuse"
+                    and outcome.before == outcome.after
+                    and not outcome.timed_out
                 ):
-                    try:
-                        data = _capture_regular_file(
-                            _capture_output_path(name, artifact_attempt)
-                        )
-                        outputs[name] = sha256_bytes(data)
-                        _capture_new_file(attempt / f"artifacts/{index:04d}.bin", data)
-                    except (OSError, ReleaseBundleError) as exc:
-                        errors.append(str(exc))
-            streams = {"stdout.log": stdout, "stderr.log": stderr}
-            for name, data in streams.items():
-                _capture_new_file(attempt / name, data)
-            expected_files = {
-                "intent.json",
-                *streams,
-                *(f"artifacts/{stage.outputs.index(name):04d}.bin" for name in outputs),
-                *(f"prior/{stage.outputs.index(name):04d}.bin" for name in prior),
-                *(
-                    name.removeprefix("{attempt}/")
-                    for name in stage.outputs
-                    if name.startswith("{attempt}/")
-                    and artifact_attempt == attempt
-                    and name in outputs
-                ),
-            }
-            if {
-                p.relative_to(attempt).as_posix()
-                for p in attempt.rglob("*")
-                if p.is_file()
-            } != expected_files or any(p.is_symlink() for p in attempt.rglob("*")):
-                errors.append("capture attempt has unexpected files or symlinks")
-            record = {
-                "schema_version": 1,
-                "stage": stage.name,
-                "policy_sha256": policy_digest,
-                "mode": mode,
-                "artifact_attempt": artifact_attempt.name,
-                "accepted": not errors,
-                "inputs_before": before,
-                "inputs_after": after,
-                "outputs": outputs,
-                "prior_outputs": prior,
-                "streams": {name: sha256_bytes(data) for name, data in streams.items()},
-                "returncode": returncode,
-                "check_returncode": check_returncode,
-                "timed_out": timed_out,
-                "errors": errors,
-            }
-            _capture_new_file(attempt / "result.json", _canonical_json(record))
-            if errors:
-                if mode == "reuse" and before == after and not timed_out:
                     continue
                 return PublicationCaptureResult(
                     False,
@@ -1187,7 +1239,7 @@ def run_publication_capture(
                     tuple(accepted),
                     tuple(reused),
                     stage.name,
-                    tuple(errors),
+                    tuple(outcome.errors),
                 )
             accepted.append(stage.name)
             if mode == "reuse":
@@ -1215,6 +1267,42 @@ _PUBLICATION_CAPTURE_WORKER = (
 )
 
 
+def _capture_render_outputs(root: Path) -> tuple[str, ...]:
+    """Enumerate the existing render owner's declared publication outputs."""
+    from fep_lean.output.release_bundle._constants import (
+        PUBLICATION_HTML,
+        RENDERER_PROVENANCE,
+    )
+    from fep_lean.output.rendering import (
+        _RENDER_METADATA_FILES,
+        MANUSCRIPT_ASSETS,
+        manuscript_source_files,
+    )
+
+    def paths(*names: str) -> tuple[str, ...]:
+        return tuple(str(root / name) for name in names)
+
+    return paths(
+        "docs/render-acceptance.json",
+        "output/pdf/fep_lean_combined.pdf",
+        "output/pdf/_combined_manuscript.log",
+        "output/pdf/_latex_stdout.log",
+        "output/pdf/_combined_manuscript.tex",
+        PUBLICATION_HTML.as_posix(),
+        RENDERER_PROVENANCE.as_posix(),
+        "output/manuscript/assets/graphical-abstract.png",
+        *(f"output/manuscript/{name}" for name in _RENDER_METADATA_FILES),
+        *(
+            f"output/manuscript/{destination.as_posix()}"
+            for _source, destination in MANUSCRIPT_ASSETS.values()
+        ),
+        *(
+            f"output/manuscript/{p.name}"
+            for p in manuscript_source_files(root / "manuscript")
+        ),
+    )
+
+
 def plan_publication_capture(
     project_root: Path,
     *,
@@ -1238,13 +1326,9 @@ def plan_publication_capture(
     from fep_lean.output.release_bundle._constants import (
         _MANUSCRIPT_FIGURE_REFERENCES,
         _REQUIRED_STATIC_MEMBERS,
-        PUBLICATION_HTML,
-        RENDERER_PROVENANCE,
     )
     from fep_lean.output.rendering import (
-        _RENDER_METADATA_FILES,
         MANUSCRIPT_ASSETS,
-        manuscript_source_files,
     )
 
     root = Path(project_root).resolve()
@@ -1315,25 +1399,7 @@ def plan_publication_capture(
         f"manuscript/{UNIFIED_FORMALISM_CATALOGUE_FILENAME}",
     )
     citation = paths("CITATION.cff")
-    render = paths(
-        "docs/render-acceptance.json",
-        "output/pdf/fep_lean_combined.pdf",
-        "output/pdf/_combined_manuscript.log",
-        "output/pdf/_latex_stdout.log",
-        "output/pdf/_combined_manuscript.tex",
-        PUBLICATION_HTML.as_posix(),
-        RENDERER_PROVENANCE.as_posix(),
-        "output/manuscript/assets/graphical-abstract.png",
-        *(f"output/manuscript/{name}" for name in _RENDER_METADATA_FILES),
-        *(
-            f"output/manuscript/{destination.as_posix()}"
-            for _source, destination in MANUSCRIPT_ASSETS.values()
-        ),
-        *(
-            f"output/manuscript/{p.name}"
-            for p in manuscript_source_files(root / "manuscript")
-        ),
-    )
+    render = _capture_render_outputs(root)
     numerical = paths("output/numerical-witnesses.json")
     browser = paths(BROWSER_RECEIPT.as_posix(), *CANONICAL_BROWSER_SCREENSHOTS.values())
     projections = paths(

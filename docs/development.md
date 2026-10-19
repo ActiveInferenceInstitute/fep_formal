@@ -360,6 +360,8 @@ process. Equivalent Windows file custody and descendant supervision need a
 separate implementation and runtime acceptance.
 
 Exit 0 reports completed local capture. It performs no publication, hosted CI
-or provider action. `status` remains a separate process-free inspection. The
+or provider action. The [operator support table](cli-reference.md#operator-support-and-exit-contracts)
+compares inspection, compiler and capture contracts. `status` remains a separate
+process-free inspection. The
 custom Python capture API records its declared checks and does not establish
 the strict production evidence contract merely from zero process exits.

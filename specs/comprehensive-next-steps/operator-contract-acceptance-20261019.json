@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "package": "O01",
+  "issue": 62,
+  "status": "accepted_bounded_operator_documentation_component",
+  "authored_contract_commit": "9f249f9945b990936dadcd74b1c012c3562ff0d6",
+  "qualified_runtime_commit": "da68c49d1dca6c69ef04836e2e72181d2330f6ef",
+  "canonical_contract": "docs/cli-reference.md",
+  "contract_files_sha256": {
+    "docs/cli-reference.md": "d7729999110ad62f13bed05ab91ed11573ceae423c36283fc02c4beb27a841e0",
+    "docs/api.md": "bec40b0e068df9e762eac967ba086063806bb29d2625fdc16bdcf30427556e5e",
+    "docs/development.md": "7b16e566ec717be11951c1afa64e52a4624c667c9dbf36e2007eabda6bcce439"
+  },
+  "review": {
+    "kind": "independent operator/source review",
+    "record_sha256": "7b32486d3778fb072dd28e5ddce91d659faeb1499ddd4ed3ccf77391cd589ca9",
+    "patch_sha256": "3c178ba1c4328d70ade74031addf0353590a9aee3e27dcc5481de8e318a42b04",
+    "must_fix_findings": 0
+  },
+  "execution": {
+    "installed_help_commands": 6,
+    "actual_help_probe_sha256": "1b524692819bae70f0b9e32499490e17608aac80ae1cba8f3cf730283471ce35",
+    "complete_local_python_passed": 3134,
+    "complete_local_python_skipped": 6,
+    "required_check_inventory_tests_passed": 28,
+    "strict_links_files": 176,
+    "strict_hygiene_files": 176,
+    "xref_anchors": 1346,
+    "xref_references": 104,
+    "documentation_check_receipt_sha256": "f4ee5f9fa12f35afc8f0af427afd9b688def4ff113b205f26064e4632f737b1b",
+    "documentation_checks": [
+      {
+        "name": "inventory",
+        "returncode": 0,
+        "log_sha256": "2f95e4fc9505fd42e61e50aafcf1f9194b9e272c72c236c9b12fb72278c7224a"
+      },
+      {
+        "name": "links",
+        "returncode": 0,
+        "log_sha256": "bd9cbe0f624674bc6d246f1acb75b7983fdc170206e62de33ca0d74341bf4cdc"
+      },
+      {
+        "name": "hygiene",
+        "returncode": 0,
+        "log_sha256": "2f9568e05bb105af800162a6f077639edc88ac52507134ed640258b88807e2b9"
+      },
+      {
+        "name": "xrefs",
+        "returncode": 0,
+        "log_sha256": "7cde092e2969280a6be191368c3224e25a06188cb958e0b0b12603e9115cb4f5"
+      }
+    ],
+    "inventory_junit_sha256": "981b20e4cef3c831ea894b31433f8fea8221e2d0122d14d4bdf685bb68ff8cf2"
+  },
+  "dependency_resolution": {
+    "C04": "Accepted local installed-runtime/status prerequisite remains unchanged.",
+    "C05": "Operator-table source/help and complete local software checks are satisfied; final source-bound publication remains a separate gate. This does not close broader current-evidence or production-capture obligations."
+  },
+  "boundary": [
+    "Documentation only; no runtime or validator policy changed.",
+    "Status remains process-free and does not acquire dependencies/providers or repair receipts.",
+    "Omitted sibling GNN comparison remains explicitly unverified; POSIX capture execution and exit-zero report composition remain distinct.",
+    "Final fifteen-cell head/main publication required before Issue62 closure."
+  ]
+}

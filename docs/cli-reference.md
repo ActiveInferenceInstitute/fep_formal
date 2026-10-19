@@ -99,6 +99,30 @@ returns non-zero. `status` and `custody census` instead exit 0 when their report
 composes, even when it reports stale or gated evidence. Inspect the structured
 findings rather than treating those exit codes as acceptance.
 
+## Operator support and exit contracts
+
+Every row requires a complete source checkout selected by `--project-root` or
+normal checkout discovery. A missing or incomplete checkout fails before the
+operation runs. Installed help remains available outside a checkout.
+
+| Operation | Required inputs | Mutation and processes | Supported runtime | Exit meaning and next action |
+| --- | --- | --- | --- | --- |
+| `status` | Checkout and existing evidence; optional `--gnn-root PATH` | Reads existing inputs; no dependency acquisition, test collection, compiler or provider process, or evidence repair | Static inspection on supported Python platforms | 0 means the report composed, including missing/stale/unverified sections. Inspect each finding and explicitly run its owning operation after reviewing the inputs. Omitting GNN leaves that side unverified; pin presence alone never compares an omitted checkout. |
+| `preflight` | Checkout plus full-mode tool/settings configuration | Read-only capability inspection, including bounded executable availability/version probes; no build, database creation, report or provider request | Platforms supported by the configured tools | 0 means capability checks report `ok`; 1 means a capability failed. Inspect its reason; use explicit `setup` only when acquisition is intended. Preflight success is no topic verification. |
+| `verify` | Checkout and built pinned Lean/Mathlib workspace; optional topic/area filters | Starts native Lean compilation with temporary probe files; `--receipt PATH` writes the requested receipt. No Hermes or OpenGauss | Platforms supported by the pinned Lean workspace | 0 means every selected body passed the requested policy. Use `--fail-on-warnings` for publication and independently validate the receipt; a filtered run does not establish the full sealed roster. |
+| `bridge status`, `bridge emit --check`, `bridge verify-certificate` | Explicit `--gnn-root PATH`, current source bindings and the verb's identified document/result/receipt inputs | Read-only source/projection or certificate comparison; no model, compiler or emitting subprocess | Static inspection with the named checkout's Python dependencies | 0 means the named check passed; stale/malformed custody or failed comparison returns nonzero. Review changed owners before any explicit re-pin. Numerical certificate agreement does not prove generated-runner execution. |
+| `bridge verify-document` | Explicit GNN checkout, `--document PATH` and built Lean workspace | Imports the named extraction route and starts a temporary native Lean probe; writes a receipt only when requested | Named GNN/Python and pinned Lean runtime | 0 means the requested syntax/well-formedness check passed. Use `--fail-on-warnings` for strict checking; this does not prove denotation, scientific validity or runner execution. |
+| `publication-capture --plan` | Checkout and explicit `--template PATH` | Prints the fixed policy without journal creation or subprocess execution | Static planning on supported Python platforms | 0 means the plan composed. Review its inputs and budgets before choosing execution; a plan is no completed capture. |
+| `publication-capture` execution or `--resume` | Reviewed plan inputs plus `--journal PATH`; exact declared template/toolchain/source inputs | Writes the owned journal and stage artifacts, and runs bounded local subprocesses. Resume revalidates custody before reuse | POSIX file custody and process supervision; Windows execution refuses before journal/process creation | 0 means the local capture completed. On failure inspect retained diagnostics and invalidation reasons. Completion supplies no hosted CI, publication, provider or scientific approval. |
+
+Argparse usage errors return 2; operation refusals/failures return nonzero
+rather than an accepted result. Read-only describes persistent artifact
+mutation separately from subprocess activity: preflight probes and document
+verification have the process behavior stated above. The
+[capture runbook](development.md#bounded-publication-capture) owns execution
+budgets and support boundaries; [evidence receipts](api.md#evidence-receipts)
+owns claim readiness.
+
 ## Custody and publication orchestration
 
 `custody census` inspects existing evidence; `custody apply` requires an

@@ -62,7 +62,7 @@ Lean 4 proofs are written using **tactics**—commands that transform proof goal
 | Tactic | What it does | FEP usage |
 |--------|-------------|-----------|
 | `exact h` | Close goal exactly with term `h` | Apply `measure_union_le`, `measure_mono` directly |
-| `rw [h]` | Rewrite goal using equation `h` | Substitute `IsProbabilityMeasure.measure_univ` |
+| `rw [h]` | Rewrite goal using equation `h` | Use probability normalization |
 | `apply f` | Apply function/lemma `f`, leaving subgoals | Apply `Real.exp_le_exp.mpr` for Gibbs monotonicity |
 | `simp [h]` | Simplify using `h` and simp lemmas | Reduce `Finset.sum_div`, `Finset.card_range` |
 | `intro x` | Introduce $\forall$/implication hypothesis into context | Start proofs of `∀ x, P x` or `P → Q` goals |
@@ -76,6 +76,8 @@ Lean 4 proofs are written using **tactics**—commands that transform proof goal
 | `calc` | Chain transitivity steps | $a \leq b \leq c$ derivations in energy bounds |
 | `sorry` | Admit goal without proof | Mark aspirational proof steps (compile flag) |
 : Lean 4 tactics used in the catalogue bodies, with the goal transformation each performs and where it appears in the FEP formalizations.
+
+The probability-normalization rewrite above uses the exact declaration `IsProbabilityMeasure.measure_univ`. Its probability-measure assumption is carried by the `IsProbabilityMeasure` instance.
 
 The catalogue's {{total_topics}} Lean bodies collectively exercise the major tactic families enumerated above. `exact`, `simp`, `rw`, `linarith`, `positivity`, and `have` dominate by frequency, while `nlinarith`, `ring`, `norm_num`, `intro`, `constructor`, and `calc` appear in specific topic families — for example, `calc` anchors fep-021's energy-bound derivation, and `constructor` structures fep-028's softmax lemma. The exhaustiveness claim is intentionally conservative: a small handful of niche tactics (e.g. `omega` and `decide`) are used opportunistically rather than uniformly.
 

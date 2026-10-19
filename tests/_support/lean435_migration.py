@@ -312,6 +312,31 @@ def _recorded_pyproject_release(data: bytes) -> bytes:
     return data.replace(present[0], recorded, 1)
 
 
+def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
+    """Reverse the exact reviewed P06 lint policy for historical controls only.
+
+    Authenticate the complete release-normalized profile first. Unknown
+    changes survive unchanged so the historical metadata gate still refuses
+    them before parsing or decoding any companion.
+    """
+    if live.count(_UV_REQUIREMENT) != 1:
+        return live
+    normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
+    if hashlib.sha256(normalized).hexdigest() != (
+        "08901ea1eb52a26b19067d292be8169591d16ad16b0112bbaccc2c4cf36353ab"
+    ):
+        return live
+    rule = b'    "PLR0915", # statement complexity; source-line spans have a separate ratchet\n'
+    policy = b'\n# A statement is not a source line. Keep a 100-statement ceiling for active\n# Python and separately enforce the issue\'s 200-line limit in the seven\n# refactored owners. Existing exceptions below are bounded by function name\n# and statement count in test_check_inventory.py; new or larger exceptions fail.\n[tool.ruff.lint.pylint]\nmax-statements = 100\n\n[tool.ruff.lint.per-file-ignores]\n"specs/h3-reference-study/bundle_study.py" = ["PLR0915"]\n"specs/h3-reference-study/export_native.py" = ["PLR0915"]\n"src/fep_lean/catalogue/latex.py" = ["PLR0915"]\n"src/fep_lean/output/evidence.py" = ["PLR0915"]\n"src/fep_lean/output/release_bundle/_acceptance.py" = ["PLR0915"]\n"src/fep_lean/output/release_bundle/_identity.py" = ["PLR0915"]\n"src/fep_lean/output/reporter.py" = ["PLR0915"]\n"src/fep_lean/verification/_subprocess.py" = ["PLR0915"]\n"src/fep_lean/verification/formalism_audit.py" = ["PLR0915"]\n"tests/test_distribution.py" = ["PLR0915"]\n"tests/test_distribution_supplemental.py" = ["PLR0915"]\n"tests/test_h3_reference_study.py" = ["PLR0915"]\n"tests/test_h3_study_bundle.py" = ["PLR0915"]\n'
+    assert live.count(rule) == 1 and live.count(policy) == 1
+    predecessor = live.replace(rule, b"", 1).replace(policy, b"", 1)
+    restored = _recorded_pyproject_release(predecessor.replace(_UV_REQUIREMENT, b"", 1))
+    assert hashlib.sha256(restored).hexdigest() == (
+        "bb9aec5b3afcdb31a0aea57cc220a178bb20824d633e5ac9e5f69fc2c296dc9a"
+    )
+    return predecessor
+
+
 def bridge_dev_metadata_predecessor(live: bytes) -> bytes:
     """Reverse only the exact reviewed safe-XML dev dependency addition.
 
@@ -319,6 +344,7 @@ def bridge_dev_metadata_predecessor(live: bytes) -> bytes:
     metadata changes survive and fail the unchanged historical profile gate;
     neither archives nor production validators are changed.
     """
+    live = function_ratchet_metadata_predecessor(live)
     if live.count(_UV_REQUIREMENT) != 1:
         return live
     normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))

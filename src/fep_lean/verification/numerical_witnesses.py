@@ -1354,7 +1354,45 @@ def _two_state_master_equation() -> NumericalWitness:
     )
 
 
-def _standalone_efe_carrier() -> NumericalWitness:
+@dataclass(frozen=True)
+class _EfePlanningData:
+    actual: tuple[float, ...]
+    affinity_bound: float
+    backward: float
+    belief_true: float
+    chain_residual: float
+    control_floor: float
+    cost: tuple[float, ...]
+    duality_residual: float
+    envelope_violation: float
+    floor_residual: float
+    forward: float
+    gap_posterior: float
+    gap_residual: float
+    gap_total: float
+    initial_gap: float
+    initial_gap_form: float
+    partition: float
+    posterior_minimal: bool
+    precision: float
+    prior: tuple[float, ...]
+    production_rate: float
+    production_violation: float
+    reference: tuple[float, ...]
+    rows: list[WitnessRow]
+
+
+@dataclass(frozen=True)
+class _EfeSplitData:
+    fep166_canonical_split: bool
+    fep166_circ_01: Fraction
+    fep166_circ_10: Fraction
+    fep166_law: tuple[Fraction, ...]
+    fep166_reversible: bool
+    fep166_unique: bool
+
+
+def _efe_planning_data() -> _EfePlanningData:
     """Evaluate the exact EFE floor, perception chain rule, and affinity bound."""
 
     def binary_kl(left: tuple[float, ...], right: tuple[float, ...]) -> float:
@@ -1464,6 +1502,35 @@ def _standalone_efe_carrier() -> NumericalWitness:
             WitnessRow((time, rho, evolved_true, gain, envelope, affinity_bound))
         )
 
+    return _EfePlanningData(
+        actual=actual,
+        affinity_bound=affinity_bound,
+        backward=backward,
+        belief_true=belief_true,
+        chain_residual=chain_residual,
+        control_floor=control_floor,
+        cost=cost,
+        duality_residual=duality_residual,
+        envelope_violation=envelope_violation,
+        floor_residual=floor_residual,
+        forward=forward,
+        gap_posterior=gap_posterior,
+        gap_residual=gap_residual,
+        gap_total=gap_total,
+        initial_gap=initial_gap,
+        initial_gap_form=initial_gap_form,
+        partition=partition,
+        posterior_minimal=posterior_minimal,
+        precision=precision,
+        prior=prior,
+        production_rate=production_rate,
+        production_violation=production_violation,
+        reference=reference,
+        rows=rows,
+    )
+
+
+def _efe_split_data() -> _EfeSplitData:
     # Law-weighted split on the t-0060 oracle datum (fep-166):
     # W = [[1, 5/2], [3/4, -1]], p = (1/3, 2/3); the canonical split is
     # S = [[1, 2], [1, -1]], A = [[0, 1/2], [-1/4, 0]].  All arithmetic is
@@ -1554,6 +1621,20 @@ def _standalone_efe_carrier() -> NumericalWitness:
         for j in range(2)
     )
 
+    return _EfeSplitData(
+        fep166_canonical_split=fep166_canonical_split,
+        fep166_circ_01=fep166_circ_01,
+        fep166_circ_10=fep166_circ_10,
+        fep166_law=fep166_law,
+        fep166_reversible=fep166_reversible,
+        fep166_unique=fep166_unique,
+    )
+
+
+def _standalone_efe_carrier() -> NumericalWitness:
+    """Evaluate the exact EFE floor, perception chain rule, and affinity bound."""
+    planning = _efe_planning_data()
+    split = _efe_split_data()
     return NumericalWitness(
         id="boltzmann-efe-affinity-gap",
         family="standalone-efe-formalizations",
@@ -1598,21 +1679,21 @@ def _standalone_efe_carrier() -> NumericalWitness:
             "-1/4 is genuinely nonzero and strictly negative"
         ),
         parameters=(
-            ("prior_true", prior[1]),
-            ("precision", precision),
-            ("cost_true", cost[1]),
-            ("control_partition", partition),
-            ("control_floor", control_floor),
-            ("actual_true", actual[1]),
-            ("reference_true", reference[1]),
-            ("forward_rate", forward),
-            ("backward_rate", backward),
-            ("belief_true", belief_true),
-            ("production_rate", production_rate),
-            ("fep166_law_0", float(fep166_law[0])),
-            ("fep166_law_1", float(fep166_law[1])),
-            ("fep166_circulation_01", float(fep166_circ_01)),
-            ("fep166_circulation_10", float(fep166_circ_10)),
+            ("prior_true", planning.prior[1]),
+            ("precision", planning.precision),
+            ("cost_true", planning.cost[1]),
+            ("control_partition", planning.partition),
+            ("control_floor", planning.control_floor),
+            ("actual_true", planning.actual[1]),
+            ("reference_true", planning.reference[1]),
+            ("forward_rate", planning.forward),
+            ("backward_rate", planning.backward),
+            ("belief_true", planning.belief_true),
+            ("production_rate", planning.production_rate),
+            ("fep166_law_0", float(split.fep166_law[0])),
+            ("fep166_law_1", float(split.fep166_law[1])),
+            ("fep166_circulation_01", float(split.fep166_circ_01)),
+            ("fep166_circulation_10", float(split.fep166_circ_10)),
         ),
         columns=_columns(
             ("time", "Time"),
@@ -1622,51 +1703,87 @@ def _standalone_efe_carrier() -> NumericalWitness:
             ("squared_relaxation_bound", "Squared relaxation envelope"),
             ("affinity_bound", "Affinity production bound"),
         ),
-        rows=tuple(rows),
+        rows=tuple(planning.rows),
         checks=(
-            NumericalCheck("control-floor-identity", "eq", floor_residual, 0.0, 1e-12),
-            NumericalCheck("control-gap-identity", "eq", gap_residual, 0.0, 1e-12),
-            NumericalCheck("donsker-varadhan-gap", "eq", duality_residual, 0.0, 1e-12),
+            NumericalCheck(
+                "control-floor-identity", "eq", planning.floor_residual, 0.0, 1e-12
+            ),
+            NumericalCheck(
+                "control-gap-identity", "eq", planning.gap_residual, 0.0, 1e-12
+            ),
+            NumericalCheck(
+                "donsker-varadhan-gap", "eq", planning.duality_residual, 0.0, 1e-12
+            ),
             NumericalCheck(
                 "control-posterior-minimality",
                 "predicate",
-                posterior_minimal,
+                planning.posterior_minimal,
                 True,
                 0.0,
             ),
-            NumericalCheck("perception-chain-rule", "eq", chain_residual, 0.0, 1e-12),
             NumericalCheck(
-                "perception-nonincrease", "le", gap_posterior, gap_total, 1e-12
+                "perception-chain-rule", "eq", planning.chain_residual, 0.0, 1e-12
             ),
             NumericalCheck(
-                "affinity-production-bound", "le", production_violation, 0.0, 1e-12
+                "perception-nonincrease",
+                "le",
+                planning.gap_posterior,
+                planning.gap_total,
+                1e-12,
             ),
             NumericalCheck(
-                "squared-relaxation-envelope", "le", envelope_violation, 0.0, 1e-12
+                "affinity-production-bound",
+                "le",
+                planning.production_violation,
+                0.0,
+                1e-12,
+            ),
+            NumericalCheck(
+                "squared-relaxation-envelope",
+                "le",
+                planning.envelope_violation,
+                0.0,
+                1e-12,
             ),
             NumericalCheck(
                 "production-rate-nonnegative",
                 "predicate",
-                production_rate >= 0.0,
+                planning.production_rate >= 0.0,
                 True,
                 0.0,
             ),
             NumericalCheck(
-                "fep166-canonical-split", "predicate", fep166_canonical_split, True, 0.0
+                "fep166-canonical-split",
+                "predicate",
+                split.fep166_canonical_split,
+                True,
+                0.0,
             ),
             NumericalCheck(
-                "fep166-competing-pair-unique", "predicate", fep166_unique, True, 0.0
+                "fep166-competing-pair-unique",
+                "predicate",
+                split.fep166_unique,
+                True,
+                0.0,
             ),
             NumericalCheck(
-                "fep166-reversible-boundary", "predicate", fep166_reversible, True, 0.0
+                "fep166-reversible-boundary",
+                "predicate",
+                split.fep166_reversible,
+                True,
+                0.0,
             ),
             NumericalCheck(
-                "fep166-circulation-nonzero", "eq", float(fep166_circ_01), 0.5, 1e-12
+                "fep166-circulation-nonzero",
+                "eq",
+                float(split.fep166_circ_01),
+                0.5,
+                1e-12,
             ),
             NumericalCheck(
                 "fep166-circulation-negative-reverse",
                 "eq",
-                float(fep166_circ_10),
+                float(split.fep166_circ_10),
                 -0.25,
                 1e-12,
             ),
@@ -1680,14 +1797,20 @@ def _standalone_efe_carrier() -> NumericalWitness:
             "datum W_rev = [[1, 4], [2, 3]] carries the split (W, 0)."
         ),
         boundary_observed=(
-            abs(float(rows[0].values[3]) - initial_gap) <= 1e-12
-            and abs(initial_gap_form - initial_gap - 0.04608232195203506) <= 1e-15
-            and abs(affinity_bound - initial_gap - 0.07203494405931334) <= 1e-15
-            and fep166_canonical_split
-            and fep166_unique
-            and fep166_reversible
-            and fep166_circ_01 == Fraction(1, 2)
-            and fep166_circ_10 == Fraction(-1, 4)
+            abs(float(planning.rows[0].values[3]) - planning.initial_gap) <= 1e-12
+            and abs(
+                planning.initial_gap_form - planning.initial_gap - 0.04608232195203506
+            )
+            <= 1e-15
+            and abs(
+                planning.affinity_bound - planning.initial_gap - 0.07203494405931334
+            )
+            <= 1e-15
+            and split.fep166_canonical_split
+            and split.fep166_unique
+            and split.fep166_reversible
+            and split.fep166_circ_01 == Fraction(1, 2)
+            and split.fep166_circ_10 == Fraction(-1, 4)
         ),
         plot=WitnessPlot(
             "line",
@@ -1698,7 +1821,34 @@ def _standalone_efe_carrier() -> NumericalWitness:
     )
 
 
-def _geometric_solenoidal() -> NumericalWitness:
+@dataclass(frozen=True)
+class _GeometricSolenoidalData:
+    current_divergence: tuple[float, ...]
+    current_matches: bool
+    div_q: tuple[float, ...]
+    div_q_matches: bool
+    drop_fails: bool
+    fep167_minimality_violation: float
+    fep167_projection_unique: bool
+    fep167_pythagoras_residual: float
+    fep167_residual_sq: float
+    fep168_aligned_gap: float
+    fep168_aligned_nonzero: bool
+    fep168_cs_violation: float
+    fep168_identity_residual: float
+    fep168_remainder_g_gap: float
+    quadratic_residual: float
+    remainder_value: float
+    skew_q: bool
+    sym_h: bool
+    symmetrize_identity: bool
+    trace_residual: float
+    witness_current: tuple[float, ...]
+    witness_g: tuple[float, ...]
+    witness_q: tuple[tuple[float, ...], ...]
+
+
+def _geometric_solenoidal_data() -> _GeometricSolenoidalData:
     """Evaluate the skew cancellations, expansion remainder, and witness current."""
 
     # Plain-matrix helpers mirroring the Lean carrier definitions.
@@ -1843,6 +1993,36 @@ def _geometric_solenoidal() -> NumericalWitness:
         - dot(fep168_r, remainder_g) ** 2
     )
 
+    return _GeometricSolenoidalData(
+        current_divergence=current_divergence,
+        current_matches=current_matches,
+        div_q=div_q,
+        div_q_matches=div_q_matches,
+        drop_fails=drop_fails,
+        fep167_minimality_violation=fep167_minimality_violation,
+        fep167_projection_unique=fep167_projection_unique,
+        fep167_pythagoras_residual=fep167_pythagoras_residual,
+        fep167_residual_sq=fep167_residual_sq,
+        fep168_aligned_gap=fep168_aligned_gap,
+        fep168_aligned_nonzero=fep168_aligned_nonzero,
+        fep168_cs_violation=fep168_cs_violation,
+        fep168_identity_residual=fep168_identity_residual,
+        fep168_remainder_g_gap=fep168_remainder_g_gap,
+        quadratic_residual=quadratic_residual,
+        remainder_value=remainder_value,
+        skew_q=skew_q,
+        sym_h=sym_h,
+        symmetrize_identity=symmetrize_identity,
+        trace_residual=trace_residual,
+        witness_current=witness_current,
+        witness_g=witness_g,
+        witness_q=witness_q,
+    )
+
+
+def _geometric_solenoidal() -> NumericalWitness:
+    """Evaluate the skew cancellations, expansion remainder, and witness current."""
+    data = _geometric_solenoidal_data()
     return NumericalWitness(
         id="geometric-solenoidal-drop",
         family="geometric-mechanics-notation",
@@ -1884,16 +2064,16 @@ def _geometric_solenoidal() -> NumericalWitness:
             "remainderG datum"
         ),
         parameters=(
-            ("witness_q_01", witness_q[0][1]),
-            ("witness_q_10", witness_q[1][0]),
-            ("witness_g_0", witness_g[0]),
-            ("trace_residual", trace_residual),
-            ("quadratic_residual", quadratic_residual),
-            ("remainder_value", remainder_value),
-            ("node0_divergence", current_divergence[0]),
-            ("fep167_residual_sq", fep167_residual_sq),
-            ("fep168_aligned_gap", fep168_aligned_gap),
-            ("fep168_remainderG_gap", fep168_remainder_g_gap),
+            ("witness_q_01", data.witness_q[0][1]),
+            ("witness_q_10", data.witness_q[1][0]),
+            ("witness_g_0", data.witness_g[0]),
+            ("trace_residual", data.trace_residual),
+            ("quadratic_residual", data.quadratic_residual),
+            ("remainder_value", data.remainder_value),
+            ("node0_divergence", data.current_divergence[0]),
+            ("fep167_residual_sq", data.fep167_residual_sq),
+            ("fep168_aligned_gap", data.fep168_aligned_gap),
+            ("fep168_remainderG_gap", data.fep168_remainder_g_gap),
         ),
         columns=_columns(
             ("node", "Node"),
@@ -1902,67 +2082,79 @@ def _geometric_solenoidal() -> NumericalWitness:
             ("divergence", "Node divergence"),
         ),
         rows=(
-            WitnessRow((0, div_q[0], witness_current[0], current_divergence[0])),
-            WitnessRow((1, div_q[1], witness_current[1], current_divergence[1])),
+            WitnessRow(
+                (0, data.div_q[0], data.witness_current[0], data.current_divergence[0])
+            ),
+            WitnessRow(
+                (1, data.div_q[1], data.witness_current[1], data.current_divergence[1])
+            ),
         ),
         checks=(
-            NumericalCheck("witness-q-skew", "predicate", skew_q and sym_h, True, 0.0),
-            NumericalCheck("trace-cancellation", "eq", trace_residual, 0.0, 1e-12),
             NumericalCheck(
-                "quadratic-cancellation", "eq", quadratic_residual, 0.0, 1e-12
+                "witness-q-skew", "predicate", data.skew_q and data.sym_h, True, 0.0
             ),
-            NumericalCheck("witness-current", "predicate", current_matches, True, 0.0),
-            NumericalCheck("witness-divq", "predicate", div_q_matches, True, 0.0),
-            NumericalCheck("expansion-remainder", "eq", remainder_value, 1.0, 1e-12),
+            NumericalCheck("trace-cancellation", "eq", data.trace_residual, 0.0, 1e-12),
+            NumericalCheck(
+                "quadratic-cancellation", "eq", data.quadratic_residual, 0.0, 1e-12
+            ),
+            NumericalCheck(
+                "witness-current", "predicate", data.current_matches, True, 0.0
+            ),
+            NumericalCheck("witness-divq", "predicate", data.div_q_matches, True, 0.0),
+            NumericalCheck(
+                "expansion-remainder", "eq", data.remainder_value, 1.0, 1e-12
+            ),
             NumericalCheck(
                 "symmetrize-identity-on-symmetric-data",
                 "predicate",
-                symmetrize_identity,
+                data.symmetrize_identity,
                 True,
                 0.0,
             ),
             NumericalCheck(
-                "unconditional-drop-fails", "eq", current_divergence[0], 1.0, 1e-12
+                "unconditional-drop-fails", "eq", data.current_divergence[0], 1.0, 1e-12
             ),
             NumericalCheck(
                 "fep167-pythagoras-residual",
                 "eq",
-                fep167_pythagoras_residual,
+                data.fep167_pythagoras_residual,
                 0.0,
                 1e-12,
             ),
             NumericalCheck(
                 "fep167-minimality-gap",
                 "le",
-                fep167_minimality_violation,
+                data.fep167_minimality_violation,
                 0.0,
                 1e-12,
             ),
             NumericalCheck(
                 "fep167-projection-unique",
                 "predicate",
-                fep167_projection_unique,
+                data.fep167_projection_unique,
                 True,
                 0.0,
             ),
             NumericalCheck(
-                "fep167-residual-example", "eq", fep167_residual_sq, 0.5, 1e-12
+                "fep167-residual-example", "eq", data.fep167_residual_sq, 0.5, 1e-12
             ),
             NumericalCheck(
                 "fep168-remainder-identity",
                 "eq",
-                fep168_identity_residual,
+                data.fep168_identity_residual,
                 0.0,
                 1e-12,
             ),
-            NumericalCheck("fep168-cs-budget", "le", fep168_cs_violation, 0.0, 1e-12),
             NumericalCheck(
-                "fep168-equality-attained", "eq", fep168_aligned_gap, 0.0, 1e-12
+                "fep168-cs-budget", "le", data.fep168_cs_violation, 0.0, 1e-12
+            ),
+            NumericalCheck(
+                "fep168-equality-attained", "eq", data.fep168_aligned_gap, 0.0, 1e-12
             ),
             NumericalCheck(
                 "fep168-remainder-g-not-aligned",
                 "eq",
-                fep168_remainder_g_gap,
+                data.fep168_remainder_g_gap,
                 1.0,
                 1e-12,
             ),
@@ -1976,19 +2168,19 @@ def _geometric_solenoidal() -> NumericalWitness:
             "the pinned remainderG = (1, 1) datum stays strict with gap 1."
         ),
         boundary_observed=(
-            drop_fails
-            and div_q_matches
-            and current_matches
-            and abs(remainder_value - 1.0) <= 1e-12
-            and fep167_pythagoras_residual <= 1e-12
-            and fep167_minimality_violation <= 1e-12
-            and fep167_projection_unique
-            and abs(fep167_residual_sq - 0.5) <= 1e-12
-            and fep168_identity_residual <= 1e-12
-            and fep168_cs_violation <= 1e-12
-            and abs(fep168_aligned_gap) <= 1e-12
-            and fep168_aligned_nonzero
-            and abs(fep168_remainder_g_gap - 1.0) <= 1e-12
+            data.drop_fails
+            and data.div_q_matches
+            and data.current_matches
+            and abs(data.remainder_value - 1.0) <= 1e-12
+            and data.fep167_pythagoras_residual <= 1e-12
+            and data.fep167_minimality_violation <= 1e-12
+            and data.fep167_projection_unique
+            and abs(data.fep167_residual_sq - 0.5) <= 1e-12
+            and data.fep168_identity_residual <= 1e-12
+            and data.fep168_cs_violation <= 1e-12
+            and abs(data.fep168_aligned_gap) <= 1e-12
+            and data.fep168_aligned_nonzero
+            and abs(data.fep168_remainder_g_gap - 1.0) <= 1e-12
         ),
         plot=WitnessPlot(
             "bar",

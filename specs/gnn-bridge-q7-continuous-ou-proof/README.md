@@ -80,8 +80,15 @@ before its NumPyro-only branch was removed from the canonical JAX output.
 
 The working [parity projection](generated/scaffold-runtime-parity.json) and
 [canonical bytes](generated/scaffold-canonical.json) are mutable projections.
-Their current bytes are bound by the 2026-10-05 source-pair capture. A later
-source change requires fresh acceptance. Reproduce static projections with installed runtimes,
+Their earlier bytes are bound by the 2026-10-05 source-pair capture. The current
+2026-10-19 renderer adds quotes around the same model title in the module
+docstring. Independent review confirms that all executable AST fields and six
+parameter tables are identical. The exact new scaffold digest is
+`0cf5e8b1afbfa7b82cd3c3cbaa5c22ba0931738030ed83195b944936a3a8b4ce`;
+all five real CPython runtimes serialize the same 56,972 bytes. The complete
+Lean probe and historical native receipts are unchanged. This parser refresh
+supplies no new native or generated-runner execution evidence. A later source
+change still requires fresh acceptance. Reproduce static projections with installed runtimes,
 without network access:
 
 ```bash

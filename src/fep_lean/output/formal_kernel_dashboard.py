@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html
 import math
+from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal, TypeAlias
@@ -249,27 +250,72 @@ def _coincident_marker_svg(
     )
 
 
-def _plot_elements(
+_PlotSeries: TypeAlias = tuple[tuple[str, tuple[float, ...]], ...]
+
+
+@dataclass(frozen=True)
+class _PlotLayout:
+    """Prepared per-plot geometry and annotations shared by SVG emitters."""
+
+    annotation_bottom: int
+    annotation_line_step: int
+    axis_line_step: int
+    categorical: bool
+    category_key_columns: int
+    category_key_step: int
+    category_key_y: int
+    category_labels: tuple[str, ...]
+    category_note_lines: tuple[str, ...]
+    category_tick_y: int
+    coincident_groups: dict[str, list[str]]
+    coincident_root_by_key: dict[str, str]
+    coincident_roots: set[str]
+    domain_lines: tuple[str, ...]
+    domain_y: int
+    has_exact_zero: bool
+    legend_layout: str
+    legend_lines: tuple[tuple[str, ...], ...]
+    native_plot_height: int
+    overlap_lines: tuple[str, ...]
+    plot_left: int
+    plot_top: int
+    plot_width: int
+    raw_x: tuple[Scalar, ...]
+    series: _PlotSeries
+    stacked_legend: bool
+    width: int
+    x: int
+    x_axis_left: int
+    x_axis_lines: tuple[str, ...]
+    x_axis_y: int
+    x_domain: str
+    x_label: str
+    x_max: float
+    x_min: float
+    x_unit: str
+    x_values: tuple[float, ...]
+    y: int
+    y_axis_lines: tuple[str, ...]
+    y_labels: tuple[str, ...]
+    y_max: float
+    y_min: float
+    y_unit: str
+    zero_baseline: bool
+    zero_key_lines: tuple[str, ...]
+
+
+def _prepare_plot_layout(
     witness: NumericalWitness,
+    raw_x: tuple[Scalar, ...],
+    x_values: tuple[float, ...],
+    series: _PlotSeries,
     *,
     x: int,
     y: int,
     width: int,
     native_plot_height: int,
     stacked_legend: bool,
-) -> tuple[list[str], float]:
-    raw_x, x_values, series = _plot_coordinates(witness)
-    if not x_values or not series:
-        return (
-            [
-                (
-                    f'<text class="plot-note" x="{x + 8}" '
-                    f'y="{y + native_plot_height // 2}">'
-                    "No plottable numeric series</text>"
-                )
-            ],
-            float(y + native_plot_height),
-        )
+) -> _PlotLayout:
     x_min, x_max = min(x_values), max(x_values)
     all_y = tuple(value for _, values in series for value in values)
     y_min, y_max = min(all_y), max(all_y)
@@ -398,80 +444,149 @@ def _plot_elements(
         annotation_bottom = (
             domain_y + (len(domain_lines) - 1) * annotation_line_step + 16
         )
+    return _PlotLayout(
+        annotation_bottom=annotation_bottom,
+        annotation_line_step=annotation_line_step,
+        axis_line_step=axis_line_step,
+        categorical=categorical,
+        category_key_columns=category_key_columns,
+        category_key_step=category_key_step,
+        category_key_y=category_key_y,
+        category_labels=category_labels,
+        category_note_lines=category_note_lines,
+        category_tick_y=category_tick_y,
+        coincident_groups=coincident_groups,
+        coincident_root_by_key=coincident_root_by_key,
+        coincident_roots=coincident_roots,
+        domain_lines=domain_lines,
+        domain_y=domain_y,
+        has_exact_zero=has_exact_zero,
+        legend_layout=legend_layout,
+        legend_lines=legend_lines,
+        native_plot_height=native_plot_height,
+        overlap_lines=overlap_lines,
+        plot_left=plot_left,
+        plot_top=plot_top,
+        plot_width=plot_width,
+        raw_x=raw_x,
+        series=series,
+        stacked_legend=stacked_legend,
+        width=width,
+        x=x,
+        x_axis_left=x_axis_left,
+        x_axis_lines=x_axis_lines,
+        x_axis_y=x_axis_y,
+        x_domain=x_domain,
+        x_label=x_label,
+        x_max=x_max,
+        x_min=x_min,
+        x_unit=x_unit,
+        x_values=x_values,
+        y=y,
+        y_axis_lines=y_axis_lines,
+        y_labels=y_labels,
+        y_max=y_max,
+        y_min=y_min,
+        y_unit=y_unit,
+        zero_baseline=zero_baseline,
+        zero_key_lines=zero_key_lines,
+    )
+
+
+def _plot_frame_elements(witness: NumericalWitness, layout: _PlotLayout) -> list[str]:
     lines = [
         (
             f'<g class="plot" data-plot-for="{escape_svg_text(witness.id)}" '
-            f'data-zero-baseline="{str(zero_baseline).lower()}" '
-            f'data-y-min="{y_min!r}" data-y-max="{y_max!r}" '
-            f'data-x-quantity="{escape_svg_text(x_label)}" data-x-unit="{x_unit}" '
-            f'data-y-quantities="{escape_svg_text(" | ".join(y_labels))}" '
-            f'data-y-unit="{y_unit}" data-legend-layout="{legend_layout}" '
-            f'data-native-plot-height="{native_plot_height}" '
-            f'data-category-count="{len(raw_x) if categorical else 0}" '
-            f'data-category-key-columns="{category_key_columns if categorical else 0}" '
-            f'data-annotation-band-bottom="{annotation_bottom:.2f}">'
+            f'data-zero-baseline="{str(layout.zero_baseline).lower()}" '
+            f'data-y-min="{layout.y_min!r}" data-y-max="{layout.y_max!r}" '
+            f'data-x-quantity="{escape_svg_text(layout.x_label)}" data-x-unit="{layout.x_unit}" '
+            f'data-y-quantities="{escape_svg_text(" | ".join(layout.y_labels))}" '
+            f'data-y-unit="{layout.y_unit}" data-legend-layout="{layout.legend_layout}" '
+            f'data-native-plot-height="{layout.native_plot_height}" '
+            f'data-category-count="{len(layout.raw_x) if layout.categorical else 0}" '
+            f'data-category-key-columns="{layout.category_key_columns if layout.categorical else 0}" '
+            f'data-annotation-band-bottom="{layout.annotation_bottom:.2f}">'
         ),
         (
-            f'<text class="axis-label axis-y-label" x="{x + 8}" y="{y + 13}">'
+            f'<text class="axis-label axis-y-label" x="{layout.x + 8}" y="{layout.y + 13}">'
             + "".join(
-                f'<tspan x="{x + 8}" y="{y + 13 + index * axis_line_step}">{escape_svg_text(line)}</tspan>'
-                for index, line in enumerate(y_axis_lines)
+                f'<tspan x="{layout.x + 8}" y="{layout.y + 13 + index * layout.axis_line_step}">{escape_svg_text(line)}</tspan>'
+                for index, line in enumerate(layout.y_axis_lines)
             )
             + "</text>"
         ),
         (
-            f'<line class="axis" x1="{plot_left}" y1="{plot_top + native_plot_height}" '
-            f'x2="{plot_left + plot_width}" y2="{plot_top + native_plot_height}"/>'
+            f'<line class="axis" x1="{layout.plot_left}" y1="{layout.plot_top + layout.native_plot_height}" '
+            f'x2="{layout.plot_left + layout.plot_width}" y2="{layout.plot_top + layout.native_plot_height}"/>'
         ),
         (
-            f'<line class="axis" x1="{plot_left}" y1="{plot_top}" '
-            f'x2="{plot_left}" y2="{plot_top + native_plot_height}"/>'
+            f'<line class="axis" x1="{layout.plot_left}" y1="{layout.plot_top}" '
+            f'x2="{layout.plot_left}" y2="{layout.plot_top + layout.native_plot_height}"/>'
         ),
     ]
-    minimum_class = "scale-zero" if zero_baseline else "scale-minimum"
-    minimum_label = "0" if zero_baseline and y_min == 0.0 else f"{y_min:.3g}"
+    minimum_class = "scale-zero" if layout.zero_baseline else "scale-minimum"
+    minimum_label = (
+        "0" if layout.zero_baseline and layout.y_min == 0.0 else f"{layout.y_min:.3g}"
+    )
     lines.extend(
         [
             (
-                f'<text class="{minimum_class}" x="{x + 8}" '
-                f'y="{plot_top + native_plot_height - 5}">y min {minimum_label}</text>'
+                f'<text class="{minimum_class}" x="{layout.x + 8}" '
+                f'y="{layout.plot_top + layout.native_plot_height - 5}">y min {minimum_label}</text>'
             ),
             (
-                f'<text class="scale-maximum" x="{x + 8}" '
-                f'y="{plot_top + 13}">y max {y_max:.3g}</text>'
+                f'<text class="scale-maximum" x="{layout.x + 8}" '
+                f'y="{layout.plot_top + 13}">y max {layout.y_max:.3g}</text>'
             ),
         ]
     )
-    for series_index, (key, values) in enumerate(series):
+    return lines
+
+
+def _plot_series_elements(witness: NumericalWitness, layout: _PlotLayout) -> list[str]:
+    lines: list[str] = []
+    for series_index, (key, values) in enumerate(layout.series):
         color = _SERIES_COLORS[series_index % len(_SERIES_COLORS)]
-        coincident_root = coincident_root_by_key.get(key)
+        coincident_root = layout.coincident_root_by_key.get(key)
         overlap_role = "coincident-member" if coincident_root else "independent"
         points = tuple(
             (
-                _scaled(value_x, x_min, x_max, plot_left, plot_width),
-                plot_top
-                + native_plot_height
-                - _scaled(value_y, y_min, y_max, 0, native_plot_height),
-            )
-            for value_x, value_y in zip(x_values, values, strict=True)
-        )
-        if witness.plot.kind == "bar":
-            group_width = plot_width / max(1, len(x_values))
-            bar_width = max(2.0, group_width * 0.7 / len(series))
-            baseline = min(
-                native_plot_height,
-                max(
-                    0.0,
-                    _scaled(0.0, y_min, y_max, 0, native_plot_height),
+                _scaled(
+                    value_x,
+                    layout.x_min,
+                    layout.x_max,
+                    layout.plot_left,
+                    layout.plot_width,
+                ),
+                layout.plot_top
+                + layout.native_plot_height
+                - _scaled(
+                    value_y, layout.y_min, layout.y_max, 0, layout.native_plot_height
                 ),
             )
-            baseline_y = plot_top + native_plot_height - baseline
+            for value_x, value_y in zip(layout.x_values, values, strict=True)
+        )
+        if witness.plot.kind == "bar":
+            group_width = layout.plot_width / max(1, len(layout.x_values))
+            bar_width = max(2.0, group_width * 0.7 / len(layout.series))
+            baseline = min(
+                layout.native_plot_height,
+                max(
+                    0.0,
+                    _scaled(
+                        0.0, layout.y_min, layout.y_max, 0, layout.native_plot_height
+                    ),
+                ),
+            )
+            baseline_y = layout.plot_top + layout.native_plot_height - baseline
             for point_index, (_, point_y) in enumerate(points):
                 value = values[point_index]
                 is_zero = value == 0.0
-                center_x = plot_left + (point_index + 0.5) * group_width
+                center_x = layout.plot_left + (point_index + 0.5) * group_width
                 bar_x = (
-                    center_x - len(series) * bar_width / 2 + series_index * bar_width
+                    center_x
+                    - len(layout.series) * bar_width / 2
+                    + series_index * bar_width
                 )
                 lines.append(
                     f'<rect class="plot-bar" data-category-index="{point_index}" '
@@ -505,7 +620,7 @@ def _plot_elements(
                         'vector-effect="non-scaling-stroke"/>'
                     )
                 elif key == coincident_root:
-                    shared_keys = " | ".join(coincident_groups[coincident_root])
+                    shared_keys = " | ".join(layout.coincident_groups[coincident_root])
                     lines.append(
                         f'<path class="coincident-value-rail" '
                         f'data-series-keys="{escape_svg_text(shared_keys)}" '
@@ -515,7 +630,7 @@ def _plot_elements(
                     )
             for point_index, (point_x, point_y) in enumerate(points):
                 if coincident_root is not None:
-                    member_index = coincident_groups[coincident_root].index(key)
+                    member_index = layout.coincident_groups[coincident_root].index(key)
                     lines.append(
                         _coincident_marker_svg(
                             css_class="coincident-series-marker",
@@ -534,44 +649,49 @@ def _plot_elements(
                         f'cy="{point_y:.2f}" r="3.4" '
                         f'fill="{color}"><title>{escape_svg_text(key)}</title></circle>'
                     )
-    if categorical:
-        group_width = plot_width / max(1, len(x_values))
+    return lines
+
+
+def _plot_axes_elements(witness: NumericalWitness, layout: _PlotLayout) -> list[str]:
+    lines: list[str] = []
+    if layout.categorical:
+        group_width = layout.plot_width / max(1, len(layout.x_values))
         for category_index, (category_label, category_value) in enumerate(
-            zip(category_labels, raw_x, strict=True)
+            zip(layout.category_labels, layout.raw_x, strict=True)
         ):
-            center_x = plot_left + (category_index + 0.5) * group_width
+            center_x = layout.plot_left + (category_index + 0.5) * group_width
             lines.append(
                 f'<text class="category-tick" data-category-index="{category_index}" '
                 f'data-category-value="{escape_svg_text(_plot_scalar_text(category_value))}" '
-                f'x="{center_x:.2f}" y="{category_tick_y:.2f}" '
+                f'x="{center_x:.2f}" y="{layout.category_tick_y:.2f}" '
                 f'text-anchor="middle">{category_label}</text>'
             )
     x_axis_tspans = "".join(
-        f'<tspan x="{x_axis_left}" y="{x_axis_y + line_index * annotation_line_step}">{escape_svg_text(line)}</tspan>'
-        for line_index, line in enumerate(x_axis_lines)
+        f'<tspan x="{layout.x_axis_left}" y="{layout.x_axis_y + line_index * layout.annotation_line_step}">{escape_svg_text(line)}</tspan>'
+        for line_index, line in enumerate(layout.x_axis_lines)
     )
     lines.append(
-        f'<text class="axis-label axis-x-label" x="{x_axis_left}" y="{x_axis_y}">'
+        f'<text class="axis-label axis-x-label" x="{layout.x_axis_left}" y="{layout.x_axis_y}">'
         f"{x_axis_tspans}</text>"
     )
-    if categorical:
+    if layout.categorical:
         note_tspans = "".join(
-            f'<tspan x="{x + 8}" y="{domain_y + index * annotation_line_step}">'
+            f'<tspan x="{layout.x + 8}" y="{layout.domain_y + index * layout.annotation_line_step}">'
             f"{escape_svg_text(line)}</tspan>"
-            for index, line in enumerate(category_note_lines)
+            for index, line in enumerate(layout.category_note_lines)
         )
         lines.append(
-            f'<text class="x-domain" data-x-domain="{escape_svg_text(x_domain)}" '
-            f'x="{x + 8}" y="{domain_y}">{note_tspans}</text>'
+            f'<text class="x-domain" data-x-domain="{escape_svg_text(layout.x_domain)}" '
+            f'x="{layout.x + 8}" y="{layout.domain_y}">{note_tspans}</text>'
         )
-        key_width = (width - 16) / category_key_columns
+        key_width = (layout.width - 16) / layout.category_key_columns
         for category_index, (category_label, category_value) in enumerate(
-            zip(category_labels, raw_x, strict=True)
+            zip(layout.category_labels, layout.raw_x, strict=True)
         ):
-            key_column = category_index % category_key_columns
-            key_row = category_index // category_key_columns
-            key_x = x + 8 + key_column * key_width
-            key_y = category_key_y + key_row * category_key_step
+            key_column = category_index % layout.category_key_columns
+            key_row = category_index // layout.category_key_columns
+            key_x = layout.x + 8 + key_column * key_width
+            key_y = layout.category_key_y + key_row * layout.category_key_step
             compact_label = _compact_category_label(category_value)
             lines.append(
                 f'<text class="category-key-item" data-category-index="{category_index}" '
@@ -582,34 +702,41 @@ def _plot_elements(
             )
     else:
         domain_tspans = "".join(
-            f'<tspan x="{plot_left}" y="{domain_y + line_index * annotation_line_step:.2f}">'
+            f'<tspan x="{layout.plot_left}" y="{layout.domain_y + line_index * layout.annotation_line_step:.2f}">'
             f"{escape_svg_text(line)}</tspan>"
-            for line_index, line in enumerate(domain_lines)
+            for line_index, line in enumerate(layout.domain_lines)
         )
         lines.append(
-            f'<text class="x-domain" data-x-domain="{escape_svg_text(x_domain)}" '
-            f'x="{plot_left}" y="{domain_y}">{domain_tspans}</text>'
+            f'<text class="x-domain" data-x-domain="{escape_svg_text(layout.x_domain)}" '
+            f'x="{layout.plot_left}" y="{layout.domain_y}">{domain_tspans}</text>'
         )
-    if stacked_legend:
-        legend_x = x + 16
-        legend_y = annotation_bottom + 12
+    return lines
+
+
+def _plot_legend_elements(
+    witness: NumericalWitness, layout: _PlotLayout
+) -> tuple[list[str], float]:
+    lines: list[str] = []
+    if layout.stacked_legend:
+        legend_x = layout.x + 16
+        legend_y = layout.annotation_bottom + 12
     else:
-        legend_x = plot_left + plot_width + 18
-        legend_y = plot_top + 13
+        legend_x = layout.plot_left + layout.plot_width + 18
+        legend_y = layout.plot_top + 13
     for series_index, ((key, _values), wrapped_label) in enumerate(
-        zip(series, legend_lines, strict=True)
+        zip(layout.series, layout.legend_lines, strict=True)
     ):
         color = _SERIES_COLORS[series_index % len(_SERIES_COLORS)]
-        coincident_root = coincident_root_by_key.get(key)
+        coincident_root = layout.coincident_root_by_key.get(key)
         overlap_role = "coincident-member" if coincident_root else "independent"
         tspans = "".join(
-            f'<tspan x="{legend_x + 20:.2f}" y="{legend_y + line_index * annotation_line_step:.2f}">'
+            f'<tspan x="{legend_x + 20:.2f}" y="{legend_y + line_index * layout.annotation_line_step:.2f}">'
             f"{escape_svg_text(line)}</tspan>"
             for line_index, line in enumerate(wrapped_label)
         )
         if witness.plot.kind == "line":
             if coincident_root is not None:
-                member_index = coincident_groups[coincident_root].index(key)
+                member_index = layout.coincident_groups[coincident_root].index(key)
                 lines.append(
                     _coincident_marker_svg(
                         css_class="coincident-legend-marker",
@@ -638,23 +765,23 @@ def _plot_elements(
             f'x="{legend_x + 20:.2f}" y="{legend_y}">'
             f"<title>{escape_svg_text(key)}</title>{tspans}</text>"
         )
-        legend_y += len(wrapped_label) * annotation_line_step + 9
-    if witness.plot.kind == "line" and coincident_roots:
+        legend_y += len(wrapped_label) * layout.annotation_line_step + 9
+    if witness.plot.kind == "line" and layout.coincident_roots:
         tspans = "".join(
-            f'<tspan x="{legend_x:.2f}" y="{legend_y + index * annotation_line_step:.2f}">'
+            f'<tspan x="{legend_x:.2f}" y="{legend_y + index * layout.annotation_line_step:.2f}">'
             f"{escape_svg_text(line)}</tspan>"
-            for index, line in enumerate(overlap_lines)
+            for index, line in enumerate(layout.overlap_lines)
         )
         lines.append(
             f'<text class="coincident-series-key" x="{legend_x:.2f}" '
             f'y="{legend_y}">{tspans}</text>'
         )
-        legend_y += len(overlap_lines) * annotation_line_step + 9
-    if has_exact_zero:
+        legend_y += len(layout.overlap_lines) * layout.annotation_line_step + 9
+    if layout.has_exact_zero:
         tspans = "".join(
-            f'<tspan x="{legend_x + 20:.2f}" y="{legend_y + index * annotation_line_step:.2f}">'
+            f'<tspan x="{legend_x + 20:.2f}" y="{legend_y + index * layout.annotation_line_step:.2f}">'
             f"{escape_svg_text(line)}</tspan>"
-            for index, line in enumerate(zero_key_lines)
+            for index, line in enumerate(layout.zero_key_lines)
         )
         lines.extend(
             [
@@ -669,9 +796,49 @@ def _plot_elements(
                 ),
             ]
         )
-        legend_y += len(zero_key_lines) * annotation_line_step + 9
+        legend_y += len(layout.zero_key_lines) * layout.annotation_line_step + 9
+    return lines, max(layout.annotation_bottom, legend_y - 9)
+
+
+def _plot_elements(
+    witness: NumericalWitness,
+    *,
+    x: int,
+    y: int,
+    width: int,
+    native_plot_height: int,
+    stacked_legend: bool,
+) -> tuple[list[str], float]:
+    raw_x, x_values, series = _plot_coordinates(witness)
+    if not x_values or not series:
+        return (
+            [
+                (
+                    f'<text class="plot-note" x="{x + 8}" '
+                    f'y="{y + native_plot_height // 2}">'
+                    "No plottable numeric series</text>"
+                )
+            ],
+            float(y + native_plot_height),
+        )
+    layout = _prepare_plot_layout(
+        witness,
+        raw_x,
+        x_values,
+        series,
+        x=x,
+        y=y,
+        width=width,
+        native_plot_height=native_plot_height,
+        stacked_legend=stacked_legend,
+    )
+    lines = _plot_frame_elements(witness, layout)
+    lines.extend(_plot_series_elements(witness, layout))
+    lines.extend(_plot_axes_elements(witness, layout))
+    legend_lines, bottom = _plot_legend_elements(witness, layout)
+    lines.extend(legend_lines)
     lines.append("</g>")
-    return lines, max(annotation_bottom, legend_y - 9)
+    return lines, bottom
 
 
 def _render_formal_kernel_dashboard_desktop_svg(

@@ -813,3 +813,70 @@ reviewed 301-node filename-only bijection. Preserve test/helper bodies, markers,
 fixture semantics and the complete runtime selection. C02 remains open for
 production-capture approval; this software acceptance does not approve a private
 controller freeze, rewrite historical rosters or authorize a second primary.
+
+
+## Measured in-place function ratchet and native entropy component acceptance
+
+**Choice:** split the eight largest measured functions in their existing owners,
+then enforce the issue's separate 200-source-line limit in all seven named
+modules. Enable PLR0915 at an explicit 100-statement ceiling. Thirteen existing
+exceptions are restricted to measured functions and counts by the inventory
+test; broad additions, renamed exception functions and growth reject.
+
+**Reason:** source lines and statements measure different properties. The
+original inventory had 44 functions above 150 lines and 19 above 200, rather
+than the older issue's 42-function description. The default 50-statement rule
+would leave 51 candidate findings; the 100-statement policy retains thirteen
+pre-existing exceptions without ignoring any of the seven refactored owners.
+Byte comparisons cover all numerical witness records, dashboard SVG/HTML,
+coverage JSON/Markdown, controlled browser results and the complete capture DAG.
+Independent infrastructure/API and security/custody source review found no
+required changes. Full current-source runtime/publication gates remain open;
+three timeout failures under overlapping cold native compilation are retained,
+and no timeout or resource limit is relaxed.
+
+**Component acceptance:** Issue111's existing measure-native proof now has an
+actual retained Mathlib-only hosted consumer, all three raw axiom reports,
+attained/clipping/singular controls and independent Lean/domain/skeptical
+component review. Source, proof-block, consumer and upload hashes agree.
+The native entropy receipt accepts only that component. It supplies no terminal
+horizon human quorum, score/Fisher acceptance, scientific promotion or upstream
+submission decision. Normal reviewed publication precedes issue closure.
+
+
+## Reviewed current Q7 scaffold after the renderer's title quoting change
+
+**Choice:** adopt only the independently reviewed current canonical scaffold
+SHA-256 `0cf5e8b1afbfa7b82cd3c3cbaa5c22ba0931738030ed83195b944936a3a8b4ce`.
+The old `b34a350a...` scaffold remains historical. No serializer, schema,
+interpreter acceptance, parameter table or executable statement changes.
+
+**Reason:** actual current GNN rendering quotes the same model title in the
+module docstring. Complete AST comparison after exactly that substitution is
+identical, and all five real CPython runtimes produce the same 56,972 candidate
+bytes with the existing adversarial serialization controls. The old contract
+correctly rejected the unreviewed docstring; the exact digest replacement was
+independently reviewed before regeneration. The complete Lean probe and every
+historical native receipt remain byte-identical. Fresh source-bound native
+capture and adverse controls are required separately. Rendering and parser
+parity do not execute the generated model runner or close Issue61/B01.
+
+## Bounded function-ratchet acceptance
+
+**When:** P06 source-bound execution, 2026-10-19.
+
+**Choice:** Keep seven existing owners and split the eight measured largest
+functions in place. Enforce the 200-source-line bound independently of the
+100-statement Ruff rule; retain thirteen named historical statement exceptions
+under qualified-function assertions.
+
+**Evidence:** [The component receipt](function-ratchet-acceptance-20261019.json)
+binds owner bytes, independent review and complete local Python/native results.
+Earlier overloaded failed runs remain failed observations; unchanged-budget
+fresh complete execution passes.
+
+**Reach:** This accepts the selected maintainability component. It adds no
+scientific, production-capture, generated-runner or final publication claim.
+
+**Verdict:** bounded acceptance; final render and fifteen-cell head/main gates
+remain explicit.

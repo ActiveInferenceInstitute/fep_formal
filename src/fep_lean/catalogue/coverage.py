@@ -6,6 +6,7 @@ import json
 import re
 from collections import Counter, defaultdict
 from collections.abc import Iterable
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -28,9 +29,9 @@ from fep_lean.lean_source import (
 
 from . import registry as _registry
 from .registry import validate_body_family_ownership
-from .relations import CapabilityStatus, EdgeKind, load_formalism_graph
-from .schema import load_catalogue_metadata
-from .semantics import SemanticDisposition, load_theorem_maturity
+from .relations import CapabilityStatus, EdgeKind, FormalismGraph, load_formalism_graph
+from .schema import CatalogueMetadataManifest, load_catalogue_metadata
+from .semantics import SemanticDisposition, TheoremMaturityAudit, load_theorem_maturity
 
 _THEOREM_RE = LEAN_THEOREM_RE
 _DEFINITION_RE = re.compile(
@@ -83,21 +84,35 @@ def render_topic_import_modules(
     return ", ".join(f"`{name}`" for name in names)
 
 
-def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
-    """Join canonical sources into an auditable coverage data structure."""
-    root = Path(project_root)
-    metadata = load_catalogue_metadata(root / "config" / "catalogue_metadata.yaml")
-    validate_body_family_ownership(
-        {record.id: record.family for record in metadata.records}
-    )
-    audit = load_theorem_maturity(
-        root / "config" / "theorem_maturity.yaml",
-        roster_ids=metadata.topic_ids,
-    )
-    graph = load_formalism_graph(
-        root / "config" / "formalism_relations.yaml",
-        roster_ids=metadata.topic_ids,
-    )
+@dataclass(frozen=True)
+class _TopicCoverage:
+    rows: list[dict[str, Any]]
+    module_topics: dict[str, list[str]]
+    total_theorems: int
+    total_definitions: int
+    total_abbreviations: int
+    total_import_edges: int
+
+
+@dataclass(frozen=True)
+class _FormalCoverage:
+    formal_modules: list[dict[str, Any]]
+    composed_declarations: frozenset[str]
+    formal_definition_count: int
+    formal_abbreviation_count: int
+    formal_structure_count: int
+    formal_import_edges: int
+    internal_dependency_edges: int
+    formal_theorem_count: int
+    foundation_theorem_count: int
+
+
+def _check_relation_evidence(
+    root: Path,
+    graph: FormalismGraph,
+    audit: TheoremMaturityAudit,
+) -> None:
+    """Validate declarations, endpoints and pairing shape in their original order."""
     known_declarations = all_formal_theorem_declarations(root)
     required_declarations = {
         declaration for node in graph.capabilities for declaration in node.evidence
@@ -174,6 +189,12 @@ def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
             "formal_pairing witnesses must expose a checked conjunction before "
             "their proof: " + ", ".join(pairing_shape_failures)
         )
+
+
+def _topic_source_coverage(
+    metadata: CatalogueMetadataManifest,
+    audit: TheoremMaturityAudit,
+) -> _TopicCoverage:
     reviews = audit.by_topic_id
     module_topics: dict[str, list[str]] = defaultdict(list)
     rows: list[dict[str, Any]] = []
@@ -215,49 +236,17 @@ def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
                 "mathlib_hints": list(meta.mathlib_modules),
             }
         )
+    return _TopicCoverage(
+        rows=rows,
+        module_topics=module_topics,
+        total_theorems=total_theorems,
+        total_definitions=total_definitions,
+        total_abbreviations=total_abbreviations,
+        total_import_edges=total_import_edges,
+    )
 
-    disposition_counts = Counter(row["semantic_disposition"] for row in rows)
-    area_counts = Counter(row["area"] for row in rows)
-    family_counts = Counter(row["family"] for row in rows)
-    area_dispositions: dict[str, dict[str, int]] = {}
-    dispositions = [member.value for member in SemanticDisposition]
-    for area in sorted(area_counts):
-        area_dispositions[area] = {
-            disposition: sum(
-                row["area"] == area and row["semantic_disposition"] == disposition
-                for row in rows
-            )
-            for disposition in dispositions
-        }
 
-    gap_ids = {
-        row["id"]
-        for row in rows
-        if row["semantic_disposition"] in {"scope_gap", "assumption_gap"}
-    }
-    blocked_sources = {
-        edge.source for edge in graph.edges if edge.kind is EdgeKind.BLOCKED_BY
-    }
-    formalized_ids = {
-        row["id"]
-        for row in rows
-        if row["semantic_disposition"] == SemanticDisposition.FORMALIZED.value
-    }
-    missing = sorted(gap_ids - blocked_sources)
-    blocked_formalized = sorted(formalized_ids & blocked_sources)
-    if missing or blocked_formalized:
-        details = []
-        if missing:
-            details.append("gap rows without blocked_by edges: " + ", ".join(missing))
-        if blocked_formalized:
-            details.append(
-                "formalized rows with blocked_by edges: "
-                + ", ".join(blocked_formalized)
-            )
-        raise ValueError("; ".join(details))
-
-    relation_counts = Counter(edge.kind.value for edge in graph.edges)
-    capability_status_counts = Counter(node.status.value for node in graph.capabilities)
+def _formal_source_coverage(root: Path) -> _FormalCoverage:
     formal_declaration_modules = formal_theorem_modules(root)
     composed_declarations = composed_theorem_declarations(root)
     manifested_module_names = {module.lean_module for module in FORMAL_MODULES}
@@ -312,7 +301,81 @@ def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
         for row in formal_modules
         if row["role"] == FormalModuleRole.FOUNDATION.value
     )
+    return _FormalCoverage(
+        formal_modules=formal_modules,
+        composed_declarations=composed_declarations,
+        formal_definition_count=formal_definition_count,
+        formal_abbreviation_count=formal_abbreviation_count,
+        formal_structure_count=formal_structure_count,
+        formal_import_edges=formal_import_edges,
+        internal_dependency_edges=internal_dependency_edges,
+        formal_theorem_count=formal_theorem_count,
+        foundation_theorem_count=foundation_theorem_count,
+    )
 
+
+def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
+    """Join canonical sources into an auditable coverage data structure."""
+    root = Path(project_root)
+    metadata = load_catalogue_metadata(root / "config" / "catalogue_metadata.yaml")
+    validate_body_family_ownership(
+        {record.id: record.family for record in metadata.records}
+    )
+    audit = load_theorem_maturity(
+        root / "config" / "theorem_maturity.yaml",
+        roster_ids=metadata.topic_ids,
+    )
+    graph = load_formalism_graph(
+        root / "config" / "formalism_relations.yaml",
+        roster_ids=metadata.topic_ids,
+    )
+    _check_relation_evidence(root, graph, audit)
+    topic_coverage = _topic_source_coverage(metadata, audit)
+    disposition_counts = Counter(
+        row["semantic_disposition"] for row in topic_coverage.rows
+    )
+    area_counts = Counter(row["area"] for row in topic_coverage.rows)
+    family_counts = Counter(row["family"] for row in topic_coverage.rows)
+    area_dispositions: dict[str, dict[str, int]] = {}
+    dispositions = [member.value for member in SemanticDisposition]
+    for area in sorted(area_counts):
+        area_dispositions[area] = {
+            disposition: sum(
+                row["area"] == area and row["semantic_disposition"] == disposition
+                for row in topic_coverage.rows
+            )
+            for disposition in dispositions
+        }
+
+    gap_ids = {
+        row["id"]
+        for row in topic_coverage.rows
+        if row["semantic_disposition"] in {"scope_gap", "assumption_gap"}
+    }
+    blocked_sources = {
+        edge.source for edge in graph.edges if edge.kind is EdgeKind.BLOCKED_BY
+    }
+    formalized_ids = {
+        row["id"]
+        for row in topic_coverage.rows
+        if row["semantic_disposition"] == SemanticDisposition.FORMALIZED.value
+    }
+    missing = sorted(gap_ids - blocked_sources)
+    blocked_formalized = sorted(formalized_ids & blocked_sources)
+    if missing or blocked_formalized:
+        details = []
+        if missing:
+            details.append("gap rows without blocked_by edges: " + ", ".join(missing))
+        if blocked_formalized:
+            details.append(
+                "formalized rows with blocked_by edges: "
+                + ", ".join(blocked_formalized)
+            )
+        raise ValueError("; ".join(details))
+
+    relation_counts = Counter(edge.kind.value for edge in graph.edges)
+    capability_status_counts = Counter(node.status.value for node in graph.capabilities)
+    formal_coverage = _formal_source_coverage(root)
     return {
         "schema_version": 3,
         "review_date": audit.review_date,
@@ -321,26 +384,29 @@ def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
             "full external-run evidence are separate receipt contracts."
         ),
         "metrics": {
-            "topics": len(rows),
-            "formal_modules": len(formal_modules),
+            "topics": len(topic_coverage.rows),
+            "formal_modules": len(formal_coverage.formal_modules),
             "foundation_modules": sum(
                 module.role is FormalModuleRole.FOUNDATION for module in FORMAL_MODULES
             ),
-            "topic_theorems": total_theorems,
-            "formal_resource_theorems": formal_theorem_count,
-            "foundation_theorems": foundation_theorem_count,
-            "theorems": total_theorems + formal_theorem_count,
-            "topic_definitions": total_definitions,
-            "formal_resource_definitions": formal_definition_count,
-            "definitions": total_definitions + formal_definition_count,
-            "topic_abbreviations": total_abbreviations,
-            "formal_resource_abbreviations": formal_abbreviation_count,
-            "abbreviations": total_abbreviations + formal_abbreviation_count,
-            "formal_resource_structures": formal_structure_count,
-            "distinct_mathlib_imports": len(module_topics),
-            "topic_import_edges": total_import_edges,
-            "formal_module_import_edges": formal_import_edges,
-            "formal_module_dependency_edges": internal_dependency_edges,
+            "topic_theorems": topic_coverage.total_theorems,
+            "formal_resource_theorems": formal_coverage.formal_theorem_count,
+            "foundation_theorems": formal_coverage.foundation_theorem_count,
+            "theorems": topic_coverage.total_theorems
+            + formal_coverage.formal_theorem_count,
+            "topic_definitions": topic_coverage.total_definitions,
+            "formal_resource_definitions": formal_coverage.formal_definition_count,
+            "definitions": topic_coverage.total_definitions
+            + formal_coverage.formal_definition_count,
+            "topic_abbreviations": topic_coverage.total_abbreviations,
+            "formal_resource_abbreviations": formal_coverage.formal_abbreviation_count,
+            "abbreviations": topic_coverage.total_abbreviations
+            + formal_coverage.formal_abbreviation_count,
+            "formal_resource_structures": formal_coverage.formal_structure_count,
+            "distinct_mathlib_imports": len(topic_coverage.module_topics),
+            "topic_import_edges": topic_coverage.total_import_edges,
+            "formal_module_import_edges": formal_coverage.formal_import_edges,
+            "formal_module_dependency_edges": formal_coverage.internal_dependency_edges,
             "authored_relation_edges": len(graph.edges),
             "formal_relation_witnesses": relation_counts[EdgeKind.FORMAL.value],
             "formal_pairing_witnesses": relation_counts[EdgeKind.FORMAL_PAIRING.value],
@@ -349,7 +415,7 @@ def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
                 for kind in EdgeKind
                 if kind.is_theorem_witnessed
             ),
-            "composed_theorems": len(composed_declarations),
+            "composed_theorems": len(formal_coverage.composed_declarations),
             "capability_nodes": len(graph.capabilities),
             "open_capabilities": sum(
                 node.status is not CapabilityStatus.SATISFIED
@@ -390,15 +456,15 @@ def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
             }
             for edge in graph.edges
         ],
-        "formal_modules": formal_modules,
-        "topics": rows,
+        "formal_modules": formal_coverage.formal_modules,
+        "topics": topic_coverage.rows,
         "mathlib_modules": [
             {
                 "module": module,
                 "topic_count": len(topic_ids),
                 "topic_ids": topic_ids,
             }
-            for module, topic_ids in sorted(module_topics.items())
+            for module, topic_ids in sorted(topic_coverage.module_topics.items())
         ],
     }
 

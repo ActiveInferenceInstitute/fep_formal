@@ -186,42 +186,62 @@ def _parse_checksums(contents: dict[str, bytes], errors: list[str]) -> dict[str,
     return parsed
 
 
-def validate_release_bundle(
-    archive_path: Path,
-    *,
-    project_root: Path | None = None,
-    presentation: FormalismPresentation | None = None,
-) -> ReleaseBundleValidation:
-    """Validate archive structure, bytes, and optionally the live checkout.
+def _validate_manifest_toolchain(manifest: dict[str, Any], errors: list[str]) -> None:
+    """Check the same compiler pins in their established diagnostic order."""
+    toolchain = manifest.get("toolchain")
+    if not isinstance(toolchain, dict):
+        errors.append("manifest toolchain identity must be an object")
+    else:
+        lean_toolchain = toolchain.get("lean_toolchain")
+        lean_version = toolchain.get("lean_version")
+        mathlib_tag = toolchain.get("mathlib_tag")
+        mathlib_revision = toolchain.get("mathlib_revision")
+        toolchain_match = (
+            re.fullmatch(r"leanprover/lean4:v(\d+\.\d+\.\d+)", lean_toolchain)
+            if isinstance(lean_toolchain, str)
+            else None
+        )
+        version_match = (
+            re.match(r"Lean \(version (\d+\.\d+\.\d+)(?:,|\))", lean_version)
+            if isinstance(lean_version, str)
+            else None
+        )
+        mathlib_match = (
+            re.fullmatch(r"v(\d+\.\d+\.\d+)", mathlib_tag)
+            if isinstance(mathlib_tag, str)
+            else None
+        )
+        if toolchain_match is None:
+            errors.append("manifest Lean toolchain is not a stable semantic pin")
+        if version_match is None:
+            errors.append("manifest Lean version is not actual compiler output")
+        if mathlib_match is None:
+            errors.append("manifest Mathlib tag is not a stable semantic pin")
+        if (
+            toolchain_match is not None
+            and version_match is not None
+            and toolchain_match.group(1) != version_match.group(1)
+        ):
+            errors.append("manifest Lean version does not match its toolchain pin")
+        if (
+            toolchain_match is not None
+            and mathlib_match is not None
+            and toolchain_match.group(1) != mathlib_match.group(1)
+        ):
+            errors.append("manifest Mathlib tag does not match the Lean pin")
+        if (
+            not isinstance(mathlib_revision, str)
+            or _GIT_SHA_RE.fullmatch(mathlib_revision) is None
+        ):
+            errors.append("manifest Mathlib revision is not a lowercase Git SHA")
 
-    Validation never extracts archive members.  Supplying ``project_root``
-    additionally binds the archive to the current release inputs; that live
-    comparison is implemented by the high-level builder below.  Supplying
-    ``presentation`` reuses an already-built formalism join so a builder that
-    validates twice against one root does not rebuild it per pass.
-    """
-    archive = Path(archive_path)
-    contents, members, epoch, read_errors = _read_archive(archive)
-    errors = list(read_errors)
-    names = tuple(member.name for member in members)
-    if names != tuple(sorted(names)):
-        errors.append("archive members must be lexically ordered")
-    for member in members:
-        if member.mode != 0o644:
-            errors.append(f"archive member mode must be 0644: {member.name}")
-        if member.uid != 0 or member.gid != 0:
-            errors.append(f"archive member uid/gid must be zero: {member.name}")
-        if member.uname or member.gname:
-            errors.append(f"archive member owner names must be empty: {member.name}")
-        if member.mtime != epoch:
-            errors.append(
-                f"archive member mtime differs from gzip mtime: {member.name}"
-            )
-        if member.pax_headers:
-            errors.append(f"archive member carries PAX metadata: {member.name}")
 
-    manifest = _parse_manifest(contents, errors)
-    checksums = _parse_checksums(contents, errors)
+def _validate_manifest_payload(
+    manifest: dict[str, Any] | None,
+    epoch: int,
+    errors: list[str],
+) -> dict[str, dict[str, Any]]:
+    """Validate manifest claims and append diagnostics in their original order."""
     manifest_members: dict[str, dict[str, Any]] = {}
     if manifest is not None:
         if manifest.get("source_date_epoch") != epoch:
@@ -294,52 +314,7 @@ def validate_release_bundle(
             formal_modules = formalism.get("formal_modules")
             if type(formal_modules) is not int or formal_modules <= 0:
                 errors.append("manifest formalism.formal_modules must be positive")
-        toolchain = manifest.get("toolchain")
-        if not isinstance(toolchain, dict):
-            errors.append("manifest toolchain identity must be an object")
-        else:
-            lean_toolchain = toolchain.get("lean_toolchain")
-            lean_version = toolchain.get("lean_version")
-            mathlib_tag = toolchain.get("mathlib_tag")
-            mathlib_revision = toolchain.get("mathlib_revision")
-            toolchain_match = (
-                re.fullmatch(r"leanprover/lean4:v(\d+\.\d+\.\d+)", lean_toolchain)
-                if isinstance(lean_toolchain, str)
-                else None
-            )
-            version_match = (
-                re.match(r"Lean \(version (\d+\.\d+\.\d+)(?:,|\))", lean_version)
-                if isinstance(lean_version, str)
-                else None
-            )
-            mathlib_match = (
-                re.fullmatch(r"v(\d+\.\d+\.\d+)", mathlib_tag)
-                if isinstance(mathlib_tag, str)
-                else None
-            )
-            if toolchain_match is None:
-                errors.append("manifest Lean toolchain is not a stable semantic pin")
-            if version_match is None:
-                errors.append("manifest Lean version is not actual compiler output")
-            if mathlib_match is None:
-                errors.append("manifest Mathlib tag is not a stable semantic pin")
-            if (
-                toolchain_match is not None
-                and version_match is not None
-                and toolchain_match.group(1) != version_match.group(1)
-            ):
-                errors.append("manifest Lean version does not match its toolchain pin")
-            if (
-                toolchain_match is not None
-                and mathlib_match is not None
-                and toolchain_match.group(1) != mathlib_match.group(1)
-            ):
-                errors.append("manifest Mathlib tag does not match the Lean pin")
-            if (
-                not isinstance(mathlib_revision, str)
-                or _GIT_SHA_RE.fullmatch(mathlib_revision) is None
-            ):
-                errors.append("manifest Mathlib revision is not a lowercase Git SHA")
+        _validate_manifest_toolchain(manifest, errors)
         for digest_name in ("source_sha256", "config_sha256"):
             digest = manifest.get(digest_name)
             if not isinstance(digest, str) or _SHA256_RE.fullmatch(digest) is None:
@@ -401,6 +376,46 @@ def validate_release_bundle(
                 and numerical_record.get("evidence_kind") != NON_PROOF_EVIDENCE
             ):
                 errors.append("manifest numerical evidence boundary was weakened")
+    return manifest_members
+
+
+def validate_release_bundle(
+    archive_path: Path,
+    *,
+    project_root: Path | None = None,
+    presentation: FormalismPresentation | None = None,
+) -> ReleaseBundleValidation:
+    """Validate archive structure, bytes, and optionally the live checkout.
+
+    Validation never extracts archive members.  Supplying ``project_root``
+    additionally binds the archive to the current release inputs; that live
+    comparison is implemented by the high-level builder below.  Supplying
+    ``presentation`` reuses an already-built formalism join so a builder that
+    validates twice against one root does not rebuild it per pass.
+    """
+    archive = Path(archive_path)
+    contents, members, epoch, read_errors = _read_archive(archive)
+    errors = list(read_errors)
+    names = tuple(member.name for member in members)
+    if names != tuple(sorted(names)):
+        errors.append("archive members must be lexically ordered")
+    for member in members:
+        if member.mode != 0o644:
+            errors.append(f"archive member mode must be 0644: {member.name}")
+        if member.uid != 0 or member.gid != 0:
+            errors.append(f"archive member uid/gid must be zero: {member.name}")
+        if member.uname or member.gname:
+            errors.append(f"archive member owner names must be empty: {member.name}")
+        if member.mtime != epoch:
+            errors.append(
+                f"archive member mtime differs from gzip mtime: {member.name}"
+            )
+        if member.pax_headers:
+            errors.append(f"archive member carries PAX metadata: {member.name}")
+
+    manifest = _parse_manifest(contents, errors)
+    checksums = _parse_checksums(contents, errors)
+    manifest_members = _validate_manifest_payload(manifest, epoch, errors)
 
     expected_names = set(manifest_members) | {MANIFEST_NAME, CHECKSUMS_NAME}
     actual_names = set(contents)

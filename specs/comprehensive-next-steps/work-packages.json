@@ -871,7 +871,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/62"
       ],
-      "status": "planned",
+      "status": "accepted",
       "outcome": "One concise operator contract table matches current parser/API/installed-help behavior.",
       "depends_on": [
         "C04",
@@ -896,7 +896,13 @@
         "installed package"
       ],
       "human_review": "Operator review of next actions and independent API review for any behavioral change.",
-      "out_of_scope": "Status repairing evidence, collecting tests, loading credentials or changing validator policy."
+      "out_of_scope": "Status repairing evidence, collecting tests, loading credentials or changing validator policy.",
+      "acceptance": {
+        "receipt": "operator-contract-acceptance-20261019.json",
+        "scope": "Canonical operator table, actual installed-help/source comparison and independent operator review; no behavior change.",
+        "dependency_resolution": "C04 accepted; C05 source/help/local-software prerequisite subset satisfied. Broader production/current-evidence scope remains open.",
+        "remaining": "Final source-bound fifteen-cell head/main publication before issue closure."
+      }
     },
     {
       "id": "O02",
@@ -1442,7 +1448,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/111"
       ],
-      "status": "in_progress",
+      "status": "accepted",
       "outcome": "An FEP-independent measure-level Donsker-Varadhan inequality is derived with explicit integrability/support assumptions.",
       "depends_on": [],
       "single_owner": "Existing variational_duality.lean and exponential_family.lean; FEP-independent candidates remain slice-local until ownership review.",
@@ -1463,7 +1469,18 @@
         "upstream feasibility"
       ],
       "human_review": "Independent Lean, domain and skeptical review; terminal human approvals follow research-contract.md. Planning supplies no approval.",
-      "out_of_scope": "Assumed equality, automatic exponential-family or empirical extrapolation, or upstream submission without a maintainer decision."
+      "out_of_scope": "Assumed equality, automatic exponential-family or empirical extrapolation, or upstream submission without a maintainer decision.",
+      "acceptance": {
+        "receipt": "native-entropy-acceptance-20261019.json",
+        "checks": [
+          "Exact authored block compiles with Mathlib-only imports and no FEP types.",
+          "Nonconstant attained tilt, clipped-equality counterexample and singular extended-KL controls compile.",
+          "Actual stdout retains all three standard-axiom reports; returncode zero and no compiler warning/error.",
+          "Independent component Lean/domain/skeptical source review supports the bounded acceptance."
+        ],
+        "boundary": "Measure-level entropy/CGF component only. No terminal horizon human quorum, scientific promotion, score/Fisher acceptance or upstream submission approval. Reviewer inspected retained actual evidence without executing Lean or independently downloading artifacts.",
+        "integration_condition": "Review the acceptance documentation and publish normally before closing Issue111; preserve all broader research/production gates."
+      }
     },
     {
       "id": "G02",
@@ -1650,7 +1667,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/122"
       ],
-      "status": "planned",
+      "status": "accepted",
       "outcome": "The largest functions are split in place with preserved outputs and an enforceable complexity ratchet.",
       "depends_on": [],
       "single_owner": "Existing package functions and pyproject.toml Ruff configuration; file ownership is unchanged.",
@@ -1670,7 +1687,12 @@
         "maintainability"
       ],
       "human_review": "Fresh independent infrastructure/API review before integration; security/custody changes need an independent security review.",
-      "out_of_scope": "A cosmetic rename, moving files around the source roster or claiming a line cap from a statement-count rule alone."
+      "out_of_scope": "A cosmetic rename, moving files around the source roster or claiming a line cap from a statement-count rule alone.",
+      "acceptance": {
+        "receipt": "function-ratchet-acceptance-20261019.json",
+        "scope": "Bounded seven-owner function ratchet, exact observable parity and complete local Python/native execution.",
+        "remaining": "Final source-bound render and normal fifteen-cell head/main publication; broader CLI/API and scientific packages remain separate."
+      }
     },
     {
       "id": "P07",

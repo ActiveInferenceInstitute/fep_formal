@@ -118,31 +118,13 @@ def _live_browser_identity(name: str, executable: Path) -> tuple[str, str]:
     return version, digest
 
 
-def _browser_receipt_errors(
-    project_root: Path,
+def _browser_identity_errors(
+    browser: object,
     *,
-    presentation: FormalismPresentation | None = None,
-    check_runtime: bool = True,
-) -> tuple[str, ...]:
-    """Validate stored capture bindings, replaying the live browser by default.
-
-    Static mode checks schemas, source/projection hashes, screenshots and
-    recorded observations. It omits executable identification and live replay;
-    an empty result in that mode is not browser acceptance.
-    """
-    root = Path(project_root).resolve()
-    path = root / BROWSER_RECEIPT
-    payload, error = _json_object(path, "browser receipt")
-    if payload is None:
-        return (error or "browser receipt is invalid",)
+    check_runtime: bool,
+) -> tuple[list[str], str | None, Path | None]:
+    """Check the recorded/live executable while retaining every diagnostic."""
     errors: list[str] = []
-    if payload.get("schema_version") != 4:
-        errors.append("browser receipt schema_version must be 4")
-    if payload.get("kind") != "browser-interaction":
-        errors.append("browser receipt kind must be browser-interaction")
-    if payload.get("accepted") is not True:
-        errors.append("browser receipt must be accepted")
-    browser = payload.get("browser")
     browser_name: str | None = None
     browser_executable: Path | None = None
     if not isinstance(browser, dict) or set(browser) != {
@@ -199,6 +181,118 @@ def _browser_receipt_errors(
                         errors.append(
                             "browser executable hash differs from the live browser binary"
                         )
+    return errors, browser_name, browser_executable
+
+
+def _browser_screenshot_errors(
+    root: Path,
+    screenshots: object,
+) -> tuple[list[str], dict[str, bytes]]:
+    """Check every screenshot and retain ordered path/role failure controls."""
+    errors: list[str] = []
+    if not isinstance(screenshots, list) or len(screenshots) != len(
+        _CANONICAL_BROWSER_SCREENSHOTS
+    ):
+        errors.append("browser receipt screenshot roster is not canonical")
+        screenshots = []
+    screenshot_paths: list[str] = []
+    screenshot_roles: list[str] = []
+    screenshot_data_by_role: dict[str, bytes] = {}
+    for index, record in enumerate(screenshots):
+        if not isinstance(record, dict):
+            errors.append(f"browser screenshot record {index} must be an object")
+            continue
+        if set(record) != {"role", "path", "sha256", "width", "height"}:
+            errors.append(f"browser screenshot record fields are invalid: {index}")
+        role = record.get("role")
+        relative = record.get("path")
+        digest = record.get("sha256")
+        width = record.get("width")
+        height = record.get("height")
+        if (
+            not isinstance(role, str)
+            or role not in _CANONICAL_BROWSER_SCREENSHOTS
+            or relative != _CANONICAL_BROWSER_SCREENSHOTS.get(role)
+        ):
+            errors.append(f"browser screenshot role/path is invalid: {role}")
+            continue
+        if role in screenshot_roles:
+            errors.append(f"duplicate browser screenshot role: {role}")
+            continue
+        screenshot_roles.append(role)
+        if (
+            not isinstance(relative, str)
+            or not relative.startswith(f"{BROWSER_ASSET_ROOT.as_posix()}/")
+            or not _safe_member_name(relative)
+        ):
+            errors.append(f"browser screenshot path is invalid: {relative}")
+            continue
+        if relative in screenshot_paths:
+            errors.append(f"duplicate browser screenshot path: {relative}")
+            continue
+        screenshot_paths.append(relative)
+        if not isinstance(digest, str) or _SHA256_RE.fullmatch(digest) is None:
+            errors.append(f"browser screenshot hash is invalid: {relative}")
+            continue
+        try:
+            screenshot_data = _relative_file_bytes(root, relative)
+            actual = sha256_bytes(screenshot_data)
+            actual_width, actual_height = _png_dimensions(screenshot_data)
+        except ReleaseBundleError as exc:
+            errors.append(str(exc))
+            continue
+        screenshot_data_by_role[role] = screenshot_data
+        if digest != actual:
+            errors.append(f"browser screenshot hash is stale: {relative}")
+        if type(width) is not int or type(height) is not int:
+            errors.append(f"browser screenshot dimensions are invalid: {relative}")
+        elif (width, height) != (actual_width, actual_height):
+            errors.append(f"browser screenshot dimensions are stale: {relative}")
+        elif role.endswith("_mobile") and (width != 390 or height < 844):
+            errors.append(f"browser mobile screenshot viewport is invalid: {relative}")
+        elif role.endswith("_desktop") and (width < 1200 or height < 800):
+            errors.append(f"browser desktop screenshot viewport is invalid: {relative}")
+        elif role.endswith("_standalone") and (width < 1200 or height < 800):
+            errors.append(
+                f"browser standalone screenshot viewport is invalid: {relative}"
+            )
+    if screenshot_paths != sorted(screenshot_paths):
+        errors.append("browser screenshot paths must be lexically ordered")
+    if set(screenshot_roles) != set(_CANONICAL_BROWSER_SCREENSHOTS):
+        errors.append("browser receipt screenshot roles are incomplete")
+    return errors, screenshot_data_by_role
+
+
+def _browser_receipt_errors(
+    project_root: Path,
+    *,
+    presentation: FormalismPresentation | None = None,
+    check_runtime: bool = True,
+) -> tuple[str, ...]:
+    """Validate stored capture bindings, replaying the live browser by default.
+
+    Static mode checks schemas, source/projection hashes, screenshots and
+    recorded observations. It omits executable identification and live replay;
+    an empty result in that mode is not browser acceptance.
+    """
+    root = Path(project_root).resolve()
+    path = root / BROWSER_RECEIPT
+    payload, error = _json_object(path, "browser receipt")
+    if payload is None:
+        return (error or "browser receipt is invalid",)
+    errors: list[str] = []
+    if payload.get("schema_version") != 4:
+        errors.append("browser receipt schema_version must be 4")
+    if payload.get("kind") != "browser-interaction":
+        errors.append("browser receipt kind must be browser-interaction")
+    if payload.get("accepted") is not True:
+        errors.append("browser receipt must be accepted")
+    browser = payload.get("browser")
+    identity_errors, browser_name, browser_executable = _browser_identity_errors(
+        browser,
+        check_runtime=check_runtime,
+    )
+    errors.extend(identity_errors)
     render_configuration = payload.get("render_configuration")
     if render_configuration != canonical_browser_render_configuration():
         errors.append("browser render configuration is not canonical")
@@ -302,76 +396,11 @@ def _browser_receipt_errors(
             errors.append(f"browser receipt projection hash is stale: {key}")
 
     screenshots = payload.get("screenshots")
-    if not isinstance(screenshots, list) or len(screenshots) != len(
-        _CANONICAL_BROWSER_SCREENSHOTS
-    ):
-        errors.append("browser receipt screenshot roster is not canonical")
-        screenshots = []
-    screenshot_paths: list[str] = []
-    screenshot_roles: list[str] = []
-    screenshot_data_by_role: dict[str, bytes] = {}
-    for index, record in enumerate(screenshots):
-        if not isinstance(record, dict):
-            errors.append(f"browser screenshot record {index} must be an object")
-            continue
-        if set(record) != {"role", "path", "sha256", "width", "height"}:
-            errors.append(f"browser screenshot record fields are invalid: {index}")
-        role = record.get("role")
-        relative = record.get("path")
-        digest = record.get("sha256")
-        width = record.get("width")
-        height = record.get("height")
-        if (
-            not isinstance(role, str)
-            or role not in _CANONICAL_BROWSER_SCREENSHOTS
-            or relative != _CANONICAL_BROWSER_SCREENSHOTS.get(role)
-        ):
-            errors.append(f"browser screenshot role/path is invalid: {role}")
-            continue
-        if role in screenshot_roles:
-            errors.append(f"duplicate browser screenshot role: {role}")
-            continue
-        screenshot_roles.append(role)
-        if (
-            not isinstance(relative, str)
-            or not relative.startswith(f"{BROWSER_ASSET_ROOT.as_posix()}/")
-            or not _safe_member_name(relative)
-        ):
-            errors.append(f"browser screenshot path is invalid: {relative}")
-            continue
-        if relative in screenshot_paths:
-            errors.append(f"duplicate browser screenshot path: {relative}")
-            continue
-        screenshot_paths.append(relative)
-        if not isinstance(digest, str) or _SHA256_RE.fullmatch(digest) is None:
-            errors.append(f"browser screenshot hash is invalid: {relative}")
-            continue
-        try:
-            screenshot_data = _relative_file_bytes(root, relative)
-            actual = sha256_bytes(screenshot_data)
-            actual_width, actual_height = _png_dimensions(screenshot_data)
-        except ReleaseBundleError as exc:
-            errors.append(str(exc))
-            continue
-        screenshot_data_by_role[role] = screenshot_data
-        if digest != actual:
-            errors.append(f"browser screenshot hash is stale: {relative}")
-        if type(width) is not int or type(height) is not int:
-            errors.append(f"browser screenshot dimensions are invalid: {relative}")
-        elif (width, height) != (actual_width, actual_height):
-            errors.append(f"browser screenshot dimensions are stale: {relative}")
-        elif role.endswith("_mobile") and (width != 390 or height < 844):
-            errors.append(f"browser mobile screenshot viewport is invalid: {relative}")
-        elif role.endswith("_desktop") and (width < 1200 or height < 800):
-            errors.append(f"browser desktop screenshot viewport is invalid: {relative}")
-        elif role.endswith("_standalone") and (width < 1200 or height < 800):
-            errors.append(
-                f"browser standalone screenshot viewport is invalid: {relative}"
-            )
-    if screenshot_paths != sorted(screenshot_paths):
-        errors.append("browser screenshot paths must be lexically ordered")
-    if set(screenshot_roles) != set(_CANONICAL_BROWSER_SCREENSHOTS):
-        errors.append("browser receipt screenshot roles are incomplete")
+    screenshot_errors, screenshot_data_by_role = _browser_screenshot_errors(
+        root,
+        screenshots,
+    )
+    errors.extend(screenshot_errors)
     if (
         check_runtime
         and not errors

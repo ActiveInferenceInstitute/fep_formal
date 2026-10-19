@@ -37,8 +37,10 @@ the eight receipt-bound copies and their individual retention decisions.
    [the local acceptance receipt](local-runtime-acceptance-20261018.json).
    L01/P08/P09 are accepted for their narrow source-bound software scopes in
    [the quality acceptance receipt](software-quality-acceptance-20261018.json).
-   Independent owner inventories can prepare L02/L03, L05/L06, S03 and
-   P06; its compiling, execution and review gates still apply. P03 is accepted
+   P06 has [bounded function-ratchet acceptance](function-ratchet-acceptance-20261019.json)
+   from complete local Python/native execution and independent source review.
+   Final render and fifteen-cell publication remain separate. Independent owner
+   inventories can prepare L02/L03, L05 and S03. P03 is accepted
    for the [bounded shared-helper consolidation](shared-helper-acceptance-20261018.json),
    with explicit retained contract exceptions and current bridge source custody.
    P11 is accepted for the [exact-source serial measurement](spikes/serial-native-20261018/README.md);
@@ -109,17 +111,20 @@ documentation-only lane was intentionally skipped. The
 
 The following successor contracts retain their original acceptance boundaries.
 L01/P09 now have executed source-bound acceptance in the quality receipt above;
-L06 retains its separate scientific/domain review requirements:
+L06 has current bounded component acceptance in the
+[native entropy receipt](native-entropy-acceptance-20261019.json):
 
 | Package | Prepared change | Required acceptance |
 | --- | --- | --- |
 | L01 / Issue109 | Accepted: narrow imports in 21 canonical topic bodies; theorem/proof tails and public/meta exposure preserved | Exact-source Python controls, generated parity, native and axiom checks passed; see the quality receipt |
-| L06 / Issue111 | Native probability-measure entropy and CGF bounds, with explicit integrability and infinite KL; derive a Mathlib-only consumer from the single authored proof block | Warning-free compilation, nonconstant attained tilt, clipping and singular-law controls, three retained axiom reports and distinct source/domain review |
+| L06 / Issue111 | Accepted component: native probability-measure entropy and CGF bounds, explicit integrability and infinite KL; Mathlib-only consumer from the single authored proof block | Actual hosted warning-free compilation, attained tilt, clipping and singular controls, all three raw axiom reports and independent component source/domain review; see the native entropy receipt |
 | P09 / Issue125 | Accepted: measured line floors for 14 packages, an explicit empty package and unchanged aggregate 89% floor | Split Python/Chrome XML, traced custody-arm rejection, clean and malformed-input controls passed; see the quality receipt |
 
 L06's extracted proposition uses no FEP types or assumed duality. Its
 `ENNReal.ofReal` bound preserves native infinity; clipped equality is not an
-optimizer characterization. P09 measures executable lines, not branch arcs.
+optimizer characterization. This component review supplies no terminal horizon
+human quorum, score/Fisher acceptance or upstream submission approval.
+P09 measures executable lines, not branch arcs.
 Its conditional control instruments an isolated copy of the actual custody model
 and retains source, XML and evaluated counts; live production source is unchanged.
 No new production Python owner or formal resource is introduced.

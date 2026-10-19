@@ -424,7 +424,17 @@ class GaussRunner:
     def run_topic(
         self, topic: TopicEntry, *, workflow: str = "verify"
     ) -> TopicRunResult:
-        """Run one topic and finalize any session left open by an exception."""
+        """Run one topic and finalize any session left open by an exception.
+
+        Parameters
+        ----------
+        workflow:
+            Workflow stage controlling the Hermes task directive:
+            - ``"verify"`` (default) — refine sketch and verify compilation.
+            - ``"draft"`` — produce a new typed skeleton (sorry ok in sub-goals).
+            - ``"prove"`` — attempt a full proof minimizing sorry usage.
+            - ``"review"`` — verify then request a post-compile review commentary.
+        """
         self._active_session_id: str | None = None
         try:
             return self._run_topic(topic, workflow=workflow)
@@ -436,62 +446,17 @@ class GaussRunner:
                 )
             raise
 
-    def _run_topic(
-        self, topic: TopicEntry, *, workflow: str = "verify"
-    ) -> TopicRunResult:
-        """Run the full Hermes + Lean workflow for a single topic.
-
-        Parameters
-        ----------
-        workflow:
-            Workflow stage controlling the Hermes task directive:
-            - ``"verify"`` (default) — refine sketch and verify compilation.
-            - ``"draft"`` — produce a new typed skeleton (sorry ok in sub-goals).
-            - ``"prove"`` — attempt a full proof minimizing sorry usage.
-            - ``"review"`` — verify then request a post-compile review commentary.
-        """
-        if workflow not in _WORKFLOW_PREAMBLES:
-            raise ValueError(f"unsupported workflow: {workflow}")
-
-        # ``review`` is a two-turn workflow: the first turn must still emit a
-        # refinable Lean block; only the post-compilation turn requests prose.
-        preamble = (
-            _WORKFLOW_PREAMBLES["verify"]
-            if workflow == "review"
-            else _WORKFLOW_PREAMBLES[workflow]
-        )
-        lean_sketch = getattr(topic, "lean_sketch", "") or ""
-        model = self.hermes._cfg.model
-        initial_stage = "review_refinement_v2" if workflow == "review" else workflow
-        initial_prompt_digest = _prompt_digest(
-            self.hermes.build_messages(
-                topic,
-                preamble=preamble,
-                request_lean=True,
-            )
-        )
-        cache_key = _hermes_cache_key(
-            topic.id,
-            lean_sketch,
-            model,
-            initial_stage,
-            prompt_digest=initial_prompt_digest,
-            salt=self._cache_salt,
-        )
-        stage_results: list[dict[str, Any]] = []
-
-        t0 = time.time()
-        session_id = self.client.create_session(
-            topic.id,
-            topic.area,
-            lean_sketch,
-        )
-        self._active_session_id = session_id
-        self.client.log_event(
-            "evaluation_started", session_id=session_id, workflow=workflow
-        )
-
-        # ── Hermes call with cache (prefetch result from prior topic's verify phase) ─
+    def _initial_topic_response(
+        self,
+        topic: TopicEntry,
+        *,
+        cache_key: str,
+        initial_stage: str,
+        workflow: str,
+        model: str,
+        preamble: str,
+        lean_sketch: str,
+    ) -> HermesResult:
         cached = self.client.get_cached_hermes(cache_key)
         if self._prefetch_future is not None:
             log.debug("Hermes prefetch result for %s (workflow=%s)", topic.id, workflow)
@@ -541,6 +506,202 @@ class GaussRunner:
                     result_json=_json.dumps(hermes_res.as_dict()),
                     lean_sketch_hash=_hashlib.sha256(lean_sketch.encode()).hexdigest(),
                 )
+        return hermes_res
+
+    def _review_compiled_topic(
+        self,
+        topic: TopicEntry,
+        *,
+        refined: str,
+        verify_res: VerifyResult,
+        model: str,
+        session_id: str,
+        next_turn: int,
+        stage_results: list[dict[str, Any]],
+    ) -> tuple[bool, str, int, int]:
+        review_preamble = _WORKFLOW_PREAMBLES["review"]
+        extra_ctx = (
+            f"The sketch compiled successfully (has_sorry={verify_res.has_sorry}). "
+            f"Errors: {verify_res.errors or 'none'}."
+        )
+        review_topic = replace(topic, lean_sketch=refined)
+        review_stage = "review_commentary_v2"
+        rendered_review_preamble = f"{review_preamble}\n\n{extra_ctx}"
+        review_messages = self.hermes.build_messages(
+            review_topic,
+            preamble=rendered_review_preamble,
+            request_lean=False,
+        )
+        review_cache_key = _hermes_cache_key(
+            topic.id,
+            refined,
+            model,
+            review_stage,
+            prompt_digest=_prompt_digest(review_messages),
+            salt=self._cache_salt,
+        )
+        review_cached = self.client.get_cached_hermes(review_cache_key)
+        if review_cached is not None:
+            # Explicit field reconstruction from cache dict — avoids fragile
+            # **kwargs unpacking.  cache_hit is forced True regardless of
+            # whatever value was stored in the dict.
+            review_res = HermesResult(
+                success=review_cached.get("success", False),
+                model_used=review_cached.get("model_used", model),
+                explanation=review_cached.get("explanation", ""),
+                refined_lean_sketch=review_cached.get("refined_lean_sketch", ""),
+                reasoning=review_cached.get("reasoning", ""),
+                tokens_used=int(review_cached.get("tokens_used", 0)),
+                duration_s=float(review_cached.get("duration_s", 0.0)),
+                error=review_cached.get("error", ""),
+                topic_id=review_cached.get("topic_id", topic.id),
+                cache_hit=True,
+                network_retries=int(review_cached.get("network_retries", 0)),
+                chain_advance_reason=review_cached.get("chain_advance_reason", ""),
+            )
+        else:
+            review_res = self.hermes.explain_topic(
+                review_topic,
+                preamble=rendered_review_preamble,
+                request_lean=False,
+            )
+        if review_res.success and review_res.refined_lean_sketch:
+            review_res = replace(
+                review_res,
+                success=False,
+                error=(
+                    "prose-only review returned a Lean rewrite; "
+                    "the compiled sketch remains authoritative"
+                ),
+            )
+        if review_cached is None and review_res.success:
+            self.client.set_cached_hermes(
+                review_cache_key,
+                topic_id=topic.id,
+                stage=review_stage,
+                model=review_res.model_used,
+                result_json=_json.dumps(review_res.as_dict()),
+                lean_sketch_hash=_hashlib.sha256(refined.encode()).hexdigest(),
+            )
+        review_completed = review_res.success
+        review_error = review_res.error if not review_res.success else ""
+        review_tokens = review_res.tokens_used
+        review_network_retries = review_res.network_retries
+        next_turn = self._record_hermes_turns(
+            session_id,
+            review_topic,
+            review_res,
+            preamble=rendered_review_preamble,
+            request_lean=False,
+            start_index=next_turn,
+        )
+        stage_results.append(
+            {
+                "stage": "review_commentary",
+                "success": review_res.success,
+                "explanation": review_res.explanation,
+                "cache_hit": review_res.cache_hit,
+                "error": review_res.error,
+                "model": review_res.model_used,
+                "tokens_used": review_res.tokens_used,
+                "network_retries": review_res.network_retries,
+                "chain_advance_reason": review_res.chain_advance_reason,
+            }
+        )
+        return review_completed, review_error, review_tokens, review_network_retries
+
+    def _open_topic_session(
+        self,
+        topic: TopicEntry,
+        lean_sketch: str,
+        workflow: str,
+    ) -> tuple[float, str]:
+        t0 = time.time()
+        session_id = self.client.create_session(
+            topic.id,
+            topic.area,
+            lean_sketch,
+        )
+        self._active_session_id = session_id
+        self.client.log_event(
+            "evaluation_started", session_id=session_id, workflow=workflow
+        )
+        return t0, session_id
+
+    @staticmethod
+    def _initial_turn_failure(
+        topic: TopicEntry,
+        hermes_res: HermesResult,
+        *,
+        session_id: str,
+        workflow: str,
+        started_at: float,
+        status: str,
+        error: str,
+    ) -> TopicRunResult:
+        return TopicRunResult(
+            topic_id=topic.id,
+            session_id=session_id,
+            success=False,
+            status=status,
+            error=error,
+            duration_s=time.time() - started_at,
+            workflow=workflow,
+            explanation=hermes_res.explanation,
+            refined_lean_sketch=hermes_res.refined_lean_sketch,
+            tokens_used=hermes_res.tokens_used,
+            hermes_model=hermes_res.model_used,
+            cache_hit=hermes_res.cache_hit,
+            network_retries=hermes_res.network_retries,
+            chain_advance_reason=hermes_res.chain_advance_reason,
+        )
+
+    def _run_topic(
+        self, topic: TopicEntry, *, workflow: str = "verify"
+    ) -> TopicRunResult:
+        """Run the full Hermes + Lean workflow for a single topic."""
+        if workflow not in _WORKFLOW_PREAMBLES:
+            raise ValueError(f"unsupported workflow: {workflow}")
+
+        # ``review`` is a two-turn workflow: the first turn must still emit a
+        # refinable Lean block; only the post-compilation turn requests prose.
+        preamble = (
+            _WORKFLOW_PREAMBLES["verify"]
+            if workflow == "review"
+            else _WORKFLOW_PREAMBLES[workflow]
+        )
+        lean_sketch = getattr(topic, "lean_sketch", "") or ""
+        model = self.hermes._cfg.model
+        initial_stage = "review_refinement_v2" if workflow == "review" else workflow
+        initial_prompt_digest = _prompt_digest(
+            self.hermes.build_messages(
+                topic,
+                preamble=preamble,
+                request_lean=True,
+            )
+        )
+        cache_key = _hermes_cache_key(
+            topic.id,
+            lean_sketch,
+            model,
+            initial_stage,
+            prompt_digest=initial_prompt_digest,
+            salt=self._cache_salt,
+        )
+        stage_results: list[dict[str, Any]] = []
+
+        t0, session_id = self._open_topic_session(topic, lean_sketch, workflow)
+
+        # ── Hermes call with cache (prefetch result from prior topic's verify phase) ─
+        hermes_res = self._initial_topic_response(
+            topic,
+            cache_key=cache_key,
+            initial_stage=initial_stage,
+            workflow=workflow,
+            model=model,
+            preamble=preamble,
+            lean_sketch=lean_sketch,
+        )
 
         next_turn = self._record_hermes_turns(
             session_id,
@@ -551,41 +712,27 @@ class GaussRunner:
 
         if not hermes_res.success:
             self.client.close_session(session_id, status="error", hermes_success=False)
-            return TopicRunResult(
-                topic_id=topic.id,
+            return self._initial_turn_failure(
+                topic,
+                hermes_res,
                 session_id=session_id,
-                success=False,
+                workflow=workflow,
+                started_at=t0,
                 status="hermes_error",
                 error=hermes_res.error or "hermes returned empty",
-                duration_s=time.time() - t0,
-                workflow=workflow,
-                explanation=hermes_res.explanation,
-                refined_lean_sketch=hermes_res.refined_lean_sketch,
-                tokens_used=hermes_res.tokens_used,
-                hermes_model=hermes_res.model_used,
-                cache_hit=hermes_res.cache_hit,
-                network_retries=hermes_res.network_retries,
-                chain_advance_reason=hermes_res.chain_advance_reason,
             )
 
         refined = hermes_res.refined_lean_sketch
         if not refined:
             self.client.close_session(session_id, status="failed", hermes_success=False)
-            return TopicRunResult(
-                topic_id=topic.id,
+            return self._initial_turn_failure(
+                topic,
+                hermes_res,
                 session_id=session_id,
-                success=False,
+                workflow=workflow,
+                started_at=t0,
                 status="no_lean_sketch",
                 error="LLM did not output a ```lean block",
-                duration_s=time.time() - t0,
-                workflow=workflow,
-                explanation=hermes_res.explanation,
-                refined_lean_sketch=hermes_res.refined_lean_sketch,
-                tokens_used=hermes_res.tokens_used,
-                hermes_model=hermes_res.model_used,
-                cache_hit=hermes_res.cache_hit,
-                network_retries=hermes_res.network_retries,
-                chain_advance_reason=hermes_res.chain_advance_reason,
             )
 
         # Restore import lines and namespace wrapper that LLMs commonly strip.
@@ -622,94 +769,16 @@ class GaussRunner:
             and not verify_res.has_sorry
             and not verify_res.warnings
         ):
-            review_preamble = _WORKFLOW_PREAMBLES["review"]
-            extra_ctx = (
-                f"The sketch compiled successfully (has_sorry={verify_res.has_sorry}). "
-                f"Errors: {verify_res.errors or 'none'}."
-            )
-            review_topic = replace(topic, lean_sketch=refined)
-            review_stage = "review_commentary_v2"
-            rendered_review_preamble = f"{review_preamble}\n\n{extra_ctx}"
-            review_messages = self.hermes.build_messages(
-                review_topic,
-                preamble=rendered_review_preamble,
-                request_lean=False,
-            )
-            review_cache_key = _hermes_cache_key(
-                topic.id,
-                refined,
-                model,
-                review_stage,
-                prompt_digest=_prompt_digest(review_messages),
-                salt=self._cache_salt,
-            )
-            review_cached = self.client.get_cached_hermes(review_cache_key)
-            if review_cached is not None:
-                # Explicit field reconstruction from cache dict — avoids fragile
-                # **kwargs unpacking.  cache_hit is forced True regardless of
-                # whatever value was stored in the dict.
-                review_res = HermesResult(
-                    success=review_cached.get("success", False),
-                    model_used=review_cached.get("model_used", model),
-                    explanation=review_cached.get("explanation", ""),
-                    refined_lean_sketch=review_cached.get("refined_lean_sketch", ""),
-                    reasoning=review_cached.get("reasoning", ""),
-                    tokens_used=int(review_cached.get("tokens_used", 0)),
-                    duration_s=float(review_cached.get("duration_s", 0.0)),
-                    error=review_cached.get("error", ""),
-                    topic_id=review_cached.get("topic_id", topic.id),
-                    cache_hit=True,
-                    network_retries=int(review_cached.get("network_retries", 0)),
-                    chain_advance_reason=review_cached.get("chain_advance_reason", ""),
+            review_completed, review_error, review_tokens, review_network_retries = (
+                self._review_compiled_topic(
+                    topic,
+                    refined=refined,
+                    verify_res=verify_res,
+                    model=model,
+                    session_id=session_id,
+                    next_turn=next_turn,
+                    stage_results=stage_results,
                 )
-            else:
-                review_res = self.hermes.explain_topic(
-                    review_topic,
-                    preamble=rendered_review_preamble,
-                    request_lean=False,
-                )
-            if review_res.success and review_res.refined_lean_sketch:
-                review_res = replace(
-                    review_res,
-                    success=False,
-                    error=(
-                        "prose-only review returned a Lean rewrite; "
-                        "the compiled sketch remains authoritative"
-                    ),
-                )
-            if review_cached is None and review_res.success:
-                self.client.set_cached_hermes(
-                    review_cache_key,
-                    topic_id=topic.id,
-                    stage=review_stage,
-                    model=review_res.model_used,
-                    result_json=_json.dumps(review_res.as_dict()),
-                    lean_sketch_hash=_hashlib.sha256(refined.encode()).hexdigest(),
-                )
-            review_completed = review_res.success
-            review_error = review_res.error if not review_res.success else ""
-            review_tokens = review_res.tokens_used
-            review_network_retries = review_res.network_retries
-            next_turn = self._record_hermes_turns(
-                session_id,
-                review_topic,
-                review_res,
-                preamble=rendered_review_preamble,
-                request_lean=False,
-                start_index=next_turn,
-            )
-            stage_results.append(
-                {
-                    "stage": "review_commentary",
-                    "success": review_res.success,
-                    "explanation": review_res.explanation,
-                    "cache_hit": review_res.cache_hit,
-                    "error": review_res.error,
-                    "model": review_res.model_used,
-                    "tokens_used": review_res.tokens_used,
-                    "network_retries": review_res.network_retries,
-                    "chain_advance_reason": review_res.chain_advance_reason,
-                }
             )
 
         artifact = self._build_artifact_payload(topic, hermes_res, verify_res)
