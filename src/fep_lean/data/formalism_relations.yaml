@@ -350,30 +350,32 @@ capabilities:
       - fep_fep051.FEP051.fep051_reconstruction_iff_absoluteContinuous
   - id: cap-multidimensional-information-geometry
     title: Multidimensional Fisher geometry
-    description: A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability.
+    description: A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability. The actual derivative of the interior Bernoulli Fisher–Rao coordinate is additionally identified with the topic Jacobian, giving the stated one-dimensional metric pullback; no global chart or path-length theorem is inferred.
     status: satisfied
     evidence:
-      - FEP.InformationGeometry.bernoulliScoreModel_fullSupport
-      - FEP.InformationGeometry.bernoulliScoreModel_identifiable
-      - FEP.InformationGeometry.bernoulli_fisherMatrix_entry
-      - FEP.InformationGeometry.bernoulli_fisherMatrix_isUnit
-      - FEP.InformationGeometry.bernoulli_fisherMetric_eq
-      - FEP.InformationGeometry.bernoulli_fisherMetric_pos
-      - FEP.InformationGeometry.bernoulli_naturalGradient_eq
-      - FEP.InformationGeometry.duplicatedFairBernoulli_not_identifiable
-      - FEP.InformationGeometry.duplicatedScore_fisherMetric_eq_zero
-      - FEP.InformationGeometry.fairBernoulli_fisherMatrix_entry
-      - FEP.InformationGeometry.fisherMatrix_symm
-      - FEP.InformationGeometry.fisherMetric_eq_dot_lowerTangent
-      - FEP.InformationGeometry.fisherMetric_eq_zero_iff
-      - FEP.InformationGeometry.fisherMetric_nonneg
-      - FEP.InformationGeometry.fisherMetric_pos
-      - FEP.InformationGeometry.naturalGradient_energy_identity
-      - FEP.InformationGeometry.naturalGradient_isNaturalGradient
-      - FEP.InformationGeometry.naturalGradient_metric_duality
-      - FEP.InformationGeometry.naturalGradient_unique
-      - FEP.InformationGeometry.pullbackMetric_comp
-      - FEP.InformationGeometry.pullbackMetric_pos
+    - FEP.InformationGeometry.bernoulliScoreModel_fullSupport
+    - FEP.InformationGeometry.bernoulliScoreModel_identifiable
+    - FEP.InformationGeometry.bernoulli_fisherMatrix_entry
+    - FEP.InformationGeometry.bernoulli_fisherMatrix_isUnit
+    - FEP.InformationGeometry.bernoulli_fisherMetric_eq
+    - FEP.InformationGeometry.bernoulli_fisherMetric_pos
+    - FEP.InformationGeometry.bernoulli_naturalGradient_eq
+    - FEP.InformationGeometry.duplicatedFairBernoulli_not_identifiable
+    - FEP.InformationGeometry.duplicatedScore_fisherMetric_eq_zero
+    - FEP.InformationGeometry.fairBernoulli_fisherMatrix_entry
+    - FEP.InformationGeometry.fisherMatrix_symm
+    - FEP.InformationGeometry.fisherMetric_eq_dot_lowerTangent
+    - FEP.InformationGeometry.fisherMetric_eq_zero_iff
+    - FEP.InformationGeometry.fisherMetric_nonneg
+    - FEP.InformationGeometry.fisherMetric_pos
+    - FEP.InformationGeometry.naturalGradient_energy_identity
+    - FEP.InformationGeometry.naturalGradient_isNaturalGradient
+    - FEP.InformationGeometry.naturalGradient_metric_duality
+    - FEP.InformationGeometry.naturalGradient_unique
+    - FEP.InformationGeometry.pullbackMetric_comp
+    - FEP.InformationGeometry.pullbackMetric_pos
+    - FEPComposed.fep018_coordinate_derivative_is_fep038
+    - FEPComposed.fep018_fep038_actual_metric_pullback
   - id: cap-native-blanket-transfer
     title: Finite-to-native blanket transfer
     description: Weighted Dirac embedding preserves finite-law atoms, normalization, expectations, prediction, and static blanket rectangles on the same discrete carrier. The embedded joint satisfies Mathlib CondIndepFun, measurable endpoint coarsenings preserve it, and every authored factorized transition row inherits it; a correlated Boolean blanket witness keeps two positive conditioning regimes and an excluded off-regime atom explicit.
@@ -655,8 +657,9 @@ edges:
     witness: FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance
   - source: fep-030
     target: fep-031
-    kind: conceptual
-    rationale: A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem.
+    kind: formal_pairing
+    rationale: The full-support binary Gibbs masses of fep031 are exactly energyGibbsLaw, and its finite entropy is exactly the Real.binEntropy carrier used by fep030. At a supplied matched mean energy, this law uniquely maximizes that binary entropy; the witness also retains fep030’s bound/equality characterization on the same normalized candidate law. This is an exact finite carrier identification and constrained specialization, not a derivation of arbitrary Gibbs laws from the binary entropy bound or existence of a temperature for every target mean.
+    witness: FEPComposed.fep030_fep031_binary_maxEntropy
   - source: fep-031
     target: fep-030
     kind: formal
