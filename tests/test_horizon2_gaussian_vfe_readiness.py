@@ -32,6 +32,7 @@ from tests._support.lean435_migration import (
     HISTORICAL_MANIFEST_ARCHIVE_SHA256,
     HISTORICAL_METADATA_ARCHIVE,
     HISTORICAL_METADATA_ARCHIVE_SHA256,
+    bridge_dev_metadata_predecessor,
     historical_carrier_bytes,
     historical_custody_root,
     historical_custody_sources,
@@ -867,6 +868,7 @@ def test_historical_metadata_preserves_only_explicit_release_profiles(
     before = _production_custody_snapshot()
     live = (root / "pyproject.toml").read_bytes()
     historical = historical_metadata_bytes(root, live)
+    live = bridge_dev_metadata_predecessor(live)
     recorded_token = RELEASE_METADATA_REPLACEMENTS["pyproject.toml"][1].encode()
     current_token = recorded_token.replace(b'"1.4.0"', b'"1.6.0"')
     if profile == "predecessor":
