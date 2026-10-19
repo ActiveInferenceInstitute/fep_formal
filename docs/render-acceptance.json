@@ -11,7 +11,7 @@
     "unnumbered_equations": 0,
     "unresolved_references": 0
   },
-  "manuscript_source_digest": "4ad49a69a226dc7b8bace4dde85453c8777e62020569f7b23fdbe82489fc737b",
+  "manuscript_source_digest": "88f7281127f3db98ee38031c99ab5763f88c848ecc44e87dfae7d02eb95e0db5",
   "pages": 385,
   "receipt_version": 2,
   "source_digests": {
@@ -31,7 +31,7 @@
     "04b_framework_active_inference.md": "08a49b058bebbd2cc5153767ad910a69b8b3e547d3c6729f70ad5de959f9a2cf",
     "04c_framework_sophisticated_dynamics.md": "61e7c3054f7b5942a55c258ddc6797ae34bd8f83263d6edd006823f494191bec",
     "04d_framework_thermodynamics.md": "9a9ceaff669463a5d830cfdf49feea4d23902bb305a755bd22e9e090d246c8c8",
-    "04e_quantitative_metrics.md": "c571b82fb1f300eb4f60a1fd298c6db22d441b09db083a4165a3e83092b4cf0b",
+    "04e_quantitative_metrics.md": "da1c401c69061512bf65b4edadb5b37bfc1d099bff769b07ef1761accde405b0",
     "04f_semantic_closure_and_validation.md": "853fefd3ac214bddab000d4cdc80fcf2ecaa6ad5b051d52a6718b907f4fc84d5",
     "04g_finite_active_inference_kernel.md": "af43d01a2d8f099ba4ad98d013c6f765c57b6e16d4598780269169e8d91b45ed",
     "04h_expanded_formalism_program.md": "4903954dd01a55897344c1e79c147fc0da3b39227f4dd3111a7a3b7a86d1cc01",
