@@ -871,7 +871,7 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/62"
       ],
-      "status": "planned",
+      "status": "accepted",
       "outcome": "One concise operator contract table matches current parser/API/installed-help behavior.",
       "depends_on": [
         "C04",
@@ -896,7 +896,13 @@
         "installed package"
       ],
       "human_review": "Operator review of next actions and independent API review for any behavioral change.",
-      "out_of_scope": "Status repairing evidence, collecting tests, loading credentials or changing validator policy."
+      "out_of_scope": "Status repairing evidence, collecting tests, loading credentials or changing validator policy.",
+      "acceptance": {
+        "receipt": "operator-contract-acceptance-20261019.json",
+        "scope": "Canonical operator table, actual installed-help/source comparison and independent operator review; no behavior change.",
+        "dependency_resolution": "C04 accepted; C05 source/help/local-software prerequisite subset satisfied. Broader production/current-evidence scope remains open.",
+        "remaining": "Final source-bound fifteen-cell head/main publication before issue closure."
+      }
     },
     {
       "id": "O02",

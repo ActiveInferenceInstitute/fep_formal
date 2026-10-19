@@ -11,7 +11,7 @@
     "unnumbered_equations": 0,
     "unresolved_references": 0
   },
-  "manuscript_source_digest": "e596f81544ae336ad5a27e888085ae4970a6bc846481338b4218894e1c83b423",
+  "manuscript_source_digest": "31e545ba4cd6df6701928129a164bff459e64f52c17e77ee6adf8c101679b728",
   "pages": 385,
   "receipt_version": 2,
   "source_digests": {
@@ -21,7 +21,7 @@
     "02a_introduction.md": "f4a0025fef6c46f9e8b61d56ae9dbce88fe125a1d3ea0ff2685f27a2f0835c3c",
     "02b_background.md": "590d239a848da92238fa1e48b65b7d0c5c7e60d1b89160fffb8dcb2ea6c98bdb",
     "03_methodology.md": "ceced4f6ff8d176fcb611abf7e6db453b4e4cc469849df2eebbae1f1da51178e",
-    "03a_lean4_primer.md": "4e4d1223cd055ba43a5e5e0ece939f1ed7b3affc7825dcb105474a906b3bdf79",
+    "03a_lean4_primer.md": "e5cd759eaba3c7f6a7c027b1a137bd939d3e069a0860d0267e8fcf64ea1d74d5",
     "03b_mathlib4_measure_theory.md": "cbc93a1b53a76fcb15c4a6b7016697b09fd589c4fd587eedea885edcb04da7eb",
     "03c_sorry_maturity.md": "79746e6265d0b8c0fc3518acc950a9a6c78f0416049e9f61fc685fa9fcec6fbb",
     "03d_hermes_llm_pipeline.md": "f0df64d24ceefe6d0603e2a2a50d9689a00a6ee373d60898fc011cdaaeb57f2e",

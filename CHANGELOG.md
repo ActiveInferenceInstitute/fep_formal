@@ -1,5 +1,12 @@
 ## Unreleased
 
+- Document one canonical operator contract table for status, preflight, native
+  verification, bridge checks and publication capture, including required inputs,
+  process/mutation effects, platform support and concrete exit-state next actions.
+  Retain independent operator review and actual installed-help comparisons for
+  [#62](https://github.com/ActiveInferenceInstitute/fep_formal/issues/62); runtime
+  behavior and broader production-capture acceptance are unchanged.
+
 - Refresh the active source pair and emitted signatures after the eight reviewed
   owner changes. Bind the current Q7 renderer's quoted model-title docstring to
   its independently reviewed exact scaffold digest; preserve every executable
