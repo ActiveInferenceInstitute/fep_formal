@@ -11,7 +11,7 @@
     "unnumbered_equations": 0,
     "unresolved_references": 0
   },
-  "manuscript_source_digest": "88f7281127f3db98ee38031c99ab5763f88c848ecc44e87dfae7d02eb95e0db5",
+  "manuscript_source_digest": "e596f81544ae336ad5a27e888085ae4970a6bc846481338b4218894e1c83b423",
   "pages": 385,
   "receipt_version": 2,
   "source_digests": {
@@ -25,7 +25,7 @@
     "03b_mathlib4_measure_theory.md": "cbc93a1b53a76fcb15c4a6b7016697b09fd589c4fd587eedea885edcb04da7eb",
     "03c_sorry_maturity.md": "79746e6265d0b8c0fc3518acc950a9a6c78f0416049e9f61fc685fa9fcec6fbb",
     "03d_hermes_llm_pipeline.md": "f0df64d24ceefe6d0603e2a2a50d9689a00a6ee373d60898fc011cdaaeb57f2e",
-    "03e_lean_compilation.md": "a08fb4362f430cc495c6b5845aa28dc4ec57561114763b819f8ece9b153c1ebf",
+    "03e_lean_compilation.md": "113a4a9a56d0f017fc3486da1f7847162618a7e6fdb1e16c320e52ec7009f4a6",
     "03f_pipeline_architecture.md": "ad43c10153d5f3e689cd2ca31965e77715beaeeae7e7710bfc2aa17627d51e77",
     "04a_framework_fep.md": "58ce9bb3e71f5ffecf1abecb4cf87a1023c65cd768f1a5602d50eeb2ef4312d1",
     "04b_framework_active_inference.md": "08a49b058bebbd2cc5153767ad910a69b8b3e547d3c6729f70ad5de959f9a2cf",

@@ -277,6 +277,29 @@ jobs:
           --chrome-junit output/live-chrome-acceptance.xml
           --coverage coverage.xml
           --output output/python-acceptance-summary.json
+      - name: Verify sealed Python package metadata before upload
+        run: |
+          uv run python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          from fep_lean.output.release_bundle._core import _capture_regular_file
+
+          root = Path.cwd().resolve(strict=True)
+          collection = json.loads((root / "output/python-acceptance-collection.json").read_text())
+          expected = {"src/fep_lean.egg-info/" + name for name in (
+              "PKG-INFO", "SOURCES.txt", "dependency_links.txt", "entry_points.txt",
+              "requires.txt", "top_level.txt",
+          )}
+          sealed = {name: sha for name, sha in collection["source_sha256"].items()
+                    if name.startswith("src/fep_lean.egg-info/")}
+          if set(sealed) != expected:
+              raise SystemExit("sealed package metadata membership differs")
+          for name, sha in sorted(sealed.items()):
+              data = _capture_regular_file(root / name)
+              if hashlib.sha256(data).hexdigest() != sha:
+                  raise SystemExit(f"sealed package metadata bytes differ: {name}")
+          PY
       - name: Retain actual Python acceptance results and coverage
         if: always()
         uses: actions/upload-artifact@v7
@@ -293,6 +316,12 @@ jobs:
             output/coverage-floor-control-one.log
             output/coverage-floor-control-both.log
             coverage.xml
+            src/fep_lean.egg-info/PKG-INFO
+            src/fep_lean.egg-info/SOURCES.txt
+            src/fep_lean.egg-info/dependency_links.txt
+            src/fep_lean.egg-info/entry_points.txt
+            src/fep_lean.egg-info/requires.txt
+            src/fep_lean.egg-info/top_level.txt
           if-no-files-found: error
       - name: Check mathematical context and numerical visualization boundaries
         run: |
@@ -860,13 +889,17 @@ jobs:
               versions[command] = subprocess.check_output([command, "--version"], text=True, timeout=30).strip()
           fonts = {}
           font_files = {}
+          font_bytes = {}
           for role, family in declared_fonts(root / "manuscript/preamble.md").items():
               names = subprocess.check_output(["fc-match", "--format=%{file}\n", family], text=True, timeout=30).splitlines()
               if not names or not Path(names[0]).is_file():
                   raise SystemExit(f"selected font is absent: {family}")
               font = Path(names[0])
               font_files[role] = font.resolve()
-              fonts[role] = {"family": family, "file": font.name, "sha256": hashlib.sha256(_capture_regular_file(font_files[role])).hexdigest()}
+              artifact_path = f"fonts/{role}/{font.name}"
+              data = _capture_regular_file(font_files[role])
+              font_bytes[artifact_path] = data
+              fonts[role] = {"family": family, "file": font.name, "sha256": hashlib.sha256(data).hexdigest(), "artifact_path": artifact_path}
           provenance = {
               "schema_version": 1, "commit": sha,
               "workflow_run_id": os.environ["WORKFLOW_RUN_ID"],
@@ -892,6 +925,7 @@ jobs:
           try:
               retained = {
                   **accepted_bytes,
+                  **font_bytes,
                   "renderer-provenance.json": (json.dumps(provenance, indent=2, sort_keys=True) + "\n").encode(),
                   "source-manifest.json": (json.dumps({"schema_version": 1, "commit": sha, "sources": sources}, indent=2, sort_keys=True) + "\n").encode(),
               }

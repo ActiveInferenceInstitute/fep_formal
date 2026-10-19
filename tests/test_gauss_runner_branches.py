@@ -1,4 +1,4 @@
-"""Extra GaussRunner branches: controlled Hermes results and error paths (no direct execution)."""
+"""Controlled Hermes/error branches and one serialized real-Lean review fixture."""
 
 from __future__ import annotations
 
@@ -261,6 +261,7 @@ def test_stage_results_empty_for_verify(tmp_path: Path) -> None:
 # ── Review workflow stage_results test ───────────────────────────────────────
 
 
+@pytest.mark.serial_lean
 def test_run_topic_review_workflow_populates_stage_results(tmp_path: Path) -> None:
     """workflow='review' appends a 'review_commentary' entry to stage_results
     when the refined sketch compiles successfully."""

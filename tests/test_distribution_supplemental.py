@@ -613,6 +613,11 @@ def _exercise_render_artifact_staging(
         from fep_lean.output.release_bundle._core import _capture_link_bytes
 
         provenance = json.loads((staged / "renderer-provenance.json").read_text())
+        for role, selected in provenance["fonts"].items():
+            retained_font = selected["artifact_path"]
+            assert retained_font == f"fonts/{role}/{selected_font.name}"
+            assert (staged / retained_font).read_bytes() == selected_font.read_bytes()
+            assert manifest["files"][retained_font] == selected["sha256"]
         template_sources = provenance["template_sources"]
         object_format = subprocess.check_output(
             ["git", "rev-parse", "--show-object-format"], cwd=template, text=True
@@ -690,3 +695,83 @@ def _exercise_render_artifact_staging(
                 assert link["referents"] == {
                     item: expected_sources[item] for item in names
                 }
+
+
+def test_python_acceptance_upload_retains_sealed_package_metadata() -> None:
+    workflow = yaml.safe_load((PROJECT_ROOT / ".github/workflows/ci.yml").read_text())
+    upload = next(
+        step
+        for step in workflow["jobs"]["python"]["steps"]
+        if step.get("name") == "Retain actual Python acceptance results and coverage"
+    )
+    paths = set(upload["with"]["path"].splitlines())
+    required = {
+        "src/fep_lean.egg-info/" + name
+        for name in (
+            "PKG-INFO",
+            "SOURCES.txt",
+            "dependency_links.txt",
+            "entry_points.txt",
+            "requires.txt",
+            "top_level.txt",
+        )
+    }
+    assert required <= paths
+    assert upload["with"]["if-no-files-found"] == "error"
+
+
+@pytest.mark.parametrize(
+    "failure", [None, "unsealed", "unexpected", "missing", "changed", "symlink"]
+)
+def test_python_metadata_upload_refuses_unsealed_or_changed_bytes(
+    tmp_path: Path, failure: str | None
+) -> None:
+    names = (
+        "PKG-INFO",
+        "SOURCES.txt",
+        "dependency_links.txt",
+        "entry_points.txt",
+        "requires.txt",
+        "top_level.txt",
+    )
+    owner = tmp_path / "src/fep_lean.egg-info"
+    owner.mkdir(parents=True)
+    sealed = {}
+    for name in names:
+        payload = (name + " fixture bytes\n").encode()
+        (owner / name).write_bytes(payload)
+        sealed["src/fep_lean.egg-info/" + name] = hashlib.sha256(payload).hexdigest()
+    selected = owner / "PKG-INFO"
+    if failure == "unsealed":
+        del sealed["src/fep_lean.egg-info/PKG-INFO"]
+    elif failure == "unexpected":
+        sealed["src/fep_lean.egg-info/unexpected"] = "0" * 64
+    elif failure == "missing":
+        selected.unlink()
+    elif failure == "changed":
+        selected.write_bytes(b"changed package metadata")
+    elif failure == "symlink":
+        target = tmp_path / "outside-metadata"
+        target.write_bytes(selected.read_bytes())
+        selected.unlink()
+        selected.symlink_to(target)
+    output = tmp_path / "output"
+    output.mkdir()
+    (output / "python-acceptance-collection.json").write_text(
+        json.dumps({"source_sha256": sealed})
+    )
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            _workflow_python(
+                "Verify sealed Python package metadata before upload", "python"
+            ),
+        ],
+        cwd=tmp_path,
+        env={**os.environ, "PYTHONPATH": str(PROJECT_ROOT / "src")},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert (result.returncode == 0) is (failure is None), result.stderr
