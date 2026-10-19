@@ -842,3 +842,21 @@ component review. Source, proof-block, consumer and upload hashes agree.
 The native entropy receipt accepts only that component. It supplies no terminal
 horizon human quorum, score/Fisher acceptance, scientific promotion or upstream
 submission decision. Normal reviewed publication precedes issue closure.
+
+
+## Reviewed current Q7 scaffold after the renderer's title quoting change
+
+**Choice:** adopt only the independently reviewed current canonical scaffold
+SHA-256 `0cf5e8b1afbfa7b82cd3c3cbaa5c22ba0931738030ed83195b944936a3a8b4ce`.
+The old `b34a350a...` scaffold remains historical. No serializer, schema,
+interpreter acceptance, parameter table or executable statement changes.
+
+**Reason:** actual current GNN rendering quotes the same model title in the
+module docstring. Complete AST comparison after exactly that substitution is
+identical, and all five real CPython runtimes produce the same 56,972 candidate
+bytes with the existing adversarial serialization controls. The old contract
+correctly rejected the unreviewed docstring; the exact digest replacement was
+independently reviewed before regeneration. The complete Lean probe and every
+historical native receipt remain byte-identical. Fresh source-bound native
+capture and adverse controls are required separately. Rendering and parser
+parity do not execute the generated model runner or close Issue61/B01.

@@ -74,21 +74,21 @@
         "lexeme": "1.0"
       }
     },
-    "scaffold_sha256": "b34a350a0c66bd611c19cd87e2343592c6ee7d15ed2fd6e422b1f891597febec",
-    "source_sha256": "48f6cc92f1c7afd8fc002af528159f5bfabf7c4bdf20b322749c6e61dbc9d026"
+    "scaffold_sha256": "0cf5e8b1afbfa7b82cd3c3cbaa5c22ba0931738030ed83195b944936a3a8b4ce",
+    "source_sha256": "630a67a12843096a5ef13de3e5fc3258886abec8716a7a6597de09634a575b53"
   },
   "evidence_plane": "static artifact certificate inputs",
-  "expected_contract_sha256": "54992fdf2c410e52f7ee36b1257914a3e40093f299c29c066b4a90a511f89b4a",
+  "expected_contract_sha256": "ceae6f1dc34cc581166b364fb3440eccbe487509ce56d76cabf5f080b4b8626e",
   "inputs": {
-    "specs/gnn-bridge-q7-continuous-ou-proof/expected.json": "54992fdf2c410e52f7ee36b1257914a3e40093f299c29c066b4a90a511f89b4a",
-    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "316732d9b8f984ed54d21d66237740efa33fae776bc99100fb376cee2869254f",
-    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py": "48f6cc92f1c7afd8fc002af528159f5bfabf7c4bdf20b322749c6e61dbc9d026",
+    "specs/gnn-bridge-q7-continuous-ou-proof/expected.json": "ceae6f1dc34cc581166b364fb3440eccbe487509ce56d76cabf5f080b4b8626e",
+    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "75628dbb7af24c169e113a8e73e94a9bf81c048eef77a4a5d3c2601225bbde2a",
+    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py": "630a67a12843096a5ef13de3e5fc3258886abec8716a7a6597de09634a575b53",
     "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "609191d65130dd15d5c6229aca711da19429862907f23d9361c393e21befd661",
-    "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-canonical.json": "b34a350a0c66bd611c19cd87e2343592c6ee7d15ed2fd6e422b1f891597febec",
-    "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-runtime-parity.json": "c6e15fe1afa209f53441c03a1c509223369b1eee9d7223cd3adf10fd3087f8bd",
+    "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-canonical.json": "0cf5e8b1afbfa7b82cd3c3cbaa5c22ba0931738030ed83195b944936a3a8b4ce",
+    "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-runtime-parity.json": "54303b768bc693626f7da3415372926be0a7fc392091d2d62a483d46f96fa38b",
     "specs/gnn-bridge-q7-continuous-ou-proof/probe.template.lean": "4ca4dd970d49b09563b3cf3d7b63f1ee14278f0dd49a4ffc45611b599fdb453a",
     "specs/gnn-bridge-q7-continuous-ou-proof/refresh_render.py": "8c87d71db852a2f0db61d640603d5669f06bce9e3f2924e0b646ea99a330f6e7",
-    "specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "72c9af36cccced0a462ad20a10079988f39b70587e54736d0055b7de64c598cd",
+    "specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "983a3531acbca913febf5b01a1961fc732cb55d8b2005538db7a3e4ea2250a2f",
     "specs/gnn-bridge-q7-continuous-ou-proof/scaffold-serialization.md": "541d408dccaa8b383aa6cac45c33d5d9d9e072ad93e985f747c58b5a77dc4ea5",
     "src/fep_lean/verification/_jsonutil.py": "8e389db30143881d795eecc8786df2ff5d9c21dd2fc1592e92e501991cee8e9d",
     "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "f6b557fc4b094abe525388e83a00210e4608dd2c9d985b6721542af56ded9aa3"

@@ -1,5 +1,12 @@
 ## Unreleased
 
+- Refresh the active source pair and emitted signatures after the eight reviewed
+  owner changes. Bind the current Q7 renderer's quoted model-title docstring to
+  its independently reviewed exact scaffold digest; preserve every executable
+  statement, parameter table and historical native receipt. Regenerate the
+  five-runtime parser evidence through its owner. New native component evidence
+  remains separate from parser parity and generated-runner execution.
+
 - Split the eight measured largest functions within their existing owners,
   preserving numerical records, dashboard SVG/HTML, coverage projections and
   capture-plan bytes. Enforce a separate 200-source-line bound in the seven
