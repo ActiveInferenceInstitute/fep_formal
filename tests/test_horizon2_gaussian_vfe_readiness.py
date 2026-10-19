@@ -32,6 +32,7 @@ from tests._support.lean435_migration import (
     HISTORICAL_MANIFEST_ARCHIVE_SHA256,
     HISTORICAL_METADATA_ARCHIVE,
     HISTORICAL_METADATA_ARCHIVE_SHA256,
+    bridge_dev_lock_predecessor,
     bridge_dev_metadata_predecessor,
     historical_carrier_bytes,
     historical_custody_root,
@@ -713,6 +714,8 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
             historical = historical_manifest
         elif relative == "pyproject.toml":
             historical = historical_metadata
+        elif relative == "uv.lock":
+            historical = bridge_dev_lock_predecessor(live)
         elif relative in migrated_sources:
             canonical = relative.replace("lean/FepSketches/", "src/fep_lean/formal/", 1)
             historical = historical_carrier_bytes(canonical, live)
@@ -731,6 +734,7 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
     } == set(historical_pins) | migrated_sources | historical_only | {
         MANIFEST_PATH,
         "pyproject.toml",
+        "uv.lock",
     }
     assert successor["historical_custody"] == json.loads(
         (PROJECT_ROOT / SUCCESSOR_PATH).read_text(encoding="utf-8")
