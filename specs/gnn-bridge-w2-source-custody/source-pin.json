@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "184ee53f55b526fdc858e2d962eba16e6066fb19",
+    "commit": "cae6293cf33405903ba96ebf2292ca9767a91fd3",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -202,7 +202,7 @@
     }
   },
   "gnn": {
-    "commit": "caab162d40977dab50bb30e0a3082033cca58141",
+    "commit": "be80431c471a3dd30fc93d690069a588b979ab26",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
@@ -232,7 +232,7 @@
       "src/gnn/7_export.py": "9e6eaa507529963a29fc50388ddf1db49d34d7f41e50cd5ab5570ba3f227d53c",
       "src/gnn/8_visualization.py": "1d106e4cc4ebc40c8b2e9cf1be822a946e3f916085bbaa65427fb6ec3f531c9d",
       "src/gnn/9_advanced_viz.py": "4075a72b77f750cad9a6e8d952abab1e1145202065d400df81900d37db248314",
-      "src/gnn/__init__.py": "22e1626bd8c9bd8f1da6f1ab8a8f7d21744a9b95a523e701cf7d11116d511e8c",
+      "src/gnn/__init__.py": "2bb528ea5050ec0d45afb3a4fda236f63a44e99b17a80ac9a3a5414436126f96",
       "src/gnn/advanced_visualization/__init__.py": "4a01ece62af204fdbc76310bb94f4f53bf008bbf79b7c4d0c11731ccb4f29540",
       "src/gnn/advanced_visualization/_shared.py": "7b5e1d349f9e2171ae70b20fe1a51b6668bba92e79dee741579decbe5d0a3862",
       "src/gnn/advanced_visualization/_theme.py": "514448ceed632b22cc87b9885e85c3bbddf7fde205e392c2c959c280557a18fe",
@@ -572,7 +572,7 @@
       "src/gnn/parsers/alloy_serializer.py": "bd01c0ef6cbceb4e19ed9d8b8d01b94e631e17f340adbb50bf9b953f16fa9840",
       "src/gnn/parsers/asn1_serializer.py": "e3afe43a7a6fec82d7608d9c16cef49e8f1b3e4420a25d78b5df5976e323037a",
       "src/gnn/parsers/base_serializer.py": "4604e615edd74218a74d1bfbeef9f36b23b90d7dc0a1640dd7f54d165c0b26ac",
-      "src/gnn/parsers/basic.py": "03bec19b3bd34e4a5f69dc386631804ae2f789c960fe06bfe5b1bd7e31c0aa3d",
+      "src/gnn/parsers/basic.py": "78942a0f5d22f4ff16a6787e4d87bb579b136232a62728b15212a7155831d15d",
       "src/gnn/parsers/binary_parser.py": "1d4f420db7b6021f69b7ed18c81bb4ad1dc9e93c3c60ab3d7a6558501de373ca",
       "src/gnn/parsers/binary_serializer.py": "d187923fff8c487f1285387491395e2505cfc14eee731e09750cf8b025ab9c19",
       "src/gnn/parsers/common.py": "c27da82a05058ec2f96b4c675374a848e64535122bf3a63155a47b8b23e3076e",
