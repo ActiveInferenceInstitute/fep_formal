@@ -13,18 +13,28 @@ all 15 hosted jobs and is integrated. The
 records implemented fixes, exact-source evidence and remaining acceptance;
 backlog rows remain open until their scope is accepted.
 
-The accepted software/proof-component checkpoint is
+The earlier software/proof-component checkpoint is
 [PR201](https://github.com/ActiveInferenceInstitute/fep_formal/pull/201), main
 `de9643f5249ad207219af51f6446327197a01247`, qualified by the
 [full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39449116181).
-The 35 first-column Issue rows reflect the post-PR201 acceptance reconciliation:
-PKG-13 moves to delivery history. CORE-D2's alias repair is accepted, while its
-independent API/schema and semantic review receipts remain to be located or
-completed. FORM-D1, FORM-S3, LEAN-6, CORE-D1, PKG-7, LEAN-9, FORM-S2 and the
+The 31 first-column Issue rows account for accepted PKG-6 (#119), CORE-D2
+(#65), BRIDGE-D1 (#61) and CORE-M3 (#73), delivered through PR203, PR205 and
+PR206. Independent API/schema and semantic review are now retained for CORE-D2;
+its conceptual Bernoulli relation keeps the explicit conjugate-carrier boundary.
+PKG-13 remains in delivery history. FORM-D1, FORM-S3, LEAN-6, CORE-D1, PKG-7, LEAN-9, FORM-S2 and the
 maintainer-closed CUR-15 remain in delivery history. This board reconciliation
 supplies no new production browser or primary scientific evidence.
 The subsequent [PR202](https://github.com/ActiveInferenceInstitute/fep_formal/pull/202)
 advances source-pair custody only; it adds no theorem or algorithm claim.
+
+The current accepted software checkpoint is
+[PR206](https://github.com/ActiveInferenceInstitute/fep_formal/pull/206), main
+`40856a1985065a2ca7e92950e3a29f5effa5c28a`, qualified by the
+[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39504371245)
+and independently checked uploaded artifacts and scoped PDF review. The runner
+receipt establishes the historical named pair's actual initial-Gaussian update;
+current-source runner execution and OU dynamics remain separate claims. These
+four closeouts supply no production browser or primary scientific acceptance.
 Fresh full capture and its evidence boundaries remain in CUR-05/CUR-07.
 
 ## Release gate
@@ -68,7 +78,6 @@ until a verified integration or disposition; they are not removed as legacy.
 | --- | --- | --- | --- |
 | [CUR-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/50) — Refresh optional strict Hermes/OpenGauss evidence for all 168 topics | Medium | Secure current credential/model route and concrete spend boundary | Complete source-bound strict full-mode report for all 168 topics independently claim-ready; secure preflight and enforcement of the separately authorized spend ceiling remain required. |
 | [CUR-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58) — Review substantive PR44 against current formal and ownership contracts | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Fresh current-base PR44 formal/ownership brief, warning-free native/axiom/projection evidence and independent domain review before integration. |
-| [BRIDGE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/61) — Prove actual generated GNN runner execution on an isolated named pair | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) and an explicitly named isolated pair | Actual source-bound generated-runner output and positive/adversarial controls; active GNN work remains untouched. |
 | [EMP-J1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/77) — Gate future empirical work on licensed data and new immutable protocol | Major | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) and named licensed data/new protocol | Verifiable license/provenance/split and independently reviewed real measurements, or retained governed no-go. |
 
 ## Upcoming minor, medium and major scopes
@@ -84,9 +93,7 @@ roster refresh; new topics are not implicitly reserved by this plan.
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
 | [CORE-M2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63) — maintain current guidance through dependency review | Minor | [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48) | Current active reading paths, complete retirement caller inventory, strict links/hygiene/xrefs and preserved historical evidence. |
-| [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73) — Audit configurable defaults and thin orchestration across workflows | Minor | [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Documented configuration/default/precedence matches actual behavior; bounded compatibility changes keep orchestration thin. |
 | [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) — align primary theorem proxies with the proved information seams | Minor | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Exact primary types/assumptions/non-vacuity reviewed; stable IDs/signatures and all native/axiom/boundary projections accepted. |
-| [CORE-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/65) — portable semantic and relation queries from one canonical join | Medium | [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Reviewed generated query schema conserves topics/relations/assumptions/blockers; deterministic isolated-wheel parity and semantic review. |
 | [CORE-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74) — Improve accessible offline manuscript, atlas and numerical explanations | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54), [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Demonstrated accessibility gap resolved through shared models; deterministic offline SVG/HTML/PDF and actual browser/text alternatives pass. |
 | [FORM-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/70) — fixed-truth consistency for the continuous static-latent model | Medium | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Explicit infinite fixed-truth law, prefix/native equality and actual convergence proof; new protocol preserves current H3 seeds. |
 | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) — Review all 168 theorem proxies and rank substantive strengthening | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54), [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) | All 168 proxies receive statement-based semantic review and ranked substantive proof briefs; no automatic disposition promotion. |
@@ -128,7 +135,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [PKG-6](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119) — Error base in the pinned GNN proof modules and every verb's failure path | Medium | [CORE-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/62) | `ArtifactProofError` and `ContinuousArtifactError` derive from `FepLeanError` after a coordinated Q5–Q7 evidence refresh, the `pinned` exclusion in `tests/test_cli.py` is empty, and the parametrised failure-schema test covers every verb. |
 
 ### Documentation and manuscript
 

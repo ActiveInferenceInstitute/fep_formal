@@ -343,3 +343,79 @@ def test_decision_risk_foundation_compiles_warning_free() -> None:
     output = result.stdout + result.stderr
     assert result.returncode == 0, output
     assert "warning:" not in output.lower()
+
+
+@pytest.mark.parametrize(
+    ("source_name", "expected_axiom_targets"),
+    [
+        (
+            "ConsumerControls.lean",
+            (
+                "FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio",
+                "FEP.FiniteInformation.finiteWeightMeasure_probability",
+                "FiniteWeightKLControls.sparse_shared_zero_control",
+                "FiniteWeightKLControls.sparse_normalization_control",
+                "FiniteWeightKLControls.singular_infinity_control",
+                "FiniteWeightKLControls.singular_relative_support_rejected",
+                "FiniteWeightKLControls.unnormalized_mass_correction_control",
+                "FiniteWeightKLControls.unequal_mass_not_normalized_control",
+                "FiniteWeightKLControls.mass_correction_not_uncorrected_score",
+                "FiniteWeightKLControls.normalized_positive_nontrivial_control",
+                "ExistingFiniteKLConsumer.embedding_defeq",
+                "FEP.FiniteInformation.klDiv_finiteWeightMeasure",
+                "FEP.DecisionRisk.embeddedLaw_withDensity_ratio_of_relativeSupport",
+                "FEP.DecisionRisk.weightedDirac_klDiv_eq_finiteKL_of_relativeSupport",
+                "FEP.DecisionRisk.embeddedLaw_withDensity_ratio",
+                "FEP.DecisionRisk.weightedDirac_klDiv_eq_finiteKL_of_fullSupport",
+            ),
+        ),
+        (
+            "FiniteWeightKL.lean",
+            (
+                "InformationTheory.klDiv_finiteWeightMeasure",
+                "InformationTheory.finiteWeightMeasure_probability",
+                "FiniteWeightKLControls.sparse_shared_zero_control",
+                "FiniteWeightKLControls.sparse_normalization_control",
+                "FiniteWeightKLControls.singular_infinity_control",
+                "FiniteWeightKLControls.singular_relative_support_rejected",
+                "FiniteWeightKLControls.unnormalized_mass_correction_control",
+                "FiniteWeightKLControls.unequal_mass_not_normalized_control",
+                "FiniteWeightKLControls.mass_correction_not_uncorrected_score",
+                "FiniteWeightKLControls.normalized_positive_nontrivial_control",
+            ),
+        ),
+    ],
+)
+def test_finite_weight_kl_project_and_standalone_controls(
+    source_name: str, expected_axiom_targets: tuple[str, ...], tmp_path: Path
+) -> None:
+    """Exercise support, mass correction, nonzero KL and legacy API consumers."""
+    source = PROJECT_ROOT / "specs" / "finite-kl-upstream" / source_name
+    if source_name == "FiniteWeightKL.lean":
+        code = lean_code_without_comments(source.read_text(encoding="utf-8"))
+        imports = [
+            name
+            for payload in re.findall(
+                r"(?m)^[ \t]*(?:public[ \t]+)?(?:meta[ \t]+)?import[ \t]+([^\n]+)", code
+            )
+            for name in payload.split()
+        ]
+        assert imports and all(name.startswith("Mathlib.") for name in imports)
+        assert not re.search(r"\bFEP(?:\.|\b)", code)
+    result = run_lean_compile_probe(
+        source, cwd=LEAN_ROOT, timeout_s=300, executable=lake_executable()
+    )
+    (tmp_path / "stdout.txt").write_text(result.stdout, encoding="utf-8")
+    (tmp_path / "stderr.txt").write_text(result.stderr, encoding="utf-8")
+    output = result.stdout + result.stderr
+    assert result.returncode == 0, output
+    assert "warning:" not in output.lower(), output
+    records = re.findall(r"'([^']+)' depends on axioms: \[([^\]]*)\]", output)
+    assert len(records) == len(expected_axiom_targets)
+    assert {name for name, _ in records} == set(expected_axiom_targets)
+    for _, values in records:
+        assert {value.strip() for value in values.split(",") if value.strip()} <= {
+            "propext",
+            "Classical.choice",
+            "Quot.sound",
+        }

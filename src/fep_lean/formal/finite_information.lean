@@ -1,6 +1,7 @@
 module
 public import FepSketches.finite_probability
-public import Mathlib.InformationTheory.KullbackLeibler.KLFun
+public import Mathlib.InformationTheory.KullbackLeibler.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.SumMeasure
 
 @[expose] public section
 
@@ -15,6 +16,94 @@ logarithmic cross-entropy identity.
 -/
 
 namespace FEP.FiniteInformation
+
+/-! Generic finite-weight Dirac helpers. These are measures of arbitrary nonnegative
+finite mass, not a second normalized probability carrier. Mathlib native KL
+retains its mass correction; the probability boundary requires normalization.
+The separately retained standalone upstream draft uses only Mathlib imports. -/
+
+open MeasureTheory ProbabilityTheory
+open scoped BigOperators ENNReal MeasureTheory ProbabilityTheory
+
+
+noncomputable def finiteWeightMeasure {α : Type*} [Fintype α] [MeasurableSpace α]
+    (p : α → ℝ) : Measure α :=
+  Measure.sum fun x => ENNReal.ofReal (p x) • Measure.dirac x
+
+instance {α : Type*} [Fintype α] [MeasurableSpace α] (p : α → ℝ) :
+    IsFiniteMeasure (finiteWeightMeasure p) where
+  measure_univ_lt_top := by
+    simp only [finiteWeightMeasure, Measure.sum_apply_of_countable, tsum_fintype,
+      Measure.smul_apply, Measure.dirac_apply_of_mem (Set.mem_univ _), smul_eq_mul,
+      mul_one]
+    exact ENNReal.sum_lt_top.mpr fun _ _ => ENNReal.ofReal_lt_top
+
+@[simp] theorem finiteWeightMeasure_singleton {α : Type*} [Fintype α]
+    [MeasurableSpace α] [DiscreteMeasurableSpace α] (p : α → ℝ) (x : α) :
+    finiteWeightMeasure p {x} = ENNReal.ofReal (p x) := by
+  simpa [finiteWeightMeasure] using
+    (Measure.sum_smul_dirac_singleton (f := fun a : α => ENNReal.ofReal (p a)) (a := x))
+
+theorem finiteWeightMeasure_withDensity_ratio {α : Type*} [Fintype α]
+    [MeasurableSpace α] [DiscreteMeasurableSpace α] (p q : α → ℝ)
+    (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 ≤ q x)
+    (hsupport : ∀ x, p x ≠ 0 → 0 < q x) :
+    (finiteWeightMeasure q).withDensity (fun x => ENNReal.ofReal (p x / q x)) =
+      finiteWeightMeasure p := by
+  classical
+  apply Measure.ext_of_singleton
+  intro x
+  rw [withDensity_apply _ MeasurableSet.of_discrete, lintegral_singleton,
+    finiteWeightMeasure_singleton, finiteWeightMeasure_singleton,
+    ← ENNReal.ofReal_mul (div_nonneg (hp x) (hq x))]
+  by_cases hzero : q x = 0
+  · have hpzero : p x = 0 := by
+      by_contra hne
+      exact (ne_of_gt (hsupport x hne)) hzero
+    simp [hzero, hpzero]
+  · rw [div_mul_cancel₀ _ hzero]
+
+theorem klDiv_finiteWeightMeasure {α : Type*} [Fintype α]
+    [MeasurableSpace α] [DiscreteMeasurableSpace α] (p q : α → ℝ)
+    (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 ≤ q x)
+    (hsupport : ∀ x, p x ≠ 0 → 0 < q x) :
+    InformationTheory.klDiv (finiteWeightMeasure p) (finiteWeightMeasure q) =
+      ENNReal.ofReal (∑ x, q x * InformationTheory.klFun (p x / q x)) := by
+  have hDensity := finiteWeightMeasure_withDensity_ratio p q hp hq hsupport
+  have hAC : finiteWeightMeasure p ≪ finiteWeightMeasure q := by
+    rw [← hDensity]
+    exact withDensity_absolutelyContinuous _ _
+  rw [InformationTheory.klDiv_eq_lintegral_klFun_of_ac hAC]
+  have hRN :
+      (finiteWeightMeasure p).rnDeriv (finiteWeightMeasure q) =ᵐ[finiteWeightMeasure q]
+        fun x => ENNReal.ofReal (p x / q x) := by
+    rw [← hDensity]
+    exact Measure.rnDeriv_withDensity _ (by fun_prop)
+  have hIntegrand :
+      (fun x => ENNReal.ofReal
+        (InformationTheory.klFun ((finiteWeightMeasure p).rnDeriv (finiteWeightMeasure q) x).toReal))
+          =ᵐ[finiteWeightMeasure q]
+        fun x => ENNReal.ofReal (InformationTheory.klFun (p x / q x)) := by
+    filter_upwards [hRN] with x hx
+    rw [hx, ENNReal.toReal_ofReal (div_nonneg (hp x) (hq x))]
+  rw [lintegral_congr_ae hIntegrand, lintegral_fintype,
+    ENNReal.ofReal_sum_of_nonneg]
+  · apply Finset.sum_congr rfl
+    intro x _
+    rw [finiteWeightMeasure_singleton, ENNReal.ofReal_mul (hq x), mul_comm]
+  · intro x _
+    exact mul_nonneg (hq x) (InformationTheory.klFun_nonneg (div_nonneg (hp x) (hq x)))
+
+theorem finiteWeightMeasure_probability {α : Type*} [Fintype α]
+    [MeasurableSpace α] (p : α → ℝ) (hp : ∀ x, 0 ≤ p x)
+    (hnormalized : ∑ x, p x = 1) : IsProbabilityMeasure (finiteWeightMeasure p) where
+  measure_univ := by
+    simp only [finiteWeightMeasure, Measure.sum_apply_of_countable, tsum_fintype,
+      Measure.smul_apply, Measure.dirac_apply_of_mem (Set.mem_univ _), smul_eq_mul,
+      mul_one]
+    rw [← ENNReal.ofReal_sum_of_nonneg (fun x _ => hp x), hnormalized]
+    simp
+
 
 open FEP Finset InformationTheory
 open scoped BigOperators

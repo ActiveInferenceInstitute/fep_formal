@@ -1,5 +1,15 @@
 ## Unreleased
 
+- Extract the finite weighted-Dirac density and native KL formulas beside
+  `finiteKL`, with explicit nonnegative weights and relative support. Retain
+  all four public DecisionRisk bridge names and types through delegation to
+  the generic helpers. Shared zero atoms remain permitted; singular support
+  retains native infinity, and arbitrary unequal masses retain the native
+  mass correction. Add persistent project and Mathlib-only draft controls
+  for [#110](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110).
+  The draft follows a bounded current-upstream source inspection; it makes no
+  novelty, upstream submission, scientific-status or full-execution claim.
+
 - Scope atlas and numerical-workbench slash shortcuts to a focused visual
   summary. Escape in search clears only its text; an explicit Clear all filters
   button resets selectors. Name and focus the atlas's wide table regions,
