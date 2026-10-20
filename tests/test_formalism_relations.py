@@ -22,6 +22,7 @@ from fep_lean.formal.declarations import (
     formal_theorem_modules,
 )
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from tests._support.lean_module_contract import reverse_information_entries
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SYNTHETIC_ROSTER = ("fep-001", "fep-002", "fep-003")
@@ -312,7 +313,19 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
     )
     assert new_scalar in edge_signatures
     assert old_scalar not in edge_signatures
-    assert edge_signatures >= BASELINE_EDGE_SIGNATURES - {old_scalar}
+    # Reverse only the complete authenticated reviewed rows before requiring
+    # every historical signature. Replaced witnesses cannot disappear silently.
+    restored_edges = reverse_information_entries(
+        yaml.safe_load((PROJECT_ROOT / "config/formalism_relations.yaml").read_text())[
+            "edges"
+        ],
+        PROJECT_ROOT,
+    )
+    restored_signatures = frozenset(
+        (row["source"], row["target"], row["kind"], row.get("witness"))
+        for row in restored_edges
+    )
+    assert restored_signatures >= BASELINE_EDGE_SIGNATURES - {old_scalar}
     assert frozenset(EXPANSION_CAPABILITY_BY_FAMILY.values()) <= capability_ids
 
     expansion_families = {
