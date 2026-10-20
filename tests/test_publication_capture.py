@@ -880,6 +880,7 @@ def test_publication_capture_rejects_byte_identical_referent_replacement(
 
     root, _owner, leaf, alias, stage = _linked_capture_stage(tmp_path)
     original_link = alias.lstat()
+    original_target = os.readlink(alias)
     original_leaf = leaf.stat()
     code = (
         "from pathlib import Path;import sys;"
@@ -895,7 +896,24 @@ def test_publication_capture_rejects_byte_identical_referent_replacement(
         _capture_plan(root, (stage,)), tmp_path / "journal"
     )
     assert not outcome.complete
-    assert alias.lstat() == original_link
+    current_link = alias.lstat()
+    # Reading a symlink may update its access time on Linux relatime mounts.
+    # Retain every stable identity/metadata field and the exact target spelling.
+    stable_link_fields = (
+        "st_dev",
+        "st_ino",
+        "st_mode",
+        "st_nlink",
+        "st_uid",
+        "st_gid",
+        "st_size",
+        "st_mtime_ns",
+        "st_ctime_ns",
+    )
+    assert tuple(getattr(current_link, field) for field in stable_link_fields) == tuple(
+        getattr(original_link, field) for field in stable_link_fields
+    )
+    assert os.readlink(alias) == original_target
     assert leaf.stat().st_ino != original_leaf.st_ino
     assert alias.read_bytes() == leaf.read_bytes() == b"owned style"
     record = json.loads(

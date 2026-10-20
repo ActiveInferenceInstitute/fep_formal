@@ -111,10 +111,11 @@
     },
     {
       "blocked_topics": [],
-      "description": "The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information; separately, the measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of Mathlib CondIndep. No theorem yet transfers the finite factorization to sigma-algebra CondIndep or constructs a regular conditional probability bridge.",
+      "description": "The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information. For the finite discrete static joint model, the native measure bridge identifies the authored conditional kernels with Mathlib conditional distributions almost everywhere and proves CondIndepFun for internal and external coordinates given the blanket. The separate measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of CondIndep. Arbitrary measurable-carrier transport and conditioning coarsening are not established by this finite bridge.",
       "evidence": [
         "FEP.MarkovBlanket.conditional_internal_external_factorization",
         "FEP.MarkovBlanket.conditional_mutualInformation_zero",
+        "FEP.NativeBlanket.staticJoint_condIndepFun",
         "fep_fep009.FEP009.fep009_condIndep_bot_right",
         "fep_fep009.FEP009.fep009_condIndep_symm"
       ],

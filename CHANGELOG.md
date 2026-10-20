@@ -1,5 +1,14 @@
 ## Unreleased
 
+- Correct the conditional-independence capability description to acknowledge
+  the existing finite discrete static-model conditional-distribution and
+  `CondIndepFun` bridge, preserving capability status and the boundary against
+  arbitrary measurable-carrier transport. Bind the four finite-weight KL
+  helper declarations separately from the retained historical method seal.
+  In the POSIX referent-replacement control, compare stable symlink identity,
+  nanosecond modification/change times and literal target spelling; reading a
+  link may change access time. Capture rejection and digest assertions remain.
+
 - Extract the finite weighted-Dirac density and native KL formulas beside
   `finiteKL`, with explicit nonnegative weights and relative support. Retain
   all four public DecisionRisk bridge names and types through delegation to
