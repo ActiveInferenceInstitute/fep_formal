@@ -513,6 +513,72 @@ def _restore_reviewed_conjugacy_rationale(
     return result
 
 
+_NATIVE_CONDITIONAL_REVIEW_PATH = (
+    PROJECT_ROOT / "tests/fixtures/native_conditional_independence_review_20261020.json"
+)
+_NATIVE_CONDITIONAL_REVIEW_SHA256 = (
+    "746cbe88175a1ea64314786623e1346f9c499cc849f04ce393658302aed28d82"
+)
+
+
+def _restore_reviewed_native_conditional_capability(
+    caps: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    """Undo only the exact reviewed finite/native wording and existing witness."""
+    raw = _NATIVE_CONDITIONAL_REVIEW_PATH.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _NATIVE_CONDITIONAL_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1
+    result = []
+    seen = 0
+    for cap in caps:
+        if cap["id"] == review["reviewed"]["id"]:
+            assert cap == review["reviewed"]
+            result.append(dict(review["released"]))
+            seen += 1
+        else:
+            result.append(dict(cap))
+    assert seen == 1
+    return result
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["description", "evidence", "status", "unrelated", "missing", "duplicate"],
+)
+def test_native_conditional_capability_review_rejects_unapproved_changes(
+    mutation: str,
+) -> None:
+    model = _yaml("formalism_relations.yaml")
+    caps = model["capabilities"]
+    row = next(cap for cap in caps if cap["id"] == "cap-conditional-independence")
+    if mutation == "description":
+        row["description"] = "Unreviewed general transport claim."
+    elif mutation == "evidence":
+        row["evidence"] = ["FEP.NativeBlanket.unreviewed_witness"]
+    elif mutation == "status":
+        row["status"] = "open"
+    elif mutation == "unrelated":
+        other = next(cap for cap in caps if cap["id"] != row["id"])
+        other["description"] = "Unreviewed unrelated capability."
+    elif mutation == "missing":
+        caps.remove(row)
+    else:
+        caps.append(dict(row))
+    with pytest.raises(AssertionError):
+        _assert_scalar_model_preimage(model)
+
+
+def test_native_conditional_capability_review_authenticates_fixture_bytes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    replacement = tmp_path / "changed-native-review.json"
+    replacement.write_bytes(_NATIVE_CONDITIONAL_REVIEW_PATH.read_bytes() + b" ")
+    monkeypatch.setitem(globals(), "_NATIVE_CONDITIONAL_REVIEW_PATH", replacement)
+    with pytest.raises(AssertionError):
+        _assert_scalar_model_preimage(_yaml("formalism_relations.yaml"))
+
+
 def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, object]]:
     edges = _restore_reviewed_conjugacy_rationale(edges)
     edges = reverse_information_entries(edges, PROJECT_ROOT)
@@ -533,6 +599,7 @@ def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, obje
 def _reverse_scalar_capabilities(
     caps: list[dict[str, object]],
 ) -> list[dict[str, object]]:
+    caps = _restore_reviewed_native_conditional_capability(caps)
     caps = reverse_information_entries(caps, PROJECT_ROOT, capabilities=True)
     change = _scalar_review()["capability_change"]
     result = []
@@ -802,6 +869,9 @@ def test_exact_information_review_preserves_complete_prior_model_and_owner_bytes
     review = exact_information_review(PROJECT_ROOT)
     model = _yaml("formalism_relations.yaml")
     model["edges"] = _restore_reviewed_conjugacy_rationale(model["edges"])
+    model["capabilities"] = _restore_reviewed_native_conditional_capability(
+        model["capabilities"]
+    )
     assert (
         hashlib.sha256(_canonical(model).encode()).hexdigest()
         == review["reviewed_model_canonical_sha256"]
@@ -843,6 +913,9 @@ def test_exact_information_review_rejects_unapproved_changes(mutation):
         return
     model = _yaml("formalism_relations.yaml")
     model["edges"] = _restore_reviewed_conjugacy_rationale(model["edges"])
+    model["capabilities"] = _restore_reviewed_native_conditional_capability(
+        model["capabilities"]
+    )
     if mutation == "capability":
         identity = review["capability_changes"][0]["reviewed"]["id"]
         next(row for row in model["capabilities"] if row["id"] == identity)["evidence"][
