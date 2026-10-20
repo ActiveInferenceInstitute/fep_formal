@@ -10,8 +10,19 @@
   line and direct Python setup/drift-check defaults. Add every-verb refusal,
   ancestry, context-reset, programming-error and setup stream controls for
   [#119](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119).
-  Integrated qualification remains pending; this entry records the change,
-  not issue closure or production acceptance.
+  Dated validation records retain the acceptance boundary; the error contract
+  does not itself establish native, provider or scientific acceptance.
+
+- Accept [PR201](https://github.com/ActiveInferenceInstitute/fep_formal/pull/201)
+  on exact main `de9643f5249ad207219af51f6446327197a01247` after its
+  [full workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39449116181):
+  all 15 wheel cells and 21 executed jobs pass. Independent source/artifact
+  validation and scoped seven-page visual review accept the 389-page PDF,
+  168 warning/admission-free native topics and 1,928 declaration axiom reports
+  within the reviewed allowlist. Close only PKG-13 (#126); CORE-D2 (#65)
+  retains its independent-review obligation despite the accepted alias repair.
+  The subsequent source-custody-only PR202 advances the named GNN pair without
+  changing FEP source, Lean theorems or algorithms.
 
 - Repair installed-query directory aliases such as macOS `/var` and
   `/private/var`. Preserve logical RECORD member names and all ownership,

@@ -465,9 +465,11 @@ to the current execution context; pass roots explicitly to new threads and
 OS processes. The capture owner explicitly projects the caller root into a
 copied child environment. Compiler children retain their separate allowlist.
 `CatalogueVerification` carries a result mapping, canonical JSON indentation
-and exit status; its mapping is an ordinary result value. Receipt validation,
-warning/admission counts and failure exits match the CLI. Read-only preflight
-remains separate from setup acquisition and native compilation.
+and the original native exit status; its mapping is an ordinary result value.
+Receipt validation and warning/admission counts are shared with the CLI. The
+CLI returns 1 for operational failures and preserves the original native code
+inside `details.exit_code`. Read-only preflight remains separate from setup
+acquisition and native compilation.
 
 ## Operational errors
 

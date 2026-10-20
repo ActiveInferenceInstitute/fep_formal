@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "24216a4948bbbaebaaf381b16b4272075f736683",
+    "commit": "cc2cd1699350530e2bfdec195e8dc9f28a6d4fcb",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -202,11 +202,11 @@
     }
   },
   "gnn": {
-    "commit": "9a94853e9fceb568dea3b91d11336c4ede6dcf7b",
+    "commit": "11bc61a531398ba35aa0b70d7d4070a02fc2a86a",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
-      "pyproject.toml": "072fe6bcf07360083f4eb9cf911ac7b761397790ea651971f766e4c45fa84fac",
+      "pyproject.toml": "eb6af6de4a79ddc133e2cd22df5326bb118d02f6e4f3af702ce68aab3046f1cb",
       "src/gnn/0_template.py": "88773455461192c3bd20a1d477ba42082fc0525236eae8c52284d3910b720bbb",
       "src/gnn/10_ontology.py": "ccbfd4a328cf50d16b840f51fbb5c3d44b0e2468c0778ea7158ad7c29cb17101",
       "src/gnn/11_render.py": "604f2bc29d1f5bb3b491988337d6e5781b606d266b3c92f41465e0b7f4a9b0ca",
@@ -506,8 +506,8 @@
       "src/gnn/llm/providers/base_provider.py": "887b17ba582c9f863f6f3df3904819512a7fa1234ea0445aeab8f6847359c8a5",
       "src/gnn/llm/providers/ollama_provider.py": "b9c8ab0ab972024af7a14b71ae7553ea4914c13a74641dae6e400568e1376823",
       "src/gnn/llm/providers/openai_provider.py": "0d3c41b6aaf70b55919170297430115cf33f03d108c7cece054f50c7127b77d8",
-      "src/gnn/llm/providers/openrouter_provider.py": "5227c18b09f63c341e9a6c7f57482930660e4601fbe9a36922e29c63a6ab5d46",
-      "src/gnn/llm/providers/perplexity_provider.py": "11abb313732b827d8b4b1761dbda24258ff9a51d9e0ad54c9b2983746f9295f3",
+      "src/gnn/llm/providers/openrouter_provider.py": "58af495ca8c4e8acd185d9b74238cf926c0a630027a71f3482f85d50b06c0418",
+      "src/gnn/llm/providers/perplexity_provider.py": "7d8c4f58f16e9b80e41e0bf5f3cfefa6c1fcaeac90a20dde7b4a29dbb164a12a",
       "src/gnn/llm/request_worker.py": "72854b63d02c153a583ca8e12431907229f53a13aef34dbea85baa4d0ede2ca7",
       "src/gnn/llm/source_parts.py": "542b8d82846ea4a9e67b063a489ee3ddfb3fda3133a5b5d0a79c1fd9ffda90e2",
       "src/gnn/llm/sync_bridge.py": "86ae1fbc7e9530a5e1da784ffdf1837eb3928a5a9e1142a8a210542cc2041bbc",
@@ -888,7 +888,7 @@
       "src/gnn/utils/pipeline_orchestration/pipeline_template.py": "5adea98412cdc15da8170eea3cc5c37fc79ef2e8f75deb5af1cb4570994d33c8",
       "src/gnn/utils/pipeline_orchestration/pipeline_validator.py": "cc38850eea3cef63663a3bdb0a6f461003401fe4c24fda704a4ccd47ba3e8cb9",
       "src/gnn/utils/runtime_safety/__init__.py": "50545392d380534a3fdd0060314a426f31c737f9ec0dc9f4397ed947a18ee4b7",
-      "src/gnn/utils/runtime_safety/dependency_validator.py": "b8585b9c03e4225a64888c891514720d61c8465df8d1f00dd591081db9156590",
+      "src/gnn/utils/runtime_safety/dependency_validator.py": "a5f561ce2b1b02f36a70e82aa2f9a57aa45ec628f7439a0b6d620f076f68c15a",
       "src/gnn/utils/runtime_safety/filesystem.py": "fdd39fb3589fc039c6968c972461e28ef8a397ad418960a1fe31f402e368fa04",
       "src/gnn/utils/runtime_safety/framework_availability.py": "28ce70a8b4940e6547f9b9291500a9fd43ceb48af217792b88fd2a5f73c9a02e",
       "src/gnn/utils/runtime_safety/jax_stack_validation.py": "03b66246f38c5ab50847a3c320e5ec1ea4590ad04d9ead69b617bb04c72fd4c7",
@@ -974,7 +974,7 @@
       "src/gnn/website/source_collection.py": "a5fe1fbe4280564087d3ac3761a67e6f62f00a312c393777192039853bd3c9d1",
       "src/gnn/website/steps.py": "3b6a08f261cf1f287cacacf926dcca73b66df5a43c2fdc05da6140ddcd6a3a91",
       "src/gnn/website/templates.py": "ed5c97deeafc999e2f400101cb3dd3fbfe5677f0d69a5da28c7b16653319b906",
-      "uv.lock": "1b78b71bb1b273ab30cd9d62baa9effc24c22090460fbd1b4a23f6d0176955db"
+      "uv.lock": "b8c2daaee53bca502281a468ec611b6b03daadd7df1001279dc501b2712ec5ca"
     }
   },
   "schema_version": 1
