@@ -1,0 +1,62 @@
+{
+  "reviewer": "/root/fep119_backend_review",
+  "independent_of_capture_author": true,
+  "decision": "approve_narrow_historical_positive_evidence; full_issue_acceptance_incomplete",
+  "FEP_head": "cc2cd1699350530e2bfdec195e8dc9f28a6d4fcb",
+  "GNN_head": "9a94853e9fceb568dea3b91d11336c4ede6dcf7b",
+  "protocol_sha256": "f9b5090ac3eb890bb68d82c1497280b3340dc7e0387fdc9afcf355d936885e89",
+  "review_method": "Immutable Git/source/artifact reads and independent arithmetic/hash recomputation only. No generated runner, runtime inventory program, capture adapter, or project gate executed.",
+  "approved_claim": "Two actual retained successful invocations of the unmodified generated Q7 runner on the named historical pair; deterministic one-dimensional initial Gaussian observation update under recorded Python/JAX/package identities.",
+  "independent_checks": {
+    "owner_hash_counts": {
+      "fep_lean": 197,
+      "gnn": 771
+    },
+    "installed_package_members_rehashed": 3270,
+    "python_executable_hash_matches": true,
+    "unmodified_runner_equals_historical_FEP_fixture": true,
+    "protocol_and_bound_artifact_hashes_match": true,
+    "both_stdout_stderr_output_hashes_match_receipts": true,
+    "numerical_comparison_recomputed": true,
+    "non_timing_payloads_byte_identical_under_sorted_JSON": true,
+    "original_protocol_retained": true
+  },
+  "gaps_for_full_issue_acceptance": [
+    {
+      "id": "capture-controls",
+      "severity": "acceptance_gap",
+      "detail": "13 negative checker controls are synthetic, including missing/stale/replacement dictionary bindings. They do not execute actual capture guards against removed/replaced runner or owner files, changed Git heads, altered installed runtime bytes, unexpected output members, nonzero exits/stderr, timeout, or preexisting invocation directories. Retain bounded end-to-end guard/refusal receipts before claiming the capture protocol is qualified."
+    },
+    {
+      "id": "maintained-integration",
+      "severity": "acceptance_gap",
+      "detail": "The protocol/capture/checker/evidence are outside the maintained repository and have not undergone maintained API/schema integration or exact-source CI/publication acceptance. Keep Issue61 open until its owned delivery/acceptance decision is concrete."
+    }
+  ],
+  "limitations": [
+    "NUM_TIMESTEPS=1 skips both F/Q state prediction and latent transition loop; no exercised OU dynamics or multistep/model validation.",
+    "The checker independently validates posterior mean/covariance/control/RMSE from reported y/x; it does not independently reproduce JAX PRNG draws or establish a population distribution claim.",
+    "Observed runtime closure comprises the named Python executable and six installed distributions (3270 members), not every stdlib/shared-library/OS byte.",
+    "Hash-consistent retained files support local custody; pre-execution freeze chronology is recorded by author protocol/logs rather than an independent trusted timestamp.",
+    "These are historical CC2/9a observations; do not relabel them current974/11BC or promote historical Q5/Q6/native/H3/provider acceptance."
+  ],
+  "artifact_sha256": {
+    "protocol-v2.json": "f9b5090ac3eb890bb68d82c1497280b3340dc7e0387fdc9afcf355d936885e89",
+    "protocol-v2.sha256": "c8af18da7bdadb622303df493bed82cfc045ff3491ebe7c3616e767d3b44aefa",
+    "protocol.json": "14dbbed9f0e78f4453cf361f5fb9e5ebc0d68bea8de8c5f3ecf4d2852e2c2fc3",
+    "capture.py": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+    "validate_output.py": "da754ef1753a1ef00bad4f1acfe7b5934e5233a390a3058648ecdbce72730f00",
+    "checker-controls.json": "dcea30a14195b186dcc17efc085e08f53a0a46e88c416a69c56468d6b9d6cfbd",
+    "runtime-inventory.json": "569275f2172aa76e132fdea5a954fa85a16b5f4eb0e81581b99c313419ac6fa8",
+    "runtime_inventory_program.py.txt": "7c55917717f6923a5f176d8ba774f9d3a4fc7a03147a4f2eaf67851a009d2a58",
+    "requirements.txt": "2e7f449e0c3764ec688d5a62b07505c7f821eba3241b9569cafe0b3ff668df7c",
+    "execution.json": "a124d9ceeb73a40e11b0611b5f62459d67efe7349d8df4a82909c83aaaa5d1a8",
+    "candidate/runner.py": "630a67a12843096a5ef13de3e5fc3258886abec8716a7a6597de09634a575b53",
+    "invocation-1/stdout.txt": "789de497bd4708d4d3052c4e547de62ff98cedac7bdfb44fccd4b32d11689eac",
+    "invocation-1/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "invocation-1/output/simulation_results.json": "512e5f9daf192518ed81cb453606d417180bbdaf11c01c2ee82960c655fb2455",
+    "invocation-2/stdout.txt": "634dc0d7d09893c1399d778fc2c7fac70fbeab2164cd1c35f9a894635298e2d5",
+    "invocation-2/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "invocation-2/output/simulation_results.json": "b82f3442c27adba4c3e8ac25536c30e4dd291a1ec6442d139a3c7c1c35ecd1d0"
+  }
+}

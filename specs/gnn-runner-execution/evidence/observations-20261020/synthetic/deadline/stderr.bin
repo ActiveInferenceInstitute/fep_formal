@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/deadline/fep61-runtime-proposal/capture.py", line 52, in <module>
+    start=time.monotonic();result=run_process_group(protocol['command'],cwd=directory,env=env,timeout=protocol['deadline_seconds_per_invocation'],check=False)
+                                  ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/src/fep_lean/verification/_subprocess.py", line 1054, in run_process_group
+    result = broker.run(
+        command,
+    ...<4 lines>...
+        root=True,
+    )
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/src/fep_lean/verification/_subprocess.py", line 724, in run
+    raise subprocess.TimeoutExpired(
+    ...<4 lines>...
+    )
+subprocess.TimeoutExpired: Command '['/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/deadline/fep61-runtime-proposal/runtime/bin/python', '-I', '-B', '/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/deadline/fep61-runtime-proposal/candidate/runner.py']' timed out after 0.3 seconds

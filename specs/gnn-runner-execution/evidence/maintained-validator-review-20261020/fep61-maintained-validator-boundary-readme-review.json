@@ -1,0 +1,35 @@
+{
+  "reviewer": "/root/fep65_api_review",
+  "independent_of_author": true,
+  "created_utc": "2026-10-20T18:33:40.718575+00:00",
+  "decision": "approve_bounded_validator_tests_and_readme_scope",
+  "blocking_findings": [],
+  "reviewed_sha256": {
+    "validate_retained.py": "98af59c932a724ba4cb811f3e98c54b830bcb447604080be494e2b5db01da1c7",
+    "test_validate_retained.py": "939c7977cc179bfc11dfbeec1c1251ecc2d854a5eff4d150e26458b8d2fc490f",
+    "README.md": "d08527e26cbf56397b43a560448c67377ebae5bc6ddbbbe58404254e54a73355",
+    "evidence/observations-20261020/manifest.json": "06de871541eaf39c0a032ac5f20f1cf768e21e8bb4ebee8bea47c9e53029df4d"
+  },
+  "evidence_sha256": {
+    "fep61-maintained-validator-boundary-tests-r4.log": "9dbda03f5a161fee2465e7daa8927ce2cd90f81ed118aa87fa0d167005d80a60",
+    "fep61-maintained-validator-git-guard-mutation-controls.json": "7c037d84b1fa0e72519a0b45fd64ede117911e353177a63b751284cad83bd122",
+    "fep61-boundary-missing-object-sensitivity-review.json": "b193e21e97f7c09e6aca098f5bca2008eedf28b1311815f4e57995b8c4d54cfa"
+  },
+  "all369_evidence_hashes_match": true,
+  "test_assessment": {
+    "default": "Actual validator runs under patched subprocess.run; before/after inventory conserves all file bytes and no pycache. Exact current code and inspected checker have no other process/network call path. This is not general OS syscall auditing.",
+    "corruption": "Five physical missing/changed/extra/symlink/coherently rehashed manifest variants refuse. Trusted fixed manifest hash prevents coherent mutation being accepted.",
+    "git_pair": "One-sided optional argument refuses.",
+    "git_guards": "Dedicated test asserts three environment guards, two global Git flags and bounded timeout. Root calibration removes all five guards independently; each is detected.",
+    "real_missing_objects": "Real scratch promisor bare repository lacks historical objects, points to unreachable loopback remote and remains byte-identical when guarded validator refuses. Independent Python3.14.8 mutant dropping only GIT_NO_LAZY_FETCH changes scratch config by adding remote.origin.partialclonefilter=blob:none; existing test detects that byte mutation. Thus the real fixture is sensitive to guard removal on this Git host."
+  },
+  "loopback_observer_decision": "A live loopback request counter is not required for the present bounded read-only/offline acceptance: explicit env/arg assertions with all-five guard mutations plus independently demonstrated real Git side-effect sensitivity adequately exercise the fix. Do not claim observed zero network requests; no connection/request listener was run. If the project wants an independent network-traffic claim across Git versions, add positive-calibrated listener monitoring separately.",
+  "readme_assessment": "Correctly distinguishes historical CC2/9a pair, two actual T1 Gaussian initial-update observations,22 synthetic adapter controls, historical runtime inventory versus omitted binaries, coordinator3.14.8 versus runner3.11.17, explicit optional read-only Git checks, and successor capture needing new dirs/protocol/custody. Relative+absolute1e-12 wording now matches checker. No current-source, OU prediction/dynamics, native/H3/browser/human-campaign promotion.",
+  "independent_execution": "Reviewer ran only scratch-only missing-object sensitivity probe using actual validator98af... under Python3.14.8 with lazy-fetch guard deliberately removed; no runner/Lean/managed repository mutations. Initial system3.9 exploratory sensitivity also failed original test no-write assertion, followed by retained3.14 detailed repeat. Reviewer did not rerun full root five-test suite.",
+  "remaining_limits": [
+    "Maintained integration/source-bound CI acceptance remain separate.",
+    "Historical runtime binaries are absent; no runtime3270member rehash by this retained validator.",
+    "No Issue61 closure is approved here.",
+    "Exact test invocation should retain python -B as documented; arbitrary importing of test module without -B is outside its no-pyc CLI recipe."
+  ]
+}

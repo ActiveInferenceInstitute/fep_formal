@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/preexisting-invocation/fep61-runtime-proposal/capture.py", line 49, in <module>
+    directory=h/f'invocation-{index+1}';directory.mkdir(exist_ok=False)
+                                        ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/Users/friedman/.local/share/uv/python/cpython-3.14.8-macos-aarch64-none/lib/python3.14/pathlib/__init__.py", line 1011, in mkdir
+    os.mkdir(self, mode)
+    ~~~~~~~~^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: '/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/preexisting-invocation/fep61-runtime-proposal/invocation-1'

@@ -43,10 +43,10 @@ text behavior.
 
 `bridge` operates on an explicit sibling GNN checkout (`--gnn-root PATH` is
 required for every verb). The current bridge surface is contract v0.6;
-`verify-document` was added in contract v0.5. `status`,
-`verify-certificate`, and `verify-document` are read-only; `pin` and `emit`
-write receipts; `certify` writes one only with `--receipt PATH` and is
-read-only without it. `certify` requires `--results PATH` -- the executed
+`verify-document` was added in contract v0.5. `status` and
+`verify-certificate` are read-only; `verify-document` writes a receipt only
+with `--receipt PATH`. `pin` and `emit` write receipts; `certify` writes one
+only with `--receipt PATH` and is read-only without it. `certify` requires `--results PATH` -- the executed
 results JSON under the FEP_Formal checkout -- and `verify-certificate`
 requires `--receipt PATH`. `--model {finite,continuous}` (default
 `finite`) selects the model family for `emit` and `verify-document`.
@@ -116,6 +116,11 @@ composes, even when it reports stale or gated evidence. Inspect the structured
 findings rather than treating those exit codes as acceptance.
 
 ## Operator support and exit contracts
+
+The [operator options and defaults table](configuration.md#operator-options-defaults-and-precedence)
+records the seven-operation configuration inventory, template fallback and
+bridge option applicability. The table below describes runtime support,
+effects and exit meanings.
 
 Every row requires a complete source checkout selected by `--project-root` or
 normal checkout discovery. A missing or incomplete checkout fails before the
