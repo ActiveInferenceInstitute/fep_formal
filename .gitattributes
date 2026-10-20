@@ -4,3 +4,9 @@ tests/_support/resources/h2_r0_custody_99e5cdf.py.txt -text
 # Retain exact unified-diff context lines in the immutable profiling evidence.
 # A blank context line is one space, required by the patch format.
 specs/comprehensive-next-steps/evidence/backend-profiling-20261020/candidate.patch whitespace=-blank-at-eol
+
+# Retained runner evidence hashes exact bytes across checkout newline policies.
+specs/gnn-runner-execution/evidence/** -text
+# This physical tamper fixture deliberately appends whitespace to a protocol.
+# Keep the captured defect; active sources retain the normal whitespace gate.
+specs/gnn-runner-execution/evidence/observations-20261020/synthetic/replacement-protocol/fep61-runtime-proposal/protocol-v2.json whitespace=-blank-at-eol,-blank-at-eof

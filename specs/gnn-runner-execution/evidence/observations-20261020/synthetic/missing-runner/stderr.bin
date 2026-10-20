@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-runner/fep61-runtime-proposal/capture.py", line 48, in <module>
+    guards()
+    ~~~~~~^^
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-runner/fep61-runtime-proposal/capture.py", line 27, in guards
+    assert sha(h/'candidate/runner.py')==protocol['runner_sha256']
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-runner/fep61-runtime-proposal/capture.py", line 13, in <lambda>
+    sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                                ~~~~~~~~~~~~~~~~~~^^
+  File "/Users/friedman/.local/share/uv/python/cpython-3.14.8-macos-aarch64-none/lib/python3.14/pathlib/__init__.py", line 777, in read_bytes
+    with self.open(mode='rb', buffering=0) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/friedman/.local/share/uv/python/cpython-3.14.8-macos-aarch64-none/lib/python3.14/pathlib/__init__.py", line 771, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-runner/fep61-runtime-proposal/candidate/runner.py'

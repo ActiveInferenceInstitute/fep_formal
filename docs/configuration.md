@@ -52,3 +52,44 @@ retry/attempt limits; record `HERMES_NETWORK_MAX_RETRIES`,
 `HERMES_429_MAX_RETRIES` and `HERMES_MAX_MODEL_ATTEMPTS` separately when capturing
 an execution policy. OpenRouter batch variants require the asynchronous Batch
 API and must not be treated as synchronous fallback completions.
+
+## Operator options, defaults and precedence
+
+The global `fep-lean` options are `--project-root PATH` and `--verbose`
+(default false). Root and output precedence are defined above; select global
+options before the command. The render entry point is a script with its own
+checkout root, rather than a `fep-lean render` verb.
+
+| Operation | Public options and defaults | Selection and effects |
+| --- | --- | --- |
+| `catalogue` | `--area` and repeated `--topic`; omitted filters select all topics | `FEP_LEAN_MAX_TOPICS` blank means unlimited; a positive integer bounds the selected set. Writes generated artifacts; no provider or native verification. Raster tools may run. |
+| `status` | Optional `--gnn-root PATH` | Read-only, process/provider-free composition. Omitted GNN leaves that side unverified. Exit 0 means composition, including stale or missing evidence. |
+| `verify` | `--area`, repeated `--topic`, optional `--receipt PATH`; `--fail-on-warnings` defaults false | Omitted filters select all topics. Empty/unknown selection refuses. Uses existing pinned Lean/Mathlib and temporary compiler probes; only an explicit receipt path requests a receipt write. |
+| `bridge` | Required operation and `--gnn-root`; `--model` defaults `finite`; `--check` and `--refresh-digests` are mutually exclusive and default false; `--results`, `--receipt`, `--document` default absent; `--fail-on-warnings` defaults false | Applicability is listed below and in the [support table](cli-reference.md#operator-support-and-exit-contracts). Inspection, emission, certificate checks and native document checks have distinct effects. |
+| `run` | `--area`, repeated `--topic`; `--workflow` defaults `verify`, with `draft`, `prove`, `review` alternatives | Full-mode service checks, model policy, topic/output selection and `FEP_LEAN_MAX_TOPICS` apply. Calls providers, compiler, database and artifact owners. Catalogue mode must be selected explicitly in the Python API. |
+| `python scripts/render_publication.py` | Optional `--template`; `--accept-only`, `--skip-font-probe`, `--require-release-stamp` default false; `--lock-timeout` defaults 1800 seconds | Uses the script checkout. First valid template wins: explicit path, then nonblank `FEP_LEAN_TEMPLATE_DIR`. An invalid explicit path falls back to a valid environment path. Both invalid refuse. `DOCXOLOGY_RENDER_LOCK` selects the shared lock path. Acceptance remains required when the font probe is skipped. |
+| `publication-capture` | Required `--template`; `--journal` required except with `--plan`; `--plan` and `--resume` default false and cannot combine; `--source-date-epoch` defaults 0; `--timeout` defaults 21600 seconds | Plan construction writes no journal and starts no subprocess. Execution is POSIX-only, copies the explicit root/template into bounded stages and writes journals/artifacts. Resume revalidates source and journal before reuse. |
+
+Render `--accept-only` delegates directly to existing-artifact acceptance; it
+skips template resolution, the shared render lock and source hydration.
+`--template`, `--lock-timeout`, `--skip-font-probe` and
+`--require-release-stamp` do not affect that branch. Acceptance still inspects
+the existing manuscript/PDF inputs and writes its receipt.
+
+For `verify`, the import-time timeout fallback captures
+`FEP_LEAN_VERIFY_TIMEOUT`, defaulting to 1800 seconds. Each native invocation
+rereads the environment variable, falling back to that captured value when it
+is absent. Set it before starting Python for a consistent process-wide policy.
+See the [native API](api.md) for its exact interfaces. The output-root hierarchy
+above applies to catalogue and full pipeline generation; there is no global
+`--output-root` CLI option.
+
+Bridge option applicability preserves the shared parser's compatibility:
+`--model` affects `emit` and `verify-document`; `--results` is required by
+`certify`; `--receipt` is certificate input for `verify-certificate` and optional
+output for `certify` and `verify-document`; `--document` is required by
+`verify-document`; `--fail-on-warnings` affects `verify-document`. Outside these
+operations, those flags are accepted and ignored, including their file paths;
+they do not request additional work. `--check` and `--refresh-digests` instead
+refuse outside `emit`. Use only the options of the intended operation when
+constructing an invocation; unsupported option names remain parser errors.

@@ -1,0 +1,49 @@
+{
+  "checks": [
+    {
+      "command": [
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/tooling/uv0130/bin/uv",
+        "venv",
+        "--python",
+        "3.11.17",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/runtime"
+      ],
+      "returncode": 0,
+      "seconds": 0.01288308299263008,
+      "log_sha256": "18c588643bdf5ea8087ca1d78785419dcdc3510a896decf4e162e3c1e9daa80d"
+    },
+    {
+      "command": [
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/tooling/uv0130/bin/uv",
+        "pip",
+        "install",
+        "--python",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/runtime/bin/python",
+        "--offline",
+        "--no-deps",
+        "--link-mode",
+        "copy",
+        "-r",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/requirements.txt"
+      ],
+      "returncode": 0,
+      "seconds": 1.2786066249827854,
+      "log_sha256": "163f177af0f0bf09d46629ea8fd047bc8d4a21f11e9c20f935f517a706d8e475"
+    },
+    {
+      "command": [
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/tooling/uv0130/bin/uv",
+        "pip",
+        "check",
+        "--python",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/runtime/bin/python"
+      ],
+      "returncode": 0,
+      "seconds": 0.012771334004355595,
+      "log_sha256": "46d7893cad623d776b367c8ecec4c898222930b337ffc7ddc7b5e442359e043a"
+    }
+  ],
+  "complete": true,
+  "passed": true,
+  "boundary": "Separate pinned runtime installation/consistency only. No JAX import or generated runner execution."
+}

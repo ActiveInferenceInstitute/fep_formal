@@ -263,6 +263,10 @@ uv run python scripts/build_render_fonts.py --check
 uv run python scripts/check_render_log.py --verify-receipt
 uv run python scripts/build_manuscript_figures.py
 uv run python scripts/build_manuscript_figures.py --check
+uv run python -B specs/gnn-runner-execution/validate_retained.py
+uv run python -B specs/gnn-runner-execution/test_validate_retained.py
+uv run ruff check specs/gnn-runner-execution
+uv run ruff format --check specs/gnn-runner-execution
 uv run pytest specs/publication-browser-acceptance/test_validate_acceptance.py -q --no-cov
 uv run ruff check specs/publication-browser-acceptance
 uv run ruff format --check specs/publication-browser-acceptance

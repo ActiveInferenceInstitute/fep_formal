@@ -21,6 +21,12 @@ and [documentation index](../docs/README.md). Receipt-bound captures, frozen
 study material and generated integration outputs retain their owner contracts;
 refreshing the landing page does not authorize altering them.
 
+[`gnn-runner-execution`](gnn-runner-execution/README.md) retains two actual
+generated-runner invocations on a named historical source pair, separately
+reviewed synthetic refusal controls and a maintained offline validator. Its T=1
+Gaussian update does not exercise OU prediction or dynamics, and its historical
+source bindings do not establish current-source execution.
+
 ## Acceptance-artifact conventions
 
 [`comprehensive-next-steps`](comprehensive-next-steps/README.md) owns the active

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/capture.py", line 56, in <module>
+    members=list(output.iterdir());assert len(members)==1 and members[0].name=='simulation_results.json' and not members[0].is_symlink() and members[0].is_file()
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

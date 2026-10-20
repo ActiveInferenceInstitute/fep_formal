@@ -1,0 +1,73 @@
+{
+  "reviewer": "/root/fep119_backend_review",
+  "independent_of_delivery_author": true,
+  "review_kind": "read-only acceptance-design assessment; no implementation or execution",
+  "decision": "proposed dedicated maintained evidence slice is sufficient in principle; closure conditional on implementation and exact-source validation",
+  "issue": 61,
+  "issue_criteria_interpretation": [
+    "Bounded runtime/input/output/custody on an explicitly named isolated source pair, actual runner output/tool versions bound to owner bytes, positive/malformed/missing/stale/replacement controls and validated numerical comparisons.",
+    "The body does not require a new CLI/API, a current source pair, multistep OU dynamics, cross-platform execution, a population inference claim, or new native statements.",
+    "A one-step initial Gaussian observation update is a valid bounded chosen lane if named transparently and no OU transition/prediction claim is made."
+  ],
+  "clarification_of_previous_review": "Previous maintained API/integration wording described absent delivery, not an issue requirement for a new src API. A dedicated maintained specs evidence slice can satisfy integration without changing public package roster or adding CLI commands.",
+  "minimum_maintained_delivery": [
+    {
+      "component": "Authentic frozen positive evidence",
+      "requirements": [
+        "Retain original protocolv1 and v2 plus digest sidecars, unchanged capture.py/checker, runtime inventory program and full observed inventory, requirements/runtime-preparation identities, actual execution journal and both outputs/stdout/stderr byte-for-byte.",
+        "Retain a closed manifest of all copied evidence paths and SHA256 values, naming historical FEPcc2cd1699350530e2bfdec195e8dc9f28a6d4fcb and GNN9a94853e9fceb568dea3b91d11336c4ede6dcf7b. Do not edit absolute paths inside frozen original files."
+      ]
+    },
+    {
+      "component": "Refusal-control evidence",
+      "requirements": [
+        "Retain exact reviewed R2 harness, qualification/execution receipts, actual supervisor source binding and enough per-case protocols, source/runtime fixture inputs, stdout/stderr and journal/output artifacts to reproduce independent branch/shape/hash checks for all22cases.",
+        "If omitting Git internals for size, retain explicit fixture construction/historical heads and identify omitted ephemeral Git data; do not claim a byte-complete Git snapshot.",
+        "Label one synthetic positive+21 physical synthetic refusals separately from the two actual generated-runner positives. Retain R1 rejected harness and reviewer correction or a precise immutable reference to its preserved evidence when discussing control-design provenance."
+      ]
+    },
+    {
+      "component": "Read-only retained-evidence validator",
+      "requirements": [
+        "Works offline from maintained slice and stdlib; checks closed file manifest/no symlink substitution, strict JSON, expected protocol/head/runtime/adapter/checker/supervisor identities, all capture hashes, both numerical comparisons and stable replay.",
+        "Checks refusal-case branch markers plus actual invocation/check counts, matching injection artifacts and preserved journal. It must not simply trust passed:true booleans.",
+        "Treat original absolute capture paths as recorded identities. Resolve archived file locations through explicit manifest mapping, without rewriting originals or reading arbitrary recorded absolute paths.",
+        "Separate retained evidence authenticity from optional live source/runtime revalidation; do not report an absent3270-member runtime as currently revalidated. Refuse unknown/missing/stale/replaced archived evidence and numerically invalid outputs with explicit nonzero checks."
+      ]
+    },
+    {
+      "component": "README and bounded reproduction",
+      "requirements": [
+        "Document exact historical source refs, owned isolated checkouts, CPython3.11.17/macOSarm64/JAX0.9.2 and six package versions, runtime/source owner counts, deadlines/env and unmodified runner hash.",
+        "Provide isolated reproduction instructions with new directories and no canonical GNN writes. Distinguish running retained evidence validation from new scientific execution; authentic old capture.py has historical absolute/layout assumptions and is evidence, not a portable new command.",
+        "New execution must freeze a new protocol/capture receipt for new paths before invocation; never overwrite/relabel historical observations.",
+        "State explicit T1 initial-update boundary: F/Q prediction and OU transition loop unexecuted; no H3/provider/native/Q5/Q6 promotion. Link currentQ7README to this separate bounded runtime lane."
+      ]
+    }
+  ],
+  "negative_control_assessment": {
+    "additional_real_scientific_runner_negative_required": false,
+    "reason": "The issue does not require malformed execution of the real scientific runner. The real positives execute exact unmodified artifact under source/runtime guards; separately, identical frozen adapter/checker code is physically exercised against constructed files/Git/runtime fixtures to demonstrate malformed/missing/stale/replacement refusal. Shared control owners and independent branch observability connect the evidence without creating extra scientific observations.",
+    "conditions": [
+      "Bind same adapter/checker bytes across actual positives and synthetic controls and preserve actual process-supervisor identity.",
+      "Keep generic one-marker runtime guard coverage distinct from evidence that all3270 actual installed members were observed unchanged in real positives.",
+      "Retained validator must independently verify control artifacts rather than trusting test summaries.",
+      "If maintained integration changes adapter/checker semantics, replay relevant controls on that exact new source or retain unchanged owners; do not transfer approval by filename."
+    ]
+  },
+  "remaining_before_closure": [
+    "Implement and independently review dedicated maintained slice and validator against exact committed source.",
+    "Run meaningful validator refusal tests for tampered archived manifest/protocol/sourcebindings/output values and missing/replaced files. These qualify maintained archive validator, not a new scientific runner.",
+    "Verify named historical FEP/GNN objects are pushed and publicly retrievable at immutable links, with source owner bindings resolvable; CC2 currently local candidate must not become a broken public citation.",
+    "Complete repository-required exact-source gates/hosted acceptance for delivery and preserve exact merged-main receipts.",
+    "Only then record precise closure facts and remove Issue61 openTODO row, retaining historical boundaries."
+  ],
+  "input_sha256": {
+    "fep-focused-issue-review-20261019/issue61.json": "d617e31db74c1fa51e8e58ec3259b97a1cadc301168bd569829ba15963ec377b",
+    "fep61-independent-outside-probe-review-20261020.json": "a1949da46434624f2932a68d382c6f5f3e0c28eae71c3ab98b4aba9a58c1ae71",
+    "fep61-capture-adapter-controls-postexecution-review.json": "25a91f0135a76ea425a726185606b97ee4bea62bb6764b228b9bc6fd2c8868d3",
+    "fep61-runtime-proposal/protocol-v2.json": "f9b5090ac3eb890bb68d82c1497280b3340dc7e0387fdc9afcf355d936885e89",
+    "fep61-runtime-proposal/execution.json": "a124d9ceeb73a40e11b0611b5f62459d67efe7349d8df4a82909c83aaaa5d1a8",
+    "fep61-capture-adapter-controls-v1/qualification.json": "692a67fbec16523d144defa238f7431f68e7c6a36c660ce7adc4d086d9c179f2"
+  }
+}

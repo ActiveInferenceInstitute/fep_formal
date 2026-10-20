@@ -1,0 +1,3 @@
+jax continuous LGSSM simulation complete: 1 steps, rmse_vs_true=0.1204
+Results saved to: /Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-1/output/simulation_results.json
+Validation: {'means_finite': True, 'posterior_cov_psd': True, 'rmse_finite': True, 'controls_finite': True, 'all_valid': True}

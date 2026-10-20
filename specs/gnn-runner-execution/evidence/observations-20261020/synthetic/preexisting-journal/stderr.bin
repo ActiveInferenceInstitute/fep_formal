@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/preexisting-journal/fep61-runtime-proposal/capture.py", line 20, in <module>
+    journal=h/'execution.json';assert not journal.exists();rows=[]
+                                      ^^^^^^^^^^^^^^^^^^^^
+AssertionError

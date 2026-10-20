@@ -1,0 +1,42 @@
+{
+  "reviewer": "/root/fep119_backend_review",
+  "independent_of_harness_author": true,
+  "script": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61_capture_adapter_controls.py",
+  "script_sha256": "9e5745a7e8bd2416959427c83f129c828ad0df1a909a2e5982edc02973902420",
+  "executed": false,
+  "decision": "changes_requested_before_qualification_execution",
+  "findings": [
+    {
+      "id": "R1",
+      "priority": 1,
+      "location": "passed predicate after capture subprocess",
+      "problem": "Except deadline and a weak post-run row-count check, negative cases pass for any nonzero subprocess result with no successful journal. An unrelated syntax/import/runtime error can qualify malformed-output, missing-owner, second-output-mismatch and other controls without reaching the intended branch. Positive control only validates its own fixture and cannot rule out case-specific construction defects.",
+      "required_fix": "Define per-case expected failure phase, exception type/reason and adapter source location. Assert expected invocation directory count and journal check count. second-output-mismatch must have two captured rows and numerical replay changed. Output/process refusals require one captured row and exact intended reason/location; preguard refusals require zero invocation directories/checks. Pre-module guards require matching traceback assertion location and no new journal. Retain raw traceback/output and assertion evidence in each row."
+    },
+    {
+      "id": "R2",
+      "priority": 2,
+      "location": "post-run-owner-replacement synthetic runner mutation",
+      "problem": "Tracked owner replacement makes git status dirty, so the post-run guard rejects at cleanliness before owner hash equality. This proves a postguard refusal but does not independently prove post-execution owner-digest validation.",
+      "required_fix": "Label this case post-run-dirty-owner refusal. If claiming owner-digest postguard coverage, add a distinct synthetic case that modifies and commits the owner, then adjusts the protocol owner-head binding only through a separately frozen fixture design that isolates the digest branch; simpler, constrain claims to the actual reached cleanliness branch. Do not mutate historical evidence."
+    }
+  ],
+  "nonblocking_observations": [
+    "The unchanged adapter is copied byte-for-byte; physical fixture roots match its hardcoded sibling layout. The synthetic runner and one-marker runtime are explicitly distinguished from generated-runner/scientific evidence.",
+    "Protocol mutations occur after a retained pre-mutation copy and digest. Existing journal bytes are checked for preservation. Distinct directories and no-overwrite behavior preserve control artifacts.",
+    "A source/runtime binding dictionary control is improved by actual fixture Git/file/runtime guards, once branch-specific rejection is demonstrated.",
+    "Do not state this suite proves OS sandboxing, full runtime closure, trusted freeze chronology, native correctness, PRNG distribution, OU dynamics, or Issue61 acceptance."
+  ],
+  "suggested_branch_contracts": {
+    "positive": "return0, complete/passed, exactly two checks and two invocation dirs, identical stable digest",
+    "second-output-mismatch": "nonzero, exactly two journal checks, first comparison passed, second captured output independently valid, failure_reason AssertionError: numerical replay changed",
+    "deadline": "TimeoutExpired or ProcessGroupTimeout exact class from owner supervisor, no completed check row, invocation1 exists, deadline elapsed bounded, retained failure journal",
+    "post-run-owner-replacement": "one captured row with return0/output valid, failure at guards git cleanliness after runner mutation",
+    "malformed-output": "one check row, JSONDecodeError at checker.strict_json, actual malformed output retained",
+    "extra-output/symlink-output/missing-output": "one check row, source location at output membership/symlink assertions; physical output shape matches injection",
+    "nonzero/stderr": "one check row, original returncode7 or nonempty stderr respectively, failure_reason nonzero exit or stderr",
+    "replacement/missing guards": "zero runner invocation dirs; exact guard expression or error type/path identifies intended missing/replaced member",
+    "preexisting-invocation": "FileExistsError at directory.mkdir, journal failure retained, preexisting directory untouched",
+    "preexisting-journal": "initial journal assertion traceback and original bytes preserved"
+  }
+}
