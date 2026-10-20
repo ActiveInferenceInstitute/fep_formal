@@ -348,6 +348,7 @@ def test_native_contract_binds_portability_artifacts_and_json_reader(
         f"{prefix}/generated/scaffold-canonical.json",
         f"{prefix}/generated/scaffold-runtime-parity.json",
         "src/fep_lean/verification/_jsonutil.py",
+        "src/fep_lean/_paths.py",
     }
     assert required <= set(adapter.CONTRACT.extra_files)
     assert required <= adapter.VERIFICATION._artifact_files()
