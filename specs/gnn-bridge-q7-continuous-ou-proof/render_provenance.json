@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-f5_i5ylt/FepLeanContinuousOU.md",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-f5_i5ylt/rendered"
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-fso4v4kn/FepLeanContinuousOU.md",
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-fso4v4kn/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "b1e5172a08716c418b6bcc9a9ea3ba9809a8e103e3f5bedac7b962fe38c0a8b0"
+    "sha256": "d18e72437896981941d4e20e2b33149f92806c01da294c9125d3b28f087ed4c4"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -168,10 +168,10 @@
       "src/fep_lean/methods/projection.py": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
       "src/fep_lean/methods/visualization.py": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a",
       "src/fep_lean/output/__init__.py": "33723735799c344c1a9d6a720da20a83c3fecb1b525a754d3f986952397f315b",
-      "src/fep_lean/output/browser_capture.py": "c2204bc7d79795651763efa9d89fbe1af1e42adfb972cf344112a3bfcf8ba681",
+      "src/fep_lean/output/browser_capture.py": "6c215ff25199fb25aa5cd218a6c10bf8669f3921bbea60f48f46f73eaf645bdc",
       "src/fep_lean/output/evidence.py": "cf24333d3f9ac7c0943f587e7b43fe6997940a631831435b00d5d134e9a70fe3",
       "src/fep_lean/output/figures.py": "c70fed46a022bcdeb27045fa5b0be3fb65541aa936095cb2f56ea046fb6134b2",
-      "src/fep_lean/output/formal_kernel_dashboard.py": "f12fc53466745a3f1e77468f9c647f77d2d5d772ea21f60f2ef5a1b5caf0cee2",
+      "src/fep_lean/output/formal_kernel_dashboard.py": "9c036847d5a70d04ad590ccb6e35ce5b0b545c5a9068e98c348ac84a87d0f9d6",
       "src/fep_lean/output/formalism_atlas.py": "fa945c28b063c781741d0f5c7429d303034122d6aae53cd4e8a0f8b1412060da",
       "src/fep_lean/output/formalism_presentation.py": "fd1579f280ccf39e5054b3fec8d4b338b65221493ca69f35c125799bb9028133",
       "src/fep_lean/output/fsutil.py": "2d895d2c2bfa97782895b3f7a67176b45e96220938f2c46ec17a8413a92a9bc9",
@@ -1142,10 +1142,10 @@
       "src/fep_lean/methods/projection.py": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
       "src/fep_lean/methods/visualization.py": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a",
       "src/fep_lean/output/__init__.py": "33723735799c344c1a9d6a720da20a83c3fecb1b525a754d3f986952397f315b",
-      "src/fep_lean/output/browser_capture.py": "c2204bc7d79795651763efa9d89fbe1af1e42adfb972cf344112a3bfcf8ba681",
+      "src/fep_lean/output/browser_capture.py": "6c215ff25199fb25aa5cd218a6c10bf8669f3921bbea60f48f46f73eaf645bdc",
       "src/fep_lean/output/evidence.py": "cf24333d3f9ac7c0943f587e7b43fe6997940a631831435b00d5d134e9a70fe3",
       "src/fep_lean/output/figures.py": "c70fed46a022bcdeb27045fa5b0be3fb65541aa936095cb2f56ea046fb6134b2",
-      "src/fep_lean/output/formal_kernel_dashboard.py": "f12fc53466745a3f1e77468f9c647f77d2d5d772ea21f60f2ef5a1b5caf0cee2",
+      "src/fep_lean/output/formal_kernel_dashboard.py": "9c036847d5a70d04ad590ccb6e35ce5b0b545c5a9068e98c348ac84a87d0f9d6",
       "src/fep_lean/output/formalism_atlas.py": "fa945c28b063c781741d0f5c7429d303034122d6aae53cd4e8a0f8b1412060da",
       "src/fep_lean/output/formalism_presentation.py": "fd1579f280ccf39e5054b3fec8d4b338b65221493ca69f35c125799bb9028133",
       "src/fep_lean/output/fsutil.py": "2d895d2c2bfa97782895b3f7a67176b45e96220938f2c46ec17a8413a92a9bc9",
@@ -1974,7 +1974,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "b459ca161046fef4b8d12b1aaf694b32814ddcac0501b3b5157acf0e3a070017",
+  "source_pin_sha256": "635422b76bddad668723b856b32bc698b1905fd55e59ee4911266080cd0ae9ac",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
