@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "cc2cd1699350530e2bfdec195e8dc9f28a6d4fcb",
+    "commit": "dd2be91e7dfd50e47ee91c55b9c88594664d41d6",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
