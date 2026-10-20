@@ -1,5 +1,13 @@
 ## Unreleased
 
+- Scope atlas and numerical-workbench slash shortcuts to a focused visual
+  summary. Escape in search clears only its text; an explicit Clear all filters
+  button resets selectors. Name and focus the atlas's wide table regions,
+  respect reduced motion when panning, and preserve literal model text while
+  sharing one keyboard policy. This is a bounded keyboard-accessibility slice
+  of [#74](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74);
+  broader accessibility and manuscript review remain separate.
+
 - Correct the conceptual fep-017 to fep-045 rationale to recognize the
   maintained Bernoulli posterior-closure theorem. The relation remains
   conceptual pending an explicit theorem between the posterior-kernel and

@@ -15,6 +15,7 @@ from fep_lean.output.formalism_presentation import (
 )
 from fep_lean.output.fsutil import atomic_write_text
 from fep_lean.output.svg_presentation import (
+    EXPLORER_KEYBOARD_SCRIPT,
     escape_svg_text,
     humanize_identifier,
     options_fragment,
@@ -1445,7 +1446,7 @@ def render_formal_kernel_dashboard_html(dashboard: FormalKernelDashboard) -> str
 .skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;background:white;padding:10px;z-index:20}
 body>header,main{max-width:1650px;margin:auto;padding:24px}body>header{padding-bottom:10px}h1{margin:.1rem 0;font-size:clamp(2rem,5vw,3.4rem)}
 .lede{max-width:90ch;color:var(--muted)}.boundary{border-left:5px solid #f97316;background:#fff7ed;padding:12px 16px;max-width:115ch}
-.controls{display:grid;grid-template-columns:minmax(260px,2fr) minmax(220px,1fr) minmax(170px,1fr);gap:12px;position:sticky;top:0;z-index:8;background:rgba(248,250,252,.96);padding:12px 0}
+.control-actions{display:flex;flex-wrap:wrap;gap:12px;grid-column:1/-1}.control-actions button{width:auto;min-width:44px} .controls{display:grid;grid-template-columns:minmax(260px,2fr) minmax(220px,1fr) minmax(170px,1fr);gap:12px;position:sticky;top:0;z-index:8;background:rgba(248,250,252,.96);padding:12px 0}
 .field{display:grid;gap:4px;min-width:0}label{font-weight:700}input,select{font:inherit;border:1px solid #94a3b8;border-radius:8px;background:white;padding:9px;color:var(--ink);width:100%;min-width:0;max-width:100%}
 .result{grid-column:1/-1;color:var(--muted);min-height:1.5em}.overview{border:1px solid var(--line);border-radius:14px;background:white;overflow:hidden}
 .desktop-overview{display:block}.mobile-overview{display:none}.overview-viewport{overflow:auto;scrollbar-color:#94a3b8 #e2e8f0}.desktop-overview svg{display:block;min-width:1100px;width:100%;height:auto}.mobile-overview-intro{margin:0;padding:14px 16px 10px;color:var(--muted)}.mobile-group-index{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:0 14px 12px}.mobile-group-index a{min-width:0;border:1px solid #94a3b8;border-radius:10px;padding:8px 5px;color:#0f4c81;font-size:.92rem;font-weight:800;text-align:center;text-decoration:none;white-space:nowrap}.mobile-plot-group{border-top:1px solid var(--line);scroll-margin-top:12px}.mobile-plot-group>summary{display:grid;grid-template-columns:auto 1fr;column-gap:9px;row-gap:2px;cursor:pointer;font-weight:800;list-style:none;padding:14px 16px}.mobile-plot-group>summary::-webkit-details-marker{display:none}.mobile-plot-group>summary::before{content:"▸";grid-row:1/3;align-self:center;color:#0f4c81;font-size:1.15rem}.mobile-plot-group[open]>summary::before{content:"▾"}.mobile-plot-group>summary span,.mobile-plot-group>summary small{grid-column:2}.mobile-plot-group>summary small{color:var(--muted);font-weight:650}.mobile-plot-scroll-cue{margin:0;padding:7px 16px;border-top:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;font-weight:750}.mobile-plot-viewport{max-height:min(52vh,560px);overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;scrollbar-color:#64748b #e2e8f0;overscroll-behavior-block:contain;border-top:1px solid #e2e8f0;box-shadow:inset 0 18px 14px -20px #1e3a8a,inset 0 -18px 14px -20px #1e3a8a}.mobile-plot-group svg{display:block;width:100%;height:auto}
@@ -1475,15 +1476,17 @@ th,td{padding:9px;border-top:1px solid #e2e8f0;text-align:left;vertical-align:to
         "</p></header><main>"
         '<section class="controls" aria-label="Numerical witness filters">'
         '<div class="field search"><label for="witness-search">Search workbench</label>'
-        '<input id="witness-search" type="search" aria-keyshortcuts="/ Escape" placeholder="Family, ID, theorem, invariant, boundary…"></div>'
-        '<div class="field"><label for="witness-family-filter">Family</label><select id="witness-family-filter">'
+        '<input id="witness-search" type="search" aria-keyshortcuts="Escape" data-explorer-search placeholder="Family, ID, theorem, invariant, boundary…"></div>'
+        '<div class="field"><label for="witness-family-filter">Family</label><select id="witness-family-filter" data-explorer-filter>'
         f"{options_fragment(families, all_label='families')}</select></div>"
-        '<div class="field"><label for="witness-status-filter">Evaluation status</label><select id="witness-status-filter">'
+        '<div class="field"><label for="witness-status-filter">Evaluation status</label><select id="witness-status-filter" data-explorer-filter>'
         '<option value="">All statuses</option><option value="accepted">Typed checks passed</option><option value="rejected">Typed checks failed</option></select></div>'
+        '<div class="control-actions"><button id="witness-clear-filters" type="button" data-explorer-clear disabled>Clear all filters</button></div>'
+        '<p class="hint">With the desktop summary focused, press / to search. Escape in search clears only its text; Clear all filters resets the selectors too.</p>'
         f'<div id="witness-result-count" class="result" role="status" aria-live="polite">{len(dashboard.witnesses)} witnesses matched</div>'
         "</section>"
         '<section id="witness-overview" aria-labelledby="overview-title"><h2 id="overview-title">All-family visual summary</h2>'
-        '<div class="overview"><div class="desktop-overview"><div class="overview-viewport" tabindex="0" aria-label="Scrollable numerical witness summary">'
+        '<div class="overview"><div class="desktop-overview"><div class="overview-viewport" tabindex="0" data-explorer-viewport aria-keyshortcuts="/" aria-label="Scrollable numerical witness summary; slash focuses search">'
         f"{svg}</div></div>{mobile_overview}"
         '<p class="hint">The exact tables below are authoritative for displayed values; plots are compact visual encodings of the same rows.</p></div></section>'
         f'<details id="witnesses" class="record-collection" data-detail-count="{len(dashboard.witnesses)}">'
@@ -1506,7 +1509,9 @@ function applyFilters(){const query=search.value.trim().toLowerCase();const filt
 [search,family,status].forEach(control=>control.addEventListener("input",applyFilters));
 document.querySelectorAll("[data-detail-jump]").forEach(link=>link.addEventListener("click",()=>{search.value="";family.value="";status.value="";applyFilters();const target=recordById.get(link.dataset.detailJump);recordCollection.open=true;target.hidden=false;target.open=true;target.querySelector("summary").focus();}));
 document.querySelectorAll("[data-mobile-group-jump]").forEach(link=>link.addEventListener("click",()=>{const target=document.getElementById(`mobile-plot-group-${link.dataset.mobileGroupJump}`);mobilePlotGroups.forEach(group=>group.open=group===target);target.querySelector("summary").focus();}));
-document.addEventListener("keydown",event=>{const editing=["INPUT","SELECT","TEXTAREA"].includes(document.activeElement.tagName);if(event.key==="/"&&!editing){event.preventDefault();search.focus();}if(event.key==="Escape"){search.value="";family.value="";status.value="";applyFilters();search.focus();}});
+"""
+        + EXPLORER_KEYBOARD_SCRIPT
+        + """
 applyFilters();
 </script>
 </body>

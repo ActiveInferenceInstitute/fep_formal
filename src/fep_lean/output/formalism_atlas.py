@@ -15,6 +15,7 @@ from fep_lean.output.formalism_presentation import (
 )
 from fep_lean.output.fsutil import atomic_write_text
 from fep_lean.output.svg_presentation import (
+    EXPLORER_KEYBOARD_SCRIPT,
     escape_svg_text,
     humanize_identifier,
     options_fragment,
@@ -714,7 +715,7 @@ def render_formalism_atlas_html(atlas: FormalismAtlas) -> str:
 a{color:#0f5e59}.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;background:white;padding:10px;z-index:20}
 header,main{max-width:1700px;margin:auto;padding:24px}header{padding-bottom:8px}h1{margin:.1rem 0;font-size:clamp(2rem,5vw,3.4rem)}
 .lede{max-width:85ch;color:var(--muted)}.boundary{border-left:5px solid #f97316;background:#fff7ed;padding:12px 16px;max-width:110ch}
-.controls{display:grid;grid-template-columns:minmax(220px,2fr) repeat(4,minmax(150px,1fr));gap:12px;position:sticky;top:0;z-index:8;background:rgba(248,250,252,.96);padding:12px 0}
+.control-actions{display:flex;flex-wrap:wrap;gap:12px;grid-column:1/-1}.control-actions button{width:auto;min-width:44px} .controls{display:grid;grid-template-columns:minmax(220px,2fr) repeat(4,minmax(150px,1fr));gap:12px;position:sticky;top:0;z-index:8;background:rgba(248,250,252,.96);padding:12px 0}
 label{font-weight:700}input,select,button{font:inherit;border:1px solid #94a3b8;border-radius:8px;background:white;padding:9px;color:var(--ink);width:100%}
 .field{display:grid;gap:4px}.result{grid-column:1/-1;color:var(--muted);min-height:1.5em}.summary-shell{border:1px solid var(--line);border-radius:14px;background:white;overflow:hidden}
 .atlas-jumps{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px}.atlas-jumps a{display:inline-block;border:1px solid var(--line);border-radius:999px;background:white;padding:7px 11px;font-weight:750;text-decoration:none}details[id]{scroll-margin-top:140px}
@@ -743,16 +744,17 @@ tbody th{min-width:170px}tbody th span{display:block;font-weight:500;margin-top:
         f"{escape_svg_text(atlas.numerical_evidence_boundary)}</p></header><main>"
         '<section class="controls" aria-label="Atlas filters">'
         '<div class="field search"><label for="atlas-search">Search topics</label>'
-        '<input id="atlas-search" type="search" aria-keyshortcuts="/ Escape" '
+        '<input id="atlas-search" type="search" aria-keyshortcuts="Escape" data-explorer-search '
         'placeholder="ID, title, theorem, invariant, assumption…"></div>'
-        '<div class="field"><label for="area-filter">Area</label><select id="area-filter">'
+        '<div class="field"><label for="area-filter">Area</label><select id="area-filter" data-explorer-filter>'
         f"{options_fragment([area.id for area in atlas.areas], all_label='areas')}</select></div>"
-        '<div class="field"><label for="family-filter">Family</label><select id="family-filter">'
+        '<div class="field"><label for="family-filter">Family</label><select id="family-filter" data-explorer-filter>'
         f"{options_fragment(topic_families, all_label='families')}</select></div>"
-        '<div class="field"><label for="status-filter">Semantic status</label><select id="status-filter">'
+        '<div class="field"><label for="status-filter">Semantic status</label><select id="status-filter" data-explorer-filter>'
         f"{options_fragment(statuses, all_label='statuses')}</select></div>"
-        '<div class="field"><label for="relation-filter">Relation kind</label><select id="relation-filter">'
+        '<div class="field"><label for="relation-filter">Relation kind</label><select id="relation-filter" data-explorer-filter>'
         f"{options_fragment(relation_kinds, all_label='relation kinds')}</select></div>"
+        '<div class="control-actions"><button id="atlas-clear-filters" type="button" data-explorer-clear disabled>Clear all filters</button></div>'
         f'<div id="atlas-result-count" class="result" role="status" aria-live="polite">{len(atlas.topics)} topics matched</div>'
         "</section>"
     )
@@ -772,36 +774,36 @@ tbody th{min-width:170px}tbody th span{display:block;font-weight:500;margin-top:
         '<button type="button" data-zoom="out" aria-label="Zoom out">− Zoom out</button>'
         '<button type="button" data-zoom="reset">Reset view</button>'
         '<button type="button" data-zoom="in" aria-label="Zoom in">+ Zoom in</button></div>'
-        '<div id="atlas-viewport" class="viewport" tabindex="0" aria-label="Scrollable atlas summary; arrow keys pan, plus and minus zoom">'
+        '<div id="atlas-viewport" class="viewport" tabindex="0" data-explorer-viewport aria-keyshortcuts="/" aria-label="Scrollable atlas summary; arrow keys pan, plus and minus zoom; slash focuses search">'
         f'<div id="atlas-canvas" class="canvas">{svg}</div></div>'
-        '<p class="hint">Drag or use arrow buttons/keys to pan. Use +/− to zoom. Press / to search and Escape to clear filters.</p>'
+        '<p class="hint">Drag or use arrow buttons/keys to pan. Use +/− to zoom. With the summary focused, press / to search. Escape in search clears only its text; Clear all filters resets the selectors too.</p>'
         f'</div><div class="mobile-summary">{mobile_svg}</div></div></section>'
     )
     tables = (
         f'<details id="topic-records"><summary>Canonical topic table · {len(atlas.topics)} topics</summary>'
-        '<div class="table-wrap topic-table-wrap">'
+        '<div class="table-wrap topic-table-wrap" role="region" tabindex="0" aria-label="Canonical topic records">'
         f'<table id="topic-table"><caption>All {len(atlas.topics)} canonical topics; filters hide rows without deleting evidence.</caption>'
         '<thead><tr><th scope="col">Topic</th><th scope="col">Area</th><th scope="col">Family</th><th scope="col">Status</th>'
         '<th scope="col">Primary theorem</th><th scope="col">Invariant</th><th scope="col">Assumptions / scope</th>'
         '<th scope="col">Non-vacuity</th><th scope="col">Theorems / definitions / imports</th></tr></thead>'
         f"<tbody>{_topic_table(atlas)}</tbody></table></div></details>"
         f'<details id="relation-records"><summary>Exact authored relation table · {len(atlas.relations)} relations</summary>'
-        '<div class="table-wrap relation-table-wrap">'
+        '<div class="table-wrap relation-table-wrap" role="region" tabindex="0" aria-label="Exact authored relation records">'
         '<p class="relation-card-hint">Complete relation cards show rationale and exact witnesses.</p>'
         f'<table id="relation-table" data-mobile-layout="complete-cards"><caption>All {len(atlas.relations)} authored scientific relations; relation kind filtering applies here.</caption>'
         '<thead><tr><th scope="col">Source</th><th scope="col">Kind</th><th scope="col">Target</th><th scope="col">Rationale</th><th scope="col">Exact witness</th></tr></thead>'
         f"<tbody>{_relation_table(atlas)}</tbody></table></div></details>"
-        f'<details id="capability-records"><summary>Retained capability table · {len(atlas.capabilities)} records</summary><div class="table-wrap">'
+        f'<details id="capability-records"><summary>Retained capability table · {len(atlas.capabilities)} records</summary><div class="table-wrap" role="region" tabindex="0" aria-label="Retained capability records">'
         '<p class="scroll-hint">Swipe horizontally to inspect every column.</p>'
         f"<table><caption>{len(atlas.capabilities)} retained capability records preserve resolved and open history.</caption>"
         '<thead><tr><th scope="col">Capability</th><th scope="col">Status</th><th scope="col">Required surface</th><th scope="col">Declaration evidence</th><th scope="col">Blocked topics</th></tr></thead>'
         f"<tbody>{_capability_table(atlas)}</tbody></table></div></details>"
-        f'<details id="module-records"><summary>Maintained formal-module table · {len(atlas.formal_modules)} modules</summary><div class="table-wrap">'
+        f'<details id="module-records"><summary>Maintained formal-module table · {len(atlas.formal_modules)} modules</summary><div class="table-wrap" role="region" tabindex="0" aria-label="Maintained formal module records">'
         '<p class="scroll-hint">Swipe horizontally to inspect every column.</p>'
         f"<table><caption>{len(atlas.formal_modules)} maintained modules. Code dependencies are not scientific relations.</caption>"
         '<thead><tr><th scope="col">Lean module</th><th scope="col">Role</th><th scope="col">Theorems</th><th scope="col">Definitions</th><th scope="col">Structures</th><th scope="col">Internal dependencies</th></tr></thead>'
         f"<tbody>{_module_table(atlas)}</tbody></table></div>"
-        '<div class="table-wrap"><table><caption>Exact internal module-dependency edges</caption>'
+        '<div class="table-wrap" role="region" tabindex="0" aria-label="Exact internal module dependency records"><table><caption>Exact internal module-dependency edges</caption>'
         '<thead><tr><th scope="col">Module</th><th scope="col">Direction</th><th scope="col">Imported maintained module</th></tr></thead>'
         f"<tbody>{_dependency_table(atlas)}</tbody></table></div></details>"
     )
@@ -827,16 +829,12 @@ function applyFilters(){
   result.textContent=`${matched} of ${topicRows.length} topics · ${matchedRelations} of ${relationRows.length} relations matched`;
 }
 [search,area,family,status,relation].forEach(control=>control.addEventListener("input",applyFilters));
-document.addEventListener("keydown",event=>{
-  const editing=["INPUT","SELECT","TEXTAREA"].includes(document.activeElement.tagName);
-  if(event.key==="/"&&!editing){event.preventDefault();search.focus();}
-  if(event.key==="Escape"){search.value="";area.value="";family.value="";status.value="";relation.value="";applyFilters();search.focus();}
-});
+__EXPLORER_KEYBOARD_SCRIPT__
 const viewport=document.getElementById("atlas-viewport");const canvas=document.getElementById("atlas-canvas");let zoom=1;
 function setZoom(next){zoom=Math.max(.55,Math.min(1.8,next));canvas.style.width=`${zoom*100}%`;}
 document.querySelectorAll("[data-zoom]").forEach(button=>button.addEventListener("click",()=>{const mode=button.dataset.zoom;setZoom(mode==="in"?zoom+.15:mode==="out"?zoom-.15:1);}));
 const deltas={left:[-260,0],right:[260,0],up:[0,-220],down:[0,220]};
-function pan(direction){const delta=deltas[direction];viewport.scrollBy({left:delta[0],top:delta[1],behavior:"smooth"});}
+function pan(direction){const delta=deltas[direction];viewport.scrollBy({left:delta[0],top:delta[1],behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});}
 document.querySelectorAll("[data-pan-direction]").forEach(button=>button.addEventListener("click",()=>pan(button.dataset.panDirection)));
 viewport.addEventListener("keydown",event=>{const direction={ArrowLeft:"left",ArrowRight:"right",ArrowUp:"up",ArrowDown:"down"}[event.key];if(direction){event.preventDefault();pan(direction);}if(event.key==="+"||event.key==="="){setZoom(zoom+.15);}if(event.key==="-"){setZoom(zoom-.15);}});
 let drag=null;viewport.addEventListener("pointerdown",event=>{drag={x:event.clientX,y:event.clientY,left:viewport.scrollLeft,top:viewport.scrollTop};viewport.classList.add("is-dragging");viewport.setPointerCapture(event.pointerId);});
@@ -847,6 +845,7 @@ applyFilters();
 </body>
 </html>
 """
+    script = script.replace("__EXPLORER_KEYBOARD_SCRIPT__", EXPLORER_KEYBOARD_SCRIPT)
     return head + controls + summary + tables + script
 
 

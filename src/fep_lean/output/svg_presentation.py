@@ -15,6 +15,7 @@ from collections.abc import Callable
 from fep_lean.output.formalism_presentation import humanize_formalism_identifier
 
 __all__ = [
+    "EXPLORER_KEYBOARD_SCRIPT",
     "escape_svg_text",
     "humanize_identifier",
     "options_fragment",
@@ -84,3 +85,28 @@ def options_fragment(
         for value in values
     )
     return "".join(rows)
+
+
+# Shared offline HTML interaction policy; mathematical presentation data stays
+# in the immutable presentation join. Character shortcuts apply only when the
+# visual summary itself is focused. Escape edits search only; reset is explicit.
+EXPLORER_KEYBOARD_SCRIPT = """
+(() => {
+  const searchControl=document.querySelector("[data-explorer-search]");
+  const summaryViewport=document.querySelector("[data-explorer-viewport]");
+  const clearControl=document.querySelector("[data-explorer-clear]");
+  clearControl.disabled=false;
+  clearControl.addEventListener("click",()=>{
+    searchControl.value="";
+    document.querySelectorAll("[data-explorer-filter]").forEach(control=>{control.value="";});
+    applyFilters();
+  });
+  document.addEventListener("keydown",event=>{
+    if(event.defaultPrevented||event.isComposing||event.ctrlKey||event.altKey||event.metaKey||(event.shiftKey&&event.key!=="/"))return;
+    const active=document.activeElement;
+    if(active.isContentEditable)return;
+    if(event.key==="Escape"&&active===searchControl){event.preventDefault();searchControl.value="";applyFilters();}
+    if(event.key==="/"&&active===summaryViewport){event.preventDefault();searchControl.focus();}
+  });
+})();
+"""
