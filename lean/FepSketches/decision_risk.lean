@@ -37,19 +37,8 @@ theorem embeddedLaw_withDensity_ratio_of_relativeSupport (p q : FiniteLaw α)
     (hsupport : ∀ x, p x ≠ 0 → 0 < q x) :
     (embeddedLaw q).withDensity
         (fun x => ENNReal.ofReal (p x / q x)) = embeddedLaw p := by
-  classical
-  apply Measure.ext_of_singleton
-  intro x
-  rw [withDensity_apply _ MeasurableSet.of_discrete,
-    lintegral_singleton, embeddedLaw_apply_singleton,
-    embeddedLaw_apply_singleton, ← ENNReal.ofReal_mul
-      (div_nonneg (p.nonneg x) (q.nonneg x))]
-  by_cases hq : q x = 0
-  · have hp : p x = 0 := by
-      by_contra hp
-      exact (ne_of_gt (hsupport x hp)) hq
-    simp [hq, hp]
-  · rw [div_mul_cancel₀ _ hq]
+  exact FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio
+    p q p.nonneg q.nonneg hsupport
 
 /-- Native and finite KL agree under relative support, including sparse laws.
 This does not identify the totalized finite value with native infinity when
@@ -58,34 +47,8 @@ theorem weightedDirac_klDiv_eq_finiteKL_of_relativeSupport
     (p q : FiniteLaw α) (hsupport : ∀ x, p x ≠ 0 → 0 < q x) :
     InformationTheory.klDiv (embeddedLaw p) (embeddedLaw q) =
       ENNReal.ofReal (finiteKL p q) := by
-  have hDensity := embeddedLaw_withDensity_ratio_of_relativeSupport p q hsupport
-  have hAC : embeddedLaw p ≪ embeddedLaw q := by
-    rw [← hDensity]
-    exact withDensity_absolutelyContinuous _ _
-  rw [InformationTheory.klDiv_eq_lintegral_klFun_of_ac hAC]
-  have hRN :
-      (embeddedLaw p).rnDeriv (embeddedLaw q) =ᵐ[embeddedLaw q]
-        fun x => ENNReal.ofReal (p x / q x) := by
-    rw [← hDensity]
-    exact Measure.rnDeriv_withDensity _ (by fun_prop)
-  have hIntegrand :
-      (fun x => ENNReal.ofReal
-        (InformationTheory.klFun
-          ((embeddedLaw p).rnDeriv (embeddedLaw q) x).toReal)) =ᵐ[embeddedLaw q]
-        fun x => ENNReal.ofReal (InformationTheory.klFun (p x / q x)) := by
-    filter_upwards [hRN] with x hx
-    rw [hx, ENNReal.toReal_ofReal
-      (div_nonneg (p.nonneg x) (q.nonneg x))]
-  rw [lintegral_congr_ae hIntegrand, lintegral_fintype, finiteKL,
-    ENNReal.ofReal_sum_of_nonneg]
-  · apply Finset.sum_congr rfl
-    intro x _
-    rw [embeddedLaw_apply_singleton,
-      ENNReal.ofReal_mul (q.nonneg x), mul_comm]
-  · intro x _
-    exact mul_nonneg (q.nonneg x)
-      (InformationTheory.klFun_nonneg
-        (div_nonneg (p.nonneg x) (q.nonneg x)))
+  exact FEP.FiniteInformation.klDiv_finiteWeightMeasure
+    p q p.nonneg q.nonneg hsupport
 
 /-- Under full reference support, the embedded actual law is the reference
 measure tilted by the pointwise finite-law likelihood ratio. -/
@@ -93,14 +56,7 @@ theorem embeddedLaw_withDensity_ratio (p q : FiniteLaw α)
     (hq : ∀ x, 0 < q x) :
     (embeddedLaw q).withDensity
         (fun x => ENNReal.ofReal (p x / q x)) = embeddedLaw p := by
-  classical
-  apply Measure.ext_of_singleton
-  intro x
-  rw [withDensity_apply _ MeasurableSet.of_discrete,
-    lintegral_singleton, embeddedLaw_apply_singleton,
-    embeddedLaw_apply_singleton, ← ENNReal.ofReal_mul
-      (div_nonneg (p.nonneg x) (q.nonneg x)),
-    div_mul_cancel₀ _ (ne_of_gt (hq x))]
+  exact embeddedLaw_withDensity_ratio_of_relativeSupport p q (fun x _ => hq x)
 
 /-- The native weighted-Dirac KL is the `ℝ≥0∞` embedding of the repository's
 real finite KL whenever the reference law has full support. -/
@@ -108,34 +64,7 @@ theorem weightedDirac_klDiv_eq_finiteKL_of_fullSupport
     (p q : FiniteLaw α) (hq : ∀ x, 0 < q x) :
     InformationTheory.klDiv (embeddedLaw p) (embeddedLaw q) =
       ENNReal.ofReal (finiteKL p q) := by
-  have hDensity := embeddedLaw_withDensity_ratio p q hq
-  have hAC : embeddedLaw p ≪ embeddedLaw q := by
-    rw [← hDensity]
-    exact withDensity_absolutelyContinuous _ _
-  rw [InformationTheory.klDiv_eq_lintegral_klFun_of_ac hAC]
-  have hRN :
-      (embeddedLaw p).rnDeriv (embeddedLaw q) =ᵐ[embeddedLaw q]
-        fun x => ENNReal.ofReal (p x / q x) := by
-    rw [← hDensity]
-    exact Measure.rnDeriv_withDensity _ (by fun_prop)
-  have hIntegrand :
-      (fun x => ENNReal.ofReal
-        (InformationTheory.klFun
-          ((embeddedLaw p).rnDeriv (embeddedLaw q) x).toReal)) =ᵐ[embeddedLaw q]
-        fun x => ENNReal.ofReal (InformationTheory.klFun (p x / q x)) := by
-    filter_upwards [hRN] with x hx
-    rw [hx, ENNReal.toReal_ofReal
-      (div_nonneg (p.nonneg x) (q.nonneg x))]
-  rw [lintegral_congr_ae hIntegrand, lintegral_fintype, finiteKL,
-    ENNReal.ofReal_sum_of_nonneg]
-  · apply Finset.sum_congr rfl
-    intro x _
-    rw [embeddedLaw_apply_singleton,
-      ENNReal.ofReal_mul (q.nonneg x), mul_comm]
-  · intro x _
-    exact mul_nonneg (q.nonneg x)
-      (InformationTheory.klFun_nonneg
-        (div_nonneg (p.nonneg x) (q.nonneg x)))
+  exact weightedDirac_klDiv_eq_finiteKL_of_relativeSupport p q (fun x _ => hq x)
 
 omit [DiscreteMeasurableSpace α] in
 /-- Native KL is infinite at every failure of absolute continuity. -/

@@ -81,10 +81,21 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     }
     information_bridges = exact_information_review(PROJECT_ROOT)["new_theorem_owners"]
     assert {name: owners[name] for name in information_bridges} == information_bridges
+    finite_weight_kl_helpers = {
+        "FEP.FiniteInformation.finiteWeightMeasure_singleton",
+        "FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio",
+        "FEP.FiniteInformation.klDiv_finiteWeightMeasure",
+        "FEP.FiniteInformation.finiteWeightMeasure_probability",
+    }
+    assert {name: owners[name] for name in finite_weight_kl_helpers} == {
+        name: "FepSketches.finite_information" for name in finite_weight_kl_helpers
+    }
     assert Counter(
         owner
         for name, owner in owners.items()
-        if name not in scalar_bridges and name not in information_bridges
+        if name not in scalar_bridges
+        and name not in information_bridges
+        and name not in finite_weight_kl_helpers
     ) == {
         "FepSketches.finite_probability": 19,
         "FepSketches.finite_information": 31,
