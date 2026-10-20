@@ -15,6 +15,7 @@ from fep_lean.formal.manifest import (
     formal_resource_paths,
 )
 from fep_lean.lean_source import lean_code_without_comments
+from tests._support.lean_module_contract import exact_information_review
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -78,8 +79,12 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     assert {name: owners[name] for name in scalar_bridges} == {
         name: "FepSketches.compositions.core" for name in scalar_bridges
     }
+    information_bridges = exact_information_review(PROJECT_ROOT)["new_theorem_owners"]
+    assert {name: owners[name] for name in information_bridges} == information_bridges
     assert Counter(
-        owner for name, owner in owners.items() if name not in scalar_bridges
+        owner
+        for name, owner in owners.items()
+        if name not in scalar_bridges and name not in information_bridges
     ) == {
         "FepSketches.finite_probability": 19,
         "FepSketches.finite_information": 31,

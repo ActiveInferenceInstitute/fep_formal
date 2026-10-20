@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 from pathlib import Path
 
 from fep_lean._paths import project_root
@@ -26,8 +25,11 @@ def _run_version(cmd: list[str], cwd: Path | None = None) -> tuple[int, str]:
 
 
 def run_preflight(*, require_gauss: bool | None = None) -> int:
-    if require_gauss is False:
-        os.environ["FEP_LEAN_REQUIRE_GAUSS"] = "0"
+    """Inspect full capabilities; the compatibility argument never relaxes them.
+
+    Full mode always requires OpenGauss. Keep the legacy keyword accepted,
+    without changing process-global environment state during inspection.
+    """
     result = run_validation_checks(project_root(), mode="full")
     print(json.dumps(result, indent=2))
     return 0 if result["status"] == "ok" else 1

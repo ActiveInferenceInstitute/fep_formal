@@ -13,6 +13,16 @@ all 15 hosted jobs and is integrated. The
 records implemented fixes, exact-source evidence and remaining acceptance;
 backlog rows remain open until their scope is accepted.
 
+The latest accepted software/proof-component baseline is
+[PR199](https://github.com/ActiveInferenceInstitute/fep_formal/pull/199), main
+`b929c93bb0bec767424276b369cf09db160b0a5b`, with a successful
+[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39371819686).
+The 39 first-column Issue rows below match the current open GitHub backlog.
+Accepted CORE-D1, PKG-7, LEAN-9 and FORM-S2 move to delivery history. The
+maintainer-closed CUR-15 row also moves out of the open-only table; that board
+reconciliation supplies no new diagnosis or production browser receipt.
+Fresh full capture and its evidence boundaries remain in CUR-05/CUR-07.
+
 ## Release gate
 
 Releases follow the short [release procedure](docs/release.md): one version
@@ -35,7 +45,6 @@ orders this work.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [CUR-15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/51) — Diagnose noncanonical live DOM rejection in the closed production capture | Minor | Independent repair | Explain and repair the actual noncanonical DOM rejection; real browser receipt passes, with old output hashes kept historical. |
 | [CUR-03](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52) — Seal complete approved tests membership in the successor source freeze | Minor | [CUR-01](https://github.com/ActiveInferenceInstitute/fep_formal/issues/46), [CUR-02](https://github.com/ActiveInferenceInstitute/fep_formal/issues/47), [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48), [CUR-15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/51) | Exact approved full tests membership enforced before imports/planning/dispatch and at closure; nonauthor source review passes. |
 | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53) — Accept a fresh full seven-stage capture and identical package archives | Medium | [CUR-01](https://github.com/ActiveInferenceInstitute/fep_formal/issues/46), [CUR-02](https://github.com/ActiveInferenceInstitute/fep_formal/issues/47), [CUR-03](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52), [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48), [CUR-15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/51) | All seven actual stages and closing guards pass; two identical package archives independently claim-ready. |
 | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) — Pass every declared check and exact-SHA hosted artifact gate | Medium | [CUR-01](https://github.com/ActiveInferenceInstitute/fep_formal/issues/46), [CUR-02](https://github.com/ActiveInferenceInstitute/fep_formal/issues/47), [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48), [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49) | Every applicable declared check and all same-SHA hosted jobs/artifacts validate; local and hosted evidence remain separate. |
@@ -73,7 +82,6 @@ roster refresh; new topics are not implicitly reserved by this plan.
 | [CORE-M2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63) — maintain current guidance through dependency review | Minor | [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48) | Current active reading paths, complete retirement caller inventory, strict links/hygiene/xrefs and preserved historical evidence. |
 | [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73) — Audit configurable defaults and thin orchestration across workflows | Minor | [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Documented configuration/default/precedence matches actual behavior; bounded compatibility changes keep orchestration thin. |
 | [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) — align primary theorem proxies with the proved information seams | Minor | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Exact primary types/assumptions/non-vacuity reviewed; stable IDs/signatures and all native/axiom/boundary projections accepted. |
-| [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64) — expose one reusable typed readiness API | Medium | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | One immutable readiness API and real non-CLI consumer; installed/CLI parity, race/process/mutation controls and infrastructure review. |
 | [CORE-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/65) — portable semantic and relation queries from one canonical join | Medium | [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Reviewed generated query schema conserves topics/relations/assumptions/blockers; deterministic isolated-wheel parity and semantic review. |
 | [CORE-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74) — Improve accessible offline manuscript, atlas and numerical explanations | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54), [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Demonstrated accessibility gap resolved through shared models; deterministic offline SVG/HTML/PDF and actual browser/text alternatives pass. |
 | [FORM-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/69) — exact fair-Boolean Hamming rate-distortion curve | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Derived Boolean Hamming converse/attaining channel/curve, endpoints and interior multiplier with information-theory review. |
@@ -96,7 +104,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [FORM-S2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/85) — Review the fep-030↔031 relation against the delivered general finite MaxEnt | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The `fep-030 → fep-031` conceptual edge is reviewed and upgraded with witness `FEP.VariationalDuality.energyGibbs_maxEntropy`, or its blocker recorded. |
 | [FORM-S3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/86) — Review the fep-013↔002 relation against the delivered Helmholtz minimum | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The `fep-013 ↔ fep-002` conceptual edge is reviewed and upgraded with `FEP.VariationalDuality.helmholtzFreeEnergy_eq_iff`, or its blocker recorded. |
 | [FORM-S5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/88) — Route the fep-050 body through the hypothesis-free Landauer bound | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The fep-050 body no longer carries `hsecondLaw`; it consumes `FEP.PathThermodynamics.erasure_generalized_landauer` as a reviewed body change. |
 | [FORM-S10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/93) — Review the fep-034↔047 relation against the delivered tree sum-product theory | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The `fep-034 ↔ fep-047` edge carries a dated review note; any tag change is a reviewed seal delta. |
@@ -114,7 +121,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [LEAN-5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/103) — A reviewed derivational edge in every family | Medium | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | At most six families without a `formal` edge; endpoint-qualification notes per the adjudication doc; relation tests pass. |
 | [LEAN-6](https://github.com/ActiveInferenceInstitute/fep_formal/issues/104) — Consumed-endpoint review notes on every `formal` edge | Minor | Independent | A reviewed seal delta applies the five pairing-rationale rewrites in `docs/relations-endpoint-adjudication.md`, and every `formal` edge's rationale names its consumed endpoint theorem. |
 | [LEAN-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105) — Obligation records for conceptual relations | Minor | Independent | A schema test requires `blocked_by` on every conceptual edge; at least one converted to a pairing (034↔047 via FORM-S10 or 016↔032). |
-| [LEAN-9](https://github.com/ActiveInferenceInstitute/fep_formal/issues/107) — Numerical witnesses for the core families | Medium | [CORE-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74) | At least 22 catalogue witnesses; dashboard `--check` and witness tests pass. |
 | [LEAN-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110) — Move the finite KL bridge beside finiteKL and prepare a Mathlib PR | Medium | Independent | Bridge lemma compiles with only Mathlib imports and no FEP namespace; upstream draft prepared after checking current Mathlib. |
 
 ### Package infrastructure
@@ -122,7 +128,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
 | [PKG-6](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119) — Error base in the pinned GNN proof modules and every verb's failure path | Medium | [CORE-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/62) | `ArtifactProofError` and `ContinuousArtifactError` derive from `FepLeanError` after a coordinated Q5–Q7 evidence refresh, the `pinned` exclusion in `tests/test_cli.py` is empty, and the parametrised failure-schema test covers every verb. |
-| [PKG-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/120) — Remove layer inversions and global environment mutation | Medium | [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64), [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73) | No `from fep_lean.cli` outside the console entry; no private release_bundle access outside its owner; an import-direction test. |
 | [PKG-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/126) — Thin cli.py to parse, dispatch and emit | Medium | [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73), [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64) | `cli.py` under ≈ 500 lines; every verb's JSON output byte-identical in CLI tests. |
 
 ### Documentation and manuscript

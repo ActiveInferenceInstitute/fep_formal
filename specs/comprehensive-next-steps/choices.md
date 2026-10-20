@@ -880,3 +880,27 @@ scientific, production-capture, generated-runner or final publication claim.
 
 **Verdict:** bounded acceptance; final render and fifteen-cell head/main gates
 remain explicit.
+
+
+## 2026-10-20: exact finite information and installed query integrity
+
+Reuse the existing variational foundation and core composition owner for the
+fair Boolean Hamming curve, finite positive-temperature Helmholtz consequences
+and six stronger endpoint witnesses. Keep every old declaration byte and
+historical fixture; authenticate a new exact preimage layer and retain the
+013/002 conceptual boundary. Native compilation and final semantic/publication
+acceptance stay separate.
+
+Reuse `MathematicalPositioning` for the installed query API. Actual cold-package
+controls showed that the existing builder rejects order/duplicate/unknown-field
+changes but permits a valid omission and edited rationale. The new narrow loader
+adds the installed wheel's standard `RECORD` integrity boundary before and after
+the canonical join, without a duplicate mathematical registry or shipped snapshot.
+Whole-distribution replacement remains outside that trust boundary. Existing
+checkout inspection stays explicit. Keep the legacy preflight keyword accepted
+while removing its demonstrated inert process-environment write.
+
+See the [proof/consumer slice](spikes/exact-information-20261020/README.md),
+[query API](../../docs/api.md#mathematical-methods) and the actual source-bound
+acceptance records produced by the publication gates. These decisions do not
+close an issue or promote a scientific claim by themselves.

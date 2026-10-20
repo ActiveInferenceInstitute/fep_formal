@@ -288,6 +288,45 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
     assert probe.returncode == 0, probe.stderr or probe.stdout
     print("installed wheel runtime:", probe.stdout.strip())
 
+    query_probe = subprocess.run(
+        [
+            str(python),
+            "-I",
+            "-c",
+            """
+from pathlib import Path
+from unittest.mock import patch
+import os, subprocess, socket, sys
+import fep_lean
+from fep_lean.methods import load_packaged_formalism_query, build_mathematical_positioning, inspect_topic, inspect_theorem
+before = dict(os.environ)
+def forbidden(*args, **kwargs):
+    raise AssertionError('installed query started a process or network operation')
+with patch('subprocess.run', forbidden), patch('subprocess.Popen', forbidden), patch('socket.socket', forbidden):
+    model = load_packaged_formalism_query()
+    assert model._json == build_mathematical_positioning()._json
+    topic = inspect_topic(model, 'fep-001')
+    theorem = inspect_theorem(model, topic['primary_theorem_qualified'])
+    assert model.as_dict()['counts']['topics'] == 168
+    assert model.origin.value == 'installed_package'
+    detached = model.as_dict()
+    detached['topics'].clear()
+    assert len(model.as_dict()['topics']) == 168
+assert dict(os.environ) == before
+assert 'fep_lean.cli' not in sys.modules
+print('actual installed wheel RECORD query, canonical parity and process-free inspection passed')
+""",
+        ],
+        cwd=tmp_path,
+        env=clean_env,
+        timeout=180,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert query_probe.returncode == 0, query_probe.stderr or query_probe.stdout
+    print(query_probe.stdout.strip())
+
     # Run the locked validator's checker against the existing target environment.
     # The checker is a development tool, never a runtime dependency of the wheel.
     typing_config = tmp_path / "installed-typing.ini"

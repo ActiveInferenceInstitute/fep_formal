@@ -624,3 +624,63 @@ def test_scalar_bridge_imported_consumers_refuse_missing_premises(
             and "function" in output.lower()
             and "fep030_fep031_finite_maxEntropy" in output
         ), output
+
+
+@pytest.mark.serial_lean
+@pytest.mark.parametrize(
+    ("case", "reports", "reject"),
+    [
+        ("fair-boolean-consumer", 11, False),
+        ("native-nonzero-consumer", 3, False),
+        ("endpoint-countermodels", 4, False),
+        ("endpoint-positive-consumer", 4, False),
+        ("helmholtz-positive-consumer", 5, False),
+        ("helmholtz-zero-countermodel", 1, False),
+        ("reject-fair-boolean-zero-multiplier", 0, True),
+        ("reject-fisher-endpoint", 0, True),
+        ("reject-zero-step", 0, True),
+        ("reject-zero-temperature", 0, True),
+        ("reject-negative-temperature", 0, True),
+    ],
+)
+def test_exact_information_imported_consumers_and_boundary_controls(
+    tmp_path: Path, case: str, reports: int, reject: bool
+) -> None:
+    source = (
+        PROJECT_ROOT
+        / "specs/comprehensive-next-steps/spikes/exact-information-20261020"
+        / (case + ".lean")
+    )
+    probe = tmp_path / "ExactInformationConsumer.lean"
+    probe.write_bytes(source.read_bytes())
+    result = run_lean_probe(
+        probe,
+        import_root=tmp_path,
+        cwd=PROJECT_ROOT / "lean",
+        timeout_s=180,
+        executable=lake_executable(
+            missing="raise", context="exact information imported consumer"
+        ),
+    )
+    output = result.stdout + result.stderr
+    assert "warning:" not in output.lower() and "sorryAx" not in output, output
+    axioms = re.findall(
+        r"'([^']+)' depends on axioms:\s*\[([^]]*)\]", output, re.DOTALL
+    )
+    assert len(axioms) == reports and len({name for name, _ in axioms}) == reports, (
+        output
+    )
+    assert all(
+        {a.strip() for a in row.split(",")}
+        == {"propext", "Classical.choice", "Quot.sound"}
+        for _, row in axioms
+    ), output
+    if reject:
+        assert result.returncode == 1 and output.count("error:") == 1, output
+        assert (
+            "unsolved goals" in output
+            and "⊢ False" in output
+            and "unknown" not in output.lower()
+        ), output
+    else:
+        assert result.returncode == 0 and "error:" not in output, output
