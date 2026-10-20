@@ -484,7 +484,37 @@ def _scalar_review() -> dict[str, object]:
     return review
 
 
+_CONJUGACY_RATIONALE_REVIEW_PATH = (
+    PROJECT_ROOT / "tests/fixtures/conjugacy_rationale_review_20261020.json"
+)
+_CONJUGACY_RATIONALE_REVIEW_SHA256 = (
+    "de38efa3965146e47bb6d89f1bd5b81d9e41f2284714adae9d113752de3e5dfa"
+)
+
+
+def _restore_reviewed_conjugacy_rationale(
+    edges: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    """Undo only the exact independently reviewed prose before historical seals."""
+    raw = _CONJUGACY_RATIONALE_REVIEW_PATH.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _CONJUGACY_RATIONALE_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1
+    result = []
+    seen = 0
+    for edge in edges:
+        if (edge["source"], edge["target"]) == ("fep-017", "fep-045"):
+            assert edge == review["reviewed"]
+            result.append(dict(review["released"]))
+            seen += 1
+        else:
+            result.append(dict(edge))
+    assert seen == 1
+    return result
+
+
 def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, object]]:
+    edges = _restore_reviewed_conjugacy_rationale(edges)
     edges = reverse_information_entries(edges, PROJECT_ROOT)
     change = _scalar_review()["edge_change"]
     result = []
@@ -771,6 +801,7 @@ def test_relation_rationale_review_authenticates_fixture_bytes(
 def test_exact_information_review_preserves_complete_prior_model_and_owner_bytes():
     review = exact_information_review(PROJECT_ROOT)
     model = _yaml("formalism_relations.yaml")
+    model["edges"] = _restore_reviewed_conjugacy_rationale(model["edges"])
     assert (
         hashlib.sha256(_canonical(model).encode()).hexdigest()
         == review["reviewed_model_canonical_sha256"]
@@ -811,6 +842,7 @@ def test_exact_information_review_rejects_unapproved_changes(mutation):
             )
         return
     model = _yaml("formalism_relations.yaml")
+    model["edges"] = _restore_reviewed_conjugacy_rationale(model["edges"])
     if mutation == "capability":
         identity = review["capability_changes"][0]["reviewed"]["id"]
         next(row for row in model["capabilities"] if row["id"] == identity)["evidence"][
@@ -850,3 +882,37 @@ def test_exact_information_review_rejects_modified_fixture(tmp_path):
     )
     with pytest.raises(AssertionError):
         exact_information_review(tmp_path)
+
+
+@pytest.mark.parametrize(
+    "mutation", ["rationale", "kind", "witness", "missing", "duplicate"]
+)
+def test_conjugacy_rationale_review_refuses_changes_beyond_exact_prose(mutation):
+    edges = [dict(edge) for edge in _yaml("formalism_relations.yaml")["edges"]]
+    row = next(
+        edge
+        for edge in edges
+        if (edge["source"], edge["target"]) == ("fep-017", "fep-045")
+    )
+    if mutation == "missing":
+        edges.remove(row)
+    elif mutation == "duplicate":
+        edges.append(dict(row))
+    else:
+        row[mutation] = {
+            "rationale": "unreviewed",
+            "kind": "formal",
+            "witness": "FEPComposed.unreviewed",
+        }[mutation]
+    with pytest.raises(AssertionError):
+        _restore_reviewed_conjugacy_rationale(edges)
+
+
+def test_conjugacy_rationale_review_authenticates_exact_fixture(tmp_path, monkeypatch):
+    changed = tmp_path / "changed-review.json"
+    changed.write_bytes(_CONJUGACY_RATIONALE_REVIEW_PATH.read_bytes() + b" ")
+    monkeypatch.setitem(globals(), "_CONJUGACY_RATIONALE_REVIEW_PATH", changed)
+    with pytest.raises(AssertionError):
+        _restore_reviewed_conjugacy_rationale(
+            _yaml("formalism_relations.yaml")["edges"]
+        )

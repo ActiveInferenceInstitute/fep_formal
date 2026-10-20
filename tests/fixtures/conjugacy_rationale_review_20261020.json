@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "scope": "One independently reviewed authored conceptual rationale only; no proof, kind, witness, capability or disposition change.",
+  "base": "974b55f9c14ff006b0f2ef1215d047dd101f9023",
+  "released": {
+    "source": "fep-017",
+    "target": "fep-045",
+    "kind": "conceptual",
+    "rationale": "The native posterior-kernel laws provide normalized Bayesian semantics, while fep-045 must still prove closure of a named conjugate family."
+  },
+  "reviewed": {
+    "source": "fep-017",
+    "target": "fep-045",
+    "kind": "conceptual",
+    "rationale": "The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier."
+  },
+  "reviewed_owner_sha256": "42b7333647a67e656dd13cb03334398ab9e01f7c74c1a53b6c797f40e63cc8aa",
+  "independent_review": "fep65-independent-semantic-integrated-review-20261020.json"
+}
