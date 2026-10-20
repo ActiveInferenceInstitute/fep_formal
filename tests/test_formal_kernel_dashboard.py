@@ -664,8 +664,11 @@ def test_mobile_defaults_keep_counted_plot_groups_and_exact_records_collapsed() 
     assert (
         "@media (max-width: 760px){.desktop-overview{display:none}"
         ".mobile-overview{display:block}"
-        ".mobile-plot-group>summary{padding:6px 16px}" in rendered
+        ".mobile-plot-group>summary{padding:4px 16px;min-height:44px;line-height:1.3}"
+        in rendered
     )
+    assert '<details class="keyboard-help"><summary>Keyboard help</summary>' in rendered
+    assert '<details class="keyboard-help" open' not in rendered
     assert "Groups start collapsed; use the index to open any group." in rendered
     assert (
         f'<details id="witnesses" class="record-collection" '

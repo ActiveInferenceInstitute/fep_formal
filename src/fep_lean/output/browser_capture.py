@@ -244,6 +244,9 @@ def canonical_browser_observations(
             "detailSections": 4,
             "detailsInitiallyOpen": 0,
             "escapeCleared": True,
+            "escapePreservedFilters": True,
+            "outsideEscapePreservedFilters": True,
+            "clearAllResetFilters": True,
             "families": counts["families"],
             "fepVisible": 41,
             "pairingVisible": REVIEWED_ATLAS_PAIRINGS,
@@ -272,6 +275,9 @@ def canonical_browser_observations(
             "detailRecords": counts["witnesses"],
             "detailsInitiallyOpen": 0,
             "escapeCleared": True,
+            "escapePreservedFilters": True,
+            "outsideEscapePreservedFilters": True,
+            "clearAllResetFilters": True,
             "exactScrollRegions": 3 * counts["witnesses"],
             "familyVisible": 1,
             "filterOpened": 1,
@@ -285,6 +291,10 @@ def canonical_browser_observations(
             "witnesses": counts["witnesses"],
         },
         "dashboard_mobile": {
+            "escapeCleared": True,
+            "escapePreservedFilters": True,
+            "outsideEscapePreservedFilters": True,
+            "clearAllResetFilters": True,
             "bodyFitsViewport": True,
             "compactDefaultHeight": True,
             "desktopOverviewHidden": True,
@@ -938,15 +948,6 @@ _ATLAS_ACTIONS_JS = r"""
 })()
 """
 
-_ATLAS_ESCAPE_JS = r"""
-(() => {
-  const search=document.getElementById("atlas-search");
-  return search.value === "" &&
-    [...document.querySelectorAll("#area-filter,#family-filter,#status-filter,#relation-filter")]
-      .every(control => control.value === "") && document.activeElement === search;
-})()
-"""
-
 _ATLAS_MOBILE_JS = r"""
 (() => {
   const details=[...document.querySelectorAll("main > details[id]")];
@@ -1002,16 +1003,6 @@ _DASHBOARD_ACTIONS_JS = r"""
 })()
 """
 
-_DASHBOARD_ESCAPE_JS = r"""
-(() => {
-  const search=document.getElementById("witness-search");
-  return search.value === "" &&
-    document.getElementById("witness-family-filter").value === "" &&
-    document.getElementById("witness-status-filter").value === "" &&
-    document.activeElement === search;
-})()
-"""
-
 _DASHBOARD_JUMP_JS = r"""
 (() => {
   const link=document.querySelector("[data-detail-jump]");
@@ -1062,6 +1053,93 @@ _DASHBOARD_MOBILE_ACTIONS_JS = r"""
 """
 
 
+def _explorer_keyboard_reset_observations(
+    client: _CdpClient,
+    session_id: str,
+    *,
+    search_id: str,
+    clear_id: str,
+    filter_ids: tuple[str, ...],
+) -> dict[str, bool]:
+    """Require exact controls and focus for text Escape, outside refusal and reset."""
+    if not filter_ids or len(set(filter_ids)) != len(filter_ids) or not all(filter_ids):
+        raise BrowserCaptureError("keyboard reset filter identities are invalid")
+    search = json.dumps(search_id)
+    clear = json.dumps(clear_id)
+    snapshot = f"""(() => ({{
+      text:document.getElementById({search}).value,
+      focused:document.activeElement?.id ?? '',
+      filters:[...document.querySelectorAll('[data-explorer-filter]')].map(node=>({{id:node.id,value:node.value}}))
+    }}))()"""
+
+    def state() -> dict[str, Any]:
+        raw = _evaluate(client, session_id, snapshot)
+        if not isinstance(raw, dict) or set(raw) != {"text", "focused", "filters"}:
+            raise BrowserCaptureError("keyboard reset snapshot shape is invalid")
+        filters = raw["filters"]
+        if (
+            not isinstance(raw["text"], str)
+            or not isinstance(raw["focused"], str)
+            or not isinstance(filters, list)
+            or len(filters) != len(filter_ids)
+        ):
+            raise BrowserCaptureError(
+                "keyboard reset control cardinality or types are invalid"
+            )
+        for item, expected_id in zip(filters, filter_ids, strict=True):
+            if (
+                not isinstance(item, dict)
+                or set(item) != {"id", "value"}
+                or item["id"] != expected_id
+                or not isinstance(item["value"], str)
+            ):
+                raise BrowserCaptureError(
+                    "keyboard reset control identities or values are invalid"
+                )
+        return raw
+
+    _evaluate(
+        client,
+        session_id,
+        f"""(() => {{
+      const search=document.getElementById({search});
+      search.value='keyboard-scope-control';
+      search.dispatchEvent(new Event('input',{{bubbles:true}}));
+      document.getElementById({clear}).focus();return true;
+    }})()""",
+    )
+    before = state()
+    if (
+        not before["text"]
+        or not any(item["value"] for item in before["filters"])
+        or before["focused"] != clear_id
+    ):
+        raise BrowserCaptureError(
+            "keyboard reset requires nonempty text, selected filter and Clear focus"
+        )
+    _press_key(client, session_id, "Escape")
+    outside_preserved = state() == before
+    _evaluate(client, session_id, f"document.getElementById({search}).focus(); true")
+    _press_key(client, session_id, "Escape")
+    after = state()
+    _evaluate(
+        client,
+        session_id,
+        f"""(() => {{
+      const clear=document.getElementById({clear});clear.focus();clear.click();return true;
+    }})()""",
+    )
+    reset = state()
+    return {
+        "escapeCleared": after["text"] == "" and after["focused"] == search_id,
+        "escapePreservedFilters": after["filters"] == before["filters"],
+        "outsideEscapePreservedFilters": outside_preserved,
+        "clearAllResetFilters": reset["text"] == ""
+        and not any(item["value"] for item in reset["filters"])
+        and reset["focused"] == clear_id,
+    }
+
+
 def _atlas_observations(
     client: _CdpClient, session_id: str, *, mobile: bool
 ) -> dict[str, Any]:
@@ -1073,6 +1151,9 @@ def _atlas_observations(
     value = _evaluate(client, session_id, _ATLAS_INITIAL_JS)
     if not isinstance(value, dict):
         raise BrowserCaptureError("atlas observations are invalid")
+    _evaluate(
+        client, session_id, 'document.getElementById("atlas-viewport").focus(); true'
+    )
     _press_key(client, session_id, "/")
     value["slashFocused"] = _evaluate(
         client,
@@ -1083,8 +1164,20 @@ def _atlas_observations(
     if not isinstance(actions, dict):
         raise BrowserCaptureError("atlas action observations are invalid")
     value.update(actions)
-    _press_key(client, session_id, "Escape")
-    value["escapeCleared"] = _evaluate(client, session_id, _ATLAS_ESCAPE_JS)
+    value.update(
+        _explorer_keyboard_reset_observations(
+            client,
+            session_id,
+            search_id="atlas-search",
+            clear_id="atlas-clear-filters",
+            filter_ids=(
+                "area-filter",
+                "family-filter",
+                "status-filter",
+                "relation-filter",
+            ),
+        )
+    )
     return value
 
 
@@ -1098,6 +1191,11 @@ def _dashboard_observations(
     if mobile:
         actions = _evaluate(client, session_id, _DASHBOARD_MOBILE_ACTIONS_JS)
     else:
+        _evaluate(
+            client,
+            session_id,
+            'document.querySelector(".overview-viewport").focus(); true',
+        )
         _press_key(client, session_id, "/")
         value["slashFocused"] = _evaluate(
             client,
@@ -1108,9 +1206,15 @@ def _dashboard_observations(
     if not isinstance(actions, dict):
         raise BrowserCaptureError("dashboard action observations are invalid")
     value.update(actions)
-    _press_key(client, session_id, "Escape")
-    if not mobile:
-        value["escapeCleared"] = _evaluate(client, session_id, _DASHBOARD_ESCAPE_JS)
+    value.update(
+        _explorer_keyboard_reset_observations(
+            client,
+            session_id,
+            search_id="witness-search",
+            clear_id="witness-clear-filters",
+            filter_ids=("witness-family-filter", "witness-status-filter"),
+        )
+    )
     jump = _evaluate(client, session_id, _DASHBOARD_JUMP_JS)
     if not isinstance(jump, dict):
         raise BrowserCaptureError("dashboard jump observations are invalid")
@@ -1163,8 +1267,18 @@ def _interactions(observations: Mapping[str, Any]) -> dict[str, bool]:
             (
                 atlas["slashFocused"],
                 atlas["escapeCleared"],
+                atlas["escapePreservedFilters"],
+                atlas["outsideEscapePreservedFilters"],
+                atlas["clearAllResetFilters"],
                 dashboard["slashFocused"],
                 dashboard["escapeCleared"],
+                dashboard["escapePreservedFilters"],
+                dashboard["outsideEscapePreservedFilters"],
+                dashboard["clearAllResetFilters"],
+                dashboard_mobile["escapeCleared"],
+                dashboard_mobile["escapePreservedFilters"],
+                dashboard_mobile["outsideEscapePreservedFilters"],
+                dashboard_mobile["clearAllResetFilters"],
             )
         ),
         "no_external_requests": observations["external_requests"] == [],
