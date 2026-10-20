@@ -305,7 +305,9 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
     # The authenticated scalar review upgrades this one former conceptual edge.
     old_scalar = ("fep-030", "fep-031", "conceptual", None)
     new_scalar = (
-        "fep-030", "fep-031", "formal_pairing",
+        "fep-030",
+        "fep-031",
+        "formal_pairing",
         "FEPComposed.fep030_fep031_binary_maxEntropy",
     )
     assert new_scalar in edge_signatures
