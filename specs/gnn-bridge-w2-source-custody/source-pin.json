@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "6c989bab1351428c44da42b2b81098e745ac57dd",
+    "commit": "b301ffb3583211410060b30c188e9dbba46a6c7d",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -71,7 +71,7 @@
       "src/fep_lean/formal/compositions/collective_learning.lean": "a7eaa3e827a2996a398c4ff827dfddef641f1f084be38e0a0fcd8dc378c0f8d1",
       "src/fep_lean/formal/compositions/continuous_time.lean": "bc88c44e1603d9ce859fcf9704ce4e745ffc1ae5904fb8485aa859c6ec0a56bb",
       "src/fep_lean/formal/compositions/control_temporal.lean": "f9a0a2bf4e80d8d5981b129d6bddce1b5c2f170a4e294efa0d7e72e3bd322943",
-      "src/fep_lean/formal/compositions/core.lean": "0e178e79b5f9c90c16cdaa3cf6744677e22aea9902f5a5c2a8fea45bb8bf1446",
+      "src/fep_lean/formal/compositions/core.lean": "cdfbd1be21587df92e1c371ffc1e6d5a88bddf0a8092f9867ed420a30a47aca8",
       "src/fep_lean/formal/compositions/efe_policy_selection.lean": "d543a4e0bf779d2dfe10976b573cbba17d45ee1fe234ebfceec788fa5877d9cc",
       "src/fep_lean/formal/compositions/efe_time_scale_separation.lean": "deaf0ae9abf3ad40c53304c186e354c8ee0855380be862c71466fa7112cb4066",
       "src/fep_lean/formal/compositions/exponential_family.lean": "8726c522ebec4d0417c3caab742f8f8f60e14e285e94fbd637037200fee48c62",
@@ -135,7 +135,7 @@
       "src/fep_lean/formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
       "src/fep_lean/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
       "src/fep_lean/formal/temporal_inference.lean": "25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b",
-      "src/fep_lean/formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+      "src/fep_lean/formal/variational_duality.lean": "445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8",
       "src/fep_lean/gauss/__init__.py": "2705273ad3f91094201eb41faf284a94172fe4a12ab23030457c8695914a10c0",
       "src/fep_lean/gauss/cli.py": "63458f1c5f5ef49266375b53b3358fa8bba9c888fd6404ffa40e300014bc5542",
       "src/fep_lean/gauss/client.py": "3a9fa26de947e781b85d07340ed57dbdc156452d65cf3797539c153d20ccbc9c",
@@ -143,8 +143,8 @@
       "src/fep_lean/lean_source.py": "0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104",
       "src/fep_lean/llm/__init__.py": "ae438b5778960193d24ee8e8cd43f75b698d4f7e283b9e8368d965e92dc581e8",
       "src/fep_lean/llm/hermes.py": "3880e8b519652894b31efaf3c13aa80ef328ce10a10f9701c2eaef6105c9b22d",
-      "src/fep_lean/methods/__init__.py": "7246bb68d195e00200fef71eec65bf91f538e1a673e6f4b4ff86ddbdcb121d72",
-      "src/fep_lean/methods/model.py": "e95371643dc94823982cccbbc82663893c456c987b3096d41248c90de45d459e",
+      "src/fep_lean/methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
+      "src/fep_lean/methods/model.py": "3bdb756ebf80b6368dd2c92a8f4231d2b685849d4d9512b74ff84c481ffc50f4",
       "src/fep_lean/methods/probes.py": "30690d7b66923a2df06b59c93b95549b8dad5018cc2ae6a2ce1f256af64e326b",
       "src/fep_lean/methods/projection.py": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
       "src/fep_lean/methods/visualization.py": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a",
@@ -197,7 +197,7 @@
       "src/fep_lean/verification/horizon_acceptance.py": "b1e25d40ee6c42c9a661e1d2fa23f3814365c50cbdc04276da929b54ff62958d",
       "src/fep_lean/verification/lean_verifier.py": "ecf4ee82914985b987fd0e61e5f5cf62c26b243a2a6ecd12937ad68a26520f76",
       "src/fep_lean/verification/numerical_witnesses.py": "cefcc5e44596631db568288c457f10ef9402c60389358fcc48912abb725207e8",
-      "src/fep_lean/verification/preflight.py": "2b80ab8cefa2f93d7648f2b3d607fda18591d2b0294ffffea1cd45ad51441ebc",
+      "src/fep_lean/verification/preflight.py": "c82c79950da29d06372372ef1157c8de887909292349a6078ca1c9f7929df4d5",
       "uv.lock": "b8c54ac9d66c570bdd3c8e50f10234ac785dc078bcfa5e52c9749161ab82e252"
     }
   },
