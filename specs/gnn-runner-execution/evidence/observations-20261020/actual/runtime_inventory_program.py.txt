@@ -1,0 +1,13 @@
+import importlib.metadata as m,json,hashlib,sys,platform,sysconfig
+from pathlib import Path
+root=Path(sys.prefix).resolve();packages={}
+for name in ['jax','jaxlib','numpy','scipy','ml_dtypes','opt_einsum']:
+ d=m.distribution(name);files={}
+ for p in d.files:
+  target=Path(d.locate_file(p)).resolve()
+  if target.suffix=='.pyc':continue
+  if not target.is_relative_to(root):raise ValueError('distribution file outside isolated runtime')
+  if not target.is_file():raise ValueError('missing installed runtime member')
+  files[str(target.relative_to(root))]=hashlib.sha256(target.read_bytes()).hexdigest()
+ packages[name]={'version':d.version,'files':files}
+print(json.dumps({'python':sys.version,'executable':str(Path(sys.executable)),'executable_sha256':hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest(),'prefix':str(root),'platform':platform.platform(),'machine':platform.machine(),'SOABI':sysconfig.get_config_var('SOABI'),'packages':packages},sort_keys=True))

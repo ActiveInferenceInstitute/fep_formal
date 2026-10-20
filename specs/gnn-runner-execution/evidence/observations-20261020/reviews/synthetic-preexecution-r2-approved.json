@@ -1,0 +1,35 @@
+{
+  "reviewer": "/root/fep119_backend_review",
+  "independent_of_author": true,
+  "script": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61_capture_adapter_controls.py",
+  "script_sha256": "365e26dccdf0bebb74a0ee6ece15c4f7f023042261ccd499a19e300389fa953a",
+  "retained_rejected_r1_sha256": "9e5745a7e8bd2416959427c83f129c828ad0df1a909a2e5982edc02973902420",
+  "executed": false,
+  "decision": "approve_preexecution_synthetic_control_design",
+  "blocking_findings": [],
+  "prior_findings": {
+    "R1": "Resolved: all negatives now require branch-specific traceback markers, expected journal state/check count and physical invocation directory count; process/output cases require matching physical injection artifacts. A generic nonzero exit alone cannot qualify a control.",
+    "R2": "Resolved by explicit scope: post-run owner replacement expects the git cleanliness guard and matching changed owner bytes; no claim of reaching the digest comparison."
+  },
+  "reviewed_cases": 22,
+  "checked_design_details": [
+    "Second output mismatch changes y, mu and RMSE consistently, so scalar checker passes before explicit numerical replay refusal; exactly two captured rows/directories required.",
+    "Missing/malformed/extra/symlink output controls require one captured row, intended rejection line/type and matching physical output shape.",
+    "Nonzero exit requires code7 in captured row; stderr requires exact retained controlled diagnostic.",
+    "Deadline requires Timeout in persisted failure, the actual supervisor call in traceback, zero captured rows, one invocation directory and absent stdout capture.",
+    "Pre-execution source/runtime guards require zero invocation directories and matching guard/error markers. Top-level checker/protocol guards require absent journal; preexisting journal must remain exact.",
+    "Preexisting invocation requires FileExistsError, zero captured rows and no newly created output subdirectory.",
+    "Positive requires two successful captured rows and directories; unchanged adapter independently enforces numerical replay and final success.",
+    "Historical adapter/checker bytes remain copied unchanged; synthetic generated scripts, two one-file Git roots and one-marker runtime are clearly labeled as fixtures."
+  ],
+  "remaining_requirements": [
+    "Execute under owning lease using the reviewed exact script bytes; retain script hash, every raw stdout/stderr, fixture inputs and qualification row.",
+    "Treat failed assertions, setup exceptions or harness timeouts as incomplete/failed qualification; retain outputs and revise in a new destination rather than overwrite.",
+    "After execution independently inspect actual per-case evidence; this preexecution approval does not state any control has passed.",
+    "These are synthetic capture-adapter controls, not new scientific runner observations, full3270-runtime tamper coverage, current source-pair evidence, OU dynamics, native acceptance or Issue61 closure."
+  ],
+  "nonblocking_limits": [
+    "Some traceback markers identify source assertions rather than custom reason codes; the matching physical artifact, phase and row/directory counts provide adequate disambiguation for these controlled fixtures.",
+    "Unexpected fixture-setup/harness parsing failures may stop before the next qualification row, but cannot be falsely reported as passing; prior rows/raw artifacts remain."
+  ]
+}

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/capture.py", line 59, in <module>
+    if previous is not None:assert encoded==previous,'numerical replay changed'
+                                   ^^^^^^^^^^^^^^^^^
+AssertionError: numerical replay changed

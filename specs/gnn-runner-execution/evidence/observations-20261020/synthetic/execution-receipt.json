@@ -1,0 +1,10 @@
+{
+  "returncode": 0,
+  "script_sha256": "365e26dccdf0bebb74a0ee6ece15c4f7f023042261ccd499a19e300389fa953a",
+  "preexecution_review_sha256": "85b258e4386de553591547433af7629b5db97f4837c97dc4bfdea1e2cbf6a6fd",
+  "actual_supervisor_source": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/src/fep_lean/verification/_subprocess.py",
+  "supervisor_sha256_before_and_after": "482a19898e0c3ffc1f2a4e71d83727715ced1ce1db4f211a06b6caf26a0aedef",
+  "log": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-execution.log",
+  "log_sha256": "6767c3d09298da07cdc9fbb76607952bae41986499e8f2b8c15b2f3b3e574d51",
+  "boundary": "Synthetic physical controls only; no new historical runner observations or native/scientific/full Issue61 acceptance."
+}

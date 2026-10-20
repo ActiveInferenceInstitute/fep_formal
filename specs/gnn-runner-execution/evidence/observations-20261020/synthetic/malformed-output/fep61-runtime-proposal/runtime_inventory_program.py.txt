@@ -1,0 +1,1 @@
+from pathlib import Path; import hashlib,json; p=Path('/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/runtime/marker.txt'); print(json.dumps({"fixture_runtime_marker_sha256":hashlib.sha256(p.read_bytes()).hexdigest()},sort_keys=True))

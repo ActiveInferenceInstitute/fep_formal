@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/replacement-runtime-inventory/fep61-runtime-proposal/capture.py", line 48, in <module>
+    guards()
+    ~~~~~~^^
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/replacement-runtime-inventory/fep61-runtime-proposal/capture.py", line 29, in guards
+    assert sha(h/'runtime-inventory.json')==protocol['runtime_inventory_sha256']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

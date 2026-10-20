@@ -1,0 +1,12 @@
+{
+  "scope": "Independent scratch sensitivity probe; no source changes or runner execution; deliberately removed lazy-fetch env guard only",
+  "python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+  "validator_sha256": "98af59c932a724ba4cb811f3e98c54b830bcb447604080be494e2b5db01da1c7",
+  "cat_file_calls": 1,
+  "validation_refusal": "ValueError: missing historical source blob",
+  "scratch_repository_config_before": "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = true\n\tignorecase = true\n\tprecomposeunicode = true\n[remote \"origin\"]\n\tpromisor = true\n\turl = http://127.0.0.1:1/unreachable\n",
+  "scratch_repository_config_after": "[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = true\n\tignorecase = true\n\tprecomposeunicode = true\n[remote \"origin\"]\n\tpromisor = true\n\turl = http://127.0.0.1:1/unreachable\n\tpartialclonefilter = blob:none\n",
+  "config_changed": true,
+  "existing_test_would_detect_guard_removal_by_config_bytes": true,
+  "network_requests_directly_observed": false
+}

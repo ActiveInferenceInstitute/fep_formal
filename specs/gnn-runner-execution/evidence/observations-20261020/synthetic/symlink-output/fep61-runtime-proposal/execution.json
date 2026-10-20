@@ -1,0 +1,38 @@
+{
+  "protocol_sha256": "89df59a156d7b9e30d04ea60faa39ca7834ecd597f241e7e5d9101e87615de44",
+  "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+  "FEP_candidate_head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+  "GNN_head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+  "checks": [
+    {
+      "invocation": 1,
+      "command": [
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/runtime/bin/python",
+        "-I",
+        "-B",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/candidate/runner.py"
+      ],
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/output",
+        "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/home",
+        "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/cache",
+        "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/cache/jax"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 0.05221354198874906,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "complete": false,
+  "passed": false,
+  "failure_reason": "AssertionError: ",
+  "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+  "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+  "boundary": [
+    "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+    "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+  ]
+}

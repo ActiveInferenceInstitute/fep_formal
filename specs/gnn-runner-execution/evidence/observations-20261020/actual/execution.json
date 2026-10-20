@@ -1,0 +1,96 @@
+{
+  "protocol_sha256": "f9b5090ac3eb890bb68d82c1497280b3340dc7e0387fdc9afcf355d936885e89",
+  "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+  "FEP_candidate_head": "cc2cd1699350530e2bfdec195e8dc9f28a6d4fcb",
+  "GNN_head": "9a94853e9fceb568dea3b91d11336c4ede6dcf7b",
+  "checks": [
+    {
+      "invocation": 1,
+      "command": [
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/runtime/bin/python",
+        "-I",
+        "-B",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/candidate/runner.py"
+      ],
+      "environment": {
+        "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-1/output",
+        "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-1/home",
+        "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-1/cache/jax",
+        "JAX_ENABLE_X64": "True",
+        "JAX_PLATFORMS": "cpu",
+        "MKL_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "PATH": "/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-1/cache",
+        "XLA_FLAGS": "--xla_cpu_multi_thread_eigen=false"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 13.444681665976532,
+      "stdout_sha256": "789de497bd4708d4d3052c4e547de62ff98cedac7bdfb44fccd4b32d11689eac",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "512e5f9daf192518ed81cb453606d417180bbdaf11c01c2ee82960c655fb2455",
+      "comparison": {
+        "passed": true,
+        "observation": 1.0590271662872408,
+        "latent": 0.6498920118351406,
+        "posterior_mean": 0.5295135831436204,
+        "posterior_covariance": 0.5,
+        "control": 0.0,
+        "boundary": "Initial observation update only; F/Q prediction and OU dynamics were not exercised."
+      },
+      "stable_payload_sha256": "0fc2385906cf0bf7aa79283f0189bd9c0279ad316f71fea66719c355056a21c1",
+      "source_runtime_before_after_unchanged": true
+    },
+    {
+      "invocation": 2,
+      "command": [
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/runtime/bin/python",
+        "-I",
+        "-B",
+        "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/candidate/runner.py"
+      ],
+      "environment": {
+        "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-2/output",
+        "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-2/home",
+        "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-2/cache/jax",
+        "JAX_ENABLE_X64": "True",
+        "JAX_PLATFORMS": "cpu",
+        "MKL_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "PATH": "/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-runtime-proposal/invocation-2/cache",
+        "XLA_FLAGS": "--xla_cpu_multi_thread_eigen=false"
+      },
+      "returncode": 0,
+      "elapsed_seconds": 1.4800000830146018,
+      "stdout_sha256": "634dc0d7d09893c1399d778fc2c7fac70fbeab2164cd1c35f9a894635298e2d5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_sha256": "b82f3442c27adba4c3e8ac25536c30e4dd291a1ec6442d139a3c7c1c35ecd1d0",
+      "comparison": {
+        "passed": true,
+        "observation": 1.0590271662872408,
+        "latent": 0.6498920118351406,
+        "posterior_mean": 0.5295135831436204,
+        "posterior_covariance": 0.5,
+        "control": 0.0,
+        "boundary": "Initial observation update only; F/Q prediction and OU dynamics were not exercised."
+      },
+      "stable_payload_sha256": "0fc2385906cf0bf7aa79283f0189bd9c0279ad316f71fea66719c355056a21c1",
+      "source_runtime_before_after_unchanged": true
+    }
+  ],
+  "complete": true,
+  "passed": true,
+  "failure_reason": null,
+  "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+  "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+  "boundary": [
+    "One-step initial observation update only; source skips F/Q prediction at first step. No exercised OU dynamics, statistical population validation or empirical estimate.",
+    "No H3 primary seeds, frozen scientific protocol edits, provider calls, canonical GNN mutations, Q5/Q6 promotion or native proof claims.",
+    "Candidate source is local unqualified Issue119 work. A successful outside probe does not close Issue61 or establish maintained API/integration/publication acceptance."
+  ]
+}
