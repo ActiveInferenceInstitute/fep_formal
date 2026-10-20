@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 import pytest
+
 from fep_lean.bridge import cli as bridge_cli
 
 
