@@ -6,6 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
+from fep_lean._paths import _emit_failure
 from fep_lean.bridge import operations
 
 
@@ -113,8 +114,9 @@ def run(root: Path, args: argparse.Namespace) -> int:
                 fail_on_warnings=args.fail_on_warnings,
             )
             result = {"status": receipt["status"], "receipt": receipt}
+        if result["status"] != "ok":
+            return _emit_failure("bridge operation refused", result=result)
         print(json.dumps(result, indent=2, allow_nan=False))
         return 0 if result["status"] == "ok" else 1
     except (OSError, ValueError, KeyError, TypeError) as exc:
-        print(json.dumps({"status": "error", "error": str(exc)}))
-        return 1
+        return _emit_failure(str(exc))

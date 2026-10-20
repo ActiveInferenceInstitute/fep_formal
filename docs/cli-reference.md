@@ -25,6 +25,22 @@ fep-lean custody     Census, staged apply and guarded custody refresh.
 fep-lean publication-capture  Plan or run bounded publication evidence capture.
 ```
 
+## Failure envelope
+
+Every verb's operational failure returns exit 1 and one JSON object on stdout:
+
+```json
+{"status": "error", "failure_reason": "explanation", "details": {}}
+```
+
+`details` retains command-specific context, including an incomplete workflow's
+`result` or a native compiler's original `exit_code`. Consumers of the former
+flat error payloads must read those fields under `details`. Successful structured
+JSON is unchanged. Parser errors remain exit 2; help remains exit 0.
+`setup` progress and child diagnostics now go to stderr; its final success line
+is unchanged. Direct Python setup and drift-check callers retain their default
+text behavior.
+
 `bridge` operates on an explicit sibling GNN checkout (`--gnn-root PATH` is
 required for every verb). The current bridge surface is contract v0.6;
 `verify-document` was added in contract v0.5. `status`,

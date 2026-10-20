@@ -1,5 +1,18 @@
 ## Unreleased
 
+- Unify all 24 package-defined exception types under the existing public
+  `FepLeanError` base, preserving their standard-library ancestry. Operational
+  CLI refusals now return exit 1 and exactly `status`, `failure_reason`, and
+  `details`; command-specific result data and original native exit codes live
+  inside `details`. Successful structured JSON is unchanged. Parser errors
+  remain exit 2. Move setup progress and child diagnostics to stderr so a late
+  refusal leaves one parseable stdout JSON object; retain the final success
+  line and direct Python setup/drift-check defaults. Add every-verb refusal,
+  ancestry, context-reset, programming-error and setup stream controls for
+  [#119](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119).
+  Integrated qualification remains pending; this entry records the change,
+  not issue closure or production acceptance.
+
 - Repair installed-query directory aliases such as macOS `/var` and
   `/private/var`. Preserve logical RECORD member names and all ownership,
   hash/size and before/after checks, while recognizing physically resolved

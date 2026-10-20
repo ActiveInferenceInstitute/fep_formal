@@ -1104,7 +1104,7 @@ def test_cli_apply_refuses_without_output_dir(
     assert cli_main(["custody", "apply"]) == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "requires --output-dir" in payload["error"]
+    assert "requires --output-dir" in payload["failure_reason"]
 
 
 @pytest.mark.parametrize("state", ("sealed", "residual"))
@@ -1134,7 +1134,9 @@ def test_cli_apply_gate_refusal_writes_nothing(
     assert cli_main(["custody", "apply", "--output-dir", str(out)]) == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert payload["error"] == "custody verify gate refused: " + "; ".join(problems)
+    assert payload["failure_reason"] == "custody verify gate refused: " + "; ".join(
+        problems
+    )
     _assert_untouched(out)
 
 
