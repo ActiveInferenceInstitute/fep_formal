@@ -830,10 +830,12 @@ def test_installed_wheel_methods_run_without_checkout_or_sibling_imports(tmp_pat
 import json, pathlib, sys, fep_lean
 from fep_lean.methods import build_mathematical_positioning, inspect_topic, export_mathematical_positioning, mathematical_positioning_drift
 from fep_lean.methods import finite_expectation, log_partition, exponential_tilt, gibbs_duality_diagnostics
-assert pathlib.Path(fep_lean.__file__).is_relative_to(pathlib.Path({str(environment)!r}))
+from fep_lean.methods import load_packaged_formalism_query
+assert pathlib.Path(fep_lean.__file__).resolve().is_relative_to(pathlib.Path({str(environment)!r}).resolve())
 assert not any(p and pathlib.Path(p).is_relative_to(pathlib.Path({str(ROOT)!r})) for p in sys.path)
 model = build_mathematical_positioning()
 assert model.origin.value == 'installed_package'
+assert load_packaged_formalism_query().as_dict() == model.as_dict()
 assert len(model.metadata.topic_ids) == 168
 assert inspect_topic(model, 'fep-038')['primary_theorem_qualified'].startswith('fep_fep038.FEP038.')
 assert finite_expectation((0.25, 0.75), (0.0, 4.0)) == 3.0
@@ -855,6 +857,20 @@ print(json.dumps({{'topics':len(model.metadata.topic_ids), 'artifacts':len(paths
         capture_output=True,
         text=True,
     )
+    if os.name != "nt":
+        alias = tmp_path / "environment-alias"
+        alias.symlink_to(environment, target_is_directory=True)
+        alias_probe = probe.replace(str(environment), str(alias)).replace(
+            str(output), str(tmp_path / "alias-analysis")
+        )
+        subprocess.run(
+            [str(alias / "bin/python"), "-I", "-c", alias_probe],
+            cwd=tmp_path,
+            env=clean_env,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
     console = scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")
     result = subprocess.run(
         [str(console), "methods", "inspect", "--family", "core-information-geometry"],
@@ -989,6 +1005,7 @@ def test_installed_query_record_binds_actual_resource_and_python_bytes(
         "bad_size",
         "extra_python",
         "foreign_distribution",
+        "foreign_member_path",
         "distribution_missing",
     ],
 )
@@ -1033,6 +1050,12 @@ def test_installed_query_record_refuses_actual_corruption(
         record.write_text(output.getvalue())
     elif corruption == "extra_python":
         (package / "unrecorded.py").write_text("# not in the installed record\n")
+    elif corruption == "foreign_member_path":
+        foreign = tmp_path / "foreign-resource.yaml"
+        foreign.write_bytes(resource.read_bytes())
+        monkeypatch.setattr(
+            model_module, "_source_paths", lambda root, inputs: {"fixture": foreign}
+        )
     elif corruption == "foreign_distribution":
         foreign = tmp_path / "foreign/fep_lean-1.0.dist-info"
         foreign.mkdir(parents=True)
@@ -1048,6 +1071,43 @@ def test_installed_query_record_refuses_actual_corruption(
         monkeypatch.setattr(metadata, "distribution", missing)
     with pytest.raises(PositioningError):
         model_module._installed_query_binding()
+
+
+@pytest.mark.parametrize("missing_member", [False, True])
+def test_installed_query_record_accepts_directory_alias_without_weakening_record(
+    installed_query_record, monkeypatch, tmp_path, missing_member
+):
+    package, resource, owner, record, rows = installed_query_record
+    alias = tmp_path / "package-alias"
+    try:
+        alias.symlink_to(package, target_is_directory=True)
+    except OSError as exc:
+        pytest.skip(f"directory aliases are unavailable: {exc}")
+    monkeypatch.setattr(model_module, "files", lambda name: alias)
+    # Formal resource discovery resolves paths, while package/Python discovery
+    # can retain the caller's alias. Both must identify the same RECORD owner.
+    monkeypatch.setattr(
+        model_module,
+        "_source_paths",
+        lambda root, inputs: {"fixture": resource.resolve()},
+    )
+    if missing_member:
+        output = io.StringIO()
+        csv.writer(output, lineterminator="\n").writerows(
+            row for row in rows if row[0] != "fep_lean/data/formalism_relations.yaml"
+        )
+        record.write_text(output.getvalue())
+    before = {path: path.read_bytes() for path in (resource, owner, record)}
+    if missing_member:
+        with pytest.raises(PositioningError, match="RECORD"):
+            model_module._installed_query_binding()
+    else:
+        binding = model_module._installed_query_binding()
+        assert {row[0] for row in binding[1]} == {
+            "fep_lean/owner.py",
+            "fep_lean/data/formalism_relations.yaml",
+        }
+    assert before == {path: path.read_bytes() for path in before}
 
 
 @pytest.mark.parametrize("race", [False, True])

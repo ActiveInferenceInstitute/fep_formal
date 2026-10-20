@@ -1,5 +1,48 @@
 ## Unreleased
 
+- Repair installed-query directory aliases such as macOS `/var` and
+  `/private/var`. Preserve logical RECORD member names and all ownership,
+  hash/size and before/after checks, while recognizing physically resolved
+  resource paths under the same imported package. Foreign paths raise the
+  exported `PositioningError`. Retain real failing/passing alias controls,
+  missing-member refusal and cold-wheel imports through a directory alias.
+
+- Reuse exact source masks and immutable content-keyed declaration tuples in
+  the existing query/resolver owners. Preserve current owner/RECORD validation,
+  duplicate detection and the extractor's default context. A retained
+  [isolated Python 3.15 observation](specs/comprehensive-next-steps/evidence/backend-profiling-20261020/README.md)
+  measured a 4.16× cold-construction speedup and 42.7% lower peak process RSS
+  locally; these are small local observations, not cross-platform guarantees.
+  Document an isolated profiling workflow without changing the Python 3.14
+  validator or claiming another hosted compatibility cell.
+
+- Thin the existing CLI to 498 lines by moving unchanged argument registration
+  and the unchanged failure emitter to existing owners. Keep the parser,
+  dispatch, serializers and public imports compatible; retain differential
+  parser/JSON controls. The separate error-schema work remains under
+  [#119](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119).
+
+- Retain current importing count-learning endpoint/row/exchangeability controls
+  and the exact available Beta/digamma/simplex library probe with a zero-shape
+  API refusal. Record the bounded Stage2 Dirichlet integration no-go without
+  changing the topic/resource roster or semantic dispositions. Correct NESS
+  prose's necessity/PDE overclaims while preserving every theorem and proof;
+  [#98](https://github.com/ActiveInferenceInstitute/fep_formal/issues/98) still
+  requires the fep163 recovery/discretisation seam. Compilation alone closes
+  neither that issue nor broader scientific dependencies.
+
+- Accept [PR200](https://github.com/ActiveInferenceInstitute/fep_formal/pull/200)
+  on main `ea900462c5f20fabe69c7d4b489a430e7d183082`, qualified by the
+  [exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39392155659):
+  all 15 installed-wheel cells and 21 executed jobs passed. Independent artifact
+  checks accepted the 389-page manuscript, all 168 native topics and 1,928
+  standard-three-axiom reports without admissions. Close only #69 (exact
+  fair-Boolean rate-distortion), #86 (finite positive-temperature Helmholtz
+  identity/minimum) and #104 (consumed-endpoint relation notes). General finite
+  duality, scientific primary execution and broader acceptance remain open.
+  Keep #65 open: the subsequent real installed-query profiling recipe exposed
+  a directory-alias failure that requires the repair above and new acceptance.
+
 - Accept [PR199](https://github.com/ActiveInferenceInstitute/fep_formal/pull/199)
   on main `b929c93bb0bec767424276b369cf09db160b0a5b`: reusable frozen readiness
   APIs and public release/verification operations, 22 catalogue numerical

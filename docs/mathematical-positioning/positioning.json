@@ -8954,7 +8954,7 @@
     "formal/continuous_time_markov.lean": "1294732d3ddd6bd3711a00b6895e09fff45dd720cddb8d9db8e78ad458b10ea4",
     "formal/controlled_markov.lean": "6cf6aa0a04704074d38dba03663349833544ef24fda92e7ad0c6ae6e77eb659a",
     "formal/decision_risk.lean": "1a34dd85015ecb421bfbe91b3995e8c2c2d9991122618e9f25db17c4d46f2251",
-    "formal/declarations.py": "26ca913d57a85a6ef744c8e72efcf678b5113a3c0de084b497a790fb452fdc16",
+    "formal/declarations.py": "6921e78b81fe1dce9ba1ed5d7d0b69bf0991a15467560f80d31143357e840309",
     "formal/efe_policy_selection.lean": "ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555",
     "formal/efe_time_scale_separation.lean": "5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1",
     "formal/empirical_risk.lean": "6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1",
@@ -8983,7 +8983,7 @@
     "formal/markov_semigroup.lean": "03284d5d473fdb3b6a2af5ae43ca2970e6f46af1b3b8915f8d0c123c177f6c02",
     "formal/measure_bayes.lean": "e2fa1b071381bbf684625e7317a02a357337df80596f95d9084d6e721a719c51",
     "formal/native_blanket.lean": "7af052b9a067be0391097a9e201e367639edc3698204a701f5663340ec9f5a11",
-    "formal/ness_flow.lean": "f84da5b1802fd3a0ae4e2904fb02e4dbab02e8153b678daaea23b00eb855cfb0",
+    "formal/ness_flow.lean": "ef5f7ca0099a2d44f01c6934eb7c4d8bd2a5e4dd36c0f9446b221c45076c9ca3",
     "formal/path_thermodynamics.lean": "9ab79dbfaccc14291a04b95339fc0f50acaf4bf3914acdf622d0b4e3d4024629",
     "formal/perception_action_loop.lean": "f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a",
     "formal/policy_tree.lean": "f88e5063dede806e31f4f7106b825ee7b3832bcc66cf17346e24b98cd9361176",
@@ -9000,7 +9000,7 @@
     "inputs/theorem_maturity.yaml": "554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383",
     "lean_source.py": "0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104",
     "methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
-    "methods/model.py": "3bdb756ebf80b6368dd2c92a8f4231d2b685849d4d9512b74ff84c481ffc50f4",
+    "methods/model.py": "917554e8cf301899a08a78344dc6232c08354dcafdccae3f07cbc20b1e87f2f0",
     "methods/probes.py": "30690d7b66923a2df06b59c93b95549b8dad5018cc2ae6a2ce1f256af64e326b",
     "methods/projection.py": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
     "methods/visualization.py": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a"
@@ -97445,7 +97445,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.detailed_balance_iff",
-        "source_line": 104,
+        "source_line": 106,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem detailed_balance_iff (ω : ℝ) (g : Fin 2 → ℝ) (hg : g 0 ≠ 0 ∨ g 1 ≠ 0) :\n    solenoidal ω g = 0 ↔ ω = 0",
         "statement_sha256": "c3ae16c78df071e45d673df3992eeba42d718270626a3ad0c996ffc6f96f844e"
@@ -97544,7 +97544,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.divergence_probCurrent_eq",
-        "source_line": 313,
+        "source_line": 318,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem divergence_probCurrent_eq (F : (Fin n → ℝ) → ℝ) (hF : ContDiff ℝ 2 F)\n    (Γ Q : Fin n → Fin n → ℝ) (x : Fin n → ℝ) :\n    divergence (probCurrent F Γ Q) x\n      = density F x * GeometricMechanics.dot (gradF F x) (GeometricMechanics.mulVec Q (gradF F x))\n        - density F x * ∑ i, ∑ k, Q i k * hessF F x i k",
         "statement_sha256": "5ea4ed1a61f8b9f6e4980ab1349bd61ecb8b439f80358b494218f2dc90d0e20a"
@@ -97659,7 +97659,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.divergence_probCurrent_eq_zero",
-        "source_line": 333,
+        "source_line": 338,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem divergence_probCurrent_eq_zero (F : (Fin n → ℝ) → ℝ) (hF : ContDiff ℝ 2 F)\n    (Γ Q : Fin n → Fin n → ℝ) (hQ : GeometricMechanics.SkewSymmetric Q)\n    (x : Fin n → ℝ) : divergence (probCurrent F Γ Q) x = 0",
         "statement_sha256": "75e3b704721ee5a4167596c1b18c28389e1ac70881ff2dff15dd7bae3c5d3e56"
@@ -97723,7 +97723,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.entropyProduction_eq_zero_iff",
-        "source_line": 138,
+        "source_line": 140,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem entropyProduction_eq_zero_iff (precision ω γ : ℝ)\n    (hp : 0 < precision) (hg : 0 < γ) : entropyProduction precision ω γ = 0 ↔ ω = 0",
         "statement_sha256": "c496ae321867396c84ba79c532378a1d8aab9e36b5c249064222e9a3a186518f"
@@ -97787,7 +97787,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.entropyProduction_nonneg",
-        "source_line": 130,
+        "source_line": 132,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem entropyProduction_nonneg (precision ω γ : ℝ)\n    (hp : 0 ≤ precision) (hg : 0 ≤ γ) : 0 ≤ entropyProduction precision ω γ",
         "statement_sha256": "d95b89433ca338dd7a73db9344b37ea64b02f662a4ee15053a0ad64110e5446b"
@@ -97889,7 +97889,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.fderiv_qCurrent",
-        "source_line": 292,
+        "source_line": 297,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem fderiv_qCurrent (F : (Fin n → ℝ) → ℝ) (hF : ContDiff ℝ 2 F)\n    (Q : Fin n → Fin n → ℝ) (x : Fin n → ℝ) (i : Fin n) :\n    fderiv ℝ (fun y => qCurrent F Q y i) x (Pi.single i 1)\n      = -(density F x * gradF F x i * GeometricMechanics.mulVec Q (gradF F x) i)\n        + density F x * ∑ k, Q i k * hessF F x i k",
         "statement_sha256": "b8c1bd7e7f3300590ded4d1bef7d191e4c6978d6f924b320b13ae14204cd08ce"
@@ -97942,7 +97942,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.flow_work_eq_dissipation",
-        "source_line": 89,
+        "source_line": 91,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem flow_work_eq_dissipation (γ ω : ℝ) (g : Fin 2 → ℝ) :\n    dot (flow γ ω g) g = -γ * normSq g",
         "statement_sha256": "a4e911e860ba95acd91517f17b356b8e55e4b8cdd8054311d24815fd29e9696b"
@@ -98045,7 +98045,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.fpRate_eq_zero",
-        "source_line": 342,
+        "source_line": 347,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem fpRate_eq_zero (F : (Fin n → ℝ) → ℝ) (hF : ContDiff ℝ 2 F)\n    (Γ Q : Fin n → Fin n → ℝ) (hQ : GeometricMechanics.SkewSymmetric Q)\n    (x : Fin n → ℝ) : fpRate F Γ Q x = 0",
         "statement_sha256": "34379dd119592fbffbae4f7dd86637afcbfd2e1a554dcd9bd941a2d65944b915"
@@ -98120,7 +98120,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.freeEnergy_non_increasing",
-        "source_line": 95,
+        "source_line": 97,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem freeEnergy_non_increasing (γ : ℝ) (hγ : 0 ≤ γ) (g : Fin 2 → ℝ) :\n    dot (flow γ ω g) g ≤ 0",
         "statement_sha256": "c5cc44b7f1ce5214642b92b6a7141a6ba776ab423f5c5b257a95e408e6cbaa38"
@@ -98164,7 +98164,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.gaussF_contDiff",
-        "source_line": 362,
+        "source_line": 367,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem gaussF_contDiff : ContDiff ℝ 2 gaussF",
         "statement_sha256": "3cd453379b43a9fca89c9cd6053808eae47a589fa5c05e6c16dc4b87fad31f9f"
@@ -98239,7 +98239,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.gradF_density",
-        "source_line": 222,
+        "source_line": 227,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem gradF_density (F : (Fin n → ℝ) → ℝ) (x : Fin n → ℝ)\n    (hF : DifferentiableAt ℝ F x) :\n    gradF (density F) x = fun i => -(density F x) * gradF F x i",
         "statement_sha256": "834bbd0826465f091d48a4deb47a80f123bb142ff23e62a0b2f9e2befbbd9bd8"
@@ -98294,7 +98294,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.gradF_gaussF",
-        "source_line": 365,
+        "source_line": 370,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem gradF_gaussF (y : Fin 2 → ℝ) : gradF gaussF y = y",
         "statement_sha256": "9d27f6e4bc9f6f61750a2146c185b8082b37d39e5ff767ef0ff93a80ec8319ae"
@@ -98379,7 +98379,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.hasFDerivAt_gradF",
-        "source_line": 253,
+        "source_line": 258,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem hasFDerivAt_gradF (F : (Fin n → ℝ) → ℝ) (hF : ContDiff ℝ 2 F)\n    (x : Fin n → ℝ) (k : Fin n) :\n    HasFDerivAt (fun y => gradF F y k)\n      ((fderiv ℝ (fderiv ℝ F) x).flip (Pi.single k 1)) x",
         "statement_sha256": "e46c7c5eef2181ed45a2d39fda7f4af4044eb94079d37217ffa893de0280eb95"
@@ -98472,7 +98472,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.hessF_eq_fderiv_gradF",
-        "source_line": 263,
+        "source_line": 268,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem hessF_eq_fderiv_gradF (F : (Fin n → ℝ) → ℝ) (hF : ContDiff ℝ 2 F)\n    (x : Fin n → ℝ) (i k : Fin n) :\n    hessF F x i k = fderiv ℝ (fun y => gradF F y k) x (Pi.single i 1)",
         "statement_sha256": "f32ec7fd142f5f6a530715ac4ad272d5ac04fde7ebdfc5642bb770acc7ee3399"
@@ -98557,7 +98557,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.hessF_gaussF",
-        "source_line": 383,
+        "source_line": 388,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem hessF_gaussF (x : Fin 2 → ℝ) (i k : Fin 2) :\n    hessF gaussF x i k = if i = k then 1 else 0",
         "statement_sha256": "3f9c74018f03f25238073d9c228a690475c45fe8e8e66ce8613f27ffdf6cd9ac"
@@ -98632,7 +98632,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.hessF_symmetric",
-        "source_line": 270,
+        "source_line": 275,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem hessF_symmetric (F : (Fin n → ℝ) → ℝ) (hF : ContDiff ℝ 2 F)\n    (x : Fin n → ℝ) : GeometricMechanics.SymmetricOf (hessF F x)",
         "statement_sha256": "551f98d5299634775b8315255c2c33354b580bfb143c64d8ccaa7e099b86f18d"
@@ -98701,7 +98701,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.ness_signature",
-        "source_line": 166,
+        "source_line": 168,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem ness_signature (ω : ℝ) (g : Fin 2 → ℝ) (hg : g 0 ≠ 0 ∨ g 1 ≠ 0) :\n    (solenoidal ω g = 0) ↔ (ω = 0)",
         "statement_sha256": "5f30d878443eef99e928ecb6dafbab9d83951494f3cb6bb56c0845af990f696e"
@@ -98770,7 +98770,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.nonSkew_divergence_ne_zero",
-        "source_line": 393,
+        "source_line": 398,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem nonSkew_divergence_ne_zero :\n    divergence (probCurrent gaussF gammaId qNonSkew) (fun _ => 0) ≠ 0",
         "statement_sha256": "a521a7560b24889116306912a9513e759bb7b9c32d7d30cd53127be49cbe697b"
@@ -98812,7 +98812,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.normSq_nonneg",
-        "source_line": 54,
+        "source_line": 56,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem normSq_nonneg (v : Fin 2 → ℝ) : 0 ≤ normSq v",
         "statement_sha256": "fafd19ff3801f506a4b0844cee2d0e8a314bbde6d55fde8a73fb682016bf6b96"
@@ -98905,7 +98905,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.probCurrent_eq",
-        "source_line": 232,
+        "source_line": 237,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem probCurrent_eq (F : (Fin n → ℝ) → ℝ) (Γ Q : Fin n → Fin n → ℝ)\n    (x : Fin n → ℝ) (hF : DifferentiableAt ℝ F x) :\n    probCurrent F Γ Q x\n      = fun i => -(density F x) * GeometricMechanics.mulVec Q (gradF F x) i",
         "statement_sha256": "05656eb126d008f12703f0e75e399398ff3d669b038925f79b15d99961e4e6c9"
@@ -98990,7 +98990,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.qGradient_orthogonal",
-        "source_line": 246,
+        "source_line": 251,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem qGradient_orthogonal (F : (Fin n → ℝ) → ℝ) (Q : Fin n → Fin n → ℝ)\n    (hQ : GeometricMechanics.SkewSymmetric Q) (x : Fin n → ℝ) :\n    GeometricMechanics.dot (GeometricMechanics.mulVec Q (gradF F x)) (gradF F x) = 0",
         "statement_sha256": "a51fa51484c54cd17e562c2744c26df3985d8343f558bb73e92acfba7eef02c6"
@@ -99059,7 +99059,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.rotation_current_ne_zero_divergence_zero",
-        "source_line": 401,
+        "source_line": 406,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem rotation_current_ne_zero_divergence_zero :\n    probCurrent gaussF gammaId qRot ![0, 1] ≠ 0 ∧\n      divergence (probCurrent gaussF gammaId qRot) ![0, 1] = 0",
         "statement_sha256": "c8dd924a165d497806de6fd793b316171f573b1d2acf88b9b929ae7c79507af7"
@@ -99135,7 +99135,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.skew_contract_symm",
-        "source_line": 277,
+        "source_line": 282,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem skew_contract_symm (Q H : Fin n → Fin n → ℝ)\n    (hQ : GeometricMechanics.SkewSymmetric Q) (hH : GeometricMechanics.SymmetricOf H) :\n    ∑ i, ∑ k, Q i k * H i k = 0",
         "statement_sha256": "e76de07ed3562bfb4453565b00b6d8bbe4f791b15d479684e8ce04388593b170"
@@ -99188,7 +99188,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.solenoidal_antisymm",
-        "source_line": 66,
+        "source_line": 68,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem solenoidal_antisymm (ω : ℝ) (v w : Fin 2 → ℝ) :\n    dot (solenoidal ω v) w = -dot (solenoidal ω w) v",
         "statement_sha256": "8c4c8034aa5c0b300f1c02973ac72b8023aafdf206661f3bb7d1b1f1c2b4f6ff"
@@ -99240,7 +99240,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.NessFlow.solenoidal_orthogonal",
-        "source_line": 73,
+        "source_line": 75,
         "source_owner": "src/fep_lean/formal/ness_flow.lean",
         "statement": "theorem solenoidal_orthogonal (ω : ℝ) (g : Fin 2 → ℝ) :\n    dot (solenoidal ω g) g = 0",
         "statement_sha256": "14982221cb83c0d573a0b5094daf2d09a33bd6230d0726f98410cb1427f93208"

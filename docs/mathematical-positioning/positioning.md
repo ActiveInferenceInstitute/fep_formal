@@ -20036,7 +20036,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/continuous_time_markov.lean` | `1294732d3ddd6bd3711a00b6895e09fff45dd720cddb8d9db8e78ad458b10ea4` |
 | `formal/controlled_markov.lean` | `6cf6aa0a04704074d38dba03663349833544ef24fda92e7ad0c6ae6e77eb659a` |
 | `formal/decision_risk.lean` | `1a34dd85015ecb421bfbe91b3995e8c2c2d9991122618e9f25db17c4d46f2251` |
-| `formal/declarations.py` | `26ca913d57a85a6ef744c8e72efcf678b5113a3c0de084b497a790fb452fdc16` |
+| `formal/declarations.py` | `6921e78b81fe1dce9ba1ed5d7d0b69bf0991a15467560f80d31143357e840309` |
 | `formal/efe_policy_selection.lean` | `ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555` |
 | `formal/efe_time_scale_separation.lean` | `5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1` |
 | `formal/empirical_risk.lean` | `6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1` |
@@ -20065,7 +20065,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/markov_semigroup.lean` | `03284d5d473fdb3b6a2af5ae43ca2970e6f46af1b3b8915f8d0c123c177f6c02` |
 | `formal/measure_bayes.lean` | `e2fa1b071381bbf684625e7317a02a357337df80596f95d9084d6e721a719c51` |
 | `formal/native_blanket.lean` | `7af052b9a067be0391097a9e201e367639edc3698204a701f5663340ec9f5a11` |
-| `formal/ness_flow.lean` | `f84da5b1802fd3a0ae4e2904fb02e4dbab02e8153b678daaea23b00eb855cfb0` |
+| `formal/ness_flow.lean` | `ef5f7ca0099a2d44f01c6934eb7c4d8bd2a5e4dd36c0f9446b221c45076c9ca3` |
 | `formal/path_thermodynamics.lean` | `9ab79dbfaccc14291a04b95339fc0f50acaf4bf3914acdf622d0b4e3d4024629` |
 | `formal/perception_action_loop.lean` | `f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a` |
 | `formal/policy_tree.lean` | `f88e5063dede806e31f4f7106b825ee7b3832bcc66cf17346e24b98cd9361176` |
@@ -20082,7 +20082,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `inputs/theorem_maturity.yaml` | `554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383` |
 | `lean_source.py` | `0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104` |
 | `methods/__init__.py` | `3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99` |
-| `methods/model.py` | `3bdb756ebf80b6368dd2c92a8f4231d2b685849d4d9512b74ff84c481ffc50f4` |
+| `methods/model.py` | `917554e8cf301899a08a78344dc6232c08354dcafdccae3f07cbc20b1e87f2f0` |
 | `methods/probes.py` | `30690d7b66923a2df06b59c93b95549b8dad5018cc2ae6a2ce1f256af64e326b` |
 | `methods/projection.py` | `28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54` |
 | `methods/visualization.py` | `3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a` |

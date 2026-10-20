@@ -24,8 +24,10 @@ free energy, `f = -Γ∇F`, which comes to rest at a mode.  Away from equilibriu
 current that circulates without doing work — the mathematical signature of a
 living (non-equilibrium) steady state.
 
-This module proves the ℝ-valued structural claims over `Fin 2 → ℝ`, the
-simplest carrier that exhibits both regimes.  The Python demo in
+This module first proves ℝ-valued structural claims over `Fin 2 → ℝ`, the
+simplest carrier that exhibits both regimes, then derives constant-matrix
+current and divergence identities on `Fin n → ℝ` using Fréchet calculus.
+The Python demo in
 ActiveInferenceSynthetic (`src/free_energy_flow.py`, `src/trajectories.py`,
 `src/steady_state.py`) instantiates every quantity with concrete numbers; this
 module provides the formal ℝ guarantee that the relationships hold identically,
@@ -173,9 +175,12 @@ Smooth-density counterpart of the `Fin 2` scalar carrier above, on `Fin n → �
 with Fréchet derivatives and no stochastic process.  For a `C²` potential `F`,
 constant `Γ`, `Q`, density `p = exp (-F)`, drift `f = -(Γ + Q) ∇F` and
 probability current `J = p f - Γ ∇p`, the dissipative part cancels
-pointwise, `J = -p · Q ∇F`, and `div J = 0` exactly when `Q` is
-skew-symmetric (the Hessian of a `C²` function is symmetric).  Hence
-`∂ₜ p = -div J = 0`: `p` is stationary for the Fokker–Planck equation.
+pointwise, `J = -p · Q ∇F`, and `div J = 0` when `Q` is skew-symmetric
+(the Hessian of a `C²` function is symmetric). This is a sufficient condition;
+for example, constant `F` also gives zero current for non-skew `Q`.
+The defined instantaneous rate `fpRate = -div J` therefore vanishes.
+No normalized probability law, time-dependent PDE solution, or boundary-flux
+condition is constructed here.
 -/
 
 section FokkerPlanck

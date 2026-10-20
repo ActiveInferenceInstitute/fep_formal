@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "state": "portable_summary_of_actual_local_engineering_observation",
+  "baseline_commit": "d8fb341a2121e1add23ca3535a345c86a46ee51d",
+  "candidate_owner_sha256": {
+    "src/fep_lean/methods/model.py": "9061cc9758123026ce0092c92d5fa452ff7e18e097f4c7ac93bdcce83d0e5474",
+    "src/fep_lean/formal/declarations.py": "6921e78b81fe1dce9ba1ed5d7d0b69bf0991a15467560f80d31143357e840309"
+  },
+  "candidate_patch_sha256": "a4e0b2a0bc5574bf8f74331beb6ff0e0c250ce6ddd1248a1b3d0c76ba797f74f",
+  "python": "3.15.0 (main, Oct 14 2026, 00:56:12) [Clang 23.1.3 ]",
+  "platform": {
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "runtime_dependency_versions": [
+    "contourpy==1.4.0",
+    "cycler==0.12.1",
+    "fonttools==4.67.0",
+    "kiwisolver==1.5.1",
+    "matplotlib==3.11.2",
+    "numpy==2.5.4",
+    "packaging==26.3",
+    "pillow==13.0.0",
+    "pyparsing==3.3.3",
+    "python-dateutil==2.9.0.post0",
+    "pyyaml==6.0.3",
+    "six==1.17.0",
+    "typing-extensions==4.16.0"
+  ],
+  "baseline_wheel_sha256": "de38a0219c86925fdcbdb2cd1dc5fcff2430af5479ea73369bd843c3b45dcb05",
+  "candidate_wheel_sha256": "cfaf8675ea8590e0fc45ee7ca7ca4a1ee8102691abf1083a0d4458baf5cfd4d4",
+  "alternating_fresh_process_samples": [
+    {
+      "round": 1,
+      "variant": "baseline",
+      "whole_process_seconds": 15.706488666008227,
+      "seconds": 15.628404374991078,
+      "topics": 168,
+      "max_rss_platform_units": 264372224
+    },
+    {
+      "round": 1,
+      "variant": "candidate",
+      "whole_process_seconds": 3.750523875001818,
+      "seconds": 3.6711537500086706,
+      "topics": 168,
+      "max_rss_platform_units": 151584768
+    },
+    {
+      "round": 2,
+      "variant": "candidate",
+      "whole_process_seconds": 3.7383274160092697,
+      "seconds": 3.6649881250050385,
+      "topics": 168,
+      "max_rss_platform_units": 150355968
+    },
+    {
+      "round": 2,
+      "variant": "baseline",
+      "whole_process_seconds": 15.348829416005174,
+      "seconds": 15.270064624986844,
+      "topics": 168,
+      "max_rss_platform_units": 263307264
+    },
+    {
+      "round": 3,
+      "variant": "baseline",
+      "whole_process_seconds": 15.294074458011892,
+      "seconds": 15.213097542000469,
+      "topics": 168,
+      "max_rss_platform_units": 264749056
+    },
+    {
+      "round": 3,
+      "variant": "candidate",
+      "whole_process_seconds": 3.7565420829923823,
+      "seconds": 3.680666416999884,
+      "topics": 168,
+      "max_rss_platform_units": 151666688
+    }
+  ],
+  "median_model_seconds": {
+    "baseline": 15.270064624986844,
+    "candidate": 3.6711537500086706
+  },
+  "median_peak_rss_bytes": {
+    "baseline": 264372224,
+    "candidate": 151584768
+  },
+  "observed_cold_speedup": 4.159472924540624,
+  "observed_peak_rss_reduction_fraction": 0.42662369856222115,
+  "warm_baseline_seconds": [
+    1.8930776249908376,
+    1.8915408330212813
+  ],
+  "warm_candidate_seconds": [
+    1.28129479198833,
+    1.2766818749951199
+  ],
+  "focused_python315_tests": 100,
+  "typing_target": "3.14",
+  "strict_mypy_changed_files": 2,
+  "public_document_comparison": "Entire query document equal except the two changed source-owner digests. Default extractor string context preserved.",
+  "cache_controls": [
+    "same-file content edits reflected",
+    "introduced duplicate rejected",
+    "restored source resolves original names",
+    "immutable tuple result",
+    "128entry bound"
+  ],
+  "profiling": "Actual Python3.15 profiling.tracing; native sampling attempt denied by macOS process-memory permissions. No privilege change. Timing/RSS runs are separate and unprofiled.",
+  "raw_receipt_sha256": {
+    "paired-timing.json": "4acc005105a0ecf5c4ad68f27ecc9e50db86dd2b02d01a4f08c9ce9726ed3a4f",
+    "document-equivalence.json": "22ccaae9ab3cf97f7a8822639b0597da00a72efdb31ec2ec4d4605e9eb1469e7",
+    "focused-tests.xml": "38f2060d47185e688f058db2fbf1c08a9ee218b1b79f64239a637ef3deb42fc6",
+    "component-qualification-with-tracing.json": "159f049c71a345262f807dacec8dddd3ccdebe3b76603d39a718d42dfa77f3e9"
+  },
+  "boundary": "Portable derived summary, not a raw execution receipt, hosted compatibility or scientific/Lean acceptance. Same exact runtime dependency versions. Small local measurements; no universal or cross-platform speed guarantee. CLI/prose/count-control changes are outside this two-owner isolated benchmark."
+}

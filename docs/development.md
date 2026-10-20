@@ -11,6 +11,51 @@ The distribution uses a single `fep_lean` namespace under `src/fep_lean/`.
 Do not add `PYTHONPATH` shims or import obsolete top-level modules such as
 `catalogue` or `pipeline`; the isolated-wheel test enforces this boundary.
 
+## Profile an isolated runtime
+
+The canonical validator stays Python 3.14. Python 3.15 profiling is a separate,
+explicit performance experiment; it does not replace the required checks or
+claim another hosted compatibility cell. Build an installed wheel and target
+load_packaged_formalism_query explicitly to include its resource and RECORD
+validation. The CLI uses the canonical builder; this library workload also
+exercises the stricter installed-distribution gate. This POSIX example keeps
+the profiling environment outside the checkout:
+
+```bash
+fep_profile_dir="$(mktemp -d)"
+uv build --wheel --out-dir "$fep_profile_dir/dist"
+uv venv --python 3.15 "$fep_profile_dir/venv"
+uv pip install --python "$fep_profile_dir/venv/bin/python" "$fep_profile_dir"/dist/*.whl
+uv pip freeze --python "$fep_profile_dir/venv/bin/python" > "$fep_profile_dir/installed.txt"
+cat > "$fep_profile_dir/profile_query.py" <<'PY'
+from fep_lean.methods import load_packaged_formalism_query
+model = load_packaged_formalism_query()
+print(model.as_dict()["counts"])
+PY
+(
+  cd "$fep_profile_dir"
+  env -u FEP_LEAN_PROJECT_ROOT "$fep_profile_dir/venv/bin/python" -I \
+    -m profiling.tracing -o methods.pstats profile_query.py
+)
+"$fep_profile_dir/venv/bin/python" -c \
+  'import pstats, sys; pstats.Stats(sys.argv[1]).sort_stats("cumulative").print_stats(30)' \
+  "$fep_profile_dir/methods.pstats"
+```
+
+Python 3.15 also provides `profiling.sampling` for statistical profiles and
+flamegraphs. If the platform denies process-memory access, the tracing command
+above remains usable. The [Python profiling documentation](https://docs.python.org/3.15/library/profiling.html)
+explains the two modes and their interpretation.
+
+Use profiles to locate work, then compare separate unprofiled runs. Record the
+wheel/source hashes, interpreter, platform and exact resolved dependencies;
+alternate fresh processes when comparing cold construction and report warm
+queries separately. Keep query content and source-change/duplicate refusal
+controls alongside any timing result. Source-text parsing caches must use exact
+content and immutable results, remain bounded, and never replace current
+source/RECORD checks. Native compiler timing and scientific acceptance retain
+their own evidence boundaries.
+
 ## Canonical authoring graph
 
 - `config/catalogue_metadata.yaml`: stable topic metadata and Mathlib hints.

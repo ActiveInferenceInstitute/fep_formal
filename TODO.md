@@ -14,10 +14,12 @@ records implemented fixes, exact-source evidence and remaining acceptance;
 backlog rows remain open until their scope is accepted.
 
 The latest accepted software/proof-component baseline is
-[PR199](https://github.com/ActiveInferenceInstitute/fep_formal/pull/199), main
-`b929c93bb0bec767424276b369cf09db160b0a5b`, with a successful
-[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39371819686).
-The 39 first-column Issue rows below match the current open GitHub backlog.
+[PR200](https://github.com/ActiveInferenceInstitute/fep_formal/pull/200), main
+`ea900462c5f20fabe69c7d4b489a430e7d183082`, with a successful
+[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39392155659).
+The 36 first-column Issue rows below match the current open GitHub backlog.
+Accepted FORM-D1, FORM-S3 and LEAN-6 move to delivery history. CORE-D2
+remains open for the installed-query directory-alias repair and its acceptance.
 Accepted CORE-D1, PKG-7, LEAN-9 and FORM-S2 move to delivery history. The
 maintainer-closed CUR-15 row also moves out of the open-only table; that board
 reconciliation supplies no new diagnosis or production browser receipt.
@@ -84,7 +86,6 @@ roster refresh; new topics are not implicitly reserved by this plan.
 | [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) — align primary theorem proxies with the proved information seams | Minor | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Exact primary types/assumptions/non-vacuity reviewed; stable IDs/signatures and all native/axiom/boundary projections accepted. |
 | [CORE-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/65) — portable semantic and relation queries from one canonical join | Medium | [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Reviewed generated query schema conserves topics/relations/assumptions/blockers; deterministic isolated-wheel parity and semantic review. |
 | [CORE-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74) — Improve accessible offline manuscript, atlas and numerical explanations | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54), [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Demonstrated accessibility gap resolved through shared models; deterministic offline SVG/HTML/PDF and actual browser/text alternatives pass. |
-| [FORM-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/69) — exact fair-Boolean Hamming rate-distortion curve | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Derived Boolean Hamming converse/attaining channel/curve, endpoints and interior multiplier with information-theory review. |
 | [FORM-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/70) — fixed-truth consistency for the continuous static-latent model | Medium | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Explicit infinite fixed-truth law, prefix/native equality and actual convergence proof; new protocol preserves current H3 seeds. |
 | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) — Review all 168 theorem proxies and rank substantive strengthening | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54), [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) | All 168 proxies receive statement-based semantic review and ranked substantive proof briefs; no automatic disposition promotion. |
 | [CORE-J1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/66) — equivalent Windows capture custody and process supervision | Major | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Equivalent Windows no-follow handle custody and descendant containment; actual seven-stage acceptance and identical valid archives. |
@@ -104,7 +105,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [FORM-S3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/86) — Review the fep-013↔002 relation against the delivered Helmholtz minimum | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The `fep-013 ↔ fep-002` conceptual edge is reviewed and upgraded with `FEP.VariationalDuality.helmholtzFreeEnergy_eq_iff`, or its blocker recorded. |
 | [FORM-S5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/88) — Route the fep-050 body through the hypothesis-free Landauer bound | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The fep-050 body no longer carries `hsecondLaw`; it consumes `FEP.PathThermodynamics.erasure_generalized_landauer` as a reviewed body change. |
 | [FORM-S10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/93) — Review the fep-034↔047 relation against the delivered tree sum-product theory | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The `fep-034 ↔ fep-047` edge carries a dated review note; any tag change is a reviewed seal delta. |
 | [FORM-S11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/94) — Review the fep-071 invariant as a Bayesian update | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The Bayes-sound planners, fep-134 re-derivation and observation-ignoring countermodel are on `main`; an independent semantic review moves the 071 invariant from 'authored update' to 'Bayesian update'. |
@@ -119,7 +119,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [LEAN-2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/100) — One Gaussian Markov semigroup interface | Medium | Independent | Duplicate names drop to one; unchanged `#print axioms`; H3 declaration names preserved. |
 | [LEAN-4](https://github.com/ActiveInferenceInstitute/fep_formal/issues/102) — Split h3_case_study.lean and retire its maxHeartbeats override | Medium | [CUR-08](https://github.com/ActiveInferenceInstitute/fep_formal/issues/55) | No `set_option` in the formal tree; declaration names unchanged; native export refreshed. |
 | [LEAN-5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/103) — A reviewed derivational edge in every family | Medium | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | At most six families without a `formal` edge; endpoint-qualification notes per the adjudication doc; relation tests pass. |
-| [LEAN-6](https://github.com/ActiveInferenceInstitute/fep_formal/issues/104) — Consumed-endpoint review notes on every `formal` edge | Minor | Independent | A reviewed seal delta applies the five pairing-rationale rewrites in `docs/relations-endpoint-adjudication.md`, and every `formal` edge's rationale names its consumed endpoint theorem. |
 | [LEAN-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105) — Obligation records for conceptual relations | Minor | Independent | A schema test requires `blocked_by` on every conceptual edge; at least one converted to a pairing (034↔047 via FORM-S10 or 016↔032). |
 | [LEAN-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110) — Move the finite KL bridge beside finiteKL and prepare a Mathlib PR | Medium | Independent | Bridge lemma compiles with only Mathlib imports and no FEP namespace; upstream draft prepared after checking current Mathlib. |
 

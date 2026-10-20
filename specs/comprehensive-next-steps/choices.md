@@ -904,3 +904,45 @@ See the [proof/consumer slice](spikes/exact-information-20261020/README.md),
 [query API](../../docs/api.md#mathematical-methods) and the actual source-bound
 acceptance records produced by the publication gates. These decisions do not
 close an issue or promote a scientific claim by themselves.
+
+## 2026-10-20: measured backend maintenance and bounded Dirichlet pickup
+
+Reuse the existing methods/declaration owners for exact-source mask reuse and
+bounded source-text declaration caching. Preserve imported-runtime and installed
+wheel RECORD validation, duplicate detection, public query content and the
+extractor's default string context. Python 3.15 profiling is an explicit isolated
+performance surface; the canonical validator stays Python 3.14. Retain rejected
+experiments and report unprofiled timing separately from tracing overhead.
+
+Thin the existing CLI by moving unchanged argument registration to its existing
+verification/capture owners and the unchanged failure emitter to the shared
+error owner. Preserve parser and handler behavior. The separate Issue119 error
+schema migration is not part of this compatibility refactor.
+
+Retain actual importing consumers of the existing count-level Dirichlet/Pólya
+foundation and a corrected pinned-library probe. Stage2 remains a bounded no-go
+for the measure/logmoment/variational-update seam, as Issue95 explicitly permits;
+Mathlib's available Beta, digamma and simplex APIs are acknowledged. No topic,
+resource manifest, semantic disposition or terminal horizon theorem is promoted.
+The [slice contract](spikes/dirichlet-counts-20261020/README.md) records the target,
+positive and adverse controls before integration.
+
+Correct NESS prose to state skewness as sufficient, distinguish the defined
+instantaneous rate from a constructed PDE solution, and acknowledge the generic
+Fréchet section. No theorem or proof changes. Issue98 stays open for the missing
+fep163 recovery/discretisation requirement.
+
+## 2026-10-20: installed directory-alias repair
+
+The documented isolated Python3.15 recipe reproduced a real `/var` versus
+`/private/var` package-prefix failure. Prefer the existing logical package
+relative member names, falling back only for already-resolved resource paths
+under the canonical imported-package root. Keep every selected-distribution,
+member ownership, RECORD hash/size and before/after check. Reject an outside
+path with PositioningError instead of leaking raw ValueError.
+
+Three filesystem/metadata regressions first reproduced the failure, then pass
+with the minimal repair; the real cold wheel also imports through a directory
+alias. An omitted RECORD row still refuses. Issue65 remains open at PR200 and
+requires this repair's own exact-source acceptance. The earlier isolated
+performance observation is retained unchanged as a separate component.

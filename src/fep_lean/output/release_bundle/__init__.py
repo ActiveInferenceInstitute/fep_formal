@@ -9,6 +9,7 @@ from __future__ import (
     annotations as annotations,
 )
 
+import argparse
 import gzip as gzip
 import hashlib as hashlib
 import importlib.metadata as importlib  # noqa: F401
@@ -751,3 +752,21 @@ def validate_render_acceptance_barrier(root: Path) -> dict[str, str]:
         "renderer_provenance_sha256": hashlib.sha256(provenance_bytes).hexdigest(),
         "manuscript_source_digest": source_digest,
     }
+
+
+def add_capture_arguments(parser: argparse.ArgumentParser) -> None:
+    """Register existing command flags without changing parser behavior."""
+    parser.add_argument("--template", type=Path, required=True)
+    parser.add_argument("--journal", type=Path)
+    parser.add_argument(
+        "--plan",
+        action="store_true",
+        help="print the fixed stage policy without running tools",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="revalidate and resume an existing journal",
+    )
+    parser.add_argument("--source-date-epoch", type=int, default=0)
+    parser.add_argument("--timeout", type=float, default=21600)

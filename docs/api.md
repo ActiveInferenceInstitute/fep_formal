@@ -114,8 +114,10 @@ contract = inspect_topic(query, "fep-001")
 
 This entry point checks every consumed owner/resource and package Python file
 against the installed distribution's standard `RECORD` hashes and sizes, builds
-the existing canonical join, and checks the binding again. Missing, ambiguous,
-foreign or unverifiable installation metadata raises `PositioningError`.
+the existing canonical join, and checks the binding again. Missing or malformed
+RECORD members, mismatched consumed bytes and a foreign selected distribution
+raise `PositioningError`. Resolved directory aliases can identify the same
+installed package without changing its RECORD member names or checks.
 Editable checkouts use `build_mathematical_positioning(project_root)` instead.
 The query retains schema version 1, exact assumptions, qualified declarations,
 relation kinds, capability states, owner digests and its installed origin.

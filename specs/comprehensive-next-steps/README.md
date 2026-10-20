@@ -12,6 +12,23 @@ The source checkpoint and exact-main hosted evidence are recorded once in
 Lean 4.35 source checkpoint retain separate identities. Planning reviews add
 no new native, production-capture, study or scientific acceptance.
 
+## Current backend maintenance
+
+The existing methods/resolver owners now have bounded exact-content caches and
+shared source contexts. The
+[retained Python 3.15 profiling observation](evidence/backend-profiling-20261020/README.md)
+records a local engineering comparison; the canonical validator remains 3.14.
+The compatible CLI extraction reuses existing verification/capture/error owners.
+Source/runtime qualification and final publication are separate from that
+observation, and the error-schema change remains a separate package.
+
+The [count-learning pickup](spikes/dirichlet-counts-20261020/README.md) exercises
+current owned Stage1 endpoints and the pinned Stage2 library boundary. It adds
+no topic, manifested resource, disposition promotion or terminal horizon result.
+NESS prose is corrected without changing a proof; its missing discretisation
+acceptance remains explicit. These components do not close Issues #95, #98 and #126 or
+their broader prerequisites merely by compiling.
+
 ## Package contracts and order
 
 [work-packages.json](work-packages.json) retains the 2026-10-15 inventory of
