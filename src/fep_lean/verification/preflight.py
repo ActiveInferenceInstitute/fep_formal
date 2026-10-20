@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from fep_lean._paths import project_root
+from fep_lean._paths import _emit_failure, project_root
 from fep_lean.verification.environment import run_validation_checks
 
 
@@ -24,13 +24,19 @@ def _run_version(cmd: list[str], cwd: Path | None = None) -> tuple[int, str]:
     return proc.returncode, output[0] if output else "no output"
 
 
-def run_preflight(*, require_gauss: bool | None = None) -> int:
+def run_preflight(
+    *, require_gauss: bool | None = None, root: Path | None = None
+) -> int:
     """Inspect full capabilities; the compatibility argument never relaxes them.
 
     Full mode always requires OpenGauss. Keep the legacy keyword accepted,
     without changing process-global environment state during inspection.
     """
-    result = run_validation_checks(project_root(), mode="full")
+    result = run_validation_checks(
+        project_root() if root is None else root, mode="full"
+    )
+    if result["status"] != "ok":
+        return _emit_failure("full-mode capabilities unavailable", result=result)
     print(json.dumps(result, indent=2))
     return 0 if result["status"] == "ok" else 1
 

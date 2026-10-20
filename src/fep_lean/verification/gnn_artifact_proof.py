@@ -38,6 +38,7 @@ from math import isfinite
 from pathlib import Path
 from typing import Any, Final
 
+from fep_lean._paths import FepLeanError
 from fep_lean.bridge.custody import contained_file
 from fep_lean.verification._jsonutil import load_strict_json
 
@@ -85,7 +86,7 @@ _AMBIGUOUS_ANCESTORS: Final[tuple[type[ast.stmt], ...]] = (
 )
 
 
-class ArtifactProofError(Exception):
+class ArtifactProofError(FepLeanError):
     """A fail-closed extraction rejection, carrying a reason code."""
 
     def __init__(self, reason: str, detail: str) -> None:

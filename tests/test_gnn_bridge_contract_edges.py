@@ -220,8 +220,10 @@ def test_emit_cli_checks_stale_document_then_refreshes_only_its_signature(
     assert run(root, _arguments(gnn, "emit", "--check")) == 1
     assert json.loads(capsys.readouterr().out) == {
         "status": "error",
-        "model": "finite",
-        "read_only": True,
+        "failure_reason": "bridge operation refused",
+        "details": {
+            "result": {"status": "error", "model": "finite", "read_only": True}
+        },
     }
     assert snapshot(root) == before
     assert run(root, _arguments(gnn, "emit", "--refresh-digests")) == 0
@@ -246,7 +248,10 @@ def test_certification_cli_rejects_stale_document_without_emitting_receipts(
         )
         == 1
     )
-    assert json.loads(capsys.readouterr().out)["error"] == "finite document is stale"
+    assert (
+        json.loads(capsys.readouterr().out)["failure_reason"]
+        == "finite document is stale"
+    )
     assert snapshot(root) == before
     assert not target.exists()
     assert not target.with_suffix(".md").exists()
@@ -259,7 +264,7 @@ def test_verification_cli_requires_an_explicit_receipt(
     before = snapshot(root)
     assert run(root, _arguments(gnn, "verify-certificate")) == 1
     assert (
-        json.loads(capsys.readouterr().out)["error"]
+        json.loads(capsys.readouterr().out)["failure_reason"]
         == "verify-certificate requires --receipt"
     )
     assert snapshot(root) == before

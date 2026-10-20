@@ -1,5 +1,27 @@
 # Choices ledger
 
+## One operational CLI envelope with direct-owner compatibility
+
+**When:** 2026-10-20, PKG-6 implementation.
+
+**Choice:** Reuse the existing public `FepLeanError` and existing failure
+emitter; repair the two missing proof-extractor bases. All 24 current owned
+exception types share that base. Put refusal context under `details` and return
+1 at the CLI boundary, preserving direct native result serialization and its
+original compiler code. Successful structured payloads remain unchanged.
+
+**Gap:** The issue's older count of 22 omitted two already-compatible
+`Refused` classes. Setup progress could precede a late failure on stdout.
+
+**Reach:** An explicit setup callback and progress stream preserve direct-call
+defaults while routing primary CLI progress to stderr. Parser exit 2 is kept;
+the new outer boundary does not catch arbitrary programming exceptions.
+Existing bridge/custody input-validation catches retain their local scope.
+
+**Verdict:** software implementation integrated; current source bindings and
+full native/Python/render/hosted qualification are required before acceptance.
+**Confidence:** component tests pass; complete acceptance remains pending.
+
 ## Portable queries reuse the delivered join
 
 **When:** G01 planning reconciliation.

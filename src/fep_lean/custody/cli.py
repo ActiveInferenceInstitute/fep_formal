@@ -26,6 +26,8 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+from fep_lean._paths import _emit_failure
+
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("operation", choices=("census", "apply", "refresh"))
@@ -391,5 +393,4 @@ def run(root: Path, args: argparse.Namespace) -> int:
         KeyError,
         TypeError,
     ) as exc:
-        print(json.dumps({"status": "error", "error": str(exc)}))
-        return 1
+        return _emit_failure(str(exc))

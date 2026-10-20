@@ -36,6 +36,7 @@ PORTABILITY_INPUTS = (
     FIXTURES["ou"],
     SERIALIZATION_PROTOCOL,
     "src/fep_lean/verification/_jsonutil.py",
+    "src/fep_lean/_paths.py",
 )
 PORTABILITY_CONTROLS = {
     "argument_order",
@@ -59,6 +60,7 @@ EXTRA_FILES = (
     CANONICAL_SCAFFOLD,
     PORTABILITY_EVIDENCE,
     "src/fep_lean/verification/_jsonutil.py",
+    "src/fep_lean/_paths.py",
 )
 
 
@@ -123,6 +125,7 @@ def regenerate(root: Path = ROOT) -> tuple[dict[str, str], dict[str, object]]:
         CANONICAL_SCAFFOLD,
         PORTABILITY_EVIDENCE,
         "src/fep_lean/verification/_jsonutil.py",
+        "src/fep_lean/_paths.py",
     ]
     manifest = {
         "schema_version": 1,
@@ -222,6 +225,7 @@ for name in ("fep_lean", "fep_lean.verification"):
     package.__path__ = []
     sys.modules[name] = package
 for name, relative in (
+    ("fep_lean._paths", "src/fep_lean/_paths.py"),
     ("fep_lean.verification._jsonutil", "src/fep_lean/verification/_jsonutil.py"),
     ("q7_portability_owner", "src/fep_lean/verification/gnn_continuous_artifact_proof.py"),
 ):

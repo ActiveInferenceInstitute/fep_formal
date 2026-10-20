@@ -119,5 +119,7 @@ def test_preflight_compatibility_flag_preserves_environment_and_full_checks(
     before = dict(os.environ)
     assert preflight.run_preflight(require_gauss=require_gauss) == 1
     assert calls == [(tmp_path, "full")]
-    assert json.loads(capsys.readouterr().out) == payload
+    record = json.loads(capsys.readouterr().out)
+    assert record["status"] == "error"
+    assert record["details"]["result"] == payload
     assert dict(os.environ) == before

@@ -62,6 +62,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
 
+from fep_lean._paths import _emit_failure
 from fep_lean.lean_source import lean_code_without_comments, lean_module_source
 from fep_lean.verification._subprocess import run_process_group
 from fep_lean.verification._toolchain import (
@@ -736,6 +737,20 @@ class CatalogueVerification:
 
     def to_json(self) -> str:
         return json.dumps(self.payload, indent=self.json_indent, default=str)
+
+    def emit_cli(self) -> int:
+        """Preserve success JSON and normalize an operational CLI refusal."""
+        if self.exit_code:
+            return _emit_failure(
+                str(
+                    self.payload.get("failure_reason")
+                    or "native verification incomplete"
+                ),
+                result=self.payload,
+                exit_code=self.exit_code,
+            )
+        print(self.to_json())
+        return 0
 
 
 def verify_catalogue(

@@ -148,16 +148,18 @@ open in [TODO.md](TODO.md).
 
 ## Current assessment
 
-The latest integrated checkpoint with a successful exact-main workflow is
-[`ea900462`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/ea900462c5f20fabe69c7d4b489a430e7d183082).
-Its [exact-main run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39392155659)
-passed all 21 executed jobs, including all 15 installed-wheel cells; the
+The accepted PR201 software/proof-component checkpoint is
+[`de9643f`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/de9643f5249ad207219af51f6446327197a01247).
+Its [exact-main run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39449116181)
+passed all 21 executed jobs and all 15 installed-wheel cells; the
 documentation-only alternative was intentionally skipped. Independent artifact
-checks accepted all 168 native topics, 1,928 standard-three-axiom reports and
-the 389-page manuscript. These establish the software and stated proof
-components; primary scientific and full-capture criteria remain separate.
-The installed-query directory-alias repair is subsequent candidate work;
-CORE-D2 stays open until that repair has its own exact-main acceptance.
+checks accepted all 168 native topics, 1,928 declaration axiom reports within
+the reviewed allowlist, and the 389-page manuscript. All seven changed pages
+were directly reviewed; 382 others exactly matched accepted-head pixels/text.
+The directory-alias repair and 498-line compatible CLI extraction are accepted;
+PKG-13 is closed. CORE-D2 retains its required independent API/schema and
+semantic review. Source-custody-only PR202 adds no theorem or algorithm claim.
+Primary scientific and full-capture criteria remain separate.
 The [publication handoff](WORK_STATUS.md) remains a dated snapshot.
 
 The earlier accepted integrated checkpoint

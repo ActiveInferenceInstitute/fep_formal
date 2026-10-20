@@ -4,14 +4,17 @@ from __future__ import annotations
 
 import argparse
 import json
-import logging
 import os
+import subprocess
+import sys
 from collections.abc import Callable, Sequence
 from contextlib import nullcontext
 from pathlib import Path
 from typing import Any
 
 from fep_lean._paths import (
+    FepLeanError,
+    _display,
     _emit_failure,
     explicit_project_root,
     project_root,
@@ -45,12 +48,13 @@ from fep_lean.output.formalism_atlas import (
     write_formalism_atlas,
 )
 from fep_lean.pipeline.orchestrator import run_pipeline, run_single_topic
-from fep_lean.verification.environment import run_validation_checks
+from fep_lean.verification.environment import _configure_logging
 from fep_lean.verification.environment import setup_workspace as _setup
 from fep_lean.verification.lean_verifier import LeanVerifier, verify_catalogue
 from fep_lean.verification.lean_verifier import (
     add_cli_arguments as add_verify_arguments,
 )
+from fep_lean.verification.preflight import run_preflight
 
 __all__ = [
     "NATIVE_RECEIPT",
@@ -72,25 +76,13 @@ __all__ = [
 ]
 
 
-def _configure_logging(verbose: bool) -> None:
-    logging.basicConfig(
-        level=logging.DEBUG if verbose else logging.INFO,
-        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
-    )
-
-
 def _print_result(result: object) -> int:
     payload = result.as_dict() if hasattr(result, "as_dict") else result
+    if not getattr(result, "complete", False):
+        reason = payload.get("failure_reason") if isinstance(payload, dict) else None
+        return _emit_failure(str(reason or "workflow is incomplete"), result=payload)
     print(json.dumps(payload, indent=2, default=str))
-    return 0 if getattr(result, "complete", False) else 1
-
-
-def _display(root: Path, path: Path) -> str:
-    """Render *path* for display, relative to *root* when possible."""
-    try:
-        return str(path.relative_to(root))
-    except ValueError:
-        return str(path)
+    return 0
 
 
 def _atlas(root: Path, *, check: bool) -> int:
@@ -101,6 +93,7 @@ def _atlas(root: Path, *, check: bool) -> int:
         write_formalism_atlas,
         "formalism atlas projections are current",
         check=check,
+        failure_emitter=_emit_failure,
     )
 
 
@@ -112,6 +105,7 @@ def _dashboard(root: Path, *, check: bool) -> int:
         write_formal_kernel_dashboard,
         "formal-kernel dashboard projections are current",
         check=check,
+        failure_emitter=_emit_failure,
     )
 
 
@@ -130,8 +124,7 @@ def _verify(
         receipt_path=receipt_path,
         fail_on_warnings=fail_on_warnings,
     )
-    print(outcome.to_json())
-    return outcome.exit_code
+    return outcome.emit_cli()
 
 
 SOURCE_PIN = Path(operations.PIN)
@@ -379,9 +372,7 @@ def _methods(args: argparse.Namespace, root: Path | None) -> int:
 
 
 def _preflight(root: Path) -> int:
-    result = run_validation_checks(root, mode="full")
-    print(json.dumps(result, indent=2))
-    return 0 if result["status"] == "ok" else 1
+    return run_preflight(root=root)
 
 
 def _status(root: Path, gnn_root: Path | None) -> int:
@@ -411,8 +402,12 @@ def _publication_capture(
         )
     except (OSError, release_bundle.ReleaseBundleError) as exc:
         return _emit_failure(str(exc), complete=False)
+    if not capture_result.complete:
+        return _emit_failure(
+            "publication capture incomplete", result=capture_result.as_dict()
+        )
     print(json.dumps(capture_result.as_dict(), indent=2))
-    return 0 if capture_result.complete else 1
+    return 0
 
 
 def _dispatch_command(
@@ -422,7 +417,9 @@ def _dispatch_command(
     from fep_lean.custody.cli import run as run_custody
 
     handlers: dict[str, Callable[[], int]] = {
-        "setup": lambda: _setup(root),
+        "setup": lambda: _setup(
+            root, failure_emitter=_emit_failure, progress_stream=sys.stderr
+        ),
         "bridge": lambda: run_bridge(root, args),
         "custody": lambda: run_custody(root, args),
         "verify": lambda: _verify(
@@ -466,32 +463,35 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
     _configure_logging(args.verbose or os.environ.get("FEP_LEAN_VERIFY_VERBOSE") == "1")
-    with (
-        project_root_context(args.project_root)
-        if args.project_root is not None
-        else nullcontext()
-    ):
-        root = project_root()
-        explicit_root = explicit_project_root()
-        if args.command == "methods":
-            selected = (
-                root
-                if args.project_root is not None
-                or explicit_root
-                or (not project_root_errors(root))
-                else None
-            )
-            return _methods(args, selected)
-        missing = project_root_errors(root)
-        if missing:
-            return _emit_failure(
-                "substantive fep-lean commands require a source checkout; pass --project-root /path/to/fep_lean. Missing: "
-                + ", ".join(missing),
-                indent=2,
-                complete=False,
-                project_root=str(root),
-            )
-        return _dispatch_command(args, root, parser)
+    try:
+        with (
+            project_root_context(args.project_root)
+            if args.project_root is not None
+            else nullcontext()
+        ):
+            root = project_root()
+            explicit_root = explicit_project_root()
+            if args.command == "methods":
+                selected = (
+                    root
+                    if args.project_root is not None
+                    or explicit_root
+                    or (not project_root_errors(root))
+                    else None
+                )
+                return _methods(args, selected)
+            missing = project_root_errors(root)
+            if missing:
+                return _emit_failure(
+                    "substantive fep-lean commands require a source checkout; pass --project-root /path/to/fep_lean. Missing: "
+                    + ", ".join(missing),
+                    indent=2,
+                    complete=False,
+                    project_root=str(root),
+                )
+            return _dispatch_command(args, root, parser)
+    except (FepLeanError, OSError, ValueError, subprocess.SubprocessError) as exc:
+        return _emit_failure(str(exc))
 
 
 if __name__ == "__main__":
