@@ -1,5 +1,12 @@
 ## Unreleased
 
+- Document all seven operator option/default surfaces and preserve the existing
+  first-valid render-template fallback and shared bridge-parser compatibility.
+  Add controls for template precedence, ignored bridge-status paths and the
+  accept-only render branch; clarify optional document-receipt writes for
+  [CORE-M3 (#73)](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73).
+  No parser, provider, output-root or execution-default behavior changes.
+
 - Correct the conceptual fep-017 to fep-045 rationale to recognize the
   maintained Bernoulli posterior-closure theorem. The relation remains
   conceptual pending an explicit theorem between the posterior-kernel and
