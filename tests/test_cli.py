@@ -607,6 +607,8 @@ def test_verify_warning_counts_align_with_strict_native_receipt(
     payload = json.loads(capsys.readouterr().out)
     receipt_payload = json.loads(receipt.read_text(encoding="utf-8"))
     assert code == 1
+    assert payload["status"] == "error"
+    payload = payload["details"]["result"]
     assert payload["complete"] is False
     assert payload["compiled_without_sorry_topics"] == 1
     assert payload["verified_topics"] == 0
@@ -760,20 +762,20 @@ def test_main_returns_2_for_unsupported_command(monkeypatch, tmp_path: Path) -> 
 
 
 def test_emit_failure_is_byte_stable(capsys) -> None:
-    """The shared emitter reproduces each historical error payload exactly."""
+    """The versioned failure envelope has fixed order and nested context."""
     assert cli._emit_failure("boom") == 1
     assert capsys.readouterr().out == (
-        '{"status": "error", "failure_reason": "boom"}\n'
+        '{"status": "error", "failure_reason": "boom", "details": {}}\n'
     )
     assert cli._emit_failure("boom", mode="lean-only", complete=False) == 1
     assert capsys.readouterr().out == (
-        '{"status": "error", "mode": "lean-only", "complete": false, '
-        '"failure_reason": "boom"}\n'
+        '{"status": "error", "failure_reason": "boom", '
+        '"details": {"mode": "lean-only", "complete": false}}\n'
     )
     assert cli._emit_failure("boom", indent=2, complete=False, project_root="/x") == 1
     assert capsys.readouterr().out == (
-        '{\n  "status": "error",\n  "complete": false,\n'
-        '  "project_root": "/x",\n  "failure_reason": "boom"\n}\n'
+        '{\n  "status": "error",\n  "failure_reason": "boom",\n'
+        '  "details": {\n    "complete": false,\n    "project_root": "/x"\n  }\n}\n'
     )
 
 
@@ -810,17 +812,10 @@ def test_every_verb_failure_shares_one_error_schema(
     argv = _failing_argv(tmp_path, monkeypatch)[index]
     assert cli.main(argv) == 1
     payload = json.loads(capsys.readouterr().out)
-    keys = list(payload)
-    assert keys[0] == "status" and payload["status"] == "error"
-    assert keys[-1] == "failure_reason"
+    assert list(payload) == ["status", "failure_reason", "details"]
+    assert payload["status"] == "error"
     assert isinstance(payload["failure_reason"], str) and payload["failure_reason"]
-    assert set(keys) <= {
-        "status",
-        "mode",
-        "complete",
-        "project_root",
-        "failure_reason",
-    }
+    assert isinstance(payload["details"], dict)
 
 
 def test_every_package_exception_is_a_fep_lean_error() -> None:
@@ -888,7 +883,9 @@ def test_cli_explicit_root_precedes_nested_caller_without_environment_mutation(
     assert len(capsys.readouterr().out.splitlines()) == 2
 
 
-def test_cli_context_resets_after_handler_failure(tmp_path: Path, monkeypatch) -> None:
+def test_cli_context_resets_after_handler_failure(
+    tmp_path: Path, monkeypatch, capsys
+) -> None:
     from fep_lean._paths import project_root, project_root_context
 
     def reject(*_args):
@@ -898,8 +895,11 @@ def test_cli_context_resets_after_handler_failure(tmp_path: Path, monkeypatch) -
     monkeypatch.setattr(cli, "build_status_report", reject)
     before = dict(os.environ)
     with project_root_context(tmp_path / "caller"):
-        with pytest.raises(OSError, match="actual handler failed"):
-            cli.main(["--project-root", str(tmp_path / "cli"), "status"])
+        assert cli.main(["--project-root", str(tmp_path / "cli"), "status"]) == 1
+        assert (
+            json.loads(capsys.readouterr().out)["failure_reason"]
+            == "actual handler failed"
+        )
         assert project_root() == tmp_path / "caller"
     assert dict(os.environ) == before
 
@@ -936,3 +936,321 @@ def test_concurrent_cli_roots_do_not_cross_or_mutate_environment(
     assert set(observed) == {(root, root) for root in roots}
     assert dict(os.environ) == before
     assert len(capsys.readouterr().out.splitlines()) == 2
+
+
+_ERROR_TYPES = [
+    ("fep_lean._paths", "FepLeanError"),
+    ("fep_lean.llm.hermes", "HermesAPIError"),
+    ("fep_lean.methods.model", "PositioningError"),
+    ("fep_lean.methods.probes", "BoundaryProbeError"),
+    ("fep_lean.prove2me.config", "Prove2meError"),
+    ("fep_lean.prove2me.config", "Prove2meConfigError"),
+    ("fep_lean.prove2me.config", "Prove2meAuthError"),
+    ("fep_lean.prove2me.config", "Prove2meAPIError"),
+    ("fep_lean.prove2me.config", "Prove2meTransportError"),
+    ("fep_lean.prove2me.config", "Prove2meTimeoutError"),
+    ("fep_lean.output.rendering", "ManuscriptRenderError"),
+    ("fep_lean.output.publication_metadata", "PublicationMetadataError"),
+    ("fep_lean.output.browser_capture", "BrowserCaptureError"),
+    ("fep_lean.output.svg_raster", "SvgRasterError"),
+    ("fep_lean.output.render_fonts", "FontProbeError"),
+    ("fep_lean.output.release_bundle._core", "ReleaseBundleError"),
+    ("fep_lean.verification.gnn_continuous_artifact_proof", "ContinuousArtifactError"),
+    ("fep_lean.verification.gnn_artifact_proof", "ArtifactProofError"),
+    ("fep_lean.custody.refresh", "RefreshRefused"),
+    ("fep_lean.custody.apply", "ApplyRefused"),
+    ("fep_lean.catalogue.registry", "RegistryValidationError"),
+    ("fep_lean.catalogue.semantics", "SemanticValidationError"),
+    ("fep_lean.catalogue.topics", "CatalogueValidationError"),
+    ("fep_lean.catalogue.novelty", "NoveltyValidationError"),
+]
+
+
+@pytest.mark.parametrize(("module", "name"), _ERROR_TYPES)
+def test_all_owned_errors_share_public_base(module, name):
+    import importlib
+
+    from fep_lean import FepLeanError
+    from fep_lean._paths import FepLeanError as owned_base
+
+    error = getattr(importlib.import_module(module), name)
+    assert FepLeanError is owned_base
+    assert issubclass(error, FepLeanError)
+
+
+def test_proof_error_legacy_ancestry_and_setup_identity():
+    from fep_lean.verification.gnn_artifact_proof import ArtifactProofError
+    from fep_lean.verification.gnn_continuous_artifact_proof import (
+        ContinuousArtifactError,
+    )
+
+    assert not issubclass(ArtifactProofError, ValueError)
+    assert issubclass(ContinuousArtifactError, ValueError)
+    assert cli._setup is environment_module.setup_workspace
+
+
+@pytest.mark.parametrize(
+    "verb",
+    [
+        "setup",
+        "verify",
+        "catalogue",
+        "atlas",
+        "dashboard",
+        "run",
+        "topic",
+        "report",
+        "preflight",
+        "status",
+        "publication-capture",
+        "methods",
+        "bridge",
+        "custody",
+    ],
+)
+def test_canonical_operational_failure_schema(verb, monkeypatch, capsys, tmp_path):
+    from types import SimpleNamespace
+
+    from fep_lean import methods
+    from fep_lean.bridge import operations
+    from fep_lean.output import release_bundle
+    from fep_lean.verification import preflight as preflight_owner
+
+    def refuse(*args, **kwargs):
+        raise OSError("controlled owner refusal")
+
+    def no_process(*args, **kwargs):
+        raise AssertionError("failure fixture attempted a subprocess")
+
+    monkeypatch.setattr("subprocess.Popen", no_process)
+    failed = {"complete": False, "failure_reason": "controlled workflow refusal"}
+    monkeypatch.setattr(
+        cli,
+        "run_pipeline",
+        lambda **kw: SimpleNamespace(complete=False, as_dict=lambda: failed),
+    )
+    monkeypatch.setattr(
+        cli,
+        "run_single_topic",
+        lambda *a, **kw: SimpleNamespace(complete=False, as_dict=lambda: failed),
+    )
+    monkeypatch.setattr(
+        cli,
+        "verify_catalogue",
+        lambda *a, **kw: verifier_module.CatalogueVerification(failed, 7, 2),
+    )
+    monkeypatch.setattr(
+        cli, "atlas_projection_drift", lambda root: [root / "atlas.svg"]
+    )
+    monkeypatch.setattr(
+        cli, "formal_kernel_dashboard_drift", lambda root: [root / "dashboard.svg"]
+    )
+    monkeypatch.setattr(
+        preflight_owner,
+        "run_validation_checks",
+        lambda *a, **kw: {"status": "error", "failed_count": 1, "checks": []},
+    )
+    monkeypatch.setattr(cli, "build_status_report", refuse)
+    monkeypatch.setattr(methods, "build_mathematical_positioning", refuse)
+    monkeypatch.setattr(release_bundle, "plan_publication_capture", refuse)
+    monkeypatch.setattr(
+        operations, "status", lambda *a: {"status": "error", "checks": {}}
+    )
+    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "invalid")
+    arguments = {
+        "setup": [],
+        "verify": [],
+        "catalogue": [],
+        "atlas": ["--check"],
+        "dashboard": ["--check"],
+        "run": [],
+        "topic": ["fep-001"],
+        "report": [],
+        "preflight": [],
+        "status": [],
+        "publication-capture": ["--template", str(tmp_path), "--plan"],
+        "methods": ["inspect"],
+        "bridge": ["status", "--gnn-root", str(tmp_path)],
+        "custody": ["apply"],
+    }
+    assert cli.main(["--project-root", str(PROJ), verb, *arguments[verb]]) == 1
+    output = capsys.readouterr()
+    record = json.loads(output.out)
+    assert set(record) == {"status", "failure_reason", "details"}
+    assert record["status"] == "error"
+    assert isinstance(record["failure_reason"], str) and record["failure_reason"]
+    assert isinstance(record["details"], dict)
+    assert not output.err
+
+
+@pytest.mark.parametrize(
+    "error", [KeyError("bug"), TypeError("bug"), RuntimeError("bug")]
+)
+def test_outer_cli_does_not_swallow_programming_errors(error, monkeypatch, capsys):
+    def fail(*args):
+        raise error
+
+    monkeypatch.setattr(cli, "_dispatch_command", fail)
+    with pytest.raises(type(error)):
+        cli.main(["--project-root", str(PROJ), "status"])
+    assert not capsys.readouterr().out
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        ["status", "--unknown"],
+        ["publication-capture", "--template", "unused", "--plan", "--resume"],
+    ],
+)
+def test_error_schema_preserves_argparse_usage_exit_two(arguments, capsys):
+    with pytest.raises(SystemExit) as error:
+        cli.main(["--project-root", str(PROJ), *arguments])
+    assert error.value.code == 2
+    assert not capsys.readouterr().out
+
+
+def test_projection_failure_callback_preserves_direct_owner_default(capsys):
+    from fep_lean.catalogue.generation import check_or_write
+
+    assert (
+        check_or_write(
+            PROJ, lambda root: [root / "missing.svg"], None, "fixture", check=True
+        )
+        == 1
+    )
+    assert capsys.readouterr().out == "STALE: missing.svg\n"
+
+
+def test_direct_setup_default_retains_existing_failure_text(monkeypatch, capsys):
+    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "invalid")
+    assert environment_module.setup_workspace(PROJ) == 1
+    assert (
+        capsys.readouterr().out
+        == "setup failed: FEP_LEAN_SETUP_TIMEOUT_SEC must be an integer\n"
+    )
+
+
+def test_native_result_success_bytes_and_failure_exit_are_separate(capsys):
+    payload = {"complete": True, "topic": "fep-001", "unicode": "Δ"}
+    result = verifier_module.CatalogueVerification(payload, 0, 2)
+    before = result.to_json()
+    assert result.emit_cli() == 0
+    assert capsys.readouterr().out == before + "\n"
+    failed = verifier_module.CatalogueVerification(
+        {"complete": False, "failure_reason": "compile refusal"}, 7, 2
+    )
+    original = failed.to_json()
+    assert failed.emit_cli() == 1
+    record = json.loads(capsys.readouterr().out)
+    assert record["details"]["exit_code"] == 7
+    assert record["details"]["result"] == json.loads(original)
+    assert failed.to_json() == original
+
+
+def test_preflight_adapter_preserves_keyword_and_uses_full_mode(monkeypatch, capsys):
+    from fep_lean.verification import preflight
+
+    calls = []
+    monkeypatch.setattr(preflight, "project_root", lambda: PROJ)
+    monkeypatch.setattr(
+        preflight,
+        "run_validation_checks",
+        lambda root, *, mode: (
+            calls.append((root, mode)) or {"status": "error", "failed_count": 1}
+        ),
+    )
+    before = dict(os.environ)
+    assert preflight.run_preflight(require_gauss=False) == 1
+    payload = json.loads(capsys.readouterr().out)
+    assert (
+        payload["status"] == "error"
+        and payload["details"]["result"]["failed_count"] == 1
+    )
+    assert calls == [(PROJ, "full")]
+    assert dict(os.environ) == before
+
+
+def test_cli_context_resets_after_unhandled_programming_failure(tmp_path, monkeypatch):
+    from fep_lean._paths import project_root, project_root_context
+
+    def reject(*args):
+        raise RuntimeError("programming fixture")
+
+    monkeypatch.setattr(cli, "project_root_errors", lambda root: ())
+    monkeypatch.setattr(cli, "build_status_report", reject)
+    before = dict(os.environ)
+    with project_root_context(tmp_path / "caller"):
+        with pytest.raises(RuntimeError, match="programming fixture"):
+            cli.main(["--project-root", str(tmp_path / "cli"), "status"])
+        assert project_root() == tmp_path / "caller"
+    assert dict(os.environ) == before
+
+
+def test_setup_cli_late_failure_keeps_stdout_json(monkeypatch, capsys):
+    import subprocess
+
+    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "1800")
+    monkeypatch.delenv("FEP_LEAN_DIR", raising=False)
+    monkeypatch.setattr(
+        environment_module, "find_executable", lambda *a: "/fixture/lake"
+    )
+    monkeypatch.setattr(
+        environment_module,
+        "run_process_group",
+        lambda command, **kw: subprocess.CompletedProcess(
+            command, 7, "compiler progress\n", "compiler diagnostic\n"
+        ),
+    )
+    monkeypatch.setattr(
+        subprocess,
+        "Popen",
+        lambda *a, **kw: pytest.fail("setup fixture spawned a process"),
+    )
+    assert cli.main(["--project-root", str(PROJ), "setup"]) == 1
+    output = capsys.readouterr()
+    payload = json.loads(output.out)
+    assert set(payload) == {"status", "failure_reason", "details"}
+    assert payload["status"] == "error" and payload["details"]["exit_code"] == 7
+    assert payload["details"]["command"] == "setup"
+    assert "compiler progress" in output.err and "compiler diagnostic" in output.err
+    assert "[fep_lean setup]" in output.err
+
+
+def test_setup_cli_success_keeps_final_line_and_routes_progress(monkeypatch, capsys):
+    import subprocess
+
+    manifest = json.loads((PROJ / "lean/lake-manifest.json").read_text())
+    revision = next(
+        row["rev"] for row in manifest["packages"] if row["name"] == "mathlib"
+    )
+    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "1800")
+    monkeypatch.delenv("FEP_LEAN_DIR", raising=False)
+    monkeypatch.setattr(
+        environment_module, "find_executable", lambda *a: "/fixture/lake"
+    )
+
+    def run(command, **kwargs):
+        if command[0] == "git":
+            text = revision + "\n"
+        elif command[-2:] == ["lean", "--version"]:
+            text = _FIXTURE_LEAN_VERSION + "\n"
+        elif command[-1] == "--version":
+            text = f"Lake version fixture (Lean version {_PINNED_LEAN_VERSION})\n"
+        else:
+            text = "controlled progress\n"
+        return subprocess.CompletedProcess(command, 0, text, "")
+
+    monkeypatch.setattr(environment_module, "run_process_group", run)
+    monkeypatch.setattr(
+        subprocess,
+        "Popen",
+        lambda *a, **kw: pytest.fail("setup fixture spawned a process"),
+    )
+    assert cli.main(["--project-root", str(PROJ), "setup"]) == 0
+    output = capsys.readouterr()
+    assert (
+        output.out
+        == f"[fep_lean setup] OK | lean: {_FIXTURE_LEAN_VERSION} | mathlib: {revision}\n"
+    )
+    assert "controlled progress" in output.err

@@ -54,6 +54,7 @@ CONTRACT = ArtifactContract(
         f"{SLICE}/generated/scaffold-canonical.json",
         f"{SLICE}/generated/scaffold-runtime-parity.json",
         "src/fep_lean/verification/_jsonutil.py",
+        "src/fep_lean/_paths.py",
     ),
 )
 VERIFICATION = ArtifactVerifier(Path(__file__).resolve().parents[2], CONTRACT)

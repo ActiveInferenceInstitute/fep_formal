@@ -13,16 +13,18 @@ all 15 hosted jobs and is integrated. The
 records implemented fixes, exact-source evidence and remaining acceptance;
 backlog rows remain open until their scope is accepted.
 
-The latest accepted software/proof-component baseline is
-[PR200](https://github.com/ActiveInferenceInstitute/fep_formal/pull/200), main
-`ea900462c5f20fabe69c7d4b489a430e7d183082`, with a successful
-[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39392155659).
-The 36 first-column Issue rows below match the current open GitHub backlog.
-Accepted FORM-D1, FORM-S3 and LEAN-6 move to delivery history. CORE-D2
-remains open for the installed-query directory-alias repair and its acceptance.
-Accepted CORE-D1, PKG-7, LEAN-9 and FORM-S2 move to delivery history. The
-maintainer-closed CUR-15 row also moves out of the open-only table; that board
-reconciliation supplies no new diagnosis or production browser receipt.
+The accepted software/proof-component checkpoint is
+[PR201](https://github.com/ActiveInferenceInstitute/fep_formal/pull/201), main
+`de9643f5249ad207219af51f6446327197a01247`, qualified by the
+[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39449116181).
+The 35 first-column Issue rows reflect the post-PR201 acceptance reconciliation:
+PKG-13 moves to delivery history. CORE-D2's alias repair is accepted, while its
+independent API/schema and semantic review receipts remain to be located or
+completed. FORM-D1, FORM-S3, LEAN-6, CORE-D1, PKG-7, LEAN-9, FORM-S2 and the
+maintainer-closed CUR-15 remain in delivery history. This board reconciliation
+supplies no new production browser or primary scientific evidence.
+The subsequent [PR202](https://github.com/ActiveInferenceInstitute/fep_formal/pull/202)
+advances source-pair custody only; it adds no theorem or algorithm claim.
 Fresh full capture and its evidence boundaries remain in CUR-05/CUR-07.
 
 ## Release gate
@@ -127,7 +129,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
 | [PKG-6](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119) — Error base in the pinned GNN proof modules and every verb's failure path | Medium | [CORE-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/62) | `ArtifactProofError` and `ContinuousArtifactError` derive from `FepLeanError` after a coordinated Q5–Q7 evidence refresh, the `pinned` exclusion in `tests/test_cli.py` is empty, and the parametrised failure-schema test covers every verb. |
-| [PKG-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/126) — Thin cli.py to parse, dispatch and emit | Medium | [CORE-M3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73), [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64) | `cli.py` under ≈ 500 lines; every verb's JSON output byte-identical in CLI tests. |
 
 ### Documentation and manuscript
 

@@ -36,16 +36,23 @@ def check_or_write(
     label: str,
     *,
     check: bool,
+    failure_emitter: Callable[..., int] | None = None,
 ) -> int:
     """Shared fail-closed ``--check``/write shell for generated projections.
 
     With *check* set, print one ``STALE: <relative path>`` line per drifted
     path and return 1, or ``OK: <label>`` and return 0 when current; *write_fn*
-    stays unused. Otherwise call *write_fn* and print one
+    stays unused. A CLI failure callback can instead emit its structured
+    refusal without changing the direct-call default. Otherwise call *write_fn* and print one
     ``Wrote <relative path>`` line per written path, returning 0.
     """
     if check:
         drift = list(drift_fn(root))
+        if drift and failure_emitter is not None:
+            return failure_emitter(
+                "generated projections are stale",
+                paths=[_display_path(root, path) for path in drift],
+            )
         for path in drift:
             print(f"STALE: {_display_path(root, path)}")
         if drift:

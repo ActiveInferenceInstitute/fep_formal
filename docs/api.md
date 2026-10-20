@@ -465,9 +465,36 @@ to the current execution context; pass roots explicitly to new threads and
 OS processes. The capture owner explicitly projects the caller root into a
 copied child environment. Compiler children retain their separate allowlist.
 `CatalogueVerification` carries a result mapping, canonical JSON indentation
-and exit status; its mapping is an ordinary result value. Receipt validation,
-warning/admission counts and failure exits match the CLI. Read-only preflight
-remains separate from setup acquisition and native compilation.
+and the original native exit status; its mapping is an ordinary result value.
+Receipt validation and warning/admission counts are shared with the CLI. The
+CLI returns 1 for operational failures and preserves the original native code
+inside `details.exit_code`. Read-only preflight remains separate from setup
+acquisition and native compilation.
+
+## Operational errors
+
+`FepLeanError` is publicly importable from `fep_lean`. All 24 package-defined
+exception types share that base. Their existing standard-library ancestry is
+preserved: for example, `ContinuousArtifactError` remains a `ValueError`, while
+`ArtifactProofError` remains an `Exception` without becoming a `ValueError`.
+
+The primary CLI emits an operational refusal as one JSON object on stdout and
+returns 1. Its three fields are `status` (`"error"`), `failure_reason` (a string),
+and `details` (an object). Command-specific evidence remains inside `details`;
+workflow reports use `details.result`, and native verification also preserves
+the original compiler `exit_code`. Successful structured payloads are unchanged.
+Argument-parser help and invalid syntax retain argparse's exit codes 0 and 2.
+The command boundary handles package errors, OS errors, value errors and
+subprocess errors; it does not broadly catch arbitrary programming exceptions.
+Existing bridge/custody input-refusal adapters retain their narrower local
+validation behavior.
+
+`CatalogueVerification.to_json()` and `.exit_code` remain direct library values;
+`.emit_cli()` applies the CLI envelope and exit-1 contract. Direct
+`setup_workspace(root)` and catalogue drift checks retain their historical text
+and exit behavior unless the caller explicitly supplies a failure callback.
+CLI setup sends progress and child diagnostics to stderr, leaving a late failure
+as one parseable JSON object on stdout. Its final success line is unchanged.
 
 ## Command-line API
 

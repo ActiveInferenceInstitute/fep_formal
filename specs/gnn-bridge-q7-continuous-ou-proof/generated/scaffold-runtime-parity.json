@@ -5,10 +5,11 @@
   "input_stability_verified": true,
   "inputs": {
     "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py": "630a67a12843096a5ef13de3e5fc3258886abec8716a7a6597de09634a575b53",
-    "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "609191d65130dd15d5c6229aca711da19429862907f23d9361c393e21befd661",
+    "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "de6c633b48b956ce9745ec413120d2fa7435e1e7475dd94d43ccb947517d0774",
     "specs/gnn-bridge-q7-continuous-ou-proof/scaffold-serialization.md": "541d408dccaa8b383aa6cac45c33d5d9d9e072ad93e985f747c58b5a77dc4ea5",
+    "src/fep_lean/_paths.py": "fc3992d6805db1275add80a69ef482ef7ae9ed32496016d5401a2ac854ab1c21",
     "src/fep_lean/verification/_jsonutil.py": "8e389db30143881d795eecc8786df2ff5d9c21dd2fc1592e92e501991cee8e9d",
-    "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "f6b557fc4b094abe525388e83a00210e4608dd2c9d985b6721542af56ded9aa3"
+    "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "5bcf6ac9b3004a13e077089b463cf21768ad61d54b2ef02bfa75dbf96029aca1"
   },
   "kind": "q7-canonical-scaffold-runtime-parity",
   "native_evidence": "not supplied; new native capture required separately",

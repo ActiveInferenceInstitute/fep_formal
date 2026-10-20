@@ -529,7 +529,7 @@ def test_cli_verify_document_requires_document(
     assert cli.run(tmp_path, _cli_namespace(gnn_stub)) == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "--document" in payload["error"]
+    assert "--document" in payload["failure_reason"]
 
 
 def test_cli_verify_document_missing_file_errors_without_receipt(
@@ -566,8 +566,10 @@ def test_cli_verify_document_skip_is_not_success(
         == 1
     )
     payload = json.loads(capsys.readouterr().out)
-    assert payload["status"] == "skipped"
-    assert payload["receipt"]["status"] == "skipped"
+    assert set(payload) == {"status", "failure_reason", "details"}
+    assert payload["status"] == "error"
+    assert payload["details"]["result"]["status"] == "skipped"
+    assert payload["details"]["result"]["receipt"]["status"] == "skipped"
     assert json.loads(receipt_path.read_text(encoding="utf-8"))["status"] == "skipped"
 
 
@@ -590,5 +592,8 @@ def test_cli_verify_document_fail_on_warnings_fails_closed(
         == 1
     )
     payload = json.loads(capsys.readouterr().out)
-    assert payload["receipt"]["status"] == "failed"
-    assert any("family mismatch" in w for w in payload["receipt"]["warnings"])
+    assert set(payload) == {"status", "failure_reason", "details"}
+    assert payload["status"] == "error"
+    receipt = payload["details"]["result"]["receipt"]
+    assert receipt["status"] == "failed"
+    assert any("family mismatch" in warning for warning in receipt["warnings"])

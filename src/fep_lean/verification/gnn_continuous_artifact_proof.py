@@ -21,6 +21,7 @@ from fractions import Fraction
 from math import isfinite
 from typing import Any, NoReturn, cast
 
+from fep_lean._paths import FepLeanError
 from fep_lean.verification._jsonutil import load_strict_json
 
 TABLE_SHAPES = {
@@ -157,7 +158,7 @@ _SCAFFOLD_LOCATION_ATTRIBUTES = frozenset(
 )
 
 
-class ContinuousArtifactError(ValueError):
+class ContinuousArtifactError(ValueError, FepLeanError):
     """A contract rejection with a stable machine-readable reason."""
 
     def __init__(self, reason: str, detail: str) -> None:

@@ -361,7 +361,7 @@ def test_refresh_native_command_failure_refused(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "native capture failed" in payload["error"]
+    assert "native capture failed" in payload["failure_reason"]
 
 
 def test_refresh_native_missing_receipt_refused(
@@ -536,7 +536,7 @@ def test_cli_refresh_refuses_empty_reason_with_json_error(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "--reason" in payload["error"]
+    assert "--reason" in payload["failure_reason"]
 
 
 def test_cli_refresh_gate_refusal_names_the_surface_and_writes_nothing(
@@ -566,7 +566,7 @@ def test_cli_refresh_gate_refusal_names_the_surface_and_writes_nothing(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "terminal-acceptance.json" in payload["error"]
+    assert "terminal-acceptance.json" in payload["failure_reason"]
     assert not out.exists()
     assert _sha(live_receipt.read_bytes()) == live_before
 
@@ -849,7 +849,7 @@ def test_cli_plan_missing_reason_stops(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "--reason" in payload["error"]
+    assert "--reason" in payload["failure_reason"]
 
 
 def test_cli_plan_happy_path_journals_under_the_override(
@@ -908,7 +908,7 @@ def test_cli_resume_refuses_without_output_dir(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "--output-dir" in payload["error"]
+    assert "--output-dir" in payload["failure_reason"]
 
 
 # ---------------------------------------------------------------------------
@@ -1032,7 +1032,7 @@ def test_cli_fixpoint_refuses_without_output_dir(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "--output-dir" in payload["error"]
+    assert "--output-dir" in payload["failure_reason"]
 
 
 def test_cli_fixpoint_gate_refusal_exits_one(
@@ -1049,7 +1049,7 @@ def test_cli_fixpoint_gate_refusal_exits_one(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "committed clean tip" in payload["error"]
+    assert "committed clean tip" in payload["failure_reason"]
 
 
 def test_cli_fixpoint_happy_path_payload(
@@ -1891,7 +1891,7 @@ def test_cli_resume_committed_bytes_mismatch_exits_one(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "do not match" in payload["error"]
+    assert "do not match" in payload["failure_reason"]
 
 
 def test_cli_resume_render_barrier_exits_one_with_state(
@@ -1918,7 +1918,7 @@ def test_cli_resume_render_barrier_exits_one_with_state(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "render-acceptance barrier" in payload["error"]
+    assert "render-acceptance barrier" in payload["failure_reason"]
     landed = json.loads((operation / "journal.json").read_text(encoding="utf-8"))
     assert landed["state"] == "awaiting-render-acceptance"
 
@@ -1943,7 +1943,7 @@ def test_cli_resume_missing_journal_exits_one(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "journal not found" in payload["error"]
+    assert "journal not found" in payload["failure_reason"]
 
 
 def test_cli_resume_requires_a_reason(
@@ -1960,7 +1960,7 @@ def test_cli_resume_requires_a_reason(
     assert exit_code == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "--reason" in payload["error"]
+    assert "--reason" in payload["failure_reason"]
 
 
 @pytest.mark.skipif(os.name != "posix", reason="process groups are POSIX")

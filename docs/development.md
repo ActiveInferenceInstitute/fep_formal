@@ -325,7 +325,9 @@ runs the full battery at the integrated tip.
 Phase 0 correctness: a nonzero native capture exit, a missing, stale, or non-claim-ready
 receipt, or post-capture drift refuses with exit 1 (the historical exit-0 `ok` behavior is
 fixed). Exit codes: 0 = report composed / fixpoint converged / resume completed; 1 = any
-gate or fail-closed check refused (JSON `{"status": "error", ...}`).
+gate or fail-closed check refused. CLI refusals use the common JSON envelope
+`{"status": "error", "failure_reason": "...", "details": {}}`; command-specific
+context is inside `details`. Successful structured payloads retain their bytes.
 
 ## Bounded publication capture
 

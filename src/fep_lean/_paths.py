@@ -146,12 +146,18 @@ def project_root_errors(root: Path) -> tuple[str, ...]:
 
 
 def _emit_failure(reason: str, *, indent: int | None = None, **extra: object) -> int:
-    """Print the canonical error JSON and return exit status 1.
+    """Emit one operational-failure envelope and return the CLI failure status.
 
-    Key order is ``status``, then *extra* in call order, then
-    ``failure_reason``; every verb's failure path goes through here so the
-    schema cannot drift between verbs.
+    Context always lives in details; success serializers remain independent.
     """
-    payload = {"status": "error", **extra, "failure_reason": reason}
-    print(json.dumps(payload, indent=indent))
+    payload = {"status": "error", "failure_reason": reason, "details": extra}
+    print(json.dumps(payload, indent=indent, default=str, allow_nan=False))
     return 1
+
+
+def _display(root: Path, path: Path) -> str:
+    """Render *path* for display, relative to *root* when possible."""
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)

@@ -6,6 +6,7 @@ Only setup_workspace acquires dependencies; run_validation_checks remains read-o
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 import shutil
@@ -15,7 +16,7 @@ import time
 from collections import Counter
 from collections.abc import Callable, Sequence
 from pathlib import Path
-from typing import Any
+from typing import Any, TextIO
 
 from fep_lean._paths import project_root as default_project_root
 from fep_lean._paths import resolve_output_root
@@ -386,8 +387,18 @@ def run_validation_checks(
     }
 
 
-def setup_workspace(root: Path) -> int:
-    """Acquire the checked-in workspace without resolving new dependency pins."""
+def setup_workspace(
+    root: Path,
+    *,
+    failure_emitter: Callable[..., int] | None = None,
+    progress_stream: TextIO | None = None,
+) -> int:
+    """Acquire the checked-in workspace without resolving new dependency pins.
+
+    Direct callers retain the existing text and exit codes. CLI adapters may
+    provide a failure emitter and progress stream; the final success line stays
+    on stdout, while command diagnostics can go to stderr without interception.
+    """
     import re
     import shutil
 
@@ -399,6 +410,12 @@ def setup_workspace(root: Path) -> int:
         resolved_mathlib_revision,
     )
 
+    def failed(message: str, *, exit_code: int = 1) -> int:
+        if failure_emitter is not None:
+            return failure_emitter(message, command="setup", exit_code=exit_code)
+        print(message, flush=True)
+        return exit_code
+
     lean_dir = Path(os.environ.get("FEP_LEAN_DIR", str(root / "lean"))).resolve()
     repair = (
         "Inspect git diff -- lean/lean-toolchain lean/lakefile.lean "
@@ -409,11 +426,9 @@ def setup_workspace(root: Path) -> int:
     try:
         timeout = int(os.environ.get("FEP_LEAN_SETUP_TIMEOUT_SEC", "1800"))
     except ValueError:
-        print("setup failed: FEP_LEAN_SETUP_TIMEOUT_SEC must be an integer", flush=True)
-        return 1
+        return failed("setup failed: FEP_LEAN_SETUP_TIMEOUT_SEC must be an integer")
     if timeout < 1:
-        print("setup failed: FEP_LEAN_SETUP_TIMEOUT_SEC must be positive", flush=True)
-        return 1
+        return failed("setup failed: FEP_LEAN_SETUP_TIMEOUT_SEC must be positive")
     deadline = time.monotonic() + timeout
     pins = [
         lean_dir / name
@@ -446,8 +461,7 @@ def setup_workspace(root: Path) -> int:
             )
         revision = resolved_mathlib_revision(lean_dir)
     except (OSError, ValueError) as exc:
-        print(f"setup failed: {exc}. {repair}", flush=True)
-        return 1
+        return failed(f"setup failed: {exc}. {repair}")
 
     def check_pins() -> None:
         for path, original in snapshot.items():
@@ -468,15 +482,15 @@ def setup_workspace(root: Path) -> int:
         remaining = deadline - time.monotonic()
         if remaining <= 0:
             raise subprocess.TimeoutExpired(list(command), timeout)
-        print(f"[fep_lean setup] {' '.join(command)}", flush=True)
+        print(f"[fep_lean setup] {' '.join(command)}", flush=True, file=progress_stream)
         try:
             result = run_process_group(
                 command, cwd=lean_dir, env=env, timeout=remaining, check=False
             )
             if result.stdout:
-                print(result.stdout, end="", flush=True)
+                print(result.stdout, end="", flush=True, file=progress_stream)
             if result.stderr:
-                print(result.stderr, end="", flush=True)
+                print(result.stderr, end="", flush=True, file=progress_stream)
         finally:
             check_pins()
         if result.returncode:
@@ -537,5 +551,16 @@ def setup_workspace(root: Path) -> int:
         )
         return 0
     except (OSError, ValueError, subprocess.SubprocessError) as exc:
-        print(f"setup failed: {exc}. For pin/manifest errors: {repair}", flush=True)
-        return exc.returncode if isinstance(exc, subprocess.CalledProcessError) else 1
+        return failed(
+            f"setup failed: {exc}. For pin/manifest errors: {repair}",
+            exit_code=exc.returncode
+            if isinstance(exc, subprocess.CalledProcessError)
+            else 1,
+        )
+
+
+def _configure_logging(verbose: bool) -> None:
+    logging.basicConfig(
+        level=logging.DEBUG if verbose else logging.INFO,
+        format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    )
