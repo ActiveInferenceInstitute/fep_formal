@@ -1,5 +1,14 @@
 ## Unreleased
 
+- Correct the conceptual fep-017 to fep-045 rationale to recognize the
+  maintained Bernoulli posterior-closure theorem. The relation remains
+  conceptual pending an explicit theorem between the posterior-kernel and
+  conjugate-family carriers. Regenerate the package, coverage, atlas and
+  methods projections from this reviewed owner; no relation kind, theorem
+  witness, semantic disposition or capability status changes. Independent
+  semantic review approves this correction for
+  [#65](https://github.com/ActiveInferenceInstitute/fep_formal/issues/65).
+
 - Unify all 24 package-defined exception types under the existing public
   `FepLeanError` base, preserving their standard-library ancestry. Operational
   CLI refusals now return exit 1 and exactly `status`, `failure_reason`, and
