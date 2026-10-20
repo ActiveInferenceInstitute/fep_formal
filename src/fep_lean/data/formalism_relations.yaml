@@ -627,7 +627,7 @@ edges:
   - source: fep-017
     target: fep-045
     kind: conceptual
-    rationale: The native posterior-kernel laws provide normalized Bayesian semantics, while fep-045 must still prove closure of a named conjugate family.
+    rationale: The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier.
   - source: fep-021
     target: fep-041
     kind: formal

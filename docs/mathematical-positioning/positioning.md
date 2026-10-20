@@ -19689,7 +19689,7 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-016` → `fep-032` (conceptual): A nonnegative quadratic residual and a scalar descent contraction are complementary local pieces of a quadratic optimization argument.
 
-- `fep-017` → `fep-045` (conceptual): The native posterior-kernel laws provide normalized Bayesian semantics, while fep-045 must still prove closure of a named conjugate family.
+- `fep-017` → `fep-045` (conceptual): The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier.
 
 - `fep-021` → `fep-041` (formal): The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The explicit hvalue upper bound on information gain is required; the identity is not an unconditional untruncated EFE decomposition. Witness: `FEPComposed.fep021_informationGain_balance`.
 
@@ -20077,7 +20077,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/temporal_inference.lean` | `25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b` |
 | `formal/variational_duality.lean` | `445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
-| `inputs/formalism_relations.yaml` | `ee403b6114153e8ddee645b7e42d5f30426e519be174e79da18ff9ee5350ab04` |
+| `inputs/formalism_relations.yaml` | `42b7333647a67e656dd13cb03334398ab9e01f7c74c1a53b6c797f40e63cc8aa` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
 | `inputs/theorem_maturity.yaml` | `554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383` |
 | `lean_source.py` | `0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104` |
