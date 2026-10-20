@@ -1,5 +1,14 @@
 ## Unreleased
 
+- Correct the conceptual fep-017 to fep-045 rationale to recognize the
+  maintained Bernoulli posterior-closure theorem. The relation remains
+  conceptual pending an explicit theorem between the posterior-kernel and
+  conjugate-family carriers. Regenerate the package, coverage, atlas and
+  methods projections from this reviewed owner; no relation kind, theorem
+  witness, semantic disposition or capability status changes. Independent
+  semantic review approves this correction for
+  [#65](https://github.com/ActiveInferenceInstitute/fep_formal/issues/65).
+
 - Retain two actual generated-runner invocations for the named historical
   CC2/9a source pair, with numerical output checks and 22 separately reviewed
   synthetic capture-adapter controls. Add a source-bound offline evidence
