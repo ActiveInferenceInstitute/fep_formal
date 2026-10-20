@@ -1,0 +1,19 @@
+{
+  "positive_synthetic_fixture": true,
+  "rejected_controls": [
+    "missing",
+    "malformed_shape",
+    "wrong_covariance",
+    "nonfinite",
+    "boolean_dimension",
+    "stale_tool",
+    "extra",
+    "missing_binding",
+    "stale_binding",
+    "replacement_binding",
+    "strict_json",
+    "strict_json",
+    "strict_json"
+  ],
+  "boundary": "Synthetic checker controls only; no runner or empirical observations."
+}

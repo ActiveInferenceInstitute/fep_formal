@@ -1,5 +1,14 @@
 ## Unreleased
 
+- Retain two actual generated-runner invocations for the named historical
+  CC2/9a source pair, with numerical output checks and 22 separately reviewed
+  synthetic capture-adapter controls. Add a source-bound offline evidence
+  validator, corruption/read-only controls and a hosted validation step for
+  [BRIDGE-D1 (#61)](https://github.com/ActiveInferenceInstitute/fep_formal/issues/61).
+  The T=1 observations exercise only the initial Gaussian update; historical
+  runtime inventory is retained without its binaries. Current-source, native,
+  OU dynamics and scientific acceptance remain separate.
+
 - Unify all 24 package-defined exception types under the existing public
   `FepLeanError` base, preserving their standard-library ancestry. Operational
   CLI refusals now return exit 1 and exactly `status`, `failure_reason`, and

@@ -1,0 +1,16 @@
+{
+  "protocol_sha256": "4c8bf2bd7ffcfb4f3464386e63dc24a4033ca240740334fbe0ec10d09ea3f9b1",
+  "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+  "FEP_candidate_head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+  "GNN_head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+  "checks": [],
+  "complete": false,
+  "passed": false,
+  "failure_reason": "AssertionError: ",
+  "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+  "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+  "boundary": [
+    "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+    "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "reviewer": "/root/fep65_api_review",
+  "independent_of_author": true,
+  "created_utc": "2026-10-20T18:31:38.153676+00:00",
+  "decision": "approve_r3_narrow_validator_revision_and_observed_positive_logs_pending_bounded_controls",
+  "code_sha256": "98af59c932a724ba4cb811f3e98c54b830bcb447604080be494e2b5db01da1c7",
+  "manifest_sha256": "06de871541eaf39c0a032ac5f20f1cf768e21e8bb4ebee8bea47c9e53029df4d",
+  "prior_r2_code_sha256": "fbf6dd7ec654a439ac6849398e1200f6f2140b81dee53b5f1ec5e55d01551cd6",
+  "rejected_first_execution_receipt_sha256": "32e5b787be8334c3646dd5a553923484bf6ac84fd7cec3e8454392432116021f",
+  "blocking_findings": [],
+  "revision_review": "Full diff from preserved rejected r2 consists solely of three-way synthetic journal count handling: absent None journal requires independently reviewed None count; preexisting journal requires exactly existing:preserve, zero rows and explicit original_journal_preserved true; ordinary present journals compare actual checks length with independent review count. This accurately represents early refusal versus an existing zero-row journal, without editing or relaxing historical artifacts.",
+  "independent_evidence_checks": {
+    "all369_hashes_match": true,
+    "manifest_unchanged": true,
+    "no_symlinks": true,
+    "synthetic_case_count": 22,
+    "journal_state_mapping": [
+      {
+        "case": "positive",
+        "journal_absent": false,
+        "reviewed_captured_rows": 2
+      },
+      {
+        "case": "missing-output",
+        "journal_absent": false,
+        "reviewed_captured_rows": 1
+      },
+      {
+        "case": "malformed-output",
+        "journal_absent": false,
+        "reviewed_captured_rows": 1
+      },
+      {
+        "case": "extra-output",
+        "journal_absent": false,
+        "reviewed_captured_rows": 1
+      },
+      {
+        "case": "symlink-output",
+        "journal_absent": false,
+        "reviewed_captured_rows": 1
+      },
+      {
+        "case": "nonzero",
+        "journal_absent": false,
+        "reviewed_captured_rows": 1
+      },
+      {
+        "case": "stderr",
+        "journal_absent": false,
+        "reviewed_captured_rows": 1
+      },
+      {
+        "case": "deadline",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "missing-runner",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "replacement-runner",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "replacement-checker",
+        "journal_absent": true,
+        "reviewed_captured_rows": null
+      },
+      {
+        "case": "replacement-protocol",
+        "journal_absent": true,
+        "reviewed_captured_rows": null
+      },
+      {
+        "case": "stale-source-head",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "missing-owner",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "wrong-owner-digest",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "replacement-runtime-inventory",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "replacement-runtime-program",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "runtime-observation-mismatch",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "post-run-owner-replacement",
+        "journal_absent": false,
+        "reviewed_captured_rows": 1
+      },
+      {
+        "case": "second-output-mismatch",
+        "journal_absent": false,
+        "reviewed_captured_rows": 2
+      },
+      {
+        "case": "preexisting-journal",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      },
+      {
+        "case": "preexisting-invocation",
+        "journal_absent": false,
+        "reviewed_captured_rows": 0
+      }
+    ]
+  },
+  "observed_logs": {
+    "fep61-maintained-validator-default-r3.log": {
+      "sha256": "7a8042c1899eb0f2ffa7d357fb8c5fa2475b39b861683e11ee05affa01fdcb74",
+      "result": {
+        "OU_prediction_or_dynamics_exercised": false,
+        "actual_historical_invocations": 2,
+        "historical_FEP_commit": "cc2cd1699350530e2bfdec195e8dc9f28a6d4fcb",
+        "historical_GNN_commit": "9a94853e9fceb568dea3b91d11336c4ede6dcf7b",
+        "historical_source_blobs_checked": false,
+        "native_verified_by_validator": false,
+        "retained_files": 369,
+        "runner_executed_by_validator": false,
+        "status": "passed",
+        "synthetic_adapter_controls": 22
+      }
+    },
+    "fep61-maintained-validator-historical-blobs-r3.log": {
+      "sha256": "c64678633adecfc1385e18ac63c09aef9e383dd743ec91e1ac7147692b7c1227",
+      "result": {
+        "OU_prediction_or_dynamics_exercised": false,
+        "actual_historical_invocations": 2,
+        "historical_FEP_commit": "cc2cd1699350530e2bfdec195e8dc9f28a6d4fcb",
+        "historical_GNN_commit": "9a94853e9fceb568dea3b91d11336c4ede6dcf7b",
+        "historical_source_blobs_checked": true,
+        "native_verified_by_validator": false,
+        "retained_files": 369,
+        "runner_executed_by_validator": false,
+        "status": "passed",
+        "synthetic_adapter_controls": 22
+      }
+    }
+  },
+  "execution_boundary": "Root-run positive logs were read and bound, not rerun by reviewer. These plain result logs indicate default and source-blob modes passed, but do not by themselves establish comprehensive no-write/no-network or rejection behavior. Focused root-authored controls remain to be executed and reviewed.",
+  "remaining_acceptance": [
+    "Bounded corruption, missing/extra/symlink member, forbidden default process/network, Git environment/missing object and before/after no-write tests.",
+    "README and maintained integration plus exact-source acceptance.",
+    "No Issue61 closure; historic T1 Gaussian observations and22 synthetic adapter controls remain separate from current-head runner/native/scientific/fullcapture acceptance."
+  ],
+  "limits": [
+    "This is a preexecution static independent review, not execution acceptance. I did not run validate_retained.py, its frozen checker, a runner, Git blob verification, Lean, or project gates.",
+    "I independently rehashed all369 retained files and checked literal manifest SHA256 and absence of symlinks. Those reads are evidence inspection, not validator execution.",
+    "Default mode intentionally compiles and executes one manifest-authenticated, inspected stdlib-only numerical checker. It does not execute arbitrary untrusted checker bytes, historical capture adapter, runtime inventory program, JAX runner or synthetic harness.",
+    "No continuously adversarial filesystem custody is established; the root symlink scan and before-exec manifest hashing assume retained files are stable during this local check.",
+    "Numerical acceptance is the initial one-dimensional Gaussian observation update only. It uses reported observation/latent values, does not reproduce PRNG draws, and does not exercise F/Q prediction, OU dynamics or multistep behavior.",
+    "Runtime identity and3270member inventory remain historical receipt claims. Runtime binaries are deliberately absent and are not reobserved by this validator.",
+    "The22 physically exercised synthetic adapter cases remain synthetic; they do not add actual generated-runner scientific observations. Literal symlink targets are strings in observations, never materialized.",
+    "The trusted constant manifest anchors all approval/rejected-review bytes, original files and layouts; frozen authentic observations are not a general editable evidence schema.",
+    "README, maintained tests/integration and exact-source hosted acceptance remain undone. No Issue61 closure or promotion to current-head/native/H3/provider/fullcapture acceptance is approved."
+  ]
+}

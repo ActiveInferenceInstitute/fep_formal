@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/wrong-owner-digest/fep61-runtime-proposal/capture.py", line 48, in <module>
+    guards()
+    ~~~~~~^^
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/wrong-owner-digest/fep61-runtime-proposal/capture.py", line 35, in guards
+    checker.validate_binding(actual,protocol['owners'][key])
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/wrong-owner-digest/fep61-runtime-proposal/validate_output.py", line 89, in validate_binding
+    raise ValueError('missing, stale or replaced source/runtime binding')
+ValueError: missing, stale or replaced source/runtime binding

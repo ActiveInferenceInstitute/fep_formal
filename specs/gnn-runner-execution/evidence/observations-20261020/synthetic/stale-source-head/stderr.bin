@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/stale-source-head/fep61-runtime-proposal/capture.py", line 48, in <module>
+    guards()
+    ~~~~~~^^
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/stale-source-head/fep61-runtime-proposal/capture.py", line 30, in guards
+    assert git(n,'rev-parse','HEAD')==protocol['FEP_candidate_head']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
