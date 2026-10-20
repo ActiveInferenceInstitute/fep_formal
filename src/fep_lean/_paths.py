@@ -6,6 +6,7 @@ project directory without depending on the pipeline layer.
 
 from __future__ import annotations
 
+import json
 import os
 from collections.abc import Iterator, Mapping
 from contextlib import contextmanager
@@ -142,3 +143,15 @@ def project_root_errors(root: Path) -> tuple[str, ...]:
         for relative in _CHECKOUT_MARKERS
         if not (candidate / relative).is_file()
     )
+
+
+def _emit_failure(reason: str, *, indent: int | None = None, **extra: object) -> int:
+    """Print the canonical error JSON and return exit status 1.
+
+    Key order is ``status``, then *extra* in call order, then
+    ``failure_reason``; every verb's failure path goes through here so the
+    schema cannot drift between verbs.
+    """
+    payload = {"status": "error", **extra, "failure_reason": reason}
+    print(json.dumps(payload, indent=indent))
+    return 1

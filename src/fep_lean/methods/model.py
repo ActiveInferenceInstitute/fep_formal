@@ -184,9 +184,13 @@ def _binder_groups(text: str) -> list[dict[str, Any]]:
     return result
 
 
-def _variable_context(source: str, before: int) -> list[str]:
+def _variable_context(
+    source: str, before: int, *, masked_source: str | None = None
+) -> list[str]:
     """Retain active namespace/section variable commands, including multiline groups."""
-    code = lean_code_without_comments(source)
+    code = (
+        lean_code_without_comments(source) if masked_source is None else masked_source
+    )
     scopes: list[tuple[str | None, list[str]]] = [(None, [])]
     commands = list(_COMMAND.finditer(code, 0, before))
     for index, match in enumerate(commands):
@@ -231,7 +235,7 @@ def _variable_context(source: str, before: int) -> list[str]:
 
 
 def _theorem_sources(
-    source: str, source_owner: str, prefix: str = ""
+    source: str, source_owner: str, prefix: str = "", *, shared_context: bool = False
 ) -> dict[str, dict[str, Any]]:
     """Extract exact statements with namespace context from reviewed Lean resources."""
     code = lean_code_without_comments(source)
@@ -263,7 +267,7 @@ def _theorem_sources(
             (item.start() for item in commands if item.start() > proof_start),
             len(source),
         )
-        variables = _variable_context(source, declaration_start)
+        variables = _variable_context(source, declaration_start, masked_source=code)
         statement = source[declaration_start:proof_start].strip()
         result[qualified] = {
             "qualified_name": qualified,
@@ -282,7 +286,9 @@ def _theorem_sources(
             "binders": _binder_groups(source[match.end() : colon].strip()),
             "conclusion": source[colon + 1 : proof_start].strip(),
             "proof_source": source[proof_start + 2 : end].strip(),
-            "source_context": source[:declaration_start],
+            "source_context": (source, code, declaration_start)
+            if shared_context
+            else source[:declaration_start],
             "analysis_boundary": ANALYSIS_BOUNDARY,
         }
     return result
@@ -315,12 +321,14 @@ def _cached_theorem_analysis(
             for entry in BODY_MODULE_MANIFEST
             if topic_id in entry.bodies
         )
-        rows = _theorem_sources(body, owner, "fep_fep" + topic_id.removeprefix("fep-"))
+        rows = _theorem_sources(
+            body, owner, "fep_fep" + topic_id.removeprefix("fep-"), shared_context=True
+        )
         if index.keys() & rows.keys():
             raise PositioningError("ambiguous canonical theorem identity")
         index.update(rows)
     for key, source in formal_sources:
-        rows = _theorem_sources(source, "src/fep_lean/" + key)
+        rows = _theorem_sources(source, "src/fep_lean/" + key, shared_context=True)
         if index.keys() & rows.keys():
             raise PositioningError("ambiguous formal theorem identity")
         index.update(rows)
@@ -357,20 +365,21 @@ def _cached_theorem_analysis(
                         }
                     )
         record["declaration_mentions"] = dependencies
-        context = record.pop("source_context")
-        record["import_context"] = re.findall(
-            r"(?m)^[ \t]*(?:public[ \t]+)?(?:meta[ \t]+)?import[ \t]+([^\n]+)",
-            lean_code_without_comments(context),
-        )
+        context, masked_context, context_end = record.pop("source_context")
+        record["import_context"] = [
+            match.group(1)
+            for match in re.compile(
+                r"(?m)^[ \t]*(?:public[ \t]+)?(?:meta[ \t]+)?import[ \t]+([^\n]+)"
+            ).finditer(masked_context, 0, context_end)
+        ]
         record["preceding_scope_directives"] = [
             {
                 "directive": match.group(1),
                 "source": context[match.start() : match.end()].strip(),
                 "interpretation": "Preceding source directive; active scopes and elaborated binder inclusion are not inferred.",
             }
-            for match in re.finditer(
-                r"(?m)^[ \t]*(include|omit)[ \t]+[^\n]+",
-                lean_code_without_comments(context),
+            for match in re.compile(r"(?m)^[ \t]*(include|omit)[ \t]+[^\n]+").finditer(
+                masked_context, 0, context_end
             )
         ]
         record["dependency_boundary"] = (
@@ -1231,13 +1240,14 @@ def _installed_query_binding() -> tuple[str, tuple[tuple[str, str, int], ...]]:
 
     package = Path(str(files("fep_lean")))
     try:
+        canonical_package = package.resolve()
         installed = distribution("fep_lean")
         record_text = installed.read_text("RECORD")
         if not record_text:
             raise PositioningError(
                 "installed query requires a wheel with RECORD metadata"
             )
-        if Path(str(installed.locate_file("fep_lean"))).resolve() != package.resolve():
+        if Path(str(installed.locate_file("fep_lean"))).resolve() != canonical_package:
             raise PositioningError(
                 "installed distribution does not own this imported package"
             )
@@ -1255,7 +1265,18 @@ def _installed_query_binding() -> tuple[str, tuple[tuple[str, str, int], ...]]:
         )
         bound: dict[str, tuple[str, int]] = {}
         for path in sources.values():
-            relative = path.relative_to(package).as_posix()
+            try:
+                relative = path.relative_to(package).as_posix()
+            except ValueError:
+                # Resource discovery can resolve a directory alias while the
+                # import loader retains it. Preserve logical member names when
+                # available; only rebase physically resolved paths otherwise.
+                try:
+                    relative = path.relative_to(canonical_package).as_posix()
+                except ValueError as exc:
+                    raise PositioningError(
+                        "installed query member is outside the imported package"
+                    ) from exc
             member = "fep_lean/" + relative
             if Path(str(installed.locate_file(member))).resolve() != path.resolve():
                 raise PositioningError(

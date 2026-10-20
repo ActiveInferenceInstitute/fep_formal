@@ -1,2 +1,6 @@
 # Frozen test evidence is hashed as exact Git bytes on every platform.
 tests/_support/resources/h2_r0_custody_99e5cdf.py.txt -text
+
+# Retain exact unified-diff context lines in the immutable profiling evidence.
+# A blank context line is one space, required by the patch format.
+specs/comprehensive-next-steps/evidence/backend-profiling-20261020/candidate.patch whitespace=-blank-at-eol

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from functools import lru_cache
 from pathlib import Path
 
 from fep_lean.catalogue import registry as _registry
@@ -23,8 +24,9 @@ _TOP_LEVEL_DECLARATION_RE = re.compile(
 )
 
 
+@lru_cache(maxsize=128)
 def _qualified_theorems(source: str) -> tuple[str, ...]:
-    """Parse theorem names while distinguishing namespaces from sections."""
+    """Cache immutable declaration names by exact source text, never by file path."""
     declarations: list[str] = []
     for line, namespaces, _opened_namespace in iter_lean_namespace_scopes(source):
         if match := _THEOREM_RE.match(line):

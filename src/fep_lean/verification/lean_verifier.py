@@ -47,6 +47,7 @@ VerifyResult fields
 
 from __future__ import annotations
 
+import argparse
 import contextlib
 import json
 import logging
@@ -842,4 +843,20 @@ def verify_catalogue(
         },
         0 if complete else 1,
         2,
+    )
+
+
+def add_cli_arguments(parser: argparse.ArgumentParser) -> None:
+    """Register existing command flags without changing parser behavior."""
+    parser.add_argument("--area")
+    parser.add_argument("--topic", action="append", dest="topics")
+    parser.add_argument(
+        "--receipt",
+        type=Path,
+        help="atomically write a typed native-Lean verification receipt",
+    )
+    parser.add_argument(
+        "--fail-on-warnings",
+        action="store_true",
+        help="treat any Lean warning as a verification failure",
     )

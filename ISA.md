@@ -149,12 +149,16 @@ open in [TODO.md](TODO.md).
 ## Current assessment
 
 The latest integrated checkpoint with a successful exact-main workflow is
-[`4208d589`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/4208d589a00c5eeaed5a36d8760153bad8805ef1).
-Its [exact-main run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/38839512633)
+[`ea900462`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/ea900462c5f20fabe69c7d4b489a430e7d183082).
+Its [exact-main run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39392155659)
 passed all 21 executed jobs, including all 15 installed-wheel cells; the
-documentation-only alternative was intentionally skipped. The later
-[publication handoff](WORK_STATUS.md) distinguishes pushed candidate work from
-accepted main and preserves its remaining gates.
+documentation-only alternative was intentionally skipped. Independent artifact
+checks accepted all 168 native topics, 1,928 standard-three-axiom reports and
+the 389-page manuscript. These establish the software and stated proof
+components; primary scientific and full-capture criteria remain separate.
+The installed-query directory-alias repair is subsequent candidate work;
+CORE-D2 stays open until that repair has its own exact-main acceptance.
+The [publication handoff](WORK_STATUS.md) remains a dated snapshot.
 
 The earlier accepted integrated checkpoint
 [`bea6b9c5ed4dc5b978b314a69d041055be295e5e`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/bea6b9c5ed4dc5b978b314a69d041055be295e5e).

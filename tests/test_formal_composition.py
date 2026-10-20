@@ -23,7 +23,7 @@ from fep_lean.formal import (
 from fep_lean.formal import manifest as formal_manifest
 from tests._support.h2_r0_custody import validate_h2_r0_custody
 from tests._support.lake import lake_executable
-from tests._support.lean_runner import run_lean_probe
+from tests._support.lean_runner import run_lake_lean_probe, run_lean_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -679,6 +679,56 @@ def test_exact_information_imported_consumers_and_boundary_controls(
         assert result.returncode == 1 and output.count("error:") == 1, output
         assert (
             "unsolved goals" in output
+            and "⊢ False" in output
+            and "unknown" not in output.lower()
+        ), output
+    else:
+        assert result.returncode == 0 and "error:" not in output, output
+
+
+@pytest.mark.serial_lean
+@pytest.mark.parametrize(
+    ("case", "reports", "reject"),
+    [
+        ("CountLevelConsumers", 8, False),
+        ("AvailableAPIs", 5, False),
+        ("RejectZeroShape", 0, True),
+    ],
+)
+def test_dirichlet_count_component_and_library_boundary(
+    tmp_path: Path, case: str, reports: int, reject: bool
+) -> None:
+    source = (
+        PROJECT_ROOT
+        / "specs/comprehensive-next-steps/spikes/dirichlet-counts-20261020"
+        / (case + ".lean")
+    )
+    probe = tmp_path / "DirichletCountConsumer.lean"
+    probe.write_bytes(source.read_bytes())
+    result = run_lake_lean_probe(
+        ["env", "lean", "-E", "warning", "-R", str(tmp_path), str(probe)],
+        cwd=PROJECT_ROOT / "lean",
+        timeout_s=180,
+        executable=lake_executable(
+            missing="raise", context="count-learning and pinned-library acceptance"
+        ),
+    )
+    output = result.stdout + result.stderr
+    assert "warning:" not in output.lower() and "sorryAx" not in output, output
+    axioms = re.findall(r"'([^']+)' depends on axioms:\s*\[([^]]*)\]", output)
+    assert len(axioms) == reports and len({name for name, _ in axioms}) == reports, (
+        output
+    )
+    assert all(
+        {a.strip() for a in row.split(",")}
+        == {"propext", "Classical.choice", "Quot.sound"}
+        for _, row in axioms
+    ), output
+    if reject:
+        assert result.returncode == 1 and output.count("error:") == 1, output
+        assert (
+            "unsolved goals" in output
+            and "case hα" in output
             and "⊢ False" in output
             and "unknown" not in output.lower()
         ), output

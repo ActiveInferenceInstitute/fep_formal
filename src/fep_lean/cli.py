@@ -12,15 +12,14 @@ from pathlib import Path
 from typing import Any
 
 from fep_lean._paths import (
+    _emit_failure,
     explicit_project_root,
     project_root,
     project_root_context,
     project_root_errors,
 )
 from fep_lean.bridge import operations
-from fep_lean.catalogue.generation import (
-    check_or_write,
-)
+from fep_lean.catalogue.generation import check_or_write
 from fep_lean.catalogue.topics import FEPTopicCatalogue
 from fep_lean.output import release_bundle
 from fep_lean.output.evidence import (
@@ -49,6 +48,9 @@ from fep_lean.pipeline.orchestrator import run_pipeline, run_single_topic
 from fep_lean.verification.environment import run_validation_checks
 from fep_lean.verification.environment import setup_workspace as _setup
 from fep_lean.verification.lean_verifier import LeanVerifier, verify_catalogue
+from fep_lean.verification.lean_verifier import (
+    add_cli_arguments as add_verify_arguments,
+)
 
 __all__ = [
     "NATIVE_RECEIPT",
@@ -81,18 +83,6 @@ def _print_result(result: object) -> int:
     payload = result.as_dict() if hasattr(result, "as_dict") else result
     print(json.dumps(payload, indent=2, default=str))
     return 0 if getattr(result, "complete", False) else 1
-
-
-def _emit_failure(reason: str, *, indent: int | None = None, **extra: object) -> int:
-    """Print the canonical error JSON and return exit status 1.
-
-    Key order is ``status``, then *extra* in call order, then
-    ``failure_reason``; every verb's failure path goes through here so the
-    schema cannot drift between verbs.
-    """
-    payload = {"status": "error", **extra, "failure_reason": reason}
-    print(json.dumps(payload, indent=indent))
-    return 1
 
 
 def _display(root: Path, path: Path) -> str:
@@ -228,18 +218,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("setup", help="explicitly acquire/build the pinned Lean workspace")
     sub.add_parser("preflight", help="run read-only full-mode capability checks")
     verify = sub.add_parser("verify", help="compile catalogue sketches with Lean only")
-    verify.add_argument("--area")
-    verify.add_argument("--topic", action="append", dest="topics")
-    verify.add_argument(
-        "--receipt",
-        type=Path,
-        help="atomically write a typed native-Lean verification receipt",
-    )
-    verify.add_argument(
-        "--fail-on-warnings",
-        action="store_true",
-        help="treat any Lean warning as a verification failure",
-    )
+    add_verify_arguments(verify)
     catalogue = sub.add_parser(
         "catalogue", help="generate deterministic offline catalogue artifacts"
     )
@@ -289,20 +268,7 @@ def build_parser() -> argparse.ArgumentParser:
         "publication-capture",
         help="explicit bounded local publication evidence capture and resume",
     )
-    capture.add_argument("--template", type=Path, required=True)
-    capture.add_argument("--journal", type=Path)
-    capture.add_argument(
-        "--plan",
-        action="store_true",
-        help="print the fixed stage policy without running tools",
-    )
-    capture.add_argument(
-        "--resume",
-        action="store_true",
-        help="revalidate and resume an existing journal",
-    )
-    capture.add_argument("--source-date-epoch", type=int, default=0)
-    capture.add_argument("--timeout", type=float, default=21600)
+    release_bundle.add_capture_arguments(capture)
     return parser
 
 
