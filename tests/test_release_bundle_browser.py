@@ -7,6 +7,7 @@ import json
 import subprocess
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any
 
 import pytest
 
@@ -16,6 +17,26 @@ from tests._support.release_bundle import (
 )
 
 PROJ = Path(__file__).resolve().parents[1]
+
+
+def _assert_stale_pairing_count_rejected(
+    project_root: Path,
+    receipt_path: Path,
+    receipt: dict[str, Any],
+    observations: dict[str, Any],
+) -> None:
+    # A self-consistent old-count receipt and replay still violate the current
+    # reviewed contract; matching those two objects must not rebind the seal.
+    observations["atlas"]["pairingVisible"] = 118
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    assert "browser receipt detailed DOM observations are not canonical" in (
+        bundle_module._browser_receipt_errors(project_root, check_runtime=False)
+    )
+    observations["atlas"]["pairingVisible"] = 119
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    assert (
+        bundle_module._browser_receipt_errors(project_root, check_runtime=False) == ()
+    )
 
 
 def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
@@ -75,8 +96,8 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
     expected = {
         "topics": 168,
         "families": 22,
-        "witnesses": 17,
-        "relations": 146,
+        "witnesses": 22,
+        "relations": 150,
         "capabilities": 50,
         "external_requests": [],
         "atlas": {
@@ -87,9 +108,9 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "escapeCleared": True,
             "families": 22,
             "fepVisible": 41,
-            "pairingVisible": 118,
-            "relationCards": 146,
-            "relations": 146,
+            "pairingVisible": 119,
+            "relationCards": 150,
+            "relations": 150,
             "searchVisible": 1,
             "slashFocused": True,
             "topics": 168,
@@ -102,18 +123,18 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "detailsInitiallyOpen": 0,
             "families": 22,
             "mobileSummaryVisible": True,
-            "relationCards": 146,
+            "relationCards": 150,
             "topics": 168,
         },
         "dashboard": {
-            "acceptedVisible": 17,
-            "accessibleTables": 17,
+            "acceptedVisible": 22,
+            "accessibleTables": 22,
             "bodyFitsViewport": True,
-            "detailJumps": 17,
-            "detailRecords": 17,
+            "detailJumps": 22,
+            "detailRecords": 22,
             "detailsInitiallyOpen": 0,
             "escapeCleared": True,
-            "exactScrollRegions": 51,
+            "exactScrollRegions": 66,
             "familyVisible": 1,
             "filterOpened": 1,
             "jumpFocused": True,
@@ -122,26 +143,26 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "searchVisible": 1,
             "slashFocused": True,
             "structuralAnalogues": 1,
-            "theoremInstances": 16,
-            "witnesses": 17,
+            "theoremInstances": 21,
+            "witnesses": 22,
         },
         "dashboard_mobile": {
             "bodyFitsViewport": True,
             "compactDefaultHeight": True,
             "desktopOverviewHidden": True,
-            "detailJumps": 17,
-            "detailRecords": 17,
+            "detailJumps": 22,
+            "detailRecords": 22,
             "detailsInitiallyOpen": 0,
-            "exactScrollRegions": 51,
+            "exactScrollRegions": 66,
             "filterOpened": 1,
             "jumpFocused": True,
             "jumpOpened": True,
             "mobileOverviewInitiallyOpen": False,
             "mobileOverviewDisclosureVisible": True,
             "overviewHiddenByFilter": True,
-            "plotSummaries": 17,
+            "plotSummaries": 22,
             "recordCollectionInitiallyOpen": False,
-            "witnesses": 17,
+            "witnesses": 22,
         },
     }
     capture_provenance = {
@@ -190,8 +211,8 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
         lambda _root: SimpleNamespace(
             topics=(None,) * 168,
             families=(None,) * 22,
-            witnesses=(None,) * 17,
-            relations=(None,) * 146,
+            witnesses=(None,) * 22,
+            relations=(None,) * 150,
             capabilities=(None,) * 50,
         ),
     )
@@ -318,6 +339,8 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
         in bundle_module._browser_receipt_errors(tmp_path)
     )
     replay.screenshot_bytes = captured_screenshots
+
+    _assert_stale_pairing_count_rejected(tmp_path, receipt_path, receipt, expected)
 
     del expected["atlas"]["slashFocused"]
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")

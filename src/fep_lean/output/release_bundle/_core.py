@@ -220,6 +220,19 @@ class PublicationCaptureResult:
     failed_stage: str | None
     errors: tuple[str, ...]
 
+    def as_dict(self) -> dict[str, Any]:
+        """Canonical local-capture JSON fields; no publication acceptance."""
+        return {
+            "status": "ok" if self.complete else "error",
+            "complete": self.complete,
+            "journal": str(self.journal),
+            "accepted_stages": self.accepted_stages,
+            "reused_stages": self.reused_stages,
+            "failed_stage": self.failed_stage,
+            "errors": self.errors,
+            "evidence_plane": "local capture; no provider, hosted CI or publication action",
+        }
+
 
 def _capture_parent_fd(path: Path, *, create: bool = False) -> int:
     if os.name != "posix":
@@ -1167,7 +1180,9 @@ def run_publication_capture(
     accepted: list[str] = []
     reused: list[str] = []
     changed: set[str] = set()
-    environment = dict(os.environ)
+    from fep_lean._paths import project_child_environment
+
+    environment = project_child_environment(os.environ)
     environment.update(PYTHONDONTWRITEBYTECODE="1", FEP_LEAN_LIVE_TESTS="0")
     if plan.kind == "strict-local-publication-capture":
         environment["SOURCE_DATE_EPOCH"] = plan.stages[0].command[-1]
@@ -1530,19 +1545,18 @@ def _publication_capture_worker(
     source_epoch = _source_date_epoch(int(epoch))
     if mode == "produce":
         if stage == "native":
-            from fep_lean.cli import main
             from fep_lean.output.manuscript import write_manuscript_vars
+            from fep_lean.verification.lean_verifier import verify_catalogue
 
-            native_returncode = main(
-                [
-                    "--project-root",
-                    str(root),
-                    "verify",
-                    "--receipt",
-                    str(root / "output/native-verification.json"),
-                    "--fail-on-warnings",
-                ]
+            outcome = verify_catalogue(
+                root,
+                None,
+                None,
+                receipt_path=root / "output/native-verification.json",
+                fail_on_warnings=True,
             )
+            print(outcome.to_json())
+            native_returncode = outcome.exit_code
             if native_returncode:
                 return native_returncode
             validation = validate_native_lean_receipt(

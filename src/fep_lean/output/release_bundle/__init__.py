@@ -78,7 +78,7 @@ from fep_lean.output.browser_capture import (
     CANONICAL_BROWSER_PROJECTIONS as _CANONICAL_BROWSER_PROJECTIONS,  # noqa: F401
 )
 from fep_lean.output.browser_capture import (
-    CANONICAL_BROWSER_SCREENSHOTS as _CANONICAL_BROWSER_SCREENSHOTS,  # noqa: F401
+    CANONICAL_BROWSER_SCREENSHOTS as _CANONICAL_BROWSER_SCREENSHOTS,
 )
 from fep_lean.output.browser_capture import (
     REQUIRED_BROWSER_INTERACTIONS as _REQUIRED_BROWSER_INTERACTIONS,  # noqa: F401
@@ -601,13 +601,153 @@ __all__ = [
     "build_numerical_witness_receipt",
     "build_python_acceptance_receipt",
     "build_release_bundle",
+    "inspect_stored_publication_evidence",
     "plan_publication_capture",
+    "publication_input_snapshot",
     "publication_manuscript_errors",
     "release_bundle_prerequisite_errors",
     "render_publication_manuscript",
     "run_publication_capture",
     "run_python_acceptance",
     "validate_release_bundle",
+    "validate_render_acceptance_barrier",
     "write_numerical_witnesses",
     "write_publication_manuscript",
 ]
+
+
+def _publication_display(root: Path, path: Path) -> str:
+    """Render *path* for display, relative to *root* when possible."""
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
+def publication_input_snapshot(
+    root: Path, gnn_root: Path | None
+) -> tuple[dict[str, str], tuple[str, ...]]:
+    """Bind observed inputs without executing tools or materializing products."""
+    from fep_lean.bridge import operations
+    from fep_lean.output.render_log import manuscript_source_digest
+
+    RENDER_RECEIPT = Path("docs/render-acceptance.json")
+    SOURCE_PIN = Path(operations.PIN)
+    CANONICAL_BROWSER_SCREENSHOTS = _CANONICAL_BROWSER_SCREENSHOTS
+    try:
+        snapshot = {
+            "source": report_source_digest(root),
+            "config": report_config_digest(root),
+            "manuscript": manuscript_source_digest(root / "manuscript"),
+        }
+        relatives = {relative for relative, _kind in _REQUIRED_STATIC_MEMBERS} | {
+            RENDER_RECEIPT.as_posix(),
+            SOURCE_PIN.as_posix(),
+            PYTHON_ACCEPTANCE_RECEIPT.as_posix(),
+            NUMERICAL_RECEIPT.as_posix(),
+            "output/.cache/tests_collected.json",
+            *CANONICAL_BROWSER_SCREENSHOTS.values(),
+            *_MANUSCRIPT_FIGURE_REFERENCES.values(),
+            *(source.as_posix() for source, _destination in MANUSCRIPT_ASSETS.values()),
+            *(
+                (Path("output/manuscript") / destination).as_posix()
+                for _source, destination in MANUSCRIPT_ASSETS.values()
+            ),
+            *(
+                (Path("output/manuscript") / source.name).as_posix()
+                for source in manuscript_source_files(root / "manuscript")
+            ),
+        }
+        for relative in sorted(relatives):
+            snapshot[relative] = (
+                sha256_bytes(_relative_file_bytes(root, relative))
+                if (root / relative).exists() or (root / relative).is_symlink()
+                else "<missing>"
+            )
+        if (root / "tests").is_dir():
+            snapshot["test_tree"] = _digest_named_bytes(_python_test_records(root))
+        if gnn_root is not None:
+            for relative in operations.owner_roster(gnn_root, "gnn"):
+                snapshot[f"gnn:{relative}"] = sha256_bytes(
+                    _relative_file_bytes(gnn_root, relative)
+                )
+    except (OSError, TypeError, ValueError) as exc:
+        return {}, (f"readiness inputs cannot be snapshotted: {exc}",)
+    return snapshot, ()
+
+
+def _stored_publication_input_findings(root: Path) -> tuple[str, ...]:
+    """Reuse source/projection/resource gates; no renderer or acceptance run."""
+    defects = list(report_owner_errors(root))
+    defects.extend(_license_metadata_errors(root))
+    for validator in (
+        formalism_coverage_drift,
+        atlas_projection_drift,
+        formal_kernel_dashboard_drift,
+    ):
+        defects.extend(
+            f"stale publication projection: {_publication_display(root, path)}"
+            for path in validator(root)
+        )
+    defects.extend(_theorem_maturity_projection_errors(root))
+    defects.extend(_bounded_manuscript_projection_errors(root))
+    _publication_resource_records(root)
+    for relative, _kind in _REQUIRED_STATIC_MEMBERS:
+        _relative_file_bytes(root, relative)
+    return tuple(dict.fromkeys(defects))
+
+
+def inspect_stored_publication_evidence(root: Path, plane: str) -> tuple[str, ...]:
+    """Inspect one named stored evidence plane without runtime replay.
+
+    Unknown planes refuse; successful browser/Python checks remain static,
+    never fresh execution, archive parity or publication authorization.
+    """
+    if plane == "publication_inputs":
+        return _stored_publication_input_findings(root)
+    if plane == "python_acceptance_receipt":
+        return _python_acceptance_receipt_errors(root, check_runtime=False)
+    if plane == "browser_acceptance_receipt":
+        return _browser_receipt_errors(root, check_runtime=False)
+    raise ValueError(f"unknown stored publication evidence plane: {plane}")
+
+
+def validate_render_acceptance_barrier(root: Path) -> dict[str, str]:
+    """Require source-bound acceptance and independently reproduce publication.
+
+    A repeated resume is not evidence that rendering ran. The committed
+    acceptance receipt must cover the live manuscript, and the strict
+    publication validator must reproduce its installed outputs. This stage
+    uses the renderer's existing deadlines and never writes publication files.
+    """
+    from fep_lean.output.render_log import manuscript_source_digest, receipt_defects
+
+    receipt = root / "docs/render-acceptance.json"
+    try:
+        receipt_bytes = _relative_file_bytes(root, "docs/render-acceptance.json")
+    except (OSError, ValueError) as exc:
+        raise ReleaseBundleError(f"render-acceptance barrier: {exc}") from exc
+    source_digest = manuscript_source_digest(root / "manuscript")
+    problems = list(receipt_defects(receipt, root / "manuscript"))
+    if not problems:
+        problems.extend(_rendered_manuscript_errors(root))
+    if not problems:
+        problems.extend(publication_manuscript_errors(root))
+    if problems:
+        raise ReleaseBundleError(
+            "render-acceptance barrier: current render acceptance refused: "
+            + "; ".join(problems)
+        )
+    if (
+        _relative_file_bytes(root, "docs/render-acceptance.json") != receipt_bytes
+        or manuscript_source_digest(root / "manuscript") != source_digest
+    ):
+        raise ReleaseBundleError(
+            "render-acceptance barrier: inputs changed during acceptance validation"
+        )
+    provenance_bytes = _relative_file_bytes(root, RENDERER_PROVENANCE.as_posix())
+    return {
+        "receipt_sha256": hashlib.sha256(receipt_bytes).hexdigest(),
+        "renderer_provenance_sha256": hashlib.sha256(provenance_bytes).hexdigest(),
+        "manuscript_source_digest": source_digest,
+    }

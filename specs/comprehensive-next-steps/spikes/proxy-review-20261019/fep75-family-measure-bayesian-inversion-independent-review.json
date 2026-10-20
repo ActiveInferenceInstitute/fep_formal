@@ -1,0 +1,472 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_semantic_audit_complete_preserve_current_dispositions_with_precision_findings",
+  "scope": "measure-bayesian-inversiononly7rows;combinedaudit64notall168",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-051",
+    "fep-052",
+    "fep-053",
+    "fep-054",
+    "fep-055",
+    "fep-056",
+    "fep-057"
+  ],
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/measure_bayesian_inversion.py": "ff36f184cc5ae19dd22fe1ebfb713762a2147dffba69a12b85c3515f56c26d49",
+    "lean/FepSketches/families/measure_bayesian_inversion.lean": "3e0f3fc71ccbecc562bb091f382d91fe6f3e2915ad221af279832291996e7bef",
+    "src/fep_lean/formal/measure_bayes.lean": "e2fa1b071381bbf684625e7317a02a357337df80596f95d9084d6e721a719c51",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665"
+  },
+  "rows": [
+    {
+      "id": "fep-051",
+      "title": "Likelihood-Ratio Reconstruction under Absolute Continuity",
+      "disposition": "retain_formalized_for_exact_declared_scope",
+      "primary": "fep051_likelihoodRatio_reconstruction",
+      "supporting": [],
+      "boundary": [
+        "fep051_reconstruction_iff_absoluteContinuous"
+      ],
+      "declaration_statements": {
+        "fep051_likelihoodRatio_reconstruction": "theorem fep051_likelihoodRatio_reconstruction\n    (target reference : Measure \u03a9)\n    [target.HaveLebesgueDecomposition reference]\n    (h_ac : target \u226a reference) :\n    reference.withDensity (target.rnDeriv reference) = target",
+        "fep051_reconstruction_iff_absoluteContinuous": "theorem fep051_reconstruction_iff_absoluteContinuous\n    (target reference : Measure \u03a9)\n    [target.HaveLebesgueDecomposition reference] :\n    reference.withDensity (target.rnDeriv reference) = target \u2194\n      target \u226a reference"
+      },
+      "body_sha256": "69d3a3b9bfe3e2a2147c8834cb9ba01a5ff0a6e134e40633e5aea3b6e84b65b7",
+      "maturity_record": {
+        "id": "fep-051",
+        "primary_theorem": "fep051_likelihoodRatio_reconstruction",
+        "supporting_theorems": [],
+        "boundary_theorems": [
+          "fep051_reconstruction_iff_absoluteContinuous"
+        ],
+        "invariant": "A native Radon\u2013Nikodym derivative reconstructs a target measure from its reference exactly when the target is absolutely continuous with respect to that reference.",
+        "assumption_review": "Both results require a measurable carrier and a HaveLebesgueDecomposition instance. The forward reconstruction additionally assumes target \u226a reference; the equivalence proves that this is the exact support condition and does not erase a singular component.",
+        "non_vacuity": "Taking target equal to reference supplies a reconstructible case, while any target with a nonzero singular component lies on the theorem's explicit failure boundary.",
+        "acceptance_probe": "native Lean compile of fep051_likelihoodRatio_reconstruction and fep051_reconstruction_iff_absoluteContinuous with the absolute-continuity premise visible.",
+        "disposition": "formalized"
+      },
+      "statement_review": "NativeRNwithDensityreconstructionunderAC,withLebesguedecomposition;equivalenceisexactsingularcomponentboundary.",
+      "premise_scope_boundary": "No pointwisedensityidentity orfinite/sigmafiniteassumptionssilentlyremoved; decompositioninstanceexplicit.",
+      "positive_adverse_unexecuted_specs": "EqualfiniteBoollawsreconstruct; disjointDiracactual/reference failsACandcannotreconstructsingularmass.",
+      "nearest_topic_distinction": "017posteriorkernelvs051singlemeasureACreconstruction;052likelihoodpredictivetiltadditionalAEkernelconditions.",
+      "own_novelty_record": {
+        "id": "fep-051",
+        "nearest_topics": [
+          "fep-017"
+        ],
+        "new_invariant": "Radon\u2013Nikodym reconstruction is equivalent to absolute continuity.",
+        "carrier_delta": "Replaces finite posterior atoms with native measures and exposes the singular-component boundary.",
+        "required_bridge": "FEPComposed.fep051_rn_reconstruction_refines_fep017"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-051",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Radon--Nikodym reconstruction and posterior joint reconstruction are the measure-level reconstruction laws on either side of Bayesian inversion.",
+          "witness": "FEPComposed.fep051_rn_reconstruction_refines_fep017"
+        }
+      ]
+    },
+    {
+      "id": "fep-052",
+      "title": "Posterior Density as a Likelihood Tilt",
+      "disposition": "retain_conditional_proxy_for_exact_declared_scope",
+      "primary": "fep052_posterior_density_tilt",
+      "supporting": [
+        "fep052_countable_posterior_density_tilt"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep052_posterior_density_tilt": "theorem fep052_posterior_density_tilt\n    (prior : Measure Parameter) [IsFiniteMeasure prior]\n    (likelihood : Kernel Parameter Observation) [IsFiniteKernel likelihood]\n    (h_ac : \u2200\u1d50 parameter \u2202prior,\n      likelihood parameter \u226a likelihood \u2218\u2098 prior) :\n    \u2200\u1d50 observation \u2202likelihood \u2218\u2098 prior,\n      (likelihood\u2020prior) observation =\n        prior.withDensity (fun parameter =>\n          likelihood.rnDeriv\n            (Kernel.const Parameter (likelihood \u2218\u2098 prior))\n            parameter observation)",
+        "fep052_countable_posterior_density_tilt": "theorem fep052_countable_posterior_density_tilt\n    {Parameter : Type*} [Countable Parameter] [MeasurableSpace Parameter]\n    [Nonempty Parameter] [StandardBorelSpace Parameter]\n    (prior : Measure Parameter) [IsFiniteMeasure prior]\n    (likelihood : Kernel Parameter Observation) [IsFiniteKernel likelihood] :\n    \u2200\u1d50 observation \u2202likelihood \u2218\u2098 prior,\n      (likelihood\u2020prior) observation =\n        prior.withDensity (fun parameter =>\n          (likelihood parameter).rnDeriv (likelihood \u2218\u2098 prior) observation)"
+      },
+      "body_sha256": "7ec23a6ec39f54a70cf17249e4c8f29a4629d4da1cd5611039c23e2b3bede48b",
+      "maturity_record": {
+        "id": "fep-052",
+        "primary_theorem": "fep052_posterior_density_tilt",
+        "supporting_theorems": [
+          "fep052_countable_posterior_density_tilt"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A posterior kernel is a prior measure tilted by the likelihood-to-predictive Radon\u2013Nikodym derivative for predictive-almost-every observation.",
+        "assumption_review": "The native result assumes a finite prior, a finite likelihood kernel, a nonempty standard-Borel parameter space, countable generation between the parameter and observation spaces, and prior-almost-every likelihood domination. The countable specialization discharges domination but remains an almost-everywhere identity, not a pointwise formula on null observations.",
+        "non_vacuity": "Countable nonempty parameter spaces and finite Markov likelihoods instantiate the specialization without an authored domination proof; observations in a predictive null set remain intentionally unconstrained.",
+        "acceptance_probe": "native Lean compile of fep052_posterior_density_tilt and fep052_countable_posterior_density_tilt, preserving predictive-a.e. equality.",
+        "disposition": "conditional_proxy"
+      },
+      "statement_review": "Primary nativekernelRNtilt predictiveAE withpriorAElikelihooddomination,finiteprior/kernel,standardBorelparameterandcountable/countablygeneratedcondition;countableparameter specializationdischargesdominationviaAPI.",
+      "premise_scope_boundary": "NotpointwiseBayesatnullobservations; generaluncountablefamilydominationmustbeproved,notimpliedbyfinitekernelsalone. Retainconditional_proxydespiteexactproof.",
+      "positive_adverse_unexecuted_specs": "CountableBoolpositivepriorkernelnoisyobservationsnontrivialtilt; continuousdeterministicobservationcanlackdominationindividualDiracsagainstnonatomicpredictive.",
+      "nearest_topic_distinction": "051ACsinglemeasure;017countableposteriordensityoverlapbut052exposesgeneralkernelRNdominationseam.",
+      "own_novelty_record": {
+        "id": "fep-052",
+        "nearest_topics": [
+          "fep-017",
+          "fep-034"
+        ],
+        "new_invariant": "Posterior kernels equal likelihood-ratio tilts for predictive-almost-every observation.",
+        "carrier_delta": "Adds native finite kernels, standard-Borel hypotheses, domination, and almost-everywhere equality.",
+        "required_bridge": "FEPComposed.fep052_posterior_tilt_is_fep017_posterior"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-052",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "On a countable latent carrier, both topic surfaces certify the same predictive-almost-everywhere likelihood-ratio representation.",
+          "witness": "FEPComposed.fep052_posterior_tilt_is_fep017_posterior"
+        }
+      ]
+    },
+    {
+      "id": "fep-053",
+      "title": "Kernel Bayesian-Inversion Reconstruction",
+      "disposition": "retain_formalized_for_exact_declared_scope",
+      "primary": "fep053_kernelBayes_joint_reconstruction",
+      "supporting": [
+        "fep053_finiteBayes_atom_reconstruction"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep053_kernelBayes_joint_reconstruction": "theorem fep053_kernelBayes_joint_reconstruction\n    (prior : Measure Parameter) [IsFiniteMeasure prior]\n    (likelihood : Kernel Parameter Observation) [IsFiniteKernel likelihood] :\n    (likelihood \u2218\u2098 prior) \u2297\u2098 likelihood\u2020prior =\n      (prior \u2297\u2098 likelihood).map Prod.swap",
+        "fep053_finiteBayes_atom_reconstruction": "theorem fep053_finiteBayes_atom_reconstruction\n    {FiniteParameter FiniteEvidence : Type*}\n    [Fintype FiniteParameter] [Fintype FiniteEvidence]\n    (prior : FiniteLaw FiniteParameter)\n    (likelihood : FiniteKernel FiniteParameter FiniteEvidence)\n    (evidence : FiniteEvidence)\n    (hEvidence : 0 < likelihood.predictive prior evidence)\n    (parameter : FiniteParameter) :\n    likelihood.posterior prior evidence hEvidence parameter *\n        likelihood.predictive prior evidence =\n      prior parameter * likelihood parameter evidence"
+      },
+      "body_sha256": "f633c7378054747edeaadd505a506e8d333b350bf50b582ff5248802ea30472e",
+      "maturity_record": {
+        "id": "fep-053",
+        "primary_theorem": "fep053_kernelBayes_joint_reconstruction",
+        "supporting_theorems": [
+          "fep053_finiteBayes_atom_reconstruction"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Bayesian inversion reconstructs the swapped prior-likelihood joint measure, and at every positive finite evidence atom posterior mass times evidence equals the corresponding joint atom.",
+        "assumption_review": "The measure theorem requires a finite prior and likelihood on a nonempty standard-Borel parameter space. The finite atom theorem additionally exposes strictly positive predictive evidence; it makes no normalized posterior claim at a zero-evidence atom.",
+        "non_vacuity": "Any informative finite likelihood with a positive predictive atom exercises the atom reconstruction, while the measure equality covers the complete swapped joint rather than only one selected observation.",
+        "acceptance_probe": "native Lean compile of fep053_kernelBayes_joint_reconstruction and fep053_finiteBayes_atom_reconstruction with positive evidence explicit.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Nativeposteriorreconstructsswappedjointfiniteprior/likelihood; finiteatomposterior*positiveevidence=prior*likelihood exact.",
+      "premise_scope_boundary": "Finiteatompositiveevidenceisnotnativepointwisenullversion. Two statedcarriersremainseparate; no provednativeembedidentitymerelybysharingreconstructionshape.",
+      "positive_adverse_unexecuted_specs": "InformativeBoolchannelpositiveevidencegivesactualnormalizedBayesmass; zeroevidencefiniteposteriortypecannotconstruct; nativejointstillversioninsensitive.",
+      "nearest_topic_distinction": "017samejointlawwrapper;053addsfiniteatomcontrast/supportboundary ratherthannewgeneraldisintegration.",
+      "own_novelty_record": {
+        "id": "fep-053",
+        "nearest_topics": [
+          "fep-017"
+        ],
+        "new_invariant": "Bayesian inversion reconstructs the complete swapped joint measure and every supported finite atom.",
+        "carrier_delta": "Lifts posterior reconstruction from a selected update to native joint measures with a finite-law bridge.",
+        "required_bridge": "FEPComposed.fep053_joint_reconstruction_extends_fep017"
+      },
+      "nearest_expansion_records": [
+        {
+          "id": "fep-117",
+          "nearest_topics": [
+            "fep-017",
+            "fep-053"
+          ],
+          "new_invariant": "Supported posterior odds equal prior odds times likelihood ratio and preserve zero prior support.",
+          "carrier_delta": "Extends posterior atom reconstruction to a favored/reference ratio with three explicit positive-denominator boundaries.",
+          "required_bridge": "FEPComposed.fep117_posterior_odds_extends_fep017_bayes"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-053",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Kernel Bayes and fep-017 reconstruct the same swapped joint law, with the new topic keeping the native posterior notation visible.",
+          "witness": "FEPComposed.fep053_joint_reconstruction_extends_fep017"
+        }
+      ]
+    },
+    {
+      "id": "fep-054",
+      "title": "Bayes Involution for Finite Joint Laws",
+      "disposition": "retain_conditional_proxy_for_exact_declared_scope",
+      "primary": "fep054_bayes_involution",
+      "supporting": [
+        "fep054_posterior_reconstructs_prior"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep054_bayes_involution": "theorem fep054_bayes_involution\n    (prior : Measure Parameter) [IsFiniteMeasure prior]\n    (likelihood : Kernel Parameter Observation)\n    [StandardBorelSpace Observation] [Nonempty Observation]\n    [IsFiniteKernel likelihood] [IsMarkovKernel likelihood] :\n    (likelihood\u2020prior)\u2020(likelihood \u2218\u2098 prior) =\u1d50[prior] likelihood",
+        "fep054_posterior_reconstructs_prior": "theorem fep054_posterior_reconstructs_prior\n    (prior : Measure Parameter) [IsFiniteMeasure prior]\n    (likelihood : Kernel Parameter Observation)\n    [IsFiniteKernel likelihood] [IsMarkovKernel likelihood] :\n    likelihood\u2020prior \u2218\u2098 likelihood \u2218\u2098 prior = prior"
+      },
+      "body_sha256": "09b78485b8c2de5eaf4cf8b5d36778f699043c5f60a540a948d298a2654e2272",
+      "maturity_record": {
+        "id": "fep-054",
+        "primary_theorem": "fep054_bayes_involution",
+        "supporting_theorems": [
+          "fep054_posterior_reconstructs_prior"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Inverting a finite Markov likelihood twice returns the original likelihood prior-almost-everywhere, and one inversion followed by prediction reconstructs the prior exactly as a measure.",
+        "assumption_review": "The likelihood and prior are native finite kernels and measures, not only finite atom tables. Involution requires both parameter and observation carriers to be nonempty standard Borel and the likelihood to be Markov; its conclusion is almost-everywhere rather than pointwise kernel equality.",
+        "non_vacuity": "Every finite Markov likelihood on nonempty standard-Borel spaces satisfies exact prior reconstruction, while distinct versions of a posterior on null observations explain why involution is stated almost everywhere.",
+        "acceptance_probe": "native Lean compile of fep054_bayes_involution and fep054_posterior_reconstructs_prior, retaining the prior-a.e. boundary.",
+        "disposition": "conditional_proxy"
+      },
+      "statement_review": "Bayesianinversiontwice recoversMarkovlikelihoodpriorAE, bothspacesnonemptyStandardBorel; singleinversionrecoverspriorasmeasure.",
+      "premise_scope_boundary": "No everywhereinverse/noordinaryfunctionbijection; Markovnormalizationessentialforpriorrecovery. Retainconditional_proxy.",
+      "positive_adverse_unexecuted_specs": "Noisyfinitekernelwithnontrivialposteriors; alterkernelonzero-priorstate givesindistinguishablepriorjointsoinvolutioncannotforcepointwiseequalitythere.",
+      "nearest_topic_distinction": "017reconstructionvs054doubleinversion;existing054\u2192017pairingconjoinsownlawsnotoneproofderivingtheother.",
+      "own_novelty_record": {
+        "id": "fep-054",
+        "nearest_topics": [
+          "fep-017"
+        ],
+        "new_invariant": "Double Bayesian inversion recovers a Markov likelihood prior-almost-everywhere.",
+        "carrier_delta": "Adds standard-Borel observation structure and version-sensitive almost-everywhere kernel equality.",
+        "required_bridge": "FEPComposed.fep054_involution_of_fep017_posterior"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-054",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Native double Bayesian inversion recovers the original likelihood almost everywhere, while the fep-017 posterior recovers the prior after a Markov likelihood; the pairing keeps these two sides of involution distinct.",
+          "witness": "FEPComposed.fep054_involution_of_fep017_posterior"
+        }
+      ]
+    },
+    {
+      "id": "fep-055",
+      "title": "Composite-Kernel Bayesian Inversion",
+      "disposition": "retain_conditional_proxy_for_exact_declared_scope",
+      "primary": "fep055_compositeKernel_bayesInversion",
+      "supporting": [
+        "fep055_compositePredictive_associativity"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep055_compositeKernel_bayesInversion": "theorem fep055_compositeKernel_bayesInversion\n    (prior : Measure Parameter) [IsFiniteMeasure prior]\n    [StandardBorelSpace Parameter] [Nonempty Parameter]\n    [StandardBorelSpace Intermediate] [Nonempty Intermediate]\n    (earlier : Kernel Parameter Intermediate) [IsFiniteKernel earlier]\n    (later : Kernel Intermediate Observation) [IsFiniteKernel later] :\n    (later \u2218\u2096 earlier)\u2020prior =\u1d50[later \u2218\u2098 earlier \u2218\u2098 prior]\n      earlier\u2020prior \u2218\u2096 later\u2020(earlier \u2218\u2098 prior)",
+        "fep055_compositePredictive_associativity": "theorem fep055_compositePredictive_associativity\n    (prior : Measure Parameter) [IsFiniteMeasure prior]\n    (earlier : Kernel Parameter Intermediate) [IsFiniteKernel earlier]\n    (later : Kernel Intermediate Observation) [IsFiniteKernel later] :\n    (later \u2218\u2096 earlier) \u2218\u2098 prior = later \u2218\u2098 earlier \u2218\u2098 prior"
+      },
+      "body_sha256": "29d74f89a6fad82937063ea46c61a42ff3f2e42a62188096a57139e600c757ad",
+      "maturity_record": {
+        "id": "fep-055",
+        "primary_theorem": "fep055_compositeKernel_bayesInversion",
+        "supporting_theorems": [
+          "fep055_compositePredictive_associativity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Bayesian inversion reverses a two-kernel composition into the corresponding composition of inversions, and the associated predictive law is exactly the chronological two-stage prediction.",
+        "assumption_review": "The prior and both kernels are finite, and the parameter and intermediate spaces are nonempty standard Borel. The inverse-kernel equality holds only almost everywhere under the final predictive law; predictive associativity itself is an unconditional measure equality under finiteness.",
+        "non_vacuity": "Two nonidentity finite kernels produce a genuine intermediate marginal and final predictive law, while final-predictive null observations retain the expected version ambiguity.",
+        "acceptance_probe": "native Lean compile of fep055_compositeKernel_bayesInversion and fep055_compositePredictive_associativity with the final predictive a.e. filter.",
+        "disposition": "conditional_proxy"
+      },
+      "statement_review": "Bayesianinversionreversescompositionorder earlierposterior\u2218laterposterior withcorrectintermediateprior; finalpredictiveAE. Supportingpredictiveassocexact.",
+      "premise_scope_boundary": "Parameter/intermediateStandardBorelnonemptyfiniteprior/kernels; finalobservationsonlymeasurablespace. No pointwiseequalitywithoutversioncontrol. Retainconditional_proxy.",
+      "positive_adverse_unexecuted_specs": "TwoNoisyBoolkernelsnoncommutingweights exerciseorder; wrongintermediateprior/wrongordergenerallyfails; nullfinalobservationversionsunconstrained.",
+      "nearest_topic_distinction": "019forwardassociativityvs055contravariantinversion;034filtercompositionnotautomaticallypathwiseexactatnullobservations.",
+      "own_novelty_record": {
+        "id": "fep-055",
+        "nearest_topics": [
+          "fep-017",
+          "fep-019"
+        ],
+        "new_invariant": "Inversion reverses two-kernel composition under the final predictive law.",
+        "carrier_delta": "Extends one-step posterior kernels to a parameter\u2013intermediate\u2013observation chain with a.e. composition.",
+        "required_bridge": "FEPComposed.fep055_composite_inversion_uses_fep019"
+      },
+      "nearest_expansion_records": [
+        {
+          "id": "fep-137",
+          "nearest_topics": [
+            "fep-019",
+            "fep-055"
+          ],
+          "new_invariant": "Embedding a finite predictive law equals native composition of the embedded finite kernel and embedded prior measure.",
+          "carrier_delta": "Provides a proved commuting square between finite kernel prediction and Mathlib measure-kernel composition.",
+          "required_bridge": "FEPComposed.fep137_embeddedPredictive_extends_fep019"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-055",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "Composite Bayesian inversion uses exactly the chronological predictive law identified by fep-019's measure--kernel associativity theorem.",
+          "witness": "FEPComposed.fep055_composite_inversion_uses_fep019"
+        }
+      ]
+    },
+    {
+      "id": "fep-056",
+      "title": "Standard-Borel Conditional-Kernel Reconstruction",
+      "disposition": "retain_formalized_for_exact_declared_scope",
+      "primary": "fep056_standardBorel_condKernel_reconstruction",
+      "supporting": [
+        "fep056_standardBorel_condKernel_mass_one"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep056_standardBorel_condKernel_reconstruction": "theorem fep056_standardBorel_condKernel_reconstruction\n    (joint : Measure (Conditioning \u00d7 Conditioned)) [IsFiniteMeasure joint] :\n    joint.fst \u2297\u2098 joint.condKernel = joint",
+        "fep056_standardBorel_condKernel_mass_one": "theorem fep056_standardBorel_condKernel_mass_one\n    (joint : Measure (Conditioning \u00d7 Conditioned)) [IsFiniteMeasure joint]\n    (conditioning : Conditioning) :\n    joint.condKernel conditioning Set.univ = 1"
+      },
+      "body_sha256": "6a90db534b1a624825d6f7f6a259f9f11df03933576711e21387cfd6d45e32f0",
+      "maturity_record": {
+        "id": "fep-056",
+        "primary_theorem": "fep056_standardBorel_condKernel_reconstruction",
+        "supporting_theorems": [
+          "fep056_standardBorel_condKernel_mass_one"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Mathlib's canonical conditional kernel reconstructs a finite joint measure from its first marginal and is normalized at every conditioning value.",
+        "assumption_review": "The conditioned carrier must be nonempty standard Borel and the joint measure finite. This is the maintained standard-Borel disintegration theorem, not a claim that regular conditional probabilities exist on arbitrary measurable spaces.",
+        "non_vacuity": "Nonproduct finite joint measures are admitted, so reconstruction can retain genuine dependence; the Markov-kernel construction also specifies normalized values on marginal-null conditioning points.",
+        "acceptance_probe": "native Lean compile of fep056_standardBorel_condKernel_reconstruction and fep056_standardBorel_condKernel_mass_one on the native conditional kernel.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Finitejointdisintegratesfirstmarginal\u2297canonicalcondKernel; conditionedspaceStandardBorelnonempty. KernelMarkovallconditioningvalues.",
+      "premise_scope_boundary": "Onlyreconstruction/marginalAEidentification,notconditionalprobabilityexistencearbitraryspacesoruniquepointwisenullversions.",
+      "positive_adverse_unexecuted_specs": "DependentBooljointretainscorrelation; zeromarginalconditioningfibresnormalizedbutcanvarywithoutchangingjoint; zerojointreconstructionnotvacuousgeneraldependence.",
+      "nearest_topic_distinction": "017likelihood-basedposteriorvs056arbitraryjointdisintegration;071genericupdatecarrierdoesnotfollowwithoutBayesmodelcontract.",
+      "own_novelty_record": {
+        "id": "fep-056",
+        "nearest_topics": [
+          "fep-017"
+        ],
+        "new_invariant": "A standard-Borel conditional kernel reconstructs every finite joint measure.",
+        "carrier_delta": "Moves from an authored Bayes kernel to Mathlib disintegration with explicit finiteness and standard-Borel scope.",
+        "required_bridge": "FEPComposed.fep056_disintegration_supplies_fep017"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-056",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Standard-Borel disintegration reconstructs its joint, while fep-017 certifies the corresponding posterior reconstruction for an arbitrary finite likelihood model.",
+          "witness": "FEPComposed.fep056_disintegration_supplies_fep017"
+        }
+      ]
+    },
+    {
+      "id": "fep-057",
+      "title": "Conditional-Expectation Tower through a Kernel",
+      "disposition": "retain_formalized_for_exact_declared_scope",
+      "primary": "fep057_conditionalExpectation_tower",
+      "supporting": [
+        "fep057_conditionalLIntegral_tower"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep057_conditionalExpectation_tower": "theorem fep057_conditionalExpectation_tower\n    (joint : Measure (Conditioning \u00d7 Conditioned)) [IsFiniteMeasure joint]\n    {observable : Conditioning \u00d7 Conditioned \u2192 \u211d}\n    (hintegrable : Integrable observable joint) :\n    (\u222b conditioning,\n        \u222b conditioned, observable (conditioning, conditioned)\n          \u2202joint.condKernel conditioning \u2202joint.fst) =\n      \u222b pair, observable pair \u2202joint",
+        "fep057_conditionalLIntegral_tower": "theorem fep057_conditionalLIntegral_tower\n    (joint : Measure (Conditioning \u00d7 Conditioned)) [IsFiniteMeasure joint]\n    {observable : Conditioning \u00d7 Conditioned \u2192 \u211d\u22650\u221e}\n    (hmeasurable : Measurable observable) :\n    (\u222b\u207b conditioning,\n        \u222b\u207b conditioned, observable (conditioning, conditioned)\n          \u2202joint.condKernel conditioning \u2202joint.fst) =\n      \u222b\u207b pair, observable pair \u2202joint"
+      },
+      "body_sha256": "ea658b3f3ffb2b3828634b9aca03f8b170f40d74faa5b4d69f021dbb67c6ac14",
+      "maturity_record": {
+        "id": "fep-057",
+        "primary_theorem": "fep057_conditionalExpectation_tower",
+        "supporting_theorems": [
+          "fep057_conditionalLIntegral_tower"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Integrating a conditional expectation against the conditioning marginal equals the original joint expectation, with a parallel extended-nonnegative tower law.",
+        "assumption_review": "The joint measure is finite and the conditioned carrier nonempty standard Borel. Real-valued observables must be integrable; extended-nonnegative observables need measurability but no separate integrability premise.",
+        "non_vacuity": "Dependent finite joints and nonconstant observables exercise genuine nested integration, while nonintegrable signed observables are excluded rather than assigned a spurious finite expectation.",
+        "acceptance_probe": "native Lean compile of fep057_conditionalExpectation_tower and fep057_conditionalLIntegral_tower with their distinct observable hypotheses.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Realintegrablejointobservabletower andnonnegativeMeasurableENNReal-lintegraltowerdifferentcontracts; finitejoint/standardBorelconditionedexplicit.",
+      "premise_scope_boundary": "No expectationfinitefrommeremeasurability; lintegralmay\u221eandisinthenativecodomain; no posteriorinference/scientificsemanticsinFubiniidentity.",
+      "positive_adverse_unexecuted_specs": "Dependentfinitejointandnonconstantobservable actualnestedexpectation; measurable1/xon(0,1]notintegrable signedrealpremisefails; nonnegativeintegral\u221eallowed.",
+      "nearest_topic_distinction": "015measurableintegranddoesnotprovideIntegrable;056reconstructionunderliestower;136finiteembeddedexpectationdifferentcarrierbridge.",
+      "own_novelty_record": {
+        "id": "fep-057",
+        "nearest_topics": [
+          "fep-015",
+          "fep-027"
+        ],
+        "new_invariant": "Nested conditional and marginal integration equals joint integration.",
+        "carrier_delta": "Adds integrable real and measurable extended-nonnegative observables over a disintegrated native joint measure.",
+        "required_bridge": "FEPComposed.fep057_tower_integrates_fep015"
+      },
+      "nearest_expansion_records": [
+        {
+          "id": "fep-136",
+          "nearest_topics": [
+            "fep-015",
+            "fep-057"
+          ],
+          "new_invariant": "Equality of embedded measures reflects equality of finite laws, and native integration agrees exactly with finite weighted expectation.",
+          "carrier_delta": "Connects atomwise finite probabilities to native Bochner integration on the same finite discrete carrier.",
+          "required_bridge": "FEPComposed.fep136_embeddedExpectation_extends_fep015"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-057",
+          "target": "fep-015",
+          "kind": "formal_pairing",
+          "rationale": "The conditional-expectation tower integrates any integrable observable; fep-015 supplies measurability for its canonical variational integrand.",
+          "witness": "FEPComposed.fep057_tower_integrates_fep015"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-051",
+      "field": "non_vacuity",
+      "finding": "EqualreferencecasealsoinheritsexplicitLebesguedecompositioninstance; demonstratewithfiniteprobabilitylawratherthanarbitraryunqualifiedmeasure.",
+      "exact_correction": "Equal finite reference/target laws supply a concrete reconstructible case with the required decomposition instance; a nonzero singular component gives the explicit failure boundary."
+    }
+  ],
+  "ranked_existing_owner_followups": [
+    {
+      "rank": 1,
+      "scope": "nativefinitepositive/nullposteriorversionconsumerpacket",
+      "missing_content": "No newgeneralRN/disintegrationtheoryneeded; qualifyactualnonproductfiniteexamples,singularmeasureandnullobservationversioncontrolsforall051\u2013057contracts.",
+      "positive": "NoisyBoolchannelanddependentjointobservable",
+      "adverse": "singularDiracs,zeroevidence,versionsonnullfibres,nonintegrableobservable",
+      "library_seam": "ExistingMeasureBayes/FiniteKernel posteriorreconstruction andMathlibposterior/condKernel APIs",
+      "estimate": "1-2dayssourceboundtypedconsumersandrawaxioms"
+    },
+    {
+      "rank": 2,
+      "scope": "053finite/nativeposterioridentification",
+      "missing_content": "Existingtwoscaleanaloguesnotyetexplicitnativeembeddingequality; boundedfinitepositiveevidenceidentificationifneededforcross-carrieredge.",
+      "positive": "finitefullsupportpriorandkernelwithactualembeddedposterioratom",
+      "adverse": "zeroevidencerefused; nativeversiononlypredictiveAE",
+      "library_seam": "finite_probability/decision_risknativeembedding,posterior_eq_withDensity_of_countable",
+      "estimate": "1-3daysboundedcommoncarrierproof"
+    },
+    {
+      "rank": 3,
+      "scope": "057integrabilityseamto015",
+      "missing_content": "UseexplicitIntegrableingredientsunderjointmarginalratherthanmeasurabilityalone; reusefirstfamilyplannedclosure.",
+      "positive": "finiteprobabilityboundednonconstantintegrand",
+      "adverse": "measurablenonintegrable1/x",
+      "library_seam": "Integrable.add/sub,joint.integral_condKernel",
+      "estimate": "0.5-1dayexistingownercomposition"
+    }
+  ],
+  "remaining": [
+    "Remaining104topicsandIssue54/68dependenciesremain;noall168acceptance",
+    "No promotionfromnative168/audit1886;exactmetadata/seal/projections/custodyrequiredforfuturechanges",
+    "Canonicalmainqualificationisparentpending,notcompletedbythisreview"
+  ],
+  "limitations": [
+    "Staticcanonicalsource/foundation/maturity/novelty/relationsinspection;noSmutation/Leanexecution",
+    "Examplewitnessesareunexecutedmathematicalspecificationsunlessseparatelyretainedelsewhere",
+    "Originalconditional_proxy052/054/055/063andstructural_proxy064preservedexplicitly"
+  ]
+}

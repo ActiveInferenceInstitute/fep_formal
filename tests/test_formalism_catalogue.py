@@ -211,6 +211,83 @@ def _yaml(name: str) -> dict[str, object]:
     return value
 
 
+_PROXY_REVIEW_PATH = PROJECT_ROOT / "tests/fixtures/theorem_proxy_review_20261019.json"
+_PROXY_REVIEW_SHA256 = (
+    "f9b3e16457fb75416e81ff46c905f9e0ca38f01ca0d64f5b89f83a26abb7345d"
+)
+
+
+def _proxy_review() -> dict[str, object]:
+    raw = _PROXY_REVIEW_PATH.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _PROXY_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1
+    assert len(review["changes"]) == 52
+    assert len({(c["id"], c["field"]) for c in review["changes"]}) == 52
+    assert len(review["top_level_changes"]) == 1
+    assert {c["id"] for c in review["body_changes"]} == {"fep-009", "fep-029"}
+    return review
+
+
+def _reverse_proxy_rows(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+    restored = [dict(row) for row in rows]
+    by_id = {row["id"]: row for row in restored}
+    for change in _proxy_review()["changes"]:
+        if change["id"] in by_id:
+            row = by_id[change["id"]]
+            assert row[change["field"]] == change["reviewed"]
+            row[change["field"]] = change["released"]
+    return restored
+
+
+def _assert_proxy_metadata_preimage(metadata: dict[str, object]) -> None:
+    review = _proxy_review()
+    restored = dict(metadata)
+    restored["topics"] = _reverse_proxy_rows(metadata["topics"])
+    for change in review["top_level_changes"]:
+        assert restored[change["field"]] == change["reviewed"]
+        restored[change["field"]] = change["released"]
+    assert (
+        hashlib.sha256(_canonical(restored).encode()).hexdigest()
+        == review["released_metadata_canonical_sha256"]
+    )
+
+
+def test_complete_proxy_review_reverses_only_exact_approved_metadata() -> None:
+    review = _proxy_review()
+    assert (
+        hashlib.sha256(
+            (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes()
+        ).hexdigest()
+        == review["reviewed_metadata_sha256"]
+    )
+    _assert_proxy_metadata_preimage(_yaml("theorem_maturity.yaml"))
+
+
+@pytest.mark.parametrize("mutation", ["reviewed", "unreviewed", "date"])
+def test_proxy_review_rejects_unapproved_metadata(mutation: str) -> None:
+    metadata = _yaml("theorem_maturity.yaml")
+    if mutation == "reviewed":
+        metadata["topics"][156]["invariant"] = "changed claim"
+    elif mutation == "unreviewed":
+        metadata["topics"][1]["primary_theorem"] = "unapproved theorem"
+    else:
+        metadata["review_date"] = "1900-01-01"
+    with pytest.raises(AssertionError):
+        _assert_proxy_metadata_preimage(metadata)
+
+
+def test_proxy_review_rejects_modified_fixture(tmp_path: Path, monkeypatch) -> None:
+    original = _PROXY_REVIEW_PATH.read_bytes()
+    tampered = tmp_path / "tampered.json"
+    tampered.write_bytes(original + b" ")
+    monkeypatch.setattr(
+        __import__(__name__, fromlist=["unused"]), "_PROXY_REVIEW_PATH", tampered
+    )
+    with pytest.raises(AssertionError):
+        _proxy_review()
+
+
 def _assert_released_body_and_maturity(
     bodies: Mapping[str, str], maturity_rows: list[dict[str, object]]
 ) -> None:
@@ -223,6 +300,12 @@ def _assert_released_body_and_maturity(
     assert baseline["topic_count"] == 120
 
     released_bodies = dict(bodies)
+    for change in _proxy_review()["body_changes"]:
+        topic = change["id"]
+        assert released_bodies[topic].count(change["reviewed"]) == 1
+        released_bodies[topic] = released_bodies[topic].replace(
+            change["reviewed"], change["released"]
+        )
     for topic_id, (released_header, reviewed_header) in REVIEWED_IMPORT_HEADERS.items():
         current = released_bodies[topic_id]
         assert current.startswith(reviewed_header), topic_id
@@ -281,7 +364,7 @@ def _assert_released_body_and_maturity(
         == baseline["body_digest"]
     )
 
-    released_maturity = [dict(row) for row in maturity_rows[:120]]
+    released_maturity = _reverse_proxy_rows(maturity_rows[:120])
     for topic_id, fields in deltas["maturity_changes"].items():
         assert set(fields) == REVIEWED_MATURITY_FIELDS[topic_id]
         row = released_maturity[int(topic_id[-3:]) - 1]
@@ -372,6 +455,176 @@ def test_expansion_vii_semantic_roster_is_complete_and_formalized() -> None:
     )
 
 
+_RELATION_RATIONALE_REVIEW_PATH = (
+    PROJECT_ROOT / "tests" / "fixtures" / "relation_rationale_review_20261019.json"
+)
+_RELATION_RATIONALE_REVIEW_SHA256 = (
+    "97fe4ef6a2621d62adf1300c1ea12e006e5d5cad53d5d85090777ad1c472048f"
+)
+
+
+_SCALAR_REVIEW_PATH = (
+    PROJECT_ROOT / "tests/fixtures/scalar_bridges_review_20261019.json"
+)
+_SCALAR_REVIEW_SHA256 = (
+    "728214c856f86560a8ff1d3a91e8f1b141bc98dbd57c34cb0f00713b99e7355a"
+)
+
+
+def _scalar_review() -> dict[str, object]:
+    raw = _SCALAR_REVIEW_PATH.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _SCALAR_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1 and review["new_theorems"] == 7
+    return review
+
+
+def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, object]]:
+    change = _scalar_review()["edge_change"]
+    result = []
+    seen = 0
+    for edge in edges:
+        if (edge["source"], edge["target"]) == ("fep-030", "fep-031"):
+            assert edge == change["reviewed"]
+            result.append(dict(change["released"]))
+            seen += 1
+        else:
+            result.append(dict(edge))
+    assert seen == 1
+    return result
+
+
+def _reverse_scalar_capabilities(
+    caps: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    change = _scalar_review()["capability_change"]
+    result = []
+    seen = 0
+    for cap in caps:
+        if cap["id"] == change["reviewed"]["id"]:
+            assert cap == change["reviewed"]
+            result.append(dict(change["released"]))
+            seen += 1
+        else:
+            result.append(dict(cap))
+    assert seen == 1
+    return result
+
+
+def _assert_scalar_model_preimage(model: dict[str, object]) -> None:
+    restored = dict(model)
+    restored["edges"] = _reverse_scalar_edges(model["edges"])
+    restored["capabilities"] = _reverse_scalar_capabilities(model["capabilities"])
+    assert (
+        hashlib.sha256(_canonical(restored).encode()).hexdigest()
+        == _scalar_review()["released_model_canonical_sha256"]
+    )
+
+
+def _assert_scalar_core_preimage(source: str) -> None:
+    review = _scalar_review()
+    for key in ["added_public_imports", "added_core_block"]:
+        assert source.count(review[key]) == 1
+        source = source.replace(review[key], "")
+    assert hashlib.sha256(source.encode()).hexdigest() == review["released_core_sha256"]
+
+
+def test_scalar_bridges_preserve_exact_existing_proofs_and_relation_model() -> None:
+    _assert_scalar_model_preimage(_yaml("formalism_relations.yaml"))
+    _assert_scalar_core_preimage(
+        (PROJECT_ROOT / "src/fep_lean/formal/compositions/core.lean").read_text()
+    )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["kind", "witness", "capability", "other_edge", "old_proof", "new_proof"],
+)
+def test_scalar_bridge_review_rejects_unapproved_changes(mutation: str) -> None:
+    if mutation in {"old_proof", "new_proof"}:
+        source = (
+            PROJECT_ROOT / "src/fep_lean/formal/compositions/core.lean"
+        ).read_text()
+        old = (
+            "namespace FEPComposed"
+            if mutation == "old_proof"
+            else "theorem fep018_coordinate_derivative_is_fep038"
+        )
+        assert old in source
+        with pytest.raises(AssertionError):
+            _assert_scalar_core_preimage(source.replace(old, "unreviewed", 1))
+        return
+    model = _yaml("formalism_relations.yaml")
+    edge = next(
+        e
+        for e in model["edges"]
+        if (e["source"], e["target"]) == ("fep-030", "fep-031")
+    )
+    if mutation == "kind":
+        edge["kind"] = "formal"
+    elif mutation == "witness":
+        edge["witness"] = "FEPComposed.unreviewed"
+    elif mutation == "capability":
+        next(
+            c
+            for c in model["capabilities"]
+            if c["id"] == "cap-multidimensional-information-geometry"
+        )["evidence"][0] = "unreviewed"
+    else:
+        model["edges"][0]["rationale"] = "unreviewed"
+    with pytest.raises(AssertionError):
+        _assert_scalar_model_preimage(model)
+
+
+def test_scalar_bridge_review_rejects_modified_fixture(
+    tmp_path: Path, monkeypatch
+) -> None:
+    tampered = tmp_path / "tampered.json"
+    tampered.write_bytes(_SCALAR_REVIEW_PATH.read_bytes() + b" ")
+    monkeypatch.setattr(
+        __import__(__name__, fromlist=["unused"]), "_SCALAR_REVIEW_PATH", tampered
+    )
+    with pytest.raises(AssertionError):
+        _scalar_review()
+
+
+def _assert_released_relation_rows(edges: list[dict[str, object]]) -> None:
+    """Reverse only the exact reviewed prose delta before the immutable seal."""
+    edges = _reverse_scalar_edges(edges)
+    raw = _RELATION_RATIONALE_REVIEW_PATH.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _RELATION_RATIONALE_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1
+    deltas = review["deltas"]
+    assert len(deltas) == 29
+    keyed = {(r["source"], r["kind"], r["target"]): r for r in deltas}
+    assert len(keyed) == len(deltas)
+    seen = set()
+    normalized = []
+    for edge in edges:
+        row = dict(edge)
+        key = (row["source"], row["kind"], row["target"])
+        if key in keyed:
+            delta = keyed[key]
+            assert row["witness"] == delta["witness"]
+            assert row["rationale"] == delta["reviewed_rationale"]
+            row["rationale"] = delta["released_rationale"]
+            assert key not in seen
+            seen.add(key)
+        normalized.append(row)
+    assert seen == set(keyed)
+    baseline = json.loads(BASELINE_PATH.read_text(encoding="utf-8"))
+    released = [
+        edge
+        for edge in normalized
+        if (edge["source"], edge["kind"], edge["target"]) not in NEW_EDGE_KEYS
+    ][:98]
+    assert (
+        _length_prefixed_sha256([_canonical(row) for row in released])
+        == baseline["edges_digest"]
+    )
+
+
 def test_expansion_vii_preserves_released_rows_except_reviewed_deltas() -> None:
     baseline = json.loads(BASELINE_PATH.read_text(encoding="utf-8"))
     metadata = _yaml("catalogue_metadata.yaml")
@@ -394,26 +647,13 @@ def test_expansion_vii_preserves_released_rows_except_reviewed_deltas() -> None:
         _length_prefixed_sha256(
             [
                 _canonical(row)
-                for row in relations["capabilities"]
+                for row in _reverse_scalar_capabilities(relations["capabilities"])
                 if row["id"] not in NEW_CAPABILITY_IDS
             ]
         )
         == baseline["capabilities_digest"]
     )
-    assert (
-        _length_prefixed_sha256(
-            [
-                _canonical(row)
-                for row in [
-                    edge
-                    for edge in relations["edges"]
-                    if (edge["source"], edge["kind"], edge["target"])
-                    not in NEW_EDGE_KEYS
-                ][:98]
-            ]
-        )
-        == baseline["edges_digest"]
-    )
+    _assert_released_relation_rows(relations["edges"])
 
 
 @pytest.mark.parametrize(
@@ -470,3 +710,49 @@ def test_reviewed_deltas_reject_unapproved_changes(mutation: str) -> None:
         maturity[61]["invariant"] = "changed invariant"
     with pytest.raises(AssertionError):
         _assert_released_body_and_maturity(bodies, maturity)
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["reviewed_text", "reviewed_kind", "reviewed_witness", "unreviewed_text"],
+)
+def test_relation_rationale_review_rejects_unapproved_changes(mutation: str) -> None:
+    edges = [dict(edge) for edge in _yaml("formalism_relations.yaml")["edges"]]
+    review = json.loads(_RELATION_RATIONALE_REVIEW_PATH.read_text(encoding="utf-8"))
+    keys = {(r["source"], r["kind"], r["target"]) for r in review["deltas"]}
+    if mutation == "unreviewed_text":
+        released = [
+            edge
+            for edge in edges
+            if (edge["source"], edge["kind"], edge["target"]) not in NEW_EDGE_KEYS
+        ][:98]
+        row = next(
+            edge
+            for edge in released
+            if (edge["source"], edge["kind"], edge["target"]) not in keys
+        )
+        row["rationale"] = "An unreviewed replacement."
+    else:
+        row = next(
+            edge
+            for edge in edges
+            if (edge["source"], edge["kind"], edge["target"]) in keys
+        )
+        field, value = {
+            "reviewed_text": ("rationale", "An unreviewed replacement."),
+            "reviewed_kind": ("kind", "conceptual"),
+            "reviewed_witness": ("witness", "FEPComposed.unreviewed_witness"),
+        }[mutation]
+        row[field] = value
+    with pytest.raises(AssertionError):
+        _assert_released_relation_rows(edges)
+
+
+def test_relation_rationale_review_authenticates_fixture_bytes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    replacement = tmp_path / "changed-review.json"
+    replacement.write_bytes(_RELATION_RATIONALE_REVIEW_PATH.read_bytes() + b" ")
+    monkeypatch.setitem(globals(), "_RELATION_RATIONALE_REVIEW_PATH", replacement)
+    with pytest.raises(AssertionError):
+        _assert_released_relation_rows(_yaml("formalism_relations.yaml")["edges"])

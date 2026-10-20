@@ -442,7 +442,7 @@
         "title": "Measure-theoretic Bayesian inversion"
       },
       {
-        "description": "A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability.",
+        "description": "A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability. The actual derivative of the interior Bernoulli Fisher–Rao coordinate is additionally identified with the topic Jacobian, giving the stated one-dimensional metric pullback; no global chart or path-length theorem is inferred.",
         "evidence": [
           "FEP.InformationGeometry.bernoulliScoreModel_fullSupport",
           "FEP.InformationGeometry.bernoulliScoreModel_identifiable",
@@ -464,7 +464,9 @@
           "FEP.InformationGeometry.naturalGradient_metric_duality",
           "FEP.InformationGeometry.naturalGradient_unique",
           "FEP.InformationGeometry.pullbackMetric_comp",
-          "FEP.InformationGeometry.pullbackMetric_pos"
+          "FEP.InformationGeometry.pullbackMetric_pos",
+          "FEPComposed.fep018_coordinate_derivative_is_fep038",
+          "FEPComposed.fep018_fep038_actual_metric_pullback"
         ],
         "id": "cap-multidimensional-information-geometry",
         "status": "satisfied",
@@ -713,21 +715,21 @@
     "edges": [
       {
         "kind": "formal",
-        "rationale": "The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule.",
+        "rationale": "The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_chain_rule.",
         "source": "fep-002",
         "target": "fep-014",
         "witness": "FEPComposed.fep002_vfe_compProd_chain_rule"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance.",
+        "rationale": "The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The epistemic balance requires the explicit hvalue premise that information value does not exceed pragmatic cost.",
         "source": "fep-003",
         "target": "fep-021",
         "witness": "FEPComposed.fep003_pragmaticCost_efe_balance"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem specializes fep-004's finite positive-weight Fisher metric to the one-coordinate Bernoulli information weight computed by fep-038. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries both endpoints through their Fisher-metric definitions (`fep_fep004.FEP004.fep004_fisherMetric`, `fep_fep038.FEP038.fep038_fisherMetric`) without invoking either topic's reviewed theorems; the row stands unchanged.",
+        "rationale": "The composed theorem identifies fep-004's Unit-coordinate weighted quadratic form with fep-038's Bernoulli Fisher-metric definition, using fep038_fisherInformation p as the supplied weight. It unfolds both metric definitions rather than invoking endpoint theorems. The identity holds for every real p; positivity as a statistical metric additionally requires 0 < p < 1 and the relevant nonzero-tangent premise.",
         "source": "fep-004",
         "target": "fep-038",
         "witness": "FEPComposed.fep004_bernoulliMetric_specialization"
@@ -740,7 +742,7 @@
       },
       {
         "kind": "formal",
-        "rationale": "With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106).",
+        "rationale": "With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemma: fep_fep007.FEP007.fep007_normalizedMessage_sum_one.",
         "source": "fep-007",
         "target": "fep-028",
         "witness": "FEPComposed.fep007_normalizedMessage_is_fep028_softmax"
@@ -753,14 +755,14 @@
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem identifies self-information and scalar prior complexity as the same negative-log functional, fixing their shared sign convention.",
+        "rationale": "The composed theorem identifies fep_fep026.FEP026.fep026_priorComplexity and fep_fep011.FEP011.fep011_surprise by their identical real negative-log definition. This fixes a sign convention for all real inputs under totalized Real.log; probability interpretation requires its separate domain assumptions.",
         "source": "fep-011",
         "target": "fep-026",
         "witness": "FEPComposed.fep026_priorComplexity_is_fep011_surprise"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+        "rationale": "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep012.FEP012.fep012_entropyRegularizedCost_le_expectedCost, fep_fep028.FEP028.fep028_softmax_le_one, fep_fep028.FEP028.fep028_softmax_nonneg. The proof consumes unit-interval supporting lemmas, not the primary sum-univ theorem; nonempty support and nonnegative temperature are explicit.",
         "source": "fep-012",
         "target": "fep-028",
         "witness": "FEPComposed.fep012_softmax_entropyRegularizedCost_le"
@@ -773,7 +775,7 @@
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2.",
+        "rationale": "The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2. Actual consumed endpoint lemmas: fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy, fep_fep040.FEP040.fep040_thermalEntropy_hasDerivAt.",
         "source": "fep-013",
         "target": "fep-040",
         "witness": "FEPComposed.fep013_gaussianHelmholtz_derivative"
@@ -792,35 +794,35 @@
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance.",
+        "rationale": "The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The explicit hvalue upper bound on information gain is required; the identity is not an unconditional untruncated EFE decomposition.",
         "source": "fep-021",
         "target": "fep-041",
         "witness": "FEPComposed.fep021_informationGain_balance"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem realizes the posterior-predictive kernel as a hierarchical child kernel and identifies its marginal with sequential prediction.",
+        "rationale": "The composed theorem instantiates fep027_hierarchicalJoint with fep022_posteriorPredictive and proves its child marginal equals likelihood composed with posterior composed with the base measure, using Measure.snd_compProd and Measure.comp_assoc. It assumes an SFinite base measure and SFinite kernels, not normalized posterior or likelihood kernels.",
         "source": "fep-022",
         "target": "fep-027",
         "witness": "FEPComposed.fep022_predictive_is_hierarchical_marginal"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law.",
+        "rationale": "The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_nonneg.",
         "source": "fep-024",
         "target": "fep-014",
         "witness": "FEPComposed.fep024_regularizer_is_fep014_kl"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
+        "rationale": "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged. Actual consumed endpoint lemma: fep_fep049.FEP049.fep049_entropyProduction_nonneg. Nonnegative resistance is an explicit premise; no physical current conservation or calibrated constitutive law is inferred.",
         "source": "fep-025",
         "target": "fep-049",
         "witness": "FEPComposed.fep025_current_dissipation_nonneg"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition.",
+        "rationale": "The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition. Actual consumed endpoint lemma: fep_fep027.FEP027.fep027_hierarchical_snd.",
         "source": "fep-027",
         "target": "fep-019",
         "witness": "FEPComposed.fep027_priorPredictive_is_fep019"
@@ -833,27 +835,28 @@
       },
       {
         "kind": "formal",
-        "rationale": "fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106).",
+        "rationale": "fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemma: fep_fep104.FEP104.fep104_mirrorDescent_threePoint_identity.",
         "source": "fep-029",
         "target": "fep-104",
         "witness": "FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance"
       },
       {
-        "kind": "conceptual",
-        "rationale": "A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem.",
+        "kind": "formal_pairing",
+        "rationale": "The full-support binary Gibbs masses of fep031 are exactly energyGibbsLaw, and its finite entropy is exactly the Real.binEntropy carrier used by fep030. At a supplied matched mean energy, this law uniquely maximizes that binary entropy; the witness also retains fep030’s bound/equality characterization on the same normalized candidate law. This is an exact finite carrier identification and constrained specialization, not a derivation of arbitrary Gibbs laws from the binary entropy bound or existence of a temperature for every target mean.",
         "source": "fep-030",
-        "target": "fep-031"
+        "target": "fep-031",
+        "witness": "FEPComposed.fep030_fep031_binary_maxEntropy"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization.",
+        "rationale": "The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization. Actual consumed endpoint lemma: fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff.",
         "source": "fep-031",
         "target": "fep-030",
         "witness": "FEPComposed.fep031_zeroBeta_binary_maxEntropy"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem identifies a gradient step on fep-043's exact quadratic landscape with fep-032's globally convergent centered update at effective step size 2aη.",
+        "rationale": "The composed theorem identifies one gradient step on fep_fep043.FEP043.fep043_quadraticGradient with fep_fep032.FEP032.fep032_quadraticUpdate at effective step 2*a*eta, by unfolding the two definitions and ring algebra. The identity holds for arbitrary real parameters. Convergence is not proved here; invoking fep032_quadraticUpdate_tendsto additionally requires 0 < 2*a*eta and 2*a*eta < 2.",
         "source": "fep-032",
         "target": "fep-043",
         "witness": "FEPComposed.fep032_update_is_fep043_gradientStep"
@@ -866,21 +869,21 @@
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem identifies the transition-observation filter with fep-017's native posterior at the transition-predicted prior.",
+        "rationale": "The composed theorem identifies fep_fep034.FEP034.fep034_filter definitionally with fep_fep017.FEP017.fep017_posterior at the transition-predicted prior. It retains standard-Borel/nonempty state and finite-measure/finite-kernel assumptions; no new pointwise Bayes identity at null observations is asserted.",
         "source": "fep-034",
         "target": "fep-017",
         "witness": "FEPComposed.fep034_filter_is_fep017_posterior"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+        "rationale": "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos, fep_fep045.FEP045.fep045_bernoulli_posterior_closed, fep_fep045.FEP045.fep045_evidence_pos. Positive binary likelihoods and the smoothed count bounds establish nonzero evidence; no asymptotic empirical-rate theorem is consumed.",
         "source": "fep-036",
         "target": "fep-045",
         "witness": "FEPComposed.fep036_empiricalPosterior_closed"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem identifies fep-037's autocorrelation mode with the exact deviation mode of fep-020's normalized two-state Markov evolution.",
+        "rationale": "The composed theorem applies fep_fep020.FEP020.fep020_iterate_deviation and unfolds fep037_autocorrelation/fep037_relaxation to identify twice the centered two-state evolution with the unit-variance autocorrelation expression. This is an exact algebraic identity for real alpha; normalized Markov or relaxation semantics require their separate parameter-domain assumptions.",
         "source": "fep-037",
         "target": "fep-020",
         "witness": "FEPComposed.fep037_autocorrelation_tracks_fep020"
@@ -894,35 +897,35 @@
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem aggregates state energies over fep-005's four unique partition fibres and proves that fep-039's local-energy sum conserves total state energy.",
+        "rationale": "The composed theorem unfolds fep039_global_fe, fep005_blockEnergy and fep005_partitionCover and applies Finset.sum_fiberwise: summing the four partition-fibre energies equals the original sum over Fin 20 for arbitrary real state energies. This is finite partition aggregation, not dynamical energy conservation or conditional independence.",
         "source": "fep-039",
         "target": "fep-005",
         "witness": "FEPComposed.fep039_partitionEnergy_conservation"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law.",
+        "rationale": "The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_eq_zero_iff.",
         "source": "fep-041",
         "target": "fep-014",
         "witness": "FEPComposed.fep041_informationGain_is_fep014_kl"
       },
       {
         "kind": "formal",
-        "rationale": "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+        "rationale": "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos. The success count enters definitionally; List.count_le_length and the two smoothed-rate supporting lemmas establish interiority, not empirical-rate convergence.",
         "source": "fep-042",
         "target": "fep-036",
         "witness": "FEPComposed.fep036_empiricalPosterior_closed"
       },
       {
         "kind": "formal",
-        "rationale": "A single stick-breaking fraction is the Bernoulli law of fep-045 (allocated weight is the true mass, residual is the false mass), and fep-046's mass-conservation theorem derives the normalization of fep-045's conjugate posterior mass function at the posterior parameter. One break only; no Dirichlet-process or infinite-series claim. Added 2026-10-08 (LEAN-8, issue 106).",
+        "rationale": "For a single stick fraction chosen as fep045_posteriorParameter, the composed theorem identifies allocated and residual weights with the true and false Bernoulli-mass definitions and uses fep_fep046.FEP046.fep046_mass_conservation to derive their sum-one identity. This algebra holds for arbitrary real inputs; nonnegative probability interpretation additionally needs a posterior in [0,1]. No general Dirichlet-process or infinite-series claim follows.",
         "source": "fep-046",
         "target": "fep-045",
         "witness": "FEPComposed.fep046_single_break_is_fep045_bernoulli"
       },
       {
         "kind": "formal",
-        "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106).",
+        "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem.",
         "source": "fep-050",
         "target": "fep-049",
         "witness": "FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production"
@@ -950,7 +953,7 @@
       },
       {
         "kind": "formal_pairing",
-        "rationale": "Native double Bayesian inversion recovers the original likelihood almost everywhere, while the fep-017 posterior recovers the prior after a Markov likelihood; the pairing keeps these two sides of involution distinct.",
+        "rationale": "The witness pairs the Bayesian inversion involution with posterior reconstruction under the stated native assumptions; neither endpoint law is derived from the other.",
         "source": "fep-054",
         "target": "fep-017",
         "witness": "FEPComposed.fep054_involution_of_fep017_posterior"
@@ -992,7 +995,7 @@
       },
       {
         "kind": "formal",
-        "rationale": "The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound.",
+        "rationale": "The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound. Actual consumed endpoint lemmas: fep_fep002.FEP002.fep002_elbo_bound, fep_fep060.FEP060.fep060_coordinateELBO_decomposition, fep_fep060.FEP060.fep060_coordinateKL_nonnegative. Finite normalized laws/kernels and strictly positive reference prior/kernel support are explicit; the bound uses the nonnegative conditional-KL remainder.",
         "source": "fep-060",
         "target": "fep-002",
         "witness": "FEPComposed.fep060_coordinate_elbo_refines_fep002"
@@ -1013,7 +1016,7 @@
       },
       {
         "kind": "formal_pairing",
-        "rationale": "Finite-channel contraction is paired with the native nonnegativity of the pre-channel KL quantity; no unsupported finite-to-measure identification is introduced.",
+        "rationale": "The witness pairs finite channel KL contraction with native KL nonnegativity for separately supplied measures; no finite/native identification is proved.",
         "source": "fep-063",
         "target": "fep-014",
         "witness": "FEPComposed.fep063_channel_dpi_bounds_fep014"
@@ -1216,7 +1219,7 @@
       },
       {
         "kind": "formal_pairing",
-        "rationale": "On the shared stability interval, predictive error tends to zero and the equivalent centered quadratic iteration from fep-032 tends to its target.",
+        "rationale": "The witness pairs separately proved convergence statements; it does not identify their update maps or establish equivalence of iterations.",
         "source": "fep-092",
         "target": "fep-032",
         "witness": "FEPComposed.fep092_quadratic_convergence_specializes_fep032"
@@ -1377,14 +1380,14 @@
       },
       {
         "kind": "formal_pairing",
-        "rationale": "The simultaneous finite-alphabet frequency bound is paired with the original exact Bernoulli likelihood factorization through finite counts.",
+        "rationale": "The witness pairs the finite event union bound with Bernoulli count-likelihood factorization; neither conjunct is derived from the other.",
         "source": "fep-115",
         "target": "fep-042",
         "witness": "FEPComposed.fep115_frequency_union_bound_extends_fep042_counts"
       },
       {
         "kind": "formal_pairing",
-        "rationale": "The finite posterior loss-gap bound, conditional on a certified log-MGF budget, is paired with fep-001's measure-native variational upper bound without equating finite real KL and native extended KL.",
+        "rationale": "The witness pairs a finite PAC-Bayes bound with an independent native variational-bound instance; the latter is not a consequence of the former.",
         "source": "fep-116",
         "target": "fep-001",
         "witness": "FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound"
@@ -2197,7 +2200,7 @@
       "title": "Measure-theoretic Bayesian inversion"
     },
     {
-      "description": "A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability.",
+      "description": "A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability. The actual derivative of the interior Bernoulli Fisher–Rao coordinate is additionally identified with the topic Jacobian, giving the stated one-dimensional metric pullback; no global chart or path-length theorem is inferred.",
       "evidence": [
         "FEP.InformationGeometry.bernoulliScoreModel_fullSupport",
         "FEP.InformationGeometry.bernoulliScoreModel_identifiable",
@@ -2219,7 +2222,9 @@
         "FEP.InformationGeometry.naturalGradient_metric_duality",
         "FEP.InformationGeometry.naturalGradient_unique",
         "FEP.InformationGeometry.pullbackMetric_comp",
-        "FEP.InformationGeometry.pullbackMetric_pos"
+        "FEP.InformationGeometry.pullbackMetric_pos",
+        "FEPComposed.fep018_coordinate_derivative_is_fep038",
+        "FEPComposed.fep018_fep038_actual_metric_pullback"
       ],
       "id": "cap-multidimensional-information-geometry",
       "status": "satisfied",
@@ -2559,9 +2564,9 @@
     "families": 22,
     "formal_modules": 72,
     "relation_kinds": {
-      "conceptual": 8,
+      "conceptual": 7,
       "formal": 24,
-      "formal_pairing": 118
+      "formal_pairing": 119
     },
     "semantic_dispositions": {
       "conditional_proxy": 13,
@@ -8407,14 +8412,14 @@
       "target": "core-free-energy"
     },
     {
-      "count": 1,
-      "kind": "conceptual",
+      "count": 3,
+      "kind": "formal",
       "source": "core-thermodynamics",
       "target": "core-thermodynamics"
     },
     {
-      "count": 3,
-      "kind": "formal",
+      "count": 1,
+      "kind": "formal_pairing",
       "source": "core-thermodynamics",
       "target": "core-thermodynamics"
     },
@@ -10579,21 +10584,21 @@
   "relations": [
     {
       "kind": "formal",
-      "rationale": "The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule.",
+      "rationale": "The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_chain_rule.",
       "source": "fep-002",
       "target": "fep-014",
       "witness": "FEPComposed.fep002_vfe_compProd_chain_rule"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance.",
+      "rationale": "The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The epistemic balance requires the explicit hvalue premise that information value does not exceed pragmatic cost.",
       "source": "fep-003",
       "target": "fep-021",
       "witness": "FEPComposed.fep003_pragmaticCost_efe_balance"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem specializes fep-004's finite positive-weight Fisher metric to the one-coordinate Bernoulli information weight computed by fep-038. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries both endpoints through their Fisher-metric definitions (`fep_fep004.FEP004.fep004_fisherMetric`, `fep_fep038.FEP038.fep038_fisherMetric`) without invoking either topic's reviewed theorems; the row stands unchanged.",
+      "rationale": "The composed theorem identifies fep-004's Unit-coordinate weighted quadratic form with fep-038's Bernoulli Fisher-metric definition, using fep038_fisherInformation p as the supplied weight. It unfolds both metric definitions rather than invoking endpoint theorems. The identity holds for every real p; positivity as a statistical metric additionally requires 0 < p < 1 and the relevant nonzero-tangent premise.",
       "source": "fep-004",
       "target": "fep-038",
       "witness": "FEPComposed.fep004_bernoulliMetric_specialization"
@@ -10606,7 +10611,7 @@
     },
     {
       "kind": "formal",
-      "rationale": "With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106).",
+      "rationale": "With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemma: fep_fep007.FEP007.fep007_normalizedMessage_sum_one.",
       "source": "fep-007",
       "target": "fep-028",
       "witness": "FEPComposed.fep007_normalizedMessage_is_fep028_softmax"
@@ -10619,14 +10624,14 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies self-information and scalar prior complexity as the same negative-log functional, fixing their shared sign convention.",
+      "rationale": "The composed theorem identifies fep_fep026.FEP026.fep026_priorComplexity and fep_fep011.FEP011.fep011_surprise by their identical real negative-log definition. This fixes a sign convention for all real inputs under totalized Real.log; probability interpretation requires its separate domain assumptions.",
       "source": "fep-011",
       "target": "fep-026",
       "witness": "FEPComposed.fep026_priorComplexity_is_fep011_surprise"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+      "rationale": "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep012.FEP012.fep012_entropyRegularizedCost_le_expectedCost, fep_fep028.FEP028.fep028_softmax_le_one, fep_fep028.FEP028.fep028_softmax_nonneg. The proof consumes unit-interval supporting lemmas, not the primary sum-univ theorem; nonempty support and nonnegative temperature are explicit.",
       "source": "fep-012",
       "target": "fep-028",
       "witness": "FEPComposed.fep012_softmax_entropyRegularizedCost_le"
@@ -10639,7 +10644,7 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2.",
+      "rationale": "The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2. Actual consumed endpoint lemmas: fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy, fep_fep040.FEP040.fep040_thermalEntropy_hasDerivAt.",
       "source": "fep-013",
       "target": "fep-040",
       "witness": "FEPComposed.fep013_gaussianHelmholtz_derivative"
@@ -10658,35 +10663,35 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance.",
+      "rationale": "The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The explicit hvalue upper bound on information gain is required; the identity is not an unconditional untruncated EFE decomposition.",
       "source": "fep-021",
       "target": "fep-041",
       "witness": "FEPComposed.fep021_informationGain_balance"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem realizes the posterior-predictive kernel as a hierarchical child kernel and identifies its marginal with sequential prediction.",
+      "rationale": "The composed theorem instantiates fep027_hierarchicalJoint with fep022_posteriorPredictive and proves its child marginal equals likelihood composed with posterior composed with the base measure, using Measure.snd_compProd and Measure.comp_assoc. It assumes an SFinite base measure and SFinite kernels, not normalized posterior or likelihood kernels.",
       "source": "fep-022",
       "target": "fep-027",
       "witness": "FEPComposed.fep022_predictive_is_hierarchical_marginal"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law.",
+      "rationale": "The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_nonneg.",
       "source": "fep-024",
       "target": "fep-014",
       "witness": "FEPComposed.fep024_regularizer_is_fep014_kl"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
+      "rationale": "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged. Actual consumed endpoint lemma: fep_fep049.FEP049.fep049_entropyProduction_nonneg. Nonnegative resistance is an explicit premise; no physical current conservation or calibrated constitutive law is inferred.",
       "source": "fep-025",
       "target": "fep-049",
       "witness": "FEPComposed.fep025_current_dissipation_nonneg"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition.",
+      "rationale": "The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition. Actual consumed endpoint lemma: fep_fep027.FEP027.fep027_hierarchical_snd.",
       "source": "fep-027",
       "target": "fep-019",
       "witness": "FEPComposed.fep027_priorPredictive_is_fep019"
@@ -10699,27 +10704,28 @@
     },
     {
       "kind": "formal",
-      "rationale": "fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106).",
+      "rationale": "fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemma: fep_fep104.FEP104.fep104_mirrorDescent_threePoint_identity.",
       "source": "fep-029",
       "target": "fep-104",
       "witness": "FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance"
     },
     {
-      "kind": "conceptual",
-      "rationale": "A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem.",
+      "kind": "formal_pairing",
+      "rationale": "The full-support binary Gibbs masses of fep031 are exactly energyGibbsLaw, and its finite entropy is exactly the Real.binEntropy carrier used by fep030. At a supplied matched mean energy, this law uniquely maximizes that binary entropy; the witness also retains fep030’s bound/equality characterization on the same normalized candidate law. This is an exact finite carrier identification and constrained specialization, not a derivation of arbitrary Gibbs laws from the binary entropy bound or existence of a temperature for every target mean.",
       "source": "fep-030",
-      "target": "fep-031"
+      "target": "fep-031",
+      "witness": "FEPComposed.fep030_fep031_binary_maxEntropy"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization.",
+      "rationale": "The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization. Actual consumed endpoint lemma: fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff.",
       "source": "fep-031",
       "target": "fep-030",
       "witness": "FEPComposed.fep031_zeroBeta_binary_maxEntropy"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies a gradient step on fep-043's exact quadratic landscape with fep-032's globally convergent centered update at effective step size 2aη.",
+      "rationale": "The composed theorem identifies one gradient step on fep_fep043.FEP043.fep043_quadraticGradient with fep_fep032.FEP032.fep032_quadraticUpdate at effective step 2*a*eta, by unfolding the two definitions and ring algebra. The identity holds for arbitrary real parameters. Convergence is not proved here; invoking fep032_quadraticUpdate_tendsto additionally requires 0 < 2*a*eta and 2*a*eta < 2.",
       "source": "fep-032",
       "target": "fep-043",
       "witness": "FEPComposed.fep032_update_is_fep043_gradientStep"
@@ -10732,21 +10738,21 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies the transition-observation filter with fep-017's native posterior at the transition-predicted prior.",
+      "rationale": "The composed theorem identifies fep_fep034.FEP034.fep034_filter definitionally with fep_fep017.FEP017.fep017_posterior at the transition-predicted prior. It retains standard-Borel/nonempty state and finite-measure/finite-kernel assumptions; no new pointwise Bayes identity at null observations is asserted.",
       "source": "fep-034",
       "target": "fep-017",
       "witness": "FEPComposed.fep034_filter_is_fep017_posterior"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+      "rationale": "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos, fep_fep045.FEP045.fep045_bernoulli_posterior_closed, fep_fep045.FEP045.fep045_evidence_pos. Positive binary likelihoods and the smoothed count bounds establish nonzero evidence; no asymptotic empirical-rate theorem is consumed.",
       "source": "fep-036",
       "target": "fep-045",
       "witness": "FEPComposed.fep036_empiricalPosterior_closed"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies fep-037's autocorrelation mode with the exact deviation mode of fep-020's normalized two-state Markov evolution.",
+      "rationale": "The composed theorem applies fep_fep020.FEP020.fep020_iterate_deviation and unfolds fep037_autocorrelation/fep037_relaxation to identify twice the centered two-state evolution with the unit-variance autocorrelation expression. This is an exact algebraic identity for real alpha; normalized Markov or relaxation semantics require their separate parameter-domain assumptions.",
       "source": "fep-037",
       "target": "fep-020",
       "witness": "FEPComposed.fep037_autocorrelation_tracks_fep020"
@@ -10760,35 +10766,35 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem aggregates state energies over fep-005's four unique partition fibres and proves that fep-039's local-energy sum conserves total state energy.",
+      "rationale": "The composed theorem unfolds fep039_global_fe, fep005_blockEnergy and fep005_partitionCover and applies Finset.sum_fiberwise: summing the four partition-fibre energies equals the original sum over Fin 20 for arbitrary real state energies. This is finite partition aggregation, not dynamical energy conservation or conditional independence.",
       "source": "fep-039",
       "target": "fep-005",
       "witness": "FEPComposed.fep039_partitionEnergy_conservation"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law.",
+      "rationale": "The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_eq_zero_iff.",
       "source": "fep-041",
       "target": "fep-014",
       "witness": "FEPComposed.fep041_informationGain_is_fep014_kl"
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+      "rationale": "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos. The success count enters definitionally; List.count_le_length and the two smoothed-rate supporting lemmas establish interiority, not empirical-rate convergence.",
       "source": "fep-042",
       "target": "fep-036",
       "witness": "FEPComposed.fep036_empiricalPosterior_closed"
     },
     {
       "kind": "formal",
-      "rationale": "A single stick-breaking fraction is the Bernoulli law of fep-045 (allocated weight is the true mass, residual is the false mass), and fep-046's mass-conservation theorem derives the normalization of fep-045's conjugate posterior mass function at the posterior parameter. One break only; no Dirichlet-process or infinite-series claim. Added 2026-10-08 (LEAN-8, issue 106).",
+      "rationale": "For a single stick fraction chosen as fep045_posteriorParameter, the composed theorem identifies allocated and residual weights with the true and false Bernoulli-mass definitions and uses fep_fep046.FEP046.fep046_mass_conservation to derive their sum-one identity. This algebra holds for arbitrary real inputs; nonnegative probability interpretation additionally needs a posterior in [0,1]. No general Dirichlet-process or infinite-series claim follows.",
       "source": "fep-046",
       "target": "fep-045",
       "witness": "FEPComposed.fep046_single_break_is_fep045_bernoulli"
     },
     {
       "kind": "formal",
-      "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106).",
+      "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem.",
       "source": "fep-050",
       "target": "fep-049",
       "witness": "FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production"
@@ -10816,7 +10822,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Native double Bayesian inversion recovers the original likelihood almost everywhere, while the fep-017 posterior recovers the prior after a Markov likelihood; the pairing keeps these two sides of involution distinct.",
+      "rationale": "The witness pairs the Bayesian inversion involution with posterior reconstruction under the stated native assumptions; neither endpoint law is derived from the other.",
       "source": "fep-054",
       "target": "fep-017",
       "witness": "FEPComposed.fep054_involution_of_fep017_posterior"
@@ -10858,7 +10864,7 @@
     },
     {
       "kind": "formal",
-      "rationale": "The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound.",
+      "rationale": "The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound. Actual consumed endpoint lemmas: fep_fep002.FEP002.fep002_elbo_bound, fep_fep060.FEP060.fep060_coordinateELBO_decomposition, fep_fep060.FEP060.fep060_coordinateKL_nonnegative. Finite normalized laws/kernels and strictly positive reference prior/kernel support are explicit; the bound uses the nonnegative conditional-KL remainder.",
       "source": "fep-060",
       "target": "fep-002",
       "witness": "FEPComposed.fep060_coordinate_elbo_refines_fep002"
@@ -10879,7 +10885,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "Finite-channel contraction is paired with the native nonnegativity of the pre-channel KL quantity; no unsupported finite-to-measure identification is introduced.",
+      "rationale": "The witness pairs finite channel KL contraction with native KL nonnegativity for separately supplied measures; no finite/native identification is proved.",
       "source": "fep-063",
       "target": "fep-014",
       "witness": "FEPComposed.fep063_channel_dpi_bounds_fep014"
@@ -11082,7 +11088,7 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "On the shared stability interval, predictive error tends to zero and the equivalent centered quadratic iteration from fep-032 tends to its target.",
+      "rationale": "The witness pairs separately proved convergence statements; it does not identify their update maps or establish equivalence of iterations.",
       "source": "fep-092",
       "target": "fep-032",
       "witness": "FEPComposed.fep092_quadratic_convergence_specializes_fep032"
@@ -11243,14 +11249,14 @@
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The simultaneous finite-alphabet frequency bound is paired with the original exact Bernoulli likelihood factorization through finite counts.",
+      "rationale": "The witness pairs the finite event union bound with Bernoulli count-likelihood factorization; neither conjunct is derived from the other.",
       "source": "fep-115",
       "target": "fep-042",
       "witness": "FEPComposed.fep115_frequency_union_bound_extends_fep042_counts"
     },
     {
       "kind": "formal_pairing",
-      "rationale": "The finite posterior loss-gap bound, conditional on a certified log-MGF budget, is paired with fep-001's measure-native variational upper bound without equating finite real KL and native extended KL.",
+      "rationale": "The witness pairs a finite PAC-Bayes bound with an independent native variational-bound instance; the latter is not a consequence of the former.",
       "source": "fep-116",
       "target": "fep-001",
       "witness": "FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound"
@@ -11624,16 +11630,16 @@
   "schema_version": 1,
   "source_origin": "checkout",
   "source_sha256": {
-    "__init__.py": "30c91435dec20f793171b3ffc79a95d2affc3b8419968f98546329483b4f7b91",
+    "__init__.py": "b722a174c3331217ce1d32b16367245f3c1b9ccdb8fe3101e4df6185391ada56",
     "catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
     "catalogue/bodies/closed_loop_policy_trees.py": "66e4396290f1128c0f35b5b9211469a426ebaf4d0e13790467c431251c17780b",
     "catalogue/bodies/collective_inference.py": "fa0b3a94bb49d43a310da37c324e5452f44141cc009c44d487b9ebef78690e80",
     "catalogue/bodies/continuous_time_thermodynamics.py": "d233e8e33bcdb3f7ece4c7af61707a27a339039ddc560340ede0818c616e2959",
     "catalogue/bodies/controlled_markov.py": "0717b3e72f966d93767cc1f359c4b0f6608714b849306bbe3e67c0248a5445e0",
     "catalogue/bodies/core_active_inference.py": "9efae270dc2516b16ccf20572a0964980e5e41fe254fab111ab52fc99d133e99",
-    "catalogue/bodies/core_bayesian_mechanics.py": "0e200577408bfd817161b4622c11bd156f2d7516414eed9e8f99390171f2d88a",
+    "catalogue/bodies/core_bayesian_mechanics.py": "7b5f11269989240e4903956bb76ccecda9c5dd620ede02dd164b2903f5996c57",
     "catalogue/bodies/core_free_energy.py": "060486982f126bbfb515272530574702ee33eec897eaf85bd65411eeefb0938c",
-    "catalogue/bodies/core_information_geometry.py": "0b6c247455728d498ddf68e606296e8546c6b7f9b0de330e4cab94605dace783",
+    "catalogue/bodies/core_information_geometry.py": "b848e656aa42a8dc85a36efa483c3d617ae72a8b857c69a4740d05460e18cd36",
     "catalogue/bodies/core_thermodynamics.py": "937e6de554759c9e3c5fe0090d605f64a0181eb0e636c4af6ffd35d4a249f2f4",
     "catalogue/bodies/exponential_family_geometry.py": "a3c02b9733044f0f1ae3b289bd9ff955de19f0d4acb114044bc4825c1dce4708",
     "catalogue/bodies/finite_sample_risk_calibration.py": "332880b4c4ed76ba1c7660b819e88bcd5ed0f0d1cd9b9f24f1c73780b9351e42",
@@ -11663,7 +11669,7 @@
     "formal/compositions/collective_learning.lean": "a7eaa3e827a2996a398c4ff827dfddef641f1f084be38e0a0fcd8dc378c0f8d1",
     "formal/compositions/continuous_time.lean": "bc88c44e1603d9ce859fcf9704ce4e745ffc1ae5904fb8485aa859c6ec0a56bb",
     "formal/compositions/control_temporal.lean": "f9a0a2bf4e80d8d5981b129d6bddce1b5c2f170a4e294efa0d7e72e3bd322943",
-    "formal/compositions/core.lean": "3461b456ffd598281f0c7881bd06e121db038b9f3753f99549d6dba90459326f",
+    "formal/compositions/core.lean": "0e178e79b5f9c90c16cdaa3cf6744677e22aea9902f5a5c2a8fea45bb8bf1446",
     "formal/compositions/efe_policy_selection.lean": "d543a4e0bf779d2dfe10976b573cbba17d45ee1fe234ebfceec788fa5877d9cc",
     "formal/compositions/efe_time_scale_separation.lean": "deaf0ae9abf3ad40c53304c186e354c8ee0855380be862c71466fa7112cb4066",
     "formal/compositions/exponential_family.lean": "8726c522ebec4d0417c3caab742f8f8f60e14e285e94fbd637037200fee48c62",
@@ -11728,9 +11734,9 @@
     "formal/temporal_inference.lean": "25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b",
     "formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
     "inputs/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
-    "inputs/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "inputs/formalism_relations.yaml": "4be4d4e572bdcd62a55420279bcd8a8ff503d22a8375fc3fcf64b130b5e315c7",
     "inputs/positioning.yaml": "d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d",
-    "inputs/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "inputs/theorem_maturity.yaml": "554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383",
     "lean_source.py": "0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104",
     "methods/__init__.py": "7246bb68d195e00200fef71eec65bf91f538e1a673e6f4b4ff86ddbdcb121d72",
     "methods/model.py": "e95371643dc94823982cccbbc82663893c456c987b3096d41248c90de45d459e",
@@ -155592,7 +155598,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -155601,7 +155610,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.activeInference_expectedFreeEnergy_to_fep021",
-        "source_line": 52,
+        "source_line": 56,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem activeInference_expectedFreeEnergy_to_fep021\n    {Policy State Outcome : Type*}\n    [Fintype Policy] [Fintype State] [Fintype Outcome]\n    (model : FEP.ActiveInference.GenerativeModel Policy State Outcome)\n    (policy : Policy) :\n    ENNReal.ofReal (FEP.ActiveInference.expectedFreeEnergy model policy) =\n      fep_fep021.FEP021.fep021_expectedFreeEnergy\n        (ENNReal.ofReal (FEP.ActiveInference.pragmaticCost model policy))\n        (ENNReal.ofReal (FEP.ActiveInference.epistemicValue model policy))",
         "statement_sha256": "ecb2042ff154b7822097f6dc472d5db69434fb58a5b80feb3752c416a0300bc5"
@@ -155738,7 +155747,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -155747,7 +155759,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep002_vfe_compProd_chain_rule",
-        "source_line": 68,
+        "source_line": 72,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep002_vfe_compProd_chain_rule\n    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]\n    (μ ν : Measure α) (κ η : Kernel α β)\n    [IsFiniteMeasure μ] [IsFiniteMeasure ν]\n    [IsMarkovKernel κ] [IsMarkovKernel η]\n    (surprisal : ENNReal) :\n    fep_fep002.FEP002.fep002_variationalFreeEnergy\n        (μ ⊗ₘ κ) (ν ⊗ₘ η) surprisal =\n      surprisal +\n        (InformationTheory.klDiv μ ν +\n          InformationTheory.klDiv (μ ⊗ₘ κ) (μ ⊗ₘ η))",
         "statement_sha256": "f60958326ea657384132dea1df2a17494902aa7e36f043d47b17a8601a151e03"
@@ -155843,7 +155855,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -155852,7 +155867,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep003_pragmaticCost_efe_balance",
-        "source_line": 214,
+        "source_line": 218,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep003_pragmaticCost_efe_balance\n    (discount : ENNReal) (stageCost : ℕ → ENNReal) (horizon : ℕ)\n    (epistemicValue : ENNReal)\n    (hvalue : epistemicValue ≤\n      fep_fep003.FEP003.fep003_pragmaticCost discount stageCost horizon) :\n    fep_fep021.FEP021.fep021_expectedFreeEnergy\n          (fep_fep003.FEP003.fep003_pragmaticCost discount stageCost horizon)\n          epistemicValue + epistemicValue =\n      fep_fep003.FEP003.fep003_pragmaticCost discount stageCost horizon",
         "statement_sha256": "372d8ff6fcb524916e2e02b8a852e03a02ee6def113a55e96ab2486dbb9c337f"
@@ -155903,7 +155918,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -155912,7 +155930,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep004_bernoulliMetric_specialization",
-        "source_line": 255,
+        "source_line": 259,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep004_bernoulliMetric_specialization (p v w : ℝ) :\n    fep_fep004.FEP004.fep004_fisherMetric\n        (ι := Unit)\n        (fun _ => fep_fep038.FEP038.fep038_fisherInformation p)\n        (fun _ => v) (fun _ => w) =\n      fep_fep038.FEP038.fep038_fisherMetric p v w",
         "statement_sha256": "993be8f56f32f67d0374b536051468d0843e941182dce42ab56418ea4fc02d1b"
@@ -156008,7 +156026,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156017,7 +156038,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep007_normalizedMessage_is_fep028_softmax",
-        "source_line": 381,
+        "source_line": 386,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep007_normalizedMessage_is_fep028_softmax\n    (gamma : ℝ) (cost : Fin 10 → ℝ) (neighbors : Finset (Fin 8))\n    (hNeighbors : neighbors.Nonempty) (node : Fin 8) :\n    (∀ target : Fin 8,\n      fep_fep007.FEP007.fep007_normalizedMessage\n          (fun _ source =>\n            Real.exp (-gamma * cost (Fin.castLE (by norm_num) source)))\n          (fun _ => 1) neighbors node target =\n        fep_fep028.FEP028.fep028_softmax gamma cost\n          (neighbors.map ⟨Fin.castLE (by norm_num), Fin.castLE_injective _⟩)\n          (Fin.castLE (by norm_num) target)) ∧\n      (∑ policy ∈ neighbors.map\n          ⟨Fin.castLE (by norm_num), Fin.castLE_injective _⟩,\n        fep_fep028.FEP028.fep028_softmax gamma cost\n          (neighbors.map ⟨Fin.castLE (by norm_num), Fin.castLE_injective _⟩)\n          policy = 1)",
         "statement_sha256": "c6ec46a8f7769f48fa053643e483fc1538d6a4242cc0da632360cc3651d628b3"
@@ -156135,7 +156156,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156144,7 +156168,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep012_softmax_entropyRegularizedCost_le",
-        "source_line": 273,
+        "source_line": 277,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep012_softmax_entropyRegularizedCost_le\n    (γ : ℝ) (cost : Fin 10 → ℝ) (policies : Finset (Fin 10))\n    (hne : policies.Nonempty) {temperature : ℝ} (htemperature : 0 ≤ temperature) :\n    fep_fep012.FEP012.fep012_entropyRegularizedCost\n        (fep_fep028.FEP028.fep028_softmax γ cost policies)\n        cost temperature ≤\n      fep_fep012.FEP012.fep012_expectedCost\n        (fep_fep028.FEP028.fep028_softmax γ cost policies) cost",
         "statement_sha256": "b98488cd22c069a26d20178c62fdcf05a5a825a2678413350dc1d9cabbebf1ff"
@@ -156227,7 +156251,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156236,10 +156263,187 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_gaussianHelmholtz_derivative",
-        "source_line": 293,
+        "source_line": 297,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_gaussianHelmholtz_derivative\n    {κ T : ℝ} (hκ : 0 < κ) (hT : 0 < T) :\n    HasDerivAt\n      (fun t => fep_fep013.FEP013.fep013_helmholtz\n        (t / 2) t (fep_fep040.FEP040.fep040_thermalEntropy κ t))\n      (-fep_fep040.FEP040.fep040_thermalEntropy κ T) T",
         "statement_sha256": "731927a33de8d94e10b9d0b56bdc70f8f0c2540e81816b0ddb5cfe45d7085fe2"
+      },
+      "FEPComposed.fep018_coordinate_derivative_is_fep038": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "p"
+            ],
+            "role": "typed_binder",
+            "source": "{p : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hp0"
+            ],
+            "role": "typed_binder",
+            "source": "(hp0 : 0 < p)",
+            "type_source": "0 < p",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hp1"
+            ],
+            "role": "typed_binder",
+            "source": "(hp1 : p < 1)",
+            "type_source": "p < 1",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Ω"
+            ],
+            "role": "typed_binder",
+            "source": "{Ω : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_information_geometry",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.geometric_optimization",
+          "FepSketches.active_inference",
+          "FepSketches.information_geometry",
+          "FepSketches.markov_blanket",
+          "FepSketches.statistical_convergence",
+          "FepSketches.controlled_markov",
+          "FepSketches.temporal_inference",
+          "FepSketches.path_thermodynamics",
+          "FepSketches.geometric_optimization",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [
+          "{Ω : Type*}"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep018_coordinate_derivative_is_fep038",
+        "source_line": 538,
+        "source_owner": "src/fep_lean/formal/compositions/core.lean",
+        "statement": "theorem fep018_coordinate_derivative_is_fep038 {p : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p",
+        "statement_sha256": "9e619e4116c5405d06496af930df1a547d93250709a8becd86aa08ac34b274a3"
+      },
+      "FEPComposed.fep018_fep038_actual_metric_pullback": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "p",
+              "v",
+              "w"
+            ],
+            "role": "typed_binder",
+            "source": "{p v w : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hp0"
+            ],
+            "role": "typed_binder",
+            "source": "(hp0 : 0 < p)",
+            "type_source": "0 < p",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hp1"
+            ],
+            "role": "typed_binder",
+            "source": "(hp1 : p < 1)",
+            "type_source": "p < 1",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p ∧\n    fep_fep038.FEP038.fep038_fisherMetric p v w =\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * v) *\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * w)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Ω"
+            ],
+            "role": "typed_binder",
+            "source": "{Ω : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "fep018_coordinate_derivative_is_fep038",
+            "qualified_name": "FEPComposed.fep018_coordinate_derivative_is_fep038",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep038.FEP038.fep038_fisherMetric_pullback",
+            "qualified_name": "fep_fep038.FEP038.fep038_fisherMetric_pullback",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_information_geometry",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.geometric_optimization",
+          "FepSketches.active_inference",
+          "FepSketches.information_geometry",
+          "FepSketches.markov_blanket",
+          "FepSketches.statistical_convergence",
+          "FepSketches.controlled_markov",
+          "FepSketches.temporal_inference",
+          "FepSketches.path_thermodynamics",
+          "FepSketches.geometric_optimization",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [
+          "{Ω : Type*}"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep018_fep038_actual_metric_pullback",
+        "source_line": 563,
+        "source_owner": "src/fep_lean/formal/compositions/core.lean",
+        "statement": "theorem fep018_fep038_actual_metric_pullback {p v w : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p ∧\n    fep_fep038.FEP038.fep038_fisherMetric p v w =\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * v) *\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * w)",
+        "statement_sha256": "397c48fcf1fa0c4f2db84551a22f44263eaff0675f115736e2951e6775542995"
       },
       "FEPComposed.fep021_informationGain_balance": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -156331,7 +156535,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156340,7 +156547,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep021_informationGain_balance",
-        "source_line": 201,
+        "source_line": 205,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep021_informationGain_balance\n    {State : Type*} [MeasurableSpace State]\n    (posterior prior : Measure State) (pragmaticCost : ENNReal)\n    (hvalue :\n      fep_fep041.FEP041.fep041_informationGain posterior prior ≤ pragmaticCost) :\n    fep_fep021.FEP021.fep021_expectedFreeEnergy pragmaticCost\n          (fep_fep041.FEP041.fep041_informationGain posterior prior) +\n        fep_fep041.FEP041.fep041_informationGain posterior prior =\n      pragmaticCost",
         "statement_sha256": "efd86353af9fbbe31d4385b10c8436797529f46c710867ea693114d578fbdc8f"
@@ -156469,7 +156676,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156478,7 +156688,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep022_predictive_is_hierarchical_marginal",
-        "source_line": 105,
+        "source_line": 109,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep022_predictive_is_hierarchical_marginal\n    {𝓒 Ω 𝓧 : Type*}\n    [MeasurableSpace 𝓒] [MeasurableSpace Ω] [MeasurableSpace 𝓧]\n    (ν : Measure 𝓒) (posterior : Kernel 𝓒 Ω) (likelihood : Kernel Ω 𝓧)\n    [SFinite ν] [IsSFiniteKernel posterior] [IsSFiniteKernel likelihood] :\n    (fep_fep027.FEP027.fep027_hierarchicalJoint ν\n      (fep_fep022.FEP022.fep022_posteriorPredictive posterior likelihood)).snd =\n        likelihood ∘ₘ (posterior ∘ₘ ν)",
         "statement_sha256": "69c61db96ca65dea792e0b3d41d8b5936c4ffec1ea806b0480be691a43b8ab59"
@@ -156564,7 +156774,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156573,7 +156786,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep024_regularizer_is_fep014_kl",
-        "source_line": 227,
+        "source_line": 231,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep024_regularizer_is_fep014_kl\n    {α : Type*} [MeasurableSpace α]\n    (base weight : ENNReal) (approximation prior : Measure α) :\n    fep_fep024.FEP024.fep024_klRegularizedObjective\n        base weight approximation prior =\n      base + weight * InformationTheory.klDiv approximation prior ∧\n    0 ≤ InformationTheory.klDiv approximation prior",
         "statement_sha256": "a41c057633445e5d7321be27c17eff9897f9347809952c978488ba7be8c682c5"
@@ -156659,7 +156872,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156668,7 +156884,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep025_current_dissipation_nonneg",
-        "source_line": 180,
+        "source_line": 184,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep025_current_dissipation_nonneg\n    {n : ℕ} (flow : Matrix (Fin n) (Fin n) ℝ)\n    (resistance : Fin n × Fin n → ℝ)\n    (hresistance : ∀ edge, 0 ≤ resistance edge) :\n    0 ≤ fep_fep049.FEP049.fep049_entropyProduction resistance\n      (fun edge =>\n        fep_fep025.FEP025.fep025_probabilityCurrent flow edge.1 edge.2)",
         "statement_sha256": "90023de6dd3fa49f0c45719ad15e67c348743fa7f968f3a996972c3e79639bfc"
@@ -156717,7 +156933,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156726,7 +156945,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep026_priorComplexity_is_fep011_surprise",
-        "source_line": 266,
+        "source_line": 270,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep026_priorComplexity_is_fep011_surprise (p : ℝ) :\n    fep_fep026.FEP026.fep026_priorComplexity p =\n      fep_fep011.FEP011.fep011_surprise p",
         "statement_sha256": "86d2073ba73a0b20d87e92a3d26f6811bc756048ccc7ce58d1e5af16ee051444"
@@ -156835,7 +157054,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156844,7 +157066,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep027_priorPredictive_is_fep019",
-        "source_line": 96,
+        "source_line": 100,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep027_priorPredictive_is_fep019\n    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]\n    (μ : Measure α) (κ : Kernel α β) [SFinite μ] [IsSFiniteKernel κ] :\n    (fep_fep027.FEP027.fep027_hierarchicalJoint μ κ).snd =\n      fep_fep019.FEP019.fep019_priorPredictive κ μ",
         "statement_sha256": "770f616b5b44b5ed1ac0f74b0a1de35fda9bfa2afcc70a24285736bd22746835"
@@ -156902,7 +157124,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156911,10 +157136,490 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance",
-        "source_line": 431,
+        "source_line": 436,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep029_quadraticBregman_is_fep104_scalar_instance (x y z : ℝ) :\n    bregmanDivergence (d := 1) (fun v => v 0 ^ 2) (fun v _ => 2 * v 0)\n        (fun _ => x) (fun _ => y) =\n        fep_fep029.FEP029.fep029_quadraticBregman x y ∧\n      fep_fep029.FEP029.fep029_quadraticBregman x z -\n          fep_fep029.FEP029.fep029_quadraticBregman x y -\n          fep_fep029.FEP029.fep029_quadraticBregman y z =\n        2 * (y - z) * (x - y)",
         "statement_sha256": "cef0776c169b7097f07502c175c3e5167e4a14affdca02dd236663257153429a"
+      },
+      "FEPComposed.fep030_fep031_binary_maxEntropy": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E"
+            ],
+            "role": "typed_binder",
+            "source": "(E : Fin 2 → ℝ)",
+            "type_source": "Fin 2 → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "β"
+            ],
+            "role": "typed_binder",
+            "source": "(β : ℝ)",
+            "type_source": "ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "q"
+            ],
+            "role": "typed_binder",
+            "source": "(q : FiniteLaw (Fin 2))",
+            "type_source": "FiniteLaw (Fin 2)",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hq"
+            ],
+            "role": "typed_binder",
+            "source": "(hq : expectation q E = expectation (energyGibbsLaw E β) E)",
+            "type_source": "expectation q E = expectation (energyGibbsLaw E β) E",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(Real.binEntropy (q 0) ≤ Real.log 2 ∧\n      (Real.binEntropy (q 0) = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)) ∧\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β 2 E Finset.univ i) ∧\n    Real.binEntropy (q 0) ≤ Real.binEntropy (energyGibbsLaw E β 0) ∧\n    (Real.binEntropy (q 0) = Real.binEntropy (energyGibbsLaw E β 0) ↔\n      q = energyGibbsLaw E β)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Ω"
+            ],
+            "role": "typed_binder",
+            "source": "{Ω : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "fep030_fep031_finite_maxEntropy",
+            "qualified_name": "FEPComposed.fep030_fep031_finite_maxEntropy",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep030_fin2_entropy_eq_binEntropy",
+            "qualified_name": "FEPComposed.fep030_fin2_entropy_eq_binEntropy",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff",
+            "qualified_name": "fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep030.FEP030.fep030_binaryEntropy_max",
+            "qualified_name": "fep_fep030.FEP030.fep030_binaryEntropy_max",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_information_geometry",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.geometric_optimization",
+          "FepSketches.active_inference",
+          "FepSketches.information_geometry",
+          "FepSketches.markov_blanket",
+          "FepSketches.statistical_convergence",
+          "FepSketches.controlled_markov",
+          "FepSketches.temporal_inference",
+          "FepSketches.path_thermodynamics",
+          "FepSketches.geometric_optimization",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [
+          "{Ω : Type*}"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep030_fep031_binary_maxEntropy",
+        "source_line": 519,
+        "source_owner": "src/fep_lean/formal/compositions/core.lean",
+        "statement": "theorem fep030_fep031_binary_maxEntropy (E : Fin 2 → ℝ) (β : ℝ)\n    (q : FiniteLaw (Fin 2))\n    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :\n    (Real.binEntropy (q 0) ≤ Real.log 2 ∧\n      (Real.binEntropy (q 0) = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)) ∧\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β 2 E Finset.univ i) ∧\n    Real.binEntropy (q 0) ≤ Real.binEntropy (energyGibbsLaw E β 0) ∧\n    (Real.binEntropy (q 0) = Real.binEntropy (energyGibbsLaw E β 0) ↔\n      q = energyGibbsLaw E β)",
+        "statement_sha256": "6c19d83daec8fe25733c405362626bb30660924d7b3c1cff08c5009e84737c0b"
+      },
+      "FEPComposed.fep030_fep031_finite_maxEntropy": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "n"
+            ],
+            "role": "typed_binder",
+            "source": "{n : ℕ}",
+            "type_source": "ℕ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[NeZero n]",
+            "type_source": "NeZero n",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E"
+            ],
+            "role": "typed_binder",
+            "source": "(E : Fin n → ℝ)",
+            "type_source": "Fin n → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "β"
+            ],
+            "role": "typed_binder",
+            "source": "(β : ℝ)",
+            "type_source": "ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "q"
+            ],
+            "role": "typed_binder",
+            "source": "(q : FiniteLaw (Fin n))",
+            "type_source": "FiniteLaw (Fin n)",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hq"
+            ],
+            "role": "typed_binder",
+            "source": "(hq : expectation q E = expectation (energyGibbsLaw E β) E)",
+            "type_source": "expectation q E = expectation (energyGibbsLaw E β) E",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i) ∧\n    entropy q ≤ entropy (energyGibbsLaw E β) ∧\n    (entropy q = entropy (energyGibbsLaw E β) ↔ q = energyGibbsLaw E β)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Ω"
+            ],
+            "role": "typed_binder",
+            "source": "{Ω : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "candidates": [
+              "FEP.VariationalDuality.energyGibbs_maxEntropy"
+            ],
+            "identifier": "energyGibbs_maxEntropy",
+            "resolution": "unresolved lexical scope",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep031_energyGibbs_is_topicProbability",
+            "qualified_name": "FEPComposed.fep031_energyGibbs_is_topicProbability",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_information_geometry",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.geometric_optimization",
+          "FepSketches.active_inference",
+          "FepSketches.information_geometry",
+          "FepSketches.markov_blanket",
+          "FepSketches.statistical_convergence",
+          "FepSketches.controlled_markov",
+          "FepSketches.temporal_inference",
+          "FepSketches.path_thermodynamics",
+          "FepSketches.geometric_optimization",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [
+          "{Ω : Type*}"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep030_fep031_finite_maxEntropy",
+        "source_line": 491,
+        "source_owner": "src/fep_lean/formal/compositions/core.lean",
+        "statement": "theorem fep030_fep031_finite_maxEntropy {n : ℕ} [NeZero n]\n    (E : Fin n → ℝ) (β : ℝ) (q : FiniteLaw (Fin n))\n    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i) ∧\n    entropy q ≤ entropy (energyGibbsLaw E β) ∧\n    (entropy q = entropy (energyGibbsLaw E β) ↔ q = energyGibbsLaw E β)",
+        "statement_sha256": "a6f98627c558431d5b14b7f8a226957d20eb8e76207830eb65a3e401124b983a"
+      },
+      "FEPComposed.fep030_fin2_entropy_eq_binEntropy": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "q"
+            ],
+            "role": "typed_binder",
+            "source": "(q : FiniteLaw (Fin 2))",
+            "type_source": "FiniteLaw (Fin 2)",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "entropy q = Real.binEntropy (q 0)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Ω"
+            ],
+            "role": "typed_binder",
+            "source": "{Ω : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_information_geometry",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.geometric_optimization",
+          "FepSketches.active_inference",
+          "FepSketches.information_geometry",
+          "FepSketches.markov_blanket",
+          "FepSketches.statistical_convergence",
+          "FepSketches.controlled_markov",
+          "FepSketches.temporal_inference",
+          "FepSketches.path_thermodynamics",
+          "FepSketches.geometric_optimization",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [
+          "{Ω : Type*}"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep030_fin2_entropy_eq_binEntropy",
+        "source_line": 501,
+        "source_owner": "src/fep_lean/formal/compositions/core.lean",
+        "statement": "theorem fep030_fin2_entropy_eq_binEntropy (q : FiniteLaw (Fin 2)) :\n    entropy q = Real.binEntropy (q 0)",
+        "statement_sha256": "51612a4a0095f08b91cf0d444096f811219d1e64ebd602643f358444d80b63c0"
+      },
+      "FEPComposed.fep030_finite_binary_entropy_bound": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "q"
+            ],
+            "role": "typed_binder",
+            "source": "(q : FiniteLaw (Fin 2))",
+            "type_source": "FiniteLaw (Fin 2)",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "entropy q ≤ Real.log 2 ∧\n      (entropy q = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Ω"
+            ],
+            "role": "typed_binder",
+            "source": "{Ω : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "fep030_fin2_entropy_eq_binEntropy",
+            "qualified_name": "FEPComposed.fep030_fin2_entropy_eq_binEntropy",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff",
+            "qualified_name": "fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep030.FEP030.fep030_binaryEntropy_max",
+            "qualified_name": "fep_fep030.FEP030.fep030_binaryEntropy_max",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_information_geometry",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.geometric_optimization",
+          "FepSketches.active_inference",
+          "FepSketches.information_geometry",
+          "FepSketches.markov_blanket",
+          "FepSketches.statistical_convergence",
+          "FepSketches.controlled_markov",
+          "FepSketches.temporal_inference",
+          "FepSketches.path_thermodynamics",
+          "FepSketches.geometric_optimization",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [
+          "{Ω : Type*}"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep030_finite_binary_entropy_bound",
+        "source_line": 511,
+        "source_owner": "src/fep_lean/formal/compositions/core.lean",
+        "statement": "theorem fep030_finite_binary_entropy_bound (q : FiniteLaw (Fin 2)) :\n    entropy q ≤ Real.log 2 ∧\n      (entropy q = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)",
+        "statement_sha256": "79ba79de68a70a1ac52299a7cf9fb7bbed0bac757bf5d6ada8de20d12cb21edc"
+      },
+      "FEPComposed.fep031_energyGibbs_is_topicProbability": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "n"
+            ],
+            "role": "typed_binder",
+            "source": "{n : ℕ}",
+            "type_source": "ℕ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[NeZero n]",
+            "type_source": "NeZero n",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "E"
+            ],
+            "role": "typed_binder",
+            "source": "(E : Fin n → ℝ)",
+            "type_source": "Fin n → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "β"
+            ],
+            "role": "typed_binder",
+            "source": "(β : ℝ)",
+            "type_source": "ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "i"
+            ],
+            "role": "typed_binder",
+            "source": "(i : Fin n)",
+            "type_source": "Fin n",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Ω"
+            ],
+            "role": "typed_binder",
+            "source": "{Ω : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_information_geometry",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.geometric_optimization",
+          "FepSketches.active_inference",
+          "FepSketches.information_geometry",
+          "FepSketches.markov_blanket",
+          "FepSketches.statistical_convergence",
+          "FepSketches.controlled_markov",
+          "FepSketches.temporal_inference",
+          "FepSketches.path_thermodynamics",
+          "FepSketches.geometric_optimization",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [
+          "{Ω : Type*}"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep031_energyGibbs_is_topicProbability",
+        "source_line": 483,
+        "source_owner": "src/fep_lean/formal/compositions/core.lean",
+        "statement": "theorem fep031_energyGibbs_is_topicProbability {n : ℕ} [NeZero n]\n    (E : Fin n → ℝ) (β : ℝ) (i : Fin n) :\n    energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i",
+        "statement_sha256": "6f804fc9158ac1ef059cc40debd8011bcc276c4967304789916bd3c4c45e46c1"
       },
       "FEPComposed.fep031_zeroBeta_binary_maxEntropy": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -156973,7 +157678,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -156982,7 +157690,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep031_zeroBeta_binary_maxEntropy",
-        "source_line": 245,
+        "source_line": 249,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep031_zeroBeta_binary_maxEntropy (E : Fin 2 → ℝ) :\n    Real.binEntropy\n        (fep_fep031.FEP031.fep031_gibbsProbability\n          0 2 E Finset.univ 0) = Real.log 2",
         "statement_sha256": "b0d13a7410ffdc1a8d7feaf0a73ae1f30c5fcf1a34dae0dd1939c5ec51cf27db"
@@ -157031,7 +157739,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157040,7 +157751,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep031_zeroBeta_binary_uniform",
-        "source_line": 238,
+        "source_line": 242,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep031_zeroBeta_binary_uniform (E : Fin 2 → ℝ) :\n    fep_fep031.FEP031.fep031_gibbsProbability\n        0 2 E Finset.univ 0 = (2 : ℝ)⁻¹",
         "statement_sha256": "a8d7127f62599e0c21c90781a214f664f3d1b414088d55dbd6e224d97761b6e4"
@@ -157092,7 +157803,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157101,7 +157815,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep032_update_is_fep043_gradientStep",
-        "source_line": 310,
+        "source_line": 315,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep032_update_is_fep043_gradientStep\n    (η a center x : ℝ) :\n    x - η * fep_fep043.FEP043.fep043_quadraticGradient a center x =\n      fep_fep032.FEP032.fep032_quadraticUpdate (2 * a * η) center x",
         "statement_sha256": "3d7317556477ab24dc41501669d76c7147e571724c9edaf449b7d894e5895dbc"
@@ -157237,7 +157951,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157246,7 +157963,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep034_filter_is_fep017_posterior",
-        "source_line": 84,
+        "source_line": 88,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep034_filter_is_fep017_posterior\n    {Ω 𝓧 : Type*} [MeasurableSpace Ω] [MeasurableSpace 𝓧]\n    (τ : Kernel Ω Ω) (κ : Kernel Ω 𝓧) (μ : Measure Ω)\n    [StandardBorelSpace Ω] [Nonempty Ω]\n    [IsFiniteMeasure μ] [IsFiniteKernel τ] [IsFiniteKernel κ] :\n    fep_fep034.FEP034.fep034_filter τ κ μ =\n      fep_fep017.FEP017.fep017_posterior κ\n        (τ ∘ₘ μ)",
         "statement_sha256": "8b7c37d519d298bc4bcd7c9668118d36ab344ae5e890c60176738e96947f3743"
@@ -157361,7 +158078,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157370,7 +158090,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep036_empiricalPosterior_closed",
-        "source_line": 121,
+        "source_line": 125,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep036_empiricalPosterior_closed\n    (data : List Bool) {l₀ l₁ : ℝ} (hl₀ : 0 < l₀) (hl₁ : 0 < l₁) (b : Bool) :\n    fep_fep045.FEP045.fep045_bernoulliMass\n        (fep_fep045.FEP045.fep045_posteriorParameter\n          (fep_fep036.FEP036.fep036_smoothedRate\n            (fep_fep042.FEP042.fep042_successCount data) data.length)\n          l₀ l₁) b =\n      fep_fep045.FEP045.fep045_bernoulliMass\n          (fep_fep036.FEP036.fep036_smoothedRate\n            (fep_fep042.FEP042.fep042_successCount data) data.length) b *\n        fep_fep045.FEP045.fep045_binaryLikelihood l₀ l₁ b /\n          fep_fep045.FEP045.fep045_evidence\n            (fep_fep036.FEP036.fep036_smoothedRate\n              (fep_fep042.FEP042.fep042_successCount data) data.length)\n            l₀ l₁",
         "statement_sha256": "c98e623d8b5bd22eac37dd18679e66caa3a0cdba1d00a049eebfcf0e609877e3"
@@ -157482,7 +158202,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157491,7 +158214,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep036_smoothedRate_strongLaw",
-        "source_line": 29,
+        "source_line": 33,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep036_smoothedRate_strongLaw\n    [MeasurableSpace Ω] (μ : Measure Ω) (observations : ℕ → Ω → Bool)\n    (hint : Integrable (indicator observations 0) μ)\n    (hindep : Pairwise (fun i j =>\n      indicator observations i ⟂ᵢ[μ] indicator observations j))\n    (hident : ∀ index,\n      IdentDistrib (indicator observations index)\n        (indicator observations 0) μ μ) :\n    ∀ᵐ ω ∂μ,\n      Tendsto\n        (fun n =>\n          fep_fep036.FEP036.fep036_smoothedRate\n            (successCount observations n ω) n)\n        atTop (nhds μ[indicator observations 0])",
         "statement_sha256": "2fed250d046a85f1381267cdacde4174cbd889b2deb945caf9d78b1d4187779f"
@@ -157557,7 +158280,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157566,7 +158292,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep037_autocorrelation_tracks_fep020",
-        "source_line": 191,
+        "source_line": 195,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep037_autocorrelation_tracks_fep020 (α : ℝ) (n : ℕ) :\n    2 * (((fep_fep020.FEP020.fep020_evolve α)^[n]) 1 - 1 / 2) =\n      fep_fep037.FEP037.fep037_autocorrelation α 1 n",
         "statement_sha256": "16121f404700d679b4ca09c6df0ea4bcff9bbba5bf0d3082dc0c4c426b02bcd1"
@@ -157660,7 +158386,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157669,7 +158398,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep038_fisherRao_separation",
-        "source_line": 154,
+        "source_line": 158,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep038_fisherRao_separation\n    {p q v : ℝ} (hp : p ∈ Set.Ioo (0 : ℝ) 1)\n    (hq : q ∈ Set.Icc (0 : ℝ) 1) (hv : v ≠ 0) :\n    (fep_fep018.FEP018.fep018_fisherRaoDistance p q = 0 ↔ p = q) ∧\n      0 < fep_fep038.FEP038.fep038_fisherMetric p v v",
         "statement_sha256": "22de169e1c5d28f944eccaffe03802d5b8892e521200fd0f795d92a20424d2a1"
@@ -157728,7 +158457,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157737,7 +158469,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep039_partitionEnergy_conservation",
-        "source_line": 327,
+        "source_line": 332,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep039_partitionEnergy_conservation\n    (assign : Fin 20 → fep_fep005.FEP005.BlkPart)\n    (stateEnergy : Fin 20 → ℝ) :\n    fep_fep039.FEP039.fep039_global_fe\n        (fep005_blockEnergy assign stateEnergy) =\n      ∑ state : Fin 20, stateEnergy state",
         "statement_sha256": "99eb2abe782363cfa2fc123e3cb6808a08fa0af937ec95289eb12e3e36baa691"
@@ -157828,7 +158560,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157837,7 +158572,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep041_informationGain_is_fep014_kl",
-        "source_line": 166,
+        "source_line": 170,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep041_informationGain_is_fep014_kl\n    {State : Type*} [MeasurableSpace State]\n    (posterior prior : Measure State)\n    [IsFiniteMeasure posterior] [IsFiniteMeasure prior] :\n    fep_fep041.FEP041.fep041_informationGain posterior prior =\n        InformationTheory.klDiv posterior prior ∧\n      (fep_fep041.FEP041.fep041_informationGain posterior prior = 0 ↔\n        posterior = prior)",
         "statement_sha256": "63ab0110391c9ac83777b99becebd113e5178b3d94be56261a93cf68f87a99b2"
@@ -157895,7 +158630,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -157904,7 +158642,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep046_single_break_is_fep045_bernoulli",
-        "source_line": 342,
+        "source_line": 347,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep046_single_break_is_fep045_bernoulli (p l₀ l₁ : ℝ) :\n    fep_fep046.FEP046.fep046_stickWeights\n          [fep_fep045.FEP045.fep045_posteriorParameter p l₀ l₁] =\n        [fep_fep045.FEP045.fep045_bernoulliMass\n          (fep_fep045.FEP045.fep045_posteriorParameter p l₀ l₁) true] ∧\n      fep_fep046.FEP046.fep046_remainder\n          [fep_fep045.FEP045.fep045_posteriorParameter p l₀ l₁] =\n        fep_fep045.FEP045.fep045_bernoulliMass\n          (fep_fep045.FEP045.fep045_posteriorParameter p l₀ l₁) false ∧\n      ∑ b : Bool, fep_fep045.FEP045.fep045_bernoulliMass\n          (fep_fep045.FEP045.fep045_posteriorParameter p l₀ l₁) b = 1",
         "statement_sha256": "dd982859e1b9f4470aefa5ffb441364cf3bbf433d4b2b894f97e3890f3c132e0"
@@ -158038,7 +158776,10 @@
           "FepSketches.temporal_inference",
           "FepSketches.path_thermodynamics",
           "FepSketches.geometric_optimization",
-          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "FepSketches.variational_duality",
+          "Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv",
+          "Mathlib.Analysis.SpecialFunctions.Sqrt"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEPComposed",
@@ -158047,7 +158788,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production",
-        "source_line": 458,
+        "source_line": 463,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep050_landauer_work_bound_from_fep049_entropy_production\n    {Edge : Type*} [Fintype Edge] {W Q T kB : ℝ} (hT : 0 < T)\n    (conductance force : Edge → ℝ)\n    (hConductance : ∀ edge, 0 ≤ conductance edge)\n    (hBalance : fep_fep050.FEP050.fep050_totalEntropyChange Q T kB =\n      fep_fep049.FEP049.fep049_entropyProduction conductance force)\n    (hWorkHeat : Q ≤ W) :\n    fep_fep050.FEP050.fep050_landauerBound kB T ≤ W",
         "statement_sha256": "82ff123cea446838c45179e6b5ad754244b725192146e1734cd271f8f1c918a0"
@@ -218231,7 +218972,7 @@
         "disposition": "formalized",
         "id": "fep-003",
         "invariant": "Finite-horizon pragmatic cost is the discounted ENNReal sum of stage costs; horizon extension exposes the exact terminal increment, costs are pointwise monotone, and horizon extension is monotone.",
-        "non_vacuity": "A positive stage cost at the newly exposed time adds the nonzero increment γ^T c_T; a zero horizon and pointwise-equal costs exercise the boundaries.",
+        "non_vacuity": "For positive discount and positive new stage cost, the terminal increment is nonzero; strict growth of the total additionally requires the previous accumulated cost to be finite. Discount zero at positive horizons exposes the zero-increment boundary.",
         "primary_theorem": "fep003_pragmaticCost_succ",
         "supporting_theorems": [
           "fep003_pragmaticCost_zero",
@@ -218508,7 +219249,7 @@
       "area": "BayesianMechanics",
       "body_source": "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py",
       "body_theorem_count": 7,
-      "canonical_body_sha256": "64378d0569fc90460fd6a81062c35374ff5e72a5f80866dde827fd682ac1e393",
+      "canonical_body_sha256": "c350ce4b0b5d2a759d1891d7ff36f7e4e55389b1d668bbfa5703b1817274979c",
       "canonical_namespace": "FEP009",
       "family": "core-bayesian-mechanics",
       "id": "fep-009",
@@ -218773,7 +219514,7 @@
         "disposition": "formalized",
         "id": "fep-013",
         "invariant": "For differentiable U(T) and S(T), Helmholtz free energy has derivative U'−S−TS'; under the equilibrium first-law identity U'=TS', this reduces exactly to dF/dT=−S.",
-        "non_vacuity": "The fep-040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at every positive temperature, yielding a compiled nonconstant physical witness.",
+        "non_vacuity": "The fep040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at positive scale and temperature, yielding a nonconstant mathematical model with explicit dimensionless units.",
         "primary_theorem": "fep013_helmholtz_derivative_eq_neg_entropy",
         "supporting_theorems": [
           "fep013_helmholtz_at_zero_temp",
@@ -218981,7 +219722,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep017_posterior_mass_one, fep017_posterior_joint_reconstruction, fep017_posterior_recovers_prior, and fep017_posterior_bayes_density.",
-        "assumption_review": "Conditional on standard-Borel and nonempty latent structure plus finite prior and likelihood kernel. The Radon--Nikodym Bayes formula additionally uses countability of the latent space and standard-Borel observation structure. This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors.",
+        "assumption_review": "Conditional on standard-Borel and nonempty latent structure plus finite prior and likelihood kernel. The Radon--Nikodym Bayes formula additionally uses countability of the latent space and standard-Borel observation structure. This is a regular posterior-kernel theorem, not a claim about learned or approximate posteriors. The Bayes-density formula additionally assumes countable latent and nonempty standard-Borel observation structure and holds only almost everywhere under the predictive law. Every selected posterior fibre is normalized, including version choices at null observations.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-017",
@@ -219515,7 +220256,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep027_hierarchical_mass_one, fep027_hierarchical_fst, fep027_hierarchical_snd, and fep027_hierarchical_assoc.",
-        "assumption_review": "Joint normalization requires a probability parent and Markov child; first- and second-marginal identities require the stated finite-kernel classes. The associativity theorem is exact for Mathlib composition products and does not impose causal identifiability.",
+        "assumption_review": "Joint normalization requires a probability parent and Markov child. First marginal requires an SFinite parent and Markov child; second marginal requires an SFinite parent and SFinite child. Associativity is the native compProd identity; no causal identifiability is imposed.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-027",
@@ -219575,7 +220316,7 @@
         "disposition": "formalized",
         "id": "fep-028",
         "invariant": "Exponentiated policy scores on a nonempty selected support define a nonnegative full finite weight vector, vanish outside support, are pointwise at most one, and sum to one globally.",
-        "non_vacuity": "A two-policy support with unequal costs gives unequal positive weights, while excluded policies have exact zero mass and the full ten-policy vector remains normalized.",
+        "non_vacuity": "With positive inverse temperature and a two-policy support of unequal costs, lower cost receives a strictly larger positive weight. At inverse temperature zero the law is uniform on support; excluded policies have zero mass. The full ten-policy vector remains normalized.",
         "primary_theorem": "fep028_softmax_sum_univ",
         "supporting_theorems": [
           "fep028_softmax_nonneg",
@@ -219593,7 +220334,7 @@
       "area": "InfoGeometry",
       "body_source": "src/fep_lean/catalogue/bodies/core_information_geometry.py",
       "body_theorem_count": 7,
-      "canonical_body_sha256": "37e07426b925405bf2d0c405a827deb1755c623dfd77f2ac57db947780dcb1c0",
+      "canonical_body_sha256": "252b9c9d4a43eefb0e355236c7d8de08a455965bf672b7e35fcc15f53df72c32",
       "canonical_namespace": "FEP029",
       "family": "core-information-geometry",
       "id": "fep-029",
@@ -219740,12 +220481,12 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of partition positivity, pointwise nonnegativity, and support normalization.",
-        "assumption_review": "Conditional only on a nonempty selected support; β and energies are arbitrary reals. The row does not derive Gibbs weights from maximum entropy or bundle the result as a measure.",
+        "assumption_review": "Conditional only on a nonempty selected support; β and energies are arbitrary reals. The row does not derive Gibbs weights from maximum entropy or bundle the result as a measure. The expression sums to one only over the selected support and is not zero outside it. A support subtype or full support is required for an ambient normalized law.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-031",
         "invariant": "Positive exponential Gibbs weights normalize to a nonnegative mass function summing to one on any nonempty finite support.",
-        "non_vacuity": "A singleton support has normalized mass one, while two unequal energies produce distinct positive normalized weights.",
+        "non_vacuity": "A singleton selected support has mass one on that support. Two unequal energies give distinct weights when beta is nonzero, with lower energy receiving higher weight for positive beta; beta zero yields uniform supported weights.",
         "primary_theorem": "fep031_gibbsProbability_sum_one",
         "supporting_theorems": [
           "fep031_gibbs_weight_pos",
@@ -219897,7 +220638,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep034_predictive_mass, fep034_filter_mass_one, fep034_filter_joint_reconstruction, and fep034_filter_recovers_prediction.",
-        "assumption_review": "Conditional on standard-Borel nonempty latent structure, a finite prior, and finite transition and observation kernels; prediction preserves total mass when the transition is Markov, and posterior recovery additionally requires a Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem.",
+        "assumption_review": "Conditional on standard-Borel nonempty latent structure, a finite prior, and finite transition and observation kernels; prediction preserves total mass when the transition is Markov, and posterior recovery additionally requires a Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem. Posterior normalization holds in every fibre of the selected Markov version; Bayes reconstruction identifies the version only relative to the predictive observation law, so no unique pointwise Bayes ratio at null observations is asserted.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-034",
@@ -220072,7 +220813,7 @@
         "disposition": "formalized",
         "id": "fep-037",
         "invariant": "For the symmetric two-state relaxation eigenvalue 1-2α, stationary autocorrelation obeys an exact recurrence and decays for 0<α<1; the discrete fluctuation--response kernel equals 2βα variance times the same geometric mode and also decays.",
-        "non_vacuity": "For α=1/4, positive β, and nonzero variance, lag-zero response is positive and both correlation and response decay geometrically by 1/2.",
+        "non_vacuity": "For alpha=1/4, positive beta and strictly positive variance, lag-zero response is positive and both defined correlation and response decay geometrically by1/2.",
         "primary_theorem": "fep037_response_eq",
         "supporting_theorems": [
           "fep037_autocorrelation_recurrence",
@@ -220124,11 +220865,11 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep038_bernoulliMass_hasDerivAt, fep038_expectedScore_zero, fep038_fisherInformation_eq, fep038_fisherMetric_pos, fep038_naturalGradient_duality, and fep038_fisherMetric_coordinate.",
-        "assumption_review": "Metric positivity, inverse-metric duality, and the coordinate law require an interior Bernoulli parameter 0 < p < 1. This is a complete one-dimensional Bernoulli information geometry, not a general finite- or infinite-dimensional statistical manifold.",
+        "assumption_review": "Metric positivity, inverse-metric duality and the coordinate-Jacobian algebra require 0 < p < 1. Identification of that supplied expression with the derivative of the authored 2*arcsin(sqrt p) coordinate requires the separately reviewed interior HasDerivAt bridge. No path-length theorem or general statistical manifold is asserted by the current topic declarations.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-038",
-        "invariant": "The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines a dual natural gradient and is the pullback of the Euclidean metric along the Fisher--Rao coordinate.",
+        "invariant": "The differentiated Bernoulli family has zero expected score and Fisher information 1/(p(1-p)); its inverse metric defines a dual natural gradient. The supplied coordinate-Jacobian expression squares to Fisher information and factorizes the metric.",
         "non_vacuity": "At p = 1/2 the Fisher information is 4, every nonzero tangent has positive metric norm, and the natural-gradient map rescales nonzero covectors by 1/4.",
         "primary_theorem": "fep038_fisherInformation_eq",
         "supporting_theorems": [
@@ -220389,7 +221130,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep043_localMin_deriv_zero, fep043_quadratic_hasDerivAt, fep043_quadratic_unique_min, fep043_quadratic_critical_iff, and fep043_quadratic_hessian_pos.",
-        "assumption_review": "The general derivative-zero theorem uses Mathlib's local-minimum notion. Uniqueness and positive second derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable objectives.",
+        "assumption_review": "The general derivative-zero theorem uses Mathlib's local-minimum notion. Uniqueness and positive second derivative are proved only for the explicit scalar quadratic with a>0, not inferred for arbitrary differentiable objectives. The general deriv = 0 wrapper uses Mathlib's totalized derivative, which is zero also at nondifferentiable points; only the explicit quadratic HasDerivAt declarations establish differentiability here.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-043",
@@ -220498,8 +221239,8 @@
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-045",
-        "invariant": "For a nonzero evidence normalizer, likelihood-times-Bernoulli-prior mass normalizes pointwise to another Bernoulli law at the Bayes-updated parameter.",
-        "non_vacuity": "Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one; equal likelihoods leave the prior parameter unchanged algebraically.",
+        "invariant": "For nonzero evidence, likelihood-times-prior masses have the Bernoulli mass-vector form at the updated parameter. A probability-law interpretation additionally requires a prior in [0,1], nonnegative likelihoods and positive evidence.",
+        "non_vacuity": "Unequal positive likelihoods move an interior prior parameter while posterior mass still sums to one. Equal nonzero likelihoods preserve the prior; both zero expose the refused evidence boundary.",
         "primary_theorem": "fep045_bernoulli_posterior_closed",
         "supporting_theorems": [
           "fep045_evidence_pos",
@@ -220595,7 +221336,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep047_forward_nonneg, fep047_forward_mono, fep047_zero_in, fep047_identity, and fep047_forward_compose using Mathlib Matrix.mulVec_mulVec.",
-        "assumption_review": "Nonnegativity and monotonicity require entrywise nonnegative factors and inputs. Identity and composition are unconditional algebraic laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence.",
+        "assumption_review": "Nonnegativity preservation requires nonnegative factors and inputs. Order monotonicity requires nonnegative factors and pointwise ordered inputs, which may themselves be negative. Identity/composition are unconditional algebraic laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-047",
@@ -220657,7 +221398,7 @@
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-048",
-        "invariant": "Mathlib's global ContractingWith contract gives a unique fixed point on ℝ, and iterations of the concrete halving update converge to zero.",
+        "invariant": "Any two fixed points of a global ContractingWith map on ℝ coincide; the concrete halving map has unique fixed point zero and its iterates converge to zero.",
         "non_vacuity": "The nonconstant update x ↦ x/2 is certified with coefficient 1/2, has zero as its unique fixed point, and has iterates converging to zero from every real start.",
         "primary_theorem": "fep048_contraction_unique",
         "supporting_theorems": [
@@ -220818,7 +221559,7 @@
         "disposition": "formalized",
         "id": "fep-051",
         "invariant": "A native Radon–Nikodym derivative reconstructs a target measure from its reference exactly when the target is absolutely continuous with respect to that reference.",
-        "non_vacuity": "Taking target equal to reference supplies a reconstructible case, while any target with a nonzero singular component lies on the theorem's explicit failure boundary.",
+        "non_vacuity": "Equal finite reference/target laws supply a concrete reconstructible case with the required decomposition instance; a nonzero singular component gives the explicit failure boundary.",
         "primary_theorem": "fep051_likelihoodRatio_reconstruction",
         "supporting_theorems": []
       },
@@ -221227,7 +221968,7 @@
         "disposition": "formalized",
         "id": "fep-060",
         "invariant": "A finite joint ELBO separates exactly into a prior-coordinate score minus an expected conditional KL remainder, and that remainder is nonnegative.",
-        "non_vacuity": "Distinct actual and reference kernels yield a positive conditional remainder; matching kernels collapse only that coordinate penalty while leaving the prior-coordinate score visible.",
+        "non_vacuity": "If actual and reference rows differ at a latent state of positive actual-prior mass, the conditional remainder is positive. Differences confined to zero-prior rows need not contribute. Matching kernels make this coordinate penalty zero while leaving the prior score visible.",
         "primary_theorem": "fep060_coordinateELBO_decomposition",
         "supporting_theorems": [
           "fep060_coordinateKL_nonnegative"
@@ -221323,7 +222064,7 @@
         "disposition": "formalized",
         "id": "fep-062",
         "invariant": "For a positive fixed sample count and positive weights, the IID product-law expectation of the log sample-mean weight is at most the log of its expected sample-mean weight.",
-        "non_vacuity": "Nonconstant positive importance weights on a nonempty finite carrier give a genuinely random positive sample mean; a one-sample law recovers the base finite Jensen inequality.",
+        "non_vacuity": "A sampling law assigning positive probability to two different weight values gives a genuinely random sample mean. Nonconstant weights off the sampling support do not. A one-sample law recovers finite weighted Jensen.",
         "primary_theorem": "fep062_iidProduct_importanceJensen",
         "supporting_theorems": [
           "fep062_fixedSample_importanceJensen",
@@ -221726,7 +222467,7 @@
         "disposition": "structural_proxy",
         "id": "fep-070",
         "invariant": "A prior-weighted exponential action score normalizes to a control posterior whose mass reconstructs the unnormalized score.",
-        "non_vacuity": "Unequal action costs and a supported prior reweight actions nonuniformly; identically zero costs return the prior exactly for every precision.",
+        "non_vacuity": "For nonzero precision and two positive-prior actions with distinct costs, their posterior odds differ from prior odds. Zero precision or constant supported costs preserves the prior; zero cost does so for every precision.",
         "primary_theorem": "fep070_controlPosterior_reconstruction",
         "supporting_theorems": [
           "fep070_controlPosterior_normalized"
@@ -221768,7 +222509,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep071_sophisticatedEFE_backward_step, fep071_twoStage_feedback_changes_action, and fep071_twoStage_feedback_strictly_better.",
-        "assumption_review": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning.",
+        "assumption_review": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately.",
         "boundary_theorems": [],
         "disposition": "conditional_proxy",
         "id": "fep-071",
@@ -221866,7 +222607,7 @@
         "disposition": "formalized",
         "id": "fep-073",
         "invariant": "Finite backward information messages obey the exact future-observation recursion and preserve nonnegativity from one message to the preceding one.",
-        "non_vacuity": "A nonempty future-observation list and nonconstant emission kernel produce a state-dependent backward message rather than only the terminal unit message.",
+        "non_vacuity": "An identity transition with differing likelihoods of the observed symbol gives a state-dependent backward message. Identical transition rows may erase that dependence even when emission rows differ.",
         "primary_theorem": "fep073_backward_message_recursion",
         "supporting_theorems": [
           "fep073_backward_message_nonnegative"
@@ -221910,7 +222651,7 @@
         "disposition": "formalized",
         "id": "fep-074",
         "invariant": "At positive normalizer, a finite smoothing marginal factors into forward law times backward information, and one-step forward and backward computations agree on observation evidence.",
-        "non_vacuity": "Nonconstant backward messages reweight a nondegenerate forward law, while the evidence-agreement theorem connects independently expressed forward and backward one-step calculations.",
+        "non_vacuity": "Backward weights differing at two positive-forward-mass states reweight their odds; differences confined to zero-forward-mass states do not affect the normalized law.",
         "primary_theorem": "fep074_forwardBackward_smoothing_factorization",
         "supporting_theorems": [
           "fep074_forward_backward_evidence_agreement"
@@ -222007,7 +222748,7 @@
         "disposition": "formalized",
         "id": "fep-076",
         "invariant": "A finite prior-weighted exponential energy tilt is normalized and reconstructs its unnormalized weight, with zero energy acting as the identity update.",
-        "non_vacuity": "Nonconstant energies reweight any prior with supported alternatives, whereas the zero-energy boundary leaves every prior law unchanged.",
+        "non_vacuity": "Energy values differing on two positive-prior-mass states change their odds. Energies constant on prior support, including nonzero constants, leave the prior unchanged.",
         "primary_theorem": "fep076_variational_state_update_normalized",
         "supporting_theorems": [
           "fep076_variational_state_update_reconstruction"
@@ -222414,7 +223155,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep085_localMarkov_factorization_from_ordered, fep085_localMarkov_mutualInformation_zero, fep085_bool_localMarkov_nonvacuity, and fep085_zeroEvidence_boundary.",
-        "assumption_review": "All carriers are finite and mediator evidence must be strictly positive. The result is a local statement for one authored ordering and parent set; it is not a proof of general d-separation, faithfulness, or native measurable conditional independence.",
+        "assumption_review": "All carriers are finite and mediator evidence must be strictly positive. The authored local product row is defined even at a null non-descendant value; interpreting it as an identified conditional on the joint parent event additionally requires positive non-descendant mass. Existing reconstruction recovers the ordered joint atom after multiplying by both parent-evidence factors. This is one maintained ordering, not general d-separation, faithfulness or native measurable conditional independence.",
         "boundary_theorems": [
           "fep085_zeroEvidence_boundary"
         ],
@@ -222605,7 +223346,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep089_finiteJet_shift_semigroup, fep089_finiteJet_terminal_boundary, and fep089_firstOrder_shift_nonvacuity.",
-        "assumption_review": "Generalized coordinates are finite jets represented by finitely supported coefficients. The semigroup is discrete and exact; no analytic infinite jet, time derivative, or continuous-flow convergence is claimed.",
+        "assumption_review": "Generalized coordinates are finite truncated coefficient jets. The primary semigroup is discrete; the existing functionJet bridge identifies shifted iterated derivatives below the truncation boundary, while top derivative information is discarded. This does not establish analytic infinite jets, ordinary coordinate-time differentiation without regularity, or continuous-flow convergence.",
         "boundary_theorems": [
           "fep089_finiteJet_terminal_boundary"
         ],
@@ -222753,7 +223494,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep092_quadraticPredictiveCoding_contraction, fep092_quadraticPredictiveCoding_strictDecrease, fep092_quadraticPredictiveCoding_error_tendsto_zero, and fep092_halfStep_decrease_nonvacuity.",
-        "assumption_review": "Convergence requires 0 < stepSize < 2; strict descent additionally requires positive precision and unequal target and estimate. The result is scalar and exact-quadratic, not a convergence theorem for nonlinear predictive-coding networks.",
+        "assumption_review": "Convergence requires 0 < stepSize < 2 for the authored residual update; strict descent also needs positive precision and unequal target and estimate. A raw negative-gradient step with learning rate alpha has effective stepSize alpha*precision. The theorem is scalar exact-quadratic and does not prove stability of coupled finite-jet or nonlinear predictive-coding updates.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-092",
@@ -222992,7 +223733,7 @@
         "disposition": "conditional_proxy",
         "id": "fep-097",
         "invariant": "A normalized finite exponential-work protocol has work average equal to the exponential of negative inverse temperature times free-energy difference.",
-        "non_vacuity": "Nonconstant finite work values can satisfy the normalization after choosing a compatible free-energy difference, while beta positivity excludes the zero-temperature-parameter collapse.",
+        "non_vacuity": "The actual nonconstant Boolean Crooks work witness satisfies the normalization at beta=1 and deltaFreeEnergy=0. Positive beta excludes the zero inverse-temperature parameter boundary; no physical temperature or unit identification is inferred without an explicit convention.",
         "primary_theorem": "fep097_finiteJarzynski_equality",
         "supporting_theorems": []
       },
@@ -223088,7 +223829,7 @@
         "disposition": "formalized",
         "id": "fep-099",
         "invariant": "One strictly positive reversible finite Markov step cannot increase KL to its stationary law; the identity transition saturates equality and an explicit irreversible path protocol has positive entropy production.",
-        "non_vacuity": "The identity kernel proves the exact reversible equality boundary, while the unequal full-support Boolean path witness proves strictly positive production away from reversibility.",
+        "non_vacuity": "A strictly positive symmetric mixing kernel supplies an instance of the main dissipation theorem. The separately proved identity equality lies outside its positive-transition class on multi-state carriers. Unequal full-support Boolean path laws prove positive path divergence; the existing stationary biased three-cycle separately proves nonreversibility and positive production at every positive finite horizon.",
         "primary_theorem": "fep099_reversibleChain_oneStep_KL_dissipation",
         "supporting_theorems": [
           "fep099_irreversiblePositiveProduction_witness"
@@ -223330,7 +224071,7 @@
         "disposition": "formalized",
         "id": "fep-104",
         "invariant": "The algebraic Bregman expression associated with supplied potential and gradient data obeys the exact three-point identity used by mirror descent.",
-        "non_vacuity": "Distinct left, middle, and right vectors with a nonconstant supplied gradient give nonzero pairing and divergence differences while retaining exact equality.",
+        "non_vacuity": "For Fin1 quadratic potential x0^2/2 and true gradient x0, the points left=2,middle=1,right=0 give divergence difference 2-1/2-1/2=1 and pairing1. This exercises the identity without asserting convexity or derivative compatibility for arbitrary supplied data.",
         "primary_theorem": "fep104_mirrorDescent_threePoint_identity",
         "supporting_theorems": []
       },
@@ -223371,7 +224112,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep105_affineProjection_bregmanPythagorean and fep105_affineProjection_minimizes with orthogonality and residual nonnegativity explicit.",
-        "assumption_review": "AffineBregmanProjection explicitly supplies projection membership and gradient-difference orthogonality for every candidate. Minimization separately assumes residual Bregman nonnegativity. Existence, uniqueness, convexity, and differentiability of the projection are not derived.",
+        "assumption_review": "AffineBregmanProjection supplies membership and gradient-difference orthogonality for every candidate in a named Set; no IsAffine or convexity predicate is required. Splitting holds under that certificate. The minimization comparison additionally assumes residual Bregman nonnegativity for the selected candidate; obtaining a minimizer over the whole set requires this for all candidates. Existence, uniqueness, derivative compatibility and convexity are not derived.",
         "boundary_theorems": [],
         "disposition": "conditional_proxy",
         "id": "fep-105",
@@ -223614,7 +224355,7 @@
         "disposition": "formalized",
         "id": "fep-110",
         "invariant": "The unit-weight finite product-of-experts pool is the normalized pointwise product of two laws and has total mass one whenever its normalizer is positive.",
-        "non_vacuity": "Two distinct overlapping laws produce a pooled distribution different from either input; the positive-overlap premise visibly excludes the disjoint point mass boundary.",
+        "non_vacuity": "For Boolean laws with true masses3/4 and2/3, the product normalizer is7/12 and the pool true mass is6/7, different from both inputs. Disjoint opposite point masses have zero normalizer and are excluded. Distinct overlap alone does not guarantee both inputs change.",
         "primary_theorem": "fep110_unitWeightProductOfExpertsPool_normalized",
         "supporting_theorems": [
           "fep110_unitWeightProductOfExpertsPool_mass"
@@ -223851,7 +224592,7 @@
         "disposition": "formalized",
         "id": "fep-115",
         "invariant": "Per-symbol empirical-frequency failure bounds combine by a finite union bound into an alphabet-wide failure probability bounded by alphabet size times the per-symbol rate.",
-        "non_vacuity": "A multi-symbol alphabet and positive sample count make the union contain genuinely distinct two-sided normalized-count deviation events.",
+        "non_vacuity": "With one uniform Fin3 observation, target mass1/3 at each symbol and deviation1/2, the three count-deviation events are distinct singletons, each with probability1/3, and their union has probability1. Boolean complementary frequencies can instead have identical deviation events; union-bound distinctness is not assumed by the theorem.",
         "primary_theorem": "fep115_simultaneous_frequency_bound",
         "supporting_theorems": [
           "fep115_frequencyDeviationEvent_membership"
@@ -223946,7 +224687,7 @@
         "disposition": "formalized",
         "id": "fep-117",
         "invariant": "At positive evidence, posterior odds equal prior odds times the likelihood ratio, and a zero-prior hypothesis retains zero posterior mass.",
-        "non_vacuity": "Unequal positive likelihoods move the favored-to-reference odds multiplicatively, while a separate zero-prior hypothesis remains exactly absent from the posterior.",
+        "non_vacuity": "Positive equal favored/reference prior masses and likelihoods3/4 versus1/4 update odds1 to3. A separate zero-prior favored hypothesis remains absent despite unequal positive likelihoods. Reference-prior/reference-likelihood and total-evidence support remain explicit.",
         "primary_theorem": "fep117_posteriorOdds_recursion",
         "supporting_theorems": []
       },
@@ -224396,7 +225137,7 @@
         "disposition": "formalized",
         "id": "fep-127",
         "invariant": "A smoothed deviation beyond the transferred threshold is contained in the corresponding raw empirical-deviation event, so any supplied finite-law probability bound transfers monotonically.",
-        "non_vacuity": "The smoothed and raw events are distinct whenever the shrinkage and offset change the threshold, and the finite-law monotonicity result applies to any nonzero failure bound.",
+        "non_vacuity": "For n=2,target=1/2,error=0, a uniform Boolean sampling law with success counts1 and0 gives raw bad-event probability1/2 and an empty smoothed event, because the smoothed deviations are0 and exactly1/4. This is a strict-containment instance. Constant count1 gives both events empty despite distinct thresholds; event distinctness is not required by the theorem.",
         "primary_theorem": "fep127_laplaceBadEvent_subset",
         "supporting_theorems": [
           "fep127_laplaceBadEvent_probability_le"
@@ -224667,7 +225408,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "warning-free native Lean compile of fep133_policyTree_efe_eq_risk_add_ambiguity and fep133_optimalValues_agree.",
-        "assumption_review": "Every belief-indexed finite generative model satisfies the maintained FullSupport contract. Belief updates and horizons are finite; the theorem transports the existing risk-plus-ambiguity identity and does not establish its empirical adequacy.",
+        "assumption_review": "Every belief-indexed generative model satisfies FullSupport and supplies actual model-derived EFE, risk and ambiguity. The generic update is an arbitrary function and need not be the preceding model's Bayesian posterior. The separate BayesianBeliefModel/update_filtered specialization and its policy-tree/POMDP/risk-ambiguity bridges establish that stronger filtered interpretation under their explicit support premises. All horizons/carriers remain finite; empirical adequacy is not established.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-133",
@@ -225194,7 +225935,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "warning-free native Lean compile of fep145_score_eq_statistic_sub_mean and fep145_score_mean_zero.",
-        "assumption_review": "The score is defined on the finite full-support exponential family. This is a natural-parameter derivative identity, not a general score-regularity theorem for arbitrary likelihoods.",
+        "assumption_review": "The centered score is defined on the finite full-support exponential family. The primary unfolds that definition and the supporting theorem proves zero mean. The existing law_hasDerivAt establishes mass derivative=mass*score, so positivity supports the natural-parameter log-derivative interpretation. This does not establish score regularity for arbitrary likelihoods.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-145",
@@ -225346,7 +226087,7 @@
         "disposition": "formalized",
         "id": "fep-148",
         "invariant": "Positive statistic variance throughout a closed interval makes the natural-to-mean coordinate map strictly monotone and injective there.",
-        "non_vacuity": "The three-state family supplies a strictly positive variance point, while the constant-statistic boundary shows why the positivity premise matters.",
+        "non_vacuity": "The three-state family has variance2/3 at0, and constant statistics show why positivity is required. A concrete nontrivial interval instance additionally needs variance positivity throughout that interval, derived either from continuity near0 or from full support and a nonconstant statistic; the retained point witness alone is not that interval certificate.",
         "primary_theorem": "fep148_meanParameter_strictMono",
         "supporting_theorems": [
           "fep148_meanParameter_injective"
@@ -225475,7 +226216,7 @@
       },
       "semantic_review": {
         "acceptance_probe": "warning-free native Lean compile of fep151_twoStateSemigroup_add for all Boolean source and target states.",
-        "assumption_review": "Both times are nonnegative and rates are strictly positive. Composition is the finite Boolean matrix sum and no path-space or general generator existence theorem is inferred.",
+        "assumption_review": "Rates are strictly positive. The entrywise additive matrix identity holds for arbitrary real times; restricting both times to be nonnegative supplies its probability-kernel interpretation. No continuous-path or PDE existence theorem is inferred from this identity.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-151",
@@ -225713,12 +226454,12 @@
       },
       "semantic_review": {
         "acceptance_probe": "warning-free native Lean compile of all nine fep-156 declarations.",
-        "assumption_review": "The bridge is a finite-carrier Gibbs/Donsker-Varadhan statement about the EFE control objective; it is not a general planning algorithm or a continuous-action result, and the policy-tree agreement is restricted to the treewise value surface of the policy_tree module.",
+        "assumption_review": "The primary Boltzmann-law minimization assumes a normalized finite full-support prior and gamma>0 and minimizes expected supplied real cost plus gamma^-1 KL to the prior over normalized candidate laws. Identifying that cost with model-derived EFE is a separate specialization. Deterministic finite-policy and finite-tree EFE/risk-ambiguity argmin statements are separate declarations. No continuous-action or general planning algorithm is claimed; supported sparse-prior and negative/zero-precision boundaries remain separately scoped foundation results.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-156",
         "invariant": "On a finite policy carrier with fixed precision, the KL-regularized control objective (expected EFE plus inverse-precision KL to the prior) is minimized exactly by the Boltzmann control posterior proportional to prior * exp(-gamma * G); the minimized value is -gamma^-1 log Z, the EFE splits as risk plus ambiguity, and the finite and treewise argmin views agree.",
-        "non_vacuity": "The finite argmin exists and attains the closed-form Boltzmann value -gamma^-1 log Z for nonempty policy sets.",
+        "non_vacuity": "A full-support finite prior, positive precision and nonconstant finite cost give a nondegenerate Boltzmann probability law attaining the unique KL-regularized objective minimum -gamma^-1 log Z. Separately, a nonempty finite policy carrier has a deterministic EFE argmin and the treewise declarations preserve finite optimal values; that deterministic argmin is not identified with the Boltzmann law or its regularized objective value.",
         "primary_theorem": "fep156_boltzmann_control_posterior_minimizes_efe",
         "supporting_theorems": [
           "fep156_boltzmann_control_posterior_minimal_value",
@@ -225781,12 +226522,12 @@
       },
       "semantic_review": {
         "acceptance_probe": "warning-free native Lean compile of all thirteen fep-157 declarations.",
-        "assumption_review": "The loop is a finite-state kernel composition; positivity statements assume full-support likelihoods and supporting posteriors, and the contraction is the finite Dobrushin-coefficient statement, not a continuous-state or neural-implementation claim.",
+        "assumption_review": "Policy, state and outcome carriers are finite; beliefs are normalized laws on the finite state carrier, not an assumed finite space of all beliefs. The primary needs positive observation evidence and FullSupport at the filtered model; finite posterior-KL decomposition additionally needs a positive reference law and full likelihood support. The native predictive DPI is separately stated on discrete measurable carriers. Prediction uses an explicit HasDobrushinBound; strict TV contraction additionally needs a coefficient below one and a nonzero initial distance. The flat-EFE posterior identity is algebraic and is not an iterated-loop fixed-point theorem.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-157",
-        "invariant": "Each closed-loop perception-action step is non-increasing in belief surprisal: the step's KL splits exactly into predictive and posterior parts, prediction contracts the predictive distribution (Dobrushin), and the loop invariant bounds surprisal by its initial value plus accumulated expected free energy; the loop's fixed point is the Boltzmann control posterior and equals the policy posterior of the control-as-inference view.",
-        "non_vacuity": "The strict step-wise KL decrease holds on the full-likelihood witness kernels, and at the fixed point the loop posterior coincides with the Boltzmann control posterior.",
+        "invariant": "For one positive-evidence observation, outcome surprisal is bounded by perception VFE, whose exact gap is finite KL from the belief to its filtered posterior; the selected filtered-model policy has EFE equal to risk plus ambiguity under FullSupport. Supporting declarations give the finite observation-averaged posterior-KL chain bound, native predictive KL data processing, a Dobrushin total-variation bound under an explicit coefficient, Bayesian-filter/kernel reconstruction and selected-policy minimization. Flat policy EFE makes the policy posterior equal its prior. No realized-observation monotonicity, accumulated trajectory bound or dynamical fixed-point/convergence theorem is asserted.",
+        "non_vacuity": "Nonuniform supported beliefs and informative likelihoods can instantiate the exact VFE gap and the observation-averaged KL decomposition. The selected-policy and filter/kernel equalities are actual finite operations. The flat-EFE case yields posterior=prior, an algebraic boundary; these declarations do not supply a strict realized-step surprisal-decrease or dynamical fixed-point witness.",
         "primary_theorem": "fep157_loop_invariant_surprisal_bound",
         "supporting_theorems": [
           "fep157_perception_kl_decomposition",
@@ -225850,12 +226591,12 @@
       },
       "semantic_review": {
         "acceptance_probe": "warning-free native Lean compile of all ten fep-158 declarations.",
-        "assumption_review": "The reduction statements hold for finite measure spaces with the pinned Donsker-Varadhan duality; the Gaussian log Bayes factor is stated in the pinned natural chart of the information-geometry module and is not a generic asymptotic model-selection claim.",
+        "assumption_review": "Parameters and evidence use finite normalized law/kernel carriers. The primary free-energy comparison assumes weight<=1 pointwise and positive masked evidence. Normalized masked-prior/posterior statements additionally require nonnegative weights, positive prior mask normalizer and positive relevant evidence; ordinary log/ratio clauses retain their support assumptions. GibbsCertificate optimizer-gap identities and the fixed-variance Gaussian log Bayes factor are separate statements, with no general asymptotic model-selection or automatic full/reduced evidence monotonicity claim.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-158",
-        "invariant": "Masking evidence never lowers the model evidence: the reduced model's evidence free energy dominates the full model's, the reduced posterior obeys the multiplicative Bayes-odds law with the evidence weight and reconstructs the full posterior through the evidence ratio, and the Gibbs-certificate excess over the optimizer is exactly the KL divergence to it.",
-        "non_vacuity": "The masked predictive is bounded by the full evidence, and the reduced posterior reconstructs the full posterior exactly through the evidence ratio.",
+        "invariant": "Weights bounded above by one make positive unnormalized masked evidence no greater than full predictive evidence, so its negative-log evidence free energy is no smaller. For a nonnegative mask with positive prior normalizer, the normalized reduced-prior predictive equals maskedEvidence divided by that normalizer; no universal direction relative to full predictive evidence is claimed for this normalized quantity. Supported reduced posteriors obey exact weighted reconstruction and cross-multiplied odds identities. Separately, the Gibbs objective gap to its optimizer equals finite KL, and the fixed-variance Gaussian natural-chart log ratio is explicit.",
+        "non_vacuity": "With prior masses(1/2,1/2), likelihoods(9/10,1/10) and mask(1,0), full evidence is1/2, unnormalized masked evidence9/20, mask normalizer1/2 and normalized reduced-prior evidence9/10. Positive support permits exact posterior reweighting. This exercises both evidence notions without reversing the proved comparison.",
         "primary_theorem": "fep158_reduction_free_energy_monotone",
         "supporting_theorems": [
           "fep158_maskedEvidence_le_predictive",
@@ -225919,8 +226660,8 @@
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-159",
-        "invariant": "The two-state belief information gap is bounded by the entropy-production rate scaled by the relaxation time (gain at most production/decay), the evolved gap contracts to the invariant measure no slower than the relaxation timescale, the one-slice path-space entropy production equals (1 - rho) * sigma / decay, and under the 1/eps rate scaling the evolved gain after any fixed positive action time vanishes.",
-        "non_vacuity": "The bound is attained by the stationary law for the benchmark rates, and the fast-relaxation limit exhibits the vanishing exactly.",
+        "invariant": "For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the retained theorem gives, for each positive tolerance, existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon or Tendsto theorem is not asserted by that declaration.",
+        "non_vacuity": "At the stationary law the gap and production rate both vanish, providing an equality boundary. A full-support nonstationary belief supplies nonzero deviation and current-affinity production for the positive rates, and the explicit rate-scaling envelope gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations do not separately state the full right-limit quantifier.",
         "primary_theorem": "fep159_epistemic_gain_bounded_by_affinity",
         "supporting_theorems": [
           "fep159_expectedFreeEnergy_le_productionRate_div_decayRate",
@@ -226239,12 +226980,12 @@
       },
       "semantic_review": {
         "acceptance_probe": "warning-free native Lean compile of all five fep-165 declarations.",
-        "assumption_review": "A concrete finite counterexample only; it shows the manuscript's honesty guard is necessary rather than decorative and claims nothing about systems satisfying the extra hypotheses of fep-163.",
+        "assumption_review": "This is a concrete finite graph counterexample with outflow-minus-inflow node divergence and edge current Qij*g_j. It does not assert that fep-163 orthogonality or spatially constant-Q directional-derivative hypotheses fail: those involve separately supplied DQ data. Identifying graph divergence with analytic or fep-163 weighted derivative divergence would require a separate proved bridge.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-165",
-        "invariant": "For the exact 2-node transport matrix [[0,1],[-1,0]] and gradient (1,0) the candidate current is (0,-1), the discrete divergence of the transport field is (2,-2), the node divergence of the current is (1,-1), and in particular equals 1 at node 0: the unconditional solenoidal drop is false, and neither the orthogonality nor the constant-Q hypothesis is available on this witness.",
-        "non_vacuity": "The witness evaluates to exactly 1 at node 0, refuting the unconditional drop on its exact hypothesis class.",
+        "invariant": "For the exact two-node skew transport matrix[[0,1],[-1,0]] and gradient(1,0), the node vector Qg is(0,-1), graph node divergence of Q is(2,-2), and graph node divergence of currentOf(Q,g) is(1,-1), hence1 at node0. This refutes an unconditional zero graph-current-divergence claim. No H,DQ or dlogp data are supplied here; the separate fep-163 remainder witness addresses its derivative-data carrier.",
+        "non_vacuity": "The exact graph witness evaluates nodeDiv(currentOf Q g) at node0 to1 despite plain skew Q. It is nonvacuous for that graph claim. On the derivative-data carrier, the same pointwise Q and g can instead be paired with H=0,DQ=0,dlogp=-g and have weightedDivergence=0; the two divergence notions are not identified.",
         "primary_theorem": "fep165_witness_drop_fails",
         "supporting_theorems": [
           "fep165_witnessQ_skew",

@@ -30,16 +30,16 @@ NUMERICAL_EVIDENCE_BOUNDARY = (
     "validation of the Free Energy Principle."
 )
 
-# The versioned release seal: the catalogue shape a release claims, not a live
-# count. Bump it deliberately with each catalogue release; every receipt
-# validator derives its expectations from this one definition.
+# The current candidate release seal is deliberately reviewed, not inferred
+# from live counts. Published tags and historical receipts retain their original
+# shape; every candidate receipt validator uses this one explicit definition.
 RELEASE_FIRST_ID: Final = "fep-001"
 RELEASE_LAST_ID: Final = "fep-168"
 RELEASE_TOPICS: Final = 168
 RELEASE_FAMILIES: Final = 22
 RELEASE_AREAS: Final = 5
-RELEASE_WITNESSES: Final = 17
-RELEASE_RELATIONS: Final = 146
+RELEASE_WITNESSES: Final = 22
+RELEASE_RELATIONS: Final = 150
 RELEASE_CAPABILITIES: Final = 50
 
 RELEASE_SEAL: Final[Mapping[str, int | str]] = MappingProxyType(

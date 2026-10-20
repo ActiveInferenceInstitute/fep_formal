@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "decision": "approve_exact_listed_authored_seal_source_only",
+  "baseline": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "listed_file_sha256": {
+    "tests/test_formalism_catalogue.py": "356cab5281dc9db50ff121f6ac66f97f9b39c3eb4012b6be7bc7ecb2d85969c1",
+    "tests/fixtures/theorem_proxy_review_20261019.json": "f9b3e16457fb75416e81ff46c905f9e0ca38f01ca0d64f5b89f83a26abb7345d",
+    "config/theorem_maturity.yaml": "554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383",
+    "src/fep_lean/catalogue/bodies/core_bayesian_mechanics.py": "7b5f11269989240e4903956bb76ccecda9c5dd620ede02dd164b2903f5996c57",
+    "src/fep_lean/catalogue/bodies/core_information_geometry.py": "b848e656aa42a8dc85a36efa483c3d617ae72a8b857c69a4740d05460e18cd36"
+  },
+  "current_tracked_full_diff_sha256": "55a92e9392fd75cdedddaa3c56d0412c6354b0fd1b30a252fa01dcaced66c160",
+  "current_tracked_scoped_diff_sha256": "9f3e748e3656799fddbf7391b024208e972fd79ec61c3d3d638868db8edbb5be",
+  "diff_command": [
+    "git",
+    "diff",
+    "--no-ext-diff",
+    "--binary",
+    "--full-index",
+    "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699"
+  ],
+  "diff_boundary": "Point-in-time tracked diff snapshot includes other previously reviewed work and potentially generated projections; untracked fixture is excluded by git diff and bound explicitly in listed_file_sha256. Only the listed authored/test/fixture scope is approved here.",
+  "fixture_verified": {
+    "sha256_authenticated_before_parse": true,
+    "exact_reviewed_row_fields": 52,
+    "exact_top_level_date_changes": 1,
+    "exact_body_docstrings": 2,
+    "approved_metadata_bytes_match": true,
+    "released_full_metadata_canonical_preimage_matches_EF": true,
+    "reversal_changes_only_authenticated_reviewed_values": true
+  },
+  "body_preservation": [
+    {
+      "id": "fep-009",
+      "source_body_sha256": "64378d0569fc90460fd6a81062c35374ff5e72a5f80866dde827fd682ac1e393",
+      "current_body_sha256": "c350ce4b0b5d2a759d1891d7ff36f7e4e55389b1d668bbfa5703b1817274979c",
+      "only_exact_reviewed_docstring_changed": true
+    },
+    {
+      "id": "fep-029",
+      "source_body_sha256": "37e07426b925405bf2d0c405a827deb1755c623dfd77f2ac57db947780dcb1c0",
+      "current_body_sha256": "252b9c9d4a43eefb0e355236c7d8de08a455965bf672b7e35fcc15f53df72c32",
+      "only_exact_reviewed_docstring_changed": true
+    }
+  ],
+  "historical_gate_assessment": [
+    "New complete metadata gate authenticates fixture bytes, requires current metadata exact SHA, checks every reviewed replacement preimage and reverses only52 approved fields/date before immutable original full canonical metadata digest. Unreviewed theorem/disposition/roster/order/top-level drift remains rejected.",
+    "The first120-row original maturity/body gates still run after exact new reversal, retaining prior import/proof migrations and155 reviewed-delta controls. The old baseline digests and historical records are not rewritten.",
+    "Only exact009/029 docstrings are reversed with count1; comparison of canonical BODIES literals verifies every other body byte, declaration and proof is unchanged in both owners.",
+    "Issue104 relation controls retain AST-identical reviewed normalization/mutation functions and the same authenticated29-rationale fixture; new proxy reversal does not broaden those controls."
+  ],
+  "mutation_test_assessment": {
+    "reviewed_field": "Mutates topic157 invariant, an actual reviewed field; exact reviewed-preimage assertion must reject.",
+    "unreviewed_field": "Mutates topic002 primary theorem; full original canonical digest must reject.",
+    "date": "Mutates current date; exact top-level preimage assertion must reject.",
+    "fixture": "Appends one whitespace byte to valid JSON, so raw fixture SHA rejects even semantic-equivalent fixture drift.",
+    "existing_body_controls": "Existing released/added body and metadata mutation controls remain, and the positive old-body gate is present.",
+    "optional_improvement": "Add explicit009/029 reviewed-docstring or proof-body tamper cases for direct regression localization. Current exact count/reversal plus historical full body digest statically rejects them; absence of those dedicated cases is not a must-fix weakness."
+  },
+  "findings": [],
+  "retained_current_qualification_observation": {
+    "junit_sha256": "38ec744a04b02a8873799008351b9d4f69066ba81532dd16d2e1de582e4bb889",
+    "tests": 118,
+    "failures": [],
+    "skips": 0,
+    "boundary": "Observation of a retained current file only, not a completed final gate or source-bound success; generation/qualification may still run."
+  },
+  "required_followup": [
+    "Finish source-bound generation and focused qualification. At the final read, retained XML had118 cases and zero failures/skips; an earlier read showed a stale projection failure before the active generator completed. The final XML is bound as an observation, not a substitute for an exact final qualification receipt.",
+    "Rebind final generated projection/current diff if generator changes bytes; source approval covers the stable listed hashes only.",
+    "Apply existing full native/software/current custody/publication gates before any acceptance/closure; static168-row review and review_date do not substitute for them."
+  ],
+  "limitations": [
+    "No source/fixture/test edits, no subject execution or delegation. Only requested review artifacts written outside N.",
+    "Other tracked runtime/API/witness/config changes in the full diff were not re-reviewed by this narrow seal task; prior component reviews and final cumulative qualification remain separate."
+  ]
+}

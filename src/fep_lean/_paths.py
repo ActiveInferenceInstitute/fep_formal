@@ -7,6 +7,9 @@ project directory without depending on the pipeline layer.
 from __future__ import annotations
 
 import os
+from collections.abc import Iterator, Mapping
+from contextlib import contextmanager
+from contextvars import ContextVar
 from pathlib import Path
 
 
@@ -31,6 +34,35 @@ _CHECKOUT_MARKERS = (
 )
 
 
+_CALLER_PROJECT_ROOT: ContextVar[Path | None] = ContextVar(
+    "fep_lean_caller_project_root", default=None
+)
+
+
+@contextmanager
+def project_root_context(root: Path) -> Iterator[Path]:
+    """Bind an explicit caller root without mutating process environment."""
+    selected = Path(root).resolve()
+    token = _CALLER_PROJECT_ROOT.set(selected)
+    try:
+        yield selected
+    finally:
+        _CALLER_PROJECT_ROOT.reset(token)
+
+
+def project_child_environment(base: Mapping[str, str]) -> dict[str, str]:
+    """Copy a child environment and propagate only an explicit caller root.
+
+    ContextVars do not propagate to OS children. Do not infer credentials,
+    mutate base, or override its root when no caller context is active.
+    """
+    result = dict(base)
+    selected = _CALLER_PROJECT_ROOT.get()
+    if selected is not None:
+        result["FEP_LEAN_PROJECT_ROOT"] = str(selected)
+    return result
+
+
 def project_root() -> Path:
     """Return the project root directory.
 
@@ -41,9 +73,16 @@ def project_root() -> Path:
     ``--project-root``.
     The environment override is also useful for isolated test fixtures.
     """
+    return explicit_project_root() or _PACKAGE_DIR.parent.parent
+
+
+def explicit_project_root() -> Path | None:
+    """Return caller-context then environment root, without checkout fallback."""
+    if selected := _CALLER_PROJECT_ROOT.get():
+        return selected
     if env_dir := os.environ.get("FEP_LEAN_PROJECT_ROOT"):
         return Path(env_dir).resolve()
-    return _PACKAGE_DIR.parent.parent
+    return None
 
 
 def resolve_output_root(root: Path, explicit: Path | None = None) -> Path:

@@ -302,7 +302,17 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
         for edge in graph.edges
     )
     assert capability_ids >= BASELINE_CAPABILITY_IDS
-    assert edge_signatures >= BASELINE_EDGE_SIGNATURES
+    # The authenticated scalar review upgrades this one former conceptual edge.
+    old_scalar = ("fep-030", "fep-031", "conceptual", None)
+    new_scalar = (
+        "fep-030",
+        "fep-031",
+        "formal_pairing",
+        "FEPComposed.fep030_fep031_binary_maxEntropy",
+    )
+    assert new_scalar in edge_signatures
+    assert old_scalar not in edge_signatures
+    assert edge_signatures >= BASELINE_EDGE_SIGNATURES - {old_scalar}
     assert frozenset(EXPANSION_CAPABILITY_BY_FAMILY.values()) <= capability_ids
 
     expansion_families = {
@@ -325,8 +335,8 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
 
     assert Counter(edge.kind for edge in graph.edges) == {
         EdgeKind.FORMAL: 24,
-        EdgeKind.FORMAL_PAIRING: 118,
-        EdgeKind.CONCEPTUAL: 8,
+        EdgeKind.FORMAL_PAIRING: 119,
+        EdgeKind.CONCEPTUAL: 7,
     }
     assert all(edge.witness for edge in graph.edges if edge.kind.is_theorem_witnessed)
     assert next(edge for edge in graph.edges if edge.source == "fep-038").kind is (

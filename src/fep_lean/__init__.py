@@ -40,7 +40,7 @@ _SOURCE_RUNTIME_SHA256 = _RuntimeMappingProxyType(
 import importlib as _importlib
 from typing import TYPE_CHECKING
 
-from fep_lean._paths import FepLeanError, project_root
+from fep_lean._paths import FepLeanError, project_root, project_root_context
 
 if TYPE_CHECKING:
     from fep_lean.catalogue import (
@@ -72,8 +72,13 @@ if TYPE_CHECKING:
         HermesResult,
     )
     from fep_lean.output.evidence import (
+        PublicationReadinessReport,
+        SectionReport,
+        StatusReport,
         build_native_lean_receipt,
+        build_status_report,
         latest_claim_ready_full_report,
+        report_to_json,
         validate_native_lean_receipt,
         write_native_lean_receipt,
     )
@@ -133,6 +138,11 @@ _SUBPACKAGES = (
 )
 
 _LAZY_EXPORTS = {
+    "PublicationReadinessReport": "fep_lean.output.evidence",
+    "SectionReport": "fep_lean.output.evidence",
+    "StatusReport": "fep_lean.output.evidence",
+    "build_status_report": "fep_lean.output.evidence",
+    "report_to_json": "fep_lean.output.evidence",
     "CapabilityNode": "fep_lean.catalogue",
     "CapabilityStatus": "fep_lean.catalogue",
     "CatalogueMetadata": "fep_lean.catalogue",
@@ -227,11 +237,14 @@ __all__ = [
     "ManuscriptRenderError",
     "OpenGaussClient",
     "PipelineResult",
+    "PublicationReadinessReport",
     "ReportPaths",
     "Reporter",
+    "SectionReport",
     "SemanticDisposition",
     "SemanticValidationError",
     "SessionRecord",
+    "StatusReport",
     "StepResult",
     "TheoremMaturityAudit",
     "TheoremMaturityRecord",
@@ -244,6 +257,7 @@ __all__ = [
     "build_formalism_probe",
     "build_manuscript_vars",
     "build_native_lean_receipt",
+    "build_status_report",
     "build_unified_formalism_appendix_markdown",
     "check_gauss_cli",
     "formal_kernel_dashboard_drift",
@@ -254,11 +268,13 @@ __all__ = [
     "load_theorem_maturity",
     "manuscript_projection_drift",
     "project_root",
+    "project_root_context",
     "render_formal_kernel_dashboard_html",
     "render_formal_kernel_dashboard_svg",
     "render_formalism_atlas_html",
     "render_formalism_atlas_svg",
     "render_manuscript",
+    "report_to_json",
     "run_formalism_audit",
     "run_pipeline",
     "run_single_topic",

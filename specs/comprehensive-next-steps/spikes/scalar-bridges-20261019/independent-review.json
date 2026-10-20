@@ -1,0 +1,41 @@
+{
+  "decision": "approve_source_semantics_and_outside_integration_observation",
+  "findings": [],
+  "manifest_sha256": "e5dc483b8762ccd1351d0f1bfcc82285b1d830cca41a147cee9dc7d077f76ea6",
+  "observation_sha256": "490a017320bd7ec954f8b8de0eeb061248a47953d39e5b95ed8e0697c1fa6b26",
+  "candidate_sha256": {
+    "src/fep_lean/formal/compositions/core.lean": "0e178e79b5f9c90c16cdaa3cf6744677e22aea9902f5a5c2a8fea45bb8bf1446",
+    "config/formalism_relations.yaml": "8fdd06874c60e5c280558ddf3040689cb8afb8b314c0766051c3b3bfb8fc1e22"
+  },
+  "observed_checks": {
+    "positive-and-proper-support": {
+      "source_sha256": "4fb229f03708ebe575e8b18d5c192721627ad6afff9203a39ec261bbbd440d6d",
+      "log_sha256": "197d29254611dfff4a04de6a5717e0ca438a1ce23c228db0fab12f928259d6f0",
+      "returncode": 0
+    },
+    "reject-zero-endpoint": {
+      "source_sha256": "c9684071787f130b3212974a01a116360219c6ef08d61b18a5a0be464338d4ce",
+      "log_sha256": "ef7736b4fccbdc61977c87c0f0a7280e9d7efca218affafb94f5bc9174f8f372",
+      "returncode": 1
+    },
+    "reject-omitted-energy-match": {
+      "source_sha256": "ccf951ec66ca49e7b08729b2a8316ef2ae7bbb54ec3db732c9b4d18f95ac6355",
+      "log_sha256": "72b01a69699cb379b0c5596ec7b1281a4bd87db5f55c30695274f5cacfd90592",
+      "returncode": 1
+    }
+  },
+  "verified": [
+    "Incorrect relation count corrected to150; both proposed owner bytes unchanged from prior review.",
+    "All three observed test sources begin with exact complete proposed existing-core module bytes.",
+    "Positive strict-warning log records seven new and two support-boundary declarations with only propext, Classical.choice, Quot.sound; fair-p derivative2 consumer succeeds.",
+    "Singleton denominator yields ambient mass2, so proper-subset support does not establish ambient normalization.",
+    "Zero-endpoint refusal is unsolved False, and omitted-energy refusal is attempting projection on the theorem function still requiring exact matched-energy hq; neither is a missing namespace rejection."
+  ],
+  "remaining_boundaries": [
+    "No N integration or subject execution by this reviewer.",
+    "Compile observations support this exact outside proposed module and listed consumers, not full current owner/project acceptance.",
+    "Exact historical seal/preimage controls, generated owner projections, import/public API integration and full custody/source-pair/native/runtime/render/publication gates remain required.",
+    "A missing-hypothesis elaboration refusal is premise enforcement evidence, not a proof that every possible stronger theorem is mathematically false.",
+    "Prior failed probes remain diagnostic only and are not counted as passing evidence."
+  ]
+}

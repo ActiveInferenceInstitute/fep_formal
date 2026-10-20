@@ -1,0 +1,795 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_semantic_audit_complete_retain_narrow_dispositions_with_precision_findings",
+  "scope": "core-thermodynamicsonly7rows;collectiveauditsnow50originalrowsnotall168",
+  "source_head": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "row_ids": [
+    "fep-013",
+    "fep-025",
+    "fep-030",
+    "fep-031",
+    "fep-037",
+    "fep-049",
+    "fep-050"
+  ],
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/core_thermodynamics.py": "937e6de554759c9e3c5fe0090d605f64a0181eb0e636c4af6ffd35d4a249f2f4",
+    "lean/FepSketches/families/core_thermodynamics.lean": "ae7e97cc9875be82d104be05a3f5196a36061fa211c4b422874f3d1d59bcc491",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "src/fep_lean/formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/compositions/thermo_geometry.lean": "da7e8302780b6aac77e9fd06c6eb1c1417042bacd9bb7d9954994c21b0751427",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665"
+  },
+  "rows": [
+    {
+      "id": "fep-013",
+      "title": "Equilibrium Helmholtz Differential Identities",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep013_helmholtz_derivative_eq_neg_entropy",
+      "supporting": [
+        "fep013_helmholtz_at_zero_temp",
+        "fep013_helmholtz_mono_entropy",
+        "fep013_helmholtz_mono_U",
+        "fep013_delta_F",
+        "fep013_helmholtz_hasDerivAt"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep013_helmholtz_derivative_eq_neg_entropy": "theorem fep013_helmholtz_derivative_eq_neg_entropy\n    {U S : \u211d \u2192 \u211d} {U' S' T : \u211d}\n    (hU : HasDerivAt U U' T) (hS : HasDerivAt S S' T)\n    (hfirstLaw : U' = T * S') :\n    HasDerivAt (fun t => fep013_helmholtz (U t) t (S t)) (-S T) T",
+        "fep013_helmholtz_at_zero_temp": "theorem fep013_helmholtz_at_zero_temp (U S : \u211d) : fep013_helmholtz U 0 S = U",
+        "fep013_helmholtz_mono_entropy": "theorem fep013_helmholtz_mono_entropy (U T : \u211d) (S\u2081 S\u2082 : \u211d) (hT : 0 < T) (h : S\u2081 \u2264 S\u2082) :\n    fep013_helmholtz U T S\u2082 \u2264 fep013_helmholtz U T S\u2081",
+        "fep013_helmholtz_mono_U": "theorem fep013_helmholtz_mono_U (U\u2081 U\u2082 T S : \u211d) (h : U\u2081 \u2264 U\u2082) :\n    fep013_helmholtz U\u2081 T S \u2264 fep013_helmholtz U\u2082 T S",
+        "fep013_delta_F": "theorem fep013_delta_F (U\u2081 U\u2082 T S\u2081 S\u2082 : \u211d) :\n    fep013_helmholtz U\u2082 T S\u2082 - fep013_helmholtz U\u2081 T S\u2081 = (U\u2082 - U\u2081) - T * (S\u2082 - S\u2081)",
+        "fep013_helmholtz_hasDerivAt": "theorem fep013_helmholtz_hasDerivAt\n    {U S : \u211d \u2192 \u211d} {U' S' T : \u211d}\n    (hU : HasDerivAt U U' T) (hS : HasDerivAt S S' T) :\n    HasDerivAt (fun t => fep013_helmholtz (U t) t (S t))\n      (U' - (S T + T * S')) T"
+      },
+      "body_sha256": "6b9c69e6301ea55700f2915cb829f3a104becbca4d5f874a4d079aca68bb7fa9",
+      "maturity_record": {
+        "id": "fep-013",
+        "primary_theorem": "fep013_helmholtz_derivative_eq_neg_entropy",
+        "supporting_theorems": [
+          "fep013_helmholtz_at_zero_temp",
+          "fep013_helmholtz_mono_entropy",
+          "fep013_helmholtz_mono_U",
+          "fep013_delta_F",
+          "fep013_helmholtz_hasDerivAt"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For differentiable U(T) and S(T), Helmholtz free energy has derivative U'\u2212S\u2212TS'; under the equilibrium first-law identity U'=TS', this reduces exactly to dF/dT=\u2212S.",
+        "assumption_review": "The derivative law is conditional on pointwise differentiability and the explicitly stated equilibrium identity. It is a thermodynamic calculus identity, not a derivation of the first law or an identification with variational free energy.",
+        "non_vacuity": "The fep-040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at every positive temperature, yielding a compiled nonconstant physical witness.",
+        "acceptance_probe": "native Lean compile of fep013_helmholtz_hasDerivAt, fep013_helmholtz_derivative_eq_neg_entropy, and FEPComposed.fep013_gaussianHelmholtz_derivative.",
+        "disposition": "formalized"
+      },
+      "statement_review": "GeneralHasDerivAtU-TS derivative Uprime-S-T*Sprime;firstlawpremiseUprime=T*Sprimeyields-S exact.",
+      "premise_scope_boundary": "Firstlawassumednotderived; zeroTidentityalgebraicnotphysicalzeroTlimit. RealFcannegativeandcannotdirectlyequal002ENNRealVFE.",
+      "positive_adverse_unexecuted_specs": "U=T/2,Gaussianentropy\u03baT,\u03ba,T>0actualcomposition;U0,S=Tviolatesfirstlawandderivativeis-2Tnot-S.",
+      "nearest_topic_distinction": "FiniteHelmholtzminimum/derivativealreadydeliveredfoundation;013\u2192002units/reference/codomaingapretained;040Gaussianmathmodelnotempiricalphysicalvalidation.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-097",
+          "nearest_topics": [
+            "fep-013",
+            "fep-049"
+          ],
+          "new_invariant": "Explicit finite exponential-work normalization implies the Jarzynski work\u2013free-energy equality.",
+          "carrier_delta": "Adds positive inverse temperature, a path work observable, free-energy difference, and a named normalization certificate.",
+          "required_bridge": "FEPComposed.fep097_jarzynski_extends_fep013_helmholtz"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-013",
+          "target": "fep-002",
+          "kind": "conceptual",
+          "rationale": "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition."
+        },
+        {
+          "source": "fep-013",
+          "target": "fep-040",
+          "kind": "formal",
+          "rationale": "The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2.",
+          "witness": "FEPComposed.fep013_gaussianHelmholtz_derivative"
+        },
+        {
+          "source": "fep-097",
+          "target": "fep-013",
+          "kind": "formal_pairing",
+          "rationale": "The finite Jarzynski normalization and the original Helmholtz difference identity are retained as separate assumptions, avoiding a microscopic-energy identification that neither theorem proves.",
+          "witness": "FEPComposed.fep097_jarzynski_extends_fep013_helmholtz"
+        }
+      ]
+    },
+    {
+      "id": "fep-025",
+      "title": "Conserved Nonequilibrium Probability Currents",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep025_cycleCurrent_stationary",
+      "supporting": [
+        "fep025_probabilityCurrent_antisymm",
+        "fep025_probabilityCurrent_diag_zero",
+        "fep025_total_divergence_zero",
+        "fep025_transitionCurrent_stationary",
+        "fep025_cycleTransition_row",
+        "fep025_cycleStationary_invariant",
+        "fep025_cycleCurrent_nonzero"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep025_cycleCurrent_stationary": "theorem fep025_cycleCurrent_stationary (i : Fin 3) :\n    fep025_divergence fep025_cycleCurrent i = 0",
+        "fep025_probabilityCurrent_antisymm": "theorem fep025_probabilityCurrent_antisymm {n : \u2115}\n    (flow : Matrix (Fin n) (Fin n) \u211d) (i j : Fin n) :\n    fep025_probabilityCurrent flow i j =\n      -fep025_probabilityCurrent flow j i",
+        "fep025_probabilityCurrent_diag_zero": "theorem fep025_probabilityCurrent_diag_zero {n : \u2115}\n    (flow : Matrix (Fin n) (Fin n) \u211d) (i : Fin n) :\n    fep025_probabilityCurrent flow i i = 0",
+        "fep025_total_divergence_zero": "theorem fep025_total_divergence_zero {n : \u2115}\n    (current : Matrix (Fin n) (Fin n) \u211d)\n    (hcurrent : \u2200 i j, current i j = -current j i) :\n    \u2211 i, fep025_divergence current i = 0",
+        "fep025_transitionCurrent_stationary": "theorem fep025_transitionCurrent_stationary {n : \u2115}\n    (stationary : Fin n \u2192 \u211d) (transition : Matrix (Fin n) (Fin n) \u211d)\n    (hrow : \u2200 i, \u2211 j, transition i j = 1)\n    (hstationary : \u2200 j, \u2211 i, stationary i * transition i j = stationary j)\n    (i : Fin n) :\n    fep025_divergence (fep025_transitionCurrent stationary transition) i = 0",
+        "fep025_cycleTransition_row": "theorem fep025_cycleTransition_row (i : Fin 3) :\n    \u2211 j, fep025_cycleTransition i j = 1",
+        "fep025_cycleStationary_invariant": "theorem fep025_cycleStationary_invariant (j : Fin 3) :\n    \u2211 i, fep025_cycleStationary i * fep025_cycleTransition i j =\n      fep025_cycleStationary j",
+        "fep025_cycleCurrent_nonzero": "theorem fep025_cycleCurrent_nonzero : fep025_cycleCurrent 0 1 \u2260 0"
+      },
+      "body_sha256": "5382a7d47f047ad802abbcbb51a8f8c5bc6c20e588b8c6cefcdf65fca85220bb",
+      "maturity_record": {
+        "id": "fep-025",
+        "primary_theorem": "fep025_cycleCurrent_stationary",
+        "supporting_theorems": [
+          "fep025_probabilityCurrent_antisymm",
+          "fep025_probabilityCurrent_diag_zero",
+          "fep025_total_divergence_zero",
+          "fep025_transitionCurrent_stationary",
+          "fep025_cycleTransition_row",
+          "fep025_cycleStationary_invariant",
+          "fep025_cycleCurrent_nonzero"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For flux \u03c0\u1d62P\u1d62\u2c7c, forward-minus-reverse current is antisymmetric; row normalization plus \u03c0-stationarity derives zero divergence. A directed three-state transition with uniform stationary law has a nonzero divergence-free current.",
+        "assumption_review": "The general stationarity theorem explicitly requires normalized transition rows and a stationary real mass vector. The concrete witness is a finite deterministic cycle; no continuous-state NESS existence or thermodynamic force law is inferred here.",
+        "non_vacuity": "The clockwise three-state transition is nonidentity, preserves the uniform law, has current 1/3 on edge 0\u21921, and nevertheless has zero divergence at every state.",
+        "acceptance_probe": "native Lean compile of fep025_transitionCurrent_stationary, fep025_cycleTransition_row, fep025_cycleStationary_invariant, fep025_cycleCurrent_stationary, and fep025_cycleCurrent_nonzero.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Currentforward-minusreverseantisymmetric;totaldivergence0;normalizedrows+stationaryvectorgiveeachdivergence0. Directed3cycleactualnonzeroDivergencefreewitness.",
+      "premise_scope_boundary": "Algebraarbitraryrealflows;probabilitysemanticsrequire\u03c0nonneg/sumone,Pnonneg. Antisymmetryonlyglobalconservationnotlocalstationarity.",
+      "positive_adverse_unexecuted_specs": "Cycle\u03c01/3,J01=1/3nonzeroeachdiv0; singleonewayedgeantisymglobaldivsum0butindividualdivnonzero.",
+      "nearest_topic_distinction": "010reversibilityimpliesstationarityconverserefutedbycycle;AoNESScontinuousSDE/PDEnotfromfiniteflowmatrix.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-093",
+          "nearest_topics": [
+            "fep-010",
+            "fep-025"
+          ],
+          "new_invariant": "Supported forward mass is reconstructed by a reverse-aligned path law and involutive path ratio.",
+          "carrier_delta": "Lifts statewise reversibility and currents to normalized finite laws on complete paths with an explicit reversal map.",
+          "required_bridge": "FEPComposed.fep093_path_ratio_extends_fep010_reversal"
+        },
+        {
+          "id": "fep-098",
+          "nearest_topics": [
+            "fep-025",
+            "fep-049"
+          ],
+          "new_invariant": "Detailed balance cancels every local current and exposes zero reverse rate as a totalized-log boundary.",
+          "carrier_delta": "Connects a reversible finite law and kernel to oriented transition currents and local affinity.",
+          "required_bridge": "FEPComposed.fep098_local_current_refines_fep025"
+        },
+        {
+          "id": "fep-111",
+          "nearest_topics": [
+            "fep-025",
+            "fep-046"
+          ],
+          "new_invariant": "The maintained doubly stochastic two-agent update conserves pointwise and total combined belief mass.",
+          "carrier_delta": "Moves conservation from one nonequilibrium current or stick-breaking law to redistribution across two normalized agents.",
+          "required_bridge": "FEPComposed.fep111_consensus_mass_extends_fep025_conservation"
+        },
+        {
+          "id": "fep-152",
+          "nearest_topics": [
+            "fep-020",
+            "fep-025"
+          ],
+          "new_invariant": "Every transition entry is differentiable and solves both the forward and backward finite master equations.",
+          "carrier_delta": "Adds an explicit rate generator, real-time derivatives, and left/right matrix products without claiming a general CTMC existence theorem.",
+          "required_bridge": "FEPComposed.fep152_masterEquation_extends_fep020"
+        },
+        {
+          "id": "fep-160",
+          "nearest_topics": [
+            "fep-025"
+          ],
+          "new_invariant": "Every rate field on a finite state space with full-support stationary law splits exactly into a detailed-balanced reversible part plus a law-weighted-skew circulation part, and the stationary edge current is carried entirely by the circulation part.",
+          "carrier_delta": "Replaces the manuscript's constant-diffusion drift ansatz by an unconditional finite decomposition of the rate field itself, with the explicit stationarity divergence check and a directed three-cycle NESS witness.",
+          "required_bridge": "FEPComposed.fep160_aoNess_extends_fep025_current"
+        },
+        {
+          "id": "fep-163",
+          "nearest_topics": [
+            "fep-025"
+          ],
+          "new_invariant": "The weighted divergence of the candidate solenoidal current is exactly the three-term expansion tr(Q H) - g\u1d40 Q g + (\u2207\u00b7Q)\u1d40 g under the stationary coupling, and the drop of the remainder requires an explicit orthogonality or constant-Q hypothesis with a concrete failing datum otherwise.",
+          "carrier_delta": "Adds explicit directional-derivative data (Hessian slot and transport-divergence slot) plus the stationary-density coupling so the manuscript's expansion identity becomes an exact finite theorem with a scoped conditional drop.",
+          "required_bridge": "FEPComposed.fep163_solenoidalExpansion_extends_fep025_current"
+        },
+        {
+          "id": "fep-164",
+          "nearest_topics": [
+            "fep-025"
+          ],
+          "new_invariant": "On a finite node set the node divergence of a skew edge field is twice its row sum, the edge current's divergence splits into transport plus discrete-divergence slots, and the weighted node divergence obeys an exact Leibniz rule with a generically nonzero density residual.",
+          "carrier_delta": "Transfers the candidate-current divergence check from fep-025's transition-row carrier to a plain flux-matrix carrier with explicit weighted-node divergence, exposing the residual that skewness alone cannot kill.",
+          "required_bridge": "FEPComposed.fep164_graphCurrent_extends_fep025_current"
+        },
+        {
+          "id": "fep-165",
+          "nearest_topics": [
+            "fep-025"
+          ],
+          "new_invariant": "For the 2-node transport [[0,1],[-1,0]] and gradient (1,0) the candidate current is (0,-1) with node divergence 1 at node 0, so the unconditional solenoidal drop is refuted exactly.",
+          "carrier_delta": "Pins the manuscript honesty guard as a compiled counterexample, separating the conditional drops of fep-163 from any unconditional claim.",
+          "required_bridge": "FEPComposed.fep165_necessityWitness_extends_fep025_current"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-025",
+          "target": "fep-049",
+          "kind": "formal",
+          "rationale": "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
+          "witness": "FEPComposed.fep025_current_dissipation_nonneg"
+        },
+        {
+          "source": "fep-098",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "Finite detailed balance cancels local current, while the original matrix current remains antisymmetric on every oriented edge.",
+          "witness": "FEPComposed.fep098_local_current_refines_fep025"
+        },
+        {
+          "source": "fep-111",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The two-agent consensus step conserves pointwise mass; the original antisymmetric-current theorem conserves total divergence.",
+          "witness": "FEPComposed.fep111_consensus_mass_extends_fep025_conservation"
+        },
+        {
+          "source": "fep-160",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The Helmholtz\u2013Ao decomposition's stationary current is carried entirely by the circulation part and its node divergence vanishes under stationarity, paired with fep-025's edge-current divergence law and nonzero cycle current, without identifying the finite rate-field ansatz with a continuum Fokker-Planck solution.",
+          "witness": "FEPComposed.fep160_aoNess_extends_fep025_current"
+        },
+        {
+          "source": "fep-163",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The exact three-term weighted-divergence expansion and its conditional drop are paired with fep-025's node-divergence current carrier, without asserting that the continuum first-order step has a finite graph analogue.",
+          "witness": "FEPComposed.fep163_solenoidalExpansion_extends_fep025_current"
+        },
+        {
+          "source": "fep-164",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The graph-plane decomposition and weighted Leibniz rule of the candidate current are paired with fep-025's edge-current node divergence, without equating the plain flux-matrix residual with a transition-row stationarity identity.",
+          "witness": "FEPComposed.fep164_graphCurrent_extends_fep025_current"
+        },
+        {
+          "source": "fep-165",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The compiled 2-node counterexample refuting the unconditional solenoidal drop is paired with fep-025's divergence-free cycle witness, jointly bounding exactly what stationarity and antisymmetry imply.",
+          "witness": "FEPComposed.fep165_necessityWitness_extends_fep025_current"
+        }
+      ]
+    },
+    {
+      "id": "fep-030",
+      "title": "Maximum Entropy Principle",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep030_binaryEntropy_max",
+      "supporting": [
+        "fep030_binaryEntropy_eq_max_iff",
+        "fep030_uniform_nonneg",
+        "fep030_uniform_sum_one",
+        "fep030_log_card_nonneg",
+        "fep030_entropy_eq_log"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep030_binaryEntropy_max": "theorem fep030_binaryEntropy_max (p : \u211d) :\n    Real.binEntropy p \u2264 Real.log 2",
+        "fep030_binaryEntropy_eq_max_iff": "theorem fep030_binaryEntropy_eq_max_iff (p : \u211d) :\n    Real.binEntropy p = Real.log 2 \u2194 p = (2 : \u211d)\u207b\u00b9",
+        "fep030_uniform_nonneg": "theorem fep030_uniform_nonneg (n : \u2115) (_hn : 0 < n) : 0 \u2264 (1 : \u211d) / n",
+        "fep030_uniform_sum_one": "theorem fep030_uniform_sum_one (n : \u2115) (hn : 0 < n) :\n    \u2211 _ \u2208 Finset.range n, (1 : \u211d) / n = 1",
+        "fep030_log_card_nonneg": "theorem fep030_log_card_nonneg (n : \u2115) (hn : 1 \u2264 n) : 0 \u2264 Real.log n",
+        "fep030_entropy_eq_log": "theorem fep030_entropy_eq_log (n : \u2115) (hn : 0 < n) :\n    -\u2211 _ \u2208 Finset.range n, (1 : \u211d) / n * Real.log ((1 : \u211d) / n)\n    = Real.log n"
+      },
+      "body_sha256": "fb11ed74476648eb35a4f13f48aa86d161e17574a545796cf80b2c6cb0a43237",
+      "maturity_record": {
+        "id": "fep-030",
+        "primary_theorem": "fep030_binaryEntropy_max",
+        "supporting_theorems": [
+          "fep030_binaryEntropy_eq_max_iff",
+          "fep030_uniform_nonneg",
+          "fep030_uniform_sum_one",
+          "fep030_log_card_nonneg",
+          "fep030_entropy_eq_log"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Binary Shannon entropy in nats is globally at most log 2, with equality exactly at probability one half.",
+        "assumption_review": "The native Mathlib theorem is unconditional over real inputs because Real.binEntropy has a total extension; the scientific probability domain is [0,1]. This is the Bernoulli maximum-entropy principle, not the general constrained Jaynes problem.",
+        "non_vacuity": "The equality characterization proves attainment at p = 1/2 and strict loss at every other real input.",
+        "acceptance_probe": "native Lean compile of fep030_binaryEntropy_max and fep030_binaryEntropy_eq_max_iff, plus the retained finite-uniform entropy calculation.",
+        "disposition": "formalized"
+      },
+      "statement_review": "ActualMathlibbinaryentropybound/equalityglobalrealextension;finiteuniformexplicitentropylogncalculationdoesnotitselfprovealllawmaximum.",
+      "premise_scope_boundary": "Probabilitydomain[0,1],naturallognats;generalfiniteMaxEntfoundationexistsseparately,topicnotautomaticallypromoted.",
+      "positive_adverse_unexecuted_specs": "p1/2log2max;p0zero;offfairstrict;uniformnpositive logn,emptyrange no probability.",
+      "nearest_topic_distinction": "031Gibbsnormalizationvs030binarybound;externalreviewedcommoncarrierbridgevalidonlyexactscopeafterintegration;no\u03b2existenceforallmeans.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-030",
+          "target": "fep-031",
+          "kind": "conceptual",
+          "rationale": "A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem."
+        },
+        {
+          "source": "fep-031",
+          "target": "fep-030",
+          "kind": "formal",
+          "rationale": "The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization.",
+          "witness": "FEPComposed.fep031_zeroBeta_binary_maxEntropy"
+        }
+      ]
+    },
+    {
+      "id": "fep-031",
+      "title": "Finite Boltzmann\u2013Gibbs Weights",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep031_gibbsProbability_sum_one",
+      "supporting": [
+        "fep031_gibbs_weight_pos",
+        "fep031_gibbs_mono",
+        "fep031_partition_pos",
+        "fep031_gibbsProbability_nonneg"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep031_gibbsProbability_sum_one": "theorem fep031_gibbsProbability_sum_one (\u03b2 : \u211d) (n : \u2115) (E : Fin n \u2192 \u211d)\n    (S : Finset (Fin n)) (hS : S.Nonempty) :\n    \u2211 i \u2208 S, fep031_gibbsProbability \u03b2 n E S i = 1",
+        "fep031_gibbs_weight_pos": "theorem fep031_gibbs_weight_pos (\u03b2 E : \u211d) : 0 < Real.exp (-\u03b2 * E)",
+        "fep031_gibbs_mono": "theorem fep031_gibbs_mono (\u03b2 E\u2081 E\u2082 : \u211d) (h\u03b2 : 0 < \u03b2) (hE : E\u2081 \u2264 E\u2082) :\n    Real.exp (-\u03b2 * E\u2082) \u2264 Real.exp (-\u03b2 * E\u2081)",
+        "fep031_partition_pos": "theorem fep031_partition_pos (\u03b2 : \u211d) (n : \u2115) (E : Fin n \u2192 \u211d)\n    (S : Finset (Fin n)) (hS : S.Nonempty) :\n    0 < \u2211 i \u2208 S, Real.exp (-\u03b2 * E i)",
+        "fep031_gibbsProbability_nonneg": "theorem fep031_gibbsProbability_nonneg (\u03b2 : \u211d) (n : \u2115) (E : Fin n \u2192 \u211d)\n    (S : Finset (Fin n)) (hS : S.Nonempty) (i : Fin n) :\n    0 \u2264 fep031_gibbsProbability \u03b2 n E S i"
+      },
+      "body_sha256": "5de120eff03a8808f57cdf1684184c7f4b4f4c5d3000138929475e13068ebf63",
+      "maturity_record": {
+        "id": "fep-031",
+        "primary_theorem": "fep031_gibbsProbability_sum_one",
+        "supporting_theorems": [
+          "fep031_gibbs_weight_pos",
+          "fep031_gibbs_mono",
+          "fep031_partition_pos",
+          "fep031_gibbsProbability_nonneg"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Positive exponential Gibbs weights normalize to a nonnegative mass function summing to one on any nonempty finite support.",
+        "assumption_review": "Conditional only on a nonempty selected support; \u03b2 and energies are arbitrary reals. The row does not derive Gibbs weights from maximum entropy or bundle the result as a measure.",
+        "non_vacuity": "A singleton support has normalized mass one, while two unequal energies produce distinct positive normalized weights.",
+        "acceptance_probe": "native Lean compile of partition positivity, pointwise nonnegativity, and support normalization.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Positiveexponentials/nonemptypartitionsum; normalizedsum1overselectedS,positivepointwiseallambienti.",
+      "premise_scope_boundary": "DoesnotzerooutsideS,so onlylawonS/subtypeorfulluniv. \u03b2arbitrarynormalization;lower-energyorderingrequires\u03b2>0.",
+      "positive_adverse_unexecuted_specs": "Fin2,S{0},\u03b20,E0 givesambientmass2;withinSsum1;\u03b20unequalenergiesstilluniform;emptySdenominator0.",
+      "nearest_topic_distinction": "028explicitzeroextendedsoftmaxdifferentproper-supportdefinition;finiteGibbsLawidentificationfullsupportonly;MaxEntrequiresconstraintproofnotnormalizationalone.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-058",
+          "nearest_topics": [
+            "fep-001",
+            "fep-031"
+          ],
+          "new_invariant": "Finite Gibbs free energy has an attained lower bound at an explicit full-support optimizer.",
+          "carrier_delta": "Adds a certified finite potential, reference law, log partition, and normalized Gibbs optimizer.",
+          "required_bridge": "FEPComposed.fep058_gibbs_gap_is_fep001_kl"
+        },
+        {
+          "id": "fep-069",
+          "nearest_topics": [
+            "fep-031",
+            "fep-020"
+          ],
+          "new_invariant": "A KL-control desirability backup is an exponential cost tilt of passive prediction.",
+          "carrier_delta": "Adds a passive finite Markov kernel and nonnegative desirability field to Boltzmann weighting.",
+          "required_bridge": "FEPComposed.fep069_desirability_combines_fep031_weights"
+        },
+        {
+          "id": "fep-070",
+          "nearest_topics": [
+            "fep-028",
+            "fep-031"
+          ],
+          "new_invariant": "Prior-weighted exponential action scores form a normalized reconstructing policy posterior.",
+          "carrier_delta": "Replaces support-aware softmax logits with a finite prior law, precision, and explicit partition reconstruction.",
+          "required_bridge": "FEPComposed.fep070_controlPosterior_refines_fep028_softmax"
+        },
+        {
+          "id": "fep-076",
+          "nearest_topics": [
+            "fep-028",
+            "fep-031"
+          ],
+          "new_invariant": "A prior-weighted exponential state-energy tilt normalizes and reconstructs its unnormalized mass.",
+          "carrier_delta": "Moves the finite Boltzmann posterior from actions to latent states with an identity zero-energy boundary.",
+          "required_bridge": "FEPComposed.fep076_variational_update_refines_fep028_softmax"
+        },
+        {
+          "id": "fep-110",
+          "nearest_topics": [
+            "fep-028",
+            "fep-031"
+          ],
+          "new_invariant": "A positive-normalizer unit-weight product-of-experts pool is the normalized pointwise product of two finite laws.",
+          "carrier_delta": "Replaces one prior-weighted softmax with two peer laws, exponent one on each factor, and an explicit pointwise-product normalizer; it is not an equal-weight logarithmic pool.",
+          "required_bridge": "FEPComposed.fep110_product_of_experts_refines_fep028_normalization"
+        },
+        {
+          "id": "fep-142",
+          "nearest_topics": [
+            "fep-031",
+            "fep-100"
+          ],
+          "new_invariant": "Positive finite base weights define a normalized, pointwise-positive scalar exponential-family law for every natural parameter.",
+          "carrier_delta": "Adds an explicit finite sufficient statistic, partition function, and full-support normalized family to the earlier standalone entropy and categorical Fisher carriers.",
+          "required_bridge": "FEPComposed.fep142_exponentialNormalization_extends_fep031"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-030",
+          "target": "fep-031",
+          "kind": "conceptual",
+          "rationale": "A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem."
+        },
+        {
+          "source": "fep-031",
+          "target": "fep-030",
+          "kind": "formal",
+          "rationale": "The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization.",
+          "witness": "FEPComposed.fep031_zeroBeta_binary_maxEntropy"
+        },
+        {
+          "source": "fep-069",
+          "target": "fep-031",
+          "kind": "formal_pairing",
+          "rationale": "A desirability backup combines a normalized passive prediction with the strictly positive Gibbs weight certified by fep-031.",
+          "witness": "FEPComposed.fep069_desirability_combines_fep031_weights"
+        },
+        {
+          "source": "fep-142",
+          "target": "fep-031",
+          "kind": "formal_pairing",
+          "rationale": "A positive-base finite exponential family is normalized for every natural parameter, paired with the original finite maximum-entropy normalization witness.",
+          "witness": "FEPComposed.fep142_exponentialNormalization_extends_fep031"
+        }
+      ]
+    },
+    {
+      "id": "fep-037",
+      "title": "Two-State Correlation\u2013Response Law",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep037_response_eq",
+      "supporting": [
+        "fep037_autocorrelation_recurrence",
+        "fep037_autocorrelation_tendsto_zero",
+        "fep037_response_nonneg",
+        "fep037_response_tendsto_zero"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep037_response_eq": "theorem fep037_response_eq (\u03b2 \u03b1 variance : \u211d) (n : \u2115) :\n    fep037_response \u03b2 \u03b1 variance n =\n      2 * \u03b2 * \u03b1 * variance * fep037_relaxation \u03b1 ^ n",
+        "fep037_autocorrelation_recurrence": "theorem fep037_autocorrelation_recurrence (\u03b1 variance : \u211d) (n : \u2115) :\n    fep037_autocorrelation \u03b1 variance (n + 1) =\n      fep037_relaxation \u03b1 * fep037_autocorrelation \u03b1 variance n",
+        "fep037_autocorrelation_tendsto_zero": "theorem fep037_autocorrelation_tendsto_zero\n    {\u03b1 : \u211d} (h\u03b10 : 0 < \u03b1) (h\u03b11 : \u03b1 < 1) (variance : \u211d) :\n    Filter.Tendsto (fep037_autocorrelation \u03b1 variance)\n      Filter.atTop (nhds 0)",
+        "fep037_response_nonneg": "theorem fep037_response_nonneg\n    {\u03b2 \u03b1 variance : \u211d} (h\u03b2 : 0 \u2264 \u03b2) (h\u03b10 : 0 \u2264 \u03b1) (h\u03b1half : \u03b1 \u2264 1 / 2)\n    (hvariance : 0 \u2264 variance) (n : \u2115) :\n    0 \u2264 fep037_response \u03b2 \u03b1 variance n",
+        "fep037_response_tendsto_zero": "theorem fep037_response_tendsto_zero\n    {\u03b1 : \u211d} (h\u03b10 : 0 < \u03b1) (h\u03b11 : \u03b1 < 1) (\u03b2 variance : \u211d) :\n    Filter.Tendsto (fun n => fep037_response \u03b2 \u03b1 variance n)\n      Filter.atTop (nhds 0)"
+      },
+      "body_sha256": "0897ab9e69cc189affd862863f4e88308f2c8429825a02a019b621b42fdc6813",
+      "maturity_record": {
+        "id": "fep-037",
+        "primary_theorem": "fep037_response_eq",
+        "supporting_theorems": [
+          "fep037_autocorrelation_recurrence",
+          "fep037_autocorrelation_tendsto_zero",
+          "fep037_response_nonneg",
+          "fep037_response_tendsto_zero"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For the symmetric two-state relaxation eigenvalue 1-2\u03b1, stationary autocorrelation obeys an exact recurrence and decays for 0<\u03b1<1; the discrete fluctuation--response kernel equals 2\u03b2\u03b1 variance times the same geometric mode and also decays.",
+        "assumption_review": "Response is defined as inverse temperature times the one-step autocorrelation loss. Nonnegativity additionally restricts \u03b1\u22641/2 and nonnegative inverse temperature and variance. This is an exact discrete two-state response law, not a microscopic Kubo derivation for general dynamics.",
+        "non_vacuity": "For \u03b1=1/4, positive \u03b2, and nonzero variance, lag-zero response is positive and both correlation and response decay geometrically by 1/2.",
+        "acceptance_probe": "native Lean compile of fep037_autocorrelation_recurrence, fep037_autocorrelation_tendsto_zero, fep037_response_eq, fep037_response_nonneg, and fep037_response_tendsto_zero.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Definedgeometricautocorrelationmodeanddefined\u03b2timesonestepdifferencegiveexactresponseformula;decay0<\u03b1<1;nonnegative\u03b2,var and\u03b1<=1/2givesresponse>=0.",
+      "premise_scope_boundary": "NotKubo/perturbeddynamicsderivationnorcorrelationasactualprocesscovariance. Variance arbitraryrealalgebra;physicalprobabilityvariance>=0.",
+      "positive_adverse_unexecuted_specs": "\u03b11/4,\u03b21,var1positiveandhalves; var-1wouldnegativeatlag0;\u03b13/4modealternatesandresponsenegativelags;\u03b11nodecay.",
+      "nearest_topic_distinction": "020realMarkovstateevolutiontiesgeometricmodebutnotfullstationaryprocesscovariance;nonequilibriumresponse/generalFDTnotdelivered.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-037",
+          "target": "fep-020",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies fep-037's autocorrelation mode with the exact deviation mode of fep-020's normalized two-state Markov evolution.",
+          "witness": "FEPComposed.fep037_autocorrelation_tracks_fep020"
+        }
+      ]
+    },
+    {
+      "id": "fep-049",
+      "title": "Linear Constitutive Entropy Production",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep049_entropyProduction_eq_zero_iff",
+      "supporting": [
+        "fep049_flux_force_identity",
+        "fep049_entropyProduction_nonneg",
+        "fep049_edgeProduction_nonneg",
+        "fep049_edgeProduction_eq_zero_iff"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep049_entropyProduction_eq_zero_iff": "theorem fep049_entropyProduction_eq_zero_iff {\u03b9 : Type*} [Fintype \u03b9]\n    (conductance force : \u03b9 \u2192 \u211d)\n    (hconductance : \u2200 i, 0 < conductance i) :\n    fep049_entropyProduction conductance force = 0 \u2194\n      \u2200 i, force i = 0",
+        "fep049_flux_force_identity": "theorem fep049_flux_force_identity {\u03b9 : Type*} [Fintype \u03b9]\n    (conductance force : \u03b9 \u2192 \u211d) :\n    (\u2211 i, force i * fep049_linearFlux conductance force i) =\n      fep049_entropyProduction conductance force",
+        "fep049_entropyProduction_nonneg": "theorem fep049_entropyProduction_nonneg {\u03b9 : Type*} [Fintype \u03b9]\n    (conductance force : \u03b9 \u2192 \u211d)\n    (hconductance : \u2200 i, 0 \u2264 conductance i) :\n    0 \u2264 fep049_entropyProduction conductance force",
+        "fep049_edgeProduction_nonneg": "theorem fep049_edgeProduction_nonneg\n    {forward reverse : \u211d} (hforward : 0 < forward) (hreverse : 0 < reverse) :\n    0 \u2264 fep049_edgeProduction forward reverse",
+        "fep049_edgeProduction_eq_zero_iff": "theorem fep049_edgeProduction_eq_zero_iff\n    {forward reverse : \u211d} (hforward : 0 < forward) (hreverse : 0 < reverse) :\n    fep049_edgeProduction forward reverse = 0 \u2194 forward = reverse"
+      },
+      "body_sha256": "2fd0eef749e0748d6d4ba966b812156208ee2ef065b45bd04ad094ee49e91b27",
+      "maturity_record": {
+        "id": "fep-049",
+        "primary_theorem": "fep049_entropyProduction_eq_zero_iff",
+        "supporting_theorems": [
+          "fep049_flux_force_identity",
+          "fep049_entropyProduction_nonneg",
+          "fep049_edgeProduction_nonneg",
+          "fep049_edgeProduction_eq_zero_iff"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Under J\u1d62=L\u1d62X\u1d62, the flux--force pairing is a nonnegative quadratic form that separates equilibrium for L\u1d62>0. Independently, positive forward/reverse edge fluxes have production (f-r)log(f/r)\u22650, with equality exactly at detailed balance.",
+        "assumption_review": "The finite constitutive law is diagonal and assumes nonnegative conductances. The edge theorem assumes strictly positive bidirectional fluxes so affinity is finite. Cross-coupled Onsager matrices and microscopic derivations remain outside the claim.",
+        "non_vacuity": "Any nonzero force under positive conductance produces positive quadratic entropy; unequal positive directed fluxes produce positive edge entropy, while equality of fluxes is the exact zero-production boundary.",
+        "acceptance_probe": "native Lean compile of fep049_flux_force_identity, fep049_entropyProduction_nonneg, fep049_entropyProduction_eq_zero_iff, fep049_edgeProduction_nonneg, and fep049_edgeProduction_eq_zero_iff.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Diagonalconductancequadraticfluxforceidentity;nonnegconductanceproduction>=0,strictpositivezeroforceiff. Positivebidirectionalfluxedgeprod=(f-r)log(f/r)>=0,zeroiffbalance.",
+      "premise_scope_boundary": "Diagonalconstitutivelawassumednotmicroscopicderived; noOnsagercrosscoupling. Zerofluxsingularityunsupportedbyreal-logformula.",
+      "positive_adverse_unexecuted_specs": "L1,X1production1;L0,X1production0withoutzeroforce; f2,r1positive; f1,r0totalizedlogdivision0gives0ratherthannative\u221e.",
+      "nearest_topic_distinction": "025currentalone pluschosenresistance notphysicalcalibratedentropy;050secondlawhBalanceexplicitmodelidentification;paththermodynamicKLratiosseparate.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-094",
+          "nearest_topics": [
+            "fep-049",
+            "fep-014"
+          ],
+          "new_invariant": "Mean path entropy production is finite path KL and expands to an expected log ratio under full support.",
+          "carrier_delta": "Replaces constitutive flux\u2013force production with a normalized forward-versus-reverse path-law divergence.",
+          "required_bridge": "FEPComposed.fep094_path_kl_refines_fep049_entropy_production"
+        },
+        {
+          "id": "fep-095",
+          "nearest_topics": [
+            "fep-010",
+            "fep-049"
+          ],
+          "new_invariant": "Reverse path mass times exponential entropy production reconstructs forward mass and reverses sign under exchange.",
+          "carrier_delta": "Adds full-support aligned path laws plus an involution that explicitly exchanges forward and reverse probabilities.",
+          "required_bridge": "FEPComposed.fep095_fluctuation_symmetry_extends_fep010_reversibility"
+        },
+        {
+          "id": "fep-096",
+          "nearest_topics": [
+            "fep-049",
+            "fep-014"
+          ],
+          "new_invariant": "The forward expectation of exponential negative path entropy production is exactly one.",
+          "carrier_delta": "Integrates supported pointwise path ratios over a normalized finite forward path law.",
+          "required_bridge": "FEPComposed.fep096_integral_fluctuation_refines_fep049"
+        },
+        {
+          "id": "fep-097",
+          "nearest_topics": [
+            "fep-013",
+            "fep-049"
+          ],
+          "new_invariant": "Explicit finite exponential-work normalization implies the Jarzynski work\u2013free-energy equality.",
+          "carrier_delta": "Adds positive inverse temperature, a path work observable, free-energy difference, and a named normalization certificate.",
+          "required_bridge": "FEPComposed.fep097_jarzynski_extends_fep013_helmholtz"
+        },
+        {
+          "id": "fep-098",
+          "nearest_topics": [
+            "fep-025",
+            "fep-049"
+          ],
+          "new_invariant": "Detailed balance cancels every local current and exposes zero reverse rate as a totalized-log boundary.",
+          "carrier_delta": "Connects a reversible finite law and kernel to oriented transition currents and local affinity.",
+          "required_bridge": "FEPComposed.fep098_local_current_refines_fep025"
+        },
+        {
+          "id": "fep-099",
+          "nearest_topics": [
+            "fep-010",
+            "fep-014",
+            "fep-049"
+          ],
+          "new_invariant": "One strictly positive reversible Markov step dissipates KL to stationarity with equality and irreversible witnesses.",
+          "carrier_delta": "Combines full-support finite-channel data processing, detailed-balance stationarity, and explicit path production.",
+          "required_bridge": "FEPComposed.fep099_reversible_kl_dissipation_links_fep010_fep014"
+        },
+        {
+          "id": "fep-155",
+          "nearest_topics": [
+            "fep-032",
+            "fep-049"
+          ],
+          "new_invariant": "Squared deviation from stationarity decays as exp(-2(a+b)t) and has derivative -2(a+b) times its current value.",
+          "carrier_delta": "Adds an exact scalar Lyapunov law and strict benchmark derivative without equating it with physical free energy or general entropy production.",
+          "required_bridge": "FEPComposed.fep155_lyapunovDecay_extends_fep032"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-025",
+          "target": "fep-049",
+          "kind": "formal",
+          "rationale": "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
+          "witness": "FEPComposed.fep025_current_dissipation_nonneg"
+        },
+        {
+          "source": "fep-050",
+          "target": "fep-049",
+          "kind": "formal",
+          "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106).",
+          "witness": "FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production"
+        },
+        {
+          "source": "fep-094",
+          "target": "fep-049",
+          "kind": "formal_pairing",
+          "rationale": "Path entropy production is exactly finite KL, alongside the original nonnegative quadratic entropy-production certificate. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
+          "witness": "FEPComposed.fep094_path_kl_refines_fep049_entropy_production"
+        },
+        {
+          "source": "fep-096",
+          "target": "fep-049",
+          "kind": "formal_pairing",
+          "rationale": "The integral fluctuation normalization is paired with the original exact flux--force representation of nonnegative entropy production. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_flux_force_identity` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.",
+          "witness": "FEPComposed.fep096_integral_fluctuation_refines_fep049"
+        }
+      ]
+    },
+    {
+      "id": "fep-050",
+      "title": "Logical Erasure and the Landauer Bound",
+      "disposition": "retain_formalized_for_exact_narrow_proxy_with_claim_precision_corrections",
+      "primary": "fep050_landauer_work_bound",
+      "supporting": [
+        "fep050_erasure_not_injective",
+        "fep050_erasureEntropyLoss_eq",
+        "fep050_landauer_heat_bound",
+        "fep050_landauerBound_pos"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep050_landauer_work_bound": "theorem fep050_landauer_work_bound\n    {W Q T kB : \u211d} (hT : 0 < T)\n    (hsecondLaw : 0 \u2264 fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q \u2264 W) :\n    fep050_landauerBound kB T \u2264 W",
+        "fep050_erasure_not_injective": "theorem fep050_erasure_not_injective :\n    \u00acFunction.Injective fep050_erasure",
+        "fep050_erasureEntropyLoss_eq": "theorem fep050_erasureEntropyLoss_eq (kB : \u211d) :\n    fep050_erasureEntropyLoss kB = kB * Real.log 2",
+        "fep050_landauer_heat_bound": "theorem fep050_landauer_heat_bound\n    {Q T kB : \u211d} (hT : 0 < T)\n    (hsecondLaw : 0 \u2264 fep050_totalEntropyChange Q T kB) :\n    fep050_landauerBound kB T \u2264 Q",
+        "fep050_landauerBound_pos": "theorem fep050_landauerBound_pos\n    {kB T : \u211d} (hkB : 0 < kB) (hT : 0 < T) :\n    0 < fep050_landauerBound kB T"
+      },
+      "body_sha256": "0101caafca6df6c405dd05f5e1536dba9004148ba5eedfdb236f4b666da6d076",
+      "maturity_record": {
+        "id": "fep-050",
+        "primary_theorem": "fep050_landauer_work_bound",
+        "supporting_theorems": [
+          "fep050_erasure_not_injective",
+          "fep050_erasureEntropyLoss_eq",
+          "fep050_landauer_heat_bound",
+          "fep050_landauerBound_pos"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A noninjective reset maps an unbiased bit to a pure state and loses exactly kB log 2 entropy; nonnegative total entropy at positive temperature derives the corresponding heat bound, and work above heat derives the work bound.",
+        "assumption_review": "The derivation explicitly assumes the second-law total-entropy inequality, positive environmental temperature, and work at least as large as dissipated heat. It does not model a microscopic Hamiltonian or finite-time erasure protocol.",
+        "non_vacuity": "The reset identifies true and false, the unbiased-to-pure entropy change is exactly nonzero for kB > 0, and equality in the environmental balance saturates the Landauer threshold.",
+        "acceptance_probe": "native Lean compile of fep050_erasure_not_injective, fep050_erasureEntropyLoss_eq, fep050_landauer_heat_bound, fep050_landauer_work_bound, and fep050_landauerBound_pos.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Noninjectivereset;definedbitentropyunbiased-to-purelosskBlog2;secondlaw+T>0\u21d2Q>=kBTlog2;Q<=W\u21d2workbound;strictthresholdkB,T>0.",
+      "premise_scope_boundary": "Secondlawandwork-heatcouplingassumed; notmicroscopicHamiltonian/finiteprotocol/existence/saturability. kBunrestrictedalgebrabutphysicalconstantpositive.",
+      "positive_adverse_unexecuted_specs": "ThresholdQ=kBTlog2withW=Qsaturatesdeclaredbalance; W<Qbreaksworktransfer;negativeTinvalidinequalitydirection;unequalbiasedbitdifferententropy-lossmodel.",
+      "nearest_topic_distinction": "030binaryentropyprovidesexactresetloss;049nonnegproductiononlyfeedssecondlawunderexplicit hBalance,notautomaticphysicalequivalence.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-050",
+          "target": "fep-049",
+          "kind": "formal",
+          "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106).",
+          "witness": "FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "row": "fep-031",
+      "field": "assumption_review/non_vacuity",
+      "finding": "SelectedsupportnormalizationdoesnotzerooutsideS; unequalenergiesweightsnotdistinctat\u03b20.",
+      "exact_correction": "The expression sums to one only over the selected support; it is not zero outside that support. Use a support subtype or full support for an ambient law. Unequal energies give unequal weights when beta is nonzero (and lower energy receives higher weight when beta is positive)."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-037",
+      "field": "non_vacuity",
+      "finding": "Nonzerovariancealonecannegativeanddoesnotimplypositiveresponse.",
+      "exact_correction": "For alpha=1/4, positive beta and strictly positive variance, lag-zero response is positive and both defined correlation and response decay geometrically by1/2."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-013",
+      "field": "non_vacuity",
+      "finding": "CompilednonconstantGaussianwitnessisamathematicalthermalmodelnotvalidatedphysicalmodel.",
+      "exact_correction": "The fep040 Gaussian thermal entropy with U(T)=T/2 satisfies the premise at positive scale and temperature, yielding a nonconstant mathematical model with explicit dimensionless units."
+    }
+  ],
+  "ranked_existing_owner_followups": [
+    {
+      "rank": 1,
+      "scope": "031supportwrapper/037positivevariancewording",
+      "missing_content": "Exactmetadata+namedproper-supportcountermodel; preserveold031API. Optionalzeroextendedwrapper/subtypeFiniteLaw.",
+      "positive": "fullsupportGibbsproperlaw;positivevariancegeometricresponse",
+      "adverse": "singletonSambienttotal2;negativevarianceresponse",
+      "library_seam": "existingFiniteLawandFinset.sum_subtype; reviewedexternalProperSupportBoundary",
+      "estimate": "0.5-1dayplussealedmetadataqualification"
+    },
+    {
+      "rank": 2,
+      "scope": "013native002dimensionlessexcessbridge",
+      "missing_content": "UseexistingfiniteHelmholtzdecompositionandnativeKLfiniteembedding; identifyonlyofReal((EqE-T*H-F)/T)with002KLatzero-surprisal,notabsoluteF.",
+      "positive": "finitefullsupportgibbs,T>0",
+      "adverse": "zeroenergyF=-Tlogn<0invalidabsoluteENNRealidentity;T0notallowed",
+      "library_seam": "VariationalDuality.helmholtz_decomposition,DecisionRiskweightedDiracfiniteKLbridge,013U-TSdefinition",
+      "estimate": "1-3daysboundedcompositionandconsumers"
+    },
+    {
+      "rank": 3,
+      "scope": "030\u2192031ownedMaxEntrelationintegration",
+      "missing_content": "Mathsalreadydeliveredexternalqualifiedcommoncarrierwitness; integrateexactreviewedbinary/fullsupportbridgewithpreciserationale.",
+      "positive": "equal-energycandidateuniqueGibbsentropymaximum",
+      "adverse": "unmatchedmeanenergy/fullsupportfailure/betaexistencenotassumed",
+      "library_seam": "reviewedFEPComposed.fep030_fep031_binary_maxEntropyandfinitefoundation",
+      "estimate": "0.5-1dayplusseal/custody/fullqualification"
+    },
+    {
+      "rank": 4,
+      "scope": "037actualcovariance/responseinterpretation",
+      "missing_content": "Showdefinedgeometricmodeequalsstationarytwo-stateprocesscovarianceunderactualjointtransitionlaw; perturbationresponseidentityrequiresseparatespecifiedmodel.",
+      "positive": "stationaryfairBoolchain\u03b11/4",
+      "adverse": "nonstationarystartchangescovariance;\u03b1>1/2signalternation",
+      "library_seam": "existingfiniteMarkovDynamicsandfinitejointExpectation; no genericKubo/Diffusionclaim",
+      "estimate": "2-4dayscovariancebridge;perturbationspikeestimateaftercontract"
+    }
+  ],
+  "remaining": [
+    "Remaining118topicsand54/68dependenciesunreviewedbythisfamilyreport",
+    "No automaticroster/dispositionpromotion; actualqualifiednative/axiom/semantic/projection/seal/custodyreviewforeachauthoredfollowup"
+  ],
+  "limitations": [
+    "Staticcanonicalsource/metadata/foundationinspection;no S changesorLeanexecution",
+    "All7boundaryarrayscurrentlyempty; exampleshereunexecutedsourcelevelspecifications",
+    "ExistingMaxEnt/Helmholtzfoundationreviewnotasubstitutefortopicendpointcarrierbridge"
+  ]
+}

@@ -61,6 +61,8 @@ REQUIRED_BROWSER_INTERACTIONS = frozenset(
 CAPTURE_OWNER = "src/fep_lean/output/browser_capture.py"
 CAPTURE_WRAPPER = "scripts/capture_browser_acceptance.py"
 CAPTURE_COMMAND = "uv run python scripts/capture_browser_acceptance.py"
+# Exact reviewed release contract; the canonical-join test rejects count drift.
+REVIEWED_ATLAS_PAIRINGS = 119
 
 _CHROME_CANDIDATES: Mapping[str, tuple[str, ...]] = {
     "Google Chrome": ("google-chrome", "google-chrome-stable"),
@@ -244,7 +246,7 @@ def canonical_browser_observations(
             "escapeCleared": True,
             "families": counts["families"],
             "fepVisible": 41,
-            "pairingVisible": 118,
+            "pairingVisible": REVIEWED_ATLAS_PAIRINGS,
             "relationCards": counts["relations"],
             "relations": counts["relations"],
             "searchVisible": 1,
@@ -277,7 +279,7 @@ def canonical_browser_observations(
             "searchVisible": 1,
             "slashFocused": True,
             "structuralAnalogues": 1,
-            "theoremInstances": 16,
+            "theoremInstances": counts["witnesses"] - 1,
             "jumpFocused": True,
             "jumpOpened": True,
             "witnesses": counts["witnesses"],
@@ -1184,7 +1186,7 @@ def _interactions(observations: Mapping[str, Any]) -> dict[str, bool]:
             (
                 atlas["searchVisible"] == 1,
                 atlas["fepVisible"] == 41,
-                atlas["pairingVisible"] == 118,
+                atlas["pairingVisible"] == REVIEWED_ATLAS_PAIRINGS,
                 dashboard["searchVisible"] == 1,
                 dashboard["familyVisible"] == 1,
                 dashboard["filterOpened"] == 1,

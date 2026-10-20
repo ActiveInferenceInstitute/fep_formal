@@ -14,9 +14,10 @@ import math
 import os
 import re
 import tempfile
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from fep_lean.catalogue.schema import topic_ids_sha256
 from fep_lean.output.fsutil import sha256_file
@@ -33,6 +34,9 @@ from fep_lean.verification._toolchain import (
     pinned_lean_semver,
     toolchain_identity,
 )
+
+if TYPE_CHECKING:
+    from fep_lean.catalogue.topics import FEPTopicCatalogue
 
 NATIVE_RECEIPT_SCHEMA_VERSION = 4
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -495,3 +499,553 @@ def latest_claim_ready_full_report(
         if validation.get("claim_ready") is True:
             return report_root
     return None
+
+
+STATUS_BOUNDARY = (
+    "status composes existing read-only checks; exit 0 means the report "
+    "composed, never that the evidence is current. Each section's state and "
+    "boundary are the authority. Nothing here compiles Lean, runs Hermes or "
+    "OpenGauss, executes the test suite, writes bytes, or repairs drift."
+)
+
+
+@dataclass(frozen=True)
+class SectionReport:
+    """One evidence-currency section with its explicit capability boundary."""
+
+    name: str
+    state: str
+    findings: tuple[str, ...]
+    composes: tuple[str, ...]
+    boundary: str
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "state": self.state,
+            "findings": list(self.findings),
+            "composes": list(self.composes),
+            "boundary": self.boundary,
+        }
+
+
+_PUBLICATION_PLANES = (
+    "catalogue_build_products",
+    "render_receipt_freshness",
+    "bridge_source_pin",
+    "native_verification_receipt",
+    "formalism_audit_receipt",
+    "python_acceptance_receipt",
+    "browser_acceptance_receipt",
+    "publication_inputs",
+    "publication_bundle",
+    "input_stability",
+)
+
+
+@dataclass(frozen=True)
+class PublicationReadinessReport:
+    """Static readiness inventory; runtime and archive gates stay explicit."""
+
+    sections: tuple[SectionReport, ...]
+    runtime_checks_performed: bool = False
+    bundle_parity_verified: bool = False
+
+    @property
+    def claim_ready(self) -> bool:
+        return (
+            tuple(section.name for section in self.sections) == _PUBLICATION_PLANES
+            and all(
+                section.state in {"current", "claim_ready"} for section in self.sections
+            )
+            and self.runtime_checks_performed
+            and self.bundle_parity_verified
+        )
+
+    @property
+    def state(self) -> str:
+        if tuple(section.name for section in self.sections) != _PUBLICATION_PLANES:
+            return "blocked"
+        if any(
+            section.state not in {"current", "claim_ready", "unverified"}
+            for section in self.sections
+        ):
+            return "blocked"
+        return "claim_ready" if self.claim_ready else "unverified"
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "state": self.state,
+            "claim_ready": self.claim_ready,
+            "runtime_checks_performed": self.runtime_checks_performed,
+            "bundle_parity_verified": self.bundle_parity_verified,
+            "deferred_checks": [
+                "fresh canonical Python test collection and executor validation",
+                "live browser executable identification and capture replay",
+                "deterministic publication rendering and renderer identity validation",
+                "two byte-identical bundles and final live-source bundle validation",
+            ],
+            "boundary": (
+                "Static source and receipt checks only. Missing or stale evidence "
+                "blocks readiness; successful static checks do not replace fresh "
+                "collection, browser replay, deterministic rendering, or bundle "
+                "validation. No publication is performed or authorized here."
+            ),
+            "sections": [section.as_dict() for section in self.sections],
+        }
+
+
+@dataclass(frozen=True)
+class StatusReport:
+    """Typed ``fep-lean status`` payload: sections, never proof claims."""
+
+    sections: tuple[SectionReport, ...]
+    publication_readiness: PublicationReadinessReport | None = None
+
+    @property
+    def status(self) -> str:
+        """``ok`` when the report composed; section states carry currency."""
+        return "ok" if len(self.sections) == 4 else "error"
+
+    def as_dict(self) -> dict[str, Any]:
+        # The top-level native_claim_ready flag must agree with the
+        # native_verification_receipt section's state: the sections are the
+        # authority, and a hardcoded False contradicted a claim_ready section
+        # (observed 2026-09-10 after the wave-2 evidence refresh).
+        native_ready = any(
+            section.name == "native_verification_receipt"
+            and section.state == "claim_ready"
+            for section in self.sections
+        )
+        payload = {
+            "schema_version": 1,
+            "status": self.status,
+            "evidence_plane": "evidence currency and provenance",
+            "boundary": STATUS_BOUNDARY,
+            "native_claim_ready": native_ready,
+            "sections": [section.as_dict() for section in self.sections],
+        }
+        if self.publication_readiness is not None:
+            payload["publication_readiness"] = self.publication_readiness.as_dict()
+        return payload
+
+
+RENDER_RECEIPT = Path("docs") / "render-acceptance.json"
+NATIVE_RECEIPT = Path("output") / "native-verification.json"
+
+
+def _readiness_display(root: Path, path: Path) -> str:
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
+def catalogue_products_section(
+    root: Path, catalogue: FEPTopicCatalogue | None = None
+) -> SectionReport:
+    """Compare offline catalogue build products against their generators."""
+    from fep_lean.catalogue.generation import (
+        catalogue_projection_drift,
+        fep_all_projection_drift,
+    )
+    from fep_lean.catalogue.topics import FEPTopicCatalogue
+    from fep_lean.output.manuscript import (
+        build_manuscript_vars,
+        manuscript_projection_drift,
+    )
+
+    composes = (
+        "fep_lean.catalogue.generation.catalogue_projection_drift",
+        "fep_lean.catalogue.generation.fep_all_projection_drift",
+        "fep_lean.output.manuscript.manuscript_projection_drift",
+    )
+    boundary = (
+        "Compares generated projections byte-for-byte against their canonical "
+        "generators. It does not compile Lean, run Hermes or OpenGauss, "
+        "execute the test suite, or prove any theorem: current means every "
+        "comparison completed and generators and products agree on bytes. "
+        "An unavailable comparison is unverified, even if other products match. "
+        "Run-local receipt/provider values and checkout stamp values are excluded; "
+        "only their mapping shapes are compared. No checkout stamp is captured "
+        "or treated as a current fact."
+    )
+    stale: list[Path] = []
+    findings: list[str] = []
+    try:
+        stale.extend(catalogue_projection_drift(root))
+    except (OSError, TypeError, ValueError) as exc:
+        findings.append(f"topic catalogue projections unreadable: {exc}")
+    try:
+        stale.extend(fep_all_projection_drift(root))
+    except (OSError, TypeError, ValueError) as exc:
+        findings.append(f"aggregate Lean projection unreadable: {exc}")
+    try:
+        cat = catalogue or FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
+        expected_vars = build_manuscript_vars(
+            cat,
+            root,
+            output_root=root / "output",
+            cache_test_count=False,
+            capture_source_stamp=False,
+        )
+        stale.extend(
+            manuscript_projection_drift(
+                root,
+                catalogue=cat,
+                output_root=root / "output",
+                expected_variables=expected_vars,
+            )
+        )
+    except (OSError, TypeError, ValueError) as exc:
+        # The test census refuses to run a collection here; a missing cache is
+        # the census boundary, not a drift verdict on the manuscript.
+        findings.append(f"manuscript projections not compared: {exc}")
+    if stale:
+        findings.extend(
+            f"stale or missing: {_readiness_display(root, path)}" for path in stale
+        )
+    state = "stale" if stale else "unverified" if findings else "current"
+    return SectionReport(
+        name="catalogue_build_products",
+        state=state,
+        findings=tuple(findings),
+        composes=composes,
+        boundary=boundary,
+    )
+
+
+def render_receipt_section(
+    root: Path,
+    *,
+    receipt_path: Path | None = None,
+    manuscript_dir: Path | None = None,
+) -> SectionReport:
+    from fep_lean.output.render_log import receipt_defects
+
+    receipt = receipt_path or root / RENDER_RECEIPT
+    manuscript = manuscript_dir or root / "manuscript"
+    composes = (
+        "fep_lean.output.render_log.receipt_defects",
+        "fep_lean.output.render_log.manuscript_source_digests",
+    )
+    boundary = (
+        "The receipt binds an accepted render to the authored manuscript text "
+        "and LaTeX preamble as of that render. It does not re-run the render, "
+        "does not cover values a {{token}} resolves to (manuscript projection "
+        "drift owns that surface), and says nothing about Lean, Hermes, or "
+        "OpenGauss evidence."
+    )
+    try:
+        defects = receipt_defects(receipt, manuscript)
+    except (OSError, TypeError, ValueError) as exc:
+        state = "error"
+        defects = (f"render receipt cannot be compared with live sources: {exc}",)
+    else:
+        if not receipt.is_file():
+            state = "missing"
+        elif defects:
+            state = "stale"
+        else:
+            state = "current"
+    return SectionReport(
+        name="render_receipt_freshness",
+        state=state,
+        findings=defects,
+        composes=composes,
+        boundary=boundary,
+    )
+
+
+def bridge_pin_section(root: Path, gnn_root: Path | None = None) -> SectionReport:
+    """Report GNN bridge source-pin presence and, when possible, staleness."""
+    from fep_lean.bridge import operations
+    from fep_lean.bridge.custody import validate_binding
+
+    composes = (
+        "fep_lean.bridge.operations.check_sources",
+        "fep_lean.bridge.custody.validate_binding",
+    )
+    pin = root / Path(operations.PIN)
+    if not pin.is_file():
+        return SectionReport(
+            name="bridge_source_pin",
+            state="not_pinned",
+            findings=(
+                "specs/gnn-bridge-w2-source-custody/source-pin.json: not pinned",
+            ),
+            composes=composes,
+            boundary=(
+                "No source pin exists, so no bridge evidence is bound to owner "
+                "bytes. Pin presence alone establishes nothing about the "
+                "current sibling tree: comparing working-tree bytes requires "
+                "the explicitly named GNN checkout, and a fresh pin is not "
+                "evidence of correctness or of native proof."
+            ),
+        )
+    try:
+        data = operations.read_object(pin)
+        findings = [
+            f"fep_lean commit recorded: {data['fep_lean'].get('commit', '?')}",
+            f"gnn commit recorded: {data['gnn'].get('commit', '?')}",
+        ]
+        errors: list[str]
+        if gnn_root is not None:
+            errors = operations.check_sources(root, gnn_root, data)
+        else:
+            fep_entry = data.get("fep_lean")
+            owners = fep_entry.get("owners") if isinstance(fep_entry, dict) else None
+            if not isinstance(owners, dict):
+                errors = ["malformed fep_lean source binding"]
+            else:
+                errors = validate_binding(
+                    root, owners, operations.owner_roster(root, "fep_lean")
+                )
+                errors = [f"fep_lean: {error}" for error in errors]
+            findings.append(
+                "gnn owner bytes not compared: pass --gnn-root with the "
+                "explicit GNN checkout to validate both sides"
+            )
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        return SectionReport(
+            name="bridge_source_pin",
+            state="error",
+            findings=(f"unreadable or malformed source pin: {exc}",),
+            composes=composes,
+            boundary=(
+                "A malformed pin is a custody failure, not a stale-but-trusted "
+                "reference; re-pin explicitly after reviewing owner changes."
+            ),
+        )
+    findings.extend(errors)
+    state = "stale" if errors else "current" if gnn_root is not None else "unverified"
+    return SectionReport(
+        name="bridge_source_pin",
+        state=state,
+        findings=tuple(findings),
+        composes=composes,
+        boundary=(
+            "Custody binds owner bytes, not a perpetually refreshed HEAD. "
+            "Currency requires comparing both explicitly named working trees. "
+            "Without --gnn-root, the GNN comparison remains unverified. It is "
+            "not native proof, not semantic review, and not proof that an "
+            "older execution artifact was produced by these sources."
+        ),
+    )
+
+
+def native_receipt_section(
+    root: Path, *, receipt_path: Path | None = None
+) -> SectionReport:
+    """Read the native verification receipt with its claim boundary."""
+    receipt = receipt_path or root / NATIVE_RECEIPT
+    composes = ("fep_lean.output.evidence.validate_native_lean_receipt",)
+    if not receipt.is_file():
+        return SectionReport(
+            name="native_verification_receipt",
+            state="missing",
+            findings=("output/native-verification.json: absent",),
+            composes=composes,
+            boundary=(
+                "No native receipt exists, so no Lean compilation claim is "
+                "bound to current sources. Catalogue-mode output must never "
+                "be read as Lean evidence."
+            ),
+        )
+    try:
+        validation = validate_native_lean_receipt(receipt, project_root=root)
+    except (OSError, TypeError, ValueError) as exc:
+        return SectionReport(
+            name="native_verification_receipt",
+            state="error",
+            findings=(f"native receipt cannot be compared with live sources: {exc}",),
+            composes=composes,
+            boundary=(
+                "Native source/receipt comparison did not complete. No native "
+                "claim readiness is established by an unavailable comparison."
+            ),
+        )
+    findings = [
+        f"valid: {validation.get('valid', False)}",
+        f"native_claim_ready: {validation.get('native_claim_ready', False)}",
+        f"selected topics: {validation.get('selected_topics', 0)}",
+        f"verified topics: {validation.get('verified_topics', 0)}",
+        f"warnings: {validation.get('warning_count', 0)}",
+        f"sorry: {validation.get('sorry_count', 0)}",
+    ]
+    findings.extend(str(error) for error in validation.get("errors", []))
+    state = "claim_ready" if validation.get("native_claim_ready") else "not_claim_ready"
+    return SectionReport(
+        name="native_verification_receipt",
+        state=state,
+        findings=tuple(findings),
+        composes=composes,
+        boundary=(
+            "Claim readiness covers exact-source native compilation of the "
+            "selected roster at the recorded digests, with zero errors, "
+            "warnings, and sorry. It is not a Hermes/OpenGauss full run, not "
+            "semantic review of a theorem proxy, and not a proof of the FEP; "
+            "compilation of a Lean body never promotes its disposition."
+        ),
+    )
+
+
+def _readiness_input_snapshot(
+    root: Path, gnn_root: Path | None
+) -> tuple[dict[str, str], tuple[str, ...]]:
+    from fep_lean.output import release_bundle
+
+    return release_bundle.publication_input_snapshot(root, gnn_root)
+
+
+def _stored_readiness_section(
+    root: Path,
+    *,
+    name: str,
+    receipts: tuple[Path, ...],
+    validator: Callable[[Path], tuple[str, ...]],
+    owner: str,
+    runtime_required: bool = False,
+) -> SectionReport:
+    """Project one existing validator's defects without relaxing its policy."""
+    missing = tuple(
+        f"missing: {relative.as_posix()}"
+        for relative in receipts
+        if not (root / relative).is_file()
+    )
+    state = "missing" if missing else "current"
+    defects = missing
+    if not missing:
+        try:
+            defects = validator(root)
+        except (OSError, TypeError, ValueError) as exc:
+            state = "error"
+            defects = (f"stored evidence cannot be validated: {exc}",)
+        else:
+            state = (
+                "stale" if defects else "unverified" if runtime_required else "current"
+            )
+    return SectionReport(
+        name=name,
+        state=state,
+        findings=defects,
+        composes=(owner,),
+        boundary=(
+            "Validates stored evidence against canonical source/schema policy "
+            "without executing tools. "
+            + (
+                "Successful static validation remains unverified until its "
+                "separate runtime validation completes."
+                if runtime_required
+                else "Current covers only this receipt's exact evidence plane."
+            )
+        ),
+    )
+
+
+def _publication_input_errors(root: Path) -> tuple[str, ...]:
+    from fep_lean.output import release_bundle
+
+    return release_bundle.inspect_stored_publication_evidence(
+        root, "publication_inputs"
+    )
+
+
+def build_status_report(root: Path, gnn_root: Path | None = None) -> StatusReport:
+    """Compose compatible currency sections plus static publication readiness."""
+    from fep_lean.output import release_bundle
+
+    before, snapshot_errors = _readiness_input_snapshot(root, gnn_root)
+    sections = (
+        catalogue_products_section(root),
+        render_receipt_section(root),
+        bridge_pin_section(root, gnn_root),
+        native_receipt_section(root),
+    )
+    readiness = list(sections)
+    readiness.extend(
+        (
+            _stored_readiness_section(
+                root,
+                name="formalism_audit_receipt",
+                receipts=(Path("output/formalism-audit.json"),),
+                validator=lambda project: (
+                    release_bundle.validate_formalism_audit_receipt(
+                        project / "output/formalism-audit.json", project
+                    )
+                ),
+                owner="fep_lean.verification.formalism_audit.validate_formalism_audit_receipt",
+            ),
+            _stored_readiness_section(
+                root,
+                name="python_acceptance_receipt",
+                receipts=(
+                    release_bundle.PYTHON_ACCEPTANCE_RECEIPT,
+                    release_bundle.PYTEST_RECEIPT,
+                    release_bundle.PYTHON_COVERAGE_RECEIPT,
+                ),
+                validator=lambda project: (
+                    release_bundle.inspect_stored_publication_evidence(
+                        project, "python_acceptance_receipt"
+                    )
+                ),
+                owner="fep_lean.output.release_bundle._python_acceptance_receipt_errors",
+                runtime_required=True,
+            ),
+            _stored_readiness_section(
+                root,
+                name="browser_acceptance_receipt",
+                receipts=(release_bundle.BROWSER_RECEIPT,),
+                validator=lambda project: (
+                    release_bundle.inspect_stored_publication_evidence(
+                        project, "browser_acceptance_receipt"
+                    )
+                ),
+                owner="fep_lean.output.release_bundle._browser_receipt_errors",
+                runtime_required=True,
+            ),
+            _stored_readiness_section(
+                root,
+                name="publication_inputs",
+                receipts=(Path("manuscript/manuscript_vars.yaml"),),
+                validator=_publication_input_errors,
+                owner="fep_lean.output.release_bundle._prerequisites",
+                runtime_required=True,
+            ),
+            SectionReport(
+                "publication_bundle",
+                "unverified",
+                (
+                    "Deterministic rendering and archive parity validation are deferred.",
+                ),
+                ("fep_lean.output.release_bundle.validate_release_bundle",),
+                "No archive is built, selected, or validated by status. Final "
+                "publication requires two identical builds and live-source validation.",
+            ),
+        )
+    )
+    after, after_errors = _readiness_input_snapshot(root, gnn_root)
+    stability_errors = (*snapshot_errors, *after_errors)
+    if not stability_errors and before != after:
+        stability_errors = (
+            "Source or evidence inputs changed during status validation.",
+        )
+    readiness.append(
+        SectionReport(
+            "input_stability",
+            "error" if stability_errors else "current",
+            tuple(dict.fromkeys(stability_errors)),
+            ("fep_lean.output.release_bundle.publication_input_snapshot",),
+            "Compares observed owner/test/manuscript/receipt bytes before and "
+            "after checks. This is input stability, never execution or proof evidence.",
+        )
+    )
+    return StatusReport(
+        sections=sections,
+        publication_readiness=PublicationReadinessReport(tuple(readiness)),
+    )
+
+
+def report_to_json(report: StatusReport) -> str:
+    """Serialize the report for the CLI's JSON output convention."""
+    return json.dumps(report.as_dict(), indent=2, default=str)

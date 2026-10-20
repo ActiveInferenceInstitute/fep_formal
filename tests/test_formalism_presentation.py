@@ -34,6 +34,23 @@ from fep_lean.verification.numerical_witnesses import (
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_reviewed_candidate_release_seal_matches_actual_owner_join() -> None:
+    from fep_lean.output.formalism_presentation import RELEASE_SEAL
+
+    presentation = build_formalism_presentation(PROJECT_ROOT)
+    actual = {
+        "first_id": presentation.topics[0].id,
+        "last_id": presentation.topics[-1].id,
+        "topics": len(presentation.topics),
+        "families": len(presentation.families),
+        "areas": len(presentation.areas),
+        "relations": len(presentation.relations),
+        "capabilities": len(presentation.capabilities),
+        "witnesses": len(presentation.witnesses),
+    }
+    assert actual == RELEASE_SEAL
+
+
 def test_scientific_acronyms_survive_human_readable_labels() -> None:
     assert (
         humanize_formalism_identifier("closed-loop-policy-trees-and-efe")
@@ -62,7 +79,7 @@ def test_presentation_join_conserves_canonical_sources_and_is_immutable() -> Non
     assert len(presentation.topics) == 168
     assert len(presentation.areas) == 5
     assert len(presentation.families) == 22
-    assert len(presentation.witnesses) == 17
+    assert len(presentation.witnesses) == 22
     assert presentation.unmatched_witness_families == ()
     assert all(
         witness.evidence_kind == NON_PROOF_EVIDENCE

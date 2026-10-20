@@ -407,7 +407,7 @@ def test_canonical_dom_passes_the_interaction_summary() -> None:
     assert all(capture_module._interactions(observations).values())
 
 
-@pytest.mark.parametrize("pairings", [0, 105, 117, 119, 146])
+@pytest.mark.parametrize("pairings", [0, 105, 117, 118, 120, 146])
 def test_interactions_reject_incorrect_pairing_counts(pairings: int) -> None:
     root = Path(__file__).resolve().parents[1]
     observations = capture_module.canonical_browser_observations(
@@ -875,7 +875,7 @@ def test_live_chrome_replay_terminates_every_profile_writer(
     for layout in mobile_layouts:
         assert layout["viewport"] == [390, 844]
         assert layout["scrollHeight"] <= 2 * layout["viewport"][1]
-        assert len(layout["summaryHeights"]) == 6
+        assert len(layout["summaryHeights"]) == 8
         assert min(layout["summaryHeights"]) >= 44
     assert (
         first.observations["dashboard_mobile"]["mobileOverviewInitiallyOpen"] is False

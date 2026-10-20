@@ -1,0 +1,492 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_audit_complete_retain_current_dispositions_with_scoped_corrections",
+  "scope": "temporal-and-hierarchical-inferenceonly7rows;combinedaudit78of168",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-072",
+    "fep-073",
+    "fep-074",
+    "fep-075",
+    "fep-076",
+    "fep-077",
+    "fep-078"
+  ],
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/temporal_inference.py": "820d493f82c2de309e51ca931b3c44807688e9d96cc9050b605bf99585d813a9",
+    "lean/FepSketches/families/temporal_inference.lean": "d8a81985ce50269b2fba44ab928741c1f896c7f3bec8cce178b2b1c4d2343926",
+    "src/fep_lean/formal/temporal_inference.lean": "25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/active_inference.lean": "260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07",
+    "src/fep_lean/formal/perception_action_loop.lean": "f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a",
+    "src/fep_lean/formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665"
+  },
+  "rows": [
+    {
+      "id": "fep-072",
+      "title": "Hidden-Markov Forward Filtering Recursion",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep072_forward_filtering_recursion",
+      "supporting": [
+        "fep072_bool_forward_mass"
+      ],
+      "boundary": [
+        "fep072_zero_evidence_boundary"
+      ],
+      "declaration_statements": {
+        "fep072_forward_filtering_recursion": "theorem fep072_forward_filtering_recursion (prior : FiniteLaw State)\n    (transition : FiniteKernel State State)\n    (emission : FiniteKernel State Observation) (observation : Observation)\n    (hEvidence : 0 < forwardEvidence prior transition emission observation)\n    (state : State) :\n    forwardFilter prior transition emission observation hEvidence state *\n        forwardEvidence prior transition emission observation =\n      forwardPrediction prior transition state * emission state observation",
+        "fep072_bool_forward_mass": "theorem fep072_bool_forward_mass : boolForwardFilter true = 20 / 23",
+        "fep072_zero_evidence_boundary": "theorem fep072_zero_evidence_boundary (prior : FiniteLaw State)\n    (transition : FiniteKernel State State)\n    (emission : FiniteKernel State Observation) (observation : Observation)\n    (hZero : forwardEvidence prior transition emission observation = 0) :\n    \u00ac0 < forwardEvidence prior transition emission observation"
+      },
+      "body_sha256": "9dc171b1f1ed3c5706b012a61677bbe893200065b8c8453e0e7cae6fc2567473",
+      "maturity_record": {
+        "id": "fep-072",
+        "primary_theorem": "fep072_forward_filtering_recursion",
+        "supporting_theorems": [
+          "fep072_bool_forward_mass"
+        ],
+        "boundary_theorems": [
+          "fep072_zero_evidence_boundary"
+        ],
+        "invariant": "One positive-evidence finite hidden-Markov filtering step reconstructs its predicted state-observation joint, with an exact asymmetric Boolean posterior witness.",
+        "assumption_review": "State and observation carriers are finite, transition and emission rows are normalized, and observed evidence is strictly positive. No filter is claimed at zero evidence and no continuous-state or Kalman\u2013Bucy limit is inferred.",
+        "non_vacuity": "The asymmetric Boolean HMM assigns true posterior mass 20/23, while the zero-evidence theorem explicitly excludes an undefined normalization.",
+        "acceptance_probe": "native Lean compile of fep072_forward_filtering_recursion, fep072_bool_forward_mass, and fep072_zero_evidence_boundary.",
+        "disposition": "formalized"
+      },
+      "statement_review": "ActualfiniteHMMprediction/emissionpositiveevidencefilterreconstructsone-stepjoint;Boolposterior20/23;zeroevidenceoutsideconstructor.",
+      "premise_scope_boundary": "No filteringconvergence/continuousKalmanBucylimit/nativemeasureidentityautomatically.",
+      "positive_adverse_unexecuted_specs": "AsymmetricBoolprior/stickynoisegives20/23; impossibleobservationgivesZ0; identityemissionpointposteriorpossible.",
+      "nearest_topic_distinction": "066action-conditionedgeneralization;034nativeposteriornotderivedfromsameformulaalone.",
+      "own_novelty_record": {
+        "id": "fep-072",
+        "nearest_topics": [
+          "fep-034"
+        ],
+        "new_invariant": "One supported hidden-Markov forward step reconstructs the predicted state-observation joint.",
+        "carrier_delta": "Adds a transition-before-emission temporal model and an exact asymmetric Boolean filtering witness.",
+        "required_bridge": "FEPComposed.fep072_forward_filter_refines_fep034"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-072",
+          "target": "fep-034",
+          "kind": "formal_pairing",
+          "rationale": "The finite forward-filter atom reconstruction and the native fep-034 joint reconstruction record the same predict-then-condition architecture.",
+          "witness": "FEPComposed.fep072_forward_filter_refines_fep034"
+        }
+      ]
+    },
+    {
+      "id": "fep-073",
+      "title": "Backward Information-Message Recursion",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep073_backward_message_recursion",
+      "supporting": [
+        "fep073_backward_message_nonnegative"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep073_backward_message_recursion": "theorem fep073_backward_message_recursion\n    (transition : FiniteKernel State State)\n    (emission : FiniteKernel State Observation) (observation : Observation)\n    (future : List Observation) (state : State) :\n    backwardMessage transition emission (observation :: future) state =\n      backwardMessageStep transition emission observation\n        (backwardMessage transition emission future) state",
+        "fep073_backward_message_nonnegative": "theorem fep073_backward_message_nonnegative\n    (transition : FiniteKernel State State)\n    (emission : FiniteKernel State Observation) (observation : Observation)\n    (nextMessage : State \u2192 \u211d) (hMessage : \u2200 state, 0 \u2264 nextMessage state)\n    (state : State) :\n    0 \u2264 backwardMessageStep transition emission observation nextMessage state"
+      },
+      "body_sha256": "c3bf75f1cc45c498a2e8a4241338b7db349745abdaca37872795980e8113ff1a",
+      "maturity_record": {
+        "id": "fep-073",
+        "primary_theorem": "fep073_backward_message_recursion",
+        "supporting_theorems": [
+          "fep073_backward_message_nonnegative"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Finite backward information messages obey the exact future-observation recursion and preserve nonnegativity from one message to the preceding one.",
+        "assumption_review": "State and observation carriers are finite and transition and emission rows are normalized. Nonnegativity requires the supplied next message to be pointwise nonnegative; the theorem does not normalize messages or assert a limiting smoother.",
+        "non_vacuity": "A nonempty future-observation list and nonconstant emission kernel produce a state-dependent backward message rather than only the terminal unit message.",
+        "acceptance_probe": "native Lean compile of fep073_backward_message_recursion and fep073_backward_message_nonnegative for arbitrary finite future lists.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Backwardmessageoverfuturelistrecursesbytransition*emission*nextMessage; nonnegativeweightspropagated.",
+      "premise_scope_boundary": "Messagesnotnormalizedandnotautomaticallystate-dependentfromnonconstantemissionsalone; transitioncanwashoutstatedependence.",
+      "positive_adverse_unexecuted_specs": "Identitytransitionwithdistinctobservedlikelihoodsstate-dependent; identicaltransitionrowsgiveconstantbackwardmessageevenemissioninformative; zerofutureterminal1.",
+      "nearest_topic_distinction": "047Fin7matrixforwardalgebravs073chronologicalfuturelikelihoodrecursion;075normalizedsmootheraddspositiveZ.",
+      "own_novelty_record": {
+        "id": "fep-073",
+        "nearest_topics": [
+          "fep-047"
+        ],
+        "new_invariant": "Backward information messages compose recursively over future observations and preserve nonnegativity.",
+        "carrier_delta": "Reverses finite sum-product propagation across a temporal observation list with an explicit terminal message.",
+        "required_bridge": "FEPComposed.fep073_backward_message_composes_fep047"
+      },
+      "nearest_expansion_records": [
+        {
+          "id": "fep-074",
+          "nearest_topics": [
+            "fep-034",
+            "fep-073"
+          ],
+          "new_invariant": "A supported smoother factors into forward law and backward message with matching evidence calculations.",
+          "carrier_delta": "Combines normalized filtering with an unnormalized nonnegative backward information field.",
+          "required_bridge": "FEPComposed.fep074_smoothing_reconstructs_fep034_filter"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-073",
+          "target": "fep-047",
+          "kind": "formal_pairing",
+          "rationale": "Backward information recursion and the original sum-product composition law jointly certify temporal message composition in their native carriers.",
+          "witness": "FEPComposed.fep073_backward_message_composes_fep047"
+        }
+      ]
+    },
+    {
+      "id": "fep-074",
+      "title": "Forward\u2013Backward Smoothing Factorization",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep074_forwardBackward_smoothing_factorization",
+      "supporting": [
+        "fep074_forward_backward_evidence_agreement"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep074_forwardBackward_smoothing_factorization": "theorem fep074_forwardBackward_smoothing_factorization\n    (filtered : FiniteLaw State) (backward : State \u2192 \u211d)\n    (hBackward : \u2200 state, 0 \u2264 backward state)\n    (hNormalizer : 0 < smoothingNormalizer filtered backward) (state : State) :\n    forwardBackwardSmoothing filtered backward hBackward hNormalizer state *\n        smoothingNormalizer filtered backward =\n      filtered state * backward state",
+        "fep074_forward_backward_evidence_agreement": "theorem fep074_forward_backward_evidence_agreement\n    {Observation : Type*} [Fintype Observation]\n    (prior : FiniteLaw State) (transition : FiniteKernel State State)\n    (emission : FiniteKernel State Observation) (observation : Observation) :\n    forwardEvidence prior transition emission observation =\n      backwardEvidence prior transition emission observation"
+      },
+      "body_sha256": "a041a9b16c71a9f2137a19010cd342ffc1dc6c95f24897d72a3e391ca6602c6c",
+      "maturity_record": {
+        "id": "fep-074",
+        "primary_theorem": "fep074_forwardBackward_smoothing_factorization",
+        "supporting_theorems": [
+          "fep074_forward_backward_evidence_agreement"
+        ],
+        "boundary_theorems": [],
+        "invariant": "At positive normalizer, a finite smoothing marginal factors into forward law times backward information, and one-step forward and backward computations agree on observation evidence.",
+        "assumption_review": "The forward law is normalized, the backward message is nonnegative, and its weighted normalizer is strictly positive. The statement covers a finite factorization and does not assert positivity when all backward weights vanish.",
+        "non_vacuity": "Nonconstant backward messages reweight a nondegenerate forward law, while the evidence-agreement theorem connects independently expressed forward and backward one-step calculations.",
+        "acceptance_probe": "native Lean compile of fep074_forwardBackward_smoothing_factorization and fep074_forward_backward_evidence_agreement.",
+        "disposition": "formalized"
+      },
+      "statement_review": "SuppliedforwardFiniteLaw/nonnegativebackwardmessageandpositiveZyieldexactnormalizedproductfactorization;one-stepforward/backwardevidenceagreement actualfiniteHMMsummation.",
+      "premise_scope_boundary": "Doesnotbyitselfshowarbitrarybackwardmessageequalsfullfuturelikelihoodorsmootherisactualfullpathconditionalmarginal.",
+      "positive_adverse_unexecuted_specs": "Forward(1/2,1/2),backward(1,3)gives(1/4,3/4); backwarddifferenceonlyoffforwardsupportnoeffect; allzerobackwardZ0.",
+      "nearest_topic_distinction": "075normalizationofsametilt; fullfiniteHMMpathmarginalbridgewouldstrengthenexistingcarrierwithoutnewtopic.",
+      "own_novelty_record": {
+        "id": "fep-074",
+        "nearest_topics": [
+          "fep-034",
+          "fep-073"
+        ],
+        "new_invariant": "A supported smoother factors into forward law and backward message with matching evidence calculations.",
+        "carrier_delta": "Combines normalized filtering with an unnormalized nonnegative backward information field.",
+        "required_bridge": "FEPComposed.fep074_smoothing_reconstructs_fep034_filter"
+      },
+      "nearest_expansion_records": [
+        {
+          "id": "fep-075",
+          "nearest_topics": [
+            "fep-034",
+            "fep-074"
+          ],
+          "new_invariant": "Positive-normalizer forward\u2013backward products define normalized smoothing marginals.",
+          "carrier_delta": "Adds a smoothing normalizer, its zero boundary, and an exact nonuniform Boolean marginal.",
+          "required_bridge": "FEPComposed.fep075_smoothing_normalization_extends_fep034"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-074",
+          "target": "fep-034",
+          "kind": "formal_pairing",
+          "rationale": "Finite forward--backward smoothing reconstructs its weighted atom while the native fep-034 posterior reconstructs the predicted observation joint.",
+          "witness": "FEPComposed.fep074_smoothing_reconstructs_fep034_filter"
+        }
+      ]
+    },
+    {
+      "id": "fep-075",
+      "title": "Smoothing-Marginal Normalization",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep075_smoothing_marginal_normalization",
+      "supporting": [
+        "fep075_bool_smoothing_normalization"
+      ],
+      "boundary": [
+        "fep075_zero_normalizer_boundary"
+      ],
+      "declaration_statements": {
+        "fep075_smoothing_marginal_normalization": "theorem fep075_smoothing_marginal_normalization\n    (filtered : FiniteLaw State) (backward : State \u2192 \u211d)\n    (hBackward : \u2200 state, 0 \u2264 backward state)\n    (hNormalizer : 0 < smoothingNormalizer filtered backward) :\n    \u2211 state, forwardBackwardSmoothing filtered backward hBackward hNormalizer state =\n      1",
+        "fep075_bool_smoothing_normalization": "theorem fep075_bool_smoothing_normalization :\n    boolSmoothing false + boolSmoothing true = 1",
+        "fep075_zero_normalizer_boundary": "theorem fep075_zero_normalizer_boundary (filtered : FiniteLaw State)\n    (backward : State \u2192 \u211d) (hZero : smoothingNormalizer filtered backward = 0) :\n    \u00ac0 < smoothingNormalizer filtered backward"
+      },
+      "body_sha256": "1318c59e3a8433e3191d772f43ccaea2b4ccef34b346825838736fb2de316b39",
+      "maturity_record": {
+        "id": "fep-075",
+        "primary_theorem": "fep075_smoothing_marginal_normalization",
+        "supporting_theorems": [
+          "fep075_bool_smoothing_normalization"
+        ],
+        "boundary_theorems": [
+          "fep075_zero_normalizer_boundary"
+        ],
+        "invariant": "A nonnegative forward\u2013backward product with positive normalizer defines a normalized finite smoothing marginal.",
+        "assumption_review": "The state carrier is finite, backward weights are pointwise nonnegative, and their forward expectation is strictly positive. The construction explicitly excludes a zero normalizer rather than selecting an arbitrary fallback law.",
+        "non_vacuity": "The Boolean smoother has unequal positive masses 7/46 and 39/46 whose sum is one; an identically zero backward message witnesses the excluded normalizer boundary.",
+        "acceptance_probe": "native Lean compile of fep075_smoothing_marginal_normalization, fep075_bool_smoothing_normalization, and fep075_zero_normalizer_boundary.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Smoothermasssum1underbackward>=0andpositiveweightedZ;Bool7/46+39/46actualnontrivialnormalizedpacket;Z0refused.",
+      "premise_scope_boundary": "Carrierprobabilitylawconditionalonsuppliedweights; nofallbackatZ0,noasymptotics/unboundedhorizonclaim.",
+      "positive_adverse_unexecuted_specs": "ActualBoolunequalpositivemasses; zerooronlypositivebackwardatzeropriorstatesZ0; negativebackwardcannotbuildlaw.",
+      "nearest_topic_distinction": "074factorizationand076exponentialtiltareseparatewaysofsupplyingweights.",
+      "own_novelty_record": {
+        "id": "fep-075",
+        "nearest_topics": [
+          "fep-034",
+          "fep-074"
+        ],
+        "new_invariant": "Positive-normalizer forward\u2013backward products define normalized smoothing marginals.",
+        "carrier_delta": "Adds a smoothing normalizer, its zero boundary, and an exact nonuniform Boolean marginal.",
+        "required_bridge": "FEPComposed.fep075_smoothing_normalization_extends_fep034"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-075",
+          "target": "fep-034",
+          "kind": "formal_pairing",
+          "rationale": "Positive-normalizer finite smoothing and every native fep-034 posterior fiber each carry exactly unit mass.",
+          "witness": "FEPComposed.fep075_smoothing_normalization_extends_fep034"
+        }
+      ]
+    },
+    {
+      "id": "fep-076",
+      "title": "One-Step Normalized Variational State Update",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep076_variational_state_update_normalized",
+      "supporting": [
+        "fep076_variational_state_update_reconstruction"
+      ],
+      "boundary": [
+        "fep076_zeroEnergy_update_eq_prior"
+      ],
+      "declaration_statements": {
+        "fep076_variational_state_update_normalized": "theorem fep076_variational_state_update_normalized\n    (prior : FiniteLaw State) (energy : State \u2192 \u211d) :\n    \u2211 state, variationalStateUpdate prior energy state = 1",
+        "fep076_variational_state_update_reconstruction": "theorem fep076_variational_state_update_reconstruction\n    (prior : FiniteLaw State) (energy : State \u2192 \u211d) (state : State) :\n    variationalStateUpdate prior energy state * boltzmannPartition prior energy =\n      boltzmannWeight prior energy state",
+        "fep076_zeroEnergy_update_eq_prior": "theorem fep076_zeroEnergy_update_eq_prior (prior : FiniteLaw State) :\n    variationalStateUpdate prior (fun _ => 0) = prior"
+      },
+      "body_sha256": "4aadcb088846b867ff9b70fcc3bd1680516fc773fec2bb5b99c97a326fbe9b2a",
+      "maturity_record": {
+        "id": "fep-076",
+        "primary_theorem": "fep076_variational_state_update_normalized",
+        "supporting_theorems": [
+          "fep076_variational_state_update_reconstruction"
+        ],
+        "boundary_theorems": [
+          "fep076_zeroEnergy_update_eq_prior"
+        ],
+        "invariant": "A finite prior-weighted exponential energy tilt is normalized and reconstructs its unnormalized weight, with zero energy acting as the identity update.",
+        "assumption_review": "The state carrier is finite and the real exponential makes the partition positive without a separate support premise. This is one exact normalized update, not convergence of a variational optimization algorithm.",
+        "non_vacuity": "Nonconstant energies reweight any prior with supported alternatives, whereas the zero-energy boundary leaves every prior law unchanged.",
+        "acceptance_probe": "native Lean compile of fep076_variational_state_update_normalized, fep076_variational_state_update_reconstruction, and fep076_zeroEnergy_update_eq_prior.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Priorweightedexponentialenergytilt normalizes,reconstructsweights,andzeroenergyreturnsprior. Partitionpositivefromsomepositivepriormass.",
+      "premise_scope_boundary": "Notoptimizer/variationalgradientconvergence; energiesdifferingonlyoffpriorsupportdonotchangeprior. No strictfullsupportneeded,zeroatomsretained.",
+      "positive_adverse_unexecuted_specs": "Positiveprioratomswithdifferentenergieschangeodds; pointmasspriorunchangedforanyenergy; constantnonzeroenergyalsocancels.",
+      "nearest_topic_distinction": "070sameBoltzmannoperationdifferentsemanticindex;058Gibbsfreeenergyoptimizationrequiressupport/objectivebridge.",
+      "own_novelty_record": {
+        "id": "fep-076",
+        "nearest_topics": [
+          "fep-028",
+          "fep-031"
+        ],
+        "new_invariant": "A prior-weighted exponential state-energy tilt normalizes and reconstructs its unnormalized mass.",
+        "carrier_delta": "Moves the finite Boltzmann posterior from actions to latent states with an identity zero-energy boundary.",
+        "required_bridge": "FEPComposed.fep076_variational_update_refines_fep028_softmax"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-076",
+          "target": "fep-028",
+          "kind": "formal_pairing",
+          "rationale": "A prior-weighted variational state update and the original finite softmax both produce normalized exponential-tilt laws. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+          "witness": "FEPComposed.fep076_variational_update_refines_fep028_softmax"
+        }
+      ]
+    },
+    {
+      "id": "fep-077",
+      "title": "Two-Level Hierarchical Predictive Factorization",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep077_hierarchical_predictive_factorization",
+      "supporting": [],
+      "boundary": [],
+      "declaration_statements": {
+        "fep077_hierarchical_predictive_factorization": "theorem fep077_hierarchical_predictive_factorization\n    (top : FiniteLaw Upper) (upperKernel : FiniteKernel Upper Middle)\n    (lowerKernel : FiniteKernel Middle Observation) :\n    hierarchicalPredictive top upperKernel lowerKernel =\n      (FiniteKernel.comp lowerKernel upperKernel).predictive top"
+      },
+      "body_sha256": "4d0f361ba64f7afa8a55e5be20f398cffc8ee3706b4720fa8211da231b5a9743",
+      "maturity_record": {
+        "id": "fep-077",
+        "primary_theorem": "fep077_hierarchical_predictive_factorization",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "Two-level finite hierarchical prediction is exactly prediction through the chronological composition of its two normalized kernels.",
+        "assumption_review": "Upper, middle, and observation carriers are finite and both conditional maps are FiniteKernel values. The result establishes two-level factorization only, not identifiability of latent levels or an unbounded hierarchy.",
+        "non_vacuity": "Nonidentity upper and lower kernels with a nondegenerate top law produce a predictive mixture that genuinely sums over the intermediate level.",
+        "acceptance_probe": "native Lean compile of fep077_hierarchical_predictive_factorization against FiniteKernel.comp and predictive normalization.",
+        "disposition": "formalized"
+      },
+      "statement_review": "TwolevelpredictionequalcomposedFiniteKernellower\u2218upperpredictive; chronologyandnormalizationbuiltcarrier.",
+      "premise_scope_boundary": "No identifiablelatentlevels/causalgraph/unboundedhierarchy. Associativitycanbestructuralbutnontrivialsumsactuallypresent.",
+      "positive_adverse_unexecuted_specs": "Nonidentity2x2upper/lowerwithnonDiractopgenuineintermediateaveraging; collapsingmiddleonepointlosesinformationwithoutviolatingidentity.",
+      "nearest_topic_distinction": "027nativehierarchicaljointand019predictionanaloguesneedexactembeddingforformalcarrierbridge;077isfiniteonly.",
+      "own_novelty_record": {
+        "id": "fep-077",
+        "nearest_topics": [
+          "fep-027",
+          "fep-019"
+        ],
+        "new_invariant": "Two-level hierarchical prediction equals prediction through composed normalized kernels.",
+        "carrier_delta": "Instantiates hierarchical factorization with an explicit upper\u2013middle\u2013observation finite kernel chain.",
+        "required_bridge": "FEPComposed.fep077_hierarchical_predictive_extends_fep027"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-077",
+          "target": "fep-027",
+          "kind": "formal_pairing",
+          "rationale": "Finite two-level predictive composition and native three-level composition both expose the same associativity seam without conflating their carriers.",
+          "witness": "FEPComposed.fep077_hierarchical_predictive_extends_fep027"
+        }
+      ]
+    },
+    {
+      "id": "fep-078",
+      "title": "Bayesian Model-Averaging Predictive Law",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep078_modelAverage_predictive_law",
+      "supporting": [
+        "fep078_modelAverage_normalized",
+        "fep078_bool_modelAverage_true_mass"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep078_modelAverage_predictive_law": "theorem fep078_modelAverage_predictive_law (modelPrior : FiniteLaw Model)\n    (modelPredictive : FiniteKernel Model Observation)\n    (observation : Observation) :\n    modelAverage modelPrior modelPredictive observation =\n      \u2211 model, modelPrior model * modelPredictive model observation",
+        "fep078_modelAverage_normalized": "theorem fep078_modelAverage_normalized (modelPrior : FiniteLaw Model)\n    (modelPredictive : FiniteKernel Model Observation) :\n    \u2211 observation, modelAverage modelPrior modelPredictive observation = 1",
+        "fep078_bool_modelAverage_true_mass": "theorem fep078_bool_modelAverage_true_mass :\n    modelAverage boolInitialLaw boolAccurateEmission true = 13 / 20"
+      },
+      "body_sha256": "84c4d2c9cecdfdf8554a18137bd3e74ad9ef0322ad8cf049c4f28edbd62a7bc5",
+      "maturity_record": {
+        "id": "fep-078",
+        "primary_theorem": "fep078_modelAverage_predictive_law",
+        "supporting_theorems": [
+          "fep078_modelAverage_normalized",
+          "fep078_bool_modelAverage_true_mass"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Bayesian model averaging is the prior-weighted finite mixture of model predictive laws and remains normalized.",
+        "assumption_review": "Model and observation sets are finite, the model prior is normalized, and each model predictive row is normalized. No posterior model update, asymptotic selection, or continuous model class is claimed.",
+        "non_vacuity": "A nonuniform Boolean model prior and informative predictive kernel give the exact nontrivial true mass 13/20 while the complete mixture still sums to one.",
+        "acceptance_probe": "native Lean compile of fep078_modelAverage_predictive_law, fep078_modelAverage_normalized, and fep078_bool_modelAverage_true_mass.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Finiteprior-weightedmodelpredictivemixtureformula,normalization,andactualBool13/20witness.",
+      "premise_scope_boundary": "Prior modelweights suppliednotposteriorselectedbyobserveddata; noBayesianmodelselection/continuousmodelclass/convergence.",
+      "positive_adverse_unexecuted_specs": "NonuniformBoolprior/informativekernel13/20; identicalpredictivesdifferentmodelweightsunidentifiable;pointmassweightsselectsinglemodel.",
+      "nearest_topic_distinction": "119mixtureloglossboundsandmodelreduction158differentclaims;078predictiveaverageonly.",
+      "own_novelty_record": {
+        "id": "fep-078",
+        "nearest_topics": [
+          "fep-019",
+          "fep-022"
+        ],
+        "new_invariant": "Bayesian model averaging is a normalized prior-weighted mixture of model predictive laws.",
+        "carrier_delta": "Treats the model index as a finite latent carrier and adds a nonuniform informative Boolean mixture witness.",
+        "required_bridge": "FEPComposed.fep078_model_average_composes_fep019"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-078",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "Finite Bayesian model averaging and native sequential prediction each make their mixture/composition law explicit.",
+          "witness": "FEPComposed.fep078_model_average_composes_fep019"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-073",
+      "field": "non_vacuity",
+      "finding": "Nonconstantemissionandnonemptyfuturealone donotguaranteestate-dependentbackwardmessage.",
+      "exact_correction": "An identity transition with differing likelihoods of the observed symbol gives a state-dependent backward message. Identical transition rows may erase that dependence even when emission rows differ."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-074",
+      "field": "non_vacuity",
+      "finding": "Nonconstantbackwardmessagemustdifferonpositiveforwardmassstatestoreweightlaw.",
+      "exact_correction": "Backward weights differing at two positive-forward-mass states reweight their odds; differences confined to zero-forward-mass states do not affect the normalized law."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-076",
+      "field": "non_vacuity",
+      "finding": "Nonconstantenergycanvaryonlyoffpriorsupport.",
+      "exact_correction": "Energy values differing on two positive-prior-mass states change their odds. Energies constant on prior support, including nonzero constants, leave the prior unchanged."
+    }
+  ],
+  "ranked_existing_owner_followups": [
+    {
+      "rank": 1,
+      "scope": "073/074/076support-sensitivewitnessprecision",
+      "content": "Metadataqualificationplusactualconstant/zero-supportwitnesses;no newgeneralinferenceproofneeded.",
+      "positive": "identitytransition/informativelikelihood;distinctsupportedtiltweights",
+      "adverse": "identicaltransitionrows,off-supportenergydifferences",
+      "library_seam": "FiniteKernelnormalization/finitesum andBoltzmannpriorzeros",
+      "estimate": "0.5dayplussealedmetadatagates"
+    },
+    {
+      "rank": 2,
+      "scope": "074/075fullfinite-pathsmoothingmarginalbridge",
+      "content": "IdentifybackwardMessagewithsummedfuturepathlikelihoodandnormalizedforwardbackwardproductwithactualjointconditionalstateatcut;currentlyfactorizationforsuppliedweights.",
+      "positive": "existingasymmetricBoolHMM2stepobservations",
+      "adverse": "Z0futureimpossible;arbitrarynonnegativebackwardnotamodelmessage",
+      "library_seam": "ExistingFiniteHMM/backwardrecursion,finitepathproduct-sumFubini,FiniteKernel.posterior;reusefiniteLawcarrier",
+      "estimate": "2-4daysboundedfinitehorizoninduction/consumers"
+    },
+    {
+      "rank": 3,
+      "scope": "077finite/nativehierarchicalcomposition",
+      "content": "Exactfiniteembeddingidentificationwith027nativecompProd/marginalsifcross-carrierrelationneeded;do notduplicatefiniteassociativity.",
+      "positive": "nontrivialfiniteupper/middle/outputlaws",
+      "adverse": "wrongcompositionorder orunnormalizedrawweights",
+      "library_seam": "FiniteKernel.comp,predictive,existingnativeembeddingandMeasure.comp_assoc",
+      "estimate": "1-3dayscommoncarrierbridge"
+    }
+  ],
+  "remaining": [
+    "Remaining90topics/Issue54/68dependenciesnotclosed",
+    "No metadata/proof/seal/projectionchangesautomaticallyauthorized;qualifiednative/axiom/semanticandcustodyreviewremainforeachfollowup",
+    "Mainqualificationnotinferredfromsourceaudit"
+  ],
+  "limitations": [
+    "Staticcanonicalbody/foundation/metadata/nearestrecordsinspection;noSmutationorLeanexecution",
+    "Examplesunexecutedsemanticwitnessspecifications",
+    "Generic071doesnotcertifyallutilitiesBayesian;existingmodel-derivedfinitebranchisrecognizedseparately"
+  ]
+}

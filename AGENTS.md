@@ -77,7 +77,9 @@ document wins.
 - `lean/FepSketches/families/*.lean` — generated family topic modules with
   unchanged public namespaces; composition leaves import their actual families.
 - `lean/FepSketches/fep_all.lean` — import-only whole-catalogue compatibility target.
-- `src/fep_lean/output/evidence.py` — native/full evidence policy and manuscript
+- `src/fep_lean/output/evidence.py` — frozen readiness/status models and their
+  process-free snapshot builder; CLI JSON projects those same type/function
+  objects. Native/full evidence policy and manuscript
   claim sentences.
 - `src/fep_lean/verification/formalism_audit.py` — declaration and axiom audit
   with typed receipts.

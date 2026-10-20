@@ -48,6 +48,7 @@ VerifyResult fields
 from __future__ import annotations
 
 import contextlib
+import json
 import logging
 import math
 import os
@@ -58,7 +59,7 @@ import tempfile
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from fep_lean.lean_source import lean_code_without_comments, lean_module_source
 from fep_lean.verification._subprocess import run_process_group
@@ -718,3 +719,127 @@ class LeanVerifier:
             timeout=_get_timeout(),
             check=False,
         )
+
+
+@dataclass(frozen=True)
+class CatalogueVerification:
+    """Catalogue result with the canonical CLI serialization and exit status.
+
+    Payload remains an ordinary result mapping; freezing this container does
+    not promise deep immutability. No process starts during serialization.
+    """
+
+    payload: dict[str, Any]
+    exit_code: int
+    json_indent: int | None
+
+    def to_json(self) -> str:
+        return json.dumps(self.payload, indent=self.json_indent, default=str)
+
+
+def verify_catalogue(
+    root: Path,
+    topic_ids: list[str] | None,
+    area: str | None,
+    *,
+    receipt_path: Path | None = None,
+    fail_on_warnings: bool = False,
+) -> CatalogueVerification:
+    """Compile catalogue sketches with Lean only, without Hermes or Gauss."""
+    from fep_lean.catalogue.topics import FEPTopicCatalogue
+    from fep_lean.output.evidence import (
+        build_native_lean_receipt,
+        validate_native_lean_receipt,
+        write_native_lean_receipt,
+    )
+
+    try:
+        catalogue = FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
+        topics = catalogue.topics
+        if topic_ids:
+            known = {topic.id for topic in topics}
+            unknown = sorted(set(topic_ids) - known)
+            if unknown:
+                raise ValueError(f"unknown topic ids: {', '.join(unknown)}")
+            topics = tuple(topic for topic in topics if topic.id in topic_ids)
+        if area:
+            topics = tuple(topic for topic in topics if topic.area == area)
+        if not topics:
+            raise ValueError("no catalogue topics matched the requested filters")
+    except (OSError, KeyError, TypeError, ValueError) as exc:
+        return CatalogueVerification(
+            {
+                "status": "error",
+                "mode": "lean-only",
+                "complete": False,
+                "failure_reason": str(exc),
+            },
+            1,
+            None,
+        )
+    verifier = LeanVerifier(lean_dir=root / "lean", project_root=root)
+    (mathlib_ok, mathlib_message) = verifier.check_mathlib_built()
+    if not mathlib_ok:
+        return CatalogueVerification(
+            {
+                "status": "error",
+                "mode": "lean-only",
+                "complete": False,
+                "catalogue_topics": len(topics),
+                "verified_topics": 0,
+                "mathlib": mathlib_message,
+                "results": [],
+            },
+            1,
+            2,
+        )
+    results = verifier.verify_batch([(topic.id, topic.lean_sketch) for topic in topics])
+    result_payload = []
+    for result in results:
+        row = result.as_dict()
+        row["lean_file"] = None
+        result_payload.append(row)
+    compiled_without_sorry = sum(
+        result.compiles and (not result.has_sorry) for result in results
+    )
+    warning_count = sum(len(getattr(result, "warnings", [])) for result in results)
+    verified = sum(
+        result.compiles
+        and (not result.has_sorry)
+        and (not getattr(result, "warnings", []))
+        for result in results
+    )
+    sorry_count = sum(result.has_sorry for result in results)
+    complete = (
+        len(results) == len(topics)
+        and compiled_without_sorry == len(topics)
+        and (not fail_on_warnings or warning_count == 0)
+    )
+    receipt_validation: dict[str, Any] | None = None
+    if receipt_path is not None:
+        receipt = write_native_lean_receipt(
+            receipt_path,
+            build_native_lean_receipt(root, [topic.id for topic in topics], results),
+        )
+        receipt_validation = validate_native_lean_receipt(receipt, project_root=root)
+        complete = complete and bool(receipt_validation.get("valid", False))
+    return CatalogueVerification(
+        {
+            "status": "ok" if complete else "error",
+            "mode": "lean-only",
+            "complete": complete,
+            "catalogue_topics": len(topics),
+            "verified_topics": verified,
+            "compiled_without_sorry_topics": compiled_without_sorry,
+            "warning_count": warning_count,
+            "sorry_count": sorry_count,
+            "mathlib": mathlib_message,
+            "receipt": str(receipt_path) if receipt_path is not None else None,
+            "native_claim_ready": receipt_validation.get("native_claim_ready", False)
+            if receipt_validation is not None
+            else False,
+            "results": result_payload,
+        },
+        0 if complete else 1,
+        2,
+    )

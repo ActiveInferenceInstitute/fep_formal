@@ -27,7 +27,7 @@ def test_numerical_receipt_preserves_every_typed_check_and_evidence_boundary() -
 
     assert payload["kind"] == "numerical-witness-receipt"
     assert payload["complete"] is True
-    assert payload["witness_count"] == 17
+    assert payload["witness_count"] == 22
     assert payload["check_count"] == sum(
         len(witness["checks"]) for witness in payload["witnesses"]
     )
@@ -42,6 +42,22 @@ def test_numerical_receipt_preserves_every_typed_check_and_evidence_boundary() -
         for witness in payload["witnesses"]
     )
     assert len(payload["source_sha256"]) == len(payload["config_sha256"]) == 64
+
+
+@pytest.mark.parametrize("extra", [False, True])
+def test_numerical_receipt_rejects_incomplete_or_extra_live_roster(
+    monkeypatch: pytest.MonkeyPatch, extra: bool
+) -> None:
+    from fep_lean.output.release_bundle import _acceptance
+    from fep_lean.verification.numerical_witnesses import evaluate_numerical_witnesses
+
+    witnesses = evaluate_numerical_witnesses(PROJ, scope="catalogue")
+    altered = (*witnesses, witnesses[0]) if extra else witnesses[:-1]
+    monkeypatch.setattr(
+        _acceptance, "evaluate_numerical_witnesses", lambda **_: altered
+    )
+    with pytest.raises(bundle_module.ReleaseBundleError, match="22-witness release"):
+        build_numerical_witness_receipt(PROJ)
 
 
 def test_python_receipts_bind_full_roster_and_coverage_floor(tmp_path: Path) -> None:

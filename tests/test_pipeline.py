@@ -140,7 +140,10 @@ def test_output_root_precedence(
     assert not expected_path.exists()
 
 
-@pytest.mark.parametrize("settings", ["[", "[]", "output: []", "output: {root: 7}"])
+@pytest.mark.parametrize(
+    "settings",
+    ["[", "[]", "output: []", "output: {root: 7}", "output: {root: '   '}"],
+)
 def test_output_root_rejects_selected_malformed_settings(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -166,6 +169,25 @@ def test_output_root_without_settings_uses_project_default(
     monkeypatch.delenv("FEP_LEAN_OUTPUT_ROOT", raising=False)
     assert FEPPipeline(tmp_path).output_root == tmp_path / "output"
     assert not (tmp_path / "output").exists()
+
+
+@pytest.mark.parametrize(
+    "settings", ["", "output: null\n", "output: {root: null}\n", "output: {root: ''}\n"]
+)
+def test_empty_output_settings_use_default_without_mutation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, settings: str
+) -> None:
+    """Absent output values are defaults, not permission to write configuration."""
+    monkeypatch.delenv("FEP_LEAN_OUTPUT_ROOT", raising=False)
+    selected = tmp_path / "config/settings.yaml"
+    selected.parent.mkdir()
+    selected.write_text(settings)
+    before = (selected.read_bytes(), selected.stat().st_mtime_ns)
+
+    assert resolve_output_root(tmp_path) == tmp_path / "output"
+    assert FEPPipeline(tmp_path).output_root == tmp_path / "output"
+    assert (selected.read_bytes(), selected.stat().st_mtime_ns) == before
+    assert set(tmp_path.rglob("*")) == {selected.parent, selected}
 
 
 @pytest.mark.parametrize("mode", ["catalogue", "full"])

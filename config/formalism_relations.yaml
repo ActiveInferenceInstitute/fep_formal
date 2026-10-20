@@ -350,30 +350,32 @@ capabilities:
       - fep_fep051.FEP051.fep051_reconstruction_iff_absoluteContinuous
   - id: cap-multidimensional-information-geometry
     title: Multidimensional Fisher geometry
-    description: A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability.
+    description: A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability. The actual derivative of the interior Bernoulli Fisher–Rao coordinate is additionally identified with the topic Jacobian, giving the stated one-dimensional metric pullback; no global chart or path-length theorem is inferred.
     status: satisfied
     evidence:
-      - FEP.InformationGeometry.bernoulliScoreModel_fullSupport
-      - FEP.InformationGeometry.bernoulliScoreModel_identifiable
-      - FEP.InformationGeometry.bernoulli_fisherMatrix_entry
-      - FEP.InformationGeometry.bernoulli_fisherMatrix_isUnit
-      - FEP.InformationGeometry.bernoulli_fisherMetric_eq
-      - FEP.InformationGeometry.bernoulli_fisherMetric_pos
-      - FEP.InformationGeometry.bernoulli_naturalGradient_eq
-      - FEP.InformationGeometry.duplicatedFairBernoulli_not_identifiable
-      - FEP.InformationGeometry.duplicatedScore_fisherMetric_eq_zero
-      - FEP.InformationGeometry.fairBernoulli_fisherMatrix_entry
-      - FEP.InformationGeometry.fisherMatrix_symm
-      - FEP.InformationGeometry.fisherMetric_eq_dot_lowerTangent
-      - FEP.InformationGeometry.fisherMetric_eq_zero_iff
-      - FEP.InformationGeometry.fisherMetric_nonneg
-      - FEP.InformationGeometry.fisherMetric_pos
-      - FEP.InformationGeometry.naturalGradient_energy_identity
-      - FEP.InformationGeometry.naturalGradient_isNaturalGradient
-      - FEP.InformationGeometry.naturalGradient_metric_duality
-      - FEP.InformationGeometry.naturalGradient_unique
-      - FEP.InformationGeometry.pullbackMetric_comp
-      - FEP.InformationGeometry.pullbackMetric_pos
+    - FEP.InformationGeometry.bernoulliScoreModel_fullSupport
+    - FEP.InformationGeometry.bernoulliScoreModel_identifiable
+    - FEP.InformationGeometry.bernoulli_fisherMatrix_entry
+    - FEP.InformationGeometry.bernoulli_fisherMatrix_isUnit
+    - FEP.InformationGeometry.bernoulli_fisherMetric_eq
+    - FEP.InformationGeometry.bernoulli_fisherMetric_pos
+    - FEP.InformationGeometry.bernoulli_naturalGradient_eq
+    - FEP.InformationGeometry.duplicatedFairBernoulli_not_identifiable
+    - FEP.InformationGeometry.duplicatedScore_fisherMetric_eq_zero
+    - FEP.InformationGeometry.fairBernoulli_fisherMatrix_entry
+    - FEP.InformationGeometry.fisherMatrix_symm
+    - FEP.InformationGeometry.fisherMetric_eq_dot_lowerTangent
+    - FEP.InformationGeometry.fisherMetric_eq_zero_iff
+    - FEP.InformationGeometry.fisherMetric_nonneg
+    - FEP.InformationGeometry.fisherMetric_pos
+    - FEP.InformationGeometry.naturalGradient_energy_identity
+    - FEP.InformationGeometry.naturalGradient_isNaturalGradient
+    - FEP.InformationGeometry.naturalGradient_metric_duality
+    - FEP.InformationGeometry.naturalGradient_unique
+    - FEP.InformationGeometry.pullbackMetric_comp
+    - FEP.InformationGeometry.pullbackMetric_pos
+    - FEPComposed.fep018_coordinate_derivative_is_fep038
+    - FEPComposed.fep018_fep038_actual_metric_pullback
   - id: cap-native-blanket-transfer
     title: Finite-to-native blanket transfer
     description: Weighted Dirac embedding preserves finite-law atoms, normalization, expectations, prediction, and static blanket rectangles on the same discrete carrier. The embedded joint satisfies Mathlib CondIndepFun, measurable endpoint coarsenings preserve it, and every authored factorized transition row inherits it; a correlated Boolean blanket witness keeps two positive conditioning regimes and an excluded off-regime atom explicit.
@@ -567,17 +569,17 @@ edges:
   - source: fep-002
     target: fep-014
     kind: formal
-    rationale: The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule.
+    rationale: "The composed theorem expands fep-002 variational free energy by invoking fep-014's composition-product KL chain rule. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_chain_rule."
     witness: FEPComposed.fep002_vfe_compProd_chain_rule
   - source: fep-003
     target: fep-021
     kind: formal
-    rationale: The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance.
+    rationale: "The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The epistemic balance requires the explicit hvalue premise that information value does not exceed pragmatic cost."
     witness: FEPComposed.fep003_pragmaticCost_efe_balance
   - source: fep-004
     target: fep-038
     kind: formal
-    rationale: The composed theorem specializes fep-004's finite positive-weight Fisher metric to the one-coordinate Bernoulli information weight computed by fep-038. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries both endpoints through their Fisher-metric definitions (`fep_fep004.FEP004.fep004_fisherMetric`, `fep_fep038.FEP038.fep038_fisherMetric`) without invoking either topic's reviewed theorems; the row stands unchanged.
+    rationale: "The composed theorem identifies fep-004's Unit-coordinate weighted quadratic form with fep-038's Bernoulli Fisher-metric definition, using fep038_fisherInformation p as the supplied weight. It unfolds both metric definitions rather than invoking endpoint theorems. The identity holds for every real p; positivity as a statistical metric additionally requires 0 < p < 1 and the relevant nonzero-tangent premise."
     witness: FEPComposed.fep004_bernoulliMetric_specialization
   - source: fep-005
     target: fep-009
@@ -586,7 +588,7 @@ edges:
   - source: fep-007
     target: fep-028
     kind: formal
-    rationale: With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106).
+    rationale: "With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemma: fep_fep007.FEP007.fep007_normalizedMessage_sum_one."
     witness: FEPComposed.fep007_normalizedMessage_is_fep028_softmax
   - source: fep-008
     target: fep-028
@@ -595,12 +597,12 @@ edges:
   - source: fep-011
     target: fep-026
     kind: formal
-    rationale: The composed theorem identifies self-information and scalar prior complexity as the same negative-log functional, fixing their shared sign convention.
+    rationale: "The composed theorem identifies fep_fep026.FEP026.fep026_priorComplexity and fep_fep011.FEP011.fep011_surprise by their identical real negative-log definition. This fixes a sign convention for all real inputs under totalized Real.log; probability interpretation requires its separate domain assumptions."
     witness: FEPComposed.fep026_priorComplexity_is_fep011_surprise
   - source: fep-012
     target: fep-028
     kind: formal
-    rationale: The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.
+    rationale: "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep012.FEP012.fep012_entropyRegularizedCost_le_expectedCost, fep_fep028.FEP028.fep028_softmax_le_one, fep_fep028.FEP028.fep028_softmax_nonneg. The proof consumes unit-interval supporting lemmas, not the primary sum-univ theorem; nonempty support and nonnegative temperature are explicit."
     witness: FEPComposed.fep012_softmax_entropyRegularizedCost_le
   - source: fep-013
     target: fep-002
@@ -609,7 +611,7 @@ edges:
   - source: fep-013
     target: fep-040
     kind: formal
-    rationale: The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2.
+    rationale: "The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2. Actual consumed endpoint lemmas: fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy, fep_fep040.FEP040.fep040_thermalEntropy_hasDerivAt."
     witness: FEPComposed.fep013_gaussianHelmholtz_derivative
   - source: fep-016
     target: fep-032
@@ -622,27 +624,27 @@ edges:
   - source: fep-021
     target: fep-041
     kind: formal
-    rationale: The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance.
+    rationale: "The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The explicit hvalue upper bound on information gain is required; the identity is not an unconditional untruncated EFE decomposition."
     witness: FEPComposed.fep021_informationGain_balance
   - source: fep-022
     target: fep-027
     kind: formal
-    rationale: The composed theorem realizes the posterior-predictive kernel as a hierarchical child kernel and identifies its marginal with sequential prediction.
+    rationale: "The composed theorem instantiates fep027_hierarchicalJoint with fep022_posteriorPredictive and proves its child marginal equals likelihood composed with posterior composed with the base measure, using Measure.snd_compProd and Measure.comp_assoc. It assumes an SFinite base measure and SFinite kernels, not normalized posterior or likelihood kernels."
     witness: FEPComposed.fep022_predictive_is_hierarchical_marginal
   - source: fep-024
     target: fep-014
     kind: formal
-    rationale: The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law.
+    rationale: "The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_nonneg."
     witness: FEPComposed.fep024_regularizer_is_fep014_kl
   - source: fep-025
     target: fep-049
     kind: formal
-    rationale: The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged.
+    rationale: "The composed theorem feeds fep-025's antisymmetric probability-current field into fep-049's nonnegative linear-resistance entropy-production law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-049 through its reviewed supporting theorem `fep_fep049.FEP049.fep049_entropyProduction_nonneg` rather than the primary `fep_fep049.FEP049.fep049_entropyProduction_eq_zero_iff`; the row stands unchanged. Actual consumed endpoint lemma: fep_fep049.FEP049.fep049_entropyProduction_nonneg. Nonnegative resistance is an explicit premise; no physical current conservation or calibrated constitutive law is inferred."
     witness: FEPComposed.fep025_current_dissipation_nonneg
   - source: fep-027
     target: fep-019
     kind: formal
-    rationale: The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition.
+    rationale: "The composed theorem identifies fep-027's child marginal with fep-019's prior-predictive measure-kernel composition. Actual consumed endpoint lemma: fep_fep027.FEP027.fep027_hierarchical_snd."
     witness: FEPComposed.fep027_priorPredictive_is_fep019
   - source: fep-029
     target: fep-044
@@ -651,21 +653,22 @@ edges:
   - source: fep-029
     target: fep-104
     kind: formal
-    rationale: fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106).
+    rationale: "fep-029's scalar quadratic Bregman divergence is the one-coordinate instance of the generic Bregman divergence of fep-104 with potential v0^2 and gradient 2*v0, and fep-104's mirror-descent three-point identity yields the scalar three-point law for it. Scalar case only; no claim about other potentials or the alpha-divergence proxy. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemma: fep_fep104.FEP104.fep104_mirrorDescent_threePoint_identity."
     witness: FEPComposed.fep029_quadraticBregman_is_fep104_scalar_instance
   - source: fep-030
     target: fep-031
-    kind: conceptual
-    rationale: A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem.
+    kind: formal_pairing
+    rationale: The full-support binary Gibbs masses of fep031 are exactly energyGibbsLaw, and its finite entropy is exactly the Real.binEntropy carrier used by fep030. At a supplied matched mean energy, this law uniquely maximizes that binary entropy; the witness also retains fep030’s bound/equality characterization on the same normalized candidate law. This is an exact finite carrier identification and constrained specialization, not a derivation of arbitrary Gibbs laws from the binary entropy bound or existence of a temperature for every target mean.
+    witness: FEPComposed.fep030_fep031_binary_maxEntropy
   - source: fep-031
     target: fep-030
     kind: formal
-    rationale: The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization.
+    rationale: "The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization. Actual consumed endpoint lemma: fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff."
     witness: FEPComposed.fep031_zeroBeta_binary_maxEntropy
   - source: fep-032
     target: fep-043
     kind: formal
-    rationale: The composed theorem identifies a gradient step on fep-043's exact quadratic landscape with fep-032's globally convergent centered update at effective step size 2aη.
+    rationale: "The composed theorem identifies one gradient step on fep_fep043.FEP043.fep043_quadraticGradient with fep_fep032.FEP032.fep032_quadraticUpdate at effective step 2*a*eta, by unfolding the two definitions and ring algebra. The identity holds for arbitrary real parameters. Convergence is not proved here; invoking fep032_quadraticUpdate_tendsto additionally requires 0 < 2*a*eta and 2*a*eta < 2."
     witness: FEPComposed.fep032_update_is_fep043_gradientStep
   - source: fep-034
     target: fep-047
@@ -674,17 +677,17 @@ edges:
   - source: fep-034
     target: fep-017
     kind: formal
-    rationale: The composed theorem identifies the transition-observation filter with fep-017's native posterior at the transition-predicted prior.
+    rationale: "The composed theorem identifies fep_fep034.FEP034.fep034_filter definitionally with fep_fep017.FEP017.fep017_posterior at the transition-predicted prior. It retains standard-Borel/nonempty state and finite-measure/finite-kernel assumptions; no new pointwise Bayes identity at null observations is asserted."
     witness: FEPComposed.fep034_filter_is_fep017_posterior
   - source: fep-036
     target: fep-045
     kind: formal
-    rationale: The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.
+    rationale: "The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos, fep_fep045.FEP045.fep045_bernoulli_posterior_closed, fep_fep045.FEP045.fep045_evidence_pos. Positive binary likelihoods and the smoothed count bounds establish nonzero evidence; no asymptotic empirical-rate theorem is consumed."
     witness: FEPComposed.fep036_empiricalPosterior_closed
   - source: fep-037
     target: fep-020
     kind: formal
-    rationale: The composed theorem identifies fep-037's autocorrelation mode with the exact deviation mode of fep-020's normalized two-state Markov evolution.
+    rationale: "The composed theorem applies fep_fep020.FEP020.fep020_iterate_deviation and unfolds fep037_autocorrelation/fep037_relaxation to identify twice the centered two-state evolution with the unit-variance autocorrelation expression. This is an exact algebraic identity for real alpha; normalized Markov or relaxation semantics require their separate parameter-domain assumptions."
     witness: FEPComposed.fep037_autocorrelation_tracks_fep020
   - source: fep-038
     target: fep-018
@@ -694,27 +697,27 @@ edges:
   - source: fep-039
     target: fep-005
     kind: formal
-    rationale: The composed theorem aggregates state energies over fep-005's four unique partition fibres and proves that fep-039's local-energy sum conserves total state energy.
+    rationale: "The composed theorem unfolds fep039_global_fe, fep005_blockEnergy and fep005_partitionCover and applies Finset.sum_fiberwise: summing the four partition-fibre energies equals the original sum over Fin 20 for arbitrary real state energies. This is finite partition aggregation, not dynamical energy conservation or conditional independence."
     witness: FEPComposed.fep039_partitionEnergy_conservation
   - source: fep-041
     target: fep-014
     kind: formal
-    rationale: The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law.
+    rationale: "The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_eq_zero_iff."
     witness: FEPComposed.fep041_informationGain_is_fep014_kl
   - source: fep-042
     target: fep-036
     kind: formal
-    rationale: The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.
+    rationale: "The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos. The success count enters definitionally; List.count_le_length and the two smoothed-rate supporting lemmas establish interiority, not empirical-rate convergence."
     witness: FEPComposed.fep036_empiricalPosterior_closed
   - source: fep-046
     target: fep-045
     kind: formal
-    rationale: A single stick-breaking fraction is the Bernoulli law of fep-045 (allocated weight is the true mass, residual is the false mass), and fep-046's mass-conservation theorem derives the normalization of fep-045's conjugate posterior mass function at the posterior parameter. One break only; no Dirichlet-process or infinite-series claim. Added 2026-10-08 (LEAN-8, issue 106).
+    rationale: "For a single stick fraction chosen as fep045_posteriorParameter, the composed theorem identifies allocated and residual weights with the true and false Bernoulli-mass definitions and uses fep_fep046.FEP046.fep046_mass_conservation to derive their sum-one identity. This algebra holds for arbitrary real inputs; nonnegative probability interpretation additionally needs a posterior in [0,1]. No general Dirichlet-process or infinite-series claim follows."
     witness: FEPComposed.fep046_single_break_is_fep045_bernoulli
   - source: fep-050
     target: fep-049
     kind: formal
-    rationale: Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106).
+    rationale: "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem."
     witness: FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production
   - source: fep-051
     target: fep-017
@@ -734,7 +737,7 @@ edges:
   - source: fep-054
     target: fep-017
     kind: formal_pairing
-    rationale: Native double Bayesian inversion recovers the original likelihood almost everywhere, while the fep-017 posterior recovers the prior after a Markov likelihood; the pairing keeps these two sides of involution distinct.
+    rationale: "The witness pairs the Bayesian inversion involution with posterior reconstruction under the stated native assumptions; neither endpoint law is derived from the other."
     witness: FEPComposed.fep054_involution_of_fep017_posterior
   - source: fep-055
     target: fep-019
@@ -764,7 +767,7 @@ edges:
   - source: fep-060
     target: fep-002
     kind: formal
-    rationale: The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound.
+    rationale: "The coordinate decomposition supplies the nonnegative remainder required by fep-002 and therefore turns the finite joint ELBO into an actual bound. Actual consumed endpoint lemmas: fep_fep002.FEP002.fep002_elbo_bound, fep_fep060.FEP060.fep060_coordinateELBO_decomposition, fep_fep060.FEP060.fep060_coordinateKL_nonnegative. Finite normalized laws/kernels and strictly positive reference prior/kernel support are explicit; the bound uses the nonnegative conditional-KL remainder."
     witness: FEPComposed.fep060_coordinate_elbo_refines_fep002
   - source: fep-061
     target: fep-014
@@ -779,7 +782,7 @@ edges:
   - source: fep-063
     target: fep-014
     kind: formal_pairing
-    rationale: Finite-channel contraction is paired with the native nonnegativity of the pre-channel KL quantity; no unsupported finite-to-measure identification is introduced.
+    rationale: "The witness pairs finite channel KL contraction with native KL nonnegativity for separately supplied measures; no finite/native identification is proved."
     witness: FEPComposed.fep063_channel_dpi_bounds_fep014
   - source: fep-064
     target: fep-041
@@ -924,7 +927,7 @@ edges:
   - source: fep-092
     target: fep-032
     kind: formal_pairing
-    rationale: On the shared stability interval, predictive error tends to zero and the equivalent centered quadratic iteration from fep-032 tends to its target.
+    rationale: "The witness pairs separately proved convergence statements; it does not identify their update maps or establish equivalence of iterations."
     witness: FEPComposed.fep092_quadratic_convergence_specializes_fep032
   - source: fep-093
     target: fep-010
@@ -1039,12 +1042,12 @@ edges:
   - source: fep-115
     target: fep-042
     kind: formal_pairing
-    rationale: The simultaneous finite-alphabet frequency bound is paired with the original exact Bernoulli likelihood factorization through finite counts.
+    rationale: "The witness pairs the finite event union bound with Bernoulli count-likelihood factorization; neither conjunct is derived from the other."
     witness: FEPComposed.fep115_frequency_union_bound_extends_fep042_counts
   - source: fep-116
     target: fep-001
     kind: formal_pairing
-    rationale: The finite posterior loss-gap bound, conditional on a certified log-MGF budget, is paired with fep-001's measure-native variational upper bound without equating finite real KL and native extended KL.
+    rationale: "The witness pairs a finite PAC-Bayes bound with an independent native variational-bound instance; the latter is not a consequence of the former."
     witness: FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound
   - source: fep-117
     target: fep-017

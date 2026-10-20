@@ -208,7 +208,7 @@ import Mathlib.Tactic.Ring
 
 namespace FEP029
 
-/-- Bregman divergence prerequisite: convex functions satisfy the secant inequality. -/
+/-- A convex combination of ordered real endpoints is at least the lower endpoint for nonnegative weight; no general convex function is involved. -/
 theorem fep029_secant_ineq (a b t : ℝ) (ht0 : 0 ≤ t) (_ht1 : t ≤ 1) (hab : a ≤ b) :
     (1 - t) * a + t * b ≥ a := by
   nlinarith

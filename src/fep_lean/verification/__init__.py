@@ -11,10 +11,13 @@ Public API
 ----------
     LeanVerifier            — main verification class
     VerifyResult            — structured compilation result
-    run_validation_checks   — checks project layout and system tool presence
+    run_validation_checks   — read-only project/capability checks
+    setup_workspace         — explicit locked dependency acquisition/build
+    verify_catalogue        — typed catalogue compilation/receipt operation
+    CatalogueVerification   — payload, canonical JSON and exit status
 """
 
-from fep_lean.verification.environment import run_validation_checks
+from fep_lean.verification.environment import run_validation_checks, setup_workspace
 from fep_lean.verification.formalism_audit import (
     FormalismAuditResult,
     FormalismEvidenceRecord,
@@ -23,9 +26,15 @@ from fep_lean.verification.formalism_audit import (
     validate_formalism_audit_receipt,
     write_formalism_audit_receipt,
 )
-from fep_lean.verification.lean_verifier import LeanVerifier, VerifyResult
+from fep_lean.verification.lean_verifier import (
+    CatalogueVerification,
+    LeanVerifier,
+    VerifyResult,
+    verify_catalogue,
+)
 
 __all__ = [
+    "CatalogueVerification",
     "FormalismAuditResult",
     "FormalismEvidenceRecord",
     "LeanVerifier",
@@ -33,6 +42,8 @@ __all__ = [
     "build_formalism_probe",
     "run_formalism_audit",
     "run_validation_checks",
+    "setup_workspace",
     "validate_formalism_audit_receipt",
+    "verify_catalogue",
     "write_formalism_audit_receipt",
 ]

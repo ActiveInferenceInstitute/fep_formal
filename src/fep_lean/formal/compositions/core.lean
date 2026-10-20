@@ -15,6 +15,10 @@ public import FepSketches.path_thermodynamics
 public import FepSketches.geometric_optimization
 public import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
 
+public import FepSketches.variational_duality
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv
+public import Mathlib.Analysis.SpecialFunctions.Sqrt
+
 @[expose] public section
 
 namespace FEPComposed
@@ -305,8 +309,9 @@ theorem fep013_gaussianHelmholtz_derivative
   exact fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy
     hU hS hfirstLaw
 
-/-- A gradient step on fep-043's positive-curvature quadratic is exactly
-fep-032's centered update with effective step size `2aη`. -/
+/-- A gradient step on fep-043's quadratic is exactly fep-032's centered
+update with effective step size 2*a*eta. This identity has no curvature
+or stable-step premise. -/
 theorem fep032_update_is_fep043_gradientStep
     (η a center x : ℝ) :
     x - η * fep_fep043.FEP043.fep043_quadraticGradient a center x =
@@ -470,5 +475,99 @@ theorem fep050_landauer_work_bound_from_fep049_entropy_production
   exact fep_fep050.FEP050.fep050_landauer_work_bound hT hSecondLaw hWorkHeat
 
 end CoreTopicDerivations
+
+open FEP FEP.FiniteInformation FEP.VariationalDuality
+open scoped BigOperators
+
+/-- Full support is essential: the topic expression does not zero atoms outside S. -/
+theorem fep031_energyGibbs_is_topicProbability {n : ℕ} [NeZero n]
+    (E : Fin n → ℝ) (β : ℝ) (i : Fin n) :
+    energyGibbsLaw E β i =
+      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i := by
+  simp [energyGibbsLaw, energyPartition,
+    fep_fep031.FEP031.fep031_gibbsProbability]
+
+/-- Same finite carrier, exact topic Gibbs masses, and supplied matched energy. -/
+theorem fep030_fep031_finite_maxEntropy {n : ℕ} [NeZero n]
+    (E : Fin n → ℝ) (β : ℝ) (q : FiniteLaw (Fin n))
+    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :
+    (∀ i, energyGibbsLaw E β i =
+      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i) ∧
+    entropy q ≤ entropy (energyGibbsLaw E β) ∧
+    (entropy q = entropy (energyGibbsLaw E β) ↔ q = energyGibbsLaw E β) := by
+  exact ⟨fep031_energyGibbs_is_topicProbability E β, energyGibbs_maxEntropy E β q hq⟩
+
+/-- Exact identification of the finite two-state entropy and fep030 carrier. -/
+theorem fep030_fin2_entropy_eq_binEntropy (q : FiniteLaw (Fin 2)) :
+    entropy q = Real.binEntropy (q 0) := by
+  have hOne : q 1 = 1 - q 0 := by
+    have h := q.sum_one
+    rw [Fin.sum_univ_two] at h
+    linarith
+  rw [entropy, Fin.sum_univ_two,
+    Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub, ← hOne]
+
+/-- Every normalized binary finite law consumes the actual fep030 bound. -/
+theorem fep030_finite_binary_entropy_bound (q : FiniteLaw (Fin 2)) :
+    entropy q ≤ Real.log 2 ∧
+      (entropy q = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹) := by
+  rw [fep030_fin2_entropy_eq_binEntropy]
+  exact ⟨fep_fep030.FEP030.fep030_binaryEntropy_max (q 0),
+    fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff (q 0)⟩
+
+/-- Single endpoint witness: normalized binary entropy at fixed mean energy. -/
+theorem fep030_fep031_binary_maxEntropy (E : Fin 2 → ℝ) (β : ℝ)
+    (q : FiniteLaw (Fin 2))
+    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :
+    (Real.binEntropy (q 0) ≤ Real.log 2 ∧
+      (Real.binEntropy (q 0) = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)) ∧
+    (∀ i, energyGibbsLaw E β i =
+      fep_fep031.FEP031.fep031_gibbsProbability β 2 E Finset.univ i) ∧
+    Real.binEntropy (q 0) ≤ Real.binEntropy (energyGibbsLaw E β 0) ∧
+    (Real.binEntropy (q 0) = Real.binEntropy (energyGibbsLaw E β 0) ↔
+      q = energyGibbsLaw E β) := by
+  refine ⟨⟨fep_fep030.FEP030.fep030_binaryEntropy_max (q 0),
+    fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff (q 0)⟩, ?_⟩
+  have h := fep030_fep031_finite_maxEntropy E β q hq
+  rw [fep030_fin2_entropy_eq_binEntropy q,
+    fep030_fin2_entropy_eq_binEntropy (energyGibbsLaw E β)] at h
+  exact h
+
+/-- On the open Bernoulli interval the declared candidate Jacobian is the
+actual derivative of the authored Fisher--Rao coordinate. -/
+theorem fep018_coordinate_derivative_is_fep038 {p : ℝ}
+    (hp0 : 0 < p) (hp1 : p < 1) :
+    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate
+      (fep_fep038.FEP038.fep038_coordinateJacobian p) p := by
+  have hsquare := Real.sq_sqrt hp0.le
+  have hnonneg := Real.sqrt_nonneg p
+  have hbelow : Real.sqrt p < 1 := by nlinarith
+  have hleft : Real.sqrt p ≠ -1 := by linarith
+  have hright : Real.sqrt p ≠ 1 := ne_of_lt hbelow
+  have hderiv := ((Real.hasDerivAt_arcsin hleft hright).comp p
+    (Real.hasDerivAt_sqrt (ne_of_gt hp0))).const_mul 2
+  have hsqrtp : Real.sqrt p ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hp0)
+  have hsqrtq : Real.sqrt (1 - p) ≠ 0 :=
+    ne_of_gt (Real.sqrt_pos.mpr (sub_pos.mpr hp1))
+  have hfactor :
+      2 * ((1 / Real.sqrt (1 - (Real.sqrt p) ^ 2)) *
+        (1 / (2 * Real.sqrt p))) =
+      fep_fep038.FEP038.fep038_coordinateJacobian p := by
+    rw [Real.sq_sqrt hp0.le,
+      fep_fep038.FEP038.fep038_coordinateJacobian, Real.sqrt_mul hp0.le]
+    field_simp [hsqrtp, hsqrtq]
+  rw [hfactor] at hderiv
+  exact hderiv
+
+/-- The existing metric identity now has an actual coordinate differential. -/
+theorem fep018_fep038_actual_metric_pullback {p v w : ℝ}
+    (hp0 : 0 < p) (hp1 : p < 1) :
+    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate
+      (fep_fep038.FEP038.fep038_coordinateJacobian p) p ∧
+    fep_fep038.FEP038.fep038_fisherMetric p v w =
+      (fep_fep038.FEP038.fep038_coordinateJacobian p * v) *
+      (fep_fep038.FEP038.fep038_coordinateJacobian p * w) := by
+  exact ⟨fep018_coordinate_derivative_is_fep038 hp0 hp1,
+    fep_fep038.FEP038.fep038_fisherMetric_pullback hp0 hp1⟩
 
 end FEPComposed

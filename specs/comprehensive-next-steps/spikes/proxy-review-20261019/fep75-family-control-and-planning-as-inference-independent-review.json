@@ -1,0 +1,574 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_audit_complete_retain_current_dispositions_with_scoped_corrections",
+  "scope": "control-and-planning-as-inferenceonly7rows;combinedaudit78of168",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-065",
+    "fep-066",
+    "fep-067",
+    "fep-068",
+    "fep-069",
+    "fep-070",
+    "fep-071"
+  ],
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/controlled_markov.py": "0717b3e72f966d93767cc1f359c4b0f6608714b849306bbe3e67c0248a5445e0",
+    "lean/FepSketches/families/controlled_markov.lean": "5c2380c7bec4238340817381222fc3a1be537fdb70e9fd0e0c59cab295d0d3cc",
+    "src/fep_lean/formal/controlled_markov.lean": "6cf6aa0a04704074d38dba03663349833544ef24fda92e7ad0c6ae6e77eb659a",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/active_inference.lean": "260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07",
+    "src/fep_lean/formal/perception_action_loop.lean": "f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a",
+    "src/fep_lean/formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665"
+  },
+  "rows": [
+    {
+      "id": "fep-065",
+      "title": "Controlled-Kernel Normalization",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep065_controlledKernel_normalization",
+      "supporting": [],
+      "boundary": [],
+      "declaration_statements": {
+        "fep065_controlledKernel_normalization": "theorem fep065_controlledKernel_normalization\n    (transition : ControlledKernel State Action)\n    (action : Action) (state : State) :\n    \u2211 nextState, transition action state nextState = 1"
+      },
+      "body_sha256": "14d986ce3fc6f5ac7219381aa2af50c714055771b586081679ed0d3f33b8592d",
+      "maturity_record": {
+        "id": "fep-065",
+        "primary_theorem": "fep065_controlledKernel_normalization",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "Every action and source state in a finite controlled kernel selects a normalized next-state law.",
+        "assumption_review": "State and action carriers are finite and ControlledKernel is an action-indexed family of normalized FiniteKernel rows. No policy, controllability, stationarity, or infinite-horizon claim follows from row normalization alone.",
+        "non_vacuity": "Multiple actions may select distinct nondegenerate transition rows while each retains unit mass, so the action index is not definitionally irrelevant.",
+        "acceptance_probe": "native Lean compile of fep065_controlledKernel_normalization for arbitrary finite action-conditioned transition rows.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Everyaction/sourceselectsFiniteLawrowandsums1byControlledKernelcontract.",
+      "premise_scope_boundary": "Normalizationprovidedbycarrier,notderivedfromphysicaldynamics/controllability/policystationarity.",
+      "positive_adverse_unexecuted_specs": "Boolactionsidentityvsflip produce distinctnormalizedrows; rawallones2x2matrixnotFiniteKernel.",
+      "nearest_topic_distinction": "066actionBayesactualupdate;067beliefreduction;033deterministicstepdifferent.",
+      "own_novelty_record": {
+        "id": "fep-065",
+        "nearest_topics": [
+          "fep-023"
+        ],
+        "new_invariant": "Every action-conditioned transition row is a normalized finite law.",
+        "carrier_delta": "Refines policy-indexed reachable laws to an explicit action-indexed family of state kernels.",
+        "required_bridge": "FEPComposed.fep065_controlledKernel_extends_fep023_normalization"
+      },
+      "nearest_expansion_records": [
+        {
+          "id": "fep-157",
+          "nearest_topics": [
+            "fep-065"
+          ],
+          "new_invariant": "Each full perception-update-select-predict step bounds the stage outcome surprisal by the recognition's perception VFE with the perception KL as the exact epistemic gap and splits the selected policy's expected free energy into its certified risk-plus-ambiguity budget.",
+          "carrier_delta": "Couples normalized action-conditioned transition rows to a positive-evidence filtered finite-belief carrier so the loop's predict stage is a controlled kernel step.",
+          "required_bridge": "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-065",
+          "target": "fep-023",
+          "kind": "formal_pairing",
+          "rationale": "Controlled transition rows and every reachable policy law obey their respective normalization contracts.",
+          "witness": "FEPComposed.fep065_controlledKernel_extends_fep023_normalization"
+        },
+        {
+          "source": "fep-157",
+          "target": "fep-065",
+          "kind": "formal_pairing",
+          "rationale": "The perception-action loop's invariant surprisal bound factors through one action-conditioned controlled-kernel step, paired with fep-065's row-normalization law, without claiming a general POMDP fixed-point theorem.",
+          "witness": "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+        }
+      ]
+    },
+    {
+      "id": "fep-066",
+      "title": "Action-Conditioned Bayesian Belief Update",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep066_actionConditioned_bayes_reconstruction",
+      "supporting": [
+        "fep066_actionConditioned_update_normalized"
+      ],
+      "boundary": [
+        "fep066_zero_evidence_boundary"
+      ],
+      "declaration_statements": {
+        "fep066_actionConditioned_bayes_reconstruction": "theorem fep066_actionConditioned_bayes_reconstruction\n    (prior : FiniteLaw State) (transition : ControlledKernel State Action)\n    (emission : FiniteKernel State Observation) (action : Action)\n    (observation : Observation)\n    (hEvidence : 0 < actionEvidence prior transition emission action observation)\n    (state : State) :\n    actionBeliefUpdate prior transition emission action observation hEvidence state *\n        actionEvidence prior transition emission action observation =\n      actionPrediction prior transition action state * emission state observation",
+        "fep066_actionConditioned_update_normalized": "theorem fep066_actionConditioned_update_normalized\n    (prior : FiniteLaw State) (transition : ControlledKernel State Action)\n    (emission : FiniteKernel State Observation) (action : Action)\n    (observation : Observation)\n    (hEvidence : 0 < actionEvidence prior transition emission action observation) :\n    \u2211 state,\n      actionBeliefUpdate prior transition emission action observation hEvidence state =\n        1",
+        "fep066_zero_evidence_boundary": "theorem fep066_zero_evidence_boundary\n    (prior : FiniteLaw State) (transition : ControlledKernel State Action)\n    (emission : FiniteKernel State Observation) (action : Action)\n    (observation : Observation)\n    (hZero : actionEvidence prior transition emission action observation = 0) :\n    \u00ac0 < actionEvidence prior transition emission action observation"
+      },
+      "body_sha256": "6963cc0827cb5b98ecd36458ecf2c9dd023f27ef037b4bf3586da8ec16df2c3c",
+      "maturity_record": {
+        "id": "fep-066",
+        "primary_theorem": "fep066_actionConditioned_bayes_reconstruction",
+        "supporting_theorems": [
+          "fep066_actionConditioned_update_normalized"
+        ],
+        "boundary_theorems": [
+          "fep066_zero_evidence_boundary"
+        ],
+        "invariant": "A positive-evidence action-conditioned prediction and observation update is normalized and reconstructs its predicted state-observation joint mass.",
+        "assumption_review": "All carriers are finite and the selected action has strictly positive observation evidence. The normalized posterior is not constructed at zero evidence, and the theorem concerns one update rather than policy optimality.",
+        "non_vacuity": "Informative emissions after distinct action-conditioned transitions yield different posterior beliefs; the zero-evidence theorem pins the exact point where the normalized construction is unavailable.",
+        "acceptance_probe": "native Lean compile of fep066_actionConditioned_bayes_reconstruction, fep066_actionConditioned_update_normalized, and fep066_zero_evidence_boundary.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Actionprediction+emissionpositiveevidenceBayesmassreconstruction/normalization;zeroevidenceexplicitnegatedpremise.",
+      "premise_scope_boundary": "Oneactualfilterstepnotpolicyoptimality. Differentactionsneednotyielddifferentposteriorsifprior/emissioneraseeffect.",
+      "positive_adverse_unexecuted_specs": "ChooseBoolidentity/flipwithasymmetricpriorandnoisyemission; zeroobservedlikelihoodcolumngivesnoevidence.",
+      "nearest_topic_distinction": "072isno-actionHMMspecialization;034nativekernelposteriorrequiresfiniteembeddingrelation,notjustsameformula.",
+      "own_novelty_record": {
+        "id": "fep-066",
+        "nearest_topics": [
+          "fep-034",
+          "fep-022"
+        ],
+        "new_invariant": "A supported action-conditioned Bayes update normalizes and reconstructs its joint atom.",
+        "carrier_delta": "Inserts a chosen control action and controlled state prediction before the observation update.",
+        "required_bridge": "FEPComposed.fep066_action_update_refines_fep034_filter"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-066",
+          "target": "fep-034",
+          "kind": "formal_pairing",
+          "rationale": "A finite action-conditioned update reconstructs its predicted joint, while the native fep-034 filter reconstructs the corresponding measure joint.",
+          "witness": "FEPComposed.fep066_action_update_refines_fep034_filter"
+        }
+      ]
+    },
+    {
+      "id": "fep-067",
+      "title": "Reachable Finite-Belief POMDP Reduction",
+      "disposition": "retain_structural_proxy_for_exact_narrow_scope",
+      "primary": "fep067_reachableBelief_policyValue_equivalence",
+      "supporting": [
+        "fep067_bool_reachable_update"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep067_reachableBelief_policyValue_equivalence": "theorem fep067_reachableBelief_policyValue_equivalence\n    (model : ReachableBeliefPOMDP Belief State Action Observation)\n    (stateCost : State \u2192 Action \u2192 \u211d) (policy : \u2115 \u2192 Belief \u2192 Action)\n    (horizon : \u2115) (belief : Belief) :\n    reducedPolicyValue model stateCost policy horizon belief =\n      interpretedPolicyValue model stateCost policy horizon belief",
+        "fep067_bool_reachable_update": "theorem fep067_bool_reachable_update\n    (belief action observation : Bool)\n    (hEvidence : 0 < actionEvidence\n      (boolReachablePOMDP.interpret belief) boolReachablePOMDP.transition\n      boolReachablePOMDP.emission action observation) :\n    boolReachablePOMDP.interpret\n        (boolReachablePOMDP.update belief action observation) =\n      actionBeliefUpdate (boolReachablePOMDP.interpret belief)\n        boolReachablePOMDP.transition boolReachablePOMDP.emission action observation\n        hEvidence"
+      },
+      "body_sha256": "059e5e3a9af34633c57895921125bfc5592c408b8919571094af5ab528972134",
+      "maturity_record": {
+        "id": "fep-067",
+        "primary_theorem": "fep067_reachableBelief_policyValue_equivalence",
+        "supporting_theorems": [
+          "fep067_bool_reachable_update"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Expanding a finite reachable-belief index into its interpreted finite law preserves every fixed finite-horizon feedback-policy value.",
+        "assumption_review": "ReachableBeliefPOMDP supplies a finite indexed carrier, an interpretation into FiniteLaw, and sound positive-evidence updates; DecidableEq is required for the belief index. This is not a finite enumeration of the full probability simplex or an infinite-horizon POMDP reduction.",
+        "non_vacuity": "The concrete Boolean reachable model proves an exact positive-evidence Bayes update between two belief indexes, and arbitrary horizons exercise recursive policy-value preservation.",
+        "acceptance_probe": "native Lean compile of fep067_reachableBelief_policyValue_equivalence and fep067_bool_reachable_update on the finite indexed belief carrier.",
+        "disposition": "structural_proxy"
+      },
+      "statement_review": "Indexedfinitebeliefcarrierhasinterpret/updateclosure/update_soundasfields; primarypreservespolicyvaluewhenexpandingstageexpectation. Boolupdate_soundactualexample.",
+      "premise_scope_boundary": "Two recursivevalues share samebelieftransitionoperator; no derivedfullPOMDPlatentpathvalueequivalenceorfiniteenumerationofsimplex. Soundupdateisinputnotprovedforallmodels.",
+      "positive_adverse_unexecuted_specs": "BooltwobeliefmodelactualpositiveBayesupdate; arbitraryunclosedindexmapcannotbuildcontract; continuousbeliefsetnotclaimedfinite.",
+      "nearest_topic_distinction": "071genericobservationalupdateandBayesianBeliefModelstrongersemanticsseparate;retainstructural_proxy.",
+      "own_novelty_record": {
+        "id": "fep-067",
+        "nearest_topics": [
+          "fep-023",
+          "fep-033"
+        ],
+        "new_invariant": "Interpreting a reachable finite-belief index preserves every fixed-horizon policy value.",
+        "carrier_delta": "Adds a finite belief index with a sound interpretation into FiniteLaw instead of enumerating the full simplex.",
+        "required_bridge": "FEPComposed.fep067_reachableBelief_refines_fep023"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-067",
+          "target": "fep-023",
+          "kind": "formal_pairing",
+          "rationale": "Reachable-belief reduction preserves policy value, alongside the original set-level witness that an available policy has a reachable law.",
+          "witness": "FEPComposed.fep067_reachableBelief_refines_fep023"
+        }
+      ]
+    },
+    {
+      "id": "fep-068",
+      "title": "Soft Bellman Recursion",
+      "disposition": "retain_formalized_for_exact_narrow_scope",
+      "primary": "fep068_softBellman_recursion",
+      "supporting": [],
+      "boundary": [],
+      "declaration_statements": {
+        "fep068_softBellman_recursion": "theorem fep068_softBellman_recursion (temperature : \u211d)\n    (hTemperature : 0 < temperature) (stageCost : State \u2192 Action \u2192 \u211d)\n    (transition : ControlledKernel State Action)\n    (horizon : \u2115) (state : State) :\n    (0 < \u2211 action,\n      Real.exp (-((softBellmanActionEnergy temperature stageCost transition\n        horizon state action) / temperature))) \u2227\n    (softBellmanValue temperature stageCost transition (horizon + 1) state =\n      -temperature * Real.log\n        (\u2211 action,\n          Real.exp (-((softBellmanActionEnergy temperature stageCost transition\n            horizon state action) / temperature)))) \u2227\n    \u2200 action,\n      softBellmanValue temperature stageCost transition (horizon + 1) state \u2264\n        softBellmanActionEnergy temperature stageCost transition\n          horizon state action"
+      },
+      "body_sha256": "5e755435f08a876255f0e565319964db1f23bdb42fef8d59844845f73ca9e1a7",
+      "maturity_record": {
+        "id": "fep-068",
+        "primary_theorem": "fep068_softBellman_recursion",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "On a nonempty finite action carrier, a positive-temperature soft Bellman partition is positive, its successor value is the exact temperature-scaled log-sum-exp backup, and that soft value is no larger than any hard action energy.",
+        "assumption_review": "State and action sets are finite, the action carrier is inhabited, and temperature is strictly positive before division, logarithmic aggregation, and the soft-minimum comparison. The statement is an exact finite-horizon recursion and pointwise hard/soft bound, not an infinite-horizon fixed-point or optimality-limit theorem.",
+        "non_vacuity": "Inhabited actions make the exponential partition strictly positive; nonconstant costs and action-dependent transition rows make multiple exponentiated action values contribute to the finite soft minimum.",
+        "acceptance_probe": "native Lean compile of fep068_softBellman_recursion with a nonempty action carrier and positive temperature, including its positive-partition, successor-recursion, and actionwise hard/soft conclusions.",
+        "disposition": "formalized"
+      },
+      "statement_review": "PositiveT,nonemptyactions:softpartitionpositive,successorlogsumexpidentityandsoftvalue<=everyhardactionenergy.",
+      "premise_scope_boundary": "No infinitehorizonfixedpoint/convergence/zeroTlimit. RealdivisionatT0definesalgebraicbackupnotphysicalhardminlimit.",
+      "positive_adverse_unexecuted_specs": "Twoequalzeroactionenergiesgives-Tlog2<0whilehardmin0; T0totalizedbackup0evennonzerocostnotlimit; emptyactionsetexcluded.",
+      "nearest_topic_distinction": "070priorweightedBoltzmannposterior vs068countingactionlogsum;012entropyobjectivecanbridgewithuniformreferenceconstants.",
+      "own_novelty_record": {
+        "id": "fep-068",
+        "nearest_topics": [
+          "fep-033",
+          "fep-012"
+        ],
+        "new_invariant": "On a nonempty finite action carrier, the positive-temperature Bellman partition is positive, gives the exact log-sum-exp recursion, and bounds the soft value by every hard action energy.",
+        "carrier_delta": "Replaces hard finite minimization with temperature-scaled exponential aggregation over controlled transitions while retaining an explicit actionwise hard/soft comparison.",
+        "required_bridge": "FEPComposed.fep068_softBellman_extends_fep033"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-068",
+          "target": "fep-033",
+          "kind": "formal_pairing",
+          "rationale": "The finite positive-temperature theorem supplies a positive partition, exact soft Bellman successor recursion, and actionwise soft-value bound; it is paired with the original transition-aware Bellman successor equation without claiming carrier equivalence.",
+          "witness": "FEPComposed.fep068_softBellman_extends_fep033"
+        }
+      ]
+    },
+    {
+      "id": "fep-069",
+      "title": "KL-Control Desirability Recursion",
+      "disposition": "retain_structural_proxy_for_exact_narrow_scope",
+      "primary": "fep069_desirability_recursion",
+      "supporting": [
+        "fep069_desirability_nonnegative"
+      ],
+      "boundary": [
+        "fep069_zeroCost_unitDesirability"
+      ],
+      "declaration_statements": {
+        "fep069_desirability_recursion": "theorem fep069_desirability_recursion\n    (passive : FiniteKernel State State) (stateCost desirability : State \u2192 \u211d)\n    (state : State) :\n    desirabilityStep passive stateCost desirability state =\n      Real.exp (-stateCost state) *\n        \u2211 nextState, passive state nextState * desirability nextState",
+        "fep069_desirability_nonnegative": "theorem fep069_desirability_nonnegative\n    (passive : FiniteKernel State State) (stateCost desirability : State \u2192 \u211d)\n    (hDesirability : \u2200 state, 0 \u2264 desirability state) (state : State) :\n    0 \u2264 desirabilityStep passive stateCost desirability state",
+        "fep069_zeroCost_unitDesirability": "theorem fep069_zeroCost_unitDesirability\n    (passive : FiniteKernel State State) (state : State) :\n    desirabilityStep passive (fun _ => 0) (fun _ => 1) state = 1"
+      },
+      "body_sha256": "9e2d36fb9f76dc8a232f6ad651fff63ff2358930d56f6ad5d200e133d2157d85",
+      "maturity_record": {
+        "id": "fep-069",
+        "primary_theorem": "fep069_desirability_recursion",
+        "supporting_theorems": [
+          "fep069_desirability_nonnegative"
+        ],
+        "boundary_theorems": [
+          "fep069_zeroCost_unitDesirability"
+        ],
+        "invariant": "One finite desirability backup is an exponential state-cost tilt of a passive transition prediction and preserves nonnegativity.",
+        "assumption_review": "The theorem gives the algebraic KL-control desirability operator on a finite Markov kernel. It does not derive this operator from a path-space KL objective, prove an optimal controlled kernel, or establish convergence of iteration.",
+        "non_vacuity": "Nonzero costs and nonconstant nonnegative desirability produce a nontrivial tilted prediction, while zero cost and unit desirability form an exact normalized fixed point.",
+        "acceptance_probe": "native Lean compile of fep069_desirability_recursion, fep069_desirability_nonnegative, and fep069_zeroCost_unitDesirability.",
+        "disposition": "structural_proxy"
+      },
+      "statement_review": "Defineddesirabilitystep exp(-cost)*passiveexpecteddesirability;nonnegativityfrominput>=0; cost0/desirability1fixed.",
+      "premise_scope_boundary": "No KLcontroloptimalityderivation/optimaltransition/exponentialtransformofactualBellman proved; structural_proxyappropriate.",
+      "positive_adverse_unexecuted_specs": "PassiveBoolnoisykernel,costlog2,desirability1gives1/2; negativedesirabilitycannegative; generalcostnonzero breaksunitfixedpoint.",
+      "nearest_topic_distinction": "068softBellmanandpathThermodynamicKLdifferentobjective/scale; latentpassivekernelactualnotgenericarbitrarylinearoperator.",
+      "own_novelty_record": {
+        "id": "fep-069",
+        "nearest_topics": [
+          "fep-031",
+          "fep-020"
+        ],
+        "new_invariant": "A KL-control desirability backup is an exponential cost tilt of passive prediction.",
+        "carrier_delta": "Adds a passive finite Markov kernel and nonnegative desirability field to Boltzmann weighting.",
+        "required_bridge": "FEPComposed.fep069_desirability_combines_fep031_weights"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-069",
+          "target": "fep-031",
+          "kind": "formal_pairing",
+          "rationale": "A desirability backup combines a normalized passive prediction with the strictly positive Gibbs weight certified by fep-031.",
+          "witness": "FEPComposed.fep069_desirability_combines_fep031_weights"
+        }
+      ]
+    },
+    {
+      "id": "fep-070",
+      "title": "Control-as-Inference Policy Posterior",
+      "disposition": "retain_structural_proxy_for_exact_narrow_scope",
+      "primary": "fep070_controlPosterior_reconstruction",
+      "supporting": [
+        "fep070_controlPosterior_normalized"
+      ],
+      "boundary": [
+        "fep070_zeroCost_posterior_eq_prior"
+      ],
+      "declaration_statements": {
+        "fep070_controlPosterior_reconstruction": "theorem fep070_controlPosterior_reconstruction (prior : FiniteLaw Action)\n    (precision : \u211d) (cost : Action \u2192 \u211d) (action : Action) :\n    controlPosterior prior precision cost action *\n        boltzmannPartition prior (fun candidate => precision * cost candidate) =\n      boltzmannWeight prior (fun candidate => precision * cost candidate) action",
+        "fep070_controlPosterior_normalized": "theorem fep070_controlPosterior_normalized (prior : FiniteLaw Action)\n    (precision : \u211d) (cost : Action \u2192 \u211d) :\n    \u2211 action, controlPosterior prior precision cost action = 1",
+        "fep070_zeroCost_posterior_eq_prior": "theorem fep070_zeroCost_posterior_eq_prior (prior : FiniteLaw Action)\n    (precision : \u211d) :\n    controlPosterior prior precision (fun _ => 0) = prior"
+      },
+      "body_sha256": "41817001ec4cc01413cb840d65dfad778e4b98e4b767ebf0806715c36b4e06d0",
+      "maturity_record": {
+        "id": "fep-070",
+        "primary_theorem": "fep070_controlPosterior_reconstruction",
+        "supporting_theorems": [
+          "fep070_controlPosterior_normalized"
+        ],
+        "boundary_theorems": [
+          "fep070_zeroCost_posterior_eq_prior"
+        ],
+        "invariant": "A prior-weighted exponential action score normalizes to a control posterior whose mass reconstructs the unnormalized score.",
+        "assumption_review": "The action carrier is finite, precision and costs are real, and positivity of the exponential partition is supplied by the finite Boltzmann construction. The result is an exact algebraic posterior but does not derive its cost from a full generative observation model.",
+        "non_vacuity": "Unequal action costs and a supported prior reweight actions nonuniformly; identically zero costs return the prior exactly for every precision.",
+        "acceptance_probe": "native Lean compile of fep070_controlPosterior_normalized, fep070_controlPosterior_reconstruction, and fep070_zeroCost_posterior_eq_prior.",
+        "disposition": "structural_proxy"
+      },
+      "statement_review": "Priorweightedpositiveexponentialtilt isFiniteLaw; mass*partition=score; cost0returnspriorforanyprecision.",
+      "premise_scope_boundary": "Priorzerosremainzero; costs/precisionarbitraryreal; precision0returnsprior despiteunequalcosts,notguaranteeunequalposteriorweights.",
+      "positive_adverse_unexecuted_specs": "Two positiveprioratomsanddistinctcostswithprecision1changepriorodds; pointmasspriorunchanged; negativeprecisionreversescostpreference.",
+      "nearest_topic_distinction": "028uniformsupportsoftmaxonlywithchosenprioridentification;076sametiltforstates;fullgenerativecostderivationelsewhere.",
+      "own_novelty_record": {
+        "id": "fep-070",
+        "nearest_topics": [
+          "fep-028",
+          "fep-031"
+        ],
+        "new_invariant": "Prior-weighted exponential action scores form a normalized reconstructing policy posterior.",
+        "carrier_delta": "Replaces support-aware softmax logits with a finite prior law, precision, and explicit partition reconstruction.",
+        "required_bridge": "FEPComposed.fep070_controlPosterior_refines_fep028_softmax"
+      },
+      "nearest_expansion_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-070",
+          "target": "fep-028",
+          "kind": "formal_pairing",
+          "rationale": "The prior-weighted control posterior and the original support-aware softmax are both exactly normalized finite action selectors. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+          "witness": "FEPComposed.fep070_controlPosterior_refines_fep028_softmax"
+        }
+      ]
+    },
+    {
+      "id": "fep-071",
+      "title": "Sophisticated Expected-Free-Energy Backward Induction",
+      "disposition": "retain_conditional_proxy_for_exact_narrow_scope",
+      "primary": "fep071_sophisticatedEFE_backward_step",
+      "supporting": [
+        "fep071_twoStage_feedback_changes_action",
+        "fep071_twoStage_feedback_strictly_better"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep071_sophisticatedEFE_backward_step": "theorem fep071_sophisticatedEFE_backward_step\n    (model : SophisticatedEFEModel Belief Action Observation)\n    (horizon : \u2115) (belief : Belief) :\n    sophisticatedEFEValue model (horizon + 1) belief =\n      model.stageEFE horizon belief (sophisticatedEFEAction model horizon belief) +\n        \u2211 observation,\n          model.observationLaw belief (sophisticatedEFEAction model horizon belief)\n              observation *\n            sophisticatedEFEValue model horizon\n              (model.update belief (sophisticatedEFEAction model horizon belief)\n                observation)",
+        "fep071_twoStage_feedback_changes_action": "theorem fep071_twoStage_feedback_changes_action :\n    twoStageFeedback false \u2260 twoStageFeedback true",
+        "fep071_twoStage_feedback_strictly_better": "theorem fep071_twoStage_feedback_strictly_better (action : Bool) :\n    twoStageFeedbackExpectedCost < twoStageOpenLoopExpectedCost action"
+      },
+      "body_sha256": "d2eee21437db05e9a1591954a29e0788c29689c4199ac6b00443e6a062ecf224",
+      "maturity_record": {
+        "id": "fep-071",
+        "primary_theorem": "fep071_sophisticatedEFE_backward_step",
+        "supporting_theorems": [
+          "fep071_twoStage_feedback_changes_action",
+          "fep071_twoStage_feedback_strictly_better"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Finite sophisticated expected-free-energy recursion reoptimizes after each observation-dependent belief update, and a two-stage witness strictly separates feedback from every fixed open-loop second action.",
+        "assumption_review": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning.",
+        "non_vacuity": "In the witness, false and true observations choose different continuation actions, and the resulting expected cost is strictly below that of either fixed Boolean continuation.",
+        "acceptance_probe": "native Lean compile of fep071_sophisticatedEFE_backward_step, fep071_twoStage_feedback_changes_action, and fep071_twoStage_feedback_strictly_better.",
+        "disposition": "conditional_proxy"
+      },
+      "statement_review": "Backwardfiniteargminreoptimizesexpectedcontinuationaftereachauthoredupdate; Booleanfeedbackwitnessbeatsfixedopenloopsecondaction.",
+      "premise_scope_boundary": "SophisticatedEFEModelstageEFEarbitraryrealfieldandupdateauthored,nointrinsicBayessoundness. ExistingBayesianBeliefModel/ActiveInference/policytreefoundationssupplyseparateactualmodelderivedspecializations; notallutilitiesBayesian.",
+      "positive_adverse_unexecuted_specs": "Booldifferentobservationschoosematchingactionsstrictlybeatbothfixedactions; constantobservationorupdatecanerasegain; keep-priorupdatecountermodeldeliveredelsewhere.",
+      "nearest_topic_distinction": "071genericrecursionvsperception_action_loopBayesmodel/riskambiguityandfeedbacksemantics;retainconditional_proxy.",
+      "own_novelty_record": {
+        "id": "fep-071",
+        "nearest_topics": [
+          "fep-033",
+          "fep-021"
+        ],
+        "new_invariant": "Observation-dependent backward induction can strictly outperform every fixed open-loop continuation.",
+        "carrier_delta": "Adds a finite belief update, nested action minimization, and a two-stage feedback witness to EFE planning.",
+        "required_bridge": "FEPComposed.fep071_sophisticatedEFE_extends_fep033"
+      },
+      "nearest_expansion_records": [
+        {
+          "id": "fep-128",
+          "nearest_topics": [
+            "fep-071"
+          ],
+          "new_invariant": "A finite policy-tree node selects an action and then evaluates observation-indexed continuation trees under the predictive observation law.",
+          "carrier_delta": "Replaces a fixed policy sequence with a depth-indexed, observation-contingent tree over finite belief, action, and observation carriers.",
+          "required_bridge": "FEPComposed.fep128_policyTreeRecursion_extends_fep071"
+        },
+        {
+          "id": "fep-129",
+          "nearest_topics": [
+            "fep-033",
+            "fep-071"
+          ],
+          "new_invariant": "Backward induction exposes an exact finite-action Bellman minimum at every policy-tree node.",
+          "carrier_delta": "Adds belief-dependent observation-weighted continuation values to the earlier scalar dynamic-programming and sophisticated-EFE recursions.",
+          "required_bridge": "FEPComposed.fep129_policyTreeBellman_extends_fep033"
+        },
+        {
+          "id": "fep-130",
+          "nearest_topics": [
+            "fep-008",
+            "fep-071"
+          ],
+          "new_invariant": "Every finite-depth policy-tree problem with a nonempty finite action carrier has a concrete attaining optimal tree.",
+          "carrier_delta": "Lifts one finite argmin to an explicitly finite depth-indexed tree constructed by backward induction.",
+          "required_bridge": "FEPComposed.fep130_optimalPolicyTree_extends_fep008"
+        },
+        {
+          "id": "fep-131",
+          "nearest_topics": [
+            "fep-033",
+            "fep-071"
+          ],
+          "new_invariant": "Reusing one continuation after every observation embeds an open-loop action plan into the closed-loop tree carrier without changing its value.",
+          "carrier_delta": "Adds a value-preserving map between observation-ignoring plans and observation-contingent policy trees at equal finite depth.",
+          "required_bridge": "FEPComposed.fep131_openLoopEmbedding_extends_fep033"
+        },
+        {
+          "id": "fep-132",
+          "nearest_topics": [
+            "fep-071"
+          ],
+          "new_invariant": "The optimal finite closed-loop policy-tree value is no greater than every embedded same-depth open-loop plan value.",
+          "carrier_delta": "Turns the open-loop embedding into a finite-horizon dominance theorem and leaves infinite-horizon POMDP optimality outside scope.",
+          "required_bridge": "FEPComposed.fep132_closedLoopDominance_extends_fep071"
+        },
+        {
+          "id": "fep-133",
+          "nearest_topics": [
+            "fep-021",
+            "fep-071"
+          ],
+          "new_invariant": "The full-support risk-plus-ambiguity expected-free-energy identity lifts branchwise through finite policy trees and preserves their optima.",
+          "carrier_delta": "Extends a one-step finite EFE decomposition to belief-indexed generative models and observation-contingent recursive planning.",
+          "required_bridge": "FEPComposed.fep133_treewiseEFE_extends_fep021"
+        },
+        {
+          "id": "fep-134",
+          "nearest_topics": [
+            "fep-071"
+          ],
+          "new_invariant": "An explicit two-step Boolean policy tree attains zero mismatch cost while every fixed open-loop continuation costs one half.",
+          "carrier_delta": "Supplies a nonvacuous exact feedback-advantage witness whose second action changes with the observed Boolean outcome.",
+          "required_bridge": "FEPComposed.fep134_feedbackWitness_extends_fep071"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-071",
+          "target": "fep-033",
+          "kind": "formal_pairing",
+          "rationale": "Sophisticated EFE and the original Bellman value each recompute a continuation at the successor horizon; only the former conditions on future observations.",
+          "witness": "FEPComposed.fep071_sophisticatedEFE_extends_fep033"
+        },
+        {
+          "source": "fep-128",
+          "target": "fep-071",
+          "kind": "formal_pairing",
+          "rationale": "Observation-contingent policy-tree recursion and sophisticated-EFE backward recursion both expose finite-horizon continuation values while retaining distinct model carriers.",
+          "witness": "FEPComposed.fep128_policyTreeRecursion_extends_fep071"
+        },
+        {
+          "source": "fep-132",
+          "target": "fep-071",
+          "kind": "formal_pairing",
+          "rationale": "Closed-loop tree optimality dominates every embedded open-loop plan, while fep-071 supplies the earlier two-stage feedback-sensitive EFE recursion.",
+          "witness": "FEPComposed.fep132_closedLoopDominance_extends_fep071"
+        },
+        {
+          "source": "fep-134",
+          "target": "fep-071",
+          "kind": "formal_pairing",
+          "rationale": "The exact Boolean policy-tree witness proves a strict one-half feedback advantage and is paired with fep-071's independent two-stage feedback witness.",
+          "witness": "FEPComposed.fep134_feedbackWitness_extends_fep071"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "row": "fep-071",
+      "field": "assumption_review",
+      "finding": "GenericstageEFE/updateauthoredfieldsnotnecessarilymodelderivedEFEorBayesconsistent.",
+      "exact_correction": "SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-070",
+      "field": "non_vacuity",
+      "finding": "Unequalcostsdo notreweightatprecision0; support/prioroddsconditionsshouldexplicit.",
+      "exact_correction": "For nonzero precision and two positive-prior actions with distinct costs, their posterior odds differ from prior odds. Zero precision or constant supported costs preserves the prior; zero cost does so for every precision."
+    }
+  ],
+  "ranked_existing_owner_followups": [
+    {
+      "rank": 1,
+      "scope": "071Bayes/model-derivedspecializationconsumerand070precisionwording",
+      "content": "Reuseexistingperception_action_loopBayesianBeliefModel andbayesRiskAmbiguity_eq_sophisticated;no duplicategenerativemodelderivation.",
+      "positive": "actualinformativeBoolBayesfeedbackgain",
+      "adverse": "nonBayeskeepPriorupdate,precision0tiltidentity",
+      "library_seam": "ExistingbayesSophisticatedModel/update_filtered/ActiveInference.expectedFreeEnergy andown071primary",
+      "estimate": "0.5-1.5daysnamedendpointconsumer/rawaxiomreview"
+    },
+    {
+      "rank": 2,
+      "scope": "069actualKLcontrolGibbsvariationalbackup",
+      "content": "DerivepassivekernelstatewiseKLregularizedcontrolminimumwithdeclaredtemperature/referenceandpositivepassivedesirability;currentoperatoralonenotoptimality.",
+      "positive": "fullsupportpassiveBoolkernelandnonconstantcost",
+      "adverse": "passivezeros/zerodesirabilitysupport,Z0,temperature0",
+      "library_seam": "ExistingfiniteGibbsCertificate/energytilt/finiteKL;supportandnegative-logdesirabilitybridge",
+      "estimate": "2-4daysboundedone-stepcomposition;noinfinitehorizonpromise"
+    },
+    {
+      "rank": 3,
+      "scope": "068hardsofttemperaturelimit/finiteentropyobjective",
+      "content": "OptionalexactentropyregularizedBellmanminimumforcommonactioncarrierusingexistingfiniteHelmholtzfoundation;nolimitinferredfromrflrecursion.",
+      "positive": "twoactionpartitionandT>0",
+      "adverse": "T0totalizednotlimit;emptyAction",
+      "library_seam": "VariationalDuality.helmholtz_decomposition/uniqueGibbsminimum,finiteArgmin/logsumexpbound",
+      "estimate": "1-3daysone-stepbridge;temperaturelimitseparate"
+    },
+    {
+      "rank": 4,
+      "scope": "067latentpath-valueequivalence",
+      "content": "Currentinterpretedsame-belieftransitionvalueequalitydoesnotprovefullPOMDPlatentpathreduction; optionalderiveusingactualupdate_soundandpathjoint.",
+      "positive": "finiteclosedBoolbeliefset",
+      "adverse": "beliefclosure/soundnessfailure;fullsimplexnotfinite",
+      "library_seam": "ReachableBeliefPOMDP.update_sound,controlledfinitepathrollout/policytrees",
+      "estimate": "2-5daysafterexactobservable/pathcontract"
+    }
+  ],
+  "remaining": [
+    "Remaining90topics/Issue54/68dependenciesnotclosed",
+    "No metadata/proof/seal/projectionchangesautomaticallyauthorized;qualifiednative/axiom/semanticandcustodyreviewremainforeachfollowup",
+    "Mainqualificationnotinferredfromsourceaudit"
+  ],
+  "limitations": [
+    "Staticcanonicalbody/foundation/metadata/nearestrecordsinspection;noSmutationorLeanexecution",
+    "Examplesunexecutedsemanticwitnessspecifications",
+    "Generic071doesnotcertifyallutilitiesBayesian;existingmodel-derivedfinitebranchisrecognizedseparately"
+  ]
+}

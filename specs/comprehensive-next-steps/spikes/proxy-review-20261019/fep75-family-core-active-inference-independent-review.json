@@ -1,0 +1,1037 @@
+{
+  "schema_version": 1,
+  "decision": "10row_family_semantic_audit_complete_retain_narrow_dispositions_with_precision_corrections",
+  "scope": "core-active-inferenceonly10rows;notall168Issue75acceptance",
+  "source_head": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "row_ids": [
+    "fep-003",
+    "fep-007",
+    "fep-008",
+    "fep-021",
+    "fep-023",
+    "fep-028",
+    "fep-033",
+    "fep-034",
+    "fep-041",
+    "fep-047"
+  ],
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/core_active_inference.py": "9efae270dc2516b16ccf20572a0964980e5e41fe254fab111ab52fc99d133e99",
+    "lean/FepSketches/families/core_active_inference.lean": "8163f213f07eba18a8ea0f1d9dc7cbfff283fe080d277508e2b6f6fd928189e2",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "src/fep_lean/formal/active_inference.lean": "260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/decision_risk.lean": "1a34dd85015ecb421bfbe91b3995e8c2c2d9991122618e9f25db17c4d46f2251",
+    "src/fep_lean/formal/compositions/core.lean": "3461b456ffd598281f0c7881bd06e121db038b9f3753f99549d6dba90459326f",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665"
+  },
+  "pinned_library_sha256": {
+    "Mathlib/Probability/Kernel/Posterior.lean": "bb883efb79b9d8e27576b95c571dd0d3009741c4707b3694e613b20664f86309"
+  },
+  "rows": [
+    {
+      "id": "fep-003",
+      "title": "Discounted Pragmatic Cost",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep003_pragmaticCost_succ",
+      "supporting": [
+        "fep003_pragmaticCost_zero",
+        "fep003_pragmaticCost_mono",
+        "fep003_pragmaticCost_horizon_succ"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep003_pragmaticCost_succ": "theorem fep003_pragmaticCost_succ\n    (discount : ENNReal) (stageCost : \u2115 \u2192 ENNReal) (horizon : \u2115) :\n    fep003_pragmaticCost discount stageCost (horizon + 1) =\n      fep003_pragmaticCost discount stageCost horizon +\n        discount ^ horizon * stageCost horizon",
+        "fep003_pragmaticCost_zero": "theorem fep003_pragmaticCost_zero\n    (discount : ENNReal) (stageCost : \u2115 \u2192 ENNReal) :\n    fep003_pragmaticCost discount stageCost 0 = 0",
+        "fep003_pragmaticCost_mono": "theorem fep003_pragmaticCost_mono\n    (discount : ENNReal) {cost\u2081 cost\u2082 : \u2115 \u2192 ENNReal}\n    (hcost : \u2200 t, cost\u2081 t \u2264 cost\u2082 t) (horizon : \u2115) :\n    fep003_pragmaticCost discount cost\u2081 horizon \u2264\n      fep003_pragmaticCost discount cost\u2082 horizon",
+        "fep003_pragmaticCost_horizon_succ": "theorem fep003_pragmaticCost_horizon_succ\n    (discount : ENNReal) (stageCost : \u2115 \u2192 ENNReal) (horizon : \u2115) :\n    fep003_pragmaticCost discount stageCost horizon \u2264\n      fep003_pragmaticCost discount stageCost (horizon + 1)"
+      },
+      "body_sha256": "c9cfdfab87c9b5613f8fd2e08ca8c1f80681fd239001aaa6494c1e52194e0d68",
+      "maturity_record": {
+        "id": "fep-003",
+        "primary_theorem": "fep003_pragmaticCost_succ",
+        "supporting_theorems": [
+          "fep003_pragmaticCost_zero",
+          "fep003_pragmaticCost_mono",
+          "fep003_pragmaticCost_horizon_succ"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Finite-horizon pragmatic cost is the discounted ENNReal sum of stage costs; horizon extension exposes the exact terminal increment, costs are pointwise monotone, and horizon extension is monotone.",
+        "assumption_review": "All costs and the discount live in ENNReal, so nonnegativity and infinity are represented directly. This is the pragmatic-cost input to EFE; epistemic value and its sign are owned by fep-021.",
+        "non_vacuity": "A positive stage cost at the newly exposed time adds the nonzero increment \u03b3^T c_T; a zero horizon and pointwise-equal costs exercise the boundaries.",
+        "acceptance_probe": "native Lean compile of fep003_pragmaticCost_zero, fep003_pragmaticCost_succ, fep003_pragmaticCost_mono, and fep003_pragmaticCost_horizon_succ.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary finitehorizonterminalincrement exactsum_range_succ; supporting zero,pointwisecostmonotonicity,horizonmonotonicity followENNRealorder.",
+      "scope_premise_boundary": "DiscountarbitraryENNRealnotnecessarily<1; costs supplied not derivedexpectations; no infinitehorizonconvergence. Positivecostalone doesnotguaranteepositiveincrementatdiscount0,T>0.",
+      "positive_adverse_unexecuted_specifications": "discount1/2,costconstant1,horizon2gives1.5then1.75; discount0horizon\u22651haslaterincrement0; accumulated\u221eblocksstrictincrease.",
+      "nearest_topic_distinction": "021owns truncation;033state-transitionvalue; existingActiveInferencefoundationderivesmodelcrossentropy/MIseparately.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-003",
+          "target": "fep-021",
+          "kind": "formal",
+          "rationale": "The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance.",
+          "witness": "FEPComposed.fep003_pragmaticCost_efe_balance"
+        }
+      ]
+    },
+    {
+      "id": "fep-007",
+      "title": "Normalized Finite Sum-Product Message",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep007_normalizedMessage_sum_one",
+      "supporting": [
+        "fep007_factorProduct_nonneg",
+        "fep007_message_agg_nonneg",
+        "fep007_message_agg_mono",
+        "fep007_zero_msg",
+        "fep007_messageNormalizer_pos",
+        "fep007_normalizedMessage_nonneg"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep007_normalizedMessage_sum_one": "theorem fep007_normalizedMessage_sum_one\n    (\u03c8 : Node \u2192 Node \u2192 \u211d) (incoming : Node \u2192 \u211d)\n    (neighbors : Finset Node) (i : Node)\n    (hne : neighbors.Nonempty)\n    (h\u03c8 : \u2200 j \u2208 neighbors, 0 < \u03c8 i j)\n    (hincoming : \u2200 j \u2208 neighbors, 0 < incoming j) :\n    \u2211 j \u2208 neighbors,\n      fep007_normalizedMessage \u03c8 incoming neighbors i j = 1",
+        "fep007_factorProduct_nonneg": "theorem fep007_factorProduct_nonneg (\u03c8 : Node \u2192 Node \u2192 \u211d) (i j : Node)\n    (h\u03c8 : 0 \u2264 \u03c8 i j) (hj : 0 \u2264 \u03c8 j i) : 0 \u2264 \u03c8 i j * \u03c8 j i",
+        "fep007_message_agg_nonneg": "theorem fep007_message_agg_nonneg (\u03c8 : Node \u2192 Node \u2192 \u211d) (msg : Node \u2192 \u211d)\n    (N : Finset Node) (i : Node)\n    (h\u03c8 : \u2200 j, 0 \u2264 \u03c8 i j) (hm : \u2200 j, 0 \u2264 msg j) :\n    0 \u2264 \u2211 j \u2208 N, \u03c8 i j * msg j",
+        "fep007_message_agg_mono": "theorem fep007_message_agg_mono (\u03c8 : Node \u2192 Node \u2192 \u211d) (m\u2081 m\u2082 : Node \u2192 \u211d)\n    (N : Finset Node) (i : Node)\n    (h\u03c8 : \u2200 j, 0 \u2264 \u03c8 i j) (h : \u2200 j \u2208 N, m\u2081 j \u2264 m\u2082 j) :\n    \u2211 j \u2208 N, \u03c8 i j * m\u2081 j \u2264 \u2211 j \u2208 N, \u03c8 i j * m\u2082 j",
+        "fep007_zero_msg": "theorem fep007_zero_msg (\u03c8 : Node \u2192 Node \u2192 \u211d) (N : Finset Node) (i : Node) :\n    \u2211 j \u2208 N, \u03c8 i j * (0 : \u211d) = 0",
+        "fep007_messageNormalizer_pos": "theorem fep007_messageNormalizer_pos\n    (\u03c8 : Node \u2192 Node \u2192 \u211d) (incoming : Node \u2192 \u211d)\n    (neighbors : Finset Node) (i : Node)\n    (hne : neighbors.Nonempty)\n    (h\u03c8 : \u2200 j \u2208 neighbors, 0 < \u03c8 i j)\n    (hincoming : \u2200 j \u2208 neighbors, 0 < incoming j) :\n    0 < fep007_messageNormalizer \u03c8 incoming neighbors i",
+        "fep007_normalizedMessage_nonneg": "theorem fep007_normalizedMessage_nonneg\n    (\u03c8 : Node \u2192 Node \u2192 \u211d) (incoming : Node \u2192 \u211d)\n    (neighbors : Finset Node) (i j : Node)\n    (hne : neighbors.Nonempty)\n    (h\u03c8 : \u2200 k \u2208 neighbors, 0 < \u03c8 i k)\n    (hincoming : \u2200 k \u2208 neighbors, 0 < incoming k) :\n    0 \u2264 fep007_normalizedMessage \u03c8 incoming neighbors i j"
+      },
+      "body_sha256": "0428730d3463363420087da0b8bddd28114d53e470ab8903731637253d143281",
+      "maturity_record": {
+        "id": "fep-007",
+        "primary_theorem": "fep007_normalizedMessage_sum_one",
+        "supporting_theorems": [
+          "fep007_factorProduct_nonneg",
+          "fep007_message_agg_nonneg",
+          "fep007_message_agg_mono",
+          "fep007_zero_msg",
+          "fep007_messageNormalizer_pos",
+          "fep007_normalizedMessage_nonneg"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Strictly positive local factors and incoming messages over a nonempty finite neighbor support define a nonnegative normalized sum-product message with support mass exactly one.",
+        "assumption_review": "Normalization requires a nonempty selected support and strict positivity of every factor and incoming message on it. The message is zero outside that support. This is one exact local update, not loopy-belief-propagation convergence or global marginal correctness.",
+        "non_vacuity": "Singleton and multi-neighbor supports produce positive normalizers; unequal factor-message products yield a genuinely nonuniform normalized message.",
+        "acceptance_probe": "native Lean compile of fep007_messageNormalizer_pos, fep007_normalizedMessage_nonneg, and fep007_normalizedMessage_sum_one.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary normalization onnonemptyFin8support understrictpositivefactors/incoming; supporting nonnegative,aggregatemonotone andnormalizerpositive exact.",
+      "scope_premise_boundary": "One row ofnormalizedfactor-messageweights; not globalBP marginalcorrectness,treeprooforloopyconvergence. Strictpositivity sufficientbutnotnecessary whenatleastonepositiveproduct.",
+      "positive_adverse_unexecuted_specifications": "Two neighborproducts1and3yield1/4,3/4; excludednodezero; empty/allzeroproductsupporttotal0; negativeproductsinvalidateprobability.",
+      "nearest_topic_distinction": "047Fin7unnormalizedmatrixpropagation andPTreetreerecursiondistinct;007\u2192028realexponentialunitincomingbridge exactspecializationnotgeneralBP/softmaxequivalence.",
+      "nearest_expansion_novelty_records": [],
+      "touching_relations": [
+        {
+          "source": "fep-007",
+          "target": "fep-028",
+          "kind": "formal",
+          "rationale": "With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106).",
+          "witness": "FEPComposed.fep007_normalizedMessage_is_fep028_softmax"
+        }
+      ]
+    },
+    {
+      "id": "fep-008",
+      "title": "Finite Policy Objective Minimizer",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep008_exists_minG",
+      "supporting": [
+        "fep008_min_agrees_on_value",
+        "fep008_exists_maxG",
+        "fep008_min_is_lb"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep008_exists_minG": "theorem fep008_exists_minG (policies : Finset Policy) (hne : policies.Nonempty) (G : Policy \u2192 \u211d) :\n    \u2203 p \u2208 policies, \u2200 p' \u2208 policies, G p \u2264 G p'",
+        "fep008_min_agrees_on_value": "theorem fep008_min_agrees_on_value (policies : Finset Policy) (_hne : policies.Nonempty) (G : Policy \u2192 \u211d)\n    (p p' : Policy) (hp : p \u2208 policies) (hp' : p' \u2208 policies)\n    (hmin : \u2200 p'' \u2208 policies, G p \u2264 G p'') (hmin' : \u2200 p'' \u2208 policies, G p' \u2264 G p'') :\n    G p = G p'",
+        "fep008_exists_maxG": "theorem fep008_exists_maxG (policies : Finset Policy) (hne : policies.Nonempty) (G : Policy \u2192 \u211d) :\n    \u2203 p \u2208 policies, \u2200 p' \u2208 policies, G p' \u2264 G p",
+        "fep008_min_is_lb": "theorem fep008_min_is_lb (policies : Finset Policy) (G : Policy \u2192 \u211d)\n    (p : Policy) (_hp : p \u2208 policies)\n    (hmin : \u2200 p' \u2208 policies, G p \u2264 G p') :\n    \u2200 p' \u2208 policies, G p \u2264 G p'"
+      },
+      "body_sha256": "0589ed42d0d6faa9899658c9a86b40f7a7ed759b3d2a11094a884d6dd7054920",
+      "maturity_record": {
+        "id": "fep-008",
+        "primary_theorem": "fep008_exists_minG",
+        "supporting_theorems": [
+          "fep008_min_agrees_on_value",
+          "fep008_exists_maxG",
+          "fep008_min_is_lb"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A real-valued objective attains a minimum on a finite nonempty policy set.",
+        "assumption_review": "Existence requires only a finite nonempty policy set and an explicit real-valued objective. The theorem does not claim uniqueness of the policy; it separately proves that all minimizers agree in value.",
+        "non_vacuity": "A policy set with at least two policies and unequal objective values has a genuine selected minimizer; tied objectives exercise nonunique policies with equal minimum value.",
+        "acceptance_probe": "native Lean compile of fep008_exists_minG, fep008_min_agrees_on_value, and fep008_exists_maxG on finite nonempty policy sets.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary realobjectiveargmin onfinite nonemptyFin14subset; supporting maxandminimizer-valueequalitycorrect; min_is_lb repeatsassumedminproperty.",
+      "scope_premise_boundary": "No uniquenessofpolicy/tie-breakalgorithm,computability,model-derivedG orglobalinfinitepolicyminimizer.",
+      "positive_adverse_unexecuted_specifications": "Policies0,1scores2,1select1; tiedconstantGmanyminimizerssamevalue; emptysetnoexistentialwitness.",
+      "nearest_topic_distinction": "028normalizesFin10stochasticweights,notargminselection; bridge needscommoncarrier/embeddingand\u03b3conditions,notretagfromnormalizationalone.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-130",
+          "nearest_topics": [
+            "fep-008",
+            "fep-071"
+          ],
+          "new_invariant": "Every finite-depth policy-tree problem with a nonempty finite action carrier has a concrete attaining optimal tree.",
+          "carrier_delta": "Lifts one finite argmin to an explicitly finite depth-indexed tree constructed by backward induction.",
+          "required_bridge": "FEPComposed.fep130_optimalPolicyTree_extends_fep008"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-008",
+          "target": "fep-028",
+          "kind": "conceptual",
+          "rationale": "Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers."
+        },
+        {
+          "source": "fep-130",
+          "target": "fep-008",
+          "kind": "formal_pairing",
+          "rationale": "A concrete attaining finite policy tree is paired with the original finite policy minimizer, making the stronger depth-indexed carrier and its nonempty-action premise explicit.",
+          "witness": "FEPComposed.fep130_optimalPolicyTree_extends_fep008"
+        }
+      ]
+    },
+    {
+      "id": "fep-021",
+      "title": "EFE Epistemic\u2013Pragmatic Balance",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep021_efe_epistemic_balance",
+      "supporting": [
+        "fep021_efe_nonneg",
+        "fep021_efe_mono_pragmatic",
+        "fep021_efe_antitone_epistemic",
+        "fep021_efe_eq_zero_iff"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep021_efe_epistemic_balance": "theorem fep021_efe_epistemic_balance\n    {pragmaticCost epistemicValue : ENNReal}\n    (hvalue : epistemicValue \u2264 pragmaticCost) :\n    fep021_expectedFreeEnergy pragmaticCost epistemicValue + epistemicValue =\n      pragmaticCost",
+        "fep021_efe_nonneg": "theorem fep021_efe_nonneg (pragmaticCost epistemicValue : ENNReal) :\n    0 \u2264 fep021_expectedFreeEnergy pragmaticCost epistemicValue",
+        "fep021_efe_mono_pragmatic": "theorem fep021_efe_mono_pragmatic\n    {pragmatic\u2081 pragmatic\u2082 epistemicValue : ENNReal}\n    (hpragmatic : pragmatic\u2081 \u2264 pragmatic\u2082) :\n    fep021_expectedFreeEnergy pragmatic\u2081 epistemicValue \u2264\n      fep021_expectedFreeEnergy pragmatic\u2082 epistemicValue",
+        "fep021_efe_antitone_epistemic": "theorem fep021_efe_antitone_epistemic\n    {pragmaticCost epistemic\u2081 epistemic\u2082 : ENNReal}\n    (hepistemic : epistemic\u2081 \u2264 epistemic\u2082) :\n    fep021_expectedFreeEnergy pragmaticCost epistemic\u2082 \u2264\n      fep021_expectedFreeEnergy pragmaticCost epistemic\u2081",
+        "fep021_efe_eq_zero_iff": "theorem fep021_efe_eq_zero_iff\n    (pragmaticCost epistemicValue : ENNReal) :\n    fep021_expectedFreeEnergy pragmaticCost epistemicValue = 0 \u2194\n      pragmaticCost \u2264 epistemicValue"
+      },
+      "body_sha256": "30f289cfabde0d1a266ef3af689df32cf30f37451d5251db89aa59f0b603a42f",
+      "maturity_record": {
+        "id": "fep-021",
+        "primary_theorem": "fep021_efe_epistemic_balance",
+        "supporting_theorems": [
+          "fep021_efe_nonneg",
+          "fep021_efe_mono_pragmatic",
+          "fep021_efe_antitone_epistemic",
+          "fep021_efe_eq_zero_iff"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Expected free energy is pragmatic expected cost minus epistemic information value in ENNReal; under epistemic value at most cost, adding information back reconstructs cost, while EFE is monotone in cost and antitone in information.",
+        "assumption_review": "The truncated subtraction convention makes EFE nonnegative and requires an explicit epistemic\u2264pragmatic premise for exact reconstruction. It does not assert the alternative risk-plus-ambiguity identity without a generative-model derivation.",
+        "non_vacuity": "Strictly positive pragmatic cost with zero information yields positive EFE, equal cost and information yields zero, and intermediate information lowers EFE without changing sign.",
+        "acceptance_probe": "native Lean compile of fep021_efe_epistemic_balance, fep021_efe_mono_pragmatic, fep021_efe_antitone_epistemic, and fep021_efe_eq_zero_iff.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary ENNRealtruncatedsubtraction reconstructionunderinformation<=cost; monotonecost/antitoneinformation andzeroiff correct including\u221econventions.",
+      "scope_premise_boundary": "Inputs supplied; itselfdoesnotderiveMIor riskambiguity. ExistingfiniteActiveInferencemodelalreadyderivesMI/riskambiguityunderFullSupport andofRealbridgeexplicitlytruncates negativevalues.",
+      "positive_adverse_unexecuted_specifications": "cost3/info1=>EFE2; info3=>0; info4=>0andbalancefails3=4; at\u221ecost finite/infinitealgebra needsENNRealinterpretationnotrealcancellation.",
+      "nearest_topic_distinction": "003discountedcost,041nativeposteriorKL and ActiveInference.modelMIareseparatetypedinputs; existingcomposedbridgecoversofReal,notblanketnative/finiteexpectedgainidentity.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-071",
+          "nearest_topics": [
+            "fep-033",
+            "fep-021"
+          ],
+          "new_invariant": "Observation-dependent backward induction can strictly outperform every fixed open-loop continuation.",
+          "carrier_delta": "Adds a finite belief update, nested action minimization, and a two-stage feedback witness to EFE planning.",
+          "required_bridge": "FEPComposed.fep071_sophisticatedEFE_extends_fep033"
+        },
+        {
+          "id": "fep-109",
+          "nearest_topics": [
+            "fep-021",
+            "fep-041"
+          ],
+          "new_invariant": "Product predictive and preference laws with additive ambiguity give additive expected free energy.",
+          "carrier_delta": "Extends one-agent epistemic\u2013pragmatic balance to two independent finite agents with full-support preferences.",
+          "required_bridge": "FEPComposed.fep109_independent_efe_extends_fep021"
+        },
+        {
+          "id": "fep-133",
+          "nearest_topics": [
+            "fep-021",
+            "fep-071"
+          ],
+          "new_invariant": "The full-support risk-plus-ambiguity expected-free-energy identity lifts branchwise through finite policy trees and preserves their optima.",
+          "carrier_delta": "Extends a one-step finite EFE decomposition to belief-indexed generative models and observation-contingent recursive planning.",
+          "required_bridge": "FEPComposed.fep133_treewiseEFE_extends_fep021"
+        },
+        {
+          "id": "fep-156",
+          "nearest_topics": [
+            "fep-021"
+          ],
+          "new_invariant": "For fixed positive precision the Boltzmann control posterior minimizes the KL-regularized expected-cost objective over every normalized candidate law and is its unique minimizer.",
+          "carrier_delta": "Adds an explicit finite policy prior, precision, and cost field so the truncated EFE convention's argmin content becomes an attained finite Gibbs optimizer with closed-form negative log-partition value.",
+          "required_bridge": "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-003",
+          "target": "fep-021",
+          "kind": "formal",
+          "rationale": "The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance.",
+          "witness": "FEPComposed.fep003_pragmaticCost_efe_balance"
+        },
+        {
+          "source": "fep-021",
+          "target": "fep-041",
+          "kind": "formal",
+          "rationale": "The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance.",
+          "witness": "FEPComposed.fep021_informationGain_balance"
+        },
+        {
+          "source": "fep-109",
+          "target": "fep-021",
+          "kind": "formal_pairing",
+          "rationale": "Independent-agent EFE additivity is paired with the original truncated EFE sign convention and its exact epistemic-balance premise.",
+          "witness": "FEPComposed.fep109_independent_efe_extends_fep021"
+        },
+        {
+          "source": "fep-133",
+          "target": "fep-021",
+          "kind": "formal_pairing",
+          "rationale": "The risk-plus-ambiguity EFE identity is lifted through every finite policy-tree branch and paired with the earlier one-step expected-free-energy balance.",
+          "witness": "FEPComposed.fep133_treewiseEFE_extends_fep021"
+        },
+        {
+          "source": "fep-156",
+          "target": "fep-021",
+          "kind": "formal_pairing",
+          "rationale": "The exact Boltzmann-form control posterior minimizes the expected free energy with its uniqueness certificate, paired with fep-021's truncated-EFE epistemic-plus-pragmatic balance as the sign-convention ancestor, without claiming continuous-state or infinite-action optimality.",
+          "witness": "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance"
+        }
+      ]
+    },
+    {
+      "id": "fep-023",
+      "title": "Policy-Indexed Reachable Laws",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep023_reachable_normalized",
+      "supporting": [
+        "fep023_policy_reachable",
+        "fep023_reachable_mono",
+        "fep023_reachable_empty"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep023_reachable_normalized": "theorem fep023_reachable_normalized\n    (policies : Set Policy) (law : Policy \u2192 Measure Outcome)\n    (hlaw : \u2200 policy \u2208 policies, law policy Set.univ = 1)\n    {\u03bc : Measure Outcome} (h\u03bc : \u03bc \u2208 fep023_reachableLaws policies law) :\n    \u03bc Set.univ = 1",
+        "fep023_policy_reachable": "theorem fep023_policy_reachable\n    (policies : Set Policy) (law : Policy \u2192 Measure Outcome)\n    {policy : Policy} (hpolicy : policy \u2208 policies) :\n    law policy \u2208 fep023_reachableLaws policies law",
+        "fep023_reachable_mono": "theorem fep023_reachable_mono\n    {policies\u2081 policies\u2082 : Set Policy} (law : Policy \u2192 Measure Outcome)\n    (hpolicies : policies\u2081 \u2286 policies\u2082) :\n    fep023_reachableLaws policies\u2081 law \u2286\n      fep023_reachableLaws policies\u2082 law",
+        "fep023_reachable_empty": "theorem fep023_reachable_empty (law : Policy \u2192 Measure Outcome) :\n    fep023_reachableLaws (\u2205 : Set Policy) law = \u2205"
+      },
+      "body_sha256": "d9c39e4ee529d530374a45ce3907cf39a57438d932ba9933149b1aec9e10e7df",
+      "maturity_record": {
+        "id": "fep-023",
+        "primary_theorem": "fep023_reachable_normalized",
+        "supporting_theorems": [
+          "fep023_policy_reachable",
+          "fep023_reachable_mono",
+          "fep023_reachable_empty"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The distributional affordance set is the image of available policies under their outcome-law map; policy-set inclusion is monotone and normalization of every policy law transfers to every reachable law.",
+        "assumption_review": "Reachability is policy-indexed one-step image semantics. Normalization is an explicit premise on available policy laws; no controllability, multi-step support closure, or topology on the law space is claimed.",
+        "non_vacuity": "Distinct policies may induce distinct normalized measures, while an empty policy set yields no reachable law and a singleton set yields its single law.",
+        "acceptance_probe": "native Lean compile of fep023_policy_reachable, fep023_reachable_mono, fep023_reachable_normalized, and fep023_reachable_empty.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary transfersassumedmassonealongpolicy-lawimage; supportingmembership,imageinclusion,emptyimageexact.",
+      "scope_premise_boundary": "Normalizationpremise explicit; law arbitraryMeasure notderiveddynamics; no reachabilitysupport/topology/controllability/uniqueinvertiblepolicy-map.",
+      "positive_adverse_unexecuted_specifications": "BoolpoliciesinducedtwoDiracoutcomelawsnontrivialimage; constantlawcollapsespolicies; emptysetnoaffordances; zeroMeasurelawrejectsmassone.",
+      "nearest_topic_distinction": "ControlledMarkovrolloutactualpolicytooutcomelawelsewhere; thisrowisextensionalimagecontractnotacausalfeasibilitytheorem.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-065",
+          "nearest_topics": [
+            "fep-023"
+          ],
+          "new_invariant": "Every action-conditioned transition row is a normalized finite law.",
+          "carrier_delta": "Refines policy-indexed reachable laws to an explicit action-indexed family of state kernels.",
+          "required_bridge": "FEPComposed.fep065_controlledKernel_extends_fep023_normalization"
+        },
+        {
+          "id": "fep-067",
+          "nearest_topics": [
+            "fep-023",
+            "fep-033"
+          ],
+          "new_invariant": "Interpreting a reachable finite-belief index preserves every fixed-horizon policy value.",
+          "carrier_delta": "Adds a finite belief index with a sound interpretation into FiniteLaw instead of enumerating the full simplex.",
+          "required_bridge": "FEPComposed.fep067_reachableBelief_refines_fep023"
+        },
+        {
+          "id": "fep-082",
+          "nearest_topics": [
+            "fep-023"
+          ],
+          "new_invariant": "A hard finite intervention assigns unit chosen mass, zero alternative mass, and normalized rows.",
+          "carrier_delta": "Adds a context-indexed deterministic do-kernel with decidable finite intervention values.",
+          "required_bridge": "FEPComposed.fep082_intervention_normalization_extends_fep023"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-065",
+          "target": "fep-023",
+          "kind": "formal_pairing",
+          "rationale": "Controlled transition rows and every reachable policy law obey their respective normalization contracts.",
+          "witness": "FEPComposed.fep065_controlledKernel_extends_fep023_normalization"
+        },
+        {
+          "source": "fep-067",
+          "target": "fep-023",
+          "kind": "formal_pairing",
+          "rationale": "Reachable-belief reduction preserves policy value, alongside the original set-level witness that an available policy has a reachable law.",
+          "witness": "FEPComposed.fep067_reachableBelief_refines_fep023"
+        },
+        {
+          "source": "fep-082",
+          "target": "fep-023",
+          "kind": "formal_pairing",
+          "rationale": "Every hard intervention row is normalized, as is every reachable law under the original fep-023 normalization premise.",
+          "witness": "FEPComposed.fep082_intervention_normalization_extends_fep023"
+        }
+      ]
+    },
+    {
+      "id": "fep-028",
+      "title": "Support-Aware Finite Softmax Policy",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep028_softmax_sum_univ",
+      "supporting": [
+        "fep028_softmax_nonneg",
+        "fep028_softmax_le_one",
+        "fep028_softmax_probs_sum_one",
+        "fep028_softmax_support",
+        "fep028_numerator_pos",
+        "fep028_denominator_pos"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep028_softmax_sum_univ": "theorem fep028_softmax_sum_univ\n    (\u03b3 : \u211d) (G : Policy \u2192 \u211d) (policies : Finset Policy)\n    (hne : policies.Nonempty) :\n    \u2211 p : Policy, fep028_softmax \u03b3 G policies p = 1",
+        "fep028_softmax_nonneg": "theorem fep028_softmax_nonneg (\u03b3 : \u211d) (G : Policy \u2192 \u211d) (policies : Finset Policy) (p : Policy)\n    (hne : policies.Nonempty) : 0 \u2264 fep028_softmax \u03b3 G policies p",
+        "fep028_softmax_le_one": "theorem fep028_softmax_le_one\n    (\u03b3 : \u211d) (G : Policy \u2192 \u211d) (policies : Finset Policy) (p : Policy)\n    (hne : policies.Nonempty) :\n    fep028_softmax \u03b3 G policies p \u2264 1",
+        "fep028_softmax_probs_sum_one": "theorem fep028_softmax_probs_sum_one (\u03b3 : \u211d) (G : Policy \u2192 \u211d) (policies : Finset Policy)\n    (hne : policies.Nonempty) :\n    \u2211 p \u2208 policies, fep028_softmax \u03b3 G policies p = 1",
+        "fep028_softmax_support": "theorem fep028_softmax_support\n    (\u03b3 : \u211d) (G : Policy \u2192 \u211d) (policies : Finset Policy) {p : Policy}\n    (hp : p \u2209 policies) :\n    fep028_softmax \u03b3 G policies p = 0",
+        "fep028_numerator_pos": "theorem fep028_numerator_pos (\u03b3 : \u211d) (G : Policy \u2192 \u211d) (p : Policy) :\n    0 < Real.exp (-\u03b3 * G p)",
+        "fep028_denominator_pos": "theorem fep028_denominator_pos (\u03b3 : \u211d) (G : Policy \u2192 \u211d) (policies : Finset Policy)\n    (hne : policies.Nonempty) :\n    0 < \u2211 p' \u2208 policies, Real.exp (-\u03b3 * G p')"
+      },
+      "body_sha256": "5ae2158c63599c3e944c9f85e33f9d0366902f95ec373fd564ed964544eb5b7b",
+      "maturity_record": {
+        "id": "fep-028",
+        "primary_theorem": "fep028_softmax_sum_univ",
+        "supporting_theorems": [
+          "fep028_softmax_nonneg",
+          "fep028_softmax_le_one",
+          "fep028_softmax_probs_sum_one",
+          "fep028_softmax_support",
+          "fep028_numerator_pos",
+          "fep028_denominator_pos"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Exponentiated policy scores on a nonempty selected support define a nonnegative full finite weight vector, vanish outside support, are pointwise at most one, and sum to one globally.",
+        "assumption_review": "Only support nonemptiness is required; inverse temperature and costs may be arbitrary reals. This proves an exact stochastic policy law but not optimality, sampling behavior, or a temperature limit.",
+        "non_vacuity": "A two-policy support with unequal costs gives unequal positive weights, while excluded policies have exact zero mass and the full ten-policy vector remains normalized.",
+        "acceptance_probe": "native Lean compile of fep028_softmax_nonneg, fep028_softmax_le_one, fep028_softmax_support, fep028_softmax_probs_sum_one, and fep028_softmax_sum_univ.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary globalFin10normalization useszeroextensionfromselectednonemptysupport; supportingbounds,zeroforsupportexcluded andpositivedenominatorcorrectforallreal\u03b3cost.",
+      "scope_premise_boundary": "\u03b3can0ornegative; nonemptyrequiredfornormalization. No optimization,temperaturelimit,samplingbehavior. Unequalcostsonlygiveunequalweightsif\u03b3\u22600.",
+      "positive_adverse_unexecuted_specifications": "Support{0,1},G0=0,G1=1,\u03b31yieldsunequalpositiveweights; \u03b30uniformevenunequalcosts; \u03b3negativefavorshighercost; emptysupportallzero.",
+      "nearest_topic_distinction": "012entropyregularizationneedsnormalizedlaw;031Gibbsproper-supportexpressiondoesnotzerooutsideSwhereas028does; mustnotidentifyambientvectorswithoutrestriction.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-070",
+          "nearest_topics": [
+            "fep-028",
+            "fep-031"
+          ],
+          "new_invariant": "Prior-weighted exponential action scores form a normalized reconstructing policy posterior.",
+          "carrier_delta": "Replaces support-aware softmax logits with a finite prior law, precision, and explicit partition reconstruction.",
+          "required_bridge": "FEPComposed.fep070_controlPosterior_refines_fep028_softmax"
+        },
+        {
+          "id": "fep-076",
+          "nearest_topics": [
+            "fep-028",
+            "fep-031"
+          ],
+          "new_invariant": "A prior-weighted exponential state-energy tilt normalizes and reconstructs its unnormalized mass.",
+          "carrier_delta": "Moves the finite Boltzmann posterior from actions to latent states with an identity zero-energy boundary.",
+          "required_bridge": "FEPComposed.fep076_variational_update_refines_fep028_softmax"
+        },
+        {
+          "id": "fep-106",
+          "nearest_topics": [
+            "fep-028",
+            "fep-038"
+          ],
+          "new_invariant": "The categorical replicator field is the inherited natural gradient of centered fitness, conserves simplex mass, and is explicitly nonzero for a nonconstant Fin 2 fitness witness.",
+          "carrier_delta": "Couples a full-support finite law, ScoreModel lowering map, centered fitness covector, and tangent replicator vector, then instantiates them on the genuine Fin 2 categorical carrier.",
+          "required_bridge": "FEPComposed.fep106_replicator_links_fep028_fep038"
+        },
+        {
+          "id": "fep-110",
+          "nearest_topics": [
+            "fep-028",
+            "fep-031"
+          ],
+          "new_invariant": "A positive-normalizer unit-weight product-of-experts pool is the normalized pointwise product of two finite laws.",
+          "carrier_delta": "Replaces one prior-weighted softmax with two peer laws, exponent one on each factor, and an explicit pointwise-product normalizer; it is not an equal-weight logarithmic pool.",
+          "required_bridge": "FEPComposed.fep110_product_of_experts_refines_fep028_normalization"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-007",
+          "target": "fep-028",
+          "kind": "formal",
+          "rationale": "With unit incoming messages and factor exp(-gamma * cost), fep-007's normalized sum-product message equals fep-028's support-aware softmax on the support embedded from the eight nodes into the ten policies, and fep-007's primary message-normalization theorem derives the unit sum of that softmax. The embedding and the exponential factor are explicit in the witness; no general belief-propagation or free-energy claim is made. Added 2026-10-08 (LEAN-8, issue 106).",
+          "witness": "FEPComposed.fep007_normalizedMessage_is_fep028_softmax"
+        },
+        {
+          "source": "fep-008",
+          "target": "fep-028",
+          "kind": "conceptual",
+          "rationale": "Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers."
+        },
+        {
+          "source": "fep-012",
+          "target": "fep-028",
+          "kind": "formal",
+          "rationale": "The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+          "witness": "FEPComposed.fep012_softmax_entropyRegularizedCost_le"
+        },
+        {
+          "source": "fep-070",
+          "target": "fep-028",
+          "kind": "formal_pairing",
+          "rationale": "The prior-weighted control posterior and the original support-aware softmax are both exactly normalized finite action selectors. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+          "witness": "FEPComposed.fep070_controlPosterior_refines_fep028_softmax"
+        },
+        {
+          "source": "fep-076",
+          "target": "fep-028",
+          "kind": "formal_pairing",
+          "rationale": "A prior-weighted variational state update and the original finite softmax both produce normalized exponential-tilt laws. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+          "witness": "FEPComposed.fep076_variational_update_refines_fep028_softmax"
+        },
+        {
+          "source": "fep-110",
+          "target": "fep-028",
+          "kind": "formal_pairing",
+          "rationale": "Positive-normalizer unit-weight product-of-experts pooling and nonempty-support softmax each expose exact finite normalization; the pairing does not identify their weighting conventions. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorem `fep_fep028.FEP028.fep028_softmax_probs_sum_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged.",
+          "witness": "FEPComposed.fep110_product_of_experts_refines_fep028_normalization"
+        }
+      ]
+    },
+    {
+      "id": "fep-033",
+      "title": "Finite-Horizon Bellman Recursion",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep033_bellman",
+      "supporting": [
+        "fep033_value_mono",
+        "fep033_zeroCost",
+        "fep033_zeroDiscount"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep033_bellman": "theorem fep033_bellman {State : Type*}\n    (discount : ENNReal) (stageCost : State \u2192 ENNReal)\n    (step : State \u2192 State) (terminalCost : State \u2192 ENNReal)\n    (horizon : \u2115) (state : State) :\n    fep033_value discount stageCost step terminalCost (horizon + 1) state =\n      stageCost state + discount *\n        fep033_value discount stageCost step terminalCost horizon (step state)",
+        "fep033_value_mono": "theorem fep033_value_mono {State : Type*}\n    (discount : ENNReal) {stage\u2081 stage\u2082 terminal\u2081 terminal\u2082 : State \u2192 ENNReal}\n    (step : State \u2192 State) (hstage : \u2200 state, stage\u2081 state \u2264 stage\u2082 state)\n    (hterminal : \u2200 state, terminal\u2081 state \u2264 terminal\u2082 state)\n    (horizon : \u2115) (state : State) :\n    fep033_value discount stage\u2081 step terminal\u2081 horizon state \u2264\n      fep033_value discount stage\u2082 step terminal\u2082 horizon state",
+        "fep033_zeroCost": "theorem fep033_zeroCost {State : Type*}\n    (discount : ENNReal) (step : State \u2192 State) (horizon : \u2115) (state : State) :\n    fep033_value discount (fun _ => 0) step (fun _ => 0) horizon state = 0",
+        "fep033_zeroDiscount": "theorem fep033_zeroDiscount {State : Type*}\n    (stageCost : State \u2192 ENNReal) (step : State \u2192 State)\n    (terminalCost : State \u2192 ENNReal) (horizon : \u2115) (state : State) :\n    fep033_value 0 stageCost step terminalCost (horizon + 1) state =\n      stageCost state"
+      },
+      "body_sha256": "22d8834abebd06272bb9f6ecb05115d12a9f66c909c2891ff2cb2a1bd6c34873",
+      "maturity_record": {
+        "id": "fep-033",
+        "primary_theorem": "fep033_bellman",
+        "supporting_theorems": [
+          "fep033_value_mono",
+          "fep033_zeroCost",
+          "fep033_zeroDiscount"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A deterministic transition-aware finite-horizon value obeys an exact Bellman recursion with stage cost, discount, and terminal cost; it is monotone in both cost functions and has exact zero-cost and zero-discount boundaries.",
+        "assumption_review": "The transition is deterministic and the codomain is ENNReal. No stochastic policy optimization, discount-convergence limit, or infinite-horizon fixed point is claimed.",
+        "non_vacuity": "A nonconstant transition and positive discount propagate later-state terminal and stage costs, while zero discount isolates the immediate cost exactly.",
+        "acceptance_probe": "native Lean compile of fep033_bellman, fep033_value_mono, fep033_zeroCost, and fep033_zeroDiscount.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary deterministic finitehorizonBellmanrecursionisrflbutstate-threadinggenuine; supporting costmonotonicity/zero/discount0correct.",
+      "scope_premise_boundary": "Supplieddeterministicstep,noactionargmin/expectation/controlpolicy; arbitraryENNRealdiscountnotinfinitehorizonsummability.",
+      "positive_adverse_unexecuted_specifications": "Boolfliptransition,terminalcostdifferentstates,discount1propagatesoppositevalueathorizon1; discount0removesfuture; stage0terminalvaluebasecase.",
+      "nearest_topic_distinction": "003timeindexcostsumcouldidentifyalongiteratepathwithexplicitterminalterm; ControlledMarkov/policytreesstochasticoptimizationdifferentcontractalreadyexists.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-067",
+          "nearest_topics": [
+            "fep-023",
+            "fep-033"
+          ],
+          "new_invariant": "Interpreting a reachable finite-belief index preserves every fixed-horizon policy value.",
+          "carrier_delta": "Adds a finite belief index with a sound interpretation into FiniteLaw instead of enumerating the full simplex.",
+          "required_bridge": "FEPComposed.fep067_reachableBelief_refines_fep023"
+        },
+        {
+          "id": "fep-068",
+          "nearest_topics": [
+            "fep-033",
+            "fep-012"
+          ],
+          "new_invariant": "On a nonempty finite action carrier, the positive-temperature Bellman partition is positive, gives the exact log-sum-exp recursion, and bounds the soft value by every hard action energy.",
+          "carrier_delta": "Replaces hard finite minimization with temperature-scaled exponential aggregation over controlled transitions while retaining an explicit actionwise hard/soft comparison.",
+          "required_bridge": "FEPComposed.fep068_softBellman_extends_fep033"
+        },
+        {
+          "id": "fep-071",
+          "nearest_topics": [
+            "fep-033",
+            "fep-021"
+          ],
+          "new_invariant": "Observation-dependent backward induction can strictly outperform every fixed open-loop continuation.",
+          "carrier_delta": "Adds a finite belief update, nested action minimization, and a two-stage feedback witness to EFE planning.",
+          "required_bridge": "FEPComposed.fep071_sophisticatedEFE_extends_fep033"
+        },
+        {
+          "id": "fep-129",
+          "nearest_topics": [
+            "fep-033",
+            "fep-071"
+          ],
+          "new_invariant": "Backward induction exposes an exact finite-action Bellman minimum at every policy-tree node.",
+          "carrier_delta": "Adds belief-dependent observation-weighted continuation values to the earlier scalar dynamic-programming and sophisticated-EFE recursions.",
+          "required_bridge": "FEPComposed.fep129_policyTreeBellman_extends_fep033"
+        },
+        {
+          "id": "fep-131",
+          "nearest_topics": [
+            "fep-033",
+            "fep-071"
+          ],
+          "new_invariant": "Reusing one continuation after every observation embeds an open-loop action plan into the closed-loop tree carrier without changing its value.",
+          "carrier_delta": "Adds a value-preserving map between observation-ignoring plans and observation-contingent policy trees at equal finite depth.",
+          "required_bridge": "FEPComposed.fep131_openLoopEmbedding_extends_fep033"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-068",
+          "target": "fep-033",
+          "kind": "formal_pairing",
+          "rationale": "The finite positive-temperature theorem supplies a positive partition, exact soft Bellman successor recursion, and actionwise soft-value bound; it is paired with the original transition-aware Bellman successor equation without claiming carrier equivalence.",
+          "witness": "FEPComposed.fep068_softBellman_extends_fep033"
+        },
+        {
+          "source": "fep-071",
+          "target": "fep-033",
+          "kind": "formal_pairing",
+          "rationale": "Sophisticated EFE and the original Bellman value each recompute a continuation at the successor horizon; only the former conditions on future observations.",
+          "witness": "FEPComposed.fep071_sophisticatedEFE_extends_fep033"
+        },
+        {
+          "source": "fep-129",
+          "target": "fep-033",
+          "kind": "formal_pairing",
+          "rationale": "Exact finite-action tree minimization extends the earlier scalar Bellman recursion with belief and observation-contingent continuation structure.",
+          "witness": "FEPComposed.fep129_policyTreeBellman_extends_fep033"
+        },
+        {
+          "source": "fep-131",
+          "target": "fep-033",
+          "kind": "formal_pairing",
+          "rationale": "The value-preserving embedding of a fixed action plan into a policy tree is paired with the earlier dynamic-programming recursion at equal finite horizon.",
+          "witness": "FEPComposed.fep131_openLoopEmbedding_extends_fep033"
+        }
+      ]
+    },
+    {
+      "id": "fep-034",
+      "title": "Normalized Bayesian Filtering",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep034_filter_joint_reconstruction",
+      "supporting": [
+        "fep034_predictive_mass",
+        "fep034_filter_mass_one",
+        "fep034_filter_recovers_prediction"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep034_filter_joint_reconstruction": "theorem fep034_filter_joint_reconstruction\n    (\u03c4 : Kernel \u03a9 \u03a9) (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9)\n    [StandardBorelSpace \u03a9] [Nonempty \u03a9]\n    [IsFiniteMeasure \u03bc] [IsFiniteKernel \u03c4] [IsFiniteKernel \u03ba] :\n    (\u03ba \u2218\u2098 fep034_predictivePrior \u03c4 \u03bc) \u2297\u2098 fep034_filter \u03c4 \u03ba \u03bc =\n      (fep034_predictivePrior \u03c4 \u03bc \u2297\u2098 \u03ba).map Prod.swap",
+        "fep034_predictive_mass": "theorem fep034_predictive_mass\n    (\u03c4 : Kernel \u03a9 \u03a9) (\u03bc : Measure \u03a9) [IsMarkovKernel \u03c4] :\n    fep034_predictivePrior \u03c4 \u03bc Set.univ = \u03bc Set.univ",
+        "fep034_filter_mass_one": "theorem fep034_filter_mass_one\n    (\u03c4 : Kernel \u03a9 \u03a9) (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9)\n    [StandardBorelSpace \u03a9] [Nonempty \u03a9]\n    [IsFiniteMeasure \u03bc] [IsFiniteKernel \u03c4] [IsFiniteKernel \u03ba] (x : \ud835\udce7) :\n    fep034_filter \u03c4 \u03ba \u03bc x Set.univ = 1",
+        "fep034_filter_recovers_prediction": "theorem fep034_filter_recovers_prediction\n    (\u03c4 : Kernel \u03a9 \u03a9) (\u03ba : Kernel \u03a9 \ud835\udce7) (\u03bc : Measure \u03a9)\n    [StandardBorelSpace \u03a9] [Nonempty \u03a9]\n    [IsFiniteMeasure \u03bc] [IsFiniteKernel \u03c4] [IsMarkovKernel \u03ba] :\n    fep034_filter \u03c4 \u03ba \u03bc \u2218\u2098 \u03ba \u2218\u2098 fep034_predictivePrior \u03c4 \u03bc =\n      fep034_predictivePrior \u03c4 \u03bc"
+      },
+      "body_sha256": "2e0ec525b1051ff0f60db9f6e47742ffbbb4eb01db58bca27dc2de0c190d5575",
+      "maturity_record": {
+        "id": "fep-034",
+        "primary_theorem": "fep034_filter_joint_reconstruction",
+        "supporting_theorems": [
+          "fep034_predictive_mass",
+          "fep034_filter_mass_one",
+          "fep034_filter_recovers_prediction"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A transition-composed predictive prior and native observation posterior reconstruct the swapped predicted-state/observation joint law, with probability mass one in every posterior fibre.",
+        "assumption_review": "Conditional on standard-Borel nonempty latent structure, a finite prior, and finite transition and observation kernels; prediction preserves total mass when the transition is Markov, and posterior recovery additionally requires a Markov observation kernel. This is a one-step exact filter, not a convergence or learned-state theorem.",
+        "non_vacuity": "A nonidentity finite Markov transition followed by a noisy observation kernel yields a nontrivial predictive prior and posterior; each posterior fibre has mass one rather than merely nonnegative unnormalized weight.",
+        "acceptance_probe": "native Lean compile of fep034_predictive_mass, fep034_filter_mass_one, fep034_filter_joint_reconstruction, and fep034_filter_recovers_prediction.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary nativepredictive/observationjointreconstructionfromMathlibposterior; supportingpredictionmassrequiresMarkovtransition, fibre normalizationfinitekernels, priorrecoveryrequiresMarkovobservation.",
+      "scope_premise_boundary": "StandardBorelnonemptylatent,finiteprior/transition/observation explicit. NullobservationposteriorstillMarkovchosenfibre; normalizationdoesnotmeanuniqueBayesratioatnullpoint. No asymptoticfilterconsistency.",
+      "positive_adverse_unexecuted_specifications": "FiniteBoolfliptransitionwithnoisypositiveobservation nontrivialposterior; zeroobservationslikelihoodpredictive-mass0allowsarbitraryposteriorversion; nonMarkovtransitionneednotpreservemass.",
+      "nearest_topic_distinction": "017posteriordefinitionidentity exact;047Fin7matrixforward differentcarrier/normalization. External93one-edgetreebridge doesnotcomplete034\u2192047nativekernelidentification.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-052",
+          "nearest_topics": [
+            "fep-017",
+            "fep-034"
+          ],
+          "new_invariant": "Posterior kernels equal likelihood-ratio tilts for predictive-almost-every observation.",
+          "carrier_delta": "Adds native finite kernels, standard-Borel hypotheses, domination, and almost-everywhere equality.",
+          "required_bridge": "FEPComposed.fep052_posterior_tilt_is_fep017_posterior"
+        },
+        {
+          "id": "fep-066",
+          "nearest_topics": [
+            "fep-034",
+            "fep-022"
+          ],
+          "new_invariant": "A supported action-conditioned Bayes update normalizes and reconstructs its joint atom.",
+          "carrier_delta": "Inserts a chosen control action and controlled state prediction before the observation update.",
+          "required_bridge": "FEPComposed.fep066_action_update_refines_fep034_filter"
+        },
+        {
+          "id": "fep-072",
+          "nearest_topics": [
+            "fep-034"
+          ],
+          "new_invariant": "One supported hidden-Markov forward step reconstructs the predicted state-observation joint.",
+          "carrier_delta": "Adds a transition-before-emission temporal model and an exact asymmetric Boolean filtering witness.",
+          "required_bridge": "FEPComposed.fep072_forward_filter_refines_fep034"
+        },
+        {
+          "id": "fep-074",
+          "nearest_topics": [
+            "fep-034",
+            "fep-073"
+          ],
+          "new_invariant": "A supported smoother factors into forward law and backward message with matching evidence calculations.",
+          "carrier_delta": "Combines normalized filtering with an unnormalized nonnegative backward information field.",
+          "required_bridge": "FEPComposed.fep074_smoothing_reconstructs_fep034_filter"
+        },
+        {
+          "id": "fep-075",
+          "nearest_topics": [
+            "fep-034",
+            "fep-074"
+          ],
+          "new_invariant": "Positive-normalizer forward\u2013backward products define normalized smoothing marginals.",
+          "carrier_delta": "Adds a smoothing normalizer, its zero boundary, and an exact nonuniform Boolean marginal.",
+          "required_bridge": "FEPComposed.fep075_smoothing_normalization_extends_fep034"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-034",
+          "target": "fep-047",
+          "kind": "conceptual",
+          "rationale": "The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers."
+        },
+        {
+          "source": "fep-034",
+          "target": "fep-017",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies the transition-observation filter with fep-017's native posterior at the transition-predicted prior.",
+          "witness": "FEPComposed.fep034_filter_is_fep017_posterior"
+        },
+        {
+          "source": "fep-066",
+          "target": "fep-034",
+          "kind": "formal_pairing",
+          "rationale": "A finite action-conditioned update reconstructs its predicted joint, while the native fep-034 filter reconstructs the corresponding measure joint.",
+          "witness": "FEPComposed.fep066_action_update_refines_fep034_filter"
+        },
+        {
+          "source": "fep-072",
+          "target": "fep-034",
+          "kind": "formal_pairing",
+          "rationale": "The finite forward-filter atom reconstruction and the native fep-034 joint reconstruction record the same predict-then-condition architecture.",
+          "witness": "FEPComposed.fep072_forward_filter_refines_fep034"
+        },
+        {
+          "source": "fep-074",
+          "target": "fep-034",
+          "kind": "formal_pairing",
+          "rationale": "Finite forward--backward smoothing reconstructs its weighted atom while the native fep-034 posterior reconstructs the predicted observation joint.",
+          "witness": "FEPComposed.fep074_smoothing_reconstructs_fep034_filter"
+        },
+        {
+          "source": "fep-075",
+          "target": "fep-034",
+          "kind": "formal_pairing",
+          "rationale": "Positive-normalizer finite smoothing and every native fep-034 posterior fiber each carry exactly unit mass.",
+          "witness": "FEPComposed.fep075_smoothing_normalization_extends_fep034"
+        }
+      ]
+    },
+    {
+      "id": "fep-041",
+      "title": "Expected Information Gain via Measure KL",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep041_expectedInformationGain_zero",
+      "supporting": [
+        "fep041_informationGain_nonneg",
+        "fep041_informationGain_eq_zero_iff"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep041_expectedInformationGain_zero": "theorem fep041_expectedInformationGain_zero\n    (predictive : Measure Obs)\n    (posterior : Obs \u2192 Measure State)\n    (prior : Measure State) [SigmaFinite prior]\n    (hposterior : \u2200\u1d50 observation \u2202predictive, posterior observation = prior) :\n    fep041_expectedInformationGain predictive posterior prior = 0",
+        "fep041_informationGain_nonneg": "theorem fep041_informationGain_nonneg (posterior prior : Measure State) :\n    0 \u2264 fep041_informationGain posterior prior",
+        "fep041_informationGain_eq_zero_iff": "theorem fep041_informationGain_eq_zero_iff\n    (posterior prior : Measure State)\n    [IsFiniteMeasure posterior] [IsFiniteMeasure prior] :\n    fep041_informationGain posterior prior = 0 \u2194 posterior = prior"
+      },
+      "body_sha256": "7d410c814f0a372bea01d601bf0a4c9204b87daae951230748109de8706fca8f",
+      "maturity_record": {
+        "id": "fep-041",
+        "primary_theorem": "fep041_expectedInformationGain_zero",
+        "supporting_theorems": [
+          "fep041_informationGain_nonneg",
+          "fep041_informationGain_eq_zero_iff"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Information gain is native measure-valued KL divergence: it is nonnegative, separates finite posterior and prior measures, and its predictive expectation vanishes when observations leave the posterior unchanged almost everywhere.",
+        "assumption_review": "KL separation requires finite measures. The zero expected-information theorem requires a sigma-finite prior and almost-everywhere posterior equality; it does not claim that every informative experiment has strictly positive expected gain.",
+        "non_vacuity": "An observation-independent posterior equal to the prior yields zero gain, while any unequal finite posterior/prior pair has nonzero KL by separation.",
+        "acceptance_probe": "native Lean compile of fep041_informationGain_nonneg, fep041_informationGain_eq_zero_iff, and fep041_expectedInformationGain_zero.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary AEposterior=prior plusSigmaFiniteprior implieszero lintegralnativeKL. Supporting finite-measureseparation/nonnegativeextendedKLcorrect.",
+      "scope_premise_boundary": "Posteriorfunctionandpredictivemeasuresupplied,notnecessarilyBayesconsistent/measurablekernel. No expectedgainpositiveiffinformative,mutualinformationidentity orintegrability/finitenessclaimed.",
+      "positive_adverse_unexecuted_specifications": "Constantpriorposteriorgain0; unequalfiniteBernoullipairpositiveKL; changeonlypredictive-nullobservationstillsameexpectedgain; predictivezeromeasurehidesallchanges; singularsupportnative\u221e.",
+      "nearest_topic_distinction": "014nativeKLsamefunctional,021usesinformationasinput; finiteInformation/ActiveInferenceMIalreadydeliveredbutnativeexpectedBayesianposteriorKLidentificationrequiresactualjoint/referencebridge.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-064",
+          "nearest_topics": [
+            "fep-041",
+            "fep-014"
+          ],
+          "new_invariant": "Certified rate and distortion lower bounds combine by weak Lagrangian duality.",
+          "carrier_delta": "Adds a finite source\u2013code joint law, distortion function, and explicit nonnegative multiplier without optimizer existence.",
+          "required_bridge": "FEPComposed.fep064_rateDistortion_uses_fep041_mutualInformation"
+        },
+        {
+          "id": "fep-109",
+          "nearest_topics": [
+            "fep-021",
+            "fep-041"
+          ],
+          "new_invariant": "Product predictive and preference laws with additive ambiguity give additive expected free energy.",
+          "carrier_delta": "Extends one-agent epistemic\u2013pragmatic balance to two independent finite agents with full-support preferences.",
+          "required_bridge": "FEPComposed.fep109_independent_efe_extends_fep021"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-021",
+          "target": "fep-041",
+          "kind": "formal",
+          "rationale": "The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance.",
+          "witness": "FEPComposed.fep021_informationGain_balance"
+        },
+        {
+          "source": "fep-041",
+          "target": "fep-014",
+          "kind": "formal",
+          "rationale": "The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law.",
+          "witness": "FEPComposed.fep041_informationGain_is_fep014_kl"
+        },
+        {
+          "source": "fep-064",
+          "target": "fep-041",
+          "kind": "formal_pairing",
+          "rationale": "Rate--distortion weak duality is accompanied by the measure-native nonnegativity law for the mutual-information ingredient's KL semantics.",
+          "witness": "FEPComposed.fep064_rateDistortion_uses_fep041_mutualInformation"
+        }
+      ]
+    },
+    {
+      "id": "fep-047",
+      "title": "Compositional Finite Sum-Product Propagation",
+      "disposition": "retain_formalized_for_exact_narrow_proxy",
+      "primary": "fep047_forward_compose",
+      "supporting": [
+        "fep047_forward_nonneg",
+        "fep047_forward_mono",
+        "fep047_zero_in",
+        "fep047_identity"
+      ],
+      "boundary": [],
+      "declaration_statements": {
+        "fep047_forward_compose": "theorem fep047_forward_compose\n    (outer inner : Factor) (incoming : State \u2192 \u211d) :\n    fep047_forward outer (fep047_forward inner incoming) =\n      fep047_forward (outer * inner) incoming",
+        "fep047_forward_nonneg": "theorem fep047_forward_nonneg\n    (factor : Factor) (incoming : State \u2192 \u211d)\n    (hfactor : \u2200 x y, 0 \u2264 factor x y)\n    (hincoming : \u2200 y, 0 \u2264 incoming y) (x : State) :\n    0 \u2264 fep047_forward factor incoming x",
+        "fep047_forward_mono": "theorem fep047_forward_mono\n    (factor : Factor) (incoming\u2081 incoming\u2082 : State \u2192 \u211d)\n    (hfactor : \u2200 x y, 0 \u2264 factor x y)\n    (hincoming : \u2200 y, incoming\u2081 y \u2264 incoming\u2082 y) (x : State) :\n    fep047_forward factor incoming\u2081 x \u2264\n      fep047_forward factor incoming\u2082 x",
+        "fep047_zero_in": "theorem fep047_zero_in (factor : Factor) :\n    fep047_forward factor (fun _ => 0) = 0",
+        "fep047_identity": "theorem fep047_identity (incoming : State \u2192 \u211d) :\n    fep047_forward (1 : Factor) incoming = incoming"
+      },
+      "body_sha256": "93711805d5fc510cd1636358cadfbb4415fd5deb75d58bb71819e893a04aa397",
+      "maturity_record": {
+        "id": "fep-047",
+        "primary_theorem": "fep047_forward_compose",
+        "supporting_theorems": [
+          "fep047_forward_nonneg",
+          "fep047_forward_mono",
+          "fep047_zero_in",
+          "fep047_identity"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Finite sum-product forward propagation is matrix--vector multiplication: it preserves nonnegativity and order under nonnegative factors, has zero and identity laws, and composes exactly by matrix multiplication.",
+        "assumption_review": "Nonnegativity and monotonicity require entrywise nonnegative factors and inputs. Identity and composition are unconditional algebraic laws. The row proves exact finite propagation, not normalization or loopy fixed-point convergence.",
+        "non_vacuity": "Nonidentity dense matrices and nonconstant incoming vectors exercise genuine cross-state aggregation; two distinct factors exercise nontrivial composed propagation.",
+        "acceptance_probe": "native Lean compile of fep047_forward_nonneg, fep047_forward_mono, fep047_zero_in, fep047_identity, and fep047_forward_compose using Mathlib Matrix.mulVec_mulVec.",
+        "disposition": "formalized"
+      },
+      "statement_review": "Primary matrixmulVeccomposition unconditionalrealalgebra; supportingidentity/zero andentrynonnegativepreservation/ordermonotonicitycorrect.",
+      "scope_premise_boundary": "ForwardunnormalizedFin7weights. Monotonicityonlyneedsnonnegativefactorandorderedinputs,notnonnegativeinputs. NoBayesnormalization,Markovcolumnsum,roworientationorloopyfixedpoint.",
+      "positive_adverse_unexecuted_specifications": "Identityforwardpreserves; denseallonesfactor mapsunitbasis toallones,total7notprobability; noncommutingfactorsexposeouter*innerorder; negativefactorbreaksmonotonicity.",
+      "nearest_topic_distinction": "007localnormalizedFin8 vs047fullFin7;034nativefilterconceptionrequiresfiniteembedding/transitiontranspose/likelihoodnormalization/positiveevidencebeforeformalrelationupgrade.",
+      "nearest_expansion_novelty_records": [
+        {
+          "id": "fep-073",
+          "nearest_topics": [
+            "fep-047"
+          ],
+          "new_invariant": "Backward information messages compose recursively over future observations and preserve nonnegativity.",
+          "carrier_delta": "Reverses finite sum-product propagation across a temporal observation list with an explicit terminal message.",
+          "required_bridge": "FEPComposed.fep073_backward_message_composes_fep047"
+        }
+      ],
+      "touching_relations": [
+        {
+          "source": "fep-034",
+          "target": "fep-047",
+          "kind": "conceptual",
+          "rationale": "The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers."
+        },
+        {
+          "source": "fep-073",
+          "target": "fep-047",
+          "kind": "formal_pairing",
+          "rationale": "Backward information recursion and the original sum-product composition law jointly certify temporal message composition in their native carriers.",
+          "witness": "FEPComposed.fep073_backward_message_composes_fep047"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "row": "fep-003",
+      "field": "non_vacuity",
+      "finding": "Positive newlyexposedstagecostalone neednotproduce nonzerodiscountedincrement:discount0,horizon>0annihilatesit.",
+      "exact_correction": "For positive discount and positive new stage cost, the terminal increment is nonzero; strict growth of the total additionally requires the previous accumulated cost to be finite. Discount zero at positive horizons exposes the zero-increment boundary."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-028",
+      "field": "non_vacuity",
+      "finding": "Unequalcostsneednotyieldunequalweightsat\u03b30.",
+      "exact_correction": "With positive inverse temperature and a two-policy support of unequal costs, lower cost receives a strictly larger positive weight. At inverse temperature zero the law is uniform on support; excluded policies have zero mass."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-034",
+      "field": "assumption_review",
+      "finding": "Everyfibremassoneincludesarbitraryposteriorversionsonnullobservations; makethisboundaryexplicit.",
+      "exact_correction": "Posterior normalization holds in every fibre of the selected Markov version; Bayes reconstruction identifies the version only relative to the predictive observation law, so no unique pointwise Bayes ratio at null observations is asserted."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-047",
+      "field": "assumption_review",
+      "finding": "Currentwordingoverrestrictsmonotonicitybyrequiringnonnegativeinputs.",
+      "exact_correction": "Nonnegativity preservation requires nonnegative factors and inputs. Order monotonicity requires nonnegative factors and pointwise ordered inputs, which may themselves be negative. Identity/composition are unconditional algebraic laws."
+    }
+  ],
+  "ranked_existing_owner_followups": [
+    {
+      "rank": 1,
+      "scope": "003discountboundary and028temperatureboundarymetadata",
+      "content": "Correctnonvacuitywordingandaddboundednamedexactboundarywitnessesifdesired; no strongerstatementpromotion.",
+      "positive": "\u03b31/2positivecostincrement; \u03b31two-policyunequalcosts",
+      "adverse": "discount0horizon1increment0; \u03b30softmaxuniform",
+      "library_seam": "ENNReal.zero_pow/sum_range_succ; Real.exp_zero andFinsetsum_const",
+      "estimate": "2-4hoursplusmetadata/projectionchecks"
+    },
+    {
+      "rank": 2,
+      "scope": "034\u2192047exactfinite/nativefilterbridge",
+      "content": "Useonefinitecarrier,actualnativeembeddingandMarkovtransitionorientation,likelihoodweightingandpositivepredictiveevidence; identifyunnormalizedforwardthenposteriornormalization. ExternaloneedgePTreeequalitydoesnotprovidethisnativebridge.",
+      "positive": "Fin7nonidentityMarkovkernelandstrictpositiveobservationweights",
+      "adverse": "zeroevidence; allonesfactorunnormalized; row/columntransposecounterexample",
+      "library_seam": "ProbabilityTheory.posterior_eq_withDensity/compProd_posterior_eq_map_swap; existingFiniteKernel.posterior andembeddedfinite/nativecarrierbridge in decision_risk",
+      "estimate": "2-4daysboundedfinitecomposition; firstprototypeexactkernelorientation",
+      "acceptance": "typedpositive/nativeaxioms/nullobservationadverse; newformalrelationonlyaftersemanticreview"
+    },
+    {
+      "rank": 3,
+      "scope": "041nativeexpectedposteriorKL-to-finiteMIidentification",
+      "content": "Do notduplicatefiniteMI/riskambiguityalreadyinfinite_information/active_inference. ProveexactexpectednativeposteriorKLidentityforfinitefullsupportBayesmodelusingactualembeddedlaws andpredictiveweights.",
+      "positive": "informativebinarychannelwithpositivepredictivemasses",
+      "adverse": "independentproductjointMI0; nullobservationsnoeffect; singularreference\u221ewhenhypothesesdropped",
+      "library_seam": "ExistingFiniteKernel.posterior,DecisionRisk.weightedDirac_klDiv_eq_finiteKL_of_relativeSupport,FiniteInformation.mutualInformation andjointchainrules",
+      "estimate": "2-4dayssourceboundfinitebridge; no generalmeasurableclaimwithoutadditionalkernelmeasurability"
+    },
+    {
+      "rank": 4,
+      "scope": "008\u2192028softmaxargminorderingcommoncarrier",
+      "content": "Actualfiniteorderingrelationwith\u03b3>0andexplicitFin14\u2192Fin10restriction/subtype or sharedsmallerselectedset. Existingnormalizationdoesnotimplyargminlimit.",
+      "positive": "two-policycostgapandpositive\u03b3lowercosthigherprobability",
+      "adverse": "tiesnotuniquepolicy; \u03b30uniform; \u03b3negativeorderingreversal",
+      "library_seam": "Real.exp_lt_exp,positivedenominator,Finset.exists_min_image; existingGibbsvariationalfoundationforentropyobjective",
+      "estimate": "0.5-1.5daysorderingbridge; separatetemperature-limitproofifneeded"
+    },
+    {
+      "rank": 5,
+      "scope": "007sparse-supportnormalizationgeneralization",
+      "content": "Replaceoverstrongstrictpositivitywithnonnegativeproductsandpositiveactualnormalizer; retainoldAPIwrappers. ThisextendsactualcarrierwithoutloopyBPclaim.",
+      "positive": "somezeropotentialwithonepositiveneighbor",
+      "adverse": "allzero,empty,negativeproduct",
+      "library_seam": "Finset.sum_nonneg/div_nonneg/div_self andpositive-sumwitness",
+      "estimate": "0.5-1dayincludingoldwrapperparity"
+    }
+  ],
+  "existing_content_not_to_reimplement": "ActualActiveInferencefiniteGenerativeModel alreadydefines crossentropypragmaticcost,latent/outcomeMI,expectedFreeEnergy andderivesrisk+ambiguityunderFullSupport. ExistingcomposedofRealbridgesit to021truncatedENNRealconvention. These are distinctfrom041arbitrarynativeexpectedposteriorKLidentity.",
+  "remaining": [
+    "Issue75full168familyreviewand54/68dependencydispositionremainopen",
+    "Prior13rowauditfindingsretained;Issue104candidatefixnotassumedappliedtoimmutableEFsource",
+    "No sourcechange/maturitypromotionuntilreviewedexactdelta/projections/nativeaxiom/integrationqualification"
+  ],
+  "limitations": [
+    "Staticcanonicalsource,maturity,metadata,nearestrelations/foundations/pinnedlibraryinspection only; no subjectexecution/S edits",
+    "All10boundarytheoremarrayscurrentlyempty; proposedadversewitnessesareunexecutedmathematicalspecifications",
+    "Nearestotherfamilyrecordsarecontextnotafullsemanticreviewofthosefamilies"
+  ]
+}

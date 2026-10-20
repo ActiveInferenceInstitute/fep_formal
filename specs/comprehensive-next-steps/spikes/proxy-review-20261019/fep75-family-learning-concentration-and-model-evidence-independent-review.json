@@ -1,0 +1,434 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "learning-concentration-and-model-evidence",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-114",
+    "fep-115",
+    "fep-116",
+    "fep-117",
+    "fep-118",
+    "fep-119",
+    "fep-120"
+  ],
+  "combined_issue75_audit_count": 120,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/learning_theory.py": "6688f84430e2723e2acce18234dfa0523e3eaf6fe1ed24134b768e876a65d922",
+    "lean/FepSketches/families/learning_theory.lean": "f5c2f3594682fc70d086a6efae696138f2a2f790dce0482fa6623686119a9ef3",
+    "src/fep_lean/formal/learning_theory.lean": "f39bf2504d47de1f76399fce0471396c0b546ddc25872572e8efa853b2e75582",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/variational_duality.lean": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+    "src/fep_lean/formal/active_inference.lean": "260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07",
+    "src/fep_lean/formal/empirical_risk.lean": "6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1",
+    "src/fep_lean/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
+    "src/fep_lean/formal/compositions/collective_learning.lean": "a7eaa3e827a2996a398c4ff827dfddef641f1f084be38e0a0fcd8dc378c0f8d1",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d",
+    "lean/.lake/packages/mathlib/Mathlib/Probability/Moments/SubGaussian.lean": "37cb8c3862d015f9757d7071e21ff8d529ada9a5d0e82eb2e7f4ff05bbcfab70"
+  },
+  "rows": [
+    {
+      "id": "fep-114",
+      "title": "Sub-Gaussian Empirical-Mean Tail Bound",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "d6f4f5f6333633a35eaee37ebd970fa5109d2a3d8dbd6c560ced6a289ea8dd6e",
+      "maturity_record": {
+        "id": "fep-114",
+        "primary_theorem": "fep114_subGaussian_empiricalMean_tail",
+        "supporting_theorems": [
+          "fep114_empiricalMean_definition"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A finite independent family with certified sub-Gaussian moment-generating functions satisfies the explicit exponential upper-tail bound for its summed empirical-mean event.",
+        "assumption_review": "Observables are indexed by Fin sampleCount, are independent under the supplied measure, and each has a nonnegative sub-Gaussian proxy variance. Deviation is nonnegative. The theorem neither assumes IID data nor asserts an asymptotic law; a positive sample count is needed for the usual empirical-mean interpretation even though real division is totalized at zero.",
+        "non_vacuity": "Multiple independent nonconstant centered observables with positive proxy variances give a nontrivial exponentially decaying bound as deviation grows.",
+        "acceptance_probe": "native Lean compile of fep114_subGaussian_empiricalMean_tail and fep114_empiricalMean_definition with independence, MGF, and deviation premises.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep114_subGaussian_empiricalMean_tail": "theorem fep114_subGaussian_empiricalMean_tail\n    {Ω : Type*} [MeasurableSpace Ω]\n    (μ : Measure Ω) {sampleCount : ℕ}\n    (observables : Fin sampleCount → Ω → ℝ)\n    (independent : iIndepFun observables μ)\n    (proxyVariance : Fin sampleCount → ℝ≥0)\n    (subGaussian : ∀ index,\n      HasSubgaussianMGF (observables index) (proxyVariance index) μ)\n    {deviation : ℝ} (deviationNonnegative : 0 ≤ deviation) :\n    μ.real {outcome |\n        (sampleCount : ℝ) * deviation ≤\n          ∑ index, observables index outcome} ≤\n      Real.exp\n        (-((sampleCount : ℝ) * deviation) ^ 2 /\n          (2 * ∑ index, proxyVariance index))",
+        "fep114_empiricalMean_definition": "theorem fep114_empiricalMean_definition\n    {Ω : Type*} {sampleCount : ℕ}\n    (observables : Fin sampleCount → Ω → ℝ) (outcome : Ω) :\n    FEP.LearningTheory.empiricalMean observables outcome =\n      (∑ index, observables index outcome) / sampleCount"
+      },
+      "statement_review": "The pinned Mathlib independent sub-Gaussian sum theorem gives the one-sided probability upper bound at threshold n*deviation. The sample mean is separately defined as sum/n; n>0 is required to rewrite the event as an ordinary mean event.",
+      "assumptions_and_scope": "iIndepFun carries probability normalization: pinned proof explicitly obtains IsProbabilityMeasure from independence. MGF certificates supply all-t exponential integrability/bound, not a consequence of arbitrary finite samples or IID assumptions. Proxy sum0 totalizes the displayed division and can make bound1; n0 also gives a trivial boundary. Non-IID independent variables are allowed.",
+      "positive_witness_specification_unexecuted": "Use independent centered bounded Bernoulli indicators via the pinned Hoeffding MGF lemma and positive proxy variances; for n>0 rewrite threshold to the centered empirical-mean event.",
+      "adverse_witness_specification_unexecuted": "Dependent identical copies lack iIndepFun. Uncentered bounded observations do not satisfy this zero-centered MGF contract without centering; n0/zero-proxy displayed exponent cannot be interpreted as a nontrivial rate.",
+      "nearest_topic_distinction": "036 deterministic smoothed-rate identities and actual statistical_convergence SLLN foundations are already present;114 adds an actual finite-sample MGF/independence probability bound. Its relation to036 is only a pairing with smoothed-rate positivity.",
+      "novelty_record": {
+        "id": "fep-114",
+        "nearest_topics": [
+          "fep-036",
+          "fep-035"
+        ],
+        "new_invariant": "Independent finite sub-Gaussian observables satisfy an explicit exponential empirical-mean upper-tail bound.",
+        "carrier_delta": "Replaces a deterministic empirical Bernoulli estimate with a probability measure, finite sample index, independence, and MGF certificates.",
+        "required_bridge": "FEPComposed.fep114_subgaussian_tail_refines_fep036_empirical_rate"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-114",
+          "target": "fep-036",
+          "kind": "formal_pairing",
+          "rationale": "The finite-sample sub-Gaussian tail certificate is paired with the original strict positivity of a Laplace-smoothed empirical rate. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorem `fep_fep036.FEP036.fep036_smoothedRate_pos` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged.",
+          "witness": "FEPComposed.fep114_subgaussian_tail_refines_fep036_empirical_rate"
+        },
+        {
+          "source": "fep-124",
+          "target": "fep-114",
+          "kind": "formal_pairing",
+          "rationale": "Finite-law squared-risk transfer and the supplied sub-Gaussian tail certificate are checked together without inferring one premise from the other.",
+          "witness": "FEPComposed.fep124_laplaceSquaredRisk_combines_fep036_fep114"
+        },
+        {
+          "source": "fep-127",
+          "target": "fep-114",
+          "kind": "formal_pairing",
+          "rationale": "Event inclusion transfers any supplied empirical tail bound to the smoothed estimator, while fep-114 records a concrete sub-Gaussian source of such a bound under its own hypotheses.",
+          "witness": "FEPComposed.fep127_laplaceConcentration_combines_fep036_fep114"
+        }
+      ]
+    },
+    {
+      "id": "fep-115",
+      "title": "Simultaneous Finite-Alphabet Frequency Bound",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "c667f763198826e08bdb0a7d6a61746d52f89848183b0629b192b39688485d18",
+      "maturity_record": {
+        "id": "fep-115",
+        "primary_theorem": "fep115_simultaneous_frequency_bound",
+        "supporting_theorems": [
+          "fep115_frequencyDeviationEvent_membership"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Per-symbol empirical-frequency failure bounds combine by a finite union bound into an alphabet-wide failure probability bounded by alphabet size times the per-symbol rate.",
+        "assumption_review": "The sampling measure is a probability measure, the alphabet is finite with decidable equality, sample count is nonzero, and every symbol has the supplied probability bound. No independence or concentration rate is inferred beyond those per-symbol premises.",
+        "non_vacuity": "A multi-symbol alphabet and positive sample count make the union contain genuinely distinct two-sided normalized-count deviation events.",
+        "acceptance_probe": "native Lean compile of fep115_simultaneous_frequency_bound and fep115_frequencyDeviationEvent_membership with the exact finite-count event.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep115_simultaneous_frequency_bound": "theorem fep115_simultaneous_frequency_bound\n    {Ω Alphabet : Type*} [MeasurableSpace Ω]\n    [Fintype Alphabet] [DecidableEq Alphabet]\n    (μ : Measure Ω) [IsProbabilityMeasure μ]\n    {sampleCount : ℕ} [NeZero sampleCount]\n    (sample : Ω → Fin sampleCount → Alphabet)\n    (target : Alphabet → ℝ) (deviation perSymbolFailure : ℝ)\n    (perSymbolBound : ∀ symbol,\n      μ.real\n          (FEP.LearningTheory.frequencyDeviationEvent\n            sample target deviation symbol) ≤ perSymbolFailure) :\n    μ.real (⋃ symbol,\n        FEP.LearningTheory.frequencyDeviationEvent\n          sample target deviation symbol) ≤\n      Fintype.card Alphabet * perSymbolFailure",
+        "fep115_frequencyDeviationEvent_membership": "theorem fep115_frequencyDeviationEvent_membership\n    {Ω Alphabet : Type*} [Fintype Alphabet] [DecidableEq Alphabet]\n    {sampleCount : ℕ} [NeZero sampleCount]\n    (sample : Ω → Fin sampleCount → Alphabet)\n    (target : Alphabet → ℝ) (deviation : ℝ)\n    (symbol : Alphabet) (outcome : Ω) :\n    outcome ∈ FEP.LearningTheory.frequencyDeviationEvent\n        sample target deviation symbol ↔\n      deviation ≤\n        |FEP.LearningTheory.empiricalFrequency\n            (sample outcome) symbol - target symbol|"
+      },
+      "statement_review": "The actual normalized count deviation events are union-bounded over the finite alphabet from supplied per-symbol probability bounds. Nonzero sample count is explicit; no statistical concentration rate or independence is derived.",
+      "assumptions_and_scope": "Neither measurability nor true-distribution identity of target is an explicit input; measureReal union bound applies as stated. For a probability/empirical-frequency interpretation, provide measurable samples and a target law separately. Multi-symbol alphabets do not guarantee distinct deviation events: normalized Boolean frequencies around a matching Boolean target have equal absolute deviations.",
+      "positive_witness_specification_unexecuted": "For alphabet Fin3, one uniform observed symbol and target mass1/3 at each symbol, deviation1/2: the three events are distinct singleton outcomes, each probability1/3 and union probability1.",
+      "adverse_witness_specification_unexecuted": "For Bool with complementary normalized target masses, true/false absolute deviations are identical, so union-bound factor2 can be loose and events are not distinct. With per-symbol budget1 the bound may exceed1 and be statistically uninformative.",
+      "nearest_topic_distinction": "042 counts factorize Bernoulli likelihood;115 uses counts as actual deviation sets. Its composition with042 does not derive per-symbol probability budgets.",
+      "novelty_record": {
+        "id": "fep-115",
+        "nearest_topics": [
+          "fep-042",
+          "fep-035"
+        ],
+        "new_invariant": "Per-symbol normalized-count deviation bounds lift to a simultaneous finite-alphabet guarantee.",
+        "carrier_delta": "Adds a nonzero finite sample, decidable alphabet, concrete two-sided frequency events, and a probability union bound.",
+        "required_bridge": "FEPComposed.fep115_frequency_union_bound_extends_fep042_counts"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-115",
+          "target": "fep-042",
+          "kind": "formal_pairing",
+          "rationale": "The simultaneous finite-alphabet frequency bound is paired with the original exact Bernoulli likelihood factorization through finite counts.",
+          "witness": "FEPComposed.fep115_frequency_union_bound_extends_fep042_counts"
+        }
+      ]
+    },
+    {
+      "id": "fep-116",
+      "title": "Finite-Hypothesis PAC-Bayes Loss-Gap Bound",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "70c21c7e768ce805414691d35d589c68d862a589a65f9e52688dd39b1136987b",
+      "maturity_record": {
+        "id": "fep-116",
+        "primary_theorem": "fep116_finitePACBayes_with_confidence",
+        "supporting_theorems": [
+          "fep116_prior_support_nonzero"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For any finite posterior, a Gibbs certificate whose potential is inverse temperature times the population-minus-empirical loss gap converts a certified log-MGF budget into an empirical-loss plus KL-complexity population-loss bound.",
+        "assumption_review": "Hypotheses are finite; inverse temperature is positive; the Gibbs reference equals the prior and carries full support; confidence lies in (0,1); and the certificate log partition is bounded by log(confidence^-1). The theorem is deterministic conditional on this log-MGF premise and does not itself prove that the premise holds with high probability over data.",
+        "non_vacuity": "Unequal posterior and prior laws contribute a finite KL penalty, nonzero loss gaps enter through the certified potential, and smaller confidence increases the explicit log(confidence^-1) budget.",
+        "acceptance_probe": "native Lean compile of fep116_finitePACBayes_with_confidence and fep116_prior_support_nonzero with positive inverse temperature, reference identity, loss-gap potential identity, confidence interval, and log-MGF bound.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep116_finitePACBayes_with_confidence": "theorem fep116_finitePACBayes_with_confidence\n    {Hypothesis : Type*} [Fintype Hypothesis]\n    (prior posterior : FiniteLaw Hypothesis)\n    (certificate : FEP.VariationalDuality.GibbsCertificate Hypothesis)\n    (referenceIsPrior : certificate.reference = prior)\n    (empiricalLoss populationLoss : Hypothesis → ℝ)\n    (inverseTemperature : ℝ)\n    (inverseTemperaturePositive : 0 < inverseTemperature)\n    (potentialIsLossGap : ∀ hypothesis,\n      certificate.potential hypothesis = inverseTemperature *\n        (populationLoss hypothesis - empiricalLoss hypothesis))\n    (confidence : ℝ)\n    (confidencePositive : 0 < confidence)\n    (confidenceBelowOne : confidence < 1)\n    (logMGFBound : certificate.logPartition ≤ Real.log confidence⁻¹) :\n    FEP.VariationalDuality.expectation posterior populationLoss ≤\n      FEP.VariationalDuality.expectation posterior empiricalLoss +\n        (FEP.FiniteInformation.finiteKL posterior prior +\n          Real.log confidence⁻¹) / inverseTemperature",
+        "fep116_prior_support_nonzero": "theorem fep116_prior_support_nonzero\n    {Hypothesis : Type*} [Fintype Hypothesis]\n    (prior : FiniteLaw Hypothesis)\n    (priorPositive : ∀ hypothesis, 0 < prior hypothesis)\n    (hypothesis : Hypothesis) :\n    prior hypothesis ≠ 0"
+      },
+      "statement_review": "A Gibbs certificate with potential lambda*(populationLoss-empiricalLoss), prior reference and logPartition<=log(1/confidence) gives the finite posterior loss bound via variational duality. It is deterministic conditional on the log-MGF budget.",
+      "assumptions_and_scope": "The theorem contains no sampled-data measure/event or probability>=1-confidence conclusion. Full prior support is carried by the certificate; posterior may have zeros. Positive lambda and confidence in(0,1) are essential for the stated interpretation. Existing058/059 DV identity and actual empirical-risk/Dirichlet count results are separate delivered facts, not a derivation of high-probability PAC generalization.",
+      "positive_witness_specification_unexecuted": "Choose a genuine positive finite Gibbs certificate for explicit losses, verify potential identity and partition budget, and consume the posterior inequality; include a data-independent constant-gap case.",
+      "adverse_witness_specification_unexecuted": "Arbitrary population/empirical losses need not meet the partition budget; without it the confidence expression is not guaranteed. Data-dependent prior or arbitrary lambda selection requires additional probabilistic/selection control.",
+      "nearest_topic_distinction": "001 measure-native variational upper bound and059 finite Gibbs/DV bound are neighbors; current116→001 relation deliberately pairs them without identifying native extended and finite real KL.",
+      "novelty_record": {
+        "id": "fep-116",
+        "nearest_topics": [
+          "fep-001",
+          "fep-059"
+        ],
+        "new_invariant": "A Gibbs loss-gap certificate and log-MGF budget imply a finite-posterior population-loss bound with empirical loss, KL complexity, confidence, and inverse temperature.",
+        "carrier_delta": "Adds finite empirical and population losses, positive inverse temperature, a loss-gap potential identity, a full-support prior reference, and a conditional log-MGF confidence budget.",
+        "required_bridge": "FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-116",
+          "target": "fep-001",
+          "kind": "formal_pairing",
+          "rationale": "The finite posterior loss-gap bound, conditional on a certified log-MGF budget, is paired with fep-001's measure-native variational upper bound without equating finite real KL and native extended KL.",
+          "witness": "FEPComposed.fep116_pac_bayes_refines_fep001_variational_bound"
+        }
+      ]
+    },
+    {
+      "id": "fep-117",
+      "title": "Posterior-Odds Multiplicative Recursion",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "16f9ca27e8c22b07bd22d2cf3fb3a78be322aa55a2dae70e73f392eae8f52577",
+      "maturity_record": {
+        "id": "fep-117",
+        "primary_theorem": "fep117_posteriorOdds_recursion",
+        "supporting_theorems": [],
+        "boundary_theorems": [
+          "fep117_zero_prior_boundary"
+        ],
+        "invariant": "At positive evidence, posterior odds equal prior odds times the likelihood ratio, and a zero-prior hypothesis retains zero posterior mass.",
+        "assumption_review": "Hypothesis and evidence carriers are finite. Total evidence, the reference prior mass, and the reference likelihood must be strictly positive before forming ordinary real odds. The zero-prior theorem marks lack of posterior support rather than permitting recovery by conditioning.",
+        "non_vacuity": "Unequal positive likelihoods move the favored-to-reference odds multiplicatively, while a separate zero-prior hypothesis remains exactly absent from the posterior.",
+        "acceptance_probe": "native Lean compile of fep117_posteriorOdds_recursion and fep117_zero_prior_boundary with all denominator-support premises.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep117_posteriorOdds_recursion": "theorem fep117_posteriorOdds_recursion\n    {Hypothesis Evidence : Type*} [Fintype Hypothesis] [Fintype Evidence]\n    (prior : FiniteLaw Hypothesis)\n    (likelihood : FiniteKernel Hypothesis Evidence)\n    (evidence : Evidence)\n    (evidencePositive : 0 < likelihood.predictive prior evidence)\n    (favored reference : Hypothesis)\n    (referencePriorPositive : 0 < prior reference)\n    (referenceLikelihoodPositive : 0 < likelihood reference evidence) :\n    FEP.LearningTheory.posteriorOdds\n        prior likelihood evidence evidencePositive favored reference =\n      (prior favored / prior reference) *\n        (likelihood favored evidence / likelihood reference evidence)",
+        "fep117_zero_prior_boundary": "theorem fep117_zero_prior_boundary\n    {Hypothesis Evidence : Type*} [Fintype Hypothesis] [Fintype Evidence]\n    (prior : FiniteLaw Hypothesis)\n    (likelihood : FiniteKernel Hypothesis Evidence)\n    (evidence : Evidence)\n    (evidencePositive : 0 < likelihood.predictive prior evidence)\n    (hypothesis : Hypothesis) (priorZero : prior hypothesis = 0) :\n    likelihood.posterior prior evidence evidencePositive hypothesis = 0"
+      },
+      "statement_review": "At positive total evidence, positive reference prior and likelihood, Bayes posterior odds equal prior odds times the likelihood ratio. A zero prior remains zero after positive-evidence conditioning.",
+      "assumptions_and_scope": "Favored prior or favored likelihood may vanish and then ordinary odds are0. Unequal positive likelihoods only change initially nonzero favored odds; a zero favored prior remains0. This is a one-evidence recursion, not consistency, learning of missing support or an iterated-data independence theorem.",
+      "positive_witness_specification_unexecuted": "Positive equal priors with favored likelihood3/4 and reference1/4 update odds1 to3; an additional zero-prior hypothesis stays absent.",
+      "adverse_witness_specification_unexecuted": "Take favored prior0 and both likelihoods positive unequal: posterior/prior favored odds both0. If reference evidence factor is0, ordinary finite odds interpretation fails even though real division is totalized.",
+      "nearest_topic_distinction": "017 native posterior reconstruction and053 finite Bayes atom reconstruction are distinct scales. Current117→017 is a pairing; it does not prove finite/native posterior equality.",
+      "novelty_record": {
+        "id": "fep-117",
+        "nearest_topics": [
+          "fep-017",
+          "fep-053"
+        ],
+        "new_invariant": "Supported posterior odds equal prior odds times likelihood ratio and preserve zero prior support.",
+        "carrier_delta": "Extends posterior atom reconstruction to a favored/reference ratio with three explicit positive-denominator boundaries.",
+        "required_bridge": "FEPComposed.fep117_posterior_odds_extends_fep017_bayes"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-117",
+          "target": "fep-017",
+          "kind": "formal_pairing",
+          "rationale": "Finite posterior odds obey Bayes multiplication, while the measure-native fep-017 posterior reconstructs its complete swapped joint law.",
+          "witness": "FEPComposed.fep117_posterior_odds_extends_fep017_bayes"
+        }
+      ]
+    },
+    {
+      "id": "fep-118",
+      "title": "Exponential Posterior Concentration from a Likelihood Gap",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "3bd15a508a3d5626d26403ee5d0383159f066374762e5ca47a1fea2690860e5b",
+      "maturity_record": {
+        "id": "fep-118",
+        "primary_theorem": "fep118_posteriorGap_concentration",
+        "supporting_theorems": [],
+        "boundary_theorems": [
+          "fep118_twoHypothesis_witness"
+        ],
+        "invariant": "A nonnegative per-observation likelihood gap yields an explicit exponential finite-sample upper bound on inferior two-hypothesis posterior weight.",
+        "assumption_review": "Good prior and likelihood weights are strictly positive, bad weights and the gap are nonnegative, and bad likelihood is bounded by exp(-gap) times good likelihood. These are scalar two-hypothesis weights, not a theorem of consistency for an arbitrary normalized model class.",
+        "non_vacuity": "Equal priors with likelihood ratio three to one give exact inferior posterior mass one tenth after two observations, so the posterior is positive yet genuinely concentrated.",
+        "acceptance_probe": "native Lean compile of fep118_posteriorGap_concentration and fep118_twoHypothesis_witness with the likelihood-gap inequality explicit.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep118_posteriorGap_concentration": "theorem fep118_posteriorGap_concentration\n    (priorGood priorBad likelihoodGood likelihoodBad likelihoodGap : ℝ)\n    (sampleCount : ℕ)\n    (priorGoodPositive : 0 < priorGood)\n    (priorBadNonnegative : 0 ≤ priorBad)\n    (likelihoodGoodPositive : 0 < likelihoodGood)\n    (likelihoodBadNonnegative : 0 ≤ likelihoodBad)\n    (likelihoodGapNonnegative : 0 ≤ likelihoodGap)\n    (gapBound :\n      likelihoodBad ≤ Real.exp (-likelihoodGap) * likelihoodGood) :\n    FEP.LearningTheory.twoHypothesisPosteriorBad\n        priorGood priorBad likelihoodGood likelihoodBad sampleCount ≤\n      (priorBad / priorGood) *\n        Real.exp (-((sampleCount : ℝ) * likelihoodGap))",
+        "fep118_twoHypothesis_witness": "theorem fep118_twoHypothesis_witness :\n    FEP.LearningTheory.twoHypothesisPosteriorBad\n      (1 / 2) (1 / 2) (3 / 4) (1 / 4) 2 = 1 / 10"
+      },
+      "statement_review": "For fixed repeated scalar likelihood weights, an assumed per-observation ratio bound yields inferior posterior weight <=priorBad/priorGood*exp(-n*gap). Explicit good weights keep the denominator positive. The exact2-observation witness gives1/10.",
+      "assumptions_and_scope": "The theorem is deterministic algebra on nonnegative unnormalized two-model weights, not probabilistic independence or almost-sure posterior consistency. Gap>=0 permits gap0 with no decaying bound; strict exponential decay as n grows requires gap>0. Repeated identical factors are authored; a heterogeneous data sequence needs product-specific hypotheses.",
+      "positive_witness_specification_unexecuted": "Use equal priors, good3/4,bad1/4,gap log3 and n2: actual1/10 while upper bound1/9.",
+      "adverse_witness_specification_unexecuted": "Gap0 and equal likelihoods leave posterior odds unchanged; priorGood0 is excluded. A varying sequence containing adverse likelihood ratios does not meet the fixed repeated factor model.",
+      "nearest_topic_distinction": "045 Bernoulli scalar update and117 finite odds supply neighboring identities. Existing Stage1 Dirichlet/Pólya count update, normalization, exchangeability and update consumers are delivered in empirical_risk; this row neither replaces nor completes measure-level Dirichlet conjugacy.",
+      "novelty_record": {
+        "id": "fep-118",
+        "nearest_topics": [
+          "fep-045",
+          "fep-117"
+        ],
+        "new_invariant": "A per-observation likelihood gap gives exponential finite-sample concentration of inferior posterior weight.",
+        "carrier_delta": "Iterates two scalar hypothesis likelihood weights over sample count with explicit support, gap, and exact posterior witness.",
+        "required_bridge": "FEPComposed.fep118_posterior_concentration_extends_fep045_update"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-118",
+          "target": "fep-045",
+          "kind": "formal_pairing",
+          "rationale": "A finite likelihood gap bounds inferior posterior mass exponentially, while the original Bernoulli update remains normalized for every parameter.",
+          "witness": "FEPComposed.fep118_posterior_concentration_extends_fep045_update"
+        }
+      ]
+    },
+    {
+      "id": "fep-119",
+      "title": "Bayesian-Mixture Log-Loss Regret Bound",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "66355752016cc0d70e0d21660622b739916f4ca9ea38860774a2e8e7aa160e59",
+      "maturity_record": {
+        "id": "fep-119",
+        "primary_theorem": "fep119_mixtureLogLoss_regret",
+        "supporting_theorems": [
+          "fep119_mixtureEvidence_lower_bound"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Finite Bayesian-mixture evidence dominates every nonnegative component contribution, so mixture log loss is at most selected-component log loss plus its exact negative-log-prior penalty.",
+        "assumption_review": "Hypotheses are finite, all component likelihood weights are nonnegative, and the selected prior and likelihood weights are strictly positive before logarithms are compared. No sequential regret sum, stochastic calibration, or asymptotic optimality is claimed.",
+        "non_vacuity": "A positive selected component contributes strictly to mixture evidence, and a prior below one produces a positive finite complexity penalty rather than a vacuous zero term.",
+        "acceptance_probe": "native Lean compile of fep119_mixtureLogLoss_regret and fep119_mixtureEvidence_lower_bound with selected-component support.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep119_mixtureLogLoss_regret": "theorem fep119_mixtureLogLoss_regret\n    (prior : FiniteLaw Hypothesis) (likelihood : Hypothesis → ℝ)\n    (likelihoodNonnegative : ∀ hypothesis, 0 ≤ likelihood hypothesis)\n    (selected : Hypothesis)\n    (priorPositive : 0 < prior selected)\n    (likelihoodPositive : 0 < likelihood selected) :\n    -Real.log (FEP.LearningTheory.mixtureEvidence prior likelihood) ≤\n      -Real.log (likelihood selected) - Real.log (prior selected)",
+        "fep119_mixtureEvidence_lower_bound": "theorem fep119_mixtureEvidence_lower_bound\n    (prior : FiniteLaw Hypothesis) (likelihood : Hypothesis → ℝ)\n    (likelihoodNonnegative : ∀ hypothesis, 0 ≤ likelihood hypothesis)\n    (selected : Hypothesis) :\n    prior selected * likelihood selected ≤\n      FEP.LearningTheory.mixtureEvidence prior likelihood"
+      },
+      "statement_review": "Nonnegative mixture evidence contains every component contribution; a positive selected component permits monotonicity of ordinary logarithm, giving component log loss plus -log prior.",
+      "assumptions_and_scope": "Likelihood weights need only be nonnegative, not normalized probability masses or<=1, so loss can be negative for densities or arbitrary weights>1. A selected sequence likelihood can instantiate the bound, but a sequential cumulative-loss equality needs chain-rule factorization and positive conditional evidence. No calibration or asymptotic optimality follows.",
+      "positive_witness_specification_unexecuted": "Two models prior1/2 each, likelihood3/4 and1/4 give mixture1/2; selected component penaltylog2 is explicit and finite.",
+      "adverse_witness_specification_unexecuted": "Selected prior0 or likelihood0 excludes the logarithmic theorem even though component lower bound still holds. A positive density>1 yields negative log loss without violating the algebra.",
+      "nearest_topic_distinction": "026 negative-log product complexity is genuinely connected through the same selected positive factors in the witness.058 variational duality is not needed for this elementary mixture dominance proof.",
+      "novelty_record": {
+        "id": "fep-119",
+        "nearest_topics": [
+          "fep-026",
+          "fep-058"
+        ],
+        "new_invariant": "Bayesian-mixture log loss is bounded by selected-model log loss plus exact negative-log-prior regret.",
+        "carrier_delta": "Connects finite nonnegative mixture evidence to a supported selected component and its explicit complexity penalty.",
+        "required_bridge": "FEPComposed.fep119_mixture_log_loss_refines_fep026_complexity"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-119",
+          "target": "fep-026",
+          "kind": "formal_pairing",
+          "rationale": "Mixture log-loss regret exposes the selected model's prior penalty, and fep-026 proves that negative-log complexity is additive for the same positive prior-likelihood product.",
+          "witness": "FEPComposed.fep119_mixture_log_loss_refines_fep026_complexity"
+        }
+      ]
+    },
+    {
+      "id": "fep-120",
+      "title": "Bayes-Factor Multiplicativity and Model-Evidence Update",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "59bd0fb1a44ad717b6a58caa39c92bcdba11f8d5a09091a461a547197d40e2d2",
+      "maturity_record": {
+        "id": "fep-120",
+        "primary_theorem": "fep120_bayesFactor_multiplicative_update",
+        "supporting_theorems": [
+          "fep120_twoHypothesis_evidence_witness"
+        ],
+        "boundary_theorems": [
+          "fep120_zero_evidence_boundary"
+        ],
+        "invariant": "Explicitly factorized evidence ratios multiply, and sequential model-odds updates equal one update using product evidence.",
+        "assumption_review": "Both reference evidence factors must be nonzero for multiplicativity in the real field. Evidence factorization is supplied algebraically and does not establish probabilistic independence. At a zero denominator, totalized real division returns zero rather than an infinite Bayes factor.",
+        "non_vacuity": "Evidence three quarters versus one quarter maps unit prior odds to three, and the separate zero-reference theorem pins the exact unsupported comparison boundary.",
+        "acceptance_probe": "native Lean compile of fep120_bayesFactor_multiplicative_update, fep120_twoHypothesis_evidence_witness, and fep120_zero_evidence_boundary.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep120_bayesFactor_multiplicative_update": "theorem fep120_bayesFactor_multiplicative_update\n    (priorOdds firstFavored firstReference secondFavored secondReference : ℝ)\n    (firstReferenceNonzero : firstReference ≠ 0)\n    (secondReferenceNonzero : secondReference ≠ 0) :\n    FEP.LearningTheory.bayesFactor\n        (firstFavored * secondFavored) (firstReference * secondReference) =\n        FEP.LearningTheory.bayesFactor firstFavored firstReference *\n          FEP.LearningTheory.bayesFactor secondFavored secondReference ∧\n      FEP.LearningTheory.updatedModelOdds priorOdds\n          (firstFavored * secondFavored) (firstReference * secondReference) =\n        FEP.LearningTheory.updatedModelOdds\n          (FEP.LearningTheory.updatedModelOdds\n            priorOdds firstFavored firstReference)\n          secondFavored secondReference",
+        "fep120_twoHypothesis_evidence_witness": "theorem fep120_twoHypothesis_evidence_witness :\n    FEP.LearningTheory.bayesFactor (3 / 4) (1 / 4) = 3 ∧\n      FEP.LearningTheory.updatedModelOdds 1 (3 / 4) (1 / 4) = 3",
+        "fep120_zero_evidence_boundary": "theorem fep120_zero_evidence_boundary (favored : ℝ) :\n    FEP.LearningTheory.bayesFactor favored 0 = 0"
+      },
+      "statement_review": "Real-field factorization of two evidence ratios yields multiplicativity and identical sequential versus product-evidence odds update; reference factors are assumed nonzero. Exact3:1 and zero-denominator controls are present.",
+      "assumptions_and_scope": "Numerators and priorOdds may be arbitrary real values in the theorem, and negative reference factors are allowed by nonzero hypotheses. Calling them probabilistic odds requires nonnegative weights and positive denominators. Product factorization may represent conditional sequential evidence; it does not establish unconditional independence.",
+      "positive_witness_specification_unexecuted": "Use both supported3:1 evidence updates with initial odds1 to obtain final odds9; alternatively specify second evidence conditional on the first.",
+      "adverse_witness_specification_unexecuted": "Zero reference evidence returns0 under totalized division, not infinite odds; negative evidence still satisfies algebra but cannot be probability mass. Correlated evidence is not justified by multiplying unconditional likelihoods.",
+      "nearest_topic_distinction": "019 native predictive associativity is only paired with this scalar algebra.117 provides the actual finite posterior-odds operation from which a supported sequential model could be constructed.",
+      "novelty_record": {
+        "id": "fep-120",
+        "nearest_topics": [
+          "fep-019",
+          "fep-117"
+        ],
+        "new_invariant": "Factorized Bayes factors multiply and sequential model-odds updates equal a product-evidence update.",
+        "carrier_delta": "Adds two sequential favored/reference evidence pairs, ordinary nonzero denominators, and a zero-denominator totalization boundary.",
+        "required_bridge": "FEPComposed.fep120_bayes_factor_update_extends_fep019_prediction"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-120",
+          "target": "fep-019",
+          "kind": "formal_pairing",
+          "rationale": "Multiplicative Bayes factors agree with sequential odds updates, while fep-019 records associativity for the corresponding native predictive chain.",
+          "witness": "FEPComposed.fep120_bayes_factor_update_extends_fep019_prediction"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-115",
+      "field": "non_vacuity",
+      "finding": "Multiple alphabet symbols do not guarantee distinct deviation events; complementary Boolean normalized frequencies give equal absolute-deviation events.",
+      "proposed_text": "With one uniform Fin3 observation, target mass1/3 at each symbol and deviation1/2, the three count-deviation events are distinct singletons, each with probability1/3, and their union has probability1. Boolean complementary frequencies can instead have identical deviation events; union-bound distinctness is not assumed by the theorem."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-117",
+      "field": "non_vacuity",
+      "finding": "Unequal positive likelihoods do not change favored odds when favored prior is zero.",
+      "proposed_text": "Positive equal favored/reference prior masses and likelihoods3/4 versus1/4 update odds1 to3. A separate zero-prior favored hypothesis remains absent despite unequal positive likelihoods. Reference-prior/reference-likelihood and total-evidence support remain explicit."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "114→115 actual finite frequency concentration",
+      "owner": "src/fep_lean/formal/learning_theory.lean",
+      "seam": "Center measurable indicator observations, instantiate pinned hasSubgaussianMGF_of_mem_Icc with independent samples, obtain both tails then finite union. Existing114 one-sided theorem and115 union theorem are delivered; the missing content is their common-sample supported specialization.",
+      "estimate": "1–3 days",
+      "positive": "independent finite-alphabet indicators at n>0",
+      "adverse": "dependent samples; duplicate Boolean event does not invalidate bound"
+    },
+    {
+      "rank": 2,
+      "scope": "116 sampled-data confidence theorem",
+      "owner": "src/fep_lean/formal/learning_theory.lean",
+      "seam": "Introduce explicit sample probability law and measurable losses, prove an expectation/exponential budget, use Markov inequality for an event with failure<=confidence and derive simultaneous posterior bound on that event. Preserve prior independence/data-dependence restrictions. Existing conditional theorem alone is not high-probability generalization.",
+      "estimate": "2–5 days bounded finite setting after pinned API probe",
+      "positive": "bounded-loss IID finite sample with fixed prior",
+      "adverse": "uncontrolled data-dependent prior or failed MGF budget"
+    },
+    {
+      "rank": 3,
+      "scope": "117/118/120 sequential supported model",
+      "owner": "src/fep_lean/formal/learning_theory.lean",
+      "seam": "Use existing finite posterior/kernel operations to connect scalar repeated/product evidence updates to actual conditional likelihoods; allow heterogeneous positive factors with product gap bounds. Existing Dirichlet count Stage1 and empirical-risk bridges remain intact, not reimplemented.",
+      "estimate": "1–3 days",
+      "positive": "two supported conditional evidence updates and exact odds9",
+      "adverse": "zero prior/reference evidence; gap0 yields no decay"
+    }
+  ],
+  "limitations": [
+    "Static exact-source semantic review; no Lean/tests/subject execution or S modifications. Examples are unexecuted specifications; existing named source theorems are not newly executed evidence.",
+    "No empirical multiagent, arbitrary network, full Dirichlet measure conjugacy, high-probability PAC generalization, scientific or terminal acceptance inferred.",
+    "Remaining48 topics and active dependency/metadata seal/projection/custody/publication gates remain open."
+  ]
+}

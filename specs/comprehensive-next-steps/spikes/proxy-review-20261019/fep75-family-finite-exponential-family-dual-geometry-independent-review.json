@@ -1,0 +1,415 @@
+{
+  "schema_version": 1,
+  "decision": "7row_family_static_semantic_audit_complete_retain_scoped_dispositions",
+  "family": "finite-exponential-family-dual-geometry",
+  "roster_verified_against": "config/catalogue_metadata.yaml",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-142",
+    "fep-143",
+    "fep-144",
+    "fep-145",
+    "fep-146",
+    "fep-147",
+    "fep-148"
+  ],
+  "combined_issue75_audit_count": 148,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/exponential_family_geometry.py": "a3c02b9733044f0f1ae3b289bd9ff955de19f0d4acb114044bc4825c1dce4708",
+    "lean/FepSketches/families/exponential_family_geometry.lean": "4861fbc01d172ee701aad776aadee64ad71e1f712cf237f5b5dbf47526b776ec",
+    "src/fep_lean/formal/exponential_family.lean": "5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2",
+    "src/fep_lean/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/information_geometry.lean": "0b9fddad4758c9e165e9fe13f0fe4ddca57d71d025c92d85068b93835acab88f",
+    "src/fep_lean/formal/geometric_optimization.lean": "7b3a6c0313946b9708a472dcbe43e8678cec1f33e36c3b8873dcd29b57a4e1b0",
+    "src/fep_lean/formal/markov_blanket.lean": "6e214ee37ba6525d1ca5b44130ceaf4b410e03a0bb18d9b3070c4f8b90280011",
+    "src/fep_lean/formal/causal_dynamics.lean": "a87844ec42f395cb8532fa96c7d5b6b956731e1b0f6069f748d512e43add686c",
+    "src/fep_lean/formal/compositions/exponential_family.lean": "8726c522ebec4d0417c3caab742f8f8f60e14e285e94fbd637037200fee48c62",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-142",
+      "title": "Finite Exponential-Family Normalization and Support",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "a77d0eb7dfb104fc2bf3cac53318532c9af4f8ae1e8d5315c2a1a3a50865b3d3",
+      "maturity_record": {
+        "id": "fep-142",
+        "primary_theorem": "fep142_exponentialFamily_sum_one",
+        "supporting_theorems": [
+          "fep142_exponentialFamily_pointwise_pos"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Strictly positive base weights normalize the finite scalar exponential family to a full-support probability law at every natural parameter.",
+        "assumption_review": "The outcome carrier is finite and nonempty, base weights are strictly positive, and the sufficient statistic is real valued. No arbitrary manifold or multidimensional family is claimed.",
+        "non_vacuity": "The maintained nonconstant three-state family supplies unequal supported masses away from zero while retaining exact normalization.",
+        "acceptance_probe": "warning-free native Lean compile of fep142_exponentialFamily_sum_one and fep142_exponentialFamily_pointwise_pos.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep142_exponentialFamily_sum_one": "theorem fep142_exponentialFamily_sum_one\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ) :\n    ∑ outcome, family.law parameter outcome = 1",
+        "fep142_exponentialFamily_pointwise_pos": "theorem fep142_exponentialFamily_pointwise_pos\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ)\n    (outcome : Outcome) :\n    0 < family.law parameter outcome"
+      },
+      "statement_review": "Positive base weights times exp(theta*statistic) normalize by a finite positive partition function to a full-support law for every real natural parameter.",
+      "assumptions_and_scope": "Outcome finite/nonempty and base strictly positive; the base need not sum1. Statistic may be constant, so normalization/full support alone implies neither parameter identifiability nor positive Fisher. No multidimensional family or continuous base measure is constructed.",
+      "positive_witness_specification_unexecuted": "Unit-base Fin3 statistic(0,1,2) at theta log2 has masses1/7,2/7,4/7; at theta0 it is uniform.",
+      "adverse_witness_specification_unexecuted": "A constant statistic gives the same normalized law for every theta. Zero/negative base weights fall outside the family contract; empty outcomes cannot form a normalized law.",
+      "nearest_topic_distinction": "031 Gibbs normalizes on a selected support, whereas142 uses full carrier positive base weights. Current bridge pairs normalizations without identifying base/energy/parameter conventions.",
+      "novelty_record": {
+        "id": "fep-142",
+        "nearest_topics": [
+          "fep-031",
+          "fep-100"
+        ],
+        "new_invariant": "Positive finite base weights define a normalized, pointwise-positive scalar exponential-family law for every natural parameter.",
+        "carrier_delta": "Adds an explicit finite sufficient statistic, partition function, and full-support normalized family to the earlier standalone entropy and categorical Fisher carriers.",
+        "required_bridge": "FEPComposed.fep142_exponentialNormalization_extends_fep031"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-142",
+          "target": "fep-031",
+          "kind": "formal_pairing",
+          "rationale": "A positive-base finite exponential family is normalized for every natural parameter, paired with the original finite maximum-entropy normalization witness.",
+          "witness": "FEPComposed.fep142_exponentialNormalization_extends_fep031"
+        }
+      ]
+    },
+    {
+      "id": "fep-143",
+      "title": "Affine Exponential-Family Log-Density Ratio",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "cb82166922f058bd22491d30fbd3544c03f8744c4746221d3a258baacb898d2a",
+      "maturity_record": {
+        "id": "fep-143",
+        "primary_theorem": "fep143_logDensityRatio_eq",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "The supported log-density ratio between two parameters is affine in the sufficient statistic with the exact log-partition difference.",
+        "assumption_review": "Finiteness, nonemptiness, and strict base-weight support make every logarithm ordinary and finite. The result is scalar and does not assert an extended-real identity at zero support.",
+        "non_vacuity": "A nonconstant statistic and distinct parameters produce outcome-dependent log-density ratios.",
+        "acceptance_probe": "warning-free native Lean compile of fep143_logDensityRatio_eq for arbitrary parameters and an arbitrary finite outcome.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep143_logDensityRatio_eq": "theorem fep143_logDensityRatio_eq\n    (family : ScalarExponentialFamily Outcome)\n    (left right : ℝ) (outcome : Outcome) :\n    Real.log\n        (family.law left outcome / family.law right outcome) =\n      (left - right) * family.statistic outcome -\n        (family.logPartition left - family.logPartition right)"
+      },
+      "statement_review": "For the same positive-base family, log(p_left/p_right)=(left-right)*statistic-(A(left)-A(right)); the base cancels exactly.",
+      "assumptions_and_scope": "Both laws use the same base and statistic. Different families need not satisfy this ratio formula. Strict support makes logs finite and ordinary; no singular-density or extended-log convention is used.",
+      "positive_witness_specification_unexecuted": "Unit-base Fin3 at left log2,right0 has distinct outcome-dependent ratios3/7,6/7,12/7 and supported logarithms.",
+      "adverse_witness_specification_unexecuted": "Changing base between the two laws introduces an additional log base ratio; equal parameters or constant statistic make the ratio trivial.",
+      "nearest_topic_distinction": "026 ordinary positive log quotient is a neighbor;058 Gibbs identity is broader finite certificate.143 derives its affine ratio from the explicit parametric family.",
+      "novelty_record": {
+        "id": "fep-143",
+        "nearest_topics": [
+          "fep-026",
+          "fep-058"
+        ],
+        "new_invariant": "The supported log-density ratio between two family parameters is affine in the sufficient statistic and log-partition difference.",
+        "carrier_delta": "Adds ordinary finite logarithmic density identities backed by strict base-weight support rather than totalized zero-mass conventions.",
+        "required_bridge": "FEPComposed.fep143_logDensityRatio_extends_fep026"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-143",
+          "target": "fep-026",
+          "kind": "formal_pairing",
+          "rationale": "Supported exponential-family log-density ratios have an exact affine form, while fep-026 retains the separate negative-log product-complexity identity.",
+          "witness": "FEPComposed.fep143_logDensityRatio_extends_fep026"
+        }
+      ]
+    },
+    {
+      "id": "fep-144",
+      "title": "Finite Log-Partition Gradient",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "a419d2362d11b1f4a6e7ed0a8faa60ebd0daee90698aea125b3123a7c43f91da",
+      "maturity_record": {
+        "id": "fep-144",
+        "primary_theorem": "fep144_logPartition_hasDerivAt",
+        "supporting_theorems": [],
+        "boundary_theorems": [],
+        "invariant": "The derivative of the finite scalar log-partition function equals the mean sufficient statistic.",
+        "assumption_review": "The proof differentiates a finite sum of positive exponential weights and uses the positive partition denominator. It makes no infinite-sum exchange or general smooth-manifold claim.",
+        "non_vacuity": "The three-state statistic gives a nonconstant finite log-partition function whose mean changes with the parameter.",
+        "acceptance_probe": "warning-free native Lean compile of fep144_logPartition_hasDerivAt on the maintained finite family carrier.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep144_logPartition_hasDerivAt": "theorem fep144_logPartition_hasDerivAt\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ) :\n    HasDerivAt family.logPartition (family.mean parameter) parameter"
+      },
+      "statement_review": "Actual HasDerivAt for the positive finite log-partition A has derivative mean statistic, via finite exponential-sum differentiation and the log chain rule.",
+      "assumptions_and_scope": "This is a genuine analytic derivative, not a symbolic gradient field or a supplied derivative certificate. It is scalar and finite; no infinite-sum differentiation, vector Hessian, chart or manifold theorem follows.",
+      "positive_witness_specification_unexecuted": "Three-state family at0 has mean1, so A'(0)=1; differentiating its mean later yields variance2/3.",
+      "adverse_witness_specification_unexecuted": "Constant statistic c makes mean constant c, despite A varying affinely if c is nonzero; nonconstant A alone does not imply nondegenerate geometry.",
+      "nearest_topic_distinction": "040 Gaussian entropy derivative and043 quadratic derivative are separate exact derivative examples. Current144 relation pairs derivatives rather than identifying their potentials.",
+      "novelty_record": {
+        "id": "fep-144",
+        "nearest_topics": [
+          "fep-040",
+          "fep-043"
+        ],
+        "new_invariant": "The derivative of the finite log-partition potential equals the mean sufficient statistic.",
+        "carrier_delta": "Differentiates a positive finite exponential sum exactly and connects a named statistical potential to the earlier scalar derivative machinery.",
+        "required_bridge": "FEPComposed.fep144_logPartitionGradient_extends_fep040"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-144",
+          "target": "fep-040",
+          "kind": "formal_pairing",
+          "rationale": "The finite log-partition derivative equals the mean sufficient statistic, paired with fep-040's exact Gaussian thermodynamic derivative on its distinct carrier.",
+          "witness": "FEPComposed.fep144_logPartitionGradient_extends_fep040"
+        }
+      ]
+    },
+    {
+      "id": "fep-145",
+      "title": "Centered Exponential-Family Score Identity",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "d05a313346869e52d534b695b51a5819e4d7f24beda9077de2973543b79fb021",
+      "maturity_record": {
+        "id": "fep-145",
+        "primary_theorem": "fep145_score_eq_statistic_sub_mean",
+        "supporting_theorems": [
+          "fep145_score_mean_zero"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The scalar score is the sufficient statistic centered by its family mean and therefore has exactly zero expectation.",
+        "assumption_review": "The score is defined on the finite full-support exponential family. This is a natural-parameter derivative identity, not a general score-regularity theorem for arbitrary likelihoods.",
+        "non_vacuity": "A nonconstant statistic yields positive and negative centered scores across outcomes while their normalized weighted mean cancels exactly.",
+        "acceptance_probe": "warning-free native Lean compile of fep145_score_eq_statistic_sub_mean and fep145_score_mean_zero.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep145_score_eq_statistic_sub_mean": "theorem fep145_score_eq_statistic_sub_mean\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ)\n    (outcome : Outcome) :\n    family.score parameter outcome =\n      family.statistic outcome - family.mean parameter",
+        "fep145_score_mean_zero": "theorem fep145_score_mean_zero\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ) :\n    ∑ outcome,\n      family.law parameter outcome * family.score parameter outcome = 0"
+      },
+      "statement_review": "score is defined as statistic-mean and the topic primary is rfl; the weighted score mean is proved0. The foundation law_hasDerivAt actually proves p_theta'=p_theta*score, and positive mass permits a direct log-derivative consumer.",
+      "assumptions_and_scope": "Do not describe the primary rfl as itself differentiating log density; the substantive derivative support is the foundation law_hasDerivAt plus positivity. The existing identities justify the scalar score interpretation, but arbitrary supplied ScoreModel centering elsewhere is a weaker contract. A direct HasDerivAt(log law) wrapper is a bounded presentation improvement.",
+      "positive_witness_specification_unexecuted": "Three-state family at0 has scores(-1,0,1), positive masses1/3 and mean score0; use actual mass derivative to verify score interpretation.",
+      "adverse_witness_specification_unexecuted": "A constant statistic yields all scores0. Centered arbitrary score data need not equal a log derivative without a parameterized law and derivative bridge.",
+      "nearest_topic_distinction": "038 derives Bernoulli score behavior;145 explicit exponential-family law supplies centered score and a genuine derivative bridge in its owner. It does not establish score regularity for arbitrary likelihood families.",
+      "novelty_record": {
+        "id": "fep-145",
+        "nearest_topics": [
+          "fep-038"
+        ],
+        "new_invariant": "The natural-parameter score is the sufficient statistic minus its family mean and has exactly zero expectation.",
+        "carrier_delta": "Derives a centered score from an explicit finite exponential family rather than assuming the abstract ScoreModel centering law.",
+        "required_bridge": "FEPComposed.fep145_centeredScore_extends_fep038"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-145",
+          "target": "fep-038",
+          "kind": "formal_pairing",
+          "rationale": "The derived exponential-family score is centered exactly, extending the abstract centered-score contract used by the earlier Fisher-geometry topic. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_expectedScore_zero` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.",
+          "witness": "FEPComposed.fep145_centeredScore_extends_fep038"
+        }
+      ]
+    },
+    {
+      "id": "fep-146",
+      "title": "Log-Partition Hessian–Variance–Fisher Identity",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "7608490c97d2c1be72c5c211d86cbc3ac735f047445834914af0971b82495868",
+      "maturity_record": {
+        "id": "fep-146",
+        "primary_theorem": "fep146_logPartition_secondDeriv_eq_variance",
+        "supporting_theorems": [
+          "fep146_fisher_eq_variance",
+          "fep146_threeState_variance_positive"
+        ],
+        "boundary_theorems": [
+          "fep146_constantStatistic_zero_boundary"
+        ],
+        "invariant": "Differentiating the log-partition mean coordinate gives statistic variance, which equals scalar Fisher information; a concrete three-state family has variance two thirds at zero.",
+        "assumption_review": "The result is the derivative of the already-proved first-derivative mean coordinate on a finite scalar family. Strict positivity is witnessed for a named nonconstant family and is not inferred for constant statistics.",
+        "non_vacuity": "The statistic (0,1,2) under unit base weights has variance two thirds, whereas every constant statistic has exactly zero variance and Fisher information.",
+        "acceptance_probe": "warning-free native Lean compile of all four fep-146 declarations, including the positive and zero-information boundaries.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep146_logPartition_secondDeriv_eq_variance": "theorem fep146_logPartition_secondDeriv_eq_variance\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ) :\n    HasDerivAt family.mean (family.variance parameter) parameter",
+        "fep146_fisher_eq_variance": "theorem fep146_fisher_eq_variance\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ) :\n    family.fisher parameter = family.variance parameter",
+        "fep146_threeState_variance_positive": "theorem fep146_threeState_variance_positive :\n    0 < ScalarExponentialFamily.threeStateFamily.variance 0",
+        "fep146_constantStatistic_zero_boundary": "theorem fep146_constantStatistic_zero_boundary\n    (base : Outcome → ℝ) (hBase : ∀ outcome, 0 < base outcome)\n    (constant parameter : ℝ) :\n    (ScalarExponentialFamily.constantStatisticFamily base hBase constant).fisher\n        parameter = 0"
+      },
+      "statement_review": "HasDerivAt mean variance is the derivative of144 first-derivative coordinate; Fisher is defined as that same expected squared centered score, so Fisher=variance is rfl. Named Fin3 variance at0 equals2/3 and constant-statistic Fisher0 are real boundaries.",
+      "assumptions_and_scope": "This is scalar second-derivative content, not a matrix Hessian/covariance transformation. The general theorem does not prove strict variance for every nonconstant family at every theta, though that is feasible from full support and the finite sum of squares. The score interpretation is supported by actual law derivative.",
+      "positive_witness_specification_unexecuted": "Use threeState_variance_zero=2/3 and law/score formulas at0; consume both HasDerivAt A mean and HasDerivAt mean variance.",
+      "adverse_witness_specification_unexecuted": "Constant statistic c has variance/Fisher0 at all theta, so positive base alone cannot imply a nondegenerate parameter chart.",
+      "nearest_topic_distinction": "100 categorical metric positivity is a separately certified tangent geometry. The146 bridge pairs those facts, not an identified all-dimensional Fisher matrix or Hessian.",
+      "novelty_record": {
+        "id": "fep-146",
+        "nearest_topics": [
+          "fep-038",
+          "fep-100"
+        ],
+        "new_invariant": "The derivative of the mean coordinate equals statistic variance, which equals scalar Fisher information, with positive three-state and zero constant-statistic boundaries.",
+        "carrier_delta": "Adds a smooth finite-family derivation of Fisher information and distinguishes genuine nonconstant curvature from a degenerate statistic.",
+        "required_bridge": "FEPComposed.fep146_fisherVariance_extends_fep100"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-146",
+          "target": "fep-100",
+          "kind": "formal_pairing",
+          "rationale": "Scalar Fisher information is derived as sufficient-statistic variance with positive and zero-curvature witnesses, paired with the earlier categorical tangent-space metric.",
+          "witness": "FEPComposed.fep146_fisherVariance_extends_fep100"
+        }
+      ]
+    },
+    {
+      "id": "fep-147",
+      "title": "Exponential-Family KL–Bregman Identity",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "fe6ccc94bce2a98484f4e2bac7da38c0503a0069a9f32ee7b8d90cba05d7f713",
+      "maturity_record": {
+        "id": "fep-147",
+        "primary_theorem": "fep147_exponentialFamily_KL_eq_bregman",
+        "supporting_theorems": [
+          "fep147_exponentialFamily_fullSupport"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Finite KL between two members of the same supported scalar exponential family equals the oriented Bregman divergence of the log-partition potential.",
+        "assumption_review": "The carrier is finite and nonempty and strict base support supplies the logarithmic KL identity. The project finiteKL convention is totalized, but this theorem stays inside its ordinary full-support regime.",
+        "non_vacuity": "The companion three-state family has Fisher variance 2/3 at zero while the constant-statistic family has zero variance, so the underlying carrier has both curved and degenerate instances. Equal parameters give the zero-KL boundary by the shared finite-KL separation theorem; this row does not add a separate strict-KL witness for unequal parameters.",
+        "acceptance_probe": "warning-free native Lean compile of fep147_exponentialFamily_KL_eq_bregman and the explicit full-support theorem.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep147_exponentialFamily_KL_eq_bregman": "theorem fep147_exponentialFamily_KL_eq_bregman\n    (family : ScalarExponentialFamily Outcome) (left right : ℝ) :\n    finiteKL (family.law left) (family.law right) =\n      family.logPartitionBregman left right",
+        "fep147_exponentialFamily_fullSupport": "theorem fep147_exponentialFamily_fullSupport\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ)\n    (outcome : Outcome) :\n    0 < family.law parameter outcome"
+      },
+      "statement_review": "The existing finiteKL(p_left||p_right) equals A(right)-A(left)-A'(left)*(right-left). This is the log-partition Bregman orientation B_A(right,left), reversed relative to the probability-law label order.",
+      "assumptions_and_scope": "Both laws have full support in one finite scalar family, so totalized finiteKL reduces to ordinary expected log ratio. This does not automatically transport to native extended KL. Constant-statistic families have equal laws for distinct parameters and zero KL; unequal natural parameters alone do not imply positive divergence without identifiability.",
+      "positive_witness_specification_unexecuted": "Unit-base Bool statistic0/1, left0,right log3 gives laws(1/2,1/2) and(1/4,3/4); KL equals log(2/sqrt3) and the oriented Bregman expression.",
+      "adverse_witness_specification_unexecuted": "Swap left/right and the divergence generally changes; constant statistic with unequal parameters still gives0. A singular native pair lies outside this full-support family.",
+      "nearest_topic_distinction": "014 native KL nonnegativity is paired, not identified;104 algebraic Bregman identity is a nearest concept but the current named bridge only invokes147 and014, not a same-carrier104 specialization.",
+      "novelty_record": {
+        "id": "fep-147",
+        "nearest_topics": [
+          "fep-014",
+          "fep-104"
+        ],
+        "new_invariant": "Finite KL within the supported scalar exponential family equals the oriented Bregman divergence of its log-partition potential.",
+        "carrier_delta": "Identifies the existing finite KL carrier with a derived statistical Bregman geometry under explicit full support.",
+        "required_bridge": "FEPComposed.fep147_KLBregman_connects_fep014_fep104"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-147",
+          "target": "fep-014",
+          "kind": "formal_pairing",
+          "rationale": "Supported finite KL inside the exponential family equals an oriented log-partition Bregman divergence, paired with the original native KL separation theorem.",
+          "witness": "FEPComposed.fep147_KLBregman_connects_fep014_fep104"
+        }
+      ]
+    },
+    {
+      "id": "fep-148",
+      "title": "Natural-to-Mean Coordinate Injectivity",
+      "decision": "retain_formalized_for_exact_narrow_scope",
+      "canonical_body_sha256": "11122c494c41f390d310b2eaf383c91c45fcd4890332a5ab0342660d87dd6318",
+      "maturity_record": {
+        "id": "fep-148",
+        "primary_theorem": "fep148_meanParameter_strictMono",
+        "supporting_theorems": [
+          "fep148_meanParameter_injective"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Positive statistic variance throughout a closed interval makes the natural-to-mean coordinate map strictly monotone and injective there.",
+        "assumption_review": "Variance positivity is an explicit interval premise. The theorem is local to a stated scalar interval and does not assert global dual-flat coordinates or positivity for degenerate statistics.",
+        "non_vacuity": "The three-state family supplies a strictly positive variance point, while the constant-statistic boundary shows why the positivity premise matters.",
+        "acceptance_probe": "warning-free native Lean compile of fep148_meanParameter_strictMono and fep148_meanParameter_injective under the interval variance premise.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep148_meanParameter_strictMono": "theorem fep148_meanParameter_strictMono\n    (family : ScalarExponentialFamily Outcome) {lower upper : ℝ}\n    (hVariance : ∀ parameter ∈ Set.Icc lower upper,\n      0 < family.variance parameter) :\n    StrictMonoOn family.mean (Set.Icc lower upper)",
+        "fep148_meanParameter_injective": "theorem fep148_meanParameter_injective\n    (family : ScalarExponentialFamily Outcome) {lower upper : ℝ}\n    (hVariance : ∀ parameter ∈ Set.Icc lower upper,\n      0 < family.variance parameter) :\n    Set.InjOn family.mean (Set.Icc lower upper)"
+      },
+      "statement_review": "Strictly positive variance throughout Icc lower upper implies StrictMonoOn mean and hence injectivity there, using the exact mean derivative. It does not construct an inverse map or prove surjectivity.",
+      "assumptions_and_scope": "There is no lower<upper premise: empty/singleton intervals permit vacuous/trivial results. A positive variance point at0 alone does not instantiate the theorem on a nontrivial interval without a continuity or global nonconstant-statistic positivity argument. Current three-state point witness does not by itself close that instance.",
+      "positive_witness_specification_unexecuted": "Prove variance>0 for the supplied nonconstant Fin3 statistic at every theta from positive masses, then instantiate lower=-1,upper=1 and compare unequal parameters.",
+      "adverse_witness_specification_unexecuted": "Constant statistics have0 variance and constant mean; removing variance positivity makes nontrivial-interval injectivity false. Empty/singleton intervals hide no genuine coordinate change.",
+      "nearest_topic_distinction": "103 invertible ambient Fisher/chart transport is a distinct finite-matrix statement.148 gives scalar order/injectivity under explicit interval positivity, not global dual-flat coordinates or a multidimensional inverse-function theorem.",
+      "novelty_record": {
+        "id": "fep-148",
+        "nearest_topics": [
+          "fep-038",
+          "fep-103"
+        ],
+        "new_invariant": "Strictly positive variance on a closed interval makes the natural-to-mean parameter map strictly monotone and injective there.",
+        "carrier_delta": "Adds a scalar coordinate-chart result with an explicit positivity interval while withholding arbitrary-manifold or global dual-flatness claims.",
+        "required_bridge": "FEPComposed.fep148_meanCoordinate_extends_fep103"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-148",
+          "target": "fep-103",
+          "kind": "formal_pairing",
+          "rationale": "Positive variance makes the natural-to-mean coordinate injective on the stated interval, paired with fep-103's invertible-chart natural-gradient equivariance.",
+          "witness": "FEPComposed.fep148_meanCoordinate_extends_fep103"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P3",
+      "row": "fep-145",
+      "field": "assumption_review",
+      "finding": "The primary score equality is definitional; actual derivative support resides in law_hasDerivAt. Distinguish these while preserving the justified score interpretation.",
+      "proposed_text": "The centered score is defined on the finite full-support exponential family. The primary unfolds that definition and the supporting theorem proves zero mean. The existing law_hasDerivAt establishes mass derivative=mass*score, so positivity supports the natural-parameter log-derivative interpretation. This does not establish score regularity for arbitrary likelihoods."
+    },
+    {
+      "priority": "P3",
+      "row": "fep-148",
+      "field": "non_vacuity",
+      "finding": "Positive variance at one point alone does not instantiate positivity over a nontrivial closed interval. The current generic theorem is valid but its concrete interval instance remains unproved in these declarations.",
+      "proposed_text": "The three-state family has variance2/3 at0, and constant statistics show why positivity is required. A concrete nontrivial interval instance additionally needs variance positivity throughout that interval, derived either from continuity near0 or from full support and a nonconstant statistic; the retained point witness alone is not that interval certificate."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "148 actual nontrivial interval instance",
+      "owner": "src/fep_lean/formal/exponential_family.lean",
+      "seam": "Prove variance>0 iff statistic nonconstant using positive atom masses and finite sum of squares, then establish the three-state family positive for every parameter and apply148 on[-1,1]. This strengthens a genuine concrete instance rather than duplicating current conditional theorem.",
+      "estimate": "1–2 days",
+      "positive": "Fin3 statistic0,1,2 on[-1,1]",
+      "adverse": "constant statistic0 variance; empty/singleton interval vacuity"
+    },
+    {
+      "rank": 2,
+      "scope": "145 direct log-score and inherited ScoreModel consumer",
+      "owner": "src/fep_lean/formal/exponential_family.lean",
+      "seam": "Use actual law_hasDerivAt, law_pos and HasDerivAt.log to prove direct HasDerivAt(log law) score. Build the existing one-coordinate ScoreModel via mean_score_zero, and identify expected-score Fisher; no second metric or new owner needed.",
+      "estimate": "0.5–1.5 days",
+      "positive": "three-state scores(-1,0,1) at0",
+      "adverse": "constant statistic gives zero information"
+    },
+    {
+      "rank": 3,
+      "scope": "147 exact oriented Bregman specialization",
+      "owner": "src/fep_lean/formal/exponential_family.lean",
+      "seam": "Embed scalar parameters as Fin1 coordinates and identify logPartitionBregman(left,right) with104 divergence at(right,left), using144 true derivative. Preserve orientation and keep native KL identification separate until a supported weighted-Dirac theorem is proved.",
+      "estimate": "0.5–2 days",
+      "positive": "non-symmetric unequal-parameter KL example",
+      "adverse": "swapped orientation or constant-statistic unequal parameters"
+    }
+  ],
+  "limitations": [
+    "Static exact-source semantic review only; no S edits or subject/Lean/test execution. Positive/adverse specifications are unexecuted and existing named source facts are not new runtime observations.",
+    "No general continuous/native KL, arbitrary uncertain-state blanket closure, causal intervention, multidimensional dual geometry, scientific or terminal acceptance inferred.",
+    "Remaining20 topics plus active dependencies/seals/projections/custody/publication gates remain open."
+  ]
+}

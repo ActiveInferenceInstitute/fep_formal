@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import ClassVar
 
@@ -10,6 +11,8 @@ import pytest
 
 from fep_lean import cli
 from fep_lean._paths import project_root_errors
+from fep_lean.verification import environment as environment_module
+from fep_lean.verification import lean_verifier as verifier_module
 from fep_lean.verification._toolchain import pinned_lean_semver, read_toolchain_pin
 
 PROJ = Path(__file__).resolve().parent.parent
@@ -346,7 +349,7 @@ def test_setup_bootstraps_when_lake_is_unavailable(
         "helper.chmod(0o755)\n"
     )
     elan.chmod(0o755)
-    monkeypatch.setattr(cli, "find_executable", lambda *_args: None)
+    monkeypatch.setattr(environment_module, "find_executable", lambda *_args: None)
     monkeypatch.setenv("FEP_LEAN_ELAN_EXE", str(elan))
     _setup_behavior(root, require_helper=True)
     assert cli._setup(root) == 0
@@ -354,7 +357,7 @@ def test_setup_bootstraps_when_lake_is_unavailable(
 
 
 def test_setup_missing_elan(setup_checkout: Path, monkeypatch, capsys) -> None:
-    monkeypatch.setattr(cli, "find_executable", lambda *_args: None)
+    monkeypatch.setattr(environment_module, "find_executable", lambda *_args: None)
     monkeypatch.setenv("PATH", "")
     assert cli._setup(setup_checkout) == 1
     assert "install elan or set FEP_LEAN_ELAN_EXE" in capsys.readouterr().out
@@ -365,7 +368,7 @@ def test_setup_elan_acquisition_failure(setup_checkout: Path, monkeypatch) -> No
     elan = setup_checkout / "bad-elan"
     elan.write_text("#!/bin/sh\nexit 7\n")
     elan.chmod(0o755)
-    monkeypatch.setattr(cli, "find_executable", lambda *_args: None)
+    monkeypatch.setattr(environment_module, "find_executable", lambda *_args: None)
     monkeypatch.setenv("FEP_LEAN_ELAN_EXE", str(elan))
     assert cli._setup(setup_checkout) == 7
     assert not _setup_calls(setup_checkout)
@@ -409,7 +412,7 @@ def test_setup_deadline_kills_real_descendant(
 
 def test_setup_total_deadline_does_not_reset(setup_checkout: Path, monkeypatch) -> None:
     ticks = iter([0.0, 1801.0])
-    monkeypatch.setattr(cli.time, "monotonic", lambda: next(ticks))
+    monkeypatch.setattr(environment_module.time, "monotonic", lambda: next(ticks))
     assert cli._setup(setup_checkout) == 1
     assert not _setup_calls(setup_checkout)
 
@@ -475,7 +478,7 @@ def test_verify_command_is_lean_only(monkeypatch, tmp_path: Path, capsys) -> Non
     monkeypatch.setattr(
         cli.FEPTopicCatalogue, "from_yaml", staticmethod(lambda _path: Catalogue())
     )
-    monkeypatch.setattr(cli, "LeanVerifier", FakeVerifier)
+    monkeypatch.setattr(verifier_module, "LeanVerifier", FakeVerifier)
     assert (
         cli.main(["--project-root", str(tmp_path), "verify", "--topic", "fep-001"]) == 0
     )
@@ -523,8 +526,8 @@ def test_verify_can_write_native_receipt(monkeypatch, tmp_path: Path, capsys) ->
         def verify_batch(self, _items: list[tuple[str, str]]) -> list[Result]:
             return [Result()]
 
-    monkeypatch.setattr(cli, "FEPTopicCatalogue", CatalogueLoader)
-    monkeypatch.setattr(cli, "LeanVerifier", Verifier)
+    monkeypatch.setattr(cli.FEPTopicCatalogue, "from_yaml", CatalogueLoader.from_yaml)
+    monkeypatch.setattr(verifier_module, "LeanVerifier", Verifier)
     receipt = tmp_path / "receipts" / "native.json"
 
     code = cli.main(
@@ -584,8 +587,8 @@ def test_verify_warning_counts_align_with_strict_native_receipt(
         def verify_batch(self, _items: list[tuple[str, str]]) -> list[Result]:
             return [Result()]
 
-    monkeypatch.setattr(cli, "FEPTopicCatalogue", CatalogueLoader)
-    monkeypatch.setattr(cli, "LeanVerifier", Verifier)
+    monkeypatch.setattr(cli.FEPTopicCatalogue, "from_yaml", CatalogueLoader.from_yaml)
+    monkeypatch.setattr(verifier_module, "LeanVerifier", Verifier)
     receipt = tmp_path / "receipts" / "native.json"
 
     code = cli.main(
@@ -849,3 +852,87 @@ def test_every_package_exception_is_a_fep_lean_error() -> None:
                 found += 1
                 assert issubclass(obj, FepLeanError), f"{info.name}.{name}"
     assert found >= 20
+
+
+def test_setup_legacy_alias_is_canonical_acquisition_operation() -> None:
+    assert cli._setup is environment_module.setup_workspace
+
+
+def test_cli_explicit_root_precedes_nested_caller_without_environment_mutation(
+    tmp_path: Path, monkeypatch, capsys
+) -> None:
+    from fep_lean._paths import project_root, project_root_context
+
+    env_root, caller_root, cli_root = (
+        tmp_path / name for name in ("env", "caller", "cli")
+    )
+    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(env_root))
+    before = dict(os.environ)
+    observed = []
+
+    def snapshot(root, _gnn):
+        observed.append((root, project_root()))
+        assert dict(os.environ) == before
+        return {"root": str(root)}
+
+    monkeypatch.setattr(cli, "project_root_errors", lambda _root: ())
+    monkeypatch.setattr(cli, "build_status_report", snapshot)
+    monkeypatch.setattr(cli, "report_to_json", json.dumps)
+    with project_root_context(caller_root):
+        assert cli.main(["--project-root", str(cli_root), "status"]) == 0
+        assert project_root() == caller_root
+        assert cli.main(["status"]) == 0
+    assert observed == [(cli_root, cli_root), (caller_root, caller_root)]
+    assert project_root() == env_root
+    assert dict(os.environ) == before
+    assert len(capsys.readouterr().out.splitlines()) == 2
+
+
+def test_cli_context_resets_after_handler_failure(tmp_path: Path, monkeypatch) -> None:
+    from fep_lean._paths import project_root, project_root_context
+
+    def reject(*_args):
+        raise OSError("actual handler failed")
+
+    monkeypatch.setattr(cli, "project_root_errors", lambda _root: ())
+    monkeypatch.setattr(cli, "build_status_report", reject)
+    before = dict(os.environ)
+    with project_root_context(tmp_path / "caller"):
+        with pytest.raises(OSError, match="actual handler failed"):
+            cli.main(["--project-root", str(tmp_path / "cli"), "status"])
+        assert project_root() == tmp_path / "caller"
+    assert dict(os.environ) == before
+
+
+def test_concurrent_cli_roots_do_not_cross_or_mutate_environment(
+    tmp_path: Path, monkeypatch, capsys
+) -> None:
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Barrier
+
+    from fep_lean._paths import project_root
+
+    barrier = Barrier(2)
+    before = dict(os.environ)
+    observed = []
+
+    def snapshot(root, _gnn):
+        barrier.wait(timeout=5)
+        observed.append((root, project_root()))
+        assert dict(os.environ) == before
+        return {"root": str(root)}
+
+    monkeypatch.setattr(cli, "project_root_errors", lambda _root: ())
+    monkeypatch.setattr(cli, "build_status_report", snapshot)
+    monkeypatch.setattr(cli, "report_to_json", json.dumps)
+    roots = [tmp_path / "left", tmp_path / "right"]
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        codes = list(
+            pool.map(
+                lambda root: cli.main(["--project-root", str(root), "status"]), roots
+            )
+        )
+    assert codes == [0, 0]
+    assert set(observed) == {(root, root) for root in roots}
+    assert dict(os.environ) == before
+    assert len(capsys.readouterr().out.splitlines()) == 2

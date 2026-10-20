@@ -64,7 +64,23 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     assert tuple(
         module.lean_module for module in modules_by_role[FormalModuleRole.AGGREGATE]
     ) == ("FepSketches.composed",)
-    assert Counter(owners.values()) == {
+    # Preserve the original per-owner inventory after excluding only the seven
+    # independently reviewed scalar bridges; unrelated additions still fail.
+    scalar_bridges = {
+        "FEPComposed.fep031_energyGibbs_is_topicProbability",
+        "FEPComposed.fep030_fep031_finite_maxEntropy",
+        "FEPComposed.fep030_fin2_entropy_eq_binEntropy",
+        "FEPComposed.fep030_finite_binary_entropy_bound",
+        "FEPComposed.fep030_fep031_binary_maxEntropy",
+        "FEPComposed.fep018_coordinate_derivative_is_fep038",
+        "FEPComposed.fep018_fep038_actual_metric_pullback",
+    }
+    assert {name: owners[name] for name in scalar_bridges} == {
+        name: "FepSketches.compositions.core" for name in scalar_bridges
+    }
+    assert Counter(
+        owner for name, owner in owners.items() if name not in scalar_bridges
+    ) == {
         "FepSketches.finite_probability": 19,
         "FepSketches.finite_information": 31,
         "FepSketches.active_inference": 44,

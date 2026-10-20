@@ -1,7 +1,11 @@
-"""Read-only capability validation for the standalone fep_lean project."""
+"""Read-only capability probes and explicit locked workspace acquisition.
+
+Only setup_workspace acquires dependencies; run_validation_checks remains read-only.
+"""
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import shutil
@@ -9,7 +13,7 @@ import subprocess
 import sys
 import time
 from collections import Counter
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from pathlib import Path
 from typing import Any
 
@@ -380,3 +384,158 @@ def run_validation_checks(
         "checks": checks,
         "failed_count": len(failed),
     }
+
+
+def setup_workspace(root: Path) -> int:
+    """Acquire the checked-in workspace without resolving new dependency pins."""
+    import re
+    import shutil
+
+    from fep_lean.verification._toolchain import (
+        lean_version_matches_pin,
+        pinned_lean_semver,
+        read_mathlib_tag,
+        read_toolchain_pin,
+        resolved_mathlib_revision,
+    )
+
+    lean_dir = Path(os.environ.get("FEP_LEAN_DIR", str(root / "lean"))).resolve()
+    repair = (
+        "Inspect git diff -- lean/lean-toolchain lean/lakefile.lean "
+        "lean/lake-manifest.json uv.lock; preserve intentional edits, then restore "
+        "these files together from the intended reviewed commit and rerun setup. "
+        "Do not run lake update to repair ordinary setup."
+    )
+    try:
+        timeout = int(os.environ.get("FEP_LEAN_SETUP_TIMEOUT_SEC", "1800"))
+    except ValueError:
+        print("setup failed: FEP_LEAN_SETUP_TIMEOUT_SEC must be an integer", flush=True)
+        return 1
+    if timeout < 1:
+        print("setup failed: FEP_LEAN_SETUP_TIMEOUT_SEC must be positive", flush=True)
+        return 1
+    deadline = time.monotonic() + timeout
+    pins = [
+        lean_dir / name
+        for name in ("lean-toolchain", "lakefile.lean", "lake-manifest.json")
+    ] + [root / "uv.lock"]
+    try:
+        snapshot = {path: path.read_bytes() for path in pins}
+        toolchain = read_toolchain_pin(lean_dir)
+        tag = read_mathlib_tag(lean_dir)
+        manifest = json.loads(snapshot[lean_dir / "lake-manifest.json"])
+        packages = manifest.get("packages") if isinstance(manifest, dict) else None
+        if (
+            not toolchain
+            or tag != "v" + str(pinned_lean_semver(toolchain))
+            or not isinstance(packages, list)
+            or not packages
+            or manifest.get("packagesDir") != ".lake/packages"
+            or any(
+                not isinstance(package, dict)
+                or package.get("type") != "git"
+                or not re.fullmatch(r"[0-9a-f]{40}", str(package.get("rev", "")))
+                for package in packages
+            )
+        ):
+            raise ValueError("invalid or mismatched toolchain/Mathlib/manifest pins")
+        mathlib = [package for package in packages if package.get("name") == "mathlib"]
+        if len(mathlib) != 1 or mathlib[0].get("inputRev") != tag:
+            raise ValueError(
+                "manifest Mathlib inputRev does not match lakefile/toolchain"
+            )
+        revision = resolved_mathlib_revision(lean_dir)
+    except (OSError, ValueError) as exc:
+        print(f"setup failed: {exc}. {repair}", flush=True)
+        return 1
+
+    def check_pins() -> None:
+        for path, original in snapshot.items():
+            if not path.is_file() or path.read_bytes() != original:
+                raise ValueError(f"setup pin drift: {path}. {repair}")
+
+    env = subprocess_env(lean_dir)
+    # Setup deliberately installs into the requested (or ordinary) elan home,
+    # unlike read-only verification's temporary writable-home fallback.
+    elan_home = Path(os.environ.get("ELAN_HOME", str(Path.home() / ".elan")))
+    env["ELAN_HOME"] = str(elan_home)
+    for name in ("XDG_CACHE_HOME", "MATHLIB_CACHE_DIR"):
+        if name in os.environ:
+            env[name] = os.environ[name]
+
+    def run(command: Sequence[str]) -> subprocess.CompletedProcess[str]:
+        check_pins()
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise subprocess.TimeoutExpired(list(command), timeout)
+        print(f"[fep_lean setup] {' '.join(command)}", flush=True)
+        try:
+            result = run_process_group(
+                command, cwd=lean_dir, env=env, timeout=remaining, check=False
+            )
+            if result.stdout:
+                print(result.stdout, end="", flush=True)
+            if result.stderr:
+                print(result.stderr, end="", flush=True)
+        finally:
+            check_pins()
+        if result.returncode:
+            raise subprocess.CalledProcessError(result.returncode, list(command))
+        return result
+
+    try:
+        lake = find_executable("lake", lean_dir)
+        if not lake:
+            elan = os.environ.get("FEP_LEAN_ELAN_EXE") or shutil.which("elan")
+            if not elan and (elan_home / "bin" / "elan").is_file():
+                elan = str(elan_home / "bin" / "elan")
+            if not elan:
+                raise ValueError(
+                    "elan is unavailable; install elan or set FEP_LEAN_ELAN_EXE"
+                )
+            run([elan, "toolchain", "install", toolchain])
+            toolchain_bin = (
+                elan_home
+                / "toolchains"
+                / toolchain.replace("/", "--").replace(":", "---")
+                / "bin"
+            )
+            lake = str(toolchain_bin / "lake")
+        # Newly acquired toolchains must be visible to nested cache processes,
+        # including Cache.IO's `lean --print-prefix` lookup.
+        env["PATH"] = str(Path(lake).parent) + os.pathsep + env.get("PATH", "")
+        lake_version = run([lake, "--version"]).stdout
+        if f"(Lean version {pinned_lean_semver(toolchain)})" not in lake_version:
+            raise ValueError(
+                f"Lake does not report {toolchain}; install that toolchain with elan "
+                "and remove a mismatched FEP_LEAN_LAKE_EXE override"
+            )
+        # With a validated manifest, ordinary Lake loading materializes its
+        # exact revisions. --wfail rejects out-of-date dependency warnings.
+        actual_lean = run([lake, "--wfail", "env", "lean", "--version"]).stdout
+        if not lean_version_matches_pin(actual_lean, toolchain):
+            raise ValueError(f"actual Lean does not match {toolchain}")
+        actual_revision = run(
+            ["git", "-C", str(lean_dir / ".lake/packages/mathlib"), "rev-parse", "HEAD"]
+        ).stdout.strip()
+        if actual_revision != revision:
+            raise ValueError(
+                "materialized Mathlib revision does not match the manifest"
+            )
+        cache = run([lake, "--wfail", "exe", "cache", "get"])
+        # The pinned Mathlib cache CLI returns zero for HTTP 404 misses.
+        # Its explicit warning must not authorize a full source rebuild.
+        if "some files were not found in the cache" in cache.stdout + cache.stderr:
+            raise ValueError(
+                "the pinned Mathlib cache is incomplete; retain this log and retry "
+                "when the upstream cache is available; no source build was started"
+            )
+        run([lake, "--wfail", "build", "FepSketches"])
+        print(
+            f"[fep_lean setup] OK | lean: {actual_lean.strip()} | mathlib: {revision}",
+            flush=True,
+        )
+        return 0
+    except (OSError, ValueError, subprocess.SubprocessError) as exc:
+        print(f"setup failed: {exc}. For pin/manifest errors: {repair}", flush=True)
+        return exc.returncode if isinstance(exc, subprocess.CalledProcessError) else 1

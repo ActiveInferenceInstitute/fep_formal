@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "purpose": "Exact new scalar proof/capability/edge deltas only. Reverse before immutable historical gates; all older fixtures and receipts remain unchanged.",
+  "released_core_sha256": "1bd92550902ff9a6f637915f0a80c6976fd2dad07adc36f7f4681f7684fba271",
+  "added_public_imports": "public import FepSketches.variational_duality\npublic import Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv\npublic import Mathlib.Analysis.SpecialFunctions.Sqrt\n\n",
+  "added_core_block": "open FEP FEP.FiniteInformation FEP.VariationalDuality\nopen scoped BigOperators\n\n/-- Full support is essential: the topic expression does not zero atoms outside S. -/\ntheorem fep031_energyGibbs_is_topicProbability {n : ℕ} [NeZero n]\n    (E : Fin n → ℝ) (β : ℝ) (i : Fin n) :\n    energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i := by\n  simp [energyGibbsLaw, energyPartition,\n    fep_fep031.FEP031.fep031_gibbsProbability]\n\n/-- Same finite carrier, exact topic Gibbs masses, and supplied matched energy. -/\ntheorem fep030_fep031_finite_maxEntropy {n : ℕ} [NeZero n]\n    (E : Fin n → ℝ) (β : ℝ) (q : FiniteLaw (Fin n))\n    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i) ∧\n    entropy q ≤ entropy (energyGibbsLaw E β) ∧\n    (entropy q = entropy (energyGibbsLaw E β) ↔ q = energyGibbsLaw E β) := by\n  exact ⟨fep031_energyGibbs_is_topicProbability E β, energyGibbs_maxEntropy E β q hq⟩\n\n/-- Exact identification of the finite two-state entropy and fep030 carrier. -/\ntheorem fep030_fin2_entropy_eq_binEntropy (q : FiniteLaw (Fin 2)) :\n    entropy q = Real.binEntropy (q 0) := by\n  have hOne : q 1 = 1 - q 0 := by\n    have h := q.sum_one\n    rw [Fin.sum_univ_two] at h\n    linarith\n  rw [entropy, Fin.sum_univ_two,\n    Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub, ← hOne]\n\n/-- Every normalized binary finite law consumes the actual fep030 bound. -/\ntheorem fep030_finite_binary_entropy_bound (q : FiniteLaw (Fin 2)) :\n    entropy q ≤ Real.log 2 ∧\n      (entropy q = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹) := by\n  rw [fep030_fin2_entropy_eq_binEntropy]\n  exact ⟨fep_fep030.FEP030.fep030_binaryEntropy_max (q 0),\n    fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff (q 0)⟩\n\n/-- Single endpoint witness: normalized binary entropy at fixed mean energy. -/\ntheorem fep030_fep031_binary_maxEntropy (E : Fin 2 → ℝ) (β : ℝ)\n    (q : FiniteLaw (Fin 2))\n    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :\n    (Real.binEntropy (q 0) ≤ Real.log 2 ∧\n      (Real.binEntropy (q 0) = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)) ∧\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β 2 E Finset.univ i) ∧\n    Real.binEntropy (q 0) ≤ Real.binEntropy (energyGibbsLaw E β 0) ∧\n    (Real.binEntropy (q 0) = Real.binEntropy (energyGibbsLaw E β 0) ↔\n      q = energyGibbsLaw E β) := by\n  refine ⟨⟨fep_fep030.FEP030.fep030_binaryEntropy_max (q 0),\n    fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff (q 0)⟩, ?_⟩\n  have h := fep030_fep031_finite_maxEntropy E β q hq\n  rw [fep030_fin2_entropy_eq_binEntropy q,\n    fep030_fin2_entropy_eq_binEntropy (energyGibbsLaw E β)] at h\n  exact h\n\n/-- On the open Bernoulli interval the declared candidate Jacobian is the\nactual derivative of the authored Fisher--Rao coordinate. -/\ntheorem fep018_coordinate_derivative_is_fep038 {p : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p := by\n  have hsquare := Real.sq_sqrt hp0.le\n  have hnonneg := Real.sqrt_nonneg p\n  have hbelow : Real.sqrt p < 1 := by nlinarith\n  have hleft : Real.sqrt p ≠ -1 := by linarith\n  have hright : Real.sqrt p ≠ 1 := ne_of_lt hbelow\n  have hderiv := ((Real.hasDerivAt_arcsin hleft hright).comp p\n    (Real.hasDerivAt_sqrt (ne_of_gt hp0))).const_mul 2\n  have hsqrtp : Real.sqrt p ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr hp0)\n  have hsqrtq : Real.sqrt (1 - p) ≠ 0 :=\n    ne_of_gt (Real.sqrt_pos.mpr (sub_pos.mpr hp1))\n  have hfactor :\n      2 * ((1 / Real.sqrt (1 - (Real.sqrt p) ^ 2)) *\n        (1 / (2 * Real.sqrt p))) =\n      fep_fep038.FEP038.fep038_coordinateJacobian p := by\n    rw [Real.sq_sqrt hp0.le,\n      fep_fep038.FEP038.fep038_coordinateJacobian, Real.sqrt_mul hp0.le]\n    field_simp [hsqrtp, hsqrtq]\n  rw [hfactor] at hderiv\n  exact hderiv\n\n/-- The existing metric identity now has an actual coordinate differential. -/\ntheorem fep018_fep038_actual_metric_pullback {p v w : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p ∧\n    fep_fep038.FEP038.fep038_fisherMetric p v w =\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * v) *\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * w) := by\n  exact ⟨fep018_coordinate_derivative_is_fep038 hp0 hp1,\n    fep_fep038.FEP038.fep038_fisherMetric_pullback hp0 hp1⟩\n\n",
+  "released_model_canonical_sha256": "3a49bb007c0ca988da5981c6c03b0ad797580232e248c04c5aceffc6e4124803",
+  "edge_change": {
+    "released": {
+      "source": "fep-030",
+      "target": "fep-031",
+      "kind": "conceptual",
+      "rationale": "A general constrained maximum-entropy derivation of Gibbs laws remains outside the binary zero-inverse-temperature theorem."
+    },
+    "reviewed": {
+      "source": "fep-030",
+      "target": "fep-031",
+      "kind": "formal_pairing",
+      "rationale": "The full-support binary Gibbs masses of fep031 are exactly energyGibbsLaw, and its finite entropy is exactly the Real.binEntropy carrier used by fep030. At a supplied matched mean energy, this law uniquely maximizes that binary entropy; the witness also retains fep030’s bound/equality characterization on the same normalized candidate law. This is an exact finite carrier identification and constrained specialization, not a derivation of arbitrary Gibbs laws from the binary entropy bound or existence of a temperature for every target mean.",
+      "witness": "FEPComposed.fep030_fep031_binary_maxEntropy"
+    }
+  },
+  "capability_change": {
+    "released": {
+      "id": "cap-multidimensional-information-geometry",
+      "title": "Multidimensional Fisher geometry",
+      "description": "A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability.",
+      "status": "satisfied",
+      "evidence": [
+        "FEP.InformationGeometry.bernoulliScoreModel_fullSupport",
+        "FEP.InformationGeometry.bernoulliScoreModel_identifiable",
+        "FEP.InformationGeometry.bernoulli_fisherMatrix_entry",
+        "FEP.InformationGeometry.bernoulli_fisherMatrix_isUnit",
+        "FEP.InformationGeometry.bernoulli_fisherMetric_eq",
+        "FEP.InformationGeometry.bernoulli_fisherMetric_pos",
+        "FEP.InformationGeometry.bernoulli_naturalGradient_eq",
+        "FEP.InformationGeometry.duplicatedFairBernoulli_not_identifiable",
+        "FEP.InformationGeometry.duplicatedScore_fisherMetric_eq_zero",
+        "FEP.InformationGeometry.fairBernoulli_fisherMatrix_entry",
+        "FEP.InformationGeometry.fisherMatrix_symm",
+        "FEP.InformationGeometry.fisherMetric_eq_dot_lowerTangent",
+        "FEP.InformationGeometry.fisherMetric_eq_zero_iff",
+        "FEP.InformationGeometry.fisherMetric_nonneg",
+        "FEP.InformationGeometry.fisherMetric_pos",
+        "FEP.InformationGeometry.naturalGradient_energy_identity",
+        "FEP.InformationGeometry.naturalGradient_isNaturalGradient",
+        "FEP.InformationGeometry.naturalGradient_metric_duality",
+        "FEP.InformationGeometry.naturalGradient_unique",
+        "FEP.InformationGeometry.pullbackMetric_comp",
+        "FEP.InformationGeometry.pullbackMetric_pos"
+      ]
+    },
+    "reviewed": {
+      "id": "cap-multidimensional-information-geometry",
+      "title": "Multidimensional Fisher geometry",
+      "description": "A centered finite score field induces a symmetric Fisher matrix, positive-semidefinite Gram metric, positive-definite metric under full-support identifiability, positive pullbacks, and an explicit unique inverse-Fisher natural gradient when the matrix is invertible. An interior one-coordinate Bernoulli model discharges the positive-definite assumptions non-vacuously, derives 1/[p(1-p)], gives Fisher value 4 at p=1/2, and proves exact p(1-p) natural-gradient scaling; a duplicated two-coordinate score model exhibits a concrete nonzero null tangent and failed identifiability. The actual derivative of the interior Bernoulli Fisher–Rao coordinate is additionally identified with the topic Jacobian, giving the stated one-dimensional metric pullback; no global chart or path-length theorem is inferred.",
+      "status": "satisfied",
+      "evidence": [
+        "FEP.InformationGeometry.bernoulliScoreModel_fullSupport",
+        "FEP.InformationGeometry.bernoulliScoreModel_identifiable",
+        "FEP.InformationGeometry.bernoulli_fisherMatrix_entry",
+        "FEP.InformationGeometry.bernoulli_fisherMatrix_isUnit",
+        "FEP.InformationGeometry.bernoulli_fisherMetric_eq",
+        "FEP.InformationGeometry.bernoulli_fisherMetric_pos",
+        "FEP.InformationGeometry.bernoulli_naturalGradient_eq",
+        "FEP.InformationGeometry.duplicatedFairBernoulli_not_identifiable",
+        "FEP.InformationGeometry.duplicatedScore_fisherMetric_eq_zero",
+        "FEP.InformationGeometry.fairBernoulli_fisherMatrix_entry",
+        "FEP.InformationGeometry.fisherMatrix_symm",
+        "FEP.InformationGeometry.fisherMetric_eq_dot_lowerTangent",
+        "FEP.InformationGeometry.fisherMetric_eq_zero_iff",
+        "FEP.InformationGeometry.fisherMetric_nonneg",
+        "FEP.InformationGeometry.fisherMetric_pos",
+        "FEP.InformationGeometry.naturalGradient_energy_identity",
+        "FEP.InformationGeometry.naturalGradient_isNaturalGradient",
+        "FEP.InformationGeometry.naturalGradient_metric_duality",
+        "FEP.InformationGeometry.naturalGradient_unique",
+        "FEP.InformationGeometry.pullbackMetric_comp",
+        "FEP.InformationGeometry.pullbackMetric_pos",
+        "FEPComposed.fep018_coordinate_derivative_is_fep038",
+        "FEPComposed.fep018_fep038_actual_metric_pullback"
+      ]
+    }
+  },
+  "new_theorems": 7,
+  "independent_review_sha256": "771894c357da77ad242464560cd9d266869e02bdb1ece9d9c1c2272cd8b180a9",
+  "actual_outside_owned_module_observation_sha256": "490a017320bd7ec954f8b8de0eeb061248a47953d39e5b95ed8e0697c1fa6b26",
+  "graph_contract_note": "The reverse zero-temperature formal edge already exists. This checked endpoint identification is a theorem-witnessed pairing, preserving the acyclic directed formal dependency contract."
+}

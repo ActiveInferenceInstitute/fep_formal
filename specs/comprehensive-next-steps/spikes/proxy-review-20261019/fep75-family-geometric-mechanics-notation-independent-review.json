@@ -1,0 +1,473 @@
+{
+  "schema_version": 1,
+  "decision": "family_static_semantic_audit_complete_metadata_corrections_required_before_broad_acceptance",
+  "family": "geometric-mechanics-notation",
+  "roster_verified_against": "config/catalogue_metadata.yaml",
+  "source_tree_epoch": "ef2c99a7ca9b8bd11508c252ec55d01fe9c36699",
+  "canonical_main_reported_tree_equal": "9a0694f16b8e89b66b2f7f8cc7426c650dd2c4de",
+  "row_ids": [
+    "fep-161",
+    "fep-162",
+    "fep-163",
+    "fep-164",
+    "fep-165",
+    "fep-167",
+    "fep-168"
+  ],
+  "combined_issue75_static_audit_count": 168,
+  "source_sha256": {
+    "src/fep_lean/catalogue/bodies/geometric_mechanics.py": "45064a01b3d3cd49fdbb7cfe20133c7d76de3426605ebf7844bed0a83b9a8c92",
+    "lean/FepSketches/families/geometric_mechanics.lean": "e613a6f4e9cd89556b59bbd42064594f0859af88bfba0e8c3a03c58abe2fe6fd",
+    "src/fep_lean/formal/continuous_time_markov.lean": "1294732d3ddd6bd3711a00b6895e09fff45dd720cddb8d9db8e78ad458b10ea4",
+    "src/fep_lean/formal/efe_policy_selection.lean": "ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555",
+    "src/fep_lean/formal/perception_action_loop.lean": "f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a",
+    "src/fep_lean/formal/bayesian_model_reduction.lean": "721c1e39ffcfe5557c0138134cac5fb5c1b78669ac475cd99465401653fa441f",
+    "src/fep_lean/formal/efe_time_scale_separation.lean": "5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1",
+    "src/fep_lean/formal/helmholtz_ao_ness.lean": "652e8dbbeb5267523b58a3b9682ac1f8b14850aac48e693ea3954b5161f1eb98",
+    "src/fep_lean/formal/law_weighted_split.lean": "ee743a2aa98403b9dd3a30046c7e53638328eb5c666865595657e86e56e79eda",
+    "src/fep_lean/formal/geometric_mechanics.lean": "75df7b794ffde405e7f596dbc06070aa518b522cb714cdd328526cc4fb2de2aa",
+    "src/fep_lean/formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "src/fep_lean/formal/native_blanket.lean": "7af052b9a067be0391097a9e201e367639edc3698204a701f5663340ec9f5a11",
+    "src/fep_lean/formal/decision_risk.lean": "1a34dd85015ecb421bfbe91b3995e8c2c2d9991122618e9f25db17c4d46f2251",
+    "src/fep_lean/formal/policy_tree.lean": "f88e5063dede806e31f4f7106b825ee7b3832bcc66cf17346e24b98cd9361176",
+    "src/fep_lean/formal/AGENTS.md": "ed9e594fc90e7c922eeff8e4c2254f48cd24efb7dc0c412dcd17459578341ed5",
+    "AGENTS.md": "199af05f57b5293ec2e9e8d86d192ee915a054ee0cf9ae39e14b4d81c4bb6665",
+    "config/theorem_maturity.yaml": "7f096a3b8ff8493d1759bbb0af39253bef3f34d159f4d443a9fd1c8f9618aded",
+    "config/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
+    "config/formalism_novelty.yaml": "234eded65ad5702db55ee7d11aed33d9b82d75c68ab03956e06903309d051815",
+    "config/formalism_relations.yaml": "8665aa1c7ac5a72f7eea383c61c5719e9a5183559273b38709fa2a1d3f86cb2d"
+  },
+  "rows": [
+    {
+      "id": "fep-161",
+      "title": "Skew Bilinear Cancellation of the Trace and Quadratic Terms",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "862299f15c8e8cab65cffbbe09f249a618c10f6e7cf635b2c26731258a187852",
+      "maturity_record": {
+        "id": "fep-161",
+        "primary_theorem": "fep161_skewTrace_eq_zero",
+        "supporting_theorems": [
+          "fep161_skewQuadratic_eq_zero"
+        ],
+        "boundary_theorems": [],
+        "invariant": "A skew-symmetric matrix contracted against a symmetric matrix has zero trace, and a skew-symmetric matrix annihilates its own quadratic form: the two algebraic cancellations behind the manuscript's solenoidal expansion, holding unconditionally on the stated symmetry hypotheses.",
+        "assumption_review": "Plain finite real matrices indexed by Fin n with explicit pointwise symmetry hypotheses; no continuum Hessian, no smoothness structure, and no numerical witness is claimed.",
+        "non_vacuity": "Both cancellations are exact identities on their hypothesis classes, witnessed by any nonzero skew matrix against a nonzero symmetric one.",
+        "acceptance_probe": "warning-free native Lean compile of all two fep-161 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep161_skewTrace_eq_zero": "theorem fep161_skewTrace_eq_zero {n : ℕ} (Q H : Fin n → Fin n → ℝ)\n    (hQ : SkewSymmetric Q) (hH : SymmetricOf H) : traceOf (mulOf Q H) = 0",
+        "fep161_skewQuadratic_eq_zero": "theorem fep161_skewQuadratic_eq_zero {n : ℕ} (Q : Fin n → Fin n → ℝ)\n    (g : Fin n → ℝ) (hQ : SkewSymmetric Q) : dot g (mulVec Q g) = 0"
+      },
+      "statement_review": "Trace(QH)=0 for plain skew Q and symmetric H, and g-transpose Q g=0 for skew Q. Pairwise summation proves exact finite real identities.",
+      "assumptions_and_scope": "No actual derivatives/Hessian or smooth fields are inputs. Fin n includes0/1 where skew may only be0; nonzero examples require dimension>=2. Plain skew is distinct from160 law-weighted skew.",
+      "positive_witness_specification_unexecuted": "Q[[0,1],[-1,0]],Hdiag(1,2),g(1,1): trace and quadratic cancellations with nonzero data.",
+      "adverse_witness_specification_unexecuted": "A nonskew Q or nonsymmetric H can give nonzero contraction; for H=Q with nonzero2D skew, trace(QH)=-2.",
+      "nearest_topic_distinction": "160 reexports the same algebra;161 isolates its precise unweighted hypotheses. The argument does not prove a solenoidal vector field has zero divergence.",
+      "novelty_record": {
+        "id": "fep-161",
+        "nearest_topics": [
+          "fep-160"
+        ],
+        "new_invariant": "On plain finite matrices a skew matrix contracted against a symmetric matrix has zero trace and annihilates its own quadratic form, unconditionally.",
+        "carrier_delta": "Isolates the two pointwise cancellation laws behind the solenoidal expansion from any stationary-state structure, on the plain Fin-indexed carrier.",
+        "required_bridge": "FEPComposed.fep161_skewCancellation_extends_fep160_aoNess"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-161",
+          "target": "fep-160",
+          "kind": "formal_pairing",
+          "rationale": "The plain-matrix trace and quadratic cancellations are paired with the rate-field decomposition whose skew clause they justify, without deriving the finite carrier's law-weighted skewness from the plain pointwise property.",
+          "witness": "FEPComposed.fep161_skewCancellation_extends_fep160_aoNess"
+        },
+        {
+          "source": "fep-162",
+          "target": "fep-161",
+          "kind": "formal_pairing",
+          "rationale": "The symmetrization construction discharges exactly the symmetric-matrix hypothesis of the trace cancellation it is paired with, without claiming a continuum Clairaut theorem or smooth Hessian.",
+          "witness": "FEPComposed.fep162_clairautSymmetrize_extends_fep161_skewCancellation"
+        }
+      ]
+    },
+    {
+      "id": "fep-162",
+      "title": "The Discrete Hessian as a Symmetrization Construction",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "ae3a24dc33ae40ce35b84c866a5b017ab7e5efc2ddba163a9984cc4f6e72fc6b",
+      "maturity_record": {
+        "id": "fep-162",
+        "primary_theorem": "fep162_skewTrace_symmetrize_eq_zero",
+        "supporting_theorems": [
+          "fep162_symmetrize_symmetric",
+          "fep162_symmetrize_of_symmetric"
+        ],
+        "boundary_theorems": [],
+        "invariant": "Symmetrization of raw mixed-difference data constructs a symmetric discrete Hessian (the finite Clairaut property as a construction), the trace cancellation holds against the constructed matrix with no hypothesis on the raw data, and on already-symmetric data the construction is the identity.",
+        "assumption_review": "The construction replaces the continuum Clairaut theorem by finite algebra; it does not claim differentiability, a continuum Hessian, or convergence of mixed-difference quotients.",
+        "non_vacuity": "The symmetrized matrix is symmetric for every input and coincides with the given matrix exactly on the symmetric subclass.",
+        "acceptance_probe": "warning-free native Lean compile of all three fep-162 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep162_skewTrace_symmetrize_eq_zero": "theorem fep162_skewTrace_symmetrize_eq_zero {n : ℕ} (Q H : Fin n → Fin n → ℝ)\n    (hQ : SkewSymmetric Q) : traceOf (mulOf Q (symmetrize H)) = 0",
+        "fep162_symmetrize_symmetric": "theorem fep162_symmetrize_symmetric {n : ℕ} (H : Fin n → Fin n → ℝ) :\n    SymmetricOf (symmetrize H)",
+        "fep162_symmetrize_of_symmetric": "theorem fep162_symmetrize_of_symmetric {n : ℕ} (H : Fin n → Fin n → ℝ)\n    (hH : SymmetricOf H) : symmetrize H = H"
+      },
+      "statement_review": "symmetrize(H)=(H+H-transpose)/2 is symmetric by construction; skew trace cancellation applies to that matrix, and symmetrization fixes every already symmetric H.",
+      "assumptions_and_scope": "This is a finite matrix projection, not Clairaut commutation for an actual twice-differentiable function or consistency of mixed-difference quotients. Replacing data by symmetric data may change it;167 quantifies the residual.",
+      "positive_witness_specification_unexecuted": "Raw H[[0,1],[0,0]] becomes[[0,1/2],[1/2,0]] with a nonzero change; symmetric H is unchanged.",
+      "adverse_witness_specification_unexecuted": "An actual nonsymmetric derivative-data matrix is not proved to be a Hessian by averaging it. Any identification with second derivatives needs smoothness and correct mixed-index orientation.",
+      "nearest_topic_distinction": "161 consumes symmetric H;162 constructs one;167 later proves actual Frobenius optimality/uniqueness of this construction.",
+      "novelty_record": {
+        "id": "fep-162",
+        "nearest_topics": [
+          "fep-161"
+        ],
+        "new_invariant": "Symmetrizing raw mixed-difference data constructs a symmetric discrete Hessian for which the trace cancellation holds with no hypothesis on the raw data, and the construction is the identity exactly on symmetric data.",
+        "carrier_delta": "Turns the continuum Clairaut symmetry of the Hessian from a smoothness hypothesis into a finite construction, discharging the symmetry premise of the trace cancellation.",
+        "required_bridge": "FEPComposed.fep162_clairautSymmetrize_extends_fep161_skewCancellation"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-162",
+          "target": "fep-161",
+          "kind": "formal_pairing",
+          "rationale": "The symmetrization construction discharges exactly the symmetric-matrix hypothesis of the trace cancellation it is paired with, without claiming a continuum Clairaut theorem or smooth Hessian.",
+          "witness": "FEPComposed.fep162_clairautSymmetrize_extends_fep161_skewCancellation"
+        },
+        {
+          "source": "fep-167",
+          "target": "fep-162",
+          "kind": "formal_pairing",
+          "rationale": "The Frobenius least-squares projection layer is paired with fep-162's algebraic symmetrization construction, so the constructed discrete Hessian is exactly the unique symmetric minimizer, without claiming a continuum Clairaut theorem or a general Bregman-projection existence result.",
+          "witness": "FEPComposed.fep167_frobeniusProjection_extends_fep162_clairautSymmetrize"
+        }
+      ]
+    },
+    {
+      "id": "fep-163",
+      "title": "The Three-Term Solenoidal Expansion and Its Conditional Drop",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "85db749354c569cfa3501b2a17913c55031b7fcc4e6fd6712916ef56e48fb9f1",
+      "maturity_record": {
+        "id": "fep-163",
+        "primary_theorem": "fep163_solenoidal_expansion",
+        "supporting_theorems": [
+          "fep163_weightedDivergence_eq",
+          "fep163_solenoidal_drop_of_orthogonal",
+          "fep163_solenoidal_drop_of_constantQ",
+          "fep163_expansion_remainder_witness"
+        ],
+        "boundary_theorems": [],
+        "invariant": "The weighted divergence of the candidate current decomposes exactly into the trace slot, the transport-divergence slot, and the density coupling slot; under the stationary coupling the identity reads tr(Q H) - g^T Q g + (div Q)^T g; both cancellable terms die on the skew and symmetric hypotheses, and the remaining drop holds only under an explicit extra hypothesis (orthogonality or spatially constant Q), with a concrete remainder datum where it does not.",
+        "assumption_review": "Directional derivative data is explicit (H for the Hessian slot, DQ for the transport-divergence slot); the coupling is an explicit hypothesis, not a solved PDE; the weighted divergence is defined by the exact Leibniz decomposition rather than a discretization of Fokker-Planck.",
+        "non_vacuity": "The remainder witness evaluates to exactly 1 on concrete two-direction derivative data, so the unconditional drop is not vacuously unreachable.",
+        "acceptance_probe": "warning-free native Lean compile of all six fep-163 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep163_solenoidal_expansion": "theorem fep163_solenoidal_expansion {n : ℕ} (Q H DQ : Fin n → Fin n → ℝ)\n    (g dlogp : Fin n → ℝ) (hcoup : ∀ i, dlogp i = -g i) :\n    weightedDivergence Q H DQ g dlogp\n      = traceOf (mulOf Q H) - dot g (mulVec Q g) + dot (divQ DQ) g",
+        "fep163_weightedDivergence_eq": "theorem fep163_weightedDivergence_eq {n : ℕ} (Q H DQ : Fin n → Fin n → ℝ)\n    (g dlogp : Fin n → ℝ) :\n    weightedDivergence Q H DQ g dlogp\n      = traceOf (mulOf Q H) + dot (divQ DQ) g + dot (mulVec Q g) dlogp",
+        "fep163_solenoidal_drop_of_orthogonal": "theorem fep163_solenoidal_drop_of_orthogonal {n : ℕ}\n    (Q H DQ : Fin n → Fin n → ℝ) (g dlogp : Fin n → ℝ)\n    (hQ : SkewSymmetric Q) (hH : SymmetricOf H)\n    (hcoup : ∀ i, dlogp i = -g i) (horth : dot (divQ DQ) g = 0) :\n    weightedDivergence Q H DQ g dlogp = 0",
+        "fep163_solenoidal_drop_of_constantQ": "theorem fep163_solenoidal_drop_of_constantQ {n : ℕ}\n    (Q H DQ : Fin n → Fin n → ℝ) (g dlogp : Fin n → ℝ)\n    (hQ : SkewSymmetric Q) (hH : SymmetricOf H)\n    (hcoup : ∀ i, dlogp i = -g i) (hconst : ∀ k l, DQ k l = 0) :\n    weightedDivergence Q H DQ g dlogp = 0",
+        "fep163_expansion_remainder_witness": "theorem fep163_expansion_remainder_witness :\n    dot (divQ remainderDQ) remainderG = 1"
+      },
+      "statement_review": "Explicit Q,H,DQ,g,dlogp data define weighted divergence through a Leibniz sum. Under dlogp=-g it is trace(QH)-g-transposeQg+divQ(DQ) dot g. Skew Q and symmetric H remove first two terms; orthogonality or DQ0 removes the remainder. A derivative-data witness has remainder1.",
+      "assumptions_and_scope": "H(l,k) denotes supplied partial_k g_l; DQ(k,l) supplied partial_k Q_kl. The weightedDivergence is defined algebraically rather than proved equal to analytic divergence of a field. H symmetry/coupling/DQ0 are explicit hypotheses, not consequences of stationarity alone. Existing outside-S current bridge is a proposal, not integrated source.",
+      "positive_witness_specification_unexecuted": "Use actual expansion_remainder_witness and skew/symmetric/coupled data to retain remainder1; use DQ0 for a valid conditional drop.",
+      "adverse_witness_specification_unexecuted": "Skew Q plus symmetric H and coupling alone do not force divQ(DQ) dot g0. Graph nodeDiv is a separate carrier and cannot be substituted for these directional derivative slots.",
+      "nearest_topic_distinction": "161 cancellations feed163;164 graph divergence gives a distinct exact finite law. A continuum/current relation requires an actual derivative/codomain bridge.",
+      "novelty_record": {
+        "id": "fep-163",
+        "nearest_topics": [
+          "fep-025"
+        ],
+        "new_invariant": "The weighted divergence of the candidate solenoidal current is exactly the three-term expansion tr(Q H) - gᵀ Q g + (∇·Q)ᵀ g under the stationary coupling, and the drop of the remainder requires an explicit orthogonality or constant-Q hypothesis with a concrete failing datum otherwise.",
+        "carrier_delta": "Adds explicit directional-derivative data (Hessian slot and transport-divergence slot) plus the stationary-density coupling so the manuscript's expansion identity becomes an exact finite theorem with a scoped conditional drop.",
+        "required_bridge": "FEPComposed.fep163_solenoidalExpansion_extends_fep025_current"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-163",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The exact three-term weighted-divergence expansion and its conditional drop are paired with fep-025's node-divergence current carrier, without asserting that the continuum first-order step has a finite graph analogue.",
+          "witness": "FEPComposed.fep163_solenoidalExpansion_extends_fep025_current"
+        },
+        {
+          "source": "fep-168",
+          "target": "fep-163",
+          "kind": "formal_pairing",
+          "rationale": "The quantitative remainder budget is paired with fep-163's exact three-term expansion, so the uncancelled divergence remainder is bounded and its equality case attained instead of being assumed to vanish, without an unconditional-drop claim.",
+          "witness": "FEPComposed.fep168_remainderBound_extends_fep163_solenoidalExpansion"
+        }
+      ]
+    },
+    {
+      "id": "fep-164",
+      "title": "Graph Divergence of the Candidate Solenoidal Current",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "da9b07d9cd8e5bf9818b2e16fa9855defd931c9623acc85fea43f65275083095",
+      "maturity_record": {
+        "id": "fep-164",
+        "primary_theorem": "fep164_graphDecomposition",
+        "supporting_theorems": [
+          "fep164_nodeDiv_skew",
+          "fep164_weightedNodeDiv_eq",
+          "fep164_weightedCurrent_div_eq"
+        ],
+        "boundary_theorems": [],
+        "invariant": "On a finite node set the node divergence of the skew transport field is twice its row sum; the node divergence of the edge current splits into the transport slot plus the discrete-divergence slot; and the weighted node divergence obeys an exact Leibniz rule whose p-residual does not vanish by skewness alone.",
+        "assumption_review": "Edge fields are plain real matrices with the flux convention W i j = flux i to j; the weighted statements assume a strictly positive density; no continuum graph limit or first-order asymptotic identification is claimed.",
+        "non_vacuity": "The decomposition and the Leibniz rule are exact on every finite node set, and the residual term is generically nonzero by nodeDiv_skew.",
+        "acceptance_probe": "warning-free native Lean compile of all four fep-164 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep164_graphDecomposition": "theorem fep164_graphDecomposition {n : ℕ} (Q : Fin n → Fin n → ℝ)\n    (g : Fin n → ℝ) (hQ : SkewSymmetric Q) (i : Fin n) :\n    nodeDiv (currentOf Q g) i = mulVec Q g i + g i * rowSum Q i",
+        "fep164_nodeDiv_skew": "theorem fep164_nodeDiv_skew {n : ℕ} {Q : Fin n → Fin n → ℝ} (hQ : SkewSymmetric Q)\n    (i : Fin n) : nodeDiv Q i = 2 * rowSum Q i",
+        "fep164_weightedNodeDiv_eq": "theorem fep164_weightedNodeDiv_eq {n : ℕ} (W : Fin n → Fin n → ℝ)\n    {p : Fin n → ℝ} (hp : ∀ i, 0 < p i) (i : Fin n) :\n    weightedNodeDiv p W i =\n      nodeDiv W i + ∑ j, (1 - p j / p i) * W j i",
+        "fep164_weightedCurrent_div_eq": "theorem fep164_weightedCurrent_div_eq {n : ℕ} (Q : Fin n → Fin n → ℝ)\n    (g : Fin n → ℝ) {p : Fin n → ℝ} (hQ : SkewSymmetric Q)\n    (hp : ∀ i, 0 < p i) (i : Fin n) :\n    weightedNodeDiv p (currentOf Q g) i\n      = mulVec Q g i + g i * rowSum Q i\n        + g i * ∑ j, (1 - p j / p i) * Q j i"
+      },
+      "statement_review": "On directed edge matrices with outflow-minus-inflow node divergence, skew Q gives nodeDiv Q=2rowSum Q. For currentOf(Q,g)(i,j)=Qij*g_j its node divergence is Qg_i+g_i*rowSum_i. Positive node weights yield an exact additional weighted residual.",
+      "assumptions_and_scope": "This is graph algebra, not an analytic divergence discretization theorem. Positive density need not normalize; currentOf is an edge field whereas mulVec Qg is a node vector. Residual can vanish on special data and is not forced nonzero solely by nodeDiv_skew.",
+      "positive_witness_specification_unexecuted": "Use165 skewQ and g(1,0): edge-current node divergence(1,-1) while mulVecQg=(0,-1). Nonuniform positive p exercises weighted residual.",
+      "adverse_witness_specification_unexecuted": "A balanced skew cycle may have rowSum0, so skewness does not force a nonzero row sum. Constant g or special densities can cancel terms; no universal residual sign follows.",
+      "nearest_topic_distinction": "025 earlier current/divergence conservation and163 derivative data use different contractions.164 proves exact graph identities retaining the density residual.",
+      "novelty_record": {
+        "id": "fep-164",
+        "nearest_topics": [
+          "fep-025"
+        ],
+        "new_invariant": "On a finite node set the node divergence of a skew edge field is twice its row sum, the edge current's divergence splits into transport plus discrete-divergence slots, and the weighted node divergence obeys an exact Leibniz rule with a generically nonzero density residual.",
+        "carrier_delta": "Transfers the candidate-current divergence check from fep-025's transition-row carrier to a plain flux-matrix carrier with explicit weighted-node divergence, exposing the residual that skewness alone cannot kill.",
+        "required_bridge": "FEPComposed.fep164_graphCurrent_extends_fep025_current"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-164",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The graph-plane decomposition and weighted Leibniz rule of the candidate current are paired with fep-025's edge-current node divergence, without equating the plain flux-matrix residual with a transition-row stationarity identity.",
+          "witness": "FEPComposed.fep164_graphCurrent_extends_fep025_current"
+        }
+      ]
+    },
+    {
+      "id": "fep-165",
+      "title": "Necessity Witness for the Unconditional Solenoidal Drop",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "e9e869324e2b63cb5feb3e5bd476980e366aa70e6bc3bab29cbfbdccb2a1590a",
+      "maturity_record": {
+        "id": "fep-165",
+        "primary_theorem": "fep165_witness_drop_fails",
+        "supporting_theorems": [
+          "fep165_witnessQ_skew",
+          "fep165_witness_current",
+          "fep165_witness_divQ",
+          "fep165_witness_divergence"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For the exact 2-node transport matrix [[0,1],[-1,0]] and gradient (1,0) the candidate current is (0,-1), the discrete divergence of the transport field is (2,-2), the node divergence of the current is (1,-1), and in particular equals 1 at node 0: the unconditional solenoidal drop is false, and neither the orthogonality nor the constant-Q hypothesis is available on this witness.",
+        "assumption_review": "A concrete finite counterexample only; it shows the manuscript's honesty guard is necessary rather than decorative and claims nothing about systems satisfying the extra hypotheses of fep-163.",
+        "non_vacuity": "The witness evaluates to exactly 1 at node 0, refuting the unconditional drop on its exact hypothesis class.",
+        "acceptance_probe": "warning-free native Lean compile of all five fep-165 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep165_witness_drop_fails": "theorem fep165_witness_drop_fails : nodeDiv (currentOf witnessQ witnessG) 0 = 1",
+        "fep165_witnessQ_skew": "theorem fep165_witnessQ_skew : SkewSymmetric witnessQ",
+        "fep165_witness_current": "theorem fep165_witness_current :\n    mulVec witnessQ witnessG = fun i => if i = 0 then 0 else -1",
+        "fep165_witness_divQ": "theorem fep165_witness_divQ :\n    nodeDiv witnessQ = fun i => if i = 0 then 2 else -2",
+        "fep165_witness_divergence": "theorem fep165_witness_divergence :\n    nodeDiv (currentOf witnessQ witnessG) = fun i => if i = 0 then 1 else -1"
+      },
+      "statement_review": "The explicit2-node skew Q and node vector g produce mulVecQg=(0,-1), nodeDivQ=(2,-2), and nodeDiv(currentOf Q g)=(1,-1), so graph-current divergence is nonzero at node0.",
+      "assumptions_and_scope": "This is a graph counterexample. It supplies no H,DQ,dlogp and therefore cannot establish failure of163 orthogonality or DQ0 hypotheses. A spatially constant skew matrix can have DQ0 in the derivative-data plane yet nonzero graph row divergence. The actual163 remainder witness separately refutes dropping a nonzero derivative-data remainder.",
+      "positive_witness_specification_unexecuted": "Reuse all five exact graph witness declarations, carefully distinguishing node current from edge field.",
+      "adverse_witness_specification_unexecuted": "Set the same Q,g with H0,DQ0,dlogp=-g in163: its weightedDivergence is0 while the graph node divergence is1. Thus these are not interchangeable countermodels.",
+      "nearest_topic_distinction": "163 pointwise/derivative-data drop and165 graph drop are distinct. Retain formalized for the graph witness, but correct the metadata claim about unavailable163 hypotheses.",
+      "novelty_record": {
+        "id": "fep-165",
+        "nearest_topics": [
+          "fep-025"
+        ],
+        "new_invariant": "For the 2-node transport [[0,1],[-1,0]] and gradient (1,0) the candidate current is (0,-1) with node divergence 1 at node 0, so the unconditional solenoidal drop is refuted exactly.",
+        "carrier_delta": "Pins the manuscript honesty guard as a compiled counterexample, separating the conditional drops of fep-163 from any unconditional claim.",
+        "required_bridge": "FEPComposed.fep165_necessityWitness_extends_fep025_current"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-165",
+          "target": "fep-025",
+          "kind": "formal_pairing",
+          "rationale": "The compiled 2-node counterexample refuting the unconditional solenoidal drop is paired with fep-025's divergence-free cycle witness, jointly bounding exactly what stationarity and antisymmetry imply.",
+          "witness": "FEPComposed.fep165_necessityWitness_extends_fep025_current"
+        }
+      ]
+    },
+    {
+      "id": "fep-167",
+      "title": "Frobenius Least-Squares Projection of the Symmetrizer",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "9b8423bb7d96d67de69ed5c93825ac59e37513d421693cf7c0518660607f8697",
+      "maturity_record": {
+        "id": "fep-167",
+        "primary_theorem": "fep167_frobenius_pythagoras",
+        "supporting_theorems": [
+          "fep167_symmetrize_minimizes",
+          "fep167_projection_unique",
+          "fep167_residual_example"
+        ],
+        "boundary_theorems": [],
+        "invariant": "For symmetric S the squared Frobenius norm splits exactly as ||H - S||^2 = ||H - symmetrize H||^2 + ||symmetrize H - S||^2, the symmetrizer minimizes the squared distance among symmetric matrices with equality exactly at the symmetrizer, the symmetric minimizer is unique, and the concrete nonsymmetric datum [[0,1],[0,0]] carries residual exactly 1/2.",
+        "assumption_review": "Matrix projection only, no differentiability, no continuum Clairaut theorem, no Bregman-projection existence/uniqueness claim.",
+        "non_vacuity": "The residual example evaluates to exactly 1/2 on nonsymmetric data, and symmetric data attains the zero residual exactly at the symmetrizer, so both the strict and the degenerate boundary are realized.",
+        "acceptance_probe": "warning-free native Lean compile of all four fep-167 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep167_frobenius_pythagoras": "theorem fep167_frobenius_pythagoras {n : ℕ} (H S : Fin n → Fin n → ℝ)\n    (hS : SymmetricOf S) :\n    frobeniusSq (H - S)\n      = frobeniusSq (H - symmetrize H) + frobeniusSq (symmetrize H - S)",
+        "fep167_symmetrize_minimizes": "theorem fep167_symmetrize_minimizes {n : ℕ} (H S : Fin n → Fin n → ℝ)\n    (hS : SymmetricOf S) :\n    frobeniusSq (H - symmetrize H) ≤ frobeniusSq (H - S)\n      ∧ (frobeniusSq (H - symmetrize H) = frobeniusSq (H - S) ↔ S = symmetrize H)",
+        "fep167_projection_unique": "theorem fep167_projection_unique {n : ℕ} (H S : Fin n → Fin n → ℝ)\n    (hS : SymmetricOf S)\n    (hmin : ∀ T : Fin n → Fin n → ℝ, SymmetricOf T →\n      frobeniusSq (H - S) ≤ frobeniusSq (H - T)) :\n    S = symmetrize H",
+        "fep167_residual_example": "theorem fep167_residual_example :\n    frobeniusSq (fep167ResidualH - symmetrize fep167ResidualH) = 1 / 2\n      ∧ frobeniusSq (fep167ResidualH - symmetrize fep167ResidualH) ≠ 0"
+      },
+      "statement_review": "Frobenius Pythagoras decomposes squared distance to any symmetric S into symmetrization residual plus symmetric projection distance. This proves minimizing symmetrizer, equality iff S=symmetrizeH and unique symmetric minimum. Explicit nonsymmetric datum has residual1/2.",
+      "assumptions_and_scope": "This is actual constructed finite matrix least-squares optimality, stronger than merely assuming a projection certificate. It does not establish differentiability/Clairaut or arbitrary Bregman projection properties.",
+      "positive_witness_specification_unexecuted": "Use raw[[0,1],[0,0]] and its symmetric average; verify residual1/2 and uniqueness. Symmetric raw data has residual0.",
+      "adverse_witness_specification_unexecuted": "A nonsymmetric competitor H itself can have distance0 but is outside the symmetric feasible set. Different weighted norms require a new projection formula/proof.",
+      "nearest_topic_distinction": "162 constructs symmetry and105 assumes abstract Bregman projection;167 gives a concrete Euclidean/Frobenius projection proof without solving general105 existence.",
+      "novelty_record": {
+        "id": "fep-167",
+        "nearest_topics": [
+          "fep-162",
+          "fep-105"
+        ],
+        "new_invariant": "Symmetrization is the unique Frobenius least-squares projection onto the symmetric matrices: exact Pythagoras, minimality with equality exactly at the symmetrizer, and uniqueness among symmetric candidates.",
+        "carrier_delta": "Adds the constructed-projection metric layer (Pythagoras + minimality + proven uniqueness) absent from fep-162's algebraic construction and from fep-105's assumed AffineBregmanProjection certificate, whose row explicitly withholds projection uniqueness.",
+        "required_bridge": "FEPComposed.fep167_frobeniusProjection_extends_fep162_clairautSymmetrize"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-167",
+          "target": "fep-162",
+          "kind": "formal_pairing",
+          "rationale": "The Frobenius least-squares projection layer is paired with fep-162's algebraic symmetrization construction, so the constructed discrete Hessian is exactly the unique symmetric minimizer, without claiming a continuum Clairaut theorem or a general Bregman-projection existence result.",
+          "witness": "FEPComposed.fep167_frobeniusProjection_extends_fep162_clairautSymmetrize"
+        }
+      ]
+    },
+    {
+      "id": "fep-168",
+      "title": "Quantitative Control of the Uncancelled Divergence Remainder",
+      "decision": "retain_formalized_only_for_exact_statements_with_listed_metadata_corrections",
+      "canonical_body_sha256": "7c1b83386845555ec06438b2b4e05241267cc69747617de316d3cea8246f157c",
+      "maturity_record": {
+        "id": "fep-168",
+        "primary_theorem": "fep168_weightedDivergence_eq_remainderDot",
+        "supporting_theorems": [
+          "fep168_remainder_sq_budget",
+          "fep168_absolute_budget",
+          "fep168_equality_attained"
+        ],
+        "boundary_theorems": [],
+        "invariant": "On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g under the cancellation hypotheses, the squared Cauchy-Schwarz budget (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncancelled remainder with its abs-product corollary, and equality is attained on aligned nonzero data with norm(g)^2 = 1.",
+        "assumption_review": "Quantitative budget on the fep-163 finite derivative-data carrier; the coupling hypothesis is sufficient-not-necessary (slot = dot(Qg, dlogp)); no PDE-discretization or entropy-production claim.",
+        "non_vacuity": "The aligned datum Q = [[0,1],[-1,0]], H = diag(1, 2), DQ with divQ (1, 0), and g = (1, 0) attains the budget with equality, while the pinned remainderG = (1, 1) datum is strict with gap 1, so both the equality and the strict boundary are realized.",
+        "acceptance_probe": "warning-free native Lean compile of all four fep-168 declarations.",
+        "disposition": "formalized"
+      },
+      "qualified_declaration_statements": {
+        "fep168_weightedDivergence_eq_remainderDot": "theorem fep168_weightedDivergence_eq_remainderDot {n : ℕ} (Q H DQ : Fin n → Fin n → ℝ)\n    (g dlogp : Fin n → ℝ) (hQ : SkewSymmetric Q) (hH : SymmetricOf H)\n    (hcoup : ∀ i, dlogp i = -g i) :\n    weightedDivergence Q H DQ g dlogp = dot (divQ DQ) g",
+        "fep168_remainder_sq_budget": "theorem fep168_remainder_sq_budget {n : ℕ} (Q H DQ : Fin n → Fin n → ℝ)\n    (g dlogp : Fin n → ℝ) (hQ : SkewSymmetric Q) (hH : SymmetricOf H)\n    (hcoup : ∀ i, dlogp i = -g i) :\n    (weightedDivergence Q H DQ g dlogp) ^ 2\n      ≤ dot (divQ DQ) (divQ DQ) * dot g g",
+        "fep168_absolute_budget": "theorem fep168_absolute_budget {n : ℕ} (Q H DQ : Fin n → Fin n → ℝ)\n    (g dlogp : Fin n → ℝ) (hQ : SkewSymmetric Q) (hH : SymmetricOf H)\n    (hcoup : ∀ i, dlogp i = -g i) :\n    abs (weightedDivergence Q H DQ g dlogp) * abs (weightedDivergence Q H DQ g dlogp)\n      ≤ dot (divQ DQ) (divQ DQ) * dot g g",
+        "fep168_equality_attained": "theorem fep168_equality_attained :\n    (weightedDivergence witnessQ fep168AlignedH remainderDQ fep168AlignedG\n        (fun i => -fep168AlignedG i)) ^ 2\n      = dot (divQ remainderDQ) (divQ remainderDQ) * dot fep168AlignedG fep168AlignedG\n      ∧ dot fep168AlignedG fep168AlignedG ≠ 0"
+      },
+      "statement_review": "Under skew Q,symmetric H and dlogp=-g, weightedDivergence equals the explicit remainder r dot g. Finite Cauchy–Schwarz bounds its square by(r dot r)*(g dot g); abs-product version is equivalent and aligned nonzero data attain equality.",
+      "assumptions_and_scope": "This budget controls algebraic derivative data, not physical entropy production, PDE discretization error or probabilistic failure. Coupling is sufficient, not necessary; other data can also make the coupling slot cancel. No smallness follows unless actual remainder/gradient norms are bounded.",
+      "positive_witness_specification_unexecuted": "Use the actual aligned g(1,0),r(1,0),Hdiag(1,2): equality with nonzero norm; r(1,0),g(1,1) gives strict gap1.",
+      "adverse_witness_specification_unexecuted": "Large DQ scales the remainder arbitrarily while skew/symmetric conditions persist. An unbounded remainder cannot be dropped because a Cauchy–Schwarz inequality exists.",
+      "nearest_topic_distinction": "163 qualitative uncancelled remainder becomes a quantitative exact norm budget;165 graph counterexample is separate and cannot supply these derivative norms without a bridge.",
+      "novelty_record": {
+        "id": "fep-168",
+        "nearest_topics": [
+          "fep-163",
+          "fep-165"
+        ],
+        "new_invariant": "On the fep-163 carrier the uncancelled remainder satisfies weightedDivergence = dot r g and the squared budget (dot r g)² ≤ (∑ r_i²)(∑ g_i²), with equality attained by aligned nonzero data.",
+        "carrier_delta": "Adds quantitative residual budgets (norm control with attainable equality) to fep-163's exact expansion and fep-165's refuting witness; bounds the remainder instead of assuming it vanishes.",
+        "required_bridge": "FEPComposed.fep168_remainderBound_extends_fep163_solenoidalExpansion"
+      },
+      "touching_relations": [
+        {
+          "source": "fep-168",
+          "target": "fep-163",
+          "kind": "formal_pairing",
+          "rationale": "The quantitative remainder budget is paired with fep-163's exact three-term expansion, so the uncancelled divergence remainder is bounded and its equality case attained instead of being assumed to vanish, without an unconditional-drop claim.",
+          "witness": "FEPComposed.fep168_remainderBound_extends_fep163_solenoidalExpansion"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "row": "fep-165",
+      "file": "config/theorem_maturity.yaml",
+      "field": "invariant",
+      "finding": "Graph counterexample does not establish failure of163 derivative-data orthogonality or DQ=0 hypotheses.",
+      "exact_replacement_field_text": "For the exact two-node skew transport matrix[[0,1],[-1,0]] and gradient(1,0), the node vector Qg is(0,-1), graph node divergence of Q is(2,-2), and graph node divergence of currentOf(Q,g) is(1,-1), hence1 at node0. This refutes an unconditional zero graph-current-divergence claim. No H,DQ or dlogp data are supplied here; the separate fep-163 remainder witness addresses its derivative-data carrier."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-165",
+      "file": "config/theorem_maturity.yaml",
+      "field": "assumption_review",
+      "finding": "The graph and derivative-data planes are not interchangeable exact hypothesis classes.",
+      "exact_replacement_field_text": "This is a concrete finite graph counterexample with outflow-minus-inflow node divergence and edge current Qij*g_j. It does not assert that fep-163 orthogonality or spatially constant-Q directional-derivative hypotheses fail: those involve separately supplied DQ data. Identifying graph divergence with analytic or fep-163 weighted derivative divergence would require a separate proved bridge."
+    },
+    {
+      "priority": "P2",
+      "row": "fep-165",
+      "file": "config/theorem_maturity.yaml",
+      "field": "non_vacuity",
+      "finding": "Refutation must name the graph hypothesis class.",
+      "exact_replacement_field_text": "The exact graph witness evaluates nodeDiv(currentOf Q g) at node0 to1 despite plain skew Q. It is nonvacuous for that graph claim. On the derivative-data carrier, the same pointwise Q and g can instead be paired with H=0,DQ=0,dlogp=-g and have weightedDivergence=0; the two divergence notions are not identified."
+    }
+  ],
+  "ranked_bounded_followups": [
+    {
+      "rank": 1,
+      "scope": "165 exact graph-versus-derivative boundary",
+      "owner": "config/theorem_maturity.yaml",
+      "seam": "Apply exact metadata correction distinguishing graph counterexample and163 directional-data theorem. Existing graph witness remains valid; no source proof change required.",
+      "estimate": "0.5–1 day with metadata seals/projections",
+      "positive": "nodeDiv graph witness1",
+      "adverse": "same Q/g with DQ0 has pointwise weighted divergence0"
+    },
+    {
+      "rank": 2,
+      "scope": "163 actual analytic derivative bridge",
+      "owner": "src/fep_lean/formal/geometric_mechanics.lean",
+      "seam": "A true analytic divergence identification requires differentiable Q(x),g(x),positive density and explicit product/chain rules with H(l,k)=partial_k g_l. Existing outside-repository current-bridge proposal must be reviewed/integrated separately; no PDE existence follows.",
+      "estimate": "2–5 day bounded finite-dimensional API spike",
+      "positive": "qualified smooth fields with correct derivative slots",
+      "adverse": "independent DQ data not forced by pointwise skew Q"
+    },
+    {
+      "rank": 3,
+      "scope": "167/168 quantitative actual consumers",
+      "owner": "src/fep_lean/formal/geometric_mechanics.lean",
+      "seam": "Reuse exact Frobenius minimizer and Cauchy–Schwarz equality/strict witnesses; any numerical/PDE error budget requires actual norm bounds and carrier/codomain identification.",
+      "estimate": "0.5–1.5 days typed consumers",
+      "positive": "projection residual1/2 and aligned equality",
+      "adverse": "large DQ prevents treating bounded-form inequality as small remainder"
+    }
+  ],
+  "limitations": [
+    "All168 topics now have a scoped static family audit; this is not broad Issue75 or scientific/terminal acceptance. Concrete metadata corrections and dependencies remain.",
+    "No S edits, Lean/tests/subject execution or delegation. Positive/adverse examples are unexecuted specifications; existing named source facts are not newly executed observations.",
+    "Current dispositions are retained only for exact narrowed mathematical statements. Pending metadata seals/projections/source-pair custody/integration and research acceptance remain distinct."
+  ]
+}
