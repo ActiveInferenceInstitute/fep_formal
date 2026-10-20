@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/post-run-owner-replacement/fep61-runtime-proposal/capture.py", line 60, in <module>
+    previous=encoded;guards()
+                     ~~~~~~^^
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/post-run-owner-replacement/fep61-runtime-proposal/capture.py", line 32, in guards
+    assert not git(n,'status','--porcelain') and not git(g,'status','--porcelain')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

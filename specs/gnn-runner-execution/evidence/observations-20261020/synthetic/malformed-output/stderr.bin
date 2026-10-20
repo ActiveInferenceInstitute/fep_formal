@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/capture.py", line 57, in <module>
+    payload=checker.strict_json(members[0].read_text());comparison=checker.validate(payload,jax_version='0.9.2')
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/validate_output.py", line 27, in strict_json
+    return json.loads(text, object_pairs_hook=pairs, parse_constant=nonfinite)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/friedman/.local/share/uv/python/cpython-3.14.8-macos-aarch64-none/lib/python3.14/json/__init__.py", line 365, in loads
+    return cls(**kw).decode(s)
+           ~~~~~~~~~~~~~~~~^^^
+  File "/Users/friedman/.local/share/uv/python/cpython-3.14.8-macos-aarch64-none/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/friedman/.local/share/uv/python/cpython-3.14.8-macos-aarch64-none/lib/python3.14/json/decoder.py", line 361, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ~~~~~~~~~~~~~~^^^^^^^^
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)

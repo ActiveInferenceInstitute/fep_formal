@@ -191,6 +191,12 @@ jobs:
           uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
           uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
           uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
+      - name: Validate retained historical runner evidence offline
+        run: |
+          uv run python -B specs/gnn-runner-execution/validate_retained.py
+          uv run python -B specs/gnn-runner-execution/test_validate_retained.py
+          uv run ruff check specs/gnn-runner-execution
+          uv run ruff format --check specs/gnn-runner-execution
       - name: Generate and validate publication inputs
         run: |
           uv run fep-lean catalogue

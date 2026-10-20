@@ -1,0 +1,3 @@
+Using CPython 3.11.17
+Creating virtual environment at: work/lean-lockstep/fep61-runtime-proposal/runtime
+Activate with: source work/lean-lockstep/fep61-runtime-proposal/runtime/bin/activate

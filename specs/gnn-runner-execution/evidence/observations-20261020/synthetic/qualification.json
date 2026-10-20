@@ -1,0 +1,902 @@
+{
+  "script_sha256": "365e26dccdf0bebb74a0ee6ece15c4f7f023042261ccd499a19e300389fa953a",
+  "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+  "complete": true,
+  "passed": true,
+  "checks": [
+    {
+      "case": "positive",
+      "passed": true,
+      "returncode": 0,
+      "seconds": 0.49247154098702595,
+      "expected_failure_marker": null,
+      "expected_captured_rows": 2,
+      "expected_invocation_directories": 2,
+      "protocol_before_mutation_sha256": "70dc66246c6042f8d835eca01ac6f154967b5998d2c12dfaade00946287e604a",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "397f697c056b7a37b6784ed9914a4bf89bf2971c1432e4782efe42788b08dd1e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "journal": {
+        "protocol_sha256": "70dc66246c6042f8d835eca01ac6f154967b5998d2c12dfaade00946287e604a",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "78e692107c735dc3133f6ed6b61b4d99c2afd4cc",
+        "GNN_head": "78e692107c735dc3133f6ed6b61b4d99c2afd4cc",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.05278816699865274,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_sha256": "bb985671461370e1c14572218bd8d409fd7e2ba000e7f02cb4e476663545a640",
+            "comparison": {
+              "passed": true,
+              "observation": 1.0590271662872408,
+              "latent": 0.6498920118351406,
+              "posterior_mean": 0.5295135831436204,
+              "posterior_covariance": 0.5,
+              "control": 0.0,
+              "boundary": "Initial observation update only; F/Q prediction and OU dynamics were not exercised."
+            },
+            "stable_payload_sha256": "0fc2385906cf0bf7aa79283f0189bd9c0279ad316f71fea66719c355056a21c1",
+            "source_runtime_before_after_unchanged": true
+          },
+          {
+            "invocation": 2,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/invocation-2/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/invocation-2/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/invocation-2/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/positive/fep61-runtime-proposal/invocation-2/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.05241570799262263,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_sha256": "bb985671461370e1c14572218bd8d409fd7e2ba000e7f02cb4e476663545a640",
+            "comparison": {
+              "passed": true,
+              "observation": 1.0590271662872408,
+              "latent": 0.6498920118351406,
+              "posterior_mean": 0.5295135831436204,
+              "posterior_covariance": 0.5,
+              "control": 0.0,
+              "boundary": "Initial observation update only; F/Q prediction and OU dynamics were not exercised."
+            },
+            "stable_payload_sha256": "0fc2385906cf0bf7aa79283f0189bd9c0279ad316f71fea66719c355056a21c1",
+            "source_runtime_before_after_unchanged": true
+          }
+        ],
+        "complete": true,
+        "passed": true,
+        "failure_reason": null,
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "missing-output",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.2288155830174219,
+      "expected_failure_marker": "assert len(members)==1",
+      "expected_captured_rows": 1,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "1d713027737112887ee92729fe00c7c2720f8fc07ad91ab4d115bf0a9081928f",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f14a2f08210a87ae65e95349da8c148e6768dd349de77320420392559c766350",
+      "journal": {
+        "protocol_sha256": "1d713027737112887ee92729fe00c7c2720f8fc07ad91ab4d115bf0a9081928f",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "735acac4b0e45eca6d907d49e87115a9d4601a62",
+        "GNN_head": "735acac4b0e45eca6d907d49e87115a9d4601a62",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-output/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-output/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-output/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-output/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-output/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-output/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.051418624992948025,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "malformed-output",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.2291420839901548,
+      "expected_failure_marker": "json.decoder.JSONDecodeError:",
+      "expected_captured_rows": 1,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "5ab7e42740a29267442f8d5c100d8b5b9d7fffb43aaf4035b5f8bfd751ef81b7",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ec335713e8369772e5ebee479f4b1c13124bcbf4e58dc2c7345d319f429a6549",
+      "journal": {
+        "protocol_sha256": "5ab7e42740a29267442f8d5c100d8b5b9d7fffb43aaf4035b5f8bfd751ef81b7",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "735acac4b0e45eca6d907d49e87115a9d4601a62",
+        "GNN_head": "735acac4b0e45eca6d907d49e87115a9d4601a62",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/malformed-output/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.05220429101609625,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "extra-output",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.2233705839898903,
+      "expected_failure_marker": "assert len(members)==1",
+      "expected_captured_rows": 1,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "736e6336ae9bffafc7cb0200db4a2a9d558485c6d6bc86e9d4a7fd191a690dd6",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "79f34d5b6efc0f5e20512ed8476865d3004d52b817cbbe8de754169640ff404a",
+      "journal": {
+        "protocol_sha256": "736e6336ae9bffafc7cb0200db4a2a9d558485c6d6bc86e9d4a7fd191a690dd6",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "GNN_head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/extra-output/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/extra-output/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/extra-output/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/extra-output/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/extra-output/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/extra-output/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.05225974999484606,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "symlink-output",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.232862542005023,
+      "expected_failure_marker": "assert len(members)==1",
+      "expected_captured_rows": 1,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "89df59a156d7b9e30d04ea60faa39ca7834ecd597f241e7e5d9101e87615de44",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a7b4a8e61edf5c47c68cfb5ff11477cdb84f701a8794ea65319cab862679a582",
+      "journal": {
+        "protocol_sha256": "89df59a156d7b9e30d04ea60faa39ca7834ecd597f241e7e5d9101e87615de44",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "GNN_head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.05221354198874906,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "nonzero",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.2398880830151029,
+      "expected_failure_marker": "AssertionError: nonzero exit or stderr",
+      "expected_captured_rows": 1,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "67915bf8507351aa2d7ebbe07d87f06e901e6cd6ef63c54a3333bd39f06ddae4",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "64a3dbd0768bc34840d12d886e95f8f5e102eb31cdcddfcb29788d8e1f34f6fa",
+      "journal": {
+        "protocol_sha256": "67915bf8507351aa2d7ebbe07d87f06e901e6cd6ef63c54a3333bd39f06ddae4",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "GNN_head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/nonzero/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/nonzero/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/nonzero/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/nonzero/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/nonzero/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/nonzero/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 7,
+            "elapsed_seconds": 0.05230679098167457,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: nonzero exit or stderr",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "stderr",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.24748295798781328,
+      "expected_failure_marker": "AssertionError: nonzero exit or stderr",
+      "expected_captured_rows": 1,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "4e2f4b4f34a683a30978a09be533434a2a72b4c9826d1a1bf4f6952f3fa8087b",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "fa0c314a0d7e5f22997324b2a4c593c9fa2eb6ade569340d759f4b37d8574935",
+      "journal": {
+        "protocol_sha256": "4e2f4b4f34a683a30978a09be533434a2a72b4c9826d1a1bf4f6952f3fa8087b",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "ed835a98d6ea77e8e0fd593daf82776b6b248bb3",
+        "GNN_head": "ed835a98d6ea77e8e0fd593daf82776b6b248bb3",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/stderr/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/stderr/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/stderr/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/stderr/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/stderr/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/stderr/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.052425542002310976,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "1335e4d08d808e64471d016ebb4a44a9878224d3d17b0c03470fa6feaf30168f"
+          }
+        ],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: nonzero exit or stderr",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "deadline",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.47596154201892205,
+      "expected_failure_marker": "result=run_process_group(",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "1108012c598da30d766a02151e259831607484ee5aed36e0bcdb052a0b4578be",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "202cb7d65bad1b401d4c3310e39f3189957af180d0e3ad196aa868169c8167cc",
+      "journal": {
+        "protocol_sha256": "1108012c598da30d766a02151e259831607484ee5aed36e0bcdb052a0b4578be",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "ed835a98d6ea77e8e0fd593daf82776b6b248bb3",
+        "GNN_head": "ed835a98d6ea77e8e0fd593daf82776b6b248bb3",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "TimeoutExpired: Command '['/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/deadline/fep61-runtime-proposal/runtime/bin/python', '-I', '-B', '/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/deadline/fep61-runtime-proposal/candidate/runner.py']' timed out after 0.3 seconds",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "missing-runner",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.11566854201373644,
+      "expected_failure_marker": "candidate/runner.py",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "294980d332e265f70f1df3b949295188333e729d2d1432a58f32a9641e959173",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a69bfb086bb97c43ad47f97e453c238deca5d8f14a9210228338e57d7c7b8f78",
+      "journal": {
+        "protocol_sha256": "294980d332e265f70f1df3b949295188333e729d2d1432a58f32a9641e959173",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "GNN_head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "FileNotFoundError: [Errno 2] No such file or directory: '/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-runner/fep61-runtime-proposal/candidate/runner.py'",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "replacement-runner",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.11863420798908919,
+      "expected_failure_marker": "assert sha(h/'candidate/runner.py')",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "4c8bf2bd7ffcfb4f3464386e63dc24a4033ca240740334fbe0ec10d09ea3f9b1",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ee8fe4213bbc4516100a7ffe1994a2fc0a78707d0de48d2d7dd0b931c88c6ca3",
+      "journal": {
+        "protocol_sha256": "4c8bf2bd7ffcfb4f3464386e63dc24a4033ca240740334fbe0ec10d09ea3f9b1",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "GNN_head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "replacement-checker",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.10225820800405927,
+      "expected_failure_marker": "assert sha(h/'validate_output.py')",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "f45799d46b934728f3828d2c82b70ad3fd99b42ec904c27256e6a175f1cd19d7",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "11b3c96f927c63a90ce1ebf8ab1f80be622ad8c0994c3a9fa69429b8f494f657",
+      "journal": null,
+      "original_journal_preserved": true
+    },
+    {
+      "case": "replacement-protocol",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.1044218750030268,
+      "expected_failure_marker": "assert sha(protocol_path)",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "41591ca37c221c8e0060b0b1dc4bc08defb0d0829c5f35834664d82b1a5b81b3",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "47a3348bae1ca5953e441e689787cbbb0de2fd1c58455e73523fce964687d552",
+      "journal": null,
+      "original_journal_preserved": true
+    },
+    {
+      "case": "stale-source-head",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.11528483300935477,
+      "expected_failure_marker": "assert git(n,'rev-parse','HEAD')",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "38671446b272849ce26b4000a0ff38e40b4e2ba443a6b7ed510a04c5bbfc4570",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7b04b5e7c8bb1f1dd727f6803634b63efc8320667ceac6978288b49cd0efebc8",
+      "journal": {
+        "protocol_sha256": "38671446b272849ce26b4000a0ff38e40b4e2ba443a6b7ed510a04c5bbfc4570",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "0000000000000000000000000000000000000000",
+        "GNN_head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "missing-owner",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.15170850002323277,
+      "expected_failure_marker": "absent.txt",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "9db036035252b783faa533c72665ad7ee2aa3f255c0b61209acb4b38a18bcab5",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ebc372206aeea3799bd94b69134dd7b3ce16ce9dd6438f9c526613ed0d0f9d29",
+      "journal": {
+        "protocol_sha256": "9db036035252b783faa533c72665ad7ee2aa3f255c0b61209acb4b38a18bcab5",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "GNN_head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "FileNotFoundError: [Errno 2] No such file or directory: '/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/missing-owner/fep-reviewed-components-next/fep_formal/absent.txt'",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "wrong-owner-digest",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.16417583302245475,
+      "expected_failure_marker": "ValueError: missing, stale or replaced source/runtime binding",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "799e8e89450e663d4af81e8793efc3186d849b31d7d9ac1367468daea2804bab",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d0102327fda69d7cb43e50f657a3659e0a107d9b39d99a9d46906f41077b5dac",
+      "journal": {
+        "protocol_sha256": "799e8e89450e663d4af81e8793efc3186d849b31d7d9ac1367468daea2804bab",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "GNN_head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "ValueError: missing, stale or replaced source/runtime binding",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "replacement-runtime-inventory",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.11399541699211113,
+      "expected_failure_marker": "assert sha(h/'runtime-inventory.json')",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "c5582056c9a0f608fda83e5d11b14f5b1c30c46fa3042e9f2d5cfa495faa4358",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "024d169ab6dd7363e11d6417aafaafab1e8767f0e218c00caf58c9eaecc0e2a9",
+      "journal": {
+        "protocol_sha256": "c5582056c9a0f608fda83e5d11b14f5b1c30c46fa3042e9f2d5cfa495faa4358",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "GNN_head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "replacement-runtime-program",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.11322374999872409,
+      "expected_failure_marker": "assert sha(h/'runtime_inventory_program.py.txt')",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "c6324afe8cd1c8268e5269715abf45635076491dfb4e3c532094c693cc54dd7d",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "c5f4e9385b015e80e41336e4b6b86a3b9e2060143111c5741fd07bcd20a03ace",
+      "journal": {
+        "protocol_sha256": "c6324afe8cd1c8268e5269715abf45635076491dfb4e3c532094c693cc54dd7d",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "GNN_head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "runtime-observation-mismatch",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.17369220798718743,
+      "expected_failure_marker": "assert hashlib.sha256(inventory)",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "73f429f7046da61c297e49ec2877a53e1e38443e148d8a534f738d53be5bddf0",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "0289d7376c5d95a3d56d49c50a2ca204293629c44e02c227e31a7e5c40ec71a1",
+      "journal": {
+        "protocol_sha256": "73f429f7046da61c297e49ec2877a53e1e38443e148d8a534f738d53be5bddf0",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "GNN_head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "post-run-owner-replacement",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.2576949579815846,
+      "expected_failure_marker": "assert not git(n,'status','--porcelain')",
+      "expected_captured_rows": 1,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "8e8b7bc8b0595707d6893630092b4e5f3ad5afd566ff840625c558401320cdb4",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "c778134482a16355007dd93e91660fd5418b8ceca1afca49cfc353176456adf5",
+      "journal": {
+        "protocol_sha256": "8e8b7bc8b0595707d6893630092b4e5f3ad5afd566ff840625c558401320cdb4",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "GNN_head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/post-run-owner-replacement/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/post-run-owner-replacement/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/post-run-owner-replacement/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/post-run-owner-replacement/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/post-run-owner-replacement/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/post-run-owner-replacement/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.052526583982398733,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: ",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "second-output-mismatch",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.43382658300106414,
+      "expected_failure_marker": "AssertionError: numerical replay changed",
+      "expected_captured_rows": 2,
+      "expected_invocation_directories": 2,
+      "protocol_before_mutation_sha256": "b49b36ddcedf8110b64da093a3390e0423f280b735ae48991552fe1137aeca3f",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a25cad6af6a6d562addc5dc05a797d27169814477851af099c1d2796f6481024",
+      "journal": {
+        "protocol_sha256": "b49b36ddcedf8110b64da093a3390e0423f280b735ae48991552fe1137aeca3f",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "GNN_head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "checks": [
+          {
+            "invocation": 1,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/invocation-1/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/invocation-1/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/invocation-1/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/invocation-1/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.052551374974427745,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "output_sha256": "bb985671461370e1c14572218bd8d409fd7e2ba000e7f02cb4e476663545a640",
+            "comparison": {
+              "passed": true,
+              "observation": 1.0590271662872408,
+              "latent": 0.6498920118351406,
+              "posterior_mean": 0.5295135831436204,
+              "posterior_covariance": 0.5,
+              "control": 0.0,
+              "boundary": "Initial observation update only; F/Q prediction and OU dynamics were not exercised."
+            },
+            "stable_payload_sha256": "0fc2385906cf0bf7aa79283f0189bd9c0279ad316f71fea66719c355056a21c1",
+            "source_runtime_before_after_unchanged": true
+          },
+          {
+            "invocation": 2,
+            "command": [
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/runtime/bin/python",
+              "-I",
+              "-B",
+              "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/candidate/runner.py"
+            ],
+            "environment": {
+              "PATH": "/usr/bin:/bin",
+              "PYTHONDONTWRITEBYTECODE": "1",
+              "GNN_OUTPUT_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/invocation-2/output",
+              "HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/invocation-2/home",
+              "XDG_CACHE_HOME": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/invocation-2/cache",
+              "JAX_COMPILATION_CACHE_DIR": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/second-output-mismatch/fep61-runtime-proposal/invocation-2/cache/jax"
+            },
+            "returncode": 0,
+            "elapsed_seconds": 0.05222433299059048,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "AssertionError: numerical replay changed",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "preexisting-journal",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.0986566670180764,
+      "expected_failure_marker": "assert not journal.exists()",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 0,
+      "protocol_before_mutation_sha256": "7175af10d15639bfe9cf4682bc1986ead65e28255b8eac77fbf45c0d51d4c8d8",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "bc0ee523ca681a96d3aa75688d7f2269171180b857e260c5370235d0adcb146c",
+      "journal": {
+        "existing": "preserve"
+      },
+      "original_journal_preserved": true
+    },
+    {
+      "case": "preexisting-invocation",
+      "passed": true,
+      "returncode": 1,
+      "seconds": 0.17537700000684708,
+      "expected_failure_marker": "FileExistsError:",
+      "expected_captured_rows": 0,
+      "expected_invocation_directories": 1,
+      "protocol_before_mutation_sha256": "7d263aeace7c8d451d3f3e8b82efa483f21c2f58ea8f2dcb79083e8683e4163b",
+      "adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "47bf4da51e05af783d9f54faa66962824684ff20ad23fc3c3f5c816decd1abc6",
+      "journal": {
+        "protocol_sha256": "7d263aeace7c8d451d3f3e8b82efa483f21c2f58ea8f2dcb79083e8683e4163b",
+        "capture_adapter_sha256": "553c651e57d021b46e22169bf40c5c1e26d3bff69a1d75bffbb16af62f9d027a",
+        "FEP_candidate_head": "2ac26a19a13cc762562e8faf2048d12228db64dc",
+        "GNN_head": "2ac26a19a13cc762562e8faf2048d12228db64dc",
+        "checks": [],
+        "complete": false,
+        "passed": false,
+        "failure_reason": "FileExistsError: [Errno 17] File exists: '/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/preexisting-invocation/fep61-runtime-proposal/invocation-1'",
+        "coordinator_python": "3.14.8 (main, Oct  9 2026, 15:11:09) [Clang 22.1.3 ]",
+        "coordinator_executable_sha256": "a99820a3a31b57e615c6e0b050c92046281617beec6e8fdcb52da34bc8b56d99",
+        "boundary": [
+          "Synthetic physical capture-adapter control only; fixture output replay is not a scientific runner observation.",
+          "Two one-file synthetic Git owners and one-marker fixture runtime; no 3270-member runtime replacement claim."
+        ]
+      },
+      "original_journal_preserved": true
+    }
+  ],
+  "boundary": "Actual unchanged adapter exercised against synthetic physical fixture sources/runtime and saved payload. No new generated-runner, OU dynamics, native or full Issue61 acceptance."
+}

@@ -1,0 +1,333 @@
+{
+  "positive": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "78e692107c735dc3133f6ed6b61b4d99c2afd4cc",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "78e692107c735dc3133f6ed6b61b4d99c2afd4cc",
+        "porcelain": ""
+      }
+    }
+  },
+  "missing-output": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "735acac4b0e45eca6d907d49e87115a9d4601a62",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "735acac4b0e45eca6d907d49e87115a9d4601a62",
+        "porcelain": ""
+      }
+    }
+  },
+  "malformed-output": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "735acac4b0e45eca6d907d49e87115a9d4601a62",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "735acac4b0e45eca6d907d49e87115a9d4601a62",
+        "porcelain": ""
+      }
+    }
+  },
+  "extra-output": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "porcelain": ""
+      }
+    }
+  },
+  "symlink-output": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python",
+      "fep61-runtime-proposal/invocation-1/output/simulation_results.json": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/symlink-output/fep61-runtime-proposal/invocation-1/outside.json"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "porcelain": ""
+      }
+    }
+  },
+  "nonzero": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "3d04ac9cb5fa9966446197f0437a18342841a82e",
+        "porcelain": ""
+      }
+    }
+  },
+  "stderr": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "ed835a98d6ea77e8e0fd593daf82776b6b248bb3",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "ed835a98d6ea77e8e0fd593daf82776b6b248bb3",
+        "porcelain": ""
+      }
+    }
+  },
+  "deadline": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "ed835a98d6ea77e8e0fd593daf82776b6b248bb3",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "ed835a98d6ea77e8e0fd593daf82776b6b248bb3",
+        "porcelain": ""
+      }
+    }
+  },
+  "missing-runner": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "porcelain": ""
+      }
+    }
+  },
+  "replacement-runner": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "porcelain": ""
+      }
+    }
+  },
+  "replacement-checker": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "9cd2da1e9240406c66990bb97855f593fda63cbe",
+        "porcelain": ""
+      }
+    }
+  },
+  "replacement-protocol": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "porcelain": ""
+      }
+    }
+  },
+  "stale-source-head": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "porcelain": ""
+      }
+    }
+  },
+  "missing-owner": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "a191893769b4fd008c6d95db76204c8635c8a993",
+        "porcelain": ""
+      }
+    }
+  },
+  "wrong-owner-digest": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "porcelain": ""
+      }
+    }
+  },
+  "replacement-runtime-inventory": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "porcelain": ""
+      }
+    }
+  },
+  "replacement-runtime-program": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "porcelain": ""
+      }
+    }
+  },
+  "runtime-observation-mismatch": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "ef53fe7171b6573a441637647d166a22a7ea8b85",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "porcelain": ""
+      }
+    }
+  },
+  "post-run-owner-replacement": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "porcelain": "M owner.txt"
+      },
+      "gnn": {
+        "head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "porcelain": ""
+      }
+    }
+  },
+  "second-output-mismatch": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "27451be2a86bd8db7f786576c57edb82cc2272ea",
+        "porcelain": ""
+      }
+    }
+  },
+  "preexisting-journal": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "2ac26a19a13cc762562e8faf2048d12228db64dc",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "2ac26a19a13cc762562e8faf2048d12228db64dc",
+        "porcelain": ""
+      }
+    }
+  },
+  "preexisting-invocation": {
+    "symlink_observations_not_materialized": {
+      "fep61-runtime-proposal/runtime/bin/python": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-reviewed-components-next/fep_formal/.venv/bin/python"
+    },
+    "physical_fixture_Git_states_at_retention": {
+      "fep": {
+        "head": "2ac26a19a13cc762562e8faf2048d12228db64dc",
+        "porcelain": ""
+      },
+      "gnn": {
+        "head": "2ac26a19a13cc762562e8faf2048d12228db64dc",
+        "porcelain": ""
+      }
+    }
+  }
+}

@@ -8,6 +8,13 @@
   of [#74](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74);
   broader accessibility and manuscript review remain separate.
 
+- Document all seven operator option/default surfaces and preserve the existing
+  first-valid render-template fallback and shared bridge-parser compatibility.
+  Add controls for template precedence, ignored bridge-status paths and the
+  accept-only render branch; clarify optional document-receipt writes for
+  [CORE-M3 (#73)](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73).
+  No parser, provider, output-root or execution-default behavior changes.
+
 - Correct the conceptual fep-017 to fep-045 rationale to recognize the
   maintained Bernoulli posterior-closure theorem. The relation remains
   conceptual pending an explicit theorem between the posterior-kernel and
@@ -16,6 +23,15 @@
   witness, semantic disposition or capability status changes. Independent
   semantic review approves this correction for
   [#65](https://github.com/ActiveInferenceInstitute/fep_formal/issues/65).
+
+- Retain two actual generated-runner invocations for the named historical
+  CC2/9a source pair, with numerical output checks and 22 separately reviewed
+  synthetic capture-adapter controls. Add a source-bound offline evidence
+  validator, corruption/read-only controls and a hosted validation step for
+  [BRIDGE-D1 (#61)](https://github.com/ActiveInferenceInstitute/fep_formal/issues/61).
+  The T=1 observations exercise only the initial Gaussian update; historical
+  runtime inventory is retained without its binaries. Current-source, native,
+  OU dynamics and scientific acceptance remain separate.
 
 - Unify all 24 package-defined exception types under the existing public
   `FepLeanError` base, preserving their standard-library ancestry. Operational

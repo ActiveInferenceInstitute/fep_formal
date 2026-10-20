@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep61-capture-adapter-controls-v1/replacement-protocol/fep61-runtime-proposal/capture.py", line 15, in <module>
+    assert sha(protocol_path)==(h/'protocol-v2.sha256').read_text().strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
