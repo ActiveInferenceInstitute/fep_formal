@@ -14,19 +14,19 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Maintained formal modules | 72 |
 | Foundation modules | 45 |
 | Topic theorem declarations | 584 |
-| Formal-resource theorem declarations | 1694 |
-| Foundation theorem declarations | 1316 |
-| Total theorem declarations | 2278 |
+| Formal-resource theorem declarations | 1698 |
+| Foundation theorem declarations | 1320 |
+| Total theorem declarations | 2282 |
 | Topic definitions | 95 |
-| Formal-resource definitions | 943 |
-| Total definitions | 1038 |
+| Formal-resource definitions | 944 |
+| Total definitions | 1039 |
 | Topic abbreviations | 7 |
 | Formal-resource abbreviations | 32 |
 | Total abbreviations | 39 |
 | Formal-resource structures | 56 |
 | Distinct Mathlib imports | 79 |
 | Topic-to-import edges | 266 |
-| Formal-resource import edges | 390 |
+| Formal-resource import edges | 391 |
 | Internal formal-module dependencies | 173 |
 | Authored formalism relations | 150 |
 | Derivational formal relations | 24 |
@@ -234,7 +234,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | Module | Role | Theorems | Definitions | Structures | Internal dependencies |
 | --- | --- | ---: | ---: | ---: | --- |
 | `FepSketches.finite_probability` | `foundation` | 19 | 13 | 2 | — |
-| `FepSketches.finite_information` | `foundation` | 31 | 8 | 0 | `FepSketches.finite_probability` |
+| `FepSketches.finite_information` | `foundation` | 35 | 9 | 0 | `FepSketches.finite_probability` |
 | `FepSketches.active_inference` | `foundation` | 44 | 35 | 3 | `FepSketches.finite_information` |
 | `FepSketches.markov_blanket` | `foundation` | 9 | 8 | 2 | `FepSketches.finite_information` |
 | `FepSketches.information_geometry` | `foundation` | 33 | 14 | 1 | `FepSketches.finite_probability` |
