@@ -85,9 +85,11 @@ class RetainedEvidenceTests(unittest.TestCase):
             calls.append(command)
             return subprocess.CompletedProcess(command, 0, stdout=b"missing\n")
 
-        with patch.object(subprocess, "run", side_effect=guarded_run):
-            with self.assertRaisesRegex(ValueError, "missing historical source blob"):
-                validator.validate(EVIDENCE, fep_git=Path("fep"), gnn_git=Path("gnn"))
+        with (
+            patch.object(subprocess, "run", side_effect=guarded_run),
+            self.assertRaisesRegex(ValueError, "missing historical source blob"),
+        ):
+            validator.validate(EVIDENCE, fep_git=Path("fep"), gnn_git=Path("gnn"))
         self.assertEqual(len(calls), 1)
 
     def test_missing_git_objects_refuse_without_repository_writes(self):
