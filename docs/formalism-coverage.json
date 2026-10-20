@@ -399,8 +399,11 @@
     },
     {
       "blocked_topics": [],
-      "description": "Full-support finite laws prove Gibbs and Donsker--Varadhan optimizer identities, coordinate and mean-field decompositions, fixed-sample importance-weighted Jensen control, channel data processing, and rate-distortion weak duality, with positive-weight and zero-multiplier witnesses. No strong-duality or extended-divergence claim is inferred.",
+      "description": "Full-support finite laws prove Gibbs and Donsker--Varadhan optimizer identities, coordinate and mean-field decompositions, fixed-sample importance-weighted Jensen control, channel data processing, and rate-distortion weak duality, with positive-weight and zero-multiplier witnesses. No strong-duality or extended-divergence claim is inferred. On the fair Boolean source with Boolean Hamming distortion, the exact natural-log rate curve is attained, has the derived converse, and has the stated positive finite log-ratio dual optimizer for strictly interior budgets; the zero-budget limiting multiplier is unbounded. No general finite- or continuous-alphabet strong duality is claimed.",
       "evidence": [
+        "FEP.VariationalDuality.FairBoolean.boolean_closed_exact_minimum",
+        "FEP.VariationalDuality.FairBoolean.boolean_interior_dual_exact",
+        "FEP.VariationalDuality.FairBoolean.interiorMultiplier_unbounded_near_zero",
         "FEP.VariationalDuality.dvObjective_eq_logPartition_iff",
         "FEP.VariationalDuality.finiteChannel_dataProcessing",
         "FEP.VariationalDuality.fixedSampleImportanceJensen",
@@ -798,9 +801,13 @@
     },
     {
       "blocked_topics": [],
-      "description": "Exact Helmholtz difference and derivative laws, including the equilibrium identity dF/dT=-S and a positive-temperature Gaussian thermal witness.",
+      "description": "Exact Helmholtz difference and derivative laws, including the equilibrium identity dF/dT=-S and a positive-temperature Gaussian thermal witness. For finite energies and positive temperature, the same normalized carrier proves the physical Helmholtz functional is free energy plus temperature-scaled KL, with a unique Gibbs minimum and the derivative of the actual log-partition free energy. A two-level Boolean uniform law is strictly above the minimum. Zero temperature is excluded; this does not identify physical free energy with native fep-002 VFE.",
       "evidence": [
+        "FEPComposed.fep013_finite_equilibrium_derivative",
+        "FEPComposed.fep013_finite_helmholtz_decomposition",
+        "FEPComposed.fep013_finite_helmholtz_unique_minimum",
         "FEPComposed.fep013_gaussianHelmholtz_derivative",
+        "FEPComposed.fep013_two_level_uniform_strict",
         "fep_fep013.FEP013.fep013_delta_F",
         "fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy"
       ],
@@ -1137,7 +1144,7 @@
     },
     {
       "abbreviation_count": 0,
-      "definition_count": 42,
+      "definition_count": 45,
       "formal_dependencies": [
         "FepSketches.finite_information"
       ],
@@ -1147,14 +1154,40 @@
         "Mathlib.Analysis.Convex.SpecificFunctions.Basic",
         "Mathlib.InformationTheory.KullbackLeibler.Basic",
         "Mathlib.Probability.Moments.Basic",
-        "Mathlib.Topology.Order.Compact"
+        "Mathlib.Topology.Order.Compact",
+        "Mathlib.Analysis.SpecialFunctions.BinaryEntropy"
       ],
       "lean_module": "FepSketches.variational_duality",
       "resource": "variational_duality.lean",
       "role": "foundation",
       "structure_count": 3,
-      "theorem_count": 85,
+      "theorem_count": 110,
       "theorems": [
+        "FEP.VariationalDuality.FairBoolean.boolean_closed_exact_minimum",
+        "FEP.VariationalDuality.FairBoolean.boolean_converse",
+        "FEP.VariationalDuality.FairBoolean.boolean_interior_dual_exact",
+        "FEP.VariationalDuality.FairBoolean.boolean_interior_exact_minimum",
+        "FEP.VariationalDuality.FairBoolean.boolean_lagrangian_lower",
+        "FEP.VariationalDuality.FairBoolean.boolean_rate_algebra",
+        "FEP.VariationalDuality.FairBoolean.boolean_zero_exact",
+        "FEP.VariationalDuality.FairBoolean.entropy_fair_bool",
+        "FEP.VariationalDuality.FairBoolean.half_or_larger_exact",
+        "FEP.VariationalDuality.FairBoolean.interiorMultiplier_pos",
+        "FEP.VariationalDuality.FairBoolean.interiorMultiplier_unbounded_near_zero",
+        "FEP.VariationalDuality.FairBoolean.interiorMultiplier_zero_totalized",
+        "FEP.VariationalDuality.FairBoolean.interior_curve_derivative",
+        "FEP.VariationalDuality.FairBoolean.negMulLog_half",
+        "FEP.VariationalDuality.FairBoolean.reverseReference_KL_entropy",
+        "FEP.VariationalDuality.FairBoolean.reverseReference_KL_exact",
+        "FEP.VariationalDuality.FairBoolean.reverseReference_crossEntropy",
+        "FEP.VariationalDuality.FairBoolean.reverseReference_support",
+        "FEP.VariationalDuality.FairBoolean.symmetricJoint_distortion",
+        "FEP.VariationalDuality.FairBoolean.symmetricJoint_entropy",
+        "FEP.VariationalDuality.FairBoolean.symmetricJoint_feasible",
+        "FEP.VariationalDuality.FairBoolean.symmetricJoint_fst",
+        "FEP.VariationalDuality.FairBoolean.symmetricJoint_information",
+        "FEP.VariationalDuality.FairBoolean.symmetricJoint_snd",
+        "FEP.VariationalDuality.FairBoolean.symmetric_zero_is_owned",
         "FEP.VariationalDuality.boolBiased_entropy_lt_zeroEnergyGibbs",
         "FEP.VariationalDuality.boolFeasible_information_pos",
         "FEP.VariationalDuality.boolHalfBudget_distinct_minimizers",
@@ -3159,18 +3192,25 @@
       "resource": "compositions/core.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 33,
+      "theorem_count": 43,
       "theorems": [
         "FEPComposed.activeInference_expectedFreeEnergy_to_fep021",
         "FEPComposed.fep002_vfe_compProd_chain_rule",
         "FEPComposed.fep003_pragmaticCost_efe_balance",
         "FEPComposed.fep004_bernoulliMetric_specialization",
+        "FEPComposed.fep004_fep038_metric_nonneg",
         "FEPComposed.fep007_normalizedMessage_is_fep028_softmax",
+        "FEPComposed.fep011_fep026_complexity_nonneg",
         "FEPComposed.fep012_softmax_entropyRegularizedCost_le",
+        "FEPComposed.fep013_finite_equilibrium_derivative",
+        "FEPComposed.fep013_finite_helmholtz_decomposition",
+        "FEPComposed.fep013_finite_helmholtz_unique_minimum",
         "FEPComposed.fep013_gaussianHelmholtz_derivative",
+        "FEPComposed.fep013_two_level_uniform_strict",
         "FEPComposed.fep018_coordinate_derivative_is_fep038",
         "FEPComposed.fep018_fep038_actual_metric_pullback",
         "FEPComposed.fep021_informationGain_balance",
+        "FEPComposed.fep022_fep027_predictive_child_marginal",
         "FEPComposed.fep022_predictive_is_hierarchical_marginal",
         "FEPComposed.fep024_regularizer_is_fep014_kl",
         "FEPComposed.fep025_current_dissipation_nonneg",
@@ -3184,12 +3224,15 @@
         "FEPComposed.fep031_energyGibbs_is_topicProbability",
         "FEPComposed.fep031_zeroBeta_binary_maxEntropy",
         "FEPComposed.fep031_zeroBeta_binary_uniform",
+        "FEPComposed.fep032_fep043_gradient_iteration_tendsto",
         "FEPComposed.fep032_update_is_fep043_gradientStep",
+        "FEPComposed.fep034_fep017_filter_joint_reconstruction",
         "FEPComposed.fep034_filter_is_fep017_posterior",
         "FEPComposed.fep036_empiricalPosterior_closed",
         "FEPComposed.fep036_smoothedRate_strongLaw",
         "FEPComposed.fep037_autocorrelation_tracks_fep020",
         "FEPComposed.fep038_fisherRao_separation",
+        "FEPComposed.fep039_fep005_partition_conservation_via_cover",
         "FEPComposed.fep039_partitionEnergy_conservation",
         "FEPComposed.fep041_informationGain_is_fep014_kl",
         "FEPComposed.fep046_single_break_is_fep045_bernoulli",
@@ -4955,24 +4998,24 @@
     "abbreviations": 39,
     "authored_relation_edges": 150,
     "capability_nodes": 50,
-    "composed_theorems": 368,
-    "definitions": 1035,
+    "composed_theorems": 378,
+    "definitions": 1038,
     "distinct_mathlib_imports": 79,
     "formal_module_dependency_edges": 173,
-    "formal_module_import_edges": 389,
+    "formal_module_import_edges": 390,
     "formal_modules": 72,
     "formal_pairing_witnesses": 119,
     "formal_relation_witnesses": 24,
     "formal_resource_abbreviations": 32,
-    "formal_resource_definitions": 940,
+    "formal_resource_definitions": 943,
     "formal_resource_structures": 56,
-    "formal_resource_theorems": 1659,
+    "formal_resource_theorems": 1694,
     "foundation_modules": 45,
-    "foundation_theorems": 1291,
+    "foundation_theorems": 1316,
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
     "theorem_witnessed_relations": 143,
-    "theorems": 2243,
+    "theorems": 2278,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
     "topic_import_edges": 266,
@@ -5001,10 +5044,10 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies fep-004's Unit-coordinate weighted quadratic form with fep-038's Bernoulli Fisher-metric definition, using fep038_fisherInformation p as the supplied weight. It unfolds both metric definitions rather than invoking endpoint theorems. The identity holds for every real p; positivity as a statistical metric additionally requires 0 < p < 1 and the relevant nonzero-tangent premise.",
+      "rationale": "fep_fep004.FEP004.fep004_fisherMetric_nonneg derives Bernoulli tangent self-metric nonnegativity after fep_fep038.FEP038.fep038_fisherInformation_eq discharges its nonnegative-weight premise on 0 < p < 1; the old metric specialization identifies the carrier.",
       "source": "fep-004",
       "target": "fep-038",
-      "witness": "FEPComposed.fep004_bernoulliMetric_specialization"
+      "witness": "FEPComposed.fep004_fep038_metric_nonneg"
     },
     {
       "kind": "conceptual",
@@ -5029,10 +5072,10 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies fep_fep026.FEP026.fep026_priorComplexity and fep_fep011.FEP011.fep011_surprise by their identical real negative-log definition. This fixes a sign convention for all real inputs under totalized Real.log; probability interpretation requires its separate domain assumptions.",
+      "rationale": "fep_fep011.FEP011.fep011_surprise_nonneg derives nonnegative fep026 prior complexity through the exact negative-log identity, for probability mass 0 < p \u2264 1; arbitrary real densities above 1 are excluded.",
       "source": "fep-011",
       "target": "fep-026",
-      "witness": "FEPComposed.fep026_priorComplexity_is_fep011_surprise"
+      "witness": "FEPComposed.fep011_fep026_complexity_nonneg"
     },
     {
       "kind": "formal",
@@ -5043,7 +5086,7 @@
     },
     {
       "kind": "conceptual",
-      "rationale": "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition.",
+      "rationale": "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition. The finite positive-temperature Helmholtz functional now has a qualified decomposition, unique Gibbs minimum and actual log-partition derivative (FEPComposed.fep013_finite_helmholtz_decomposition, FEPComposed.fep013_finite_helmholtz_unique_minimum, FEPComposed.fep013_finite_equilibrium_derivative). Its physical free energy is shifted and temperature-scaled finite KL, not identical to the native extended-valued fep-002 VFE; this edge remains conceptual.",
       "source": "fep-013",
       "target": "fep-002",
       "witness": null
@@ -5078,10 +5121,10 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem instantiates fep027_hierarchicalJoint with fep022_posteriorPredictive and proves its child marginal equals likelihood composed with posterior composed with the base measure, using Measure.snd_compProd and Measure.comp_assoc. It assumes an SFinite base measure and SFinite kernels, not normalized posterior or likelihood kernels.",
+      "rationale": "fep_fep027.FEP027.fep027_hierarchical_snd derives the actual posterior-predictive child marginal, then kernel/measure composition associativity yields sequential prediction under SFinite parent and SFinite kernels; no extra Bayesian identification is inferred.",
       "source": "fep-022",
       "target": "fep-027",
-      "witness": "FEPComposed.fep022_predictive_is_hierarchical_marginal"
+      "witness": "FEPComposed.fep022_fep027_predictive_child_marginal"
     },
     {
       "kind": "formal",
@@ -5134,10 +5177,10 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies one gradient step on fep_fep043.FEP043.fep043_quadraticGradient with fep_fep032.FEP032.fep032_quadraticUpdate at effective step 2*a*eta, by unfolding the two definitions and ring algebra. The identity holds for arbitrary real parameters. Convergence is not proved here; invoking fep032_quadraticUpdate_tendsto additionally requires 0 < 2*a*eta and 2*a*eta < 2.",
+      "rationale": "fep_fep032.FEP032.fep032_quadraticUpdate_tendsto derives convergence of the actual fep043 quadratic gradient-step iterates via the exact update-map identity, under0<2*a*eta<2; no convergence at endpoint effective steps is claimed.",
       "source": "fep-032",
       "target": "fep-043",
-      "witness": "FEPComposed.fep032_update_is_fep043_gradientStep"
+      "witness": "FEPComposed.fep032_fep043_gradient_iteration_tendsto"
     },
     {
       "kind": "conceptual",
@@ -5148,10 +5191,10 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem identifies fep_fep034.FEP034.fep034_filter definitionally with fep_fep017.FEP017.fep017_posterior at the transition-predicted prior. It retains standard-Borel/nonempty state and finite-measure/finite-kernel assumptions; no new pointwise Bayes identity at null observations is asserted.",
+      "rationale": "fep_fep017.FEP017.fep017_posterior_joint_reconstruction derives swapped joint reconstruction for the actual fep034 filter at the transition-predicted finite prior, using the old exact filter/posterior identity; retain measurable carriers, StandardBorel/nonempty latent space and finite prior/transition/likelihood kernels. No arbitrary pointwise null-version equality is inferred.",
       "source": "fep-034",
       "target": "fep-017",
-      "witness": "FEPComposed.fep034_filter_is_fep017_posterior"
+      "witness": "FEPComposed.fep034_fep017_filter_joint_reconstruction"
     },
     {
       "kind": "formal",
@@ -5176,10 +5219,10 @@
     },
     {
       "kind": "formal",
-      "rationale": "The composed theorem unfolds fep039_global_fe, fep005_blockEnergy and fep005_partitionCover and applies Finset.sum_fiberwise: summing the four partition-fibre energies equals the original sum over Fin 20 for arbitrary real state energies. This is finite partition aggregation, not dynamical energy conservation or conditional independence.",
+      "rationale": "fep_fep005.FEP005.fep005_disjoint and fep_fep005.FEP005.fep005_total_cover supply actual pairwise disjointness and union coverage to Finset.sum_biUnion, deriving fep039 additive block-energy conservation on the same 20-state/4-block carrier.",
       "source": "fep-039",
       "target": "fep-005",
-      "witness": "FEPComposed.fep039_partitionEnergy_conservation"
+      "witness": "FEPComposed.fep039_fep005_partition_conservation_via_cover"
     },
     {
       "kind": "formal",

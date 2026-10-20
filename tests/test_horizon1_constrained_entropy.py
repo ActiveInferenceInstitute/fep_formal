@@ -34,6 +34,7 @@ def test_constrained_entropy_preserves_its_existing_owner_imports() -> None:
         "Mathlib.InformationTheory.KullbackLeibler.Basic",
         "Mathlib.Probability.Moments.Basic",
         "Mathlib.Topology.Order.Compact",
+        "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
     )
     assert "namespace FEP.VariationalDuality\n" in source
     assert source.rstrip().endswith("end FEP.VariationalDuality")

@@ -14,6 +14,11 @@ import yaml
 from fep_lean.catalogue import BODIES, BODY_MODULE_MANIFEST, load_catalogue_metadata
 from fep_lean.catalogue.semantics import load_theorem_maturity
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from tests._support.lean_module_contract import (
+    exact_information_review,
+    restore_information_owner,
+    reverse_information_entries,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 BASELINE_PATH = (
@@ -480,6 +485,7 @@ def _scalar_review() -> dict[str, object]:
 
 
 def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, object]]:
+    edges = reverse_information_entries(edges, PROJECT_ROOT)
     change = _scalar_review()["edge_change"]
     result = []
     seen = 0
@@ -497,6 +503,7 @@ def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, obje
 def _reverse_scalar_capabilities(
     caps: list[dict[str, object]],
 ) -> list[dict[str, object]]:
+    caps = reverse_information_entries(caps, PROJECT_ROOT, capabilities=True)
     change = _scalar_review()["capability_change"]
     result = []
     seen = 0
@@ -522,6 +529,9 @@ def _assert_scalar_model_preimage(model: dict[str, object]) -> None:
 
 
 def _assert_scalar_core_preimage(source: str) -> None:
+    source = restore_information_owner(
+        source, "src/fep_lean/formal/compositions/core.lean", PROJECT_ROOT
+    )
     review = _scalar_review()
     for key in ["added_public_imports", "added_core_block"]:
         assert source.count(review[key]) == 1
@@ -756,3 +766,87 @@ def test_relation_rationale_review_authenticates_fixture_bytes(
     monkeypatch.setitem(globals(), "_RELATION_RATIONALE_REVIEW_PATH", replacement)
     with pytest.raises(AssertionError):
         _assert_released_relation_rows(_yaml("formalism_relations.yaml")["edges"])
+
+
+def test_exact_information_review_preserves_complete_prior_model_and_owner_bytes():
+    review = exact_information_review(PROJECT_ROOT)
+    model = _yaml("formalism_relations.yaml")
+    assert (
+        hashlib.sha256(_canonical(model).encode()).hexdigest()
+        == review["reviewed_model_canonical_sha256"]
+    )
+    restored = dict(model)
+    restored["edges"] = reverse_information_entries(model["edges"], PROJECT_ROOT)
+    restored["capabilities"] = reverse_information_entries(
+        model["capabilities"], PROJECT_ROOT, capabilities=True
+    )
+    assert (
+        hashlib.sha256(_canonical(restored).encode()).hexdigest()
+        == review["released_model_canonical_sha256"]
+    )
+    for owner in review["owner_changes"]:
+        restore_information_owner(
+            (PROJECT_ROOT / owner).read_text(), owner, PROJECT_ROOT
+        )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ["old_proof", "new_proof", "witness", "rationale", "capability", "other_edge"],
+)
+def test_exact_information_review_rejects_unapproved_changes(mutation):
+    review = exact_information_review(PROJECT_ROOT)
+    if mutation in {"old_proof", "new_proof"}:
+        owner = "src/fep_lean/formal/compositions/core.lean"
+        source = (PROJECT_ROOT / owner).read_text()
+        name = (
+            "namespace FEPComposed"
+            if mutation == "old_proof"
+            else "theorem fep013_finite_helmholtz_decomposition"
+        )
+        assert name in source
+        with pytest.raises(AssertionError):
+            restore_information_owner(
+                source.replace(name, "unreviewed", 1), owner, PROJECT_ROOT
+            )
+        return
+    model = _yaml("formalism_relations.yaml")
+    if mutation == "capability":
+        identity = review["capability_changes"][0]["reviewed"]["id"]
+        next(row for row in model["capabilities"] if row["id"] == identity)["evidence"][
+            0
+        ] = "unreviewed"
+    elif mutation == "other_edge":
+        model["edges"][0]["rationale"] = "unreviewed"
+    else:
+        identity = review["edge_changes"][0]["reviewed"]
+        row = next(
+            row
+            for row in model["edges"]
+            if (row["source"], row["target"])
+            == (identity["source"], identity["target"])
+        )
+        row[mutation] = "unreviewed"
+    with pytest.raises(AssertionError):
+        restored = dict(model)
+        restored["edges"] = reverse_information_entries(model["edges"], PROJECT_ROOT)
+        restored["capabilities"] = reverse_information_entries(
+            model["capabilities"], PROJECT_ROOT, capabilities=True
+        )
+        assert (
+            hashlib.sha256(_canonical(restored).encode()).hexdigest()
+            == review["released_model_canonical_sha256"]
+        )
+
+
+def test_exact_information_review_rejects_modified_fixture(tmp_path):
+    target = tmp_path / "tests/fixtures/exact_information_review_20261020.json"
+    target.parent.mkdir(parents=True)
+    target.write_bytes(
+        (
+            PROJECT_ROOT / "tests/fixtures/exact_information_review_20261020.json"
+        ).read_bytes()
+        + b" "
+    )
+    with pytest.raises(AssertionError):
+        exact_information_review(tmp_path)

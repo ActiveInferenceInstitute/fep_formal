@@ -1,0 +1,245 @@
+{
+  "schema_version": 1,
+  "base_commit": "b929c93bb0bec767424276b369cf09db160b0a5b",
+  "purpose": "Exact existing-owner additions and reviewed semantic-ledger deltas; historical fixtures remain unchanged. Source/compile components do not alone establish final issue acceptance.",
+  "edge_changes": [
+    {
+      "released": {
+        "source": "fep-004",
+        "target": "fep-038",
+        "kind": "formal",
+        "rationale": "The composed theorem identifies fep-004's Unit-coordinate weighted quadratic form with fep-038's Bernoulli Fisher-metric definition, using fep038_fisherInformation p as the supplied weight. It unfolds both metric definitions rather than invoking endpoint theorems. The identity holds for every real p; positivity as a statistical metric additionally requires 0 < p < 1 and the relevant nonzero-tangent premise.",
+        "witness": "FEPComposed.fep004_bernoulliMetric_specialization"
+      },
+      "reviewed": {
+        "source": "fep-004",
+        "target": "fep-038",
+        "kind": "formal",
+        "rationale": "fep_fep004.FEP004.fep004_fisherMetric_nonneg derives Bernoulli tangent self-metric nonnegativity after fep_fep038.FEP038.fep038_fisherInformation_eq discharges its nonnegative-weight premise on 0 < p < 1; the old metric specialization identifies the carrier.",
+        "witness": "FEPComposed.fep004_fep038_metric_nonneg"
+      }
+    },
+    {
+      "released": {
+        "source": "fep-011",
+        "target": "fep-026",
+        "kind": "formal",
+        "rationale": "The composed theorem identifies fep_fep026.FEP026.fep026_priorComplexity and fep_fep011.FEP011.fep011_surprise by their identical real negative-log definition. This fixes a sign convention for all real inputs under totalized Real.log; probability interpretation requires its separate domain assumptions.",
+        "witness": "FEPComposed.fep026_priorComplexity_is_fep011_surprise"
+      },
+      "reviewed": {
+        "source": "fep-011",
+        "target": "fep-026",
+        "kind": "formal",
+        "rationale": "fep_fep011.FEP011.fep011_surprise_nonneg derives nonnegative fep026 prior complexity through the exact negative-log identity, for probability mass 0 < p ≤ 1; arbitrary real densities above 1 are excluded.",
+        "witness": "FEPComposed.fep011_fep026_complexity_nonneg"
+      }
+    },
+    {
+      "released": {
+        "source": "fep-013",
+        "target": "fep-002",
+        "kind": "conceptual",
+        "rationale": "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition."
+      },
+      "reviewed": {
+        "source": "fep-013",
+        "target": "fep-002",
+        "kind": "conceptual",
+        "rationale": "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition. The finite positive-temperature Helmholtz functional now has a qualified decomposition, unique Gibbs minimum and actual log-partition derivative (FEPComposed.fep013_finite_helmholtz_decomposition, FEPComposed.fep013_finite_helmholtz_unique_minimum, FEPComposed.fep013_finite_equilibrium_derivative). Its physical free energy is shifted and temperature-scaled finite KL, not identical to the native extended-valued fep-002 VFE; this edge remains conceptual."
+      }
+    },
+    {
+      "released": {
+        "source": "fep-022",
+        "target": "fep-027",
+        "kind": "formal",
+        "rationale": "The composed theorem instantiates fep027_hierarchicalJoint with fep022_posteriorPredictive and proves its child marginal equals likelihood composed with posterior composed with the base measure, using Measure.snd_compProd and Measure.comp_assoc. It assumes an SFinite base measure and SFinite kernels, not normalized posterior or likelihood kernels.",
+        "witness": "FEPComposed.fep022_predictive_is_hierarchical_marginal"
+      },
+      "reviewed": {
+        "source": "fep-022",
+        "target": "fep-027",
+        "kind": "formal",
+        "rationale": "fep_fep027.FEP027.fep027_hierarchical_snd derives the actual posterior-predictive child marginal, then kernel/measure composition associativity yields sequential prediction under SFinite parent and SFinite kernels; no extra Bayesian identification is inferred.",
+        "witness": "FEPComposed.fep022_fep027_predictive_child_marginal"
+      }
+    },
+    {
+      "released": {
+        "source": "fep-032",
+        "target": "fep-043",
+        "kind": "formal",
+        "rationale": "The composed theorem identifies one gradient step on fep_fep043.FEP043.fep043_quadraticGradient with fep_fep032.FEP032.fep032_quadraticUpdate at effective step 2*a*eta, by unfolding the two definitions and ring algebra. The identity holds for arbitrary real parameters. Convergence is not proved here; invoking fep032_quadraticUpdate_tendsto additionally requires 0 < 2*a*eta and 2*a*eta < 2.",
+        "witness": "FEPComposed.fep032_update_is_fep043_gradientStep"
+      },
+      "reviewed": {
+        "source": "fep-032",
+        "target": "fep-043",
+        "kind": "formal",
+        "rationale": "fep_fep032.FEP032.fep032_quadraticUpdate_tendsto derives convergence of the actual fep043 quadratic gradient-step iterates via the exact update-map identity, under0<2*a*eta<2; no convergence at endpoint effective steps is claimed.",
+        "witness": "FEPComposed.fep032_fep043_gradient_iteration_tendsto"
+      }
+    },
+    {
+      "released": {
+        "source": "fep-034",
+        "target": "fep-017",
+        "kind": "formal",
+        "rationale": "The composed theorem identifies fep_fep034.FEP034.fep034_filter definitionally with fep_fep017.FEP017.fep017_posterior at the transition-predicted prior. It retains standard-Borel/nonempty state and finite-measure/finite-kernel assumptions; no new pointwise Bayes identity at null observations is asserted.",
+        "witness": "FEPComposed.fep034_filter_is_fep017_posterior"
+      },
+      "reviewed": {
+        "source": "fep-034",
+        "target": "fep-017",
+        "kind": "formal",
+        "rationale": "fep_fep017.FEP017.fep017_posterior_joint_reconstruction derives swapped joint reconstruction for the actual fep034 filter at the transition-predicted finite prior, using the old exact filter/posterior identity; retain measurable carriers, StandardBorel/nonempty latent space and finite prior/transition/likelihood kernels. No arbitrary pointwise null-version equality is inferred.",
+        "witness": "FEPComposed.fep034_fep017_filter_joint_reconstruction"
+      }
+    },
+    {
+      "released": {
+        "source": "fep-039",
+        "target": "fep-005",
+        "kind": "formal",
+        "rationale": "The composed theorem unfolds fep039_global_fe, fep005_blockEnergy and fep005_partitionCover and applies Finset.sum_fiberwise: summing the four partition-fibre energies equals the original sum over Fin 20 for arbitrary real state energies. This is finite partition aggregation, not dynamical energy conservation or conditional independence.",
+        "witness": "FEPComposed.fep039_partitionEnergy_conservation"
+      },
+      "reviewed": {
+        "source": "fep-039",
+        "target": "fep-005",
+        "kind": "formal",
+        "rationale": "fep_fep005.FEP005.fep005_disjoint and fep_fep005.FEP005.fep005_total_cover supply actual pairwise disjointness and union coverage to Finset.sum_biUnion, deriving fep039 additive block-energy conservation on the same 20-state/4-block carrier.",
+        "witness": "FEPComposed.fep039_fep005_partition_conservation_via_cover"
+      }
+    }
+  ],
+  "capability_changes": [
+    {
+      "released": {
+        "id": "cap-finite-variational-duality",
+        "title": "Finite variational duality and information bounds",
+        "description": "Full-support finite laws prove Gibbs and Donsker--Varadhan optimizer identities, coordinate and mean-field decompositions, fixed-sample importance-weighted Jensen control, channel data processing, and rate-distortion weak duality, with positive-weight and zero-multiplier witnesses. No strong-duality or extended-divergence claim is inferred.",
+        "status": "satisfied",
+        "evidence": [
+          "FEP.VariationalDuality.dvObjective_eq_logPartition_iff",
+          "FEP.VariationalDuality.finiteChannel_dataProcessing",
+          "FEP.VariationalDuality.fixedSampleImportanceJensen",
+          "FEP.VariationalDuality.meanFieldCoordinate_optimum_iff",
+          "FEP.VariationalDuality.rateDistortion_weak_duality",
+          "FEP.VariationalDuality.sampleMeanWeight_pos",
+          "fep_fep064.FEP064.fep064_zeroMultiplier_boundary"
+        ]
+      },
+      "reviewed": {
+        "id": "cap-finite-variational-duality",
+        "title": "Finite variational duality and information bounds",
+        "description": "Full-support finite laws prove Gibbs and Donsker--Varadhan optimizer identities, coordinate and mean-field decompositions, fixed-sample importance-weighted Jensen control, channel data processing, and rate-distortion weak duality, with positive-weight and zero-multiplier witnesses. No strong-duality or extended-divergence claim is inferred. On the fair Boolean source with Boolean Hamming distortion, the exact natural-log rate curve is attained, has the derived converse, and has the stated positive finite log-ratio dual optimizer for strictly interior budgets; the zero-budget limiting multiplier is unbounded. No general finite- or continuous-alphabet strong duality is claimed.",
+        "status": "satisfied",
+        "evidence": [
+          "FEP.VariationalDuality.FairBoolean.boolean_closed_exact_minimum",
+          "FEP.VariationalDuality.FairBoolean.boolean_interior_dual_exact",
+          "FEP.VariationalDuality.FairBoolean.interiorMultiplier_unbounded_near_zero",
+          "FEP.VariationalDuality.dvObjective_eq_logPartition_iff",
+          "FEP.VariationalDuality.finiteChannel_dataProcessing",
+          "FEP.VariationalDuality.fixedSampleImportanceJensen",
+          "FEP.VariationalDuality.meanFieldCoordinate_optimum_iff",
+          "FEP.VariationalDuality.rateDistortion_weak_duality",
+          "FEP.VariationalDuality.sampleMeanWeight_pos",
+          "fep_fep064.FEP064.fep064_zeroMultiplier_boundary"
+        ]
+      }
+    },
+    {
+      "released": {
+        "id": "cap-thermodynamic-potential",
+        "title": "Helmholtz thermodynamic potential",
+        "description": "Exact Helmholtz difference and derivative laws, including the equilibrium identity dF/dT=-S and a positive-temperature Gaussian thermal witness.",
+        "status": "satisfied",
+        "evidence": [
+          "FEPComposed.fep013_gaussianHelmholtz_derivative",
+          "fep_fep013.FEP013.fep013_delta_F",
+          "fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy"
+        ]
+      },
+      "reviewed": {
+        "id": "cap-thermodynamic-potential",
+        "title": "Helmholtz thermodynamic potential",
+        "description": "Exact Helmholtz difference and derivative laws, including the equilibrium identity dF/dT=-S and a positive-temperature Gaussian thermal witness. For finite energies and positive temperature, the same normalized carrier proves the physical Helmholtz functional is free energy plus temperature-scaled KL, with a unique Gibbs minimum and the derivative of the actual log-partition free energy. A two-level Boolean uniform law is strictly above the minimum. Zero temperature is excluded; this does not identify physical free energy with native fep-002 VFE.",
+        "status": "satisfied",
+        "evidence": [
+          "FEPComposed.fep013_finite_equilibrium_derivative",
+          "FEPComposed.fep013_finite_helmholtz_decomposition",
+          "FEPComposed.fep013_finite_helmholtz_unique_minimum",
+          "FEPComposed.fep013_gaussianHelmholtz_derivative",
+          "FEPComposed.fep013_two_level_uniform_strict",
+          "fep_fep013.FEP013.fep013_delta_F",
+          "fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy"
+        ]
+      }
+    }
+  ],
+  "released_model_canonical_sha256": "819c45cd6c18ba9987ef0832cadfc1ac33ce65c4a058923227dcf42e7138f3ee",
+  "reviewed_model_canonical_sha256": "45bd0aaba621a196ffdf11e8098b41e7d44aa14c40e78b00f81acb131493d452",
+  "owner_changes": {
+    "src/fep_lean/formal/variational_duality.lean": {
+      "released_sha256": "b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9",
+      "reviewed_sha256": "445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8",
+      "added_imports": [
+        "public import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\n"
+      ],
+      "added_block": "/-! ## Exact fair-Boolean Hamming rate-distortion curve\n\nNatural-log units and the fair Boolean source are fixed. The reverse-reference\nproof permits zero reproduction atoms. Finite dual optimizers are asserted only\nfor strictly interior budgets; zero distortion has an unbounded limiting\nmultiplier despite the totalized logarithm's finite value at zero. This selected\nsource does not establish general finite- or continuous-alphabet strong duality.\n-/\nnamespace FairBoolean\n\nnoncomputable def symmetricJoint (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :\n    FiniteLaw (Bool × Bool) where\n  mass xy := if xy.1 = xy.2 then (1-D)/2 else D/2\n  nonneg xy := by split <;> positivity\n  sum_one := by simp [Fintype.sum_prod_type]; ring\n\ntheorem symmetricJoint_fst (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :\n    (symmetricJoint D h0 h1).fstMarginal = FiniteLaw.uniform := by\n  apply FiniteLaw.ext_mass\n  funext x\n  cases x <;> simp [FiniteLaw.fstMarginal, symmetricJoint, FiniteLaw.uniform] <;> ring\n\ntheorem symmetricJoint_snd (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :\n    (symmetricJoint D h0 h1).sndMarginal = FiniteLaw.uniform := by\n  apply FiniteLaw.ext_mass\n  funext x\n  cases x <;> simp [FiniteLaw.sndMarginal, symmetricJoint, FiniteLaw.uniform] <;> ring\n\ntheorem symmetricJoint_distortion (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :\n    expectedDistortion (symmetricJoint D h0 h1) boolHammingDistortion = D := by\n  simp [expectedDistortion, symmetricJoint, boolHammingDistortion,\n    Fintype.sum_prod_type]\n\ntheorem symmetricJoint_feasible (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :\n    RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D\n      (symmetricJoint D h0 h1) :=\n  ⟨symmetricJoint_fst D h0 h1, (symmetricJoint_distortion D h0 h1).le⟩\n\nlemma entropy_fair_bool : entropy (FiniteLaw.uniform : FiniteLaw Bool) = Real.log 2 := by\n  simp [entropy, FiniteLaw.uniform, Real.negMulLog_eq_neg]\n\nlemma negMulLog_half (x : ℝ) :\n    2 * Real.negMulLog (x/2) = Real.negMulLog x + x * Real.log 2 := by\n  have hhalf : Real.negMulLog ((2 : ℝ)⁻¹) = (2 : ℝ)⁻¹ * Real.log 2 := by\n    simp only [Real.negMulLog_eq_neg, Real.log_inv]\n    ring\n  have h := Real.negMulLog_mul x ((2 : ℝ)⁻¹)\n  rw [hhalf] at h\n  rw [div_eq_mul_inv]\n  linear_combination 2 * h\n\ntheorem symmetricJoint_entropy (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :\n    entropy (symmetricJoint D h0 h1) = Real.log 2 + Real.binEntropy D := by\n  have hD := negMulLog_half D\n  have hC := negMulLog_half (1-D)\n  rw [Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]\n  simp [entropy, symmetricJoint, Fintype.sum_prod_type]\n  linarith\n\ntheorem symmetricJoint_information (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :\n    mutualInformation (symmetricJoint D h0 h1) = Real.log 2 - Real.binEntropy D := by\n  rw [mutualInformation_eq_entropy_marginals_without_support,\n    symmetricJoint_fst, symmetricJoint_snd, entropy_fair_bool,\n    symmetricJoint_entropy]\n  ring\n\n/-- Reverse-channel comparison law, using the actual reproduction marginal.\nIt is normalized even if the reproduction law has zero atoms. -/\nnoncomputable def reverseReference (code : FiniteLaw Bool)\n    (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) : FiniteLaw (Bool × Bool) where\n  mass xy := code xy.2 * (if xy.1 = xy.2 then 1-D else D)\n  nonneg xy := mul_nonneg (code.nonneg _) (by split <;> positivity)\n  sum_one := by\n    have h := code.sum_one\n    rw [Fintype.sum_bool] at h\n    simp [Fintype.sum_prod_type]\n    nlinarith\n\ntheorem reverseReference_support (J : FiniteLaw (Bool × Bool))\n    (D : ℝ) (h0 : 0 < D) (h1 : D < 1) :\n    ∀ xy, J xy ≠ 0 → 0 < reverseReference J.sndMarginal D h0.le h1.le xy := by\n  rintro ⟨x,y⟩ hmass\n  have hpos : 0 < J (x,y) := lt_of_le_of_ne (J.nonneg _) (Ne.symm hmass)\n  have hmarg : 0 < J.sndMarginal y := by\n    change 0 < ∑ z : Bool, J (z,y)\n    rw [Fintype.sum_bool]\n    cases x <;> linarith [J.nonneg (true,y), J.nonneg (false,y)]\n  change 0 < J.sndMarginal y * (if x=y then 1-D else D)\n  split <;> exact mul_pos hmarg (by linarith)\n\n/-- This consumes the real existing relative-support theorem, not assumed KL\nidentification or full support of the reproduction marginal. -/\ntheorem reverseReference_KL_entropy (J : FiniteLaw (Bool × Bool))\n    (D : ℝ) (h0 : 0 < D) (h1 : D < 1) :\n    finiteKL J (reverseReference J.sndMarginal D h0.le h1.le) =\n      crossEntropy J (reverseReference J.sndMarginal D h0.le h1.le) - entropy J := by\n  exact finiteKL_eq_crossEntropy_sub_entropy_of_relativeSupport _ _\n    (reverseReference_support J D h0 h1)\n\n/-- Endpoint/large-budget value0: an actual independent minimizer. -/\ntheorem half_or_larger_exact (D : ℝ) (hD : (1:ℝ)/2 ≤ D) :\n    ∃ J : FiniteLaw (Bool × Bool),\n      RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D J ∧\n      mutualInformation J = 0 ∧\n      ∀ K, RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D K →\n        mutualInformation J ≤ mutualInformation K := by\n  let J := (FiniteLaw.uniform : FiniteLaw Bool).product (FiniteLaw.pointMass false)\n  have h := boolIndependent_minimizer D hD (FiniteLaw.pointMass false)\n  exact ⟨J,h.1,mutualInformation_product_eq_zero _ _,h.2⟩\n\nnoncomputable def interiorMultiplier (D : ℝ) := Real.log (1-D) - Real.log D\n\ntheorem interiorMultiplier_pos (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :\n    0 < interiorMultiplier D := by\n  unfold interiorMultiplier\n  exact sub_pos.mpr (Real.log_lt_log h0 (show D < 1-D by linarith))\n\n/-- The derivative is claimed only in the strict interior. -/\ntheorem interior_curve_derivative (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :\n    HasDerivAt (fun d : ℝ => Real.log 2 - Real.binEntropy d)\n      (-interiorMultiplier D) D := by\n  simpa [interiorMultiplier] using\n    (Real.hasDerivAt_binEntropy (ne_of_gt h0) (ne_of_lt (show D < 1 by linarith))).const_sub (Real.log 2)\n\nlemma reverseReference_crossEntropy (J : FiniteLaw (Bool × Bool))\n    (hfair : J.fstMarginal = FiniteLaw.uniform)\n    (D : ℝ) (h0 : 0 < D) (h1 : D < 1) :\n    crossEntropy J (reverseReference J.sndMarginal D h0.le h1.le) =\n      crossEntropy J (J.fstMarginal.product J.sndMarginal) - Real.log 2 -\n      ((1-expectedDistortion J boolHammingDistortion)*Real.log (1-D) +\n        expectedDistortion J boolHammingDistortion*Real.log D) := by\n  let c : Bool × Bool → ℝ := fun xy => if xy.1=xy.2 then 1-D else D\n  have hc : ∀ xy, 0 < c xy := by intro xy; dsimp [c]; split <;> linarith\n  have hp : ∀ xy, -J xy * Real.log\n      (reverseReference J.sndMarginal D h0.le h1.le xy) =\n      -J xy * Real.log ((J.fstMarginal.product J.sndMarginal) xy) -\n        J xy * Real.log 2 - J xy * Real.log (c xy) := by\n    intro xy\n    by_cases hz : J xy=0\n    · simp [hz]\n    · have hprod := joint_supported_by_productMarginals J xy hz\n      have heq : reverseReference J.sndMarginal D h0.le h1.le xy =\n          (J.fstMarginal.product J.sndMarginal) xy * 2 * c xy := by\n        simp [reverseReference, FiniteLaw.product, hfair, FiniteLaw.uniform, c]\n        ring\n      rw [heq, Real.log_mul (mul_ne_zero (ne_of_gt hprod) (by norm_num))\n        (ne_of_gt (hc xy)), Real.log_mul (ne_of_gt hprod) (by norm_num)]\n      ring\n  have hchannel : (∑ xy, J xy * Real.log (c xy)) =\n      (1-expectedDistortion J boolHammingDistortion)*Real.log (1-D) +\n        expectedDistortion J boolHammingDistortion*Real.log D := by\n    have hsum := J.sum_one\n    simp only [Fintype.sum_prod_type, Fintype.sum_bool] at hsum\n    have hslog := congrArg (fun z : ℝ => z * Real.log (1-D)) hsum\n    simp [c, expectedDistortion, boolHammingDistortion, Fintype.sum_prod_type]\n    nlinarith\n  unfold crossEntropy\n  simp_rw [hp]\n  rw [Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.sum_mul,\n    J.sum_one, one_mul, hchannel]\n\nlemma reverseReference_KL_exact (J : FiniteLaw (Bool × Bool))\n    (hfair : J.fstMarginal = FiniteLaw.uniform)\n    (D : ℝ) (h0 : 0 < D) (h1 : D < 1) :\n    finiteKL J (reverseReference J.sndMarginal D h0.le h1.le) =\n      mutualInformation J - Real.log 2 -\n      ((1-expectedDistortion J boolHammingDistortion)*Real.log (1-D) +\n        expectedDistortion J boolHammingDistortion*Real.log D) := by\n  have hprod := finiteKL_eq_crossEntropy_sub_entropy_of_relativeSupport\n    J (J.fstMarginal.product J.sndMarginal) (joint_supported_by_productMarginals J)\n  have href := reverseReference_KL_entropy J D h0 h1\n  have hcross := reverseReference_crossEntropy J hfair D h0 h1\n  change mutualInformation J = _ at hprod\n  linarith\n\n/-- All source-fixed laws, not only distortion-feasible laws, obey this bound. -/\ntheorem boolean_lagrangian_lower (J : FiniteLaw (Bool × Bool))\n    (hfair : J.fstMarginal = FiniteLaw.uniform)\n    (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :\n    Real.log 2 + Real.log (1-D) ≤\n      mutualInformation J + interiorMultiplier D *\n        expectedDistortion J boolHammingDistortion := by\n  have h1 : D < 1 := by linarith\n  have hn := finiteKL_nonneg J (reverseReference J.sndMarginal D h0.le h1.le)\n  rw [reverseReference_KL_exact J hfair D h0 h1] at hn\n  unfold interiorMultiplier\n  nlinarith\n\nlemma boolean_rate_algebra (D : ℝ) :\n    Real.log 2 - Real.binEntropy D =\n      Real.log 2 + Real.log (1-D) - interiorMultiplier D * D := by\n  rw [Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]\n  simp only [Real.negMulLog_eq_neg, interiorMultiplier]\n  ring\n\ntheorem boolean_converse (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2)\n    (J : FiniteLaw (Bool × Bool))\n    (hJ : RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D J) :\n    Real.log 2 - Real.binEntropy D ≤ mutualInformation J := by\n  have hbound := boolean_lagrangian_lower J hJ.1 D h0 hhalf\n  have hmult := interiorMultiplier_pos D h0 hhalf\n  have hdist := mul_le_mul_of_nonneg_left hJ.2 hmult.le\n  rw [boolean_rate_algebra]\n  linarith\n\n/-- Actual attained interior minimum, with no field assuming a converse. -/\ntheorem boolean_interior_exact_minimum\n    (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :\n    ∃ J : FiniteLaw (Bool × Bool),\n      RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D J ∧\n      mutualInformation J = Real.log 2 - Real.binEntropy D ∧\n      ∀ K, RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D K →\n        mutualInformation J ≤ mutualInformation K := by\n  have h1 : D ≤ 1 := by linarith\n  refine ⟨symmetricJoint D h0.le h1, symmetricJoint_feasible D h0.le h1,\n    symmetricJoint_information D h0.le h1, ?_⟩\n  intro K hK\n  rw [symmetricJoint_information]\n  exact boolean_converse D h0 hhalf K hK\n\ntheorem symmetric_zero_is_owned :\n    symmetricJoint 0 (by norm_num) (by norm_num) = boolZeroDistortionJoint := by\n  apply FiniteLaw.ext_mass\n  funext xy\n  simp [symmetricJoint, boolZeroDistortionJoint]\n\ntheorem boolean_zero_exact (J : FiniteLaw (Bool × Bool))\n    (hJ : RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion 0 J) :\n    J = boolZeroDistortionJoint ∧ mutualInformation J = Real.log 2 := by\n  have heq := boolZeroBudget_unique_feasible J hJ\n  refine ⟨heq, ?_⟩\n  rw [heq, ← symmetric_zero_is_owned, symmetricJoint_information]\n  simp only [Real.binEntropy_zero, sub_zero]\n\n/-- Closed interval value, assembled without endpoint multiplier/continuity. -/\ntheorem boolean_closed_exact_minimum\n    (D : ℝ) (h0 : 0 ≤ D) (hhalf : D ≤ (1:ℝ)/2) :\n    ∃ J : FiniteLaw (Bool × Bool),\n      RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D J ∧\n      mutualInformation J = Real.log 2 - Real.binEntropy D ∧\n      ∀ K, RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D K →\n        mutualInformation J ≤ mutualInformation K := by\n  by_cases hz : D = 0\n  · subst D\n    refine ⟨boolZeroDistortionJoint, boolZeroDistortionJoint_feasible, ?_, ?_⟩\n    · have h := (boolean_zero_exact _ boolZeroDistortionJoint_feasible).2\n      simpa only [Real.binEntropy_zero, sub_zero] using h\n    · intro K hK\n      rw [(boolean_zero_exact _ hK).1]\n  · by_cases hh : D = (1:ℝ)/2\n    · subst D\n      obtain ⟨J,hJ,hI,hmin⟩ := half_or_larger_exact ((1:ℝ)/2) le_rfl\n      refine ⟨J,hJ,?_,hmin⟩\n      have hEntropy : Real.binEntropy ((1:ℝ)/2) = Real.log 2 :=\n        Real.binEntropy_eq_log_two.mpr (by norm_num)\n      rw [hI,hEntropy,sub_self]\n    · exact boolean_interior_exact_minimum D (lt_of_le_of_ne h0 (Ne.symm hz))\n        (lt_of_le_of_ne hhalf hh)\n\n/-- Exact dual value at the strict-interior finite multiplier. -/\ntheorem boolean_interior_dual_exact\n    (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :\n    rateDistortionDualValue (FiniteLaw.uniform : FiniteLaw Bool)\n      boolHammingDistortion D (interiorMultiplier D) =\n        Real.log 2 - Real.binEntropy D := by\n  have h1 : D ≤ 1 := by linarith\n  let J := symmetricJoint D h0.le h1\n  have hJ := symmetricJoint_feasible D h0.le h1\n  apply le_antisymm\n  · have h := rateDistortionDual_le_feasible_information\n      (FiniteLaw.uniform : FiniteLaw Bool) boolHammingDistortion D\n      (interiorMultiplier D) boolHammingDistortion_nonneg\n      (interiorMultiplier_pos D h0 hhalf).le J hJ\n    simpa [J, symmetricJoint_information] using h\n  · unfold rateDistortionDualValue\n    refine le_csInf ?_ ?_\n    · exact ⟨rateDistortionLagrangian J boolHammingDistortion\n        (interiorMultiplier D) - interiorMultiplier D * D, J, hJ.1, rfl⟩\n    · rintro value ⟨K,hfair,rfl⟩\n      have h := boolean_lagrangian_lower K hfair D h0 hhalf\n      rw [boolean_rate_algebra]\n      unfold rateDistortionLagrangian\n      linarith\n\n/-- Quantitative one-sided divergence. No finite endpoint multiplier is inferred\nfrom Lean's totalized real log at zero. -/\ntheorem interiorMultiplier_unbounded_near_zero :\n    ∀ M : ℝ, ∃ δ : ℝ, 0 < δ ∧\n      ∀ D : ℝ, 0 < D → D < δ → M < interiorMultiplier D := by\n  intro M\n  let δ : ℝ := min (1/4) (Real.exp (-M-Real.log 2))\n  refine ⟨δ, lt_min (by norm_num) (Real.exp_pos _), ?_⟩\n  intro D h0 hδ\n  have hquarter : D < (1:ℝ)/4 := lt_of_lt_of_le hδ (min_le_left _ _)\n  have hexp : D < Real.exp (-M-Real.log 2) :=\n    lt_of_lt_of_le hδ (min_le_right _ _)\n  have hlogD : Real.log D < -M-Real.log 2 := by\n    simpa only [Real.log_exp] using Real.log_lt_log h0 hexp\n  have hlogC : -Real.log 2 ≤ Real.log (1-D) := by\n    have h := Real.log_le_log (by norm_num : (0:ℝ) < 1/2)\n      (show (1:ℝ)/2 ≤ 1-D by linarith)\n    simpa [Real.log_div] using h\n  unfold interiorMultiplier\n  linarith\n\n/-- The totalized value differs from the right-hand limiting behavior. -/\ntheorem interiorMultiplier_zero_totalized : interiorMultiplier 0 = 0 := by\n  simp [interiorMultiplier]\n\nend FairBoolean\n\n"
+    },
+    "src/fep_lean/formal/compositions/core.lean": {
+      "released_sha256": "0e178e79b5f9c90c16cdaa3cf6744677e22aea9902f5a5c2a8fea45bb8bf1446",
+      "reviewed_sha256": "cdfbd1be21587df92e1c371ffc1e6d5a88bddf0a8092f9867ed420a30a47aca8",
+      "added_imports": [],
+      "added_block": "/-! ## Endpoint consequences and finite Helmholtz characterization\n\nThese results consume the actual endpoint laws on their stated carriers.\nPositive-temperature Helmholtz free energy is an energy-shifted, temperature-\nscaled finite KL functional, without identifying it with arbitrary native VFE.\n-/\nopen FEP FEP.FiniteInformation FEP.VariationalDuality\nopen scoped BigOperators\n\n/-- Statistical Bernoulli weights discharge the supplied-weight premise. -/\ntheorem fep004_fep038_metric_nonneg {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)\n    (v : ℝ) : 0 ≤ fep_fep038.FEP038.fep038_fisherMetric p v v := by\n  have hweight : 0 ≤ fep_fep038.FEP038.fep038_fisherInformation p := by\n    rw [fep_fep038.FEP038.fep038_fisherInformation_eq hp0 hp1]\n    positivity\n  rw [← fep004_bernoulliMetric_specialization p v v]\n  exact fep_fep004.FEP004.fep004_fisherMetric_nonneg\n    (fun _ : Unit => fep_fep038.FEP038.fep038_fisherInformation p)\n    (fun _ => v) (fun _ => hweight)\n\n/-- Probability mass, not an arbitrary density larger than one. -/\ntheorem fep011_fep026_complexity_nonneg {p : ℝ} (hp : 0 < p) (hp1 : p ≤ 1) :\n    0 ≤ fep_fep026.FEP026.fep026_priorComplexity p := by\n  rw [fep026_priorComplexity_is_fep011_surprise]\n  exact fep_fep011.FEP011.fep011_surprise_nonneg hp hp1\n\n/-- Stable effective step is an actual iteration-convergence premise. -/\ntheorem fep032_fep043_gradient_iteration_tendsto\n    (η a center x : ℝ) (h0 : 0 < 2*a*η) (h2 : 2*a*η < 2) :\n    Filter.Tendsto\n      (fun n : ℕ => ((fun y => y-η*fep_fep043.FEP043.fep043_quadraticGradient a center y)^[n]) x)\n      Filter.atTop (nhds center) := by\n  have hmap : (fun y => y-η*fep_fep043.FEP043.fep043_quadraticGradient a center y) =\n      fep_fep032.FEP032.fep032_quadraticUpdate (2*a*η) center := by\n    funext y\n    exact fep032_update_is_fep043_gradientStep η a center y\n  rw [hmap]\n  exact fep_fep032.FEP032.fep032_quadraticUpdate_tendsto h0 h2 center x\n\n/-- Disjointness and actual total coverage justify summation over blocks. -/\ntheorem fep039_fep005_partition_conservation_via_cover\n    (assign : Fin 20 → fep_fep005.FEP005.BlkPart) (stateEnergy : Fin 20 → ℝ) :\n    fep_fep039.FEP039.fep039_global_fe (fep005_blockEnergy assign stateEnergy) =\n      ∑ state : Fin 20, stateEnergy state := by\n  classical\n  let blocks := fep_fep005.FEP005.fep005_partitionCover assign\n  have hdisj : Set.PairwiseDisjoint (↑(Finset.univ : Finset (Fin 4))) blocks := by\n    intro i hi j hj hij\n    exact fep_fep005.FEP005.fep005_disjoint assign i j hij\n  have hcover : (Finset.univ : Finset (Fin 4)).biUnion blocks = Finset.univ := by\n    apply Finset.ext\n    intro state\n    constructor\n    · intro _; exact Finset.mem_univ _\n    · intro _\n      obtain ⟨block,hblock⟩ := fep_fep005.FEP005.fep005_total_cover assign state\n      exact Finset.mem_biUnion.mpr ⟨block,Finset.mem_univ _,hblock⟩\n  have hsum := Finset.sum_biUnion (f := stateEnergy) hdisj\n  rw [hcover] at hsum\n  simpa [fep_fep039.FEP039.fep039_global_fe, fep005_blockEnergy, blocks] using hsum.symm\n\ntheorem fep022_fep027_predictive_child_marginal\n    {𝓒 Ω 𝓧 : Type*}\n    [MeasurableSpace 𝓒] [MeasurableSpace Ω] [MeasurableSpace 𝓧]\n    (ν : Measure 𝓒) (posterior : Kernel 𝓒 Ω) (likelihood : Kernel Ω 𝓧)\n    [SFinite ν] [IsSFiniteKernel posterior] [IsSFiniteKernel likelihood] :\n    (fep_fep027.FEP027.fep027_hierarchicalJoint ν\n      (fep_fep022.FEP022.fep022_posteriorPredictive posterior likelihood)).snd =\n        likelihood ∘ₘ (posterior ∘ₘ ν) := by\n  let : IsSFiniteKernel (fep_fep022.FEP022.fep022_posteriorPredictive posterior likelihood) := by\n    change IsSFiniteKernel (likelihood ∘ₖ posterior)\n    infer_instance\n  rw [fep_fep027.FEP027.fep027_hierarchical_snd]\n  change (likelihood ∘ₖ posterior) ∘ₘ ν = likelihood ∘ₘ (posterior ∘ₘ ν)\n  exact Measure.comp_assoc.symm\n\n/-- The actual filter disintegrates the predicted-prior/likelihood joint.\nNo pointwise equality of arbitrary posterior versions is inferred. -/\ntheorem fep034_fep017_filter_joint_reconstruction\n    {Ω 𝓧 : Type*} [MeasurableSpace Ω] [MeasurableSpace 𝓧]\n    [StandardBorelSpace Ω] [Nonempty Ω]\n    (τ : Kernel Ω Ω) (κ : Kernel Ω 𝓧) (μ : Measure Ω)\n    [IsFiniteMeasure μ] [IsFiniteKernel τ] [IsFiniteKernel κ] :\n    (κ ∘ₘ (τ ∘ₘ μ)) ⊗ₘ fep_fep034.FEP034.fep034_filter τ κ μ =\n      ((τ ∘ₘ μ) ⊗ₘ κ).map Prod.swap := by\n  rw [fep034_filter_is_fep017_posterior]\n  exact fep_fep017.FEP017.fep017_posterior_joint_reconstruction κ (τ ∘ₘ μ)\n\nopen FEP FEP.FiniteInformation FEP.VariationalDuality\nvariable {α : Type*} [Fintype α] [Nonempty α]\n\n/-- Physical Helmholtz functional on this exact finite probability carrier. -/\ntheorem fep013_finite_helmholtz_decomposition (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) (q : FiniteLaw α) :\n    fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q) =\n      helmholtzFreeEnergy E T + T * finiteKL q (helmholtzGibbsLaw E T) := by\n  exact helmholtz_decomposition E hT q\n\n/-- Attainment and uniqueness use the same finite carrier and positive T. -/\ntheorem fep013_finite_helmholtz_unique_minimum (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) :\n    (∀ q : FiniteLaw α, helmholtzFreeEnergy E T ≤\n      fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q)) ∧\n    (∀ q : FiniteLaw α,\n      fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q) =\n        helmholtzFreeEnergy E T ↔ q = helmholtzGibbsLaw E T) := by\n  exact ⟨fun q => helmholtzFreeEnergy_le E hT q,\n    fun q => helmholtzFreeEnergy_eq_iff E hT q⟩\n\n/-- Derivative of the actual log-partition free energy, not an assumed first law. -/\ntheorem fep013_finite_equilibrium_derivative (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) :\n    HasDerivAt (helmholtzFreeEnergy E) (-entropy (helmholtzGibbsLaw E T)) T :=\n  hasDerivAt_helmholtzFreeEnergy E hT\n\n/-- A real two-level witness is strictly above the Gibbs minimum at uniform q. -/\ntheorem fep013_two_level_uniform_strict :\n    helmholtzFreeEnergy helmholtzBoolEnergy 1 <\n      fep_fep013.FEP013.fep013_helmholtz\n        (expectation (FiniteLaw.uniform : FiniteLaw Bool) helmholtzBoolEnergy)\n        1 (entropy (FiniteLaw.uniform : FiniteLaw Bool)) := by\n  exact helmholtz_bool_uniform_gt (by norm_num)\n\n"
+    }
+  },
+  "new_theorem_owners": {
+    "FEP.VariationalDuality.FairBoolean.boolean_closed_exact_minimum": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.boolean_converse": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.boolean_interior_dual_exact": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.boolean_interior_exact_minimum": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.boolean_lagrangian_lower": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.boolean_rate_algebra": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.boolean_zero_exact": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.entropy_fair_bool": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.half_or_larger_exact": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.interiorMultiplier_pos": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.interiorMultiplier_unbounded_near_zero": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.interiorMultiplier_zero_totalized": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.interior_curve_derivative": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.negMulLog_half": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.reverseReference_KL_entropy": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.reverseReference_KL_exact": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.reverseReference_crossEntropy": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.reverseReference_support": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.symmetricJoint_distortion": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.symmetricJoint_entropy": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.symmetricJoint_feasible": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.symmetricJoint_fst": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.symmetricJoint_information": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.symmetricJoint_snd": "FepSketches.variational_duality",
+    "FEP.VariationalDuality.FairBoolean.symmetric_zero_is_owned": "FepSketches.variational_duality",
+    "FEPComposed.fep004_fep038_metric_nonneg": "FepSketches.compositions.core",
+    "FEPComposed.fep011_fep026_complexity_nonneg": "FepSketches.compositions.core",
+    "FEPComposed.fep013_finite_equilibrium_derivative": "FepSketches.compositions.core",
+    "FEPComposed.fep013_finite_helmholtz_decomposition": "FepSketches.compositions.core",
+    "FEPComposed.fep013_finite_helmholtz_unique_minimum": "FepSketches.compositions.core",
+    "FEPComposed.fep013_two_level_uniform_strict": "FepSketches.compositions.core",
+    "FEPComposed.fep022_fep027_predictive_child_marginal": "FepSketches.compositions.core",
+    "FEPComposed.fep032_fep043_gradient_iteration_tendsto": "FepSketches.compositions.core",
+    "FEPComposed.fep034_fep017_filter_joint_reconstruction": "FepSketches.compositions.core",
+    "FEPComposed.fep039_fep005_partition_conservation_via_cover": "FepSketches.compositions.core"
+  },
+  "topic_roster_count": 168,
+  "formal_module_count": 72,
+  "relation_counts": {
+    "formal": 24,
+    "formal_pairing": 119,
+    "conceptual": 7
+  },
+  "semantic_dispositions_changed": false
+}

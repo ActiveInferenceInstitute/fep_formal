@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 from pathlib import Path
 
@@ -70,3 +72,63 @@ def topic_namespace_owner_modules(aggregate: Path) -> dict[str, str]:
             assert namespace not in owners, f"duplicate topic owner: {namespace}"
             owners[namespace] = module
     return owners
+
+
+_EXACT_INFORMATION_REVIEW_SHA256 = (
+    "e6f5c12d6843b04d1ae85f8b7157bc7da55b2c6de7227b24158227882f069d6c"
+)
+
+
+def exact_information_review(project_root: Path) -> dict:
+    """Authenticate the new review without changing historical seal fixtures."""
+    path = project_root / "tests/fixtures/exact_information_review_20261020.json"
+    raw = path.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _EXACT_INFORMATION_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1
+    assert review["topic_roster_count"] == 168
+    assert review["formal_module_count"] == 72
+    assert review["semantic_dispositions_changed"] is False
+    assert len(review["edge_changes"]) == 7
+    assert len(review["capability_changes"]) == 2
+    assert len(review["new_theorem_owners"]) == 35
+    return review
+
+
+def reverse_information_entries(
+    entries: list[dict[str, object]], project_root: Path, *, capabilities: bool = False
+) -> list[dict[str, object]]:
+    """Reverse only exact reviewed complete rows before applying older seals."""
+    review = exact_information_review(project_root)
+    changes = review["capability_changes" if capabilities else "edge_changes"]
+
+    def key(row: dict) -> object:
+        return row["id"] if capabilities else (row["source"], row["target"])
+
+    expected = {key(change["reviewed"]): change for change in changes}
+    assert len(expected) == len(changes)
+    seen = set()
+    restored = []
+    for row in entries:
+        identity = key(row)
+        if identity in expected:
+            assert identity not in seen
+            seen.add(identity)
+            change = expected[identity]
+            assert row == change["reviewed"]
+            restored.append(dict(change["released"]))
+        else:
+            restored.append(dict(row))
+    assert seen == set(expected)
+    return restored
+
+
+def restore_information_owner(source: str, owner: str, project_root: Path) -> str:
+    """Require every current byte, remove approved additions, and hash its preimage."""
+    change = exact_information_review(project_root)["owner_changes"][owner]
+    assert hashlib.sha256(source.encode()).hexdigest() == change["reviewed_sha256"]
+    for addition in [*change["added_imports"], change["added_block"]]:
+        assert source.count(addition) == 1
+        source = source.replace(addition, "", 1)
+    assert hashlib.sha256(source.encode()).hexdigest() == change["released_sha256"]
+    return source

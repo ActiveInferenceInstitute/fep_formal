@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -96,3 +98,26 @@ def test_run_preflight_happy_path(
     monkeypatch.setenv("PATH", str(bin_dir))
     status = preflight.run_preflight(require_gauss=False)
     assert status == 1
+
+
+@pytest.mark.parametrize("require_gauss", [None, True, False])
+def test_preflight_compatibility_flag_preserves_environment_and_full_checks(
+    monkeypatch, capsys, tmp_path, require_gauss
+):
+    from fep_lean.verification import preflight
+
+    monkeypatch.setenv("FEP_LEAN_REQUIRE_GAUSS", "preserved-sentinel")
+    monkeypatch.setattr(preflight, "project_root", lambda: tmp_path)
+    calls = []
+    payload = {"status": "error", "mode": "full", "checks": [], "failed_count": 1}
+
+    def inspect(root, *, mode):
+        calls.append((root, mode))
+        return payload
+
+    monkeypatch.setattr(preflight, "run_validation_checks", inspect)
+    before = dict(os.environ)
+    assert preflight.run_preflight(require_gauss=require_gauss) == 1
+    assert calls == [(tmp_path, "full")]
+    assert json.loads(capsys.readouterr().out) == payload
+    assert dict(os.environ) == before

@@ -1,5 +1,45 @@
 ## Unreleased
 
+- Accept [PR199](https://github.com/ActiveInferenceInstitute/fep_formal/pull/199)
+  on main `b929c93bb0bec767424276b369cf09db160b0a5b`: reusable frozen readiness
+  APIs and public release/verification operations, 22 catalogue numerical
+  witnesses, the complete 168-proxy static family review with 52 scoped metadata
+  corrections, and seven bounded entropy/Gibbs/Fisher bridge proofs. All 15
+  installed-wheel compatibility cells and executed hosted jobs pass on exact
+  main. Uploaded source/metadata/fonts/native/audit/render artifacts validate;
+  all 168 native topics compile with zero warnings or admissions. The accepted
+  389-page main PDF has seven directly reviewed changed pages and 382 exact
+  accepted-head pixel/text matches. Close bounded
+  [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64),
+  [PKG-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/120),
+  [LEAN-9](https://github.com/ActiveInferenceInstitute/fep_formal/issues/107) and
+  [FORM-S2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/85) with
+  explicit prerequisite subsets. Preserve broader capture, semantic, layout and
+  CLI-compatibility obligations.
+
+- Reconcile the open-only backlog with the maintainer's earlier closure of
+  [CUR-15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/51).
+  This removes a stale board row without claiming a new production DOM
+  diagnosis or fresh private-stream browser receipt. The remaining full capture
+  criteria retain their own evidence gates and the primary campaign is unchanged.
+
+- Extend the existing variational foundation with the exact fair-Boolean
+  Hamming rate-distortion minimum and interior dual multiplier, including
+  zero/half/negative-budget and unfair-source boundaries. Add finite
+  positive-temperature Helmholtz decomposition, unique minimum and actual
+  equilibrium derivative on one carrier. Strengthen six relation witnesses
+  with consumed endpoint consequences while retaining all relation kinds and
+  semantic dispositions. Add actual importing positive/refusal controls and an
+  authenticated new preimage layer; preserve every historical fixture.
+
+- Add `fep_lean.methods.load_packaged_formalism_query()` using the existing
+  immutable model and canonical join. Check consumed installed resources and
+  package Python owners against the standard wheel `RECORD` before and after
+  analysis; reject omission, coherent edits, malformed metadata and source
+  races. Preserve explicit checkout inspection and the source-only evidence
+  boundary. Remove the inert process-environment write from the legacy
+  preflight keyword while retaining strict full-mode capability checks.
+
 - Document one canonical operator contract table for status, preflight, native
   verification, bridge checks and publication capture, including required inputs,
   process/mutation effects, platform support and concrete exit-state next actions.

@@ -2,7 +2,8 @@
 
 - `model.py` owns source resolution (installed package data or an explicit
   checkout), strict YAML loading, policy and cross-corpus validation, the
-  immutable `MathematicalPositioning` model, and the exact-query functions.
+  immutable `MathematicalPositioning` model, the exact-query functions and
+  installed-wheel `RECORD` integrity checks.
 - `probes.py` owns deterministic numerical boundary probes, reusable finite
   Gibbs methods and the fixed-precision `classical_mds`. Its only internal
   dependency is the shared `FepLeanError` base; it performs no source discovery.
@@ -48,6 +49,7 @@ from fep_lean.methods import (
     inspect_family,
     inspect_theorem,
     inspect_topic,
+    load_packaged_formalism_query,
     log_partition,
     mathematical_positioning_bytes,
     mathematical_positioning_drift,

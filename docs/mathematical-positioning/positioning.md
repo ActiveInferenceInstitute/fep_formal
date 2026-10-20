@@ -19671,7 +19671,7 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-003` → `fep-021` (formal): The composed theorem feeds fep-003's discounted ENNReal pragmatic cost directly into fep-021's EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The epistemic balance requires the explicit hvalue premise that information value does not exceed pragmatic cost. Witness: `FEPComposed.fep003_pragmaticCost_efe_balance`.
 
-- `fep-004` → `fep-038` (formal): The composed theorem identifies fep-004's Unit-coordinate weighted quadratic form with fep-038's Bernoulli Fisher-metric definition, using fep038_fisherInformation p as the supplied weight. It unfolds both metric definitions rather than invoking endpoint theorems. The identity holds for every real p; positivity as a statistical metric additionally requires 0 < p < 1 and the relevant nonzero-tangent premise. Witness: `FEPComposed.fep004_bernoulliMetric_specialization`.
+- `fep-004` → `fep-038` (formal): fep_fep004.FEP004.fep004_fisherMetric_nonneg derives Bernoulli tangent self-metric nonnegativity after fep_fep038.FEP038.fep038_fisherInformation_eq discharges its nonnegative-weight premise on 0 < p < 1; the old metric specialization identifies the carrier. Witness: `FEPComposed.fep004_fep038_metric_nonneg`.
 
 - `fep-005` → `fep-009` (conceptual): The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge.
 
@@ -19679,11 +19679,11 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-008` → `fep-028` (conceptual): Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers.
 
-- `fep-011` → `fep-026` (formal): The composed theorem identifies fep_fep026.FEP026.fep026_priorComplexity and fep_fep011.FEP011.fep011_surprise by their identical real negative-log definition. This fixes a sign convention for all real inputs under totalized Real.log; probability interpretation requires its separate domain assumptions. Witness: `FEPComposed.fep026_priorComplexity_is_fep011_surprise`.
+- `fep-011` → `fep-026` (formal): fep_fep011.FEP011.fep011_surprise_nonneg derives nonnegative fep026 prior complexity through the exact negative-log identity, for probability mass 0 < p ≤ 1; arbitrary real densities above 1 are excluded. Witness: `FEPComposed.fep011_fep026_complexity_nonneg`.
 
 - `fep-012` → `fep-028` (formal): The composed theorem supplies fep-012's entropy-regularized policy objective with fep-028's globally normalized unit-interval softmax law. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-028 through its reviewed supporting theorems `fep_fep028.FEP028.fep028_softmax_nonneg` and `fep_fep028.FEP028.fep028_softmax_le_one` rather than the primary `fep_fep028.FEP028.fep028_softmax_sum_univ`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep012.FEP012.fep012_entropyRegularizedCost_le_expectedCost, fep_fep028.FEP028.fep028_softmax_le_one, fep_fep028.FEP028.fep028_softmax_nonneg. The proof consumes unit-interval supporting lemmas, not the primary sum-univ theorem; nonempty support and nonnegative temperature are explicit. Witness: `FEPComposed.fep012_softmax_entropyRegularizedCost_le`.
 
-- `fep-013` → `fep-002` (conceptual): Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition.
+- `fep-013` → `fep-002` (conceptual): Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition. The finite positive-temperature Helmholtz functional now has a qualified decomposition, unique Gibbs minimum and actual log-partition derivative (FEPComposed.fep013_finite_helmholtz_decomposition, FEPComposed.fep013_finite_helmholtz_unique_minimum, FEPComposed.fep013_finite_equilibrium_derivative). Its physical free energy is shifted and temperature-scaled finite KL, not identical to the native extended-valued fep-002 VFE; this edge remains conceptual.
 
 - `fep-013` → `fep-040` (formal): The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2. Actual consumed endpoint lemmas: fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy, fep_fep040.FEP040.fep040_thermalEntropy_hasDerivAt. Witness: `FEPComposed.fep013_gaussianHelmholtz_derivative`.
 
@@ -19693,7 +19693,7 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-021` → `fep-041` (formal): The composed theorem inserts fep-041's native KL information gain into fep-021's ENNReal EFE convention and proves the exact epistemic balance. Actual consumed endpoint lemma: fep_fep021.FEP021.fep021_efe_epistemic_balance. The explicit hvalue upper bound on information gain is required; the identity is not an unconditional untruncated EFE decomposition. Witness: `FEPComposed.fep021_informationGain_balance`.
 
-- `fep-022` → `fep-027` (formal): The composed theorem instantiates fep027_hierarchicalJoint with fep022_posteriorPredictive and proves its child marginal equals likelihood composed with posterior composed with the base measure, using Measure.snd_compProd and Measure.comp_assoc. It assumes an SFinite base measure and SFinite kernels, not normalized posterior or likelihood kernels. Witness: `FEPComposed.fep022_predictive_is_hierarchical_marginal`.
+- `fep-022` → `fep-027` (formal): fep_fep027.FEP027.fep027_hierarchical_snd derives the actual posterior-predictive child marginal, then kernel/measure composition associativity yields sequential prediction under SFinite parent and SFinite kernels; no extra Bayesian identification is inferred. Witness: `FEPComposed.fep022_fep027_predictive_child_marginal`.
 
 - `fep-024` → `fep-014` (formal): The composed theorem identifies fep-024's weighted regularizer with fep-014's native measure-valued KL divergence and its nonnegativity law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_nonneg. Witness: `FEPComposed.fep024_regularizer_is_fep014_kl`.
 
@@ -19709,11 +19709,11 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-031` → `fep-030` (formal): The composed theorem rewrites the binary Gibbs law at zero inverse temperature to one half and invokes fep-030's entropy equality characterization. Actual consumed endpoint lemma: fep_fep030.FEP030.fep030_binaryEntropy_eq_max_iff. Witness: `FEPComposed.fep031_zeroBeta_binary_maxEntropy`.
 
-- `fep-032` → `fep-043` (formal): The composed theorem identifies one gradient step on fep_fep043.FEP043.fep043_quadraticGradient with fep_fep032.FEP032.fep032_quadraticUpdate at effective step 2*a*eta, by unfolding the two definitions and ring algebra. The identity holds for arbitrary real parameters. Convergence is not proved here; invoking fep032_quadraticUpdate_tendsto additionally requires 0 < 2*a*eta and 2*a*eta < 2. Witness: `FEPComposed.fep032_update_is_fep043_gradientStep`.
+- `fep-032` → `fep-043` (formal): fep_fep032.FEP032.fep032_quadraticUpdate_tendsto derives convergence of the actual fep043 quadratic gradient-step iterates via the exact update-map identity, under0<2*a*eta<2; no convergence at endpoint effective steps is claimed. Witness: `FEPComposed.fep032_fep043_gradient_iteration_tendsto`.
 
 - `fep-034` → `fep-047` (conceptual): The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.
 
-- `fep-034` → `fep-017` (formal): The composed theorem identifies fep_fep034.FEP034.fep034_filter definitionally with fep_fep017.FEP017.fep017_posterior at the transition-predicted prior. It retains standard-Borel/nonempty state and finite-measure/finite-kernel assumptions; no new pointwise Bayes identity at null observations is asserted. Witness: `FEPComposed.fep034_filter_is_fep017_posterior`.
+- `fep-034` → `fep-017` (formal): fep_fep017.FEP017.fep017_posterior_joint_reconstruction derives swapped joint reconstruction for the actual fep034 filter at the transition-predicted finite prior, using the old exact filter/posterior identity; retain measurable carriers, StandardBorel/nonempty latent space and finite prior/transition/likelihood kernels. No arbitrary pointwise null-version equality is inferred. Witness: `FEPComposed.fep034_fep017_filter_joint_reconstruction`.
 
 - `fep-036` → `fep-045` (formal): The composed theorem feeds fep-036's interior smoothed count estimate into fep-045's exact normalized conjugate update. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos, fep_fep045.FEP045.fep045_bernoulli_posterior_closed, fep_fep045.FEP045.fep045_evidence_pos. Positive binary likelihoods and the smoothed count bounds establish nonzero evidence; no asymptotic empirical-rate theorem is consumed. Witness: `FEPComposed.fep036_empiricalPosterior_closed`.
 
@@ -19721,7 +19721,7 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-038` → `fep-018` (formal_pairing): The composed theorem couples fep-038's positive Bernoulli Fisher tangent metric to fep-018's separating Fisher--Rao coordinate distance. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_fisherMetric_pos` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged. Witness: `FEPComposed.fep038_fisherRao_separation`.
 
-- `fep-039` → `fep-005` (formal): The composed theorem unfolds fep039_global_fe, fep005_blockEnergy and fep005_partitionCover and applies Finset.sum_fiberwise: summing the four partition-fibre energies equals the original sum over Fin 20 for arbitrary real state energies. This is finite partition aggregation, not dynamical energy conservation or conditional independence. Witness: `FEPComposed.fep039_partitionEnergy_conservation`.
+- `fep-039` → `fep-005` (formal): fep_fep005.FEP005.fep005_disjoint and fep_fep005.FEP005.fep005_total_cover supply actual pairwise disjointness and union coverage to Finset.sum_biUnion, deriving fep039 additive block-energy conservation on the same 20-state/4-block carrier. Witness: `FEPComposed.fep039_fep005_partition_conservation_via_cover`.
 
 - `fep-041` → `fep-014` (formal): The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_eq_zero_iff. Witness: `FEPComposed.fep041_informationGain_is_fep014_kl`.
 
@@ -20012,7 +20012,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/collective_learning.lean` | `a7eaa3e827a2996a398c4ff827dfddef641f1f084be38e0a0fcd8dc378c0f8d1` |
 | `formal/compositions/continuous_time.lean` | `bc88c44e1603d9ce859fcf9704ce4e745ffc1ae5904fb8485aa859c6ec0a56bb` |
 | `formal/compositions/control_temporal.lean` | `f9a0a2bf4e80d8d5981b129d6bddce1b5c2f170a4e294efa0d7e72e3bd322943` |
-| `formal/compositions/core.lean` | `0e178e79b5f9c90c16cdaa3cf6744677e22aea9902f5a5c2a8fea45bb8bf1446` |
+| `formal/compositions/core.lean` | `cdfbd1be21587df92e1c371ffc1e6d5a88bddf0a8092f9867ed420a30a47aca8` |
 | `formal/compositions/efe_policy_selection.lean` | `d543a4e0bf779d2dfe10976b573cbba17d45ee1fe234ebfceec788fa5877d9cc` |
 | `formal/compositions/efe_time_scale_separation.lean` | `deaf0ae9abf3ad40c53304c186e354c8ee0855380be862c71466fa7112cb4066` |
 | `formal/compositions/exponential_family.lean` | `8726c522ebec4d0417c3caab742f8f8f60e14e285e94fbd637037200fee48c62` |
@@ -20075,14 +20075,14 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/smooth_information_geometry.lean` | `1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04` |
 | `formal/statistical_convergence.lean` | `6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf` |
 | `formal/temporal_inference.lean` | `25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b` |
-| `formal/variational_duality.lean` | `b7acb60b2832abb27c7ff233e90fcbd76150408f1cbba2608919591bee0bc6c9` |
+| `formal/variational_duality.lean` | `445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
-| `inputs/formalism_relations.yaml` | `4be4d4e572bdcd62a55420279bcd8a8ff503d22a8375fc3fcf64b130b5e315c7` |
+| `inputs/formalism_relations.yaml` | `ee403b6114153e8ddee645b7e42d5f30426e519be174e79da18ff9ee5350ab04` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
 | `inputs/theorem_maturity.yaml` | `554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383` |
 | `lean_source.py` | `0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104` |
-| `methods/__init__.py` | `7246bb68d195e00200fef71eec65bf91f538e1a673e6f4b4ff86ddbdcb121d72` |
-| `methods/model.py` | `e95371643dc94823982cccbbc82663893c456c987b3096d41248c90de45d459e` |
+| `methods/__init__.py` | `3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99` |
+| `methods/model.py` | `3bdb756ebf80b6368dd2c92a8f4231d2b685849d4d9512b74ff84c481ffc50f4` |
 | `methods/probes.py` | `30690d7b66923a2df06b59c93b95549b8dad5018cc2ae6a2ce1f256af64e326b` |
 | `methods/projection.py` | `28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54` |
 | `methods/visualization.py` | `3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a` |

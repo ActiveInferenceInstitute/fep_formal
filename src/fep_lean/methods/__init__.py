@@ -10,6 +10,7 @@ from .model import (
     inspect_family,
     inspect_theorem,
     inspect_topic,
+    load_packaged_formalism_query,
     package_resource_drift,
     positioning_neighbors,
 )
@@ -51,6 +52,7 @@ __all__ = [
     "inspect_family",
     "inspect_theorem",
     "inspect_topic",
+    "load_packaged_formalism_query",
     "log_partition",
     "mathematical_positioning_bytes",
     "mathematical_positioning_drift",

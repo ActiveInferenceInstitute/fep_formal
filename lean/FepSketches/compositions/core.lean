@@ -570,4 +570,127 @@ theorem fep018_fep038_actual_metric_pullback {p v w : ℝ}
   exact ⟨fep018_coordinate_derivative_is_fep038 hp0 hp1,
     fep_fep038.FEP038.fep038_fisherMetric_pullback hp0 hp1⟩
 
+/-! ## Endpoint consequences and finite Helmholtz characterization
+
+These results consume the actual endpoint laws on their stated carriers.
+Positive-temperature Helmholtz free energy is an energy-shifted, temperature-
+scaled finite KL functional, without identifying it with arbitrary native VFE.
+-/
+open FEP FEP.FiniteInformation FEP.VariationalDuality
+open scoped BigOperators
+
+/-- Statistical Bernoulli weights discharge the supplied-weight premise. -/
+theorem fep004_fep038_metric_nonneg {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)
+    (v : ℝ) : 0 ≤ fep_fep038.FEP038.fep038_fisherMetric p v v := by
+  have hweight : 0 ≤ fep_fep038.FEP038.fep038_fisherInformation p := by
+    rw [fep_fep038.FEP038.fep038_fisherInformation_eq hp0 hp1]
+    positivity
+  rw [← fep004_bernoulliMetric_specialization p v v]
+  exact fep_fep004.FEP004.fep004_fisherMetric_nonneg
+    (fun _ : Unit => fep_fep038.FEP038.fep038_fisherInformation p)
+    (fun _ => v) (fun _ => hweight)
+
+/-- Probability mass, not an arbitrary density larger than one. -/
+theorem fep011_fep026_complexity_nonneg {p : ℝ} (hp : 0 < p) (hp1 : p ≤ 1) :
+    0 ≤ fep_fep026.FEP026.fep026_priorComplexity p := by
+  rw [fep026_priorComplexity_is_fep011_surprise]
+  exact fep_fep011.FEP011.fep011_surprise_nonneg hp hp1
+
+/-- Stable effective step is an actual iteration-convergence premise. -/
+theorem fep032_fep043_gradient_iteration_tendsto
+    (η a center x : ℝ) (h0 : 0 < 2*a*η) (h2 : 2*a*η < 2) :
+    Filter.Tendsto
+      (fun n : ℕ => ((fun y => y-η*fep_fep043.FEP043.fep043_quadraticGradient a center y)^[n]) x)
+      Filter.atTop (nhds center) := by
+  have hmap : (fun y => y-η*fep_fep043.FEP043.fep043_quadraticGradient a center y) =
+      fep_fep032.FEP032.fep032_quadraticUpdate (2*a*η) center := by
+    funext y
+    exact fep032_update_is_fep043_gradientStep η a center y
+  rw [hmap]
+  exact fep_fep032.FEP032.fep032_quadraticUpdate_tendsto h0 h2 center x
+
+/-- Disjointness and actual total coverage justify summation over blocks. -/
+theorem fep039_fep005_partition_conservation_via_cover
+    (assign : Fin 20 → fep_fep005.FEP005.BlkPart) (stateEnergy : Fin 20 → ℝ) :
+    fep_fep039.FEP039.fep039_global_fe (fep005_blockEnergy assign stateEnergy) =
+      ∑ state : Fin 20, stateEnergy state := by
+  classical
+  let blocks := fep_fep005.FEP005.fep005_partitionCover assign
+  have hdisj : Set.PairwiseDisjoint (↑(Finset.univ : Finset (Fin 4))) blocks := by
+    intro i hi j hj hij
+    exact fep_fep005.FEP005.fep005_disjoint assign i j hij
+  have hcover : (Finset.univ : Finset (Fin 4)).biUnion blocks = Finset.univ := by
+    apply Finset.ext
+    intro state
+    constructor
+    · intro _; exact Finset.mem_univ _
+    · intro _
+      obtain ⟨block,hblock⟩ := fep_fep005.FEP005.fep005_total_cover assign state
+      exact Finset.mem_biUnion.mpr ⟨block,Finset.mem_univ _,hblock⟩
+  have hsum := Finset.sum_biUnion (f := stateEnergy) hdisj
+  rw [hcover] at hsum
+  simpa [fep_fep039.FEP039.fep039_global_fe, fep005_blockEnergy, blocks] using hsum.symm
+
+theorem fep022_fep027_predictive_child_marginal
+    {𝓒 Ω 𝓧 : Type*}
+    [MeasurableSpace 𝓒] [MeasurableSpace Ω] [MeasurableSpace 𝓧]
+    (ν : Measure 𝓒) (posterior : Kernel 𝓒 Ω) (likelihood : Kernel Ω 𝓧)
+    [SFinite ν] [IsSFiniteKernel posterior] [IsSFiniteKernel likelihood] :
+    (fep_fep027.FEP027.fep027_hierarchicalJoint ν
+      (fep_fep022.FEP022.fep022_posteriorPredictive posterior likelihood)).snd =
+        likelihood ∘ₘ (posterior ∘ₘ ν) := by
+  let : IsSFiniteKernel (fep_fep022.FEP022.fep022_posteriorPredictive posterior likelihood) := by
+    change IsSFiniteKernel (likelihood ∘ₖ posterior)
+    infer_instance
+  rw [fep_fep027.FEP027.fep027_hierarchical_snd]
+  change (likelihood ∘ₖ posterior) ∘ₘ ν = likelihood ∘ₘ (posterior ∘ₘ ν)
+  exact Measure.comp_assoc.symm
+
+/-- The actual filter disintegrates the predicted-prior/likelihood joint.
+No pointwise equality of arbitrary posterior versions is inferred. -/
+theorem fep034_fep017_filter_joint_reconstruction
+    {Ω 𝓧 : Type*} [MeasurableSpace Ω] [MeasurableSpace 𝓧]
+    [StandardBorelSpace Ω] [Nonempty Ω]
+    (τ : Kernel Ω Ω) (κ : Kernel Ω 𝓧) (μ : Measure Ω)
+    [IsFiniteMeasure μ] [IsFiniteKernel τ] [IsFiniteKernel κ] :
+    (κ ∘ₘ (τ ∘ₘ μ)) ⊗ₘ fep_fep034.FEP034.fep034_filter τ κ μ =
+      ((τ ∘ₘ μ) ⊗ₘ κ).map Prod.swap := by
+  rw [fep034_filter_is_fep017_posterior]
+  exact fep_fep017.FEP017.fep017_posterior_joint_reconstruction κ (τ ∘ₘ μ)
+
+open FEP FEP.FiniteInformation FEP.VariationalDuality
+variable {α : Type*} [Fintype α] [Nonempty α]
+
+/-- Physical Helmholtz functional on this exact finite probability carrier. -/
+theorem fep013_finite_helmholtz_decomposition (E : α → ℝ) {T : ℝ}
+    (hT : 0 < T) (q : FiniteLaw α) :
+    fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q) =
+      helmholtzFreeEnergy E T + T * finiteKL q (helmholtzGibbsLaw E T) := by
+  exact helmholtz_decomposition E hT q
+
+/-- Attainment and uniqueness use the same finite carrier and positive T. -/
+theorem fep013_finite_helmholtz_unique_minimum (E : α → ℝ) {T : ℝ}
+    (hT : 0 < T) :
+    (∀ q : FiniteLaw α, helmholtzFreeEnergy E T ≤
+      fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q)) ∧
+    (∀ q : FiniteLaw α,
+      fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q) =
+        helmholtzFreeEnergy E T ↔ q = helmholtzGibbsLaw E T) := by
+  exact ⟨fun q => helmholtzFreeEnergy_le E hT q,
+    fun q => helmholtzFreeEnergy_eq_iff E hT q⟩
+
+/-- Derivative of the actual log-partition free energy, not an assumed first law. -/
+theorem fep013_finite_equilibrium_derivative (E : α → ℝ) {T : ℝ}
+    (hT : 0 < T) :
+    HasDerivAt (helmholtzFreeEnergy E) (-entropy (helmholtzGibbsLaw E T)) T :=
+  hasDerivAt_helmholtzFreeEnergy E hT
+
+/-- A real two-level witness is strictly above the Gibbs minimum at uniform q. -/
+theorem fep013_two_level_uniform_strict :
+    helmholtzFreeEnergy helmholtzBoolEnergy 1 <
+      fep_fep013.FEP013.fep013_helmholtz
+        (expectation (FiniteLaw.uniform : FiniteLaw Bool) helmholtzBoolEnergy)
+        1 (entropy (FiniteLaw.uniform : FiniteLaw Bool)) := by
+  exact helmholtz_bool_uniform_gt (by norm_num)
+
 end FEPComposed

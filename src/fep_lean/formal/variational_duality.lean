@@ -4,6 +4,7 @@ public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
 public import Mathlib.InformationTheory.KullbackLeibler.Basic
 public import Mathlib.Probability.Moments.Basic
 public import Mathlib.Topology.Order.Compact
+public import Mathlib.Analysis.SpecialFunctions.BinaryEntropy
 
 @[expose] public section
 
@@ -1723,5 +1724,316 @@ theorem nativeCgf_le_klDiv
 
 end NativeEntropy
 /- L06_MATHLIB_ONLY_END -/
+
+/-! ## Exact fair-Boolean Hamming rate-distortion curve
+
+Natural-log units and the fair Boolean source are fixed. The reverse-reference
+proof permits zero reproduction atoms. Finite dual optimizers are asserted only
+for strictly interior budgets; zero distortion has an unbounded limiting
+multiplier despite the totalized logarithm's finite value at zero. This selected
+source does not establish general finite- or continuous-alphabet strong duality.
+-/
+namespace FairBoolean
+
+noncomputable def symmetricJoint (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :
+    FiniteLaw (Bool × Bool) where
+  mass xy := if xy.1 = xy.2 then (1-D)/2 else D/2
+  nonneg xy := by split <;> positivity
+  sum_one := by simp [Fintype.sum_prod_type]; ring
+
+theorem symmetricJoint_fst (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :
+    (symmetricJoint D h0 h1).fstMarginal = FiniteLaw.uniform := by
+  apply FiniteLaw.ext_mass
+  funext x
+  cases x <;> simp [FiniteLaw.fstMarginal, symmetricJoint, FiniteLaw.uniform] <;> ring
+
+theorem symmetricJoint_snd (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :
+    (symmetricJoint D h0 h1).sndMarginal = FiniteLaw.uniform := by
+  apply FiniteLaw.ext_mass
+  funext x
+  cases x <;> simp [FiniteLaw.sndMarginal, symmetricJoint, FiniteLaw.uniform] <;> ring
+
+theorem symmetricJoint_distortion (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :
+    expectedDistortion (symmetricJoint D h0 h1) boolHammingDistortion = D := by
+  simp [expectedDistortion, symmetricJoint, boolHammingDistortion,
+    Fintype.sum_prod_type]
+
+theorem symmetricJoint_feasible (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :
+    RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D
+      (symmetricJoint D h0 h1) :=
+  ⟨symmetricJoint_fst D h0 h1, (symmetricJoint_distortion D h0 h1).le⟩
+
+lemma entropy_fair_bool : entropy (FiniteLaw.uniform : FiniteLaw Bool) = Real.log 2 := by
+  simp [entropy, FiniteLaw.uniform, Real.negMulLog_eq_neg]
+
+lemma negMulLog_half (x : ℝ) :
+    2 * Real.negMulLog (x/2) = Real.negMulLog x + x * Real.log 2 := by
+  have hhalf : Real.negMulLog ((2 : ℝ)⁻¹) = (2 : ℝ)⁻¹ * Real.log 2 := by
+    simp only [Real.negMulLog_eq_neg, Real.log_inv]
+    ring
+  have h := Real.negMulLog_mul x ((2 : ℝ)⁻¹)
+  rw [hhalf] at h
+  rw [div_eq_mul_inv]
+  linear_combination 2 * h
+
+theorem symmetricJoint_entropy (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :
+    entropy (symmetricJoint D h0 h1) = Real.log 2 + Real.binEntropy D := by
+  have hD := negMulLog_half D
+  have hC := negMulLog_half (1-D)
+  rw [Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]
+  simp [entropy, symmetricJoint, Fintype.sum_prod_type]
+  linarith
+
+theorem symmetricJoint_information (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) :
+    mutualInformation (symmetricJoint D h0 h1) = Real.log 2 - Real.binEntropy D := by
+  rw [mutualInformation_eq_entropy_marginals_without_support,
+    symmetricJoint_fst, symmetricJoint_snd, entropy_fair_bool,
+    symmetricJoint_entropy]
+  ring
+
+/-- Reverse-channel comparison law, using the actual reproduction marginal.
+It is normalized even if the reproduction law has zero atoms. -/
+noncomputable def reverseReference (code : FiniteLaw Bool)
+    (D : ℝ) (h0 : 0 ≤ D) (h1 : D ≤ 1) : FiniteLaw (Bool × Bool) where
+  mass xy := code xy.2 * (if xy.1 = xy.2 then 1-D else D)
+  nonneg xy := mul_nonneg (code.nonneg _) (by split <;> positivity)
+  sum_one := by
+    have h := code.sum_one
+    rw [Fintype.sum_bool] at h
+    simp [Fintype.sum_prod_type]
+    nlinarith
+
+theorem reverseReference_support (J : FiniteLaw (Bool × Bool))
+    (D : ℝ) (h0 : 0 < D) (h1 : D < 1) :
+    ∀ xy, J xy ≠ 0 → 0 < reverseReference J.sndMarginal D h0.le h1.le xy := by
+  rintro ⟨x,y⟩ hmass
+  have hpos : 0 < J (x,y) := lt_of_le_of_ne (J.nonneg _) (Ne.symm hmass)
+  have hmarg : 0 < J.sndMarginal y := by
+    change 0 < ∑ z : Bool, J (z,y)
+    rw [Fintype.sum_bool]
+    cases x <;> linarith [J.nonneg (true,y), J.nonneg (false,y)]
+  change 0 < J.sndMarginal y * (if x=y then 1-D else D)
+  split <;> exact mul_pos hmarg (by linarith)
+
+/-- This consumes the real existing relative-support theorem, not assumed KL
+identification or full support of the reproduction marginal. -/
+theorem reverseReference_KL_entropy (J : FiniteLaw (Bool × Bool))
+    (D : ℝ) (h0 : 0 < D) (h1 : D < 1) :
+    finiteKL J (reverseReference J.sndMarginal D h0.le h1.le) =
+      crossEntropy J (reverseReference J.sndMarginal D h0.le h1.le) - entropy J := by
+  exact finiteKL_eq_crossEntropy_sub_entropy_of_relativeSupport _ _
+    (reverseReference_support J D h0 h1)
+
+/-- Endpoint/large-budget value0: an actual independent minimizer. -/
+theorem half_or_larger_exact (D : ℝ) (hD : (1:ℝ)/2 ≤ D) :
+    ∃ J : FiniteLaw (Bool × Bool),
+      RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D J ∧
+      mutualInformation J = 0 ∧
+      ∀ K, RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D K →
+        mutualInformation J ≤ mutualInformation K := by
+  let J := (FiniteLaw.uniform : FiniteLaw Bool).product (FiniteLaw.pointMass false)
+  have h := boolIndependent_minimizer D hD (FiniteLaw.pointMass false)
+  exact ⟨J,h.1,mutualInformation_product_eq_zero _ _,h.2⟩
+
+noncomputable def interiorMultiplier (D : ℝ) := Real.log (1-D) - Real.log D
+
+theorem interiorMultiplier_pos (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :
+    0 < interiorMultiplier D := by
+  unfold interiorMultiplier
+  exact sub_pos.mpr (Real.log_lt_log h0 (show D < 1-D by linarith))
+
+/-- The derivative is claimed only in the strict interior. -/
+theorem interior_curve_derivative (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :
+    HasDerivAt (fun d : ℝ => Real.log 2 - Real.binEntropy d)
+      (-interiorMultiplier D) D := by
+  simpa [interiorMultiplier] using
+    (Real.hasDerivAt_binEntropy (ne_of_gt h0) (ne_of_lt (show D < 1 by linarith))).const_sub (Real.log 2)
+
+lemma reverseReference_crossEntropy (J : FiniteLaw (Bool × Bool))
+    (hfair : J.fstMarginal = FiniteLaw.uniform)
+    (D : ℝ) (h0 : 0 < D) (h1 : D < 1) :
+    crossEntropy J (reverseReference J.sndMarginal D h0.le h1.le) =
+      crossEntropy J (J.fstMarginal.product J.sndMarginal) - Real.log 2 -
+      ((1-expectedDistortion J boolHammingDistortion)*Real.log (1-D) +
+        expectedDistortion J boolHammingDistortion*Real.log D) := by
+  let c : Bool × Bool → ℝ := fun xy => if xy.1=xy.2 then 1-D else D
+  have hc : ∀ xy, 0 < c xy := by intro xy; dsimp [c]; split <;> linarith
+  have hp : ∀ xy, -J xy * Real.log
+      (reverseReference J.sndMarginal D h0.le h1.le xy) =
+      -J xy * Real.log ((J.fstMarginal.product J.sndMarginal) xy) -
+        J xy * Real.log 2 - J xy * Real.log (c xy) := by
+    intro xy
+    by_cases hz : J xy=0
+    · simp [hz]
+    · have hprod := joint_supported_by_productMarginals J xy hz
+      have heq : reverseReference J.sndMarginal D h0.le h1.le xy =
+          (J.fstMarginal.product J.sndMarginal) xy * 2 * c xy := by
+        simp [reverseReference, FiniteLaw.product, hfair, FiniteLaw.uniform, c]
+        ring
+      rw [heq, Real.log_mul (mul_ne_zero (ne_of_gt hprod) (by norm_num))
+        (ne_of_gt (hc xy)), Real.log_mul (ne_of_gt hprod) (by norm_num)]
+      ring
+  have hchannel : (∑ xy, J xy * Real.log (c xy)) =
+      (1-expectedDistortion J boolHammingDistortion)*Real.log (1-D) +
+        expectedDistortion J boolHammingDistortion*Real.log D := by
+    have hsum := J.sum_one
+    simp only [Fintype.sum_prod_type, Fintype.sum_bool] at hsum
+    have hslog := congrArg (fun z : ℝ => z * Real.log (1-D)) hsum
+    simp [c, expectedDistortion, boolHammingDistortion, Fintype.sum_prod_type]
+    nlinarith
+  unfold crossEntropy
+  simp_rw [hp]
+  rw [Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.sum_mul,
+    J.sum_one, one_mul, hchannel]
+
+lemma reverseReference_KL_exact (J : FiniteLaw (Bool × Bool))
+    (hfair : J.fstMarginal = FiniteLaw.uniform)
+    (D : ℝ) (h0 : 0 < D) (h1 : D < 1) :
+    finiteKL J (reverseReference J.sndMarginal D h0.le h1.le) =
+      mutualInformation J - Real.log 2 -
+      ((1-expectedDistortion J boolHammingDistortion)*Real.log (1-D) +
+        expectedDistortion J boolHammingDistortion*Real.log D) := by
+  have hprod := finiteKL_eq_crossEntropy_sub_entropy_of_relativeSupport
+    J (J.fstMarginal.product J.sndMarginal) (joint_supported_by_productMarginals J)
+  have href := reverseReference_KL_entropy J D h0 h1
+  have hcross := reverseReference_crossEntropy J hfair D h0 h1
+  change mutualInformation J = _ at hprod
+  linarith
+
+/-- All source-fixed laws, not only distortion-feasible laws, obey this bound. -/
+theorem boolean_lagrangian_lower (J : FiniteLaw (Bool × Bool))
+    (hfair : J.fstMarginal = FiniteLaw.uniform)
+    (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :
+    Real.log 2 + Real.log (1-D) ≤
+      mutualInformation J + interiorMultiplier D *
+        expectedDistortion J boolHammingDistortion := by
+  have h1 : D < 1 := by linarith
+  have hn := finiteKL_nonneg J (reverseReference J.sndMarginal D h0.le h1.le)
+  rw [reverseReference_KL_exact J hfair D h0 h1] at hn
+  unfold interiorMultiplier
+  nlinarith
+
+lemma boolean_rate_algebra (D : ℝ) :
+    Real.log 2 - Real.binEntropy D =
+      Real.log 2 + Real.log (1-D) - interiorMultiplier D * D := by
+  rw [Real.binEntropy_eq_negMulLog_add_negMulLog_one_sub]
+  simp only [Real.negMulLog_eq_neg, interiorMultiplier]
+  ring
+
+theorem boolean_converse (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2)
+    (J : FiniteLaw (Bool × Bool))
+    (hJ : RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D J) :
+    Real.log 2 - Real.binEntropy D ≤ mutualInformation J := by
+  have hbound := boolean_lagrangian_lower J hJ.1 D h0 hhalf
+  have hmult := interiorMultiplier_pos D h0 hhalf
+  have hdist := mul_le_mul_of_nonneg_left hJ.2 hmult.le
+  rw [boolean_rate_algebra]
+  linarith
+
+/-- Actual attained interior minimum, with no field assuming a converse. -/
+theorem boolean_interior_exact_minimum
+    (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :
+    ∃ J : FiniteLaw (Bool × Bool),
+      RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D J ∧
+      mutualInformation J = Real.log 2 - Real.binEntropy D ∧
+      ∀ K, RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D K →
+        mutualInformation J ≤ mutualInformation K := by
+  have h1 : D ≤ 1 := by linarith
+  refine ⟨symmetricJoint D h0.le h1, symmetricJoint_feasible D h0.le h1,
+    symmetricJoint_information D h0.le h1, ?_⟩
+  intro K hK
+  rw [symmetricJoint_information]
+  exact boolean_converse D h0 hhalf K hK
+
+theorem symmetric_zero_is_owned :
+    symmetricJoint 0 (by norm_num) (by norm_num) = boolZeroDistortionJoint := by
+  apply FiniteLaw.ext_mass
+  funext xy
+  simp [symmetricJoint, boolZeroDistortionJoint]
+
+theorem boolean_zero_exact (J : FiniteLaw (Bool × Bool))
+    (hJ : RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion 0 J) :
+    J = boolZeroDistortionJoint ∧ mutualInformation J = Real.log 2 := by
+  have heq := boolZeroBudget_unique_feasible J hJ
+  refine ⟨heq, ?_⟩
+  rw [heq, ← symmetric_zero_is_owned, symmetricJoint_information]
+  simp only [Real.binEntropy_zero, sub_zero]
+
+/-- Closed interval value, assembled without endpoint multiplier/continuity. -/
+theorem boolean_closed_exact_minimum
+    (D : ℝ) (h0 : 0 ≤ D) (hhalf : D ≤ (1:ℝ)/2) :
+    ∃ J : FiniteLaw (Bool × Bool),
+      RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D J ∧
+      mutualInformation J = Real.log 2 - Real.binEntropy D ∧
+      ∀ K, RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion D K →
+        mutualInformation J ≤ mutualInformation K := by
+  by_cases hz : D = 0
+  · subst D
+    refine ⟨boolZeroDistortionJoint, boolZeroDistortionJoint_feasible, ?_, ?_⟩
+    · have h := (boolean_zero_exact _ boolZeroDistortionJoint_feasible).2
+      simpa only [Real.binEntropy_zero, sub_zero] using h
+    · intro K hK
+      rw [(boolean_zero_exact _ hK).1]
+  · by_cases hh : D = (1:ℝ)/2
+    · subst D
+      obtain ⟨J,hJ,hI,hmin⟩ := half_or_larger_exact ((1:ℝ)/2) le_rfl
+      refine ⟨J,hJ,?_,hmin⟩
+      have hEntropy : Real.binEntropy ((1:ℝ)/2) = Real.log 2 :=
+        Real.binEntropy_eq_log_two.mpr (by norm_num)
+      rw [hI,hEntropy,sub_self]
+    · exact boolean_interior_exact_minimum D (lt_of_le_of_ne h0 (Ne.symm hz))
+        (lt_of_le_of_ne hhalf hh)
+
+/-- Exact dual value at the strict-interior finite multiplier. -/
+theorem boolean_interior_dual_exact
+    (D : ℝ) (h0 : 0 < D) (hhalf : D < (1:ℝ)/2) :
+    rateDistortionDualValue (FiniteLaw.uniform : FiniteLaw Bool)
+      boolHammingDistortion D (interiorMultiplier D) =
+        Real.log 2 - Real.binEntropy D := by
+  have h1 : D ≤ 1 := by linarith
+  let J := symmetricJoint D h0.le h1
+  have hJ := symmetricJoint_feasible D h0.le h1
+  apply le_antisymm
+  · have h := rateDistortionDual_le_feasible_information
+      (FiniteLaw.uniform : FiniteLaw Bool) boolHammingDistortion D
+      (interiorMultiplier D) boolHammingDistortion_nonneg
+      (interiorMultiplier_pos D h0 hhalf).le J hJ
+    simpa [J, symmetricJoint_information] using h
+  · unfold rateDistortionDualValue
+    refine le_csInf ?_ ?_
+    · exact ⟨rateDistortionLagrangian J boolHammingDistortion
+        (interiorMultiplier D) - interiorMultiplier D * D, J, hJ.1, rfl⟩
+    · rintro value ⟨K,hfair,rfl⟩
+      have h := boolean_lagrangian_lower K hfair D h0 hhalf
+      rw [boolean_rate_algebra]
+      unfold rateDistortionLagrangian
+      linarith
+
+/-- Quantitative one-sided divergence. No finite endpoint multiplier is inferred
+from Lean's totalized real log at zero. -/
+theorem interiorMultiplier_unbounded_near_zero :
+    ∀ M : ℝ, ∃ δ : ℝ, 0 < δ ∧
+      ∀ D : ℝ, 0 < D → D < δ → M < interiorMultiplier D := by
+  intro M
+  let δ : ℝ := min (1/4) (Real.exp (-M-Real.log 2))
+  refine ⟨δ, lt_min (by norm_num) (Real.exp_pos _), ?_⟩
+  intro D h0 hδ
+  have hquarter : D < (1:ℝ)/4 := lt_of_lt_of_le hδ (min_le_left _ _)
+  have hexp : D < Real.exp (-M-Real.log 2) :=
+    lt_of_lt_of_le hδ (min_le_right _ _)
+  have hlogD : Real.log D < -M-Real.log 2 := by
+    simpa only [Real.log_exp] using Real.log_lt_log h0 hexp
+  have hlogC : -Real.log 2 ≤ Real.log (1-D) := by
+    have h := Real.log_le_log (by norm_num : (0:ℝ) < 1/2)
+      (show (1:ℝ)/2 ≤ 1-D by linarith)
+    simpa [Real.log_div] using h
+  unfold interiorMultiplier
+  linarith
+
+/-- The totalized value differs from the right-hand limiting behavior. -/
+theorem interiorMultiplier_zero_totalized : interiorMultiplier 0 = 0 := by
+  simp [interiorMultiplier]
+
+end FairBoolean
 
 end FEP.VariationalDuality

@@ -80,6 +80,7 @@ def test_mathematical_methods_public_import_surface():
         "gibbs_duality_diagnostics",
         "inspect_family",
         "inspect_topic",
+        "load_packaged_formalism_query",
         "log_partition",
         "inspect_theorem",
         "mathematical_positioning_bytes",

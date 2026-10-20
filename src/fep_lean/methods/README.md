@@ -19,6 +19,16 @@ records its `SourceOrigin` and the SHA-256 of every byte read. Queries
 (`inspect_topic`, `inspect_family`, `inspect_theorem`, `analyze_topic`,
 `positioning_neighbors`, `cross_corpus_embedding`) return detached copies.
 
+`load_packaged_formalism_query()` returns that same immutable model after
+checking its consumed resources and package Python files against the installed
+wheel's `RECORD` hashes/sizes, before and after analysis. It rejects missing or
+unverifiable metadata and changed members, including coherent relation edits.
+It requires a real wheel installation; use the explicit checkout builder while
+authoring. Integrity is relative to trusted installation metadata, and does not
+authenticate replacement of the entire distribution. No extra query registry,
+subprocess, network operation or native receipt is introduced. See the
+[installed query API](../../../docs/api.md#mathematical-methods).
+
 Use `uv run fep-lean methods --help`. `inspect`, `neighbors`, `probe`, `gibbs`,
 `analyze`, `theorem`, `embedding`, and `check` perform no writes; `export`
 writes the artifact tree under `--output-root` (default

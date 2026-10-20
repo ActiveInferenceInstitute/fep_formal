@@ -102,6 +102,32 @@ interfaces produce/read exactly the same JSON, Markdown, HTML and SVG model;
 checks do not repair drift. See [mathematical methods](mathematical-methods.md)
 for all public commands, mathematical scope and maintenance ownership.
 
+For an installed wheel with an independent file-integrity check, use the same
+immutable query type through the narrower entry point:
+
+```python
+from fep_lean.methods import load_packaged_formalism_query, inspect_topic
+
+query = load_packaged_formalism_query()
+contract = inspect_topic(query, "fep-001")
+```
+
+This entry point checks every consumed owner/resource and package Python file
+against the installed distribution's standard `RECORD` hashes and sizes, builds
+the existing canonical join, and checks the binding again. Missing, ambiguous,
+foreign or unverifiable installation metadata raises `PositioningError`.
+Editable checkouts use `build_mathematical_positioning(project_root)` instead.
+The query retains schema version 1, exact assumptions, qualified declarations,
+relation kinds, capability states, owner digests and its installed origin.
+`as_dict()` returns a detached view; no additional mathematical registry or
+materialized query snapshot is shipped.
+
+The integrity boundary is the trusted installed wheel metadata. Replacing the
+whole distribution and its `RECORD` is outside that boundary. The operation
+reads files without launching Lean, a provider, a subprocess or a network call.
+Its source-text model contains no live proof receipt; native and full-run
+acceptance retain their separate validators.
+
 The development checkout adds four reusable finite numerical methods:
 
 ```python

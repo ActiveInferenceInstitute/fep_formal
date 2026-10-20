@@ -1216,3 +1216,82 @@ def positioning_neighbors(
 ) -> list[dict[str, Any]]:
     """Read feature-space comparison candidates, independent of authored edges."""
     return neighbors(model.as_dict()["feature_embedding"], family, limit)
+
+
+def _installed_query_binding() -> tuple[str, tuple[tuple[str, str, int], ...]]:
+    """Bind consumed installed owners to the wheel's standard RECORD metadata.
+
+    This is integrity relative to trusted installed distribution metadata, not
+    authentication against replacement of the entire package and its RECORD.
+    """
+    import base64
+    import csv
+    import io
+    from importlib.metadata import PackageNotFoundError, distribution
+
+    package = Path(str(files("fep_lean")))
+    try:
+        installed = distribution("fep_lean")
+        record_text = installed.read_text("RECORD")
+        if not record_text:
+            raise PositioningError(
+                "installed query requires a wheel with RECORD metadata"
+            )
+        if Path(str(installed.locate_file("fep_lean"))).resolve() != package.resolve():
+            raise PositioningError(
+                "installed distribution does not own this imported package"
+            )
+        records: dict[str, tuple[str, str]] = {}
+        for row in csv.reader(io.StringIO(record_text), strict=True):
+            if len(row) != 3 or not row[0] or row[0] in records:
+                raise PositioningError(
+                    "installed RECORD has malformed or duplicate members"
+                )
+            records[row[0]] = (row[1], row[2])
+        sources = _source_paths(None, _input_paths(None))
+        sources.update(
+            ("package-python/" + path.relative_to(package).as_posix(), path)
+            for path in package.rglob("*.py")
+        )
+        bound: dict[str, tuple[str, int]] = {}
+        for path in sources.values():
+            relative = path.relative_to(package).as_posix()
+            member = "fep_lean/" + relative
+            if Path(str(installed.locate_file(member))).resolve() != path.resolve():
+                raise PositioningError(
+                    f"installed query member has a foreign location: {relative}"
+                )
+            data = path.read_bytes()
+            digest = hashlib.sha256(data).digest()
+            encoded = base64.urlsafe_b64encode(digest).rstrip(b"=").decode("ascii")
+            if records.get(member) != ("sha256=" + encoded, str(len(data))):
+                raise PositioningError(
+                    f"installed query member disagrees with wheel RECORD: {relative}"
+                )
+            bound[member] = (digest.hex(), len(data))
+    except (OSError, UnicodeError, csv.Error, PackageNotFoundError) as exc:
+        raise PositioningError(
+            f"installed query cannot validate wheel metadata: {exc}"
+        ) from exc
+    return (
+        hashlib.sha256(record_text.encode()).hexdigest(),
+        tuple((name, digest, size) for name, (digest, size) in sorted(bound.items())),
+    )
+
+
+def load_packaged_formalism_query() -> MathematicalPositioning:
+    """Return the existing immutable query model from verified installed owners.
+
+    Canonical joins and schema remain owned by build_mathematical_positioning.
+    The standard wheel RECORD supplies the additional installed integrity gate;
+    no parallel mathematical registry, bundled proof receipt, or child process
+    is introduced. Editable/unverifiable distributions fail closed. Use the
+    existing explicit checkout builder for authoring inspection instead.
+    """
+    before = _installed_query_binding()
+    model = build_mathematical_positioning()
+    if _installed_query_binding() != before:
+        raise PositioningError(
+            "installed query source or distribution metadata changed"
+        )
+    return model

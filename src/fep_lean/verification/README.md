@@ -101,3 +101,9 @@ authenticate the host or compiler vendor. Checked local Python generators are
 not an execution sandbox for arbitrary programs. Render transcripts retain
 captured output, while the verifier independently checks the command, input
 and artifact bindings.
+
+
+The compatibility keyword `run_preflight(require_gauss=False)` remains accepted.
+Full-mode checks always require OpenGauss; this keyword does not relax them or
+write `FEP_LEAN_REQUIRE_GAUSS` into the process environment. Capability inspection
+and explicit workspace setup remain separate operations.

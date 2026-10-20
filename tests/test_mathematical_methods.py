@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import base64
 import copy
+import csv
 import hashlib
+import io
 import json
 import math
 import os
@@ -38,6 +41,7 @@ from fep_lean.methods import (
     positioning_neighbors,
 )
 from fep_lean.methods import model as model_module
+from tests._support.lean_module_contract import exact_information_review
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -141,6 +145,16 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     assert {declarations[name]["source_owner"] for name in scalar_bridges} == {
         "src/fep_lean/formal/compositions/core.lean"
     }
+    information_bridges = exact_information_review(ROOT)["new_theorem_owners"]
+    assert information_bridges.keys() <= declarations.keys()
+    assert {
+        name: declarations[name]["source_owner"] for name in information_bridges
+    } == {
+        name: "src/fep_lean/formal/"
+        + module.removeprefix("FepSketches.").replace(".", "/")
+        + ".lean"
+        for name, module in information_bridges.items()
+    }
     assert (
         len(
             declarations.keys()
@@ -149,6 +163,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - measure_entropy_extension
             - category_extension
             - scalar_bridges
+            - information_bridges.keys()
         )
         == 2185
     )
@@ -891,3 +906,172 @@ print(json.dumps({{'topics':len(model.metadata.topic_ids), 'artifacts':len(paths
         if path.is_file()
     }
     assert before == after
+
+
+@pytest.fixture
+def installed_query_record(tmp_path, monkeypatch):
+    """Real filesystem/stdlib distribution metadata for the integrity boundary.
+
+    Full canonical joins and cold installed imports have their separate tests.
+    This fixture narrows only the consumed-file roster, never the hash checks.
+    """
+    from importlib import metadata
+
+    package = tmp_path / "fep_lean"
+    data = package / "data"
+    data.mkdir(parents=True)
+    resource = data / "formalism_relations.yaml"
+    resource.write_text(
+        "schema_version: 2\nedges: [{source: fep-013, target: fep-002, kind: conceptual, rationale: original}]\n"
+    )
+    owner = package / "owner.py"
+    owner.write_text("# fixture-owned Python bytes\n")
+    metadata_root = tmp_path / "fep_lean-1.0.dist-info"
+    metadata_root.mkdir()
+    (metadata_root / "METADATA").write_text(
+        "Metadata-Version: 2.4\nName: fep_lean\nVersion: 1.0\n"
+    )
+    record = metadata_root / "RECORD"
+    rows = []
+    for path in (owner, resource):
+        raw = path.read_bytes()
+        rows.append(
+            (
+                path.relative_to(tmp_path).as_posix(),
+                "sha256="
+                + base64.urlsafe_b64encode(hashlib.sha256(raw).digest())
+                .rstrip(b"=")
+                .decode(),
+                str(len(raw)),
+            )
+        )
+    rows.append((record.relative_to(tmp_path).as_posix(), "", ""))
+    output = io.StringIO()
+    csv.writer(output, lineterminator="\n").writerows(rows)
+    record.write_text(output.getvalue())
+    monkeypatch.setattr(
+        metadata, "distribution", lambda name: metadata.PathDistribution(metadata_root)
+    )
+    monkeypatch.setattr(model_module, "files", lambda name: package)
+    monkeypatch.setattr(model_module, "_input_paths", lambda root: {})
+    monkeypatch.setattr(
+        model_module, "_source_paths", lambda root, inputs: {"fixture": resource}
+    )
+    return package, resource, owner, record, rows
+
+
+def test_installed_query_record_binds_actual_resource_and_python_bytes(
+    installed_query_record,
+):
+    _package, resource, owner, record, _ = installed_query_record
+    before = {path: path.read_bytes() for path in (resource, owner, record)}
+    binding = model_module._installed_query_binding()
+    assert len(binding[1]) == 2
+    assert {row[0] for row in binding[1]} == {
+        "fep_lean/owner.py",
+        "fep_lean/data/formalism_relations.yaml",
+    }
+    assert before == {path: path.read_bytes() for path in before}
+
+
+@pytest.mark.parametrize(
+    "corruption",
+    [
+        "resource_omission",
+        "coherent_rationale",
+        "restored_mtime",
+        "missing_resource",
+        "missing_record",
+        "malformed_record",
+        "duplicate_member",
+        "missing_member",
+        "bad_hash",
+        "bad_size",
+        "extra_python",
+        "foreign_distribution",
+        "distribution_missing",
+    ],
+)
+def test_installed_query_record_refuses_actual_corruption(
+    installed_query_record, monkeypatch, tmp_path, corruption
+):
+    from importlib import metadata
+
+    package, resource, _owner, record, rows = installed_query_record
+    if corruption in {"resource_omission", "coherent_rationale", "restored_mtime"}:
+        before = resource.stat()
+        raw = resource.read_bytes()
+        if corruption == "resource_omission":
+            resource.write_text("schema_version: 2\nedges: []\n")
+        elif corruption == "coherent_rationale":
+            resource.write_bytes(raw.replace(b"original", b"modified"))
+        else:
+            resource.write_bytes(raw.replace(b"original", b"Original"))
+            os.utime(resource, ns=(before.st_atime_ns, before.st_mtime_ns))
+            assert (
+                resource.stat().st_size == before.st_size
+                and resource.stat().st_mtime_ns == before.st_mtime_ns
+            )
+    elif corruption == "missing_resource":
+        resource.unlink()
+    elif corruption == "missing_record":
+        record.unlink()
+    elif corruption == "malformed_record":
+        record.write_text("single-field\n")
+    elif corruption in {"duplicate_member", "missing_member", "bad_hash", "bad_size"}:
+        changed = [list(row) for row in rows]
+        if corruption == "duplicate_member":
+            changed.append(list(changed[1]))
+        elif corruption == "missing_member":
+            changed.pop(1)
+        elif corruption == "bad_hash":
+            changed[1][1] = "sha256=invalid"
+        else:
+            changed[1][2] = "0"
+        output = io.StringIO()
+        csv.writer(output, lineterminator="\n").writerows(changed)
+        record.write_text(output.getvalue())
+    elif corruption == "extra_python":
+        (package / "unrecorded.py").write_text("# not in the installed record\n")
+    elif corruption == "foreign_distribution":
+        foreign = tmp_path / "foreign/fep_lean-1.0.dist-info"
+        foreign.mkdir(parents=True)
+        (foreign / "RECORD").write_bytes(record.read_bytes())
+        monkeypatch.setattr(
+            metadata, "distribution", lambda name: metadata.PathDistribution(foreign)
+        )
+    else:
+
+        def missing(name):
+            raise metadata.PackageNotFoundError(name)
+
+        monkeypatch.setattr(metadata, "distribution", missing)
+    with pytest.raises(PositioningError):
+        model_module._installed_query_binding()
+
+
+@pytest.mark.parametrize("race", [False, True])
+def test_installed_query_reuses_model_and_rechecks_binding(
+    installed_query_record, packaged, monkeypatch, race
+):
+    from fep_lean.methods import load_packaged_formalism_query
+
+    _package, resource, _owner, _record, _rows = installed_query_record
+    calls = []
+
+    def analyze():
+        calls.append(True)
+        if race:
+            before = resource.stat()
+            resource.write_bytes(resource.read_bytes() + b" ")
+            os.utime(resource, ns=(before.st_atime_ns, before.st_mtime_ns))
+        return packaged
+
+    monkeypatch.setattr(model_module, "build_mathematical_positioning", analyze)
+    before = dict(os.environ)
+    if race:
+        with pytest.raises(PositioningError):
+            load_packaged_formalism_query()
+    else:
+        assert load_packaged_formalism_query() is packaged
+    assert calls == [True] and dict(os.environ) == before
