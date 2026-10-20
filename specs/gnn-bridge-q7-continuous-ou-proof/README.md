@@ -64,7 +64,7 @@ It remains execution evidence, distinct from the static coefficient proof.
 ## 2026-10-20 source-pair refresh
 
 The [fresh native receipt](native_receipt_20261020_c06.json) binds GNN source
-`c06d867efa914a52c76d584cacf2fff8ad5d01ea` and the current FEP source owners.
+`c06d867efa914a52c76d584cacf2fff8ad5d01ea` and its recorded FEP source-owner set.
 The owning render refresher renewed the emitted input, source-pin and owner
 provenance, and the probe generator renewed the artifact manifest. The canonical
 JAX runner, reviewed scaffold, Lean probe and all four historical
