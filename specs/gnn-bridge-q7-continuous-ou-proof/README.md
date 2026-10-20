@@ -61,6 +61,26 @@ The retained P4b `NUM_TIMESTEPS=1` observes the prior and never exercises F or Q
 nonstationary belief or use at least two samples. The GNN three-step nonstationary regression exercises that runtime route.
 It remains execution evidence, distinct from the static coefficient proof.
 
+## 2026-10-20 source-pair refresh
+
+The [fresh native receipt](native_receipt_20261020_c06.json) binds GNN source
+`c06d867efa914a52c76d584cacf2fff8ad5d01ea` and the current FEP source owners.
+The owning render refresher renewed the emitted input, source-pin and owner
+provenance, and the probe generator renewed the artifact manifest. The canonical
+JAX runner, reviewed scaffold, Lean probe and all four historical
+`native_receipt.json` files retain their earlier bytes.
+
+A fresh compile and independent retained check passed on the recorded Lean
+4.35.0 toolchain, including all twelve axiom reports with no compiler warnings
+or admissions. Its scope is the static coefficient and real-arithmetic bounds
+above; `runtime_execution_verified` remains false. It supplies no generated
+runner, SDE or physical-model execution claim. Later source changes require
+another fresh capture rather than editing this receipt's hashes.
+
+The GNN paired workflow also checks current-Q7 source/provenance and generated
+scaffold freshness on CPython 3.14. That read-only gate supplies no new native
+proof evidence; the native receipt remains a distinct acceptance surface.
+
 ## Interpreter contract for the frozen scaffold
 
 The [schema-1 serialization protocol](scaffold-serialization.md) retains all
