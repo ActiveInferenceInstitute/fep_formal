@@ -7925,7 +7925,16 @@ topics:
     &(\mathsf{estimate.coefficient}\,\mathsf{order})
 
     \end{aligned}'
-  - \mathsf{let}\,\mathsf{corrected}
+  - '\begin{aligned}
+
+    &\mathsf{let}\,\mathsf{corrected} := \mathsf{generalizedFilteringStep}\,(1 / 2 : \mathbb{R})\,(\lambda\,\mathord{\_} \mapsto
+    1) \\
+
+    &(\mathsf{firstOrderJet}\,2\,0)\,(\mathsf{firstOrderJet}\,0\,1)\,\mathsf{corrected.coefficient}\,0 = 3 / 2 \\
+
+    &\wedge \mathsf{corrected.coefficient}\,1 = 1 / 2
+
+    \end{aligned}'
 - id: fep-091
   title: Precision Modulation of Prediction Error
   area: FEP
@@ -11397,7 +11406,28 @@ topics:
 
     &\{\mathsf{Internal}\,\mathsf{Sensory}\,\mathsf{Active}\,\mathsf{External} : \mathsf{Type}^{*}\} \\
 
-    &\mathsf{letI} : \mathsf{MeasurableSpace} \mathsf{Bool}
+    &\mathsf{letI} : \mathsf{MeasurableSpace} \mathsf{Bool} := \top \mathsf{CondIndepFun}\,(\mathsf{MeasurableSpace.comap}
+    \\
+
+    &\mathsf{FEP.NativeBlanket.blanketCoordinate}\,\mathsf{inferInstance}) \\
+
+    &\mathsf{FEP.NativeBlanket.blanketCoordinate\_measurable.comap\_le} \\
+
+    &\mathsf{FEP.NativeBlanket.internalCoordinate}\,\mathsf{FEP.NativeBlanket.externalCoordinate} \\
+
+    &(\mathsf{FEP.NativeBlanket.embeddedLaw}\,(\mathsf{staticJoint} \\
+
+    &\mathsf{FEP.NativeBlanket.correlatedBlanketModel})) \wedge \mathsf{staticJoint} \\
+
+    &\mathsf{FEP.NativeBlanket.correlatedBlanketModel}\,(((\mathsf{false}, \mathsf{false}), \mathsf{false}), \mathsf{false})
+    = 1 \\
+
+    &/ 2 \wedge \mathsf{staticJoint}\,\mathsf{FEP.NativeBlanket.correlatedBlanketModel} \\
+
+    &(((\mathsf{true}, \mathsf{true}), \mathsf{true}), \mathsf{true}) = 1 / 2 \wedge \mathsf{staticJoint} \\
+
+    &\mathsf{FEP.NativeBlanket.correlatedBlanketModel}\,(((\mathsf{false}, \mathsf{true}), \mathsf{false}), \mathsf{false})
+    \ne 1 / 2
 
     \end{aligned}'
 - id: fep-140

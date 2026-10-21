@@ -18,7 +18,7 @@ _LEAN_END_RE = re.compile(rf"^\s*end(?:\s+({_LEAN_QUALIFIED_NAME}))?\s*$")
 # parsed.
 LEAN_ATTRIBUTE_PREFIX = r"(?:@\[[^\]\r\n]*\][ \t]*)*"
 LEAN_THEOREM_RE = re.compile(
-    rf"^\s*{LEAN_ATTRIBUTE_PREFIX}(?:theorem|lemma)\s+([A-Za-z][A-Za-z0-9_]*)",
+    rf"^\s*{LEAN_ATTRIBUTE_PREFIX}(?:public\s+)?(?:theorem|lemma)\s+([A-Za-z][A-Za-z0-9_]*)(?=$|\s|[:({{\[])",
     re.MULTILINE,
 )
 # Canonical bodies use one simple module name per import line. Horizontal
@@ -83,6 +83,22 @@ def _lean_source_mask(source: str) -> tuple[str, list[tuple[int, int | None]]]:
                 in_string = False
             index += 1
             continue
+        if current == "'" and (
+            index == 0 or not (source[index - 1].isalnum() or source[index - 1] in "_'")
+        ):
+            literal = re.match(
+                r"'(?:\\(?:u\{[0-9a-fA-F]+\}|.)|[^'\\\n])'", source[index:]
+            )
+            if literal is not None:
+                output.extend(" " * len(literal[0]))
+                index += len(literal[0])
+                continue
+        if current == "«":
+            quoted_end = source.find("»", index + 1)
+            if quoted_end >= 0:
+                output.extend(source[index : quoted_end + 1])
+                index = quoted_end + 1
+                continue
         if following == "--":
             in_line_comment = True
             output.extend((" ", " "))
@@ -208,32 +224,12 @@ def lean_outer_namespaces(source: str) -> tuple[str, ...]:
 
 
 def lean_declaration_conclusion(source: str) -> str:
-    """Return a theorem/lemma result after its final top-level header colon."""
-    code = lean_code_without_comments(source)
-    proof_start = re.search(r":=\s*by\b", code)
-    if proof_start is None:
-        raise ValueError("Lean declaration has no `:= by` proof boundary")
-    header = code[: proof_start.start()]
-    paren = brace = bracket = 0
-    conclusion_colon: int | None = None
-    for index, character in enumerate(header):
-        if character == "(":
-            paren += 1
-        elif character == ")":
-            paren = max(0, paren - 1)
-        elif character == "{":
-            brace += 1
-        elif character == "}":
-            brace = max(0, brace - 1)
-        elif character == "[":
-            bracket += 1
-        elif character == "]":
-            bracket = max(0, bracket - 1)
-        elif character == ":" and paren == brace == bracket == 0:
-            conclusion_colon = index
-    if conclusion_colon is None:
-        raise ValueError("Lean declaration has no top-level conclusion colon")
-    conclusion = header[conclusion_colon + 1 :].strip()
+    """Return the complete supported theorem/lemma result before its proof."""
+    match = LEAN_THEOREM_RE.search(lean_code_without_comments(source))
+    if match is None:
+        raise ValueError("Lean declaration has no theorem or lemma header")
+    colon, proof = lean_theorem_header_delimiters(source, match.end())
+    conclusion = lean_code_without_comments(source)[colon + 1 : proof].strip()
     if not conclusion:
         raise ValueError("Lean declaration conclusion is empty")
     return conclusion
@@ -249,3 +245,127 @@ __all__ = [
     "lean_declaration_conclusion",
     "lean_outer_namespaces",
 ]
+
+
+def lean_syntax_mask(source: str) -> str:
+    """Mask comments and literals while preserving every source offset."""
+    code = lean_code_without_comments(source)
+    # Character literals and quoted identifiers must not contribute syntax.
+    literals = re.compile(r"«[^»]*»|'(?:\\(?:u\{[0-9a-fA-F]+\}|.)|[^'\\\n])'")
+    code = literals.sub(
+        lambda match: "".join("\n" if c == "\n" else " " for c in match[0]), code
+    )
+    if "«" in code or "»" in code:
+        raise ValueError("unsupported or unterminated Lean quoted identifier")
+    return code
+
+
+def lean_theorem_header_delimiters(source: str, start: int) -> tuple[int, int]:
+    """Locate the goal colon and proof assignment in supported source headers.
+
+    This is a conservative lexical extractor, not Lean elaboration. Balanced
+    binders and parenthesized expressions are supported. Top-level simple
+    ``let``/``letI`` initializers consume their own assignment; unparenthesized
+    tactic/binder constructs in such initializers are refused rather than
+    returning a truncated proposition. Returned offsets address original text.
+    """
+    code = lean_syntax_mask(source)
+    command = re.compile(
+        r"(?m)^[ \t]*(?:@\[[^\]\r\n]*\][ \t]*)*"
+        r"(?:(?:public|private|protected|noncomputable|unsafe|partial)\s+)*"
+        r"(?:theorem|lemma|def|abbrev|structure|instance|opaque|inductive|class|"
+        r"axiom|constant|example|namespace|section|end)\b"
+    )
+    declaration_line = code.rfind("\n", 0, start) + 1
+    declaration_indent = len(code[declaration_line:start]) - len(
+        code[declaration_line:start].lstrip()
+    )
+    boundaries = (
+        match
+        for match in command.finditer(code, start)
+        if len(match[0]) - len(match[0].lstrip()) <= declaration_indent
+    )
+    before_declaration = code[:declaration_line].rstrip()
+    if re.search(
+        r"\b(?:private|protected|noncomputable|unsafe|partial)\s*$", before_declaration
+    ):
+        raise ValueError("unsupported multiline Lean declaration modifier")
+    boundary = next(boundaries, None)
+    stop = boundary.start() if boundary else len(code)
+    stack: list[str] = []
+    pairs = {")": "(", "}": "{", "]": "["}
+    goal: int | None = None
+    pending_let = False
+    saw_let_initializer = False
+    saw_result_function = False
+    unsupported = {
+        "by",
+        "do",
+        "have",
+        "haveI",
+        "haveI'",
+        "letI'",
+        "suffices",
+        "show",
+        "match",
+        "calc",
+    }
+    index = start
+    while index < stop:
+        char = code[index]
+        if not stack and char == "|" and goal is not None:
+            line_start = code.rfind("\n", 0, index) + 1
+            line_stop = code.find("\n", index)
+            line_stop = stop if line_stop < 0 else line_stop
+            clause = code[index + 1 : line_stop]
+            if not code[line_start:index].strip() and "=>" in clause:
+                pattern = clause.split("=>", 1)[0]
+                if (
+                    "|" not in pattern
+                    and not saw_let_initializer
+                    and not pending_let
+                    and not saw_result_function
+                ):
+                    return goal, index
+        if not stack and code[index : index + 2] == ":=":
+            if goal is None:
+                raise ValueError("Lean theorem header has no goal colon")
+            if pending_let:
+                pending_let = False
+                saw_let_initializer = True
+                index += 2
+                continue
+            return goal, index
+        if char in "({[":
+            stack.append(char)
+        elif char in ")}]":
+            if not stack or stack.pop() != pairs[char]:
+                raise ValueError("unbalanced Lean theorem header")
+        elif char == ":" and not stack and goal is None:
+            goal = index
+        elif not stack and (char.isalpha() or char == "_"):
+            match = re.match(r"[\w'.]+", code[index:])
+            assert match is not None
+            token = match[0]
+            if goal is not None:
+                if token == "where":
+                    return goal, index
+                if token == "fun":
+                    saw_result_function = True
+                if token in {"let", "letI"}:
+                    tail = code[index + len(token) : stop].lstrip()
+                    if (
+                        pending_let
+                        or tail.startswith(("(", "⟨"))
+                        or re.match(r"(?:rec|mut)\b", tail)
+                    ):
+                        raise ValueError("unsupported top-level Lean let binding")
+                    pending_let = True
+                elif token in unsupported:
+                    raise ValueError(
+                        "unsupported unparenthesized Lean result expression"
+                    )
+            index += len(token)
+            continue
+        index += 1
+    raise ValueError("Lean theorem header has no supported proof delimiter")

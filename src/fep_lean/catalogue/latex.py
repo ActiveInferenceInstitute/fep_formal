@@ -20,7 +20,12 @@ from __future__ import annotations
 import re
 from collections.abc import Mapping
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_lean.lean_source import (
+    LEAN_THEOREM_RE,
+    lean_code_without_comments,
+    lean_syntax_mask,
+    lean_theorem_header_delimiters,
+)
 
 
 def _extract_variable_block(body: str) -> str:
@@ -36,70 +41,35 @@ def _extract_variable_block(body: str) -> str:
 
 
 def _extract_theorem_stmt(body: str, name: str) -> str | None:
-    """Return the Lean type before its first delimiter-balanced proof ``:=``."""
-    m = re.search(r"(?m)^\s*(?:theorem|lemma)\s+" + re.escape(name) + r"\b", body)
+    """Return the complete supported Lean type before its actual proof delimiter."""
+    m = next(
+        (
+            match
+            for match in LEAN_THEOREM_RE.finditer(lean_code_without_comments(body))
+            if match[1] == name
+        ),
+        None,
+    )
     if not m:
         return None
-    rest = body[m.end() :]
-    paren = brace = bracket = 0
-    in_string = escaped = False
-    for index, char in enumerate(rest[:-1]):
-        if in_string:
-            if escaped:
-                escaped = False
-            elif char == "\\":
-                escaped = True
-            elif char == '"':
-                in_string = False
-            continue
-        if char == '"':
-            in_string = True
-        elif char == "(":
-            paren += 1
-        elif char == ")":
-            paren = max(paren - 1, 0)
-        elif char == "{":
-            brace += 1
-        elif char == "}":
-            brace = max(brace - 1, 0)
-        elif char == "[":
-            bracket += 1
-        elif char == "]":
-            bracket = max(bracket - 1, 0)
-        elif char == ":" and rest[index + 1] == "=" and paren == brace == bracket == 0:
-            return rest[:index].strip()
-    return None
+    _colon, proof = lean_theorem_header_delimiters(body, m.end())
+    return body[m.end() : proof].strip()
 
 
 def _split_binders_and_goal(stmt: str) -> tuple[str, str]:
     stmt = stmt.strip()
-    paren = brace = brack = 0
-    last_ok = -1
-    for i, ch in enumerate(stmt):
-        if ch == "(":
-            paren += 1
-        elif ch == ")":
-            paren = max(0, paren - 1)
-        elif ch == "{":
-            brace += 1
-        elif ch == "}":
-            brace = max(0, brace - 1)
-        elif ch == "[":
-            brack += 1
-        elif ch == "]":
-            brack = max(0, brack - 1)
-        if paren == 0 and brace == 0 and brack == 0 and ch == ":":
-            j = i - 1
-            while j >= 0 and stmt[j] in " \t\n":
-                j -= 1
-            if j >= 0 and stmt[j] in ")]}":
-                last_ok = i
-    if last_ok < 0:
-        m0 = re.match(r"^\s*:\s*(.+)$", stmt, re.DOTALL)
-        if m0:
-            return "", m0.group(1).strip()
-        return stmt, ""
-    return stmt[:last_ok].strip(), stmt[last_ok + 1 :].strip()
+    code = lean_syntax_mask(stmt)
+    stack: list[str] = []
+    pairs = {")": "(", "}": "{", "]": "["}
+    for index, char in enumerate(code):
+        if char in "({[":
+            stack.append(char)
+        elif char in ")}]":
+            if not stack or stack.pop() != pairs[char]:
+                raise ValueError("unbalanced Lean statement binders")
+        elif char == ":" and not stack:
+            return stmt[:index].strip(), stmt[index + 1 :].strip()
+    raise ValueError("Lean statement has no goal colon")
 
 
 def _theorem_names_in_order(body: str) -> list[str]:

@@ -19996,7 +19996,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `catalogue/bodies/standalone_efe_formalizations.py` | `da17bf17e4cfa56271cb4e0948457a279fe66a42a412f25959c6b6a70d32365a` |
 | `catalogue/bodies/temporal_inference.py` | `820d493f82c2de309e51ca931b3c44807688e9d96cc9050b605bf99585d813a9` |
 | `catalogue/bodies/variational_duality.py` | `41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb` |
-| `catalogue/latex.py` | `78c1f381621a1fe5703d8949391098e4d9e0a65ec7269cf3e9b0c93130500801` |
+| `catalogue/latex.py` | `20b9ad7612374a6f528d67fe6a40ab3c49f5eb3f6ac8baac75e602eefb9b25a7` |
 | `catalogue/registry.py` | `a758f1be3f4b4efbdbd80fb5854c71557f3e392fd90587b3c59656716fdfa268` |
 | `catalogue/relations.py` | `ea6f24b1ed0225b9a8919bcdaa82d17467e7fd93b612cf83c8a7f87f0df078dd` |
 | `catalogue/schema.py` | `5bfad0a7aff944410faa2d18621b1bae3dd4cf245d3ff7ef81172a8c9ed2ddf4` |
@@ -20080,9 +20080,9 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `inputs/formalism_relations.yaml` | `bd232d1cada8eb2588c5e6397f480ed4aecaf305ebe3fc339ece2f8630d117f8` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
 | `inputs/theorem_maturity.yaml` | `7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b` |
-| `lean_source.py` | `0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104` |
+| `lean_source.py` | `adc252c7625809ede9b248f96a56effaf9fc0915b55b78fd83dcd047e7717efb` |
 | `methods/__init__.py` | `3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99` |
-| `methods/model.py` | `917554e8cf301899a08a78344dc6232c08354dcafdccae3f07cbc20b1e87f2f0` |
+| `methods/model.py` | `b7e9985b30707fb73f7548b7f0198992fc796c0895fabd486dd1e145cd07d3f4` |
 | `methods/probes.py` | `30690d7b66923a2df06b59c93b95549b8dad5018cc2ae6a2ce1f256af64e326b` |
 | `methods/projection.py` | `28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54` |
 | `methods/visualization.py` | `3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a` |

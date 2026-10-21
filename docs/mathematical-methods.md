@@ -175,6 +175,18 @@ primary witnesses from supporting declarations and authored relation witnesses.
 Its prose comes from reviewed owners. This source-grounded analysis is not a
 certified translation of Lean into natural language or a new semantic review.
 
+Statement extraction preserves original source slices and uses a conservative
+supported grammar. It keeps top-level simple `let`/`letI` bindings in the result,
+distinguishes anonymous function clauses from equation-style proofs, and stops
+before structure-style `where` proofs. The public query inventory keeps its
+existing simple ASCII identifiers; unsupported name suffixes never alias a
+shorter name. Unsupported unparenthesized tactic/match result expressions and
+multiline non-public modifiers fail explicitly rather than yielding an
+incomplete proposition. This is source-text analysis, not a general Lean parser
+or elaboration. The retained Issue #211 correction fixture seals all 2,286
+existing public statement hashes, including 27 reviewed extraction corrections;
+it does not prevent independently reviewed new declarations.
+
 The interpretation protocol in Supplement A first fixes the carrier and
 codomain, then checks normalization, support, quantifier order and equality
 conditions, and finally tests the proposed prose against the exact conclusion.

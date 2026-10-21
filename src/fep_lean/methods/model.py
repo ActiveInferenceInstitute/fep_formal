@@ -44,6 +44,7 @@ from fep_lean.lean_source import (
     iter_lean_namespace_scopes,
     lean_code_without_comments,
     lean_declaration_conclusion,
+    lean_syntax_mask,
 )
 
 from .probes import classical_mds, evaluate_boundary_probes
@@ -105,35 +106,25 @@ ANALYSIS_BOUNDARY = (
 _IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*")
 _COMMAND = re.compile(
     r"(?m)^[ \t]*(?:@\[[^\]\r\n]*\][ \t]*(?:\n[ \t]*)?)*"
-    r"(?:(?:private|protected|noncomputable|unsafe|partial)[ \t]+)*"
+    r"(?:(?:public|private|protected|noncomputable|unsafe|partial)\s+)*"
     r"(namespace|section|end|variable|include|omit|theorem|lemma|def|abbrev|structure|instance|opaque|inductive|class|axiom|constant|example)\b"
 )
 
 
 def _header_delimiters(code: str, start: int) -> tuple[int, int]:
     """Find the goal colon and proof delimiter without entering nested binders."""
-    stack: list[str] = []
-    colon: int | None = None
-    pairs = {")": "(", "}": "{", "]": "["}
-    for index in range(start, len(code)):
-        char = code[index]
-        if not stack and code[index : index + 2] == ":=":
-            if colon is None:
-                raise PositioningError("Lean theorem header has no goal colon")
-            return colon, index
-        if char in "({[":
-            stack.append(char)
-        elif char in ")}]":
-            if not stack or stack.pop() != pairs[char]:
-                raise PositioningError("unbalanced Lean theorem header")
-        elif char == ":" and not stack and colon is None:
-            colon = index
-    raise PositioningError("Lean theorem header has no proof delimiter")
+    from fep_lean.lean_source import lean_theorem_header_delimiters
+
+    try:
+        return lean_theorem_header_delimiters(code, start)
+    except ValueError as error:
+        raise PositioningError(str(error)) from error
 
 
 def _binder_groups(text: str) -> list[dict[str, Any]]:
     """Preserve complete top-level binder groups; make only syntactic assertions."""
-    code = lean_code_without_comments(text)
+    names_source = lean_code_without_comments(text)
+    code = lean_syntax_mask(text)
     result: list[dict[str, Any]] = []
     index = 0
     pairs = {")": "(", "}": "{", "]": "["}
@@ -161,7 +152,7 @@ def _binder_groups(text: str) -> list[dict[str, Any]]:
             raise PositioningError("unclosed Lean binder")
         raw = text[start:index]
         names = (
-            code[start + 1 : binder_colon].strip().split()
+            re.findall(r"«[^»]*»|[^\s]+", names_source[start + 1 : binder_colon])
             if binder_colon is not None
             else []
         )
@@ -263,8 +254,17 @@ def _theorem_sources(
         if keyword is None:
             raise PositioningError("Lean theorem declaration keyword is unresolved")
         declaration_start = match.start() + keyword.start()
+        declaration_line = code.rfind("\n", 0, name_start) + 1
+        declaration_indent = len(code[declaration_line:name_start]) - len(
+            code[declaration_line:name_start].lstrip()
+        )
         end = next(
-            (item.start() for item in commands if item.start() > proof_start),
+            (
+                item.start()
+                for item in commands
+                if item.start() > proof_start
+                and len(item[0]) - len(item[0].lstrip()) <= declaration_indent
+            ),
             len(source),
         )
         variables = _variable_context(source, declaration_start, masked_source=code)
@@ -285,7 +285,10 @@ def _theorem_sources(
             ],
             "binders": _binder_groups(source[match.end() : colon].strip()),
             "conclusion": source[colon + 1 : proof_start].strip(),
-            "proof_source": source[proof_start + 2 : end].strip(),
+            "proof_source": source[
+                proof_start
+                + (2 if code[proof_start : proof_start + 2] == ":=" else 0) : end
+            ].strip(),
             "source_context": (source, code, declaration_start)
             if shared_context
             else source[:declaration_start],

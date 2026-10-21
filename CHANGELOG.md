@@ -1,5 +1,14 @@
 ## Unreleased
 
+- Correct 27 source-text statement records without changing their Lean theorem
+  types or proofs: preserve result `let`/`letI` initializers, separate equation
+  and structure-style proofs, and use the first goal colon consistently across
+  query and signature rendering. Shared literal/comment handling and explicit
+  unsupported-syntax refusal prevent silent prefix identities and truncation.
+  The reviewed fixture retains all 2,286 existing public statement hashes;
+  isolated-wheel parity and broader publication acceptance remain separate
+  gates for [#211](https://github.com/ActiveInferenceInstitute/fep_formal/issues/211).
+
 - Accept the scoped software deliveries for the unified CLI error contract
   [#119](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119),
   canonical semantic queries
