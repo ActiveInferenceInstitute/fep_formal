@@ -1,5 +1,15 @@
 ## Unreleased
 
+- Refresh the GNN 4.2.0 source pair through bridge pin/emissions, the canonical
+  Q7 render and probe generation, then a fresh native compile/retained check.
+  Twelve axiom reports pass without warnings/admissions; prior receipts,
+  canonical runner and probe stay unchanged. This proves the retained static
+  coefficient/real-arithmetic scope, without generated-runner execution.
+  A second fresh capture binds the repaired GNN direct/supervised entrypoints
+  and renewed manuscript; the earlier 4.2 capture retains its own source epoch.
+  The final typed-runtime namespace adjustment receives another genuine capture,
+  preserving all earlier evidence and the unchanged static scientific scope.
+
 - Correct the conditional-independence capability description to acknowledge
   the existing finite discrete static-model conditional-distribution and
   `CondIndepFun` bridge, preserving capability status and the boundary against

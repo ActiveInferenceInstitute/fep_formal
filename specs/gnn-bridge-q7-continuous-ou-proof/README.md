@@ -189,3 +189,39 @@ uv run python specs/gnn-bridge-q7-continuous-ou-proof/verify_native.py \
 uv run python specs/gnn-bridge-q7-continuous-ou-proof/verify_native.py \
   --check --gnn-root "$GNN_ROOT" --receipt output/bridge/q7-native-candidate.json
 ```
+
+## 2026-10-21 GNN 4.2 source epoch
+
+The [fresh native receipt](native_receipt_20261021_gnn420.json) binds GNN
+`0b0028aaa2cc3c40bddf47ac934a1f7e6b8644fe`, including package 4.2.0 and its
+current compatible dependency lock. Bridge pin/emissions, canonical render and
+probe provenance were regenerated with their owning tools. A fresh native
+compile and retained check pass all twelve standard-axiom reports without
+warnings or admissions. The canonical runner, probe and every historical receipt
+retain their prior bytes. Scope remains static binary64 coefficient and
+real-arithmetic bounds; generated-runner execution remains unverified.
+
+## 2026-10-21 repaired GNN 4.2 entrypoint epoch
+
+The [new capture](native_receipt_20261021_gnn420_startup.json) binds GNN
+`fb67431ee073fa27c0ce0c9e9336c7ff50e5737b` after its direct/supervised Python
+entrypoint repair and fresh manuscript render. The earlier 4.2 capture above
+retains its original source identity. Bridge signatures, Q7 render provenance
+and probe metadata were regenerated again through their owners; a new native
+compile and independent retained check pass all twelve axiom reports without
+warnings/admissions. The runner, Lean probe and historical receipts are unchanged.
+Scope remains static coefficients and real-arithmetic bounds, without emitted
+runner execution or a general Python import-safety theorem.
+
+## 2026-10-21 final typed GNN 4.2 source epoch
+
+The [final source-pair capture](native_receipt_20261021_gnn420_typed.json) binds
+GNN `097328f40299de1469df1e4a5c027d535e3c7132`. Its direct-script guard reads the
+actual optional runtime package state while satisfying static type checks.
+The scientific runner, counts, manuscript inputs and Lean probe are unchanged;
+strict manuscript/token/hydration checks still pass. Owner hashes nevertheless
+changed, so bridge emissions, Q7 render provenance and the native capture were
+freshly regenerated again. All twelve standard-axiom reports pass without
+warnings/admissions. Earlier receipts retain their own identities. This remains
+static coefficient/real-arithmetic evidence and supplies no generated-runner
+execution or general import-safety proof.
