@@ -212,3 +212,16 @@ compile and independent retained check pass all twelve axiom reports without
 warnings/admissions. The runner, Lean probe and historical receipts are unchanged.
 Scope remains static coefficients and real-arithmetic bounds, without emitted
 runner execution or a general Python import-safety theorem.
+
+## 2026-10-21 final typed GNN 4.2 source epoch
+
+The [final source-pair capture](native_receipt_20261021_gnn420_typed.json) binds
+GNN `097328f40299de1469df1e4a5c027d535e3c7132`. Its direct-script guard reads the
+actual optional runtime package state while satisfying static type checks.
+The scientific runner, counts, manuscript inputs and Lean probe are unchanged;
+strict manuscript/token/hydration checks still pass. Owner hashes nevertheless
+changed, so bridge emissions, Q7 render provenance and the native capture were
+freshly regenerated again. All twelve standard-axiom reports pass without
+warnings/admissions. Earlier receipts retain their own identities. This remains
+static coefficient/real-arithmetic evidence and supplies no generated-runner
+execution or general import-safety proof.
