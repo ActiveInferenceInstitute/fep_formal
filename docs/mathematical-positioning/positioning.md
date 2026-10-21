@@ -20035,14 +20035,14 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/thermo_geometry.lean` | `da7e8302780b6aac77e9fd06c6eb1c1417042bacd9bb7d9954994c21b0751427` |
 | `formal/continuous_time_markov.lean` | `1294732d3ddd6bd3711a00b6895e09fff45dd720cddb8d9db8e78ad458b10ea4` |
 | `formal/controlled_markov.lean` | `6cf6aa0a04704074d38dba03663349833544ef24fda92e7ad0c6ae6e77eb659a` |
-| `formal/decision_risk.lean` | `1a34dd85015ecb421bfbe91b3995e8c2c2d9991122618e9f25db17c4d46f2251` |
+| `formal/decision_risk.lean` | `6dc1eed6ac2600ecc1c563bafba8526696ac41dcb44ad13dcd46c211a3fc32b2` |
 | `formal/declarations.py` | `6921e78b81fe1dce9ba1ed5d7d0b69bf0991a15467560f80d31143357e840309` |
 | `formal/efe_policy_selection.lean` | `ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555` |
 | `formal/efe_time_scale_separation.lean` | `5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1` |
 | `formal/empirical_risk.lean` | `6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1` |
 | `formal/exponential_family.lean` | `5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2` |
 | `formal/fin4_gaussian_semigroup.lean` | `7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875` |
-| `formal/finite_information.lean` | `6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65` |
+| `formal/finite_information.lean` | `963dbd8a1f9d37f719a2e7fdd7d42bc81efe84ccc5ae48d3fae6dc54cf9aaa31` |
 | `formal/finite_markov_dynamics.lean` | `69c8600e5a40d48cfc01b1b8bb36004d60b40655d620794d0b0e94ec1c8c6784` |
 | `formal/finite_posterior_learning.lean` | `8b4f2e2a985431a016c265887f31389b6764eee987cf6bbd36e18415217ede90` |
 | `formal/finite_probability.lean` | `d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380` |
@@ -20077,7 +20077,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/temporal_inference.lean` | `25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b` |
 | `formal/variational_duality.lean` | `445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
-| `inputs/formalism_relations.yaml` | `42b7333647a67e656dd13cb03334398ab9e01f7c74c1a53b6c797f40e63cc8aa` |
+| `inputs/formalism_relations.yaml` | `2913a03cf9049a94f5911358ce9fc03b3166aa7db8b6948eeaa7f85d89b889d9` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
 | `inputs/theorem_maturity.yaml` | `554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383` |
 | `lean_source.py` | `0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104` |
