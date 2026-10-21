@@ -17,7 +17,7 @@ The earlier software/proof-component checkpoint is
 [PR201](https://github.com/ActiveInferenceInstitute/fep_formal/pull/201), main
 `de9643f5249ad207219af51f6446327197a01247`, qualified by the
 [full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39449116181).
-The 29 first-column Issue rows account for accepted PKG-6 (#119), CORE-D2
+The 30 first-column Issue rows account for accepted PKG-6 (#119), CORE-D2
 (#65), BRIDGE-D1 (#61), CORE-M3 (#73), CORE-D3 (#74) and LEAN-12 (#110),
 delivered through PR203, PR205, PR206 and PR207. Independent API/schema and semantic review are now retained for CORE-D2;
 its conceptual Bernoulli relation keeps the explicit conjugate-carrier boundary.
@@ -102,6 +102,7 @@ roster refresh; new topics are not implicitly reserved by this plan.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
+| [Issue #211](https://github.com/ActiveInferenceInstitute/fep_formal/issues/211) — Correct complete theorem statement and proof spans | Minor | Current canonical owners and installed query contract | Reviewed complete source slices, unchanged public inventory, adversarial grammar controls, deterministic projections, installed-wheel parity and actual publication evidence. |
 | [CORE-M2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63) — maintain current guidance through dependency review | Minor | [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48) | Current active reading paths, complete retirement caller inventory, strict links/hygiene/xrefs and preserved historical evidence. |
 | [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) — align primary theorem proxies with the proved information seams | Minor | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Exact primary types/assumptions/non-vacuity reviewed; stable IDs/signatures and all native/axiom/boundary projections accepted. |
 | [FORM-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/70) — fixed-truth consistency for the continuous static-latent model | Medium | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Explicit infinite fixed-truth law, prefix/native equality and actual convergence proof; new protocol preserves current H3 seeds. |

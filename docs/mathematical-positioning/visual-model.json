@@ -11673,7 +11673,7 @@
     "catalogue/bodies/standalone_efe_formalizations.py": "da17bf17e4cfa56271cb4e0948457a279fe66a42a412f25959c6b6a70d32365a",
     "catalogue/bodies/temporal_inference.py": "820d493f82c2de309e51ca931b3c44807688e9d96cc9050b605bf99585d813a9",
     "catalogue/bodies/variational_duality.py": "41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb",
-    "catalogue/latex.py": "78c1f381621a1fe5703d8949391098e4d9e0a65ec7269cf3e9b0c93130500801",
+    "catalogue/latex.py": "20b9ad7612374a6f528d67fe6a40ab3c49f5eb3f6ac8baac75e602eefb9b25a7",
     "catalogue/registry.py": "a758f1be3f4b4efbdbd80fb5854c71557f3e392fd90587b3c59656716fdfa268",
     "catalogue/relations.py": "ea6f24b1ed0225b9a8919bcdaa82d17467e7fd93b612cf83c8a7f87f0df078dd",
     "catalogue/schema.py": "5bfad0a7aff944410faa2d18621b1bae3dd4cf245d3ff7ef81172a8c9ed2ddf4",
@@ -11757,9 +11757,9 @@
     "inputs/formalism_relations.yaml": "bd232d1cada8eb2588c5e6397f480ed4aecaf305ebe3fc339ece2f8630d117f8",
     "inputs/positioning.yaml": "d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d",
     "inputs/theorem_maturity.yaml": "7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b",
-    "lean_source.py": "0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104",
+    "lean_source.py": "adc252c7625809ede9b248f96a56effaf9fc0915b55b78fd83dcd047e7717efb",
     "methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
-    "methods/model.py": "917554e8cf301899a08a78344dc6232c08354dcafdccae3f07cbc20b1e87f2f0",
+    "methods/model.py": "b7e9985b30707fb73f7548b7f0198992fc796c0895fabd486dd1e145cd07d3f4",
     "methods/probes.py": "30690d7b66923a2df06b59c93b95549b8dad5018cc2ae6a2ce1f256af64e326b",
     "methods/projection.py": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
     "methods/visualization.py": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a"
@@ -15533,7 +15533,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "FullSupport (symmetricBoolModel prior) where\n  state_pos policy state",
+        "conclusion": "FullSupport (symmetricBoolModel prior)",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -15600,8 +15600,8 @@
         "qualified_name": "FEP.ActiveInference.symmetricBoolModel_fullSupport",
         "source_line": 779,
         "source_owner": "src/fep_lean/formal/active_inference.lean",
-        "statement": "theorem symmetricBoolModel_fullSupport (prior : FiniteLaw Bool) :\n    FullSupport (symmetricBoolModel prior) where\n  state_pos policy state",
-        "statement_sha256": "b468b83d6ca48b60fd4266043244051f9e95a58a3dfca854a349c57c68ce4f2e"
+        "statement": "theorem symmetricBoolModel_fullSupport (prior : FiniteLaw Bool) :\n    FullSupport (symmetricBoolModel prior)",
+        "statement_sha256": "46b7c7d95fe01b3c91a77e696925df1f83e267a2c88badaf41b6c3a9b749db58"
       },
       "FEP.ActiveInference.symmetricBoolModel_policyPosterior_eq_prior": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -17439,7 +17439,7 @@
       "FEP.CausalDynamics.boolFactorizedMixture_not_factorized": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "let mixture",
+        "conclusion": "let mixture :=\n      mixLaw (1 / 2 : ℝ) (by norm_num) (by norm_num)\n        ((FiniteLaw.pointMass false).product (FiniteLaw.pointMass false))\n        ((FiniteLaw.pointMass true).product (FiniteLaw.pointMass true))\n    mixture ≠ mixture.fstMarginal.product mixture.sndMarginal",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -17505,8 +17505,8 @@
         "qualified_name": "FEP.CausalDynamics.boolFactorizedMixture_not_factorized",
         "source_line": 365,
         "source_owner": "src/fep_lean/formal/causal_dynamics.lean",
-        "statement": "theorem boolFactorizedMixture_not_factorized :\n    let mixture",
-        "statement_sha256": "4a8ea0bdfb331d0988e13c65a47e8720b9dfc75a70148bbc9b4abb8213d60075"
+        "statement": "theorem boolFactorizedMixture_not_factorized :\n    let mixture :=\n      mixLaw (1 / 2 : ℝ) (by norm_num) (by norm_num)\n        ((FiniteLaw.pointMass false).product (FiniteLaw.pointMass false))\n        ((FiniteLaw.pointMass true).product (FiniteLaw.pointMass true))\n    mixture ≠ mixture.fstMarginal.product mixture.sndMarginal",
+        "statement_sha256": "cad36254a4409dd556c097576996fbf0c6aa724ea1485591961333c229b62842"
       },
       "FEP.CausalDynamics.boolHalfMixture_false": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -20055,7 +20055,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "let mixture",
+        "conclusion": "let mixture := mixLaw weight hWeightNonneg hWeightLeOne left right\n    mixture = mixture.fstMarginal.product mixture.sndMarginal",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -20115,8 +20115,8 @@
         "qualified_name": "FEP.CausalDynamics.mixture_factorizes_of_shared_right",
         "source_line": 193,
         "source_owner": "src/fep_lean/formal/causal_dynamics.lean",
-        "statement": "theorem mixture_factorizes_of_shared_right\n    {Left Right : Type*} [Fintype Left] [Fintype Right]\n    (weight : ℝ) (hWeightNonneg : 0 ≤ weight)\n    (hWeightLeOne : weight ≤ 1)\n    (left right : FiniteLaw (Left × Right))\n    (leftInternal rightInternal : FiniteLaw Left)\n    (shared : FiniteLaw Right)\n    (hLeft : left = leftInternal.product shared)\n    (hRight : right = rightInternal.product shared) :\n    let mixture",
-        "statement_sha256": "1dfee4997167c5edda0fee26ef0385dde4e9019126feefa2432fbd81266b72e8"
+        "statement": "theorem mixture_factorizes_of_shared_right\n    {Left Right : Type*} [Fintype Left] [Fintype Right]\n    (weight : ℝ) (hWeightNonneg : 0 ≤ weight)\n    (hWeightLeOne : weight ≤ 1)\n    (left right : FiniteLaw (Left × Right))\n    (leftInternal rightInternal : FiniteLaw Left)\n    (shared : FiniteLaw Right)\n    (hLeft : left = leftInternal.product shared)\n    (hRight : right = rightInternal.product shared) :\n    let mixture := mixLaw weight hWeightNonneg hWeightLeOne left right\n    mixture = mixture.fstMarginal.product mixture.sndMarginal",
+        "statement_sha256": "893984c3e7cc8ca0a6cda216e2776fc2af77fc7fec070c79609cfee0ae4005e1"
       },
       "FEP.CausalDynamics.mixture_product_shared_left": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -59323,7 +59323,7 @@
       "FEP.EFEPolicy.zeroPrecision_prior_not_minimizer": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "let prior : FiniteLaw Bool",
+        "conclusion": "let prior : FiniteLaw Bool := FiniteLaw.uniform\n    let cost : Bool → ℝ := fun policy => if policy then 1 else 0\n    (∀ policy, 0 < prior policy) ∧ controlPosterior prior 0 cost = prior ∧\n      efeControlObjective prior 0 cost (FiniteLaw.pointMass false) <\n        efeControlObjective prior 0 cost (controlPosterior prior 0 cost)",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -59414,13 +59414,13 @@
         "qualified_name": "FEP.EFEPolicy.zeroPrecision_prior_not_minimizer",
         "source_line": 420,
         "source_owner": "src/fep_lean/formal/efe_policy_selection.lean",
-        "statement": "theorem zeroPrecision_prior_not_minimizer :\n    let prior : FiniteLaw Bool",
-        "statement_sha256": "22afa2856e0f9534f8ecf92ba5dd0a6b513cd09a09ac9b7a616d2e92ef388de0"
+        "statement": "theorem zeroPrecision_prior_not_minimizer :\n    let prior : FiniteLaw Bool := FiniteLaw.uniform\n    let cost : Bool → ℝ := fun policy => if policy then 1 else 0\n    (∀ policy, 0 < prior policy) ∧ controlPosterior prior 0 cost = prior ∧\n      efeControlObjective prior 0 cost (FiniteLaw.pointMass false) <\n        efeControlObjective prior 0 cost (controlPosterior prior 0 cost)",
+        "statement_sha256": "796b542f4bc4970439427adef26736c7db97aaa70727efc9929859c53200ca0e"
       },
       "FEP.EFEPolicy.zeroReference_unsupported_candidate_beats_posterior": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "let prior : FiniteLaw Bool",
+        "conclusion": "let prior : FiniteLaw Bool := FiniteLaw.pointMass false\n    let candidate : FiniteLaw Bool := FiniteLaw.pointMass true\n    let cost : Bool → ℝ := fun policy => if policy then -2 else 0\n    (prior true = 0 ∧ candidate true = 1) ∧\n      efeControlObjective prior 1 cost candidate <\n        efeControlObjective prior 1 cost (controlPosterior prior 1 cost)",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -59519,8 +59519,8 @@
         "qualified_name": "FEP.EFEPolicy.zeroReference_unsupported_candidate_beats_posterior",
         "source_line": 397,
         "source_owner": "src/fep_lean/formal/efe_policy_selection.lean",
-        "statement": "theorem zeroReference_unsupported_candidate_beats_posterior :\n    let prior : FiniteLaw Bool",
-        "statement_sha256": "2205de530a790258bebbca5c2af382cc04027e352a771e881aac7f018795ebbc"
+        "statement": "theorem zeroReference_unsupported_candidate_beats_posterior :\n    let prior : FiniteLaw Bool := FiniteLaw.pointMass false\n    let candidate : FiniteLaw Bool := FiniteLaw.pointMass true\n    let cost : Bool → ℝ := fun policy => if policy then -2 else 0\n    (prior true = 0 ∧ candidate true = 1) ∧\n      efeControlObjective prior 1 cost candidate <\n        efeControlObjective prior 1 cost (controlPosterior prior 1 cost)",
+        "statement_sha256": "7a977a14acc960890678048f30976c7c923b15d4cc49b357d31a93e05489d384"
       },
       "FEP.EmpiricalRisk.brierExcess_eq_sqError": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -59610,7 +59610,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "let α",
+        "conclusion": "let α := binaryPseudoCounts success failure\n    let p := polyaPredictive α (fun _ => 0) true\n    let l₁ := polyaPredictive α (Pi.single true 1 : Bool → ℕ) true\n    let l₀ := polyaPredictive α (Pi.single false 1 : Bool → ℕ) true\n    p * l₁ / (p * l₁ + (1 - p) * l₀) =\n      polyaPredictive α (Pi.single true 1 : Bool → ℕ) true",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -59703,8 +59703,8 @@
         "qualified_name": "FEP.EmpiricalRisk.dirichletBinary_bernoulliBayes_bridge",
         "source_line": 551,
         "source_owner": "src/fep_lean/formal/empirical_risk.lean",
-        "statement": "theorem dirichletBinary_bernoulliBayes_bridge (success failure : ℝ)\n    (successPositive : 0 < success) (failurePositive : 0 < failure) :\n    let α",
-        "statement_sha256": "611a4aeb24bb0b73830072f816f3f16155e99449c67ddafddf8ce3c1f8e84663"
+        "statement": "theorem dirichletBinary_bernoulliBayes_bridge (success failure : ℝ)\n    (successPositive : 0 < success) (failurePositive : 0 < failure) :\n    let α := binaryPseudoCounts success failure\n    let p := polyaPredictive α (fun _ => 0) true\n    let l₁ := polyaPredictive α (Pi.single true 1 : Bool → ℕ) true\n    let l₀ := polyaPredictive α (Pi.single false 1 : Bool → ℕ) true\n    p * l₁ / (p * l₁ + (1 - p) * l₀) =\n      polyaPredictive α (Pi.single true 1 : Bool → ℕ) true",
+        "statement_sha256": "bb5a0c6c8c03a1902ca85818deab1e24f0d27b99bafe8b7a54fed358485cac30"
       },
       "FEP.EmpiricalRisk.dirichletPosterior_total": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -69236,7 +69236,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "IsProbabilityMeasure (finiteWeightMeasure p) where\n  measure_univ",
+        "conclusion": "IsProbabilityMeasure (finiteWeightMeasure p)",
         "context_binders": [],
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
@@ -69252,8 +69252,8 @@
         "qualified_name": "FEP.FiniteInformation.finiteWeightMeasure_probability",
         "source_line": 97,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
-        "statement": "theorem finiteWeightMeasure_probability {α : Type*} [Fintype α]\n    [MeasurableSpace α] (p : α → ℝ) (hp : ∀ x, 0 ≤ p x)\n    (hnormalized : ∑ x, p x = 1) : IsProbabilityMeasure (finiteWeightMeasure p) where\n  measure_univ",
-        "statement_sha256": "670e36e402907cc18fc44b559733185710598eee11c5719a2025fa09fb9e61df"
+        "statement": "theorem finiteWeightMeasure_probability {α : Type*} [Fintype α]\n    [MeasurableSpace α] (p : α → ℝ) (hp : ∀ x, 0 ≤ p x)\n    (hnormalized : ∑ x, p x = 1) : IsProbabilityMeasure (finiteWeightMeasure p)",
+        "statement_sha256": "25e73f38e31b0c354f46a0ea5edd9348acd2a253f14cc700fc81805eded61e31"
       },
       "FEP.FiniteInformation.finiteWeightMeasure_singleton": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -73563,7 +73563,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "∀ sampleCount,\n      nonidentifiablePosteriorAfter prior path sampleCount = prior\n  | 0 => rfl\n  | sampleCount + 1 => by\n      rw [nonidentifiablePosteriorAfter,\n        nonidentifiablePosteriorAfter_eq_prior prior path sampleCount,\n        nonidentifiablePosteriorUpdate_eq_prior]\n\n/-! ## Separate almost-sure contraction from the finite-alphabet strong law -/\n\n/-- Coordinate process supplied to the maintained finite-alphabet strong law. -/\ndef trajectoryObservation (index : ℕ) (path : Trajectory) : Observation",
+        "conclusion": "∀ sampleCount,\n      nonidentifiablePosteriorAfter prior path sampleCount = prior",
         "context_binders": [],
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
@@ -73581,8 +73581,8 @@
         "qualified_name": "FEP.FinitePosteriorLearning.nonidentifiablePosteriorAfter_eq_prior",
         "source_line": 564,
         "source_owner": "src/fep_lean/formal/finite_posterior_learning.lean",
-        "statement": "theorem nonidentifiablePosteriorAfter_eq_prior\n    (prior : FiniteLaw Hypothesis) (path : Trajectory) :\n    ∀ sampleCount,\n      nonidentifiablePosteriorAfter prior path sampleCount = prior\n  | 0 => rfl\n  | sampleCount + 1 => by\n      rw [nonidentifiablePosteriorAfter,\n        nonidentifiablePosteriorAfter_eq_prior prior path sampleCount,\n        nonidentifiablePosteriorUpdate_eq_prior]\n\n/-! ## Separate almost-sure contraction from the finite-alphabet strong law -/\n\n/-- Coordinate process supplied to the maintained finite-alphabet strong law. -/\ndef trajectoryObservation (index : ℕ) (path : Trajectory) : Observation",
-        "statement_sha256": "0ca2acf10b537e56ae02fe904414f58caf242c457543de3954f207457ceb9614"
+        "statement": "theorem nonidentifiablePosteriorAfter_eq_prior\n    (prior : FiniteLaw Hypothesis) (path : Trajectory) :\n    ∀ sampleCount,\n      nonidentifiablePosteriorAfter prior path sampleCount = prior",
+        "statement_sha256": "6c63cef6068a76c2649edb075ce4e912979fc2857f0f4c4415cdce69d7b0bdd1"
       },
       "FEP.FinitePosteriorLearning.nonidentifiablePredictive_pos": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -73697,20 +73697,20 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "∀ sampleCount, posteriorAfter prior path sampleCount hypothesis = 0\n  | 0 => priorZero\n  | sampleCount + 1 => by\n      rw [posteriorAfter]\n      exact FEP.LearningTheory.posterior_zero_of_prior_zero\n        (posteriorAfter prior path sampleCount) selectedLikelihood\n        (path sampleCount)\n        (selectedPredictive_pos\n          (posteriorAfter prior path sampleCount) (path sampleCount))\n        hypothesis\n        (posteriorAfter_zeroPrior\n          prior path hypothesis priorZero sampleCount)\n\n/-- Observation law with identical rows, making the two hypotheses\nobservationally nonidentifiable. -/\ndef nonidentifiableLikelihood : FiniteKernel Hypothesis Observation where\n  mass _hypothesis _observation",
+        "conclusion": "∀ sampleCount, posteriorAfter prior path sampleCount hypothesis = 0",
         "context_binders": [],
         "declaration_mentions": [
           {
             "identifier": "FEP.LearningTheory.posterior_zero_of_prior_zero",
             "qualified_name": "FEP.LearningTheory.posterior_zero_of_prior_zero",
             "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
+            "role": "proof_reference"
           },
           {
             "identifier": "selectedPredictive_pos",
             "qualified_name": "FEP.FinitePosteriorLearning.selectedPredictive_pos",
             "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
+            "role": "proof_reference"
           }
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
@@ -73728,8 +73728,8 @@
         "qualified_name": "FEP.FinitePosteriorLearning.posteriorAfter_zeroPrior",
         "source_line": 497,
         "source_owner": "src/fep_lean/formal/finite_posterior_learning.lean",
-        "statement": "theorem posteriorAfter_zeroPrior (prior : FiniteLaw Hypothesis)\n    (path : Trajectory) (hypothesis : Hypothesis)\n    (priorZero : prior hypothesis = 0) :\n    ∀ sampleCount, posteriorAfter prior path sampleCount hypothesis = 0\n  | 0 => priorZero\n  | sampleCount + 1 => by\n      rw [posteriorAfter]\n      exact FEP.LearningTheory.posterior_zero_of_prior_zero\n        (posteriorAfter prior path sampleCount) selectedLikelihood\n        (path sampleCount)\n        (selectedPredictive_pos\n          (posteriorAfter prior path sampleCount) (path sampleCount))\n        hypothesis\n        (posteriorAfter_zeroPrior\n          prior path hypothesis priorZero sampleCount)\n\n/-- Observation law with identical rows, making the two hypotheses\nobservationally nonidentifiable. -/\ndef nonidentifiableLikelihood : FiniteKernel Hypothesis Observation where\n  mass _hypothesis _observation",
-        "statement_sha256": "100a57f947620123fb450148cc89d91133bf17eb00abad92999edd1927fe8106"
+        "statement": "theorem posteriorAfter_zeroPrior (prior : FiniteLaw Hypothesis)\n    (path : Trajectory) (hypothesis : Hypothesis)\n    (priorZero : prior hypothesis = 0) :\n    ∀ sampleCount, posteriorAfter prior path sampleCount hypothesis = 0",
+        "statement_sha256": "919313c7ff222149181ee1d034dab2b99cc8d2811f538bb444acdf37e417760a"
       },
       "FEP.FinitePosteriorLearning.posteriorBadMass_contraction_of_not_badGap": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -86865,7 +86865,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "letI",
+        "conclusion": "letI := bernoulliFisherInvertible p hp0 hp1\n    naturalGradient (bernoulliScoreModel p hp0 hp1) covector =\n      fun _ => p * (1 - p) * covector 0",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -86930,8 +86930,8 @@
         "qualified_name": "FEP.InformationGeometry.bernoulli_naturalGradient_eq",
         "source_line": 406,
         "source_owner": "src/fep_lean/formal/information_geometry.lean",
-        "statement": "theorem bernoulli_naturalGradient_eq (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1)\n    (covector : Fin 1 → ℝ) :\n    letI",
-        "statement_sha256": "e240bcda30a051b7b5504186674759e6403af9d234303d7a183ce7efa517e3b7"
+        "statement": "theorem bernoulli_naturalGradient_eq (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1)\n    (covector : Fin 1 → ℝ) :\n    letI := bernoulliFisherInvertible p hp0 hp1\n    naturalGradient (bernoulliScoreModel p hp0 hp1) covector =\n      fun _ => p * (1 - p) * covector 0",
+        "statement_sha256": "e48fe30ed7aadd5efa661feac108f26cb5e28a3178e9e6d02c039143c227a9e8"
       },
       "FEP.InformationGeometry.duplicatedFairBernoulli_fisherMatrix_entry": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -92941,7 +92941,7 @@
       "FEP.MarkovBlanket.boolDynamics_nontrivial": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "let current : DynamicState Bool Bool Bool Bool",
+        "conclusion": "let current : DynamicState Bool Bool Bool Bool :=\n      (false, (true, (false, true)))\n    let next : DynamicState Bool Bool Bool Bool :=\n      (false, (true, (true, false)))\n    next ≠ current ∧ nextLaw boolDynamics current next = 1",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -93003,8 +93003,8 @@
         "qualified_name": "FEP.MarkovBlanket.boolDynamics_nontrivial",
         "source_line": 257,
         "source_owner": "src/fep_lean/formal/markov_blanket.lean",
-        "statement": "theorem boolDynamics_nontrivial :\n    let current : DynamicState Bool Bool Bool Bool",
-        "statement_sha256": "dbc61ec8c7e6df6fd932d8302fb2d1f37fb18c97895174a9d896db72a4c869c9"
+        "statement": "theorem boolDynamics_nontrivial :\n    let current : DynamicState Bool Bool Bool Bool :=\n      (false, (true, (false, true)))\n    let next : DynamicState Bool Bool Bool Bool :=\n      (false, (true, (true, false)))\n    next ≠ current ∧ nextLaw boolDynamics current next = 1",
+        "statement_sha256": "b39e9c126d56aa86daf1698060eea2721a25773b08ede2fd99b4bb74bed8fd30"
       },
       "FEP.MarkovBlanket.conditionalJoint_fstMarginal": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -97349,7 +97349,7 @@
       "FEP.NativeBlanket.correlatedBlanket_nonvacuous": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "letI : MeasurableSpace Bool",
+        "conclusion": "letI : MeasurableSpace Bool := ⊤\n    CondIndepFun\n        (MeasurableSpace.comap blanketCoordinate inferInstance)\n        blanketCoordinate_measurable.comap_le\n        internalCoordinate externalCoordinate\n        (embeddedLaw (staticJoint correlatedBlanketModel)) ∧\n      staticJoint correlatedBlanketModel (((false, false), false), false) = 1 / 2 ∧\n      staticJoint correlatedBlanketModel (((true, true), true), true) = 1 / 2 ∧\n      staticJoint correlatedBlanketModel (((false, true), false), false) ≠ 1 / 2",
         "context_binders": [],
         "declaration_mentions": [
           {
@@ -97397,8 +97397,8 @@
         "qualified_name": "FEP.NativeBlanket.correlatedBlanket_nonvacuous",
         "source_line": 624,
         "source_owner": "src/fep_lean/formal/native_blanket.lean",
-        "statement": "theorem correlatedBlanket_nonvacuous :\n    letI : MeasurableSpace Bool",
-        "statement_sha256": "88b0ea9cd73d2a63c4d364a9096872aeea54d8cd307b726ad51634d4ef92c3f2"
+        "statement": "theorem correlatedBlanket_nonvacuous :\n    letI : MeasurableSpace Bool := ⊤\n    CondIndepFun\n        (MeasurableSpace.comap blanketCoordinate inferInstance)\n        blanketCoordinate_measurable.comap_le\n        internalCoordinate externalCoordinate\n        (embeddedLaw (staticJoint correlatedBlanketModel)) ∧\n      staticJoint correlatedBlanketModel (((false, false), false), false) = 1 / 2 ∧\n      staticJoint correlatedBlanketModel (((true, true), true), true) = 1 / 2 ∧\n      staticJoint correlatedBlanketModel (((false, true), false), false) ≠ 1 / 2",
+        "statement_sha256": "a97404344146986da6193a58c89774e84c71fda26c59ceef19db38a16c104b17"
       },
       "FEP.NativeBlanket.embeddedConditionalPairKernel_eq_prod": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -114052,7 +114052,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "∀ (horizon : ℕ) (belief : Belief),\n      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief =\n        beliefFeedbackValue pomdp cost\n          (optimalTreeAction (pomdpPolicyTreeModel pomdp cost)) horizon belief\n  | 0, _ => rfl\n  | horizon + 1, belief => by\n      rw [optimalTreeValue_eq_min]\n      change\n        cost horizon belief\n              (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon belief) +\n            ∑ outcome,\n              actionObservationLaw (pomdp.interpret belief) pomdp.transition\n                  pomdp.emission\n                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon\n                    belief) outcome *\n                optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon\n                  (pomdp.update belief\n                    (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon\n                      belief) outcome) =\n          cost horizon belief\n              (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon belief) +\n            ∑ nextBelief,\n              reachableBeliefKernel pomdp\n                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon\n                    belief) belief nextBelief *\n                beliefFeedbackValue pomdp cost\n                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost)) horizon\n                  nextBelief\n      rw [reachableBeliefKernel_sum]\n      apply congrArg\n      apply Finset.sum_congr rfl\n      intro outcome _\n      rw [optimalTreeValue_eq_beliefFeedback pomdp cost horizon]\n\n/-- The sophisticated Bayesian recursion is the reachable-belief POMDP optimum:\nit never exceeds any belief-feedback policy's value and is attained by the\nBellman-optimal one. -/\ntheorem bayesSophisticatedValue_eq_pomdpOptimum [Nonempty Action] [DecidableEq Belief]\n    (model : BayesianBeliefModel Belief State Action Outcome)\n    (support : ∀ belief, FullSupport (bayesGenerative model belief))\n    (initial : Belief) :\n    (∀ (policy : ℕ → Belief → Action) (horizon : ℕ) (belief : Belief),\n      sophisticatedEFEValue (bayesSophisticatedModel model) horizon belief ≤\n        beliefFeedbackValue (bayesReachablePOMDP model initial)\n          (fun _ belief action =>\n            expectedFreeEnergy (bayesGenerative model belief) action)\n          policy horizon belief) ∧\n      ∃ policy : ℕ → Belief → Action, ∀ (horizon : ℕ) (belief : Belief),\n        sophisticatedEFEValue (bayesSophisticatedModel model) horizon belief =\n          beliefFeedbackValue (bayesReachablePOMDP model initial)\n            (fun _ belief action =>\n              expectedFreeEnergy (bayesGenerative model belief) action)\n            policy horizon belief",
+        "conclusion": "∀ (horizon : ℕ) (belief : Belief),\n      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief =\n        beliefFeedbackValue pomdp cost\n          (optimalTreeAction (pomdpPolicyTreeModel pomdp cost)) horizon belief",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -114120,40 +114120,16 @@
         ],
         "declaration_mentions": [
           {
-            "identifier": "bayesSophisticatedValue_eq_pomdpOptimum",
-            "qualified_name": "FEP.PerceptionActionLoop.bayesSophisticatedValue_eq_pomdpOptimum",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
-          },
-          {
             "candidates": [
               "FEP.PolicyTrees.optimalTreeValue_eq_min"
             ],
             "identifier": "optimalTreeValue_eq_min",
             "resolution": "unresolved lexical scope",
-            "role": "statement_reference"
+            "role": "proof_reference"
           },
           {
             "identifier": "reachableBeliefKernel_sum",
             "qualified_name": "FEP.PerceptionActionLoop.reachableBeliefKernel_sum",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
-          },
-          {
-            "identifier": "bayesEFETree_eq_pomdpTree",
-            "qualified_name": "FEP.PerceptionActionLoop.bayesEFETree_eq_pomdpTree",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "bayesSophisticatedValue_eq_optimalTree",
-            "qualified_name": "FEP.PerceptionActionLoop.bayesSophisticatedValue_eq_optimalTree",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "optimalTreeValue_le_beliefFeedback",
-            "qualified_name": "FEP.PerceptionActionLoop.optimalTreeValue_le_beliefFeedback",
             "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
@@ -114177,8 +114153,8 @@
         "qualified_name": "FEP.PerceptionActionLoop.optimalTreeValue_eq_beliefFeedback",
         "source_line": 791,
         "source_owner": "src/fep_lean/formal/perception_action_loop.lean",
-        "statement": "theorem optimalTreeValue_eq_beliefFeedback [Nonempty Action] [DecidableEq Belief]\n    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)\n    (cost : ℕ → Belief → Action → ℝ) :\n    ∀ (horizon : ℕ) (belief : Belief),\n      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief =\n        beliefFeedbackValue pomdp cost\n          (optimalTreeAction (pomdpPolicyTreeModel pomdp cost)) horizon belief\n  | 0, _ => rfl\n  | horizon + 1, belief => by\n      rw [optimalTreeValue_eq_min]\n      change\n        cost horizon belief\n              (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon belief) +\n            ∑ outcome,\n              actionObservationLaw (pomdp.interpret belief) pomdp.transition\n                  pomdp.emission\n                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon\n                    belief) outcome *\n                optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon\n                  (pomdp.update belief\n                    (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon\n                      belief) outcome) =\n          cost horizon belief\n              (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon belief) +\n            ∑ nextBelief,\n              reachableBeliefKernel pomdp\n                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost) horizon\n                    belief) belief nextBelief *\n                beliefFeedbackValue pomdp cost\n                  (optimalTreeAction (pomdpPolicyTreeModel pomdp cost)) horizon\n                  nextBelief\n      rw [reachableBeliefKernel_sum]\n      apply congrArg\n      apply Finset.sum_congr rfl\n      intro outcome _\n      rw [optimalTreeValue_eq_beliefFeedback pomdp cost horizon]\n\n/-- The sophisticated Bayesian recursion is the reachable-belief POMDP optimum:\nit never exceeds any belief-feedback policy's value and is attained by the\nBellman-optimal one. -/\ntheorem bayesSophisticatedValue_eq_pomdpOptimum [Nonempty Action] [DecidableEq Belief]\n    (model : BayesianBeliefModel Belief State Action Outcome)\n    (support : ∀ belief, FullSupport (bayesGenerative model belief))\n    (initial : Belief) :\n    (∀ (policy : ℕ → Belief → Action) (horizon : ℕ) (belief : Belief),\n      sophisticatedEFEValue (bayesSophisticatedModel model) horizon belief ≤\n        beliefFeedbackValue (bayesReachablePOMDP model initial)\n          (fun _ belief action =>\n            expectedFreeEnergy (bayesGenerative model belief) action)\n          policy horizon belief) ∧\n      ∃ policy : ℕ → Belief → Action, ∀ (horizon : ℕ) (belief : Belief),\n        sophisticatedEFEValue (bayesSophisticatedModel model) horizon belief =\n          beliefFeedbackValue (bayesReachablePOMDP model initial)\n            (fun _ belief action =>\n              expectedFreeEnergy (bayesGenerative model belief) action)\n            policy horizon belief",
-        "statement_sha256": "0fc7c3712c63e7c01fa2c90144e4c091b3d89aa55121a05def192c62b49923f8"
+        "statement": "theorem optimalTreeValue_eq_beliefFeedback [Nonempty Action] [DecidableEq Belief]\n    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)\n    (cost : ℕ → Belief → Action → ℝ) :\n    ∀ (horizon : ℕ) (belief : Belief),\n      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief =\n        beliefFeedbackValue pomdp cost\n          (optimalTreeAction (pomdpPolicyTreeModel pomdp cost)) horizon belief",
+        "statement_sha256": "c0daaef8881c9d217fb2d846b1c7d2456ed7a8a3f1342a748224d4d139823a61"
       },
       "FEP.PerceptionActionLoop.optimalTreeValue_le_beliefFeedback": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -114230,7 +114206,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "∀ (horizon : ℕ) (belief : Belief),\n      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief ≤\n        beliefFeedbackValue pomdp cost policy horizon belief\n  | 0, _ => le_rfl\n  | horizon + 1, belief => by\n      have hAction",
+        "conclusion": "∀ (horizon : ℕ) (belief : Belief),\n      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief ≤\n        beliefFeedbackValue pomdp cost policy horizon belief",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -114339,8 +114315,8 @@
         "qualified_name": "FEP.PerceptionActionLoop.optimalTreeValue_le_beliefFeedback",
         "source_line": 754,
         "source_owner": "src/fep_lean/formal/perception_action_loop.lean",
-        "statement": "theorem optimalTreeValue_le_beliefFeedback [Nonempty Action] [DecidableEq Belief]\n    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)\n    (cost : ℕ → Belief → Action → ℝ) (policy : ℕ → Belief → Action) :\n    ∀ (horizon : ℕ) (belief : Belief),\n      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief ≤\n        beliefFeedbackValue pomdp cost policy horizon belief\n  | 0, _ => le_rfl\n  | horizon + 1, belief => by\n      have hAction",
-        "statement_sha256": "f84155070b81b1958da27b4a722381409c78d9ee0c6831120cf853c6e9de7fe7"
+        "statement": "theorem optimalTreeValue_le_beliefFeedback [Nonempty Action] [DecidableEq Belief]\n    (pomdp : ReachableBeliefPOMDP Belief State Action Outcome)\n    (cost : ℕ → Belief → Action → ℝ) (policy : ℕ → Belief → Action) :\n    ∀ (horizon : ℕ) (belief : Belief),\n      optimalTreeValue (pomdpPolicyTreeModel pomdp cost) horizon belief ≤\n        beliefFeedbackValue pomdp cost policy horizon belief",
+        "statement_sha256": "052e443c608497aa243877467e72853acb455d3dbc888d550986b63f62b40dcd"
       },
       "FEP.PerceptionActionLoop.perceptionActionKernel_apply": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -116414,7 +116390,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "∀ {depth : ℕ} (plan : OpenLoopPlan Action depth) (belief : Belief),\n      policyTreeValue model (openLoopEmbedding plan) belief =\n        openLoopValue model plan belief\n  | 0, _, _ => rfl\n  | depth + 1, plan, belief => by\n      change\n        model.stageCost depth belief plan.1 +\n            ∑ observation,\n              model.observationLaw belief plan.1 observation *\n                policyTreeValue model (openLoopEmbedding plan.2)\n                  (model.update belief plan.1 observation) = _\n      apply congrArg\n      apply Finset.sum_congr rfl\n      intro observation _\n      rw [openLoopEmbedding_value model plan.2]\n\n/-- The closed-loop optimum is no worse than every embedded open-loop plan. -/\ntheorem optimalTree_le_openLoop [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation)\n    {depth : ℕ} (plan : OpenLoopPlan Action depth) (belief : Belief) :\n    optimalTreeValue model depth belief ≤ openLoopValue model plan belief",
+        "conclusion": "∀ {depth : ℕ} (plan : OpenLoopPlan Action depth) (belief : Belief),\n      policyTreeValue model (openLoopEmbedding plan) belief =\n        openLoopValue model plan belief",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -116489,20 +116465,7 @@
             "visibility": "instance"
           }
         ],
-        "declaration_mentions": [
-          {
-            "identifier": "optimalTree_le_openLoop",
-            "qualified_name": "FEP.PolicyTrees.optimalTree_le_openLoop",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
-          },
-          {
-            "identifier": "optimalTreeValue_le_tree",
-            "qualified_name": "FEP.PolicyTrees.optimalTreeValue_le_tree",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
+        "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.controlled_markov"
@@ -116516,8 +116479,8 @@
         "qualified_name": "FEP.PolicyTrees.openLoopEmbedding_value",
         "source_line": 286,
         "source_owner": "src/fep_lean/formal/policy_tree.lean",
-        "statement": "theorem openLoopEmbedding_value\n    (model : PolicyTreeModel Belief Action Observation) :\n    ∀ {depth : ℕ} (plan : OpenLoopPlan Action depth) (belief : Belief),\n      policyTreeValue model (openLoopEmbedding plan) belief =\n        openLoopValue model plan belief\n  | 0, _, _ => rfl\n  | depth + 1, plan, belief => by\n      change\n        model.stageCost depth belief plan.1 +\n            ∑ observation,\n              model.observationLaw belief plan.1 observation *\n                policyTreeValue model (openLoopEmbedding plan.2)\n                  (model.update belief plan.1 observation) = _\n      apply congrArg\n      apply Finset.sum_congr rfl\n      intro observation _\n      rw [openLoopEmbedding_value model plan.2]\n\n/-- The closed-loop optimum is no worse than every embedded open-loop plan. -/\ntheorem optimalTree_le_openLoop [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation)\n    {depth : ℕ} (plan : OpenLoopPlan Action depth) (belief : Belief) :\n    optimalTreeValue model depth belief ≤ openLoopValue model plan belief",
-        "statement_sha256": "2bafeddc2db43923f3d31a0506310da71edc9692489a83f6d25676e6eca1ed24"
+        "statement": "theorem openLoopEmbedding_value\n    (model : PolicyTreeModel Belief Action Observation) :\n    ∀ {depth : ℕ} (plan : OpenLoopPlan Action depth) (belief : Belief),\n      policyTreeValue model (openLoopEmbedding plan) belief =\n        openLoopValue model plan belief",
+        "statement_sha256": "f1e96f79984aa04ef0ff513bc68194027ffcf705c49ff4ea889a21eda7575d96"
       },
       "FEP.PolicyTrees.optimalEFEValue_eq_riskAmbiguity": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -116694,7 +116657,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "∀ (depth : ℕ) (belief : Belief),\n      policyTreeValue model (optimalPolicyTree model depth belief) belief =\n        optimalTreeValue model depth belief\n  | 0, _ => rfl\n  | depth + 1, belief => by\n      rw [optimalTreeValue_eq_min]\n      change\n        model.stageCost depth belief (optimalTreeAction model depth belief) +\n            ∑ observation,\n              model.observationLaw belief\n                  (optimalTreeAction model depth belief) observation *\n                policyTreeValue model\n                  (optimalPolicyTree model depth\n                    (model.update belief\n                      (optimalTreeAction model depth belief) observation))\n                  (model.update belief\n                    (optimalTreeAction model depth belief) observation) = _\n      apply congrArg\n      apply Finset.sum_congr rfl\n      intro observation _\n      rw [optimalPolicyTree_value model depth]\n\n/-- The recursive Bellman value is below the value of every tree on the same\nfinite depth carrier. -/\ntheorem optimalTreeValue_le_tree [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation) :\n    ∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      optimalTreeValue model depth belief ≤ policyTreeValue model tree belief\n  | 0, _, _ => le_rfl\n  | depth + 1, tree, belief => by\n      let objective : Action → ℝ",
+        "conclusion": "∀ (depth : ℕ) (belief : Belief),\n      policyTreeValue model (optimalPolicyTree model depth belief) belief =\n        optimalTreeValue model depth belief",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -116774,26 +116737,6 @@
             "identifier": "optimalTreeValue_eq_min",
             "qualified_name": "FEP.PolicyTrees.optimalTreeValue_eq_min",
             "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
-          },
-          {
-            "identifier": "optimalTreeValue_le_tree",
-            "qualified_name": "FEP.PolicyTrees.optimalTreeValue_le_tree",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
-          },
-          {
-            "candidates": [
-              "FEP.ControlledMarkov.finiteArgmin_le"
-            ],
-            "identifier": "finiteArgmin_le",
-            "resolution": "unresolved lexical scope",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "optimalTreeValue_le_tree",
-            "qualified_name": "FEP.PolicyTrees.optimalTreeValue_le_tree",
-            "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
         ],
@@ -116810,8 +116753,8 @@
         "qualified_name": "FEP.PolicyTrees.optimalPolicyTree_value",
         "source_line": 170,
         "source_owner": "src/fep_lean/formal/policy_tree.lean",
-        "statement": "theorem optimalPolicyTree_value [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation) :\n    ∀ (depth : ℕ) (belief : Belief),\n      policyTreeValue model (optimalPolicyTree model depth belief) belief =\n        optimalTreeValue model depth belief\n  | 0, _ => rfl\n  | depth + 1, belief => by\n      rw [optimalTreeValue_eq_min]\n      change\n        model.stageCost depth belief (optimalTreeAction model depth belief) +\n            ∑ observation,\n              model.observationLaw belief\n                  (optimalTreeAction model depth belief) observation *\n                policyTreeValue model\n                  (optimalPolicyTree model depth\n                    (model.update belief\n                      (optimalTreeAction model depth belief) observation))\n                  (model.update belief\n                    (optimalTreeAction model depth belief) observation) = _\n      apply congrArg\n      apply Finset.sum_congr rfl\n      intro observation _\n      rw [optimalPolicyTree_value model depth]\n\n/-- The recursive Bellman value is below the value of every tree on the same\nfinite depth carrier. -/\ntheorem optimalTreeValue_le_tree [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation) :\n    ∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      optimalTreeValue model depth belief ≤ policyTreeValue model tree belief\n  | 0, _, _ => le_rfl\n  | depth + 1, tree, belief => by\n      let objective : Action → ℝ",
-        "statement_sha256": "93e60bb4fb4c6eef9037aa20dc3d9d822779209b700bfa09c2146f82ab051b01"
+        "statement": "theorem optimalPolicyTree_value [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation) :\n    ∀ (depth : ℕ) (belief : Belief),\n      policyTreeValue model (optimalPolicyTree model depth belief) belief =\n        optimalTreeValue model depth belief",
+        "statement_sha256": "e982299f52547366df14004ebf34c5b32eb33e5ae325bb8fd7d4cf0eccc96850"
       },
       "FEP.PolicyTrees.optimalTreeAction_le": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -117122,7 +117065,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      optimalTreeValue model depth belief ≤ policyTreeValue model tree belief\n  | 0, _, _ => le_rfl\n  | depth + 1, tree, belief => by\n      let objective : Action → ℝ",
+        "conclusion": "∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      optimalTreeValue model depth belief ≤ policyTreeValue model tree belief",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -117220,8 +117163,8 @@
         "qualified_name": "FEP.PolicyTrees.optimalTreeValue_le_tree",
         "source_line": 196,
         "source_owner": "src/fep_lean/formal/policy_tree.lean",
-        "statement": "theorem optimalTreeValue_le_tree [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation) :\n    ∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      optimalTreeValue model depth belief ≤ policyTreeValue model tree belief\n  | 0, _, _ => le_rfl\n  | depth + 1, tree, belief => by\n      let objective : Action → ℝ",
-        "statement_sha256": "96b5fa5b9e5095e78706cccab3082e255f1e0c95d707d9a87ed04743c03acce9"
+        "statement": "theorem optimalTreeValue_le_tree [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation) :\n    ∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      optimalTreeValue model depth belief ≤ policyTreeValue model tree belief",
+        "statement_sha256": "7bfdb091599550edcdd7e1d0a08ccb4532a739eb39b298aba1dad4d3dbd8ab1b"
       },
       "FEP.PolicyTrees.optimalTree_le_openLoop": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -117540,7 +117483,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      policyTreeValue (efePolicyTreeModel model) tree belief =\n        policyTreeValue (riskAmbiguityPolicyTreeModel model) tree belief\n  | 0, _, _ => rfl\n  | depth + 1, tree, belief => by\n      change\n        expectedFreeEnergy (model.generative belief) tree.1 +\n            ∑ observation,\n              predictedOutcome (model.generative belief) tree.1 observation *\n                policyTreeValue (efePolicyTreeModel model) (tree.2 observation)\n                  (model.update belief tree.1 observation) =\n          (risk (model.generative belief) tree.1 +\n              ambiguity (model.generative belief) tree.1) +\n            ∑ observation,\n              predictedOutcome (model.generative belief) tree.1 observation *\n                policyTreeValue (riskAmbiguityPolicyTreeModel model)\n                  (tree.2 observation)\n                  (model.update belief tree.1 observation)\n      rw [expectedFreeEnergy_eq_risk_add_ambiguity\n        (model.generative belief) tree.1 (model.support belief)]\n      apply congrArg\n      apply Finset.sum_congr rfl\n      intro observation _\n      rw [policyTree_efe_eq_risk_add_ambiguity model\n        (tree.2 observation)]\n\n/-- Since every tree has equal EFE and risk-plus-ambiguity values, their finite\noptimal values agree as well. -/\ntheorem optimalEFEValue_eq_riskAmbiguity [Nonempty Action]\n    (model : EFEPolicyTreeModel Belief State Action Observation)\n    (depth : ℕ) (belief : Belief) :\n    optimalTreeValue (efePolicyTreeModel model) depth belief =\n      optimalTreeValue (riskAmbiguityPolicyTreeModel model) depth belief",
+        "conclusion": "∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      policyTreeValue (efePolicyTreeModel model) tree belief =\n        policyTreeValue (riskAmbiguityPolicyTreeModel model) tree belief",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -117622,24 +117565,6 @@
             ],
             "identifier": "expectedFreeEnergy_eq_risk_add_ambiguity",
             "resolution": "unresolved lexical scope",
-            "role": "statement_reference"
-          },
-          {
-            "identifier": "optimalEFEValue_eq_riskAmbiguity",
-            "qualified_name": "FEP.PolicyTrees.optimalEFEValue_eq_riskAmbiguity",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
-          },
-          {
-            "identifier": "optimalPolicyTree_value",
-            "qualified_name": "FEP.PolicyTrees.optimalPolicyTree_value",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "optimalTreeValue_le_tree",
-            "qualified_name": "FEP.PolicyTrees.optimalTreeValue_le_tree",
-            "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
         ],
@@ -117656,8 +117581,8 @@
         "qualified_name": "FEP.PolicyTrees.policyTree_efe_eq_risk_add_ambiguity",
         "source_line": 346,
         "source_owner": "src/fep_lean/formal/policy_tree.lean",
-        "statement": "theorem policyTree_efe_eq_risk_add_ambiguity\n    (model : EFEPolicyTreeModel Belief State Action Observation) :\n    ∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      policyTreeValue (efePolicyTreeModel model) tree belief =\n        policyTreeValue (riskAmbiguityPolicyTreeModel model) tree belief\n  | 0, _, _ => rfl\n  | depth + 1, tree, belief => by\n      change\n        expectedFreeEnergy (model.generative belief) tree.1 +\n            ∑ observation,\n              predictedOutcome (model.generative belief) tree.1 observation *\n                policyTreeValue (efePolicyTreeModel model) (tree.2 observation)\n                  (model.update belief tree.1 observation) =\n          (risk (model.generative belief) tree.1 +\n              ambiguity (model.generative belief) tree.1) +\n            ∑ observation,\n              predictedOutcome (model.generative belief) tree.1 observation *\n                policyTreeValue (riskAmbiguityPolicyTreeModel model)\n                  (tree.2 observation)\n                  (model.update belief tree.1 observation)\n      rw [expectedFreeEnergy_eq_risk_add_ambiguity\n        (model.generative belief) tree.1 (model.support belief)]\n      apply congrArg\n      apply Finset.sum_congr rfl\n      intro observation _\n      rw [policyTree_efe_eq_risk_add_ambiguity model\n        (tree.2 observation)]\n\n/-- Since every tree has equal EFE and risk-plus-ambiguity values, their finite\noptimal values agree as well. -/\ntheorem optimalEFEValue_eq_riskAmbiguity [Nonempty Action]\n    (model : EFEPolicyTreeModel Belief State Action Observation)\n    (depth : ℕ) (belief : Belief) :\n    optimalTreeValue (efePolicyTreeModel model) depth belief =\n      optimalTreeValue (riskAmbiguityPolicyTreeModel model) depth belief",
-        "statement_sha256": "bc43a914ad27d01b648dd5d20e8fb38cbcd9c7d0cb6a15ab5b975245cc0fec1c"
+        "statement": "theorem policyTree_efe_eq_risk_add_ambiguity\n    (model : EFEPolicyTreeModel Belief State Action Observation) :\n    ∀ {depth : ℕ} (tree : PolicyTree Action Observation depth)\n      (belief : Belief),\n      policyTreeValue (efePolicyTreeModel model) tree belief =\n        policyTreeValue (riskAmbiguityPolicyTreeModel model) tree belief",
+        "statement_sha256": "4db7e9e63e9a2c29d2afc7ebc399fb1c9f01b7351bb81d38ba71ed19d8b510a2"
       },
       "FEP.PosteriorConvergence.boundedContinuousPosteriorExpectation_tendsto_ae": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -119009,7 +118934,7 @@
       "FEP.PredictiveCoding.firstOrderCorrection_witness": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "let corrected",
+        "conclusion": "let corrected := generalizedFilteringStep (1 / 2 : ℝ) (fun _ => 1)\n      (firstOrderJet 2 0) (firstOrderJet 0 1)\n    corrected.coefficient 0 = 3 / 2 ∧ corrected.coefficient 1 = 1 / 2",
         "context_binders": [],
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
@@ -119044,8 +118969,8 @@
         "qualified_name": "FEP.PredictiveCoding.firstOrderCorrection_witness",
         "source_line": 344,
         "source_owner": "src/fep_lean/formal/predictive_coding.lean",
-        "statement": "theorem firstOrderCorrection_witness :\n    let corrected",
-        "statement_sha256": "f717f20d22be56c827d69bacf8468951aefec13d2a43834cc398129abbafb401"
+        "statement": "theorem firstOrderCorrection_witness :\n    let corrected := generalizedFilteringStep (1 / 2 : ℝ) (fun _ => 1)\n      (firstOrderJet 2 0) (firstOrderJet 0 1)\n    corrected.coefficient 0 = 3 / 2 ∧ corrected.coefficient 1 = 1 / 2",
+        "statement_sha256": "7ab849cae0e5ff0bcb7a4244d616c7abfac07426b9a2a16dfb4e5657b5ec9013"
       },
       "FEP.PredictiveCoding.firstOrderJet_shift_boundary": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -124939,7 +124864,7 @@
       "FEP.TemporalInference.PTree.msg_nonneg": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "(t : PTree S) → t.Nonneg → ∀ s, 0 ≤ msg t s\n  | node φ n ψ c, ⟨hφ, hψ, hc⟩, s => by\n    rw [msg]\n    exact mul_nonneg (hφ s) (Finset.prod_nonneg fun i _ =>\n      Finset.sum_nonneg fun y _ => mul_nonneg (hψ i s y) (msg_nonneg (c i) (hc i) y))\n\n/-- With nonnegative potentials and positive total weight, the root belief is\na probability law. -/\ntheorem rootBelief_sum_one [DecidableEq S] (t : PTree S) (hpos : 0 < totalWeight t) :\n    ∑ s, rootBelief t s = 1",
+        "conclusion": "(t : PTree S) → t.Nonneg → ∀ s, 0 ≤ msg t s",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -125014,20 +124939,7 @@
             "visibility": "instance"
           }
         ],
-        "declaration_mentions": [
-          {
-            "identifier": "rootBelief_sum_one",
-            "qualified_name": "FEP.TemporalInference.PTree.rootBelief_sum_one",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "statement_reference"
-          },
-          {
-            "identifier": "beliefNormalizer_eq_totalWeight",
-            "qualified_name": "FEP.TemporalInference.PTree.beliefNormalizer_eq_totalWeight",
-            "resolution": "exact or same-namespace source identifier",
-            "role": "proof_reference"
-          }
-        ],
+        "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.controlled_markov"
@@ -125043,8 +124955,8 @@
         "qualified_name": "FEP.TemporalInference.PTree.msg_nonneg",
         "source_line": 584,
         "source_owner": "src/fep_lean/formal/temporal_inference.lean",
-        "statement": "theorem msg_nonneg : (t : PTree S) → t.Nonneg → ∀ s, 0 ≤ msg t s\n  | node φ n ψ c, ⟨hφ, hψ, hc⟩, s => by\n    rw [msg]\n    exact mul_nonneg (hφ s) (Finset.prod_nonneg fun i _ =>\n      Finset.sum_nonneg fun y _ => mul_nonneg (hψ i s y) (msg_nonneg (c i) (hc i) y))\n\n/-- With nonnegative potentials and positive total weight, the root belief is\na probability law. -/\ntheorem rootBelief_sum_one [DecidableEq S] (t : PTree S) (hpos : 0 < totalWeight t) :\n    ∑ s, rootBelief t s = 1",
-        "statement_sha256": "ded7c81644ca22b8a650ee2eef7fa67f6572186f090c422c85bf4942607a620e"
+        "statement": "theorem msg_nonneg : (t : PTree S) → t.Nonneg → ∀ s, 0 ≤ msg t s",
+        "statement_sha256": "5b340242f7e6c35c33ae5281d6fef8fb5272597feab154a6fa0ccc5043702c63"
       },
       "FEP.TemporalInference.PTree.rootBelief_eq_exactMarginal": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -132738,7 +132650,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "FullSupport (twoStateModel rates belief time hTime) where\n  state_pos policy state",
+        "conclusion": "FullSupport (twoStateModel rates belief time hTime)",
         "context_binders": [],
         "declaration_mentions": [
           {
@@ -132786,8 +132698,8 @@
         "qualified_name": "FEP.TimeScaleEFE.twoStateModel_fullSupport",
         "source_line": 414,
         "source_owner": "src/fep_lean/formal/efe_time_scale_separation.lean",
-        "statement": "theorem twoStateModel_fullSupport (rates : TwoStateRates) (belief : FiniteLaw Bool)\n    (hSupport : ∀ i, 0 < belief i) (time : ℝ) (hTime : 0 ≤ time) :\n    FullSupport (twoStateModel rates belief time hTime) where\n  state_pos policy state",
-        "statement_sha256": "f26ea881ec1b9638c961f51ffa92852fd631369701fab00c470f486806a6d320"
+        "statement": "theorem twoStateModel_fullSupport (rates : TwoStateRates) (belief : FiniteLaw Bool)\n    (hSupport : ∀ i, 0 < belief i) (time : ℝ) (hTime : 0 ≤ time) :\n    FullSupport (twoStateModel rates belief time hTime)",
+        "statement_sha256": "15c676561944383cb9530241857d8f6f6b43592ed2084652c1ec541b1fca3b29"
       },
       "FEP.TimeScaleEFE.twoStateModel_predictedOutcome": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -146415,7 +146327,7 @@
       "FEPComposed.FiniteReferenceAgent.finiteReferenceAgent_terminal": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "let learned : FiniteLaw Bool",
+        "conclusion": "let learned : FiniteLaw Bool :=\n      posteriorAfter selectedPrior (fun _ => true) 2\n    let updatedInternal : FiniteLaw Bool := posteriorUpdate learned true\n    let liftedLearned : FiniteLaw BoolBlanketState := liftInternalLaw learned\n    let liftedUpdated : FiniteLaw BoolBlanketState :=\n      liftInternalLaw updatedInternal\n    let model :=\n      boolBlanketGenerativeModel liftedLearned\n        (liftInternalLikelihood selectedLikelihood)\n        (FiniteLaw.uniform : FiniteLaw Bool)\n        (FiniteLaw.uniform : FiniteLaw Bool)\n    let actionInterface :=\n      boolBlanketGenerativeModelActionInterface liftedLearned\n        (liftInternalLikelihood selectedLikelihood)\n        (FiniteLaw.uniform : FiniteLaw Bool)\n        (FiniteLaw.uniform : FiniteLaw Bool)\n    let emittedTrueAction : Bool :=\n      actionInterface.policyToAction\n        (selectedPosteriorFeedbackTree.2 true).1\n    let selectedKernel : FiniteKernel BoolBlanketState BoolBlanketState :=\n      actionInterface.actionTransition emittedTrueAction\n    let stationary : FiniteLaw BoolBlanketState := boolBlanketStationaryLaw\n    ∃ hEvidence : 0 < predictedOutcome model false true,\n      learned false = 1 / 10 ∧\n      learned true = 9 / 10 ∧\n      learned ≠ selectedPrior ∧\n      liftedLearned.fstMarginal = learned ∧\n      selectedBeliefInterpret SelectedBeliefIndex.learned = learned ∧\n      (∑ hypothesis, updatedInternal hypothesis = 1) ∧\n      updatedInternal ≠ learned ∧\n      trajectoryLaw.real\n          (posteriorBadMassFailure selectedPrior 2 (identificationGap / 2)) ≤\n        Real.exp\n          (-((2 : ℝ) * (identificationGap / 2)) ^ 2 /\n            (2 * ∑ _index : Fin 2, logLikelihoodRatioProxy)) ∧\n      predictedOutcome model false = selectedLikelihood.predictive learned ∧\n      posteriorState model false true hEvidence = liftedUpdated ∧\n      (posteriorState model false true hEvidence).fstMarginal =\n        selectedBeliefInterpret\n          (selectedBeliefUpdate SelectedBeliefIndex.learned false true) ∧\n      (posteriorState model false true hEvidence).fstMarginal =\n        selectedBeliefInterpret\n          (selectedPosteriorFeedbackModel.update\n            SelectedBeliefIndex.learned false true) ∧\n      (∀ recognition : FiniteLaw BoolBlanketState,\n        variationalFreeEnergy model false true hEvidence recognition =\n            outcomeSurprisal model false true ↔\n          recognition = liftedUpdated) ∧\n      optimalTreeAction selectedPosteriorFeedbackModel 0\n          (SelectedBeliefIndex.afterObservation true) =\n        (selectedPosteriorFeedbackTree.2 true).1 ∧\n      (∀ fixedAction,\n        policyTreeValue selectedPosteriorFeedbackModel\n            selectedPosteriorFeedbackTree SelectedBeliefIndex.learned <\n          openLoopValue selectedPosteriorFeedbackModel\n            (selectedPosteriorOpenLoopPlan fixedAction)\n            SelectedBeliefIndex.learned) ∧\n      emittedTrueAction = true ∧\n      selectedKernel =\n        model.transition (selectedPosteriorFeedbackTree.2 true).1 ∧\n      selectedKernel =\n        boolBlanketActionIndexedSemigroup.sampledKernel true ∧\n      boolBlanketActionIndexedSemigroup.sampledKernel true =\n        boolBlanketRefreshKernel ∧\n      (FiniteLaw.uniform : FiniteLaw Bool).product\n          (FiniteLaw.uniform : FiniteLaw (Bool × (Bool × Bool))) = stationary ∧\n      (∃ blanketModel :\n          ConditionalBlanketModel\n            (FEP.MarkovBlanket.Blanket Bool Bool) Bool Bool,\n        (∀ blanket, 0 < blanketModel.blanketLaw blanket) ∧\n          (∃ blanketFirst blanketSecond,\n            blanketFirst ≠ blanketSecond ∧\n              0 < blanketModel.blanketLaw blanketFirst ∧\n              0 < blanketModel.blanketLaw blanketSecond) ∧\n          Factorizes blanketModel ∧\n          ∀ internal sensory active external,\n            stationary (internal, (sensory, (active, external))) =\n              blanketModel.blanketLaw (sensory, active) *\n                blanketModel.conditional (sensory, active)\n                  (internal, external)) ∧\n      IsInvariant stationary selectedKernel ∧\n      Fintype.card BoolBlanketState = 16 ∧\n      boolBlanketOrigin ≠ boolBlanketAlternative ∧\n      0 < stationary boolBlanketOrigin ∧\n      0 < stationary boolBlanketAlternative ∧\n      0 < liftedUpdated boolBlanketOrigin ∧\n      0 < liftedUpdated boolBlanketAlternative ∧\n      InformationTheory.klDiv\n          (embeddedLaw (selectedKernel.predictive liftedUpdated))\n          (embeddedLaw stationary) ≤\n        InformationTheory.klDiv\n          (embeddedLaw liftedUpdated) (embeddedLaw stationary) ∧\n      finiteKL (selectedKernel.predictive liftedUpdated) stationary <\n        finiteKL liftedUpdated stationary ∧\n      InformationTheory.klDiv\n          (embeddedLaw (selectedKernel.predictive liftedUpdated))\n          (embeddedLaw stationary) <\n        InformationTheory.klDiv\n          (embeddedLaw liftedUpdated) (embeddedLaw stationary)",
         "context_binders": [],
         "declaration_mentions": [
           {
@@ -146576,8 +146488,8 @@
         "qualified_name": "FEPComposed.FiniteReferenceAgent.finiteReferenceAgent_terminal",
         "source_line": 363,
         "source_owner": "src/fep_lean/formal/compositions/finite_reference_agent.lean",
-        "statement": "theorem finiteReferenceAgent_terminal :\n    let learned : FiniteLaw Bool",
-        "statement_sha256": "aeb3b460fddb7958ebf63e12b407bee394ff6c1867714b87849ad9733707a4aa"
+        "statement": "theorem finiteReferenceAgent_terminal :\n    let learned : FiniteLaw Bool :=\n      posteriorAfter selectedPrior (fun _ => true) 2\n    let updatedInternal : FiniteLaw Bool := posteriorUpdate learned true\n    let liftedLearned : FiniteLaw BoolBlanketState := liftInternalLaw learned\n    let liftedUpdated : FiniteLaw BoolBlanketState :=\n      liftInternalLaw updatedInternal\n    let model :=\n      boolBlanketGenerativeModel liftedLearned\n        (liftInternalLikelihood selectedLikelihood)\n        (FiniteLaw.uniform : FiniteLaw Bool)\n        (FiniteLaw.uniform : FiniteLaw Bool)\n    let actionInterface :=\n      boolBlanketGenerativeModelActionInterface liftedLearned\n        (liftInternalLikelihood selectedLikelihood)\n        (FiniteLaw.uniform : FiniteLaw Bool)\n        (FiniteLaw.uniform : FiniteLaw Bool)\n    let emittedTrueAction : Bool :=\n      actionInterface.policyToAction\n        (selectedPosteriorFeedbackTree.2 true).1\n    let selectedKernel : FiniteKernel BoolBlanketState BoolBlanketState :=\n      actionInterface.actionTransition emittedTrueAction\n    let stationary : FiniteLaw BoolBlanketState := boolBlanketStationaryLaw\n    ∃ hEvidence : 0 < predictedOutcome model false true,\n      learned false = 1 / 10 ∧\n      learned true = 9 / 10 ∧\n      learned ≠ selectedPrior ∧\n      liftedLearned.fstMarginal = learned ∧\n      selectedBeliefInterpret SelectedBeliefIndex.learned = learned ∧\n      (∑ hypothesis, updatedInternal hypothesis = 1) ∧\n      updatedInternal ≠ learned ∧\n      trajectoryLaw.real\n          (posteriorBadMassFailure selectedPrior 2 (identificationGap / 2)) ≤\n        Real.exp\n          (-((2 : ℝ) * (identificationGap / 2)) ^ 2 /\n            (2 * ∑ _index : Fin 2, logLikelihoodRatioProxy)) ∧\n      predictedOutcome model false = selectedLikelihood.predictive learned ∧\n      posteriorState model false true hEvidence = liftedUpdated ∧\n      (posteriorState model false true hEvidence).fstMarginal =\n        selectedBeliefInterpret\n          (selectedBeliefUpdate SelectedBeliefIndex.learned false true) ∧\n      (posteriorState model false true hEvidence).fstMarginal =\n        selectedBeliefInterpret\n          (selectedPosteriorFeedbackModel.update\n            SelectedBeliefIndex.learned false true) ∧\n      (∀ recognition : FiniteLaw BoolBlanketState,\n        variationalFreeEnergy model false true hEvidence recognition =\n            outcomeSurprisal model false true ↔\n          recognition = liftedUpdated) ∧\n      optimalTreeAction selectedPosteriorFeedbackModel 0\n          (SelectedBeliefIndex.afterObservation true) =\n        (selectedPosteriorFeedbackTree.2 true).1 ∧\n      (∀ fixedAction,\n        policyTreeValue selectedPosteriorFeedbackModel\n            selectedPosteriorFeedbackTree SelectedBeliefIndex.learned <\n          openLoopValue selectedPosteriorFeedbackModel\n            (selectedPosteriorOpenLoopPlan fixedAction)\n            SelectedBeliefIndex.learned) ∧\n      emittedTrueAction = true ∧\n      selectedKernel =\n        model.transition (selectedPosteriorFeedbackTree.2 true).1 ∧\n      selectedKernel =\n        boolBlanketActionIndexedSemigroup.sampledKernel true ∧\n      boolBlanketActionIndexedSemigroup.sampledKernel true =\n        boolBlanketRefreshKernel ∧\n      (FiniteLaw.uniform : FiniteLaw Bool).product\n          (FiniteLaw.uniform : FiniteLaw (Bool × (Bool × Bool))) = stationary ∧\n      (∃ blanketModel :\n          ConditionalBlanketModel\n            (FEP.MarkovBlanket.Blanket Bool Bool) Bool Bool,\n        (∀ blanket, 0 < blanketModel.blanketLaw blanket) ∧\n          (∃ blanketFirst blanketSecond,\n            blanketFirst ≠ blanketSecond ∧\n              0 < blanketModel.blanketLaw blanketFirst ∧\n              0 < blanketModel.blanketLaw blanketSecond) ∧\n          Factorizes blanketModel ∧\n          ∀ internal sensory active external,\n            stationary (internal, (sensory, (active, external))) =\n              blanketModel.blanketLaw (sensory, active) *\n                blanketModel.conditional (sensory, active)\n                  (internal, external)) ∧\n      IsInvariant stationary selectedKernel ∧\n      Fintype.card BoolBlanketState = 16 ∧\n      boolBlanketOrigin ≠ boolBlanketAlternative ∧\n      0 < stationary boolBlanketOrigin ∧\n      0 < stationary boolBlanketAlternative ∧\n      0 < liftedUpdated boolBlanketOrigin ∧\n      0 < liftedUpdated boolBlanketAlternative ∧\n      InformationTheory.klDiv\n          (embeddedLaw (selectedKernel.predictive liftedUpdated))\n          (embeddedLaw stationary) ≤\n        InformationTheory.klDiv\n          (embeddedLaw liftedUpdated) (embeddedLaw stationary) ∧\n      finiteKL (selectedKernel.predictive liftedUpdated) stationary <\n        finiteKL liftedUpdated stationary ∧\n      InformationTheory.klDiv\n          (embeddedLaw (selectedKernel.predictive liftedUpdated))\n          (embeddedLaw stationary) <\n        InformationTheory.klDiv\n          (embeddedLaw liftedUpdated) (embeddedLaw stationary)",
+        "statement_sha256": "5e649cf2658e5cfb2eb88ab77b88fa4f340b47111c88224088867ceaa5de99de"
       },
       "FEPComposed.FiniteReferenceAgent.finiteReferenceCoherence_uninhabited": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -149976,7 +149888,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "let predicted",
+        "conclusion": "let predicted := predictionBelief model prior\n    evidenceLaw model prior = (evidenceFamily model prior).law predicted.mean",
         "context_binders": [],
         "declaration_mentions": [
           {
@@ -150001,8 +149913,8 @@
         "qualified_name": "FEPComposed.GaussianFilter.evidenceLaw_eq_gaussian",
         "source_line": 501,
         "source_owner": "src/fep_lean/formal/compositions/gaussian_filter.lean",
-        "statement": "theorem evidenceLaw_eq_gaussian\n    (model : ScalarGaussianFilterModel) (prior : ScalarGaussianBelief) :\n    let predicted",
-        "statement_sha256": "35449d8edc2e1b74c9995b523c5bf4a74df38b0c2241fcc748f7b28184baafcc"
+        "statement": "theorem evidenceLaw_eq_gaussian\n    (model : ScalarGaussianFilterModel) (prior : ScalarGaussianBelief) :\n    let predicted := predictionBelief model prior\n    evidenceLaw model prior = (evidenceFamily model prior).law predicted.mean",
+        "statement_sha256": "656dcc9cf57f1d196aa0478777265723385482378270c26310dd5896b6451868"
       },
       "FEPComposed.GaussianFilter.evidenceLaw_singleton_eq_zero": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -150206,7 +150118,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "let predicted",
+        "conclusion": "let predicted := predictionBelief model prior\n    (evidenceFamily model prior).law predicted.mean ⊗ₘ\n        closedFormPosteriorKernel model prior =\n      ((predictionBelief model prior).law ⊗ₘ observationKernel model).map\n        Prod.swap",
         "context_binders": [],
         "declaration_mentions": [
           {
@@ -150231,8 +150143,8 @@
         "qualified_name": "FEPComposed.GaussianFilter.gaussianEvidence_compProd_closedForm_eq_map_swap",
         "source_line": 452,
         "source_owner": "src/fep_lean/formal/compositions/gaussian_filter.lean",
-        "statement": "theorem gaussianEvidence_compProd_closedForm_eq_map_swap\n    (model : ScalarGaussianFilterModel) (prior : ScalarGaussianBelief) :\n    let predicted",
-        "statement_sha256": "a28ec3e4b4443df26dd7a6e02afe030d1e4eb6964a9bacb7216ef0987e601f40"
+        "statement": "theorem gaussianEvidence_compProd_closedForm_eq_map_swap\n    (model : ScalarGaussianFilterModel) (prior : ScalarGaussianBelief) :\n    let predicted := predictionBelief model prior\n    (evidenceFamily model prior).law predicted.mean ⊗ₘ\n        closedFormPosteriorKernel model prior =\n      ((predictionBelief model prior).law ⊗ₘ observationKernel model).map\n        Prod.swap",
+        "statement_sha256": "c766a28fc62fef74f8ce67cc210da8de26de0732da79406906fd14a7957aa0ea"
       },
       "FEPComposed.GaussianFilter.gaussianPDF_factorization": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -150269,7 +150181,7 @@
             "visibility": "explicit"
           }
         ],
-        "conclusion": "let predicted",
+        "conclusion": "let predicted := predictionBelief model prior\n    gaussianPDF predicted.mean predicted.family.variance state *\n        gaussianPDF state model.observationNoise.variance observation =\n      evidenceDensity model prior observation *\n        gaussianPDF (posteriorMean model prior observation)\n          (posteriorVariance model prior) state",
         "context_binders": [],
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
@@ -150287,8 +150199,8 @@
         "qualified_name": "FEPComposed.GaussianFilter.gaussianPDF_factorization",
         "source_line": 326,
         "source_owner": "src/fep_lean/formal/compositions/gaussian_filter.lean",
-        "statement": "theorem gaussianPDF_factorization\n    (model : ScalarGaussianFilterModel) (prior : ScalarGaussianBelief)\n    (state observation : ℝ) :\n    let predicted",
-        "statement_sha256": "f136e81c72fa7f5fc0604158082904b9cb173b5837858715f947e2f5c744401b"
+        "statement": "theorem gaussianPDF_factorization\n    (model : ScalarGaussianFilterModel) (prior : ScalarGaussianBelief)\n    (state observation : ℝ) :\n    let predicted := predictionBelief model prior\n    gaussianPDF predicted.mean predicted.family.variance state *\n        gaussianPDF state model.observationNoise.variance observation =\n      evidenceDensity model prior observation *\n        gaussianPDF (posteriorMean model prior observation)\n          (posteriorVariance model prior) state",
+        "statement_sha256": "392acda0e95f6aa99880219b544e21ce244a6bc73893deaae5b02fd586792f0f"
       },
       "FEPComposed.GaussianFilter.innovationVariance_pos": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -155580,6 +155492,12 @@
             ],
             "identifier": "evidenceLaw_eq_gaussian",
             "resolution": "unresolved lexical scope",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "secondRisk_closedForm",
+            "qualified_name": "FEPComposed.H3CaseStudy.secondRisk_closedForm",
+            "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
         ],
@@ -204747,7 +204665,7 @@
       "fep_fep090.FEP090.fep090_firstOrder_correction_nonvacuity": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "let corrected",
+        "conclusion": "let corrected := generalizedFilteringStep (1 / 2 : ℝ) (fun _ => 1)\n      (firstOrderJet 2 0) (firstOrderJet 0 1)\n    corrected.coefficient 0 = 3 / 2 ∧ corrected.coefficient 1 = 1 / 2",
         "context_binders": [],
         "declaration_mentions": [
           {
@@ -204770,8 +204688,8 @@
         "qualified_name": "fep_fep090.FEP090.fep090_firstOrder_correction_nonvacuity",
         "source_line": 43,
         "source_owner": "src/fep_lean/catalogue/bodies/predictive_coding_generalized.py",
-        "statement": "theorem fep090_firstOrder_correction_nonvacuity :\n    let corrected",
-        "statement_sha256": "a0afd374e2704613a34277bb0a7105b4427fb03ef5e389e9cf1b59a9ea58face"
+        "statement": "theorem fep090_firstOrder_correction_nonvacuity :\n    let corrected := generalizedFilteringStep (1 / 2 : ℝ) (fun _ => 1)\n      (firstOrderJet 2 0) (firstOrderJet 0 1)\n    corrected.coefficient 0 = 3 / 2 ∧ corrected.coefficient 1 = 1 / 2",
+        "statement_sha256": "4e80ffd71bbe6ffb36ba73dae9e0ce1af9820202be7b236055091a7db21b977e"
       },
       "fep_fep091.FEP091.fep091_doubledPrecision_nonvacuity": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -213084,7 +213002,7 @@
       "fep_fep139.FEP139.fep139_correlatedBlanket_nonvacuous": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [],
-        "conclusion": "letI : MeasurableSpace Bool",
+        "conclusion": "letI : MeasurableSpace Bool := ⊤\n    CondIndepFun\n        (MeasurableSpace.comap FEP.NativeBlanket.blanketCoordinate inferInstance)\n        FEP.NativeBlanket.blanketCoordinate_measurable.comap_le\n        FEP.NativeBlanket.internalCoordinate\n        FEP.NativeBlanket.externalCoordinate\n        (FEP.NativeBlanket.embeddedLaw\n          (staticJoint FEP.NativeBlanket.correlatedBlanketModel)) ∧\n      staticJoint FEP.NativeBlanket.correlatedBlanketModel\n          (((false, false), false), false) = 1 / 2 ∧\n      staticJoint FEP.NativeBlanket.correlatedBlanketModel\n          (((true, true), true), true) = 1 / 2 ∧\n      staticJoint FEP.NativeBlanket.correlatedBlanketModel\n          (((false, true), false), false) ≠ 1 / 2",
         "context_binders": [
           {
             "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -213233,8 +213151,8 @@
         "qualified_name": "fep_fep139.FEP139.fep139_correlatedBlanket_nonvacuous",
         "source_line": 29,
         "source_owner": "src/fep_lean/catalogue/bodies/native_blanket_independence.py",
-        "statement": "theorem fep139_correlatedBlanket_nonvacuous :\n    letI : MeasurableSpace Bool",
-        "statement_sha256": "ebe4634f702579a6a5c0937282db038a710c1971c3b191eb22a58b9167b53fc1"
+        "statement": "theorem fep139_correlatedBlanket_nonvacuous :\n    letI : MeasurableSpace Bool := ⊤\n    CondIndepFun\n        (MeasurableSpace.comap FEP.NativeBlanket.blanketCoordinate inferInstance)\n        FEP.NativeBlanket.blanketCoordinate_measurable.comap_le\n        FEP.NativeBlanket.internalCoordinate\n        FEP.NativeBlanket.externalCoordinate\n        (FEP.NativeBlanket.embeddedLaw\n          (staticJoint FEP.NativeBlanket.correlatedBlanketModel)) ∧\n      staticJoint FEP.NativeBlanket.correlatedBlanketModel\n          (((false, false), false), false) = 1 / 2 ∧\n      staticJoint FEP.NativeBlanket.correlatedBlanketModel\n          (((true, true), true), true) = 1 / 2 ∧\n      staticJoint FEP.NativeBlanket.correlatedBlanketModel\n          (((false, true), false), false) ≠ 1 / 2",
+        "statement_sha256": "4902114c5ed24f575f046e85f6bafca1e14f2de0742aa01faffcad11c63bd358"
       },
       "fep_fep139.FEP139.fep139_staticJoint_condIndepFun": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
