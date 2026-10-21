@@ -189,3 +189,14 @@ uv run python specs/gnn-bridge-q7-continuous-ou-proof/verify_native.py \
 uv run python specs/gnn-bridge-q7-continuous-ou-proof/verify_native.py \
   --check --gnn-root "$GNN_ROOT" --receipt output/bridge/q7-native-candidate.json
 ```
+
+## 2026-10-21 GNN 4.2 source epoch
+
+The [fresh native receipt](native_receipt_20261021_gnn420.json) binds GNN
+`0b0028aaa2cc3c40bddf47ac934a1f7e6b8644fe`, including package 4.2.0 and its
+current compatible dependency lock. Bridge pin/emissions, canonical render and
+probe provenance were regenerated with their owning tools. A fresh native
+compile and retained check pass all twelve standard-axiom reports without
+warnings or admissions. The canonical runner, probe and every historical receipt
+retain their prior bytes. Scope remains static binary64 coefficient and
+real-arithmetic bounds; generated-runner execution remains unverified.

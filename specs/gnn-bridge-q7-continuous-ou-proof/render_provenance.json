@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-1oiukf6s/FepLeanContinuousOU.md",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-1oiukf6s/rendered"
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-o_fxl0pi/FepLeanContinuousOU.md",
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-o_fxl0pi/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "ecab55b031ded36ca4cd81f2e670efcd53345226e1f3cf1444b2efe463262f6c"
+    "sha256": "dce0e23cc71e9ff14612509faa9cb47c2cb52a363641a97fa47eafaf2f83db9b"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -222,7 +222,7 @@
     "gnn": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
-      "pyproject.toml": "725947a05b9f5adfec54e2e4d9169d526f9f006f1cbaeb2cb4645747fe86e103",
+      "pyproject.toml": "94072b59fa357a873dda909c0cd337051bf3df61a97f8220626cea81efa67507",
       "src/gnn/0_template.py": "88773455461192c3bd20a1d477ba42082fc0525236eae8c52284d3910b720bbb",
       "src/gnn/10_ontology.py": "ccbfd4a328cf50d16b840f51fbb5c3d44b0e2468c0778ea7158ad7c29cb17101",
       "src/gnn/11_render.py": "604f2bc29d1f5bb3b491988337d6e5781b606d266b3c92f41465e0b7f4a9b0ca",
@@ -248,7 +248,7 @@
       "src/gnn/7_export.py": "9e6eaa507529963a29fc50388ddf1db49d34d7f41e50cd5ab5570ba3f227d53c",
       "src/gnn/8_visualization.py": "1d106e4cc4ebc40c8b2e9cf1be822a946e3f916085bbaa65427fb6ec3f531c9d",
       "src/gnn/9_advanced_viz.py": "4075a72b77f750cad9a6e8d952abab1e1145202065d400df81900d37db248314",
-      "src/gnn/__init__.py": "2bb528ea5050ec0d45afb3a4fda236f63a44e99b17a80ac9a3a5414436126f96",
+      "src/gnn/__init__.py": "7d24858f48276d68504bdd2043c5c12c377b1ea8d588887b7049bbfa2df3a365",
       "src/gnn/advanced_visualization/__init__.py": "4a01ece62af204fdbc76310bb94f4f53bf008bbf79b7c4d0c11731ccb4f29540",
       "src/gnn/advanced_visualization/_shared.py": "7b5e1d349f9e2171ae70b20fe1a51b6668bba92e79dee741579decbe5d0a3862",
       "src/gnn/advanced_visualization/_theme.py": "514448ceed632b22cc87b9885e85c3bbddf7fde205e392c2c959c280557a18fe",
@@ -990,7 +990,7 @@
       "src/gnn/website/source_collection.py": "a5fe1fbe4280564087d3ac3761a67e6f62f00a312c393777192039853bd3c9d1",
       "src/gnn/website/steps.py": "3b6a08f261cf1f287cacacf926dcca73b66df5a43c2fdc05da6140ddcd6a3a91",
       "src/gnn/website/templates.py": "ed5c97deeafc999e2f400101cb3dd3fbfe5677f0d69a5da28c7b16653319b906",
-      "uv.lock": "e43436203d3cefaf6e6e6c80ed8a91e5328759971194a48e0b0757bb075232eb"
+      "uv.lock": "c81d95e10e756d3ea7612868041b1e8b9a35e23b11fb1d6d69fe900a286687a3"
     }
   },
   "owners_before": {
@@ -1196,7 +1196,7 @@
     "gnn": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
-      "pyproject.toml": "725947a05b9f5adfec54e2e4d9169d526f9f006f1cbaeb2cb4645747fe86e103",
+      "pyproject.toml": "94072b59fa357a873dda909c0cd337051bf3df61a97f8220626cea81efa67507",
       "src/gnn/0_template.py": "88773455461192c3bd20a1d477ba42082fc0525236eae8c52284d3910b720bbb",
       "src/gnn/10_ontology.py": "ccbfd4a328cf50d16b840f51fbb5c3d44b0e2468c0778ea7158ad7c29cb17101",
       "src/gnn/11_render.py": "604f2bc29d1f5bb3b491988337d6e5781b606d266b3c92f41465e0b7f4a9b0ca",
@@ -1222,7 +1222,7 @@
       "src/gnn/7_export.py": "9e6eaa507529963a29fc50388ddf1db49d34d7f41e50cd5ab5570ba3f227d53c",
       "src/gnn/8_visualization.py": "1d106e4cc4ebc40c8b2e9cf1be822a946e3f916085bbaa65427fb6ec3f531c9d",
       "src/gnn/9_advanced_viz.py": "4075a72b77f750cad9a6e8d952abab1e1145202065d400df81900d37db248314",
-      "src/gnn/__init__.py": "2bb528ea5050ec0d45afb3a4fda236f63a44e99b17a80ac9a3a5414436126f96",
+      "src/gnn/__init__.py": "7d24858f48276d68504bdd2043c5c12c377b1ea8d588887b7049bbfa2df3a365",
       "src/gnn/advanced_visualization/__init__.py": "4a01ece62af204fdbc76310bb94f4f53bf008bbf79b7c4d0c11731ccb4f29540",
       "src/gnn/advanced_visualization/_shared.py": "7b5e1d349f9e2171ae70b20fe1a51b6668bba92e79dee741579decbe5d0a3862",
       "src/gnn/advanced_visualization/_theme.py": "514448ceed632b22cc87b9885e85c3bbddf7fde205e392c2c959c280557a18fe",
@@ -1964,7 +1964,7 @@
       "src/gnn/website/source_collection.py": "a5fe1fbe4280564087d3ac3761a67e6f62f00a312c393777192039853bd3c9d1",
       "src/gnn/website/steps.py": "3b6a08f261cf1f287cacacf926dcca73b66df5a43c2fdc05da6140ddcd6a3a91",
       "src/gnn/website/templates.py": "ed5c97deeafc999e2f400101cb3dd3fbfe5677f0d69a5da28c7b16653319b906",
-      "uv.lock": "e43436203d3cefaf6e6e6c80ed8a91e5328759971194a48e0b0757bb075232eb"
+      "uv.lock": "c81d95e10e756d3ea7612868041b1e8b9a35e23b11fb1d6d69fe900a286687a3"
     }
   },
   "render_route": [
@@ -1974,7 +1974,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "8ccfe119d1473da062283fed0c42f0b5c479d305e9154e5d0b70e312de1c8fd7",
+  "source_pin_sha256": "1214e5a745cc4817a0663ae6ab4fd41311c7d3d7b4a823d7787cefe081c1ea79",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
