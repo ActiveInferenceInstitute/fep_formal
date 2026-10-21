@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "557cd49edc8a911214193be3f702107de72291d6",
+    "commit": "0d11a114f81a38a90288d1d3d05a47136f3732e1",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -42,7 +42,7 @@
       "src/fep_lean/catalogue/bodies/variational_duality.py": "41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb",
       "src/fep_lean/catalogue/coverage.py": "bbbeecc966b2d38bdeebb8ca713708f368383474414ecea568bbac4d140aa8fe",
       "src/fep_lean/catalogue/generation.py": "87cc27995fcb804a68dd1d1e31b2c53b42c3559ff82733874f0ee1994c1a0765",
-      "src/fep_lean/catalogue/latex.py": "78c1f381621a1fe5703d8949391098e4d9e0a65ec7269cf3e9b0c93130500801",
+      "src/fep_lean/catalogue/latex.py": "20b9ad7612374a6f528d67fe6a40ab3c49f5eb3f6ac8baac75e602eefb9b25a7",
       "src/fep_lean/catalogue/novelty.py": "b7142a1d50d7b538101913270a156297bf5566518bbc0700769c296187c2f176",
       "src/fep_lean/catalogue/references.py": "8f4c4b843a6f53e2baccf92e12ac807b71efb315a4c13d8521f49008c6e3b848",
       "src/fep_lean/catalogue/registry.py": "a758f1be3f4b4efbdbd80fb5854c71557f3e392fd90587b3c59656716fdfa268",
@@ -140,11 +140,11 @@
       "src/fep_lean/gauss/cli.py": "63458f1c5f5ef49266375b53b3358fa8bba9c888fd6404ffa40e300014bc5542",
       "src/fep_lean/gauss/client.py": "3a9fa26de947e781b85d07340ed57dbdc156452d65cf3797539c153d20ccbc9c",
       "src/fep_lean/gauss/runner.py": "fc6e28495112416a149ebdf8a8ee5f1b60109144c6e14582cfc6e69a00e14aa7",
-      "src/fep_lean/lean_source.py": "0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104",
+      "src/fep_lean/lean_source.py": "adc252c7625809ede9b248f96a56effaf9fc0915b55b78fd83dcd047e7717efb",
       "src/fep_lean/llm/__init__.py": "ae438b5778960193d24ee8e8cd43f75b698d4f7e283b9e8368d965e92dc581e8",
       "src/fep_lean/llm/hermes.py": "3880e8b519652894b31efaf3c13aa80ef328ce10a10f9701c2eaef6105c9b22d",
       "src/fep_lean/methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
-      "src/fep_lean/methods/model.py": "917554e8cf301899a08a78344dc6232c08354dcafdccae3f07cbc20b1e87f2f0",
+      "src/fep_lean/methods/model.py": "b7e9985b30707fb73f7548b7f0198992fc796c0895fabd486dd1e145cd07d3f4",
       "src/fep_lean/methods/probes.py": "30690d7b66923a2df06b59c93b95549b8dad5018cc2ae6a2ce1f256af64e326b",
       "src/fep_lean/methods/projection.py": "28ac68b3d8a340d6a430258110b6d4198745ebb703ce6af5acb6450ed5a30f54",
       "src/fep_lean/methods/visualization.py": "3c12c0213ef98a4b1ad803836d637969efe4a3e28e02302d3ba63ed2f229719a",
