@@ -7,6 +7,11 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
+      native_producer_shadow:
+        description: 'Compare the strict in-test producer with the existing CLI; no gate is removed'
+        required: false
+        type: boolean
+        default: false
       use_lean_cache:
         description: 'Skip restoring/saving the Lean build cache for a forced cold run'
         required: false
@@ -1076,6 +1081,7 @@ jobs:
           uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --check output/cascadia-diagnostic-bounds
       - name: Run the serial_lean acceptance lane
         env:
+          FEP_LEAN_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
           FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
           FEP_LEAN_SLICE04_COMPILE_TEST: "1"
           FEP_LEAN_SLICE05_COMPILE_TEST: "1"
@@ -1083,11 +1089,21 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p output
+          if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then
+            export FEP_LEAN_CI_NATIVE_RECEIPT=1
+          fi
           uv run pytest tests/ -q -m serial_lean -n 1 --no-cov \
             --junitxml=output/serial-lean-acceptance.xml \
             -W always --color=no 2>&1 | tee output/serial-lean-warning-inventory.log
       - name: Verify exact sealed-roster native receipt
+        env:
+          FEP_LEAN_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
         run: |
+          if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then
+            test ! -e output/native-verification-serial-producer.json
+            test ! -L output/native-verification-serial-producer.json
+            cp output/native-verification.json output/native-verification-serial-producer.json
+          fi
           uv run fep-lean verify \
             --fail-on-warnings \
             --receipt output/native-verification.json
@@ -1100,7 +1116,19 @@ jobs:
               project_root=Path.cwd(),
           )
           print(result)
-          raise SystemExit(0 if result["native_claim_ready"] else 1)
+          if not result["native_claim_ready"]:
+              raise SystemExit(1)
+          import os
+          if os.environ["FEP_LEAN_NATIVE_SHADOW"] == "1":
+              import json
+              from tests._support.native_catalogue_shadow import compare_native_catalogue_receipts
+              comparison = compare_native_catalogue_receipts(
+                  Path.cwd(), Path("output/native-verification-serial-producer.json"),
+                  Path("output/native-verification.json"), run_id=os.environ["GITHUB_RUN_ID"],
+                  attempt=os.environ["GITHUB_RUN_ATTEMPT"], commit=os.environ["GITHUB_SHA"],
+              )
+              with Path("output/native-producer-shadow-comparison.json").open("x") as stream:
+                  stream.write(json.dumps(comparison, indent=2) + "\n")
           PY
       # render_manuscript.py --check verifies the manuscript's Mathlib
       # citations against the pinned Mathlib checkout and fails closed when
@@ -1167,3 +1195,15 @@ jobs:
             output/serial-lean-warning-inventory.log
             output/serial-lean-acceptance.xml
             output/native-entropy-consumer.log
+
+      - name: Retain optional native producer shadow evidence
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow
+        uses: actions/upload-artifact@v7
+        with:
+          name: native-producer-shadow-evidence
+          if-no-files-found: error
+          path: |
+            output/native-verification-serial-producer.json
+            output/native-producer-shadow-comparison.json
+            output/native-catalogue-producer.intent.json
+            output/native-catalogue-producer.json
