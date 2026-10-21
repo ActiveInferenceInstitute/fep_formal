@@ -3,7 +3,7 @@
   "roles": {
     "mono": {
       "family": "JuliaMono",
-      "codepoint_count": 79,
+      "codepoint_count": 78,
       "codepoints": [
         "U+00AC",
         "U+00B2",
@@ -38,7 +38,6 @@
         "U+2016",
         "U+2020",
         "U+2026",
-        "U+207A",
         "U+207B",
         "U+2080",
         "U+2081",
