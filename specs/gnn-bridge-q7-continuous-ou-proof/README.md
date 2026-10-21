@@ -81,6 +81,23 @@ The GNN paired workflow also checks current-Q7 source/provenance and generated
 scaffold freshness on CPython 3.14. That read-only gate supplies no new native
 proof evidence; the native receipt remains a distinct acceptance surface.
 
+## 2026-10-20 Pillow 13 source epoch
+
+The [new native receipt](native_receipt_20261020_e928.json) binds GNN
+`e92883b22feb7a28f0b386e8aa2bc3d87236e459`, whose lock upgrades Pillow to 13.
+The source pin and both emitted signatures were regenerated through the bridge
+CLI, then the owning render refresher and probe generator renewed current
+provenance. The actual JAX runner and Lean probe retain their earlier bytes.
+The four original receipts and the earlier C06 receipt remain byte-identical
+historical observations of their own source pairs.
+
+A fresh native compile and retained check pass with all twelve standard-axiom
+reports, no compiler warnings or admissions. The scope remains static binary64
+coefficient approximation and real-arithmetic prediction bounds;
+`runtime_execution_verified` is false. This capture does not renew generated
+runner, SDE or physical execution evidence. Later source changes still require
+fresh capture; the current-Q7 paired gate only checks read-only source freshness.
+
 ## Interpreter contract for the frozen scaffold
 
 The [schema-1 serialization protocol](scaffold-serialization.md) retains all

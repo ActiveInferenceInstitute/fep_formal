@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "27eec9375c5c551fd5fed3356580b19b11ae14a8",
+    "commit": "820be729e6f931da4ebb0d6254cb8cd1648e76c5",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -202,11 +202,11 @@
     }
   },
   "gnn": {
-    "commit": "c06d867efa914a52c76d584cacf2fff8ad5d01ea",
+    "commit": "e92883b22feb7a28f0b386e8aa2bc3d87236e459",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "07ff3f32f82e5788e2669cb5401b6557be763010165ca2512e3ed522f79810dc",
-      "pyproject.toml": "e058daf27fd6272399496defbf97d22b511884415bf40d5f785e5b230b49d27e",
+      "pyproject.toml": "725947a05b9f5adfec54e2e4d9169d526f9f006f1cbaeb2cb4645747fe86e103",
       "src/gnn/0_template.py": "88773455461192c3bd20a1d477ba42082fc0525236eae8c52284d3910b720bbb",
       "src/gnn/10_ontology.py": "ccbfd4a328cf50d16b840f51fbb5c3d44b0e2468c0778ea7158ad7c29cb17101",
       "src/gnn/11_render.py": "604f2bc29d1f5bb3b491988337d6e5781b606d266b3c92f41465e0b7f4a9b0ca",
@@ -974,7 +974,7 @@
       "src/gnn/website/source_collection.py": "a5fe1fbe4280564087d3ac3761a67e6f62f00a312c393777192039853bd3c9d1",
       "src/gnn/website/steps.py": "3b6a08f261cf1f287cacacf926dcca73b66df5a43c2fdc05da6140ddcd6a3a91",
       "src/gnn/website/templates.py": "ed5c97deeafc999e2f400101cb3dd3fbfe5677f0d69a5da28c7b16653319b906",
-      "uv.lock": "3e2a5587ac92bf281079c60c2c55aa58e386478f6640211a0ebf66f90224f283"
+      "uv.lock": "e43436203d3cefaf6e6e6c80ed8a91e5328759971194a48e0b0757bb075232eb"
     }
   },
   "schema_version": 1
