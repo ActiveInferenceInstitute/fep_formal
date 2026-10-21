@@ -13243,6 +13243,8 @@ topics:
   - fep159_expectedFreeEnergy_le_productionRate_div_decayRate
   - fep159_slow_fast_separation_statement
   - fep159_fastRelaxation_epistemic_vanishes
+  - fep159_fastRelaxation_eventually_small
+  - fep159_fastRelaxation_tendsto
   - fep159_slicePath_entropyProduction_eq
   - fep159_beliefAffinity_eq_localAffinity
   - fep159_productionRate_nonneg
@@ -13253,22 +13255,25 @@ topics:
   nl: 'For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A
     specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded
     by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported
-    source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the retained
-    theorem gives, for each positive tolerance, existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon
-    or Tendsto theorem is not asserted by that declaration. Assumption scope: All statements are for the explicit two-state
-    continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of
-    the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker
-    with no mathematical dependence. Semantic disposition: `formalized`.
+    source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the old attainable-scale
+    theorem is preserved. The uniform theorem controls every sufficiently small positive epsilon, and the Tendsto theorem
+    proves the genuine right-hand limit at zero for every fixed positive time and initial finite law. Assumption scope: All
+    statements use the explicit two-state continuous-time semigroup and positive rates. The uniform bound and right-hand limit
+    require fixed strictly positive time but permit zero-mass atoms in the initial law. The affinity and slice-path identities
+    retain their explicit full-support premises; the path identity is one-slice, not a general path-space theorem. The ness_flow
+    import remains only an orphan-adoption marker. Semantic disposition: `formalized`.
 
     '
-  assumption_review: All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter
-    family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space
-    theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.
-  non_vacuity: At the stationary law the gap and production rate both vanish, providing an equality boundary. A full-support
-    nonstationary belief supplies nonzero deviation and current-affinity production for the positive rates, and the explicit
-    rate-scaling envelope gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations
-    do not separately state the full right-limit quantifier.
-  acceptance_probe: warning-free native Lean compile of all nine fep-159 declarations.
+  assumption_review: All statements use the explicit two-state continuous-time semigroup and positive rates. The uniform bound
+    and right-hand limit require fixed strictly positive time but permit zero-mass atoms in the initial law. The affinity
+    and slice-path identities retain their explicit full-support premises; the path identity is one-slice, not a general path-space
+    theorem. The ness_flow import remains only an orphan-adoption marker.
+  non_vacuity: A symmetric-rate nonstationary three-quarter/one-quarter belief and a sparse point mass both satisfy the positive-time
+    right limit. The stationary law has exactly zero gap at every positive scale and nonnegative time. At time zero the symmetric
+    point mass retains log 2 at every positive scale, so dropping the positive-time premise is refuted. These controls use
+    the same existing finite probability carrier and public owner.
+  acceptance_probe: Warning-free native Lean compile of all eleven fep-159 declarations, strict importing consumer with five
+    concrete controls, and seven standard-axiom reports for the two public limit proofs and those controls.
   lean_sketch: "import FepSketches.efe_time_scale_separation\n\nnamespace FEP159\n\nopen FEP.TimeScaleEFE\nopen FEP FEP.FiniteInformation\
     \ FEP.ContinuousTimeMarkov FEP.PathThermodynamics\n  FEP.ActiveInference FEP.VariationalDuality Finset\nopen scoped BigOperators\n\
     \n/-- **Theorem 1 (`epistemic_gain_bounded_by_affinity`).**  The policy-relevant\ninformation gap of the belief is bounded\
@@ -13286,21 +13291,29 @@ topics:
     \ (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (time : ℝ) (hTime : 0 ≤ time) :\n    epistemicGain rates belief\
     \ time hTime ≤\n      rates.rho time ^ 2 *\n        ((belief true - rates.stationaryTrue) ^ 2 /\n          (rates.stationaryTrue\
     \ * rates.stationaryFalse)) :=\n  FEP.TimeScaleEFE.slow_fast_separation_statement rates belief time hTime\n\n/-- **Theorem\
-    \ 2, limit form.**  Under the `1 / eps` rate scaling the\npolicy-relevant gain after a fixed positive action time vanishes\
-    \ as\n`eps → 0⁺`; on the tuned branch the explicit witness is\n`eps = decayRate * time / (-log (delta / chi0))`. -/\n\
-    theorem fep159_fastRelaxation_epistemic_vanishes (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (time : ℝ) (hpos\
-    \ : 0 < time) :\n    ∀ δ : ℝ, 0 < δ → ∃ eps : ℝ, 0 < eps ∧ ∀ (hTime : 0 ≤ time) (heps : 0 < eps),\n      epistemicGain\
-    \ (scaledRates rates eps heps) belief time hTime ≤ δ :=\n  FEP.TimeScaleEFE.fastRelaxation_epistemic_vanishes rates belief\
-    \ time hpos\n\n/-- **Theorem 3 (`slicePath_entropyProduction_eq`).**  The one-slice path-space\nentropy production of\
-    \ `FEP.PathThermodynamics` equals `(1 - rho time) * σ /\ndecayRate`: the generator entropy-production rate `σ = J * A`\
-    \ is exactly the\nper-unit-relaxation path-space dissipation rate. -/\ntheorem fep159_slicePath_entropyProduction_eq (rates\
-    \ : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 ≤ time) (hpos\
-    \ : 0 < time) :\n    entropyProduction (slicePathProtocol rates belief time hTime)\n      = (1 - rates.rho time) * productionRate\
-    \ rates belief / rates.decayRate :=\n  FEP.TimeScaleEFE.slicePath_entropyProduction_eq rates belief hSupport time hTime\
-    \ hpos\n\n/-- The generator affinity coincides with `FEP.PathThermodynamics.localAffinity`\nof the semigroup slice at\
-    \ every positive sampling time. -/\ntheorem fep159_beliefAffinity_eq_localAffinity (rates : TwoStateRates)\n    (belief\
-    \ : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 < time) :\n    beliefAffinity rates belief\
-    \ =\n      localAffinity belief (rates.certifiedSemigroup.kernel time hTime.le) false true :=\n  FEP.TimeScaleEFE.beliefAffinity_eq_localAffinity\
+    \ 2, attainable-scale form.**  For each positive tolerance,\none positive scale attains it after a fixed positive action\
+    \ time; on the tuned\nbranch the witness is `eps = decayRate * time / (-log (delta / chi0))`.\nThe uniform small-scale\
+    \ bound and genuine right-hand limit are stated below. -/\ntheorem fep159_fastRelaxation_epistemic_vanishes (rates : TwoStateRates)\n\
+    \    (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :\n    ∀ δ : ℝ, 0 < δ → ∃ eps : ℝ, 0 < eps ∧ ∀ (hTime : 0\
+    \ ≤ time) (heps : 0 < eps),\n      epistemicGain (scaledRates rates eps heps) belief time hTime ≤ δ :=\n  FEP.TimeScaleEFE.fastRelaxation_epistemic_vanishes\
+    \ rates belief time hpos\n\n/-- At fixed positive time every sufficiently small positive scale makes the\ninformation\
+    \ gap at most the given positive tolerance. -/\ntheorem fep159_fastRelaxation_eventually_small (rates : TwoStateRates)\n\
+    \    (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :\n    ∀ δ : ℝ, 0 < δ → ∃ eps0 : ℝ, 0 < eps0 ∧\n      ∀ eps\
+    \ : ℝ, ∀ heps : 0 < eps, eps ≤ eps0 → ∀ hTime : 0 ≤ time,\n        epistemicGain (scaledRates rates eps heps) belief time\
+    \ hTime ≤ δ :=\n  FEP.TimeScaleEFE.fastRelaxation_epistemic_eventually_small rates belief time hpos\n\nopen scoped Topology\
+    \ in\n/-- The actual right-hand scale limit, without requiring initial full support. -/\ntheorem fep159_fastRelaxation_tendsto\
+    \ (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :\n    Filter.Tendsto (FEP.TimeScaleEFE.positiveScaledEpistemicGain\
+    \ rates belief time hpos.le)\n      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) :=\n  FEP.TimeScaleEFE.fastRelaxation_epistemic_tendsto\
+    \ rates belief time hpos\n\n/-- **Theorem 3 (`slicePath_entropyProduction_eq`).**  The one-slice path-space\nentropy production\
+    \ of `FEP.PathThermodynamics` equals `(1 - rho time) * σ /\ndecayRate`: the generator entropy-production rate `σ = J *\
+    \ A` is exactly the\nper-unit-relaxation path-space dissipation rate. -/\ntheorem fep159_slicePath_entropyProduction_eq\
+    \ (rates : TwoStateRates)\n    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 ≤ time)\
+    \ (hpos : 0 < time) :\n    entropyProduction (slicePathProtocol rates belief time hTime)\n      = (1 - rates.rho time)\
+    \ * productionRate rates belief / rates.decayRate :=\n  FEP.TimeScaleEFE.slicePath_entropyProduction_eq rates belief hSupport\
+    \ time hTime hpos\n\n/-- The generator affinity coincides with `FEP.PathThermodynamics.localAffinity`\nof the semigroup\
+    \ slice at every positive sampling time. -/\ntheorem fep159_beliefAffinity_eq_localAffinity (rates : TwoStateRates)\n\
+    \    (belief : FiniteLaw Bool) (hSupport : ∀ i, 0 < belief i)\n    (time : ℝ) (hTime : 0 < time) :\n    beliefAffinity\
+    \ rates belief =\n      localAffinity belief (rates.certifiedSemigroup.kernel time hTime.le) false true :=\n  FEP.TimeScaleEFE.beliefAffinity_eq_localAffinity\
     \ rates belief hSupport time hTime\n\n/-- The entropy-production rate is nonnegative at a fully supported belief. -/\n\
     theorem fep159_productionRate_nonneg (rates : TwoStateRates) (belief : FiniteLaw Bool)\n    (hSupport : ∀ i, 0 < belief\
     \ i) : 0 ≤ productionRate rates belief :=\n  FEP.TimeScaleEFE.productionRate_nonneg rates belief hSupport\n\n/-- For the\
@@ -13360,6 +13373,31 @@ topics:
 
     &\mathsf{epistemicGain}\,(\mathsf{scaledRates}\,\mathsf{rates}\,\mathsf{eps}\,\mathsf{heps})\,\mathsf{belief}\,\mathsf{time}\,\mathsf{hTime}
     \le \delta{}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{time} : \mathbb{R})\,(\mathsf{hpos}
+    : 0 < \mathsf{time}) \\
+
+    &\forall \delta{} : \mathbb{R}, 0 < \delta{} \Rightarrow \exists \mathsf{eps0} : \mathbb{R}, 0 < \mathsf{eps0} \wedge
+    \forall \mathsf{eps} : \mathbb{R}, \forall \mathsf{heps} : 0 < \mathsf{eps}, \mathsf{eps} \le \mathsf{eps0} \\
+
+    &\Rightarrow \forall \mathsf{hTime} : 0 \le \mathsf{time}, \mathsf{epistemicGain}\,(\mathsf{scaledRates}\,\mathsf{rates}\,\mathsf{eps}\,\mathsf{heps})\,\mathsf{belief}\,\mathsf{time}
+    \\
+
+    &\mathsf{hTime} \le \delta{}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &(\mathsf{rates} : \mathsf{TwoStateRates})\,(\mathsf{belief} : \mathsf{FiniteLaw}\,\mathsf{Bool})\,(\mathsf{time} : \mathbb{R})\,(\mathsf{hpos}
+    : 0 < \mathsf{time}) \\
+
+    &\mathsf{Filter.Tendsto}\,(\mathsf{FEP.TimeScaleEFE.positiveScaledEpistemicGain}\,\mathsf{rates}\,\mathsf{belief}\,\mathsf{time}
+    \\
+
+    &\mathsf{hpos.le})\,(\mathsf{nhdsWithin}\,0\,(\mathsf{Set.Ioi}\,0))\,(\mathsf{nhds}\,0)
 
     \end{aligned}'
   - '\begin{aligned}

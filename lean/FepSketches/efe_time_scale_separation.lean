@@ -20,7 +20,9 @@ machinery on the two-state carrier.
 | `epistemic_gain_bounded_by_affinity` | the belief information gap `finiteKL belief stationaryLaw` is at most the entropy-production rate `σ = J * A` scaled by the relaxation time `1 / decayRate` |
 | `expectedFreeEnergy_le_productionRate_div_decayRate` | the same bound for the actual `expectedFreeEnergy` of the two-state observing agent |
 | `slow_fast_separation_statement` | the evolved gain is bounded by the squared relaxation factor `rho time ^ 2` and by the initial gap: policy-relevant information contracts to the invariant measure no slower than the relaxation timescale |
-| `fastRelaxation_epistemic_vanishes` | under the `1 / eps` rate scaling the gain after a fixed positive action time vanishes as `eps → 0⁺` |
+| `fastRelaxation_epistemic_vanishes` | for each positive tolerance, one positive scale attains that tolerance at a fixed positive time |
+| `fastRelaxation_epistemic_eventually_small` | every sufficiently small positive scale attains the tolerance at that fixed time |
+| `fastRelaxation_epistemic_tendsto` | the gain genuinely tends to zero as `eps → 0⁺` at that fixed positive time |
 | `slicePath_entropyProduction_eq` | the one-slice path-space entropy production of `FEP.PathThermodynamics` equals `(1 - rho time) * σ / decayRate`, so `σ` is the generator production rate of the anchored path machinery |
 
 ## Scope discipline
@@ -51,7 +53,7 @@ namespace FEP.TimeScaleEFE
 
 open FEP FEP.FiniteInformation FEP.ContinuousTimeMarkov FEP.PathThermodynamics
   FEP.ActiveInference FEP.VariationalDuality Finset
-open scoped BigOperators
+open scoped BigOperators Topology
 
 /-! ## Two-state helpers -/
 
@@ -637,10 +639,10 @@ theorem epistemicGain_rateScaling (rates : TwoStateRates) (belief : FiniteLaw Bo
     scaledRates_rho_eq, scaledRates_stationaryTrue_eq, scaledRates_stationaryFalse_eq]
   exact le_of_eq (by ring)
 
-/-- **Theorem 2, limit form.**  Under the `1 / eps` rate scaling the
-policy-relevant gain after a fixed positive action time vanishes as
-`eps → 0⁺`; on the tuned branch the explicit witness is
-`eps = decayRate * time / (-log (delta / chi0))`. -/
+/-- **Theorem 2, attainable-scale form.**  For each positive tolerance,
+one positive scale attains it after a fixed positive action time; on the tuned
+branch the witness is `eps = decayRate * time / (-log (delta / chi0))`.
+The uniform small-scale bound and genuine right-hand limit are stated below. -/
 theorem fastRelaxation_epistemic_vanishes (rates : TwoStateRates)
     (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :
     ∀ δ : ℝ, 0 < δ → ∃ eps : ℝ, 0 < eps ∧ ∀ (hTime : 0 ≤ time) (heps : 0 < eps),
@@ -704,6 +706,75 @@ theorem fastRelaxation_epistemic_vanishes (rates : TwoStateRates)
     rw [hkey, Real.exp_log htargetpos]
     refine le_trans (mul_le_mul_of_nonneg_right htsq hχnonneg) ?_
     exact le_of_eq (div_mul_cancel₀ δ (ne_of_gt hχpos))
+
+/-- Uniform fast-relaxation control for every sufficiently small positive scale. -/
+theorem fastRelaxation_epistemic_eventually_small (rates : TwoStateRates)
+    (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :
+    ∀ δ : ℝ, 0 < δ → ∃ eps0 : ℝ, 0 < eps0 ∧
+      ∀ eps : ℝ, ∀ heps : 0 < eps, eps ≤ eps0 → ∀ hTime : 0 ≤ time,
+        epistemicGain (scaledRates rates eps heps) belief time hTime ≤ δ := by
+  intro δ hδ
+  let chi : ℝ := (belief true - rates.stationaryTrue) ^ 2 /
+    (rates.stationaryTrue * rates.stationaryFalse)
+  let d : ℝ := rates.decayRate * time
+  have hdpos : 0 < d := mul_pos rates.decayRate_pos hpos
+  have hchi : 0 ≤ chi := div_nonneg (sq_nonneg _)
+    (mul_pos rates.stationaryTrue_pos rates.stationaryFalse_pos).le
+  have hchipos : 0 < chi + 1 := by linarith
+  refine ⟨δ * d / (chi + 1), div_pos (mul_pos hδ hdpos) hchipos, ?_⟩
+  intro eps heps hsmall hTime
+  let x : ℝ := d / eps
+  have hxpos : 0 < x := div_pos hdpos heps
+  have harg : -(rates.decayRate / eps) * time = -x := by
+    dsimp [x, d]
+    ring
+  have hexp : Real.exp (-x) ≤ eps / d := by
+    rw [Real.exp_neg]
+    calc
+      (Real.exp x)⁻¹ = 1 / Real.exp x := by rw [one_div]
+      _ ≤ 1 / x := one_div_le_one_div_of_le hxpos (by linarith [Real.add_one_le_exp x])
+      _ = eps / d := by
+        dsimp [x]
+        field_simp [ne_of_gt hdpos, ne_of_gt heps]
+  have hunit : Real.exp (-x) ≤ 1 :=
+    Real.exp_le_one_iff.mpr (neg_nonpos.mpr hxpos.le)
+  have hsq : Real.exp (-x) ^ 2 ≤ Real.exp (-x) := by
+    nlinarith [Real.exp_pos (-x)]
+  have hrate := epistemicGain_rateScaling rates belief time hTime eps heps
+  change _ ≤ Real.exp (-(rates.decayRate / eps) * time) ^ 2 * chi at hrate
+  calc
+    epistemicGain (scaledRates rates eps heps) belief time hTime
+        ≤ Real.exp (-x) ^ 2 * chi := by simpa only [harg] using hrate
+    _ ≤ Real.exp (-x) * chi := mul_le_mul_of_nonneg_right hsq hchi
+    _ ≤ eps / d * chi := mul_le_mul_of_nonneg_right hexp hchi
+    _ ≤ eps / d * (chi + 1) := mul_le_mul_of_nonneg_left (by linarith)
+      (div_nonneg heps.le hdpos.le)
+    _ = eps * (chi + 1) / d := by ring
+    _ ≤ δ := (div_le_iff₀ hdpos).mpr ((le_div_iff₀ hchipos).mp hsmall)
+
+/-- Total extension used only to state the right-hand limit in the scale. -/
+noncomputable def positiveScaledEpistemicGain (rates : TwoStateRates)
+    (belief : FiniteLaw Bool) (time : ℝ) (hTime : 0 ≤ time) (eps : ℝ) : ℝ :=
+  if heps : 0 < eps then epistemicGain (scaledRates rates eps heps) belief time hTime else 0
+
+/-- The information gap tends to zero as the positive scale tends to zero. -/
+theorem fastRelaxation_epistemic_tendsto (rates : TwoStateRates)
+    (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :
+    Filter.Tendsto (positiveScaledEpistemicGain rates belief time hpos.le)
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
+  apply Metric.tendsto_nhds.mpr
+  intro δ hδ
+  obtain ⟨eps0, heps0, hsmall⟩ :=
+    fastRelaxation_epistemic_eventually_small rates belief time hpos (δ / 2) (by positivity)
+  have hnear : ∀ᶠ eps : ℝ in nhdsWithin 0 (Set.Ioi 0), eps < eps0 :=
+    (eventually_lt_nhds heps0).filter_mono nhdsWithin_le_nhds
+  filter_upwards [self_mem_nhdsWithin, hnear] with eps heps hupper
+  have heps' : 0 < eps := heps
+  have hnonneg : 0 ≤ epistemicGain (scaledRates rates eps heps') belief time hpos.le :=
+    FEP.FiniteInformation.finiteKL_nonneg _ _
+  rw [positiveScaledEpistemicGain, dite_eq_left heps', Real.dist_eq, sub_zero,
+    abs_of_nonneg hnonneg]
+  exact lt_of_le_of_lt (hsmall eps heps' hupper.le hpos.le) (by linarith)
 
 /-! ## One-slice path-space entropy production -/
 

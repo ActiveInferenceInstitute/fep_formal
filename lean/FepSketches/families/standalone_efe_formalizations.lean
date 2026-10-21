@@ -493,15 +493,32 @@ theorem fep159_slow_fast_separation_statement (rates : TwoStateRates)
           (rates.stationaryTrue * rates.stationaryFalse)) :=
   FEP.TimeScaleEFE.slow_fast_separation_statement rates belief time hTime
 
-/-- **Theorem 2, limit form.**  Under the `1 / eps` rate scaling the
-policy-relevant gain after a fixed positive action time vanishes as
-`eps → 0⁺`; on the tuned branch the explicit witness is
-`eps = decayRate * time / (-log (delta / chi0))`. -/
+/-- **Theorem 2, attainable-scale form.**  For each positive tolerance,
+one positive scale attains it after a fixed positive action time; on the tuned
+branch the witness is `eps = decayRate * time / (-log (delta / chi0))`.
+The uniform small-scale bound and genuine right-hand limit are stated below. -/
 theorem fep159_fastRelaxation_epistemic_vanishes (rates : TwoStateRates)
     (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :
     ∀ δ : ℝ, 0 < δ → ∃ eps : ℝ, 0 < eps ∧ ∀ (hTime : 0 ≤ time) (heps : 0 < eps),
       epistemicGain (scaledRates rates eps heps) belief time hTime ≤ δ :=
   FEP.TimeScaleEFE.fastRelaxation_epistemic_vanishes rates belief time hpos
+
+/-- At fixed positive time every sufficiently small positive scale makes the
+information gap at most the given positive tolerance. -/
+theorem fep159_fastRelaxation_eventually_small (rates : TwoStateRates)
+    (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :
+    ∀ δ : ℝ, 0 < δ → ∃ eps0 : ℝ, 0 < eps0 ∧
+      ∀ eps : ℝ, ∀ heps : 0 < eps, eps ≤ eps0 → ∀ hTime : 0 ≤ time,
+        epistemicGain (scaledRates rates eps heps) belief time hTime ≤ δ :=
+  FEP.TimeScaleEFE.fastRelaxation_epistemic_eventually_small rates belief time hpos
+
+open scoped Topology in
+/-- The actual right-hand scale limit, without requiring initial full support. -/
+theorem fep159_fastRelaxation_tendsto (rates : TwoStateRates)
+    (belief : FiniteLaw Bool) (time : ℝ) (hpos : 0 < time) :
+    Filter.Tendsto (FEP.TimeScaleEFE.positiveScaledEpistemicGain rates belief time hpos.le)
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) :=
+  FEP.TimeScaleEFE.fastRelaxation_epistemic_tendsto rates belief time hpos
 
 /-- **Theorem 3 (`slicePath_entropyProduction_eq`).**  The one-slice path-space
 entropy production of `FEP.PathThermodynamics` equals `(1 - rho time) * σ /

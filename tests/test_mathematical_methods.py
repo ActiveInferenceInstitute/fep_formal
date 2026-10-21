@@ -41,6 +41,7 @@ from fep_lean.methods import (
     positioning_neighbors,
 )
 from fep_lean.methods import model as model_module
+from tests._support.fast_relaxation_review import fast_relaxation_theorem_extension
 from tests._support.lean_module_contract import exact_information_review
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -166,6 +167,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     assert {
         declarations[name]["source_owner"] for name in finite_weight_kl_helpers
     } == {"src/fep_lean/formal/finite_information.lean"}
+    fast_relaxation_extension = fast_relaxation_theorem_extension(declarations, ROOT)
     assert (
         len(
             declarations.keys()
@@ -176,6 +178,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - scalar_bridges
             - information_bridges.keys()
             - finite_weight_kl_helpers
+            - fast_relaxation_extension
         )
         == 2185
     )

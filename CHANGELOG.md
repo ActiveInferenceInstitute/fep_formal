@@ -1,5 +1,32 @@
 ## Unreleased
 
+- Accept the scoped software deliveries for the unified CLI error contract
+  [#119](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119),
+  canonical semantic queries
+  [#65](https://github.com/ActiveInferenceInstitute/fep_formal/issues/65),
+  historical named-pair runner evidence
+  [#61](https://github.com/ActiveInferenceInstitute/fep_formal/issues/61),
+  operator defaults and orchestration
+  [#73](https://github.com/ActiveInferenceInstitute/fep_formal/issues/73),
+  accessible offline views
+  [#74](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74), and
+  finite KL helpers and Mathlib-only draft
+  [#110](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110).
+  Acceptance is bound to main `ad4569db717a7d1998141ea5d0dbd68a7f6b5b64`,
+  exact workflow `39532685900`, independently authenticated uploaded artifacts,
+  and scoped direct PDF review. Historical named-pair execution, native
+  compilation, full Hermes/capture evidence, and scientific study acceptance
+  retain their separate boundaries; this closeout does not promote those
+  remaining requirements or submit the draft upstream.
+
+- Strengthen the existing two-state fast-relaxation owner with a uniform
+  sufficiently-small-positive-scale bound and a genuine right-hand limit at
+  every fixed positive time. Preserve the old attainable-scale API and
+  primary affinity theorem. Concrete nonstationary, sparse, stationary and
+  time-zero adverse controls use the existing probability carrier; this is
+  a bounded strengthening for #75, with no general slow-fast physical limit,
+  empirical result, topic-roster expansion or whole-program acceptance claim.
+
 - Refresh the GNN 4.2.0 source pair through bridge pin/emissions, the canonical
   Q7 render and probe generation, then a fresh native compile/retained check.
   Twelve axiom reports pass without warnings/admissions; prior receipts,
