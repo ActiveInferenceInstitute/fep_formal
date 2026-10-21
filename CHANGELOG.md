@@ -5,6 +5,8 @@
   Twelve axiom reports pass without warnings/admissions; prior receipts,
   canonical runner and probe stay unchanged. This proves the retained static
   coefficient/real-arithmetic scope, without generated-runner execution.
+  A second fresh capture binds the repaired GNN direct/supervised entrypoints
+  and renewed manuscript; the earlier 4.2 capture retains its own source epoch.
 
 - Correct the conditional-independence capability description to acknowledge
   the existing finite discrete static-model conditional-distribution and

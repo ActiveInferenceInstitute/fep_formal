@@ -200,3 +200,15 @@ compile and retained check pass all twelve standard-axiom reports without
 warnings or admissions. The canonical runner, probe and every historical receipt
 retain their prior bytes. Scope remains static binary64 coefficient and
 real-arithmetic bounds; generated-runner execution remains unverified.
+
+## 2026-10-21 repaired GNN 4.2 entrypoint epoch
+
+The [new capture](native_receipt_20261021_gnn420_startup.json) binds GNN
+`fb67431ee073fa27c0ce0c9e9336c7ff50e5737b` after its direct/supervised Python
+entrypoint repair and fresh manuscript render. The earlier 4.2 capture above
+retains its original source identity. Bridge signatures, Q7 render provenance
+and probe metadata were regenerated again through their owners; a new native
+compile and independent retained check pass all twelve axiom reports without
+warnings/admissions. The runner, Lean probe and historical receipts are unchanged.
+Scope remains static coefficients and real-arithmetic bounds, without emitted
+runner execution or a general Python import-safety theorem.
