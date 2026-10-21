@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "scope": "Exact reviewed capability prose and existing witness only; capability status and all relation kinds unchanged. Restore this delta before immutable historical model seals.",
+  "source_baseline": "820be729e6f931da4ebb0d6254cb8cd1648e76c5",
+  "existing_qualified_witness": "FEP.NativeBlanket.staticJoint_condIndepFun",
+  "released": {
+    "id": "cap-conditional-independence",
+    "title": "Finite factorization and conditional-independence laws",
+    "description": "The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information; separately, the measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of Mathlib CondIndep. No theorem yet transfers the finite factorization to sigma-algebra CondIndep or constructs a regular conditional probability bridge.",
+    "status": "satisfied",
+    "evidence": [
+      "FEP.MarkovBlanket.conditional_internal_external_factorization",
+      "FEP.MarkovBlanket.conditional_mutualInformation_zero",
+      "fep_fep009.FEP009.fep009_condIndep_bot_right",
+      "fep_fep009.FEP009.fep009_condIndep_symm"
+    ]
+  },
+  "reviewed": {
+    "id": "cap-conditional-independence",
+    "title": "Finite factorization and conditional-independence laws",
+    "description": "The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information. For the finite discrete static joint model, the native measure bridge identifies the authored conditional kernels with Mathlib conditional distributions almost everywhere and proves CondIndepFun for internal and external coordinates given the blanket. The separate measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of CondIndep. Arbitrary measurable-carrier transport and conditioning coarsening are not established by this finite bridge.",
+    "status": "satisfied",
+    "evidence": [
+      "FEP.MarkovBlanket.conditional_internal_external_factorization",
+      "FEP.MarkovBlanket.conditional_mutualInformation_zero",
+      "FEP.NativeBlanket.staticJoint_condIndepFun",
+      "fep_fep009.FEP009.fep009_condIndep_bot_right",
+      "fep_fep009.FEP009.fep009_condIndep_symm"
+    ]
+  }
+}

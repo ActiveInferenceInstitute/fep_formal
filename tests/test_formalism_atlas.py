@@ -125,7 +125,9 @@ def test_html_has_exact_accessible_tables_and_offline_interactions() -> None:
     assert 'id="relation-filter"' in html
     assert 'id="atlas-viewport"' in html
     assert 'class="viewport" tabindex="0"' in html
-    assert 'aria-keyshortcuts="/ Escape"' in html
+    assert 'aria-keyshortcuts="Escape" data-explorer-search' in html
+    assert 'data-explorer-viewport aria-keyshortcuts="/"' in html
+    assert "data-explorer-clear disabled>Clear all filters</button>" in html
     assert 'data-pan-direction="left"' in html
     assert 'data-pan-direction="right"' in html
     assert 'data-zoom="in"' in html

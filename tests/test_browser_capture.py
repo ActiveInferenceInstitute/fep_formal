@@ -12,6 +12,7 @@ import tempfile
 import zlib
 from collections.abc import Iterator
 from contextlib import contextmanager
+from copy import deepcopy
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -421,7 +422,17 @@ def test_interactions_reject_incorrect_pairing_counts(pairings: int) -> None:
     ("section", "field", "value"),
     [
         ("atlas", "pairingVisible", 105),
+        ("atlas", "escapePreservedFilters", False),
+        ("atlas", "outsideEscapePreservedFilters", False),
+        ("atlas", "clearAllResetFilters", False),
+        ("dashboard", "escapePreservedFilters", False),
+        ("dashboard", "outsideEscapePreservedFilters", False),
+        ("dashboard", "clearAllResetFilters", False),
         ("dashboard_mobile", "compactDefaultHeight", False),
+        ("dashboard_mobile", "clearAllResetFilters", False),
+        ("dashboard_mobile", "escapeCleared", False),
+        ("dashboard_mobile", "escapePreservedFilters", False),
+        ("dashboard_mobile", "outsideEscapePreservedFilters", False),
         ("dashboard_mobile", "recordCollectionInitiallyOpen", True),
     ],
 )
@@ -885,3 +896,99 @@ def test_live_chrome_replay_terminates_every_profile_writer(
         is True
     )
     assert first.screenshot_bytes == second.screenshot_bytes
+
+
+def _keyboard_policy_states():
+    filters = [{"id": "family", "value": "chosen"}, {"id": "status", "value": ""}]
+    before = {"text": "keyboard-scope-control", "focused": "clear", "filters": filters}
+    after = {"text": "", "focused": "search", "filters": deepcopy(filters)}
+    reset = {
+        "text": "",
+        "focused": "clear",
+        "filters": [{"id": "family", "value": ""}, {"id": "status", "value": ""}],
+    }
+    return [deepcopy(before), deepcopy(before), after, reset]
+
+
+def _run_keyboard_policy(monkeypatch, states):
+    snapshots = iter(states)
+    keys = []
+
+    def evaluate(_client, _session, expression):
+        return next(snapshots) if "filters:" in expression else True
+
+    monkeypatch.setattr(capture_module, "_evaluate", evaluate)
+    monkeypatch.setattr(
+        capture_module, "_press_key", lambda _c, _s, key: keys.append(key)
+    )
+    result = capture_module._explorer_keyboard_reset_observations(
+        object(),
+        "session",
+        search_id="search",
+        clear_id="clear",
+        filter_ids=("family", "status"),
+    )
+    assert keys == ["Escape", "Escape"]
+    return result
+
+
+def test_keyboard_policy_observes_preservation_focus_and_explicit_reset(monkeypatch):
+    assert _run_keyboard_policy(monkeypatch, _keyboard_policy_states()) == {
+        "escapeCleared": True,
+        "escapePreservedFilters": True,
+        "outsideEscapePreservedFilters": True,
+        "clearAllResetFilters": True,
+    }
+
+
+@pytest.mark.parametrize("stage", [0, 1, 2, 3])
+def test_keyboard_policy_rejects_missing_snapshot_at_every_stage(monkeypatch, stage):
+    states = _keyboard_policy_states()
+    states[stage] = {}
+    with pytest.raises(capture_module.BrowserCaptureError, match="snapshot shape"):
+        _run_keyboard_policy(monkeypatch, states)
+
+
+@pytest.mark.parametrize(
+    "corruption",
+    ["empty", "missing", "reordered", "extra", "nonstring-value", "nonstring-text"],
+)
+def test_keyboard_policy_rejects_malformed_or_missing_controls(monkeypatch, corruption):
+    states = _keyboard_policy_states()
+    before = states[0]
+    if corruption == "empty":
+        before["filters"] = []
+    elif corruption == "missing":
+        before["filters"].pop()
+    elif corruption == "reordered":
+        before["filters"].reverse()
+    elif corruption == "extra":
+        before["filters"].append({"id": "extra", "value": ""})
+    elif corruption == "nonstring-value":
+        before["filters"][0]["value"] = 0
+    else:
+        before["text"] = None
+    with pytest.raises(
+        capture_module.BrowserCaptureError, match="cardinality|types|identities|values"
+    ):
+        _run_keyboard_policy(monkeypatch, states)
+
+
+@pytest.mark.parametrize(
+    ("stage", "field"),
+    [
+        (1, "outsideEscapePreservedFilters"),
+        (2, "escapeCleared"),
+        (3, "clearAllResetFilters"),
+    ],
+)
+def test_keyboard_policy_rejects_focus_theft(monkeypatch, stage, field):
+    states = _keyboard_policy_states()
+    states[stage]["focused"] = "unrelated"
+    assert _run_keyboard_policy(monkeypatch, states)[field] is False
+
+
+def test_keyboard_policy_rejects_noop_clear(monkeypatch):
+    states = _keyboard_policy_states()
+    states[3]["filters"][0]["value"] = "chosen"
+    assert _run_keyboard_policy(monkeypatch, states)["clearAllResetFilters"] is False

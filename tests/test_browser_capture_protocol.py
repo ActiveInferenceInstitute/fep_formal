@@ -530,7 +530,7 @@ def test_screenshot_png_parser_rejects_non_png_streams() -> None:
     (
         (True, ([],), "atlas mobile observations are invalid"),
         (False, ([],), "atlas observations are invalid"),
-        (False, ({}, True, []), "atlas action observations are invalid"),
+        (False, ({}, True, True, []), "atlas action observations are invalid"),
     ),
 )
 def test_atlas_observations_reject_non_object_javascript_results(
@@ -564,6 +564,10 @@ def test_dashboard_observations_reject_non_object_javascript_results(
     results = iter(values)
     monkeypatch.setattr(capture, "_evaluate", lambda *_a, **_k: next(results))
     monkeypatch.setattr(capture, "_press_key", lambda *_a, **_k: None)
+    # This test isolates the action/jump result shape; reset policy has direct controls.
+    monkeypatch.setattr(
+        capture, "_explorer_keyboard_reset_observations", lambda *_a, **_k: {}
+    )
 
     with pytest.raises(capture.BrowserCaptureError, match=message):
         capture._dashboard_observations(object(), "session-1", mobile=mobile)

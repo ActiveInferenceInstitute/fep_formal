@@ -5,6 +5,7 @@ from __future__ import annotations
 import html as html_lib
 import math
 import re
+from dataclasses import replace
 from itertools import combinations, pairwise
 from pathlib import Path
 from xml.etree import ElementTree
@@ -663,8 +664,11 @@ def test_mobile_defaults_keep_counted_plot_groups_and_exact_records_collapsed() 
     assert (
         "@media (max-width: 760px){.desktop-overview{display:none}"
         ".mobile-overview{display:block}"
-        ".mobile-plot-group>summary{padding:6px 16px}" in rendered
+        ".mobile-plot-group>summary{padding:4px 16px;min-height:44px;line-height:1.3}"
+        in rendered
     )
+    assert '<details class="keyboard-help"><summary>Keyboard help</summary>' in rendered
+    assert '<details class="keyboard-help" open' not in rendered
     assert "Groups start collapsed; use the index to open any group." in rendered
     assert (
         f'<details id="witnesses" class="record-collection" '
@@ -1203,7 +1207,9 @@ def test_html_is_a_filtered_exact_family_numerical_workbench() -> None:
     assert 'id="witness-search"' in html
     assert 'id="witness-family-filter"' in html
     assert 'id="witness-status-filter"' in html
-    assert 'aria-keyshortcuts="/ Escape"' in html
+    assert 'aria-keyshortcuts="Escape" data-explorer-search' in html
+    assert 'data-explorer-viewport aria-keyshortcuts="/"' in html
+    assert "data-explorer-clear disabled>Clear all filters</button>" in html
     assert html.count('class="witness-workbench"') == len(dashboard.witnesses)
     assert html.count('data-witness-id="') == len(dashboard.witnesses) * 2
     assert html.count('data-witness-row="') == row_count
@@ -1390,3 +1396,17 @@ def test_width_wrapping_preserves_overlong_identifiers_without_truncation() -> N
     lines = _wrap_pixels(label, 180, 19, 800)
     assert len(lines) > 2
     assert "".join(lines) == label
+
+
+def test_dashboard_preserves_literal_script_marker_in_model_text() -> None:
+    dashboard = build_formal_kernel_dashboard(PROJECT_ROOT)
+    title = "Literal __EXPLORER_KEYBOARD_SCRIPT__ & <label>"
+    witness = replace(dashboard.witnesses[0], title=title)
+    model = replace(dashboard, witnesses=(witness, *dashboard.witnesses[1:]))
+
+    rendered = render_formal_kernel_dashboard_html(model)
+
+    escaped = html_lib.escape(title, quote=True)
+    assert f"<h2>{escaped}</h2>" in rendered
+    assert f'<span class="summary-title">{escaped}</span>' in rendered
+    assert dashboard.witnesses[0].title != title

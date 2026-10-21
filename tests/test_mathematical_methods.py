@@ -155,6 +155,17 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         + ".lean"
         for name, module in information_bridges.items()
     }
+    # Bind the finite-weight KL extension separately; retain the historical seal.
+    finite_weight_kl_helpers = {
+        "FEP.FiniteInformation.finiteWeightMeasure_singleton",
+        "FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio",
+        "FEP.FiniteInformation.klDiv_finiteWeightMeasure",
+        "FEP.FiniteInformation.finiteWeightMeasure_probability",
+    }
+    assert finite_weight_kl_helpers <= declarations.keys()
+    assert {
+        declarations[name]["source_owner"] for name in finite_weight_kl_helpers
+    } == {"src/fep_lean/formal/finite_information.lean"}
     assert (
         len(
             declarations.keys()
@@ -164,6 +175,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - category_extension
             - scalar_bridges
             - information_bridges.keys()
+            - finite_weight_kl_helpers
         )
         == 2185
     )

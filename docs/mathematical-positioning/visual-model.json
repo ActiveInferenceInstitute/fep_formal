@@ -59,10 +59,11 @@
         "title": "Finite collective inference and consensus invariants"
       },
       {
-        "description": "The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information; separately, the measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of Mathlib CondIndep. No theorem yet transfers the finite factorization to sigma-algebra CondIndep or constructs a regular conditional probability bridge.",
+        "description": "The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information. For the finite discrete static joint model, the native measure bridge identifies the authored conditional kernels with Mathlib conditional distributions almost everywhere and proves CondIndepFun for internal and external coordinates given the blanket. The separate measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of CondIndep. Arbitrary measurable-carrier transport and conditioning coarsening are not established by this finite bridge.",
         "evidence": [
           "FEP.MarkovBlanket.conditional_internal_external_factorization",
           "FEP.MarkovBlanket.conditional_mutualInformation_zero",
+          "FEP.NativeBlanket.staticJoint_condIndepFun",
           "fep_fep009.FEP009.fep009_condIndep_bot_right",
           "fep_fep009.FEP009.fep009_condIndep_symm"
         ],
@@ -1824,10 +1825,11 @@
       "title": "Finite collective inference and consensus invariants"
     },
     {
-      "description": "The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information; separately, the measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of Mathlib CondIndep. No theorem yet transfers the finite factorization to sigma-algebra CondIndep or constructs a regular conditional probability bridge.",
+      "description": "The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information. For the finite discrete static joint model, the native measure bridge identifies the authored conditional kernels with Mathlib conditional distributions almost everywhere and proves CondIndepFun for internal and external coordinates given the blanket. The separate measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of CondIndep. Arbitrary measurable-carrier transport and conditioning coarsening are not established by this finite bridge.",
       "evidence": [
         "FEP.MarkovBlanket.conditional_internal_external_factorization",
         "FEP.MarkovBlanket.conditional_mutualInformation_zero",
+        "FEP.NativeBlanket.staticJoint_condIndepFun",
         "fep_fep009.FEP009.fep009_condIndep_bot_right",
         "fep_fep009.FEP009.fep009_condIndep_symm"
       ],
@@ -11706,14 +11708,14 @@
     "formal/compositions/thermo_geometry.lean": "da7e8302780b6aac77e9fd06c6eb1c1417042bacd9bb7d9954994c21b0751427",
     "formal/continuous_time_markov.lean": "1294732d3ddd6bd3711a00b6895e09fff45dd720cddb8d9db8e78ad458b10ea4",
     "formal/controlled_markov.lean": "6cf6aa0a04704074d38dba03663349833544ef24fda92e7ad0c6ae6e77eb659a",
-    "formal/decision_risk.lean": "1a34dd85015ecb421bfbe91b3995e8c2c2d9991122618e9f25db17c4d46f2251",
+    "formal/decision_risk.lean": "6dc1eed6ac2600ecc1c563bafba8526696ac41dcb44ad13dcd46c211a3fc32b2",
     "formal/declarations.py": "6921e78b81fe1dce9ba1ed5d7d0b69bf0991a15467560f80d31143357e840309",
     "formal/efe_policy_selection.lean": "ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555",
     "formal/efe_time_scale_separation.lean": "5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1",
     "formal/empirical_risk.lean": "6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1",
     "formal/exponential_family.lean": "5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2",
     "formal/fin4_gaussian_semigroup.lean": "7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875",
-    "formal/finite_information.lean": "6827f3ceeee21c9312c5166aefdd4a6cbc50579229813992c3e5a05cadb71d65",
+    "formal/finite_information.lean": "963dbd8a1f9d37f719a2e7fdd7d42bc81efe84ccc5ae48d3fae6dc54cf9aaa31",
     "formal/finite_markov_dynamics.lean": "69c8600e5a40d48cfc01b1b8bb36004d60b40655d620794d0b0e94ec1c8c6784",
     "formal/finite_posterior_learning.lean": "8b4f2e2a985431a016c265887f31389b6764eee987cf6bbd36e18415217ede90",
     "formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
@@ -11748,7 +11750,7 @@
     "formal/temporal_inference.lean": "25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b",
     "formal/variational_duality.lean": "445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8",
     "inputs/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
-    "inputs/formalism_relations.yaml": "42b7333647a67e656dd13cb03334398ab9e01f7c74c1a53b6c797f40e63cc8aa",
+    "inputs/formalism_relations.yaml": "2913a03cf9049a94f5911358ce9fc03b3166aa7db8b6948eeaa7f85d89b889d9",
     "inputs/positioning.yaml": "d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d",
     "inputs/theorem_maturity.yaml": "554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383",
     "lean_source.py": "0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104",
@@ -53108,7 +53110,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.bayesRisk_mono_under_observationGarbling",
-        "source_line": 419,
+        "source_line": 348,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem bayesRisk_mono_under_observationGarbling\n    (loss : Θ → Decision → ℝ≥0∞) (experiment : Kernel Θ Observation)\n    (prior : Measure Θ) (garbling : Kernel Observation Garbled)\n    [IsMarkovKernel garbling] :\n    ProbabilityTheory.bayesRisk loss experiment prior ≤\n      ProbabilityTheory.bayesRisk loss (garbling ∘ₖ experiment) prior",
         "statement_sha256": "9791b44afe63a080ae0c81f6856c1815f729c1a7ce9529c1050fdd840d298fa3"
@@ -53190,7 +53192,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.boolPointMass_klDiv_eq_top",
-        "source_line": 148,
+        "source_line": 77,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem boolPointMass_klDiv_eq_top :\n    InformationTheory.klDiv\n        (embeddedLaw (FiniteLaw.pointMass true))\n        (embeddedLaw (FiniteLaw.pointMass false)) = ∞",
         "statement_sha256": "7205ef761122cde5308e63253838bcb48392e64c8172b7b4304a7bad82b3afc7"
@@ -53311,7 +53313,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.boolPrior_zeroOneRisk",
-        "source_line": 469,
+        "source_line": 398,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem boolPrior_zeroOneRisk (report : Bool) :\n    ∫⁻ truth, boolZeroOneLoss truth report ∂boolPrior = 1 / 2",
         "statement_sha256": "575505267a149f1a82bcbc2fba9e5dab5be18b79730e0b57ca6376f87d141e89"
@@ -53412,7 +53414,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.boolZeroOneLoss_measurable",
-        "source_line": 448,
+        "source_line": 377,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem boolZeroOneLoss_measurable :\n    Measurable (Function.uncurry boolZeroOneLoss)",
         "statement_sha256": "7141d9e03e363c81a935632ac9e8c3c3fe2838108e07538b152e4478b1a2f677"
@@ -53560,7 +53562,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.channelJoint_fstMarginal",
-        "source_line": 329,
+        "source_line": 258,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem channelJoint_fstMarginal (prior : FiniteLaw α)\n    (experiment : FiniteKernel α β) :\n    (experiment.joint prior).fstMarginal = prior",
         "statement_sha256": "500c79fc96e7e21187458248fee53b1868883abf3c68c74ec6cbb38290450b67"
@@ -53712,7 +53714,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.embeddedJoint_klDiv_eq_mutualInformation",
-        "source_line": 317,
+        "source_line": 246,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem embeddedJoint_klDiv_eq_mutualInformation\n    (joint : FiniteLaw (α × β)) :\n    InformationTheory.klDiv (embeddedLaw joint)\n        ((embeddedLaw joint.fstMarginal).prod (embeddedLaw joint.sndMarginal)) =\n      ENNReal.ofReal (mutualInformation joint)",
         "statement_sha256": "20fb41dcce2ee6aa15830bf54b4c8ba6f093881877c2a491712f6dc3b2020f64"
@@ -53859,7 +53861,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.embeddedLaw_product",
-        "source_line": 282,
+        "source_line": 211,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem embeddedLaw_product (p : FiniteLaw α) (q : FiniteLaw β) :\n    embeddedLaw (p.product q) = (embeddedLaw p).prod (embeddedLaw q)",
         "statement_sha256": "b5c15fb5f446e3b12e3838e241b2461236530f177a5ff0c3a66418935c62bc1a"
@@ -53928,11 +53930,9 @@
         ],
         "declaration_mentions": [
           {
-            "candidates": [
-              "FEP.NativeBlanket.embeddedLaw_apply_singleton"
-            ],
-            "identifier": "embeddedLaw_apply_singleton",
-            "resolution": "unresolved lexical scope",
+            "identifier": "embeddedLaw_withDensity_ratio_of_relativeSupport",
+            "qualified_name": "FEP.DecisionRisk.embeddedLaw_withDensity_ratio_of_relativeSupport",
+            "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
         ],
@@ -53951,7 +53951,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.DecisionRisk.embeddedLaw_withDensity_ratio",
-        "source_line": 92,
+        "source_line": 55,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem embeddedLaw_withDensity_ratio (p q : FiniteLaw α)\n    (hq : ∀ x, 0 < q x) :\n    (embeddedLaw q).withDensity\n        (fun x => ENNReal.ofReal (p x / q x)) = embeddedLaw p",
         "statement_sha256": "f12ef23cda6ab799533d1e03ef01dca9764d16f72defd8951da34a6c735701ce"
@@ -54020,11 +54020,9 @@
         ],
         "declaration_mentions": [
           {
-            "candidates": [
-              "FEP.NativeBlanket.embeddedLaw_apply_singleton"
-            ],
-            "identifier": "embeddedLaw_apply_singleton",
-            "resolution": "unresolved lexical scope",
+            "identifier": "FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio",
+            "qualified_name": "FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio",
+            "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
         ],
@@ -54094,7 +54092,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.finiteKL_asymmetric_bool",
-        "source_line": 220,
+        "source_line": 149,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem finiteKL_asymmetric_bool :\n    finiteKL asymmetricBoolTruth asymmetricBoolReport ≠\n      finiteKL asymmetricBoolReport asymmetricBoolTruth",
         "statement_sha256": "1eb597e2bf76d2dec840e4a11dcfdaf055099a017eb1bbb0a8f7c9666fb82e75"
@@ -54287,7 +54285,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.finiteKL_mono_under_channel_of_relativeSupport",
-        "source_line": 382,
+        "source_line": 311,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem finiteKL_mono_under_channel_of_relativeSupport\n    (actual reference : FiniteLaw α) (channel : FiniteKernel α β)\n    (hsupport : ∀ x, actual x ≠ 0 → 0 < reference x) :\n    finiteKL (channel.predictive actual) (channel.predictive reference) ≤\n      finiteKL actual reference",
         "statement_sha256": "c8ad9c552196b0a2c8193a93971e98ecaa01a805a89635acafd642f8913614e6"
@@ -54479,7 +54477,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.finiteMutualInformation_mono_under_observationGarbling",
-        "source_line": 398,
+        "source_line": 327,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem finiteMutualInformation_mono_under_observationGarbling\n    (prior : FiniteLaw α) (experiment : FiniteKernel α β)\n    (garbling : FiniteKernel β γ) :\n    mutualInformation ((FiniteKernel.comp garbling experiment).joint prior) ≤\n      mutualInformation (experiment.joint prior)",
         "statement_sha256": "4bd54f87800f214c7161f8941852fbc0422abc0c9f61bf5f51aa9c3d3b711207"
@@ -54593,7 +54591,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.garbledBool_bayesRisk_eq_half",
-        "source_line": 505,
+        "source_line": 434,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem garbledBool_bayesRisk_eq_half :\n    bayesRisk boolZeroOneLoss garbledBoolExperiment boolPrior = 1 / 2",
         "statement_sha256": "f710912db85c5d1a0332caedfee89807846f09718bab0b21204f76bec834a82a"
@@ -54726,7 +54724,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.joint_relativeSupport_productMarginals",
-        "source_line": 298,
+        "source_line": 227,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem joint_relativeSupport_productMarginals (joint : FiniteLaw (α × β)) :\n    ∀ xy, joint xy ≠ 0 →\n      0 < (joint.fstMarginal.product joint.sndMarginal) xy",
         "statement_sha256": "ceb5b7a4f5c76cd94a86483bb981e30ee0f8fad9ffeb2e1237591ae4f819625b"
@@ -54856,7 +54854,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.mutualInformation_mono_under_observationGarbling",
-        "source_line": 261,
+        "source_line": 190,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem mutualInformation_mono_under_observationGarbling\n    (prior : Measure Parameter) [IsProbabilityMeasure prior]\n    (experiment : Kernel Parameter Observation) [IsMarkovKernel experiment]\n    (garbling : Kernel Observation Garbled) [IsMarkovKernel garbling] :\n    nativeChannelMutualInformation prior (garbling ∘ₖ experiment) ≤\n      nativeChannelMutualInformation prior experiment",
         "statement_sha256": "912240be45a9936ed4213cb1463127d27c180cbb83a640429345141c0ebb9181"
@@ -55033,7 +55031,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.nativeChannelMutualInformation_eq_finite",
-        "source_line": 340,
+        "source_line": 269,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem nativeChannelMutualInformation_eq_finite\n    (prior : FiniteLaw α) (experiment : FiniteKernel α β) :\n    nativeChannelMutualInformation (embeddedLaw prior) (embeddedKernel experiment) =\n      ENNReal.ofReal (mutualInformation (experiment.joint prior))",
         "statement_sha256": "c6bc98a30287724d02c406019dfe209bf3f107815649551c74570283bb7afedb"
@@ -55197,7 +55195,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.predictive_relativeSupport",
-        "source_line": 355,
+        "source_line": 284,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem predictive_relativeSupport (actual reference : FiniteLaw α)\n    (channel : FiniteKernel α β)\n    (hsupport : ∀ x, actual x ≠ 0 → 0 < reference x) :\n    ∀ y, channel.predictive actual y ≠ 0 →\n      0 < channel.predictive reference y",
         "statement_sha256": "e3da52d30cbaa404bdcc6c364b1cdde4dda3e72e59e5e88b2c2feca92c4ff37f"
@@ -55287,7 +55285,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.properLogScore_excessRisk_eq_finiteKL_truth_report",
-        "source_line": 183,
+        "source_line": 112,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem properLogScore_excessRisk_eq_finiteKL_truth_report\n    (truth report : FiniteLaw α)\n    (hreport : ∀ x, truth x ≠ 0 → 0 < report x) :\n    properLogScoreExcessRisk truth report = finiteKL truth report",
         "statement_sha256": "a70a1720be4370c18edbcb549bbfad6ce06d7b18af63a4b4aca75939567ec678"
@@ -55388,7 +55386,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.revealingBoolArgminEstimator",
-        "source_line": 478,
+        "source_line": 407,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem revealingBoolArgminEstimator :\n    IsArgminEstimator boolZeroOneLoss revealingBoolExperiment boolPrior id",
         "statement_sha256": "b1d9b279351bf9c4c38d43895393dfc2ef4b5581e9afd25bc24dcc35a3add012"
@@ -55496,7 +55494,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.revealingBool_bayesRisk_eq_zero",
-        "source_line": 496,
+        "source_line": 425,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem revealingBool_bayesRisk_eq_zero :\n    bayesRisk boolZeroOneLoss revealingBoolExperiment boolPrior = 0",
         "statement_sha256": "3eafce0c453c11e575eee8486d47986f1b7e5ce3ce4d5524ae7b86055907ab3f"
@@ -55610,7 +55608,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.revealingBool_bayesRisk_lt_garbled",
-        "source_line": 515,
+        "source_line": 444,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem revealingBool_bayesRisk_lt_garbled :\n    bayesRisk boolZeroOneLoss revealingBoolExperiment boolPrior <\n      bayesRisk boolZeroOneLoss garbledBoolExperiment boolPrior",
         "statement_sha256": "6b9f29c6033f3c1a352d654d8c14da635f414fa6046fae217c2eba76759177fa"
@@ -55718,7 +55716,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.revealingBool_isBayesEstimator",
-        "source_line": 489,
+        "source_line": 418,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem revealingBool_isBayesEstimator :\n    IsBayesEstimator boolZeroOneLoss revealingBoolExperiment Kernel.id boolPrior",
         "statement_sha256": "19c1fc738f7d1ba211b166a00ff937df36c81281618513109caa1f83c22c7e65"
@@ -55787,16 +55785,8 @@
         ],
         "declaration_mentions": [
           {
-            "candidates": [
-              "FEP.NativeBlanket.embeddedLaw_apply_singleton"
-            ],
-            "identifier": "embeddedLaw_apply_singleton",
-            "resolution": "unresolved lexical scope",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "embeddedLaw_withDensity_ratio",
-            "qualified_name": "FEP.DecisionRisk.embeddedLaw_withDensity_ratio",
+            "identifier": "weightedDirac_klDiv_eq_finiteKL_of_relativeSupport",
+            "qualified_name": "FEP.DecisionRisk.weightedDirac_klDiv_eq_finiteKL_of_relativeSupport",
             "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
@@ -55816,7 +55806,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.DecisionRisk.weightedDirac_klDiv_eq_finiteKL_of_fullSupport",
-        "source_line": 107,
+        "source_line": 63,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem weightedDirac_klDiv_eq_finiteKL_of_fullSupport\n    (p q : FiniteLaw α) (hq : ∀ x, 0 < q x) :\n    InformationTheory.klDiv (embeddedLaw p) (embeddedLaw q) =\n      ENNReal.ofReal (finiteKL p q)",
         "statement_sha256": "703569f68de9b9092f83f615787418ece25bb98202d82e2df705e874f97d208a"
@@ -55885,16 +55875,8 @@
         ],
         "declaration_mentions": [
           {
-            "candidates": [
-              "FEP.NativeBlanket.embeddedLaw_apply_singleton"
-            ],
-            "identifier": "embeddedLaw_apply_singleton",
-            "resolution": "unresolved lexical scope",
-            "role": "proof_reference"
-          },
-          {
-            "identifier": "embeddedLaw_withDensity_ratio_of_relativeSupport",
-            "qualified_name": "FEP.DecisionRisk.embeddedLaw_withDensity_ratio_of_relativeSupport",
+            "identifier": "FEP.FiniteInformation.klDiv_finiteWeightMeasure",
+            "qualified_name": "FEP.FiniteInformation.klDiv_finiteWeightMeasure",
             "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
@@ -55914,7 +55896,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.DecisionRisk.weightedDirac_klDiv_eq_finiteKL_of_relativeSupport",
-        "source_line": 57,
+        "source_line": 46,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem weightedDirac_klDiv_eq_finiteKL_of_relativeSupport\n    (p q : FiniteLaw α) (hsupport : ∀ x, p x ≠ 0 → 0 < q x) :\n    InformationTheory.klDiv (embeddedLaw p) (embeddedLaw q) =\n      ENNReal.ofReal (finiteKL p q)",
         "statement_sha256": "5bb042b816a921998ee560133c2274e1c7cbdf8d3dd91119704722ad5baee1b9"
@@ -56003,7 +55985,7 @@
           }
         ],
         "qualified_name": "FEP.DecisionRisk.weightedDirac_klDiv_eq_top_of_not_absolutelyContinuous",
-        "source_line": 142,
+        "source_line": 71,
         "source_owner": "src/fep_lean/formal/decision_risk.lean",
         "statement": "theorem weightedDirac_klDiv_eq_top_of_not_absolutelyContinuous\n    (p q : FiniteLaw α) (hNotAC : ¬ embeddedLaw p ≪ embeddedLaw q) :\n    InformationTheory.klDiv (embeddedLaw p) (embeddedLaw q) = ∞",
         "statement_sha256": "e13d0b70df731d0af7e5b8971026bdd95e1252fe9d6943d1a14a53333fcff65c"
@@ -67363,7 +67345,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -67372,7 +67355,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.boolBiased_entropy_lt_log_two",
-        "source_line": 512,
+        "source_line": 601,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem boolBiased_entropy_lt_log_two :\n    entropy boolBiased < Real.log 2",
         "statement_sha256": "3d3ed81e7694760d3223c7eb4acad12d5afbcc74c427bbfdb390c7c6a1c2b127"
@@ -67442,7 +67425,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -67451,7 +67435,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.conditionalEntropy_nonneg",
-        "source_line": 172,
+        "source_line": 261,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem conditionalEntropy_nonneg\n    (prior : FiniteLaw α) (kernel : FiniteKernel α β) :\n    0 ≤ conditionalEntropy prior kernel",
         "statement_sha256": "fca76ad5b938028e42b94a2486e3448d59ae871cac2222dd714d23c85d85a049"
@@ -67532,7 +67516,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -67541,7 +67526,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.conditionalKL_eq_crossEntropy_sub_entropy",
-        "source_line": 256,
+        "source_line": 345,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem conditionalKL_eq_crossEntropy_sub_entropy\n    (prior : FiniteLaw α) (actual reference : FiniteKernel α β)\n    (hreference : ∀ x y, 0 < reference x y) :\n    conditionalKL prior actual reference =\n      conditionalCrossEntropy prior actual reference -\n        conditionalEntropy prior actual",
         "statement_sha256": "9b0c45979775d8d94af8e3b26edd08d625cc4bd9476a86f6482680b9f0205748"
@@ -67634,7 +67619,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -67643,7 +67629,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.conditionalKL_eq_zero_iff",
-        "source_line": 188,
+        "source_line": 277,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem conditionalKL_eq_zero_iff\n    (prior : FiniteLaw α) (actual reference : FiniteKernel α β)\n    (hprior : ∀ x, 0 < prior x) :\n    conditionalKL prior actual reference = 0 ↔ actual = reference",
         "statement_sha256": "2227898980a38579520165372f675ebf1f88a136f34b42edc1cbcae9bd59d17d"
@@ -67714,7 +67700,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -67723,7 +67710,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.conditionalKL_nonneg",
-        "source_line": 179,
+        "source_line": 268,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem conditionalKL_nonneg\n    (prior : FiniteLaw α) (actual reference : FiniteKernel α β) :\n    0 ≤ conditionalKL prior actual reference",
         "statement_sha256": "9746cc3fdd65116340bc02c6b58e16441db55d2ed6859548621a622e6069a20e"
@@ -67765,7 +67752,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -67774,7 +67762,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.crossEntropy_disjoint_pointMass_totalized",
-        "source_line": 60,
+        "source_line": 149,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem crossEntropy_disjoint_pointMass_totalized :\n    crossEntropy (FiniteLaw.pointMass true) (FiniteLaw.pointMass false) = 0",
         "statement_sha256": "f74ea1881802bf10ffc1978b51333f8fa69ebd93218509de661dfe10b3f7d003"
@@ -67859,7 +67847,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -67868,7 +67857,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.crossEntropy_joint",
-        "source_line": 228,
+        "source_line": 317,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem crossEntropy_joint\n    (actualPrior referencePrior : FiniteLaw α)\n    (actualKernel referenceKernel : FiniteKernel α β)\n    (hprior : ∀ x, 0 < referencePrior x)\n    (hkernel : ∀ x y, 0 < referenceKernel x y) :\n    crossEntropy (actualKernel.joint actualPrior)\n        (referenceKernel.joint referencePrior) =\n      crossEntropy actualPrior referencePrior +\n        conditionalCrossEntropy actualPrior actualKernel referenceKernel",
         "statement_sha256": "e0a9f5491904443e1ef0bff7572b76e5d6bfef18fa4c6b35981cc5e1fc3f98db"
@@ -67941,7 +67930,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -67950,7 +67940,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.crossEntropy_product_marginals",
-        "source_line": 380,
+        "source_line": 469,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem crossEntropy_product_marginals (joint : FiniteLaw (α × β))\n    (hfst : ∀ x, 0 < joint.fstMarginal x)\n    (hsnd : ∀ y, 0 < joint.sndMarginal y) :\n    crossEntropy joint (joint.fstMarginal.product joint.sndMarginal) =\n      entropy joint.fstMarginal + entropy joint.sndMarginal",
         "statement_sha256": "80c7e4a257d4eb90a7f90d3d1af9e06ddc05af260ecbb32648a41be3a72d6fab"
@@ -68011,7 +68001,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68020,7 +68011,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.crossEntropy_uniform",
-        "source_line": 470,
+        "source_line": 559,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem crossEntropy_uniform [Nonempty α] (p : FiniteLaw α) :\n    crossEntropy p FiniteLaw.uniform = Real.log (Fintype.card α)",
         "statement_sha256": "89826f4b0ca900c322e6be3704c8e3ad8136f86e93486c0d714029f211533e3f"
@@ -68106,7 +68097,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68115,7 +68107,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.entropy_eq_log_card_iff",
-        "source_line": 490,
+        "source_line": 579,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem entropy_eq_log_card_iff [Nonempty α] (p : FiniteLaw α) :\n    entropy p = Real.log (Fintype.card α) ↔ p = FiniteLaw.uniform",
         "statement_sha256": "8495d3da5a4498a24554598639b8af6b2b54bb0ae9c98f9e302ffb54143dc3c4"
@@ -68178,7 +68170,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68187,7 +68180,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.entropy_joint_eq_add_conditional",
-        "source_line": 213,
+        "source_line": 302,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem entropy_joint_eq_add_conditional\n    (prior : FiniteLaw α) (kernel : FiniteKernel α β) :\n    entropy (kernel.joint prior) =\n      entropy prior + conditionalEntropy prior kernel",
         "statement_sha256": "39b3e43f25d8f681f24b4b2e8ce1f573cdc4c4adba0bae4536ba5696bd765b8a"
@@ -68273,7 +68266,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68282,7 +68276,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.entropy_le_log_card",
-        "source_line": 482,
+        "source_line": 571,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem entropy_le_log_card [Nonempty α] (p : FiniteLaw α) :\n    entropy p ≤ Real.log (Fintype.card α)",
         "statement_sha256": "07a88f13ae67e89ea1d525cc3201b9d5d5402dbef07e3050294a084bb1f03c62"
@@ -68366,7 +68360,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68375,7 +68370,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.entropy_lt_log_card_of_ne_uniform",
-        "source_line": 499,
+        "source_line": 588,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem entropy_lt_log_card_of_ne_uniform [Nonempty α] (p : FiniteLaw α)\n    (hp : p ≠ FiniteLaw.uniform) :\n    entropy p < Real.log (Fintype.card α)",
         "statement_sha256": "6c35bbb9bf7a6b50ea1232a0b1689fbebbe5be195eab15a042f61a829b1647ba"
@@ -68428,7 +68423,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68437,7 +68433,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.entropy_nonneg",
-        "source_line": 37,
+        "source_line": 126,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem entropy_nonneg (p : FiniteLaw α) : 0 ≤ entropy p",
         "statement_sha256": "eb76c2347a2b3a4bbfa8eb67a54c2f1cd92139215fe077b7c6655d93b1f37b7d"
@@ -68500,7 +68496,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68509,7 +68506,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.entropy_product",
-        "source_line": 308,
+        "source_line": 397,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem entropy_product (p : FiniteLaw α) (q : FiniteLaw β) :\n    entropy (p.product q) = entropy p + entropy q",
         "statement_sha256": "b307234b93b5624b1b8f4e5239b7b3b42771dc4b3bd363393bc39e09cf627ee6"
@@ -68551,7 +68548,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68560,7 +68558,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.finiteKL_disjoint_pointMass_totalized",
-        "source_line": 69,
+        "source_line": 158,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem finiteKL_disjoint_pointMass_totalized :\n    finiteKL (FiniteLaw.pointMass true) (FiniteLaw.pointMass false) = 1",
         "statement_sha256": "dfda67abead3160fe4ac8de606584c98755782c609f3b7ca032d4191c16f4c3c"
@@ -68631,7 +68629,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68640,7 +68639,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.finiteKL_eq_crossEntropy_sub_entropy",
-        "source_line": 146,
+        "source_line": 235,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem finiteKL_eq_crossEntropy_sub_entropy (p q : FiniteLaw α)\n    (hq : ∀ x, 0 < q x) :\n    finiteKL p q = crossEntropy p q - entropy p",
         "statement_sha256": "aae480a2333741b0cd1e4c97c78db4f1de4f02096a525e307cb9faf73ba0fab9"
@@ -68701,7 +68700,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68710,7 +68710,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.finiteKL_eq_zero_iff",
-        "source_line": 78,
+        "source_line": 167,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem finiteKL_eq_zero_iff (p q : FiniteLaw α) :\n    finiteKL p q = 0 ↔ p = q",
         "statement_sha256": "8453cb83f1fdff0ec74e971d76e6247fed5b97efc07a2f7c8e0fb1f791a03dc5"
@@ -68820,7 +68820,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68829,7 +68830,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.finiteKL_joint_chain_rule",
-        "source_line": 273,
+        "source_line": 362,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem finiteKL_joint_chain_rule\n    (actualPrior referencePrior : FiniteLaw α)\n    (actualKernel referenceKernel : FiniteKernel α β)\n    (hprior : ∀ x, 0 < referencePrior x)\n    (hkernel : ∀ x y, 0 < referenceKernel x y) :\n    finiteKL (actualKernel.joint actualPrior)\n        (referenceKernel.joint referencePrior) =\n      finiteKL actualPrior referencePrior +\n        conditionalKL actualPrior actualKernel referenceKernel",
         "statement_sha256": "240aa136bbabda705d916bc0ee63672c1167c039608b60ca234c6670f8cfa4ac"
@@ -68883,7 +68884,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68892,7 +68894,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.finiteKL_nonneg",
-        "source_line": 43,
+        "source_line": 132,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem finiteKL_nonneg (p q : FiniteLaw α) : 0 ≤ finiteKL p q",
         "statement_sha256": "78381e09fd3a1a8f1134f0484cb358e721bf0a7b1fe4532c6704251ac9a17ef2"
@@ -68990,7 +68992,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -68999,7 +69002,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.finiteKL_prior_le_joint",
-        "source_line": 294,
+        "source_line": 383,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem finiteKL_prior_le_joint\n    (actualPrior referencePrior : FiniteLaw α)\n    (actualKernel referenceKernel : FiniteKernel α β)\n    (hprior : ∀ x, 0 < referencePrior x)\n    (hkernel : ∀ x y, 0 < referenceKernel x y) :\n    finiteKL actualPrior referencePrior ≤\n      finiteKL (actualKernel.joint actualPrior)\n        (referenceKernel.joint referencePrior)",
         "statement_sha256": "074ae9fe0b6528bbe8c6bc0f63c9b8a120ae92f362461315729e38e3871267a8"
@@ -69091,7 +69094,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69100,7 +69104,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.finiteKL_product",
-        "source_line": 325,
+        "source_line": 414,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem finiteKL_product\n    (p q : FiniteLaw α) (r s : FiniteLaw β)\n    (hq : ∀ x, 0 < q x) (hs : ∀ y, 0 < s y) :\n    finiteKL (p.product r) (q.product s) =\n      finiteKL p q + finiteKL r s",
         "statement_sha256": "c17998cf4e03334343389eac6bb035545219af87cdbcb967fb1202ae086b09d2"
@@ -69153,7 +69157,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69162,10 +69167,382 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.finiteKL_self",
-        "source_line": 49,
+        "source_line": 138,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem finiteKL_self (p : FiniteLaw α) : finiteKL p p = 0",
         "statement_sha256": "dbe49945a6abd0a9fac5cda377ce9190b6d3b50c2e26beeb2623a24c9d506571"
+      },
+      "FEP.FiniteInformation.finiteWeightMeasure_probability": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "α"
+            ],
+            "role": "typed_binder",
+            "source": "{α : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype α]",
+            "type_source": "Fintype α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[MeasurableSpace α]",
+            "type_source": "MeasurableSpace α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "p"
+            ],
+            "role": "typed_binder",
+            "source": "(p : α → ℝ)",
+            "type_source": "α → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hp"
+            ],
+            "role": "typed_binder",
+            "source": "(hp : ∀ x, 0 ≤ p x)",
+            "type_source": "∀ x, 0 ≤ p x",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hnormalized"
+            ],
+            "role": "typed_binder",
+            "source": "(hnormalized : ∑ x, p x = 1)",
+            "type_source": "∑ x, p x = 1",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "IsProbabilityMeasure (finiteWeightMeasure p) where\n  measure_univ",
+        "context_binders": [],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteInformation",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteInformation.finiteWeightMeasure_probability",
+        "source_line": 97,
+        "source_owner": "src/fep_lean/formal/finite_information.lean",
+        "statement": "theorem finiteWeightMeasure_probability {α : Type*} [Fintype α]\n    [MeasurableSpace α] (p : α → ℝ) (hp : ∀ x, 0 ≤ p x)\n    (hnormalized : ∑ x, p x = 1) : IsProbabilityMeasure (finiteWeightMeasure p) where\n  measure_univ",
+        "statement_sha256": "670e36e402907cc18fc44b559733185710598eee11c5719a2025fa09fb9e61df"
+      },
+      "FEP.FiniteInformation.finiteWeightMeasure_singleton": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "α"
+            ],
+            "role": "typed_binder",
+            "source": "{α : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype α]",
+            "type_source": "Fintype α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[MeasurableSpace α]",
+            "type_source": "MeasurableSpace α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DiscreteMeasurableSpace α]",
+            "type_source": "DiscreteMeasurableSpace α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "p"
+            ],
+            "role": "typed_binder",
+            "source": "(p : α → ℝ)",
+            "type_source": "α → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : α)",
+            "type_source": "α",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "finiteWeightMeasure p {x} = ENNReal.ofReal (p x)",
+        "context_binders": [],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteInformation",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteInformation.finiteWeightMeasure_singleton",
+        "source_line": 41,
+        "source_owner": "src/fep_lean/formal/finite_information.lean",
+        "statement": "theorem finiteWeightMeasure_singleton {α : Type*} [Fintype α]\n    [MeasurableSpace α] [DiscreteMeasurableSpace α] (p : α → ℝ) (x : α) :\n    finiteWeightMeasure p {x} = ENNReal.ofReal (p x)",
+        "statement_sha256": "e2239d0d38a782e6d0822f5e376dabf417ce9881c431f4542bb14f33a440d068"
+      },
+      "FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "α"
+            ],
+            "role": "typed_binder",
+            "source": "{α : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype α]",
+            "type_source": "Fintype α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[MeasurableSpace α]",
+            "type_source": "MeasurableSpace α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DiscreteMeasurableSpace α]",
+            "type_source": "DiscreteMeasurableSpace α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "p",
+              "q"
+            ],
+            "role": "typed_binder",
+            "source": "(p q : α → ℝ)",
+            "type_source": "α → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hp"
+            ],
+            "role": "typed_binder",
+            "source": "(hp : ∀ x, 0 ≤ p x)",
+            "type_source": "∀ x, 0 ≤ p x",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hq"
+            ],
+            "role": "typed_binder",
+            "source": "(hq : ∀ x, 0 ≤ q x)",
+            "type_source": "∀ x, 0 ≤ q x",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hsupport"
+            ],
+            "role": "typed_binder",
+            "source": "(hsupport : ∀ x, p x ≠ 0 → 0 < q x)",
+            "type_source": "∀ x, p x ≠ 0 → 0 < q x",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(finiteWeightMeasure q).withDensity (fun x => ENNReal.ofReal (p x / q x)) =\n      finiteWeightMeasure p",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "finiteWeightMeasure_singleton",
+            "qualified_name": "FEP.FiniteInformation.finiteWeightMeasure_singleton",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteInformation",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio",
+        "source_line": 47,
+        "source_owner": "src/fep_lean/formal/finite_information.lean",
+        "statement": "theorem finiteWeightMeasure_withDensity_ratio {α : Type*} [Fintype α]\n    [MeasurableSpace α] [DiscreteMeasurableSpace α] (p q : α → ℝ)\n    (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 ≤ q x)\n    (hsupport : ∀ x, p x ≠ 0 → 0 < q x) :\n    (finiteWeightMeasure q).withDensity (fun x => ENNReal.ofReal (p x / q x)) =\n      finiteWeightMeasure p",
+        "statement_sha256": "ca429e9ac60f1b8b826c7112dc0179f09a96ded85b45dfed248ca80d5f295184"
+      },
+      "FEP.FiniteInformation.klDiv_finiteWeightMeasure": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "α"
+            ],
+            "role": "typed_binder",
+            "source": "{α : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype α]",
+            "type_source": "Fintype α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[MeasurableSpace α]",
+            "type_source": "MeasurableSpace α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DiscreteMeasurableSpace α]",
+            "type_source": "DiscreteMeasurableSpace α",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "p",
+              "q"
+            ],
+            "role": "typed_binder",
+            "source": "(p q : α → ℝ)",
+            "type_source": "α → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hp"
+            ],
+            "role": "typed_binder",
+            "source": "(hp : ∀ x, 0 ≤ p x)",
+            "type_source": "∀ x, 0 ≤ p x",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hq"
+            ],
+            "role": "typed_binder",
+            "source": "(hq : ∀ x, 0 ≤ q x)",
+            "type_source": "∀ x, 0 ≤ q x",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hsupport"
+            ],
+            "role": "typed_binder",
+            "source": "(hsupport : ∀ x, p x ≠ 0 → 0 < q x)",
+            "type_source": "∀ x, p x ≠ 0 → 0 < q x",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "InformationTheory.klDiv (finiteWeightMeasure p) (finiteWeightMeasure q) =\n      ENNReal.ofReal (∑ x, q x * InformationTheory.klFun (p x / q x))",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "finiteWeightMeasure_singleton",
+            "qualified_name": "FEP.FiniteInformation.finiteWeightMeasure_singleton",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "finiteWeightMeasure_withDensity_ratio",
+            "qualified_name": "FEP.FiniteInformation.finiteWeightMeasure_withDensity_ratio",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteInformation",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteInformation.klDiv_finiteWeightMeasure",
+        "source_line": 66,
+        "source_owner": "src/fep_lean/formal/finite_information.lean",
+        "statement": "theorem klDiv_finiteWeightMeasure {α : Type*} [Fintype α]\n    [MeasurableSpace α] [DiscreteMeasurableSpace α] (p q : α → ℝ)\n    (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 ≤ q x)\n    (hsupport : ∀ x, p x ≠ 0 → 0 < q x) :\n    InformationTheory.klDiv (finiteWeightMeasure p) (finiteWeightMeasure q) =\n      ENNReal.ofReal (∑ x, q x * InformationTheory.klFun (p x / q x))",
+        "statement_sha256": "5c8504b478e8b261b33e439b80cbd069160e2ab452677b8536052915e926f843"
       },
       "FEP.FiniteInformation.mutualInformation_eq_entropy_marginals": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -69248,7 +69625,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69257,7 +69635,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.mutualInformation_eq_entropy_marginals",
-        "source_line": 403,
+        "source_line": 492,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem mutualInformation_eq_entropy_marginals (joint : FiniteLaw (α × β))\n    (hfst : ∀ x, 0 < joint.fstMarginal x)\n    (hsnd : ∀ y, 0 < joint.sndMarginal y) :\n    mutualInformation joint =\n      entropy joint.fstMarginal + entropy joint.sndMarginal - entropy joint",
         "statement_sha256": "6379ceff5536b6d242c347a0f6dd6f1dbe4e65d194d885241c4489e3228abbfe"
@@ -69353,7 +69731,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69362,7 +69741,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.mutualInformation_eq_predictive_entropy_sub_conditional",
-        "source_line": 423,
+        "source_line": 512,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem mutualInformation_eq_predictive_entropy_sub_conditional\n    (prior : FiniteLaw α) (kernel : FiniteKernel α β)\n    (hprior : ∀ x, 0 < prior x)\n    (hpredictive : ∀ y, 0 < kernel.predictive prior y) :\n    mutualInformation (kernel.joint prior) =\n      entropy (kernel.predictive prior) - conditionalEntropy prior kernel",
         "statement_sha256": "7fbab147beafdf493a455641618b75cc07c71cdd95f7cde374c9191d57f0fb5e"
@@ -69422,7 +69801,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69431,7 +69811,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.mutualInformation_eq_zero_iff",
-        "source_line": 415,
+        "source_line": 504,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem mutualInformation_eq_zero_iff (joint : FiniteLaw (α × β)) :\n    mutualInformation joint = 0 ↔\n      joint = joint.fstMarginal.product joint.sndMarginal",
         "statement_sha256": "57de0e7ea300c78091891c380509ae659e81e4cb7688fb10e08e38e6dfe917d6"
@@ -69527,7 +69907,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69536,7 +69917,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.mutualInformation_le_predictive_entropy",
-        "source_line": 451,
+        "source_line": 540,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem mutualInformation_le_predictive_entropy\n    (prior : FiniteLaw α) (kernel : FiniteKernel α β)\n    (hprior : ∀ x, 0 < prior x)\n    (hpredictive : ∀ y, 0 < kernel.predictive prior y) :\n    mutualInformation (kernel.joint prior) ≤\n      entropy (kernel.predictive prior)",
         "statement_sha256": "88959fa3823d8ddbe0f36eabff59f26a315d1ed3ea4df5ea2a5e69a1b1cf3acf"
@@ -69596,7 +69977,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69605,7 +69987,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.mutualInformation_nonneg",
-        "source_line": 367,
+        "source_line": 456,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem mutualInformation_nonneg (joint : FiniteLaw (α × β)) :\n    0 ≤ mutualInformation joint",
         "statement_sha256": "2be6944073af35150fbd40182877f017ba9d567d88d90026d894c8cddbe42a54"
@@ -69675,7 +70057,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69684,7 +70067,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.mutualInformation_product_eq_zero",
-        "source_line": 372,
+        "source_line": 461,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem mutualInformation_product_eq_zero (p : FiniteLaw α) (q : FiniteLaw β) :\n    mutualInformation (p.product q) = 0",
         "statement_sha256": "570713996a8afee0b08819ae181309caab83ea3e3dcca798e61fa677e1ecba54"
@@ -69745,7 +70128,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69754,7 +70138,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.uniform_mass_pos",
-        "source_line": 464,
+        "source_line": 553,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem uniform_mass_pos [Nonempty α] (x : α) :\n    0 < (FiniteLaw.uniform : FiniteLaw α) x",
         "statement_sha256": "8c17c0049626223565d8f2e7bd07c4a7c3949120f8be812915fd73a7e18d6a36"
@@ -69818,7 +70202,8 @@
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
           "FepSketches.finite_probability",
-          "Mathlib.InformationTheory.KullbackLeibler.KLFun"
+          "Mathlib.InformationTheory.KullbackLeibler.Basic",
+          "Mathlib.MeasureTheory.Integral.Bochner.SumMeasure"
         ],
         "line_coordinate_kind": "formal_resource_file",
         "namespace": "FEP.FiniteInformation",
@@ -69827,7 +70212,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.FiniteInformation.weighted_klFun_eq_log_score",
-        "source_line": 136,
+        "source_line": 225,
         "source_owner": "src/fep_lean/formal/finite_information.lean",
         "statement": "theorem weighted_klFun_eq_log_score {a b : ℝ} (hb : 0 < b) :\n    b * klFun (a / b) =\n      (-a * Real.log b - Real.negMulLog a) + (b - a)",
         "statement_sha256": "c63a505cb3da7906d6251c7fe9bd7b4e584dccb04103870ec56da8324c1e5481"

@@ -1,5 +1,32 @@
 ## Unreleased
 
+- Correct the conditional-independence capability description to acknowledge
+  the existing finite discrete static-model conditional-distribution and
+  `CondIndepFun` bridge, preserving capability status and the boundary against
+  arbitrary measurable-carrier transport. Bind the four finite-weight KL
+  helper declarations separately from the retained historical method seal.
+  In the POSIX referent-replacement control, compare stable symlink identity,
+  nanosecond modification/change times and literal target spelling; reading a
+  link may change access time. Capture rejection and digest assertions remain.
+
+- Extract the finite weighted-Dirac density and native KL formulas beside
+  `finiteKL`, with explicit nonnegative weights and relative support. Retain
+  all four public DecisionRisk bridge names and types through delegation to
+  the generic helpers. Shared zero atoms remain permitted; singular support
+  retains native infinity, and arbitrary unequal masses retain the native
+  mass correction. Add persistent project and Mathlib-only draft controls
+  for [#110](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110).
+  The draft follows a bounded current-upstream source inspection; it makes no
+  novelty, upstream submission, scientific-status or full-execution claim.
+
+- Scope atlas and numerical-workbench slash shortcuts to a focused visual
+  summary. Escape in search clears only its text; an explicit Clear all filters
+  button resets selectors. Name and focus the atlas's wide table regions,
+  respect reduced motion when panning, and preserve literal model text while
+  sharing one keyboard policy. This is a bounded keyboard-accessibility slice
+  of [#74](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74);
+  broader accessibility and manuscript review remain separate.
+
 - Document all seven operator option/default surfaces and preserve the existing
   first-valid render-template fallback and shared bridge-parser compatibility.
   Add controls for template precedence, ignored bridge-status paths and the

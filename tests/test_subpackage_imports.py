@@ -268,3 +268,21 @@ def test_verification_subpackage_exports_canonical_operations() -> None:
     assert verification.setup_workspace is environment.setup_workspace
     assert verification.verify_catalogue is lean_verifier.verify_catalogue
     assert verification.CatalogueVerification is lean_verifier.CatalogueVerification
+
+
+def test_explorer_keyboard_policy_has_one_public_owner() -> None:
+    from fep_lean.output import (
+        formal_kernel_dashboard,
+        formalism_atlas,
+        svg_presentation,
+    )
+
+    assert "EXPLORER_KEYBOARD_SCRIPT" in svg_presentation.__all__
+    assert (
+        formalism_atlas.EXPLORER_KEYBOARD_SCRIPT
+        is svg_presentation.EXPLORER_KEYBOARD_SCRIPT
+    )
+    assert (
+        formal_kernel_dashboard.EXPLORER_KEYBOARD_SCRIPT
+        is svg_presentation.EXPLORER_KEYBOARD_SCRIPT
+    )

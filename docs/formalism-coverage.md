@@ -14,19 +14,19 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Maintained formal modules | 72 |
 | Foundation modules | 45 |
 | Topic theorem declarations | 584 |
-| Formal-resource theorem declarations | 1694 |
-| Foundation theorem declarations | 1316 |
-| Total theorem declarations | 2278 |
+| Formal-resource theorem declarations | 1698 |
+| Foundation theorem declarations | 1320 |
+| Total theorem declarations | 2282 |
 | Topic definitions | 95 |
-| Formal-resource definitions | 943 |
-| Total definitions | 1038 |
+| Formal-resource definitions | 944 |
+| Total definitions | 1039 |
 | Topic abbreviations | 7 |
 | Formal-resource abbreviations | 32 |
 | Total abbreviations | 39 |
 | Formal-resource structures | 56 |
 | Distinct Mathlib imports | 79 |
 | Topic-to-import edges | 266 |
-| Formal-resource import edges | 390 |
+| Formal-resource import edges | 391 |
 | Internal formal-module dependencies | 173 |
 | Authored formalism relations | 150 |
 | Derivational formal relations | 24 |
@@ -234,7 +234,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | Module | Role | Theorems | Definitions | Structures | Internal dependencies |
 | --- | --- | ---: | ---: | ---: | --- |
 | `FepSketches.finite_probability` | `foundation` | 19 | 13 | 2 | — |
-| `FepSketches.finite_information` | `foundation` | 31 | 8 | 0 | `FepSketches.finite_probability` |
+| `FepSketches.finite_information` | `foundation` | 35 | 9 | 0 | `FepSketches.finite_probability` |
 | `FepSketches.active_inference` | `foundation` | 44 | 35 | 3 | `FepSketches.finite_information` |
 | `FepSketches.markov_blanket` | `foundation` | 9 | 8 | 2 | `FepSketches.finite_information` |
 | `FepSketches.information_geometry` | `foundation` | 33 | 14 | 1 | `FepSketches.finite_probability` |
@@ -473,7 +473,7 @@ Satisfied nodes remain visible so resolved gaps retain auditable declaration evi
 | `cap-causal-intervention-invariants` — Finite causal-blanket and intervention invariants | `satisfied` | — | `FEP.CausalDynamics.conditionalMutualInformation_eq_zero_iff_factorizes`, `FEP.CausalDynamics.interventionKernel_sum_one`, `FEP.CausalDynamics.localMarkov_zeroEvidence_boundary`, `FEP.CausalDynamics.nonDescendant_intervention_invariant`, `fep_fep081.FEP081.fep081_correlatedBlanket_nonvacuity`, `fep_fep083.FEP083.fep083_fourNode_descendantChange_nonDescendantPreservation`, `fep_fep085.FEP085.fep085_zeroEvidence_boundary` | Finite normalized carriers prove blanket factorization equivalent to zero conditional mutual information, intervention-kernel normalization, non-descendant invariance in the stated four-node model, a correlated non-factorizing witness, and an explicit zero-evidence boundary. These results do not assert a measure-theoretic do-calculus or causal identification beyond the encoded finite graph. |
 | `cap-closed-loop-policy-trees` — Finite closed-loop policy trees | `satisfied` | — | `FEP.PolicyTrees.boolFeedbackTree_strictlyBetter`, `FEP.PolicyTrees.exists_optimalPolicyTree`, `FEP.PolicyTrees.openLoopEmbedding_value`, `FEP.PolicyTrees.optimalTree_le_openLoop`, `FEP.PolicyTrees.policyTree_efe_eq_risk_add_ambiguity`, `fep_fep134.FEP134.fep134_feedback_continuation_changes` | Depth-indexed finite policy trees admit exact observation-contingent value recursion, backward-induction minima, attaining optimal trees, value-preserving open-loop embeddings, and a full-support recursive EFE decomposition. A two-stage Boolean witness has observation-dependent continuation actions, value zero, and a strict one-half advantage over every fixed continuation; no infinite-horizon or continuous-belief optimality is claimed. |
 | `cap-collective-consensus-invariants` — Finite collective inference and consensus invariants | `satisfied` | — | `FEP.CollectiveInference.boolConsensus_nonzero_strict_witness`, `FEP.CollectiveInference.collectiveVFE_additive`, `FEP.CollectiveInference.consensusMass_conserved`, `FEP.CollectiveInference.consensus_gap_tendsto_zero`, `FEP.CollectiveInference.coupledPotential_strict_descent`, `FEP.CollectiveInference.independentEFE_additive`, `FEP.CollectiveInference.productAgent_joint_mass`, `FEP.CollectiveInference.unitWeightProductOfExpertsPool_sum_one` | Explicit finite product-agent laws prove joint normalization, VFE and EFE additivity under independence, normalized unit-weight product-of-experts pooling, consensus-mass conservation, strict stochastic contraction and convergence with a nonzero Boolean witness, and descent of a coupled quadratic potential. No theorem attributes emergent agency or consciousness to the collective. |
-| `cap-conditional-independence` — Finite factorization and conditional-independence laws | `satisfied` | — | `FEP.MarkovBlanket.conditional_internal_external_factorization`, `FEP.MarkovBlanket.conditional_mutualInformation_zero`, `fep_fep009.FEP009.fep009_condIndep_bot_right`, `fep_fep009.FEP009.fep009_condIndep_symm` | The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information; separately, the measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of Mathlib CondIndep. No theorem yet transfers the finite factorization to sigma-algebra CondIndep or constructs a regular conditional probability bridge. |
+| `cap-conditional-independence` — Finite factorization and conditional-independence laws | `satisfied` | — | `FEP.MarkovBlanket.conditional_internal_external_factorization`, `FEP.MarkovBlanket.conditional_mutualInformation_zero`, `FEP.NativeBlanket.staticJoint_condIndepFun`, `fep_fep009.FEP009.fep009_condIndep_bot_right`, `fep_fep009.FEP009.fep009_condIndep_symm` | The finite blanket carrier proves pointwise conditional factorization and zero conditional mutual information. For the finite discrete static joint model, the native measure bridge identifies the authored conditional kernels with Mathlib conditional distributions almost everywhere and proves CondIndepFun for internal and external coordinates given the blanket. The separate measure-theoretic topic proves symmetry and a trivial-sigma-algebra instance of CondIndep. Arbitrary measurable-carrier transport and conditioning coarsening are not established by this finite bridge. |
 | `cap-conjugacy-laws` — Conjugate-family laws | `satisfied` | — | `fep_fep045.FEP045.fep045_bernoulli_posterior_closed`, `fep_fep045.FEP045.fep045_evidence_pos`, `fep_fep045.FEP045.fep045_posteriorParameter_mem_unit`, `fep_fep045.FEP045.fep045_posterior_mass_one` | A likelihood/prior family with a proved posterior closure and parameter-update theorem. |
 | `cap-continuous-time-thermodynamics` — Exact two-state continuous-time dynamics | `satisfied` | — | `FEP.ContinuousTimeMarkov.TwoStateRates.benchmarkInitial_nonstationary`, `FEP.ContinuousTimeMarkov.TwoStateRates.benchmarkLyapunov_deriv_zero_neg`, `FEP.ContinuousTimeMarkov.TwoStateRates.transition_add`, `FEP.ContinuousTimeMarkov.TwoStateRates.transition_detailedBalance`, `FEP.ContinuousTimeMarkov.TwoStateRates.transition_masterEquation`, `FEP.ContinuousTimeMarkov.TwoStateRates.transition_stationary` | Positive forward and backward rates generate an explicit normalized nonnegative Boolean transition semigroup, an exact generator and two-sided master equation, a nonuniform stationary reversible law, exponential relaxation, and a squared-deviation Lyapunov derivative. The concrete nonstationary benchmark has a strictly negative derivative; no general CTMC existence theorem or physical free-energy identification is inferred. |
 | `cap-controlled-markov-planning` — Finite controlled-Markov planning | `satisfied` | — | `FEP.ControlledMarkov.actionEvidence_zero_boundary`, `FEP.ControlledMarkov.controlledKernel_sum_one`, `FEP.ControlledMarkov.reachableBelief_policyValue_eq`, `FEP.ControlledMarkov.twoStageFeedback_beats_openLoop`, `fep_fep071.FEP071.fep071_twoStage_feedback_changes_action`, `fep_fep071.FEP071.fep071_twoStage_feedback_strictly_better` | Controlled transition rows remain normalized; action-conditioned belief updates expose their zero-evidence boundary; reachable finite-belief reduction preserves finite-horizon policy value; and a two-stage Boolean witness proves that closed-loop feedback can strictly improve on open-loop control. Infinite-horizon and continuous-state POMDP optimality are not claimed. |
