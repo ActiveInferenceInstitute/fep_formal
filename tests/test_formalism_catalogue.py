@@ -14,6 +14,10 @@ import yaml
 from fep_lean.catalogue import BODIES, BODY_MODULE_MANIFEST, load_catalogue_metadata
 from fep_lean.catalogue.semantics import load_theorem_maturity
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from tests._support.fast_relaxation_review import (
+    reverse_fast_relaxation_raw,
+    reverse_fast_relaxation_rows,
+)
 from tests._support.lean_module_contract import (
     exact_information_review,
     restore_information_owner,
@@ -248,7 +252,9 @@ def _reverse_proxy_rows(rows: list[dict[str, object]]) -> list[dict[str, object]
 def _assert_proxy_metadata_preimage(metadata: dict[str, object]) -> None:
     review = _proxy_review()
     restored = dict(metadata)
-    restored["topics"] = _reverse_proxy_rows(metadata["topics"])
+    restored["topics"] = _reverse_proxy_rows(
+        reverse_fast_relaxation_rows(metadata["topics"], PROJECT_ROOT)
+    )
     for change in review["top_level_changes"]:
         assert restored[change["field"]] == change["reviewed"]
         restored[change["field"]] = change["released"]
@@ -262,7 +268,10 @@ def test_complete_proxy_review_reverses_only_exact_approved_metadata() -> None:
     review = _proxy_review()
     assert (
         hashlib.sha256(
-            (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes()
+            reverse_fast_relaxation_raw(
+                (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes(),
+                PROJECT_ROOT,
+            )
         ).hexdigest()
         == review["reviewed_metadata_sha256"]
     )
@@ -599,6 +608,7 @@ def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, obje
 def _reverse_scalar_capabilities(
     caps: list[dict[str, object]],
 ) -> list[dict[str, object]]:
+    caps = reverse_fast_relaxation_rows(caps, PROJECT_ROOT, capability=True)
     caps = _restore_reviewed_native_conditional_capability(caps)
     caps = reverse_information_entries(caps, PROJECT_ROOT, capabilities=True)
     change = _scalar_review()["capability_change"]
@@ -870,7 +880,9 @@ def test_exact_information_review_preserves_complete_prior_model_and_owner_bytes
     model = _yaml("formalism_relations.yaml")
     model["edges"] = _restore_reviewed_conjugacy_rationale(model["edges"])
     model["capabilities"] = _restore_reviewed_native_conditional_capability(
-        model["capabilities"]
+        reverse_fast_relaxation_rows(
+            model["capabilities"], PROJECT_ROOT, capability=True
+        )
     )
     assert (
         hashlib.sha256(_canonical(model).encode()).hexdigest()
@@ -914,7 +926,9 @@ def test_exact_information_review_rejects_unapproved_changes(mutation):
     model = _yaml("formalism_relations.yaml")
     model["edges"] = _restore_reviewed_conjugacy_rationale(model["edges"])
     model["capabilities"] = _restore_reviewed_native_conditional_capability(
-        model["capabilities"]
+        reverse_fast_relaxation_rows(
+            model["capabilities"], PROJECT_ROOT, capability=True
+        )
     )
     if mutation == "capability":
         identity = review["capability_changes"][0]["reviewed"]["id"]

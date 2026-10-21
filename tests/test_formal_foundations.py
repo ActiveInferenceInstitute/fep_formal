@@ -90,12 +90,20 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     assert {name: owners[name] for name in finite_weight_kl_helpers} == {
         name: "FepSketches.finite_information" for name in finite_weight_kl_helpers
     }
+    fast_relaxation_limits = {
+        "FEP.TimeScaleEFE.fastRelaxation_epistemic_eventually_small",
+        "FEP.TimeScaleEFE.fastRelaxation_epistemic_tendsto",
+    }
+    assert {name: owners[name] for name in fast_relaxation_limits} == {
+        name: "FepSketches.efe_time_scale_separation" for name in fast_relaxation_limits
+    }
     assert Counter(
         owner
         for name, owner in owners.items()
         if name not in scalar_bridges
         and name not in information_bridges
         and name not in finite_weight_kl_helpers
+        and name not in fast_relaxation_limits
     ) == {
         "FepSketches.finite_probability": 19,
         "FepSketches.finite_information": 31,

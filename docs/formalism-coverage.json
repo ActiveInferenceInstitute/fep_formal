@@ -676,7 +676,7 @@
     },
     {
       "blocked_topics": [],
-      "description": "The Boltzmann-form control posterior minimizes the expected free energy with the stated uniqueness boundary; the perception-action loop admits an invariant surprisal bound through one controlled-kernel step; Bayesian model reduction never lowers evidence free energy under masked evidence; and the epistemic gain of an EFE time-scale separation is bounded by the log-affinity of its two-state carrier. Each result is a standalone Lean module bridged to its nearest catalogue topic; infinite-horizon, continuous-state, and physical entropy-production identification are not claimed.",
+      "description": "The Boltzmann-form control posterior minimizes the expected free energy with the stated uniqueness boundary; the perception-action loop admits an invariant surprisal bound through one controlled-kernel step; Bayesian model reduction never lowers evidence free energy under masked evidence; and the epistemic gain of an EFE time-scale separation is bounded by the log-affinity of its two-state carrier. At each fixed positive time, its inverse-scale family also satisfies a uniform sufficiently-small-scale bound and a genuine right-hand limit at zero; no such limit is claimed at time zero. Each result is a standalone Lean module bridged to its nearest catalogue topic; infinite-horizon, continuous-state, and physical entropy-production identification are not claimed.",
       "evidence": [
         "FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance",
         "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel",
@@ -685,7 +685,9 @@
         "fep_fep156.FEP156.fep156_boltzmann_control_posterior_minimizes_efe",
         "fep_fep157.FEP157.fep157_loop_invariant_surprisal_bound",
         "fep_fep158.FEP158.fep158_reduction_free_energy_monotone",
-        "fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity"
+        "fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity",
+        "fep_fep159.FEP159.fep159_fastRelaxation_eventually_small",
+        "fep_fep159.FEP159.fep159_fastRelaxation_tendsto"
       ],
       "id": "cap-standalone-efe-theorems",
       "status": "satisfied",
@@ -2889,7 +2891,7 @@
     },
     {
       "abbreviation_count": 0,
-      "definition_count": 8,
+      "definition_count": 9,
       "formal_dependencies": [
         "FepSketches.active_inference",
         "FepSketches.continuous_time_markov",
@@ -2907,7 +2909,7 @@
       "resource": "efe_time_scale_separation.lean",
       "role": "foundation",
       "structure_count": 0,
-      "theorem_count": 37,
+      "theorem_count": 39,
       "theorems": [
         "FEP.TimeScaleEFE.beliefAffinity_eq_localAffinity",
         "FEP.TimeScaleEFE.beliefCurrent_eq",
@@ -2918,6 +2920,8 @@
         "FEP.TimeScaleEFE.epistemic_gain_bounded_by_affinity",
         "FEP.TimeScaleEFE.evolved_true_eq_trueMass",
         "FEP.TimeScaleEFE.expectedFreeEnergy_le_productionRate_div_decayRate",
+        "FEP.TimeScaleEFE.fastRelaxation_epistemic_eventually_small",
+        "FEP.TimeScaleEFE.fastRelaxation_epistemic_tendsto",
         "FEP.TimeScaleEFE.fastRelaxation_epistemic_vanishes",
         "FEP.TimeScaleEFE.finiteKL_stationaryLaw_eq",
         "FEP.TimeScaleEFE.predictive_support_of",
@@ -5005,7 +5009,7 @@
     "authored_relation_edges": 150,
     "capability_nodes": 50,
     "composed_theorems": 378,
-    "definitions": 1039,
+    "definitions": 1040,
     "distinct_mathlib_imports": 79,
     "formal_module_dependency_edges": 173,
     "formal_module_import_edges": 391,
@@ -5013,19 +5017,19 @@
     "formal_pairing_witnesses": 119,
     "formal_relation_witnesses": 24,
     "formal_resource_abbreviations": 32,
-    "formal_resource_definitions": 944,
+    "formal_resource_definitions": 945,
     "formal_resource_structures": 56,
-    "formal_resource_theorems": 1698,
+    "formal_resource_theorems": 1700,
     "foundation_modules": 45,
-    "foundation_theorems": 1320,
+    "foundation_theorems": 1322,
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
     "theorem_witnessed_relations": 143,
-    "theorems": 2282,
+    "theorems": 2286,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
     "topic_import_edges": 266,
-    "topic_theorems": 584,
+    "topic_theorems": 586,
     "topics": 168
   },
   "relation_counts": {
@@ -9553,24 +9557,24 @@
     },
     {
       "abbreviation_count": 0,
-      "acceptance_probe": "warning-free native Lean compile of all nine fep-159 declarations.",
+      "acceptance_probe": "Warning-free native Lean compile of all eleven fep-159 declarations, strict importing consumer with five concrete controls, and seven standard-axiom reports for the two public limit proofs and those controls.",
       "area": "ActiveInference",
-      "assumption_review": "All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.",
+      "assumption_review": "All statements use the explicit two-state continuous-time semigroup and positive rates. The uniform bound and right-hand limit require fixed strictly positive time but permit zero-mass atoms in the initial law. The affinity and slice-path identities retain their explicit full-support premises; the path identity is one-slice, not a general path-space theorem. The ness_flow import remains only an orphan-adoption marker.",
       "definition_count": 0,
       "family": "standalone-efe-formalizations",
       "id": "fep-159",
       "imports": [
         "FepSketches.efe_time_scale_separation"
       ],
-      "invariant": "For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the retained theorem gives, for each positive tolerance, existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon or Tendsto theorem is not asserted by that declaration.",
+      "invariant": "For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the old attainable-scale theorem is preserved. The uniform theorem controls every sufficiently small positive epsilon, and the Tendsto theorem proves the genuine right-hand limit at zero for every fixed positive time and initial finite law.",
       "mathlib_hints": [
         "Analysis.SpecialFunctions.ExpDeriv",
         "Probability.Kernel.Invariance"
       ],
-      "non_vacuity": "At the stationary law the gap and production rate both vanish, providing an equality boundary. A full-support nonstationary belief supplies nonzero deviation and current-affinity production for the positive rates, and the explicit rate-scaling envelope gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations do not separately state the full right-limit quantifier.",
+      "non_vacuity": "A symmetric-rate nonstationary three-quarter/one-quarter belief and a sparse point mass both satisfy the positive-time right limit. The stationary law has exactly zero gap at every positive scale and nonnegative time. At time zero the symmetric point mass retains log 2 at every positive scale, so dropping the positive-time premise is refuted. These controls use the same existing finite probability carrier and public owner.",
       "primary_theorem": "fep159_epistemic_gain_bounded_by_affinity",
       "semantic_disposition": "formalized",
-      "theorem_count": 9,
+      "theorem_count": 11,
       "title": "EFE and Entropy-Production Time-Scale Separation"
     },
     {

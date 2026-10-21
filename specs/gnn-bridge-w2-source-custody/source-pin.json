@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "f3257be3276d2c2cba426f343efb84ec7c539b40",
+    "commit": "557cd49edc8a911214193be3f702107de72291d6",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -37,7 +37,7 @@
       "src/fep_lean/catalogue/bodies/native_blanket_independence.py": "717738bb35ff451cf7a2e984328559ec23dfdaff1d547bf4f2948c9a8ded930d",
       "src/fep_lean/catalogue/bodies/path_thermodynamics.py": "8f326e4eacaba27c0ad70d5d127e079a4818749d41fd3c3c8f52a60617d44904",
       "src/fep_lean/catalogue/bodies/predictive_coding_generalized.py": "dfec6d770726c94bb8daa93f892cb1ffec3d35827eb024f5fd09bc697920a707",
-      "src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py": "9eabd06eb78704a3be4f14188533ec06a6d78ec612813dfcd7d56b18e82f71eb",
+      "src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py": "da17bf17e4cfa56271cb4e0948457a279fe66a42a412f25959c6b6a70d32365a",
       "src/fep_lean/catalogue/bodies/temporal_inference.py": "820d493f82c2de309e51ca931b3c44807688e9d96cc9050b605bf99585d813a9",
       "src/fep_lean/catalogue/bodies/variational_duality.py": "41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb",
       "src/fep_lean/catalogue/coverage.py": "bbbeecc966b2d38bdeebb8ca713708f368383474414ecea568bbac4d140aa8fe",
@@ -97,7 +97,7 @@
       "src/fep_lean/formal/decision_risk.lean": "6dc1eed6ac2600ecc1c563bafba8526696ac41dcb44ad13dcd46c211a3fc32b2",
       "src/fep_lean/formal/declarations.py": "6921e78b81fe1dce9ba1ed5d7d0b69bf0991a15467560f80d31143357e840309",
       "src/fep_lean/formal/efe_policy_selection.lean": "ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555",
-      "src/fep_lean/formal/efe_time_scale_separation.lean": "5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1",
+      "src/fep_lean/formal/efe_time_scale_separation.lean": "0236054d545caea04fa247ddf66a8d21554d61d9c5369be3ff89bdf8c384f459",
       "src/fep_lean/formal/empirical_risk.lean": "6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1",
       "src/fep_lean/formal/exponential_family.lean": "5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2",
       "src/fep_lean/formal/fin4_gaussian_semigroup.lean": "7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875",

@@ -17,9 +17,9 @@ The earlier software/proof-component checkpoint is
 [PR201](https://github.com/ActiveInferenceInstitute/fep_formal/pull/201), main
 `de9643f5249ad207219af51f6446327197a01247`, qualified by the
 [full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39449116181).
-The 31 first-column Issue rows account for accepted PKG-6 (#119), CORE-D2
-(#65), BRIDGE-D1 (#61) and CORE-M3 (#73), delivered through PR203, PR205 and
-PR206. Independent API/schema and semantic review are now retained for CORE-D2;
+The 29 first-column Issue rows account for accepted PKG-6 (#119), CORE-D2
+(#65), BRIDGE-D1 (#61), CORE-M3 (#73), CORE-D3 (#74) and LEAN-12 (#110),
+delivered through PR203, PR205, PR206 and PR207. Independent API/schema and semantic review are now retained for CORE-D2;
 its conceptual Bernoulli relation keeps the explicit conjugate-carrier boundary.
 PKG-13 remains in delivery history. FORM-D1, FORM-S3, LEAN-6, CORE-D1, PKG-7, LEAN-9, FORM-S2 and the
 maintainer-closed CUR-15 remain in delivery history. This board reconciliation
@@ -27,7 +27,7 @@ supplies no new production browser or primary scientific evidence.
 The subsequent [PR202](https://github.com/ActiveInferenceInstitute/fep_formal/pull/202)
 advances source-pair custody only; it adds no theorem or algorithm claim.
 
-The current accepted software checkpoint is
+The earlier accepted software checkpoint is
 [PR206](https://github.com/ActiveInferenceInstitute/fep_formal/pull/206), main
 `40856a1985065a2ca7e92950e3a29f5effa5c28a`, qualified by the
 [full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39504371245)
@@ -36,6 +36,16 @@ receipt establishes the historical named pair's actual initial-Gaussian update;
 current-source runner execution and OU dynamics remain separate claims. These
 four closeouts supply no production browser or primary scientific acceptance.
 Fresh full capture and its evidence boundaries remain in CUR-05/CUR-07.
+
+The current accepted software checkpoint is
+[PR207](https://github.com/ActiveInferenceInstitute/fep_formal/pull/207), main
+`ad4569db717a7d1998141ea5d0dbd68a7f6b5b64`, qualified by the
+[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39532685900)
+and independently authenticated uploaded artifacts and scoped direct PDF review.
+Its accessible offline views and finite KL/Mathlib-only draft complete the two
+additional software closeouts. All six retain their recorded scope boundaries;
+full Hermes/capture, primary scientific acceptance and upstream submission are
+separate requirements.
 
 ## Release gate
 
@@ -94,7 +104,6 @@ roster refresh; new topics are not implicitly reserved by this plan.
 | --- | --- | --- | --- |
 | [CORE-M2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63) — maintain current guidance through dependency review | Minor | [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48) | Current active reading paths, complete retirement caller inventory, strict links/hygiene/xrefs and preserved historical evidence. |
 | [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) — align primary theorem proxies with the proved information seams | Minor | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Exact primary types/assumptions/non-vacuity reviewed; stable IDs/signatures and all native/axiom/boundary projections accepted. |
-| [CORE-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/74) — Improve accessible offline manuscript, atlas and numerical explanations | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54), [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Demonstrated accessibility gap resolved through shared models; deterministic offline SVG/HTML/PDF and actual browser/text alternatives pass. |
 | [FORM-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/70) — fixed-truth consistency for the continuous static-latent model | Medium | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Explicit infinite fixed-truth law, prefix/native equality and actual convergence proof; new protocol preserves current H3 seeds. |
 | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) — Review all 168 theorem proxies and rank substantive strengthening | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54), [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) | All 168 proxies receive statement-based semantic review and ranked substantive proof briefs; no automatic disposition promotion. |
 | [CORE-J1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/66) — equivalent Windows capture custody and process supervision | Major | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Equivalent Windows no-follow handle custody and descendant containment; actual seven-stage acceptance and identical valid archives. |
@@ -129,7 +138,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [LEAN-4](https://github.com/ActiveInferenceInstitute/fep_formal/issues/102) — Split h3_case_study.lean and retire its maxHeartbeats override | Medium | [CUR-08](https://github.com/ActiveInferenceInstitute/fep_formal/issues/55) | No `set_option` in the formal tree; declaration names unchanged; native export refreshed. |
 | [LEAN-5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/103) — A reviewed derivational edge in every family | Medium | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | At most six families without a `formal` edge; endpoint-qualification notes per the adjudication doc; relation tests pass. |
 | [LEAN-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105) — Obligation records for conceptual relations | Minor | Independent | A schema test requires `blocked_by` on every conceptual edge; at least one converted to a pairing (034↔047 via FORM-S10 or 016↔032). |
-| [LEAN-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/110) — Move the finite KL bridge beside finiteKL and prepare a Mathlib PR | Medium | Independent | Bridge lemma compiles with only Mathlib imports and no FEP namespace; upstream draft prepared after checking current Mathlib. |
 
 ### Package infrastructure
 

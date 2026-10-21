@@ -3281,6 +3281,8 @@ topics:
   - fep159_expectedFreeEnergy_le_productionRate_div_decayRate
   - fep159_slow_fast_separation_statement
   - fep159_fastRelaxation_epistemic_vanishes
+  - fep159_fastRelaxation_eventually_small
+  - fep159_fastRelaxation_tendsto
   - fep159_slicePath_entropyProduction_eq
   - fep159_beliefAffinity_eq_localAffinity
   - fep159_productionRate_nonneg
@@ -3292,19 +3294,22 @@ topics:
     has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared
     exponential relaxation factor times the initial chi-square expression. At positive time
     the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under
-    inverse-epsilon rate scaling, the retained theorem gives, for each positive tolerance,
-    existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon or
-    Tendsto theorem is not asserted by that declaration.
-  assumption_review: All statements are for the explicit two-state continuous-time semigroup
-    and its scaled one-parameter family; the slice-path identity is the one-slice restriction
-    of the path-thermodynamics production, not a general path-space theorem. The ness_flow
-    import is an orphan-adoption marker with no mathematical dependence.
-  non_vacuity: At the stationary law the gap and production rate both vanish, providing an
-    equality boundary. A full-support nonstationary belief supplies nonzero deviation and
-    current-affinity production for the positive rates, and the explicit rate-scaling envelope
-    gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations
-    do not separately state the full right-limit quantifier.
-  acceptance_probe: warning-free native Lean compile of all nine fep-159 declarations.
+    inverse-epsilon rate scaling, the old attainable-scale theorem is preserved. The uniform
+    theorem controls every sufficiently small positive epsilon, and the Tendsto theorem proves
+    the genuine right-hand limit at zero for every fixed positive time and initial finite law.
+  assumption_review: All statements use the explicit two-state continuous-time semigroup
+    and positive rates. The uniform bound and right-hand limit require fixed strictly positive
+    time but permit zero-mass atoms in the initial law. The affinity and slice-path identities
+    retain their explicit full-support premises; the path identity is one-slice, not a general
+    path-space theorem. The ness_flow import remains only an orphan-adoption marker.
+  non_vacuity: A symmetric-rate nonstationary three-quarter/one-quarter belief and a sparse
+    point mass both satisfy the positive-time right limit. The stationary law has exactly zero
+    gap at every positive scale and nonnegative time. At time zero the symmetric point mass
+    retains log 2 at every positive scale, so dropping the positive-time premise is refuted.
+    These controls use the same existing finite probability carrier and public owner.
+  acceptance_probe: Warning-free native Lean compile of all eleven fep-159 declarations, strict
+    importing consumer with five concrete controls, and seven standard-axiom reports for
+    the two public limit proofs and those controls.
   disposition: formalized
 - id: fep-160
   primary_theorem: fep160_aoDecomposition

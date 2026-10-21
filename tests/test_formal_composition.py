@@ -734,3 +734,117 @@ def test_dirichlet_count_component_and_library_boundary(
         ), output
     else:
         assert result.returncode == 0 and "error:" not in output, output
+
+
+@pytest.mark.serial_lean
+def test_fast_relaxation_imported_limits_and_concrete_controls(tmp_path: Path) -> None:
+    executable = lake_executable(
+        missing="raise", context="fast-relaxation limit controls"
+    )
+    build = run_lake_lean_probe(
+        ["build", "--wfail", "FepSketches.efe_time_scale_separation"],
+        cwd=PROJECT_ROOT / "lean",
+        timeout_s=300,
+        executable=executable,
+    )
+    assert build.returncode == 0, build.stdout + build.stderr
+    consumer = tmp_path / "FastRelaxationControls.lean"
+    consumer.write_text(
+        r"""module
+public import FepSketches.efe_time_scale_separation
+@[expose] public section
+namespace FEP.TimeScaleEFE.ReviewControls
+open FEP FEP.ContinuousTimeMarkov
+open scoped Topology
+
+noncomputable def symmetricRates : TwoStateRates where
+  forward := 1
+  backward := 1
+  forward_pos := by norm_num
+  backward_pos := by norm_num
+
+noncomputable def skewBelief : FiniteLaw Bool where
+  mass state := if state then 3 / 4 else 1 / 4
+  nonneg state := by cases state <;> norm_num
+  sum_one := by norm_num [Fintype.sum_bool]
+
+/-- A concrete nonstationary positive-time control. -/
+theorem skew_positive_time_limit :
+    Filter.Tendsto (positiveScaledEpistemicGain symmetricRates skewBelief 1 (by norm_num))
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) :=
+  fastRelaxation_epistemic_tendsto symmetricRates skewBelief 1 (by norm_num)
+
+/-- Zero-mass atoms in the initial law do not obstruct the right limit. -/
+theorem sparse_positive_time_limit :
+    Filter.Tendsto (positiveScaledEpistemicGain symmetricRates (FiniteLaw.pointMass true)
+      1 (by norm_num)) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) :=
+  fastRelaxation_epistemic_tendsto symmetricRates (FiniteLaw.pointMass true) 1 (by norm_num)
+
+/-- The stationary control is exactly zero at every nonnegative time and positive scale. -/
+theorem stationary_gain_zero (rates : TwoStateRates) (eps : ℝ) (heps : 0 < eps)
+    (time : ℝ) (hTime : 0 ≤ time) :
+    epistemicGain (scaledRates rates eps heps) rates.stationaryLaw time hTime = 0 := by
+  rw [← scaledRates_stationaryLaw_eq rates eps heps]
+  have hstat := TwoStateRates.certifiedSemigroup_stationary (scaledRates rates eps heps)
+    time hTime
+  unfold FEP.FiniteMarkovDynamics.IsInvariant at hstat
+  rw [epistemicGain, hstat]
+  exact FEP.FiniteInformation.finiteKL_self _
+
+/-- At time zero a point mass retains a positive gap, regardless of scale. -/
+theorem zero_time_gain (eps : ℝ) (heps : 0 < eps) :
+    epistemicGain (scaledRates symmetricRates eps heps) (FiniteLaw.pointMass true)
+      0 le_rfl = Real.log 2 := by
+  rw [epistemicGain, FiniteMarkovSemigroup.kernel_zero, FiniteKernel.predictive_identity,
+    scaledRates_stationaryLaw_eq, finiteKL_stationaryLaw_eq]
+  norm_num [FiniteLaw.pointMass, symmetricRates, TwoStateRates.stationaryTrue,
+    TwoStateRates.stationaryFalse, TwoStateRates.decayRate, Real.log_div]
+
+/-- The positive-time premise cannot be dropped even for symmetric rates. -/
+theorem zero_time_adverse_control (eps : ℝ) (heps : 0 < eps) :
+    Real.log 2 / 2 < epistemicGain (scaledRates symmetricRates eps heps)
+      (FiniteLaw.pointMass true) 0 le_rfl := by
+  rw [zero_time_gain]
+  have hlog : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  linarith
+
+#print axioms FEP.TimeScaleEFE.fastRelaxation_epistemic_eventually_small
+#print axioms FEP.TimeScaleEFE.fastRelaxation_epistemic_tendsto
+#print axioms FEP.TimeScaleEFE.ReviewControls.skew_positive_time_limit
+#print axioms FEP.TimeScaleEFE.ReviewControls.sparse_positive_time_limit
+#print axioms FEP.TimeScaleEFE.ReviewControls.stationary_gain_zero
+#print axioms FEP.TimeScaleEFE.ReviewControls.zero_time_gain
+#print axioms FEP.TimeScaleEFE.ReviewControls.zero_time_adverse_control
+end FEP.TimeScaleEFE.ReviewControls
+""",
+        encoding="utf-8",
+    )
+    result = run_lean_probe(
+        consumer,
+        import_root=tmp_path,
+        cwd=PROJECT_ROOT / "lean",
+        timeout_s=300,
+        executable=executable,
+    )
+    output = result.stdout + result.stderr
+    assert result.returncode == 0 and "warning:" not in output.lower(), output
+    reports = re.findall(
+        r"'([^']+)' depends on axioms:\s*\[([^]]*)\]", output, re.DOTALL
+    )
+    expected = {
+        "FEP.TimeScaleEFE.ReviewControls.skew_positive_time_limit",
+        "FEP.TimeScaleEFE.ReviewControls.zero_time_gain",
+        "FEP.TimeScaleEFE.fastRelaxation_epistemic_eventually_small",
+        "FEP.TimeScaleEFE.ReviewControls.zero_time_adverse_control",
+        "FEP.TimeScaleEFE.ReviewControls.stationary_gain_zero",
+        "FEP.TimeScaleEFE.fastRelaxation_epistemic_tendsto",
+        "FEP.TimeScaleEFE.ReviewControls.sparse_positive_time_limit",
+    }
+    assert (
+        len(reports) == len(expected) and {name for name, _ in reports} == expected
+    ), output
+    assert all(
+        {name.strip() for name in axioms.split(",")}
+        == {"propext", "Classical.choice", "Quot.sound"}
+        for _, axioms in reports
+    ), output

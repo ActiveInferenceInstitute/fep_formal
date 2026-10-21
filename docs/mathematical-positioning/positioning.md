@@ -18801,13 +18801,13 @@ Primary theorem: `fep_fep159.FEP159.fep159_epistemic_gain_bounded_by_affinity`.
 
 Body owner: `src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py`; canonical namespace `FEP159`.
 
-Invariant: For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the retained theorem gives, for each positive tolerance, existence of one positive epsilon achieving it; a forall-sufficiently-small-epsilon or Tendsto theorem is not asserted by that declaration.
+Invariant: For a full-support two-state belief, its finite KL gap to the invariant law is at most productionRate/decayRate. A specific policy-independent perfect-observation model has EFE equal to the semigroup-evolved gap; that gap is bounded by the explicit squared exponential relaxation factor times the initial chi-square expression. At positive time the supported source-target slice production equals(1-rho)*productionRate/decayRate. Under inverse-epsilon rate scaling, the old attainable-scale theorem is preserved. The uniform theorem controls every sufficiently small positive epsilon, and the Tendsto theorem proves the genuine right-hand limit at zero for every fixed positive time and initial finite law.
 
-Assumptions: All statements are for the explicit two-state continuous-time semigroup and its scaled one-parameter family; the slice-path identity is the one-slice restriction of the path-thermodynamics production, not a general path-space theorem. The ness_flow import is an orphan-adoption marker with no mathematical dependence.
+Assumptions: All statements use the explicit two-state continuous-time semigroup and positive rates. The uniform bound and right-hand limit require fixed strictly positive time but permit zero-mass atoms in the initial law. The affinity and slice-path identities retain their explicit full-support premises; the path identity is one-slice, not a general path-space theorem. The ness_flow import remains only an orphan-adoption marker.
 
-Non-vacuity: At the stationary law the gap and production rate both vanish, providing an equality boundary. A full-support nonstationary belief supplies nonzero deviation and current-affinity production for the positive rates, and the explicit rate-scaling envelope gives arbitrarily small attainable gap values at a fixed positive time. The retained declarations do not separately state the full right-limit quantifier.
+Non-vacuity: A symmetric-rate nonstationary three-quarter/one-quarter belief and a sparse point mass both satisfy the positive-time right limit. The stationary law has exactly zero gap at every positive scale and nonnegative time. At time zero the symmetric point mass retains log 2 at every positive scale, so dropping the positive-time premise is refuted. These controls use the same existing finite probability carrier and public owner.
 
-Canonical acceptance probe: warning-free native Lean compile of all nine fep-159 declarations.
+Canonical acceptance probe: Warning-free native Lean compile of all eleven fep-159 declarations, strict importing consumer with five concrete controls, and seven standard-axiom reports for the two public limit proofs and those controls.
 
 Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.
 
@@ -18870,7 +18870,7 @@ finiteKL belief rates.stationaryLaw ≤
 
 Statement SHA-256: `a6d4d8fc041fc51da373de78f7cabf8ef9ebcdce587ef8d264e9675e12b9df9d`. Lexical declaration mentions are retained in the JSON; they do not certify kernel dependencies.
 
-Supporting theorems: `fep_fep159.FEP159.fep159_expectedFreeEnergy_le_productionRate_div_decayRate`, `fep_fep159.FEP159.fep159_slow_fast_separation_statement`, `fep_fep159.FEP159.fep159_fastRelaxation_epistemic_vanishes`, `fep_fep159.FEP159.fep159_slicePath_entropyProduction_eq`, `fep_fep159.FEP159.fep159_beliefAffinity_eq_localAffinity`, `fep_fep159.FEP159.fep159_productionRate_nonneg`, `fep_fep159.FEP159.fep159_twoStateModel_expectedFreeEnergy`, `fep_fep159.FEP159.fep159_epistemicGain_rateScaling`.
+Supporting theorems: `fep_fep159.FEP159.fep159_expectedFreeEnergy_le_productionRate_div_decayRate`, `fep_fep159.FEP159.fep159_slow_fast_separation_statement`, `fep_fep159.FEP159.fep159_fastRelaxation_epistemic_vanishes`, `fep_fep159.FEP159.fep159_fastRelaxation_eventually_small`, `fep_fep159.FEP159.fep159_fastRelaxation_tendsto`, `fep_fep159.FEP159.fep159_slicePath_entropyProduction_eq`, `fep_fep159.FEP159.fep159_beliefAffinity_eq_localAffinity`, `fep_fep159.FEP159.fep159_productionRate_nonneg`, `fep_fep159.FEP159.fep159_twoStateModel_expectedFreeEnergy`, `fep_fep159.FEP159.fep159_epistemicGain_rateScaling`.
 
 Boundary theorems: none recorded.
 
@@ -19993,7 +19993,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `catalogue/bodies/native_blanket_independence.py` | `717738bb35ff451cf7a2e984328559ec23dfdaff1d547bf4f2948c9a8ded930d` |
 | `catalogue/bodies/path_thermodynamics.py` | `8f326e4eacaba27c0ad70d5d127e079a4818749d41fd3c3c8f52a60617d44904` |
 | `catalogue/bodies/predictive_coding_generalized.py` | `dfec6d770726c94bb8daa93f892cb1ffec3d35827eb024f5fd09bc697920a707` |
-| `catalogue/bodies/standalone_efe_formalizations.py` | `9eabd06eb78704a3be4f14188533ec06a6d78ec612813dfcd7d56b18e82f71eb` |
+| `catalogue/bodies/standalone_efe_formalizations.py` | `da17bf17e4cfa56271cb4e0948457a279fe66a42a412f25959c6b6a70d32365a` |
 | `catalogue/bodies/temporal_inference.py` | `820d493f82c2de309e51ca931b3c44807688e9d96cc9050b605bf99585d813a9` |
 | `catalogue/bodies/variational_duality.py` | `41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb` |
 | `catalogue/latex.py` | `78c1f381621a1fe5703d8949391098e4d9e0a65ec7269cf3e9b0c93130500801` |
@@ -20038,7 +20038,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/decision_risk.lean` | `6dc1eed6ac2600ecc1c563bafba8526696ac41dcb44ad13dcd46c211a3fc32b2` |
 | `formal/declarations.py` | `6921e78b81fe1dce9ba1ed5d7d0b69bf0991a15467560f80d31143357e840309` |
 | `formal/efe_policy_selection.lean` | `ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555` |
-| `formal/efe_time_scale_separation.lean` | `5b201d8c1aef6e6f0a078fcbd9dbae779afa95cd2f09e23e187f26dd7be27be1` |
+| `formal/efe_time_scale_separation.lean` | `0236054d545caea04fa247ddf66a8d21554d61d9c5369be3ff89bdf8c384f459` |
 | `formal/empirical_risk.lean` | `6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1` |
 | `formal/exponential_family.lean` | `5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2` |
 | `formal/fin4_gaussian_semigroup.lean` | `7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875` |
@@ -20077,9 +20077,9 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/temporal_inference.lean` | `25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b` |
 | `formal/variational_duality.lean` | `445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
-| `inputs/formalism_relations.yaml` | `2913a03cf9049a94f5911358ce9fc03b3166aa7db8b6948eeaa7f85d89b889d9` |
+| `inputs/formalism_relations.yaml` | `bd232d1cada8eb2588c5e6397f480ed4aecaf305ebe3fc339ece2f8630d117f8` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
-| `inputs/theorem_maturity.yaml` | `554f3053d31e6bc84bcdb26481339217daeb29bfb89ac741a029aacfd75f3383` |
+| `inputs/theorem_maturity.yaml` | `7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b` |
 | `lean_source.py` | `0e897290a01f2ca150322e1c7a88bab90c236180120ce24a333cb5c658520104` |
 | `methods/__init__.py` | `3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99` |
 | `methods/model.py` | `917554e8cf301899a08a78344dc6232c08354dcafdccae3f07cbc20b1e87f2f0` |
