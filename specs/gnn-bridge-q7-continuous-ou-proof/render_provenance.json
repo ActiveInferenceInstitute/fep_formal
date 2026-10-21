@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-slgb4b0q/FepLeanContinuousOU.md",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-slgb4b0q/rendered"
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-brohji5h/FepLeanContinuousOU.md",
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-brohji5h/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "d4c3108c530a385c087a7205f85d75108fcaeb9f7bf5446854e3ccd2dd7537b6"
+    "sha256": "8366f691cb23425dc30b5dba144de2719579b04508cd13a035e9609c09d010ad"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -154,7 +154,7 @@
       "src/fep_lean/formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
       "src/fep_lean/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
       "src/fep_lean/formal/temporal_inference.lean": "25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b",
-      "src/fep_lean/formal/variational_duality.lean": "445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8",
+      "src/fep_lean/formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
       "src/fep_lean/gauss/__init__.py": "2705273ad3f91094201eb41faf284a94172fe4a12ab23030457c8695914a10c0",
       "src/fep_lean/gauss/cli.py": "63458f1c5f5ef49266375b53b3358fa8bba9c888fd6404ffa40e300014bc5542",
       "src/fep_lean/gauss/client.py": "3a9fa26de947e781b85d07340ed57dbdc156452d65cf3797539c153d20ccbc9c",
@@ -1128,7 +1128,7 @@
       "src/fep_lean/formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
       "src/fep_lean/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
       "src/fep_lean/formal/temporal_inference.lean": "25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b",
-      "src/fep_lean/formal/variational_duality.lean": "445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8",
+      "src/fep_lean/formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
       "src/fep_lean/gauss/__init__.py": "2705273ad3f91094201eb41faf284a94172fe4a12ab23030457c8695914a10c0",
       "src/fep_lean/gauss/cli.py": "63458f1c5f5ef49266375b53b3358fa8bba9c888fd6404ffa40e300014bc5542",
       "src/fep_lean/gauss/client.py": "3a9fa26de947e781b85d07340ed57dbdc156452d65cf3797539c153d20ccbc9c",
@@ -1974,7 +1974,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "4d5192f3a62f558ee1513ee8b16bb6aa2287c3566371c37ee783d9122a47f295",
+  "source_pin_sha256": "df953141b8983aa4d46ba6cab5e027fb05f920300f032686c1b116f778c0e4ea",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
