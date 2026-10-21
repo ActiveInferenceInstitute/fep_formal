@@ -142,9 +142,10 @@ native, custody, rendering and scientific evidence. The H3.0 freeze is already
 an actual prerequisite; repeating branch selection or preregistration would
 rewrite the current cycle.
 
-The [upcoming improvement scopes](next-improvements.md) distinguish implemented
-work awaiting acceptance from genuinely new minor, medium and major package and
-formalization work. Optional manifold packaging remains unopened unless its
+The [open scope contracts](next-improvements.md) link accepted component
+history and describe remaining package and formalization obligations. The
+[canonical backlog](../../../TODO.md) and [active campaign](../../../specs/comprehensive-next-steps/README.md)
+own current pickup decisions. Optional manifold packaging remains unopened unless its
 proof-compression usefulness gate passes. Licensed data, unsupported path APIs
 and stronger physical/causal claims cannot be supplied by a successful local
 fixture or a release version.
@@ -158,4 +159,4 @@ fixture or a release version.
 5. [Horizon 3](horizon-3-scientific-case-study.md)
 6. [Primary sources and pinned-library seams](references.md)
 7. [Next-agent handoff](handoff.md)
-8. [Upcoming minor, medium and major improvements](next-improvements.md)
+8. [Open scope contracts and accepted component history](next-improvements.md)

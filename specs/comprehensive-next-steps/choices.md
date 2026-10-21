@@ -968,3 +968,21 @@ with the minimal repair; the real cold wheel also imports through a directory
 alias. An omitted RECORD row still refuses. Issue65 remains open at PR200 and
 requires this repair's own exact-source acceptance. The earlier isolated
 performance observation is retained unchanged as a separate component.
+
+## 2026-10-21: derived finite Slater duality
+
+The F07 convexity, separation and support spikes now compile on actual finite-law
+coordinates, with independent scientific review. Integrate their reusable core
+through the existing variational-duality owner and regenerate projections. The
+public result assumes nonnegative distortion and an actual strictly feasible
+fixed-source law; it derives both extrema and complementary slackness, allowing
+zero atoms. Keep F07 and issue76 open: the general feasible endpoint dual
+supremum still needs a separate closed-upper-image argument. No finite endpoint
+multiplier, uniqueness or continuous-alphabet claim is introduced.
+
+The subsequent closed-image and strict-epsilon-support spikes now derive the
+all-feasible dual supremum without Slater, including the Boolean zero-budget
+boundary. Integrate that separate clause under the same owner and preserve the
+strict-feasibility requirement only for finite multiplier attainment. The
+[active finite-duality contract](finite-rate-distortion-duality-20261021.md) owns
+this source-candidate scope; maintained qualification and review remain pending.

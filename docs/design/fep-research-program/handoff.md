@@ -92,9 +92,10 @@ owns dated observations and failures.
 6. [H2 mathematical contracts](horizon-2-smooth-stochastic.md) and
    [dependency map](dependency-map.md): retained dependencies and exclusions,
    rather than a new instruction to reopen completed H1/H2 slices.
-7. [Upcoming improvement scopes](next-improvements.md): separate minor, medium
-   and major package/formalization proposals with owners, dependencies,
-   acceptance witnesses, failure controls and no-go actions.
+7. [Open scope contracts](next-improvements.md): accepted component history and
+   remaining package/formalization obligations. Select active work from
+   [TODO.md](../../../TODO.md) and the [current campaign](../../../specs/comprehensive-next-steps/README.md);
+   each open scope retains its dependencies, witnesses and no-go actions.
 
 No guide, checkbox, source hash or catalogue-mode report promotes a claim
 across evidence planes. Missing, indirect, stale or unverified acceptance keeps

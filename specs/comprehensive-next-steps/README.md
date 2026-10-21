@@ -57,7 +57,8 @@ the eight receipt-bound copies and their individual retention decisions.
    P06 has [bounded function-ratchet acceptance](function-ratchet-acceptance-20261019.json)
    from complete local Python/native execution and independent source review.
    Final render and fifteen-cell publication remain separate. Independent owner
-   inventories can prepare L02/L03, L05 and S03. P03 is accepted
+   inventories can prepare open L02 (#100); completed L03/L05/S03 work
+   remains in linked delivery history. P03 is accepted
    for the [bounded shared-helper consolidation](shared-helper-acceptance-20261018.json),
    with explicit retained contract exceptions and current bridge source custody.
    P11 is accepted for the [exact-source serial measurement](spikes/serial-native-20261018/README.md);
@@ -66,9 +67,11 @@ the eight receipt-bound copies and their individual retention decisions.
    successor membership. C03 obtains actual capture/archive acceptance; C04 local
    installed-runtime/status acceptance is separately recorded above; C05 closes the complete current-source
    check/artifact gate. H00 resolves the frozen-carrier migration meaning.
-3. After their stated predecessors, O01/O02 reconcile operator/configuration
-   contracts; A01/A02 expose demonstrated readiness/query gaps; P04/P05/P10
-   complete error, import-direction and CLI boundaries. R01 adjudicates PR44;
+3. Use [TODO.md](../../TODO.md) to select residual operator, API and software
+   boundary work after its stated predecessors. Accepted operator, readiness,
+   query and error-contract deliveries are recorded in the
+   [changelog](../../CHANGELOG.md) and [current API guide](../../docs/api.md);
+   their original package contracts remain available as history. R01 adjudicates PR44;
    C07/C08 require their real custody/lifecycle probes. P07 has a reviewed
    filename-only bijection and explicit current software membership; its
    production-capture boundary is recorded below.
@@ -83,9 +86,14 @@ the eight receipt-bound copies and their individual retention decisions.
    H03 binds outcomes, archives and reproduction. C06 independently audits all
    nine original criteria. F05/F06/F08 and F12 extend control, paths, fixed-truth
    learning and Bayes-sound updates only after their declared prerequisites.
-   D01/N01 retain their separate accessibility and numerical acceptance.
-6. V01 provider execution, B01 generated-runner execution and E01 empirical
-   research remain separately governed lanes. A broad request to address the
+   D01/N01 retain their accepted accessibility and numerical delivery records
+   in the [changelog](../../CHANGELOG.md); later owner changes need fresh
+   evidence in the affected planes.
+6. V01 provider execution and E01 empirical research remain separately governed
+   lanes. B01's accepted historical named-pair runner evidence is retained in
+   [its source-bound record](../gnn-runner-execution/README.md); current-source
+   generated OU runner execution remains unverified without its own actual
+   execution and acceptance. A broad request to address the
    backlog supplies no missing credential route, spend ceiling, isolated source
    pair, data license or scientific approval.
 
