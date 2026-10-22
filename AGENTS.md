@@ -328,3 +328,17 @@ standalone tests require no sibling checkout. Source pins bind owner bytes,
 not a perpetually refreshed HEAD. Default checks never regenerate reports.
 The package tests include `tests/test_gnn_bridge_operations.py`.
 Numerical agreement is not native proof or proof of current execution.
+
+
+### Optional native producer shadow
+
+The manual `native_producer_shadow` input defaults to false. When explicitly
+selected, the existing serial catalogue test executes the strict production
+operation and validates its fresh full-roster receipt. The later ordinary CLI
+command still executes independently; its receipt remains publication's native
+input. A separate comparison validates both captured receipts and all
+non-duration fields, binding actual workflow run, attempt and checkout. Separate
+shadow artifacts retain the first receipt, exclusive producer intent, invocation
+and comparison. This temporary comparison adds work; it establishes no release
+speedup and removes no gate. Enabling a single producer later requires separate
+review and fresh full-profile acceptance.

@@ -1,5 +1,12 @@
 ## Unreleased
 
+- Add an explicitly selected CI native-producer shadow: the existing serial
+  catalogue node runs the strict operation and validates its receipt; the
+  ordinary strict CLI still runs and supplies publication evidence. Compare
+  both actual outcomes with independent validation and retain separate shadow
+  artifacts. Default jobs and all release gates remain unchanged; no release
+  speedup is claimed before a qualified shadow and separate activation.
+
 - Correct 27 source-text statement records without changing their Lean theorem
   types or proofs: preserve result `let`/`letI` initializers, separate equation
   and structure-style proofs, and use the first goal colon consistently across
