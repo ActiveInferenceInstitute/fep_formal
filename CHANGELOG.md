@@ -1,5 +1,16 @@
 ## Unreleased
 
+- Add canonical missing-lemma or Issue obligations to the six remaining
+  conceptual relations and preserve legacy schema-2 loading and report rendering.
+  Pair the supporting fep-016 quadratic nonnegativity law with the fep-032
+  bounded-step descent law on the same state and center. The generated atlas
+  exposes those obligations; 034/047 remains conceptual under #93/F11.
+  The strict Lean 4.35 build, imported boundary controls and focused package
+  checks passed. Full source/native/render/hosted qualification remains required
+  for [#105](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105);
+  no Laplace approximation, general optimizer, convergence or primary-theorem
+  promotion is claimed.
+
 - Prepare default CI to consume its strict serial catalogue producer once, retain
   the ordinary CLI in explicit manual dual-shadow mode, observe original producer
   checkout/receipt context, and use the full 15-cell matrix for automatic PRs.

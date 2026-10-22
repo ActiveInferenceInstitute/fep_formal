@@ -377,7 +377,7 @@ def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
     capability_status_counts = Counter(node.status.value for node in graph.capabilities)
     formal_coverage = _formal_source_coverage(root)
     return {
-        "schema_version": 3,
+        "schema_version": 4,
         "review_date": audit.review_date,
         "evidence_boundary": (
             "Counts describe canonical source coverage. Compilation evidence and "
@@ -453,6 +453,7 @@ def build_formalism_coverage(project_root: Path) -> dict[str, Any]:
                 "kind": edge.kind.value,
                 "rationale": edge.rationale,
                 "witness": edge.witness,
+                "blocked_by": edge.blocked_by,
             }
             for edge in graph.edges
         ],
@@ -617,15 +618,16 @@ def render_formalism_coverage_markdown(coverage: dict[str, Any]) -> str:
                 "missing capability. Shared imports never create these edges."
             ),
             "",
-            "| Source | Kind | Target | Witness | Rationale |",
-            "| --- | --- | --- | --- | --- |",
+            "| Source | Kind | Target | Witness | Rationale | Missing obligation |",
+            "| --- | --- | --- | --- | --- | --- |",
         ]
     )
     for edge in coverage["relations"]:
         witness = f"`{edge['witness']}`" if edge["witness"] else "—"
         lines.append(
             f"| {edge['source']} | `{edge['kind']}` | {edge['target']} | "
-            f"{witness} | {edge['rationale']} |"
+            f"{witness} | {edge['rationale']} | "
+            f"{edge.get('blocked_by') or '—'} |"
         )
     lines.extend(
         [

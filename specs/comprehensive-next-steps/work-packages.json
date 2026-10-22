@@ -1364,16 +1364,14 @@
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/105"
       ],
       "status": "planned",
-      "outcome": "Conceptual relations carry explicit missing obligations and one selected tree relation receives a proved pairing.",
-      "depends_on": [
-        "F11"
-      ],
-      "single_owner": "Existing relation schema/config and atlas projection owners.",
+      "outcome": "Conceptual relations carry explicit missing obligations and the selected 016/032 supporting relation receives a proved non-implicational pairing.",
+      "depends_on": [],
+      "single_owner": "Existing relation schema/config and atlas projection owners; the selected pairing is owned by existing formal/compositions/core.lean.",
       "stop_go_spike": "Specify blocked_by as required for conceptual edges while retaining the distinct existing blocker-edge kind; demonstrate deterministic atlas rendering.",
-      "go_condition": "Schema/API review distinguishes proof obligations from capability blockers and an accepted F11 witness supports the selected conversion.",
-      "no_go_action": "Block S04.obligation-schema -> S04.pairing-closure without a qualified accepted 034/047 witness; do not erase the obligation to satisfy the target.",
-      "target": "Every conceptual edge has a missing carrier lemma/Issue obligation; select the 034/047 conversion route through F11 for terminal acceptance.",
-      "positive_witness": "A conceptual edge renders its actual unresolved obligation; the tree witness justifies one reviewed pairing conversion.",
+      "go_condition": "Schema/API review distinguishes proof obligations from capability blockers; a warning-free, independently reviewed 016/032 witness pairs the actual supporting quadratic nonnegativity and bounded-step descent laws on the same state and center.",
+      "no_go_action": "Block S04.obligation-schema -> S04.pairing-closure without the qualified selected 016/032 supporting witness; retain 034/047 as conceptual with issue:93 and its separate F11 carrier-bridge obligations.",
+      "target": "Every conceptual edge has a missing carrier lemma/Issue obligation; select the issue105-permitted 016/032 supporting formal_pairing for this scope. The 034/047 conversion remains separate under issue93/F11.",
+      "positive_witness": "A conceptual edge renders its actual unresolved obligation; FEPComposed.fep016_quadratic_pairs_fep032_descent justifies only the reviewed supporting 016/032 pairing, with nonnegative precision and step in [0,2].",
       "boundary_result": "Missing/unknown obligation fields reject and imports/proximity do not become theorem relations.",
       "test_surface": [
         "tests/test_formalism_relations.py",

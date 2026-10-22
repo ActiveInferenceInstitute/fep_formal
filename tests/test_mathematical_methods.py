@@ -45,6 +45,7 @@ from tests._support.fast_relaxation_review import fast_relaxation_theorem_extens
 from tests._support.lean_module_contract import (
     exact_information_review,
     finite_rate_distortion_theorem_extension,
+    obligation_theorem_extension,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -174,6 +175,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         declarations, ROOT
     )
     fast_relaxation_extension = fast_relaxation_theorem_extension(declarations, ROOT)
+    obligation_extension = obligation_theorem_extension(declarations, ROOT)
     assert (
         len(
             declarations.keys()
@@ -186,6 +188,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - finite_weight_kl_helpers
             - fast_relaxation_extension
             - finite_rate_distortion_extension
+            - obligation_extension
         )
         == 2185
     )

@@ -986,3 +986,25 @@ boundary. Integrate that separate clause under the same owner and preserve the
 strict-feasibility requirement only for finite multiplier attainment. The
 [active finite-duality contract](finite-rate-distortion-duality-20261021.md) owns
 this source-candidate scope; maintained qualification and review remain pending.
+
+## Explicit obligations with the issue105 alternative pairing
+
+**When:** 2026-10-22, S04 implementation decision before source integration.
+
+**Choice:** Use the issue105-permitted supporting 016/032 pairing: nonnegative
+precision-weighted quadratic energy and bounded-step descent on the same state
+and center. Require a canonical missing-lemma or Issue token on each remaining
+conceptual relation. Preserve the distinct capability-blocker edge kind.
+
+**Gap:** The prior S04 contract selected only the 034/047 route through F11,
+although issue105 permits either route. The selected 016/032 conjunction compiled
+with ten boundary controls on Lean 4.35.0 and received independent review.
+
+**Reach:** Amend only S04's selected route. Keep 034/047 conceptual under issue93
+and F11; retain every other work package and all existing capability evidence.
+This pairing proves no Laplace approximation, precision-derived update, general
+optimizer, convergence result, or primary-theorem promotion.
+
+**Verdict:** alternate implementation route approved; maintained-source and full
+release acceptance remain required before issue105 closeout.
+**Confidence:** the external proof and controls passed; source integration is pending.

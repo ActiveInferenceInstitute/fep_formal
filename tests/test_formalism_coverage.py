@@ -439,3 +439,17 @@ def test_coverage_requires_formal_pairings_to_state_a_conjunction(
         ValueError, match="formal_pairing witnesses must expose a checked conjunction"
     ):
         build_formalism_coverage(tmp_path)
+
+
+@pytest.mark.parametrize("missing_field", [True, False])
+def test_legacy_coverage_markdown_allows_optional_obligation(missing_field):
+    coverage = build_formalism_coverage(PROJ)
+    for edge in coverage["relations"]:
+        if missing_field:
+            edge.pop("blocked_by", None)
+        else:
+            edge["blocked_by"] = None
+    markdown = render_formalism_coverage_markdown(coverage)
+    assert "## Authored formalism relations" in markdown
+    assert "Missing obligation" in markdown
+    assert all(edge["rationale"] in markdown for edge in coverage["relations"])

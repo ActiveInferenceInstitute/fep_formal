@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import re
@@ -127,6 +128,8 @@ def restore_information_owner(source: str, owner: str, project_root: Path) -> st
     """Require every current byte, remove approved additions, and hash its preimage."""
     if owner == "src/fep_lean/formal/variational_duality.lean":
         source = restore_finite_rate_distortion_owner(source, project_root)
+    if owner == "src/fep_lean/formal/compositions/core.lean":
+        source = restore_obligation_core(source, project_root)
     change = exact_information_review(project_root)["owner_changes"][owner]
     assert hashlib.sha256(source.encode()).hexdigest() == change["reviewed_sha256"]
     for addition in [*change["added_imports"], change["added_block"]]:
@@ -180,6 +183,71 @@ def finite_rate_distortion_theorem_extension(
     declarations: dict, project_root: Path
 ) -> set[str]:
     owners = finite_rate_distortion_review(project_root)["new_theorem_owners"]
+    assert owners.keys() <= declarations.keys()
+    assert {name: declarations[name]["source_owner"] for name in owners} == owners
+    return set(owners)
+
+
+_OBLIGATION_REVIEW_SHA256 = (
+    "7f5f85fde16ed8e62aee4b4ac39ad492949f703c5599246a068ec01055aa2719"
+)
+
+
+def obligation_review(project_root: Path) -> dict:
+    raw = (
+        project_root / "tests/fixtures/conceptual_obligations_review_20261022.json"
+    ).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _OBLIGATION_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1
+    assert len(review["edge_changes"]) == 7
+    assert (
+        len(
+            {
+                (c["before"]["source"], c["before"]["target"])
+                for c in review["edge_changes"]
+            }
+        )
+        == 7
+    )
+    return review
+
+
+def reverse_obligation_edges(edges: list[dict], project_root: Path) -> list[dict]:
+    restored = copy.deepcopy(edges)
+    for change in obligation_review(project_root)["edge_changes"]:
+        key = (change["after"]["source"], change["after"]["target"])
+        positions = [
+            i
+            for i, edge in enumerate(restored)
+            if (edge["source"], edge["target"]) == key
+        ]
+        assert len(positions) == 1
+        position = positions[0]
+        assert restored[position] == change["after"]
+        restored[position] = copy.deepcopy(change["before"])
+    return restored
+
+
+def reverse_obligation_model(model: dict, project_root: Path) -> dict:
+    assert type(model["schema_version"]) is int and model["schema_version"] == 3
+    restored = copy.deepcopy(model)
+    restored["schema_version"] = 2
+    restored["edges"] = reverse_obligation_edges(model["edges"], project_root)
+    return restored
+
+
+def restore_obligation_core(source: str, project_root: Path) -> str:
+    review = obligation_review(project_root)
+    block = review["added_core_block"]
+    assert source.count(block) == 1
+    restored = source.replace(block, "", 1)
+    assert hashlib.sha256(restored.encode()).hexdigest() == review["base_core_sha256"]
+    return restored
+
+
+def obligation_theorem_extension(declarations: dict, project_root: Path) -> set[str]:
+    owners = obligation_review(project_root)["new_theorem_owners"]
     assert owners.keys() <= declarations.keys()
     assert {name: declarations[name]["source_owner"] for name in owners} == owners
     return set(owners)

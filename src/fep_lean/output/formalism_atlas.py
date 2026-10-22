@@ -636,6 +636,13 @@ def _topic_table(atlas: FormalismAtlas) -> str:
     return "".join(rows)
 
 
+def _obligation_markup(obligation: str | None) -> str:
+    """Keep unmet obligation tokens literal and fully offline."""
+    return (
+        f"<code>{escape_svg_text(obligation)}</code>" if obligation is not None else "—"
+    )
+
+
 def _relation_table(atlas: FormalismAtlas) -> str:
     return "".join(
         f'<tr data-relation-row="{index}" data-kind="{escape_svg_text(relation.kind)}">'
@@ -645,6 +652,7 @@ def _relation_table(atlas: FormalismAtlas) -> str:
         f'<td data-label="Rationale">{escape_svg_text(relation.rationale)}</td>'
         f'<td data-label="Exact witness">'
         f"{f'<code>{escape_svg_text(relation.witness)}</code>' if relation.witness else '—'}</td>"
+        f'<td data-label="Missing obligation">{_obligation_markup(relation.blocked_by)}</td>'
         "</tr>"
         for index, relation in enumerate(atlas.relations)
     )
@@ -791,7 +799,7 @@ tbody th{min-width:170px}tbody th span{display:block;font-weight:500;margin-top:
         '<div class="table-wrap relation-table-wrap" role="region" tabindex="0" aria-label="Exact authored relation records">'
         '<p class="relation-card-hint">Complete relation cards show rationale and exact witnesses.</p>'
         f'<table id="relation-table" data-mobile-layout="complete-cards"><caption>All {len(atlas.relations)} authored scientific relations; relation kind filtering applies here.</caption>'
-        '<thead><tr><th scope="col">Source</th><th scope="col">Kind</th><th scope="col">Target</th><th scope="col">Rationale</th><th scope="col">Exact witness</th></tr></thead>'
+        '<thead><tr><th scope="col">Source</th><th scope="col">Kind</th><th scope="col">Target</th><th scope="col">Rationale</th><th scope="col">Exact witness</th><th scope="col">Missing obligation</th></tr></thead>'
         f"<tbody>{_relation_table(atlas)}</tbody></table></div></details>"
         f'<details id="capability-records"><summary>Retained capability table · {len(atlas.capabilities)} records</summary><div class="table-wrap" role="region" tabindex="0" aria-label="Retained capability records">'
         '<p class="scroll-hint">Swipe horizontally to inspect every column.</p>'

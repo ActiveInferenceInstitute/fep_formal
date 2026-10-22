@@ -23,6 +23,8 @@ from tests._support.lean_module_contract import (
     restore_information_owner,
     reverse_finite_rate_distortion_capabilities,
     reverse_information_entries,
+    reverse_obligation_edges,
+    reverse_obligation_model,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -590,6 +592,7 @@ def test_native_conditional_capability_review_authenticates_fixture_bytes(
 
 
 def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, object]]:
+    edges = reverse_obligation_edges(edges, PROJECT_ROOT)
     edges = _restore_reviewed_conjugacy_rationale(edges)
     edges = reverse_information_entries(edges, PROJECT_ROOT)
     change = _scalar_review()["edge_change"]
@@ -628,7 +631,9 @@ def _reverse_scalar_capabilities(
 
 
 def _assert_scalar_model_preimage(model: dict[str, object]) -> None:
+    assert type(model["schema_version"]) is int and model["schema_version"] == 3
     restored = dict(model)
+    restored["schema_version"] = 2
     restored["edges"] = _reverse_scalar_edges(model["edges"])
     restored["capabilities"] = _reverse_scalar_capabilities(model["capabilities"])
     assert (
@@ -879,7 +884,7 @@ def test_relation_rationale_review_authenticates_fixture_bytes(
 
 def test_exact_information_review_preserves_complete_prior_model_and_owner_bytes():
     review = exact_information_review(PROJECT_ROOT)
-    model = _yaml("formalism_relations.yaml")
+    model = reverse_obligation_model(_yaml("formalism_relations.yaml"), PROJECT_ROOT)
     model["capabilities"] = reverse_finite_rate_distortion_capabilities(
         model["capabilities"], PROJECT_ROOT
     )
@@ -928,7 +933,7 @@ def test_exact_information_review_rejects_unapproved_changes(mutation):
                 source.replace(name, "unreviewed", 1), owner, PROJECT_ROOT
             )
         return
-    model = _yaml("formalism_relations.yaml")
+    model = reverse_obligation_model(_yaml("formalism_relations.yaml"), PROJECT_ROOT)
     model["capabilities"] = reverse_finite_rate_distortion_capabilities(
         model["capabilities"], PROJECT_ROOT
     )
