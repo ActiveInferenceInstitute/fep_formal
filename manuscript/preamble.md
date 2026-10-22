@@ -1,6 +1,8 @@
 ```latex
 % ── Page Geometry (tight margins for dense scholarly layout) ──────
 \usepackage[margin=1cm, top=1.2cm, bottom=1.2cm, heightrounded]{geometry}
+% Keep the page-number footer inside the sheet without changing the text area.
+\setlength{\footskip}{18pt}
 
 % ── Color Support ─────────────────────────────────────────────────
 \usepackage{xcolor}
