@@ -15,7 +15,10 @@ from fep_lean.formal.manifest import (
     formal_resource_paths,
 )
 from fep_lean.lean_source import lean_code_without_comments
-from tests._support.lean_module_contract import exact_information_review
+from tests._support.lean_module_contract import (
+    exact_information_review,
+    finite_rate_distortion_theorem_extension,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -97,50 +100,17 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     assert {name: owners[name] for name in fast_relaxation_limits} == {
         name: "FepSketches.efe_time_scale_separation" for name in fast_relaxation_limits
     }
-    finite_rate_distortion = {
-        "FEP.VariationalDuality.RateDistortionGeometry.actual_primal_dual_extrema",
-        "FEP.VariationalDuality.RateDistortionGeometry.actual_slater_support",
-        "FEP.VariationalDuality.RateDistortionGeometry.boolClosedBudget_dual_supremum",
-        "FEP.VariationalDuality.RateDistortionGeometry.boolQuarterBudget_actual_dual_optimizer",
-        "FEP.VariationalDuality.RateDistortionGeometry.boolZeroBudget_dual_supremum",
-        "FEP.VariationalDuality.RateDistortionGeometry.coefficient_decomposition",
-        "FEP.VariationalDuality.RateDistortionGeometry.columnEntropy_concave_nonnegative",
-        "FEP.VariationalDuality.RateDistortionGeometry.columnEntropy_smul",
-        "FEP.VariationalDuality.RateDistortionGeometry.columnEntropy_superadd",
-        "FEP.VariationalDuality.RateDistortionGeometry.column_eq_zero_of_sum_zero",
-        "FEP.VariationalDuality.RateDistortionGeometry.convexOn_information_fixed_source",
-        "FEP.VariationalDuality.RateDistortionGeometry.convex_actual_upperImage",
-        "FEP.VariationalDuality.RateDistortionGeometry.convex_feasible",
-        "FEP.VariationalDuality.RateDistortionGeometry.convex_upperImage_of_information_convex",
-        "FEP.VariationalDuality.RateDistortionGeometry.distortion_affine",
-        "FEP.VariationalDuality.RateDistortionGeometry.epsilon_dual_lower_bound",
-        "FEP.VariationalDuality.RateDistortionGeometry.exists_actual_strong_duality",
-        "FEP.VariationalDuality.RateDistortionGeometry.exists_all_feasible_dual_supremum",
-        "FEP.VariationalDuality.RateDistortionGeometry.exists_optimizer_boundary",
-        "FEP.VariationalDuality.RateDistortionGeometry.information_eq_rowEntropy_sub_columns",
-        "FEP.VariationalDuality.RateDistortionGeometry.negativeBudget_infeasible_control",
-        "FEP.VariationalDuality.RateDistortionGeometry.nonneg_of_bounded_below_ray",
-        "FEP.VariationalDuality.RateDistortionGeometry.nonunique_minimizer_control",
-        "FEP.VariationalDuality.RateDistortionGeometry.nonzero_lower_support",
-        "FEP.VariationalDuality.RateDistortionGeometry.normalize_lower_support_coefficients",
-        "FEP.VariationalDuality.RateDistortionGeometry.normalize_lower_support_functional",
-        "FEP.VariationalDuality.RateDistortionGeometry.normalized_columnEntropy_concave",
-        "FEP.VariationalDuality.RateDistortionGeometry.optimizer_not_interior",
-        "FEP.VariationalDuality.RateDistortionGeometry.scalar_support_from_geometry",
-        "FEP.VariationalDuality.RateDistortionGeometry.upperImage_closed",
-        "FEP.VariationalDuality.RateDistortionGeometry.upperImage_iff_joint",
-        "FEP.VariationalDuality.RateDistortionGeometry.upperImage_nonempty_interior",
-        "FEP.VariationalDuality.RateDistortionGeometry.upperImage_upward_distortion",
-        "FEP.VariationalDuality.RateDistortionGeometry.upperImage_upward_information",
-        "FEP.VariationalDuality.RateDistortionGeometry.zeroBudget_zeroDistortion_control",
-        "FEP.VariationalDuality.mutualInformationOfMasses_convexOn_fixedSource",
-        "FEP.VariationalDuality.rateDistortion_exists_minimizer_and_dual_supremum",
-        "FEP.VariationalDuality.rateDistortion_exists_slater_dual_optimizer",
-        "FEP.VariationalDuality.rateDistortion_primal_dual_extrema",
-    }
-    assert {name: owners[name] for name in finite_rate_distortion} == {
-        name: "FepSketches.variational_duality" for name in finite_rate_distortion
-    }
+    finite_rate_distortion = finite_rate_distortion_theorem_extension(
+        {
+            name: {
+                "source_owner": "src/fep_lean/formal/"
+                + module.removeprefix("FepSketches.").replace(".", "/")
+                + ".lean"
+            }
+            for name, module in owners.items()
+        },
+        PROJECT_ROOT,
+    )
     assert Counter(
         owner
         for name, owner in owners.items()

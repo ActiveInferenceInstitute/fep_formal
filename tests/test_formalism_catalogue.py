@@ -21,6 +21,7 @@ from tests._support.fast_relaxation_review import (
 from tests._support.lean_module_contract import (
     exact_information_review,
     restore_information_owner,
+    reverse_finite_rate_distortion_capabilities,
     reverse_information_entries,
 )
 
@@ -608,6 +609,7 @@ def _reverse_scalar_edges(edges: list[dict[str, object]]) -> list[dict[str, obje
 def _reverse_scalar_capabilities(
     caps: list[dict[str, object]],
 ) -> list[dict[str, object]]:
+    caps = reverse_finite_rate_distortion_capabilities(caps, PROJECT_ROOT)
     caps = reverse_fast_relaxation_rows(caps, PROJECT_ROOT, capability=True)
     caps = _restore_reviewed_native_conditional_capability(caps)
     caps = reverse_information_entries(caps, PROJECT_ROOT, capabilities=True)
@@ -878,6 +880,9 @@ def test_relation_rationale_review_authenticates_fixture_bytes(
 def test_exact_information_review_preserves_complete_prior_model_and_owner_bytes():
     review = exact_information_review(PROJECT_ROOT)
     model = _yaml("formalism_relations.yaml")
+    model["capabilities"] = reverse_finite_rate_distortion_capabilities(
+        model["capabilities"], PROJECT_ROOT
+    )
     model["edges"] = _restore_reviewed_conjugacy_rationale(model["edges"])
     model["capabilities"] = _restore_reviewed_native_conditional_capability(
         reverse_fast_relaxation_rows(
@@ -924,6 +929,9 @@ def test_exact_information_review_rejects_unapproved_changes(mutation):
             )
         return
     model = _yaml("formalism_relations.yaml")
+    model["capabilities"] = reverse_finite_rate_distortion_capabilities(
+        model["capabilities"], PROJECT_ROOT
+    )
     model["edges"] = _restore_reviewed_conjugacy_rationale(model["edges"])
     model["capabilities"] = _restore_reviewed_native_conditional_capability(
         reverse_fast_relaxation_rows(
