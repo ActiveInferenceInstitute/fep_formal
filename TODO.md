@@ -48,7 +48,7 @@ orders this work.
 
 The original #52/#53 contracts remain historical evidence, not satisfied
 predecessors. Their retirement does not supply a package or scientific receipt.
-#54 keeps its exact-source local/hosted software gate. #55–#57 keep current
+Issue #54 keeps its exact-source local/hosted software gate. #55–#57 keep current
 export, three proof-role reviews, the frozen sole-primary and outcome/archive
 requirements. #59 keeps its independent nine-criterion audit and must report
 retired criteria honestly. #66/#67 retain actual custody, containment and
