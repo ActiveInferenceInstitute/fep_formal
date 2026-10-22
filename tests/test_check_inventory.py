@@ -365,7 +365,11 @@ def test_root_reference_sections_use_canonical_owners(relative: str) -> None:
         (
             "README.md",
             "Development checks",
-            "```bash\nuv run mypy src scripts docs # copied gate\n```\n",
+            (
+                "```bash\nuv run mypy src scripts docs "
+                "specs/publication-browser-acceptance/wait_render_dependencies.py "
+                "# copied gate\n```\n"
+            ),
             "copies required checks",
         ),
         (
