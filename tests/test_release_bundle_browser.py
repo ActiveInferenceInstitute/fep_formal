@@ -27,12 +27,13 @@ def _assert_stale_pairing_count_rejected(
 ) -> None:
     # A self-consistent old-count receipt and replay still violate the current
     # reviewed contract; matching those two objects must not rebind the seal.
-    observations["atlas"]["pairingVisible"] = 118
-    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
-    assert "browser receipt detailed DOM observations are not canonical" in (
-        bundle_module._browser_receipt_errors(project_root, check_runtime=False)
-    )
-    observations["atlas"]["pairingVisible"] = 119
+    for stale_count in [118, 119]:
+        observations["atlas"]["pairingVisible"] = stale_count
+        receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+        assert "browser receipt detailed DOM observations are not canonical" in (
+            bundle_module._browser_receipt_errors(project_root, check_runtime=False)
+        )
+    observations["atlas"]["pairingVisible"] = 120
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
     assert (
         bundle_module._browser_receipt_errors(project_root, check_runtime=False) == ()
@@ -111,7 +112,7 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
             "clearAllResetFilters": True,
             "families": 22,
             "fepVisible": 41,
-            "pairingVisible": 119,
+            "pairingVisible": 120,
             "relationCards": 150,
             "relations": 150,
             "searchVisible": 1,
