@@ -72,3 +72,32 @@ shape-premise error, with no warning, admitted proof, missing import or unknown
 identifier. The tests use the shared process-group-safe runner and fail closed
 when the required toolchain is unavailable. Source-bound test execution,
 semantic/prerequisite review, publication and issue closure remain separate.
+
+## Recorded Stage2 continuation boundary
+
+The [binary Beta evidence archive](stage2-binary-beta-external-r3/README.md)
+records a partial go for continuous binary-measure feasibility. Its exact
+external proof qualified on Lean 4.35.0 / Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`
+at source epoch `1cc327f4bf41a8ffda85e402bcb800baff1d0929`, with 21
+standard-only axiom reports. It derives a likelihood-weighted Beta prior as a
+positive finite scalar multiple of the shifted posterior and proves actual
+normalized probability. This is historical external evidence, not a new
+maintained theorem or current-source compiler receipt.
+
+The broader continuation is a recorded no-go at three integration seams:
+
+- a generic finite-simplex Dirichlet carrier/base measure, support and
+  probability normalization;
+- endpoint logarithm integrability and the real/complex digamma identification,
+  with justified differentiation under integration if that route is used;
+- an actual variational objective, admissible family and factorization with a
+  proved coordinate optimum or monotone improvement.
+
+The available Beta, Gamma, simplex, digamma and `withDensity` APIs do not supply
+these identifications automatically. This is not a claim of library absence or
+mathematical impossibility. Any general continuation needs a separate frozen
+probe and independent review. The binary proof uses positive-shape Beta
+normalization; it supplies no blanket #75/S01 dependency waiver or acceptance.
+Accepted Stage1 and its current importing consumers remain unchanged. Issue95
+stays open until this scoped record receives exact-source qualification,
+independent review and accepted-main publication; its TODO row is retained.

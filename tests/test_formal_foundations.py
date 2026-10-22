@@ -18,6 +18,7 @@ from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lean_module_contract import (
     exact_information_review,
     finite_rate_distortion_theorem_extension,
+    obligation_theorem_extension,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -111,6 +112,18 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         },
         PROJECT_ROOT,
     )
+    obligation_extension = obligation_theorem_extension(
+        {
+            name: {
+                "source_owner": "src/fep_lean/formal/"
+                + module.removeprefix("FepSketches.").replace(".", "/")
+                + ".lean"
+            }
+            for name, module in owners.items()
+        },
+        PROJECT_ROOT,
+    )
+    assert obligation_extension == {"FEPComposed.fep016_quadratic_pairs_fep032_descent"}
     assert Counter(
         owner
         for name, owner in owners.items()
@@ -119,6 +132,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         and name not in finite_weight_kl_helpers
         and name not in fast_relaxation_limits
         and name not in finite_rate_distortion
+        and name not in obligation_extension
     ) == {
         "FepSketches.finite_probability": 19,
         "FepSketches.finite_information": 31,

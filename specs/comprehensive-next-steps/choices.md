@@ -1008,3 +1008,32 @@ optimizer, convergence result, or primary-theorem promotion.
 **Verdict:** alternate implementation route approved; maintained-source and full
 release acceptance remain required before issue105 closeout.
 **Confidence:** the external proof and controls passed; source integration is pending.
+
+
+## Integrate reviewed release-contract repairs before repeating qualification
+
+**When:** 2026-10-22, before changing the settled source `75e7593` candidate.
+
+**Choice:** Repair the two observed full-suite failures: the current browser
+contract must accept the reviewed 120 pairings while retaining explicit historical
+119 controls, and the foundation inventory must account for exactly the one
+reviewed 016/032 theorem. Preserve all test identities and all other owner counts.
+
+Batch the separately reviewed optional-slide configuration and portable issue #95
+Stage2 evidence record before repeating the mandatory final-source gates. This
+explicitly advances their proposed integration order; it does not claim that the
+failed source `75e7593` suite or this new cohort is accepted. The slide setting keeps
+required combined manuscript outputs, fonts and receipts, with ambient format
+overrides cleared in CI and qualification. The issue #95 archive records the
+historical 21-theorem binary Beta feasibility result separately from the general
+Dirichlet/expected-log/variational integration no-go. F13 remains planned with
+its existing S01 dependency; TODO95 remains open until accepted closeout.
+
+**Reach:** One existing browser production owner changes; refresh source custody
+and native evidence before rendering. No new production owner, canonical proof,
+receipt schema, maturity promotion, empirical or H3 acceptance is introduced.
+Keep the failed parallel result with 3,551 cases and its unrun Chrome stage immutable.
+
+**Verdict:** source integration only. Fresh native, effective renderer-config,
+publication/PDF, full Python/browser/coverage, remaining checks and hosted/main
+acceptance remain required; no measured speedup is claimed.

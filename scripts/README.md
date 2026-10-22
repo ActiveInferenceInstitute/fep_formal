@@ -242,6 +242,27 @@ not a substitute for rendering the changed sources.
 
 ### 3. Render and accept
 
+The source-bound publication configuration requires the combined manuscript PDF
+and disables per-section slide derivatives through the pinned SDK's existing
+`render.formats.pdf: true` and `render.formats.slides: false` settings. Slides
+remain an optional separately requested deliverable; this mode makes no claim
+that slide PDFs were rendered or accepted. Other format settings are unchanged.
+
+The SDK's `ENABLE_PDF` and `ENABLE_SLIDES` environment variables override YAML.
+CI clears both for the render subprocess. Local and installed-wheel trials must
+also remove both from the child environment before invoking the unchanged
+publication entry point, and pass an explicit absolute `--template` checkout
+(or `FEP_LEAN_TEMPLATE_DIR`) at the pinned SDK revision. Do not rely on an
+editable installation's sibling-template discovery or an unrelated shell
+environment. A portable Python launcher can form the child environment with
+`{k: v for k, v in os.environ.items() if k not in {"ENABLE_PDF", "ENABLE_SLIDES"}}`
+and run the existing entry point with that environment.
+
+Combined PDF/TeX/Markdown/log parity, exact-source native and render receipts,
+font registration/cleanup, provenance and scoped PDF visual review remain
+mandatory. Enabling slides later requires an explicit mode change and fresh
+render qualification; no timing improvement is assumed from this configuration.
+
 Prerequisites, all matching CI's render job in `.github/workflows/ci.yml`:
 
 - A claim-ready native receipt for the current sources at

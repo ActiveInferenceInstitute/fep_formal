@@ -405,11 +405,20 @@ def test_canonical_dom_passes_the_interaction_summary() -> None:
     assert observations["atlas"]["pairingVisible"] == sum(
         relation.kind == "formal_pairing" for relation in presentation.relations
     )
+    assert observations["atlas"]["pairingVisible"] == 120
     assert all(capture_module._interactions(observations).values())
+    stale = deepcopy(observations)
+    stale["atlas"]["pairingVisible"] = 119
+    assert not capture_module._interactions(stale)["search_and_filter"]
 
 
 @pytest.mark.parametrize("pairings", [0, 105, 117, 118, 120, 146])
-def test_interactions_reject_incorrect_pairing_counts(pairings: int) -> None:
+def test_interactions_reject_incorrect_pairing_counts(
+    pairings: int, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Preserve these six historical 119-contract refusals and their exact IDs.
+    # The canonical test above separately pins current 120 and refuses stale 119.
+    monkeypatch.setattr(capture_module, "REVIEWED_ATLAS_PAIRINGS", 119)
     root = Path(__file__).resolve().parents[1]
     observations = capture_module.canonical_browser_observations(
         capture_module._project_counts(root)

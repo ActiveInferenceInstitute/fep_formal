@@ -1,0 +1,128 @@
+{
+  "head": "1cc327f4bf41a8ffda85e402bcb800baff1d0929",
+  "complete": true,
+  "passed": true,
+  "command": [
+    "/opt/homebrew/bin/elan",
+    "run",
+    "leanprover/lean4:v4.35.0",
+    "lake",
+    "--dir",
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep76-finite-slater-duality/fep_formal/lean",
+    "env",
+    "lean",
+    "-DwarningAsError=true",
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep95-binary-beta-density-candidate-r3/DensityIdentity.lean"
+  ],
+  "returncode": 0,
+  "stdout_sha256": "28d60b4de824e1ffd274d6c7ed170f0a7f7ca1806602d17de13bc43c9aaaec0a",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "axiom_reports": {
+    "FEP95BinaryBetaProbe.normalizer_pos": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.normalizer_finite": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.likelihood_measurable": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.real_pdf_product": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.pdf_product": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.weighted_measure": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.weighted_mass": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.normalized_posterior": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.normalized_probability": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.zero_counts": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.noninteger_prior_recovery": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.noninteger_measure_recovery": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.uniform_success_normalizer": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.uniform_failure_normalizer": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.uniform_success_posterior": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.uniform_failure_posterior": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.distinct_posteriors": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.wrong_inverse_ratio": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.wrong_scaled_measure_refused": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.nonpositive_shape_refused": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "FEP95BinaryBetaProbe.outside_pdf_zero": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ]
+  },
+  "boundary": "External binary Beta candidate strict compilation and exact21 axiom reports only. Maintained activation, full Dirichlet/expected-log/variational results, independent scientific acceptance and issue closure remain separate."
+}
