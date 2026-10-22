@@ -11,7 +11,7 @@
     "unnumbered_equations": 0,
     "unresolved_references": 0
   },
-  "manuscript_source_digest": "f0a2150aac1608e1abf66afe8a2a08034cb0ca9377e88758a479ec662698ca0d",
+  "manuscript_source_digest": "6eea95f0a15ac3624d48d1065a7961bfdf20c15eddf1d3909db989eb210cf0de",
   "pages": 387,
   "receipt_version": 2,
   "source_digests": {
@@ -45,7 +45,7 @@
     "06_conclusion.md": "b5b29168be218341a0ae070da94f02f5db9fcd8d2959b419195c820eaeab72db",
     "07_references.md": "b6132569eea5c54b542fff8754cee5c5d288873d8e920ce27c66a4a0318a7d94",
     "08_appendix_a_overview.md": "4954eb32f780051b09fb1f5a35d8ba00b894faca7fa8ace51dd423142749adbd",
-    "08b_mathematical_positioning_supplement.md": "17619eff24b93dbf9970d02f818ba6362a9f244eeb8faf3d5fa50d00afc8060d",
+    "08b_mathematical_positioning_supplement.md": "7b5c6bf4dca225fa2670f0264f7dd9b570ba559df8232eba5ecafe2167ec2919",
     "09z_unified_formalism_catalogue.md": "b2ca42a9b09d6d226af4111f02fe303091dc53d0177ad98c02cc6633d1dad7c3",
     "config.yaml": "bb8be070839c1256a19b0a6e8e90e70fdfaa57f6dcc189aa9295ce264dab5fc3",
     "preamble.md": "0ca6e7d06bf56f64e2e2850c96e7a802695f0225128d9a955ab9d1318651a6d9",
