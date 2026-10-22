@@ -30,6 +30,7 @@ def test_constrained_entropy_preserves_its_existing_owner_imports() -> None:
 
     assert tuple(re.findall(r"(?m)^public import (\S+)$", source)) == (
         "FepSketches.finite_information",
+        "Mathlib.Analysis.LocallyConvex.Separation",
         "Mathlib.Analysis.Convex.SpecificFunctions.Basic",
         "Mathlib.InformationTheory.KullbackLeibler.Basic",
         "Mathlib.Probability.Moments.Basic",
@@ -59,8 +60,15 @@ def test_certificate_proves_existence_and_uniqueness_only_from_supplied_data() -
     assert "candidate = certificate.gibbs.optimizer" in result
     assert "dvObjective_le_logPartition" in result
     assert "dvObjective_eq_logPartition_iff" in result
-    assert "strongDuality" not in source
-    assert "slater" not in lean_code_without_comments(source).lower()
+    # Keep the supplied-certificate contract scoped to its original H1.5 section.
+    # General rate-distortion Slater results are a separate later extension.
+    section = source.split("## Finite constrained maximum entropy", maxsplit=1)[
+        1
+    ].split("## Rate--distortion weak duality", maxsplit=1)[0]
+    assert "strongDuality" not in lean_code_without_comments(section)
+    assert "slater" not in lean_code_without_comments(section).lower()
+    assert "strongDuality" not in result
+    assert "slater" not in result.lower()
 
 
 def test_temperature_reference_and_full_support_boundaries_are_explicit() -> None:

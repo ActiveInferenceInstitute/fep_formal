@@ -1,5 +1,6 @@
 module
 public import FepSketches.finite_information
+public import Mathlib.Analysis.LocallyConvex.Separation
 public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
 public import Mathlib.InformationTheory.KullbackLeibler.Basic
 public import Mathlib.Probability.Moments.Basic
@@ -2036,4 +2037,881 @@ theorem interiorMultiplier_zero_totalized : interiorMultiplier 0 = 0 := by
 
 end FairBoolean
 
+end FEP.VariationalDuality
+
+/-! ### Finite rate-distortion strong duality under strict feasibility
+The actual finite-law upper image supplies convexity and boundary geometry.
+Nonnegative distortion and a strictly feasible law yield attained primal/dual
+extrema and complementary slackness. No full-support or uniqueness claim.
+-/
+set_option autoImplicit false
+open FEP FEP.VariationalDuality
+open scoped BigOperators
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {ι : Type*} [Fintype ι]
+
+/-- Homogeneous conditional-entropy contribution of one nonnegative column.
+The algebraic definition is total on real vectors. -/
+noncomputable def columnEntropy (x : ι → ℝ) : ℝ :=
+  (∑ i, Real.negMulLog (x i)) - Real.negMulLog (∑ i, x i)
+
+/-- This identity includes zero scaling and zero coordinates. -/
+theorem columnEntropy_smul (c : ℝ) (x : ι → ℝ) :
+    columnEntropy (c • x) = c * columnEntropy x := by
+  unfold columnEntropy
+  simp only [Pi.smul_apply, smul_eq_mul, ← Finset.mul_sum]
+  simp_rw [Real.negMulLog_mul]
+  rw [Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.mul_sum]
+  ring
+
+/-- Concavity on normalized nonnegative columns uses scalar entropy concavity;
+no positivity or logarithm-of-zero premise is needed. -/
+theorem normalized_columnEntropy_concave (x y : ι → ℝ)
+    (hx : ∀ i, 0 ≤ x i) (hy : ∀ i, 0 ≤ y i)
+    (hsx : ∑ i, x i = 1) (hsy : ∑ i, y i = 1)
+    (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a + b = 1) :
+    a * columnEntropy x + b * columnEntropy y ≤ columnEntropy (a • x + b • y) := by
+  have hsum : ∑ i, (a • x + b • y) i = 1 := by
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_add_distrib,
+      ← Finset.mul_sum, hsx, hsy, mul_one, hab]
+  have hpoint : ∀ i, a * Real.negMulLog (x i) + b * Real.negMulLog (y i) ≤
+      Real.negMulLog ((a • x + b • y) i) := by
+    intro i
+    exact Real.concaveOn_negMulLog.2 (hx i) (hy i) ha hb hab
+  have h := Finset.sum_le_sum (fun i (_ : i ∈ Finset.univ) => hpoint i)
+  simpa only [columnEntropy, hsx, hsy, hsum, Real.negMulLog_one, sub_zero,
+    Finset.sum_add_distrib, ← Finset.mul_sum] using h
+/-- A nonnegative zero-mass column is exactly the zero vector. -/
+theorem column_eq_zero_of_sum_zero (x : ι → ℝ) (hx : ∀ i, 0 ≤ x i)
+    (hs : ∑ i, x i = 0) : x = 0 := by
+  classical
+  funext i
+  have hi : x i ≤ ∑ j, x j := Finset.single_le_sum (fun j _ => hx j) (Finset.mem_univ i)
+  exact le_antisymm (hi.trans (le_of_eq hs)) (hx i)
+
+/-- Conditional column entropy is superadditive, including zero-mass columns. -/
+theorem columnEntropy_superadd (x y : ι → ℝ)
+    (hx : ∀ i, 0 ≤ x i) (hy : ∀ i, 0 ≤ y i) :
+    columnEntropy x + columnEntropy y ≤ columnEntropy (x + y) := by
+  by_cases hx0 : (∑ i, x i) = 0
+  · have hxeq := column_eq_zero_of_sum_zero x hx hx0
+    simp [hxeq, columnEntropy]
+  by_cases hy0 : (∑ i, y i) = 0
+  · have hyeq := column_eq_zero_of_sum_zero y hy hy0
+    simp [hyeq, columnEntropy]
+  let sx : ℝ := ∑ i, x i
+  let sy : ℝ := ∑ i, y i
+  let t : ℝ := sx + sy
+  have hsx : 0 < sx := lt_of_le_of_ne (Finset.sum_nonneg (fun i _ => hx i)) (Ne.symm hx0)
+  have hsy : 0 < sy := lt_of_le_of_ne (Finset.sum_nonneg (fun i _ => hy i)) (Ne.symm hy0)
+  have ht : 0 < t := add_pos hsx hsy
+  have hnx : ∀ i, 0 ≤ (sx⁻¹ • x) i := fun i =>
+    mul_nonneg (inv_nonneg.mpr (le_of_lt hsx)) (hx i)
+  have hny : ∀ i, 0 ≤ (sy⁻¹ • y) i := fun i =>
+    mul_nonneg (inv_nonneg.mpr (le_of_lt hsy)) (hy i)
+  have hsumx : ∑ i, (sx⁻¹ • x) i = 1 := by
+    simp only [Pi.smul_apply, smul_eq_mul, ← Finset.mul_sum]
+    exact inv_mul_cancel₀ (ne_of_gt hsx)
+  have hsumy : ∑ i, (sy⁻¹ • y) i = 1 := by
+    simp only [Pi.smul_apply, smul_eq_mul, ← Finset.mul_sum]
+    exact inv_mul_cancel₀ (ne_of_gt hsy)
+  have hab : sx / t + sy / t = 1 := by
+    rw [← add_div]
+    exact div_self (ne_of_gt ht)
+  have hn := normalized_columnEntropy_concave (sx⁻¹ • x) (sy⁻¹ • y)
+    hnx hny hsumx hsumy (sx / t) (sy / t)
+    (div_nonneg (le_of_lt hsx) (le_of_lt ht))
+    (div_nonneg (le_of_lt hsy) (le_of_lt ht)) hab
+  have hm : (sx / t) • (sx⁻¹ • x) + (sy / t) • (sy⁻¹ • y) = t⁻¹ • (x + y) := by
+    funext i
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+    field_simp [ne_of_gt hsx, ne_of_gt hsy, ne_of_gt ht]
+  rw [hm] at hn
+  simp only [columnEntropy_smul] at hn
+  have hcx : (sx / t) * sx⁻¹ = t⁻¹ := by
+    field_simp [ne_of_gt hsx, ne_of_gt ht]
+  have hcy : (sy / t) * sy⁻¹ = t⁻¹ := by
+    field_simp [ne_of_gt hsy, ne_of_gt ht]
+  rw [← mul_assoc, hcx, ← mul_assoc, hcy, ← mul_add] at hn
+  exact (mul_le_mul_iff_right₀ (inv_pos.mpr ht)).mp hn
+
+/-- Homogeneity and superadditivity give concavity on the entire nonnegative cone. -/
+theorem columnEntropy_concave_nonnegative :
+    ConcaveOn ℝ {x : ι → ℝ | ∀ i, 0 ≤ x i} columnEntropy := by
+  refine ⟨?_, ?_⟩
+  · intro x hx y hy a b ha hb _hab i
+    exact add_nonneg (mul_nonneg ha (hx i)) (mul_nonneg hb (hy i))
+  · intro x hx y hy a b ha hb _hab
+    have h := columnEntropy_superadd (a • x) (b • y)
+      (fun i => mul_nonneg ha (hx i)) (fun i => mul_nonneg hb (hy i))
+    simpa only [columnEntropy_smul, smul_eq_mul] using h
+
+variable {α β : Type*} [Fintype α] [Fintype β]
+
+/-- Exact finite entropy identity; it includes zero rows and columns. -/
+theorem information_eq_rowEntropy_sub_columns (x : α × β → ℝ) :
+    mutualInformationOfMasses x =
+      (∑ u : α, Real.negMulLog (∑ v : β, x (u, v))) -
+        ∑ v : β, columnEntropy (fun u : α => x (u, v)) := by
+  have hswap : (∑ xy : α × β, Real.negMulLog (x xy)) =
+      ∑ v : β, ∑ u : α, Real.negMulLog (x (u, v)) := by
+    rw [Fintype.sum_prod_type, Finset.sum_comm]
+  unfold mutualInformationOfMasses columnEntropy
+  rw [Finset.sum_sub_distrib, ← hswap]
+  ring
+
+/-- Actual entropy-form mutual information is convex at fixed first marginal.
+The domain is the maintained finite-law mass carrier, with zero distortion;
+no full-support condition or supplied convexity certificate is assumed. -/
+theorem convexOn_information_fixed_source (p : FiniteLaw α) :
+    ConvexOn ℝ (rateDistortionFeasibleMasses (β := β) p (fun _ _ => 0) 0)
+      (mutualInformationOfMasses : (α × β → ℝ) → ℝ) := by
+  have hconv : Convex ℝ
+      (rateDistortionFeasibleMasses (β := β) p (fun _ _ => 0) 0) := by
+    intro x hx y hy a b ha hb hab
+    refine ⟨?_, ?_, ?_⟩
+    · intro xy
+      exact add_nonneg (mul_nonneg ha (hx.1 xy)) (mul_nonneg hb (hy.1 xy))
+    · intro u
+      simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_add_distrib,
+        ← Finset.mul_sum]
+      rw [hx.2.1 u, hy.2.1 u, ← add_mul, hab, one_mul]
+    · simp
+  refine ⟨hconv, ?_⟩
+  intro x hx y hy a b ha hb hab
+  have hm := hconv hx hy ha hb hab
+  have hc (v : β) :
+      a * columnEntropy (fun u : α => x (u, v)) +
+        b * columnEntropy (fun u : α => y (u, v)) ≤
+      columnEntropy (fun u : α => (a • x + b • y) (u, v)) :=
+    columnEntropy_concave_nonnegative.2 (fun u => hx.1 (u, v))
+      (fun u => hy.1 (u, v)) ha hb hab
+  have hsum := Finset.sum_le_sum (fun v (_ : v ∈ Finset.univ) => hc v)
+  simp only [Finset.sum_add_distrib, ← Finset.mul_sum] at hsum
+  have hMx := information_eq_rowEntropy_sub_columns x
+  have hMy := information_eq_rowEntropy_sub_columns y
+  have hMm := information_eq_rowEntropy_sub_columns (a • x + b • y)
+  simp_rw [hx.2.1] at hMx
+  simp_rw [hy.2.1] at hMy
+  simp_rw [hm.2.1] at hMm
+  rw [hMm, hMx, hMy]
+  have hconst : (a + b) * (∑ u : α, Real.negMulLog (p u)) =
+      ∑ u : α, Real.negMulLog (p u) := by rw [hab, one_mul]
+  simp only [smul_eq_mul]
+  nlinarith only [hsum, hconst]
+
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {α β : Type*} [Fintype α] [Fintype β]
+
+/-- Coordinate distortion is affine on the existing joint-mass carrier. -/
+theorem distortion_affine (d : α → β → ℝ) (x y : α × β → ℝ) (a b : ℝ) :
+    (∑ xy, (a • x + b • y) xy * d xy.1 xy.2) =
+      a * (∑ xy, x xy * d xy.1 xy.2) +
+      b * (∑ xy, y xy * d xy.1 xy.2) := by
+  simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul,
+    Finset.sum_add_distrib, mul_assoc, ← Finset.mul_sum]
+
+/-- Feasibility is convex without assuming an optimizer, information convexity,
+or a duality equation. Zero source rows and output columns remain allowed. -/
+theorem convex_feasible (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ) :
+    Convex ℝ (rateDistortionFeasibleMasses p d D) := by
+  intro x hx y hy a b ha hb hab
+  refine ⟨?_, ?_, ?_⟩
+  · intro xy
+    exact add_nonneg (mul_nonneg ha (hx.1 xy)) (mul_nonneg hb (hy.1 xy))
+  · intro u
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul,
+      Finset.sum_add_distrib, ← Finset.mul_sum]
+    rw [hx.2.1 u, hy.2.1 u, ← add_mul, hab, one_mul]
+  · rw [distortion_affine]
+    calc
+      a * (∑ xy, x xy * d xy.1 xy.2) + b * (∑ xy, y xy * d xy.1 xy.2) ≤
+          a * D + b * D := add_le_add
+            (mul_le_mul_of_nonneg_left hx.2.2 ha)
+            (mul_le_mul_of_nonneg_left hy.2.2 hb)
+      _ = D := by rw [← add_mul, hab, one_mul]
+
+/-- Fixed first marginal with no distortion restriction. -/
+abbrev FixedSourceMasses (p : FiniteLaw α) : Set (α × β → ℝ) :=
+  rateDistortionFeasibleMasses p (fun _ _ => 0) 0
+
+/-- Actual finite information/distortion upper image; zero atoms remain allowed. -/
+noncomputable def rateDistortionUpperImage (p : FiniteLaw α)
+    (d : α → β → ℝ) : Set (ℝ × ℝ) :=
+  {z | ∃ x ∈ FixedSourceMasses (β := β) p,
+    (∑ xy, x xy * d xy.1 xy.2) ≤ z.1 ∧ mutualInformationOfMasses x ≤ z.2}
+
+/-- This explicitly conditional theorem does not establish information convexity. -/
+theorem convex_upperImage_of_information_convex
+    (p : FiniteLaw α) (d : α → β → ℝ)
+    (hMI : ConvexOn ℝ (FixedSourceMasses (β := β) p)
+      (mutualInformationOfMasses : (α × β → ℝ) → ℝ)) :
+    Convex ℝ (rateDistortionUpperImage p d) := by
+  intro z hz v hv a b ha hb hab
+  obtain ⟨x, hx, hxd, hxi⟩ := hz
+  obtain ⟨y, hy, hyd, hyi⟩ := hv
+  refine ⟨a • x + b • y, convex_feasible p (fun _ _ => 0) 0 hx hy ha hb hab, ?_, ?_⟩
+  · rw [distortion_affine]
+    exact add_le_add (mul_le_mul_of_nonneg_left hxd ha)
+      (mul_le_mul_of_nonneg_left hyd hb)
+  · exact (hMI.2 hx hy ha hb hab).trans
+      (add_le_add (mul_le_mul_of_nonneg_left hxi ha)
+        (mul_le_mul_of_nonneg_left hyi hb))
+
+theorem upperImage_upward_distortion (p : FiniteLaw α) (d : α → β → ℝ)
+    (z : ℝ × ℝ) (t : ℝ) (ht : 0 ≤ t)
+    (hz : z ∈ rateDistortionUpperImage p d) :
+    (z.1 + t, z.2) ∈ rateDistortionUpperImage p d := by
+  obtain ⟨x, hx, hxd, hxi⟩ := hz
+  exact ⟨x, hx, hxd.trans (le_add_of_nonneg_right ht), hxi⟩
+
+theorem upperImage_upward_information (p : FiniteLaw α) (d : α → β → ℝ)
+    (z : ℝ × ℝ) (t : ℝ) (ht : 0 ≤ t)
+    (hz : z ∈ rateDistortionUpperImage p d) :
+    (z.1, z.2 + t) ∈ rateDistortionUpperImage p d := by
+  obtain ⟨x, hx, hxd, hxi⟩ := hz
+  exact ⟨x, hx, hxd, hxi.trans (le_add_of_nonneg_right ht)⟩
+/-- The coordinate upper image is exactly the existing finite-law image.
+No information-convexity or optimizer assumption is needed for this equality. -/
+theorem upperImage_iff_joint (p : FiniteLaw α) (d : α → β → ℝ) (z : ℝ × ℝ) :
+    z ∈ rateDistortionUpperImage p d ↔
+      ∃ J : FiniteLaw (α × β), J.fstMarginal = p ∧
+        expectedDistortion J d ≤ z.1 ∧ FEP.FiniteInformation.mutualInformation J ≤ z.2 := by
+  constructor
+  · rintro ⟨x, hx, hxd, hxi⟩
+    let J := rateDistortionLawOfMasses p (fun _ _ => 0) 0 x hx
+    refine ⟨J, (rateDistortionLawOfMasses_feasible p (fun _ _ => 0) 0 x hx).1,
+      hxd, ?_⟩
+    rw [← mutualInformationOfMasses_eq J]
+    exact hxi
+  · rintro ⟨J, hJ, hD, hI⟩
+    have hz : RateDistortionFeasible p (fun _ _ => 0) 0 J :=
+      ⟨hJ, by simp [expectedDistortion]⟩
+    refine ⟨J.mass, rateDistortionFeasible_mass_mem p (fun _ _ => 0) 0 J hz,
+      hD, ?_⟩
+    simpa only [mutualInformationOfMasses_eq] using hI
+
+/-- Unconditional convexity of the actual finite-law upper image, including zero atoms. -/
+theorem convex_actual_upperImage (p : FiniteLaw α) (d : α → β → ℝ) :
+    Convex ℝ (rateDistortionUpperImage p d) :=
+  convex_upperImage_of_information_convex p d
+    (FEP.VariationalDuality.RateDistortionGeometry.convexOn_information_fixed_source p)
+
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {α β : Type*} [Fintype α] [Fintype β]
+
+/-- Any actual fixed-source joint supplies an open quadrant in the upper image. -/
+theorem upperImage_nonempty_interior (p : FiniteLaw α) (d : α → β → ℝ)
+    (J : FiniteLaw (α × β)) (hJ : J.fstMarginal = p) :
+    (interior (rateDistortionUpperImage p d)).Nonempty := by
+  let U : Set (ℝ × ℝ) := {z | expectedDistortion J d < z.1 ∧
+    FEP.FiniteInformation.mutualInformation J < z.2}
+  have hU : IsOpen U :=
+    (isOpen_lt continuous_const continuous_fst).inter
+      (isOpen_lt continuous_const continuous_snd)
+  have hsub : U ⊆ rateDistortionUpperImage p d := by
+    intro z hz
+    exact (upperImage_iff_joint p d z).2 ⟨J, hJ, le_of_lt hz.1, le_of_lt hz.2⟩
+  have hz : (expectedDistortion J d + 1,
+      FEP.FiniteInformation.mutualInformation J + 1) ∈ U := by
+    constructor <;> dsimp <;> linarith
+  refine ⟨(expectedDistortion J d + 1, FEP.FiniteInformation.mutualInformation J + 1), ?_⟩
+  exact interior_mono hsub (by rwa [hU.interior_eq])
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {α β : Type*} [Fintype α] [Fintype β]
+
+/-- An actual feasible information minimizer lies outside the upper-image interior. -/
+theorem optimizer_not_interior (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (J : FiniteLaw (α × β))
+    (hmin : ∀ K, RateDistortionFeasible p d D K →
+      FEP.FiniteInformation.mutualInformation J ≤ FEP.FiniteInformation.mutualInformation K) :
+    (D, FEP.FiniteInformation.mutualInformation J) ∉
+      interior (rateDistortionUpperImage p d) := by
+  intro hint
+  obtain ⟨ε, hε, hball⟩ := Metric.mem_nhds_iff.mp (mem_interior_iff_mem_nhds.mp hint)
+  have hnear : (D, FEP.FiniteInformation.mutualInformation J - ε / 2) ∈
+      Metric.ball (D, FEP.FiniteInformation.mutualInformation J) ε := by
+    rw [Metric.mem_ball, Prod.dist_eq]
+    simp only [dist_self, Real.dist_eq]
+    rw [max_lt_iff]
+    constructor
+    · exact hε
+    · rw [show FEP.FiniteInformation.mutualInformation J - ε / 2 -
+          FEP.FiniteInformation.mutualInformation J = -(ε / 2) by ring,
+        abs_neg, abs_of_pos (by linarith : 0 < ε / 2)]
+      linarith
+  obtain ⟨K, hK, hD, hI⟩ := (upperImage_iff_joint p d _).mp (hball hnear)
+  have h := hmin K ⟨hK, hD⟩
+  linarith
+
+/-- Compactness supplies the actual optimizer and its upper-image boundary point. -/
+theorem exists_optimizer_boundary (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (hfeasible : ∃ J, RateDistortionFeasible p d D J) :
+    ∃ J : FiniteLaw (α × β), RateDistortionFeasible p d D J ∧
+      (D, FEP.FiniteInformation.mutualInformation J) ∈ rateDistortionUpperImage p d ∧
+      (D, FEP.FiniteInformation.mutualInformation J) ∉
+        interior (rateDistortionUpperImage p d) := by
+  obtain ⟨J, hJ, hmin⟩ := rateDistortion_exists_minimizer p d D hfeasible
+  exact ⟨J, hJ, (upperImage_iff_joint p d _).2 ⟨J, hJ.1, hJ.2, le_rfl⟩,
+    optimizer_not_interior p d D J hmin⟩
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+
+/-- A lower-bounded full nonnegative ray cannot have negative slope. -/
+theorem nonneg_of_bounded_below_ray (a c L : ℝ)
+    (h : ∀ t : ℝ, 0 ≤ t → L ≤ c + t * a) : 0 ≤ a := by
+  by_contra hn
+  have ha : a < 0 := lt_of_not_ge hn
+  have hc : L ≤ c := by simpa using h 0 (le_refl 0)
+  have hden : 0 < -a := neg_pos.mpr ha
+  have ht : 0 ≤ (c - L + 1) / (-a) := div_nonneg (by linarith) hden.le
+  have heq := div_mul_cancel₀ (c - L + 1) (ne_of_gt hden)
+  have hb := h ((c - L + 1) / (-a)) ht
+  nlinarith
+
+/-- Normalize an upward-closed lower support using strict feasibility only.
+The support point need not belong to the set; no optimizer is assumed. -/
+theorem normalize_lower_support_coefficients
+    (C : Set (ℝ × ℝ)) (P : ℝ × ℝ) (a b : ℝ)
+    (hupD : ∀ z ∈ C, ∀ t : ℝ, 0 ≤ t → (z.1 + t, z.2) ∈ C)
+    (hupR : ∀ z ∈ C, ∀ t : ℝ, 0 ≤ t → (z.1, z.2 + t) ∈ C)
+    (hsupport : ∀ z ∈ C, a * P.1 + b * P.2 ≤ a * z.1 + b * z.2)
+    (hnonzero : a ≠ 0 ∨ b ≠ 0)
+    (hslater : ∃ z ∈ C, z.1 < P.1) :
+    0 ≤ a ∧ 0 < b ∧ 0 ≤ a / b ∧
+      ∀ z ∈ C, P.2 ≤ z.2 + (a / b) * (z.1 - P.1) := by
+  obtain ⟨z₀, hz₀, hstrict⟩ := hslater
+  have ha : 0 ≤ a := nonneg_of_bounded_below_ray a
+      (a * z₀.1 + b * z₀.2) (a * P.1 + b * P.2) (by
+    intro t ht
+    have hs := hsupport (z₀.1 + t, z₀.2) (hupD z₀ hz₀ t ht)
+    dsimp at hs
+    nlinarith)
+  have hb : 0 ≤ b := nonneg_of_bounded_below_ray b
+      (a * z₀.1 + b * z₀.2) (a * P.1 + b * P.2) (by
+    intro t ht
+    have hs := hsupport (z₀.1, z₀.2 + t) (hupR z₀ hz₀ t ht)
+    dsimp at hs
+    nlinarith)
+  have hbpos : 0 < b := by
+    by_contra hn
+    have hbzero : b = 0 := le_antisymm (le_of_not_gt hn) hb
+    have hane : a ≠ 0 := hnonzero.resolve_right (by simp [hbzero])
+    have hapos : 0 < a := lt_of_le_of_ne ha (Ne.symm hane)
+    have hs := hsupport z₀ hz₀
+    have hm := mul_lt_mul_of_pos_left hstrict hapos
+    simp only [hbzero, zero_mul, add_zero] at hs
+    linarith
+  refine ⟨ha, hbpos, div_nonneg ha hbpos.le, ?_⟩
+  intro z hz
+  have hs := hsupport z hz
+  apply (mul_le_mul_iff_of_pos_right hbpos).mp
+  have heq : (a / b) * b = a := div_mul_cancel₀ a (ne_of_gt hbpos)
+  calc
+    P.2 * b ≤ z.2 * b + a * (z.1 - P.1) := by nlinarith
+    _ = (z.2 + (a / b) * (z.1 - P.1)) * b := by
+      rw [add_mul]
+      congr 1
+      calc
+        a * (z.1 - P.1) = ((a / b) * b) * (z.1 - P.1) := by rw [heq]
+        _ = (a / b) * (z.1 - P.1) * b := by ring
+
+def UpD (C : Set (ℝ × ℝ)) : Prop := ∀ z ∈ C, ∀ t : ℝ, 0 ≤ t → (z.1 + t, z.2) ∈ C
+def UpR (C : Set (ℝ × ℝ)) : Prop := ∀ z ∈ C, ∀ t : ℝ, 0 ≤ t → (z.1, z.2 + t) ∈ C
+def Lower (C : Set (ℝ × ℝ)) (P : ℝ × ℝ) (a b : ℝ) : Prop :=
+  ∀ z ∈ C, a * P.1 + b * P.2 ≤ a * z.1 + b * z.2
+def Slater (C : Set (ℝ × ℝ)) (P : ℝ × ℝ) : Prop := ∃ z ∈ C, z.1 < P.1
+/-- The actual pinned separation API supplies a nonzero lower supporting normal.
+The caller supplies its own convexity/interior proof. -/
+theorem nonzero_lower_support (C : Set (ℝ × ℝ)) (P : ℝ × ℝ)
+    (hC : Convex ℝ C) (hint : (interior C).Nonempty)
+    (hboundary : P ∉ interior C) :
+    ∃ f : StrongDual ℝ (ℝ × ℝ), f ≠ 0 ∧ ∀ z ∈ C, f P ≤ f z := by
+  have hdis : Disjoint (interior C) ({P} : Set (ℝ × ℝ)) := by
+    simpa only [Set.disjoint_singleton_right] using hboundary
+  obtain ⟨f, u, hf, hCs, hp⟩ := geometric_hahn_banach_of_nonempty_interior
+    hC (convex_singleton P) hdis hint (Set.singleton_nonempty P)
+  refine ⟨-f, neg_ne_zero.mpr hf, ?_⟩
+  intro z hz
+  have hleft := hCs z hz
+  have hright := hp P (by simp)
+  change -f P ≤ -f z
+  linarith
+
+/-- Coordinate coefficients are derived from the real continuous linear map. -/
+theorem coefficient_decomposition (f : StrongDual ℝ (ℝ × ℝ)) (d r : ℝ) :
+    f (d, r) = d * f (1, 0) + r * f (0, 1) := by
+  have h : (d, r) = d • ((1, 0) : ℝ × ℝ) + r • ((0, 1) : ℝ × ℝ) := by
+    ext <;> simp
+  rw [h, map_add, map_smul, map_smul]
+  simp only [smul_eq_mul]
+
+/-- Nonzero functional support normalizes without attainment or P-membership. -/
+theorem normalize_lower_support_functional
+    (C : Set (ℝ × ℝ)) (P : ℝ × ℝ) (f : StrongDual ℝ (ℝ × ℝ))
+    (hupD : UpD C) (hupR : UpR C)
+    (hsupport : ∀ z ∈ C, f P ≤ f z) (hf : f ≠ 0) (hslater : Slater C P) :
+    0 ≤ f (1,0) ∧ 0 < f (0,1) ∧ 0 ≤ f (1,0) / f (0,1) ∧
+      ∀ z ∈ C, P.2 ≤ z.2 + (f (1,0) / f (0,1)) * (z.1 - P.1) := by
+  have expand (z : ℝ × ℝ) : f z = f (1,0) * z.1 + f (0,1) * z.2 := by
+    simpa only [mul_comm] using coefficient_decomposition f z.1 z.2
+  have hnonzero : f (1,0) ≠ 0 ∨ f (0,1) ≠ 0 := by
+    by_contra hn
+    have ha : f (1,0) = 0 := by tauto
+    have hb : f (0,1) = 0 := by tauto
+    apply hf
+    apply ContinuousLinearMap.ext
+    intro z
+    change f z = 0
+    rw [expand, ha, hb]
+    ring
+  apply normalize_lower_support_coefficients C P (f (1,0)) (f (0,1)) hupD hupR
+  · intro z hz
+    have hs := hsupport z hz
+    rw [expand P, expand z] at hs
+    exact hs
+  · exact hnonzero
+  · exact hslater
+
+/-- Separation plus strict feasibility yields a nonnegative scalar support.
+Actual rate-distortion geometry is deliberately a caller obligation. -/
+theorem scalar_support_from_geometry
+    (C : Set (ℝ × ℝ)) (P : ℝ × ℝ)
+    (hC : Convex ℝ C) (hint : (interior C).Nonempty)
+    (hboundary : P ∉ interior C) (hupD : UpD C) (hupR : UpR C)
+    (hslater : Slater C P) :
+    ∃ lam : ℝ, 0 ≤ lam ∧ ∀ z ∈ C, P.2 ≤ z.2 + lam * (z.1 - P.1) := by
+  obtain ⟨f, hf, hs⟩ := nonzero_lower_support C P hC hint hboundary
+  obtain ⟨_, _, hlam, hbound⟩ := normalize_lower_support_functional C P f hupD hupR hs hf hslater
+  exact ⟨f (1,0) / f (0,1), hlam, hbound⟩
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+
+
+
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {α β : Type*} [Fintype α] [Fintype β]
+
+/-- Strict actual feasibility produces a nonnegative Lagrange support multiplier. -/
+theorem actual_slater_support (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (J : FiniteLaw (α × β))
+    (hmin : ∀ K, RateDistortionFeasible p d D K →
+      FEP.FiniteInformation.mutualInformation J ≤ FEP.FiniteInformation.mutualInformation K)
+    (hslater : ∃ K : FiniteLaw (α × β), K.fstMarginal = p ∧ expectedDistortion K d < D) :
+    ∃ lam : ℝ, 0 ≤ lam ∧ ∀ K : FiniteLaw (α × β), K.fstMarginal = p →
+      FEP.FiniteInformation.mutualInformation J ≤
+        FEP.FiniteInformation.mutualInformation K + lam * (expectedDistortion K d - D) := by
+  obtain ⟨K₀, hK₀, hstrict⟩ := hslater
+  obtain ⟨lam, hlam, hbound⟩ := FEP.VariationalDuality.RateDistortionGeometry.scalar_support_from_geometry
+    (rateDistortionUpperImage p d) (D, FEP.FiniteInformation.mutualInformation J)
+    (convex_actual_upperImage p d) (upperImage_nonempty_interior p d K₀ hK₀)
+    (optimizer_not_interior p d D J hmin)
+    (fun z hz t ht => upperImage_upward_distortion p d z t ht hz)
+    (fun z hz t ht => upperImage_upward_information p d z t ht hz)
+    ⟨(expectedDistortion K₀ d, FEP.FiniteInformation.mutualInformation K₀),
+      (upperImage_iff_joint p d _).2 ⟨K₀, hK₀, le_rfl, le_rfl⟩, hstrict⟩
+  refine ⟨lam, hlam, ?_⟩
+  intro K hK
+  exact hbound (expectedDistortion K d, FEP.FiniteInformation.mutualInformation K)
+    ((upperImage_iff_joint p d _).2 ⟨K, hK, le_rfl, le_rfl⟩)
+
+/-- Actual finite-law strong duality under strict feasibility; both extrema are
+constructed from compactness and separation, with zero atoms allowed. -/
+theorem exists_actual_strong_duality (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (hd : ∀ x y, 0 ≤ d x y)
+    (hslater : ∃ K : FiniteLaw (α × β), K.fstMarginal = p ∧ expectedDistortion K d < D) :
+    ∃ J : FiniteLaw (α × β), RateDistortionFeasible p d D J ∧
+      (∀ K, RateDistortionFeasible p d D K →
+        FEP.FiniteInformation.mutualInformation J ≤ FEP.FiniteInformation.mutualInformation K) ∧
+      ∃ lam : ℝ, 0 ≤ lam ∧
+        rateDistortionDualValue p d D lam = FEP.FiniteInformation.mutualInformation J := by
+  have hfeasible : ∃ K, RateDistortionFeasible p d D K := by
+    obtain ⟨K,hK,hD⟩ := hslater
+    exact ⟨K,hK,le_of_lt hD⟩
+  obtain ⟨J,hJ,hmin⟩ := rateDistortion_exists_minimizer p d D hfeasible
+  obtain ⟨lam,hlam,hbound⟩ := actual_slater_support p d D J hmin hslater
+  refine ⟨J,hJ,hmin,lam,hlam,le_antisymm
+    (rateDistortionDual_le_feasible_information p d D lam hd hlam J hJ) ?_⟩
+  unfold rateDistortionDualValue
+  apply le_csInf
+  · exact ⟨rateDistortionLagrangian J d lam - lam * D,J,hJ.1,rfl⟩
+  · rintro value ⟨K,hK,rfl⟩
+    have h := hbound K hK
+    unfold rateDistortionLagrangian
+    nlinarith only [h]
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {α β : Type*} [Fintype α] [Fintype β]
+
+/-- Strong duality also gives the primal infimum, dual supremum and slackness. -/
+theorem actual_primal_dual_extrema (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (hd : ∀ x y, 0 ≤ d x y)
+    (hslater : ∃ K : FiniteLaw (α × β), K.fstMarginal = p ∧ expectedDistortion K d < D) :
+    ∃ J : FiniteLaw (α × β), RateDistortionFeasible p d D J ∧
+      ∃ lam : ℝ, 0 ≤ lam ∧
+        rateDistortionDualValue p d D lam = FEP.FiniteInformation.mutualInformation J ∧
+        lam * (expectedDistortion J d - D) = 0 ∧
+        sInf {v : ℝ | ∃ K, RateDistortionFeasible p d D K ∧
+          v = FEP.FiniteInformation.mutualInformation K} =
+            FEP.FiniteInformation.mutualInformation J ∧
+        sSup {v : ℝ | ∃ t : ℝ, 0 ≤ t ∧ v = rateDistortionDualValue p d D t} =
+          FEP.FiniteInformation.mutualInformation J := by
+  obtain ⟨J,hJ,hmin,lam,hlam,heq⟩ := exists_actual_strong_duality p d D hd hslater
+  have hbounded := rateDistortionDual_bddBelow p d D lam hd hlam
+  have hdualJ : rateDistortionDualValue p d D lam ≤
+      rateDistortionLagrangian J d lam - lam * D :=
+    csInf_le hbounded ⟨J,hJ.1,rfl⟩
+  have hslack : lam * (expectedDistortion J d - D) = 0 := by
+    have hnonpos := mul_nonpos_of_nonneg_of_nonpos hlam (sub_nonpos.mpr hJ.2)
+    unfold rateDistortionLagrangian at hdualJ
+    rw [heq] at hdualJ
+    nlinarith only [hdualJ,hnonpos]
+  refine ⟨J,hJ,lam,hlam,heq,hslack,?_,?_⟩
+  · apply le_antisymm
+    · apply csInf_le
+      · exact ⟨0,by rintro v ⟨K,_,rfl⟩; exact FEP.FiniteInformation.mutualInformation_nonneg K⟩
+      · exact ⟨J,hJ,rfl⟩
+    · apply le_csInf
+      · exact ⟨FEP.FiniteInformation.mutualInformation J,J,hJ,rfl⟩
+      · rintro v ⟨K,hK,rfl⟩
+        exact hmin K hK
+  · apply le_antisymm
+    · apply csSup_le
+      · exact ⟨rateDistortionDualValue p d D lam,lam,hlam,rfl⟩
+      · rintro v ⟨t,ht,rfl⟩
+        exact rateDistortionDual_le_feasible_information p d D t hd ht J hJ
+    · rw [← heq]
+      apply le_csSup
+      · refine ⟨FEP.FiniteInformation.mutualInformation J,?_⟩
+        rintro v ⟨t,ht,rfl⟩
+        exact rateDistortionDual_le_feasible_information p d D t hd ht J hJ
+      · exact ⟨lam,hlam,rfl⟩
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+/-- The existing informative fair Boolean quarter-budget problem satisfies
+actual Slater and has a positive primal optimum attained by the dual. -/
+theorem boolQuarterBudget_actual_dual_optimizer :
+    ∃ J : FiniteLaw (Bool × Bool),
+      RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion (1 / 4) J ∧
+      0 < FEP.FiniteInformation.mutualInformation J ∧
+      ∃ lam : ℝ, 0 ≤ lam ∧
+        rateDistortionDualValue FiniteLaw.uniform boolHammingDistortion (1 / 4) lam =
+          FEP.FiniteInformation.mutualInformation J ∧
+        lam * (expectedDistortion J boolHammingDistortion - 1 / 4) = 0 := by
+  have hd : ∀ x y : Bool, 0 ≤ boolHammingDistortion x y := by
+    intro x y
+    simp only [boolHammingDistortion]
+    split <;> norm_num
+  have hs : ∃ K : FiniteLaw (Bool × Bool), K.fstMarginal = FiniteLaw.uniform ∧
+      expectedDistortion K boolHammingDistortion < 1 / 4 := by
+    refine ⟨boolZeroDistortionJoint,boolZeroDistortionJoint_feasible.1,?_⟩
+    have h := boolZeroDistortionJoint_feasible.2
+    linarith
+  obtain ⟨J,hJ,lam,hlam,heq,hslack,_,_⟩ := actual_primal_dual_extrema
+    (FiniteLaw.uniform : FiniteLaw Bool) boolHammingDistortion (1 / 4) hd hs
+  exact ⟨J,hJ,boolFeasible_information_pos (1 / 4) (by norm_num) J hJ,
+    lam,hlam,heq,hslack⟩
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+/-- Zero-distortion zero-budget is a real no-Slater boundary where the
+independent law and zero multiplier still attain equal zero values. -/
+theorem zeroBudget_zeroDistortion_control :
+    let p : FiniteLaw Bool := FiniteLaw.uniform
+    let J := p.product (FiniteLaw.pointMass false)
+    RateDistortionFeasible p (fun _ _ : Bool => (0 : ℝ)) 0 J ∧
+      FEP.FiniteInformation.mutualInformation J = 0 ∧
+      rateDistortionDualValue p (fun _ _ : Bool => (0 : ℝ)) 0 0 =
+        FEP.FiniteInformation.mutualInformation J ∧
+      ¬ (∃ K : FiniteLaw (Bool × Bool), K.fstMarginal = p ∧
+        expectedDistortion K (fun _ _ => 0) < 0) := by
+  dsimp only
+  refine ⟨⟨FiniteLaw.product_fstMarginal _ _,by simp [expectedDistortion]⟩,
+    FEP.FiniteInformation.mutualInformation_product_eq_zero _ _,?_,?_⟩
+  · rw [rateDistortionDual_zeroMultiplier,
+      FEP.FiniteInformation.mutualInformation_product_eq_zero]
+  · simp [expectedDistortion]
+
+theorem negativeBudget_infeasible_control :
+    ¬ ∃ J : FiniteLaw (Bool × Bool),
+      RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion (-1) J :=
+  rateDistortion_infeasible_of_negativeBudget _ _ _
+    boolHammingDistortion_nonneg (by norm_num)
+
+theorem nonunique_minimizer_control :
+    ∃ left right : FiniteLaw (Bool × Bool), left ≠ right ∧
+      (RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion (1 / 2) left ∧
+        ∀ K, RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion (1 / 2) K →
+          FEP.FiniteInformation.mutualInformation left ≤ FEP.FiniteInformation.mutualInformation K) ∧
+      (RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion (1 / 2) right ∧
+        ∀ K, RateDistortionFeasible FiniteLaw.uniform boolHammingDistortion (1 / 2) K →
+          FEP.FiniteInformation.mutualInformation right ≤ FEP.FiniteInformation.mutualInformation K) :=
+  boolHalfBudget_distinct_minimizers
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+variable {α β : Type*} [Fintype α] [Fintype β]
+/-- Mutual information is convex over the actual fixed-source finite-law mass carrier. -/
+theorem mutualInformationOfMasses_convexOn_fixedSource (p : FiniteLaw α) :
+    ConvexOn ℝ (rateDistortionFeasibleMasses (β := β) p (fun _ _ => 0) 0)
+      (mutualInformationOfMasses : (α × β → ℝ) → ℝ) :=
+  RateDistortionGeometry.convexOn_information_fixed_source p
+end FEP.VariationalDuality
+
+
+namespace FEP.VariationalDuality
+variable {α β : Type*} [Fintype α] [Fintype β]
+theorem rateDistortion_exists_slater_dual_optimizer (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (hd : ∀ x y, 0 ≤ d x y)
+    (hslater : ∃ K : FiniteLaw (α × β), K.fstMarginal = p ∧ expectedDistortion K d < D) :
+    ∃ J : FiniteLaw (α × β), RateDistortionFeasible p d D J ∧
+      (∀ K, RateDistortionFeasible p d D K →
+        FEP.FiniteInformation.mutualInformation J ≤ FEP.FiniteInformation.mutualInformation K) ∧
+      ∃ lam : ℝ, 0 ≤ lam ∧
+        rateDistortionDualValue p d D lam = FEP.FiniteInformation.mutualInformation J :=
+  RateDistortionGeometry.exists_actual_strong_duality p d D hd hslater
+
+theorem rateDistortion_primal_dual_extrema (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (hd : ∀ x y, 0 ≤ d x y)
+    (hslater : ∃ K : FiniteLaw (α × β), K.fstMarginal = p ∧ expectedDistortion K d < D) :
+    ∃ J : FiniteLaw (α × β), RateDistortionFeasible p d D J ∧
+      ∃ lam : ℝ, 0 ≤ lam ∧
+        rateDistortionDualValue p d D lam = FEP.FiniteInformation.mutualInformation J ∧
+        lam * (expectedDistortion J d - D) = 0 ∧
+        sInf {v : ℝ | ∃ K, RateDistortionFeasible p d D K ∧
+          v = FEP.FiniteInformation.mutualInformation K} =
+            FEP.FiniteInformation.mutualInformation J ∧
+        sSup {v : ℝ | ∃ t : ℝ, 0 ≤ t ∧ v = rateDistortionDualValue p d D t} =
+          FEP.FiniteInformation.mutualInformation J :=
+  RateDistortionGeometry.actual_primal_dual_extrema p d D hd hslater
+end FEP.VariationalDuality
+
+open scoped Pointwise
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {α β : Type*} [Fintype α] [Fintype β]
+/-- Compact actual information/distortion image plus the closed nonnegative
+quadrant makes the actual upper image closed, including feasible endpoints. -/
+theorem upperImage_closed (p : FiniteLaw α) (d : α → β → ℝ) :
+    IsClosed (rateDistortionUpperImage p d) := by
+  let F : (α × β → ℝ) → ℝ × ℝ := fun x =>
+    (∑ xy, x xy * d xy.1 xy.2, mutualInformationOfMasses x)
+  let Q : Set (ℝ × ℝ) := {z | 0 ≤ z.1 ∧ 0 ≤ z.2}
+  have hF : Continuous F := by
+    apply Continuous.prodMk
+    · apply continuous_finsetSum
+      intro xy _
+      exact (continuous_apply xy).mul continuous_const
+    · exact continuous_mutualInformationOfMasses
+  have hK := (isCompact_rateDistortionFeasibleMasses (β := β) p (fun _ _ => 0) 0).image hF
+  have hQ : IsClosed Q :=
+    (isClosed_le continuous_const continuous_fst).inter
+      (isClosed_le continuous_const continuous_snd)
+  have heq : rateDistortionUpperImage p d = F '' FixedSourceMasses (β := β) p + Q := by
+    ext z
+    constructor
+    · rintro ⟨x,hx,hD,hI⟩
+      refine ⟨F x,⟨x,hx,rfl⟩,z-F x,?_,?_⟩
+      · exact ⟨sub_nonneg.mpr hD,sub_nonneg.mpr hI⟩
+      · exact add_sub_cancel _ _
+    · rintro ⟨u,⟨x,hx,rfl⟩,q,hq,rfl⟩
+      refine ⟨x,hx,?_,?_⟩
+      · exact le_add_of_nonneg_right hq.1
+      · exact le_add_of_nonneg_right hq.2
+  rw [heq]
+  exact hQ.add_left_of_isCompact hK
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {α β : Type*} [Fintype α] [Fintype β]
+/-- Strict separation below the primal optimum normalizes without Slater:
+a same-budget feasible point forces the objective coefficient positive. -/
+theorem epsilon_dual_lower_bound (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (J : FiniteLaw (α × β)) (hJ : RateDistortionFeasible p d D J)
+    (hmin : ∀ K, RateDistortionFeasible p d D K →
+      FEP.FiniteInformation.mutualInformation J ≤ FEP.FiniteInformation.mutualInformation K)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ lam : ℝ, 0 ≤ lam ∧
+      FEP.FiniteInformation.mutualInformation J - ε ≤ rateDistortionDualValue p d D lam := by
+  let R := FEP.FiniteInformation.mutualInformation J
+  let P : ℝ × ℝ := (D,R-ε)
+  have hnot : P ∉ rateDistortionUpperImage p d := by
+    intro hP
+    obtain ⟨K,hK,hD,hI⟩ := (upperImage_iff_joint p d P).mp hP
+    have hm := hmin K ⟨hK,hD⟩
+    dsimp [P,R] at hI
+    linarith
+  obtain ⟨f,u,hP,hC⟩ := geometric_hahn_banach_point_closed
+    (convex_actual_upperImage p d) (upperImage_closed p d) hnot
+  let a := f (1,0)
+  let b := f (0,1)
+  have expand (z : ℝ × ℝ) : f z = a*z.1+b*z.2 := by
+    simpa only [a,b,mul_comm] using
+      FEP.VariationalDuality.RateDistortionGeometry.coefficient_decomposition f z.1 z.2
+  have hZ : (D,R) ∈ rateDistortionUpperImage p d :=
+    (upperImage_iff_joint p d _).2 ⟨J,hJ.1,hJ.2,le_rfl⟩
+  have hgap := hP.trans (hC (D,R) hZ)
+  rw [expand P,expand (D,R)] at hgap
+  have hbε : 0 < b*ε := by dsimp [P] at hgap; nlinarith only [hgap]
+  have hb : 0 < b := (mul_pos_iff_of_pos_right hε).mp hbε
+  have ha : 0 ≤ a := FEP.VariationalDuality.RateDistortionGeometry.nonneg_of_bounded_below_ray a
+    (f (D,R)) (f P) (by
+      intro t ht
+      have hh := (hP.trans (hC (D+t,R)
+        (upperImage_upward_distortion p d (D,R) t ht hZ))).le
+      rw [expand P,expand (D+t,R)] at hh
+      rw [expand (D,R),expand P]
+      dsimp [P] at *
+      nlinarith only [hh])
+  let lam := a/b
+  have hbound (K : FiniteLaw (α × β)) (hK : K.fstMarginal = p) :
+      R-ε ≤ FEP.FiniteInformation.mutualInformation K + lam*(expectedDistortion K d-D) := by
+    have hs := (hP.trans (hC (expectedDistortion K d,FEP.FiniteInformation.mutualInformation K)
+      ((upperImage_iff_joint p d _).2 ⟨K,hK,le_rfl,le_rfl⟩))).le
+    rw [expand P,expand _] at hs
+    dsimp [P] at hs
+    apply (mul_le_mul_iff_of_pos_right hb).mp
+    rw [add_mul]
+    have heq : lam*(expectedDistortion K d-D)*b = a*(expectedDistortion K d-D) := by
+      calc
+        lam*(expectedDistortion K d-D)*b = (a/b*b)*(expectedDistortion K d-D) := by dsimp [lam]; ring
+        _ = a*(expectedDistortion K d-D) := by rw [div_mul_cancel₀ a (ne_of_gt hb)]
+    rw [heq]
+    nlinarith only [hs]
+  refine ⟨lam,div_nonneg ha hb.le,?_⟩
+  unfold rateDistortionDualValue
+  apply le_csInf
+  · exact ⟨rateDistortionLagrangian J d lam-lam*D,J,hJ.1,rfl⟩
+  · rintro value ⟨K,hK,rfl⟩
+    have hs := hbound K hK
+    unfold rateDistortionLagrangian
+    nlinarith only [hs]
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+variable {α β : Type*} [Fintype α] [Fintype β]
+/-- Every nonempty finite nonnegative-distortion problem has equal attained
+primal minimum and dual supremum. A finite maximizing multiplier is not asserted. -/
+theorem exists_all_feasible_dual_supremum (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (hd : ∀ x y, 0 ≤ d x y)
+    (hfeasible : ∃ K, RateDistortionFeasible p d D K) :
+    ∃ J : FiniteLaw (α × β), RateDistortionFeasible p d D J ∧
+      (∀ K, RateDistortionFeasible p d D K →
+        FEP.FiniteInformation.mutualInformation J ≤ FEP.FiniteInformation.mutualInformation K) ∧
+      sInf {v : ℝ | ∃ K, RateDistortionFeasible p d D K ∧
+        v = FEP.FiniteInformation.mutualInformation K} =
+          FEP.FiniteInformation.mutualInformation J ∧
+      sSup {v : ℝ | ∃ t : ℝ, 0 ≤ t ∧ v = rateDistortionDualValue p d D t} =
+        FEP.FiniteInformation.mutualInformation J := by
+  obtain ⟨J,hJ,hmin⟩ := rateDistortion_exists_minimizer p d D hfeasible
+  let V : Set ℝ := {v | ∃ t : ℝ, 0 ≤ t ∧ v = rateDistortionDualValue p d D t}
+  have hV : V.Nonempty := ⟨rateDistortionDualValue p d D 0,0,le_rfl,rfl⟩
+  have hb : BddAbove V := by
+    refine ⟨FEP.FiniteInformation.mutualInformation J,?_⟩
+    rintro v ⟨t,ht,rfl⟩
+    exact rateDistortionDual_le_feasible_information p d D t hd ht J hJ
+  refine ⟨J,hJ,hmin,?_,?_⟩
+  · apply le_antisymm
+    · apply csInf_le
+      · exact ⟨0,by rintro v ⟨K,_,rfl⟩; exact FEP.FiniteInformation.mutualInformation_nonneg K⟩
+      · exact ⟨J,hJ,rfl⟩
+    · apply le_csInf
+      · exact ⟨FEP.FiniteInformation.mutualInformation J,J,hJ,rfl⟩
+      · rintro v ⟨K,hK,rfl⟩
+        exact hmin K hK
+  · change sSup V = FEP.FiniteInformation.mutualInformation J
+    apply le_antisymm
+    · apply csSup_le hV
+      rintro v ⟨t,ht,rfl⟩
+      exact rateDistortionDual_le_feasible_information p d D t hd ht J hJ
+    · by_contra h
+      have hlt : sSup V < FEP.FiniteInformation.mutualInformation J := lt_of_not_ge h
+      let ε := (FEP.FiniteInformation.mutualInformation J-sSup V)/2
+      have hε : 0 < ε := by dsimp [ε]; linarith
+      obtain ⟨lam,hlam,hlo⟩ := epsilon_dual_lower_bound p d D J hJ hmin ε hε
+      have hhi : rateDistortionDualValue p d D lam ≤ sSup V :=
+        le_csSup hb ⟨lam,hlam,rfl⟩
+      dsimp [ε] at hlo
+      linarith
+
+/-- The actual fair-Boolean zero-budget boundary has dual supremum log2;
+no Slater condition or finite dual optimizer is introduced. -/
+theorem boolZeroBudget_dual_supremum :
+    sSup {v : ℝ | ∃ t : ℝ, 0 ≤ t ∧
+      v = rateDistortionDualValue (FiniteLaw.uniform : FiniteLaw Bool)
+        boolHammingDistortion 0 t} = Real.log 2 := by
+  obtain ⟨J,hJ,_,_,hSup⟩ := exists_all_feasible_dual_supremum
+    (FiniteLaw.uniform : FiniteLaw Bool) boolHammingDistortion 0
+    boolHammingDistortion_nonneg ⟨boolZeroDistortionJoint,boolZeroDistortionJoint_feasible⟩
+  exact hSup.trans (FairBoolean.boolean_zero_exact J hJ).2
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+namespace RateDistortionGeometry
+/-- General finite dual-supremum equality recovers the complete maintained
+fair-Boolean natural-log rate curve, including both closed endpoints. -/
+theorem boolClosedBudget_dual_supremum (D : ℝ) (h0 : 0 ≤ D) (hhalf : D ≤ (1:ℝ)/2) :
+    sSup {v : ℝ | ∃ t : ℝ, 0 ≤ t ∧
+      v = rateDistortionDualValue (FiniteLaw.uniform : FiniteLaw Bool)
+        boolHammingDistortion D t} = Real.log 2 - Real.binEntropy D := by
+  obtain ⟨K,hK,hvalue,hKmin⟩ := FairBoolean.boolean_closed_exact_minimum D h0 hhalf
+  obtain ⟨J,hJ,hJmin,_,hSup⟩ := exists_all_feasible_dual_supremum
+    (FiniteLaw.uniform : FiniteLaw Bool) boolHammingDistortion D
+    boolHammingDistortion_nonneg ⟨K,hK⟩
+  have heq : FEP.FiniteInformation.mutualInformation J =
+      FEP.FiniteInformation.mutualInformation K :=
+    le_antisymm (hJmin K hK) (hKmin J hJ)
+  exact hSup.trans (heq.trans hvalue)
+end RateDistortionGeometry
+end FEP.VariationalDuality
+
+namespace FEP.VariationalDuality
+variable {α β : Type*} [Fintype α] [Fintype β]
+theorem rateDistortion_exists_minimizer_and_dual_supremum (p : FiniteLaw α) (d : α → β → ℝ) (D : ℝ)
+    (hd : ∀ x y, 0 ≤ d x y)
+    (hfeasible : ∃ K, RateDistortionFeasible p d D K) :
+    ∃ J : FiniteLaw (α × β), RateDistortionFeasible p d D J ∧
+      (∀ K, RateDistortionFeasible p d D K →
+        FEP.FiniteInformation.mutualInformation J ≤ FEP.FiniteInformation.mutualInformation K) ∧
+      sInf {v : ℝ | ∃ K, RateDistortionFeasible p d D K ∧
+        v = FEP.FiniteInformation.mutualInformation K} =
+          FEP.FiniteInformation.mutualInformation J ∧
+      sSup {v : ℝ | ∃ t : ℝ, 0 ≤ t ∧ v = rateDistortionDualValue p d D t} =
+        FEP.FiniteInformation.mutualInformation J :=
+  RateDistortionGeometry.exists_all_feasible_dual_supremum p d D hd hfeasible
 end FEP.VariationalDuality

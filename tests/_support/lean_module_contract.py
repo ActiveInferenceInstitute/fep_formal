@@ -125,6 +125,8 @@ def reverse_information_entries(
 
 def restore_information_owner(source: str, owner: str, project_root: Path) -> str:
     """Require every current byte, remove approved additions, and hash its preimage."""
+    if owner == "src/fep_lean/formal/variational_duality.lean":
+        source = restore_finite_rate_distortion_owner(source, project_root)
     change = exact_information_review(project_root)["owner_changes"][owner]
     assert hashlib.sha256(source.encode()).hexdigest() == change["reviewed_sha256"]
     for addition in [*change["added_imports"], change["added_block"]]:
@@ -132,3 +134,52 @@ def restore_information_owner(source: str, owner: str, project_root: Path) -> st
         source = source.replace(addition, "", 1)
     assert hashlib.sha256(source.encode()).hexdigest() == change["released_sha256"]
     return source
+
+
+_FINITE_RATE_DISTORTION_REVIEW_SHA256 = (
+    "72203e995cfa96d7726b244d950f8a1bebb34a2879754d67a59170d948cc0a22"
+)
+
+
+def finite_rate_distortion_review(project_root: Path) -> dict:
+    raw = (
+        project_root / "tests/fixtures/finite_rate_distortion_review_20261022.json"
+    ).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _FINITE_RATE_DISTORTION_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1
+    assert len(review["new_theorem_owners"]) == 39
+    assert len(review["capability_changes"]) == 1
+    return review
+
+
+def reverse_finite_rate_distortion_capabilities(
+    rows: list[dict], project_root: Path
+) -> list[dict]:
+    changes = finite_rate_distortion_review(project_root)["capability_changes"]
+    restored = [dict(row) for row in rows]
+    for change in changes:
+        indices = [i for i, row in enumerate(restored) if row.get("id") == change["id"]]
+        assert len(indices) == 1
+        index = indices[0]
+        assert restored[index] == change["after"]
+        restored[index] = dict(change["before"])
+    return restored
+
+
+def restore_finite_rate_distortion_owner(source: str, project_root: Path) -> str:
+    review = finite_rate_distortion_review(project_root)
+    for addition in [review["added_import"], review["added_block"]]:
+        assert source.count(addition) == 1
+        source = source.replace(addition, "", 1)
+    assert hashlib.sha256(source.encode()).hexdigest() == review["prior_owner_sha256"]
+    return source
+
+
+def finite_rate_distortion_theorem_extension(
+    declarations: dict, project_root: Path
+) -> set[str]:
+    owners = finite_rate_distortion_review(project_root)["new_theorem_owners"]
+    assert owners.keys() <= declarations.keys()
+    assert {name: declarations[name]["source_owner"] for name in owners} == owners
+    return set(owners)

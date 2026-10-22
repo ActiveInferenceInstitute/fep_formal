@@ -1,5 +1,19 @@
 ## Unreleased
 
+- Reconcile active research guidance with accepted operator, readiness, query
+  and fair-Boolean deliveries; point the accepted software baseline at main
+  `a53456c` and keep the general finite-duality candidate and all outstanding
+  execution/study/provider scopes separately qualified. This guidance cleanup
+  supplies no new mathematical or execution acceptance.
+
+- Derive the primal minimum and dual supremum equality for every feasible finite
+  nonnegative-distortion problem, including feasible endpoints. Actual strict
+  feasibility separately yields a finite dual optimizer and complementary
+  slackness. Fixed-source convexity includes zero atoms; the full fair-Boolean
+  curve is recovered without assuming optimizer or equality certificates.
+  Maintained qualification for [#76](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76)
+  remains pending; no all-budget finite multiplier or uniqueness is claimed.
+
 - Add an explicitly selected CI native-producer shadow: the existing serial
   catalogue node runs the strict operation and validates its receipt; the
   ordinary strict CLI still runs and supplies publication evidence. Compare

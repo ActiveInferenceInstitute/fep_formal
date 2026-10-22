@@ -15,7 +15,10 @@ from fep_lean.formal.manifest import (
     formal_resource_paths,
 )
 from fep_lean.lean_source import lean_code_without_comments
-from tests._support.lean_module_contract import exact_information_review
+from tests._support.lean_module_contract import (
+    exact_information_review,
+    finite_rate_distortion_theorem_extension,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -97,6 +100,17 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     assert {name: owners[name] for name in fast_relaxation_limits} == {
         name: "FepSketches.efe_time_scale_separation" for name in fast_relaxation_limits
     }
+    finite_rate_distortion = finite_rate_distortion_theorem_extension(
+        {
+            name: {
+                "source_owner": "src/fep_lean/formal/"
+                + module.removeprefix("FepSketches.").replace(".", "/")
+                + ".lean"
+            }
+            for name, module in owners.items()
+        },
+        PROJECT_ROOT,
+    )
     assert Counter(
         owner
         for name, owner in owners.items()
@@ -104,6 +118,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         and name not in information_bridges
         and name not in finite_weight_kl_helpers
         and name not in fast_relaxation_limits
+        and name not in finite_rate_distortion
     ) == {
         "FepSketches.finite_probability": 19,
         "FepSketches.finite_information": 31,
@@ -411,3 +426,25 @@ def test_formal_module_dependency_projection_is_acyclic_and_separate() -> None:
     assert coverage["relation_counts"] == dict(
         sorted(Counter(edge.kind.value for edge in graph.edges).items())
     )
+
+
+def test_finite_rate_distortion_public_query_separates_feasibility_and_slater() -> None:
+    from fep_lean.methods import build_mathematical_positioning
+
+    declarations = build_mathematical_positioning(PROJECT_ROOT).as_dict()[
+        "theorem_analysis"
+    ]["declarations"]
+    prefix = "FEP.VariationalDuality."
+    general = declarations[
+        prefix + "rateDistortion_exists_minimizer_and_dual_supremum"
+    ]["statement"]
+    strict = declarations[prefix + "rateDistortion_primal_dual_extrema"]["statement"]
+    curve = declarations[
+        prefix + "RateDistortionGeometry.boolClosedBudget_dual_supremum"
+    ]["statement"]
+    assert "hfeasible" in general and "hslater" not in general
+    assert "sInf" in general and "sSup" in general
+    assert "hslater" in strict and "expectedDistortion" in strict
+    assert "lam" in strict and "= 0" in strict
+    assert "h0" in curve and "hhalf" in curve and "Real.binEntropy D" in curve
+    assert all("FullSupport" not in statement for statement in (general, strict, curve))

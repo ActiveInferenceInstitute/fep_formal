@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "0d11a114f81a38a90288d1d3d05a47136f3732e1",
+    "commit": "41e5a53c88e3692dfdc0dc1c3ba3417f9536015f",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -135,7 +135,7 @@
       "src/fep_lean/formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
       "src/fep_lean/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
       "src/fep_lean/formal/temporal_inference.lean": "25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b",
-      "src/fep_lean/formal/variational_duality.lean": "445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8",
+      "src/fep_lean/formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
       "src/fep_lean/gauss/__init__.py": "2705273ad3f91094201eb41faf284a94172fe4a12ab23030457c8695914a10c0",
       "src/fep_lean/gauss/cli.py": "63458f1c5f5ef49266375b53b3358fa8bba9c888fd6404ffa40e300014bc5542",
       "src/fep_lean/gauss/client.py": "3a9fa26de947e781b85d07340ed57dbdc156452d65cf3797539c153d20ccbc9c",

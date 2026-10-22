@@ -42,7 +42,10 @@ from fep_lean.methods import (
 )
 from fep_lean.methods import model as model_module
 from tests._support.fast_relaxation_review import fast_relaxation_theorem_extension
-from tests._support.lean_module_contract import exact_information_review
+from tests._support.lean_module_contract import (
+    exact_information_review,
+    finite_rate_distortion_theorem_extension,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -167,6 +170,9 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     assert {
         declarations[name]["source_owner"] for name in finite_weight_kl_helpers
     } == {"src/fep_lean/formal/finite_information.lean"}
+    finite_rate_distortion_extension = finite_rate_distortion_theorem_extension(
+        declarations, ROOT
+    )
     fast_relaxation_extension = fast_relaxation_theorem_extension(declarations, ROOT)
     assert (
         len(
@@ -179,6 +185,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - information_bridges.keys()
             - finite_weight_kl_helpers
             - fast_relaxation_extension
+            - finite_rate_distortion_extension
         )
         == 2185
     )

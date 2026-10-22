@@ -148,7 +148,20 @@ open in [TODO.md](TODO.md).
 
 ## Current assessment
 
-The accepted PR201 software/proof-component checkpoint is
+The accepted software/proof-component source is
+[maina534](https://github.com/ActiveInferenceInstitute/fep_formal/commit/a53456c0941443d698a5dd34ea61c78721e40282).
+Its [exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39687054068)
+passed the full fifteen-cell installed-wheel profile and required software
+jobs. Downloaded native/audit/render/source/font artifacts and scoped PDF
+layout were independently accepted for that epoch. The
+[changelog](CHANGELOG.md) records the bounded operator, readiness, canonical
+query, historical named-pair runner, accessibility and finite-KL deliveries.
+Current scientific primary execution, capture/archive, study reproduction and
+optional provider lanes remain separate requirements in [TODO.md](TODO.md).
+Later source edits require fresh evidence in the affected planes.
+
+
+The earlier accepted PR201 software/proof-component checkpoint is
 [`de9643f`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/de9643f5249ad207219af51f6446327197a01247).
 Its [exact-main run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39449116181)
 passed all 21 executed jobs and all 15 installed-wheel cells; the
@@ -157,8 +170,8 @@ checks accepted all 168 native topics, 1,928 declaration axiom reports within
 the reviewed allowlist, and the 389-page manuscript. All seven changed pages
 were directly reviewed; 382 others exactly matched accepted-head pixels/text.
 The directory-alias repair and 498-line compatible CLI extraction are accepted;
-PKG-13 is closed. CORE-D2 retains its required independent API/schema and
-semantic review. Source-custody-only PR202 adds no theorem or algorithm claim.
+At that checkpoint PKG-13 was closed and CORE-D2 still required independent
+API/schema and semantic review; the later scoped acceptance is recorded above. Source-custody-only PR202 adds no theorem or algorithm claim.
 Primary scientific and full-capture criteria remain separate.
 The [publication handoff](WORK_STATUS.md) remains a dated snapshot.
 

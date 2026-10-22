@@ -260,7 +260,7 @@ capabilities:
       - FEP.EmpiricalRisk.laplaceError_identity
   - id: cap-finite-variational-duality
     title: Finite variational duality and information bounds
-    description: "Full-support finite laws prove Gibbs and Donsker--Varadhan optimizer identities, coordinate and mean-field decompositions, fixed-sample importance-weighted Jensen control, channel data processing, and rate-distortion weak duality, with positive-weight and zero-multiplier witnesses. No strong-duality or extended-divergence claim is inferred. On the fair Boolean source with Boolean Hamming distortion, the exact natural-log rate curve is attained, has the derived converse, and has the stated positive finite log-ratio dual optimizer for strictly interior budgets; the zero-budget limiting multiplier is unbounded. No general finite- or continuous-alphabet strong duality is claimed."
+    description: "Full-support finite laws prove Gibbs and Donsker--Varadhan optimizer identities, coordinate and mean-field decompositions, fixed-sample importance-weighted Jensen control, channel data processing, and rate-distortion weak duality, with positive-weight and zero-multiplier witnesses. Those weak-duality witnesses alone imply neither strong duality nor extended-divergence semantics. On the fair Boolean source with Boolean Hamming distortion, the exact natural-log rate curve is attained, has the derived converse, and has the stated positive finite log-ratio dual optimizer for strictly interior budgets; the zero-budget limiting multiplier is unbounded. For arbitrary finite alphabets, nonnegative distortion and an actual strictly feasible fixed-source law, the finite mass carrier now gives attained primal/dual extrema and complementary slackness, including zero atoms. Every feasible finite nonnegative-distortion problem additionally has equal primal infimum and dual supremum, including feasible endpoints; finite maximizing multipliers remain separately qualified by strict feasibility. No continuous-alphabet or uniqueness conclusion is claimed."
     status: satisfied
     evidence:
       - FEP.VariationalDuality.FairBoolean.boolean_closed_exact_minimum
@@ -270,6 +270,9 @@ capabilities:
       - FEP.VariationalDuality.finiteChannel_dataProcessing
       - FEP.VariationalDuality.fixedSampleImportanceJensen
       - FEP.VariationalDuality.meanFieldCoordinate_optimum_iff
+      - FEP.VariationalDuality.rateDistortion_exists_minimizer_and_dual_supremum
+      - FEP.VariationalDuality.rateDistortion_exists_slater_dual_optimizer
+      - FEP.VariationalDuality.rateDistortion_primal_dual_extrema
       - FEP.VariationalDuality.rateDistortion_weak_duality
       - FEP.VariationalDuality.sampleMeanWeight_pos
       - fep_fep064.FEP064.fep064_zeroMultiplier_boundary

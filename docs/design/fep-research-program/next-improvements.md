@@ -1,4 +1,4 @@
-# Upcoming package and formalization improvements
+# Open package and formalization scope contracts
 
 Future scopes were reviewed against maintained source on 2026-10-02; current
 acceptance context was refreshed on 2026-10-05. This document scopes future
@@ -39,21 +39,23 @@ new Lean resources require the six manifest/namespace facts in the research
 contract. Generate projections from their canonical owners. Preserve the
 four dependency pins unless a separately reviewed upgrade changes the program.
 
-## Current implementation that still needs acceptance
+## Current source and acceptance owners
 
-The following code is present. Its existence must not be presented as a new
-proposal or as proof that the final source epoch passed every gate.
+The [accepted maina534 software checkpoint](https://github.com/ActiveInferenceInstitute/fep_formal/commit/a53456c0941443d698a5dd34ea61c78721e40282)
+has an [exact-source full hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39687054068).
+Its native, installed-package and scoped manuscript acceptance belongs to that
+source epoch. The [current assessment](../../../ISA.md#current-assessment)
+and [delivery history](../../../CHANGELOG.md) own accepted component facts;
+[TODO.md](../../../TODO.md) owns the open issue inventory. This guide does not
+maintain another live implementation/status table.
 
-| Original scope | Inspected implementation | Remaining obligation |
-| --- | --- | --- |
-| PKG-1: truthful static status | `SectionReport`, `PublicationReadinessReport` and `bridge_pin_section` in [cli.py](../../../src/fep_lean/cli.py); named/omitted GNN and source-race controls in [status tests](../../../tests/test_status_verb.py) | Final-source process-free, byte/mtime-preserving acceptance; unavailable comparisons remain unverified and drift remains stale on both status surfaces. Exit zero means composition succeeded. |
-| PKG-2: distribution support | The declared Python floor in package metadata; isolated installed API/resource/help and parsed wheel-metadata controls in [distribution tests](../../../tests/test_distribution.py) | All 15 hosted cells passed at `c99e933`. Final-source runtime evidence remains required after later owner edits; the local five-cell matrix retains its 15 GiB prerequisite checked before launch and every cell. Validator runtime remains CPython 3.14; package import support does not imply native capture support. |
-| PKG-3: documentation and render gates | Classification and source/template-link retention in [CI](../../../.github/workflows/ci.yml), with positive and adversarial distribution controls | Hosted Lean/render passed at `c99e933`; final-source PDF, render receipt, fonts, renderer and source manifest must still validate after owner edits. Preserve fresh independent infrastructure review; failed or skipped renders supply no accepted artifact. |
-| PKG-4: capture and publication readiness | `PublicationCapturePlan`, `run_publication_capture` and `plan_publication_capture` in [release capture](../../../src/fep_lean/output/release_bundle/_core.py); strict [prerequisite aggregation](../../../src/fep_lean/output/release_bundle/_prerequisites.py) | Actual seven-stage capture, current native/audit/Python/render/numerical/browser acceptance, and two byte-identical archives independently accepted against final source. Static readiness and custom test plans cannot replace production capture. |
-| FORM-1: deterministic information witnesses | `finiteChannel_identity_preservesKL` and `constantChannel_KL_strict` in [variational duality](../../../src/fep_lean/formal/variational_duality.lean) | Current warning-free focused/aggregate native and declaration/axiom evidence; retain the zero-reference convention and current reviewed theorem-proxy disposition. |
-| FORM-2: relative-support information bridge | `weightedDirac_klDiv_eq_finiteKL_of_relativeSupport`, `nativeChannelMutualInformation_eq_finite` and the finite garbling theorems in [decision risk](../../../src/fep_lean/formal/decision_risk.lean) | Current source-bound native/audit and semantic review, including shared-zero, deterministic, asymmetric and singular boundaries. Native infinity is not the totalized finite convention. |
-| FORM-3: actual finite rate-distortion optimization | Compactness-derived `rateDistortion_exists_minimizer`, infimum-derived weak duality and Boolean boundary witnesses in variational duality | Current source-bound acceptance for feasibility, attainment, informative interior, infeasible budget, zero multiplier and nonunique optimizer. The existing primary theorem still assumes component bounds; general strong duality is unproved. |
-| FORM-4: frozen H3 chain | Manifested [reference model](../../../src/fep_lean/formal/h3_reference_model.lean), [composition](../../../src/fep_lean/formal/compositions/h3_case_study.lean), native export, synthetic executor and study bundler | Current native/export and three independent proof-role reviews, unchanged one-attempt synthetic execution and complete replay, outcome-bound claim reviews, and clean installed study reproduction. The licensed empirical branch remains governed no-go without data. |
+The [remaining original acceptance sequence](../../../specs/comprehensive-science-improvement/NEXT.md)
+keeps production capture and identical archives, current H3 export and distinct
+proof-role reviews, the frozen primary and complete replay, outcome-bound
+claims and clean installed study reproduction separate. Optional strict
+Hermes/OpenGauss execution has its own credential and provider boundary.
+Software CI and catalogue-mode output supply none of those research outcomes.
+Every later source change needs acceptance in its affected evidence planes.
 
 The [2026-10-02 Q7 capture](../../../specs/comprehensive-science-improvement/evidence/public-q7-final-source-20261002-r1/summary.json)
 closed the source-pair residual for its recorded native inputs. Preserve its
@@ -70,38 +72,22 @@ GNN work, failed attempts and historical Q5/Q6/Q7 receipts remain preserved;
 static coefficient proofs leave runner execution unverified. Current guidance
 and all declared checks remain obligations under the ninth criterion.
 
-The output/configuration repairs are minor existing-owner reliability work.
-Their retained focused validation and independent infrastructure reviews apply
-to the reviewed source epochs; later repairs require their own checks and review.
-Final source-bound native, package and scientific acceptance remains open.
-They do not activate the future medium API/information-theory scopes or the
-major Windows capture, control and path-law scopes below. Those proposals retain
-their named predecessors and reviews; none substitutes for current package or
-once-only H3 acceptance, or changes the frozen scientific protocol.
+Accepted operator, readiness and query API deliveries are linked below for
+navigation. Their original planning contracts remain in Git history. Open
+Windows capture, lifecycle, control and path-law scopes retain their own
+predecessors and reviews; none changes the frozen scientific protocol.
 
 ## Core package: minor scopes
 
 ### CORE-M1 — precise operator contracts
 
-**Owner and evidence:** existing CLI plus [API guide](../../api.md) and
-[development guide](../../development.md). The CLI already distinguishes static
-readiness, runtime capture and archive parity; the guide already documents the
-POSIX-only execution boundary.
-
-- **Outcome:** one concise command/support table states required inputs,
-  mutation/process behavior, supported runtime and exit meaning for `status`,
-  `preflight`, `verify`, bridge checks and `publication-capture`. Resolve wording
-  that implies a pin-presence check compared an omitted GNN checkout.
-- **Dependencies and go probe:** accepted PKG-1/PKG-2 behavior; compare the table
-  with actual parser/API signatures and existing installed help output.
-- **Acceptance and failure controls:** the documented examples use existing
-  options; missing checkout, omitted sibling, stale receipt and unsupported
-  capture platform remain distinguishable. Preserve additive preflight JSON
-  policy and the exit-zero composition contract. Add behavioral tests only if
-  behavior changes; documentation checks cover prose-only edits.
-- **Review and boundary:** operator review decides that every state leads to a
-  concrete next action. No status call acquires dependencies, starts providers,
-  collects tests, repairs evidence or silently changes validator policy.
+The bounded [operator-contract scope #62](https://github.com/ActiveInferenceInstitute/fep_formal/issues/62)
+is delivered; see [delivery history](../../../CHANGELOG.md), the
+[API guide](../../api.md) and [configuration guide](../../configuration.md).
+These owners distinguish process-free inspection, native verification,
+production capture and archive parity. Exit zero from status means composition
+succeeded; omitted sibling comparison remains unverified. Later changes retain
+the documented runtime and mutation boundaries.
 
 ### CORE-M2 — maintain current guidance through dependency review
 
@@ -129,61 +115,22 @@ keeps active reading paths synchronized as subsequent slices are accepted.
 
 ### CORE-D1 — expose one reusable typed readiness API
 
-**Owner:** the existing CLI models and existing evidence/release owners. Current
-readiness types live in cli.py, while strict archive prerequisites live in
-`release_bundle/_prerequisites.py`; application callers currently have no
-documented stable readiness type in the root API.
-
-- **Outcome/API:** publish an immutable readiness snapshot API with named
-  evidence planes, source bindings, findings and explicit runtime/parity flags.
-  Make CLI serialization a projection of that API. Prefer an existing owner
-  over a new package or a parallel validator. The proposed stable entry point
-  is the existing `build_status_report(project_root, gnn_root=None) -> StatusReport`
-  with its immutable nested `PublicationReadinessReport`; review any move into
-  the existing evidence owner before changing imports.
-- **Dependencies and go probe:** PKG-4 accepted first. Inventory current callers
-  and demonstrate a non-CLI consumer of the same snapshot before extraction;
-  stop if the move adds another validator or dependency cycle.
-- **Acceptance:** old CLI output remains compatible except reviewed additive
-  fields; installed-wheel callers produce the same states and bindings as CLI.
-  Reuse existing strict validators and preserve source-race invalidation.
-- **Controls:** absent/malformed/stale receipts, restored-mtime source changes,
-  missing sibling comparisons and unknown planes fail closed. Existing process
-  sentinels and real-file snapshots prove that inspection starts no child and
-  changes no consumed file. A static all-green inventory remains unverified
-  until actual runtime and two-archive parity evidence are validated.
-- **Review/no-go:** independent infrastructure review approves ownership and
-  compatibility. If API extraction changes receipt identity or schema, retain
-  the old epoch and refresh dependent evidence explicitly; never relabel it.
+The bounded [readiness API scope #64](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64)
+is delivered. The [API guide](../../api.md) owns its public surface and
+[delivery history](../../../CHANGELOG.md) records source-bound acceptance.
+CLI and non-CLI consumers share the immutable snapshot types and strict
+validators. Static readiness is process-free; it does not establish production
+execution, two-archive parity or acceptance of later source epochs.
 
 ### CORE-D2 — portable semantic and relation queries from one canonical join
 
-**Owner:** catalogue generation/relations/semantics and the existing packaging
-resource declarations. The API guide explicitly says the wheel's default
-catalogue resource is topics.yaml; authoring metadata, maturity, novelty and
-relations currently require explicit checkout paths.
-
-- **Outcome/API:** offer an immutable installed query resource for reviewed
-  assumptions, qualified theorem identifiers, authored relations and capability
-  blockers. Generate it from the existing canonical join, with a schema version
-  and owner digests; do not create another editable registry. The proposed
-  resource is `data/formalism-query.json`, consumed through a reviewed
-  `load_packaged_formalism_query()` API; packaging/generation/schema review must
-  settle its exact type and closed field roster before implementation.
-- **Dependencies and go probe:** PKG-2 and canonical projection acceptance.
-  Demonstrate an outside-checkout topic-to-theorem/assumption/blocker query and
-  a bounded resource-size proposal before adding package data.
-- **Acceptance:** installed results conserve the canonical topic/node/edge
-  roster and distinguish `formal`, `formal_pairing`, conceptual and blocker
-  relations. Reordered, omitted, duplicated, unknown or coherently edited
-  members reject. Deterministic regeneration and isolated wheel parity pass.
-- **Controls and boundary:** no shared-import inference, automatic semantic
-  promotion or bundled historical receipt masquerades as live proof. Optional
-  receipt attachment requires explicit source-bound validation. Metadata
-  inspection does not invoke Lean or an external model.
-- **Review/no-go:** independent API/schema and semantic reviews approve the
-  surface. Defer if the proposed snapshot cannot express unknown/current
-  evidence separately or duplicates the maintained relation/maturity owners.
+The bounded [query API/schema scope #65](https://github.com/ActiveInferenceInstitute/fep_formal/issues/65)
+is delivered with independent API/schema and semantic review. Use the current
+[API guide](../../api.md), [methods integration](../../mathematical-methods.md)
+and [delivery history](../../../CHANGELOG.md). The existing canonical join owns
+packaged topic, theorem, assumption, relation and blocker queries; there is no
+new editable semantic registry. Metadata inspection supplies no native proof,
+shared-import derivation or scientific promotion.
 
 ## Core package: major scopes
 
@@ -272,28 +219,26 @@ attainment and dual-bound supporting theorems.
 
 ### FORM-D1 — exact fair-Boolean Hamming rate-distortion curve
 
-**Owner:** existing variational_duality.lean; any cross-topic bridge belongs in
-an existing justified composition leaf. Current compactness/weak-duality
-theorems prove attainment and a positive quarter-budget optimum, not a closed
-rate curve or a general dual optimizer.
+The selected-source [Boolean curve scope #69](https://github.com/ActiveInferenceInstitute/fep_formal/issues/69)
+is delivered; [delivery history](../../../CHANGELOG.md) records its accepted
+source epoch. In [variational duality](../../../src/fep_lean/formal/variational_duality.lean),
+`FEP.VariationalDuality.FairBoolean.boolean_closed_exact_minimum` derives the natural-log value
+`log 2 - binEntropy D` on `0 ≤ D ≤ 1/2`; `half_or_larger_exact` gives zero
+for larger feasible budgets. The finite dual optimizer is derived only for
+strict interior budgets. Zero distortion's limiting multiplier, infeasible
+negative budgets and nonunique half-budget optimizers remain distinct.
 
-- **Target:** on the fair Boolean source and Boolean Hamming distortion, derive
-  `R(D) = log 2 - H(Bernoulli D)` for `0 ≤ D ≤ 1/2`, and zero for larger
-  feasible budgets. Construct a symmetric channel attaining the value, derive
-  the converse, and derive a finite dual multiplier only on `0 < D < 1/2`.
-- **Dependencies/go probe:** FORM-3 accepted; compile the exact entropy
-  concavity/symmetrization and endpoint-continuity seams at the unchanged pin.
-  Stop or split the claim if the selected APIs do not support the converse.
-- **Positive/boundary witnesses:** informative interior channels, unique
-  zero-budget joint, nonunique half-budget optimizers and infeasible negative
-  budgets. Treat zero distortion's limiting multiplier separately; never assume
-  that a finite interior dual optimizer exists at an endpoint.
-- **Acceptance:** actual derived feasibility, lower bound and equality, focused
-  plus aggregate warning-free native/audit receipts and independent information
-  theory review. Numerical plots may explain the curve but cannot prove it.
-- **Boundary:** this selected finite source does not establish general
-  rate-distortion strong duality, continuous-alphabet attainment or a universal
-  unique optimizer. Any disposition change applies only to the reviewed proxy.
+This fair-Boolean source result proves neither general finite-alphabet strong
+duality ([#76](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76))
+nor continuous-alphabet attainment or a universally unique optimizer. Primary
+proxy migration and broader scientific acceptance keep their own scope.
+
+The separate [F07 source candidate](../../../specs/comprehensive-next-steps/finite-rate-distortion-duality-20261021.md)
+now derives primal/dual value equality for every feasible finite nonnegative-
+distortion problem; strict feasibility separately gives a finite maximizing
+multiplier and complementary slackness. Its maintained gates and scientific
+acceptance are tracked independently by issue76. The Boolean proof alone
+does not supply that general theorem.
 
 ### FORM-D2 — fixed-truth consistency for the continuous static-latent model
 
@@ -403,10 +348,12 @@ SDE, Itô and physical-entropy claims.
    the Zenodo record for the actual release, never a guessed ID.
 4. Close the research lanes above in their own order; each keeps its
    acceptance probe in TODO.md and its Issue.
-5. Activate minor future scopes first, then CORE-D1/CORE-D2 and FORM-D1/FORM-D2
-   as independent existing-owner lanes. CORE-J2 depends on CORE-D1; Windows
-   capture and generator/path work retain their own prerequisite reviews.
-   FORM-J1 and FORM-J2 follow current H3 acceptance, without altering its freeze.
+5. Select the next unaccepted requirement from [TODO.md](../../../TODO.md)
+   and the [active campaign](../../../specs/comprehensive-next-steps/README.md).
+   Accepted operator, readiness, query and Boolean-curve deliveries are history,
+   not new activation instructions. Open lifecycle, Windows capture, fixed-truth,
+   control and generator/path work retain their own prerequisite reviews.
+   The frozen H3 protocol is unchanged.
 
 The future empirical lane opens only for a named, licensed dataset with known
 units, provenance, access and held-out split, followed by a new immutable

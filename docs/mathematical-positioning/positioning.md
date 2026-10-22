@@ -20075,9 +20075,9 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/smooth_information_geometry.lean` | `1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04` |
 | `formal/statistical_convergence.lean` | `6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf` |
 | `formal/temporal_inference.lean` | `25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b` |
-| `formal/variational_duality.lean` | `445152a80fe89b222c64d293155aac9ae63bc964c64c03abb4d60b19c57d64e8` |
+| `formal/variational_duality.lean` | `05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
-| `inputs/formalism_relations.yaml` | `bd232d1cada8eb2588c5e6397f480ed4aecaf305ebe3fc339ece2f8630d117f8` |
+| `inputs/formalism_relations.yaml` | `1351da45e8b2cfa9a32c8e7c175aa57d2c12b036c2040480048df2e48da09a59` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
 | `inputs/theorem_maturity.yaml` | `7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b` |
 | `lean_source.py` | `adc252c7625809ede9b248f96a56effaf9fc0915b55b78fd83dcd047e7717efb` |
