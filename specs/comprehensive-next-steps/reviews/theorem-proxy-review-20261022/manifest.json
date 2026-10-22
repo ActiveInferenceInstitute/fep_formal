@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "state": "PROPOSED_AUTHOR_VALIDATED_REPORT_ARCHIVE_NOT_FINAL_INDEPENDENT_ACCEPTANCE",
+  "source_head": "b617be7bdf2cf31326af8d2e6e2896c9ead1b1aa",
+  "files_sha256": {
+    "roadmap.json": "22abd0ea70a2e78745125390038f2b3f56e0b2a07b41b9b5aef2607195e344d2",
+    "topics001-056.json": "4245f7bbaf9a1445acc7ac6fd147d2a840bc3bd5b87e1f95cc4afcc8b708e4d8",
+    "topics057-112.json": "5a494ae6d963fbee991510bfa730d45b5f2061d6075d27d007011da692a370cb",
+    "topics113-168.json": "98b1fb530da50c0dad34da6b8d04e750b1ed2dd3bdde0493528d6d20838472a9",
+    "issue75-source-snapshot.json": "e52fe4d28a3d33c4d34f3c87c0c749a49bf25afd8f84d05786483f0de49d678b",
+    "README.md": "919ce88d6125a34ed4e7b6e20dc645fa4b0f5593f6ffb439dfc9759e02ffd1e2",
+    "composed-source-delta.json": "d0f0ec775c545a4469791613745173552a0f2983154bc5ad119cf4d8c593a02b",
+    "composed-source-delta-review.json": "1550e7c53e1aaa259c7f2f559418bdb67a3c81eab8086d90dd3074c8f097a352"
+  },
+  "original_historical_index_sha256": "ea52c68a39834d3b5db668dce46f9994bc516bf2e87bb765ceea4f1efaadb882",
+  "portable_reading": "Adjacentfiles are canonical packet entries; retainedabsoluteWpaths inside JSON are provenanceonly.",
+  "boundary": "No maturity/issueclosure or proofimplementation acceptance."
+}

@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "delta_sha256": "d0f0ec775c545a4469791613745173552a0f2983154bc5ad119cf4d8c593a02b",
+  "metadata_application_receipt_sha256": "901a1e8a32bf9e68d416443e38939496711c13b4494ba4076abdddef52723e2f",
+  "r1_historical_draft_preserved": true,
+  "exact_current_R5_semantic_rows_compared_to_sealed_fixture_after": true,
+  "selected_statement_and_body_hashes_verified": true,
+  "before_source_Git_blob_hashes_verified": true,
+  "scope": "Readyforboundedsource-postimagedelta publicationadjacent preservedhistoricalD168report; notcurrent168acceptedsourceorissueclosure.",
+  "findings": [],
+  "semantic_readings": [
+    "063wrapperactualnonzeromass\u2192positive reference support; sharedzeros/zerochannelentries allowed, no blanket singular-totalizedrealKL DPI. Oldstrictpositiveprimary retained.",
+    "064actualfeasiblefinitejoint/nonnegativedistortion+multiplier\u21d2actualinfimumdualweakbound; no generalizedcontinuousstrongduality/boundaryfinite\u03bb/uniqueness. SeparateF07scope explicitlyretained.",
+    "H3private2L2leaves/proofonly, same93publictypes; no changefrozenprotocol. #102numberdistinctfromtopic102. Maturityconditional_proxy/structural_proxy unchanged."
+  ],
+  "remaining": [
+    "Bindactualfuturecommit/tree/projections and independentfinalsource/gate receipts before describing currentaccepted168composition",
+    "Preserve exactDmatrix/roadmap provenance; do not replacehistoricalsnapshotwithpostimageorrelabeledcommit",
+    "Allfinalnative/API/audit/render/Python/required/hosted/main scopes remainfuturequalification"
+  ],
+  "managed_edits_or_gates": false
+}

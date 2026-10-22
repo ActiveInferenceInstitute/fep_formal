@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 from collections import Counter
 from pathlib import Path
+
+import pytest
 
 from fep_lean.catalogue.coverage import build_formalism_coverage
 from fep_lean.catalogue.relations import load_formalism_graph
@@ -19,6 +22,7 @@ from tests._support.lean_module_contract import (
     exact_information_review,
     finite_rate_distortion_theorem_extension,
     obligation_theorem_extension,
+    primary_alignment_review,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -462,3 +466,54 @@ def test_finite_rate_distortion_public_query_separates_feasibility_and_slater() 
     assert "lam" in strict and "= 0" in strict
     assert "h0" in curve and "hhalf" in curve and "Real.binEntropy D" in curve
     assert all("FullSupport" not in statement for statement in (general, strict, curve))
+
+
+@pytest.mark.serial_lean
+def test_primary_alignment_imported_canonical_controls(tmp_path):
+    from fep_lean.verification.formalism_audit import parse_axiom_output
+    from tests._support.lake import lake_executable
+    from tests._support.lean_runner import run_lake_lean_probe
+
+    source = (
+        PROJECT_ROOT
+        / "specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean"
+    )
+    assert source.is_file() and not source.is_symlink()
+    review = primary_alignment_review(PROJECT_ROOT)
+    assert source == PROJECT_ROOT / review["consumer_path"]
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == review["consumer_sha256"]
+    review = primary_alignment_review(PROJECT_ROOT)
+    assert source == PROJECT_ROOT / review["consumer_path"]
+    assert hashlib.sha256(source.read_bytes()).hexdigest() == review["consumer_sha256"]
+    result = run_lake_lean_probe(
+        ["env", "lean", "-DwarningAsError=true", str(source)],
+        cwd=PROJECT_ROOT / "lean",
+        executable=lake_executable(
+            missing="raise", context="primary alignment canonical consumer"
+        ),
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert not result.stderr
+    expected = (
+        "fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing_of_relativeSupport",
+        "fep_fep063.FEP063.RelativeSupportControls.sparse_support",
+        "fep_fep063.FEP063.RelativeSupportControls.sparse_deterministic_DPI",
+        "fep_fep063.FEP063.RelativeSupportControls.identity_boundary",
+        "fep_fep063.FEP063.RelativeSupportControls.singular_support_adverse",
+        "fep_fep063.FEP063.RelativeSupportControls.singular_native_infinity",
+        "FEP68PrimaryAlignmentControls.full_support_specialization",
+        "FEP68PrimaryAlignmentControls.sparse_shared_zero",
+        "FEP68PrimaryAlignmentControls.singular_real_finite",
+        "FEP68PrimaryAlignmentControls.actual_dual_bound",
+        "FEP68PrimaryAlignmentControls.positive_multiplier_interior",
+        "FEP68PrimaryAlignmentControls.zero_multiplier_boundary",
+        "FEP68PrimaryAlignmentControls.negative_budget_adverse",
+    )
+    axioms, errors = parse_axiom_output(result.stdout, expected=expected)
+    assert not errors and set(axioms) == set(expected)
+    assert all(
+        set(values) <= {"propext", "Classical.choice", "Quot.sound"}
+        for values in axioms.values()
+    )
+    (tmp_path / "primary-alignment.stdout.txt").write_text(result.stdout)
+    (tmp_path / "primary-alignment.stderr.txt").write_text(result.stderr)

@@ -7,6 +7,7 @@ actual compiler outcomes before the duplicate gate can be removed.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import subprocess
 from types import SimpleNamespace
@@ -17,27 +18,57 @@ from fep_lean.output.evidence import (
     build_native_lean_receipt,
     write_native_lean_receipt,
 )
+from fep_lean.output.provenance import config_owner_paths, source_owner_paths
 from fep_lean.verification.lean_verifier import CatalogueVerification, VerifyResult
 from tests._support import native_catalogue_gate as gate
 from tests.test_native_evidence import (
     LEAN_VERSION,
-    _copy_complete_owner_tree,
+    PROJ,
     _topic_ids,
 )
 
 
-@pytest.fixture
-def producer(tmp_path, monkeypatch):
-    root = tmp_path / "checkout"
-    _copy_complete_owner_tree(root)
-    ids = _topic_ids(root)
+@pytest.fixture(scope="module")
+def producer_seed(tmp_path_factory):
+    """Immutable synthetic inputs per worker; never cached acceptance results."""
+    owners = tuple(
+        sorted(set(source_owner_paths(PROJ)) | set(config_owner_paths(PROJ)))
+    )
+    files = tuple((path.relative_to(PROJ), path.read_bytes()) for path in owners)
+    seed_root = tmp_path_factory.mktemp("native-producer-seed")
+    for relative, raw in files:
+        target = seed_root / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(raw)
+    ids = tuple(_topic_ids(seed_root))
     results = [
         VerifyResult(
             topic_id=name, compiles=True, has_sorry=False, lean_version=LEAN_VERSION
         )
         for name in ids
     ]
-    payload = build_native_lean_receipt(root, ids, results)
+    payload_json = json.dumps(build_native_lean_receipt(seed_root, ids, results))
+    return files, ids, payload_json
+
+
+@pytest.fixture
+def producer(tmp_path, monkeypatch, producer_seed):
+    root = tmp_path / "checkout"
+    files, ids, payload_json = producer_seed
+    current = set(source_owner_paths(PROJ)) | set(config_owner_paths(PROJ))
+    assert {path.relative_to(PROJ) for path in current} == {name for name, _ in files}
+    for relative, raw in files:
+        # This is an input seed, not a waiver of source drift or live validation.
+        assert (
+            hashlib.sha256((PROJ / relative).read_bytes()).digest()
+            == hashlib.sha256(raw).digest()
+        )
+        target = root / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(raw)
+        assert not target.is_symlink() and target.read_bytes() == raw
+    payload = json.loads(payload_json)
+    assert payload["requested_topic_ids"] == list(ids)
     calls = []
     state = SimpleNamespace(
         root=root, payload=payload, calls=calls, exit_code=0, mutate_source=False
@@ -57,7 +88,13 @@ def producer(tmp_path, monkeypatch):
     return state
 
 
-def test_single_strict_unfiltered_call_and_real_receipt_validation(producer):
+def test_single_strict_unfiltered_call_and_real_receipt_validation(
+    producer, producer_seed
+):
+    files, ids, payload_json = producer_seed
+    seed_fingerprint = tuple(
+        (str(name), hashlib.sha256(raw).hexdigest()) for name, raw in files
+    )
     result = gate.produce_native_catalogue_receipt(producer.root, "1")
     assert producer.calls == [
         (
@@ -71,6 +108,16 @@ def test_single_strict_unfiltered_call_and_real_receipt_validation(producer):
     assert result["validation"]["native_claim_ready"] is True
     assert result["topic_ids"] == _topic_ids(producer.root)
     assert result["validation"]["verified_topics"] == 168
+    producer.payload["results"][0]["warnings"].append("private mutation")
+    assert json.loads(payload_json)["results"][0]["warnings"] == []
+    assert (
+        tuple(
+            (str(name), hashlib.sha256(raw).hexdigest())
+            for name, raw in producer_seed[0]
+        )
+        == seed_fingerprint
+    )
+    assert tuple(result["topic_ids"]) == ids
 
 
 @pytest.mark.parametrize("flag", ["", "0", "true", "yes"])

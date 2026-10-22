@@ -8926,7 +8926,7 @@
     "catalogue/bodies/predictive_coding_generalized.py": "dfec6d770726c94bb8daa93f892cb1ffec3d35827eb024f5fd09bc697920a707",
     "catalogue/bodies/standalone_efe_formalizations.py": "da17bf17e4cfa56271cb4e0948457a279fe66a42a412f25959c6b6a70d32365a",
     "catalogue/bodies/temporal_inference.py": "820d493f82c2de309e51ca931b3c44807688e9d96cc9050b605bf99585d813a9",
-    "catalogue/bodies/variational_duality.py": "41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb",
+    "catalogue/bodies/variational_duality.py": "aa53d3a653b8102b0c6789e3c7102ff962c507d34e6b5f1ac1639044d4e629ce",
     "catalogue/latex.py": "20b9ad7612374a6f528d67fe6a40ab3c49f5eb3f6ac8baac75e602eefb9b25a7",
     "catalogue/registry.py": "a758f1be3f4b4efbdbd80fb5854c71557f3e392fd90587b3c59656716fdfa268",
     "catalogue/relations.py": "d8b53c1fe2be4b35a618bfbffe60716c44436dfff5b41d66b880767f57ea1c61",
@@ -8955,7 +8955,7 @@
     "formal/compositions/gaussian_filter.lean": "9580e9be505e2ca144cc5bdeec470b69483e3d6a06bd094a6793a6a3aedd46e0",
     "formal/compositions/gaussian_grid_path.lean": "cc1f4020ab1cf8762b2eced248ff59976ce140ced7112eea2ab0de23c8d5561a",
     "formal/compositions/geometric_mechanics.lean": "0a2fec955da05b388308950e2333bb985f089d6d756ab3f867a62c4d831e8752",
-    "formal/compositions/h3_case_study.lean": "24c0a05321f23eccc290bca5a6d5a414af322cc35da5ea691b7520d9f655fbc7",
+    "formal/compositions/h3_case_study.lean": "6a1ebfaa4588cff8c5131fbbf0f5003353367ea74ac4e33a7214e9b8ac466d17",
     "formal/compositions/helmholtz_ao_ness.lean": "7de6f6c012d5e134d8bc84a4aec8c560adf2de60722d4466c4f77d9474d66c78",
     "formal/compositions/measure_variational.lean": "02590c6597b79c8ecde30896acfe34b872837b1225db33207cdd2997636f2d35",
     "formal/compositions/native_blanket_transfer.lean": "24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7",
@@ -9010,7 +9010,7 @@
     "inputs/catalogue_metadata.yaml": "e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd",
     "inputs/formalism_relations.yaml": "030f02dbe6df85ba955742ad05db4cd08959eb171a516f0113ee2485340f95e4",
     "inputs/positioning.yaml": "d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d",
-    "inputs/theorem_maturity.yaml": "7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b",
+    "inputs/theorem_maturity.yaml": "16eecb21d0884f962dfe87b596f9d3262fb08488be939664e4ddd3b6d9c55fbf",
     "lean_source.py": "adc252c7625809ede9b248f96a56effaf9fc0915b55b78fd83dcd047e7717efb",
     "methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
     "methods/model.py": "b7e9985b30707fb73f7548b7f0198992fc796c0895fabd486dd1e145cd07d3f4",
@@ -152540,7 +152540,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.all_zero_grid_kl",
-        "source_line": 4201,
+        "source_line": 4205,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem all_zero_grid_kl :\n    klDiv (studyProjectedLaw allZeroStudyGrid) (studyReverseLaw allZeroStudyGrid) = 0",
         "statement_sha256": "8638489cdc55170fd4cc3bf165ed3cadc33d2bdb6823c7ac160a8923403f8797"
@@ -153374,7 +153374,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.clamp_conditional_covariance",
-        "source_line": 2562,
+        "source_line": 2566,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem clamp_conditional_covariance (center : FEP.Fin4GaussianSemigroup.StandardizedState) :\n    (condDistrib sensoryEndpoints sensoryClampedBlanket (sensoryClampedLaw center)\n      =ᵐ[(sensoryClampedLaw center).map sensoryClampedBlanket]\n        sensoryClampedConditionalKernel center) ∧\n      ∀ datum : ℝ,\n        cov[Prod.fst, Prod.snd; sensoryClampedConditionalKernel center (datum, 0)] = 1 / 56",
         "statement_sha256": "9e8e30772da525c47060f27cb7577f11f2f7a05d658c5b2f02dab3362081b173"
@@ -153850,7 +153850,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.constitutive_nonidentification",
-        "source_line": 4219,
+        "source_line": 4223,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem constitutive_nonidentification :\n    hypotheticalEnergyLaw 1 = hypotheticalEnergyLaw 2 ∧\n      klDiv (hypotheticalEnergyLaw 1) (studyReverseLaw informationGrid) =\n        klDiv (hypotheticalEnergyLaw 2) (studyReverseLaw informationGrid) ∧\n      hypotheticalAssignedExpectedHeat 1 < hypotheticalAssignedExpectedHeat 2",
         "statement_sha256": "0ca9b760af6b88ce02f237c279af88f826751dd94e2916620a954e3e67e9e67b"
@@ -153937,7 +153937,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlledMean_exact",
-        "source_line": 2312,
+        "source_line": 2316,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem controlledMean_exact (belief : ScalarGaussianBelief) (action : Bool) :\n    controlledMean controlModel belief action =\n      controlDecay * belief.mean + (1 - controlDecay) * actionCenter action",
         "statement_sha256": "10bdf8c7a14d9b87821345f8ae8b463a06bf143bcc039306eb1da8d3284bb737"
@@ -153991,7 +153991,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlledVariance_exact",
-        "source_line": 2304,
+        "source_line": 2308,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem controlledVariance_exact (belief : ScalarGaussianBelief) (action : Bool) :\n    (controlledVariance controlModel belief action : ℝ) = terminalVariance belief",
         "statement_sha256": "0e76ca94226ef1bbaf58f556ab961ca6c142ca830eaa0799b0ab72eb4dff8164"
@@ -154055,7 +154055,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlled_moment_bound",
-        "source_line": 3229,
+        "source_line": 3233,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem controlled_moment_bound (policy : TwoStepPolicy) (noise : ℝ≥0) (hNoise : 0 < noise) :\n    (∫ state, (allOnesProjection state) ^ 2 ∂controlFirstLaw policy) ≤ controlledBound ∧\n    (∫ state, (allOnesProjection state) ^ 2 ∂controlSecondLaw policy noise hNoise) ≤ controlledBound ∧\n    (∫ state, ‖state‖ ^ 2 ∂controlFirstLaw policy) ≤ controlledBound + 2 / 3 ∧\n    (∫ state, ‖state‖ ^ 2 ∂controlSecondLaw policy noise hNoise) ≤ controlledBound + 2 / 3",
         "statement_sha256": "e1f4b3c64b852089226cf996aeadeb519eb01aaffb0a2727e2874acba03e7ab9"
@@ -154142,7 +154142,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlled_native_cost",
-        "source_line": 4354,
+        "source_line": 4358,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem controlled_native_cost (policy : TwoStepPolicy) (noise : ℝ≥0) (hNoise : 0 < noise) :\n    (∫ state, (allOnesProjection state) ^ 2 ∂controlSecondLaw policy noise hNoise) =\n      policyRisk noise hNoise policy",
         "statement_sha256": "ff0cc91fbcf0c1a9e5a6e48c0b17dc2006d11772b9f84bd620dd1a071df5f7ab"
@@ -154229,7 +154229,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.efe_native_information",
-        "source_line": 2338,
+        "source_line": 2342,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem efe_native_information (belief : ScalarGaussianBelief) (action : Bool)\n    (noise : ℝ≥0) (hNoise : 0 < noise) :\n    terminalInformation belief action noise hNoise =\n      ENNReal.ofReal ((1 / 2 : ℝ) * Real.log (1 + terminalVariance belief / noise))",
         "statement_sha256": "a724a74fc5adec547d450c8b7c79d1555c6c54ff273f1a958ccd770e9eaca64e"
@@ -154325,7 +154325,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.efe_risk_alignment",
-        "source_line": 2408,
+        "source_line": 2412,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem efe_risk_alignment (belief : ScalarGaussianBelief) (left right : Bool)\n    (noise : ℝ≥0) (hNoise : 0 < noise) :\n    expectedFreeEnergy 0 belief left noise hNoise -\n        expectedFreeEnergy 0 belief right noise hNoise =\n      quadraticActionRisk controlModel belief left - quadraticActionRisk controlModel belief right",
         "statement_sha256": "b28ad686b3c9869bf08b9ec336848a9f9f836b2162291c46b47af585b84879b5"
@@ -154407,7 +154407,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.efe_risk_ordering",
-        "source_line": 2419,
+        "source_line": 2423,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem efe_risk_ordering (belief : ScalarGaussianBelief) (left right : Bool)\n    (noise : ℝ≥0) (hNoise : 0 < noise) :\n    (expectedFreeEnergy 0 belief left noise hNoise ≤ expectedFreeEnergy 0 belief right noise hNoise ↔\n      quadraticActionRisk controlModel belief left ≤ quadraticActionRisk controlModel belief right) ∧\n    (expectedFreeEnergy 0 belief left noise hNoise = expectedFreeEnergy 0 belief right noise hNoise ↔\n      quadraticActionRisk controlModel belief left = quadraticActionRisk controlModel belief right)",
         "statement_sha256": "ac82adc0cfbedd671d1749577fc86b9b9832c9c1f621d4947561f41bf0c27cff"
@@ -154498,7 +154498,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.expectedFreeEnergy_closedForm",
-        "source_line": 2386,
+        "source_line": 2390,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem expectedFreeEnergy_closedForm (preference : ℝ) (belief : ScalarGaussianBelief)\n    (action : Bool) (noise : ℝ≥0) (hNoise : 0 < noise) :\n    expectedFreeEnergy preference belief action noise hNoise =\n      terminalVariance belief +\n        (controlledMean controlModel belief action - preference) ^ 2 +\n        (1 / 2 : ℝ) * Real.log Real.pi -\n        (1 / 2 : ℝ) * Real.log (1 + terminalVariance belief / noise)",
         "statement_sha256": "68bcbbde9d52fc333e2817eee104caf42070ea98a2d44cd2f5b7be64694b9031"
@@ -154575,7 +154575,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.feedback_false_attainment",
-        "source_line": 4845,
+        "source_line": 4849,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem feedback_false_attainment (noise : ℝ≥0) (hNoise : 0 < noise) (policy : TwoStepPolicy) :\n    policyRisk noise hNoise (feedbackPolicy false noise hNoise) ≤ policyRisk noise hNoise policy",
         "statement_sha256": "bab27ae10a1bbbc61e6055d530c14bd92661d73441805cf33b7e6c1c809d047e"
@@ -154629,7 +154629,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.feedback_first_risk_symmetry",
-        "source_line": 4812,
+        "source_line": 4816,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem feedback_first_risk_symmetry (noise : ℝ≥0) (hNoise : 0 < noise) :\n    policyRisk noise hNoise (feedbackPolicy false noise hNoise) =\n      policyRisk noise hNoise (feedbackPolicy true noise hNoise)",
         "statement_sha256": "593c85770c008e78b9fd37a4d7b1b60de775acb9dd178555ff0cc3173d4ab5ee"
@@ -154669,7 +154669,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_kl",
-        "source_line": 4112,
+        "source_line": 4116,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem finite_grid_kl :\n    klDiv (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid) =\n      ENNReal.ofReal (2 * (1 - controlDecay ^ 2))",
         "statement_sha256": "f9166047f3f595714c5e9f4a5710e3122bfdc87c0103278f09b5373e74e142fe"
@@ -154715,7 +154715,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_kl_mahalanobis",
-        "source_line": 4577,
+        "source_line": 4581,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem finite_grid_kl_mahalanobis :\n    klDiv (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid) =\n      ENNReal.ofReal ((1 / 2 : ℝ) *\n        ((informationMean - fun index => informationMean (2 - index)) ⬝ᵥ\n          (informationCovariance⁻¹ *ᵥ (informationMean - fun index => informationMean (2 - index)))))",
         "statement_sha256": "43eb287e6c3b41be430d9ec91e18c29efe0258cf5cf961d18b2c6da8d3792169"
@@ -154755,7 +154755,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_kl_positive",
-        "source_line": 4132,
+        "source_line": 4136,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem finite_grid_kl_positive :\n    0 < klDiv (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid)",
         "statement_sha256": "0adb3abfa02f7da3262e179550ea48150da5d07935bedb706819520c7455ae60"
@@ -154801,7 +154801,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_mutual_support",
-        "source_line": 4655,
+        "source_line": 4659,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem finite_grid_mutual_support :\n    (studyProjectedLaw informationGrid ≪ studyReverseLaw informationGrid ∧\n      Integrable (llr (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid))\n        (studyProjectedLaw informationGrid)) ∧\n    (studyReverseLaw informationGrid ≪ studyProjectedLaw informationGrid ∧\n      Integrable (llr (studyReverseLaw informationGrid) (studyProjectedLaw informationGrid))\n        (studyReverseLaw informationGrid))",
         "statement_sha256": "5763bdc790633e1dff25bc7f59b76b07efeaf62dc3771847c8ed54d0278b8e9b"
@@ -154841,7 +154841,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_reverse_kl",
-        "source_line": 4640,
+        "source_line": 4644,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem finite_grid_reverse_kl :\n    klDiv (studyReverseLaw informationGrid) (studyProjectedLaw informationGrid) =\n      ENNReal.ofReal (2 * (1 - controlDecay ^ 2))",
         "statement_sha256": "dbf31f1f8581f74121ead297070ba3bd290ae8eb11a597d97234a531f411fa17"
@@ -154881,7 +154881,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_support",
-        "source_line": 4139,
+        "source_line": 4143,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem finite_grid_support :\n    studyProjectedLaw informationGrid ≪ studyReverseLaw informationGrid ∧\n      Integrable (llr (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid))\n        (studyProjectedLaw informationGrid)",
         "statement_sha256": "ec786a5031e36cadaf7fb65a85b3fb3c2d31782d36427a09bb6ded6be9304a10"
@@ -155121,7 +155121,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.fullPathObservationKernel_native_row",
-        "source_line": 2245,
+        "source_line": 2249,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem fullPathObservationKernel_native_row (n : ℕ) (index : Iic n)\n    (noise : ℝ≥0) (hNoise : 0 < noise) (path : FullGridPath n) :\n    fullPathObservationKernel n index noise hNoise path =\n      gaussianReal (allOnesProjection (path index)) noise",
         "statement_sha256": "9aaecee1f47fad225737f95add0bf3ab89f95870a6bf6e92c90c1f45740046f7"
@@ -155210,7 +155210,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.full_native_path_projection",
-        "source_line": 2185,
+        "source_line": 2189,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem full_native_path_projection (center : ℝ) (grid : TimeGrid)\n    (initial : Measure StandardizedState) [IsProbabilityMeasure initial] (n : ℕ) :\n    (fullNativeGridLaw center grid initial n).map (projectFullPath n) =\n      scalarNativeGridLaw center grid (initial.map allOnesProjection) n",
         "statement_sha256": "d95103858e415db133b73e53c127a04a5ad284be5b9855917e2a81649e67c50b"
@@ -155656,7 +155656,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.hidden_mode_nonidentifiability",
-        "source_line": 2267,
+        "source_line": 2271,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem hidden_mode_nonidentifiability (grid : TimeGrid) (n : ℕ) (index : Iic n)\n    (noise : ℝ≥0) (hNoise : 0 < noise) :\n    hiddenInitialLaw 0 false ≠ hiddenInitialLaw 0 true ∧\n    (fullNativeGridLaw 0 grid (hiddenInitialLaw 0 false) n).map (projectFullPath n) =\n      (fullNativeGridLaw 0 grid (hiddenInitialLaw 0 true) n).map (projectFullPath n) ∧\n    ((fullNativeGridLaw 0 grid (hiddenInitialLaw 0 false) n) ⊗ₘ\n        fullPathObservationKernel n index noise hNoise).map (Prod.map (projectFullPath n) id) =\n      ((fullNativeGridLaw 0 grid (hiddenInitialLaw 0 true) n) ⊗ₘ\n        fullPathObservationKernel n index noise hNoise).map (Prod.map (projectFullPath n) id)",
         "statement_sha256": "6376dfcd750939697490ca67e76dd6aadb7e66c122dda693d9e403ed22b17b16"
@@ -155689,7 +155689,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.informationCovariance_inverse",
-        "source_line": 4565,
+        "source_line": 4569,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem informationCovariance_inverse : informationCovariance⁻¹ = informationInverse",
         "statement_sha256": "3c722af729b31efc2f9da864705d0b6ff8bd2acebd792b4ba35346aa4959dabb"
@@ -155722,7 +155722,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.informationCovariance_posDef",
-        "source_line": 4515,
+        "source_line": 4519,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem informationCovariance_posDef : informationCovariance.PosDef",
         "statement_sha256": "ab208d74b323fd799551ffaed61343e2968257bf427be870538756a322bc629e"
@@ -155767,7 +155767,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.informationCovariance_time_entries",
-        "source_line": 4725,
+        "source_line": 4729,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem informationCovariance_time_entries (left right : Fin 3) :\n    informationCovariance left right = (1 / 2 : ℝ) *\n      Real.exp (-2 * |(informationGrid.time left.val : ℝ) - (informationGrid.time right.val : ℝ)|)",
         "statement_sha256": "cde423e2356ae119edbbe790d4e180270ed6ddcba1c6051bc2be8d47b4bc4919"
@@ -155811,7 +155811,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.informationMean_time_entries",
-        "source_line": 4716,
+        "source_line": 4720,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem informationMean_time_entries (index : Fin 3) :\n    informationMean index = Real.exp (-2 * (informationGrid.time index.val : ℝ))",
         "statement_sha256": "e0cae0d599b4cac57b38be2df3eeb4a67afb7ffb235095a868b5460a5966c223"
@@ -155864,7 +155864,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_full_marginal_projection",
-        "source_line": 4676,
+        "source_line": 4680,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_full_marginal_projection (time : ℝ≥0) :\n    (informationFullMarginal time).map allOnesProjection =\n      gaussianReal (Real.exp (-2 * (time : ℝ))) (1 / 2)",
         "statement_sha256": "749c5de4eb16d5e76cd8bb4c38c677a482e4e2465da3e12f0b64c4dd40d3bf48"
@@ -155915,7 +155915,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_marginal_kl",
-        "source_line": 4592,
+        "source_line": 4596,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_marginal_kl (index : Fin 3) :\n    klDiv ((studyProjectedLaw informationGrid).map (informationCoordinate index))\n      (gaussianReal 0 (1 / 2)) = ENNReal.ofReal ((informationMean index) ^ 2)",
         "statement_sha256": "25e76f266ddf91f51b66eb3feebde058b972c9fabdb678de04216f5c98171469"
@@ -155966,7 +155966,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_marginal_kl_at_time",
-        "source_line": 4736,
+        "source_line": 4740,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_marginal_kl_at_time (index : Fin 3) :\n    klDiv ((studyProjectedLaw informationGrid).map (informationCoordinate index))\n      (gaussianReal 0 (1 / 2)) =\n        ENNReal.ofReal (Real.exp (-4 * (informationGrid.time index.val : ℝ)))",
         "statement_sha256": "a86cdfd8615d853a74b40b8ab8db619727d661cfc281dae24726be8afe979427"
@@ -156006,7 +156006,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_marginal_kl_values",
-        "source_line": 4602,
+        "source_line": 4606,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_marginal_kl_values :\n    (∀ index : Fin 3, klDiv ((studyProjectedLaw informationGrid).map (informationCoordinate index))\n      (gaussianReal 0 (1 / 2)) =\n        ENNReal.ofReal (![1, Real.exp (-1), Real.exp (-2)] index))",
         "statement_sha256": "b4e47b7150d7675a4afcb0b4c33cd1044ed35d2f2bb4d2ea6434c6a1fd8db5fa"
@@ -156039,7 +156039,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_mean_asymmetry",
-        "source_line": 4569,
+        "source_line": 4573,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_mean_asymmetry : informationMean ≠ fun index => informationMean (2 - index)",
         "statement_sha256": "a05a65b7658bd9839de8d84bd9e3c5faddabdd015947eeab51ed08f5d20d0396"
@@ -156091,7 +156091,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_covariance",
-        "source_line": 4502,
+        "source_line": 4506,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_native_covariance (left right : Fin 3) :\n    cov[informationCoordinate left, informationCoordinate right;\n      studyProjectedLaw informationGrid] = informationCovariance left right",
         "statement_sha256": "de67b9389b4602655ad0dbf8d3c7833462632d693705fc9b28d7a724f8e9f4d9"
@@ -156142,7 +156142,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_lyapunov",
-        "source_line": 4703,
+        "source_line": 4707,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_native_lyapunov (time : ℝ≥0) :\n    klDiv ((informationFullMarginal time).map allOnesProjection) (gaussianReal 0 (1 / 2)) =\n      ENNReal.ofReal (Real.exp (-4 * (time : ℝ)))",
         "statement_sha256": "0dc5dc6a966ba9bf5be357e21f4f40ae97e6cc3f6588587957c689acd774833b"
@@ -156193,7 +156193,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_marginal",
-        "source_line": 4478,
+        "source_line": 4482,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_native_marginal (index : Fin 3) :\n    (studyProjectedLaw informationGrid).map (informationCoordinate index) =\n      gaussianReal (informationMean index) (1 / 2)",
         "statement_sha256": "ef67c388c8b2044d76fe2814c7706ace63437709f8dca16e1b79e8eb47b9ce36"
@@ -156244,7 +156244,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_mean",
-        "source_line": 4490,
+        "source_line": 4494,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_native_mean (index : Fin 3) :\n    (∫ path, informationCoordinate index path ∂studyProjectedLaw informationGrid) =\n      informationMean index",
         "statement_sha256": "b728e418b9ff0eb684e5791296fd785f5a570cc35a719bc06c63d4b305e0d205"
@@ -156307,7 +156307,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_mutualInformation",
-        "source_line": 1539,
+        "source_line": 1543,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem information_native_mutualInformation\n    (model : ScalarGaussianFilterModel) (belief : ScalarGaussianBelief) :\n    klDiv (informationJoint model belief)\n        ((informationJoint model belief).fst.prod (informationJoint model belief).snd) =\n      ENNReal.ofReal ((1 / 2 : ℝ) * Real.log\n        (1 + ((predictionBelief model belief).family.variance : ℝ) /\n          (model.observationNoise.variance : ℝ)))",
         "statement_sha256": "ea5418833ea1f815b08abbd5b2ccdf8dabda59ed461d1cf23f819edd78ffa48c"
@@ -156558,7 +156558,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.measurable_projectFullPath",
-        "source_line": 2090,
+        "source_line": 2094,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem measurable_projectFullPath (n : ℕ) : Measurable (projectFullPath n)",
         "statement_sha256": "ed58d01a5e221a5c2b505b0a6b0a9fa3922fed453fc67e425f507932ce5d615f"
@@ -156819,7 +156819,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.nonstationary_native_grid",
-        "source_line": 4098,
+        "source_line": 4102,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem nonstationary_native_grid :\n    (studyProjectedLaw informationGrid).map informationPath2Equiv =\n      gaussianARTripleLaw 1 (1 / 2) controlDecay frozenPathNoise",
         "statement_sha256": "f279fe151f6758fdbc6a14ed038f46f287b2066d95e64d77209c3ffa069b69e7"
@@ -156899,7 +156899,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.openLoopRisk_closedForm",
-        "source_line": 2502,
+        "source_line": 2506,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem openLoopRisk_closedForm (noise : ℝ≥0) (hNoise : 0 < noise)\n    (first second : Bool) :\n    policyRisk noise hNoise (openLoopPolicy first second) =\n      (1 / 2 : ℝ) +\n        ((1 - controlDecay) * (controlDecay * actionCenter first + actionCenter second)) ^ 2",
         "statement_sha256": "5e17dea842cbe934a826613947e9356feac28d013ff1109f1e35f64e8755e587"
@@ -156960,7 +156960,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.optimalPolicy_eq_feedback_false",
-        "source_line": 4832,
+        "source_line": 4836,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem optimalPolicy_eq_feedback_false (noise : ℝ≥0) (hNoise : 0 < noise) :\n    optimalPolicy noise hNoise = feedbackPolicy false noise hNoise",
         "statement_sha256": "04b162f5477107c9318b11c207b0c47a6aae3acd10f44f2edf5290dfddd1b414"
@@ -157021,7 +157021,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.optimalPolicy_first_false",
-        "source_line": 4838,
+        "source_line": 4842,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem optimalPolicy_first_false (noise : ℝ≥0) (hNoise : 0 < noise) :\n    (optimalPolicy noise hNoise).first = false",
         "statement_sha256": "4945dc6971e5c439f77f426e68e200deec39e503b9c3fc7d8c73042d8bb9247f"
@@ -157183,7 +157183,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.optimalSecond_threshold",
-        "source_line": 4744,
+        "source_line": 4748,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem optimalSecond_threshold (first : Bool) (noise : ℝ≥0) (hNoise : 0 < noise)\n    (observation : ℝ) :\n    optimalSecond first noise hNoise observation =\n      if 0 ≤ controlPosteriorMean first noise observation then false else true",
         "statement_sha256": "4866bde400f7f3a5ccda70e8ef3fee709b35aa3b89230e664647b08670db2b64"
@@ -157256,7 +157256,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.policyRisk_eq_nativePosterior",
-        "source_line": 2461,
+        "source_line": 2465,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem policyRisk_eq_nativePosterior (noise : ℝ≥0) (hNoise : 0 < noise) (policy : TwoStepPolicy) :\n    policyRisk noise hNoise policy =\n      ∫ observation, nativePosteriorQuadraticRisk controlModel\n        (firstFilter policy.first noise hNoise) (prior 0) observation (policy.second observation)\n        ∂evidenceLaw (firstFilter policy.first noise hNoise) (prior 0)",
         "statement_sha256": "2fc81539c0ee186e02fd10496639e939cf9ecb8ec949df327aa56152eb6a64ec"
@@ -157327,7 +157327,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.policy_attainment",
-        "source_line": 1143,
+        "source_line": 1147,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem policy_attainment (noise : ℝ≥0) (hNoise : 0 < noise) (policy : TwoStepPolicy) :\n    policyRisk noise hNoise (optimalPolicy noise hNoise) ≤ policyRisk noise hNoise policy",
         "statement_sha256": "d1f6edf8230314074d9ec55773d41898a29a361d335d04f9ca7e3bbf5427d086"
@@ -157399,7 +157399,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.policy_containment",
-        "source_line": 1163,
+        "source_line": 1167,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem policy_containment (noise : ℝ≥0) (hNoise : 0 < noise) (first second : Bool) :\n    policyRisk noise hNoise (optimalPolicy noise hNoise) ≤\n      policyRisk noise hNoise (openLoopPolicy first second)",
         "statement_sha256": "fb255ab06c3d919a74db6ead7d1816172d441ef16a56fde6b9142e20f9c775de"
@@ -157646,7 +157646,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.preference_counterexample",
-        "source_line": 2439,
+        "source_line": 2443,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem preference_counterexample (noise : ℝ≥0) (hNoise : 0 < noise) :\n    quadraticActionRisk controlModel (preferenceCounterBelief noise hNoise) false <\n      quadraticActionRisk controlModel (preferenceCounterBelief noise hNoise) true ∧\n    expectedFreeEnergy 1 (preferenceCounterBelief noise hNoise) true noise hNoise <\n      expectedFreeEnergy 1 (preferenceCounterBelief noise hNoise) false noise hNoise",
         "statement_sha256": "65c2aa64c6153de15ab5e259dec01b592c4f0bf8cfb5d0fd316a8f7481a5e014"
@@ -157713,7 +157713,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.restricted_class_counterexample",
-        "source_line": 2540,
+        "source_line": 2544,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem restricted_class_counterexample (noise : ℝ≥0) (hNoise : 0 < noise) :\n    policyRisk noise hNoise (openLoopPolicy true true) =\n      (1 / 2 : ℝ) + (1 - controlDecay ^ 2) ^ 2 ∧\n    policyRisk noise hNoise (openLoopPolicy false true) =\n      (1 / 2 : ℝ) + (1 - controlDecay) ^ 4 ∧\n    policyRisk noise hNoise (openLoopPolicy false true) <\n      policyRisk noise hNoise (openLoopPolicy true true)",
         "statement_sha256": "f8795373df50864404af4db693e7bb878410c9b7a3de1879f2c7a045918869a9"
@@ -157905,7 +157905,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.sensory_clamped_conditional_covariance",
-        "source_line": 2040,
+        "source_line": 2044,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem sensory_clamped_conditional_covariance (center : StandardizedState) (datum : ℝ) :\n    cov[Prod.fst, Prod.snd; sensoryClampedConditionalKernel center (datum, 0)] = 1 / 56",
         "statement_sha256": "fd8f2fa16dd4e0a21a04181580a96da9389164bd8f453df53c54c8c90abb4014"
@@ -157959,7 +157959,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.sensory_clamped_conditional_variances",
-        "source_line": 2046,
+        "source_line": 2050,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem sensory_clamped_conditional_variances (center : StandardizedState) (datum : ℝ) :\n    Var[Prod.fst; sensoryClampedConditionalKernel center (datum, 0)] = 15 / 56 ∧\n    Var[Prod.snd; sensoryClampedConditionalKernel center (datum, 0)] = 15 / 56",
         "statement_sha256": "6389177ff7f66e4f7a04161030077ace94a8669c2b9ea60d0971cb299ef844a1"
@@ -158003,7 +158003,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.sensory_clamped_native_condDistrib",
-        "source_line": 2031,
+        "source_line": 2035,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem sensory_clamped_native_condDistrib (center : StandardizedState) :\n    condDistrib sensoryEndpoints sensoryClampedBlanket (sensoryClampedLaw center)\n      =ᵐ[(sensoryClampedLaw center).map sensoryClampedBlanket]\n        sensoryClampedConditionalKernel center",
         "statement_sha256": "1b63d5e9933532df67a0f156efd182d3c1d8220b160b05a4e4dbf4b5cc7bf934"
@@ -158036,7 +158036,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.singular_grid_infinite_kl",
-        "source_line": 4179,
+        "source_line": 4183,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem singular_grid_infinite_kl :\n    klDiv (studyProjectedLaw repeatedStudyGrid) (studyReverseLaw repeatedStudyGrid) = ∞",
         "statement_sha256": "032dc4768d49f2f32143e1553ed25e27859d32f148f242131a73af293fde8a2c"
@@ -158095,7 +158095,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.terminalVariance_pos",
-        "source_line": 2319,
+        "source_line": 2323,
         "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
         "statement": "theorem terminalVariance_pos (belief : ScalarGaussianBelief) : 0 < terminalVariance belief",
         "statement_sha256": "f34ba207ed6566646495c405dbba100caf9bfc2ebfded5beae4a7323dbd31820"
@@ -199304,7 +199304,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
-          "FepSketches.variational_duality"
+          "FepSketches.variational_duality",
+          "FepSketches.decision_risk"
         ],
         "line_coordinate_kind": "canonical_topic_body_literal",
         "namespace": "fep_fep063.FEP063",
@@ -199324,7 +199325,7 @@
           }
         ],
         "qualified_name": "fep_fep063.FEP063.fep063_constantChannel_strict",
-        "source_line": 49,
+        "source_line": 65,
         "source_owner": "src/fep_lean/catalogue/bodies/variational_duality.py",
         "statement": "theorem fep063_constantChannel_strict\n    (actual reference : FiniteLaw Input) (hne : actual ≠ reference) :\n    finiteKL\n        ((FiniteKernel.deterministic (fun _ : Input => ())).predictive actual)\n        ((FiniteKernel.deterministic (fun _ : Input => ())).predictive reference) <\n      finiteKL actual reference",
         "statement_sha256": "17d00f6a908d6dd2dfba2b0977e37851323662d13e66e2ca9864e2f729c7bd40"
@@ -199434,7 +199435,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
-          "FepSketches.variational_duality"
+          "FepSketches.variational_duality",
+          "FepSketches.decision_risk"
         ],
         "line_coordinate_kind": "canonical_topic_body_literal",
         "namespace": "fep_fep063.FEP063",
@@ -199443,10 +199445,135 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing",
-        "source_line": 12,
+        "source_line": 13,
         "source_owner": "src/fep_lean/catalogue/bodies/variational_duality.py",
         "statement": "theorem fep063_finiteChannel_klDataProcessing\n    (actual reference : FiniteLaw Input)\n    (channel : FiniteKernel Input Output)\n    (hactual : ∀ input, 0 < actual input)\n    (hreference : ∀ input, 0 < reference input)\n    (hchannel : ∀ input output, 0 < channel input output) :\n    finiteKL (channel.predictive actual) (channel.predictive reference) ≤\n      finiteKL actual reference",
         "statement_sha256": "b76a3f5ec35a4fe78a23abbc7a1351005cd3d24318fbb0babdfbc6a6049c4763"
+      },
+      "fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing_of_relativeSupport": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Input",
+              "Output"
+            ],
+            "role": "typed_binder",
+            "source": "{Input Output : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Input]",
+            "type_source": "Fintype Input",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Output]",
+            "type_source": "Fintype Output",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "actual",
+              "reference"
+            ],
+            "role": "typed_binder",
+            "source": "(actual reference : FiniteLaw Input)",
+            "type_source": "FiniteLaw Input",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "channel"
+            ],
+            "role": "typed_binder",
+            "source": "(channel : FiniteKernel Input Output)",
+            "type_source": "FiniteKernel Input Output",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hsupport"
+            ],
+            "role": "typed_binder",
+            "source": "(hsupport : ∀ x, actual x ≠ 0 → 0 < reference x)",
+            "type_source": "∀ x, actual x ≠ 0 → 0 < reference x",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "finiteKL (channel.predictive actual) (channel.predictive reference) ≤\n      finiteKL actual reference",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Input",
+              "Output"
+            ],
+            "role": "typed_binder",
+            "source": "{Input Output : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Input]",
+            "type_source": "Fintype Input",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Output]",
+            "type_source": "Fintype Output",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Nonempty Input]",
+            "type_source": "Nonempty Input",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "FEP.DecisionRisk.finiteKL_mono_under_channel_of_relativeSupport",
+            "qualified_name": "FEP.DecisionRisk.finiteKL_mono_under_channel_of_relativeSupport",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.variational_duality",
+          "FepSketches.decision_risk"
+        ],
+        "line_coordinate_kind": "canonical_topic_body_literal",
+        "namespace": "fep_fep063.FEP063",
+        "namespace_variable_context": [
+          "{Input Output : Type*}\n  [Fintype Input] [Fintype Output] [Nonempty Input]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing_of_relativeSupport",
+        "source_line": 26,
+        "source_owner": "src/fep_lean/catalogue/bodies/variational_duality.py",
+        "statement": "theorem fep063_finiteChannel_klDataProcessing_of_relativeSupport\n    {Input Output : Type*} [Fintype Input] [Fintype Output]\n    (actual reference : FiniteLaw Input) (channel : FiniteKernel Input Output)\n    (hsupport : ∀ x, actual x ≠ 0 → 0 < reference x) :\n    finiteKL (channel.predictive actual) (channel.predictive reference) ≤\n      finiteKL actual reference",
+        "statement_sha256": "6ef1088f19fa411c2aec429fce6fdd24f82daa35fe88d2658259818e16e68eb7"
       },
       "fep_fep063.FEP063.fep063_identityChannel_preservesKL": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -199521,7 +199648,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
-          "FepSketches.variational_duality"
+          "FepSketches.variational_duality",
+          "FepSketches.decision_risk"
         ],
         "line_coordinate_kind": "canonical_topic_body_literal",
         "namespace": "fep_fep063.FEP063",
@@ -199536,7 +199664,7 @@
           }
         ],
         "qualified_name": "fep_fep063.FEP063.fep063_identityChannel_preservesKL",
-        "source_line": 40,
+        "source_line": 56,
         "source_owner": "src/fep_lean/catalogue/bodies/variational_duality.py",
         "statement": "theorem fep063_identityChannel_preservesKL [DecidableEq Input]\n    (actual reference : FiniteLaw Input) :\n    finiteKL (FiniteKernel.identity.predictive actual)\n        (FiniteKernel.identity.predictive reference) = finiteKL actual reference",
         "statement_sha256": "6461cfff20ecb0ef65115b382205311a795711334ec16f068d040e40b3409efe"
@@ -199636,7 +199764,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
-          "FepSketches.variational_duality"
+          "FepSketches.variational_duality",
+          "FepSketches.decision_risk"
         ],
         "line_coordinate_kind": "canonical_topic_body_literal",
         "namespace": "fep_fep063.FEP063",
@@ -199645,7 +199774,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep063.FEP063.fep063_referencePredictive_fullSupport",
-        "source_line": 25,
+        "source_line": 41,
         "source_owner": "src/fep_lean/catalogue/bodies/variational_duality.py",
         "statement": "theorem fep063_referencePredictive_fullSupport\n    (reference : FiniteLaw Input)\n    (channel : FiniteKernel Input Output)\n    (hreference : ∀ input, 0 < reference input)\n    (hchannel : ∀ input output, 0 < channel input output)\n    (output : Output) :\n    0 < channel.predictive reference output",
         "statement_sha256": "81ecd3bbf6bcc60fccb2e2eeee0d08528e1f320a2ac0f646c7a4ff0a8dfdceb7"
@@ -228097,8 +228226,8 @@
       "aggregate_namespace": "fep_fep063.FEP063",
       "area": "FEP",
       "body_source": "src/fep_lean/catalogue/bodies/variational_duality.py",
-      "body_theorem_count": 4,
-      "canonical_body_sha256": "a8e11d95db3fa8a10c2ce98c9e0f330f199bd508c54cf9b2eb5f9a126191e4e4",
+      "body_theorem_count": 5,
+      "canonical_body_sha256": "2360d671345a61fc4b2ec9745a48ed67c6b0367dd4e9407e3b16d3501b18123c",
       "canonical_namespace": "FEP063",
       "family": "variational-duality-and-information-bounds",
       "id": "fep-063",
@@ -228119,28 +228248,30 @@
         "Probability.Kernel.Composition.MeasureComp"
       ],
       "mathlib_status": "real",
-      "primary_theorem_qualified": "fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing",
+      "primary_theorem_qualified": "fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing_of_relativeSupport",
       "reviewed_theorems_qualified": {
         "boundary_theorems": [
           "fep_fep063.FEP063.fep063_constantChannel_strict"
         ],
         "supporting_theorems": [
+          "fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing",
           "fep_fep063.FEP063.fep063_referencePredictive_fullSupport",
           "fep_fep063.FEP063.fep063_identityChannel_preservesKL"
         ]
       },
       "semantic_review": {
-        "acceptance_probe": "native Lean compile of fep063_finiteChannel_klDataProcessing and fep063_referencePredictive_fullSupport with all three support certificates, plus fep063_identityChannel_preservesKL and fep063_constantChannel_strict.",
-        "assumption_review": "Input is nonempty, both input laws have strict support, and every channel atom is strictly positive; these conditions force reference-predictive support and avoid the project's totalized-log boundary. This is stronger support than the most general measure-theoretic data-processing theorem.",
+        "acceptance_probe": "Strict native Lean compile of the selected relative-support wrapper and retained old primary, plus imported full-support, sparse/shared-zero, deterministic projection, identity and singular support/native-infinity controls. Require exact standard-only axiom reports and preserve the existing coarsening boundary. Compilation does not itself promote semantic disposition. The strict imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 exact axiom queries comprise the selected canonical wrapper and 12 consumer statements, not 13 independent compiler experiments. The unchanged former primary and catalogue boundaries also require the actual native catalogue/API and declaration-audit gates.",
+        "assumption_review": "The selected primary exposes relative input support explicitly; it does not assume strict positivity of either full input law or all channel entries. Local discrete measurable instances bridge the existing finite-law theorem. This is the project's totalized real finiteKL convention under relative support, not a theorem identifying a singular native extended KL with a finite real value. The retained former primary still provides its exact full-support specialization and unchanged API.",
         "boundary_theorems": [
           "fep063_constantChannel_strict"
         ],
         "disposition": "conditional_proxy",
         "id": "fep-063",
-        "invariant": "Passing two finite full-support laws through the same strictly positive finite channel cannot increase their finite KL divergence.",
-        "non_vacuity": "Any noisy positive channel acting on unequal full-support input laws exercises a genuine contraction comparison. Separate identity and complete-coarsening witnesses cover deterministic zero-entry channels: identity preserves finite KL and complete coarsening strictly reduces it for unequal laws. These do not weaken the support premises of the primary theorem or identify singular native infinity with the project's totalized finite convention.",
-        "primary_theorem": "fep063_finiteChannel_klDataProcessing",
+        "invariant": "Passing finite actual and reference laws through the same finite channel cannot increase finite KL when every atom carrying nonzero actual mass has strictly positive reference mass. Shared-zero atoms and zero channel entries are permitted.",
+        "non_vacuity": "Unequal full-support laws exercise the positive-support specialization. A point mass compared with a diagonal reference law has genuine shared-zero atoms and passes a deterministic projection through the relative-support theorem. Identity preserves finite KL and complete coarsening contracts it. Disjoint point masses violate the support premise: their totalized finiteKL is one while native extended KL is infinite.",
+        "primary_theorem": "fep063_finiteChannel_klDataProcessing_of_relativeSupport",
         "supporting_theorems": [
+          "fep063_finiteChannel_klDataProcessing",
           "fep063_referencePredictive_fullSupport",
           "fep063_identityChannel_preservesKL"
         ]
@@ -228173,7 +228304,7 @@
         "Algebra.Order.BigOperators.Group.Finset"
       ],
       "mathlib_status": "real",
-      "primary_theorem_qualified": "fep_fep064.FEP064.fep064_rateDistortion_weakDuality",
+      "primary_theorem_qualified": "fep_fep064.FEP064.fep064_rateDistortion_dual_lower_bound",
       "reviewed_theorems_qualified": {
         "boundary_theorems": [
           "fep_fep064.FEP064.fep064_zeroMultiplier_boundary",
@@ -228184,13 +228315,13 @@
         ],
         "supporting_theorems": [
           "fep_fep064.FEP064.fep064_rateDistortion_exists_minimizer",
-          "fep_fep064.FEP064.fep064_rateDistortion_dual_lower_bound",
+          "fep_fep064.FEP064.fep064_rateDistortion_weakDuality",
           "fep_fep064.FEP064.fep064_quarterBudget_informative_optimum"
         ]
       },
       "semantic_review": {
-        "acceptance_probe": "native Lean compile of fep064_rateDistortion_weakDuality and fep064_zeroMultiplier_boundary, all three supporting attainment/duality/ informative-interior declarations, and the zero-dual, negative-budget, nonunique-half-budget, and unique-zero-budget boundaries. The actual optimizer is derived, never supplied as a certificate field.",
-        "assumption_review": "The theorem assumes both component lower bounds rather than deriving a dual function. The supporting attainment theorem instead derives primal optimizer existence from compactness and the continuous zero-safe entropy expression for mutual information, requiring only a feasible finite joint with fixed source marginal. Infimum-derived weak duality requires nonnegative distortion and multiplier; zero-multiplier dual value requires a nonempty code alphabet. Neither general strong duality, dual attainment, a closed-form interior rate function, nor general optimizer uniqueness is claimed. The structural-proxy disposition and primary theorem remain unchanged: the primary theorem still assumes separately certified component lower bounds, while the independently reviewed supporting theorems establish finite optimizer attainment and infimum-derived weak duality.",
+        "acceptance_probe": "Strict native Lean compile of the existing actual-infimum weak-dual primary, former component-bound primary and retained minimizer/informative-interior support, plus positive-multiplier, zero-dual, negative-budget, nonunique-half and unique-zero controls. Preserve the separate finite F07 all-feasible dual-supremum and Slater-attainment scope and zero-source-atom controls. Exact declaration ownership and standard-only axiom reports are required. The same strict imported-consumer command from lean/ is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 queries cover the canonical 063 wrapper and 12 shared consumer statements, including the actual 064 weak bound and multiplier controls. Retained old-primary and additional 064 boundaries remain subject to the actual native catalogue/API and declaration-audit gates separately.",
+        "assumption_review": "The selected primary assumes an actual feasible finite joint and nonnegative distortion and multiplier; it does not assume separately certified component lower bounds. The underlying infimum is genuinely derived. Retained support separately provides primal minimizer attainment by compactness. The reviewed finite F07 capability proves primal minimum equals nonnegative-multiplier dual supremum for every feasible finite problem, and finite dual attainment with complementary slackness under strict Slater feasibility. Those scoped capabilities do not turn this primary weak bound into unrestricted general strong duality, finite boundary dual attainment, or optimizer uniqueness. The structural-proxy disposition remains unchanged pending explicit review.",
         "boundary_theorems": [
           "fep064_zeroMultiplier_boundary",
           "fep064_dual_zeroMultiplier",
@@ -228200,12 +228331,12 @@
         ],
         "disposition": "structural_proxy",
         "id": "fep-064",
-        "invariant": "Separately certified lower bounds on finite mutual information and expected distortion combine into a lower bound on their rate–distortion Lagrangian for every nonnegative multiplier. Supporting theorems now additionally establish an attained information minimum for every nonempty finite fixed-source distortion-feasible set, an actual Lagrangian-infimum weak-duality bound, and an attained strictly positive optimum at fair Boolean Hamming budget one quarter.",
-        "non_vacuity": "Positive multipliers make both certified components contribute, while setting the multiplier to zero reduces the Lagrangian exactly to mutual information and gives dual value zero. A concrete quarter-crossover Boolean joint makes the interior budget feasible, while every independent fair-source joint has distortion one half, forcing the attained quarter-budget optimum positive. Negative budgets are infeasible, zero budget forces a unique diagonal joint, and half budget has two distinct independent information minimizers.",
-        "primary_theorem": "fep064_rateDistortion_weakDuality",
+        "invariant": "The actual finite rate-distortion Lagrangian-infimum dual value is at most the mutual information of every joint law with the required source marginal and distortion budget, for nonnegative distortion and multiplier. The former component-bound Lagrangian inequality remains an unchanged supporting API.",
+        "non_vacuity": "A feasible fair Boolean quarter-budget joint has positive mutual information and exercises the weak bound at a positive multiplier; this does not assert that the chosen multiplier maximizes the dual. Zero multiplier is a separate boundary with zero dual value on a nonempty code alphabet. Negative budgets are infeasible for nonnegative distortion; zero budget forces a unique Boolean diagonal joint while half budget has distinct information minimizers.",
+        "primary_theorem": "fep064_rateDistortion_dual_lower_bound",
         "supporting_theorems": [
           "fep064_rateDistortion_exists_minimizer",
-          "fep064_rateDistortion_dual_lower_bound",
+          "fep064_rateDistortion_weakDuality",
           "fep064_quarterBudget_informative_optimum"
         ]
       },

@@ -5707,48 +5707,68 @@ topics:
   - InformationTheory.KullbackLeibler.ChainRule
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
-  primary_theorem: fep063_finiteChannel_klDataProcessing
+  primary_theorem: fep063_finiteChannel_klDataProcessing_of_relativeSupport
   supporting_theorems:
+  - fep063_finiteChannel_klDataProcessing
   - fep063_referencePredictive_fullSupport
   - fep063_identityChannel_preservesKL
   boundary_theorems:
   - fep063_constantChannel_strict
   semantic_disposition: conditional_proxy
-  nl: 'Passing two finite full-support laws through the same strictly positive finite channel cannot increase their finite
-    KL divergence. Assumption scope: Input is nonempty, both input laws have strict support, and every channel atom is strictly
-    positive; these conditions force reference-predictive support and avoid the project''s totalized-log boundary. This is
-    stronger support than the most general measure-theoretic data-processing theorem. Semantic disposition: `conditional_proxy`.
+  nl: 'Passing finite actual and reference laws through the same finite channel cannot increase finite KL when every atom
+    carrying nonzero actual mass has strictly positive reference mass. Shared-zero atoms and zero channel entries are permitted.
+    Assumption scope: The selected primary exposes relative input support explicitly; it does not assume strict positivity
+    of either full input law or all channel entries. Local discrete measurable instances bridge the existing finite-law theorem.
+    This is the project''s totalized real finiteKL convention under relative support, not a theorem identifying a singular
+    native extended KL with a finite real value. The retained former primary still provides its exact full-support specialization
+    and unchanged API. Semantic disposition: `conditional_proxy`.
 
     '
-  assumption_review: Input is nonempty, both input laws have strict support, and every channel atom is strictly positive;
-    these conditions force reference-predictive support and avoid the project's totalized-log boundary. This is stronger support
-    than the most general measure-theoretic data-processing theorem.
-  non_vacuity: 'Any noisy positive channel acting on unequal full-support input laws exercises a genuine contraction comparison.
-    Separate identity and complete-coarsening witnesses cover deterministic zero-entry channels: identity preserves finite
-    KL and complete coarsening strictly reduces it for unequal laws. These do not weaken the support premises of the primary
-    theorem or identify singular native infinity with the project''s totalized finite convention.'
-  acceptance_probe: native Lean compile of fep063_finiteChannel_klDataProcessing and fep063_referencePredictive_fullSupport
-    with all three support certificates, plus fep063_identityChannel_preservesKL and fep063_constantChannel_strict.
-  lean_sketch: "import FepSketches.variational_duality\n\nnamespace FEP063\n\nopen FEP FEP.FiniteInformation FEP.VariationalDuality\n\
-    \nvariable {Input Output : Type*}\n  [Fintype Input] [Fintype Output] [Nonempty Input]\n\n/-- Passing two full-support\
-    \ laws through the same strictly positive finite\nchannel cannot increase KL divergence. -/\ntheorem fep063_finiteChannel_klDataProcessing\n\
-    \    (actual reference : FiniteLaw Input)\n    (channel : FiniteKernel Input Output)\n    (hactual : ∀ input, 0 < actual\
-    \ input)\n    (hreference : ∀ input, 0 < reference input)\n    (hchannel : ∀ input output, 0 < channel input output) :\n\
-    \    finiteKL (channel.predictive actual) (channel.predictive reference) ≤\n      finiteKL actual reference :=\n  finiteChannel_dataProcessing\
-    \ actual reference channel\n    hactual hreference hchannel\n\n/-- The same support assumptions make every reference predictive\
-    \ atom\npositive, pinning the logarithmic boundary used by the proof. -/\ntheorem fep063_referencePredictive_fullSupport\n\
-    \    (reference : FiniteLaw Input)\n    (channel : FiniteKernel Input Output)\n    (hreference : ∀ input, 0 < reference\
-    \ input)\n    (hchannel : ∀ input output, 0 < channel input output)\n    (output : Output) :\n    0 < channel.predictive\
-    \ reference output := by\n  simp only [FiniteKernel.predictive_mass]\n  exact Finset.sum_pos (fun input _ =>\n    mul_pos\
-    \ (hreference input) (hchannel input output))\n    Finset.univ_nonempty\n\nomit [Nonempty Input] in\n/-- A deterministic\
-    \ identity channel preserves finite KL exactly, despite\nits zero off-diagonal channel entries. -/\ntheorem fep063_identityChannel_preservesKL\
-    \ [DecidableEq Input]\n    (actual reference : FiniteLaw Input) :\n    finiteKL (FiniteKernel.identity.predictive actual)\n\
-    \        (FiniteKernel.identity.predictive reference) = finiteKL actual reference :=\n  finiteChannel_identity_preservesKL\
-    \ actual reference\n\nomit [Nonempty Input] in\n/-- Complete deterministic coarsening strictly reduces the repository's\n\
-    finite divergence for unequal normalized input laws. -/\ntheorem fep063_constantChannel_strict\n    (actual reference\
-    \ : FiniteLaw Input) (hne : actual ≠ reference) :\n    finiteKL\n        ((FiniteKernel.deterministic (fun _ : Input =>\
-    \ ())).predictive actual)\n        ((FiniteKernel.deterministic (fun _ : Input => ())).predictive reference) <\n     \
-    \ finiteKL actual reference :=\n  constantChannel_KL_strict actual reference hne\n\nend FEP063\n"
+  assumption_review: The selected primary exposes relative input support explicitly; it does not assume strict positivity
+    of either full input law or all channel entries. Local discrete measurable instances bridge the existing finite-law theorem.
+    This is the project's totalized real finiteKL convention under relative support, not a theorem identifying a singular
+    native extended KL with a finite real value. The retained former primary still provides its exact full-support specialization
+    and unchanged API.
+  non_vacuity: 'Unequal full-support laws exercise the positive-support specialization. A point mass compared with a diagonal
+    reference law has genuine shared-zero atoms and passes a deterministic projection through the relative-support theorem.
+    Identity preserves finite KL and complete coarsening contracts it. Disjoint point masses violate the support premise:
+    their totalized finiteKL is one while native extended KL is infinite.'
+  acceptance_probe: Strict native Lean compile of the selected relative-support wrapper and retained old primary, plus imported
+    full-support, sparse/shared-zero, deterministic projection, identity and singular support/native-infinity controls. Require
+    exact standard-only axiom reports and preserve the existing coarsening boundary. Compilation does not itself promote semantic
+    disposition. The strict imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`.
+    After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from
+    lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 exact axiom queries
+    comprise the selected canonical wrapper and 12 consumer statements, not 13 independent compiler experiments. The unchanged
+    former primary and catalogue boundaries also require the actual native catalogue/API and declaration-audit gates.
+  lean_sketch: "import FepSketches.variational_duality\nimport FepSketches.decision_risk\n\nnamespace FEP063\n\nopen FEP FEP.FiniteInformation\
+    \ FEP.VariationalDuality\n\nvariable {Input Output : Type*}\n  [Fintype Input] [Fintype Output] [Nonempty Input]\n\n/--\
+    \ Passing two full-support laws through the same strictly positive finite\nchannel cannot increase KL divergence. -/\n\
+    theorem fep063_finiteChannel_klDataProcessing\n    (actual reference : FiniteLaw Input)\n    (channel : FiniteKernel Input\
+    \ Output)\n    (hactual : ∀ input, 0 < actual input)\n    (hreference : ∀ input, 0 < reference input)\n    (hchannel :\
+    \ ∀ input output, 0 < channel input output) :\n    finiteKL (channel.predictive actual) (channel.predictive reference)\
+    \ ≤\n      finiteKL actual reference :=\n  finiteChannel_dataProcessing actual reference channel\n    hactual hreference\
+    \ hchannel\n\n/-- Relative input support suffices for finite KL data processing; channel\nentries and shared-zero input\
+    \ atoms need not be strictly positive. -/\ntheorem fep063_finiteChannel_klDataProcessing_of_relativeSupport\n    {Input\
+    \ Output : Type*} [Fintype Input] [Fintype Output]\n    (actual reference : FiniteLaw Input) (channel : FiniteKernel Input\
+    \ Output)\n    (hsupport : ∀ x, actual x ≠ 0 → 0 < reference x) :\n    finiteKL (channel.predictive actual) (channel.predictive\
+    \ reference) ≤\n      finiteKL actual reference := by\n  let : MeasurableSpace Input := ⊤\n  let : MeasurableSpace Output\
+    \ := ⊤\n  let : DiscreteMeasurableSpace Input := ⟨fun _ => trivial⟩\n  let : DiscreteMeasurableSpace Output := ⟨fun _\
+    \ => trivial⟩\n  exact FEP.DecisionRisk.finiteKL_mono_under_channel_of_relativeSupport\n    actual reference channel hsupport\n\
+    \n/-- The same support assumptions make every reference predictive atom\npositive, pinning the logarithmic boundary used\
+    \ by the proof. -/\ntheorem fep063_referencePredictive_fullSupport\n    (reference : FiniteLaw Input)\n    (channel :\
+    \ FiniteKernel Input Output)\n    (hreference : ∀ input, 0 < reference input)\n    (hchannel : ∀ input output, 0 < channel\
+    \ input output)\n    (output : Output) :\n    0 < channel.predictive reference output := by\n  simp only [FiniteKernel.predictive_mass]\n\
+    \  exact Finset.sum_pos (fun input _ =>\n    mul_pos (hreference input) (hchannel input output))\n    Finset.univ_nonempty\n\
+    \nomit [Nonempty Input] in\n/-- A deterministic identity channel preserves finite KL exactly, despite\nits zero off-diagonal\
+    \ channel entries. -/\ntheorem fep063_identityChannel_preservesKL [DecidableEq Input]\n    (actual reference : FiniteLaw\
+    \ Input) :\n    finiteKL (FiniteKernel.identity.predictive actual)\n        (FiniteKernel.identity.predictive reference)\
+    \ = finiteKL actual reference :=\n  finiteChannel_identity_preservesKL actual reference\n\nomit [Nonempty Input] in\n\
+    /-- Complete deterministic coarsening strictly reduces the repository's\nfinite divergence for unequal normalized input\
+    \ laws. -/\ntheorem fep063_constantChannel_strict\n    (actual reference : FiniteLaw Input) (hne : actual ≠ reference)\
+    \ :\n    finiteKL\n        ((FiniteKernel.deterministic (fun _ : Input => ())).predictive actual)\n        ((FiniteKernel.deterministic\
+    \ (fun _ : Input => ())).predictive reference) <\n      finiteKL actual reference :=\n  constantChannel_KL_strict actual\
+    \ reference hne\n\nend FEP063\n"
   latex_equations:
   - '\begin{aligned}
 
@@ -5763,6 +5783,24 @@ topics:
 
     &(\mathsf{hchannel} : \forall \mathsf{input}\,\mathsf{output}, 0 < \mathsf{channel}\,\mathsf{input}\,\mathsf{output})
     \\
+
+    &\mathsf{finiteKL}\,(\mathsf{channel.predictive}\,\mathsf{actual})\,(\mathsf{channel.predictive}\,\mathsf{reference})
+    \le \mathsf{finiteKL} \\
+
+    &\mathsf{actual}\,\mathsf{reference}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Input}\,\mathsf{Output} : \mathsf{Type}^{*}\} \\
+
+    &\{\mathsf{Input}\,\mathsf{Output} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Input}]\,[\mathsf{Fintype}\,\mathsf{Output}]
+    \\
+
+    &(\mathsf{actual}\,\mathsf{reference} : \mathsf{FiniteLaw}\,\mathsf{Input})\,(\mathsf{channel} : \mathsf{FiniteKernel}\,\mathsf{Input}\,\mathsf{Output})
+    \\
+
+    &(\mathsf{hsupport} : \forall x, \mathsf{actual}\,x \ne 0 \Rightarrow 0 < \mathsf{reference}\,x) \\
 
     &\mathsf{finiteKL}\,(\mathsf{channel.predictive}\,\mathsf{actual})\,(\mathsf{channel.predictive}\,\mathsf{reference})
     \le \mathsf{finiteKL} \\
@@ -5820,10 +5858,10 @@ topics:
   - InformationTheory.KullbackLeibler.Basic
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
-  primary_theorem: fep064_rateDistortion_weakDuality
+  primary_theorem: fep064_rateDistortion_dual_lower_bound
   supporting_theorems:
   - fep064_rateDistortion_exists_minimizer
-  - fep064_rateDistortion_dual_lower_bound
+  - fep064_rateDistortion_weakDuality
   - fep064_quarterBudget_informative_optimum
   boundary_theorems:
   - fep064_zeroMultiplier_boundary
@@ -5832,36 +5870,38 @@ topics:
   - fep064_halfBudget_nonunique
   - fep064_zeroBudget_unique
   semantic_disposition: structural_proxy
-  nl: 'Separately certified lower bounds on finite mutual information and expected distortion combine into a lower bound on
-    their rate–distortion Lagrangian for every nonnegative multiplier. Supporting theorems now additionally establish an attained
-    information minimum for every nonempty finite fixed-source distortion-feasible set, an actual Lagrangian-infimum weak-duality
-    bound, and an attained strictly positive optimum at fair Boolean Hamming budget one quarter. Assumption scope: The theorem
-    assumes both component lower bounds rather than deriving a dual function. The supporting attainment theorem instead derives
-    primal optimizer existence from compactness and the continuous zero-safe entropy expression for mutual information, requiring
-    only a feasible finite joint with fixed source marginal. Infimum-derived weak duality requires nonnegative distortion
-    and multiplier; zero-multiplier dual value requires a nonempty code alphabet. Neither general strong duality, dual attainment,
-    a closed-form interior rate function, nor general optimizer uniqueness is claimed. The structural-proxy disposition and
-    primary theorem remain unchanged: the primary theorem still assumes separately certified component lower bounds, while
-    the independently reviewed supporting theorems establish finite optimizer attainment and infimum-derived weak duality.
-    Semantic disposition: `structural_proxy`.
+  nl: 'The actual finite rate-distortion Lagrangian-infimum dual value is at most the mutual information of every joint law
+    with the required source marginal and distortion budget, for nonnegative distortion and multiplier. The former component-bound
+    Lagrangian inequality remains an unchanged supporting API. Assumption scope: The selected primary assumes an actual feasible
+    finite joint and nonnegative distortion and multiplier; it does not assume separately certified component lower bounds.
+    The underlying infimum is genuinely derived. Retained support separately provides primal minimizer attainment by compactness.
+    The reviewed finite F07 capability proves primal minimum equals nonnegative-multiplier dual supremum for every feasible
+    finite problem, and finite dual attainment with complementary slackness under strict Slater feasibility. Those scoped
+    capabilities do not turn this primary weak bound into unrestricted general strong duality, finite boundary dual attainment,
+    or optimizer uniqueness. The structural-proxy disposition remains unchanged pending explicit review. Semantic disposition:
+    `structural_proxy`.
 
     '
-  assumption_review: 'The theorem assumes both component lower bounds rather than deriving a dual function. The supporting
-    attainment theorem instead derives primal optimizer existence from compactness and the continuous zero-safe entropy expression
-    for mutual information, requiring only a feasible finite joint with fixed source marginal. Infimum-derived weak duality
-    requires nonnegative distortion and multiplier; zero-multiplier dual value requires a nonempty code alphabet. Neither
-    general strong duality, dual attainment, a closed-form interior rate function, nor general optimizer uniqueness is claimed.
-    The structural-proxy disposition and primary theorem remain unchanged: the primary theorem still assumes separately certified
-    component lower bounds, while the independently reviewed supporting theorems establish finite optimizer attainment and
-    infimum-derived weak duality.'
-  non_vacuity: Positive multipliers make both certified components contribute, while setting the multiplier to zero reduces
-    the Lagrangian exactly to mutual information and gives dual value zero. A concrete quarter-crossover Boolean joint makes
-    the interior budget feasible, while every independent fair-source joint has distortion one half, forcing the attained
-    quarter-budget optimum positive. Negative budgets are infeasible, zero budget forces a unique diagonal joint, and half
-    budget has two distinct independent information minimizers.
-  acceptance_probe: native Lean compile of fep064_rateDistortion_weakDuality and fep064_zeroMultiplier_boundary, all three
-    supporting attainment/duality/ informative-interior declarations, and the zero-dual, negative-budget, nonunique-half-budget,
-    and unique-zero-budget boundaries. The actual optimizer is derived, never supplied as a certificate field.
+  assumption_review: The selected primary assumes an actual feasible finite joint and nonnegative distortion and multiplier;
+    it does not assume separately certified component lower bounds. The underlying infimum is genuinely derived. Retained
+    support separately provides primal minimizer attainment by compactness. The reviewed finite F07 capability proves primal
+    minimum equals nonnegative-multiplier dual supremum for every feasible finite problem, and finite dual attainment with
+    complementary slackness under strict Slater feasibility. Those scoped capabilities do not turn this primary weak bound
+    into unrestricted general strong duality, finite boundary dual attainment, or optimizer uniqueness. The structural-proxy
+    disposition remains unchanged pending explicit review.
+  non_vacuity: A feasible fair Boolean quarter-budget joint has positive mutual information and exercises the weak bound at
+    a positive multiplier; this does not assert that the chosen multiplier maximizes the dual. Zero multiplier is a separate
+    boundary with zero dual value on a nonempty code alphabet. Negative budgets are infeasible for nonnegative distortion;
+    zero budget forces a unique Boolean diagonal joint while half budget has distinct information minimizers.
+  acceptance_probe: Strict native Lean compile of the existing actual-infimum weak-dual primary, former component-bound primary
+    and retained minimizer/informative-interior support, plus positive-multiplier, zero-dual, negative-budget, nonunique-half
+    and unique-zero controls. Preserve the separate finite F07 all-feasible dual-supremum and Slater-attainment scope and
+    zero-source-atom controls. Exact declaration ownership and standard-only axiom reports are required. The same strict imported-consumer
+    command from lean/ is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`.
+    After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from
+    lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 queries cover the canonical
+    063 wrapper and 12 shared consumer statements, including the actual 064 weak bound and multiplier controls. Retained old-primary
+    and additional 064 boundaries remain subject to the actual native catalogue/API and declaration-audit gates separately.
   lean_sketch: "import FepSketches.variational_duality\n\nnamespace FEP064\n\nopen FEP FEP.FiniteInformation FEP.VariationalDuality\n\
     \nvariable {Source Code : Type*} [Fintype Source] [Fintype Code]\n\n/-- Separately certified rate and distortion lower\
     \ bounds yield a lower bound\non the finite rate--distortion Lagrangian for every nonnegative multiplier. -/\ntheorem\

@@ -1083,7 +1083,24 @@ def policyRisk (noise : ℝ≥0) (hNoise : 0 < noise) (policy : TwoStepPolicy) :
   ∫ observation, secondRisk policy.first noise hNoise observation (policy.second observation)
     ∂evidenceLaw (firstFilter policy.first noise hNoise) (prior 0)
 
-set_option maxHeartbeats 800000 in
+/-- Named Gaussian L2 leaf with explicit law, independent of filter unfolding. -/
+private theorem gaussian_centeredAffine_memLp (mean : ℝ) (variance : ℝ≥0)
+    (offset coefficient : ℝ) :
+    MemLp (fun observation : ℝ => offset + coefficient * (observation - offset))
+      2 (gaussianReal mean variance) := by
+  have hIdentity : MemLp (fun observation : ℝ => observation) 2
+      (gaussianReal mean variance) := memLp_id_gaussianReal 2
+  have hConstant : MemLp (fun _ : ℝ => offset) 2
+      (gaussianReal mean variance) := memLp_const offset
+  exact hConstant.add ((hIdentity.sub hConstant).const_mul coefficient)
+
+/-- Isolate the actual posterior affine formula from the terminal square. -/
+private theorem controlPosteriorMean_memLp (first : Bool) (noise : ℝ≥0)
+    (mean : ℝ) (variance : ℝ≥0) :
+    MemLp (controlPosteriorMean first noise) 2 (gaussianReal mean variance) := by
+  exact gaussian_centeredAffine_memLp mean variance
+    ((1 - controlDecay) * actionCenter first) ((1 / 2 : ℝ) / (1 / 2 + noise))
+
 private theorem secondRisk_integrable (first second : Bool) (noise : ℝ≥0)
     (hNoise : 0 < noise) : Integrable
       (fun observation => secondRisk first noise hNoise observation second)
@@ -1092,29 +1109,16 @@ private theorem secondRisk_integrable (first second : Bool) (noise : ℝ≥0)
   change Integrable (fun observation => secondRisk first noise hNoise observation second)
     (gaussianReal (predictionBelief (firstFilter first noise hNoise) (prior 0)).mean
       (innovationVariance (firstFilter first noise hNoise) (prior 0)))
-  have hIdentity : MemLp (fun observation : ℝ => observation) 2
-      (gaussianReal (predictionBelief (firstFilter first noise hNoise) (prior 0)).mean
-        (innovationVariance (firstFilter first noise hNoise) (prior 0))) :=
-    memLp_id_gaussianReal 2
-  have hMean : MemLp (controlPosteriorMean first noise) 2
-      (gaussianReal (predictionBelief (firstFilter first noise hNoise) (prior 0)).mean
-        (innovationVariance (firstFilter first noise hNoise) (prior 0))) := by
-    let predicted : ℝ := (1 - controlDecay) * actionCenter first
-    let coefficient : ℝ := (1 / 2 : ℝ) / (1 / 2 + noise)
-    have hConstant : MemLp (fun _ : ℝ => predicted) 2
-        (gaussianReal (predictionBelief (firstFilter first noise hNoise) (prior 0)).mean
-          (innovationVariance (firstFilter first noise hNoise) (prior 0))) := memLp_const predicted
-    have hCentered : MemLp (fun observation : ℝ => observation - predicted) 2
-        (gaussianReal (predictionBelief (firstFilter first noise hNoise) (prior 0)).mean
-          (innovationVariance (firstFilter first noise hNoise) (prior 0))) := hIdentity.sub hConstant
-    exact hConstant.add (hCentered.const_mul coefficient)
-  simp_rw [secondRisk_closedForm]
+  have hMean := controlPosteriorMean_memLp first noise
+    (predictionBelief (firstFilter first noise hNoise) (prior 0)).mean
+    (innovationVariance (firstFilter first noise hNoise) (prior 0))
   have hTerminalMean : MemLp (fun observation =>
       controlDecay * controlPosteriorMean first noise observation +
         (1 - controlDecay) * actionCenter second) 2
       (gaussianReal (predictionBelief (firstFilter first noise hNoise) (prior 0)).mean
         (innovationVariance (firstFilter first noise hNoise) (prior 0))) :=
     (hMean.const_mul controlDecay).add (memLp_const _)
+  simp_rw [secondRisk_closedForm]
   exact (integrable_const (controlDecay ^ 2 * (controlPosteriorVariance noise : ℝ) +
     (1 - controlDecay ^ 2) / 2)).add hTerminalMean.integrable_sq
 

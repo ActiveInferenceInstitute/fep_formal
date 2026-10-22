@@ -14,6 +14,7 @@ from tests._support.fast_relaxation_review import (
     reverse_fast_relaxation_raw,
     reverse_fast_relaxation_rows,
 )
+from tests._support.lean_module_contract import reverse_primary_alignment_raw
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -58,7 +59,9 @@ def test_fast_relaxation_inverse_rejects_changed_roster_or_field(capability, mut
 
 
 def test_fast_relaxation_raw_inverse_retains_historical_bytes():
-    raw = (ROOT / "config/theorem_maturity.yaml").read_bytes()
+    raw = reverse_primary_alignment_raw(
+        (ROOT / "config/theorem_maturity.yaml").read_bytes(), ROOT
+    )
     before = reverse_fast_relaxation_raw(raw, ROOT)
     review = fast_relaxation_review(ROOT)["maturity"]
     assert yaml.safe_load(before)["topics"][158] == review["before"]
@@ -66,7 +69,9 @@ def test_fast_relaxation_raw_inverse_retains_historical_bytes():
 
 @pytest.mark.parametrize("mutation", ["outside", "inside", "missing", "duplicate"])
 def test_fast_relaxation_raw_inverse_rejects_changed_bytes(mutation):
-    raw = (ROOT / "config/theorem_maturity.yaml").read_bytes()
+    raw = reverse_primary_alignment_raw(
+        (ROOT / "config/theorem_maturity.yaml").read_bytes(), ROOT
+    )
     block = fast_relaxation_review(ROOT)["maturity"]["after_raw_block"].encode()
     if mutation == "outside":
         raw += b"# unreviewed\n"

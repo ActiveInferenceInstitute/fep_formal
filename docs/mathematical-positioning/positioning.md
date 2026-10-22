@@ -8988,29 +8988,27 @@ Boundary theorems: none recorded.
 
 Family: `variational-duality-and-information-bounds`. Disposition: `conditional_proxy`.
 
-Primary theorem: `fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing`.
+Primary theorem: `fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing_of_relativeSupport`.
 
 Body owner: `src/fep_lean/catalogue/bodies/variational_duality.py`; canonical namespace `FEP063`.
 
-Invariant: Passing two finite full-support laws through the same strictly positive finite channel cannot increase their finite KL divergence.
+Invariant: Passing finite actual and reference laws through the same finite channel cannot increase finite KL when every atom carrying nonzero actual mass has strictly positive reference mass. Shared-zero atoms and zero channel entries are permitted.
 
-Assumptions: Input is nonempty, both input laws have strict support, and every channel atom is strictly positive; these conditions force reference-predictive support and avoid the project's totalized-log boundary. This is stronger support than the most general measure-theoretic data-processing theorem.
+Assumptions: The selected primary exposes relative input support explicitly; it does not assume strict positivity of either full input law or all channel entries. Local discrete measurable instances bridge the existing finite-law theorem. This is the project's totalized real finiteKL convention under relative support, not a theorem identifying a singular native extended KL with a finite real value. The retained former primary still provides its exact full-support specialization and unchanged API.
 
-Non-vacuity: Any noisy positive channel acting on unequal full-support input laws exercises a genuine contraction comparison. Separate identity and complete-coarsening witnesses cover deterministic zero-entry channels: identity preserves finite KL and complete coarsening strictly reduces it for unequal laws. These do not weaken the support premises of the primary theorem or identify singular native infinity with the project's totalized finite convention.
+Non-vacuity: Unequal full-support laws exercise the positive-support specialization. A point mass compared with a diagonal reference law has genuine shared-zero atoms and passes a deterministic projection through the relative-support theorem. Identity preserves finite KL and complete coarsening contracts it. Disjoint point masses violate the support premise: their totalized finiteKL is one while native extended KL is infinite.
 
-Canonical acceptance probe: native Lean compile of fep063_finiteChannel_klDataProcessing and fep063_referencePredictive_fullSupport with all three support certificates, plus fep063_identityChannel_preservesKL and fep063_constantChannel_strict.
+Canonical acceptance probe: Strict native Lean compile of the selected relative-support wrapper and retained old primary, plus imported full-support, sparse/shared-zero, deterministic projection, identity and singular support/native-infinity controls. Require exact standard-only axiom reports and preserve the existing coarsening boundary. Compilation does not itself promote semantic disposition. The strict imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 exact axiom queries comprise the selected canonical wrapper and 12 consumer statements, not 13 independent compiler experiments. The unchanged former primary and catalogue boundaries also require the actual native catalogue/API and declaration-audit gates.
 
 Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.
 
 Exact primary Lean statement:
 
 ```lean
-theorem fep063_finiteChannel_klDataProcessing
-    (actual reference : FiniteLaw Input)
-    (channel : FiniteKernel Input Output)
-    (hactual : ∀ input, 0 < actual input)
-    (hreference : ∀ input, 0 < reference input)
-    (hchannel : ∀ input output, 0 < channel input output) :
+theorem fep063_finiteChannel_klDataProcessing_of_relativeSupport
+    {Input Output : Type*} [Fintype Input] [Fintype Output]
+    (actual reference : FiniteLaw Input) (channel : FiniteKernel Input Output)
+    (hsupport : ∀ x, actual x ≠ 0 → 0 < reference x) :
     finiteKL (channel.predictive actual) (channel.predictive reference) ≤
       finiteKL actual reference
 ```
@@ -9026,6 +9024,33 @@ Exact typed binder groups (syntactic roles):
 
 ```json
 [
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [
+      "Input",
+      "Output"
+    ],
+    "role": "typed_binder",
+    "source": "{Input Output : Type*}",
+    "type_source": "Type*",
+    "visibility": "implicit"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [],
+    "role": "instance_requirement",
+    "source": "[Fintype Input]",
+    "type_source": "Fintype Input",
+    "visibility": "instance"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [],
+    "role": "instance_requirement",
+    "source": "[Fintype Output]",
+    "type_source": "Fintype Output",
+    "visibility": "instance"
+  },
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
     "names": [
@@ -9050,31 +9075,11 @@ Exact typed binder groups (syntactic roles):
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
     "names": [
-      "hactual"
+      "hsupport"
     ],
     "role": "typed_binder",
-    "source": "(hactual : ∀ input, 0 < actual input)",
-    "type_source": "∀ input, 0 < actual input",
-    "visibility": "explicit"
-  },
-  {
-    "hypothesis_status": "source syntax; proposition elaboration not performed",
-    "names": [
-      "hreference"
-    ],
-    "role": "typed_binder",
-    "source": "(hreference : ∀ input, 0 < reference input)",
-    "type_source": "∀ input, 0 < reference input",
-    "visibility": "explicit"
-  },
-  {
-    "hypothesis_status": "source syntax; proposition elaboration not performed",
-    "names": [
-      "hchannel"
-    ],
-    "role": "typed_binder",
-    "source": "(hchannel : ∀ input output, 0 < channel input output)",
-    "type_source": "∀ input output, 0 < channel input output",
+    "source": "(hsupport : ∀ x, actual x ≠ 0 → 0 < reference x)",
+    "type_source": "∀ x, actual x ≠ 0 → 0 < reference x",
     "visibility": "explicit"
   }
 ]
@@ -9087,9 +9092,9 @@ finiteKL (channel.predictive actual) (channel.predictive reference) ≤
       finiteKL actual reference
 ```
 
-Statement SHA-256: `b76a3f5ec35a4fe78a23abbc7a1351005cd3d24318fbb0babdfbc6a6049c4763`. Lexical declaration mentions are retained in the JSON; they do not certify kernel dependencies.
+Statement SHA-256: `6ef1088f19fa411c2aec429fce6fdd24f82daa35fe88d2658259818e16e68eb7`. Lexical declaration mentions are retained in the JSON; they do not certify kernel dependencies.
 
-Supporting theorems: `fep_fep063.FEP063.fep063_referencePredictive_fullSupport`, `fep_fep063.FEP063.fep063_identityChannel_preservesKL`.
+Supporting theorems: `fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing`, `fep_fep063.FEP063.fep063_referencePredictive_fullSupport`, `fep_fep063.FEP063.fep063_identityChannel_preservesKL`.
 
 Boundary theorems: `fep_fep063.FEP063.fep063_constantChannel_strict`.
 
@@ -9097,33 +9102,29 @@ Boundary theorems: `fep_fep063.FEP063.fep063_constantChannel_strict`.
 
 Family: `variational-duality-and-information-bounds`. Disposition: `structural_proxy`.
 
-Primary theorem: `fep_fep064.FEP064.fep064_rateDistortion_weakDuality`.
+Primary theorem: `fep_fep064.FEP064.fep064_rateDistortion_dual_lower_bound`.
 
 Body owner: `src/fep_lean/catalogue/bodies/variational_duality.py`; canonical namespace `FEP064`.
 
-Invariant: Separately certified lower bounds on finite mutual information and expected distortion combine into a lower bound on their rate–distortion Lagrangian for every nonnegative multiplier. Supporting theorems now additionally establish an attained information minimum for every nonempty finite fixed-source distortion-feasible set, an actual Lagrangian-infimum weak-duality bound, and an attained strictly positive optimum at fair Boolean Hamming budget one quarter.
+Invariant: The actual finite rate-distortion Lagrangian-infimum dual value is at most the mutual information of every joint law with the required source marginal and distortion budget, for nonnegative distortion and multiplier. The former component-bound Lagrangian inequality remains an unchanged supporting API.
 
-Assumptions: The theorem assumes both component lower bounds rather than deriving a dual function. The supporting attainment theorem instead derives primal optimizer existence from compactness and the continuous zero-safe entropy expression for mutual information, requiring only a feasible finite joint with fixed source marginal. Infimum-derived weak duality requires nonnegative distortion and multiplier; zero-multiplier dual value requires a nonempty code alphabet. Neither general strong duality, dual attainment, a closed-form interior rate function, nor general optimizer uniqueness is claimed. The structural-proxy disposition and primary theorem remain unchanged: the primary theorem still assumes separately certified component lower bounds, while the independently reviewed supporting theorems establish finite optimizer attainment and infimum-derived weak duality.
+Assumptions: The selected primary assumes an actual feasible finite joint and nonnegative distortion and multiplier; it does not assume separately certified component lower bounds. The underlying infimum is genuinely derived. Retained support separately provides primal minimizer attainment by compactness. The reviewed finite F07 capability proves primal minimum equals nonnegative-multiplier dual supremum for every feasible finite problem, and finite dual attainment with complementary slackness under strict Slater feasibility. Those scoped capabilities do not turn this primary weak bound into unrestricted general strong duality, finite boundary dual attainment, or optimizer uniqueness. The structural-proxy disposition remains unchanged pending explicit review.
 
-Non-vacuity: Positive multipliers make both certified components contribute, while setting the multiplier to zero reduces the Lagrangian exactly to mutual information and gives dual value zero. A concrete quarter-crossover Boolean joint makes the interior budget feasible, while every independent fair-source joint has distortion one half, forcing the attained quarter-budget optimum positive. Negative budgets are infeasible, zero budget forces a unique diagonal joint, and half budget has two distinct independent information minimizers.
+Non-vacuity: A feasible fair Boolean quarter-budget joint has positive mutual information and exercises the weak bound at a positive multiplier; this does not assert that the chosen multiplier maximizes the dual. Zero multiplier is a separate boundary with zero dual value on a nonempty code alphabet. Negative budgets are infeasible for nonnegative distortion; zero budget forces a unique Boolean diagonal joint while half budget has distinct information minimizers.
 
-Canonical acceptance probe: native Lean compile of fep064_rateDistortion_weakDuality and fep064_zeroMultiplier_boundary, all three supporting attainment/duality/ informative-interior declarations, and the zero-dual, negative-budget, nonunique-half-budget, and unique-zero-budget boundaries. The actual optimizer is derived, never supplied as a certificate field.
+Canonical acceptance probe: Strict native Lean compile of the existing actual-infimum weak-dual primary, former component-bound primary and retained minimizer/informative-interior support, plus positive-multiplier, zero-dual, negative-budget, nonunique-half and unique-zero controls. Preserve the separate finite F07 all-feasible dual-supremum and Slater-attainment scope and zero-source-atom controls. Exact declaration ownership and standard-only axiom reports are required. The same strict imported-consumer command from lean/ is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 queries cover the canonical 063 wrapper and 12 shared consumer statements, including the actual 064 weak bound and multiplier controls. Retained old-primary and additional 064 boundaries remain subject to the actual native catalogue/API and declaration-audit gates separately.
 
 Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.
 
 Exact primary Lean statement:
 
 ```lean
-theorem fep064_rateDistortion_weakDuality
-    (joint : FiniteLaw (Source × Code))
-    (distortion : Source → Code → ℝ)
-    (multiplier rateLower distortionLower : ℝ)
-    (hmultiplier : 0 ≤ multiplier)
-    (hrate : rateLower ≤ mutualInformation joint)
-    (hdistortion :
-      distortionLower ≤ expectedDistortion joint distortion) :
-    rateLower + multiplier * distortionLower ≤
-      rateDistortionLagrangian joint distortion multiplier
+theorem fep064_rateDistortion_dual_lower_bound
+    (source : FiniteLaw Source) (distortion : Source → Code → ℝ)
+    (budget multiplier : ℝ) (hdistortion : ∀ x y, 0 ≤ distortion x y)
+    (hmultiplier : 0 ≤ multiplier) (joint : FiniteLaw (Source × Code))
+    (hjoint : RateDistortionFeasible source distortion budget joint) :
+    rateDistortionDualValue source distortion budget multiplier ≤ mutualInformation joint
 ```
 
 Namespace variable context:
@@ -9139,11 +9140,11 @@ Exact typed binder groups (syntactic roles):
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
     "names": [
-      "joint"
+      "source"
     ],
     "role": "typed_binder",
-    "source": "(joint : FiniteLaw (Source × Code))",
-    "type_source": "FiniteLaw (Source × Code)",
+    "source": "(source : FiniteLaw Source)",
+    "type_source": "FiniteLaw Source",
     "visibility": "explicit"
   },
   {
@@ -9159,13 +9160,22 @@ Exact typed binder groups (syntactic roles):
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
     "names": [
-      "multiplier",
-      "rateLower",
-      "distortionLower"
+      "budget",
+      "multiplier"
     ],
     "role": "typed_binder",
-    "source": "(multiplier rateLower distortionLower : ℝ)",
+    "source": "(budget multiplier : ℝ)",
     "type_source": "ℝ",
+    "visibility": "explicit"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [
+      "hdistortion"
+    ],
+    "role": "typed_binder",
+    "source": "(hdistortion : ∀ x y, 0 ≤ distortion x y)",
+    "type_source": "∀ x y, 0 ≤ distortion x y",
     "visibility": "explicit"
   },
   {
@@ -9181,21 +9191,21 @@ Exact typed binder groups (syntactic roles):
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
     "names": [
-      "hrate"
+      "joint"
     ],
     "role": "typed_binder",
-    "source": "(hrate : rateLower ≤ mutualInformation joint)",
-    "type_source": "rateLower ≤ mutualInformation joint",
+    "source": "(joint : FiniteLaw (Source × Code))",
+    "type_source": "FiniteLaw (Source × Code)",
     "visibility": "explicit"
   },
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
     "names": [
-      "hdistortion"
+      "hjoint"
     ],
     "role": "typed_binder",
-    "source": "(hdistortion :\n      distortionLower ≤ expectedDistortion joint distortion)",
-    "type_source": "distortionLower ≤ expectedDistortion joint distortion",
+    "source": "(hjoint : RateDistortionFeasible source distortion budget joint)",
+    "type_source": "RateDistortionFeasible source distortion budget joint",
     "visibility": "explicit"
   }
 ]
@@ -9204,13 +9214,12 @@ Exact typed binder groups (syntactic roles):
 Exact conclusion:
 
 ```lean
-rateLower + multiplier * distortionLower ≤
-      rateDistortionLagrangian joint distortion multiplier
+rateDistortionDualValue source distortion budget multiplier ≤ mutualInformation joint
 ```
 
-Statement SHA-256: `fec46716b7f73754cf4a5af3887f46f19ac7b7b019a2e33d01bd2e8a25f35fc4`. Lexical declaration mentions are retained in the JSON; they do not certify kernel dependencies.
+Statement SHA-256: `a3d4f2de684d742f91d76fd8ae37e2f2d4254ffa9bbc5a07569182128bb8cf63`. Lexical declaration mentions are retained in the JSON; they do not certify kernel dependencies.
 
-Supporting theorems: `fep_fep064.FEP064.fep064_rateDistortion_exists_minimizer`, `fep_fep064.FEP064.fep064_rateDistortion_dual_lower_bound`, `fep_fep064.FEP064.fep064_quarterBudget_informative_optimum`.
+Supporting theorems: `fep_fep064.FEP064.fep064_rateDistortion_exists_minimizer`, `fep_fep064.FEP064.fep064_rateDistortion_weakDuality`, `fep_fep064.FEP064.fep064_quarterBudget_informative_optimum`.
 
 Boundary theorems: `fep_fep064.FEP064.fep064_zeroMultiplier_boundary`, `fep_fep064.FEP064.fep064_dual_zeroMultiplier`, `fep_fep064.FEP064.fep064_negativeBudget_infeasible`, `fep_fep064.FEP064.fep064_halfBudget_nonunique`, `fep_fep064.FEP064.fep064_zeroBudget_unique`.
 
@@ -19995,7 +20004,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `catalogue/bodies/predictive_coding_generalized.py` | `dfec6d770726c94bb8daa93f892cb1ffec3d35827eb024f5fd09bc697920a707` |
 | `catalogue/bodies/standalone_efe_formalizations.py` | `da17bf17e4cfa56271cb4e0948457a279fe66a42a412f25959c6b6a70d32365a` |
 | `catalogue/bodies/temporal_inference.py` | `820d493f82c2de309e51ca931b3c44807688e9d96cc9050b605bf99585d813a9` |
-| `catalogue/bodies/variational_duality.py` | `41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb` |
+| `catalogue/bodies/variational_duality.py` | `aa53d3a653b8102b0c6789e3c7102ff962c507d34e6b5f1ac1639044d4e629ce` |
 | `catalogue/latex.py` | `20b9ad7612374a6f528d67fe6a40ab3c49f5eb3f6ac8baac75e602eefb9b25a7` |
 | `catalogue/registry.py` | `a758f1be3f4b4efbdbd80fb5854c71557f3e392fd90587b3c59656716fdfa268` |
 | `catalogue/relations.py` | `d8b53c1fe2be4b35a618bfbffe60716c44436dfff5b41d66b880767f57ea1c61` |
@@ -20024,7 +20033,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/gaussian_filter.lean` | `9580e9be505e2ca144cc5bdeec470b69483e3d6a06bd094a6793a6a3aedd46e0` |
 | `formal/compositions/gaussian_grid_path.lean` | `cc1f4020ab1cf8762b2eced248ff59976ce140ced7112eea2ab0de23c8d5561a` |
 | `formal/compositions/geometric_mechanics.lean` | `0a2fec955da05b388308950e2333bb985f089d6d756ab3f867a62c4d831e8752` |
-| `formal/compositions/h3_case_study.lean` | `24c0a05321f23eccc290bca5a6d5a414af322cc35da5ea691b7520d9f655fbc7` |
+| `formal/compositions/h3_case_study.lean` | `6a1ebfaa4588cff8c5131fbbf0f5003353367ea74ac4e33a7214e9b8ac466d17` |
 | `formal/compositions/helmholtz_ao_ness.lean` | `7de6f6c012d5e134d8bc84a4aec8c560adf2de60722d4466c4f77d9474d66c78` |
 | `formal/compositions/measure_variational.lean` | `02590c6597b79c8ecde30896acfe34b872837b1225db33207cdd2997636f2d35` |
 | `formal/compositions/native_blanket_transfer.lean` | `24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7` |
@@ -20079,7 +20088,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
 | `inputs/formalism_relations.yaml` | `030f02dbe6df85ba955742ad05db4cd08959eb171a516f0113ee2485340f95e4` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
-| `inputs/theorem_maturity.yaml` | `7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b` |
+| `inputs/theorem_maturity.yaml` | `16eecb21d0884f962dfe87b596f9d3262fb08488be939664e4ddd3b6d9c55fbf` |
 | `lean_source.py` | `adc252c7625809ede9b248f96a56effaf9fc0915b55b78fd83dcd047e7717efb` |
 | `methods/__init__.py` | `3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99` |
 | `methods/model.py` | `b7e9985b30707fb73f7548b7f0198992fc796c0895fabd486dd1e145cd07d3f4` |

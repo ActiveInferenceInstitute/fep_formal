@@ -46,6 +46,7 @@ from tests._support.lean_module_contract import (
     exact_information_review,
     finite_rate_distortion_theorem_extension,
     obligation_theorem_extension,
+    primary_alignment_theorem_extension,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -176,6 +177,33 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     )
     fast_relaxation_extension = fast_relaxation_theorem_extension(declarations, ROOT)
     obligation_extension = obligation_theorem_extension(declarations, ROOT)
+    primary_alignment_extension = primary_alignment_theorem_extension(
+        declarations, ROOT
+    )
+    new_primary = next(iter(primary_alignment_extension))
+    old_primary = "fep_fep063.FEP063.fep063_finiteChannel_klDataProcessing"
+    for mutation in (
+        "missing_new",
+        "moved_new",
+        "changed_new_statement",
+        "changed_old_statement",
+    ):
+        tampered = dict(declarations)
+        if mutation == "missing_new":
+            tampered.pop(new_primary)
+        elif mutation == "moved_new":
+            tampered[new_primary] = {
+                **tampered[new_primary],
+                "source_owner": "unapproved.py",
+            }
+        else:
+            selected = (
+                new_primary if mutation == "changed_new_statement" else old_primary
+            )
+            tampered[selected] = {**tampered[selected], "statement": "unapproved type"}
+        with pytest.raises(AssertionError):
+            primary_alignment_theorem_extension(tampered, ROOT)
+
     assert (
         len(
             declarations.keys()
@@ -189,6 +217,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - fast_relaxation_extension
             - finite_rate_distortion_extension
             - obligation_extension
+            - primary_alignment_extension
         )
         == 2185
     )

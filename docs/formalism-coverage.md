@@ -13,10 +13,10 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Stable topics | 168 |
 | Maintained formal modules | 72 |
 | Foundation modules | 45 |
-| Topic theorem declarations | 586 |
+| Topic theorem declarations | 587 |
 | Formal-resource theorem declarations | 1740 |
 | Foundation theorem declarations | 1361 |
-| Total theorem declarations | 2326 |
+| Total theorem declarations | 2327 |
 | Topic definitions | 95 |
 | Formal-resource definitions | 951 |
 | Total definitions | 1046 |
@@ -24,8 +24,8 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Formal-resource abbreviations | 33 |
 | Total abbreviations | 40 |
 | Formal-resource structures | 56 |
-| Distinct Mathlib imports | 79 |
-| Topic-to-import edges | 266 |
+| Distinct Mathlib imports | 80 |
+| Topic-to-import edges | 267 |
 | Formal-resource import edges | 392 |
 | Internal formal-module dependencies | 173 |
 | Authored formalism relations | 150 |
@@ -116,8 +116,8 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 | fep-060 | FEP | `fep060_coordinateELBO_decomposition` | `formalized` | 2 | 0 | 1 |
 | fep-061 | FEP | `fep061_meanFieldCoordinate_optimum_iff` | `formalized` | 2 | 0 | 1 |
 | fep-062 | FEP | `fep062_iidProduct_importanceJensen` | `formalized` | 3 | 0 | 1 |
-| fep-063 | FEP | `fep063_finiteChannel_klDataProcessing` | `conditional_proxy` | 4 | 0 | 1 |
-| fep-064 | FEP | `fep064_rateDistortion_weakDuality` | `structural_proxy` | 9 | 0 | 1 |
+| fep-063 | FEP | `fep063_finiteChannel_klDataProcessing_of_relativeSupport` | `conditional_proxy` | 5 | 0 | 2 |
+| fep-064 | FEP | `fep064_rateDistortion_dual_lower_bound` | `structural_proxy` | 9 | 0 | 1 |
 | fep-065 | ActiveInference | `fep065_controlledKernel_normalization` | `formalized` | 1 | 0 | 1 |
 | fep-066 | ActiveInference | `fep066_actionConditioned_bayes_reconstruction` | `formalized` | 3 | 0 | 1 |
 | fep-067 | ActiveInference | `fep067_reachableBelief_policyValue_equivalence` | `structural_proxy` | 2 | 0 | 1 |
@@ -531,6 +531,7 @@ Shared imports indicate library reuse, not logical dependencies between catalogu
 | `FepSketches.collective_inference` | 7 | fep-107, fep-108, fep-109, fep-110, fep-111, fep-112, fep-113 |
 | `FepSketches.continuous_time_markov` | 7 | fep-149, fep-150, fep-151, fep-152, fep-153, fep-154, fep-155 |
 | `FepSketches.controlled_markov` | 7 | fep-065, fep-066, fep-067, fep-068, fep-069, fep-070, fep-071 |
+| `FepSketches.decision_risk` | 1 | fep-063 |
 | `FepSketches.efe_policy_selection` | 1 | fep-156 |
 | `FepSketches.efe_time_scale_separation` | 1 | fep-159 |
 | `FepSketches.empirical_risk` | 7 | fep-121, fep-122, fep-123, fep-124, fep-125, fep-126, fep-127 |

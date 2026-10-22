@@ -4367,6 +4367,13 @@
       ]
     },
     {
+      "module": "FepSketches.decision_risk",
+      "topic_count": 1,
+      "topic_ids": [
+        "fep-063"
+      ]
+    },
+    {
       "module": "FepSketches.efe_policy_selection",
       "topic_count": 1,
       "topic_ids": [
@@ -5054,7 +5061,7 @@
     "capability_nodes": 50,
     "composed_theorems": 379,
     "definitions": 1046,
-    "distinct_mathlib_imports": 79,
+    "distinct_mathlib_imports": 80,
     "formal_module_dependency_edges": 173,
     "formal_module_import_edges": 392,
     "formal_modules": 72,
@@ -5069,11 +5076,11 @@
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
     "theorem_witnessed_relations": 144,
-    "theorems": 2326,
+    "theorems": 2327,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
-    "topic_import_edges": 266,
-    "topic_theorems": 586,
+    "topic_import_edges": 267,
+    "topic_theorems": 587,
     "topics": 168
   },
   "relation_counts": {
@@ -7694,44 +7701,45 @@
     },
     {
       "abbreviation_count": 0,
-      "acceptance_probe": "native Lean compile of fep063_finiteChannel_klDataProcessing and fep063_referencePredictive_fullSupport with all three support certificates, plus fep063_identityChannel_preservesKL and fep063_constantChannel_strict.",
+      "acceptance_probe": "Strict native Lean compile of the selected relative-support wrapper and retained old primary, plus imported full-support, sparse/shared-zero, deterministic projection, identity and singular support/native-infinity controls. Require exact standard-only axiom reports and preserve the existing coarsening boundary. Compilation does not itself promote semantic disposition. The strict imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 exact axiom queries comprise the selected canonical wrapper and 12 consumer statements, not 13 independent compiler experiments. The unchanged former primary and catalogue boundaries also require the actual native catalogue/API and declaration-audit gates.",
       "area": "FEP",
-      "assumption_review": "Input is nonempty, both input laws have strict support, and every channel atom is strictly positive; these conditions force reference-predictive support and avoid the project's totalized-log boundary. This is stronger support than the most general measure-theoretic data-processing theorem.",
+      "assumption_review": "The selected primary exposes relative input support explicitly; it does not assume strict positivity of either full input law or all channel entries. Local discrete measurable instances bridge the existing finite-law theorem. This is the project's totalized real finiteKL convention under relative support, not a theorem identifying a singular native extended KL with a finite real value. The retained former primary still provides its exact full-support specialization and unchanged API.",
       "definition_count": 0,
       "family": "variational-duality-and-information-bounds",
       "id": "fep-063",
       "imports": [
-        "FepSketches.variational_duality"
+        "FepSketches.variational_duality",
+        "FepSketches.decision_risk"
       ],
-      "invariant": "Passing two finite full-support laws through the same strictly positive finite channel cannot increase their finite KL divergence.",
+      "invariant": "Passing finite actual and reference laws through the same finite channel cannot increase finite KL when every atom carrying nonzero actual mass has strictly positive reference mass. Shared-zero atoms and zero channel entries are permitted.",
       "mathlib_hints": [
         "InformationTheory.KullbackLeibler.ChainRule",
         "Probability.Kernel.Composition.MeasureComp"
       ],
-      "non_vacuity": "Any noisy positive channel acting on unequal full-support input laws exercises a genuine contraction comparison. Separate identity and complete-coarsening witnesses cover deterministic zero-entry channels: identity preserves finite KL and complete coarsening strictly reduces it for unequal laws. These do not weaken the support premises of the primary theorem or identify singular native infinity with the project's totalized finite convention.",
-      "primary_theorem": "fep063_finiteChannel_klDataProcessing",
+      "non_vacuity": "Unequal full-support laws exercise the positive-support specialization. A point mass compared with a diagonal reference law has genuine shared-zero atoms and passes a deterministic projection through the relative-support theorem. Identity preserves finite KL and complete coarsening contracts it. Disjoint point masses violate the support premise: their totalized finiteKL is one while native extended KL is infinite.",
+      "primary_theorem": "fep063_finiteChannel_klDataProcessing_of_relativeSupport",
       "semantic_disposition": "conditional_proxy",
-      "theorem_count": 4,
+      "theorem_count": 5,
       "title": "Finite-Channel KL Data-Processing Inequality"
     },
     {
       "abbreviation_count": 0,
-      "acceptance_probe": "native Lean compile of fep064_rateDistortion_weakDuality and fep064_zeroMultiplier_boundary, all three supporting attainment/duality/ informative-interior declarations, and the zero-dual, negative-budget, nonunique-half-budget, and unique-zero-budget boundaries. The actual optimizer is derived, never supplied as a certificate field.",
+      "acceptance_probe": "Strict native Lean compile of the existing actual-infimum weak-dual primary, former component-bound primary and retained minimizer/informative-interior support, plus positive-multiplier, zero-dual, negative-budget, nonunique-half and unique-zero controls. Preserve the separate finite F07 all-feasible dual-supremum and Slater-attainment scope and zero-source-atom controls. Exact declaration ownership and standard-only axiom reports are required. The same strict imported-consumer command from lean/ is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 queries cover the canonical 063 wrapper and 12 shared consumer statements, including the actual 064 weak bound and multiplier controls. Retained old-primary and additional 064 boundaries remain subject to the actual native catalogue/API and declaration-audit gates separately.",
       "area": "FEP",
-      "assumption_review": "The theorem assumes both component lower bounds rather than deriving a dual function. The supporting attainment theorem instead derives primal optimizer existence from compactness and the continuous zero-safe entropy expression for mutual information, requiring only a feasible finite joint with fixed source marginal. Infimum-derived weak duality requires nonnegative distortion and multiplier; zero-multiplier dual value requires a nonempty code alphabet. Neither general strong duality, dual attainment, a closed-form interior rate function, nor general optimizer uniqueness is claimed. The structural-proxy disposition and primary theorem remain unchanged: the primary theorem still assumes separately certified component lower bounds, while the independently reviewed supporting theorems establish finite optimizer attainment and infimum-derived weak duality.",
+      "assumption_review": "The selected primary assumes an actual feasible finite joint and nonnegative distortion and multiplier; it does not assume separately certified component lower bounds. The underlying infimum is genuinely derived. Retained support separately provides primal minimizer attainment by compactness. The reviewed finite F07 capability proves primal minimum equals nonnegative-multiplier dual supremum for every feasible finite problem, and finite dual attainment with complementary slackness under strict Slater feasibility. Those scoped capabilities do not turn this primary weak bound into unrestricted general strong duality, finite boundary dual attainment, or optimizer uniqueness. The structural-proxy disposition remains unchanged pending explicit review.",
       "definition_count": 0,
       "family": "variational-duality-and-information-bounds",
       "id": "fep-064",
       "imports": [
         "FepSketches.variational_duality"
       ],
-      "invariant": "Separately certified lower bounds on finite mutual information and expected distortion combine into a lower bound on their rate\u2013distortion Lagrangian for every nonnegative multiplier. Supporting theorems now additionally establish an attained information minimum for every nonempty finite fixed-source distortion-feasible set, an actual Lagrangian-infimum weak-duality bound, and an attained strictly positive optimum at fair Boolean Hamming budget one quarter.",
+      "invariant": "The actual finite rate-distortion Lagrangian-infimum dual value is at most the mutual information of every joint law with the required source marginal and distortion budget, for nonnegative distortion and multiplier. The former component-bound Lagrangian inequality remains an unchanged supporting API.",
       "mathlib_hints": [
         "InformationTheory.KullbackLeibler.Basic",
         "Algebra.Order.BigOperators.Group.Finset"
       ],
-      "non_vacuity": "Positive multipliers make both certified components contribute, while setting the multiplier to zero reduces the Lagrangian exactly to mutual information and gives dual value zero. A concrete quarter-crossover Boolean joint makes the interior budget feasible, while every independent fair-source joint has distortion one half, forcing the attained quarter-budget optimum positive. Negative budgets are infeasible, zero budget forces a unique diagonal joint, and half budget has two distinct independent information minimizers.",
-      "primary_theorem": "fep064_rateDistortion_weakDuality",
+      "non_vacuity": "A feasible fair Boolean quarter-budget joint has positive mutual information and exercises the weak bound at a positive multiplier; this does not assert that the chosen multiplier maximizes the dual. Zero multiplier is a separate boundary with zero dual value on a nonempty code alphabet. Negative budgets are infeasible for nonnegative distortion; zero budget forces a unique Boolean diagonal joint while half budget has distinct information minimizers.",
+      "primary_theorem": "fep064_rateDistortion_dual_lower_bound",
       "semantic_disposition": "structural_proxy",
       "theorem_count": 9,
       "title": "Rate\u2013Distortion Lagrangian Weak Duality"

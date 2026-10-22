@@ -550,10 +550,15 @@ jobs:
       - name: Install the XeLaTeX toolchain, Pandoc, pandoc-crossref, and the SVG rasterizer
         shell: bash
         run: |
+          render_install_phase_started=$SECONDS
           sudo apt-get update
+          printf 'FEP_RENDER_INSTALL_PHASE phase=apt_update elapsed_seconds=%s\n' "$((SECONDS - render_install_phase_started))"
+          render_install_phase_started=$SECONDS
           sudo apt-get install -y --no-install-recommends \
             texlive-xetex texlive-latex-recommended texlive-latex-extra \
             texlive-fonts-recommended lmodern fontconfig librsvg2-bin
+          printf 'FEP_RENDER_INSTALL_PHASE phase=apt_install elapsed_seconds=%s\n' "$((SECONDS - render_install_phase_started))"
+          render_install_phase_started=$SECONDS
           # Match the Pandoc version used to compile the Linux crossref binary.
           # A matching pandoc-types API alone does not establish compatibility.
           # SHA256 values are the asset digests from the official releases:
@@ -571,11 +576,14 @@ jobs:
             b419369915e0f3181be0afdb040ec8ecc6b70e72e5992652a0d83aed9e6bc109 "$render_tools_dir/pandoc.deb" \
             2319816e3545ee78e44e4a97c2174c72eedf4b51d436b32721b48f43458eb0f6 "$render_tools_dir/pandoc-crossref.tar.xz" \
             | sha256sum --check --strict
+          printf 'FEP_RENDER_INSTALL_PHASE phase=verified_downloads elapsed_seconds=%s\n' "$((SECONDS - render_install_phase_started))"
+          render_install_phase_started=$SECONDS
           sudo dpkg -i "$render_tools_dir/pandoc.deb"
           tar -xJf "$render_tools_dir/pandoc-crossref.tar.xz" -C "$render_tools_dir" pandoc-crossref
           sudo install -m 0755 "$render_tools_dir/pandoc-crossref" /usr/local/bin/pandoc-crossref
           pandoc --version
           pandoc-crossref --version
+          printf 'FEP_RENDER_INSTALL_PHASE phase=tools_installation elapsed_seconds=%s\n' "$((SECONDS - render_install_phase_started))"
       - name: Install the two faces the preamble selects
         timeout-minutes: 10
         run: |

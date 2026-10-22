@@ -1,0 +1,120 @@
+{
+  "state": "EXTERNAL_SOURCE_POSTIMAGE_SEMANTIC_DELTA_NOT_CURRENT168_ACCEPTANCE",
+  "source_before_commit": "a46ed93473046293f6e5ef33ba4ced2ad3ffdc43",
+  "future_source_commit": null,
+  "postimages": {
+    "src/fep_lean/catalogue/bodies/variational_duality.py": {
+      "before_sha256": "41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb",
+      "postimage_sha256": "aa53d3a653b8102b0c6789e3c7102ff962c507d34e6b5f1ac1639044d4e629ce"
+    },
+    "config/theorem_maturity.yaml": {
+      "before_sha256": "7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b",
+      "postimage_sha256": "16eecb21d0884f962dfe87b596f9d3262fb08488be939664e4ddd3b6d9c55fbf"
+    },
+    "src/fep_lean/formal/compositions/h3_case_study.lean": {
+      "before_sha256": "24c0a05321f23eccc290bca5a6d5a414af322cc35da5ea691b7520d9f655fbc7",
+      "postimage_sha256": "6a1ebfaa4588cff8c5131fbbf0f5003353367ea74ac4e33a7214e9b8ac466d17"
+    }
+  },
+  "application_receipt_sha256": "88e882bc372657c3694170409cd53c82a41b607cfb9dd56d2ab5e2b11228065c",
+  "historical_D_roadmap_sha256": "22abd0ea70a2e78745125390038f2b3f56e0b2a07b41b9b5aef2607195e344d2",
+  "changed_topic_rows": [
+    {
+      "id": "fep-063",
+      "primary": "fep063_finiteChannel_klDataProcessing_of_relativeSupport",
+      "selected_statement": "theorem fep063_finiteChannel_klDataProcessing_of_relativeSupport\n    {Input Output : Type*} [Fintype Input] [Fintype Output]\n    (actual reference : FiniteLaw Input) (channel : FiniteKernel Input Output)\n    (hsupport : \u2200 x, actual x \u2260 0 \u2192 0 < reference x) :\n    finiteKL (channel.predictive actual) (channel.predictive reference) \u2264\n      finiteKL actual reference",
+      "selected_statement_sha256": "6ef1088f19fa411c2aec429fce6fdd24f82daa35fe88d2658259818e16e68eb7",
+      "canonical_topic_body_sha256": "2360d671345a61fc4b2ec9745a48ed67c6b0367dd4e9407e3b16d3501b18123c",
+      "maturity_disposition": "conditional_proxy",
+      "supporting_theorems": [
+        "fep063_finiteChannel_klDataProcessing",
+        "fep063_referencePredictive_fullSupport",
+        "fep063_identityChannel_preservesKL"
+      ],
+      "boundary_theorems": [
+        "fep063_constantChannel_strict"
+      ],
+      "exact_semantic_metadata": {
+        "id": "fep-063",
+        "primary_theorem": "fep063_finiteChannel_klDataProcessing_of_relativeSupport",
+        "supporting_theorems": [
+          "fep063_finiteChannel_klDataProcessing",
+          "fep063_referencePredictive_fullSupport",
+          "fep063_identityChannel_preservesKL"
+        ],
+        "boundary_theorems": [
+          "fep063_constantChannel_strict"
+        ],
+        "invariant": "Passing finite actual and reference laws through the same finite channel cannot increase finite KL when every atom carrying nonzero actual mass has strictly positive reference mass. Shared-zero atoms and zero channel entries are permitted.",
+        "assumption_review": "The selected primary exposes relative input support explicitly; it does not assume strict positivity of either full input law or all channel entries. Local discrete measurable instances bridge the existing finite-law theorem. This is the project's totalized real finiteKL convention under relative support, not a theorem identifying a singular native extended KL with a finite real value. The retained former primary still provides its exact full-support specialization and unchanged API.",
+        "non_vacuity": "Unequal full-support laws exercise the positive-support specialization. A point mass compared with a diagonal reference law has genuine shared-zero atoms and passes a deterministic projection through the relative-support theorem. Identity preserves finite KL and complete coarsening contracts it. Disjoint point masses violate the support premise: their totalized finiteKL is one while native extended KL is infinite.",
+        "acceptance_probe": "Strict native Lean compile of the selected relative-support wrapper and retained old primary, plus imported full-support, sparse/shared-zero, deterministic projection, identity and singular support/native-infinity controls. Require exact standard-only axiom reports and preserve the existing coarsening boundary. Compilation does not itself promote semantic disposition. The strict imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 exact axiom queries comprise the selected canonical wrapper and 12 consumer statements, not 13 independent compiler experiments. The unchanged former primary and catalogue boundaries also require the actual native catalogue/API and declaration-audit gates.",
+        "disposition": "conditional_proxy"
+      }
+    },
+    {
+      "id": "fep-064",
+      "primary": "fep064_rateDistortion_dual_lower_bound",
+      "selected_statement": "theorem fep064_rateDistortion_dual_lower_bound\n    (source : FiniteLaw Source) (distortion : Source \u2192 Code \u2192 \u211d)\n    (budget multiplier : \u211d) (hdistortion : \u2200 x y, 0 \u2264 distortion x y)\n    (hmultiplier : 0 \u2264 multiplier) (joint : FiniteLaw (Source \u00d7 Code))\n    (hjoint : RateDistortionFeasible source distortion budget joint) :\n    rateDistortionDualValue source distortion budget multiplier \u2264 mutualInformation joint",
+      "selected_statement_sha256": "a3d4f2de684d742f91d76fd8ae37e2f2d4254ffa9bbc5a07569182128bb8cf63",
+      "canonical_topic_body_sha256": "1b7e1cdb1008511f4a8f33cb10e9b6f47f68de2c43640307cde988d44fdcf83d",
+      "maturity_disposition": "structural_proxy",
+      "supporting_theorems": [
+        "fep064_rateDistortion_exists_minimizer",
+        "fep064_rateDistortion_weakDuality",
+        "fep064_quarterBudget_informative_optimum"
+      ],
+      "boundary_theorems": [
+        "fep064_zeroMultiplier_boundary",
+        "fep064_dual_zeroMultiplier",
+        "fep064_negativeBudget_infeasible",
+        "fep064_halfBudget_nonunique",
+        "fep064_zeroBudget_unique"
+      ],
+      "exact_semantic_metadata": {
+        "id": "fep-064",
+        "primary_theorem": "fep064_rateDistortion_dual_lower_bound",
+        "supporting_theorems": [
+          "fep064_rateDistortion_exists_minimizer",
+          "fep064_rateDistortion_weakDuality",
+          "fep064_quarterBudget_informative_optimum"
+        ],
+        "boundary_theorems": [
+          "fep064_zeroMultiplier_boundary",
+          "fep064_dual_zeroMultiplier",
+          "fep064_negativeBudget_infeasible",
+          "fep064_halfBudget_nonunique",
+          "fep064_zeroBudget_unique"
+        ],
+        "invariant": "The actual finite rate-distortion Lagrangian-infimum dual value is at most the mutual information of every joint law with the required source marginal and distortion budget, for nonnegative distortion and multiplier. The former component-bound Lagrangian inequality remains an unchanged supporting API.",
+        "assumption_review": "The selected primary assumes an actual feasible finite joint and nonnegative distortion and multiplier; it does not assume separately certified component lower bounds. The underlying infimum is genuinely derived. Retained support separately provides primal minimizer attainment by compactness. The reviewed finite F07 capability proves primal minimum equals nonnegative-multiplier dual supremum for every feasible finite problem, and finite dual attainment with complementary slackness under strict Slater feasibility. Those scoped capabilities do not turn this primary weak bound into unrestricted general strong duality, finite boundary dual attainment, or optimizer uniqueness. The structural-proxy disposition remains unchanged pending explicit review.",
+        "non_vacuity": "A feasible fair Boolean quarter-budget joint has positive mutual information and exercises the weak bound at a positive multiplier; this does not assert that the chosen multiplier maximizes the dual. Zero multiplier is a separate boundary with zero dual value on a nonempty code alphabet. Negative budgets are infeasible for nonnegative distortion; zero budget forces a unique Boolean diagonal joint while half budget has distinct information minimizers.",
+        "acceptance_probe": "Strict native Lean compile of the existing actual-infimum weak-dual primary, former component-bound primary and retained minimizer/informative-interior support, plus positive-multiplier, zero-dual, negative-budget, nonunique-half and unique-zero controls. Preserve the separate finite F07 all-feasible dual-supremum and Slater-attainment scope and zero-source-atom controls. Exact declaration ownership and standard-only axiom reports are required. The same strict imported-consumer command from lean/ is `lake env lean -DwarningAsError=true ../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 queries cover the canonical 063 wrapper and 12 shared consumer statements, including the actual 064 weak bound and multiplier controls. Retained old-primary and additional 064 boundaries remain subject to the actual native catalogue/API and declaration-audit gates separately.",
+        "disposition": "structural_proxy"
+      }
+    }
+  ],
+  "assessment": {
+    "063": "Newprimaryforwardsalreadyprovedrelative-supportfiniteKL DPI. Premiseactualx\u22600\u21d2referencex>0 explicitlyallowscommonzeroatoms andzerochannelentries. NoNonemptyInputorfullchannelpositivityrequiredbynewwrapper. Oldstrictpositiveprimaryname/type/proofretainedsupporting. Localdiscretemeasurableinstancesareactualbridge, nottargetinequalityassumption.",
+    "063_sparse_singular": "Sparsepointmassactualon(true,true)/diagonalreferenceBool\u00d7Bool/deterministicProd.fst control genuinepremise. DisjointBooleanpointmassesfailrelative-support; realfiniteKL1/native\u221e distinctionstrictlyconcrete, notallsingularpairs. No unsupported-input realKL DPI.",
+    "064": "ExistingactualrateDistortionDualValue lower-bound nowselectedprimary: actualfeasiblefinitejoint+nonnegative distortion/multiplier. Oldcomponentlower-boundLagrangian APIretainedsupporting. ExistingfiniteF07 min=dualSupforallfeasible andfinite\u03bbunderSlater remainindependentlyscopedsupport; no generalcontinuous strongduality/newfiniteboundary\u03bb/uniquenessclaim.",
+    "maturity": "063conditional_proxy/064structural_proxy unchanged; selectorstrengthening isnotautomaticpromotion. Exactreadingsclearerthanoldselectedcomponentbound.",
+    "H3": "Onlyproofdecompositionchanged: gaussian_centeredAffine_memLp/controlPosteriorMean_memLp privateL2leaves; sameactualgaussianlaw/affineformula/secondRisk_integrable type and downstreampublicstatements. maxHeartbeats800000localoverride removed, notraised. NochangefrozenH3scientificprotocol/data/outcome/acceptance. Sourcepostimageunqualifieduntilactualnativegates."
+  },
+  "current168_row_update_needed": [
+    "RetainexacthistoricalDreportsbytes/provenance; appendthisdeltaornewsource-bound063/064rows, do notsilentlyrelabeloldmatricesasnewsource.",
+    "063currentrow primary/supportstatementhashes+metadata mustreplaceoldselectorinnewmatrix; addexactonecanonicalnewdeclaration qualifiedowner+fullaxiomqueries, refreshprojectionsactualnames ratherthancountonly.",
+    "064newrow selectedactualinfimumstatement/promotedfromsupport, oldcomponentprimarynowinsupport; allolddecltypes remainAPIseals. Updateclaims/assumptionrankcontext, no dispositionchange.",
+    "H3proof-onlysourcehash/typedhelperdependencies updatedindependently; no semanticrowrewritefortopic102CramerRao (issue102H3numberdistinct). Existing168topicstatementsunchangedexceptnew063primaryselector and064selection.",
+    "Aftergenerators/checks, sourceauthoritymustbindactualfuturecommit/tree/projectionsandprivatehelpersrosterpolicy; thenindependentfinaldelta+all168auditcomposition. Untilthen reportremainsD-era168review+explicitunqualifiedpostimagedelta."
+  ],
+  "required_future_controls": [
+    "Actualstrictnewwrapper/retainedoldprimaries/12consumerstatements reports(no13independentexperiments), sparse/commonzero/deterministic/identity/singular/native\u221e/positiveandzero\u03bb/infeasible/nonunique endpoints.",
+    "H3oldpublicstatements byte/typepreserved, actualfreshstrictcompilationwithout800koverride andsource-boundnative/auditgates; privatehelperstandard-only noadmissions.",
+    "Deterministictopic/signature/maturity/coverage/APIcustody/source197pin/generatedmirrors/runtime/render/Python/fullrequired/hosted/mainacceptance beforepublication."
+  ],
+  "boundary": "Authorsemanticdeltaonly, notindependentnewproofreview/compilation, maintainedall168currentacceptance, primarybroadpromotion orissueclosure. No managedwrites/gatesbyreviewer.",
+  "metadata_repair_application_receipt_sha256": "901a1e8a32bf9e68d416443e38939496711c13b4494ba4076abdddef52723e2f",
+  "preserved_r1_draft_sha256": "dcb2ab83308ebfdd56909672ed4fa1e932d57d8795bb851d9fc584084ef57195",
+  "r2_change_scope": "OnlyactualR5metadatahash/twoacceptanceprobes+repairreceipt; mathematicalreadings/targets/dispositions/source-before/futurecommitNone unchanged."
+}

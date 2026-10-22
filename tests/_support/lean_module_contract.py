@@ -251,3 +251,86 @@ def obligation_theorem_extension(declarations: dict, project_root: Path) -> set[
     assert owners.keys() <= declarations.keys()
     assert {name: declarations[name]["source_owner"] for name in owners} == owners
     return set(owners)
+
+
+_PRIMARY_ALIGNMENT_REVIEW_SHA256 = (
+    "d8111a50ec6ded5d5b0a7657408314c01b1b7bab9b9969392d29dc7dd17dd311"
+)
+
+
+def primary_alignment_review(project_root: Path) -> dict:
+    raw = (
+        project_root / "tests/fixtures/primary_alignment_review_20261022.json"
+    ).read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _PRIMARY_ALIGNMENT_REVIEW_SHA256
+    review = json.loads(raw)
+    assert review["schema_version"] == 1
+    assert [x["id"] for x in review["body_changes"]] == ["fep-063"]
+    assert [x["id"] for x in review["maturity_changes"]] == ["fep-063", "fep-064"]
+    assert len(review["old_declaration_statement_sha256"]) == 2326
+    assert set(review["old_declaration_statement_sha256"]) == set(
+        review["old_declaration_owners"]
+    )
+    assert len(review["new_theorem_owners"]) == 1
+    return review
+
+
+def restore_primary_alignment_bodies(bodies: dict, project_root: Path) -> dict:
+    restored = dict(bodies)
+    for change in primary_alignment_review(project_root)["body_changes"]:
+        assert restored[change["id"]] == change["after"]
+        restored[change["id"]] = change["before"]
+    return restored
+
+
+def reverse_primary_alignment_rows(rows: list[dict], project_root: Path) -> list[dict]:
+    restored = copy.deepcopy(rows)
+    for change in primary_alignment_review(project_root)["maturity_changes"]:
+        positions = [i for i, row in enumerate(restored) if row["id"] == change["id"]]
+        assert len(positions) == 1
+        assert restored[positions[0]] == change["after"]
+        restored[positions[0]] = copy.deepcopy(change["before"])
+    return restored
+
+
+def reverse_primary_alignment_raw(raw: bytes, project_root: Path) -> bytes:
+    review = primary_alignment_review(project_root)
+    assert hashlib.sha256(raw).hexdigest() == review["reviewed_maturity_sha256"]
+    for change in review["maturity_changes"]:
+        current = change["raw_after"].encode()
+        assert raw.count(current) == 1
+        raw = raw.replace(current, change["raw_before"].encode(), 1)
+    assert hashlib.sha256(raw).hexdigest() == review["prior_maturity_sha256"]
+    return raw
+
+
+def restore_primary_alignment_owner(source: str, project_root: Path) -> str:
+    review = primary_alignment_review(project_root)
+    assert source == review["owner_after"]
+    restored = review["owner_before"]
+    assert hashlib.sha256(restored.encode()).hexdigest() == review["prior_owner_sha256"]
+    return restored
+
+
+def primary_alignment_theorem_extension(
+    declarations: dict, project_root: Path
+) -> set[str]:
+    review = primary_alignment_review(project_root)
+    for name, digest in review["old_declaration_statement_sha256"].items():
+        assert name in declarations
+        assert (
+            hashlib.sha256(declarations[name]["statement"].encode()).hexdigest()
+            == digest
+        )
+        assert (
+            declarations[name]["source_owner"] == review["old_declaration_owners"][name]
+        )
+    owners = review["new_theorem_owners"]
+    assert owners.keys() <= declarations.keys()
+    for name, digest in review["new_declaration_statement_sha256"].items():
+        assert (
+            hashlib.sha256(declarations[name]["statement"].encode()).hexdigest()
+            == digest
+        )
+    assert {name: declarations[name]["source_owner"] for name in owners} == owners
+    return set(owners)

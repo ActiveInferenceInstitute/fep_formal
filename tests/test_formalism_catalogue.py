@@ -20,11 +20,16 @@ from tests._support.fast_relaxation_review import (
 )
 from tests._support.lean_module_contract import (
     exact_information_review,
+    primary_alignment_review,
     restore_information_owner,
+    restore_primary_alignment_bodies,
+    restore_primary_alignment_owner,
     reverse_finite_rate_distortion_capabilities,
     reverse_information_entries,
     reverse_obligation_edges,
     reverse_obligation_model,
+    reverse_primary_alignment_raw,
+    reverse_primary_alignment_rows,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -242,6 +247,7 @@ def _proxy_review() -> dict[str, object]:
 
 
 def _reverse_proxy_rows(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+    rows = reverse_primary_alignment_rows(rows, PROJECT_ROOT)
     restored = [dict(row) for row in rows]
     by_id = {row["id"]: row for row in restored}
     for change in _proxy_review()["changes"]:
@@ -272,7 +278,10 @@ def test_complete_proxy_review_reverses_only_exact_approved_metadata() -> None:
     assert (
         hashlib.sha256(
             reverse_fast_relaxation_raw(
-                (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes(),
+                reverse_primary_alignment_raw(
+                    (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes(),
+                    PROJECT_ROOT,
+                ),
                 PROJECT_ROOT,
             )
         ).hexdigest()
@@ -316,7 +325,7 @@ def _assert_released_body_and_maturity(
     assert set(deltas["maturity_changes"]) == set(REVIEWED_MATURITY_FIELDS)
     assert baseline["topic_count"] == 120
 
-    released_bodies = dict(bodies)
+    released_bodies = restore_primary_alignment_bodies(dict(bodies), PROJECT_ROOT)
     for change in _proxy_review()["body_changes"]:
         topic = change["id"]
         assert released_bodies[topic].count(change["reviewed"]) == 1
@@ -1016,3 +1025,61 @@ def test_conjugacy_rationale_review_authenticates_exact_fixture(tmp_path, monkey
         _restore_reviewed_conjugacy_rationale(
             _yaml("formalism_relations.yaml")["edges"]
         )
+
+
+def test_primary_alignment_exact_owner_and_metadata_inverse():
+    review = primary_alignment_review(PROJECT_ROOT)
+    restored = restore_primary_alignment_owner(
+        (PROJECT_ROOT / review["owner"]).read_text(), PROJECT_ROOT
+    )
+    assert hashlib.sha256(restored.encode()).hexdigest() == review["prior_owner_sha256"]
+    raw = (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes()
+    reverse_primary_alignment_raw(raw, PROJECT_ROOT)
+
+
+@pytest.mark.parametrize(
+    "mutation", ["new_wrapper", "old_primary", "selector", "other_row", "raw_byte"]
+)
+def test_primary_alignment_inverse_refuses_unreviewed_changes(mutation):
+    review = primary_alignment_review(PROJECT_ROOT)
+    if mutation in {"new_wrapper", "old_primary"}:
+        source = (PROJECT_ROOT / review["owner"]).read_text()
+        token = (
+            "fep063_finiteChannel_klDataProcessing_of_relativeSupport"
+            if mutation == "new_wrapper"
+            else "theorem fep063_finiteChannel_klDataProcessing\n"
+        )
+        assert token in source
+        with pytest.raises(AssertionError):
+            restore_primary_alignment_owner(
+                source.replace(token, token + "_tampered", 1), PROJECT_ROOT
+            )
+    elif mutation == "raw_byte":
+        raw = (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes()
+        with pytest.raises(AssertionError):
+            reverse_primary_alignment_raw(raw + b"\n# unreviewed\n", PROJECT_ROOT)
+    else:
+        rows = _yaml("theorem_maturity.yaml")["topics"]
+        if mutation == "selector":
+            rows[62]["primary_theorem"] = "unapproved"
+            with pytest.raises(AssertionError):
+                reverse_primary_alignment_rows(rows, PROJECT_ROOT)
+        else:
+            # The new inverse must preserve this unrelated change so the ORIGINAL
+            # proxy historical seal, not a broad fixture waiver, rejects it.
+            rows[1]["invariant"] = "unapproved"
+            restored = reverse_primary_alignment_rows(rows, PROJECT_ROOT)
+            assert restored[1]["invariant"] == "unapproved"
+            metadata = _yaml("theorem_maturity.yaml")
+            metadata["topics"] = rows
+            with pytest.raises(AssertionError):
+                _assert_proxy_metadata_preimage(metadata)
+
+
+def test_primary_alignment_fixture_rejects_modified_bytes(tmp_path):
+    source = PROJECT_ROOT / "tests/fixtures/primary_alignment_review_20261022.json"
+    target = tmp_path / "tests/fixtures/primary_alignment_review_20261022.json"
+    target.parent.mkdir(parents=True)
+    target.write_bytes(source.read_bytes() + b" ")
+    with pytest.raises(AssertionError):
+        primary_alignment_review(tmp_path)
