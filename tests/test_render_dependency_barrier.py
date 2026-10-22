@@ -5,7 +5,10 @@ import importlib.util
 import io
 import json
 import os
+import shutil
+import subprocess
 import tempfile
+import textwrap
 import time
 import urllib.request
 from pathlib import Path
@@ -315,3 +318,116 @@ def test_import_does_not_require_environment_or_access_network(monkeypatch):
 
     monkeypatch.setattr(urllib.request, "urlopen", forbidden)
     assert callable(_load_barrier().main)
+
+
+@pytest.mark.parametrize(
+    "update_code,install_code,expected_code,expected_calls",
+    [(0, 0, 0, 2), (42, 0, 42, 1), (0, 43, 43, 2)],
+    ids=[
+        "apt_success_exact_argv",
+        "apt_update_failure_stops",
+        "apt_install_failure_propagates",
+    ],
+)
+def test_render_apt_network_prefix(
+    tmp_path, update_code, install_code, expected_code, expected_calls
+):
+    """Execute only the real workflow APT prefix with Bash builtin stubs."""
+    workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+    title = "      - name: Install the XeLaTeX toolchain, Pandoc, pandoc-crossref, and the SVG rasterizer\n"
+    assert workflow.count(title) == 1
+    step = workflow.split(title, 1)[1].split("      - name:", 1)[0]
+    assert "        timeout-minutes: 12\n" in step
+    script = textwrap.dedent(step.split("        run: |\n", 1)[1])
+    lines = script.splitlines()
+    ends = [
+        i
+        for i, line in enumerate(lines)
+        if line.startswith("printf 'FEP_RENDER_INSTALL_PHASE phase=apt_install ")
+    ]
+    assert len(ends) == 1
+    prefix = "\n".join(lines[: ends[0] + 1]) + "\n"
+    assert "curl " not in prefix and "dpkg " not in prefix
+    bash = shutil.which("bash")
+    assert bash is not None, "These workflow contract controls require Bash"
+    # Parse the entire unchanged download/install suffix without executing it.
+    syntax = subprocess.run(
+        [bash, "-n"],
+        input=script,
+        text=True,
+        capture_output=True,
+        stdin=None,
+        timeout=5,
+        check=False,
+    )
+    assert syntax.returncode == 0, syntax.stdout + syntax.stderr
+    argv_log = tmp_path / "apt-argv.nul"
+    stub = r"""
+sudo() {
+  printf '%s\0' "$@" >> "$APT_ARGV_LOG"
+  printf '\0' >> "$APT_ARGV_LOG"
+  [[ "$1" == apt-get ]] || return 99
+  local argument
+  for argument in "$@"; do
+    if [[ "$argument" == update ]]; then return "$APT_UPDATE_RC"; fi
+    if [[ "$argument" == install ]]; then return "$APT_INSTALL_RC"; fi
+  done
+  return 98
+}
+"""
+    result = subprocess.run(
+        [bash, "-e", "-u", "-o", "pipefail", "-c", stub + "\n" + prefix],
+        env={
+            "PATH": os.environ.get("PATH", ""),
+            "APT_ARGV_LOG": str(argv_log),
+            "APT_UPDATE_RC": str(update_code),
+            "APT_INSTALL_RC": str(install_code),
+        },
+        stdin=subprocess.DEVNULL,
+        text=True,
+        capture_output=True,
+        timeout=5,
+        check=False,
+    )
+    assert result.returncode == expected_code, result.stdout + result.stderr
+    raw = argv_log.read_bytes()
+    assert raw.endswith(b"\0\0")
+    calls = [
+        [word.decode("utf-8") for word in call.split(b"\0")]
+        for call in raw[:-2].split(b"\0\0")
+    ]
+    options = [
+        "apt-get",
+        "-o",
+        "Acquire::http::Timeout=30",
+        "-o",
+        "Acquire::https::Timeout=30",
+        "-o",
+        "Acquire::Retries=1",
+    ]
+    expected = [options + ["update", "--error-on=any"]]
+    if expected_calls == 2:
+        expected.append(
+            options
+            + [
+                "install",
+                "-y",
+                "--no-install-recommends",
+                "texlive-xetex",
+                "texlive-latex-recommended",
+                "texlive-latex-extra",
+                "texlive-fonts-recommended",
+                "lmodern",
+                "fontconfig",
+                "librsvg2-bin",
+            ]
+        )
+    assert calls == expected
+    assert (
+        "FEP_RENDER_INSTALL_PHASE phase=apt_update " in result.stdout
+        if update_code == 0
+        else "FEP_RENDER_INSTALL_PHASE" not in result.stdout
+    )
+    assert ("FEP_RENDER_INSTALL_PHASE phase=apt_install " in result.stdout) == (
+        expected_code == 0
+    )

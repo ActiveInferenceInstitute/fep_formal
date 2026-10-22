@@ -552,11 +552,18 @@ jobs:
         timeout-minutes: 12
         shell: bash
         run: |
+          # Connection/data inactivity bounds, not an overall download deadline.
+          # The existing 12-minute step timeout remains the whole-step bound.
+          render_apt_network_options=(
+            -o Acquire::http::Timeout=30
+            -o Acquire::https::Timeout=30
+            -o Acquire::Retries=1
+          )
           render_install_phase_started=$SECONDS
-          sudo apt-get update
+          sudo apt-get "${render_apt_network_options[@]}" update --error-on=any
           printf 'FEP_RENDER_INSTALL_PHASE phase=apt_update elapsed_seconds=%s\n' "$((SECONDS - render_install_phase_started))"
           render_install_phase_started=$SECONDS
-          sudo apt-get install -y --no-install-recommends \
+          sudo apt-get "${render_apt_network_options[@]}" install -y --no-install-recommends \
             texlive-xetex texlive-latex-recommended texlive-latex-extra \
             texlive-fonts-recommended lmodern fontconfig librsvg2-bin
           printf 'FEP_RENDER_INSTALL_PHASE phase=apt_install elapsed_seconds=%s\n' "$((SECONDS - render_install_phase_started))"
