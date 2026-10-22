@@ -365,11 +365,7 @@ def test_root_reference_sections_use_canonical_owners(relative: str) -> None:
         (
             "README.md",
             "Development checks",
-            (
-                "```bash\nuv run mypy src scripts docs "
-                "specs/publication-browser-acceptance/wait_render_dependencies.py "
-                "# copied gate\n```\n"
-            ),
+            "```bash\nuv run mypy src scripts docs # copied gate\n```\n",
             "copies required checks",
         ),
         (
@@ -389,6 +385,14 @@ def test_root_reference_sections_use_canonical_owners(relative: str) -> None:
 def test_root_reference_guard_rejects_restored_definitions(
     relative: str, heading: str, addition: str, message: str
 ) -> None:
+    if message == "copies required checks":
+        # The historical parameter text preserves its collected identity.
+        # Inject the current owner command, not that historical label's command.
+        mypy_commands = [
+            command for command in agents_commands() if command.startswith("mypy ")
+        ]
+        assert len(mypy_commands) == 1, "Expected one canonical mypy gate"
+        addition = f"```bash\nuv run {mypy_commands[0]} # copied gate\n```\n"
     text = (PROJECT_ROOT / relative).read_text(encoding="utf-8")
     marker = f"## {heading}\n"
     text = text.replace(marker, f"{marker}\n{addition}", 1)
