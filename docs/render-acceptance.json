@@ -11,7 +11,7 @@
     "unnumbered_equations": 0,
     "unresolved_references": 0
   },
-  "manuscript_source_digest": "f38f91875babb6ff1d2b224d70b9a17abb712dbfee0a3421cc68ba0fcfe6dca6",
+  "manuscript_source_digest": "528b93b9399cbd1f6edd4a3b4052ef8a6836593aa4b5c2a9c0d17436b601062c",
   "pages": 388,
   "receipt_version": 2,
   "source_digests": {
@@ -48,7 +48,7 @@
     "08b_mathematical_positioning_supplement.md": "7b5c6bf4dca225fa2670f0264f7dd9b570ba559df8232eba5ecafe2167ec2919",
     "09z_unified_formalism_catalogue.md": "8ce2c8ec7c2d3052c6cfca3980d5865b888d17742ad1f480911f094428b19198",
     "config.yaml": "d812b8b53cb7c3c3a0e7235c468da62ab386e8084d2af892cb013e8ffc834708",
-    "preamble.md": "0ca6e7d06bf56f64e2e2850c96e7a802695f0225128d9a955ab9d1318651a6d9",
+    "preamble.md": "059044a04cedd89955c792227f696cc685e5afa4c359cb54ccd00e71b39997da",
     "references.bib": "240a65f3305926df7507b70de86ada7bdfd8d77c2f70c22f1650da03b86a34a5"
   }
 }
