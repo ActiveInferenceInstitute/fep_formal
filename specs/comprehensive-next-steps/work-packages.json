@@ -708,7 +708,9 @@
       "issues": [
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/76"
       ],
-      "status": "planned",
+      "status": "accepted",
+      "acceptance_reference": "[PR #214](https://github.com/ActiveInferenceInstitute/fep_formal/pull/214) and [fresh main workflow 39715953206](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39715953206)",
+      "accepted_main": "75cde030c34d331eefb4b95943ac2fe7fb1505cb",
       "outcome": "General finite rate-distortion primal minimum equals dual supremum with correctly separated multiplier-attainment conditions.",
       "depends_on": [
         "F03"
@@ -1065,7 +1067,7 @@
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/77"
       ],
       "status": "planned",
-      "outcome": "A future empirical lane has licensed measurements and its own approved pre-outcome protocol, or a retained governed no-go.",
+      "outcome": "Current governed no-go: acquisition/analysis remains inactive pending named licensed-owner and separately reviewed protocol admission. Future empirical work retains all original gates; see the EMP-J1 disposition in open-issue-review-20261016.md.",
       "depends_on": [
         "H03"
       ],

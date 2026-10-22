@@ -81,7 +81,7 @@ the eight receipt-bound copies and their individual retention decisions.
    integration and publication acceptance remain separate. F02/F03/F04/F09/F10/F11/F13/F14 cover thermodynamics, Boolean
    distortion, Gaussian blankets, MaxEnt, Helmholtz, tree messages, count-level
    conjugacy and stationary currents. S02/S03/S04 govern actual relation
-   witnesses; F07 follows F03 through its separate strong-duality library gate.
+   witnesses; F07 has delivered its separately qualified [finite duality scope](finite-rate-distortion-duality-20261021.md), with all-feasible value equality separated from strict-feasibility multiplier attainment.
 5. H01 obtains current export and distinct reviews; H02 runs the sole primary;
    H03 binds outcomes, archives and reproduction. C06 independently audits all
    nine original criteria. F05/F06/F08 and F12 extend control, paths, fixed-truth

@@ -6,46 +6,13 @@ Each linked GitHub Issue contains its owner, detailed scope, dependencies,
 positive acceptance, failure controls and claim boundary. Size means
 implementation scope, not a version or schedule promise.
 
-The [2026-10-16 publication handoff](WORK_STATUS.md) records pushed work and
-remaining acceptance. [PR182](https://github.com/ActiveInferenceInstitute/fep_formal/pull/182) has passed
-all 15 hosted jobs and is integrated. The
-[complete issue review](specs/comprehensive-next-steps/open-issue-review-20261016.md)
-records implemented fixes, exact-source evidence and remaining acceptance;
-backlog rows remain open until their scope is accepted.
-
-The earlier software/proof-component checkpoint is
-[PR201](https://github.com/ActiveInferenceInstitute/fep_formal/pull/201), main
-`de9643f5249ad207219af51f6446327197a01247`, qualified by the
-[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39449116181).
-The 30 first-column Issue rows account for accepted PKG-6 (#119), CORE-D2
-(#65), BRIDGE-D1 (#61), CORE-M3 (#73), CORE-D3 (#74) and LEAN-12 (#110),
-delivered through PR203, PR205, PR206 and PR207. Independent API/schema and semantic review are now retained for CORE-D2;
-its conceptual Bernoulli relation keeps the explicit conjugate-carrier boundary.
-PKG-13 remains in delivery history. FORM-D1, FORM-S3, LEAN-6, CORE-D1, PKG-7, LEAN-9, FORM-S2 and the
-maintainer-closed CUR-15 remain in delivery history. This board reconciliation
-supplies no new production browser or primary scientific evidence.
-The subsequent [PR202](https://github.com/ActiveInferenceInstitute/fep_formal/pull/202)
-advances source-pair custody only; it adds no theorem or algorithm claim.
-
-The earlier accepted software checkpoint is
-[PR206](https://github.com/ActiveInferenceInstitute/fep_formal/pull/206), main
-`40856a1985065a2ca7e92950e3a29f5effa5c28a`, qualified by the
-[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39504371245)
-and independently checked uploaded artifacts and scoped PDF review. The runner
-receipt establishes the historical named pair's actual initial-Gaussian update;
-current-source runner execution and OU dynamics remain separate claims. These
-four closeouts supply no production browser or primary scientific acceptance.
-Fresh full capture and its evidence boundaries remain in CUR-05/CUR-07.
-
-The current accepted software checkpoint is
-[PR207](https://github.com/ActiveInferenceInstitute/fep_formal/pull/207), main
-`ad4569db717a7d1998141ea5d0dbd68a7f6b5b64`, qualified by the
-[full exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39532685900)
-and independently authenticated uploaded artifacts and scoped direct PDF review.
-Its accessible offline views and finite KL/Mathlib-only draft complete the two
-additional software closeouts. All six retain their recorded scope boundaries;
-full Hermes/capture, primary scientific acceptance and upstream submission are
-separate requirements.
+The [current assessment](ISA.md#current-assessment) owns the accepted
+software/proof-component checkpoint and exact-source evidence;
+[CHANGELOG.md](CHANGELOG.md) owns completed delivery and acceptance history.
+The [complete issue review](specs/comprehensive-next-steps/open-issue-review-20261016.md)
+retains scope-specific evidence and remaining acceptance. Rows below remain
+open until their exact scope is accepted; software delivery supplies no
+production-capture, primary scientific or optional-provider acceptance.
 
 ## Release gate
 
@@ -88,7 +55,6 @@ until a verified integration or disposition; they are not removed as legacy.
 | --- | --- | --- | --- |
 | [CUR-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/50) — Refresh optional strict Hermes/OpenGauss evidence for all 168 topics | Medium | Secure current credential/model route and concrete spend boundary | Complete source-bound strict full-mode report for all 168 topics independently claim-ready; secure preflight and enforcement of the separately authorized spend ceiling remain required. |
 | [CUR-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58) — Review substantive PR44 against current formal and ownership contracts | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Fresh current-base PR44 formal/ownership brief, warning-free native/axiom/projection evidence and independent domain review before integration. |
-| [EMP-J1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/77) — Gate future empirical work on licensed data and new immutable protocol | Major | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) and named licensed data/new protocol | Verifiable license/provenance/split and independently reviewed real measurements, or retained governed no-go. |
 
 ## Upcoming minor, medium and major scopes
 
@@ -102,7 +68,6 @@ roster refresh; new topics are not implicitly reserved by this plan.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [Issue #211](https://github.com/ActiveInferenceInstitute/fep_formal/issues/211) — Correct complete theorem statement and proof spans | Minor | Current canonical owners and installed query contract | Reviewed complete source slices, unchanged public inventory, adversarial grammar controls, deterministic projections, installed-wheel parity and actual publication evidence. |
 | [CORE-M2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63) — maintain current guidance through dependency review | Minor | [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48) | Current active reading paths, complete retirement caller inventory, strict links/hygiene/xrefs and preserved historical evidence. |
 | [FORM-M1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68) — align primary theorem proxies with the proved information seams | Minor | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Exact primary types/assumptions/non-vacuity reviewed; stable IDs/signatures and all native/axiom/boundary projections accepted. |
 | [FORM-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/70) — fixed-truth consistency for the continuous static-latent model | Medium | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Explicit infinite fixed-truth law, prefix/native equality and actual convergence proof; new protocol preserves current H3 seeds. |
@@ -111,7 +76,6 @@ roster refresh; new topics are not implicitly reserved by this plan.
 | [CORE-J2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/67) — measured incremental capture and bounded resource lifecycle | Major | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64) | Measured full/resumed/edited capture equivalence, exact dependency invalidation and closed-owned resource receipts without weaker budgets. |
 | [FORM-J1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/71) — observation-dependent finite-horizon control on one carrier | Major | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Finite-horizon measurable updates/selectors, Bellman/native cost equality, attainment/moment bounds and exact two-step recovery. |
 | [FORM-J2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/72) — generator-to-path lifting with an explicit library stop gate | Major | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Pinned generator/path API stop gate, semigroup compatibility and actual path construction, or bounded upstream proposal/no-go. |
-| [FORM-J3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76) — Probe general finite rate-distortion strong duality before staged proof | Major | [FORM-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/69) | Pinned convexity/support/separation/endpoint seam passes before derived general finite duality, or explicit library no-go. |
 
 ## Scoped improvements (2026-10-08)
 

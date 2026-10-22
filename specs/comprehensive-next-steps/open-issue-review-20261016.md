@@ -173,13 +173,13 @@ Packages: `S01`.
 
 ### [#76: FORM-J3 Probe general finite rate-distortion strong duality before staged proof](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76)
 
-The exact package target, witnesses and acceptance controls are retained below. No implementation or scientific acceptance is inferred from planning.
+The bounded F07 target is delivered: all-feasible finite nonnegative-distortion primal/dual value equality, with finite multiplier attainment only under actual strict feasibility. See the [accepted scope and evidence](finite-rate-distortion-duality-20261021.md). This supersedes planning status for F07 only; broader guidance and terminal H3 acceptance remain separate.
 
 Packages: `F07`.
 
 ### [#77: EMP-J1 Gate future empirical work on licensed data and new immutable protocol](https://github.com/ActiveInferenceInstitute/fep_formal/issues/77)
 
-No real licensed dataset or acquisition protocol is supplied. No empirical conclusion or invented data is introduced.
+The permitted governed no-go leaves E01 acquisition/analysis inactive because named licensed-owner and independently reviewed pre-outcome protocol admission gates were not supplied and validated for this task. See the retained EMP-J1 disposition below. This accepts no empirical null, H03/#57 dependency, or terminal H3 result.
 
 Packages: `E01`.
 
@@ -356,3 +356,74 @@ Packages: `P11`.
 Accepted on2026-10-18 at the bound current source: authoritative ownership links, shorter README, preserved historical evidence boundaries and25 inventory controls pass fresh strict Markdown gates and independent review. The original G01 dependency is explicitly resolved for the delivered root-map/reading-path subset; G01/#63 remains open. See [the scoped acceptance receipt](doc11-acceptance-20261018.json). No other acceptance follows.
 
 Packages: `D04`.
+
+## EMP-J1 governed empirical no-go — current-D documentation proposal
+
+Issue [#77](https://github.com/ActiveInferenceInstitute/fep_formal/issues/77)
+permits a governed no-go when empirical admission gates are missing. This
+record leaves the E01 acquisition/analysis lane inactive for this task because
+its licensed-owner and pre-outcome protocol admission gates have not been met.
+It does not restrict independent local software, mathematical or synthetic work.
+It binds the reviewed source checkpoint
+`fa151fbb9d0559e939a60df18606863324a115db`; publication qualification and issue
+closeout remain separately recorded.
+
+No named licensed dataset, dataset-owner approval, reproducible authorized
+acquisition route, or separately reviewed pre-outcome held-out protocol and
+split was supplied for this task. This describes missing supplied gates; it
+does not claim that suitable datasets do not exist. The earlier waiver concerned missing capture materials; it does not prohibit
+searching public datasets or grant dataset-specific approval. No empirical
+acquisition was undertaken for this disposition. Software-maintenance
+authorization supplies no dataset-specific license or data-owner approval.
+
+| Admission gate | Current disposition |
+| --- | --- |
+| Named measurements, provenance, units, sampling, access and interventions | No dataset-specific package was supplied and reviewed |
+| License and data-owner approval | Not supplied or validated for an empirical dataset |
+| Authorized reproducible acquisition | Not attempted for this disposition |
+| New pre-outcome analysis protocol and immutable held-out split | Not supplied or independently approved |
+| Protocol-faithful empirical analysis | Not run; empirical outcomes remain unavailable |
+
+No empirical analysis or protected empirical outcome inspection was performed
+for this disposition. Frozen protocol fields describe their historical epoch;
+this record makes no claim about all other actors or all possible datasets.
+Mathematical proofs and synthetic results supply no empirical, causal, or
+physical validation. Empirical claims remain unavailable, and physical
+constitutive identification remains outside the mathematical carrier.
+
+The exact no-go action is to block
+`E01.licensed-data-protocol -> E01.acquisition-analysis`, as specified by the
+active E01 package. The corresponding future empirical branch is
+`H30 -> H36E` in the research dependency map; no empirical held-out-comparison
+clause is activated or claimed accepted. This records the permitted governance
+alternative, rather than deleting that future branch or approving a terminal
+H3 theorem. H03/#57 and all current-source proof, reproduction, package and
+publication gates retain their separate acceptance requirements.
+
+The frozen H3 preregistration, freeze and prior methodology/statistical reviews
+remain unchanged. The existing H3 synthetic protocol is not an empirical
+acquisition protocol. This disposition accepts neither the CUR-10/#57 outcome
+and reproduction scope nor any other current research criterion. Its result is
+a governance no-go from missing supplied admission gates, not an observed
+empirical null result.
+
+Future empirical work requires a new study identity, a named data owner,
+validated license and access/provenance/units/sampling/intervention metadata,
+independent domain and statistical review, and a new immutable pre-outcome
+protocol and held-out split. That protocol must identify the exact mathematical
+carrier, constitutive assumptions and measured quantities before inspecting
+outcomes. A future proposal may still fail admission; this no-go grants it no
+approval and leaves the frozen H3 protocol intact.
+
+The historical independent source review that identified this permitted no-go path is
+`fep77-governed-empirical-no-go-path-independent-review-20261020`. The following
+source bindings make the governance basis reproducible:
+
+| Governing file | SHA-256 at the bound checkpoint |
+| --- | --- |
+| `specs/h3-reference-study/preregistration.yaml` | `50b3575316fb272dc7bf209f50a21330fc5ea0764da9399e20aedeb0b2302c93` |
+| `specs/h3-reference-study/freeze.json` | `dadbbf4a5f06d5b143dd87c6fb9f7eaca6f9db69b1351e32cad842ab1c8556d5` |
+| `specs/h3-reference-study/review-methodology.json` | `1fb83a201280faf933bcd985c7b574e9eb6387b883ceb7313c597c823770dc5a` |
+| `specs/h3-reference-study/review-statistical.json` | `230afe6c8538c2257a5c48136d885c09b5a100313cbe119a2b93e3bed00e6e28` |
+| `docs/design/fep-research-program/next-improvements.md` | `92a203824c406b1e9c964616f56d6866f526ad7c2469feadea454dda04a41d47` |
+| `docs/design/fep-research-program/research-contract.md` | `8ba6c4b6228b66061af06cd5003106e9428cf26b6b579c7e63f59d289530187f` |

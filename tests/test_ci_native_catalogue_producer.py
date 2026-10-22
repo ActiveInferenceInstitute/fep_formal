@@ -7,6 +7,7 @@ actual compiler outcomes before the duplicate gate can be removed.
 from __future__ import annotations
 
 import copy
+import json
 import subprocess
 from types import SimpleNamespace
 
@@ -229,3 +230,242 @@ def test_actual_missing_mathlib_path_fails_ci_mode_without_skip(producer, monkey
         "cache absent control"
         in (producer.root / "output/native-catalogue-producer.json").read_text()
     )
+
+
+@pytest.fixture
+def consumer(producer):
+    """Synthetic compiler boundary, real native receipt construction/validation."""
+    gate.produce_native_catalogue_receipt(producer.root, "1")
+    output = producer.root / "output"
+    native = json.loads((output / "native-verification.json").read_text())
+    invocation = {
+        "status": "ok",
+        "mode": "lean-only",
+        "complete": True,
+        "catalogue_topics": 168,
+        "verified_topics": 168,
+        "compiled_without_sorry_topics": 168,
+        "warning_count": 0,
+        "sorry_count": 0,
+        "mathlib": "Mathlib built (`Mathlib.olean` and required leaves present)",
+        "receipt": str(output / "native-verification.json"),
+        "native_claim_ready": True,
+        "results": [
+            VerifyResult(
+                topic_id=row["topic_id"],
+                compiles=row["compiles"],
+                has_sorry=row["has_sorry"],
+                sorry_occurrences=row["sorry_occurrences"],
+                errors=row["errors"],
+                warnings=row["warnings"],
+                duration_s=row["duration_s"],
+                lean_version=row["lean_version"],
+            ).as_dict()
+            for row in native["results"]
+        ],
+    }
+    (output / "native-catalogue-producer.json").write_text(json.dumps(invocation))
+    junit = output / "serial-lean-acceptance.xml"
+    junit.write_text(
+        '<testsuite><testcase classname="tests.test_catalogue_bodies_compile" '
+        'name="test_all_catalogue_bodies_compile"/></testsuite>'
+    )
+    producer.junit = junit
+    return producer
+
+
+def test_consumer_validates_actual_records_without_second_compile(consumer):
+    result = gate.validate_native_catalogue_producer(
+        consumer.root, junit=consumer.junit
+    )
+    assert result["validation"]["native_claim_ready"]
+    assert result["producer_node_passed_exactly_once"]
+    assert len(consumer.calls) == 1
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "native-verification.json",
+        "native-catalogue-producer.intent.json",
+        "native-catalogue-producer.json",
+        "serial-lean-acceptance.xml",
+    ],
+)
+@pytest.mark.parametrize("mutation", ["missing", "symlink", "malformed"])
+def test_consumer_refuses_unavailable_or_nonregular_records(consumer, name, mutation):
+    path = consumer.root / "output" / name
+    if mutation == "missing":
+        path.unlink()
+    elif mutation == "symlink":
+        target = path.with_suffix(".retained")
+        path.rename(target)
+        path.symlink_to(target)
+    else:
+        path.write_text("malformed")
+    with pytest.raises((ValueError, RuntimeError)):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+    assert len(consumer.calls) == 1
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("complete", False),
+        ("status", "error"),
+        ("verified_topics", 167),
+        ("warning_count", 1),
+        ("native_claim_ready", False),
+    ],
+)
+def test_consumer_refuses_incomplete_or_non_strict_api(consumer, field, value):
+    path = consumer.root / "output/native-catalogue-producer.json"
+    data = json.loads(path.read_text())
+    data[field] = value
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="API"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+
+
+@pytest.mark.parametrize(
+    "mutation", ["reordered", "duplicate", "missing", "duration", "extra-field"]
+)
+def test_consumer_refuses_api_receipt_mismatch(consumer, mutation):
+    path = consumer.root / "output/native-catalogue-producer.json"
+    data = json.loads(path.read_text())
+    if mutation == "reordered":
+        data["results"].reverse()
+    elif mutation == "duplicate":
+        data["results"][1] = copy.deepcopy(data["results"][0])
+    elif mutation == "missing":
+        data["results"].pop()
+    elif mutation == "duration":
+        data["results"][0]["duration_s"] += 1
+    else:
+        data["unknown"] = True
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="API"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+
+
+@pytest.mark.parametrize("mutation", ["strict", "filter", "extra"])
+def test_consumer_refuses_changed_producer_intent(consumer, mutation):
+    path = consumer.root / "output/native-catalogue-producer.intent.json"
+    data = json.loads(path.read_text())
+    if mutation == "strict":
+        data["fail_on_warnings"] = False
+    elif mutation == "filter":
+        data["topic_ids"] = ["fep-001"]
+    else:
+        data["unknown"] = True
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="intent"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+
+
+@pytest.mark.parametrize(
+    "mutation", ["missing", "duplicate", "skipped", "failure", "error"]
+)
+def test_consumer_requires_once_passing_serial_producer(consumer, mutation):
+    import xml.etree.ElementTree as ET
+
+    tree = ET.parse(consumer.junit)
+    suite = tree.getroot()
+    node = suite[0]
+    if mutation == "missing":
+        suite.remove(node)
+    elif mutation == "duplicate":
+        suite.append(copy.deepcopy(node))
+    else:
+        ET.SubElement(node, mutation)
+    tree.write(consumer.junit)
+    with pytest.raises(ValueError, match="passing producer"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+
+
+def test_consumer_refuses_stale_source_without_recompile(consumer):
+    owner = consumer.root / "src/fep_lean/lean_source.py"
+    owner.write_text(owner.read_text() + "\n# stale source\n")
+    with pytest.raises(ValueError, match="source-bound"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+    assert len(consumer.calls) == 1
+
+
+def test_consumer_refuses_input_replacement_during_validation(consumer, monkeypatch):
+    original = gate.validate_native_lean_receipt
+
+    def replace_after_validation(*args, **kwargs):
+        result = original(*args, **kwargs)
+        path = consumer.root / "output/native-catalogue-producer.intent.json"
+        path.write_text("{}")
+        return result
+
+    monkeypatch.setattr(gate, "validate_native_lean_receipt", replace_after_validation)
+    with pytest.raises(ValueError, match="changed during consumption"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("unexpected", True),
+        ("compiles", 1),
+        ("has_sorry", 0),
+        ("sorry_occurrences", False),
+        ("duration_s", False),
+        ("status", "compile_error"),
+        ("skip_reason", "invented"),
+        ("failure_kind", "timeout"),
+        ("lean_file", "/foreign.lean"),
+        ("retries", True),
+        ("retries", 0),
+        ("retries", 2),
+    ],
+)
+def test_consumer_rejects_noncanonical_typed_api_result(consumer, field, value):
+    path = consumer.root / "output/native-catalogue-producer.json"
+    data = json.loads(path.read_text())
+    data["results"][0][field] = value
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="API"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+
+
+@pytest.mark.parametrize("value", [False, "fixture", "Mathlib not built", ""])
+def test_consumer_rejects_wrong_mathlib_projection(consumer, value):
+    path = consumer.root / "output/native-catalogue-producer.json"
+    data = json.loads(path.read_text())
+    data["mathlib"] = value
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="API"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+
+
+@pytest.mark.parametrize("mode", ["foreign", "relative", "parent-hop", "symlink"])
+def test_consumer_requires_exact_current_receipt_target(consumer, mode):
+    output = consumer.root / "output"
+    path = output / "native-catalogue-producer.json"
+    data = json.loads(path.read_text())
+    if mode == "foreign":
+        data["receipt"] = "/foreign/native-verification.json"
+    elif mode == "relative":
+        data["receipt"] = "output/native-verification.json"
+    elif mode == "parent-hop":
+        data["receipt"] = str(output / ".." / "output" / "native-verification.json")
+    else:
+        alias = output / "alias"
+        alias.symlink_to(output, target_is_directory=True)
+        data["receipt"] = str(alias / "native-verification.json")
+    path.write_text(json.dumps(data))
+    with pytest.raises(ValueError, match="API"):
+        gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)
+
+
+def test_consumer_accepts_real_retry_once_projection(consumer):
+    path = consumer.root / "output/native-catalogue-producer.json"
+    data = json.loads(path.read_text())
+    data["results"][0]["retries"] = 1
+    path.write_text(json.dumps(data))
+    assert gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)[
+        "producer_node_passed_exactly_once"
+    ]

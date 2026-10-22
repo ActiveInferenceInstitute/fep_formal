@@ -542,9 +542,13 @@ perfect-reproduction joint. At half budget, distinct independent joints attain
 zero information. At quarter budget, a feasible informative problem has an
 attained strictly positive information minimum, proved by
 `FEP.VariationalDuality.boolQuarterBudget_exists_positive_minimizer`.
-The last statement does not assert that the explicit quarter-crossover
-feasibility witness is the optimizer. A closed-form curve, general strong
-duality, and interior optimizer uniqueness would need additional proofs.
+This existence theorem alone does not identify the explicit quarter-crossover
+witness as the optimizer. Separately,
+`FEP.VariationalDuality.FairBoolean.boolean_closed_exact_minimum` derives
+the fair-Boolean natural-log curve `log 2 - binEntropy D` for
+$0\leq D\leq1/2$ and proves optimality against every feasible joint.
+The general finite-law capability is stated below with its own hypotheses.
+No general or interior optimizer uniqueness follows from these value results.
 
 The native-information reading is nevertheless sound here: a joint law cannot
 charge an atom where its product marginal is zero. Hence the mutual-information
@@ -2068,30 +2072,43 @@ which direction its conclusion covers. Passing a real totalized functional
 through this limit does not prove the corresponding native extended-real
 statement.
 
-### From an attained rate-distortion problem to a sharp certificate {#sec:math_packet_distortion}
+### From attained rate distortion to a sharp dual certificate {#sec:math_packet_distortion}
 
-The present compactness theorem already supplies primal attainment. The next
-target should begin with the fair Boolean Hamming carrier, rather than assume
-general strong duality. A precise candidate is to derive the crossover
-optimizer and its value on $0\leq D\leq1/2$, including the endpoint
-distinctions, and connect it to the source's attained minimizer. A proof must
-show optimality against every feasible joint, not only compute the information
-of the symmetric crossover witness.
+The retained capability now separates three conclusions. For finite alphabets,
+a fixed source law, pointwise nonnegative real distortion and an actual
+feasible joint, `FEP.VariationalDuality.rateDistortion_exists_minimizer_and_dual_supremum`
+derives a primal minimizer whose information equals both the feasible primal
+infimum and the supremum of the Lagrangian dual over nonnegative real
+multipliers. Zero source atoms are permitted. Actual fixed-source information
+convexity and closed upper-image separation derive equality; neither an
+optimizer nor an equality certificate is supplied as a hypothesis.
 
-The dual certificate should state the multiplier domain and the exact
-normalization. The maintained
-`FEP.VariationalDuality.rateDistortionDual_le_feasible_information`
-gives a lower bound under its nonnegative-distortion and multiplier premises.
-A new sharp theorem would construct a multiplier and prove zero primal-dual
-gap, or explain why an endpoint needs a limit of multipliers. Uniqueness at
-zero budget and nonuniqueness at half budget are mandatory controls. An
-infeasible negative budget must remain infeasible; changing the feasible set
-to obtain a smooth-looking curve would change the question.
+The maintained fair-Boolean Hamming result already derives the natural-log
+curve $\log 2-\operatorname{binEntropy}D$ on $0\leq D\leq1/2$,
+including optimality against all feasible joints. The general dual-supremum
+theorem recovers this closed curve. At zero budget the supremum statement
+does not assert a finite maximizing multiplier. At half budget distinct
+independent joints minimize information; an infeasible negative budget remains
+infeasible.
 
-This packet would also support a computational certificate: compare a
-feasible joint's objective with a proved dual lower bound and report their
-gap. General alphabets, arbitrary distortion, and boundary regularity would
-remain later statements with their own hypotheses.
+Finite multiplier attainment is a separate result under actual strict
+feasibility. `FEP.VariationalDuality.rateDistortion_exists_slater_dual_optimizer`
+and `FEP.VariationalDuality.rateDistortion_primal_dual_extrema` construct a
+nonnegative real multiplier, zero primal-dual gap and complementary slackness.
+Strict feasibility is sufficient, not necessary: the zero-distortion,
+zero-budget control has multiplier zero and no strictly feasible law.
+These results assert neither a unique optimizer nor finite multiplier
+attainment at every feasible boundary.
+
+A later computational-certificate interface may compare an actual feasible
+joint's objective with a proved dual lower bound and report their gap. It
+would need its own executable representation, numerical-error contract and
+source-bound validation; the proof alone is not an implementation or measured
+performance result. Continuous alphabets, signed-distortion extensions,
+general uniqueness and stronger boundary-attainment claims remain separate
+questions. The supporting capability does not change the primary `fep-064`
+structural-proxy theorem or its reviewed semantic disposition. Formal results
+also supply no empirical or physical validation.
 
 ### Observation intertwining as a reusable theorem interface {#sec:math_packet_observation}
 

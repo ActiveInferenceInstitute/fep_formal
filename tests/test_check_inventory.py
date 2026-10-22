@@ -585,3 +585,172 @@ def test_statement_exceptions_cannot_expand() -> None:
         assert count is not None, finding
         assert key in _STATEMENT_DEBT, key
         assert int(count[1]) <= _STATEMENT_DEBT[key], finding
+
+
+def test_native_single_producer_and_explicit_dual_shadow_workflow_contract():
+    workflow = yaml.safe_load(CI.read_text())
+    steps = workflow["jobs"]["lean"]["steps"]
+    serial = next(
+        s for s in steps if s.get("name") == "Run the serial_lean acceptance lane"
+    )
+    assert serial["env"]["FEP_LEAN_CI_NATIVE_RECEIPT"] == "1"
+    assert (
+        "test_all_catalogue_bodies_compile" not in serial["run"]
+    )  # complete serial lane, no narrow selection
+    native = next(
+        s
+        for s in steps
+        if s.get("name")
+        == "Validate the strict serial producer and optionally compare the CLI"
+    )
+    body = native["run"]
+    assert body.index("validate_native_catalogue_producer(") < body.index(
+        'if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then'
+    )
+    conditional = body.split('if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then', 1)[
+        1
+    ].split("\nfi", 1)[0]
+    assert "uv run fep-lean verify" in conditional
+    assert body.count("uv run fep-lean verify") == 1
+    uploads = [
+        s for s in steps if s.get("uses", "").startswith("actions/upload-artifact@")
+    ]
+    standard = next(s for s in uploads if s["with"]["name"] == "native-formal-evidence")
+    assert "output/native-catalogue-producer.intent.json" in standard["with"]["path"]
+    assert "output/native-catalogue-producer.json" in standard["with"]["path"]
+    # Local default still reaches its direct LeanVerifier branch unless explicit CI flag is present.
+    source = (PROJECT_ROOT / "tests/test_catalogue_bodies_compile.py").read_text()
+    assert "if CI_NATIVE_RECEIPT_ENV in os.environ:" in source
+    assert "verifier.verify_batch(items)" in source
+
+
+def _full_profile_distribution_cells(workflow):
+    """Closed full matrix for automatic PR/default push and manual shadow profiles."""
+    matrix = workflow["jobs"]["distribution"]["strategy"]["matrix"]
+    assert set(matrix) == {"os", "python"}
+    assert matrix["os"] == ["ubuntu-latest", "macos-latest", "windows-latest"]
+    assert matrix["python"] == ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    cells = [
+        (os_name, version) for os_name in matrix["os"] for version in matrix["python"]
+    ]
+    assert len(cells) == len(set(cells)) == 15
+    return cells
+
+
+def test_full_pr15_distribution_matrix_is_event_independent():
+    workflow = yaml.safe_load(CI.read_text())
+    assert len(_full_profile_distribution_cells(workflow)) == 15
+    # A literal matrix applies equally to automatic PR, push and explicit manual shadow.
+    assert isinstance(
+        workflow["jobs"]["distribution"]["strategy"]["matrix"]["python"], list
+    )
+
+
+@pytest.mark.parametrize(
+    "versions",
+    [
+        ["3.10", "3.12", "3.14"],
+        ["3.10", "3.11", "3.12", "3.13"],
+        ["3.10", "3.11", "3.12", "3.13", "3.13"],
+        ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"],
+    ],
+)
+def test_full_pr15_matrix_refuses_reduced_missing_duplicate_extra_versions(versions):
+    workflow = yaml.safe_load(CI.read_text())
+    workflow["jobs"]["distribution"]["strategy"]["matrix"]["python"] = versions
+    with pytest.raises(AssertionError):
+        _full_profile_distribution_cells(workflow)
+
+
+@pytest.mark.parametrize(
+    "key,value", [("os", ["ubuntu-latest", "macos-latest"]), ("exclude", [])]
+)
+def test_full_pr15_matrix_refuses_platform_loss_or_filter(key, value):
+    workflow = yaml.safe_load(CI.read_text())
+    workflow["jobs"]["distribution"]["strategy"]["matrix"][key] = value
+    with pytest.raises(AssertionError):
+        _full_profile_distribution_cells(workflow)
+
+
+def test_producer_context_observes_original_paths_after_success_before_optional_cli():
+    steps = yaml.safe_load(CI.read_text())["jobs"]["lean"]["steps"]
+    body = next(
+        s["run"]
+        for s in steps
+        if s.get("name")
+        == "Validate the strict serial producer and optionally compare the CLI"
+    )
+    assert body.index("validate_native_catalogue_producer(") < body.index(
+        'print("FEP_NATIVE_PRODUCER_CONTEXT '
+    )
+    assert body.index('print("FEP_NATIVE_PRODUCER_CONTEXT ') < body.index(
+        'if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then'
+    )
+    for token in [
+        "Path.cwd().resolve(strict=True)",
+        '"git_head"',
+        '"receipt"',
+        '"GITHUB_REPOSITORY"',
+        '"GITHUB_RUN_ID"',
+        '"GITHUB_RUN_ATTEMPT"',
+        '"GITHUB_SHA"',
+    ]:
+        assert token in body
+
+
+def _assert_native_shadow_selection_is_explicit(workflow):
+    expected = "${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}"
+    steps = workflow["jobs"]["lean"]["steps"]
+    for name in [
+        "Run the serial_lean acceptance lane",
+        "Validate the strict serial producer and optionally compare the CLI",
+    ]:
+        step = next(s for s in steps if s.get("name") == name)
+        assert step["env"]["FEP_LEAN_NATIVE_SHADOW"] == expected
+    events = workflow.get("on", workflow.get(True))
+    selection = events["workflow_dispatch"]["inputs"]["native_producer_shadow"]
+    assert selection["type"] == "boolean"
+    assert selection["default"] is False
+    assert selection["required"] is False
+
+
+def test_native_shadow_selection_requires_manual_explicit_boolean():
+    _assert_native_shadow_selection_is_explicit(yaml.safe_load(CI.read_text()))
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "Run the serial_lean acceptance lane",
+        "Validate the strict serial producer and optionally compare the CLI",
+    ],
+)
+@pytest.mark.parametrize(
+    "value",
+    [
+        "1",
+        "0",
+        "${{ inputs.native_producer_shadow && '1' || '0' }}",
+        "${{ github.event_name == 'pull_request' && '1' || '0' }}",
+    ],
+)
+def test_native_shadow_selection_refuses_forced_or_wrong_event_mutants(name, value):
+    workflow = yaml.safe_load(CI.read_text())
+    step = next(s for s in workflow["jobs"]["lean"]["steps"] if s.get("name") == name)
+    step["env"]["FEP_LEAN_NATIVE_SHADOW"] = value
+    with pytest.raises(AssertionError):
+        _assert_native_shadow_selection_is_explicit(workflow)
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [("default", True), ("default", "false"), ("required", True), ("type", "string")],
+)
+def test_native_shadow_selection_refuses_nonboolean_or_default_enabled_input(
+    field, value
+):
+    workflow = yaml.safe_load(CI.read_text())
+    events = workflow.get("on", workflow.get(True))
+    events["workflow_dispatch"]["inputs"]["native_producer_shadow"][field] = value
+    with pytest.raises(AssertionError):
+        _assert_native_shadow_selection_is_explicit(workflow)

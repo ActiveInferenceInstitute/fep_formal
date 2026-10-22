@@ -18,8 +18,11 @@ internal implementation details.
 - Formal-source tests distinguish topic bodies, manifested foundations,
   leaf-composition modules, and the import-only aggregate. Lean tests are
   serial. The opt-in whole-catalogue test uses
-  `FEP_LEAN_CATALOGUE_COMPILE_TEST=1`; normal publication acceptance uses the
-  CLI receipt and warning gate.
+  `FEP_LEAN_CATALOGUE_COMPILE_TEST=1`; CI explicitly selects the same node as
+  the strict unfiltered production receipt producer. Publication validates its
+  native receipt, intent/API record and once-passing JUnit node. Explicit manual
+  dual-shadow mode additionally runs the ordinary CLI; local defaults remain
+  unchanged. Missing or stale producer evidence never triggers a rescue compile.
 - Provider tests require credentials. Hermes and end-to-end families require
   explicit live-test selection; the Gauss runner live family also enables
   itself when a provider key is present unless `FEP_LEAN_LIVE_TESTS=0`.
@@ -56,3 +59,9 @@ generator field, add invalid-schema, freshness, and byte-parity tests. A new
 expansion family also needs registry-order, novelty-bridge, source-closure, and
 composition-resolution coverage. When adding evidence, test both a valid
 positive receipt and plausible tampering.
+
+### Full automatic PR and explicit dual-shadow acceptance profiles
+
+The profile policy is owned by [root AGENTS.md](../AGENTS.md#full-automatic-pr-and-explicit-dual-shadow-acceptance-profiles).
+Keep its full matrix, explicit shadow selection, producer evidence and final
+membership controls in the existing test owners; do not duplicate profile rules.

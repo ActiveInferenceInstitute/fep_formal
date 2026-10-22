@@ -1,6 +1,6 @@
-# F07 finite rate-distortion duality source candidate
+# F07 finite rate-distortion duality accepted scope
 
-This is the active source contract for [issue76](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76), refining the existing F07 matrix in [work-packages.json](work-packages.json). Maintained qualification and acceptance remain pending. Follow the [research contract](../../docs/design/fep-research-program/research-contract.md).
+This is the active source contract for [issue76](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76), refining the existing F07 matrix in [work-packages.json](work-packages.json). Accepted at `75cde030c34d331eefb4b95943ac2fe7fb1505cb`; evidence: [PR #214](https://github.com/ActiveInferenceInstitute/fep_formal/pull/214) and [fresh main workflow 39715953206](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39715953206). Follow the [research contract](../../docs/design/fep-research-program/research-contract.md).
 
 | Field | Contract |
 | --- | --- |
@@ -8,7 +8,7 @@ This is the active source contract for [issue76](https://github.com/ActiveInfere
 | Depends on | F03 and the existing finite-law compactness/continuity minimum. |
 | Single owner | Existing `src/fep_lean/formal/variational_duality.lean`; regenerate its existing manifested workspace projection. |
 | Stop/go spike | Actual fixed-source MI convexity with zero atoms, closed upper image, strict epsilon separation, and normalized infimum lower bounds. |
-| Go condition | Strict Lean 4.35 compiles the exact finite-law conclusions with standard-only axiom reports and independent review. External core has passed; maintained gates remain pending. |
+| Go condition | Strict Lean 4.35 compiles the exact finite-law conclusions with standard-only axiom reports and independent review. Maintained qualification and independent source/publication reviews are recorded in the acceptance reference above. |
 | No-go action | Block the closed-image -> epsilon-support -> all-feasible-dual-supremum clause if its actual proof fails; keep the separately proved strict-feasibility theorem scoped, without promoting endpoint attainment. |
 | Theorem/API target | `rateDistortion_exists_minimizer_and_dual_supremum` uses finite `FiniteLaw` carriers, nonnegative real distortion and actual feasible-law existence. `rateDistortion_exists_slater_dual_optimizer` and `rateDistortion_primal_dual_extrema` additionally assume actual strict feasibility for a finite maximizing multiplier and complementary slackness. |
 | Positive witness | Recover the maintained fair-Boolean natural-log curve as the dual supremum on the closed interval from 0 to 1/2; derive positive quarter-budget primal/dual attainment. |
@@ -22,4 +22,4 @@ The source uses Lean `v4.35.0`, Mathlib `v4.35.0` at `56a005855ea17e0b0958f73ec8
 
 The primal set and dual-value set are explicitly nonempty. Mutual-information nonnegativity bounds the primal infimum; actual weak duality at a feasible minimizer bounds the dual supremum. Strict separation below the optimum gives arbitrarily close dual lower bounds even when Slater fails. Finite multiplier attainment uses the separate strict-feasibility theorem. No finite endpoint multiplier follows from equality of values.
 
-External source probes and independent reviews are retained in the workspace evidence ledger. Their compilation does not substitute for the current maintained-source commands and receipts. Keep F07 and issue76 open until those gates and independent maintained reviews pass.
+External source probes and independent reviews are retained in the workspace evidence ledger. Their compilation does not substitute for the current maintained-source commands and receipts. The acceptance reference binds the maintained gates and independent reviews for this finite subpackage; it does not imply terminal H3 acceptance.

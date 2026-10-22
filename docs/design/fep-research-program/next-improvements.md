@@ -41,11 +41,9 @@ four dependency pins unless a separately reviewed upgrade changes the program.
 
 ## Current source and acceptance owners
 
-The [accepted maina534 software checkpoint](https://github.com/ActiveInferenceInstitute/fep_formal/commit/a53456c0941443d698a5dd34ea61c78721e40282)
-has an [exact-source full hosted run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39687054068).
-Its native, installed-package and scoped manuscript acceptance belongs to that
-source epoch. The [current assessment](../../../ISA.md#current-assessment)
-and [delivery history](../../../CHANGELOG.md) own accepted component facts;
+The [current assessment](../../../ISA.md#current-assessment) owns the accepted
+software/proof-component source and exact-main evidence. The
+[delivery history](../../../CHANGELOG.md) owns durable component facts;
 [TODO.md](../../../TODO.md) owns the open issue inventory. This guide does not
 maintain another live implementation/status table.
 
@@ -233,11 +231,11 @@ duality ([#76](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76)
 nor continuous-alphabet attainment or a universally unique optimizer. Primary
 proxy migration and broader scientific acceptance keep their own scope.
 
-The separate [F07 source candidate](../../../specs/comprehensive-next-steps/finite-rate-distortion-duality-20261021.md)
+The separately [accepted F07 scope](../../../specs/comprehensive-next-steps/finite-rate-distortion-duality-20261021.md)
 now derives primal/dual value equality for every feasible finite nonnegative-
 distortion problem; strict feasibility separately gives a finite maximizing
-multiplier and complementary slackness. Its maintained gates and scientific
-acceptance are tracked independently by issue76. The Boolean proof alone
+multiplier and complementary slackness. Its exact accepted-source evidence and scoped scientific reviews are linked
+from that contract; broader scientific acceptance remains separate. The Boolean proof alone
 does not supply that general theorem.
 
 ### FORM-D2 — fixed-truth consistency for the continuous static-latent model

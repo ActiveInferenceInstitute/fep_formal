@@ -137,10 +137,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        # Pull requests run the floor, a middle and the validator interpreter
-        # (9 cells); main and dispatch runs, which the release gate reads, run
-        # all 15.
-        python: ${{ fromJSON(github.event_name == 'pull_request' && '["3.10","3.12","3.14"]' || '["3.10","3.11","3.12","3.13","3.14"]') }}
+        # Pull requests, main pushes and full manual runs all cover the same
+        # 15 cells: three operating systems and five supported Python versions.
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
@@ -1082,6 +1081,7 @@ jobs:
       - name: Run the serial_lean acceptance lane
         env:
           FEP_LEAN_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
+          FEP_LEAN_CI_NATIVE_RECEIPT: "1"
           FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
           FEP_LEAN_SLICE04_COMPILE_TEST: "1"
           FEP_LEAN_SLICE05_COMPILE_TEST: "1"
@@ -1089,24 +1089,47 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p output
-          if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then
-            export FEP_LEAN_CI_NATIVE_RECEIPT=1
-          fi
           uv run pytest tests/ -q -m serial_lean -n 1 --no-cov \
             --junitxml=output/serial-lean-acceptance.xml \
             -W always --color=no 2>&1 | tee output/serial-lean-warning-inventory.log
-      - name: Verify exact sealed-roster native receipt
+      - name: Validate the strict serial producer and optionally compare the CLI
         env:
           FEP_LEAN_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
         run: |
+          uv run python - <<'PY_CONSUMER'
+          from pathlib import Path
+          import json
+          import os
+          import subprocess
+          from tests._support.native_catalogue_gate import validate_native_catalogue_producer
+          root = Path.cwd().resolve(strict=True)
+          print(validate_native_catalogue_producer(
+              root, junit=root / "output/serial-lean-acceptance.xml",
+          ))
+          # Observe original capture paths after successful live consumption.
+          # Uploaded evidence retains these strings; external review never rebinds them.
+          context = {
+              "checkout": str(root),
+              "receipt": str((root / "output/native-verification.json").resolve(strict=True)),
+              "git_head": subprocess.check_output(
+                  ["git", "rev-parse", "HEAD"], cwd=root, text=True,
+                  stdin=subprocess.DEVNULL, timeout=30,
+              ).strip(),
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "github_sha": os.environ["GITHUB_SHA"],
+          }
+          print("FEP_NATIVE_PRODUCER_CONTEXT " + json.dumps(context, sort_keys=True, separators=(",", ":")), flush=True)
+          PY_CONSUMER
           if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then
             test ! -e output/native-verification-serial-producer.json
             test ! -L output/native-verification-serial-producer.json
             cp output/native-verification.json output/native-verification-serial-producer.json
+            uv run fep-lean verify \
+              --fail-on-warnings \
+              --receipt output/native-verification.json
           fi
-          uv run fep-lean verify \
-            --fail-on-warnings \
-            --receipt output/native-verification.json
           uv run python - <<'PY'
           from pathlib import Path
           from fep_lean.output import validate_native_lean_receipt
@@ -1191,6 +1214,8 @@ jobs:
           if-no-files-found: warn
           path: |
             output/native-verification.json
+            output/native-catalogue-producer.intent.json
+            output/native-catalogue-producer.json
             output/formalism-audit.json
             output/serial-lean-warning-inventory.log
             output/serial-lean-acceptance.xml
