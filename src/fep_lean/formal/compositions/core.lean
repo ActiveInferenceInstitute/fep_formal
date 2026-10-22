@@ -694,3 +694,19 @@ theorem fep013_two_level_uniform_strict :
   exact helmholtz_bool_uniform_gt (by norm_num)
 
 end FEPComposed
+
+namespace FEPComposed
+
+/-- Pair the explicit nonnegative precision-weighted quadratic with the
+bounded-step scalar descent law on the same state and centre. This is neither
+a derivation of a Laplace approximation nor a general optimizer theorem. -/
+theorem fep016_quadratic_pairs_fep032_descent
+    (prec step center x : ℝ) (hp : 0 ≤ prec)
+    (hstep0 : 0 ≤ step) (hstep2 : step ≤ 2) :
+    0 ≤ prec * (x - center) ^ 2 ∧
+      (fep_fep032.FEP032.fep032_quadraticUpdate step center x - center) ^ 2 ≤
+        (x - center) ^ 2 := by
+  exact ⟨fep_fep016.FEP016.fep016_precision_weighted prec x center hp,
+    fep_fep032.FEP032.fep032_quadraticEnergy_descent hstep0 hstep2⟩
+
+end FEPComposed

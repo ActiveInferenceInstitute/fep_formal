@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "decision": "ACCEPT_EXTERNAL_BINARY_BETA_MEASURE_PROTOTYPE_ONLY",
+  "source_sha256": "17fbc43aa3cec3edc6a1dac231a0b6ccf1ec0e6ef238fbdaf1c8e59e9250af32",
+  "manifest_sha256": "6ffb67c7880b8815ed00e1b513672f90f347131ba3f6897ecfdc7a4ed04f9a32",
+  "controller_sha256": "b1b6d871fdf39bc3e573e50c7f84610147ad13e7fa5fc8bcb277f1670224ae20",
+  "qualification_sha256": "7c2812d143da75ccd71d5fee61b83bff8caf766f377ff07aa0dd0b7d3b040eca",
+  "supervision_sha256": "600d7181335e9bd3a6f44b4fac61b497110a238e4b0125abbc1c61417470e6c8",
+  "root_repair_review_sha256": "1d9d34ca851b8d23224b87254b30195c65b6ccf956d1ca5a2a7a248f869a7419",
+  "actual_seconds": 2.8053572089993395,
+  "public_report_count": 21,
+  "standard_axiom_allowlist": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "retained_failed_density_qualifications": {
+    "1": "f805741f76fff8887987756f22fe51fcefbf51304a4472e8190129dff58b5d49",
+    "2": "80f088d7eb515ade0637dc8fd74a2bb828f0a17e8b572de1a2906d92f5408fa0"
+  },
+  "findings": [],
+  "mathematical_summary": "For positive real Beta shapes a,b and natural success/failure counts, actual prior measure onR weighted by ENNReal.ofReal(x)^s * ENNReal.ofReal(1-x)^f equals positive finite Beta-ratio scalar times shiftedBeta(a+s,b+f). Dividing by proved scalar yields actual posterior probability measure. Zeroatoms/endpoints handled by actualBetaPDF support; noninteger prior zero-count recovery is concrete.",
+  "nonvacuous_controls": [
+    "Uniformprior success/failure eachnormalizer1/2 with differentactualposteriorBeta2,1/Beta1,2.",
+    "distinct_posteriors compares actual likelihood-weighted mass firstmoment functional:Beta2,1 gives2/3, Beta1,2 gives1/3; no Bochnerexpected-log statement or derivative/integral interchange.",
+    "Wrongreciprocal2 scaling rejected by actualtotalmass; nonpositive-shape premise refused and outside/endpointsPDFzero actualproofs."
+  ],
+  "provenance": "Authenticated exactR3 deletion of unusedtacticline only; originalcontract/all21statements unchanged, source31/frozen6/librarypins currentbyteidentity, successfulcontroller source/runtime/SDKguards and quiescent180s supervision. Controller does not emit standalone runtimeprepost JSON; no such record fabricated.",
+  "boundary": "No maintained owner/import/source change, fullDirichlet/expectedlog/variationalclaim, issue95closure, topicmaturity or empiricalpromotion. Actualexternalbinarymeasureproof feasibility established only; maintainedintegration/fullgates and independent scientific reviews remain separate.",
+  "execution_by_reviewer": false
+}

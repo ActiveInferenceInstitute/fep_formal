@@ -1,0 +1,110 @@
+{
+  "state": "FROZEN_EXTERNAL_PROBE_CONTRACT_REQUIRES_INDEPENDENT_REVIEW_BEFORE_EXECUTION",
+  "scope": "#95/F13 stage2 feasibility only, binaryBeta measure slice; Stage1alreadyaccepted and untouched. No maintainedsourcechange/execution/semanticpromotion.",
+  "issue_snapshot_sha256": "d23f08fe0e14640746c5ea849bf37aeca114442c027e03420857fd5d72a9bfab",
+  "stage1": "Issue95comment records #169/e5e4e28 actual accepted countlevel Polya/risingfactorial/exchangeability/normalizedA-B rows andK2/fep045/alpha1/fep121 recovery. Originalbody noDirichlet claim is stale; do not repeat/reimplement it.",
+  "toolchain": {
+    "lean": "leanprover/lean4:v4.35.0",
+    "mathlib_tag": "v4.35.0",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679"
+  },
+  "pins": {
+    "fep95-stage2-pinned-library-readonly-assessment-20261022.json": "1d52d65580cec847ceef3ec26b8693eba1a36c046486560a6208128390103f49",
+    "fep76-finite-slater-duality/fep_formal/docs/design/fep-research-program/research-contract.md": "8ba6c4b6228b66061af06cd5003106e9428cf26b6b579c7e63f59d289530187f",
+    "fep76-finite-slater-duality/fep_formal/specs/comprehensive-next-steps/work-packages.json": "b954d825d4b87f2cc5155b94201df5458bb1849ca80fbfe01a30caa9254af3ce",
+    "fep76-finite-slater-duality/fep_formal/src/fep_lean/formal/empirical_risk.lean": "6e62f95a713d40f2c2e33f22e00c54f87a42b2e62f364ed00d221f1a56dd2dd1",
+    "fep76-finite-slater-duality/fep_formal/lean/.lake/packages/mathlib/Mathlib/Probability/Distributions/Beta.lean": "22f0dab9b561f169bf38bad89fa539d51b054783de4d23d2a27b9a135ad15398",
+    "fep76-finite-slater-duality/fep_formal/lean/.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Gamma/Digamma.lean": "bdd92157a3511e187a0b6c4ee4ea7d1d707d713761d598bfbf7b288942b25d02",
+    "fep76-finite-slater-duality/fep_formal/lean/.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Gamma/BohrMollerup.lean": "ec3d80042cc6021f1851660c4b377a4b0b2fe3f38377d8d61d0d28e70c1dda0d",
+    "fep76-finite-slater-duality/fep_formal/lean/.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Pow/Real.lean": "f8a26d662fb7966fa5b45aef95c8d7cf0383c9921fa3e9ee1cd2c41561e9fbfd",
+    "fep76-finite-slater-duality/fep_formal/lean/.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/WithDensity.lean": "cb47f52f610d82f9ad76e1146e551839d4b762f7157800d12a16b0d2e618e6d3"
+  },
+  "work_package": {
+    "outcome": "Decide feasibility of genuinebinary continuousBeta likelihood-weighted measureconjugacy at positive realshapeparameters; permitnarrowimplementation only afteractualqualifiedproof and independentreview.",
+    "depends_on": [
+      "F13acceptedcountstage (context, not desiredproofassumption)",
+      "ExistingpinnedBeta PDFnormalization+withDensity API; no dependency on unfinishedmeasureentropy#75 inferred. Liveissue/TODO#75 versuspackageS01 planning mismatch requires root explicitdisposition before maintainedactivation."
+    ],
+    "single_owner": "Externalspike only in this dedicatedfolder; prospective maintainedowner existing empirical_risk.lean DirichletCategorical section only after successfulprobe/review. No newproductionPython/scripts owners.",
+    "stop_go_spike": "APIchecks first; then exactunnormalizedBeta likelihood measure identity+finitepositive mass and normalized posterior; no integraldifferentiation/logexpectation claim in this firstslice.",
+    "go_condition": "ActualstrictLean4.35 warningAsError proof of realweightedmeasure identity and normalizer>0finite plus explicitpositive/boundarycontrols, exactstandardaxioms/noadmissions, independentLean/domain/skepticalreview; APIchecks alone neveropensmeasurestage.",
+    "no_go_action": "Keep F13.count-conjugacy -> F13.measure-stage blocked if exactmeasureidentity/normalization proof fails; record exactunsatisfiedAPI/lemma/upstreamprerequisite, retain acceptedstage1. No broadabsenceclaim.",
+    "carrier": "a,b:positiveRealshapeparameters; s,f:naturalcounts; x:real inBeta measureonR supportedIoo0,1. mu=ProbabilityTheory.betaMeasure a b. L(x)=ENNReal.ofReal(x)^s * ENNReal.ofReal(1-x)^f (nonnegative globalextendeddensity). Zreal=beta(a+s,b+f)/beta(a,b); Z=ENNReal.ofRealZreal.",
+    "goal": "mu.withDensity L = Z \u2022 betaMeasure(a+s)(b+f), with0<Zreal and Z!=top. Then Z^-1 \u2022 (mu.withDensity L)=posterior, totalmassweighted=Z, normalizedposterior IsProbabilityMeasure. No equality/normalization certificate supplied as hypothesis.",
+    "positive_witness": [
+      "a=b=1,s=1,f=0 -> normalizedbetaMeasure2,1 and Zreal=1/2",
+      "a=1/2,b=3/2,s=f=0 recoverssameprior withZ=1 (nonintegerpositiveparameters)",
+      "generic s,f=0 recovery and s=0/fpositive or reverse"
+    ],
+    "boundary_result": [
+      "a=0,b>0 or negativea cannotbeadmitted bypositivepremises; librarytotaldefinitions atinvalidshapes do not establishprobabilitynormalization",
+      "x<=0 orx>=1 BetaPDFzero, includingx0/1 withpotentialrpow singularities; no pointwise divisionbylikelihood assumed",
+      "Endpointlogsingularities remain outsideinitialtarget; no logexpectation/integrability conclusion borrowedfromnonnegativeweightedmass",
+      "Wrongnormalizer inverse/ratio or swappedcounts must fail actualmoment/mass comparison on a=b=1,s1f0; candidate positivewitnessnontrivial"
+    ],
+    "integrability": "ForENNReal withDensity identity onlymeasurability+finitepositive normalizer needed; prove finiteweightedmass viaactualidentityandprobabilitymeasure. If realBochner integrability is asserted, deriveit separately (a.e. likelihood in[0,1] under actualBeta support+finiteprobability); never use integrable_log or interchange derivative/integral withoutnewproof.",
+    "test_surface": [
+      "ApiProbe.lean exact #check and existingnormalization example; nofuturetheorem guessed",
+      "TargetSignatures.md explicitproposedtypedgoals, no proofgeneration untilcontractreview",
+      "LaterqualifiedDensityIdentity.lean + Controls.lean generatedonlyaftercontract/APIreview; directpointwisePDF derivation, actualmeasureext/withDensity transfer, controls with genuinepremises",
+      "Immutablequalifiedsource/hash/stdout/stderr/axiomname reports and terminalfalseonfailure; exactD/source/runtime/sharedS/SDKbeforeafter guards forrootunderlease"
+    ],
+    "evidence_plane": "Formal/native/libraryfeasibility; no empirical,numericalorprimarysemanticpromotion.",
+    "human_review": "Rootand independentLean/domain/skepticalcontract review before anyproofgeneration/execution; lateractualproofreview beforemaintainedactivation. HumanterminalH3approvalsnotimplied.",
+    "out_of_scope": [
+      "GeneralkcategoricalsimplexDirichletmeasure/density",
+      "Expectedlog/digamma expectation underBeta/Dirichlet",
+      "Realcomplexdigamma bridge beyondAPIavailability",
+      "Variationalobjective/coordinateascent/convergence",
+      "Automaticissue95closure,FEPtopicmaturitypromotion,universaldata/scientificclaim"
+    ]
+  },
+  "API_inventory": [
+    {
+      "path": "Mathlib/Probability/Distributions/Beta.lean",
+      "declarations": [
+        "ProbabilityTheory.beta:33",
+        "ProbabilityTheory.beta_pos:36",
+        "ProbabilityTheory.betaPDFReal:51",
+        "ProbabilityTheory.betaPDF:58",
+        "ProbabilityTheory.betaPDF_of_pos_lt_one:74",
+        "ProbabilityTheory.measurable_betaPDFReal:98",
+        "ProbabilityTheory.lintegral_betaPDF_eq_one:108",
+        "ProbabilityTheory.betaMeasure:132",
+        "ProbabilityTheory.isProbabilityMeasureBeta:135"
+      ]
+    },
+    {
+      "path": "Mathlib/MeasureTheory/Measure/WithDensity.lean",
+      "declarations": [
+        "MeasureTheory.withDensity_congr_ae:96",
+        "MeasureTheory.withDensity_smul:130",
+        "MeasureTheory.withDensity_smul_measure:144",
+        "MeasureTheory.withDensity_mul:563"
+      ]
+    },
+    {
+      "path": "Mathlib/Analysis/SpecialFunctions/Pow/Real.lean",
+      "declarations": [
+        "Real.rpow_natCast:61",
+        "Real.rpow_add:207",
+        "Real.rpow_add_natCast:431"
+      ]
+    },
+    {
+      "path": "Mathlib/Analysis/SpecialFunctions/Gamma/Digamma.lean",
+      "declarations": [
+        "Complex.digamma:48",
+        "Complex.digamma_one:56",
+        "Complex.digamma_apply_add_one:64",
+        "Complex.digamma_nat_add_one:85"
+      ],
+      "boundary": "These arecomplexAPI availability only, not theexpectedlogidentity."
+    }
+  ],
+  "execution": "Notexecuted. Rootmaypreparefiniteofficialleasequalification onlyafterindependentcontract+typedproposalreview. PreserveallcurrentD31/source/runtime/SDKbytes; useexternalinputfile only, no productiongeneration/importhoisting.",
+  "immutable_policy": "This contract is saved before ApiProbe sourceproposal. Any mathematicaltarget/hypothesis change requires distinctrevision andindependentreview, keepthisfile unchanged.",
+  "revision": 2,
+  "predecessor_contract_sha256": "594fd55101d137b6b927136e9191c91e2ecc8fc0c19f6a12350d48d110855dcb",
+  "correction": "Source reread confirms withDensity lemma namespace MeasureTheory, not MeasureTheory.Measure; r1 preserved, only correctedr2 is proposed for review."
+}

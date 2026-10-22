@@ -22,7 +22,10 @@ from fep_lean.formal.declarations import (
     formal_theorem_modules,
 )
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
-from tests._support.lean_module_contract import reverse_information_entries
+from tests._support.lean_module_contract import (
+    reverse_information_entries,
+    reverse_obligation_edges,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SYNTHETIC_ROSTER = ("fep-001", "fep-002", "fep-003")
@@ -316,9 +319,12 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
     # Reverse only the complete authenticated reviewed rows before requiring
     # every historical signature. Replaced witnesses cannot disappear silently.
     restored_edges = reverse_information_entries(
-        yaml.safe_load((PROJECT_ROOT / "config/formalism_relations.yaml").read_text())[
-            "edges"
-        ],
+        reverse_obligation_edges(
+            yaml.safe_load(
+                (PROJECT_ROOT / "config/formalism_relations.yaml").read_text()
+            )["edges"],
+            PROJECT_ROOT,
+        ),
         PROJECT_ROOT,
     )
     restored_signatures = frozenset(
@@ -348,8 +354,8 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
 
     assert Counter(edge.kind for edge in graph.edges) == {
         EdgeKind.FORMAL: 24,
-        EdgeKind.FORMAL_PAIRING: 119,
-        EdgeKind.CONCEPTUAL: 7,
+        EdgeKind.FORMAL_PAIRING: 120,
+        EdgeKind.CONCEPTUAL: 6,
     }
     assert all(edge.witness for edge in graph.edges if edge.kind.is_theorem_witnessed)
     assert next(edge for edge in graph.edges if edge.source == "fep-038").kind is (
@@ -541,7 +547,7 @@ edges:
 @pytest.mark.parametrize(
     ("data", "message"),
     [
-        ({"schema_version": 3, "capabilities": [], "edges": []}, "schema_version"),
+        ({"schema_version": 4, "capabilities": [], "edges": []}, "schema_version"),
         (
             {
                 "schema_version": 2,

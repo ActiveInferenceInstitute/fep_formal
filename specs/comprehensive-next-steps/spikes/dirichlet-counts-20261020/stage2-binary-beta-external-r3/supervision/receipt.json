@@ -1,0 +1,28 @@
+{
+  "head": "1cc327f4bf41a8ffda85e402bcb800baff1d0929",
+  "command": [
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/tooling/fep-review-runtime314/bin/python",
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/qualify_fep95_external_density_proof_r3.py",
+    "--worker"
+  ],
+  "timeout": 180,
+  "seconds": 2.8053572089993395,
+  "returncode": 0,
+  "timed_out": false,
+  "termination_signals": [],
+  "primary_group_quiescent": true,
+  "group_observation_errors": [],
+  "exception": null,
+  "broker_environment_absent_in_child": [
+    "FEP_LEAN_PROCESS_OWNER_SOCKET",
+    "FEP_LEAN_PROCESS_OWNER_TOKEN"
+  ],
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "report_sha256": "7c2812d143da75ccd71d5fee61b83bff8caf766f377ff07aa0dd0b7d3b040eca",
+  "report_error": null,
+  "source_clean": true,
+  "source_guard_error": null,
+  "passed": true,
+  "boundary": "Standalone primary process-group deadline only; no assertion of arbitrary detached-descendant settlement. Actual package broker tests remain independently required."
+}

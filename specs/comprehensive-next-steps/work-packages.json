@@ -1216,17 +1216,17 @@
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/95"
       ],
       "status": "planned",
-      "outcome": "The existing Dirichlet-categorical count-level seam receives exact acceptance and only demonstrated residual extensions.",
+      "outcome": "Preserve accepted Dirichlet-categorical Stage1 and record the remaining Stage2 library-probe decision: binary measure feasibility only, with a bounded general Dirichlet/logmoment/variational integration no-go.",
       "depends_on": [
         "S01"
       ],
       "single_owner": "Existing empirical_risk.lean DirichletCategorical section and learning-theory/body consumers.",
-      "stop_go_spike": "Inventory the already delivered rising-factorial, Polya predictive, exchangeability and row-learning declarations against every issue95 clause before adding code.",
-      "go_condition": "Current qualified consumers establish count-level conjugacy and identify any genuinely missing A/B or catalogue reduction.",
-      "no_go_action": "Block F13.count-conjugacy -> F13.measure-stage while a separate pinned-library digamma/Dirichlet-measure probe has not passed; do not duplicate the existing owner.",
-      "target": "Stage 1 exact binary fep045 and alpha=1 fep121 recovery, exchangeability and normalized learned A/B rows; stage 2 is separately gated.",
-      "positive_witness": "K=2 and unit pseudocount consumers recover the released formulas exactly.",
-      "boundary_result": "Invalid/zero total pseudocount and impossible rows reject; count-level results do not imply a continuous Dirichlet density or variational update.",
+      "stop_go_spike": "Review exact pinned Beta/Gamma/digamma/simplex/withDensity APIs and the archived 21-report external binary Beta measure proof; inventory the genuinely unproved general carrier, logarithmic-moment and variational-objective bridges before any continuation.",
+      "go_condition": "Source-bound available-API probes and independent semantic review support either a separately scoped narrow continuation or a precise recorded integration no-go; no conclusion is inferred from a library-name search alone.",
+      "no_go_action": "Block general finite-simplex Dirichlet measure, expected-log/digamma or variational implementation until its own frozen target and actual integration probe pass. Retain the documented stop and accepted Stage1; the binary proof does not waive the broader S01/#75 scope.",
+      "target": "Remaining issue95 Stage2 library-probe-or-recorded-no-go scope. Partial go is only historical external binary Beta measure feasibility; generic Dirichlet, expected logarithms and variational updates remain unproved integration clauses.",
+      "positive_witness": "Existing Stage1 exact fep045/fep121 and normalized A/B consumers stay intact. Archived positive-shape binary Beta weighted-measure/posterior identity has noninteger zero-count, distinct-posterior and wrong-scaling controls.",
+      "boundary_result": "Zero/nonpositive shape premises refuse the probability API. Binary measure conjugacy does not imply a generic Dirichlet law, expected logarithm or variational optimum; retained S01/#75 planning dependencies are not blanket theorem assumptions or accepted by this probe.",
       "test_surface": [
         "tests/test_collective_learning_formalisms.py",
         "tests/test_risk_policy_tree_formalisms.py",
@@ -1364,16 +1364,14 @@
         "https://github.com/ActiveInferenceInstitute/fep_formal/issues/105"
       ],
       "status": "planned",
-      "outcome": "Conceptual relations carry explicit missing obligations and one selected tree relation receives a proved pairing.",
-      "depends_on": [
-        "F11"
-      ],
-      "single_owner": "Existing relation schema/config and atlas projection owners.",
+      "outcome": "Conceptual relations carry explicit missing obligations and the selected 016/032 supporting relation receives a proved non-implicational pairing.",
+      "depends_on": [],
+      "single_owner": "Existing relation schema/config and atlas projection owners; the selected pairing is owned by existing formal/compositions/core.lean.",
       "stop_go_spike": "Specify blocked_by as required for conceptual edges while retaining the distinct existing blocker-edge kind; demonstrate deterministic atlas rendering.",
-      "go_condition": "Schema/API review distinguishes proof obligations from capability blockers and an accepted F11 witness supports the selected conversion.",
-      "no_go_action": "Block S04.obligation-schema -> S04.pairing-closure without a qualified accepted 034/047 witness; do not erase the obligation to satisfy the target.",
-      "target": "Every conceptual edge has a missing carrier lemma/Issue obligation; select the 034/047 conversion route through F11 for terminal acceptance.",
-      "positive_witness": "A conceptual edge renders its actual unresolved obligation; the tree witness justifies one reviewed pairing conversion.",
+      "go_condition": "Schema/API review distinguishes proof obligations from capability blockers; a warning-free, independently reviewed 016/032 witness pairs the actual supporting quadratic nonnegativity and bounded-step descent laws on the same state and center.",
+      "no_go_action": "Block S04.obligation-schema -> S04.pairing-closure without the qualified selected 016/032 supporting witness; retain 034/047 as conceptual with issue:93 and its separate F11 carrier-bridge obligations.",
+      "target": "Every conceptual edge has a missing carrier lemma/Issue obligation; select the issue105-permitted 016/032 supporting formal_pairing for this scope. The 034/047 conversion remains separate under issue93/F11.",
+      "positive_witness": "A conceptual edge renders its actual unresolved obligation; FEPComposed.fep016_quadratic_pairs_fep032_descent justifies only the reviewed supporting 016/032 pairing, with nonnegative precision and step in [0,2].",
       "boundary_result": "Missing/unknown obligation fields reject and imports/proximity do not become theorem relations.",
       "test_surface": [
         "tests/test_formalism_relations.py",

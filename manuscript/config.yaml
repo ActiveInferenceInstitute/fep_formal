@@ -68,3 +68,9 @@ metadata:
   language: "en"
   documentclass: "extarticle"
   fontsize: "9pt"
+
+# The publication is the combined manuscript; slide decks are optional derivatives.
+render:
+  formats:
+    pdf: true
+    slides: false

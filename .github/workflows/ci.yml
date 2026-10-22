@@ -657,6 +657,8 @@ jobs:
               raise SystemExit("publication source checkout is not clean before manuscript hydration")
           print("publication source checkout is clean before manuscript hydration")
           PY
+          # YAML owns PDF/optional-slide mode; ambient SDK overrides must not replace it.
+          unset ENABLE_PDF ENABLE_SLIDES
           uv run python scripts/render_publication.py
       - name: Validate the fresh render receipts against the same sources
         run: |

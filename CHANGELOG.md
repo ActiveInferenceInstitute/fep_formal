@@ -1,5 +1,36 @@
 ## Unreleased
 
+- Keep optional slide derivatives disabled in the project render configuration
+  while retaining the required combined manuscript PDF, sources, logs, fonts
+  and acceptance receipts. CI clears ambient format overrides; fresh effective
+  configuration, portable rendering and publication qualification remain required.
+  No measured release-speedup claim is made.
+
+- Align the reviewed browser capture contract with120 checked pairings and
+  account for exactly the reviewed 016/032 theorem in the foundation inventory.
+  Preserve historical 119 browser controls, all test identities and every other
+  owner count. These repairs follow two actual full-suite failures; fresh
+  custody, native and complete source qualification remain required.
+
+- Record the remaining [#95 Stage2 library-probe decision](specs/comprehensive-next-steps/spikes/dirichlet-counts-20261020/README.md):
+  a retained, independently reviewed external binary Beta measure proof gives
+  a partial feasibility go; generic Dirichlet measure, expected-log/digamma and
+  variational integration remain at a documented no-go. Preserve accepted
+  Stage1, its canonical owner and all maturity/roster boundaries. This record
+  remains subject to exact-source qualification and accepted-main publication;
+  issue #95 and its TODO row remain open.
+
+- Add canonical missing-lemma or Issue obligations to the six remaining
+  conceptual relations and preserve legacy schema-2 loading and report rendering.
+  Pair the supporting fep-016 quadratic nonnegativity law with the fep-032
+  bounded-step descent law on the same state and center. The generated atlas
+  exposes those obligations; 034/047 remains conceptual under #93/F11.
+  The strict Lean 4.35 build, imported boundary controls and focused package
+  checks passed. Full source/native/render/hosted qualification remains required
+  for [#105](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105);
+  no Laplace approximation, general optimizer, convergence or primary-theorem
+  promotion is claimed.
+
 - Prepare default CI to consume its strict serial catalogue producer once, retain
   the ordinary CLI in explicit manual dual-shadow mode, observe original producer
   checkout/receipt context, and use the full 15-cell matrix for automatic PRs.

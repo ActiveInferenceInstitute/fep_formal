@@ -19687,7 +19687,7 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-013` → `fep-040` (formal): The composed theorem instantiates the equilibrium Helmholtz derivative law with fep-040's Gaussian thermal entropy and the compatible internal energy U(T)=T/2. Actual consumed endpoint lemmas: fep_fep013.FEP013.fep013_helmholtz_derivative_eq_neg_entropy, fep_fep040.FEP040.fep040_thermalEntropy_hasDerivAt. Witness: `FEPComposed.fep013_gaussianHelmholtz_derivative`.
 
-- `fep-016` → `fep-032` (conceptual): A nonnegative quadratic residual and a scalar descent contraction are complementary local pieces of a quadratic optimization argument.
+- `fep-016` → `fep-032` (formal_pairing): The checked conjunction places nonnegative precision-weighted quadratic energy beside bounded-step scalar energy descent on the same state and centre. It asserts neither a Laplace approximation nor a derivation or general optimizer theorem. Witness: `FEPComposed.fep016_quadratic_pairs_fep032_descent`.
 
 - `fep-017` → `fep-045` (conceptual): The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier.
 
@@ -19998,7 +19998,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `catalogue/bodies/variational_duality.py` | `41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb` |
 | `catalogue/latex.py` | `20b9ad7612374a6f528d67fe6a40ab3c49f5eb3f6ac8baac75e602eefb9b25a7` |
 | `catalogue/registry.py` | `a758f1be3f4b4efbdbd80fb5854c71557f3e392fd90587b3c59656716fdfa268` |
-| `catalogue/relations.py` | `ea6f24b1ed0225b9a8919bcdaa82d17467e7fd93b612cf83c8a7f87f0df078dd` |
+| `catalogue/relations.py` | `d8b53c1fe2be4b35a618bfbffe60716c44436dfff5b41d66b880767f57ea1c61` |
 | `catalogue/schema.py` | `5bfad0a7aff944410faa2d18621b1bae3dd4cf245d3ff7ef81172a8c9ed2ddf4` |
 | `catalogue/semantics.py` | `6f18f1ce351fcb5ca61e0c3678ca78abf53c6022417ac5c17d8d8ddc47057274` |
 | `catalogue/topics.py` | `2a0defd8922b966f5478dd2b5b978db7aec848792e7c60d15f18a854b1a1afd3` |
@@ -20012,7 +20012,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/collective_learning.lean` | `a7eaa3e827a2996a398c4ff827dfddef641f1f084be38e0a0fcd8dc378c0f8d1` |
 | `formal/compositions/continuous_time.lean` | `bc88c44e1603d9ce859fcf9704ce4e745ffc1ae5904fb8485aa859c6ec0a56bb` |
 | `formal/compositions/control_temporal.lean` | `f9a0a2bf4e80d8d5981b129d6bddce1b5c2f170a4e294efa0d7e72e3bd322943` |
-| `formal/compositions/core.lean` | `cdfbd1be21587df92e1c371ffc1e6d5a88bddf0a8092f9867ed420a30a47aca8` |
+| `formal/compositions/core.lean` | `bb6fc71c7c1863ccbb8cbf72871f9c7f11fbbe1d255dacb4c1c0ffa2bb0455fa` |
 | `formal/compositions/efe_policy_selection.lean` | `d543a4e0bf779d2dfe10976b573cbba17d45ee1fe234ebfceec788fa5877d9cc` |
 | `formal/compositions/efe_time_scale_separation.lean` | `deaf0ae9abf3ad40c53304c186e354c8ee0855380be862c71466fa7112cb4066` |
 | `formal/compositions/exponential_family.lean` | `8726c522ebec4d0417c3caab742f8f8f60e14e285e94fbd637037200fee48c62` |
@@ -20077,7 +20077,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/temporal_inference.lean` | `25333450e94d7f551190ab0e8cdf51ad902767a423fe6cf84fc57623e5e2193b` |
 | `formal/variational_duality.lean` | `05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1` |
 | `inputs/catalogue_metadata.yaml` | `e50020964ece9caeeb05dad04ccae7c709389d5983c386056efc975e51a4e5bd` |
-| `inputs/formalism_relations.yaml` | `1351da45e8b2cfa9a32c8e7c175aa57d2c12b036c2040480048df2e48da09a59` |
+| `inputs/formalism_relations.yaml` | `030f02dbe6df85ba955742ad05db4cd08959eb171a516f0113ee2485340f95e4` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
 | `inputs/theorem_maturity.yaml` | `7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b` |
 | `lean_source.py` | `adc252c7625809ede9b248f96a56effaf9fc0915b55b78fd83dcd047e7717efb` |

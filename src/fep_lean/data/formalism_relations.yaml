@@ -1,4 +1,4 @@
-schema_version: 2
+schema_version: 3
 
 # Maintained scientific relations. Shared Mathlib imports are generated
 # separately and must never be promoted into these edges automatically.
@@ -598,6 +598,7 @@ edges:
     target: fep-009
     kind: conceptual
     rationale: The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge.
+    blocked_by: lemma:FEPComposed.fep005_partition_to_fep009_native_conditional_independence
   - source: fep-007
     target: fep-028
     kind: formal
@@ -607,6 +608,7 @@ edges:
     target: fep-028
     kind: conceptual
     rationale: Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers.
+    blocked_by: lemma:FEPComposed.fep008_argmin_to_fep028_softmax_policy
   - source: fep-011
     target: fep-026
     kind: formal
@@ -621,6 +623,7 @@ edges:
     target: fep-002
     kind: conceptual
     rationale: "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition. The finite positive-temperature Helmholtz functional now has a qualified decomposition, unique Gibbs minimum and actual log-partition derivative (FEPComposed.fep013_finite_helmholtz_decomposition, FEPComposed.fep013_finite_helmholtz_unique_minimum, FEPComposed.fep013_finite_equilibrium_derivative). Its physical free energy is shifted and temperature-scaled finite KL, not identical to the native extended-valued fep-002 VFE; this edge remains conceptual."
+    blocked_by: lemma:FEPComposed.fep013_helmholtz_to_fep002_native_vfe
   - source: fep-013
     target: fep-040
     kind: formal
@@ -628,12 +631,14 @@ edges:
     witness: FEPComposed.fep013_gaussianHelmholtz_derivative
   - source: fep-016
     target: fep-032
-    kind: conceptual
-    rationale: A nonnegative quadratic residual and a scalar descent contraction are complementary local pieces of a quadratic optimization argument.
+    kind: formal_pairing
+    rationale: The checked conjunction places nonnegative precision-weighted quadratic energy beside bounded-step scalar energy descent on the same state and centre. It asserts neither a Laplace approximation nor a derivation or general optimizer theorem.
+    witness: FEPComposed.fep016_quadratic_pairs_fep032_descent
   - source: fep-017
     target: fep-045
     kind: conceptual
     rationale: The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier.
+    blocked_by: lemma:FEPComposed.fep017_posterior_kernel_to_fep045_bernoulli
   - source: fep-021
     target: fep-041
     kind: formal
@@ -663,6 +668,7 @@ edges:
     target: fep-044
     kind: conceptual
     rationale: The explicit quadratic Bregman instance and the alpha-divergence proxy are neighboring but mathematically distinct divergence families.
+    blocked_by: lemma:FEPComposed.fep029_bregman_to_fep044_alpha_carrier
   - source: fep-029
     target: fep-104
     kind: formal
@@ -687,6 +693,7 @@ edges:
     target: fep-047
     kind: conceptual
     rationale: The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.
+    blocked_by: issue:93
   - source: fep-034
     target: fep-017
     kind: formal

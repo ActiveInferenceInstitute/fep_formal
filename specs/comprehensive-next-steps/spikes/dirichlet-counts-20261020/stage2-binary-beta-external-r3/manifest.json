@@ -1,0 +1,32 @@
+{
+  "kind": "HISTORICAL_EXTERNAL_BINARY_BETA_PROOF_CUSTODY_NOT_MAINTAINED_GENERAL_DIRICHLET",
+  "lean": "leanprover/lean4:v4.35.0",
+  "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+  "actual_execution_source_epoch": "1cc327f4bf41a8ffda85e402bcb800baff1d0929",
+  "source_sha256": "17fbc43aa3cec3edc6a1dac231a0b6ccf1ec0e6ef238fbdaf1c8e59e9250af32",
+  "actual_qualification_sha256": "7c2812d143da75ccd71d5fee61b83bff8caf766f377ff07aa0dd0b7d3b040eca",
+  "public_axiom_reports": 21,
+  "files_sha256": {
+    "DensityIdentity.lean": "17fbc43aa3cec3edc6a1dac231a0b6ccf1ec0e6ef238fbdaf1c8e59e9250af32",
+    "frozen-contract.json": "61ce4a89dab725e2ff21b2dbd4944cf4b4d1f7b445d35934dca3b04ca2e56d2d",
+    "qualification.json": "7c2812d143da75ccd71d5fee61b83bff8caf766f377ff07aa0dd0b7d3b040eca",
+    "api.stdout": "28d60b4de824e1ffd274d6c7ed170f0a7f7ca1806602d17de13bc43c9aaaec0a",
+    "api.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/receipt.json": "600d7181335e9bd3a6f44b4fac61b497110a238e4b0125abbc1c61417470e6c8",
+    "supervision/stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "independent-native-domain-review.json": "f67e2aadee459fcafc31ce7b94f6652a50dcc444d9f673bde71b0369960480fe",
+    "bounded-go-no-go-assessment.json": "6e55d6388db9fb7e479b4b90829ad00acd531732fdbfe2bdf4c39b4a2952e9ff",
+    "independent-bounded-assessment-review.json": "5e2906115dc72550d3a24bde4edd836c3ce4a15f9f38f5d61d9a713bcbb62458"
+  },
+  "archive_rule": "All copied evidence exactbytes; original absolute paths in historical receipts/contracts are provenance strings, not current path authority. Relative archivefile pins above are the portable custody index.",
+  "nonclaims": [
+    "current-source native execution",
+    "maintainedcanonical theorem integration",
+    "generalK Dirichletmeasure",
+    "expectedlog/digamma moment",
+    "variationalupdate/optimum/convergence",
+    "maturity/primary/H3 acceptance"
+  ],
+  "future_replay": "Any replay is new evidence at its own source/runtime epoch; historical receipt is never relabelled."
+}

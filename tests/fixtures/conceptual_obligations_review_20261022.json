@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "base": "5da5edeb63b2225de55dbaa8142601941fca5e60",
+  "relations_schema_before": 2,
+  "relations_schema_after": 3,
+  "edge_changes": [
+    {
+      "before": {
+        "source": "fep-005",
+        "target": "fep-009",
+        "kind": "conceptual",
+        "rationale": "The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge."
+      },
+      "after": {
+        "source": "fep-005",
+        "target": "fep-009",
+        "kind": "conceptual",
+        "rationale": "The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge.",
+        "blocked_by": "lemma:FEPComposed.fep005_partition_to_fep009_native_conditional_independence"
+      },
+      "before_raw_block": "  - source: fep-005\n    target: fep-009\n    kind: conceptual\n    rationale: The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge.\n",
+      "after_raw_block": "  - source: fep-005\n    target: fep-009\n    kind: conceptual\n    rationale: The finite blanket foundation proves a normalized conditional factorization and ties each transition row to it, but neither theorem consumes fep-005's finite partition declarations or fep-009's measure-theoretic conditional-independence declarations. A formal cross-topic edge awaits an explicit carrier bridge.\n    blocked_by: lemma:FEPComposed.fep005_partition_to_fep009_native_conditional_independence\n"
+    },
+    {
+      "before": {
+        "source": "fep-008",
+        "target": "fep-028",
+        "kind": "conceptual",
+        "rationale": "Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers."
+      },
+      "after": {
+        "source": "fep-008",
+        "target": "fep-028",
+        "kind": "conceptual",
+        "rationale": "Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers.",
+        "blocked_by": "lemma:FEPComposed.fep008_argmin_to_fep028_softmax_policy"
+      },
+      "before_raw_block": "  - source: fep-008\n    target: fep-028\n    kind: conceptual\n    rationale: Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers.\n",
+      "after_raw_block": "  - source: fep-008\n    target: fep-028\n    kind: conceptual\n    rationale: Finite argmin existence and finite softmax normalization represent deterministic and stochastic policy-selection layers.\n    blocked_by: lemma:FEPComposed.fep008_argmin_to_fep028_softmax_policy\n"
+    },
+    {
+      "before": {
+        "source": "fep-013",
+        "target": "fep-002",
+        "kind": "conceptual",
+        "rationale": "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition. The finite positive-temperature Helmholtz functional now has a qualified decomposition, unique Gibbs minimum and actual log-partition derivative (FEPComposed.fep013_finite_helmholtz_decomposition, FEPComposed.fep013_finite_helmholtz_unique_minimum, FEPComposed.fep013_finite_equilibrium_derivative). Its physical free energy is shifted and temperature-scaled finite KL, not identical to the native extended-valued fep-002 VFE; this edge remains conceptual."
+      },
+      "after": {
+        "source": "fep-013",
+        "target": "fep-002",
+        "kind": "conceptual",
+        "rationale": "Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition. The finite positive-temperature Helmholtz functional now has a qualified decomposition, unique Gibbs minimum and actual log-partition derivative (FEPComposed.fep013_finite_helmholtz_decomposition, FEPComposed.fep013_finite_helmholtz_unique_minimum, FEPComposed.fep013_finite_equilibrium_derivative). Its physical free energy is shifted and temperature-scaled finite KL, not identical to the native extended-valued fep-002 VFE; this edge remains conceptual.",
+        "blocked_by": "lemma:FEPComposed.fep013_helmholtz_to_fep002_native_vfe"
+      },
+      "before_raw_block": "  - source: fep-013\n    target: fep-002\n    kind: conceptual\n    rationale: \"Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition. The finite positive-temperature Helmholtz functional now has a qualified decomposition, unique Gibbs minimum and actual log-partition derivative (FEPComposed.fep013_finite_helmholtz_decomposition, FEPComposed.fep013_finite_helmholtz_unique_minimum, FEPComposed.fep013_finite_equilibrium_derivative). Its physical free energy is shifted and temperature-scaled finite KL, not identical to the native extended-valued fep-002 VFE; this edge remains conceptual.\"\n",
+      "after_raw_block": "  - source: fep-013\n    target: fep-002\n    kind: conceptual\n    rationale: \"Relating Helmholtz and variational free energy requires an explicit energy map and scaling beyond either current scalar definition. The finite positive-temperature Helmholtz functional now has a qualified decomposition, unique Gibbs minimum and actual log-partition derivative (FEPComposed.fep013_finite_helmholtz_decomposition, FEPComposed.fep013_finite_helmholtz_unique_minimum, FEPComposed.fep013_finite_equilibrium_derivative). Its physical free energy is shifted and temperature-scaled finite KL, not identical to the native extended-valued fep-002 VFE; this edge remains conceptual.\"\n    blocked_by: lemma:FEPComposed.fep013_helmholtz_to_fep002_native_vfe\n"
+    },
+    {
+      "before": {
+        "source": "fep-016",
+        "target": "fep-032",
+        "kind": "conceptual",
+        "rationale": "A nonnegative quadratic residual and a scalar descent contraction are complementary local pieces of a quadratic optimization argument."
+      },
+      "after": {
+        "source": "fep-016",
+        "target": "fep-032",
+        "kind": "formal_pairing",
+        "rationale": "The checked conjunction places nonnegative precision-weighted quadratic energy beside bounded-step scalar energy descent on the same state and centre. It asserts neither a Laplace approximation nor a derivation or general optimizer theorem.",
+        "witness": "FEPComposed.fep016_quadratic_pairs_fep032_descent"
+      },
+      "before_raw_block": "  - source: fep-016\n    target: fep-032\n    kind: conceptual\n    rationale: A nonnegative quadratic residual and a scalar descent contraction are complementary local pieces of a quadratic optimization argument.\n",
+      "after_raw_block": "  - source: fep-016\n    target: fep-032\n    kind: formal_pairing\n    rationale: The checked conjunction places nonnegative precision-weighted quadratic energy beside bounded-step scalar energy descent on the same state and centre. It asserts neither a Laplace approximation nor a derivation or general optimizer theorem.\n    witness: FEPComposed.fep016_quadratic_pairs_fep032_descent\n"
+    },
+    {
+      "before": {
+        "source": "fep-017",
+        "target": "fep-045",
+        "kind": "conceptual",
+        "rationale": "The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier."
+      },
+      "after": {
+        "source": "fep-017",
+        "target": "fep-045",
+        "kind": "conceptual",
+        "rationale": "The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier.",
+        "blocked_by": "lemma:FEPComposed.fep017_posterior_kernel_to_fep045_bernoulli"
+      },
+      "before_raw_block": "  - source: fep-017\n    target: fep-045\n    kind: conceptual\n    rationale: The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier.\n",
+      "after_raw_block": "  - source: fep-017\n    target: fep-045\n    kind: conceptual\n    rationale: The native posterior-kernel laws provide normalized Bayesian semantics, and fep-045 proves Bernoulli posterior closure. This relation remains conceptual because no explicit theorem bridges the posterior-kernel carrier to that conjugate-family carrier.\n    blocked_by: lemma:FEPComposed.fep017_posterior_kernel_to_fep045_bernoulli\n"
+    },
+    {
+      "before": {
+        "source": "fep-029",
+        "target": "fep-044",
+        "kind": "conceptual",
+        "rationale": "The explicit quadratic Bregman instance and the alpha-divergence proxy are neighboring but mathematically distinct divergence families."
+      },
+      "after": {
+        "source": "fep-029",
+        "target": "fep-044",
+        "kind": "conceptual",
+        "rationale": "The explicit quadratic Bregman instance and the alpha-divergence proxy are neighboring but mathematically distinct divergence families.",
+        "blocked_by": "lemma:FEPComposed.fep029_bregman_to_fep044_alpha_carrier"
+      },
+      "before_raw_block": "  - source: fep-029\n    target: fep-044\n    kind: conceptual\n    rationale: The explicit quadratic Bregman instance and the alpha-divergence proxy are neighboring but mathematically distinct divergence families.\n",
+      "after_raw_block": "  - source: fep-029\n    target: fep-044\n    kind: conceptual\n    rationale: The explicit quadratic Bregman instance and the alpha-divergence proxy are neighboring but mathematically distinct divergence families.\n    blocked_by: lemma:FEPComposed.fep029_bregman_to_fep044_alpha_carrier\n"
+    },
+    {
+      "before": {
+        "source": "fep-034",
+        "target": "fep-047",
+        "kind": "conceptual",
+        "rationale": "The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers."
+      },
+      "after": {
+        "source": "fep-034",
+        "target": "fep-047",
+        "kind": "conceptual",
+        "rationale": "The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.",
+        "blocked_by": "issue:93"
+      },
+      "before_raw_block": "  - source: fep-034\n    target: fep-047\n    kind: conceptual\n    rationale: The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.\n",
+      "after_raw_block": "  - source: fep-034\n    target: fep-047\n    kind: conceptual\n    rationale: The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.\n    blocked_by: issue:93\n"
+    }
+  ],
+  "core_owner": "src/fep_lean/formal/compositions/core.lean",
+  "added_core_block": "\nnamespace FEPComposed\n\n/-- Pair the explicit nonnegative precision-weighted quadratic with the\nbounded-step scalar descent law on the same state and centre. This is neither\na derivation of a Laplace approximation nor a general optimizer theorem. -/\ntheorem fep016_quadratic_pairs_fep032_descent\n    (prec step center x : ℝ) (hp : 0 ≤ prec)\n    (hstep0 : 0 ≤ step) (hstep2 : step ≤ 2) :\n    0 ≤ prec * (x - center) ^ 2 ∧\n      (fep_fep032.FEP032.fep032_quadraticUpdate step center x - center) ^ 2 ≤\n        (x - center) ^ 2 := by\n  exact ⟨fep_fep016.FEP016.fep016_precision_weighted prec x center hp,\n    fep_fep032.FEP032.fep032_quadraticEnergy_descent hstep0 hstep2⟩\n\nend FEPComposed\n",
+  "base_core_sha256": "cdfbd1be21587df92e1c371ffc1e6d5a88bddf0a8092f9867ed420a30a47aca8",
+  "new_theorem_owners": {
+    "FEPComposed.fep016_quadratic_pairs_fep032_descent": "src/fep_lean/formal/compositions/core.lean"
+  },
+  "boundary": "Exact seven-row/schema and one existing-owner supporting proof extension from source5da only. Existing historical fixture/model seals remain unchanged; no broader semantic promotion."
+}

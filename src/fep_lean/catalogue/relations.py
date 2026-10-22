@@ -66,6 +66,7 @@ class FormalismEdge:
     kind: EdgeKind
     rationale: str
     witness: str | None = None
+    blocked_by: str | None = None
 
 
 @dataclass(frozen=True)
@@ -135,6 +136,23 @@ def _reject_formal_cycles(edges: tuple[FormalismEdge, ...]) -> None:
         visit(source, ())
 
 
+def _obligation_token(raw_edge: dict[str, Any], owner: str) -> str:
+    obligation = _text(raw_edge, "blocked_by", owner)
+    if raw_edge["blocked_by"] != obligation:
+        raise SemanticValidationError(f"{owner}: blocked_by must use canonical spacing")
+    if not (
+        re.fullmatch(r"issue:[1-9][0-9]*", obligation)
+        or (
+            obligation.startswith("lemma:")
+            and _DECLARATION_RE.fullmatch(obligation[6:])
+        )
+    ):
+        raise SemanticValidationError(
+            f"{owner}: blocked_by must be a canonical issue or missing-lemma token"
+        )
+    return obligation
+
+
 def load_formalism_graph(
     path: Path, *, roster_ids: Sequence[str] | None = None
 ) -> FormalismGraph:
@@ -145,8 +163,13 @@ def load_formalism_graph(
         raise SemanticValidationError(
             f"cannot read formalism graph {path}: {exc}"
         ) from exc
-    if not isinstance(raw, dict) or raw.get("schema_version") != 2:
-        raise SemanticValidationError("formalism graph schema_version must be 2")
+    if (
+        not isinstance(raw, dict)
+        or type(raw.get("schema_version")) is not int
+        or raw["schema_version"] not in {2, 3}
+    ):
+        raise SemanticValidationError("formalism graph schema_version must be 2 or 3")
+    schema_version = raw["schema_version"]
     unknown_top = set(raw) - {"schema_version", "capabilities", "edges"}
     if unknown_top:
         raise SemanticValidationError(
@@ -239,6 +262,8 @@ def load_formalism_graph(
             if kind.is_theorem_witnessed
             else _EDGE_BASE_FIELDS
         )
+        if schema_version == 3 and kind is EdgeKind.CONCEPTUAL:
+            expected_edge_fields = expected_edge_fields | {"blocked_by"}
         _require_exact_fields(raw_edge, frozenset(expected_edge_fields), owner)
         source = _text(raw_edge, "source", owner)
         target = _text(raw_edge, "target", owner)
@@ -268,6 +293,9 @@ def load_formalism_graph(
                 raise SemanticValidationError(
                     f"{owner}: witness must be a qualified declaration"
                 )
+        obligation: str | None = None
+        if schema_version == 3 and kind is EdgeKind.CONCEPTUAL:
+            obligation = _obligation_token(raw_edge, owner)
         edges.append(
             FormalismEdge(
                 source=source,
@@ -275,6 +303,7 @@ def load_formalism_graph(
                 kind=kind,
                 rationale=_text(raw_edge, "rationale", owner),
                 witness=witness,
+                blocked_by=obligation,
             )
         )
 

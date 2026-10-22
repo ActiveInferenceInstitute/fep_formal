@@ -112,6 +112,7 @@ class PresentationRelation:
     kind: str
     rationale: str
     witness: str | None
+    blocked_by: str | None = None
 
 
 @dataclass(frozen=True)
@@ -270,6 +271,7 @@ def _relation(row: Mapping[str, object], index: int) -> PresentationRelation:
         kind=_required_str(row, "kind", context=context),
         rationale=_required_str(row, "rationale", context=context),
         witness=_optional_str(row, "witness", context=context),
+        blocked_by=_optional_str(row, "blocked_by", context=context),
     )
 
 
