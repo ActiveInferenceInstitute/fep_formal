@@ -148,7 +148,19 @@ open in [TODO.md](TODO.md).
 
 ## Current assessment
 
-The accepted software/proof-component source is
+The accepted software/proof-component source is `75cde030c34d331eefb4b95943ac2fe7fb1505cb`;
+its exact-main evidence is [PR #214](https://github.com/ActiveInferenceInstitute/fep_formal/pull/214) and [fresh main workflow 39715953206](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39715953206).
+The [F07 accepted scope](specs/comprehensive-next-steps/finite-rate-distortion-duality-20261021.md)
+and [delivery history](CHANGELOG.md) record the bounded finite duality and
+complete lexical theorem spans. The separately documented EMP-J1 governance
+no-go is a disposition of missing empirical admission gates, not a result or
+execution delivered by that software/proof source. These component
+deliveries do not accept the scientific primary, capture/archive, reproduction
+or optional provider lanes; [TODO.md](TODO.md) retains their open requirements.
+
+### Earlier accepted software checkpoint
+
+The earlier accepted software/proof-component source is
 [maina534](https://github.com/ActiveInferenceInstitute/fep_formal/commit/a53456c0941443d698a5dd34ea61c78721e40282).
 Its [exact-main workflow](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39687054068)
 passed the full fifteen-cell installed-wheel profile and required software

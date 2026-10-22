@@ -1,18 +1,31 @@
 ## Unreleased
 
+- Prepare default CI to consume its strict serial catalogue producer once, retain
+  the ordinary CLI in explicit manual dual-shadow mode, observe original producer
+  checkout/receipt context, and use the full 15-cell matrix for automatic PRs.
+  Actual rollout/source/artifact/PDF acceptance and timing measurement remain
+  required; no measured speedup or source/schema promotion is claimed.
+
+- Record the permitted #77 governance disposition in this documentation
+  cohort ([the EMP-J1 documentation disposition](specs/comprehensive-next-steps/open-issue-review-20261016.md)): empirical admission
+  gates remain inactive; no dataset nonexistence, empirical null, H03/#57 or
+  terminal H3 acceptance is claimed.
+
 - Reconcile active research guidance with accepted operator, readiness, query
   and fair-Boolean deliveries; point the accepted software baseline at main
-  `a53456c` and keep the general finite-duality candidate and all outstanding
-  execution/study/provider scopes separately qualified. This guidance cleanup
-  supplies no new mathematical or execution acceptance.
+  `75cde030c34d331eefb4b95943ac2fe7fb1505cb`; evidence:
+  [PR #214](https://github.com/ActiveInferenceInstitute/fep_formal/pull/214) and [fresh main workflow 39715953206](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39715953206). Keep outstanding
+  execution/study/provider scopes separately qualified; this guidance cleanup
+  supplies no additional mathematical or execution acceptance.
 
 - Derive the primal minimum and dual supremum equality for every feasible finite
   nonnegative-distortion problem, including feasible endpoints. Actual strict
   feasibility separately yields a finite dual optimizer and complementary
   slackness. Fixed-source convexity includes zero atoms; the full fair-Boolean
   curve is recovered without assuming optimizer or equality certificates.
-  Maintained qualification for [#76](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76)
-  remains pending; no all-budget finite multiplier or uniqueness is claimed.
+  The scoped maintained qualification for [#76](https://github.com/ActiveInferenceInstitute/fep_formal/issues/76)
+  is recorded at [PR #214](https://github.com/ActiveInferenceInstitute/fep_formal/pull/214) and [fresh main workflow 39715953206](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39715953206);
+  no all-budget finite multiplier or uniqueness is claimed.
 
 - Add an explicitly selected CI native-producer shadow: the existing serial
   catalogue node runs the strict operation and validates its receipt; the
@@ -27,8 +40,10 @@
   query and signature rendering. Shared literal/comment handling and explicit
   unsupported-syntax refusal prevent silent prefix identities and truncation.
   The reviewed fixture retains all 2,286 existing public statement hashes;
-  isolated-wheel parity and broader publication acceptance remain separate
-  gates for [#211](https://github.com/ActiveInferenceInstitute/fep_formal/issues/211).
+  isolated-wheel query parity and scoped publication layout acceptance for
+  [#211](https://github.com/ActiveInferenceInstitute/fep_formal/issues/211) are
+  recorded at [PR #214](https://github.com/ActiveInferenceInstitute/fep_formal/pull/214) and [fresh main workflow 39715953206](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39715953206).
+  Lexical source extraction remains distinct from native Lean verification.
 
 - Accept the scoped software deliveries for the unified CLI error contract
   [#119](https://github.com/ActiveInferenceInstitute/fep_formal/issues/119),

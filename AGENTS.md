@@ -330,15 +330,41 @@ The package tests include `tests/test_gnn_bridge_operations.py`.
 Numerical agreement is not native proof or proof of current execution.
 
 
-### Optional native producer shadow
+### Strict serial native producer and optional dual shadow
 
-The manual `native_producer_shadow` input defaults to false. When explicitly
-selected, the existing serial catalogue test executes the strict production
-operation and validates its fresh full-roster receipt. The later ordinary CLI
-command still executes independently; its receipt remains publication's native
-input. A separate comparison validates both captured receipts and all
-non-duration fields, binding actual workflow run, attempt and checkout. Separate
-shadow artifacts retain the first receipt, exclusive producer intent, invocation
-and comparison. This temporary comparison adds work; it establishes no release
-speedup and removes no gate. Enabling a single producer later requires separate
-review and fresh full-profile acceptance.
+CI always selects the existing serial catalogue node's strict, unfiltered
+`verify_catalogue` operation and independently validates its fresh native receipt,
+existing intent/API record and once-passing JUnit node. This is the reviewed CI
+decomposition of the strict `fep-lean verify --fail-on-warnings` operation below;
+local CLI and the default local catalogue test remain unchanged. Missing, failed
+or stale producer evidence fails; the job never hides it with another compile.
+
+The manual `native_producer_shadow` input defaults to false. When selected, the
+ordinary CLI additionally executes and its receipt is compared with the retained
+first receipt on every non-duration field. Both actual execution origins and
+workflow run/attempt/checkout bindings remain independently validated. Standard
+native artifacts retain the existing intent/API records, without a new schema.
+Any rollout requires actual full automatic PR/default and explicit dual-shadow acceptance;
+no measured release speedup follows from this source change alone.
+
+
+### Full automatic PR and explicit dual-shadow acceptance profiles
+
+Automatic code PRs, normal main pushes and manual full runs use the same full
+15-cell installed-wheel matrix (three OS families, Python 3.10 through 3.14).
+The default native lane consumes its strict serial producer once. A separate
+explicit manual full dual-shadow run executes the ordinary CLI as a second
+strict operation and preserves both receipts. Local default CLI behavior is
+unchanged. No extra manual default full run is required by this proposed profile
+once its actual rollout is independently accepted; the explicit dual-shadow and
+fresh merged-main full runs remain mandatory. Until rollout acceptance, the
+current accepted profile policy remains in force.
+
+Full profile contexts are 22 total: 21 successful roles/cells plus the configured
+documentation skip. Artifact validation must authenticate automatic PR synthetic
+merge parents/tree and preserve actual checkout/source/render origin; it must
+not relabel synthetic execution as candidate or merged-main execution. Original
+producer checkout/receipt paths are observed in the same-job context marker.
+No new receipt schema, production owner, sidecar, cache-trust substitution,
+classifier change or measured speedup is implied. Exact test membership is
+collected and reviewed on the final composed source before acceptance.
