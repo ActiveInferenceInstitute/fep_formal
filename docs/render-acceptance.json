@@ -11,7 +11,7 @@
     "unnumbered_equations": 0,
     "unresolved_references": 0
   },
-  "manuscript_source_digest": "528b93b9399cbd1f6edd4a3b4052ef8a6836593aa4b5c2a9c0d17436b601062c",
+  "manuscript_source_digest": "232f826092c223e6610b784f2528684c483e040ea571ca51a24a9a0739346f0b",
   "pages": 388,
   "receipt_version": 2,
   "source_digests": {
@@ -42,10 +42,10 @@
     "05c_fep_debate_implications.md": "4baf502d8c9bccf24e96092059291c76c89cc53d5bc099f4ce87f4e216530f6f",
     "05d_comparative_analysis.md": "4921ce7adb0954e604a725e8b61b1f7fa7fdd60ad8f10efbd51c31d3c8e292f1",
     "05e_broader_impact_limitations.md": "02b83a0004c642723ecb93af52ae4b4bc24e0230fae3a6a93f9b7be1445edad5",
-    "06_conclusion.md": "b5b29168be218341a0ae070da94f02f5db9fcd8d2959b419195c820eaeab72db",
+    "06_conclusion.md": "6e253d17a656bf38225a0b01f408b617d3478108453f5fe244cd9926f43f9288",
     "07_references.md": "b6132569eea5c54b542fff8754cee5c5d288873d8e920ce27c66a4a0318a7d94",
     "08_appendix_a_overview.md": "4954eb32f780051b09fb1f5a35d8ba00b894faca7fa8ace51dd423142749adbd",
-    "08b_mathematical_positioning_supplement.md": "7b5c6bf4dca225fa2670f0264f7dd9b570ba559df8232eba5ecafe2167ec2919",
+    "08b_mathematical_positioning_supplement.md": "c124787798332649a5e03f7600159de478b61125567e6c86ff424f37cc035b52",
     "09z_unified_formalism_catalogue.md": "8ce2c8ec7c2d3052c6cfca3980d5865b888d17742ad1f480911f094428b19198",
     "config.yaml": "d812b8b53cb7c3c3a0e7235c468da62ab386e8084d2af892cb013e8ffc834708",
     "preamble.md": "059044a04cedd89955c792227f696cc685e5afa4c359cb54ccd00e71b39997da",
