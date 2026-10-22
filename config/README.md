@@ -65,6 +65,17 @@ as resolution history. The coverage builder resolves evidence/witness
 declarations, validates targets, rejects derivational-formal cycles, and
 requires every semantic gap row to identify at least one blocker.
 
+
+The maintained relation graph uses schema 3. Every conceptual edge must also
+name its unresolved obligation in a `blocked_by` field: use `issue:93` for a
+positive Issue number or `lemma:FEPComposed.missing_carrier_bridge` for a
+qualified missing-lemma name. Tokens have no surrounding whitespace. The field
+is forbidden on theorem-backed and capability-blocker edges. It describes a
+planned obligation, never an available theorem or an inferred proof dependency.
+The atlas displays these tokens as escaped, offline text. Legacy schema-2
+inputs remain readable without this field; the roster seal has its own,
+unchanged schema version.
+
 `formalism_novelty.yaml` covers rows added after the original core roster. Each
 record names earlier nearest topics, states the invariant and carrier delta,
 and requires a stable `FEPComposed` theorem in a manifested leaf composition
