@@ -7,6 +7,7 @@ module
 -- so identically-named helpers across topics never collide during the
 -- whole-catalogue `lake build FepSketches`. Inner `namespace FEPNNN`
 -- blocks are preserved so per-topic qualified names stay stable.
+public import FepSketches.decision_risk
 public import FepSketches.variational_duality
 
 @[expose] public section
@@ -209,6 +210,21 @@ theorem fep063_finiteChannel_klDataProcessing
       finiteKL actual reference :=
   finiteChannel_dataProcessing actual reference channel
     hactual hreference hchannel
+
+/-- Relative input support suffices for finite KL data processing; channel
+entries and shared-zero input atoms need not be strictly positive. -/
+theorem fep063_finiteChannel_klDataProcessing_of_relativeSupport
+    {Input Output : Type*} [Fintype Input] [Fintype Output]
+    (actual reference : FiniteLaw Input) (channel : FiniteKernel Input Output)
+    (hsupport : ∀ x, actual x ≠ 0 → 0 < reference x) :
+    finiteKL (channel.predictive actual) (channel.predictive reference) ≤
+      finiteKL actual reference := by
+  let : MeasurableSpace Input := ⊤
+  let : MeasurableSpace Output := ⊤
+  let : DiscreteMeasurableSpace Input := ⟨fun _ => trivial⟩
+  let : DiscreteMeasurableSpace Output := ⟨fun _ => trivial⟩
+  exact FEP.DecisionRisk.finiteKL_mono_under_channel_of_relativeSupport
+    actual reference channel hsupport
 
 /-- The same support assumptions make every reference predictive atom
 positive, pinning the logarithmic boundary used by the proof. -/

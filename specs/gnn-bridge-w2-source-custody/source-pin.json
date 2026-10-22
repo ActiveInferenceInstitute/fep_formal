@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "875bbc61431d39e4e1cc480be792b7bd8d123de5",
+    "commit": "a46ed93473046293f6e5ef33ba4ced2ad3ffdc43",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "61102fa2602c482106365b1eb655c34f3d55ad5fc481637dbc6d0d6777612c53",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -39,7 +39,7 @@
       "src/fep_lean/catalogue/bodies/predictive_coding_generalized.py": "dfec6d770726c94bb8daa93f892cb1ffec3d35827eb024f5fd09bc697920a707",
       "src/fep_lean/catalogue/bodies/standalone_efe_formalizations.py": "da17bf17e4cfa56271cb4e0948457a279fe66a42a412f25959c6b6a70d32365a",
       "src/fep_lean/catalogue/bodies/temporal_inference.py": "820d493f82c2de309e51ca931b3c44807688e9d96cc9050b605bf99585d813a9",
-      "src/fep_lean/catalogue/bodies/variational_duality.py": "41bca6f54ae5f1e8353d267b5388e1b6b2460c913049b965e836c1c0f43042eb",
+      "src/fep_lean/catalogue/bodies/variational_duality.py": "aa53d3a653b8102b0c6789e3c7102ff962c507d34e6b5f1ac1639044d4e629ce",
       "src/fep_lean/catalogue/coverage.py": "871f27fc94b6b97c87901bf20a721b6b5da36b86db7efb6aeaf21efdc1094a69",
       "src/fep_lean/catalogue/generation.py": "87cc27995fcb804a68dd1d1e31b2c53b42c3559ff82733874f0ee1994c1a0765",
       "src/fep_lean/catalogue/latex.py": "20b9ad7612374a6f528d67fe6a40ab3c49f5eb3f6ac8baac75e602eefb9b25a7",
@@ -83,7 +83,7 @@
       "src/fep_lean/formal/compositions/gaussian_filter.lean": "9580e9be505e2ca144cc5bdeec470b69483e3d6a06bd094a6793a6a3aedd46e0",
       "src/fep_lean/formal/compositions/gaussian_grid_path.lean": "cc1f4020ab1cf8762b2eced248ff59976ce140ced7112eea2ab0de23c8d5561a",
       "src/fep_lean/formal/compositions/geometric_mechanics.lean": "0a2fec955da05b388308950e2333bb985f089d6d756ab3f867a62c4d831e8752",
-      "src/fep_lean/formal/compositions/h3_case_study.lean": "24c0a05321f23eccc290bca5a6d5a414af322cc35da5ea691b7520d9f655fbc7",
+      "src/fep_lean/formal/compositions/h3_case_study.lean": "6a1ebfaa4588cff8c5131fbbf0f5003353367ea74ac4e33a7214e9b8ac466d17",
       "src/fep_lean/formal/compositions/helmholtz_ao_ness.lean": "7de6f6c012d5e134d8bc84a4aec8c560adf2de60722d4466c4f77d9474d66c78",
       "src/fep_lean/formal/compositions/measure_variational.lean": "02590c6597b79c8ecde30896acfe34b872837b1225db33207cdd2997636f2d35",
       "src/fep_lean/formal/compositions/native_blanket_transfer.lean": "24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7",

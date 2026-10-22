@@ -1,0 +1,168 @@
+{
+  "state": "EXTERNAL_SOURCE_ONLY_ALL168_SEMANTIC_MATRIX_COMPLETE_MAINTAINED_PUBLICATION_PENDING",
+  "source_head": "b617be7bdf2cf31326af8d2e6e2896c9ead1b1aa",
+  "topic_count": 168,
+  "matrices": [
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-current-first56-semantic-review-r1/matrix.json",
+      "sha256": "4245f7bbaf9a1445acc7ac6fd147d2a840bc3bd5b87e1f95cc4afcc8b708e4d8",
+      "rows": 56
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-current-next56-semantic-review-r1/matrix.json",
+      "sha256": "5a494ae6d963fbee991510bfa730d45b5f2061d6075d27d007011da692a370cb",
+      "rows": 56
+    },
+    {
+      "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep75-current-last56-semantic-review-r1/matrix.json",
+      "sha256": "98b1fb530da50c0dad34da6b8d04e750b1ed2dd3bdde0493528d6d20838472a9",
+      "rows": 56
+    }
+  ],
+  "historical_all168_index_sha256": "ea52c68a39834d3b5db668dce46f9994bc516bf2e87bb765ceea4f1efaadb882",
+  "issue75_snapshot_sha256": "e52fe4d28a3d33c4d34f3c87c0c749a49bf25afd8f84d05786483f0de49d678b",
+  "current_scope_authorities": {
+    "config/theorem_maturity.yaml": "7ee77479ee1926d4b03b17dd76fa979339c370c4861f0c5a504571216cf9b28b",
+    "src/fep_lean/formal/efe_policy_selection.lean": "ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555"
+  },
+  "historical_compatibility": {
+    "body_strings_exact": 165,
+    "comment_only_deltas": [
+      "fep-009 productnonnegativity notjointindependence",
+      "fep-029 orderedendpointalgebra notgeneralconvexsecant"
+    ],
+    "genuine_existing_delta": "fep-159twoactualuniform/rightlimitforwardingtheorems, originalAPIsretained",
+    "relation_boundary": "016/032newformal_pairing providesbothendpointlaws supportonly; nogenuineimplication/newderivationclaimed."
+  },
+  "explicit_correction_to_prior_rankings": "First/next56recommendcanonicalGibbsconstruction/optimality. Whole168inspectionfindsactualefeGibbsCertificate and156optimizeralreadymaintained; those recommendations meanminimalbridge/reuse intoselectedtopics, NOTabsence/reimplementationofalreadyprovedminimization. Earlierimmutablematricespreservedwiththisexplicitcorrection.",
+  "priority_roadmap": [
+    {
+      "rank": 1,
+      "cohort": "ReuseexistingfiniteGibbs/control proofscanonically",
+      "topics": [
+        "012",
+        "028",
+        "031",
+        "058",
+        "059",
+        "061",
+        "068",
+        "069",
+        "070",
+        "076",
+        "156"
+      ],
+      "existing_content": "efe_policy_selection.lean:63efeGibbsCertificate/186relativeSupportoptimizer/296fullsupport/309minimalvalue",
+      "new_content_needed": "Exactcarrier/sign/temperature/priorbridge forselectedpublictopicsandactualcoordinate/controlobjective; implementationonlyifnotalreadycallerexposed.",
+      "feasibility": "High; firstreadonlycaller/APIinventory beforeanynewproof."
+    },
+    {
+      "rank": 2,
+      "cohort": "Actualfinitefilter/smoothingtrajectory semantics",
+      "topics": [
+        "034",
+        "047",
+        "066",
+        "072",
+        "073",
+        "074",
+        "075",
+        "128",
+        "133",
+        "137",
+        "157"
+      ],
+      "new_content_needed": "Actualjointtrajectory/observationconditionalmarginal recursion/evidencenormalizers, thenformal034047obligationwitness onlyifmatching endpoints.",
+      "feasibility": "Medium-high; actualfinitecomponentsreused, no arbitraryupdate assumption waiver."
+    },
+    {
+      "rank": 3,
+      "cohort": "Actualsamplingrisk/concentration",
+      "topics": [
+        "036",
+        "042",
+        "114",
+        "115",
+        "118",
+        "121",
+        "122",
+        "126",
+        "127"
+      ],
+      "new_content_needed": "Actualiidfinite/nativesamplelaw,independence/binomialmoments/per-symboltail, thenbias/MSE/badevent theorem; Stage1countlearning preserved.",
+      "feasibility": "Medium-high withpinnedMathlib concentration/SLLN; regularitynotassumedaway."
+    },
+    {
+      "rank": 4,
+      "cohort": "Boundedprimaryalignment63/64",
+      "topics": [
+        "063",
+        "064"
+      ],
+      "existing_content": "Relative-supportDPI andactualinfimumweakdual maintainedfoundations; external68R3exactpostimageproposal reviewedseparately.",
+      "new_content_needed": "Oneforwardwrapper/selectorsemantic/APIinverse/projection/sourcecustodyqualification; nogeneralstrongprimarypromotion.",
+      "feasibility": "Highscientificclarity/lownewmath; externalproposalnotmaintainedaccepted."
+    },
+    {
+      "rank": 5,
+      "cohort": "Statisticalregularity/Fisher andconvexprojection",
+      "topics": [
+        "004",
+        "018",
+        "038",
+        "100",
+        "102",
+        "104",
+        "105",
+        "106",
+        "144",
+        "145",
+        "146",
+        "148"
+      ],
+      "new_content_needed": "Actualfiniteparameterizedfamily score/Jacobian/unbiasedness/varianceproofs, convexderivative/minimizerfirstorderconditions replacingcertificateinputs.",
+      "feasibility": "Medium; external102spikeseparate, reuseactualexponentialfamily calculus."
+    },
+    {
+      "rank": 6,
+      "cohort": "Measure-levelGaussianblanket genericity",
+      "topics": [
+        "009",
+        "056",
+        "079",
+        "139",
+        "141"
+      ],
+      "new_content_needed": "ResidualGaussian/crosscov fromK\u03a3=1 plusactualblanketresidualproduct/affinecompProd; actualCondIndepFun, Fin4recovery+nonsparseconditionalcountermodel.",
+      "feasibility": "Medium-hard; external97pairproduct/controlactualpasses onlysublemmas, no genericCIacceptance."
+    },
+    {
+      "rank": 7,
+      "cohort": "Actualstochasticthermodynamicprotocol",
+      "topics": [
+        "025",
+        "037",
+        "049",
+        "050",
+        "093",
+        "094",
+        "095",
+        "096",
+        "097",
+        "152",
+        "159"
+      ],
+      "new_content_needed": "PhysicalfiniteMarkovreverse/work/equilibriumprotocol derivesnormalization/entropyflow ratherthancertificate; preservetotalizedreal/nativeKLboundaries.",
+      "feasibility": "Highermodelingcost; startfinitequench/two-stateperturbation, notcontinuumPDE."
+    }
+  ],
+  "acceptance_gap_against_actual_issue75": [
+    "All168externalrows nowreviewedwithsource/statement/assumption/nonvacuity/nearest-priorcontexts andrankedstrengthenings; previoushistorical168reviewfullypreserved.",
+    "This externalreview completionisNOTmaintainedreportpublication orindependentfinalwhole-roadmapacceptance. Needreviewaggregatecorrection/consistencyandretainexactsourcepins.",
+    "Anyimplementedboundedcohortrequiresfrozenownercontract, exactproof/controls/nativeaxiomreview, deterministicsignature/maturity/coverage/qualifiedrelationwitnessprojections, sourcecustody/runtime/gates/hosted/mainacceptance.",
+    "NoTODO75removal/issueclosureorformalizedbroadscientifictopicpromotionfromthismatrix. Existingconditional/structuraldispositionskeepboundaries, futureproofspikesnotnewmaintainedfacts."
+  ],
+  "managed_source_edits": false,
+  "executed_gates": false,
+  "boundary": "Source-only semantic audit/roadmap externalartifacts; no compilation-implies-maturity, externalspikepromotion, empiricalH3/provider/captureacceptance orIssue75closure."
+}

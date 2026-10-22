@@ -102,7 +102,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [LEAN-2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/100) — One Gaussian Markov semigroup interface | Medium | Independent | Duplicate names drop to one; unchanged `#print axioms`; H3 declaration names preserved. |
 | [LEAN-4](https://github.com/ActiveInferenceInstitute/fep_formal/issues/102) — Split h3_case_study.lean and retire its maxHeartbeats override | Medium | [CUR-08](https://github.com/ActiveInferenceInstitute/fep_formal/issues/55) | No `set_option` in the formal tree; declaration names unchanged; native export refreshed. |
 | [LEAN-5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/103) — A reviewed derivational edge in every family | Medium | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | At most six families without a `formal` edge; endpoint-qualification notes per the adjudication doc; relation tests pass. |
-| [LEAN-7](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105) — Obligation records for conceptual relations | Minor | Independent | A schema test requires `blocked_by` on every conceptual edge; at least one converted to a pairing (034↔047 via FORM-S10 or 016↔032). |
 
 ### Package infrastructure
 

@@ -1,5 +1,25 @@
 ## Unreleased
 
+- Reuse immutable test seed data while keeping fresh per-case files, payloads
+  and real producer validation. Selected external timing observations and
+  correctness controls are retained separately; complete-source qualification
+  remains required.
+
+- Factor two private Gaussian integrability helpers so the affected H3 proof
+  uses the default heartbeat budget. Preserve public statements and the current
+  module structure; the full H3 split and accepted export refresh remain open.
+
+- Select the existing finite rate-distortion infimum weak-dual theorem and
+  expose the relative-support channel DPI through its canonical topic. Retain
+  previous strict-support and component-bound APIs, with sparse and boundary
+  consumer controls; no broad semantic promotion is claimed.
+
+- Publish a source-only semantic review and ranked strengthening roadmap for
+  all 168 theorem proxies at the recorded source epoch. Preserve existing
+  dispositions and distinguish reused Gibbs/control proofs from new proof
+  obligations. Final independent acceptance and issue #75 closeout remain
+  separate.
+
 - Keep optional slide derivatives disabled in the project render configuration
   while retaining the required combined manuscript PDF, sources, logs, fonts
   and acceptance receipts. CI clears ambient format overrides; fresh effective
@@ -25,9 +45,12 @@
   Pair the supporting fep-016 quadratic nonnegativity law with the fep-032
   bounded-step descent law on the same state and center. The generated atlas
   exposes those obligations; 034/047 remains conceptual under #93/F11.
-  The strict Lean 4.35 build, imported boundary controls and focused package
-  checks passed. Full source/native/render/hosted qualification remains required
-  for [#105](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105);
+  Exact-source software qualification and scoped artifact/PDF acceptance are
+  recorded at [PR #216](https://github.com/ActiveInferenceInstitute/fep_formal/pull/216),
+  [main `a46ed9347304`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/a46ed93473046293f6e5ef33ba4ced2ad3ffdc43) and
+  [fresh main workflow 39772166859](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39772166859).
+  This delivers the bounded schema/supporting-pairing acceptance for
+  [#105](https://github.com/ActiveInferenceInstitute/fep_formal/issues/105);
   no Laplace approximation, general optimizer, convergence or primary-theorem
   promotion is claimed.
 
