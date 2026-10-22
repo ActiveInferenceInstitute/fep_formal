@@ -589,6 +589,7 @@ def test_statement_exceptions_cannot_expand() -> None:
 
 def test_native_single_producer_and_explicit_dual_shadow_workflow_contract():
     workflow = yaml.safe_load(CI.read_text())
+    _assert_render_dependencies_barrier_contract(workflow)
     steps = workflow["jobs"]["lean"]["steps"]
     serial = next(
         s for s in steps if s.get("name") == "Run the serial_lean acceptance lane"
@@ -754,3 +755,120 @@ def test_native_shadow_selection_refuses_nonboolean_or_default_enabled_input(
     events["workflow_dispatch"]["inputs"]["native_producer_shadow"][field] = value
     with pytest.raises(AssertionError):
         _assert_native_shadow_selection_is_explicit(workflow)
+
+
+def _assert_render_dependencies_barrier_contract(workflow):
+    jobs = workflow["jobs"]
+    lean = jobs["lean"]
+    assert lean["needs"] == "changes"
+    assert lean["permissions"] == {"contents": "read", "actions": "read"}
+    assert (
+        lean["if"]
+        == "needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.run_lean)"
+    )
+    assert jobs["render"]["needs"] == ["lean", "render-deps"]
+    steps = lean["steps"]
+    by_name = {
+        row.get("name"): index for index, row in enumerate(steps) if row.get("name")
+    }
+    barrier_index = by_name["Require current-attempt publication figure producer"]
+    barrier = steps[barrier_index]
+    assert barrier["id"] == "render-figures-barrier"
+    assert barrier["timeout-minutes"] == 22
+    assert barrier["env"] == {"GH_TOKEN": "${{ github.token }}"}
+    assert barrier["run"] == (
+        "python specs/publication-browser-acceptance/wait_render_dependencies.py"
+    )
+    static_runs = [step.get("run", "") for step in workflow["jobs"]["static"]["steps"]]
+    assert (
+        "uv run mypy src scripts docs "
+        "specs/publication-browser-acceptance/wait_render_dependencies.py"
+    ) in static_runs
+    required = AGENTS.read_text(encoding="utf-8")
+    assert "uv run ruff check specs/publication-browser-acceptance" in required
+    assert "uv run ruff format --check specs/publication-browser-acceptance" in required
+    assert (
+        "uv run mypy src scripts docs "
+        "specs/publication-browser-acceptance/wait_render_dependencies.py"
+    ) in required
+    download_index = by_name[
+        "Download the publication figure assets the render-deps job produced"
+    ]
+    assert (
+        by_name["Compile orphaned formal modules"]
+        < barrier_index
+        < download_index
+        < by_name["Run the serial_lean acceptance lane"]
+    )
+    assert steps[download_index]["with"] == {
+        "artifact-ids": "${{ steps.render-figures-barrier.outputs.artifact_id }}",
+        "path": ".",
+    }
+    expected_name = "render-figures-${{ github.run_id }}-${{ github.run_attempt }}"
+    producer = next(
+        row
+        for row in jobs["render-deps"]["steps"]
+        if row.get("name") == "Upload the publication figure assets"
+    )
+    consumer = next(
+        row
+        for row in jobs["render"]["steps"]
+        if row.get("name")
+        == "Download the publication figure assets the render-deps job produced"
+    )
+    assert producer["with"]["name"] == consumer["with"]["name"] == expected_name
+
+
+@pytest.mark.parametrize(
+    "mutant",
+    [
+        "legacy_upload",
+        "legacy_render_download",
+        "lean_by_name",
+        "wrong_barrier_command",
+        "missing_actions_read",
+        "restore_serial_needs",
+        "bypass_skip_condition",
+        "barrier_after_serial",
+    ],
+)
+def test_render_dependency_contract_refuses_gate_or_identity_drift(mutant):
+    workflow = yaml.safe_load(CI.read_text())
+    jobs = workflow["jobs"]
+    lean = jobs["lean"]
+    steps = lean["steps"]
+    barrier = next(row for row in steps if row.get("id") == "render-figures-barrier")
+    download = next(
+        row
+        for row in steps
+        if row.get("name")
+        == "Download the publication figure assets the render-deps job produced"
+    )
+    if mutant == "legacy_upload":
+        next(
+            row
+            for row in jobs["render-deps"]["steps"]
+            if row.get("name") == "Upload the publication figure assets"
+        )["with"]["name"] = "render-figures"
+    if mutant == "legacy_render_download":
+        next(
+            row
+            for row in jobs["render"]["steps"]
+            if row.get("name")
+            == "Download the publication figure assets the render-deps job produced"
+        )["with"]["name"] = "render-figures"
+    if mutant == "lean_by_name":
+        download["with"] = {"name": "render-figures", "path": "."}
+    if mutant == "wrong_barrier_command":
+        barrier["run"] = "true"
+    if mutant == "missing_actions_read":
+        del lean["permissions"]["actions"]
+    if mutant == "restore_serial_needs":
+        lean["needs"] = ["changes", "render-deps"]
+    if mutant == "bypass_skip_condition":
+        lean["if"] = "true"
+    if mutant == "barrier_after_serial":
+        steps.remove(barrier)
+        steps.append(barrier)
+    with pytest.raises(AssertionError):
+        _assert_render_dependencies_barrier_contract(workflow)

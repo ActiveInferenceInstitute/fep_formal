@@ -1,5 +1,13 @@
 ## Unreleased
 
+- Retire the historical private successor source-freeze and full seven-stage
+  production-capture requirements in [#52](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52)
+  and [#53](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53)
+  as not planned, at the owner's direction to drop the unavailable private
+  capture materials. Their original acceptance criteria were not met. Preserve
+  rejected r6 and all frozen evidence; current software gates and dependent
+  H3, final-criteria, Windows and incremental-capture contracts remain separate.
+
 - Record the verified disposition of [PR #44](https://github.com/ActiveInferenceInstitute/fep_formal/pull/44)
   through its attributed, merged [successor #179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179).
   The finite-kernel category and concrete predictive-law functor are present in

@@ -45,6 +45,8 @@ trajectory filtering/smoothing semantics, sampling-law concentration and risk,
 explicit statistical regularity, and finite Markov reversal/work protocols.
 Each roadmap cohort distinguishes existing results from its missing proof.
 
+A follow-up whole-roadmap review also records that the native Boolean and finite-atom strong laws and the composed smoothed-rate strong law are already maintained. Historical row 036 still accurately describes its selected convergence-transfer primary; future work must reuse the existing almost-sure results or add a genuinely missing model, caller, or finite-sample-risk bridge. Likewise, actual C² Hessian symmetry and constant-current divergence theorems in `ness_flow.lean` are existing foundations for any derivative-data identification, not missing analytic results. These corrections preserve all historical matrix bytes, the earlier Gibbs correction, and every stated regularity and carrier boundary.
+
 The 016/032 witness is a supporting formal pairing of two endpoint laws; it
 does not derive the update from Laplace normalization. External spikes for issues #68, #97 and #102 are separate research artifacts,
 not maintained results accepted

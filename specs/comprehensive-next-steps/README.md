@@ -12,6 +12,24 @@ The source checkpoint and exact-main hosted evidence are recorded once in
 Lean 4.35 source checkpoint retain separate identities. Planning reviews add
 no new native, production-capture, study or scientific acceptance.
 
+## Owner-directed production-capture retirement
+
+On 2026-10-22 the owner directed that the unavailable private r6 failure streams
+and reviewed successor production controller packet no longer be required.
+CUR-03/#52 and CUR-05/#53 are retired as not planned, without acceptance of
+their original source-freeze or seven-stage capture/archive contracts. C02/C03
+in the dated package matrix retain those historical contracts; they are no
+longer mandatory work in this continuation. Preserve rejected r6, immutable
+freezes and all historical receipts. Current exact test membership, source
+custody and software release gates remain mandatory.
+
+This does not satisfy a dependent scientific prerequisite. H01–H03/#55–#57,
+C06/#59 and C07/C08/#66/#67 remain independently governed; prospective
+source/package prerequisites require their own review before execution. No
+primary seed or outcome may be opened through this retirement. See the
+[open backlog](../../TODO.md#retired-production-capture-dependencies) and
+[choice record](choices.md#retire-unavailable-private-production-capture-work).
+
 ## Current backend maintenance
 
 The existing methods/resolver owners now have bounded exact-content caches and
@@ -63,8 +81,9 @@ the eight receipt-bound copies and their individual retention decisions.
    with explicit retained contract exceptions and current bridge source custody.
    P11 is accepted for the [exact-source serial measurement](spikes/serial-native-20261018/README.md);
    canonical serialization and all future parallel-proposal gates remain.
-2. C01/C02 resolve the actual production DOM failure and explicitly approved
-   successor membership. C03 obtains actual capture/archive acceptance; C04 local
+2. Historical C02/C03 successor membership and production capture/archive
+   work is retired under the owner direction above, without runtime acceptance.
+   C04 local
    installed-runtime/status acceptance is separately recorded above; C05 closes the complete current-source
    check/artifact gate. H00 resolves the frozen-carrier migration meaning.
 3. Use [TODO.md](../../TODO.md) to select residual operator, API and software
@@ -122,7 +141,8 @@ Closed Issue predecessors are retained in the matrix's historical dependency
 map instead of becoming new open packages. Issue URLs disambiguate reused
 historical scope labels. Later H3 refactoring (L04) needs a fresh successor
 export before primary execution. P07 seals the current software roster under
-the user waiver below; C02 still governs production-capture membership. These
+the software waiver below; historical C02 production-capture membership is
+retired under the separate owner direction above. These
 source-epoch renewals do not create a circular delivery graph
 or authorize a second primary.
 

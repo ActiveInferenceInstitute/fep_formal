@@ -273,7 +273,7 @@ uv run ruff format --check specs/publication-browser-acceptance
 uv run python specs/publication-browser-acceptance/validate_acceptance.py --collect output/python-acceptance-collection.json
 uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"
 uv run python docs/check_coverage_floors.py --coverage coverage.xml
-uv run mypy src scripts docs
+uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py
 uv run ruff check .
 uv run ruff format --check src tests scripts docs
 git diff --check

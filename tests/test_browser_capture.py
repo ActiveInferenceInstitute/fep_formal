@@ -5,13 +5,14 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import stat
 import struct
 import subprocess
 import sys
 import tempfile
 import zlib
 from collections.abc import Iterator
-from contextlib import contextmanager
+from contextlib import contextmanager, suppress
 from copy import deepcopy
 from dataclasses import replace
 from pathlib import Path
@@ -31,6 +32,33 @@ def _startup_stderr_tail(stream: BinaryIO) -> str:
     return f"stderr_bytes={size}; tail (max 8192 bytes):\n{tail}"
 
 
+def _startup_port_state(command: list[str]) -> dict[str, object]:
+    """Selected port-file metadata only, never its UUID or unbounded contents."""
+    profile = next(
+        arg.split("=", 1)[1] for arg in command if arg.startswith("--user-data-dir=")
+    )
+    port_file = Path(profile) / "DevToolsActivePort"
+    flags = os.O_RDONLY | getattr(os, "O_NONBLOCK", 0) | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(port_file, flags)
+    except FileNotFoundError:
+        return {"exists": False, "size": None, "parse_valid": False}
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise ValueError("diagnostic port path is not a regular file")
+        size = metadata.st_size
+        raw = os.read(descriptor, 4097)
+    finally:
+        os.close(descriptor)
+    lines = raw.decode("utf-8", errors="replace").splitlines()
+    valid = False
+    if len(raw) <= 4096 and len(lines) >= 2:
+        with suppress(ValueError):
+            valid = 0 < int(lines[0]) < 65536 and bool(lines[1])
+    return {"exists": True, "size": size, "parse_valid": valid}
+
+
 @pytest.fixture(autouse=True)
 def _live_chrome_startup_diagnostics(
     request: pytest.FixtureRequest, monkeypatch: pytest.MonkeyPatch
@@ -48,6 +76,30 @@ def _live_chrome_startup_diagnostics(
         return
     original_client = capture_module._chrome_client
     original_subprocess = capture_module.subprocess
+    original_os = capture_module.os
+    original_resolver = capture_module.resolve_browser_executable
+    identities = []
+    diagnostic_errors = []
+
+    def diagnostic_resolver(*args, **kwargs):
+        result = original_resolver(*args, **kwargs)
+        try:
+            name, executable, version, digest = result
+            identities.append(
+                {
+                    "name": name,
+                    "path": str(executable),
+                    "version": version,
+                    "sha256": digest,
+                }
+            )
+        except Exception as exc:
+            diagnostic_errors.append(repr(exc))
+        return result
+
+    monkeypatch.setattr(
+        capture_module, "resolve_browser_executable", diagnostic_resolver
+    )
     launch = 0
 
     @contextmanager
@@ -57,13 +109,45 @@ def _live_chrome_startup_diagnostics(
         nonlocal launch
         launch += 1
         processes = []
+        launch_records = []
+        signal_observations = []
         with tempfile.TemporaryFile() as stderr:
 
             def diagnostic_popen(*args, **kwargs):
                 kwargs["stderr"] = stderr
                 process = original_subprocess.Popen(*args, **kwargs)
                 processes.append(process)
+                try:
+                    launch_records.append(
+                        (process, args[0], capture_module.time.monotonic())
+                    )
+                except Exception as exc:
+                    diagnostic_errors.append(repr(exc))
                 return process
+
+            def diagnostic_killpg(pgid, sig):
+                try:
+                    for process, command, started in launch_records:
+                        if process.pid == pgid:
+                            signal_observations.append(
+                                {
+                                    "pid": process.pid,
+                                    "signal": int(sig),
+                                    "returncode_before_signal": process.poll(),
+                                    "elapsed_since_Popen_return_seconds": capture_module.time.monotonic()
+                                    - started,
+                                    "startup_deadline_seconds": capture_module._CDP_START_TIMEOUT_SECONDS,
+                                    "resolver_matches": [
+                                        row
+                                        for row in identities
+                                        if row["path"] == str(executable)
+                                    ],
+                                    "port": _startup_port_state(command),
+                                }
+                            )
+                except Exception as exc:
+                    diagnostic_errors.append(repr(exc))
+                return original_os.killpg(pgid, sig)
 
             # Patch only this owner's module reference, never global Popen.
             proxy = SimpleNamespace(
@@ -71,18 +155,37 @@ def _live_chrome_startup_diagnostics(
             )
             with monkeypatch.context() as patch:
                 patch.setattr(capture_module, "subprocess", proxy)
+                patch.setattr(
+                    capture_module,
+                    "os",
+                    SimpleNamespace(
+                        **{**vars(original_os), "killpg": diagnostic_killpg}
+                    ),
+                )
                 try:
                     with original_client(executable) as client:
                         yield client
                 finally:
-                    states = [(p.pid, p.poll()) for p in processes]
-                    request.node.add_report_section(
-                        "call",
-                        f"Chrome startup {launch}",
-                        f"worker={os.environ.get('PYTEST_XDIST_WORKER', 'main')}; "
-                        f"pid/returncode_after_cleanup={states!r}\n"
-                        + _startup_stderr_tail(stderr),
-                    )
+                    try:
+                        states = [(p.pid, p.poll()) for p in processes]
+                        request.node.add_report_section(
+                            "call",
+                            f"Chrome startup {launch}",
+                            f"worker={os.environ.get('PYTEST_XDIST_WORKER', 'main')}; "
+                            f"pid/returncode_after_cleanup={states!r}\n"
+                            + json.dumps(
+                                {
+                                    "resolver_observations": identities,
+                                    "pre_signal_observations": signal_observations,
+                                    "diagnostic_errors": diagnostic_errors,
+                                }
+                            )
+                            + "\n"
+                            + _startup_stderr_tail(stderr),
+                        )
+                    except Exception as exc:
+                        # Reporting itself must never replace the primary outcome.
+                        diagnostic_errors.append(repr(exc))
 
     monkeypatch.setattr(capture_module, "_chrome_client", diagnostic_client)
 
