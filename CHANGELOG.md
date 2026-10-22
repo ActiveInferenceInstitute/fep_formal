@@ -1,5 +1,16 @@
 ## Unreleased
 
+- Record the verified disposition of [PR #44](https://github.com/ActiveInferenceInstitute/fep_formal/pull/44)
+  through its attributed, merged [successor #179](https://github.com/ActiveInferenceInstitute/fep_formal/pull/179).
+  The finite-kernel category and concrete predictive-law functor are present in
+  accepted [main `a46ed9347304`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/a46ed93473046293f6e5ef33ba4ced2ad3ffdc43),
+  with retained native, axiom and projection evidence from
+  [workflow 39772166859](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39772166859).
+  This completes the bounded PR disposition for [#58](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58);
+  [#54](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) remains independently open.
+  Preserve contributor credit and the existing normalized carriers; no scientific
+  relation, novelty or maturity promotion is claimed.
+
 - Reuse immutable test seed data while keeping fresh per-case files, payloads
   and real producer validation. Selected external timing observations and
   correctness controls are retained separately; complete-source qualification

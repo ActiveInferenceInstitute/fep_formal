@@ -54,7 +54,6 @@ until a verified integration or disposition; they are not removed as legacy.
 | Work | Size | Predecessors and activation | Closure probe |
 | --- | --- | --- | --- |
 | [CUR-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/50) — Refresh optional strict Hermes/OpenGauss evidence for all 168 topics | Medium | Secure current credential/model route and concrete spend boundary | Complete source-bound strict full-mode report for all 168 topics independently claim-ready; secure preflight and enforcement of the separately authorized spend ceiling remain required. |
-| [CUR-13](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58) — Review substantive PR44 against current formal and ownership contracts | Medium | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Fresh current-base PR44 formal/ownership brief, warning-free native/axiom/projection evidence and independent domain review before integration. |
 
 ## Upcoming minor, medium and major scopes
 

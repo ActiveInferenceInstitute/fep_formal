@@ -38,17 +38,46 @@ def _bodies(module_name: str) -> dict[str, str]:
     return namespace["BODIES"]
 
 
+def _topic_imports(body: str, *, foundation: str) -> tuple[tuple[str, ...], str]:
+    """Split only the reviewed leading plain-import grammar, preserving proof text."""
+    header = re.match(r"(?:import [A-Za-z_][A-Za-z0-9_.]*\n)+", body)
+    assert header is not None, "topic must start with a plain import header"
+    imports = tuple(header.group().splitlines(keepends=True))
+    assert imports[0] == f"import FepSketches.{foundation}\n"
+    assert len(imports) == len(set(imports)), "duplicate topic import"
+    proof = body[header.end() :]
+    assert not re.search(r"(?m)^(?:public\s+)?import\b", proof), "late topic import"
+    assert "".join(imports) + proof == body
+    return imports[1:], proof
+
+
+def _inline_foundation(*, foundation: str, bodies: tuple[str, ...]) -> str:
+    foundation_text = (FORMAL_ROOT / f"{foundation}.lean").read_text(encoding="utf-8")
+    assert foundation_text.startswith("module\n"), "reviewed foundation module header"
+    additional: list[str] = []
+    proofs: list[str] = []
+    for body in bodies:
+        imports, proof = _topic_imports(body, foundation=foundation)
+        for import_line in imports:
+            if import_line not in additional:
+                additional.append(import_line)
+        proofs.append(proof)
+    hoisted = "".join(additional)
+    combined_foundation = (
+        "module\n" + hoisted + foundation_text.removeprefix("module\n")
+    )
+    assert combined_foundation.removeprefix(
+        "module\n" + hoisted
+    ) == foundation_text.removeprefix("module\n")
+    return combined_foundation + "\n" + "\n".join(proofs)
+
+
 def _compile_with_foundation(
     tmp_path: Path, *, foundation: str, topic_id: str, body: str
 ) -> subprocess.CompletedProcess[str]:
-    import_line = f"import FepSketches.{foundation}\n"
-    assert body.startswith(import_line)
     combined = tmp_path / f"{topic_id}.lean"
     combined.write_text(
-        (FORMAL_ROOT / f"{foundation}.lean").read_text(encoding="utf-8")
-        + "\n"
-        + body.removeprefix(import_line),
-        encoding="utf-8",
+        _inline_foundation(foundation=foundation, bodies=(body,)), encoding="utf-8"
     )
     return _compile(combined)
 
@@ -345,6 +374,22 @@ def test_finite_channel_data_processing_compiles_with_support_boundary(
     assert result.returncode == 0, result.stdout + result.stderr
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
+    compiled_source = (tmp_path / "fep-063.lean").read_text(encoding="utf-8")
+    required_import = "import FepSketches.decision_risk\n"
+    assert compiled_source.startswith("module\n" + required_import)
+    assert compiled_source.count(required_import) == 1
+    missing_dependency = tmp_path / "fep-063-missing-decision-risk.lean"
+    missing_dependency.write_text(
+        compiled_source.replace(required_import, "", 1), encoding="utf-8"
+    )
+    rejected = _compile(missing_dependency)
+    assert rejected.returncode != 0, (
+        "relative-support wrapper must retain its foundation import"
+    )
+    assert "FEP.DecisionRisk.finiteKL_mono_under_channel_of_relativeSupport" in (
+        rejected.stdout + rejected.stderr
+    )
+
 
 @pytest.mark.parametrize(
     ("module_name", "foundation"),
@@ -356,13 +401,10 @@ def test_finite_channel_data_processing_compiles_with_support_boundary(
 def test_family_body_closure_compiles_warning_free(
     tmp_path: Path, module_name: str, foundation: str
 ) -> None:
-    import_line = f"import FepSketches.{foundation}\n"
     combined = tmp_path / f"{module_name}.lean"
     bodies = _bodies(module_name)
     combined.write_text(
-        (FORMAL_ROOT / f"{foundation}.lean").read_text(encoding="utf-8")
-        + "\n"
-        + "\n".join(body.removeprefix(import_line) for body in bodies.values()),
+        _inline_foundation(foundation=foundation, bodies=tuple(bodies.values())),
         encoding="utf-8",
     )
 
@@ -447,6 +489,7 @@ def test_family_declaration_names_are_unique_stable_and_topic_scoped() -> None:
         ),
         "fep-063": (
             "fep063_finiteChannel_klDataProcessing",
+            "fep063_finiteChannel_klDataProcessing_of_relativeSupport",
             "fep063_referencePredictive_fullSupport",
             "fep063_identityChannel_preservesKL",
             "fep063_constantChannel_strict",
