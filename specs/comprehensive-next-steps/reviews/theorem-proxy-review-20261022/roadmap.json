@@ -89,8 +89,9 @@
         "126",
         "127"
       ],
-      "new_content_needed": "Actualiidfinite/nativesamplelaw,independence/binomialmoments/per-symboltail, thenbias/MSE/badevent theorem; Stage1countlearning preserved.",
-      "feasibility": "Medium-high withpinnedMathlib concentration/SLLN; regularitynotassumedaway."
+      "new_content_needed": "Reuse existing strong-law and concentration foundations. Derive genuinely absent concrete iid-law instantiations, binomial moments/per-symbol finite-sample tail/risk bounds, or exact caller/selected-primary integration; do not duplicate existing almost-sure consistency.",
+      "feasibility": "Medium-high withpinnedMathlib concentration/SLLN; regularitynotassumedaway.",
+      "existing_content": "Actual StatisticalConvergence empirical Boolean/finite-atom strong-law/L1 theorems and composed fep036_smoothedRate_strongLaw already exist, alongside concentration and Stage1 count results."
     },
     {
       "rank": 4,
@@ -164,5 +165,13 @@
   ],
   "managed_source_edits": false,
   "executed_gates": false,
-  "boundary": "Source-only semantic audit/roadmap externalartifacts; no compilation-implies-maturity, externalspikepromotion, empiricalH3/provider/captureacceptance orIssue75closure."
+  "boundary": "Source-only semantic audit/roadmap externalartifacts; no compilation-implies-maturity, externalspikepromotion, empiricalH3/provider/captureacceptance orIssue75closure.",
+  "prospective_followup_corrections": {
+    "source_epoch": "cd114c1363036e89eb055da759d55736f71bf48a",
+    "future_application_commit": null,
+    "strong_law_existing_content": "StatisticalConvergence.empiricalRate_strongLaw/empiricalMass_strongLaw/empiricalLaw_strongLaw/empiricalL1Error_strongLaw and FEPComposed.fep036_smoothedRate_strongLaw already derive almost-sure convergence under explicit integrability, pairwise independence and identical-distribution hypotheses. Historical row036 selected primary remains a convergence-transfer theorem. Any strengthening must reuse these foundations or supply an actually missing caller/selected-primary/model-specific risk bridge, not reimplement an absent strong law.",
+    "analytic_existing_content": "NessFlow.hessF_symmetric and divergence_probCurrent_eq/_eq_zero already supply actual C2 Hessian/current derivative results. Topics161/163 derivative-data identification work must reuse them with exact sign/index/density maps; generic variable-Q or finite-difference bounds and PDE existence are not thereby established.",
+    "historical_matrices_unchanged": true,
+    "existing_Gibbs_correction_preserved": true
+  }
 }

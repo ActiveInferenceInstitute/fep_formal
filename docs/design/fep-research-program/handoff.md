@@ -14,9 +14,10 @@ candidate through the [release procedure](../../release.md). The
 [release overview](../../../README.md#release) owns the current release line. The original
 [nine-criterion program](../../../specs/comprehensive-science-improvement/PROTOCOL.md)
 remains binding; a successful subset or a new version cannot close it.
-[TODO.md](../../../TODO.md) owns the open-only backlog and
-[remaining acceptance](../../../specs/comprehensive-science-improvement/NEXT.md)
-owns exact execution order.
+[TODO.md](../../../TODO.md) owns the open-only backlog and the
+[active campaign](../../../specs/comprehensive-next-steps/README.md) owns current
+pickup. [Remaining acceptance](../../../specs/comprehensive-science-improvement/NEXT.md)
+reconciles the continuation with current issue states and retained evidence.
 
 Completed delivery checklists and dated test/declaration totals have been
 removed from this active pickup path. Their acceptance evidence remains in the
@@ -29,12 +30,23 @@ their own epochs; they do not certify later H3/package bytes.
 
 ## First useful actions
 
-Use [remaining acceptance](../../../specs/comprehensive-science-improvement/NEXT.md)
-for the single current execution sequence. It owns source settlement, fresh
-Q7 validation, the real seven-stage native/audit/package capture, installed
-runtime cells, current H3 export/reviews, once-only primary execution, replay,
-claim review, study reproduction and release. Do not add a duplicate native
-or axiom producer from this handoff.
+Use the [active campaign](../../../specs/comprehensive-next-steps/README.md#owner-directed-production-capture-retirement)
+and [canonical backlog](../../../TODO.md#retired-production-capture-dependencies)
+for current pickup; [remaining acceptance](../../../specs/comprehensive-science-improvement/NEXT.md)
+retains the continuation sequence under those scope decisions. On 2026-10-22
+the owner retired CUR-03/#52 and CUR-05/#53 as not planned, without meeting
+their original source-freeze or seven-stage production-capture/archive acceptance.
+Their failed and frozen records remain historical evidence. Closed CUR-01/#46,
+CUR-02/#47, CUR-04/#48 and CUR-06/#49 retain their accepted component epochs.
+CUR-15/#51 is also closed, but its retained comment does not establish the
+unmet r6 diagnosis/current production receipt; do not reactivate private-stream
+work or infer acceptance from closure status. Current source/test
+custody, Q7 validation, installed runtime and exact-source software gates remain
+required. CUR-07/#54, the original nine criteria, H3 export/reviews, the sole
+primary, outcome/study archives and Windows/incremental scopes #66/#67 retain
+independent obligations; prospective dependent prerequisites require explicit
+review. Retirement supplies no successful capture or scientific acceptance.
+Do not add a duplicate native or axiom producer from this handoff.
 
 Read the H3 guide, frozen protocol and implementation contract first. Preserve
 the accepted branch, axis order, units, carrier, seeds, counts, thresholds and

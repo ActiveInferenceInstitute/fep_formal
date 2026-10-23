@@ -1037,3 +1037,23 @@ Keep the failed parallel result with 3,551 cases and its unrun Chrome stage immu
 **Verdict:** source integration only. Fresh native, effective renderer-config,
 publication/PDF, full Python/browser/coverage, remaining checks and hosted/main
 acceptance remain required; no measured speedup is claimed.
+
+## Retire unavailable private production-capture work
+
+**When:** 2026-10-22, before further successor capture work.
+
+**Choice:** Follow the owner's reply, “Drop the need for that entirely, just
+focus on everything you can do here,” to the request for private r6 browser
+failure streams and the reviewed successor controller packet. Retire the
+original CUR-03/#52 and CUR-05/#53 requirements as not planned.
+
+**Reach:** This is a scope decision, not passing production acceptance. Preserve
+rejected r6 and original freezes; retain current software membership/custody
+and release gates. The H3 export, sole-primary, outcome and nine-criterion
+contracts are not waived. Windows and incremental capture retain their actual
+execution requirements. Each dependent lane must explicitly reconcile its
+prospective source/package prerequisite before activation.
+
+**Verdict:** Retire unavailable original production work without inventing a
+successor execution or rewriting historical evidence. GitHub disposition and
+this documentation must be reconciled in the reviewed source update.

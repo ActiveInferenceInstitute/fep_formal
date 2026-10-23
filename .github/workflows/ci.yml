@@ -383,7 +383,7 @@ jobs:
         if: ${{ !cancelled() }}
       - run: uv run python docs/xref_audit.py
         if: ${{ !cancelled() }}
-      - run: uv run mypy src scripts docs
+      - run: uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py
         if: ${{ !cancelled() }}
       - run: uv run ruff check .
         if: ${{ !cancelled() }}
@@ -460,7 +460,7 @@ jobs:
       - name: Upload the publication figure assets
         uses: actions/upload-artifact@v7
         with:
-          name: render-figures
+          name: render-figures-${{ github.run_id }}-${{ github.run_attempt }}
           if-no-files-found: error
           path: |
             docs/formalism-atlas.svg
@@ -524,7 +524,7 @@ jobs:
       - name: Download the publication figure assets the render-deps job produced
         uses: actions/download-artifact@v8
         with:
-          name: render-figures
+          name: render-figures-${{ github.run_id }}-${{ github.run_attempt }}
           path: .
       - name: Check out the shared rendering template at its pinned ref
         uses: actions/checkout@v7
@@ -548,13 +548,22 @@ jobs:
           mkdir -p output/render-template/projects/active
           ln -s "$GITHUB_WORKSPACE" output/render-template/projects/active/fep_lean
       - name: Install the XeLaTeX toolchain, Pandoc, pandoc-crossref, and the SVG rasterizer
+        # Bound whole toolchain provisioning; a timeout fails the required render gate.
+        timeout-minutes: 12
         shell: bash
         run: |
+          # Connection/data inactivity bounds, not an overall download deadline.
+          # The existing 12-minute step timeout remains the whole-step bound.
+          render_apt_network_options=(
+            -o Acquire::http::Timeout=30
+            -o Acquire::https::Timeout=30
+            -o Acquire::Retries=1
+          )
           render_install_phase_started=$SECONDS
-          sudo apt-get update
+          sudo apt-get "${render_apt_network_options[@]}" update --error-on=any
           printf 'FEP_RENDER_INSTALL_PHASE phase=apt_update elapsed_seconds=%s\n' "$((SECONDS - render_install_phase_started))"
           render_install_phase_started=$SECONDS
-          sudo apt-get install -y --no-install-recommends \
+          sudo apt-get "${render_apt_network_options[@]}" install -y --no-install-recommends \
             texlive-xetex texlive-latex-recommended texlive-latex-extra \
             texlive-fonts-recommended lmodern fontconfig librsvg2-bin
           printf 'FEP_RENDER_INSTALL_PHASE phase=apt_install elapsed_seconds=%s\n' "$((SECONDS - render_install_phase_started))"
@@ -987,7 +996,10 @@ jobs:
 
   lean:
     runs-on: ubuntu-latest
-    needs: [changes, render-deps]
+    needs: changes
+    permissions:
+      contents: read
+      actions: read
     # Pure documentation PRs stop at the read-only documentation lane.
     if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.run_lean)
     timeout-minutes: 180
@@ -1079,10 +1091,17 @@ jobs:
       # tests (catalogue, slice04, slice05) that would otherwise silently
       # skip; FEP_HEAVY_LEAN_PROBES stays off by design. No coverage here:
       # the 89% gate stays with the python job.
+      - name: Require current-attempt publication figure producer
+        id: render-figures-barrier
+        timeout-minutes: 22
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: python specs/publication-browser-acceptance/wait_render_dependencies.py
       - name: Download the publication figure assets the render-deps job produced
         uses: actions/download-artifact@v8
         with:
-          name: render-figures
+          artifact-ids: ${{ steps.render-figures-barrier.outputs.artifact_id }}
           path: .
       - name: Verify Cascadia diagnostic score bounds and false controls
         run: |

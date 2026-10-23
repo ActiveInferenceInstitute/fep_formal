@@ -192,10 +192,23 @@ another resume switch or trusting old zero exits.
 ### FORM-M1 — align primary theorem proxies with the proved information seams
 
 **Owner:** existing variational-duality body/foundation, decision-risk bridge and
-the [maturity records](../../../config/theorem_maturity.yaml). `fep-063` retains
-a strict-positive-channel primary theorem despite a broader relative-support
-bridge; `fep-064` retains an assumed-component primary theorem with genuine
+the [maturity records](../../../config/theorem_maturity.yaml).
+
+**Scope-opening baseline (2026-10-05):** `fep-063` retained a
+strict-positive-channel primary theorem despite a broader relative-support
+bridge; `fep-064` retained an assumed-component primary theorem with genuine
 attainment and dual-bound supporting theorems.
+
+**Current source alignment:** the maturity records select
+`fep063_finiteChannel_klDataProcessing_of_relativeSupport` and
+`fep064_rateDistortion_dual_lower_bound` from the existing
+[canonical owner](../../../src/fep_lean/catalogue/bodies/variational_duality.py).
+The former exposes relative input support for finite KL; the latter uses the
+actual Lagrangian infimum for a feasible-joint weak bound. Earlier APIs remain
+supporting, and the respective `conditional_proxy` and `structural_proxy`
+dispositions are unchanged. These source selections do not themselves establish
+acceptance or waive the [CUR-07 dependency (#54)](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54).
+The exact-source checks and scientific boundaries below still apply.
 
 - **Outcome:** review whether a canonical primary statement can use the already
   proved narrower carrier directly. Preserve IDs and signature order, update

@@ -530,11 +530,13 @@ attainment witness. The proof first obtains a coordinate minimizer, then
 reconstructs a normalized finite law and transfers feasibility and minimality.
 Neither a preselected optimizer nor strictly positive atoms are supplied.
 
-This supporting result is stronger than the primary structural-proxy
-statement of `fep-064`, which combines separately certified component lower
-bounds. Keeping both facts visible respects the maintained semantic review:
-a strengthened supporting theorem does not silently change the primary
-theorem or its disposition.
+The maintained primary `fep064_rateDistortion_dual_lower_bound` uses the
+actual Lagrangian infimum to bound every feasible joint’s mutual information,
+under nonnegative distortion and multiplier assumptions. The earlier
+componentwise lower-bound API remains a supporting theorem. Attainment
+provides a separate existence result; neither weak duality nor attainment
+alone establishes general strong duality or optimizer uniqueness. The
+maintained semantic disposition remains unchanged.
 
 The Boolean Hamming examples further separate questions often conflated in
 informal variational prose. At zero budget, the source derives the unique

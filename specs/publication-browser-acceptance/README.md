@@ -52,3 +52,19 @@ review. PR acceptance and exact-main release acceptance remain separate.
 Passing these startup cases does not close the production DOM/capture lane,
 create a browser receipt, prove earlier startup causality, or establish
 provider, native Lean, or scientific acceptance.
+
+## Same-run render dependency readiness
+
+`wait_render_dependencies.py` is slice-local CI publication-readiness tooling.
+Before a PDF consumer downloads figure assets, it checks the current workflow
+run, attempt, source identity, successful `render-deps` producer and exact artifact
+name. It is an orchestration barrier, separate from browser capture policy and
+from scientific or native acceptance. Its bounded API polling cannot approve a
+failed producer, substitute an older attempt, or establish artifact content
+acceptance; the download and independent publication validators still apply.
+
+The helper uses only the standard library and performs no environment inspection
+or network access on import. CI invokes it with its actual GitHub environment.
+The canonical required checks in `AGENTS.md` cover this slice with Ruff and
+format checks and explicitly include the helper in strict mypy coverage. Tests
+mock the API boundary; a later actual hosted run remains required before rollout.

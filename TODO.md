@@ -27,8 +27,10 @@ successful hosted `ci.yml` run on the exact `main` commit, all checked by
 These keep their own acceptance probes and are reported in release notes, not
 claimed. Hosted Chrome startup (CUR-01) passed its eight required cases on the
 [accepted exact-source PR run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/37682721329).
-Fresh full capture and the closed production DOM rejection (CUR-15) retain
-their own acceptance gates. H3 primary seeds remain unopened; Q7
+The owner retired the historical private successor source-freeze and full
+production-capture requirements (CUR-03/#52 and CUR-05/#53) as not planned.
+Their original acceptance criteria were not met. Exact current software test
+membership, source guards and release checks remain required. H3 primary seeds remain unopened; Q7
 generated-runner execution remains unverified. The
 [locked protocol](specs/comprehensive-science-improvement/PROTOCOL.md) retains
 all nine original criteria; the [execution sequence](specs/comprehensive-science-improvement/NEXT.md)
@@ -36,13 +38,24 @@ orders this work.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [CUR-03](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52) — Seal complete approved tests membership in the successor source freeze | Minor | [CUR-01](https://github.com/ActiveInferenceInstitute/fep_formal/issues/46), [CUR-02](https://github.com/ActiveInferenceInstitute/fep_formal/issues/47), [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48), [CUR-15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/51) | Exact approved full tests membership enforced before imports/planning/dispatch and at closure; nonauthor source review passes. |
-| [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53) — Accept a fresh full seven-stage capture and identical package archives | Medium | [CUR-01](https://github.com/ActiveInferenceInstitute/fep_formal/issues/46), [CUR-02](https://github.com/ActiveInferenceInstitute/fep_formal/issues/47), [CUR-03](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52), [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48), [CUR-15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/51) | All seven actual stages and closing guards pass; two identical package archives independently claim-ready. |
 | [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) — Pass every declared check and exact-SHA hosted artifact gate | Medium | [CUR-01](https://github.com/ActiveInferenceInstitute/fep_formal/issues/46), [CUR-02](https://github.com/ActiveInferenceInstitute/fep_formal/issues/47), [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48), [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49) | Every applicable declared check and all same-SHA hosted jobs/artifacts validate; local and hosted evidence remain separate. |
 | [CUR-08](https://github.com/ActiveInferenceInstitute/fep_formal/issues/55) — Refresh H3 native export and three independent proof-role reviews | Medium | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Current 293-source export, 24 roles/33 supplements/12 witnesses and three independent proof-role reviews accepted. |
 | [CUR-09](https://github.com/ActiveInferenceInstitute/fep_formal/issues/56) — Execute frozen H3 primary once and replay all 42 arrays | Major | [CUR-08](https://github.com/ActiveInferenceInstitute/fep_formal/issues/55) | Exactly one frozen primary invocation; all 42 arrays/control results retained and replayed, including governed scientific rejection. |
 | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) — Close outcome claims, study archive parity and clean installed reproduction | Major | [CUR-09](https://github.com/ActiveInferenceInstitute/fep_formal/issues/56) | Three outcome reviews, identical independently valid study archives and clean installed 42-array reproduction complete. |
 | [CUR-14](https://github.com/ActiveInferenceInstitute/fep_formal/issues/59) — Audit all nine original criteria and final evidence boundaries | Medium | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54), [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Independent mapping closes all nine criteria and exact FORM-1–FORM-3 semantic/native/axiom boundaries at final source. |
+
+## Retired production-capture dependencies
+
+The original #52/#53 contracts remain historical evidence, not satisfied
+predecessors. Their retirement does not supply a package or scientific receipt.
+Issue #54 keeps its exact-source local/hosted software gate. #55–#57 keep current
+export, three proof-role reviews, the frozen sole-primary and outcome/archive
+requirements. #59 keeps its independent nine-criterion audit and must report
+retired criteria honestly. #66/#67 retain actual custody, containment and
+fresh/resumed capture acceptance; they cannot inherit a successful capture
+from the retirement. Before activating one of these dependent lanes, review
+its prospective source/package prerequisite explicitly. No original freeze,
+seed, failed capture or historical receipt is changed by this scope decision.
 
 ## Separately governed lanes
 
