@@ -12,7 +12,7 @@
 
 This contract is the formal articulation between two sibling repositories:
 
-- `fep_lean` — a standalone catalog of 168 FEP / Active Inference /
+- `fep_lean` — a standalone catalogue of 155 FEP / Active Inference /
   Bayesian Mechanics / Information Geometry / Thermodynamics topics with
   Lean 4 theorem bodies, a pinned workspace, and distinct evidence planes.
 - `GeneralizedNotationNotation` (GNN) — a text-based notation for Active
@@ -20,7 +20,7 @@ This contract is the formal articulation between two sibling repositories:
   checks, renders, and executes model documents.
 
 The contract scopes two directions of collaboration and nothing else. It
-creates no capabilities, no catalog rows, and no evidence claims. All
+creates no capabilities, no catalogue rows, and no evidence claims. All
 cross-references between the repositories are inline code paths, never
 markdown links.
 
@@ -169,7 +169,7 @@ does not establish runtime behavior or general renderer correctness.
 
 The historical P3 comparison default is read-only; report writing requires
 `--output`. Supported source-bound operations use `fep-lean bridge` with an
-explicit `--gnn-root`.
+explicit `--gnn-root`. Legacy script locations remain compatibility entry points.
 
 v0.6 extraction-package migration: the pinned render route is
 `gnn.extract.pomdp_extractor` (the extraction concern is packaged at
@@ -257,7 +257,7 @@ The canonical `MODEL_DATA` payload schema embedded by the GNN Lean surface is
 `{"schema_version": 1, "model_family": "finite" | "continuous",
 "state_spaces": [{"decl", "dims", "value_type"}], "parameterizations":
 [{"var_name", "payload"}], "ontology_bindings": [{"var_name", "term"}]}`
-plus the required keys the shared strict reconstruction path consumes
+plus the legacy keys the shared strict reconstruction path consumes
 (`model_name`, `variables`, `connections`, `parameters`, `equations`,
 `time_specification`, `ontology_mappings`).
 
