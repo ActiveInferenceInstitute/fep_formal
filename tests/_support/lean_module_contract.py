@@ -10,7 +10,6 @@ from pathlib import Path
 
 from fep_lean.lean_source import lean_code_without_comments
 
-
 # Recorded V-to-947 American prose/spacing changes, for historical seals only.
 # Public theorem statements, frozen review bytes, and live production stay intact.
 _HISTORICAL_PROSE_FIELDS = [
@@ -18,137 +17,169 @@ _HISTORICAL_PROSE_FIELDS = [
         "capabilities",
         {"id": "cap-expected-free-energy-decomposition"},
         "description",
-        "Real finite-model EFE has proved pragmatic-minus-epistemic and risk-plus-ambiguity "
-        "decompositions, nonnegativity under full support, and an explicit truncating bridge "
-        "to the catalogue ENNReal convention.",
-        "Real finite-model EFE has proved pragmatic-minus-epistemic and risk-plus-ambiguity "
-        "decompositions, nonnegativity under full support, and an explicit truncating bridge "
-        "to the catalog ENNReal convention.",
+        (
+            "Real finite-model EFE has proved pragmatic-minus-epistemic and risk-plus-ambiguity "
+            "decompositions, nonnegativity under full support, and an explicit truncating bridge "
+            "to the catalogue ENNReal convention."
+        ),
+        (
+            "Real finite-model EFE has proved pragmatic-minus-epistemic and risk-plus-ambiguity "
+            "decompositions, nonnegativity under full support, and an explicit truncating bridge "
+            "to the catalog ENNReal convention."
+        ),
     ),
     (
         "capabilities",
         {"id": "cap-standalone-efe-theorems"},
         "description",
-        "The Boltzmann-form control posterior minimizes the expected free energy with the "
-        "stated uniqueness boundary; the perception-action loop admits an invariant "
-        "surprisal bound through one controlled-kernel step; Bayesian model reduction never "
-        "lowers evidence free energy under masked evidence; and the epistemic gain of an EFE "
-        "time-scale separation is bounded by the log-affinity of its two-state carrier. At "
-        "each fixed positive time, its inverse-scale family also satisfies a uniform "
-        "sufficiently-small-scale bound and a genuine right-hand limit at zero; no such "
-        "limit is claimed at time zero. Each result is a standalone Lean module bridged to "
-        "its nearest catalogue topic; infinite-horizon, continuous-state, and physical "
-        "entropy-production identification are not claimed.",
-        "The Boltzmann-form control posterior minimizes the expected free energy with the "
-        "stated uniqueness boundary; the perception-action loop admits an invariant "
-        "surprisal bound through one controlled-kernel step; Bayesian model reduction never "
-        "lowers evidence free energy under masked evidence; and the epistemic gain of an EFE "
-        "time-scale separation is bounded by the log-affinity of its two-state carrier. At "
-        "each fixed positive time, its inverse-scale family also satisfies a uniform "
-        "sufficiently-small-scale bound and a genuine right-hand limit at zero; no such "
-        "limit is claimed at time zero. Each result is a standalone Lean module bridged to "
-        "its nearest catalog topic; infinite-horizon, continuous-state, and physical "
-        "entropy-production identification are not claimed.",
+        (
+            "The Boltzmann-form control posterior minimizes the expected free energy with the "
+            "stated uniqueness boundary; the perception-action loop admits an invariant "
+            "surprisal bound through one controlled-kernel step; Bayesian model reduction never "
+            "lowers evidence free energy under masked evidence; and the epistemic gain of an EFE "
+            "time-scale separation is bounded by the log-affinity of its two-state carrier. At "
+            "each fixed positive time, its inverse-scale family also satisfies a uniform "
+            "sufficiently-small-scale bound and a genuine right-hand limit at zero; no such "
+            "limit is claimed at time zero. Each result is a standalone Lean module bridged to "
+            "its nearest catalogue topic; infinite-horizon, continuous-state, and physical "
+            "entropy-production identification are not claimed."
+        ),
+        (
+            "The Boltzmann-form control posterior minimizes the expected free energy with the "
+            "stated uniqueness boundary; the perception-action loop admits an invariant "
+            "surprisal bound through one controlled-kernel step; Bayesian model reduction never "
+            "lowers evidence free energy under masked evidence; and the epistemic gain of an EFE "
+            "time-scale separation is bounded by the log-affinity of its two-state carrier. At "
+            "each fixed positive time, its inverse-scale family also satisfies a uniform "
+            "sufficiently-small-scale bound and a genuine right-hand limit at zero; no such "
+            "limit is claimed at time zero. Each result is a standalone Lean module bridged to "
+            "its nearest catalog topic; infinite-horizon, continuous-state, and physical "
+            "entropy-production identification are not claimed."
+        ),
     ),
     (
         "edges",
         {"source": "fep-016", "target": "fep-032"},
         "rationale",
-        "The checked conjunction places nonnegative precision-weighted quadratic energy "
-        "beside bounded-step scalar energy descent on the same state and centre. It asserts "
-        "neither a Laplace approximation nor a derivation or general optimizer theorem.",
-        "The checked conjunction places nonnegative precision-weighted quadratic energy "
-        "beside bounded-step scalar energy descent on the same state and center. It asserts "
-        "neither a Laplace approximation nor a derivation or general optimizer theorem.",
+        (
+            "The checked conjunction places nonnegative precision-weighted quadratic energy "
+            "beside bounded-step scalar energy descent on the same state and centre. It asserts "
+            "neither a Laplace approximation nor a derivation or general optimizer theorem."
+        ),
+        (
+            "The checked conjunction places nonnegative precision-weighted quadratic energy "
+            "beside bounded-step scalar energy descent on the same state and center. It asserts "
+            "neither a Laplace approximation nor a derivation or general optimizer theorem."
+        ),
     ),
     (
         "edges",
         {"source": "fep-050", "target": "fep-049"},
         "rationale",
-        "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic "
-        "entropy production derives the Landauer work bound. The identification of the "
-        "erasure's total entropy change with the constitutive-law entropy production is an "
-        "explicit premise (`hBalance`) of the witness, a modelling assumption rather than a "
-        "consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed "
-        "endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, "
-        "fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification "
-        "and Q<=W are premises, not conclusions of the entropy-production theorem.",
-        "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic "
-        "entropy production derives the Landauer work bound. The identification of the "
-        "erasure's total entropy change with the constitutive-law entropy production is an "
-        "explicit premise (`hBalance`) of the witness, a modeling assumption rather than a "
-        "consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed "
-        "endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, "
-        "fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification "
-        "and Q<=W are premises, not conclusions of the entropy-production theorem.",
+        (
+            "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic "
+            "entropy production derives the Landauer work bound. The identification of the "
+            "erasure's total entropy change with the constitutive-law entropy production is an "
+            "explicit premise (`hBalance`) of the witness, a modelling assumption rather than a "
+            "consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed "
+            "endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, "
+            "fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification "
+            "and Q<=W are premises, not conclusions of the entropy-production theorem."
+        ),
+        (
+            "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic "
+            "entropy production derives the Landauer work bound. The identification of the "
+            "erasure's total entropy change with the constitutive-law entropy production is an "
+            "explicit premise (`hBalance`) of the witness, a modeling assumption rather than a "
+            "consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed "
+            "endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, "
+            "fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification "
+            "and Q<=W are premises, not conclusions of the entropy-production theorem."
+        ),
     ),
     (
         "edges",
         {"source": "fep-093", "target": "fep-010"},
         "rationale",
-        "The supported forward/reverse ratio reconstructs path mass, while the identity "
-        "kernel supplies the original catalogue's concrete reversibility witness on an "
-        "arbitrary measure carrier.",
-        "The supported forward/reverse ratio reconstructs path mass, while the identity "
-        "kernel supplies the original catalog's concrete reversibility witness on an "
-        "arbitrary measure carrier.",
+        (
+            "The supported forward/reverse ratio reconstructs path mass, while the identity "
+            "kernel supplies the original catalogue's concrete reversibility witness on an "
+            "arbitrary measure carrier."
+        ),
+        (
+            "The supported forward/reverse ratio reconstructs path mass, while the identity "
+            "kernel supplies the original catalog's concrete reversibility witness on an "
+            "arbitrary measure carrier."
+        ),
     ),
     (
         "edges",
         {"source": "fep-168", "target": "fep-163"},
         "rationale",
-        "The quantitative remainder budget is paired with fep-163's exact three-term "
-        "expansion, so the uncancelled divergence remainder is bounded and its equality case "
-        "attained instead of being assumed to vanish, without an unconditional-drop claim.",
-        "The quantitative remainder budget is paired with fep-163's exact three-term "
-        "expansion, so the uncanceled divergence remainder is bounded and its equality case "
-        "attained instead of being assumed to vanish, without an unconditional-drop claim.",
+        (
+            "The quantitative remainder budget is paired with fep-163's exact three-term "
+            "expansion, so the uncancelled divergence remainder is bounded and its equality case "
+            "attained instead of being assumed to vanish, without an unconditional-drop claim."
+        ),
+        (
+            "The quantitative remainder budget is paired with fep-163's exact three-term "
+            "expansion, so the uncanceled divergence remainder is bounded and its equality case "
+            "attained instead of being assumed to vanish, without an unconditional-drop claim."
+        ),
     ),
     (
         "topics",
         {"id": "fep-063"},
         "acceptance_probe",
-        "Strict native Lean compile of the selected relative-support wrapper and retained "
-        "old primary, plus imported full-support, sparse/shared-zero, deterministic "
-        "projection, identity and singular support/native-infinity controls. Require exact "
-        "standard-only axiom reports and preserve the existing coarsening boundary. "
-        "Compilation does not itself promote semantic disposition. The strict "
-        "imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true "
-        "../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. "
-        "After official generator synchronization, first require a successful current-source "
-        "`lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported "
-        "consumer must not use stale prior-build objects. Its 13 exact axiom queries "
-        "comprise the selected canonical wrapper and 12 consumer statements, not 13 "
-        "independent compiler experiments. The unchanged former primary and catalogue "
-        "boundaries also require the actual native catalogue/API and declaration-audit "
-        "gates.",
-        "Strict native Lean compile of the selected relative-support wrapper and retained "
-        "old primary, plus imported full-support, sparse/shared-zero, deterministic "
-        "projection, identity and singular support/native-infinity controls. Require exact "
-        "standard-only axiom reports and preserve the existing coarsening boundary. "
-        "Compilation does not itself promote semantic disposition. The strict "
-        "imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true "
-        "../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. "
-        "After official generator synchronization, first require a successful current-source "
-        "`lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported "
-        "consumer must not use stale prior-build objects. Its 13 exact axiom queries "
-        "comprise the selected canonical wrapper and 12 consumer statements, not 13 "
-        "independent compiler experiments. The unchanged former primary and catalog "
-        "boundaries also require the actual native catalogue/API and declaration-audit "
-        "gates.",
+        (
+            "Strict native Lean compile of the selected relative-support wrapper and retained "
+            "old primary, plus imported full-support, sparse/shared-zero, deterministic "
+            "projection, identity and singular support/native-infinity controls. Require exact "
+            "standard-only axiom reports and preserve the existing coarsening boundary. "
+            "Compilation does not itself promote semantic disposition. The strict "
+            "imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true "
+            "../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. "
+            "After official generator synchronization, first require a successful current-source "
+            "`lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported "
+            "consumer must not use stale prior-build objects. Its 13 exact axiom queries "
+            "comprise the selected canonical wrapper and 12 consumer statements, not 13 "
+            "independent compiler experiments. The unchanged former primary and catalogue "
+            "boundaries also require the actual native catalogue/API and declaration-audit "
+            "gates."
+        ),
+        (
+            "Strict native Lean compile of the selected relative-support wrapper and retained "
+            "old primary, plus imported full-support, sparse/shared-zero, deterministic "
+            "projection, identity and singular support/native-infinity controls. Require exact "
+            "standard-only axiom reports and preserve the existing coarsening boundary. "
+            "Compilation does not itself promote semantic disposition. The strict "
+            "imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true "
+            "../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. "
+            "After official generator synchronization, first require a successful current-source "
+            "`lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported "
+            "consumer must not use stale prior-build objects. Its 13 exact axiom queries "
+            "comprise the selected canonical wrapper and 12 consumer statements, not 13 "
+            "independent compiler experiments. The unchanged former primary and catalog "
+            "boundaries also require the actual native catalogue/API and declaration-audit "
+            "gates."
+        ),
     ),
     (
         "topics",
         {"id": "fep-168"},
         "invariant",
-        "On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g under the "
-        "cancellation hypotheses, the squared Cauchy-Schwarz budget (weightedDivergence)^2 "
-        "<= (sum r_i^2)(sum g_i^2) bounds the uncancelled remainder with its abs-product "
-        "corollary, and equality is attained on aligned nonzero data with norm(g)^2 = 1.",
-        "On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g under the "
-        "cancellation hypotheses, the squared Cauchy-Schwarz budget (weightedDivergence)^2 "
-        "<= (sum r_i^2)(sum g_i^2) bounds the uncanceled remainder with its abs-product "
-        "corollary, and equality is attained on aligned nonzero data with norm(g)^2 = 1.",
+        (
+            "On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g under the "
+            "cancellation hypotheses, the squared Cauchy-Schwarz budget (weightedDivergence)^2 "
+            "<= (sum r_i^2)(sum g_i^2) bounds the uncancelled remainder with its abs-product "
+            "corollary, and equality is attained on aligned nonzero data with norm(g)^2 = 1."
+        ),
+        (
+            "On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g under the "
+            "cancellation hypotheses, the squared Cauchy-Schwarz budget (weightedDivergence)^2 "
+            "<= (sum r_i^2)(sum g_i^2) bounds the uncanceled remainder with its abs-product "
+            "corollary, and equality is attained on aligned nonzero data with norm(g)^2 = 1."
+        ),
     ),
 ]
 
@@ -160,9 +191,11 @@ def historical_prose_rows(rows: list[dict], section: str) -> list[dict]:
         if scope != section:
             continue
         for row in restored:
-            if all(row.get(key) == value for key, value in identity.items()):
-                if row.get(field) == current:
-                    row[field] = historical
+            if (
+                all(row.get(key) == value for key, value in identity.items())
+                and row.get(field) == current
+            ):
+                row[field] = historical
     return restored
 
 
