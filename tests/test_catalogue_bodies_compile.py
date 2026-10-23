@@ -57,4 +57,4 @@ def test_all_catalogue_bodies_compile(monkeypatch: pytest.MonkeyPatch) -> None:
         for r in results
         if not r.compiles or r.has_sorry
     ]
-    assert not failures, f"Catalogue compile failures: {failures}"
+    assert not failures, f"Catalog compile failures: {failures}"

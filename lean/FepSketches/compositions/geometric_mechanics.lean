@@ -10,7 +10,7 @@ public import FepSketches.geometric_mechanics
 # Geometric-mechanics topic compositions
 
 Seven bridges pair the new geometric-mechanics theorems with their nearest
-catalogue endpoints.  Each conjunction keeps both endpoint laws visible
+catalog endpoints.  Each conjunction keeps both endpoint laws visible
 instead of asserting an unproved reduction; the necessity witness is paired
 with the divergence-free cycle carrier to bound exactly what stationarity
 and antisymmetry imply.

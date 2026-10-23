@@ -503,7 +503,7 @@ print(sys.version, sys.platform, 'installed capture and nested helper accepted')
         text=True,
     )
     assert cli.returncode == 0, cli.stderr or cli.stdout
-    assert "Strict FEP Lean catalogue" in cli.stdout
+    assert "Strict FEP Lean catalog" in cli.stdout
     outside_checkout = subprocess.run(
         [
             str(scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")),

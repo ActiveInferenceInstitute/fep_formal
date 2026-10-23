@@ -10,7 +10,7 @@ exists today. Parent program:
 
 ## Goal
 
-Given a Lean expression of a generative model in this catalogue — a compiled,
+Given a Lean expression of a generative model in this catalog — a compiled,
 `sorry`-free body naming explicit laws, kernels, and dynamics — produce a GNN
 document that the GNN toolchain validates, renders, and executes, then carry
 execution-derived quantities back as certificates checked against
@@ -23,7 +23,7 @@ invariants", and end-to-end assurance needs both plus a proof that the
 executable representation refines the formal one. The certificate stage of
 this direction is that refinement claim, made checkable one model at a time.
 
-## What the catalogue supplies today
+## What the catalog supplies today
 
 All names below are verified, compiled declarations in the pinned workspace
 (`lean/FepSketches/`, projected byte-for-byte from `src/fep_lean/formal/` per
@@ -123,7 +123,7 @@ On a shared model instance:
   semigroup parameter) needs an explicit mapping table before continuous
   emission.
 - **Families without counterparts.** Multi-agent, hierarchical, and
-  learning-rate/dirichlet-pseudo-count GNN families have no catalogue
+  learning-rate/dirichlet-pseudo-count GNN families have no catalog
   counterpart today and stay out of scope (contract section 3).
 - **Artifact custody.** Emitted documents, render summaries, and execution
   summaries must be bound to their generating commit digest so a later

@@ -224,7 +224,25 @@ def reverse_obligation_edges(edges: list[dict], project_root: Path) -> list[dict
         ]
         assert len(positions) == 1
         position = positions[0]
-        assert restored[position] == change["after"]
+        if key == ("fep-016", "fep-032"):
+            # Test-only inverse of one authenticated spelling-only successor.
+            # The frozen review and its exact original rows remain unchanged.
+            assert change["after"]["rationale"] == (
+                "The checked conjunction places nonnegative precision-weighted "
+                "quadratic energy beside bounded-step scalar energy descent on "
+                "the same state and centre. It asserts neither a Laplace "
+                "approximation nor a derivation or general optimizer theorem."
+            )
+            american_after = copy.deepcopy(change["after"])
+            american_after["rationale"] = (
+                "The checked conjunction places nonnegative precision-weighted "
+                "quadratic energy beside bounded-step scalar energy descent on "
+                "the same state and center. It asserts neither a Laplace "
+                "approximation nor a derivation or general optimizer theorem."
+            )
+            assert restored[position] in (change["after"], american_after)
+        else:
+            assert restored[position] == change["after"]
         restored[position] = copy.deepcopy(change["before"])
     return restored
 

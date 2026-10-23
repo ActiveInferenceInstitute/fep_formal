@@ -9,7 +9,7 @@ chapters into `output/manuscript/` with the same command without `--check`.
 `config.yaml` contains static metadata. Runtime values are emitted by
 `src/fep_lean/output/manuscript.py`; rendering is source-preserving and any
 unresolved `{{...}}` expression fails before output is written. The generated
-appendix is derived from the validated catalogue and contains one Lean block
+appendix is derived from the validated catalog and contains one Lean block
 and one equation group for every topic.
 
 The cover's top-level `authors` record in `config.yaml` is validated against
@@ -37,7 +37,7 @@ introduces the reusable kernel, `04h_expanded_formalism_program.md` documents
 the first ten seven-topic expansion families, and
 `04i_formalism_catalogue_155.md` documents the five families that extend the
 roster from 120 to 155 (`fep-121` to `fep-155`, the second expansion; the
-third-expansion rows `fep-156` to `fep-168` bring the live catalogue to 168
+third-expansion rows `fep-156` to `fep-168` bring the live catalog to 168
 topics and are outside that chapter). Keep that last chapter source-grounded: the retained
 native, declaration, Python, and browser receipts bind the frozen v1.1.0
 release snapshot only — the accepted post-v1.1.0 Horizon 1/Horizon 2 source
@@ -48,7 +48,7 @@ retained 50-topic provider receipt remains historical.
 `04j_horizon2_smooth_stochastic_kernel.md` completes the ordered sequence,
 carrying the kernel onto the Horizon-2 smooth and stochastic foundations.
 
-`08b_mathematical_positioning_supplement.md` places the catalogue and maintained
+`08b_mathematical_positioning_supplement.md` places the catalog and maintained
 foundations within probability, topology, statistical geometry, inference,
 control, and stochastic mechanics. It compares selected result families from
 the pinned OpenAI mathematics corpus and distinguishes editorial affinities

@@ -8,7 +8,7 @@ these rules.
 
 | Fact | Canonical owner | Enforcer or projection |
 | --- | --- | --- |
-| Current ordered topic roster and family metadata | [`config/catalogue_metadata.yaml`](../../../config/catalogue_metadata.yaml) | Catalogue schema and registry tests |
+| Current ordered topic roster and family metadata | [`config/catalogue_metadata.yaml`](../../../config/catalogue_metadata.yaml) | Catalog schema and registry tests |
 | Current primary theorem, assumptions, non-vacuity, and disposition | [`config/theorem_maturity.yaml`](../../../config/theorem_maturity.yaml) | Theorem-maturity audit |
 | Current novelty and cross-topic relation/capability state | [`config/formalism_novelty.yaml`](../../../config/formalism_novelty.yaml) and [`config/formalism_relations.yaml`](../../../config/formalism_relations.yaml) | Coverage and relation validators |
 | Current reusable formal module roster | [`formal/manifest.py`](../../../src/fep_lean/formal/manifest.py) | Formal projection and declaration audits |

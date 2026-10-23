@@ -458,7 +458,7 @@ theorem fep029_quadraticBregman_is_fep104_scalar_instance (x y z : ℝ) :
 /-- Discharging fep-050's second-law premise with fep-049's nonnegative
 quadratic entropy production derives the Landauer work bound.  The explicit
 `hBalance` premise identifies the erasure's total entropy change with the
-constitutive-law entropy production; it is a modelling assumption, not a
+constitutive-law entropy production; it is a modeling assumption, not a
 consequence of either topic. -/
 theorem fep050_landauer_work_bound_from_fep049_entropy_production
     {Edge : Type*} [Fintype Edge] {W Q T kB : ℝ} (hT : 0 < T)
@@ -698,7 +698,7 @@ end FEPComposed
 namespace FEPComposed
 
 /-- Pair the explicit nonnegative precision-weighted quadratic with the
-bounded-step scalar descent law on the same state and centre. This is neither
+bounded-step scalar descent law on the same state and center. This is neither
 a derivation of a Laplace approximation nor a general optimizer theorem. -/
 theorem fep016_quadratic_pairs_fep032_descent
     (prec step center x : ℝ) (hp : 0 ≤ prec)

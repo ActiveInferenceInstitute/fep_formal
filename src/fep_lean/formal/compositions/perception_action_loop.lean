@@ -9,7 +9,7 @@ public import FepSketches.perception_action_loop
 # Perception-action-loop topic compositions
 
 This bridge pairs the exact closed-loop surprisal invariant with the
-controlled-kernel normalization of the nearest catalogue endpoint.  The
+controlled-kernel normalization of the nearest catalog endpoint.  The
 conjunction keeps the generative-model loop carrier and the controlled-kernel
 carrier separate instead of asserting an unproved identification.
 -/

@@ -24,7 +24,7 @@ below are relative to the project root.
   new digest in the same change. The template's title-page cover
   (`paper.cover`) publishes the same artifact on page 1.
 
-The catalogue itself is a generated join. Stable metadata is maintained in
+The catalog itself is a generated join. Stable metadata is maintained in
 `config/catalogue_metadata.yaml`, semantic scope in
 `config/theorem_maturity.yaml`, expansion novelty in
 `config/formalism_novelty.yaml`, Lean bodies in family modules under
@@ -34,7 +34,7 @@ The catalogue itself is a generated join. Stable metadata is maintained in
 
 ## Evidence boundaries
 
-- Catalogue mode provides deterministic artifact-generation evidence only.
+- Catalog mode provides deterministic artifact-generation evidence only.
 - A validated native receipt establishes exact-roster Lean compilation with
   source/toolchain binding, zero `sorry`, and (for claim readiness) zero
   warnings. It does not establish an LLM or OpenGauss run.
@@ -48,7 +48,7 @@ The catalogue itself is a generated join. Stable metadata is maintained in
 The [root required-check inventory](../AGENTS.md#required-checks) owns the
 complete command list. The [render runbook](../scripts/README.md) explains
 publication orchestration and independent receipt acceptance. Materialize
-catalogue-derived manuscript inputs before cross-reference and render checks;
+catalog-derived manuscript inputs before cross-reference and render checks;
 font projections and installed-font acceptance remain separate checks.
 
 Order matters before publishing. The native receipt binds every maintained
@@ -92,7 +92,7 @@ claims must be grounded in a verifiable primary or published source.
 
 ## Conventions
 
-- Cite the generated appendix instead of copying catalogue bodies into prose.
+- Cite the generated appendix instead of copying catalog bodies into prose.
 - A table cell naming Lean modules is a token, never a literal: the
   framework chapters print `{{topics.fep-NNN.imported_modules}}`, computed
   from each row's own imports. Before it was generated, forty-two of

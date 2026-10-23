@@ -45,7 +45,7 @@ machinery on the two-state carrier.
 * `FepSketches.ness_flow` is imported as its first consumer (orphan adoption
   marker); no mathematical dependence on it is used or claimed.
 * This file is rostered in the formal resource manifest and is imported by the
-  generated `fep_all.lean`; its catalogue topics are bridged from
+  generated `fep_all.lean`; its catalog topics are bridged from
   `formal/compositions/efe_time_scale_separation.lean`.
 -/
 

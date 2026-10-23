@@ -20,12 +20,12 @@ output/reports/run_YYYYMMDD_HHMMSS_microseconds/
 ```
 
 `summary.json` carries the serialized pipeline result, selected topic rows,
-catalogue summary, source/config digests, receipt-schema version, configured
+catalog summary, source/config digests, receipt-schema version, configured
 Lean and Mathlib pins, the actual compiler version, the resolved 40-character
 Mathlib revision, and a hash map for every other artifact. It deliberately
 excludes its own digest to avoid a self-referential value.
 
-`run_manifest.json` is the compact run contract: mode, completion, catalogue
+`run_manifest.json` is the compact run contract: mode, completion, catalog
 and verified counts, warning count, capabilities, verification source,
 clean-Lean and zero-warning predicates, failure reason, source/config digests,
 toolchain, and topic rows.
@@ -46,7 +46,7 @@ The Markdown files are human-readable projections:
 - `topics/fep-NNN.md`: one selected topic's Hermes and final verification
   provenance.
 
-Catalogue mode normally has no topic verification rows. Its bundle can be
+Catalog mode normally has no topic verification rows. Its bundle can be
 structurally valid while `verified_topics` remains zero.
 
 ## API
@@ -93,7 +93,7 @@ The validator:
 - rejects absolute paths, traversal, malformed SHA-256 values, hash drift,
   unlisted files, missing topic files, and unexpected topic files;
 - validates summary, capability, selection, and topic-row types;
-- reconciles run ID, mode, completion, catalogue count, verified count,
+- reconciles run ID, mode, completion, catalog count, verified count,
   complete topic evidence rows, source/config digests, and toolchain fields;
 - always recomputes repository digests against the repository root selected by
   the adapter (or the explicit `project_root` supplied to the Python API);

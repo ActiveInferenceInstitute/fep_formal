@@ -131,7 +131,7 @@ def resolve_output_root(root: Path, explicit: Path | None = None) -> Path:
 def project_root_errors(root: Path) -> tuple[str, ...]:
     """Return missing checkout assets required by substantive CLI workflows.
 
-    The wheel contains the importable catalogue and formal resources, but the
+    The wheel contains the importable catalog and formal resources, but the
     Lean workspace, authored configuration, manuscript, and generated-output
     owners intentionally remain checkout-bound.  Detecting that boundary up
     front prevents an installed console script from accidentally treating a

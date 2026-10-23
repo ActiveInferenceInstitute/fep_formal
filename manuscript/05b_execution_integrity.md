@@ -1,7 +1,7 @@
 # Execution integrity {#sec:execution_integrity}
 
 Every success claim in this project is tied to a concrete artifact or an
-observable computation. Catalogue mode validates and renders the {{total_topics}} source
+observable computation. Catalog mode validates and renders the {{total_topics}} source
 entries, but it makes no Lean or Hermes claim. Full mode first validates every
 required capability and then records the Hermes response, refined Lean source,
 compiler result, SQLite session, and report manifest for each selected topic.
@@ -10,7 +10,7 @@ compiler result, SQLite session, and report manifest for each selected topic.
 
 The evidence boundary is deliberately explicit:
 
-1. YAML is loaded by the strict catalogue schema and checked against the
+1. YAML is loaded by the strict catalog schema and checked against the
    sealed family-body registry and generated aggregate.
 2. Lean evidence comes only from `lake env lean` using the pinned workspace.
 3. Hermes evidence comes from an HTTP response accepted by the configured
@@ -32,12 +32,12 @@ captures diagnostics, removes the temporary file, and records the result. In
 full mode, a topic succeeds only when the Hermes-refined source compiles
 without warnings or a proof placeholder; in native mode, the same compiler
 boundary checks the canonical source directly. A prose-only review cannot
-replace the candidate that actually compiled. The original catalogue body
+replace the candidate that actually compiled. The original catalog body
 and any refined source are retained as separate fields; the original is never
 presented as the refined result.
 
 The committed `lean/FepSketches/fep_all.lean` is generated from the canonical
-catalogue source, while manifested foundations, leaf compositions, and their
+catalog source, while manifested foundations, leaf compositions, and their
 import-only aggregate are projected from `src/fep_lean/formal/`. Regeneration
 checks fail when either projection differs, and the Lean build compiles the
 library against the exact pinned toolchain. The formalism audit then resolves

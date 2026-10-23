@@ -55,7 +55,7 @@ See [formal-kernel methods](formal-kernel-methods.md) for the evidence matrix.
 
 The `distribution` CI job uses a CPython 3.14 test harness and fresh target
 environments for CPython 3.10--3.14 on Ubuntu, macOS, and Windows. It tests
-installed API/catalogue loading, complete Lean/YAML resource parity, isolated
+installed API/catalog loading, complete Lean/YAML resource parity, isolated
 imports, CLI help, explicit checkout selection, and Q7's refusal before parsing
 on unsupported validator interpreters. Runtime dependency resolution is
 independent of the validator's locked environment. It does not reuse the

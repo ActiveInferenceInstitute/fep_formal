@@ -1,6 +1,6 @@
-"""Load and summarize the generated FEP topic catalogue.
+"""Load and summarize the generated FEP topic catalog.
 
-This is the canonical module for the catalogue data model.
+This is the canonical module for the catalog data model.
 Importable as ``from fep_lean.catalogue.topics import FEPTopicCatalogue``.
 """
 
@@ -33,12 +33,12 @@ _MATURITY_ORDER = ("real", "partial", "aspirational")
 
 
 class CatalogueValidationError(ValueError, FepLeanError):
-    """Raised when the catalogue cannot be trusted as a verification input."""
+    """Raised when the catalog cannot be trusted as a verification input."""
 
 
 @dataclass(frozen=True)
 class TopicEntry:
-    """One catalogue row."""
+    """One catalog row."""
 
     id: str
     title: str
@@ -59,12 +59,12 @@ class TopicEntry:
 
     @property
     def lean_chars(self) -> int:
-        """Character count of the Lean sketch (for catalogue metrics)."""
+        """Character count of the Lean sketch (for catalog metrics)."""
         return len(self.lean_sketch)
 
 
 class FEPTopicCatalogue:
-    """Validated in-memory view of generated checkout or package catalogue data."""
+    """Validated in-memory view of generated checkout or package catalog data."""
 
     def __init__(
         self,
@@ -76,13 +76,13 @@ class FEPTopicCatalogue:
         """Initialize the sole validating construction path.
 
         Roster, order, and consistency are asserted here so no unvalidated
-        catalogue can exist: every constructor (including ``from_yaml`` and
+        catalog can exist: every constructor (including ``from_yaml`` and
         ``default``) passes through these checks.
         """
         if not isinstance(roster, RosterSeal):
-            raise CatalogueValidationError("catalogue roster must be a RosterSeal")
+            raise CatalogueValidationError("catalog roster must be a RosterSeal")
         if not isinstance(source_path, Path):
-            raise CatalogueValidationError("catalogue source_path must be a Path")
+            raise CatalogueValidationError("catalog source_path must be a Path")
         if (
             not isinstance(families, tuple)
             or not families
@@ -90,16 +90,16 @@ class FEPTopicCatalogue:
             or len(families) != len(set(families))
         ):
             raise CatalogueValidationError(
-                "catalogue families must be a non-empty unique tuple of strings"
+                "catalog families must be a non-empty unique tuple of strings"
             )
         entries = tuple(topics)
         if not entries or not all(isinstance(entry, TopicEntry) for entry in entries):
             raise CatalogueValidationError(
-                "catalogue topics must be a non-empty sequence of TopicEntry"
+                "catalog topics must be a non-empty sequence of TopicEntry"
             )
         if tuple(entry.id for entry in entries) != roster.topic_ids:
             raise CatalogueValidationError(
-                "catalogue rows must exactly match the sealed roster in order"
+                "catalog rows must exactly match the sealed roster in order"
             )
         for entry in entries:
             if entry.area not in AREAS:
@@ -121,12 +121,12 @@ class FEPTopicCatalogue:
 
     @classmethod
     def default(cls) -> FEPTopicCatalogue:
-        """Load the generated catalogue bundled with the installed package."""
+        """Load the generated catalog bundled with the installed package."""
         return cls.from_yaml(_default_topics_path())
 
     @classmethod
     def from_yaml(cls, path: Path | None = None) -> FEPTopicCatalogue:
-        """Load and validate the complete catalogue from YAML.
+        """Load and validate the complete catalog from YAML.
 
         Document, roster, family, and per-row metadata validation is
         delegated to ``schema.load_catalogue_metadata`` with the generated
@@ -146,7 +146,7 @@ class FEPTopicCatalogue:
             data = yaml.safe_load(resolved.read_text(encoding="utf-8"))
         except (OSError, yaml.YAMLError) as exc:
             raise CatalogueValidationError(
-                f"cannot read catalogue {resolved}: {exc}"
+                f"cannot read catalog {resolved}: {exc}"
             ) from exc
         assert isinstance(data, dict)  # load_catalogue_metadata validated shape
         roster = manifest.roster
@@ -154,11 +154,11 @@ class FEPTopicCatalogue:
         expected_ids = roster.topic_ids
         raw = data["topics"]
         if not isinstance(raw, list):
-            raise CatalogueValidationError("catalogue topics must be a list")
+            raise CatalogueValidationError("catalog topics must be a list")
         raw_ids = tuple(row.get("id") if isinstance(row, dict) else None for row in raw)
         if raw_ids != expected_ids:
             raise CatalogueValidationError(
-                "catalogue rows must exactly match the sealed roster in order"
+                "catalog rows must exactly match the sealed roster in order"
             )
         topics: list[TopicEntry] = []
         records_by_id = {record.id: record for record in manifest.records}
@@ -184,7 +184,7 @@ class FEPTopicCatalogue:
                 )
             ):
                 raise CatalogueValidationError(
-                    f"{expected_id}: catalogue text fields must be non-empty strings"
+                    f"{expected_id}: catalog text fields must be non-empty strings"
                 )
             try:
                 semantic_disposition = SemanticDisposition(
@@ -304,7 +304,7 @@ class FEPTopicCatalogue:
 
 
 def _default_topics_path() -> Path:
-    """Resolve the generated package-data catalogue for checkout or wheel use."""
+    """Resolve the generated package-data catalog for checkout or wheel use."""
     return Path(str(files("fep_lean.data").joinpath("topics.yaml")))
 
 

@@ -1,18 +1,18 @@
 ## Quantitative Execution Metrics {#sec:quantitative_execution_metrics}
 
-This section reports three surfaces separately: catalogue coverage, native Lean evidence, and optional full-pipeline evidence. A count from one surface is never substituted for another. The generated formalism coverage audit is authoritative for source structure; native and full receipts are authoritative for execution claims.
+This section reports three surfaces separately: catalog coverage, native Lean evidence, and optional full-pipeline evidence. A count from one surface is never substituted for another. The generated formalism coverage audit is authoritative for source structure; native and full receipts are authoritative for execution claims.
 
-![Topic distribution across the five catalogue areas. The figure visualizes catalogue breadth only.](../output/figures/topics_by_area.png){#fig:topics_by_area width=80%}
+![Topic distribution across the five catalog areas. The figure visualizes catalog breadth only.](../output/figures/topics_by_area.png){#fig:topics_by_area width=80%}
 
-The area-distribution figure above visualizes catalogue breadth only. It does not measure scientific maturity or compilation success.
+The area-distribution figure above visualizes catalog breadth only. It does not measure scientific maturity or compilation success.
 
-### Aggregate Catalogue Metrics {#sec:aggregate_metrics}
+### Aggregate Catalog Metrics {#sec:aggregate_metrics}
 
-The catalogue contains {{total_topics}} topics across {{total_areas}} areas. `mathlib_status` records whether a row is intended to use available pinned-library infrastructure; semantic disposition records whether the primary theorem reaches the topic-facing claim. The two fields answer different questions. Maintained foundation/composition declarations are counted separately from topic declarations before the package total is formed:
+The catalog contains {{total_topics}} topics across {{total_areas}} areas. `mathlib_status` records whether a row is intended to use available pinned-library infrastructure; semantic disposition records whether the primary theorem reaches the topic-facing claim. The two fields answer different questions. Maintained foundation/composition declarations are counted separately from topic declarations before the package total is formed:
 
 | Source layer | Modules | Theorem declarations |
 | --- | ---: | ---: |
-| Topic catalogue | {{formalism.metrics.topics}} topic modules | {{formalism.metrics.topic_theorems}} |
+| Topic catalog | {{formalism.metrics.topics}} topic modules | {{formalism.metrics.topic_theorems}} |
 | Maintained foundations | {{formalism.metrics.foundation_modules}} | {{formalism.metrics.foundation_theorems}} |
 | All maintained formal resources, including composition | {{formalism.metrics.formal_modules}} | {{formalism.metrics.formal_resource_theorems}} |
 | Package total, without double-counting resources | — | {{formalism.metrics.theorems}} |
@@ -26,7 +26,7 @@ The catalogue contains {{total_topics}} topics across {{total_areas}} areas. `ma
 | Information Geometry | {{areas.InfoGeometry.count}} | `{{compile_rate.by_area.InfoGeometry}}` |
 | Thermodynamics | {{areas.Thermodynamics.count}} | `{{compile_rate.by_area.Thermodynamics}}` |
 | **Total** | **{{total_topics}}** | **`{{compile_rate.total}}`** |
-: Topic count and native receipt rate for each catalogue area.
+: Topic count and native receipt rate for each catalog area.
 
 The runtime projection reports the following receipt-derived values:
 
@@ -48,7 +48,7 @@ The runtime projection reports the following receipt-derived values:
 | Lean / Mathlib pin | `{{lean_toolchain}}` / `{{mathlib_tag}}` |
 : Receipt-derived fields of the runtime verification projection.
 
-A native receipt becomes claim-ready only for the exact ordered roster of {{total_topics}} topics with every result compiling, zero errors, zero warnings, zero `sorry`, actual Lean output matching the configured pin, the resolved Mathlib commit, finite timing evidence, and source/toolchain digests matching an explicitly supplied live tree. A valid subset or structurally validated unbound receipt remains useful diagnostic evidence but cannot populate the full-catalogue headline.
+A native receipt becomes claim-ready only for the exact ordered roster of {{total_topics}} topics with every result compiling, zero errors, zero warnings, zero `sorry`, actual Lean output matching the configured pin, the resolved Mathlib commit, finite timing evidence, and source/toolchain digests matching an explicitly supplied live tree. A valid subset or structurally validated unbound receipt remains useful diagnostic evidence but cannot populate the full-catalog headline.
 
 ### Maturity Distribution by Area {#sec:maturity_distribution}
 
@@ -81,7 +81,7 @@ consume intervening table rows in Pandoc. -->
 | Token total | {{hermes.tokens_total}} |
 : Hermes full-run fields, exposed only from an independently validated, claim-ready report.
 
-When `full.claim_ready` is false, zero or empty cells above mean *unavailable evidence*, not an observed zero-event experiment. Catalogue mode cannot populate this table.
+When `full.claim_ready` is false, zero or empty cells above mean *unavailable evidence*, not an observed zero-event experiment. Catalog mode cannot populate this table.
 
 ### Lean 4 Verification Timing {#sec:lean_timing_distribution}
 
@@ -119,4 +119,4 @@ These failure classes are independently observable and should not be collapsed i
 
 ## Cross-Area Mathlib Dependency Analysis {#sec:cross_area_mathlib_dependency_analysis}
 
-The generated coverage audit derives the exact Mathlib module-to-topic incidence relation from canonical imports. Shared imports indicate library reuse, not logical dependence between catalogue topics. Conceptual relationships must be reviewed separately, and both derivational relations and formal pairings must name checked declarations that consume both endpoint namespaces; the project does not infer any relation from common tokens such as `State`, `Policy`, or `Measure`.
+The generated coverage audit derives the exact Mathlib module-to-topic incidence relation from canonical imports. Shared imports indicate library reuse, not logical dependence between catalog topics. Conceptual relationships must be reviewed separately, and both derivational relations and formal pairings must name checked declarations that consume both endpoint namespaces; the project does not infer any relation from common tokens such as `State`, `Policy`, or `Measure`.

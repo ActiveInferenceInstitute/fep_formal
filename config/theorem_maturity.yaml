@@ -1,4 +1,4 @@
-# Maintained semantic review of catalogue theorem proxies.
+# Maintained semantic review of catalog theorem proxies.
 schema_version: 2
 review_date: '2026-10-19'
 native_evidence: A validated receipt from uv run fep-lean verify --fail-on-warnings
@@ -8,9 +8,11 @@ status_policy: Any semantic disposition or mathlib_status change requires exact 
   review, regenerated projections, focused and aggregate native Lean acceptance, and
   an explicit changelog entry; compilation alone never promotes a proxy.
 topics:
+
 - id: fep-001
   primary_theorem: fep001_variationalUpperBound_eq_iff
   supporting_theorems:
+
   - fep001_variationalUpperBound_ge
   - fep001_variationalGap_eq_zero_iff
   boundary_theorems: []
@@ -28,6 +30,7 @@ topics:
 - id: fep-002
   primary_theorem: fep002_vfe_ge_surprisal
   supporting_theorems:
+
   - fep002_prob_measure_univ
   - fep002_prob_compl
   - fep002_elbo_bound
@@ -47,6 +50,7 @@ topics:
 - id: fep-003
   primary_theorem: fep003_pragmaticCost_succ
   supporting_theorems:
+
   - fep003_pragmaticCost_zero
   - fep003_pragmaticCost_mono
   - fep003_pragmaticCost_horizon_succ
@@ -66,6 +70,7 @@ topics:
 - id: fep-004
   primary_theorem: fep004_fisherMetric_eq_zero_iff
   supporting_theorems:
+
   - fep004_fisherMetric_symm
   - fep004_fisherMetric_nonneg
   boundary_theorems: []
@@ -85,6 +90,7 @@ topics:
 - id: fep-005
   primary_theorem: fep005_existsUnique_block
   supporting_theorems:
+
   - fep005_disjoint
   - fep005_total_cover
   - fep005_mem_iff
@@ -102,6 +108,7 @@ topics:
 - id: fep-006
   primary_theorem: fep006_iterateFlow_add
   supporting_theorems:
+
   - fep006_iterateFlow_measurable
   - fep006_iterateFlow_zero
   - fep006_iterateFlow_fixed
@@ -121,6 +128,7 @@ topics:
 - id: fep-007
   primary_theorem: fep007_normalizedMessage_sum_one
   supporting_theorems:
+
   - fep007_factorProduct_nonneg
   - fep007_message_agg_nonneg
   - fep007_message_agg_mono
@@ -143,6 +151,7 @@ topics:
 - id: fep-008
   primary_theorem: fep008_exists_minG
   supporting_theorems:
+
   - fep008_min_agrees_on_value
   - fep008_exists_maxG
   - fep008_min_is_lb
@@ -161,6 +170,7 @@ topics:
 - id: fep-009
   primary_theorem: fep009_condIndep_symm
   supporting_theorems:
+
   - fep009_condIndep_bot_right
   - fep009_joint_product_nonneg
   - fep009_likelihood_mono
@@ -181,6 +191,7 @@ topics:
 - id: fep-010
   primary_theorem: fep010_reversible_invariant
   supporting_theorems:
+
   - fep010_identity_reversible
   - fep010_identity_invariant
   - fep010_invariant_def
@@ -199,6 +210,7 @@ topics:
 - id: fep-011
   primary_theorem: fep011_surprise_eq_zero_iff
   supporting_theorems:
+
   - fep011_log_nonneg_on_ge_one
   - fep011_surprise_nonneg
   - fep011_surprise_additive
@@ -220,6 +232,7 @@ topics:
 - id: fep-012
   primary_theorem: fep012_entropyRegularizedCost_le_expectedCost
   supporting_theorems:
+
   - fep012_policyEntropy_nonneg
   - fep012_policyEntropy_pointMass
   - fep012_entropyRegularizedCost_zeroTemperature
@@ -242,6 +255,7 @@ topics:
 - id: fep-013
   primary_theorem: fep013_helmholtz_derivative_eq_neg_entropy
   supporting_theorems:
+
   - fep013_helmholtz_at_zero_temp
   - fep013_helmholtz_mono_entropy
   - fep013_helmholtz_mono_U
@@ -262,6 +276,7 @@ topics:
 - id: fep-014
   primary_theorem: fep014_kl_chain_rule
   supporting_theorems:
+
   - fep014_kl_nonneg
   - fep014_kl_self
   - fep014_kl_eq_zero_iff
@@ -282,6 +297,7 @@ topics:
 - id: fep-015
   primary_theorem: fep015_variationalIntegrand_measurable
   supporting_theorems:
+
   - fep015_variationalIntegrand_comp_measurable
   - fep015_variationalIntegrand_add_const_measurable
   boundary_theorems: []
@@ -299,6 +315,7 @@ topics:
 - id: fep-016
   primary_theorem: fep016_laplaceKernel_integral
   supporting_theorems:
+
   - fep016_quadratic_min
   - fep016_quadratic_at_mode
   - fep016_precision_weighted
@@ -319,6 +336,7 @@ topics:
 - id: fep-017
   primary_theorem: fep017_posterior_joint_reconstruction
   supporting_theorems:
+
   - fep017_posterior_mass_one
   - fep017_posterior_recovers_prior
   - fep017_posterior_bayes_density
@@ -342,6 +360,7 @@ topics:
 - id: fep-018
   primary_theorem: fep018_fisherRaoDistance_eq_zero_iff
   supporting_theorems:
+
   - fep018_fisherRaoDistance_nonneg
   - fep018_fisherRaoDistance_symm
   - fep018_fisherRaoDistance_triangle
@@ -360,6 +379,7 @@ topics:
 - id: fep-019
   primary_theorem: fep019_priorPredictive_assoc
   supporting_theorems:
+
   - fep019_priorPredictive_mass
   - fep019_priorPredictive_mass_one
   boundary_theorems: []
@@ -377,6 +397,7 @@ topics:
 - id: fep-020
   primary_theorem: fep020_tendsto_uniform
   supporting_theorems:
+
   - fep020_transition_nonneg
   - fep020_transition_sum_one
   - fep020_evolve_affine
@@ -399,6 +420,7 @@ topics:
 - id: fep-021
   primary_theorem: fep021_efe_epistemic_balance
   supporting_theorems:
+
   - fep021_efe_nonneg
   - fep021_efe_mono_pragmatic
   - fep021_efe_antitone_epistemic
@@ -420,6 +442,7 @@ topics:
 - id: fep-022
   primary_theorem: fep022_brier_eq_optimum_iff
   supporting_theorems:
+
   - fep022_posteriorPredictive_mass_one
   - fep022_brier_decomposition
   - fep022_predictive_brier_decomposition
@@ -440,6 +463,7 @@ topics:
 - id: fep-023
   primary_theorem: fep023_reachable_normalized
   supporting_theorems:
+
   - fep023_policy_reachable
   - fep023_reachable_mono
   - fep023_reachable_empty
@@ -459,6 +483,7 @@ topics:
 - id: fep-024
   primary_theorem: fep024_klRegularizedObjective_exact
   supporting_theorems:
+
   - fep024_klRegularizedObjective_ge
   - fep024_klRegularizedObjective_zeroWeight
   - fep024_klRegularizedObjective_monoWeight
@@ -477,6 +502,7 @@ topics:
 - id: fep-025
   primary_theorem: fep025_cycleCurrent_stationary
   supporting_theorems:
+
   - fep025_probabilityCurrent_antisymm
   - fep025_probabilityCurrent_diag_zero
   - fep025_total_divergence_zero
@@ -501,6 +527,7 @@ topics:
 - id: fep-026
   primary_theorem: fep026_priorComplexity_eq_zero_iff
   supporting_theorems:
+
   - fep026_log_monotone
   - fep026_log_div
   - fep026_complexity_increases
@@ -521,6 +548,7 @@ topics:
 - id: fep-027
   primary_theorem: fep027_hierarchical_assoc
   supporting_theorems:
+
   - fep027_hierarchical_mass_one
   - fep027_hierarchical_fst
   - fep027_hierarchical_snd
@@ -541,6 +569,7 @@ topics:
 - id: fep-028
   primary_theorem: fep028_softmax_sum_univ
   supporting_theorems:
+
   - fep028_softmax_nonneg
   - fep028_softmax_le_one
   - fep028_softmax_probs_sum_one
@@ -564,6 +593,7 @@ topics:
 - id: fep-029
   primary_theorem: fep029_quadraticBregman_eq_zero_iff
   supporting_theorems:
+
   - fep029_secant_ineq
   - fep029_convex_combo_bound
   - fep029_combo_t_zero
@@ -583,6 +613,7 @@ topics:
 - id: fep-030
   primary_theorem: fep030_binaryEntropy_max
   supporting_theorems:
+
   - fep030_binaryEntropy_eq_max_iff
   - fep030_uniform_nonneg
   - fep030_uniform_sum_one
@@ -603,6 +634,7 @@ topics:
 - id: fep-031
   primary_theorem: fep031_gibbsProbability_sum_one
   supporting_theorems:
+
   - fep031_gibbs_weight_pos
   - fep031_gibbs_mono
   - fep031_partition_pos
@@ -623,6 +655,7 @@ topics:
 - id: fep-032
   primary_theorem: fep032_quadraticUpdate_tendsto
   supporting_theorems:
+
   - fep032_quadraticUpdate_deviation
   - fep032_quadraticUpdate_fixed
   - fep032_quadraticUpdate_iterate
@@ -643,6 +676,7 @@ topics:
 - id: fep-033
   primary_theorem: fep033_bellman
   supporting_theorems:
+
   - fep033_value_mono
   - fep033_zeroCost
   - fep033_zeroDiscount
@@ -661,6 +695,7 @@ topics:
 - id: fep-034
   primary_theorem: fep034_filter_joint_reconstruction
   supporting_theorems:
+
   - fep034_predictive_mass
   - fep034_filter_mass_one
   - fep034_filter_recovers_prediction
@@ -684,6 +719,7 @@ topics:
 - id: fep-035
   primary_theorem: fep035_log_jensen_two_strict
   supporting_theorems:
+
   - fep035_log_strictConcave
   - fep035_log_mul
   - fep035_log_pow
@@ -704,6 +740,7 @@ topics:
 - id: fep-036
   primary_theorem: fep036_smoothedRate_tendsto_of_empiricalRate
   supporting_theorems:
+
   - fep036_binomialModel_apply
   - fep036_smoothedRate_pos
   - fep036_smoothedRate_lt_one
@@ -729,6 +766,7 @@ topics:
 - id: fep-037
   primary_theorem: fep037_response_eq
   supporting_theorems:
+
   - fep037_autocorrelation_recurrence
   - fep037_autocorrelation_tendsto_zero
   - fep037_response_nonneg
@@ -749,6 +787,7 @@ topics:
 - id: fep-038
   primary_theorem: fep038_fisherInformation_eq
   supporting_theorems:
+
   - fep038_bernoulliMass_hasDerivAt
   - fep038_bernoulliMass_sum_one
   - fep038_expectedScore_zero
@@ -774,6 +813,7 @@ topics:
 - id: fep-039
   primary_theorem: fep039_global_eq_zero_iff
   supporting_theorems:
+
   - fep039_global_nonneg
   - fep039_global_mono
   - fep039_global_zero
@@ -793,6 +833,7 @@ topics:
 - id: fep-040
   primary_theorem: fep040_thermalEntropy_hasDerivAt
   supporting_theorems:
+
   - fep040_gaussian_mass_one
   - fep040_gaussian_mean
   - fep040_gaussian_variance
@@ -818,6 +859,7 @@ topics:
 - id: fep-041
   primary_theorem: fep041_expectedInformationGain_zero
   supporting_theorems:
+
   - fep041_informationGain_nonneg
   - fep041_informationGain_eq_zero_iff
   boundary_theorems: []
@@ -836,6 +878,7 @@ topics:
 - id: fep-042
   primary_theorem: fep042_likelihood_eq_of_stat_eq
   supporting_theorems:
+
   - fep042_likelihood_factorizes
   boundary_theorems: []
   invariant: The Bernoulli sequence likelihood factorizes exactly through success
@@ -853,6 +896,7 @@ topics:
 - id: fep-043
   primary_theorem: fep043_quadratic_critical_iff
   supporting_theorems:
+
   - fep043_localMin_deriv_zero
   - fep043_quadratic_hasDerivAt
   - fep043_quadratic_unique_min
@@ -875,6 +919,7 @@ topics:
 - id: fep-044
   primary_theorem: fep044_hellingerSq_eq_zero_iff
   supporting_theorems:
+
   - fep044_hellingerSq_nonneg
   - fep044_hellingerSq_symm
   - fep044_hellingerSq_complement
@@ -894,6 +939,7 @@ topics:
 - id: fep-045
   primary_theorem: fep045_bernoulli_posterior_closed
   supporting_theorems:
+
   - fep045_evidence_pos
   - fep045_posteriorParameter_mem_unit
   - fep045_posterior_mass_one
@@ -914,6 +960,7 @@ topics:
 - id: fep-046
   primary_theorem: fep046_mass_conservation
   supporting_theorems:
+
   - fep046_remainder_nonneg
   - fep046_remainder_le_one
   boundary_theorems: []
@@ -931,6 +978,7 @@ topics:
 - id: fep-047
   primary_theorem: fep047_forward_compose
   supporting_theorems:
+
   - fep047_forward_nonneg
   - fep047_forward_mono
   - fep047_zero_in
@@ -951,6 +999,7 @@ topics:
 - id: fep-048
   primary_theorem: fep048_contraction_unique
   supporting_theorems:
+
   - fep048_sync_nonneg
   - fep048_async_mono
   - fep048_halfUpdate_contracts
@@ -972,6 +1021,7 @@ topics:
 - id: fep-049
   primary_theorem: fep049_entropyProduction_eq_zero_iff
   supporting_theorems:
+
   - fep049_flux_force_identity
   - fep049_entropyProduction_nonneg
   - fep049_edgeProduction_nonneg
@@ -993,6 +1043,7 @@ topics:
 - id: fep-050
   primary_theorem: fep050_landauer_work_bound
   supporting_theorems:
+
   - fep050_erasure_not_injective
   - fep050_erasureEntropyLoss_eq
   - fep050_landauer_heat_bound
@@ -1015,6 +1066,7 @@ topics:
   primary_theorem: fep051_likelihoodRatio_reconstruction
   supporting_theorems: []
   boundary_theorems:
+
   - fep051_reconstruction_iff_absoluteContinuous
   invariant: A native Radon–Nikodym derivative reconstructs a target measure from its reference
     exactly when the target is absolutely continuous with respect to that reference.
@@ -1030,6 +1082,7 @@ topics:
 - id: fep-052
   primary_theorem: fep052_posterior_density_tilt
   supporting_theorems:
+
   - fep052_countable_posterior_density_tilt
   boundary_theorems: []
   invariant: >-
@@ -1052,6 +1105,7 @@ topics:
 - id: fep-053
   primary_theorem: fep053_kernelBayes_joint_reconstruction
   supporting_theorems:
+
   - fep053_finiteBayes_atom_reconstruction
   boundary_theorems: []
   invariant: >-
@@ -1074,6 +1128,7 @@ topics:
 - id: fep-054
   primary_theorem: fep054_bayes_involution
   supporting_theorems:
+
   - fep054_posterior_reconstructs_prior
   boundary_theorems: []
   invariant: >-
@@ -1096,6 +1151,7 @@ topics:
 - id: fep-055
   primary_theorem: fep055_compositeKernel_bayesInversion
   supporting_theorems:
+
   - fep055_compositePredictive_associativity
   boundary_theorems: []
   invariant: >-
@@ -1118,6 +1174,7 @@ topics:
 - id: fep-056
   primary_theorem: fep056_standardBorel_condKernel_reconstruction
   supporting_theorems:
+
   - fep056_standardBorel_condKernel_mass_one
   boundary_theorems: []
   invariant: >-
@@ -1139,6 +1196,7 @@ topics:
 - id: fep-057
   primary_theorem: fep057_conditionalExpectation_tower
   supporting_theorems:
+
   - fep057_conditionalLIntegral_tower
   boundary_theorems: []
   invariant: >-
@@ -1160,6 +1218,7 @@ topics:
 - id: fep-058
   primary_theorem: fep058_gibbsVariational_lower_bound
   supporting_theorems:
+
   - fep058_gibbsVariational_optimizer
   - fep058_uniformGibbs_nonvacuity
   boundary_theorems: []
@@ -1181,6 +1240,7 @@ topics:
 - id: fep-059
   primary_theorem: fep059_donskerVaradhan_equality_iff
   supporting_theorems:
+
   - fep059_donskerVaradhan_upper_bound
   - fep059_donskerVaradhan_optimizer
   boundary_theorems: []
@@ -1203,6 +1263,7 @@ topics:
 - id: fep-060
   primary_theorem: fep060_coordinateELBO_decomposition
   supporting_theorems:
+
   - fep060_coordinateKL_nonnegative
   boundary_theorems: []
   invariant: A finite joint ELBO separates exactly into a prior-coordinate score minus an
@@ -1221,6 +1282,7 @@ topics:
 - id: fep-061
   primary_theorem: fep061_meanFieldCoordinate_optimum_iff
   supporting_theorems:
+
   - fep061_meanFieldCoordinate_reduction
   boundary_theorems: []
   invariant: >-
@@ -1242,6 +1304,7 @@ topics:
 - id: fep-062
   primary_theorem: fep062_iidProduct_importanceJensen
   supporting_theorems:
+
   - fep062_fixedSample_importanceJensen
   - fep062_expectedImportanceWeight_positive
   boundary_theorems: []
@@ -1259,10 +1322,12 @@ topics:
 - id: fep-063
   primary_theorem: fep063_finiteChannel_klDataProcessing_of_relativeSupport
   supporting_theorems:
+
   - fep063_finiteChannel_klDataProcessing
   - fep063_referencePredictive_fullSupport
   - fep063_identityChannel_preservesKL
   boundary_theorems:
+
   - fep063_constantChannel_strict
   invariant: >-
     Passing finite actual and reference laws through the same finite channel
@@ -1298,16 +1363,18 @@ topics:
     Lean 4.35; the imported consumer must not use stale prior-build objects.
     Its 13 exact axiom queries comprise the selected canonical wrapper and 12
     consumer statements, not 13 independent compiler experiments. The unchanged
-    former primary and catalogue boundaries also require the actual native
+    former primary and catalog boundaries also require the actual native
     catalogue/API and declaration-audit gates.
   disposition: conditional_proxy
 - id: fep-064
   primary_theorem: fep064_rateDistortion_dual_lower_bound
   supporting_theorems:
+
   - fep064_rateDistortion_exists_minimizer
   - fep064_rateDistortion_weakDuality
   - fep064_quarterBudget_informative_optimum
   boundary_theorems:
+
   - fep064_zeroMultiplier_boundary
   - fep064_dual_zeroMultiplier
   - fep064_negativeBudget_infeasible
@@ -1376,8 +1443,10 @@ topics:
 - id: fep-066
   primary_theorem: fep066_actionConditioned_bayes_reconstruction
   supporting_theorems:
+
   - fep066_actionConditioned_update_normalized
   boundary_theorems:
+
   - fep066_zero_evidence_boundary
   invariant: >-
     A positive-evidence action-conditioned prediction and observation update is
@@ -1397,6 +1466,7 @@ topics:
 - id: fep-067
   primary_theorem: fep067_reachableBelief_policyValue_equivalence
   supporting_theorems:
+
   - fep067_bool_reachable_update
   boundary_theorems: []
   invariant: >-
@@ -1442,8 +1512,10 @@ topics:
 - id: fep-069
   primary_theorem: fep069_desirability_recursion
   supporting_theorems:
+
   - fep069_desirability_nonnegative
   boundary_theorems:
+
   - fep069_zeroCost_unitDesirability
   invariant: >-
     One finite desirability backup is an exponential state-cost tilt of a passive
@@ -1463,8 +1535,10 @@ topics:
 - id: fep-070
   primary_theorem: fep070_controlPosterior_reconstruction
   supporting_theorems:
+
   - fep070_controlPosterior_normalized
   boundary_theorems:
+
   - fep070_zeroCost_posterior_eq_prior
   invariant: A prior-weighted exponential action score normalizes to a control posterior whose
     mass reconstructs the unnormalized score.
@@ -1481,6 +1555,7 @@ topics:
 - id: fep-071
   primary_theorem: fep071_sophisticatedEFE_backward_step
   supporting_theorems:
+
   - fep071_twoStage_feedback_changes_action
   - fep071_twoStage_feedback_strictly_better
   boundary_theorems: []
@@ -1502,8 +1577,10 @@ topics:
 - id: fep-072
   primary_theorem: fep072_forward_filtering_recursion
   supporting_theorems:
+
   - fep072_bool_forward_mass
   boundary_theorems:
+
   - fep072_zero_evidence_boundary
   invariant: >-
     One positive-evidence finite hidden-Markov filtering step reconstructs its
@@ -1523,6 +1600,7 @@ topics:
 - id: fep-073
   primary_theorem: fep073_backward_message_recursion
   supporting_theorems:
+
   - fep073_backward_message_nonnegative
   boundary_theorems: []
   invariant: Finite backward information messages obey the exact future-observation recursion
@@ -1539,6 +1617,7 @@ topics:
 - id: fep-074
   primary_theorem: fep074_forwardBackward_smoothing_factorization
   supporting_theorems:
+
   - fep074_forward_backward_evidence_agreement
   boundary_theorems: []
   invariant: At positive normalizer, a finite smoothing marginal factors into forward law
@@ -1555,8 +1634,10 @@ topics:
 - id: fep-075
   primary_theorem: fep075_smoothing_marginal_normalization
   supporting_theorems:
+
   - fep075_bool_smoothing_normalization
   boundary_theorems:
+
   - fep075_zero_normalizer_boundary
   invariant: >-
     A nonnegative forward–backward product with positive normalizer defines a
@@ -1576,8 +1657,10 @@ topics:
 - id: fep-076
   primary_theorem: fep076_variational_state_update_normalized
   supporting_theorems:
+
   - fep076_variational_state_update_reconstruction
   boundary_theorems:
+
   - fep076_zeroEnergy_update_eq_prior
   invariant: A finite prior-weighted exponential energy tilt is normalized and reconstructs
     its unnormalized weight, with zero energy acting as the identity update.
@@ -1610,6 +1693,7 @@ topics:
 - id: fep-078
   primary_theorem: fep078_modelAverage_predictive_law
   supporting_theorems:
+
   - fep078_modelAverage_normalized
   - fep078_bool_modelAverage_true_mass
   boundary_theorems: []
@@ -1630,6 +1714,7 @@ topics:
 - id: fep-079
   primary_theorem: fep079_blanketFactorization_iff_conditionalMutualInformation_zero
   supporting_theorems:
+
   - fep079_staticBlanket_conditionalMutualInformation_zero
   boundary_theorems: []
   invariant: >-
@@ -1653,6 +1738,7 @@ topics:
 - id: fep-080
   primary_theorem: fep080_sharedConditional_mixture_preservation
   supporting_theorems:
+
   - fep080_boolHalfMixture_nonvacuity
   boundary_theorems: []
   invariant: >-
@@ -1673,6 +1759,7 @@ topics:
 - id: fep-081
   primary_theorem: fep081_coupledSubsystem_blanketComposition
   supporting_theorems:
+
   - fep081_correlatedBlanket_nonvacuity
   boundary_theorems: []
   invariant: >-
@@ -1694,8 +1781,10 @@ topics:
 - id: fep-082
   primary_theorem: fep082_interventionKernel_normalization
   supporting_theorems:
+
   - fep082_interventionKernel_chosen_mass
   boundary_theorems:
+
   - fep082_interventionKernel_other_mass
   invariant: >-
     A hard finite intervention kernel places unit mass on the chosen value, zero
@@ -1717,6 +1806,7 @@ topics:
 - id: fep-083
   primary_theorem: fep083_nonDescendant_intervention_invariance
   supporting_theorems:
+
   - fep083_fourNode_descendantChange_nonDescendantPreservation
   boundary_theorems: []
   invariant: >-
@@ -1739,6 +1829,7 @@ topics:
 - id: fep-084
   primary_theorem: fep084_orderedFiniteCausal_factorization
   supporting_theorems:
+
   - fep084_orderedFiniteCausal_normalization
   boundary_theorems: []
   invariant: >-
@@ -1758,9 +1849,11 @@ topics:
 - id: fep-085
   primary_theorem: fep085_localMarkov_factorization_from_ordered
   supporting_theorems:
+
   - fep085_localMarkov_mutualInformation_zero
   - fep085_bool_localMarkov_nonvacuity
   boundary_theorems:
+
   - fep085_zeroEvidence_boundary
   invariant: In the ordered four-node carrier, conditioning on the outcome's two parents factorizes
     the outcome from its non-parent predecessor root and forces their finite mutual information
@@ -1780,6 +1873,7 @@ topics:
 - id: fep-086
   primary_theorem: fep086_precisionWeighted_zero_iff_exactPrediction
   supporting_theorems:
+
   - fep086_precisionWeighted_predictionError_nonnegative
   - fep086_unitError_nonvacuity
   boundary_theorems: []
@@ -1801,6 +1895,7 @@ topics:
 - id: fep-087
   primary_theorem: fep087_hierarchicalPredictiveCoding_decomposition
   supporting_theorems:
+
   - fep087_hierarchicalPredictiveCoding_nonnegative
   - fep087_twoLevel_decomposition_nonvacuity
   boundary_theorems: []
@@ -1823,6 +1918,7 @@ topics:
 - id: fep-088
   primary_theorem: fep088_predictionError_gradient_identity
   supporting_theorems:
+
   - fep088_namedGradient_hasDerivAt
   - fep088_gradient_nonvacuity
   boundary_theorems: []
@@ -1844,8 +1940,10 @@ topics:
 - id: fep-089
   primary_theorem: fep089_finiteJet_shift_semigroup
   supporting_theorems:
+
   - fep089_firstOrder_shift_nonvacuity
   boundary_theorems:
+
   - fep089_finiteJet_terminal_boundary
   invariant: Natural-number shifts on a finite generalized-coordinate jet compose associatively,
     with the highest retained coordinate shifting into an explicit zero truncation boundary.
@@ -1862,9 +1960,11 @@ topics:
 - id: fep-090
   primary_theorem: fep090_finiteJet_generalizedFiltering_correctionEquation
   supporting_theorems:
+
   - fep090_finiteJet_coordinateGradient_hasDerivAt
   - fep090_firstOrder_correction_nonvacuity
   boundary_theorems:
+
   - fep090_finiteJet_truncation_visible
   invariant: >-
     One finite-jet generalized-filtering Euler step equals the current coordinate
@@ -1887,6 +1987,7 @@ topics:
 - id: fep-091
   primary_theorem: fep091_precisionModulation_energy_mono
   supporting_theorems:
+
   - fep091_precisionModulation_gradient_scale
   - fep091_doubledPrecision_nonvacuity
   boundary_theorems: []
@@ -1910,6 +2011,7 @@ topics:
 - id: fep-092
   primary_theorem: fep092_quadraticPredictiveCoding_error_tendsto_zero
   supporting_theorems:
+
   - fep092_quadraticPredictiveCoding_contraction
   - fep092_quadraticPredictiveCoding_strictDecrease
   - fep092_halfStep_decrease_nonvacuity
@@ -1930,6 +2032,7 @@ topics:
 - id: fep-093
   primary_theorem: fep093_forward_reverse_pathLaw_ratio
   supporting_theorems:
+
   - fep093_pathLaws_normalized
   - fep093_pathReversal_involutive
   boundary_theorems: []
@@ -1952,6 +2055,7 @@ topics:
 - id: fep-094
   primary_theorem: fep094_entropyProduction_as_pathKL
   supporting_theorems:
+
   - fep094_entropyProduction_expected_logRatio
   - fep094_entropyProduction_nonnegative
   boundary_theorems: []
@@ -1976,6 +2080,7 @@ topics:
 - id: fep-095
   primary_theorem: fep095_detailedFluctuation_symmetry
   supporting_theorems:
+
   - fep095_entropyProduction_reversal_antisymmetry
   boundary_theorems: []
   invariant: >-
@@ -2032,6 +2137,7 @@ topics:
   primary_theorem: fep098_localDetailedBalance_currentCancellation
   supporting_theorems: []
   boundary_theorems:
+
   - fep098_zeroReverseRate_boundary
   invariant: >-
     Detailed balance cancels every oriented finite probability current, while a
@@ -2051,8 +2157,10 @@ topics:
 - id: fep-099
   primary_theorem: fep099_reversibleChain_oneStep_KL_dissipation
   supporting_theorems:
+
   - fep099_irreversiblePositiveProduction_witness
   boundary_theorems:
+
   - fep099_reversibleEquality_boundary
   invariant: One strictly positive reversible finite Markov step cannot increase KL to its
     stationary law; the identity transition saturates equality and an explicit irreversible
@@ -2072,10 +2180,12 @@ topics:
 - id: fep-100
   primary_theorem: fep100_categoricalFisher_simplexTangent_positivity
   supporting_theorems:
+
   - fep100_twoCategorical_simplexMetric_fullRank
   - fep100_twoCategorical_tangent_spanning
   - fep100_fullRank_categorical_example
   boundary_theorems:
+
   - fep100_rankDeficient_nullDirection_example
   invariant: >-
     The inherited Fisher metric is strictly positive on every certified nonzero
@@ -2103,6 +2213,7 @@ topics:
 - id: fep-101
   primary_theorem: fep101_fisherPullback_reparameterization
   supporting_theorems:
+
   - fep101_fisherPullback_nonnegative
   boundary_theorems: []
   invariant: >-
@@ -2144,6 +2255,7 @@ topics:
 - id: fep-103
   primary_theorem: fep103_naturalGradient_equivariance
   supporting_theorems:
+
   - fep103_weightedCauchySchwarz_proofSpike
   boundary_theorems: []
   invariant: >-
@@ -2182,6 +2294,7 @@ topics:
 - id: fep-105
   primary_theorem: fep105_affineProjection_bregmanPythagorean
   supporting_theorems:
+
   - fep105_affineProjection_minimizes
   boundary_theorems: []
   invariant: An affine projection certificate yields exact Bregman Pythagorean splitting,
@@ -2202,6 +2315,7 @@ topics:
 - id: fep-106
   primary_theorem: fep106_replicator_naturalGradient_equivalence
   supporting_theorems:
+
   - fep106_replicator_massConservation
   - fep106_twoCategorical_nonzero_replicator_witness
   boundary_theorems: []
@@ -2226,6 +2340,7 @@ topics:
 - id: fep-107
   primary_theorem: fep107_productAgent_generative_mass
   supporting_theorems:
+
   - fep107_productKernel_normalized
   boundary_theorems: []
   invariant: >-
@@ -2248,6 +2363,7 @@ topics:
 - id: fep-108
   primary_theorem: fep108_collectiveVFE_additive
   supporting_theorems:
+
   - fep108_productCost_additive
   boundary_theorems: []
   invariant: >-
@@ -2269,6 +2385,7 @@ topics:
 - id: fep-109
   primary_theorem: fep109_independentEFE_additive
   supporting_theorems:
+
   - fep109_additiveAmbiguity_expectation
   boundary_theorems: []
   invariant: >-
@@ -2290,6 +2407,7 @@ topics:
 - id: fep-110
   primary_theorem: fep110_unitWeightProductOfExpertsPool_normalized
   supporting_theorems:
+
   - fep110_unitWeightProductOfExpertsPool_mass
   boundary_theorems: []
   invariant: The unit-weight finite product-of-experts pool is the normalized pointwise product
@@ -2309,6 +2427,7 @@ topics:
 - id: fep-111
   primary_theorem: fep111_consensus_pointwise_mass_conserved
   supporting_theorems:
+
   - fep111_consensus_total_mass_two
   boundary_theorems: []
   invariant: >-
@@ -2329,8 +2448,10 @@ topics:
 - id: fep-112
   primary_theorem: fep112_consensus_converges
   supporting_theorems:
+
   - fep112_consensus_half_contraction
   boundary_theorems:
+
   - fep112_bool_nonzero_strict_witness
   invariant: >-
     Iterating the maintained strictly stochastic two-agent update halves each
@@ -2352,6 +2473,7 @@ topics:
 - id: fep-113
   primary_theorem: fep113_coupledPotential_strict_descent
   supporting_theorems:
+
   - fep113_coupledPotential_contracts
   boundary_theorems: []
   invariant: >-
@@ -2373,6 +2495,7 @@ topics:
 - id: fep-114
   primary_theorem: fep114_subGaussian_empiricalMean_tail
   supporting_theorems:
+
   - fep114_empiricalMean_definition
   boundary_theorems: []
   invariant: >-
@@ -2395,6 +2518,7 @@ topics:
 - id: fep-115
   primary_theorem: fep115_simultaneous_frequency_bound
   supporting_theorems:
+
   - fep115_frequencyDeviationEvent_membership
   boundary_theorems: []
   invariant: Per-symbol empirical-frequency failure bounds combine by a finite union bound
@@ -2413,6 +2537,7 @@ topics:
 - id: fep-116
   primary_theorem: fep116_finitePACBayes_with_confidence
   supporting_theorems:
+
   - fep116_prior_support_nonzero
   boundary_theorems: []
   invariant: >-
@@ -2439,6 +2564,7 @@ topics:
   primary_theorem: fep117_posteriorOdds_recursion
   supporting_theorems: []
   boundary_theorems:
+
   - fep117_zero_prior_boundary
   invariant: At positive evidence, posterior odds equal prior odds times the likelihood ratio,
     and a zero-prior hypothesis retains zero posterior mass.
@@ -2457,6 +2583,7 @@ topics:
   primary_theorem: fep118_posteriorGap_concentration
   supporting_theorems: []
   boundary_theorems:
+
   - fep118_twoHypothesis_witness
   invariant: >-
     A nonnegative per-observation likelihood gap yields an explicit exponential
@@ -2477,6 +2604,7 @@ topics:
 - id: fep-119
   primary_theorem: fep119_mixtureLogLoss_regret
   supporting_theorems:
+
   - fep119_mixtureEvidence_lower_bound
   boundary_theorems: []
   invariant: >-
@@ -2499,8 +2627,10 @@ topics:
 - id: fep-120
   primary_theorem: fep120_bayesFactor_multiplicative_update
   supporting_theorems:
+
   - fep120_twoHypothesis_evidence_witness
   boundary_theorems:
+
   - fep120_zero_evidence_boundary
   invariant: >-
     Explicitly factorized evidence ratios multiply, and sequential model-odds
@@ -2521,6 +2651,7 @@ topics:
 - id: fep-121
   primary_theorem: fep121_laplaceError_identity
   supporting_theorems:
+
   - fep121_shrinkage_mem_unitInterval
   boundary_theorems: []
   invariant: >-
@@ -2542,6 +2673,7 @@ topics:
   primary_theorem: fep122_laplaceBias_abs_le
   supporting_theorems: []
   boundary_theorems:
+
   - fep122_nonzero_boundary_witness
   invariant: >-
     The absolute target-dependent Laplace offset is at most one pseudo-count
@@ -2560,6 +2692,7 @@ topics:
 - id: fep-123
   primary_theorem: fep123_laplaceAbsoluteError_le
   supporting_theorems:
+
   - fep123_error_nonnegative
   boundary_theorems: []
   invariant: >-
@@ -2579,6 +2712,7 @@ topics:
 - id: fep-124
   primary_theorem: fep124_laplaceSquaredError_le
   supporting_theorems:
+
   - fep124_laplaceSquaredRisk_le
   boundary_theorems: []
   invariant: >-
@@ -2599,6 +2733,7 @@ topics:
 - id: fep-125
   primary_theorem: fep125_brierExcess_eq_sqError
   supporting_theorems:
+
   - fep125_brierExcess_self
   boundary_theorems: []
   invariant: >-
@@ -2618,6 +2753,7 @@ topics:
 - id: fep-126
   primary_theorem: fep126_laplaceBrierRisk_le
   supporting_theorems:
+
   - fep126_sampling_mass_one
   boundary_theorems: []
   invariant: >-
@@ -2637,6 +2773,7 @@ topics:
 - id: fep-127
   primary_theorem: fep127_laplaceBadEvent_subset
   supporting_theorems:
+
   - fep127_laplaceBadEvent_probability_le
   boundary_theorems: []
   invariant: A smoothed deviation beyond the transferred threshold is contained in the corresponding
@@ -2656,6 +2793,7 @@ topics:
 - id: fep-128
   primary_theorem: fep128_policyTreeValue_node
   supporting_theorems:
+
   - fep128_policyTreeValue_leaf
   boundary_theorems: []
   invariant: >-
@@ -2676,6 +2814,7 @@ topics:
 - id: fep-129
   primary_theorem: fep129_optimalTreeValue_eq_min
   supporting_theorems:
+
   - fep129_optimalTreeAction_le
   boundary_theorems: []
   invariant: >-
@@ -2695,6 +2834,7 @@ topics:
 - id: fep-130
   primary_theorem: fep130_exists_optimalPolicyTree
   supporting_theorems:
+
   - fep130_policyTree_carrier_finite
   boundary_theorems: []
   invariant: >-
@@ -2714,6 +2854,7 @@ topics:
 - id: fep-131
   primary_theorem: fep131_openLoopEmbedding_value
   supporting_theorems:
+
   - fep131_openLoopEmbedding_leaf
   boundary_theorems: []
   invariant: >-
@@ -2735,6 +2876,7 @@ topics:
 - id: fep-132
   primary_theorem: fep132_optimalTree_le_openLoop
   supporting_theorems:
+
   - fep132_finite_horizon_depth
   boundary_theorems: []
   invariant: >-
@@ -2754,6 +2896,7 @@ topics:
 - id: fep-133
   primary_theorem: fep133_policyTree_efe_eq_risk_add_ambiguity
   supporting_theorems:
+
   - fep133_optimalValues_agree
   boundary_theorems: []
   invariant: The one-step full-support expected-free-energy identity lifts through every branch
@@ -2772,6 +2915,7 @@ topics:
 - id: fep-134
   primary_theorem: fep134_boolFeedback_strictlyBetter
   supporting_theorems:
+
   - fep134_feedback_continuation_changes
   boundary_theorems: []
   invariant: >-
@@ -2791,6 +2935,7 @@ topics:
 - id: fep-135
   primary_theorem: fep135_embeddedLaw_apply_singleton
   supporting_theorems:
+
   - fep135_embeddedLaw_normalized
   boundary_theorems: []
   invariant: >-
@@ -2810,6 +2955,7 @@ topics:
 - id: fep-136
   primary_theorem: fep136_embeddedLaw_injective
   supporting_theorems:
+
   - fep136_embeddedLaw_expectation
   boundary_theorems: []
   invariant: >-
@@ -2869,6 +3015,7 @@ topics:
 - id: fep-139
   primary_theorem: fep139_staticJoint_condIndepFun
   supporting_theorems:
+
   - fep139_correlatedBlanket_nonvacuous
   boundary_theorems: []
   invariant: >-
@@ -2934,6 +3081,7 @@ topics:
 - id: fep-142
   primary_theorem: fep142_exponentialFamily_sum_one
   supporting_theorems:
+
   - fep142_exponentialFamily_pointwise_pos
   boundary_theorems: []
   invariant: >-
@@ -2989,6 +3137,7 @@ topics:
 - id: fep-145
   primary_theorem: fep145_score_eq_statistic_sub_mean
   supporting_theorems:
+
   - fep145_score_mean_zero
   boundary_theorems: []
   invariant: The scalar score is the sufficient statistic centered by its family mean and
@@ -3006,9 +3155,11 @@ topics:
 - id: fep-146
   primary_theorem: fep146_logPartition_secondDeriv_eq_variance
   supporting_theorems:
+
   - fep146_fisher_eq_variance
   - fep146_threeState_variance_positive
   boundary_theorems:
+
   - fep146_constantStatistic_zero_boundary
   invariant: >-
     Differentiating the log-partition mean coordinate gives statistic variance,
@@ -3029,6 +3180,7 @@ topics:
 - id: fep-147
   primary_theorem: fep147_exponentialFamily_KL_eq_bregman
   supporting_theorems:
+
   - fep147_exponentialFamily_fullSupport
   boundary_theorems: []
   invariant: >-
@@ -3052,6 +3204,7 @@ topics:
 - id: fep-148
   primary_theorem: fep148_meanParameter_strictMono
   supporting_theorems:
+
   - fep148_meanParameter_injective
   boundary_theorems: []
   invariant: Positive statistic variance throughout a closed interval makes the natural-to-mean
@@ -3070,6 +3223,7 @@ topics:
 - id: fep-149
   primary_theorem: fep149_twoStateSemigroup_rowSum
   supporting_theorems:
+
   - fep149_twoStateSemigroup_nonnegative
   - fep149_benchmarkRates_exact
   boundary_theorems: []
@@ -3139,6 +3293,7 @@ topics:
 - id: fep-153
   primary_theorem: fep153_twoStateSemigroup_stationary
   supporting_theorems:
+
   - fep153_twoStateSemigroup_detailedBalance
   boundary_theorems: []
   invariant: >-
@@ -3158,6 +3313,7 @@ topics:
 - id: fep-154
   primary_theorem: fep154_twoStateRelaxation_exact
   supporting_theorems:
+
   - fep154_benchmarkInitial_nonstationary
   boundary_theorems: []
   invariant: >-
@@ -3177,6 +3333,7 @@ topics:
 - id: fep-155
   primary_theorem: fep155_twoStateLyapunov_exact
   supporting_theorems:
+
   - fep155_twoStateLyapunov_hasDerivAt
   - fep155_benchmarkLyapunov_strictlyDecreasing
   boundary_theorems: []
@@ -3197,6 +3354,7 @@ topics:
 - id: fep-156
   primary_theorem: fep156_boltzmann_control_posterior_minimizes_efe
   supporting_theorems:
+
   - fep156_boltzmann_control_posterior_minimal_value
   - fep156_efeControlObjective_eq_gibbsFreeEnergy
   - fep156_efeControlObjective_eq_kl_sub_logPartition
@@ -3228,6 +3386,7 @@ topics:
 - id: fep-157
   primary_theorem: fep157_loop_invariant_surprisal_bound
   supporting_theorems:
+
   - fep157_perception_kl_decomposition
   - fep157_perception_step_kl_nonincrease
   - fep157_perception_native_kl_nonincrease
@@ -3267,6 +3426,7 @@ topics:
 - id: fep-158
   primary_theorem: fep158_reduction_free_energy_monotone
   supporting_theorems:
+
   - fep158_maskedEvidence_le_predictive
   - fep158_maskedPrior_predictive_eq
   - fep158_reduction_posterior_reconstruction
@@ -3301,6 +3461,7 @@ topics:
 - id: fep-159
   primary_theorem: fep159_epistemic_gain_bounded_by_affinity
   supporting_theorems:
+
   - fep159_expectedFreeEnergy_le_productionRate_div_decayRate
   - fep159_slow_fast_separation_statement
   - fep159_fastRelaxation_epistemic_vanishes
@@ -3337,6 +3498,7 @@ topics:
 - id: fep-160
   primary_theorem: fep160_aoDecomposition
   supporting_theorems:
+
   - fep160_skewQuadratic_eq_zero
   - fep160_skewTrace_eq_zero
   - fep160_circulationPart_skew
@@ -3377,6 +3539,7 @@ topics:
 - id: fep-161
   primary_theorem: fep161_skewTrace_eq_zero
   supporting_theorems:
+
   - fep161_skewQuadratic_eq_zero
   boundary_theorems: []
   invariant: >-
@@ -3397,6 +3560,7 @@ topics:
 - id: fep-162
   primary_theorem: fep162_skewTrace_symmetrize_eq_zero
   supporting_theorems:
+
   - fep162_symmetrize_symmetric
   - fep162_symmetrize_of_symmetric
   boundary_theorems: []
@@ -3419,6 +3583,7 @@ topics:
 - id: fep-163
   primary_theorem: fep163_solenoidal_expansion
   supporting_theorems:
+
   - fep163_weightedDivergence_eq
   - fep163_solenoidal_drop_of_orthogonal
   - fep163_solenoidal_drop_of_constantQ
@@ -3446,6 +3611,7 @@ topics:
 - id: fep-164
   primary_theorem: fep164_graphDecomposition
   supporting_theorems:
+
   - fep164_nodeDiv_skew
   - fep164_weightedNodeDiv_eq
   - fep164_weightedCurrent_div_eq
@@ -3470,6 +3636,7 @@ topics:
 - id: fep-165
   primary_theorem: fep165_witness_drop_fails
   supporting_theorems:
+
   - fep165_witnessQ_skew
   - fep165_witness_current
   - fep165_witness_divQ
@@ -3494,6 +3661,7 @@ topics:
 - id: fep-166
   primary_theorem: fep166_split_unique
   supporting_theorems:
+
   - fep166_reversible_split_unique
   - fep166_twoByTwo_support
   - fep166_twoByTwo_predicates
@@ -3525,6 +3693,7 @@ topics:
 - id: fep-167
   primary_theorem: fep167_frobenius_pythagoras
   supporting_theorems:
+
   - fep167_symmetrize_minimizes
   - fep167_projection_unique
   - fep167_residual_example
@@ -3549,6 +3718,7 @@ topics:
 - id: fep-168
   primary_theorem: fep168_weightedDivergence_eq_remainderDot
   supporting_theorems:
+
   - fep168_remainder_sq_budget
   - fep168_absolute_budget
   - fep168_equality_attained
@@ -3556,7 +3726,7 @@ topics:
   invariant: >-
     On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g
     under the cancellation hypotheses, the squared Cauchy-Schwarz budget
-    (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncancelled
+    (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncanceled
     remainder with its abs-product corollary, and equality is attained on
     aligned nonzero data with norm(g)^2 = 1.
   assumption_review: >-

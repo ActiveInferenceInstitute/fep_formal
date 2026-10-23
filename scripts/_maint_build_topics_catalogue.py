@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate or check the checkout and packaged topic catalogues."""
+"""Regenerate or check the checkout and packaged topic catalogs."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--check",
         action="store_true",
-        help="fail when either generated catalogue projection is stale",
+        help="fail when either generated catalog projection is stale",
     )
     args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[1]
@@ -28,7 +28,7 @@ def main(argv: list[str] | None = None) -> int:
             root,
             catalogue_projection_drift,
             None,
-            "checkout and package topic catalogues are current",
+            "checkout and package topic catalogs are current",
             check=True,
         )
 

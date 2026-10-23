@@ -2,7 +2,7 @@
 
 ### Architecture Overview {#sec:architecture_overview}
 
-`fep_lean.llm.hermes.HermesExplainer` reviews a curated `TopicEntry`. It does not own the catalogue, overwrite a canonical topic body, or establish a theorem merely by returning text. Family modules under `src/fep_lean/catalogue/bodies/` own those bodies and `registry.py` validates their ordered union; `config/topics.yaml` is the generated projection. A live model response becomes relevant only after its extracted Lean block is compiled and its complete run bundle passes independent receipt validation.
+`fep_lean.llm.hermes.HermesExplainer` reviews a curated `TopicEntry`. It does not own the catalog, overwrite a canonical topic body, or establish a theorem merely by returning text. Family modules under `src/fep_lean/catalogue/bodies/` own those bodies and `registry.py` validates their ordered union; `config/topics.yaml` is the generated projection. A live model response becomes relevant only after its extracted Lean block is compiled and its complete run bundle passes independent receipt validation.
 
 The client uses standard-library HTTP against an OpenAI-compatible endpoint. Configuration is resolved from explicit environment values, project settings, and built-in defaults. The exact configured model and fallback roster are operational facts in `config/settings.yaml` and the validated run manifest; copying them into the paper would create a second, rapidly stale owner.
 
@@ -43,17 +43,17 @@ Prompt constraints reduce predictable damage; they do not certify semantic fidel
 
 ### Hermes vs Native Lean: Compilation Diagnostics {#sec:hermes_vs_native_lean_diagnostics}
 
-Hermes success and Lean success are orthogonal. A well-formed explanation can accompany a non-compiling block; a compiling block can express a weak or irrelevant theorem. Accordingly, the report schema records the model response, direct refined-sketch outcome, final compiler fields, and semantic disposition separately. No aggregate rate is inferred from a catalogue-only run.
+Hermes success and Lean success are orthogonal. A well-formed explanation can accompany a non-compiling block; a compiling block can express a weak or irrelevant theorem. Accordingly, the report schema records the model response, direct refined-sketch outcome, final compiler fields, and semantic disposition separately. No aggregate rate is inferred from a catalog-only run.
 
 ### Compiler Output and the `VerifyResult` Dataclass {#sec:compiler_driven_error_loop}
 
 `LeanVerifier.verify_sketch` returns a structured `VerifyResult`: `compiles`, `has_sorry`, warnings, errors, stdout/stderr, duration, Lean version, skip reason, and an advisory failure class. Its status projection distinguishes `compiles_clean`, `compiles_with_sorry`, `compile_error`, and `skipped (...)`. The failure classifier helps triage missing imports, renamed identifiers, tactic failures, arity/type mismatches, and timeouts, but it is not proof evidence itself.
 
-The full workflow does not treat the canonical body as a hidden success fallback after Hermes failure. If Hermes is disabled, lacks credentials, returns no usable candidate, or exhausts its model attempts, the topic fails full mode. Native verification of the canonical catalogue is available as a separate `fep-lean verify` contract.
+The full workflow does not treat the canonical body as a hidden success fallback after Hermes failure. If Hermes is disabled, lacks credentials, returns no usable candidate, or exhausts its model attempts, the topic fails full mode. Native verification of the canonical catalog is available as a separate `fep-lean verify` contract.
 
 ### Token Usage and Cost Profile {#sec:token_usage_and_cost_profile}
 
-Token, model, cache, retry, and latency fields are populated only from an independently validated full report. At render time the current full-claim predicate is `{{full.claim_ready}}`. If it is false, model totals and timings are unavailable rather than borrowed from an old or catalogue-only directory. This policy is important because provider latency, context accounting, and model availability are mutable external conditions.
+Token, model, cache, retry, and latency fields are populated only from an independently validated full report. At render time the current full-claim predicate is `{{full.claim_ready}}`. If it is false, model totals and timings are unavailable rather than borrowed from an old or catalog-only directory. This policy is important because provider latency, context accounting, and model availability are mutable external conditions.
 
 For a claim-ready run, `summary.json` remains the primary quantitative record: it contains per-topic model identity, token count, duration, cache status, same-model retries, and chain-advance reason. The manuscript may summarize those values but never substitutes configuration defaults for observations.
 
@@ -72,7 +72,7 @@ The implementation distinguishes mechanisms that are often conflated in LLM repo
 | Same-model retry | HTTP `429` or a transient transport failure | network attempt only | `network_retries`, aggregated as `network_retry_count` | bounded availability recovery on the same model |
 | Cross-model advance | empty content, wall-clock timeout, non-retriable HTTP failure, transport failure, or parse failure | provider model | `chain_advance_reason`, `model_used`, aggregated as `model_fallback_count` and `chain_advance_reasons` | the configured primary did not supply the accepted response |
 | Hermes-refined Lean outcome | the returned refinement is compiled with `lake env lean` | no provider retry; this occurs after the LLM stage | `hermes_lean_compiles_count` | a failed refinement remains a topic failure; no baseline body is substituted |
-| Native canonical verification | the curated catalogue is compiled independently of Hermes | execution mode | source-bound native receipt | separate non-LLM evidence contract |
+| Native canonical verification | the curated catalog is compiled independently of Hermes | execution mode | source-bound native receipt | separate non-LLM evidence contract |
 : The three classes of pipeline fallback, the field each records, and how each may and may not be read as evidence.
 
 `HermesResult` carries the per-call retry count and labeled chain-advance cause,

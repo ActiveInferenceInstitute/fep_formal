@@ -6,7 +6,7 @@ Run `uv run fep-lean preflight`. The JSON lists the exact missing capability.
 Use `uv run fep-lean setup` only when the failure is a missing Lean/Mathlib
 build. Install OpenGauss and configure Hermes credentials separately.
 
-## Catalogue artifacts are stale
+## Catalog artifacts are stale
 
 Run `uv run fep-lean catalogue`. The command validates the YAML first and then
 regenerates manuscript variables, the unified appendix, figures, and a report.

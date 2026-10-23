@@ -54,7 +54,7 @@ part relative to `p*`, together with the explicit divergence check
 * Carriers stay finite and every hypothesis is explicit.  No new axioms,
   no proof placeholders, no `native_decide`.
 * This file is standalone: it is not wired into the generated
-  `fep_all.lean`; the catalogue wire-up (topic row, formal-resource roster
+  `fep_all.lean`; the catalog wire-up (topic row, formal-resource roster
   entry, aggregate hoist) is a post-acceptance coordinator chore.
 -/
 

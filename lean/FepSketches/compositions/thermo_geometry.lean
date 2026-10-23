@@ -27,7 +27,7 @@ open MeasureTheory ProbabilityTheory Finset
 open scoped BigOperators ENNReal Matrix MeasureTheory ProbabilityTheory
 
 /-- The supported forward/reverse ratio reconstructs path mass, while the
-identity kernel supplies the original catalogue's concrete reversibility
+identity kernel supplies the original catalog's concrete reversibility
 witness on an arbitrary measure carrier. -/
 theorem fep093_path_ratio_extends_fep010_reversal
     {Path Native : Type*} [Fintype Path] [MeasurableSpace Native]

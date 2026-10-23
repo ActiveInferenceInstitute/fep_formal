@@ -1,4 +1,4 @@
-"""Typed semantic-maturity records for the formalism catalogue.
+"""Typed semantic-maturity records for the formalism catalog.
 
 ``config/theorem_maturity.yaml`` is the maintained authoring source.  This
 module owns validation and exposes immutable records to generators, reports,
@@ -41,7 +41,7 @@ class SemanticDisposition(str, Enum):
 
 @dataclass(frozen=True)
 class TheoremMaturityRecord:
-    """Maintained semantic review for one catalogue topic."""
+    """Maintained semantic review for one catalog topic."""
 
     id: str
     primary_theorem: str

@@ -25,7 +25,7 @@ Parent program:
 Give GNN's parse → validate → render → execute contract machine-checked
 semantics: the GNN document language, its well-formedness rules, and the
 dynamic meaning of its two supported model families become Lean definitions
-and theorems, hosted in this catalogue's formal workspace and reusing its
+and theorems, hosted in this catalog's formal workspace and reusing its
 existing carriers.
 
 The syntax surface and the step inventory are owned by GNN and frozen per
@@ -62,7 +62,7 @@ object language rather than receiving arbitrary meaning.
 ## Alignment statements (prospective)
 
 Each statement below is a target for a future slice; none is an existing
-declaration, and none reserves a catalogue identifier:
+declaration, and none reserves a catalog identifier:
 
 1. **Discrete denotation.** A well-formed discrete-family GNN document
    denotes an instance of the `active_inference.lean` `GenerativeModel`:

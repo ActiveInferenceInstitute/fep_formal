@@ -468,7 +468,7 @@ theorem linearPool_kl_decomposition
   simp only [h1, h2, h3, mul_sub, Finset.sum_sub_distrib]
   linarith
 
-/-- The linear pool minimises the weighted forward KL among full-support
+/-- The linear pool minimizes the weighted forward KL among full-support
 laws. -/
 theorem linearPool_kl_minimal
     (w : ι → ℝ) (hw : ∀ i, 0 ≤ w i) (hsum : ∑ i, w i = 1)
@@ -578,7 +578,7 @@ theorem logPool_kl_minimal
     finiteKL_self]
   linarith [finiteKL_nonneg q (logPool w p)]
 
-/-- Uniqueness of the geometric-pool minimiser. -/
+/-- Uniqueness of the geometric-pool minimizer. -/
 theorem logPool_kl_unique_minimiser
     (w : ι → ℝ) (hsum : ∑ i, w i = 1)
     (p : ι → FiniteLaw α) (hp : ∀ i x, 0 < p i x) (q : FiniteLaw α)

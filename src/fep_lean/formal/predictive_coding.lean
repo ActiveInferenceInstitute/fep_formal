@@ -196,7 +196,7 @@ theorem functionJet_coefficient_of_le {order : ℕ} (f : ℝ → ℝ) (t : ℝ) 
   simp [functionJet, hk]
 
 /-- The one-step shift of the jet of `f` is the jet of `deriv f` on every
-coordinate strictly below the truncation order: the shift realises
+coordinate strictly below the truncation order: the shift realizes
 differentiation. -/
 theorem shift_one_functionJet {order : ℕ} (f : ℝ → ℝ) (t : ℝ) {k : ℕ}
     (hk : k < order) :
@@ -487,7 +487,7 @@ theorem halfStep_energy_witness :
 
 /-- Scalar free energy of a precision `precision` given a fixed prediction
 error `error`: `precision/2 * error² - log(precision)/2`.  The log term is the
-Gaussian normaliser that makes precision an inferred quantity rather than a
+Gaussian normalizer that makes precision an inferred quantity rather than a
 free weight. -/
 noncomputable def precisionFreeEnergy (error precision : ℝ) : ℝ :=
   precision * error ^ 2 / 2 - Real.log precision / 2
@@ -507,7 +507,7 @@ theorem precisionFreeEnergy_sub_opt {error : ℝ} (hError : error ≠ 0)
   field_simp
   ring
 
-/-- The free energy is minimised at `1/error²`. -/
+/-- The free energy is minimized at `1/error²`. -/
 theorem precisionFreeEnergy_min {error : ℝ} (hError : error ≠ 0)
     {precision : ℝ} (hPrecision : 0 < precision) :
     precisionFreeEnergy error (1 / error ^ 2) ≤
@@ -517,7 +517,7 @@ theorem precisionFreeEnergy_min {error : ℝ} (hError : error ≠ 0)
   have hLe := Real.log_le_sub_one_of_pos (mul_pos hE hPrecision)
   linarith
 
-/-- The minimiser `1/error²` is unique. -/
+/-- The minimizer `1/error²` is unique. -/
 theorem precisionFreeEnergy_eq_iff {error : ℝ} (hError : error ≠ 0)
     {precision : ℝ} (hPrecision : 0 < precision) :
     precisionFreeEnergy error precision =

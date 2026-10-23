@@ -95,7 +95,7 @@ explicit extra hypothesis.
   datum; the pinned `remainderG = (1, 1)` is deliberately not repinned
   (it is not aligned: bound `2`, value `1` — strict).
 * This file is standalone: it is not wired into the generated
-  `fep_all.lean`; the catalogue wire-up (topic rows, family, body file,
+  `fep_all.lean`; the catalog wire-up (topic rows, family, body file,
   formal-resource roster entry, aggregate hoist) is the coordinator's
   post-acceptance fold chore.
 -/

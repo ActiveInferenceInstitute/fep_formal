@@ -65,7 +65,7 @@ seed, failed capture or historical receipt is changed by this scope decision.
 These remain open and activate only on their stated conditions.
 A governed empirical no-go satisfies the frozen current program. Accepted Q7
 static proofs do not imply the future runner lane ran. PRs remain substantive
-until a verified integration or disposition; they are not removed as legacy.
+until a verified integration or disposition.
 
 | Work | Size | Predecessors and activation | Closure probe |
 | --- | --- | --- | --- |
@@ -75,7 +75,7 @@ until a verified integration or disposition; they are not removed as legacy.
 
 The [maintained research scopes](docs/design/fep-research-program/next-improvements.md)
 retain the eleven existing detailed proposals; the additional bounded issues
-cover configuration, accessibility, catalogue review and general finite duality.
+cover configuration, accessibility, catalog review and general finite duality.
 Use the [work-package contract](docs/design/fep-research-program/research-contract.md)
 before activating an implementation. Demonstrate a concrete gap first for
 configuration and visualization work. New owners require a coordinated source
@@ -83,7 +83,6 @@ roster refresh; new topics are not implicitly reserved by this plan.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [CORE-M2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63) — maintain current guidance through dependency review | Minor | [CUR-04](https://github.com/ActiveInferenceInstitute/fep_formal/issues/48) | Current active reading paths, complete retirement caller inventory, strict links/hygiene/xrefs and preserved historical evidence. |
 | [FORM-D2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/70) — fixed-truth consistency for the continuous static-latent model | Medium | [CUR-10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57) | Explicit infinite fixed-truth law, prefix/native equality and actual convergence proof; new protocol preserves current H3 seeds. |
 | [CORE-J1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/66) — equivalent Windows capture custody and process supervision | Major | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CUR-06](https://github.com/ActiveInferenceInstitute/fep_formal/issues/49), [CUR-07](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) | Equivalent Windows no-follow handle custody and descendant containment; actual seven-stage acceptance and identical valid archives. |
 | [CORE-J2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/67) — measured incremental capture and bounded resource lifecycle | Major | [CUR-05](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53), [CORE-D1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/64) | Measured full/resumed/edited capture equivalence, exact dependency invalidation and closed-owned resource receipts without weaker budgets. |
@@ -106,7 +105,7 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | [FORM-S11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/94) — Review the fep-071 invariant as a Bayesian update | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The Bayes-sound planners, fep-134 re-derivation and observation-ignoring countermodel are on `main`; an independent semantic review moves the 071 invariant from 'authored update' to 'Bayesian update'. |
 | [FORM-S12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/95) — Dirichlet–categorical learning, stage 2 (digamma, Dirichlet measure, variational update) | Medium | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | Stage 1 is on `main`. A library probe like FORM-J2/J3 either starts stage 2 or records a no-go. |
 | [FORM-S14](https://github.com/ActiveInferenceInstitute/fep_formal/issues/97) — Measure-level Gaussian Markov blanket from precision sparsity | Major | Mathlib Gaussian conditional kernel ([gap memo](docs/lean4.md#gaussian-conditioning-gap-memo)), [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The algebraic dimension-generic statement, Fin4 instance and countermodel are on `main`; `K_ei = 0` implies `e ⟂ i ∣ (s, a)` as a `condIndepFun` statement for every positive-definite block precision. |
-| [FORM-S15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/98) — Recover the fep-163 weighted-divergence carrier from the Fokker–Planck current | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | A qualified theorem derives the fep-163 expansion (or a stated discretisation of it) from `FEP.NessFlow.probCurrent` and `divergence`, with any pairing recorded as a reviewed relation. |
+| [FORM-S15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/98) — Recover the fep-163 weighted-divergence carrier from the Fokker–Planck current | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | A qualified theorem derives the fep-163 expansion (or a stated discretization of it) from `FEP.NessFlow.probCurrent` and `divergence`, with any pairing recorded as a reviewed relation. |
 
 ### Lean formal layer and relations
 

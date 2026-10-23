@@ -2,7 +2,7 @@
 
 These are checkout workflows. Keep `.python-version`, `pyproject.toml`,
 `uv.lock`, `config/`, the canonical and projected formal resources, and the
-`lean/` pin triple together. The wheel packages the catalogue but still needs
+`lean/` pin triple together. The wheel packages the catalog but still needs
 an explicit source checkout for configuration, verification, and publication.
 Outside that checkout, put the global option before the subcommand:
 
@@ -32,7 +32,7 @@ bash scripts/setup_checkout.sh
 The kit resolves its own checkout root, including paths containing spaces.
 It runs `uv sync --locked --extra dev` with `.python-version`, checks the
 validator interpreter and locked environment, runs guarded `fep-lean setup`
-twice through the two existing entry points, and generates the catalogue and
+twice through the two existing entry points, and generates the catalog and
 manuscript figures. Python can be acquired by uv; Lean and the Mathlib cache
 are acquired by setup. Allow network access, several gigabytes for downloads,
 and tens of gigabytes of free space for the expanded toolchain and workspace.
@@ -41,12 +41,12 @@ idempotency. Each setup pass has its own `FEP_LEAN_SETUP_TIMEOUT_SEC` deadline.
 The kit stops at the first failed command and prints each command it runs.
 
 This prepares the local Python/native gate environment; it does not assert
-that the [gate battery](testing.md) passed. Run catalogue generation before
+that the [gate battery](testing.md) passed. Run catalog generation before
 projection-dependent manuscript checks, and native verification before the
 strict manuscript-render check, which requires a current native receipt.
 Committed evidence may already be stale at the chosen commit; setup must not
 repair it. Publication rendering and live services retain their separate
-tiers below. For catalogue-only use, without elan or the SVG rasterizer:
+tiers below. For catalog-only use, without elan or the SVG rasterizer:
 
 ```bash
 bash scripts/setup_checkout.sh --catalogue-only
@@ -57,7 +57,7 @@ substitutions, and a clean-environment acceptance recipe. The kit delegates
 all Lean pin/cache validation to the existing setup implementation; it never
 copies a donor `.lake` tree or invokes `lake update`.
 
-## Catalogue-only tier
+## Catalog-only tier
 
 Install uv and use Python 3.14, the validator version in `.python-version`.
 The packaging floor in `pyproject.toml` is not the validator contract. From
@@ -71,7 +71,7 @@ uv run --locked fep-lean dashboard --check
 ```
 
 Dependency installation requires network access unless already cached. Once
-installed, catalogue mode is offline and needs no Lean, Hermes, OpenGauss,
+installed, catalog mode is offline and needs no Lean, Hermes, OpenGauss,
 provider credentials, donor cache, or coordinator tooling. Its report records
 zero verified topics. The atlas is a structural view; the dashboard is
 numerical, non-proof evidence.
@@ -99,7 +99,7 @@ An empty `ELAN_HOME` is supported; elan must already be installed or supplied
 via `FEP_LEAN_ELAN_EXE`. Cache acquisition can require several gigabytes and
 several minutes. Do not copy another checkout's `.lake/packages` as a recipe.
 
-After setup, the maintained formal kernel and catalogue have distinct checks:
+After setup, the maintained formal kernel and catalog have distinct checks:
 
 ```bash
 uv run --locked python scripts/_maint_build_formal_modules.py --check
@@ -178,7 +178,7 @@ uv run --locked fep-lean run
 does not install them. A failed full run returns nonzero and creates no
 successful report. Full success requires every selected result to compile
 without `sorry` or warnings; `review` also requires its prose-review stage.
-A complete selected-topic run is not automatically a full-catalogue,
+A complete selected-topic run is not automatically a full-catalog,
 publication-ready receipt.
 
 Checkout portability does not resolve Q7's interpreter-dependent scaffold

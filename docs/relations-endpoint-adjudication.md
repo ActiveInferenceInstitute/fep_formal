@@ -144,7 +144,7 @@ rationale.
 | fep-046 | fep-046 → fep-045 `formal` | `fep046_single_break_is_fep045_bernoulli` (`core`) | One break is the Bernoulli law of fep-045; fep-046's mass conservation derives the normalization of fep-045's posterior mass function. |
 | fep-050 | fep-050 → fep-049 `formal` | `fep050_landauer_work_bound_from_fep049_entropy_production` (`thermo_geometry`) | With the explicit premise `totalEntropyChange = entropyProduction`, fep-049's nonnegativity discharges fep-050's second-law hypothesis and yields the Landauer work bound. |
 
-Caveats recorded with the edges: the fep-050 → fep-049 premise is a modelling
+Caveats recorded with the edges: the fep-050 → fep-049 premise is a modeling
 assumption, not a consequence of either topic; the fep-007 → fep-028 identity
 fixes the factor and incoming messages; the fep-046 → fep-045 identity covers
 one break only. The relations schema has no "isolated by design" field, and none

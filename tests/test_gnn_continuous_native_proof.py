@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification.formalism_audit import _parse_axiom_output
+from fep_lean.verification.formalism_audit import parse_axiom_output
 from fep_lean.verification.gnn_continuous_artifact_proof import NAMESPACE, THEOREMS
 from tests._support.lean_runner import run_lean_probe
 
@@ -35,7 +35,7 @@ def test_native_ou_bounds_have_complete_standard_axiom_census(tmp_path: Path) ->
     output = result.stdout + result.stderr
     assert result.returncode == 0, output
     assert not re.search(r"\b(?:warning|sorry|sorryAx)\b", output)
-    axioms, errors = _parse_axiom_output(output, expected=names)
+    axioms, errors = parse_axiom_output(output, expected=names)
     assert not errors, errors
     assert set(axioms) == set(names)
     assert all(

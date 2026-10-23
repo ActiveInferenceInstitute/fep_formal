@@ -31,7 +31,7 @@ Before activating a proposal below, its bounded spec must instantiate the
 [work-package contract](research-contract.md): exact owner, carrier/API,
 predecessors, stop/go probe, positive witness, boundary result, tests and
 reviewer. Proposed identifiers here are planning references only. They do not
-reserve topic IDs or create catalogue, relation or capability claims.
+reserve topic IDs or create catalog, relation or capability claims.
 
 Use existing owners where practical. New Python owners require the coordinated
 versioned [source roster](../../../src/fep_lean/output/provenance.py) refresh;
@@ -55,7 +55,7 @@ replay, outcome-bound claims and clean installed study reproduction retain their
 independent obligations. Retirement is neither a passed capture nor permission to
 open dependent scientific lanes without prospective prerequisite review. Optional strict
 Hermes/OpenGauss execution has its own credential and provider boundary.
-Software CI and catalogue-mode output supply none of those research outcomes.
+Software CI and catalog-mode output supply none of those research outcomes.
 Every later source change needs acceptance in its affected evidence planes.
 
 The [2026-10-02 Q7 capture](../../../specs/comprehensive-science-improvement/evidence/public-q7-final-source-20261002-r1/summary.json)

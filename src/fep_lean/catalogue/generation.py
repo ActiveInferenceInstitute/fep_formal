@@ -1,4 +1,4 @@
-"""Deterministic catalogue projections from the maintained authoring sources."""
+"""Deterministic catalog projections from the maintained authoring sources."""
 
 from __future__ import annotations
 
@@ -69,7 +69,7 @@ def check_or_write(
 def topics_header(topic_count: int) -> str:
     """Return the generated projection header without a fixed roster constant."""
     return (
-        f"# FEP / Active Inference / Bayesian Mechanics — {topic_count}-topic Lean4 catalogue\n"
+        f"# FEP / Active Inference / Bayesian Mechanics — {topic_count}-topic Lean4 catalog\n"
         "# Each topic maps to one OpenGauss session when workflows are enabled.\n"
         "# Regenerate: uv run python scripts/_maint_build_topics_catalogue.py\n"
         "# Fields include compile maturity and a separately reviewed semantic disposition.\n"
@@ -143,7 +143,7 @@ def render_fep_all_lean(sketches: Mapping[str, str] | None = None) -> str:
         "--",
         "-- Each topic body is wrapped in `namespace fep_fepNNN ... end fep_fepNNN`",
         "-- so identically-named helpers across topics never collide during the",
-        "-- whole-catalogue `lake build FepSketches`. Inner `namespace FEPNNN`",
+        "-- whole-catalog `lake build FepSketches`. Inner `namespace FEPNNN`",
         "-- blocks are preserved so per-topic qualified names stay stable.",
         *hoisted_sketch_imports(source),
         "",
@@ -192,7 +192,7 @@ def fep_all_projection_sources(
 
 
 def fep_all_projection_path(project_root: Path) -> Path:
-    """Return the tracked whole-catalogue Lean import aggregate path."""
+    """Return the tracked whole-catalog Lean import aggregate path."""
     return Path(project_root) / "lean" / "FepSketches" / "fep_all.lean"
 
 
@@ -238,7 +238,7 @@ def build_topics_data(project_root: Path) -> dict[str, Any]:
     )
     reviews = audit.by_topic_id
     if [row.id for row in metadata.records] != [record.id for record in audit.records]:
-        raise ValueError("catalogue metadata and theorem maturity rosters differ")
+        raise ValueError("catalog metadata and theorem maturity rosters differ")
     from fep_lean.formal.declarations import composed_theorem_sources
 
     load_formalism_novelty(
@@ -282,7 +282,7 @@ def build_topics_data(project_root: Path) -> dict[str, Any]:
 
 
 def render_topics_yaml(project_root: Path) -> str:
-    """Render the checkout and wheel catalogue bytes."""
+    """Render the checkout and wheel catalog bytes."""
     data = build_topics_data(project_root)
     rows = data["topics"]
     return topics_header(len(rows)) + yaml.safe_dump(

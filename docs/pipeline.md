@@ -2,13 +2,13 @@
 
 The pipeline has four recorded stages:
 
-1. **Load Catalogue** — strict YAML validation and optional filters.
+1. **Load Catalog** — strict YAML validation and optional filters.
 2. **Environment Validation** — bounded, read-only capability checks.
 3. **Gauss Sessions** — full mode only: Hermes, Lean, and SQLite per topic.
 4. **Manuscript Artifacts** — deterministic figures, variables, and appendix.
 
 `Reporter.generate` runs only after a complete pipeline result. Full mode never
-turns an unavailable service into a successful-looking partial run. Catalogue
+turns an unavailable service into a successful-looking partial run. Catalog
 mode records the Gauss stage as `not_run`, writes a report marked
 `catalogue`, and reports zero verified topics.
 
@@ -38,4 +38,4 @@ manifests. A receipt is claim-ready only when `--require-complete` accepts a
 non-empty full-mode run whose Hermes session/model, direct compile result,
 exact compiled Lean digest, actual compiler version, resolved Mathlib revision,
 and one-per-topic Markdown roster all agree with the live source tree.
-Catalogue receipts remain offline artifacts with zero verified topics.
+Catalog receipts remain offline artifacts with zero verified topics.

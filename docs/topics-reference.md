@@ -1,6 +1,6 @@
 # Topic reference
 
-The schema-2 catalogue currently seals 168 stable identifiers, `fep-001`
+The schema-2 catalog currently seals 168 stable identifiers, `fep-001`
 through `fep-168`, across 22 named families. This page explains how to inspect
 them without copying a second, drift-prone roster.
 
@@ -131,7 +131,7 @@ blocked.
 
 1. Edit the appropriate maintained owner: metadata, semantic review, novelty
    ledger, relation graph, or family-owned canonical body.
-2. Regenerate the catalogue, topic aggregate, and manifested formal-module
+2. Regenerate the catalog, topic aggregate, and manifested formal-module
    projections.
 3. Regenerate maturity and coverage projections.
 4. Regenerate and drift-check the atlas and formal-kernel dashboard.

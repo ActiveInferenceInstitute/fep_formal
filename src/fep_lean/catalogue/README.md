@@ -1,6 +1,6 @@
 # `fep_lean.catalogue`
 
-Typed catalogue ownership and deterministic projections for FEP_Formal's
+Typed catalog ownership and deterministic projections for FEP_Formal's
 schema-2 roster. The maintained roster seal is owned by
 [`catalogue_metadata.yaml`](../../../config/catalogue_metadata.yaml).
 

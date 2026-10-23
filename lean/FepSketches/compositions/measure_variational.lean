@@ -14,7 +14,7 @@ public import FepSketches.variational_duality
 # Measure and variational topic compositions
 
 These theorems expose the precise seams between the measure-native Bayesian
-topics, the finite variational topics, and the original catalogue.  A
+topics, the finite variational topics, and the original catalog.  A
 conjunction is used where the old and new topics deliberately have different
 carriers; it records both certified laws without claiming an unproved coercion
 between `FiniteLaw`, real-valued finite KL, and Mathlib's measure-valued KL.

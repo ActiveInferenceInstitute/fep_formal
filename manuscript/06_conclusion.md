@@ -1,6 +1,6 @@
 # Conclusion and Future Work {#sec:conclusion_and_future_work}
 
-This work turns a broad FEP-facing catalogue into an auditable Lean package with explicit semantic maturity, composition, provenance, and visual diagnostics. Its principal result is inspectable semantic reach: {{semantic_dispositions.formalized}} of {{total_topics}} rows directly formalize their deliberately bounded claims, while the remaining rows retain explicit conditional or structural classifications rather than inheriting strength from compilation. The {{formalism.metrics.theorem_witnessed_relations}} authored cross-topic theorems make reuse inspectable, while the graph distinguishes {{formalism.metrics.formal_relation_witnesses}} derivations or identifications from {{formalism.metrics.formal_pairing_witnesses}} checked pairings. Capability status totals remain visible in the same generated graph. A manifested reusable kernel spans normalized finite and measure-theoretic probability, Bayesian inversion, variational and expected free energy, controlled and temporal inference, finite policy trees, causal interventions, native finite blankets, predictive coding, finite path and finite-state continuous-time thermodynamics, categorical and scalar exponential-family geometry, collective inference, finite risk, and learning/model evidence. H1 composes one selected subset into a single model-specific theorem: an exact learned and further-updated posterior, an asymmetric one-step decision, its emitted action and refresh transition, a full-support factorized invariant blanket law, and strict repository-real and Mathlib-native KL decrease on the same lifted posterior. It still does not supply generic blanket existence, transition-aware or EFE-optimal planning on that carrier, causal identification, unrestricted continuous-state active inference, multidimensional smooth-manifold geometry with dual connections, physical thermodynamic dissipation, or empirical validation of a biological model. This is not a proof of a universal FEP; it is a deep, inspectable library of exact finite, measure-theoretic, geometric, dynamical, learning-theoretic, and thermodynamic instances.
+This work turns a broad FEP-facing catalog into an auditable Lean package with explicit semantic maturity, composition, provenance, and visual diagnostics. Its principal result is inspectable semantic reach: {{semantic_dispositions.formalized}} of {{total_topics}} rows directly formalize their deliberately bounded claims, while the remaining rows retain explicit conditional or structural classifications rather than inheriting strength from compilation. The {{formalism.metrics.theorem_witnessed_relations}} authored cross-topic theorems make reuse inspectable, while the graph distinguishes {{formalism.metrics.formal_relation_witnesses}} derivations or identifications from {{formalism.metrics.formal_pairing_witnesses}} checked pairings. Capability status totals remain visible in the same generated graph. A manifested reusable kernel spans normalized finite and measure-theoretic probability, Bayesian inversion, variational and expected free energy, controlled and temporal inference, finite policy trees, causal interventions, native finite blankets, predictive coding, finite path and finite-state continuous-time thermodynamics, categorical and scalar exponential-family geometry, collective inference, finite risk, and learning/model evidence. H1 composes one selected subset into a single model-specific theorem: an exact learned and further-updated posterior, an asymmetric one-step decision, its emitted action and refresh transition, a full-support factorized invariant blanket law, and strict repository-real and Mathlib-native KL decrease on the same lifted posterior. It still does not supply generic blanket existence, transition-aware or EFE-optimal planning on that carrier, causal identification, unrestricted continuous-state active inference, multidimensional smooth-manifold geometry with dual connections, physical thermodynamic dissipation, or empirical validation of a biological model. This is not a proof of a universal FEP; it is a deep, inspectable library of exact finite, measure-theoretic, geometric, dynamical, learning-theoretic, and thermodynamic instances.
 
 The mathematical supplement (Section @sec:math_positioning_supplement) makes this library's
 location and transfer requirements explicit. Compact finite-law topology,
@@ -20,15 +20,15 @@ Formal adequacy asks whether a proposition is well-typed, proved, explicit about
 
 ### Typology of Results: Definitional, Structural, Quantitative {#sec:typology_of_results}
 
-The catalogue contains definitions, structural laws, and quantitative inequalities, but these categories do not form an automatic ladder of scientific strength. A scalar inequality may be mathematically complete and scientifically remote; a definition may expose the precise object needed for a later deep theorem. The per-topic semantic review is therefore more informative than classifying declarations by syntax alone.
+The catalog contains definitions, structural laws, and quantitative inequalities, but these categories do not form an automatic ladder of scientific strength. A scalar inequality may be mathematically complete and scientifically remote; a definition may expose the precise object needed for a later deep theorem. The per-topic semantic review is therefore more informative than classifying declarations by syntax alone.
 
 ### Definitional Commitment via the Type System {#sec:definitional_commitment}
 
 The fep-005 row illustrates both the value and limit of definitional commitment. `fep005_partitionCover`, `fep005_disjoint`, and `fep005_existsUnique_block` give an exact finite labeled partition with unique membership. Those row declarations do not establish conditional independence, stationarity, or a dynamical Markov blanket. The maintained blanket foundation then introduces the missing probabilistic objects explicitly and proves finite positive-mass factorization, zero conditional mutual information, and a typed nontrivial one-step dynamic; fep-135--141 embed that carrier into native measures and prove one `CondIndepFun` instance plus rowwise preservation. H1 further proves that one full-support uniform law on sixteen Boolean $(I,S,A,E)$ states has the $P(S,A)P(I\mid S,A)P(E\mid S,A)$ factorization and is invariant under its selected refresh kernel. The remaining boundary is therefore generic existence, arbitrary-mixture closure, causal identification, and biological interpretation—not the absence of a concrete factorized invariant blanket model or every native bridge.
 
-### The Catalogue as Formal Review Infrastructure {#sec:catalogue_as_infrastructure}
+### The Catalog as Formal Review Infrastructure {#sec:catalogue_as_infrastructure}
 
-The catalogue is most useful as review infrastructure. A proposed extension must identify its primary invariant, theorem statement, assumptions, non-vacuity evidence, and acceptance probe. Generated coverage and receipt checks then make it difficult for a narrow compiler success to acquire a stronger title through prose drift.
+The catalog is most useful as review infrastructure. A proposed extension must identify its primary invariant, theorem statement, assumptions, non-vacuity evidence, and acceptance probe. Generated coverage and receipt checks then make it difficult for a narrow compiler success to acquire a stronger title through prose drift.
 
 ## Summary of Contributions {#sec:summary_of_contributions}
 
@@ -39,7 +39,7 @@ The package contributes:
 3. native Mathlib posterior, KL, Gaussian, conditional-independence, and Markov-kernel formalizations;
 4. a manifested reusable kernel of foundations and leaf compositions for probability, information, variational and expected free energy, finite policy trees, temporal and causal inference, native blanket transfer, predictive coding, stochastic thermodynamics, scalar exponential-family geometry, collective inference, finite risk, and learning;
 5. one H1 finite synthetic reference-agent certificate connecting the exact two-observation posterior, one further update, a four-to-one asymmetric report decision, the selected positive-time refresh kernel, stationary blanket factorization and invariance, and same-posterior strict finite/native KL decrease;
-6. exact Bernoulli Fisher--Rao, Hellinger, stochastic-dynamics, entropy-production, and Landauer surfaces in the topic catalogue;
+6. exact Bernoulli Fisher--Rao, Hellinger, stochastic-dynamics, entropy-production, and Landauer surfaces in the topic catalog;
 7. manifested composition leaves with **{{formalism.metrics.theorem_witnessed_relations}}** declaration-witnessed cross-topic relations, typed as derivational edges or non-implicational formal pairings, and an import-only aggregate;
 8. a warning-free aggregate plus declaration-resolution and axiom-audit acceptance target;
 9. source-bound native and full-report evidence contracts;
@@ -53,7 +53,7 @@ The practical implication is a change in review questions. Instead of asking onl
 
 ### Compilation Headline
 
-The rendered native rate is **`{{compile_rate.total}}`** from evidence kind `{{verify.evidence_kind}}`. Claim readiness is `{{verify.claim_ready}}`, with {{verify.warning_count}} warnings and {{verify.sorry_occurrences}} admitted proofs. Catalogue generation alone cannot populate this headline.
+The rendered native rate is **`{{compile_rate.total}}`** from evidence kind `{{verify.evidence_kind}}`. Claim readiness is `{{verify.claim_ready}}`, with {{verify.warning_count}} warnings and {{verify.sorry_occurrences}} admitted proofs. Catalog generation alone cannot populate this headline.
 
 ### Mathlib Integration Lessons
 
@@ -92,8 +92,8 @@ Full Hermes/OpenGauss reproduction additionally requires the declared external c
 
 ## Data Availability {#sec:data_availability}
 
-Canonical sources, generated catalogue data, topic and maintained foundation/composition Lean modules, semantic review records, coverage/atlas projections, and validation scripts are distributed with the repository. Provider credentials, local caches, and transient receipts are not source artifacts.
+Canonical sources, generated catalog data, topic and maintained foundation/composition Lean modules, semantic review records, coverage/atlas projections, and validation scripts are distributed with the repository. Provider credentials, local caches, and transient receipts are not source artifacts.
 
 ## Closing Remark {#sec:closing_remark}
 
-Formalization is most valuable here not as a seal of approval but as a disciplined way to discover exactly what has and has not been proved. The strengthened catalogue now makes that distinction visible at the level of theorem, package, receipt, and manuscript.
+Formalization is most valuable here not as a seal of approval but as a disciplined way to discover exactly what has and has not been proved. The strengthened catalog now makes that distinction visible at the level of theorem, package, receipt, and manuscript.

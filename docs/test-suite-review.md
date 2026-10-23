@@ -31,7 +31,7 @@
 - **[PASS]** All 339 exercising tests use real code paths — `LeanVerifier`, `GaussRunner`, `OpenGaussClient`, `FEPPipeline`, real subprocess calls to `lake`, `lean`, `gauss`
 - **[PASS]** Zero mock/fake/stub usage: `grep -rn 'MagicMock\|Mock()\|mock\.\|patch(\|unittest.mock' --include='*.py'` returns empty
 - **[PASS]** Monkeys use `monkeypatch` for env-var injection and PATH isolation only — never to fake core behavior (documented in `tests/AGENTS.md`)
-- **[PASS]** 14 sad-path test files cover every failure boundary: missing tools, broken binaries, timeouts, sandbox errors, malformed YAML, empty catalogues, permission errors
+- **[PASS]** 14 sad-path test files cover every failure boundary: missing tools, broken binaries, timeouts, sandbox errors, malformed YAML, empty catalogs, permission errors
 
 ### Structure & Naming
 
@@ -70,7 +70,7 @@
 | Shared mutable state | ✗ | No global state, module-level vars, or thread-shared fixtures |
 | Test overfitting | ✗ | Tests check behavior/contracts, not implementation internals |
 | Integration in unit tests | ✓ Properly organized | Integration tests are marked with `serial_lean` or `skipif(no-api-key)` |
-| Coverage without teeth | ✗ | Critical paths (catalogue loading, SSOT, report generation, receipt validation) all 90%+ |
+| Coverage without teeth | ✗ | Critical paths (catalog loading, SSOT, report generation, receipt validation) all 90%+ |
 
 ## Action Plan
 

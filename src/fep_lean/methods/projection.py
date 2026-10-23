@@ -72,7 +72,7 @@ def render_markdown(model: Mapping[str, Any]) -> str:
     lines.extend(
         [
             "",
-            "## Continuous native scope beyond catalogue families",
+            "## Continuous native scope beyond catalog families",
             "",
             (
                 "These selected authored scope notes concern manifested source modules. "

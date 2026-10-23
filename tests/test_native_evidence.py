@@ -302,7 +302,11 @@ def test_native_receipt_builder_rejects_truthy_non_boolean_result_flags() -> Non
     ("requested", "expected_error"),
     [
         (["fep-001", "fep-001"], "must be unique"),
-        (["fep-002", "fep-001"], "preserve live catalogue order"),
+        pytest.param(
+            ["fep-002", "fep-001"],
+            "preserve live catalog order",
+            id="requested1-preserve live catalogue order",
+        ),
         (["fep-999"], "must be known"),
     ],
 )

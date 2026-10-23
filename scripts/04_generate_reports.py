@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a complete offline catalogue report."""
+"""Generate a complete offline catalog report."""
 
 from __future__ import annotations
 

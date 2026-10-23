@@ -35,9 +35,9 @@ console script. Installation and dependency acquisition belong to
 - The formalism audit receipt is declaration/axiom evidence, not a replacement
   for an exact sealed-roster native receipt.
 - `check_mathlib_built()` is a presence probe, not proof that the current
-  catalogue compiled.
+  catalog compiled.
 - Full-mode validation requires every local capability and a permitted Hermes
-  credential; catalogue mode remains offline.
+  credential; catalog mode remains offline.
 
 ## Verification scope
 

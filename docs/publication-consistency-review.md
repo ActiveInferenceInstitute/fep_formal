@@ -10,7 +10,7 @@ Fokker–Planck, or Riemannian-manifold results.
 
 The current source resolves this ambiguity through separate contracts:
 
-- [Catalogue metadata](../config/catalogue_metadata.yaml) owns the sealed roster
+- [Catalog metadata](../config/catalogue_metadata.yaml) owns the sealed roster
   and `mathlib_status` classification.
 - [Theorem maturity](../config/theorem_maturity.yaml) owns each row's exact
   primary theorem, supporting statements, assumptions, non-vacuity review,
@@ -31,7 +31,7 @@ label nor a warning-free compile receipt proves a universal or empirical FEP.
 ## Verification and archival boundary
 
 A current native claim requires an independently validated, live-source-bound
-receipt from `fep-lean verify --fail-on-warnings`. Catalogue generation and the
+receipt from `fep-lean verify --fail-on-warnings`. Catalog generation and the
 semantic audit provide source/projection evidence only. Full Hermes/OpenGauss
 execution requires its separate validated report.
 

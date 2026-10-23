@@ -1,6 +1,6 @@
 # Second Expansion, from {{topics_before_second_expansion}} to {{topics_before_third_expansion}} Topics: Risk, Feedback, Native Blankets, Dual Geometry, and Continuous Time {#sec:formalism_catalogue_155}
 
-The second catalogue expansion adds {{expansion_second_topics}} stable rows, `fep-121` through
+The second catalog expansion adds {{expansion_second_topics}} stable rows, `fep-121` through
 `fep-155`, in {{expansion_second_families}} families of {{expansion_family_size}} topics each. Its purpose is not numerical growth.
 Each family closes a boundary that was explicit in the preceding {{topics_before_second_expansion}}-topic
 snapshot: finite-sample control for the Laplace estimator, genuinely
@@ -25,7 +25,7 @@ The authoring workspace pins **`{{lean_toolchain}}`** and Mathlib
 `lean/lake-manifest.json`. Earlier Lean and Mathlib releases provide historical
 context [@lean4330release; @lean4331release; @mathlib4331release]; the workspace
 files identify the compiler and dependency used for a current claim. A release
-tag, source file, or successful one-file probe is not a catalogue receipt. A
+tag, source file, or successful one-file probe is not a catalog receipt. A
 native claim for this expansion requires a fresh exact-roster receipt whose
 ordered IDs, source digests, actual compiler version, resolved Mathlib
 revision, warnings, and `sorry` count all reconcile against the live {{total_topics}}-topic

@@ -37,7 +37,7 @@ and is cited (not restated) for the reversible boundary.
   `A_10 = -1/4 < 0`, so no such boundary holds.
 * Carriers stay finite (`Fintype`); every hypothesis is explicit.  No new
   axioms, no proof placeholders, no `native_decide`.
-* This file is wired into the generated `fep_all.lean` (wave-4 catalogue
+* This file is wired into the generated `fep_all.lean` (wave-4 catalog
   wire-up: topic row, formal-resource roster entry, aggregate hoist).
 -/
 

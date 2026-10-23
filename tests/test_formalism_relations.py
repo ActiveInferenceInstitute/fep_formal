@@ -430,7 +430,7 @@ def test_formal_cycles_are_rejected(tmp_path: Path) -> None:
     path = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities: []
 edges:
   - source: fep-001
@@ -456,7 +456,7 @@ def test_formal_pairings_are_witnessed_but_not_directional_dependencies(
     path = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities: []
 edges:
   - source: fep-001
@@ -482,7 +482,7 @@ def test_blocked_edges_must_target_declared_capabilities(tmp_path: Path) -> None
     path = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities: []
 edges:
   - source: fep-001
@@ -502,7 +502,7 @@ def test_conceptual_edges_cannot_target_capabilities(tmp_path: Path) -> None:
     path = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities:
   - id: cap-example
     title: Example capability
@@ -512,6 +512,7 @@ edges:
   - source: fep-001
     target: cap-example
     kind: conceptual
+    blocked_by: issue:93
     rationale: Wrong target class.
 """,
     )
@@ -526,16 +527,18 @@ def test_relation_order_is_canonical(tmp_path: Path) -> None:
     path = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities: []
 edges:
   - source: fep-002
     target: fep-003
     kind: conceptual
+    blocked_by: issue:93
     rationale: Later source first.
   - source: fep-001
     target: fep-002
     kind: conceptual
+    blocked_by: issue:93
     rationale: Earlier source second.
 """,
     )
@@ -550,7 +553,7 @@ edges:
         ({"schema_version": 4, "capabilities": [], "edges": []}, "schema_version"),
         (
             {
-                "schema_version": 2,
+                "schema_version": 3,
                 "capabilities": [],
                 "edges": [],
                 "surprise": True,
@@ -558,16 +561,16 @@ edges:
             "unknown fields",
         ),
         (
-            {"schema_version": 2, "capabilities": {}, "edges": []},
+            {"schema_version": 3, "capabilities": {}, "edges": []},
             "must be lists",
         ),
         (
-            {"schema_version": 2, "capabilities": ["bad"], "edges": []},
+            {"schema_version": 3, "capabilities": ["bad"], "edges": []},
             "capability row 1 must be an object",
         ),
         (
             {
-                "schema_version": 2,
+                "schema_version": 3,
                 "capabilities": [
                     {
                         "id": "BAD",
@@ -582,7 +585,7 @@ edges:
         ),
         (
             {
-                "schema_version": 2,
+                "schema_version": 3,
                 "capabilities": [
                     {
                         "id": "cap-b",
@@ -602,18 +605,19 @@ edges:
             "must be ID-sorted",
         ),
         (
-            {"schema_version": 2, "capabilities": [], "edges": ["bad"]},
+            {"schema_version": 3, "capabilities": [], "edges": ["bad"]},
             "edge row 1 must be an object",
         ),
         (
             {
-                "schema_version": 2,
+                "schema_version": 3,
                 "capabilities": [],
                 "edges": [
                     {
                         "source": "fep-999",
                         "target": "fep-001",
                         "kind": "conceptual",
+                        "blocked_by": "issue:93",
                         "rationale": "Unknown source.",
                     }
                 ],
@@ -622,13 +626,14 @@ edges:
         ),
         (
             {
-                "schema_version": 2,
+                "schema_version": 3,
                 "capabilities": [],
                 "edges": [
                     {
                         "source": "fep-001",
                         "target": "fep-001",
                         "kind": "conceptual",
+                        "blocked_by": "issue:93",
                         "rationale": "Self edge.",
                     }
                 ],
@@ -637,7 +642,7 @@ edges:
         ),
         (
             {
-                "schema_version": 2,
+                "schema_version": 3,
                 "capabilities": [],
                 "edges": [
                     {
@@ -652,19 +657,21 @@ edges:
         ),
         (
             {
-                "schema_version": 2,
+                "schema_version": 3,
                 "capabilities": [],
                 "edges": [
                     {
                         "source": "fep-001",
                         "target": "fep-002",
                         "kind": "conceptual",
+                        "blocked_by": "issue:93",
                         "rationale": "Duplicate edge.",
                     },
                     {
                         "source": "fep-001",
                         "target": "fep-002",
                         "kind": "conceptual",
+                        "blocked_by": "issue:93",
                         "rationale": "Duplicate edge again.",
                     },
                 ],
@@ -673,7 +680,7 @@ edges:
         ),
         (
             {
-                "schema_version": 2,
+                "schema_version": 3,
                 "capabilities": [
                     {
                         "id": "cap-unused",
@@ -712,7 +719,7 @@ def test_formal_edges_require_a_qualified_witness(tmp_path: Path) -> None:
     missing = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities: []
 edges:
   - source: fep-001
@@ -727,7 +734,7 @@ edges:
     malformed = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities: []
 edges:
   - source: fep-001
@@ -743,7 +750,7 @@ edges:
     pairing_without_witness = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities: []
 edges:
   - source: fep-001
@@ -760,12 +767,13 @@ def test_nonformal_edges_reject_witness_fields(tmp_path: Path) -> None:
     path = _write_graph(
         tmp_path,
         """\
-schema_version: 2
+schema_version: 3
 capabilities: []
 edges:
   - source: fep-001
     target: fep-002
     kind: conceptual
+    blocked_by: issue:93
     rationale: Conceptual adjacency is not compiled evidence.
     witness: Example.notAllowed
 """,

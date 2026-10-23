@@ -74,7 +74,7 @@ SOURCE_EXCLUDES = frozenset(
 # Generated appendices that carry no ``{{placeholder}}`` and therefore need no
 # substitution, but must still reach the rendered tree. They were previously
 # only excluded, so an injected-tree render dropped the entire 155-topic
-# formalism catalogue -- roughly two thirds of the paper -- with no diagnostic.
+# formalism catalog -- roughly two thirds of the paper -- with no diagnostic.
 VERBATIM_SOURCES: tuple[str, ...] = ("09z_unified_formalism_catalogue.md",)
 # The template copies these metadata inputs beside the rendered chapters.
 # Preserve their raw bytes; preamble.md is not an authored chapter, and none

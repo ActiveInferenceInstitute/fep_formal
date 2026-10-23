@@ -153,7 +153,7 @@ def is_lean_qualified_name(value: str) -> bool:
 
 
 def lean_module_source(source: str) -> str:
-    """Preserve a legacy source's public surface under Lean's module system.
+    """Preserve a module-less source's public surface under Lean's module system.
 
     Only command lines outside comments and strings are rewritten. Existing
     modules retain their declared visibility; theorem statements and proofs are

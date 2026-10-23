@@ -397,7 +397,7 @@ theorem dirichletPosterior_total (α : K → ℝ) (n : K → ℕ) :
   simp [dirichletPosterior, dirichletTotal, Finset.sum_add_distrib]
 
 omit [DecidableEq K] in
-/-- The Pólya predictive is the normalised posterior pseudo-count vector. -/
+/-- The Pólya predictive is the normalized posterior pseudo-count vector. -/
 theorem polyaPredictive_eq_posterior_normalised (α : K → ℝ) (n : K → ℕ) (k : K) :
     polyaPredictive α n k =
       dirichletPosterior α n k / ∑ j, dirichletPosterior α n j := by

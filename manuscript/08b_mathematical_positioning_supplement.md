@@ -43,7 +43,7 @@ family crosswalk and exact joined topic contracts are projected from canonical
 metadata and semantic records in the accompanying methods slice. Family
 domain labels give inherited editorial context, not a certification that each
 topic proves a result in every assigned domain. The grouping
-below explains the mathematical roles rather than introducing new catalogue
+below explains the mathematical roles rather than introducing new catalog
 families.
 
 | Subpart | Mathematical home and carrier | What connects it to FEP | Essential boundary |
@@ -217,7 +217,7 @@ The methods slice gives each family an explicit binary incidence vector over
 reviewed mathematical domains. Its Jaccard comparison is a deterministic
 retrieval aid. Equal vectors mean equal assigned domains at that coarse
 resolution; they do not mean equivalent theorem types. This is a feature
-representation, not an injective mathematical embedding of the catalogue.
+representation, not an injective mathematical embedding of the catalog.
 
 A future text embedding should freeze document units, exact source bytes,
 model/tokenizer revision, normalization, distance, and preprocessing. Evaluate
@@ -292,7 +292,7 @@ is read. The passports below select exact maintained results and expose the
 mathematical work each performs. The displayed statements are explanatory
 restatements of the named declarations, with carrier assumptions written in
 ordinary mathematical notation. They introduce no new canonical topic body,
-Lean theorem, native receipt, or semantic disposition. The generated catalogue
+Lean theorem, native receipt, or semantic disposition. The generated catalog
 appendix remains the authority for complete topic bodies; a rendered compile
 status remains governed by [@sec:quantitative_execution_metrics].
 
@@ -874,7 +874,7 @@ with coordinate order stated explicitly. A native inverse kernel is often
 unique only under predictive-almost-everywhere equivalence. Composition of
 Bayesian inverses must carry the intermediate prior induced by the first
 prediction; it is not ordinary inversion of a bijective state map. The
-measure-level compositions in the catalogue preserve these priors and
+measure-level compositions in the catalog preserve these priors and
 almost-everywhere qualifications.
 
 ### Quantifiers and clocks distinguish statistical results {#sec:math_quantifiers_clocks}
@@ -1038,7 +1038,7 @@ every linear functional. It does not require a smooth density or a strictly
 positive lower bound on the potential Hessian. The separately stated
 `cor:intro-transport` bounds $W_2(\nu,\mu)^2$ by $Ca^2H(\nu\mid\mu)$ for
 every $\nu\in\mathcal P_2(\mathbb R^n)$, with native relative entropy that
-can be infinite. The inspected catalogue has no linked Lean scope record
+can be infinite. The inspected catalog has no linked Lean scope record
 for this family. Both statements are compared as manuscript results.
 
 The paper's proof route is substantially more than Gaussian integration.
@@ -1331,7 +1331,7 @@ This is stability of a particular *representation* of laws by optimal maps.
 FEP's weighted-Dirac injection is a different representation, and its
 Gaussian mean-coordinate injection uses a different source and support.
 Neither already defines the Brenier map from a uniform convex source. A
-useful finite-law bridge would instead realize catalogue laws as atomic
+useful finite-law bridge would instead realize catalog laws as atomic
 targets inside a fixed compact $Y$, construct their semi-discrete transport
 maps, and compare the native target metric with a controlled map norm. Its
 proof obligations include existence, source-null uniqueness, normalization,
@@ -1557,7 +1557,7 @@ The upstream challenge configuration provides another useful pattern: select
 the challenge and solution modules, exact theorem names, and permitted axioms
 explicitly. A challenge file may intentionally contain proof holes because
 it is a specification. Acceptance instead concerns the solution closure and
-the trusted challenge definitions. Upstream catalogue review is marked
+the trusted challenge definitions. Upstream catalog review is marked
 unchecked in the inspected release. Here, the pinned metadata review does not
 assert that upstream solutions were compiled or compared.
 
@@ -1570,7 +1570,7 @@ assumption review, non-vacuity, qualified primary theorem, and authored
 relations for every topic. Existing `formal` and `formal_pairing` edges keep
 their distinct meanings; conceptual associations remain conceptual. Generated
 similarity never produces a proof edge. Maintained H2/H3 module scopes are
-listed separately from catalogue family classifications.
+listed separately from catalog family classifications.
 
 For a substantial integration candidate, use the following sequence:
 
@@ -1691,7 +1691,7 @@ an independently governed empirical or publication gate.
 
 A natural-language analysis should explain a theorem's logical interface
 before interpreting its scientific title. This is particularly important in
-a catalogue where a familiar phrase can name a finite proxy, a supplied
+a catalog where a familiar phrase can name a finite proxy, a supplied
 identity, or a native measure theorem. The task is to reconstruct what a
 reader may substitute into the declaration, what the declaration returns,
 and where that interpretation stops. A readable explanation is a separate

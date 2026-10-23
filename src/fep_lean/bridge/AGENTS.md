@@ -8,5 +8,5 @@ evaluation. `cli.py` adapts the existing `fep-lean` command.
 Never turn a passing comparison into native proof or execution provenance.
 Never silently re-pin sources, ignore deleted owners, or rewrite content under
 a digest-refresh flag. No import-time filesystem writes or provider calls.
-Old spec scripts are compatibility entry points; tests live in the package's
+Tests live in the package's
 ordinary pytest suite. Follow the parent package and repository contracts.

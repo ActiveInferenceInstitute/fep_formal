@@ -9,7 +9,7 @@ boundaries:
 - `formalism_atlas.py` projects canonical coverage into offline SVG and HTML;
 - `manuscript.py` builds variables and exact generated appendices;
 - `rendering.py` resolves manuscript variables without mutating sources;
-- `figures.py` creates deterministic catalogue figures; and
+- `figures.py` creates deterministic catalog figures; and
 - `reporter.py` writes hash-bound catalogue/full report bundles.
 
 The atlas consumes `build_formalism_coverage`; it never invents edges or infers
@@ -17,7 +17,7 @@ scientific dependency from imports. Use `write_formalism_atlas` to generate and
 `atlas_projection_drift` to validate the tracked views.
 
 The dashboard also consumes the coverage metrics, but its curves are numerical
-diagnostics rather than theorem evidence. Each registered catalogue witness
+diagnostics rather than theorem evidence. Each registered catalog witness
 owns typed equality, inequality, or predicate checks with per-check tolerances;
 a panel passes only when their conjunction and its boundary observation pass.
 Use `write_formal_kernel_dashboard` to generate the SVG/HTML pair and

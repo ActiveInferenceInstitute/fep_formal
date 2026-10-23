@@ -2,9 +2,11 @@
 # Canonical Lean bodies live in fep_lean.catalogue.bodies.
 schema_version: 2
 roster:
+
   first_id: fep-001
   last_id: fep-168
 families:
+
 - core-free-energy
 - core-active-inference
 - core-bayesian-mechanics
@@ -28,11 +30,13 @@ families:
 - standalone-efe-formalizations
 - geometric-mechanics-notation
 topics:
+
 - id: fep-001
   title: Variational Free Energy Bound
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
 - id: fep-002
@@ -40,6 +44,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
 - id: fep-003
@@ -47,6 +52,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - Data.ENNReal.Inv
   mathlib_status: real
 - id: fep-004
@@ -54,6 +60,7 @@ topics:
   area: InfoGeometry
   family: core-information-geometry
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-005
@@ -61,6 +68,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Data.Finset.Basic
   mathlib_status: real
 - id: fep-006
@@ -68,6 +76,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - MeasureTheory.MeasurableSpace.Basic
   mathlib_status: real
 - id: fep-007
@@ -75,6 +84,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-008
@@ -82,6 +92,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - Data.Finset.Basic
   - Order.Bounds.Basic
   mathlib_status: real
@@ -90,6 +101,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Probability.Independence.Conditional
   mathlib_status: real
 - id: fep-010
@@ -97,6 +109,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Probability.Kernel.Invariance
   mathlib_status: real
 - id: fep-011
@@ -104,6 +117,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Log.Basic
   mathlib_status: real
 - id: fep-012
@@ -111,6 +125,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   mathlib_status: real
 - id: fep-013
@@ -118,6 +133,7 @@ topics:
   area: Thermodynamics
   family: core-thermodynamics
   mathlib_modules:
+
   - Analysis.Calculus.Deriv.Mul
   mathlib_status: real
 - id: fep-014
@@ -125,6 +141,7 @@ topics:
   area: InfoGeometry
   family: core-information-geometry
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.ChainRule
   mathlib_status: real
 - id: fep-015
@@ -132,6 +149,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - MeasureTheory.Constructions.BorelSpace.Basic
   mathlib_status: real
 - id: fep-016
@@ -139,6 +157,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Gaussian.GaussianIntegral
   mathlib_status: real
 - id: fep-017
@@ -146,6 +165,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-018
@@ -153,6 +173,7 @@ topics:
   area: InfoGeometry
   family: core-information-geometry
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Trigonometric.Inverse
   mathlib_status: real
 - id: fep-019
@@ -160,6 +181,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
 - id: fep-020
@@ -167,6 +189,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Analysis.SpecificLimits.Normed
   mathlib_status: real
 - id: fep-021
@@ -174,6 +197,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - Data.ENNReal.Inv
   mathlib_status: real
 - id: fep-022
@@ -181,6 +205,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
 - id: fep-023
@@ -188,6 +213,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - MeasureTheory.Measure.MeasureSpace
   mathlib_status: real
 - id: fep-024
@@ -195,6 +221,7 @@ topics:
   area: InfoGeometry
   family: core-information-geometry
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
 - id: fep-025
@@ -202,6 +229,7 @@ topics:
   area: Thermodynamics
   family: core-thermodynamics
   mathlib_modules:
+
   - LinearAlgebra.Matrix.Notation
   mathlib_status: real
 - id: fep-026
@@ -209,6 +237,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Log.Basic
   mathlib_status: real
 - id: fep-027
@@ -216,6 +245,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
 - id: fep-028
@@ -223,6 +253,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - Data.Finset.Basic
   - Analysis.SpecialFunctions.Exp
   mathlib_status: real
@@ -231,6 +262,7 @@ topics:
   area: InfoGeometry
   family: core-information-geometry
   mathlib_modules:
+
   - Analysis.Convex.Basic
   mathlib_status: real
 - id: fep-030
@@ -238,6 +270,7 @@ topics:
   area: Thermodynamics
   family: core-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.BinaryEntropy
   mathlib_status: real
 - id: fep-031
@@ -245,6 +278,7 @@ topics:
   area: Thermodynamics
   family: core-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   mathlib_status: real
 - id: fep-032
@@ -252,6 +286,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Analysis.SpecificLimits.Normed
   mathlib_status: real
 - id: fep-033
@@ -259,6 +294,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - Data.ENNReal.Inv
   mathlib_status: real
 - id: fep-034
@@ -266,6 +302,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-035
@@ -273,6 +310,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Analysis.Convex.SpecificFunctions.Basic
   mathlib_status: real
 - id: fep-036
@@ -280,6 +318,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Probability.ProbabilityMassFunction.Binomial
   mathlib_status: real
 - id: fep-037
@@ -287,6 +326,7 @@ topics:
   area: Thermodynamics
   family: core-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecificLimits.Normed
   mathlib_status: real
 - id: fep-038
@@ -294,6 +334,7 @@ topics:
   area: InfoGeometry
   family: core-information-geometry
   mathlib_modules:
+
   - Analysis.Calculus.Deriv.Basic
   mathlib_status: real
 - id: fep-039
@@ -301,6 +342,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-040
@@ -308,6 +350,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Probability.Distributions.Gaussian.Real
   mathlib_status: real
 - id: fep-041
@@ -315,6 +358,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
 - id: fep-042
@@ -322,6 +366,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Data.List.Count
   mathlib_status: real
 - id: fep-043
@@ -329,6 +374,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Analysis.Calculus.LocalExtr.Basic
   mathlib_status: real
 - id: fep-044
@@ -336,6 +382,7 @@ topics:
   area: InfoGeometry
   family: core-information-geometry
   mathlib_modules:
+
   - Data.Real.Sqrt
   mathlib_status: real
 - id: fep-045
@@ -343,6 +390,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-046
@@ -350,6 +398,7 @@ topics:
   area: BayesianMechanics
   family: core-bayesian-mechanics
   mathlib_modules:
+
   - Algebra.BigOperators.Ring.List
   mathlib_status: real
 - id: fep-047
@@ -357,6 +406,7 @@ topics:
   area: ActiveInference
   family: core-active-inference
   mathlib_modules:
+
   - Data.Matrix.Mul
   mathlib_status: real
 - id: fep-048
@@ -364,6 +414,7 @@ topics:
   area: FEP
   family: core-free-energy
   mathlib_modules:
+
   - Topology.MetricSpace.Contracting
   - Order.Monotone.Basic
   mathlib_status: real
@@ -372,6 +423,7 @@ topics:
   area: Thermodynamics
   family: core-thermodynamics
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-050
@@ -379,6 +431,7 @@ topics:
   area: Thermodynamics
   family: core-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.BinaryEntropy
   mathlib_status: real
 - id: fep-051
@@ -386,6 +439,7 @@ topics:
   area: BayesianMechanics
   family: measure-bayesian-inversion
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-052
@@ -393,6 +447,7 @@ topics:
   area: BayesianMechanics
   family: measure-bayesian-inversion
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-053
@@ -400,6 +455,7 @@ topics:
   area: BayesianMechanics
   family: measure-bayesian-inversion
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-054
@@ -407,6 +463,7 @@ topics:
   area: BayesianMechanics
   family: measure-bayesian-inversion
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-055
@@ -414,6 +471,7 @@ topics:
   area: BayesianMechanics
   family: measure-bayesian-inversion
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   - Probability.Kernel.Posterior
   mathlib_status: real
@@ -422,6 +480,7 @@ topics:
   area: BayesianMechanics
   family: measure-bayesian-inversion
   mathlib_modules:
+
   - Probability.Kernel.Disintegration.Integral
   mathlib_status: real
 - id: fep-057
@@ -429,6 +488,7 @@ topics:
   area: BayesianMechanics
   family: measure-bayesian-inversion
   mathlib_modules:
+
   - Probability.Kernel.Disintegration.Integral
   mathlib_status: real
 - id: fep-058
@@ -436,6 +496,7 @@ topics:
   area: FEP
   family: variational-duality-and-information-bounds
   mathlib_modules:
+
   - Analysis.Convex.SpecificFunctions.Basic
   mathlib_status: real
 - id: fep-059
@@ -443,6 +504,7 @@ topics:
   area: FEP
   family: variational-duality-and-information-bounds
   mathlib_modules:
+
   - Analysis.Convex.SpecificFunctions.Basic
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
@@ -451,6 +513,7 @@ topics:
   area: FEP
   family: variational-duality-and-information-bounds
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.ChainRule
   mathlib_status: real
 - id: fep-061
@@ -458,6 +521,7 @@ topics:
   area: FEP
   family: variational-duality-and-information-bounds
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
 - id: fep-062
@@ -465,6 +529,7 @@ topics:
   area: FEP
   family: variational-duality-and-information-bounds
   mathlib_modules:
+
   - Analysis.Convex.SpecificFunctions.Basic
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -473,6 +538,7 @@ topics:
   area: FEP
   family: variational-duality-and-information-bounds
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.ChainRule
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
@@ -481,6 +547,7 @@ topics:
   area: FEP
   family: variational-duality-and-information-bounds
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.Basic
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
@@ -489,6 +556,7 @@ topics:
   area: ActiveInference
   family: control-and-planning-as-inference
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-066
@@ -496,6 +564,7 @@ topics:
   area: ActiveInference
   family: control-and-planning-as-inference
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-067
@@ -503,6 +572,7 @@ topics:
   area: ActiveInference
   family: control-and-planning-as-inference
   mathlib_modules:
+
   - Data.Finset.Basic
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
@@ -511,6 +581,7 @@ topics:
   area: ActiveInference
   family: control-and-planning-as-inference
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -519,6 +590,7 @@ topics:
   area: ActiveInference
   family: control-and-planning-as-inference
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -527,6 +599,7 @@ topics:
   area: ActiveInference
   family: control-and-planning-as-inference
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - Data.Finset.Basic
   mathlib_status: real
@@ -535,6 +608,7 @@ topics:
   area: ActiveInference
   family: control-and-planning-as-inference
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-072
@@ -542,6 +616,7 @@ topics:
   area: BayesianMechanics
   family: temporal-and-hierarchical-inference
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-073
@@ -549,6 +624,7 @@ topics:
   area: BayesianMechanics
   family: temporal-and-hierarchical-inference
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-074
@@ -556,6 +632,7 @@ topics:
   area: BayesianMechanics
   family: temporal-and-hierarchical-inference
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-075
@@ -563,6 +640,7 @@ topics:
   area: BayesianMechanics
   family: temporal-and-hierarchical-inference
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-076
@@ -570,6 +648,7 @@ topics:
   area: BayesianMechanics
   family: temporal-and-hierarchical-inference
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - Data.Finset.Basic
   mathlib_status: real
@@ -578,6 +657,7 @@ topics:
   area: BayesianMechanics
   family: temporal-and-hierarchical-inference
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
 - id: fep-078
@@ -585,6 +665,7 @@ topics:
   area: BayesianMechanics
   family: temporal-and-hierarchical-inference
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -593,6 +674,7 @@ topics:
   area: BayesianMechanics
   family: causal-blankets-and-interventions
   mathlib_modules:
+
   - Probability.Independence.Conditional
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
@@ -601,6 +683,7 @@ topics:
   area: BayesianMechanics
   family: causal-blankets-and-interventions
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-081
@@ -608,6 +691,7 @@ topics:
   area: BayesianMechanics
   family: causal-blankets-and-interventions
   mathlib_modules:
+
   - Probability.Independence.Conditional
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
@@ -616,6 +700,7 @@ topics:
   area: BayesianMechanics
   family: causal-blankets-and-interventions
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-083
@@ -623,6 +708,7 @@ topics:
   area: BayesianMechanics
   family: causal-blankets-and-interventions
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
 - id: fep-084
@@ -630,6 +716,7 @@ topics:
   area: BayesianMechanics
   family: causal-blankets-and-interventions
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-085
@@ -637,6 +724,7 @@ topics:
   area: BayesianMechanics
   family: causal-blankets-and-interventions
   mathlib_modules:
+
   - Probability.Independence.Conditional
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
@@ -645,6 +733,7 @@ topics:
   area: FEP
   family: predictive-coding-and-generalized-coordinates
   mathlib_modules:
+
   - Analysis.Calculus.Deriv.Basic
   mathlib_status: real
 - id: fep-087
@@ -652,6 +741,7 @@ topics:
   area: FEP
   family: predictive-coding-and-generalized-coordinates
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-088
@@ -659,6 +749,7 @@ topics:
   area: FEP
   family: predictive-coding-and-generalized-coordinates
   mathlib_modules:
+
   - Analysis.Calculus.Deriv.Basic
   mathlib_status: real
 - id: fep-089
@@ -666,6 +757,7 @@ topics:
   area: FEP
   family: predictive-coding-and-generalized-coordinates
   mathlib_modules:
+
   - Data.Finsupp.Basic
   mathlib_status: real
 - id: fep-090
@@ -673,6 +765,7 @@ topics:
   area: FEP
   family: predictive-coding-and-generalized-coordinates
   mathlib_modules:
+
   - Data.Finsupp.Basic
   - Analysis.Calculus.Deriv.Basic
   mathlib_status: real
@@ -681,6 +774,7 @@ topics:
   area: FEP
   family: predictive-coding-and-generalized-coordinates
   mathlib_modules:
+
   - Analysis.Calculus.Deriv.Basic
   mathlib_status: real
 - id: fep-092
@@ -688,6 +782,7 @@ topics:
   area: FEP
   family: predictive-coding-and-generalized-coordinates
   mathlib_modules:
+
   - Analysis.SpecificLimits.Normed
   mathlib_status: real
 - id: fep-093
@@ -695,6 +790,7 @@ topics:
   area: Thermodynamics
   family: path-space-stochastic-thermodynamics
   mathlib_modules:
+
   - Probability.Kernel.Invariance
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -703,6 +799,7 @@ topics:
   area: Thermodynamics
   family: path-space-stochastic-thermodynamics
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
 - id: fep-095
@@ -710,6 +807,7 @@ topics:
   area: Thermodynamics
   family: path-space-stochastic-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - Probability.Kernel.Invariance
   mathlib_status: real
@@ -718,6 +816,7 @@ topics:
   area: Thermodynamics
   family: path-space-stochastic-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -726,6 +825,7 @@ topics:
   area: Thermodynamics
   family: path-space-stochastic-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -734,6 +834,7 @@ topics:
   area: Thermodynamics
   family: path-space-stochastic-thermodynamics
   mathlib_modules:
+
   - Probability.Kernel.Invariance
   - LinearAlgebra.Matrix.Notation
   mathlib_status: real
@@ -742,6 +843,7 @@ topics:
   area: Thermodynamics
   family: path-space-stochastic-thermodynamics
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.ChainRule
   - Probability.Kernel.Invariance
   mathlib_status: real
@@ -750,6 +852,7 @@ topics:
   area: InfoGeometry
   family: information-geometry-and-geometric-optimization
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   - LinearAlgebra.Matrix.Notation
   mathlib_status: real
@@ -758,6 +861,7 @@ topics:
   area: InfoGeometry
   family: information-geometry-and-geometric-optimization
   mathlib_modules:
+
   - Data.Matrix.Mul
   - LinearAlgebra.Matrix.Notation
   mathlib_status: real
@@ -766,6 +870,7 @@ topics:
   area: InfoGeometry
   family: information-geometry-and-geometric-optimization
   mathlib_modules:
+
   - Analysis.InnerProductSpace.Basic
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -774,6 +879,7 @@ topics:
   area: InfoGeometry
   family: information-geometry-and-geometric-optimization
   mathlib_modules:
+
   - LinearAlgebra.Matrix.NonsingularInverse
   - Data.Matrix.Invertible
   mathlib_status: real
@@ -782,6 +888,7 @@ topics:
   area: InfoGeometry
   family: information-geometry-and-geometric-optimization
   mathlib_modules:
+
   - Analysis.Convex.Basic
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -790,6 +897,7 @@ topics:
   area: InfoGeometry
   family: information-geometry-and-geometric-optimization
   mathlib_modules:
+
   - Analysis.Convex.Basic
   - LinearAlgebra.AffineSpace.AffineSubspace.Basic
   mathlib_status: real
@@ -798,6 +906,7 @@ topics:
   area: InfoGeometry
   family: information-geometry-and-geometric-optimization
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   - LinearAlgebra.Matrix.Notation
   mathlib_status: real
@@ -806,6 +915,7 @@ topics:
   area: ActiveInference
   family: collective-and-multiagent-active-inference
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset.Basic
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
@@ -814,6 +924,7 @@ topics:
   area: ActiveInference
   family: collective-and-multiagent-active-inference
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.ChainRule
   - Algebra.BigOperators.Group.Finset.Basic
   mathlib_status: real
@@ -822,6 +933,7 @@ topics:
   area: ActiveInference
   family: collective-and-multiagent-active-inference
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.ChainRule
   - Algebra.BigOperators.Group.Finset.Basic
   mathlib_status: real
@@ -830,6 +942,7 @@ topics:
   area: ActiveInference
   family: collective-and-multiagent-active-inference
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset.Basic
   - Analysis.SpecialFunctions.Log.Basic
   mathlib_status: real
@@ -838,6 +951,7 @@ topics:
   area: ActiveInference
   family: collective-and-multiagent-active-inference
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset.Basic
   mathlib_status: real
 - id: fep-112
@@ -845,6 +959,7 @@ topics:
   area: ActiveInference
   family: collective-and-multiagent-active-inference
   mathlib_modules:
+
   - Analysis.SpecificLimits.Normed
   - Topology.MetricSpace.Contracting
   mathlib_status: real
@@ -853,6 +968,7 @@ topics:
   area: ActiveInference
   family: collective-and-multiagent-active-inference
   mathlib_modules:
+
   - Analysis.SpecificLimits.Normed
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
@@ -861,6 +977,7 @@ topics:
   area: FEP
   family: learning-concentration-and-model-evidence
   mathlib_modules:
+
   - Probability.Moments.SubGaussian
   mathlib_status: real
 - id: fep-115
@@ -868,6 +985,7 @@ topics:
   area: FEP
   family: learning-concentration-and-model-evidence
   mathlib_modules:
+
   - MeasureTheory.Measure.Real
   - Algebra.BigOperators.Group.Finset.Basic
   mathlib_status: real
@@ -876,6 +994,7 @@ topics:
   area: FEP
   family: learning-concentration-and-model-evidence
   mathlib_modules:
+
   - Probability.Moments.SubGaussian
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
@@ -884,6 +1003,7 @@ topics:
   area: FEP
   family: learning-concentration-and-model-evidence
   mathlib_modules:
+
   - Probability.Kernel.Posterior
   mathlib_status: real
 - id: fep-118
@@ -891,6 +1011,7 @@ topics:
   area: FEP
   family: learning-concentration-and-model-evidence
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - Analysis.SpecialFunctions.Pow.Real
   mathlib_status: real
@@ -899,6 +1020,7 @@ topics:
   area: FEP
   family: learning-concentration-and-model-evidence
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Log.Basic
   - Algebra.BigOperators.Group.Finset.Basic
   mathlib_status: real
@@ -907,6 +1029,7 @@ topics:
   area: FEP
   family: learning-concentration-and-model-evidence
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Log.Basic
   mathlib_status: real
 - id: fep-121
@@ -914,6 +1037,7 @@ topics:
   area: FEP
   family: finite-sample-risk-and-calibration
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-122
@@ -921,6 +1045,7 @@ topics:
   area: FEP
   family: finite-sample-risk-and-calibration
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Pow.Real
   mathlib_status: real
 - id: fep-123
@@ -928,6 +1053,7 @@ topics:
   area: FEP
   family: finite-sample-risk-and-calibration
   mathlib_modules:
+
   - Algebra.Order.AbsoluteValue.Basic
   mathlib_status: real
 - id: fep-124
@@ -935,6 +1061,7 @@ topics:
   area: FEP
   family: finite-sample-risk-and-calibration
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-125
@@ -942,6 +1069,7 @@ topics:
   area: FEP
   family: finite-sample-risk-and-calibration
   mathlib_modules:
+
   - Algebra.Ring.Basic
   mathlib_status: real
 - id: fep-126
@@ -949,6 +1077,7 @@ topics:
   area: FEP
   family: finite-sample-risk-and-calibration
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-127
@@ -956,6 +1085,7 @@ topics:
   area: FEP
   family: finite-sample-risk-and-calibration
   mathlib_modules:
+
   - Probability.Moments.SubGaussian
   mathlib_status: real
 - id: fep-128
@@ -963,6 +1093,7 @@ topics:
   area: ActiveInference
   family: closed-loop-policy-trees-and-efe
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-129
@@ -970,6 +1101,7 @@ topics:
   area: ActiveInference
   family: closed-loop-policy-trees-and-efe
   mathlib_modules:
+
   - Data.Finset.Order
   mathlib_status: real
 - id: fep-130
@@ -977,6 +1109,7 @@ topics:
   area: ActiveInference
   family: closed-loop-policy-trees-and-efe
   mathlib_modules:
+
   - Data.Fintype.Order
   mathlib_status: real
 - id: fep-131
@@ -984,6 +1117,7 @@ topics:
   area: ActiveInference
   family: closed-loop-policy-trees-and-efe
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-132
@@ -991,6 +1125,7 @@ topics:
   area: ActiveInference
   family: closed-loop-policy-trees-and-efe
   mathlib_modules:
+
   - Data.Finset.Order
   mathlib_status: real
 - id: fep-133
@@ -998,6 +1133,7 @@ topics:
   area: ActiveInference
   family: closed-loop-policy-trees-and-efe
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.ChainRule
   mathlib_status: real
 - id: fep-134
@@ -1005,6 +1141,7 @@ topics:
   area: ActiveInference
   family: closed-loop-policy-trees-and-efe
   mathlib_modules:
+
   - Data.Fintype.Order
   mathlib_status: real
 - id: fep-135
@@ -1012,6 +1149,7 @@ topics:
   area: BayesianMechanics
   family: finite-to-native-blanket-transfer
   mathlib_modules:
+
   - MeasureTheory.Measure.WithDensityFinite
   mathlib_status: real
 - id: fep-136
@@ -1019,6 +1157,7 @@ topics:
   area: BayesianMechanics
   family: finite-to-native-blanket-transfer
   mathlib_modules:
+
   - MeasureTheory.Integral.Bochner.Basic
   mathlib_status: real
 - id: fep-137
@@ -1026,6 +1165,7 @@ topics:
   area: BayesianMechanics
   family: finite-to-native-blanket-transfer
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   mathlib_status: real
 - id: fep-138
@@ -1033,6 +1173,7 @@ topics:
   area: BayesianMechanics
   family: finite-to-native-blanket-transfer
   mathlib_modules:
+
   - MeasureTheory.Constructions.Pi
   mathlib_status: real
 - id: fep-139
@@ -1040,6 +1181,7 @@ topics:
   area: BayesianMechanics
   family: finite-to-native-blanket-transfer
   mathlib_modules:
+
   - Probability.Independence.Conditional
   - Probability.Kernel.CondDistrib
   mathlib_status: real
@@ -1048,6 +1190,7 @@ topics:
   area: BayesianMechanics
   family: finite-to-native-blanket-transfer
   mathlib_modules:
+
   - Probability.Independence.Conditional
   mathlib_status: real
 - id: fep-141
@@ -1055,6 +1198,7 @@ topics:
   area: BayesianMechanics
   family: finite-to-native-blanket-transfer
   mathlib_modules:
+
   - Probability.Kernel.Composition.MeasureComp
   - Probability.Independence.Conditional
   mathlib_status: real
@@ -1063,6 +1207,7 @@ topics:
   area: InfoGeometry
   family: finite-exponential-family-dual-geometry
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   mathlib_status: real
 - id: fep-143
@@ -1070,6 +1215,7 @@ topics:
   area: InfoGeometry
   family: finite-exponential-family-dual-geometry
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Log.Basic
   mathlib_status: real
 - id: fep-144
@@ -1077,6 +1223,7 @@ topics:
   area: InfoGeometry
   family: finite-exponential-family-dual-geometry
   mathlib_modules:
+
   - Analysis.SpecialFunctions.ExpDeriv
   mathlib_status: real
 - id: fep-145
@@ -1084,6 +1231,7 @@ topics:
   area: InfoGeometry
   family: finite-exponential-family-dual-geometry
   mathlib_modules:
+
   - Algebra.Order.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-146
@@ -1091,6 +1239,7 @@ topics:
   area: InfoGeometry
   family: finite-exponential-family-dual-geometry
   mathlib_modules:
+
   - Analysis.Calculus.Deriv.Basic
   mathlib_status: real
 - id: fep-147
@@ -1098,6 +1247,7 @@ topics:
   area: InfoGeometry
   family: finite-exponential-family-dual-geometry
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
 - id: fep-148
@@ -1105,6 +1255,7 @@ topics:
   area: InfoGeometry
   family: finite-exponential-family-dual-geometry
   mathlib_modules:
+
   - Analysis.Calculus.Deriv.Monotone
   mathlib_status: real
 - id: fep-149
@@ -1112,6 +1263,7 @@ topics:
   area: Thermodynamics
   family: two-state-continuous-time-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   mathlib_status: real
 - id: fep-150
@@ -1119,6 +1271,7 @@ topics:
   area: Thermodynamics
   family: two-state-continuous-time-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   mathlib_status: real
 - id: fep-151
@@ -1126,6 +1279,7 @@ topics:
   area: Thermodynamics
   family: two-state-continuous-time-thermodynamics
   mathlib_modules:
+
   - LinearAlgebra.Matrix.Multiplication
   mathlib_status: real
 - id: fep-152
@@ -1133,6 +1287,7 @@ topics:
   area: Thermodynamics
   family: two-state-continuous-time-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.ExpDeriv
   - LinearAlgebra.Matrix.Multiplication
   mathlib_status: real
@@ -1141,6 +1296,7 @@ topics:
   area: Thermodynamics
   family: two-state-continuous-time-thermodynamics
   mathlib_modules:
+
   - Probability.Kernel.Invariance
   mathlib_status: real
 - id: fep-154
@@ -1148,6 +1304,7 @@ topics:
   area: Thermodynamics
   family: two-state-continuous-time-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   mathlib_status: real
 - id: fep-155
@@ -1155,6 +1312,7 @@ topics:
   area: Thermodynamics
   family: two-state-continuous-time-thermodynamics
   mathlib_modules:
+
   - Analysis.SpecialFunctions.ExpDeriv
   mathlib_status: real
 - id: fep-156
@@ -1162,6 +1320,7 @@ topics:
   area: ActiveInference
   family: standalone-efe-formalizations
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Exp
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
@@ -1170,6 +1329,7 @@ topics:
   area: ActiveInference
   family: standalone-efe-formalizations
   mathlib_modules:
+
   - InformationTheory.KullbackLeibler.ChainRule
   - Probability.Kernel.Posterior
   mathlib_status: real
@@ -1178,6 +1338,7 @@ topics:
   area: ActiveInference
   family: standalone-efe-formalizations
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Log.Basic
   - InformationTheory.KullbackLeibler.Basic
   mathlib_status: real
@@ -1186,6 +1347,7 @@ topics:
   area: ActiveInference
   family: standalone-efe-formalizations
   mathlib_modules:
+
   - Analysis.SpecialFunctions.ExpDeriv
   - Probability.Kernel.Invariance
   mathlib_status: real
@@ -1194,6 +1356,7 @@ topics:
   area: ActiveInference
   family: standalone-efe-formalizations
   mathlib_modules:
+
   - Analysis.SpecialFunctions.Log.Basic
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
@@ -1202,6 +1365,7 @@ topics:
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-162
@@ -1209,6 +1373,7 @@ topics:
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-163
@@ -1216,6 +1381,7 @@ topics:
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-164
@@ -1223,6 +1389,7 @@ topics:
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-165
@@ -1230,6 +1397,7 @@ topics:
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-166
@@ -1237,6 +1405,7 @@ topics:
   area: ActiveInference
   family: standalone-efe-formalizations
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-167
@@ -1244,12 +1413,14 @@ topics:
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-168
-  title: Quantitative Control of the Uncancelled Divergence Remainder
+  title: Quantitative Control of the Uncanceled Divergence Remainder
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:
+
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real

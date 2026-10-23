@@ -146,7 +146,7 @@ def _selected_topic_ids(
     result: Any,
     rows: list[dict[str, Any]],
 ) -> list[str]:
-    """Resolve the exact ordered selection from the pipeline's catalogue stage."""
+    """Resolve the exact ordered selection from the pipeline's catalog stage."""
     catalogue_ids = [topic.id for topic in catalogue.topics]
     stage_ids: list[str] | None = None
     for stage in getattr(result, "stages", []):
@@ -170,14 +170,14 @@ def _selected_topic_ids(
     unknown = sorted(set(selected) - set(catalogue_ids))
     if unknown:
         raise ValueError(
-            "selected report topic IDs are absent from the catalogue: "
+            "selected report topic IDs are absent from the catalog: "
             + ", ".join(unknown)
         )
     canonical_order = [topic_id for topic_id in catalogue_ids if topic_id in selected]
     if selected != canonical_order:
-        raise ValueError("selected report topic IDs must preserve catalogue order")
+        raise ValueError("selected report topic IDs must preserve catalog order")
     if rows and row_ids != selected:
-        raise ValueError("report topic rows must equal the selected catalogue topics")
+        raise ValueError("report topic rows must equal the selected catalog topics")
     return selected
 
 
@@ -192,7 +192,7 @@ def _bind_canonical_topic_evidence(
         row = dict(raw)
         topic_id = row.get("topic_id")
         if not isinstance(topic_id, str) or topic_id not in by_id:
-            raise ValueError(f"report topic is absent from the catalogue: {topic_id!r}")
+            raise ValueError(f"report topic is absent from the catalog: {topic_id!r}")
         canonical = by_id[topic_id].lean_sketch
         final = row.get("final_lean_sketch")
         final_source = final if isinstance(final, str) else ""
@@ -448,7 +448,7 @@ def _validate_summary_header(
                 "summary validation failed_count must be a non-negative integer"
             )
     if not isinstance(summary.get("catalogue"), dict):
-        errors.append("summary catalogue must be an object")
+        errors.append("summary catalog must be an object")
     if not isinstance(summary.get("stats"), dict):
         errors.append("summary stats must be an object")
     if summary.get("owner_manifest_version") != OWNER_MANIFEST_VERSION:
@@ -745,7 +745,7 @@ def _validate_run_manifest(
     if run_manifest.get("selected_topics") != facts.selected_topics:
         errors.append("summary and run manifest selected-topic counts disagree")
     if run_manifest.get("live_catalogue_topics") != facts.live_catalogue_topics:
-        errors.append("summary and run manifest live-catalogue counts disagree")
+        errors.append("summary and run manifest live-catalog counts disagree")
     if run_manifest.get("selected_topic_ids") != facts.selected_topic_ids:
         errors.append("summary and run manifest selected-topic IDs disagree")
     if run_manifest.get("selection") != summary_payload.get("selection"):
@@ -824,7 +824,7 @@ def _validate_topic_agreement(facts: _ReceiptFacts) -> tuple[str, ...]:
     if facts.mode == "full" and facts.summary_ids != facts.selected_topic_ids:
         errors.append("full-mode summary topic rows do not match selected topic IDs")
     if facts.mode == "catalogue" and facts.summary_rows:
-        errors.append("catalogue-mode summary must not contain verification topic rows")
+        errors.append("catalog-mode summary must not contain verification topic rows")
     if len(facts.run_rows) != expected_row_count:
         errors.append("run manifest topic rows do not match the mode contract")
     if facts.verification_ids != facts.summary_ids[:expected_row_count]:
@@ -928,7 +928,7 @@ def _validate_derived_summary(
     if facts.verified_topics != expected_verified:
         errors.append("summary verified_topics disagrees with clean topic rows")
     if facts.mode == "catalogue" and facts.verified_topics != 0:
-        errors.append("catalogue mode cannot report verified topics")
+        errors.append("catalog mode cannot report verified topics")
 
     summary_stages = (summary or {}).get("stages")
     summary_stages = summary_stages if isinstance(summary_stages, list) else []
@@ -948,7 +948,7 @@ def _validate_derived_summary(
 def _validate_catalogue_completion(
     summary: dict[str, Any] | None,
 ) -> tuple[str, ...]:
-    """Enforce the completion policy for a complete catalogue-mode receipt."""
+    """Enforce the completion policy for a complete catalog-mode receipt."""
     errors: list[str] = []
     catalogue_validation = (summary or {}).get("validation")
     catalogue_validation = (
@@ -961,21 +961,21 @@ def _validate_catalogue_completion(
     ]
     if catalogue_check_names != list(CATALOGUE_VALIDATION_CHECK_NAMES):
         errors.append(
-            "complete catalogue-mode environment checks do not match the required policy"
+            "complete catalog-mode environment checks do not match the required policy"
         )
     if (
         catalogue_validation.get("status") != "ok"
         or type(catalogue_validation.get("failed_count")) is not int
         or catalogue_validation.get("failed_count") != 0
     ):
-        errors.append("complete catalogue-mode environment validation must be clean")
+        errors.append("complete catalog-mode environment validation must be clean")
     if any(
         not isinstance(check, dict)
         or check.get("ok") is not True
         or not isinstance(check.get("message"), str)
         for check in catalogue_checks
     ):
-        errors.append("complete catalogue-mode environment checks must be true")
+        errors.append("complete catalog-mode environment checks must be true")
     catalogue_capabilities = (summary or {}).get("capabilities")
     catalogue_capabilities = (
         catalogue_capabilities if isinstance(catalogue_capabilities, dict) else {}
@@ -987,17 +987,17 @@ def _validate_catalogue_completion(
     }
     if set(catalogue_capabilities) != expected_catalogue_capabilities:
         errors.append(
-            "complete catalogue-mode capabilities do not match the required policy"
+            "complete catalog-mode capabilities do not match the required policy"
         )
     if catalogue_capabilities.get("catalogue") is not True or (
         catalogue_capabilities.get("verification") is not False
     ):
-        errors.append("complete catalogue-mode capability values are inconsistent")
+        errors.append("complete catalog-mode capability values are inconsistent")
     if any(
         catalogue_capabilities.get(name) is not True
         for name in CATALOGUE_VALIDATION_CHECK_NAMES
     ):
-        errors.append("complete catalogue-mode contains a failed capability")
+        errors.append("complete catalog-mode contains a failed capability")
     catalogue_stages = (summary or {}).get("stages")
     catalogue_stages = catalogue_stages if isinstance(catalogue_stages, list) else []
     expected_catalogue_stage_statuses = (
@@ -1011,13 +1011,11 @@ def _validate_catalogue_completion(
         for stage in catalogue_stages
         if isinstance(stage, dict)
     ] != list(expected_catalogue_stage_statuses):
-        errors.append(
-            "complete catalogue-mode receipt has inconsistent pipeline stages"
-        )
+        errors.append("complete catalog-mode receipt has inconsistent pipeline stages")
     if (summary or {}).get("status") != "ok" or (summary or {}).get(
         "failure_reason"
     ) != "":
-        errors.append("complete catalogue-mode summary state is inconsistent")
+        errors.append("complete catalog-mode summary state is inconsistent")
     return tuple(errors)
 
 
@@ -1069,7 +1067,7 @@ def _validate_full_completion(
     if not isinstance(capabilities, dict):
         capabilities = {}
     if capabilities.get("catalogue") is not True:
-        errors.append("complete full-mode receipt must record catalogue capability")
+        errors.append("complete full-mode receipt must record catalog capability")
     if capabilities.get("verification") is not True:
         errors.append("complete full-mode receipt must record verification capability")
     if any(value is not True for value in capabilities.values()):
@@ -1322,7 +1320,7 @@ def _validate_live_binding(
     root: Path,
     facts: _ReceiptFacts,
 ) -> tuple[str, ...]:
-    """Recompute digests and catalogue contracts against the live owner tree.
+    """Recompute digests and catalog contracts against the live owner tree.
 
     A synthetic directory whose missing files merely hash as ``<missing>`` is
     structural evidence only and can never be claim-ready.
@@ -1367,36 +1365,36 @@ def _validate_live_binding(
         )
     except (OSError, TypeError, ValueError) as exc:
         facts.source_bound = False
-        errors.append(f"live catalogue cannot be loaded: {exc}")
+        errors.append(f"live catalog cannot be loaded: {exc}")
     else:
         live_ids = [topic.id for topic in live_catalogue.topics]
         if summary.get("live_catalogue_topics") != len(live_ids):
             facts.source_bound = False
             errors.append(
-                "summary live_catalogue_topics does not match the live catalogue"
+                "summary live_catalogue_topics does not match the live catalog"
             )
         if summary.get("roster_sha256") != topic_ids_sha256(live_ids):
             facts.source_bound = False
-            errors.append("summary roster_sha256 does not match the live catalogue")
+            errors.append("summary roster_sha256 does not match the live catalog")
         if summary.get("catalogue") != live_catalogue.summary():
             facts.source_bound = False
-            errors.append("summary catalogue does not match the live catalogue")
+            errors.append("summary catalog does not match the live catalog")
         live_selection = summary.get("selection")
         live_selection = live_selection if isinstance(live_selection, dict) else {}
         if live_selection.get("topic_ids") != facts.selected_topic_ids:
             facts.source_bound = False
         if live_selection.get("total_catalogue_topics") != len(live_ids):
             facts.source_bound = False
-            errors.append("summary selection total does not match the live catalogue")
+            errors.append("summary selection total does not match the live catalog")
         if any(topic_id not in live_ids for topic_id in facts.selected_topic_ids):
             facts.source_bound = False
-            errors.append("summary selects a topic absent from the live catalogue")
+            errors.append("summary selects a topic absent from the live catalog")
         live_selected_order = [
             topic_id for topic_id in live_ids if topic_id in facts.selected_topic_ids
         ]
         if facts.selected_topic_ids != live_selected_order:
             facts.source_bound = False
-            errors.append("summary selection does not preserve live catalogue order")
+            errors.append("summary selection does not preserve live catalog order")
 
         live_by_id = {topic.id: topic for topic in live_catalogue.topics}
         for row in facts.summary_rows:
@@ -1410,12 +1408,12 @@ def _validate_live_binding(
             if row.get("canonical_source_sha256") != expected_canonical_digest:
                 facts.source_bound = False
                 errors.append(
-                    f"{live_topic_id} canonical source digest disagrees with the live catalogue"
+                    f"{live_topic_id} canonical source digest disagrees with the live catalog"
                 )
             if row.get("semantic_contract_sha256") != expected_contract_digest:
                 facts.source_bound = False
                 errors.append(
-                    f"{live_topic_id} semantic contract digest disagrees with the live catalogue"
+                    f"{live_topic_id} semantic contract digest disagrees with the live catalog"
                 )
             final_source = row.get("final_lean_sketch")
             if not isinstance(final_source, str) or not (
@@ -1852,7 +1850,7 @@ class Reporter:
             f"**Status:** `{getattr(result, 'status', 'unknown')}`",
             f"**Mode:** `{getattr(result, 'mode', 'full')}`",
             f"**Total Topics:** {selected_topics}",
-            f"**Catalogue Topics:** {len(catalogue.topics)}",
+            f"**Catalog Topics:** {len(catalogue.topics)}",
             f"**Verified topics:** {getattr(result, 'verified_topics', 0)}",
             f"**Hermes-refined Lean compiled directly:** {direct}/{len(rows) or 0}",
             f"**Final Lean compiled:** {final}/{len(rows) or 0}",
@@ -1863,7 +1861,12 @@ class Reporter:
             "| --- | --- | ---: |",
         ]
         for stage in getattr(result, "stages", []):
-            lines.append(f"| {stage.name} | {stage.status} | {stage.duration_s:.2f}s |")
+            stage_label = (
+                "Load Catalog" if stage.name == "Load Catalogue" else stage.name
+            )
+            lines.append(
+                f"| {stage_label} | {stage.status} | {stage.duration_s:.2f}s |"
+            )
         lines.extend(
             [
                 "",

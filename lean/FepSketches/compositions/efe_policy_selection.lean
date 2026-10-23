@@ -9,7 +9,7 @@ public import FepSketches.efe_policy_selection
 # EFE policy-selection topic compositions
 
 This bridge pairs the exact Boltzmann control-posterior minimization with the
-nearest catalogue EFE-convention endpoint.  The conjunction keeps the finite
+nearest catalog EFE-convention endpoint.  The conjunction keeps the finite
 policy-law carrier and the extended-nonnegative EFE convention separate
 instead of asserting an unsupported identification.
 -/

@@ -49,15 +49,15 @@ def test_axiom_parser_accepts_lean_hard_wrapped_output() -> None:
         " Classical.choice,\n"
         " Quot.sound]\n"
     )
-    assert formalism_audit._axioms_by_declaration(output) == {
-        declaration: ("propext", "Classical.choice", "Quot.sound")
-    }
+    parsed, errors = formalism_audit.parse_axiom_output(output)
+    assert errors == ()
+    assert parsed == {declaration: ("propext", "Classical.choice", "Quot.sound")}
 
 
 def test_axiom_parser_preserves_primed_declaration_names() -> None:
     declaration = "FEPComposed.posterior_predictive'"
     output = f"'{declaration}' depends on axioms: [propext]\n"
-    parsed, errors = formalism_audit._parse_axiom_output(
+    parsed, errors = formalism_audit.parse_axiom_output(
         output,
         expected=(declaration,),
     )
@@ -96,7 +96,7 @@ def test_axiom_parser_rejects_ambiguous_or_malformed_evidence(
     output: str,
     expected_error: str,
 ) -> None:
-    _, errors = formalism_audit._parse_axiom_output(output, expected=("FEP.a",))
+    _, errors = formalism_audit.parse_axiom_output(output, expected=("FEP.a",))
     assert expected_error in errors
 
 
@@ -270,7 +270,7 @@ def test_audit_rejects_stale_whole_catalogue_projection(
     result = formalism_audit.run_formalism_audit(tmp_path)
 
     assert result.complete is False
-    assert result.failure_reason == "whole-catalogue Lean projection is stale"
+    assert result.failure_reason == "whole-catalog Lean projection is stale"
 
 
 def test_declaration_evidence_records_preserve_semantic_source_roles(
@@ -464,7 +464,7 @@ def test_audit_receipt_validation_rejects_live_projection_drift(
 
     errors = formalism_audit.validate_formalism_audit_receipt(receipt, PROJECT_ROOT)
 
-    assert "live whole-catalogue Lean projection is stale" in errors
+    assert "live whole-catalog Lean projection is stale" in errors
     assert "live formal composition aggregate is stale" in errors
     assert "live formal Lean workspace projection is stale" in errors
 

@@ -1,4 +1,4 @@
-"""Typed, authored relations between catalogue topics and retained capabilities.
+"""Typed, authored relations between catalog topics and retained capabilities.
 
 Shared imports are generated implementation data; they are deliberately not
 treated as scientific or proof dependencies.  This module validates the
@@ -166,10 +166,9 @@ def load_formalism_graph(
     if (
         not isinstance(raw, dict)
         or type(raw.get("schema_version")) is not int
-        or raw["schema_version"] not in {2, 3}
+        or raw["schema_version"] != 3
     ):
-        raise SemanticValidationError("formalism graph schema_version must be 2 or 3")
-    schema_version = raw["schema_version"]
+        raise SemanticValidationError("formalism graph schema_version must be 3")
     unknown_top = set(raw) - {"schema_version", "capabilities", "edges"}
     if unknown_top:
         raise SemanticValidationError(
@@ -262,7 +261,7 @@ def load_formalism_graph(
             if kind.is_theorem_witnessed
             else _EDGE_BASE_FIELDS
         )
-        if schema_version == 3 and kind is EdgeKind.CONCEPTUAL:
+        if kind is EdgeKind.CONCEPTUAL:
             expected_edge_fields = expected_edge_fields | {"blocked_by"}
         _require_exact_fields(raw_edge, frozenset(expected_edge_fields), owner)
         source = _text(raw_edge, "source", owner)
@@ -294,7 +293,7 @@ def load_formalism_graph(
                     f"{owner}: witness must be a qualified declaration"
                 )
         obligation: str | None = None
-        if schema_version == 3 and kind is EdgeKind.CONCEPTUAL:
+        if kind is EdgeKind.CONCEPTUAL:
             obligation = _obligation_token(raw_edge, owner)
         edges.append(
             FormalismEdge(

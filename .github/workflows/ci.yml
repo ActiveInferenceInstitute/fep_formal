@@ -199,7 +199,6 @@ jobs:
         run: |
           uv run python -B specs/gnn-runner-execution/validate_retained.py
           uv run python -B specs/gnn-runner-execution/test_validate_retained.py
-          uv run ruff format --check specs/gnn-runner-execution
       - name: Generate and validate publication inputs
         run: |
           uv run fep-lean catalogue
@@ -236,7 +235,6 @@ jobs:
       - name: Check Python acceptance membership controls
         run: |
           uv run pytest specs/publication-browser-acceptance/test_validate_acceptance.py -q --no-cov
-          uv run ruff format --check specs/publication-browser-acceptance
       - name: Record the complete non-serial Python test selection
         run: uv run python specs/publication-browser-acceptance/validate_acceptance.py --collect output/python-acceptance-collection.json
       # A loadgroup isolates the two Chrome probes from each other, but not
@@ -334,12 +332,10 @@ jobs:
       - name: Check mathematical context and numerical visualization boundaries
         run: |
           uv run pytest specs/openai-math-methods/test_methods.py specs/openai-math-methods/test_upstream.py specs/openai-math-methods/test_visualization.py -q --no-cov
-          uv run ruff format --check specs/openai-math-methods
       - name: Check Cascadia experiment proof-impact boundaries
         run: |
           uv run pytest specs/cascadia-experiments/test_proof_impact.py -q --no-cov
           uv run pytest specs/cascadia-experiments/test_diagnostic_bounds.py -q --no-cov
-          uv run ruff format --check specs/cascadia-experiments
       - name: Upload coverage report
         if: always()
         uses: actions/upload-artifact@v7
@@ -383,7 +379,7 @@ jobs:
         if: ${{ !cancelled() }}
       - run: uv run ruff check .
         if: ${{ !cancelled() }}
-      - run: uv run ruff format --check src tests scripts docs
+      - run: uv run ruff format --check src tests scripts docs specs/openai-math-methods specs/cascadia-experiments specs/gnn-runner-execution specs/publication-browser-acceptance
         if: ${{ !cancelled() }}
       - run: git diff --check
         if: ${{ !cancelled() }}

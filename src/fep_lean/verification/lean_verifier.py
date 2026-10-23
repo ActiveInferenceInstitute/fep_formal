@@ -419,7 +419,7 @@ class LeanVerifier:
 
         This is a fast filesystem check — it does NOT invoke lake or lean. The
         check probes both the root ``Mathlib.olean`` and a small set of leaf
-        modules that are imported by virtually every catalogue sketch
+        modules that are imported by virtually every catalog sketch
         (``Mathlib.Data.Real.Basic`` for ``LE ℝ`` / ``OfNat ℝ`` instances and
         ``Mathlib.Algebra.Order.Ring.Basic`` for ordered-ring arithmetic). A
         partial cache that contains the root artifact but is missing these
@@ -445,9 +445,9 @@ class LeanVerifier:
                     f"{mathlib_root_olean}"
                 ),
             )
-        # Probe a small, stable set of leaf .olean files that the catalogue
+        # Probe a small, stable set of leaf .olean files that the catalog
         # sketches universally depend on. If any is missing, the cache is
-        # partial / corrupted and a full-catalogue batch will fail opaquely.
+        # partial / corrupted and a full-catalog batch will fail opaquely.
         required_leaves = (
             mathlib_build / "Mathlib" / "Data" / "Real" / "Basic.olean",
             mathlib_build / "Mathlib" / "Algebra" / "Order" / "Ring" / "Basic.olean",
@@ -679,7 +679,7 @@ class LeanVerifier:
         """Use the module system, adding Mathlib when imports are absent.
 
         The preamble imports the core Mathlib modules used by the FEP
-        catalogue, covering:
+        catalog, covering:
         - MeasureTheory (measures, integration, KL divergence)
         - Probability (kernels, conditional expectations, KL)
         - Analysis (special functions, inner products, derivatives)
@@ -725,7 +725,7 @@ class LeanVerifier:
 
 @dataclass(frozen=True)
 class CatalogueVerification:
-    """Catalogue result with the canonical CLI serialization and exit status.
+    """Catalog result with the canonical CLI serialization and exit status.
 
     Payload remains an ordinary result mapping; freezing this container does
     not promise deep immutability. No process starts during serialization.
@@ -761,7 +761,7 @@ def verify_catalogue(
     receipt_path: Path | None = None,
     fail_on_warnings: bool = False,
 ) -> CatalogueVerification:
-    """Compile catalogue sketches with Lean only, without Hermes or Gauss."""
+    """Compile catalog sketches with Lean only, without Hermes or Gauss."""
     from fep_lean.catalogue.topics import FEPTopicCatalogue
     from fep_lean.output.evidence import (
         build_native_lean_receipt,
@@ -781,7 +781,7 @@ def verify_catalogue(
         if area:
             topics = tuple(topic for topic in topics if topic.area == area)
         if not topics:
-            raise ValueError("no catalogue topics matched the requested filters")
+            raise ValueError("no catalog topics matched the requested filters")
     except (OSError, KeyError, TypeError, ValueError) as exc:
         return CatalogueVerification(
             {

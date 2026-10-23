@@ -20,7 +20,7 @@ A second axis, `semantic_disposition`, records whether the primary theorem direc
 
 #### Level 1 — `real` (Kernel-Complete at the Stated Scope) {#sec:level_real}
 
-A `real` body has no admitted proof and is accepted by the pinned Lean/Mathlib environment. Illustrated on the primer's union bound rather than on a catalogue row, so that the shape is visible in ten lines:
+A `real` body has no admitted proof and is accepted by the pinned Lean/Mathlib environment. Illustrated on the primer's union bound rather than on a catalog row, so that the shape is visible in ten lines:
 
 ```lean
 import Mathlib.MeasureTheory.Measure.MeasureSpace
@@ -39,15 +39,15 @@ This proves exactly the measure union bound. The topic title may motivate an FEP
 
 #### Level 2 — `partial` (Typed Statement With Admitted Subgoals) {#sec:level_partial}
 
-A `partial` row would contain one or more localized `sorry` terms. Such a row can be useful on a research branch because Lean checks the surrounding types, but it is excluded from the shipped catalogue and from claim-ready evidence. The preferred publication behavior is either to prove the missing lemma or to narrow the statement to an honest complete theorem and record the remaining gap in the semantic audit.
+A `partial` row would contain one or more localized `sorry` terms. Such a row can be useful on a research branch because Lean checks the surrounding types, but it is excluded from the shipped catalog and from claim-ready evidence. The preferred publication behavior is either to prove the missing lemma or to narrow the statement to an honest complete theorem and record the remaining gap in the semantic audit.
 
 #### Level 3 — `aspirational` (Target Signature Only) {#sec:level_aspirational}
 
-An `aspirational` row documents a desired signature whose proof is not present. The project keeps such targets in prose or coverage-roadmap fields rather than in the verified catalogue. This prevents a compilable file containing an admitted axiom from resembling a completed result.
+An `aspirational` row documents a desired signature whose proof is not present. The project keeps such targets in prose or coverage-roadmap fields rather than in the verified catalog. This prevents a compilable file containing an admitted axiom from resembling a completed result.
 
 ### The Zero-`sorry` Policy {#sec:zero_sorry_policy}
 
-The canonical catalogue, generated aggregate, native receipt, and publication variables all enforce zero `sorry`. A native receipt is claim-ready only when it covers the exact ordered roster of {{total_topics}} topics and independently reports zero warnings and zero admitted bodies. A filtered or stale receipt cannot satisfy the full-catalogue predicate.
+The canonical catalog, generated aggregate, native receipt, and publication variables all enforce zero `sorry`. A native receipt is claim-ready only when it covers the exact ordered roster of {{total_topics}} topics and independently reports zero warnings and zero admitted bodies. A filtered or stale receipt cannot satisfy the full-catalog predicate.
 
 Zero `sorry` is necessary but not sufficient. The semantic audit additionally checks the exact primary theorem, assumption quality, non-vacuity rationale, and acceptance probe. This blocks the common failure mode of replacing a difficult domain theorem with an easy tautology while retaining the stronger title.
 
@@ -76,7 +76,7 @@ For a canonical row, `real` means:
 
 It does **not** mean that the topic title is proved at its broadest reading, that assumptions hold in a biological system, or that the theorem is empirically adequate. For example, fep-028 directly proves finite softmax normalization, while fep-005 proves only properties of a supplied finite label assignment. Both are kernel-complete; their semantic reach differs.
 
-![Syntactic proof-status distribution across the {{total_topics}} catalogue rows. This figure reports `mathlib_status`, not semantic disposition; the separate coverage report supplies the semantic matrix.](../output/figures/status_distribution.png){#fig:status_distribution}
+![Syntactic proof-status distribution across the {{total_topics}} catalog rows. This figure reports `mathlib_status`, not semantic disposition; the separate coverage report supplies the semantic matrix.](../output/figures/status_distribution.png){#fig:status_distribution}
 
 The tally in [@fig:status_distribution] is the machine-checked artifact of the compilation gate in [@sec:compilation_gate]; the worked example below shows what moving one row across it involves.
 
@@ -94,7 +94,7 @@ uv run python scripts/theorem_maturity_audit.py
 uv run python scripts/build_formalism_coverage.py
 ```
 
-This sequence updates the authoring graph, proves the focused row, and refreshes the semantic projection. A full receipt is generated only after the entire catalogue passes.
+This sequence updates the authoring graph, proves the focused row, and refreshes the semantic projection. A full receipt is generated only after the entire catalog passes.
 
 ### Maturity by FEP Area {#sec:maturity_by_area}
 
@@ -102,4 +102,4 @@ Per-area `mathlib_status` is uniform in this release and therefore not very info
 
 ### Why Aspirational Proofs Are Rejected {#sec:why_aspirational_proofs_are_rejected}
 
-Shipping admitted targets would blur three distinct activities: specifying a desirable theorem, proving it, and showing it represents the scientific claim. The project instead keeps the executable corpus axiom-free with respect to `sorry`, records stronger targets as explicit gaps, and permits narrow complete proxies only when their reduced scope is visible in the catalogue and manuscript. This produces fewer headline theorems, but a much clearer evidentiary boundary.
+Shipping admitted targets would blur three distinct activities: specifying a desirable theorem, proving it, and showing it represents the scientific claim. The project instead keeps the executable corpus axiom-free with respect to `sorry`, records stronger targets as explicit gaps, and permits narrow complete proxies only when their reduced scope is visible in the catalog and manuscript. This produces fewer headline theorems, but a much clearer evidentiary boundary.

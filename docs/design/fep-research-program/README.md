@@ -48,7 +48,7 @@ vertical chain.
 
 ## Progress measures
 
-The program reports these measures instead of rewarding catalogue growth:
+The program reports these measures instead of rewarding catalog growth:
 
 - **derivational depth:** the longest reviewed `formal` chain that shares
   actual carriers and intermediate values;
@@ -103,13 +103,13 @@ fixes the following choices so an implementing agent does not reopen them:
    general manifold, stochastic-calculus library, or simulator unrelated to
    the H3 case study.
 7. **No future topic IDs are reserved.** A proved terminal theorem may motivate
-   a later catalogue row only through the existing novelty and semantic-review
+   a later catalog row only through the existing novelty and semantic-review
    gates.
 8. **No second research registry is introduced.** This directory owns
    prospective goals. Active implementation and blocker state remains
    spec-owned until an accepted theorem supplies source-bound evidence for the
    existing relation/capability owners. Opening a spec alone creates no
-   capability, novelty, or catalogue claim.
+   capability, novelty, or catalog claim.
 9. **Terminal work uses merge barriers, not a misleading shortest path.** Every
    solid incoming lane is mandatory until a reviewed no-go revises both the
    theorem clause and the dependency graph.

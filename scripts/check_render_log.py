@@ -116,7 +116,7 @@ def main(argv: list[str] | None = None) -> int:
     # The renderer resolves ``{{placeholder}}`` tokens from this file, so the
     # staleness check needs it to compare a source line against the rendered
     # line it became. Reading the committed projection costs nothing and keeps
-    # this acceptance script free of the catalogue build.
+    # this acceptance script free of the catalog build.
     variables = None
     vars_path = manuscript_dir / "manuscript_vars.yaml"
     vars_present = vars_path.is_file()

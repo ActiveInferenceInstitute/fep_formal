@@ -1,6 +1,6 @@
 # FEP background and formalization boundary
 
-This page supplies conceptual orientation for the catalogue. It does not claim
+This page supplies conceptual orientation for the catalog. It does not claim
 that every displayed scientific object has been constructed in Lean. For the
 exact proposition proved by each row, use the
 [formalism coverage report](formalism-coverage.md) and canonical family body.
@@ -46,7 +46,7 @@ preference model. Moving between risk/ambiguity and
 epistemic/pragmatic formulations requires real probabilistic hypotheses; an
 algebraic rearrangement alone is not enough.
 
-The catalogue provides finite pragmatic-cost sums, minimizer existence,
+The catalog provides finite pragmatic-cost sums, minimizer existence,
 support-aware normalized softmax weights, entropy-regularized policy costs,
 Bellman recursion, and matrix--vector message propagation. fep-021 defines EFE
 as pragmatic cost minus epistemic information in `ENNReal`, proves exact

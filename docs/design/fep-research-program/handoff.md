@@ -111,6 +111,6 @@ owns dated observations and failures.
    [TODO.md](../../../TODO.md) and the [current campaign](../../../specs/comprehensive-next-steps/README.md);
    each open scope retains its dependencies, witnesses and no-go actions.
 
-No guide, checkbox, source hash or catalogue-mode report promotes a claim
+No guide, checkbox, source hash or catalog-mode report promotes a claim
 across evidence planes. Missing, indirect, stale or unverified acceptance keeps
 the corresponding work open.

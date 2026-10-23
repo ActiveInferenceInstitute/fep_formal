@@ -1,6 +1,6 @@
 # Formalisms, Model Specifications, and Results {#sec:formalisms_and_results}
 
-The core artifact is a generated catalogue of {{total_topics}} topic-scoped Lean bodies plus semantic review metadata, accompanied by reusable maintained foundations. Canonical topic bodies live in the family modules under `fep_lean.catalogue.bodies`; generated YAML and the unified appendix are projections. Native evidence is `{{verify.evidence_kind}}` with rate `{{compile_rate.total}}`. This section discusses mathematical scope; it does not infer full-pipeline evidence from catalogue generation.
+The core artifact is a generated catalog of {{total_topics}} topic-scoped Lean bodies plus semantic review metadata, accompanied by reusable maintained foundations. Canonical topic bodies live in the family modules under `fep_lean.catalogue.bodies`; generated YAML and the unified appendix are projections. Native evidence is `{{verify.evidence_kind}}` with rate `{{compile_rate.total}}`. This section discusses mathematical scope; it does not infer full-pipeline evidence from catalog generation.
 
 ## Foundational Dynamics: Free Energy Principle ({{areas.FEP.count}} topics) {#sec:foundational_dynamics_free_energy_principle}
 
@@ -10,7 +10,7 @@ $$
 F[q] = -\log p(o) + \KL\!\left[q\,\middle\|\,p(\cdot\mid o)\right].
 $$ {#eq:eq_VFE_functional}
 
-The catalogue now represents the nonnegative-extended-real core of this identity directly. `fep002_variationalFreeEnergy` defines surprisal plus `InformationTheory.klDiv`; `fep002_vfe_ge_surprisal` proves the upper bound; and `fep002_vfe_exact_at_posterior` uses Mathlib's self-divergence theorem under `SigmaFinite`. This is a meaningful strengthening over a theorem that merely assumed an unnamed nonnegative scalar remainder.
+The catalog now represents the nonnegative-extended-real core of this identity directly. `fep002_variationalFreeEnergy` defines surprisal plus `InformationTheory.klDiv`; `fep002_vfe_ge_surprisal` proves the upper bound; and `fep002_vfe_exact_at_posterior` uses Mathlib's self-divergence theorem under `SigmaFinite`. This is a meaningful strengthening over a theorem that merely assumed an unnamed nonnegative scalar remainder.
 
 The topic result is deliberately narrower than the displayed FEP equation: it does not construct the observation marginal, conditional posterior, or real logarithmic evidence term from a joint generative model. The maintained finite kernel supplies exactly that discrete construction on normalized finite laws, proves Bayes reconstruction, and shows that posterior-form VFE bounds outcome surprisal, with exact-posterior attainment and support-qualified uniqueness. A bridge from this finite real carrier to the topic row's general measure-valued `ENNReal` statement remains intentionally explicit rather than being inferred from matching notation.
 
@@ -27,7 +27,7 @@ $$
 = -F[q].
 $$ {#eq:eq_jensen_elbo}
 
-No catalogue theorem currently proves this whole chain with its integrability and almost-everywhere conditions. fep-035 now imports Mathlib's strict-concavity result for `Real.log` and proves the exact two-point strict Jensen inequality for distinct positive inputs and positive weights summing to one. That theorem is a genuine finite convexity fact, but it is not the expectation-level Jensen step above. fep-002 supplies a native KL remainder identity at a narrower abstraction boundary.
+No catalog theorem currently proves this whole chain with its integrability and almost-everywhere conditions. fep-035 now imports Mathlib's strict-concavity result for `Real.log` and proves the exact two-point strict Jensen inequality for distinct positive inputs and positive weights summing to one. That theorem is a genuine finite convexity fact, but it is not the expectation-level Jensen step above. fep-002 supplies a native KL remainder identity at a narrower abstraction boundary.
 
 Likewise, the elementary quadratic update used as a local descent model is:
 

@@ -8,9 +8,9 @@ Mathlib4 [@mathlib2020] is Lean 4's community mathematical library. This project
 
 The relevant substrate includes measurable spaces, extended-nonnegative-real-valued measures, probability-measure type classes, Radon--Nikodym derivatives, kernels, integrals, and information-theoretic KL divergence. Preconditions are part of theorem types: finiteness, sigma-finiteness, measurability, and Markov-kernel instances cannot be elided by prose.
 
-At the pin, KL divergence is the native `InformationTheory.klDiv : Measure α → Measure α → ℝ≥0∞`. The extended codomain preserves infinite divergence. A conversion through `.toReal` would map infinity to zero unless finiteness is separately established, so the strengthened catalogue statements stay in `ℝ≥0∞`.
+At the pin, KL divergence is the native `InformationTheory.klDiv : Measure α → Measure α → ℝ≥0∞`. The extended codomain preserves infinite divergence. A conversion through `.toReal` would map infinity to zero unless finiteness is separately established, so the strengthened catalog statements stay in `ℝ≥0∞`.
 
-### Key Mathlib4 Lemmas Referenced by the Catalogue {#sec:key_mathlib4_lemmas_referenced}
+### Key Mathlib4 Lemmas Referenced by the Catalog {#sec:key_mathlib4_lemmas_referenced}
 
 The generated coverage report derives the exact import surface. Representative direct dependencies include measure monotonicity and subadditivity, probability mass of the universe, finite-sum order laws, real log/exp facts, metric inequalities, matrix transpose laws, and the following KL declarations:
 
@@ -18,7 +18,7 @@ The generated coverage report derives the exact import surface. Representative d
 - `InformationTheory.klDiv_eq_zero_iff` for finite measures;
 - `InformationTheory.klDiv_compProd_eq_add` for finite measures and Markov kernels.
 
-The catalogue wraps these declarations in topic-local theorems rather than copying their proofs.
+The catalog wraps these declarations in topic-local theorems rather than copying their proofs.
 
 The project-local finite information layer goes further at its explicitly finite, full-support scope. It proves conditional entropy and conditional KL definitions, a joint/channel KL chain rule, the resulting prior-marginal KL bound, independent-product additivity, and the entropy identity and cardinality bound for mutual information. These are finite-sum theorems over the shared generative carrier; they are not presented as generic measure-theoretic data-processing or disintegration results.
 

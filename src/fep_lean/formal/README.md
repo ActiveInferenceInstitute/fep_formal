@@ -9,7 +9,7 @@ owners, not a second authoring location.
 ## Proof ownership
 
 Foundations own reusable finite and measure-theoretic carriers and laws.
-Composition leaves own cross-topic theorems using stable catalogue namespaces;
+Composition leaves own cross-topic theorems using stable catalog namespaces;
 `composed.lean` is their import-only aggregate. Topic-local bodies remain in
 [`catalogue/bodies/`](../catalogue/bodies/).
 

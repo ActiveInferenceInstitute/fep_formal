@@ -164,7 +164,7 @@ EXPECTED_EXPANSION_TITLES = (
     "Necessity Witness for the Unconditional Solenoidal Drop",
     "Uniqueness of the Law-Weighted Reversible/Circulation Split",
     "Frobenius Least-Squares Projection of the Symmetrizer",
-    "Quantitative Control of the Uncancelled Divergence Remainder",
+    "Quantitative Control of the Uncanceled Divergence Remainder",
 )
 
 

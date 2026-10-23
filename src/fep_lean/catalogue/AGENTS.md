@@ -1,6 +1,6 @@
 # `fep_lean.catalogue` contract
 
-This package owns the catalogue's semantic truth plane and all deterministic
+This package owns the catalog's semantic truth plane and all deterministic
 projections from it.
 
 ## Files
@@ -17,7 +17,7 @@ projections from it.
   roster-ordered merger.
 - `latex.py`: deterministic theorem-signature projection from each body.
 - `generation.py`: exact join and byte-identical checkout/package YAML output.
-- `topics.py`: immutable runtime rows and catalogue summaries.
+- `topics.py`: immutable runtime rows and catalog summaries.
 - `coverage.py`: declaration/import/topic coverage model and renderers.
 - `references.py`: manuscript theorem-identifier inventory and audit.
 
@@ -39,7 +39,7 @@ projections from it.
 - Expansion rows carry a nonempty novelty record whose unique `FEPComposed`
   bridge resolves from a manifested leaf and uses both the new topic and at
   least one declared nearest-topic endpoint outside comments.
-- The packaged and checkout catalogues are byte-identical and all generators
+- The packaged and checkout catalogs are byte-identical and all generators
   are idempotent.
 
 Import from `fep_lean.catalogue`; do not add compatibility packages or dynamic

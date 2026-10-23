@@ -20,10 +20,10 @@ _DECLARATION_RE = re.compile(
 )
 _REFERENCE_RE = re.compile(r"\bfep\d{3}_[A-Za-z0-9_]+\b")
 _FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
-# A ``lean``-tagged fence is typeset as a catalogue body, so a ``fepNNN_`` name
+# A ``lean``-tagged fence is typeset as a catalog body, so a ``fepNNN_`` name
 # inside it is a claim about a real declaration. Blanking every fence made this
 # audit structurally unable to see that class: the primer printed
-# ``fep001_union_bound`` as "catalogue row fep-001" for two releases while the
+# ``fep001_union_bound`` as "catalog row fep-001" for two releases while the
 # gate reported "all references resolve". Only non-Lean fences are blanked now.
 _LEAN_FENCE_RE = re.compile(r"^```lean[^\n]*\n.*?^```", re.DOTALL | re.MULTILINE)
 _ANY_FENCE_RE = re.compile(r"^```[^\n]*\n.*?^```", re.DOTALL | re.MULTILINE)

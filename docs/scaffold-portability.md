@@ -27,7 +27,7 @@ through arguments or environment variables still need local substitutions.
 | [Service configuration](../src/fep_lean/llm/hermes.py), lines 229–238 | Full mode needs local service configuration and credentials, optionally read from `$GAUSS_HOME/.env`. Supply them privately; copying a home directory is not part of setup. |
 | [Bridge CLI](../src/fep_lean/bridge/cli.py), lines 25–28 | Live bridge checks require an explicitly selected `--gnn-root` with matching custody pins. Normal standalone tests need no sibling checkout. Do not repin to make a local check pass. |
 | [Collection summary parser](../src/fep_lean/output/manuscript.py), lines 710–718 | Slow hosts can collect tests for over a minute; pytest then appends `H:MM:SS`. This kit's companion parser fix accepts that duration suffix while retaining the exact roster and final-summary checks. Collection still has its existing 120-second timeout; a timeout is a failure, not permission to invent a test count. |
-| [Render runbook](../scripts/README.md#local-render-runbook) | XeLaTeX, pandoc, mermaid, fonts, template registration, and fresh publication receipts remain the publication tier. The kit only generates catalogue and rasterized figure inputs. |
+| [Render runbook](../scripts/README.md#local-render-runbook) | XeLaTeX, pandoc, mermaid, fonts, template registration, and fresh publication receipts remain the publication tier. The kit only generates catalog and rasterized figure inputs. |
 
 Herdr pane IDs, `.herdr-project` briefs/receipts, omp skills, and private PAI
 bootstrap paths belong to the coordinator environment, not the installed

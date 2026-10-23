@@ -233,13 +233,13 @@ def report_config_digest(project_root: Path) -> str:
 
 
 def catalogue_source_paths(project_root: Path) -> tuple[Path, ...]:
-    """Return maintained catalogue sources with body paths derived from the registry."""
+    """Return maintained catalog sources with body paths derived from the registry."""
     root = Path(project_root)
     return _deduplicated(root / relative for relative in CATALOGUE_SOURCE_FILES)
 
 
 def catalogue_sources_digest(project_root: Path) -> str:
-    """Return the exact maintained catalogue-source digest."""
+    """Return the exact maintained catalog-source digest."""
     root = Path(project_root)
     return digest_owner_paths(root, catalogue_source_paths(root))
 

@@ -121,7 +121,7 @@ def build_native_lean_receipt(
     ]
     if selected != canonical_selection:
         raise ValueError(
-            "requested native topic IDs must be known and preserve live catalogue order"
+            "requested native topic IDs must be known and preserve live catalog order"
         )
     rows = [_result_row(result) for result in results]
     source = _source_snapshot(Path(project_root), live_topic_ids=live_topic_ids)
@@ -403,7 +403,7 @@ def validate_native_lean_receipt(
                 live_root / "config" / "topics.yaml"
             )
         except (OSError, TypeError, ValueError) as exc:
-            errors.append(f"live catalogue cannot be loaded: {exc}")
+            errors.append(f"live catalog cannot be loaded: {exc}")
         else:
             live_topic_ids = tuple(topic.id for topic in catalogue.topics)
             catalogue_bound = payload.get("live_catalogue_topics") == len(
@@ -411,7 +411,7 @@ def validate_native_lean_receipt(
             ) and payload.get("roster_sha256") == topic_ids_sha256(live_topic_ids)
             if not catalogue_bound:
                 errors.append(
-                    "receipt live roster fields do not match the canonical catalogue"
+                    "receipt live roster fields do not match the canonical catalog"
                 )
 
         live = _source_snapshot(live_root, live_topic_ids=live_topic_ids)
@@ -644,7 +644,7 @@ def _readiness_display(root: Path, path: Path) -> str:
 def catalogue_products_section(
     root: Path, catalogue: FEPTopicCatalogue | None = None
 ) -> SectionReport:
-    """Compare offline catalogue build products against their generators."""
+    """Compare offline catalog build products against their generators."""
     from fep_lean.catalogue.generation import (
         catalogue_projection_drift,
         fep_all_projection_drift,
@@ -675,7 +675,7 @@ def catalogue_products_section(
     try:
         stale.extend(catalogue_projection_drift(root))
     except (OSError, TypeError, ValueError) as exc:
-        findings.append(f"topic catalogue projections unreadable: {exc}")
+        findings.append(f"topic catalog projections unreadable: {exc}")
     try:
         stale.extend(fep_all_projection_drift(root))
     except (OSError, TypeError, ValueError) as exc:
@@ -848,7 +848,7 @@ def native_receipt_section(
             composes=composes,
             boundary=(
                 "No native receipt exists, so no Lean compilation claim is "
-                "bound to current sources. Catalogue-mode output must never "
+                "bound to current sources. Catalog-mode output must never "
                 "be read as Lean evidence."
             ),
         )

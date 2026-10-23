@@ -7,7 +7,7 @@ Subpackages
     gauss/         — OpenGauss API client, sessions, orchestrator
     llm/           — LLM backend wrapper (Hermes explainer)
     output/        — Artifact generators (figures, manuscript vars, reports)
-    pipeline/      — 4-stage core DAG (Load Catalogue, Environment Validation,
+    pipeline/      — 4-stage core DAG (Load Catalog, Environment Validation,
                      Gauss Sessions, Manuscript Artifacts) and entry scripts
     bridge/        — cross-repo GNN custody + verification operations
     data/          — generated package data (topics.yaml)

@@ -13,7 +13,7 @@ public import FepSketches.temporal_inference
 # Controlled and temporal topic compositions
 
 The finite normalized control/filtering results are paired with their nearest
-original catalogue laws.  Where the older theorem is measure-native, both
+original catalog laws.  Where the older theorem is measure-native, both
 claims remain explicit instead of introducing an unproved conversion from a
 `FiniteLaw` to a Mathlib `Measure`.
 -/
