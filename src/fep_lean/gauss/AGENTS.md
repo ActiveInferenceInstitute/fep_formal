@@ -8,9 +8,8 @@
 - `runner.py` composes Hermes and `LeanVerifier` into per-topic results; it must
   close sessions and preserve error evidence on every exit path.
 
-Full mode is strict. Do not restore the removed
-`FEP_LEAN_GAUSS_WORKFLOWS` pseudo-gate or silently downgrade workflows. Offline
-behavior belongs to pipeline `catalogue` mode. Provider success, original-body
+Full mode is strict: requested provider workflows must complete without silent
+downgrades. Offline behavior belongs to pipeline `catalogue` mode. Provider success, original-body
 fallback, refined-body compilation, native compilation, and full result
 completion are separate facts.
 
