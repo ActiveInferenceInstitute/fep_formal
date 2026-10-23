@@ -1,5 +1,9 @@
 ## Unreleased
 
+- Keep the frozen scalar R0 records bound to authenticated historical source
+  after the proof refactor. Reject unknown live or archived bytes and retain
+  separate current native validation; no historical H3 acceptance is renewed.
+
 - Extend the maintained finite stick-breaking and posterior conditioning support
   for #95, generic covariance residual identities for #97, and forward-difference
   current support for #98. Reuse the existing scalar Gaussian transition law in

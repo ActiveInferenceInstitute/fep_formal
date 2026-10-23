@@ -41,13 +41,49 @@ _CARRIER_EXPORTED_SUPPORT = {
 }
 
 
+_HISTORICAL_SCALAR_REPLAY = "tests/fixtures/historical_scalar_gaussian_semigroup_Y.txt"
+_HISTORICAL_SCALAR_BASELINE_SHA256 = (
+    "69a25520efda55eac16f0785662b0d4ee830bae216ddda9e2845482738946a22"
+)
+_RECOGNIZED_SCALAR_PROOF_REFACTOR_SHA256 = (
+    "b10823429b5a182b37303aa970162e8587c9d2bb6c20554c1f5ef20eeb005766"
+)
+
+
+def historical_scalar_static_replay_source(live: bytes, archived: bytes) -> bytes:
+    """Authenticate one exact proof-only successor for historical/static replay.
+
+    This returns accepted-Y source bytes for the existing migration inverse.
+    It does not certify current H3 execution, reseal receipts, or strip proofs.
+    """
+    assert hashlib.sha256(live).hexdigest() == (
+        _RECOGNIZED_SCALAR_PROOF_REFACTOR_SHA256
+    ), "unrecognized live scalar historical replay source"
+    assert hashlib.sha256(archived).hexdigest() == (
+        _HISTORICAL_SCALAR_BASELINE_SHA256
+    ), "historical scalar replay archive identity changed"
+    return archived
+
+
 def historical_carrier_bytes(relative: str, live: bytes) -> bytes:
     """Reverse only known carrier migration edits, never update frozen evidence.
 
     Callers must compare the returned bytes with the immutable historical
     digest. Any other statement, proof, carrier, or import change survives
-    this reversal and therefore invalidates that comparison.
+    this reversal and therefore invalidates that comparison. The sole exact
+    scalar proof-refactor successor uses separately pinned accepted-Y bytes
+    for historical/static replay only; current execution acceptance is separate.
     """
+    if (
+        relative == "src/fep_lean/formal/scalar_gaussian_semigroup.lean"
+        and hashlib.sha256(live).hexdigest() != _HISTORICAL_SCALAR_BASELINE_SHA256
+    ):
+        live = historical_scalar_static_replay_source(
+            live,
+            (
+                Path(__file__).resolve().parents[2] / _HISTORICAL_SCALAR_REPLAY
+            ).read_bytes(),
+        )
     additions = _CARRIER_IMPORT_ADDITIONS[relative]
     migrated = live.decode("utf-8")
     assert migrated.startswith("module\n"), relative
