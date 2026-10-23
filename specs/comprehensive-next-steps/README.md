@@ -55,8 +55,10 @@ The [count-learning pickup](spikes/dirichlet-counts-20261020/README.md) exercise
 current owned Stage1 endpoints and the pinned Stage2 library boundary. It adds
 no topic, manifested resource, disposition promotion or terminal horizon result.
 NESS prose is corrected without changing a proof; its missing discretisation
-acceptance remains explicit. These components do not close Issues #95, #98 and #126 or
-their broader prerequisites merely by compiling.
+acceptance remains explicit. These components do not close Issues #95 and #98 or
+their broader scientific prerequisites merely by compiling. The bounded CLI
+extraction scope #126 is completed delivery in the [changelog](../../CHANGELOG.md);
+its closure supplies no broader scientific acceptance.
 
 ## Package contracts and order
 

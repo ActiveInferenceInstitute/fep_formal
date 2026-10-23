@@ -51,7 +51,7 @@ Issue #54 closed its bounded exact-source software gate at accepted main
 `e8cea5b87857df94038a104fdb72459efdb783a6` ([attempt 2](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39877928982/attempts/2)); later source changes require fresh qualification.
 Issues #68/#75 closed their bounded primary-alignment and all-168 review/ranking
 scopes without promoting dispositions or implementing every roadmap proof.
-#55–#57 keep current
+Issues #55–#57 keep current
 export, three proof-role reviews, the frozen sole-primary and outcome/archive
 requirements. #59 keeps its independent nine-criterion audit and must report
 retired criteria honestly. #66/#67 retain actual custody, containment and

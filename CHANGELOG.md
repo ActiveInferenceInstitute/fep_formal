@@ -1,8 +1,9 @@
 ## Unreleased
 
-- Keep the frozen scalar R0 records bound to authenticated historical source
-  after the proof refactor. Reject unknown live or archived bytes and retain
-  separate current native validation; no historical H3 acceptance is renewed.
+- Keep frozen scalar R0 and Gaussian carrier records bound to authenticated
+  historical source after proof-library changes. Reject unknown live or archived
+  bytes and retain separate current native validation; no historical H3
+  acceptance is renewed.
 
 - Extend the maintained finite stick-breaking and posterior conditioning support
   for #95, generic covariance residual identities for #97, and forward-difference

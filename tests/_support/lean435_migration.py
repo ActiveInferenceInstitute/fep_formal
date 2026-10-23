@@ -65,13 +65,40 @@ def historical_scalar_static_replay_source(live: bytes, archived: bytes) -> byte
     return archived
 
 
+_HISTORICAL_GAUSSIAN_REPLAY = (
+    "tests/fixtures/historical_gaussian_precision_conditioning_Y.txt"
+)
+_HISTORICAL_GAUSSIAN_BASELINE_SHA256 = (
+    "8291230f5e0c116dfa5c3a3ad9ad2a3e2b05477f8338fe5091d3a1d9a5ffc225"
+)
+_RECOGNIZED_GAUSSIAN_EXTENSION_SHA256 = (
+    "b77f3f9187f93d15a359df5c22d4b28ee5ccfc6290d8c4bb9d59a8fadb87b93a"
+)
+
+
+def historical_gaussian_static_replay_source(live: bytes, archived: bytes) -> bytes:
+    """Authenticate one exact theorem-extension successor for static history.
+
+    Replay accepted-Y bytes through the existing migration inverse only.
+    This neither certifies current H3 execution nor changes frozen evidence.
+    """
+    assert hashlib.sha256(live).hexdigest() == (
+        _RECOGNIZED_GAUSSIAN_EXTENSION_SHA256
+    ), "unrecognized live Gaussian historical replay source"
+    assert hashlib.sha256(archived).hexdigest() == (
+        _HISTORICAL_GAUSSIAN_BASELINE_SHA256
+    ), "historical Gaussian replay archive identity changed"
+    return archived
+
+
 def historical_carrier_bytes(relative: str, live: bytes) -> bytes:
     """Reverse only known carrier migration edits, never update frozen evidence.
 
     Callers must compare the returned bytes with the immutable historical
     digest. Any other statement, proof, carrier, or import change survives
-    this reversal and therefore invalidates that comparison. The sole exact
-    scalar proof-refactor successor uses separately pinned accepted-Y bytes
+    this reversal and therefore invalidates that comparison. Exact recognized
+    scalar proof-refactor and Gaussian theorem-extension successors use pinned
+    accepted-Y bytes
     for historical/static replay only; current execution acceptance is separate.
     """
     if (
@@ -82,6 +109,16 @@ def historical_carrier_bytes(relative: str, live: bytes) -> bytes:
             live,
             (
                 Path(__file__).resolve().parents[2] / _HISTORICAL_SCALAR_REPLAY
+            ).read_bytes(),
+        )
+    if (
+        relative == "src/fep_lean/formal/gaussian_precision_conditioning.lean"
+        and hashlib.sha256(live).hexdigest() != _HISTORICAL_GAUSSIAN_BASELINE_SHA256
+    ):
+        live = historical_gaussian_static_replay_source(
+            live,
+            (
+                Path(__file__).resolve().parents[2] / _HISTORICAL_GAUSSIAN_REPLAY
             ).read_bytes(),
         )
     additions = _CARRIER_IMPORT_ADDITIONS[relative]

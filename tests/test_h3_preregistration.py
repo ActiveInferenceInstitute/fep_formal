@@ -85,6 +85,27 @@ def test_feasibility_pins_preserve_historical_terminal_epoch() -> None:
             assert _sha256(current) != digest, relative
         else:
             assert _sha256(current) == digest, relative
+    # Exact static replay preserves history; unknown live/archive bytes refuse.
+    from tests._support import lean435_migration as migration
+
+    gaussian = "src/fep_lean/formal/gaussian_precision_conditioning.lean"
+    live = (PROJECT_ROOT / gaussian).read_bytes()
+    archived = (PROJECT_ROOT / migration._HISTORICAL_GAUSSIAN_REPLAY).read_bytes()
+    assert (
+        migration.historical_gaussian_static_replay_source(live, archived) == archived
+    )
+    assert (
+        hashlib.sha256(historical_carrier_bytes(gaussian, archived)).hexdigest()
+        == (spike.PINNED_SOURCES[gaussian])
+    )
+    with pytest.raises(AssertionError, match="unrecognized live Gaussian"):
+        migration.historical_gaussian_static_replay_source(live + b"\n", archived)
+    with pytest.raises(AssertionError, match="archive identity changed"):
+        migration.historical_gaussian_static_replay_source(live, archived + b"\n")
+    changed_statement = live.replace(b"(hinv : K * S = 1)", b"(hinv : K * S = 0)", 1)
+    assert changed_statement != live
+    with pytest.raises(AssertionError, match="unrecognized live Gaussian"):
+        migration.historical_gaussian_static_replay_source(changed_statement, archived)
     with pytest.raises(spike.SpikeRejection, match="stale source digest"):
         spike.digest_guard(PROJECT_ROOT)
 
