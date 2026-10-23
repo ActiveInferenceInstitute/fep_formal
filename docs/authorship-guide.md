@@ -71,7 +71,7 @@ uv run fep-lean atlas
 uv run fep-lean dashboard
 ```
 
-These commands update the checkout/package catalogue pair, whole-catalogue
+These commands update the checkout/package catalog pair, whole-catalog
 Lean target, formal-module projection, semantic audit, coverage map, and the
 two validation visualizations. Their `--check` modes must then be clean.
 

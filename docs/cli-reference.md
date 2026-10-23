@@ -57,7 +57,7 @@ the `FEP.GnnDocument` typed surface (syntax + `WellFormed`);
 `--refresh-digests` rewrites only permitted Signature custody fields.
 
 `status` composes the existing fail-closed checks into one read-only
-evidence-currency report: catalogue projection drift, render-receipt
+evidence-currency report: catalog projection drift, render-receipt
 defects, bridge source-pin binding, and native-receipt validation. It
 accepts an optional `--gnn-root PATH` for the full two-sided pin comparison
 and prints the report as JSON. Every section carries its capability

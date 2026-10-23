@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate deterministic offline catalogue artifacts."""
+"""Generate deterministic offline catalog artifacts."""
 
 from __future__ import annotations
 

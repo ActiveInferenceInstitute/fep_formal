@@ -13,7 +13,7 @@ For Active Inference, this yields:
 - **Compositional scaling.** Proven lemmas compose into larger theorems without re-verification.
 - **Reproducibility.** A Lean proof file is itself a reproducible artifact, unlike a journal PDF.
 
-Throughout this primer — and the full {{total_topics}}-topic catalogue — the pinned toolchain is **Lean 4 `{{lean_toolchain}}`** with **Mathlib4 `{{mathlib_tag}}`**. Every lemma name, module path, and tactic behavior cited resolves against that exact pin; version drift is prevented by the `lean/lean-toolchain` and `lean/lakefile.lean` files in the repository.
+Throughout this primer — and the full {{total_topics}}-topic catalog — the pinned toolchain is **Lean 4 `{{lean_toolchain}}`** with **Mathlib4 `{{mathlib_tag}}`**. Every lemma name, module path, and tactic behavior cited resolves against that exact pin; version drift is prevented by the `lean/lean-toolchain` and `lean/lakefile.lean` files in the repository.
 
 ### Propositions as Types: The Curry-Howard Correspondence {#sec:propositions_as_types_the_curry_howard_correspondence}
 
@@ -75,15 +75,15 @@ Lean 4 proofs are written using **tactics**—commands that transform proof goal
 | `have h : P := ...` | Introduce intermediate lemma `h : P` | Build step-by-step proofs for complex bounds |
 | `calc` | Chain transitivity steps | $a \leq b \leq c$ derivations in energy bounds |
 | `sorry` | Admit goal without proof | Mark aspirational proof steps (compile flag) |
-: Lean 4 tactics used in the catalogue bodies, with the goal transformation each performs and where it appears in the FEP formalizations.
+: Lean 4 tactics used in the catalog bodies, with the goal transformation each performs and where it appears in the FEP formalizations.
 
 The probability-normalization rewrite above uses the exact declaration `IsProbabilityMeasure.measure_univ`. Its probability-measure assumption is carried by the `IsProbabilityMeasure` instance.
 
-The catalogue's {{total_topics}} Lean bodies collectively exercise the major tactic families enumerated above. `exact`, `simp`, `rw`, `linarith`, `positivity`, and `have` dominate by frequency, while `nlinarith`, `ring`, `norm_num`, `intro`, `constructor`, and `calc` appear in specific topic families — for example, `calc` anchors fep-021's energy-bound derivation, and `constructor` structures fep-028's softmax lemma. The exhaustiveness claim is intentionally conservative: a small handful of niche tactics (e.g. `omega` and `decide`) are used opportunistically rather than uniformly.
+The catalog's {{total_topics}} Lean bodies collectively exercise the major tactic families enumerated above. `exact`, `simp`, `rw`, `linarith`, `positivity`, and `have` dominate by frequency, while `nlinarith`, `ring`, `norm_num`, `intro`, `constructor`, and `calc` appear in specific topic families — for example, `calc` anchors fep-021's energy-bound derivation, and `constructor` structures fep-028's softmax lemma. The exhaustiveness claim is intentionally conservative: a small handful of niche tactics (e.g. `omega` and `decide`) are used opportunistically rather than uniformly.
 
 **How `lake env lean` verification works in the pipeline.**
 
-`LeanVerifier` writes each sketch to its own temporary file under `lean/FepSketches/`, created by `tempfile.mkstemp` with the prefix `_verify_<topic-id>_` and the suffix `.lean`, and unlinked once the subprocess returns. Before the subprocess call, `_wrap_lean_code` prepends `import Mathlib`, the fixed `open MeasureTheory ProbabilityTheory Real Nat Finset Set` line, and `open scoped BigOperators` — but only to a body that does not already begin with `import`, and all {{total_topics}} catalogue bodies do. For every row in `config/topics.yaml` the wrapper therefore returns the body unchanged, and the imports, the opens, and the `namespace FEP<NNN> … end FEP<NNN>` block, where `<NNN>` is the topic's three-digit identifier, are the ones the body itself declares. With `lean/` as the working directory, the verifier then invokes `lake env lean FepSketches/_verify_<topic-id>_<suffix>.lean`. That file exists only for the duration of the call, so the reproducible form of one topic's verification is the entry point that creates it:
+`LeanVerifier` writes each sketch to its own temporary file under `lean/FepSketches/`, created by `tempfile.mkstemp` with the prefix `_verify_<topic-id>_` and the suffix `.lean`, and unlinked once the subprocess returns. Before the subprocess call, `_wrap_lean_code` prepends `import Mathlib`, the fixed `open MeasureTheory ProbabilityTheory Real Nat Finset Set` line, and `open scoped BigOperators` — but only to a body that does not already begin with `import`, and all {{total_topics}} catalog bodies do. For every row in `config/topics.yaml` the wrapper therefore returns the body unchanged, and the imports, the opens, and the `namespace FEP<NNN> … end FEP<NNN>` block, where `<NNN>` is the topic's three-digit identifier, are the ones the body itself declares. With `lean/` as the working directory, the verifier then invokes `lake env lean FepSketches/_verify_<topic-id>_<suffix>.lean`. That file exists only for the duration of the call, so the reproducible form of one topic's verification is the entry point that creates it:
 
 ```bash
 uv run fep-lean verify --topic fep-001
@@ -104,7 +104,7 @@ This executes inside the Lake build environment rooted at `lean/`, which provide
 | Finite sums | `Algebra.BigOperators.Group.Finset`, `Data.Finset.Basic` |
 | Metric spaces | `Topology.MetricSpace.Basic`, `Topology.MetricSpace.PseudoMetric` |
 | Real arithmetic | `Analysis.SpecialFunctions.Pow.Real`, `Mathlib.Tactic` |
-: Mathlib4 modules each catalogue topic area draws on.
+: Mathlib4 modules each catalog topic area draws on.
 
 ### From Informal Bound to Lean Statement: A Minimal Walk-Through {#sec:informal_to_formal_walkthrough}
 
@@ -122,7 +122,7 @@ Before the full ELBO, consider the simplest FEP-flavoured informal claim and its
 4. *State the inequality.* `μ (s ∪ t) ≤ μ s + μ t`.
 5. *Discharge the proof.* Invoke the Mathlib4 lemma `measure_union_le` via the `exact` tactic.
 
-**Formal (Lean 4, Mathlib4 `{{mathlib_tag}}`) — a primer illustration, not a catalogue row:**
+**Formal (Lean 4, Mathlib4 `{{mathlib_tag}}`) — a primer illustration, not a catalog row:**
 
 ```lean
 import Mathlib.MeasureTheory.Measure.MeasureSpace
@@ -139,9 +139,9 @@ theorem union_bound {α : Type*} [MeasurableSpace α]
 end PrimerUnionBound
 ```
 
-Every implicit assumption of the informal claim has been made explicit (the type, its σ-algebra, and the two sets), and the inequality is discharged by a single pre-verified Mathlib4 lemma. Three structural conventions carry over to every catalogue body: a namespace, so names cannot collide in the {{total_topics}}-topic aggregate build; targeted imports rather than the whole of Mathlib4; and an `open` block that brings the needed names into scope without fully-qualified paths.
+Every implicit assumption of the informal claim has been made explicit (the type, its σ-algebra, and the two sets), and the inequality is discharged by a single pre-verified Mathlib4 lemma. Three structural conventions carry over to every catalog body: a namespace, so names cannot collide in the {{total_topics}}-topic aggregate build; targeted imports rather than the whole of Mathlib4; and an `open` block that brings the needed names into scope without fully-qualified paths.
 
-What the illustration does not carry over is scale. Catalogue rows state the FEP quantity itself rather than a Mathlib4 lemma restated under a new name. Row `fep-001`, the variational free-energy bound, declares two definitions and three theorems over `InformationTheory.klDiv`:
+What the illustration does not carry over is scale. Catalog rows state the FEP quantity itself rather than a Mathlib4 lemma restated under a new name. Row `fep-001`, the variational free-energy bound, declares two definitions and three theorems over `InformationTheory.klDiv`:
 
 ```lean
 import Mathlib.InformationTheory.KullbackLeibler.Basic
@@ -173,7 +173,7 @@ theorem fep001_variationalUpperBound_ge
 end FEP001
 ```
 
-The row also proves `fep001_variationalGap_eq_zero_iff` — the gap vanishes exactly at the posterior for finite measures — and `fep001_variationalUpperBound_eq_iff`, its consequence at finite surprisal. The complete body, and every other row's, is reproduced in the generated catalogue appendix.
+The row also proves `fep001_variationalGap_eq_zero_iff` — the gap vanishes exactly at the posterior for finite measures — and `fep001_variationalUpperBound_eq_iff`, its consequence at finite surprisal. The complete body, and every other row's, is reproduced in the generated catalog appendix.
 
 ### Concrete Example: Informal vs Formal ELBO {#sec:concrete_example_informal_vs_formal_elbo}
 
@@ -206,7 +206,7 @@ end FEP002
 
 The topic-row version fixes the measurable space, both measures, the order of KL arguments, and the nonnegative extended-real codomain. Its inequality is deliberately narrower than the informal theorem: it treats surprisal and posterior as inputs rather than constructing them from a joint model. The separate finite `GenerativeModel` foundation closes that bridge for one normalized finite carrier by constructing evidence and posterior, proving Bayes reconstruction, and deriving posterior-form VFE and its evidence bound. Keeping the two declarations separate makes the difference between a native measure-level remainder theorem and a finite model theorem visible in their types.
 
-**Catalogue note.** The {{total_topics}} committed bodies in the family modules under `src/fep_lean/catalogue/bodies/` carry targeted `import Mathlib.…` lines. The validated registry fixes their order and source identity. [`LeanVerifier._wrap_lean_code`]({{publication.repository_url}}/blob/{{source.published_ref}}/src/fep_lean/verification/lean_verifier.py) preserves a body with leading imports and supplies the shared preamble only when imports are absent ([@sec:native_lean_4_compilation_and_zero_direct_verification]; Appendix B).
+**Catalog note.** The {{total_topics}} committed bodies in the family modules under `src/fep_lean/catalogue/bodies/` carry targeted `import Mathlib.…` lines. The validated registry fixes their order and source identity. [`LeanVerifier._wrap_lean_code`]({{publication.repository_url}}/blob/{{source.published_ref}}/src/fep_lean/verification/lean_verifier.py) preserves a body with leading imports and supplies the shared preamble only when imports are absent ([@sec:native_lean_4_compilation_and_zero_direct_verification]; Appendix B).
 
 ### Reading Type Error Messages {#sec:reading_type_error_messages}
 

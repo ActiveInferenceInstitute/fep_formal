@@ -693,7 +693,7 @@ def test_main_preflight_returns_error_for_incomplete_root(
 
 
 def test_verify_rejects_unknown_topics(monkeypatch, tmp_path: Path, capsys) -> None:
-    """Verify --topic with IDs not in the catalogue returns error."""
+    """Verify --topic with IDs not in the catalog returns error."""
 
     class Topic:
         def __init__(self) -> None:
@@ -739,7 +739,7 @@ def test_verify_returns_error_when_no_topics_match(
     assert result == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
-    assert "no catalogue topics matched" in payload["failure_reason"]
+    assert "no catalog topics matched" in payload["failure_reason"]
 
 
 def test_print_result_returns_1_for_incomplete_object_without_as_dict() -> None:
@@ -1148,7 +1148,9 @@ def test_native_result_success_bytes_and_failure_exit_are_separate(capsys):
     assert failed.to_json() == original
 
 
-def test_preflight_adapter_preserves_keyword_and_uses_full_mode(monkeypatch, capsys):
+def test_preflight_adapter_uses_full_mode_without_environment_mutation(
+    monkeypatch, capsys
+):
     from fep_lean.verification import preflight
 
     calls = []
@@ -1161,7 +1163,7 @@ def test_preflight_adapter_preserves_keyword_and_uses_full_mode(monkeypatch, cap
         ),
     )
     before = dict(os.environ)
-    assert preflight.run_preflight(require_gauss=False) == 1
+    assert preflight.run_preflight() == 1
     payload = json.loads(capsys.readouterr().out)
     assert (
         payload["status"] == "error"

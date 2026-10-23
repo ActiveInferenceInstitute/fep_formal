@@ -8,8 +8,8 @@ uv run python -c "from fep_lean.catalogue import FEPTopicCatalogue; print(len(FE
 ```
 
 The distribution uses a single `fep_lean` namespace under `src/fep_lean/`.
-Do not add `PYTHONPATH` shims or import obsolete top-level modules such as
-`catalogue` or `pipeline`; the isolated-wheel test enforces this boundary.
+Use the `fep_lean` namespace for imports. The isolated-wheel test enforces
+this boundary.
 
 ## Profile an isolated runtime
 
@@ -115,7 +115,7 @@ Never inject credentials into source, tests, or generated evidence.
 
 | Area | Path | Contract |
 | --- | --- | --- |
-| Catalogue | `src/fep_lean/catalogue/` | typed authoring, loading, audits, coverage |
+| Catalog | `src/fep_lean/catalogue/` | typed authoring, loading, audits, coverage |
 | Formal kernel | `src/fep_lean/formal/` | reusable finite carriers, cross-topic proofs, and exact Lake projection |
 | Bridge | `src/fep_lean/bridge/` | typed cross-repository interchange, AST analysis and custody validation |
 | Custody | `src/fep_lean/custody/` | census, staged refresh and bounded orchestration |
@@ -128,7 +128,7 @@ Never inject credentials into source, tests, or generated evidence.
 
 Use type hints on public APIs, immutable dataclasses for source records,
 structured results at subprocess/network boundaries, and temporary paths in
-tests. Preserve catalogue, native, and full-run evidence as separate types and
+tests. Preserve catalog, native, and full-run evidence as separate types and
 claims.
 
 For theorem ownership, support conventions, the validation ladder, and the
@@ -167,7 +167,7 @@ See [authorship-guide.md](authorship-guide.md), [testing.md](testing.md), and
 `requires-python = ">=3.10"` declares the packaging floor. CI tests fresh
 installed wheels on CPython 3.10, 3.11, 3.12, 3.13, and 3.14 on Ubuntu, macOS,
 and Windows. Each target environment resolves the wheel's declared runtime
-dependencies, imports the public API and catalogue, verifies every packaged
+dependencies, imports the public API and catalog, verifies every packaged
 Lean/YAML resource against the built sources, and exercises the console script
 outside the checkout. It has no editable install, parent site-packages,
 `PYTHONPATH`, or `PYTHONHOME`. This matrix is a package compatibility gate;

@@ -7,8 +7,7 @@ imports stable when changing project-facing documentation.
 The [source guide](README.md) owns package navigation. Each subpackage's
 `__init__.py` owns its public exports; the root
 [`fep_lean/__init__.py`](fep_lean/__init__.py) lazily exposes selected high-level
-operations. Use qualified `fep_lean.*` imports rather than recreating obsolete
-top-level packages such as `catalogue`, `pipeline` or `output`.
+operations. Use qualified `fep_lean.*` imports for package operations.
 
 ## Maintenance boundaries
 

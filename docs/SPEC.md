@@ -12,11 +12,11 @@ complete command list, including strict root-inclusive links and Markdown
 hygiene, pin/latest-stable audit and manuscript cross-references.
 [Testing](testing.md) explains local and hosted acceptance boundaries.
 
-Claims about catalogue compilation must be backed by a current validated
+Claims about catalog compilation must be backed by a current validated
 native receipt. Claims about maintained-module declarations and axioms must be
 backed by the formalism audit. Claims about Hermes/OpenGauss execution must be
 backed by an independently validated complete `full` result and its manifest.
-Offline catalogue output must be labeled as catalogue data, and numerical
+Offline catalog output must be labeled as catalog data, and numerical
 dashboard witnesses must never be described as proof evidence.
 
 ## Prospective design boundary

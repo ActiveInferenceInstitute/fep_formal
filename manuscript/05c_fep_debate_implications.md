@@ -1,6 +1,6 @@
 ## Implications for the FEP Debate {#sec:implications_for_the_fep_debate}
 
-Formalization can locate a disagreement more sharply, but it cannot decide which formal object best represents a biological system. The catalogue therefore treats the critical literature as a source of proof obligations, not as a set of objections already answered by compilation. Its semantic audit asks, for every row, what is actually invariant, which assumptions do the work, whether the statement has a non-vacuous witness, and what stronger theorem would have to compile before the advertised interpretation was justified.
+Formalization can locate a disagreement more sharply, but it cannot decide which formal object best represents a biological system. The catalog therefore treats the critical literature as a source of proof obligations, not as a set of objections already answered by compilation. Its semantic audit asks, for every row, what is actually invariant, which assumptions do the work, whether the statement has a non-vacuous witness, and what stronger theorem would have to compile before the advertised interpretation was justified.
 
 ### Blanket Conditions (Biehl et al.) → fep-005 Response {#sec:blanket_conditions_biehl_et_al}
 
@@ -104,7 +104,7 @@ The theorem is strong and non-vacuous at its stated measure-theoretic scope. Its
 
 **Witnessed composition.** Both derivational graph edges and formal pairings require a qualified Lean declaration, not just prose. The {{formalism.metrics.theorem_witnessed_relations}} current witnesses span posterior filtering and Bayesian inversion, variational duality, controlled and temporal inference, causal blankets and interventions, predictive coding, finite path thermodynamics, Fisher and geometric optimization, collective inference, learning/model evidence, and the original entropy, policy, Gaussian, convergence, and partition-energy seams. Only {{formalism.metrics.formal_relation_witnesses}} assert a derivation or identification; the other {{formalism.metrics.formal_pairing_witnesses}} deliberately place separately proved endpoint laws together without implication. The maintained foundations add deeper within-carrier chains; these are counted separately from authored topic-to-topic edges. Conceptual edges remain visibly non-proof evidence, and the graph schema retains an explicit blocker kind for any future gap.
 
-These vignettes also explain why **{{semantic_dispositions.formalized}}** catalogue rows currently carry the `formalized` disposition: directness, assumption quality, and a non-vacuity witness are required in addition to compilation. For fep-036, posterior closure was insufficient until an explicit finite binomial law, outcome-indexed estimator, shrinkage identity, and consistency-transfer theorem were added. The generated coverage projection is authoritative if that count changes.
+These vignettes also explain why **{{semantic_dispositions.formalized}}** catalog rows currently carry the `formalized` disposition: directness, assumption quality, and a non-vacuity witness are required in addition to compilation. For fep-036, posterior closure was insufficient until an explicit finite binomial law, outcome-indexed estimator, shrinkage identity, and consistency-transfer theorem were added. The generated coverage projection is authoritative if that count changes.
 
 ### Limitations: What Formalization Does Not Do {#sec:what_formalisation_does_not_do}
 
@@ -121,7 +121,7 @@ The current contribution does not:
 - make an LLM response trustworthy without independent compilation and review; or
 - make every warning-free theorem semantically representative of its topic title.
 
-The catalogue's breadth is therefore a map of formalization surfaces, not {{total_topics}} end-to-end domain theorems. Its value lies partly in refusing to erase that distinction.
+The catalog's breadth is therefore a map of formalization surfaces, not {{total_topics}} end-to-end domain theorems. Its value lies partly in refusing to erase that distinction.
 
 ### Future: Machine-Verifiable Proofs in Journals {#sec:future_journal_verification}
 

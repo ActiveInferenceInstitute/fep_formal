@@ -301,11 +301,11 @@ def test_build_manuscript_vars_validates_the_canonical_graphical_abstract(
         "media_type": "image/png",
         "width_px": 1536,
         "height_px": 1024,
-        "sha256": "68b7819e8c799348b9d958cee41c5c4fdb5b716690749e0e586ef0e90086a904",
+        "sha256": "30bd427f4de44042d237ad802518ef34d87741656727481bd6365dfab2871c16",
         "alt_text": (
             "Graphical abstract: the fep_lean verification pipeline. Maintained "
             "GNN-typed authoring inputs join by stable topic ID into a 168-topic, "
-            "22-family catalogue with reviewed semantic dispositions; a pinned "
+            "22-family catalog with reviewed semantic dispositions; a pinned "
             "Lean 4 and Mathlib compile of FepSketches with zero warnings and "
             "zero sorry binds a source-digest-bound, claim-ready native evidence "
             "receipt; a dashed optional full mode adds Hermes and OpenGauss "
@@ -487,7 +487,7 @@ def test_build_unified_formalism_appendix_markdown_structure() -> None:
     assert len(set(labels)) == equation_count
     assert "\\label{eq:" not in md
     assert (
-        "# Appendix B: Full Lean Catalogue {#sec:appendix_b_full_topic_lean_catalogue}"
+        "# Appendix B: Full Lean Catalog {#sec:appendix_b_full_topic_lean_catalogue}"
         in md
     )
     assert "# Appendix C: Typeset Equations {#sec:appendix_c_latex_equations}" in md

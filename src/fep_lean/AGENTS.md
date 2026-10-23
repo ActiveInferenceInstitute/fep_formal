@@ -9,7 +9,7 @@ or `llm`). FEP_Formal is the project name; `fep_lean`, `fep-lean` and
 ## Boundaries
 
 - `catalogue` owns typed metadata/semantic validation, the family-body registry,
-  theorem-signature projection, and deterministic catalogue projections.
+  theorem-signature projection, and deterministic catalog projections.
 - `formal` owns the explicit foundation/composition manifest, canonical Lean
   resources, and exact workspace projection; its `composed.lean` resource is an
   import-only aggregate.
@@ -19,10 +19,10 @@ or `llm`). FEP_Formal is the project name; `fep_lean`, `fep-lean` and
 - `verification` owns read-only environment checks and native Lean execution.
 - `llm` owns Hermes/provider interaction; `gauss` owns SQLite sessions and
   per-topic orchestration.
-- `pipeline` composes those layers. Catalogue mode must remain offline; full
+- `pipeline` composes those layers. Catalog mode must remain offline; full
   mode must fail closed when a required capability is unavailable.
 - `output` owns receipts, reports, figures, variables, and source-preserving
-  rendering. Catalogue, native, and full-run evidence must remain distinct.
+  rendering. Catalog, native, and full-run evidence must remain distinct.
 - `bridge` owns explicit source custody and interchange with a named GNN
   checkout; numerical agreement does not establish current execution.
 - `custody` owns read-only census/gating and explicit staged refresh. Rebinding

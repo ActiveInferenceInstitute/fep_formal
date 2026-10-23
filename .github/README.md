@@ -7,11 +7,11 @@
 [![CI](https://github.com/ActiveInferenceInstitute/fep_formal/actions/workflows/ci.yml/badge.svg)](https://github.com/ActiveInferenceInstitute/fep_formal/actions/workflows/ci.yml)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](../LICENSE)
 
-FEP_Formal is a standalone catalogue of 168 Free Energy Principle, Active
+FEP_Formal is a standalone catalog of 168 Free Energy Principle, Active
 Inference, Bayesian Mechanics, Information Geometry, and Thermodynamics topics.
 Its reviewed roster spans 22 reviewed families in five
 areas. Each topic connects an invariant, explicit assumptions, a canonical Lean
-4 theorem body and typeset signatures. The catalogue is a versioned research
+4 theorem body and typeset signatures. The catalog is a versioned research
 interface, not an exhaustive census of the FEP literature.
 
 The repository is **FEP_Formal** (`fep_formal` on GitHub). Its Python distribution
@@ -50,7 +50,7 @@ uv sync --locked --extra dev
 uv run fep-lean catalogue
 ```
 
-This offline command validates the catalogue and creates deterministic figures,
+This offline command validates the catalog and creates deterministic figures,
 manuscript inputs and a report. It records **zero verified topics** and does
 not call Hermes or compile Lean. See [getting started](../docs/getting-started.md)
 for expected outputs and the separate native and full-mode prerequisites.
@@ -64,11 +64,11 @@ they actually verified.
 
 Choose the interface that matches the work:
 
-- **Explore without a model provider:** begin with the offline catalogue above,
+- **Explore without a model provider:** begin with the offline catalog above,
   the [atlas](../docs/formalism-atlas.html) and the
   [numerical dashboard guide](../docs/formal-kernel-methods.md).
 - **Use the Python API:** start with the [API guide](../docs/api.md). Installed
-  wheels support packaged catalogue resources and `fep-lean --help`; substantive
+  wheels support packaged catalog resources and `fep-lean --help`; substantive
   operator commands require the checkout's configuration, Lean workspace and
   manuscript assets.
 - **Compile the canonical Lean statements:** follow the native setup and
@@ -88,7 +88,7 @@ subcommand. [The command quick reference](../docs/quickref.md) and
 
 ## Formal depth
 
-The maintained catalogue spans 168 topics. Its reusable formal kernel connects
+The maintained catalog spans 168 topics. Its reusable formal kernel connects
 finite probability, Bayesian inversion, variational free energy,
 expected-free-energy decompositions, controlled inference, finite Markov paths,
 information geometry and thermodynamic identities. Continuous constructions
@@ -109,7 +109,7 @@ Historical [Horizon 1](../specs/done/horizon-1-finite-synthesis/README.md) and
 their original source epochs and scientific limits. The
 [H3 reference study](../specs/h3-reference-study/README.md) has a frozen protocol;
 its primary study remains unopened pending its declared package, source and
-review gates. Neither hosted CI nor an offline catalogue run supplies
+review gates. Neither hosted CI nor an offline catalog run supplies
 production-capture, provider, empirical or scientific acceptance.
 
 ## Contract

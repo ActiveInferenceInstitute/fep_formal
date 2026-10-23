@@ -7,7 +7,7 @@ entrypoints plus report generation.
 ## Invariants
 
 - Only `full` and `catalogue` modes are valid.
-- Catalogue mode is offline and never invokes Hermes, Gauss, or Lean.
+- Catalog mode is offline and never invokes Hermes, Gauss, or Lean.
 - Full mode requires a live Hermes client and strict capability validation; no
   fallback may convert a missing capability into success.
 - A report is generated only for a complete pipeline result.
@@ -17,7 +17,7 @@ entrypoints plus report generation.
 - Artifact generation may write only declared output/manuscript projections.
 
 Use imports from `fep_lean.pipeline`. Tests must cover unknown IDs, empty or
-invalid filters, missing capabilities, catalogue non-execution, and valid
+invalid filters, missing capabilities, catalog non-execution, and valid
 single-topic/full selection.
 
 See [README.md](README.md) and [../../AGENTS.md](../../AGENTS.md).

@@ -2,7 +2,7 @@
 
 A standard-library client in FEP_Formal for the [Prove2me](https://prove2.me) Lean 4
 formalization platform. It is explicit and authenticated: nothing here runs as
-part of catalogue mode or the pipeline, and every call needs an API key you
+part of catalog mode or the pipeline, and every call needs an API key you
 supply.
 
 `Prove2meConfig.load()` resolves the key from an explicit argument, then the

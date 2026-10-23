@@ -1,6 +1,6 @@
 # `fep_lean` — FEP_Formal Python package
 
-The installable namespace for FEP_Formal's catalogue, reusable methods and
+The installable namespace for FEP_Formal's catalog, reusable methods and
 verification pipeline. The namespace and `fep-lean` console name remain stable
 independently of the project-facing name.
 
@@ -24,13 +24,13 @@ and minimum-version compatibility has its own installed-wheel CI lanes.
 See [testing](../../docs/testing.md) for their scope and
 [ISA.md](../../ISA.md#current-assessment) for accepted source checkpoints.
 
-Portable catalogue and mathematical-methods APIs read installed resources.
+Portable catalog and mathematical-methods APIs read installed resources.
 Checkout-bound operator workflows validate their required assets rather than
-treating a `site-packages` ancestor as a project root. The package intentionally
-installs no obsolete top-level compatibility modules.
+treating a `site-packages` ancestor as a project root. The package exports the supported
+`fep_lean` namespace.
 
 Q7's current `ast.dump` scaffold contract refuses unsupported interpreters
 before parsing. That guard limits Q7 evidence validation, not ordinary package
-installation or catalogue use. The corresponding open work remains in
+installation or catalog use. The corresponding open work remains in
 [TODO.md](../../TODO.md); a Python-version change needs a reviewed source and
 custody migration rather than a documentation-only pin change.

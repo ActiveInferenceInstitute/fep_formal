@@ -791,6 +791,27 @@ def test_historical_custody_control_is_positive_and_explicitly_non_native(
     assert marker["archived_source_execution"] is False
     assert before == _production_custody_snapshot()
 
+    # Exact proof-refactor replay is a static historical control, not H3 acceptance.
+    from tests._support import lean435_migration as migration
+
+    scalar = (root / "src/fep_lean/formal/scalar_gaussian_semigroup.lean").read_bytes()
+    archived = (root / migration._HISTORICAL_SCALAR_REPLAY).read_bytes()
+    assert (
+        migration.historical_scalar_static_replay_source(scalar, archived) == archived
+    )
+    with pytest.raises(AssertionError, match="unrecognized live scalar"):
+        migration.historical_scalar_static_replay_source(scalar + b"\n", archived)
+    with pytest.raises(AssertionError, match="archive identity changed"):
+        migration.historical_scalar_static_replay_source(scalar, archived + b"\n")
+    changed_statement = scalar.replace(
+        b"model.ouNativeSemigroup model.stationaryLaw := by",
+        b"model.ouNativeSemigroup (0 : Measure Real) := by",
+        1,
+    )
+    assert changed_statement != scalar
+    with pytest.raises(AssertionError, match="unrecognized live scalar"):
+        migration.historical_scalar_static_replay_source(changed_statement, archived)
+
 
 @pytest.mark.parametrize("tamper", ("append", "metadata", "payload"))
 def test_historical_custody_archive_tampering_is_rejected_before_decode(

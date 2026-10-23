@@ -13,7 +13,7 @@ public import FepSketches.exponential_family
 # Finite exponential-family topic compositions
 
 These bridges pair the finite scalar exponential-family laws with their
-nearest established catalogue endpoints.  Separate carriers stay visible in
+nearest established catalog endpoints.  Separate carriers stay visible in
 conjunctions; no bridge claims an unproved identification between finite
 real-valued geometry and Mathlib's measure-native information theory.
 -/

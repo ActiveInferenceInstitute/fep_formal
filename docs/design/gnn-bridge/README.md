@@ -13,11 +13,11 @@ FEP_Formal is this repository's current project name; `fep_lean` remains its
 Python namespace, serialized custody key and historical GNN mirror identity.
 The mirrored version-0.6 contract retains its 2026-09-06 source epoch and
 155-topic baseline. Use the [current source owners](../../../AGENTS.md#source-of-truth)
-for the live catalogue; changing that shared contract requires coordinated
+for the live catalog; changing that shared contract requires coordinated
 review and publication on both sides.
 
 The [design lifecycle](../README.md) governs bounded implementation slices. The
-active catalogue program lives in
+active catalog program lives in
 [FEP research horizons](../fep-research-program/README.md); this bridge adds no
 topics, formalism relations, atlas edges, or reserved `fep-NNN` identifiers.
 Implemented artifacts include Q1–Q4 foundation modules, Q5–Q7 slice-local proof
@@ -121,7 +121,7 @@ Blanket structure and the ontology bindings `s=HiddenState`, `o=Observation`,
 6. **Misfit is reported, not repaired.** Where a projected model exceeds a
    backend, the GNN `unsupported` render status applies; the bridge never
    distorts a model to force a fit.
-7. **No catalogue or relation claims.** This program adds no topics, no
+7. **No catalog or relation claims.** This program adds no topics, no
    formalism relations, no atlas edges, and reserves no `fep-NNN`
    identifiers. Future rows arrive only through the existing novelty and
    semantic-review gates.
@@ -209,7 +209,7 @@ linked above, the explicitly named source pair, and its exact receipt. A fresh
 render invalidates dependent probe and native receipts; reproduce and validate
 that evidence in dependency order.
 
-P1/P4b emitter and W1 status script locations remain compatibility entry points. P3 `certify.py` is a read-only historical numerical comparator
+P3 `certify.py` is a read-only historical numerical comparator
 unless `--output PATH` is supplied. Its retained reports are not silently
 rewritten by status. Package regression tests run without an adjacent GNN
 checkout; live bridge checks require the explicitly named pair.

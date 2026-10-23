@@ -51,7 +51,7 @@ def run_single_topic(
     workflow: str = "verify",
     output_root: Path | None = None,
 ) -> PipelineResult:
-    """Run one exact catalogue topic under the selected execution contract."""
+    """Run one exact catalog topic under the selected execution contract."""
     root = project_root()
     catalogue = FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
     if topic_id not in {topic.id for topic in catalogue.topics}:

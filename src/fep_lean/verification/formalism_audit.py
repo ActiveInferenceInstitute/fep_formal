@@ -243,17 +243,6 @@ def parse_axiom_output(
     return parsed, tuple(dict.fromkeys(errors))
 
 
-# Compatibility alias: tests and external callers historically imported the
-# private name; keep it importable until they migrate to ``parse_axiom_output``.
-_parse_axiom_output = parse_axiom_output
-
-
-def _axioms_by_declaration(output: str) -> dict[str, tuple[str, ...]]:
-    """Compatibility projection of the strict parser's unambiguous records."""
-    parsed, _ = parse_axiom_output(output)
-    return parsed
-
-
 def _canonical_axiom_output(
     declarations: tuple[str, ...], axiom_map: dict[str, tuple[str, ...]]
 ) -> tuple[str, ...]:
@@ -297,7 +286,7 @@ def _declaration_records(
     sorry_ax_detected: bool,
 ) -> tuple[FormalismEvidenceRecord, ...]:
     declarations, sources = _declaration_sources(project_root)
-    axiom_map = _axioms_by_declaration(output)
+    axiom_map, _ = parse_axiom_output(output)
     formal_modules = formal_theorem_modules(project_root)
     records = []
     for declaration in declarations:
@@ -437,7 +426,7 @@ def run_formalism_audit(
             root,
             declarations,
             evidence,
-            "whole-catalogue Lean projection is stale",
+            "whole-catalog Lean projection is stale",
         )
     if formal_aggregate_drift(root):
         return _failed_result(
@@ -633,7 +622,7 @@ def validate_formalism_audit_receipt(path: Path, project_root: Path) -> tuple[st
 
     errors: list[str] = []
     if aggregate_drift:
-        errors.append("live whole-catalogue Lean projection is stale")
+        errors.append("live whole-catalog Lean projection is stale")
     if composition_aggregate_drift:
         errors.append("live formal composition aggregate is stale")
     if resource_drift:

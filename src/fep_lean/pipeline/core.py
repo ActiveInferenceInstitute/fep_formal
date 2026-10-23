@@ -1,4 +1,4 @@
-"""Strict catalogue and verification pipeline."""
+"""Strict catalog and verification pipeline."""
 
 from __future__ import annotations
 
@@ -186,7 +186,7 @@ class FEPPipeline:
                 mode=mode,
                 total_duration=time.perf_counter() - started,
                 stages=stages,
-                failure_reason=catalogue_stage.error or "catalogue load failed",
+                failure_reason=catalogue_stage.error or "catalog load failed",
             )
 
         validation_stage, validation = stage(
@@ -246,7 +246,7 @@ class FEPPipeline:
                 StepResult(
                     "Gauss Sessions",
                     "not_run",
-                    message="catalogue mode never performs verification",
+                    message="catalog mode never performs verification",
                 )
             )
 
@@ -352,7 +352,7 @@ class FEPPipeline:
 
     def _write_artifacts(self) -> dict[str, str]:
         if self._catalogue is None:
-            raise RuntimeError("catalogue is not loaded")
+            raise RuntimeError("catalog is not loaded")
         vars_path = write_manuscript_vars(
             self.project_root,
             self._catalogue,

@@ -47,6 +47,7 @@ from tests._support.lean_module_contract import (
     finite_rate_distortion_theorem_extension,
     obligation_theorem_extension,
     primary_alignment_theorem_extension,
+    proof_performance_theorem_extension,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -204,6 +205,24 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         with pytest.raises(AssertionError):
             primary_alignment_theorem_extension(tampered, ROOT)
 
+    proof_performance_extension = proof_performance_theorem_extension(declarations)
+    # One representative per changed mathematical owner; all77 pass the positive seal.
+    for selected in (
+        "FEP.EmpiricalRisk.BetaDensity.normalized_posterior",
+        "FEP.GaussianPrecisionConditioning.FinitePrecision.residual_cross_block",
+        "FEP.NessFlow.ForwardDifference.negative_forwardDiv_tendsto_carrier",
+    ):
+        assert selected in proof_performance_extension
+        for mutation in ("missing", "moved", "changed_statement"):
+            tampered = dict(declarations)
+            if mutation == "missing":
+                tampered.pop(selected)
+            else:
+                field = "source_owner" if mutation == "moved" else "statement"
+                tampered[selected] = {**tampered[selected], field: "unapproved"}
+            with pytest.raises(AssertionError):
+                proof_performance_theorem_extension(tampered)
+
     assert (
         len(
             declarations.keys()
@@ -218,6 +237,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - finite_rate_distortion_extension
             - obligation_extension
             - primary_alignment_extension
+            - proof_performance_extension
         )
         == 2185
     )

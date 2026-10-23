@@ -9,7 +9,7 @@ public import FepSketches.efe_time_scale_separation
 # EFE time-scale-separation topic compositions
 
 This bridge pairs the exact epistemic-gain affinity bound with the stationary
-invariance of the nearest two-state continuous-time catalogue law.  The
+invariance of the nearest two-state continuous-time catalog law.  The
 conjunction keeps the information-gap functional and the semigroup stationary
 carrier visible on both sides instead of asserting an unproved reduction.
 -/

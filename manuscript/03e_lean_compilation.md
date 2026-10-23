@@ -1,6 +1,6 @@
 ## Native Lean 4 Compilation and Execution-Integrity Verification {#sec:native_lean_4_compilation_and_zero_direct_verification}
 
-Native verification is a compiler operation, not a catalogue property. The rendered evidence kind is `{{verify.evidence_kind}}`; claim readiness is `{{verify.claim_ready}}`; the full-catalogue rate is `{{compile_rate.total}}`, with {{verify.warning_count}} warnings and {{verify.sorry_occurrences}} admitted proofs in the selected receipt. If no matching receipt exists, these fields render as unavailable rather than borrowing a `complete` flag from catalogue mode.
+Native verification is a compiler operation, not a catalog property. The rendered evidence kind is `{{verify.evidence_kind}}`; claim readiness is `{{verify.claim_ready}}`; the full-catalog rate is `{{compile_rate.total}}`, with {{verify.warning_count}} warnings and {{verify.sorry_occurrences}} admitted proofs in the selected receipt. If no matching receipt exists, these fields render as unavailable rather than borrowing a `complete` flag from catalog mode.
 
 ### Why Simulated Compilation Fails {#sec:why_simulated_compilation_fails}
 
@@ -78,13 +78,13 @@ Lean checks derivability in the imported formal system. It does not choose the u
 
 #### Formal Definition of Execution Integrity {#sec:formal_definition_of_zero_direct}
 
-A native claim is accepted exactly when a schema-valid receipt identifies the canonical ordered roster, reconciles every result row, reports complete warning-free and `sorry`-free compilation, and matches the current catalogue, family-body source manifest, Lean toolchain, and Mathlib pin. A full claim additionally requires a valid full-mode report with artifact hashes and current source/configuration digests.
+A native claim is accepted exactly when a schema-valid receipt identifies the canonical ordered roster, reconciles every result row, reports complete warning-free and `sorry`-free compilation, and matches the current catalog, family-body source manifest, Lean toolchain, and Mathlib pin. A full claim additionally requires a valid full-mode report with artifact hashes and current source/configuration digests.
 
 #### Per-Stage Success Criteria {#sec:per_stage_success_criteria}
 
 | Boundary | Acceptance criterion | Failure meaning |
 | --- | --- | --- |
-| Catalogue generation | Typed sources join and generated projections are current | Authoring or drift error |
+| Catalog generation | Typed sources join and generated projections are current | Authoring or drift error |
 | Native Lean | Selected compiler results satisfy the native receipt | Formal compilation evidence unavailable |
 | Full pipeline | Required capabilities and every selected full-mode row succeed | No Hermes/OpenGauss publication claim |
 | Manuscript rendering | Every placeholder and theorem identifier resolves | Publication build blocked |

@@ -33,8 +33,8 @@ lake build FepSketches
 The migration introduces explicit modules, public imports and exposed public
 sections in maintained formal sources and generated probes. Supporting
 constants that occur in exported definitions are public. Mathematical theorem
-statements retain their original scope; Mathlib API adaptations and removal of
-obsolete tactic alternatives are checked by native compilation.
+statements retain their original scope. Native compilation checks the current
+sources against the pinned Mathlib API.
 
 Historical scientific freezes and custody receipts retain their original
 source and toolchain digests. Test-only reversal of enumerated formatting,
@@ -42,7 +42,7 @@ import and visibility edits checks the historical byte contracts without
 renewing those approvals. The current H3 study remains rejected by its frozen
 source guard until a separately governed successor epoch is accepted.
 
-Catalogue generation changes the appendix when proof bodies change. The
+Catalog generation changes the appendix when proof bodies change. The
 retained publication render receipt then fails its freshness check, even when
 Lean validation passes. Follow the real render procedure in
 [scripts/README.md](../scripts/README.md#3-render-and-accept) before renewing
@@ -131,7 +131,7 @@ other's. This smoke does not replace full native receipt validation.
 The 4.35 workspace uses module headers and explicit public imports in the
 formal kernel and generated aggregates. Some Mathlib lemmas now require
 direct imports because their earlier transitive dependencies are private.
-The verifier converts legacy topic input to equivalent exposed module source;
+The verifier converts module-less topic input to equivalent exposed module source;
 explicit module input keeps its declared visibility. Theorems and assumptions
 remain authored in their canonical owners, and projections must be regenerated.
 
@@ -176,7 +176,7 @@ probability, information, active-inference, blanket, geometry, and convergence
 contracts and why projection, build, audit, native receipt, visualization, and
 full-run evidence remain distinct.
 
-## Catalogue source of truth {#catalogue-source-of-truth}
+## Catalog source of truth {#catalogue-source-of-truth}
 
 Metadata, semantic review, novelty records, and the family body registry are
 maintained separately and joined strictly by the schema-2 roster seal.

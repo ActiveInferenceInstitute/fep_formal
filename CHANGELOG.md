@@ -1,5 +1,43 @@
 ## Unreleased
 
+- Refresh the nine current guidance paths and their inbound callers for
+  [#63](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63).
+  Remove obsolete entry-point advertising, retain exact historical evidence and
+  interface identities, and validate strict links, Markdown hygiene and manuscript
+  cross-references. The issue closes with acceptance of this change.
+
+- Keep frozen scalar R0 and Gaussian carrier records bound to authenticated
+  historical source after proof-library changes. Reject unknown live or archived
+  bytes and retain separate current native validation; no historical H3
+  acceptance is renewed.
+
+- Extend the maintained finite stick-breaking and posterior conditioning support
+  for #95, generic covariance residual identities for #97, and forward-difference
+  current support for #98. Reuse the existing scalar Gaussian transition law in
+  the #100 invariance proof. Preserve the stronger open scientific obligations:
+  no general Dirichlet density, Gaussian conditional-independence, or stationary
+  PDE result is claimed. Four imported consumer fixtures check 114 standard-only
+  axiom queries; generated inventories include 77 additional declarations.
+
+- Bound repeated Lean source masking with an exact-string, 32-entry cache and
+  bypass oversized or string-subclass inputs. Retain original scanner behavior
+  and add eviction, invalidation and input-boundary controls. A same-environment
+  offline comparison observed a 12.8% reduction in the measured stage sum over
+  two samples per variant; this is not a CI or interpreter speedup claim.
+  Python 3.15 profiling remains separate from Python 3.14 release validation.
+
+- Consolidate active-spec lint and formatting into the existing repository-wide
+  static Ruff checks. The format command covers all eight source roots in one
+  invocation, replacing five process starts. Preserve test coverage, the 15-cell
+  wheel matrix and every release context; fresh qualification remains required.
+
+- Remove unused private parser/status aliases, the unused version probe, and
+  the ignored preflight `require_gauss` argument and `--require-gauss` option.
+  Preflight always performs the full capability checks. Require relation schema
+  3 and explicit blockers for conceptual edges. Use American English throughout
+  maintained prose and visible output while preserving exact interface names
+  and authenticated historical evidence.
+
 - Retire the historical private successor source-freeze and full seven-stage
   production-capture requirements in [#52](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52)
   and [#53](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53)
@@ -15,7 +53,8 @@
   with retained native, axiom and projection evidence from
   [workflow 39772166859](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39772166859).
   This completes the bounded PR disposition for [#58](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58);
-  [#54](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) remains independently open.
+  [#54](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) is now
+  closed for its bounded software scope.
   Preserve contributor credit and the existing normalized carriers; no scientific
   relation, novelty or maturity promotion is claimed.
 
@@ -36,8 +75,8 @@
 - Publish a source-only semantic review and ranked strengthening roadmap for
   all 168 theorem proxies at the recorded source epoch. Preserve existing
   dispositions and distinguish reused Gibbs/control proofs from new proof
-  obligations. Final independent acceptance and issue #75 closeout remain
-  separate.
+  obligations. The final independent review and bounded issue #75 closeout are
+  complete; the ranked scientific strengthening obligations remain open.
 
 - Keep optional slide derivatives disabled in the project render configuration
   while retaining the required combined manuscript PDF, sources, logs, fonts
@@ -73,7 +112,7 @@
   no Laplace approximation, general optimizer, convergence or primary-theorem
   promotion is claimed.
 
-- Prepare default CI to consume its strict serial catalogue producer once, retain
+- Prepare default CI to consume its strict serial catalog producer once, retain
   the ordinary CLI in explicit manual dual-shadow mode, observe original producer
   checkout/receipt context, and use the full 15-cell matrix for automatic PRs.
   Actual rollout/source/artifact/PDF acceptance and timing measurement remain
@@ -101,7 +140,7 @@
   no all-budget finite multiplier or uniqueness is claimed.
 
 - Add an explicitly selected CI native-producer shadow: the existing serial
-  catalogue node runs the strict operation and validates its receipt; the
+  catalog node runs the strict operation and validates its receipt; the
   ordinary strict CLI still runs and supplies publication evidence. Compare
   both actual outcomes with independent validation and retain separate shadow
   artifacts. Default jobs and all release gates remain unchanged; no release
@@ -259,7 +298,7 @@
   changing the topic/resource roster or semantic dispositions. Correct NESS
   prose's necessity/PDE overclaims while preserving every theorem and proof;
   [#98](https://github.com/ActiveInferenceInstitute/fep_formal/issues/98) still
-  requires the fep163 recovery/discretisation seam. Compilation alone closes
+  requires the fep163 recovery/discretization seam. Compilation alone closes
   neither that issue nor broader scientific dependencies.
 
 - Accept [PR200](https://github.com/ActiveInferenceInstitute/fep_formal/pull/200)
@@ -276,7 +315,7 @@
 
 - Accept [PR199](https://github.com/ActiveInferenceInstitute/fep_formal/pull/199)
   on main `b929c93bb0bec767424276b369cf09db160b0a5b`: reusable frozen readiness
-  APIs and public release/verification operations, 22 catalogue numerical
+  APIs and public release/verification operations, 22 catalog numerical
   witnesses, the complete 168-proxy static family review with 52 scoped metadata
   corrections, and seven bounded entropy/Gibbs/Fisher bridge proofs. All 15
   installed-wheel compatibility cells and executed hosted jobs pass on exact
@@ -372,7 +411,7 @@
   See [the measured scope](specs/lean-family-shards/README.md).
 
 - Split release-bundle tests into source-owner leaves and shared fixtures; rename
-  the stale catalogue test filename. Preserve all 134 test and 11 helper function
+  the stale catalog test filename. Preserve all 134 test and 11 helper function
   ASTs, all 3,714 cases and their markers; 301 IDs change only by filename.
   The explicit current software membership and acceptance record retain historical
   capture freezes and scientific claim boundaries.
@@ -503,7 +542,7 @@
   the methods exporter; all theorem statements and mathematical content remain
   unchanged.
 - Derive relation captions from the validated count inventory and audit current
-  root catalogue counts against the coverage projection. Keep release/test
+  root catalog counts against the coverage projection. Keep release/test
   histories at their original epochs. Clarify the second-expansion chapter's
   fixed endpoint and inject current toolchain pins without changing its anchor.
 - Remove three proven-dead private helpers while preserving test-used helpers
@@ -579,7 +618,7 @@
   pymdp 1.0.4's score without full-support hypotheses; the generated instance
   proves stochasticity, H3 locality, a tight 13-step homing bound, an exact
   18/19 first posterior and well-formedness of the transcribed GNN source.
-  Its native receipt is claim-ready and rejects four mutations. The catalogue
+  Its native receipt is claim-ready and rejects four mutations. The catalog
   roster, aggregate and dispositions are unchanged. The GEO-INFER notation map
   gains rows for `fep-008`, `fep-014` and `fep-031`.
 
@@ -590,7 +629,7 @@ Every addition built warning-free at the then-current `v4.34.1` pin and depends 
 `propext`, `Classical.choice` and `Quot.sound`. Lexical Lean declarations grow
 from 1,946 to 2,185.
 
-- Path thermodynamics: the Jarzynski normalisation follows from a pathwise
+- Path thermodynamics: the Jarzynski normalization follows from a pathwise
   Crooks relation and is strictly weaker than it ([#87](https://github.com/ActiveInferenceInstitute/fep_formal/issues/87)); Markov-chain path
   laws for general horizons, the Schnakenberg entropy-production form and
   reversed-kernel duality ([#89](https://github.com/ActiveInferenceInstitute/fep_formal/issues/89)).
@@ -615,7 +654,7 @@ from 1,946 to 2,185.
   POMDP optimum; the fep-134 witness is re-derived through the filter and an
   observation-ignoring update is a countermodel ([#94](https://github.com/ActiveInferenceInstitute/fep_formal/issues/94)).
 - Dirichlet–categorical learning (stage 1): Pólya predictive, rising-factorial
-  sequence law, exchangeability and normalised row-wise A/B learning; `K = 2`
+  sequence law, exchangeability and normalized row-wise A/B learning; `K = 2`
   recovers the Bernoulli update and `α = 1` Laplace smoothing ([#95](https://github.com/ActiveInferenceInstitute/fep_formal/issues/95)).
 - Gaussian Markov blankets in any dimension: for positive-definite block
   precision, the conditional external–internal covariance vanishes exactly
@@ -623,7 +662,7 @@ from 1,946 to 2,185.
   is a countermodel. Measure-level Gaussian conditioning is a recorded Mathlib
   gap ([#97](https://github.com/ActiveInferenceInstitute/fep_formal/issues/97), [#112](https://github.com/ActiveInferenceInstitute/fep_formal/issues/112)).
 - Variational free energy: general finite maximum entropy and the constrained
-  Gibbs maximiser ([#85](https://github.com/ActiveInferenceInstitute/fep_formal/issues/85)); Helmholtz free energy as the unique variational
+  Gibbs maximizer ([#85](https://github.com/ActiveInferenceInstitute/fep_formal/issues/85)); Helmholtz free energy as the unique variational
   minimum with `dF/dT = −H` derived ([#86](https://github.com/ActiveInferenceInstitute/fep_formal/issues/86)).
 - Predictive coding: generalized-coordinate jets are iterated derivatives
   ([#91](https://github.com/ActiveInferenceInstitute/fep_formal/issues/91)); precision is inferred with unique optimum `1/ε²`, and the
@@ -709,7 +748,7 @@ remain historical. This PR acceptance is separate from the exact-main
 release gate, fresh production capture, CUR-15 and other governed lanes.
 
 Publication CI now acquires the pinned render template under the existing
-ignored `output/` directory and checks unfiltered Git status before catalogue
+ignored `output/` directory and checks unfiltered Git status before catalog
 projection and manuscript hydration. A real Git fixture demonstrated that
 the former untracked root-level template made the otherwise unchanged source
 stamp dirty; relocating the dependency preserves a clean stamp. The actual
@@ -750,10 +789,10 @@ Hermes/OpenGauss execution remain separate research lanes. Publication requires 
 hosted release gate. The scholarly and software Zenodo concept DOI histories
 are maintained separately in citation metadata and release guidance.
 
-## 1.5.0 — 2026-10-06 — 168-topic catalogue, finite information program and streamlined release gate
+## 1.5.0 — 2026-10-06 — 168-topic catalog, finite information program and streamlined release gate
 
 First published release since `v1.3.0` (the `1.4.0` candidate prepared on
-2026-10-02 was never tagged; its content ships here). The catalogue grows from
+2026-10-02 was never tagged; its content ships here). The catalog grows from
 159 to 168 canonical topics across 22 families (waves 3 and 4), with finite
 information identity/coarsening, relative-support information and genuine
 finite rate–distortion results, the Q7 source-pair acceptance, publication
@@ -807,7 +846,7 @@ Cooperative process supervision now holds a leased caller's result until owned
 descendant cleanup settles within the original shared cleanup deadline. A
 child's handled timeout no longer fails its ancestor, guard-wait faults still
 publish final cleanup state, and only a command whose guard had not reported is
-treated as cleanly cancelled by its ancestor, so an undelivered terminal
+treated as cleanly canceled by its ancestor, so an undelivered terminal
 response remains an obligation regardless of release order. Remote requests
 skip an empty frame remainder that raised EPIPE against a rejecting peer.
 
@@ -956,7 +995,7 @@ accepted prefix or native receipt is promoted, and active GNN work is preserved.
 `FEP-Q7-CURRENT` leaves the open-only backlog. The former Q7 README heading is
 explicitly historical; its exact capture-time preimage remains retained. These
 postcapture guidance changes do not alter the 191 FEP or 291 native inputs.
-Catalogue-native, full package/hosted acceptance, H3 outcomes, provider evidence
+Catalog-native, full package/hosted acceptance, H3 outcomes, provider evidence
 and the v1.4.0 release remain separate pending gates.
 
 ### Main publication and hosted follow-up (2026-10-02)
@@ -1035,7 +1074,7 @@ total is arithmetic only. Provider, release and H3/FORM-4 gates remain open.
 
 ### Programmatic test isolation and current evidence (2026-10-01)
 
-Programmatic catalogue tests now use the same private canonical project fixture
+Programmatic catalog tests now use the same private canonical project fixture
 as direct pipeline tests. Redirecting output alone still allowed generated
 manuscript source files to be replaced in the live checkout. The default-root
 contract remains explicit, private projections are checked, and every test
@@ -1153,9 +1192,9 @@ Local cache incompatibility and manuscript/render/bridge freshness remain
 explicit residuals; no new full native sweep, provider run, or publication
 is claimed by this review.
 
-### Wave-4 catalogue wiring: 168 topics / 22 families (2026-09-28)
+### Wave-4 catalog wiring: 168 topics / 22 families (2026-09-28)
 
-The catalogue grows 165 → 168 topics (families unchanged at 22) with the
+The catalog grows 165 → 168 topics (families unchanged at 22) with the
 wave-4 formalizations. fep-166 (Uniqueness of the Law-Weighted
 Reversible/Circulation Split, area ActiveInference) joins the
 `standalone-efe-formalizations` family through a new canonical
@@ -1164,7 +1203,7 @@ body: competing-pair uniqueness of the Helmholtz–Ao split, the reversible
 boundary in uniqueness form, and the t-0060 two-state oracle datum with
 nonzero forward circulation 1/2 and strictly negative reverse entry -1/4.
 fep-167 (Frobenius Least-Squares Projection of the Symmetrizer) and fep-168
-(Quantitative Control of the Uncancelled Divergence Remainder) extend
+(Quantitative Control of the Uncanceled Divergence Remainder) extend
 `geometric-mechanics-notation` (area Thermodynamics); the
 `FEP.GeometricMechanics` module grows to 37 qualified declarations with the
 exact Frobenius Pythagoras/minimality/uniqueness layer and the squared
@@ -1182,9 +1221,9 @@ with the per-family size pin replacing the uniform-size singleton assertion.
 Native capture and render re-acceptance ride the coordinator's remaining
 phases and are pending, not part of this wiring.
 
-### Wave-3 catalogue wiring: 165 topics / 22 families (2026-09-27)
+### Wave-3 catalog wiring: 165 topics / 22 families (2026-09-27)
 
-The catalogue grows 159 → 165 topics and 21 → 22 families with the wave-3
+The catalog grows 159 → 165 topics and 21 → 22 families with the wave-3
 formalizations. fep-160 (Helmholtz–Ao Decomposition of Nonequilibrium Steady
 Currents, area ActiveInference) joins the `standalone-efe-formalizations`
 family; a new `geometric-mechanics-notation` family (area Thermodynamics)
@@ -1227,7 +1266,7 @@ terminal packet → H3 spike lockstep) is re-bound over that delta with the
 strip model in `tests/_support/h2_r0_custody.py` gaining this wave's
 added-module group so the reconstruction still hashes to the sealed R0
 manifest digest. Prerequisite for `fep-lean verify` claim-readiness at any
-tip containing the wave-4 catalogue (the native capture fails the roster
+tip containing the wave-4 catalog (the native capture fails the roster
 pre-gate otherwise); the native capture, render re-acceptance, and pin-cycle #33
 re-seal follow.
 
@@ -1256,7 +1295,7 @@ re-seal follow.
 ### Coordinated evidence refresh: SOURCE_OWNER_ROSTER v23 (2026-09-27)
 
 `OWNER_MANIFEST_VERSION` 22 → 23 covering the wave-3 fold chore's custody
-cascade: the new `geometric_mechanics` catalogue body joins the roster via
+cascade: the new `geometric_mechanics` catalog body joins the roster via
 `body_source_relative_paths()` and the H2.7 evidence-custody chain
 (acceptance → matrix → R0 prior/successor custody receipts → 05d/05b/06a →
 terminal packet → H3 spike lockstep) was re-bound over the wave-3 wiring
@@ -1265,7 +1304,7 @@ delta (two foundation modules + two bridge compositions in
 expanded release seal). The strip model in `tests/_support/h2_r0_custody.py`
 gains the wave-4 group constants so the reconstruction still hashes to the
 sealed R0 manifest digest. Prerequisite for `fep-lean verify`
-claim-readiness at any tip containing the wave-3 catalogue (the native
+claim-readiness at any tip containing the wave-3 catalog (the native
 capture fails the roster pre-gate otherwise); the native capture and the
 render re-acceptance follow before the pin-cycle #32 re-seal.
 
@@ -1276,9 +1315,9 @@ render re-acceptance follow before the pin-cycle #32 re-seal.
 User-approved G20 co-bump: `lean/lean-toolchain` and `lean/lakefile.lean`
 moved to v4.34.1, `lean/lake-manifest.json` re-resolved at Mathlib
 `d13f23b7`; `lake build FepSketches` green (8990 jobs, zero errors and
-warnings) with the catalogue-compile spot-check, mypy, ruff, and
+warnings) with the catalog-compile spot-check, mypy, ruff, and
 pin-audit gates green. Wave-2 delivery (lean-5 archive under `done/`,
-owner roster v22, 159-topic wave-3 catalogue, cycles #27-#29 custody
+owner roster v22, 159-topic wave-3 catalog, cycles #27-#29 custody
 seals) ships with this release; the coordinated native capture and the
 pin cycle #31 re-seal follow before the `v1.3.0` tag.
 
@@ -1426,7 +1465,7 @@ surfaces migrated and projections regenerated byte-identical,
 `lake build FepSketches` at zero warnings, `fep-lean verify` at 155/155
 verified with `native_claim_ready=true`, and the coordinated evidence-custody
 refresh bound to the new pin; `98c6324` formalism-coverage projections
-regenerated after the 4.34 migration (the CI catalogue-check step);
+regenerated after the 4.34 migration (the CI catalog-check step);
 `1534610` ruff-format of the fixture constants in
 `tests/test_reporter.py`/`tests/test_native_evidence.py` — all three merged
 as PR #19 (`63aac26`); `430b725` pin cycle #7 re-seal to GNN
@@ -1511,12 +1550,12 @@ bridge custody re-pin at `d818efb`.
   (`specs/gnn-bridge-w2-source-custody/source-pin.json` at `d818efb`; both
   Q5 and Q6 freshness gates green). Formalism-audit receipt refreshed
   (complete, zero errors, no sorry-axiom). Publication plane current
-  (catalogue, render-fonts, and the strict-default `render_manuscript
+  (catalog, render-fonts, and the strict-default `render_manuscript
   --check` all green) and the browser interaction receipt re-captured with
   zero receipt errors against the live Chrome replay.
-- Evidence boundary: the report receipt validates in catalogue mode
+- Evidence boundary: the report receipt validates in catalog mode
   (`valid`, `source_bound`; `claim_ready` is full-mode-only by definition —
-  a catalogue-mode report must never be read as provider evidence); native
+  a catalog-mode report must never be read as provider evidence); native
   compilation is claim-ready at 155/155 for the exact recorded digests; the
   Hermes/OpenGauss provider plane remains historical (FEP-FULL-155 owns the
   next full-mode run under its own credential and spend boundary).
@@ -1569,7 +1608,7 @@ bridge custody re-pin at `d818efb`.
 
 Code (all receipt-digest-shifting by design; one coordinated refresh):
 
-- Catalogue spine: `FEPTopicCatalogue` gained the sole validating
+- Catalog spine: `FEPTopicCatalogue` gained the sole validating
   construction path (roster/order/vocabulary asserted in `__init__`,
   `topics` frozen to a tuple); `from_yaml` delegates document/roster/family
   metadata validation to `schema.load_catalogue_metadata` (new
@@ -1614,7 +1653,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
 ### Evidence-currency status verb and GEO-INFER notation slice (2026-09-08)
 
 - Added the read-only `fep-lean status` verb: it composes existing
-  fail-closed checks (catalogue projection drift, render-receipt defects,
+  fail-closed checks (catalog projection drift, render-receipt defects,
   bridge source-pin binding, native-receipt validation) into one
   evidence-currency report whose every section carries its capability
   boundary; exit 0 means the report composed, never that evidence is
@@ -1675,12 +1714,12 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   directory, and publishes `uv run fep-lean verify --topic fep-001` as the
   reproducible entry point. The same paragraph claimed `_wrap_lean_code`
   prepends imports, adds area-specific opens and wraps the body in a
-  namespace; all 155 catalogue bodies already begin with `import` and declare
+  namespace; all 155 catalog bodies already begin with `import` and declare
   their own `namespace FEP<NNN>`, so the wrapper returns every one of them
   unchanged. It also credited native mode with writing `VerifyResult` to
   SQLite; the session store belongs to full OpenGauss mode.
 
-- Stopped printing catalogue row counts as theorem counts. Two sentences in
+- Stopped printing catalog row counts as theorem counts. Two sentences in
   the sophisticated-dynamics synthesis read "The {{areas.InfoGeometry.count}}
   Information Geometry theorems" and "The {{areas.BayesianMechanics.count}}
   Bayesian Mechanics theorems"; those tokens carry row counts, three lines
@@ -1728,12 +1767,12 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   `hand_maintained_module_cells` fails the render path on a literal typed back
   in, and `unknown_topic_import_modules` checks the relation itself against the
   pinned Mathlib.
-- Stopped a catalogue theorem reading as Mathlib prior art, and made the
+- Stopped a catalog theorem reading as Mathlib prior art, and made the
   allowlist that hid it self-checking. `manuscript/04b_framework_active_inference.md`
   said fep-008's proof used "`min_agrees_on_value` plus `le_antisymm`", between
   two real Mathlib names; `grep -rl min_agrees_on_value
   lean/.lake/packages/mathlib/Mathlib` matches nothing, because the name is
-  this catalogue's own `fep008_min_agrees_on_value`
+  this catalog's own `fep008_min_agrees_on_value`
   (`src/fep_lean/catalogue/bodies/core_active_inference.py`) printed without its
   prefix. It evaded the reference audit only by sitting in
   `NON_CATALOGUE_IDENTIFIERS` under the comment "Mathlib declarations cited as
@@ -1818,9 +1857,9 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
 - Made the theorem LaTeX projection fail closed: an unextractable statement
   raises instead of silently emitting a `\mathsf{?}` placeholder into the
   generated appendix.
-- Extended generated-catalogue parity: `from_yaml` now also asserts
+- Extended generated-catalog parity: `from_yaml` now also asserts
   `latex_equations` against `registry.LATEX_EQUATIONS`, matching the existing
-  `lean_sketch` contract, wherever the catalogue is loaded (including wheels).
+  `lean_sketch` contract, wherever the catalog is loaded (including wheels).
 - Extended the coverage join to fail closed when a `theorem_maturity.yaml`
   primary/supporting/boundary reference is not a resolvable formal
   declaration (qualified namespace form).
@@ -1842,7 +1881,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   reporter run-id helper drops the inline `__import__` and uses a tz-aware
   timestamp; and the stale `_write_sorry_distribution` figure helper is
   renamed to `_write_status_distribution`.
-- Catalogue loaders fail closed: `FEPTopicCatalogue.summary()` raises on an
+- Catalog loaders fail closed: `FEPTopicCatalogue.summary()` raises on an
   unknown `mathlib_status` instead of silently counting it as `partial`, and
   the roster seal rejects `first_id` below `fep-001` (the canonical interval
   definition shared with novelty loading).
@@ -1927,7 +1966,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   immutable v1.1.0 release. A later release must choose its own version and DOI
   only after the connected theorem and source-bound evidence gates settle.
 - Refreshed the deterministic offline evidence surface after the post-v1.1.0
-  source wave (`fep-evidence` lane): catalogue stage exit 0, formalism coverage
+  source wave (`fep-evidence` lane): catalog stage exit 0, formalism coverage
   regenerated (52 maintained formal modules, 33 foundation modules, 1480 total
   theorem declarations, 226 composed theorem declarations, including the new
   `FepSketches.ness_flow` and `FepSketches.compositions.smooth_reference_kernel`
@@ -1943,7 +1982,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   had materialized the gitignored generated appendix
   (`manuscript/09z_unified_formalism_catalogue.md`), so every fresh checkout
   derived a smaller glyph set than the committed `docs/render-fonts.json` and
-  the workflow reported a false STALE. The check now runs after the catalogue
+  the workflow reported a false STALE. The check now runs after the catalog
   step, and requirement derivation fails closed on its own: without the
   generated appendix, `render_font_projection` and `font_coverage_defects`
   raise `FontProbeError` naming the remedy instead of silently deriving an
@@ -2095,7 +2134,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
 
 ### Prior 50-topic semantic milestone (historical source snapshot)
 
-- Deepened all 50 catalogue rows to directly formalized, deliberately bounded
+- Deepened all 50 catalog rows to directly formalized, deliberately bounded
   topic scopes. The final fep-036 promotion adds Mathlib's finite binomial PMF,
   an outcome-indexed Laplace prior, exact shrinkage, consistency transfer from
   convergent empirical frequencies, and posterior closure while explicitly
@@ -2192,7 +2231,7 @@ they hash. They are not current acceptance evidence for the 155-topic cut.
   Lean path. The present validator rejects both report directories because
   they predate the current report-receipt schema and their source/configuration
   digests no longer match the live tree. They are not claim-ready evidence for
-  the final source or the complete 50-topic catalogue.
+  the final source or the complete 50-topic catalog.
 - `FEP-FULL-002` and `FEP-PROV-003` were complete for that snapshot. The
   historical run stored no provider secret and granted no authority for a
   later release.
@@ -2202,11 +2241,11 @@ they hash. They are not current acceptance evidence for the 155-topic cut.
 ### Package and canonical ownership
 
 - Replaced collision-prone loose top-level modules with one installable
-  `fep_lean` namespace, package-relative imports, packaged catalogue data, and
+  `fep_lean` namespace, package-relative imports, packaged catalog data, and
   an isolated wheel/import/console-script contract.
-- Split maintained catalogue metadata, semantic review, canonical Lean bodies,
+- Split maintained catalog metadata, semantic review, canonical Lean bodies,
   and generated projections into typed single-owner seams. Regeneration now
-  preserves the checkout and wheel catalogue bytes deterministically.
+  preserves the checkout and wheel catalog bytes deterministically.
 - Added a strictly validated authored formalism graph with explicit
   `conceptual`, `formal`, and `blocked_by` edge kinds. Formal edges require
   qualified Lean witnesses, and capability nodes retain open/partial/satisfied
@@ -2242,7 +2281,7 @@ they hash. They are not current acceptance evidence for the 155-topic cut.
 ### Evidence, manuscript, and audit integrity
 
 - Added atomic, source-digest-bound native Lean receipts and kept their
-  `native_claim_ready` predicate distinct from catalogue completion and
+  `native_claim_ready` predicate distinct from catalog completion and
   claim-ready full Hermes/OpenGauss reports.
 - Replaced in-place manuscript substitution with fail-closed source-to-build
   rendering. Missing, stale, partial, or tampered evidence renders explicit
@@ -2271,14 +2310,14 @@ they hash. They are not current acceptance evidence for the 155-topic cut.
 - Mypy passed for 39 source files; Ruff and format checks passed for all 157
   checked files; lock and installed-dependency checks passed.
 - Wheel and source distributions built successfully with the packaged
-  catalogue and canonical composed Lean source.
+  catalog and canonical composed Lean source.
 - Aggregate Lean build completed 8,251 jobs with no project warning.
 - The independently validated native receipt records 50/50 clean topics, zero
   warnings, zero `sorry`, Lean/Mathlib v4.29.0, and 106.732 seconds.
 - The declaration audit resolves 56/56 primary/composed declarations and all
   12 evidence declarations, with no warnings or `sorryAx`.
 - All generator, link, Markdown, pin, cross-reference, theorem, citation, and
-  manuscript-placeholder gates passed. Catalogue mode remained honest at zero
+  manuscript-placeholder gates passed. Catalog mode remained honest at zero
   verified topics.
 
 ### Still externally gated
@@ -2320,7 +2359,7 @@ they hash. They are not current acceptance evidence for the 155-topic cut.
   verification manifests. A real complete full-mode receipt is still required
   before FEP-PROV-003 can close.
 - Re-ran `uv run fep-lean verify`: `complete: true`, 50/50 clean native Lean
-  results, no `sorry` results. The catalogue CLI receipt also passed the new
+  results, no `sorry` results. The catalog CLI receipt also passed the new
   independent checker with `mode: catalogue` and `verified_topics: 0`.
 - The complete Python gate passed with `339 passed, 3 skipped`, 90.24% line
   coverage, and 342 collected tests; strict receipt failure paths, including
@@ -2333,7 +2372,7 @@ they hash. They are not current acceptance evidence for the 155-topic cut.
 ### Still externally gated
 
 - A permitted `OPENROUTER_API_KEY` or `ANTHROPIC_API_KEY` is still required to
-  exercise the live Hermes/OpenGauss/Lean full-mode smoke and complete-catalogue
+  exercise the live Hermes/OpenGauss/Lean full-mode smoke and complete-catalog
   runs. No credential is stored in this repository.
 
 ## Development snapshot — 2026-07-31 (revision 2)
@@ -2382,6 +2421,6 @@ All gates re-run and passing after improvements:
 - mypy: 23 source files, no issues
 - **ruff: 0 findings** (was 216 — 100% reduction)
 - Lean verify: 50/50 clean, `complete: true`
-- All 6 doc audits pass (links, md_hygiene, pin_audit, xref, catalogue, receipt)
+- All 6 doc audits pass (links, md_hygiene, pin_audit, xref, catalog, receipt)
 Owner roster bumped
 15 → 17 for the new rostered modules.

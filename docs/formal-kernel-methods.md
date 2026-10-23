@@ -20,7 +20,7 @@ inventory, not an authoring surface.
 
 The project intentionally has two related theorem planes:
 
-- A **topic plane** gives every stable catalogue row a reviewed theorem proxy,
+- A **topic plane** gives every stable catalog row a reviewed theorem proxy,
   a primary declaration, assumptions, non-vacuity evidence, and a semantic
   disposition. Topic bodies remain independently inspectable and compile as
   one generated aggregate.
@@ -286,7 +286,7 @@ No single green command answers every validation question:
 | Are generated Lean files exact copies of canonical sources? | Formal-module projection `--check` | Type correctness or theorem meaning |
 | Do the maintained modules type-check together? | `lake build FepSketches` with no warnings or proof holes | Scientific adequacy or external execution |
 | Do every reviewed declaration and relation witness resolve without `sorryAx`? | Formalism declaration/axiom audit receipt | Assumption realism or empirical truth |
-| Do catalogue rows compile from current bytes? | Validated native exact-roster receipt | Hermes/OpenGauss execution or shared-kernel audit |
+| Do catalog rows compile from current bytes? | Validated native exact-roster receipt | Hermes/OpenGauss execution or shared-kernel audit |
 | Do semantic claims match theorem scope? | Maturity records, assumption review, non-vacuity review, and human review | Provider execution |
 | Are the graph and numerical views current? | Atlas and dashboard drift checks plus renderer tests | New deductive evidence |
 | Did the provider-backed workflow complete? | Independently validated complete full-mode report | A broader theorem than the compiled source states |
@@ -318,7 +318,7 @@ uv run fep-lean verify --fail-on-warnings \
 
 The first receipt covers the maintained declarations, actual compiler identity,
 resolved Mathlib revision, and reported axioms under the versioned trusted
-policy. The second covers the stable catalogue roster, actual compiler
+policy. The second covers the stable catalog roster, actual compiler
 identity, resolved dependency revision, and current topic source digests.
 Publication claims that depend on both planes must cite both evidence classes
 rather than substituting one for the other.

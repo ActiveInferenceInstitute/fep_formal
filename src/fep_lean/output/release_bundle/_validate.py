@@ -297,7 +297,7 @@ def _validate_manifest_payload(
             "topics": RELEASE_SEAL["topics"],
         }:
             errors.append(
-                "manifest catalogue does not match the "
+                "manifest catalog does not match the "
                 f"{RELEASE_SEAL['topics']}-topic release seal"
             )
         formalism = manifest.get("formalism")

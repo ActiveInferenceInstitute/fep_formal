@@ -3,7 +3,7 @@
 project:
   name: fep_lean
   version: "1.6.0"
-  description: "FEP / Active Inference / Bayesian Mechanics Lean4 catalogue"
+  description: "FEP / Active Inference / Bayesian Mechanics Lean4 catalog"
 
 gauss:
   home: ~/.gauss

@@ -1,4 +1,4 @@
-"""Canonical Lean bodies for one original catalogue family."""
+"""Canonical Lean bodies for one original catalog family."""
 
 from __future__ import annotations
 

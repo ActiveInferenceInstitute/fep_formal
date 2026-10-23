@@ -1,6 +1,6 @@
 """Immutable presentation join for structural and numerical formalism views.
 
-The catalogue coverage join remains the sole structural source, and the typed
+The catalog coverage join remains the sole structural source, and the typed
 numerical-witness evaluator remains the sole numerical source.  This module
 normalizes those two sources once so every HTML and SVG projection conserves
 the same topics, relations, capabilities, modules, and witness tables.
@@ -84,7 +84,7 @@ def humanize_formalism_identifier(value: str) -> str:
 
 @dataclass(frozen=True)
 class PresentationTopic:
-    """One canonical catalogue topic represented without presentation geometry."""
+    """One canonical catalog topic represented without presentation geometry."""
 
     id: str
     title: str

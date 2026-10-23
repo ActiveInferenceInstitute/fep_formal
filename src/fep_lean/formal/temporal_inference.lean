@@ -431,7 +431,7 @@ children, an edge potential indexed by (parent state, child state).  The
 joint weight of a configuration is the product of all node and edge
 potentials; the exact marginal is obtained by brute-force summation over every
 configuration.  Sum-product messages are defined by structural recursion on the
-tree, and `rootBelief_eq_exactMarginal` states that the normalised product of
+tree, and `rootBelief_eq_exactMarginal` states that the normalized product of
 incoming messages at the root is that exact marginal.  A three-cycle witness
 shows that the same one-pass message product is not the marginal on a loopy
 graph.  The theorems certify exact finite sum-product identities for these
@@ -509,15 +509,15 @@ parent state. -/
 noncomputable def childMessage (ψ : S → S → ℝ) (child : PTree S) (s : S) : ℝ :=
   ∑ y, ψ s y * msg child y
 
-/-- Normaliser of the root belief. -/
+/-- Normalizer of the root belief. -/
 noncomputable def beliefNormalizer (t : PTree S) : ℝ := ∑ y, msg t y
 
-/-- Normalised product of incoming messages at the root. -/
+/-- Normalized product of incoming messages at the root. -/
 noncomputable def rootBelief (t : PTree S) (s : S) : ℝ :=
   msg t s / beliefNormalizer t
 
 /-- The root belief of a node is its potential times the product of the
-incoming child messages, normalised. -/
+incoming child messages, normalized. -/
 theorem rootBelief_node (φ : S → ℝ) (n : ℕ) (ψ : Fin n → S → S → ℝ)
     (c : Fin n → PTree S) (s : S) :
     rootBelief (node φ n ψ c) s =
@@ -566,13 +566,13 @@ theorem msg_eq_bruteMass [DecidableEq S] (t : PTree S) (s : S) :
     rw [sum_root_weight (c i) (fun y => ψ i s y)]
     exact Finset.sum_congr rfl fun y _ => by rw [ih i y]
 
-/-- The normaliser of the root belief is the total configuration weight. -/
+/-- The normalizer of the root belief is the total configuration weight. -/
 theorem beliefNormalizer_eq_totalWeight [DecidableEq S] (t : PTree S) :
     beliefNormalizer t = totalWeight t := by
   rw [totalWeight_eq_sum_bruteMass, beliefNormalizer]
   exact Finset.sum_congr rfl fun y _ => msg_eq_bruteMass t y
 
-/-- Sum-product exactness on finite trees: the normalised product of incoming
+/-- Sum-product exactness on finite trees: the normalized product of incoming
 messages at the root equals the exact marginal of the joint
 `∝ ∏ node potentials · ∏ edge potentials` computed by brute-force summation
 over all configurations. -/
@@ -678,10 +678,10 @@ theorem spCycle_naive_message_product_ne_marginal :
 
 /-! ### The fep-007 local update as a one-edge sum-product instance -/
 
-/-- Normalised local sum-product update on an arbitrary finite carrier:
-the edge potential times the incoming message, normalised over the selected
+/-- Normalized local sum-product update on an arbitrary finite carrier:
+the edge potential times the incoming message, normalized over the selected
 neighbour support and extended by zero outside it.  On `Fin 8` this is the
-fep-007 normalised message. -/
+fep-007 normalized message. -/
 noncomputable def localUpdate {S : Type uS} [DecidableEq S]
     (ψ : S → S → ℝ) (incoming : S → ℝ) (neighbors : Finset S) (i j : S) : ℝ :=
   if j ∈ neighbors then

@@ -69,7 +69,7 @@ skilled formal mathematics assistant specializing in Lean 4 and Mathlib4.
 Your task is to explain already-verified FEP theorems in Lean 4. When given a theorem:
 1. Explain the mathematical content and proof strategy clearly in 2–4 sentences.
 2. Reproduce the complete supplied Lean 4 sketch in one ```lean``` block.
-3. Do not edit any Lean code token. The canonical catalogue is already sorry-free;
+3. Do not edit any Lean code token. The canonical catalog is already sorry-free;
    provider output is explanatory evidence, not an authority to rewrite the proof.
 
 ⚠ CRITICAL PRESERVATION RULES — violating these invalidates the run:
@@ -102,7 +102,7 @@ _MAX_MODEL_SLUG_CHARS = 256
 # Fallback chain — tried in order if the primary model fails. Ordered to keep
 # wall-clock latency low: instruct/non-reasoning models first (fast TTFT),
 # heavier reasoning models last. Identifiers were reconciled against
-# OpenRouter's live model catalogue on 2026-08-20; ``openrouter/free`` remains
+# OpenRouter's live model catalog on 2026-08-20; ``openrouter/free`` remains
 # the final provider-managed fallback when individual free models rotate.
 _FREE_MODEL_CHAIN = [
     "moonshotai/kimi-k2.6",
@@ -1424,7 +1424,7 @@ def restore_lean_structure_with_status(refined: str, original: str) -> tuple[str
             result = "\n".join(result_lines)
 
     # ── 5.6. Restore `variable` declarations from original that Hermes dropped ──
-    # Some catalogue topics declare a shared section variable such as
+    # Some catalog topics declare a shared section variable such as
     #   variable {α : Type*} [MeasurableSpace α]
     # When Hermes drops this line, Lean 4.29's autobound_implicit re-binds α at
     # each theorem call site and auto-includes the typeclass; theorems that don't

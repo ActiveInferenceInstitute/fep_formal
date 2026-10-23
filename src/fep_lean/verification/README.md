@@ -14,7 +14,7 @@ provider request. Validation never downloads or builds dependencies.
 | `formalism_audit.py` | declaration resolution, evidence axiom inspection, and typed audit receipt |
 | `_toolchain.py` | Exact pinned executable resolution shared by validation and verification |
 | `preflight.py` | Adapter behind `fep-lean preflight` |
-| `numerical_witnesses.py` | Typed catalogue and horizon diagnostic registry |
+| `numerical_witnesses.py` | Typed catalog and horizon diagnostic registry |
 | `_horizon_numerical_witnesses.py` | Scalar terminal and Fin4 numerical calculations |
 | `horizon_acceptance.py` | Source-bound H2 terminal and H3.G0 eligibility validation |
 | `gnn_artifact_receipt.py` | Immutable backend contracts and retained native receipts |
@@ -41,11 +41,11 @@ warnings, records `sorry`, and removes the temporary source before returning.
 Lake build tree.
 
 `check_mathlib_built()` returns `(ok, message)`, not compilation evidence. The
-native CLI receipt is the full-catalogue evidence boundary. Its invocation and
+native CLI receipt is the full-catalog evidence boundary. Its invocation and
 the independent axiom audit are owned by the
 [root required-check inventory](../../../AGENTS.md#required-checks).
 
-The native catalogue receipt and formalism audit answer different questions.
+The native catalog receipt and formalism audit answer different questions.
 The former compiles all exact topic bodies; the latter resolves every primary
 and graph-evidence declaration through the topic aggregate and manifest-selected
 foundation/composition imports, and
@@ -72,7 +72,7 @@ See the local [agent contract](AGENTS.md) and the package-level
 `evaluate_numerical_witnesses(project_root, scope=None)` evaluates the shared
 typed registry. `scope="catalogue"` selects the registered family witnesses;
 `scope="horizon2"` selects the scalar terminal and Fin4 blanket diagnostics.
-The atlas/dashboard and release witness receipt explicitly select catalogue
+The atlas/dashboard and release witness receipt explicitly select catalog
 scope. H2 acceptance consumes the two horizon witnesses through the same
 `NumericalCheck` validation and declaration resolver.
 
@@ -103,7 +103,6 @@ captured output, while the verifier independently checks the command, input
 and artifact bindings.
 
 
-The compatibility keyword `run_preflight(require_gauss=False)` remains accepted.
-Full-mode checks always require OpenGauss; this keyword does not relax them or
-write `FEP_LEAN_REQUIRE_GAUSS` into the process environment. Capability inspection
-and explicit workspace setup remain separate operations.
+Full-mode preflight always checks every required capability, including OpenGauss.
+Use `run_preflight(root=...)` or `fep-lean preflight`; capability inspection
+does not change the process environment. Workspace setup remains explicit.

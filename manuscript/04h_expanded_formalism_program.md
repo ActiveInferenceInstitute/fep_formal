@@ -81,7 +81,7 @@ a named non-descendant invariant. It does not claim general graphical
 d-separation or observational identifiability. This scoped construction is
 kept distinct from causal blankets defined through dynamical sufficient
 statistics [@rosas2020causal] and from the conditional-independence blanket
-carrier used elsewhere in the catalogue. This distinction also prevents the
+carrier used elsewhere in the catalog. This distinction also prevents the
 finite intervention carrier from inheriting the stationary-diffusion claims of
 Bayesian mechanics [@dacosta2021stationary].
 

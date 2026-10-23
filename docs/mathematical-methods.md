@@ -1,6 +1,6 @@
 # Mathematical methods and the OpenAI mathematics context
 
-Version 1.6.0 makes the catalogue's mathematical location inspectable.
+Version 1.6.0 makes the catalog's mathematical location inspectable.
 The portable `fep_lean.methods` interface joins canonical topic contracts and
 authored relations with an explicit interpretive taxonomy. The extended
 [manuscript supplement](../manuscript/08b_mathematical_positioning_supplement.md)

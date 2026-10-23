@@ -271,7 +271,7 @@ def test_size_bound_and_unknown_probe_variant() -> None:
 @pytest.mark.parametrize("variant", q6.VARIANTS)
 def test_native_embedded_input_probe_and_axioms(tmp_path: Path, variant: str) -> None:
     """Native-only acceptance; the draft Python run explicitly deselects this."""
-    from fep_lean.verification.formalism_audit import _parse_axiom_output
+    from fep_lean.verification.formalism_audit import parse_axiom_output
     from tests._support.lean_runner import run_lean_probe
 
     expected = tuple(f"{q6.NAMESPACES[variant]}.{n}" for n in q6.THEOREMS[variant])
@@ -288,7 +288,7 @@ def test_native_embedded_input_probe_and_axioms(tmp_path: Path, variant: str) ->
     output = result.stdout + result.stderr
     assert result.returncode == 0, output
     assert "warning:" not in output and "sorry" not in output
-    reports, errors = _parse_axiom_output(output, expected=expected)
+    reports, errors = parse_axiom_output(output, expected=expected)
     assert not errors, errors
     assert set(reports) == set(expected)
     assert all(

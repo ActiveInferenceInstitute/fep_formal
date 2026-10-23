@@ -1,4 +1,4 @@
-"""Validated novelty ledger for catalogue rows beyond the original baseline."""
+"""Validated novelty ledger for catalog rows beyond the original baseline."""
 
 from __future__ import annotations
 
@@ -104,11 +104,11 @@ def load_formalism_novelty(
 
     roster = tuple(roster_ids)
     if not roster or len(roster) != len(set(roster)):
-        raise NoveltyValidationError("catalogue roster must be non-empty and unique")
+        raise NoveltyValidationError("catalog roster must be non-empty and unique")
     for index, topic_id in enumerate(roster, 1):
-        if _topic_number(topic_id, "catalogue roster ID") != index:
+        if _topic_number(topic_id, "catalog roster ID") != index:
             raise NoveltyValidationError(
-                "catalogue roster must be the ordered fep-001 interval"
+                "catalog roster must be the ordered fep-001 interval"
             )
 
     baseline_last_id = _required_text(

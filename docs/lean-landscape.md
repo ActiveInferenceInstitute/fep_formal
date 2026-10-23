@@ -11,7 +11,7 @@ The exact roster and roles live in the manifest; this page projects them for nav
   Generated topic family shards and the compatibility aggregate are listed
   without formal-manifest layer expansion. Lake owns the complete build plan.
 - Cycles among manifested modules stop generation with the cycle path.
-- Topic bodies (168 catalogue rows) live in family modules under
+- Topic bodies (168 catalog rows) live in family modules under
   [`src/fep_lean/catalogue/bodies/`](../src/fep_lean/catalogue/bodies/), not
   here; generated Lean family shards own their topic namespaces, and the
   import-only `fep_all.lean` remains their compatibility aggregate.

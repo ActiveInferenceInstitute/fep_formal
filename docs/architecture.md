@@ -52,7 +52,7 @@ dependencies in purple, outside the authored scientific-edge collection. The
 dashboard renders deterministic finite witnesses for selected laws; it is an
 explanatory projection, not proof evidence.
 
-Catalogue generation, native Lean verification, and credentialed full
+Catalog generation, native Lean verification, and credentialed full
 Hermes/OpenGauss execution are separate evidence planes. No completion flag is
 reused across those boundaries without independent receipt validation.
 

@@ -166,7 +166,7 @@ def _convert_lean_expr(s: str) -> str:
     # Normalize Lean's compound notation before its component characters.  In
     # particular, leaving Unicode subscript letters behind creates commands
     # such as ``\circₖ``, which XeLaTeX cannot parse.  The output is kept
-    # deliberately ASCII-only so unsupported notation fails during catalogue
+    # deliberately ASCII-only so unsupported notation fails during catalog
     # construction rather than late in publication rendering.
     for lean, latex in (
         ("ℝ≥0∞", r"\mathbb{R}_{\ge 0}^{\infty}"),

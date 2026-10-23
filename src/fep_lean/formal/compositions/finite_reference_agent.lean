@@ -358,7 +358,7 @@ theorem retainedFiniteReference_predecessors :
 /-- One exact learned posterior is lifted to the sixteen-state Boolean blanket,
 updated by the hold-policy observation, consumed by the posterior-dependent
 feedback tree, and evolved by the true action's certified refresh slice.  The
-KL clauses use that same lifted updated posterior; the legacy point-mass
+KL clauses use that same lifted updated posterior; the separate point-mass
 strictness witnesses above are not substituted into this result. -/
 theorem finiteReferenceAgent_terminal :
     let learned : FiniteLaw Bool :=

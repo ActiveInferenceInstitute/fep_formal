@@ -2,7 +2,7 @@
 
 ## Scope
 
-The project validates the schema-2 168-topic catalogue sealed in
+The project validates the schema-2 168-topic catalog sealed in
 [`config/catalogue_metadata.yaml`](config/catalogue_metadata.yaml) against its
 pinned Lean and Mathlib workspace. The evidence compiler and dependency revision
 are defined by [`lean/lean-toolchain`](lean/lean-toolchain),
@@ -52,7 +52,7 @@ The [execution contract](AGENTS.md#execution-contract) defines read-only
 validation and explicit setup boundaries; the
 [required-check inventory](AGENTS.md#required-checks) owns validation commands.
 
-The catalogue loader rejects missing fields, divergence from the maintained
+The catalog loader rejects missing fields, divergence from the maintained
 roster seal, duplicate or out-of-order IDs, unsupported areas/statuses, empty
 theorem bodies, mismatched equation counts, and divergence from the validated
 family-body registry under `src/fep_lean/catalogue/`.
@@ -72,7 +72,7 @@ and fails on stale projections, warnings, compiler errors, timeouts, or
 ## Artifacts
 
 Successful pipeline runs write a timestamped report containing Markdown, JSON,
-a verification manifest, and SHA-256 hashes. Catalogue generation writes
+a verification manifest, and SHA-256 hashes. Catalog generation writes
 `manuscript/manuscript_vars.yaml` and the unified appendix. Rendering writes
 resolved chapters to `output/manuscript/` without changing authored Markdown.
 Generated files are never evidence by themselves: native claims require a

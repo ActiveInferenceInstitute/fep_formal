@@ -140,7 +140,7 @@ def test_all_report_files_created(report_paths: ReportPaths) -> None:
 def test_index_md_contains_status(report_paths: ReportPaths) -> None:
     text = report_paths.index_md.read_text(encoding="utf-8")
     assert "ok" in text.lower() or "ok" in text
-    assert "Load Catalogue" in text
+    assert "Load Catalog" in text
     assert "Environment Validation" in text
 
 
@@ -564,7 +564,7 @@ def test_index_and_summary_use_selected_topics_and_hash_nested_artifacts(
     paths = rep.generate(TOPICS, result)
     index = paths.index_md.read_text(encoding="utf-8")
     assert "**Total Topics:** 1" in index
-    assert f"**Catalogue Topics:** {len(TOPICS.roster.topic_ids)}" in index
+    assert f"**Catalog Topics:** {len(TOPICS.roster.topic_ids)}" in index
     summary = json.loads(paths.summary_json.read_text(encoding="utf-8"))
     hashes = summary["artifact_hashes"]
     assert "topics/fep-001.md" in hashes
@@ -689,7 +689,7 @@ def test_reporter_rejects_topic_absent_from_catalogue_before_writing(
         ]
     )
 
-    with pytest.raises(ValueError, match="absent from the catalogue"):
+    with pytest.raises(ValueError, match="absent from the catalog"):
         Reporter(tmp_path, run_id="run_unknown_topic").generate(TOPICS, result)
 
     assert not (tmp_path / "output" / "reports" / "run_unknown_topic").exists()
@@ -732,7 +732,7 @@ def test_complete_receipt_rejects_internally_consistent_unknown_topic(
     )
 
     assert receipt["claim_ready"] is False
-    assert any("absent from the live catalogue" in error for error in receipt["errors"])
+    assert any("absent from the live catalog" in error for error in receipt["errors"])
 
 
 def test_incomplete_synthetic_root_cannot_source_bind(tmp_path: Path) -> None:
@@ -1810,7 +1810,11 @@ def test_validate_receipt_detects_source_drift(tmp_path: Path) -> None:
         ),
         ("roster_sha256", "summary roster_sha256 does not match"),
         ("toolchain", "summary toolchain does not match"),
-        ("catalogue", "summary catalogue does not match"),
+        pytest.param(
+            "catalogue",
+            "summary catalog does not match",
+            id="catalogue-summary catalogue does not match",
+        ),
     ],
 )
 def test_source_bound_rejects_tampered_live_binding(

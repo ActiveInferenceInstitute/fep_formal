@@ -576,7 +576,7 @@ def _safe_project_path(project_root: Path, path: Path, *, label: str) -> Path:
 def _test_collection_input_paths(project_root: Path) -> tuple[Path, ...]:
     """Return every file whose bytes can affect pytest collection.
 
-    Collection-time parametrization imports the maintained catalogue and formal
+    Collection-time parametrization imports the maintained catalog and formal
     manifests, so test files and ``pyproject.toml`` alone are not a closed
     cache key.  Reuse the source/config receipt owners and add every Python
     test; missing owners remain part of the fingerprint rather than silently
@@ -1369,7 +1369,7 @@ def manuscript_projection_drift(
 
 def build_lean_catalogue_markdown(catalogue: FEPTopicCatalogue) -> str:
     lines = [
-        "# Appendix B: Full Lean Catalogue {#sec:appendix_b_full_topic_lean_catalogue}",
+        "# Appendix B: Full Lean Catalog {#sec:appendix_b_full_topic_lean_catalogue}",
         "",
     ]
     last_topic_id = catalogue.topics[-1].id

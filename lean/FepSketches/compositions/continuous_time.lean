@@ -10,7 +10,7 @@ public import FepSketches.continuous_time_markov
 # Exact two-state continuous-time topic compositions
 
 These bridges pair the exact two-state semigroup with the nearest discrete or
-measure-native catalogue law.  The conjunctions preserve the different time
+measure-native catalog law.  The conjunctions preserve the different time
 domains and carriers instead of asserting an unsupported general equivalence.
 -/
 

@@ -438,7 +438,7 @@ def test_archive_validator_rejects_self_consistent_semantic_manifest_tampering(
 
     assert validation.valid is False
     expected_errors = {
-        "manifest catalogue does not match the 168-topic release seal",
+        "manifest catalog does not match the 168-topic release seal",
         "manifest formalism.relations is stale",
         "manifest formalism.formal_modules must be positive",
         "manifest Lean version does not match its toolchain pin",

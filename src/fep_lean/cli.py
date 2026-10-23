@@ -28,7 +28,6 @@ from fep_lean.output import release_bundle
 from fep_lean.output.evidence import (
     NATIVE_RECEIPT,
     RENDER_RECEIPT,
-    STATUS_BOUNDARY,
     PublicationReadinessReport,
     SectionReport,
     StatusReport,
@@ -130,14 +129,10 @@ def _verify(
 SOURCE_PIN = Path(operations.PIN)
 
 
-# Legacy CLI imports remain the exact same type objects, now owned by evidence.
-_STATUS_BOUNDARY = STATUS_BOUNDARY
-
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="fep-lean",
-        description="Strict FEP Lean catalogue and verification pipeline",
+        description="Strict FEP Lean catalog and verification pipeline",
     )
     parser.add_argument(
         "--project-root",
@@ -210,10 +205,10 @@ def build_parser() -> argparse.ArgumentParser:
     )
     sub.add_parser("setup", help="explicitly acquire/build the pinned Lean workspace")
     sub.add_parser("preflight", help="run read-only full-mode capability checks")
-    verify = sub.add_parser("verify", help="compile catalogue sketches with Lean only")
+    verify = sub.add_parser("verify", help="compile catalog sketches with Lean only")
     add_verify_arguments(verify)
     catalogue = sub.add_parser(
-        "catalogue", help="generate deterministic offline catalogue artifacts"
+        "catalogue", help="generate deterministic offline catalog artifacts"
     )
     catalogue.add_argument("--area")
     catalogue.add_argument("--topic", action="append", dest="topics")
@@ -240,7 +235,7 @@ def build_parser() -> argparse.ArgumentParser:
     topic.add_argument(
         "--workflow", choices=("verify", "draft", "prove", "review"), default="verify"
     )
-    sub.add_parser("report", help="run catalogue mode and emit a complete report")
+    sub.add_parser("report", help="run catalog mode and emit a complete report")
     status = sub.add_parser(
         "status",
         help=(

@@ -42,17 +42,20 @@ As reviewed on 2026-10-22:
    diagnosis and current production-receipt requirements. Closure status alone
    does not prove those results. Do not reopen unavailable private-stream work
    or claim its scientific or production acceptance. On 2026-10-22 the owner
-   retired CUR-03/#52 and CUR-05/#53 as not planned; their GitHub issues remain
-   open at this review. Original source-freeze and seven-stage capture/archive
+   retired CUR-03/#52 and CUR-05/#53, now closed as not planned. Original
+   source-freeze and seven-stage capture/archive
    acceptance remains unmet. Preserve the r7-r1 REVISE finding, all 560 original
    inputs plus explicitly approved additions, original caps and no-resume
    contract as history; retirement does not rewrite them or approve unknown
    source/test members. Current exact membership and source custody remain required.
-3. CUR-07/#54 remains open. Complete every applicable declared check and exact-SHA
-   hosted distribution/native/audit/Python/docs/render artifact gate for the
-   claimed source. No green subset, retired capture requirement or historical
-   receipt substitutes. Before activating a dependent scientific lane, review
-   its prospective source/package prerequisites explicitly.
+3. CUR-07/#54 completed the bounded software/artifact gate at accepted main
+   `e8cea5b87857df94038a104fdb72459efdb783a6` with [fresh attempt 2](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39877928982/attempts/2).
+   FORM-M1/#68 and FORM-D3/#75 also completed their bounded primary-alignment
+   and all-168 statement review/ranking, retaining scientific limits and current
+   dispositions. Their future proof roadmap is not accepted by those closures.
+   Every later source epoch, including this next cohort, still requires its own
+   applicable checks and exact-source evidence. Before activating a dependent
+   scientific lane, review its prospective source/package prerequisites explicitly.
 4. CUR-08/#55 remains open. Resolve the frozen-carrier preflight through an
    explicit reviewed successor or migration contract, preserving the original
    freeze and unopened primary. Refresh H3 export and three independent proof-role

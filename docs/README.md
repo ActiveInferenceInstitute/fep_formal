@@ -6,10 +6,10 @@ FEP_Formal is the project name. The installed Python namespace remains
 - [Mathematical methods](mathematical-methods.md) — portable topic contracts, research context and mathematical transfer rules.
 - [Support-aware variational methods](support-aware-variational-methods.md) — sparse Gibbs optimization, finite-path marginals, reversible KL drop and numerical API boundaries.
 - [Mathematical positioning explorer](mathematical-positioning/mathematical-map.html) — offline searchable contracts, typed associations and numerical boundary panels.
-- [Getting started](getting-started.md) — install, catalogue mode, and strict mode.
+- [Getting started](getting-started.md) — install, catalog mode, and strict mode.
 - [FEP background](fep-background.md) — conceptual orientation with explicit formalization boundaries.
 - [Formal-kernel methods](formal-kernel-methods.md) — shared carriers, theorem scope, validation ladder, and visualization contract.
-- [Design programs](design/README.md) — prospective architecture and research goals, kept separate from current catalogue and evidence claims.
+- [Design programs](design/README.md) — prospective architecture and research goals, kept separate from current catalog and evidence claims.
 - [GNN bridge](design/gnn-bridge/README.md) — cross-repo articulation with the GeneralizedNotationNotation pipeline (bridge CLI, Lean AST, and source custody).
 - [FEP research horizons](design/fep-research-program/README.md) — dependency-ordered finite synthesis, smooth/stochastic lifting, and an end-to-end scientific case study.
 - [Second-expansion chapter (`fep-121` to `fep-155`)](../manuscript/04i_formalism_catalogue_155.md) — finite risk, policy trees, native blankets, exponential-family duality, continuous time, and evidence boundaries.
@@ -43,7 +43,7 @@ FEP_Formal is the project name. The installed Python namespace remains
 ## Reference
 
 - [Documentation specification](SPEC.md) — what the documentation set must cover and how it is kept self-contained.
-- [Architecture](architecture.md) — package layout and the data flow between catalogue, Lean, Hermes, and OpenGauss.
+- [Architecture](architecture.md) — package layout and the data flow between catalog, Lean, Hermes, and OpenGauss.
 - [Python API](api.md) — public package surface.
 - [Formalism authorship guide](authorship-guide.md) — strengthening a reviewed topic and deciding when a new formalism is warranted.
 - [Publication consistency review](publication-consistency-review.md) — reconciles archived publication wording with current theorem scope and evidence boundaries.
@@ -60,7 +60,7 @@ were written; current evidence lives in the generated reports above.
 - [Test suite review](test-suite-review.md) — 2026-07-31 snapshot of suite structure and gaps.
 - [Relations endpoint adjudication](relations-endpoint-adjudication.md) — coverage-gate verdict on the reviewed-primary-qualified endpoint rule.
 
-All paths in this directory resolve within this repository. Catalogue-derived
+All paths in this directory resolve within this repository. Catalog-derived
 manuscript inputs are created by `uv run fep-lean catalogue`; coverage, atlas,
 dashboard, and manuscript-render checks each retain a separate freshness gate.
 

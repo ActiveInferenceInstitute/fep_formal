@@ -3,6 +3,9 @@
 The agent and contributor contract is [AGENTS.md](AGENTS.md); this page is the
 short human entry point and links to it rather than copying it.
 
+Use American English in maintained human-facing text. Preserve exact public
+identifiers, proper names, citations, and frozen evidence in their original form.
+
 ## Environment
 
 Use the validator Python selected by [`.python-version`](.python-version)

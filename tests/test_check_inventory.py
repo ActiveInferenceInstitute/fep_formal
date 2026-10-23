@@ -765,6 +765,50 @@ def test_native_shadow_selection_refuses_nonboolean_or_default_enabled_input(
         _assert_native_shadow_selection_is_explicit(workflow)
 
 
+_FORMAT_SPEC_ROOTS = (
+    "specs/openai-math-methods",
+    "specs/cascadia-experiments",
+    "specs/gnn-runner-execution",
+    "specs/publication-browser-acceptance",
+)
+_FORMAT_COMMAND = "uv run ruff format --check src tests scripts docs " + " ".join(
+    _FORMAT_SPEC_ROOTS
+)
+
+
+def _assert_consolidated_format_contract(workflow):
+    static_runs = [step.get("run", "") for step in workflow["jobs"]["static"]["steps"]]
+    assert static_runs.count(_FORMAT_COMMAND) == 1
+    assert _FORMAT_COMMAND in AGENTS.read_text(encoding="utf-8")
+    for job in ("lean", "python"):
+        runs = "\n".join(step.get("run", "") for step in workflow["jobs"][job]["steps"])
+        assert all(
+            f"ruff format --check {root}" not in runs for root in _FORMAT_SPEC_ROOTS
+        )
+
+
+def test_consolidated_format_refuses_missing_roots_or_duplicate_execution():
+    workflow = yaml.safe_load(CI.read_text())
+    _assert_consolidated_format_contract(workflow)
+    for root in _FORMAT_SPEC_ROOTS:
+        mutated = yaml.safe_load(CI.read_text())
+        step = next(
+            row
+            for row in mutated["jobs"]["static"]["steps"]
+            if row.get("run") == _FORMAT_COMMAND
+        )
+        step["run"] = step["run"].replace(" " + root, "", 1)
+        with pytest.raises(AssertionError):
+            _assert_consolidated_format_contract(mutated)
+    for job in ("lean", "python"):
+        mutated = yaml.safe_load(CI.read_text())
+        mutated["jobs"][job]["steps"].append(
+            {"run": "uv run ruff format --check " + _FORMAT_SPEC_ROOTS[0]}
+        )
+        with pytest.raises(AssertionError):
+            _assert_consolidated_format_contract(mutated)
+
+
 def _assert_render_dependencies_barrier_contract(workflow):
     jobs = workflow["jobs"]
     lean = jobs["lean"]
@@ -793,8 +837,9 @@ def _assert_render_dependencies_barrier_contract(workflow):
         "specs/publication-browser-acceptance/wait_render_dependencies.py"
     ) in static_runs
     required = AGENTS.read_text(encoding="utf-8")
-    assert "uv run ruff check specs/publication-browser-acceptance" in required
-    assert "uv run ruff format --check specs/publication-browser-acceptance" in required
+    assert "uv run ruff check ." in required
+    assert "uv run ruff check ." in static_runs
+    _assert_consolidated_format_contract(workflow)
     assert (
         "uv run mypy src scripts docs "
         "specs/publication-browser-acceptance/wait_render_dependencies.py"

@@ -1,11 +1,11 @@
-"""Catalogue data model, roster seal, and canonical Lean body registry.
+"""Catalog data model, roster seal, and canonical Lean body registry.
 
 The exact roster count is derived from the packaged schema-2 seal.
 
 Public API
 ----------
     TopicEntry          — single theorem row (frozen dataclass)
-    FEPTopicCatalogue   — in-memory catalogue loaded from config/topics.yaml
+    FEPTopicCatalogue   — in-memory catalog loaded from config/topics.yaml
 """
 
 from typing import TYPE_CHECKING

@@ -33,6 +33,6 @@ unified appendix before checking manuscript cross-references.
 
 `formalism-coverage.*`, `formalism-atlas.*`, and
 `formal-kernel-dashboard.*` are generated projections. Edit their canonical
-catalogue, relation, formal-module, or renderer owners, never the generated
+catalog, relation, formal-module, or renderer owners, never the generated
 bytes. The dashboard is explanatory numerical evidence and never substitutes
 for Lean compilation or the declaration/axiom audit.

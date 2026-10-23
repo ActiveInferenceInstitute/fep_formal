@@ -252,8 +252,8 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     # The reference audits look past one reviewed set of names -- Mathlib
     # citations, this repository's own maintained Lean declarations, and
-    # catalogue record fields. Each group is checked against the source it
-    # claims, because a group comment is exactly what let a catalogue theorem
+    # catalog record fields. Each group is checked against the source it
+    # claims, because a group comment is exactly what let a catalog theorem
     # sit in the Mathlib group under a stripped prefix and read as prior art.
     pinned = project_root / "lean" / ".lake" / "packages" / "mathlib"
     mathlib_root: Path | None = pinned if (pinned / "Mathlib").is_dir() else None
@@ -285,14 +285,14 @@ def main(argv: list[str] | None = None) -> int:
         for item in hand_typed:
             print(f"  {item}")
         return 1
-    # A row count labelled "theorems" is the same failure one level up: the
+    # A row count labeled "theorems" is the same failure one level up: the
     # token resolves, so every placeholder gate passes, while the sentence
-    # states a proof total the catalogue does not have. Two such sentences
+    # states a proof total the catalog does not have. Two such sentences
     # shipped in a rendered PDF three lines below a heading that already said
     # "Rows"; only the heading had been fixed.
     miscounted = miscounted_area_labels(source_dir)
     if miscounted:
-        print("ERROR: area row counts labelled as proved declarations")
+        print("ERROR: area row counts labeled as proved declarations")
         for item in miscounted:
             print(f"  {item}")
         return 1

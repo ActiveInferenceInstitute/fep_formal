@@ -276,7 +276,21 @@ def test_foundations_pin_finite_carriers_and_reuse_existing_owners() -> None:
     risk = (FORMAL_ROOT / "empirical_risk.lean").read_text(encoding="utf-8")
     policy = (FORMAL_ROOT / "policy_tree.lean").read_text(encoding="utf-8")
 
-    assert_exposed_module_header(risk, ("FepSketches.learning_theory",))
+    assert_exposed_module_header(
+        risk,
+        (
+            "FepSketches.learning_theory",
+            "Mathlib.Probability.Distributions.Beta",
+            "Mathlib.Tactic",
+            "Mathlib.MeasureTheory.Measure.WithDensity",
+            "Mathlib.MeasureTheory.Integral.Lebesgue.Map",
+            "Mathlib.MeasureTheory.Constructions.Pi",
+            "Mathlib.MeasureTheory.Measure.Dirac.Basic",
+            "Mathlib.Algebra.BigOperators.Ring.Finset",
+            "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+            "Mathlib.Basic.ENNReal.Real",
+        ),
+    )
     assert "FiniteLaw" in risk
     assert "VariationalDuality.expectation" in risk
     assert "def empiricalRate" in risk
@@ -439,3 +453,75 @@ def test_keystone_axiom_probe_accepts_only_trusted_set(
     for axiom_blob in re.findall(r"depends on axioms: \[([^]]*)]", output):
         observed = {item.strip() for item in axiom_blob.split(",") if item.strip()}
         assert observed <= ALLOWED_AXIOMS
+
+
+def test_generic_stick_family_posterior_imported_controls(tmp_path: Path) -> None:
+    """Compile actual maintained posterior imports and genuine Fin3 controls."""
+    source = (
+        PROJECT_ROOT
+        / "tests"
+        / "fixtures"
+        / "fep95_stick_family_imported_controls.lean"
+    )
+    text = source.read_text(encoding="utf-8")
+    expected = re.findall(r"(?m)^#print axioms ([A-Za-z0-9_.']+)$", text)
+    assert len(expected) == 75 and len(set(expected)) == 75
+    assert text.startswith("import FepSketches.empirical_risk\n")
+    probe = tmp_path / "stick-family-imported-controls.lean"
+    probe.write_text(text, encoding="utf-8")
+    result = _compile(probe)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert not result.stderr, result.stderr
+    pattern = (
+        r"'([^']+)' (?:depends on axioms: \[([^]]*)\]|does not depend on any axioms)"
+    )
+    matches = list(re.finditer(pattern, result.stdout, re.DOTALL))
+    assert [match.group(1) for match in matches] == expected
+    for match in matches:
+        raw = match.group(2)
+        atoms = (
+            []
+            if raw is None or not raw.strip()
+            else [item.strip() for item in raw.split(",")]
+        )
+        assert len(atoms) == len(set(atoms))
+        assert all(atom in ALLOWED_AXIOMS for atom in atoms)
+    assert not re.sub(pattern, "", result.stdout, flags=re.DOTALL).strip(), (
+        result.stdout
+    )
+
+
+def test_conditioning_row_posterior_imported_controls(tmp_path: Path) -> None:
+    """Compile actual row-posterior imports and genuine matrix controls."""
+    source = (
+        PROJECT_ROOT
+        / "tests"
+        / "fixtures"
+        / "fep95_conditioning_row_imported_controls.lean"
+    )
+    text = source.read_text(encoding="utf-8")
+    expected = re.findall(r"(?m)^#print axioms ([A-Za-z0-9_.']+)$", text)
+    assert len(expected) == 16 and len(set(expected)) == 16
+    assert text.startswith("import FepSketches.empirical_risk\n")
+    probe = tmp_path / "conditioning-row-imported-controls.lean"
+    probe.write_text(text, encoding="utf-8")
+    result = _compile(probe)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert not result.stderr, result.stderr
+    pattern = (
+        r"'([^']+)' (?:depends on axioms: \[([^]]*)\]|does not depend on any axioms)"
+    )
+    matches = list(re.finditer(pattern, result.stdout, re.DOTALL))
+    assert [match.group(1) for match in matches] == expected
+    for match in matches:
+        raw = match.group(2)
+        atoms = (
+            []
+            if raw is None or not raw.strip()
+            else [item.strip() for item in raw.split(",")]
+        )
+        assert len(atoms) == len(set(atoms))
+        assert all(atom in ALLOWED_AXIOMS for atom in atoms)
+    assert not re.sub(pattern, "", result.stdout, flags=re.DOTALL).strip(), (
+        result.stdout
+    )

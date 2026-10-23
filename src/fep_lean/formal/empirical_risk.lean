@@ -1,5 +1,14 @@
 module
 public import FepSketches.learning_theory
+public import Mathlib.Probability.Distributions.Beta
+public import Mathlib.Tactic
+public import Mathlib.MeasureTheory.Measure.WithDensity
+public import Mathlib.MeasureTheory.Integral.Lebesgue.Map
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.Measure.Dirac.Basic
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Basic.ENNReal.Real
 
 @[expose] public section
 
@@ -388,7 +397,7 @@ theorem dirichletPosterior_total (α : K → ℝ) (n : K → ℕ) :
   simp [dirichletPosterior, dirichletTotal, Finset.sum_add_distrib]
 
 omit [DecidableEq K] in
-/-- The Pólya predictive is the normalised posterior pseudo-count vector. -/
+/-- The Pólya predictive is the normalized posterior pseudo-count vector. -/
 theorem polyaPredictive_eq_posterior_normalised (α : K → ℝ) (n : K → ℕ) (k : K) :
     polyaPredictive α n k =
       dirichletPosterior α n k / ∑ j, dirichletPosterior α n j := by
@@ -642,4 +651,849 @@ theorem learnedTransition_normalised {S U : Type*} (α : S × U → K → ℝ)
 
 end DirichletCategorical
 
+end FEP.EmpiricalRisk
+
+namespace FEP.EmpiricalRisk
+
+/- Source lineage 17fbc43aa3cec3edc6a1dac231a0b6ccf1ec0e6ef238fbdaf1c8e59e9250af32.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Positive real-shape Beta likelihood weighting and normalized posterior identities. -/
+
+open MeasureTheory
+open scoped ENNReal
+
+namespace BetaDensity
+
+noncomputable def likelihood (s f : ℕ) (x : ℝ) : ENNReal :=
+  ENNReal.ofReal x ^ s * ENNReal.ofReal (1 - x) ^ f
+
+noncomputable def normalizer (a b : ℝ) (s f : ℕ) : ℝ :=
+  ProbabilityTheory.beta (a + (s : ℝ)) (b + (f : ℝ)) / ProbabilityTheory.beta a b
+
+theorem normalizer_pos {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (s f : ℕ) :
+    0 < normalizer a b s f := by
+  exact div_pos (ProbabilityTheory.beta_pos (by positivity) (by positivity))
+    (ProbabilityTheory.beta_pos ha hb)
+
+theorem normalizer_finite (a b : ℝ) (s f : ℕ) :
+    ENNReal.ofReal (normalizer a b s f) ≠ ⊤ := ENNReal.ofReal_ne_top
+
+theorem likelihood_measurable (s f : ℕ) : Measurable (likelihood s f) := by
+  unfold likelihood
+  fun_prop
+
+theorem real_pdf_product {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
+    (s f : ℕ) (x : ℝ) :
+    ProbabilityTheory.betaPDFReal a b x * (x ^ s * (1 - x) ^ f) =
+      normalizer a b s f * ProbabilityTheory.betaPDFReal (a + (s : ℝ)) (b + (f : ℝ)) x := by
+  by_cases hx : 0 < x ∧ x < 1
+  · have hx1 : 0 < 1 - x := sub_pos.mpr hx.2
+    have hbase : ProbabilityTheory.beta a b ≠ 0 := ne_of_gt (ProbabilityTheory.beta_pos ha hb)
+    have hpost : ProbabilityTheory.beta (a + (s : ℝ)) (b + (f : ℝ)) ≠ 0 :=
+      ne_of_gt (ProbabilityTheory.beta_pos (by positivity) (by positivity))
+    simp only [ProbabilityTheory.betaPDFReal, ite_eq_left hx, normalizer]
+    rw [show a + (s : ℝ) - 1 = (a - 1) + (s : ℝ) by ring,
+      show b + (f : ℝ) - 1 = (b - 1) + (f : ℝ) by ring,
+      Real.rpow_add_natCast (ne_of_gt hx.1), Real.rpow_add_natCast (ne_of_gt hx1)]
+    field_simp
+  · simp [ProbabilityTheory.betaPDFReal, hx]
+
+theorem pdf_product {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
+    (s f : ℕ) (x : ℝ) :
+    ProbabilityTheory.betaPDF a b x * likelihood s f x =
+      ENNReal.ofReal (normalizer a b s f) *
+        ProbabilityTheory.betaPDF (a + (s : ℝ)) (b + (f : ℝ)) x := by
+  by_cases hx : 0 < x ∧ x < 1
+  · have hp : 0 ≤ ProbabilityTheory.betaPDFReal a b x :=
+      (ProbabilityTheory.betaPDFReal_pos hx.1 hx.2 ha hb).le
+    have hx0 : 0 ≤ x := hx.1.le
+    have hx1 : 0 ≤ 1 - x := (sub_pos.mpr hx.2).le
+    calc
+      ProbabilityTheory.betaPDF a b x * likelihood s f x =
+          ENNReal.ofReal (ProbabilityTheory.betaPDFReal a b x * (x ^ s * (1 - x) ^ f)) := by
+        rw [ENNReal.ofReal_mul hp, ENNReal.ofReal_mul (pow_nonneg hx0 s),
+          ENNReal.ofReal_pow hx0, ENNReal.ofReal_pow hx1]
+        rfl
+      _ = ENNReal.ofReal (normalizer a b s f *
+          ProbabilityTheory.betaPDFReal (a + (s : ℝ)) (b + (f : ℝ)) x) :=
+        congrArg ENNReal.ofReal (real_pdf_product ha hb s f x)
+      _ = _ := by
+        rw [ENNReal.ofReal_mul (normalizer_pos ha hb s f).le]
+        rfl
+  · simp [ProbabilityTheory.betaPDF, ProbabilityTheory.betaPDFReal, hx]
+
+theorem weighted_measure {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (s f : ℕ) :
+    (ProbabilityTheory.betaMeasure a b).withDensity (likelihood s f) =
+      ENNReal.ofReal (normalizer a b s f) •
+        ProbabilityTheory.betaMeasure (a + (s : ℝ)) (b + (f : ℝ)) := by
+  have hprior : Measurable (ProbabilityTheory.betaPDF a b) := by
+    unfold ProbabilityTheory.betaPDF
+    fun_prop
+  have hpost : Measurable (ProbabilityTheory.betaPDF (a + (s : ℝ)) (b + (f : ℝ))) := by
+    unfold ProbabilityTheory.betaPDF
+    fun_prop
+  unfold ProbabilityTheory.betaMeasure
+  rw [← MeasureTheory.withDensity_mul volume hprior (likelihood_measurable s f),
+    ← MeasureTheory.withDensity_smul _ hpost]
+  apply MeasureTheory.withDensity_congr_ae
+  exact Filter.Eventually.of_forall fun x => pdf_product ha hb s f x
+
+theorem weighted_mass {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (s f : ℕ) :
+    ((ProbabilityTheory.betaMeasure a b).withDensity (likelihood s f)) Set.univ =
+      ENNReal.ofReal (normalizer a b s f) := by
+  let := ProbabilityTheory.isProbabilityMeasureBeta
+    (show 0 < a + (s : ℝ) by positivity) (show 0 < b + (f : ℝ) by positivity)
+  rw [weighted_measure ha hb s f]
+  simp
+
+theorem normalized_posterior {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (s f : ℕ) :
+    (ENNReal.ofReal (normalizer a b s f))⁻¹ •
+      (ProbabilityTheory.betaMeasure a b).withDensity (likelihood s f) =
+        ProbabilityTheory.betaMeasure (a + (s : ℝ)) (b + (f : ℝ)) := by
+  rw [weighted_measure ha hb s f, smul_smul,
+    ENNReal.inv_mul_cancel (ne_of_gt (ENNReal.ofReal_pos.mpr (normalizer_pos ha hb s f)))
+      (normalizer_finite a b s f), one_smul]
+
+theorem normalized_probability {a b : ℝ} (ha : 0 < a) (hb : 0 < b) (s f : ℕ) :
+    IsProbabilityMeasure ((ENNReal.ofReal (normalizer a b s f))⁻¹ •
+      (ProbabilityTheory.betaMeasure a b).withDensity (likelihood s f)) := by
+  rw [normalized_posterior ha hb s f]
+  exact ProbabilityTheory.isProbabilityMeasureBeta (by positivity) (by positivity)
+
+theorem zero_counts {a b : ℝ} (ha : 0 < a) (hb : 0 < b) :
+    normalizer a b 0 0 = 1 := by
+  simp [normalizer, ne_of_gt (ProbabilityTheory.beta_pos ha hb)]
+
+theorem noninteger_prior_recovery : normalizer (1 / 2) (3 / 2) 0 0 = 1 :=
+  zero_counts (by norm_num) (by norm_num)
+
+theorem noninteger_measure_recovery :
+    (ProbabilityTheory.betaMeasure (1 / 2) (3 / 2)).withDensity (likelihood 0 0) =
+      ProbabilityTheory.betaMeasure (1 / 2) (3 / 2) := by
+  have ha : (0 : ℝ) < 1 / 2 := by norm_num
+  have hb : (0 : ℝ) < 3 / 2 := by norm_num
+  have h := weighted_measure ha hb 0 0
+  rw [zero_counts ha hb, ENNReal.ofReal_one, one_smul] at h
+  simpa using h
+
+private theorem gamma_two : Real.Gamma 2 = 1 := by
+  norm_num
+
+private theorem gamma_three : Real.Gamma 3 = 2 := by
+  norm_num
+
+private theorem gamma_four : Real.Gamma 4 = 6 := by
+  norm_num
+
+theorem uniform_success_normalizer : normalizer 1 1 1 0 = 1 / 2 := by
+  norm_num [normalizer, ProbabilityTheory.beta, Real.Gamma_one, gamma_two, gamma_three]
+
+theorem uniform_failure_normalizer : normalizer 1 1 0 1 = 1 / 2 := by
+  norm_num [normalizer, ProbabilityTheory.beta, Real.Gamma_one, gamma_two, gamma_three]
+
+theorem uniform_success_posterior :
+    (ENNReal.ofReal (1 / 2 : ℝ))⁻¹ •
+      (ProbabilityTheory.betaMeasure 1 1).withDensity (likelihood 1 0) =
+        ProbabilityTheory.betaMeasure 2 1 := by
+  simpa only [Nat.cast_one, Nat.cast_zero, add_zero, show (1 : ℝ) + 1 = 2 by norm_num, uniform_success_normalizer] using
+    normalized_posterior (by norm_num : (0 : ℝ) < 1) (by norm_num : (0 : ℝ) < 1) 1 0
+
+theorem uniform_failure_posterior :
+    (ENNReal.ofReal (1 / 2 : ℝ))⁻¹ •
+      (ProbabilityTheory.betaMeasure 1 1).withDensity (likelihood 0 1) =
+        ProbabilityTheory.betaMeasure 1 2 := by
+  simpa only [Nat.cast_one, Nat.cast_zero, add_zero, show (1 : ℝ) + 1 = 2 by norm_num, uniform_failure_normalizer] using
+    normalized_posterior (by norm_num : (0 : ℝ) < 1) (by norm_num : (0 : ℝ) < 1) 0 1
+
+theorem distinct_posteriors : ProbabilityTheory.betaMeasure 2 1 ≠ ProbabilityTheory.betaMeasure 1 2 := by
+  intro h
+  have hm := congrArg (fun μ : Measure ℝ => (μ.withDensity (likelihood 1 0)) Set.univ) h
+  rw [weighted_mass (by norm_num : (0 : ℝ) < 2) (by norm_num : (0 : ℝ) < 1) 1 0,
+    weighted_mass (by norm_num : (0 : ℝ) < 1) (by norm_num : (0 : ℝ) < 2) 1 0] at hm
+  have hr := congrArg ENNReal.toReal hm
+  norm_num [normalizer, ProbabilityTheory.beta, Real.Gamma_one, gamma_two, gamma_three,
+    gamma_four] at hr
+
+theorem wrong_inverse_ratio : ENNReal.ofReal (normalizer 1 1 1 0) ≠ ENNReal.ofReal (2 : ℝ) := by
+  rw [uniform_success_normalizer]
+  norm_num
+
+theorem wrong_scaled_measure_refused :
+    (ProbabilityTheory.betaMeasure 1 1).withDensity (likelihood 1 0) ≠
+      ENNReal.ofReal (2 : ℝ) • ProbabilityTheory.betaMeasure 2 1 := by
+  intro h
+  let := ProbabilityTheory.isProbabilityMeasureBeta (by norm_num : (0 : ℝ) < 2)
+    (by norm_num : (0 : ℝ) < 1)
+  have hm := congrArg (fun μ : Measure ℝ => μ Set.univ) h
+  rw [weighted_mass (by norm_num : (0 : ℝ) < 1) (by norm_num : (0 : ℝ) < 1) 1 0] at hm
+  have hr := congrArg ENNReal.toReal hm
+  norm_num [uniform_success_normalizer] at hr
+
+theorem nonpositive_shape_refused : ¬ (0 < (0 : ℝ)) ∧ ¬ (0 < (-1 : ℝ)) := by norm_num
+
+theorem outside_pdf_zero (a b x : ℝ) (hx : x ≤ 0 ∨ 1 ≤ x) :
+    ProbabilityTheory.betaPDF a b x = 0 := by
+  rcases hx with h | h
+  · exact ProbabilityTheory.betaPDF_eq_zero_of_nonpos h
+  · exact ProbabilityTheory.betaPDF_eq_zero_of_one_le h
+
+end BetaDensity
+
+end
+
+/- Source lineage c46ab183c943feea671ed259ca696f255f906e3668a663a094975714904a7a93.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Measurable likelihood-weight transport; not a generic Dirichlet conjugacy theorem. -/
+
+set_option autoImplicit false
+open MeasureTheory
+namespace MeasureTransport
+variable {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y]
+
+/-- A likelihood on the observed simplex may be pulled back to stick coordinates
+before weighting, with no injectivity requirement on the stick map. -/
+theorem map_likelihood_weight (μ : Measure X) (T : X → Y)
+    (L : Y → ENNReal) (hT : Measurable T) (hL : Measurable L) :
+    (μ.withDensity (fun x => L (T x))).map T =
+      (μ.map T).withDensity L := by
+  ext s hs
+  rw [Measure.map_apply hT hs, withDensity_apply _ (hT hs), withDensity_apply _ hs]
+  exact (setLIntegral_map hs hL hT).symm
+
+/-- The genuine two-factor product-measure density identity, ready for induction.
+There is no assumed conjugacy or assumed posterior equality. -/
+theorem product_likelihood_weight (μ : Measure X) (ν : Measure Y)
+    [SFinite μ] [SFinite ν] (f : X → ENNReal) (g : Y → ENNReal)
+    (hf : Measurable f) (hg : Measurable g) :
+    (μ.prod ν).withDensity (fun z => f z.1 * g z.2) =
+      (μ.withDensity f).prod (ν.withDensity g) := by
+  exact (prod_withDensity hf hg).symm
+end MeasureTransport
+
+end
+
+/- Source lineage 0e89bd49a61e0669cc66e1ac200d53b1e71047caba9ee7ced02d7588f8cb00ca.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Normalized stick-defined family; no Dirichlet density identification. -/
+
+set_option autoImplicit false
+open MeasureTheory
+open scoped BigOperators
+namespace StickFamily
+noncomputable section
+
+def tailShape (n : ℕ) (α : Fin (n + 1) → ℝ) (i : Fin n) : ℝ :=
+  α (Fin.last n) + ∑ j ∈ Finset.univ.filter (fun j : Fin n => i < j), α j.castSucc
+
+theorem tailShape_pos (n : ℕ) (α : Fin (n + 1) → ℝ)
+    (hα : ∀ i, 0 < α i) (i : Fin n) : 0 < tailShape n α i := by
+  unfold tailShape
+  apply add_pos_of_pos_of_nonneg (hα _)
+  exact Finset.sum_nonneg fun j _ => (hα j.castSucc).le
+
+def stickMap (n : ℕ) (v : Fin n → ℝ) (i : Fin (n + 1)) : ℝ :=
+  if h : i.val < n then
+    v ⟨i.val, h⟩ * ∏ j ∈ Finset.univ.filter (fun j : Fin n => j.val < i.val), (1 - v j)
+  else ∏ j : Fin n, (1 - v j)
+
+theorem measurable_stickMap (n : ℕ) : Measurable (stickMap n) := by
+  apply measurable_pi_iff.mpr
+  intro i
+  unfold stickMap
+  split_ifs <;> fun_prop
+
+def stickLaw (n : ℕ) (α : Fin (n + 1) → ℝ) : Measure (Fin n → ℝ) :=
+  Measure.pi (fun i => ProbabilityTheory.betaMeasure (α i.castSucc) (tailShape n α i))
+
+def family (n : ℕ) (α : Fin (n + 1) → ℝ) : Measure (Fin (n + 1) → ℝ) :=
+  (stickLaw n α).map (stickMap n)
+
+theorem stickLaw_probability (n : ℕ) (α : Fin (n + 1) → ℝ)
+    (hα : ∀ i, 0 < α i) : IsProbabilityMeasure (stickLaw n α) := by
+  let : ∀ i : Fin n, IsProbabilityMeasure
+      (ProbabilityTheory.betaMeasure (α i.castSucc) (tailShape n α i)) :=
+    fun i => ProbabilityTheory.isProbabilityMeasureBeta (hα _) (tailShape_pos n α hα i)
+  unfold stickLaw
+  infer_instance
+
+theorem family_probability (n : ℕ) (α : Fin (n + 1) → ℝ)
+    (hα : ∀ i, 0 < α i) : IsProbabilityMeasure (family n α) := by
+  let := stickLaw_probability n α hα
+  constructor
+  unfold family
+  rw [Measure.map_apply (measurable_stickMap n) MeasurableSet.univ, Set.preimage_univ]
+  exact measure_univ
+
+theorem stickMap_nonneg (n : ℕ) (v : Fin n → ℝ)
+    (hv : ∀ j, 0 ≤ v j ∧ v j ≤ 1) (i : Fin (n + 1)) : 0 ≤ stickMap n v i := by
+  unfold stickMap
+  split_ifs
+  · apply mul_nonneg (hv _).1
+    exact Finset.prod_nonneg fun j _ => sub_nonneg.mpr (hv j).2
+  · exact Finset.prod_nonneg fun j _ => sub_nonneg.mpr (hv j).2
+
+theorem stickMap_zero (v : Fin 0 → ℝ) : stickMap 0 v = fun _ => 1 := by
+  funext i
+  simp [stickMap]
+
+theorem family_zero (α : Fin 1 → ℝ) (hα : ∀ i, 0 < α i) :
+    family 0 α = Measure.dirac (fun _ : Fin 1 => (1 : ℝ)) := by
+  let := stickLaw_probability 0 α hα
+  have hmap : stickMap 0 = fun _ : Fin 0 → ℝ => fun _ : Fin 1 => (1 : ℝ) := by
+    funext v
+    exact stickMap_zero v
+  unfold family
+  rw [hmap, Measure.map_const]
+  simp
+
+/-- The finite ordered-product identity gives exact total mass of stick coordinates. -/
+theorem stickMap_sum_one (n : ℕ) (v : Fin n → ℝ) :
+    ∑ i : Fin (n + 1), stickMap n v i = 1 := by
+  have hfirst : (∑ i : Fin n, stickMap n v i.castSucc) =
+      ∑ i : Fin n, v i * ∏ j ∈ Finset.univ.filter (fun j : Fin n => j < i), (1 - v j) := by
+    apply Finset.sum_congr rfl
+    intro i _
+    have hfilter : Finset.univ.filter (fun j : Fin n => j.val < i.val) =
+        Finset.univ.filter (fun j : Fin n => j < i) := by
+      ext j
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.val_fin_lt]
+    simp only [stickMap, Fin.val_castSucc, dite_eq_left i.isLt]
+    rw [hfilter]
+  have hlast : stickMap n v (Fin.last n) = ∏ j : Fin n, (1 - v j) := by
+    simp [stickMap]
+  rw [Fin.sum_univ_castSucc, hfirst, hlast]
+  have hprod := Finset.prod_one_sub_ordered (Finset.univ : Finset (Fin n)) v
+  linarith
+
+/-- Actual Beta density is zero outside the open unit interval; no positive-shape
+assumption is needed for this support implication alone. -/
+theorem beta_ae_Ioo (a b : ℝ) :
+    ∀ᵐ x ∂ProbabilityTheory.betaMeasure a b, 0 < x ∧ x < 1 := by
+  unfold ProbabilityTheory.betaMeasure
+  apply (ae_withDensity_iff (show Measurable (ProbabilityTheory.betaPDF a b) by
+    exact (ProbabilityTheory.measurable_betaPDFReal a b).ennreal_ofReal)).mpr
+  exact Filter.Eventually.of_forall fun x hx => by
+    by_contra hout
+    apply hx
+    simp [ProbabilityTheory.betaPDF, ProbabilityTheory.betaPDFReal, hout]
+
+/-- All independent sticks lie in their genuine Beta support almost everywhere. -/
+theorem stickLaw_ae_unit (n : ℕ) (α : Fin (n + 1) → ℝ)
+    (hα : ∀ i, 0 < α i) :
+    ∀ᵐ v ∂stickLaw n α, ∀ i, 0 ≤ v i ∧ v i ≤ 1 := by
+  let : ∀ i : Fin n, IsProbabilityMeasure
+      (ProbabilityTheory.betaMeasure (α i.castSucc) (tailShape n α i)) :=
+    fun i => ProbabilityTheory.isProbabilityMeasureBeta (hα _) (tailShape_pos n α hα i)
+  apply Filter.eventually_all.mpr
+  intro i
+  have hi := (MeasureTheory.Measure.tendsto_eval_ae_ae
+      (μ := fun j : Fin n => ProbabilityTheory.betaMeasure (α j.castSucc) (tailShape n α j))
+      (i := i)).eventually (beta_ae_Ioo (α i.castSucc) (tailShape n α i))
+  exact hi.mono fun _ hx => ⟨hx.1.le, hx.2.le⟩
+
+/-- Actual ambient pushforward is concentrated on the closed probability simplex. -/
+theorem family_ae_simplex (n : ℕ) (α : Fin (n + 1) → ℝ)
+    (hα : ∀ i, 0 < α i) :
+    ∀ᵐ p ∂family n α, (∀ i, 0 ≤ p i) ∧ ∑ i, p i = 1 := by
+  unfold family
+  apply (ae_map_iff (measurable_stickMap n).aemeasurable (by measurability)).mpr
+  filter_upwards [stickLaw_ae_unit n α hα] with v hv
+  exact ⟨fun i => stickMap_nonneg n v hv i, stickMap_sum_one n v⟩
+
+end
+end StickFamily
+
+
+end
+
+/- Source lineage f41e9f30380595fec26ac8694726ebeb1a12de7a8d6a36e40fb8e4f8f017a0e4.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Categorical-likelihood algebraic factorization; no measure-conjugacy claim. -/
+set_option autoImplicit false
+open scoped BigOperators
+namespace CategoricalLikelihood
+/-- Rearrangement of a finite incidence likelihood, before any probabilistic identification.
+An incidence column records the residual sticks used by one simplex coordinate. -/
+theorem incidence_factorization {I J : Type*} [Fintype I] [Fintype J]
+    (a : J → ℝ) (b : I → ℝ) (counts : J → ℕ) (uses : I → J → Prop)
+    [∀ i j, Decidable (uses i j)] :
+    (∏ j, (a j * ∏ i, if uses i j then b i else 1) ^ counts j) =
+      (∏ j, a j ^ counts j) *
+        ∏ i, b i ^ (∑ j, if uses i j then counts j else 0) := by
+  simp_rw [mul_pow, ← Finset.prod_pow]
+  rw [Finset.prod_mul_distrib, Finset.prod_comm]
+  congr 1
+  apply Finset.prod_congr rfl
+  intro i _
+  rw [← Finset.prod_pow_eq_pow_sum]
+  apply Finset.prod_congr rfl
+  intro j _
+  split_ifs <;> simp_all
+
+/-- Explicit three-category likelihood: the final stick residual contributes both
+later counts. This is not a posterior-measure statement. -/
+theorem three_category_pullback (u v : ℝ) (c0 c1 c2 : ℕ) :
+    u ^ c0 * ((1-u)*v) ^ c1 * ((1-u)*(1-v)) ^ c2 =
+      (u ^ c0 * (1-u) ^ (c1+c2)) * (v ^ c1 * (1-v) ^ c2) := by
+  simp only [mul_pow, pow_add]
+  ring
+
+/-- Zero counts give the genuine unit likelihood, including boundary coordinates. -/
+theorem three_category_zero_counts (u v : ℝ) :
+    u ^ (0:ℕ) * ((1-u)*v) ^ (0:ℕ) * ((1-u)*(1-v)) ^ (0:ℕ) = 1 := by simp
+
+/-- An actual wrong-tail-count control, not just a syntactic inequality. -/
+theorem wrong_tail_count_refused :
+    ((1-(1/2:ℝ))*(1-(1/3:ℝ))) ^ (1:ℕ) ≠
+      (1-(1/3:ℝ)) ^ (1:ℕ) := by norm_num
+end CategoricalLikelihood
+
+end
+
+/- Source lineage c3ee31e3e275df3b905c6bf8dd127bd78310ac9ac6484f74c68916557811b440.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Stick-map likelihood specialization using the shared StickFamily and
+CategoricalLikelihood definitions. -/
+set_option autoImplicit false
+open scoped BigOperators
+namespace StickMapLikelihood
+open StickFamily CategoricalLikelihood
+noncomputable section
+
+def headFactor (n : ℕ) (v : Fin n → ℝ) (j : Fin (n+1)) : ℝ :=
+  if h : j.val < n then v ⟨j.val,h⟩ else 1
+
+def tailCount (n : ℕ) (c : Fin (n+1) → ℕ) (i : Fin n) : ℕ :=
+  c (Fin.last n) + ∑ j ∈ Finset.univ.filter (fun j : Fin n => i < j), c j.castSucc
+
+/-- Exact pointwise identity for the actual ordered stick map, not a newly defined proxy. -/
+theorem stickMap_incidence (n : ℕ) (v : Fin n → ℝ) (j : Fin (n+1)) :
+    stickMap n v j = headFactor n v j *
+      ∏ i : Fin n, if i.val < j.val then (1-v i) else 1 := by
+  unfold stickMap headFactor
+  split_ifs with h
+  · simp only [Finset.prod_filter]
+  · have hj : j = Fin.last n := Fin.eq_last_of_not_lt h
+    subst j
+    simp
+
+/-- Actual generic likelihood pullback in real coordinates, before ENNReal/measure lifting. -/
+theorem stickMap_likelihood_incidence (n : ℕ) (v : Fin n → ℝ)
+    (c : Fin (n+1) → ℕ) :
+    (∏ j, stickMap n v j ^ c j) =
+      (∏ j, headFactor n v j ^ c j) *
+        ∏ i : Fin n, (1-v i) ^ (∑ j : Fin (n+1), if i.val < j.val then c j else 0) := by
+  simp_rw [stickMap_incidence]
+  exact incidence_factorization (headFactor n v) (fun i => 1-v i) c
+    (fun i j => i.val < j.val)
+
+/-- The terminal coordinate has no head stick factor; earlier heads are exactly v_i. -/
+theorem headFactor_likelihood (n : ℕ) (v : Fin n → ℝ) (c : Fin (n+1) → ℕ) :
+    (∏ j, headFactor n v j ^ c j) = ∏ i : Fin n, v i ^ c i.castSucc := by
+  rw [Fin.prod_univ_castSucc]
+  simp [headFactor]
+
+/-- Actual ordered Beta tail shapes shift by the sum of all later categorical counts. -/
+theorem tailShape_update (n : ℕ) (α : Fin (n+1) → ℝ)
+    (c : Fin (n+1) → ℕ) (i : Fin n) :
+    tailShape n (fun j => α j + (c j : ℝ)) i =
+      tailShape n α i + (tailCount n c i : ℝ) := by
+  unfold tailShape tailCount
+  push_cast
+  rw [Finset.sum_add_distrib]
+  ring
+
+/-- Empty-stick boundary retains a unit categorical likelihood at the sole simplex point. -/
+theorem zero_stick_likelihood (v : Fin 0 → ℝ) (c : Fin 1 → ℕ) :
+    (∏ j, stickMap 0 v j ^ c j) = 1 := by
+  simp [stickMap_zero]
+end
+end StickMapLikelihood
+
+end
+
+/- Source lineage 561cec459fba313559a48ed377fefd67e1b7f6cf3f0cc36fd420efdd23906a9c.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Tail-count and almost-everywhere likelihood transfer; no posterior-measure claim. -/
+set_option autoImplicit false
+open MeasureTheory
+open scoped BigOperators
+namespace TailCountTransfer
+open StickFamily StickMapLikelihood
+noncomputable section
+
+theorem tail_exponent_eq (n : ℕ) (c : Fin (n+1) → ℕ) (i : Fin n) :
+    (∑ j : Fin (n+1), if i.val < j.val then c j else 0) = tailCount n c i := by
+  rw [Fin.sum_univ_castSucc]
+  simp [tailCount, Finset.sum_filter, Fin.val_fin_lt, Nat.add_comm]
+
+theorem real_likelihood_pullback (n : ℕ) (v : Fin n → ℝ) (c : Fin (n+1) → ℕ) :
+    (∏ j, stickMap n v j ^ c j) =
+      ∏ i : Fin n, (v i ^ c i.castSucc * (1-v i) ^ tailCount n c i) := by
+  rw [stickMap_likelihood_incidence, headFactor_likelihood]
+  simp_rw [tail_exponent_eq]
+  exact (Finset.prod_mul_distrib).symm
+
+theorem ofReal_product {K : Type*} [Fintype K] (f : K → ℝ) (hf : ∀ k, 0 ≤ f k) :
+    ENNReal.ofReal (∏ k, f k) = ∏ k, ENNReal.ofReal (f k) := by
+  exact ENNReal.ofReal_prod_of_nonneg (fun k _ => hf k)
+
+def categoricalLikelihood (n : ℕ) (c : Fin (n+1) → ℕ) (p : Fin (n+1) → ℝ) : ENNReal :=
+  ∏ j, ENNReal.ofReal (p j) ^ c j
+
+def stickLikelihood (n : ℕ) (c : Fin (n+1) → ℕ) (v : Fin n → ℝ) : ENNReal :=
+  ∏ i, ENNReal.ofReal (v i) ^ c i.castSucc * ENNReal.ofReal (1-v i) ^ tailCount n c i
+
+theorem ennreal_likelihood_pullback (n : ℕ) (v : Fin n → ℝ) (c : Fin (n+1) → ℕ)
+    (hv : ∀ i, 0 ≤ v i ∧ v i ≤ 1) :
+    categoricalLikelihood n c (stickMap n v) = stickLikelihood n c v := by
+  have left : ENNReal.ofReal (∏ j, stickMap n v j ^ c j) =
+      categoricalLikelihood n c (stickMap n v) := by
+    rw [ofReal_product _ (fun j => pow_nonneg (stickMap_nonneg n v hv j) _)]
+    apply Finset.prod_congr rfl
+    intro j _
+    exact ENNReal.ofReal_pow (stickMap_nonneg n v hv j) _
+  have right : ENNReal.ofReal (∏ i : Fin n, v i ^ c i.castSucc * (1-v i) ^ tailCount n c i) =
+      stickLikelihood n c v := by
+    rw [ofReal_product _ (fun i => mul_nonneg (pow_nonneg (hv i).1 _) (pow_nonneg (sub_nonneg.mpr (hv i).2) _))]
+    apply Finset.prod_congr rfl
+    intro i _
+    rw [ENNReal.ofReal_mul (pow_nonneg (hv i).1 _), ENNReal.ofReal_pow (hv i).1,
+      ENNReal.ofReal_pow (sub_nonneg.mpr (hv i).2)]
+  rw [← left, real_likelihood_pullback, right]
+
+theorem ae_likelihood_pullback (n : ℕ) (α : Fin (n+1) → ℝ)
+    (hα : ∀ j, 0 < α j) (c : Fin (n+1) → ℕ) :
+    ∀ᵐ v ∂stickLaw n α, categoricalLikelihood n c (stickMap n v) = stickLikelihood n c v := by
+  filter_upwards [stickLaw_ae_unit n α hα] with v hv
+  exact ennreal_likelihood_pullback n v c hv
+end
+end TailCountTransfer
+
+end
+
+/- Source lineage a69e44fa9874fc7374ca30955956f8b2d196f761887fa38a6b5fbabf0b40c84a.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Finite-product likelihood-weighting induction; no new measure definition. -/
+set_option autoImplicit false
+open MeasureTheory
+open scoped BigOperators
+namespace FinitePiWeighting
+open MeasureTransport
+noncomputable section
+
+/-- The weighted finite product is the product of actual coordinate-weighted measures.
+Sigma-finiteness of weighted coordinates is explicit and is satisfied by the
+positive-shape Beta weighted identities; it is not the target conjugacy equality. -/
+theorem fin_pi_withDensity (n : ℕ) (μ : Fin n → Measure ℝ)
+    (f : Fin n → ℝ → ENNReal) [∀ i, SigmaFinite (μ i)]
+    [∀ i, SigmaFinite ((μ i).withDensity (f i))] (hf : ∀ i, Measurable (f i)) :
+    (Measure.pi μ).withDensity (fun x => ∏ i, f i (x i)) =
+      Measure.pi (fun i => (μ i).withDensity (f i)) := by
+  induction n with
+  | zero =>
+      have hempty : (fun i : Fin 0 => (μ i).withDensity (f i)) = μ := by
+        funext i
+        exact Fin.elim0 i
+      rw [hempty]
+      simp only [Finset.univ_eq_empty, Finset.prod_empty, withDensity_const, one_smul]
+  | succ n ih =>
+      let e := (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => ℝ) 0).symm
+      let μtail := Measure.pi (fun i : Fin n => μ i.succ)
+      let νtail := Measure.pi (fun i : Fin n => (μ i.succ).withDensity (f i.succ))
+      have hprior : ((μ 0).prod μtail).map e = Measure.pi μ :=
+        (measurePreserving_piFinSuccAbove μ 0).symm.map_eq
+      have hpost : (((μ 0).withDensity (f 0)).prod νtail).map e =
+          Measure.pi (fun i => (μ i).withDensity (f i)) :=
+        (measurePreserving_piFinSuccAbove (fun i => (μ i).withDensity (f i)) 0).symm.map_eq
+      have hweight : (fun z : ℝ × (Fin n → ℝ) => ∏ i : Fin (n+1), f i (e z i)) =
+          fun z => f 0 z.1 * ∏ i : Fin n, f i.succ (z.2 i) := by
+        funext z
+        simp [e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv,
+          Fin.prod_univ_succ, Fin.zero_succAbove]
+      have hL : Measurable (fun x : Fin (n+1) → ℝ => ∏ i, f i (x i)) := by fun_prop
+      calc
+        _ = (((μ 0).prod μtail).withDensity
+              (fun z => f 0 z.1 * ∏ i : Fin n, f i.succ (z.2 i))).map e := by
+          rw [← hweight, map_likelihood_weight _ _ _ e.measurable hL, hprior]
+        _ = (((μ 0).withDensity (f 0)).prod νtail).map e := by
+          let g : (Fin n → ℝ) → ENNReal := fun x => ∏ i, f i.succ (x i)
+          have hg : Measurable g := by fun_prop
+          have hsplit := (prod_withDensity (μ := μ 0) (ν := μtail)
+            (f := f 0) (g := g) (hf 0) hg).symm
+          have htail : μtail.withDensity g = νtail :=
+            ih (fun i => μ i.succ) (fun i => f i.succ) (fun i => hf i.succ)
+          exact congrArg (fun ν : Measure (ℝ × (Fin n → ℝ)) => ν.map e)
+            (hsplit.trans (congrArg (fun ν => ((μ 0).withDensity (f 0)).prod ν) htail))
+        _ = _ := hpost
+
+/-- Coordinate scale factors collect into their genuine finite product. -/
+theorem pi_scale_factors {K : Type*} [Fintype K] (μ : K → Measure ℝ)
+    (c : K → ENNReal) [∀ i, SigmaFinite (μ i)]
+    [∀ i, SigmaFinite (c i • μ i)] :
+    Measure.pi (fun i => c i • μ i) = (∏ i, c i) • Measure.pi μ := by
+  apply Measure.pi_eq
+  intro s hs
+  rw [Measure.smul_apply, Measure.pi_pi]
+  simp_rw [Measure.smul_apply]
+  exact (Finset.prod_mul_distrib).symm
+end
+end FinitePiWeighting
+
+end
+
+/- Source lineage bd1b617cde71d9d8a67313835f21fb1d324db3ff40a99d6c061aa30cff5ab676.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Independent Beta-coordinate likelihood weighting and normalized posterior. -/
+set_option autoImplicit false
+open MeasureTheory
+open scoped BigOperators
+namespace BetaProductPosterior
+open BetaDensity FinitePiWeighting
+noncomputable section
+
+def betaPiZ (n : ℕ) (a b : Fin n → ℝ) (s t : Fin n → ℕ) : ENNReal :=
+  ∏ i, ENNReal.ofReal (normalizer (a i) (b i) (s i) (t i))
+
+theorem betaPiZ_pos_finite (n : ℕ) (a b : Fin n → ℝ) (s t : Fin n → ℕ)
+    (ha : ∀ i, 0<a i) (hb : ∀ i, 0<b i) :
+    betaPiZ n a b s t ≠ 0 ∧ betaPiZ n a b s t ≠ ⊤ := by
+  constructor
+  · exact Finset.prod_ne_zero_iff.mpr fun i _ =>
+      ne_of_gt (ENNReal.ofReal_pos.mpr (normalizer_pos (ha i) (hb i) (s i) (t i)))
+  · exact ENNReal.prod_ne_top fun i _ => normalizer_finite (a i) (b i) (s i) (t i)
+
+theorem weighted_beta_pi (n : ℕ) (a b : Fin n → ℝ) (s t : Fin n → ℕ)
+    (ha : ∀ i, 0<a i) (hb : ∀ i, 0<b i) :
+    (Measure.pi (fun i => ProbabilityTheory.betaMeasure (a i) (b i))).withDensity
+      (fun x => ∏ i, likelihood (s i) (t i) (x i)) =
+    betaPiZ n a b s t • Measure.pi (fun i =>
+      ProbabilityTheory.betaMeasure (a i+(s i:ℝ)) (b i+(t i:ℝ))) := by
+  let : ∀ i, IsProbabilityMeasure (ProbabilityTheory.betaMeasure (a i) (b i)) :=
+    fun i => ProbabilityTheory.isProbabilityMeasureBeta (ha i) (hb i)
+  let : ∀ i, IsProbabilityMeasure
+      (ProbabilityTheory.betaMeasure (a i+(s i:ℝ)) (b i+(t i:ℝ))) :=
+    fun i => ProbabilityTheory.isProbabilityMeasureBeta
+      (add_pos_of_pos_of_nonneg (ha i) (Nat.cast_nonneg (s i)))
+      (add_pos_of_pos_of_nonneg (hb i) (Nat.cast_nonneg (t i)))
+  let : ∀ i, IsFiniteMeasure ((ProbabilityTheory.betaMeasure (a i) (b i)).withDensity
+      (likelihood (s i) (t i))) := fun i => ⟨by
+    rw [weighted_mass (ha i) (hb i) (s i) (t i)]
+    exact ENNReal.ofReal_lt_top⟩
+  have hcoord : (fun i => (ProbabilityTheory.betaMeasure (a i) (b i)).withDensity
+      (likelihood (s i) (t i))) = fun i =>
+      ENNReal.ofReal (normalizer (a i) (b i) (s i) (t i)) •
+      ProbabilityTheory.betaMeasure (a i+(s i:ℝ)) (b i+(t i:ℝ)) := by
+    funext i
+    exact weighted_measure (ha i) (hb i) (s i) (t i)
+  let : ∀ i, SigmaFinite (ENNReal.ofReal (normalizer (a i) (b i) (s i) (t i)) •
+      ProbabilityTheory.betaMeasure (a i+(s i:ℝ)) (b i+(t i:ℝ))) := fun i => by
+    rw [← weighted_measure (ha i) (hb i) (s i) (t i)]
+    infer_instance
+  rw [fin_pi_withDensity n _ _ (fun i => likelihood_measurable (s i) (t i)), hcoord]
+  exact pi_scale_factors _ _
+
+theorem normalized_beta_pi (n : ℕ) (a b : Fin n → ℝ) (s t : Fin n → ℕ)
+    (ha : ∀ i, 0<a i) (hb : ∀ i, 0<b i) :
+    (betaPiZ n a b s t)⁻¹ •
+      (Measure.pi (fun i => ProbabilityTheory.betaMeasure (a i) (b i))).withDensity
+        (fun x => ∏ i, likelihood (s i) (t i) (x i)) =
+      Measure.pi (fun i => ProbabilityTheory.betaMeasure (a i+(s i:ℝ)) (b i+(t i:ℝ))) := by
+  rw [weighted_beta_pi n a b s t ha hb, smul_smul,
+    ENNReal.inv_mul_cancel (betaPiZ_pos_finite n a b s t ha hb).1
+      (betaPiZ_pos_finite n a b s t ha hb).2, one_smul]
+
+theorem betaPiZ_empty (a b : Fin 0 → ℝ) (s t : Fin 0 → ℕ) :
+    betaPiZ 0 a b s t = 1 := by simp [betaPiZ]
+end
+end BetaProductPosterior
+
+end
+
+/- Source lineage 894d96a1303301d8b19c3167dd1ba61fcdf0648d57e7e9df0628b558553f890d.
+Current composed integration requires its own maintained qualification. -/
+section
+/- Categorical posterior of the constructed stick family.
+This is not a simplex Lebesgue/Jacobian identification. -/
+set_option autoImplicit false
+open MeasureTheory
+open scoped BigOperators
+namespace StickFamilyPosterior
+open BetaDensity BetaProductPosterior StickFamily
+open StickMapLikelihood TailCountTransfer
+open MeasureTransport
+noncomputable section
+
+def stickZ (n : ℕ) (α : Fin (n+1) → ℝ) (c : Fin (n+1) → ℕ) : ENNReal :=
+  betaPiZ n (fun i => α i.castSucc) (tailShape n α)
+    (fun i => c i.castSucc) (tailCount n c)
+
+theorem stickZ_pos_finite (n : ℕ) (α : Fin (n+1) → ℝ)
+    (hα : ∀ j, 0<α j) (c : Fin (n+1) → ℕ) :
+    stickZ n α c ≠ 0 ∧ stickZ n α c ≠ ⊤ :=
+  betaPiZ_pos_finite n _ _ _ _ (fun i => hα i.castSucc) (tailShape_pos n α hα)
+
+theorem weighted_stickLaw (n : ℕ) (α : Fin (n+1) → ℝ)
+    (hα : ∀ j, 0<α j) (c : Fin (n+1) → ℕ) :
+    (stickLaw n α).withDensity (stickLikelihood n c) =
+      stickZ n α c • stickLaw n (fun j => α j+(c j:ℝ)) := by
+  have h := weighted_beta_pi n (fun i => α i.castSucc) (tailShape n α)
+    (fun i => c i.castSucc) (tailCount n c)
+    (fun i => hα i.castSucc) (tailShape_pos n α hα)
+  have hlik : stickLikelihood n c =
+      fun x => ∏ i : Fin n, likelihood (c i.castSucc) (tailCount n c i) (x i) := by
+    funext x
+    rfl
+  rw [hlik]
+  simpa only [stickLaw, stickZ, tailShape_update] using h
+
+theorem weighted_family (n : ℕ) (α : Fin (n+1) → ℝ)
+    (hα : ∀ j, 0<α j) (c : Fin (n+1) → ℕ) :
+    (family n α).withDensity (categoricalLikelihood n c) =
+      stickZ n α c • family n (fun j => α j+(c j:ℝ)) := by
+  unfold family
+  rw [← map_likelihood_weight _ _ _ (measurable_stickMap n) (by
+    unfold categoricalLikelihood
+    fun_prop)]
+  rw [withDensity_congr_ae (ae_likelihood_pullback n α hα c),
+    weighted_stickLaw n α hα c, Measure.map_smul _ (measurable_stickMap n).aemeasurable]
+
+theorem weighted_family_mass (n : ℕ) (α : Fin (n+1) → ℝ)
+    (hα : ∀ j, 0<α j) (c : Fin (n+1) → ℕ) :
+    ((family n α).withDensity (categoricalLikelihood n c)) Set.univ = stickZ n α c := by
+  let := family_probability n (fun j => α j+(c j:ℝ))
+    (fun j => add_pos_of_pos_of_nonneg (hα j) (Nat.cast_nonneg (c j)))
+  rw [weighted_family n α hα c]
+  simp
+
+theorem normalized_family (n : ℕ) (α : Fin (n+1) → ℝ)
+    (hα : ∀ j, 0<α j) (c : Fin (n+1) → ℕ) :
+    (stickZ n α c)⁻¹ • (family n α).withDensity (categoricalLikelihood n c) =
+      family n (fun j => α j+(c j:ℝ)) := by
+  rw [weighted_family n α hα c, smul_smul,
+    ENNReal.inv_mul_cancel (stickZ_pos_finite n α hα c).1
+      (stickZ_pos_finite n α hα c).2, one_smul]
+end
+end StickFamilyPosterior
+
+end
+
+end FEP.EmpiricalRisk
+
+/-! Independent natural-count row posterior over the existing stick-family carrier. -/
+set_option autoImplicit false
+open MeasureTheory
+open scoped BigOperators
+namespace FEP.EmpiricalRisk
+namespace ConditioningRowProductProposal
+open FEP.EmpiricalRisk.MeasureTransport
+noncomputable section
+variable {E : Type*} [MeasurableSpace E]
+theorem vector_pi_withDensity (n : ℕ) (μ : Fin n → Measure E)
+    (f : Fin n → E → ENNReal) [∀ i, SigmaFinite (μ i)]
+    [∀ i, SigmaFinite ((μ i).withDensity (f i))] (hf : ∀ i, Measurable (f i)) :
+    (Measure.pi μ).withDensity (fun x => ∏ i, f i (x i)) =
+      Measure.pi (fun i => (μ i).withDensity (f i)) := by
+  induction n with
+  | zero =>
+      have hempty : (fun i : Fin 0 => (μ i).withDensity (f i)) = μ := by
+        funext i
+        exact Fin.elim0 i
+      rw [hempty]
+      simp only [Finset.univ_eq_empty, Finset.prod_empty, withDensity_const, one_smul]
+  | succ n ih =>
+      let e := (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => E) 0).symm
+      let μtail := Measure.pi (fun i : Fin n => μ i.succ)
+      let νtail := Measure.pi (fun i : Fin n => (μ i.succ).withDensity (f i.succ))
+      have hprior : ((μ 0).prod μtail).map e = Measure.pi μ :=
+        (measurePreserving_piFinSuccAbove μ 0).symm.map_eq
+      have hpost : (((μ 0).withDensity (f 0)).prod νtail).map e =
+          Measure.pi (fun i => (μ i).withDensity (f i)) :=
+        (measurePreserving_piFinSuccAbove (fun i => (μ i).withDensity (f i)) 0).symm.map_eq
+      have hweight : (fun z : E × (Fin n → E) => ∏ i : Fin (n+1), f i (e z i)) =
+          fun z => f 0 z.1 * ∏ i : Fin n, f i.succ (z.2 i) := by
+        funext z
+        simp [e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv,
+          Fin.prod_univ_succ, Fin.zero_succAbove]
+      have hL : Measurable (fun x : Fin (n+1) → E => ∏ i, f i (x i)) := by fun_prop
+      calc
+        _ = (((μ 0).prod μtail).withDensity
+              (fun z => f 0 z.1 * ∏ i : Fin n, f i.succ (z.2 i))).map e := by
+          rw [← hweight, map_likelihood_weight _ _ _ e.measurable hL, hprior]
+        _ = (((μ 0).withDensity (f 0)).prod νtail).map e := by
+          let g : (Fin n → E) → ENNReal := fun x => ∏ i, f i.succ (x i)
+          have hg : Measurable g := by fun_prop
+          have hsplit := (prod_withDensity (μ := μ 0) (ν := μtail)
+            (f := f 0) (g := g) (hf 0) hg).symm
+          have htail : μtail.withDensity g = νtail :=
+            ih (fun i => μ i.succ) (fun i => f i.succ) (fun i => hf i.succ)
+          exact congrArg (fun ν : Measure (E × (Fin n → E)) => ν.map e)
+            (hsplit.trans (congrArg (fun ν => ((μ 0).withDensity (f 0)).prod ν) htail))
+        _ = _ := hpost
+
+/-- Coordinate scale factors collect into their genuine finite product. -/
+theorem vector_pi_scale_factors {K : Type*} [Fintype K] (μ : K → Measure E)
+    (c : K → ENNReal) [∀ i, SigmaFinite (μ i)]
+    [∀ i, SigmaFinite (c i • μ i)] :
+    Measure.pi (fun i => c i • μ i) = (∏ i, c i) • Measure.pi μ := by
+  apply Measure.pi_eq
+  intro s hs
+  rw [Measure.smul_apply, Measure.pi_pi]
+  simp_rw [Measure.smul_apply]
+  exact (Finset.prod_mul_distrib).symm
+end
+end ConditioningRowProductProposal
+end FEP.EmpiricalRisk
+
+namespace FEP.EmpiricalRisk
+namespace ConditioningRowProductProposal
+open StickFamily StickFamilyPosterior TailCountTransfer
+noncomputable section
+
+def matrixZ (m k : ℕ) (α : Fin m → Fin (k+1) → ℝ)
+    (c : Fin m → Fin (k+1) → ℕ) : ENNReal := ∏ r, stickZ k (α r) (c r)
+
+theorem weighted_rows (m k : ℕ) (α : Fin m → Fin (k+1) → ℝ)
+    (hα : ∀ r j, 0<α r j) (c : Fin m → Fin (k+1) → ℕ) :
+    (Measure.pi (fun r => family k (α r))).withDensity
+      (fun A => ∏ r, categoricalLikelihood k (c r) (A r)) =
+      matrixZ m k α c • Measure.pi (fun r => family k (fun j => α r j+(c r j:ℝ))) := by
+  let : ∀ r, IsProbabilityMeasure (family k (α r)) := fun r => family_probability k (α r) (hα r)
+  let : ∀ r, IsProbabilityMeasure (family k (fun j => α r j+(c r j:ℝ))) :=
+    fun r => family_probability k (fun j => α r j+(c r j:ℝ)) (fun j => add_pos_of_pos_of_nonneg (hα r j) (Nat.cast_nonneg _))
+  let : ∀ r, IsFiniteMeasure ((family k (α r)).withDensity (categoricalLikelihood k (c r))) :=
+    fun r => ⟨by rw [weighted_family_mass k (α r) (hα r) (c r)]; exact lt_top_iff_ne_top.mpr (stickZ_pos_finite k (α r) (hα r) (c r)).2⟩
+  have hrow : (fun r => (family k (α r)).withDensity (categoricalLikelihood k (c r))) =
+      fun r => stickZ k (α r) (c r) • family k (fun j => α r j+(c r j:ℝ)) := by
+    funext r; exact weighted_family k (α r) (hα r) (c r)
+  let : ∀ r, SigmaFinite (stickZ k (α r) (c r) • family k (fun j => α r j+(c r j:ℝ))) :=
+    fun r => by rw [← weighted_family k (α r) (hα r) (c r)]; infer_instance
+  rw [vector_pi_withDensity m _ _ (by intro r; unfold categoricalLikelihood; fun_prop), hrow]
+  exact vector_pi_scale_factors _ _
+
+theorem matrixZ_pos_finite (m k : ℕ) (α : Fin m → Fin (k+1) → ℝ)
+    (hα : ∀ r j, 0<α r j) (c : Fin m → Fin (k+1) → ℕ) :
+    matrixZ m k α c ≠ 0 ∧ matrixZ m k α c ≠ ⊤ := by
+  constructor
+  · exact Finset.prod_ne_zero_iff.mpr fun r _ => (stickZ_pos_finite k (α r) (hα r) (c r)).1
+  · exact ENNReal.prod_ne_top fun r _ => (stickZ_pos_finite k (α r) (hα r) (c r)).2
+
+theorem normalized_rows (m k : ℕ) (α : Fin m → Fin (k+1) → ℝ)
+    (hα : ∀ r j, 0<α r j) (c : Fin m → Fin (k+1) → ℕ) :
+    (matrixZ m k α c)⁻¹ • (Measure.pi (fun r => family k (α r))).withDensity
+      (fun A => ∏ r, categoricalLikelihood k (c r) (A r)) =
+      Measure.pi (fun r => family k (fun j => α r j+(c r j:ℝ))) := by
+  rw [weighted_rows m k α hα c, smul_smul,
+    ENNReal.inv_mul_cancel (matrixZ_pos_finite m k α hα c).1 (matrixZ_pos_finite m k α hα c).2, one_smul]
+
+end
+end ConditioningRowProductProposal
 end FEP.EmpiricalRisk

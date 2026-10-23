@@ -217,7 +217,7 @@ class _Broker:
                 self.groups.remove(current)
                 self.scopes.pop(current.scope_token)
             for current in reversed(subtree):
-                # Only a command still running is cancelled by its ancestor. One
+                # Only a command still running is canceled by its ancestor. One
                 # whose guard already reported keeps its delivery obligation,
                 # whichever release wins the lock.
                 if (

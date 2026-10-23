@@ -1,7 +1,7 @@
 # Design programs
 
 This directory owns prospective architecture and research programs. It is not a
-second topic catalogue, capability graph, theorem-maturity ledger, or evidence
+second topic catalog, capability graph, theorem-maturity ledger, or evidence
 store. A design becomes current implementation work only when a bounded slice
 is opened under `specs/` and linked back to its design goal. Once that slice
 ships, its acceptance record moves under `specs/done/`; the design document
@@ -11,7 +11,7 @@ continues to describe the longer research dependency.
 
 | Program | Purpose | Status |
 | --- | --- | --- |
-| [FEP research horizons](fep-research-program/README.md) | Move from the released finite catalogue to a falsifiable, carrier-spanning, end-to-end scientific theorem chain | Active: recorded [Horizon 1](../../specs/done/horizon-1-finite-synthesis/README.md), [H2.7](../../specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json), and [H3.G0/protocol-freeze acceptance](../../specs/h3-reference-study/README.md) retain their source epochs; current package/export/review, frozen primary, replay and reproduction gates follow the [execution sequence](../../specs/comprehensive-science-improvement/NEXT.md) |
+| [FEP research horizons](fep-research-program/README.md) | Move from the released finite catalog to a falsifiable, carrier-spanning, end-to-end scientific theorem chain | Active: recorded [Horizon 1](../../specs/done/horizon-1-finite-synthesis/README.md), [H2.7](../../specs/done/horizon-2-smooth-stochastic/readiness/terminal-acceptance.json), and [H3.G0/protocol-freeze acceptance](../../specs/h3-reference-study/README.md) retain their source epochs; current package/export/review, frozen primary, replay and reproduction gates follow the [execution sequence](../../specs/comprehensive-science-improvement/NEXT.md) |
 | [GNN bridge](gnn-bridge/README.md) | Cross-repo articulation with the GNN pipeline: render and execute Lean-expressed generative models (Direction 1) and formalize GNN steps and methods in Lean (Direction 2) | Q1–Q4/P1–P4b implementation records and dated [W2 custody](../../specs/gnn-bridge-w2-source-custody/REPORT.md), [Q5 proof](../../specs/gnn-bridge-q5-artifact-proof/REPORT.md) and [Q6 Julia-input proof](../../specs/gnn-bridge-q6-activeinference-artifact/REPORT.md) retain their recorded scope; [recorded Q7 coefficient proof](../../specs/gnn-bridge-q7-continuous-ou-proof/README.md) binds its recorded selected source pair; generated-runner execution remains unverified |
 
 ## Lifecycle
@@ -31,7 +31,7 @@ but those names remain prospective until the corresponding active slice proves
 and accepts them. They must not reserve future `fep-NNN` identifiers or add
 planned objects to generated coverage. Current implementation status belongs
 to the linked spec while active and to its archived acceptance record after
-exit; catalogue and formalism ownership remain with the files listed in the
+exit; catalog and formalism ownership remain with the files listed in the
 [topic reference](../topics-reference.md) and
 [formalism authorship guide](../authorship-guide.md).
 

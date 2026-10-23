@@ -1,7 +1,7 @@
 """Canonical Chrome/CDP browser-acceptance capture and replay.
 
 This module owns the browser selectors, actions, measurements, screenshots, and
-schema-4 receipt emission for the sealed catalogue.  It deliberately uses only
+schema-4 receipt emission for the sealed catalog.  It deliberately uses only
 the Python standard library plus a locally installed Chrome/Chromium binary.
 """
 

@@ -31,7 +31,7 @@ Before activating a proposal below, its bounded spec must instantiate the
 [work-package contract](research-contract.md): exact owner, carrier/API,
 predecessors, stop/go probe, positive witness, boundary result, tests and
 reviewer. Proposed identifiers here are planning references only. They do not
-reserve topic IDs or create catalogue, relation or capability claims.
+reserve topic IDs or create catalog, relation or capability claims.
 
 Use existing owners where practical. New Python owners require the coordinated
 versioned [source roster](../../../src/fep_lean/output/provenance.py) refresh;
@@ -48,11 +48,14 @@ software/proof-component source and exact-main evidence. The
 maintain another live implementation/status table.
 
 The [remaining original acceptance sequence](../../../specs/comprehensive-science-improvement/NEXT.md)
-keeps production capture and identical archives, current H3 export and distinct
-proof-role reviews, the frozen primary and complete replay, outcome-bound
-claims and clean installed study reproduction separate. Optional strict
+records the owner-directed retirement of CUR-03/#52 and CUR-05/#53 as not planned;
+their original source-freeze and production-capture/archive acceptance remains unmet.
+Current H3 export and distinct proof-role reviews, the frozen primary and complete
+replay, outcome-bound claims and clean installed study reproduction retain their
+independent obligations. Retirement is neither a passed capture nor permission to
+open dependent scientific lanes without prospective prerequisite review. Optional strict
 Hermes/OpenGauss execution has its own credential and provider boundary.
-Software CI and catalogue-mode output supply none of those research outcomes.
+Software CI and catalog-mode output supply none of those research outcomes.
 Every later source change needs acceptance in its affected evidence planes.
 
 The [2026-10-02 Q7 capture](../../../specs/comprehensive-science-improvement/evidence/public-q7-final-source-20261002-r1/summary.json)
@@ -189,42 +192,26 @@ another resume switch or trusting old zero exits.
 
 ## Formalizations: minor scope
 
-### FORM-M1 — align primary theorem proxies with the proved information seams
+### FORM-M1 — accepted primary alignment and retained boundaries
 
-**Owner:** existing variational-duality body/foundation, decision-risk bridge and
-the [maturity records](../../../config/theorem_maturity.yaml).
-
-**Scope-opening baseline (2026-10-05):** `fep-063` retained a
-strict-positive-channel primary theorem despite a broader relative-support
-bridge; `fep-064` retained an assumed-component primary theorem with genuine
-attainment and dual-bound supporting theorems.
-
-**Current source alignment:** the maturity records select
+The bounded [primary-alignment scope #68](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68)
+completed at the [accepted Y checkpoint](../../../TODO.md#retired-production-capture-dependencies);
+[delivery history](../../../CHANGELOG.md) retains its exact-source acceptance.
+The maturity records select
 `fep063_finiteChannel_klDataProcessing_of_relativeSupport` and
 `fep064_rateDistortion_dual_lower_bound` from the existing
 [canonical owner](../../../src/fep_lean/catalogue/bodies/variational_duality.py).
 The former exposes relative input support for finite KL; the latter uses the
-actual Lagrangian infimum for a feasible-joint weak bound. Earlier APIs remain
-supporting, and the respective `conditional_proxy` and `structural_proxy`
-dispositions are unchanged. These source selections do not themselves establish
-acceptance or waive the [CUR-07 dependency (#54)](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54).
-The exact-source checks and scientific boundaries below still apply.
+actual Lagrangian infimum for a feasible-joint weak bound. Earlier public APIs
+remain supporting, and the respective `conditional_proxy` and `structural_proxy`
+dispositions are unchanged. Singular, zero-multiplier and nonunique boundaries
+remain explicit; native extended KL, general strong duality and scientific
+promotion do not follow from these primary selections.
 
-- **Outcome:** review whether a canonical primary statement can use the already
-  proved narrower carrier directly. Preserve IDs and signature order, update
-  explicit assumptions/non-vacuity and generate all projections from owners.
-- **Dependencies/go probe:** current FORM-1–FORM-3 native/audit and independent
-  semantic acceptance. Compare proposed primary types with the existing
-  advertised scientific statements; no theorem body is changed merely to make
-  a maturity label more favorable.
-- **Acceptance:** focused and aggregate warning-free compilation, declaration
-  ownership/axiom audit and deterministic signature/maturity projections;
-  sparse supported, singular, zero-multiplier and nonunique boundaries remain
-  visible. Reviewers decide the disposition from the exact statement.
-- **Boundary/no-go:** supporting mathematics does not automatically promote an
-  old proxy. If a primary swap obscures the distinction between totalized real
-  finite KL and native extended KL, or implies general strong duality, retain
-  the current primary and document the stronger supporting seam explicitly.
+Later primary/type or owner changes require their own semantic, declaration,
+axiom, projection and exact-source acceptance. They must preserve released IDs,
+signature order and countermodels. This historical closure does not reopen the
+completed alignment review or satisfy current H3 scientific gates.
 
 ## Formalizations: medium scopes
 

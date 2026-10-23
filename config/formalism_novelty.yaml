@@ -1,4 +1,4 @@
-# Maintained novelty ledger for catalogue rows added after the sealed baseline.
+# Maintained novelty ledger for catalog rows added after the sealed baseline.
 schema_version: 1
 baseline_last_id: fep-050
 topics:
@@ -589,6 +589,6 @@ topics:
   required_bridge: FEPComposed.fep167_frobeniusProjection_extends_fep162_clairautSymmetrize
 - id: fep-168
   nearest_topics: [fep-163, fep-165]
-  new_invariant: On the fep-163 carrier the uncancelled remainder satisfies weightedDivergence = dot r g and the squared budget (dot r g)² ≤ (∑ r_i²)(∑ g_i²), with equality attained by aligned nonzero data.
+  new_invariant: On the fep-163 carrier the uncanceled remainder satisfies weightedDivergence = dot r g and the squared budget (dot r g)² ≤ (∑ r_i²)(∑ g_i²), with equality attained by aligned nonzero data.
   carrier_delta: Adds quantitative residual budgets (norm control with attainable equality) to fep-163's exact expansion and fep-165's refuting witness; bounds the remainder instead of assuming it vanishes.
   required_bridge: FEPComposed.fep168_remainderBound_extends_fep163_solenoidalExpansion

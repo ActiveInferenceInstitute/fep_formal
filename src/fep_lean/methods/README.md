@@ -1,6 +1,6 @@
 # `fep_lean.methods`
 
-Portable, offline mathematical positioning of the FEP_Formal catalogue. The
+Portable, offline mathematical positioning of the FEP_Formal catalog. The
 package validates the canonical topic, maturity, relation, and positioning
 inputs, then answers exact queries and renders deterministic artifacts: a JSON
 and Markdown projection, a visual model, SVG panels, and a self-contained
@@ -46,7 +46,7 @@ The expectation accumulates products exactly before rounding. Gibbs weights
 use supported, centered high-precision arithmetic; diagnostics distinguish
 reference zeros from numerical underflow and report normalization explicitly.
 The `gibbs` CLI accepts three required JSON arrays and works without loading a
-catalogue model. See the [numerical API guide](../../../docs/mathematical-methods.md#reusable-finite-variational-methods)
+catalog model. See the [numerical API guide](../../../docs/mathematical-methods.md#reusable-finite-variational-methods)
 for conventions, examples and range boundaries.
 
 Everything here is explanatory context, not proof. Source validation is text

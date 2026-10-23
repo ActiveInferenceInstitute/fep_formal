@@ -52,7 +52,7 @@
 | 6 | Ruff non-gating (214 findings) with unbounded staged-debt plan | MEDIUM | MODERATE | Wave 3 PH-1, Wave 4 (DAF, Neville) | `docs/quality.md` |
 | 7 | Stale corrupt Mathlib cache directory on disk | MEDIUM | HIGH | Wave 3 TM-1 | `lean/.lake/packages/mathlib.corrupt-20260730/` |
 | 8 | Hermes cache key excludes area/Mathlib version | MEDIUM | HIGH | Wave 3 TM-4 | `src/gauss/runner.py:376-383` |
-| 9 | "Why 50" unearned — catalogue size asserted without provenance | LOW | HIGH | Wave 4 (Allie, both Julians, Neville) | `README.md:1` |
+| 9 | "Why 50" unearned — catalog size asserted without provenance | LOW | HIGH | Wave 4 (Allie, both Julians, Neville) | `README.md:1` |
 | 10 | Release boundary implicit — needs one README sentence | LOW | HIGH | Wave 4 (Adam, both Julians, Neville) | `README.md`, `ISA.md` §Release boundary |
 
 ### Also Noted (LOW/PASS)
@@ -95,7 +95,7 @@
 | Hypothesis | Evidence supporting | Evidence against | Confidence |
 |-----------|-------------------|------------------|------------|
 | **The repo is ready to ship** | All 10 gates pass, 0 mocks, 0 except:pass, fail-closed, zero sorry | CI missing mypy, terminology unresolved, FEP_LEAN_GAUSS_WORKFLOWS gate unimplemented | MODERATE |
-| **The repo needs CI hardening before release** | mypy not in CI, Ruff non-gating, parallel mode untested in CI | These are process gaps, not integrity flaws; the core output (catalogue + Lean) is unaffected | HIGH |
+| **The repo needs CI hardening before release** | mypy not in CI, Ruff non-gating, parallel mode untested in CI | These are process gaps, not integrity flaws; the core output (catalog + Lean) is unaffected | HIGH |
 | **The FEP-mathematical claims are hollow** | No ISA gate on non-vacuity; "sketch"/"proxy" fuzzy; theorem-maturity audit is maintained but not gating | Maturity audit exists (357 lines) with explicit disposition, non-vacuity, and assumption review for all 50 | LOW |
 
 The evidence strongly favors hypothesis 2 — the infrastructure is solid, the FEP claims are honestly scoped, and the gaps are in CI process and documentation framing, not in integrity or correctness.
@@ -127,10 +127,10 @@ The evidence strongly favors hypothesis 2 — the infrastructure is solid, the F
 **Persona-specific insights:**
 - **Adam:** Real-Filesystem SQLite partial-write failure not tested; preflight JSON schema undocumented
 - **DAF:** ISA criteria lack non-vacuity gate; notation table missing for FEP community bridge
-- **Allie:** Why 50 catalogue size unearned; sketch-vs-proxy ambiguity
+- **Allie:** Why 50 catalog size unearned; sketch-vs-proxy ambiguity
 - **Julian (Polite):** Rigorous but constructive — earn the 50, fix terminology, name release-blocker
 - **Julian (Rude):** "A good repo wearing a slightly misleading outfit" — same gaps, unfiltered register
-- **Neville:** Lead with evidence boundary as product, not catalogue size; add date to Ruff plan
+- **Neville:** Lead with evidence boundary as product, not catalog size; add date to Ruff plan
 
 ### Test Suite Review (direct audit, 31 files, 342 tests)
 - 0 mock/fake/stub usage anywhere

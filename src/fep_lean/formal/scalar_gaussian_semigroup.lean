@@ -348,20 +348,10 @@ theorem stationaryLaw_invariant (model : ScalarOUParameters) :
       model.ouNativeSemigroup model.stationaryLaw := by
   intro time
   rw [Kernel.Invariant]
-  simp only [stationaryLaw,
-    FEP.GaussianInformationGeometry.FixedVarianceGaussian.law]
-  change
-    (gaussianReal model.center model.stationaryVariance).bind
-        (fun state =>
-          gaussianReal (model.transitionMean time state)
-            (model.transitionVariance time)) =
-      gaussianReal model.center model.stationaryVariance
-  simp_rw [model.transitionMean_affine time]
-  rw [gaussian_bind_affine]
-  apply gaussianReal_ext_iff.mpr
-  constructor
-  · ring
-  · exact model.stationaryVariance_decomposition time
+  change model.ouTransition time ∘ₘ gaussianReal model.center model.stationaryVariance =
+    gaussianReal model.center model.stationaryVariance
+  rw [model.ouTransition_comp_gaussian, model.stationaryVariance_decomposition]
+  simp [transitionMean]
 
 /-- The transition mean is its declared Gaussian mean parameter. -/
 theorem ouTransition_mean

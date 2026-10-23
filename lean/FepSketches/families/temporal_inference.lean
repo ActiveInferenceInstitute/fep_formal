@@ -5,7 +5,7 @@ module
 --
 -- Each topic body is wrapped in `namespace fep_fepNNN ... end fep_fepNNN`
 -- so identically-named helpers across topics never collide during the
--- whole-catalogue `lake build FepSketches`. Inner `namespace FEPNNN`
+-- whole-catalog `lake build FepSketches`. Inner `namespace FEPNNN`
 -- blocks are preserved so per-topic qualified names stay stable.
 public import FepSketches.temporal_inference
 

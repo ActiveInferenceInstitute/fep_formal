@@ -10,20 +10,21 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification.preflight import _run_version, run_preflight
+from fep_lean.verification.environment import _version_line
+from fep_lean.verification.preflight import run_preflight
 
 PROJ = Path(__file__).resolve().parent.parent
 
 
-def test_run_version_missing_binary() -> None:
-    code, line = _run_version(["/nonexistent/fep_lean_preflight_binary", "--version"])
-    assert code == 1
+def test_version_line_missing_binary() -> None:
+    ok, line = _version_line("/nonexistent/fep_lean_preflight_binary")
+    assert ok is False
     assert isinstance(line, str)
     assert len(line) > 0
 
 
 def test_run_preflight_returns_zero_or_one() -> None:
-    c = run_preflight(require_gauss=False)
+    c = run_preflight()
     assert c in (0, 1)
 
 
@@ -33,13 +34,13 @@ def test_run_preflight_require_gauss_when_missing(
     """Cover the gauss-missing path by hiding gauss from PATH."""
     monkeypatch.setenv("PATH", str(tmp_path))
     monkeypatch.setenv("FEP_LEAN_SKIP_FALLBACKS", "1")
-    assert run_preflight(require_gauss=True) == 1
+    assert run_preflight() == 1
 
 
-def test_run_version_with_real_binary() -> None:
-    """Cover the success branch of _run_version with a real binary."""
-    code, line = _run_version([sys.executable, "--version"])
-    assert code == 0
+def test_version_line_with_real_binary() -> None:
+    """Cover the canonical version probe with a real binary."""
+    ok, line = _version_line(sys.executable)
+    assert ok is True
     assert "Python" in line or "python" in line.lower()
 
 
@@ -49,7 +50,7 @@ def test_run_preflight_gauss_required_missing_with_env(
     """Cover the gauss-fail early return in run_preflight with isolated PATH."""
     monkeypatch.setenv("PATH", str(tmp_path))
     monkeypatch.setenv("FEP_LEAN_SKIP_FALLBACKS", "1")
-    assert run_preflight(require_gauss=True) == 1
+    assert run_preflight() == 1
 
 
 def test_preflight_main_cli_smoke() -> None:
@@ -72,10 +73,10 @@ def test_preflight_main_cli_smoke() -> None:
     assert r.returncode in (0, 1)
 
 
-def test_preflight_main_require_gauss(
+def test_preflight_main_rejects_removed_flag(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    """Exercise main() directly, failing via missing gauss."""
+    """The removed no-op option must be rejected rather than silently accepted."""
     monkeypatch.setenv("PATH", str(tmp_path))
     monkeypatch.setenv("FEP_LEAN_SKIP_FALLBACKS", "1")
     monkeypatch.setattr(sys, "argv", ["fep-lean preflight", "--require-gauss"])
@@ -83,7 +84,7 @@ def test_preflight_main_require_gauss(
 
     with pytest.raises(SystemExit) as exc:
         main()
-    assert exc.value.code == 1
+    assert exc.value.code == 2
 
 
 def test_run_preflight_happy_path(
@@ -96,14 +97,11 @@ def test_run_preflight_happy_path(
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     monkeypatch.setenv("PATH", str(bin_dir))
-    status = preflight.run_preflight(require_gauss=False)
+    status = preflight.run_preflight()
     assert status == 1
 
 
-@pytest.mark.parametrize("require_gauss", [None, True, False])
-def test_preflight_compatibility_flag_preserves_environment_and_full_checks(
-    monkeypatch, capsys, tmp_path, require_gauss
-):
+def test_preflight_full_checks_preserve_environment(monkeypatch, capsys, tmp_path):
     from fep_lean.verification import preflight
 
     monkeypatch.setenv("FEP_LEAN_REQUIRE_GAUSS", "preserved-sentinel")
@@ -117,7 +115,7 @@ def test_preflight_compatibility_flag_preserves_environment_and_full_checks(
 
     monkeypatch.setattr(preflight, "run_validation_checks", inspect)
     before = dict(os.environ)
-    assert preflight.run_preflight(require_gauss=require_gauss) == 1
+    assert preflight.run_preflight() == 1
     assert calls == [(tmp_path, "full")]
     record = json.loads(capsys.readouterr().out)
     assert record["status"] == "error"

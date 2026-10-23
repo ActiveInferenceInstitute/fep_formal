@@ -47,7 +47,7 @@ HEIGHT_PX = 1024
 CANVAS_W = 7.68
 CANVAS_H = 5.12
 
-# The catalogue figure palette (fep_lean.output.figures), reused so the
+# The catalog figure palette (fep_lean.output.figures), reused so the
 # abstract shares the manuscript's visual language.
 _BLUE = "#315f8c"
 _GREEN = "#2f855a"
@@ -201,7 +201,7 @@ def _draw(fig: Figure, metadata: CatalogueMetadataManifest) -> None:
         color="#5a6472",
     )
 
-    # Row 1: authoring inputs -> generated catalogue -> pinned compile.
+    # Row 1: authoring inputs -> generated catalog -> pinned compile.
     box_w, gutter = 2.18, 0.35
     row1_y, row1_h = 2.86, 1.44
     x1, x2, x3 = 0.22, 0.22 + box_w + gutter, 0.22 + 2 * (box_w + gutter)
@@ -213,7 +213,7 @@ def _draw(fig: Figure, metadata: CatalogueMetadataManifest) -> None:
         row1_h,
         title="GNN-typed authoring inputs",
         lines=[
-            "catalogue metadata · maturity",
+            "catalog metadata · maturity",
             "novelty + typed relations",
             "family-owned Lean bodies",
             "joined by stable topic ID",
@@ -227,7 +227,7 @@ def _draw(fig: Figure, metadata: CatalogueMetadataManifest) -> None:
         row1_y,
         box_w,
         row1_h,
-        title="Generated catalogue",
+        title="Generated catalog",
         lines=[
             f"{len(metadata)} topics · {len(metadata.families)} families",
             "regeneration-identical",

@@ -16,7 +16,7 @@ compile Lean locally, write SQLite sessions, or decide claim readiness.
 ## Invariants
 
 - No module in `src/fep_lean` outside this package imports it (`output/provenance.py` only lists its file paths). Every operation is
-  an explicit caller action; do not wire it into pipeline, catalogue, or
+  an explicit caller action; do not wire it into pipeline, catalog, or
   full-run stages. Importing the package performs no request and reads no
   credential.
 - Credentials are referenced by name only: `PROVE2ME_API_KEY` and

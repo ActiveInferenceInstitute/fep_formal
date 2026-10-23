@@ -1247,7 +1247,7 @@ topics:
   - Algebra.BigOperators.Group.Finset
   mathlib_status: real
 - id: fep-168
-  title: Quantitative Control of the Uncancelled Divergence Remainder
+  title: Quantitative Control of the Uncanceled Divergence Remainder
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:

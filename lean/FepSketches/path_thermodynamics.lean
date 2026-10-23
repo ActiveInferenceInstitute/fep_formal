@@ -1294,7 +1294,7 @@ theorem sum_mul_comp_eq_sum_fiber (law : FiniteLaw Path) (coordinate : Path → 
   intro path hPath
   rw [(Finset.mem_filter.mp hPath).2]
 
-/-- A finite one-bit erasure model.  Every modelling assumption is a named
+/-- A finite one-bit erasure model.  Every modeling assumption is a named
 field:
 
 * `initial_marginal` / `final_marginal`: the forward path law has initial-bit

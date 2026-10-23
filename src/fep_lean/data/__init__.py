@@ -1,1 +1,1 @@
-"""Generated package data for checkout-independent catalogue loading."""
+"""Generated package data for checkout-independent catalog loading."""

@@ -13,7 +13,7 @@ This page documents contracts, not every private helper. Runtime annotations
 and docstrings in `src/fep_lean/` are the executable signature source, and the
 distribution tests pin the installed import and console-script boundary.
 
-## Catalogue
+## Catalog
 
 ```python
 from fep_lean.catalogue import FEPTopicCatalogue, TopicEntry
@@ -48,7 +48,7 @@ verification success.
 
 ## Authoring and coverage loaders
 
-The maintainer-facing catalogue API also exports:
+The maintainer-facing catalog API also exports:
 
 ```python
 from fep_lean.catalogue import (
@@ -199,14 +199,14 @@ run_single_topic(
 
 `PipelineResult` records `status`, `mode`, `complete`, selected and verified
 counts, capability flags, failure reason, stages, topic rows, run directory,
-and duration. Catalogue mode can be complete while `verified_topics` remains
+and duration. Catalog mode can be complete while `verified_topics` remains
 zero. Full mode is incomplete if a required capability or selected topic
 fails, emits a Lean warning, retains `sorry`, or does not complete a requested
 review stage.
 
 Unknown areas, explicit empty topic lists and filters whose intersection is
-empty fail during catalogue loading, before capability checks, provider calls
-or artifact writes. Omitting both filters selects the full catalogue.
+empty fail during catalog loading, before capability checks, provider calls
+or artifact writes. Omitting both filters selects the full catalog.
 
 The explicit `output_root` argument takes precedence over a nonblank
 `FEP_LEAN_OUTPUT_ROOT`, then `output.root` settings, then `project_root/output`.
@@ -295,7 +295,7 @@ topic evidence rows, compiler/Mathlib identity, warning lists/counts, and
 completion fields. Full claim readiness requires successful provider and
 direct-compile evidence, nonempty session/model provenance, exact compiled
 source digests, zero warnings, and live-source binding.
-Catalogue reports may be structurally valid but are never claim-ready full-run
+Catalog reports may be structurally valid but are never claim-ready full-run
 evidence. `latest_claim_ready_full_report` searches only independently accepted
 full-mode bundles.
 
@@ -324,9 +324,8 @@ rejects source and destination aliasing, and atomically writes a separate
 build tree.
 
 The unified formalism appendix is assembled from two pure component renderers:
-the exact Lean catalogue and its typeset theorem signatures. There is one
-writer for the unified appendix and one writer for manuscript variables; the
-obsolete split appendix files are neither authored inputs nor outputs.
+the exact Lean catalog and its typeset theorem signatures. There is one
+writer for the unified appendix and one writer for manuscript variables.
 
 `Reporter.generate` writes a timestamped Markdown/JSON report bundle and its
 verification manifest. Use `ReportPaths` for emitted locations and validate the
@@ -399,7 +398,7 @@ and session lifecycle and always records whether the verified sketch was native
 or Hermes-derived.
 
 Provider-backed calls occur only in full mode with valid credentials. Imports,
-catalogue mode, native verification, and receipt validation do not call a
+catalog mode, native verification, and receipt validation do not call a
 provider.
 
 ## Readiness snapshots
@@ -422,7 +421,7 @@ source bindings and named evidence planes retain their individual states.
 Omitting the sibling checkout leaves that comparison unverified. The immutable
 nested publication report distinguishes static currency from runtime execution
 and two-archive parity; static all-green results remain unverified. The CLI
-serializes this same snapshot. Its legacy imports remain the same objects.
+serializes this same snapshot.
 New input-stability records name the public
 `fep_lean.output.release_bundle.publication_input_snapshot` owner; historical
 receipts keep their original provenance.
@@ -491,7 +490,7 @@ validation behavior.
 
 `CatalogueVerification.to_json()` and `.exit_code` remain direct library values;
 `.emit_cli()` applies the CLI envelope and exit-1 contract. Direct
-`setup_workspace(root)` and catalogue drift checks retain their historical text
+`setup_workspace(root)` and catalog drift checks retain their historical text
 and exit behavior unless the caller explicitly supplies a failure callback.
 CLI setup sends progress and child diagnostics to stderr, leaving a late failure
 as one parseable JSON object on stdout. Its final success line is unchanged.
@@ -503,7 +502,7 @@ The installed console script is `fep-lean`. The
 write, exit-status and evidence boundaries, including bridge, custody, methods
 and publication capture. Use `fep-lean --help` for the installed parser surface.
 
-The wheel provides imports, packaged catalogue and manifested formal resources,
+The wheel provides imports, packaged catalog and manifested formal resources,
 and CLI help independently. The portable `methods` commands use installed
 resources or numerical inputs; other substantive operator commands require a
 complete source checkout because configuration, the Lean workspace, manuscript inputs, and output
@@ -562,7 +561,7 @@ Compile with the committed workspace: `lean/` (Lake + Mathlib4); see
 
 - Stable: the `fep_lean` root namespace, documented exports, CLI command names,
   stable topic IDs, and receipt validators.
-- Versioned data: generated catalogue rows, semantic dispositions, formalism
+- Versioned data: generated catalog rows, semantic dispositions, formalism
   relations, and receipt schemas.
 - Internal: underscore-prefixed helpers, raw SQLite tables, temporary Lean file
   layout, and exact report-rendering helpers not re-exported at a package

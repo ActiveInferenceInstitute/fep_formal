@@ -1,7 +1,7 @@
 # Packaged data contract
 
 This directory contains generated package resources. Follow the canonical owner
-mapping in [README.md](README.md): catalogue projection and portable methods
+mapping in [README.md](README.md): catalog projection and portable methods
 inputs have different generators. Regenerate through the appropriate owner and
 check its drift mode after changing maintained inputs.
 

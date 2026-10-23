@@ -293,7 +293,7 @@ _MERMAID_SOURCE_RE = re.compile(
 )
 # The pinned producer can discard a fallback rewrite when its success counter
 # is zero, leaving the original fence for Pandoc. Inspect complete code
-# environments as well as the legacy figure/verbatim shape. Prose and Pandoc
+# environments and figure/verbatim blocks. Prose and Pandoc
 # macro definitions are outside this line-anchored environment matcher.
 _PANDOC_HIGHLIGHTING_RE = re.compile(
     r"^[ \t]*\\begin\{Highlighting\}(?:\[[^\]\r\n]*\])?[ \t]*\r?\n"
@@ -309,7 +309,7 @@ _PANDOC_TOKEN_RE = re.compile(
     r"|SpecialString|String|Variable|VerbatimString|Warning)Tok"
     r"\{(?P<text>(?:\\[{}]|[^{}])*)\}"
 )
-# Unlike the legacy Mermaid-only figure, Highlighting also contains ordinary
+# Highlighting also contains ordinary
 # Python and Lean. Require the complete opening header, so ``graph = ...``,
 # ``flowchart(...)`` and similarly named identifiers do not qualify.
 _HIGHLIGHTED_MERMAID_HEADER_RE = re.compile(
@@ -733,7 +733,7 @@ def equation_numbering_defects(
 ) -> tuple[str, ...]:
     """Reject unnumbered display math in the actual combined LaTeX body.
 
-    Pandoc-crossref's ``autoEqnLabels`` sends both labelled and unlabelled
+    Pandoc-crossref's ``autoEqnLabels`` sends both labeled and unlabeled
     display nodes to numbered equation environments. Audit the output rather
     than assuming that configuration reached the filter. Code environments,
     comments, preamble definitions and ``\\\\[spacing]`` are not equations.
@@ -812,7 +812,7 @@ def equation_numbering_defects(
 # ``{{token}}`` resolves to inside the authored text stay outside the digest:
 # :func:`stale_render_defects` compares those against the render variables on
 # the render path, and ``manuscript_projection_drift`` owns the generated
-# projections against the catalogue.
+# projections against the catalog.
 RECEIPT_VERSION = 2
 # Every check whose defect list must be empty for a render to be publishable.
 _RECEIPT_CHECKS = (

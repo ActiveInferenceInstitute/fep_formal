@@ -9,16 +9,16 @@ updated: 2026-10-16
 
 ## Problem
 
-FEP_Formal combines a 168-row catalogue, generated Lean source, a pinned
+FEP_Formal combines a 168-row catalog, generated Lean source, a pinned
 Lean/Mathlib workspace, Hermes model calls, OpenGauss persistence, manuscript
 projections, and strict run reports. The repository must distinguish a
-deterministic offline catalogue from real theorem verification. A green local
+deterministic offline catalog from real theorem verification. A green local
 command is only meaningful when its capability boundary and evidence are
 explicit.
 
 ## Vision
 
-A fresh checkout can reproduce the catalogue, acquire the exact declared Lean
+A fresh checkout can reproduce the catalog, acquire the exact declared Lean
 toolchain, compile the canonical aggregate, and expose a bounded full-run
 workflow whose report proves what was actually verified. Missing external
 credentials or failed topics stop full mode without producing a misleading
@@ -45,7 +45,7 @@ This assessment covers the standalone repository boundary:
 ## Out of scope
 
 - Changing the parent repository or any sibling repository.
-- Treating catalogue mode, a cached response, or a generated manuscript value
+- Treating catalog mode, a cached response, or a generated manuscript value
   as proof that a theorem was verified.
 - Printing, inventing, or storing provider credentials.
 - Making mathematical claims stronger than the source theorem statements and
@@ -63,7 +63,7 @@ This assessment covers the standalone repository boundary:
 | ISA-06 | The live full path is end-to-end. | A permitted Hermes provider answers a bounded smoke run, OpenGauss persists and closes sessions, Lean verifies each selected topic, and the report/manifest agree. |
 | ISA-07 | Reports are provenance-safe. | Selected-topic identities and denominators, source/config and compiled-source digests, the preserved Lean declaration contract, toolchain revision, nested artifact hashes, verification source, and completion state are internally consistent. |
 | ISA-08 | Generated manuscript projections use the requested output root. | A custom output-root run cannot consume a stale report from the default `output/reports` tree. |
-| ISA-09 | Operator documentation matches behavior. | Link, Markdown hygiene, pin, and cross-reference audits pass after catalogue generation; counts and setup commands are current. |
+| ISA-09 | Operator documentation matches behavior. | Link, Markdown hygiene, pin, and cross-reference audits pass after catalog generation; counts and setup commands are current. |
 | ISA-10 | Every primary theorem proxy has a non-vacuity and assumption-strength review on record. | `config/theorem_maturity.yaml` has a `non_vacuity` field for every topic, and the generated `docs/theorem-maturity-audit.md` renders it. The `non_vacuity` entry documents whether the statement has a real witness or is structural/vacuous; topics with `non_vacuity: structural` or `non_vacuity: witnessed` are accepted; topics missing the field are flagged. |
 | ISA-11 | Scientific relations and capability history are explicit. | The typed loader validates every authored edge, every gap row has a `blocked_by` edge, derivational `formal` edges are acyclic, both theorem-backed kinds resolve leaf-owned declarations that use both endpoints, `formal_pairing` does not imply dependence, capability evidence resolves, and shared imports are reported separately. |
 | ISA-12 | Manuscript claims fail closed. | Theorem-reference, bibliography/citation, placeholder, receipt, and source-to-build rendering audits pass; authored Markdown is never modified by rendering. |
@@ -73,13 +73,13 @@ This assessment covers the standalone repository boundary:
 
 The repository is not in the ideal state if any of these occurs:
 
-- catalogue mode reports a verified topic or full mode reports success after a
+- catalog mode reports a verified topic or full mode reports success after a
   failed capability check;
 - a generated aggregate, report, or manuscript projection is treated as an
   authoring source of truth;
 - setup silently accepts the wrong Lean version, a partial Mathlib checkout, or
   a failed build;
-- a report calls failed Hermes rows `hermes_refined`, uses the full catalogue
+- a report calls failed Hermes rows `hermes_refined`, uses the full catalog
   as a filtered-run denominator, or records stale artifact hashes;
 - an unexpected runner failure leaves an open SQLite session or a live worker;
 - validation acquires dependencies, prints credentials, or makes unbounded
@@ -264,7 +264,7 @@ source-pair requirement for that epoch without promoting any failed prefix or
 historical native receipt. The observation is not itself a native receipt or
 validation of this checkout; later source-owner changes require fresh source-pair
 acceptance. Historical Q5/Q6/Q7 receipts and active GNN work remain preserved.
-Catalogue-native, package, hosted, provider and scientific acceptance remain
+Catalog-native, package, hosted, provider and scientific acceptance remain
 separate.
 
 Fresh H2 custody and continuous G0 acceptance preceded the immutable H3.0

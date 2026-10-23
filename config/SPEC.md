@@ -23,9 +23,9 @@ inputs and write both checkout and package-data YAML.
 
 - Topic IDs match the `catalogue_metadata.yaml` roster seal, are ordered and
   unique, and belong to exactly one declared family.
-- Catalogue and semantic review schemas reject missing and unknown fields.
+- Catalog and semantic review schemas reject missing and unknown fields.
   Runtime settings use their named consumer contracts; they are not validated
-  by the catalogue row schema.
+  by the catalog row schema.
 - A primary theorem must resolve in its canonical Lean body.
 - Semantic disposition is independent of `mathlib_status` and compilation.
 - Relation edges require a rationale; `blocked_by` targets capabilities, while

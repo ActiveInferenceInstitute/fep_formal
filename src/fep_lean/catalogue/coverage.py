@@ -1,4 +1,4 @@
-"""Deterministic breadth/depth coverage projections for the formalism catalogue."""
+"""Deterministic breadth/depth coverage projections for the formalism catalog."""
 
 from __future__ import annotations
 
@@ -654,7 +654,7 @@ def render_formalism_coverage_markdown(coverage: dict[str, Any]) -> str:
             "",
             (
                 "Shared imports indicate library reuse, not logical dependencies "
-                "between catalogue topics."
+                "between catalog topics."
             ),
             "",
             "| Mathlib module | Topics | Topic IDs |",

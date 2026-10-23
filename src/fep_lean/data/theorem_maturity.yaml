@@ -1,4 +1,4 @@
-# Maintained semantic review of catalogue theorem proxies.
+# Maintained semantic review of catalog theorem proxies.
 schema_version: 2
 review_date: '2026-10-19'
 native_evidence: A validated receipt from uv run fep-lean verify --fail-on-warnings
@@ -1298,7 +1298,7 @@ topics:
     Lean 4.35; the imported consumer must not use stale prior-build objects.
     Its 13 exact axiom queries comprise the selected canonical wrapper and 12
     consumer statements, not 13 independent compiler experiments. The unchanged
-    former primary and catalogue boundaries also require the actual native
+    former primary and catalog boundaries also require the actual native
     catalogue/API and declaration-audit gates.
   disposition: conditional_proxy
 - id: fep-064
@@ -3556,7 +3556,7 @@ topics:
   invariant: >-
     On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g
     under the cancellation hypotheses, the squared Cauchy-Schwarz budget
-    (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncancelled
+    (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncanceled
     remainder with its abs-product corollary, and equality is attained on
     aligned nonzero data with norm(g)^2 = 1.
   assumption_review: >-

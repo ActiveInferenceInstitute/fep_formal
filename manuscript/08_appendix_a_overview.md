@@ -1,17 +1,17 @@
 # Appendix A: Formalisms Overview {#sec:appendix_comprehensive_formalisms_overview}
 
-This catalogue index is Appendix A. The separate **Supplement A**
+This catalog index is Appendix A. The separate **Supplement A**
 ([@sec:math_positioning_supplement]) develops the mathematical
 positioning, exact Lean-to-language analysis and selected OpenAI-result
 comparisons behind the portable methods interface. Its corpus feature map is
 an interpretive comparison; the canonical declarations indexed here retain
 their own carriers, assumptions and semantic reviews.
 
-**Appendices B and C (material)** are one auto-generated file, `09z_unified_formalism_catalogue.md`, produced during Manuscript Artifacts. It juxtaposes, per `fep-NNN` topic, the fenced Lean body and the typeset display-math blocks (former appendices B and C). Stable descriptive metadata comes from `config/catalogue_metadata.yaml`, semantic review from `config/theorem_maturity.yaml`, canonical Lean bodies from family modules under `src/fep_lean/catalogue/bodies/`, and equation signatures from `src/fep_lean/catalogue/latex.py`; `scripts/_maint_build_topics_catalogue.py` joins them into the generated catalogue. Each topic has one display-math **block** per `theorem` (typically `aligned`), with a unique stable id `eq:fep-NNN-k`. Counts and validated evidence projections come from `manuscript_vars.yaml`.
+**Appendices B and C (material)** are one auto-generated file, `09z_unified_formalism_catalogue.md`, produced during Manuscript Artifacts. It juxtaposes, per `fep-NNN` topic, the fenced Lean body and the typeset display-math blocks (former appendices B and C). Stable descriptive metadata comes from `config/catalogue_metadata.yaml`, semantic review from `config/theorem_maturity.yaml`, canonical Lean bodies from family modules under `src/fep_lean/catalogue/bodies/`, and equation signatures from `src/fep_lean/catalogue/latex.py`; `scripts/_maint_build_topics_catalogue.py` joins them into the generated catalog. Each topic has one display-math **block** per `theorem` (typically `aligned`), with a unique stable id `eq:fep-NNN-k`. Counts and validated evidence projections come from `manuscript_vars.yaml`.
 
-## Complete Topic Catalogue {#sec:complete_topic_catalogue}
+## Complete Topic Catalog {#sec:complete_topic_catalogue}
 
-The **per-topic index** (id, human title, area, primary Mathlib path, and full `lean_sketch`) is not duplicated here: it appears in the **unified formalism appendix** ([@sec:appendix_b_full_topic_lean_catalogue]), with stable per-topic anchors `#sec:catalogue-fep-NNN` (Lean sketch) and `#sec:eqs-fep-NNN` (typeset LaTeX equations) for each `fep-NNN`. That file is regenerated from `config/topics.yaml` on every Manuscript Artifacts pass, so titles and bodies cannot drift from the committed catalogue.
+The **per-topic index** (id, human title, area, primary Mathlib path, and full `lean_sketch`) is not duplicated here: it appears in the **unified formalism appendix** ([@sec:appendix_b_full_topic_lean_catalogue]), with stable per-topic anchors `#sec:catalogue-fep-NNN` (Lean sketch) and `#sec:eqs-fep-NNN` (typeset LaTeX equations) for each `fep-NNN`. That file is regenerated from `config/topics.yaml` on every Manuscript Artifacts pass, so titles and bodies cannot drift from the committed catalog.
 
 Native compilation status for the full roster is **`{{compile_rate.total}}`** against Mathlib **`{{mathlib_tag}}`** / Lean **`{{lean_toolchain}}`**. `manuscript_vars.yaml` prefers an independently validated, live-source-bound native receipt and accepts a full-run verification manifest only through its separate claim-ready report contract. Diagnostics and verifier fields are summarized in [@sec:quantitative_execution_metrics].
 
@@ -43,11 +43,11 @@ uv run fep-lean verify \
   --receipt output/native-verification.json
 ```
 
-Then refresh the catalogue and manuscript projections.
+Then refresh the catalog and manuscript projections.
 
 ## Representative topics (pointers only) {#sec:representative_lean_sketches}
 
-To avoid duplicating Lean that can drift from the SSOT, this appendix does **not** paste catalogue fences. The pointers below cover the variational-bound backbone (fep-001), Boltzmann--Gibbs weights (fep-031), and stick-breaking bookkeeping (fep-046).
+To avoid duplicating Lean that can drift from the SSOT, this appendix does **not** paste catalog fences. The pointers below cover the variational-bound backbone (fep-001), Boltzmann--Gibbs weights (fep-031), and stick-breaking bookkeeping (fep-046).
 
 | Topic | Appendix B (Lean) | Appendix C (display math) |
 |-------|-------------------|---------------------------|
@@ -56,15 +56,15 @@ To avoid duplicating Lean that can drift from the SSOT, this appendix does **not
 | fep-046 | [@sec:catalogue-fep-046] | [@sec:eqs-fep-046] |
 : Representative topics, with pointers to the Lean body in Appendix B and the display math in Appendix C.
 
-## Mathlib4 Imports Used Across the Catalogue {#sec:mathlib4_imports_catalogue}
+## Mathlib4 Imports Used Across the Catalog {#sec:mathlib4_imports_catalogue}
 
-Every shipped row in Appendix B declares its own Mathlib imports rather than relying on an implicit global prelude. The project uses measure/probability kernels and conditional independence, finite sums and sets, real logarithm/exponential and calculus, finite-dimensional matrices and metrics, information theory, contraction limits, and the real strong law. Pedagogical snippets may use broader imports for exposition only; they are not catalogue sources.
+Every shipped row in Appendix B declares its own Mathlib imports rather than relying on an implicit global prelude. The project uses measure/probability kernels and conditional independence, finite sums and sets, real logarithm/exponential and calculus, finite-dimensional matrices and metrics, information theory, contraction limits, and the real strong law. Pedagogical snippets may use broader imports for exposition only; they are not catalog sources.
 
 The generated [formalism coverage report]({{publication.repository_url}}/blob/{{source.published_ref}}/docs/formalism-coverage.md) is the exact import and declaration roster. It owns both the topic-to-Mathlib incidence table and the maintained formal-module dependency graph. The atlas renders those import dependencies separately from scientific edges, while formal relations require named declarations. This avoids a static appendix roster that would drift whenever a sketch narrows an import.
 
 ## Formalization Epistemology: Realism vs. Illusionism {#sec:formalization_epistemology}
 
-The catalogue offers a structural way to inspect claims that appear in debates about FEP and consciousness (Solms, Dołęga, Wiese, 2023–2025) [@brainsblog2023]. Its typed measure-theoretic rows illustrate how candidate belief objects can receive explicit domains and assumptions, and its finite kernel composes one bounded generative-model instance through posterior, VFE, EFE, policy, and rollout layers. It does not formalize consciousness, establish that the finite model describes a living system, or adjudicate realist and illusionist positions.
+The catalog offers a structural way to inspect claims that appear in debates about FEP and consciousness (Solms, Dołęga, Wiese, 2023–2025) [@brainsblog2023]. Its typed measure-theoretic rows illustrate how candidate belief objects can receive explicit domains and assumptions, and its finite kernel composes one bounded generative-model instance through posterior, VFE, EFE, policy, and rollout layers. It does not formalize consciousness, establish that the finite model describes a living system, or adjudicate realist and illusionist positions.
 
 For machine-checked native compilation, run:
 

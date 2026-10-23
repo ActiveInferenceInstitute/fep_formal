@@ -16,7 +16,7 @@ paper:
     image: "output/figures/graphical-abstract.png"
     alt: >-
       Graphical abstract: maintained GNN-typed authoring inputs join into a
-      168-topic, 22-family catalogue, compile under pinned Lean 4 and Mathlib
+      168-topic, 22-family catalog, compile under pinned Lean 4 and Mathlib
       into a source-digest-bound claim-ready native evidence receipt, and feed
       a fail-closed manuscript projection; a dashed optional full mode adds
       Hermes and OpenGauss evidence behind its own validated receipt.
@@ -34,11 +34,11 @@ publication:
     media_type: "image/png"
     width_px: 1536
     height_px: 1024
-    sha256: "68b7819e8c799348b9d958cee41c5c4fdb5b716690749e0e586ef0e90086a904"
+    sha256: "30bd427f4de44042d237ad802518ef34d87741656727481bd6365dfab2871c16"
     alt_text: >-
       Graphical abstract: the fep_lean verification pipeline. Maintained
       GNN-typed authoring inputs join by stable topic ID into a 168-topic,
-      22-family catalogue with reviewed semantic dispositions; a pinned Lean 4
+      22-family catalog with reviewed semantic dispositions; a pinned Lean 4
       and Mathlib compile of FepSketches with zero warnings and zero sorry
       binds a source-digest-bound, claim-ready native evidence receipt; a
       dashed optional full mode adds Hermes and OpenGauss evidence behind its

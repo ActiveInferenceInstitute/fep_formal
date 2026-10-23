@@ -10,10 +10,11 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.catalogue.relations import EdgeKind, FormalismEdge, load_formalism_graph
+from fep_lean.catalogue.relations import EdgeKind, load_formalism_graph
 from fep_lean.catalogue.semantics import SemanticValidationError
 from fep_lean.output.formalism_atlas import _obligation_markup
 from tests._support.lean_module_contract import (
+    historical_core_prose,
     obligation_review,
     obligation_theorem_extension,
     restore_obligation_core,
@@ -52,18 +53,13 @@ def test_schema_three_preserves_obligation_and_immutability(token, tmp_path):
         edge.blocked_by = "unreviewed"
 
 
-def test_explicit_legacy_schema_two_and_old_constructor(tmp_path):
-    assert _load(_payload(version=2), tmp_path).edges[0].blocked_by is None
-    assert (
-        FormalismEdge(
-            "fep-001", "fep-002", EdgeKind.CONCEPTUAL, "legacy", None
-        ).blocked_by
-        is None
-    )
-    payload = _payload(version=2)
-    payload["edges"][0]["blocked_by"] = "issue:93"
-    with pytest.raises(SemanticValidationError, match="unknown"):
-        _load(payload, tmp_path)
+def test_relation_schema_two_is_rejected(tmp_path):
+    for include_obligation in (False, True):
+        payload = _payload(version=2)
+        if include_obligation:
+            payload["edges"][0]["blocked_by"] = "issue:93"
+        with pytest.raises(SemanticValidationError, match="schema_version must be 3"):
+            _load(payload, tmp_path)
 
 
 @pytest.mark.parametrize(
@@ -197,6 +193,28 @@ def test_inverse_restores_exact_rows_without_mutating_input():
     ]
     assert rows == original
 
+    american_rows = copy.deepcopy(rows)
+    position = next(
+        index
+        for index, edge in enumerate(american_rows)
+        if (edge["source"], edge["target"]) == ("fep-016", "fep-032")
+    )
+    rationale = american_rows[position]["rationale"]
+    assert rationale.count("same state and centre.") == 1
+    american_rows[position]["rationale"] = rationale.replace(
+        "same state and centre.", "same state and center.", 1
+    )
+    american_original = copy.deepcopy(american_rows)
+    assert reverse_obligation_edges(american_rows, ROOT) == [
+        change["before"] for change in review["edge_changes"]
+    ]
+    assert american_rows == american_original
+    for field in american_rows[position]:
+        changed = copy.deepcopy(american_rows)
+        changed[position][field] = "unreviewed"
+        with pytest.raises(AssertionError):
+            reverse_obligation_edges(changed, ROOT)
+
 
 @pytest.mark.parametrize("mutation", ["missing", "duplicate", "field"])
 def test_inverse_rejects_each_bad_row(mutation):
@@ -236,8 +254,9 @@ def test_fixture_authenticates_exact_bytes(tmp_path):
 @pytest.mark.parametrize("mutation", ["missing", "duplicate", "old_proof"])
 def test_core_inverse_seals_all_old_proofs(mutation):
     review = obligation_review(ROOT)
-    source = (ROOT / review["core_owner"]).read_text()
+    source = historical_core_prose((ROOT / review["core_owner"]).read_text())
     block = review["added_core_block"]
+    assert source.count(block) == 1
     if mutation == "missing":
         source = source.replace(block, "", 1)
     elif mutation == "duplicate":

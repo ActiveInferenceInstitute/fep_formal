@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Audit canonical declaration references and current root catalogue counts.
+"""Audit canonical declaration references and current root catalog counts.
 
 Current overview/contract sections are compared with the generated coverage
 projection. Release histories and dated evidence receipts have their own source
@@ -21,7 +21,7 @@ from fep_lean.formal.declarations import composed_theorem_declarations
 # Scope follows the current overview/contract sections, not every number in
 # every root document. In particular README's Release section and HANDOFF's
 # dated receipts are historical. Runtime/test counts have no coverage-JSON
-# counterpart and are never compared with catalogue or declaration counts.
+# counterpart and are never compared with catalog or declaration counts.
 _CURRENT_COUNT_SECTIONS = {
     "README.md": frozenset({"", "Contract", "Formal depth"}),
     "AGENTS.md": frozenset({"Purpose"}),
@@ -48,7 +48,7 @@ _SMALL_COUNTS = {
 }
 _NUMBER = r"(?P<count>\d+(?:,\d{3})*|" + "|".join(_SMALL_COUNTS) + r")\b"
 _COUNT_REFERENCES = (
-    ("topics", re.compile(r"\bcatalogue\s+of\s+" + _NUMBER, re.IGNORECASE)),
+    ("topics", re.compile(r"\bcatalog(?:ue)?\s+of\s+" + _NUMBER, re.IGNORECASE)),
     ("topics", re.compile(r"\b" + _NUMBER + r"(?:-|\s+)topics?\b", re.IGNORECASE)),
     (
         "families",
@@ -88,7 +88,7 @@ def _current_count_prose(text: str, sections: frozenset[str]) -> str:
         if heading is not None:
             section = heading[1]
         prose.append(line if section in sections else _blank(line))
-    # Link targets are addresses, not catalogue quantity claims.
+    # Link targets are addresses, not catalog quantity claims.
     return re.sub(r"\]\([^\n)]*\)", lambda match: _blank(match[0]), "".join(prose))
 
 
@@ -138,7 +138,7 @@ def root_count_reference_failures(root: Path) -> tuple[str, ...]:
             "areas": len(areas),
         }
     except (OSError, UnicodeError, ValueError, TypeError) as exc:
-        return (f"{COVERAGE_JSON}: cannot validate catalogue count references: {exc}",)
+        return (f"{COVERAGE_JSON}: cannot validate catalog count references: {exc}",)
 
     failures: list[str] = []
     for relative, sections in _CURRENT_COUNT_SECTIONS.items():
@@ -160,7 +160,7 @@ def root_count_reference_failures(root: Path) -> tuple[str, ...]:
                 if found != expected[unit]:
                     line = prose.count("\n", 0, match.start()) + 1
                     failures.append(
-                        f"{relative}:{line}: current catalogue {unit} count "
+                        f"{relative}:{line}: current catalog {unit} count "
                         f"{literal!r} disagrees with {COVERAGE_JSON} ({expected[unit]})"
                     )
     return tuple(failures)
@@ -185,7 +185,7 @@ def main() -> int:
         return 1
     print(
         "OK: all manuscript topic and composed declaration references resolve; "
-        "current root catalogue counts match coverage"
+        "current root catalog counts match coverage"
     )
     return 0
 

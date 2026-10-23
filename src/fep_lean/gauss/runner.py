@@ -742,7 +742,7 @@ class GaussRunner:
         )
         self.client.set_refined_sketch(session_id, refined)
 
-        # Overlap Hermes for the next catalogue row with Lean verify (prefetch mode only).
+        # Overlap Hermes for the next catalog row with Lean verify (prefetch mode only).
         self._start_prefetch_next_hermes(topic, workflow, preamble, model)
 
         if not self.lean.check_lake_available():

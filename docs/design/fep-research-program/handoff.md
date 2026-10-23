@@ -42,10 +42,12 @@ CUR-15/#51 is also closed, but its retained comment does not establish the
 unmet r6 diagnosis/current production receipt; do not reactivate private-stream
 work or infer acceptance from closure status. Current source/test
 custody, Q7 validation, installed runtime and exact-source software gates remain
-required. CUR-07/#54, the original nine criteria, H3 export/reviews, the sole
-primary, outcome/study archives and Windows/incremental scopes #66/#67 retain
-independent obligations; prospective dependent prerequisites require explicit
-review. Retirement supplies no successful capture or scientific acceptance.
+required. CUR-07/#54 completed its bounded software/artifact gate at the
+[accepted Y checkpoint](../../../TODO.md#retired-production-capture-dependencies);
+later source changes need fresh applicable exact-source checks. The original
+nine criteria, H3 export/reviews, the sole primary, outcome/study archives and
+Windows/incremental scopes #66/#67 retain independent obligations; prospective
+dependent prerequisites require explicit review. Retirement supplies no successful capture or scientific acceptance.
 Do not add a duplicate native or axiom producer from this handoff.
 
 Read the H3 guide, frozen protocol and implementation contract first. Preserve
@@ -109,6 +111,6 @@ owns dated observations and failures.
    [TODO.md](../../../TODO.md) and the [current campaign](../../../specs/comprehensive-next-steps/README.md);
    each open scope retains its dependencies, witnesses and no-go actions.
 
-No guide, checkbox, source hash or catalogue-mode report promotes a claim
+No guide, checkbox, source hash or catalog-mode report promotes a claim
 across evidence planes. Missing, indirect, stale or unverified acceptance keeps
 the corresponding work open.

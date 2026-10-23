@@ -13,7 +13,7 @@ Public API
     VerifyResult            — structured compilation result
     run_validation_checks   — read-only project/capability checks
     setup_workspace         — explicit locked dependency acquisition/build
-    verify_catalogue        — typed catalogue compilation/receipt operation
+    verify_catalogue        — typed catalog compilation/receipt operation
     CatalogueVerification   — payload, canonical JSON and exit status
 """
 

@@ -18,31 +18,31 @@ maintained metadata + semantic review + Lean bodies
                  checked manuscript build
 ```
 
-Catalogue generation is offline. Native verification requires the pinned Lean workspace. Full mode additionally requires the declared Hermes and OpenGauss capabilities. Manuscript rendering consumes validated evidence but cannot create it.
+Catalog generation is offline. Native verification requires the pinned Lean workspace. Full mode additionally requires the declared Hermes and OpenGauss capabilities. Manuscript rendering consumes validated evidence but cannot create it.
 
 ### Expression Lifecycle: YAML → Manuscript → Lake {#sec:expression_lifecycle_yaml_to_lake}
 
 The direction of ownership is fixed:
 
 1. `config/catalogue_metadata.yaml`, `config/theorem_maturity.yaml`, `config/formalism_novelty.yaml`, and the family-owned `fep_lean.catalogue.bodies` modules are maintained inputs.
-2. The catalogue generator joins metadata, semantic review, and bodies strictly by stable topic ID, validates every required novelty bridge against the maintained composition leaves, and writes checkout and wheel data from identical bytes.
-3. Native verification reads the generated catalogue, invokes Lean, and may write a digest-bound receipt.
-4. Manuscript variables are projected from the catalogue plus validated receipts.
+2. The catalog generator joins metadata, semantic review, and bodies strictly by stable topic ID, validates every required novelty bridge against the maintained composition leaves, and writes checkout and wheel data from identical bytes.
+3. Native verification reads the generated catalog, invokes Lean, and may write a digest-bound receipt.
+4. Manuscript variables are projected from the catalog plus validated receipts.
 5. The renderer validates all placeholders before writing numbered chapters to a separate build directory.
 
 Generated YAML, aggregate Lean, coverage reports, manuscript variables, and appendices are projections; hand edits to them are not a valid repair.
 
 ### Sequence Diagram: Single Topic Execution {#sec:sequence_diagram_single_topic_execution}
 
-For native verification, one selected topic follows catalogue load → isolated temporary source → `lake env lean` → structured result. In full mode, Hermes may propose or explain a sketch before native checking, but the kernel outcome remains decisive. A failed or unavailable provider cannot be converted into a native or full success through baseline substitution.
+For native verification, one selected topic follows catalog load → isolated temporary source → `lake env lean` → structured result. In full mode, Hermes may propose or explain a sketch before native checking, but the kernel outcome remains decisive. A failed or unavailable provider cannot be converted into a native or full success through baseline substitution.
 
 ### Persistent State: Dual-Mode Storage {#sec:persistent_state_sqlite_schema}
 
-Offline catalogue mode needs no external state. Native receipts are standalone JSON artifacts. Full mode may persist session and model interaction state through OpenGauss-compatible SQLite storage, while its publication contract is the independently validated report directory. The distinction lets readers verify compiler evidence without trusting a database or provider.
+Offline catalog mode needs no external state. Native receipts are standalone JSON artifacts. Full mode may persist session and model interaction state through OpenGauss-compatible SQLite storage, while its publication contract is the independently validated report directory. The distinction lets readers verify compiler evidence without trusting a database or provider.
 
 #### Per-topic audit trail {#sec:per_topic_audit_trail}
 
-Canonical topic content lives in the generated package catalogue; semantic review lives in the maintained maturity source. Native receipt rows add compiler status, warnings, admissions, elapsed time, and toolchain identity. Full report rows add provider and orchestration provenance. The layers are linked by topic ID and digests, not by copied prose.
+Canonical topic content lives in the generated package catalog; semantic review lives in the maintained maturity source. Native receipt rows add compiler status, warnings, admissions, elapsed time, and toolchain identity. Full report rows add provider and orchestration provenance. The layers are linked by topic ID and digests, not by copied prose.
 
 #### Run-level artifacts {#sec:run_level_artifacts}
 
@@ -59,7 +59,7 @@ Environment variables configure credentials, provider budgets, timeouts, and sto
 - credentials enable full mode but do not alter native theorem truth;
 - changing a timeout or model invalidates any claim that a previous full receipt describes the new configuration.
 
-The package now uses the unambiguous `fep_lean` namespace, so correctness no longer depends on placing collision-prone top-level modules such as `catalogue`, `pipeline`, or `output` first on `PYTHONPATH`.
+Package imports use the `fep_lean` namespace.
 
 ### Representative Run Statistics {#sec:pipeline_run_statistics}
 
@@ -75,9 +75,9 @@ From the project root:
 
 1. synchronize the locked Python environment with `uv sync --locked --extra dev`, whose test extras step 5 needs;
 2. explicitly prepare the pinned Lean workspace with `uv run fep-lean setup` when its cache is absent;
-3. regenerate and drift-check catalogue, aggregate Lean, semantic audit, and coverage projections;
+3. regenerate and drift-check catalog, aggregate Lean, semantic audit, and coverage projections;
 4. run `uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json` for native evidence;
 5. generate manuscript variables, run the placeholder and theorem-reference audits, and render to `output/manuscript/`;
 6. run full mode only when its external capabilities and credentials are intentionally supplied, then validate its report before citing it.
 
-Hermes wording may vary. A fixed Lean source under the pinned toolchain is reproducible; a native receipt additionally binds that result to the current catalogue bytes.
+Hermes wording may vary. A fixed Lean source under the pinned toolchain is reproducible; a native receipt additionally binds that result to the current catalog bytes.

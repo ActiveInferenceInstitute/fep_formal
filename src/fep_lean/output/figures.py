@@ -1,7 +1,7 @@
-"""Deterministic catalogue figures.
+"""Deterministic catalog figures.
 
-The functions intentionally accept a catalogue and an output directory only.
-They do not depend on report state or network services, which makes catalogue
+The functions intentionally accept a catalog and an output directory only.
+They do not depend on report state or network services, which makes catalog
 mode reproducible and safe to run in a clean checkout.
 """
 
@@ -99,7 +99,7 @@ def _write_maturity_heatmap(
     )
     ax.set_xticks(range(len(statuses)), statuses)
     ax.set_yticks(range(len(areas)), areas)
-    ax.set_title("Catalogue maturity by area")
+    ax.set_title("Catalog maturity by area")
     for i in range(len(areas)):
         for j in range(len(statuses)):
             ax.text(j, i, str(data[i, j]), ha="center", va="center")
@@ -170,7 +170,7 @@ def write_all_catalogue_figures(
     *,
     output_root: Path | None = None,
 ) -> list[Path]:
-    """Write the nine canonical catalogue figures and return their paths."""
+    """Write the nine canonical catalog figures and return their paths."""
     out = (
         Path(output_root) if output_root is not None else Path(project_root) / "output"
     ) / "figures"

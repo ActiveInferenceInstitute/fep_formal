@@ -1,4 +1,4 @@
-# FEP / Active Inference / Bayesian Mechanics — 168-topic Lean4 catalogue
+# FEP / Active Inference / Bayesian Mechanics — 168-topic Lean4 catalog
 # Each topic maps to one OpenGauss session when workflows are enabled.
 # Regenerate: uv run python scripts/_maint_build_topics_catalogue.py
 # Fields include compile maturity and a separately reviewed semantic disposition.
@@ -5740,7 +5740,7 @@ topics:
     After official generator synchronization, first require a successful current-source `lake build --wfail FepSketches` from
     lean/ with pinned Lean 4.35; the imported consumer must not use stale prior-build objects. Its 13 exact axiom queries
     comprise the selected canonical wrapper and 12 consumer statements, not 13 independent compiler experiments. The unchanged
-    former primary and catalogue boundaries also require the actual native catalogue/API and declaration-audit gates.
+    former primary and catalog boundaries also require the actual native catalogue/API and declaration-audit gates.
   lean_sketch: "import FepSketches.variational_duality\nimport FepSketches.decision_risk\n\nnamespace FEP063\n\nopen FEP FEP.FiniteInformation\
     \ FEP.VariationalDuality\n\nvariable {Input Output : Type*}\n  [Fintype Input] [Fintype Output] [Nonempty Input]\n\n/--\
     \ Passing two full-support laws through the same strictly positive finite\nchannel cannot increase KL divergence. -/\n\
@@ -14352,7 +14352,7 @@ topics:
 
     \end{aligned}'
 - id: fep-168
-  title: Quantitative Control of the Uncancelled Divergence Remainder
+  title: Quantitative Control of the Uncanceled Divergence Remainder
   area: Thermodynamics
   family: geometric-mechanics-notation
   mathlib_modules:
@@ -14366,7 +14366,7 @@ topics:
   boundary_theorems: []
   semantic_disposition: formalized
   nl: 'On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g under the cancellation hypotheses, the squared
-    Cauchy-Schwarz budget (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncancelled remainder with its abs-product
+    Cauchy-Schwarz budget (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncanceled remainder with its abs-product
     corollary, and equality is attained on aligned nonzero data with norm(g)^2 = 1. Assumption scope: Quantitative budget
     on the fep-163 finite derivative-data carrier; the coupling hypothesis is sufficient-not-necessary (slot = dot(Qg, dlogp));
     no PDE-discretization or entropy-production claim. Semantic disposition: `formalized`.

@@ -1,6 +1,6 @@
 # Glossary
 
-- **Catalogue mode** — deterministic offline validation and artifact generation;
+- **Catalog mode** — deterministic offline validation and artifact generation;
   it reports zero verified topics.
 - **Full mode** — strict Hermes, Lean, OpenGauss, and artifact execution.
 - **Formal kernel** — manifested reusable foundations and leaf cross-topic

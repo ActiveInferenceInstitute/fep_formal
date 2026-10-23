@@ -152,7 +152,7 @@ capabilities:
       - FEP.ActiveInference.variationalFreeEnergy_posterior
   - id: cap-expected-free-energy-decomposition
     title: Expected free energy decomposition
-    description: Real finite-model EFE has proved pragmatic-minus-epistemic and risk-plus-ambiguity decompositions, nonnegativity under full support, and an explicit truncating bridge to the catalogue ENNReal convention.
+    description: Real finite-model EFE has proved pragmatic-minus-epistemic and risk-plus-ambiguity decompositions, nonnegativity under full support, and an explicit truncating bridge to the catalog ENNReal convention.
     status: satisfied
     evidence:
       - FEP.ActiveInference.epistemicValue_eq_entropy_sub_ambiguity
@@ -471,7 +471,7 @@ capabilities:
       - fep_fep043.FEP043.fep043_quadratic_unique_min
   - id: cap-standalone-efe-theorems
     title: Exact standalone EFE theorems
-    description: The Boltzmann-form control posterior minimizes the expected free energy with the stated uniqueness boundary; the perception-action loop admits an invariant surprisal bound through one controlled-kernel step; Bayesian model reduction never lowers evidence free energy under masked evidence; and the epistemic gain of an EFE time-scale separation is bounded by the log-affinity of its two-state carrier. At each fixed positive time, its inverse-scale family also satisfies a uniform sufficiently-small-scale bound and a genuine right-hand limit at zero; no such limit is claimed at time zero. Each result is a standalone Lean module bridged to its nearest catalogue topic; infinite-horizon, continuous-state, and physical entropy-production identification are not claimed.
+    description: The Boltzmann-form control posterior minimizes the expected free energy with the stated uniqueness boundary; the perception-action loop admits an invariant surprisal bound through one controlled-kernel step; Bayesian model reduction never lowers evidence free energy under masked evidence; and the epistemic gain of an EFE time-scale separation is bounded by the log-affinity of its two-state carrier. At each fixed positive time, its inverse-scale family also satisfies a uniform sufficiently-small-scale bound and a genuine right-hand limit at zero; no such limit is claimed at time zero. Each result is a standalone Lean module bridged to its nearest catalog topic; infinite-horizon, continuous-state, and physical entropy-production identification are not claimed.
     status: satisfied
     evidence:
       - FEPComposed.fep156_boltzmannControlPosterior_extends_fep021_efeBalance
@@ -632,7 +632,7 @@ edges:
   - source: fep-016
     target: fep-032
     kind: formal_pairing
-    rationale: The checked conjunction places nonnegative precision-weighted quadratic energy beside bounded-step scalar energy descent on the same state and centre. It asserts neither a Laplace approximation nor a derivation or general optimizer theorem.
+    rationale: The checked conjunction places nonnegative precision-weighted quadratic energy beside bounded-step scalar energy descent on the same state and center. It asserts neither a Laplace approximation nor a derivation or general optimizer theorem.
     witness: FEPComposed.fep016_quadratic_pairs_fep032_descent
   - source: fep-017
     target: fep-045
@@ -737,7 +737,7 @@ edges:
   - source: fep-050
     target: fep-049
     kind: formal
-    rationale: "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modelling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem."
+    rationale: "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modeling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem."
     witness: FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production
   - source: fep-051
     target: fep-017
@@ -952,7 +952,7 @@ edges:
   - source: fep-093
     target: fep-010
     kind: formal_pairing
-    rationale: The supported forward/reverse ratio reconstructs path mass, while the identity kernel supplies the original catalogue's concrete reversibility witness on an arbitrary measure carrier.
+    rationale: The supported forward/reverse ratio reconstructs path mass, while the identity kernel supplies the original catalog's concrete reversibility witness on an arbitrary measure carrier.
     witness: FEPComposed.fep093_path_ratio_extends_fep010_reversal
   - source: fep-094
     target: fep-049
@@ -1327,5 +1327,5 @@ edges:
   - source: fep-168
     target: fep-163
     kind: formal_pairing
-    rationale: The quantitative remainder budget is paired with fep-163's exact three-term expansion, so the uncancelled divergence remainder is bounded and its equality case attained instead of being assumed to vanish, without an unconditional-drop claim.
+    rationale: The quantitative remainder budget is paired with fep-163's exact three-term expansion, so the uncanceled divergence remainder is bounded and its equality case attained instead of being assumed to vanish, without an unconditional-drop claim.
     witness: FEPComposed.fep168_remainderBound_extends_fep163_solenoidalExpansion

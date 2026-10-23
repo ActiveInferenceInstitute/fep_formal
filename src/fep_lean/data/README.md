@@ -1,6 +1,6 @@
 # FEP_Formal packaged data
 
-These YAML resources let the installed package load the catalogue and portable
+These YAML resources let the installed package load the catalog and portable
 methods inputs without relying on a checkout.
 
 - `topics.yaml` is the byte-identical generated projection of
@@ -15,7 +15,7 @@ methods inputs without relying on a checkout.
 Use each generator's `--check` mode to inspect freshness. Never edit a package
 copy to hide drift in its canonical input.
 
-`FEPTopicCatalogue.default()` validates the packaged catalogue it reads; it does
+`FEPTopicCatalogue.default()` validates the packaged catalog it reads; it does
 not compare it with an external checkout. Generator checks establish that
 checkout/package byte parity at a named source epoch. Methods analysis has its
 own source/runtime consistency checks, described in the

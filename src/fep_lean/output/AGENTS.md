@@ -15,7 +15,7 @@ non-mutating drift check.
   and authored edge, remain offline, and expose full text through accessible
   titles/tables.
 - Evidence writers preserve source/toolchain digests and write atomically.
-- Catalogue, native, declaration-audit, and full-run evidence stay separate.
+- Catalog, native, declaration-audit, and full-run evidence stay separate.
 - Manuscript rendering fails on unknown variables and never edits source
   chapters.
 - `release_bundle/` owns archive assembly, renderer provenance, numerical

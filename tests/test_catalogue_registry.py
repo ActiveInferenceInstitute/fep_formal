@@ -11,6 +11,7 @@ from typing import Final
 import pytest
 import yaml
 
+from fep_lean import lean_source as _lean_source
 from fep_lean.catalogue.generation import (
     hoisted_sketch_imports,
     render_fep_all_lean,
@@ -163,7 +164,7 @@ EXPECTED_EXPANSION_TITLES = (
     "Necessity Witness for the Unconditional Solenoidal Drop",
     "Uniqueness of the Law-Weighted Reversible/Circulation Split",
     "Frobenius Least-Squares Projection of the Symmetrizer",
-    "Quantitative Control of the Uncancelled Divergence Remainder",
+    "Quantitative Control of the Uncanceled Divergence Remainder",
 )
 
 
@@ -776,3 +777,115 @@ def test_latex_registry_is_qualified_complete_and_fully_consumed() -> None:
     assert all(isinstance(key, tuple) and len(key) == 2 for key in THEOREM_LATEX)
     assert tuple(LATEX_EQUATIONS) == tuple(BODIES)
     assert sum(len(rows) for rows in LATEX_EQUATIONS.values()) == len(THEOREM_LATEX)
+
+
+@pytest.fixture
+def clean_mask_cache():
+    _lean_source._cached_lean_code_without_comments.cache_clear()
+    yield
+    _lean_source._cached_lean_code_without_comments.cache_clear()
+
+
+@pytest.mark.usefixtures("clean_mask_cache")
+@pytest.mark.parametrize(
+    "text",
+    [
+        "theorem visible : True := by trivial -- theorem hidden\n",
+        "/- outer /- nested -/ theorem hidden -/ theorem visible : True := by trivial",
+        'def text := "-- theorem hidden /- hidden -/"\ntheorem visible : True := by trivial',
+        'def text := "escaped \\" -- hidden"\ntheorem visible : True := by trivial',
+        "def character := 'x'\ntheorem visible : True := by trivial",
+        "theorem «quoted--name» : True := by trivial",
+        "/- unfinished nested /- comment -/",
+    ],
+)
+def test_cached_mask_matches_fresh_lexical_algorithm(text):
+    expected = _lean_source._lean_source_mask(text)[0]
+    assert _lean_source.lean_code_without_comments(text) == expected
+    assert _lean_source.lean_code_without_comments(text) == expected
+    assert _lean_source._cached_lean_code_without_comments.cache_info().hits == 1
+    assert len(expected) == len(text)
+    assert [i for i, c in enumerate(expected) if c == "\n"] == [
+        i for i, c in enumerate(text) if c == "\n"
+    ]
+
+
+@pytest.mark.usefixtures("clean_mask_cache")
+def test_equal_content_hits_but_changed_source_cannot_reuse_stale_mask():
+    first = "theorem old : True := by trivial -- hidden"
+    equal = first.encode().decode()
+    assert first == equal and first is not equal
+    _lean_source.lean_code_without_comments(first)
+    assert (
+        _lean_source.lean_code_without_comments(equal)
+        == _lean_source._lean_source_mask(equal)[0]
+    )
+    changed = first.replace("old", "new")
+    assert (
+        _lean_source.lean_code_without_comments(changed)
+        == _lean_source._lean_source_mask(changed)[0]
+    )
+    assert "new" in _lean_source.lean_code_without_comments(changed)
+    info = _lean_source._cached_lean_code_without_comments.cache_info()
+    assert info.misses == 2 and info.hits == 2
+
+
+@pytest.mark.usefixtures("clean_mask_cache")
+def test_oversized_mask_bypasses_cache(monkeypatch):
+    text = "a" * (_lean_source._MASK_CACHE_MAX_SOURCE_CHARS + 1)
+    original = _lean_source._lean_source_mask
+    calls = []
+
+    def observed(value):
+        calls.append(len(value))
+        return original(value)
+
+    monkeypatch.setattr(_lean_source, "_lean_source_mask", observed)
+    assert _lean_source.lean_code_without_comments(text) == text
+    assert _lean_source.lean_code_without_comments(text) == text
+    assert calls == [len(text), len(text)]
+    assert _lean_source._cached_lean_code_without_comments.cache_info().currsize == 0
+
+
+@pytest.mark.usefixtures("clean_mask_cache")
+def test_exact_character_boundary_is_cacheable():
+    text = "a" * _lean_source._MASK_CACHE_MAX_SOURCE_CHARS
+    assert _lean_source.lean_code_without_comments(text) == text
+    assert _lean_source.lean_code_without_comments(text) == text
+    assert _lean_source._cached_lean_code_without_comments.cache_info().hits == 1
+
+
+@pytest.mark.usefixtures("clean_mask_cache")
+def test_lru_capacity_eviction_is_bounded():
+    first = "def first := 1"
+    _lean_source.lean_code_without_comments(first)
+    for i in range(_lean_source._MASK_CACHE_MAX_ENTRIES):
+        _lean_source.lean_code_without_comments(f"def item{i} := {i}")
+    before = _lean_source._cached_lean_code_without_comments.cache_info()
+    assert before.currsize == _lean_source._MASK_CACHE_MAX_ENTRIES
+    assert _lean_source.lean_code_without_comments(first) == first
+    after = _lean_source._cached_lean_code_without_comments.cache_info()
+    assert after.misses == before.misses + 1 and after.currsize == before.currsize
+
+
+@pytest.mark.usefixtures("clean_mask_cache")
+def test_string_subclasses_bypass_hash_cache():
+    class UnhashableText(str):
+        __hash__ = None
+
+    text = UnhashableText("def visible := 1 -- hidden")
+    assert (
+        _lean_source.lean_code_without_comments(text)
+        == _lean_source._lean_source_mask(text)[0]
+    )
+    assert _lean_source._cached_lean_code_without_comments.cache_info().currsize == 0
+
+
+@pytest.mark.usefixtures("clean_mask_cache")
+def test_mutable_comment_boundaries_are_not_cached_or_exposed():
+    text = "/- comment -/ theorem visible : True := by trivial"
+    expected = _lean_source.lean_code_without_comments(text)
+    masked, boundaries = _lean_source._lean_source_mask(text)
+    boundaries.clear()
+    assert _lean_source.lean_code_without_comments(text) == expected == masked
+    assert _lean_source._lean_source_mask(text)[1]

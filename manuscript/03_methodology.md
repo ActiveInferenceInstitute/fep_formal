@@ -1,6 +1,6 @@
 # Methodology and System Architecture {#sec:methodology_and_system_architecture}
 
-The project is organized around one methodological rule: a claim is no stronger than the evidence object that supports it. Catalogue generation, native Lean compilation, and a live Hermes/OpenGauss run are therefore separate modes with separate acceptance predicates. A deterministic catalogue build can establish source consistency; a native receipt can establish warning-free, `sorry`-free typechecking against a pinned toolchain; only a validated full-run receipt can support claims about model output, provider latency, or persisted sessions.
+The project is organized around one methodological rule: a claim is no stronger than the evidence object that supports it. Catalog generation, native Lean compilation, and a live Hermes/OpenGauss run are therefore separate modes with separate acceptance predicates. A deterministic catalog build can establish source consistency; a native receipt can establish warning-free, `sorry`-free typechecking against a pinned toolchain; only a validated full-run receipt can support claims about model output, provider latency, or persisted sessions.
 
 Readers new to Lean should begin with [@sec:lean_4_a_primer_for_active_inference_researchers]. The detailed components in [@sec:mathlib4_and_measure_theoretic_probability]--[@sec:pipeline_architecture_and_execution_profile] cover the library substrate, semantic maturity, optional LLM stage, native compiler bridge, and execution pipeline.
 
@@ -15,7 +15,7 @@ The architecture has three source layers and three evidence layers.
 | Full pipeline | live credentials, Hermes result, OpenGauss session state, native verification | hashed report bundle and independently validated full receipt | only the observed LLM/session/run claims |
 : The three source layers and three evidence layers, with the canonical input, derived output and evidentiary reach of each.
 
-`FEPPipeline` itself has four stages: Load Catalogue, Environment Validation, Gauss Sessions, and Manuscript Artifacts. In `catalogue` mode the Gauss stage is explicitly `not_run`. In `full` mode all selected topics must produce successful Hermes-backed results and clean Lean verification before the run is complete. `Reporter` executes only after a complete pipeline result; incomplete runs do not receive a successful report directory.
+`FEPPipeline` itself has four stages: Load Catalog, Environment Validation, Gauss Sessions, and Manuscript Artifacts. In `catalogue` mode the Gauss stage is explicitly `not_run`. In `full` mode all selected topics must produce successful Hermes-backed results and clean Lean verification before the run is complete. `Reporter` executes only after a complete pipeline result; incomplete runs do not receive a successful report directory.
 
 ## The Command-Line Toolchain {#sec:the_command_line_toolchain}
 
@@ -30,7 +30,7 @@ uv run fep-lean preflight
 uv run fep-lean run
 ```
 
-The first two commands are deterministic and offline: catalogue mode builds publication inputs, while the atlas command checks the coverage visualization. The native compiler command writes an atomic, source-bound topic receipt that records the actual compiler output and resolved Mathlib revision; the formalism audit separately resolves primary/evidence declarations, applies a versioned trusted-axiom policy, and inspects evidence axioms. `preflight` is a read-only capability check. `run` is the credentialed Hermes/OpenGauss path and fails closed when required capabilities are absent. Topic and area filters are useful during development, but a filtered native receipt is never publication-claim-ready for the full catalogue.
+The first two commands are deterministic and offline: catalog mode builds publication inputs, while the atlas command checks the coverage visualization. The native compiler command writes an atomic, source-bound topic receipt that records the actual compiler output and resolved Mathlib revision; the formalism audit separately resolves primary/evidence declarations, applies a versioned trusted-axiom policy, and inspects evidence axioms. `preflight` is a read-only capability check. `run` is the credentialed Hermes/OpenGauss path and fails closed when required capabilities are absent. Topic and area filters are useful during development, but a filtered native receipt is never publication-claim-ready for the full catalog.
 
 Maintenance scripts expose non-mutating drift checks:
 
@@ -57,7 +57,7 @@ See [@sec:the_hermes_ai_agent_and_llm_assisted_formalization] for the session pr
 
 `fep_lean.verification.lean_verifier.LeanVerifier` writes each selected body to a temporary file in the pinned Lake workspace and invokes `lake env lean`. Leading imports are preserved; a shared preamble is used only for a sketch that has no explicit imports. Results retain compiler output, separated warnings and errors, `sorry` detection, duration, toolchain version, and an advisory failure class.
 
-Native claim readiness is stricter than an exit code. The receipt must cover the exact ordered roster of {{total_topics}} topics, every row must compile, warning and `sorry` counts must both be zero, and the catalogue, canonical family-body sources, Lean toolchain, and Mathlib tag must match the live tree. Revalidation independently recomputes those conditions rather than trusting a stored `complete` flag.
+Native claim readiness is stricter than an exit code. The receipt must cover the exact ordered roster of {{total_topics}} topics, every row must compile, warning and `sorry` counts must both be zero, and the catalog, canonical family-body sources, Lean toolchain, and Mathlib tag must match the live tree. Revalidation independently recomputes those conditions rather than trusting a stored `complete` flag.
 
 The complementary formalism audit imports `FepSketches.composed`, checks every reviewed primary plus semantic/formal witness, and runs `#print axioms` over the evidence roster. Projection drift, unresolved names, warnings, timeouts, compiler failures, or `sorryAx` make that receipt incomplete. Standard logical axioms reported by Mathlib are retained rather than hidden.
 
@@ -65,7 +65,7 @@ The complementary formalism audit imports `FepSketches.composed`, checks every r
 
 OpenGauss here refers to the Math, Inc. Lean-workflow tool, not the similarly named database product. `GaussRunner` persists project sessions in SQLite, records the system/user/assistant turns, stores the refined sketch and structured compiler artifact, and closes each session with explicit Hermes and Lean outcomes. Raw compiler diagnostics remain in the artifact rather than being presented as model dialogue.
 
-The state store improves auditability but does not confer correctness. Full-report validation checks the selected topic roster, verification source, summary/manifest agreement, current source and configuration digests, and hashes of required artifacts. A stale, partial, catalogue-only, or fixture-backed report cannot supply manuscript metrics.
+The state store improves auditability but does not confer correctness. Full-report validation checks the selected topic roster, verification source, summary/manifest agreement, current source and configuration digests, and hashes of required artifacts. A stale, partial, catalog-only, or fixture-backed report cannot supply manuscript metrics.
 
 ## The Unified Execution Pipeline {#sec:the_unified_execution_pipeline}
 
@@ -75,7 +75,7 @@ The three supported execution contracts are intentionally non-interchangeable:
 2. `verify`: runs the native compiler without an LLM or session store and may emit a native receipt.
 3. `run`: requires live credentials and state/toolchain capabilities, runs Hermes and native verification per topic, and emits a full report only on strict completion.
 
-This separation removes the former ambiguity in which a catalogue-only `complete` flag could be read as empirical pipeline evidence. The manuscript renderer selects a current, independently validated native receipt for compile claims and a claim-ready full report for Hermes/OpenGauss claims; otherwise it emits explicit unavailable/false values.
+This separation removes the former ambiguity in which a catalog-only `complete` flag could be read as empirical pipeline evidence. The manuscript renderer selects a current, independently validated native receipt for compile claims and a claim-ready full report for Hermes/OpenGauss claims; otherwise it emits explicit unavailable/false values.
 
 ## Standard Reproducibility Workflow {#sec:standard_reproducibility_workflow}
 
@@ -121,7 +121,7 @@ These rows include generic conditional-independence laws, reversible-kernel inva
 
 Thermodynamic rows cover the equilibrium Helmholtz derivative identity, finite conserved currents, binary entropy optimality, normalized Gibbs weights, Gaussian thermal entropy response and heat capacity, diagonal and edgewise entropy production, and a logical-erasure derivation of Landauer heat/work bounds from explicit second-law premises. The path-space family additionally normalizes forward and reverse finite path laws, proves reversal and fluctuation identities, states a finite Jarzynski equality with explicit work, inverse temperature, and normalization, and links reversible one-step dynamics to KL dissipation. The exact Boolean continuous-time family adds stochastic kernels, the Chapman--Kolmogorov semigroup, both master equations, stationarity, detailed balance, exponential relaxation, and quadratic Lyapunov decay for positive two-state rates. These finite laws do not constitute general constrained equilibrium statistical mechanics, SDE/PDE theory, or a microscopic thermodynamic derivation of the FEP.
 
-## Catalogue Authorship Pipeline {#sec:catalogue_authorship_pipeline}
+## Catalog Authorship Pipeline {#sec:catalogue_authorship_pipeline}
 
 The source graph is explicit:
 
@@ -160,7 +160,7 @@ The project pins `{{lean_toolchain}}` and Mathlib `{{mathlib_tag}}`. `lake exe c
 
 ## execution-integrity Testing Policy {#sec:zero_direct_testing_policy}
 
-Tests pin observable contracts rather than publication constants. Catalogue tests exercise strict schema and source parity; native tests invoke the real Lean subprocess where marked; SQLite tests use isolated real databases; HTTP behavior is tested through controlled local servers or is guarded by explicit live credentials. Distribution tests build a wheel, install it into an isolated environment, import `fep_lean`, execute CLI help, load packaged data, and confirm that obsolete top-level names such as `catalogue` are not exported.
+Tests pin observable contracts rather than publication constants. Catalog tests exercise strict schema and source parity; native tests invoke the real Lean subprocess where marked; SQLite tests use isolated real databases; HTTP behavior is tested through controlled local servers or is guarded by explicit live credentials. Distribution tests build a wheel, install it into an isolated environment, import `fep_lean`, execute CLI help, load packaged data, and confirm that only the supported `fep_lean` namespace is exported.
 
 External services remain external evidence. Offline fixture responses are useful for parser and failure-path tests, but cannot make a full report claim-ready.
 
@@ -170,11 +170,11 @@ Python code lives under one `fep_lean` namespace. Lean declarations use an inner
 
 ## PYTHONPATH Isolation {#sec:pythonpath_isolation}
 
-The installable package no longer relies on path precedence among generic top-level names such as `catalogue`, `pipeline`, `llm`, or `output`. Checkout commands run through `uv`, and installed commands import `fep_lean.*`. The wheel includes its generated catalogue as package data, so loading the default catalogue does not depend on locating the repository root.
+The installable package uses the `fep_lean` namespace. Checkout commands run through `uv`, and installed commands import `fep_lean.*`. The wheel includes its generated catalog as package data, so loading the default catalog does not depend on locating the repository root.
 
 ## Parallelism Model {#sec:parallelism_model}
 
-Formal compilation is serialized. In full mode, optional single-worker prefetch may overlap the next Hermes request with current Lean verification, but it does not reorder persisted topic results or permit multiple concurrent compiler processes. Receipt topic order remains the requested catalogue order, which makes completeness and digest validation deterministic.
+Formal compilation is serialized. In full mode, optional single-worker prefetch may overlap the next Hermes request with current Lean verification, but it does not reorder persisted topic results or permit multiple concurrent compiler processes. Receipt topic order remains the requested catalog order, which makes completeness and digest validation deterministic.
 
 ## Detailed Methodology Sub-Sections {#sec:detailed_methodology_sub_sections}
 

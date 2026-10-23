@@ -298,8 +298,8 @@ def test_current_readme_count_mutation_fails_the_actual_audit_gate(
     original = (tmp_path / "README.md").read_text(encoding="utf-8")
     replacements = {
         "intro": (
-            f"catalogue of {counts['topics']} ",
-            f"catalogue of {counts['topics'] + 1} ",
+            f"catalog of {counts['topics']} ",
+            f"catalog of {counts['topics'] + 1} ",
         ),
         "current-boundary": (
             f"spans {counts['topics']} topics",
@@ -329,7 +329,7 @@ def test_current_readme_count_mutation_fails_the_actual_audit_gate(
 
     assert code == 1
     assert "README.md:" in out
-    assert "current catalogue" in out
+    assert "current catalog" in out
     assert "disagrees with docs/formalism-coverage.json" in out
 
 
@@ -346,7 +346,7 @@ def test_current_count_audit_covers_the_other_root_contracts(
 ) -> None:
     counts = _write_count_references(tmp_path)
     (tmp_path / name).write_text(
-        f"# Contract\n\n## {section}\n\nThe catalogue has {counts[unit] + 1} {unit}.\n",
+        f"# Contract\n\n## {section}\n\nThe catalog has {counts[unit] + 1} {unit}.\n",
         encoding="utf-8",
     )
     module = _load_docs_script("theorem_ref_audit")
@@ -355,13 +355,23 @@ def test_current_count_audit_covers_the_other_root_contracts(
 
     assert len(failures) == 1
     assert failures[0].startswith(f"{name}:5:")
-    assert f"current catalogue {unit} count" in failures[0]
+    assert f"current catalog {unit} count" in failures[0]
+
+    # The spelling change must not remove either count-recognition boundary.
+    for spelling in ("catalog", "catalogue"):
+        (tmp_path / name).write_text(
+            f"# Contract\n\n## {section}\n\nA {spelling} of {counts['topics'] + 1} entries.\n",
+            encoding="utf-8",
+        )
+        spelling_failures = module.root_count_reference_failures(tmp_path)
+        assert len(spelling_failures) == 1
+        assert "current catalog topics count" in spelling_failures[0]
 
 
 def test_count_audit_preserves_histories_subsets_and_non_prose(tmp_path: Path) -> None:
     counts = _write_count_references(tmp_path)
     (tmp_path / "README.md").write_text(
-        f"# Catalogue\n\nA catalogue of {counts['topics']} topics.\n"
+        f"# Catalog\n\nA catalog of {counts['topics']} topics.\n"
         "Its five second-expansion families form a subset.\n"
         "[Example](/999-topic.md)\n"
         "<!-- An abandoned draft said 999 topics. -->\n\n"
@@ -370,7 +380,7 @@ def test_count_audit_preserves_histories_subsets_and_non_prose(tmp_path: Path) -
         "## Release\n\nThe dated v0.1 release contained 50 topics in 7 families.\n"
         "That release passed 2,404 tests; this total belongs to its source epoch.\n\n"
         "## Formal depth\n\n"
-        f"The maintained catalogue spans {counts['topics']} topics in\n"
+        f"The maintained catalog spans {counts['topics']} topics in\n"
         f"{counts['families']} reviewed families across {counts['areas']} areas.\n",
         encoding="utf-8",
     )
@@ -425,7 +435,7 @@ def test_count_audit_rejects_missing_or_inconsistent_coverage(
 
     assert len(failures) == 1
     assert failures[0].startswith(
-        "docs/formalism-coverage.json: cannot validate catalogue count references:"
+        "docs/formalism-coverage.json: cannot validate catalog count references:"
     )
 
 

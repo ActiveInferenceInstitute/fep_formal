@@ -281,7 +281,7 @@ def test_native_blanket_axiom_probe_uses_only_trusted_axioms() -> None:
 
     assert result.returncode == 0, output
     assert "warning:" not in output.lower()
-    parsed, errors = formalism_audit._parse_axiom_output(
+    parsed, errors = formalism_audit.parse_axiom_output(
         output,
         expected=AXIOM_DECLARATIONS,
     )

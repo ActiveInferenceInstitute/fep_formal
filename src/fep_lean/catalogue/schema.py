@@ -1,4 +1,4 @@
-"""Typed schema-2 roster seal and static catalogue metadata."""
+"""Typed schema-2 roster seal and static catalog metadata."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ _TOPIC_FIELDS = frozenset(
     {"id", "title", "area", "family", "mathlib_modules", "mathlib_status"}
 )
 
-# The generated catalogue document (config/topics.yaml and the packaged copy)
+# The generated catalog document (config/topics.yaml and the packaged copy)
 # carries the metadata fields plus its generated projections; validation
 # accepts exactly this set on that document.
 GENERATED_TOPIC_FIELDS = _TOPIC_FIELDS | frozenset(
@@ -156,7 +156,7 @@ def load_catalogue_metadata(
     """Load metadata and reject any schema, roster, vocabulary, or row drift.
 
     ``row_fields`` selects the accepted per-row field set: the maintained
-    metadata document by default, the generated catalogue's superset when
+    metadata document by default, the generated catalog's superset when
     the caller passes ``GENERATED_TOPIC_FIELDS``.
     """
     accepted_topic_fields = (
@@ -166,18 +166,18 @@ def load_catalogue_metadata(
         raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
     except (OSError, yaml.YAMLError) as exc:
         raise SemanticValidationError(
-            f"cannot read catalogue metadata {path}: {exc}"
+            f"cannot read catalog metadata {path}: {exc}"
         ) from exc
     if not isinstance(raw, dict):
-        raise SemanticValidationError("catalogue metadata must be a YAML object")
-    _reject_field_drift(raw, _DOCUMENT_FIELDS, "catalogue metadata")
+        raise SemanticValidationError("catalog metadata must be a YAML object")
+    _reject_field_drift(raw, _DOCUMENT_FIELDS, "catalog metadata")
     if raw.get("schema_version") != 2:
-        raise SemanticValidationError("catalogue metadata schema_version must be 2")
+        raise SemanticValidationError("catalog metadata schema_version must be 2")
 
     roster_raw = raw.get("roster")
     if not isinstance(roster_raw, dict):
-        raise SemanticValidationError("catalogue metadata roster must be an object")
-    _reject_field_drift(roster_raw, _ROSTER_FIELDS, "catalogue metadata roster")
+        raise SemanticValidationError("catalog metadata roster must be an object")
+    _reject_field_drift(roster_raw, _ROSTER_FIELDS, "catalog metadata roster")
     roster = RosterSeal(
         first_id=_required_text(roster_raw, "first_id", "roster"),
         last_id=_required_text(roster_raw, "last_id", "roster"),
@@ -187,33 +187,33 @@ def load_catalogue_metadata(
     raw_families = raw.get("families")
     if not isinstance(raw_families, list) or not raw_families:
         raise SemanticValidationError(
-            "catalogue metadata families must be a non-empty list"
+            "catalog metadata families must be a non-empty list"
         )
     if not all(
         isinstance(family, str) and _FAMILY_RE.fullmatch(family)
         for family in raw_families
     ):
         raise SemanticValidationError(
-            "catalogue metadata families must be canonical kebab-case strings"
+            "catalog metadata families must be canonical kebab-case strings"
         )
     families = tuple(raw_families)
     if len(families) != len(set(families)):
-        raise SemanticValidationError("catalogue metadata families must be unique")
+        raise SemanticValidationError("catalog metadata families must be unique")
 
     rows = raw.get("topics")
     if not isinstance(rows, list):
-        raise SemanticValidationError("catalogue metadata topics must be a list")
+        raise SemanticValidationError("catalog metadata topics must be a list")
     ids = tuple(row.get("id") if isinstance(row, dict) else None for row in rows)
     if ids != topic_ids:
         raise SemanticValidationError(
-            "catalogue metadata rows must exactly match the sealed roster in order"
+            "catalog metadata rows must exactly match the sealed roster in order"
         )
 
     records: list[CatalogueMetadata] = []
     for raw_row in rows:
         if not isinstance(raw_row, dict):
             raise SemanticValidationError(
-                "every catalogue metadata row must be an object"
+                "every catalog metadata row must be an object"
             )
         topic_id = _required_text(raw_row, "id", "topic")
         _reject_field_drift(raw_row, accepted_topic_fields, topic_id)

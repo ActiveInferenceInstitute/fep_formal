@@ -838,7 +838,7 @@ def _source_paths(
     )
     paths = {"inputs/" + name: path for name, path in inputs.items()}
     if project_root is None:
-        # Installed mode additionally validates this generated public catalogue.
+        # Installed mode additionally validates this generated public catalog.
         # Source mode reads the canonical owners instead of consuming its copy.
         paths["data/topics.yaml"] = base / "data/topics.yaml"
     paths.update(
@@ -988,7 +988,7 @@ def _validate_packaged_catalogue(
         }
         if any(getattr(topic, key) != value for key, value in expected.items()):
             raise PositioningError(
-                f"{topic.id}: methods resources drift from packaged catalogue"
+                f"{topic.id}: methods resources drift from packaged catalog"
             )
 
 
