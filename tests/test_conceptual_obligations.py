@@ -14,6 +14,7 @@ from fep_lean.catalogue.relations import EdgeKind, load_formalism_graph
 from fep_lean.catalogue.semantics import SemanticValidationError
 from fep_lean.output.formalism_atlas import _obligation_markup
 from tests._support.lean_module_contract import (
+    historical_core_prose,
     obligation_review,
     obligation_theorem_extension,
     restore_obligation_core,
@@ -253,8 +254,9 @@ def test_fixture_authenticates_exact_bytes(tmp_path):
 @pytest.mark.parametrize("mutation", ["missing", "duplicate", "old_proof"])
 def test_core_inverse_seals_all_old_proofs(mutation):
     review = obligation_review(ROOT)
-    source = (ROOT / review["core_owner"]).read_text()
+    source = historical_core_prose((ROOT / review["core_owner"]).read_text())
     block = review["added_core_block"]
+    assert source.count(block) == 1
     if mutation == "missing":
         source = source.replace(block, "", 1)
     elif mutation == "duplicate":
