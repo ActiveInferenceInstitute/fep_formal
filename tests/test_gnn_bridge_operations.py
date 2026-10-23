@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
+import subprocess
+from copy import deepcopy
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -19,6 +23,614 @@ from fep_lean.bridge.custody import (
     validate_binding,
     write_json,
 )
+
+
+def _semantic_fixture(family: str) -> dict[str, Any]:
+    """Small authored rational examples with independent closed-form answers."""
+    from fep_lean.bridge.certificates import _semantic_quantity
+
+    finite = family == "finite"
+    parameters = (
+        {
+            "A": [[0.8, 0.2], [0.2, 0.8]],
+            "B": [[[0.9], [0.3]], [[0.1], [0.7]]],
+            "C": [0, 0],
+            "D": [0.6, 0.4],
+        }
+        if finite
+        else {
+            "F": [[0.7]],
+            "H": [[1.0]],
+            "Q": [[0.2]],
+            "R": [[0.5]],
+            "prior_mean": [0.0],
+            "prior_cov": [[1.0]],
+        }
+    )
+    axes = (
+        {"A": ["observation", "state"], "B": ["next_state", "previous_state", "action"]}
+        if finite
+        else {"F": ["next_state", "previous_state"], "H": ["observation", "state"]}
+    )
+    declaration = {
+        "schema": "gnn-independent-numerical-witness-v1",
+        "model": family,
+        "question": "filtering",
+        "dtype": "float64",
+        "initial_time": "first_observation_uses_prior",
+        "axes": axes,
+        "state_ids": ["left", "right"] if finite else ["x"],
+        "observation_ids": ["red", "blue"] if finite else ["y"],
+    }
+    options: dict[str, Any] = {"num_timesteps": 2, "random_seed": 19}
+    if finite:
+        options["b_tensor_order"] = "next_state_previous_state_action"
+    variables = (
+        "s[2,1,type=int]\no[2,1,type=int]\nu[1,1,type=int]"
+        if finite
+        else "x[1,1,type=float]\ny[1,1,type=float]"
+    )
+    equations = (
+        "p(s_0)=D; p(o_t|s_t)=A[o_t,s_t]; p(s_(t+1)|s_t,a_t)=B[s_(t+1),s_t,a_t]"
+        if finite
+        else "x_0~N(prior_mean,prior_cov); x_(t+1)=F*x_t+N(0,Q); y_t=H*x_t+N(0,R)"
+    )
+    source = (
+        "\n\n".join(
+            (
+                "# FEP semantic source fixture",
+                "## ModelName\nIndependent rational example",
+                "## GNNSection\n" + ("ActInfPOMDP" if finite else "ActInfContinuous"),
+                "## StateSpaceBlock\n" + variables,
+                "## InitialParameterization\n"
+                + "\n".join(
+                    f"{key} = {json.dumps(value)}" for key, value in parameters.items()
+                ),
+                "## ModelParameters\n"
+                + "\n".join(f"{key}: {value}" for key, value in options.items()),
+                "## Equations\n" + equations,
+                "## NumericalWitness\n" + json.dumps(declaration),
+            )
+        )
+        + "\n"
+    )
+    contract = {
+        **declaration,
+        "parameters": parameters,
+        "model_parameters": options,
+        "equations": equations,
+        "source_sha256": hashlib.sha256(source.encode()).hexdigest(),
+    }
+    quantities = (
+        {"beliefs": [[3 / 11, 8 / 11], [204 / 263, 59 / 263]]}
+        if finite
+        else {
+            "beliefs": [[2 / 3], [31 / 518]],
+            "posterior_cov": [[[1 / 3]], [[109 / 518]]],
+        }
+    )
+    observations = [1, 0] if finite else [[1.0], [-0.5]]
+    actions = [0] if finite else []
+    identity = {
+        "dtype": "float64",
+        "initial_time": declaration["initial_time"],
+        "axes": axes,
+        "conditioning_horizon": [1, 2],
+        "num_timesteps": 2,
+        "num_states": 2 if finite else 1,
+        "num_observations": 2 if finite else 1,
+        "random_seed": 19,
+        "inference_contract": "bnlearn_fixed_action_filter_v1"
+        if finite
+        else "gnn_lgssm_filter_v1",
+        "inference_mode": "exact_categorical_filtering"
+        if finite
+        else "gaussian_filtering",
+        "control_mode": "fixed_transition_actions" if finite else "passive",
+    }
+    result = {
+        **identity,
+        **quantities,
+        "framework": "bnlearn" if finite else "jax",
+        "parameters": {key: value for key, value in parameters.items() if key != "C"},
+    }
+    if finite:
+        result.update(
+            observations=observations,
+            transition_actions=actions,
+            action_semantics="transition_into_next_state",
+        )
+    else:
+        result.update(observations_continuous=observations, controls=[[0.0], [0.0]])
+    comparisons = {
+        f"identity:{key}": {
+            "status": "passed",
+            "reason": "",
+            "expected": value,
+            "actual": value,
+        }
+        for key, value in identity.items()
+    }
+    comparisons["identity:framework"] = {
+        "status": "passed",
+        "reason": "",
+        "expected": ["bnlearn"]
+        if finite
+        else ["jax", "numpyro", "pytorch", "ngclearn"],
+        "actual": result["framework"],
+    }
+    comparisons["validity:beliefs"] = {"status": "passed", "reason": ""}
+    if not finite:
+        comparisons["validity:posterior_cov"] = {"status": "passed", "reason": ""}
+    for key, value in parameters.items():
+        if key != "C":
+            comparisons[f"parameter:{key}"] = _semantic_quantity(
+                value, value, exact=True
+            )
+    for key, value in quantities.items():
+        comparisons[key] = _semantic_quantity(value, value)
+    if finite:
+        comparisons["identity:action_semantics"] = {
+            "status": "passed",
+            "reason": "",
+            "expected": "transition_into_next_state",
+            "actual": "transition_into_next_state",
+        }
+    else:
+        comparisons["controls"] = _semantic_quantity(
+            result["controls"], result["controls"], exact=True
+        )
+
+    def artifact(text: str) -> dict[str, str]:
+        return {"utf8": text, "sha256": hashlib.sha256(text.encode()).hexdigest()}
+
+    return {
+        "schema": "gnn-semantic-witness-v2",
+        "status": "passed",
+        "source_contract": contract,
+        "reference": {
+            "algorithm": "finite_complete_path_enumeration"
+            if finite
+            else "joint_gaussian_prefix_conditioning",
+            "quantities": quantities,
+            "observations": observations,
+            "transition_actions": actions,
+            "conditioning_horizon": [1, 2],
+        },
+        "candidate": {
+            **identity,
+            "observations": observations,
+            "transition_actions": actions,
+            "quantities": quantities,
+        },
+        "comparisons": comparisons,
+        "assumptions": {
+            **{
+                key: declaration[key]
+                for key in (
+                    "question",
+                    "initial_time",
+                    "state_ids",
+                    "observation_ids",
+                    "axes",
+                )
+            },
+            "conditioning_horizon": [1, 2],
+            "label_mapping": "Ordered source labels name numeric axes; native label provenance is not authenticated.",
+            "scope": "One stationary factor, fixed exogenous actions or passive LGSSM; float64; at most eight times/four dimensions; no planning, coupled/hybrid semantics or universal equivalence.",
+        },
+        "artifacts": {
+            "source": artifact(source),
+            "result": artifact(json.dumps(result)),
+            "program": None,
+        },
+        "formal_evidence": {"status": "unavailable", "universal_equivalence": False},
+        "execution_evidence": {
+            "status": "artifact_only",
+            "execution_source_verified": False,
+            "reported_framework": "bnlearn" if finite else "jax",
+            "reported_versions": {},
+        },
+    }
+
+
+@pytest.mark.parametrize("family", ["finite", "gaussian"])
+def test_source_semantic_replay_resolves_theorems_without_promoting_evidence(
+    family: str,
+) -> None:
+    from fep_lean.bridge.certificates import audit_semantic_witness
+
+    audit = audit_semantic_witness(
+        _semantic_fixture(family), Path(__file__).resolve().parents[1]
+    )
+    assert audit["status"] == "passed", audit["errors"]
+    assert audit["formal_references"]
+    assert audit["independent_replay"]["algorithm"] == (
+        "finite_forward_filter" if family == "finite" else "gaussian_kalman_joseph"
+    )
+    assert all(
+        row["status"] == "passed"
+        for row in audit["independent_replay"]["comparisons"].values()
+    )
+    assert audit["formal_evidence"]["native_claim_ready"] is False
+    assert audit["execution_evidence"]["execution_source_verified"] is False
+    assert {item["alignment"] for item in audit["formal_references"]} == (
+        {"theorem_instance"} if family == "finite" else {"structural_analogue"}
+    )
+    assert all(item["unmatched_assumptions"] for item in audit["formal_references"])
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    [
+        "digest",
+        "source",
+        "candidate",
+        "reference",
+        "comparison",
+        "proof",
+        "execution",
+        "status",
+        "deleted_framework",
+        "invented_framework",
+        "fabricated",
+        "malformed_row",
+        "scope",
+        "label_mapping",
+        "assumptions_list",
+    ],
+)
+def test_source_semantic_replay_refuses_plausible_tampering(mutation: str) -> None:
+    from fep_lean.bridge.certificates import audit_semantic_witness
+
+    witness = deepcopy(_semantic_fixture("gaussian"))
+    if mutation == "digest":
+        witness["artifacts"]["result"]["sha256"] = "0" * 64
+    elif mutation == "source":
+        witness["source_contract"]["parameters"]["H"] = [[2.0]]
+    elif mutation == "candidate":
+        witness["candidate"]["dtype"] = "float32"
+    elif mutation == "reference":
+        witness["reference"]["quantities"]["posterior_cov"][0][0][0] += 0.1
+    elif mutation == "comparison":
+        witness["comparisons"]["beliefs"]["max_abs_error"] = 0.1
+    elif mutation == "proof":
+        witness["formal_evidence"]["universal_equivalence"] = True
+    elif mutation == "execution":
+        witness["execution_evidence"]["execution_source_verified"] = True
+    elif mutation == "deleted_framework":
+        del witness["comparisons"]["identity:framework"]
+    elif mutation == "invented_framework":
+        witness["comparisons"]["identity:framework"]["actual"] = "invented"
+    elif mutation == "fabricated":
+        witness["comparisons"]["fabricated"] = {
+            "status": "passed",
+            "reason": "invented law",
+        }
+    elif mutation == "malformed_row":
+        witness["comparisons"]["fabricated"] = []
+    elif mutation in {"scope", "label_mapping"}:
+        witness["assumptions"][mutation] = "universal equivalence proved"
+    elif mutation == "assumptions_list":
+        witness["assumptions"] = []
+    else:
+        witness["status"] = "failed"
+    audit = audit_semantic_witness(witness, Path(__file__).resolve().parents[1])
+    assert audit["status"] != "passed"
+    assert audit["errors"]
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("dtype", "float32"),
+        ("random_seed", True),
+        ("initial_time", "predict_before_first_observation"),
+        ("controls", [[1], [0]]),
+        ("conditioning_horizon", [2, 2]),
+    ],
+)
+def test_source_semantic_replay_checks_native_owned_assumptions(
+    field: str, value: Any
+) -> None:
+    from fep_lean.bridge.certificates import audit_semantic_witness
+
+    witness = _semantic_fixture("gaussian")
+    payload = json.loads(witness["artifacts"]["result"]["utf8"])
+    payload[field] = value
+    text = json.dumps(payload)
+    witness["artifacts"]["result"] = {
+        "utf8": text,
+        "sha256": hashlib.sha256(text.encode()).hexdigest(),
+    }
+    audit = audit_semantic_witness(witness, Path(__file__).resolve().parents[1])
+    assert audit["status"] == "refused"
+    assert audit["errors"]
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("source_sha256", "0" * 64),
+        ("source_identity", {"source_sha256": "0" * 64}),
+        ("state_ids", ["different"]),
+        ("observation_ids", ["different"]),
+        ("model_kind", "discrete"),
+        ("framework", "unregistered"),
+        ("schema_version", "synthetic_backend_smoke_v1"),
+        ("success", False),
+        ("status", "incomplete"),
+        ("validation", {"nested": [{"valid": False}]}),
+        ("validation", []),
+        ("source_identity", []),
+    ],
+)
+def test_semantic_audit_refuses_explicit_raw_contradictions_even_without_saved_rows(
+    field: str, value: Any
+) -> None:
+    from fep_lean.bridge.certificates import audit_semantic_witness
+
+    witness = _semantic_fixture("gaussian")
+    payload = json.loads(witness["artifacts"]["result"]["utf8"])
+    payload[field] = value
+    text = json.dumps(payload)
+    witness["artifacts"]["result"] = {
+        "utf8": text,
+        "sha256": hashlib.sha256(text.encode()).hexdigest(),
+    }
+    audit = audit_semantic_witness(witness, Path(__file__).resolve().parents[1])
+    assert audit["status"] == "refused"
+    assert audit["errors"]
+
+
+@pytest.mark.parametrize("budget", ["nodes", "depth", "path"])
+def test_semantic_audit_refuses_native_validation_beyond_gnn_budget(
+    budget: str,
+) -> None:
+    from fep_lean.bridge.certificates import audit_semantic_witness
+
+    witness = _semantic_fixture("finite")
+    payload = json.loads(witness["artifacts"]["result"]["utf8"])
+    validation: dict[str, Any] = {"values": [True] * 4096}
+    if budget == "depth":
+        validation = {}
+        for _ in range(33):
+            validation = {"nested": validation}
+    elif budget == "path":
+        validation = {"v" * 2048: True}
+    payload["validation"] = validation
+    text = json.dumps(payload)
+    witness["artifacts"]["result"] = {
+        "utf8": text,
+        "sha256": hashlib.sha256(text.encode()).hexdigest(),
+    }
+    audit = audit_semantic_witness(witness, Path(__file__).resolve().parents[1])
+    assert audit["status"] == "refused"
+    assert audit["errors"] == ["native validation exceeds node, depth or path budget"]
+
+
+def test_semantic_cli_binds_live_sources_without_refreshing_historical_pin(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import argparse
+
+    from fep_lean.bridge.cli import add_arguments, run
+
+    root = Path(__file__).resolve().parents[1]
+    gnn = tmp_path / "gnn"
+    gnn.mkdir()
+    for relative in operations.owner_roster(gnn, "gnn"):
+        owner = gnn / relative
+        owner.parent.mkdir(parents=True, exist_ok=True)
+        owner.write_text("independent test owner\n")
+    subprocess.run(["git", "init", "--quiet"], cwd=gnn, check=True)
+    subprocess.run(["git", "add", "."], cwd=gnn, check=True)
+    subprocess.run(
+        [
+            "git",
+            "-c",
+            "user.name=Semantic Test",
+            "-c",
+            "user.email=semantic@example.invalid",
+            "commit",
+            "--quiet",
+            "-m",
+            "test source",
+        ],
+        cwd=gnn,
+        check=True,
+    )
+    witness = tmp_path / "witness.json"
+    witness.write_text(json.dumps(_semantic_fixture("finite")))
+    receipt = tmp_path / "audit.json"
+    before_pin = (root / operations.PIN).read_bytes()
+    parser = argparse.ArgumentParser()
+    add_arguments(parser)
+    args = parser.parse_args(
+        [
+            "audit-semantic",
+            "--gnn-root",
+            str(gnn),
+            "--results",
+            str(witness),
+            "--receipt",
+            str(receipt),
+        ]
+    )
+    assert run(root, args) == 0
+    audit = json.loads(receipt.read_text())
+    assert audit["status"] == "passed"
+    assert audit["live_sources"]["gnn"]["dirty_paths"] == []
+    assert len(audit["live_sources"]["gnn"]["owners_sha256"]) == 64
+    assert audit["pair_evidence"]["status"] == "unavailable"
+    assert audit["pair_evidence"]["current_pair_synchronized"] is False
+    assert (root / operations.PIN).read_bytes() == before_pin
+    assert json.loads(capsys.readouterr().out)["status"] == "ok"
+
+
+@pytest.mark.parametrize(
+    "heading",
+    ["## CouplingV2", "## Unexpected-Section", "##ModelName", "  ## ModelName"],
+)
+def test_semantic_source_refuses_unknown_or_malformed_headings(heading: str) -> None:
+    from fep_lean.bridge.certificates import _semantic_source
+
+    source = _semantic_fixture("finite")["artifacts"]["source"]["utf8"]
+    with pytest.raises(ValueError, match="heading"):
+        _semantic_source(heading + "\nignored-looking semantics\n" + source)
+    with pytest.raises(ValueError, match="heading"):
+        _semantic_source(
+            source.replace(
+                "Independent rational example",
+                "Independent rational example\n" + heading,
+            )
+        )
+
+
+def test_semantic_source_rejects_byte_budget_without_normalizing() -> None:
+    from fep_lean.bridge.certificates import _semantic_source
+
+    source = _semantic_fixture("finite")["artifacts"]["source"]["utf8"]
+    with pytest.raises(ValueError, match="byte budget"):
+        _semantic_source("é" * (1024 * 1024) + source)
+
+
+@pytest.mark.parametrize(
+    "family,quantity,value",
+    [
+        ("finite", "beliefs", [[1 + 1e-13, -1e-13], [0.5, 0.5]]),
+        ("finite", "beliefs", [[1 + 1e-13, 0], [0.5, 0.5]]),
+        ("finite", "beliefs", [[0.2, 0.2], [0.5, 0.5]]),
+        ("gaussian", "posterior_cov", [[[-1e-13]], [[0.1]]]),
+        ("gaussian", "posterior_cov", [[[0]], [[0.1]]]),
+        ("gaussian", "posterior_cov", [[[True]], [[0.1]]]),
+    ],
+)
+def test_semantic_candidate_invariants_precede_numerical_tolerance(
+    family: str, quantity: str, value: Any
+) -> None:
+    from fep_lean.bridge.certificates import _semantic_candidate_validity
+
+    witness = _semantic_fixture(family)
+    payload = json.loads(witness["artifacts"]["result"]["utf8"])
+    payload[quantity] = value
+    with pytest.raises(ValueError):
+        _semantic_candidate_validity(witness["source_contract"], payload)
+
+
+def test_semantic_audit_reports_derived_overflow_and_solver_failure(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import numpy as np
+
+    from fep_lean.bridge.certificates import audit_semantic_witness
+
+    witness = _semantic_fixture("gaussian")
+    source = witness["artifacts"]["source"]["utf8"].replace(
+        "H = [[1.0]]", "H = [[1e+308]]"
+    )
+    digest = hashlib.sha256(source.encode()).hexdigest()
+    witness["artifacts"]["source"] = {"utf8": source, "sha256": digest}
+    witness["source_contract"]["source_sha256"] = digest
+    witness["source_contract"]["parameters"]["H"] = [[1e308]]
+    audit = audit_semantic_witness(witness, Path(__file__).resolve().parents[1])
+    assert audit["status"] == "refused"
+    assert audit["errors"]
+
+    def singular(*args: Any, **kwargs: Any) -> Any:
+        raise np.linalg.LinAlgError("bounded solver failure")
+
+    monkeypatch.setattr(np.linalg, "solve", singular)
+    audit = audit_semantic_witness(
+        _semantic_fixture("gaussian"), Path(__file__).resolve().parents[1]
+    )
+    assert audit["status"] == "refused"
+    assert "bounded solver failure" in audit["errors"]
+
+
+@pytest.mark.parametrize("alias_kind", ["same", "symlink", "hardlink"])
+def test_semantic_cli_cannot_overwrite_input_artifact(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str], alias_kind: str
+) -> None:
+    import argparse
+
+    from fep_lean.bridge.cli import add_arguments, run
+
+    witness = tmp_path / "input.json"
+    witness.write_text(json.dumps(_semantic_fixture("finite")))
+    alias = witness if alias_kind == "same" else tmp_path / "alias.json"
+    if alias_kind == "symlink":
+        alias.symlink_to(witness)
+    elif alias_kind == "hardlink":
+        alias.hardlink_to(witness)
+    before = witness.read_bytes()
+    parser = argparse.ArgumentParser()
+    add_arguments(parser)
+    args = parser.parse_args(
+        [
+            "audit-semantic",
+            "--gnn-root",
+            str(tmp_path),
+            "--results",
+            str(witness),
+            "--receipt",
+            str(alias),
+        ]
+    )
+    assert run(tmp_path, args) == 1
+    assert witness.read_bytes() == before
+    assert "overwrite or alias" in capsys.readouterr().out
+
+
+def test_semantic_audit_refuses_oversized_sparse_input_before_source_checks(
+    tmp_path: Path,
+) -> None:
+    witness = tmp_path / "oversized.json"
+    with witness.open("wb") as stream:
+        stream.truncate(96 * 1024 * 1024 + 1)
+    with pytest.raises(ValueError, match="receipt byte budget"):
+        operations.semantic_witness_audit(tmp_path, tmp_path, witness)
+
+
+@pytest.mark.parametrize(
+    "content,error",
+    [
+        pytest.param(
+            '{"schema":"first","schema":"second"}',
+            "duplicate JSON key",
+            id="duplicate",
+        ),
+        pytest.param('{"value":NaN}', "nonfinite JSON value", id="nan"),
+        pytest.param('{"value":Infinity}', "nonfinite JSON value", id="infinity"),
+        pytest.param("[" * 5000 + "0" + "]" * 5000, "JSON object", id="deep-nonobject"),
+    ],
+)
+def test_semantic_cli_rejects_malformed_captured_json_without_traceback(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+    content: str,
+    error: str,
+) -> None:
+    import argparse
+
+    from fep_lean.bridge.cli import add_arguments, run
+
+    witness = tmp_path / "input.json"
+    witness.write_text(content)
+    parser = argparse.ArgumentParser()
+    add_arguments(parser)
+    args = parser.parse_args(
+        [
+            "audit-semantic",
+            "--gnn-root",
+            str(tmp_path),
+            "--results",
+            str(witness),
+        ]
+    )
+    assert run(tmp_path, args) == 1
+    assert error in capsys.readouterr().out
+    assert witness.read_text() == content
 
 
 def document(commit: str = "old", body: str = "A\nB\n") -> str:
