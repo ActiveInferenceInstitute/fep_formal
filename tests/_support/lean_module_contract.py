@@ -11,6 +11,217 @@ from pathlib import Path
 from fep_lean.lean_source import lean_code_without_comments
 
 
+# Recorded V-to-947 American prose/spacing changes, for historical seals only.
+# Public theorem statements, frozen review bytes, and live production stay intact.
+_HISTORICAL_PROSE_FIELDS = [
+    (
+        "capabilities",
+        {"id": "cap-expected-free-energy-decomposition"},
+        "description",
+        "Real finite-model EFE has proved pragmatic-minus-epistemic and risk-plus-ambiguity "
+        "decompositions, nonnegativity under full support, and an explicit truncating bridge "
+        "to the catalogue ENNReal convention.",
+        "Real finite-model EFE has proved pragmatic-minus-epistemic and risk-plus-ambiguity "
+        "decompositions, nonnegativity under full support, and an explicit truncating bridge "
+        "to the catalog ENNReal convention.",
+    ),
+    (
+        "capabilities",
+        {"id": "cap-standalone-efe-theorems"},
+        "description",
+        "The Boltzmann-form control posterior minimizes the expected free energy with the "
+        "stated uniqueness boundary; the perception-action loop admits an invariant "
+        "surprisal bound through one controlled-kernel step; Bayesian model reduction never "
+        "lowers evidence free energy under masked evidence; and the epistemic gain of an EFE "
+        "time-scale separation is bounded by the log-affinity of its two-state carrier. At "
+        "each fixed positive time, its inverse-scale family also satisfies a uniform "
+        "sufficiently-small-scale bound and a genuine right-hand limit at zero; no such "
+        "limit is claimed at time zero. Each result is a standalone Lean module bridged to "
+        "its nearest catalogue topic; infinite-horizon, continuous-state, and physical "
+        "entropy-production identification are not claimed.",
+        "The Boltzmann-form control posterior minimizes the expected free energy with the "
+        "stated uniqueness boundary; the perception-action loop admits an invariant "
+        "surprisal bound through one controlled-kernel step; Bayesian model reduction never "
+        "lowers evidence free energy under masked evidence; and the epistemic gain of an EFE "
+        "time-scale separation is bounded by the log-affinity of its two-state carrier. At "
+        "each fixed positive time, its inverse-scale family also satisfies a uniform "
+        "sufficiently-small-scale bound and a genuine right-hand limit at zero; no such "
+        "limit is claimed at time zero. Each result is a standalone Lean module bridged to "
+        "its nearest catalog topic; infinite-horizon, continuous-state, and physical "
+        "entropy-production identification are not claimed.",
+    ),
+    (
+        "edges",
+        {"source": "fep-016", "target": "fep-032"},
+        "rationale",
+        "The checked conjunction places nonnegative precision-weighted quadratic energy "
+        "beside bounded-step scalar energy descent on the same state and centre. It asserts "
+        "neither a Laplace approximation nor a derivation or general optimizer theorem.",
+        "The checked conjunction places nonnegative precision-weighted quadratic energy "
+        "beside bounded-step scalar energy descent on the same state and center. It asserts "
+        "neither a Laplace approximation nor a derivation or general optimizer theorem.",
+    ),
+    (
+        "edges",
+        {"source": "fep-050", "target": "fep-049"},
+        "rationale",
+        "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic "
+        "entropy production derives the Landauer work bound. The identification of the "
+        "erasure's total entropy change with the constitutive-law entropy production is an "
+        "explicit premise (`hBalance`) of the witness, a modelling assumption rather than a "
+        "consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed "
+        "endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, "
+        "fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification "
+        "and Q<=W are premises, not conclusions of the entropy-production theorem.",
+        "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic "
+        "entropy production derives the Landauer work bound. The identification of the "
+        "erasure's total entropy change with the constitutive-law entropy production is an "
+        "explicit premise (`hBalance`) of the witness, a modeling assumption rather than a "
+        "consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed "
+        "endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, "
+        "fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification "
+        "and Q<=W are premises, not conclusions of the entropy-production theorem.",
+    ),
+    (
+        "edges",
+        {"source": "fep-093", "target": "fep-010"},
+        "rationale",
+        "The supported forward/reverse ratio reconstructs path mass, while the identity "
+        "kernel supplies the original catalogue's concrete reversibility witness on an "
+        "arbitrary measure carrier.",
+        "The supported forward/reverse ratio reconstructs path mass, while the identity "
+        "kernel supplies the original catalog's concrete reversibility witness on an "
+        "arbitrary measure carrier.",
+    ),
+    (
+        "edges",
+        {"source": "fep-168", "target": "fep-163"},
+        "rationale",
+        "The quantitative remainder budget is paired with fep-163's exact three-term "
+        "expansion, so the uncancelled divergence remainder is bounded and its equality case "
+        "attained instead of being assumed to vanish, without an unconditional-drop claim.",
+        "The quantitative remainder budget is paired with fep-163's exact three-term "
+        "expansion, so the uncanceled divergence remainder is bounded and its equality case "
+        "attained instead of being assumed to vanish, without an unconditional-drop claim.",
+    ),
+    (
+        "topics",
+        {"id": "fep-063"},
+        "acceptance_probe",
+        "Strict native Lean compile of the selected relative-support wrapper and retained "
+        "old primary, plus imported full-support, sparse/shared-zero, deterministic "
+        "projection, identity and singular support/native-infinity controls. Require exact "
+        "standard-only axiom reports and preserve the existing coarsening boundary. "
+        "Compilation does not itself promote semantic disposition. The strict "
+        "imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true "
+        "../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. "
+        "After official generator synchronization, first require a successful current-source "
+        "`lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported "
+        "consumer must not use stale prior-build objects. Its 13 exact axiom queries "
+        "comprise the selected canonical wrapper and 12 consumer statements, not 13 "
+        "independent compiler experiments. The unchanged former primary and catalogue "
+        "boundaries also require the actual native catalogue/API and declaration-audit "
+        "gates.",
+        "Strict native Lean compile of the selected relative-support wrapper and retained "
+        "old primary, plus imported full-support, sparse/shared-zero, deterministic "
+        "projection, identity and singular support/native-infinity controls. Require exact "
+        "standard-only axiom reports and preserve the existing coarsening boundary. "
+        "Compilation does not itself promote semantic disposition. The strict "
+        "imported-consumer command, from lean/, is `lake env lean -DwarningAsError=true "
+        "../specs/comprehensive-next-steps/spikes/primary-alignment-20261022/Consumers.lean`. "
+        "After official generator synchronization, first require a successful current-source "
+        "`lake build --wfail FepSketches` from lean/ with pinned Lean 4.35; the imported "
+        "consumer must not use stale prior-build objects. Its 13 exact axiom queries "
+        "comprise the selected canonical wrapper and 12 consumer statements, not 13 "
+        "independent compiler experiments. The unchanged former primary and catalog "
+        "boundaries also require the actual native catalogue/API and declaration-audit "
+        "gates.",
+    ),
+    (
+        "topics",
+        {"id": "fep-168"},
+        "invariant",
+        "On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g under the "
+        "cancellation hypotheses, the squared Cauchy-Schwarz budget (weightedDivergence)^2 "
+        "<= (sum r_i^2)(sum g_i^2) bounds the uncancelled remainder with its abs-product "
+        "corollary, and equality is attained on aligned nonzero data with norm(g)^2 = 1.",
+        "On the fep-163 carrier the weighted divergence equals dot (divQ DQ) g under the "
+        "cancellation hypotheses, the squared Cauchy-Schwarz budget (weightedDivergence)^2 "
+        "<= (sum r_i^2)(sum g_i^2) bounds the uncanceled remainder with its abs-product "
+        "corollary, and equality is attained on aligned nonzero data with norm(g)^2 = 1.",
+    ),
+]
+
+
+def historical_prose_rows(rows: list[dict], section: str) -> list[dict]:
+    """Undo enumerated exact field values; other changes reach original seals."""
+    restored = copy.deepcopy(rows)
+    for scope, identity, field, historical, current in _HISTORICAL_PROSE_FIELDS:
+        if scope != section:
+            continue
+        for row in restored:
+            if all(row.get(key) == value for key, value in identity.items()):
+                if row.get(field) == current:
+                    row[field] = historical
+    return restored
+
+
+def historical_maturity_prose_bytes(raw: bytes) -> bytes:
+    """Invert only the three complete known current American prose lines."""
+    if (
+        hashlib.sha256(raw).hexdigest()
+        != "bedaf97e851aebdfc5cf8acd5dc0653f47cfddaf4a042f1b025a5e4a6afc59d1"
+    ):
+        return raw
+    for current, historical in (
+        (
+            b"# Maintained semantic review of catalog theorem proxies.\n",
+            b"# Maintained semantic review of catalogue theorem proxies.\n",
+        ),
+        (
+            b"    former primary and catalog boundaries also require the actual native\n",
+            b"    former primary and catalogue boundaries also require the actual native\n",
+        ),
+        (
+            b"    (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncanceled\n",
+            b"    (weightedDivergence)^2 <= (sum r_i^2)(sum g_i^2) bounds the uncancelled\n",
+        ),
+    ):
+        assert raw.count(current) == 1
+        raw = raw.replace(current, historical, 1)
+    assert (
+        hashlib.sha256(raw).hexdigest()
+        == "16eecb21d0884f962dfe87b596f9d3262fb08488be939664e4ddd3b6d9c55fbf"
+    )
+    return raw
+
+
+def historical_core_prose(source: str) -> str:
+    """Invert exactly the two current comments before unchanged core-byte seals."""
+    if (
+        hashlib.sha256(source.encode()).hexdigest()
+        != "4f2969cca55290de0c5d3c8189b8dbc88c1f93dc7507e2afd1eb54ba97b09d42"
+    ):
+        return source
+    for current, historical in (
+        (
+            "constitutive-law entropy production; it is a modeling assumption, not a\n",
+            "constitutive-law entropy production; it is a modelling assumption, not a\n",
+        ),
+        (
+            "bounded-step scalar descent law on the same state and center. This is neither\n",
+            "bounded-step scalar descent law on the same state and centre. This is neither\n",
+        ),
+    ):
+        assert source.count(current) == 1
+        source = source.replace(current, historical, 1)
+    assert (
+        hashlib.sha256(source.encode()).hexdigest()
+        == "bb6fc71c7c1863ccbb8cbf72871f9c7f11fbbe1d255dacb4c1c0ffa2bb0455fa"
+    )
+    return source
+
+
 def _header(imports: tuple[str, ...]) -> str:
     return (
         "module\n"
@@ -214,7 +425,7 @@ def obligation_review(project_root: Path) -> dict:
 
 
 def reverse_obligation_edges(edges: list[dict], project_root: Path) -> list[dict]:
-    restored = copy.deepcopy(edges)
+    restored = historical_prose_rows(edges, "edges")
     for change in obligation_review(project_root)["edge_changes"]:
         key = (change["after"]["source"], change["after"]["target"])
         positions = [
@@ -256,6 +467,7 @@ def reverse_obligation_model(model: dict, project_root: Path) -> dict:
 
 
 def restore_obligation_core(source: str, project_root: Path) -> str:
+    source = historical_core_prose(source)
     review = obligation_review(project_root)
     block = review["added_core_block"]
     assert source.count(block) == 1
@@ -302,7 +514,7 @@ def restore_primary_alignment_bodies(bodies: dict, project_root: Path) -> dict:
 
 
 def reverse_primary_alignment_rows(rows: list[dict], project_root: Path) -> list[dict]:
-    restored = copy.deepcopy(rows)
+    restored = historical_prose_rows(rows, "topics")
     for change in primary_alignment_review(project_root)["maturity_changes"]:
         positions = [i for i, row in enumerate(restored) if row["id"] == change["id"]]
         assert len(positions) == 1
@@ -313,6 +525,7 @@ def reverse_primary_alignment_rows(rows: list[dict], project_root: Path) -> list
 
 def reverse_primary_alignment_raw(raw: bytes, project_root: Path) -> bytes:
     review = primary_alignment_review(project_root)
+    raw = historical_maturity_prose_bytes(raw)
     assert hashlib.sha256(raw).hexdigest() == review["reviewed_maturity_sha256"]
     for change in review["maturity_changes"]:
         current = change["raw_after"].encode()

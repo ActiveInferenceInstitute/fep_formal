@@ -1,13 +1,11 @@
 # Runtime configuration for the standalone fep_lean verifier.
 
 project:
-
   name: fep_lean
   version: "1.6.0"
   description: "FEP / Active Inference / Bayesian Mechanics Lean4 catalog"
 
 gauss:
-
   home: ~/.gauss
   # default_model is a pin_audit requirement, not a runtime default: it must
   # equal hermes.model or `docs/pin_audit.py` fails the audit.
@@ -16,15 +14,12 @@ gauss:
   # gauss.verify_lean, gauss.log_level, output.report_dir.
 
 output:
-
   root: output
 
 hermes:
-
   enabled: true
   model: "moonshotai/kimi-k2.6"
   fallback_models:
-
     - "moonshotai/kimi-k2-thinking"
     - "poolside/laguna-s-2.1:free"
     - "cohere/north-mini-code:free"

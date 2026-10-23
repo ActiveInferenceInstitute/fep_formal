@@ -7,6 +7,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from tests._support.lean_module_contract import historical_prose_rows
+
 FIXTURE_SHA = "76835362aceb98d23a06887e7ae2ccbe26e3c4326a76a7b6475cf57ff7dae40a"
 
 
@@ -22,7 +24,7 @@ def reverse_fast_relaxation_rows(
     rows: list[dict], root: Path, *, capability: bool = False
 ) -> list[dict]:
     change = fast_relaxation_review(root)["capability" if capability else "maturity"]
-    restored = copy.deepcopy(rows)
+    restored = historical_prose_rows(rows, "capabilities" if capability else "topics")
     matches = [i for i, row in enumerate(restored) if row.get("id") == change["id"]]
     assert len(matches) == 1
     index = matches[0]

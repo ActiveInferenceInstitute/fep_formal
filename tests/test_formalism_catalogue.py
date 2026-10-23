@@ -1035,6 +1035,17 @@ def test_primary_alignment_exact_owner_and_metadata_inverse():
     assert hashlib.sha256(restored.encode()).hexdigest() == review["prior_owner_sha256"]
     raw = (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes()
     reverse_primary_alignment_raw(raw, PROJECT_ROOT)
+    # Current prose/spacing is an exact static inverse, never a general normalizer.
+    for token in (
+        b"catalog theorem proxies",
+        b"former primary and catalog boundaries",
+        b"uncanceled",
+        b"schema_version: 2",
+    ):
+        assert token in raw
+        changed = raw.replace(token, token + b" unreviewed", 1)
+        with pytest.raises(AssertionError):
+            reverse_primary_alignment_raw(changed, PROJECT_ROOT)
 
 
 @pytest.mark.parametrize(

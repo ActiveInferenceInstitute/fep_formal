@@ -39,6 +39,21 @@ def test_fast_relaxation_inverse_restores_only_reviewed_row(capability):
         change["before"],
     ]
     assert rows == original
+    if capability:
+        american = copy.deepcopy(rows)
+        american[1]["description"] = american[1]["description"].replace(
+            "nearest catalogue topic", "nearest catalog topic", 1
+        )
+        assert american != rows
+        assert reverse_fast_relaxation_rows(american, ROOT, capability=True) == [
+            unrelated,
+            change["before"],
+        ]
+        for field in change["after"]:
+            changed = copy.deepcopy(american)
+            changed[1][field] = "unreviewed"
+            with pytest.raises(AssertionError):
+                reverse_fast_relaxation_rows(changed, ROOT, capability=True)
 
 
 @pytest.mark.parametrize("capability", [False, True])

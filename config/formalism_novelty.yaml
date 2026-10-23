@@ -2,7 +2,6 @@
 schema_version: 1
 baseline_last_id: fep-050
 topics:
-
 - id: fep-051
   nearest_topics: [fep-017]
   new_invariant: Radon–Nikodym reconstruction is equivalent to absolute continuity.

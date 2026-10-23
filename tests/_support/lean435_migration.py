@@ -395,6 +395,17 @@ def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
     if live.count(_UV_REQUIREMENT) != 1:
         return live
     normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
+    # Exact American package-description successor; historical/static replay only.
+    # Authenticate the complete release-normalized profile before changing bytes.
+    if (
+        hashlib.sha256(normalized).hexdigest()
+        == "b735a00e551b460b224e4780765104647f52b1e5bf9f7df9d6effb7ea1cf62f7"
+    ):
+        current = b'description = "FEP Lean4 catalog, OpenGauss-oriented session model, manuscript artifacts"\n'
+        historical = b'description = "FEP Lean4 catalogue, OpenGauss-oriented session model, manuscript artifacts"\n'
+        assert live.count(current) == 1
+        live = live.replace(current, historical, 1)
+        normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
     if hashlib.sha256(normalized).hexdigest() != (
         "08901ea1eb52a26b19067d292be8169591d16ad16b0112bbaccc2c4cf36353ab"
     ):
