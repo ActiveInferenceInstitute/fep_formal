@@ -64,6 +64,10 @@ EXACT_IMPORTS = (
     "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Basic",
     "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence",
     "Mathlib.Probability.Independence.Conditional",
+    "Mathlib.Basic.Real.Basic",
+    "Mathlib.LinearAlgebra.Matrix.NonsingularInverse",
+    "Mathlib.LinearAlgebra.Matrix.Block",
+    "Mathlib.Probability.Moments.Covariance",
 )
 PUBLIC_ABBREVIATIONS = ("Blanket", "Endpoints", "PerturbedEndpoints")
 PUBLIC_DEFINITIONS = (
@@ -117,7 +121,7 @@ PUBLIC_THEOREMS = (
     "perturbedEndpoint_external_internal_covariance",
     "perturbedEndpoint_external_not_indep_internal",
 )
-PUBLIC_ENVIRONMENT_DECLARATIONS = frozenset(
+LEGACY_PUBLIC_ENVIRONMENT_DECLARATIONS = frozenset(
     (
         *PUBLIC_ABBREVIATIONS,
         *PUBLIC_DEFINITIONS,
@@ -136,6 +140,25 @@ PRESERVED_HASHES = {
     R0_SPIKE: "51184185f3adfee7506e95457f352b56910cd127bd05f9140f21437c3d88e612",
     R0_TEST: "e575c5597f0b3e7e945d4471aeb6caf4066da0ddcc38b13700963e96c32eb848",
 }
+
+RESIDUAL_EXTENSION_DECLARATIONS = (
+    "FinitePrecision.Axis",
+    "FinitePrecision.ee",
+    "FinitePrecision.eb",
+    "FinitePrecision.ei",
+    "FinitePrecision.bi",
+    "FinitePrecision.bb",
+    "FinitePrecision.inverse_rows",
+    "FinitePrecision.residual_cross_block",
+    "FiniteCovariance.covariance_weighted_add_left",
+    "FiniteCovariance.covariance_weighted_add_right",
+    "FiniteCovariance.coordinateCovariance",
+    "FiniteCovariance.covariance_residual_block",
+    "FiniteCovariance.actual_residual_covariance_zero",
+)
+PUBLIC_ENVIRONMENT_DECLARATIONS = LEGACY_PUBLIC_ENVIRONMENT_DECLARATIONS | frozenset(
+    RESIDUAL_EXTENSION_DECLARATIONS
+)
 
 pytestmark = pytest.mark.serial_lean
 
@@ -186,7 +209,12 @@ def _run_lean(path: Path, *, timeout: int = 300) -> subprocess.CompletedProcess[
 def test_h2_5d_owner_imports_namespace_and_h2_5c_reuse_are_exact() -> None:
     assert SOURCE.is_file()
     raw_source = SOURCE.read_text(encoding="utf-8")
-    source = lean_code_without_comments(raw_source)
+    source = lean_code_without_comments(
+        raw_source.split(
+            "/-! Finite precision residual covariance extension: no generic conditional independence claim. -/",
+            1,
+        )[0]
+    )
 
     assert_exposed_module_header(raw_source, EXACT_IMPORTS)
     assert "namespace FEP.GaussianPrecisionConditioning\n" in raw_source
@@ -305,7 +333,12 @@ example : ¬ IndepFun perturbedExternal perturbedInternal perturbedEndpointLaw :
 
 
 def test_h2_5d_public_source_roster_and_fixed_formulas_are_exact() -> None:
-    source = lean_code_without_comments(SOURCE.read_text(encoding="utf-8"))
+    source = lean_code_without_comments(
+        SOURCE.read_text(encoding="utf-8").split(
+            "/-! Finite precision residual covariance extension: no generic conditional independence claim. -/",
+            1,
+        )[0]
+    )
 
     assert tuple(re.findall(r"(?m)^abbrev (\w+)\b", source)) == PUBLIC_ABBREVIATIONS
     assert (
@@ -688,3 +721,32 @@ def test_h2_5d_preserves_h2_5c_r0_hashes_and_readiness_validation() -> None:
         )
     ]
     assert before == {path: path.read_bytes() for path in production_paths}
+
+
+def test_finite_precision_residual_imported_controls(tmp_path: Path) -> None:
+    """Imported matrix boundaries and covariance API; no generic CI claim."""
+    source = (
+        PROJECT_ROOT
+        / "tests"
+        / "fixtures"
+        / "gaussian_precision_residual_controls.lean"
+    )
+    probe = tmp_path / "GaussianPrecisionResidualControls.lean"
+    probe.write_bytes(source.read_bytes())
+    result = _run_lean(probe)
+    output = result.stdout + result.stderr
+    assert result.returncode == 0, output
+    assert "warning:" not in output.lower()
+    assert "sorryAx" not in output
+    names = re.findall(r"(?m)^#print axioms (\S+)$", source.read_text(encoding="utf-8"))
+    assert len(names) == len(set(names)) == 12
+    for name in names:
+        report = re.search(
+            rf"'{re.escape(name)}' "
+            r"(?:depends on axioms: \[(?P<axioms>.*?)\]|does not depend on any axioms)",
+            output,
+            re.DOTALL,
+        )
+        assert report is not None, name
+        if report.group("axioms") is not None:
+            assert _parse_axiom_names(report.group("axioms")) <= ALLOWED_AXIOMS

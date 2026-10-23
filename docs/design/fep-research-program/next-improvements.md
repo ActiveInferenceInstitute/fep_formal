@@ -48,9 +48,12 @@ software/proof-component source and exact-main evidence. The
 maintain another live implementation/status table.
 
 The [remaining original acceptance sequence](../../../specs/comprehensive-science-improvement/NEXT.md)
-keeps production capture and identical archives, current H3 export and distinct
-proof-role reviews, the frozen primary and complete replay, outcome-bound
-claims and clean installed study reproduction separate. Optional strict
+records the owner-directed retirement of CUR-03/#52 and CUR-05/#53 as not planned;
+their original source-freeze and production-capture/archive acceptance remains unmet.
+Current H3 export and distinct proof-role reviews, the frozen primary and complete
+replay, outcome-bound claims and clean installed study reproduction retain their
+independent obligations. Retirement is neither a passed capture nor permission to
+open dependent scientific lanes without prospective prerequisite review. Optional strict
 Hermes/OpenGauss execution has its own credential and provider boundary.
 Software CI and catalogue-mode output supply none of those research outcomes.
 Every later source change needs acceptance in its affected evidence planes.

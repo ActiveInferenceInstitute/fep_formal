@@ -12,11 +12,22 @@ The source checkpoint and exact-main hosted evidence are recorded once in
 Lean 4.35 source checkpoint retain separate identities. Planning reviews add
 no new native, production-capture, study or scientific acceptance.
 
+Accepted main `e8cea5b87857df94038a104fdb72459efdb783a6` and its
+[fresh full attempt 2](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39877928982/attempts/2)
+close C05/#54's bounded software/artifact gate, S01/#68's primary alignment and
+F01/#75's all-168 statement review/ranking. Their actual closure comments retain
+[software scope](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54#issuecomment-6355632802),
+[primary boundaries](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68#issuecomment-6355633420)
+and [roadmap limits](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75#issuecomment-6355634111).
+These are accepted Y results, not acceptance of this next cohort's new proofs
+or cache changes. The canonical backlog retains 20 open issues, including
+ongoing #63, H3/current-nine criteria and the remaining scientific projects.
+
 ## Owner-directed production-capture retirement
 
 On 2026-10-22 the owner directed that the unavailable private r6 failure streams
 and reviewed successor production controller packet no longer be required.
-CUR-03/#52 and CUR-05/#53 are retired as not planned, without acceptance of
+CUR-03/#52 and CUR-05/#53 are now closed as not planned, without acceptance of
 their original source-freeze or seven-stage capture/archive contracts. C02/C03
 in the dated package matrix retain those historical contracts; they are no
 longer mandatory work in this continuation. Preserve rejected r6, immutable
@@ -94,10 +105,12 @@ the eight receipt-bound copies and their individual retention decisions.
    C07/C08 require their real custody/lifecycle probes. P07 has a reviewed
    filename-only bijection and explicit current software membership; its
    production-capture boundary is recorded below.
-4. F01 and S01 review exact primary statements before the dependent proof
-   packages. F01 has [all168 static semantic reviews](spikes/proxy-review-20261019/README.md)
-   with exact metadata corrections and preserved dispositions. Current-source
-   integration and publication acceptance remain separate. F02/F03/F04/F09/F10/F11/F13/F14 cover thermodynamics, Boolean
+4. F01/#75 and S01/#68 completed their bounded review/primary-alignment
+   scopes at accepted Y. The [all-168 review packet](reviews/theorem-proxy-review-20261022/README.md)
+   preserves historical matrices, the explicit 063/064 delta and the corrected
+   existing Gibbs, strong-law and C² NESS foundations. Dependent proof packages
+   remain open; no automatic maturity promotion follows. New cohort source
+   integration and publication still need their own acceptance. F02/F03/F04/F09/F10/F11/F13/F14 cover thermodynamics, Boolean
    distortion, Gaussian blankets, MaxEnt, Helmholtz, tree messages, count-level
    conjugacy and stationary currents. S02/S03/S04 govern actual relation
    witnesses; F07 has delivered its separately qualified [finite duality scope](finite-rate-distortion-duality-20261021.md), with all-feasible value equality separated from strict-feasibility multiplier attainment.

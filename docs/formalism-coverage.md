@@ -14,19 +14,19 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Maintained formal modules | 72 |
 | Foundation modules | 45 |
 | Topic theorem declarations | 587 |
-| Formal-resource theorem declarations | 1740 |
-| Foundation theorem declarations | 1361 |
-| Total theorem declarations | 2327 |
+| Formal-resource theorem declarations | 1817 |
+| Foundation theorem declarations | 1438 |
+| Total theorem declarations | 2404 |
 | Topic definitions | 95 |
-| Formal-resource definitions | 951 |
-| Total definitions | 1046 |
+| Formal-resource definitions | 967 |
+| Total definitions | 1062 |
 | Topic abbreviations | 7 |
-| Formal-resource abbreviations | 33 |
-| Total abbreviations | 40 |
+| Formal-resource abbreviations | 39 |
+| Total abbreviations | 46 |
 | Formal-resource structures | 56 |
 | Distinct Mathlib imports | 80 |
 | Topic-to-import edges | 267 |
-| Formal-resource import edges | 392 |
+| Formal-resource import edges | 408 |
 | Internal formal-module dependencies | 173 |
 | Authored formalism relations | 150 |
 | Derivational formal relations | 24 |
@@ -246,12 +246,12 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.finite_markov_dynamics` | `foundation` | 17 | 6 | 0 | `FepSketches.finite_probability` |
 | `FepSketches.causal_dynamics` | `foundation` | 34 | 18 | 2 | `FepSketches.markov_blanket` |
 | `FepSketches.predictive_coding` | `foundation` | 47 | 13 | 1 | — |
-| `FepSketches.ness_flow` | `foundation` | 25 | 19 | 0 | `FepSketches.geometric_mechanics` |
+| `FepSketches.ness_flow` | `foundation` | 32 | 21 | 0 | `FepSketches.geometric_mechanics` |
 | `FepSketches.path_thermodynamics` | `foundation` | 81 | 23 | 2 | `FepSketches.finite_markov_dynamics`, `FepSketches.variational_duality` |
 | `FepSketches.geometric_optimization` | `foundation` | 25 | 17 | 3 | `FepSketches.information_geometry` |
 | `FepSketches.collective_inference` | `foundation` | 41 | 26 | 0 | `FepSketches.finite_information` |
 | `FepSketches.learning_theory` | `foundation` | 12 | 9 | 0 | `FepSketches.variational_duality` |
-| `FepSketches.empirical_risk` | `foundation` | 38 | 19 | 0 | `FepSketches.learning_theory` |
+| `FepSketches.empirical_risk` | `foundation` | 102 | 32 | 0 | `FepSketches.learning_theory` |
 | `FepSketches.policy_tree` | `foundation` | 13 | 13 | 2 | `FepSketches.controlled_markov` |
 | `FepSketches.native_blanket` | `foundation` | 26 | 8 | 0 | `FepSketches.markov_blanket` |
 | `FepSketches.exponential_family` | `foundation` | 23 | 14 | 1 | `FepSketches.finite_information` |
@@ -262,7 +262,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.scalar_gaussian_semigroup` | `foundation` | 16 | 12 | 1 | `FepSketches.gaussian_information_geometry`, `FepSketches.markov_semigroup` |
 | `FepSketches.linear_gaussian_semigroup` | `foundation` | 26 | 13 | 1 | `FepSketches.markov_semigroup`, `FepSketches.scalar_gaussian_semigroup` |
 | `FepSketches.fin4_gaussian_semigroup` | `foundation` | 42 | 18 | 0 | `FepSketches.linear_gaussian_semigroup` |
-| `FepSketches.gaussian_precision_conditioning` | `foundation` | 25 | 15 | 0 | `FepSketches.fin4_gaussian_semigroup` |
+| `FepSketches.gaussian_precision_conditioning` | `foundation` | 31 | 16 | 0 | `FepSketches.fin4_gaussian_semigroup` |
 | `FepSketches.decision_risk` | `foundation` | 25 | 10 | 0 | `FepSketches.finite_information`, `FepSketches.native_blanket` |
 | `FepSketches.finite_posterior_learning` | `foundation` | 14 | 21 | 0 | `FepSketches.decision_risk`, `FepSketches.learning_theory`, `FepSketches.native_blanket`, `FepSketches.statistical_convergence` |
 | `FepSketches.posterior_convergence` | `foundation` | 27 | 22 | 0 | `FepSketches.finite_posterior_learning`, `FepSketches.gaussian_information_geometry`, `FepSketches.measure_bayes` |

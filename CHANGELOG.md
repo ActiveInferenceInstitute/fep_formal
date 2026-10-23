@@ -1,5 +1,25 @@
 ## Unreleased
 
+- Extend the maintained finite stick-breaking and posterior conditioning support
+  for #95, generic covariance residual identities for #97, and forward-difference
+  current support for #98. Reuse the existing scalar Gaussian transition law in
+  the #100 invariance proof. Preserve the stronger open scientific obligations:
+  no general Dirichlet density, Gaussian conditional-independence, or stationary
+  PDE result is claimed. Four imported consumer fixtures check 114 standard-only
+  axiom queries; generated inventories include 77 additional declarations.
+
+- Bound repeated Lean source masking with an exact-string, 32-entry cache and
+  bypass oversized or string-subclass inputs. Retain original scanner behavior
+  and add eviction, invalidation and input-boundary controls. A same-environment
+  offline comparison observed a 12.8% reduction in the measured stage sum over
+  two samples per variant; this is not a CI or interpreter speedup claim.
+  Python 3.15 profiling remains separate from Python 3.14 release validation.
+
+- Consolidate four redundant active-spec lint invocations into the existing
+  repository-wide static Ruff check. Keep each explicit spec format check,
+  all tests, the 15-cell wheel matrix and every release context. Fresh full
+  source and hosted qualification remain required.
+
 - Retire the historical private successor source-freeze and full seven-stage
   production-capture requirements in [#52](https://github.com/ActiveInferenceInstitute/fep_formal/issues/52)
   and [#53](https://github.com/ActiveInferenceInstitute/fep_formal/issues/53)
@@ -15,7 +35,8 @@
   with retained native, axiom and projection evidence from
   [workflow 39772166859](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/39772166859).
   This completes the bounded PR disposition for [#58](https://github.com/ActiveInferenceInstitute/fep_formal/issues/58);
-  [#54](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) remains independently open.
+  [#54](https://github.com/ActiveInferenceInstitute/fep_formal/issues/54) is now
+  closed for its bounded software scope.
   Preserve contributor credit and the existing normalized carriers; no scientific
   relation, novelty or maturity promotion is claimed.
 
@@ -36,8 +57,8 @@
 - Publish a source-only semantic review and ranked strengthening roadmap for
   all 168 theorem proxies at the recorded source epoch. Preserve existing
   dispositions and distinguish reused Gibbs/control proofs from new proof
-  obligations. Final independent acceptance and issue #75 closeout remain
-  separate.
+  obligations. The final independent review and bounded issue #75 closeout are
+  complete; the ranked scientific strengthening obligations remain open.
 
 - Keep optional slide derivatives disabled in the project render configuration
   while retaining the required combined manuscript PDF, sources, logs, fonts

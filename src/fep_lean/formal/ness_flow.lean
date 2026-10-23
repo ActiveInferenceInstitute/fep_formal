@@ -11,6 +11,9 @@ public import Mathlib.Tactic.FunProp
 public import Mathlib.Tactic.Linarith
 public import Mathlib.Tactic.NormNum
 public import Mathlib.Tactic.Ring
+public import Mathlib.Analysis.Calculus.Deriv.Slope
+public import Mathlib.Analysis.Calculus.Deriv.Comp
+public import Mathlib.Topology.Algebra.Monoid
 
 @[expose] public section
 
@@ -415,5 +418,111 @@ theorem rotation_current_ne_zero_divergence_zero :
     fin_cases i <;> fin_cases j <;> simp [qRot]
 
 end FokkerPlanck
+
+/-! Forward-difference consistency; finite-step conservation is not asserted. -/
+set_option autoImplicit false
+open Filter Topology
+open scoped BigOperators
+namespace ForwardDifference
+open FEP.NessFlow FEP.GeometricMechanics
+variable {n : ℕ}
+noncomputable def forwardDiv (V : (Fin n → ℝ) → Fin n → ℝ)
+    (x : Fin n → ℝ) (h : ℝ) : ℝ :=
+  ∑ i, (V (x + h • Pi.single i 1) i - V x i) / h
+
+theorem forwardDiv_tendsto (V : (Fin n → ℝ) → Fin n → ℝ)
+    (x : Fin n → ℝ)
+    (hV : ∀ i, DifferentiableAt ℝ (fun y => V y i) x) :
+    Tendsto (forwardDiv V x) (𝓝[≠] (0 : ℝ)) (𝓝 (divergence V x)) := by
+  have component : ∀ i : Fin n,
+      Tendsto (fun h : ℝ => (V (x + h • Pi.single i 1) i - V x i) / h)
+        (𝓝[≠] 0) (𝓝 (fderiv ℝ (fun y => V y i) x (Pi.single i 1))) := by
+    intro i
+    have line : HasDerivAt (fun h : ℝ => x + h • (Pi.single i 1 : Fin n → ℝ))
+        (Pi.single i 1) 0 := by
+      simpa using ((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single i 1 : Fin n → ℝ)).const_add x
+    have derivative := (hV i).hasFDerivAt.comp_hasDerivAt_of_eq 0 line (by simp)
+    simpa [Function.comp_def, div_eq_mul_inv, smul_eq_mul, mul_comm] using derivative.tendsto_slope_zero
+  change Tendsto (fun h => ∑ i, (V (x + h • Pi.single i 1) i - V x i) / h)
+    (𝓝[≠] (0 : ℝ)) (𝓝 (∑ i, fderiv ℝ (fun y => V y i) x (Pi.single i 1)))
+  exact tendsto_finsetSum Finset.univ (fun i _ => component i)
+
+theorem stationary_current_differentiable (F : (Fin n → ℝ) → ℝ)
+    (hF : ContDiff ℝ 2 F) (Γ Q : Fin n → Fin n → ℝ)
+    (x : Fin n → ℝ) (i : Fin n) :
+    DifferentiableAt ℝ (fun y => probCurrent F Γ Q y i) x := by
+  have hp : DifferentiableAt ℝ (density F) x :=
+    ((hF.differentiable (by norm_num)) x).neg.exp
+  have hg : ∀ k, DifferentiableAt ℝ (fun y => gradF F y k) x :=
+    fun k => (hasFDerivAt_gradF F hF x k).differentiableAt
+  have hs : DifferentiableAt ℝ (fun y => mulVec Q (gradF F y) i) x := by
+    unfold mulVec
+    exact DifferentiableAt.fun_sum fun k _ => (hg k).const_mul (Q i k)
+  have identity : (fun y => probCurrent F Γ Q y i) =
+      fun y => -(density F y * mulVec Q (gradF F y) i) := by
+    funext y
+    rw [probCurrent_eq F Γ Q y ((hF.differentiable (by norm_num)) y)]
+    simp
+  rw [identity]
+  exact (hp.mul hs).neg
+
+theorem stationary_forwardDiv_tendsto_zero (F : (Fin n → ℝ) → ℝ)
+    (hF : ContDiff ℝ 2 F) (Γ Q : Fin n → Fin n → ℝ)
+    (hQ : SkewSymmetric Q) (x : Fin n → ℝ) :
+    Tendsto (forwardDiv (probCurrent F Γ Q) x) (𝓝[≠] (0 : ℝ)) (𝓝 0) := by
+  simpa [divergence_probCurrent_eq_zero F hF Γ Q hQ x] using
+    forwardDiv_tendsto (probCurrent F Γ Q) x (stationary_current_differentiable F hF Γ Q x)
+
+/-- Actual derivative-data specialization of the fep-163 carrier. -/
+noncomputable def actualCarrier (F : (Fin n → ℝ) → ℝ)
+    (Q : Fin n → Fin n → ℝ) (x : Fin n → ℝ) : ℝ :=
+  weightedDivergence Q (hessF F x) (fun _ _ => 0)
+    (gradF F x) (fun i => -gradF F x i)
+
+/-- Arbitrary Q, not only the zero-valued skew case. The sign follows J=-pQg. -/
+theorem actualCarrier_eq_negative_divergence (F : (Fin n → ℝ) → ℝ)
+    (hF : ContDiff ℝ 2 F) (Γ Q : Fin n → Fin n → ℝ) (x : Fin n → ℝ) :
+    actualCarrier F Q x = -divergence (probCurrent F Γ Q) x / density F x := by
+  have hsym := hessF_symmetric F hF x
+  have trace_identity : traceOf (mulOf Q (hessF F x)) =
+      ∑ i, ∑ k, Q i k * hessF F x i k := by
+    unfold traceOf mulOf
+    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by rw [hsym k i]
+  have carrier_identity : actualCarrier F Q x =
+      (∑ i, ∑ k, Q i k * hessF F x i k) - FEP.GeometricMechanics.dot (gradF F x) (mulVec Q (gradF F x)) := by
+    unfold actualCarrier
+    rw [solenoidal_expansion Q (hessF F x) (fun _ _ => 0)
+      (gradF F x) (fun i => -gradF F x i) (fun _ => rfl), trace_identity]
+    simp [divQ, FEP.GeometricMechanics.dot]
+  apply (eq_div_iff (ne_of_gt (Real.exp_pos (-F x)))).2
+  rw [carrier_identity, divergence_probCurrent_eq F hF Γ Q x]
+  simp only [density]
+  ring
+
+/-- The actual fep-163 derivative-data value is recovered as a genuine FD limit. -/
+theorem negative_forwardDiv_tendsto_carrier (F : (Fin n → ℝ) → ℝ)
+    (hF : ContDiff ℝ 2 F) (Γ Q : Fin n → Fin n → ℝ) (x : Fin n → ℝ) :
+    Tendsto (fun h => -forwardDiv (probCurrent F Γ Q) x h / density F x)
+      (𝓝[≠] (0 : ℝ)) (𝓝 (actualCarrier F Q x)) := by
+  rw [actualCarrier_eq_negative_divergence F hF Γ Q x]
+  exact (forwardDiv_tendsto (probCurrent F Γ Q) x
+    (stationary_current_differentiable F hF Γ Q x)).neg.div_const _
+
+/-- Non-skew Gaussian carrier is one: the identification is not vacuous zero=zero. -/
+theorem nonSkew_gaussian_carrier_one :
+    actualCarrier gaussF qNonSkew (fun _ => 0) = 1 := by
+  simp [actualCarrier, weightedDivergence, fluxDivergence, gradF_gaussF,
+    hessF_gaussF, qNonSkew, FEP.GeometricMechanics.dot, mulVec]
+
+/-- Only after the arbitrary-Q bridge may skew cancellation be applied. -/
+theorem skew_actualCarrier_zero (F : (Fin n → ℝ) → ℝ)
+    (hF : ContDiff ℝ 2 F) (Γ Q : Fin n → Fin n → ℝ)
+    (hQ : SkewSymmetric Q) (x : Fin n → ℝ) : actualCarrier F Q x = 0 := by
+  rw [actualCarrier_eq_negative_divergence F hF Γ Q x,
+    divergence_probCurrent_eq_zero F hF Γ Q hQ x]
+  simp
+
+end ForwardDifference
+
 
 end FEP.NessFlow

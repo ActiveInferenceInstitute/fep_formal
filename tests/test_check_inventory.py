@@ -793,7 +793,8 @@ def _assert_render_dependencies_barrier_contract(workflow):
         "specs/publication-browser-acceptance/wait_render_dependencies.py"
     ) in static_runs
     required = AGENTS.read_text(encoding="utf-8")
-    assert "uv run ruff check specs/publication-browser-acceptance" in required
+    assert "uv run ruff check ." in required
+    assert "uv run ruff check ." in static_runs
     assert "uv run ruff format --check specs/publication-browser-acceptance" in required
     assert (
         "uv run mypy src scripts docs "

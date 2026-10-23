@@ -154,12 +154,12 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         "FepSketches.finite_markov_dynamics": 17,
         "FepSketches.causal_dynamics": 34,
         "FepSketches.predictive_coding": 47,
-        "FepSketches.ness_flow": 25,
+        "FepSketches.ness_flow": 32,
         "FepSketches.path_thermodynamics": 81,
         "FepSketches.geometric_optimization": 25,
         "FepSketches.collective_inference": 41,
         "FepSketches.learning_theory": 12,
-        "FepSketches.empirical_risk": 38,
+        "FepSketches.empirical_risk": 102,
         "FepSketches.policy_tree": 13,
         "FepSketches.native_blanket": 26,
         "FepSketches.exponential_family": 23,
@@ -170,7 +170,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         "FepSketches.scalar_gaussian_semigroup": 16,
         "FepSketches.linear_gaussian_semigroup": 26,
         "FepSketches.fin4_gaussian_semigroup": 42,
-        "FepSketches.gaussian_precision_conditioning": 25,
+        "FepSketches.gaussian_precision_conditioning": 31,
         "FepSketches.decision_risk": 25,
         "FepSketches.finite_posterior_learning": 14,
         "FepSketches.posterior_convergence": 27,
@@ -517,3 +517,41 @@ def test_primary_alignment_imported_canonical_controls(tmp_path):
     )
     (tmp_path / "primary-alignment.stdout.txt").write_text(result.stdout)
     (tmp_path / "primary-alignment.stderr.txt").write_text(result.stderr)
+
+
+@pytest.mark.serial_lean
+def test_ness_forward_difference_imported_controls(tmp_path):
+    from fep_lean.verification.formalism_audit import parse_axiom_output
+    from tests._support.lake import lake_executable
+    from tests._support.lean_runner import run_lake_lean_probe
+
+    source = PROJECT_ROOT / "tests/fixtures/ness_forward_difference_controls.lean"
+    assert source.is_file() and not source.is_symlink()
+    result = run_lake_lean_probe(
+        ["env", "lean", "-DwarningAsError=true", str(source)],
+        cwd=PROJECT_ROOT / "lean",
+        executable=lake_executable(
+            missing="raise", context="forward difference imported controls"
+        ),
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert not result.stderr
+    expected = (
+        "FEP.NessFlow.ForwardDifference.forwardDiv_tendsto",
+        "FEP.NessFlow.ForwardDifference.stationary_current_differentiable",
+        "FEP.NessFlow.ForwardDifference.stationary_forwardDiv_tendsto_zero",
+        "FEP.NessFlow.ForwardDifference.actualCarrier_eq_negative_divergence",
+        "FEP.NessFlow.ForwardDifference.negative_forwardDiv_tendsto_carrier",
+        "FEP.NessFlow.ForwardDifference.nonSkew_gaussian_carrier_one",
+        "FEP.NessFlow.ForwardDifference.skew_actualCarrier_zero",
+        "FEP.NessForwardDifferenceControls.empty_dimension",
+        "FEP.NessForwardDifferenceControls.zero_step",
+        "FEP.NessForwardDifferenceControls.dense_field",
+        "FEP.NessForwardDifferenceControls.finite_step_leibniz_counterexample",
+    )
+    axioms, errors = parse_axiom_output(result.stdout, expected=expected)
+    assert not errors and set(axioms) == set(expected)
+    assert all(
+        set(values) <= {"propext", "Classical.choice", "Quot.sound"}
+        for values in axioms.values()
+    )

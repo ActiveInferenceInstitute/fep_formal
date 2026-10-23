@@ -4,6 +4,10 @@ public import Mathlib.LinearAlgebra.Matrix.Notation
 public import Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Basic
 public import Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Independence
 public import Mathlib.Probability.Independence.Conditional
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.LinearAlgebra.Matrix.Block
+public import Mathlib.Probability.Moments.Covariance
 
 @[expose] public section
 
@@ -996,6 +1000,167 @@ theorem perturbedEndpoint_external_not_indep_internal :
   rw [perturbedEndpoint_external_internal_covariance] at hZero
   norm_num at hZero
 
+end
+
+/-! Finite precision residual covariance extension: no generic conditional independence claim. -/
+set_option autoImplicit false
+section
+namespace FinitePrecision
+open Matrix
+variable {E I B : Type*} [Fintype E] [Fintype I] [Fintype B]
+  [DecidableEq E] [DecidableEq I] [DecidableEq B]
+abbrev Axis := E ⊕ (I ⊕ B)
+abbrev ee (K : Matrix (Axis (E := E) (I := I) (B := B)) (Axis (E := E) (I := I) (B := B)) ℝ) :=
+  K.submatrix Sum.inl Sum.inl
+abbrev eb (K : Matrix (Axis (E := E) (I := I) (B := B)) (Axis (E := E) (I := I) (B := B)) ℝ) :=
+  K.submatrix Sum.inl (fun b ↦ Sum.inr (Sum.inr b))
+abbrev ei (S : Matrix (Axis (E := E) (I := I) (B := B)) (Axis (E := E) (I := I) (B := B)) ℝ) :=
+  S.submatrix Sum.inl (fun i ↦ Sum.inr (Sum.inl i))
+abbrev bi (S : Matrix (Axis (E := E) (I := I) (B := B)) (Axis (E := E) (I := I) (B := B)) ℝ) :=
+  S.submatrix (fun b ↦ Sum.inr (Sum.inr b)) (fun i ↦ Sum.inr (Sum.inl i))
+abbrev bb (S : Matrix (Axis (E := E) (I := I) (B := B)) (Axis (E := E) (I := I) (B := B)) ℝ) :=
+  S.submatrix (fun b ↦ Sum.inr (Sum.inr b)) (fun b ↦ Sum.inr (Sum.inr b))
+
+/-- These equations are extracted from the full inverse identity and precision
+sparsity, not assumed covariance-zero conclusions. -/
+theorem inverse_rows
+    (K S : Matrix (Axis (E := E) (I := I) (B := B))
+      (Axis (E := E) (I := I) (B := B)) ℝ)
+    (hinv : K * S = 1) (hEI : ∀ e i, K (Sum.inl e) (Sum.inr (Sum.inl i)) = 0) :
+    ee K * ei S + eb K * bi S = 0 ∧
+      ee K * eb S + eb K * bb S = 0 := by
+  constructor
+  · ext e i
+    have h := congrFun (congrFun hinv (Sum.inl e)) (Sum.inr (Sum.inl i))
+    simpa [Matrix.mul_apply, Fintype.sum_sum_type, hEI] using h
+  · ext e b
+    have h := congrFun (congrFun hinv (Sum.inl e)) (Sum.inr (Sum.inr b))
+    simpa [Matrix.mul_apply, Fintype.sum_sum_type, hEI] using h
+
+/-- The matrix expression for cross covariance after external regression and
+an arbitrary internal blanket correction vanishes. Actual covariance
+identification is a separate measure-level lemma. -/
+theorem residual_cross_block
+    (K S : Matrix (Axis (E := E) (I := I) (B := B))
+      (Axis (E := E) (I := I) (B := B)) ℝ)
+    [Invertible (ee K)]
+    (hinv : K * S = 1) (hEI : ∀ e i, K (Sum.inl e) (Sum.inr (Sum.inl i)) = 0)
+    (R : Matrix I B ℝ) :
+    (ei S + (ee K)⁻¹ * eb K * bi S) +
+      (eb S + (ee K)⁻¹ * eb K * bb S) * R.transpose = 0 := by
+  obtain ⟨hI, hB⟩ := inverse_rows K S hinv hEI
+  have hIzero : ei S + (ee K)⁻¹ * eb K * bi S = 0 := by
+    have h := congrArg (fun Z ↦ (ee K)⁻¹ * Z) hI
+    rw [Matrix.mul_add, Matrix.mul_zero,
+      Matrix.inv_mul_cancel_left_of_invertible] at h
+    simpa only [Matrix.mul_assoc] using h
+  have hBzero : eb S + (ee K)⁻¹ * eb K * bb S = 0 := by
+    have h := congrArg (fun Z ↦ (ee K)⁻¹ * Z) hB
+    rw [Matrix.mul_add, Matrix.mul_zero,
+      Matrix.inv_mul_cancel_left_of_invertible] at h
+    simpa only [Matrix.mul_assoc] using h
+  rw [hIzero, hBzero, Matrix.zero_mul, add_zero]
+end FinitePrecision
+
+namespace FiniteCovariance
+open MeasureTheory ProbabilityTheory Matrix FinitePrecision
+open scoped BigOperators ProbabilityTheory
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsFiniteMeasure μ]
+variable {B : Type*} [Fintype B]
+
+theorem covariance_weighted_add_left (U V : Ω → ℝ) (Y : B → Ω → ℝ) (L : B → ℝ)
+    (hU : MemLp U 2 μ) (hV : MemLp V 2 μ) (hY : ∀ b, MemLp (Y b) 2 μ) :
+    cov[fun ω ↦ U ω + ∑ b, L b * Y b ω, V; μ] =
+      cov[U, V; μ] + ∑ b, L b * cov[Y b, V; μ] := by
+  have hsum : MemLp (fun ω ↦ ∑ b, L b * Y b ω) 2 μ := by
+    simpa using memLp_finsetSum Finset.univ (fun b _ ↦ (hY b).const_mul (L b))
+  change cov[U + (fun ω ↦ ∑ b, L b * Y b ω), V; μ] = _
+  rw [covariance_add_left hU hsum hV,
+    covariance_fun_sum_left (fun b ↦ (hY b).const_mul (L b)) hV]
+  simp_rw [covariance_const_mul_left]
+
+theorem covariance_weighted_add_right (U V : Ω → ℝ) (Y : B → Ω → ℝ) (R : B → ℝ)
+    (hU : MemLp U 2 μ) (hV : MemLp V 2 μ) (hY : ∀ b, MemLp (Y b) 2 μ) :
+    cov[U, fun ω ↦ V ω + ∑ b, R b * Y b ω; μ] =
+      cov[U, V; μ] + ∑ b, R b * cov[U, Y b; μ] := by
+  rw [covariance_comm]
+  rw [covariance_weighted_add_left V U Y R hV hU hY]
+  simp_rw [covariance_comm]
+
+variable {E I : Type*} [Fintype E] [Fintype I]
+  [DecidableEq E] [DecidableEq I] [DecidableEq B]
+noncomputable def coordinateCovariance
+    (X : Axis (E := E) (I := I) (B := B) → Ω → ℝ) :
+    Matrix (Axis (E := E) (I := I) (B := B))
+      (Axis (E := E) (I := I) (B := B)) ℝ :=
+  fun a b ↦ cov[X a, X b; μ]
+
+omit [Fintype E] [Fintype I] [DecidableEq E] [DecidableEq I] [DecidableEq B] in
+theorem covariance_residual_block
+    (X : Axis (E := E) (I := I) (B := B) → Ω → ℝ)
+    (hX : ∀ a, MemLp (X a) 2 μ) (L : Matrix E B ℝ) (R : Matrix I B ℝ)
+    (e : E) (i : I) :
+    cov[fun ω ↦ X (Sum.inl e) ω + ∑ b, L e b * X (Sum.inr (Sum.inr b)) ω,
+      fun ω ↦ X (Sum.inr (Sum.inl i)) ω + ∑ b, R i b * X (Sum.inr (Sum.inr b)) ω; μ] =
+      ((ei (coordinateCovariance (μ := μ) X) + L * bi (coordinateCovariance (μ := μ) X)) +
+        (eb (coordinateCovariance (μ := μ) X) + L * bb (coordinateCovariance (μ := μ) X)) * R.transpose) e i := by
+  let Y : B → Ω → ℝ := fun b ↦ X (Sum.inr (Sum.inr b))
+  have hY : ∀ b, MemLp (Y b) 2 μ := fun b ↦ hX (Sum.inr (Sum.inr b))
+  have hsum : MemLp (fun ω ↦ ∑ b, L e b * Y b ω) 2 μ := by
+    simpa using memLp_finsetSum Finset.univ (fun b _ ↦ (hY b).const_mul (L e b))
+  have hU := (hX (Sum.inl e)).add hsum
+  have hRight := covariance_weighted_add_right (μ := μ)
+    ((X (Sum.inl e)) + (fun ω : Ω => ∑ b : B, L e b * Y b ω))
+    (X (Sum.inr (Sum.inl i))) Y (fun b : B => R i b)
+    hU (hX (Sum.inr (Sum.inl i))) hY
+  have hLeftI := covariance_weighted_add_left (μ := μ)
+    (X (Sum.inl e)) (X (Sum.inr (Sum.inl i))) Y (fun b : B => L e b)
+    (hX (Sum.inl e)) (hX (Sum.inr (Sum.inl i))) hY
+  have hLeftB (b : B) := covariance_weighted_add_left (μ := μ)
+    (X (Sum.inl e)) (Y b) Y (fun k : B => L e k)
+    (hX (Sum.inl e)) (hY b) hY
+  change cov[fun ω => X (Sum.inl e) ω + ∑ b, L e b * Y b ω,
+      fun ω => X (Sum.inr (Sum.inl i)) ω + ∑ b, R i b * Y b ω; μ] =
+    (cov[X (Sum.inl e), X (Sum.inr (Sum.inl i)); μ] +
+      ∑ b, L e b * cov[Y b, X (Sum.inr (Sum.inl i)); μ]) +
+      ∑ b, (cov[X (Sum.inl e), Y b; μ] +
+        ∑ k, L e k * cov[Y k, Y b; μ]) * R i b
+  calc
+    cov[fun ω => X (Sum.inl e) ω + ∑ b, L e b * Y b ω,
+        fun ω => X (Sum.inr (Sum.inl i)) ω + ∑ b, R i b * Y b ω; μ] =
+      cov[(X (Sum.inl e)) + (fun ω => ∑ b, L e b * Y b ω),
+        X (Sum.inr (Sum.inl i)); μ] +
+        ∑ b, R i b * cov[(X (Sum.inl e)) + (fun ω => ∑ k, L e k * Y k ω), Y b; μ] :=
+      hRight
+    _ = (cov[X (Sum.inl e), X (Sum.inr (Sum.inl i)); μ] +
+        ∑ b, L e b * cov[Y b, X (Sum.inr (Sum.inl i)); μ]) +
+        ∑ b, R i b * (cov[X (Sum.inl e), Y b; μ] +
+          ∑ k, L e k * cov[Y k, Y b; μ]) := by
+      apply congrArg₂ (fun a b : ℝ => a + b) hLeftI
+      apply Finset.sum_congr rfl
+      intro b _
+      exact congrArg (fun t : ℝ => R i b * t) (hLeftB b)
+    _ = _ := by
+      congr 1
+      apply Finset.sum_congr rfl
+      intro b _
+      exact mul_comm _ _
+
+theorem actual_residual_covariance_zero
+    (X : Axis (E := E) (I := I) (B := B) → Ω → ℝ)
+    (hX : ∀ a, MemLp (X a) 2 μ)
+    (K : Matrix (Axis (E := E) (I := I) (B := B))
+      (Axis (E := E) (I := I) (B := B)) ℝ)
+    [Invertible (ee K)] (hinv : K * coordinateCovariance (μ := μ) X = 1)
+    (hEI : ∀ e i, K (Sum.inl e) (Sum.inr (Sum.inl i)) = 0)
+    (R : Matrix I B ℝ) (e : E) (i : I) :
+    cov[fun ω ↦ X (Sum.inl e) ω +
+      ∑ b, ((ee K)⁻¹ * eb K) e b * X (Sum.inr (Sum.inr b)) ω,
+      fun ω ↦ X (Sum.inr (Sum.inl i)) ω + ∑ b, R i b * X (Sum.inr (Sum.inr b)) ω; μ] = 0 := by
+  have h := residual_cross_block K (coordinateCovariance (μ := μ) X) hinv hEI R
+  exact (covariance_residual_block (μ := μ) X hX ((ee K)⁻¹ * eb K) R e i).trans
+    (congrFun (congrFun h e) i)
+end FiniteCovariance
 end
 
 end FEP.GaussianPrecisionConditioning

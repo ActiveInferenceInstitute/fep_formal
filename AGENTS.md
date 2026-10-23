@@ -247,11 +247,9 @@ uv run fep-lean --project-root . methods check --output-root docs/mathematical-p
 uv run pytest specs/openai-math-methods/test_methods.py \
   specs/openai-math-methods/test_upstream.py \
   specs/openai-math-methods/test_visualization.py -q --no-cov
-uv run ruff check specs/openai-math-methods
 uv run ruff format --check specs/openai-math-methods
 uv run pytest specs/cascadia-experiments/test_proof_impact.py -q --no-cov
 uv run pytest specs/cascadia-experiments/test_diagnostic_bounds.py -q --no-cov
-uv run ruff check specs/cascadia-experiments
 uv run ruff format --check specs/cascadia-experiments
 uv run python scripts/audit_formalisms.py \
   --receipt output/formalism-audit.json
@@ -265,10 +263,8 @@ uv run python scripts/build_manuscript_figures.py
 uv run python scripts/build_manuscript_figures.py --check
 uv run python -B specs/gnn-runner-execution/validate_retained.py
 uv run python -B specs/gnn-runner-execution/test_validate_retained.py
-uv run ruff check specs/gnn-runner-execution
 uv run ruff format --check specs/gnn-runner-execution
 uv run pytest specs/publication-browser-acceptance/test_validate_acceptance.py -q --no-cov
-uv run ruff check specs/publication-browser-acceptance
 uv run ruff format --check specs/publication-browser-acceptance
 uv run python specs/publication-browser-acceptance/validate_acceptance.py --collect output/python-acceptance-collection.json
 uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"

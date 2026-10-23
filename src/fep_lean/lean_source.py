@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Iterator
+from functools import lru_cache
 
 _LEAN_QUALIFIED_NAME = r"[A-Za-z][A-Za-z0-9_]*(?:\.[A-Za-z][A-Za-z0-9_]*)*"
 _LEAN_NAMESPACE_RE = re.compile(rf"^\s*namespace\s+({_LEAN_QUALIFIED_NAME})\s*$")
@@ -122,6 +123,17 @@ def _lean_source_mask(source: str) -> tuple[str, list[tuple[int, int | None]]]:
     return "".join(output), block_comments
 
 
+# Content identity, never filesystem identity. Bound both entry count and each
+# retained source length; cache only the immutable mask, not comment boundaries.
+_MASK_CACHE_MAX_ENTRIES = 32
+_MASK_CACHE_MAX_SOURCE_CHARS = 16_384
+
+
+@lru_cache(maxsize=_MASK_CACHE_MAX_ENTRIES)
+def _cached_lean_code_without_comments(source: str) -> str:
+    return _lean_source_mask(source)[0]
+
+
 def lean_code_without_comments(source: str) -> str:
     """Blank nested comments and strings while preserving source offsets.
 
@@ -130,6 +142,8 @@ def lean_code_without_comments(source: str) -> str:
     literals, while source-block extraction still needs exact byte offsets.
     Every removed non-newline character is therefore replaced with one space.
     """
+    if type(source) is str and len(source) <= _MASK_CACHE_MAX_SOURCE_CHARS:
+        return _cached_lean_code_without_comments(source)
     return _lean_source_mask(source)[0]
 
 
