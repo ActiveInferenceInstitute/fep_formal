@@ -1,4 +1,38 @@
-## Unreleased
+## 2.0.0 — 2026-10-23 — Source-bound semantics and coordinated GNN release
+
+- Prepare the coordinated FEP_Formal 2.0.0 / GNN 5.0.0 release. Version and
+  landing-page changes are preparation, not publication or renewed historical
+  acceptance. Current bridge/Q7 source custody, native verification, manuscript,
+  hosted and distribution qualification retain separate final gates.
+
+- Reserve the distinct 2.0.0 scholarly version DOI
+  `10.5281/zenodo.23607007` under the existing manuscript concept. The draft
+  remains unpublished until the final accepted manuscript is uploaded and
+  publication identity is checked. The published 1.6.0 DOI and historical
+  evidence remain unchanged.
+
+- Add the explicit `bridge audit-semantic` operation for retained
+  `gnn-semantic-witness-v2` receipts. Independently parse the supported authored
+  finite or passive linear-Gaussian source subset and replay forward filtering
+  or Kalman/Joseph updates against GNN's path-enumeration or joint-conditioning
+  reference. Check axes, inputs, parameters, conditioning, float64 precision,
+  distribution validity and every recorded comparison. Malformed, incompatible,
+  nonfinite or unavailable evidence refuses explicitly; saved success flags are
+  insufficient.
+
+- Retain source/result/program bytes, current owner hashes, formal references,
+  unmatched assumptions and per-quantity differences separately from pair
+  currency. Supplied result artifacts do not establish that current code
+  executed them, and numerical agreement does not establish universal
+  translation equivalence.
+
+- Add slice-local finite-weight normalization/reconstruction and scalar
+  arbitrary-observation-slope prior-measurement laws, with positive compilation
+  and false-zero-normalizer/omitted-noise controls in a separate compiler/axiom
+  receipt. These do not prove GNN parsing/execution, matrix Gaussian conditioning
+  or universal translation. The sealed topic roster and its semantic
+  dispositions are unchanged by this bounded extension.
+
 
 - Refresh the nine current guidance paths and their inbound callers for
   [#63](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63).
