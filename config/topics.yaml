@@ -6570,20 +6570,32 @@ topics:
   - fep071_twoStage_feedback_strictly_better
   boundary_theorems: []
   semantic_disposition: conditional_proxy
-  nl: 'Finite sophisticated expected-free-energy recursion reoptimizes after each observation-dependent belief update, and
-    a two-stage witness strictly separates feedback from every fixed open-loop second action. Assumption scope: Belief, action,
-    and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon
-    recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated
-    planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion
-    does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel
-    and generative-model specializations provide those stronger contracts separately. Semantic disposition: `conditional_proxy`.
+  nl: 'Finite sophisticated expected-free-energy recursion reoptimizes after each observation-dependent update, and a two-stage
+    witness separates feedback from every fixed open-loop second action. Separately, under the explicit BayesianBeliefModel
+    filter-soundness and full-support premises, the generative-model specialization agrees with the reachable-belief POMDP
+    optimum; this stronger statement does not make the generic primary Bayesian. Assumption scope: Belief, action, and observation
+    carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion
+    with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning.
+    SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not
+    certify Bayes correctness or derive the stage objective from mutual information. Reviewed 2026-10-23 in docs/relations-endpoint-adjudication.md
+    (FORM-S11): FEP.PerceptionActionLoop.bayesSophisticatedValue_eq_pomdpOptimum and bayesRiskAmbiguity_eq_sophisticated provide
+    the separate Bayesian specialization on a finite filter-closed indexed belief family with positive-evidence update soundness,
+    nonempty actions, and full support at every indexed belief. boolBayes_rederives_feedbackWitness re-derives the ordinary
+    Boolean mismatch-cost tree through the filter; it is not a full-support EFE witness. boolKeepPrior_not_bayesian and boolKeepPrior_agreement_fails
+    expose the observation-ignoring update boundary. No null-observation Bayes identity, full-simplex enumeration, continuous-state
+    or infinite-horizon result is claimed. Semantic disposition: `conditional_proxy`.
 
     '
-  assumption_review: Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists.
+  assumption_review: 'Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists.
     The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state
     or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed
     update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information.
-    Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately.
+    Reviewed 2026-10-23 in docs/relations-endpoint-adjudication.md (FORM-S11): FEP.PerceptionActionLoop.bayesSophisticatedValue_eq_pomdpOptimum
+    and bayesRiskAmbiguity_eq_sophisticated provide the separate Bayesian specialization on a finite filter-closed indexed
+    belief family with positive-evidence update soundness, nonempty actions, and full support at every indexed belief. boolBayes_rederives_feedbackWitness
+    re-derives the ordinary Boolean mismatch-cost tree through the filter; it is not a full-support EFE witness. boolKeepPrior_not_bayesian
+    and boolKeepPrior_agreement_fails expose the observation-ignoring update boundary. No null-observation Bayes identity,
+    full-simplex enumeration, continuous-state or infinite-horizon result is claimed.'
   non_vacuity: In the witness, false and true observations choose different continuation actions, and the resulting expected
     cost is strictly below that of either fixed Boolean continuation.
   acceptance_probe: native Lean compile of fep071_sophisticatedEFE_backward_step, fep071_twoStage_feedback_changes_action,

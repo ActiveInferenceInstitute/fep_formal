@@ -149,3 +149,147 @@ assumption, not a consequence of either topic; the fep-007 → fep-028 identity
 fixes the factor and incoming messages; the fep-046 → fep-045 identity covers
 one break only. The relations schema has no "isolated by design" field, and none
 was needed because every topic received a witnessed edge.
+
+
+## FORM-S10: fep-034 → fep-047 conceptual relation (2026-10-23)
+
+Reviewed against source `22dddbdabb32fece60038e08c849f8fd7dca3a9d`, including
+`src/fep_lean/catalogue/bodies/core_active_inference.py` and
+`src/fep_lean/formal/temporal_inference.lean`. Keep the edge **conceptual**;
+this review supplies no cross-endpoint Lean witness or maturity promotion.
+
+The actual fep-034 primary, `fep034_filter_joint_reconstruction`, identifies the
+swapped predicted-state/observation joint through a posterior kernel. Its latent
+carrier is a nonempty standard Borel measurable space; the prior and transition
+and observation kernels are finite. Markov assumptions separately support mass
+preservation/recovery. The selected posterior has probability fibres, but the
+joint reconstruction does not identify a unique pointwise Bayes ratio at null
+observations.
+
+The actual fep-047 primary, `fep047_forward_compose`, is matrix–vector
+composition on `Fin 7` over real weights. It proves an algebraic propagation
+identity, with separate nonnegativity and monotonicity laws. It supplies no
+normalization, conditional kernel, or posterior identification.
+
+For a finite discrete Markov specialization, write `T[y,x] = τ(x,{y})`,
+`p[x] = μ({x})`, and `L_z[y] = κ(y,{z})`. Prediction is `T p`; the
+unnormalized observation-weighted vector is `diag(L_z) T p`. A Bayes vector is
+obtained only after dividing by positive evidence `Σ_y L_z[y](T p)[y]`.
+This is the precise adjacent-layer interpretation of 034→047: matrix propagation
+provides finite unnormalized weights, whereas filtering adds an observation
+model and conditioning. Orientation/transposition, discrete measurable structure,
+Markov row sums, nonnegative inputs, the finite carrier mapping into the actual
+`Fin 7` endpoint, and positive observation evidence are explicit prerequisites
+for a formal specialization. No such endpoint equality is asserted here.
+
+The delivered tree owner makes that interpretation substantive rather than an
+import-based analogy. `PTree.msg_eq_bruteMass` structurally expands the product
+of independent child-subtree sums into the joint configuration sum, and
+`rootBelief_eq_exactMarginal` equates the root-normalized recursion with that
+brute-force ratio on any `Fintype S` (with `DecidableEq S`). Probability-law use
+additionally requires nonnegative potentials and positive total weight; the
+ratio equality itself is algebraic even at a zero denominator. The recursion
+uses unnormalized child messages and normalizes the root. It does not assert an
+additional theorem for arbitrarily rescaled/normalized child messages.
+
+The independent three-node Boolean star enumeration gives `49/74`; adding the
+closing leaf edge produces the cycle marginal `43/62`, different from the naive
+star message product. This is a counterexample to ignoring the closing edge,
+not a theorem that all loopy belief-propagation algorithms fail or diverge.
+The fep-007 one-edge local-update identification is explicit in
+`localUpdate_eq_oneEdge_exactMarginal`. The finite HMM forward/backward owner
+provides chain-style predict/weight/smooth identities; it is not silently an
+already-proved equality between the fep-034 measure-kernel endpoint, the
+fep-047 `Fin 7` operator, and an arbitrary `PTree` encoding.
+
+Disposition: the remaining dated conceptual-review clause is satisfied by this
+bounded source review once this note is independently accepted and maintained.
+Leave both endpoint maturity dispositions and the conceptual tag unchanged.
+Any later formal edge needs an actual qualified endpoint witness and separately
+reviewed relation-seal delta. Actual current-source execution receipts remain a
+separate closeout prerequisite; this read-only review ran no Lean or tests.
+
+
+## FORM-S11: Bayesian specialization of sophisticated planning (2026-10-23)
+
+Independent source review at `22dddbdabb32fece60038e08c849f8fd7dca3a9d`
+examined the actual canonical fep-071 body and the controlled-Markov,
+policy-tree, and perception-action-loop owners. The generic fep-071 primary
+remains a finite-horizon recursion over an authored observation law, update,
+and real stage objective. It has no Bayesian premise. Keep its primary theorem,
+canonical theorem-role lists, and `conditional_proxy` disposition unchanged.
+
+The separate `FEP.PerceptionActionLoop.BayesianBeliefModel` is stronger: one
+`GenerativeModel` supplies transition, likelihood, and preferences; `interpret`
+denotes each finite belief index; and `update_filtered` requires the denoted
+update to equal `filteredBelief` of the transition-predicted state at every
+positive-evidence observation. This premise specifies Bayesian soundness, not
+the desired optimal-value conclusion. It is substantive: the Boolean witness
+constructs it and the observation-ignoring update violates it.
+
+`bayesSophisticatedModel` and `bayesEFEPolicyTreeModel` use that same model and
+update. The former derives both observation law and stage EFE from it. The
+latter additionally needs `FullSupport` for every indexed belief. That support
+means positive predicted state and outcome masses and positive preferences;
+it cannot be dropped for the logarithmic EFE/risk/ambiguity interpretation.
+`bayesEFETree_eq_pomdpTree` identifies the constructed EFE tree with the
+reachable-belief POMDP tree under EFE stage cost. Its definitional proof is
+appropriate because the constructions expose the same fields; it alone is not
+an optimality proof. `bayesSophisticatedValue_eq_optimalTree` inducts over the
+horizon. `reachableBeliefKernel_sum`, `optimalTreeValue_le_beliefFeedback`,
+and `optimalTreeValue_eq_beliefFeedback` then prove respectively the pushforward
+expectation identity, domination of every indexed belief-feedback policy, and
+attainment by the Bellman policy. These yield
+`bayesSophisticatedValue_eq_pomdpOptimum` and, with the full-support EFE identity,
+`bayesRiskAmbiguity_eq_sophisticated`.
+
+The scope is finite horizons and finite indexed families of belief laws closed
+under the required positive-evidence update, with a nonempty action type and
+`DecidableEq Belief` for the kernel/optimum theorem. `bayesReachablePOMDP` sets
+its declared reachable index set to `Finset.univ`; this supplies closure over
+the selected family, not a minimal reachable-set construction, a finite
+enumeration of the whole probability simplex, or continuous/infinite-horizon
+POMDP optimality. Zero-probability observations do not acquire a unique Bayes
+update from this contract. Different indexes may denote the same belief law;
+no injectivity assumption or quotient-identification result is inferred.
+
+The fep-134 re-derivation is genuine: identity transition/likelihood filter a
+fair Boolean prior into an observed point mass. `boolBayes_filtered` establishes
+positive-evidence filter soundness, `boolBayesModel` packages it, and
+`boolBayes_rederives_feedbackWitness` identifies the original feedback witness
+and proves value zero versus one half for either fixed second action. This is
+an ordinary mismatch-cost policy-tree witness. Its point-mass belief states
+fail the all-belief full-support requirement, so it is not presented as a
+nondegenerate full-support instantiation of the EFE/risk/ambiguity theorem.
+
+The refusal witness is likewise concrete. `boolKeepPrior_not_bayesian` proves
+that retaining the fair prior after a positive-probability observation differs
+from the filter. `boolKeepPrior_agreement_fails` proves the same feedback tree
+has value one half under that update, and that the Bayesian tree optimum is
+strictly smaller than the keep-prior optimum. This does not say that arbitrary
+updates destroy the purely algebraic EFE/risk-ambiguity decomposition; it says
+an arbitrary update cannot be identified with the Bayesian model's planning
+problem.
+
+Verdict: the narrowed independent semantic-review criterion is eligible for
+closeout after an accepted maintained note and exact-source execution custody.
+No additional proof gap was found for the stated finite, conditional Bayesian
+specialization and its requested Boolean/refusal witnesses. Do not rewrite the
+generic fep-071 primary as unconditionally Bayesian or promote its maturity.
+Do not insert foundation-qualified names into its canonical theorem-role lists:
+`catalogue/semantics.py` requires those lists to close exactly over declarations
+in the canonical topic body. Foundation results are cited in this review and in
+the conditional assumption review instead. A future stronger primary requires
+its own actual body/statement change and normal coordinated qualification.
+This review ran no Lean or tests and changes no frozen H3/scientific inputs.
+
+
+## FORM-S15: constant-Q forward-difference scope (2026-10-23)
+
+Dated scope note proposed for maintained NessFlow documentation — 2026-10-23
+
+The fep-163 weightedDivergence definition remains an explicit Leibniz decomposition on derivative data. FEP.NessFlow.ForwardDifference now identifies its actual constant-Q specialization, with H=hessF F x, DQ=0, g=gradF F x and dlogp=-g, as -divergence(probCurrent F Γ Q) x / density F x. For C² F and constant real matrices Γ,Q, negative_forwardDiv_tendsto_carrier recovers that value as h tends to zero through nonzero real steps. The identity and limit hold before imposing skew symmetry; nonSkew_gaussian_carrier_one evaluates the carrier to one. Under skew Q the previously proved divergence cancellation yields a zero limit and zero actual carrier. The existing n=2 Gaussian rotating-current witness has nonzero current and zero divergence, and the nonskew witness has nonzero divergence.
+
+This is pointwise consistency of a stated forward-difference discretization of the current divergence. It does not assert an exact finite-step Leibniz rule or exact finite-step conservation: the imported Fin 1 quadratic control explicitly refutes that rule at step one. It supplies no convergence rate, grid stability, boundary treatment, variable-Q/DQ-nonzero recovery, normalized density, stochastic process construction, or time-dependent PDE solution. Γ symmetry/positive-semidefiniteness is unnecessary for this current identity, so the intended physical subclass is included without a stronger physical conclusion. The existing fep-163→fep-025 formal-pairing relation and the original carrier definition are unchanged; no new topic, disposition, or pairing is inferred from this bridge.
+
+This note records mathematical scope, not a substitute for the issue's independent semantic review or current software qualification. The reviewer preparing this note participated in the earlier #98 bridge/integration and qualification work, and therefore does not count this as a disjoint-author approval of that work.

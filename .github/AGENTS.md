@@ -28,3 +28,17 @@ lane never supplies an unexecuted runtime or scientific check.
 permissions, credentials and hosted resource behavior need explicit source
 review. Preserve provider and scientific acceptance boundaries, and obtain fresh
 independent review for shared infrastructure or security changes.
+
+## Versioned native supplement dispatch
+
+For the proposed release supplement, dispatch the same immutable candidate ref
+as the automatic pull-request run, without waiting for it to finish:
+
+```sh
+gh workflow run ci.yml --ref "$CANDIDATE_REF" -f native_supplement_profile=native-api-cli-supplement-v1 -f automatic_run_id="$AUTOMATIC_RUN_ID" -f automatic_run_attempt="$AUTOMATIC_RUN_ATTEMPT" -f supplement_pr_number="$PR_NUMBER" -f run_lean=true -f native_producer_shadow=false
+```
+
+Record the new supplement run/attempt before release joining. Dispatch success
+is not test acceptance. Reject automatic reruns, changed bases/heads/trees or
+unaccepted references rather than substituting an arbitrary prior green run.
+This source proposal needs fresh full qualification before activation.

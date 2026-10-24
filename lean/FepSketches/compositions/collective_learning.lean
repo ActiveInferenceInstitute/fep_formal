@@ -371,4 +371,23 @@ theorem fep120_bayes_factor_update_extends_fep019_prediction
       fep_fep019.FEP019.fep019_priorPredictive_assoc
         firstKernel secondKernel nativePrior⟩
 
+
+/-- A fixed pair of the specified consensus has zero gap, hence equal beliefs. -/
+theorem fep112_consensus_fixed_pair_is_equal
+    {State : Type*} [Fintype State] (left right : FiniteLaw State)
+    (hLeft : consensusLeft left right = left)
+    (hRight : consensusRight left right = right) : left = right := by
+  apply FiniteLaw.ext_mass
+  funext state
+  have contraction := fep_fep112.FEP112.fep112_consensus_half_contraction left right state
+  rw [hLeft, hRight] at contraction
+  have fixed : Function.IsFixedPt fep_fep048.FEP048.fep048_halfUpdate
+      (beliefGap left right state) := by
+    change beliefGap left right state / 2 = beliefGap left right state
+    linarith
+  have zero := fep_fep048.FEP048.fep048_halfUpdate_unique_fixed_point
+    (beliefGap left right state) fixed
+  change |left state - right state| = 0 at zero
+  exact sub_eq_zero.mp (abs_eq_zero.mp zero)
+
 end FEPComposed

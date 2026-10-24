@@ -238,7 +238,12 @@ def _collection_worker(root: Path) -> dict[str, Any]:
     }
 
 
-def collect(root: Path) -> dict[str, Any]:
+def collect(
+    root: Path,
+    *,
+    observation: Path | None = None,
+    protected: tuple[Path, ...] = (),
+) -> dict[str, Any]:
     source_live_node_ids(root)
     before = source_hashes(root)
     result = subprocess.run(
@@ -256,6 +261,20 @@ def collect(root: Path) -> dict[str, Any]:
         timeout=180,
         check=False,
     )
+    if observation is not None:
+        _write(
+            root,
+            observation,
+            {
+                "status": "collection-worker-observed",
+                "returncode": result.returncode,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "validator_python": list(sys.version_info[:3]),
+                "scope": "Raw collection observation, not acceptance.",
+            },
+            protected=protected,
+        )
     _require(result.returncode == 0, "collection worker did not complete successfully")
     data = json.loads(result.stdout)
     _require(data["exit_code"] == 0, "pytest collection failed")
@@ -428,6 +447,26 @@ def coverage_evidence(data: bytes) -> dict[str, Any]:
     }
 
 
+def _validator_python_diagnostic(
+    approved: dict[str, Any], actual: list[int]
+) -> str | None:
+    """Report an exact sealed runtime mismatch without normalizing either input."""
+    sealed = approved.get("validator_python")
+    if (
+        type(sealed) is list
+        and len(sealed) == 3
+        and all(type(value) is int for value in sealed)
+        and sealed == actual
+    ):
+        return None
+    return (
+        f"sealed validator_python={json.dumps(sealed)} differs from "
+        f"actual validator_python={json.dumps(actual)}; use the exact sealed "
+        "interpreter. Fresh collection will still be retained; this diagnostic "
+        "does not establish that runtime is the only difference."
+    )
+
+
 def validate_payloads(
     approved: dict[str, Any],
     fresh: dict[str, Any],
@@ -570,7 +609,29 @@ def main(argv: list[str] | None = None) -> int:
         paths = [_regular_path(root, path) for path in validation_paths[:-1]]
         inputs = [path.read_bytes() for path in paths]
         approved = _load_json(inputs[0])
-        fresh = collect(root)
+        fresh_path = args.output.with_name(args.output.name + ".fresh-collection.json")
+        worker_path = args.output.with_name(
+            args.output.name + ".collection-worker.json"
+        )
+        _output_path(root, fresh_path, protected + (args.output, worker_path))
+        _output_path(root, worker_path, protected + (args.output, fresh_path))
+        version_error = _validator_python_diagnostic(
+            approved, list(sys.version_info[:3])
+        )
+        if version_error is not None:
+            print(version_error, file=sys.stderr)
+        fresh = collect(
+            root,
+            observation=worker_path,
+            protected=protected + (args.output, fresh_path),
+        )
+        _write(
+            root,
+            fresh_path,
+            fresh,
+            protected=protected + (args.output, worker_path),
+        )
+        _require(version_error is None, version_error or "")
         result = validate_payloads(approved, fresh, *inputs[1:])
         _require(
             all(

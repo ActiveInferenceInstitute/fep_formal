@@ -142,4 +142,19 @@ theorem fep148_meanCoordinate_extends_fep103
       fep_fep103.FEP103.fep103_naturalGradient_equivariance
         model jacobian covector⟩
 
+
+/-- Positive Fisher information supplies the variance premise of mean injectivity. -/
+theorem fep146_positive_fisher_supplies_fep148_mean_injectivity
+    {Outcome : Type*} [Fintype Outcome] [Nonempty Outcome]
+    (family : ScalarExponentialFamily Outcome) (lower upper : ℝ)
+    (hFisher : ∀ parameter ∈ Set.Icc lower upper, 0 < family.fisher parameter) :
+    StrictMonoOn family.mean (Set.Icc lower upper) ∧
+      Set.InjOn family.mean (Set.Icc lower upper) := by
+  have hVariance : ∀ parameter ∈ Set.Icc lower upper, 0 < family.variance parameter := by
+    intro parameter hParameter
+    rw [← fep_fep146.FEP146.fep146_fisher_eq_variance family parameter]
+    exact hFisher parameter hParameter
+  exact ⟨fep_fep148.FEP148.fep148_meanParameter_strictMono family hVariance,
+    fep_fep148.FEP148.fep148_meanParameter_injective family hVariance⟩
+
 end FEPComposed

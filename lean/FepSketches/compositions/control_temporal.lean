@@ -368,4 +368,28 @@ theorem fep078_model_average_composes_fep019
       fep_fep019.FEP019.fep019_priorPredictive_assoc
         earlier later nativePrior⟩
 
+
+/-- Backward evidence supplies the forward filter's positive-evidence premise. -/
+theorem fep074_backwardEvidence_supplies_fep072_filter
+    {State Observation : Type*} [Fintype State] [Fintype Observation]
+    (prior : FiniteLaw State) (transition : FiniteKernel State State)
+    (emission : FiniteKernel State Observation) (observation : Observation)
+    (hBackward : 0 < backwardEvidence prior transition emission observation) :
+    ∃ hForward : 0 < forwardEvidence prior transition emission observation,
+      ∀ state, forwardFilter prior transition emission observation hForward state *
+        backwardEvidence prior transition emission observation =
+        forwardPrediction prior transition state * emission state observation := by
+  have evidence := fep_fep074.FEP074.fep074_forward_backward_evidence_agreement
+    prior transition emission observation
+  have hForward : 0 < forwardEvidence prior transition emission observation := by
+    rw [evidence]
+    exact hBackward
+  refine ⟨hForward, ?_⟩
+  intro state
+  calc
+    _ = forwardFilter prior transition emission observation hForward state *
+        forwardEvidence prior transition emission observation := by rw [evidence]
+    _ = _ := fep_fep072.FEP072.fep072_forward_filtering_recursion prior transition
+      emission observation hForward state
+
 end FEPComposed

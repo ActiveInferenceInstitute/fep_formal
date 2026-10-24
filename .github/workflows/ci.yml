@@ -7,8 +7,26 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
+      native_supplement_profile:
+        description: 'Versioned release supplement; disabled retains full debug dispatch'
+        required: false
+        type: choice
+        options: [disabled, native-api-cli-supplement-v1]
+        default: disabled
+      automatic_run_id:
+        description: 'Exact concurrent automatic pull-request run ID (not acceptance)'
+        required: false
+        type: string
+      automatic_run_attempt:
+        description: 'Exact referenced automatic run attempt'
+        required: false
+        type: string
+      supplement_pr_number:
+        description: 'Exact pull request for the automatic reference'
+        required: false
+        type: string
       native_producer_shadow:
-        description: 'Compare the strict in-test producer with the existing CLI; no gate is removed'
+        description: 'Debug-only full manual profile with CLI comparison; not release supplement v1'
         required: false
         type: boolean
         default: false
@@ -39,12 +57,10 @@ concurrency:
   # near-complete lean run loses its minutes) while main runs never cancel,
   # protecting landing evidence.
   #
-  # The dispatch inputs only toggle the lean and render lanes. The python,
-  # static and render-deps jobs are the custody-gate carriers and are NOT toggleable:
-  # every dispatch run still executes pin_audit --check-latest,
-  # check_orphan_compiles, theorem_ref_audit, xref_audit, the frozen-custody
-  # bridge checks, catalogue regeneration checks, mypy/ruff -- a cache hit
-  # can never skip a custody gate, fail-closed.
+  # Automatic PR/main and default debug dispatch retain all original gates.
+  # The explicit supplement profile uses only changes+lean: one fresh producer
+  # and ordinary CLI, joined later to independently accepted full automatic CI.
+  # A reference to an in-progress run is identity only, never release acceptance.
 
 jobs:
   changes:
@@ -63,6 +79,12 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SUPPLEMENT: ${{ inputs.native_supplement_profile }}
+          AUTO_RUN: ${{ inputs.automatic_run_id }}
+          AUTO_ATTEMPT: ${{ inputs.automatic_run_attempt }}
+          SUPPLEMENT_PR: ${{ inputs.supplement_pr_number }}
+          RUN_LEAN: ${{ inputs.run_lean }}
+          DEBUG_SHADOW: ${{ inputs.native_producer_shadow }}
         run: |
           uv run --no-project --python 3.14 python - <<'PY'
           import os
@@ -70,6 +92,16 @@ jobs:
           import subprocess
           from pathlib import Path, PurePosixPath
 
+          profile = os.environ["SUPPLEMENT"]
+          if os.environ["EVENT_NAME"] == "workflow_dispatch":
+              if profile not in {"disabled", "native-api-cli-supplement-v1"}:
+                  raise SystemExit("unknown supplement version")
+              if profile == "native-api-cli-supplement-v1":
+                  if os.environ["RUN_LEAN"] != "true" or os.environ["DEBUG_SHADOW"] != "false":
+                      raise SystemExit("supplement needs native and forbids debug shadow")
+                  if not all(re.fullmatch(r"[1-9][0-9]*", os.environ[k]) for k in
+                             ["AUTO_RUN", "AUTO_ATTEMPT", "SUPPLEMENT_PR"]):
+                      raise SystemExit("exact positive reference identities required")
           docs_only = False
           if os.environ["EVENT_NAME"] == "pull_request":
               base = os.environ["BASE_SHA"]
@@ -132,7 +164,7 @@ jobs:
 
   distribution:
     needs: changes
-    if: needs.changes.outputs.docs_only != 'true'
+    if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
     strategy:
       fail-fast: false
       matrix:
@@ -163,7 +195,7 @@ jobs:
 
   python:
     needs: changes
-    if: needs.changes.outputs.docs_only != 'true'
+    if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
 
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -358,7 +390,7 @@ jobs:
   # xref_audit reports false unresolved references).
   static:
     needs: changes
-    if: needs.changes.outputs.docs_only != 'true'
+    if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -375,7 +407,7 @@ jobs:
         if: ${{ !cancelled() }}
       - run: uv run python docs/xref_audit.py
         if: ${{ !cancelled() }}
-      - run: uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py
+      - run: uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py specs/publication-browser-acceptance/native_supplement.py
         if: ${{ !cancelled() }}
       - run: uv run ruff check .
         if: ${{ !cancelled() }}
@@ -392,7 +424,7 @@ jobs:
   # cannot cross job boundaries, so they stay in the render job itself.
   render-deps:
     needs: changes
-    if: needs.changes.outputs.docs_only != 'true'
+    if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -477,6 +509,7 @@ jobs:
       && needs.render-deps.result == 'success'
       && needs.lean.result == 'success'
       && (github.event_name != 'workflow_dispatch' || inputs.run_render)
+      && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
     runs-on: ubuntu-latest
     timeout-minutes: 150
     steps:
@@ -1001,6 +1034,17 @@ jobs:
         with:
           version: "0.13.0"
           enable-cache: true
+      - name: Freeze concurrent automatic reference for supplement v1
+        if: github.event_name == 'workflow_dispatch' && inputs.native_supplement_profile == 'native-api-cli-supplement-v1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUTO_RUN: ${{ inputs.automatic_run_id }}
+          AUTO_ATTEMPT: ${{ inputs.automatic_run_attempt }}
+          SUPPLEMENT_PR: ${{ inputs.supplement_pr_number }}
+        run: >-
+          python specs/publication-browser-acceptance/native_supplement.py capture
+          --automatic-run-id "$AUTO_RUN" --automatic-run-attempt "$AUTO_ATTEMPT"
+          --pr-number "$SUPPLEMENT_PR"
       - name: Cache the elan toolchain
         uses: actions/cache@v6
         with:
@@ -1018,6 +1062,7 @@ jobs:
       - name: Install Python package
         run: uv sync --locked --extra dev
       - name: Install the SVG rasterizer for private rendering tests
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends librsvg2-bin
       # Only the aggregate's build directory: .lake/packages is materialized
       # fresh by the Mathlib cache fetch below and must not be cached with it.
@@ -1063,6 +1108,7 @@ jobs:
             exit 1
           fi
       - name: Compile orphaned formal modules
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         run: |
           # b5e6a9d reached main with a broken orphaned formal module while
           # the lean job never evaluated the tip (the runs at the adjacent
@@ -1084,6 +1130,7 @@ jobs:
       # skip; FEP_HEAVY_LEAN_PROBES stays off by design. No coverage here:
       # the 89% gate stays with the python job.
       - name: Require current-attempt publication figure producer
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         id: render-figures-barrier
         timeout-minutes: 22
         env:
@@ -1091,15 +1138,18 @@ jobs:
         shell: bash
         run: python specs/publication-browser-acceptance/wait_render_dependencies.py
       - name: Download the publication figure assets the render-deps job produced
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         uses: actions/download-artifact@v8
         with:
           artifact-ids: ${{ steps.render-figures-barrier.outputs.artifact_id }}
           path: .
       - name: Verify Cascadia diagnostic score bounds and false controls
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         run: |
           uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --compile output/cascadia-diagnostic-bounds
           uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --check output/cascadia-diagnostic-bounds
       - name: Run the serial_lean acceptance lane
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         env:
           FEP_LEAN_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
           FEP_LEAN_CI_NATIVE_RECEIPT: "1"
@@ -1114,6 +1164,7 @@ jobs:
             --junitxml=output/serial-lean-acceptance.xml \
             -W always --color=no 2>&1 | tee output/serial-lean-warning-inventory.log
       - name: Validate the strict serial producer and optionally compare the CLI
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         env:
           FEP_LEAN_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
         run: |
@@ -1182,10 +1233,12 @@ jobs:
       # the claim-ready native receipt does not exist yet in a fresh
       # checkout (output/ is gitignored; the verify step writes it).
       - name: Verify the publication render path against the pinned Mathlib
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         run: |
           uv run fep-lean catalogue
           uv run python scripts/render_manuscript.py --check
       - name: Audit formal declarations and axioms
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         run: |
           uv run python scripts/audit_formalisms.py \
             --receipt output/formalism-audit.json
@@ -1211,6 +1264,40 @@ jobs:
       # which is a no-op, not a failure. Only pushes to main save: pull-request
       # caches are scoped to their merge ref, so no later run could restore
       # them, and they only evict main's entries. PRs restore main's newest.
+      - name: Fresh native API and ordinary CLI supplement v1
+        if: github.event_name == 'workflow_dispatch' && inputs.native_supplement_profile == 'native-api-cli-supplement-v1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FEP_LEAN_CI_NATIVE_RECEIPT: "1"
+          FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
+          FEP_LEAN_NATIVE_SHADOW: "0"
+          FEP_LEAN_LIVE_TESTS: "0"
+        shell: bash
+        run: |
+          set -euo pipefail
+          helper=specs/publication-browser-acceptance/native_supplement.py
+          out=output/native-supplement-v1
+          uv run --no-sync python "$helper" start
+          set +e
+          uv run --no-sync pytest tests/test_catalogue_bodies_compile.py::test_all_catalogue_bodies_compile -q -n 0 --no-cov --junitxml=output/native-supplement-producer.xml -W always --color=no > "$out/api.stdout.log" 2> "$out/api.stderr.log"
+          api_rc=$?
+          printf '%s\n' "$api_rc" > "$out/api.exitcode"
+          set -e
+          if [ "$api_rc" -ne 0 ]; then exit "$api_rc"; fi
+          set +e
+          uv run --no-sync fep-lean verify --fail-on-warnings --receipt output/native-supplement-cli.json > "$out/cli.stdout.log" 2> "$out/cli.stderr.log"
+          cli_rc=$?
+          printf '%s\n' "$cli_rc" > "$out/cli.exitcode"
+          set -e
+          if [ "$cli_rc" -ne 0 ]; then exit "$cli_rc"; fi
+          uv run --no-sync python "$helper" finalize --repository-root "$GITHUB_WORKSPACE"
+      - name: Retain supplement v1 original evidence
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.native_supplement_profile == 'native-api-cli-supplement-v1'
+        uses: actions/upload-artifact@v7
+        with:
+          name: native-api-cli-supplement-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          path: output/native-supplement-v1/*
       - name: Record the Lean build cache result
         if: always() && steps.lean-build-restore.outcome != 'skipped'
         env:
@@ -1229,7 +1316,7 @@ jobs:
           path: lean/.lake/build
           key: lean-build-v2-${{ hashFiles('lean/lean-toolchain', 'lean/lakefile.lean', 'lean/lake-manifest.json') }}-${{ github.sha }}
       - uses: actions/upload-artifact@v7
-        if: always()
+        if: always() && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         with:
           name: native-formal-evidence
           if-no-files-found: warn
@@ -1243,7 +1330,7 @@ jobs:
             output/native-entropy-consumer.log
 
       - name: Retain optional native producer shadow evidence
-        if: always() && github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         uses: actions/upload-artifact@v7
         with:
           name: native-producer-shadow-evidence

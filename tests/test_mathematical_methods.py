@@ -45,6 +45,7 @@ from tests._support.fast_relaxation_review import fast_relaxation_theorem_extens
 from tests._support.lean_module_contract import (
     exact_information_review,
     finite_rate_distortion_theorem_extension,
+    next_cohort_review,
     obligation_theorem_extension,
     primary_alignment_theorem_extension,
     proof_performance_theorem_extension,
@@ -206,7 +207,18 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             primary_alignment_theorem_extension(tampered, ROOT)
 
     proof_performance_extension = proof_performance_theorem_extension(declarations)
-    # One representative per changed mathematical owner; all77 pass the positive seal.
+    # Preserve the original 77 exact additions and the seven composed bridges.
+    for selected in sorted(next_cohort_review()["new_theorems"]):
+        assert selected in proof_performance_extension
+        for mutation in ("missing", "moved", "changed_statement"):
+            tampered = dict(declarations)
+            if mutation == "missing":
+                tampered.pop(selected)
+            else:
+                field = "source_owner" if mutation == "moved" else "statement"
+                tampered[selected] = {**tampered[selected], field: "unapproved"}
+            with pytest.raises(AssertionError):
+                proof_performance_theorem_extension(tampered)
     for selected in (
         "FEP.EmpiricalRisk.BetaDensity.normalized_posterior",
         "FEP.GaussianPrecisionConditioning.FinitePrecision.residual_cross_block",

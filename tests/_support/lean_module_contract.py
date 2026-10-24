@@ -184,9 +184,98 @@ _HISTORICAL_PROSE_FIELDS = [
 ]
 
 
+# Closed post-219 authored source delta for historical/static replay only.
+_NEXT_COHORT_REVIEW_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "fixtures/post219_composition_compatibility.json"
+)
+_NEXT_COHORT_REVIEW_SHA256 = (
+    "77c244dbd51b92a7723afc340fd3a4517e5304ecc40ccaf65877f5b9f1c888e6"
+)
+
+
+def next_cohort_review() -> dict:
+    raw = _NEXT_COHORT_REVIEW_PATH.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == _NEXT_COHORT_REVIEW_SHA256
+    review = json.loads(raw)
+    assert (
+        review["schema_version"] == 1 and review["historical_records_unchanged"] is True
+    )
+    assert len(review["maturity_changes"]) == 1
+    assert review["maturity_changes"][0]["after"]["id"] == "fep-071"
+    assert len(review["relation_changes"]) == 9
+    assert sum(row["before"] is None for row in review["relation_changes"]) == 6
+    assert len(review["new_theorems"]) == 7
+    return review
+
+
+def next_cohort_maturity_raw(raw: bytes) -> bytes:
+    """Undo only the full authenticated new #071 prose epoch before old raw seals."""
+    review = next_cohort_review()
+    if hashlib.sha256(raw).hexdigest() != review["maturity_after_sha256"]:
+        return raw
+    for change in review["maturity_raw_changes"]:
+        after, before = change["after"].encode(), change["before"].encode()
+        assert after and raw.count(after) == 1
+        raw = raw.replace(after, before, 1)
+    assert hashlib.sha256(raw).hexdigest() == review["maturity_before_sha256"]
+    return raw
+
+
+def reverse_next_cohort_rows(rows: list[dict], section: str) -> list[dict]:
+    """Exact row transitions only; every unrelated byte/field reaches original seals."""
+    restored = copy.deepcopy(rows)
+    review = next_cohort_review()
+    if section == "topics":
+        assert sum(row.get("id") == "fep-071" for row in restored) <= 1
+        change = review["maturity_changes"][0]
+        for index, row in enumerate(restored):
+            if row == change["after"]:
+                restored[index] = copy.deepcopy(change["before"])
+        return restored
+    if section != "edges":
+        return restored
+    pair = lambda row: (row["source"], row["target"])
+    changes = review["relation_changes"]
+    keys = [pair(row) for row in restored]
+    assert len(keys) == len(set(keys))
+    additions = {
+        pair(change["after"]) for change in changes if change["before"] is None
+    }
+    active = bool(additions.intersection(keys)) or any(
+        change["before"] is not None and change["after"] in restored
+        for change in changes
+    )
+    if not active:
+        return restored
+    by_pair = {pair(row): row for row in restored}
+    for change in changes:
+        key = pair(change["after"])
+        assert key in by_pair and by_pair[key] == change["after"]
+    replacements = {pair(change["after"]): change["before"] for change in changes}
+    return [
+        copy.deepcopy(replacements.get(pair(row), row))
+        for row in restored
+        if pair(row) not in additions
+    ]
+
+
+def next_cohort_theorem_extension(declarations: dict) -> set[str]:
+    review = next_cohort_review()
+    for name, expected in review["new_theorems"].items():
+        assert name in declarations
+        row = declarations[name]
+        assert row["source_owner"] == expected["source_owner"]
+        assert (
+            hashlib.sha256(row["statement"].encode()).hexdigest()
+            == expected["statement_sha256"]
+        )
+    return set(review["new_theorems"])
+
+
 def historical_prose_rows(rows: list[dict], section: str) -> list[dict]:
     """Undo enumerated exact field values; other changes reach original seals."""
-    restored = copy.deepcopy(rows)
+    restored = reverse_next_cohort_rows(rows, section)
     for scope, identity, field, historical, current in _HISTORICAL_PROSE_FIELDS:
         if scope != section:
             continue
@@ -200,7 +289,8 @@ def historical_prose_rows(rows: list[dict], section: str) -> list[dict]:
 
 
 def historical_maturity_prose_bytes(raw: bytes) -> bytes:
-    """Invert only the three complete known current American prose lines."""
+    """Invert the exact reviewed #071 prose, then three known American prose lines."""
+    raw = next_cohort_maturity_raw(raw)
     if (
         hashlib.sha256(raw).hexdigest()
         != "bedaf97e851aebdfc5cf8acd5dc0653f47cfddaf4a042f1b025a5e4a6afc59d1"
@@ -276,7 +366,7 @@ def exposed_module_body(source: str, imports: tuple[str, ...]) -> str:
     """Extract a verified dependency body for inlining in one outer module.
 
     The caller retains the outer module's imports and exposed public section.
-    Topic bodies use legacy imports and are deliberately outside this helper.
+    Topic bodies use their own import contract and are outside this helper.
     """
     assert_exposed_module_header(source, imports)
     return source.removeprefix(_header(imports))
@@ -923,4 +1013,6 @@ def proof_performance_theorem_extension(declarations: dict) -> set[str]:
             hashlib.sha256(declarations[name]["statement"].encode()).hexdigest()
             == digest
         )
-    return set(_PROOF_PERFORMANCE_THEOREM_EXTENSION)
+    return set(_PROOF_PERFORMANCE_THEOREM_EXTENSION) | next_cohort_theorem_extension(
+        declarations
+    )
