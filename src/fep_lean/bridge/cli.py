@@ -8,6 +8,7 @@ from pathlib import Path
 
 from fep_lean._paths import _emit_failure
 from fep_lean.bridge import operations
+from fep_lean.bridge.custody import write_json
 
 
 def add_arguments(parser: argparse.ArgumentParser) -> None:
@@ -20,6 +21,7 @@ def add_arguments(parser: argparse.ArgumentParser) -> None:
             "certify",
             "verify-certificate",
             "verify-document",
+            "audit-semantic",
         ),
     )
     parser.add_argument(
@@ -41,7 +43,7 @@ def add_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--results",
         type=Path,
-        help="explicit executed-results JSON under the fep_lean checkout",
+        help="explicit result JSON; audit-semantic accepts a self-contained GNN v2 witness",
     )
     parser.add_argument(
         "--receipt",
@@ -102,6 +104,23 @@ def run(root: Path, args: argparse.Namespace) -> int:
                 root, gnn, operations.read_object(args.receipt)
             )
             result = {"status": "error" if errors else "ok", "errors": errors}
+        elif args.operation == "audit-semantic":
+            if args.results is None:
+                raise ValueError("audit-semantic requires --results")
+            if args.receipt is not None and (
+                args.receipt.resolve() == args.results.resolve()
+                or (args.receipt.exists() and args.receipt.samefile(args.results))
+            ):
+                raise ValueError(
+                    "audit receipt must not overwrite or alias its input witness"
+                )
+            receipt = operations.semantic_witness_audit(root, gnn, args.results)
+            if args.receipt is not None:
+                write_json(args.receipt, receipt)
+            result = {
+                "status": "ok" if receipt["status"] == "passed" else "error",
+                "receipt": receipt,
+            }
         else:
             if args.document is None:
                 raise ValueError("verify-document requires --document")
@@ -118,5 +137,12 @@ def run(root: Path, args: argparse.Namespace) -> int:
             return _emit_failure("bridge operation refused", result=result)
         print(json.dumps(result, indent=2, allow_nan=False))
         return 0 if result["status"] == "ok" else 1
-    except (OSError, ValueError, KeyError, TypeError) as exc:
+    except (
+        OSError,
+        ValueError,
+        KeyError,
+        TypeError,
+        RecursionError,
+        OverflowError,
+    ) as exc:
         return _emit_failure(str(exc))

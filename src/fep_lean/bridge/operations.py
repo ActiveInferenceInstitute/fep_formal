@@ -3,12 +3,19 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 from pathlib import Path
 from types import ModuleType
 from typing import Any
 
-from fep_lean.bridge.certificates import TOLERANCE, compare, render_markdown
+from fep_lean.bridge.certificates import (
+    TOLERANCE,
+    _semantic_json,
+    audit_semantic_witness,
+    compare,
+    render_markdown,
+)
 from fep_lean.bridge.custody import (
     FRESH,
     binding_digest,
@@ -312,6 +319,72 @@ def emit_certificate(path: Path, receipt: dict[str, Any]) -> None:
             receipt["all_certificates_pass"],
         ),
     )
+
+
+def semantic_witness_audit(root: Path, gnn: Path, results: Path) -> dict[str, Any]:
+    """Bind an independent numerical replay to both live owner byte sets.
+
+    Historical pins are inspected separately. A stale historical pair does not
+    forbid an explicit diagnostic against new source bytes, and this operation
+    never refreshes that pin or asserts current native/formal acceptance.
+    """
+    root, gnn, results = root.resolve(), gnn.resolve(), results.resolve()
+    content = _semantic_receipt_bytes(results)
+    witness = _semantic_json(content.decode("utf-8"))
+    if not isinstance(witness, dict):
+        raise TypeError("semantic audit input must be a JSON object")
+
+    def live(checkout: Path, repository: str) -> dict[str, Any]:
+        owners = fingerprint(checkout, owner_roster(checkout, repository))
+        dirty = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=normal"],
+            cwd=checkout,
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).stdout.splitlines()
+        return {
+            "revision": _head(checkout),
+            "owners_sha256": binding_digest(owners),
+            "dirty_paths": dirty,
+        }
+
+    before = {"fep": live(root, "fep_lean"), "gnn": live(gnn, "gnn")}
+    audit = audit_semantic_witness(witness, root)
+    pin_errors: list[str] = []
+    try:
+        pin_errors = check_sources(root, gnn, read_object(root / PIN))
+    except (ValueError, TypeError, KeyError, OSError) as exc:
+        pin_errors.append(str(exc))
+    audit["pair_evidence"] = {
+        "status": "unavailable" if pin_errors else "source_custody_current",
+        "current_pair_synchronized": False,
+        "native_claim_ready": False,
+        "errors": pin_errors,
+        "boundary": "Source custody and current native qualification are independent of this numerical audit.",
+    }
+    after = {"fep": live(root, "fep_lean"), "gnn": live(gnn, "gnn")}
+    if before != after or content != _semantic_receipt_bytes(results):
+        audit["status"] = "refused"
+        audit["errors"].append(
+            "live owners, revisions or result artifact changed during semantic audit"
+        )
+    audit["live_sources"] = before
+    audit["input_artifact"] = {"path": str(results), "sha256": sha256_bytes(content)}
+    return audit
+
+
+def _semantic_receipt_bytes(path: Path) -> bytes:
+    """Bound a new audit input before reading; recheck the same bound at bookend."""
+    limit = 96 * 1024 * 1024
+    with path.open("rb") as stream:
+        if os.fstat(stream.fileno()).st_size > limit:
+            raise ValueError("semantic audit receipt byte budget exceeded")
+        content = stream.read(limit + 1)
+    if len(content) > limit:
+        raise ValueError("semantic audit receipt byte budget exceeded")
+    return content
 
 
 # ---------------------------------------------------------------------------

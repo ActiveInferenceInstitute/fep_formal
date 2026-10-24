@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Check the release gate: one version/date, a changelog section, green hosted CI.
 
-The gate is deliberately short (see release.md). Research and evidence
-lanes (H3 study, capture custody, installed-wheel matrix, provider runs) are
-reported in release notes; they do not block a versioned release.
+The gate is deliberately short (see release.md). Hosted acceptance includes
+every required installed-wheel matrix cell. Research and evidence lanes
+(H3 study, capture custody, optional provider runs) retain their own acceptance
+probes and are reported in release notes.
 """
 
 from __future__ import annotations
@@ -27,8 +28,8 @@ WORKFLOW = "ci.yml"
 #: conclusion alone is not enough.
 REQUIRED_JOBS = ("python", "static", "lean", "render-deps", "render")
 DISTRIBUTION_PREFIX = "distribution ("
-# Pull requests run a reduced matrix; the release gate reads the push run on
-# main, which must carry every operating system and interpreter cell.
+# Automatic code PRs, main pushes and manual full runs use the full matrix.
+# The release gate requires every operating system and interpreter cell.
 DISTRIBUTION_CELLS = tuple(
     f"distribution ({os}, {python})"
     for os in ("ubuntu-latest", "macos-latest", "windows-latest")

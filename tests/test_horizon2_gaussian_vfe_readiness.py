@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 
+from fep_lean import __version__
 from fep_lean.formal.manifest import FORMAL_MODULES
 from fep_lean.lean_source import lean_code_without_comments
 from tests._support.h2_r0_custody import (
@@ -896,6 +897,10 @@ def test_historical_metadata_preserves_only_explicit_release_profiles(
     live = bridge_dev_metadata_predecessor(live)
     recorded_token = RELEASE_METADATA_REPLACEMENTS["pyproject.toml"][1].encode()
     current_token = recorded_token.replace(b'"1.4.0"', b'"1.6.0"')
+    # Keep these exact historical profile digests in their recorded 1.6.0 epoch.
+    live_token = recorded_token.replace(b'"1.4.0"', f'"{__version__}"'.encode())
+    assert live.count(live_token) == 1
+    live = live.replace(live_token, current_token, 1)
     if profile == "predecessor":
         uv_pin = b'\n[tool.uv]\nrequired-version = "==0.13.0"\n'
         assert historical.count(b"\n[project]\n") == 1
@@ -1040,9 +1045,13 @@ def test_historical_custody_control_refuses_source_drift_before_writing(
         if tamper == "metadata_dependency":
             data = data.replace(b'"numpy>=1.24.0"', b'"numpy>=1.25.0"', 1)
         elif tamper == "metadata_unknown_release":
-            data = data.replace(b'version = "1.6.0"', b'version = "9.9.9"', 1)
+            current = f'version = "{__version__}"'.encode()
+            assert data.count(current) == 1
+            data = data.replace(current, b'version = "9.9.9"', 1)
         elif tamper == "metadata_duplicate_root":
-            data += b'\n[project]\nname = "fep_lean"\nversion = "1.6.0"\n'
+            data += (
+                f'\n[project]\nname = "fep_lean"\nversion = "{__version__}"\n'.encode()
+            )
         else:
             data = data.replace(
                 b'required-version = "==0.13.0"', b'required-version = "==0.13.1"', 1

@@ -622,6 +622,7 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
         VALIDATOR_PATH,
         validate_h2_r0_custody,
     )
+    from tests._support.release_lineage import LATER_RELEASE_VERSIONS
 
     assert destination.is_dir() and not destination.is_symlink()
     assert not any(destination.iterdir()), "historical custody root must be empty"
@@ -663,10 +664,14 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
             data = (project_root / relative).read_bytes()
             if relative == "uv.lock":
                 data = bridge_dev_lock_predecessor(data)
-                current = b'[[package]]\nname = "fep-lean"\nversion = "1.6.0"\n'
-                historical = current.replace(b'"1.6.0"', b'"1.4.0"')
-                assert data.count(current) == 1
-                data = data.replace(current, historical, 1)
+                anchor = b'[[package]]\nname = "fep-lean"\nversion = '
+                tokens = [
+                    anchor + f'"{version}"\n'.encode()
+                    for version in ("1.4.0", *LATER_RELEASE_VERSIONS)
+                ]
+                present = [token for token in tokens if token in data]
+                assert len(present) == 1 and data.count(present[0]) == 1
+                data = data.replace(present[0], anchor + b'"1.4.0"\n', 1)
             elif canonical in _CARRIER_IMPORT_ADDITIONS:
                 data = historical_carrier_bytes(canonical, data)
         assert hashlib.sha256(data).hexdigest() == digest, relative
