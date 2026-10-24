@@ -235,6 +235,7 @@ boundaries. The production-capture executor is unchanged.
 
 ```bash
 uv lock --check && uv pip check
+uv run pytest tests/test_composition_source_inventory.py -q -n 0 --no-cov
 uv run python scripts/_maint_build_topics_catalogue.py --check
 uv run python scripts/_maint_build_fep_all_lean.py --check
 uv run python scripts/_maint_build_formal_modules.py --check

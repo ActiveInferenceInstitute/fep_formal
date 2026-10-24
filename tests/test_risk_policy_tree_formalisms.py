@@ -10,12 +10,8 @@ from typing import TypedDict, cast
 
 import pytest
 
-from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
-from tests._support.lean_module_contract import (
-    assert_exposed_module_header,
-    topic_namespace_owner_modules,
-)
+from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -340,28 +336,6 @@ def test_promoted_spikes_print_exact_keystone_axioms(resource: str) -> None:
     assert (
         tuple(re.findall(r"(?m)^#print axioms ([A-Za-z0-9_.']+)$", source))
         == (AXIOM_PROBES[resource])
-    )
-    assert FORBIDDEN_FORMAL_TOKENS.search(source) is None
-
-
-@pytest.mark.parametrize("resource", tuple(COMPOSITION_BRIDGES))
-def test_composition_leaves_pin_exact_bridge_names_and_imports(resource: str) -> None:
-    source = (COMPOSITIONS_ROOT / resource).read_text(encoding="utf-8")
-    foundation = resource.removesuffix("s.lean")
-    if resource == "risk_calibration.lean":
-        foundation = "empirical_risk"
-
-    owners = topic_namespace_owner_modules(
-        PROJECT_ROOT / "lean/FepSketches/fep_all.lean"
-    )
-    code = lean_code_without_comments(source)
-    namespaces = set(re.findall(r"\bfep_fep\d+\b", code))
-    families = tuple(sorted({owners[namespace] for namespace in namespaces}))
-    assert families
-    assert "FepSketches.fep_all" not in code
-    assert_exposed_module_header(source, (*families, f"FepSketches.{foundation}"))
-    assert tuple(re.findall(r"(?m)^theorem ([A-Za-z0-9_']+)", source)) == tuple(
-        COMPOSITION_BRIDGES[resource]
     )
     assert FORBIDDEN_FORMAL_TOKENS.search(source) is None
 

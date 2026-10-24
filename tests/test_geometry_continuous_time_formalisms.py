@@ -15,12 +15,7 @@ from fep_lean.catalogue.bodies.continuous_time_thermodynamics import (
 from fep_lean.catalogue.bodies.exponential_family_geometry import (
     BODIES as EXPONENTIAL_FAMILY_BODIES,
 )
-from fep_lean.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
-from tests._support.lean_module_contract import (
-    assert_exposed_module_header,
-    topic_namespace_owner_modules,
-)
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -531,60 +526,6 @@ def test_slice04_theorem_names_do_not_overclaim_scope() -> None:
         r"(?:^|_)(?:manifold|curvature|sde|fokker|planck|pde)(?:_|$)", re.IGNORECASE
     )
     assert all(not forbidden_token.search(name) for name in theorem_names)
-
-
-@pytest.mark.parametrize(
-    ("resource", "foundation", "bridges"),
-    (
-        (
-            "exponential_family.lean",
-            "FepSketches.exponential_family",
-            COMPOSITION_BRIDGES["exponential_family.lean"],
-        ),
-        (
-            "continuous_time.lean",
-            "FepSketches.continuous_time_markov",
-            COMPOSITION_BRIDGES["continuous_time.lean"],
-        ),
-    ),
-)
-def test_slice04_composition_leaves_pin_exact_bridges_and_endpoint_proofs(
-    resource: str,
-    foundation: str,
-    bridges: tuple[tuple[str, str, str], ...],
-) -> None:
-    source = (COMPOSITIONS_ROOT / resource).read_text(encoding="utf-8")
-    owners = topic_namespace_owner_modules(
-        PROJECT_ROOT / "lean/FepSketches/fep_all.lean"
-    )
-    code = lean_code_without_comments(source)
-    namespaces = set(re.findall(r"\bfep_fep\d+\b", code))
-    families = tuple(sorted({owners[namespace] for namespace in namespaces}))
-    assert families
-    assert "FepSketches.fep_all" not in code
-    assert_exposed_module_header(source, (*families, foundation))
-    assert "namespace FEPComposed\n" in source
-    assert source.rstrip().endswith("end FEPComposed")
-    assert len(bridges) == 7
-    assert tuple(re.findall(r"(?m)^theorem\s+([A-Za-z0-9_]+)", source)) == tuple(
-        bridge[0] for bridge in bridges
-    )
-
-    for index, (name, new_ref, endpoint_ref) in enumerate(bridges):
-        start = source.index(f"theorem {name}")
-        end = (
-            source.index(f"theorem {bridges[index + 1][0]}")
-            if index + 1 < len(bridges)
-            else source.index("end FEPComposed")
-        )
-        declaration = source[start:end]
-        statement, proof = declaration.split(":= by", maxsplit=1)
-        assert "∧" in statement, name
-        assert new_ref in proof, name
-        assert endpoint_ref in proof, name
-
-    assert not FORBIDDEN_DECLARATIONS.search(source)
-    assert not FORBIDDEN_PROOFS.search(source)
 
 
 @pytest.mark.skipif(

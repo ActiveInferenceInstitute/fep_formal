@@ -400,6 +400,8 @@ jobs:
           version: "0.13.0"
           enable-cache: true
       - run: uv sync --locked --extra dev
+      - name: Check composition source inventory
+        run: uv run pytest tests/test_composition_source_inventory.py -q -n 0 --no-cov
       - run: uv run fep-lean catalogue
       - run: uv run python docs/check_links.py --strict --include-root
         if: ${{ !cancelled() }}
