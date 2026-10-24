@@ -1,0 +1,16 @@
+{
+  "fep_authored_revision": "7d89beb8378d16bbf4c3711e8149f9f244048a34",
+  "focused_cases": 413,
+  "gnn_artifact_revision": "139f5c2f6430ee31390c94e0a30090efabcc46b3",
+  "historical_receipts_unchanged": true,
+  "lean_probe_sha256": "54730472f92737bce66581d713c249f7f655905992285b5c8eb153dea4e7358a",
+  "native_controls": 3,
+  "native_receipt_sha256": "f874397ca076b24c2c3712cf1dc35d1dff56c5bdaf7e873f3dec3e580bf7ffed",
+  "package_version": "2.1.0",
+  "runner_sha256": "07f34e713d5dff0addf17af90c45eb2cab925ee18a0d6b5b34b98a744519c8d0",
+  "runtime_execution_verified": false,
+  "schema": "q7-current-source-observation-v1",
+  "scope": "Static binary64 coefficient approximation and real-arithmetic prediction bounds only; no generated-runner/SDE execution or universal translation proof.",
+  "status": "passed",
+  "universal_equivalence": false
+}
