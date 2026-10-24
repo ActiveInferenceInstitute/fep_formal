@@ -290,8 +290,8 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
     (project_root / "CITATION.cff").write_text(
         "cff-version: 1.2.0\n"
         "doi: 10.5281/zenodo.23196891\n"
-        'version: "2.0.0"\n'
-        'date-released: "2026-10-23"\n'
+        'version: "2.0.1"\n'
+        'date-released: "2026-10-24"\n'
         "repository-code: https://github.com/ActiveInferenceInstitute/fep_formal\n"
         "url: https://github.com/ActiveInferenceInstitute/fep_formal\n"
         "license: CC-BY-4.0\n"
@@ -313,8 +313,8 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
     )
     (project_root / "manuscript/config.yaml").write_text(
         "paper:\n"
-        '  version: "2.0.0"\n'
-        '  date: "2026-10-23"\n'
+        '  version: "2.0.1"\n'
+        '  date: "2026-10-24"\n'
         "publication:\n"
         "  doi: 10.5281/zenodo.23607007\n"
         "  journal: Active Inference Journal\n"
@@ -325,7 +325,7 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
     (project_root / "pyproject.toml").write_text(
         '[build-system]\nrequires = ["setuptools>=77.0.3"]\n'
         'build-backend = "setuptools.build_meta"\n\n'
-        '[project]\nname = "fixture"\nversion = "2.0.0"\n'
+        '[project]\nname = "fixture"\nversion = "2.0.1"\n'
         'readme = "README.md"\n'
         'authors = [{ name = "Daniel Ari Friedman", email = "daniel@activeinference.institute" }]\n'
         'license = "CC-BY-4.0"\n',
@@ -339,17 +339,17 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
             '"Concept DOI" = "https://doi.org/10.5281/zenodo.19699233"\n'
         )
     (project_root / "src/fep_lean/__init__.py").write_text(
-        '__version__ = "2.0.0"\n', encoding="utf-8"
+        '__version__ = "2.0.1"\n', encoding="utf-8"
     )
     (project_root / "config/settings.yaml").write_text(
-        'project:\n  version: "2.0.0"\n', encoding="utf-8"
+        'project:\n  version: "2.0.1"\n', encoding="utf-8"
     )
     (project_root / ".aii/config.yaml").write_text(
         "meta:\n"
-        "  updated: '2026-10-23'\n"
+        "  updated: '2026-10-24'\n"
         "repo:\n"
         "  full_name: ActiveInferenceInstitute/fep_formal\n"
-        "  description: 'Release v2.0.0 (2026-10-23); concept DOI 10.5281/zenodo.19699233'\n"
+        "  description: 'Release v2.0.1 (2026-10-24); concept DOI 10.5281/zenodo.19699233'\n"
         "ecosystem:\n"
         "  links:\n"
         "    github: https://github.com/ActiveInferenceInstitute/fep_formal\n"

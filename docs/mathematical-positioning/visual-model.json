@@ -10613,7 +10613,7 @@
       "title": "Preference matching and predictive risk select different forecasts"
     }
   ],
-  "package_version": "2.0.0",
+  "package_version": "2.0.1",
   "relations": [
     {
       "kind": "formal",
@@ -11670,7 +11670,7 @@
   "schema_version": 1,
   "source_origin": "checkout",
   "source_sha256": {
-    "__init__.py": "de6c3c4f4fd9c033b388ac49eb5ccb9c130854dad734f8cd1dd371e43ea39466",
+    "__init__.py": "d7fe2e6f37097f7a178a0ebc777d40c120f7707aa07a0d8c5627a669a23b49fb",
     "catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
     "catalogue/bodies/closed_loop_policy_trees.py": "66e4396290f1128c0f35b5b9211469a426ebaf4d0e13790467c431251c17780b",
     "catalogue/bodies/collective_inference.py": "fa0b3a94bb49d43a310da37c324e5452f44141cc009c44d487b9ebef78690e80",

@@ -16,7 +16,7 @@ Subpackages
 
 from __future__ import annotations
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 
 # Capture the installed/source package before importing any subpackage. The
 # mathematical methods use this immutable identity to reject edited sources

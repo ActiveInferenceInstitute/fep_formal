@@ -1,11 +1,11 @@
 # AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
 meta:
-  updated: '2026-10-23'
+  updated: '2026-10-24'
 repo:
   name: fep_lean
   slug: fep-lean
   full_name: ActiveInferenceInstitute/fep_formal
-  description: 'Release v2.0.0 preparation (2026-10-23; candidate, not tagged) · Concept DOI [10.5281/zenodo.19699233](https://doi.org/10.5281/zenodo.19699233) · License CC BY 4.0. Standalone 168-topic Free Energy Principle / Active Inference Lean 4 catalogue.'
+  description: 'Release v2.0.1 implementation (2026-10-24) · Concept DOI [10.5281/zenodo.19699233](https://doi.org/10.5281/zenodo.19699233) · License CC BY 4.0. Standalone 168-topic Free Energy Principle / Active Inference Lean 4 catalogue.'
 institute:
   category: research-software
   steward: Active Inference Institute

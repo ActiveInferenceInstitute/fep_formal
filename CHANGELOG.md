@@ -1,3 +1,17 @@
+## 2.0.1 — 2026-10-24 — Current-source maintenance successor
+
+- Prepare the coordinated FEP_Formal 2.0.1 / GNN 5.0.1 maintenance release.
+  GNN's unused bibliography URL produced a retained HTTP 404 in the 5.0.0 tag
+  documentation gate; the prior tags and unpublished preparation artifacts
+  remain immutable at their original source epochs.
+- Advance only release identity and current-source custody. Numerical,
+  catalogue, theorem, compiler and proof boundaries are unchanged. Fresh
+  source-bound bridge/Q7, native, manuscript, hosted and distribution gates
+  remain required before the successor is described as qualified.
+- Retain the reserved unpublished scholarly DOI `10.5281/zenodo.23607007`.
+  Its owner draft metadata and final files must match version 2.0.1 before
+  publication; no published prior manuscript DOI is reused.
+
 ## 2.0.0 — 2026-10-23 — Source-bound semantics and coordinated GNN release
 
 - Prepare the coordinated FEP_Formal 2.0.0 / GNN 5.0.0 release. Version and
