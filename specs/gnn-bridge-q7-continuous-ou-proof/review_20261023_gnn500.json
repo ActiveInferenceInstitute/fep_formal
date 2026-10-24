@@ -1,0 +1,44 @@
+{
+  "schema": "q7-current-source-observation-v1",
+  "status": "passed",
+  "fep_authored_revision": "c85160a0bb740b86e02cd35210f4b0d7d3bbefa4",
+  "gnn_artifact_revision": "15b4bbe2cab77753981673f69bcbde0d2bc99203",
+  "runner_sha256": "07f34e713d5dff0addf17af90c45eb2cab925ee18a0d6b5b34b98a744519c8d0",
+  "scaffold_sha256": "0a7efe879324b4234283615fe2caf92c473060a2c6c8228e32c1a3c6b41fdf25",
+  "canonical_bytes": 63595,
+  "lean_probe_unchanged": true,
+  "all_six_literals_unchanged": true,
+  "five_actual_runtime_versions": [
+    [
+      3,
+      10,
+      22
+    ],
+    [
+      3,
+      11,
+      17
+    ],
+    [
+      3,
+      12,
+      15
+    ],
+    [
+      3,
+      13,
+      17
+    ],
+    [
+      3,
+      14,
+      9
+    ]
+  ],
+  "focused_cases": 413,
+  "native_controls": 3,
+  "native_receipt_sha256": "48a397798a2c74f439ce42a8c5861b4e6d203ebea380bd7d5a5ec078e62aa6e5",
+  "historical_receipts_unchanged": true,
+  "runtime_execution_verified": false,
+  "scope": "Static binary64 coefficient approximation and real-arithmetic prediction bounds; no generated runner/SDE execution or universal equivalence claim."
+}

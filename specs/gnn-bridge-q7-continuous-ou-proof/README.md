@@ -3,9 +3,9 @@
 This slice connects a canonical GNN JAX render of the P4b scalar OU document
 to exact real one-step coefficients and bounds the error of its six embedded
 binary64 parameters. The independently reviewed
-[current source-pair capture](../comprehensive-science-improvement/evidence/public-q7-current-source-20261005-r1/summary.json)
+[2026-10-05 source-pair capture](../comprehensive-science-improvement/evidence/public-q7-current-source-20261005-r1/summary.json)
 passed all twelve stages and four closing checks on 2026-10-05. Its separate
-native receipt binds the current 291-input roster and covers static coefficient
+native receipt binds the 291-input roster of that epoch and covers static coefficient
 statements; generated-runner execution remains unverified.
 
 The [proof report](REPORT.md) distinguishes this capture from the retained
@@ -225,3 +225,35 @@ freshly regenerated again. All twelve standard-axiom reports pass without
 warnings/admissions. Earlier receipts retain their own identities. This remains
 static coefficient/real-arithmetic evidence and supplies no generated-runner
 execution or general import-safety proof.
+
+## 2026-10-23 GNN 5.0 metadata and source epoch
+
+The [new source-pair observation](review_20261023_gnn500.json) records the
+FEP_Formal 2.0 authored source and GNN
+`15b4bbe2cab77753981673f69bcbde0d2bc99203`. Canonical bridge pinning, both
+emissions, render provenance, generated scaffold and probe freshness were
+renewed through their owners. Historical receipts retain their original bytes.
+
+The GNN runner adds fourteen result metadata fields and a `hashlib` import.
+Independent AST review found the six parameter tables and all existing
+filtering, Joseph-update, control, sampling and timing expressions unchanged.
+The new fields report schema, parameters, axes, conditioning, precision,
+interpreter/library versions and the script digest. Reading that digest can
+refuse an unreadable script and contributes to execution overhead; this review
+makes no speed claim. The old scaffold correctly refused the new runner before
+reviewed admission. The new canonical scaffold digest is
+`0a7efe879324b4234283615fe2caf92c473060a2c6c8228e32c1a3c6b41fdf25`.
+No serializer rule, numerical tolerance or scientific assumption was relaxed.
+
+All five real Python parser/serializer observations agree; the validator still
+requires CPython 3.14. There were 413 passing extraction/custody controls and
+three passing native positive/wrong-F/wrong-Q controls. A new typed native
+receipt passed compilation and independent retained validation on Lean 4.35.0
+with the pinned Mathlib revision. Its exact hash is retained in the public
+observation; the typed receipt stays in the operator evidence set. The public
+observation does not replace that validator. The Lean probe is byte-identical.
+
+This evidence remains static binary64 coefficient and real-arithmetic bounds.
+`runtime_execution_verified` is false. Separate GNN numerical filtering tests
+do not turn this certificate into generated-runner, SDE, multidimensional
+filtering or universal translation equivalence evidence.
