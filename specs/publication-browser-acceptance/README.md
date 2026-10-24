@@ -68,3 +68,38 @@ or network access on import. CI invokes it with its actual GitHub environment.
 The canonical required checks in `AGENTS.md` cover this slice with Ruff and
 format checks and explicitly include the helper in strict mypy coverage. Tests
 mock the API boundary; a later actual hosted run remains required before rollout.
+
+## Native API/CLI supplement v1 source proposal
+
+`native_supplement.py` belongs to this CI slice; it is not a production formal
+owner. The explicit dispatch profile runs existing pinned setup, Mathlib cache,
+warning-free aggregate, one strict in-test API producer and the ordinary CLI.
+It skips duplicate orphan, Cascadia, full-serial, Python, wheel and render sweeps
+only in this supplement. Those checks remain mandatory in the exact accepted
+full automatic PR and fresh main profiles. The existing manual debug profile
+remains separate and cannot silently count as supplement v1.
+
+Capture the concurrent automatic run/attempt, PR/base/head, synthetic ordered
+parents/tree and workflow bytes before native execution. Current Actions state
+is not acceptance. The versioned original artifact contains raw API/CLI,
+producer intent/invocation, exactly-one-case JUnit, four command logs/two exit
+codes, before/after source/runtime observations and original reference metadata.
+The uploaded archive must be retained unchanged, match GitHub artifact digest,
+run/attempt/name/source and a closed member hash roster. Independent artifact
+replay invokes both existing production native validators at candidate source,
+checks exact non-duration equality, producer-once and immutable runtime facts.
+Unknown or failed fields refuse release joining.
+
+`join_release` requires a future independently authenticated full-validator
+projection marked `supplement_join_schema=full-automatic-source-projection-v1`.
+It preserves the original validation and explicit candidate versus synthetic
+checkout/parents/tree/workflow facts. Current immutable R10/R11 validators do
+not acquire these fields by assertion: a separately reviewed successor and
+original-five-artifact/PDF independent acceptance are prerequisites. The
+supplement review must bind its validation hash and original archive custody.
+Both referenced automatic and supplement attempts must match frozen identity;
+an automatic failure/cancellation/rerun cannot be replaced by another success.
+The full release join never substitutes for fresh merged-main qualification.
+
+This packet is unexecuted and unactivated. No hosted IDs, changed membership
+counts, latency savings or scientific acceptance are inferred from this design.

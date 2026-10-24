@@ -155,7 +155,7 @@ def test_distribution_exports_one_root_package_and_console_script() -> None:
     assert scripts == {"fep-lean": "fep_lean.cli:main"}
 
 
-def test_q7_scaffold_bytes_refuse_legacy_codepage_substitution() -> None:
+def test_q7_scaffold_bytes_refuse_cp1252_codepage_substitution() -> None:
     """Wrong text decoding must not become accepted canonical AST evidence."""
     from fep_lean.verification.gnn_continuous_artifact_proof import (
         canonical_scaffold_bytes,
@@ -167,10 +167,12 @@ def test_q7_scaffold_bytes_refuse_legacy_codepage_substitution() -> None:
         "runner_ast_sha256"
     ]
     utf8 = source.read_text(encoding="utf-8")
-    legacy = source.read_text(encoding="cp1252")
-    assert utf8 != legacy, "control requires the actual UTF-8 scaffold text"
+    cp1252_decoded = source.read_text(encoding="cp1252")
+    assert utf8 != cp1252_decoded, "control requires the actual UTF-8 scaffold text"
     assert hashlib.sha256(canonical_scaffold_bytes(utf8)).hexdigest() == expected
-    assert hashlib.sha256(canonical_scaffold_bytes(legacy)).hexdigest() != expected
+    assert (
+        hashlib.sha256(canonical_scaffold_bytes(cp1252_decoded)).hexdigest() != expected
+    )
 
 
 def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
@@ -705,26 +707,41 @@ def test_documentation_classifier_keeps_publication_inputs_on_full_gates(
         env=git_env,
         check=True,
     )
-    output = tmp_path / "job-output"
-    result = subprocess.run(
-        [
-            sys.executable,
-            "-c",
-            _workflow_python("Classify documentation-only pull requests", "changes"),
-        ],
-        cwd=tmp_path,
-        env={
-            **os.environ,
-            "EVENT_NAME": "pull_request",
-            "BASE_SHA": base,
-            "GITHUB_OUTPUT": str(output),
-        },
-        check=False,
-        capture_output=True,
-        text=True,
+    classifier = _workflow_python(
+        "Classify documentation-only pull requests", "changes"
     )
-    assert result.returncode == 0, result.stderr
-    assert output.read_text().strip() == f"docs_only={str(docs_only).lower()}"
+    for event in ("pull_request", "push"):
+        for profile in ("disabled", "native-api-cli-supplement-v1"):
+            output = tmp_path / f"job-output-{event}-{profile}"
+            result = subprocess.run(
+                [sys.executable, "-c", classifier],
+                cwd=tmp_path,
+                env={
+                    **os.environ,
+                    "EVENT_NAME": event,
+                    "BASE_SHA": base,
+                    "SUPPLEMENT": profile,
+                    "GITHUB_OUTPUT": str(output),
+                },
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            assert result.returncode == 0, result.stderr
+            expected = docs_only if event == "pull_request" else False
+            assert output.read_text().strip() == f"docs_only={str(expected).lower()}"
+    # Supplement selection can bypass full roles only on explicit dispatch.
+    workflow = yaml.safe_load((PROJECT_ROOT / ".github/workflows/ci.yml").read_text())
+    dispatch_only = (
+        "(github.event_name != 'workflow_dispatch' || "
+        "inputs.native_supplement_profile != 'native-api-cli-supplement-v1')"
+    )
+    for job in ("static", "python", "distribution", "render-deps", "render"):
+        assert dispatch_only in workflow["jobs"][job]["if"]
+    assert (
+        "(github.event_name != 'workflow_dispatch' || inputs.run_lean)"
+        in workflow["jobs"]["lean"]["if"]
+    )
 
 
 def test_documentation_classifier_rejects_source_rename_into_prose(
@@ -762,26 +779,62 @@ def test_documentation_classifier_rejects_source_rename_into_prose(
         env=git_env,
         check=True,
     )
-    output = tmp_path / "job-output"
-    result = subprocess.run(
-        [
-            sys.executable,
-            "-c",
-            _workflow_python("Classify documentation-only pull requests", "changes"),
-        ],
-        cwd=tmp_path,
-        env={
-            **os.environ,
-            "EVENT_NAME": "pull_request",
-            "BASE_SHA": base,
-            "GITHUB_OUTPUT": str(output),
-        },
-        capture_output=True,
-        text=True,
-        check=False,
+    classifier = _workflow_python(
+        "Classify documentation-only pull requests", "changes"
     )
-    assert result.returncode == 0, result.stderr
-    assert output.read_text().strip() == "docs_only=false"
+    env = {
+        **os.environ,
+        "EVENT_NAME": "pull_request",
+        "BASE_SHA": base,
+        "SUPPLEMENT": "disabled",
+    }
+    for profile in ("disabled", "native-api-cli-supplement-v1"):
+        output = tmp_path / f"job-output-{profile}"
+        result = subprocess.run(
+            [sys.executable, "-c", classifier],
+            cwd=tmp_path,
+            env={**env, "SUPPLEMENT": profile, "GITHUB_OUTPUT": str(output)},
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert result.returncode == 0, result.stderr
+        assert output.read_text().strip() == "docs_only=false"
+    # Both supported dispatch profiles keep classification distinct from the
+    # later full/supplement job gates; invalid opt-ins cannot silently fall back.
+    for index, (profile, run_lean, debug_shadow, passed) in enumerate(
+        (
+            ("disabled", "true", "false", True),
+            ("native-api-cli-supplement-v1", "true", "false", True),
+            ("native-api-cli-supplement-v1", "false", "false", False),
+            ("native-api-cli-supplement-v1", "true", "true", False),
+            ("unknown", "true", "false", False),
+        )
+    ):
+        output = tmp_path / f"dispatch-output-{index}"
+        result = subprocess.run(
+            [sys.executable, "-c", classifier],
+            cwd=tmp_path,
+            env={
+                **env,
+                "EVENT_NAME": "workflow_dispatch",
+                "SUPPLEMENT": profile,
+                "RUN_LEAN": run_lean,
+                "DEBUG_SHADOW": debug_shadow,
+                "AUTO_RUN": "101",
+                "AUTO_ATTEMPT": "2",
+                "SUPPLEMENT_PR": "7",
+                "GITHUB_OUTPUT": str(output),
+            },
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert (result.returncode == 0) is passed, result.stderr
+        if passed:
+            assert output.read_text().strip() == "docs_only=false"
+        else:
+            assert not output.exists()
 
 
 @pytest.mark.parametrize(

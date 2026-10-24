@@ -46,10 +46,24 @@ ROOT_REFERENCES = {
 LOCAL_ONLY: dict[str, str] = {}
 
 #: Commands CI runs that the "Required checks" block deliberately omits.
-#: Normalised form -> why. Generation (non-``--check``) steps materialise
+#: Normalized form -> why. Generation (non-``--check``) steps materialize
 #: inputs for later gates; the rest are hosted-only orchestration whose
 #: inputs (JUnit files, per-OS interpreters) do not exist on a workstation.
 HOSTED_ONLY = {
+    "python $helper start": "versioned native supplement identity admission",
+    "python $helper finalize --repository-root $GITHUB_WORKSPACE": (
+        "versioned native supplement terminal evidence join"
+    ),
+    "pytest tests/test_catalogue_bodies_compile.py::test_all_catalogue_bodies_compile "
+    "-q -n 0 --no-cov --junitxml=output/native-supplement-producer.xml "
+    "-W always --color=no > $out/api.stdout.log 2> $out/api.stderr.log": (
+        "versioned native supplement once-only producer, not full serial acceptance"
+    ),
+    "fep-lean verify --fail-on-warnings "
+    "--receipt output/native-supplement-cli.json "
+    "> $out/cli.stdout.log 2> $out/cli.stderr.log": (
+        "versioned native supplement ordinary CLI evidence"
+    ),
     "python scripts/build_formalism_atlas.py": "render-deps: generates the atlas",
     "python scripts/build_formal_kernel_dashboard.py": "render-deps: generates it",
     "fep-lean --project-root . methods export --output-root "
@@ -79,7 +93,7 @@ _TRACKED_PREFIXES = ("uv run", "lake ", "git diff", "uv lock", "uv pip")
 
 
 def _shell_tokens(command: str) -> list[str]:
-    """Lex comments/operators while retaining quotes for later normalisation.
+    """Lex comments/operators while retaining quotes for later normalization.
 
     This inventory supports quoted arguments, ``&&`` chains, a parenthesised
     ``cd`` prefix, pipelines and ``2>&1``; it does not evaluate shell syntax.
@@ -102,7 +116,7 @@ def normalise(command: str) -> str:
     tokens = shlex.split(" ".join(raw).strip().strip("()").strip(), comments=False)
     if tokens[:2] == ["uv", "run"]:
         tokens = tokens[2:]
-        if tokens and tokens[0] == "--locked":
+        while tokens and tokens[0] in {"--locked", "--no-sync"}:
             tokens = tokens[1:]
     if tokens[:3] == ["python", "-m", "pytest"]:
         tokens = ["pytest", *tokens[3:]]
@@ -114,6 +128,8 @@ def split_commands(script: str) -> list[str]:
 
     Comments, heredoc bodies and control flow are skipped; ``a && b`` is two
     commands and ``(cd d && c)`` is ``c``.
+    Returned strings omit working-directory context and support inventory
+    comparison only.
     """
     commands: list[str] = []
     heredoc_end: str | None = None
@@ -206,6 +222,18 @@ def _assert_root_references(relative: str, text: str, required: set[str]) -> Non
 
 
 def test_normaliser_handles_continuations_chains_and_prefixes() -> None:
+    assert normalise("uv run --no-sync python helper.py start") == (
+        "python helper.py start"
+    )
+    assert normalise("uv run --locked --no-sync python -m pytest a.py") == (
+        "pytest a.py"
+    )
+    assert normalise("uv run --unknown python helper.py") == (
+        "--unknown python helper.py"
+    )
+    assert normalise("uv run --no-sync --unknown python helper.py") == (
+        "--unknown python helper.py"
+    )
     script = (
         "uv lock --check && uv pip check\n"
         "# comment\n"
@@ -598,6 +626,19 @@ def test_statement_exceptions_cannot_expand() -> None:
 def test_native_single_producer_and_explicit_dual_shadow_workflow_contract():
     workflow = yaml.safe_load(CI.read_text())
     _assert_render_dependencies_barrier_contract(workflow)
+    for missing in (
+        "specs/publication-browser-acceptance/wait_render_dependencies.py",
+        "specs/publication-browser-acceptance/native_supplement.py",
+    ):
+        mutant = yaml.safe_load(CI.read_text())
+        mypy = next(
+            step
+            for step in mutant["jobs"]["static"]["steps"]
+            if step.get("run", "").startswith("uv run mypy ")
+        )
+        mypy["run"] = mypy["run"].replace(" " + missing, "")
+        with pytest.raises(AssertionError):
+            _assert_render_dependencies_barrier_contract(mutant)
     steps = workflow["jobs"]["lean"]["steps"]
     serial = next(
         s for s in steps if s.get("name") == "Run the serial_lean acceptance lane"
@@ -834,7 +875,8 @@ def _assert_render_dependencies_barrier_contract(workflow):
     static_runs = [step.get("run", "") for step in workflow["jobs"]["static"]["steps"]]
     assert (
         "uv run mypy src scripts docs "
-        "specs/publication-browser-acceptance/wait_render_dependencies.py"
+        "specs/publication-browser-acceptance/wait_render_dependencies.py "
+        "specs/publication-browser-acceptance/native_supplement.py"
     ) in static_runs
     required = AGENTS.read_text(encoding="utf-8")
     assert "uv run ruff check ." in required
@@ -842,7 +884,8 @@ def _assert_render_dependencies_barrier_contract(workflow):
     _assert_consolidated_format_contract(workflow)
     assert (
         "uv run mypy src scripts docs "
-        "specs/publication-browser-acceptance/wait_render_dependencies.py"
+        "specs/publication-browser-acceptance/wait_render_dependencies.py "
+        "specs/publication-browser-acceptance/native_supplement.py"
     ) in required
     download_index = by_name[
         "Download the publication figure assets the render-deps job produced"

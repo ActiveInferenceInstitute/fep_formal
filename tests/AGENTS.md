@@ -65,3 +65,10 @@ positive receipt and plausible tampering.
 The profile policy is owned by [root AGENTS.md](../AGENTS.md#full-automatic-pr-and-explicit-dual-shadow-acceptance-profiles).
 Keep its full matrix, explicit shadow selection, producer evidence and final
 membership controls in the existing test owners; do not duplicate profile rules.
+
+The versioned native supplement controls in `test_ci_native_catalogue_shadow.py`
+cover identity admission and terminal release joining separately. A single
+producer JUnit case is explicitly not full serial acceptance. Preserve the
+existing real production-validator controls and full automatic/main suites.
+The supplement helper must be imported from its exact slice path for controls;
+its fixture identities never supply real hosted acceptance.

@@ -882,7 +882,7 @@
       {
         "blocked_by": "issue:93",
         "kind": "conceptual",
-        "rationale": "The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.",
+        "rationale": "Reviewed 2026-10-23 against the exact fep034_filter_joint_reconstruction and fep047_forward_compose statements and the delivered PTree exact-marginal/star/cycle theory; see docs/relations-endpoint-adjudication.md, FORM-S10. Finite matrix propagation supplies unnormalized weights; native posterior reconstruction additionally requires an observation kernel and conditioning. No cross-endpoint equality, null-observation ratio, generic normalized-child-message theorem, or loopy convergence claim is made. Keep conceptual; any formal tag change requires a qualified witness and reviewed seal delta.",
         "source": "fep-034",
         "target": "fep-047"
       },
@@ -1109,6 +1109,13 @@
         "source": "fep-073",
         "target": "fep-047",
         "witness": "FEPComposed.fep073_backward_message_composes_fep047"
+      },
+      {
+        "kind": "formal",
+        "rationale": "The actual fep-074 forward/backward evidence equality transports positive backward evidence into the premise of the actual fep-072 filtering recursion, then identifies its weighted atoms on the same finite carrier. Zero evidence remains excluded.",
+        "source": "fep-074",
+        "target": "fep-072",
+        "witness": "FEPComposed.fep074_backwardEvidence_supplies_fep072_filter"
       },
       {
         "kind": "formal_pairing",
@@ -1377,11 +1384,11 @@
         "witness": "FEPComposed.fep111_consensus_mass_extends_fep025_conservation"
       },
       {
-        "kind": "formal_pairing",
-        "rationale": "Atomwise consensus disagreement converges to zero, extending the original concrete halving-contraction convergence witness.",
+        "kind": "formal",
+        "rationale": "For a fixed pair of the specified consensus update, actual fep-112 contraction makes each disagreement atom a fixed point of the actual fep-048 half update; its unique fixed point is zero, so the two finite laws are equal. This does not assert a unique fixed pair or arbitrary-coupling contraction.",
         "source": "fep-112",
         "target": "fep-048",
-        "witness": "FEPComposed.fep112_consensus_convergence_extends_fep048_contraction"
+        "witness": "FEPComposed.fep112_consensus_fixed_pair_is_equal"
       },
       {
         "kind": "formal_pairing",
@@ -1468,6 +1475,13 @@
         "witness": "FEPComposed.fep124_laplaceSquaredRisk_combines_fep036_fep114"
       },
       {
+        "kind": "formal",
+        "rationale": "The actual fep-125 pointwise Brier-excess identity identifies the sampled risk with squared error on the same finite law, allowing the actual fep-124 Laplace squared-risk bound to apply. Positive sample count and probability bounds remain explicit.",
+        "source": "fep-125",
+        "target": "fep-124",
+        "witness": "FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound"
+      },
+      {
         "kind": "formal_pairing",
         "rationale": "Exact Bernoulli Brier excess equals squared forecast error, while fep-022 retains the separate preference-risk decomposition used by the earlier active-inference carrier.",
         "source": "fep-125",
@@ -1501,6 +1515,13 @@
         "source": "fep-129",
         "target": "fep-033",
         "witness": "FEPComposed.fep129_policyTreeBellman_extends_fep033"
+      },
+      {
+        "kind": "formal",
+        "rationale": "An attaining tree supplied by actual fep-130 is compared with the open-loop embedding from actual fep-131; its value-preservation law gives finite-depth closed-loop dominance over every embedded plan. Universal strict advantage and infinite-horizon optimality are not claimed.",
+        "source": "fep-130",
+        "target": "fep-131",
+        "witness": "FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans"
       },
       {
         "kind": "formal_pairing",
@@ -1615,6 +1636,13 @@
         "witness": "FEPComposed.fep145_centeredScore_extends_fep038"
       },
       {
+        "kind": "formal",
+        "rationale": "The actual fep-146 Fisher/variance identity transports interval-wise positive Fisher information into the variance premise of actual fep-148 strict monotonicity and injectivity. Constant-statistic and degenerate-information cases are excluded by the stated positivity premise.",
+        "source": "fep-146",
+        "target": "fep-148",
+        "witness": "FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity"
+      },
+      {
         "kind": "formal_pairing",
         "rationale": "Scalar Fisher information is derived as sufficient-statistic variance with positive and zero-curvature witnesses, paired with the earlier categorical tangent-space metric.",
         "source": "fep-146",
@@ -1671,6 +1699,13 @@
         "witness": "FEPComposed.fep153_continuousDetailedBalance_extends_fep010"
       },
       {
+        "kind": "formal",
+        "rationale": "The actual fep-154 relaxation formula turns nonstationary initial mass into a strictly positive Lyapunov value; combined with the actual fep-155 derivative law and positive rates, this gives strict two-state decay. Stationary initial laws have zero derivative instead.",
+        "source": "fep-154",
+        "target": "fep-155",
+        "witness": "FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay"
+      },
+      {
         "kind": "formal_pairing",
         "rationale": "Boolean true-state mass relaxes exponentially to stationarity, paired with the original discrete transition evolution without claiming a general mixing-rate theorem.",
         "source": "fep-154",
@@ -1697,6 +1732,13 @@
         "source": "fep-157",
         "target": "fep-065",
         "witness": "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+      },
+      {
+        "kind": "formal",
+        "rationale": "The actual fep-158 masked-evidence identity supplies the predictive-evidence denominator consumed by the actual fep-117 reduced posterior-odds formula on the same finite carrier. Required positive evidence and reference weights are retained.",
+        "source": "fep-158",
+        "target": "fep-117",
+        "witness": "FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds"
       },
       {
         "kind": "formal_pairing",
@@ -1727,8 +1769,8 @@
         "witness": "FEPComposed.fep161_skewCancellation_extends_fep160_aoNess"
       },
       {
-        "kind": "formal_pairing",
-        "rationale": "The symmetrization construction discharges exactly the symmetric-matrix hypothesis of the trace cancellation it is paired with, without claiming a continuum Clairaut theorem or smooth Hessian.",
+        "kind": "formal",
+        "rationale": "The actual fep-162 symmetrization theorem constructs the symmetric-matrix premise consumed by the actual fep-161 skew-trace theorem. This finite-matrix derivation does not establish continuum Clairaut regularity or a smooth Hessian.",
         "source": "fep-162",
         "target": "fep-161",
         "witness": "FEPComposed.fep162_clairautSymmetrize_extends_fep161_skewCancellation"
@@ -1866,15 +1908,15 @@
     }
   ],
   "counts": {
-    "authored_edges": 150,
+    "authored_edges": 156,
     "capabilities": 50,
     "domains": 14,
     "families": 22,
     "formal_modules": 72,
     "relation_kinds": {
       "conceptual": 6,
-      "formal": 24,
-      "formal_pairing": 120
+      "formal": 32,
+      "formal_pairing": 118
     },
     "semantic_dispositions": {
       "conditional_proxy": 13,
@@ -8176,7 +8218,7 @@
       "lean_module": "FepSketches.compositions.control_temporal",
       "resource": "compositions/control_temporal.lean",
       "role": "composition",
-      "theorem_count": 14
+      "theorem_count": 15
     },
     {
       "declaration_namespace": "FEPComposed",
@@ -8197,21 +8239,21 @@
       "lean_module": "FepSketches.compositions.collective_learning",
       "resource": "compositions/collective_learning.lean",
       "role": "composition",
-      "theorem_count": 14
+      "theorem_count": 15
     },
     {
       "declaration_namespace": "FEPComposed",
       "lean_module": "FepSketches.compositions.risk_calibration",
       "resource": "compositions/risk_calibration.lean",
       "role": "composition",
-      "theorem_count": 7
+      "theorem_count": 8
     },
     {
       "declaration_namespace": "FEPComposed",
       "lean_module": "FepSketches.compositions.policy_trees",
       "resource": "compositions/policy_trees.lean",
       "role": "composition",
-      "theorem_count": 7
+      "theorem_count": 8
     },
     {
       "declaration_namespace": "FEPComposed",
@@ -8225,14 +8267,14 @@
       "lean_module": "FepSketches.compositions.exponential_family",
       "resource": "compositions/exponential_family.lean",
       "role": "composition",
-      "theorem_count": 7
+      "theorem_count": 8
     },
     {
       "declaration_namespace": "FEPComposed",
       "lean_module": "FepSketches.compositions.continuous_time",
       "resource": "compositions/continuous_time.lean",
       "role": "composition",
-      "theorem_count": 7
+      "theorem_count": 8
     },
     {
       "declaration_namespace": "FEPComposed.FiniteScientificImplications",
@@ -8309,7 +8351,7 @@
       "lean_module": "FepSketches.compositions.bayesian_model_reduction",
       "resource": "compositions/bayesian_model_reduction.lean",
       "role": "composition",
-      "theorem_count": 1
+      "theorem_count": 2
     },
     {
       "declaration_namespace": "FEPComposed",
@@ -8938,15 +8980,15 @@
     "formal/causal_dynamics.lean": "a87844ec42f395cb8532fa96c7d5b6b956731e1b0f6069f748d512e43add686c",
     "formal/collective_inference.lean": "f29ed5c7a736b84da55ca1fcbc9b0e89e34b7d8616775029615f362c546ac784",
     "formal/composed.lean": "b150366a325e7c2b4046aac1c359182a5200a6031381e401dc7dc70553b0fc74",
-    "formal/compositions/bayesian_model_reduction.lean": "81f77676bc99ebb10c88d2817da4dbde9847b3529b75202c66bf827db088caa0",
+    "formal/compositions/bayesian_model_reduction.lean": "4a6e5113397c66cd4ec3967a14830eec685fb409fd9a6b95547263cd50e9b817",
     "formal/compositions/causal_predictive.lean": "c71060d75bed0f8a5283fdf9ecdb08f18ae9a8b0c63dcda5fe6e1aa9144e1d4e",
-    "formal/compositions/collective_learning.lean": "a7eaa3e827a2996a398c4ff827dfddef641f1f084be38e0a0fcd8dc378c0f8d1",
-    "formal/compositions/continuous_time.lean": "a550f6cb5ba5df86baac388780c420ff23944399a5edc345431b21815e1d18da",
-    "formal/compositions/control_temporal.lean": "2d754d0f4c21be7872551264f31703904c94245e5a24303011f80d08217ed100",
+    "formal/compositions/collective_learning.lean": "07c5617a21dd16dc745fa2d6bd3dc2e5dda44a1163ee1bfbb10616dd89ef88d1",
+    "formal/compositions/continuous_time.lean": "82e75229c4bea00c54c9a2f305201c9486bd65913f5f83bdee3956c0efedec78",
+    "formal/compositions/control_temporal.lean": "abe7417377156805d94f3aa94e7bfe341eb8bf946ec5e68216f5d15bec1d6663",
     "formal/compositions/core.lean": "4f2969cca55290de0c5d3c8189b8dbc88c1f93dc7507e2afd1eb54ba97b09d42",
     "formal/compositions/efe_policy_selection.lean": "c1ccc05af21013867cc80ffc7072c9a1f7f1665519774e2770d08d5161d2ac96",
     "formal/compositions/efe_time_scale_separation.lean": "f6d33fb0958a85b7d0885a28fc397a15a7de327e675834dbd2682a6f9e581eb5",
-    "formal/compositions/exponential_family.lean": "47fa5444df0c310dc7eb8dfa89013e8c6b56b442a4568ef456edfb58a745b287",
+    "formal/compositions/exponential_family.lean": "f9597994791db5f07d770aedee8d9972851f1954fc59deb39b6a4b74b505c3bc",
     "formal/compositions/finite_kernel_category.lean": "b47e8ae41f53b96e0b6f53b8dbfbd850f401d98c45bc80531bfc2be891457e47",
     "formal/compositions/finite_policy_action.lean": "106954b5d9ae27f1f37e472cda108526bc9b5937ac272616ac35daab37dae566",
     "formal/compositions/finite_reference_agent.lean": "af13e798f61a038f9760b2f019ddcfb01e1c86a5fa0f324c6be0e76edeff8f00",
@@ -8960,8 +9002,8 @@
     "formal/compositions/measure_variational.lean": "63496c6d4add85393bcdbc5b147e94873f8533ee1d88311cf7865c6e7496e69d",
     "formal/compositions/native_blanket_transfer.lean": "24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7",
     "formal/compositions/perception_action_loop.lean": "4fe9d173f7f1b0f450783a498668f0786c387289797b501128aa5326b2ceb115",
-    "formal/compositions/policy_trees.lean": "e44660569781cb4012a50f263bf8137854f11abfe0829e2c4386d5836dddfaff",
-    "formal/compositions/risk_calibration.lean": "63bea681da287d5dcb202b2fb5da22f459d9273068b78bbe89f65e1a06dd57d6",
+    "formal/compositions/policy_trees.lean": "82e860eddabc90d0b5f8bef411f2c22734381de6dad834a5a155a3b6b2f80245",
+    "formal/compositions/risk_calibration.lean": "9361a95299a697b0bb13135b0cd7fcead79ae3f3f0cc546052ad753d3474132f",
     "formal/compositions/smooth_reference_kernel.lean": "dd4a9f289dede4c15f226c915c352e7e024beebc35e1ab4d371bec333b543a4d",
     "formal/compositions/thermo_geometry.lean": "a08d505814b95a1109db7de96a8c74fb7252a3dfeebc16ad15d7467ec04e9ed5",
     "formal/continuous_time_markov.lean": "1294732d3ddd6bd3711a00b6895e09fff45dd720cddb8d9db8e78ad458b10ea4",
@@ -9008,9 +9050,9 @@
     "formal/temporal_inference.lean": "7b1260acd419ac368ea490d58b2e33c02b53d969e690ce1b805a177f2bb9e3b4",
     "formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
     "inputs/catalogue_metadata.yaml": "f2659ffb8e72f5d2881154b55c3537a2743ce5a83689b19b63b1d685e698693c",
-    "inputs/formalism_relations.yaml": "3f4ed14f267a18052d8750612f952b9bf7351b09920f5d4aa1d902f0210696d7",
+    "inputs/formalism_relations.yaml": "570b78f087c44520aa25ac7124a5275834129aa81418f29acee6af628adb4fec",
     "inputs/positioning.yaml": "d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d",
-    "inputs/theorem_maturity.yaml": "bedaf97e851aebdfc5cf8acd5dc0653f47cfddaf4a042f1b025a5e4a6afc59d1",
+    "inputs/theorem_maturity.yaml": "d1730762d51a5369e2a7ae90ebc5292e8c83de8797fcc11cc992a452e0983266",
     "lean_source.py": "67790e70ab3ae3af48d9d2cd570e0d641f18fa03519c06b17c9a0b21acbc6781",
     "methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
     "methods/model.py": "8b517cc056b4b8e577790d50333762febc4f0ff5ceae96a431cc2dc15bf321dc",
@@ -178556,6 +178598,123 @@
         "statement": "theorem fep073_backward_message_composes_fep047\n    {State Observation : Type*} [Fintype State] [Fintype Observation]\n    (transition : FiniteKernel State State)\n    (emission : FiniteKernel State Observation) (observation : Observation)\n    (future : List Observation) (state : State)\n    (outer inner : fep_fep047.FEP047.Factor)\n    (incoming : fep_fep047.FEP047.State → ℝ) :\n    (backwardMessage transition emission (observation :: future) state =\n      backwardMessageStep transition emission observation\n        (backwardMessage transition emission future) state) ∧\n      (fep_fep047.FEP047.fep047_forward outer\n          (fep_fep047.FEP047.fep047_forward inner incoming) =\n        fep_fep047.FEP047.fep047_forward (outer * inner) incoming)",
         "statement_sha256": "21d1c0f905a3a5a523d6ef3879776212a01416065492a143bcb6c8a2d018a838"
       },
+      "FEPComposed.fep074_backwardEvidence_supplies_fep072_filter": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "transition"
+            ],
+            "role": "typed_binder",
+            "source": "(transition : FiniteKernel State State)",
+            "type_source": "FiniteKernel State State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "emission"
+            ],
+            "role": "typed_binder",
+            "source": "(emission : FiniteKernel State Observation)",
+            "type_source": "FiniteKernel State Observation",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "observation"
+            ],
+            "role": "typed_binder",
+            "source": "(observation : Observation)",
+            "type_source": "Observation",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hBackward"
+            ],
+            "role": "typed_binder",
+            "source": "(hBackward : 0 < backwardEvidence prior transition emission observation)",
+            "type_source": "0 < backwardEvidence prior transition emission observation",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "∃ hForward : 0 < forwardEvidence prior transition emission observation,\n      ∀ state, forwardFilter prior transition emission observation hForward state *\n        backwardEvidence prior transition emission observation =\n        forwardPrediction prior transition state * emission state observation",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep_fep072.FEP072.fep072_forward_filtering_recursion",
+            "qualified_name": "fep_fep072.FEP072.fep072_forward_filtering_recursion",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep074.FEP074.fep074_forward_backward_evidence_agreement",
+            "qualified_name": "fep_fep074.FEP074.fep074_forward_backward_evidence_agreement",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.controlled_markov",
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.temporal_inference",
+          "FepSketches.controlled_markov",
+          "FepSketches.temporal_inference"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep074_backwardEvidence_supplies_fep072_filter",
+        "source_line": 373,
+        "source_owner": "src/fep_lean/formal/compositions/control_temporal.lean",
+        "statement": "theorem fep074_backwardEvidence_supplies_fep072_filter\n    {State Observation : Type*} [Fintype State] [Fintype Observation]\n    (prior : FiniteLaw State) (transition : FiniteKernel State State)\n    (emission : FiniteKernel State Observation) (observation : Observation)\n    (hBackward : 0 < backwardEvidence prior transition emission observation) :\n    ∃ hForward : 0 < forwardEvidence prior transition emission observation,\n      ∀ state, forwardFilter prior transition emission observation hForward state *\n        backwardEvidence prior transition emission observation =\n        forwardPrediction prior transition state * emission state observation",
+        "statement_sha256": "22349d7d5e842543dd94f33d32dee366525fb4d3123aea846d3c27fc38a03c32"
+      },
       "FEPComposed.fep074_smoothing_reconstructs_fep034_filter": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -183927,6 +184086,96 @@
         "statement": "theorem fep112_consensus_convergence_extends_fep048_contraction\n    {State : Type*} [Fintype State]\n    (left right : FiniteLaw State) (state : State) (initial : ℝ) :\n    Tendsto\n          (fun iterations =>\n            beliefGap\n              (consensusIterate (left, right) iterations).1\n              (consensusIterate (left, right) iterations).2 state)\n          atTop (nhds 0) ∧\n      Tendsto\n        (fun iterations => fep_fep048.FEP048.fep048_halfUpdate^[iterations] initial)\n        atTop (nhds 0)",
         "statement_sha256": "55fd995a8cdd977c306bafe12664624cae9b62f38a80155d8bb21a037d1f0bc9"
       },
+      "FEPComposed.fep112_consensus_fixed_pair_is_equal": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State"
+            ],
+            "role": "typed_binder",
+            "source": "{State : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "left",
+              "right"
+            ],
+            "role": "typed_binder",
+            "source": "(left right : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hLeft"
+            ],
+            "role": "typed_binder",
+            "source": "(hLeft : consensusLeft left right = left)",
+            "type_source": "consensusLeft left right = left",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hRight"
+            ],
+            "role": "typed_binder",
+            "source": "(hRight : consensusRight left right = right)",
+            "type_source": "consensusRight left right = right",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "left = right",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep_fep048.FEP048.fep048_halfUpdate_unique_fixed_point",
+            "qualified_name": "fep_fep048.FEP048.fep048_halfUpdate_unique_fixed_point",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep112.FEP112.fep112_consensus_half_contraction",
+            "qualified_name": "fep_fep112.FEP112.fep112_consensus_half_contraction",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.collective_inference",
+          "FepSketches.families.core_active_inference",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.learning_theory",
+          "FepSketches.collective_inference",
+          "FepSketches.learning_theory"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep112_consensus_fixed_pair_is_equal",
+        "source_line": 376,
+        "source_owner": "src/fep_lean/formal/compositions/collective_learning.lean",
+        "statement": "theorem fep112_consensus_fixed_pair_is_equal\n    {State : Type*} [Fintype State] (left right : FiniteLaw State)\n    (hLeft : consensusLeft left right = left)\n    (hRight : consensusRight left right = right) : left = right",
+        "statement_sha256": "716f1bbc736ece53e109c8438e50d898cb3c86d43091adcfe7223e20eb9cabc8"
+      },
       "FEPComposed.fep113_coupled_potential_refines_fep032_descent": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -185702,6 +185951,131 @@
         "statement": "theorem fep125_brierExcess_refines_fep022 (target forecast : ℝ) :\n    (bernoulliBrierScore target forecast -\n        bernoulliBrierScore target target = (forecast - target) ^ 2) ∧\n      (fep_fep022.FEP022.fep022_brierScore target forecast =\n        target * (1 - target) + (forecast - target) ^ 2)",
         "statement_sha256": "8745afc8f35276dff8643eb86f7da43704b707eb4b2779774711c4cc198cd11d"
       },
+      "FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Ω"
+            ],
+            "role": "typed_binder",
+            "source": "{Ω : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Ω]",
+            "type_source": "Fintype Ω",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "sampling"
+            ],
+            "role": "typed_binder",
+            "source": "(sampling : FiniteLaw Ω)",
+            "type_source": "FiniteLaw Ω",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "successes"
+            ],
+            "role": "typed_binder",
+            "source": "(successes : Ω → ℕ)",
+            "type_source": "Ω → ℕ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "sampleCount"
+            ],
+            "role": "typed_binder",
+            "source": "(sampleCount : ℕ)",
+            "type_source": "ℕ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "target"
+            ],
+            "role": "typed_binder",
+            "source": "(target : ℝ)",
+            "type_source": "ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hCount"
+            ],
+            "role": "typed_binder",
+            "source": "(hCount : 0 < sampleCount)",
+            "type_source": "0 < sampleCount",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hSuccess"
+            ],
+            "role": "typed_binder",
+            "source": "(hSuccess : ∀ o, successes o ≤ sampleCount)",
+            "type_source": "∀ o, successes o ≤ sampleCount",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hTarget"
+            ],
+            "role": "typed_binder",
+            "source": "(hTarget : target ∈ Set.Icc (0 : ℝ) 1)",
+            "type_source": "target ∈ Set.Icc (0 : ℝ) 1",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "brierExcessRisk sampling\n        (fun o => laplaceEstimate (successes o) sampleCount) target ≤\n      2 * shrinkage sampleCount ^ 2 * expectation sampling\n        (fun o => (empiricalRate (successes o) sampleCount - target) ^ 2) +\n        2 * (1 / ((sampleCount : ℝ) + 2)) ^ 2",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep_fep124.FEP124.fep124_laplaceSquaredRisk_le",
+            "qualified_name": "fep_fep124.FEP124.fep124_laplaceSquaredRisk_le",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep125.FEP125.fep125_brierExcess_eq_sqError",
+            "qualified_name": "fep_fep125.FEP125.fep125_brierExcess_eq_sqError",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.finite_sample_risk_calibration",
+          "FepSketches.families.learning_theory",
+          "FepSketches.empirical_risk"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound",
+        "source_line": 207,
+        "source_owner": "src/fep_lean/formal/compositions/risk_calibration.lean",
+        "statement": "theorem fep125_brier_identity_transfers_fep124_risk_bound\n    {Ω : Type*} [Fintype Ω] (sampling : FiniteLaw Ω)\n    (successes : Ω → ℕ) (sampleCount : ℕ) (target : ℝ)\n    (hCount : 0 < sampleCount) (hSuccess : ∀ o, successes o ≤ sampleCount)\n    (hTarget : target ∈ Set.Icc (0 : ℝ) 1) :\n    brierExcessRisk sampling\n        (fun o => laplaceEstimate (successes o) sampleCount) target ≤\n      2 * shrinkage sampleCount ^ 2 * expectation sampling\n        (fun o => (empiricalRate (successes o) sampleCount - target) ^ 2) +\n        2 * (1 / ((sampleCount : ℝ) + 2)) ^ 2",
+        "statement_sha256": "b1fd50ba0c8e8feeab30c437f299eed9ad8e306df0ff77db50dd8e78820f2c2e"
+      },
       "FEPComposed.fep126_laplaceBrierRisk_combines_fep022_fep036": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -186421,6 +186795,117 @@
         "source_owner": "src/fep_lean/formal/compositions/policy_trees.lean",
         "statement": "theorem fep129_policyTreeBellman_extends_fep033\n    {Belief Action Observation OldState : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation] [Nonempty Action]\n    (treeModel : PolicyTreeModel Belief Action Observation)\n    (depth : ℕ) (belief : Belief)\n    (discount : ENNReal) (oldStageCost : OldState → ENNReal)\n    (step : OldState → OldState) (terminalCost : OldState → ENNReal)\n    (oldDepth : ℕ) (oldState : OldState)\n    (sophisticatedModel : SophisticatedEFEModel Belief Action Observation)\n    (sophisticatedDepth : ℕ) (sophisticatedBelief : Belief) :\n    (optimalTreeValue treeModel (depth + 1) belief =\n      treeModel.stageCost depth belief (optimalTreeAction treeModel depth belief) +\n        ∑ observation,\n          treeModel.observationLaw belief\n              (optimalTreeAction treeModel depth belief) observation *\n            optimalTreeValue treeModel depth\n              (treeModel.update belief\n                (optimalTreeAction treeModel depth belief) observation)) ∧\n      ((fep_fep033.FEP033.fep033_value\n          discount oldStageCost step terminalCost (oldDepth + 1) oldState =\n        oldStageCost oldState + discount *\n          fep_fep033.FEP033.fep033_value\n            discount oldStageCost step terminalCost oldDepth (step oldState)) ∧\n        sophisticatedEFEValue sophisticatedModel\n            (sophisticatedDepth + 1) sophisticatedBelief =\n          sophisticatedModel.stageEFE sophisticatedDepth sophisticatedBelief\n              (sophisticatedEFEAction sophisticatedModel sophisticatedDepth\n                sophisticatedBelief) +\n            ∑ observation,\n              sophisticatedModel.observationLaw sophisticatedBelief\n                  (sophisticatedEFEAction sophisticatedModel sophisticatedDepth\n                    sophisticatedBelief) observation *\n                sophisticatedEFEValue sophisticatedModel sophisticatedDepth\n                  (sophisticatedModel.update sophisticatedBelief\n                    (sophisticatedEFEAction sophisticatedModel\n                      sophisticatedDepth sophisticatedBelief) observation))",
         "statement_sha256": "b598b56436cb73afe75a59ca70390748750a78e2b1a63a9400a5955c6d089ae4"
+      },
+      "FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Belief",
+              "Action",
+              "Observation"
+            ],
+            "role": "typed_binder",
+            "source": "{Belief Action Observation : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Belief]",
+            "type_source": "Fintype Belief",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Action]",
+            "type_source": "Fintype Action",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Nonempty Action]",
+            "type_source": "Nonempty Action",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "model"
+            ],
+            "role": "typed_binder",
+            "source": "(model : PolicyTreeModel Belief Action Observation)",
+            "type_source": "PolicyTreeModel Belief Action Observation",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "depth"
+            ],
+            "role": "typed_binder",
+            "source": "(depth : ℕ)",
+            "type_source": "ℕ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "belief"
+            ],
+            "role": "typed_binder",
+            "source": "(belief : Belief)",
+            "type_source": "Belief",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "∃ tree : PolicyTree Action Observation depth,\n      policyTreeValue model tree belief = optimalTreeValue model depth belief ∧\n      ∀ plan : OpenLoopPlan Action depth,\n        policyTreeValue model tree belief ≤ openLoopValue model plan belief",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep_fep130.FEP130.fep130_exists_optimalPolicyTree",
+            "qualified_name": "fep_fep130.FEP130.fep130_exists_optimalPolicyTree",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep131.FEP131.fep131_openLoopEmbedding_value",
+            "qualified_name": "fep_fep131.FEP131.fep131_openLoopEmbedding_value",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.closed_loop_policy_trees",
+          "FepSketches.families.controlled_markov",
+          "FepSketches.families.core_active_inference",
+          "FepSketches.policy_tree"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans",
+        "source_line": 255,
+        "source_owner": "src/fep_lean/formal/compositions/policy_trees.lean",
+        "statement": "theorem fep130_attaining_tree_dominates_fep131_embedded_plans\n    {Belief Action Observation : Type*}\n    [Fintype Belief] [Fintype Action] [Fintype Observation] [Nonempty Action]\n    (model : PolicyTreeModel Belief Action Observation) (depth : ℕ) (belief : Belief) :\n    ∃ tree : PolicyTree Action Observation depth,\n      policyTreeValue model tree belief = optimalTreeValue model depth belief ∧\n      ∀ plan : OpenLoopPlan Action depth,\n        policyTreeValue model tree belief ≤ openLoopValue model plan belief",
+        "statement_sha256": "d30d55fc2485bbefd1b2d09e3ca8dc7c3b8d21193570768ece6a703e431e8604"
       },
       "FEPComposed.fep130_optimalPolicyTree_extends_fep008": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -189017,6 +189502,109 @@
         "statement": "theorem fep146_fisherVariance_extends_fep100\n    {Outcome : Type*} [Fintype Outcome] [Nonempty Outcome]\n    {dimension : ℕ}\n    (family : ScalarExponentialFamily Outcome) (parameter : ℝ)\n    (carrier : CategoricalFisherCarrier dimension)\n    (tangent : Fin dimension → ℝ) (hTangent : IsSimplexTangent tangent)\n    (hNonzero : tangent ≠ 0) :\n    family.fisher parameter = family.variance parameter ∧\n      0 < fisherMetric carrier.model tangent tangent",
         "statement_sha256": "b5c8021746e1556bf170276a11000e5d6dc6f4056a099de01f0e44fc44e0076e"
       },
+      "FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Outcome"
+            ],
+            "role": "typed_binder",
+            "source": "{Outcome : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Outcome]",
+            "type_source": "Fintype Outcome",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Nonempty Outcome]",
+            "type_source": "Nonempty Outcome",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "family"
+            ],
+            "role": "typed_binder",
+            "source": "(family : ScalarExponentialFamily Outcome)",
+            "type_source": "ScalarExponentialFamily Outcome",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "lower",
+              "upper"
+            ],
+            "role": "typed_binder",
+            "source": "(lower upper : ℝ)",
+            "type_source": "ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hFisher"
+            ],
+            "role": "typed_binder",
+            "source": "(hFisher : ∀ parameter ∈ Set.Icc lower upper, 0 < family.fisher parameter)",
+            "type_source": "∀ parameter ∈ Set.Icc lower upper, 0 < family.fisher parameter",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "StrictMonoOn family.mean (Set.Icc lower upper) ∧\n      Set.InjOn family.mean (Set.Icc lower upper)",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep_fep146.FEP146.fep146_fisher_eq_variance",
+            "qualified_name": "fep_fep146.FEP146.fep146_fisher_eq_variance",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep148.FEP148.fep148_meanParameter_injective",
+            "qualified_name": "fep_fep148.FEP148.fep148_meanParameter_injective",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep148.FEP148.fep148_meanParameter_strictMono",
+            "qualified_name": "fep_fep148.FEP148.fep148_meanParameter_strictMono",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.families.core_information_geometry",
+          "FepSketches.families.core_thermodynamics",
+          "FepSketches.families.exponential_family_geometry",
+          "FepSketches.families.geometric_optimization",
+          "FepSketches.exponential_family"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity",
+        "source_line": 147,
+        "source_owner": "src/fep_lean/formal/compositions/exponential_family.lean",
+        "statement": "theorem fep146_positive_fisher_supplies_fep148_mean_injectivity\n    {Outcome : Type*} [Fintype Outcome] [Nonempty Outcome]\n    (family : ScalarExponentialFamily Outcome) (lower upper : ℝ)\n    (hFisher : ∀ parameter ∈ Set.Icc lower upper, 0 < family.fisher parameter) :\n    StrictMonoOn family.mean (Set.Icc lower upper) ∧\n      Set.InjOn family.mean (Set.Icc lower upper)",
+        "statement_sha256": "52a98dc44826c852c7d6c77eb870e28a8e37ef5d0da727d9e4f59359efef6e6c"
+      },
       "FEPComposed.fep147_KLBregman_connects_fep014_fep104": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -189796,6 +190384,83 @@
         "statement": "theorem fep154_continuousRelaxation_extends_fep020\n    (rates : TwoStateRates) (initial : FiniteLaw Bool) (time : ℝ)\n    (switching probability : ℝ) :\n    (rates.trueMass initial time - rates.stationaryTrue =\n      rates.rho time * (initial true - rates.stationaryTrue)) ∧\n      (fep_fep020.FEP020.fep020_evolve switching probability - 1 / 2 =\n        (1 - 2 * switching) * (probability - 1 / 2))",
         "statement_sha256": "0eef538b352e7190b9c9c0f3af82ea1fa5712493eab98133e624c222e0bbc7f4"
       },
+      "FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "rates"
+            ],
+            "role": "typed_binder",
+            "source": "(rates : TwoStateRates)",
+            "type_source": "TwoStateRates",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "initial"
+            ],
+            "role": "typed_binder",
+            "source": "(initial : FiniteLaw Bool)",
+            "type_source": "FiniteLaw Bool",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "nonstationary"
+            ],
+            "role": "typed_binder",
+            "source": "(nonstationary : initial true ≠ rates.stationaryTrue)",
+            "type_source": "initial true ≠ rates.stationaryTrue",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "time"
+            ],
+            "role": "typed_binder",
+            "source": "(time : ℝ)",
+            "type_source": "ℝ",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "HasDerivAt (rates.lyapunov initial)\n      (-2 * rates.decayRate * rates.lyapunov initial time) time ∧\n      -2 * rates.decayRate * rates.lyapunov initial time < 0",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep_fep154.FEP154.fep154_twoStateRelaxation_exact",
+            "qualified_name": "fep_fep154.FEP154.fep154_twoStateRelaxation_exact",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep155.FEP155.fep155_twoStateLyapunov_hasDerivAt",
+            "qualified_name": "fep_fep155.FEP155.fep155_twoStateLyapunov_hasDerivAt",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.continuous_time_thermodynamics",
+          "FepSketches.families.core_bayesian_mechanics",
+          "FepSketches.families.core_free_energy",
+          "FepSketches.continuous_time_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay",
+        "source_line": 126,
+        "source_owner": "src/fep_lean/formal/compositions/continuous_time.lean",
+        "statement": "theorem fep154_nonstationary_relaxation_supplies_fep155_strict_decay\n    (rates : TwoStateRates) (initial : FiniteLaw Bool)\n    (nonstationary : initial true ≠ rates.stationaryTrue) (time : ℝ) :\n    HasDerivAt (rates.lyapunov initial)\n      (-2 * rates.decayRate * rates.lyapunov initial time) time ∧\n      -2 * rates.decayRate * rates.lyapunov initial time < 0",
+        "statement_sha256": "c3006fd0569c8c4c76a4461a6901c71900eb2407f6532e3857bc9f91a88f72c4"
+      },
       "FEPComposed.fep155_lyapunovDecay_extends_fep032": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -190199,6 +190864,181 @@
         "statement": "theorem fep157_loopInvariant_extends_fep065_controlledKernel\n    {Policy State Outcome Action : Type*}\n    [Fintype Policy] [Fintype State] [Fintype Outcome] [Fintype Action]\n    [Nonempty Policy]\n    (model : GenerativeModel Policy State Outcome) (belief : FiniteLaw State)\n    (outcome : Outcome)\n    (hEvidence : 0 < model.likelihood.predictive belief outcome)\n    (support : FullSupport (withInitialState model\n      (filteredBelief model belief outcome hEvidence)))\n    (controlledTransition : ControlledKernel State Action)\n    (controlledAction : Action) (controlledState : State) :\n    (-Real.log (model.likelihood.predictive belief outcome) ≤\n        perceptionVFE model belief outcome hEvidence belief ∧\n      perceptionVFE model belief outcome hEvidence belief =\n        -Real.log (model.likelihood.predictive belief outcome) +\n          finiteKL belief (filteredBelief model belief outcome hEvidence) ∧\n      expectedFreeEnergy\n          (withInitialState model (filteredBelief model belief outcome hEvidence))\n          (selectedPolicy model (filteredBelief model belief outcome hEvidence)) =\n        risk (withInitialState model (filteredBelief model belief outcome hEvidence))\n            (selectedPolicy model (filteredBelief model belief outcome hEvidence)) +\n          ambiguity\n            (withInitialState model (filteredBelief model belief outcome hEvidence))\n            (selectedPolicy model (filteredBelief model belief outcome hEvidence))) ∧\n      (∑ nextState, controlledTransition controlledAction controlledState nextState =\n        1)",
         "statement_sha256": "5e767fc634eaf3c9518336995a63919cea56153d26074b5a4cd460c9023c3ef3"
       },
+      "FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Parameter",
+              "Evidence"
+            ],
+            "role": "typed_binder",
+            "source": "{Parameter Evidence : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Parameter]",
+            "type_source": "Fintype Parameter",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Evidence]",
+            "type_source": "Fintype Evidence",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw Parameter)",
+            "type_source": "FiniteLaw Parameter",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Parameter → ℝ)",
+            "type_source": "Parameter → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "kernel"
+            ],
+            "role": "typed_binder",
+            "source": "(kernel : FiniteKernel Parameter Evidence)",
+            "type_source": "FiniteKernel Parameter Evidence",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "data"
+            ],
+            "role": "typed_binder",
+            "source": "(data : Evidence)",
+            "type_source": "Evidence",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hw"
+            ],
+            "role": "typed_binder",
+            "source": "(hw : ∀ x, 0 ≤ weight x)",
+            "type_source": "∀ x, 0 ≤ weight x",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hZ"
+            ],
+            "role": "typed_binder",
+            "source": "(hZ : 0 < ∑ x, weight x * prior x)",
+            "type_source": "0 < ∑ x, weight x * prior x",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hE"
+            ],
+            "role": "typed_binder",
+            "source": "(hE : 0 < maskedEvidence prior weight kernel data)",
+            "type_source": "0 < maskedEvidence prior weight kernel data",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "favored",
+              "reference"
+            ],
+            "role": "typed_binder",
+            "source": "(favored reference : Parameter)",
+            "type_source": "Parameter",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hwref"
+            ],
+            "role": "typed_binder",
+            "source": "(hwref : 0 < weight reference)",
+            "type_source": "0 < weight reference",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hpref"
+            ],
+            "role": "typed_binder",
+            "source": "(hpref : 0 < prior reference)",
+            "type_source": "0 < prior reference",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hlref"
+            ],
+            "role": "typed_binder",
+            "source": "(hlref : 0 < kernel reference data)",
+            "type_source": "0 < kernel reference data",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "∃ hy : 0 < kernel.predictive (maskedPrior prior weight hw hZ) data,\n      FEP.LearningTheory.posteriorOdds (maskedPrior prior weight hw hZ) kernel data hy favored reference =\n        ((weight favored * prior favored) / (weight reference * prior reference)) *\n          (kernel favored data / kernel reference data)",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep_fep117.FEP117.fep117_posteriorOdds_recursion",
+            "qualified_name": "fep_fep117.FEP117.fep117_posteriorOdds_recursion",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "fep_fep158.FEP158.fep158_maskedPrior_predictive_eq",
+            "qualified_name": "fep_fep158.FEP158.fep158_maskedPrior_predictive_eq",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.families.standalone_efe_formalizations",
+          "FepSketches.families.variational_duality",
+          "FepSketches.families.learning_theory",
+          "FepSketches.bayesian_model_reduction"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEPComposed",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds",
+        "source_line": 46,
+        "source_owner": "src/fep_lean/formal/compositions/bayesian_model_reduction.lean",
+        "statement": "theorem fep158_masked_evidence_supplies_fep117_reduced_odds\n    {Parameter Evidence : Type*} [Fintype Parameter] [Fintype Evidence]\n    (prior : FiniteLaw Parameter) (weight : Parameter → ℝ)\n    (kernel : FiniteKernel Parameter Evidence) (data : Evidence)\n    (hw : ∀ x, 0 ≤ weight x) (hZ : 0 < ∑ x, weight x * prior x)\n    (hE : 0 < maskedEvidence prior weight kernel data)\n    (favored reference : Parameter) (hwref : 0 < weight reference)\n    (hpref : 0 < prior reference) (hlref : 0 < kernel reference data) :\n    ∃ hy : 0 < kernel.predictive (maskedPrior prior weight hw hZ) data,\n      FEP.LearningTheory.posteriorOdds (maskedPrior prior weight hw hZ) kernel data hy favored reference =\n        ((weight favored * prior favored) / (weight reference * prior reference)) *\n          (kernel favored data / kernel reference data)",
+        "statement_sha256": "bc3bdb35c2adb9f51cb57764fa1438c9e307705aa24497e9a3094cae0598e059"
+      },
       "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -190330,6 +191170,7 @@
         "import_context": [
           "FepSketches.families.standalone_efe_formalizations",
           "FepSketches.families.variational_duality",
+          "FepSketches.families.learning_theory",
           "FepSketches.bayesian_model_reduction"
         ],
         "line_coordinate_kind": "formal_resource_file",
@@ -190337,7 +191178,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound",
-        "source_line": 26,
+        "source_line": 27,
         "source_owner": "src/fep_lean/formal/compositions/bayesian_model_reduction.lean",
         "statement": "theorem fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound\n    {Parameter Evidence : Type*} [Fintype Parameter] [Fintype Evidence]\n    (prior : FiniteLaw Parameter) (weight : Parameter → ℝ)\n    (kernel : FiniteKernel Parameter Evidence) (data : Evidence)\n    (hw1 : ∀ x, weight x ≤ 1)\n    (hE : 0 < maskedEvidence prior weight kernel data)\n    (certificate : GibbsCertificate Parameter)\n    (candidate : FiniteLaw Parameter) :\n    (evidenceFreeEnergy (kernel.predictive prior data) ≤\n        evidenceFreeEnergy (maskedEvidence prior weight kernel data)) ∧\n      (-certificate.logPartition ≤\n        gibbsFreeEnergy certificate candidate)",
         "statement_sha256": "f6874d9a42144af78d37ebf6449ef35700aa5fb1b8c90fd7d856b6cb14b232de"
@@ -239024,11 +239865,11 @@
       },
       "semantic_review": {
         "acceptance_probe": "native Lean compile of fep071_sophisticatedEFE_backward_step, fep071_twoStage_feedback_changes_action, and fep071_twoStage_feedback_strictly_better.",
-        "assumption_review": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately.",
+        "assumption_review": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Reviewed 2026-10-23 in docs/relations-endpoint-adjudication.md (FORM-S11): FEP.PerceptionActionLoop.bayesSophisticatedValue_eq_pomdpOptimum and bayesRiskAmbiguity_eq_sophisticated provide the separate Bayesian specialization on a finite filter-closed indexed belief family with positive-evidence update soundness, nonempty actions, and full support at every indexed belief. boolBayes_rederives_feedbackWitness re-derives the ordinary Boolean mismatch-cost tree through the filter; it is not a full-support EFE witness. boolKeepPrior_not_bayesian and boolKeepPrior_agreement_fails expose the observation-ignoring update boundary. No null-observation Bayes identity, full-simplex enumeration, continuous-state or infinite-horizon result is claimed.",
         "boundary_theorems": [],
         "disposition": "conditional_proxy",
         "id": "fep-071",
-        "invariant": "Finite sophisticated expected-free-energy recursion reoptimizes after each observation-dependent belief update, and a two-stage witness strictly separates feedback from every fixed open-loop second action.",
+        "invariant": "Finite sophisticated expected-free-energy recursion reoptimizes after each observation-dependent update, and a two-stage witness separates feedback from every fixed open-loop second action. Separately, under the explicit BayesianBeliefModel filter-soundness and full-support premises, the generative-model specialization agrees with the reachable-belief POMDP optimum; this stronger statement does not make the generic primary Bayesian.",
         "non_vacuity": "In the witness, false and true observations choose different continuation actions, and the resulting expected cost is strictly below that of either fixed Boolean continuation.",
         "primary_theorem": "fep071_sophisticatedEFE_backward_step",
         "supporting_theorems": [

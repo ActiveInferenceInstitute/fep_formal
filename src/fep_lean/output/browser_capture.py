@@ -62,7 +62,7 @@ CAPTURE_OWNER = "src/fep_lean/output/browser_capture.py"
 CAPTURE_WRAPPER = "scripts/capture_browser_acceptance.py"
 CAPTURE_COMMAND = "uv run python scripts/capture_browser_acceptance.py"
 # Exact reviewed release contract; the canonical-join test rejects count drift.
-REVIEWED_ATLAS_PAIRINGS = 120
+REVIEWED_ATLAS_PAIRINGS = 118
 
 _CHROME_CANDIDATES: Mapping[str, tuple[str, ...]] = {
     "Google Chrome": ("google-chrome", "google-chrome-stable"),

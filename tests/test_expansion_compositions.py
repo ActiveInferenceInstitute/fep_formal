@@ -479,9 +479,23 @@ def test_expansion_compositions_pin_exact_ids_names_and_file_ownership() -> None
         for topic_id, (filename, theorem_name, _, _) in BRIDGES.items()
     }
     expected.add((99, "thermo_geometry.lean", "fep099_markov_path_KL_drop_reduction"))
+    expected.update(
+        {
+            (
+                74,
+                "control_temporal.lean",
+                "fep074_backwardEvidence_supplies_fep072_filter",
+            ),
+            (
+                112,
+                "collective_learning.lean",
+                "fep112_consensus_fixed_pair_is_equal",
+            ),
+        }
+    )
     assert actual == expected
-    assert len(expected) == 71
-    assert sum(len(THEOREM_RE.findall(source)) for source in sources.values()) == 71
+    assert len(expected) == 73
+    assert sum(len(THEOREM_RE.findall(source)) for source in sources.values()) == 73
 
 
 def test_every_bridge_consumes_endpoint_and_pre051_declarations() -> None:

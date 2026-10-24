@@ -692,7 +692,7 @@ edges:
   - source: fep-034
     target: fep-047
     kind: conceptual
-    rationale: The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.
+    rationale: "Reviewed 2026-10-23 against the exact fep034_filter_joint_reconstruction and fep047_forward_compose statements and the delivered PTree exact-marginal/star/cycle theory; see docs/relations-endpoint-adjudication.md, FORM-S10. Finite matrix propagation supplies unnormalized weights; native posterior reconstruction additionally requires an observation kernel and conditioning. No cross-endpoint equality, null-observation ratio, generic normalized-child-message theorem, or loopy convergence claim is made. Keep conceptual; any formal tag change requires a qualified witness and reviewed seal delta."
     blocked_by: issue:93
   - source: fep-034
     target: fep-017
@@ -854,6 +854,11 @@ edges:
     kind: formal_pairing
     rationale: Backward information recursion and the original sum-product composition law jointly certify temporal message composition in their native carriers.
     witness: FEPComposed.fep073_backward_message_composes_fep047
+  - source: fep-074
+    target: fep-072
+    kind: formal
+    rationale: "The actual fep-074 forward/backward evidence equality transports positive backward evidence into the premise of the actual fep-072 filtering recursion, then identifies its weighted atoms on the same finite carrier. Zero evidence remains excluded."
+    witness: FEPComposed.fep074_backwardEvidence_supplies_fep072_filter
   - source: fep-074
     target: fep-034
     kind: formal_pairing
@@ -1046,9 +1051,9 @@ edges:
     witness: FEPComposed.fep111_consensus_mass_extends_fep025_conservation
   - source: fep-112
     target: fep-048
-    kind: formal_pairing
-    rationale: Atomwise consensus disagreement converges to zero, extending the original concrete halving-contraction convergence witness.
-    witness: FEPComposed.fep112_consensus_convergence_extends_fep048_contraction
+    kind: formal
+    rationale: "For a fixed pair of the specified consensus update, actual fep-112 contraction makes each disagreement atom a fixed point of the actual fep-048 half update; its unique fixed point is zero, so the two finite laws are equal. This does not assert a unique fixed pair or arbitrary-coupling contraction."
+    witness: FEPComposed.fep112_consensus_fixed_pair_is_equal
   - source: fep-113
     target: fep-032
     kind: formal_pairing
@@ -1110,6 +1115,11 @@ edges:
     rationale: Finite-law squared-risk transfer and the supplied sub-Gaussian tail certificate are checked together without inferring one premise from the other.
     witness: FEPComposed.fep124_laplaceSquaredRisk_combines_fep036_fep114
   - source: fep-125
+    target: fep-124
+    kind: formal
+    rationale: "The actual fep-125 pointwise Brier-excess identity identifies the sampled risk with squared error on the same finite law, allowing the actual fep-124 Laplace squared-risk bound to apply. Positive sample count and probability bounds remain explicit."
+    witness: FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound
+  - source: fep-125
     target: fep-022
     kind: formal_pairing
     rationale: Exact Bernoulli Brier excess equals squared forecast error, while fep-022 retains the separate preference-risk decomposition used by the earlier active-inference carrier.
@@ -1134,6 +1144,11 @@ edges:
     kind: formal_pairing
     rationale: Exact finite-action tree minimization extends the earlier scalar Bellman recursion with belief and observation-contingent continuation structure.
     witness: FEPComposed.fep129_policyTreeBellman_extends_fep033
+  - source: fep-130
+    target: fep-131
+    kind: formal
+    rationale: "An attaining tree supplied by actual fep-130 is compared with the open-loop embedding from actual fep-131; its value-preservation law gives finite-depth closed-loop dominance over every embedded plan. Universal strict advantage and infinite-horizon optimality are not claimed."
+    witness: FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans
   - source: fep-130
     target: fep-008
     kind: formal_pairing
@@ -1215,6 +1230,11 @@ edges:
     rationale: The derived exponential-family score is centered exactly, extending the abstract centered-score contract used by the earlier Fisher-geometry topic. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-038 through its reviewed supporting theorem `fep_fep038.FEP038.fep038_expectedScore_zero` rather than the primary `fep_fep038.FEP038.fep038_fisherInformation_eq`; the row stands unchanged.
     witness: FEPComposed.fep145_centeredScore_extends_fep038
   - source: fep-146
+    target: fep-148
+    kind: formal
+    rationale: "The actual fep-146 Fisher/variance identity transports interval-wise positive Fisher information into the variance premise of actual fep-148 strict monotonicity and injectivity. Constant-statistic and degenerate-information cases are excluded by the stated positivity premise."
+    witness: FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity
+  - source: fep-146
     target: fep-100
     kind: formal_pairing
     rationale: Scalar Fisher information is derived as sufficient-statistic variance with positive and zero-curvature witnesses, paired with the earlier categorical tangent-space metric.
@@ -1255,6 +1275,11 @@ edges:
     rationale: The nonuniform stationary law satisfies exact continuous-time detailed balance, alongside the original native reversible-kernel stationarity theorem.
     witness: FEPComposed.fep153_continuousDetailedBalance_extends_fep010
   - source: fep-154
+    target: fep-155
+    kind: formal
+    rationale: "The actual fep-154 relaxation formula turns nonstationary initial mass into a strictly positive Lyapunov value; combined with the actual fep-155 derivative law and positive rates, this gives strict two-state decay. Stationary initial laws have zero derivative instead."
+    witness: FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay
+  - source: fep-154
     target: fep-020
     kind: formal_pairing
     rationale: Boolean true-state mass relaxes exponentially to stationarity, paired with the original discrete transition evolution without claiming a general mixing-rate theorem.
@@ -1274,6 +1299,11 @@ edges:
     kind: formal_pairing
     rationale: The perception-action loop's invariant surprisal bound factors through one action-conditioned controlled-kernel step, paired with fep-065's row-normalization law, without claiming a general POMDP fixed-point theorem.
     witness: FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel
+  - source: fep-158
+    target: fep-117
+    kind: formal
+    rationale: "The actual fep-158 masked-evidence identity supplies the predictive-evidence denominator consumed by the actual fep-117 reduced posterior-odds formula on the same finite carrier. Required positive evidence and reference weights are retained."
+    witness: FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds
   - source: fep-158
     target: fep-058
     kind: formal_pairing
@@ -1296,8 +1326,8 @@ edges:
     witness: FEPComposed.fep161_skewCancellation_extends_fep160_aoNess
   - source: fep-162
     target: fep-161
-    kind: formal_pairing
-    rationale: The symmetrization construction discharges exactly the symmetric-matrix hypothesis of the trace cancellation it is paired with, without claiming a continuum Clairaut theorem or smooth Hessian.
+    kind: formal
+    rationale: "The actual fep-162 symmetrization theorem constructs the symmetric-matrix premise consumed by the actual fep-161 skew-trace theorem. This finite-matrix derivation does not establish continuum Clairaut regularity or a smooth Hessian."
     witness: FEPComposed.fep162_clairautSymmetrize_extends_fep161_skewCancellation
   - source: fep-163
     target: fep-025

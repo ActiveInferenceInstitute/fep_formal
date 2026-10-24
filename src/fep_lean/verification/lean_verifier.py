@@ -486,7 +486,7 @@ class LeanVerifier:
         -------
         VerifyResult
         """
-        lv = self.lean_version() or "unknown"
+        lv = "unknown"
 
         if not self._lake_exe:
             return VerifyResult(
@@ -515,6 +515,25 @@ class LeanVerifier:
                 lean_version=lv,
                 skip_reason="lakefile.lean not found",
             )
+
+        # Dependency acquisition belongs to explicit workspace setup. Lake can
+        # resolve missing dependencies even when the supplied sketch is invalid.
+        mathlib_ok, mathlib_message = self.check_mathlib_built()
+        if not mathlib_ok:
+            return VerifyResult(
+                topic_id=topic_id,
+                compiles=False,
+                has_sorry=_has_sorry(lean_code),
+                sorry_occurrences=_count_sorry(lean_code),
+                lean_version=lv,
+                skip_reason=(
+                    "Mathlib prerequisite unavailable; run fep-lean setup first: "
+                    f"{mathlib_message}"
+                ),
+                failure_kind="missing_import",
+            )
+
+        lv = self.lean_version() or "unknown"
 
         # Wrap bare theorem declarations in the required import preamble
         full_code = self._wrap_lean_code(lean_code)

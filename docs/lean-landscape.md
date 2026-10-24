@@ -74,7 +74,7 @@ The exact roster and roles live in the manifest; this page projects them for nav
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `compositions.bayesian_model_reduction` | composition | `FEPComposed` | families.standalone_efe_formalizations, families.variational_duality, bayesian_model_reduction |
+| `compositions.bayesian_model_reduction` | composition | `FEPComposed` | families.standalone_efe_formalizations, families.variational_duality, families.learning_theory, bayesian_model_reduction |
 | `compositions.causal_predictive` | composition | `FEPComposed` | families.causal_blankets_interventions, families.core_active_inference, families.core_bayesian_mechanics, families.core_free_energy, families.predictive_coding_generalized, causal_dynamics, predictive_coding |
 | `compositions.collective_learning` | composition | `FEPComposed` | families.collective_inference, families.core_active_inference, families.core_bayesian_mechanics, families.core_free_energy, families.core_thermodynamics, families.learning_theory, collective_inference, learning_theory |
 | `compositions.finite_scientific_implications` | composition | `FEPComposed.FiniteScientificImplications` | finite_probability, causal_dynamics, finite_markov_dynamics, active_inference, information_geometry |

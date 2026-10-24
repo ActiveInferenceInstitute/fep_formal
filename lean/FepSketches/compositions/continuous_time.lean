@@ -122,4 +122,20 @@ theorem fep155_lyapunovDecay_extends_fep032
       fep_fep032.FEP032.fep032_quadraticEnergy_descent
         hStepNonnegative hStepAtMostTwo⟩
 
+/-- Exact relaxation makes the actual Lyapunov derivative strictly negative away from stationarity. -/
+theorem fep154_nonstationary_relaxation_supplies_fep155_strict_decay
+    (rates : TwoStateRates) (initial : FiniteLaw Bool)
+    (nonstationary : initial true ≠ rates.stationaryTrue) (time : ℝ) :
+    HasDerivAt (rates.lyapunov initial)
+      (-2 * rates.decayRate * rates.lyapunov initial time) time ∧
+      -2 * rates.decayRate * rates.lyapunov initial time < 0 := by
+  have relaxation := fep_fep154.FEP154.fep154_twoStateRelaxation_exact rates initial time
+  have deviation : rates.trueMass initial time - rates.stationaryTrue ≠ 0 := by
+    rw [relaxation]
+    exact mul_ne_zero (ne_of_gt (rates.rho_pos time)) (sub_ne_zero.mpr nonstationary)
+  have positive : 0 < rates.lyapunov initial time := by
+    exact sq_pos_of_ne_zero deviation
+  exact ⟨fep_fep155.FEP155.fep155_twoStateLyapunov_hasDerivAt rates initial time,
+    mul_neg_of_neg_of_pos (mul_neg_of_neg_of_pos (by norm_num) rates.decayRate_pos) positive⟩
+
 end FEPComposed

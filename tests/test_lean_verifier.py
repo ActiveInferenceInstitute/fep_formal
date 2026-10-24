@@ -259,8 +259,9 @@ def test_verify_sketch_with_lake_trivial(verifier: LeanVerifier) -> None:
         pytest.skip(
             "lake not on PATH — run scripts/_maint_bootstrap_lean_toolchain.sh (or uv run fep-lean setup — wraps it) first"
         )
-    _mathlib_ok, _mathlib_msg = verifier.check_mathlib_built()
-    # Trivial True.intro doesn't actually need Mathlib loaded
+    mathlib_ok, mathlib_msg = verifier.check_mathlib_built()
+    if not mathlib_ok:
+        pytest.skip(f"Mathlib not built: {mathlib_msg}")
     sketch = "theorem fep_lean_trivial_check : True := True.intro"
     r = verifier.verify_sketch("fep-trivial", sketch)
     assert isinstance(r, VerifyResult)

@@ -509,7 +509,7 @@ def _render_source_fixture(tmp_path: Path) -> Path:
     root = (tmp_path / "publication").resolve()
     root.mkdir()
     _init_render_fixture_repository(root)
-    # A cached legacy-directory listing can survive the control's rename.
+    # A cached prior-directory listing can survive the control's rename.
     # Configure this disposable fixture before any status query; the actual
     # source stamp and CI guards still inspect unfiltered Git status.
     subprocess.run(
@@ -680,3 +680,165 @@ def test_ci_hydration_guards_refuse_unfiltered_git_drift_without_path_disclosure
     assert "DO-NOT-DISCLOSE" not in result.stderr
     assert subprocess.check_output(["git", "status", "--porcelain"], cwd=root) == before
     assert _source_stamp_vars(root)["dirty"] == "true"
+
+
+@pytest.mark.parametrize(
+    "sealed,actual,matched",
+    [
+        ([3, 14, 9], [3, 14, 9], True),
+        ([3, 14, 8], [3, 14, 9], False),
+        ([3, 14, 9], [3, 14, 8], False),
+        (None, [3, 14, 9], False),
+        ([3, 14], [3, 14, 9], False),
+        ([3, 14, True], [3, 14, 1], False),
+    ],
+    ids=["exact", "newer-runtime", "older-runtime", "missing", "short", "boolean"],
+)
+def test_sealed_validator_python_diagnostic(sealed, actual, matched):
+    approved = {"validator_python": sealed}
+    before = copy.deepcopy(approved)
+    message = acceptance._validator_python_diagnostic(approved, actual)
+    assert (message is None) == matched
+    assert approved == before
+    if message is not None:
+        assert "sealed validator_python=" in message
+        assert "actual validator_python=" in message
+        assert "only difference" in message
+
+
+def _diagnostic_inputs(root):
+    out = root / "output"
+    out.mkdir()
+    approved = {
+        "validator_python": list(sys.version_info[:3]),
+        "nodeids": sorted(acceptance.LIVE_NODE_IDS + acceptance.CONTROL_NODE_IDS),
+        "source_sha256": {"fixture": "a" * 64},
+    }
+    parallel = junit(list(acceptance.CONTROL_NODE_IDS))
+    chrome = junit(list(acceptance.LIVE_NODE_IDS))
+    payloads = {
+        "collection.json": json.dumps(approved).encode(),
+        "parallel.xml": parallel,
+        "chrome.xml": chrome,
+        "coverage.xml": coverage(),
+    }
+    for name, raw in payloads.items():
+        (out / name).write_bytes(raw)
+    argv = [
+        "--project-root",
+        str(root),
+        "--collection",
+        str(out / "collection.json"),
+        "--parallel-junit",
+        str(out / "parallel.xml"),
+        "--chrome-junit",
+        str(out / "chrome.xml"),
+        "--coverage",
+        str(out / "coverage.xml"),
+        "--output",
+        str(out / "summary.json"),
+    ]
+    return argv, approved, payloads
+
+
+@pytest.mark.parametrize(
+    "mode", ["matching", "patch-mismatch", "source-mismatch", "bad-junit"]
+)
+def test_cli_retains_fresh_collection_without_acceptance_waiver(
+    tmp_path, monkeypatch, capsys, mode
+):
+    argv, approved, payloads = _diagnostic_inputs(tmp_path)
+    fresh = copy.deepcopy(approved)
+    if mode == "patch-mismatch":
+        approved["validator_python"][-1] += 1
+    elif mode == "source-mismatch":
+        fresh["source_sha256"]["fixture"] = "b" * 64
+    elif mode == "bad-junit":
+        (tmp_path / "output/parallel.xml").write_bytes(b"not XML")
+    (tmp_path / "output/collection.json").write_text(json.dumps(approved))
+
+    def collect(root, **kwargs):
+        assert root == tmp_path and kwargs["observation"].name.endswith(
+            ".collection-worker.json"
+        )
+        # The version diagnostic must already be visible before this expensive seam.
+        captured = capsys.readouterr()
+        assert ("sealed validator_python=" in captured.err) == (
+            mode == "patch-mismatch"
+        )
+        return fresh
+
+    monkeypatch.setattr(acceptance, "collect", collect)
+    code = acceptance.main(argv)
+    out = tmp_path / "output"
+    assert json.loads((out / "summary.json.fresh-collection.json").read_text()) == fresh
+    summary = json.loads((out / "summary.json").read_text())
+    if mode == "matching":
+        assert code == 0 and summary["status"] == "passed"
+        expected = acceptance.validate_payloads(
+            approved,
+            fresh,
+            payloads["parallel.xml"],
+            payloads["chrome.xml"],
+            payloads["coverage.xml"],
+        )
+        expected["input_sha256"]["collection"] = acceptance._sha(
+            (out / "collection.json").read_bytes()
+        )
+        assert summary == expected
+    else:
+        assert code == 1 and summary["status"] == "failed"
+        if mode == "patch-mismatch":
+            assert "sealed validator_python=" in summary["errors"][0]
+        if mode == "source-mismatch":
+            assert "fresh current collection" in summary["errors"][0]
+
+
+@pytest.mark.parametrize(
+    "mode", ["worker-nonzero", "malformed-worker-json", "pytest-collection-failed"]
+)
+def test_failed_collection_retains_actual_worker_observation(
+    tmp_path, monkeypatch, mode
+):
+    from types import SimpleNamespace
+
+    (tmp_path / "output").mkdir()
+    raw = json.dumps(
+        {"exit_code": 2, "nodeids": [], "collection_log": "fixture diagnostic"}
+    )
+    if mode == "malformed-worker-json":
+        raw = "not JSON"
+    result = SimpleNamespace(
+        returncode=1 if mode == "worker-nonzero" else 0,
+        stdout=raw,
+        stderr="actual fake-worker stderr",
+    )
+    monkeypatch.setattr(acceptance, "source_live_node_ids", lambda root: ())
+    monkeypatch.setattr(acceptance, "source_hashes", lambda root: {})
+    monkeypatch.setattr(acceptance.subprocess, "run", lambda *args, **kwargs: result)
+    path = tmp_path / "output/worker.json"
+    with pytest.raises((acceptance.AcceptanceError, json.JSONDecodeError)):
+        acceptance.collect(tmp_path, observation=path)
+    observed = json.loads(path.read_text())
+    assert observed["status"] == "collection-worker-observed"
+    assert observed["returncode"] == result.returncode
+    assert observed["stdout"] == raw and observed["stderr"] == result.stderr
+
+
+def test_fresh_collection_sidecar_alias_is_refused_before_collection(
+    tmp_path, monkeypatch
+):
+    argv, _, _ = _diagnostic_inputs(tmp_path)
+    output = tmp_path / "output"
+    original = (output / "collection.json").read_bytes()
+    aliased = output / "summary.json.fresh-collection.json"
+    (output / "collection.json").rename(aliased)
+    argv[argv.index("--collection") + 1] = str(aliased)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("collection must not start on output/input alias")
+
+    monkeypatch.setattr(acceptance, "collect", forbidden)
+    assert acceptance.main(argv) == 1
+    assert aliased.read_bytes() == original
+    assert json.loads((output / "summary.json").read_text())["status"] == "failed"

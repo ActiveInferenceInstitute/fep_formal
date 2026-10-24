@@ -3447,7 +3447,7 @@
       "resource": "compositions/control_temporal.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 14,
+      "theorem_count": 15,
       "theorems": [
         "FEPComposed.fep065_controlledKernel_extends_fep023_normalization",
         "FEPComposed.fep066_action_update_refines_fep034_filter",
@@ -3458,6 +3458,7 @@
         "FEPComposed.fep071_sophisticatedEFE_extends_fep033",
         "FEPComposed.fep072_forward_filter_refines_fep034",
         "FEPComposed.fep073_backward_message_composes_fep047",
+        "FEPComposed.fep074_backwardEvidence_supplies_fep072_filter",
         "FEPComposed.fep074_smoothing_reconstructs_fep034_filter",
         "FEPComposed.fep075_smoothing_normalization_extends_fep034",
         "FEPComposed.fep076_variational_update_refines_fep028_softmax",
@@ -3567,7 +3568,7 @@
       "resource": "compositions/collective_learning.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 14,
+      "theorem_count": 15,
       "theorems": [
         "FEPComposed.fep107_product_agent_extends_fep027_hierarchy",
         "FEPComposed.fep108_collective_vfe_extends_fep039_additivity",
@@ -3575,6 +3576,7 @@
         "FEPComposed.fep110_product_of_experts_refines_fep028_normalization",
         "FEPComposed.fep111_consensus_mass_extends_fep025_conservation",
         "FEPComposed.fep112_consensus_convergence_extends_fep048_contraction",
+        "FEPComposed.fep112_consensus_fixed_pair_is_equal",
         "FEPComposed.fep113_coupled_potential_refines_fep032_descent",
         "FEPComposed.fep114_subgaussian_tail_refines_fep036_empirical_rate",
         "FEPComposed.fep115_frequency_union_bound_extends_fep042_counts",
@@ -3602,13 +3604,14 @@
       "resource": "compositions/risk_calibration.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 7,
+      "theorem_count": 8,
       "theorems": [
         "FEPComposed.fep121_laplaceError_extends_fep036",
         "FEPComposed.fep122_laplaceBias_extends_fep036",
         "FEPComposed.fep123_laplaceAbsoluteError_extends_fep036",
         "FEPComposed.fep124_laplaceSquaredRisk_combines_fep036_fep114",
         "FEPComposed.fep125_brierExcess_refines_fep022",
+        "FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound",
         "FEPComposed.fep126_laplaceBrierRisk_combines_fep022_fep036",
         "FEPComposed.fep127_laplaceConcentration_combines_fep036_fep114"
       ]
@@ -3630,10 +3633,11 @@
       "resource": "compositions/policy_trees.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 7,
+      "theorem_count": 8,
       "theorems": [
         "FEPComposed.fep128_policyTreeRecursion_extends_fep071",
         "FEPComposed.fep129_policyTreeBellman_extends_fep033",
+        "FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans",
         "FEPComposed.fep130_optimalPolicyTree_extends_fep008",
         "FEPComposed.fep131_openLoopEmbedding_extends_fep033",
         "FEPComposed.fep132_closedLoopDominance_extends_fep071",
@@ -3707,13 +3711,14 @@
       "resource": "compositions/exponential_family.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 7,
+      "theorem_count": 8,
       "theorems": [
         "FEPComposed.fep142_exponentialNormalization_extends_fep031",
         "FEPComposed.fep143_logDensityRatio_extends_fep026",
         "FEPComposed.fep144_logPartitionGradient_extends_fep040",
         "FEPComposed.fep145_centeredScore_extends_fep038",
         "FEPComposed.fep146_fisherVariance_extends_fep100",
+        "FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity",
         "FEPComposed.fep147_KLBregman_connects_fep014_fep104",
         "FEPComposed.fep148_meanCoordinate_extends_fep103"
       ]
@@ -3735,7 +3740,7 @@
       "resource": "compositions/continuous_time.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 7,
+      "theorem_count": 8,
       "theorems": [
         "FEPComposed.fep149_continuousKernel_extends_fep020",
         "FEPComposed.fep150_semigroupZero_extends_fep006",
@@ -3743,6 +3748,7 @@
         "FEPComposed.fep152_masterEquation_extends_fep020",
         "FEPComposed.fep153_continuousDetailedBalance_extends_fep010",
         "FEPComposed.fep154_continuousRelaxation_extends_fep020",
+        "FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay",
         "FEPComposed.fep155_lyapunovDecay_extends_fep032"
       ]
     },
@@ -4115,14 +4121,16 @@
       "imports": [
         "FepSketches.families.standalone_efe_formalizations",
         "FepSketches.families.variational_duality",
+        "FepSketches.families.learning_theory",
         "FepSketches.bayesian_model_reduction"
       ],
       "lean_module": "FepSketches.compositions.bayesian_model_reduction",
       "resource": "compositions/bayesian_model_reduction.lean",
       "role": "composition",
       "structure_count": 0,
-      "theorem_count": 1,
+      "theorem_count": 2,
       "theorems": [
+        "FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds",
         "FEPComposed.fep158_reductionFreeEnergy_extends_fep058_gibbsLowerBound"
       ]
     },
@@ -5150,26 +5158,26 @@
   ],
   "metrics": {
     "abbreviations": 46,
-    "authored_relation_edges": 150,
+    "authored_relation_edges": 156,
     "capability_nodes": 50,
-    "composed_theorems": 379,
+    "composed_theorems": 386,
     "definitions": 1062,
     "distinct_mathlib_imports": 80,
     "formal_module_dependency_edges": 173,
-    "formal_module_import_edges": 408,
+    "formal_module_import_edges": 409,
     "formal_modules": 72,
-    "formal_pairing_witnesses": 120,
-    "formal_relation_witnesses": 24,
+    "formal_pairing_witnesses": 118,
+    "formal_relation_witnesses": 32,
     "formal_resource_abbreviations": 39,
     "formal_resource_definitions": 967,
     "formal_resource_structures": 56,
-    "formal_resource_theorems": 1817,
+    "formal_resource_theorems": 1824,
     "foundation_modules": 45,
     "foundation_theorems": 1438,
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
-    "theorem_witnessed_relations": 144,
-    "theorems": 2404,
+    "theorem_witnessed_relations": 150,
+    "theorems": 2411,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
     "topic_import_edges": 267,
@@ -5178,8 +5186,8 @@
   },
   "relation_counts": {
     "conceptual": 6,
-    "formal": 24,
-    "formal_pairing": 120
+    "formal": 32,
+    "formal_pairing": 118
   },
   "relations": [
     {
@@ -5361,7 +5369,7 @@
     {
       "blocked_by": "issue:93",
       "kind": "conceptual",
-      "rationale": "The normalized one-step kernel filter and the finite sum-product forward message occupy adjacent exact-inference layers.",
+      "rationale": "Reviewed 2026-10-23 against the exact fep034_filter_joint_reconstruction and fep047_forward_compose statements and the delivered PTree exact-marginal/star/cycle theory; see docs/relations-endpoint-adjudication.md, FORM-S10. Finite matrix propagation supplies unnormalized weights; native posterior reconstruction additionally requires an observation kernel and conditioning. No cross-endpoint equality, null-observation ratio, generic normalized-child-message theorem, or loopy convergence claim is made. Keep conceptual; any formal tag change requires a qualified witness and reviewed seal delta.",
       "source": "fep-034",
       "target": "fep-047",
       "witness": null
@@ -5621,6 +5629,14 @@
       "source": "fep-073",
       "target": "fep-047",
       "witness": "FEPComposed.fep073_backward_message_composes_fep047"
+    },
+    {
+      "blocked_by": null,
+      "kind": "formal",
+      "rationale": "The actual fep-074 forward/backward evidence equality transports positive backward evidence into the premise of the actual fep-072 filtering recursion, then identifies its weighted atoms on the same finite carrier. Zero evidence remains excluded.",
+      "source": "fep-074",
+      "target": "fep-072",
+      "witness": "FEPComposed.fep074_backwardEvidence_supplies_fep072_filter"
     },
     {
       "blocked_by": null,
@@ -5928,11 +5944,11 @@
     },
     {
       "blocked_by": null,
-      "kind": "formal_pairing",
-      "rationale": "Atomwise consensus disagreement converges to zero, extending the original concrete halving-contraction convergence witness.",
+      "kind": "formal",
+      "rationale": "For a fixed pair of the specified consensus update, actual fep-112 contraction makes each disagreement atom a fixed point of the actual fep-048 half update; its unique fixed point is zero, so the two finite laws are equal. This does not assert a unique fixed pair or arbitrary-coupling contraction.",
       "source": "fep-112",
       "target": "fep-048",
-      "witness": "FEPComposed.fep112_consensus_convergence_extends_fep048_contraction"
+      "witness": "FEPComposed.fep112_consensus_fixed_pair_is_equal"
     },
     {
       "blocked_by": null,
@@ -6032,6 +6048,14 @@
     },
     {
       "blocked_by": null,
+      "kind": "formal",
+      "rationale": "The actual fep-125 pointwise Brier-excess identity identifies the sampled risk with squared error on the same finite law, allowing the actual fep-124 Laplace squared-risk bound to apply. Positive sample count and probability bounds remain explicit.",
+      "source": "fep-125",
+      "target": "fep-124",
+      "witness": "FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound"
+    },
+    {
+      "blocked_by": null,
       "kind": "formal_pairing",
       "rationale": "Exact Bernoulli Brier excess equals squared forecast error, while fep-022 retains the separate preference-risk decomposition used by the earlier active-inference carrier.",
       "source": "fep-125",
@@ -6069,6 +6093,14 @@
       "source": "fep-129",
       "target": "fep-033",
       "witness": "FEPComposed.fep129_policyTreeBellman_extends_fep033"
+    },
+    {
+      "blocked_by": null,
+      "kind": "formal",
+      "rationale": "An attaining tree supplied by actual fep-130 is compared with the open-loop embedding from actual fep-131; its value-preservation law gives finite-depth closed-loop dominance over every embedded plan. Universal strict advantage and infinite-horizon optimality are not claimed.",
+      "source": "fep-130",
+      "target": "fep-131",
+      "witness": "FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans"
     },
     {
       "blocked_by": null,
@@ -6200,6 +6232,14 @@
     },
     {
       "blocked_by": null,
+      "kind": "formal",
+      "rationale": "The actual fep-146 Fisher/variance identity transports interval-wise positive Fisher information into the variance premise of actual fep-148 strict monotonicity and injectivity. Constant-statistic and degenerate-information cases are excluded by the stated positivity premise.",
+      "source": "fep-146",
+      "target": "fep-148",
+      "witness": "FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity"
+    },
+    {
+      "blocked_by": null,
       "kind": "formal_pairing",
       "rationale": "Scalar Fisher information is derived as sufficient-statistic variance with positive and zero-curvature witnesses, paired with the earlier categorical tangent-space metric.",
       "source": "fep-146",
@@ -6264,6 +6304,14 @@
     },
     {
       "blocked_by": null,
+      "kind": "formal",
+      "rationale": "The actual fep-154 relaxation formula turns nonstationary initial mass into a strictly positive Lyapunov value; combined with the actual fep-155 derivative law and positive rates, this gives strict two-state decay. Stationary initial laws have zero derivative instead.",
+      "source": "fep-154",
+      "target": "fep-155",
+      "witness": "FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay"
+    },
+    {
+      "blocked_by": null,
       "kind": "formal_pairing",
       "rationale": "Boolean true-state mass relaxes exponentially to stationarity, paired with the original discrete transition evolution without claiming a general mixing-rate theorem.",
       "source": "fep-154",
@@ -6293,6 +6341,14 @@
       "source": "fep-157",
       "target": "fep-065",
       "witness": "FEPComposed.fep157_loopInvariant_extends_fep065_controlledKernel"
+    },
+    {
+      "blocked_by": null,
+      "kind": "formal",
+      "rationale": "The actual fep-158 masked-evidence identity supplies the predictive-evidence denominator consumed by the actual fep-117 reduced posterior-odds formula on the same finite carrier. Required positive evidence and reference weights are retained.",
+      "source": "fep-158",
+      "target": "fep-117",
+      "witness": "FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds"
     },
     {
       "blocked_by": null,
@@ -6328,8 +6384,8 @@
     },
     {
       "blocked_by": null,
-      "kind": "formal_pairing",
-      "rationale": "The symmetrization construction discharges exactly the symmetric-matrix hypothesis of the trace cancellation it is paired with, without claiming a continuum Clairaut theorem or smooth Hessian.",
+      "kind": "formal",
+      "rationale": "The actual fep-162 symmetrization theorem constructs the symmetric-matrix premise consumed by the actual fep-161 skew-trace theorem. This finite-matrix derivation does not establish continuum Clairaut regularity or a smooth Hessian.",
       "source": "fep-162",
       "target": "fep-161",
       "witness": "FEPComposed.fep162_clairautSymmetrize_extends_fep161_skewCancellation"
@@ -7971,14 +8027,14 @@
       "abbreviation_count": 0,
       "acceptance_probe": "native Lean compile of fep071_sophisticatedEFE_backward_step, fep071_twoStage_feedback_changes_action, and fep071_twoStage_feedback_strictly_better.",
       "area": "ActiveInference",
-      "assumption_review": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Existing BayesianBeliefModel and generative-model specializations provide those stronger contracts separately.",
+      "assumption_review": "Belief, action, and observation carriers are finite and Action is nonempty so each finite argmin exists. The theorem is a maintained finite-horizon recursion with an exact Boolean two-stage witness; it does not prove continuous-state or infinite-horizon sophisticated planning. SophisticatedEFEModel supplies a real stage objective and an observation-indexed update. This generic recursion does not certify Bayes correctness or derive the stage objective from mutual information. Reviewed 2026-10-23 in docs/relations-endpoint-adjudication.md (FORM-S11): FEP.PerceptionActionLoop.bayesSophisticatedValue_eq_pomdpOptimum and bayesRiskAmbiguity_eq_sophisticated provide the separate Bayesian specialization on a finite filter-closed indexed belief family with positive-evidence update soundness, nonempty actions, and full support at every indexed belief. boolBayes_rederives_feedbackWitness re-derives the ordinary Boolean mismatch-cost tree through the filter; it is not a full-support EFE witness. boolKeepPrior_not_bayesian and boolKeepPrior_agreement_fails expose the observation-ignoring update boundary. No null-observation Bayes identity, full-simplex enumeration, continuous-state or infinite-horizon result is claimed.",
       "definition_count": 0,
       "family": "control-and-planning-as-inference",
       "id": "fep-071",
       "imports": [
         "FepSketches.controlled_markov"
       ],
-      "invariant": "Finite sophisticated expected-free-energy recursion reoptimizes after each observation-dependent belief update, and a two-stage witness strictly separates feedback from every fixed open-loop second action.",
+      "invariant": "Finite sophisticated expected-free-energy recursion reoptimizes after each observation-dependent update, and a two-stage witness separates feedback from every fixed open-loop second action. Separately, under the explicit BayesianBeliefModel filter-soundness and full-support premises, the generative-model specialization agrees with the reachable-belief POMDP optimum; this stronger statement does not make the generic primary Bayesian.",
       "mathlib_hints": [
         "Algebra.Order.BigOperators.Group.Finset"
       ],

@@ -61,6 +61,7 @@ def test_run_topic_no_refined_sketch(tmp_path: Path) -> None:
     assert r.success is False
 
 
+@pytest.mark.serial_lean
 def test_run_topic_with_reasoning_turn(tmp_path: Path) -> None:
     lean = LeanVerifier(PROJ / "lean", PROJ)
     sketch = "theorem fixtureReason : True := True.intro\n"
@@ -198,6 +199,7 @@ class _PreambleAwareHermes(HermesExplainer):
         )
 
 
+@pytest.mark.serial_lean
 def test_run_topic_uses_cache_on_second_call(tmp_path: Path) -> None:
     """Second identical run returns from SQLite cache; explain_topic called only once."""
     lean = LeanVerifier(PROJ / "lean", PROJ)
@@ -520,6 +522,7 @@ def test_review_commentary_is_not_requested_for_warning_bearing_lean(
 # ── Error capture tests ──────────────────────────────────────────────────────
 
 
+@pytest.mark.serial_lean
 def test_topic_run_result_error_uses_skip_reason_when_errors_empty(
     tmp_path: Path,
 ) -> None:

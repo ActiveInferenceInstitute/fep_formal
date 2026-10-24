@@ -1,3 +1,24 @@
+## Unreleased — Composition proofs and release iteration
+
+- Add seven bounded composition proofs and explicit false-claim controls for the
+  temporal, risk, exponential-family, policy, reduction, consensus, and geometric
+  interfaces. Regenerate the relation inventory with 32 formal relations, 118
+  theorem pairings, and six conceptual relations; retain explicit scientific
+  limitations and conditional theorem maturity.
+- Add an explicit versioned native API/CLI release supplement that reuses a
+  matching automatic qualification run while retaining the full automatic test,
+  distribution, and publication gates. Refuse mismatched source, events,
+  artifacts, or missing required contexts. This profile does not replace the
+  complete automatic workflow.
+- Refuse missing or partial Mathlib prerequisites before compiler version and
+  topic verification operations, with a concrete setup diagnostic. Run real Gauss
+  compiler probes in the serial Lean lane. Update graph expectations and active American English wording.
+
+The composed candidate passed warning-strict Lean 4.35.0 verification for all
+168 topics and an audit of 2,060 declarations. These results establish the
+stated native proof scope; full software, hosted, publication, and scientific
+acceptance remain separate.
+
 ## 2.0.0 — 2026-10-23 — Source-bound semantics and coordinated GNN release
 
 - Prepare the coordinated FEP_Formal 2.0.0 / GNN 5.0.0 release. Version and
