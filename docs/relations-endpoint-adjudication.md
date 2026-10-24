@@ -293,3 +293,40 @@ The fep-163 weightedDivergence definition remains an explicit Leibniz decomposit
 This is pointwise consistency of a stated forward-difference discretization of the current divergence. It does not assert an exact finite-step Leibniz rule or exact finite-step conservation: the imported Fin 1 quadratic control explicitly refutes that rule at step one. It supplies no convergence rate, grid stability, boundary treatment, variable-Q/DQ-nonzero recovery, normalized density, stochastic process construction, or time-dependent PDE solution. Γ symmetry/positive-semidefiniteness is unnecessary for this current identity, so the intended physical subclass is included without a stronger physical conclusion. The existing fep-163→fep-025 formal-pairing relation and the original carrier definition are unchanged; no new topic, disposition, or pairing is inferred from this bridge.
 
 This note records mathematical scope, not a substitute for the issue's independent semantic review or current software qualification. The reviewer preparing this note participated in the earlier #98 bridge/integration and qualification work, and therefore does not count this as a disjoint-author approval of that work.
+
+
+## LEAN-5: qualified family-edge coverage (2026-10-24)
+
+The current ledger has 32 `formal` relations, 118 `formal_pairing` relations,
+and six conceptual relations. Counting a family when either endpoint of a
+formal edge belongs to it covers 16 of 22 families, leaving six. This meets
+#103’s numerical criterion of at most six uncovered families. It does not
+assert a formal edge for all families.
+
+The endpoint rule remains the adjudicated rule above: a reviewed supporting
+theorem may carry an actual derivation. These witnesses transport an endpoint
+identity or premise into another endpoint theorem; their classification does
+not follow from shared imports or suggestive names.
+
+| Edge | Endpoint roles and actual derivation | Boundary |
+| --- | --- | --- |
+| fep-074 → fep-072 | The source’s supporting evidence-agreement theorem supplies the positive-evidence premise of the target’s primary filtering recursion. | Finite carrier and positive observation evidence; zero evidence is excluded. |
+| fep-125 → fep-124 | The source’s primary Brier-excess identity rewrites the integrand consumed by the target’s supporting squared-risk bound. | Positive sample count, bounded successes, and target in [0,1]; this concerns excess risk, not raw Brier score. |
+| fep-130 → fep-131 | The source’s primary attainment theorem supplies a tree; the target’s primary embedding identity rewrites its comparison with every open-loop plan. | Finite depth and nonempty finite actions; dominance need not be strict. |
+| fep-146 → fep-148 | The source’s supporting Fisher/variance identity supplies the variance premise of the target’s primary strict-monotonicity and supporting injectivity results. | Positive Fisher information throughout the interval; constant statistics are excluded. |
+| fep-154 → fep-155 | The source’s primary relaxation identity supplies a positive Lyapunov value; the target’s supporting derivative identity gives strict decay. | Positive two-state rates and a nonstationary initial law; stationary laws have zero derivative. |
+| fep-158 → fep-117 | The source’s supporting masked-predictive identity supplies the evidence premise of the target’s primary posterior-odds recursion. | Positive normalization, evidence, and reference weight/prior/likelihood; zero denominators are excluded. |
+| fep-112 → fep-048 | The source’s supporting contraction law makes each fixed-pair gap a fixed point of the target’s supporting half-update theorem; that theorem forces equality. | The specified consensus operator only; many equal fixed pairs remain possible. |
+| fep-162 → fep-161 | The source’s supporting symmetrization theorem constructs symmetry and passes that exact premise into the target’s primary skew-trace cancellation theorem. | Finite matrices, skew Q, and explicit symmetrization; no continuum Clairaut claim. |
+
+The 112→048 result concerns equality within a fixed pair, not uniqueness of a
+fixed pair. The 162→161 conjunction contains a real premise dependency; it is
+not merely two independent endpoint laws. Imported controls retain the stated
+zero-evidence, degenerate-information, stationary, no-action, non-skew, and
+arbitrary-coupling boundaries. No capability or theorem-maturity promotion
+follows from this edge count.
+
+Current-source relation tests and retained native evidence remain execution
+prerequisites for closeout. The semantic review behind this note was separate
+from the original proof-term authorship but involved earlier integration and
+qualification work; it is not a wholly disjoint-author integration approval.
