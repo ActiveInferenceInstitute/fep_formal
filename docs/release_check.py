@@ -27,8 +27,8 @@ WORKFLOW = "ci.yml"
 #: conclusion alone is not enough.
 REQUIRED_JOBS = ("python", "static", "lean", "render-deps", "render")
 DISTRIBUTION_PREFIX = "distribution ("
-# Pull requests run a reduced matrix; the release gate reads the push run on
-# main, which must carry every operating system and interpreter cell.
+# Automatic code PRs, main pushes and manual full runs use the full matrix.
+# The release gate requires every operating system and interpreter cell.
 DISTRIBUTION_CELLS = tuple(
     f"distribution ({os}, {python})"
     for os in ("ubuntu-latest", "macos-latest", "windows-latest")
