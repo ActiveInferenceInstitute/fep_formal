@@ -300,7 +300,7 @@ This note records mathematical scope, not a substitute for the issue's independe
 The current ledger has 32 `formal` relations, 118 `formal_pairing` relations,
 and six conceptual relations. Counting a family when either endpoint of a
 formal edge belongs to it covers 16 of 22 families, leaving six. This meets
-#103’s numerical criterion of at most six uncovered families. It does not
+Issue #103’s numerical criterion of at most six uncovered families. It does not
 assert a formal edge for all families.
 
 The endpoint rule remains the adjudicated rule above: a reviewed supporting

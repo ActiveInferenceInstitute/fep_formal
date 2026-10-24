@@ -117,7 +117,7 @@ assert data['source_origin'] == 'installed_package'
 assert data['package_version'] == {expected_version!r}
 assert data['counts']['topics'] == len(model.metadata.topic_ids) == 168
 assert data['counts']['families'] == 22
-assert data['counts']['authored_edges'] == 150
+assert data['counts']['authored_edges'] == 156
 assert data['counts']['capabilities'] == 50
 assert inspect_topic(model, 'fep-038')['primary_theorem_qualified'].startswith('fep_fep038.FEP038.')
 analysis = analyze_topic(model, 'fep-038')
