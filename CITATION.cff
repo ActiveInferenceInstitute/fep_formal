@@ -8,7 +8,7 @@ abstract: >-
   Thermodynamics. Each row has a canonical Lean 4 topic body, reviewed
   invariant, explicit assumptions, and a separate semantic maturity record.
   The Python package supports deterministic offline artifacts, native
-  Lean verification, and configured Hermes/OpenGauss execution. The 2.0.1
+  Lean verification, and configured Hermes/OpenGauss execution. The 2.1.0
   implementation uses the pinned Lean 4.35.0 / Mathlib 4.35.0 profile; fresh
   source-bound native acceptance requires zero warnings and proof holes.
   Historical evidence retains its original source and toolchain. Compilation
@@ -21,7 +21,7 @@ authors:
     orcid: "https://orcid.org/0000-0001-6232-9096"
     affiliation: Active Inference Institute
 doi: "10.5281/zenodo.23196891"
-version: "2.0.1"
+version: "2.1.0"
 date-released: "2026-10-24"
 repository-code: "https://github.com/ActiveInferenceInstitute/fep_formal"
 url: "https://github.com/ActiveInferenceInstitute/fep_formal"

@@ -125,7 +125,9 @@ validation behavior. [Pipeline usage](../docs/pipeline.md) gives operator exampl
 
 ## Release
 
-The **2.0.1 implementation** coordinates with GNN 5.0.1. Its
+The **2.1.0 implementation** coordinates with GNN 5.0.1. It includes seven
+bounded composition proofs, updated formal relations, and fail-fast Mathlib
+prerequisites. The native supplement remains a separately unactivated proposal. Its
 [semantic audit](../src/fep_lean/bridge/README.md#independent-semantic-audit)
 compares source-bound finite and passive linear-Gaussian numerical witnesses
 through independent reference algorithms. It retains identity, parameter,
@@ -136,7 +138,7 @@ authenticates a supplied execution artifact. Current pair/native, manuscript,
 hosted, distribution and publication gates must pass before it is
 described as an accepted joint release.
 
-The 2.0.1 manuscript has the reserved, unpublished version DOI
+The 2.1.0 manuscript has the reserved, unpublished version DOI
 `10.5281/zenodo.23607007` under the scholarly concept. Final rendered bytes and
 publication acceptance remain pending; the published 1.6.0 manuscript retains
 its own DOI and files.

@@ -1,3 +1,39 @@
+## 2.1.0 — 2026-10-24 — Bounded compositions and coordinated release
+
+- Prepare the coordinated FEP_Formal 2.1.0 / GNN 5.0.1 release after normal
+  integration of PR222 with the retained 2.0.1 metadata/fixture preparation.
+  The scientific/runtime/CI additions below form a new feature cohort; the
+  earlier 2.0.1 and 2.0.0 sections retain their unpublished preparation epochs.
+- Exact final pair/custody, native compiler and false-claim controls, full
+  automatic PR/default dual-shadow/main, manuscript, installed distributions
+  and publication acceptance remain required. The proposed native supplement
+  stays unactivated unless its independent rollout contract is satisfied.
+- Retain reserved unpublished scholarly DOI `10.5281/zenodo.23607007`; its
+  draft metadata and final files must match 2.1.0 before publication.
+
+- Add seven bounded composition proofs and explicit false-claim controls for the
+  temporal, risk, exponential-family, policy, reduction, consensus, and geometric
+  interfaces. Regenerate the relation inventory with 32 formal relations, 118
+  theorem pairings, and six conceptual relations; retain explicit scientific
+  limitations and conditional theorem maturity.
+- Add an explicit versioned native API/CLI release supplement that reuses a
+  matching automatic qualification run while retaining the full automatic test,
+  distribution, and publication gates. Refuse mismatched source, events,
+  artifacts, or missing required contexts. This profile does not replace the
+  complete automatic workflow.
+- Refuse missing or partial Mathlib prerequisites before compiler version and
+  topic verification operations, with a concrete setup diagnostic. Run real Gauss
+  compiler probes in the serial Lean lane. Update graph expectations and active American English wording.
+
+
+PR222 retained authored native report (historical source statement, not this
+release's independent qualification):
+
+> The composed candidate passed warning-strict Lean 4.35.0 verification for all
+> 168 topics and an audit of 2,060 declarations. These results establish the
+> stated native proof scope; full software, hosted, publication, and scientific
+> acceptance remain separate.
+
 ## 2.0.1 — 2026-10-24 — Current-source maintenance successor
 
 - Prepare the coordinated FEP_Formal 2.0.1 / GNN 5.0.1 maintenance release.

@@ -176,6 +176,17 @@ def test_verify_sketch_subprocess_timeout(tmp_path: Path):
     (lean_dir / "lakefile.lean").write_text("")
     (lean_dir / "FepSketches").mkdir()
 
+    build_root = lean_dir / ".lake/packages/mathlib/.lake/build/lib/lean"
+    for relative in (
+        "Mathlib.olean",
+        "Mathlib/Data/Real/Basic.olean",
+        "Mathlib/Algebra/Order/Ring/Basic.olean",
+        "Mathlib/MeasureTheory/Measure/MeasureSpace.olean",
+    ):
+        artifact = build_root / relative
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        artifact.write_bytes(b"synthetic presence fixture; never compiled")
+
     lv = LeanVerifier(lean_dir, tmp_path)
 
     temporary_lake = tmp_path / "lake"
@@ -201,6 +212,17 @@ def test_verify_sketch_oserror(tmp_path: Path):
     lean_dir.mkdir()
     (lean_dir / "lakefile.lean").write_text("")
     (lean_dir / "FepSketches").mkdir()
+
+    build_root = lean_dir / ".lake/packages/mathlib/.lake/build/lib/lean"
+    for relative in (
+        "Mathlib.olean",
+        "Mathlib/Data/Real/Basic.olean",
+        "Mathlib/Algebra/Order/Ring/Basic.olean",
+        "Mathlib/MeasureTheory/Measure/MeasureSpace.olean",
+    ):
+        artifact = build_root / relative
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        artifact.write_bytes(b"synthetic presence fixture; never compiled")
 
     lv = LeanVerifier(lean_dir, tmp_path)
 

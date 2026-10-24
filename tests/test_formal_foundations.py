@@ -176,15 +176,15 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         "FepSketches.posterior_convergence": 27,
         "FepSketches.compositions.core": 26,
         "FepSketches.compositions.measure_variational": 14,
-        "FepSketches.compositions.control_temporal": 14,
+        "FepSketches.compositions.control_temporal": 15,
         "FepSketches.compositions.causal_predictive": 14,
         "FepSketches.compositions.thermo_geometry": 15,
-        "FepSketches.compositions.collective_learning": 14,
-        "FepSketches.compositions.risk_calibration": 7,
-        "FepSketches.compositions.policy_trees": 7,
+        "FepSketches.compositions.collective_learning": 15,
+        "FepSketches.compositions.risk_calibration": 8,
+        "FepSketches.compositions.policy_trees": 8,
         "FepSketches.compositions.native_blanket_transfer": 20,
-        "FepSketches.compositions.exponential_family": 7,
-        "FepSketches.compositions.continuous_time": 7,
+        "FepSketches.compositions.exponential_family": 8,
+        "FepSketches.compositions.continuous_time": 8,
         "FepSketches.compositions.finite_scientific_implications": 9,
         "FepSketches.compositions.finite_policy_action": 12,
         "FepSketches.compositions.finite_reference_agent": 5,
@@ -199,7 +199,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         "FepSketches.efe_time_scale_separation": 37,
         "FepSketches.compositions.efe_policy_selection": 1,
         "FepSketches.compositions.perception_action_loop": 1,
-        "FepSketches.compositions.bayesian_model_reduction": 1,
+        "FepSketches.compositions.bayesian_model_reduction": 2,
         "FepSketches.compositions.efe_time_scale_separation": 1,
         "FepSketches.helmholtz_ao_ness": 22,
         "FepSketches.geometric_mechanics": 37,
@@ -376,6 +376,17 @@ def test_foundations_pin_the_claims_that_make_the_kernel_substantive() -> None:
             "FepSketches.compositions.continuous_time"
         ),
     }
+    expected.update(
+        {
+            "FEPComposed.fep074_backwardEvidence_supplies_fep072_filter": "FepSketches.compositions.control_temporal",
+            "FEPComposed.fep112_consensus_fixed_pair_is_equal": "FepSketches.compositions.collective_learning",
+            "FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound": "FepSketches.compositions.risk_calibration",
+            "FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans": "FepSketches.compositions.policy_trees",
+            "FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity": "FepSketches.compositions.exponential_family",
+            "FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay": "FepSketches.compositions.continuous_time",
+            "FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds": "FepSketches.compositions.bayesian_model_reduction",
+        }
+    )
     assert {name: owners.get(name) for name in expected} == expected
 
 
@@ -555,3 +566,115 @@ def test_ness_forward_difference_imported_controls(tmp_path):
         set(values) <= {"propext", "Classical.choice", "Quot.sound"}
         for values in axioms.values()
     )
+
+
+@pytest.mark.serial_lean
+@pytest.mark.parametrize(
+    ("fixture_name", "expected"),
+    [
+        (
+            "fep103_policy_decay_reduction_controls.lean",
+            (
+                "FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans",
+                "FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay",
+                "FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds",
+                "FEP103Controls.policy_attained_boolean",
+                "FEP103Controls.policy_strict_witness",
+                "FEP103Controls.policy_depth_zero",
+                "FEP103Controls.policy_not_universal_strict",
+                "FEP103Controls.decay_benchmark",
+                "FEP103Controls.decay_stationary_boundary",
+                "FEP103Controls.weights_nonnegative",
+                "FEP103Controls.normalizer_positive",
+                "FEP103Controls.evidence_positive",
+                "FEP103Controls.reduced_odds_three",
+                "FEP103Controls.original_odds_six",
+                "FEP103Controls.zero_weights_refuse",
+                "FEP103Controls.zero_reference_weight",
+                "FEP103Controls.zero_reference_actual_odds",
+                "FEP103Controls.impossible_observation_refuses",
+                "FEP103Controls.no_action_depth_one",
+            ),
+        ),
+        (
+            "fep103_temporal_consensus_controls.lean",
+            (
+                "FEPComposed.fep074_backwardEvidence_supplies_fep072_filter",
+                "FEPComposed.fep112_consensus_fixed_pair_is_equal",
+                "FEP103TemporalConsensusControls.boolean_backward_positive",
+                "FEP103TemporalConsensusControls.boolean_imported_reconstruction",
+                "FEP103TemporalConsensusControls.prior_not_filtered",
+                "FEP103TemporalConsensusControls.zero_evidence_refuses",
+                "FEP103TemporalConsensusControls.equal_nonuniform_pair_fixed",
+                "FEP103TemporalConsensusControls.imported_equal_pair",
+                "FEP103TemporalConsensusControls.opposite_nonzero_gap",
+                "FEP103TemporalConsensusControls.opposite_pair_not_fixed",
+                "FEP103TemporalConsensusControls.identity_coupling_adverse",
+                "FEP103TemporalConsensusControls.many_equal_fixed_pairs",
+            ),
+        ),
+        (
+            "fep103_risk_exponential_controls.lean",
+            (
+                "FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound",
+                "FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity",
+                "FEP103RiskExpControls.risk_nonuniform_exact",
+                "FEP103RiskExpControls.risk_imported_bound",
+                "FEP103RiskExpControls.raw_score_not_excess",
+                "FEP103RiskExpControls.invalid_sample_and_target",
+                "FEP103RiskExpControls.threeState_variance_positive_all",
+                "FEP103RiskExpControls.threeState_interval_strict_injective",
+                "FEP103RiskExpControls.interval_is_nondegenerate",
+                "FEP103RiskExpControls.constant_fisher_refuses",
+                "FEP103RiskExpControls.constant_mean",
+                "FEP103RiskExpControls.constant_interval_not_injective",
+            ),
+        ),
+        (
+            "fep103_geometric_bridge_controls.lean",
+            (
+                "fep_fep162.FEP162.fep162_symmetrize_symmetric",
+                "fep_fep161.FEP161.fep161_skewTrace_eq_zero",
+                "FEPComposed.fep162_clairautSymmetrize_extends_fep161_skewCancellation",
+                "FEP103GeometricBridgeControls.raw_not_symmetric",
+                "FEP103GeometricBridgeControls.raw_trace_two",
+                "FEP103GeometricBridgeControls.constructed_symmetric",
+                "FEP103GeometricBridgeControls.constructed_trace_zero",
+                "FEP103GeometricBridgeControls.raw_trace_differs_from_constructed",
+                "FEP103GeometricBridgeControls.identity_not_skew",
+                "FEP103GeometricBridgeControls.identity_trace_four",
+                "FEP103GeometricBridgeControls.empty_imported_boundary",
+            ),
+        ),
+    ],
+    ids=[
+        "policy_decay_reduction",
+        "temporal_consensus",
+        "risk_exponential",
+        "geometric_bridge",
+    ],
+)
+def test_derivational_bridge_imported_controls(tmp_path, fixture_name, expected):
+    from fep_lean.verification.formalism_audit import parse_axiom_output
+    from tests._support.lake import lake_executable
+    from tests._support.lean_runner import run_lake_lean_probe
+
+    source = PROJECT_ROOT / "tests/fixtures" / fixture_name
+    assert source.is_file() and not source.is_symlink()
+    result = run_lake_lean_probe(
+        ["env", "lean", "-DwarningAsError=true", str(source)],
+        cwd=PROJECT_ROOT / "lean",
+        executable=lake_executable(
+            missing="raise", context="derivational bridge imported controls"
+        ),
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert not result.stderr
+    axioms, errors = parse_axiom_output(result.stdout, expected=expected)
+    assert not errors and set(axioms) == set(expected)
+    assert all(
+        set(values) <= {"propext", "Classical.choice", "Quot.sound"}
+        for values in axioms.values()
+    )
+    (tmp_path / "bridge.stdout.txt").write_text(result.stdout)
+    (tmp_path / "bridge.stderr.txt").write_text(result.stderr)

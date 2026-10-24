@@ -73,6 +73,8 @@ def test_duration_summary_ignores_skips_and_reports_deterministic_percentiles() 
 def _isolated_verifier(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
+    *,
+    built_mathlib: bool = True,
 ) -> LeanVerifier:
     lean_dir = tmp_path / "lean"
     lean_dir.mkdir()
@@ -82,6 +84,17 @@ def _isolated_verifier(
     verifier = LeanVerifier(lean_dir=lean_dir, project_root=tmp_path)
     verifier._lake_exe = "/virtual/lake"
     verifier._lean_exe = None
+    if built_mathlib:
+        build_root = lean_dir / ".lake/packages/mathlib/.lake/build/lib/lean"
+        for relative in (
+            "Mathlib.olean",
+            "Mathlib/Data/Real/Basic.olean",
+            "Mathlib/Algebra/Order/Ring/Basic.olean",
+            "Mathlib/MeasureTheory/Measure/MeasureSpace.olean",
+        ):
+            artifact = build_root / relative
+            artifact.parent.mkdir(parents=True, exist_ok=True)
+            artifact.write_bytes(b"synthetic presence fixture; never compiled")
     return verifier
 
 
@@ -215,7 +228,7 @@ def test_mathlib_probe_rejects_a_partial_leaf_cache_without_running_lake(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    verifier = _isolated_verifier(tmp_path, monkeypatch)
+    verifier = _isolated_verifier(tmp_path, monkeypatch, built_mathlib=False)
     build_root = verifier._lean_dir / ".lake/packages/mathlib/.lake/build/lib/lean"
     build_root.mkdir(parents=True)
     (build_root / "Mathlib.olean").write_bytes(b"root")
@@ -226,12 +239,15 @@ def test_mathlib_probe_rejects_a_partial_leaf_cache_without_running_lake(
     assert "required leaf .olean files missing" in message
     assert "Mathlib/Data/Real/Basic.olean" in message
 
+    _assert_cold_verification_refuses_without_side_effects(verifier, monkeypatch)
+
 
 def test_mathlib_probe_reports_a_missing_root_olean_without_running_lake(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    verifier = _isolated_verifier(tmp_path, monkeypatch)
+    verifier = _isolated_verifier(tmp_path, monkeypatch, built_mathlib=False)
+    _assert_cold_verification_refuses_without_side_effects(verifier, monkeypatch)
     (verifier._lean_dir / ".lake" / "packages" / "mathlib").mkdir(parents=True)
     build_root = verifier._lean_dir / ".lake/packages/mathlib/.lake/build/lib/lean"
 
@@ -239,6 +255,8 @@ def test_mathlib_probe_reports_a_missing_root_olean_without_running_lake(
 
     assert ok is False
     assert str(build_root / "Mathlib.olean") in message
+
+    _assert_cold_verification_refuses_without_side_effects(verifier, monkeypatch)
 
 
 def test_run_lake_lean_fails_closed_without_an_executable(
@@ -250,3 +268,43 @@ def test_run_lake_lean_fails_closed_without_an_executable(
 
     with pytest.raises(RuntimeError, match="lake executable is unavailable"):
         verifier._run_lake_lean(tmp_path / "sketch.lean")
+
+
+def _assert_cold_verification_refuses_without_side_effects(
+    verifier: LeanVerifier,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    sentinel = verifier._sketches_dir / "_verify_existing.lean"
+    sentinel.write_text("preserve existing probe", encoding="utf-8")
+    before = {
+        str(path.relative_to(verifier._lean_dir)): (
+            path.stat().st_mode,
+            path.stat().st_mtime_ns,
+            path.read_bytes() if path.is_file() else None,
+        )
+        for path in verifier._lean_dir.rglob("*")
+    }
+
+    def forbidden(*_args: object, **_kwargs: object) -> None:
+        pytest.fail("cold verification must not create a probe or launch a process")
+
+    monkeypatch.setattr(verifier, "lean_version", forbidden)
+    monkeypatch.setattr(verifier, "_run_lake_lean", forbidden)
+    monkeypatch.setattr(verifier_module, "run_process_group", forbidden)
+    monkeypatch.setattr(verifier_module.tempfile, "mkstemp", forbidden)
+    result = verifier.verify_sketch("cold", "theorem probe : True := by sorry")
+    assert result.compiles is False
+    assert result.has_sorry is True
+    assert result.sorry_occurrences == 1
+    assert result.failure_kind == "missing_import"
+    assert result.lean_version == "unknown"
+    assert "fep-lean setup" in result.skip_reason
+    after = {
+        str(path.relative_to(verifier._lean_dir)): (
+            path.stat().st_mode,
+            path.stat().st_mtime_ns,
+            path.read_bytes() if path.is_file() else None,
+        )
+        for path in verifier._lean_dir.rglob("*")
+    }
+    assert after == before

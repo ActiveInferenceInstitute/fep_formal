@@ -27,7 +27,7 @@ from tests.test_distribution import (
 _TEMPLATE_SUCCESS_CASES = _ORIGINAL_TEMPLATE_SUCCESS_CASES | {"executable_owner"}
 
 
-def test_q7_scaffold_bytes_refuse_legacy_codepage_substitution() -> None:
+def test_q7_scaffold_bytes_refuse_cp1252_codepage_substitution() -> None:
     """Wrong text decoding must not become accepted canonical AST evidence."""
     from fep_lean.verification.gnn_continuous_artifact_proof import (
         canonical_scaffold_bytes,
@@ -39,10 +39,12 @@ def test_q7_scaffold_bytes_refuse_legacy_codepage_substitution() -> None:
         "runner_ast_sha256"
     ]
     utf8 = source.read_text(encoding="utf-8")
-    legacy = source.read_text(encoding="cp1252")
-    assert utf8 != legacy, "control requires the actual UTF-8 scaffold text"
+    cp1252_decoded = source.read_text(encoding="cp1252")
+    assert utf8 != cp1252_decoded, "control requires the actual UTF-8 scaffold text"
     assert hashlib.sha256(canonical_scaffold_bytes(utf8)).hexdigest() == expected
-    assert hashlib.sha256(canonical_scaffold_bytes(legacy)).hexdigest() != expected
+    assert (
+        hashlib.sha256(canonical_scaffold_bytes(cp1252_decoded)).hexdigest() != expected
+    )
 
 
 def test_staging_detects_physical_template_mode_drift_hidden_from_git(

@@ -389,7 +389,7 @@ def test_decision_risk_foundation_compiles_warning_free() -> None:
 def test_finite_weight_kl_project_and_standalone_controls(
     source_name: str, expected_axiom_targets: tuple[str, ...], tmp_path: Path
 ) -> None:
-    """Exercise support, mass correction, nonzero KL and legacy API consumers."""
+    """Exercise support, mass correction, nonzero KL and existing API consumers."""
     source = PROJECT_ROOT / "specs" / "finite-kl-upstream" / source_name
     if source_name == "FiniteWeightKL.lean":
         code = lean_code_without_comments(source.read_text(encoding="utf-8"))

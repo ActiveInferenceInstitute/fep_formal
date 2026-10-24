@@ -202,4 +202,27 @@ theorem fep127_laplaceConcentration_combines_fep036_fep114
           nativeLaw observables independent proxyVariance subGaussian
           deviationNonnegative⟩⟩
 
+
+/-- The actual Brier identity transports the squared-risk bound to excess risk. -/
+theorem fep125_brier_identity_transfers_fep124_risk_bound
+    {Ω : Type*} [Fintype Ω] (sampling : FiniteLaw Ω)
+    (successes : Ω → ℕ) (sampleCount : ℕ) (target : ℝ)
+    (hCount : 0 < sampleCount) (hSuccess : ∀ o, successes o ≤ sampleCount)
+    (hTarget : target ∈ Set.Icc (0 : ℝ) 1) :
+    brierExcessRisk sampling
+        (fun o => laplaceEstimate (successes o) sampleCount) target ≤
+      2 * shrinkage sampleCount ^ 2 * expectation sampling
+        (fun o => (empiricalRate (successes o) sampleCount - target) ^ 2) +
+        2 * (1 / ((sampleCount : ℝ) + 2)) ^ 2 := by
+  have integrands :
+      (fun o => bernoulliBrierScore target (laplaceEstimate (successes o) sampleCount) -
+        bernoulliBrierScore target target) =
+      (fun o => (laplaceEstimate (successes o) sampleCount - target) ^ 2) := by
+    funext o
+    exact fep_fep125.FEP125.fep125_brierExcess_eq_sqError target _
+  unfold brierExcessRisk
+  rw [integrands]
+  exact fep_fep124.FEP124.fep124_laplaceSquaredRisk_le sampling successes
+    sampleCount target hCount hSuccess hTarget
+
 end FEPComposed

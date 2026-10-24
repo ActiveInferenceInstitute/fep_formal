@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import re
@@ -1094,3 +1095,94 @@ def test_primary_alignment_fixture_rejects_modified_bytes(tmp_path):
     target.write_bytes(source.read_bytes() + b" ")
     with pytest.raises(AssertionError):
         primary_alignment_review(tmp_path)
+
+
+def test_next_cohort_exact_historical_projection_and_tamper_controls(
+    tmp_path, monkeypatch
+):
+    from tests._support.lean_module_contract import (
+        next_cohort_maturity_raw,
+        next_cohort_review,
+        reverse_next_cohort_rows,
+    )
+
+    review = next_cohort_review()
+    raw = (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes()
+    restored = next_cohort_maturity_raw(raw)
+    assert hashlib.sha256(restored).hexdigest() == review["maturity_before_sha256"]
+    assert next_cohort_maturity_raw(restored) == restored
+    for mutation in (
+        raw + b"\n# unreviewed\n",
+        raw.replace(b"conditional_proxy", b"unreviewed_proxy", 1),
+    ):
+        assert (
+            hashlib.sha256(next_cohort_maturity_raw(mutation)).hexdigest()
+            != review["maturity_before_sha256"]
+        )
+    topics = _yaml("theorem_maturity.yaml")["topics"]
+    old_topics = reverse_next_cohort_rows(topics, "topics")
+    before = review["maturity_changes"][0]["before"]
+    assert next(row for row in old_topics if row["id"] == "fep-071") == before
+    for field in ("invariant", "assumption_review", "primary_theorem"):
+        changed = copy.deepcopy(topics)
+        row = next(row for row in changed if row["id"] == "fep-071")
+        row[field] = "unreviewed"
+        assert (
+            next(
+                row
+                for row in reverse_next_cohort_rows(changed, "topics")
+                if row["id"] == "fep-071"
+            )
+            != before
+        )
+    with pytest.raises(AssertionError):
+        reverse_next_cohort_rows(
+            topics + [copy.deepcopy(review["maturity_changes"][0]["after"])], "topics"
+        )
+    edges = _yaml("formalism_relations.yaml")["edges"]
+    original = reverse_next_cohort_rows(edges, "edges")
+    assert len(edges) - len(original) == 6
+    for change in review["relation_changes"]:
+        current = change["after"]
+        for field in ("rationale", "kind", "witness"):
+            if field not in current:
+                continue
+            changed = copy.deepcopy(edges)
+            row = next(
+                row
+                for row in changed
+                if (row["source"], row["target"])
+                == (current["source"], current["target"])
+            )
+            row[field] = "unreviewed"
+            with pytest.raises(AssertionError):
+                reverse_next_cohort_rows(changed, "edges")
+        changed = [
+            row
+            for row in edges
+            if (row["source"], row["target"]) != (current["source"], current["target"])
+        ]
+        with pytest.raises(AssertionError):
+            reverse_next_cohort_rows(changed, "edges")
+    with pytest.raises(AssertionError):
+        reverse_next_cohort_rows(edges + [copy.deepcopy(edges[0])], "edges")
+
+    model = _yaml("formalism_relations.yaml")
+    extra = copy.deepcopy(model)
+    extra["edges"].append(
+        {
+            "source": "fep-001",
+            "target": "fep-999",
+            "kind": "conceptual",
+            "rationale": "unreviewed",
+        }
+    )
+    with pytest.raises(AssertionError):
+        _assert_scalar_model_preimage(extra)
+    import tests._support.lean_module_contract as contract
+
+    changed = tmp_path / "changed-post219-review.json"
+    changed.write_bytes(contract._NEXT_COHORT_REVIEW_PATH.read_bytes() + b" ")
+    monkeypatch.setattr(contract, "_NEXT_COHORT_REVIEW_PATH", changed)
+    with pytest.raises(AssertionError):
+        contract.next_cohort_review()

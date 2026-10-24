@@ -353,8 +353,8 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
     assert expansion_topic_ids <= theorem_witnessed_sources
 
     assert Counter(edge.kind for edge in graph.edges) == {
-        EdgeKind.FORMAL: 24,
-        EdgeKind.FORMAL_PAIRING: 120,
+        EdgeKind.FORMAL: 32,
+        EdgeKind.FORMAL_PAIRING: 118,
         EdgeKind.CONCEPTUAL: 6,
     }
     assert all(edge.witness for edge in graph.edges if edge.kind.is_theorem_witnessed)
@@ -364,10 +364,63 @@ def test_shipped_graph_conserves_relation_and_capability_state() -> None:
     assert next(edge for edge in graph.edges if edge.source == "fep-060").kind is (
         EdgeKind.FORMAL
     )
+    expected_expansion_formal = {
+        (
+            "fep-060",
+            "fep-002",
+            "FEPComposed.fep060_coordinate_elbo_refines_fep002",
+        ),
+        (
+            "fep-074",
+            "fep-072",
+            "FEPComposed.fep074_backwardEvidence_supplies_fep072_filter",
+        ),
+        (
+            "fep-112",
+            "fep-048",
+            "FEPComposed.fep112_consensus_fixed_pair_is_equal",
+        ),
+        (
+            "fep-125",
+            "fep-124",
+            "FEPComposed.fep125_brier_identity_transfers_fep124_risk_bound",
+        ),
+        (
+            "fep-130",
+            "fep-131",
+            "FEPComposed.fep130_attaining_tree_dominates_fep131_embedded_plans",
+        ),
+        (
+            "fep-146",
+            "fep-148",
+            "FEPComposed.fep146_positive_fisher_supplies_fep148_mean_injectivity",
+        ),
+        (
+            "fep-154",
+            "fep-155",
+            "FEPComposed.fep154_nonstationary_relaxation_supplies_fep155_strict_decay",
+        ),
+        (
+            "fep-158",
+            "fep-117",
+            "FEPComposed.fep158_masked_evidence_supplies_fep117_reduced_odds",
+        ),
+        (
+            "fep-162",
+            "fep-161",
+            "FEPComposed.fep162_clairautSymmetrize_extends_fep161_skewCancellation",
+        ),
+    }
+    assert {
+        (edge.source, edge.target, edge.witness)
+        for edge in graph.edges
+        if edge.source in expansion_topic_ids and edge.kind is EdgeKind.FORMAL
+    } == expected_expansion_formal
     assert all(
         edge.kind is EdgeKind.FORMAL_PAIRING
         for edge in graph.edges
-        if edge.source in expansion_topic_ids and edge.source != "fep-060"
+        if edge.source in expansion_topic_ids
+        and (edge.source, edge.target, edge.witness) not in expected_expansion_formal
     )
     assert all(edge.rationale.endswith(".") for edge in graph.edges)
     assert graph.capability_ids == capability_ids

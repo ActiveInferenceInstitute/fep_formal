@@ -22,7 +22,7 @@ from tests._support.h2_r0_custody import (
     VALIDATOR_PATH,
 )
 
-LATER_RELEASE_VERSIONS = ("1.5.0", "1.6.0", "2.0.0", "2.0.1")
+LATER_RELEASE_VERSIONS = ("1.5.0", "1.6.0", "2.0.0", "2.0.1", "2.1.0")
 
 
 def record_release_metadata(root: Path) -> None:

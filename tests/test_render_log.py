@@ -220,7 +220,7 @@ theorem fep001_union_bound : True := trivial
 
 # Exact opening and first edge from the failed pinned-template render. Pandoc
 # preserves the discarded Mermaid fence as highlighted code rather than the
-# legacy figure/verbatim fallback above.
+# figure/verbatim fallback above.
 HIGHLIGHTED_MERMAID_FALLBACK = r"""\begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{flowchart} \ConstantTok{LR}

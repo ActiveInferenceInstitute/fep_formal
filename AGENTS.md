@@ -214,7 +214,8 @@ block in the same change.
 Ruff checks all active Python tooling, including slice-local specs. The narrow
 historical/generated/pinned-input exclusions in `pyproject.toml` follow
 `specs/AGENTS.md`; their bytes remain unchanged. Strict mypy covers the package,
-scripts and docs at the Python 3.14 validator target. Ruff retains Python 3.10
+scripts, docs, and the render-dependency and native-supplement helpers at the
+Python 3.14 validator target. Ruff retains Python 3.10
 syntax compatibility, and the installed-wheel matrix checks the packaging floor
 separately. Exceptions preserve declared error or compatibility contracts and
 must be justified at the affected line.
@@ -234,6 +235,7 @@ boundaries. The production-capture executor is unchanged.
 
 ```bash
 uv lock --check && uv pip check
+uv run pytest tests/test_composition_source_inventory.py -q -n 0 --no-cov
 uv run python scripts/_maint_build_topics_catalogue.py --check
 uv run python scripts/_maint_build_fep_all_lean.py --check
 uv run python scripts/_maint_build_formal_modules.py --check
@@ -265,7 +267,7 @@ uv run pytest specs/publication-browser-acceptance/test_validate_acceptance.py -
 uv run python specs/publication-browser-acceptance/validate_acceptance.py --collect output/python-acceptance-collection.json
 uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"
 uv run python docs/check_coverage_floors.py --coverage coverage.xml
-uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py
+uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py specs/publication-browser-acceptance/native_supplement.py
 uv run ruff check .
 uv run ruff format --check src tests scripts docs specs/openai-math-methods specs/cascadia-experiments specs/gnn-runner-execution specs/publication-browser-acceptance
 git diff --check
@@ -336,27 +338,28 @@ ordinary CLI additionally executes and its receipt is compared with the retained
 first receipt on every non-duration field. Both actual execution origins and
 workflow run/attempt/checkout bindings remain independently validated. Standard
 native artifacts retain the existing intent/API records, without a new schema.
-Any rollout requires actual full automatic PR/default and explicit dual-shadow acceptance;
+Until the versioned supplement is qualified, rollout requires actual full automatic PR/default and explicit dual-shadow acceptance;
 no measured release speedup follows from this source change alone.
 
 
 ### Full automatic PR and explicit dual-shadow acceptance profiles
 
-Automatic code PRs, normal main pushes and manual full runs use the same full
-15-cell installed-wheel matrix (three OS families, Python 3.10 through 3.14).
-The default native lane consumes its strict serial producer once. A separate
-explicit manual full dual-shadow run executes the ordinary CLI as a second
-strict operation and preserves both receipts. Local default CLI behavior is
-unchanged. No extra manual default full run is required by this proposed profile
-once its actual rollout is independently accepted; the explicit dual-shadow and
-fresh merged-main full runs remain mandatory. Until rollout acceptance, the
-current accepted profile policy remains in force.
+Full automatic code PR and fresh merged-main CI retain all 22 role contexts,
+15 wheel cells, source-bound native evidence and independently scoped PDF
+acceptance. Release supplement profile `native-api-cli-supplement-v1` requires
+`run_lean=true`, `native_producer_shadow=false`, and the exact automatic run ID,
+attempt and PR number. It may dispatch concurrently with automatic CI; that
+reference is identity only. Release acceptance joins the exact terminal and
+independently accepted automatic full profile, its five original artifacts/PDF,
+and independently replayed supplement custody with two genuinely fresh 168-topic
+API/ordinary CLI receipts equal on all non-duration fields. One producer node
+is never described as a 640-case serial run. Fresh full merged-main acceptance
+remains mandatory; no full automatic or main sweep is removed.
 
-Full profile contexts are 22 total: 21 successful roles/cells plus the configured
-documentation skip. Artifact validation must authenticate automatic PR synthetic
-merge parents/tree and preserve actual checkout/source/render origin; it must
-not relabel synthetic execution as candidate or merged-main execution. Original
-producer checkout/receipt paths are observed in the same-job context marker.
-No new receipt schema, production owner, sidecar, cache-trust substitution,
-classifier change or measured speedup is implied. Exact test membership is
-collected and reviewed on the final composed source before acceptance.
+The disabled profile retains existing full manual debug behavior, including
+optional shadow comparison. The versioned release supplement has separate
+acceptance requirements. Actual checkout, source and synthetic parent/tree identities
+remain distinct. Exact final test membership and a new closed validator/source
+projection must qualify before this profile can replace release manual dual
+execution. No production owner, compiler budget, retry or measured speedup is
+changed. See `specs/publication-browser-acceptance/README.md`.

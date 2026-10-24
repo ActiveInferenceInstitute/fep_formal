@@ -251,4 +251,21 @@ theorem fep134_feedbackWitness_extends_fep071 (action : Bool) :
     ⟨fep_fep134.FEP134.fep134_boolFeedback_strictlyBetter action,
       fep_fep071.FEP071.fep071_twoStage_feedback_strictly_better action⟩
 
+/-- An actual attaining tree dominates every embedded open-loop plan at the same depth. -/
+theorem fep130_attaining_tree_dominates_fep131_embedded_plans
+    {Belief Action Observation : Type*}
+    [Fintype Belief] [Fintype Action] [Fintype Observation] [Nonempty Action]
+    (model : PolicyTreeModel Belief Action Observation) (depth : ℕ) (belief : Belief) :
+    ∃ tree : PolicyTree Action Observation depth,
+      policyTreeValue model tree belief = optimalTreeValue model depth belief ∧
+      ∀ plan : OpenLoopPlan Action depth,
+        policyTreeValue model tree belief ≤ openLoopValue model plan belief := by
+  obtain ⟨tree, attained, dominates⟩ :=
+    fep_fep130.FEP130.fep130_exists_optimalPolicyTree model depth belief
+  refine ⟨tree, attained, ?_⟩
+  intro plan
+  have comparison := dominates (openLoopEmbedding (Observation := Observation) plan)
+  rw [fep_fep131.FEP131.fep131_openLoopEmbedding_value model plan belief] at comparison
+  exact comparison
+
 end FEPComposed

@@ -7,7 +7,7 @@ required-version = "==0.13.0"
 
 [project]
 name = "fep_lean"
-version = "2.0.1"
+version = "2.1.0"
 description = "FEP Lean4 catalog, OpenGauss-oriented session model, manuscript artifacts"
 readme = "README.md"
 authors = [

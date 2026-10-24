@@ -15,9 +15,9 @@ actually ships, and it is fully checked by
 | Clean working tree; `HEAD` equals `origin/main` | `release_check.py --hosted` |
 | The newest hosted `ci.yml` run on that exact commit succeeded, and its `python`, `static`, `lean`, `render-deps`, `render` and every `distribution` matrix job each succeeded (none skipped) | `release_check.py --hosted` |
 
-## Coordinated 2.0.1 implementation
+## Coordinated 2.1.0 implementation
 
-The 2.0.1 implementation coordinates with GNN 5.0.1. A joint-release claim additionally
+The 2.1.0 implementation coordinates with GNN 5.0.1. A joint-release claim additionally
 requires the explicit current-source bridge/Q7 re-pin and fresh native
 qualification for the final source pair, followed by GNN's final companion pin
 and repository gates. Version preparation, numerical semantic audits and
@@ -92,10 +92,10 @@ citation. The manuscript DOI identifies its exact scholarly version under the
 scholarly concept. For v1.6.0 the published version is
 `10.5281/zenodo.23220027`. Keep the scholarly concept, scholarly version and
 software concept distinct; do not describe the two histories as one version chain.
-The 2.0.1 implementation retains the reserved unpublished version DOI
+The 2.1.0 implementation retains the reserved unpublished version DOI
 `10.5281/zenodo.23607007` under that scholarly concept (reserved 2026-10-23).
 Reservation does not publish the manuscript or certify its files. Upload only
-the final accepted 2.0.1 manuscript bundle to that draft, then independently
+the final accepted 2.1.0 manuscript bundle to that draft, then independently
 verify publication and file identity. The published 1.6.0 version DOI must not
 identify a new PDF with different bytes.
 
