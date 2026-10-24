@@ -1,0 +1,17 @@
+{
+  "schema": "brotli-formal-custody-renewal-v1",
+  "fep_parent": "c603d75622744204731c16bc9f7fc2316f0a1380",
+  "gnn_revision": "4dee78c9d778e8257683bafa0edfa865c387047c",
+  "focused_cases": 413,
+  "native_control_cases": 3,
+  "native_receipt_sha256": "2eed6ede1f9185c5943660762c9b5173d7d63e2efe025a49de1792a0726ff560",
+  "generated_runner_executed": false,
+  "universal_equivalence": false,
+  "fep_production_owners_unchanged": true,
+  "historical_receipts_unchanged": true,
+  "status": "passed",
+  "reason": "Renew source custody after Brotli lock1.2.0 to1.2.1 security repair; numerical runner and Lean probe unchanged",
+  "runner_sha256": "07f34e713d5dff0addf17af90c45eb2cab925ee18a0d6b5b34b98a744519c8d0",
+  "lean_probe_sha256": "54730472f92737bce66581d713c249f7f655905992285b5c8eb153dea4e7358a",
+  "scope": "Static binary64 coefficient approximation and real-arithmetic prediction bounds only; no generated-runner execution or universal equivalence."
+}
