@@ -1,4 +1,15 @@
-## Unreleased — Composition proofs and release iteration
+## 2.1.0 — 2026-10-24 — Bounded compositions and coordinated release
+
+- Prepare the coordinated FEP_Formal 2.1.0 / GNN 5.0.1 release after normal
+  integration of PR222 with the retained 2.0.1 metadata/fixture preparation.
+  The scientific/runtime/CI additions below form a new feature cohort; the
+  earlier 2.0.1 and 2.0.0 sections retain their unpublished preparation epochs.
+- Exact final pair/custody, native compiler and false-claim controls, full
+  automatic PR/default dual-shadow/main, manuscript, installed distributions
+  and publication acceptance remain required. The proposed native supplement
+  stays unactivated unless its independent rollout contract is satisfied.
+- Retain reserved unpublished scholarly DOI `10.5281/zenodo.23607007`; its
+  draft metadata and final files must match 2.1.0 before publication.
 
 - Add seven bounded composition proofs and explicit false-claim controls for the
   temporal, risk, exponential-family, policy, reduction, consensus, and geometric
@@ -14,10 +25,28 @@
   topic verification operations, with a concrete setup diagnostic. Run real Gauss
   compiler probes in the serial Lean lane. Update graph expectations and active American English wording.
 
-The composed candidate passed warning-strict Lean 4.35.0 verification for all
-168 topics and an audit of 2,060 declarations. These results establish the
-stated native proof scope; full software, hosted, publication, and scientific
-acceptance remain separate.
+
+PR222 retained authored native report (historical source statement, not this
+release's independent qualification):
+
+> The composed candidate passed warning-strict Lean 4.35.0 verification for all
+> 168 topics and an audit of 2,060 declarations. These results establish the
+> stated native proof scope; full software, hosted, publication, and scientific
+> acceptance remain separate.
+
+## 2.0.1 — 2026-10-24 — Current-source maintenance successor
+
+- Prepare the coordinated FEP_Formal 2.0.1 / GNN 5.0.1 maintenance release.
+  GNN's unused bibliography URL produced a retained HTTP 404 in the 5.0.0 tag
+  documentation gate; the prior tags and unpublished preparation artifacts
+  remain immutable at their original source epochs.
+- Advance only release identity and current-source custody. Numerical,
+  catalogue, theorem, compiler and proof boundaries are unchanged. Fresh
+  source-bound bridge/Q7, native, manuscript, hosted and distribution gates
+  remain required before the successor is described as qualified.
+- Retain the reserved unpublished scholarly DOI `10.5281/zenodo.23607007`.
+  Its owner draft metadata and final files must match version 2.0.1 before
+  publication; no published prior manuscript DOI is reused.
 
 ## 2.0.0 — 2026-10-23 — Source-bound semantics and coordinated GNN release
 

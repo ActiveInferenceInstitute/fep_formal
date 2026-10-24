@@ -123,7 +123,9 @@ validation behavior. [Pipeline usage](docs/pipeline.md) gives operator examples.
 
 ## Release
 
-The **2.0.0 candidate** prepares a coordinated release with GNN 5.0.0. Its
+The **2.1.0 implementation** coordinates with GNN 5.0.1. It includes seven
+bounded composition proofs, updated formal relations, and fail-fast Mathlib
+prerequisites. The native supplement remains a separately unactivated proposal. Its
 [semantic audit](src/fep_lean/bridge/README.md#independent-semantic-audit)
 compares source-bound finite and passive linear-Gaussian numerical witnesses
 through independent reference algorithms. It retains identity, parameter,
@@ -131,10 +133,10 @@ quantity, refusal and provenance details. The separate
 [finite/scalar algebraic laws](specs/gnn-semantic-witness-v1/README.md) have
 their own compiler controls; neither plane proves universal translation or
 authenticates a supplied execution artifact. Current pair/native, manuscript,
-hosted, distribution and publication gates must pass before this candidate is
+hosted, distribution and publication gates must pass before it is
 described as an accepted joint release.
 
-The 2.0.0 manuscript has the reserved, unpublished version DOI
+The 2.1.0 manuscript has the reserved, unpublished version DOI
 `10.5281/zenodo.23607007` under the scholarly concept. Final rendered bytes and
 publication acceptance remain pending; the published 1.6.0 manuscript retains
 its own DOI and files.
@@ -143,7 +145,7 @@ The published [v1.6.0 release](https://github.com/ActiveInferenceInstitute/fep_f
 contains mathematical methods and the manuscript's
 [Supplement A](manuscript/08b_mathematical_positioning_supplement.md). Its
 recorded Lean/Mathlib pair is `v4.34.1`; its evidence describes that immutable
-release. The v4.35.0 migration and subsequent source improvements are recorded in the 2.0.0 candidate section of
+release. The v4.35.0 migration and subsequent source improvements are recorded in the dated 2.0.0 preparation section of
 [CHANGELOG.md](CHANGELOG.md); the [accepted checkpoint](ISA.md#current-assessment)
 and [active campaign](specs/comprehensive-next-steps/README.md) distinguish
 accepted scopes, proposals and remaining gates.

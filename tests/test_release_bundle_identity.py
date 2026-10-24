@@ -27,12 +27,12 @@ def test_release_metadata_rejects_a_stale_institute_sidecar(tmp_path: Path) -> N
     _write_release_metadata_fixture(tmp_path)
     sidecar = tmp_path / ".aii/config.yaml"
     sidecar.write_text(
-        sidecar.read_text(encoding="utf-8").replace("v2.0.0", "v1.0.0"),
+        sidecar.read_text(encoding="utf-8").replace("v2.1.0", "v1.0.0"),
         encoding="utf-8",
     )
 
     assert bundle_module._license_metadata_errors(tmp_path) == (
-        "InstituteOS sidecar description must identify release v2.0.0",
+        "InstituteOS sidecar description must identify release v2.1.0",
     )
 
 
@@ -118,8 +118,8 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
 
     (tmp_path / "manuscript/config.yaml").write_text(
         "paper:\n"
-        '  version: "2.0.0"\n'
-        '  date: "2026-10-23"\n'
+        '  version: "2.1.0"\n'
+        '  date: "2026-10-24"\n'
         "publication:\n"
         "  doi: 10.0000/wrong\n"
         "  journal: Active Inference Journal\n"
@@ -133,8 +133,8 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
 
     (tmp_path / "manuscript/config.yaml").write_text(
         "paper:\n"
-        '  version: "2.0.0"\n'
-        '  date: "2026-10-23"\n'
+        '  version: "2.1.0"\n'
+        '  date: "2026-10-24"\n'
         "publication:\n"
         "  doi: 10.5281/zenodo.23607007\n"
         "  journal: Other Journal\n"
@@ -149,8 +149,8 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
 
     (tmp_path / "manuscript/config.yaml").write_text(
         "paper:\n"
-        '  version: "2.0.0"\n'
-        '  date: "2026-10-23"\n'
+        '  version: "2.1.0"\n'
+        '  date: "2026-10-24"\n'
         "publication:\n"
         "  doi: 10.5281/zenodo.23607007\n"
         "  journal: Active Inference Journal\n"
@@ -169,7 +169,7 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
     assert bundle_module._license_metadata_errors(tmp_path) == (
         "Python build system must require setuptools>=77.0.3",
         "Python package license must be CC-BY-4.0",
-        "Python package version must be 2.0.0",
+        "Python package version must be 2.1.0",
     )
 
     _write_release_metadata_fixture(tmp_path)
@@ -335,45 +335,45 @@ def test_release_metadata_retains_each_scholarly_concept_guard(
     [
         (
             "CITATION.cff",
-            'version: "2.0.0"',
+            'version: "2.1.0"',
             'version: "1.2.0"',
-            "CITATION.cff version must be 2.0.0",
+            "CITATION.cff version must be 2.1.0",
         ),
         (
             "CITATION.cff",
-            'date-released: "2026-10-23"',
+            'date-released: "2026-10-24"',
             'date-released: "2026-09-16"',
-            "CITATION.cff date-released must be 2026-10-23",
+            "CITATION.cff date-released must be 2026-10-24",
         ),
         (
             "manuscript/config.yaml",
-            'version: "2.0.0"',
+            'version: "2.1.0"',
             'version: "1.2.0"',
-            "manuscript paper version must be 2.0.0",
+            "manuscript paper version must be 2.1.0",
         ),
         (
             "manuscript/config.yaml",
-            'date: "2026-10-23"',
+            'date: "2026-10-24"',
             'date: "2026-09-16"',
-            "manuscript paper date must be 2026-10-23",
+            "manuscript paper date must be 2026-10-24",
         ),
         (
             "pyproject.toml",
-            'version = "2.0.0"',
+            'version = "2.1.0"',
             'version = "1.2.0"',
-            "Python package version must be 2.0.0",
+            "Python package version must be 2.1.0",
         ),
         (
             "src/fep_lean/__init__.py",
-            '__version__ = "2.0.0"',
+            '__version__ = "2.1.0"',
             '__version__ = "1.2.0"',
-            "Python runtime version must be 2.0.0",
+            "Python runtime version must be 2.1.0",
         ),
         (
             "config/settings.yaml",
-            'version: "2.0.0"',
+            'version: "2.1.0"',
             'version: "1.2.0"',
-            "runtime settings version must be 2.0.0",
+            "runtime settings version must be 2.1.0",
         ),
     ],
 )
@@ -399,12 +399,12 @@ def test_release_metadata_rejects_each_version_and_date_plane_independently(
         (
             "pyproject.toml",
             'version = "1.2.0"\n',
-            "Python package version must be 2.0.0",
+            "Python package version must be 2.1.0",
         ),
         (
             "src/fep_lean/__init__.py",
             '__version__ = "1.2.0"\n',
-            "Python runtime version must be 2.0.0",
+            "Python runtime version must be 2.1.0",
         ),
     ],
 )
@@ -419,8 +419,8 @@ def test_release_metadata_rejects_ambiguous_duplicate_runtime_versions(
     contents = path.read_text(encoding="utf-8")
     if relative == "pyproject.toml":
         contents = contents.replace(
-            'version = "2.0.0"\n',
-            'version = "2.0.0"\n' + duplicate,
+            'version = "2.1.0"\n',
+            'version = "2.1.0"\n' + duplicate,
             1,
         )
     else:

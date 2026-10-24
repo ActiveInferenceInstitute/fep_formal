@@ -8494,7 +8494,7 @@
       "update": "(x,y) -> (x/2,y)"
     }
   ],
-  "package_version": "2.0.0",
+  "package_version": "2.1.0",
   "retrieval_candidates": {
     "causal-blankets-and-interventions": [
       {
@@ -8946,7 +8946,7 @@
   },
   "source_origin": "checkout",
   "source_sha256": {
-    "__init__.py": "de6c3c4f4fd9c033b388ac49eb5ccb9c130854dad734f8cd1dd371e43ea39466",
+    "__init__.py": "f772577abbe7a0ccc5e1bbc2024949b8d2d85cbb3d82eab7870f74121e7b06bc",
     "catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
     "catalogue/bodies/closed_loop_policy_trees.py": "66e4396290f1128c0f35b5b9211469a426ebaf4d0e13790467c431251c17780b",
     "catalogue/bodies/collective_inference.py": "fa0b3a94bb49d43a310da37c324e5452f44141cc009c44d487b9ebef78690e80",
