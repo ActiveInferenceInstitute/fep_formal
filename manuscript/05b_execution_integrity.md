@@ -44,6 +44,26 @@ library against the exact pinned toolchain. The formalism audit then resolves
 reviewed declarations and checks their reported axioms; aggregate success alone
 does not supply that semantic evidence roster.
 
+## Source-bound GNN numerical audits {#sec:gnn_semantic_audits}
+
+The GNN semantic audit is a separate numerical evidence path. It reads retained
+authored source for a restricted stationary finite model or passive
+linear-Gaussian filtering model, then compares GNN's path-enumeration or joint
+Gaussian reference with an independent forward-filter or Kalman/Joseph replay.
+Admission checks the authored axes, ordered inputs, parameters, conditioning
+horizons, declared float64 precision and distribution validity. Per-quantity
+differences and explicit refusal reasons remain visible; a stored passing flag
+does not establish agreement.
+
+The audit retains source/result/program artifacts and live owner identities,
+but supplied bytes do not authenticate an observed execution of the current
+runner. Slice-local finite-weight normalization and scalar arbitrary-slope
+prior-measurement laws have separate compiler and axiom controls, including
+expected rejection of false claims. Their scope excludes GNN parsing/execution,
+matrix Gaussian conditional-kernel theorems and universal translation
+equivalence. Current pair custody, numerical replay, native algebraic evidence
+and full-provider execution therefore remain distinct claims.
+
 ## HTTP and persistence
 
 Hermes tests use a real loopback HTTP server and exercise response parsing,

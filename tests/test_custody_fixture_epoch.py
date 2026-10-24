@@ -181,12 +181,19 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
 def test_function_ratchet_metadata_reversal_authenticates_complete_profile(
     tamper: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    from fep_lean import __version__
     from tests._support import lean435_migration as migration
 
     before = _production_snapshot()
     live = (REPO_ROOT / "pyproject.toml").read_bytes()
     predecessor = function_ratchet_metadata_predecessor(live)
-    assert hashlib.sha256(predecessor).hexdigest() == (
+    recorded = current_r0.RELEASE_METADATA_REPLACEMENTS["pyproject.toml"][1].encode()
+    current = recorded.replace(b'"1.4.0"', f'"{__version__}"'.encode())
+    assert predecessor.count(current) == 1
+    normalized = predecessor.replace(
+        current, recorded.replace(b'"1.4.0"', b'"1.6.0"'), 1
+    )
+    assert hashlib.sha256(normalized).hexdigest() == (
         "734fc9d2bf373242030d38f16bd64439c752ce3f59f5319f83ddec8c5c696705"
     )
     if tamper == "none":

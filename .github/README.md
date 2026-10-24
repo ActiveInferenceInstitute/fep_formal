@@ -78,6 +78,10 @@ Choose the interface that matches the work:
   [pipeline guide](../docs/pipeline.md) and [configuration reference](../docs/configuration.md).
   Full mode requires Hermes, OpenGauss, the pinned Lean environment and the
   required credentials. Failed capabilities or topics prevent a successful report.
+- **Audit GNN numerical semantics:** follow the
+  [source-bound semantic audit guide](../src/fep_lean/bridge/README.md#independent-semantic-audit).
+  It checks a retained receipt against independent finite/Gaussian calculations;
+  actual execution and native proof require separate evidence.
 - **Inspect mathematical methods:** use the [methods guide](../docs/mathematical-methods.md),
   including stable finite expectations, log partitions, exponential tilts and
   Gibbs diagnostics. Numerical agreement is explanatory evidence.
@@ -121,11 +125,27 @@ validation behavior. [Pipeline usage](../docs/pipeline.md) gives operator exampl
 
 ## Release
 
+The **2.0.0 candidate** prepares a coordinated release with GNN 5.0.0. Its
+[semantic audit](../src/fep_lean/bridge/README.md#independent-semantic-audit)
+compares source-bound finite and passive linear-Gaussian numerical witnesses
+through independent reference algorithms. It retains identity, parameter,
+quantity, refusal and provenance details. The separate
+[finite/scalar algebraic laws](../specs/gnn-semantic-witness-v1/README.md) have
+their own compiler controls; neither plane proves universal translation or
+authenticates a supplied execution artifact. Current pair/native, manuscript,
+hosted, distribution and publication gates must pass before this candidate is
+described as an accepted joint release.
+
+The 2.0.0 manuscript has the reserved, unpublished version DOI
+`10.5281/zenodo.23607007` under the scholarly concept. Final rendered bytes and
+publication acceptance remain pending; the published 1.6.0 manuscript retains
+its own DOI and files.
+
 The published [v1.6.0 release](https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v1.6.0)
 contains mathematical methods and the manuscript's
 [Supplement A](../manuscript/08b_mathematical_positioning_supplement.md). Its
 recorded Lean/Mathlib pair is `v4.34.1`; its evidence describes that immutable
-release. The v4.35.0 migration and subsequent source improvements are recorded under Unreleased in
+release. The v4.35.0 migration and subsequent source improvements are recorded in the 2.0.0 candidate section of
 [CHANGELOG.md](../CHANGELOG.md); the [accepted checkpoint](../ISA.md#current-assessment)
 and [active campaign](../specs/comprehensive-next-steps/README.md) distinguish
 accepted scopes, proposals and remaining gates.

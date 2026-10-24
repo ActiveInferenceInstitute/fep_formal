@@ -15,6 +15,16 @@ actually ships, and it is fully checked by
 | Clean working tree; `HEAD` equals `origin/main` | `release_check.py --hosted` |
 | The newest hosted `ci.yml` run on that exact commit succeeded, and its `python`, `static`, `lean`, `render-deps`, `render` and every `distribution` matrix job each succeeded (none skipped) | `release_check.py --hosted` |
 
+## Coordinated 2.0.0 candidate
+
+The 2.0.0 candidate coordinates with GNN 5.0.0. A joint-release claim additionally
+requires the explicit current-source bridge/Q7 re-pin and fresh native
+qualification for the final source pair, followed by GNN's final companion pin
+and repository gates. Version preparation, numerical semantic audits and
+source-custody checks cannot substitute for one another or for native proof.
+Keep historical receipts and DOI identities unchanged; archive publication
+and new version-DOI acceptance remain separate maintainer steps.
+
 ## What does not block a release
 
 Research and evidence lanes stay in [`TODO.md`](../TODO.md) with their own
@@ -79,9 +89,15 @@ A release changes no scientific claim. Unrun lanes stay described as unrun.
 
 `CITATION.cff` distinguishes software citation from its preferred scholarly
 citation. The manuscript DOI identifies its exact scholarly version under the
-scholarly concept. For v1.6.0 the reserved version is
+scholarly concept. For v1.6.0 the published version is
 `10.5281/zenodo.23220027`. Keep the scholarly concept, scholarly version and
 software concept distinct; do not describe the two histories as one version chain.
+The 2.0.0 candidate has reserved unpublished version DOI
+`10.5281/zenodo.23607007` under that scholarly concept (reserved 2026-10-23).
+Reservation does not publish the manuscript or certify its files. Upload only
+the final accepted 2.0.0 manuscript bundle to that draft, then independently
+verify publication and file identity. The published 1.6.0 version DOI must not
+identify a new PDF with different bytes.
 
 ## Deferred
 

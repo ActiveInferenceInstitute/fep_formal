@@ -543,6 +543,16 @@ strict validation) and decides `FEP.GnnDocument.documentWellFormed` in a
 compile-once Lean probe. Receipt schema: `{"schema_version": 2, "document",
 "model_family", "extracted_family", "toolchain", "status", "warnings"}`.
 
+The additive `fep_lean.bridge.operations.semantic_witness_audit` operation
+accepts a retained `gnn-semantic-witness-v2` JSON artifact and emits the
+`fep-semantic-witness-audit-v1` record. The CLI entry point is
+`fep-lean bridge audit-semantic --gnn-root PATH --results WITNESS.json`;
+`--receipt NEW.json` is an explicit optional write. Independent numerical
+replay, current owner hashes, formal references and pair currency remain
+separate from execution authentication and native proof. The
+[bridge module guide](../src/fep_lean/bridge/README.md#independent-semantic-audit)
+owns the admitted source subset, limits and refusal boundaries.
+
 ## Formal Lean modules
 
 The `fep_lean.formal` namespace carries the bridge's typed surface:
