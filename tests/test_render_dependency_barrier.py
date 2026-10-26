@@ -334,6 +334,8 @@ def test_import_does_not_require_environment_or_access_network(monkeypatch):
     [
         "azure",
         "official",
+        "runner_mirror_list",
+        "unknown_mirror_list",
         "unknown",
         "mixed",
         "missing",
@@ -390,6 +392,17 @@ def test_render_apt_network_prefix(
     original = {
         "azure": azure,
         "official": official,
+        "runner_mirror_list": azure.replace(
+            "https://azure.archive.ubuntu.com/ubuntu/",
+            "mirror+file:/etc/apt/apt-mirrors.txt",
+        ).replace(
+            "http://azure.archive.ubuntu.com/ubuntu/",
+            "mirror+file:/etc/apt/apt-mirrors.txt",
+        ),
+        "unknown_mirror_list": azure.replace(
+            "https://azure.archive.ubuntu.com/ubuntu/",
+            "mirror+file:/etc/apt/unreviewed-mirrors.txt",
+        ),
         "unknown": azure.replace("azure.archive.ubuntu.com", "unexpected.invalid"),
         "mixed": azure.replace(
             "Suites: noble-security", "Suites: noble noble-security"
@@ -439,13 +452,18 @@ sudo() {
         timeout=5,
         check=False,
     )
-    if mirror not in {"azure", "official"}:
+    if mirror not in {"azure", "official", "runner_mirror_list"}:
         assert result.returncode != 0
         assert not argv_log.exists()
         assert sources.read_text() == original
         assert "FEP_RENDER_INSTALL_PHASE" not in result.stdout
         return
-    assert sources.read_text() == official
+    expected_sources = (
+        official.replace("http://security.ubuntu.com/", "https://security.ubuntu.com/")
+        if mirror == "runner_mirror_list"
+        else official
+    )
+    assert sources.read_text() == expected_sources
     assert result.returncode == expected_code, result.stdout + result.stderr
     raw = argv_log.read_bytes()
     assert raw.endswith(b"\0\0")

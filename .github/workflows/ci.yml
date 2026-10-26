@@ -604,13 +604,15 @@ jobs:
                          for scheme in ('http', 'https')
                          for host in ('azure.archive.ubuntu.com', 'archive.ubuntu.com', 'security.ubuntu.com')
                          for slash in ('', '/')}
-              if uris[0] not in allowed or not suites[0].split():
+              runner_mirror_list = uris[0] == 'mirror+file:/etc/apt/apt-mirrors.txt'
+              if (uris[0] not in allowed and not runner_mirror_list) or not suites[0].split():
                   raise SystemExit('Unrecognized Ubuntu archive source')
               security = [suite.endswith('-security') for suite in suites[0].split()]
               if any(security) and not all(security):
                   raise SystemExit('Mixed security and ordinary Ubuntu suites')
               host = 'security.ubuntu.com' if all(security) else 'archive.ubuntu.com'
-              replacement = 'URIs: ' + uris[0].split(':', 1)[0] + '://' + host + '/ubuntu/'
+              scheme = 'https' if runner_mirror_list else uris[0].split(':', 1)[0]
+              replacement = 'URIs: ' + scheme + '://' + host + '/ubuntu/'
               blocks[index] = re.sub(r'^URIs: .+$', replacement, block, flags=re.MULTILINE)
               selected += 1
           if not selected:
