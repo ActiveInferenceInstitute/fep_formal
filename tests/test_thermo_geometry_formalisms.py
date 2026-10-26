@@ -44,8 +44,6 @@ GEOMETRY_TITLES = (
     "Replicator–Natural-Gradient Equivalence",
 )
 
-pytestmark = pytest.mark.serial_lean
-
 
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
     return run_lean_compile_probe(
@@ -200,6 +198,7 @@ def test_slice05_go_no_go_bodies_are_substantive() -> None:
     assert "hRight : 0 <" in fep103
 
 
+@pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
     reason="set FEP_LEAN_SLICE05_COMPILE_TEST=1 for serialized native checks",
@@ -215,6 +214,7 @@ def test_slice05_gate_topics_compile_warning_free(
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
     reason="set FEP_LEAN_SLICE05_COMPILE_TEST=1 for serialized native checks",
@@ -229,6 +229,7 @@ def test_slice05_foundations_compile_warning_free(resource: str) -> None:
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
     reason="set FEP_LEAN_SLICE05_COMPILE_TEST=1 for serialized native checks",

@@ -15,15 +15,21 @@ actually ships, and it is fully checked by
 | Clean working tree; `HEAD` equals `origin/main` | `release_check.py --hosted` |
 | The newest hosted `ci.yml` run on that exact commit succeeded, and its `python`, `static`, `lean`, `render-deps`, `render` and every `distribution` matrix job each succeeded (none skipped) | `release_check.py --hosted` |
 
-## Coordinated 2.1.0 implementation
+## Published coordinated 2.1.0 checkpoint
 
-The 2.1.0 implementation coordinates with GNN 5.0.1. A joint-release claim additionally
-requires the explicit current-source bridge/Q7 re-pin and fresh native
-qualification for the final source pair, followed by GNN's final companion pin
-and repository gates. Version preparation, numerical semantic audits and
-source-custody checks cannot substitute for one another or for native proof.
-Keep historical receipts and DOI identities unchanged; archive publication
-and new version-DOI acceptance remain separate maintainer steps.
+[FEP_Formal 2.1.0](https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v2.1.0)
+and [GNN 5.0.1](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/releases/tag/v5.0.1)
+are published; [GEO-INFER 0.4.0](https://github.com/ActiveInferenceInstitute/GEO_INFER/releases/tag/v0.4.0)
+links those exact releases. FEP's accepted source remains
+`96bf714d91c088e79b9dea54af0f9151f70de64f`, tree
+`15af656a15fc86b6d89804277ea030502a4f9168`, annotated tag object
+`6bc61ffa58428190055245781328820c7c86abac`.
+
+A later joint candidate still requires current-source bridge/Q7 refresh,
+fresh native qualification for its actual source pair, GNN's final companion
+pin and repository gates. Numerical audits, source custody and native proof
+retain separate scopes. Do not relabel a published receipt for a later source;
+preserve historical DOI, tag and artifact identities.
 
 ## What does not block a release
 
@@ -92,12 +98,18 @@ citation. The manuscript DOI identifies its exact scholarly version under the
 scholarly concept. For v1.6.0 the published version is
 `10.5281/zenodo.23220027`. Keep the scholarly concept, scholarly version and
 software concept distinct; do not describe the two histories as one version chain.
-The 2.1.0 implementation retains the reserved unpublished version DOI
-`10.5281/zenodo.23607007` under that scholarly concept (reserved 2026-10-23).
-Reservation does not publish the manuscript or certify its files. Upload only
-the final accepted 2.1.0 manuscript bundle to that draft, then independently
-verify publication and file identity. The published 1.6.0 version DOI must not
-identify a new PDF with different bytes.
+The [2.1.0 scholarly record](https://doi.org/10.5281/zenodo.23607007)
+was published and independently checked on 2026-10-26. All nine public files
+(57,016,395 bytes) match the accepted source `96bf714` payload; DOI resolution,
+version metadata, the checksum inventory and metadata bookends also passed.
+The accepted 390-page PDF has SHA-256
+`ba7594ee91f1bc9adf3830ae32e915da9f956436965758381615129d90378953`.
+The [public archive verification](fep_2_1_0_manuscript_archive.json)
+records all filenames, sizes and SHA-256 hashes.
+This completes the separate scholarly deposit; it does not add a new proof,
+provider run or execution claim. Its software source archive remains
+[10.5281/zenodo.23631895](https://doi.org/10.5281/zenodo.23631895).
+Preserve the earlier 1.6.0 scholarly record and its original PDF bytes.
 
 ## Deferred
 

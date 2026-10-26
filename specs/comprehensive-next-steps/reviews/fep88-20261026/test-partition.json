@@ -1,0 +1,132 @@
+{
+  "kind": "independent-marker-partition-and-delivery-scope-source-actual-data-audit",
+  "passed": true,
+  "scope": "Marker-only12file transition and bounded isolatedissue88 deliverynotes, not totalPRidentitypreservation or fullcurrentreleaseacceptance",
+  "marker_receipt": {
+    "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/marker-partition-receipt-r2.json",
+    "sha256": "bafa0f732c3c1b126e7bbfcd2637c33722f25165aae30e971993ce678ea25409"
+  },
+  "source_review_sha256": "38485e222d7100adca22d21eaf99641185e65c4b64145f1a5903bc7b60cd7bf7",
+  "test_source_pins": {
+    "tests/test_causal_predictive_formalisms.py": {
+      "before": "d636a4734e656e5b9810b63002b648bed6809cb9aafdb7811b7af30935c57308",
+      "after": "841a45b2f3d6b9283e0416f8ce35748dc5dd580ded06821d23404aeeb70882f6"
+    },
+    "tests/test_collective_learning_formalisms.py": {
+      "before": "cfc309fb81582a1a60edd3b4211e6e0b3be3171a0cbda7f3fec93c2988d408e8",
+      "after": "2a7eb5af61919babc044e5c39556b7da500edd4ef0e18a99800d49b5da07ca2c"
+    },
+    "tests/test_control_temporal_formalisms.py": {
+      "before": "6802566ef3b6da1c071fc86e6b17ae561a7a117ffb13825b87625afa989a513d",
+      "after": "18fc85e0c1b5405024b9fe2539730e4ed1c5e371bbd18c0709edec97470060eb"
+    },
+    "tests/test_finite_markov_dynamics.py": {
+      "before": "9ece9c99d690229b34a0fd88a5132d013735f267ab5adcc46ed430d5f3e3503d",
+      "after": "62f319df665074cf42fc82caa6dacdbad8fb729fd97b82316d9e1af6d3e2dac7"
+    },
+    "tests/test_geometry_continuous_time_formalisms.py": {
+      "before": "792f2a64b6ed74dd7656d7d3d47ddd3019fdfda82842e8bd750c8f79eafa24fd",
+      "after": "bff5bb90b396088f2e721073fc084a1c306b10685956d2d4569dfaf108fe7588"
+    },
+    "tests/test_horizon1_decision_risk.py": {
+      "before": "3ef62c20846d88b2bd39209bd58f551a8e7a199691fb787e16fcf78efdfb2a14",
+      "after": "2ed6e0088dc1f7ab39480b7704dece2616c0cac21eb8605b469b1758d4d3f09e"
+    },
+    "tests/test_horizon1_finite_reference_agent.py": {
+      "before": "3861b070ee1f57b0a160ad1a44ff57df5801276d4d84f20bf0b3b6b5376eee86",
+      "after": "720d5cbc1a6e82fc6632c2b65903c5798014f6d82987a6476a7c87fef5912dac"
+    },
+    "tests/test_horizon1_policy_action.py": {
+      "before": "db9748c641a2584631e4e283b05dcfe151b15c6b712edf31efcdce979fdb39a7",
+      "after": "261577f2d804989b51a3ffc133b6a337cfeea623900f2361bd4b8bb2e396fd89"
+    },
+    "tests/test_measure_variational_formalisms.py": {
+      "before": "f7f923f370bf4dc619061e22013c78cc1c66ac26bc09573467b161292c5cb02f",
+      "after": "e1fdf96b35f785db37c8143990e66a2f86da16e1e5d9e2e66e76813c3709073a"
+    },
+    "tests/test_native_blanket_formalisms.py": {
+      "before": "3835c0a1975986aa167cb46d3af84a24d590bacbc0c86283883d517da6250ffd",
+      "after": "563472c133238a018b2cd7203869d28c8dc385a81cc097dbae742b274e72075b"
+    },
+    "tests/test_risk_policy_tree_formalisms.py": {
+      "before": "84ee5fb5d1ab22cf14064273a5b40e82d45f273fd1cec29002365ab815465515",
+      "after": "766fd979157b0c9b425557581e3b040f944e9b7446a31beb11a49b5ce3b522ce"
+    },
+    "tests/test_thermo_geometry_formalisms.py": {
+      "before": "d4fae37bc175806d5258d1e68ef33329985bcb283212aa023c04bc9a8db8f023",
+      "after": "5f3e99dca8f48858d4d265a8e6609d149a9103edc838444fd508612b8a2ff87e"
+    }
+  },
+  "actual_membership": {
+    "before_total": 4469,
+    "after_total": 4469,
+    "exact_case_ids_equal": true,
+    "serial_before": 659,
+    "serial_after": 477,
+    "moved_actual_cases": 182,
+    "pure_functions": 91,
+    "retained_explicit_serial_compiler_functions": 37,
+    "new_serial_movements": 0,
+    "junit_exact_moved_IDs": true,
+    "passed": 182,
+    "skips_failures_errors": 0
+  },
+  "AST_assessment": "Wholemodule AST comparison against exactbeforeHEAD and reviewedpreimages equal after removing ONLY global serial assignment/perfunctionserialdecorators. Everyfunctionbody, existing skipif/parametrization/decorator, import, constant, helper and othermodule statement retained. Explicit37nativefunctions remainserial;91purefunctions no longer marked.",
+  "scope_context_reconciliation": {
+    "plan_stage": "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-backlog-20261026",
+    "helper_wholefile_hash_differs_in_isolated88": true,
+    "imported_helper_functions": "assert_exposed_module_header and exposed_module_body ASTidentical between source-reviewstage and currentisolated88; their own relevant safetycontract unchanged. Otherlake/runner/conftest/pyproject context hashes match.",
+    "excluded_H2VFE_wholefile_differs_from_combinedstage": true,
+    "excluded_H2VFE_explanation": "Currentisolated88 file equals itsHEAD exactly; combinedstage had separateH3testadapter edits that were deliberatelynotported. Other12excludedfiles matchplanhashes. No markerchange to excluded13files.",
+    "literal_body_module_evidence": "Reviewedcandidate source reads literalownerbodymaps and authoredLeantext, no actualcompiler calls; actualsubprocess/nativehelpers retainedserial. PureControlTemporal closure writes only pytesttmp_path."
+  },
+  "native_receipt_join": {
+    "sha256": "155e6ef1f07de7ca0ceabc0fb4b3c7df7d51323655abc80f9a8a54ef285c208e",
+    "actual_compilation_rows": 168,
+    "errors_warnings_sorry": 0,
+    "toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "owner_manifest_version": 26,
+    "source_digest": "1b25c8ede84cf6787dc4bd624877066ecb408c3e81b968b39730533891750742",
+    "config_digest": "9df54b1cb15cc37fccd8f2de7d3673ba998fb970b05109a87f7d15e9b8c7bf4c",
+    "catalogue_sources_sha256": "430cb590559628b93e4663cda2ef80b7f699877de6511b5bc8b492e8fe9ef2b7",
+    "independent_AST_derived_current_digest_replay": "All307declaredsourceowners,18configowners and26catalogowners matchedrecordeddigests inread-onlyreview; productionmodulecode notimported.",
+    "preservation_evidence_limit": "Executedr2ownerasserts before/afterreceiptbytes and declaredsource_snapshot unchanged and validates currentreceipt. Immediatebeforehash was heldinmemory, not separatelypersisted; review binds actualcurrentreceipt and independentcurrentowner digests, not an inventedpersistedpreimage."
+  },
+  "render_receipt_join": {
+    "sha256": "0e41906a076318b739a3b5c3489701fc745e8bbf9609b0777f9acebc4895c9da",
+    "accepted": true,
+    "pages": 390,
+    "all_checks_zero": true,
+    "current35_source_digests_and_aggregate_match": true,
+    "new_visual_or_release_claim": false
+  },
+  "raw_evidence_sha256": {
+    "marker-before.json": "6a3f7654dc2332c9736c52489f1e32fef9b5a1fdbee12f2433b8b096eec01b6d",
+    "marker-after.json": "8030cf5904c17dc7086349df8fb5c6531cd804d76aab6f6e075a230519174846",
+    "marker-pure-tests.xml": "c07336f994e8e1b50ebc772a39ebf08d4cdc4c232f708083502d7c51f4c130ca",
+    "marker-pure-tests.stdout": "4f2a59bddf2ed98e8f583d9330c457b9323cf39b37175ab78dc2ac4d5ca4532c",
+    "marker-pure-tests.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "repartition_source_tests_r2.py": "a579dce0ce2af547a545d49d6f4440c49e01b0042efb8c06b2e151466df8c7d6",
+    "marker-partition-receipt-r1.json": "1a50d76892a0313b3b0bf36242b77ea8d598534029d1a70a64fcffdb3ae18166",
+    "native-qualification-r1.json": "60783d4d08c9679b3d129f4695d0efafa5e2f6d74551a704c5bba8efef7cb375",
+    "isolated-render-r1.json": "68bf27163f26d53abc10d335d537d9be05858c81344aaa27137506ccde0ffd2c",
+    "delivery-notes-r1.json": "85f45a6178bbdc11d8a34d0748f444bf36150651169ad96153b4e52610fd241e"
+  },
+  "deliverynotes": {
+    "TODO_only88_removed": true,
+    "TODO_sha256": "b71ce57c1d0aefb0791f45c7807c2d575da289cb8d34fee10e527add26495f2d",
+    "CHANGELOG_sha256": "2089c4247197a8bbc2b052ae037dace671873b2f4233ac06ea40f21c978137db",
+    "tests_AGENTS_sha256": "428e84bb9452b58fef117579cfa692f50a896f2f4f7391e75b3d189059ac3d24",
+    "assessment": "Currentchangelogparagraphdescribes the182case markerpartition and no speedup; itdoesnot justifyclaiming same4469IDs across entirePR which separatelyaddsLandauertests. TODOremoval tiedonly88localacceptednative/currentsemanticwork; normalPR+actualmainCI stillrequired and otherissuesstayopen.",
+    "optional_wording": "Prefer explicit \u201cThe marker-only transition preserves its4,469collectedidentities\u201d to makepartition-only claimunambiguous."
+  },
+  "findings": [],
+  "higher_acceptance_limits": [
+    "FullPythonqualification running atassignment, not assumedcomplete.",
+    "No actualhostedPR/mainCI merge/release/fullscientificacceptance from thisreview.",
+    "No55/100/102closure or H3primary/export result.",
+    "Originalr1markerreceiptfalse preserved."
+  ],
+  "reviewer_project_gate_compiler_run_or_source_git_mutation": false
+}

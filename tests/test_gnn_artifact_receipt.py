@@ -534,6 +534,140 @@ def receipt(verifier: ArtifactVerifier, workspace: tuple[Path, Path]) -> dict[st
     )
 
 
+@pytest.fixture
+def public_import_receipt(
+    verifier: ArtifactVerifier,
+    workspace: tuple[Path, Path],
+    receipt: dict[str, Any],
+) -> dict[str, Any]:
+    """Synthetic mixed import graph; no Lean compiler or native evidence."""
+    root, gnn = workspace
+    target = verifier.contract.targets[0]
+    sources = {
+        target: "module\npublic import FepSketches.public_parent\n",
+        "FepSketches.public_parent": (
+            "module\npublic import FepSketches.public_leaf\n"
+            "import FepSketches.plain_leaf\n"
+        ),
+        "FepSketches.public_leaf": "module\npublic import Mathlib.Data.Real.Basic\n",
+        "FepSketches.plain_leaf": "import Mathlib.Data.Nat.Basic\n",
+    }
+    for module, source in sources.items():
+        resource = module.removeprefix("FepSketches.").replace(".", "/")
+        _write(root, f"src/fep_lean/formal/{resource}.lean", source)
+        _write(root, f"lean/FepSketches/{resource}.lean", source)
+        _write(
+            root,
+            f"lean/.lake/build/lib/lean/FepSketches/{resource}.olean",
+            "synthetic compiled " + module,
+        )
+    # Admit this synthetic graph before constructing its synthetic receipt.
+    pin = verifier.read_object(root / operations.PIN)
+    pin["fep_lean"]["owners"] = fingerprint(
+        root, operations.owner_roster(root, "fep_lean")
+    )
+    write_json(root / operations.PIN, pin)
+    provenance = verifier.read_object(root / verifier.contract.provenance)
+    owners = {key: pin[key]["owners"] for key in ("fep_lean", "gnn")}
+    provenance.update(
+        source_pin_sha256=verifier._digest((root / operations.PIN).read_bytes()),
+        owners_before=owners,
+        owners_after=owners,
+    )
+    write_json(root / verifier.contract.provenance, provenance)
+    return verifier._receipt(
+        verifier.source_snapshot(gnn),
+        verifier.toolchain_snapshot(),
+        verifier.compiled_imports(),
+        receipt["compiler_version"],
+        receipt["dependency_build"],
+        receipt["probes"],
+    )
+
+
+def test_public_and_plain_imports_bind_recursive_sources_and_objects(
+    verifier: ArtifactVerifier,
+    workspace: tuple[Path, Path],
+    public_import_receipt: dict[str, Any],
+) -> None:
+    root, gnn = workspace
+    modules = sorted(
+        [
+            *verifier.contract.targets,
+            "FepSketches.public_parent",
+            "FepSketches.public_leaf",
+            "FepSketches.plain_leaf",
+        ]
+    )
+    assert verifier._import_files() == modules
+    objects = [
+        "lean/.lake/build/lib/lean/" + module.replace(".", "/") + ".olean"
+        for module in modules
+    ]
+    assert public_import_receipt["compiled_imports"] == fingerprint(root, objects)
+    artifacts = public_import_receipt["source_before"]["artifacts"]
+    for module in modules:
+        resource = module.removeprefix("FepSketches.").replace(".", "/") + ".lean"
+        for path in (f"src/fep_lean/formal/{resource}", f"lean/FepSketches/{resource}"):
+            assert artifacts[path] == verifier._digest((root / path).read_bytes())
+    # External Mathlib remains bound through the existing pinned toolchain policy.
+    assert not any("Mathlib/" in path for path in artifacts)
+    assert verifier.validate_receipt(gnn, public_import_receipt) == []
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        "source_pair_tamper",
+        "projection_tamper",
+        "object_tamper",
+        "owner_missing",
+        "projection_missing",
+        "object_missing",
+    ],
+)
+def test_transitive_public_import_tampering_and_missing_files_reject(
+    verifier: ArtifactVerifier,
+    workspace: tuple[Path, Path],
+    public_import_receipt: dict[str, Any],
+    case: str,
+) -> None:
+    root, gnn = workspace
+    owner = root / "src/fep_lean/formal/public_leaf.lean"
+    projection = root / "lean/FepSketches/public_leaf.lean"
+    compiled = root / "lean/.lake/build/lib/lean/FepSketches/public_leaf.olean"
+    if case == "source_pair_tamper":
+        owner.write_bytes(owner.read_bytes() + b"\n-- changed transitive source\n")
+        projection.write_bytes(owner.read_bytes())
+    elif case == "projection_tamper":
+        projection.write_bytes(projection.read_bytes() + b"\n-- stale projection\n")
+    elif case == "object_tamper":
+        compiled.write_bytes(compiled.read_bytes() + b"\nchanged compiled object\n")
+    else:
+        {
+            "owner_missing": owner,
+            "projection_missing": projection,
+            "object_missing": compiled,
+        }[case].unlink()
+    assert verifier.validate_receipt(gnn, public_import_receipt)
+
+
+@pytest.mark.parametrize("prefix", ["import", "public import"])
+def test_unknown_transitive_local_imports_still_reject(
+    verifier: ArtifactVerifier,
+    workspace: tuple[Path, Path],
+    public_import_receipt: dict[str, Any],
+    prefix: str,
+) -> None:
+    root, gnn = workspace
+    source = "module\n" + prefix + " FepSketches.unavailable_local\n"
+    _write(root, "src/fep_lean/formal/public_leaf.lean", source)
+    _write(root, "lean/FepSketches/public_leaf.lean", source)
+    with pytest.raises(ValueError, match="unavailable_local"):
+        verifier._import_files()
+    assert verifier.validate_receipt(gnn, public_import_receipt)
+
+
 def test_retained_check_is_read_only(
     verifier: ArtifactVerifier,
     workspace: tuple[Path, Path],

@@ -15,9 +15,8 @@ FORMAL_SOURCE = (
     PROJECT_ROOT / "src" / "fep_lean" / "formal" / "finite_markov_dynamics.lean"
 )
 
-pytestmark = pytest.mark.serial_lean
 
-
+@pytest.mark.serial_lean
 def test_finite_markov_dynamics_compiles_warning_free() -> None:
     result = run_lean_compile_probe(
         FORMAL_SOURCE,

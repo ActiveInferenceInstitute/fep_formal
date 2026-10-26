@@ -254,6 +254,8 @@ uv run pytest specs/openai-math-methods/test_methods.py \
   specs/openai-math-methods/test_visualization.py -q --no-cov
 uv run pytest specs/cascadia-experiments/test_proof_impact.py -q --no-cov
 uv run pytest specs/cascadia-experiments/test_diagnostic_bounds.py -q --no-cov
+uv run pytest specs/gnn-semantic-witness-v1/test_composition.py -q -n 0 --no-cov \
+  --junitxml=output/gnn-composition-acceptance.xml
 uv run python scripts/audit_formalisms.py \
   --receipt output/formalism-audit.json
 uv run python docs/theorem_ref_audit.py
@@ -293,6 +295,7 @@ uv run pytest tests/ -q -m serial_lean -n 1 --no-cov
 uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
 uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --compile output/cascadia-diagnostic-bounds
 uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --check output/cascadia-diagnostic-bounds
+uv run python specs/gnn-semantic-witness-v1/verify_composition_native.py --output output/gnn-composition-native
 ```
 
 Hosted CI also runs the `distribution` installed-wheel matrix, the isolated

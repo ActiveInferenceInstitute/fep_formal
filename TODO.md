@@ -100,7 +100,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
-| [FORM-S5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/88) — Route the fep-050 body through the hypothesis-free Landauer bound | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The fep-050 body no longer carries `hsecondLaw`; it consumes `FEP.PathThermodynamics.erasure_generalized_landauer` as a reviewed body change. |
 | [FORM-S14](https://github.com/ActiveInferenceInstitute/fep_formal/issues/97) — Measure-level Gaussian Markov blanket from precision sparsity | Major | Mathlib Gaussian conditional kernel ([gap memo](docs/lean4.md#gaussian-conditioning-gap-memo)), [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The algebraic dimension-generic statement, Fin4 instance and countermodel are on `main`; `K_ei = 0` implies `e ⟂ i ∣ (s, a)` as a `condIndepFun` statement for every positive-definite block precision. |
 
 ### Lean formal layer and relations

@@ -30,7 +30,6 @@ AXIOM_PROBE = (
     / "native_blanket.lean"
 )
 
-pytestmark = pytest.mark.serial_lean
 
 FORBIDDEN_FORMAL_TOKENS = (
     "sorry",
@@ -252,6 +251,7 @@ def test_native_blanket_probe_pins_condindep_and_composition_axioms() -> None:
     assert not re.search(r"\b(?:sorry|admit|axiom|opaque)\b|:\s*True\b", source)
 
 
+@pytest.mark.serial_lean
 def test_native_blanket_foundation_compiles_warning_free() -> None:
     result = _compile(FOUNDATION)
 
@@ -259,6 +259,7 @@ def test_native_blanket_foundation_compiles_warning_free() -> None:
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 def test_native_blanket_family_closure_compiles_warning_free(tmp_path: Path) -> None:
     import_line = "import FepSketches.native_blanket\n"
     combined = tmp_path / "native_blanket_independence.lean"
@@ -275,6 +276,7 @@ def test_native_blanket_family_closure_compiles_warning_free(tmp_path: Path) -> 
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 def test_native_blanket_axiom_probe_uses_only_trusted_axioms() -> None:
     result = _compile(AXIOM_PROBE)
     output = result.stdout + result.stderr

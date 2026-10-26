@@ -17,7 +17,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
 FOUNDATION = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "decision_risk.lean"
 
-pytestmark = pytest.mark.serial_lean
 
 EXACT_IMPORTS = (
     "FepSketches.native_blanket",
@@ -69,6 +68,7 @@ def test_weighted_dirac_bridge_preserves_support_and_extended_real_boundaries() 
     assert "FiniteLaw.pointMass false" in disjoint
 
 
+@pytest.mark.serial_lean
 def test_relative_support_bridge_and_sparse_information_consumer_compile(
     tmp_path: Path,
 ) -> None:
@@ -332,6 +332,7 @@ def test_native_mutual_information_garbling_uses_product_pushforward_dpi() -> No
     assert "InformationTheory.klDiv_comp_right_le" in monotonicity
 
 
+@pytest.mark.serial_lean
 def test_decision_risk_foundation_compiles_warning_free() -> None:
     result = run_lean_compile_probe(
         FOUNDATION,
@@ -345,6 +346,7 @@ def test_decision_risk_foundation_compiles_warning_free() -> None:
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize(
     ("source_name", "expected_axiom_targets"),
     [

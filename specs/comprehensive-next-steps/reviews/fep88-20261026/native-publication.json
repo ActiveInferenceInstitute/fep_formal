@@ -1,0 +1,253 @@
+{
+  "passed": true,
+  "complete": true,
+  "reviewer": "/root/fep_workspace_pointer_review",
+  "observed_at": "2026-10-26T19:23:14.522862+00:00",
+  "scope": "Actual isolated R88 native and local PDF/HTML artifact qualification only; no combined T, full-PythonR2, CI, merge, release or issue closure acceptance",
+  "repository": "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026",
+  "head_base": "c83706eea4beb486d5dbe52d130198f8d7464dc0",
+  "candidate_dirty": true,
+  "release_identity": "2.1.0 retained; render explicitly discloses v2.1.0-5-gc83706e-dirty and source snapshot, not a released2.1 source claim",
+  "native": {
+    "qualification_steps": 6,
+    "all_returncodes_zero": true,
+    "family_core_build_jobs": 3334,
+    "focused_passing_cases": 102,
+    "landauer_native_control_test_passed": true,
+    "control_axiom_count": 9,
+    "control_axiom_evidence_boundary": "Nine expected records are asserted by the once-passing maintained native control test, with standard-three allow-list; its individual compiler stdout is pytest-captured and not separately retained here, so no independent raw-nine-print parsing claim.",
+    "producer_nodes": 1,
+    "unfiltered_strict_intent_exact": true,
+    "selected_and_verified_topics": 168,
+    "zero_warnings_errors_sorry": true,
+    "all_api_native_result_fields_match": true,
+    "independent_validator_evidence": "Actual once-passing producer invokes validate_native_lean_receipt on a byte snapshot and requires valid/source_bound/native_claim_ready before success; current digest bindings independently recomputed without rerunning validator/compiler.",
+    "current_owner_digests": {
+      "source_digest": "1b25c8ede84cf6787dc4bd624877066ecb408c3e81b968b39730533891750742",
+      "config_digest": "9df54b1cb15cc37fccd8f2de7d3673ba998fb970b05109a87f7d15e9b8c7bf4c",
+      "catalogue_sources_sha256": "430cb590559628b93e4663cda2ef80b7f699877de6511b5bc8b492e8fe9ef2b7"
+    },
+    "source_owner_count": 307,
+    "config_owner_count": 18,
+    "owner_manifest_version": 26,
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679"
+  },
+  "publication": {
+    "four_returncodes_zero": true,
+    "template_head": "5b3c0f43940f0322fbc6205b3be4c2854f99329d",
+    "rendered_manuscript_files": 31,
+    "receipt_source_digest_count": 35,
+    "all_current_source_hashes_match": true,
+    "manuscript_source_digest": "afa9d05e0bf42bf12de2db922e925d84bb4a95ed981fdaf74d86c84b3c60f6d0",
+    "pdf_pages": 390,
+    "pdf_sha256": "c1e43b146a885628369a494bc4a98fe9791b122656b0e7e5c38841ca3b15d4f7",
+    "pdf_bytes": 7796909,
+    "html_sha256": "636470133418eb0ed9aa689c69ad62fb7cbcde68904ef8af65d60b28e7ed6281",
+    "checks": {
+      "contents_number_overflows": 0,
+      "mermaid_fallbacks": 0,
+      "missing_characters": 0,
+      "publication_cover": 0,
+      "stale_sources": 0,
+      "tex_errors": 0,
+      "uncaptioned_tables": 0,
+      "unnumbered_equations": 0,
+      "unresolved_references": 0
+    },
+    "font_codepoint_coverage_reported_success": true,
+    "receipt_regression_test_passed": true,
+    "no_new_visual_or_browser_acceptance_claim": true
+  },
+  "files": {
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-qualification-r1.json": {
+      "sha256": "60783d4d08c9679b3d129f4695d0efafa5e2f6d74551a704c5bba8efef7cb375",
+      "bytes": 3034
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/qualify_native_r1.py": {
+      "sha256": "57b12df271637eeacee5e91bae48bcceacab7f9396f76b6fca4b8d829b6659a6",
+      "bytes": 3015
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1.json": {
+      "sha256": "68bf27163f26d53abc10d335d537d9be05858c81344aaa27137506ccde0ffd2c",
+      "bytes": 1636
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/qualify_render_r1.py": {
+      "sha256": "a74e93a212be47a7dae1859b242c9cdf30e98268c3953dc8e2f64bf6ad2122aa",
+      "bytes": 2748
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/focused-native-r1.xml": {
+      "sha256": "ed8b36bf54905ba457503ebeae217d1928873bc64a43e1b1580cf24a1d9fea21",
+      "bytes": 14984
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/all-topics-native-producer-r1.xml": {
+      "sha256": "0d8184942ac53960cf889e7b04e86fad86454011d1231e6f0371ea66fa929792",
+      "bytes": 379
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/native-verification.json": {
+      "sha256": "155e6ef1f07de7ca0ceabc0fb4b3c7df7d51323655abc80f9a8a54ef285c208e",
+      "bytes": 57499
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/native-catalogue-producer.json": {
+      "sha256": "318cb751ba8c35631b2caef3e6df89a821d30505432b42405c6e810f1c1f94b4",
+      "bytes": 73677
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/native-catalogue-producer.intent.json": {
+      "sha256": "3fc65abe827d3cd98c03f3ee8b1e5cc1b05ab3d72631358b7ab419ed31956e39",
+      "bytes": 113
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/docs/render-acceptance.json": {
+      "sha256": "0e41906a076318b739a3b5c3489701fc745e8bbf9609b0777f9acebc4895c9da",
+      "bytes": 4006
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/pdf/fep_lean_combined.pdf": {
+      "sha256": "c1e43b146a885628369a494bc4a98fe9791b122656b0e7e5c38841ca3b15d4f7",
+      "bytes": 7796909
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/web/index.html": {
+      "sha256": "636470133418eb0ed9aa689c69ad62fb7cbcde68904ef8af65d60b28e7ed6281",
+      "bytes": 2060167
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/pdf/_combined_manuscript.log": {
+      "sha256": "54068a6f3590e1bbfd02cc18f3e05b6e530f1b232210218a2450ea44447ba206",
+      "bytes": 99731
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/pdf/_latex_stdout.log": {
+      "sha256": "f86c18da92988755ae1006af32de871991b5c4f0c08636d9a5e805fd990d9482",
+      "bytes": 19118
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/pdf/_combined_manuscript.tex": {
+      "sha256": "7621b95b99f9dda180759e820e55018f2b35b9154d9d76f948daedfe3ce3d186",
+      "bytes": 1793321
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/output/pdf/_combined_manuscript.md": {
+      "sha256": "476d19f1b393a1dfcc33506b78d1382b78c76b6b90b1dced26e48c6132d08754",
+      "bytes": 1509883
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/tests/_support/native_catalogue_gate.py": {
+      "sha256": "ff27c5535a487e43a5acfedf76d614cb60875ee7e27834711f12061fd13abc64",
+      "bytes": 11575
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/tests/test_catalogue_bodies_compile.py": {
+      "sha256": "dd9689baa1effe5749f09b0770359d9e0aaa0d68ef5308dc99126f6be14779ba",
+      "bytes": 2168
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/tests/test_formalism_depth_upgrades.py": {
+      "sha256": "31e2aa08669a73fb8d47685139972c6be813347564a0776a475328ef8c04f14f",
+      "bytes": 24169
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/tests/fixtures/landauer_path_controls.lean": {
+      "sha256": "507a17d16bac3bd4628be1011e9bcb3a1dab7a7ce0db7e01cf1d19f031b536a8",
+      "bytes": 3948
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/src/fep_lean/output/provenance.py": {
+      "sha256": "340f934aba70b191b76e52a83bb2e8ad4b047600260968012f378dcbefa5f01b",
+      "bytes": 11722
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/src/fep_lean/output/evidence.py": {
+      "sha256": "84ed8a1057c7dce2bc1f66d307f03184cbb8a028d4e775b06b8925ea7b418297",
+      "bytes": 41001
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/pyproject.toml": {
+      "sha256": "08b51e09c5d9ac3f439773f602e8df163db58e4309ed0088674d088835b23666",
+      "bytes": 4843
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/manuscript/config.yaml": {
+      "sha256": "db4361314f62d7de155ebed384d8fff9311dd7a8466569fb71de38d510950ee3",
+      "bytes": 2981
+    },
+    "/Users/friedman/Documents/Git/gitvault/Local/worktrees/fep-landauer-20261026/CITATION.cff": {
+      "sha256": "6e96bcecd2613291110f9efb4b9bc48fa177843f8a1569c69641485c200b28da",
+      "bytes": 2093
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-0.stdout": {
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-0.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-1.stdout": {
+      "sha256": "a751789ff830b449b28f710e8fd4a44c227d33c18358c9c4cf7dd898af3b83e3",
+      "bytes": 28
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-1.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-2.stdout": {
+      "sha256": "46068eced9129924d3b0be52573b15943bf1750d772d5fb26c8ee0dcfc5840b2",
+      "bytes": 45
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-2.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-3.stdout": {
+      "sha256": "a9922f754c3a6ecc519631f0605a17353a757f445373b04256cf6b145439eb92",
+      "bytes": 578
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-3.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-4.stdout": {
+      "sha256": "f9975073d4ddf562290fd81556fbe731a44e238dd6f34a9b4ea8fa620d648d5c",
+      "bytes": 1213
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-4.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-5.stdout": {
+      "sha256": "c9d92e95f7e2421186ba110a6a1431d771fd7e1fb41b3eba2c0f5dd7bf6dd9f0",
+      "bytes": 742
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/native-r1-5.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1-0.stdout": {
+      "sha256": "3f52c84823cc2f3dbb26fce632cd96e12cc7feabb8eddd14f7a0ab7de9590723",
+      "bytes": 1410
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1-0.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1-1.stdout": {
+      "sha256": "063f646a17f5dea3bf3f5ed7c4eeb550374d241598adbdcfbecd9cfbded5680e",
+      "bytes": 901
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1-1.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1-2.stdout": {
+      "sha256": "1c99796f9d17b8b853589fca7c687403e5949ae6bb4a8271fd676635275aac89",
+      "bytes": 24548
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1-2.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1-3.stdout": {
+      "sha256": "2b2584a8cfaf9b6fb5e4b4f90dd5e8b7546b2b5b9c23692c1558f5fa13bf9e96",
+      "bytes": 571
+    },
+    "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/isolated-render-r1-3.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  },
+  "prior_full_python_failed_receipt_preserved_sha256": "d9f09235fcc6ddd7f64791ae1da04c2b335afcd8b613232db21265c531fc3955",
+  "full_python_r2_ci_or_merge_conclusion": "Not inspected or accepted by this review. Prior fullPythonR1 false receipt stays intact; no source-capture failure waiver.",
+  "operations": {
+    "compiler_tests_validators_or_ci_runs": false,
+    "pure_owner_hash_recomputation": true,
+    "read_only_git_metadata_queries": true,
+    "repo_or_native_artifact_edits": false,
+    "only_new_review_json_written": true
+  }
+}

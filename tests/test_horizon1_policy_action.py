@@ -23,7 +23,6 @@ COMPOSITION = (
     / "finite_policy_action.lean"
 )
 
-pytestmark = pytest.mark.serial_lean
 
 EXACT_IMPORTS = (
     "FepSketches.policy_tree",
@@ -234,6 +233,7 @@ def test_leaf_keeps_epistemic_and_total_efe_garbling_out_of_scope() -> None:
     )
 
 
+@pytest.mark.serial_lean
 def test_finite_policy_action_leaf_compiles_warning_free() -> None:
     result = run_lean_compile_probe(
         COMPOSITION,

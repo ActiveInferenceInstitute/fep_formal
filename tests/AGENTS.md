@@ -50,6 +50,10 @@ uv run fep-lean verify \
   --receipt output/native-verification.json
 ```
 
+Capture split-test membership after package installation or wheel metadata
+preparation. A packaging metadata change during test execution invalidates
+the recorded inputs and requires fresh collection and execution.
+
 Pure source/API assertions belong to the normal Python lane. Mark only actual
 compiler probes `serial_lean`, including callers of shared compile helpers.
 Changing that partition requires an unchanged total case-ID set, disjoint
