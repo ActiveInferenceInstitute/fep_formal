@@ -11,8 +11,8 @@
     "unnumbered_equations": 0,
     "unresolved_references": 0
   },
-  "manuscript_source_digest": "16e964514e3da3f1e76828717039cdae76b7fa2b57fa5a6a697a9677df3308c0",
-  "pages": 388,
+  "manuscript_source_digest": "afa9d05e0bf42bf12de2db922e925d84bb4a95ed981fdaf74d86c84b3c60f6d0",
+  "pages": 390,
   "receipt_version": 2,
   "source_digests": {
     "../CITATION.cff": "6e96bcecd2613291110f9efb4b9bc48fa177843f8a1569c69641485c200b28da",
@@ -46,7 +46,7 @@
     "07_references.md": "b6132569eea5c54b542fff8754cee5c5d288873d8e920ce27c66a4a0318a7d94",
     "08_appendix_a_overview.md": "8cf7e8b3e101bd7bee111045c156c306e81c35c20564c633bae8ed28d4234021",
     "08b_mathematical_positioning_supplement.md": "e49667f342a73f9167ef0691c512125aa3cc5327e5d5647dd833368bde25707e",
-    "09z_unified_formalism_catalogue.md": "f5dd6af8554f96cea9e72ac0c56ceb7f6ef223745a50fccdd5ee4d2403936c21",
+    "09z_unified_formalism_catalogue.md": "5fe6edacb448a9a36173327deebf3664691b513fe21d8a442602950c6698dc0f",
     "config.yaml": "db4361314f62d7de155ebed384d8fff9311dd7a8466569fb71de38d510950ee3",
     "preamble.md": "059044a04cedd89955c792227f696cc685e5afa4c359cb54ccd00e71b39997da",
     "references.bib": "240a65f3305926df7507b70de86ada7bdfd8d77c2f70c22f1650da03b86a34a5"

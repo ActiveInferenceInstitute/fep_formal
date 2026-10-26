@@ -7,6 +7,7 @@ module
 -- so identically-named helpers across topics never collide during the
 -- whole-catalog `lake build FepSketches`. Inner `namespace FEPNNN`
 -- blocks are preserved so per-topic qualified names stay stable.
+public import FepSketches.path_thermodynamics
 public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 public import Mathlib.Algebra.BigOperators.Ring.Finset
 public import Mathlib.Algebra.Order.BigOperators.Group.Finset
@@ -502,7 +503,7 @@ noncomputable def fep050_landauerBound (kB T : ℝ) : ℝ :=
 
 /-- The second-law entropy balance derives the Landauer heat bound; the
 threshold inequality is a conclusion rather than an input. -/
-theorem fep050_landauer_heat_bound
+theorem fep050_landauer_heat_bound_of_entropy_balance
     {Q T kB : ℝ} (hT : 0 < T)
     (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB) :
     fep050_landauerBound kB T ≤ Q := by
@@ -515,14 +516,54 @@ theorem fep050_landauer_heat_bound
   rw [fep050_landauerBound]
   nlinarith
 
-/-- If supplied work dominates dissipated heat, the heat bound yields the
-Landauer work bound. -/
-theorem fep050_landauer_work_bound
+/-- Conditional entropy-balance helper retained for the existing constitutive
+composition. This helper does not itself construct a path protocol. -/
+theorem fep050_landauer_work_bound_of_entropy_balance
     {W Q T kB : ℝ} (hT : 0 < T)
     (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)
     (hworkHeat : Q ≤ W) :
     fep050_landauerBound kB T ≤ W :=
-  (fep050_landauer_heat_bound hT hsecondLaw).trans hworkHeat
+  (fep050_landauer_heat_bound_of_entropy_balance hT hsecondLaw).trans hworkHeat
+
+/-- Reset bound for an arbitrary prior. Heat is the model's mean bath heat;
+local detailed balance encodes σ = β Q + Δs_sys and β = 1/(kB T).
+Thus Q = kB T σ + kB T (H(initial) - H(final)); no second-law premise. -/
+theorem fep050_generalized_landauer_heat_bound
+    {Path : Type*} [Fintype Path]
+    (model : FEP.PathThermodynamics.ErasureModel Path)
+    {kB T : ℝ} (hBeta : model.beta = (kB * T)⁻¹)
+    (hReset : model.IsReset) :
+    kB * T * Real.binEntropy (model.prior true) ≤ model.meanHeat := by
+  have hBound := FEP.PathThermodynamics.erasure_landauer_reset model hReset
+  rw [hBeta, div_inv_eq_mul] at hBound
+  calc
+    kB * T * Real.binEntropy (model.prior true) =
+        Real.binEntropy (model.prior true) * (kB * T) := by ring
+    _ ≤ model.meanHeat := hBound
+
+/-- Fair-bit corner of the finite path reset bound. Positivity and inverse
+thermal scale are explicit physical identifications, not a heat inequality. -/
+theorem fep050_landauer_heat_bound
+    {Path : Type*} [Fintype Path]
+    (model : FEP.PathThermodynamics.ErasureModel Path)
+    {kB T : ℝ} (_hkB : 0 < kB) (_hT : 0 < T)
+    (hBeta : model.beta = (kB * T)⁻¹)
+    (hReset : model.IsReset) (hFair : model.prior true = 1 / 2) :
+    fep050_landauerBound kB T ≤ model.meanHeat := by
+  have hBound := fep050_generalized_landauer_heat_bound model hBeta hReset
+  rw [hFair, one_div, Real.binEntropy_two_inv] at hBound
+  exact hBound
+
+/-- Supplied work dominating the path model's mean heat obeys Landauer. -/
+theorem fep050_landauer_work_bound
+    {Path : Type*} [Fintype Path]
+    (model : FEP.PathThermodynamics.ErasureModel Path)
+    {W kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T)
+    (hBeta : model.beta = (kB * T)⁻¹)
+    (hReset : model.IsReset) (hFair : model.prior true = 1 / 2)
+    (hworkHeat : model.meanHeat ≤ W) :
+    fep050_landauerBound kB T ≤ W :=
+  (fep050_landauer_heat_bound model hkB hT hBeta hReset hFair).trans hworkHeat
 
 /-- The Landauer threshold is positive for positive `kB` and temperature. -/
 theorem fep050_landauerBound_pos

@@ -1,0 +1,57 @@
+{
+  "kind": "independent-isolated-landauer-delivery-scientific-source-review",
+  "verdict": "PASS scoped scientific meaning and source identity for issue88 only; fresh local/hosted acceptance remains separate",
+  "base": "c83706eea4beb486d5dbe52d130198f8d7464dc0",
+  "branch": "codex/fep-landauer-20261026",
+  "preparation_receipt": {
+    "path": "/Users/friedman/Documents/Codex/2026-10-16/re/work/lean-lockstep/fep-backlog-20261026/landauer-delivery-20261026/preparation-receipt.json",
+    "sha256": "4a3c906d1ad6b3a222e32837e157c3c20caa0c67ca9f05fa99faad9a0b67d8a2",
+    "passed": true,
+    "all_recorded_commands_returned_zero": true
+  },
+  "copied_source_sha256_verified": {
+    "config/theorem_maturity.yaml": "35250c1fcb1bb77137ee6b3fdfbc93f3a0e6c031668b55a2fa574dca18df11a5",
+    "config/formalism_relations.yaml": "7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80",
+    "src/fep_lean/catalogue/bodies/core_thermodynamics.py": "ed78ab84cfaf2bcc7a6306efa822031cea33f0fdd179e3611c00ce5695ec3c18",
+    "src/fep_lean/formal/compositions/core.lean": "9547ab60a536cb8a2211b3d4ef064dd15d68be445508a070ba23e22187e33882",
+    "tests/_support/landauer_epoch.py": "c4c7e5d8bcd3743091b103600a576cf4a052a67092720cee7cc52746802b0fce",
+    "tests/fixtures/landauer_epoch_20261026.json": "de8f57cff85a7622f7b637c56aeb0eb36a15706c11405836d45f887999d1bb9a",
+    "tests/fixtures/landauer_path_controls.lean": "507a17d16bac3bd4628be1011e9bcb3a1dab7a7ce0db7e01cf1d19f031b536a8",
+    "tests/test_landauer_epoch.py": "3a58f5504a498d50e6a464f9b9ea99de8bfaf94159012e67f6db44b80dc42e5b",
+    "tests/test_formalism_depth_upgrades.py": "31e2aa08669a73fb8d47685139972c6be813347564a0776a475328ef8c04f14f",
+    "tests/test_theorem_header_extraction.py": "5597341891bfd7e31a606e85d8eaea0672227a419e4529945e1f5f1f16cd400e",
+    "tests/test_gnn_artifact_proof.py": "007d1f1503205a30ebd099811ce287ddc4dd87abd4dbb12b64f426addae1dc17"
+  },
+  "additional_source_sha256": {
+    "tests/_support/lean_module_contract.py": "b708f1387a0b2fdb55db89de5a6dc9ceaa5ae5736b2c9fb2eedc042626f4ace1",
+    "tests/test_mathematical_methods.py": "543e4804f413b9d3ce93153097b4157083df672bc54a08e55cd389a41a66a863",
+    "src/fep_lean/formal/path_thermodynamics.lean": "86d71ab7a7b77b9e2f2c185bc9723e0c758b28d1c5697b78252455bcaf962540",
+    "CHANGELOG.md": "5f16175c704e494cffd250eb78169da93c1e4f531c53ff12190488cc8a65457f"
+  },
+  "scientific_assessment": [
+    "Current public heat/work theorem names now consume actual finite ErasureModel, explicit beta=1/(kBT), reset and fairprior as applicable. No secondlaw inequality is a premise of the path-model bounds.",
+    "Underlying erasure_generalized_landauer derives bound from actual entropy-production decomposition plus entropyProduction_nonneg of normalized forward/alignedreverse finite path laws. Model stores actual prior/finalmarginals, support and localdetailedbalance; itdoesnot store meanproductionnonneg or heatbound as conclusionfields.",
+    "Heat units correct: Q=kBTsigma+kBT(Hprior\u2212Hfinal), dimensionlessShannon/productionnats; physicalentropy lossDeltaS=kBDeltaH contributesTDeltaS. Generalizedendpoint requires positive modelbeta and betaidentification; separate positivekB/T not necessary for its mathematicalstatement because their product isforcedpositive. Primaryfairworkendpoint explicitly requires both.",
+    "Six importedcontrols exercise actual heat encoding, fair6log2 bound, reversibleequality atpositivekB2/T3, priortrue3/4 generalizedbound, strictbiasedlessfair threshold andworkdomination. Reversible witness constructs forward=reverse, heat=\u2212logprior/beta with derived equality, not supplied resultfield; no finite-time apparatus/physicalrealization claim.",
+    "Existingfep050\u2190fep049 constitutivecomposition preserves exact public theoremstatement, hBalance andworkpremises; proof nowcalls renamed entropy-balance helper. Sourcecomment andedge rationale explicitly retain this conditional scope; no false implication that it constructs pathErasureModel.",
+    "Maturity disposition remainsformalized; primary assumptions/nonvacuity/rationale updated to actual newtypes. Twochangedpublictypes+3newnames are separatelyauthenticated; historical2326/2286/2185seals remainimmutable through copiedstaticviews.",
+    "Currentsemantic/sourcecontract rejects rollback, missing/duplicate050row/edge, changedunits/endpoint/proofowner/body/types/digests; liveAPI models are not globally normalized."
+  ],
+  "scope_assessment": [
+    "Scientific productionpaths confined to050body, conditionalcorewitness,050maturityrow and050\u2192049rationale plus owner-generatedprojections.",
+    "NoH3source_epochadapter/commonaction/source-manifest changes ported; no55export/100semigroup/102split/primary claim.",
+    "Existingtrackedfrozenfixtures,H2historicalvalidator and H3studyproducers unchanged vsbase. NewLandauerfixture/control resources are additive.",
+    "Artifactproof test usesactive sys.executable instead of assumed checkout.venv; this is boundedworktreeergonomics, not a changedgeneratedproof contract."
+  ],
+  "findings": [],
+  "acceptance_limits": [
+    "Preparation/generatorzeroexit and source review do not establish fresh scientific/native/installed/fullCI/PDF acceptance.",
+    "Localfocused/currentAPI qualification was pending atassignment; no result isassumed.",
+    "Issue88closure may follow only accepted exactfinalsource native/control/axiom/API/fullpublicationgates as required; nootherissueclosedbythisreview."
+  ],
+  "reviewer_actions": {
+    "source_edits": false,
+    "compiler_or_project_gates": false,
+    "Git_or_CI_mutations": false
+  }
+}

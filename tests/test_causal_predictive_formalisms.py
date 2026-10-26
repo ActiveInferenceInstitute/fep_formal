@@ -25,8 +25,6 @@ FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
 CAUSAL_IDS = tuple(f"fep-{number:03d}" for number in range(79, 86))
 PREDICTIVE_IDS = tuple(f"fep-{number:03d}" for number in range(86, 93))
 
-pytestmark = pytest.mark.serial_lean
-
 
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
     return run_lean_compile_probe(
@@ -182,6 +180,7 @@ def test_quadratic_convergence_keeps_exact_stability_interval_visible() -> None:
     assert "fep092_halfStep_decrease_nonvacuity" in body
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize("resource", ("causal_dynamics.lean", "predictive_coding.lean"))
 def test_slice04_foundations_compile_warning_free(resource: str) -> None:
     result = _compile(FORMAL_ROOT / resource)
@@ -190,6 +189,7 @@ def test_slice04_foundations_compile_warning_free(resource: str) -> None:
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize(
     ("topic_id", "body"),
     (*CAUSAL_BODIES.items(), *PREDICTIVE_BODIES.items()),

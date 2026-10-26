@@ -21,8 +21,6 @@ BODIES_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "catalogue" / "bodies"
 COMPOSITIONS_ROOT = FORMAL_ROOT / "compositions"
 SPIKE_ROOT = PROJECT_ROOT / "specs" / "done" / "formalism-catalogue-155" / "spikes"
 
-pytestmark = pytest.mark.serial_lean
-
 
 class TopicContract(TypedDict):
     title: str
@@ -379,6 +377,7 @@ def test_topic_inventory_names_each_primary_declaration(
     assert primary in _bodies(module_name)[topic_id]
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize("foundation_name", ("empirical_risk", "policy_tree"))
 def test_foundation_compiles_warning_free(foundation_name: str) -> None:
     result = _compile(FORMAL_ROOT / f"{foundation_name}.lean")
@@ -387,6 +386,7 @@ def test_foundation_compiles_warning_free(foundation_name: str) -> None:
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize(
     ("module_name", "topic_id"),
     tuple(
@@ -404,6 +404,7 @@ def test_topic_body_closure_compiles_warning_free(
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize("resource", tuple(COMPOSITION_BRIDGES))
 def test_composition_leaf_closure_compiles_warning_free(resource: str) -> None:
     result = _compile(COMPOSITIONS_ROOT / resource)
@@ -412,6 +413,7 @@ def test_composition_leaf_closure_compiles_warning_free(resource: str) -> None:
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize("resource", tuple(AXIOM_PROBES))
 def test_keystone_axiom_probe_accepts_only_trusted_set(
     tmp_path: Path, resource: str
@@ -429,6 +431,7 @@ def test_keystone_axiom_probe_accepts_only_trusted_set(
         assert observed <= ALLOWED_AXIOMS
 
 
+@pytest.mark.serial_lean
 def test_generic_stick_family_posterior_imported_controls(tmp_path: Path) -> None:
     """Compile actual maintained posterior imports and genuine Fin3 controls."""
     source = (
@@ -465,6 +468,7 @@ def test_generic_stick_family_posterior_imported_controls(tmp_path: Path) -> Non
     )
 
 
+@pytest.mark.serial_lean
 def test_conditioning_row_posterior_imported_controls(tmp_path: Path) -> None:
     """Compile actual row-posterior imports and genuine matrix controls."""
     source = (

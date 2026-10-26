@@ -17,7 +17,6 @@ FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
 LEAN_ROOT = PROJECT_ROOT / "lean"
 COMPOSITION = FORMAL_ROOT / "compositions" / "finite_reference_agent.lean"
 
-pytestmark = pytest.mark.serial_lean
 
 EXACT_IMPORTS = (
     "FepSketches.finite_posterior_learning",
@@ -242,6 +241,7 @@ def test_terminal_theorem_connects_one_shared_learned_blanket_model() -> None:
         assert legacy_or_overclaim not in terminal
 
 
+@pytest.mark.serial_lean
 def test_finite_reference_agent_compiles_warning_free_with_explicit_output(
     tmp_path: Path,
 ) -> None:
@@ -262,6 +262,7 @@ def test_finite_reference_agent_compiles_warning_free_with_explicit_output(
     assert output_path.stat().st_size > 0
 
 
+@pytest.mark.serial_lean
 def test_public_theorems_have_only_standard_axioms(tmp_path: Path) -> None:
     probe = tmp_path / "finite_reference_agent_axioms.lean"
     probe.write_text(

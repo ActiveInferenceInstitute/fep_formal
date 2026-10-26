@@ -995,21 +995,47 @@ topics:
   supporting_theorems:
   - fep050_erasure_not_injective
   - fep050_erasureEntropyLoss_eq
+  - fep050_generalized_landauer_heat_bound
   - fep050_landauer_heat_bound
+  - fep050_landauer_heat_bound_of_entropy_balance
+  - fep050_landauer_work_bound_of_entropy_balance
   - fep050_landauerBound_pos
   boundary_theorems: []
-  invariant: A noninjective reset maps an unbiased bit to a pure state and loses exactly
-    kB log 2 entropy; nonnegative total entropy at positive temperature derives the
-    corresponding heat bound, and work above heat derives the work bound.
-  assumption_review: The derivation explicitly assumes the second-law total-entropy
-    inequality, positive environmental temperature, and work at least as large as
-    dissipated heat. It does not model a microscopic Hamiltonian or finite-time erasure
+  invariant: A normalized finite path erasure model with forward-supported local
+    detailed balance derives mean bath heat at least kB T times the prior's binary
+    Shannon entropy when the final bit is reset. The fair-prior corner gives
+    kB T log 2, and work dominating that mean heat obeys the same threshold.
+    No second-law inequality is assumed by these path-model bounds.
+  assumption_review: >-
+    ErasureModel supplies finite normalized forward and aligned
+    reverse path laws, initial and final marginals, positive beta, reverse support
+    on every forward-supported path, and local detailed balance. The primary work
+    theorem additionally requires positive kB and T, beta = 1/(kB T), reset to
+    false, prior(true) = 1/2, and meanHeat <= W. The generalized prior endpoint
+    assumes the same beta identification and reset but does not separately require
+    positive kB and T; the model forces their product positive. Shannon entropy
+    and mean path production are dimensionless nats: meanHeat = kB T sigma +
+    kB T (H(prior) - H(final)). For physical entropy loss DeltaS = kB DeltaH,
+    the latter term is T DeltaS. Local detailed balance and work/heat domination
+    are modeling assumptions, not a microscopic derivation, first-law proof,
+    finite-time realization, laboratory result, or causal claim. The separately
+    named entropy-balance helpers remain conditional and do not construct a path
     protocol.
-  non_vacuity: The reset identifies true and false, the unbiased-to-pure entropy change
-    is exactly nonzero for kB > 0, and equality in the environmental balance saturates
-    the Landauer threshold.
-  acceptance_probe: native Lean compile of fep050_erasure_not_injective, fep050_erasureEntropyLoss_eq,
-    fep050_landauer_heat_bound, fep050_landauer_work_bound, and fep050_landauerBound_pos.
+  non_vacuity: reversibleErasureWitness constructs a normalized reset with aligned
+    reverse law equal to the forward law, derived zero production, and heat equal
+    to binEntropy(prior(true))/beta. At kB = 2 and T = 3 the fair witness attains
+    6 log 2; the actual prior(true) = 3/4 witness attains its generalized bound
+    strictly below the fair threshold. Equality is proved for these mathematical
+    witnesses rather than supplied as a model field or claimed for an apparatus.
+  acceptance_probe: Warning-strict native Lean compile and axiom inspection of
+    the focused and aggregate generalized, fair heat, primary work, and conditional
+    entropy-balance helpers; the existing full core composition must compile with
+    its explicit conditional helper endpoint. Imported maintained controls must
+    verify heat encoding, fair bound, reversible equality, biased bound, strict
+    biased-versus-fair boundary, and work domination at the same positive scale.
+    Dropping reset, beta identification, or local detailed balance must not be
+    accepted as the path theorem. Current-source qualification remains separate
+    from this semantic review and from historical external compile receipts.
   disposition: formalized
 - id: fep-051
   primary_theorem: fep051_likelihoodRatio_reconstruction

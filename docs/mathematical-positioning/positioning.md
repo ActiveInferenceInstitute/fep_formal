@@ -7730,13 +7730,13 @@ Primary theorem: `fep_fep050.FEP050.fep050_landauer_work_bound`.
 
 Body owner: `src/fep_lean/catalogue/bodies/core_thermodynamics.py`; canonical namespace `FEP050`.
 
-Invariant: A noninjective reset maps an unbiased bit to a pure state and loses exactly kB log 2 entropy; nonnegative total entropy at positive temperature derives the corresponding heat bound, and work above heat derives the work bound.
+Invariant: A normalized finite path erasure model with forward-supported local detailed balance derives mean bath heat at least kB T times the prior's binary Shannon entropy when the final bit is reset. The fair-prior corner gives kB T log 2, and work dominating that mean heat obeys the same threshold. No second-law inequality is assumed by these path-model bounds.
 
-Assumptions: The derivation explicitly assumes the second-law total-entropy inequality, positive environmental temperature, and work at least as large as dissipated heat. It does not model a microscopic Hamiltonian or finite-time erasure protocol.
+Assumptions: ErasureModel supplies finite normalized forward and aligned reverse path laws, initial and final marginals, positive beta, reverse support on every forward-supported path, and local detailed balance. The primary work theorem additionally requires positive kB and T, beta = 1/(kB T), reset to false, prior(true) = 1/2, and meanHeat <= W. The generalized prior endpoint assumes the same beta identification and reset but does not separately require positive kB and T; the model forces their product positive. Shannon entropy and mean path production are dimensionless nats: meanHeat = kB T sigma + kB T (H(prior) - H(final)). For physical entropy loss DeltaS = kB DeltaH, the latter term is T DeltaS. Local detailed balance and work/heat domination are modeling assumptions, not a microscopic derivation, first-law proof, finite-time realization, laboratory result, or causal claim. The separately named entropy-balance helpers remain conditional and do not construct a path protocol.
 
-Non-vacuity: The reset identifies true and false, the unbiased-to-pure entropy change is exactly nonzero for kB > 0, and equality in the environmental balance saturates the Landauer threshold.
+Non-vacuity: reversibleErasureWitness constructs a normalized reset with aligned reverse law equal to the forward law, derived zero production, and heat equal to binEntropy(prior(true))/beta. At kB = 2 and T = 3 the fair witness attains 6 log 2; the actual prior(true) = 3/4 witness attains its generalized bound strictly below the fair threshold. Equality is proved for these mathematical witnesses rather than supplied as a model field or claimed for an apparatus.
 
-Canonical acceptance probe: native Lean compile of fep050_erasure_not_injective, fep050_erasureEntropyLoss_eq, fep050_landauer_heat_bound, fep050_landauer_work_bound, and fep050_landauerBound_pos.
+Canonical acceptance probe: Warning-strict native Lean compile and axiom inspection of the focused and aggregate generalized, fair heat, primary work, and conditional entropy-balance helpers; the existing full core composition must compile with its explicit conditional helper endpoint. Imported maintained controls must verify heat encoding, fair bound, reversible equality, biased bound, strict biased-versus-fair boundary, and work domination at the same positive scale. Dropping reset, beta identification, or local detailed balance must not be accepted as the path theorem. Current-source qualification remains separate from this semantic review and from historical external compile receipts.
 
 Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.
 
@@ -7744,9 +7744,12 @@ Exact primary Lean statement:
 
 ```lean
 theorem fep050_landauer_work_bound
-    {W Q T kB : ℝ} (hT : 0 < T)
-    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)
-    (hworkHeat : Q ≤ W) :
+    {Path : Type*} [Fintype Path]
+    (model : FEP.PathThermodynamics.ErasureModel Path)
+    {W kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T)
+    (hBeta : model.beta = (kB * T)⁻¹)
+    (hReset : model.IsReset) (hFair : model.prior true = 1 / 2)
+    (hworkHeat : model.meanHeat ≤ W) :
     fep050_landauerBound kB T ≤ W
 ```
 
@@ -7761,15 +7764,52 @@ Exact typed binder groups (syntactic roles):
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
     "names": [
-      "W",
-      "Q",
-      "T",
-      "kB"
+      "Path"
     ],
     "role": "typed_binder",
-    "source": "{W Q T kB : ℝ}",
+    "source": "{Path : Type*}",
+    "type_source": "Type*",
+    "visibility": "implicit"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [],
+    "role": "instance_requirement",
+    "source": "[Fintype Path]",
+    "type_source": "Fintype Path",
+    "visibility": "instance"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [
+      "model"
+    ],
+    "role": "typed_binder",
+    "source": "(model : FEP.PathThermodynamics.ErasureModel Path)",
+    "type_source": "FEP.PathThermodynamics.ErasureModel Path",
+    "visibility": "explicit"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [
+      "W",
+      "kB",
+      "T"
+    ],
+    "role": "typed_binder",
+    "source": "{W kB T : ℝ}",
     "type_source": "ℝ",
     "visibility": "implicit"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [
+      "hkB"
+    ],
+    "role": "typed_binder",
+    "source": "(hkB : 0 < kB)",
+    "type_source": "0 < kB",
+    "visibility": "explicit"
   },
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
@@ -7784,11 +7824,31 @@ Exact typed binder groups (syntactic roles):
   {
     "hypothesis_status": "source syntax; proposition elaboration not performed",
     "names": [
-      "hsecondLaw"
+      "hBeta"
     ],
     "role": "typed_binder",
-    "source": "(hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)",
-    "type_source": "0 ≤ fep050_totalEntropyChange Q T kB",
+    "source": "(hBeta : model.beta = (kB * T)⁻¹)",
+    "type_source": "model.beta = (kB * T)⁻¹",
+    "visibility": "explicit"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [
+      "hReset"
+    ],
+    "role": "typed_binder",
+    "source": "(hReset : model.IsReset)",
+    "type_source": "model.IsReset",
+    "visibility": "explicit"
+  },
+  {
+    "hypothesis_status": "source syntax; proposition elaboration not performed",
+    "names": [
+      "hFair"
+    ],
+    "role": "typed_binder",
+    "source": "(hFair : model.prior true = 1 / 2)",
+    "type_source": "model.prior true = 1 / 2",
     "visibility": "explicit"
   },
   {
@@ -7797,8 +7857,8 @@ Exact typed binder groups (syntactic roles):
       "hworkHeat"
     ],
     "role": "typed_binder",
-    "source": "(hworkHeat : Q ≤ W)",
-    "type_source": "Q ≤ W",
+    "source": "(hworkHeat : model.meanHeat ≤ W)",
+    "type_source": "model.meanHeat ≤ W",
     "visibility": "explicit"
   }
 ]
@@ -7810,9 +7870,9 @@ Exact conclusion:
 fep050_landauerBound kB T ≤ W
 ```
 
-Statement SHA-256: `bcddfd0c4aeb92d4e90ca5a4ea6db6c08cc8d917366d469933d326bf9132f71e`. Lexical declaration mentions are retained in the JSON; they do not certify kernel dependencies.
+Statement SHA-256: `44ae51f8652eb46d44c591470a9806c0f5fadd16729db884caba5bb1f2415d4f`. Lexical declaration mentions are retained in the JSON; they do not certify kernel dependencies.
 
-Supporting theorems: `fep_fep050.FEP050.fep050_erasure_not_injective`, `fep_fep050.FEP050.fep050_erasureEntropyLoss_eq`, `fep_fep050.FEP050.fep050_landauer_heat_bound`, `fep_fep050.FEP050.fep050_landauerBound_pos`.
+Supporting theorems: `fep_fep050.FEP050.fep050_erasure_not_injective`, `fep_fep050.FEP050.fep050_erasureEntropyLoss_eq`, `fep_fep050.FEP050.fep050_generalized_landauer_heat_bound`, `fep_fep050.FEP050.fep050_landauer_heat_bound`, `fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance`, `fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance`, `fep_fep050.FEP050.fep050_landauerBound_pos`.
 
 Boundary theorems: none recorded.
 
@@ -19738,7 +19798,7 @@ Every edge is retained in authored order and with its original kind, rationale, 
 
 - `fep-046` → `fep-045` (formal): For a single stick fraction chosen as fep045_posteriorParameter, the composed theorem identifies allocated and residual weights with the true and false Bernoulli-mass definitions and uses fep_fep046.FEP046.fep046_mass_conservation to derive their sum-one identity. This algebra holds for arbitrary real inputs; nonnegative probability interpretation additionally needs a posterior in [0,1]. No general Dirichlet-process or infinite-series claim follows. Witness: `FEPComposed.fep046_single_break_is_fep045_bernoulli`.
 
-- `fep-050` → `fep-049` (formal): Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modeling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem. Witness: `FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production`.
+- `fep-050` → `fep-049` (formal): Conditional constitutive bridge: nonnegative conductances let fep_fep049.FEP049.fep049_entropyProduction_nonneg supply a nonnegative quadratic entropy-production value. The explicit hBalance premise identifies that real value with fep_fep050.FEP050.fep050_totalEntropyChange Q T kB; positive T and Q<=W then let fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance derive the Landauer work threshold. The identification, including its entropy units and any time-scale interpretation, is assumed rather than derived by either topic. This witness retains its original statement and consumes the conditional entropy-balance helper; it does not instantiate ErasureModel, establish local detailed balance, or remove the assumptions of the current path-model primary theorem. Witness: `FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production`.
 
 - `fep-051` → `fep-017` (formal_pairing): Radon--Nikodym reconstruction and posterior joint reconstruction are the measure-level reconstruction laws on either side of Bayesian inversion. Witness: `FEPComposed.fep051_rn_reconstruction_refines_fep017`.
 
@@ -20004,7 +20064,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `catalogue/bodies/core_bayesian_mechanics.py` | `1f2e57886c3397aa4a08b8bb2a5872aad56e5d046d8422fe395d7efc1afed81d` |
 | `catalogue/bodies/core_free_energy.py` | `371ccc56c5fb3f834a2a8f42bec7bc9841254108e9f7403597ea3f8b0fa5468b` |
 | `catalogue/bodies/core_information_geometry.py` | `837d0ae1c4b420c09c6c58b217e3a3870a0bc08d8b6db3475bb47606c26de75f` |
-| `catalogue/bodies/core_thermodynamics.py` | `927d2f0b88e19cc2a0b5424b85c960cbce473ba53ad50f4c0ba76e734dbf6520` |
+| `catalogue/bodies/core_thermodynamics.py` | `ed78ab84cfaf2bcc7a6306efa822031cea33f0fdd179e3611c00ce5695ec3c18` |
 | `catalogue/bodies/exponential_family_geometry.py` | `a3c02b9733044f0f1ae3b289bd9ff955de19f0d4acb114044bc4825c1dce4708` |
 | `catalogue/bodies/finite_sample_risk_calibration.py` | `332880b4c4ed76ba1c7660b819e88bcd5ed0f0d1cd9b9f24f1c73780b9351e42` |
 | `catalogue/bodies/geometric_mechanics.py` | `45064a01b3d3cd49fdbb7cfe20133c7d76de3426605ebf7844bed0a83b9a8c92` |
@@ -20033,7 +20093,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/compositions/collective_learning.lean` | `07c5617a21dd16dc745fa2d6bd3dc2e5dda44a1163ee1bfbb10616dd89ef88d1` |
 | `formal/compositions/continuous_time.lean` | `82e75229c4bea00c54c9a2f305201c9486bd65913f5f83bdee3956c0efedec78` |
 | `formal/compositions/control_temporal.lean` | `abe7417377156805d94f3aa94e7bfe341eb8bf946ec5e68216f5d15bec1d6663` |
-| `formal/compositions/core.lean` | `4f2969cca55290de0c5d3c8189b8dbc88c1f93dc7507e2afd1eb54ba97b09d42` |
+| `formal/compositions/core.lean` | `9547ab60a536cb8a2211b3d4ef064dd15d68be445508a070ba23e22187e33882` |
 | `formal/compositions/efe_policy_selection.lean` | `c1ccc05af21013867cc80ffc7072c9a1f7f1665519774e2770d08d5161d2ac96` |
 | `formal/compositions/efe_time_scale_separation.lean` | `f6d33fb0958a85b7d0885a28fc397a15a7de327e675834dbd2682a6f9e581eb5` |
 | `formal/compositions/exponential_family.lean` | `f9597994791db5f07d770aedee8d9972851f1954fc59deb39b6a4b74b505c3bc` |
@@ -20098,9 +20158,9 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/temporal_inference.lean` | `7b1260acd419ac368ea490d58b2e33c02b53d969e690ce1b805a177f2bb9e3b4` |
 | `formal/variational_duality.lean` | `05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1` |
 | `inputs/catalogue_metadata.yaml` | `f2659ffb8e72f5d2881154b55c3537a2743ce5a83689b19b63b1d685e698693c` |
-| `inputs/formalism_relations.yaml` | `570b78f087c44520aa25ac7124a5275834129aa81418f29acee6af628adb4fec` |
+| `inputs/formalism_relations.yaml` | `7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80` |
 | `inputs/positioning.yaml` | `d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d` |
-| `inputs/theorem_maturity.yaml` | `d1730762d51a5369e2a7ae90ebc5292e8c83de8797fcc11cc992a452e0983266` |
+| `inputs/theorem_maturity.yaml` | `35250c1fcb1bb77137ee6b3fdfbc93f3a0e6c031668b55a2fa574dca18df11a5` |
 | `lean_source.py` | `67790e70ab3ae3af48d9d2cd570e0d641f18fa03519c06b17c9a0b21acbc6781` |
 | `methods/__init__.py` | `3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99` |
 | `methods/model.py` | `8b517cc056b4b8e577790d50333762febc4f0ff5ceae96a431cc2dc15bf321dc` |

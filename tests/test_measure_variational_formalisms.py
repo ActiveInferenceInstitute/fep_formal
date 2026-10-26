@@ -21,8 +21,6 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
 BODIES_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "catalogue" / "bodies"
 
-pytestmark = pytest.mark.serial_lean
-
 
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
     return run_lean_compile_probe(
@@ -82,6 +80,7 @@ def _compile_with_foundation(
     return _compile(combined)
 
 
+@pytest.mark.serial_lean
 def test_measure_bayes_foundation_compiles_warning_free() -> None:
     result = _compile(FORMAL_ROOT / "measure_bayes.lean")
 
@@ -89,6 +88,7 @@ def test_measure_bayes_foundation_compiles_warning_free() -> None:
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 def test_variational_duality_foundation_compiles_warning_free() -> None:
     result = _compile(FORMAL_ROOT / "variational_duality.lean")
 
@@ -96,6 +96,7 @@ def test_variational_duality_foundation_compiles_warning_free() -> None:
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 def test_native_entropy_mathlib_only_consumers_compile(tmp_path: Path) -> None:
     """Compile the authored proof once without FEP imports, plus native controls."""
     foundation_path = FORMAL_ROOT / "variational_duality.lean"
@@ -317,6 +318,7 @@ def test_measure_bayesian_inversion_family_owns_ordered_standalone_bodies() -> N
         assert "axiom " not in body
 
 
+@pytest.mark.serial_lean
 def test_standard_borel_disintegration_topic_compiles_at_native_boundary(
     tmp_path: Path,
 ) -> None:
@@ -345,6 +347,7 @@ def test_variational_duality_family_owns_ordered_standalone_bodies() -> None:
         assert "axiom " not in body
 
 
+@pytest.mark.serial_lean
 def test_donsker_varadhan_topic_compiles_with_full_support_visible(
     tmp_path: Path,
 ) -> None:
@@ -360,6 +363,7 @@ def test_donsker_varadhan_topic_compiles_with_full_support_visible(
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 def test_finite_channel_data_processing_compiles_with_support_boundary(
     tmp_path: Path,
 ) -> None:
@@ -391,6 +395,7 @@ def test_finite_channel_data_processing_compiles_with_support_boundary(
     )
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize(
     ("module_name", "foundation"),
     [
@@ -522,6 +527,7 @@ def test_family_declaration_names_are_unique_stable_and_topic_scoped() -> None:
     assert len(names) == len(set(names))
 
 
+@pytest.mark.serial_lean
 def test_rate_distortion_optimization_consumers_compile(tmp_path: Path) -> None:
     """Exercise informative, infeasible, unique, and nonunique budget faces."""
     consumer = tmp_path / "rate_distortion_consumers.lean"
