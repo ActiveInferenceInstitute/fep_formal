@@ -72,7 +72,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     assert all(modules_by_role.values())
     assert tuple(
         module.lean_module for module in modules_by_role[FormalModuleRole.AGGREGATE]
-    ) == ("FepSketches.composed",)
+    ) == ("FepSketches.compositions.h3_case_study", "FepSketches.composed")
     # Preserve the original per-owner inventory after excluding only the seven
     # independently reviewed scalar bridges; unrelated additions still fail.
     scalar_bridges = {
@@ -128,10 +128,35 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         PROJECT_ROOT,
     )
     assert obligation_extension == {"FEPComposed.fep016_quadratic_pairs_fep032_descent"}
+    from tests._support.source_epoch import _transition, authenticate_h3_partition
+
+    authenticate_h3_partition(PROJECT_ROOT)
+    relocations = _transition(PROJECT_ROOT)["h3_theorem_relocations"]
+    assert {
+        name for name in owners if name.startswith("FEPComposed.H3CaseStudy.")
+    } == set(relocations)
+    historical_owners = dict(owners)
+    for name, move in relocations.items():
+        current_module = (
+            move["after_owner"]
+            .removeprefix("src/fep_lean/formal/")
+            .removesuffix(".lean")
+            .replace("/", ".")
+        )
+        assert owners[name] == "FepSketches." + current_module
+        historical_owners[name] = "FepSketches.compositions.h3_case_study"
+    shared_action = {
+        "FEP.MarkovSemigroup.ParameterKernelAction.kernel_add",
+        "FEP.MarkovSemigroup.ParameterKernelAction.invariant_of_fixed",
+    }
+    assert {name: owners[name] for name in shared_action} == {
+        name: "FepSketches.markov_semigroup" for name in shared_action
+    }
     assert Counter(
         owner
-        for name, owner in owners.items()
-        if name not in scalar_bridges
+        for name, owner in historical_owners.items()
+        if name not in shared_action
+        and name not in scalar_bridges
         and name not in information_bridges
         and name not in finite_weight_kl_helpers
         and name not in fast_relaxation_limits

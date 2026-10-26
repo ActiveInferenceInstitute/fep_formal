@@ -17,30 +17,132 @@ ROOT = Path(__file__).resolve().parents[1]
 COMPOSITION = ROOT / "src/fep_lean/formal/compositions/h3_case_study.lean"
 PROJECTION = ROOT / "lean/FepSketches/compositions/h3_case_study.lean"
 ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
+LEAF_NAMES = (
+    "h3_case_study_model_control",
+    "h3_case_study_path_information",
+    "h3_case_study_cost_feedback",
+)
+# Exact public theorem inventory preserved from the pre-split source.
+PUBLIC_THEOREMS = (
+    "measurable_scalarCoordinate",
+    "arbitrary_state_projection_native",
+    "arbitrary_state_projection",
+    "native_blanket",
+    "native_recognition",
+    "measurable_clampActive",
+    "clamp_normalization",
+    "clamp_nondescendants",
+    "native_posterior",
+    "vfe_optimum",
+    "scalar_mean_identifiability",
+    "prediction_stationary",
+    "posterior_parameters",
+    "batchCovariance_posDef",
+    "measurable_batchObservations",
+    "batchDenominator_pos",
+    "batchPosteriorVariance_pos",
+    "measurable_batchError",
+    "batchError_eq",
+    "batchError_hasGaussianLaw",
+    "batchError_mean",
+    "batchError_variance",
+    "consistency_mse",
+    "consistency_tail",
+    "consistency_bound_limit",
+    "consistency_limit",
+    "batch_innovations_independent",
+    "batch_latent_law",
+    "finite_likelihood_conjugacy",
+    "finite_native_posterior",
+    "gaussianSigma_scalar_marginal",
+    "hiddenContrast_native_binding",
+    "hiddenContrast_norm",
+    "hiddenContrast_ne_zero",
+    "hiddenContrast_projection",
+    "hiddenInitialLaw_projection",
+    "hidden_mode_marginal_nonidentifiability",
+    "controlDecay_bounds",
+    "secondRisk_closedForm",
+    "measurable_optimalSecond",
+    "optimalSecond_le",
+    "policy_attainment",
+    "policy_containment",
+    "information_native_mutualInformation",
+    "sensory_clamped_native_condDistrib",
+    "sensory_clamped_conditional_covariance",
+    "sensory_clamped_conditional_variances",
+    "measurable_projectFullPath",
+    "full_native_path_projection",
+    "fullPathObservationKernel_native_row",
+    "hidden_mode_nonidentifiability",
+    "controlledVariance_exact",
+    "controlledMean_exact",
+    "terminalVariance_pos",
+    "efe_native_information",
+    "expectedFreeEnergy_closedForm",
+    "efe_risk_alignment",
+    "efe_risk_ordering",
+    "preference_counterexample",
+    "policyRisk_eq_nativePosterior",
+    "openLoopRisk_closedForm",
+    "restricted_class_counterexample",
+    "clamp_conditional_covariance",
+    "controlled_moment_bound",
+    "nonstationary_native_grid",
+    "finite_grid_kl",
+    "finite_grid_kl_positive",
+    "finite_grid_support",
+    "singular_grid_infinite_kl",
+    "all_zero_grid_kl",
+    "constitutive_nonidentification",
+    "controlled_native_cost",
+    "information_native_marginal",
+    "information_native_mean",
+    "information_native_covariance",
+    "informationCovariance_posDef",
+    "informationCovariance_inverse",
+    "information_mean_asymmetry",
+    "finite_grid_kl_mahalanobis",
+    "information_marginal_kl",
+    "information_marginal_kl_values",
+    "finite_grid_reverse_kl",
+    "finite_grid_mutual_support",
+    "information_full_marginal_projection",
+    "information_native_lyapunov",
+    "informationMean_time_entries",
+    "informationCovariance_time_entries",
+    "information_marginal_kl_at_time",
+    "optimalSecond_threshold",
+    "feedback_first_risk_symmetry",
+    "optimalPolicy_eq_feedback_false",
+    "optimalPolicy_first_false",
+    "feedback_false_attainment",
+)
 
 
 def test_h3_composition_import_ownership_and_exact_projection() -> None:
-    code = lean_code_without_comments(COMPOSITION.read_text())
-    assert code.startswith("module\n")
-    assert "\n@[expose] public section\n" in code
-    imports = re.findall(r"(?m)^public import (FepSketches\.\S+)$", code)
-    assert imports == [
-        "FepSketches.h3_reference_model",
-        "FepSketches.markov_blanket",
-        "FepSketches.native_blanket",
-        "FepSketches.causal_dynamics",
-        "FepSketches.compositions.finite_scientific_implications",
-        "FepSketches.compositions.smooth_reference_kernel",
-        "FepSketches.compositions.gaussian_filter",
-        "FepSketches.compositions.gaussian_control",
-        "FepSketches.compositions.gaussian_grid_path",
-        "FepSketches.compositions.finite_policy_action",
-        "FepSketches.path_thermodynamics",
+    facade = lean_code_without_comments(COMPOSITION.read_text())
+    assert re.findall(r"(?m)^public import (FepSketches\.\S+)$", facade) == [
+        "FepSketches.compositions." + name for name in LEAF_NAMES
     ]
-    assert "namespace FEPComposed.H3CaseStudy\n" in code
-    assert code.rstrip().endswith("end FEPComposed.H3CaseStudy")
-    assert not re.search(r"\b(?:sorry|admit|axiom|opaque)\b|unsafe\s+", code)
+    assert not re.search(r"\b(?:namespace|def|theorem)\b", facade)
     assert COMPOSITION.read_bytes() == PROJECTION.read_bytes()
+    names = []
+    for name in LEAF_NAMES:
+        path = COMPOSITION.with_name(name + ".lean")
+        source = path.read_text()
+        code = lean_code_without_comments(source)
+        assert code.startswith("module\n")
+        assert "\n@[expose] public section\n" in code
+        assert "namespace FEPComposed.H3CaseStudy\n" in code
+        assert code.rstrip().endswith("end FEPComposed.H3CaseStudy")
+        assert not re.search(r"\b(?:sorry|admit|axiom|opaque)\b|unsafe\s+", code)
+        assert "set_option maxHeartbeats" not in code
+        assert path.read_bytes() == PROJECTION.with_name(path.name).read_bytes()
+        names.extend(
+            re.findall(r"(?<!private )\btheorem\s+([A-Za-z_][A-Za-z0-9_]*)", code)
+        )
+    assert tuple(names) == PUBLIC_THEOREMS
 
 
 @pytest.mark.serial_lean
@@ -48,15 +150,13 @@ def test_native_h3_finite_observation_seams_and_failure_controls(
     tmp_path: Path,
 ) -> None:
     source = COMPOSITION.read_text()
-    code = lean_code_without_comments(source)
-    names = re.findall(r"(?<!private )\btheorem\s+([A-Za-z_][A-Za-z0-9_]*)", code)
-    assert len(names) == len(set(names))
+    names = PUBLIC_THEOREMS
     prints = "\n".join(
         f"#print axioms FEPComposed.H3CaseStudy.{name}" for name in names
     )
     consumers = r"""
 open MeasureTheory ProbabilityTheory
-open scoped ENNReal ProbabilityTheory
+open scoped ENNReal NNReal ProbabilityTheory
 open FEPComposed.H3CaseStudy
 
 -- A full state with a rate-four hidden component remains in the projection theorem.

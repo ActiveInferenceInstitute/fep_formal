@@ -4,10 +4,15 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from fep_lean.catalogue.registry import BODIES
 from fep_lean.catalogue.relations import EdgeKind, load_formalism_graph
 from fep_lean.catalogue.schema import load_catalogue_metadata
 from fep_lean.catalogue.semantics import SemanticDisposition, load_theorem_maturity
+from fep_lean.verification.formalism_audit import parse_axiom_output
+from tests._support.lake import lake_executable
+from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -321,7 +326,7 @@ def test_probability_currents_and_constitutive_entropy_production_are_explicit()
     assert audit["fep-049"].disposition is SemanticDisposition.FORMALIZED
 
 
-def test_landauer_bound_is_derived_from_erasure_entropy_balance() -> None:
+def test_landauer_bound_is_derived_from_finite_path_erasure_protocol() -> None:
     body = BODIES["fep-050"]
     for declaration in (
         "fep050_erasure_not_injective",
@@ -331,6 +336,14 @@ def test_landauer_bound_is_derived_from_erasure_entropy_balance() -> None:
     ):
         assert declaration in body
     assert "(hW : fep050_landauer_bound" not in body
+    path_bound = body.split("theorem fep050_generalized_landauer_heat_bound", 1)[1]
+    path_bound = path_bound.split("/-- The Landauer threshold is positive", 1)[0]
+    assert "hsecondLaw" not in path_bound
+    assert "FEP.PathThermodynamics.erasure_landauer_reset model hReset" in path_bound
+    assert "hBeta : model.beta = (kB * T)⁻¹" in path_bound
+    assert "model.meanHeat ≤ W" in path_bound
+    assert "(hReset : model.IsReset)" in path_bound
+    assert "FEP.PathThermodynamics.ErasureModel Path" in path_bound
 
     audit = load_theorem_maturity(
         PROJECT_ROOT / "config" / "theorem_maturity.yaml"
@@ -593,3 +606,46 @@ def test_remaining_exact_formalisms_replace_all_but_empirical_bayes_proxy() -> N
         for row in audit.records
         if row.disposition is not SemanticDisposition.FORMALIZED
     } == expected_below_formalized
+
+
+@pytest.mark.serial_lean
+def test_native_landauer_path_protocol_controls(tmp_path: Path) -> None:
+    fixture = PROJECT_ROOT / "tests/fixtures/landauer_path_controls.lean"
+    probe = tmp_path / "LandauerPathControls.lean"
+    probe.write_bytes(fixture.read_bytes())
+    result = run_lean_compile_probe(
+        probe,
+        cwd=PROJECT_ROOT / "lean",
+        import_root=tmp_path,
+        output_path=tmp_path / "LandauerPathControls.olean",
+        timeout_s=300,
+        executable=lake_executable(
+            missing="raise", context="finite-path Landauer controls"
+        ),
+    )
+    output = result.stdout + result.stderr
+    assert result.returncode == 0, output
+    assert "warning:" not in output.lower(), output
+    names = tuple(
+        "fep_fep050.FEP050." + name
+        for name in (
+            "fep050_generalized_landauer_heat_bound",
+            "fep050_landauer_heat_bound",
+            "fep050_landauer_work_bound",
+        )
+    ) + tuple(
+        "FEP050Controls." + name
+        for name in (
+            "heat_encoding",
+            "fair_catalogue_bound",
+            "fair_reversible_equality",
+            "biased_catalogue_bound",
+            "biased_strict_control",
+            "fair_work_control",
+        )
+    )
+    axioms, errors = parse_axiom_output(output, expected=names)
+    assert not errors, errors
+    assert set(axioms) == set(names)
+    for dependencies in axioms.values():
+        assert set(dependencies) <= {"propext", "Classical.choice", "Quot.sound"}

@@ -219,6 +219,9 @@ def test_all_reviewed_public_statement_hashes_and_corrections():
     declarations = build_mathematical_positioning(root).as_dict()["theorem_analysis"][
         "declarations"
     ]
+    from tests._support.landauer_epoch import statement_view
+
+    declarations = statement_view(declarations)
     assert len(fixture["expected_public_statement_sha256"]) == 2286
     assert len(fixture["corrections"]) == 27
     for name, expected in fixture["expected_public_statement_sha256"].items():

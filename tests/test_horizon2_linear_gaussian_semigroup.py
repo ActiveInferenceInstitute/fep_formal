@@ -21,7 +21,6 @@ FOUNDATION = (
     PROJECT_ROOT / "src" / "fep_lean" / "formal" / "linear_gaussian_semigroup.lean"
 )
 
-pytestmark = pytest.mark.serial_lean
 
 EXACT_IMPORTS = (
     "FepSketches.markov_semigroup",
@@ -45,6 +44,7 @@ PUBLIC_DEFINITIONS = (
     "transitionMean",
     "transitionCovariance",
     "transition",
+    "gaussianLawAction",
     "nativeSemigroup",
     "stationaryLaw",
     "transitionProbability",
@@ -248,6 +248,7 @@ def test_h2_5b_fin_one_specialization_names_exact_h2_5a_parameters() -> None:
     assert "(finOneScalarParameters rate hRate center).ouTransition time" in source
 
 
+@pytest.mark.serial_lean
 def test_h2_5b_compiles_warning_free() -> None:
     with tempfile.TemporaryDirectory(prefix="fep-h2-5b-") as output_dir:
         output_path = Path(output_dir) / "linear_gaussian_semigroup.olean"
@@ -269,6 +270,7 @@ def test_h2_5b_compiles_warning_free() -> None:
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 def test_h2_5b_public_theorems_use_only_standard_axioms(tmp_path: Path) -> None:
     probe = tmp_path / "LinearGaussianSemigroupAxioms.lean"
     source = FOUNDATION.read_text(encoding="utf-8")

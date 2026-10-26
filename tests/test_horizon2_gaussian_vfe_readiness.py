@@ -204,6 +204,10 @@ def _copy_historical_custody_inputs(source: Path, destination: Path) -> None:
         HISTORICAL_MANIFEST_ARCHIVE,
         HISTORICAL_METADATA_ARCHIVE,
         "tests/fixtures/custody_toolchain_4_34_1.json",
+        "tests/fixtures/source_epoch_20261026.json",
+        "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
+        "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
+        "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
     }:
         target = destination / relative
         target.parent.mkdir(parents=True, exist_ok=True)

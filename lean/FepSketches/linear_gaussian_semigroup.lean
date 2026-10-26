@@ -853,31 +853,34 @@ theorem transition_comp_multivariateGaussian
         (model.evolution time) (by
           simpa only [model.transitionMean_affine time] using hRowsMeasurable)
 
-/-- Chapman--Kolmogorov with the later slice composed on the left. -/
+/-- The same law-action carrier with admissible PSD matrix covariance.
+No injective parameterization or nonsingular covariance is assumed. -/
+noncomputable def gaussianLawAction (model : LinearGaussianParameters Axis) :
+    FEP.MarkovSemigroup.ParameterKernelAction model.transition
+      (State Axis × Matrix Axis Axis ℝ) where
+  law := fun parameter => multivariateGaussian parameter.1 parameter.2
+  admissible := fun parameter => parameter.2.PosSemidef
+  evolve := fun time parameter =>
+    (model.transitionMean time parameter.1,
+      model.evolution time * parameter.2 * (model.evolution time)ᵀ +
+        model.transitionCovariance time)
+  rowParameter := fun time state =>
+    (model.transitionMean time state, model.transitionCovariance time)
+  row_admissible := fun time _ => model.transitionCovariance_posSemidef time
+  row_law := model.transition_apply
+  closure := fun time parameter hParameter =>
+    model.transition_comp_multivariateGaussian time parameter.1 parameter.2 hParameter
+  row_add := by
+    intro left right state
+    exact Prod.ext (model.transitionMean_add left right state)
+      (model.transitionCovariance_add left right)
+
+/-- Public compatibility name; the shared carrier derives the kernel law. -/
 theorem transition_add (model : LinearGaussianParameters Axis)
     (left right : ℝ≥0) :
     model.transition (left + right) =
-      model.transition right ∘ₖ model.transition left := by
-  apply DFunLike.ext _ _
-  intro state
-  rw [Kernel.comp_apply]
-  calc
-    model.transition (left + right) state =
-        multivariateGaussian (model.transitionMean (left + right) state)
-          (model.transitionCovariance (left + right)) :=
-      model.transition_apply (left + right) state
-    _ = multivariateGaussian
-        (model.transitionMean right (model.transitionMean left state))
-        (model.evolution right * model.transitionCovariance left *
-            (model.evolution right)ᵀ + model.transitionCovariance right) := by
-      rw [← model.transitionMean_add left right state,
-        ← model.transitionCovariance_add left right]
-    _ = model.transition right ∘ₘ model.transition left state := by
-      rw [model.transition_apply]
-      exact
-        (model.transition_comp_multivariateGaussian right
-          (model.transitionMean left state) (model.transitionCovariance left)
-          (model.transitionCovariance_posSemidef left)).symm
+      model.transition right ∘ₖ model.transition left :=
+  model.gaussianLawAction.kernel_add left right
 
 /-- H2.4 packaging of the exact native transition family. -/
 noncomputable def nativeSemigroup (model : LinearGaussianParameters Axis) :
@@ -901,12 +904,12 @@ theorem stationaryLaw_invariant (model : LinearGaussianParameters Axis) :
     FEP.MarkovSemigroup.InvariantLaw
       model.nativeSemigroup model.stationaryLaw := by
   intro time
-  rw [Kernel.Invariant]
-  rw [stationaryLaw,
-    model.transition_comp_multivariateGaussian time model.center
-      model.covariance model.covariance_posDef.posSemidef]
-  rw [transitionMean, transitionCovariance]
-  simp
+  exact model.gaussianLawAction.invariant_of_fixed
+    (model.center, model.covariance) model.covariance_posDef.posSemidef (by
+      intro t
+      apply Prod.ext
+      · simp [gaussianLawAction, transitionMean]
+      · simp [gaussianLawAction, transitionCovariance]) time
 
 /-- The transition mean is its multivariate Gaussian mean parameter. -/
 theorem transition_mean (model : LinearGaussianParameters Axis)

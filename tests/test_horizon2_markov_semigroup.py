@@ -11,6 +11,7 @@ import pytest
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.formal.projection import formal_projection_drift
 from fep_lean.lean_source import lean_code_without_comments
+from fep_lean.verification.formalism_audit import parse_axiom_output
 from tests._support.lake import lake_executable
 from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
@@ -24,7 +25,6 @@ SEMIGROUP_FOUNDATION = (
 )
 SEMIGROUP_PROJECTION = LEAN_ROOT / "FepSketches" / "markov_semigroup.lean"
 
-pytestmark = pytest.mark.serial_lean
 
 EXACT_IMPORTS = (
     "FepSketches.markov_blanket",
@@ -53,6 +53,8 @@ SEMIGROUP_DEFINITIONS = (
     "boolBlanketNativeActionIndexedSemigroup",
 )
 SEMIGROUP_THEOREMS = (
+    "kernel_add",
+    "invariant_of_fixed",
     "reversibleLaw_invariantLaw",
     "nativeKL_nonincrease",
     "nativeKL_to_invariant_nonincrease",
@@ -113,6 +115,7 @@ def test_h2_4a_projection_is_current() -> None:
     assert formal_projection_drift(PROJECT_ROOT) == ()
 
 
+@pytest.mark.serial_lean
 def test_h2_4a_native_owner_compiles_warning_free() -> None:
     with tempfile.TemporaryDirectory(prefix="fep-h2-4a-") as output_dir:
         output_path = Path(output_dir) / "native_blanket.olean"
@@ -134,6 +137,7 @@ def test_h2_4a_native_owner_compiles_warning_free() -> None:
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 def test_h2_4a_embedding_theorems_use_standard_axioms_and_fix_orientation(
     tmp_path: Path,
 ) -> None:
@@ -191,9 +195,11 @@ example :
     assert "warning:" not in output.lower()
     axiom_blocks = re.findall(r"depends on axioms: \[(.*?)\]", output, re.DOTALL)
     assert len(axiom_blocks) == len(NEW_THEOREMS), output
-    for block in axiom_blocks:
-        axioms = set(re.findall(r"'([^']+)'", block))
-        assert axioms <= {"propext", "Classical.choice", "Quot.sound"}
+    parsed_axioms, errors = parse_axiom_output(output)
+    assert not errors, errors
+    assert len(parsed_axioms) == len(axiom_blocks), output
+    for axioms in parsed_axioms.values():
+        assert set(axioms) <= {"propext", "Classical.choice", "Quot.sound"}
 
 
 def test_h2_4b_has_one_exact_foundation_owner() -> None:
@@ -221,7 +227,7 @@ def test_h2_4b_interface_stores_only_semigroup_laws() -> None:
     )
 
     native_match = re.search(
-        r"structure NativeKernelSemigroup.*?where\n(?P<body>.*?)(?=\n(?:namespace|/--))",
+        r"structure NativeKernelSemigroup.*?where\n(?P<body>.*?)(?=\n(?:namespace|structure|/--))",
         source,
         re.DOTALL,
     )
@@ -229,6 +235,22 @@ def test_h2_4b_interface_stores_only_semigroup_laws() -> None:
     assert tuple(re.findall(r"(?m)^  (\w+)\s*:", native_match["body"])) == (
         "kernel_zero",
         "kernel_add",
+    )
+    action = re.search(
+        r"structure ParameterKernelAction.*?where\n(?P<body>.*?)(?=\nnamespace)",
+        source,
+        re.DOTALL,
+    )
+    assert action is not None
+    assert tuple(re.findall(r"(?m)^  (\w+)\s*:", action["body"])) == (
+        "law",
+        "admissible",
+        "evolve",
+        "rowParameter",
+        "row_admissible",
+        "row_law",
+        "closure",
+        "row_add",
     )
     assert "kernel (left + right) = kernel right ∘ₖ kernel left" in source
     assert (
@@ -274,6 +296,7 @@ def test_h2_4b_projection_is_current() -> None:
     assert formal_projection_drift(PROJECT_ROOT) == ()
 
 
+@pytest.mark.serial_lean
 def test_h2_4b_foundation_compiles_warning_free() -> None:
     with tempfile.TemporaryDirectory(prefix="fep-h2-4b-") as output_dir:
         output_path = Path(output_dir) / "markov_semigroup.olean"
@@ -295,10 +318,17 @@ def test_h2_4b_foundation_compiles_warning_free() -> None:
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 def test_h2_4b_bridge_and_dissipation_use_standard_axioms(tmp_path: Path) -> None:
     source = SEMIGROUP_FOUNDATION.read_text(encoding="utf-8")
     prints = "\n".join(
-        f"#print axioms FEP.MarkovSemigroup.{name}" for name in SEMIGROUP_THEOREMS
+        f"#print axioms FEP.MarkovSemigroup.{qualified}"
+        for name in SEMIGROUP_THEOREMS
+        for qualified in [
+            "ParameterKernelAction." + name
+            if name in {"kernel_add", "invariant_of_fixed"}
+            else name
+        ]
     )
     contracts = r"""
 open MeasureTheory ProbabilityTheory
@@ -374,6 +404,8 @@ example (earlier increment : ℝ≥0)
     assert "warning:" not in output.lower()
     axiom_blocks = re.findall(r"depends on axioms: \[(.*?)\]", output, re.DOTALL)
     assert len(axiom_blocks) == len(SEMIGROUP_THEOREMS), output
-    for block in axiom_blocks:
-        axioms = set(re.findall(r"'([^']+)'", block))
-        assert axioms <= {"propext", "Classical.choice", "Quot.sound"}
+    parsed_axioms, errors = parse_axiom_output(output)
+    assert not errors, errors
+    assert len(parsed_axioms) == len(axiom_blocks), output
+    for axioms in parsed_axioms.values():
+        assert set(axioms) <= {"propext", "Classical.choice", "Quot.sound"}

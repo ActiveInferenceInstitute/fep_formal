@@ -944,7 +944,7 @@
       },
       {
         "kind": "formal",
-        "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modeling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem.",
+        "rationale": "Conditional constitutive bridge: nonnegative conductances let fep_fep049.FEP049.fep049_entropyProduction_nonneg supply a nonnegative quadratic entropy-production value. The explicit hBalance premise identifies that real value with fep_fep050.FEP050.fep050_totalEntropyChange Q T kB; positive T and Q<=W then let fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance derive the Landauer work threshold. The identification, including its entropy units and any time-scale interpretation, is assumed rather than derived by either topic. This witness retains its original statement and consumes the conditional entropy-balance helper; it does not instantiate ErasureModel, establish local detailed balance, or remove the assumptions of the current path-model primary theorem.",
         "source": "fep-050",
         "target": "fep-049",
         "witness": "FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production"
@@ -1912,7 +1912,7 @@
     "capabilities": 50,
     "domains": 14,
     "families": 22,
-    "formal_modules": 72,
+    "formal_modules": 75,
     "relation_kinds": {
       "conceptual": 6,
       "formal": 32,
@@ -8064,7 +8064,7 @@
       "lean_module": "FepSketches.markov_semigroup",
       "resource": "markov_semigroup.lean",
       "role": "foundation",
-      "theorem_count": 10
+      "theorem_count": 12
     },
     {
       "declaration_namespace": "FEP.ScalarGaussianSemigroup",
@@ -8376,10 +8376,31 @@
     },
     {
       "declaration_namespace": "FEPComposed.H3CaseStudy",
+      "lean_module": "FepSketches.compositions.h3_case_study_model_control",
+      "resource": "compositions/h3_case_study_model_control.lean",
+      "role": "composition",
+      "theorem_count": 63
+    },
+    {
+      "declaration_namespace": "FEPComposed.H3CaseStudy",
+      "lean_module": "FepSketches.compositions.h3_case_study_path_information",
+      "resource": "compositions/h3_case_study_path_information.lean",
+      "role": "composition",
+      "theorem_count": 8
+    },
+    {
+      "declaration_namespace": "FEPComposed.H3CaseStudy",
+      "lean_module": "FepSketches.compositions.h3_case_study_cost_feedback",
+      "resource": "compositions/h3_case_study_cost_feedback.lean",
+      "role": "composition",
+      "theorem_count": 22
+    },
+    {
+      "declaration_namespace": null,
       "lean_module": "FepSketches.compositions.h3_case_study",
       "resource": "compositions/h3_case_study.lean",
-      "role": "composition",
-      "theorem_count": 93
+      "role": "aggregate",
+      "theorem_count": 0
     },
     {
       "declaration_namespace": null,
@@ -8956,7 +8977,7 @@
     "catalogue/bodies/core_bayesian_mechanics.py": "1f2e57886c3397aa4a08b8bb2a5872aad56e5d046d8422fe395d7efc1afed81d",
     "catalogue/bodies/core_free_energy.py": "371ccc56c5fb3f834a2a8f42bec7bc9841254108e9f7403597ea3f8b0fa5468b",
     "catalogue/bodies/core_information_geometry.py": "837d0ae1c4b420c09c6c58b217e3a3870a0bc08d8b6db3475bb47606c26de75f",
-    "catalogue/bodies/core_thermodynamics.py": "927d2f0b88e19cc2a0b5424b85c960cbce473ba53ad50f4c0ba76e734dbf6520",
+    "catalogue/bodies/core_thermodynamics.py": "ed78ab84cfaf2bcc7a6306efa822031cea33f0fdd179e3611c00ce5695ec3c18",
     "catalogue/bodies/exponential_family_geometry.py": "a3c02b9733044f0f1ae3b289bd9ff955de19f0d4acb114044bc4825c1dce4708",
     "catalogue/bodies/finite_sample_risk_calibration.py": "332880b4c4ed76ba1c7660b819e88bcd5ed0f0d1cd9b9f24f1c73780b9351e42",
     "catalogue/bodies/geometric_mechanics.py": "45064a01b3d3cd49fdbb7cfe20133c7d76de3426605ebf7844bed0a83b9a8c92",
@@ -8979,13 +9000,13 @@
     "formal/bayesian_model_reduction.lean": "721c1e39ffcfe5557c0138134cac5fb5c1b78669ac475cd99465401653fa441f",
     "formal/causal_dynamics.lean": "a87844ec42f395cb8532fa96c7d5b6b956731e1b0f6069f748d512e43add686c",
     "formal/collective_inference.lean": "f29ed5c7a736b84da55ca1fcbc9b0e89e34b7d8616775029615f362c546ac784",
-    "formal/composed.lean": "b150366a325e7c2b4046aac1c359182a5200a6031381e401dc7dc70553b0fc74",
+    "formal/composed.lean": "592fcfd4fd8b365a8fcf7b4c5231908bf88dead1513df4f2f92e232bce89b239",
     "formal/compositions/bayesian_model_reduction.lean": "4a6e5113397c66cd4ec3967a14830eec685fb409fd9a6b95547263cd50e9b817",
     "formal/compositions/causal_predictive.lean": "c71060d75bed0f8a5283fdf9ecdb08f18ae9a8b0c63dcda5fe6e1aa9144e1d4e",
     "formal/compositions/collective_learning.lean": "07c5617a21dd16dc745fa2d6bd3dc2e5dda44a1163ee1bfbb10616dd89ef88d1",
     "formal/compositions/continuous_time.lean": "82e75229c4bea00c54c9a2f305201c9486bd65913f5f83bdee3956c0efedec78",
     "formal/compositions/control_temporal.lean": "abe7417377156805d94f3aa94e7bfe341eb8bf946ec5e68216f5d15bec1d6663",
-    "formal/compositions/core.lean": "4f2969cca55290de0c5d3c8189b8dbc88c1f93dc7507e2afd1eb54ba97b09d42",
+    "formal/compositions/core.lean": "9547ab60a536cb8a2211b3d4ef064dd15d68be445508a070ba23e22187e33882",
     "formal/compositions/efe_policy_selection.lean": "c1ccc05af21013867cc80ffc7072c9a1f7f1665519774e2770d08d5161d2ac96",
     "formal/compositions/efe_time_scale_separation.lean": "f6d33fb0958a85b7d0885a28fc397a15a7de327e675834dbd2682a6f9e581eb5",
     "formal/compositions/exponential_family.lean": "f9597994791db5f07d770aedee8d9972851f1954fc59deb39b6a4b74b505c3bc",
@@ -8997,7 +9018,10 @@
     "formal/compositions/gaussian_filter.lean": "9580e9be505e2ca144cc5bdeec470b69483e3d6a06bd094a6793a6a3aedd46e0",
     "formal/compositions/gaussian_grid_path.lean": "cc1f4020ab1cf8762b2eced248ff59976ce140ced7112eea2ab0de23c8d5561a",
     "formal/compositions/geometric_mechanics.lean": "8f696611db7e04cdaae6355b3654375f8aa781c1b1021299e6de27b32d834357",
-    "formal/compositions/h3_case_study.lean": "6a1ebfaa4588cff8c5131fbbf0f5003353367ea74ac4e33a7214e9b8ac466d17",
+    "formal/compositions/h3_case_study.lean": "691457cba871ffa9cfc4ba6a983ed249d8736e1c2c29a7312e7f5168c6dc205e",
+    "formal/compositions/h3_case_study_cost_feedback.lean": "54bcea329a8e5ad2862af107810a7153ba20949898bc030d3e360a8d0cefbfb2",
+    "formal/compositions/h3_case_study_model_control.lean": "cc599186dbc585a9caa3fb7d358f95b80abb876082b13b96c24ee07f8c4024ae",
+    "formal/compositions/h3_case_study_path_information.lean": "8f1c84ab2ef679020dfc5f43519e025845d49d0c3bc0f290d01a9e6f5848a953",
     "formal/compositions/helmholtz_ao_ness.lean": "7de6f6c012d5e134d8bc84a4aec8c560adf2de60722d4466c4f77d9474d66c78",
     "formal/compositions/measure_variational.lean": "63496c6d4add85393bcdbc5b147e94873f8533ee1d88311cf7865c6e7496e69d",
     "formal/compositions/native_blanket_transfer.lean": "24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7",
@@ -9032,10 +9056,10 @@
     "formal/information_geometry.lean": "0b9fddad4758c9e165e9fe13f0fe4ddca57d71d025c92d85068b93835acab88f",
     "formal/law_weighted_split.lean": "8f3337e433c93828fb1a5185c962b47e2d521b4cd3792e75f3a484e5ca14bc35",
     "formal/learning_theory.lean": "f39bf2504d47de1f76399fce0471396c0b546ddc25872572e8efa853b2e75582",
-    "formal/linear_gaussian_semigroup.lean": "d4373ff6c120d2b55bf717338b2a4a210f34d89c44a73fd98562f0226098985d",
-    "formal/manifest.py": "e99bc2bb55d88872d04a851430fae6ca9978bc9aea12de493e923c3d8b9f4157",
+    "formal/linear_gaussian_semigroup.lean": "b546a626b35d3c9a8b7e3f6f139c2ce22d7208c67f7f05064cf02c253facf55e",
+    "formal/manifest.py": "8e29ba9d0f3f5fdcba383abed77d36a4a63fd32ddb8101c9993248a2b321fd3b",
     "formal/markov_blanket.lean": "6e214ee37ba6525d1ca5b44130ceaf4b410e03a0bb18d9b3070c4f8b90280011",
-    "formal/markov_semigroup.lean": "03284d5d473fdb3b6a2af5ae43ca2970e6f46af1b3b8915f8d0c123c177f6c02",
+    "formal/markov_semigroup.lean": "78553d0eff3e8588b62faeef9cf2c96cc1a9c8356e411cad76342ba35ae3730c",
     "formal/measure_bayes.lean": "e2fa1b071381bbf684625e7317a02a357337df80596f95d9084d6e721a719c51",
     "formal/native_blanket.lean": "7af052b9a067be0391097a9e201e367639edc3698204a701f5663340ec9f5a11",
     "formal/ness_flow.lean": "d09408edccda4103d6da2b8680c2c4dfcab9ead185983efa5fe25110a462fb38",
@@ -9044,15 +9068,15 @@
     "formal/policy_tree.lean": "f88e5063dede806e31f4f7106b825ee7b3832bcc66cf17346e24b98cd9361176",
     "formal/posterior_convergence.lean": "21c78105a1c318a717fd67e0c6f0df28cbdc458e4b6a3b3e6b422be19149dd6f",
     "formal/predictive_coding.lean": "ef30d3fbe10511613f48bf6ec165d03c1ba89c356deaa47d61ed285ee4f814d0",
-    "formal/scalar_gaussian_semigroup.lean": "b10823429b5a182b37303aa970162e8587c9d2bb6c20554c1f5ef20eeb005766",
+    "formal/scalar_gaussian_semigroup.lean": "98248c0f588c3f7d9a0fa44368acb0e952d4c3e4739ea1c6b19fddc8357e4397",
     "formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
     "formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
     "formal/temporal_inference.lean": "7b1260acd419ac368ea490d58b2e33c02b53d969e690ce1b805a177f2bb9e3b4",
     "formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
     "inputs/catalogue_metadata.yaml": "f2659ffb8e72f5d2881154b55c3537a2743ce5a83689b19b63b1d685e698693c",
-    "inputs/formalism_relations.yaml": "570b78f087c44520aa25ac7124a5275834129aa81418f29acee6af628adb4fec",
+    "inputs/formalism_relations.yaml": "7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80",
     "inputs/positioning.yaml": "d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d",
-    "inputs/theorem_maturity.yaml": "d1730762d51a5369e2a7ae90ebc5292e8c83de8797fcc11cc992a452e0983266",
+    "inputs/theorem_maturity.yaml": "35250c1fcb1bb77137ee6b3fdfbc93f3a0e6c031668b55a2fa574dca18df11a5",
     "lean_source.py": "67790e70ab3ae3af48d9d2cd570e0d641f18fa03519c06b17c9a0b21acbc6781",
     "methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
     "methods/model.py": "8b517cc056b4b8e577790d50333762febc4f0ff5ceae96a431cc2dc15bf321dc",
@@ -97945,7 +97969,7 @@
           }
         ],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOneState_measurable",
-        "source_line": 1174,
+        "source_line": 1177,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem finOneState_measurable : Measurable finOneState",
         "statement_sha256": "e37b19310bc6202b3b451a965b986a73b2d969ce21bf41543b1ebd2b43ca2eac"
@@ -98079,7 +98103,7 @@
           }
         ],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOneTransition_eq_scalarOU",
-        "source_line": 1278,
+        "source_line": 1281,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem finOneTransition_eq_scalarOU\n    (rate : ℝ) (hRate : 0 < rate) (center : ℝ) (time : ℝ≥0) :\n    (finOneParameters rate hRate center).finOneTransition time =\n      (finOneScalarParameters rate hRate center).ouTransition time",
         "statement_sha256": "a2e6a695067a080629e414f6fa86b3c06e24b8166060aecaf16268c452f285f6"
@@ -98188,7 +98212,7 @@
           }
         ],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOne_transitionCovariance",
-        "source_line": 1257,
+        "source_line": 1260,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem finOne_transitionCovariance\n    (rate : ℝ) (hRate : 0 < rate) (center : ℝ)\n    (time : ℝ≥0) :\n    (finOneParameters rate hRate center).transitionCovariance time 0 0 =\n      (((finOneScalarParameters rate hRate center).transitionVariance time :\n        ℝ≥0) : ℝ)",
         "statement_sha256": "797602a4effaf7c99937de744946304375ca893151ddbc6be0fd846e059cbcfb"
@@ -98307,7 +98331,7 @@
           }
         ],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.finOne_transitionMean",
-        "source_line": 1240,
+        "source_line": 1243,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem finOne_transitionMean\n    (rate : ℝ) (hRate : 0 < rate) (center : ℝ)\n    (time : ℝ≥0) (state : ℝ) :\n    (finOneParameters rate hRate center).transitionMean time\n        (finOneState state) 0 =\n      (finOneScalarParameters rate hRate center).transitionMean time state",
         "statement_sha256": "218e0e2a76950fb0ca81ac5053f20cbed52e8b26af0e78563690bab8d2b2b714"
@@ -98406,7 +98430,7 @@
           }
         ],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.integral_transition_tendsto_invariant",
-        "source_line": 1156,
+        "source_line": 1159,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem integral_transition_tendsto_invariant\n    (model : LinearGaussianParameters Axis) (state : State Axis)\n    (f : State Axis →ᵇ ℝ) :\n    Tendsto\n      (fun time : ℝ≥0 =>\n        ∫ next, f next ∂\n          (model.transitionProbability time state : Measure (State Axis)))\n      atTop\n      (𝓝 (∫ next, f next ∂\n        (model.stationaryProbability : Measure (State Axis))))",
         "statement_sha256": "fe404a18047ce37eaefe76782635b5134250f2decae632a4af2243baa88c53a9"
@@ -98552,7 +98576,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.stationaryLaw_invariant",
-        "source_line": 900,
+        "source_line": 903,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem stationaryLaw_invariant (model : LinearGaussianParameters Axis) :\n    FEP.MarkovSemigroup.InvariantLaw\n      model.nativeSemigroup model.stationaryLaw",
         "statement_sha256": "3e70f909cfe44f9d4ae15f6f2b0ffe26dd174b46c5ea85a26e7f0c1034a387b3"
@@ -99151,7 +99175,7 @@
           }
         ],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.transitionProbability_tendsto_invariant",
-        "source_line": 1126,
+        "source_line": 1129,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem transitionProbability_tendsto_invariant\n    (model : LinearGaussianParameters Axis) (state : State Axis) :\n    Tendsto\n      (fun time : ℝ≥0 => model.transitionProbability time state)\n      atTop (𝓝 model.stationaryProbability)",
         "statement_sha256": "a360c460e730e37ac551af24fbbc899f0127d472f68b5cf2c9d00636931af208"
@@ -99235,7 +99259,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.transition_add",
-        "source_line": 857,
+        "source_line": 879,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem transition_add (model : LinearGaussianParameters Axis)\n    (left right : ℝ≥0) :\n    model.transition (left + right) =\n      model.transition right ∘ₖ model.transition left",
         "statement_sha256": "86058a245cb6a4f535b3ee0e57e4f926e10a5bf96ac1e0bb4283185c14dbf85e"
@@ -99545,7 +99569,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.transition_covariance",
-        "source_line": 921,
+        "source_line": 924,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem transition_covariance (model : LinearGaussianParameters Axis)\n    (time : ℝ≥0) (state : State Axis) (left right : Axis) :\n    cov[fun next => next left, fun next => next right;\n      model.transition time state] =\n        model.transitionCovariance time left right",
         "statement_sha256": "f16b69b145e2382bf5f1a77df5875eaf5d7afff180f6cfce47f8e3538e57658e"
@@ -99638,7 +99662,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.LinearGaussianSemigroup.LinearGaussianParameters.transition_mean",
-        "source_line": 912,
+        "source_line": 915,
         "source_owner": "src/fep_lean/formal/linear_gaussian_semigroup.lean",
         "statement": "theorem transition_mean (model : LinearGaussianParameters Axis)\n    (time : ℝ≥0) (state : State Axis) :\n    (∫ next, next ∂model.transition time state) =\n      model.transitionMean time state",
         "statement_sha256": "e7e7cfcb39500eb221aff8d10a33c22e461bf747dd465c63124efec1e4a7cdf6"
@@ -100785,7 +100809,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeActionIndexedKernelSemigroup.boolBlanketNativeActionIndexedSemigroup_false_kernel",
-        "source_line": 241,
+        "source_line": 288,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem boolBlanketNativeActionIndexedSemigroup_false_kernel :\n    sampledKernel boolBlanketNativeActionIndexedSemigroup false =\n      (Kernel.id : Kernel FEP.ContinuousTimeMarkov.BoolBlanketState\n        FEP.ContinuousTimeMarkov.BoolBlanketState)",
         "statement_sha256": "bd1aa99a8e302027e5627880d88fe4e265d55ba30ff1e239ef798e7d38df611a"
@@ -100873,7 +100897,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeActionIndexedKernelSemigroup.boolBlanketNativeActionIndexedSemigroup_kernels_ne",
-        "source_line": 278,
+        "source_line": 325,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem boolBlanketNativeActionIndexedSemigroup_kernels_ne :\n    sampledKernel boolBlanketNativeActionIndexedSemigroup false ≠\n      sampledKernel boolBlanketNativeActionIndexedSemigroup true",
         "statement_sha256": "931a5da60bcdff5edb69667f013943659624a97de40e4b23b37afbba489f08f8"
@@ -100949,7 +100973,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeActionIndexedKernelSemigroup.boolBlanketNativeActionIndexedSemigroup_true_kernel",
-        "source_line": 261,
+        "source_line": 308,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem boolBlanketNativeActionIndexedSemigroup_true_kernel :\n    sampledKernel boolBlanketNativeActionIndexedSemigroup true =\n      FEP.NativeBlanket.embeddedKernel\n        FEP.ContinuousTimeMarkov.boolBlanketRefreshKernel",
         "statement_sha256": "4557c2b23f7b628f701de8075b9ad65ae895e534361027934956bdda9c5c0fbf"
@@ -101075,7 +101099,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeActionIndexedKernelSemigroup.liftActionIndexedSemigroup_kernel",
-        "source_line": 199,
+        "source_line": 246,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem liftActionIndexedSemigroup_kernel\n    [Fintype State] [DecidableEq State] [DiscreteMeasurableSpace State]\n    [Fintype Action]\n    (indexed : FEP.ContinuousTimeMarkov.ActionIndexedSemigroup State Action)\n    (action : Action) (time : ℝ≥0) :\n    embeddedActionKernelFamily indexed action time =\n      FEP.NativeBlanket.embeddedKernel\n        ((indexed.semigroup action).kernel time.1 time.2)",
         "statement_sha256": "0a55e558726bfb846eda75d11c6d8bc81472a0dce9b61435a9cd8bb5c4a2015d"
@@ -101191,7 +101215,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeActionIndexedKernelSemigroup.liftActionIndexedSemigroup_sampleTime",
-        "source_line": 211,
+        "source_line": 258,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem liftActionIndexedSemigroup_sampleTime\n    [Fintype State] [DecidableEq State] [DiscreteMeasurableSpace State]\n    [Fintype Action]\n    (indexed : FEP.ContinuousTimeMarkov.ActionIndexedSemigroup State Action)\n    (action : Action) :\n    (((liftActionIndexedSemigroup indexed).sampleTime action : ℝ)) =\n      indexed.sampleTime action",
         "statement_sha256": "4b0e3072ca64de53115eb4f8e99e3c4c41e3d1ed68f0f52cca0cdb630847819f"
@@ -101307,7 +101331,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeActionIndexedKernelSemigroup.liftActionIndexedSemigroup_sampledKernel",
-        "source_line": 221,
+        "source_line": 268,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem liftActionIndexedSemigroup_sampledKernel\n    [Fintype State] [DecidableEq State] [DiscreteMeasurableSpace State]\n    [Fintype Action]\n    (indexed : FEP.ContinuousTimeMarkov.ActionIndexedSemigroup State Action)\n    (action : Action) :\n    sampledKernel (liftActionIndexedSemigroup indexed) action =\n      FEP.NativeBlanket.embeddedKernel (indexed.sampledKernel action)",
         "statement_sha256": "03f786654e2e246450e3e1f04dc0cb288493cd306cf414d801cd2fbe05b9ef8a"
@@ -101414,7 +101438,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeKernelSemigroup.liftFiniteMarkovSemigroup_kernel",
-        "source_line": 135,
+        "source_line": 182,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem liftFiniteMarkovSemigroup_kernel\n    [Fintype State] [DecidableEq State] [DiscreteMeasurableSpace State]\n    (semigroup : FEP.ContinuousTimeMarkov.FiniteMarkovSemigroup State)\n    (time : ℝ≥0) :\n    embeddedFiniteKernelFamily semigroup time =\n      FEP.NativeBlanket.embeddedKernel\n        (semigroup.kernel time.1 time.2)",
         "statement_sha256": "899aedd9d8fe02b7c247b982b0b1c3834bb41706667848f2f6e384ad0f1f5c46"
@@ -101525,7 +101549,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeKernelSemigroup.nativeKL_nonincrease",
-        "source_line": 96,
+        "source_line": 143,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem nativeKL_nonincrease\n    (semigroup : NativeKernelSemigroup kernel)\n    (earlier increment : ℝ≥0)\n    (actual reference : Measure State)\n    [IsFiniteMeasure actual] [IsFiniteMeasure reference] :\n    InformationTheory.klDiv (kernel (earlier + increment) ∘ₘ actual)\n        (kernel (earlier + increment) ∘ₘ reference) ≤\n      InformationTheory.klDiv (kernel earlier ∘ₘ actual)\n        (kernel earlier ∘ₘ reference)",
         "statement_sha256": "d3d466ac9078304e917ca65efbb381109cddf9b778322254a5ac2c28f0e1fc43"
@@ -101653,7 +101677,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeKernelSemigroup.nativeKL_to_invariant_nonincrease",
-        "source_line": 112,
+        "source_line": 159,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem nativeKL_to_invariant_nonincrease\n    (semigroup : NativeKernelSemigroup kernel)\n    (earlier increment : ℝ≥0)\n    (actual invariant : Measure State)\n    [IsFiniteMeasure actual] [IsFiniteMeasure invariant]\n    (hInvariant : InvariantLaw semigroup invariant) :\n    InformationTheory.klDiv\n        (kernel (earlier + increment) ∘ₘ actual) invariant ≤\n      InformationTheory.klDiv (kernel earlier ∘ₘ actual) invariant",
         "statement_sha256": "1f5def394414d28ff1a0803d4f43a7bebf0fb4f146dfe25ef40fdea137b1acee"
@@ -101746,10 +101770,209 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.MarkovSemigroup.NativeKernelSemigroup.reversibleLaw_invariantLaw",
-        "source_line": 87,
+        "source_line": 134,
         "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
         "statement": "theorem reversibleLaw_invariantLaw\n    (semigroup : NativeKernelSemigroup kernel) (law : Measure State)\n    (hReversible : ReversibleLaw semigroup law) :\n    InvariantLaw semigroup law",
         "statement_sha256": "f40a51a4ac22b2001eceb9ef59bb402ec725f900c90f89aea6df277950dc9663"
+      },
+      "FEP.MarkovSemigroup.ParameterKernelAction.invariant_of_fixed": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "action"
+            ],
+            "role": "typed_binder",
+            "source": "(action : ParameterKernelAction kernel Parameter)",
+            "type_source": "ParameterKernelAction kernel Parameter",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "parameter"
+            ],
+            "role": "typed_binder",
+            "source": "(parameter : Parameter)",
+            "type_source": "Parameter",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hParameter"
+            ],
+            "role": "typed_binder",
+            "source": "(hParameter : action.admissible parameter)",
+            "type_source": "action.admissible parameter",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hFixed"
+            ],
+            "role": "typed_binder",
+            "source": "(hFixed : ∀ time, action.evolve time parameter = parameter)",
+            "type_source": "∀ time, action.evolve time parameter = parameter",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "time"
+            ],
+            "role": "typed_binder",
+            "source": "(time : ℝ≥0)",
+            "type_source": "ℝ≥0",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "Kernel.Invariant (kernel time) (action.law parameter)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Parameter"
+            ],
+            "role": "typed_binder",
+            "source": "{State Parameter : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[MeasurableSpace State]",
+            "type_source": "MeasurableSpace State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "kernel"
+            ],
+            "role": "typed_binder",
+            "source": "{kernel : ℝ≥0 → Kernel State State}",
+            "type_source": "ℝ≥0 → Kernel State State",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[∀ time, IsMarkovKernel (kernel time)]",
+            "type_source": "∀ time, IsMarkovKernel (kernel time)",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.continuous_time_markov",
+          "FepSketches.native_blanket",
+          "Mathlib.InformationTheory.KullbackLeibler.DataProcessing",
+          "Mathlib.Probability.Kernel.Invariance"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.MarkovSemigroup.ParameterKernelAction",
+        "namespace_variable_context": [
+          "{State Parameter : Type*} [MeasurableSpace State]\n  {kernel : ℝ≥0 → Kernel State State}\n  [∀ time, IsMarkovKernel (kernel time)]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.MarkovSemigroup.ParameterKernelAction.invariant_of_fixed",
+        "source_line": 73,
+        "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
+        "statement": "theorem invariant_of_fixed (action : ParameterKernelAction kernel Parameter)\n    (parameter : Parameter) (hParameter : action.admissible parameter)\n    (hFixed : ∀ time, action.evolve time parameter = parameter) (time : ℝ≥0) :\n    Kernel.Invariant (kernel time) (action.law parameter)",
+        "statement_sha256": "cf78feef19d50580398070599b8e1ad01c08675f850ab129ac76bda07b790469"
+      },
+      "FEP.MarkovSemigroup.ParameterKernelAction.kernel_add": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "action"
+            ],
+            "role": "typed_binder",
+            "source": "(action : ParameterKernelAction kernel Parameter)",
+            "type_source": "ParameterKernelAction kernel Parameter",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "left",
+              "right"
+            ],
+            "role": "typed_binder",
+            "source": "(left right : ℝ≥0)",
+            "type_source": "ℝ≥0",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "kernel (left + right) = kernel right ∘ₖ kernel left",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Parameter"
+            ],
+            "role": "typed_binder",
+            "source": "{State Parameter : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[MeasurableSpace State]",
+            "type_source": "MeasurableSpace State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "kernel"
+            ],
+            "role": "typed_binder",
+            "source": "{kernel : ℝ≥0 → Kernel State State}",
+            "type_source": "ℝ≥0 → Kernel State State",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[∀ time, IsMarkovKernel (kernel time)]",
+            "type_source": "∀ time, IsMarkovKernel (kernel time)",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.continuous_time_markov",
+          "FepSketches.native_blanket",
+          "Mathlib.InformationTheory.KullbackLeibler.DataProcessing",
+          "Mathlib.Probability.Kernel.Invariance"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.MarkovSemigroup.ParameterKernelAction",
+        "namespace_variable_context": [
+          "{State Parameter : Type*} [MeasurableSpace State]\n  {kernel : ℝ≥0 → Kernel State State}\n  [∀ time, IsMarkovKernel (kernel time)]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.MarkovSemigroup.ParameterKernelAction.kernel_add",
+        "source_line": 57,
+        "source_owner": "src/fep_lean/formal/markov_semigroup.lean",
+        "statement": "theorem kernel_add (action : ParameterKernelAction kernel Parameter)\n    (left right : ℝ≥0) : kernel (left + right) = kernel right ∘ₖ kernel left",
+        "statement_sha256": "f03988285dafc642c5eb01b1abe2bc99df1c4c3232af55f4ed00651ce63c0313"
       },
       "FEP.MeasureBayes.conditionalExpectation_tower": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -129934,7 +130157,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.integral_ouTransition_tendsto_invariant",
-        "source_line": 492,
+        "source_line": 494,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem integral_ouTransition_tendsto_invariant\n    (model : ScalarOUParameters) (state : ℝ) (f : ℝ →ᵇ ℝ) :\n    Tendsto\n      (fun time : ℝ≥0 =>\n        ∫ next, f next ∂(model.ouTransitionProbability time state : Measure ℝ))\n      atTop\n      (𝓝 (∫ next, f next ∂(model.stationaryProbability : Measure ℝ)))",
         "statement_sha256": "3d44215cf952fe76a1165dca61a43f4f922f6402bba0337fab9e5e74cc3e425e"
@@ -130009,7 +130232,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouKL_to_stationary_nonincrease",
-        "source_line": 505,
+        "source_line": 507,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem ouKL_to_stationary_nonincrease\n    (model : ScalarOUParameters) (earlier increment : ℝ≥0)\n    (actual : Measure ℝ) [IsFiniteMeasure actual] :\n    InformationTheory.klDiv\n        (model.ouTransition (earlier + increment) ∘ₘ actual)\n        model.stationaryLaw ≤\n      InformationTheory.klDiv\n        (model.ouTransition earlier ∘ₘ actual)\n        model.stationaryLaw",
         "statement_sha256": "ae3939e4d5c40b13d8217d73e9afb7b11d8c11366403c4df6a834de1b5120d89"
@@ -130058,7 +130281,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouTransitionProbability_tendsto_invariant",
-        "source_line": 467,
+        "source_line": 469,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem ouTransitionProbability_tendsto_invariant\n    (model : ScalarOUParameters) (state : ℝ) :\n    Tendsto\n      (fun time : ℝ≥0 => model.ouTransitionProbability time state)\n      atTop (𝓝 model.stationaryProbability)",
         "statement_sha256": "30a81513ef6d5a6b8d9168482c4f8b845310d824ec01313a22e58592802aa1b0"
@@ -130108,7 +130331,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouTransition_add",
-        "source_line": 258,
+        "source_line": 295,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem ouTransition_add\n    (model : ScalarOUParameters) (left right : ℝ≥0) :\n    model.ouTransition (left + right) =\n      model.ouTransition right ∘ₖ model.ouTransition left",
         "statement_sha256": "c6c3ce04b7ef225560adf40d5cdf2befc1d803157ad3bbf3389533643812c47e"
@@ -130177,7 +130400,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouTransition_comp_gaussian",
-        "source_line": 284,
+        "source_line": 258,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem ouTransition_comp_gaussian\n    (model : ScalarOUParameters) (time : ℝ≥0)\n    (sourceMean : ℝ) (sourceVariance : ℝ≥0) :\n    model.ouTransition time ∘ₘ gaussianReal sourceMean sourceVariance =\n      gaussianReal\n        (model.transitionMean time sourceMean)\n        (NNReal.mk (model.decay time ^ 2) (sq_nonneg _) * sourceVariance +\n          model.transitionVariance time)",
         "statement_sha256": "8f32a042a37ff5c45dc4a53cad75bd117c1795ae651e79c1a7a7a53b679fae7b"
@@ -130246,7 +130469,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouTransition_eq_gaussianLocation",
-        "source_line": 307,
+        "source_line": 308,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem ouTransition_eq_gaussianLocation\n    (model : ScalarOUParameters) (time : ℝ≥0) (hTime : 0 < time)\n    (state : ℝ) :\n    model.ouTransition time state =\n      (model.positiveTimeGaussian time hTime).law\n        (model.transitionMean time state)",
         "statement_sha256": "89d2c79670c1bb216944c5737c057cc9f495d779cd1f07721ad97231406f4bc3"
@@ -130305,7 +130528,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouTransition_mean",
-        "source_line": 357,
+        "source_line": 359,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem ouTransition_mean\n    (model : ScalarOUParameters) (time : ℝ≥0) (state : ℝ) :\n    (∫ next, next ∂model.ouTransition time state) =\n      model.transitionMean time state",
         "statement_sha256": "9a8b87d6e30b97e671370f7ac4a70e2db4315c239f1613cde3acf1c7f7b2b329"
@@ -130423,7 +130646,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.ouTransition_variance",
-        "source_line": 368,
+        "source_line": 370,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem ouTransition_variance\n    (model : ScalarOUParameters) (time : ℝ≥0) (state : ℝ) :\n    Var[id; model.ouTransition time state] = model.transitionVariance time",
         "statement_sha256": "627b5308daf514fb6a3f13961fd54decd0507410b4fee7e9916b7ea6cb83ac0b"
@@ -130501,7 +130724,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.ScalarGaussianSemigroup.ScalarOUParameters.stationaryLaw_invariant",
-        "source_line": 346,
+        "source_line": 347,
         "source_owner": "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
         "statement": "theorem stationaryLaw_invariant (model : ScalarOUParameters) :\n    FEP.MarkovSemigroup.InvariantLaw\n      model.ouNativeSemigroup model.stationaryLaw",
         "statement_sha256": "6fc9f8ccf73d88e86dfbf5cabd40a89398fbeb52052922c01be329bc6d02553f"
@@ -162926,6 +163149,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -162946,8 +163171,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.all_zero_grid_kl",
-        "source_line": 4205,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 1671,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
         "statement": "theorem all_zero_grid_kl :\n    klDiv (studyProjectedLaw allZeroStudyGrid) (studyReverseLaw allZeroStudyGrid) = 0",
         "statement_sha256": "8638489cdc55170fd4cc3bf165ed3cadc33d2bdb6823c7ac160a8923403f8797"
       },
@@ -163042,7 +163267,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.arbitrary_state_projection",
         "source_line": 207,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem arbitrary_state_projection (center : ℝ) (time : ℝ≥0)\n    (state : FEP.H3ReferenceModel.StandardState) :\n    (FEP.H3ReferenceModel.transition\n      (FEP.H3ReferenceModel.fromNativeState (allOnesEmbedding center)) time state).map\n        scalarCoordinate =\n      (FEP.H3ReferenceModel.scalarParameters center).ouTransition time\n        (scalarCoordinate state)",
         "statement_sha256": "45f8995ee824085b11b646614c9141938a81de16d86ac666fac6a263576a6b1c"
       },
@@ -163117,7 +163342,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.arbitrary_state_projection_native",
         "source_line": 191,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem arbitrary_state_projection_native (center : ℝ) (time : ℝ≥0)\n    (state : StandardizedState) :\n    (transition (allOnesEmbedding center) time state).map allOnesProjection =\n      (scalarParameters center).ouTransition time (allOnesProjection state)",
         "statement_sha256": "8036b1ad06e34ab06611f039dbf4f2a6e4a28aa3b3dd478fd0a0d379eaf7acca"
       },
@@ -163181,7 +163406,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batchCovariance_posDef",
         "source_line": 428,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batchCovariance_posDef (n : ℕ) (noise : ℝ) (hNoise : 0 < noise) :\n    (batchCovariance n noise).PosDef",
         "statement_sha256": "2b99bb1ae59e4132430fd2ccf27b7247ce209fbbfae1a1b9d1d7efab0e489473"
       },
@@ -163245,7 +163470,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batchDenominator_pos",
         "source_line": 466,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batchDenominator_pos (n : ℕ) (noise : ℝ) (hNoise : 0 < noise) :\n    0 < 2 * noise + n",
         "statement_sha256": "25c5872ab57cf0c2f6c2534536b6d30a979270b9c310b3645746f0ccdf32c621"
       },
@@ -163327,7 +163552,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batchError_eq",
         "source_line": 488,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batchError_eq (n : ℕ) (center noise : ℝ) (hNoise : 0 < noise)\n    (state : BatchState n) :\n    batchError center noise state =\n      batchPosteriorMean center noise (batchObservations state) - state 0",
         "statement_sha256": "f934901e2b20b447ccaa265994adf2a2250d37c12cfa53395c9626adef71c416"
       },
@@ -163382,7 +163607,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batchError_hasGaussianLaw",
         "source_line": 507,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batchError_hasGaussianLaw (n : ℕ) (center noise : ℝ) :\n    HasGaussianLaw (batchError (n := n) center noise) (batchSourceLaw n center noise)",
         "statement_sha256": "88122c27aa57b9d9423f727f84f6a96d4eee76e465260d04816cba5875557a36"
       },
@@ -163437,7 +163662,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batchError_mean",
         "source_line": 512,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batchError_mean (n : ℕ) (center noise : ℝ) :\n    ∫ state, batchError center noise state ∂batchSourceLaw n center noise = 0",
         "statement_sha256": "c31e4a663685f20994254d3eb270fe83c81f494a583f99952f166d2e96e45a53"
       },
@@ -163509,7 +163734,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batchError_variance",
         "source_line": 535,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batchError_variance (n : ℕ) (center noise : ℝ) (hNoise : 0 < noise) :\n    Var[batchError center noise; batchSourceLaw n center noise] =\n      batchPosteriorVariance n noise",
         "statement_sha256": "8596ffc8baca642d5f33e398a7238aae84dd7dffb4f1122655421961bcbaf08c"
       },
@@ -163580,7 +163805,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batchPosteriorVariance_pos",
         "source_line": 469,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batchPosteriorVariance_pos (n : ℕ) (noise : ℝ) (hNoise : 0 < noise) :\n    0 < batchPosteriorVariance n noise",
         "statement_sha256": "5a7f658a214e5e960c772589bbf112b0101880ba1dbeac883cf48effc89a59d6"
       },
@@ -163652,7 +163877,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batch_innovations_independent",
         "source_line": 614,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batch_innovations_independent (n : ℕ) (center noise : ℝ) (hNoise : 0 < noise) :\n    iIndepFun (fun index : Fin (n + 1) => fun state : BatchState n => state index)\n      (batchSourceLaw n center noise)",
         "statement_sha256": "6c47b1eaa06a1b392d9b6613fb6ec3c3034994e6bc6d3dc4ecf44d53e73b6dc5"
       },
@@ -163724,7 +163949,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.batch_latent_law",
         "source_line": 630,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem batch_latent_law (n : ℕ) (center noise : ℝ) (hNoise : 0 < noise) :\n    (batchSourceLaw n center noise).map (fun state => state 0) =\n      gaussianReal center (1 / 2)",
         "statement_sha256": "b02186222ab19b00b4768cb0dbc61d634da2269a1cb9808fe3cb17324d0f94ac"
       },
@@ -163781,7 +164006,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.clamp_conditional_covariance",
         "source_line": 2566,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem clamp_conditional_covariance (center : FEP.Fin4GaussianSemigroup.StandardizedState) :\n    (condDistrib sensoryEndpoints sensoryClampedBlanket (sensoryClampedLaw center)\n      =ᵐ[(sensoryClampedLaw center).map sensoryClampedBlanket]\n        sensoryClampedConditionalKernel center) ∧\n      ∀ datum : ℝ,\n        cov[Prod.fst, Prod.snd; sensoryClampedConditionalKernel center (datum, 0)] = 1 / 56",
         "statement_sha256": "9e8e30772da525c47060f27cb7577f11f2f7a05d658c5b2f02dab3362081b173"
       },
@@ -163842,7 +164067,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.clamp_nondescendants",
         "source_line": 302,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem clamp_nondescendants (value : ℝ)\n    (law : Measure FEP.H3ReferenceModel.StandardState) :\n    (clampKernel value ∘ₘ law).map\n        (fun state => (state FEP.H3ReferenceModel.Axis.external,\n          state FEP.H3ReferenceModel.Axis.sensory,\n          state FEP.H3ReferenceModel.Axis.internal)) =\n      law.map (fun state => (state FEP.H3ReferenceModel.Axis.external,\n        state FEP.H3ReferenceModel.Axis.sensory,\n        state FEP.H3ReferenceModel.Axis.internal))",
         "statement_sha256": "4ac23984736287ea56ab6c197d6d4810f1865b88789bfe4d9bcec777d645568f"
       },
@@ -163896,7 +164121,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.clamp_normalization",
         "source_line": 297,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem clamp_normalization (value : ℝ) (state : FEP.H3ReferenceModel.StandardState) :\n    clampKernel value state Set.univ = 1",
         "statement_sha256": "f75b5ae7e1b4250a80dbeeeeb3c41b2292bfc94859ebb3af1dd374b274e22e6a"
       },
@@ -163941,7 +164166,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.consistency_bound_limit",
         "source_line": 574,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem consistency_bound_limit (noise epsilon : ℝ) :\n    Tendsto (fun n : ℕ => batchPosteriorVariance n noise / epsilon ^ 2)\n      atTop (nhds 0)",
         "statement_sha256": "b551c81cb00abe8a7ef84a4e854b2ca0398952ea18197794048b3971b423bf7e"
       },
@@ -164026,7 +164251,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.consistency_limit",
         "source_line": 587,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem consistency_limit (center noise epsilon : ℝ) (hNoise : 0 < noise)\n    (hEpsilon : 0 < epsilon) :\n    Tendsto (fun n : ℕ => (batchSourceLaw n center noise).real\n      {state | epsilon ≤ |batchPosteriorMean center noise (batchObservations state) - state 0|})\n      atTop (nhds 0)",
         "statement_sha256": "d510912e53e67e8e77a8f3f5373ab25e7506bffba5e18d55bd3e78fd43b8f6f9"
       },
@@ -164116,7 +164341,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.consistency_mse",
         "source_line": 553,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem consistency_mse (n : ℕ) (center noise : ℝ) (hNoise : 0 < noise) :\n    (∫ state, (batchPosteriorMean center noise (batchObservations state) - state 0) ^ 2\n      ∂batchSourceLaw n center noise) = noise / (2 * noise + n)",
         "statement_sha256": "b3d879e7341b24aa3968bcde2c620f0c15a215483d73029eb75f3a9ef9eadc69"
       },
@@ -164217,7 +164442,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.consistency_tail",
         "source_line": 563,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem consistency_tail (n : ℕ) (center noise epsilon : ℝ)\n    (hNoise : 0 < noise) (hEpsilon : 0 < epsilon) :\n    batchSourceLaw n center noise\n      {state | epsilon ≤ |batchPosteriorMean center noise (batchObservations state) - state 0|} ≤\n        ENNReal.ofReal (batchPosteriorVariance n noise / epsilon ^ 2)",
         "statement_sha256": "e04e3f14df28f06983419b8467de22ade11654d29aaeb6a97134d8fd70713e08"
       },
@@ -164236,6 +164461,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -164256,8 +164483,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.constitutive_nonidentification",
-        "source_line": 4223,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 1689,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
         "statement": "theorem constitutive_nonidentification :\n    hypotheticalEnergyLaw 1 = hypotheticalEnergyLaw 2 ∧\n      klDiv (hypotheticalEnergyLaw 1) (studyReverseLaw informationGrid) =\n        klDiv (hypotheticalEnergyLaw 2) (studyReverseLaw informationGrid) ∧\n      hypotheticalAssignedExpectedHeat 1 < hypotheticalAssignedExpectedHeat 2",
         "statement_sha256": "0ca9b760af6b88ce02f237c279af88f826751dd94e2916620a954e3e67e9e67b"
       },
@@ -164290,7 +164517,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlDecay_bounds",
         "source_line": 938,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem controlDecay_bounds : 0 < controlDecay ∧ controlDecay < 1",
         "statement_sha256": "31fefaae00d240a37927ba0035338b017c6c2c3be470b98a5c6327e8195c410b"
       },
@@ -164344,7 +164571,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlledMean_exact",
         "source_line": 2316,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem controlledMean_exact (belief : ScalarGaussianBelief) (action : Bool) :\n    controlledMean controlModel belief action =\n      controlDecay * belief.mean + (1 - controlDecay) * actionCenter action",
         "statement_sha256": "10bdf8c7a14d9b87821345f8ae8b463a06bf143bcc039306eb1da8d3284bb737"
       },
@@ -164398,7 +164625,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlledVariance_exact",
         "source_line": 2308,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem controlledVariance_exact (belief : ScalarGaussianBelief) (action : Bool) :\n    (controlledVariance controlModel belief action : ℝ) = terminalVariance belief",
         "statement_sha256": "0e76ca94226ef1bbaf58f556ab961ca6c142ca830eaa0799b0ab72eb4dff8164"
       },
@@ -164441,6 +164668,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -164461,8 +164690,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlled_moment_bound",
-        "source_line": 3233,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 699,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
         "statement": "theorem controlled_moment_bound (policy : TwoStepPolicy) (noise : ℝ≥0) (hNoise : 0 < noise) :\n    (∫ state, (allOnesProjection state) ^ 2 ∂controlFirstLaw policy) ≤ controlledBound ∧\n    (∫ state, (allOnesProjection state) ^ 2 ∂controlSecondLaw policy noise hNoise) ≤ controlledBound ∧\n    (∫ state, ‖state‖ ^ 2 ∂controlFirstLaw policy) ≤ controlledBound + 2 / 3 ∧\n    (∫ state, ‖state‖ ^ 2 ∂controlSecondLaw policy noise hNoise) ≤ controlledBound + 2 / 3",
         "statement_sha256": "e1f4b3c64b852089226cf996aeadeb519eb01aaffb0a2727e2874acba03e7ab9"
       },
@@ -164528,6 +164757,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -164548,8 +164781,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.controlled_native_cost",
-        "source_line": 4358,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 166,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem controlled_native_cost (policy : TwoStepPolicy) (noise : ℝ≥0) (hNoise : 0 < noise) :\n    (∫ state, (allOnesProjection state) ^ 2 ∂controlSecondLaw policy noise hNoise) =\n      policyRisk noise hNoise policy",
         "statement_sha256": "ff0cc91fbcf0c1a9e5a6e48c0b17dc2006d11772b9f84bd620dd1a071df5f7ab"
       },
@@ -164636,7 +164869,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.efe_native_information",
         "source_line": 2342,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem efe_native_information (belief : ScalarGaussianBelief) (action : Bool)\n    (noise : ℝ≥0) (hNoise : 0 < noise) :\n    terminalInformation belief action noise hNoise =\n      ENNReal.ofReal ((1 / 2 : ℝ) * Real.log (1 + terminalVariance belief / noise))",
         "statement_sha256": "a724a74fc5adec547d450c8b7c79d1555c6c54ff273f1a958ccd770e9eaca64e"
       },
@@ -164732,7 +164965,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.efe_risk_alignment",
         "source_line": 2412,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem efe_risk_alignment (belief : ScalarGaussianBelief) (left right : Bool)\n    (noise : ℝ≥0) (hNoise : 0 < noise) :\n    expectedFreeEnergy 0 belief left noise hNoise -\n        expectedFreeEnergy 0 belief right noise hNoise =\n      quadraticActionRisk controlModel belief left - quadraticActionRisk controlModel belief right",
         "statement_sha256": "b28ad686b3c9869bf08b9ec336848a9f9f836b2162291c46b47af585b84879b5"
       },
@@ -164814,7 +165047,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.efe_risk_ordering",
         "source_line": 2423,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem efe_risk_ordering (belief : ScalarGaussianBelief) (left right : Bool)\n    (noise : ℝ≥0) (hNoise : 0 < noise) :\n    (expectedFreeEnergy 0 belief left noise hNoise ≤ expectedFreeEnergy 0 belief right noise hNoise ↔\n      quadraticActionRisk controlModel belief left ≤ quadraticActionRisk controlModel belief right) ∧\n    (expectedFreeEnergy 0 belief left noise hNoise = expectedFreeEnergy 0 belief right noise hNoise ↔\n      quadraticActionRisk controlModel belief left = quadraticActionRisk controlModel belief right)",
         "statement_sha256": "ac82adc0cfbedd671d1749577fc86b9b9832c9c1f621d4947561f41bf0c27cff"
       },
@@ -164905,7 +165138,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.expectedFreeEnergy_closedForm",
         "source_line": 2390,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem expectedFreeEnergy_closedForm (preference : ℝ) (belief : ScalarGaussianBelief)\n    (action : Bool) (noise : ℝ≥0) (hNoise : 0 < noise) :\n    expectedFreeEnergy preference belief action noise hNoise =\n      terminalVariance belief +\n        (controlledMean controlModel belief action - preference) ^ 2 +\n        (1 / 2 : ℝ) * Real.log Real.pi -\n        (1 / 2 : ℝ) * Real.log (1 + terminalVariance belief / noise)",
         "statement_sha256": "68bcbbde9d52fc333e2817eee104caf42070ea98a2d44cd2f5b7be64694b9031"
       },
@@ -164961,6 +165194,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -164981,8 +165218,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.feedback_false_attainment",
-        "source_line": 4849,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 657,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem feedback_false_attainment (noise : ℝ≥0) (hNoise : 0 < noise) (policy : TwoStepPolicy) :\n    policyRisk noise hNoise (feedbackPolicy false noise hNoise) ≤ policyRisk noise hNoise policy",
         "statement_sha256": "bab27ae10a1bbbc61e6055d530c14bd92661d73441805cf33b7e6c1c809d047e"
       },
@@ -165015,6 +165252,10 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -165035,8 +165276,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.feedback_first_risk_symmetry",
-        "source_line": 4816,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 624,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem feedback_first_risk_symmetry (noise : ℝ≥0) (hNoise : 0 < noise) :\n    policyRisk noise hNoise (feedbackPolicy false noise hNoise) =\n      policyRisk noise hNoise (feedbackPolicy true noise hNoise)",
         "statement_sha256": "593c85770c008e78b9fd37a4d7b1b60de775acb9dd178555ff0cc3173d4ab5ee"
       },
@@ -165055,6 +165296,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -165075,8 +165318,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_kl",
-        "source_line": 4116,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 1582,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
         "statement": "theorem finite_grid_kl :\n    klDiv (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid) =\n      ENNReal.ofReal (2 * (1 - controlDecay ^ 2))",
         "statement_sha256": "f9166047f3f595714c5e9f4a5710e3122bfdc87c0103278f09b5373e74e142fe"
       },
@@ -165101,6 +165344,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -165121,8 +165368,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_kl_mahalanobis",
-        "source_line": 4581,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 389,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem finite_grid_kl_mahalanobis :\n    klDiv (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid) =\n      ENNReal.ofReal ((1 / 2 : ℝ) *\n        ((informationMean - fun index => informationMean (2 - index)) ⬝ᵥ\n          (informationCovariance⁻¹ *ᵥ (informationMean - fun index => informationMean (2 - index)))))",
         "statement_sha256": "43eb287e6c3b41be430d9ec91e18c29efe0258cf5cf961d18b2c6da8d3792169"
       },
@@ -165141,6 +165388,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -165161,8 +165410,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_kl_positive",
-        "source_line": 4136,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 1602,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
         "statement": "theorem finite_grid_kl_positive :\n    0 < klDiv (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid)",
         "statement_sha256": "0adb3abfa02f7da3262e179550ea48150da5d07935bedb706819520c7455ae60"
       },
@@ -165187,6 +165436,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -165207,8 +165460,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_mutual_support",
-        "source_line": 4659,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 467,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem finite_grid_mutual_support :\n    (studyProjectedLaw informationGrid ≪ studyReverseLaw informationGrid ∧\n      Integrable (llr (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid))\n        (studyProjectedLaw informationGrid)) ∧\n    (studyReverseLaw informationGrid ≪ studyProjectedLaw informationGrid ∧\n      Integrable (llr (studyReverseLaw informationGrid) (studyProjectedLaw informationGrid))\n        (studyReverseLaw informationGrid))",
         "statement_sha256": "5763bdc790633e1dff25bc7f59b76b07efeaf62dc3771847c8ed54d0278b8e9b"
       },
@@ -165227,6 +165480,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -165247,8 +165504,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_reverse_kl",
-        "source_line": 4644,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 452,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem finite_grid_reverse_kl :\n    klDiv (studyReverseLaw informationGrid) (studyProjectedLaw informationGrid) =\n      ENNReal.ofReal (2 * (1 - controlDecay ^ 2))",
         "statement_sha256": "dbf31f1f8581f74121ead297070ba3bd290ae8eb11a597d97234a531f411fa17"
       },
@@ -165267,6 +165524,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -165287,8 +165546,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_grid_support",
-        "source_line": 4143,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 1609,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
         "statement": "theorem finite_grid_support :\n    studyProjectedLaw informationGrid ≪ studyReverseLaw informationGrid ∧\n      Integrable (llr (studyProjectedLaw informationGrid) (studyReverseLaw informationGrid))\n        (studyProjectedLaw informationGrid)",
         "statement_sha256": "ec786a5031e36cadaf7fb65a85b3fb3c2d31782d36427a09bb6ded6be9304a10"
       },
@@ -165366,7 +165625,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_likelihood_conjugacy",
         "source_line": 769,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem finite_likelihood_conjugacy (n : ℕ) (center noise : ℝ) (hNoise : 0 < noise) :\n    (batchSourceLaw n center noise).map (fun state => (batchObservations state, state 0)) =\n      ((batchSourceLaw n center noise).map batchObservations) ⊗ₘ\n        batchPosteriorKernel n center noise",
         "statement_sha256": "ee6129124b004462922bab8093cbb0b1f1eba55ef9d06d89e5b25045caa4192e"
       },
@@ -165444,7 +165703,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.finite_native_posterior",
         "source_line": 789,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem finite_native_posterior (n : ℕ) (center noise : ℝ) (hNoise : 0 < noise) :\n    condDistrib (fun state : BatchState n => state 0) batchObservations\n        (batchSourceLaw n center noise) =ᵐ[(batchSourceLaw n center noise).map batchObservations]\n      batchPosteriorKernel n center noise",
         "statement_sha256": "e5465d3e4346bb04fb4110ad1e22d480fb04db67ded1804ffb19f26388f8cc90"
       },
@@ -165528,7 +165787,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.fullPathObservationKernel_native_row",
         "source_line": 2249,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem fullPathObservationKernel_native_row (n : ℕ) (index : Iic n)\n    (noise : ℝ≥0) (hNoise : 0 < noise) (path : FullGridPath n) :\n    fullPathObservationKernel n index noise hNoise path =\n      gaussianReal (allOnesProjection (path index)) noise",
         "statement_sha256": "9aaecee1f47fad225737f95add0bf3ab89f95870a6bf6e92c90c1f45740046f7"
       },
@@ -165617,7 +165876,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.full_native_path_projection",
         "source_line": 2189,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem full_native_path_projection (center : ℝ) (grid : TimeGrid)\n    (initial : Measure StandardizedState) [IsProbabilityMeasure initial] (n : ℕ) :\n    (fullNativeGridLaw center grid initial n).map (projectFullPath n) =\n      scalarNativeGridLaw center grid (initial.map allOnesProjection) n",
         "statement_sha256": "d95103858e415db133b73e53c127a04a5ad284be5b9855917e2a81649e67c50b"
       },
@@ -165670,7 +165929,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.gaussianSigma_scalar_marginal",
         "source_line": 805,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem gaussianSigma_scalar_marginal (mean : StandardizedState) :\n    (multivariateGaussian mean FEP.Fin4GaussianSemigroup.Sigma).map allOnesProjection =\n      gaussianReal (allOnesProjection mean) (1 / 2)",
         "statement_sha256": "978d11b3b1b2ee75b27c1bafb6ec685315ae67d32487c60efacc2d2794989383"
       },
@@ -165712,7 +165971,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.hiddenContrast_native_binding",
         "source_line": 839,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem hiddenContrast_native_binding :\n    hiddenContrast = (Real.sqrt 2)⁻¹ • WithLp.toLp 2 eigenmodeFourExternal ∧\n      K *ᵥ hiddenContrast = 4 • hiddenContrast",
         "statement_sha256": "9640c3144624bd816e1434ffe2313482887c5b91e6632827b1b66f471aec6580"
       },
@@ -165752,7 +166011,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.hiddenContrast_ne_zero",
         "source_line": 860,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem hiddenContrast_ne_zero : hiddenContrast ≠ 0",
         "statement_sha256": "dd88e26f8d3c58287d3d63101483f6607b6944e4b035e1b84bd872eb44c06081"
       },
@@ -165785,7 +166044,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.hiddenContrast_norm",
         "source_line": 848,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem hiddenContrast_norm : ‖hiddenContrast‖ = 1",
         "statement_sha256": "e6bc885579322b42e19cf1bdf0775d46c2b9919796cea60a64222f41344ce731"
       },
@@ -165818,7 +166077,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.hiddenContrast_projection",
         "source_line": 866,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem hiddenContrast_projection : allOnesProjection hiddenContrast = 0",
         "statement_sha256": "fa8646eabd4921237b5067b36ed5d8f4d8a0028fd4f729440ad3894f57159204"
       },
@@ -165893,7 +166152,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.hiddenInitialLaw_projection",
         "source_line": 884,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem hiddenInitialLaw_projection (center : ℝ) (shiftHidden : Bool) :\n    (hiddenInitialLaw center shiftHidden).map allOnesProjection =\n      gaussianReal center (1 / 2)",
         "statement_sha256": "8e2a53751e74e79c2cc0b0572ba420b5078deb89e4c173992f00aa0b8d4a8dd8"
       },
@@ -165960,7 +166219,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.hidden_mode_marginal_nonidentifiability",
         "source_line": 909,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem hidden_mode_marginal_nonidentifiability (center : ℝ) (time : ℝ≥0) :\n    hiddenInitialLaw center false ≠ hiddenInitialLaw center true ∧\n    (transition (allOnesEmbedding center) time ∘ₘ hiddenInitialLaw center false).map\n        allOnesProjection =\n      (transition (allOnesEmbedding center) time ∘ₘ hiddenInitialLaw center true).map\n        allOnesProjection",
         "statement_sha256": "730f2bee8d37d40375e3745bba7f9fa7bbf897f309e8a2d5b83c084b8beff72e"
       },
@@ -166063,7 +166322,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.hidden_mode_nonidentifiability",
         "source_line": 2271,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem hidden_mode_nonidentifiability (grid : TimeGrid) (n : ℕ) (index : Iic n)\n    (noise : ℝ≥0) (hNoise : 0 < noise) :\n    hiddenInitialLaw 0 false ≠ hiddenInitialLaw 0 true ∧\n    (fullNativeGridLaw 0 grid (hiddenInitialLaw 0 false) n).map (projectFullPath n) =\n      (fullNativeGridLaw 0 grid (hiddenInitialLaw 0 true) n).map (projectFullPath n) ∧\n    ((fullNativeGridLaw 0 grid (hiddenInitialLaw 0 false) n) ⊗ₘ\n        fullPathObservationKernel n index noise hNoise).map (Prod.map (projectFullPath n) id) =\n      ((fullNativeGridLaw 0 grid (hiddenInitialLaw 0 true) n) ⊗ₘ\n        fullPathObservationKernel n index noise hNoise).map (Prod.map (projectFullPath n) id)",
         "statement_sha256": "6376dfcd750939697490ca67e76dd6aadb7e66c122dda693d9e403ed22b17b16"
       },
@@ -166075,6 +166334,10 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166095,8 +166358,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.informationCovariance_inverse",
-        "source_line": 4569,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 377,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem informationCovariance_inverse : informationCovariance⁻¹ = informationInverse",
         "statement_sha256": "3c722af729b31efc2f9da864705d0b6ff8bd2acebd792b4ba35346aa4959dabb"
       },
@@ -166108,6 +166371,10 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166128,8 +166395,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.informationCovariance_posDef",
-        "source_line": 4519,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 327,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem informationCovariance_posDef : informationCovariance.PosDef",
         "statement_sha256": "ab208d74b323fd799551ffaed61343e2968257bf427be870538756a322bc629e"
       },
@@ -166153,6 +166420,10 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166173,8 +166444,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.informationCovariance_time_entries",
-        "source_line": 4729,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 537,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem informationCovariance_time_entries (left right : Fin 3) :\n    informationCovariance left right = (1 / 2 : ℝ) *\n      Real.exp (-2 * |(informationGrid.time left.val : ℝ) - (informationGrid.time right.val : ℝ)|)",
         "statement_sha256": "cde423e2356ae119edbbe790d4e180270ed6ddcba1c6051bc2be8d47b4bc4919"
       },
@@ -166197,6 +166468,10 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166217,8 +166492,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.informationMean_time_entries",
-        "source_line": 4720,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 528,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem informationMean_time_entries (index : Fin 3) :\n    informationMean index = Real.exp (-2 * (informationGrid.time index.val : ℝ))",
         "statement_sha256": "e0cae0d599b4cac57b38be2df3eeb4a67afb7ffb235095a868b5460a5966c223"
       },
@@ -166250,6 +166525,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166270,8 +166549,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_full_marginal_projection",
-        "source_line": 4680,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 488,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_full_marginal_projection (time : ℝ≥0) :\n    (informationFullMarginal time).map allOnesProjection =\n      gaussianReal (Real.exp (-2 * (time : ℝ))) (1 / 2)",
         "statement_sha256": "749c5de4eb16d5e76cd8bb4c38c677a482e4e2465da3e12f0b64c4dd40d3bf48"
       },
@@ -166301,6 +166580,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166321,8 +166604,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_marginal_kl",
-        "source_line": 4596,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 404,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_marginal_kl (index : Fin 3) :\n    klDiv ((studyProjectedLaw informationGrid).map (informationCoordinate index))\n      (gaussianReal 0 (1 / 2)) = ENNReal.ofReal ((informationMean index) ^ 2)",
         "statement_sha256": "25e76f266ddf91f51b66eb3feebde058b972c9fabdb678de04216f5c98171469"
       },
@@ -166352,6 +166635,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166372,8 +166659,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_marginal_kl_at_time",
-        "source_line": 4740,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 548,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_marginal_kl_at_time (index : Fin 3) :\n    klDiv ((studyProjectedLaw informationGrid).map (informationCoordinate index))\n      (gaussianReal 0 (1 / 2)) =\n        ENNReal.ofReal (Real.exp (-4 * (informationGrid.time index.val : ℝ)))",
         "statement_sha256": "a86cdfd8615d853a74b40b8ab8db619727d661cfc281dae24726be8afe979427"
       },
@@ -166392,6 +166679,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166412,8 +166703,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_marginal_kl_values",
-        "source_line": 4606,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 414,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_marginal_kl_values :\n    (∀ index : Fin 3, klDiv ((studyProjectedLaw informationGrid).map (informationCoordinate index))\n      (gaussianReal 0 (1 / 2)) =\n        ENNReal.ofReal (![1, Real.exp (-1), Real.exp (-2)] index))",
         "statement_sha256": "b4e47b7150d7675a4afcb0b4c33cd1044ed35d2f2bb4d2ea6434c6a1fd8db5fa"
       },
@@ -166425,6 +166716,10 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166445,8 +166740,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_mean_asymmetry",
-        "source_line": 4573,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 381,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_mean_asymmetry : informationMean ≠ fun index => informationMean (2 - index)",
         "statement_sha256": "a05a65b7658bd9839de8d84bd9e3c5faddabdd015947eeab51ed08f5d20d0396"
       },
@@ -166477,6 +166772,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166497,8 +166796,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_covariance",
-        "source_line": 4506,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 314,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_native_covariance (left right : Fin 3) :\n    cov[informationCoordinate left, informationCoordinate right;\n      studyProjectedLaw informationGrid] = informationCovariance left right",
         "statement_sha256": "de67b9389b4602655ad0dbf8d3c7833462632d693705fc9b28d7a724f8e9f4d9"
       },
@@ -166528,6 +166827,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166548,8 +166851,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_lyapunov",
-        "source_line": 4707,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 515,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_native_lyapunov (time : ℝ≥0) :\n    klDiv ((informationFullMarginal time).map allOnesProjection) (gaussianReal 0 (1 / 2)) =\n      ENNReal.ofReal (Real.exp (-4 * (time : ℝ)))",
         "statement_sha256": "0dc5dc6a966ba9bf5be357e21f4f40ae97e6cc3f6588587957c689acd774833b"
       },
@@ -166579,6 +166882,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166599,8 +166906,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_marginal",
-        "source_line": 4482,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 290,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_native_marginal (index : Fin 3) :\n    (studyProjectedLaw informationGrid).map (informationCoordinate index) =\n      gaussianReal (informationMean index) (1 / 2)",
         "statement_sha256": "ef67c388c8b2044d76fe2814c7706ace63437709f8dca16e1b79e8eb47b9ce36"
       },
@@ -166630,6 +166937,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -166650,8 +166961,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_mean",
-        "source_line": 4494,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 302,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem information_native_mean (index : Fin 3) :\n    (∫ path, informationCoordinate index path ∂studyProjectedLaw informationGrid) =\n      informationMean index",
         "statement_sha256": "b728e418b9ff0eb684e5791296fd785f5a570cc35a719bc06c63d4b305e0d205"
       },
@@ -166714,7 +167025,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.information_native_mutualInformation",
         "source_line": 1543,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem information_native_mutualInformation\n    (model : ScalarGaussianFilterModel) (belief : ScalarGaussianBelief) :\n    klDiv (informationJoint model belief)\n        ((informationJoint model belief).fst.prod (informationJoint model belief).snd) =\n      ENNReal.ofReal ((1 / 2 : ℝ) * Real.log\n        (1 + ((predictionBelief model belief).family.variance : ℝ) /\n          (model.observationNoise.variance : ℝ)))",
         "statement_sha256": "ea5418833ea1f815b08abbd5b2ccdf8dabda59ed461d1cf23f819edd78ffa48c"
       },
@@ -166769,7 +167080,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.measurable_batchError",
         "source_line": 481,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem measurable_batchError (n : ℕ) (center noise : ℝ) :\n    Measurable (batchError (n := n) center noise)",
         "statement_sha256": "cc5a49c82ff65b2143c3685c3839a0e7f71504bb6a8da393647ef5c64f7f784b"
       },
@@ -166813,7 +167124,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.measurable_batchObservations",
         "source_line": 455,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem measurable_batchObservations (n : ℕ) :\n    Measurable (batchObservations (n := n))",
         "statement_sha256": "349eaf46b2adf18ba9042ee23cef3c95af660e76635b7550fc05ae7d01501d1d"
       },
@@ -166857,7 +167168,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.measurable_clampActive",
         "source_line": 281,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem measurable_clampActive (value : ℝ) :\n    Measurable (clampActive value)",
         "statement_sha256": "404c32672285bfaf09f56e0596d749df57e177020e087d1e886ecd1484e8a292"
       },
@@ -166921,7 +167232,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.measurable_optimalSecond",
         "source_line": 1059,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem measurable_optimalSecond (first : Bool) (noise : ℝ≥0) (hNoise : 0 < noise) :\n    Measurable (optimalSecond first noise hNoise)",
         "statement_sha256": "df6a1e8ab70b8db2dbd53781fe98fc427ae901013b00c31e8f701d9322878e6b"
       },
@@ -166965,7 +167276,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.measurable_projectFullPath",
         "source_line": 2094,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem measurable_projectFullPath (n : ℕ) : Measurable (projectFullPath n)",
         "statement_sha256": "ed58d01a5e221a5c2b505b0a6b0a9fa3922fed453fc67e425f507932ce5d615f"
       },
@@ -166998,7 +167309,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.measurable_scalarCoordinate",
         "source_line": 55,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem measurable_scalarCoordinate : Measurable scalarCoordinate",
         "statement_sha256": "da65aa3a0a6129de82335a3fcc8f7e35de75d7989fe55965a74f6d726b854542"
       },
@@ -167061,7 +167372,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.native_blanket",
         "source_line": 242,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem native_blanket (center : FEP.H3ReferenceModel.StandardState) :\n    FEP.H3ReferenceModel.K .external .internal = 0 ∧\n    cov[fun state : FEP.H3ReferenceModel.NativeState => state .external,\n      fun state => state .internal;\n      FEP.Fin4GaussianSemigroup.stationaryLaw (FEP.H3ReferenceModel.toNativeState center)] =\n        1 / 24 ∧\n    ((fun state : FEP.H3ReferenceModel.NativeState => state .external) ⟂ᵢ[\n      FEP.GaussianPrecisionConditioning.blanketCoordinates,\n      FEP.GaussianPrecisionConditioning.measurable_blanketCoordinates;\n      FEP.Fin4GaussianSemigroup.stationaryLaw (FEP.H3ReferenceModel.toNativeState center)]\n      (fun state => state .internal))",
         "statement_sha256": "1507027bd5c75201033b66f37c929d11d3c465deeefa947ef22d717e05f16991"
       },
@@ -167135,7 +167446,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.native_posterior",
         "source_line": 337,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem native_posterior (center : ℝ) (duration noise : ℝ≥0) (hNoise : 0 < noise) :\n    closedFormPosteriorKernel (observationFilter center duration noise hNoise) (prior center)\n      =ᵐ[evidenceLaw (observationFilter center duration noise hNoise) (prior center)]\n      ProbabilityTheory.posterior\n        (observationKernel (observationFilter center duration noise hNoise))\n        (predictionBelief (observationFilter center duration noise hNoise) (prior center)).law",
         "statement_sha256": "15df5d2b164fa85c9e3cec5e8863ee51697e29747cd666547f4bd0791f05450b"
       },
@@ -167193,7 +167504,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.native_recognition",
         "source_line": 259,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem native_recognition (center state : FEP.H3ReferenceModel.StandardState) :\n    FEP.H3ReferenceModel.recognitionMean center state =\n      FEP.GaussianPrecisionConditioning.externalConditionalMean\n        (FEP.H3ReferenceModel.toNativeState center)\n        (FEP.GaussianPrecisionConditioning.blanketCoordinates\n          (FEP.H3ReferenceModel.toNativeState state)) ∧\n    condDistrib (fun next : FEP.H3ReferenceModel.NativeState => next .external)\n        FEP.GaussianPrecisionConditioning.blanketCoordinates\n        (FEP.Fin4GaussianSemigroup.stationaryLaw (FEP.H3ReferenceModel.toNativeState center))\n      =ᵐ[FEP.GaussianPrecisionConditioning.blanketLaw\n        (FEP.H3ReferenceModel.toNativeState center)]\n      FEP.GaussianPrecisionConditioning.externalConditionalKernel\n        (FEP.H3ReferenceModel.toNativeState center)",
         "statement_sha256": "6343e631b651da9ceedddfefe2194ac98a76fb389b54bf15fc94fecdbd0299b9"
       },
@@ -167205,6 +167516,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -167225,8 +167538,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.nonstationary_native_grid",
-        "source_line": 4102,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 1568,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
         "statement": "theorem nonstationary_native_grid :\n    (studyProjectedLaw informationGrid).map informationPath2Equiv =\n      gaussianARTripleLaw 1 (1 / 2) controlDecay frozenPathNoise",
         "statement_sha256": "f279fe151f6758fdbc6a14ed038f46f287b2066d95e64d77209c3ffa069b69e7"
       },
@@ -167306,7 +167619,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.openLoopRisk_closedForm",
         "source_line": 2506,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem openLoopRisk_closedForm (noise : ℝ≥0) (hNoise : 0 < noise)\n    (first second : Bool) :\n    policyRisk noise hNoise (openLoopPolicy first second) =\n      (1 / 2 : ℝ) +\n        ((1 - controlDecay) * (controlDecay * actionCenter first + actionCenter second)) ^ 2",
         "statement_sha256": "5e17dea842cbe934a826613947e9356feac28d013ff1109f1e35f64e8755e587"
       },
@@ -167346,6 +167659,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -167366,8 +167683,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.optimalPolicy_eq_feedback_false",
-        "source_line": 4836,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 644,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem optimalPolicy_eq_feedback_false (noise : ℝ≥0) (hNoise : 0 < noise) :\n    optimalPolicy noise hNoise = feedbackPolicy false noise hNoise",
         "statement_sha256": "04b162f5477107c9318b11c207b0c47a6aae3acd10f44f2edf5290dfddd1b414"
       },
@@ -167407,6 +167724,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -167427,8 +167748,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.optimalPolicy_first_false",
-        "source_line": 4842,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 650,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem optimalPolicy_first_false (noise : ℝ≥0) (hNoise : 0 < noise) :\n    (optimalPolicy noise hNoise).first = false",
         "statement_sha256": "4945dc6971e5c439f77f426e68e200deec39e503b9c3fc7d8c73042d8bb9247f"
       },
@@ -167503,7 +167824,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.optimalSecond_le",
         "source_line": 1065,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem optimalSecond_le (first second : Bool) (noise : ℝ≥0) (hNoise : 0 < noise)\n    (observation : ℝ) :\n    secondRisk first noise hNoise observation (optimalSecond first noise hNoise observation) ≤\n      secondRisk first noise hNoise observation second",
         "statement_sha256": "5c37c60f2331c4bdddd4dd82803248181efdab2c53ab9a5f59c7e83db345acf8"
       },
@@ -167569,6 +167890,10 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
+          "FepSketches.compositions.h3_case_study_path_information",
+          "all FepSketches.compositions.h3_case_study_path_information",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -167589,8 +167914,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.optimalSecond_threshold",
-        "source_line": 4748,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 556,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_cost_feedback.lean",
         "statement": "theorem optimalSecond_threshold (first : Bool) (noise : ℝ≥0) (hNoise : 0 < noise)\n    (observation : ℝ) :\n    optimalSecond first noise hNoise observation =\n      if 0 ≤ controlPosteriorMean first noise observation then false else true",
         "statement_sha256": "4866bde400f7f3a5ccda70e8ef3fee709b35aa3b89230e664647b08670db2b64"
       },
@@ -167663,7 +167988,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.policyRisk_eq_nativePosterior",
         "source_line": 2465,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem policyRisk_eq_nativePosterior (noise : ℝ≥0) (hNoise : 0 < noise) (policy : TwoStepPolicy) :\n    policyRisk noise hNoise policy =\n      ∫ observation, nativePosteriorQuadraticRisk controlModel\n        (firstFilter policy.first noise hNoise) (prior 0) observation (policy.second observation)\n        ∂evidenceLaw (firstFilter policy.first noise hNoise) (prior 0)",
         "statement_sha256": "2fc81539c0ee186e02fd10496639e939cf9ecb8ec949df327aa56152eb6a64ec"
       },
@@ -167734,7 +168059,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.policy_attainment",
         "source_line": 1147,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem policy_attainment (noise : ℝ≥0) (hNoise : 0 < noise) (policy : TwoStepPolicy) :\n    policyRisk noise hNoise (optimalPolicy noise hNoise) ≤ policyRisk noise hNoise policy",
         "statement_sha256": "d1f6edf8230314074d9ec55773d41898a29a361d335d04f9ca7e3bbf5427d086"
       },
@@ -167806,7 +168131,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.policy_containment",
         "source_line": 1167,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem policy_containment (noise : ℝ≥0) (hNoise : 0 < noise) (first second : Bool) :\n    policyRisk noise hNoise (optimalPolicy noise hNoise) ≤\n      policyRisk noise hNoise (openLoopPolicy first second)",
         "statement_sha256": "fb255ab06c3d919a74db6ead7d1816172d441ef16a56fde6b9142e20f9c775de"
       },
@@ -167888,7 +168213,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.posterior_parameters",
         "source_line": 401,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem posterior_parameters (center : ℝ) (duration noise : ℝ≥0) (hNoise : 0 < noise)\n    (observation : ℝ) :\n    gain (observationFilter center duration noise hNoise) (prior center) =\n        (1 / 2 : ℝ) / (1 / 2 + noise) ∧\n    posteriorMean (observationFilter center duration noise hNoise) (prior center) observation =\n        center + ((1 / 2 : ℝ) / (1 / 2 + noise)) * (observation - center) ∧\n    (posteriorVariance (observationFilter center duration noise hNoise) (prior center) : ℝ) =\n        ((1 / 2 : ℝ) * noise) / (1 / 2 + noise)",
         "statement_sha256": "086cf89320e9e7b4176e46fcf121edf4b3319e4e5da494993526872dc21b353a"
       },
@@ -167966,7 +168291,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.prediction_stationary",
         "source_line": 378,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem prediction_stationary (center : ℝ) (duration noise : ℝ≥0) (hNoise : 0 < noise) :\n    predictionBelief (observationFilter center duration noise hNoise) (prior center) =\n      prior center",
         "statement_sha256": "a0f4410f3896a045c84f7792437678a1cfe54f1d1917489170a77666f114192b"
       },
@@ -168053,7 +168378,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.preference_counterexample",
         "source_line": 2443,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem preference_counterexample (noise : ℝ≥0) (hNoise : 0 < noise) :\n    quadraticActionRisk controlModel (preferenceCounterBelief noise hNoise) false <\n      quadraticActionRisk controlModel (preferenceCounterBelief noise hNoise) true ∧\n    expectedFreeEnergy 1 (preferenceCounterBelief noise hNoise) true noise hNoise <\n      expectedFreeEnergy 1 (preferenceCounterBelief noise hNoise) false noise hNoise",
         "statement_sha256": "65c2aa64c6153de15ab5e259dec01b592c4f0bf8cfb5d0fd316a8f7481a5e014"
       },
@@ -168120,7 +168445,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.restricted_class_counterexample",
         "source_line": 2544,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem restricted_class_counterexample (noise : ℝ≥0) (hNoise : 0 < noise) :\n    policyRisk noise hNoise (openLoopPolicy true true) =\n      (1 / 2 : ℝ) + (1 - controlDecay ^ 2) ^ 2 ∧\n    policyRisk noise hNoise (openLoopPolicy false true) =\n      (1 / 2 : ℝ) + (1 - controlDecay) ^ 4 ∧\n    policyRisk noise hNoise (openLoopPolicy false true) <\n      policyRisk noise hNoise (openLoopPolicy true true)",
         "statement_sha256": "f8795373df50864404af4db693e7bb878410c9b7a3de1879f2c7a045918869a9"
       },
@@ -168174,7 +168499,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.scalar_mean_identifiability",
         "source_line": 372,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem scalar_mean_identifiability (noise : ℝ≥0) (hNoise : 0 < noise) :\n    Function.Injective (fun mean : ℝ => gaussianReal mean noise)",
         "statement_sha256": "47a12e49e7c2161496d2ebda49dc1d256892af8d3cf84c6bba688b2e7e7a7d26"
       },
@@ -168258,7 +168583,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.secondRisk_closedForm",
         "source_line": 1022,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem secondRisk_closedForm (first second : Bool) (noise : ℝ≥0) (hNoise : 0 < noise)\n    (observation : ℝ) :\n    secondRisk first noise hNoise observation second =\n      controlDecay ^ 2 * (controlPosteriorVariance noise : ℝ) +\n        (1 - controlDecay ^ 2) / 2 +\n        (controlDecay * controlPosteriorMean first noise observation +\n          (1 - controlDecay) * actionCenter second) ^ 2",
         "statement_sha256": "04dab56ad0bcf9a1eb6201ad1ecc68db1ae10c8f7a24619c6e4a56a06f5b12da"
       },
@@ -168312,7 +168637,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.sensory_clamped_conditional_covariance",
         "source_line": 2044,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem sensory_clamped_conditional_covariance (center : StandardizedState) (datum : ℝ) :\n    cov[Prod.fst, Prod.snd; sensoryClampedConditionalKernel center (datum, 0)] = 1 / 56",
         "statement_sha256": "fd8f2fa16dd4e0a21a04181580a96da9389164bd8f453df53c54c8c90abb4014"
       },
@@ -168366,7 +168691,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.sensory_clamped_conditional_variances",
         "source_line": 2050,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem sensory_clamped_conditional_variances (center : StandardizedState) (datum : ℝ) :\n    Var[Prod.fst; sensoryClampedConditionalKernel center (datum, 0)] = 15 / 56 ∧\n    Var[Prod.snd; sensoryClampedConditionalKernel center (datum, 0)] = 15 / 56",
         "statement_sha256": "6389177ff7f66e4f7a04161030077ace94a8669c2b9ea60d0971cb299ef844a1"
       },
@@ -168410,7 +168735,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.sensory_clamped_native_condDistrib",
         "source_line": 2035,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem sensory_clamped_native_condDistrib (center : StandardizedState) :\n    condDistrib sensoryEndpoints sensoryClampedBlanket (sensoryClampedLaw center)\n      =ᵐ[(sensoryClampedLaw center).map sensoryClampedBlanket]\n        sensoryClampedConditionalKernel center",
         "statement_sha256": "1b63d5e9933532df67a0f156efd182d3c1d8220b160b05a4e4dbf4b5cc7bf934"
       },
@@ -168422,6 +168747,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.compositions.h3_case_study_model_control",
+          "all FepSketches.compositions.h3_case_study_model_control",
           "FepSketches.h3_reference_model",
           "FepSketches.markov_blanket",
           "FepSketches.native_blanket",
@@ -168442,8 +168769,8 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.singular_grid_infinite_kl",
-        "source_line": 4183,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_line": 1649,
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_path_information.lean",
         "statement": "theorem singular_grid_infinite_kl :\n    klDiv (studyProjectedLaw repeatedStudyGrid) (studyReverseLaw repeatedStudyGrid) = ∞",
         "statement_sha256": "032dc4768d49f2f32143e1553ed25e27859d32f148f242131a73af293fde8a2c"
       },
@@ -168502,7 +168829,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.terminalVariance_pos",
         "source_line": 2323,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem terminalVariance_pos (belief : ScalarGaussianBelief) : 0 < terminalVariance belief",
         "statement_sha256": "f34ba207ed6566646495c405dbba100caf9bfc2ebfded5beae4a7323dbd31820"
       },
@@ -168599,7 +168926,7 @@
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.H3CaseStudy.vfe_optimum",
         "source_line": 348,
-        "source_owner": "src/fep_lean/formal/compositions/h3_case_study.lean",
+        "source_owner": "src/fep_lean/formal/compositions/h3_case_study_model_control.lean",
         "statement": "theorem vfe_optimum (center : ℝ) (duration noise : ℝ≥0) (hNoise : 0 < noise)\n    (observation recognition : ℝ) :\n    FEPComposed.SmoothReferenceKernel.evidenceSurprisal\n        (observationFilter center duration noise hNoise) (prior center) observation ≤\n      FEPComposed.SmoothReferenceKernel.gaussianVariationalFreeEnergy\n        (observationFilter center duration noise hNoise) (prior center) observation recognition ∧\n    (FEPComposed.SmoothReferenceKernel.gaussianVariationalFreeEnergy\n        (observationFilter center duration noise hNoise) (prior center) observation recognition =\n      FEPComposed.SmoothReferenceKernel.evidenceSurprisal\n        (observationFilter center duration noise hNoise) (prior center) observation ↔\n      recognition = posteriorMean\n        (observationFilter center duration noise hNoise) (prior center) observation)",
         "statement_sha256": "9d6db69422c2c05c7278719b6e31f2b3740d476f5c9c3a5d8871dfa32eba724c"
       },
@@ -171088,7 +171415,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep004_fep038_metric_nonneg",
-        "source_line": 583,
+        "source_line": 584,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep004_fep038_metric_nonneg {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)\n    (v : ℝ) : 0 ≤ fep_fep038.FEP038.fep038_fisherMetric p v v",
         "statement_sha256": "a4e4cb76e21bc8efac6b26a23f8b74282a61f974231e33afde3de5828eab2690"
@@ -171290,7 +171617,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep011_fep026_complexity_nonneg",
-        "source_line": 594,
+        "source_line": 595,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep011_fep026_complexity_nonneg {p : ℝ} (hp : 0 < p) (hp1 : p ≤ 1) :\n    0 ≤ fep_fep026.FEP026.fep026_priorComplexity p",
         "statement_sha256": "567d5d54d79aae7adb224abb3bca31c956dd5de2dc0900111be6590849be92dc"
@@ -171537,7 +171864,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_finite_equilibrium_derivative",
-        "source_line": 683,
+        "source_line": 684,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_finite_equilibrium_derivative (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) :\n    HasDerivAt (helmholtzFreeEnergy E) (-entropy (helmholtzGibbsLaw E T)) T",
         "statement_sha256": "af11a8cea7046caa2eb7e49fc88feba50cb57082a9ff66787f700fd797bb413f"
@@ -171664,7 +171991,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_finite_helmholtz_decomposition",
-        "source_line": 665,
+        "source_line": 666,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_finite_helmholtz_decomposition (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) (q : FiniteLaw α) :\n    fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q) =\n      helmholtzFreeEnergy E T + T * finiteKL q (helmholtzGibbsLaw E T)",
         "statement_sha256": "0dddc3f7da883441b4b4d5b043ae84277564b58a1f3c5f649b28cdbc4e4393d8"
@@ -171789,7 +172116,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_finite_helmholtz_unique_minimum",
-        "source_line": 672,
+        "source_line": 673,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_finite_helmholtz_unique_minimum (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) :\n    (∀ q : FiniteLaw α, helmholtzFreeEnergy E T ≤\n      fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q)) ∧\n    (∀ q : FiniteLaw α,\n      fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q) =\n        helmholtzFreeEnergy E T ↔ q = helmholtzGibbsLaw E T)",
         "statement_sha256": "bf9425eb544d54ddb270fe0b7f9adba5de3c0d77a430b841794701568dc0c91d"
@@ -171970,7 +172297,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_two_level_uniform_strict",
-        "source_line": 689,
+        "source_line": 690,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_two_level_uniform_strict :\n    helmholtzFreeEnergy helmholtzBoolEnergy 1 <\n      fep_fep013.FEP013.fep013_helmholtz\n        (expectation (FiniteLaw.uniform : FiniteLaw Bool) helmholtzBoolEnergy)\n        1 (entropy (FiniteLaw.uniform : FiniteLaw Bool))",
         "statement_sha256": "fdb255f78dacd7b78d878e1c878dd5ad4225d8b4d6a51b809717282eedecbf2f"
@@ -172064,7 +172391,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep016_quadratic_pairs_fep032_descent",
-        "source_line": 703,
+        "source_line": 704,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep016_quadratic_pairs_fep032_descent\n    (prec step center x : ℝ) (hp : 0 ≤ prec)\n    (hstep0 : 0 ≤ step) (hstep2 : step ≤ 2) :\n    0 ≤ prec * (x - center) ^ 2 ∧\n      (fep_fep032.FEP032.fep032_quadraticUpdate step center x - center) ^ 2 ≤\n        (x - center) ^ 2",
         "statement_sha256": "dcbf8fd5ccec1b5c62c1390ec5a8f113ef5eb8e0976b60b169729b26d1b4dc6b"
@@ -172145,7 +172472,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep018_coordinate_derivative_is_fep038",
-        "source_line": 538,
+        "source_line": 539,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep018_coordinate_derivative_is_fep038 {p : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p",
         "statement_sha256": "9e619e4116c5405d06496af930df1a547d93250709a8becd86aa08ac34b274a3"
@@ -172241,7 +172568,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep018_fep038_actual_metric_pullback",
-        "source_line": 563,
+        "source_line": 564,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep018_fep038_actual_metric_pullback {p v w : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p ∧\n    fep_fep038.FEP038.fep038_fisherMetric p v w =\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * v) *\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * w)",
         "statement_sha256": "397c48fcf1fa0c4f2db84551a22f44263eaff0675f115736e2951e6775542995"
@@ -172496,7 +172823,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep022_fep027_predictive_child_marginal",
-        "source_line": 634,
+        "source_line": 635,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep022_fep027_predictive_child_marginal\n    {𝓒 Ω 𝓧 : Type*}\n    [MeasurableSpace 𝓒] [MeasurableSpace Ω] [MeasurableSpace 𝓧]\n    (ν : Measure 𝓒) (posterior : Kernel 𝓒 Ω) (likelihood : Kernel Ω 𝓧)\n    [SFinite ν] [IsSFiniteKernel posterior] [IsSFiniteKernel likelihood] :\n    (fep_fep027.FEP027.fep027_hierarchicalJoint ν\n      (fep_fep022.FEP022.fep022_posteriorPredictive posterior likelihood)).snd =\n        likelihood ∘ₘ (posterior ∘ₘ ν)",
         "statement_sha256": "456b82f6829d3cc9e14353a55cbf127786c8b47eacf185f681dcfe651a6edb99"
@@ -173201,7 +173528,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep030_fep031_binary_maxEntropy",
-        "source_line": 519,
+        "source_line": 520,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep030_fep031_binary_maxEntropy (E : Fin 2 → ℝ) (β : ℝ)\n    (q : FiniteLaw (Fin 2))\n    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :\n    (Real.binEntropy (q 0) ≤ Real.log 2 ∧\n      (Real.binEntropy (q 0) = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)) ∧\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β 2 E Finset.univ i) ∧\n    Real.binEntropy (q 0) ≤ Real.binEntropy (energyGibbsLaw E β 0) ∧\n    (Real.binEntropy (q 0) = Real.binEntropy (energyGibbsLaw E β 0) ↔\n      q = energyGibbsLaw E β)",
         "statement_sha256": "6c19d83daec8fe25733c405362626bb30660924d7b3c1cff08c5009e84737c0b"
@@ -173325,7 +173652,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep030_fep031_finite_maxEntropy",
-        "source_line": 491,
+        "source_line": 492,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep030_fep031_finite_maxEntropy {n : ℕ} [NeZero n]\n    (E : Fin n → ℝ) (β : ℝ) (q : FiniteLaw (Fin n))\n    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i) ∧\n    entropy q ≤ entropy (energyGibbsLaw E β) ∧\n    (entropy q = entropy (energyGibbsLaw E β) ↔ q = energyGibbsLaw E β)",
         "statement_sha256": "a6f98627c558431d5b14b7f8a226957d20eb8e76207830eb65a3e401124b983a"
@@ -173386,7 +173713,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep030_fin2_entropy_eq_binEntropy",
-        "source_line": 501,
+        "source_line": 502,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep030_fin2_entropy_eq_binEntropy (q : FiniteLaw (Fin 2)) :\n    entropy q = Real.binEntropy (q 0)",
         "statement_sha256": "51612a4a0095f08b91cf0d444096f811219d1e64ebd602643f358444d80b63c0"
@@ -173466,7 +173793,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep030_finite_binary_entropy_bound",
-        "source_line": 511,
+        "source_line": 512,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep030_finite_binary_entropy_bound (q : FiniteLaw (Fin 2)) :\n    entropy q ≤ Real.log 2 ∧\n      (entropy q = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)",
         "statement_sha256": "79ba79de68a70a1ac52299a7cf9fb7bbed0bac757bf5d6ada8de20d12cb21edc"
@@ -173565,7 +173892,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep031_energyGibbs_is_topicProbability",
-        "source_line": 483,
+        "source_line": 484,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep031_energyGibbs_is_topicProbability {n : ℕ} [NeZero n]\n    (E : Fin n → ℝ) (β : ℝ) (i : Fin n) :\n    energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i",
         "statement_sha256": "6f804fc9158ac1ef059cc40debd8011bcc276c4967304789916bd3c4c45e46c1"
@@ -173797,7 +174124,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep032_fep043_gradient_iteration_tendsto",
-        "source_line": 600,
+        "source_line": 601,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep032_fep043_gradient_iteration_tendsto\n    (η a center x : ℝ) (h0 : 0 < 2*a*η) (h2 : 2*a*η < 2) :\n    Filter.Tendsto\n      (fun n : ℕ => ((fun y => y-η*fep_fep043.FEP043.fep043_quadraticGradient a center y)^[n]) x)\n      Filter.atTop (nhds center)",
         "statement_sha256": "581c94a314bf9bced62799632ebbdab0d64c5a5de3c2cc49631b3584a36dca15"
@@ -174022,7 +174349,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep034_fep017_filter_joint_reconstruction",
-        "source_line": 651,
+        "source_line": 652,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep034_fep017_filter_joint_reconstruction\n    {Ω 𝓧 : Type*} [MeasurableSpace Ω] [MeasurableSpace 𝓧]\n    [StandardBorelSpace Ω] [Nonempty Ω]\n    (τ : Kernel Ω Ω) (κ : Kernel Ω 𝓧) (μ : Measure Ω)\n    [IsFiniteMeasure μ] [IsFiniteKernel τ] [IsFiniteKernel κ] :\n    (κ ∘ₘ (τ ∘ₘ μ)) ⊗ₘ fep_fep034.FEP034.fep034_filter τ κ μ =\n      ((τ ∘ₘ μ) ⊗ₘ κ).map Prod.swap",
         "statement_sha256": "d70be8c55da52e2d5a9d9f2ea2650d5d2038f689e296328acd043093b542d3b9"
@@ -174689,7 +175016,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep039_fep005_partition_conservation_via_cover",
-        "source_line": 613,
+        "source_line": 614,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep039_fep005_partition_conservation_via_cover\n    (assign : Fin 20 → fep_fep005.FEP005.BlkPart) (stateEnergy : Fin 20 → ℝ) :\n    fep_fep039.FEP039.fep039_global_fe (fep005_blockEnergy assign stateEnergy) =\n      ∑ state : Fin 20, stateEnergy state",
         "statement_sha256": "14ba71983211cac1dc2a49c4c54b66b39d30bb2ec93a52f103affd5847df7f1b"
@@ -175045,8 +175372,8 @@
             "role": "proof_reference"
           },
           {
-            "identifier": "fep_fep050.FEP050.fep050_landauer_work_bound",
-            "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound",
+            "identifier": "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance",
+            "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance",
             "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
@@ -207549,6 +207876,7 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207558,7 +207886,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep050.FEP050.fep050_erasureEntropyLoss_eq",
-        "source_line": 26,
+        "source_line": 27,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
         "statement": "theorem fep050_erasureEntropyLoss_eq (kB : ℝ) :\n    fep050_erasureEntropyLoss kB = kB * Real.log 2",
         "statement_sha256": "8d39b479810cb3643ec99f43cb464276b1865fc025a21c0cf92f0ac9cf2b6540"
@@ -207571,6 +207899,7 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207580,10 +207909,100 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep050.FEP050.fep050_erasure_not_injective",
-        "source_line": 11,
+        "source_line": 12,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
         "statement": "theorem fep050_erasure_not_injective :\n    ¬Function.Injective fep050_erasure",
         "statement_sha256": "d63f2c8edf98ceb3d8518c69ee13ef9723bd377f189f9ed3a3331c114926869c"
+      },
+      "fep_fep050.FEP050.fep050_generalized_landauer_heat_bound": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Path"
+            ],
+            "role": "typed_binder",
+            "source": "{Path : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Path]",
+            "type_source": "Fintype Path",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "model"
+            ],
+            "role": "typed_binder",
+            "source": "(model : FEP.PathThermodynamics.ErasureModel Path)",
+            "type_source": "FEP.PathThermodynamics.ErasureModel Path",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "kB",
+              "T"
+            ],
+            "role": "typed_binder",
+            "source": "{kB T : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hBeta"
+            ],
+            "role": "typed_binder",
+            "source": "(hBeta : model.beta = (kB * T)⁻¹)",
+            "type_source": "model.beta = (kB * T)⁻¹",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hReset"
+            ],
+            "role": "typed_binder",
+            "source": "(hReset : model.IsReset)",
+            "type_source": "model.IsReset",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "kB * T * Real.binEntropy (model.prior true) ≤ model.meanHeat",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "FEP.PathThermodynamics.erasure_landauer_reset",
+            "qualified_name": "FEP.PathThermodynamics.erasure_landauer_reset",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.path_thermodynamics",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "Mathlib.Tactic.Linarith",
+          "Mathlib.Tactic.NormNum"
+        ],
+        "line_coordinate_kind": "canonical_topic_body_literal",
+        "namespace": "fep_fep050.FEP050",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "fep_fep050.FEP050.fep050_generalized_landauer_heat_bound",
+        "source_line": 69,
+        "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
+        "statement": "theorem fep050_generalized_landauer_heat_bound\n    {Path : Type*} [Fintype Path]\n    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {kB T : ℝ} (hBeta : model.beta = (kB * T)⁻¹)\n    (hReset : model.IsReset) :\n    kB * T * Real.binEntropy (model.prior true) ≤ model.meanHeat",
+        "statement_sha256": "4d1871d771f99256f7001fc50cc61920fadb9c413a8f54ddc30ddb50b209a93a"
       },
       "fep_fep050.FEP050.fep050_landauerBound_pos": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -207625,6 +208044,7 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207634,12 +208054,132 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep050.FEP050.fep050_landauerBound_pos",
-        "source_line": 66,
+        "source_line": 107,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
         "statement": "theorem fep050_landauerBound_pos\n    {kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T) :\n    0 < fep050_landauerBound kB T",
         "statement_sha256": "00abd1258736b3629df941b0dc52389b75008dfd6825817656f05f0794ef649b"
       },
       "fep_fep050.FEP050.fep050_landauer_heat_bound": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Path"
+            ],
+            "role": "typed_binder",
+            "source": "{Path : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Path]",
+            "type_source": "Fintype Path",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "model"
+            ],
+            "role": "typed_binder",
+            "source": "(model : FEP.PathThermodynamics.ErasureModel Path)",
+            "type_source": "FEP.PathThermodynamics.ErasureModel Path",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "kB",
+              "T"
+            ],
+            "role": "typed_binder",
+            "source": "{kB T : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "_hkB"
+            ],
+            "role": "typed_binder",
+            "source": "(_hkB : 0 < kB)",
+            "type_source": "0 < kB",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "_hT"
+            ],
+            "role": "typed_binder",
+            "source": "(_hT : 0 < T)",
+            "type_source": "0 < T",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hBeta"
+            ],
+            "role": "typed_binder",
+            "source": "(hBeta : model.beta = (kB * T)⁻¹)",
+            "type_source": "model.beta = (kB * T)⁻¹",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hReset"
+            ],
+            "role": "typed_binder",
+            "source": "(hReset : model.IsReset)",
+            "type_source": "model.IsReset",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hFair"
+            ],
+            "role": "typed_binder",
+            "source": "(hFair : model.prior true = 1 / 2)",
+            "type_source": "model.prior true = 1 / 2",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "fep050_landauerBound kB T ≤ model.meanHeat",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep050_generalized_landauer_heat_bound",
+            "qualified_name": "fep_fep050.FEP050.fep050_generalized_landauer_heat_bound",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.path_thermodynamics",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "Mathlib.Tactic.Linarith",
+          "Mathlib.Tactic.NormNum"
+        ],
+        "line_coordinate_kind": "canonical_topic_body_literal",
+        "namespace": "fep_fep050.FEP050",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound",
+        "source_line": 84,
+        "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
+        "statement": "theorem fep050_landauer_heat_bound\n    {Path : Type*} [Fintype Path]\n    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {kB T : ℝ} (_hkB : 0 < kB) (_hT : 0 < T)\n    (hBeta : model.beta = (kB * T)⁻¹)\n    (hReset : model.IsReset) (hFair : model.prior true = 1 / 2) :\n    fep050_landauerBound kB T ≤ model.meanHeat",
+        "statement_sha256": "dc3696ab5148488ddc614978c44a6ff6293efe3e0ea423ea8a379047c9ddbd0d"
+      },
+      "fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
           {
@@ -207687,6 +208227,7 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207695,13 +208236,144 @@
         "namespace": "fep_fep050.FEP050",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
-        "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound",
-        "source_line": 43,
+        "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance",
+        "source_line": 44,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
-        "statement": "theorem fep050_landauer_heat_bound\n    {Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB) :\n    fep050_landauerBound kB T ≤ Q",
-        "statement_sha256": "b03285d1e89eaba1cf2e561aa4c83fb7455bfc7d7caf95751b398abe25b7f0e9"
+        "statement": "theorem fep050_landauer_heat_bound_of_entropy_balance\n    {Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB) :\n    fep050_landauerBound kB T ≤ Q",
+        "statement_sha256": "5f310077fbbb4bdada913dc8092655d955012e4b2196b77524ca85fa57fb5396"
       },
       "fep_fep050.FEP050.fep050_landauer_work_bound": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Path"
+            ],
+            "role": "typed_binder",
+            "source": "{Path : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Path]",
+            "type_source": "Fintype Path",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "model"
+            ],
+            "role": "typed_binder",
+            "source": "(model : FEP.PathThermodynamics.ErasureModel Path)",
+            "type_source": "FEP.PathThermodynamics.ErasureModel Path",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "W",
+              "kB",
+              "T"
+            ],
+            "role": "typed_binder",
+            "source": "{W kB T : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hkB"
+            ],
+            "role": "typed_binder",
+            "source": "(hkB : 0 < kB)",
+            "type_source": "0 < kB",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hT"
+            ],
+            "role": "typed_binder",
+            "source": "(hT : 0 < T)",
+            "type_source": "0 < T",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hBeta"
+            ],
+            "role": "typed_binder",
+            "source": "(hBeta : model.beta = (kB * T)⁻¹)",
+            "type_source": "model.beta = (kB * T)⁻¹",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hReset"
+            ],
+            "role": "typed_binder",
+            "source": "(hReset : model.IsReset)",
+            "type_source": "model.IsReset",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hFair"
+            ],
+            "role": "typed_binder",
+            "source": "(hFair : model.prior true = 1 / 2)",
+            "type_source": "model.prior true = 1 / 2",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hworkHeat"
+            ],
+            "role": "typed_binder",
+            "source": "(hworkHeat : model.meanHeat ≤ W)",
+            "type_source": "model.meanHeat ≤ W",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "fep050_landauerBound kB T ≤ W",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep050_landauer_heat_bound",
+            "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.path_thermodynamics",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "Mathlib.Tactic.Linarith",
+          "Mathlib.Tactic.NormNum"
+        ],
+        "line_coordinate_kind": "canonical_topic_body_literal",
+        "namespace": "fep_fep050.FEP050",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound",
+        "source_line": 96,
+        "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
+        "statement": "theorem fep050_landauer_work_bound\n    {Path : Type*} [Fintype Path]\n    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {W kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T)\n    (hBeta : model.beta = (kB * T)⁻¹)\n    (hReset : model.IsReset) (hFair : model.prior true = 1 / 2)\n    (hworkHeat : model.meanHeat ≤ W) :\n    fep050_landauerBound kB T ≤ W",
+        "statement_sha256": "44ae51f8652eb46d44c591470a9806c0f5fadd16729db884caba5bb1f2415d4f"
+      },
+      "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
           {
@@ -207752,14 +208424,15 @@
         "context_binders": [],
         "declaration_mentions": [
           {
-            "identifier": "fep050_landauer_heat_bound",
-            "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound",
+            "identifier": "fep050_landauer_heat_bound_of_entropy_balance",
+            "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance",
             "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207768,11 +208441,11 @@
         "namespace": "fep_fep050.FEP050",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
-        "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound",
-        "source_line": 58,
+        "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance",
+        "source_line": 59,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
-        "statement": "theorem fep050_landauer_work_bound\n    {W Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q ≤ W) :\n    fep050_landauerBound kB T ≤ W",
-        "statement_sha256": "bcddfd0c4aeb92d4e90ca5a4ea6db6c08cc8d917366d469933d326bf9132f71e"
+        "statement": "theorem fep050_landauer_work_bound_of_entropy_balance\n    {W Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q ≤ W) :\n    fep050_landauerBound kB T ≤ W",
+        "statement_sha256": "f82e28c62426eef3fd44a43ee553aa85b947e3751ff63f486c87b35b5b687aca"
       },
       "fep_fep051.FEP051.fep051_likelihoodRatio_reconstruction": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -238825,8 +239498,8 @@
       "aggregate_namespace": "fep_fep050.FEP050",
       "area": "Thermodynamics",
       "body_source": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
-      "body_theorem_count": 5,
-      "canonical_body_sha256": "0101caafca6df6c405dd05f5e1536dba9004148ba5eedfdb236f4b666da6d076",
+      "body_theorem_count": 8,
+      "canonical_body_sha256": "36d02b8ec12a34ff9fd84f7b06483dd93124d85a0b54b37ed2303c16bbcfeb54",
       "canonical_namespace": "FEP050",
       "family": "core-thermodynamics",
       "id": "fep-050",
@@ -238853,23 +239526,29 @@
         "supporting_theorems": [
           "fep_fep050.FEP050.fep050_erasure_not_injective",
           "fep_fep050.FEP050.fep050_erasureEntropyLoss_eq",
+          "fep_fep050.FEP050.fep050_generalized_landauer_heat_bound",
           "fep_fep050.FEP050.fep050_landauer_heat_bound",
+          "fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance",
+          "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance",
           "fep_fep050.FEP050.fep050_landauerBound_pos"
         ]
       },
       "semantic_review": {
-        "acceptance_probe": "native Lean compile of fep050_erasure_not_injective, fep050_erasureEntropyLoss_eq, fep050_landauer_heat_bound, fep050_landauer_work_bound, and fep050_landauerBound_pos.",
-        "assumption_review": "The derivation explicitly assumes the second-law total-entropy inequality, positive environmental temperature, and work at least as large as dissipated heat. It does not model a microscopic Hamiltonian or finite-time erasure protocol.",
+        "acceptance_probe": "Warning-strict native Lean compile and axiom inspection of the focused and aggregate generalized, fair heat, primary work, and conditional entropy-balance helpers; the existing full core composition must compile with its explicit conditional helper endpoint. Imported maintained controls must verify heat encoding, fair bound, reversible equality, biased bound, strict biased-versus-fair boundary, and work domination at the same positive scale. Dropping reset, beta identification, or local detailed balance must not be accepted as the path theorem. Current-source qualification remains separate from this semantic review and from historical external compile receipts.",
+        "assumption_review": "ErasureModel supplies finite normalized forward and aligned reverse path laws, initial and final marginals, positive beta, reverse support on every forward-supported path, and local detailed balance. The primary work theorem additionally requires positive kB and T, beta = 1/(kB T), reset to false, prior(true) = 1/2, and meanHeat <= W. The generalized prior endpoint assumes the same beta identification and reset but does not separately require positive kB and T; the model forces their product positive. Shannon entropy and mean path production are dimensionless nats: meanHeat = kB T sigma + kB T (H(prior) - H(final)). For physical entropy loss DeltaS = kB DeltaH, the latter term is T DeltaS. Local detailed balance and work/heat domination are modeling assumptions, not a microscopic derivation, first-law proof, finite-time realization, laboratory result, or causal claim. The separately named entropy-balance helpers remain conditional and do not construct a path protocol.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-050",
-        "invariant": "A noninjective reset maps an unbiased bit to a pure state and loses exactly kB log 2 entropy; nonnegative total entropy at positive temperature derives the corresponding heat bound, and work above heat derives the work bound.",
-        "non_vacuity": "The reset identifies true and false, the unbiased-to-pure entropy change is exactly nonzero for kB > 0, and equality in the environmental balance saturates the Landauer threshold.",
+        "invariant": "A normalized finite path erasure model with forward-supported local detailed balance derives mean bath heat at least kB T times the prior's binary Shannon entropy when the final bit is reset. The fair-prior corner gives kB T log 2, and work dominating that mean heat obeys the same threshold. No second-law inequality is assumed by these path-model bounds.",
+        "non_vacuity": "reversibleErasureWitness constructs a normalized reset with aligned reverse law equal to the forward law, derived zero production, and heat equal to binEntropy(prior(true))/beta. At kB = 2 and T = 3 the fair witness attains 6 log 2; the actual prior(true) = 3/4 witness attains its generalized bound strictly below the fair threshold. Equality is proved for these mathematical witnesses rather than supplied as a model field or claimed for an apparatus.",
         "primary_theorem": "fep050_landauer_work_bound",
         "supporting_theorems": [
           "fep050_erasure_not_injective",
           "fep050_erasureEntropyLoss_eq",
+          "fep050_generalized_landauer_heat_bound",
           "fep050_landauer_heat_bound",
+          "fep050_landauer_heat_bound_of_entropy_balance",
+          "fep050_landauer_work_bound_of_entropy_balance",
           "fep050_landauerBound_pos"
         ]
       },

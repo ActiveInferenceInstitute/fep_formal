@@ -50,6 +50,11 @@ uv run fep-lean verify \
   --receipt output/native-verification.json
 ```
 
+Pure source/API assertions belong to the normal Python lane. Mark only actual
+compiler probes `serial_lean`, including callers of shared compile helpers.
+Changing that partition requires an unchanged total case-ID set, disjoint
+serial/nonserial selections, and an exact reviewed list of moved cases.
+
 Do not run Lean-heavy files concurrently against the shared `.lake` tree.
 Tests that exercise reporters or orchestration must pass `output_root=tmp_path`
 or set `FEP_LEAN_OUTPUT_ROOT` to avoid changing real report selection.

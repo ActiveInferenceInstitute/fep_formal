@@ -157,9 +157,11 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         "compositions/efe_time_scale_separation.lean",
         "compositions/helmholtz_ao_ness.lean",
         "compositions/geometric_mechanics.lean",
-        "compositions/h3_case_study.lean",
+        "compositions/h3_case_study_model_control.lean",
+        "compositions/h3_case_study_path_information.lean",
+        "compositions/h3_case_study_cost_feedback.lean",
     )
-    aggregate_resources = ("composed.lean",)
+    aggregate_resources = ("compositions/h3_case_study.lean", "composed.lean")
     resources = (
         *foundation_resources,
         *composition_resources,
@@ -233,6 +235,9 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         "FEPComposed",
         "FEPComposed",
         "FEPComposed.H3CaseStudy",
+        "FEPComposed.H3CaseStudy",
+        "FEPComposed.H3CaseStudy",
+        None,
         None,
     )
     expected_resources_by_role = {
@@ -466,7 +471,7 @@ def test_category_roster_growth_is_rejected_by_historical_custody() -> None:
     # Keep this refusal when separately reviewing a prospective successor epoch.
     with pytest.raises(
         ValueError,
-        match="H3 owner subtraction does not recover the historical custody manifest",
+        match="H3 owner missing, duplicated, or changed",
     ):
         validate_h2_r0_custody(PROJECT_ROOT)
 
@@ -848,3 +853,46 @@ end FEP.TimeScaleEFE.ReviewControls
         == {"propext", "Classical.choice", "Quot.sound"}
         for _, axioms in reports
     ), output
+
+
+@pytest.mark.parametrize(
+    "resource,role",
+    [
+        ("compositions/unreviewed_h3.lean", FormalModuleRole.COMPOSITION),
+        ("compositions/h3_case_study_model_control.lean", FormalModuleRole.FOUNDATION),
+    ],
+)
+def test_h3_namespace_is_limited_to_reviewed_composition_leaves(
+    monkeypatch, resource, role
+):
+    module = FormalModule(
+        resource,
+        "FepSketches." + resource.removesuffix(".lean").replace("/", "."),
+        role,
+        "FEPComposed.H3CaseStudy",
+    )
+    monkeypatch.setattr(formal_manifest, "FORMAL_MODULES", (module,))
+    with pytest.raises(ValueError, match="unrecognized H3 leaf namespace owner"):
+        formal_manifest.formal_module_imports()
+
+
+def test_duplicate_h3_leaf_is_rejected(monkeypatch):
+    leaf = next(
+        module
+        for module in FORMAL_MODULES
+        if module.resource == "compositions/h3_case_study_model_control.lean"
+    )
+    monkeypatch.setattr(formal_manifest, "FORMAL_MODULES", (*FORMAL_MODULES, leaf))
+    with pytest.raises(ValueError, match="duplicate resources"):
+        formal_manifest.formal_module_imports()
+
+
+def test_global_aggregate_writer_preserves_h3_facade(tmp_path):
+    facade = tmp_path / "src/fep_lean/formal/compositions/h3_case_study.lean"
+    facade.parent.mkdir(parents=True)
+    original = (
+        PROJECT_ROOT / "src/fep_lean/formal/compositions/h3_case_study.lean"
+    ).read_bytes()
+    facade.write_bytes(original)
+    assert write_formal_aggregate(tmp_path).name == "composed.lean"
+    assert facade.read_bytes() == original

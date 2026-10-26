@@ -11,6 +11,7 @@ import pytest
 
 from fep_lean.formal.manifest import FORMAL_MODULES
 from fep_lean.lean_source import lean_code_without_comments
+from fep_lean.verification.formalism_audit import parse_axiom_output
 from tests._support.lean435_migration import assert_historical_repair_bindings
 from tests._support.lean_runner import run_lean_probe
 
@@ -85,8 +86,6 @@ PUBLIC_THEOREMS = (
     "evidenceLaw_singleton_eq_zero",
     "closedFormPosterior_univ",
 )
-
-pytestmark = pytest.mark.serial_lean
 
 
 def _sha256(path: Path) -> str:
@@ -215,6 +214,7 @@ def test_h2_6a_r0_excludes_out_of_scope_and_atomic_evidence_claims() -> None:
     )
 
 
+@pytest.mark.serial_lean
 def test_h2_6a_r0_spike_compiles_warning_free(tmp_path: Path) -> None:
     probe = tmp_path / "H2_6aNativePosteriorSpike.lean"
     probe.write_text(SPIKE.read_text(encoding="utf-8"), encoding="utf-8")
@@ -230,6 +230,7 @@ def test_h2_6a_r0_spike_compiles_warning_free(tmp_path: Path) -> None:
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 def test_h2_6a_r0_public_theorems_use_only_standard_axioms(tmp_path: Path) -> None:
     probe = tmp_path / "H2_6aNativePosteriorAxioms.lean"
     source = SPIKE.read_text(encoding="utf-8")
@@ -251,9 +252,11 @@ def test_h2_6a_r0_public_theorems_use_only_standard_axioms(tmp_path: Path) -> No
     assert "warning:" not in output.lower()
     axiom_blocks = re.findall(r"depends on axioms: \[(.*?)\]", output, re.DOTALL)
     assert len(axiom_blocks) == len(PUBLIC_THEOREMS), output
-    for block in axiom_blocks:
-        axioms = set(re.findall(r"'([^']+)'", block))
-        assert axioms <= {"propext", "Classical.choice", "Quot.sound"}
+    parsed_axioms, errors = parse_axiom_output(output)
+    assert not errors, errors
+    assert len(parsed_axioms) == len(axiom_blocks), output
+    for axioms in parsed_axioms.values():
+        assert set(axioms) <= {"propext", "Classical.choice", "Quot.sound"}
 
 
 def test_h2_6a_r0_repair_is_source_bound_append_only_go() -> None:

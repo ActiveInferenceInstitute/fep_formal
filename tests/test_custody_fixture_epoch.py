@@ -117,7 +117,20 @@ def test_synthetic_epoch_uses_real_isolated_historical_validator(
     current_owners = current_r0._manifest_owners(
         (REPO_ROOT / current_r0.MANIFEST_PATH).read_text()
     )
-    assert len(owners) == 69 and len(current_owners) == 72
+    assert len(owners) == 69
+    old_by_resource = {owner["resource"]: owner for owner in owners}
+    current_by_resource = {owner["resource"]: owner for owner in current_owners}
+    assert current_by_resource.keys() == old_by_resource.keys() | {
+        "h3_reference_model.lean",
+        "compositions/h3_case_study.lean",
+        "compositions/finite_kernel_category.lean",
+        "compositions/h3_case_study_model_control.lean",
+        "compositions/h3_case_study_path_information.lean",
+        "compositions/h3_case_study_cost_feedback.lean",
+    }
+    assert {
+        name: current_by_resource[name] for name in old_by_resource
+    } == old_by_resource
     category_resource = "compositions/finite_kernel_category.lean"
     assert category_resource in {owner["resource"] for owner in current_owners}
     assert category_resource not in {owner["resource"] for owner in owners}
@@ -135,7 +148,7 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
     # The current category owner is outside the frozen manifest transition.
     with pytest.raises(
         ValueError,
-        match=r"^H3 owner subtraction does not recover the historical custody manifest$",
+        match=r"^H3 owner missing, duplicated, or changed$",
     ):
         current_r0.validate_h2_r0_custody(recorded_root)
     # Restore only the disposable manifest from its authenticated companion

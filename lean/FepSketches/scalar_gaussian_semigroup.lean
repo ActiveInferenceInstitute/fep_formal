@@ -254,32 +254,6 @@ private theorem gaussian_bind_affine
         gaussianReal_conv_gaussianReal]
       simp
 
-/-- Chapman--Kolmogorov with the later slice composed on the left. -/
-theorem ouTransition_add
-    (model : ScalarOUParameters) (left right : ℝ≥0) :
-    model.ouTransition (left + right) =
-      model.ouTransition right ∘ₖ model.ouTransition left := by
-  apply DFunLike.ext _ _
-  intro state
-  rw [Kernel.comp_apply]
-  change
-    gaussianReal
-        (model.transitionMean (left + right) state)
-        (model.transitionVariance (left + right)) =
-      (gaussianReal
-        (model.transitionMean left state)
-        (model.transitionVariance left)).bind
-        (fun next =>
-          gaussianReal
-            (model.transitionMean right next)
-            (model.transitionVariance right))
-  simp_rw [model.transitionMean_affine right]
-  rw [gaussian_bind_affine]
-  apply gaussianReal_ext_iff.mpr
-  exact ⟨(model.transitionMean_add left right state).trans
-      (model.transitionMean_affine right (model.transitionMean left state)),
-    model.transitionVariance_add left right⟩
-
 /-- Evolving an arbitrary scalar Gaussian through the OU slice stays Gaussian. -/
 theorem ouTransition_comp_gaussian
     (model : ScalarOUParameters) (time : ℝ≥0)
@@ -296,6 +270,33 @@ theorem ouTransition_comp_gaussian
             (model.transitionVariance time)) = _
   simp_rw [model.transitionMean_affine time]
   rw [gaussian_bind_affine]
+
+/-- Actual scalar Gaussian closure, instantiated in the common law-action carrier. -/
+noncomputable def gaussianLawAction (model : ScalarOUParameters) :
+    FEP.MarkovSemigroup.ParameterKernelAction model.ouTransition (ℝ × ℝ≥0) where
+  law := fun parameter => gaussianReal parameter.1 parameter.2
+  admissible := fun _ => True
+  evolve := fun time parameter =>
+    (model.transitionMean time parameter.1,
+      NNReal.mk (model.decay time ^ 2) (sq_nonneg _) * parameter.2 +
+        model.transitionVariance time)
+  rowParameter := fun time state =>
+    (model.transitionMean time state, model.transitionVariance time)
+  row_admissible := fun _ _ => True.intro
+  row_law := fun _ _ => rfl
+  closure := fun time parameter _ =>
+    model.ouTransition_comp_gaussian time parameter.1 parameter.2
+  row_add := by
+    intro left right state
+    exact Prod.ext (model.transitionMean_add left right state)
+      (model.transitionVariance_add left right)
+
+/-- Public compatibility name; the shared carrier derives the kernel law. -/
+theorem ouTransition_add
+    (model : ScalarOUParameters) (left right : ℝ≥0) :
+    model.ouTransition (left + right) =
+      model.ouTransition right ∘ₖ model.ouTransition left :=
+  model.gaussianLawAction.kernel_add left right
 
 /-- H2.4 native-semigroup packaging of the exact transition family. -/
 noncomputable def ouNativeSemigroup (model : ScalarOUParameters) :
@@ -347,11 +348,12 @@ theorem stationaryLaw_invariant (model : ScalarOUParameters) :
     FEP.MarkovSemigroup.InvariantLaw
       model.ouNativeSemigroup model.stationaryLaw := by
   intro time
-  rw [Kernel.Invariant]
-  change model.ouTransition time ∘ₘ gaussianReal model.center model.stationaryVariance =
-    gaussianReal model.center model.stationaryVariance
-  rw [model.ouTransition_comp_gaussian, model.stationaryVariance_decomposition]
-  simp [transitionMean]
+  exact model.gaussianLawAction.invariant_of_fixed
+    (model.center, model.stationaryVariance) True.intro (by
+      intro t
+      apply Prod.ext
+      · simp [gaussianLawAction, transitionMean]
+      · exact model.stationaryVariance_decomposition t) time
 
 /-- The transition mean is its declared Gaussian mean parameter. -/
 theorem ouTransition_mean

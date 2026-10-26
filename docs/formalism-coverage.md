@@ -11,23 +11,23 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Metric | Count |
 | --- | ---: |
 | Stable topics | 168 |
-| Maintained formal modules | 72 |
+| Maintained formal modules | 75 |
 | Foundation modules | 45 |
-| Topic theorem declarations | 587 |
-| Formal-resource theorem declarations | 1824 |
-| Foundation theorem declarations | 1438 |
-| Total theorem declarations | 2411 |
+| Topic theorem declarations | 590 |
+| Formal-resource theorem declarations | 1826 |
+| Foundation theorem declarations | 1440 |
+| Total theorem declarations | 2416 |
 | Topic definitions | 95 |
-| Formal-resource definitions | 967 |
-| Total definitions | 1062 |
+| Formal-resource definitions | 969 |
+| Total definitions | 1064 |
 | Topic abbreviations | 7 |
 | Formal-resource abbreviations | 39 |
 | Total abbreviations | 46 |
-| Formal-resource structures | 56 |
+| Formal-resource structures | 57 |
 | Distinct Mathlib imports | 80 |
-| Topic-to-import edges | 267 |
-| Formal-resource import edges | 409 |
-| Internal formal-module dependencies | 173 |
+| Topic-to-import edges | 268 |
+| Formal-resource import edges | 448 |
+| Internal formal-module dependencies | 203 |
 | Authored formalism relations | 156 |
 | Derivational formal relations | 32 |
 | Checked formal pairings | 118 |
@@ -103,7 +103,7 @@ Compilation and semantic adequacy are deliberately different axes. `formalized` 
 | fep-047 | ActiveInference | `fep047_forward_compose` | `formalized` | 5 | 1 | 2 |
 | fep-048 | FEP | `fep048_contraction_unique` | `formalized` | 8 | 1 | 3 |
 | fep-049 | Thermodynamics | `fep049_entropyProduction_eq_zero_iff` | `formalized` | 5 | 4 | 4 |
-| fep-050 | Thermodynamics | `fep050_landauer_work_bound` | `formalized` | 5 | 6 | 3 |
+| fep-050 | Thermodynamics | `fep050_landauer_work_bound` | `formalized` | 8 | 6 | 4 |
 | fep-051 | BayesianMechanics | `fep051_likelihoodRatio_reconstruction` | `formalized` | 2 | 0 | 1 |
 | fep-052 | BayesianMechanics | `fep052_posterior_density_tilt` | `conditional_proxy` | 2 | 0 | 1 |
 | fep-053 | BayesianMechanics | `fep053_kernelBayes_joint_reconstruction` | `formalized` | 2 | 0 | 1 |
@@ -258,9 +258,9 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.gaussian_information_geometry` | `foundation` | 31 | 10 | 1 | — |
 | `FepSketches.smooth_information_geometry` | `foundation` | 16 | 7 | 0 | `FepSketches.gaussian_information_geometry` |
 | `FepSketches.continuous_time_markov` | `foundation` | 98 | 55 | 4 | `FepSketches.active_inference`, `FepSketches.decision_risk`, `FepSketches.finite_markov_dynamics`, `FepSketches.markov_blanket` |
-| `FepSketches.markov_semigroup` | `foundation` | 10 | 8 | 2 | `FepSketches.continuous_time_markov`, `FepSketches.native_blanket` |
-| `FepSketches.scalar_gaussian_semigroup` | `foundation` | 16 | 12 | 1 | `FepSketches.gaussian_information_geometry`, `FepSketches.markov_semigroup` |
-| `FepSketches.linear_gaussian_semigroup` | `foundation` | 26 | 13 | 1 | `FepSketches.markov_semigroup`, `FepSketches.scalar_gaussian_semigroup` |
+| `FepSketches.markov_semigroup` | `foundation` | 12 | 8 | 3 | `FepSketches.continuous_time_markov`, `FepSketches.native_blanket` |
+| `FepSketches.scalar_gaussian_semigroup` | `foundation` | 16 | 13 | 1 | `FepSketches.gaussian_information_geometry`, `FepSketches.markov_semigroup` |
+| `FepSketches.linear_gaussian_semigroup` | `foundation` | 26 | 14 | 1 | `FepSketches.markov_semigroup`, `FepSketches.scalar_gaussian_semigroup` |
 | `FepSketches.fin4_gaussian_semigroup` | `foundation` | 42 | 18 | 0 | `FepSketches.linear_gaussian_semigroup` |
 | `FepSketches.gaussian_precision_conditioning` | `foundation` | 31 | 16 | 0 | `FepSketches.fin4_gaussian_semigroup` |
 | `FepSketches.decision_risk` | `foundation` | 25 | 10 | 0 | `FepSketches.finite_information`, `FepSketches.native_blanket` |
@@ -303,8 +303,11 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.compositions.efe_time_scale_separation` | `composition` | 1 | 0 | 0 | `FepSketches.efe_time_scale_separation` |
 | `FepSketches.compositions.helmholtz_ao_ness` | `composition` | 2 | 0 | 0 | `FepSketches.helmholtz_ao_ness` |
 | `FepSketches.compositions.geometric_mechanics` | `composition` | 7 | 0 | 0 | `FepSketches.geometric_mechanics` |
-| `FepSketches.compositions.h3_case_study` | `composition` | 93 | 91 | 1 | `FepSketches.causal_dynamics`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.h3_reference_model`, `FepSketches.markov_blanket`, `FepSketches.native_blanket`, `FepSketches.path_thermodynamics` |
-| `FepSketches.composed` | `aggregate` | 0 | 0 | 0 | `FepSketches.compositions.bayesian_model_reduction`, `FepSketches.compositions.causal_predictive`, `FepSketches.compositions.collective_learning`, `FepSketches.compositions.continuous_time`, `FepSketches.compositions.control_temporal`, `FepSketches.compositions.core`, `FepSketches.compositions.efe_policy_selection`, `FepSketches.compositions.efe_time_scale_separation`, `FepSketches.compositions.exponential_family`, `FepSketches.compositions.finite_kernel_category`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_reference_agent`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.geometric_mechanics`, `FepSketches.compositions.h3_case_study`, `FepSketches.compositions.helmholtz_ao_ness`, `FepSketches.compositions.measure_variational`, `FepSketches.compositions.native_blanket_transfer`, `FepSketches.compositions.perception_action_loop`, `FepSketches.compositions.policy_trees`, `FepSketches.compositions.risk_calibration`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.compositions.thermo_geometry` |
+| `FepSketches.compositions.h3_case_study_model_control` | `composition` | 63 | 61 | 1 | `FepSketches.causal_dynamics`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.h3_reference_model`, `FepSketches.markov_blanket`, `FepSketches.native_blanket`, `FepSketches.path_thermodynamics` |
+| `FepSketches.compositions.h3_case_study_path_information` | `composition` | 8 | 25 | 0 | `FepSketches.causal_dynamics`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.h3_case_study_model_control`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.h3_reference_model`, `FepSketches.markov_blanket`, `FepSketches.native_blanket`, `FepSketches.path_thermodynamics` |
+| `FepSketches.compositions.h3_case_study_cost_feedback` | `composition` | 22 | 5 | 0 | `FepSketches.causal_dynamics`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.h3_case_study_model_control`, `FepSketches.compositions.h3_case_study_path_information`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.h3_reference_model`, `FepSketches.markov_blanket`, `FepSketches.native_blanket`, `FepSketches.path_thermodynamics` |
+| `FepSketches.compositions.h3_case_study` | `aggregate` | 0 | 0 | 0 | `FepSketches.compositions.h3_case_study_cost_feedback`, `FepSketches.compositions.h3_case_study_model_control`, `FepSketches.compositions.h3_case_study_path_information` |
+| `FepSketches.composed` | `aggregate` | 0 | 0 | 0 | `FepSketches.compositions.bayesian_model_reduction`, `FepSketches.compositions.causal_predictive`, `FepSketches.compositions.collective_learning`, `FepSketches.compositions.continuous_time`, `FepSketches.compositions.control_temporal`, `FepSketches.compositions.core`, `FepSketches.compositions.efe_policy_selection`, `FepSketches.compositions.efe_time_scale_separation`, `FepSketches.compositions.exponential_family`, `FepSketches.compositions.finite_kernel_category`, `FepSketches.compositions.finite_policy_action`, `FepSketches.compositions.finite_reference_agent`, `FepSketches.compositions.finite_scientific_implications`, `FepSketches.compositions.gaussian_control`, `FepSketches.compositions.gaussian_filter`, `FepSketches.compositions.gaussian_grid_path`, `FepSketches.compositions.geometric_mechanics`, `FepSketches.compositions.h3_case_study_cost_feedback`, `FepSketches.compositions.h3_case_study_model_control`, `FepSketches.compositions.h3_case_study_path_information`, `FepSketches.compositions.helmholtz_ao_ness`, `FepSketches.compositions.measure_variational`, `FepSketches.compositions.native_blanket_transfer`, `FepSketches.compositions.perception_action_loop`, `FepSketches.compositions.policy_trees`, `FepSketches.compositions.risk_calibration`, `FepSketches.compositions.smooth_reference_kernel`, `FepSketches.compositions.thermo_geometry` |
 
 ## Authored formalism relations
 
@@ -343,7 +346,7 @@ These edges are maintained scientific review data. `conceptual` means explanator
 | fep-041 | `formal` | fep-014 | `FEPComposed.fep041_informationGain_is_fep014_kl` | The composed theorem identifies fep-041 information gain with the native KL divergence and invokes fep-014's finite-measure separation law. Actual consumed endpoint lemma: fep_fep014.FEP014.fep014_kl_eq_zero_iff. | — |
 | fep-042 | `formal` | fep-036 | `FEPComposed.fep036_empiricalPosterior_closed` | The composed theorem uses fep-042's success count to construct fep-036's smoothed empirical prior before conjugate updating. Reviewed 2026-09-22 against the primary-qualified endpoint rule. The witness carries fep-036 through its reviewed supporting theorems `fep_fep036.FEP036.fep036_smoothedRate_pos` and `fep_fep036.FEP036.fep036_smoothedRate_lt_one` rather than the primary `fep_fep036.FEP036.fep036_smoothedRate_tendsto_of_empiricalRate`; the row stands unchanged. Actual consumed endpoint lemmas: fep_fep036.FEP036.fep036_smoothedRate_lt_one, fep_fep036.FEP036.fep036_smoothedRate_pos. The success count enters definitionally; List.count_le_length and the two smoothed-rate supporting lemmas establish interiority, not empirical-rate convergence. | — |
 | fep-046 | `formal` | fep-045 | `FEPComposed.fep046_single_break_is_fep045_bernoulli` | For a single stick fraction chosen as fep045_posteriorParameter, the composed theorem identifies allocated and residual weights with the true and false Bernoulli-mass definitions and uses fep_fep046.FEP046.fep046_mass_conservation to derive their sum-one identity. This algebra holds for arbitrary real inputs; nonnegative probability interpretation additionally needs a posterior in [0,1]. No general Dirichlet-process or infinite-series claim follows. | — |
-| fep-050 | `formal` | fep-049 | `FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production` | Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modeling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem. | — |
+| fep-050 | `formal` | fep-049 | `FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production` | Conditional constitutive bridge: nonnegative conductances let fep_fep049.FEP049.fep049_entropyProduction_nonneg supply a nonnegative quadratic entropy-production value. The explicit hBalance premise identifies that real value with fep_fep050.FEP050.fep050_totalEntropyChange Q T kB; positive T and Q<=W then let fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance derive the Landauer work threshold. The identification, including its entropy units and any time-scale interpretation, is assumed rather than derived by either topic. This witness retains its original statement and consumes the conditional entropy-balance helper; it does not instantiate ErasureModel, establish local detailed balance, or remove the assumptions of the current path-model primary theorem. | — |
 | fep-051 | `formal_pairing` | fep-017 | `FEPComposed.fep051_rn_reconstruction_refines_fep017` | Radon--Nikodym reconstruction and posterior joint reconstruction are the measure-level reconstruction laws on either side of Bayesian inversion. | — |
 | fep-052 | `formal_pairing` | fep-017 | `FEPComposed.fep052_posterior_tilt_is_fep017_posterior` | On a countable latent carrier, both topic surfaces certify the same predictive-almost-everywhere likelihood-ratio representation. | — |
 | fep-053 | `formal_pairing` | fep-017 | `FEPComposed.fep053_joint_reconstruction_extends_fep017` | Kernel Bayes and fep-017 reconstruct the same swapped joint law, with the new topic keeping the native posterior notation visible. | — |
@@ -549,7 +552,7 @@ Shared imports indicate library reuse, not logical dependencies between catalog 
 | `FepSketches.learning_theory` | 7 | fep-114, fep-115, fep-116, fep-117, fep-118, fep-119, fep-120 |
 | `FepSketches.measure_bayes` | 7 | fep-051, fep-052, fep-053, fep-054, fep-055, fep-056, fep-057 |
 | `FepSketches.native_blanket` | 7 | fep-135, fep-136, fep-137, fep-138, fep-139, fep-140, fep-141 |
-| `FepSketches.path_thermodynamics` | 7 | fep-093, fep-094, fep-095, fep-096, fep-097, fep-098, fep-099 |
+| `FepSketches.path_thermodynamics` | 8 | fep-050, fep-093, fep-094, fep-095, fep-096, fep-097, fep-098, fep-099 |
 | `FepSketches.perception_action_loop` | 1 | fep-157 |
 | `FepSketches.policy_tree` | 7 | fep-128, fep-129, fep-130, fep-131, fep-132, fep-133, fep-134 |
 | `FepSketches.predictive_coding` | 7 | fep-086, fep-087, fep-088, fep-089, fep-090, fep-091, fep-092 |

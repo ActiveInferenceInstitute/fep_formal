@@ -32,12 +32,20 @@ def render_formal_aggregate() -> str:
 
 
 def _aggregate_path(project_root: Path) -> Path:
-    paths = formal_resource_paths(
-        FormalModuleRole.AGGREGATE,
-        project_root=project_root,
+    # Other manifested aggregates are stable import facades, not the generated
+    # whole-composition entry point. Its identity remains explicit.
+    paths = tuple(
+        path
+        for path in formal_resource_paths(
+            FormalModuleRole.AGGREGATE, project_root=project_root
+        )
+        if path.relative_to(project_root / "src/fep_lean/formal").as_posix()
+        == "composed.lean"
     )
     if len(paths) != 1:
-        raise ValueError("formal manifest must contain exactly one aggregate module")
+        raise ValueError(
+            "formal manifest must contain exactly one composed.lean aggregate module"
+        )
     return paths[0]
 
 

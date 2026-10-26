@@ -11,6 +11,7 @@ import pytest
 from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from fep_lean.formal.projection import formal_projection_drift
 from fep_lean.lean_source import lean_code_without_comments
+from fep_lean.verification.formalism_audit import parse_axiom_output
 from tests._support.lake import lake_executable
 from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
@@ -22,7 +23,6 @@ FOUNDATION = (
 )
 PROJECTION = LEAN_ROOT / "FepSketches" / "scalar_gaussian_semigroup.lean"
 
-pytestmark = pytest.mark.serial_lean
 
 EXACT_IMPORTS = (
     "FepSketches.gaussian_information_geometry",
@@ -43,6 +43,7 @@ PUBLIC_DEFINITIONS = (
     "transitionVariance",
     "positiveTimeGaussian",
     "ouTransition",
+    "gaussianLawAction",
     "ouNativeSemigroup",
     "stationaryGaussian",
     "stationaryLaw",
@@ -57,8 +58,8 @@ PUBLIC_THEOREMS = (
     "transitionVariance_pos",
     "ouTransition_univ",
     "ouTransition_zero",
-    "ouTransition_add",
     "ouTransition_comp_gaussian",
+    "ouTransition_add",
     "ouTransition_eq_gaussianLocation",
     "stationaryLaw_invariant",
     "ouTransition_mean",
@@ -175,6 +176,7 @@ def test_h2_5a_projection_is_current() -> None:
     assert formal_projection_drift(PROJECT_ROOT) == ()
 
 
+@pytest.mark.serial_lean
 def test_h2_5a_compiles_warning_free() -> None:
     with tempfile.TemporaryDirectory(prefix="fep-h2-5a-") as output_dir:
         output_path = Path(output_dir) / "scalar_gaussian_semigroup.olean"
@@ -196,6 +198,7 @@ def test_h2_5a_compiles_warning_free() -> None:
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 def test_h2_5a_public_theorems_use_only_standard_axioms(tmp_path: Path) -> None:
     probe = tmp_path / "ScalarGaussianSemigroupAxioms.lean"
     source = FOUNDATION.read_text(encoding="utf-8")
@@ -234,6 +237,8 @@ example
     assert "warning:" not in output.lower()
     axiom_blocks = re.findall(r"depends on axioms: \[(.*?)\]", output, re.DOTALL)
     assert len(axiom_blocks) == len(PUBLIC_THEOREMS), output
-    for block in axiom_blocks:
-        axioms = set(re.findall(r"'([^']+)'", block))
-        assert axioms <= {"propext", "Classical.choice", "Quot.sound"}
+    parsed_axioms, errors = parse_axiom_output(output)
+    assert not errors, errors
+    assert len(parsed_axioms) == len(axiom_blocks), output
+    for axioms in parsed_axioms.values():
+        assert set(axioms) <= {"propext", "Classical.choice", "Quot.sound"}

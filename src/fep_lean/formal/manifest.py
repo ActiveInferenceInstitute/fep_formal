@@ -9,6 +9,14 @@ from pathlib import Path, PurePosixPath
 from fep_lean.lean_source import is_lean_qualified_name, lean_outer_namespaces
 
 _RELEASED_SHARED_DECLARATION_NAMESPACE = "FEPComposed"
+_H3_LEAF_NAMESPACE = "FEPComposed.H3CaseStudy"
+_H3_LEAF_RESOURCES = frozenset(
+    (
+        "compositions/h3_case_study_model_control.lean",
+        "compositions/h3_case_study_path_information.lean",
+        "compositions/h3_case_study_cost_feedback.lean",
+    )
+)
 
 
 class FormalModuleRole(str, Enum):
@@ -483,10 +491,28 @@ FORMAL_MODULES: tuple[FormalModule, ...] = (
         declaration_namespace="FEPComposed",
     ),
     FormalModule(
-        resource="compositions/h3_case_study.lean",
-        lean_module="FepSketches.compositions.h3_case_study",
+        resource="compositions/h3_case_study_model_control.lean",
+        lean_module="FepSketches.compositions.h3_case_study_model_control",
         role=FormalModuleRole.COMPOSITION,
         declaration_namespace="FEPComposed.H3CaseStudy",
+    ),
+    FormalModule(
+        resource="compositions/h3_case_study_path_information.lean",
+        lean_module="FepSketches.compositions.h3_case_study_path_information",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed.H3CaseStudy",
+    ),
+    FormalModule(
+        resource="compositions/h3_case_study_cost_feedback.lean",
+        lean_module="FepSketches.compositions.h3_case_study_cost_feedback",
+        role=FormalModuleRole.COMPOSITION,
+        declaration_namespace="FEPComposed.H3CaseStudy",
+    ),
+    FormalModule(
+        resource="compositions/h3_case_study.lean",
+        lean_module="FepSketches.compositions.h3_case_study",
+        role=FormalModuleRole.AGGREGATE,
+        declaration_namespace=None,
     ),
     FormalModule(
         resource="composed.lean",
@@ -521,11 +547,23 @@ def _selected(role: FormalModuleRole | None) -> tuple[FormalModule, ...]:
             or module.resource not in _RELEASED_SHARED_DECLARATION_NAMESPACE_RESOURCES
         )
     )
+    unauthorized_h3_owners = tuple(
+        module.resource
+        for module in modules
+        if module.declaration_namespace == _H3_LEAF_NAMESPACE
+        and (
+            module.role is not FormalModuleRole.COMPOSITION
+            or module.resource not in _H3_LEAF_RESOURCES
+        )
+    )
+    if unauthorized_h3_owners:
+        raise ValueError("unrecognized H3 leaf namespace owner")
     declaration_namespaces = tuple(
         module.declaration_namespace
         for module in modules
         if module.declaration_namespace is not None
-        and module.declaration_namespace != _RELEASED_SHARED_DECLARATION_NAMESPACE
+        and module.declaration_namespace
+        not in {_RELEASED_SHARED_DECLARATION_NAMESPACE, _H3_LEAF_NAMESPACE}
     )
     if len(set(resources)) != len(resources):
         raise ValueError("formal resource manifest contains duplicate resources")

@@ -474,3 +474,38 @@ def test_native_declaration_owner_rejects_unmanifested_topics() -> None:
         formalism_audit._declaration_module("fep_fep999.FEP999.invented", {})
     with pytest.raises(ValueError, match="no manifested module owner"):
         formalism_audit._declaration_module("Unowned.invented", {})
+
+
+@pytest.mark.parametrize("unapproved", [None, "Unsafe.customAxiom", "sorryAx"])
+def test_native_semigroup_callsite_checks_unquoted_axiom_names(
+    tmp_path, monkeypatch, unapproved
+):
+    """Exercise the real native-test acceptance path without starting a compiler."""
+    import re
+
+    from tests import test_horizon2_markov_semigroup as native
+
+    calls = []
+
+    def captured_output(probe, **kwargs):
+        names = re.findall(r"(?m)^#print axioms (\S+)$", probe.read_text())
+        assert names
+        calls.append(names)
+        axioms = ["propext", "Classical.choice", "Quot.sound"]
+        if unapproved is not None:
+            axioms.append(unapproved)
+        output = "\n".join(
+            f"'{name}' depends on axioms: [{', '.join(axioms)}]" for name in names
+        )
+        return subprocess.CompletedProcess([], 0, output, "")
+
+    monkeypatch.setattr(
+        native, "lake_executable", lambda **kwargs: "unused-test-compiler"
+    )
+    monkeypatch.setattr(native, "run_lean_compile_probe", captured_output)
+    if unapproved is None:
+        native.test_h2_4b_bridge_and_dissipation_use_standard_axioms(tmp_path)
+    else:
+        with pytest.raises(AssertionError):
+            native.test_h2_4b_bridge_and_dissipation_use_standard_axioms(tmp_path)
+    assert len(calls) == 1

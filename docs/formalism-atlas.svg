@@ -16,7 +16,7 @@
         </style>
 <rect class="background" width="1600" height="1292"/>
 <text class="title" x="40" y="55">Formalism composition atlas</text>
-<text class="subtitle" x="40" y="84">168 canonical topics · 22 joined families · 156 authored relations · 72 maintained modules</text>
+<text class="subtitle" x="40" y="84">168 canonical topics · 22 joined families · 156 authored relations · 75 maintained modules</text>
 <text class="subtitle" x="40" y="108">Data-driven family layout; full topic, relation, capability, and module records remain available in the companion accessible HTML tables.</text>
 <g data-area-summary="ActiveInference" role="group" aria-label="ActiveInference, 37 topics">
 <rect class="area-card" x="40" y="142" width="493" height="122" rx="14" style="stroke:#0f766e;fill:#ccfbf1"/>

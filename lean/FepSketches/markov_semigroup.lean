@@ -30,6 +30,53 @@ structure NativeKernelSemigroup {State : Type*} [MeasurableSpace State]
   kernel_add : ∀ left right,
     kernel (left + right) = kernel right ∘ₖ kernel left
 
+/-- A law family closed under concrete kernel evolution. Admissibility describes
+law parameters (e.g. PSD covariance), not a semigroup or invariance conclusion.
+The row parameter identity is a concrete mean/covariance evolution law. -/
+structure ParameterKernelAction {State : Type*} [MeasurableSpace State]
+    (kernel : ℝ≥0 → Kernel State State)
+    [∀ time, IsMarkovKernel (kernel time)] (Parameter : Type*) where
+  law : Parameter → Measure State
+  admissible : Parameter → Prop
+  evolve : ℝ≥0 → Parameter → Parameter
+  rowParameter : ℝ≥0 → State → Parameter
+  row_admissible : ∀ time state, admissible (rowParameter time state)
+  row_law : ∀ time state, kernel time state = law (rowParameter time state)
+  closure : ∀ time parameter, admissible parameter →
+    kernel time ∘ₘ law parameter = law (evolve time parameter)
+  row_add : ∀ left right state,
+    rowParameter (left + right) state = evolve right (rowParameter left state)
+
+namespace ParameterKernelAction
+variable {State Parameter : Type*} [MeasurableSpace State]
+  {kernel : ℝ≥0 → Kernel State State}
+  [∀ time, IsMarkovKernel (kernel time)]
+
+/-- One closure-to-Chapman--Kolmogorov proof, shared by scalar and vector laws.
+The later/right slice acts on the earlier/left row. -/
+theorem kernel_add (action : ParameterKernelAction kernel Parameter)
+    (left right : ℝ≥0) : kernel (left + right) = kernel right ∘ₖ kernel left := by
+  apply DFunLike.ext _ _
+  intro state
+  rw [Kernel.comp_apply]
+  calc
+    kernel (left + right) state = action.law (action.rowParameter (left + right) state) :=
+      action.row_law (left + right) state
+    _ = action.law (action.evolve right (action.rowParameter left state)) :=
+      congrArg action.law (action.row_add left right state)
+    _ = kernel right ∘ₘ action.law (action.rowParameter left state) :=
+      (action.closure right _ (action.row_admissible left state)).symm
+    _ = kernel right ∘ₘ kernel left state := by rw [← action.row_law left state]
+
+/-- An admissible fixed parameter yields an invariant measure, without assuming
+invariance as a field of the interface. -/
+theorem invariant_of_fixed (action : ParameterKernelAction kernel Parameter)
+    (parameter : Parameter) (hParameter : action.admissible parameter)
+    (hFixed : ∀ time, action.evolve time parameter = parameter) (time : ℝ≥0) :
+    Kernel.Invariant (kernel time) (action.law parameter) := by
+  rw [Kernel.Invariant, action.closure time parameter hParameter, hFixed time]
+end ParameterKernelAction
+
 namespace NativeKernelSemigroup
 
 variable {State : Type*} [MeasurableSpace State]

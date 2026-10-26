@@ -211,6 +211,9 @@ def next_cohort_review() -> dict:
 
 def next_cohort_maturity_raw(raw: bytes) -> bytes:
     """Undo only the full authenticated new #071 prose epoch before old raw seals."""
+    from tests._support.landauer_epoch import maturity_before
+
+    raw = maturity_before(raw)
     review = next_cohort_review()
     if hashlib.sha256(raw).hexdigest() != review["maturity_after_sha256"]:
         return raw
@@ -275,7 +278,9 @@ def next_cohort_theorem_extension(declarations: dict) -> set[str]:
 
 def historical_prose_rows(rows: list[dict], section: str) -> list[dict]:
     """Undo enumerated exact field values; other changes reach original seals."""
-    restored = reverse_next_cohort_rows(rows, section)
+    from tests._support.landauer_epoch import rows_before
+
+    restored = rows_before(reverse_next_cohort_rows(rows, section), section)
     for scope, identity, field, historical, current in _HISTORICAL_PROSE_FIELDS:
         if scope != section:
             continue
@@ -321,6 +326,9 @@ def historical_maturity_prose_bytes(raw: bytes) -> bytes:
 
 def historical_core_prose(source: str) -> str:
     """Invert exactly the two current comments before unchanged core-byte seals."""
+    from tests._support.landauer_epoch import source_before
+
+    source = source_before(source, "src/fep_lean/formal/compositions/core.lean")
     if (
         hashlib.sha256(source.encode()).hexdigest()
         != "4f2969cca55290de0c5d3c8189b8dbc88c1f93dc7507e2afd1eb54ba97b09d42"
@@ -460,6 +468,9 @@ def reverse_information_entries(
 
 def restore_information_owner(source: str, owner: str, project_root: Path) -> str:
     """Require every current byte, remove approved additions, and hash its preimage."""
+    from tests._support.landauer_epoch import source_before
+
+    source = source_before(source, owner)
     if owner == "src/fep_lean/formal/variational_duality.lean":
         source = restore_finite_rate_distortion_owner(source, project_root)
     if owner == "src/fep_lean/formal/compositions/core.lean":
@@ -629,7 +640,9 @@ def primary_alignment_review(project_root: Path) -> dict:
 
 
 def restore_primary_alignment_bodies(bodies: dict, project_root: Path) -> dict:
-    restored = dict(bodies)
+    from tests._support.landauer_epoch import bodies_before
+
+    restored = bodies_before(bodies)
     for change in primary_alignment_review(project_root)["body_changes"]:
         assert restored[change["id"]] == change["after"]
         restored[change["id"]] = change["before"]
@@ -669,6 +682,10 @@ def restore_primary_alignment_owner(source: str, project_root: Path) -> str:
 def primary_alignment_theorem_extension(
     declarations: dict, project_root: Path
 ) -> set[str]:
+    from tests._support.landauer_epoch import statement_view
+    from tests._support.source_epoch import historical_h3_owner_view
+
+    declarations = statement_view(historical_h3_owner_view(declarations, project_root))
     review = primary_alignment_review(project_root)
     for name, digest in review["old_declaration_statement_sha256"].items():
         assert name in declarations
@@ -1016,3 +1033,28 @@ def proof_performance_theorem_extension(declarations: dict) -> set[str]:
     return set(_PROOF_PERFORMANCE_THEOREM_EXTENSION) | next_cohort_theorem_extension(
         declarations
     )
+
+
+# Exact new derived laws; public scalar/vector compatibility theorems stay sealed.
+_GAUSSIAN_KERNEL_ACTION_EXTENSION = {
+    "FEP.MarkovSemigroup.ParameterKernelAction.kernel_add": (
+        "src/fep_lean/formal/markov_semigroup.lean",
+        "f03988285dafc642c5eb01b1abe2bc99df1c4c3232af55f4ed00651ce63c0313",
+    ),
+    "FEP.MarkovSemigroup.ParameterKernelAction.invariant_of_fixed": (
+        "src/fep_lean/formal/markov_semigroup.lean",
+        "cf78feef19d50580398070599b8e1ad01c08675f850ab129ac76bda07b790469",
+    ),
+}
+
+
+def gaussian_kernel_action_theorem_extension(declarations: dict) -> set[str]:
+    """Bind the two reviewed shared laws without changing any historical roster."""
+    for name, (owner, digest) in _GAUSSIAN_KERNEL_ACTION_EXTENSION.items():
+        assert name in declarations
+        assert declarations[name]["source_owner"] == owner
+        assert (
+            hashlib.sha256(declarations[name]["statement"].encode()).hexdigest()
+            == digest
+        )
+    return set(_GAUSSIAN_KERNEL_ACTION_EXTENSION)

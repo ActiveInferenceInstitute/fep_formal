@@ -155,15 +155,28 @@ The exact roster and roles live in the manifest; this page projects them for nav
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `compositions.h3_case_study` | composition | `FEPComposed.H3CaseStudy` | h3_reference_model, markov_blanket, native_blanket, causal_dynamics, compositions.finite_scientific_implications, compositions.smooth_reference_kernel, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.finite_policy_action, path_thermodynamics |
+| `compositions.h3_case_study_model_control` | composition | `FEPComposed.H3CaseStudy` | h3_reference_model, markov_blanket, native_blanket, causal_dynamics, compositions.finite_scientific_implications, compositions.smooth_reference_kernel, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.finite_policy_action, path_thermodynamics |
 
 ## Layer 13 (1 module)
 
 | Module | Role | Namespace | Depends on |
 | --- | --- | --- | --- |
-| `composed` | aggregate | `—` | compositions.core, compositions.measure_variational, compositions.control_temporal, compositions.causal_predictive, compositions.thermo_geometry, compositions.collective_learning, compositions.risk_calibration, compositions.policy_trees, compositions.native_blanket_transfer, compositions.exponential_family, compositions.continuous_time, compositions.finite_scientific_implications, compositions.finite_policy_action, compositions.finite_reference_agent, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.smooth_reference_kernel, compositions.finite_kernel_category, compositions.efe_policy_selection, compositions.perception_action_loop, compositions.bayesian_model_reduction, compositions.efe_time_scale_separation, compositions.helmholtz_ao_ness, compositions.geometric_mechanics, compositions.h3_case_study |
+| `compositions.h3_case_study_path_information` | composition | `FEPComposed.H3CaseStudy` | compositions.h3_case_study_model_control, h3_reference_model, markov_blanket, native_blanket, causal_dynamics, compositions.finite_scientific_implications, compositions.smooth_reference_kernel, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.finite_policy_action, path_thermodynamics |
 
-Total maintained formal modules: **72** across **14** dependency layers.
+## Layer 14 (1 module)
+
+| Module | Role | Namespace | Depends on |
+| --- | --- | --- | --- |
+| `compositions.h3_case_study_cost_feedback` | composition | `FEPComposed.H3CaseStudy` | compositions.h3_case_study_model_control, compositions.h3_case_study_path_information, h3_reference_model, markov_blanket, native_blanket, causal_dynamics, compositions.finite_scientific_implications, compositions.smooth_reference_kernel, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.finite_policy_action, path_thermodynamics |
+
+## Layer 15 (2 modules)
+
+| Module | Role | Namespace | Depends on |
+| --- | --- | --- | --- |
+| `composed` | aggregate | `—` | compositions.core, compositions.measure_variational, compositions.control_temporal, compositions.causal_predictive, compositions.thermo_geometry, compositions.collective_learning, compositions.risk_calibration, compositions.policy_trees, compositions.native_blanket_transfer, compositions.exponential_family, compositions.continuous_time, compositions.finite_scientific_implications, compositions.finite_policy_action, compositions.finite_reference_agent, compositions.gaussian_filter, compositions.gaussian_control, compositions.gaussian_grid_path, compositions.smooth_reference_kernel, compositions.finite_kernel_category, compositions.efe_policy_selection, compositions.perception_action_loop, compositions.bayesian_model_reduction, compositions.efe_time_scale_separation, compositions.helmholtz_ao_ness, compositions.geometric_mechanics, compositions.h3_case_study_model_control, compositions.h3_case_study_path_information, compositions.h3_case_study_cost_feedback |
+| `compositions.h3_case_study` | aggregate | `—` | compositions.h3_case_study_model_control, compositions.h3_case_study_path_information, compositions.h3_case_study_cost_feedback |
+
+Total maintained formal modules: **75** across **16** dependency layers.
 
 
 ## Reading order

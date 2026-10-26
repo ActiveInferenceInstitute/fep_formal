@@ -24,7 +24,9 @@ public import FepSketches.compositions.bayesian_model_reduction
 public import FepSketches.compositions.efe_time_scale_separation
 public import FepSketches.compositions.helmholtz_ao_ness
 public import FepSketches.compositions.geometric_mechanics
-public import FepSketches.compositions.h3_case_study
+public import FepSketches.compositions.h3_case_study_model_control
+public import FepSketches.compositions.h3_case_study_path_information
+public import FepSketches.compositions.h3_case_study_cost_feedback
 
 @[expose] public section
 

@@ -45,6 +45,7 @@ from tests._support.fast_relaxation_review import fast_relaxation_theorem_extens
 from tests._support.lean_module_contract import (
     exact_information_review,
     finite_rate_distortion_theorem_extension,
+    gaussian_kernel_action_theorem_extension,
     next_cohort_review,
     obligation_theorem_extension,
     primary_alignment_theorem_extension,
@@ -206,6 +207,20 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         with pytest.raises(AssertionError):
             primary_alignment_theorem_extension(tampered, ROOT)
 
+    from tests._support.landauer_epoch import theorem_extension
+
+    landauer_extension = theorem_extension(declarations)
+    kernel_action_extension = gaussian_kernel_action_theorem_extension(declarations)
+    for selected in sorted(kernel_action_extension):
+        for mutation in ("missing", "owner", "statement"):
+            changed = {name: dict(value) for name, value in declarations.items()}
+            if mutation == "missing":
+                del changed[selected]
+            else:
+                field = "source_owner" if mutation == "owner" else "statement"
+                changed[selected][field] = "unapproved"
+            with pytest.raises(AssertionError):
+                gaussian_kernel_action_theorem_extension(changed)
     proof_performance_extension = proof_performance_theorem_extension(declarations)
     # Preserve the original 77 exact additions and the seven composed bridges.
     for selected in sorted(next_cohort_review()["new_theorems"]):
@@ -250,6 +265,8 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - obligation_extension
             - primary_alignment_extension
             - proof_performance_extension
+            - kernel_action_extension
+            - landauer_extension
         )
         == 2185
     )

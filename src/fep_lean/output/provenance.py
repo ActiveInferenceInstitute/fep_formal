@@ -16,7 +16,7 @@ from pathlib import Path
 from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST, body_source_relative_paths
 from fep_lean.formal.manifest import FORMAL_MODULES, formal_resource_relative_paths
 
-OWNER_MANIFEST_VERSION = 26
+OWNER_MANIFEST_VERSION = 27
 
 # Globs are discovery rules only. They must never define the digest roster:
 # deleting a source file would otherwise silently delete it from the claimed

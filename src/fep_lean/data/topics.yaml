@@ -4765,28 +4765,51 @@ topics:
   supporting_theorems:
   - fep050_erasure_not_injective
   - fep050_erasureEntropyLoss_eq
+  - fep050_generalized_landauer_heat_bound
   - fep050_landauer_heat_bound
+  - fep050_landauer_heat_bound_of_entropy_balance
+  - fep050_landauer_work_bound_of_entropy_balance
   - fep050_landauerBound_pos
   boundary_theorems: []
   semantic_disposition: formalized
-  nl: 'A noninjective reset maps an unbiased bit to a pure state and loses exactly kB log 2 entropy; nonnegative total entropy
-    at positive temperature derives the corresponding heat bound, and work above heat derives the work bound. Assumption scope:
-    The derivation explicitly assumes the second-law total-entropy inequality, positive environmental temperature, and work
-    at least as large as dissipated heat. It does not model a microscopic Hamiltonian or finite-time erasure protocol. Semantic
-    disposition: `formalized`.
+  nl: 'A normalized finite path erasure model with forward-supported local detailed balance derives mean bath heat at least
+    kB T times the prior''s binary Shannon entropy when the final bit is reset. The fair-prior corner gives kB T log 2, and
+    work dominating that mean heat obeys the same threshold. No second-law inequality is assumed by these path-model bounds.
+    Assumption scope: ErasureModel supplies finite normalized forward and aligned reverse path laws, initial and final marginals,
+    positive beta, reverse support on every forward-supported path, and local detailed balance. The primary work theorem additionally
+    requires positive kB and T, beta = 1/(kB T), reset to false, prior(true) = 1/2, and meanHeat <= W. The generalized prior
+    endpoint assumes the same beta identification and reset but does not separately require positive kB and T; the model forces
+    their product positive. Shannon entropy and mean path production are dimensionless nats: meanHeat = kB T sigma + kB T
+    (H(prior) - H(final)). For physical entropy loss DeltaS = kB DeltaH, the latter term is T DeltaS. Local detailed balance
+    and work/heat domination are modeling assumptions, not a microscopic derivation, first-law proof, finite-time realization,
+    laboratory result, or causal claim. The separately named entropy-balance helpers remain conditional and do not construct
+    a path protocol. Semantic disposition: `formalized`.
 
     '
-  assumption_review: The derivation explicitly assumes the second-law total-entropy inequality, positive environmental temperature,
-    and work at least as large as dissipated heat. It does not model a microscopic Hamiltonian or finite-time erasure protocol.
-  non_vacuity: The reset identifies true and false, the unbiased-to-pure entropy change is exactly nonzero for kB > 0, and
-    equality in the environmental balance saturates the Landauer threshold.
-  acceptance_probe: native Lean compile of fep050_erasure_not_injective, fep050_erasureEntropyLoss_eq, fep050_landauer_heat_bound,
-    fep050_landauer_work_bound, and fep050_landauerBound_pos.
-  lean_sketch: "import Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Tactic.Linarith\nimport Mathlib.Tactic.NormNum\n\
-    \nnamespace FEP050\n\n/-- Logical reset of a binary memory to `false`. -/\ndef fep050_erasure (_bit : Bool) : Bool :=\
-    \ false\n\n/-- Reset is logically irreversible because it is not injective. -/\ntheorem fep050_erasure_not_injective :\n\
-    \    ¬Function.Injective fep050_erasure := by\n  intro hinjective\n  have hfalse_true : false = true := hinjective (by\
-    \ rfl)\n  simp at hfalse_true\n\n/-- Thermodynamic bit entropy in nats with Boltzmann constant `kB`. -/\nnoncomputable\
+  assumption_review: 'ErasureModel supplies finite normalized forward and aligned reverse path laws, initial and final marginals,
+    positive beta, reverse support on every forward-supported path, and local detailed balance. The primary work theorem additionally
+    requires positive kB and T, beta = 1/(kB T), reset to false, prior(true) = 1/2, and meanHeat <= W. The generalized prior
+    endpoint assumes the same beta identification and reset but does not separately require positive kB and T; the model forces
+    their product positive. Shannon entropy and mean path production are dimensionless nats: meanHeat = kB T sigma + kB T
+    (H(prior) - H(final)). For physical entropy loss DeltaS = kB DeltaH, the latter term is T DeltaS. Local detailed balance
+    and work/heat domination are modeling assumptions, not a microscopic derivation, first-law proof, finite-time realization,
+    laboratory result, or causal claim. The separately named entropy-balance helpers remain conditional and do not construct
+    a path protocol.'
+  non_vacuity: reversibleErasureWitness constructs a normalized reset with aligned reverse law equal to the forward law, derived
+    zero production, and heat equal to binEntropy(prior(true))/beta. At kB = 2 and T = 3 the fair witness attains 6 log 2;
+    the actual prior(true) = 3/4 witness attains its generalized bound strictly below the fair threshold. Equality is proved
+    for these mathematical witnesses rather than supplied as a model field or claimed for an apparatus.
+  acceptance_probe: Warning-strict native Lean compile and axiom inspection of the focused and aggregate generalized, fair
+    heat, primary work, and conditional entropy-balance helpers; the existing full core composition must compile with its
+    explicit conditional helper endpoint. Imported maintained controls must verify heat encoding, fair bound, reversible equality,
+    biased bound, strict biased-versus-fair boundary, and work domination at the same positive scale. Dropping reset, beta
+    identification, or local detailed balance must not be accepted as the path theorem. Current-source qualification remains
+    separate from this semantic review and from historical external compile receipts.
+  lean_sketch: "import FepSketches.path_thermodynamics\nimport Mathlib.Analysis.SpecialFunctions.BinaryEntropy\nimport Mathlib.Tactic.Linarith\n\
+    import Mathlib.Tactic.NormNum\n\nnamespace FEP050\n\n/-- Logical reset of a binary memory to `false`. -/\ndef fep050_erasure\
+    \ (_bit : Bool) : Bool := false\n\n/-- Reset is logically irreversible because it is not injective. -/\ntheorem fep050_erasure_not_injective\
+    \ :\n    ¬Function.Injective fep050_erasure := by\n  intro hinjective\n  have hfalse_true : false = true := hinjective\
+    \ (by rfl)\n  simp at hfalse_true\n\n/-- Thermodynamic bit entropy in nats with Boltzmann constant `kB`. -/\nnoncomputable\
     \ def fep050_bitEntropy (kB p : ℝ) : ℝ :=\n  kB * Real.binEntropy p\n\n/-- Entropy lost when an unbiased bit is reset\
     \ to a pure state. -/\nnoncomputable def fep050_erasureEntropyLoss (kB : ℝ) : ℝ :=\n  fep050_bitEntropy kB (2 : ℝ)⁻¹ -\
     \ fep050_bitEntropy kB 0\n\n/-- Resetting an unbiased bit loses exactly `kB log 2` entropy. -/\ntheorem fep050_erasureEntropyLoss_eq\
@@ -4796,16 +4819,33 @@ topics:
     \ (Q T kB : ℝ) : ℝ :=\n  fep050_environmentEntropyChange Q T - fep050_erasureEntropyLoss kB\n\n/-- Landauer threshold\
     \ `kB T log 2`. -/\nnoncomputable def fep050_landauerBound (kB T : ℝ) : ℝ :=\n  kB * T * Real.log 2\n\n/-- The second-law\
     \ entropy balance derives the Landauer heat bound; the\nthreshold inequality is a conclusion rather than an input. -/\n\
-    theorem fep050_landauer_heat_bound\n    {Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T\
-    \ kB) :\n    fep050_landauerBound kB T ≤ Q := by\n  have hratio : kB * Real.log 2 ≤ Q / T := by\n    rw [fep050_totalEntropyChange,\
+    theorem fep050_landauer_heat_bound_of_entropy_balance\n    {Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange\
+    \ Q T kB) :\n    fep050_landauerBound kB T ≤ Q := by\n  have hratio : kB * Real.log 2 ≤ Q / T := by\n    rw [fep050_totalEntropyChange,\
     \ fep050_environmentEntropyChange,\n      fep050_erasureEntropyLoss_eq] at hsecondLaw\n    exact sub_nonneg.mp hsecondLaw\n\
     \  have hheat : (kB * Real.log 2) * T ≤ Q :=\n    (le_div_iff₀ hT).mp hratio\n  rw [fep050_landauerBound]\n  nlinarith\n\
-    \n/-- If supplied work dominates dissipated heat, the heat bound yields the\nLandauer work bound. -/\ntheorem fep050_landauer_work_bound\n\
-    \    {W Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q ≤ W) :\n\
-    \    fep050_landauerBound kB T ≤ W :=\n  (fep050_landauer_heat_bound hT hsecondLaw).trans hworkHeat\n\n/-- The Landauer\
-    \ threshold is positive for positive `kB` and temperature. -/\ntheorem fep050_landauerBound_pos\n    {kB T : ℝ} (hkB :\
-    \ 0 < kB) (hT : 0 < T) :\n    0 < fep050_landauerBound kB T := by\n  exact mul_pos (mul_pos hkB hT)\n    (Real.log_pos\
-    \ (by norm_num : (1 : ℝ) < 2))\n\nend FEP050\n"
+    \n/-- Conditional entropy-balance helper retained for the existing constitutive\ncomposition. This helper does not itself\
+    \ construct a path protocol. -/\ntheorem fep050_landauer_work_bound_of_entropy_balance\n    {W Q T kB : ℝ} (hT : 0 < T)\n\
+    \    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q ≤ W) :\n    fep050_landauerBound kB T ≤ W\
+    \ :=\n  (fep050_landauer_heat_bound_of_entropy_balance hT hsecondLaw).trans hworkHeat\n\n/-- Reset bound for an arbitrary\
+    \ prior. Heat is the model's mean bath heat;\nlocal detailed balance encodes σ = β Q + Δs_sys and β = 1/(kB T).\nThus\
+    \ Q = kB T σ + kB T (H(initial) - H(final)); no second-law premise. -/\ntheorem fep050_generalized_landauer_heat_bound\n\
+    \    {Path : Type*} [Fintype Path]\n    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {kB T : ℝ} (hBeta : model.beta\
+    \ = (kB * T)⁻¹)\n    (hReset : model.IsReset) :\n    kB * T * Real.binEntropy (model.prior true) ≤ model.meanHeat := by\n\
+    \  have hBound := FEP.PathThermodynamics.erasure_landauer_reset model hReset\n  rw [hBeta, div_inv_eq_mul] at hBound\n\
+    \  calc\n    kB * T * Real.binEntropy (model.prior true) =\n        Real.binEntropy (model.prior true) * (kB * T) := by\
+    \ ring\n    _ ≤ model.meanHeat := hBound\n\n/-- Fair-bit corner of the finite path reset bound. Positivity and inverse\n\
+    thermal scale are explicit physical identifications, not a heat inequality. -/\ntheorem fep050_landauer_heat_bound\n \
+    \   {Path : Type*} [Fintype Path]\n    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {kB T : ℝ} (_hkB : 0 <\
+    \ kB) (_hT : 0 < T)\n    (hBeta : model.beta = (kB * T)⁻¹)\n    (hReset : model.IsReset) (hFair : model.prior true = 1\
+    \ / 2) :\n    fep050_landauerBound kB T ≤ model.meanHeat := by\n  have hBound := fep050_generalized_landauer_heat_bound\
+    \ model hBeta hReset\n  rw [hFair, one_div, Real.binEntropy_two_inv] at hBound\n  exact hBound\n\n/-- Supplied work dominating\
+    \ the path model's mean heat obeys Landauer. -/\ntheorem fep050_landauer_work_bound\n    {Path : Type*} [Fintype Path]\n\
+    \    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {W kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T)\n    (hBeta : model.beta\
+    \ = (kB * T)⁻¹)\n    (hReset : model.IsReset) (hFair : model.prior true = 1 / 2)\n    (hworkHeat : model.meanHeat ≤ W)\
+    \ :\n    fep050_landauerBound kB T ≤ W :=\n  (fep050_landauer_heat_bound model hkB hT hBeta hReset hFair).trans hworkHeat\n\
+    \n/-- The Landauer threshold is positive for positive `kB` and temperature. -/\ntheorem fep050_landauerBound_pos\n   \
+    \ {kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T) :\n    0 < fep050_landauerBound kB T := by\n  exact mul_pos (mul_pos hkB hT)\n\
+    \    (Real.log_pos (by norm_num : (1 : ℝ) < 2))\n\nend FEP050\n"
   latex_equations:
   - \neg{}\mathsf{Function.Injective}\,\mathsf{fep050\_erasure}
   - '\begin{aligned}
@@ -4829,6 +4869,45 @@ topics:
     \\
 
     &(\mathsf{hworkHeat} : Q \le W) \\
+
+    &\mathsf{fep050\_landauerBound}\,\mathsf{kB}\,T \le W
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Path} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Path}]\,(\mathsf{model} : \mathsf{FEP.PathThermodynamics.ErasureModel}\,\mathsf{Path})
+    \\
+
+    &\{\mathsf{kB}\,T : \mathbb{R}\}\,(\mathsf{hBeta} : \mathsf{model.beta} = (\mathsf{kB} \cdot T)^{-1})\,(\mathsf{hReset}
+    : \mathsf{model.IsReset}) \\
+
+    &\mathsf{kB} \cdot T \cdot \mathsf{Real.binEntropy}\,(\mathsf{model.prior}\,\mathsf{true}) \le \mathsf{model.meanHeat}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Path} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Path}]\,(\mathsf{model} : \mathsf{FEP.PathThermodynamics.ErasureModel}\,\mathsf{Path})
+    \\
+
+    &\{\mathsf{kB}\,T : \mathbb{R}\}\,(_hkB : 0 < \mathsf{kB})\,(_hT : 0 < T)\,(\mathsf{hBeta} : \mathsf{model.beta} = (\mathsf{kB}
+    \cdot T)^{-1}) \\
+
+    &(\mathsf{hReset} : \mathsf{model.IsReset})\,(\mathsf{hFair} : \mathsf{model.prior}\,\mathsf{true} = 1 / 2) \\
+
+    &\mathsf{fep050\_landauerBound}\,\mathsf{kB}\,T \le \mathsf{model.meanHeat}
+
+    \end{aligned}'
+  - '\begin{aligned}
+
+    &\{\mathsf{Path} : \mathsf{Type}^{*}\}\,[\mathsf{Fintype}\,\mathsf{Path}]\,(\mathsf{model} : \mathsf{FEP.PathThermodynamics.ErasureModel}\,\mathsf{Path})
+    \\
+
+    &\{W\,\mathsf{kB}\,T : \mathbb{R}\}\,(\mathsf{hkB} : 0 < \mathsf{kB})\,(\mathsf{hT} : 0 < T)\,(\mathsf{hBeta} : \mathsf{model.beta}
+    = (\mathsf{kB} \cdot T)^{-1}) \\
+
+    &(\mathsf{hReset} : \mathsf{model.IsReset})\,(\mathsf{hFair} : \mathsf{model.prior}\,\mathsf{true} = 1 / 2) \\
+
+    &(\mathsf{hworkHeat} : \mathsf{model.meanHeat} \le W) \\
 
     &\mathsf{fep050\_landauerBound}\,\mathsf{kB}\,T \le W
 
