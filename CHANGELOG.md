@@ -1,3 +1,17 @@
+## Unreleased
+
+- Add a slice-local independent audit for the bounded two-agent Gaussian
+  composition witness. Replay authored inputs with Kalman/Joseph recursion,
+  check retained native children and every comparison, and retain explicit
+  refusal for unsupported coupling, control or malformed source metadata.
+- Add separately compiled finite post-evidence product-weight algebra and
+  false-claim controls. These laws do not prove Gaussian conditioning, a
+  parser, generated execution or universal formal-to-numerical equivalence.
+- Record the published 2.1.0 scholarly manuscript DOI
+  `10.5281/zenodo.23607007` and verified nine-file public inventory. Preserve
+  the accepted 2.1.0 software tag/source and previous scholarly records.
+  Later source-pair changes require fresh bridge/Q7 and native qualification.
+
 ## 2.1.0 — 2026-10-24 — Bounded compositions and coordinated release
 
 - Prepare the coordinated FEP_Formal 2.1.0 / GNN 5.0.1 release after normal
