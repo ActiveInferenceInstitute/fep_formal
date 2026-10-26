@@ -101,11 +101,7 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
 | [FORM-S5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/88) — Route the fep-050 body through the hypothesis-free Landauer bound | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The fep-050 body no longer carries `hsecondLaw`; it consumes `FEP.PathThermodynamics.erasure_generalized_landauer` as a reviewed body change. |
-| [FORM-S10](https://github.com/ActiveInferenceInstitute/fep_formal/issues/93) — Review the fep-034↔047 relation against the delivered tree sum-product theory | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The `fep-034 ↔ fep-047` edge carries a dated review note; any tag change is a reviewed seal delta. |
-| [FORM-S11](https://github.com/ActiveInferenceInstitute/fep_formal/issues/94) — Review the fep-071 invariant as a Bayesian update | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The Bayes-sound planners, fep-134 re-derivation and observation-ignoring countermodel are on `main`; an independent semantic review moves the 071 invariant from 'authored update' to 'Bayesian update'. |
-| [FORM-S12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/95) — Dirichlet–categorical learning, stage 2 (digamma, Dirichlet measure, variational update) | Medium | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | Stage 1 is on `main`. A library probe like FORM-J2/J3 either starts stage 2 or records a no-go. |
 | [FORM-S14](https://github.com/ActiveInferenceInstitute/fep_formal/issues/97) — Measure-level Gaussian Markov blanket from precision sparsity | Major | Mathlib Gaussian conditional kernel ([gap memo](docs/lean4.md#gaussian-conditioning-gap-memo)), [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | The algebraic dimension-generic statement, Fin4 instance and countermodel are on `main`; `K_ei = 0` implies `e ⟂ i ∣ (s, a)` as a `condIndepFun` statement for every positive-definite block precision. |
-| [FORM-S15](https://github.com/ActiveInferenceInstitute/fep_formal/issues/98) — Recover the fep-163 weighted-divergence carrier from the Fokker–Planck current | Minor | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | A qualified theorem derives the fep-163 expansion (or a stated discretization of it) from `FEP.NessFlow.probCurrent` and `divergence`, with any pairing recorded as a reviewed relation. |
 
 ### Lean formal layer and relations
 
@@ -113,7 +109,6 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | --- | --- | --- | --- |
 | [LEAN-2](https://github.com/ActiveInferenceInstitute/fep_formal/issues/100) — One Gaussian Markov semigroup interface | Medium | Independent | Duplicate names drop to one; unchanged `#print axioms`; H3 declaration names preserved. |
 | [LEAN-4](https://github.com/ActiveInferenceInstitute/fep_formal/issues/102) — Split h3_case_study.lean and retire its maxHeartbeats override | Medium | [CUR-08](https://github.com/ActiveInferenceInstitute/fep_formal/issues/55) | No `set_option` in the formal tree; declaration names unchanged; native export refreshed. |
-| [LEAN-5](https://github.com/ActiveInferenceInstitute/fep_formal/issues/103) — A reviewed derivational edge in every family | Medium | [FORM-D3](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75) | At most six families without a `formal` edge; endpoint-qualification notes per the adjudication doc; relation tests pass. |
 
 ### Package infrastructure
 
