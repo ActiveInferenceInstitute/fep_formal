@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "b83e8607e8b8bcd54ee69abae1bca7df1317ff88",
+    "commit": "24deccdcc5295a8d2705339eadacd30dcc65365c",
     "owners": {
       "docs/design/gnn-bridge/bridge-contract.md": "2c03c2f9060c2ef3d7d954656830838a16b112485d21b760124ea5bb3ae7b498",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
@@ -191,7 +191,7 @@
       "src/fep_lean/verification/environment.py": "8582bde3125acf14815f9a15cd4f97c72028b9615173807f56bb48cc9c73656c",
       "src/fep_lean/verification/formalism_audit.py": "d50b90faf528655a8619ebc100a5f3091696aa1ae7ee3403e1c9e3028338f62f",
       "src/fep_lean/verification/gnn_artifact_proof.py": "edf215c7aefe3b967afa1ea2248dc6bf51b3f503c32ccf6dd63475360e3a781b",
-      "src/fep_lean/verification/gnn_artifact_receipt.py": "cc5f3cbc9889495576aa3550c2fb1791eb042024f97d7a1af56ba7eb1c855d79",
+      "src/fep_lean/verification/gnn_artifact_receipt.py": "29b3bdbe5203ed9d10302a2cc1c2f78481d150fdb9b40ff581c619ac5311526e",
       "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "5bcf6ac9b3004a13e077089b463cf21768ad61d54b2ef02bfa75dbf96029aca1",
       "src/fep_lean/verification/gnn_julia_artifact_proof.py": "c3963e31367fa1b1deac5de0dd561cf742da38b7a24c1bbbb8e7d8014b006e3c",
       "src/fep_lean/verification/horizon_acceptance.py": "b1e25d40ee6c42c9a661e1d2fa23f3814365c50cbdc04276da929b54ff62958d",

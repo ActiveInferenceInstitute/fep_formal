@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-q871__s2/FepLeanContinuousOU.md",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-q871__s2/rendered"
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-vds4p4_a/FepLeanContinuousOU.md",
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-vds4p4_a/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "b808220b5a6922f687b5aabb7e91b9d8ee93984959515f0e4179fd902b02b1d0"
+    "sha256": "a5afa5dcd4e6a80eff380a35c650692611a62fbdcdfd6c617cb2c46cd36993b3"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -210,7 +210,7 @@
       "src/fep_lean/verification/environment.py": "8582bde3125acf14815f9a15cd4f97c72028b9615173807f56bb48cc9c73656c",
       "src/fep_lean/verification/formalism_audit.py": "d50b90faf528655a8619ebc100a5f3091696aa1ae7ee3403e1c9e3028338f62f",
       "src/fep_lean/verification/gnn_artifact_proof.py": "edf215c7aefe3b967afa1ea2248dc6bf51b3f503c32ccf6dd63475360e3a781b",
-      "src/fep_lean/verification/gnn_artifact_receipt.py": "cc5f3cbc9889495576aa3550c2fb1791eb042024f97d7a1af56ba7eb1c855d79",
+      "src/fep_lean/verification/gnn_artifact_receipt.py": "29b3bdbe5203ed9d10302a2cc1c2f78481d150fdb9b40ff581c619ac5311526e",
       "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "5bcf6ac9b3004a13e077089b463cf21768ad61d54b2ef02bfa75dbf96029aca1",
       "src/fep_lean/verification/gnn_julia_artifact_proof.py": "c3963e31367fa1b1deac5de0dd561cf742da38b7a24c1bbbb8e7d8014b006e3c",
       "src/fep_lean/verification/horizon_acceptance.py": "b1e25d40ee6c42c9a661e1d2fa23f3814365c50cbdc04276da929b54ff62958d",
@@ -1193,7 +1193,7 @@
       "src/fep_lean/verification/environment.py": "8582bde3125acf14815f9a15cd4f97c72028b9615173807f56bb48cc9c73656c",
       "src/fep_lean/verification/formalism_audit.py": "d50b90faf528655a8619ebc100a5f3091696aa1ae7ee3403e1c9e3028338f62f",
       "src/fep_lean/verification/gnn_artifact_proof.py": "edf215c7aefe3b967afa1ea2248dc6bf51b3f503c32ccf6dd63475360e3a781b",
-      "src/fep_lean/verification/gnn_artifact_receipt.py": "cc5f3cbc9889495576aa3550c2fb1791eb042024f97d7a1af56ba7eb1c855d79",
+      "src/fep_lean/verification/gnn_artifact_receipt.py": "29b3bdbe5203ed9d10302a2cc1c2f78481d150fdb9b40ff581c619ac5311526e",
       "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "5bcf6ac9b3004a13e077089b463cf21768ad61d54b2ef02bfa75dbf96029aca1",
       "src/fep_lean/verification/gnn_julia_artifact_proof.py": "c3963e31367fa1b1deac5de0dd561cf742da38b7a24c1bbbb8e7d8014b006e3c",
       "src/fep_lean/verification/horizon_acceptance.py": "b1e25d40ee6c42c9a661e1d2fa23f3814365c50cbdc04276da929b54ff62958d",
@@ -1992,7 +1992,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "a43f272e219441234984f195bd4f84463e9748b473d6a196d9966839d8ad486b",
+  "source_pin_sha256": "66301545cee72907f794f028b65bc51893fc346df765aefed8ded3dc877880fa",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
