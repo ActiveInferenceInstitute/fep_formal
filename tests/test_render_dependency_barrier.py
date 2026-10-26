@@ -329,8 +329,22 @@ def test_import_does_not_require_environment_or_access_network(monkeypatch):
         "apt_install_failure_propagates",
     ],
 )
+@pytest.mark.parametrize(
+    "mirror",
+    [
+        "azure",
+        "official",
+        "unknown",
+        "mixed",
+        "missing",
+        "wrong_key",
+        "uri_continuation",
+        "suite_continuation",
+        "duplicate_key",
+    ],
+)
 def test_render_apt_network_prefix(
-    tmp_path, update_code, install_code, expected_code, expected_calls
+    tmp_path, update_code, install_code, expected_code, expected_calls, mirror
 ):
     """Execute only the real workflow APT prefix with Bash builtin stubs."""
     workflow = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
@@ -361,9 +375,45 @@ def test_render_apt_network_prefix(
         check=False,
     )
     assert syntax.returncode == 0, syntax.stdout + syntax.stderr
+    sources = tmp_path / "ubuntu.sources"
+    azure = (
+        "Types: deb\nURIs: https://azure.archive.ubuntu.com/ubuntu/\n"
+        "Suites: noble noble-updates noble-backports\nComponents: main universe\n"
+        "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n\n"
+        "Types: deb\nURIs: http://azure.archive.ubuntu.com/ubuntu/\n"
+        "Suites: noble-security\nComponents: main universe\n"
+        "Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg\n"
+    )
+    official = azure.replace(
+        "https://azure.archive.ubuntu.com/", "https://archive.ubuntu.com/"
+    ).replace("http://azure.archive.ubuntu.com/", "http://security.ubuntu.com/")
+    original = {
+        "azure": azure,
+        "official": official,
+        "unknown": azure.replace("azure.archive.ubuntu.com", "unexpected.invalid"),
+        "mixed": azure.replace(
+            "Suites: noble-security", "Suites: noble noble-security"
+        ),
+        "missing": "# no Ubuntu source configured\n",
+        "wrong_key": azure.replace("ubuntu-archive-keyring.gpg", "unexpected.gpg"),
+        "uri_continuation": azure.replace(
+            "/ubuntu/\n", "/ubuntu/\n https://unexpected.invalid/ubuntu/\n", 1
+        ),
+        "suite_continuation": azure.replace(
+            "Suites: noble-security", "Suites: noble-security\n noble"
+        ),
+        "duplicate_key": azure.replace(
+            "Types: deb", "Signed-By: /unexpected.gpg\nTypes: deb", 1
+        ),
+    }[mirror]
+    sources.write_text(original)
+    literal = "Path('/etc/apt/sources.list.d/ubuntu.sources')"
+    assert prefix.count(literal) == 1
+    prefix = prefix.replace(literal, f"Path({str(sources)!r})")
     argv_log = tmp_path / "apt-argv.nul"
     stub = r"""
 sudo() {
+  if [[ "$1" == python3 ]]; then command "$@"; return; fi
   printf '%s\0' "$@" >> "$APT_ARGV_LOG"
   printf '\0' >> "$APT_ARGV_LOG"
   [[ "$1" == apt-get ]] || return 99
@@ -389,6 +439,13 @@ sudo() {
         timeout=5,
         check=False,
     )
+    if mirror not in {"azure", "official"}:
+        assert result.returncode != 0
+        assert not argv_log.exists()
+        assert sources.read_text() == original
+        assert "FEP_RENDER_INSTALL_PHASE" not in result.stdout
+        return
+    assert sources.read_text() == official
     assert result.returncode == expected_code, result.stdout + result.stderr
     raw = argv_log.read_bytes()
     assert raw.endswith(b"\0\0")

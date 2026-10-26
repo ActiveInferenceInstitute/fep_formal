@@ -1,3 +1,14 @@
+## Unreleased
+
+- Select Ubuntu's primary package archives only for the render runner's known
+  deb822 sources, preserving signing keys, suites, transport scheme, package
+  selection and the existing provisioning deadline. Reject unknown layouts
+  before package operations; retain update and install failures.
+
+- Correct the active campaign pickup to reflect completed issue scopes without
+  claiming their deferred scientific results. Use American English in current
+  guidance and remove outdated bridge entry-point wording.
+
 ## 2.1.0 — 2026-10-24 — Bounded compositions and coordinated release
 
 - Prepare the coordinated FEP_Formal 2.1.0 / GNN 5.0.1 release after normal

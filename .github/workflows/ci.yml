@@ -579,6 +579,46 @@ jobs:
         timeout-minutes: 12
         shell: bash
         run: |
+          # Avoid the Azure mirror's observed steady trickle. Preserve Ubuntu's
+          # suites, components and signing key; unknown layouts fail closed.
+          sudo python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          sources = Path('/etc/apt/sources.list.d/ubuntu.sources')
+          original = sources.read_text()
+          blocks = original.split('\n\n')
+          selected = 0
+          for index, block in enumerate(blocks):
+              if not block.strip() or all(not line.strip() or line.startswith('#') for line in block.splitlines()):
+                  continue
+              lines = [line for line in block.splitlines() if line.strip() and not line.lstrip().startswith('#')]
+              keys = [line.split(':', 1)[0] for line in lines]
+              if any(line[0].isspace() for line in lines) or len(set(keys)) != len(keys):
+                  raise SystemExit('Folded or duplicate Ubuntu source fields')
+              uris = re.findall(r'^URIs: (.+)$', block, re.MULTILINE)
+              suites = re.findall(r'^Suites: (.+)$', block, re.MULTILINE)
+              if len(uris) != 1 or len(suites) != 1 or not re.search(r'^Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg$', block, re.MULTILINE):
+                  raise SystemExit('Unrecognized Ubuntu deb822 source layout')
+              allowed = {scheme + '://' + host + '/ubuntu' + slash
+                         for scheme in ('http', 'https')
+                         for host in ('azure.archive.ubuntu.com', 'archive.ubuntu.com', 'security.ubuntu.com')
+                         for slash in ('', '/')}
+              if uris[0] not in allowed or not suites[0].split():
+                  raise SystemExit('Unrecognized Ubuntu archive source')
+              security = [suite.endswith('-security') for suite in suites[0].split()]
+              if any(security) and not all(security):
+                  raise SystemExit('Mixed security and ordinary Ubuntu suites')
+              host = 'security.ubuntu.com' if all(security) else 'archive.ubuntu.com'
+              replacement = 'URIs: ' + uris[0].split(':', 1)[0] + '://' + host + '/ubuntu/'
+              blocks[index] = re.sub(r'^URIs: .+$', replacement, block, flags=re.MULTILINE)
+              selected += 1
+          if not selected:
+              raise SystemExit('Ubuntu archive sources are missing')
+          updated = '\n\n'.join(blocks)
+          if updated != original:
+              sources.write_text(updated)
+          PY
           # Connection/data inactivity bounds, not an overall download deadline.
           # The existing 12-minute step timeout remains the whole-step bound.
           render_apt_network_options=(
