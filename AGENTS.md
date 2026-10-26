@@ -108,6 +108,9 @@ output. Use the owner-provided generators and their `--check` modes.
 
 ## Maintaining documentation
 
+Use American English in maintained prose and comments. Preserve exact public
+identifiers, quotations, external titles, and receipt-bound historical bytes.
+
 Use **FEP_Formal** for the project and `fep_formal` for the checkout/repository.
 Use `fep_lean` for the real Python distribution/import namespace and `fep-lean`
 for the CLI. Historical titles, external integration paths, environment
