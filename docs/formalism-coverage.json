@@ -4595,8 +4595,9 @@
     },
     {
       "module": "FepSketches.path_thermodynamics",
-      "topic_count": 7,
+      "topic_count": 8,
       "topic_ids": [
+        "fep-050",
         "fep-093",
         "fep-094",
         "fep-095",
@@ -5177,11 +5178,11 @@
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
     "theorem_witnessed_relations": 150,
-    "theorems": 2411,
+    "theorems": 2414,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
-    "topic_import_edges": 267,
-    "topic_theorems": 587,
+    "topic_import_edges": 268,
+    "topic_theorems": 590,
     "topics": 168
   },
   "relation_counts": {
@@ -5441,7 +5442,7 @@
     {
       "blocked_by": null,
       "kind": "formal",
-      "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modeling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem.",
+      "rationale": "Conditional constitutive bridge: nonnegative conductances let fep_fep049.FEP049.fep049_entropyProduction_nonneg supply a nonnegative quadratic entropy-production value. The explicit hBalance premise identifies that real value with fep_fep050.FEP050.fep050_totalEntropyChange Q T kB; positive T and Q<=W then let fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance derive the Landauer work threshold. The identification, including its entropy units and any time-scale interpretation, is assumed rather than derived by either topic. This witness retains its original statement and consumes the conditional entropy-balance helper; it does not instantiate ErasureModel, establish local detailed balance, or remove the assumptions of the current path-model primary theorem.",
       "source": "fep-050",
       "target": "fep-049",
       "witness": "FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production"
@@ -7572,25 +7573,26 @@
     },
     {
       "abbreviation_count": 0,
-      "acceptance_probe": "native Lean compile of fep050_erasure_not_injective, fep050_erasureEntropyLoss_eq, fep050_landauer_heat_bound, fep050_landauer_work_bound, and fep050_landauerBound_pos.",
+      "acceptance_probe": "Warning-strict native Lean compile and axiom inspection of the focused and aggregate generalized, fair heat, primary work, and conditional entropy-balance helpers; the existing full core composition must compile with its explicit conditional helper endpoint. Imported maintained controls must verify heat encoding, fair bound, reversible equality, biased bound, strict biased-versus-fair boundary, and work domination at the same positive scale. Dropping reset, beta identification, or local detailed balance must not be accepted as the path theorem. Current-source qualification remains separate from this semantic review and from historical external compile receipts.",
       "area": "Thermodynamics",
-      "assumption_review": "The derivation explicitly assumes the second-law total-entropy inequality, positive environmental temperature, and work at least as large as dissipated heat. It does not model a microscopic Hamiltonian or finite-time erasure protocol.",
+      "assumption_review": "ErasureModel supplies finite normalized forward and aligned reverse path laws, initial and final marginals, positive beta, reverse support on every forward-supported path, and local detailed balance. The primary work theorem additionally requires positive kB and T, beta = 1/(kB T), reset to false, prior(true) = 1/2, and meanHeat <= W. The generalized prior endpoint assumes the same beta identification and reset but does not separately require positive kB and T; the model forces their product positive. Shannon entropy and mean path production are dimensionless nats: meanHeat = kB T sigma + kB T (H(prior) - H(final)). For physical entropy loss DeltaS = kB DeltaH, the latter term is T DeltaS. Local detailed balance and work/heat domination are modeling assumptions, not a microscopic derivation, first-law proof, finite-time realization, laboratory result, or causal claim. The separately named entropy-balance helpers remain conditional and do not construct a path protocol.",
       "definition_count": 6,
       "family": "core-thermodynamics",
       "id": "fep-050",
       "imports": [
+        "FepSketches.path_thermodynamics",
         "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
         "Mathlib.Tactic.Linarith",
         "Mathlib.Tactic.NormNum"
       ],
-      "invariant": "A noninjective reset maps an unbiased bit to a pure state and loses exactly kB log 2 entropy; nonnegative total entropy at positive temperature derives the corresponding heat bound, and work above heat derives the work bound.",
+      "invariant": "A normalized finite path erasure model with forward-supported local detailed balance derives mean bath heat at least kB T times the prior's binary Shannon entropy when the final bit is reset. The fair-prior corner gives kB T log 2, and work dominating that mean heat obeys the same threshold. No second-law inequality is assumed by these path-model bounds.",
       "mathlib_hints": [
         "Analysis.SpecialFunctions.BinaryEntropy"
       ],
-      "non_vacuity": "The reset identifies true and false, the unbiased-to-pure entropy change is exactly nonzero for kB > 0, and equality in the environmental balance saturates the Landauer threshold.",
+      "non_vacuity": "reversibleErasureWitness constructs a normalized reset with aligned reverse law equal to the forward law, derived zero production, and heat equal to binEntropy(prior(true))/beta. At kB = 2 and T = 3 the fair witness attains 6 log 2; the actual prior(true) = 3/4 witness attains its generalized bound strictly below the fair threshold. Equality is proved for these mathematical witnesses rather than supplied as a model field or claimed for an apparatus.",
       "primary_theorem": "fep050_landauer_work_bound",
       "semantic_disposition": "formalized",
-      "theorem_count": 5,
+      "theorem_count": 8,
       "title": "Logical Erasure and the Landauer Bound"
     },
     {

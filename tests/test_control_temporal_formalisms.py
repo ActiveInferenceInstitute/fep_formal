@@ -24,8 +24,6 @@ FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
 CONTROL_IDS = tuple(f"fep-{number:03d}" for number in range(65, 72))
 TEMPORAL_IDS = tuple(f"fep-{number:03d}" for number in range(72, 79))
 
-pytestmark = pytest.mark.serial_lean
-
 
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
     return run_lean_compile_probe(
@@ -195,6 +193,7 @@ def test_soft_bellman_topic_requires_nonempty_actions_and_uses_temperature() -> 
     assert "softBellmanValue_le_actionEnergy" in foundation
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize(
     "resource", ("controlled_markov.lean", "temporal_inference.lean")
 )
@@ -207,6 +206,7 @@ def test_slice03_foundations_compile_warning_free(
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize(
     ("topic_id", "body"),
     (*CONTROL_BODIES.items(), *TEMPORAL_BODIES.items()),

@@ -1,5 +1,18 @@
 ## Unreleased
 
+- Move 182 source-only test cases into the Python feedback lane while keeping
+  all compiler probes serial. That marker-only transition preserves all 4,469
+  collected identities and every test function body; native verification and
+  publication gates remain unchanged.
+
+- Derive fep-050 heat and work bounds from normalized finite-path erasure
+  models, including biased priors and reversible equality. Keep the explicit
+  entropy-balance helpers for the conditional constitutive-law bridge; retain
+  the reviewed finite-model scope and existing maturity disposition.
+- Validate the actual current Landauer statements and metadata while preserving
+  authenticated historical review snapshots. Run the artifact-proof freshness
+  check with the active Python interpreter in isolated worktrees.
+
 - Add a slice-local independent audit for the bounded two-agent Gaussian
   composition witness. Replay authored inputs with Kalman/Joseph recursion,
   check retained native children and every comparison, and retain explicit

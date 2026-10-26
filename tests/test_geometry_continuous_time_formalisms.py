@@ -109,8 +109,6 @@ FORBIDDEN_DECLARATIONS = re.compile(
 )
 FORBIDDEN_PROOFS = re.compile(r"\b(?:sorry|admit)\b|:\s*True\b")
 
-pytestmark = pytest.mark.serial_lean
-
 
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
     return run_lean_compile_probe(
@@ -528,6 +526,7 @@ def test_slice04_theorem_names_do_not_overclaim_scope() -> None:
     assert all(not forbidden_token.search(name) for name in theorem_names)
 
 
+@pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
     reason="set FEP_LEAN_SLICE04_COMPILE_TEST=1 for serialized native checks",
@@ -542,6 +541,7 @@ def test_slice04_foundations_compile_warning_free(resource: str) -> None:
     assert "warning:" not in output.lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
     reason="set FEP_LEAN_SLICE04_COMPILE_TEST=1 for serialized native checks",

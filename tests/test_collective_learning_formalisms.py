@@ -19,8 +19,6 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
 BODIES_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "catalogue" / "bodies"
 
-pytestmark = pytest.mark.serial_lean
-
 
 class FamilyContract(TypedDict):
     foundation_import: str
@@ -311,6 +309,7 @@ def test_learning_family_pins_two_hypothesis_witnesses_and_zero_support() -> Non
     assert "fep120_zero_evidence_boundary" in bodies["fep-120"]
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize("module_name", tuple(FAMILIES))
 def test_family_foundation_compiles_warning_free(module_name: str) -> None:
     result = _compile(FORMAL_ROOT / f"{module_name}.lean")
@@ -319,6 +318,7 @@ def test_family_foundation_compiles_warning_free(module_name: str) -> None:
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize(
     ("module_name", "topic_id"),
     [
@@ -343,6 +343,7 @@ NON_SPIKE_TOPICS = tuple(
 )
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize(("module_name", "topic_id"), NON_SPIKE_TOPICS)
 def test_each_remaining_topic_compiles_warning_free(
     tmp_path: Path, module_name: str, topic_id: str
@@ -353,6 +354,7 @@ def test_each_remaining_topic_compiles_warning_free(
     assert "warning:" not in (result.stdout + result.stderr).lower()
 
 
+@pytest.mark.serial_lean
 @pytest.mark.parametrize("module_name", tuple(FAMILIES))
 def test_family_body_closure_compiles_warning_free(
     tmp_path: Path, module_name: str

@@ -455,11 +455,11 @@ theorem fep029_quadraticBregman_is_fep104_scalar_instance (x y z : ℝ) :
   rw [hIdentify, hIdentify, hIdentify] at hThree
   simpa [coordinatePairing, mul_sub, sub_mul] using hThree
 
-/-- Discharging fep-050's second-law premise with fep-049's nonnegative
-quadratic entropy production derives the Landauer work bound.  The explicit
-`hBalance` premise identifies the erasure's total entropy change with the
-constitutive-law entropy production; it is a modeling assumption, not a
-consequence of either topic. -/
+/-- Conditional constitutive bridge through the entropy-balance helper.
+The explicit `hBalance` premise identifies erasure total entropy change with
+nonnegative quadratic constitutive entropy production; units and any time-scale
+interpretation belong to that modeling premise. This witness does not construct
+an `ErasureModel` or discharge the current path-model primary's assumptions. -/
 theorem fep050_landauer_work_bound_from_fep049_entropy_production
     {Edge : Type*} [Fintype Edge] {W Q T kB : ℝ} (hT : 0 < T)
     (conductance force : Edge → ℝ)
@@ -472,7 +472,8 @@ theorem fep050_landauer_work_bound_from_fep049_entropy_production
     rw [hBalance]
     exact fep_fep049.FEP049.fep049_entropyProduction_nonneg
       conductance force hConductance
-  exact fep_fep050.FEP050.fep050_landauer_work_bound hT hSecondLaw hWorkHeat
+  exact fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance
+    hT hSecondLaw hWorkHeat
 
 end CoreTopicDerivations
 

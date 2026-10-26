@@ -944,7 +944,7 @@
       },
       {
         "kind": "formal",
-        "rationale": "Discharging fep-050's second-law premise with fep-049's nonnegative quadratic entropy production derives the Landauer work bound. The identification of the erasure's total entropy change with the constitutive-law entropy production is an explicit premise (`hBalance`) of the witness, a modeling assumption rather than a consequence of either topic. Added 2026-10-08 (LEAN-8, issue 106). Actual consumed endpoint lemmas: fep_fep049.FEP049.fep049_entropyProduction_nonneg, fep_fep050.FEP050.fep050_landauer_work_bound. The explicit hBalance identification and Q<=W are premises, not conclusions of the entropy-production theorem.",
+        "rationale": "Conditional constitutive bridge: nonnegative conductances let fep_fep049.FEP049.fep049_entropyProduction_nonneg supply a nonnegative quadratic entropy-production value. The explicit hBalance premise identifies that real value with fep_fep050.FEP050.fep050_totalEntropyChange Q T kB; positive T and Q<=W then let fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance derive the Landauer work threshold. The identification, including its entropy units and any time-scale interpretation, is assumed rather than derived by either topic. This witness retains its original statement and consumes the conditional entropy-balance helper; it does not instantiate ErasureModel, establish local detailed balance, or remove the assumptions of the current path-model primary theorem.",
         "source": "fep-050",
         "target": "fep-049",
         "witness": "FEPComposed.fep050_landauer_work_bound_from_fep049_entropy_production"
@@ -8956,7 +8956,7 @@
     "catalogue/bodies/core_bayesian_mechanics.py": "1f2e57886c3397aa4a08b8bb2a5872aad56e5d046d8422fe395d7efc1afed81d",
     "catalogue/bodies/core_free_energy.py": "371ccc56c5fb3f834a2a8f42bec7bc9841254108e9f7403597ea3f8b0fa5468b",
     "catalogue/bodies/core_information_geometry.py": "837d0ae1c4b420c09c6c58b217e3a3870a0bc08d8b6db3475bb47606c26de75f",
-    "catalogue/bodies/core_thermodynamics.py": "927d2f0b88e19cc2a0b5424b85c960cbce473ba53ad50f4c0ba76e734dbf6520",
+    "catalogue/bodies/core_thermodynamics.py": "ed78ab84cfaf2bcc7a6306efa822031cea33f0fdd179e3611c00ce5695ec3c18",
     "catalogue/bodies/exponential_family_geometry.py": "a3c02b9733044f0f1ae3b289bd9ff955de19f0d4acb114044bc4825c1dce4708",
     "catalogue/bodies/finite_sample_risk_calibration.py": "332880b4c4ed76ba1c7660b819e88bcd5ed0f0d1cd9b9f24f1c73780b9351e42",
     "catalogue/bodies/geometric_mechanics.py": "45064a01b3d3cd49fdbb7cfe20133c7d76de3426605ebf7844bed0a83b9a8c92",
@@ -8985,7 +8985,7 @@
     "formal/compositions/collective_learning.lean": "07c5617a21dd16dc745fa2d6bd3dc2e5dda44a1163ee1bfbb10616dd89ef88d1",
     "formal/compositions/continuous_time.lean": "82e75229c4bea00c54c9a2f305201c9486bd65913f5f83bdee3956c0efedec78",
     "formal/compositions/control_temporal.lean": "abe7417377156805d94f3aa94e7bfe341eb8bf946ec5e68216f5d15bec1d6663",
-    "formal/compositions/core.lean": "4f2969cca55290de0c5d3c8189b8dbc88c1f93dc7507e2afd1eb54ba97b09d42",
+    "formal/compositions/core.lean": "9547ab60a536cb8a2211b3d4ef064dd15d68be445508a070ba23e22187e33882",
     "formal/compositions/efe_policy_selection.lean": "c1ccc05af21013867cc80ffc7072c9a1f7f1665519774e2770d08d5161d2ac96",
     "formal/compositions/efe_time_scale_separation.lean": "f6d33fb0958a85b7d0885a28fc397a15a7de327e675834dbd2682a6f9e581eb5",
     "formal/compositions/exponential_family.lean": "f9597994791db5f07d770aedee8d9972851f1954fc59deb39b6a4b74b505c3bc",
@@ -9050,9 +9050,9 @@
     "formal/temporal_inference.lean": "7b1260acd419ac368ea490d58b2e33c02b53d969e690ce1b805a177f2bb9e3b4",
     "formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
     "inputs/catalogue_metadata.yaml": "f2659ffb8e72f5d2881154b55c3537a2743ce5a83689b19b63b1d685e698693c",
-    "inputs/formalism_relations.yaml": "570b78f087c44520aa25ac7124a5275834129aa81418f29acee6af628adb4fec",
+    "inputs/formalism_relations.yaml": "7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80",
     "inputs/positioning.yaml": "d18b1e937babd732ac94414935f606e671ffb54a19f022de15b0dc45ed245e2d",
-    "inputs/theorem_maturity.yaml": "d1730762d51a5369e2a7ae90ebc5292e8c83de8797fcc11cc992a452e0983266",
+    "inputs/theorem_maturity.yaml": "35250c1fcb1bb77137ee6b3fdfbc93f3a0e6c031668b55a2fa574dca18df11a5",
     "lean_source.py": "67790e70ab3ae3af48d9d2cd570e0d641f18fa03519c06b17c9a0b21acbc6781",
     "methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
     "methods/model.py": "8b517cc056b4b8e577790d50333762febc4f0ff5ceae96a431cc2dc15bf321dc",
@@ -171088,7 +171088,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep004_fep038_metric_nonneg",
-        "source_line": 583,
+        "source_line": 584,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep004_fep038_metric_nonneg {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1)\n    (v : ℝ) : 0 ≤ fep_fep038.FEP038.fep038_fisherMetric p v v",
         "statement_sha256": "a4e4cb76e21bc8efac6b26a23f8b74282a61f974231e33afde3de5828eab2690"
@@ -171290,7 +171290,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep011_fep026_complexity_nonneg",
-        "source_line": 594,
+        "source_line": 595,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep011_fep026_complexity_nonneg {p : ℝ} (hp : 0 < p) (hp1 : p ≤ 1) :\n    0 ≤ fep_fep026.FEP026.fep026_priorComplexity p",
         "statement_sha256": "567d5d54d79aae7adb224abb3bca31c956dd5de2dc0900111be6590849be92dc"
@@ -171537,7 +171537,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_finite_equilibrium_derivative",
-        "source_line": 683,
+        "source_line": 684,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_finite_equilibrium_derivative (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) :\n    HasDerivAt (helmholtzFreeEnergy E) (-entropy (helmholtzGibbsLaw E T)) T",
         "statement_sha256": "af11a8cea7046caa2eb7e49fc88feba50cb57082a9ff66787f700fd797bb413f"
@@ -171664,7 +171664,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_finite_helmholtz_decomposition",
-        "source_line": 665,
+        "source_line": 666,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_finite_helmholtz_decomposition (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) (q : FiniteLaw α) :\n    fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q) =\n      helmholtzFreeEnergy E T + T * finiteKL q (helmholtzGibbsLaw E T)",
         "statement_sha256": "0dddc3f7da883441b4b4d5b043ae84277564b58a1f3c5f649b28cdbc4e4393d8"
@@ -171789,7 +171789,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_finite_helmholtz_unique_minimum",
-        "source_line": 672,
+        "source_line": 673,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_finite_helmholtz_unique_minimum (E : α → ℝ) {T : ℝ}\n    (hT : 0 < T) :\n    (∀ q : FiniteLaw α, helmholtzFreeEnergy E T ≤\n      fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q)) ∧\n    (∀ q : FiniteLaw α,\n      fep_fep013.FEP013.fep013_helmholtz (expectation q E) T (entropy q) =\n        helmholtzFreeEnergy E T ↔ q = helmholtzGibbsLaw E T)",
         "statement_sha256": "bf9425eb544d54ddb270fe0b7f9adba5de3c0d77a430b841794701568dc0c91d"
@@ -171970,7 +171970,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep013_two_level_uniform_strict",
-        "source_line": 689,
+        "source_line": 690,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep013_two_level_uniform_strict :\n    helmholtzFreeEnergy helmholtzBoolEnergy 1 <\n      fep_fep013.FEP013.fep013_helmholtz\n        (expectation (FiniteLaw.uniform : FiniteLaw Bool) helmholtzBoolEnergy)\n        1 (entropy (FiniteLaw.uniform : FiniteLaw Bool))",
         "statement_sha256": "fdb255f78dacd7b78d878e1c878dd5ad4225d8b4d6a51b809717282eedecbf2f"
@@ -172064,7 +172064,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep016_quadratic_pairs_fep032_descent",
-        "source_line": 703,
+        "source_line": 704,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep016_quadratic_pairs_fep032_descent\n    (prec step center x : ℝ) (hp : 0 ≤ prec)\n    (hstep0 : 0 ≤ step) (hstep2 : step ≤ 2) :\n    0 ≤ prec * (x - center) ^ 2 ∧\n      (fep_fep032.FEP032.fep032_quadraticUpdate step center x - center) ^ 2 ≤\n        (x - center) ^ 2",
         "statement_sha256": "dcbf8fd5ccec1b5c62c1390ec5a8f113ef5eb8e0976b60b169729b26d1b4dc6b"
@@ -172145,7 +172145,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep018_coordinate_derivative_is_fep038",
-        "source_line": 538,
+        "source_line": 539,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep018_coordinate_derivative_is_fep038 {p : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p",
         "statement_sha256": "9e619e4116c5405d06496af930df1a547d93250709a8becd86aa08ac34b274a3"
@@ -172241,7 +172241,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep018_fep038_actual_metric_pullback",
-        "source_line": 563,
+        "source_line": 564,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep018_fep038_actual_metric_pullback {p v w : ℝ}\n    (hp0 : 0 < p) (hp1 : p < 1) :\n    HasDerivAt fep_fep018.FEP018.fep018_fisherCoordinate\n      (fep_fep038.FEP038.fep038_coordinateJacobian p) p ∧\n    fep_fep038.FEP038.fep038_fisherMetric p v w =\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * v) *\n      (fep_fep038.FEP038.fep038_coordinateJacobian p * w)",
         "statement_sha256": "397c48fcf1fa0c4f2db84551a22f44263eaff0675f115736e2951e6775542995"
@@ -172496,7 +172496,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep022_fep027_predictive_child_marginal",
-        "source_line": 634,
+        "source_line": 635,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep022_fep027_predictive_child_marginal\n    {𝓒 Ω 𝓧 : Type*}\n    [MeasurableSpace 𝓒] [MeasurableSpace Ω] [MeasurableSpace 𝓧]\n    (ν : Measure 𝓒) (posterior : Kernel 𝓒 Ω) (likelihood : Kernel Ω 𝓧)\n    [SFinite ν] [IsSFiniteKernel posterior] [IsSFiniteKernel likelihood] :\n    (fep_fep027.FEP027.fep027_hierarchicalJoint ν\n      (fep_fep022.FEP022.fep022_posteriorPredictive posterior likelihood)).snd =\n        likelihood ∘ₘ (posterior ∘ₘ ν)",
         "statement_sha256": "456b82f6829d3cc9e14353a55cbf127786c8b47eacf185f681dcfe651a6edb99"
@@ -173201,7 +173201,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep030_fep031_binary_maxEntropy",
-        "source_line": 519,
+        "source_line": 520,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep030_fep031_binary_maxEntropy (E : Fin 2 → ℝ) (β : ℝ)\n    (q : FiniteLaw (Fin 2))\n    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :\n    (Real.binEntropy (q 0) ≤ Real.log 2 ∧\n      (Real.binEntropy (q 0) = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)) ∧\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β 2 E Finset.univ i) ∧\n    Real.binEntropy (q 0) ≤ Real.binEntropy (energyGibbsLaw E β 0) ∧\n    (Real.binEntropy (q 0) = Real.binEntropy (energyGibbsLaw E β 0) ↔\n      q = energyGibbsLaw E β)",
         "statement_sha256": "6c19d83daec8fe25733c405362626bb30660924d7b3c1cff08c5009e84737c0b"
@@ -173325,7 +173325,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep030_fep031_finite_maxEntropy",
-        "source_line": 491,
+        "source_line": 492,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep030_fep031_finite_maxEntropy {n : ℕ} [NeZero n]\n    (E : Fin n → ℝ) (β : ℝ) (q : FiniteLaw (Fin n))\n    (hq : expectation q E = expectation (energyGibbsLaw E β) E) :\n    (∀ i, energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i) ∧\n    entropy q ≤ entropy (energyGibbsLaw E β) ∧\n    (entropy q = entropy (energyGibbsLaw E β) ↔ q = energyGibbsLaw E β)",
         "statement_sha256": "a6f98627c558431d5b14b7f8a226957d20eb8e76207830eb65a3e401124b983a"
@@ -173386,7 +173386,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep030_fin2_entropy_eq_binEntropy",
-        "source_line": 501,
+        "source_line": 502,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep030_fin2_entropy_eq_binEntropy (q : FiniteLaw (Fin 2)) :\n    entropy q = Real.binEntropy (q 0)",
         "statement_sha256": "51612a4a0095f08b91cf0d444096f811219d1e64ebd602643f358444d80b63c0"
@@ -173466,7 +173466,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep030_finite_binary_entropy_bound",
-        "source_line": 511,
+        "source_line": 512,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep030_finite_binary_entropy_bound (q : FiniteLaw (Fin 2)) :\n    entropy q ≤ Real.log 2 ∧\n      (entropy q = Real.log 2 ↔ q 0 = (2 : ℝ)⁻¹)",
         "statement_sha256": "79ba79de68a70a1ac52299a7cf9fb7bbed0bac757bf5d6ada8de20d12cb21edc"
@@ -173565,7 +173565,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep031_energyGibbs_is_topicProbability",
-        "source_line": 483,
+        "source_line": 484,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep031_energyGibbs_is_topicProbability {n : ℕ} [NeZero n]\n    (E : Fin n → ℝ) (β : ℝ) (i : Fin n) :\n    energyGibbsLaw E β i =\n      fep_fep031.FEP031.fep031_gibbsProbability β n E Finset.univ i",
         "statement_sha256": "6f804fc9158ac1ef059cc40debd8011bcc276c4967304789916bd3c4c45e46c1"
@@ -173797,7 +173797,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep032_fep043_gradient_iteration_tendsto",
-        "source_line": 600,
+        "source_line": 601,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep032_fep043_gradient_iteration_tendsto\n    (η a center x : ℝ) (h0 : 0 < 2*a*η) (h2 : 2*a*η < 2) :\n    Filter.Tendsto\n      (fun n : ℕ => ((fun y => y-η*fep_fep043.FEP043.fep043_quadraticGradient a center y)^[n]) x)\n      Filter.atTop (nhds center)",
         "statement_sha256": "581c94a314bf9bced62799632ebbdab0d64c5a5de3c2cc49631b3584a36dca15"
@@ -174022,7 +174022,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep034_fep017_filter_joint_reconstruction",
-        "source_line": 651,
+        "source_line": 652,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep034_fep017_filter_joint_reconstruction\n    {Ω 𝓧 : Type*} [MeasurableSpace Ω] [MeasurableSpace 𝓧]\n    [StandardBorelSpace Ω] [Nonempty Ω]\n    (τ : Kernel Ω Ω) (κ : Kernel Ω 𝓧) (μ : Measure Ω)\n    [IsFiniteMeasure μ] [IsFiniteKernel τ] [IsFiniteKernel κ] :\n    (κ ∘ₘ (τ ∘ₘ μ)) ⊗ₘ fep_fep034.FEP034.fep034_filter τ κ μ =\n      ((τ ∘ₘ μ) ⊗ₘ κ).map Prod.swap",
         "statement_sha256": "d70be8c55da52e2d5a9d9f2ea2650d5d2038f689e296328acd043093b542d3b9"
@@ -174689,7 +174689,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEPComposed.fep039_fep005_partition_conservation_via_cover",
-        "source_line": 613,
+        "source_line": 614,
         "source_owner": "src/fep_lean/formal/compositions/core.lean",
         "statement": "theorem fep039_fep005_partition_conservation_via_cover\n    (assign : Fin 20 → fep_fep005.FEP005.BlkPart) (stateEnergy : Fin 20 → ℝ) :\n    fep_fep039.FEP039.fep039_global_fe (fep005_blockEnergy assign stateEnergy) =\n      ∑ state : Fin 20, stateEnergy state",
         "statement_sha256": "14ba71983211cac1dc2a49c4c54b66b39d30bb2ec93a52f103affd5847df7f1b"
@@ -175045,8 +175045,8 @@
             "role": "proof_reference"
           },
           {
-            "identifier": "fep_fep050.FEP050.fep050_landauer_work_bound",
-            "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound",
+            "identifier": "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance",
+            "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance",
             "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
@@ -207549,6 +207549,7 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207558,7 +207559,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep050.FEP050.fep050_erasureEntropyLoss_eq",
-        "source_line": 26,
+        "source_line": 27,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
         "statement": "theorem fep050_erasureEntropyLoss_eq (kB : ℝ) :\n    fep050_erasureEntropyLoss kB = kB * Real.log 2",
         "statement_sha256": "8d39b479810cb3643ec99f43cb464276b1865fc025a21c0cf92f0ac9cf2b6540"
@@ -207571,6 +207572,7 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207580,10 +207582,100 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep050.FEP050.fep050_erasure_not_injective",
-        "source_line": 11,
+        "source_line": 12,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
         "statement": "theorem fep050_erasure_not_injective :\n    ¬Function.Injective fep050_erasure",
         "statement_sha256": "d63f2c8edf98ceb3d8518c69ee13ef9723bd377f189f9ed3a3331c114926869c"
+      },
+      "fep_fep050.FEP050.fep050_generalized_landauer_heat_bound": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Path"
+            ],
+            "role": "typed_binder",
+            "source": "{Path : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Path]",
+            "type_source": "Fintype Path",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "model"
+            ],
+            "role": "typed_binder",
+            "source": "(model : FEP.PathThermodynamics.ErasureModel Path)",
+            "type_source": "FEP.PathThermodynamics.ErasureModel Path",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "kB",
+              "T"
+            ],
+            "role": "typed_binder",
+            "source": "{kB T : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hBeta"
+            ],
+            "role": "typed_binder",
+            "source": "(hBeta : model.beta = (kB * T)⁻¹)",
+            "type_source": "model.beta = (kB * T)⁻¹",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hReset"
+            ],
+            "role": "typed_binder",
+            "source": "(hReset : model.IsReset)",
+            "type_source": "model.IsReset",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "kB * T * Real.binEntropy (model.prior true) ≤ model.meanHeat",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "FEP.PathThermodynamics.erasure_landauer_reset",
+            "qualified_name": "FEP.PathThermodynamics.erasure_landauer_reset",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.path_thermodynamics",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "Mathlib.Tactic.Linarith",
+          "Mathlib.Tactic.NormNum"
+        ],
+        "line_coordinate_kind": "canonical_topic_body_literal",
+        "namespace": "fep_fep050.FEP050",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "fep_fep050.FEP050.fep050_generalized_landauer_heat_bound",
+        "source_line": 69,
+        "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
+        "statement": "theorem fep050_generalized_landauer_heat_bound\n    {Path : Type*} [Fintype Path]\n    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {kB T : ℝ} (hBeta : model.beta = (kB * T)⁻¹)\n    (hReset : model.IsReset) :\n    kB * T * Real.binEntropy (model.prior true) ≤ model.meanHeat",
+        "statement_sha256": "4d1871d771f99256f7001fc50cc61920fadb9c413a8f54ddc30ddb50b209a93a"
       },
       "fep_fep050.FEP050.fep050_landauerBound_pos": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -207625,6 +207717,7 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207634,12 +207727,132 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep050.FEP050.fep050_landauerBound_pos",
-        "source_line": 66,
+        "source_line": 107,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
         "statement": "theorem fep050_landauerBound_pos\n    {kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T) :\n    0 < fep050_landauerBound kB T",
         "statement_sha256": "00abd1258736b3629df941b0dc52389b75008dfd6825817656f05f0794ef649b"
       },
       "fep_fep050.FEP050.fep050_landauer_heat_bound": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Path"
+            ],
+            "role": "typed_binder",
+            "source": "{Path : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Path]",
+            "type_source": "Fintype Path",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "model"
+            ],
+            "role": "typed_binder",
+            "source": "(model : FEP.PathThermodynamics.ErasureModel Path)",
+            "type_source": "FEP.PathThermodynamics.ErasureModel Path",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "kB",
+              "T"
+            ],
+            "role": "typed_binder",
+            "source": "{kB T : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "_hkB"
+            ],
+            "role": "typed_binder",
+            "source": "(_hkB : 0 < kB)",
+            "type_source": "0 < kB",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "_hT"
+            ],
+            "role": "typed_binder",
+            "source": "(_hT : 0 < T)",
+            "type_source": "0 < T",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hBeta"
+            ],
+            "role": "typed_binder",
+            "source": "(hBeta : model.beta = (kB * T)⁻¹)",
+            "type_source": "model.beta = (kB * T)⁻¹",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hReset"
+            ],
+            "role": "typed_binder",
+            "source": "(hReset : model.IsReset)",
+            "type_source": "model.IsReset",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hFair"
+            ],
+            "role": "typed_binder",
+            "source": "(hFair : model.prior true = 1 / 2)",
+            "type_source": "model.prior true = 1 / 2",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "fep050_landauerBound kB T ≤ model.meanHeat",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep050_generalized_landauer_heat_bound",
+            "qualified_name": "fep_fep050.FEP050.fep050_generalized_landauer_heat_bound",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.path_thermodynamics",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "Mathlib.Tactic.Linarith",
+          "Mathlib.Tactic.NormNum"
+        ],
+        "line_coordinate_kind": "canonical_topic_body_literal",
+        "namespace": "fep_fep050.FEP050",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound",
+        "source_line": 84,
+        "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
+        "statement": "theorem fep050_landauer_heat_bound\n    {Path : Type*} [Fintype Path]\n    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {kB T : ℝ} (_hkB : 0 < kB) (_hT : 0 < T)\n    (hBeta : model.beta = (kB * T)⁻¹)\n    (hReset : model.IsReset) (hFair : model.prior true = 1 / 2) :\n    fep050_landauerBound kB T ≤ model.meanHeat",
+        "statement_sha256": "dc3696ab5148488ddc614978c44a6ff6293efe3e0ea423ea8a379047c9ddbd0d"
+      },
+      "fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
           {
@@ -207687,6 +207900,7 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207695,13 +207909,144 @@
         "namespace": "fep_fep050.FEP050",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
-        "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound",
-        "source_line": 43,
+        "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance",
+        "source_line": 44,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
-        "statement": "theorem fep050_landauer_heat_bound\n    {Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB) :\n    fep050_landauerBound kB T ≤ Q",
-        "statement_sha256": "b03285d1e89eaba1cf2e561aa4c83fb7455bfc7d7caf95751b398abe25b7f0e9"
+        "statement": "theorem fep050_landauer_heat_bound_of_entropy_balance\n    {Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB) :\n    fep050_landauerBound kB T ≤ Q",
+        "statement_sha256": "5f310077fbbb4bdada913dc8092655d955012e4b2196b77524ca85fa57fb5396"
       },
       "fep_fep050.FEP050.fep050_landauer_work_bound": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Path"
+            ],
+            "role": "typed_binder",
+            "source": "{Path : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Path]",
+            "type_source": "Fintype Path",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "model"
+            ],
+            "role": "typed_binder",
+            "source": "(model : FEP.PathThermodynamics.ErasureModel Path)",
+            "type_source": "FEP.PathThermodynamics.ErasureModel Path",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "W",
+              "kB",
+              "T"
+            ],
+            "role": "typed_binder",
+            "source": "{W kB T : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hkB"
+            ],
+            "role": "typed_binder",
+            "source": "(hkB : 0 < kB)",
+            "type_source": "0 < kB",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hT"
+            ],
+            "role": "typed_binder",
+            "source": "(hT : 0 < T)",
+            "type_source": "0 < T",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hBeta"
+            ],
+            "role": "typed_binder",
+            "source": "(hBeta : model.beta = (kB * T)⁻¹)",
+            "type_source": "model.beta = (kB * T)⁻¹",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hReset"
+            ],
+            "role": "typed_binder",
+            "source": "(hReset : model.IsReset)",
+            "type_source": "model.IsReset",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hFair"
+            ],
+            "role": "typed_binder",
+            "source": "(hFair : model.prior true = 1 / 2)",
+            "type_source": "model.prior true = 1 / 2",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hworkHeat"
+            ],
+            "role": "typed_binder",
+            "source": "(hworkHeat : model.meanHeat ≤ W)",
+            "type_source": "model.meanHeat ≤ W",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "fep050_landauerBound kB T ≤ W",
+        "context_binders": [],
+        "declaration_mentions": [
+          {
+            "identifier": "fep050_landauer_heat_bound",
+            "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.path_thermodynamics",
+          "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
+          "Mathlib.Tactic.Linarith",
+          "Mathlib.Tactic.NormNum"
+        ],
+        "line_coordinate_kind": "canonical_topic_body_literal",
+        "namespace": "fep_fep050.FEP050",
+        "namespace_variable_context": [],
+        "preceding_scope_directives": [],
+        "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound",
+        "source_line": 96,
+        "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
+        "statement": "theorem fep050_landauer_work_bound\n    {Path : Type*} [Fintype Path]\n    (model : FEP.PathThermodynamics.ErasureModel Path)\n    {W kB T : ℝ} (hkB : 0 < kB) (hT : 0 < T)\n    (hBeta : model.beta = (kB * T)⁻¹)\n    (hReset : model.IsReset) (hFair : model.prior true = 1 / 2)\n    (hworkHeat : model.meanHeat ≤ W) :\n    fep050_landauerBound kB T ≤ W",
+        "statement_sha256": "44ae51f8652eb46d44c591470a9806c0f5fadd16729db884caba5bb1f2415d4f"
+      },
+      "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
           {
@@ -207752,14 +208097,15 @@
         "context_binders": [],
         "declaration_mentions": [
           {
-            "identifier": "fep050_landauer_heat_bound",
-            "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound",
+            "identifier": "fep050_landauer_heat_bound_of_entropy_balance",
+            "qualified_name": "fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance",
             "resolution": "exact or same-namespace source identifier",
             "role": "proof_reference"
           }
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "FepSketches.path_thermodynamics",
           "Mathlib.Analysis.SpecialFunctions.BinaryEntropy",
           "Mathlib.Tactic.Linarith",
           "Mathlib.Tactic.NormNum"
@@ -207768,11 +208114,11 @@
         "namespace": "fep_fep050.FEP050",
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
-        "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound",
-        "source_line": 58,
+        "qualified_name": "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance",
+        "source_line": 59,
         "source_owner": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
-        "statement": "theorem fep050_landauer_work_bound\n    {W Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q ≤ W) :\n    fep050_landauerBound kB T ≤ W",
-        "statement_sha256": "bcddfd0c4aeb92d4e90ca5a4ea6db6c08cc8d917366d469933d326bf9132f71e"
+        "statement": "theorem fep050_landauer_work_bound_of_entropy_balance\n    {W Q T kB : ℝ} (hT : 0 < T)\n    (hsecondLaw : 0 ≤ fep050_totalEntropyChange Q T kB)\n    (hworkHeat : Q ≤ W) :\n    fep050_landauerBound kB T ≤ W",
+        "statement_sha256": "f82e28c62426eef3fd44a43ee553aa85b947e3751ff63f486c87b35b5b687aca"
       },
       "fep_fep051.FEP051.fep051_likelihoodRatio_reconstruction": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -238825,8 +239171,8 @@
       "aggregate_namespace": "fep_fep050.FEP050",
       "area": "Thermodynamics",
       "body_source": "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
-      "body_theorem_count": 5,
-      "canonical_body_sha256": "0101caafca6df6c405dd05f5e1536dba9004148ba5eedfdb236f4b666da6d076",
+      "body_theorem_count": 8,
+      "canonical_body_sha256": "36d02b8ec12a34ff9fd84f7b06483dd93124d85a0b54b37ed2303c16bbcfeb54",
       "canonical_namespace": "FEP050",
       "family": "core-thermodynamics",
       "id": "fep-050",
@@ -238853,23 +239199,29 @@
         "supporting_theorems": [
           "fep_fep050.FEP050.fep050_erasure_not_injective",
           "fep_fep050.FEP050.fep050_erasureEntropyLoss_eq",
+          "fep_fep050.FEP050.fep050_generalized_landauer_heat_bound",
           "fep_fep050.FEP050.fep050_landauer_heat_bound",
+          "fep_fep050.FEP050.fep050_landauer_heat_bound_of_entropy_balance",
+          "fep_fep050.FEP050.fep050_landauer_work_bound_of_entropy_balance",
           "fep_fep050.FEP050.fep050_landauerBound_pos"
         ]
       },
       "semantic_review": {
-        "acceptance_probe": "native Lean compile of fep050_erasure_not_injective, fep050_erasureEntropyLoss_eq, fep050_landauer_heat_bound, fep050_landauer_work_bound, and fep050_landauerBound_pos.",
-        "assumption_review": "The derivation explicitly assumes the second-law total-entropy inequality, positive environmental temperature, and work at least as large as dissipated heat. It does not model a microscopic Hamiltonian or finite-time erasure protocol.",
+        "acceptance_probe": "Warning-strict native Lean compile and axiom inspection of the focused and aggregate generalized, fair heat, primary work, and conditional entropy-balance helpers; the existing full core composition must compile with its explicit conditional helper endpoint. Imported maintained controls must verify heat encoding, fair bound, reversible equality, biased bound, strict biased-versus-fair boundary, and work domination at the same positive scale. Dropping reset, beta identification, or local detailed balance must not be accepted as the path theorem. Current-source qualification remains separate from this semantic review and from historical external compile receipts.",
+        "assumption_review": "ErasureModel supplies finite normalized forward and aligned reverse path laws, initial and final marginals, positive beta, reverse support on every forward-supported path, and local detailed balance. The primary work theorem additionally requires positive kB and T, beta = 1/(kB T), reset to false, prior(true) = 1/2, and meanHeat <= W. The generalized prior endpoint assumes the same beta identification and reset but does not separately require positive kB and T; the model forces their product positive. Shannon entropy and mean path production are dimensionless nats: meanHeat = kB T sigma + kB T (H(prior) - H(final)). For physical entropy loss DeltaS = kB DeltaH, the latter term is T DeltaS. Local detailed balance and work/heat domination are modeling assumptions, not a microscopic derivation, first-law proof, finite-time realization, laboratory result, or causal claim. The separately named entropy-balance helpers remain conditional and do not construct a path protocol.",
         "boundary_theorems": [],
         "disposition": "formalized",
         "id": "fep-050",
-        "invariant": "A noninjective reset maps an unbiased bit to a pure state and loses exactly kB log 2 entropy; nonnegative total entropy at positive temperature derives the corresponding heat bound, and work above heat derives the work bound.",
-        "non_vacuity": "The reset identifies true and false, the unbiased-to-pure entropy change is exactly nonzero for kB > 0, and equality in the environmental balance saturates the Landauer threshold.",
+        "invariant": "A normalized finite path erasure model with forward-supported local detailed balance derives mean bath heat at least kB T times the prior's binary Shannon entropy when the final bit is reset. The fair-prior corner gives kB T log 2, and work dominating that mean heat obeys the same threshold. No second-law inequality is assumed by these path-model bounds.",
+        "non_vacuity": "reversibleErasureWitness constructs a normalized reset with aligned reverse law equal to the forward law, derived zero production, and heat equal to binEntropy(prior(true))/beta. At kB = 2 and T = 3 the fair witness attains 6 log 2; the actual prior(true) = 3/4 witness attains its generalized bound strictly below the fair threshold. Equality is proved for these mathematical witnesses rather than supplied as a model field or claimed for an apparatus.",
         "primary_theorem": "fep050_landauer_work_bound",
         "supporting_theorems": [
           "fep050_erasure_not_injective",
           "fep050_erasureEntropyLoss_eq",
+          "fep050_generalized_landauer_heat_bound",
           "fep050_landauer_heat_bound",
+          "fep050_landauer_heat_bound_of_entropy_balance",
+          "fep050_landauer_work_bound_of_entropy_balance",
           "fep050_landauerBound_pos"
         ]
       },

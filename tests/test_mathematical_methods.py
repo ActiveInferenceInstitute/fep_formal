@@ -206,6 +206,9 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         with pytest.raises(AssertionError):
             primary_alignment_theorem_extension(tampered, ROOT)
 
+    from tests._support.landauer_epoch import theorem_extension
+
+    landauer_extension = theorem_extension(declarations)
     proof_performance_extension = proof_performance_theorem_extension(declarations)
     # Preserve the original 77 exact additions and the seven composed bridges.
     for selected in sorted(next_cohort_review()["new_theorems"]):
@@ -250,6 +253,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             - obligation_extension
             - primary_alignment_extension
             - proof_performance_extension
+            - landauer_extension
         )
         == 2185
     )

@@ -11,6 +11,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 from fractions import Fraction
 from pathlib import Path
 
@@ -295,7 +296,7 @@ def test_probe_render_is_deterministic_and_matches_committed_bytes() -> None:
 
 def test_generate_check_gate_is_fresh() -> None:
     result = subprocess.run(
-        [str(PROJECT_ROOT / ".venv" / "bin" / "python"), str(GENERATOR), "--check"],
+        [sys.executable, str(GENERATOR), "--check"],
         capture_output=True,
         text=True,
         cwd=PROJECT_ROOT,
