@@ -1,5 +1,10 @@
 ## Unreleased
 
+- Cache immutable Lean source masks up to 262,144 characters within the existing
+  32-entry content-keyed limit. Preserve oversized-input bypass, source offsets
+  and lexical refusal behavior. Python 3.14 remains the validation runtime;
+  local Python 3.15 timing observations do not establish CI or release speedups.
+
 - Select Ubuntu's primary package archives only for the render runner's known
   deb822 sources, preserving signing keys, suites, transport scheme, package
   selection and the existing provisioning deadline. Reject unknown layouts

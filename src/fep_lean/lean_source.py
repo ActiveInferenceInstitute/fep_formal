@@ -126,7 +126,8 @@ def _lean_source_mask(source: str) -> tuple[str, list[tuple[int, int | None]]]:
 # Content identity, never filesystem identity. Bound both entry count and each
 # retained source length; cache only the immutable mask, not comment boundaries.
 _MASK_CACHE_MAX_ENTRIES = 32
-_MASK_CACHE_MAX_SOURCE_CHARS = 16_384
+# Cover large maintained modules without admitting unbounded cache entries.
+_MASK_CACHE_MAX_SOURCE_CHARS = 262_144
 
 
 @lru_cache(maxsize=_MASK_CACHE_MAX_ENTRIES)
