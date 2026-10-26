@@ -20,8 +20,10 @@ F01/#75's all-168 statement review/ranking. Their actual closure comments retain
 [primary boundaries](https://github.com/ActiveInferenceInstitute/fep_formal/issues/68#issuecomment-6355633420)
 and [roadmap limits](https://github.com/ActiveInferenceInstitute/fep_formal/issues/75#issuecomment-6355634111).
 These are accepted Y results, not acceptance of this next cohort's new proofs
-or cache changes. The canonical backlog retains 20 open issues, including
-ongoing #63, H3/current-nine criteria and the remaining scientific projects.
+or cache changes. The [canonical backlog](../../TODO.md) owns the current open issue inventory.
+Issue #63 and the bounded scopes #93–#95, #98 and #103 are completed; the
+H3/current-nine criteria and remaining scientific projects retain their own
+acceptance requirements.
 
 ## Owner-directed production-capture retirement
 
@@ -54,9 +56,11 @@ observation, and the error-schema change remains a separate package.
 The [count-learning pickup](spikes/dirichlet-counts-20261020/README.md) exercises
 current owned Stage1 endpoints and the pinned Stage2 library boundary. It adds
 no topic, manifested resource, disposition promotion or terminal horizon result.
-NESS prose is corrected without changing a proof; its missing discretisation
-acceptance remains explicit. These components do not close Issues #95 and #98 or
-their broader scientific prerequisites merely by compiling. The bounded CLI
+The NESS correction and constant-Q/C2 finite-difference limit retain their
+bounded mathematical scope. Issues #95 and #98 closed their bounded stop/go and
+source-correction scopes. Those closures do not establish a generic Dirichlet
+result, a stochastic-process or PDE discretization theorem, or their broader
+scientific prerequisites. The bounded CLI
 extraction scope #126 is completed delivery in the [changelog](../../CHANGELOG.md);
 its closure supplies no broader scientific acceptance.
 
