@@ -1,0 +1,87 @@
+{
+  "annotated_tag_object": "6bc61ffa58428190055245781328820c7c86abac",
+  "anonymous_downloads_match_accepted_payload": true,
+  "checked_date": "2026-10-26",
+  "claim_boundary": "Archival verification of existing accepted source and manuscript bytes only. No new proof, strict provider execution, production capture or generated-runner execution is established.",
+  "doi": "10.5281/zenodo.23607007",
+  "doi_resolution_verified": true,
+  "file_count": 9,
+  "files": [
+    {
+      "bytes": 2093,
+      "filename": "CITATION.cff",
+      "md5": "c4720e343752930df9c7f6a0c4f69ff6",
+      "sha256": "6e96bcecd2613291110f9efb4b9bc48fa177843f8a1569c69641485c200b28da",
+      "source_url": "https://zenodo.org/records/23607007/files/CITATION.cff?download=1"
+    },
+    {
+      "bytes": 15191176,
+      "filename": "FEP_Formal-2.1.0-offline-companion.zip",
+      "md5": "942ebd20b96a252ba648937139207d3a",
+      "sha256": "9bc2dc6fb7cc7673fdf3a91a9a40193f47ba3de1d3490e520985ded7077619ae",
+      "source_url": "https://zenodo.org/records/23607007/files/FEP_Formal-2.1.0-offline-companion.zip?download=1"
+    },
+    {
+      "bytes": 30773932,
+      "filename": "FEP_Formal-2.1.0-source.zip",
+      "md5": "bac53fefe5c91fda1911df00875adf2d",
+      "sha256": "5905df488616696c60803aa790dfeca502a958e1bc4b55a566818d8590e28786",
+      "source_url": "https://zenodo.org/records/23607007/files/FEP_Formal-2.1.0-source.zip?download=1"
+    },
+    {
+      "bytes": 7885960,
+      "filename": "FEP_Formal-2.1.0.pdf",
+      "md5": "023f083f8f09ff7bef8b49ab5a41198c",
+      "sha256": "ba7594ee91f1bc9adf3830ae32e915da9f956436965758381615129d90378953",
+      "source_url": "https://zenodo.org/records/23607007/files/FEP_Formal-2.1.0.pdf?download=1"
+    },
+    {
+      "bytes": 2215,
+      "filename": "LICENSE",
+      "md5": "5a8b2c503ef835b86bfbb11d95d4bfdc",
+      "sha256": "f32d813f7c6c5dcb85ee1713942b7b14a581526bf46a6be6950c02aaf33a467e",
+      "source_url": "https://zenodo.org/records/23607007/files/LICENSE?download=1"
+    },
+    {
+      "bytes": 720,
+      "filename": "SHA256SUMS",
+      "md5": "5ebb4ac8b4330c3540576a4d984be5dc",
+      "sha256": "852c283ce5dba060ac1a650f4c54737f1bf8097ab95b3a5b35408ef9a01ca16f",
+      "source_url": "https://zenodo.org/records/23607007/files/SHA256SUMS?download=1"
+    },
+    {
+      "bytes": 1342677,
+      "filename": "fep_lean-2.1.0-py3-none-any.whl",
+      "md5": "722951cc369971dc093cf12c3f1349c1",
+      "sha256": "833a1c4fd2a5ec3dab3b1ee451ee3c5ad78d0f21ddfd4b00ab7eee06a6c9c938",
+      "source_url": "https://zenodo.org/records/23607007/files/fep_lean-2.1.0-py3-none-any.whl?download=1"
+    },
+    {
+      "bytes": 1816878,
+      "filename": "fep_lean-2.1.0.tar.gz",
+      "md5": "14c6e428d465470cf18c1637fd419588",
+      "sha256": "3af709558e2d718db78c7b5ba8944b042e4cb5b5b0158d0f51691bdcbedb0b09",
+      "source_url": "https://zenodo.org/records/23607007/files/fep_lean-2.1.0.tar.gz?download=1"
+    },
+    {
+      "bytes": 744,
+      "filename": "publication-observation.json",
+      "md5": "74428f40989d9e7a78f3b6ba1e2320a0",
+      "sha256": "37b101605afe30792388490dd0599f9af1c2c1b4dd9e05d0c62bf6a3dec6e8bf",
+      "source_url": "https://zenodo.org/records/23607007/files/publication-observation.json?download=1"
+    }
+  ],
+  "historical_manuscript_records_preserved": true,
+  "metadata_bookends_equal": true,
+  "publication_date": "2026-10-24",
+  "record": "https://zenodo.org/records/23607007",
+  "release": "https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v2.1.0",
+  "schema": "fep-formal-public-scholarly-archive-v1",
+  "scholarly_concept_doi": "10.5281/zenodo.19699233",
+  "software_source_doi": "10.5281/zenodo.23631895",
+  "source_commit": "96bf714d91c088e79b9dea54af0f9151f70de64f",
+  "source_tree": "15af656a15fc86b6d89804277ea030502a4f9168",
+  "status": "published_public_metadata_doi_and_all_files_verified",
+  "total_bytes": 57016395,
+  "version": "2.1.0"
+}
