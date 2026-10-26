@@ -231,6 +231,14 @@ jobs:
         run: |
           uv run python -B specs/gnn-runner-execution/validate_retained.py
           uv run python -B specs/gnn-runner-execution/test_validate_retained.py
+      - name: Check independent Gaussian composition replay controls
+        timeout-minutes: 5
+        env:
+          FEP_LEAN_LIVE_TESTS: "0"
+        run: |
+          mkdir -p output
+          uv run pytest specs/gnn-semantic-witness-v1/test_composition.py -q -n 0 --no-cov \
+            --junitxml=output/gnn-composition-acceptance.xml
       - name: Generate and validate publication inputs
         run: |
           uv run fep-lean catalogue
@@ -345,6 +353,7 @@ jobs:
           name: python-acceptance
           path: |
             output/python-acceptance.xml
+            output/gnn-composition-acceptance.xml
             output/live-chrome-acceptance.xml
             output/python-acceptance-collection.json
             output/python-acceptance-summary.json
@@ -1192,6 +1201,14 @@ jobs:
         run: |
           uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --compile output/cascadia-diagnostic-bounds
           uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --check output/cascadia-diagnostic-bounds
+      - name: Verify finite product laws and false controls
+        if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
+        timeout-minutes: 5
+        env:
+          FEP_LEAN_VERIFY_TIMEOUT: "60"
+        run: >-
+          uv run python specs/gnn-semantic-witness-v1/verify_composition_native.py
+          --output output/gnn-composition-native
       - name: Run the serial_lean acceptance lane
         if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         env:
@@ -1372,6 +1389,7 @@ jobs:
             output/serial-lean-warning-inventory.log
             output/serial-lean-acceptance.xml
             output/native-entropy-consumer.log
+            output/gnn-composition-native/
 
       - name: Retain optional native producer shadow evidence
         if: always() && github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')

@@ -35,7 +35,9 @@ from fep_lean.verification.formalism_audit import parse_axiom_output
 ENGINE_PATH = "src/fep_lean/verification/gnn_artifact_receipt.py"
 ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
 _DIAGNOSTIC = re.compile(r"\b(?:warning|error|sorryAx|sorry)\b", re.IGNORECASE)
-_IMPORT = re.compile(r"^import (FepSketches\.[A-Za-z0-9_.]+)\s*$", re.MULTILINE)
+_IMPORT = re.compile(
+    r"^(?:public )?import (FepSketches\.[A-Za-z0-9_.]+)\s*$", re.MULTILINE
+)
 
 
 def _checked_chain(name: str, load: Callable[[str], ModuleType]) -> ModuleType:
