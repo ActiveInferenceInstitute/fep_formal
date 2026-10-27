@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Correct catalogue chart units for Lean source characters and formal signatures.
+
 - Avoid historical Git batch pipe stalls with regular files for query input and captured output.
 
 - Remove an unused private report-validation adapter, four redundant private
