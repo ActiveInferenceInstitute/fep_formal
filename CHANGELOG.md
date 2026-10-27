@@ -1,5 +1,9 @@
 ## Unreleased
 
+- Remove an unused private report-validation adapter, four redundant private
+  collection aliases, and an obsolete monorepo integration comment. Use canonical
+  collection helpers and current portability owners and entry points.
+
 - Move 182 source-only test cases into the Python feedback lane while keeping
   all compiler probes serial. That marker-only transition preserves all 4,469
   collected identities and every test function body; native verification and
