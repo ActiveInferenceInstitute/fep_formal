@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Avoid historical Git batch pipe stalls with regular files for query input and captured output.
+
 - Remove an unused private report-validation adapter, four redundant private
   collection aliases, and an obsolete monorepo integration comment. Use canonical
   collection helpers and current portability owners and entry points.
