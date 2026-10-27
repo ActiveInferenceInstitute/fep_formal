@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Correct catalogue chart units for Lean source characters and formal signatures.
+  Keep atlas relation edge and named-witness counts on separate lines within their cards.
 
 - Avoid historical Git batch pipe stalls with regular files for query input and captured output.
 
