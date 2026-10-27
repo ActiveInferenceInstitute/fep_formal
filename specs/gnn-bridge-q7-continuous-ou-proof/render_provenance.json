@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-a_1o87i3/FepLeanContinuousOU.md",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-a_1o87i3/rendered"
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-xhxwavfh/FepLeanContinuousOU.md",
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-xhxwavfh/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "b17cf005bc91509f73eaffee757c5e64870071ae37a855919bdf38b7d1bab2f7"
+    "sha256": "d8d518ccbcf528c01a20d08c1fcb4892ec34d91db6173a9e67d8b638c5c73d0b"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -69,7 +69,7 @@
       "src/fep_lean/catalogue/schema.py": "75c7c90e829eb7373c09bd3fa7e264937aeac1b8d880b513932975deae5677a0",
       "src/fep_lean/catalogue/semantics.py": "4a47ebebac7aab2120738b1e922790e3f0afb603cc18a8b06dec7307101f131b",
       "src/fep_lean/catalogue/theorem_maturity_projection.py": "c70a0187641a7b52e4161602b0c59ba1d326c91de6852b63a4e7ee4dbf379e4c",
-      "src/fep_lean/catalogue/topics.py": "97b5e0dd45673df52cd8399332dc1fcddebe0f6f8ad5a5434abec2ed599f564a",
+      "src/fep_lean/catalogue/topics.py": "cea2591a8f6b0a11df9d49c6ae15fdd18900c22c5992d05f5b3395169e4b67fc",
       "src/fep_lean/cli.py": "63bbc8bb8d78e27f1dd3ac1aaef42a31fcc2a779cbe3f2a061dd89568e9861a1",
       "src/fep_lean/custody/__init__.py": "01d95ff4f342f82f81ecd39ed41900d44c93033253057e2bb6e450bb79757537",
       "src/fep_lean/custody/apply.py": "10966829413a7824e03ab5dc04c68b706101949a023368a739e98fd542de3f77",
@@ -170,9 +170,9 @@
       "src/fep_lean/output/__init__.py": "33723735799c344c1a9d6a720da20a83c3fecb1b525a754d3f986952397f315b",
       "src/fep_lean/output/browser_capture.py": "1b8d8856c88165c6aaf591e20edeb5f321c269fa3a13f1499644c40cc51f2653",
       "src/fep_lean/output/evidence.py": "84ed8a1057c7dce2bc1f66d307f03184cbb8a028d4e775b06b8925ea7b418297",
-      "src/fep_lean/output/figures.py": "a6f49a9be1ec675907fd62b73aecd007003981245c1c4690f0960dd4c292770e",
+      "src/fep_lean/output/figures.py": "7051930a26c9d0a22309f05043990b0524a6d5dd7340b413c97e233ce62d8892",
       "src/fep_lean/output/formal_kernel_dashboard.py": "9c036847d5a70d04ad590ccb6e35ce5b0b545c5a9068e98c348ac84a87d0f9d6",
-      "src/fep_lean/output/formalism_atlas.py": "14f9f330f345ec29941b66cc2f537d32a32dbe34d2bc6abcfb970d8fe24df8f2",
+      "src/fep_lean/output/formalism_atlas.py": "1f5bf859b48cde6ab2517ee45e2b390d119501a125a8d65c836d953ec3749219",
       "src/fep_lean/output/formalism_presentation.py": "c4b84956f8a890c0a291a35a8181cf6d01f711dade843835fe839549fedde35e",
       "src/fep_lean/output/fsutil.py": "2d895d2c2bfa97782895b3f7a67176b45e96220938f2c46ec17a8413a92a9bc9",
       "src/fep_lean/output/graphical_abstract.py": "a09269aec83de859e53bcf543f959432c3656647c29077e282f1beb621b66d05",
@@ -1052,7 +1052,7 @@
       "src/fep_lean/catalogue/schema.py": "75c7c90e829eb7373c09bd3fa7e264937aeac1b8d880b513932975deae5677a0",
       "src/fep_lean/catalogue/semantics.py": "4a47ebebac7aab2120738b1e922790e3f0afb603cc18a8b06dec7307101f131b",
       "src/fep_lean/catalogue/theorem_maturity_projection.py": "c70a0187641a7b52e4161602b0c59ba1d326c91de6852b63a4e7ee4dbf379e4c",
-      "src/fep_lean/catalogue/topics.py": "97b5e0dd45673df52cd8399332dc1fcddebe0f6f8ad5a5434abec2ed599f564a",
+      "src/fep_lean/catalogue/topics.py": "cea2591a8f6b0a11df9d49c6ae15fdd18900c22c5992d05f5b3395169e4b67fc",
       "src/fep_lean/cli.py": "63bbc8bb8d78e27f1dd3ac1aaef42a31fcc2a779cbe3f2a061dd89568e9861a1",
       "src/fep_lean/custody/__init__.py": "01d95ff4f342f82f81ecd39ed41900d44c93033253057e2bb6e450bb79757537",
       "src/fep_lean/custody/apply.py": "10966829413a7824e03ab5dc04c68b706101949a023368a739e98fd542de3f77",
@@ -1153,9 +1153,9 @@
       "src/fep_lean/output/__init__.py": "33723735799c344c1a9d6a720da20a83c3fecb1b525a754d3f986952397f315b",
       "src/fep_lean/output/browser_capture.py": "1b8d8856c88165c6aaf591e20edeb5f321c269fa3a13f1499644c40cc51f2653",
       "src/fep_lean/output/evidence.py": "84ed8a1057c7dce2bc1f66d307f03184cbb8a028d4e775b06b8925ea7b418297",
-      "src/fep_lean/output/figures.py": "a6f49a9be1ec675907fd62b73aecd007003981245c1c4690f0960dd4c292770e",
+      "src/fep_lean/output/figures.py": "7051930a26c9d0a22309f05043990b0524a6d5dd7340b413c97e233ce62d8892",
       "src/fep_lean/output/formal_kernel_dashboard.py": "9c036847d5a70d04ad590ccb6e35ce5b0b545c5a9068e98c348ac84a87d0f9d6",
-      "src/fep_lean/output/formalism_atlas.py": "14f9f330f345ec29941b66cc2f537d32a32dbe34d2bc6abcfb970d8fe24df8f2",
+      "src/fep_lean/output/formalism_atlas.py": "1f5bf859b48cde6ab2517ee45e2b390d119501a125a8d65c836d953ec3749219",
       "src/fep_lean/output/formalism_presentation.py": "c4b84956f8a890c0a291a35a8181cf6d01f711dade843835fe839549fedde35e",
       "src/fep_lean/output/fsutil.py": "2d895d2c2bfa97782895b3f7a67176b45e96220938f2c46ec17a8413a92a9bc9",
       "src/fep_lean/output/graphical_abstract.py": "a09269aec83de859e53bcf543f959432c3656647c29077e282f1beb621b66d05",
@@ -1992,7 +1992,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "37a65c05b44a5f85dce735902bba4ca5e6156b9f06d3ba2bf466f8088c88513e",
+  "source_pin_sha256": "904aeaf99cb2cc96d705180fea2d729a2bab2cb9672c87716edbb74ed72e4ac7",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
