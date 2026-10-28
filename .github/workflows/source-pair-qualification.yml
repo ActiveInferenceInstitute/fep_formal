@@ -1,0 +1,182 @@
+name: FEP_Formal source pair qualification
+
+on:
+  workflow_dispatch:
+    inputs:
+      fep_revision:
+        description: Canonical FEP_Formal source commit (40 lowercase hex characters)
+        required: true
+        type: string
+      gnn_revision:
+        description: Reviewed GNN source commit (40 lowercase hex characters)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bridge-source-${{ inputs.fep_revision }}-${{ inputs.gnn_revision }}
+  cancel-in-progress: false
+
+jobs:
+  qualify-source-pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      UV_PYTHON: "3.14"
+      FEP_FORMAL_LIVE_TESTS: "0"
+      FEP_FORMAL_SETUP_TIMEOUT_SEC: "1800"
+    steps:
+      - name: Validate explicit source revisions
+        env:
+          FEP_REVISION: ${{ inputs.fep_revision }}
+          GNN_REVISION: ${{ inputs.gnn_revision }}
+        run: |
+          python3 - <<'PY'
+          import os, re
+          for name in ("FEP_REVISION", "GNN_REVISION"):
+              if re.fullmatch("[0-9a-f]{40}", os.environ[name]) is None:
+                  raise SystemExit(name + " must be an explicit full source SHA")
+          PY
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.fep_revision }}
+          path: fep
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ActiveInferenceInstitute/Generalized_Notation_Notation
+          ref: ${{ inputs.gnn_revision }}
+          path: gnn
+          persist-credentials: false
+      - name: Require canonical qualification implementation
+        run: |
+          test -f fep/src/fep_formal/__init__.py
+          test -f fep/specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.14"
+          check-latest: true
+      - uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
+        with:
+          version: "0.13.0"
+          enable-cache: true
+      - name: Install independent frozen project runtimes and GNN uv tool
+        run: |
+          set -euo pipefail
+          uv sync --project fep --frozen --extra dev
+          uv venv "$RUNNER_TEMP/gnn-uv-tool" --python 3.14
+          uv pip install --python "$RUNNER_TEMP/gnn-uv-tool/bin/python" uv==0.13.4
+          "$RUNNER_TEMP/gnn-uv-tool/bin/uv" sync --project gnn --frozen --extra dev
+          uv python install 3.10 3.11 3.12 3.13 3.14
+      - name: Install pinned Lean launcher
+        run: |
+          set -euo pipefail
+          curl -fsS -o "$RUNNER_TEMP/elan-init.sh" https://raw.githubusercontent.com/leanprover/elan/0e36a07b9bbcc5381fa6250df109f9a4f94d7bac/elan-init.sh
+          sh "$RUNNER_TEMP/elan-init.sh" -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Acquire and build pinned Lean dependencies explicitly
+        working-directory: fep
+        run: uv run --frozen --no-sync fep-formal setup
+      - name: Pin and check both source-owned emissions
+        working-directory: fep
+        run: |
+          set -euo pipefail
+          git diff --exit-code
+          git -C ../gnn diff --exit-code
+          uv run --frozen --no-sync fep-formal bridge pin --gnn-root ../gnn
+          for model in finite continuous; do
+            uv run --frozen --no-sync fep-formal bridge emit --gnn-root ../gnn --model "$model" --refresh-digests
+            uv run --frozen --no-sync fep-formal bridge emit --gnn-root ../gnn --model "$model" --check
+          done
+      - name: Capture the canonical GNN artifact without executing it
+        run: |
+          set -euo pipefail
+          export PATH="$RUNNER_TEMP/gnn-uv-tool/bin:$PATH"
+          export UV_PROJECT_ENVIRONMENT="$GITHUB_WORKSPACE/gnn/.venv"
+          export UV_PYTHON="$GITHUB_WORKSPACE/gnn/.venv/bin/python"
+          export PYTHONPATH="$GITHUB_WORKSPACE/fep/src"
+          uv run --project gnn --frozen --no-sync python "$GITHUB_WORKSPACE/fep/specs/gnn-bridge-q7-continuous-ou-proof/refresh_render.py" --fep-root "$GITHUB_WORKSPACE/fep" --gnn-root "$GITHUB_WORKSPACE/gnn"
+      - name: Observe five real parsers and publish checked working projections
+        working-directory: fep
+        run: |
+          set -euo pipefail
+          generator=specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py
+          uv run --frozen --no-sync python "$generator" --record-scaffold-portability --output-root "$RUNNER_TEMP/q7-parity"
+          uv run --frozen --no-sync python "$generator" --publish-scaffold-from "$RUNNER_TEMP/q7-parity"
+          uv run --frozen --no-sync python "$generator" --output-root "$RUNNER_TEMP/q7-probe"
+          uv run --frozen --no-sync python "$generator" --publish-generated-from "$RUNNER_TEMP/q7-probe"
+          uv run --frozen --no-sync python "$generator" --check
+      - name: Compile and independently validate native static Q7 evidence
+        id: native
+        working-directory: fep
+        run: |
+          set -euo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/qualification"
+          verifier=specs/gnn-bridge-q7-continuous-ou-proof/verify_native.py
+          uv run --frozen --no-sync python "$verifier" --compile --gnn-root ../gnn --receipt "$GITHUB_WORKSPACE/qualification/native-q7.json"
+          uv run --frozen --no-sync python "$verifier" --check --gnn-root ../gnn --receipt "$GITHUB_WORKSPACE/qualification/native-q7.json"
+          uv run --frozen --no-sync fep-formal bridge status --gnn-root ../gnn
+      - name: Collect exact projections and scoped execution context
+        if: always()
+        env:
+          FEP_REVISION: ${{ inputs.fep_revision }}
+          GNN_REVISION: ${{ inputs.gnn_revision }}
+          NATIVE_OUTCOME: ${{ steps.native.outcome }}
+          WORKFLOW_REVISION: ${{ github.workflow_sha }}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, re, shutil
+          source = Path("fep")
+          out = Path("qualification")
+          out.mkdir(exist_ok=True)
+          q7 = "specs/gnn-bridge-q7-continuous-ou-proof"
+          files = [
+              "specs/gnn-bridge-w2-source-custody/source-pin.json",
+              "specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md",
+              "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
+              q7 + "/fixtures/FepLeanContinuousOU.md",
+              q7 + "/fixtures/continuous_ou_jax.py",
+              q7 + "/render_provenance.json",
+              *[q7 + "/generated/" + name for name in (
+                  "probe.lean", "artifact_proof_manifest.json",
+                  "scaffold-canonical.json", "scaffold-runtime-parity.json",
+              )],
+          ]
+          for rel in files:
+              path = source / rel
+              if path.is_file():
+                  target = out / "projections" / rel
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copyfile(path, target)
+          def revision(name):
+              value = os.environ[name]
+              return value if re.fullmatch("[0-9a-f]{40}", value) else None
+          context = {
+              "kind": "fep-formal-bridge-source-qualification/v1",
+              "fep_revision": revision("FEP_REVISION"),
+              "gnn_revision": revision("GNN_REVISION"),
+              "workflow_revision": revision("WORKFLOW_REVISION"),
+              "run_id": os.environ["GITHUB_RUN_ID"],
+              "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+              "native_outcome": os.environ["NATIVE_OUTCOME"],
+              "scope": "Selected source pair, parser serialization, and static Q7 bounds",
+              "runner_execution_verified": False,
+              "full_mode_verified": False,
+              "release_acceptance": False,
+              "sha256": {
+                  str(p.relative_to(out)): hashlib.sha256(p.read_bytes()).hexdigest()
+                  for p in sorted(out.rglob("*")) if p.is_file()
+              },
+          }
+          (out / "context.json").write_text(json.dumps(context, indent=2) + chr(10))
+          PY
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: bridge-source-${{ inputs.fep_revision }}-${{ inputs.gnn_revision }}
+          path: qualification/
+          if-no-files-found: error
+          retention-days: 90
