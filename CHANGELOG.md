@@ -1,5 +1,10 @@
 ## Unreleased
 
+- Renew the GNN source-custody projections after the website shutdown fix,
+  retaining the named Linux Q7 native receipt and five parser observations.
+  The twelve static bounds retain their previous probe and runner bytes;
+  generated execution, full mode and release acceptance remain separate.
+
 - Canonical Python imports/distribution/command become `fep_formal`,
   `fep-formal`, and `fep-formal`; public configuration uses `FEP_FORMAL_`.
   Old imports share canonical module/class identity, and old command and
