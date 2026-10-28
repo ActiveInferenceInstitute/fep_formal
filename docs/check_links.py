@@ -589,4 +589,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-# Integrated into validation via `infrastructure.validation.cli` and the fep_lean pipeline.
+# Integrated into validation via `infrastructure.validation.cli` and the fep_formal pipeline.

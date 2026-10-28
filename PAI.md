@@ -1,23 +1,23 @@
 # FEP_Formal agent interface
 
-The project exposes the `fep-lean` command through the `fep_lean` Python package.
-Discover commands with `uv run fep-lean --help`; common entry points are:
+The project exposes the `fep-formal` command through the `fep_formal` Python package.
+Discover commands with `uv run fep-formal --help`; common entry points are:
 
 ```bash
-uv run fep-lean catalogue
-uv run fep-lean atlas --check
-uv run fep-lean dashboard --check
-uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-formal catalogue
+uv run fep-formal atlas --check
+uv run fep-formal dashboard --check
+uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json
 uv run python scripts/audit_formalisms.py --receipt output/formalism-audit.json
-uv run fep-lean preflight
-uv run fep-lean run
+uv run fep-formal preflight
+uv run fep-formal run
 ```
 
 The generated catalog in `config/topics.yaml` joins maintained metadata,
-semantic review, and canonical Lean bodies. Agents use `fep-lean catalogue` for
-offline artifacts, `fep-lean atlas` to inspect or drift-check authored
-formalism relations, `fep-lean dashboard --check` to validate the deterministic
-maintained witness projection, and `fep-lean preflight` before full
+semantic review, and canonical Lean bodies. Agents use `fep-formal catalogue` for
+offline artifacts, `fep-formal atlas` to inspect or drift-check authored
+formalism relations, `fep-formal dashboard --check` to validate the deterministic
+maintained witness projection, and `fep-formal preflight` before full
 execution. Dashboard acceptance is the conjunction of typed equality,
 inequality, and predicate checks with per-check tolerances; it is numerical
 diagnostic evidence, not a Lean proof or an empirical result. A native

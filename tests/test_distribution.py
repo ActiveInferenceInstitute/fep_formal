@@ -18,8 +18,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.output.render_log import build_acceptance_receipt
-from fep_lean.output.rendering import MANUSCRIPT_ASSETS
+from fep_formal.output.render_log import build_acceptance_receipt
+from fep_formal.output.rendering import MANUSCRIPT_ASSETS
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -46,7 +46,7 @@ def _assert_wheel_metadata_headers(metadata_text: str) -> None:
 def _wheel_metadata_fixture() -> str:
     return (
         "Metadata-Version: 2.4\n"
-        "Name: fep_lean\n"
+        "Name: fep_formal\n"
         "License-Expression: CC-BY-4.0\n"
         "License-File: LICENSE\n"
         "Author-email: Daniel Ari Friedman <daniel@activeinference.institute>\n"
@@ -115,7 +115,7 @@ def _init_fixture_repository(root: Path) -> None:
 
 
 def _package_namespace_digests(project_root: Path) -> dict[str, str]:
-    root = project_root / "src" / "fep_lean"
+    root = project_root / "src" / "fep_formal"
     return {
         path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in root.rglob("*")
@@ -129,11 +129,11 @@ def _wheel_namespace_digests(wheel: Path) -> dict[str, str]:
         members = [
             entry.filename
             for entry in archive.infolist()
-            if entry.filename.startswith("fep_lean/") and not entry.is_dir()
+            if entry.filename.startswith("fep_formal/") and not entry.is_dir()
         ]
         assert len(members) == len(set(members)), "duplicate wheel namespace member"
         return {
-            name.removeprefix("fep_lean/"): hashlib.sha256(
+            name.removeprefix("fep_formal/"): hashlib.sha256(
                 archive.read(name)
             ).hexdigest()
             for name in members
@@ -142,22 +142,25 @@ def _wheel_namespace_digests(wheel: Path) -> dict[str, str]:
 
 def test_distribution_exports_one_root_package_and_console_script() -> None:
     """Wheel metadata must match the documented import and CLI surfaces."""
-    dist = distribution("fep_lean")
+    dist = distribution("fep_formal")
 
     top_level = (dist.read_text("top_level.txt") or "").split()
-    assert top_level == ["fep_lean"]
+    assert top_level == ["fep_formal", "fep_lean"]
 
     scripts = {
         entry.name: entry.value
         for entry in dist.entry_points
         if entry.group == "console_scripts"
     }
-    assert scripts == {"fep-lean": "fep_lean.cli:main"}
+    assert scripts == {
+        "fep-formal": "fep_formal.cli:main",
+        "fep-lean": "fep_formal.cli:legacy_main",
+    }
 
 
 def test_q7_scaffold_bytes_refuse_cp1252_codepage_substitution() -> None:
     """Wrong text decoding must not become accepted canonical AST evidence."""
-    from fep_lean.verification.gnn_continuous_artifact_proof import (
+    from fep_formal.verification.gnn_continuous_artifact_proof import (
         canonical_scaffold_bytes,
     )
 
@@ -189,7 +192,7 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
         capture_output=True,
         text=True,
     )
-    wheel = next(dist_dir.glob("fep_lean-*.whl"))
+    wheel = next(dist_dir.glob("fep_formal-*.whl"))
     expected_resources = _package_namespace_digests(PROJECT_ROOT)
     assert _wheel_namespace_digests(wheel) == expected_resources
     with zipfile.ZipFile(wheel) as archive:
@@ -208,7 +211,7 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
         key: value
         for key, value in os.environ.items()
         if key not in {"PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV"}
-        and not key.startswith(("FEP_LEAN_", "MYPY"))
+        and not key.startswith(("FEP_FORMAL_", "FEP_LEAN_", "MYPY"))
     }
     subprocess.run(
         [uv, "venv", "--python", target_python, str(environment)],
@@ -244,27 +247,27 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
             "-I",
             "-c",
             (
-                "import hashlib, importlib.resources, importlib.util, pathlib, sys, fep_lean; "
-                "from fep_lean.bridge.custody import classify_document; "
-                "from fep_lean.bridge.certificates import compare; "
+                "import hashlib, importlib.resources, importlib.util, pathlib, sys, fep_formal; "
+                "from fep_formal.bridge.custody import classify_document; "
+                "from fep_formal.bridge.certificates import compare; "
                 "assert callable(classify_document) and callable(compare); "
-                "from fep_lean.catalogue import BODIES, FEPTopicCatalogue; "
-                f"assert pathlib.Path(fep_lean.__file__).is_relative_to(pathlib.Path({str(environment)!r})); "
+                "from fep_formal.catalogue import BODIES, FEPTopicCatalogue; "
+                f"assert pathlib.Path(fep_formal.__file__).is_relative_to(pathlib.Path({str(environment)!r})); "
                 f"assert not any(path and pathlib.Path(path).is_relative_to(pathlib.Path({str(PROJECT_ROOT)!r})) for path in sys.path); "
                 "assert len(FEPTopicCatalogue.default().topics) == len(BODIES); "
-                "assert callable(fep_lean.build_formal_kernel_dashboard); "
-                "formal = importlib.resources.files('fep_lean.formal').joinpath('composed.lean'); "
-                "core = importlib.resources.files('fep_lean.formal').joinpath('compositions/core.lean'); "
+                "assert callable(fep_formal.build_formal_kernel_dashboard); "
+                "formal = importlib.resources.files('fep_formal.formal').joinpath('composed.lean'); "
+                "core = importlib.resources.files('fep_formal.formal').joinpath('compositions/core.lean'); "
                 "assert 'import FepSketches.compositions.core' in formal.read_text(encoding='utf-8'); "
                 "assert 'fep002_vfe_compProd_chain_rule' in core.read_text(encoding='utf-8'); "
                 f"expected = {expected_resources!r}; "
-                "root = importlib.resources.files('fep_lean'); "
+                "root = importlib.resources.files('fep_formal'); "
                 "assert all(hashlib.sha256(root.joinpath(name).read_bytes()).hexdigest() == value for name, value in expected.items()); "
-                "installed_root = pathlib.Path(fep_lean.__file__).parent; "
+                "installed_root = pathlib.Path(fep_formal.__file__).parent; "
                 "installed = {path.relative_to(installed_root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() "
                 "for path in installed_root.rglob('*') if path.is_file() and (path.suffix in {'.py', '.lean', '.yaml'} or path.name == 'py.typed')}; "
                 "assert installed == expected, 'installed namespace roster or bytes differ'; "
-                "from fep_lean.verification.gnn_continuous_artifact_proof import ContinuousArtifactError, scaffold_digest, canonical_scaffold_bytes; "
+                "from fep_formal.verification.gnn_continuous_artifact_proof import ContinuousArtifactError, scaffold_digest, canonical_scaffold_bytes; "
                 f"q7_source = pathlib.Path({str(PROJECT_ROOT / 'specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py')!r}).read_text(encoding='utf-8'); "
                 f"q7_expected = {json.loads((PROJECT_ROOT / 'specs/gnn-bridge-q7-continuous-ou-proof/expected.json').read_text(encoding='utf-8'))['runner_ast_sha256']!r}; "
                 "assert hashlib.sha256(canonical_scaffold_bytes(q7_source)).hexdigest() == q7_expected; "
@@ -299,8 +302,8 @@ def test_built_wheel_imports_in_isolated_namespace(tmp_path: Path) -> None:
 from pathlib import Path
 from unittest.mock import patch
 import os, subprocess, socket, sys
-import fep_lean
-from fep_lean.methods import load_packaged_formalism_query, build_mathematical_positioning, inspect_topic, inspect_theorem
+import fep_formal
+from fep_formal.methods import load_packaged_formalism_query, build_mathematical_positioning, inspect_topic, inspect_theorem
 before = dict(os.environ)
 def forbidden(*args, **kwargs):
     raise AssertionError('installed query started a process or network operation')
@@ -315,7 +318,7 @@ with patch('subprocess.run', forbidden), patch('subprocess.Popen', forbidden), p
     detached['topics'].clear()
     assert len(model.as_dict()['topics']) == 168
 assert dict(os.environ) == before
-assert 'fep_lean.cli' not in sys.modules
+assert 'fep_formal.cli' not in sys.modules
 print('actual installed wheel RECORD query, canonical parity and process-free inspection passed')
 """,
         ],
@@ -337,7 +340,7 @@ print('actual installed wheel RECORD query, canonical parity and process-free in
     consumer = (
         "from pathlib import Path\n"
         "from typing_extensions import assert_type\n"
-        "from fep_lean import FEPPipeline, PipelineResult\n"
+        "from fep_formal import FEPPipeline, PipelineResult\n"
         "\n"
         "pipeline = FEPPipeline(Path('.'))\n"
         "assert_type(pipeline, FEPPipeline)\n"
@@ -387,13 +390,13 @@ print('actual installed wheel RECORD query, canonical parity and process-free in
     resolved_modules = [
         (module, Path(path).resolve())
         for path, module in re.findall(
-            r"^LOG:\s+Parsing (.+) \((fep_lean(?:\.[A-Za-z_][A-Za-z_0-9]*)*)\)$",
+            r"^LOG:\s+Parsing (.+) \((fep_formal(?:\.[A-Za-z_][A-Za-z_0-9]*)*)\)$",
             typed.stderr,
             re.MULTILINE,
         )
     ]
-    assert "fep_lean" in {module for module, _ in resolved_modules}, typed.stderr
-    assert "fep_lean.pipeline.core" in {module for module, _ in resolved_modules}, (
+    assert "fep_formal" in {module for module, _ in resolved_modules}, typed.stderr
+    assert "fep_formal.pipeline.core" in {module for module, _ in resolved_modules}, (
         typed.stderr
     )
     assert all(
@@ -437,7 +440,7 @@ print('actual installed wheel RECORD query, canonical parity and process-free in
             """
 from pathlib import Path
 import os, sys
-from fep_lean.output.release_bundle import (
+from fep_formal.output.release_bundle import (
     PublicationCapturePlan, PublicationCaptureStage, ReleaseBundleError, run_publication_capture,
 )
 root = Path.cwd() / 'capture-project'
@@ -451,7 +454,7 @@ producer = (
 )
 nested = (
     'import sys;print("installed nested worker started",flush=True);'
-    'from fep_lean.verification._subprocess import run_process_group;'
+    'from fep_formal.verification._subprocess import run_process_group;'
     'r=run_process_group([sys.executable,"-S","-c",sys.argv[1],sys.argv[2],sys.argv[3]],'
     'cwd=sys.argv[4],timeout=10,check=True);print(r.stdout,end="")'
 )
@@ -497,7 +500,10 @@ print(sys.version, sys.platform, 'installed capture and nested helper accepted')
     assert capture_probe.returncode == 0, capture_probe.stderr or capture_probe.stdout
     print("installed capture runtime:", capture_probe.stdout.strip())
     cli = subprocess.run(
-        [str(scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")), "--help"],
+        [
+            str(scripts / ("fep-formal.exe" if os.name == "nt" else "fep-formal")),
+            "--help",
+        ],
         cwd=tmp_path,
         env=clean_env,
         check=False,
@@ -508,7 +514,7 @@ print(sys.version, sys.platform, 'installed capture and nested helper accepted')
     assert "Strict FEP Lean catalog" in cli.stdout
     outside_checkout = subprocess.run(
         [
-            str(scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")),
+            str(scripts / ("fep-formal.exe" if os.name == "nt" else "fep-formal")),
             "catalogue",
         ],
         cwd=tmp_path,
@@ -525,10 +531,10 @@ print(sys.version, sys.platform, 'installed capture and nested helper accepted')
     checkout = tmp_path / "checkout"
     shutil.copytree(PROJECT_ROOT / "config", checkout / "config")
     shutil.copytree(
-        PROJECT_ROOT / "src/fep_lean/formal", checkout / "src/fep_lean/formal"
+        PROJECT_ROOT / "src/fep_formal/formal", checkout / "src/fep_formal/formal"
     )
     for relative in (
-        "src/fep_lean/__init__.py",
+        "src/fep_formal/__init__.py",
         "lean/lean-toolchain",
         "lean/lakefile.lean",
         "manuscript/config.yaml",
@@ -539,7 +545,7 @@ print(sys.version, sys.platform, 'installed capture and nested helper accepted')
     for command in ("atlas", "dashboard"):
         built = subprocess.run(
             [
-                str(scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")),
+                str(scripts / ("fep-formal.exe" if os.name == "nt" else "fep-formal")),
                 "--project-root",
                 str(checkout),
                 command,
@@ -553,7 +559,7 @@ print(sys.version, sys.platform, 'installed capture and nested helper accepted')
         assert built.returncode == 0, built.stderr or built.stdout
     live_check = subprocess.run(
         [
-            str(scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")),
+            str(scripts / ("fep-formal.exe" if os.name == "nt" else "fep-formal")),
             "--project-root",
             str(checkout),
             "atlas",
@@ -569,7 +575,7 @@ print(sys.version, sys.platform, 'installed capture and nested helper accepted')
     assert "projections are current" in live_check.stdout
     dashboard_check = subprocess.run(
         [
-            str(scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")),
+            str(scripts / ("fep-formal.exe" if os.name == "nt" else "fep-formal")),
             "--project-root",
             str(checkout),
             "dashboard",
@@ -596,8 +602,8 @@ def test_default_build_excludes_stale_cache_without_deleting_it(tmp_path: Path) 
     for name in ("pyproject.toml", "README.md", "LICENSE", ".python-version"):
         shutil.copyfile(PROJECT_ROOT / name, project / name)
     shutil.copytree(
-        PROJECT_ROOT / "src/fep_lean",
-        project / "src/fep_lean",
+        PROJECT_ROOT / "src/fep_formal",
+        project / "src/fep_formal",
         ignore=shutil.ignore_patterns("__pycache__"),
     )
     expected = _package_namespace_digests(project)
@@ -616,7 +622,7 @@ def test_default_build_excludes_stale_cache_without_deleting_it(tmp_path: Path) 
             )
         },
     }
-    cache = project / "build/lib/fep_lean"
+    cache = project / "build/lib/fep_formal"
     for relative, contents in orphans.items():
         assert relative not in expected
         path = cache / relative
@@ -630,7 +636,7 @@ def test_default_build_excludes_stale_cache_without_deleting_it(tmp_path: Path) 
         capture_output=True,
         text=True,
     )
-    direct = _wheel_namespace_digests(next(direct_dist.glob("fep_lean-*.whl")))
+    direct = _wheel_namespace_digests(next(direct_dist.glob("fep_formal-*.whl")))
     orphan_digests = {
         relative: hashlib.sha256(contents).hexdigest()
         for relative, contents in orphans.items()
@@ -643,8 +649,10 @@ def test_default_build_excludes_stale_cache_without_deleting_it(tmp_path: Path) 
         capture_output=True,
         text=True,
     )
-    assert len(tuple(fresh_dist.glob("fep_lean-*.tar.gz"))) == 1
-    assert _wheel_namespace_digests(next(fresh_dist.glob("fep_lean-*.whl"))) == expected
+    assert len(tuple(fresh_dist.glob("fep_formal-*.tar.gz"))) == 1
+    assert (
+        _wheel_namespace_digests(next(fresh_dist.glob("fep_formal-*.whl"))) == expected
+    )
     assert {name: (cache / name).read_bytes() for name in orphans} == orphans
     assert _package_namespace_digests(project) == expected
     print("controlled stale-cache carryover reproduced; fresh-sdist namespace exact")
@@ -672,7 +680,7 @@ def _workflow_python(step_name: str, job: str) -> str:
         ("docs/render-fonts.json", False),
         ("docs/formalism-atlas.svg", False),
         ("manuscript/01_abstract.md", False),
-        ("src/fep_lean/catalogue/bodies/free_energy.py", False),
+        ("src/fep_formal/catalogue/bodies/free_energy.py", False),
         (".github/workflows/ci.yml", False),
     ],
 )
@@ -1351,8 +1359,8 @@ def _exercise_render_artifact_staging(
         "        _link_read_mutated = True\n"
         "    return data\n"
         "os.readlink = _mutating_readlink\n"
-        "import fep_lean.output.evidence as _native\n"
-        "import fep_lean.verification.formalism_audit as _audit\n"
+        "import fep_formal.output.evidence as _native\n"
+        "import fep_formal.verification.formalism_audit as _audit\n"
         f"_native.validate_native_lean_receipt = lambda *args, **kwargs: {{'native_claim_ready': {failure != 'native_stale'!r}}}\n"
         f"_audit.validate_formalism_audit_receipt = lambda *args, **kwargs: {('fixture audit is stale',) if failure == 'audit_stale' else ()!r}\n"
         "_real_check_output = subprocess.check_output\n"
@@ -1376,7 +1384,7 @@ def _exercise_render_artifact_staging(
         f"            _real_write_bytes(Path({str(selected_font)!r}), b'changed selected font bytes')\n"
         "    return result\n"
         "Path.write_bytes = _staged_write\n"
-        "import fep_lean.output.release_bundle._core as _capture_owner\n"
+        "import fep_formal.output.release_bundle._core as _capture_owner\n"
         "_real_regular_read = _capture_owner._capture_regular_file\n"
         "_inventory_gitlink_mutated = False\n"
         "def _retained_read(path):\n"
@@ -1507,7 +1515,7 @@ def _exercise_render_artifact_staging(
             sources["sources"]["manuscript/01_abstract.md"]
             == hashlib.sha256((manuscript / "01_abstract.md").read_bytes()).hexdigest()
         )
-        from fep_lean.output.release_bundle._core import _capture_link_bytes
+        from fep_formal.output.release_bundle._core import _capture_link_bytes
 
         provenance = json.loads((staged / "renderer-provenance.json").read_text())
         for role, selected in provenance["fonts"].items():

@@ -2,7 +2,7 @@
 
 import pytest
 
-from fep_lean.lean_source import lean_theorem_header_delimiters
+from fep_formal.lean_source import lean_theorem_header_delimiters
 
 
 @pytest.mark.parametrize(
@@ -106,8 +106,11 @@ def test_missing_proof_cannot_consume_next_public_declaration():
 
 
 def test_all_shared_conclusion_consumers_keep_let_annotation():
-    from fep_lean.catalogue.latex import _extract_theorem_stmt, _split_binders_and_goal
-    from fep_lean.lean_source import lean_declaration_conclusion
+    from fep_formal.catalogue.latex import (
+        _extract_theorem_stmt,
+        _split_binders_and_goal,
+    )
+    from fep_formal.lean_source import lean_declaration_conclusion
 
     source = (
         "theorem instance_case : letI : MeasurableSpace Bool := top; True := by trivial"
@@ -121,7 +124,7 @@ def test_all_shared_conclusion_consumers_keep_let_annotation():
 
 
 def test_structure_where_proof_is_not_in_the_type():
-    from fep_lean.lean_source import lean_declaration_conclusion
+    from fep_formal.lean_source import lean_declaration_conclusion
 
     source = (
         "theorem structure_proof (x : Nat) : Support x where\n  field := by trivial"
@@ -165,7 +168,7 @@ def test_other_assignment_producing_term_forms_are_refused(goal):
 
 
 def test_signature_lookup_ignores_commented_duplicate_and_supports_public():
-    from fep_lean.catalogue.latex import _extract_theorem_stmt
+    from fep_formal.catalogue.latex import _extract_theorem_stmt
 
     source = "/-\ntheorem example : False := by trivial\n-/\npublic theorem example : True := by trivial"
     assert _extract_theorem_stmt(source, "example") == ": True"
@@ -175,7 +178,7 @@ def test_signature_lookup_ignores_commented_duplicate_and_supports_public():
     "actual_name", ["foo'", "fooé", "foo.bar", "foo\u0301", "foo!", "foo?"]
 )
 def test_unsupported_name_does_not_alias_supported_prefix(actual_name):
-    from fep_lean.catalogue.latex import _extract_theorem_stmt
+    from fep_formal.catalogue.latex import _extract_theorem_stmt
 
     source = "theorem " + actual_name + " : True := by trivial"
     assert _extract_theorem_stmt(source, "foo") is None
@@ -188,7 +191,7 @@ def test_missing_proof_stops_before_multiline_public_modifier():
 
 
 def test_private_helpers_are_not_added_to_public_query_inventory():
-    from fep_lean.lean_source import LEAN_THEOREM_RE
+    from fep_formal.lean_source import LEAN_THEOREM_RE
 
     source = "private theorem helper : True := by trivial\npublic theorem visible : True := by trivial"
     assert [match[1] for match in LEAN_THEOREM_RE.finditer(source)] == ["visible"]
@@ -196,7 +199,7 @@ def test_private_helpers_are_not_added_to_public_query_inventory():
 
 @pytest.mark.parametrize("modifier", ["private", "protected", "noncomputable"])
 def test_multiline_unsupported_modifier_refuses_public_identity(modifier):
-    from fep_lean.catalogue.latex import _extract_theorem_stmt
+    from fep_formal.catalogue.latex import _extract_theorem_stmt
 
     source = modifier + "\n theorem helper : True := by trivial"
     with pytest.raises(ValueError, match="unsupported multiline"):
@@ -208,7 +211,7 @@ def test_all_reviewed_public_statement_hashes_and_corrections():
     import json
     from pathlib import Path
 
-    from fep_lean.methods import build_mathematical_positioning
+    from fep_formal.methods import build_mathematical_positioning
 
     root = Path(__file__).resolve().parents[1]
     fixture = json.loads(
@@ -239,7 +242,7 @@ def test_all_reviewed_public_statement_hashes_and_corrections():
 
 
 def test_declaration_names_work_for_line_and_header_fragment_consumers():
-    from fep_lean.lean_source import LEAN_THEOREM_RE
+    from fep_formal.lean_source import LEAN_THEOREM_RE
 
     for header in ["theorem example", "lemma example", "public theorem example"]:
         match = LEAN_THEOREM_RE.match(header)
@@ -248,7 +251,7 @@ def test_declaration_names_work_for_line_and_header_fragment_consumers():
 
 @pytest.mark.parametrize("modifier", ["public ", "public\n"])
 def test_methods_proof_span_stops_before_next_public_declaration(modifier):
-    from fep_lean.methods.model import _theorem_sources
+    from fep_formal.methods.model import _theorem_sources
 
     source = (
         "theorem first : True := by trivial\n"
@@ -266,8 +269,11 @@ def test_methods_proof_span_stops_before_next_public_declaration(modifier):
     "quoted", ["«[»", "«]»", "«(»", "«)»", "«:»", "«with space»", "«two  spaces»"]
 )
 def test_quoted_binder_syntax_preserves_original_name_and_goal(quoted):
-    from fep_lean.catalogue.latex import _extract_theorem_stmt, _split_binders_and_goal
-    from fep_lean.methods.model import _binder_groups
+    from fep_formal.catalogue.latex import (
+        _extract_theorem_stmt,
+        _split_binders_and_goal,
+    )
+    from fep_formal.methods.model import _binder_groups
 
     source = f"theorem quoted_binder ({quoted} : Nat) : {quoted} = {quoted} := by rfl"
     statement = _extract_theorem_stmt(source, "quoted_binder")
@@ -281,7 +287,7 @@ def test_quoted_binder_syntax_preserves_original_name_and_goal(quoted):
 
 
 def test_binder_names_preserve_mixed_quoted_unicode_and_prime_identifiers():
-    from fep_lean.methods.model import _binder_groups
+    from fep_formal.methods.model import _binder_groups
 
     assert _binder_groups("(ordinary α x' «with space» : Nat)")[0]["names"] == [
         "ordinary",

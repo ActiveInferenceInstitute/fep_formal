@@ -160,7 +160,7 @@ def test_xref_audit_flags_unresolved_crossref(
     assert code == 1
     assert "unresolved" in out
     assert "sec:ghost" in out
-    assert "fep-lean catalogue" in out
+    assert "fep-formal catalogue" in out
 
 
 def test_xref_audit_omits_the_catalogue_hint_when_generated_inputs_exist(
@@ -185,7 +185,7 @@ def test_xref_audit_omits_the_catalogue_hint_when_generated_inputs_exist(
 
     assert code == 1
     assert "sec:ghost" in out
-    assert "fep-lean catalogue" not in out
+    assert "fep-formal catalogue" not in out
 
 
 def test_xref_audit_passes_resolved_crossref(
@@ -454,7 +454,7 @@ def test_count_audit_rejects_missing_or_inconsistent_coverage(
 def test_relation_captions_follow_the_canonical_counts_and_a_changed_count(
     figure: str, kind: str, phrase: str
 ) -> None:
-    from fep_lean.output.rendering import substitute_placeholders
+    from fep_formal.output.rendering import substitute_placeholders
 
     coverage = json.loads(
         (PROJECT_ROOT / "docs" / "formalism-coverage.json").read_text(encoding="utf-8")
@@ -472,7 +472,7 @@ def test_relation_captions_follow_the_canonical_counts_and_a_changed_count(
 
 
 def test_second_expansion_heading_does_not_grow_with_the_full_catalogue() -> None:
-    from fep_lean.output.rendering import substitute_placeholders
+    from fep_formal.output.rendering import substitute_placeholders
 
     source = (PROJECT_ROOT / "manuscript" / "04i_formalism_catalogue_155.md").read_text(
         encoding="utf-8"
@@ -494,7 +494,7 @@ def test_second_expansion_heading_does_not_grow_with_the_full_catalogue() -> Non
 
 
 def test_second_expansion_current_toolchain_comes_from_workspace_variables() -> None:
-    from fep_lean.output.rendering import substitute_placeholders
+    from fep_formal.output.rendering import substitute_placeholders
 
     source = (PROJECT_ROOT / "manuscript" / "04i_formalism_catalogue_155.md").read_text(
         encoding="utf-8"
@@ -551,8 +551,8 @@ def _run_wide(
     "rel",
     [
         "HANDOFF.md",
-        "src/fep_lean/custody/README.md",
-        "src/fep_lean/custody/AGENTS.md",
+        "src/fep_formal/custody/README.md",
+        "src/fep_formal/custody/AGENTS.md",
         "tests/AGENTS.md",
         "config/README.md",
         "scripts/AGENTS.md",
@@ -590,7 +590,7 @@ def test_check_links_include_root_catches_broken_link_everywhere(
         "specs/live/gnn_output/PIPELINE_REPORT.md",
         "specs/live/gnn-input/Model.md",
         "specs/live/fixtures/Model.md",
-        "src/fep_lean/custody/NOTES.md",  # only AGENTS.md / README.md in src
+        "src/fep_formal/custody/NOTES.md",  # only AGENTS.md / README.md in src
         "lean/.lake/packages/dep/README.md",
         ".github/evidence/old-run/README.md",
         ".github/node_modules/vendor/README.md",
@@ -974,14 +974,14 @@ def test_md_hygiene_include_root_flags_trailing_whitespace_in_src_readme(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     docs = _make_repo(tmp_path)
-    readme = tmp_path / "src" / "fep_lean" / "custody" / "README.md"
+    readme = tmp_path / "src" / "fep_formal" / "custody" / "README.md"
     readme.parent.mkdir(parents=True)
     readme.write_text("# Custody\n\ntrailing   \n", encoding="utf-8")
 
     code, out = _run_wide(docs, monkeypatch, capsys, "md_hygiene", ["--strict"])
 
     assert code == 1
-    assert "src/fep_lean/custody/README.md:3: trailing whitespace" in out
+    assert "src/fep_formal/custody/README.md:3: trailing whitespace" in out
 
 
 def test_md_hygiene_numeric_brackets_are_not_orphans(

@@ -7,8 +7,8 @@ from fractions import Fraction
 
 import pytest
 
-from fep_lean.verification._horizon_numerical_witnesses import _inverse
-from fep_lean.verification.numerical_witnesses import (
+from fep_formal.verification._horizon_numerical_witnesses import _inverse
+from fep_formal.verification.numerical_witnesses import (
     evaluate_numerical_witnesses,
     numerical_witness_by_id,
 )
@@ -75,7 +75,7 @@ def test_scope_selection_uses_same_registry() -> None:
 def test_stationary_check_detects_wrong_transverse_decay(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    from fep_lean.verification import _horizon_numerical_witnesses as horizon
+    from fep_formal.verification import _horizon_numerical_witnesses as horizon
 
     original = horizon._fin4_transition
 

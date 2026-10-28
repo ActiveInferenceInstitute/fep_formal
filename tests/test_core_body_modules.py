@@ -12,7 +12,7 @@ import importlib
 
 import pytest
 
-from fep_lean.catalogue.registry import BODIES
+from fep_formal.catalogue.registry import BODIES
 
 CORE_BODY_MODULES = (
     "core_free_energy",
@@ -88,7 +88,7 @@ EXPECTED_CORE_ROSTERS: dict[str, tuple[str, ...]] = {
 
 @pytest.mark.parametrize("module_name", sorted(EXPECTED_CORE_ROSTERS))
 def test_core_module_exports_its_exact_roster(module_name: str) -> None:
-    module = importlib.import_module(f"fep_lean.catalogue.bodies.{module_name}")
+    module = importlib.import_module(f"fep_formal.catalogue.bodies.{module_name}")
     assert tuple(module.BODIES) == EXPECTED_CORE_ROSTERS[module_name]
 
 
@@ -96,6 +96,6 @@ def test_core_module_exports_its_exact_roster(module_name: str) -> None:
 def test_core_module_bodies_are_registered_in_the_aggregate(
     module_name: str,
 ) -> None:
-    module = importlib.import_module(f"fep_lean.catalogue.bodies.{module_name}")
+    module = importlib.import_module(f"fep_formal.catalogue.bodies.{module_name}")
     for topic_id, body in module.BODIES.items():
         assert BODIES[topic_id] == body

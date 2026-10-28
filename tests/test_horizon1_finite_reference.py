@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fep_lean.formal import (
+from fep_formal.formal import (
     FORMAL_MODULES,
     FormalModuleRole,
     formal_module_imports,
@@ -14,7 +14,7 @@ from fep_lean.formal import (
     formal_theorem_modules,
     render_formal_aggregate,
 )
-from fep_lean.formal.declarations import composed_theorem_declarations
+from fep_formal.formal.declarations import composed_theorem_declarations
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -178,7 +178,7 @@ def test_h11_projection_and_public_aggregate_are_byte_current() -> None:
     assert aggregate.count(new_import) == 1
     for foundation in H11_IMPORTS:
         assert f"import {foundation}\n" not in aggregate
-    assert (PROJECT_ROOT / "src" / "fep_lean" / "formal" / "composed.lean").read_text(
+    assert (PROJECT_ROOT / "src" / "fep_formal" / "formal" / "composed.lean").read_text(
         encoding="utf-8"
     ) == aggregate
 

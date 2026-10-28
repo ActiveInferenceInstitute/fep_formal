@@ -9,9 +9,9 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal import formal_projection_pairs
-from fep_lean.formal.manifest import FORMAL_MODULES
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.formal import formal_projection_pairs
+from fep_formal.formal.manifest import FORMAL_MODULES
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
 from tests._support.lean435_migration import assert_historical_repair_bindings
 from tests._support.lean_runner import run_lean_compile_probe, run_lean_probe
@@ -38,7 +38,7 @@ REPAIR = (
 MAINTAINED_OWNER = (
     PROJECT_ROOT
     / "src"
-    / "fep_lean"
+    / "fep_formal"
     / "formal"
     / "gaussian_precision_conditioning.lean"
 )
@@ -49,7 +49,7 @@ SOURCE_BOUND_PATHS = (
     "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json",
     "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
     "specs/done/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean",
-    "src/fep_lean/formal/fin4_gaussian_semigroup.lean",
+    "src/fep_formal/formal/fin4_gaussian_semigroup.lean",
     "specs/done/horizon-2-smooth-stochastic/slices/05d-r0-gaussian-conditioning.md",
     "specs/done/horizon-2-smooth-stochastic/spikes/05d_gaussian_conditioning.lean",
     "tests/test_horizon2_gaussian_conditioning_readiness.py",
@@ -293,7 +293,7 @@ def test_h2_5d_r0_spike_compiles_warning_free(tmp_path: Path) -> None:
     probe.write_text(SPIKE.read_text(encoding="utf-8"), encoding="utf-8")
     result = run_lean_probe(
         probe,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         cwd=LEAN_ROOT,
         timeout_s=1800,
     )

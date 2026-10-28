@@ -4,7 +4,7 @@
 
 | File | Purpose |
 | ---- | ------- |
-| `settings.yaml` | Hermes block + project metadata (read by `HermesConfig.from_settings`); `gauss.default_model` is only a `docs/pin_audit.py` cross-check (must equal `hermes.model`), and orchestration is pipeline code (`src/fep_lean/pipeline/`), not config—see [`../docs/configuration.md`](../docs/configuration.md) |
+| `settings.yaml` | Hermes block + project metadata (read by `HermesConfig.from_settings`); `gauss.default_model` is only a `docs/pin_audit.py` cross-check (must equal `hermes.model`), and orchestration is pipeline code (`src/fep_formal/pipeline/`), not config—see [`../docs/configuration.md`](../docs/configuration.md) |
 | `catalogue_metadata.yaml` | Schema-2 roster seal, family membership, title, area, Mathlib hints, and compile-maturity fields |
 | `theorem_maturity.yaml` | Maintained semantic review and primary theorem for every topic |
 | `formalism_novelty.yaml` | Maintained novelty contract for expansion rows and their required composition bridges |
@@ -16,15 +16,15 @@
 Authoritative fields live in the checked-in file. Highlights:
 
 - `project.version` should match `pyproject.toml` and `manuscript/config.yaml`.
-- `hermes.*` is loaded by `HermesConfig.from_settings()` in `fep_lean/llm/hermes.py` (env overrides apply).
-- SQLite state uses `resolve_gauss_home()` in `fep_lean/gauss/client.py`:
+- `hermes.*` is loaded by `HermesConfig.from_settings()` in `fep_formal/llm/hermes.py` (env overrides apply).
+- SQLite state uses `resolve_gauss_home()` in `fep_formal/gauss/client.py`:
   `GAUSS_HOME` takes precedence over checkout `gauss.home`, then the caller's
   default. Hermes separately reads allowlisted keys from the environment or
   `$GAUSS_HOME/.env` (`~/.gauss/.env` when unset), independently of the checkout
   `gauss.home` setting. See [configuration](../docs/configuration.md)
   and [OpenGauss](../docs/opengauss.md) for those distinct resolution paths.
-- `output.root` belongs to `resolve_output_root()` in `fep_lean/_paths.py`.
-  An explicit API `output_root` takes precedence over `FEP_LEAN_OUTPUT_ROOT`,
+- `output.root` belongs to `resolve_output_root()` in `fep_formal/_paths.py`.
+  An explicit API `output_root` takes precedence over `FEP_FORMAL_OUTPUT_ROOT`,
   the checkout setting and the default. Methods projection `--output-root`
   selects its own export destination; ordinary catalogue/run commands use
   the environment or checkout setting.
@@ -36,23 +36,23 @@ configuration identifiers remain as declared in their owners.
 
 ```bash
 # From the project root; explicit offline artifact generation
-FEP_LEAN_OUTPUT_ROOT=/tmp/fep-formal-catalogue uv run fep-lean catalogue
+FEP_FORMAL_OUTPUT_ROOT=/tmp/fep-formal-catalogue uv run fep-formal catalogue
 ```
 
 ## topics.yaml — Topic format
 
 The complete row fields and validation rules live in
-[`schema.py`](../src/fep_lean/catalogue/schema.py),
-[`semantics.py`](../src/fep_lean/catalogue/semantics.py) and
-[`topics.py`](../src/fep_lean/catalogue/topics.py). The generated `lean_sketch`
+[`schema.py`](../src/fep_formal/catalogue/schema.py),
+[`semantics.py`](../src/fep_formal/catalogue/semantics.py) and
+[`topics.py`](../src/fep_formal/catalogue/topics.py). The generated `lean_sketch`
 field keeps its compatibility name; its content comes from canonical topic
 bodies. Compilation maturity and semantic disposition remain separate fields.
 
 Do not hand-edit generated topic rows. Edit `catalogue_metadata.yaml`,
 `theorem_maturity.yaml`, the applicable `formalism_novelty.yaml` row, or the
-appropriate module under `src/fep_lean/catalogue/bodies/`, then run the
-generator and its `--check` mode. `src/fep_lean/catalogue/registry.py` is the
-validated merger; `src/fep_lean/catalogue/latex.py` derives theorem
+appropriate module under `src/fep_formal/catalogue/bodies/`, then run the
+generator and its `--check` mode. `src/fep_formal/catalogue/registry.py` is the
+validated merger; `src/fep_formal/catalogue/latex.py` derives theorem
 signatures.
 
 `formalism_relations.yaml` is independent maintained review data. Its

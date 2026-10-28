@@ -1,5 +1,19 @@
 ## Unreleased
 
+- Canonical Python imports/distribution/command become `fep_formal`,
+  `fep-formal`, and `fep-formal`; public configuration uses `FEP_FORMAL_`.
+  Old imports share canonical module/class identity, and old command and
+  environment names emit deprecation warnings. Compatibility remains through
+  the 2.x release line; removal requires a separately announced major release.
+- Preserve actual compiler warnings in bridge verification and reject them in
+  strict mode; real Lean warning controls exercise both modes.
+- Add a metadata-only `fep-lean` compatibility distribution; preserve historical
+  receipt schema keys, publication identities, and Lean theorem namespaces.
+- Source-owner manifest v27 seals the canonical package and legacy adapter.
+  This migration changes source identity and requires new native, bridge,
+  render, browser, and hosted acceptance; historical receipts remain historical.
+  See [the migration guide](docs/identity-migration.md).
+
 - Move 182 source-only test cases into the Python feedback lane while keeping
   all compiler probes serial. That marker-only transition preserves all 4,469
   collected identities and every test function body; native verification and

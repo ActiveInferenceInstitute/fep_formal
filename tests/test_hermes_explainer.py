@@ -14,8 +14,9 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.llm.hermes import (
+from fep_formal._paths import resolve_environment
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.llm.hermes import (
     _FEP_SYSTEM_PROMPT,
     HermesAPIError,
     HermesConfig,
@@ -38,13 +39,13 @@ _HAS_API_KEY = bool(
     os.environ.get("OPENROUTER_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
 )
 # Run live tests when a key is present, unless explicitly opted out with =0.
-# Set FEP_LEAN_LIVE_TESTS=0 in CI to skip expensive API calls even when keys exist.
-# Set FEP_LEAN_LIVE_TESTS=1 to force-run even without a key (will fail at API level).
-_FEP_LEAN_LIVE_VAR = os.environ.get("FEP_LEAN_LIVE_TESTS", "").lower()
-# Live OpenRouter tests run only when FEP_LEAN_LIVE_TESTS is explicitly
+# Set FEP_FORMAL_LIVE_TESTS=0 in CI to skip expensive API calls even when keys exist.
+# Set FEP_FORMAL_LIVE_TESTS=1 to force-run even without a key (will fail at API level).
+_FEP_FORMAL_LIVE_VAR = resolve_environment("FEP_FORMAL_LIVE_TESTS", "").lower()
+# Live OpenRouter tests run only when FEP_FORMAL_LIVE_TESTS is explicitly
 # enabled. Key presence alone never opts a default pytest run into paid
 # API calls.
-_LIVE_TESTS_ENABLED = _FEP_LEAN_LIVE_VAR in ("1", "true", "yes")
+_LIVE_TESTS_ENABLED = _FEP_FORMAL_LIVE_VAR in ("1", "true", "yes")
 
 
 def test_hermes_config_defaults() -> None:
@@ -301,7 +302,7 @@ def test_hermes_try_fetch_raw_retries_429(monkeypatch: pytest.MonkeyPatch) -> No
         }
 
     monkeypatch.setattr(HermesExplainer, "_call_api", temporary_call)
-    monkeypatch.setattr("fep_lean.llm.hermes.time.sleep", lambda *_: None)
+    monkeypatch.setattr("fep_formal.llm.hermes.time.sleep", lambda *_: None)
     msgs = [{"role": "user", "content": "hi"}]
     raw, fatal, _err, retries, advance = ex._try_fetch_raw(msgs, "test-m", "fep-001")
     assert fatal is False
@@ -341,7 +342,7 @@ def test_hermes_explain_records_empty_content_chain_advance(
         }
 
     monkeypatch.setattr(HermesExplainer, "_call_api", temporary_call)
-    monkeypatch.setattr("fep_lean.llm.hermes.time.sleep", lambda *_: None)
+    monkeypatch.setattr("fep_formal.llm.hermes.time.sleep", lambda *_: None)
     res = ex.explain_topic(FIRST_TOPIC)
     assert res.success is True
     assert res.model_used == "fallback-m"
@@ -397,7 +398,7 @@ def test_build_messages_review_mode_has_no_lean_rewrite_instruction() -> None:
 
 @pytest.mark.skipif(
     not (_HAS_API_KEY and _LIVE_TESTS_ENABLED),
-    reason="No API key found (set OPENROUTER_API_KEY or ANTHROPIC_API_KEY); or suppressed via FEP_LEAN_LIVE_TESTS=0",
+    reason="No API key found (set OPENROUTER_API_KEY or ANTHROPIC_API_KEY); or suppressed via FEP_FORMAL_LIVE_TESTS=0",
 )
 def test_hermes_explain_topic_real_api_call() -> None:
     """Real HTTP round-trip: HermesExplainer.explain_topic → OpenRouter API.
@@ -434,7 +435,7 @@ def test_hermes_explain_topic_real_api_call() -> None:
     ::
 
         export OPENROUTER_API_KEY=sk-or-v1-...   # or ANTHROPIC_API_KEY
-        export FEP_LEAN_LIVE_TESTS=1
+        export FEP_FORMAL_LIVE_TESTS=1
         uv run pytest tests/test_hermes_explainer.py::test_hermes_explain_topic_real_api_call -v -s
 
     Expected timing: 5–90 s (standard models) or up to 720 s (reasoning models + retries).
@@ -456,7 +457,7 @@ def test_hermes_explain_topic_real_api_call() -> None:
     # Should not take forever: reasoning timeout (300s) + 2 retry/fallback cycles
     assert (
         elapsed < 720
-    )  # 12 min ceiling; set FEP_LEAN_LIVE_TESTS=0 to skip in pipeline
+    )  # 12 min ceiling; set FEP_FORMAL_LIVE_TESTS=0 to skip in pipeline
 
 
 # ── _strip_extra_theorems tests ───────────────────────────────────────────────

@@ -6,7 +6,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from fep_lean.catalogue.schema import load_catalogue_metadata
+from fep_formal.catalogue.schema import load_catalogue_metadata
 
 PROJ = Path(__file__).resolve().parent.parent
 SCRIPTS = PROJ / "scripts"

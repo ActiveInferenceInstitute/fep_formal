@@ -38,7 +38,7 @@ presented as the refined result.
 
 The committed `lean/FepSketches/fep_all.lean` is generated from the canonical
 catalog source, while manifested foundations, leaf compositions, and their
-import-only aggregate are projected from `src/fep_lean/formal/`. Regeneration
+import-only aggregate are projected from `src/fep_formal/formal/`. Regeneration
 checks fail when either projection differs, and the Lean build compiles the
 library against the exact pinned toolchain. The formalism audit then resolves
 reviewed declarations and checks their reported axioms; aggregate success alone
@@ -74,7 +74,7 @@ make provider, compiler, and filesystem drift visible in test results.
 
 ## Reproducibility
 
-Use `uv.lock`, `fep-lean setup`, and the documented `fep-lean preflight` command
+Use `uv.lock`, `fep-formal setup`, and the documented `fep-formal preflight` command
 to reproduce the pinned environment. A complete run produces
 `run_manifest.json`, `verification_manifest.json`, `summary.json`, Markdown
 reports, deterministic figures, and manuscript projections. These artifacts

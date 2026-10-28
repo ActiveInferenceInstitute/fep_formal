@@ -7,9 +7,9 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal import formal_projection_pairs, render_formal_aggregate
-from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.formal import formal_projection_pairs, render_formal_aggregate
+from fep_formal.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
 from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
@@ -19,7 +19,7 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 SOURCE = (
     PROJECT_ROOT
     / "src"
-    / "fep_lean"
+    / "fep_formal"
     / "formal"
     / "compositions"
     / "gaussian_control.lean"
@@ -312,7 +312,7 @@ def test_h2_6b_compiles_warning_free(tmp_path: Path) -> None:
     result = run_lean_compile_probe(
         SOURCE,
         cwd=LEAN_ROOT,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         output_path=output_path,
         timeout_s=300,
         executable=lake_executable(
@@ -337,7 +337,7 @@ def test_h2_6b_public_theorems_use_only_standard_axioms(tmp_path: Path) -> None:
     result = run_lean_compile_probe(
         probe,
         cwd=LEAN_ROOT,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         timeout_s=300,
         executable=lake_executable(
             missing="raise",

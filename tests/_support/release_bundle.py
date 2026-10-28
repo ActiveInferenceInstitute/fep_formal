@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.output import release_bundle as bundle_module
+from fep_formal.output import release_bundle as bundle_module
 
 PROJ = Path(__file__).resolve().parents[2]
 
@@ -280,7 +280,7 @@ def _minimal_manuscript(project_root: Path) -> None:
 def _write_release_metadata_fixture(project_root: Path) -> None:
     (project_root / ".aii").mkdir(parents=True, exist_ok=True)
     (project_root / "manuscript").mkdir(parents=True, exist_ok=True)
-    (project_root / "src/fep_lean").mkdir(parents=True, exist_ok=True)
+    (project_root / "src/fep_formal").mkdir(parents=True, exist_ok=True)
     (project_root / "config").mkdir(parents=True, exist_ok=True)
     (project_root / "LICENSE").write_text(
         "Creative Commons Attribution 4.0 International (CC BY 4.0)\n"
@@ -338,7 +338,7 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
             'Changelog = "https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CHANGELOG.md"\n'
             '"Concept DOI" = "https://doi.org/10.5281/zenodo.19699233"\n'
         )
-    (project_root / "src/fep_lean/__init__.py").write_text(
+    (project_root / "src/fep_formal/__init__.py").write_text(
         '__version__ = "2.1.0"\n', encoding="utf-8"
     )
     (project_root / "config/settings.yaml").write_text(
@@ -362,7 +362,7 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
 
 
 def _capture_stage(root: Path, name: str, dependencies: tuple[str, ...] = ()):
-    from fep_lean.output.release_bundle._core import PublicationCaptureStage
+    from fep_formal.output.release_bundle._core import PublicationCaptureStage
 
     source, output = root / f"{name}.input", root / f"{name}.output"
     source.write_bytes(name.encode())
@@ -390,7 +390,7 @@ def _capture_stage(root: Path, name: str, dependencies: tuple[str, ...] = ()):
 
 
 def _capture_plan(root: Path, stages):
-    from fep_lean.output.release_bundle._core import PublicationCapturePlan
+    from fep_formal.output.release_bundle._core import PublicationCapturePlan
 
     return PublicationCapturePlan(str(root), tuple(stages), 30)
 

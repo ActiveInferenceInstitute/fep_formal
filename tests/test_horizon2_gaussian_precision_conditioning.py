@@ -10,9 +10,9 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal import formal_projection_pairs, render_formal_aggregate
-from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.formal import formal_projection_pairs, render_formal_aggregate
+from fep_formal.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
 from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe, run_lean_probe
@@ -22,13 +22,13 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 SOURCE = (
     PROJECT_ROOT
     / "src"
-    / "fep_lean"
+    / "fep_formal"
     / "formal"
     / "gaussian_precision_conditioning.lean"
 )
 PROJECTION = PROJECT_ROOT / "lean" / "FepSketches" / SOURCE.name
 H2_5C_SOURCE = (
-    PROJECT_ROOT / "src" / "fep_lean" / "formal" / "fin4_gaussian_semigroup.lean"
+    PROJECT_ROOT / "src" / "fep_formal" / "formal" / "fin4_gaussian_semigroup.lean"
 )
 R0_SPIKE = (
     PROJECT_ROOT
@@ -200,7 +200,7 @@ def _assert_exact_namespace_declarations(
 def _run_lean(path: Path, *, timeout: int = 300) -> subprocess.CompletedProcess[str]:
     return run_lean_probe(
         path,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         cwd=LEAN_ROOT,
         timeout_s=timeout,
     )
@@ -630,7 +630,10 @@ example : ¬ IndepFun perturbedExternal perturbedInternal perturbedEndpointLaw :
 
 
 def test_h2_5d_preserves_h2_5c_r0_hashes_and_readiness_validation() -> None:
-    from tests._support.lean435_migration import historical_carrier_bytes
+    from tests._support.lean435_migration import (
+        assert_historical_repair_bindings,
+        historical_carrier_bytes,
+    )
 
     production_paths = {
         *PRESERVED_HASHES,
@@ -663,9 +666,21 @@ def test_h2_5d_preserves_h2_5c_r0_hashes_and_readiness_validation() -> None:
     assert _sha256(R0_REPAIR) == R0_REPAIR_SHA256
     repair = json.loads(R0_REPAIR.read_text(encoding="utf-8"))
     assert repair["decision"] == "go"
+    recorded_paths = tuple(repair["source_sha256"])
+    canonical_owner = H2_5C_SOURCE.relative_to(PROJECT_ROOT).as_posix()
+    for duplicate in (recorded_paths[0], canonical_owner):
+        with pytest.raises(AssertionError):
+            assert_historical_repair_bindings(
+                PROJECT_ROOT,
+                R0_REPAIR,
+                R0_REPAIR_SHA256,
+                (*recorded_paths, duplicate),
+                historical_tests={},
+            )
     for path, expected in PRESERVED_HASHES.items():
         relative = path.relative_to(PROJECT_ROOT).as_posix()
-        assert repair["source_sha256"][relative] == expected
+        logical = relative.replace("src/fep_formal/", "src/fep_lean/", 1)
+        assert repair["source_sha256"][logical] == expected
 
     assert _sha256(R0_LIFECYCLE) == R0_LIFECYCLE_SHA256
     lifecycle = json.loads(R0_LIFECYCLE.read_text(encoding="utf-8"))

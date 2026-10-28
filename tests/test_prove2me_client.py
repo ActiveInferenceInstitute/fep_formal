@@ -25,20 +25,20 @@ import pytest
 from pytest_httpserver import HTTPServer
 from werkzeug.wrappers import Response
 
-from fep_lean.prove2me import client as client_module
-from fep_lean.prove2me.client import (
+from fep_formal.prove2me import client as client_module
+from fep_formal.prove2me.client import (
     Prove2meClient,
     Prove2meTransport,
     TransportResult,
 )
-from fep_lean.prove2me.config import (
+from fep_formal.prove2me.config import (
     Prove2meAPIError,
     Prove2meAuthError,
     Prove2meConfig,
     Prove2meTimeoutError,
     Prove2meTransportError,
 )
-from fep_lean.prove2me.missions import wait_for_verdict
+from fep_formal.prove2me.missions import wait_for_verdict
 
 FAKE_KEY = "p2m_TEST_FAKE_KEY"
 FAKE_TOKEN = "tok-fake-1"

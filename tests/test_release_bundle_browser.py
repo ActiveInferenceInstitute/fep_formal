@@ -11,7 +11,7 @@ from typing import Any
 
 import pytest
 
-from fep_lean.output import release_bundle as bundle_module
+from fep_formal.output import release_bundle as bundle_module
 from tests._support.release_bundle import (
     _png_bytes,
 )
@@ -178,7 +178,7 @@ def test_browser_receipt_is_bound_to_canonical_projections_and_screenshots(
     }
     capture_provenance = {
         "command": "uv run python scripts/capture_browser_acceptance.py",
-        "owner": "src/fep_lean/output/browser_capture.py",
+        "owner": "src/fep_formal/output/browser_capture.py",
         "owner_sha256": "b" * 64,
         "protocol": "Chrome DevTools Protocol",
         "wrapper": "scripts/capture_browser_acceptance.py",

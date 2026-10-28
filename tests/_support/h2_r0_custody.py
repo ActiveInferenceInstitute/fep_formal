@@ -26,10 +26,15 @@ H3_ADDENDUM_PATH = (
 )
 PRIOR_SHA256 = "06fa2f40cec8cc0174eb4583e1e86436ba6bb081db494ff1e2b5086e196d289a"
 SUCCESSOR_SHA256 = "6311a998b1a66bb31949e194eb9e36a2e361dfbfb0f0e7d715b3a17e3e396bae"
-MANIFEST_PATH = "src/fep_lean/formal/manifest.py"
+MANIFEST_PATH = "src/fep_formal/formal/manifest.py"
+RECORDED_MANIFEST_PATH = "src/fep_lean/formal/manifest.py"
 READINESS_TEST_PATH = "tests/test_horizon2_gaussian_vfe_readiness.py"
 VALIDATOR_PATH = "tests/_support/h2_r0_custody.py"
-ALLOWED_PRIOR_CHANGES = (MANIFEST_PATH, READINESS_TEST_PATH)
+# This pair names immutable predecessor-schema keys, not live source paths.
+ALLOWED_PRIOR_CHANGES = (
+    "src/fep_lean/formal/manifest.py",
+    READINESS_TEST_PATH,
+)
 H3_CUSTODY_SUPPORT_CHANGES = (VALIDATOR_PATH, READINESS_TEST_PATH)
 RELEASE_METADATA_REPLACEMENTS = {
     "pyproject.toml": (
@@ -42,9 +47,9 @@ RELEASE_METADATA_REPLACEMENTS = {
     ),
 }
 H3_OWNER_SOURCE_PATHS = (
-    "src/fep_lean/formal/h3_reference_model.lean",
+    "src/fep_formal/formal/h3_reference_model.lean",
     "lean/FepSketches/h3_reference_model.lean",
-    "src/fep_lean/formal/compositions/h3_case_study.lean",
+    "src/fep_formal/formal/compositions/h3_case_study.lean",
     "lean/FepSketches/compositions/h3_case_study.lean",
 )
 H3_ADDED_OWNERS = (
@@ -418,7 +423,8 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     manifest_bytes = (project_root / MANIFEST_PATH).read_bytes()
     manifest = _strip_h3_owner_additions(manifest_bytes.decode("utf-8"))
     _require(
-        _sha256(manifest.encode()) == successor["source_sha256"][MANIFEST_PATH],
+        _sha256(manifest.encode())
+        == successor["source_sha256"][RECORDED_MANIFEST_PATH],
         "H3 owner subtraction does not recover the historical custody manifest",
     )
     owners = _manifest_owners(manifest)
@@ -525,7 +531,7 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     prior_manifest = without_w4.replace(
         _W4_CONSOLIDATION_ANCHOR, _W4_RESTORED_LITERAL_BLOCK, 1
     )
-    prior_manifest_sha = prior["source_sha256"][MANIFEST_PATH]
+    prior_manifest_sha = prior["source_sha256"][RECORDED_MANIFEST_PATH]
     _require(
         _sha256(prior_manifest.encode()) == prior_manifest_sha,
         "manifest has unlisted changes to historical owners or code",
@@ -593,7 +599,7 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
         source_paths
         - set(H3_CUSTODY_SUPPORT_CHANGES)
         - set(RELEASE_METADATA_REPLACEMENTS)
-        - {MANIFEST_PATH}
+        - {RECORDED_MANIFEST_PATH}
     )
     _require(
         all(historical_sources[path] == current[path] for path in stable_sources),
@@ -637,7 +643,9 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
             )
     current.update(
         {
-            path: _sha256((project_root / path).read_bytes())
+            path.replace("src/fep_formal/", "src/fep_lean/", 1): _sha256(
+                (project_root / path).read_bytes()
+            )
             for path in H3_OWNER_SOURCE_PATHS
         }
     )
@@ -645,8 +653,8 @@ def validate_h2_r0_custody(project_root: Path) -> dict[str, Any]:
     _require(
         addendum["manifest_transition"]
         == {
-            "prior_sha256": historical_sources[MANIFEST_PATH],
-            "current_sha256": current[MANIFEST_PATH],
+            "prior_sha256": historical_sources[RECORDED_MANIFEST_PATH],
+            "current_sha256": current[RECORDED_MANIFEST_PATH],
             "historical_r0_sha256": prior_manifest_sha,
             "added_modules": [
                 {

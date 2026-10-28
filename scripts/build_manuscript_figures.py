@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Produce the manuscript figure PNGs that no other generator writes.
 
-``fep-lean catalogue`` writes the matplotlib figures and ``fep-lean atlas`` /
-``fep-lean dashboard`` write the SVG projections, but two chapters cite those
+``fep-formal catalogue`` writes the matplotlib figures and ``fep-formal atlas`` /
+``fep-formal dashboard`` write the SVG projections, but two chapters cite those
 projections as PNGs. This wrapper rasterizes them (see
-``fep_lean.output.svg_raster``) so a publication render on a clean checkout has
+``fep_formal.output.svg_raster``) so a publication render on a clean checkout has
 every figure it references.
 
-Run it after ``fep-lean atlas`` and ``fep-lean dashboard`` and before
+Run it after ``fep-formal atlas`` and ``fep-formal dashboard`` and before
 ``stage_03_render.py``.
 
 Usage:
@@ -25,8 +25,8 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
-from fep_lean.catalogue.generation import check_or_write
-from fep_lean.output.svg_raster import (
+from fep_formal.catalogue.generation import check_or_write
+from fep_formal.output.svg_raster import (
     SvgRasterError,
     manuscript_png_drift,
     write_manuscript_figure_pngs,

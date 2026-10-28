@@ -9,25 +9,25 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.catalogue.coverage import (
+from fep_formal.catalogue.coverage import (
     build_formalism_coverage,
     formalism_coverage_drift,
     render_formalism_coverage_json,
     render_formalism_coverage_markdown,
     write_formalism_coverage,
 )
-from fep_lean.catalogue.registry import BODIES
-from fep_lean.catalogue.relations import (
+from fep_formal.catalogue.registry import BODIES
+from fep_formal.catalogue.relations import (
     CapabilityStatus,
     EdgeKind,
     load_formalism_graph,
 )
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.formal.declarations import (
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.formal.declarations import (
     composed_theorem_declarations,
     formal_theorem_modules,
 )
-from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_formal.formal.manifest import FORMAL_MODULES, FormalModuleRole
 
 PROJ = Path(__file__).resolve().parent.parent
 
@@ -42,8 +42,8 @@ def _copy_coverage_sources(destination: Path) -> None:
     ):
         shutil.copyfile(PROJ / "config" / name, config_dir / name)
     shutil.copytree(
-        PROJ / "src" / "fep_lean" / "formal",
-        destination / "src" / "fep_lean" / "formal",
+        PROJ / "src" / "fep_formal" / "formal",
+        destination / "src" / "fep_formal" / "formal",
     )
 
 
@@ -174,7 +174,7 @@ def test_coverage_writer_and_drift_check_are_deterministic(tmp_path: Path) -> No
 def test_formal_import_inventory_retains_meta_dependencies(tmp_path: Path) -> None:
     _copy_coverage_sources(tmp_path)
     before = build_formalism_coverage(tmp_path)
-    resource = tmp_path / "src" / "fep_lean" / "formal" / "finite_probability.lean"
+    resource = tmp_path / "src" / "fep_formal" / "formal" / "finite_probability.lean"
     source = resource.read_text(encoding="utf-8")
     resource.write_text(
         source.replace(
@@ -215,7 +215,7 @@ def test_formal_inventory_and_counts_ignore_comment_only_lean_commands(
 ) -> None:
     _copy_coverage_sources(tmp_path)
     before = build_formalism_coverage(tmp_path)
-    resource = tmp_path / "src" / "fep_lean" / "formal" / "finite_probability.lean"
+    resource = tmp_path / "src" / "fep_formal" / "formal" / "finite_probability.lean"
     resource.write_text(
         resource.read_text(encoding="utf-8")
         + "\n/-\n"
@@ -387,7 +387,7 @@ def test_coverage_does_not_count_comment_only_endpoint_mentions(
     tmp_path: Path,
 ) -> None:
     _copy_coverage_sources(tmp_path)
-    core = tmp_path / "src" / "fep_lean" / "formal" / "compositions" / "core.lean"
+    core = tmp_path / "src" / "fep_formal" / "formal" / "compositions" / "core.lean"
     source = core.read_text(encoding="utf-8")
     source = source.replace("fep_fep002.", "fep_fep999.")
     source = source.replace(
@@ -408,7 +408,7 @@ def test_coverage_requires_formal_pairings_to_state_a_conjunction(
     leaf = (
         tmp_path
         / "src"
-        / "fep_lean"
+        / "fep_formal"
         / "formal"
         / "compositions"
         / "collective_learning.lean"

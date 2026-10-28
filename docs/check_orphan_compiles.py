@@ -7,11 +7,11 @@ Scope
 CI's lean job builds the Lake workspace projection (``lake build
 FepSketches`` with ``globs := #[.andSubmodules 'FepSketches]`` in
 ``lean/lakefile.lean``). Those are the projected bytes under
-``lean/FepSketches/``. The canonical sources under ``src/fep_lean/formal/``
+``lean/FepSketches/``. The canonical sources under ``src/fep_formal/formal/``
 are never compiled as files by any CI step, and the serial_lean lane's
 opt-in compile probes are topic-driven, not module-driven. Commit b5e6a9d
 narrowed ``finite_probability``'s imports and broke the orphaned
-``src/fep_lean/formal/posterior_convergence.lean`` without any gate
+``src/fep_formal/formal/posterior_convergence.lean`` without any gate
 compiling it; b85cfe0 fixed the break and this gate closes the gap.
 
 Orphan definition
@@ -23,7 +23,7 @@ transitive ``import FepSketches.*`` closure of
 ``scripts/_maint_build_lean_landscape.py::_workspace_imports`` (first token
 after ``import``; only ``FepSketches.*`` targets are followed), and dotted
 names mirror to canonical resources the way
-``src/fep_lean/formal/manifest.py`` validates, e.g.
+``src/fep_formal/formal/manifest.py`` validates, e.g.
 ``FepSketches.compositions.core`` -> ``compositions/core.lean``. An import
 without a canonical mirror (the generated ``FepSketches.fep_all`` aggregate
 itself) is a closure leaf.
@@ -31,7 +31,7 @@ itself) is a closure leaf.
 Check
 -----
 
-Only the top level of ``src/fep_lean/formal/`` is enumerated; the
+Only the top level of ``src/fep_formal/formal/`` is enumerated; the
 composition leaves under ``formal/compositions/`` are workspace build
 targets reached through ``composed.lean``. Each orphan's canonical file is
 compiled with ``lake env lean`` from the ``lean/`` directory: no olean is
@@ -63,7 +63,7 @@ import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-FORMAL_DIR = Path("src") / "fep_lean" / "formal"
+FORMAL_DIR = Path("src") / "fep_formal" / "formal"
 FEP_ALL_PATH = Path("lean") / "FepSketches" / "fep_all.lean"
 LEAN_DIR = Path("lean")
 WORKSPACE_PREFIX = "FepSketches."

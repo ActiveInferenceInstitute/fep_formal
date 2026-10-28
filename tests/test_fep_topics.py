@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.catalogue.topics import CatalogueValidationError, FEPTopicCatalogue
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.catalogue.topics import CatalogueValidationError, FEPTopicCatalogue
 
 PROJ = Path(__file__).resolve().parent.parent
 TOPICS = PROJ / "config" / "topics.yaml"

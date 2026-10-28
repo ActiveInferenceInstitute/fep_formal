@@ -13,7 +13,7 @@ from typing import Any
 
 import pytest
 
-from fep_lean.output import browser_capture as capture
+from fep_formal.output import browser_capture as capture
 
 
 class _ScriptedSocket:

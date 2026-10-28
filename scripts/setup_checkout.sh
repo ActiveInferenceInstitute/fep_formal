@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Compose existing checkout workflows; pin/cache policy stays in fep-lean setup.
+# Compose existing checkout workflows; pin/cache policy stays in fep-formal setup.
 set -euo pipefail
 
 usage() {
@@ -48,14 +48,14 @@ run uv lock --check
 run uv pip check
 
 if [[ "$catalogue_only" == false ]]; then
-  run uv run --locked fep-lean setup
+  run uv run --locked fep-formal setup
   # Deliberate second pass proves re-entry; both calls retain t-0058's guards.
   run bash scripts/_maint_bootstrap_lean_toolchain.sh
 fi
 
-run uv run --locked fep-lean catalogue
-run uv run --locked fep-lean atlas --check
-run uv run --locked fep-lean dashboard --check
+run uv run --locked fep-formal catalogue
+run uv run --locked fep-formal atlas --check
+run uv run --locked fep-formal dashboard --check
 if [[ "$catalogue_only" == false ]]; then
   run uv run --locked python scripts/build_manuscript_figures.py
   run uv run --locked python scripts/build_manuscript_figures.py --check

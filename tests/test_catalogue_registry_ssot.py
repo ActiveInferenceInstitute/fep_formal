@@ -1,6 +1,6 @@
 """Enforce generated-YAML parity with the canonical body registry.
 
-The family modules are merged by ``fep_lean.catalogue.registry``; ``topics.yaml``
+The family modules are merged by ``fep_formal.catalogue.registry``; ``topics.yaml``
 is a generated projection. This test catches accidental YAML-only drift without
 a full Lean run.
 """
@@ -9,20 +9,20 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
+from fep_formal.catalogue.topics import FEPTopicCatalogue
 
 PROJ = Path(__file__).resolve().parent.parent
 TOPICS = PROJ / "config" / "topics.yaml"
 
 
 def _load_bodies():
-    from fep_lean.catalogue.registry import BODIES
+    from fep_formal.catalogue.registry import BODIES
 
     return BODIES
 
 
 def _load_latex_equations():
-    from fep_lean.catalogue.registry import LATEX_EQUATIONS
+    from fep_formal.catalogue.registry import LATEX_EQUATIONS
 
     return LATEX_EQUATIONS
 

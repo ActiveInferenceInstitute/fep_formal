@@ -1,7 +1,7 @@
 # Mathematical methods and the OpenAI mathematics context
 
 Version 1.6.0 makes the catalog's mathematical location inspectable.
-The portable `fep_lean.methods` interface joins canonical topic contracts and
+The portable `fep_formal.methods` interface joins canonical topic contracts and
 authored relations with an explicit interpretive taxonomy. The extended
 [manuscript supplement](../manuscript/08b_mathematical_positioning_supplement.md)
 develops the mathematics behind that join. The
@@ -38,7 +38,7 @@ The default reads generated YAML resources and canonical Lean resources in the
 installed distribution. It does not require a checkout:
 
 ```python
-from fep_lean.methods import (
+from fep_formal.methods import (
     build_mathematical_positioning,
     inspect_topic,
     positioning_neighbors,
@@ -58,23 +58,23 @@ embedding = cross_corpus_embedding(model)
 ```
 
 ```bash
-fep-lean methods inspect --topic fep-001
-fep-lean methods inspect --family core-information-geometry
-fep-lean methods neighbors core-information-geometry --limit 5
-fep-lean methods probe
-fep-lean methods analyze fep-001
-fep-lean methods theorem fep_fep001.FEP001.fep001_variationalUpperBound_eq_iff
-fep-lean methods embedding
-fep-lean methods export --output-root ./mathematical-methods
-fep-lean methods check --output-root ./mathematical-methods
+fep-formal methods inspect --topic fep-001
+fep-formal methods inspect --family core-information-geometry
+fep-formal methods neighbors core-information-geometry --limit 5
+fep-formal methods probe
+fep-formal methods analyze fep-001
+fep-formal methods theorem fep_fep001.FEP001.fep001_variationalUpperBound_eq_iff
+fep-formal methods embedding
+fep-formal methods export --output-root ./mathematical-methods
+fep-formal methods check --output-root ./mathematical-methods
 ```
 
 Select current canonical checkout inputs explicitly:
 
 ```bash
-uv run fep-lean --project-root . methods inspect --topic fep-001
-uv run fep-lean --project-root . methods export --output-root docs/mathematical-positioning
-uv run fep-lean --project-root . methods check --output-root docs/mathematical-positioning
+uv run fep-formal --project-root . methods inspect --topic fep-001
+uv run fep-formal --project-root . methods export --output-root docs/mathematical-positioning
+uv run fep-formal --project-root . methods check --output-root docs/mathematical-positioning
 uv run python specs/openai-math-methods/generate_package_methods.py --check
 ```
 
@@ -98,7 +98,7 @@ loading the positioning model or invoking a compiler:
 
 ```python
 import math
-from fep_lean.methods import (
+from fep_formal.methods import (
     finite_expectation,
     log_partition,
     exponential_tilt,
@@ -114,7 +114,7 @@ report = gibbs_duality_diagnostics(reference, reference, potential)
 ```
 
 ```bash
-fep-lean methods gibbs \
+fep-formal methods gibbs \
   --candidate '[0.5, 0.5, 0.0]' \
   --reference '[0.5, 0.5, 0.0]' \
   --potential '[0.0, 1.0986122886681098, 7.0]'

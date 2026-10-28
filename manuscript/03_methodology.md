@@ -19,15 +19,15 @@ The architecture has three source layers and three evidence layers.
 
 ## The Command-Line Toolchain {#sec:the_command_line_toolchain}
 
-The installed `fep-lean` command is the public interface:
+The installed `fep-formal` command is the public interface:
 
 ```bash
-uv run fep-lean catalogue
-uv run fep-lean atlas --check
-uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-formal catalogue
+uv run fep-formal atlas --check
+uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json
 uv run python scripts/audit_formalisms.py --receipt output/formalism-audit.json
-uv run fep-lean preflight
-uv run fep-lean run
+uv run fep-formal preflight
+uv run fep-formal run
 ```
 
 The first two commands are deterministic and offline: catalog mode builds publication inputs, while the atlas command checks the coverage visualization. The native compiler command writes an atomic, source-bound topic receipt that records the actual compiler output and resolved Mathlib revision; the formalism audit separately resolves primary/evidence declarations, applies a versioned trusted-axiom policy, and inspects evidence axioms. `preflight` is a read-only capability check. `run` is the credentialed Hermes/OpenGauss path and fails closed when required capabilities are absent. Topic and area filters are useful during development, but a filtered native receipt is never publication-claim-ready for the full catalog.
@@ -39,7 +39,7 @@ uv run python scripts/_maint_build_topics_catalogue.py --check
 uv run python scripts/_maint_build_fep_all_lean.py --check
 uv run python scripts/_maint_build_formal_modules.py --check
 uv run python scripts/build_formalism_coverage.py --check
-uv run fep-lean atlas --check
+uv run fep-formal atlas --check
 uv run python scripts/build_formal_kernel_dashboard.py --check
 uv run python scripts/theorem_maturity_audit.py
 uv run python docs/theorem_ref_audit.py
@@ -47,7 +47,7 @@ uv run python docs/theorem_ref_audit.py
 
 ## The Hermes Agent and LLM Integration {#sec:the_hermes_agent_and_llm_integration}
 
-`fep_lean.llm.hermes.HermesExplainer` is an optional reviewer of a curated theorem body, not the owner of the formal kernel. It sends a system/user prompt pair to an OpenAI-compatible endpoint, parses the explanation and refined Lean block, and records retries and model-chain advances. The prompt requires preservation of imports, namespaces, tactic hints, and the absence of `sorry` in an already complete sketch.
+`fep_formal.llm.hermes.HermesExplainer` is an optional reviewer of a curated theorem body, not the owner of the formal kernel. It sends a system/user prompt pair to an OpenAI-compatible endpoint, parses the explanation and refined Lean block, and records retries and model-chain advances. The prompt requires preservation of imports, namespaces, tactic hints, and the absence of `sorry` in an already complete sketch.
 
 Provider/model rosters are runtime configuration rather than scientific results. They are authoritative only in a validated report bundle. With no OpenRouter or Anthropic credential, full-mode preflight fails; an offline fixture result may exercise code paths in tests, but it is ineligible for publication claims.
 
@@ -55,7 +55,7 @@ See [@sec:the_hermes_ai_agent_and_llm_assisted_formalization] for the session pr
 
 ## The Native Lean Compilation Engine {#sec:the_native_lean_compilation_engine}
 
-`fep_lean.verification.lean_verifier.LeanVerifier` writes each selected body to a temporary file in the pinned Lake workspace and invokes `lake env lean`. Leading imports are preserved; a shared preamble is used only for a sketch that has no explicit imports. Results retain compiler output, separated warnings and errors, `sorry` detection, duration, toolchain version, and an advisory failure class.
+`fep_formal.verification.lean_verifier.LeanVerifier` writes each selected body to a temporary file in the pinned Lake workspace and invokes `lake env lean`. Leading imports are preserved; a shared preamble is used only for a sketch that has no explicit imports. Results retain compiler output, separated warnings and errors, `sorry` detection, duration, toolchain version, and an advisory failure class.
 
 Native claim readiness is stricter than an exit code. The receipt must cover the exact ordered roster of {{total_topics}} topics, every row must compile, warning and `sorry` counts must both be zero, and the catalog, canonical family-body sources, Lean toolchain, and Mathlib tag must match the live tree. Revalidation independently recomputes those conditions rather than trusting a stored `complete` flag.
 
@@ -87,15 +87,15 @@ uv run python scripts/_maint_build_topics_catalogue.py --check
 uv run python scripts/_maint_build_fep_all_lean.py --check
 uv run python scripts/_maint_build_formal_modules.py --check
 uv run python scripts/build_formalism_coverage.py --check
-uv run fep-lean atlas --check
+uv run fep-formal atlas --check
 uv run python scripts/build_formal_kernel_dashboard.py --check
 uv run python scripts/audit_formalisms.py --receipt output/formalism-audit.json
-uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
-uv run fep-lean catalogue
+uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-formal catalogue
 uv run python scripts/render_manuscript.py --check
 ```
 
-For a full live run, configure an accepted credential, run `uv run fep-lean preflight`, then `uv run fep-lean run`. The resulting report must pass the receipt validator before its Hermes or timing fields can enter manuscript variables. Neither path mutates authored manuscript Markdown: rendering writes to `output/manuscript/` only after validating every placeholder across the full source set.
+For a full live run, configure an accepted credential, run `uv run fep-formal preflight`, then `uv run fep-formal run`. The resulting report must pass the receipt validator before its Hermes or timing fields can enter manuscript variables. Neither path mutates authored manuscript Markdown: rendering writes to `output/manuscript/` only after validating every placeholder across the full source set.
 
 ## Area-Specific Methodological Constraints {#sec:area_specific_methodological_constraints}
 
@@ -130,16 +130,16 @@ config/catalogue_metadata.yaml             stable titles/areas/library hints
 config/theorem_maturity.yaml               primary theorem + semantic review
 config/formalism_novelty.yaml              expansion deltas + required bridges
 config/formalism_relations.yaml            authored relations + capability history
-src/fep_lean/catalogue/bodies/*.py          family-owned canonical Lean bodies
-src/fep_lean/catalogue/registry.py          validated body manifest and merger
-src/fep_lean/catalogue/latex.py             theorem-signature projection
-src/fep_lean/formal/**/*.lean               manifested foundations + composition leaves
+src/fep_formal/catalogue/bodies/*.py          family-owned canonical Lean bodies
+src/fep_formal/catalogue/registry.py          validated body manifest and merger
+src/fep_formal/catalogue/latex.py             theorem-signature projection
+src/fep_formal/formal/**/*.lean               manifested foundations + composition leaves
                     \ | /
                      v
-src/fep_lean/catalogue/generation.py
+src/fep_formal/catalogue/generation.py
         |                         |
         v                         v
-config/topics.yaml       src/fep_lean/data/topics.yaml
+config/topics.yaml       src/fep_formal/data/topics.yaml
         |
         +--> lean/FepSketches/fep_all.lean
         +--> lean/FepSketches/{foundations,compositions,aggregate}.lean
@@ -160,17 +160,17 @@ The project pins `{{lean_toolchain}}` and Mathlib `{{mathlib_tag}}`. `lake exe c
 
 ## execution-integrity Testing Policy {#sec:zero_direct_testing_policy}
 
-Tests pin observable contracts rather than publication constants. Catalog tests exercise strict schema and source parity; native tests invoke the real Lean subprocess where marked; SQLite tests use isolated real databases; HTTP behavior is tested through controlled local servers or is guarded by explicit live credentials. Distribution tests build a wheel, install it into an isolated environment, import `fep_lean`, execute CLI help, load packaged data, and confirm that only the supported `fep_lean` namespace is exported.
+Tests pin observable contracts rather than publication constants. Catalog tests exercise strict schema and source parity; native tests invoke the real Lean subprocess where marked; SQLite tests use isolated real databases; HTTP behavior is tested through controlled local servers or is guarded by explicit live credentials. Distribution tests build a wheel, install it into an isolated environment, import `fep_formal`, execute CLI help, load packaged data, and confirm that canonical `fep_formal` imports and deprecated `fep_lean` aliases share module and class identity.
 
 External services remain external evidence. Offline fixture responses are useful for parser and failure-path tests, but cannot make a full report claim-ready.
 
 ## Namespace Convention and Topic Isolation {#sec:namespace_convention}
 
-Python code lives under one `fep_lean` namespace. Lean declarations use an inner stable topic namespace (`FEP002`, `FEP014`, and so on); the generated aggregate adds an outer `fep_fepNNN` namespace so helper declarations from different self-contained sketches cannot collide. The coverage audit counts declarations and imports from canonical bodies, while theorem-reference auditing ensures that manuscript identifiers resolve to actual declarations.
+Python code lives under one `fep_formal` namespace. Lean declarations use an inner stable topic namespace (`FEP002`, `FEP014`, and so on); the generated aggregate adds an outer `fep_fepNNN` namespace so helper declarations from different self-contained sketches cannot collide. The coverage audit counts declarations and imports from canonical bodies, while theorem-reference auditing ensures that manuscript identifiers resolve to actual declarations.
 
 ## PYTHONPATH Isolation {#sec:pythonpath_isolation}
 
-The installable package uses the `fep_lean` namespace. Checkout commands run through `uv`, and installed commands import `fep_lean.*`. The wheel includes its generated catalog as package data, so loading the default catalog does not depend on locating the repository root.
+The installable package uses the canonical `fep_formal` namespace. Deprecated `fep_lean` imports and the `fep-lean` executable remain compatibility aliases through the 2.x release line; new consumers use the canonical interfaces. Checkout commands run through `uv`, and installed commands import `fep_formal.*`. The wheel includes its generated catalog as package data, so loading the default catalog does not depend on locating the repository root.
 
 ## Parallelism Model {#sec:parallelism_model}
 

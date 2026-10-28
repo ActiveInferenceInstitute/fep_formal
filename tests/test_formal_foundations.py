@@ -9,15 +9,15 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.coverage import build_formalism_coverage
-from fep_lean.catalogue.relations import load_formalism_graph
-from fep_lean.formal.declarations import formal_theorem_modules
-from fep_lean.formal.manifest import (
+from fep_formal.catalogue.coverage import build_formalism_coverage
+from fep_formal.catalogue.relations import load_formalism_graph
+from fep_formal.formal.declarations import formal_theorem_modules
+from fep_formal.formal.manifest import (
     FORMAL_MODULES,
     FormalModuleRole,
     formal_resource_paths,
 )
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lean_module_contract import (
     exact_information_review,
     finite_rate_distortion_theorem_extension,
@@ -58,12 +58,12 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     manifested_resources = tuple(module.resource for module in FORMAL_MODULES)
     actual_resources = tuple(
         sorted(
-            path.relative_to(PROJECT_ROOT / "src" / "fep_lean" / "formal").as_posix()
-            for path in (PROJECT_ROOT / "src" / "fep_lean" / "formal").rglob("*.lean")
+            path.relative_to(PROJECT_ROOT / "src" / "fep_formal" / "formal").as_posix()
+            for path in (PROJECT_ROOT / "src" / "fep_formal" / "formal").rglob("*.lean")
         )
     )
     resolved_resources = tuple(
-        path.relative_to(PROJECT_ROOT / "src" / "fep_lean" / "formal").as_posix()
+        path.relative_to(PROJECT_ROOT / "src" / "fep_formal" / "formal").as_posix()
         for path in formal_resource_paths(project_root=PROJECT_ROOT)
     )
 
@@ -108,7 +108,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     finite_rate_distortion = finite_rate_distortion_theorem_extension(
         {
             name: {
-                "source_owner": "src/fep_lean/formal/"
+                "source_owner": "src/fep_formal/formal/"
                 + module.removeprefix("FepSketches.").replace(".", "/")
                 + ".lean"
             }
@@ -119,7 +119,7 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
     obligation_extension = obligation_theorem_extension(
         {
             name: {
-                "source_owner": "src/fep_lean/formal/"
+                "source_owner": "src/fep_formal/formal/"
                 + module.removeprefix("FepSketches.").replace(".", "/")
                 + ".lean"
             }
@@ -458,7 +458,7 @@ def test_formal_module_dependency_projection_is_acyclic_and_separate() -> None:
 
 
 def test_finite_rate_distortion_public_query_separates_feasibility_and_slater() -> None:
-    from fep_lean.methods import build_mathematical_positioning
+    from fep_formal.methods import build_mathematical_positioning
 
     declarations = build_mathematical_positioning(PROJECT_ROOT).as_dict()[
         "theorem_analysis"
@@ -481,7 +481,7 @@ def test_finite_rate_distortion_public_query_separates_feasibility_and_slater() 
 
 @pytest.mark.serial_lean
 def test_primary_alignment_imported_canonical_controls(tmp_path):
-    from fep_lean.verification.formalism_audit import parse_axiom_output
+    from fep_formal.verification.formalism_audit import parse_axiom_output
     from tests._support.lake import lake_executable
     from tests._support.lean_runner import run_lake_lean_probe
 
@@ -532,7 +532,7 @@ def test_primary_alignment_imported_canonical_controls(tmp_path):
 
 @pytest.mark.serial_lean
 def test_ness_forward_difference_imported_controls(tmp_path):
-    from fep_lean.verification.formalism_audit import parse_axiom_output
+    from fep_formal.verification.formalism_audit import parse_axiom_output
     from tests._support.lake import lake_executable
     from tests._support.lean_runner import run_lake_lean_probe
 
@@ -655,7 +655,7 @@ def test_ness_forward_difference_imported_controls(tmp_path):
     ],
 )
 def test_derivational_bridge_imported_controls(tmp_path, fixture_name, expected):
-    from fep_lean.verification.formalism_audit import parse_axiom_output
+    from fep_formal.verification.formalism_audit import parse_axiom_output
     from tests._support.lake import lake_executable
     from tests._support.lean_runner import run_lake_lean_probe
 

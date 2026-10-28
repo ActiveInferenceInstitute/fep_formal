@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification import _toolchain as toolchain
+from fep_formal.verification import _toolchain as toolchain
 
 
 def test_toolchain_pin_rejects_missing_and_non_utf8_files(tmp_path: Path) -> None:
@@ -156,7 +156,7 @@ def test_explicit_toolchain_executable_must_be_a_file(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setenv("FEP_LEAN_LEAN_EXE", str(tmp_path / "missing-lean"))
+    monkeypatch.setenv("FEP_FORMAL_LEAN_EXE", str(tmp_path / "missing-lean"))
 
     assert toolchain.find_executable("lean") is None
 
@@ -167,7 +167,7 @@ def test_executable_resolution_uses_path_before_the_elan_proxy(
 ) -> None:
     path_lean = tmp_path / "path-lean"
     path_lean.write_bytes(b"binary")
-    monkeypatch.delenv("FEP_LEAN_LEAN_EXE", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_LEAN_EXE", raising=False)
     monkeypatch.setattr(toolchain, "find_toolchain_bin", lambda _lean_dir=None: None)
     monkeypatch.setattr(toolchain.shutil, "which", lambda _name: str(path_lean))
 
@@ -183,7 +183,7 @@ def test_executable_resolution_falls_back_to_an_existing_elan_proxy(
     proxy.parent.mkdir(parents=True)
     proxy.write_bytes(b"binary")
     monkeypatch.setenv("ELAN_HOME", str(elan_home))
-    monkeypatch.delenv("FEP_LEAN_LAKE_EXE", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_LAKE_EXE", raising=False)
     monkeypatch.setattr(toolchain, "find_toolchain_bin", lambda _lean_dir=None: None)
     monkeypatch.setattr(toolchain.shutil, "which", lambda _name: None)
 

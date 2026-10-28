@@ -16,13 +16,13 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue, TopicEntry
-from fep_lean.gauss.client import OpenGaussClient
-from fep_lean.gauss.runner import GaussRunner
-from fep_lean.llm.hermes import HermesConfig, HermesExplainer, HermesResult
-from fep_lean.verification import lean_verifier as verifier_module
-from fep_lean.verification.environment import run_validation_checks
-from fep_lean.verification.lean_verifier import LeanVerifier, VerifyResult
+from fep_formal.catalogue.topics import FEPTopicCatalogue, TopicEntry
+from fep_formal.gauss.client import OpenGaussClient
+from fep_formal.gauss.runner import GaussRunner
+from fep_formal.llm.hermes import HermesConfig, HermesExplainer, HermesResult
+from fep_formal.verification import lean_verifier as verifier_module
+from fep_formal.verification.environment import run_validation_checks
+from fep_formal.verification.lean_verifier import LeanVerifier, VerifyResult
 
 PROJ = Path(__file__).resolve().parent.parent
 LEAN_DIR = PROJ / "lean"
@@ -75,14 +75,14 @@ def test_verify_result_timeout_status_reports_skip_reason() -> None:
 
 
 def test_get_timeout_reads_env_at_call_time(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("FEP_LEAN_VERIFY_TIMEOUT", "1234")
+    monkeypatch.setenv("FEP_FORMAL_VERIFY_TIMEOUT", "1234")
     assert verifier_module._get_timeout() == 1234
 
 
 def test_get_timeout_default_matches_module_constant(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.delenv("FEP_LEAN_VERIFY_TIMEOUT", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_VERIFY_TIMEOUT", raising=False)
     assert verifier_module._get_timeout() == verifier_module._VERIFICATION_TIMEOUT
 
 

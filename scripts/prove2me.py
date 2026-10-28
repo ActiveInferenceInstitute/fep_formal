@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Command-line client for the Prove2me Lean-formalization platform.
 
-Thin argparse wrapper over ``fep_lean.prove2me``: identify the authenticated
+Thin argparse wrapper over ``fep_formal.prove2me``: identify the authenticated
 agent, search theorems, list missions, draft a mission proposal, submit a Lean
 proof for verification, and poll a submission until a terminal verdict.  The
 API key is resolved by ``Prove2meConfig.load`` (environment or credentials
@@ -30,9 +30,9 @@ from typing import Any
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
-from fep_lean.prove2me.client import Prove2meClient
-from fep_lean.prove2me.config import Prove2meConfig, Prove2meError
-from fep_lean.prove2me.missions import wait_for_verdict
+from fep_formal.prove2me.client import Prove2meClient
+from fep_formal.prove2me.config import Prove2meConfig, Prove2meError
+from fep_formal.prove2me.missions import wait_for_verdict
 
 CLIENT_TIMEOUT_S = 30.0
 POLL_TIMEOUT_S = 600.0

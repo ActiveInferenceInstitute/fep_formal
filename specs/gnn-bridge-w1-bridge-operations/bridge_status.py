@@ -2,7 +2,7 @@
 """Compatibility entry point for read-only W2 bridge custody checks.
 
 Default: no writes. --refresh-digests is guarded Signature-only emission.
-The source pin is changed only by `fep-lean bridge pin --gnn-root PATH`.
+The source pin is changed only by `fep-formal bridge pin --gnn-root PATH`.
 """
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ import json
 from pathlib import Path
 
 # Retain the historical compatibility alias for existing import consumers.
-from fep_lean.bridge.custody import classify_document as _classify_diff  # noqa: F401
-from fep_lean.bridge.operations import emit, status
+from fep_formal.bridge.custody import classify_document as _classify_diff  # noqa: F401
+from fep_formal.bridge.operations import emit, status
 
 FEP_LEAN_ROOT = Path(__file__).resolve().parents[2]
 GNN_ROOT = FEP_LEAN_ROOT.parent / "GeneralizedNotationNotation"

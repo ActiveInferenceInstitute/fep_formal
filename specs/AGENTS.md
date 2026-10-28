@@ -13,4 +13,4 @@ Slice-local specifications, acceptance artifacts, and research modules. See
 - The link and hygiene gates (`docs/check_links.py`, `docs/md_hygiene.py`) skip these
   historical trees by design (`--include-root`); active spec documents are scanned.
 - Slice-local tooling lives here (see `openai-math-methods/generate_package_methods.py`)
-  instead of adding new files under `src/fep_lean/` or `scripts/`.
+  instead of adding new files under `src/fep_formal/` or `scripts/`.

@@ -1,7 +1,7 @@
-# Runtime configuration for the standalone fep_lean verifier.
+# Runtime configuration for the standalone fep_formal verifier.
 
 project:
-  name: fep_lean
+  name: fep_formal
   version: "2.1.0"
   description: "FEP / Active Inference / Bayesian Mechanics Lean4 catalog"
 

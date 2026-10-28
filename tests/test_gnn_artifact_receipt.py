@@ -16,9 +16,9 @@ from typing import Any
 
 import pytest
 
-from fep_lean.bridge import operations
-from fep_lean.bridge.custody import fingerprint, write_json
-from fep_lean.verification.gnn_artifact_receipt import ENGINE_PATH, ArtifactVerifier
+from fep_formal.bridge import operations
+from fep_formal.bridge.custody import fingerprint, write_json
+from fep_formal.verification.gnn_artifact_receipt import ENGINE_PATH, ArtifactVerifier
 
 REPO = Path(__file__).resolve().parents[1]
 SCRIPT = REPO / "specs/gnn-bridge-q5-artifact-proof/verify_native.py"
@@ -61,7 +61,7 @@ def workspace(
         _write(root, name, (REPO / name).read_text(encoding="utf-8"))
     for name in verifier.contract.targets:
         relative = name.removeprefix("FepSketches.").replace(".", "/")
-        _write(root, f"src/fep_lean/formal/{relative}.lean", "-- synthetic owner\n")
+        _write(root, f"src/fep_formal/formal/{relative}.lean", "-- synthetic owner\n")
         _write(root, f"lean/FepSketches/{relative}.lean", "-- synthetic owner\n")
         _write(
             root,
@@ -267,9 +267,9 @@ def test_rejects_forged_render_commands(
 @pytest.mark.parametrize(
     "import_line",
     [
-        "import fep_lean.verification.gnn_artifact_proof as checked_proof",
-        "import fep_lean.verification.gnn_artifact_proof\nchecked_proof = fep_lean.verification.gnn_artifact_proof",
-        "from fep_lean.verification import gnn_artifact_proof as checked_proof",
+        "import fep_formal.verification.gnn_artifact_proof as checked_proof",
+        "import fep_formal.verification.gnn_artifact_proof\nchecked_proof = fep_formal.verification.gnn_artifact_proof",
+        "from fep_formal.verification import gnn_artifact_proof as checked_proof",
     ],
 )
 def test_direct_and_aliased_owned_imports_bind_checked_buffers(
@@ -279,7 +279,7 @@ def test_direct_and_aliased_owned_imports_bind_checked_buffers(
     import sys
 
     root, gnn = workspace
-    canonical = "fep_lean.verification.gnn_artifact_proof"
+    canonical = "fep_formal.verification.gnn_artifact_proof"
     poisoned = ModuleType(canonical)
     poisoned.POISON = True
     saved = sys.modules.get(canonical)
@@ -289,8 +289,8 @@ def test_direct_and_aliased_owned_imports_bind_checked_buffers(
         generator = root / verifier.contract.generator
         source = generator.read_text(encoding="utf-8")
         mutated = source.replace(
-            "from fep_lean.verification.gnn_artifact_proof import (",
-            import_line + "\nfrom fep_lean.verification.gnn_artifact_proof import (",
+            "from fep_formal.verification.gnn_artifact_proof import (",
+            import_line + "\nfrom fep_formal.verification.gnn_artifact_proof import (",
             1,
         ).replace(
             "    texts: dict[str, str] = {}",
@@ -323,7 +323,7 @@ def test_star_import_of_owned_module_stays_checked(
     import sys
 
     root, gnn = workspace
-    canonical = "fep_lean.verification.gnn_artifact_proof"
+    canonical = "fep_formal.verification.gnn_artifact_proof"
     poisoned = ModuleType(canonical)
     poisoned.POISON = True
     saved = sys.modules.get(canonical)
@@ -331,14 +331,14 @@ def test_star_import_of_owned_module_stays_checked(
     try:
         generator = root / verifier.contract.generator
         source = generator.read_text(encoding="utf-8")
-        anchor = "from fep_lean.verification.gnn_artifact_proof import ("
+        anchor = "from fep_formal.verification.gnn_artifact_proof import ("
         head, sep, body = source.partition(anchor)
         assert sep
         _names, sep2, tail = body.partition(")\n")
         assert sep2
         mutated = (
             head
-            + "from fep_lean.verification.gnn_artifact_proof import *\n"
+            + "from fep_formal.verification.gnn_artifact_proof import *\n"
             + "try:\n"
             + "    sha256_file_strict  # star copy binds the checked buffer's public names\n"
             + "except NameError:\n"
@@ -362,7 +362,7 @@ def test_extractor_cache_poison_is_ignored(
     import sys
 
     _root, gnn = workspace
-    canonical = "fep_lean.verification.gnn_artifact_proof"
+    canonical = "fep_formal.verification.gnn_artifact_proof"
     poisoned = ModuleType(canonical)
     poisoned.POISON = True
     saved = sys.modules.get(canonical)
@@ -377,22 +377,20 @@ def test_extractor_cache_poison_is_ignored(
             sys.modules[canonical] = saved
 
 
+@pytest.mark.parametrize("namespace", ["fep_formal", "fep_lean"])
 def test_generator_import_module_bypass_is_rejected(
-    verifier: ArtifactVerifier, workspace: tuple[Path, Path]
+    verifier: ArtifactVerifier, workspace: tuple[Path, Path], namespace: str
 ) -> None:
     root, gnn = workspace
     generator = root / verifier.contract.generator
     source = generator.read_text(encoding="utf-8")
-    generator.write_text(
-        source.replace(
-            "def regenerate()",
-            "import importlib\n"
-            "importlib.import_module('fep_lean.verification.gnn_artifact_proof')\n"
-            "\n\ndef regenerate()",
-            1,
-        ),
-        encoding="utf-8",
+    injected = (
+        "import importlib\n"
+        f"importlib.import_module('{namespace}.verification.gnn_artifact_proof')\n"
     )
+    mutated = source.replace("def regenerate(", injected + "\ndef regenerate(", 1)
+    assert mutated != source and injected in mutated
+    generator.write_text(mutated, encoding="utf-8")
     with pytest.raises(ValueError, match="importlib.import_module"):
         verifier.source_snapshot(gnn)
 
@@ -418,7 +416,7 @@ def test_extractor_relative_import_is_rejected(
 
 def test_manual_importlib_util_loader_stays_allowed() -> None:
     """The gate blocks import_module, not the checked manual loader pattern."""
-    from fep_lean.verification.gnn_artifact_receipt import _reject_unchecked_imports
+    from fep_formal.verification.gnn_artifact_receipt import _reject_unchecked_imports
 
     _reject_unchecked_imports(
         b"import importlib.util\n"
@@ -468,7 +466,7 @@ def test_structured_rejection_for_deeply_nested_receipt(
 
 def test_horizon_evidence_parsers_reject_deep_nesting() -> None:
     """F9: deeply nested hostile JSON/XML surface as structured rejections."""
-    from fep_lean.verification import horizon_acceptance
+    from fep_formal.verification import horizon_acceptance
 
     payload = ('{"k":' * 250_000) + "{}" + ("}" * 250_000)
     with pytest.raises(ValueError, match="nesting"):
@@ -525,7 +523,7 @@ def receipt(verifier: ArtifactVerifier, workspace: tuple[Path, Path]) -> dict[st
                     "env",
                     lean,
                     "-R",
-                    str(root / "src/fep_lean/formal"),
+                    str(root / "src/fep_formal/formal"),
                     str(root / f"probe_{key}.lean"),
                 ],
             )
@@ -554,7 +552,7 @@ def public_import_receipt(
     }
     for module, source in sources.items():
         resource = module.removeprefix("FepSketches.").replace(".", "/")
-        _write(root, f"src/fep_lean/formal/{resource}.lean", source)
+        _write(root, f"src/fep_formal/formal/{resource}.lean", source)
         _write(root, f"lean/FepSketches/{resource}.lean", source)
         _write(
             root,
@@ -608,7 +606,10 @@ def test_public_and_plain_imports_bind_recursive_sources_and_objects(
     artifacts = public_import_receipt["source_before"]["artifacts"]
     for module in modules:
         resource = module.removeprefix("FepSketches.").replace(".", "/") + ".lean"
-        for path in (f"src/fep_lean/formal/{resource}", f"lean/FepSketches/{resource}"):
+        for path in (
+            f"src/fep_formal/formal/{resource}",
+            f"lean/FepSketches/{resource}",
+        ):
             assert artifacts[path] == verifier._digest((root / path).read_bytes())
     # External Mathlib remains bound through the existing pinned toolchain policy.
     assert not any("Mathlib/" in path for path in artifacts)
@@ -633,7 +634,7 @@ def test_transitive_public_import_tampering_and_missing_files_reject(
     case: str,
 ) -> None:
     root, gnn = workspace
-    owner = root / "src/fep_lean/formal/public_leaf.lean"
+    owner = root / "src/fep_formal/formal/public_leaf.lean"
     projection = root / "lean/FepSketches/public_leaf.lean"
     compiled = root / "lean/.lake/build/lib/lean/FepSketches/public_leaf.olean"
     if case == "source_pair_tamper":
@@ -661,7 +662,7 @@ def test_unknown_transitive_local_imports_still_reject(
 ) -> None:
     root, gnn = workspace
     source = "module\n" + prefix + " FepSketches.unavailable_local\n"
-    _write(root, "src/fep_lean/formal/public_leaf.lean", source)
+    _write(root, "src/fep_formal/formal/public_leaf.lean", source)
     _write(root, "lean/FepSketches/public_leaf.lean", source)
     with pytest.raises(ValueError, match="unavailable_local"):
         verifier._import_files()
@@ -816,7 +817,7 @@ def test_rejects_changed_current_bytes(
         "toolchain": "lean/lean-toolchain",
         "lake_manifest": "lean/lake-manifest.json",
         "binary": "bin/lean",
-        "owner": "src/fep_lean/formal/gnn_denotation.lean",
+        "owner": "src/fep_formal/formal/gnn_denotation.lean",
         "projection": "lean/FepSketches/gnn_denotation.lean",
         "olean": "lean/.lake/build/lib/lean/FepSketches/gnn_denotation.olean",
     }
@@ -865,7 +866,7 @@ def test_compile_uses_exact_probes_and_process_group_helper(
             path = Path(command[-1])
             variant = "asymmetric" if "asymmetric" in path.name else "symmetric"
             assert path.read_text() == verifier.audit_source(variant)
-            assert str(root / "src/fep_lean/formal") in command
+            assert str(root / "src/fep_formal/formal") in command
             output = _output(verifier, variant)
         return subprocess.CompletedProcess(command, 0, output, "")
 
@@ -1314,7 +1315,7 @@ def test_retained_imports_do_not_reuse_or_replace_cached_extractor(
 ) -> None:
     import sys
 
-    from fep_lean.verification import gnn_artifact_proof
+    from fep_formal.verification import gnn_artifact_proof
 
     cached = sys.modules[gnn_artifact_proof.__name__]
 

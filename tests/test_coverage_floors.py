@@ -17,6 +17,8 @@ from typing import Any
 import pytest
 import tomllib
 
+from fep_formal._paths import resolve_environment
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -45,7 +47,7 @@ def _policy(*, empty: tuple[str, ...] = ()) -> bytes:
                     "baseline_lines_covered": floor,
                     "baseline_lines_valid": 100,
                 }
-                for name, floor in (("fep_lean", 92), ("fep_lean.custody", 93))
+                for name, floor in (("fep_formal", 92), ("fep_formal.custody", 93))
             },
             "empty_packages": list(empty),
         }
@@ -60,7 +62,7 @@ def _rate(covered: int, valid: int) -> str:
 
 def _xml(counts: dict[str, tuple[int, int]] | None = None) -> bytes:
     if counts is None:
-        counts = {"fep_lean": (1000, 1000), "fep_lean.custody": (94, 100)}
+        counts = {"fep_formal": (1000, 1000), "fep_formal.custody": (94, 100)}
     covered, valid = (
         sum(c for c, _ in counts.values()),
         sum(v for _, v in counts.values()),
@@ -101,7 +103,7 @@ def _xml(counts: dict[str, tuple[int, int]] | None = None) -> bytes:
 
 def test_clean_report_and_exact_floor_boundary_pass(checker: ModuleType) -> None:
     result = checker.evaluate(
-        _xml({"fep_lean": (1000, 1000), "fep_lean.custody": (93, 100)}), _policy()
+        _xml({"fep_formal": (1000, 1000), "fep_formal.custody": (93, 100)}), _policy()
     )
     assert result["status"] == "passed"
     assert result["metric"] == "line" and result["aggregate"]["floor"] == 89
@@ -110,22 +112,22 @@ def test_clean_report_and_exact_floor_boundary_pass(checker: ModuleType) -> None
 
 def test_package_regression_cannot_hide_in_aggregate(checker: ModuleType) -> None:
     result = checker.evaluate(
-        _xml({"fep_lean": (1000, 1000), "fep_lean.custody": (92, 100)}), _policy()
+        _xml({"fep_formal": (1000, 1000), "fep_formal.custody": (92, 100)}), _policy()
     )
     assert result["aggregate"]["passed"] is True
     assert result["status"] == "failed"
-    assert result["violations"] == ["fep_lean.custody: 92/100 lines below 93%"]
+    assert result["violations"] == ["fep_formal.custody: 92/100 lines below 93%"]
 
 
 def test_package_passes_cannot_replace_the_global_line_gate(
     checker: ModuleType,
 ) -> None:
     policy = json.loads(_policy())
-    for name, floor in (("fep_lean", 86), ("fep_lean.custody", 83)):
+    for name, floor in (("fep_formal", 86), ("fep_formal.custody", 83)):
         policy["packages"][name]["line_floor"] = floor
         policy["packages"][name]["baseline_lines_covered"] = floor
     result = checker.evaluate(
-        _xml({"fep_lean": (860, 1000), "fep_lean.custody": (83, 100)}),
+        _xml({"fep_formal": (860, 1000), "fep_formal.custody": (83, 100)}),
         json.dumps(policy).encode(),
     )
     assert all(row["status"] == "passed" for row in result["packages"])
@@ -136,7 +138,8 @@ def test_package_passes_cannot_replace_the_global_line_gate(
 
 def test_unrounded_ratio_cannot_pass_by_display_rounding(checker: ModuleType) -> None:
     result = checker.evaluate(
-        _xml({"fep_lean": (1000, 1000), "fep_lean.custody": (18599, 20000)}), _policy()
+        _xml({"fep_formal": (1000, 1000), "fep_formal.custody": (18599, 20000)}),
+        _policy(),
     )
     assert (
         result["status"] == "failed"
@@ -145,25 +148,25 @@ def test_unrounded_ratio_cannot_pass_by_display_rounding(checker: ModuleType) ->
 
 def test_empty_package_is_explicit_and_must_stay_empty(checker: ModuleType) -> None:
     counts = {
-        "fep_lean": (1000, 1000),
-        "fep_lean.custody": (94, 100),
-        "fep_lean.data": (0, 0),
+        "fep_formal": (1000, 1000),
+        "fep_formal.custody": (94, 100),
+        "fep_formal.data": (0, 0),
     }
-    result = checker.evaluate(_xml(counts), _policy(empty=("fep_lean.data",)))
+    result = checker.evaluate(_xml(counts), _policy(empty=("fep_formal.data",)))
     assert result["packages"][-1]["status"] == "empty-no-executable-lines"
-    counts["fep_lean.data"] = (1, 1)
+    counts["fep_formal.data"] = (1, 1)
     with pytest.raises(ValueError, match="formerly empty package"):
-        checker.evaluate(_xml(counts), _policy(empty=("fep_lean.data",)))
+        checker.evaluate(_xml(counts), _policy(empty=("fep_formal.data",)))
 
 
 @pytest.mark.parametrize(
     "counts",
     [
-        {"fep_lean": (1000, 1000)},
+        {"fep_formal": (1000, 1000)},
         {
-            "fep_lean": (1000, 1000),
-            "fep_lean.custody": (94, 100),
-            "fep_lean.extra": (1, 1),
+            "fep_formal": (1000, 1000),
+            "fep_formal.custody": (94, 100),
+            "fep_formal.extra": (1, 1),
         },
     ],
 )
@@ -209,9 +212,9 @@ def test_malformed_or_incoherent_xml_fails(checker: ModuleType, tamper: str) -> 
     elif tamper == "negative-hits":
         lines[0].set("hits", "-1")
     elif tamper == "path-escape":
-        cls.set("filename", "../fep_lean/sample.py")
+        cls.set("filename", "../fep_formal/sample.py")
     elif tamper == "package-path-disagreement":
-        cls.set("filename", "fep_lean/custody/sample.py")
+        cls.set("filename", "fep_formal/custody/sample.py")
     elif tamper == "aggregate-count":
         tree.set("lines-covered", "1095")
     elif tamper == "aggregate-rate":
@@ -267,11 +270,11 @@ def test_unreviewed_policy_shapes_and_unmeasured_thresholds_fail(
         if change == "metric":
             payload["metric"] = "branch"
         elif change == "floor":
-            payload["packages"]["fep_lean.custody"]["line_floor"] = 92
+            payload["packages"]["fep_formal.custody"]["line_floor"] = 92
         elif change == "baseline":
-            payload["packages"]["fep_lean.custody"]["baseline_lines_valid"] = 0
+            payload["packages"]["fep_formal.custody"]["baseline_lines_valid"] = 0
         else:
-            payload["empty_packages"] = ["fep_lean.custody"]
+            payload["empty_packages"] = ["fep_formal.custody"]
         data = json.dumps(payload).encode()
     with pytest.raises(ValueError):
         checker.evaluate(_xml(), data)
@@ -285,7 +288,7 @@ def _real_conditional_coverage(
     No production source is changed. Padding is an explicit aggregate masking
     control, not additional custody coverage or a full-suite measurement.
     """
-    original_path = PROJECT_ROOT / "src/fep_lean/custody/model.py"
+    original_path = PROJECT_ROOT / "src/fep_formal/custody/model.py"
     original = original_path.read_bytes()
     original_sha = hashlib.sha256(original).hexdigest()
     if (
@@ -322,19 +325,20 @@ def _real_conditional_coverage(
             "reviewed_policy_sha256": hashlib.sha256(policy_source).hexdigest(),
         },
         "packages": {
-            name: policy["packages"][name] for name in ("fep_lean", "fep_lean.custody")
+            name: policy["packages"][name]
+            for name in ("fep_formal", "fep_formal.custody")
         },
         "empty_packages": [],
     }
     control_policy_bytes = json.dumps(control_policy, sort_keys=True).encode()
     source = tmp_path / "src"
-    custody = source / "fep_lean/custody"
+    custody = source / "fep_formal/custody"
     custody.mkdir(parents=True)
-    (source / "fep_lean/__init__.py").write_text("", encoding="utf-8")
+    (source / "fep_formal/__init__.py").write_text("", encoding="utf-8")
     (custody / "__init__.py").write_text("", encoding="utf-8")
     copied_model = custody / "model.py"
     copied_model.write_bytes(mutant)
-    (source / "fep_lean/padding.py").write_text(
+    (source / "fep_formal/padding.py").write_text(
         "\n".join(f"value_{n} = {n}" for n in range(150)) + "\n", encoding="utf-8"
     )
     report = tmp_path / "coverage.xml"
@@ -346,7 +350,7 @@ source = Path(sys.argv[1])
 cov = Coverage(source=[str(source)], branch=False, data_file=None, config_file=False)
 cov.start()
 spec = importlib.util.spec_from_file_location(
-    'p09_isolated_custody_model', source / 'fep_lean/custody/model.py')
+    'p09_isolated_custody_model', source / 'fep_formal/custody/model.py')
 assert spec is not None and spec.loader is not None
 model = importlib.util.module_from_spec(spec)
 sys.modules[spec.name] = model
@@ -387,7 +391,7 @@ for invalid in ([], (object(),), (records[0], records[0])):
 if sys.argv[3] == 'both':
     expected = '/'.join(['isolated', *(f'{n:02}' for n in range(1, 12))])
     assert census.status_of('__P09_ISOLATED_UNTESTED_ARM__') == expected
-runpy.run_path(str(source / 'fep_lean/padding.py'))
+runpy.run_path(str(source / 'fep_formal/padding.py'))
 cov.stop()
 cov.xml_report(outfile=sys.argv[2])
 """
@@ -435,7 +439,7 @@ cov.xml_report(outfile=sys.argv[2])
         arm_hits = {
             int(line.attrib["number"]): int(line.attrib["hits"])
             for line in ET.fromstring(data).findall(
-                "./packages/package/classes/class[@filename='fep_lean/custody/model.py']/lines/line"
+                "./packages/package/classes/class[@filename='fep_formal/custody/model.py']/lines/line"
             )
             if int(line.attrib["number"]) in arm_lines
         }
@@ -471,7 +475,7 @@ cov.xml_report(outfile=sys.argv[2])
         "evaluation_error": evaluation_error,
         "scope": "Isolated copy of the actual custody model with one injected arm; line-only tracing and explicit aggregate padding. No production source mutation, full-suite mutation, branch-arc, native, custody or scientific acceptance.",
     }
-    if os.environ.get("FEP_LEAN_COVERAGE_FLOOR_EVIDENCE") == "1":
+    if resolve_environment("FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE") == "1":
         output = PROJECT_ROOT / "output" / f"coverage-floor-control-{mode}.log"
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(
@@ -508,9 +512,9 @@ def test_real_uncovered_custody_arm_fails_its_line_floor_while_global_passes(
     assert result["aggregate"]["passed"] is True
     assert result["status"] == ("passed" if both_arms else "failed")
     custody = next(
-        row for row in result["packages"] if row["package"] == "fep_lean.custody"
+        row for row in result["packages"] if row["package"] == "fep_formal.custody"
     )
-    padding = next(row for row in result["packages"] if row["package"] == "fep_lean")
+    padding = next(row for row in result["packages"] if row["package"] == "fep_formal")
     assert padding["status"] == "passed"
     assert custody["floor"] == 93
     assert (custody["covered"] * 100 >= custody["valid"] * 93) is both_arms
@@ -554,17 +558,25 @@ def test_committed_policy_preserves_global_floor_and_baseline_math(
     )
     baseline = policy["baseline"]
     assert (
-        sum(row["baseline_lines_covered"] for row in policy["packages"].values())
+        sum(
+            row["baseline_lines_covered"]
+            for name, row in policy["packages"].items()
+            if name != "fep_lean"
+        )
         == baseline["lines_covered"]
         == 17197
     )
     assert (
-        sum(row["baseline_lines_valid"] for row in policy["packages"].values())
+        sum(
+            row["baseline_lines_valid"]
+            for name, row in policy["packages"].items()
+            if name != "fep_lean"
+        )
         == baseline["lines_valid"]
         == 18765
     )
-    assert len(policy["packages"]) == 14 and policy["empty_packages"] == [
-        "fep_lean.data"
+    assert len(policy["packages"]) == 15 and policy["empty_packages"] == [
+        "fep_formal.data"
     ]
 
 
@@ -586,5 +598,33 @@ def test_default_policy_is_anchored_to_script_not_working_directory(
     assert checker.main(["--coverage", "coverage.xml"]) == 0
     result = json.loads(capsys.readouterr().out)
     assert result["status"] == "passed"
-    assert result["aggregate"]["covered"] == 17197
-    assert result["aggregate"]["valid"] == 18765
+    assert result["aggregate"]["covered"] == 17197 + 32
+    assert result["aggregate"]["valid"] == 18765 + 32
+
+
+def test_compatibility_adapter_has_its_own_floor_and_cannot_hide_descendants(
+    checker: ModuleType,
+) -> None:
+    policy = json.loads(_policy())
+    policy["packages"]["fep_lean"] = {
+        "line_floor": 100,
+        "baseline_lines_covered": 32,
+        "baseline_lines_valid": 32,
+    }
+    data = json.dumps(policy).encode()
+    counts = {
+        "fep_formal": (1000, 1000),
+        "fep_formal.custody": (94, 100),
+        "fep_lean": (32, 32),
+    }
+    assert checker.evaluate(_xml(counts), data)["status"] == "passed"
+    counts["fep_lean"] = (31, 32)
+    assert checker.evaluate(_xml(counts), data)["violations"] == [
+        "fep_lean: 31/32 lines below 100%"
+    ]
+    del counts["fep_lean"]
+    with pytest.raises(ValueError, match="package inventory differs"):
+        checker.evaluate(_xml(counts), data)
+    counts["fep_lean.unexpected"] = (1, 1)
+    with pytest.raises(ValueError, match="invalid or duplicate coverage package"):
+        checker.evaluate(_xml(counts), data)

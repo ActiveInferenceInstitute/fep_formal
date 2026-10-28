@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # scripts/00b_install_opengauss_cli.sh
-# One-time math-inc/OpenGauss CLI setup for fep_lean.
+# One-time math-inc/OpenGauss CLI setup for fep_formal.
 #
 # Clones the OpenGauss repository to ~/.gauss_src and runs the installer
 # in headless/plain mode.
@@ -20,7 +20,7 @@ info() { echo -e "   $*"; }
 
 echo ""
 echo "╔══════════════════════════════════════════════════════════════════════╗"
-echo "║  fep_lean — OpenGauss CLI Setup                                      ║"
+echo "║  fep_formal — OpenGauss CLI Setup                                      ║"
 echo "╚══════════════════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -43,5 +43,5 @@ info "Installing OpenGauss headlessly (--plain)..."
 # The installer typically places the binary natively so it's globally available
 ok "OpenGauss CLI successfully installed."
 echo ""
-echo "We recommend adding FEP_LEAN_REQUIRE_GAUSS=1 to your FEP Lean environment."
+echo "We recommend adding FEP_FORMAL_REQUIRE_GAUSS=1 to your FEP Lean environment."
 echo ""

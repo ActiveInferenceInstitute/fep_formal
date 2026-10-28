@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification import lean_verifier as verifier_module
-from fep_lean.verification.lean_verifier import LeanVerifier, VerifyResult
+from fep_formal.verification import lean_verifier as verifier_module
+from fep_formal.verification.lean_verifier import LeanVerifier, VerifyResult
 
 
 @pytest.mark.parametrize(
@@ -147,7 +147,7 @@ def test_killed_sketch_runs_once_without_retry_knob(
     verifier = _isolated_verifier(tmp_path, monkeypatch)
     calls: list[Path] = []
     monkeypatch.setattr(verifier, "_run_lake_lean", _killed_run(calls, [-9]))
-    monkeypatch.delenv("FEP_LEAN_VERIFY_RETRY_KILLED", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_VERIFY_RETRY_KILLED", raising=False)
 
     result = verifier.verify_sketch(
         "fep-killed-off",
@@ -167,7 +167,7 @@ def test_killed_sketch_retries_once_and_reports_retries(
     verifier = _isolated_verifier(tmp_path, monkeypatch)
     calls: list[Path] = []
     monkeypatch.setattr(verifier, "_run_lake_lean", _killed_run(calls, [-9, -9]))
-    monkeypatch.setenv("FEP_LEAN_VERIFY_RETRY_KILLED", "1")
+    monkeypatch.setenv("FEP_FORMAL_VERIFY_RETRY_KILLED", "1")
 
     result = verifier.verify_sketch(
         "fep-killed-retry",
@@ -188,7 +188,7 @@ def test_retry_outcome_wins_when_second_attempt_compiles(
     verifier = _isolated_verifier(tmp_path, monkeypatch)
     calls: list[Path] = []
     monkeypatch.setattr(verifier, "_run_lake_lean", _killed_run(calls, [-9, 0]))
-    monkeypatch.setenv("FEP_LEAN_VERIFY_RETRY_KILLED", "1")
+    monkeypatch.setenv("FEP_FORMAL_VERIFY_RETRY_KILLED", "1")
 
     result = verifier.verify_sketch(
         "fep-killed-success",
@@ -215,7 +215,7 @@ def test_non_killed_failure_never_retries_even_with_knob(
         )
 
     monkeypatch.setattr(verifier, "_run_lake_lean", _run)
-    monkeypatch.setenv("FEP_LEAN_VERIFY_RETRY_KILLED", "1")
+    monkeypatch.setenv("FEP_FORMAL_VERIFY_RETRY_KILLED", "1")
 
     result = verifier.verify_sketch("fep-nokill", "theorem probe : True := by trivial")
 
@@ -298,7 +298,7 @@ def _assert_cold_verification_refuses_without_side_effects(
     assert result.sorry_occurrences == 1
     assert result.failure_kind == "missing_import"
     assert result.lean_version == "unknown"
-    assert "fep-lean setup" in result.skip_reason
+    assert "fep-formal setup" in result.skip_reason
     after = {
         str(path.relative_to(verifier._lean_dir)): (
             path.stat().st_mode,

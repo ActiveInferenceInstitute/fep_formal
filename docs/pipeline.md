@@ -21,7 +21,7 @@ SQLite session, and a failed commentary turn fails the requested workflow.
 ## Programmatic use
 
 ```python
-from fep_lean.pipeline import run_pipeline, run_single_topic
+from fep_formal.pipeline import run_pipeline, run_single_topic
 
 offline = run_pipeline(mode="catalogue")
 strict = run_pipeline(mode="full", topic_filter=["fep-001"])

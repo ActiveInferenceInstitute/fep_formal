@@ -1,15 +1,15 @@
 # Scripts
 
-The public command is `uv run fep-lean`. The numbered files remain thin local
+The public command is `uv run fep-formal`. The numbered files remain thin local
 wrappers for environments that discover Python scripts automatically:
 
-- `01_fep_catalogue_and_figures.py` → `fep-lean catalogue`
-- `02_run_single_topic.py` → `fep-lean topic ID`
-- `03_lean_verify_only.py` → `fep-lean verify` (Lean only; no Hermes/Gauss)
-- `04_generate_reports.py` → `fep-lean report`
+- `01_fep_catalogue_and_figures.py` → `fep-formal catalogue`
+- `02_run_single_topic.py` → `fep-formal topic ID`
+- `03_lean_verify_only.py` → `fep-formal verify` (Lean only; no Hermes/Gauss)
+- `04_generate_reports.py` → `fep-formal report`
 
 Maintenance adapters are prefixed with `_maint_`. Canonical topic bodies live
-in family modules under `src/fep_lean/catalogue/bodies/` and are merged by the
+in family modules under `src/fep_formal/catalogue/bodies/` and are merged by the
 validated registry; metadata, semantic review, novelty, and relation review
 live in their corresponding `config/*.yaml` owners. Regenerate all tracked
 projections after editing those sources:
@@ -47,14 +47,14 @@ uv run python scripts/audit_formalisms.py \
 `render_manuscript.py` is the fail-closed source-to-build renderer. Its check
 mode validates the stable typed-variable projection, the exact generated
 appendix, and every authored placeholder without writing output. Neither mode
-creates that projection -- `fep-lean catalogue` owns it, and both modes exit 1
+creates that projection -- `fep-formal catalogue` owns it, and both modes exit 1
 with "stale manuscript projections" where it is absent, which on a fresh
 checkout is always. Run-local receipt/provider values are rebuilt from
 independently validated evidence; the default mode writes the resolved files
 under `output/manuscript/`:
 
 ```bash
-uv run fep-lean catalogue
+uv run fep-formal catalogue
 uv run python scripts/render_manuscript.py --check
 uv run python scripts/render_manuscript.py
 ```
@@ -74,7 +74,7 @@ declines to accept its verdict instead. A preflight probes the host's installed
 fonts first, because the dropped-glyph failure is silent by construction:
 
 ```bash
-FEP_LEAN_TEMPLATE_DIR=<template checkout> \
+FEP_FORMAL_TEMPLATE_DIR=<template checkout> \
   uv run python scripts/render_publication.py
 uv run python scripts/render_publication.py --accept-only
 ```
@@ -108,7 +108,7 @@ manuscript cites (rasterized from the committed SVG projections via
 `rsvg-convert`) and the graphical abstract under `output/figures/`; `--check`
 fails when a cited PNG is missing or older than its SVG projection. The write
 pass must precede the check on a fresh checkout because `output/` is
-gitignored -- CI runs exactly that pair after `fep-lean catalogue`:
+gitignored -- CI runs exactly that pair after `fep-formal catalogue`:
 
 ```bash
 uv run python scripts/build_manuscript_figures.py
@@ -117,7 +117,7 @@ uv run python scripts/build_manuscript_figures.py --check
 
 `build_graphical_abstract.py` is the graphical abstract's producer: it renders
 `manuscript/assets/graphical-abstract.png` (the sha256-pinned canonical asset)
-from `fep_lean.output.graphical_abstract` -- byte-deterministic, 8-bit RGB,
+from `fep_formal.output.graphical_abstract` -- byte-deterministic, 8-bit RGB,
 no external rasterizer. Run it when the art changes, then record the new
 digest in `manuscript/config.yaml`; `--check` validates the committed asset
 against that pin without writing. The copy pass above republishes the asset
@@ -156,8 +156,8 @@ binds an existing archive back to current sources without mutating them;
 its receipts:
 
 ```bash
-uv run python scripts/build_release_bundle.py --output dist/fep-lean.tar.gz
-uv run python scripts/build_release_bundle.py --check --output dist/fep-lean.tar.gz
+uv run python scripts/build_release_bundle.py --output dist/fep-formal.tar.gz
+uv run python scripts/build_release_bundle.py --check --output dist/fep-formal.tar.gz
 ```
 
 Do not invoke repository-root modules or set a monorepo-specific `PYTHONPATH`;
@@ -176,15 +176,15 @@ fail-closed; nothing below writes a receipt without a real accepted render.
 
 ```bash
 uv sync --locked --extra dev
-uv run fep-lean catalogue
-uv run fep-lean atlas --check
-uv run fep-lean dashboard --check
+uv run fep-formal catalogue
+uv run fep-formal atlas --check
+uv run fep-formal dashboard --check
 uv run python scripts/build_manuscript_figures.py
 uv run python scripts/build_manuscript_figures.py --check
 uv run python scripts/build_render_fonts.py --check
 ```
 
-`fep-lean catalogue` writes the generated appendix
+`fep-formal catalogue` writes the generated appendix
 `manuscript/09z_unified_formalism_catalogue.md`, the typed-variable projection
 `manuscript/manuscript_vars.yaml`, and the catalogue figures under
 `output/figures/`. All three are gitignored local build products, so a new
@@ -212,11 +212,11 @@ skip or deselect the test.
 the catalogue has not run, the checker prints both lines (paths shortened):
 
 ```text
-FAIL: docs/render-acceptance.json: covers manuscript sources '<recorded>' but this checkout is '<live>'; the shipped render predates these sources -- regenerate the build product with `uv run fep-lean catalogue`; changed since that render: 09z_unified_formalism_catalogue.md (generated appendix)
-FAIL: docs/render-acceptance.json: generated appendix 09z_unified_formalism_catalogue.md is missing under <checkout>/manuscript; the acceptance digest covers the generated appendix, so run `uv run fep-lean catalogue` first
+FAIL: docs/render-acceptance.json: covers manuscript sources '<recorded>' but this checkout is '<live>'; the shipped render predates these sources -- regenerate the build product with `uv run fep-formal catalogue`; changed since that render: 09z_unified_formalism_catalogue.md (generated appendix)
+FAIL: docs/render-acceptance.json: generated appendix 09z_unified_formalism_catalogue.md is missing under <checkout>/manuscript; the acceptance digest covers the generated appendix, so run `uv run fep-formal catalogue` first
 ```
 
-Remedy: run `uv run fep-lean catalogue`, then `--verify-receipt` again. When the
+Remedy: run `uv run fep-formal catalogue`, then `--verify-receipt` again. When the
 catalogue inputs have not changed since the accepted render, the regenerated
 appendix reproduces the accepted bytes and the check passes with no render.
 Generation does not always clear it: if the first line persists, still naming
@@ -233,7 +233,7 @@ FAIL: docs/render-acceptance.json: covers manuscript sources '<recorded>' but th
 ```
 
 When both classes are present, an extra line names the generated appendix and
-asks for `uv run fep-lean catalogue`; run it, but the authored change still
+asks for `uv run fep-formal catalogue`; run it, but the authored change still
 needs a render. Regeneration never clears class (b): the receipt stays rejected
 until `render_publication.py` completes a real, accepted render and rewrites
 it. Do not edit the receipt's digests by hand; `render_publication.py
@@ -252,7 +252,7 @@ The SDK's `ENABLE_PDF` and `ENABLE_SLIDES` environment variables override YAML.
 CI clears both for the render subprocess. Local and installed-wheel trials must
 also remove both from the child environment before invoking the unchanged
 publication entry point, and pass an explicit absolute `--template` checkout
-(or `FEP_LEAN_TEMPLATE_DIR`) at the pinned SDK revision. Do not rely on an
+(or `FEP_FORMAL_TEMPLATE_DIR`) at the pinned SDK revision. Do not rely on an
 editable installation's sibling-template discovery or an unrelated shell
 environment. A portable Python launcher can form the child environment with
 `{k: v for k, v in os.environ.items() if k not in {"ENABLE_PDF", "ENABLE_SLIDES"}}`
@@ -267,7 +267,7 @@ Prerequisites, all matching CI's render job in `.github/workflows/ci.yml`:
 
 - A claim-ready native receipt for the current sources at
   `output/native-verification.json`
-  (`uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json`).
+  (`uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json`).
   Without it the hydration step exits 1 with "native verification receipt is
   absent or not claim-ready". `render_manuscript.py
   --allow-unavailable-evidence` is for intentionally dry runs only;
@@ -297,7 +297,7 @@ git clone https://github.com/docxology/template "$template"
 git -C "$template" checkout <ref pinned in .github/workflows/ci.yml>
 mkdir -p "$template/projects/active"
 ln -s "$PWD" "$template/projects/active/fep_lean"
-FEP_LEAN_TEMPLATE_DIR="$template" uv run python scripts/render_publication.py
+FEP_FORMAL_TEMPLATE_DIR="$template" uv run python scripts/render_publication.py
 uv run python scripts/build_render_fonts.py --check
 uv run python scripts/check_render_log.py --verify-receipt
 ```
@@ -312,13 +312,13 @@ verification, or full Hermes/OpenGauss execution.
 
 ## Custody evidence commands
 
-The custody machinery adapter is `uv run fep-lean custody
+The custody machinery adapter is `uv run fep-formal custody
 <census|apply|refresh>`:
 
 ```bash
-uv run fep-lean custody census
-uv run fep-lean custody apply --output-dir <dir>
-uv run fep-lean custody refresh [--plan | --fixpoint | --resume <journal-dir>] \
+uv run fep-formal custody census
+uv run fep-formal custody apply --output-dir <dir>
+uv run fep-formal custody refresh [--plan | --fixpoint | --resume <journal-dir>] \
   --reason "<why>"
 ```
 
@@ -340,8 +340,8 @@ explorer in `docs/mathematical-positioning/`. Generate that model before
 cited panel and its check rejects missing or stale PNGs:
 
 ```bash
-uv run fep-lean --project-root . methods export --output-root docs/mathematical-positioning
-uv run fep-lean --project-root . methods check --output-root docs/mathematical-positioning
+uv run fep-formal --project-root . methods export --output-root docs/mathematical-positioning
+uv run fep-formal --project-root . methods check --output-root docs/mathematical-positioning
 uv run python scripts/build_manuscript_figures.py
 uv run python scripts/build_manuscript_figures.py --check
 ```

@@ -46,8 +46,8 @@ SOURCE_BOUND_PATHS = (
     "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json",
     "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
     "specs/done/horizon-2-smooth-stochastic/readiness/probes/07_fin4_matrix_gaussian.lean",
-    "src/fep_lean/formal/markov_semigroup.lean",
-    "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
+    "src/fep_formal/formal/markov_semigroup.lean",
+    "src/fep_formal/formal/scalar_gaussian_semigroup.lean",
     "specs/done/horizon-2-smooth-stochastic/slices/05b-r0-transition-covariance.md",
     "specs/done/horizon-2-smooth-stochastic/spikes/05b_transition_covariance.lean",
     "tests/test_horizon2_transition_covariance_readiness.py",
@@ -135,7 +135,7 @@ def test_h2_5b_r0_spike_compiles_warning_free(tmp_path: Path) -> None:
     probe.write_text(SPIKE.read_text(encoding="utf-8"), encoding="utf-8")
     result = run_lean_probe(
         probe,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         cwd=LEAN_ROOT,
         timeout_s=1800,
     )
@@ -154,7 +154,7 @@ def test_h2_5b_r0_public_theorems_use_only_standard_axioms(tmp_path: Path) -> No
     probe.write_text(f"{source}\n{prints}\n", encoding="utf-8")
     result = run_lean_probe(
         probe,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         cwd=LEAN_ROOT,
         timeout_s=1800,
     )
@@ -212,7 +212,7 @@ example (left right : ℝ≥0) :
     probe.write_text(f"{import_source}\n{bodies}\n{consumer}\n", encoding="utf-8")
     result = run_lean_probe(
         probe,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         cwd=LEAN_ROOT,
         timeout_s=1800,
     )

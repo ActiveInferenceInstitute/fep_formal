@@ -21,8 +21,8 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from fep_lean.output import release_bundle as bundle_module
-from fep_lean.output.release_bundle import (
+from fep_formal.output import release_bundle as bundle_module
+from fep_formal.output.release_bundle import (
     publication_manuscript_errors,
     render_publication_manuscript,
     write_publication_manuscript,
@@ -40,8 +40,8 @@ PROJ = Path(__file__).resolve().parents[1]
 def test_renderer_identity_cannot_dispatch_or_accept_after_shared_deadline(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, phase: str
 ) -> None:
-    from fep_lean.output.release_bundle import _manuscript
-    from fep_lean.verification import _subprocess
+    from fep_formal.output.release_bundle import _manuscript
+    from fep_formal.verification import _subprocess
 
     clock = [100.0]
     reads: list[str] = []
@@ -79,8 +79,8 @@ def test_renderer_identity_cannot_dispatch_or_accept_after_shared_deadline(
 def test_renderer_identity_fallback_receives_only_remaining_budget(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle import _manuscript
-    from fep_lean.verification import _subprocess
+    from fep_formal.output.release_bundle import _manuscript
+    from fep_formal.verification import _subprocess
 
     clock = [100.0]
     calls: list[float] = []
@@ -112,8 +112,8 @@ def test_renderer_identity_fallback_receives_only_remaining_budget(
 def test_renderer_preparation_cannot_launch_after_consuming_budget(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle import _manuscript
-    from fep_lean.verification import _subprocess
+    from fep_formal.output.release_bundle import _manuscript
+    from fep_formal.verification import _subprocess
 
     clock = [100.0]
     monkeypatch.setattr(
@@ -142,8 +142,8 @@ def test_renderer_preparation_cannot_launch_after_consuming_budget(
 def test_standalone_renderer_refuses_late_supervised_completion(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle import _manuscript
-    from fep_lean.verification import _subprocess
+    from fep_formal.output.release_bundle import _manuscript
+    from fep_formal.verification import _subprocess
 
     clock = [100.0]
     monkeypatch.setattr(
@@ -174,7 +174,7 @@ def test_standalone_renderer_refuses_late_supervised_completion(
 def test_template_gitlink_brackets_the_descriptor_relative_leaf(
     tmp_path: Path, replace_parent: bool
 ) -> None:
-    from fep_lean.output.release_bundle import _core
+    from fep_formal.output.release_bundle import _core
     from tests.test_distribution import _workflow_python
 
     template = tmp_path.resolve() / "render-template"
@@ -240,7 +240,7 @@ def test_template_gitlink_brackets_the_descriptor_relative_leaf(
 def test_renderer_artifact_replacement_after_regular_check_is_refused(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, phase: str, mutation: str
 ) -> None:
-    from fep_lean.output.release_bundle import _manuscript
+    from fep_formal.output.release_bundle import _manuscript
 
     changed: list[Path] = []
     original_is_file = Path.is_file
@@ -305,7 +305,7 @@ def test_renderer_artifact_replacement_after_regular_check_is_refused(
 def test_template_manifest_checks_physical_mode_and_read_identity(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, control: str
 ) -> None:
-    from fep_lean.output.release_bundle import _core
+    from fep_formal.output.release_bundle import _core
     from tests.test_distribution import _workflow_python
 
     root = tmp_path.resolve()
@@ -677,7 +677,7 @@ def test_publication_html_is_two_render_reproducible_and_checkable(
 def test_rendered_metadata_validates_canonical_bytes_and_rejects_extra_members(
     tmp_path: Path, name: str, mutation: str
 ) -> None:
-    from fep_lean.output.publication_metadata import load_graphical_abstract
+    from fep_formal.output.publication_metadata import load_graphical_abstract
 
     _minimal_manuscript(tmp_path)
     for source, _destination in bundle_module.MANUSCRIPT_ASSETS.values():
@@ -1067,7 +1067,7 @@ def test_two_render_passes_and_normalizer_share_one_deadline(
     clock = [100.0]
     dispatched: list[tuple[str, ...]] = []
     monkeypatch.setattr(
-        "fep_lean.output.release_bundle._manuscript.time",
+        "fep_formal.output.release_bundle._manuscript.time",
         SimpleNamespace(monotonic=lambda: clock[0]),
     )
 
@@ -1101,7 +1101,7 @@ def test_completed_renderer_cannot_publish_after_artifact_or_cleanup_deadline(
 ) -> None:
     clock = [100.0]
     monkeypatch.setattr(
-        "fep_lean.output.release_bundle._manuscript.time",
+        "fep_formal.output.release_bundle._manuscript.time",
         SimpleNamespace(monotonic=lambda: clock[0]),
     )
     pdf = b"%PDF-1.4\n<< /ID [<" + b"0" * 32 + b"> <" + b"F" * 32 + b">] >>\n"
@@ -1118,7 +1118,7 @@ def test_completed_renderer_cannot_publish_after_artifact_or_cleanup_deadline(
         Path(output).write_bytes(pdf)
         return SimpleNamespace(returncode=0)
 
-    from fep_lean.output.release_bundle import _manuscript
+    from fep_formal.output.release_bundle import _manuscript
 
     original_read = _manuscript._capture_regular_file
 
@@ -1143,7 +1143,7 @@ def test_completed_renderer_cannot_publish_after_artifact_or_cleanup_deadline(
                 clock[0] += 2.0
 
     monkeypatch.setattr(
-        "fep_lean.output.release_bundle._manuscript.tempfile",
+        "fep_formal.output.release_bundle._manuscript.tempfile",
         SimpleNamespace(TemporaryDirectory=BudgetedDirectory),
     )
     monkeypatch.setattr(_manuscript, "_capture_regular_file", delayed_artifact_read)
@@ -1263,7 +1263,7 @@ def test_publication_renderer_rejects_binary_changed_during_rendering(
 def test_renderer_identity_missing_binary_keeps_typed_diagnostic(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.verification import _subprocess
+    from fep_formal.verification import _subprocess
 
     def forbidden_child(*_args: object, **_kwargs: object) -> None:
         pytest.fail("a missing binary must fail before a process launch")

@@ -12,11 +12,11 @@ These paths are source or tracked generated projections:
 - `config/theorem_maturity.yaml`
 - `config/formalism_novelty.yaml`
 - `config/formalism_relations.yaml`
-- `src/fep_lean/catalogue/bodies/*.py`, `registry.py`, and `latex.py`
-- `config/topics.yaml` and `src/fep_lean/data/topics.yaml`
+- `src/fep_formal/catalogue/bodies/*.py`, `registry.py`, and `latex.py`
+- `config/topics.yaml` and `src/fep_formal/data/topics.yaml`
 - `lean/lakefile.lean`, `lean/lean-toolchain`, and `lean/lake-manifest.json`
 - `lean/FepSketches/fep_all.lean`
-- canonical manifested `src/fep_lean/formal/**/*.lean` modules and their
+- canonical manifested `src/fep_formal/formal/**/*.lean` modules and their
   tracked `lean/FepSketches/` projections
 - `docs/formalism-coverage.json` and `docs/formalism-coverage.md`
 - `docs/formalism-atlas.svg`, `docs/formalism-atlas.html`,
@@ -34,7 +34,7 @@ Before cleanup, inspect the exact state:
 ```bash
 git status --short --branch
 git status --ignored --short
-git ls-files lean/FepSketches config src/fep_lean/data
+git ls-files lean/FepSketches config src/fep_formal/data
 ```
 
 ## Reproducible checkout-local state
@@ -46,12 +46,12 @@ removal.
 | Path | Contents | Reproducer |
 | --- | --- | --- |
 | `output/` | figures, rendered manuscript, native receipts, run reports | relevant CLI command below |
-| `manuscript/manuscript_vars.yaml` | generated typed variable projection | `fep-lean catalogue` |
-| `manuscript/09z_unified_formalism_catalogue.md` | generated Lean and equation appendix | `fep-lean catalogue` |
+| `manuscript/manuscript_vars.yaml` | generated typed variable projection | `fep-formal catalogue` |
+| `manuscript/09z_unified_formalism_catalogue.md` | generated Lean and equation appendix | `fep-formal catalogue` |
 | `.pytest_cache/`, `.coverage`, `htmlcov/` | test metadata and coverage output | coverage gate |
 | `build/`, `dist/`, `*.egg-info/` | Python build output | `uv build` or `uv sync` |
 | `__pycache__/` | interpreter bytecode | Python import |
-| `lean/.lake/` | pinned dependency checkout and compiled Lake cache | `fep-lean setup` |
+| `lean/.lake/` | pinned dependency checkout and compiled Lake cache | `fep-formal setup` |
 
 `output/reports/` may contain the only copy of a full-run receipt. Deleting it
 requires preserving that evidence first; repeating the provider-backed run
@@ -74,9 +74,9 @@ uv run python scripts/_maint_build_formal_modules.py --check
 uv run python scripts/theorem_maturity_audit.py --check
 uv run python scripts/build_formalism_coverage.py --check
 uv run python scripts/_maint_build_lean_landscape.py --check
-uv run fep-lean atlas --check
-uv run fep-lean dashboard --check
-uv run fep-lean catalogue
+uv run fep-formal atlas --check
+uv run fep-formal dashboard --check
+uv run fep-formal catalogue
 uv run python scripts/render_manuscript.py --check
 uv run python scripts/render_manuscript.py --output-dir output/manuscript
 ```
@@ -89,9 +89,9 @@ For a genuinely cold Lean workspace, use the bounded setup owner instead of
 manually manipulating `.lake` internals:
 
 ```bash
-uv run fep-lean setup
+uv run fep-formal setup
 (cd lean && lake build FepSketches)
-uv run fep-lean verify --fail-on-warnings \
+uv run fep-formal verify --fail-on-warnings \
   --receipt output/native-verification.json
 ```
 

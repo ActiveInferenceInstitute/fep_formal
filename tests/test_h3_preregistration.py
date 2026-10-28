@@ -2,7 +2,7 @@
 
 Validates the H3.G0 acceptance record (`specs/h3-case-study/
 pre-outcome-metadata.json`) against the protocol's required G0 field set
-(`src/fep_lean/verification/horizon_acceptance.py:706-731`) and re-binds the
+(`src/fep_formal/verification/horizon_acceptance.py:706-731`) and re-binds the
 six source-hash pins captured in the frozen feasibility-spike receipt
 (`specs/h3-case-study/spike-receipt.json`) to its preserved source epoch.
 The historical spike must reject a replaced live terminal seal.
@@ -18,6 +18,7 @@ from types import ModuleType
 
 import pytest
 
+from tests._support.landauer_epoch import current_source_owner, historical_source_owner
 from tests._support.lean435_migration import historical_carrier_bytes
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -69,7 +70,8 @@ def test_feasibility_pins_preserve_historical_terminal_epoch() -> None:
     assert set(receipt["digests"]) == set(spike.PINNED_SOURCES)
     for relative, digest in spike.PINNED_SOURCES.items():
         assert receipt["digests"][relative] == digest, relative
-        current = PROJECT_ROOT / relative
+        current_relative = current_source_owner(relative)
+        current = PROJECT_ROOT / current_relative
         if relative.endswith("/terminal-acceptance.json"):
             historical = (
                 PROJECT_ROOT
@@ -79,8 +81,10 @@ def test_feasibility_pins_preserve_historical_terminal_epoch() -> None:
             )
             assert _sha256(historical) == digest
             assert _sha256(current) != digest
-        elif relative.startswith("src/fep_lean/formal/"):
-            historical_bytes = historical_carrier_bytes(relative, current.read_bytes())
+        elif current_relative.startswith("src/fep_formal/formal/"):
+            historical_bytes = historical_carrier_bytes(
+                current_relative, current.read_bytes()
+            )
             assert hashlib.sha256(historical_bytes).hexdigest() == digest, relative
             assert _sha256(current) != digest, relative
         else:
@@ -88,7 +92,7 @@ def test_feasibility_pins_preserve_historical_terminal_epoch() -> None:
     # Exact static replay preserves history; unknown live/archive bytes refuse.
     from tests._support import lean435_migration as migration
 
-    gaussian = "src/fep_lean/formal/gaussian_precision_conditioning.lean"
+    gaussian = "src/fep_formal/formal/gaussian_precision_conditioning.lean"
     live = (PROJECT_ROOT / gaussian).read_bytes()
     archived = (PROJECT_ROOT / migration._HISTORICAL_GAUSSIAN_REPLAY).read_bytes()
     assert (
@@ -96,7 +100,7 @@ def test_feasibility_pins_preserve_historical_terminal_epoch() -> None:
     )
     assert (
         hashlib.sha256(historical_carrier_bytes(gaussian, archived)).hexdigest()
-        == (spike.PINNED_SOURCES[gaussian])
+        == (spike.PINNED_SOURCES[historical_source_owner(gaussian)])
     )
     with pytest.raises(AssertionError, match="unrecognized live Gaussian"):
         migration.historical_gaussian_static_replay_source(live + b"\n", archived)
@@ -106,8 +110,12 @@ def test_feasibility_pins_preserve_historical_terminal_epoch() -> None:
     assert changed_statement != live
     with pytest.raises(AssertionError, match="unrecognized live Gaussian"):
         migration.historical_gaussian_static_replay_source(changed_statement, archived)
-    with pytest.raises(spike.SpikeRejection, match="stale source digest"):
+    with pytest.raises(spike.SpikeRejection) as rejected:
         spike.digest_guard(PROJECT_ROOT)
+    missing = sorted(
+        path for path in spike.PINNED_SOURCES if path.startswith("src/fep_lean/formal/")
+    )
+    assert str(rejected.value) == f"pinned source missing: {missing}"
 
 
 def test_canonical_protocol_binds_real_pre_outcome_freeze_and_reviews() -> None:
@@ -134,8 +142,11 @@ def test_canonical_protocol_binds_real_pre_outcome_freeze_and_reviews() -> None:
         identities.add(review["reviewer_id"])
     assert len(identities) == 2
     for path, digest in freeze["carrier_sources"].items():
-        live = (PROJECT_ROOT / path).read_bytes()
+        live = (PROJECT_ROOT / current_source_owner(path)).read_bytes()
         assert (
-            hashlib.sha256(historical_carrier_bytes(path, live)).hexdigest() == digest
+            hashlib.sha256(
+                historical_carrier_bytes(current_source_owner(path), live)
+            ).hexdigest()
+            == digest
         )
         assert hashlib.sha256(live).hexdigest() != digest

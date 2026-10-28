@@ -3,7 +3,7 @@
 
 The abstract is an authored image asset whose bytes are pinned by the
 ``sha256`` in ``manuscript/config.yaml``; this wrapper is its producer (see
-``fep_lean.output.graphical_abstract``).  Run it whenever the art changes,
+``fep_formal.output.graphical_abstract``).  Run it whenever the art changes,
 then record the new digest in ``manuscript/config.yaml`` -- the validator
 fails closed on any mismatch, so a stale pin cannot ship.  The copy pass in
 ``scripts/build_manuscript_figures.py`` then republishes the asset under
@@ -24,11 +24,11 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
-from fep_lean.output.graphical_abstract import (
+from fep_formal.output.graphical_abstract import (
     GRAPHICAL_ABSTRACT_RELATIVE,
     render_graphical_abstract,
 )
-from fep_lean.output.publication_metadata import (
+from fep_formal.output.publication_metadata import (
     PublicationMetadataError,
     load_graphical_abstract,
 )

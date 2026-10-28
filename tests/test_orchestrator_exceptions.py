@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from fep_lean.pipeline.core import FEPPipeline
+from fep_formal.pipeline.core import FEPPipeline
 
 
 def test_pipeline_reports_artifact_failure(monkeypatch, tmp_path: Path) -> None:

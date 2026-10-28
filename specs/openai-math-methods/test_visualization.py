@@ -23,8 +23,8 @@ from xml.etree import ElementTree as ET
 
 import pytest
 
-from fep_lean.methods import build_mathematical_positioning
-from fep_lean.methods import visualization as visual
+from fep_formal.methods import build_mathematical_positioning
+from fep_formal.methods import visualization as visual
 
 HERE = Path(__file__).resolve().parent
 
@@ -101,7 +101,7 @@ def test_capability_html_preserves_all_evidence_and_control_names(model):
     assert controls["domain"]["aria-label"] == "Family domain"
     assert controls["capability-query"]["aria-label"] == "Search capabilities"
     assert controls["capability-status-filter"]["aria-label"] == "Capability status"
-    assert "fep-lean methods check --output-root DIRECTORY" in output
+    assert "fep-formal methods check --output-root DIRECTORY" in output
 
 
 @pytest.mark.parametrize(

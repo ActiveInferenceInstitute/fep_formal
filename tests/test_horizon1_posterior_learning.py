@@ -7,7 +7,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FOUNDATION = (
-    PROJECT_ROOT / "src" / "fep_lean" / "formal" / "finite_posterior_learning.lean"
+    PROJECT_ROOT / "src" / "fep_formal" / "formal" / "finite_posterior_learning.lean"
 )
 
 EXACT_IMPORTS = (

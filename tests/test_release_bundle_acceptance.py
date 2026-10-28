@@ -11,11 +11,11 @@ from types import SimpleNamespace
 
 import pytest
 
-from fep_lean.output import release_bundle as bundle_module
-from fep_lean.output.release_bundle import (
+from fep_formal.output import release_bundle as bundle_module
+from fep_formal.output.release_bundle import (
     build_numerical_witness_receipt,
 )
-from fep_lean.verification import _subprocess
+from fep_formal.verification import _subprocess
 
 PROJ = Path(__file__).resolve().parents[1]
 
@@ -48,8 +48,8 @@ def test_numerical_receipt_preserves_every_typed_check_and_evidence_boundary() -
 def test_numerical_receipt_rejects_incomplete_or_extra_live_roster(
     monkeypatch: pytest.MonkeyPatch, extra: bool
 ) -> None:
-    from fep_lean.output.release_bundle import _acceptance
-    from fep_lean.verification.numerical_witnesses import evaluate_numerical_witnesses
+    from fep_formal.output.release_bundle import _acceptance
+    from fep_formal.verification.numerical_witnesses import evaluate_numerical_witnesses
 
     witnesses = evaluate_numerical_witnesses(PROJ, scope="catalogue")
     altered = (*witnesses, witnesses[0]) if extra else witnesses[:-1]
@@ -67,7 +67,7 @@ def test_python_receipts_bind_full_roster_and_coverage_floor(tmp_path: Path) -> 
     manuscript.mkdir()
     test_root = tmp_path / "tests"
     test_root.mkdir()
-    source = tmp_path / "src/fep_lean"
+    source = tmp_path / "src/fep_formal"
     source.mkdir(parents=True)
     (source / "a.py").write_text(
         "\n".join(f"value_{index} = {index}" for index in range(1, 11)) + "\n",
@@ -102,7 +102,7 @@ def test_python_receipts_bind_full_roster_and_coverage_floor(tmp_path: Path) -> 
         return (
             f'<coverage line-rate="{covered / 10:.4f}" lines-valid="10" '
             f'lines-covered="{covered}"><packages><package><classes>'
-            '<class filename="fep_lean/a.py"><lines>'
+            '<class filename="fep_formal/a.py"><lines>'
             f"{lines}</lines></class></classes></package></packages></coverage>\n"
         )
 
@@ -208,7 +208,7 @@ def test_python_receipts_bind_the_exact_collected_node_id_roster(
 ) -> None:
     output = tmp_path / "output"
     manuscript = tmp_path / "manuscript"
-    source = tmp_path / "src/fep_lean"
+    source = tmp_path / "src/fep_formal"
     output.mkdir()
     manuscript.mkdir()
     source.mkdir(parents=True)
@@ -224,7 +224,7 @@ def test_python_receipts_bind_the_exact_collected_node_id_roster(
     )
     (output / "coverage.xml").write_text(
         '<coverage line-rate="1" lines-valid="1" lines-covered="1">'
-        '<packages><package><classes><class filename="fep_lean/a.py">'
+        '<packages><package><classes><class filename="fep_formal/a.py">'
         '<lines><line number="1" hits="1"/></lines></class></classes>'
         "</package></packages></coverage>\n",
         encoding="utf-8",
@@ -257,7 +257,7 @@ def test_python_receipts_reject_noncanonical_coverage_source_records(
 ) -> None:
     output = tmp_path / "output"
     manuscript = tmp_path / "manuscript"
-    source = tmp_path / "src/fep_lean"
+    source = tmp_path / "src/fep_formal"
     output.mkdir()
     manuscript.mkdir()
     source.mkdir(parents=True)
@@ -273,7 +273,7 @@ def test_python_receipts_reject_noncanonical_coverage_source_records(
     )
     (output / "coverage.xml").write_text(
         '<coverage line-rate="1" lines-valid="1" lines-covered="1">'
-        '<packages><package><classes><class filename="fep_lean/invented.py">'
+        '<packages><package><classes><class filename="fep_formal/invented.py">'
         '<lines><line number="1" hits="1"/></lines></class></classes>'
         "</package></packages></coverage>\n",
         encoding="utf-8",
@@ -311,7 +311,7 @@ def test_python_coverage_floor_uses_exact_line_counters_not_rounded_rate(
     (output / "coverage.xml").write_text(
         '<coverage line-rate="0.8900" lines-valid="10001" '
         'lines-covered="8900"><packages><package><classes>'
-        '<class filename="fep_lean/a.py"><lines>'
+        '<class filename="fep_formal/a.py"><lines>'
         f"{lines}</lines></class></classes></package></packages></coverage>\n",
         encoding="utf-8",
     )
@@ -330,7 +330,7 @@ def test_python_acceptance_is_emitted_only_by_the_exact_stable_run(
     output.mkdir()
     manuscript.mkdir()
     tests.mkdir()
-    source = tmp_path / "src/fep_lean"
+    source = tmp_path / "src/fep_formal"
     source.mkdir(parents=True)
     (source / "a.py").write_text("value = 1\n", encoding="utf-8")
     test_source = tests / "test_fixture.py"
@@ -371,7 +371,7 @@ def test_python_acceptance_is_emitted_only_by_the_exact_stable_run(
         )
         (output / "coverage.xml").write_text(
             '<coverage line-rate="1" lines-valid="1" lines-covered="1">'
-            '<packages><package><classes><class filename="fep_lean/a.py">'
+            '<packages><package><classes><class filename="fep_formal/a.py">'
             '<lines><line number="1" hits="1"/></lines></class></classes>'
             "</package></packages></coverage>\n",
             encoding="utf-8",
@@ -415,7 +415,7 @@ def test_python_acceptance_is_emitted_only_by_the_exact_stable_run(
     assert receipt["coverage"]["source_records"] == [
         {
             "lines": [{"hits": 1, "number": 1}],
-            "path": "src/fep_lean/a.py",
+            "path": "src/fep_formal/a.py",
             "source_sha256": hashlib.sha256(b"value = 1\n").hexdigest(),
         }
     ]
@@ -505,7 +505,7 @@ def test_python_acceptance_rolls_back_when_inputs_or_executor_change_during_run(
     output.mkdir()
     manuscript.mkdir()
     tests.mkdir()
-    source = tmp_path / "src/fep_lean"
+    source = tmp_path / "src/fep_formal"
     source.mkdir(parents=True)
     (source / "a.py").write_text("value = 1\n", encoding="utf-8")
     test_source = tests / "test_fixture.py"
@@ -559,7 +559,7 @@ def test_python_acceptance_rolls_back_when_inputs_or_executor_change_during_run(
         )
         (output / "coverage.xml").write_text(
             '<coverage line-rate="1" lines-valid="1" lines-covered="1">'
-            '<packages><package><classes><class filename="fep_lean/a.py">'
+            '<packages><package><classes><class filename="fep_formal/a.py">'
             '<lines><line number="1" hits="1"/></lines></class></classes>'
             "</package></packages></coverage>\n",
             encoding="utf-8",

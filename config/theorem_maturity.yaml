@@ -1,7 +1,7 @@
 # Maintained semantic review of catalog theorem proxies.
 schema_version: 2
 review_date: '2026-10-19'
-native_evidence: A validated receipt from uv run fep-lean verify --fail-on-warnings
+native_evidence: A validated receipt from uv run fep-formal verify --fail-on-warnings
   establishes exact-source native compilation only; it does not establish the semantic
   disposition below or a full Hermes/OpenGauss run.
 status_policy: Any semantic disposition or mathlib_status change requires exact theorem

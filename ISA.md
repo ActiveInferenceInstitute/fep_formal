@@ -2,7 +2,7 @@
 title: FEP_Formal Ideal State Assessment
 status: active
 phase: verifying
-updated: 2026-10-16
+updated: 2026-10-27
 ---
 
 # FEP_Formal Ideal State Assessment
@@ -56,7 +56,7 @@ This assessment covers the standalone repository boundary:
 | ID | Criterion | Required evidence |
 | --- | --- | --- |
 | ISA-01 | The sealed topic roster and family registry are complete and parity-safe. | Registry/SSOT tests pass; the aggregate generator is deterministic and leaves no diff. |
-| ISA-02 | Offline mode is deterministic and honest. | `uv run fep-lean catalogue` completes, emits reproducible artifacts, and reports `verified_topics: 0`. |
+| ISA-02 | Offline mode is deterministic and honest. | `uv run fep-formal catalogue` completes, emits reproducible artifacts, and reports `verified_topics: 0`. |
 | ISA-03 | The local Python boundary is reproducible. | `uv sync --locked --extra dev`, `uv pip check`, the coverage gate, and the [canonical strict typing gate](AGENTS.md#required-checks) pass. |
 | ISA-04 | The pinned Lean workspace is real, not merely configured. | Direct pinned Lean/Lake version probes, Mathlib cache/build, `lake build FepSketches`, an exact sealed-roster native compile sweep, and the declaration/axiom audit pass. |
 | ISA-05 | Full mode is fail-closed. | Preflight requires Gauss, writable state, exact Lean/Lake/Mathlib, and Hermes credentials; any failure returns an error without a successful report. |
@@ -102,17 +102,17 @@ uv run python scripts/_maint_build_formal_modules.py --check
 uv run python scripts/theorem_maturity_audit.py --check
 uv run python scripts/build_formalism_coverage.py --check
 uv run python scripts/_maint_build_lean_landscape.py --check
-uv run fep-lean atlas --check
-uv run fep-lean dashboard --check
+uv run fep-formal atlas --check
+uv run fep-formal dashboard --check
 uv run python docs/pin_audit.py --check-latest
 uv run mypy src scripts docs
-uv run fep-lean setup
+uv run fep-formal setup
 cd lean
 lake build FepSketches
 cd ..
-uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json
 uv run python scripts/audit_formalisms.py --receipt output/formalism-audit.json
-uv run fep-lean catalogue
+uv run fep-formal catalogue
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
 uv run python scripts/render_manuscript.py --check
@@ -123,10 +123,10 @@ uv run python scripts/capture_browser_acceptance.py
 uv run python scripts/build_release_bundle.py --run-python-acceptance
 release_dir="$(mktemp -d)"
 SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
-  --output "$release_dir/fep-lean-candidate-168.tar.gz"
+  --output "$release_dir/fep-formal-candidate-168.tar.gz"
 SOURCE_DATE_EPOCH=0 uv run python scripts/build_release_bundle.py \
-  --check --output "$release_dir/fep-lean-candidate-168.tar.gz"
-uv run fep-lean preflight
+  --check --output "$release_dir/fep-formal-candidate-168.tar.gz"
+uv run fep-formal preflight
 ```
 
 `preflight` reports the external full-mode capability boundary. A complete
@@ -135,9 +135,9 @@ workflow after credentials are supplied through the operator's existing secret
 mechanism:
 
 ```bash
-FEP_LEAN_CATALOGUE_COMPILE_TEST=1 uv run pytest tests/test_catalogue_bodies_compile.py -q --no-cov
-uv run fep-lean run --topic fep-001
-uv run fep-lean run
+FEP_FORMAL_CATALOGUE_COMPILE_TEST=1 uv run pytest tests/test_catalogue_bodies_compile.py -q --no-cov
+uv run fep-formal run --topic fep-001
+uv run fep-formal run
 ```
 
 The smoke run is accepted only when its result is `complete: true`; the full
@@ -147,6 +147,11 @@ available, record the exact preflight failure and leave the full-run criterion
 open in [TODO.md](TODO.md).
 
 ## Current assessment
+
+The following accepted source checkpoint predates the unreleased identity
+migration. It remains historical acceptance of that source, not of the
+changed checkout. Current cutover work and outstanding gates are recorded
+in the [migration status](docs/identity-migration-status.md).
 
 The accepted software/proof-component source is
 [`a46ed93473046293f6e5ef33ba4ced2ad3ffdc43`](https://github.com/ActiveInferenceInstitute/fep_formal/commit/a46ed93473046293f6e5ef33ba4ced2ad3ffdc43);

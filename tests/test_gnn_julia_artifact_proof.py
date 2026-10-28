@@ -14,8 +14,8 @@ from types import ModuleType
 
 import pytest
 
-from fep_lean.verification import gnn_julia_artifact_proof as q6
-from fep_lean.verification.gnn_artifact_proof import ArtifactProofError
+from fep_formal.verification import gnn_julia_artifact_proof as q6
+from fep_formal.verification.gnn_artifact_proof import ArtifactProofError
 
 ROOT = Path(q6.__file__).resolve().parents[3]
 SLICE = ROOT / q6.SLICE
@@ -223,7 +223,7 @@ def test_previous_action_exchange_stays_normalized_but_changes_oracle() -> None:
     assert tables.table("B_data").values != EXPECTED_ASYM["B_data"]
 
 
-def test_generator_is_deterministic_readonly_and_scope_explicit() -> None:
+def test_generator_is_deterministic_readonly_and_scope_explicit(tmp_path: Path) -> None:
     generator = _generator()
     texts, manifest = generator.regenerate()
     assert generator.regenerate() == (texts, manifest)
@@ -231,7 +231,18 @@ def test_generator_is_deterministic_readonly_and_scope_explicit() -> None:
         p: (p.read_bytes(), p.stat().st_mtime_ns)
         for p in (SLICE / "generated").iterdir()
     }
-    assert generator.main(["--check"]) == 0
+    # Retained source hashes predate the identity cutover and must stay stale.
+    assert generator.main(["--check"]) == 1
+    target = tmp_path / "fresh"
+    assert generator.main(["--output-root", str(target)]) == 0
+    assert generator.main(["--check", "--output-root", str(target)]) == 0
+    probe = target / "generated/probe_symmetric.lean"
+    probe.write_text(probe.read_text() + "\n-- tampered\n")
+    assert generator.main(["--check", "--output-root", str(target)]) == 1
+    with pytest.raises(FileExistsError):
+        generator.main(["--output-root", str(target)])
+    with pytest.raises(SystemExit):
+        generator.main([])
     assert {p: (p.read_bytes(), p.stat().st_mtime_ns) for p in before} == before
     assert manifest["native_verification"] == "not_established_by_generation"
     assert (
@@ -271,7 +282,7 @@ def test_size_bound_and_unknown_probe_variant() -> None:
 @pytest.mark.parametrize("variant", q6.VARIANTS)
 def test_native_embedded_input_probe_and_axioms(tmp_path: Path, variant: str) -> None:
     """Native-only acceptance; the draft Python run explicitly deselects this."""
-    from fep_lean.verification.formalism_audit import parse_axiom_output
+    from fep_formal.verification.formalism_audit import parse_axiom_output
     from tests._support.lean_runner import run_lean_probe
 
     expected = tuple(f"{q6.NAMESPACES[variant]}.{n}" for n in q6.THEOREMS[variant])
@@ -281,7 +292,7 @@ def test_native_embedded_input_probe_and_axioms(tmp_path: Path, variant: str) ->
     probe.write_text(source)
     result = run_lean_probe(
         probe,
-        import_root=ROOT / "src/fep_lean/formal",
+        import_root=ROOT / "src/fep_formal/formal",
         cwd=ROOT / "lean",
         timeout_s=1800,
     )
@@ -314,7 +325,7 @@ def test_native_normalized_previous_action_swap_is_rejected(tmp_path: Path) -> N
     probe.write_text(source)
     result = run_lean_probe(
         probe,
-        import_root=ROOT / "src/fep_lean/formal",
+        import_root=ROOT / "src/fep_formal/formal",
         cwd=ROOT / "lean",
         timeout_s=1800,
     )

@@ -9,12 +9,12 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 
 ROOT = Path(__file__).resolve().parents[1]
-COMPOSITION = ROOT / "src/fep_lean/formal/compositions/h3_case_study.lean"
+COMPOSITION = ROOT / "src/fep_formal/formal/compositions/h3_case_study.lean"
 PROJECTION = ROOT / "lean/FepSketches/compositions/h3_case_study.lean"
 ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 

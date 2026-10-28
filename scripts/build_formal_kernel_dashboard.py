@@ -6,8 +6,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from fep_lean.catalogue.generation import check_or_write
-from fep_lean.output.formal_kernel_dashboard import (
+from fep_formal.catalogue.generation import check_or_write
+from fep_formal.output.formal_kernel_dashboard import (
     formal_kernel_dashboard_drift,
     write_formal_kernel_dashboard,
 )

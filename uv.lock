@@ -359,7 +359,7 @@ wheels = [
 ]
 
 [[package]]
-name = "fep-lean"
+name = "fep-formal"
 version = "2.1.0"
 source = { editable = "." }
 dependencies = [

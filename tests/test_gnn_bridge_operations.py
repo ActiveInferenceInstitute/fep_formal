@@ -11,9 +11,9 @@ from typing import Any
 
 import pytest
 
-from fep_lean.bridge import operations
-from fep_lean.bridge.certificates import compare
-from fep_lean.bridge.custody import (
+from fep_formal.bridge import operations
+from fep_formal.bridge.certificates import compare
+from fep_formal.bridge.custody import (
     CONTENT_DRIFT,
     FRESH,
     STALE_CUSTODY,
@@ -27,7 +27,7 @@ from fep_lean.bridge.custody import (
 
 def _semantic_fixture(family: str) -> dict[str, Any]:
     """Small authored rational examples with independent closed-form answers."""
-    from fep_lean.bridge.certificates import _semantic_quantity
+    from fep_formal.bridge.certificates import _semantic_quantity
 
     finite = family == "finite"
     parameters = (
@@ -238,7 +238,7 @@ def _semantic_fixture(family: str) -> dict[str, Any]:
 def test_source_semantic_replay_resolves_theorems_without_promoting_evidence(
     family: str,
 ) -> None:
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     audit = audit_semantic_witness(
         _semantic_fixture(family), Path(__file__).resolve().parents[1]
@@ -281,7 +281,7 @@ def test_source_semantic_replay_resolves_theorems_without_promoting_evidence(
     ],
 )
 def test_source_semantic_replay_refuses_plausible_tampering(mutation: str) -> None:
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     witness = deepcopy(_semantic_fixture("gaussian"))
     if mutation == "digest":
@@ -333,7 +333,7 @@ def test_source_semantic_replay_refuses_plausible_tampering(mutation: str) -> No
 def test_source_semantic_replay_checks_native_owned_assumptions(
     field: str, value: Any
 ) -> None:
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     witness = _semantic_fixture("gaussian")
     payload = json.loads(witness["artifacts"]["result"]["utf8"])
@@ -368,7 +368,7 @@ def test_source_semantic_replay_checks_native_owned_assumptions(
 def test_semantic_audit_refuses_explicit_raw_contradictions_even_without_saved_rows(
     field: str, value: Any
 ) -> None:
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     witness = _semantic_fixture("gaussian")
     payload = json.loads(witness["artifacts"]["result"]["utf8"])
@@ -387,7 +387,7 @@ def test_semantic_audit_refuses_explicit_raw_contradictions_even_without_saved_r
 def test_semantic_audit_refuses_native_validation_beyond_gnn_budget(
     budget: str,
 ) -> None:
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     witness = _semantic_fixture("finite")
     payload = json.loads(witness["artifacts"]["result"]["utf8"])
@@ -414,7 +414,7 @@ def test_semantic_cli_binds_live_sources_without_refreshing_historical_pin(
 ) -> None:
     import argparse
 
-    from fep_lean.bridge.cli import add_arguments, run
+    from fep_formal.bridge.cli import add_arguments, run
 
     root = Path(__file__).resolve().parents[1]
     gnn = tmp_path / "gnn"
@@ -473,7 +473,7 @@ def test_semantic_cli_binds_live_sources_without_refreshing_historical_pin(
     ["## CouplingV2", "## Unexpected-Section", "##ModelName", "  ## ModelName"],
 )
 def test_semantic_source_refuses_unknown_or_malformed_headings(heading: str) -> None:
-    from fep_lean.bridge.certificates import _semantic_source
+    from fep_formal.bridge.certificates import _semantic_source
 
     source = _semantic_fixture("finite")["artifacts"]["source"]["utf8"]
     with pytest.raises(ValueError, match="heading"):
@@ -488,7 +488,7 @@ def test_semantic_source_refuses_unknown_or_malformed_headings(heading: str) -> 
 
 
 def test_semantic_source_rejects_byte_budget_without_normalizing() -> None:
-    from fep_lean.bridge.certificates import _semantic_source
+    from fep_formal.bridge.certificates import _semantic_source
 
     source = _semantic_fixture("finite")["artifacts"]["source"]["utf8"]
     with pytest.raises(ValueError, match="byte budget"):
@@ -509,7 +509,7 @@ def test_semantic_source_rejects_byte_budget_without_normalizing() -> None:
 def test_semantic_candidate_invariants_precede_numerical_tolerance(
     family: str, quantity: str, value: Any
 ) -> None:
-    from fep_lean.bridge.certificates import _semantic_candidate_validity
+    from fep_formal.bridge.certificates import _semantic_candidate_validity
 
     witness = _semantic_fixture(family)
     payload = json.loads(witness["artifacts"]["result"]["utf8"])
@@ -523,7 +523,7 @@ def test_semantic_audit_reports_derived_overflow_and_solver_failure(
 ) -> None:
     import numpy as np
 
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     witness = _semantic_fixture("gaussian")
     source = witness["artifacts"]["source"]["utf8"].replace(
@@ -554,7 +554,7 @@ def test_semantic_cli_cannot_overwrite_input_artifact(
 ) -> None:
     import argparse
 
-    from fep_lean.bridge.cli import add_arguments, run
+    from fep_formal.bridge.cli import add_arguments, run
 
     witness = tmp_path / "input.json"
     witness.write_text(json.dumps(_semantic_fixture("finite")))
@@ -613,7 +613,7 @@ def test_semantic_cli_rejects_malformed_captured_json_without_traceback(
 ) -> None:
     import argparse
 
-    from fep_lean.bridge.cli import add_arguments, run
+    from fep_formal.bridge.cli import add_arguments, run
 
     witness = tmp_path / "input.json"
     witness.write_text(content)
@@ -676,7 +676,7 @@ def _bind_semantic_artifact(witness: dict[str, Any], name: str, text: str) -> No
 def test_semantic_source_refuses_unreviewed_grammar_and_parameters(
     old: str, new: str, error: str
 ) -> None:
-    from fep_lean.bridge.certificates import _semantic_source
+    from fep_formal.bridge.certificates import _semantic_source
 
     source = _semantic_fixture("finite")["artifacts"]["source"]["utf8"]
     assert source.count(old) == 1
@@ -686,7 +686,7 @@ def test_semantic_source_refuses_unreviewed_grammar_and_parameters(
 
 @pytest.mark.parametrize("section", ["ModelName", "InitialParameterization"])
 def test_semantic_source_refuses_duplicate_sections_or_parameters(section: str) -> None:
-    from fep_lean.bridge.certificates import _semantic_source
+    from fep_formal.bridge.certificates import _semantic_source
 
     source = _semantic_fixture("finite")["artifacts"]["source"]["utf8"]
     if section == "ModelName":
@@ -711,7 +711,7 @@ def test_semantic_source_refuses_duplicate_sections_or_parameters(section: str) 
 def test_semantic_source_refuses_invalid_gaussian_covariance_contract(
     case: str, error: str
 ) -> None:
-    from fep_lean.bridge.certificates import _semantic_source
+    from fep_formal.bridge.certificates import _semantic_source
 
     source = _semantic_fixture("gaussian")["artifacts"]["source"]["utf8"]
     if case == "missing":
@@ -749,7 +749,7 @@ def test_semantic_source_refuses_invalid_gaussian_covariance_contract(
 def test_semantic_replay_refuses_incomplete_or_mistyped_conditioning(
     family: str, field: str, value: Any, error: str
 ) -> None:
-    from fep_lean.bridge.certificates import _semantic_replay
+    from fep_formal.bridge.certificates import _semantic_replay
 
     witness = _semantic_fixture(family)
     result = json.loads(witness["artifacts"]["result"]["utf8"])
@@ -759,7 +759,7 @@ def test_semantic_replay_refuses_incomplete_or_mistyped_conditioning(
 
 
 def test_semantic_finite_replay_refuses_zero_evidence() -> None:
-    from fep_lean.bridge.certificates import _semantic_replay
+    from fep_formal.bridge.certificates import _semantic_replay
 
     witness = _semantic_fixture("finite")
     contract = witness["source_contract"]
@@ -782,14 +782,14 @@ def test_semantic_finite_replay_refuses_zero_evidence() -> None:
 def test_semantic_diagnostics_refuse_ragged_shape_and_float_range(
     reference: Any, candidate: Any, error: str
 ) -> None:
-    from fep_lean.bridge.certificates import _semantic_quantity
+    from fep_formal.bridge.certificates import _semantic_quantity
 
     with pytest.raises(ValueError, match=error):
         _semantic_quantity(reference, candidate)
 
 
 def test_semantic_identity_does_not_equate_boolean_with_integer() -> None:
-    from fep_lean.bridge.certificates import _semantic_identity_row
+    from fep_formal.bridge.certificates import _semantic_identity_row
 
     with pytest.raises(ValueError, match="scientific identity"):
         _semantic_identity_row(True, 1)
@@ -798,7 +798,7 @@ def test_semantic_identity_does_not_equate_boolean_with_integer() -> None:
 def test_semantic_covariance_requires_positive_definiteness_beyond_positive_diagonal() -> (
     None
 ):
-    from fep_lean.bridge.certificates import _semantic_candidate_validity
+    from fep_formal.bridge.certificates import _semantic_candidate_validity
 
     contract = _semantic_fixture("gaussian")["source_contract"]
     contract["state_ids"] = ["x", "z"]
@@ -836,7 +836,7 @@ def test_semantic_covariance_requires_positive_definiteness_beyond_positive_diag
 def test_semantic_audit_refuses_structural_and_native_parameter_defects(
     case: str, error: str
 ) -> None:
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     witness = _semantic_fixture("gaussian")
     if case == "schema":
@@ -864,7 +864,7 @@ def test_semantic_audit_refuses_structural_and_native_parameter_defects(
 
 
 def test_semantic_audit_independently_rejects_a_mutually_fabricated_trace() -> None:
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     witness = _semantic_fixture("finite")
     forged = [[0.5, 0.5], [0.5, 0.5]]
@@ -885,7 +885,7 @@ def test_semantic_audit_independently_rejects_a_mutually_fabricated_trace() -> N
 def test_semantic_audit_accepts_bound_optional_declarations_without_execution_claim() -> (
     None
 ):
-    from fep_lean.bridge.certificates import audit_semantic_witness
+    from fep_formal.bridge.certificates import audit_semantic_witness
 
     witness = _semantic_fixture("gaussian")
     result = json.loads(witness["artifacts"]["result"]["utf8"])
@@ -920,7 +920,7 @@ def test_semantic_audit_accepts_bound_optional_declarations_without_execution_cl
 
 
 def test_semantic_formal_references_refuse_unknown_family() -> None:
-    from fep_lean.bridge.certificates import semantic_formal_references
+    from fep_formal.bridge.certificates import semantic_formal_references
 
     with pytest.raises(ValueError, match="unsupported formal semantic family"):
         semantic_formal_references(Path(__file__).resolve().parents[1], "hybrid")
@@ -929,12 +929,12 @@ def test_semantic_formal_references_refuse_unknown_family() -> None:
 @pytest.fixture
 def semantic_pair(pair: tuple[Path, Path]) -> tuple[Path, Path]:
     """Real formal source bytes in independent disposable source roots."""
-    from fep_lean.formal.manifest import FORMAL_MODULES
+    from fep_formal.formal.manifest import FORMAL_MODULES
 
     root, gnn = pair
     original = Path(__file__).resolve().parents[1]
     for module in FORMAL_MODULES:
-        relative = Path("src/fep_lean/formal") / module.resource
+        relative = Path("src/fep_formal/formal") / module.resource
         (root / relative).write_bytes((original / relative).read_bytes())
     operations.pin_sources(root, gnn)
     for checkout in (root, gnn):
@@ -1005,7 +1005,7 @@ def test_semantic_cli_requires_an_explicit_input_without_writes(
 ) -> None:
     import argparse
 
-    from fep_lean.bridge.cli import add_arguments, run
+    from fep_formal.bridge.cli import add_arguments, run
 
     parser = argparse.ArgumentParser()
     add_arguments(parser)
@@ -1129,10 +1129,10 @@ def pair(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[Path, Path]:
     """Two independent tiny source checkouts, with no installed sibling required."""
     root, gnn = tmp_path / "fep", tmp_path / "gnn"
     monkeypatch.setattr(operations, "_head", lambda _: "a" * 40)
-    from fep_lean.formal.manifest import FORMAL_MODULES
+    from fep_formal.formal.manifest import FORMAL_MODULES
 
     for module in FORMAL_MODULES:
-        for prefix in ("src/fep_lean/formal", "lean/FepSketches"):
+        for prefix in ("src/fep_formal/formal", "lean/FepSketches"):
             path = root / prefix / module.resource
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("-- fixture formal owner\n")
@@ -1324,7 +1324,7 @@ def test_bridge_cli_round_trip_and_missing_results(
 ) -> None:
     import argparse
 
-    from fep_lean.bridge.cli import add_arguments, run
+    from fep_formal.bridge.cli import add_arguments, run
 
     root, gnn = pair
     parser = argparse.ArgumentParser()
@@ -1405,7 +1405,7 @@ def test_emission_flags_reject_other_operations_without_writing(
 ) -> None:
     import argparse
 
-    from fep_lean.bridge.cli import add_arguments, run
+    from fep_formal.bridge.cli import add_arguments, run
 
     root, gnn = pair
     parser = argparse.ArgumentParser()

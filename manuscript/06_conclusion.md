@@ -34,7 +34,7 @@ The catalog is most useful as review infrastructure. A proposed extension must i
 
 The package contributes:
 
-1. a real `fep_lean` import namespace and isolated-wheel contract;
+1. a real `fep_formal` import namespace and isolated-wheel contract;
 2. one typed generation graph for metadata, semantic review, Lean bodies, YAML, and package data;
 3. native Mathlib posterior, KL, Gaussian, conditional-independence, and Markov-kernel formalizations;
 4. a manifested reusable kernel of foundations and leaf compositions for probability, information, variational and expected free energy, finite policy trees, temporal and causal inference, native blanket transfer, predictive coding, stochastic thermodynamics, scalar exponential-family geometry, collective inference, finite risk, and learning;
@@ -69,21 +69,21 @@ Posterior contraction itself is already proved on the selected two-hypothesis Ga
 
 ## Reproducibility Statement {#sec:reproducibility_statement}
 
-The Python environment is lockfile-controlled; Lean and Mathlib are pinned in the Lake workspace; generated artifacts have drift checks; and native evidence can be reproduced with the sequence below. `fep-lean catalogue` appears before the manuscript drift check because `manuscript/manuscript_vars.yaml` and the generated appendix are build products rather than tracked sources: on a fresh checkout they do not exist yet, and the check that compares them to canonical data has nothing to compare.
+The Python environment is lockfile-controlled; Lean and Mathlib are pinned in the Lake workspace; generated artifacts have drift checks; and native evidence can be reproduced with the sequence below. `fep-formal catalogue` appears before the manuscript drift check because `manuscript/manuscript_vars.yaml` and the generated appendix are build products rather than tracked sources: on a fresh checkout they do not exist yet, and the check that compares them to canonical data has nothing to compare.
 
 ```bash
 uv sync --locked --extra dev
-uv run fep-lean setup
+uv run fep-formal setup
 uv run python scripts/_maint_build_topics_catalogue.py --check
 uv run python scripts/_maint_build_fep_all_lean.py --check
 uv run python scripts/_maint_build_formal_modules.py --check
 uv run python scripts/theorem_maturity_audit.py
 uv run python scripts/build_formalism_coverage.py --check
-uv run fep-lean atlas --check
+uv run fep-formal atlas --check
 uv run python scripts/build_formal_kernel_dashboard.py --check
 uv run python scripts/audit_formalisms.py --receipt output/formalism-audit.json
-uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
-uv run fep-lean catalogue
+uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-formal catalogue
 uv run python scripts/render_manuscript.py --check
 uv run python docs/theorem_ref_audit.py
 ```

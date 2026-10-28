@@ -12,8 +12,8 @@ import hashlib
 import json
 from pathlib import Path
 
-from fep_lean.verification import gnn_artifact_proof as shared_tables
-from fep_lean.verification.gnn_julia_artifact_proof import (
+from fep_formal.verification import gnn_artifact_proof as shared_tables
+from fep_formal.verification.gnn_julia_artifact_proof import (
     SKELETON_PATH,
     SLICE,
     VARIANTS,
@@ -47,10 +47,10 @@ def regenerate() -> tuple[dict[str, str], dict[str, object]]:
     for path in (
         SKELETON_PATH,
         f"{SLICE}/generate_probe.py",
-        "src/fep_lean/verification/gnn_julia_artifact_proof.py",
+        "src/fep_formal/verification/gnn_julia_artifact_proof.py",
     ):
         sources[path] = hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
-    sources["src/fep_lean/verification/gnn_artifact_proof.py"] = hashlib.sha256(
+    sources["src/fep_formal/verification/gnn_artifact_proof.py"] = hashlib.sha256(
         Path(shared_tables.__file__).read_bytes()
     ).hexdigest()
     manifest: dict[str, object] = {
@@ -76,11 +76,21 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--check", action="store_true", help="read-only freshness check"
     )
+    parser.add_argument(
+        "--output-root",
+        type=Path,
+        help="fresh output slice; retained outputs are never overwritten",
+    )
     args = parser.parse_args(argv)
+    if not args.check and args.output_root is None:
+        parser.error("current-source generation requires a fresh --output-root")
+    target_root = args.output_root.resolve() if args.output_root else ROOT / SLICE
+    if not args.check:
+        target_root.mkdir(parents=True, exist_ok=False)
     texts, _manifest = regenerate()
     mismatches: list[str] = []
     for relative, text in texts.items():
-        target = ROOT / SLICE / relative
+        target = target_root / relative
         encoded = text.encode("utf-8")
         if args.check:
             if not target.is_file() or target.read_bytes() != encoded:

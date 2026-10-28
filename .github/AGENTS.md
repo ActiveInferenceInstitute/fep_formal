@@ -1,7 +1,7 @@
 # GitHub repository contract
 
 The public project is **FEP_Formal**, hosted as `ActiveInferenceInstitute/fep_formal`.
-The Python import remains `fep_lean`; the CLI remains `fep-lean`.
+The canonical Python import is `fep_formal`; the CLI is `fep-formal`.
 
 ## Repository presentation
 

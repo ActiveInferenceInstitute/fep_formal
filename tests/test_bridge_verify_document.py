@@ -13,7 +13,7 @@ from types import ModuleType, SimpleNamespace
 
 import pytest
 
-from fep_lean.bridge import cli, operations
+from fep_formal.bridge import cli, operations
 
 REPO = Path(__file__).resolve().parents[1]
 GNN_ROOT = REPO.parent / "Generalized_Notation_Notation"
@@ -420,7 +420,7 @@ def test_probe_sections_projects_the_frozen_inventory() -> None:
     assert '.modelName "Symmetric Bool POMDP"' in joined
     assert '.modelAnnotation "Active Inference"' in joined
     assert ".gnnVersionAndFlags .v1 []" in joined
-    assert '.footer "Verified by fep-lean bridge verify-document' in joined
+    assert '.footer "Verified by fep-formal bridge verify-document' in joined
     state_block = next(s for s in sections if s.startswith(".stateSpaceBlock"))
     assert '"s_f", [.lit 1], .floatT' in state_block
     assert '"o_f", [.lit 2], .intT' in state_block
@@ -597,3 +597,63 @@ def test_cli_verify_document_fail_on_warnings_fails_closed(
     receipt = payload["details"]["result"]["receipt"]
     assert receipt["status"] == "failed"
     assert any("family mismatch" in warning for warning in receipt["warnings"])
+
+
+@pytest.mark.serial_lean
+@pytest.mark.parametrize("strict", [False, True], ids=["nonstrict", "strict"])
+def test_verify_document_records_actual_compiler_warning(
+    tmp_path: Path, gnn_stub: Path, monkeypatch: pytest.MonkeyPatch, strict: bool
+) -> None:
+    """Compile a deliberate warning; the real verifier must control the receipt."""
+    from fep_formal.verification.lean_verifier import LeanVerifier, VerifyResult
+    from tests._support.lake import lake_executable
+
+    lake_executable(missing="raise", context="bridge compiler-warning acceptance")
+    document = _write_document(tmp_path, "finite.md", FINITE_DOCUMENT)
+    message = "bridge warning propagation acceptance control"
+    original_probe = operations._probe_lean_code
+    original_verify = LeanVerifier.verify_sketch
+    observed: list[VerifyResult] = []
+
+    def warning_probe(space, declared):
+        source = "public meta import Lean.Elab.Command\n" + original_probe(
+            space, declared
+        )
+        source += f'\nrun_cmd Lean.logWarning "{message}"\n'
+        (tmp_path / "warning-probe.lean").write_text(source, encoding="utf-8")
+        return source
+
+    def record_real_compile(self, topic_id, lean_code):
+        result = original_verify(self, topic_id, lean_code)
+        observed.append(result)
+        (tmp_path / "compiler-result.json").write_text(
+            json.dumps(
+                {
+                    "result": result.as_dict(),
+                    "stdout": result.stdout,
+                    "stderr": result.stderr,
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        return result
+
+    monkeypatch.setattr(operations, "_probe_lean_code", warning_probe)
+    monkeypatch.setattr(LeanVerifier, "verify_sketch", record_real_compile)
+    receipt_path = tmp_path / "receipt.json"
+    receipt = operations.verify_document(
+        REPO, gnn_stub, document, receipt=receipt_path, fail_on_warnings=strict
+    )
+    assert len(observed) == 1
+    result = observed[0]
+    assert not result.skip_reason, result.skip_reason
+    assert result.compiles and not result.has_sorry, result.stdout
+    assert not result.errors
+    pin = (REPO / "lean/lean-toolchain").read_text().strip().split(":v", 1)[1]
+    assert pin in result.lean_version
+    assert any(message in warning for warning in result.warnings), result.stdout
+    assert receipt["status"] == ("failed" if strict else "ok")
+    assert receipt["warnings"] == result.warnings
+    assert json.loads(receipt_path.read_text()) == receipt

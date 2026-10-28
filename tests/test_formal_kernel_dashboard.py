@@ -10,15 +10,15 @@ from itertools import combinations, pairwise
 from pathlib import Path
 from xml.etree import ElementTree
 
-from fep_lean.output.formal_kernel_dashboard import (
+from fep_formal.output.formal_kernel_dashboard import (
     build_formal_kernel_dashboard,
     formal_kernel_dashboard_drift,
     render_formal_kernel_dashboard_html,
     render_formal_kernel_dashboard_svg,
     write_formal_kernel_dashboard,
 )
-from fep_lean.output.formalism_presentation import FormalismPresentation
-from fep_lean.verification.numerical_witnesses import NON_PROOF_EVIDENCE
+from fep_formal.output.formalism_presentation import FormalismPresentation
+from fep_formal.verification.numerical_witnesses import NON_PROOF_EVIDENCE
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
@@ -1390,7 +1390,7 @@ def test_mobile_evidence_banner_complete_text_fits_before_cards() -> None:
 
 
 def test_width_wrapping_preserves_overlong_identifiers_without_truncation() -> None:
-    from fep_lean.output.formal_kernel_dashboard import _wrap_pixels
+    from fep_formal.output.formal_kernel_dashboard import _wrap_pixels
 
     label = "WWWWideFamilyIdentifier" * 8
     lines = _wrap_pixels(label, 180, 19, 800)

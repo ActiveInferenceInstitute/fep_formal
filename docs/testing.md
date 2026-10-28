@@ -3,7 +3,7 @@
 Run from the project root:
 
 ```bash
-FEP_LEAN_LIVE_TESTS=0 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
+FEP_FORMAL_LIVE_TESTS=0 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
 ```
 
 The development extra includes `defusedxml` for the conditional tests that
@@ -17,7 +17,7 @@ name and retains `GeneralizedNotationNotation` for older local layouts.
 The suite uses real temporary files, SQLite databases, subprocesses, and local
 HTTP servers. Environment variables isolate secrets and expensive external
 integration tests; they do not manufacture successful execution results.
-Set `FEP_LEAN_LIVE_TESTS=0` for credential-free runs: the Gauss runner live
+Set `FEP_FORMAL_LIVE_TESTS=0` for credential-free runs: the Gauss runner live
 family otherwise also enables itself when a provider key is present. Hermes
 and end-to-end live families require explicit opt-in and credentials.
 
@@ -38,11 +38,11 @@ preserves the browser startup deadline and does not diagnose the historical
 startup timeouts. See the [acceptance validator](../specs/publication-browser-acceptance/README.md).
 
 The native formal commands (`lake build FepSketches`, the formalism audit,
-`fep-lean verify --fail-on-warnings --receipt ...`) require the pinned
+`fep-formal verify --fail-on-warnings --receipt ...`) require the pinned
 toolchain and Mathlib build and are listed in the same block.
 
 Hermes/OpenGauss full validation additionally requires external credentials;
-`fep-lean preflight` reports each missing capability without modifying the
+`fep-formal preflight` reports each missing capability without modifying the
 workspace.
 
 The atlas and dashboard tests validate deterministic projection and

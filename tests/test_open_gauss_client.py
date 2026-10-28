@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.gauss.client import OpenGaussClient
+from fep_formal.gauss.client import OpenGaussClient
 
 
 @pytest.fixture()

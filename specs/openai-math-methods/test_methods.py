@@ -13,10 +13,10 @@ from xml.etree import ElementTree
 import pytest
 import yaml
 
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.catalogue.semantics import SemanticValidationError
-from fep_lean.formal.declarations import all_formal_theorem_declarations
-from fep_lean.formal.manifest import FORMAL_MODULES
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.catalogue.semantics import SemanticValidationError
+from fep_formal.formal.declarations import all_formal_theorem_declarations
+from fep_formal.formal.manifest import FORMAL_MODULES
 
 METHOD_PATH = Path(__file__).with_name("methods.py")
 SPEC = importlib.util.spec_from_file_location("positioning_methods", METHOD_PATH)
@@ -298,7 +298,7 @@ def test_extreme_supported_kl_is_finite_without_ratio_overflow_or_underflow():
 def test_package_generator_binds_reviewed_result_passports_to_exact_lock(
     tmp_path, mutation
 ):
-    from fep_lean.methods import PositioningError
+    from fep_formal.methods import PositioningError
 
     spec = importlib.util.spec_from_file_location(
         "passport_generator", METHOD_PATH.with_name("generate_package_methods.py")

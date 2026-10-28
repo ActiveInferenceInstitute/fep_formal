@@ -14,8 +14,9 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 _SOURCES = (
     "pyproject.toml",
-    "src/fep_lean/__init__.py",
-    "src/fep_lean/output/release_bundle/_constants.py",
+    "compat/fep-lean/pyproject.toml",
+    "src/fep_formal/__init__.py",
+    "src/fep_formal/output/release_bundle/_constants.py",
     "CITATION.cff",
     "manuscript/config.yaml",
     "config/settings.yaml",
@@ -62,10 +63,22 @@ def test_repository_metadata_agrees_on_one_release() -> None:
             "pyproject.toml",
         ),
         (
-            "src/fep_lean/__init__.py",
+            "src/fep_formal/__init__.py",
             '__version__ = "',
             '__version__ = "0.',
             "__init__",
+        ),
+        (
+            "compat/fep-lean/pyproject.toml",
+            '\nversion = "',
+            '\nversion = "9.9.9" #',
+            "compat/fep-lean",
+        ),
+        (
+            "compat/fep-lean/pyproject.toml",
+            "fep-formal==2.1.0",
+            "fep-formal==9.9.9",
+            "dependency",
         ),
         ("CITATION.cff", "date-released: ", "date-released: 1999-01-01 #", "CITATION"),
         ("manuscript/config.yaml", "  version: ", "  version: 0.0.1 #", "manuscript"),

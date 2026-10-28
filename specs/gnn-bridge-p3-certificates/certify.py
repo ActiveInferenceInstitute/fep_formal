@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only historical P3 numerical comparison; use --output to emit explicitly.
 
-For source-bound receipts use `fep-lean bridge certify --gnn-root PATH
+For source-bound receipts use `fep-formal bridge certify --gnn-root PATH
 --results PATH`. Numerical agreement is not execution provenance or Lean proof.
 """
 from __future__ import annotations
@@ -10,8 +10,8 @@ import argparse
 import json
 from pathlib import Path
 
-from fep_lean.bridge.certificates import compare, render_markdown
-from fep_lean.bridge.custody import write_json, write_text
+from fep_formal.bridge.certificates import compare, render_markdown
+from fep_formal.bridge.custody import write_json, write_text
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_RESULTS = SCRIPT_DIR / "gnn_output/12_execute_output/FepLeanSymmetricBool/pymdp/simulation_data/simulation_results.json"

@@ -79,7 +79,7 @@ generative transition and the exact positive-time refresh kernel. This is a
 model-specific one-step posterior--decision--action certificate, not
 transition-aware planning, EFE-optimal control, or a claim about how future
 transition consequences determine the report. The exact theorem lives in
-[`finite_reference_agent.lean`](../src/fep_lean/formal/compositions/finite_reference_agent.lean).
+[`finite_reference_agent.lean`](../src/fep_formal/formal/compositions/finite_reference_agent.lean).
 
 ## Bayesian mechanics and Markov blankets
 

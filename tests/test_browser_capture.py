@@ -21,7 +21,7 @@ from typing import BinaryIO
 
 import pytest
 
-from fep_lean.output import browser_capture as capture_module
+from fep_formal.output import browser_capture as capture_module
 
 
 def _startup_stderr_tail(stream: BinaryIO) -> str:
@@ -440,7 +440,7 @@ def _stubbed_capture(
 ) -> capture_module.BrowserReplay:
     source_root = Path(__file__).resolve().parents[1]
     for relative in (
-        "src/fep_lean/output/browser_capture.py",
+        "src/fep_formal/output/browser_capture.py",
         "scripts/capture_browser_acceptance.py",
     ):
         destination = tmp_path / relative
@@ -612,7 +612,7 @@ def test_capture_command_emits_source_bound_receipt_and_exact_screenshot_bytes(
     receipt_path = capture_module.capture_browser_acceptance(tmp_path)
     payload = json.loads(receipt_path.read_text(encoding="utf-8"))
 
-    owner = tmp_path / "src/fep_lean/output/browser_capture.py"
+    owner = tmp_path / "src/fep_formal/output/browser_capture.py"
     wrapper = tmp_path / "scripts/capture_browser_acceptance.py"
     assert payload["capture"] == {
         "command": "uv run python scripts/capture_browser_acceptance.py",

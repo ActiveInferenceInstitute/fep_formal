@@ -1,4 +1,4 @@
-"""Tests for fep_lean.verification.preflight — real subprocesses, no direct execution."""
+"""Tests for fep_formal.verification.preflight — real subprocesses, no direct execution."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification.environment import _version_line
-from fep_lean.verification.preflight import run_preflight
+from fep_formal.verification.environment import _version_line
+from fep_formal.verification.preflight import run_preflight
 
 PROJ = Path(__file__).resolve().parent.parent
 
@@ -33,7 +33,7 @@ def test_run_preflight_require_gauss_when_missing(
 ) -> None:
     """Cover the gauss-missing path by hiding gauss from PATH."""
     monkeypatch.setenv("PATH", str(tmp_path))
-    monkeypatch.setenv("FEP_LEAN_SKIP_FALLBACKS", "1")
+    monkeypatch.setenv("FEP_FORMAL_SKIP_FALLBACKS", "1")
     assert run_preflight() == 1
 
 
@@ -49,7 +49,7 @@ def test_run_preflight_gauss_required_missing_with_env(
 ) -> None:
     """Cover the gauss-fail early return in run_preflight with isolated PATH."""
     monkeypatch.setenv("PATH", str(tmp_path))
-    monkeypatch.setenv("FEP_LEAN_SKIP_FALLBACKS", "1")
+    monkeypatch.setenv("FEP_FORMAL_SKIP_FALLBACKS", "1")
     assert run_preflight() == 1
 
 
@@ -58,8 +58,8 @@ def test_preflight_main_cli_smoke() -> None:
     code = (
         "import sys\n"
         "sys.path.insert(0, 'src')\n"
-        "sys.argv = ['fep-lean preflight']\n"
-        "from fep_lean.verification.preflight import main\n"
+        "sys.argv = ['fep-formal preflight']\n"
+        "from fep_formal.verification.preflight import main\n"
         "main()\n"
     )
     r = subprocess.run(
@@ -78,9 +78,9 @@ def test_preflight_main_rejects_removed_flag(
 ) -> None:
     """The removed no-op option must be rejected rather than silently accepted."""
     monkeypatch.setenv("PATH", str(tmp_path))
-    monkeypatch.setenv("FEP_LEAN_SKIP_FALLBACKS", "1")
-    monkeypatch.setattr(sys, "argv", ["fep-lean preflight", "--require-gauss"])
-    from fep_lean.verification.preflight import main
+    monkeypatch.setenv("FEP_FORMAL_SKIP_FALLBACKS", "1")
+    monkeypatch.setattr(sys, "argv", ["fep-formal preflight", "--require-gauss"])
+    from fep_formal.verification.preflight import main
 
     with pytest.raises(SystemExit) as exc:
         main()
@@ -91,7 +91,7 @@ def test_run_preflight_happy_path(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     """A partial tree remains a strict full-mode failure."""
-    from fep_lean.verification import preflight
+    from fep_formal.verification import preflight
 
     monkeypatch.setattr(preflight, "project_root", lambda: tmp_path / "proj")
     bin_dir = tmp_path / "bin"
@@ -102,9 +102,9 @@ def test_run_preflight_happy_path(
 
 
 def test_preflight_full_checks_preserve_environment(monkeypatch, capsys, tmp_path):
-    from fep_lean.verification import preflight
+    from fep_formal.verification import preflight
 
-    monkeypatch.setenv("FEP_LEAN_REQUIRE_GAUSS", "preserved-sentinel")
+    monkeypatch.setenv("FEP_FORMAL_REQUIRE_GAUSS", "preserved-sentinel")
     monkeypatch.setattr(preflight, "project_root", lambda: tmp_path)
     calls = []
     payload = {"status": "error", "mode": "full", "checks": [], "failed_count": 1}

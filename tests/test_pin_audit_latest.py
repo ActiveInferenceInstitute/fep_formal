@@ -32,6 +32,7 @@ def test_pin_audit_keeps_history_journals_out_of_current_guidance(
         "specs/comprehensive-science-improvement/evidence/retained/REPORT.md",
         "specs/comprehensive-science-improvement/NEXT.md",
         "docs/evidence/README.md",
+        ".omo/evidence/retained-install/baseline/manuscript/README.md",
     )
     paths = [tmp_path / name for name in names]
     for path in paths:
@@ -47,7 +48,7 @@ def test_pin_audit_keeps_history_journals_out_of_current_guidance(
 
     current = audit._gather_files(tmp_path)
 
-    assert set(current) == set(paths[1:])
+    assert set(current) == set(paths[1:3])
     assert all(audit._scan_file(path, pins) for path in current)
 
 

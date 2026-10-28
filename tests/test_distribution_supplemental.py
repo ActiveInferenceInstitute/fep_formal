@@ -12,8 +12,8 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.output.render_log import build_acceptance_receipt
-from fep_lean.output.rendering import MANUSCRIPT_ASSETS
+from fep_formal.output.render_log import build_acceptance_receipt
+from fep_formal.output.rendering import MANUSCRIPT_ASSETS
 from tests.test_distribution import (
     _TEMPLATE_GITLINK,
     PROJECT_ROOT,
@@ -29,7 +29,7 @@ _TEMPLATE_SUCCESS_CASES = _ORIGINAL_TEMPLATE_SUCCESS_CASES | {"executable_owner"
 
 def test_q7_scaffold_bytes_refuse_cp1252_codepage_substitution() -> None:
     """Wrong text decoding must not become accepted canonical AST evidence."""
-    from fep_lean.verification.gnn_continuous_artifact_proof import (
+    from fep_formal.verification.gnn_continuous_artifact_proof import (
         canonical_scaffold_bytes,
     )
 
@@ -456,8 +456,8 @@ def _exercise_render_artifact_staging(
         "        _link_read_mutated = True\n"
         "    return data\n"
         "os.readlink = _mutating_readlink\n"
-        "import fep_lean.output.evidence as _native\n"
-        "import fep_lean.verification.formalism_audit as _audit\n"
+        "import fep_formal.output.evidence as _native\n"
+        "import fep_formal.verification.formalism_audit as _audit\n"
         f"_native.validate_native_lean_receipt = lambda *args, **kwargs: {{'native_claim_ready': {failure != 'native_stale'!r}}}\n"
         f"_audit.validate_formalism_audit_receipt = lambda *args, **kwargs: {('fixture audit is stale',) if failure == 'audit_stale' else ()!r}\n"
         "_real_check_output = subprocess.check_output\n"
@@ -481,7 +481,7 @@ def _exercise_render_artifact_staging(
         f"            _real_write_bytes(Path({str(selected_font)!r}), b'changed selected font bytes')\n"
         "    return result\n"
         "Path.write_bytes = _staged_write\n"
-        "import fep_lean.output.release_bundle._core as _capture_owner\n"
+        "import fep_formal.output.release_bundle._core as _capture_owner\n"
         "_real_regular_read = _capture_owner._capture_regular_file\n"
         "_inventory_gitlink_mutated = False\n"
         "def _retained_read(path):\n"
@@ -612,7 +612,7 @@ def _exercise_render_artifact_staging(
             sources["sources"]["manuscript/01_abstract.md"]
             == hashlib.sha256((manuscript / "01_abstract.md").read_bytes()).hexdigest()
         )
-        from fep_lean.output.release_bundle._core import _capture_link_bytes
+        from fep_formal.output.release_bundle._core import _capture_link_bytes
 
         provenance = json.loads((staged / "renderer-provenance.json").read_text())
         for role, selected in provenance["fonts"].items():
@@ -708,7 +708,7 @@ def test_python_acceptance_upload_retains_sealed_package_metadata() -> None:
     )
     paths = set(upload["with"]["path"].splitlines())
     required = {
-        "src/fep_lean.egg-info/" + name
+        "src/fep_formal.egg-info/" + name
         for name in (
             "PKG-INFO",
             "SOURCES.txt",
@@ -736,18 +736,18 @@ def test_python_metadata_upload_refuses_unsealed_or_changed_bytes(
         "requires.txt",
         "top_level.txt",
     )
-    owner = tmp_path / "src/fep_lean.egg-info"
+    owner = tmp_path / "src/fep_formal.egg-info"
     owner.mkdir(parents=True)
     sealed = {}
     for name in names:
         payload = (name + " fixture bytes\n").encode()
         (owner / name).write_bytes(payload)
-        sealed["src/fep_lean.egg-info/" + name] = hashlib.sha256(payload).hexdigest()
+        sealed["src/fep_formal.egg-info/" + name] = hashlib.sha256(payload).hexdigest()
     selected = owner / "PKG-INFO"
     if failure == "unsealed":
-        del sealed["src/fep_lean.egg-info/PKG-INFO"]
+        del sealed["src/fep_formal.egg-info/PKG-INFO"]
     elif failure == "unexpected":
-        sealed["src/fep_lean.egg-info/unexpected"] = "0" * 64
+        sealed["src/fep_formal.egg-info/unexpected"] = "0" * 64
     elif failure == "missing":
         selected.unlink()
     elif failure == "changed":

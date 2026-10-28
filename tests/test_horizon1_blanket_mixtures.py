@@ -5,10 +5,10 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
+FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal"
 CAUSAL_SOURCE = FORMAL_ROOT / "causal_dynamics.lean"
 COMPOSITION_SOURCE = (
     FORMAL_ROOT / "compositions" / "finite_scientific_implications.lean"

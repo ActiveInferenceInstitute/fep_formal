@@ -16,7 +16,7 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from fep_lean.output import release_bundle as bundle_module
+from fep_formal.output import release_bundle as bundle_module
 from tests._support.release_bundle import (
     _capture_plan,
     _capture_stage,
@@ -30,7 +30,7 @@ PROJ = Path(__file__).resolve().parents[1]
 def test_publication_capture_plan_is_process_free(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle._core import plan_publication_capture
+    from fep_formal.output.release_bundle._core import plan_publication_capture
 
     template = tmp_path / "template"
     renderer = template / "scripts/pipeline/stage_03_render.py"
@@ -81,7 +81,7 @@ def test_publication_capture_plan_is_process_free(
 def test_publication_capture_missing_projection_pair_rejects_before_tools(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, missing: str
 ) -> None:
-    from fep_lean.output.release_bundle._core import plan_publication_capture
+    from fep_formal.output.release_bundle._core import plan_publication_capture
 
     root = tmp_path / "project"
     manuscript = root / "manuscript"
@@ -108,9 +108,9 @@ def test_publication_capture_missing_projection_pair_rejects_before_tools(
 def test_publication_capture_native_rejection_preserves_projection_pair(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, boundary: str
 ) -> None:
-    from fep_lean.output import evidence, manuscript
-    from fep_lean.output.release_bundle._core import _publication_capture_worker
-    from fep_lean.verification import lean_verifier as verifier_module
+    from fep_formal.output import evidence, manuscript
+    from fep_formal.output.release_bundle._core import _publication_capture_worker
+    from fep_formal.verification import lean_verifier as verifier_module
 
     directory = tmp_path / "manuscript"
     directory.mkdir()
@@ -157,10 +157,10 @@ def test_publication_capture_native_rejection_preserves_projection_pair(
 def test_publication_capture_projects_final_native_values_and_rejects_stale_values(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
 ) -> None:
-    from fep_lean.catalogue.topics import FEPTopicCatalogue
-    from fep_lean.output import evidence, manuscript
-    from fep_lean.output.release_bundle._core import _publication_capture_worker
-    from fep_lean.verification import lean_verifier as verifier_module
+    from fep_formal.catalogue.topics import FEPTopicCatalogue
+    from fep_formal.output import evidence, manuscript
+    from fep_formal.output.release_bundle._core import _publication_capture_worker
+    from fep_formal.verification import lean_verifier as verifier_module
 
     (tmp_path / "manuscript").mkdir()
     (tmp_path / "output/.cache").mkdir(parents=True)
@@ -247,9 +247,9 @@ def test_publication_capture_projects_final_native_values_and_rejects_stale_valu
 def test_publication_capture_projection_failure_is_fatal(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output import evidence, manuscript
-    from fep_lean.output.release_bundle._core import _publication_capture_worker
-    from fep_lean.verification import lean_verifier as verifier_module
+    from fep_formal.output import evidence, manuscript
+    from fep_formal.output.release_bundle._core import _publication_capture_worker
+    from fep_formal.verification import lean_verifier as verifier_module
 
     monkeypatch.setattr(
         verifier_module,
@@ -279,7 +279,7 @@ def test_publication_capture_projection_failure_is_fatal(
 def test_publication_capture_reuses_unchanged_stages_and_invalidates_descendants(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -315,7 +315,7 @@ def test_publication_capture_reuses_unchanged_stages_and_invalidates_descendants
 def test_publication_capture_failed_stage_resume_preserves_partial_and_prior_bytes(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -341,7 +341,7 @@ def test_publication_capture_failed_stage_resume_preserves_partial_and_prior_byt
 def test_publication_capture_rejects_tampered_history_before_process(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, tamper: str
 ) -> None:
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -385,7 +385,7 @@ def test_publication_capture_rejects_source_mutation_and_missing_artifacts(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -415,7 +415,7 @@ def test_publication_capture_owns_only_its_external_journal_and_declared_outputs
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -435,7 +435,7 @@ def test_publication_capture_owns_only_its_external_journal_and_declared_outputs
 def test_publication_capture_two_archive_worker_requires_independent_strict_acceptance_and_parity(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle._core import _publication_capture_worker
+    from fep_formal.output.release_bundle._core import _publication_capture_worker
 
     archives = [tmp_path / name for name in ("release-a.tar.gz", "release-b.tar.gz")]
     for archive in archives:
@@ -479,7 +479,7 @@ def test_publication_capture_two_archive_worker_requires_independent_strict_acce
 def test_publication_capture_runs_real_numerical_owner_in_disposable_project(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.release_bundle._core import (
+    from fep_formal.output.release_bundle._core import (
         _PUBLICATION_CAPTURE_WORKER,
         PublicationCaptureStage,
         run_publication_capture,
@@ -527,7 +527,7 @@ def test_publication_capture_deadline_reaps_real_child_and_grandchild(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -569,7 +569,7 @@ def test_publication_capture_deadline_reaps_real_child_and_grandchild(
 def test_publication_capture_cli_plan_is_additive_and_process_free(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    from fep_lean.cli import main
+    from fep_formal.cli import main
 
     template = tmp_path / "template"
     renderer = template / "scripts/pipeline/stage_03_render.py"
@@ -627,7 +627,7 @@ def test_publication_capture_wrapper_rejects_ambiguous_actions_without_execution
 def test_publication_capture_template_seals_all_resource_types(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.release_bundle._core import plan_publication_capture
+    from fep_formal.output.release_bundle._core import plan_publication_capture
 
     template = tmp_path / "template"
     renderer = template / "scripts/pipeline/stage_03_render.py"
@@ -663,7 +663,7 @@ def test_publication_capture_template_seals_all_resource_types(
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX descriptor link ownership")
 def test_publication_capture_declared_internal_link_and_resume(tmp_path: Path) -> None:
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root, _owner, leaf, alias, stage = _linked_capture_stage(tmp_path)
     plan = _capture_plan(root, (stage,))
@@ -682,7 +682,7 @@ def test_publication_capture_declared_internal_link_and_resume(tmp_path: Path) -
 def test_publication_capture_real_template_registration_is_process_free(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle._core import plan_publication_capture
+    from fep_formal.output.release_bundle._core import plan_publication_capture
 
     template = tmp_path / "template"
     entry = template / "scripts/pipeline/stage_03_render.py"
@@ -749,7 +749,7 @@ def test_publication_capture_link_policy_rejects_forged_custom_plans(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root, owner, leaf, alias, stage = _linked_capture_stage(tmp_path)
     raw = "../canonical/style.txt"
@@ -845,7 +845,7 @@ def test_publication_capture_link_rejects_ambiguous_raw_target_spelling(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root, owner, leaf, alias, stage = _linked_capture_stage(tmp_path)
     raw = {
@@ -876,7 +876,7 @@ def test_publication_capture_rejects_byte_identical_referent_replacement(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root, _owner, leaf, alias, stage = _linked_capture_stage(tmp_path)
     original_link = alias.lstat()
@@ -931,7 +931,7 @@ def test_publication_capture_rejects_restored_link_or_owned_ancestor(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root, _owner, leaf, alias, stage = _linked_capture_stage(tmp_path)
     original = alias.lstat()
@@ -978,7 +978,7 @@ def test_publication_capture_rejects_restored_link_or_owned_ancestor(
 def test_publication_capture_existing_cache_contents_preserve_link_snapshot(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.release_bundle._core import _capture_stage_snapshot
+    from fep_formal.output.release_bundle._core import _capture_stage_snapshot
 
     _root, owner, _leaf, _alias, stage = _linked_capture_stage(tmp_path)
     cache = owner / ".venv/data"
@@ -994,7 +994,7 @@ def test_publication_capture_resource_edits_invalidate_and_added_membership_refu
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1029,7 +1029,7 @@ def test_publication_capture_rejects_membership_expansion_during_producer(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1068,7 +1068,7 @@ def test_publication_capture_failed_reuse_and_recapture_share_one_stage_budget(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1120,7 +1120,7 @@ def test_publication_capture_unowned_attempt_file_never_receives_acceptance(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1152,7 +1152,7 @@ def test_publication_capture_reuse_check_mutation_cannot_rewrite_accepted_histor
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1191,7 +1191,7 @@ def test_publication_capture_timeout_journal_preserves_raw_partial_streams(
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1226,7 +1226,7 @@ def test_publication_capture_final_snapshot_rechecks_directory_membership_after_
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle import _core
+    from fep_formal.output.release_bundle import _core
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1267,8 +1267,8 @@ def test_publication_capture_final_snapshot_rechecks_directory_membership_after_
 def test_publication_capture_plan_owns_every_render_asset_and_generated_collection_cache(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.release_bundle._core import plan_publication_capture
-    from fep_lean.output.rendering import MANUSCRIPT_ASSETS
+    from fep_formal.output.release_bundle._core import plan_publication_capture
+    from fep_formal.output.rendering import MANUSCRIPT_ASSETS
 
     template = tmp_path / "template"
     renderer = template / "scripts/pipeline/stage_03_render.py"
@@ -1295,11 +1295,11 @@ def test_publication_capture_plan_owns_every_render_asset_and_generated_collecti
 def test_publication_capture_real_renderer_asset_source_mutation_rejects(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.release_bundle._core import (
+    from fep_formal.output.release_bundle._core import (
         PublicationCaptureStage,
         run_publication_capture,
     )
-    from fep_lean.output.rendering import MANUSCRIPT_ASSETS
+    from fep_formal.output.rendering import MANUSCRIPT_ASSETS
 
     root = tmp_path / "project"
     manuscript = root / "manuscript"
@@ -1316,7 +1316,7 @@ def test_publication_capture_real_renderer_asset_source_mutation_rejects(
         destinations.append(str(root / "output/manuscript" / destination))
     program = (
         "from pathlib import Path;import sys;"
-        "from fep_lean.output.rendering import render_manuscript;"
+        "from fep_formal.output.rendering import render_manuscript;"
         "root=Path(sys.argv[1]);render_manuscript(root/'manuscript',root/'output/manuscript',{});"
         "Path(sys.argv[2]).write_bytes(b'asset changed during render')"
     )
@@ -1343,7 +1343,7 @@ def test_publication_capture_first_run_generated_cache_is_an_output_then_consume
 ) -> None:
     from dataclasses import replace
 
-    from fep_lean.output.release_bundle._core import run_publication_capture
+    from fep_formal.output.release_bundle._core import run_publication_capture
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1389,7 +1389,7 @@ def test_publication_capture_first_run_generated_cache_is_an_output_then_consume
 def test_publication_capture_descriptor_reads_refuse_real_symlink_swaps(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, swap: str
 ) -> None:
-    from fep_lean.output.release_bundle import _core
+    from fep_formal.output.release_bundle import _core
 
     directory = tmp_path / "declared"
     directory.mkdir()
@@ -1425,7 +1425,7 @@ def test_publication_capture_descriptor_reads_refuse_real_symlink_swaps(
 def test_publication_capture_descriptor_writes_refuse_ancestor_swap(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle import _core
+    from fep_formal.output.release_bundle import _core
 
     parent = tmp_path / "journal"
     parent.mkdir()
@@ -1451,7 +1451,7 @@ def test_publication_capture_descriptor_writes_refuse_ancestor_swap(
 def test_publication_capture_descriptor_read_refuses_fifo_swap_before_blocking(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle import _core
+    from fep_formal.output.release_bundle import _core
 
     source = tmp_path / "source.txt"
     source.write_bytes(b"regular source")
@@ -1478,7 +1478,7 @@ def test_publication_capture_descriptor_read_refuses_fifo_swap_before_blocking(
 def test_publication_capture_unsupported_platform_refuses_before_journal_or_process(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output.release_bundle import _core
+    from fep_formal.output.release_bundle import _core
 
     root = tmp_path / "project"
     root.mkdir()
@@ -1498,7 +1498,7 @@ def test_publication_capture_unsupported_platform_refuses_before_journal_or_proc
 def test_publication_capture_result_serialization_preserves_cli_contract(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.release_bundle._core import PublicationCaptureResult
+    from fep_formal.output.release_bundle._core import PublicationCaptureResult
 
     result = PublicationCaptureResult(
         False, tmp_path / "journal", ("native",), (), "render", ("rejected",)

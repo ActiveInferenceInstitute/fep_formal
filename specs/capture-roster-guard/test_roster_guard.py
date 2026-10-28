@@ -184,7 +184,7 @@ def test_recorded_roster_cannot_narrow_or_reorder_map(tree):
 def test_exclusions_match_actual_maintained_planner_source():
     owner = (
         Path(__file__).resolve().parents[2]
-        / "src/fep_lean/output/release_bundle/_core.py"
+        / "src/fep_formal/output/release_bundle/_core.py"
     )
     source = ast.parse(owner.read_text())
     assignment = next(

@@ -14,8 +14,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.output.manuscript import UNIFIED_FORMALISM_CATALOGUE_FILENAME
-from fep_lean.output.render_fonts import (
+from fep_formal.output.manuscript import UNIFIED_FORMALISM_CATALOGUE_FILENAME
+from fep_formal.output.render_fonts import (
     FontProbeError,
     code_font_codepoints,
     declared_fonts,
@@ -126,14 +126,16 @@ def test_requirement_derivation_fails_closed_without_the_appendix(
     with pytest.raises(FontProbeError) as error:
         font_coverage_defects(tmp_path)
     assert UNIFIED_FORMALISM_CATALOGUE_FILENAME in str(error.value)
-    assert "fep-lean catalogue" in str(error.value)
+    assert "fep-formal catalogue" in str(error.value)
     with pytest.raises(FontProbeError):
         render_font_projection(tmp_path)
 
 
 def test_an_unprobeable_host_fails_closed(monkeypatch: pytest.MonkeyPatch) -> None:
     """Not knowing is not the same as being covered."""
-    monkeypatch.setattr("fep_lean.output.render_fonts.shutil.which", lambda _name: None)
+    monkeypatch.setattr(
+        "fep_formal.output.render_fonts.shutil.which", lambda _name: None
+    )
     with pytest.raises(FontProbeError) as error:
         uncovered_codepoints("JuliaMono", (0x2098,))
     assert "fontconfig" in str(error.value)
@@ -143,7 +145,7 @@ def test_the_committed_requirement_matches_the_sources() -> None:
     appendix = PROJECT_ROOT / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
     if not appendix.is_file():
         pytest.skip(
-            "generated appendix is missing; run `uv run fep-lean catalogue` first"
+            "generated appendix is missing; run `uv run fep-formal catalogue` first"
         )
     committed = json.loads(
         (PROJECT_ROOT / "docs" / "render-fonts.json").read_text(encoding="utf-8")

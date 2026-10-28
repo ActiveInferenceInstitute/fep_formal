@@ -1,8 +1,8 @@
 # Exact finite information and endpoint consequences
 
 This slice exercises additions in the existing
-[variational foundation](../../../../src/fep_lean/formal/variational_duality.lean)
-and [core composition owner](../../../../src/fep_lean/formal/compositions/core.lean).
+[variational foundation](../../../../src/fep_formal/formal/variational_duality.lean)
+and [core composition owner](../../../../src/fep_formal/formal/compositions/core.lean).
 The 168-topic roster, 72 formal resources and semantic dispositions stay fixed.
 Its authenticated [review fixture](../../../../tests/fixtures/exact_information_review_20261020.json)
 reverses only the exact new owner blocks and seven relation/two capability

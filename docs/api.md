@@ -3,20 +3,20 @@
 **Version:** 1.6.0
 **Last reviewed:** 2026-10-19
 
-FEP_Formal's installed distribution exposes one root namespace, `fep_lean`.
+FEP_Formal's installed distribution exposes one root namespace, `fep_formal`.
 Generic top-level names such as `catalogue`, `pipeline`, and `output` are not packages
 and have no compatibility aliases. The root package re-exports the stable
-operator-facing types and functions listed in `fep_lean.__all__`; direct
+operator-facing types and functions listed in `fep_formal.__all__`; direct
 submodule imports make ownership clearest in application code.
 
 This page documents contracts, not every private helper. Runtime annotations
-and docstrings in `src/fep_lean/` are the executable signature source, and the
+and docstrings in `src/fep_formal/` are the executable signature source, and the
 distribution tests pin the installed import and console-script boundary.
 
 ## Catalog
 
 ```python
-from fep_lean.catalogue import FEPTopicCatalogue, TopicEntry
+from fep_formal.catalogue import FEPTopicCatalogue, TopicEntry
 
 catalogue = FEPTopicCatalogue.default()
 assert catalogue.topics[0].id == "fep-001"
@@ -51,7 +51,7 @@ verification success.
 The maintainer-facing catalog API also exports:
 
 ```python
-from fep_lean.catalogue import (
+from fep_formal.catalogue import (
     load_catalogue_metadata,
     load_formalism_graph,
     load_formalism_novelty,
@@ -72,12 +72,12 @@ The metadata, semantic review and relation sources remain authored in the
 checkout. The methods module packages byte-identical generated copies for
 portable mathematical inspection; novelty remains a checkout authoring input.
 These low-level loaders still take explicit paths. The portable default is the
-validated `fep_lean.methods` join documented below.
+validated `fep_formal.methods` join documented below.
 
 ## Mathematical methods
 
 ```python
-from fep_lean.methods import (
+from fep_formal.methods import (
     build_mathematical_positioning,
     inspect_topic,
     analyze_topic,
@@ -106,7 +106,7 @@ For an installed wheel with an independent file-integrity check, use the same
 immutable query type through the narrower entry point:
 
 ```python
-from fep_lean.methods import load_packaged_formalism_query, inspect_topic
+from fep_formal.methods import load_packaged_formalism_query, inspect_topic
 
 query = load_packaged_formalism_query()
 contract = inspect_topic(query, "fep-001")
@@ -133,7 +133,7 @@ acceptance retain their separate validators.
 The development checkout adds four reusable finite numerical methods:
 
 ```python
-from fep_lean.methods import (
+from fep_formal.methods import (
     finite_expectation,
     log_partition,
     exponential_tilt,
@@ -155,7 +155,7 @@ supported log-domain scaling, true support failure and optimizer underflow.
 ## Pipeline
 
 ```python
-from fep_lean.pipeline import FEPPipeline, run_pipeline, run_single_topic
+from fep_formal.pipeline import FEPPipeline, run_pipeline, run_single_topic
 
 offline = run_pipeline(mode="catalogue")
 native_candidate = FEPPipeline(project_root).run(
@@ -209,7 +209,7 @@ empty fail during catalog loading, before capability checks, provider calls
 or artifact writes. Omitting both filters selects the full catalog.
 
 The explicit `output_root` argument takes precedence over a nonblank
-`FEP_LEAN_OUTPUT_ROOT`, then `output.root` settings, then `project_root/output`.
+`FEP_FORMAL_OUTPUT_ROOT`, then `output.root` settings, then `project_root/output`.
 The [configuration guide](configuration.md) defines relative-path semantics.
 Validation, figures, reports and run-bound manuscript evidence use that same
 selected root; the paired authored projections remain under `manuscript/`.
@@ -217,7 +217,7 @@ selected root; the paired authored projections remain under `manuscript/`.
 ## Native Lean verification
 
 ```python
-from fep_lean.verification import LeanVerifier, VerifyResult
+from fep_formal.verification import LeanVerifier, VerifyResult
 
 verifier = LeanVerifier(project_root=project_root)
 result = verifier.verify_sketch(topic.id, topic.lean_sketch)
@@ -232,7 +232,7 @@ workspace.
 Environment validation is read-only:
 
 ```python
-from fep_lean import run_validation_checks
+from fep_formal import run_validation_checks
 
 catalogue_checks = run_validation_checks(project_root, mode="catalogue")
 full_checks = run_validation_checks(
@@ -240,13 +240,13 @@ full_checks = run_validation_checks(
 )
 ```
 
-Dependency acquisition belongs to the explicit `fep-lean setup` command, not
+Dependency acquisition belongs to the explicit `fep-formal setup` command, not
 to validation or package import.
 
 The declaration/axiom audit is a separate native evidence surface:
 
 ```python
-from fep_lean.verification import (
+from fep_formal.verification import (
     run_formalism_audit,
     write_formalism_audit_receipt,
 )
@@ -266,7 +266,7 @@ timeouts, or `sorryAx`.
 ## Evidence receipts
 
 ```python
-from fep_lean.output import (
+from fep_formal.output import (
     validate_native_lean_receipt,
     validate_report_receipt,
 )
@@ -302,7 +302,7 @@ full-mode bundles.
 ## Manuscript and reports
 
 ```python
-from fep_lean.output import (
+from fep_formal.output import (
     Reporter,
     build_manuscript_vars,
     manuscript_projection_drift,
@@ -334,7 +334,7 @@ bundle before making evidence claims.
 ## Formalism atlas
 
 ```python
-from fep_lean.output import (
+from fep_formal.output import (
     atlas_projection_drift,
     build_formalism_atlas,
     render_formalism_atlas_html,
@@ -356,7 +356,7 @@ assets, and the HTML includes keyboard interaction and complete tables.
 ## Formal-kernel dashboard
 
 ```python
-from fep_lean.output import (
+from fep_formal.output import (
     build_formal_kernel_dashboard,
     formal_kernel_dashboard_drift,
     render_formal_kernel_dashboard_html,
@@ -386,12 +386,12 @@ numerical checks, not theorem or empirical-evidence receipts.
 
 ## Hermes and OpenGauss
 
-`fep_lean.llm` exports `HermesConfig`, `HermesExplainer`, `HermesResult`, and
+`fep_formal.llm` exports `HermesConfig`, `HermesExplainer`, `HermesResult`, and
 `HermesAPIError`. Configuration is loaded from environment and the canonical
 settings file; model names and fallbacks should be read from live configuration
 rather than copied into API documentation.
 
-`fep_lean.gauss` exports `OpenGaussClient`, `SessionRecord`, `GaussRunner`, and
+`fep_formal.gauss` exports `OpenGaussClient`, `SessionRecord`, `GaussRunner`, and
 `TopicRunResult`. The client owns SQLite sessions, turns, artifacts, structured
 events, and Hermes-result caching. The runner owns one topic's Hermes, Lean,
 and session lifecycle and always records whether the verified sketch was native
@@ -403,13 +403,13 @@ provider.
 
 ## Readiness snapshots
 
-The root and `fep_lean.output` export the same frozen `SectionReport`,
+The root and `fep_formal.output` export the same frozen `SectionReport`,
 `PublicationReadinessReport` and `StatusReport` types, owned by
-`fep_lean.output.evidence`. The public builder composes existing validators:
+`fep_formal.output.evidence`. The public builder composes existing validators:
 
 ```python
 from pathlib import Path
-from fep_lean import build_status_report, report_to_json
+from fep_formal import build_status_report, report_to_json
 
 root = Path("/path/to/fep_formal")
 snapshot = build_status_report(root, gnn_root=None)
@@ -423,7 +423,7 @@ nested publication report distinguishes static currency from runtime execution
 and two-archive parity; static all-green results remain unverified. The CLI
 serializes this same snapshot.
 New input-stability records name the public
-`fep_lean.output.release_bundle.publication_input_snapshot` owner; historical
+`fep_formal.output.release_bundle.publication_input_snapshot` owner; historical
 receipts keep their original provenance.
 
 The release owner also exposes `inspect_stored_publication_evidence(root, plane)`
@@ -437,8 +437,8 @@ render work; it preserves publication files.
 ## Explicit caller roots and native operations
 
 ```python
-from fep_lean import project_root_context
-from fep_lean.verification import setup_workspace, verify_catalogue
+from fep_formal import project_root_context
+from fep_formal.verification import setup_workspace, verify_catalogue
 
 with project_root_context(root):
     snapshot = build_status_report(root)
@@ -458,7 +458,7 @@ verify_exit = outcome.exit_code
 ```
 
 Project-root precedence is explicit CLI `--project-root`, then caller context,
-then `FEP_LEAN_PROJECT_ROOT`, then the package checkout fallback. The context
+then `FEP_FORMAL_PROJECT_ROOT`, then the package checkout fallback. The context
 resets on exit or error and does not mutate the process environment. It applies
 to the current execution context; pass roots explicitly to new threads and
 OS processes. The capture owner explicitly projects the caller root into a
@@ -472,7 +472,7 @@ acquisition and native compilation.
 
 ## Operational errors
 
-`FepLeanError` is publicly importable from `fep_lean`. All 24 package-defined
+`FepLeanError` is publicly importable from `fep_formal`. All 24 package-defined
 exception types share that base. Their existing standard-library ancestry is
 preserved: for example, `ContinuousArtifactError` remains a `ValueError`, while
 `ArtifactProofError` remains an `Exception` without becoming a `ValueError`.
@@ -497,23 +497,23 @@ as one parseable JSON object on stdout. Its final success line is unchanged.
 
 ## Command-line API
 
-The installed console script is `fep-lean`. The
+The installed console script is `fep-formal`. The
 [CLI reference](cli-reference.md) owns the command inventory and command-specific
 write, exit-status and evidence boundaries, including bridge, custody, methods
-and publication capture. Use `fep-lean --help` for the installed parser surface.
+and publication capture. Use `fep-formal --help` for the installed parser surface.
 
 The wheel provides imports, packaged catalog and manifested formal resources,
 and CLI help independently. The portable `methods` commands use installed
 resources or numerical inputs; other substantive operator commands require a
 complete source checkout because configuration, the Lean workspace, manuscript inputs, and output
 ownership are intentionally not duplicated into the wheel. Invoke
-`fep-lean --project-root /path/to/fep_formal COMMAND` outside that checkout.
+`fep-formal --project-root /path/to/fep_formal COMMAND` outside that checkout.
 `review` is a two-turn workflow: refinement, compilation, then prose-only
 review of the exact compiled source; either provider turn can fail the result.
 
-There is no separate `fep-lean-preflight` entry point. Use `fep-lean preflight`
+There is no separate `fep-formal-preflight` entry point. Use `fep-formal preflight`
 so every operator command shares the same project-root and logging contract.
-`fep-lean status` is read-only: it composes the existing fail-closed checks
+`fep-formal status` is read-only: it composes the existing fail-closed checks
 into one evidence-currency report and exits 0 whenever the report composes.
 See the status section in [CLI reference](cli-reference.md) for each
 section's capability boundary.
@@ -523,9 +523,9 @@ exit interpretation for the inspection and execution paths.
 
 ## GNN bridge
 
-`fep_lean.bridge` exposes the cross-repo operations surface (contract v0.6):
+`fep_formal.bridge` exposes the cross-repo operations surface (contract v0.6):
 
-- CLI: `fep-lean bridge {status,pin,emit,certify,verify-certificate,verify-document} --gnn-root PATH`.
+- CLI: `fep-formal bridge {status,pin,emit,certify,verify-certificate,verify-document} --gnn-root PATH`.
 - Python: `status`, `pin_sources`, `check_sources`, `emit`,
   `certificate_receipt`, `emit_certificate`, `validate_certificate`,
   `verify_document`.
@@ -536,26 +536,26 @@ exit interpretation for the inspection and execution paths.
 The source-custody pin (`specs/gnn-bridge-w2-source-custody/source-pin.json`)
 seals owner bytes on both sides. The GNN owner-roster glob is
 `src/gnn/**/*.py` plus `src/gnn/main.py`; the pin JSON shape is
-`{"schema_version": 1, "fep_lean": {"commit", "owners"}, "gnn": {"commit", "owners"}}`.
+`{"schema_version": 1, "fep_formal": {"commit", "owners"}, "gnn": {"commit", "owners"}}`.
 `verify-document --document PATH` extracts one emitted document through the
 pinned render route (`gnn.extract.pomdp_extractor.extract_pomdp_from_file`,
 strict validation) and decides `FEP.GnnDocument.documentWellFormed` in a
 compile-once Lean probe. Receipt schema: `{"schema_version": 2, "document",
 "model_family", "extracted_family", "toolchain", "status", "warnings"}`.
 
-The additive `fep_lean.bridge.operations.semantic_witness_audit` operation
+The additive `fep_formal.bridge.operations.semantic_witness_audit` operation
 accepts a retained `gnn-semantic-witness-v2` JSON artifact and emits the
 `fep-semantic-witness-audit-v1` record. The CLI entry point is
-`fep-lean bridge audit-semantic --gnn-root PATH --results WITNESS.json`;
+`fep-formal bridge audit-semantic --gnn-root PATH --results WITNESS.json`;
 `--receipt NEW.json` is an explicit optional write. Independent numerical
 replay, current owner hashes, formal references and pair currency remain
 separate from execution authentication and native proof. The
-[bridge module guide](../src/fep_lean/bridge/README.md#independent-semantic-audit)
+[bridge module guide](../src/fep_formal/bridge/README.md#independent-semantic-audit)
 owns the admitted source subset, limits and refusal boundaries.
 
 ## Formal Lean modules
 
-The `fep_lean.formal` namespace carries the bridge's typed surface:
+The `fep_formal.formal` namespace carries the bridge's typed surface:
 
 - `FEP.GnnDocument` — `GnnSectionKind` (frozen 13-kind inventory in canonical
   rank order), `GnnDocument`, `documentWellFormed`, and `WellFormed`
@@ -569,7 +569,7 @@ Compile with the committed workspace: `lean/` (Lake + Mathlib4); see
 
 ## Stability boundary
 
-- Stable: the `fep_lean` root namespace, documented exports, CLI command names,
+- Stable: the `fep_formal` root namespace, documented exports, CLI command names,
   stable topic IDs, and receipt validators.
 - Versioned data: generated catalog rows, semantic dispositions, formalism
   relations, and receipt schemas.

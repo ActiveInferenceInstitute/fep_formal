@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.output import release_bundle as bundle_module
+from fep_formal.output import release_bundle as bundle_module
 from tests._support.release_bundle import (
     _write_release_metadata_fixture,
 )
@@ -364,7 +364,7 @@ def test_release_metadata_retains_each_scholarly_concept_guard(
             "Python package version must be 2.1.0",
         ),
         (
-            "src/fep_lean/__init__.py",
+            "src/fep_formal/__init__.py",
             '__version__ = "2.1.0"',
             '__version__ = "1.2.0"',
             "Python runtime version must be 2.1.0",
@@ -402,7 +402,7 @@ def test_release_metadata_rejects_each_version_and_date_plane_independently(
             "Python package version must be 2.1.0",
         ),
         (
-            "src/fep_lean/__init__.py",
+            "src/fep_formal/__init__.py",
             '__version__ = "1.2.0"\n',
             "Python runtime version must be 2.1.0",
         ),

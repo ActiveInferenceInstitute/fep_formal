@@ -19,7 +19,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-_PACKAGE = re.compile(r"fep_lean(?:\.[A-Za-z_][A-Za-z_0-9]*)*\Z")
+_PACKAGE = re.compile(r"(?:fep_formal(?:\.[A-Za-z_][A-Za-z_0-9]*)*|fep_lean)\Z")
 _INTEGER = re.compile(r"(?:0|[1-9][0-9]{0,9})\Z")
 
 

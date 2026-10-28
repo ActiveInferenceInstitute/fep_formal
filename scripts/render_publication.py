@@ -18,7 +18,7 @@ success.
 
 Usage:
     uv run python scripts/render_publication.py --template <path to template>
-    FEP_LEAN_TEMPLATE_DIR=<path> uv run python scripts/render_publication.py
+    FEP_FORMAL_TEMPLATE_DIR=<path> uv run python scripts/render_publication.py
     uv run python scripts/render_publication.py --accept-only
 """
 
@@ -53,11 +53,12 @@ render_sources: Callable[[list[str] | None], int] = importlib.import_module(
     "render_manuscript"
 ).main
 
-from fep_lean.output.render_fonts import (
+from fep_formal._paths import resolve_environment
+from fep_formal.output.render_fonts import (
     FontProbeError,
     font_coverage_defects,
 )
-from fep_lean.output.rendering import crossref_toolchain_defects
+from fep_formal.output.rendering import crossref_toolchain_defects
 
 PROJECT_NAME = "fep_lean"
 RENDER_STAGE = Path("scripts/pipeline/stage_03_render.py")
@@ -67,7 +68,7 @@ RENDER_STAGE = Path("scripts/pipeline/stage_03_render.py")
 # preamble selects, then re-verifies this record), and a chapter edited
 # without a fresh render leaves it naming a digest the checkout no longer has.
 RECEIPT_PATH = Path("docs") / "render-acceptance.json"
-TEMPLATE_ENVIRONMENT_VARIABLE = "FEP_LEAN_TEMPLATE_DIR"
+TEMPLATE_ENVIRONMENT_VARIABLE = "FEP_FORMAL_TEMPLATE_DIR"
 # One template checkout serves several projects, and two concurrent renders
 # share its output tree. The lock is a directory because ``mkdir`` is atomic.
 LOCK_ENVIRONMENT_VARIABLE = "DOCXOLOGY_RENDER_LOCK"
@@ -89,7 +90,7 @@ def resolve_template(explicit: Path | None) -> Path:
     """Return the template checkout, or raise with what was tried."""
 
     candidates = [explicit] if explicit is not None else []
-    from_environment = os.environ.get(TEMPLATE_ENVIRONMENT_VARIABLE, "").strip()
+    from_environment = resolve_environment(TEMPLATE_ENVIRONMENT_VARIABLE, "").strip()
     if from_environment:
         candidates.append(Path(from_environment))
     for candidate in candidates:

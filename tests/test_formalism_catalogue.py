@@ -12,13 +12,14 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.catalogue import BODIES, BODY_MODULE_MANIFEST, load_catalogue_metadata
-from fep_lean.catalogue.semantics import load_theorem_maturity
-from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_formal.catalogue import BODIES, BODY_MODULE_MANIFEST, load_catalogue_metadata
+from fep_formal.catalogue.semantics import load_theorem_maturity
+from fep_formal.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from tests._support.fast_relaxation_review import (
     reverse_fast_relaxation_raw,
     reverse_fast_relaxation_rows,
 )
+from tests._support.landauer_epoch import current_source_owner
 from tests._support.lean_module_contract import (
     exact_information_review,
     primary_alignment_review,
@@ -262,6 +263,15 @@ def _reverse_proxy_rows(rows: list[dict[str, object]]) -> list[dict[str, object]
 def _assert_proxy_metadata_preimage(metadata: dict[str, object]) -> None:
     review = _proxy_review()
     restored = dict(metadata)
+    # Only the interface label changed; the complete historical object hash
+    # below still rejects every unreviewed semantic or metadata change.
+    current_label = (
+        "A validated receipt from uv run fep-formal verify --fail-on-warnings "
+        "establishes exact-source native compilation only; it does not establish the semantic "
+        "disposition below or a full Hermes/OpenGauss run."
+    )
+    if restored.get("native_evidence") == current_label:
+        restored["native_evidence"] = current_label.replace("fep-formal", "fep-lean")
     restored["topics"] = _reverse_proxy_rows(
         reverse_fast_relaxation_rows(metadata["topics"], PROJECT_ROOT)
     )
@@ -654,7 +664,7 @@ def _assert_scalar_model_preimage(model: dict[str, object]) -> None:
 
 def _assert_scalar_core_preimage(source: str) -> None:
     source = restore_information_owner(
-        source, "src/fep_lean/formal/compositions/core.lean", PROJECT_ROOT
+        source, "src/fep_formal/formal/compositions/core.lean", PROJECT_ROOT
     )
     review = _scalar_review()
     for key in ["added_public_imports", "added_core_block"]:
@@ -666,7 +676,7 @@ def _assert_scalar_core_preimage(source: str) -> None:
 def test_scalar_bridges_preserve_exact_existing_proofs_and_relation_model() -> None:
     _assert_scalar_model_preimage(_yaml("formalism_relations.yaml"))
     _assert_scalar_core_preimage(
-        (PROJECT_ROOT / "src/fep_lean/formal/compositions/core.lean").read_text()
+        (PROJECT_ROOT / "src/fep_formal/formal/compositions/core.lean").read_text()
     )
 
 
@@ -677,7 +687,7 @@ def test_scalar_bridges_preserve_exact_existing_proofs_and_relation_model() -> N
 def test_scalar_bridge_review_rejects_unapproved_changes(mutation: str) -> None:
     if mutation in {"old_proof", "new_proof"}:
         source = (
-            PROJECT_ROOT / "src/fep_lean/formal/compositions/core.lean"
+            PROJECT_ROOT / "src/fep_formal/formal/compositions/core.lean"
         ).read_text()
         old = (
             "namespace FEPComposed"
@@ -919,7 +929,9 @@ def test_exact_information_review_preserves_complete_prior_model_and_owner_bytes
     )
     for owner in review["owner_changes"]:
         restore_information_owner(
-            (PROJECT_ROOT / owner).read_text(), owner, PROJECT_ROOT
+            (PROJECT_ROOT / current_source_owner(owner)).read_text(),
+            owner,
+            PROJECT_ROOT,
         )
 
 
@@ -930,8 +942,8 @@ def test_exact_information_review_preserves_complete_prior_model_and_owner_bytes
 def test_exact_information_review_rejects_unapproved_changes(mutation):
     review = exact_information_review(PROJECT_ROOT)
     if mutation in {"old_proof", "new_proof"}:
-        owner = "src/fep_lean/formal/compositions/core.lean"
-        source = (PROJECT_ROOT / owner).read_text()
+        owner = "src/fep_formal/formal/compositions/core.lean"
+        source = (PROJECT_ROOT / current_source_owner(owner)).read_text()
         name = (
             "namespace FEPComposed"
             if mutation == "old_proof"
@@ -1031,7 +1043,7 @@ def test_conjugacy_rationale_review_authenticates_exact_fixture(tmp_path, monkey
 def test_primary_alignment_exact_owner_and_metadata_inverse():
     review = primary_alignment_review(PROJECT_ROOT)
     restored = restore_primary_alignment_owner(
-        (PROJECT_ROOT / review["owner"]).read_text(), PROJECT_ROOT
+        (PROJECT_ROOT / current_source_owner(review["owner"])).read_text(), PROJECT_ROOT
     )
     assert hashlib.sha256(restored.encode()).hexdigest() == review["prior_owner_sha256"]
     raw = (PROJECT_ROOT / "config/theorem_maturity.yaml").read_bytes()
@@ -1055,7 +1067,7 @@ def test_primary_alignment_exact_owner_and_metadata_inverse():
 def test_primary_alignment_inverse_refuses_unreviewed_changes(mutation):
     review = primary_alignment_review(PROJECT_ROOT)
     if mutation in {"new_wrapper", "old_primary"}:
-        source = (PROJECT_ROOT / review["owner"]).read_text()
+        source = (PROJECT_ROOT / current_source_owner(review["owner"])).read_text()
         token = (
             "fep063_finiteChannel_klDataProcessing_of_relativeSupport"
             if mutation == "new_wrapper"

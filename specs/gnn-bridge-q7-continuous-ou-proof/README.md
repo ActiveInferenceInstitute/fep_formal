@@ -49,8 +49,13 @@ this slice with before/after owner digests and exact input bytes. It invokes
 An initial discovery run found that the generic dispatcher rejected this model
 at a categorical A/B/C/D requirement; the parent repaired the dispatcher and
 the final retained fixture is refreshed through that generic public route.
-It never executes the emitted runner. `generate_probe.py` creates the probe and
-manifest; `generate_probe.py --check` compares bytes without writing. The parent
+It never executes the emitted runner. `generate_probe.py --output-root PATH`
+creates a fresh probe and manifest; `--check --output-root PATH` compares bytes
+without writing. `--source-root PATH` selects the current source and parity input
+profile; it defaults to this checkout. Generation refuses existing output paths.
+The retained pre-cutover parity bindings are intentionally stale against current
+source, so a default `--check` must refuse them. Historical source-pair and native
+receipts remain historical; no identity translation grants current acceptance. The parent
 receipt engine owns source/toolchain/native custody and must check the manifest's
 complete `receipt_contract` before accepting evidence. A generated manifest is
 explicitly not native evidence.
@@ -125,14 +130,19 @@ parameter tables are identical. The exact new scaffold digest is
 all five real CPython runtimes serialize the same 56,972 bytes. The complete
 Lean probe and historical native receipts are unchanged. This parser refresh
 supplies no new native or generated-runner execution evidence. A later source
-change still requires fresh acceptance. Reproduce static projections with installed runtimes,
-without network access:
+change still requires fresh acceptance. Observe a current static parity projection
+in a fresh directory with installed runtimes, without network access:
 
 ```bash
 uv run --locked python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py \
-  --record-scaffold-portability
-uv run --locked python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py --check
+  --record-scaffold-portability --output-root output/q7-current-parser-observations
 ```
+
+The observation directory is separate from retained records. To generate a fresh
+probe, explicitly prepare a separate source profile containing its own matching
+parity projection, then pass that profile as `--source-root` and a new
+`--output-root`. Unit tests use clearly labeled synthetic profiles solely to test
+schema acceptance and rejection; they supply no observed runtime evidence.
 
 Candidate serialization parity is static syntax evidence. Actual
 `scaffold_digest`, extraction and receipt validation still accept exactly
@@ -257,3 +267,39 @@ This evidence remains static binary64 coefficient and real-arithmetic bounds.
 `runtime_execution_verified` is false. Separate GNN numerical filtering tests
 do not turn this certificate into generated-runner, SDE, multidimensional
 filtering or universal translation equivalence evidence.
+
+### Publishing current working projections
+
+After preserving the old projections and recording five fresh real interpreter
+observations into a new output directory, explicitly adopt that directory:
+
+```bash
+uv run python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py \
+  --publish-scaffold-from output/q7-current-parser-observations
+uv run python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py \
+  --output-root output/q7-current-generated
+uv run python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py \
+  --publish-generated-from output/q7-current-generated
+```
+
+Publication rejects incomplete, extra, aliased, symlinked, tampered or stale
+inputs before replacing the working projections. Scaffold adoption checks the
+current owner hashes, canonical bytes and all five runtime records; it validates
+stored observations and does not establish that new runtimes were executed.
+Probe adoption requires exact regeneration against current source and parity.
+Generation still requires a fresh output directory, and `--check` remains
+read-only and refuses stale projections. Neither operation updates historical
+receipts or supplies native evidence.
+
+The publisher stages all four working files and retains the previous directory
+as `.generated-before-<unique-id>` beside `generated`. Two directory renames
+expose complete projections or a briefly absent directory, so concurrent readers
+fail closed instead of consuming a mixed pair. An installation error restores
+the old directory; a process interruption between renames requires restoring the
+retained backup before retrying. Run publication under the repository lease.
+
+The parity record's `probe_command` is a portable producer recipe, not a captured
+exact invocation. New records include `--output-root NEW_DIRECTORY`; substitute
+a fresh directory when executing the recipe. Publication accepts earlier
+nonempty string recipes under the same schema, while rejecting missing, empty
+or non-string recipes. Recipe text alone never establishes runtime execution.

@@ -50,9 +50,16 @@ def custody_paths(source: Path) -> tuple[str, ...]:
 
 def custody_root(source: Path, destination: Path) -> Path:
     """Copy custody inputs from ``source`` and record their release metadata."""
+    from tests._support.custody_fixture_knobs import _logical_source
+
     for relative in custody_paths(source):
         target = destination / relative
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source / relative, target)
+        physical = _logical_source(source, relative)
+        shutil.copy2(physical, target)
+        if physical.relative_to(source).as_posix() != relative:
+            canonical = destination / physical.relative_to(source)
+            canonical.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(physical, canonical)
     record_release_metadata(destination)
     return destination

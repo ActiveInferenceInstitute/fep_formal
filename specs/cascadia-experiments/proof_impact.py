@@ -165,7 +165,7 @@ def assess(candidate: Path) -> ProofImpact:
         )
     )
     return ProofImpact(
-        "fep-lean/cascadia-proof-impact/1",
+        "fep-formal/cascadia-proof-impact/1",
         changed,
         reviews,
         reference.file_sha256,

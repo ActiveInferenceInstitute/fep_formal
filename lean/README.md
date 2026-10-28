@@ -14,17 +14,17 @@ a pair upgrade requires a reviewed migration and refreshed evidence.
 Run explicit dependency setup from the project root:
 
 ```bash
-uv run fep-lean setup
+uv run fep-formal setup
 ```
 
 Setup validates declared pins and the resolved Mathlib revision, acquires the
-exact cache and builds under the `FEP_LEAN_SETUP_TIMEOUT_SEC` deadline. It
+exact cache and builds under the `FEP_FORMAL_SETUP_TIMEOUT_SEC` deadline. It
 preserves dependency pins and never runs `lake update`. Ordinary validation
 acquires nothing.
 
 Topic bodies are authored in the
-[body registry](../src/fep_lean/catalogue/AGENTS.md). Reusable Lean resources are
-authored under the [formal package](../src/fep_lean/formal/AGENTS.md) and selected
+[body registry](../src/fep_formal/catalogue/AGENTS.md). Reusable Lean resources are
+authored under the [formal package](../src/fep_formal/formal/AGENTS.md) and selected
 by its typed manifest. `FepSketches/` contains generated projections of those
 owners. Change an owner, regenerate its projection and inspect the diff;
 never repair a workspace copy by hand.
@@ -36,13 +36,13 @@ claim every current source or a full provider workflow was accepted.
 
 ## Executable and timeout configuration
 
-`FEP_LEAN_LAKE_EXE` and `FEP_LEAN_LEAN_EXE` select explicit binaries.
+`FEP_FORMAL_LAKE_EXE` and `FEP_FORMAL_LEAN_EXE` select explicit binaries.
 `ELAN_HOME` is respected for toolchain discovery and child execution; when
 unset, the compiler child's writable home is a per-user temporary directory.
-[`_toolchain.py`](../src/fep_lean/verification/_toolchain.py) owns resolution and
-the allowlisted child environment. `FEP_LEAN_VERIFY_TIMEOUT` configures the
+[`_toolchain.py`](../src/fep_formal/verification/_toolchain.py) owns resolution and
+the allowlisted child environment. `FEP_FORMAL_VERIFY_TIMEOUT` configures the
 per-topic compilation deadline; its default is owned by
-[`lean_verifier.py`](../src/fep_lean/verification/lean_verifier.py).
+[`lean_verifier.py`](../src/fep_formal/verification/lean_verifier.py).
 
 See [AGENTS.md](AGENTS.md) for the workspace contract and
 [Lean operations](../docs/lean4.md) for detailed usage.

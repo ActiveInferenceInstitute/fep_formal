@@ -26,8 +26,8 @@ this direction is that refinement claim, made checkable one model at a time.
 ## What the catalog supplies today
 
 All names below are verified, compiled declarations in the pinned workspace
-(`lean/FepSketches/`, projected byte-for-byte from `src/fep_lean/formal/` per
-`src/fep_lean/formal/manifest.py`).
+(`lean/FepSketches/`, projected byte-for-byte from `src/fep_formal/formal/` per
+`src/fep_formal/formal/manifest.py`).
 
 | Lean module | What it formalizes | Bridge relevance |
 | --- | --- | --- |
@@ -64,8 +64,8 @@ A Lean definition is projectable when the projection is mechanical:
 FEP_Formal side (evidence commands per `docs/cli-reference.md`):
 
 ```bash
-uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
-uv run fep-lean dashboard --check   # explanatory witnesses for the selected families
+uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-formal dashboard --check   # explanatory witnesses for the selected families
 ```
 
 GNN side (commands of record per the GNN documentation):
@@ -89,7 +89,7 @@ directory); P1 fixes it.
 | Phase | Outcome | Acceptance | No-go |
 | --- | --- | --- | --- |
 | P1 — single-model spike | one finite model (the H1 terminal-carrier family: a finite one-step posterior–decision–action model on a Boolean carrier) projected to a GNN document | `gnn validate --strict` passes; step 11 renders on at least one categorical backend; step 12 executes and writes its summaries | if any document field needs a judgment call, stop and narrow the extraction contract |
-| P2 — deterministic emitter | projection module (prospective location: a sibling package beside `src/fep_lean/formal/`) plus emitter, regenerable with a freshness gate in the style of `fep-lean atlas --check` | byte-identical regeneration; provenance populated; drift gate green | if regeneration needs manual edits, the emitter scope is wrong |
+| P2 — deterministic emitter | projection module (prospective location: a sibling package beside `src/fep_formal/formal/`) plus emitter, regenerable with a freshness gate in the style of `fep-formal atlas --check` | byte-identical regeneration; provenance populated; drift gate green | if regeneration needs manual edits, the emitter scope is wrong |
 | P3 — certificate protocol | execution-derived quantities compared with Lean-witnessed properties | compared quantities listed with their evidence planes; first disagreement filed as a finding | if comparisons require reclassifying a plane, refuse and record the boundary |
 | P4 — continuous spike | the OU/linear-Gaussian family projected onto the GNN continuous family, rendered and executed on a Gaussian-capable backend | continuous exemplar round-trips; categorical backends report `unsupported` and are excluded from execution | if continuous parameters cannot be projected mechanically, the family stays out of scope |
 

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.methods.model import _theorem_sources
+from fep_formal.methods.model import _theorem_sources
 from tests._support import landauer_epoch as epoch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,8 +15,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def inputs():
     record = epoch.review()
-    owners = {owner: (ROOT / owner).read_text() for owner in record["owners"]}
-    owner = "src/fep_lean/catalogue/bodies/core_thermodynamics.py"
+    owners = {
+        epoch.current_source_owner(owner): (
+            ROOT / epoch.current_source_owner(owner)
+        ).read_text()
+        for owner in record["owners"]
+    }
+    owner = "src/fep_formal/catalogue/bodies/core_thermodynamics.py"
     tree = ast.parse(owners[owner])
     bodies = ast.literal_eval(
         next(
@@ -61,7 +66,12 @@ def test_live_current_contract_and_copied_historical_view():
         == record["maturity_raw"]["before_sha256"]
     )
     for owner, change in record["owners"].items():
-        assert epoch.source_before(data["owners"][owner], owner) == change["before"]
+        assert (
+            epoch.source_before(
+                data["owners"][epoch.current_source_owner(owner)], owner
+            )
+            == change["before"]
+        )
 
 
 @pytest.mark.parametrize(
@@ -91,7 +101,8 @@ def test_live_current_contract_rejects_mutations(mutation):
     edge = next(
         r for r in edges if (r.get("source"), r.get("target")) == ("fep-050", "fep-049")
     )
-    owner = next(iter(record["owners"]))
+    recorded_owner = next(iter(record["owners"]))
+    owner = epoch.current_source_owner(recorded_owner)
     if mutation == "old_row":
         rows[rows.index(row)] = record["maturity"]["before"]
     elif mutation == "old_edge":
@@ -113,7 +124,7 @@ def test_live_current_contract_rejects_mutations(mutation):
     elif mutation == "proof_body":
         data["owners"][owner] += "\n# changed proof owner\n"
     elif mutation == "old_owner":
-        data["owners"][owner] = record["owners"][owner]["before"]
+        data["owners"][owner] = record["owners"][recorded_owner]["before"]
     elif mutation == "missing_owner":
         del data["owners"][owner]
     elif mutation == "changed_body":
@@ -160,3 +171,75 @@ def test_unknown_changes_reach_historical_seals():
     row = next(r for r in rows if r.get("id") == "fep-050")
     row["assumption_review"] += " unapproved"
     assert epoch.rows_before(rows, "topics") == rows
+
+
+@pytest.mark.parametrize(
+    "owner",
+    [
+        "src/fep_lean/formal/compositions/core.lean",
+        "src/fep_lean/catalogue/bodies/core_thermodynamics.py",
+    ],
+)
+def test_owner_identity_view_is_reversible_and_source_preserving(owner):
+    current = epoch.current_source_owner(owner)
+    assert current != owner
+    assert epoch.historical_source_owner(current) == owner
+    assert epoch.current_source_owner(current) == current
+    assert epoch.historical_source_owner(owner) == owner
+    record = epoch.review()
+    source = (ROOT / current).read_text()
+    assert epoch.source_before(source, owner) == record["owners"][owner]["before"]
+    assert epoch.source_before(source, current) == record["owners"][owner]["before"]
+    assert epoch.source_before(source, current + ".moved") == source
+
+
+@pytest.mark.parametrize(
+    "owner",
+    [
+        "src/fep_formal/formal/../compositions/core.lean",
+        "src/fep_formal/formal//core.lean",
+        "src/fep_formal/other/core.lean",
+        "src/fep_formal/formal/core.py",
+        "src/unapproved/formal/core.lean",
+    ],
+)
+def test_owner_identity_view_refuses_unbounded_mapping(owner):
+    assert epoch.historical_source_owner(owner) == owner
+    assert epoch.current_source_owner(owner) == owner
+
+
+def test_maturity_identity_inverse_requires_complete_authenticated_preimage():
+    raw = (ROOT / "config/theorem_maturity.yaml").read_bytes()
+    original = bytes(raw)
+    restored = epoch.identity_maturity_before(raw)
+    assert restored != raw
+    assert epoch._sha(restored) == epoch.review()["maturity_raw"]["after_sha256"]
+    assert (
+        restored.replace(b"uv run fep-lean verify", b"uv run fep-formal verify", 1)
+        == raw
+    )
+    assert raw == original
+    assert epoch.identity_maturity_before(restored) == restored
+    for tampered in (
+        raw + b"\n",
+        raw.replace(b"--fail-on-warnings", b"--skip-warnings", 1),
+        raw.replace(b"native_evidence:", b"other_evidence:", 1),
+        raw
+        + b"native_evidence: A validated receipt from uv run fep-formal verify --fail-on-warnings\n",
+    ):
+        assert epoch.identity_maturity_before(tampered) == tampered
+
+
+@pytest.mark.parametrize("mutation", ["moved_owner", "moved_declaration"])
+def test_canonical_namespace_does_not_hide_changed_owner(mutation):
+    data = inputs()
+    if mutation == "moved_owner":
+        owner = next(iter(data["owners"]))
+        data["owners"][owner + ".moved"] = data["owners"].pop(owner)
+    else:
+        name = next(iter(epoch.review()["new_theorems"]))
+        data["declarations"][name]["source_owner"] = (
+            "src/fep_formal/catalogue/bodies/moved.py"
+        )
+    with pytest.raises((AssertionError, KeyError)):
+        epoch.current_contract(**data)

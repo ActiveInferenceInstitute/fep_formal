@@ -6,12 +6,12 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue, TopicEntry
-from fep_lean.gauss import runner as runner_module
-from fep_lean.gauss.client import OpenGaussClient
-from fep_lean.gauss.runner import GaussRunner
-from fep_lean.llm.hermes import HermesConfig, HermesExplainer, HermesResult
-from fep_lean.verification.lean_verifier import LeanVerifier, VerifyResult
+from fep_formal.catalogue.topics import FEPTopicCatalogue, TopicEntry
+from fep_formal.gauss import runner as runner_module
+from fep_formal.gauss.client import OpenGaussClient
+from fep_formal.gauss.runner import GaussRunner
+from fep_formal.llm.hermes import HermesConfig, HermesExplainer, HermesResult
+from fep_formal.verification.lean_verifier import LeanVerifier, VerifyResult
 
 PROJ = Path(__file__).resolve().parent.parent
 

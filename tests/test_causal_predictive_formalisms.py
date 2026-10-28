@@ -9,10 +9,10 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.bodies.causal_blankets_interventions import (
+from fep_formal.catalogue.bodies.causal_blankets_interventions import (
     BODIES as CAUSAL_BODIES,
 )
-from fep_lean.catalogue.bodies.predictive_coding_generalized import (
+from fep_formal.catalogue.bodies.predictive_coding_generalized import (
     BODIES as PREDICTIVE_BODIES,
 )
 from tests._support.lake import lake_executable
@@ -20,7 +20,7 @@ from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
-FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
+FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal"
 
 CAUSAL_IDS = tuple(f"fep-{number:03d}" for number in range(79, 86))
 PREDICTIVE_IDS = tuple(f"fep-{number:03d}" for number in range(86, 93))
@@ -62,7 +62,12 @@ def test_slice04_body_modules_own_one_exact_ordered_roster() -> None:
 )
 def test_slice04_body_module_has_no_competing_mapping_alias(module_name: str) -> None:
     namespace = runpy.run_path(
-        PROJECT_ROOT / "src" / "fep_lean" / "catalogue" / "bodies" / f"{module_name}.py"
+        PROJECT_ROOT
+        / "src"
+        / "fep_formal"
+        / "catalogue"
+        / "bodies"
+        / f"{module_name}.py"
     )
     public_mappings = tuple(
         name

@@ -3,7 +3,7 @@
 # Formal Lean Theorem Landscape
 
 Deterministic dependency map of the maintained formal kernel, generated from
-[`src/fep_lean/formal/manifest.py`](../src/fep_lean/formal/manifest.py) and the
+[`src/fep_formal/formal/manifest.py`](../src/fep_formal/formal/manifest.py) and the
 actual plain/public `import FepSketches.*` statements in the workspace sources.
 The exact roster and roles live in the manifest; this page projects them for navigation.
 
@@ -12,7 +12,7 @@ The exact roster and roles live in the manifest; this page projects them for nav
   without formal-manifest layer expansion. Lake owns the complete build plan.
 - Cycles among manifested modules stop generation with the cycle path.
 - Topic bodies (168 catalog rows) live in family modules under
-  [`src/fep_lean/catalogue/bodies/`](../src/fep_lean/catalogue/bodies/), not
+  [`src/fep_formal/catalogue/bodies/`](../src/fep_formal/catalogue/bodies/), not
   here; generated Lean family shards own their topic namespaces, and the
   import-only `fep_all.lean` remains their compatibility aggregate.
 - Regenerate with `uv run python scripts/_maint_build_lean_landscape.py`;

@@ -1,13 +1,13 @@
 # Manuscript sources
 
 The chapters are rendered from this directory with the local Pandoc/XeLaTeX
-toolchain. Run `uv run fep-lean catalogue` first to generate
+toolchain. Run `uv run fep-formal catalogue` first to generate
 `manuscript_vars.yaml` and `09z_unified_formalism_catalogue.md`, then run
 `uv run python scripts/render_manuscript.py --check` or render authored
 chapters into `output/manuscript/` with the same command without `--check`.
 
 `config.yaml` contains static metadata. Runtime values are emitted by
-`src/fep_lean/output/manuscript.py`; rendering is source-preserving and any
+`src/fep_formal/output/manuscript.py`; rendering is source-preserving and any
 unresolved `{{...}}` expression fails before output is written. The generated
 appendix is derived from the validated catalog and contains one Lean block
 and one equation group for every topic.
@@ -64,7 +64,7 @@ publication figures, including a common FEP/OpenAI feature embedding. The
 Prepare the visual source and cited PNGs before rendering:
 
 ```bash
-uv run fep-lean --project-root . methods export --output-root docs/mathematical-positioning
+uv run fep-formal --project-root . methods export --output-root docs/mathematical-positioning
 uv run python scripts/build_manuscript_figures.py
 uv run python scripts/build_manuscript_figures.py --check
 ```

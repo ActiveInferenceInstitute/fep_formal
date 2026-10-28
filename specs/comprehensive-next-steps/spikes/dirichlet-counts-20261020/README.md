@@ -1,7 +1,7 @@
 # Count-level Dirichlet learning and the Stage2 library boundary
 
 This slice retains importing consumers of the existing
-[count foundation](../../../../src/fep_lean/formal/empirical_risk.lean).
+[count foundation](../../../../src/fep_formal/formal/empirical_risk.lean).
 It adds no topic, manifested resource, probability carrier or maturity change.
 Issue95 already permits Stage2 to stop at a recorded library no-go.
 

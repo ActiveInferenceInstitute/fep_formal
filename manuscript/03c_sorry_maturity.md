@@ -57,7 +57,7 @@ The enforcement layers are complementary:
 
 1. `FEPTopicCatalogue` rejects malformed or incomplete generated rows and theorem/signature count drift.
 2. `LeanVerifier` detects non-comment `sorry`, invokes the real pinned compiler, and retains warnings/errors in a structured result.
-3. `uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json` requires clean per-topic results and atomically writes a source-digest-bound receipt.
+3. `uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json` requires clean per-topic results and atomically writes a source-digest-bound receipt.
 4. `lake build FepSketches` checks the topic aggregate and manifested maintained formal modules together, exposing namespace collisions, broken dependencies, and declaration warnings.
 5. `scripts/_maint_build_fep_all_lean.py --check` and `scripts/_maint_build_formal_modules.py --check` reject projection drift without rewriting tracked files.
 6. The receipt validator recomputes roster, counts, digests, toolchain, and claim readiness instead of trusting stored booleans.
@@ -89,7 +89,7 @@ The workflow for such a migration is:
 ```bash
 uv run python scripts/_maint_build_topics_catalogue.py
 uv run python scripts/_maint_build_fep_all_lean.py
-uv run fep-lean verify --topic fep-014 --fail-on-warnings
+uv run fep-formal verify --topic fep-014 --fail-on-warnings
 uv run python scripts/theorem_maturity_audit.py
 uv run python scripts/build_formalism_coverage.py
 ```

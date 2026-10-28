@@ -13,12 +13,12 @@ from pathlib import Path
 import pytest
 import yaml
 
-import fep_lean.output.manuscript as manuscript_module
-from fep_lean.catalogue.coverage import build_formalism_coverage
-from fep_lean.catalogue.relations import EdgeKind
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.output.graphical_abstract import render_graphical_abstract
-from fep_lean.output.manuscript import (
+import fep_formal.output.manuscript as manuscript_module
+from fep_formal.catalogue.coverage import build_formalism_coverage
+from fep_formal.catalogue.relations import EdgeKind
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.output.graphical_abstract import render_graphical_abstract
+from fep_formal.output.manuscript import (
     _SMALL_NUMBER_WORDS,
     UNIFIED_FORMALISM_CATALOGUE_FILENAME,
     _count_test_cases,
@@ -36,7 +36,7 @@ from fep_lean.output.manuscript import (
     write_manuscript_vars,
     write_unified_formalism_appendix_markdown,
 )
-from fep_lean.output.publication_metadata import (
+from fep_formal.output.publication_metadata import (
     PublicationMetadataError,
     load_publication_author,
     pdf_metadata_drift,
@@ -73,7 +73,7 @@ def test_appendix_orientation_tables_avoid_narrow_identifier_columns() -> None:
     assert "| Topic | Appendix B (Lean) | Appendix C (display math) |" in appendix
     assert "| Role |" not in appendix
     assert appendix.count("```bash") == 2
-    assert "`uv run fep-lean catalogue`" not in appendix
+    assert "`uv run fep-formal catalogue`" not in appendix
 
 
 def test_pdf_preamble_wraps_highlighted_lean_without_clipping() -> None:
@@ -86,7 +86,7 @@ def test_pdf_preamble_wraps_highlighted_lean_without_clipping() -> None:
 
 
 def test_build_manuscript_vars_shape(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _: 0)
+    monkeypatch.setattr("fep_formal.output.manuscript._count_test_cases", lambda _: 0)
     c = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     v = build_manuscript_vars(c, PROJ)
     summary = c.summary()
@@ -172,7 +172,7 @@ def test_corpus_print_keys_reject_a_drifted_coordinate(tmp_path: Path) -> None:
 def test_build_manuscript_vars_projects_the_canonical_citation_author(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _: 0)
+    monkeypatch.setattr("fep_formal.output.manuscript._count_test_cases", lambda _: 0)
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     citation = yaml.safe_load((PROJ / "CITATION.cff").read_text(encoding="utf-8"))
     author = citation["authors"][0]
@@ -290,7 +290,7 @@ def test_publication_author_rejects_a_duplicated_preferred_citation_owner(
 def test_build_manuscript_vars_validates_the_canonical_graphical_abstract(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _: 0)
+    monkeypatch.setattr("fep_formal.output.manuscript._count_test_cases", lambda _: 0)
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
 
     variables = build_manuscript_vars(catalogue, PROJ)
@@ -351,8 +351,8 @@ def test_render_graphical_abstract_writes_canonical_deterministic_png(
 def test_graphical_abstract_label_follows_changed_roster(tmp_path: Path) -> None:
     import matplotlib.pyplot as plt
 
-    from fep_lean.catalogue.schema import load_catalogue_metadata
-    from fep_lean.output.graphical_abstract import _draw
+    from fep_formal.catalogue.schema import load_catalogue_metadata
+    from fep_formal.output.graphical_abstract import _draw
 
     metadata = yaml.safe_load((PROJ / "config/catalogue_metadata.yaml").read_text())
     metadata["roster"]["last_id"] = "fep-167"
@@ -380,7 +380,7 @@ def test_build_manuscript_vars_can_disable_test_count_cache(
         return 17
 
     monkeypatch.setattr(
-        "fep_lean.output.manuscript._count_test_cases", count_without_cache
+        "fep_formal.output.manuscript._count_test_cases", count_without_cache
     )
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
 
@@ -423,7 +423,7 @@ def test_build_lean_catalogue_markdown_matches_topics() -> None:
     assert md.count("\n```lean\n") == len(c.topics)
     assert "**Version**:" not in md
     assert "**Status**: Generated" not in md
-    assert "**Source**: `src/fep_lean/output/manuscript.py`" not in md
+    assert "**Source**: `src/fep_formal/output/manuscript.py`" not in md
     for t in c.topics:
         assert t.id in md
         assert t.lean_sketch.strip() in md
@@ -436,8 +436,8 @@ def test_write_unified_formalism_appendix_markdown_roundtrip(tmp_path: Path) -> 
 
     shutil.copytree(PROJ / "config", tmp_path / "config")
     shutil.copytree(
-        PROJ / "src" / "fep_lean" / "formal",
-        tmp_path / "src" / "fep_lean" / "formal",
+        PROJ / "src" / "fep_formal" / "formal",
+        tmp_path / "src" / "fep_formal" / "formal",
     )
     (tmp_path / "manuscript").mkdir(parents=True, exist_ok=True)
     c = FEPTopicCatalogue.from_yaml(tmp_path / "config" / "topics.yaml")
@@ -454,8 +454,8 @@ def test_write_unified_formalism_appendix_markdown_roundtrip(tmp_path: Path) -> 
     assert "### Typeset statement signatures" in text
     assert "**Version**:" not in text
     assert "**Status**: Generated" not in text
-    assert "**Source**: `src/fep_lean/output/manuscript.py`" not in text
-    assert text.startswith("<!-- AUTO-GENERATED by src/fep_lean/output/manuscript.py")
+    assert "**Source**: `src/fep_formal/output/manuscript.py`" not in text
+    assert text.startswith("<!-- AUTO-GENERATED by src/fep_formal/output/manuscript.py")
 
 
 def test_build_typeset_equations_markdown_structure() -> None:
@@ -497,7 +497,7 @@ def test_build_unified_formalism_appendix_markdown_structure() -> None:
 
 
 def test_fep_001_latex_equations_from_yaml_matches_data_module() -> None:
-    from fep_lean.catalogue.registry import LATEX_EQUATIONS, THEOREM_LATEX
+    from fep_formal.catalogue.registry import LATEX_EQUATIONS, THEOREM_LATEX
 
     c = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     t1 = next(t for t in c.topics if t.id == "fep-001")
@@ -509,7 +509,7 @@ def test_fep_001_latex_equations_from_yaml_matches_data_module() -> None:
 
 
 def test_theorem_latex_is_probability_measure_not_double_wrapped() -> None:
-    from fep_lean.catalogue.registry import THEOREM_LATEX
+    from fep_formal.catalogue.registry import THEOREM_LATEX
 
     s = THEOREM_LATEX[("fep-002", "fep002_prob_measure_univ")]
     assert r"\mathsf{IsProbability\mathsf{Measure}" not in s
@@ -555,7 +555,7 @@ def test_latest_verification_manifest_uses_validated_selector(
     (old / "summary.json").write_text(json.dumps({"complete": True}), encoding="utf-8")
     (new / "summary.json").write_text(json.dumps({"complete": True}), encoding="utf-8")
     monkeypatch.setattr(
-        "fep_lean.output.manuscript.latest_claim_ready_full_report",
+        "fep_formal.output.manuscript.latest_claim_ready_full_report",
         lambda *_args, **_kwargs: new,
     )
     picked = _get_latest_verification_manifest(tmp_path)
@@ -623,7 +623,7 @@ def test_manuscript_vars_honor_explicit_output_root(
 ) -> None:
     # Collection is tested separately; this assertion must not update the
     # real checkout's collection cache while selecting a temporary report.
-    monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _: 0)
+    monkeypatch.setattr("fep_formal.output.manuscript._count_test_cases", lambda _: 0)
     custom = tmp_path / "custom-output" / "reports" / "run_custom"
     custom.mkdir(parents=True)
     (custom / "summary.json").write_text(
@@ -923,8 +923,8 @@ def test_build_manuscript_vars_exposes_hermes_block(
     sibling ``summary.json`` is present alongside the verification manifest."""
     shutil.copytree(PROJ / "config", tmp_path / "config")
     shutil.copytree(
-        PROJ / "src" / "fep_lean" / "formal",
-        tmp_path / "src" / "fep_lean" / "formal",
+        PROJ / "src" / "fep_formal" / "formal",
+        tmp_path / "src" / "fep_formal" / "formal",
     )
     _copy_publication_metadata(tmp_path)
     # _read_toolchain_vars only reads ``lean-toolchain``, ``lakefile.lean``,
@@ -982,10 +982,10 @@ def test_build_manuscript_vars_exposes_hermes_block(
         encoding="utf-8",
     )
     monkeypatch.setattr(
-        "fep_lean.output.manuscript.latest_claim_ready_full_report",
+        "fep_formal.output.manuscript.latest_claim_ready_full_report",
         lambda *_args, **_kwargs: run_dir,
     )
-    monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _: 1)
+    monkeypatch.setattr("fep_formal.output.manuscript._count_test_cases", lambda _: 1)
     c = FEPTopicCatalogue.from_yaml(tmp_path / "config" / "topics.yaml")
     v = build_manuscript_vars(c, tmp_path)
     assert "hermes" in v
@@ -1009,15 +1009,15 @@ def test_write_manuscript_vars_roundtrip(
         (tmp_path / d).mkdir()
     (tmp_path / "src" / "__init__.py").write_text('"""x"""\n', encoding="utf-8")
     shutil.copytree(
-        PROJ / "src" / "fep_lean" / "formal",
-        tmp_path / "src" / "fep_lean" / "formal",
+        PROJ / "src" / "fep_formal" / "formal",
+        tmp_path / "src" / "fep_formal" / "formal",
     )
     shutil.copytree(
         PROJ / "lean",
         tmp_path / "lean",
         ignore=shutil.ignore_patterns(".lake", "FepSketches"),
     )
-    monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _: 1)
+    monkeypatch.setattr("fep_formal.output.manuscript._count_test_cases", lambda _: 1)
 
     c = FEPTopicCatalogue.from_yaml(tmp_path / "config" / "topics.yaml")
     out = write_manuscript_vars(tmp_path, c)
@@ -1135,7 +1135,7 @@ def test_count_test_cases_is_content_addressed_over_production_parameters(
     parameter_source = (
         tmp_path
         / "src"
-        / "fep_lean"
+        / "fep_formal"
         / "catalogue"
         / "bodies"
         / "causal_blankets_interventions.py"
@@ -1147,7 +1147,7 @@ def test_count_test_cases_is_content_addressed_over_production_parameters(
         "from pathlib import Path\n"
         "import pytest\n"
         "PARAMETERS = (Path(__file__).parents[1] / "
-        "'src/fep_lean/catalogue/bodies/causal_blankets_interventions.py').read_text().splitlines()\n"
+        "'src/fep_formal/catalogue/bodies/causal_blankets_interventions.py').read_text().splitlines()\n"
         "@pytest.mark.parametrize('value', PARAMETERS)\n"
         "def test_value(value): assert value\n",
         encoding="utf-8",
@@ -1546,7 +1546,7 @@ def test_test_count_generation_is_hermetic_and_check_reuses_cache_read_only(
     assert environment["PYTEST_ADDOPTS"] == ""
     assert environment["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
     assert environment["PYTHONHASHSEED"] == "0"
-    assert environment["FEP_LEAN_LIVE_TESTS"] == "0"
+    assert environment["FEP_FORMAL_LIVE_TESTS"] == "0"
     cache = tmp_path / "output" / ".cache" / "tests_collected.json"
     payload = json.loads(cache.read_text(encoding="utf-8"))
     assert payload["schema_version"] == 5

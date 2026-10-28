@@ -10,7 +10,7 @@ Edit only the file that owns the intended concept:
   deltas, invariants, and required composition bridges;
 - `formalism_relations.yaml` for reviewed relations and retained capability
   status/evidence;
-- the appropriate `src/fep_lean/catalogue/bodies/*.py` module for canonical
+- the appropriate `src/fep_formal/catalogue/bodies/*.py` module for canonical
   Lean bodies. `registry.py` validates the family registry and `latex.py`
   derives equation signatures.
 
@@ -50,7 +50,7 @@ projection, semantic, coverage and Markdown gates. The focused source contracts
 are exercised by `tests/test_fep_topics.py`, `tests/test_semantics.py`,
 `tests/test_formalism_relations.py` and `tests/test_formalism_coverage.py`.
 Portable methods inputs have a separate generated-package owner, described in
-[the packaged-data guide](../src/fep_lean/data/README.md).
+[the packaged-data guide](../src/fep_formal/data/README.md).
 
 See [README.md](README.md) for the file schema and [SPEC.md](SPEC.md) for the
 ownership model.

@@ -62,7 +62,7 @@ def test_target_interpreter_installed_methods_api_cli_and_full_visual_export(tmp
         key: value
         for key, value in os.environ.items()
         if key not in {"PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV"}
-        and not key.startswith("FEP_LEAN_")
+        and not key.startswith(("FEP_FORMAL_", "FEP_LEAN_"))
     }
     dist = tmp_path / "dist"
     subprocess.run(
@@ -73,7 +73,7 @@ def test_target_interpreter_installed_methods_api_cli_and_full_visual_export(tmp
         capture_output=True,
         text=True,
     )
-    wheels = list(dist.glob("fep_lean-*.whl"))
+    wheels = list(dist.glob("fep_formal-*.whl"))
     assert len(wheels) == 1
     environment = tmp_path / "venv"
     subprocess.run(
@@ -86,7 +86,7 @@ def test_target_interpreter_installed_methods_api_cli_and_full_visual_export(tmp
     )
     scripts = environment / ("Scripts" if os.name == "nt" else "bin")
     python = scripts / ("python.exe" if os.name == "nt" else "python")
-    console = scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")
+    console = scripts / ("fep-formal.exe" if os.name == "nt" else "fep-formal")
     subprocess.run(
         [uv, "pip", "install", "--python", str(python), str(wheels[0])],
         cwd=tmp_path,
@@ -98,18 +98,18 @@ def test_target_interpreter_installed_methods_api_cli_and_full_visual_export(tmp
     api_output, cli_output = tmp_path / "api-export", tmp_path / "cli-export"
     probe = f"""
 import hashlib, importlib.metadata, json, math, pathlib, sys
-import fep_lean
-from fep_lean.methods import (
+import fep_formal
+from fep_formal.methods import (
     SourceOrigin, analyze_topic, bernoulli_fisher, build_mathematical_positioning,
     cross_corpus_embedding, inspect_theorem,
     evaluate_boundary_probes, export_mathematical_positioning, extended_kl,
     finite_kl_totalized, inspect_family, inspect_topic,
     mathematical_positioning_drift, positioning_neighbors,
 )
-assert pathlib.Path(fep_lean.__file__).is_relative_to(pathlib.Path({str(environment)!r}))
+assert pathlib.Path(fep_formal.__file__).is_relative_to(pathlib.Path({str(environment)!r}))
 assert not any(p and pathlib.Path(p).is_relative_to(pathlib.Path({str(ROOT)!r})) for p in sys.path)
 assert not any(name == 'src' or name.startswith('src.') for name in sys.modules)
-assert fep_lean.__version__ == importlib.metadata.version('fep_lean') == {expected_version!r}
+assert fep_formal.__version__ == importlib.metadata.version('fep_formal') == {expected_version!r}
 model = build_mathematical_positioning()
 data = model.as_dict()
 assert model.origin is SourceOrigin.INSTALLED_PACKAGE

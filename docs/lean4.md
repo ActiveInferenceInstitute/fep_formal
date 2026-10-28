@@ -19,9 +19,9 @@ which is available at the same version. A pin change alone does not establish
 native verification; rebuild and refresh receipts as described below.
 
 ```bash
-uv run fep-lean setup
+uv run fep-formal setup
 uv run python docs/pin_audit.py --check-latest
-uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json
 uv run python scripts/audit_formalisms.py --receipt output/formalism-audit.json
 cd lean
 lake build
@@ -51,13 +51,13 @@ publication acceptance; do not replace receipt hashes by hand.
 ## Lock-preserving setup
 
 From a checkout synchronized with `uv sync --locked --extra dev`, use
-`uv run --locked fep-lean setup` or
+`uv run --locked fep-formal setup` or
 `bash scripts/_maint_bootstrap_lean_toolchain.sh`. Both use the same bounded
 implementation. It validates the toolchain, Mathlib tag, and committed
 manifest before acquisition, and checks that the pin triple and `uv.lock`
 remain byte-identical after each subprocess. An explicit Lake executable
 must report the pinned compiler version. Without Lake, setup uses elan to
-install exactly the checkout's toolchain; set `FEP_LEAN_ELAN_EXE` if elan is
+install exactly the checkout's toolchain; set `FEP_FORMAL_ELAN_EXE` if elan is
 not on PATH. `ELAN_HOME` may point to a new empty directory. Set
 `XDG_CACHE_HOME` or `MATHLIB_CACHE_DIR` to isolate downloaded cache artifacts
 as well; setup forwards these locations to its acquisition subprocesses.
@@ -107,7 +107,7 @@ def hashes():
 
 before = hashes()
 print("before:", before, flush=True)
-for command in (["uv", "run", "--locked", "fep-lean", "setup"],
+for command in (["uv", "run", "--locked", "fep-formal", "setup"],
                 ["bash", "scripts/_maint_bootstrap_lean_toolchain.sh"]):
     subprocess.run(command, check=True)
     after = hashes()
@@ -115,7 +115,7 @@ for command in (["uv", "run", "--locked", "fep-lean", "setup"],
     assert after == before, "setup changed a checked-in pin"
 subprocess.run(["git", "diff", "--exit-code", "--", *pins], check=True)
 PYTHON
-uv run --locked fep-lean verify --topic fep-001 --fail-on-warnings
+uv run --locked fep-formal verify --topic fep-001 --fail-on-warnings
 (cd lean && lake env lean --version && git -C .lake/packages/mathlib rev-parse HEAD)
 ```
 
@@ -142,16 +142,16 @@ receipts. CI and the scheduled latest-stable workflow reject a stale compatible
 pair; they do not silently select a different compiler.
 
 Canonical topic bodies live in family modules under
-[`src/fep_lean/catalogue/bodies/`](../src/fep_lean/catalogue/bodies/).
-[`registry.py`](../src/fep_lean/catalogue/registry.py) validates and merges them,
-and [`latex.py`](../src/fep_lean/catalogue/latex.py) projects theorem signatures.
+[`src/fep_formal/catalogue/bodies/`](../src/fep_formal/catalogue/bodies/).
+[`registry.py`](../src/fep_formal/catalogue/registry.py) validates and merges them,
+and [`latex.py`](../src/fep_formal/catalogue/latex.py) projects theorem signatures.
 The tracked aggregate
 [`lean/FepSketches/fep_all.lean`](../lean/FepSketches/fep_all.lean) is regenerated with
 [`scripts/_maint_build_fep_all_lean.py`](../scripts/_maint_build_fep_all_lean.py).
 CI rejects regeneration drift, proof holes, and Lean warnings in the aggregate.
 
 Reusable foundations and cross-topic theorems have separate canonical owners
-under [`src/fep_lean/formal/`](../src/fep_lean/formal/); the exact module set
+under [`src/fep_formal/formal/`](../src/fep_formal/formal/); the exact module set
 and roles are declared in `manifest.py`. Leaf modules under `compositions/` own
 proofs that consume multiple stable topic namespaces, while `composed.lean` is
 their import-only aggregate.
@@ -180,7 +180,7 @@ full-run evidence remain distinct.
 
 Metadata, semantic review, novelty records, and the family body registry are
 maintained separately and joined strictly by the schema-2 roster seal.
-`config/topics.yaml` and packaged `src/fep_lean/data/topics.yaml` must be
+`config/topics.yaml` and packaged `src/fep_formal/data/topics.yaml` must be
 byte-identical. The strict loader checks the generated schema before execution.
 
 ## Cursor Lean 4 commands {#cursor-lean4-commands}
@@ -188,7 +188,7 @@ byte-identical. The strict loader checks the generated schema before execution.
 Use the canonical local commands above. Editor integrations should invoke the
 same pinned Lake workspace rather than a separately discovered compiler.
 
-## Mathlib4 modules used in FEP_Formal {#mathlib4-modules-used-in-fep_lean}
+## Mathlib4 modules used in FEP_Formal {#mathlib4-modules-used-in-fep_formal}
 
 Each canonical body declares the narrow Mathlib modules it needs; the generated
 coverage map records distinct modules and topic-to-import edges. The metadata

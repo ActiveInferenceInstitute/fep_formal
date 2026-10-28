@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.output import release_bundle as bundle_module
-from fep_lean.output.release_bundle import (
+from fep_formal.output import release_bundle as bundle_module
+from fep_formal.output.release_bundle import (
     validate_release_bundle,
 )
 from tests._support.release_bundle import (

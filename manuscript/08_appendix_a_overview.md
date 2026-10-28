@@ -7,7 +7,7 @@ comparisons behind the portable methods interface. Its corpus feature map is
 an interpretive comparison; the canonical declarations indexed here retain
 their own carriers, assumptions and semantic reviews.
 
-**Appendices B and C (material)** are one auto-generated file, `09z_unified_formalism_catalogue.md`, produced during Manuscript Artifacts. It juxtaposes, per `fep-NNN` topic, the fenced Lean body and the typeset display-math blocks (former appendices B and C). Stable descriptive metadata comes from `config/catalogue_metadata.yaml`, semantic review from `config/theorem_maturity.yaml`, canonical Lean bodies from family modules under `src/fep_lean/catalogue/bodies/`, and equation signatures from `src/fep_lean/catalogue/latex.py`; `scripts/_maint_build_topics_catalogue.py` joins them into the generated catalog. Each topic has one display-math **block** per `theorem` (typically `aligned`), with a unique stable id `eq:fep-NNN-k`. Counts and validated evidence projections come from `manuscript_vars.yaml`.
+**Appendices B and C (material)** are one auto-generated file, `09z_unified_formalism_catalogue.md`, produced during Manuscript Artifacts. It juxtaposes, per `fep-NNN` topic, the fenced Lean body and the typeset display-math blocks (former appendices B and C). Stable descriptive metadata comes from `config/catalogue_metadata.yaml`, semantic review from `config/theorem_maturity.yaml`, canonical Lean bodies from family modules under `src/fep_formal/catalogue/bodies/`, and equation signatures from `src/fep_formal/catalogue/latex.py`; `scripts/_maint_build_topics_catalogue.py` joins them into the generated catalog. Each topic has one display-math **block** per `theorem` (typically `aligned`), with a unique stable id `eq:fep-NNN-k`. Counts and validated evidence projections come from `manuscript_vars.yaml`.
 
 ## Complete Topic Catalog {#sec:complete_topic_catalogue}
 
@@ -38,7 +38,7 @@ Rates come from the selected validated evidence projected into `manuscript_vars.
 After any toolchain or sketch change, regenerate a source-bound receipt with:
 
 ```bash
-uv run fep-lean verify \
+uv run fep-formal verify \
   --fail-on-warnings \
   --receipt output/native-verification.json
 ```
@@ -69,10 +69,10 @@ The catalog offers a structural way to inspect claims that appear in debates abo
 For machine-checked native compilation, run:
 
 ```bash
-uv run fep-lean verify \
+uv run fep-formal verify \
   --fail-on-warnings \
   --receipt output/native-verification.json
-uv run fep-lean catalogue
+uv run fep-formal catalogue
 ```
 
 Validate the receipt against the live tree before using its result. Full-run manifests under `output/reports/run_*/` are a separate Hermes/OpenGauss evidence class and cannot substitute for the native receipt.

@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 required-version = "==0.13.0"
 
 [project]
-name = "fep_lean"
+name = "fep-formal"
 version = "2.1.0"
 description = "FEP Lean4 catalog, OpenGauss-oriented session model, manuscript artifacts"
 readme = "README.md"
@@ -36,7 +36,8 @@ dev = [
 ]
 
 [project.scripts]
-fep-lean = "fep_lean.cli:main"
+fep-formal = "fep_formal.cli:main"
+fep-lean = "fep_formal.cli:legacy_main"
 
 [project.urls]
 Repository = "https://github.com/ActiveInferenceInstitute/fep_formal"
@@ -45,10 +46,11 @@ Changelog = "https://github.com/ActiveInferenceInstitute/fep_formal/blob/main/CH
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["fep_lean*"]
+include = ["fep_formal*", "fep_lean"]
 
 [tool.setuptools.package-data]
-fep_lean = ["data/*.yaml", "formal/*.lean", "formal/compositions/*.lean"]
+fep_formal = ["data/*.yaml", "formal/*.lean", "formal/compositions/*.lean"]
+fep_lean = ["**/*.pyi", "py.typed"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
@@ -124,13 +126,13 @@ max-statements = 100
 [tool.ruff.lint.per-file-ignores]
 "specs/h3-reference-study/bundle_study.py" = ["PLR0915"]
 "specs/h3-reference-study/export_native.py" = ["PLR0915"]
-"src/fep_lean/catalogue/latex.py" = ["PLR0915"]
-"src/fep_lean/output/evidence.py" = ["PLR0915"]
-"src/fep_lean/output/release_bundle/_acceptance.py" = ["PLR0915"]
-"src/fep_lean/output/release_bundle/_identity.py" = ["PLR0915"]
-"src/fep_lean/output/reporter.py" = ["PLR0915"]
-"src/fep_lean/verification/_subprocess.py" = ["PLR0915"]
-"src/fep_lean/verification/formalism_audit.py" = ["PLR0915"]
+"src/fep_formal/catalogue/latex.py" = ["PLR0915"]
+"src/fep_formal/output/evidence.py" = ["PLR0915"]
+"src/fep_formal/output/release_bundle/_acceptance.py" = ["PLR0915"]
+"src/fep_formal/output/release_bundle/_identity.py" = ["PLR0915"]
+"src/fep_formal/output/reporter.py" = ["PLR0915"]
+"src/fep_formal/verification/_subprocess.py" = ["PLR0915"]
+"src/fep_formal/verification/formalism_audit.py" = ["PLR0915"]
 "tests/test_distribution.py" = ["PLR0915"]
 "tests/test_distribution_supplemental.py" = ["PLR0915"]
 "tests/test_h3_reference_study.py" = ["PLR0915"]

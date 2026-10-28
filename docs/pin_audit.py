@@ -87,6 +87,7 @@ EXCLUDED_PATH_FRAGMENTS = (
     "/.pytest_cache/",
     "/output/",
     "/.herdr-project/",
+    "/.omo/",  # Agent plans, archives and isolated install fixtures are not current guidance.
     "/specs/done/",
     "/specs/comprehensive-science-improvement/evidence/",
 )
@@ -164,7 +165,7 @@ _FETCH_BACKOFF_SEC = 2.0
 def _fetch_json(url: str) -> Any:
     headers = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "fep-lean-pin-audit",
+        "User-Agent": "fep-formal-pin-audit",
         "X-GitHub-Api-Version": "2022-11-28",
     }
     if token := os.environ.get("GITHUB_TOKEN", "").strip():

@@ -59,14 +59,14 @@ HOSTED_ONLY = {
     "-W always --color=no > $out/api.stdout.log 2> $out/api.stderr.log": (
         "versioned native supplement once-only producer, not full serial acceptance"
     ),
-    "fep-lean verify --fail-on-warnings "
+    "fep-formal verify --fail-on-warnings "
     "--receipt output/native-supplement-cli.json "
     "> $out/cli.stdout.log 2> $out/cli.stderr.log": (
         "versioned native supplement ordinary CLI evidence"
     ),
     "python scripts/build_formalism_atlas.py": "render-deps: generates the atlas",
     "python scripts/build_formal_kernel_dashboard.py": "render-deps: generates it",
-    "fep-lean --project-root . methods export --output-root "
+    "fep-formal --project-root . methods export --output-root "
     "docs/mathematical-positioning": "render-deps: generates the methods export",
     "python scripts/build_render_fonts.py": "render: generates the font record",
     "python scripts/render_publication.py": "render: the publication render itself",
@@ -349,7 +349,7 @@ def test_package_line_floor_gate_consumes_complete_split_coverage() -> None:
         assert "--cov-branch" not in steps[index]["run"]
     assert "--cov-append" not in steps[parallel]["run"]
     assert "--cov-append" in steps[chrome]["run"]
-    assert steps[parallel]["env"]["FEP_LEAN_COVERAGE_FLOOR_EVIDENCE"] == "1"
+    assert steps[parallel]["env"]["FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE"] == "1"
     retained = next(
         step
         for step in steps
@@ -439,7 +439,7 @@ def test_root_reference_guard_rejects_missing_owner_links(relative: str) -> None
 
 def test_setup_examples_outside_reference_sections_remain_allowed() -> None:
     text = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
-    assert "uv sync --locked --extra dev\nuv run fep-lean catalogue" in text
+    assert "uv sync --locked --extra dev\nuv run fep-formal catalogue" in text
     _assert_root_references("README.md", text, set(agents_commands()))
 
 
@@ -499,20 +499,20 @@ def test_repository_lint_rejects_an_active_spec_unused_import(
 _STATEMENT_DEBT = {
     ("specs/h3-reference-study/bundle_study.py", "reproduce"): 141,
     ("specs/h3-reference-study/export_native.py", "export_native"): 114,
-    ("src/fep_lean/catalogue/latex.py", "_convert_lean_expr"): 114,
-    ("src/fep_lean/output/evidence.py", "validate_native_lean_receipt"): 131,
+    ("src/fep_formal/catalogue/latex.py", "_convert_lean_expr"): 114,
+    ("src/fep_formal/output/evidence.py", "validate_native_lean_receipt"): 131,
     (
-        "src/fep_lean/output/release_bundle/_acceptance.py",
+        "src/fep_formal/output/release_bundle/_acceptance.py",
         "_pytest_receipt_errors",
     ): 111,
     (
-        "src/fep_lean/output/release_bundle/_identity.py",
+        "src/fep_formal/output/release_bundle/_identity.py",
         "_license_metadata_errors",
     ): 137,
-    ("src/fep_lean/output/reporter.py", "_validate_full_completion"): 146,
-    ("src/fep_lean/verification/_subprocess.py", "_Broker.run"): 168,
+    ("src/fep_formal/output/reporter.py", "_validate_full_completion"): 146,
+    ("src/fep_formal/verification/_subprocess.py", "_Broker.run"): 168,
     (
-        "src/fep_lean/verification/formalism_audit.py",
+        "src/fep_formal/verification/formalism_audit.py",
         "validate_formalism_audit_receipt",
     ): 118,
     ("tests/test_distribution.py", "_exercise_render_artifact_staging"): 247,
@@ -543,7 +543,7 @@ _FUNCTION_SPAN_OWNERS = (
 def test_refactored_function_spans_remain_bounded() -> None:
     violations = []
     for owner in _FUNCTION_SPAN_OWNERS:
-        tree = ast.parse((PROJECT_ROOT / "src/fep_lean" / owner).read_text())
+        tree = ast.parse((PROJECT_ROOT / "src/fep_formal" / owner).read_text())
         for node in ast.walk(tree):
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 assert node.end_lineno is not None
@@ -643,7 +643,7 @@ def test_native_single_producer_and_explicit_dual_shadow_workflow_contract():
     serial = next(
         s for s in steps if s.get("name") == "Run the serial_lean acceptance lane"
     )
-    assert serial["env"]["FEP_LEAN_CI_NATIVE_RECEIPT"] == "1"
+    assert serial["env"]["FEP_FORMAL_CI_NATIVE_RECEIPT"] == "1"
     assert (
         "test_all_catalogue_bodies_compile" not in serial["run"]
     )  # complete serial lane, no narrow selection
@@ -655,13 +655,13 @@ def test_native_single_producer_and_explicit_dual_shadow_workflow_contract():
     )
     body = native["run"]
     assert body.index("validate_native_catalogue_producer(") < body.index(
-        'if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then'
+        'if [ "$FEP_FORMAL_NATIVE_SHADOW" = "1" ]; then'
     )
-    conditional = body.split('if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then', 1)[
+    conditional = body.split('if [ "$FEP_FORMAL_NATIVE_SHADOW" = "1" ]; then', 1)[
         1
     ].split("\nfi", 1)[0]
-    assert "uv run fep-lean verify" in conditional
-    assert body.count("uv run fep-lean verify") == 1
+    assert "uv run fep-formal verify" in conditional
+    assert body.count("uv run fep-formal verify") == 1
     uploads = [
         s for s in steps if s.get("uses", "").startswith("actions/upload-artifact@")
     ]
@@ -734,7 +734,7 @@ def test_producer_context_observes_original_paths_after_success_before_optional_
         'print("FEP_NATIVE_PRODUCER_CONTEXT '
     )
     assert body.index('print("FEP_NATIVE_PRODUCER_CONTEXT ') < body.index(
-        'if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then'
+        'if [ "$FEP_FORMAL_NATIVE_SHADOW" = "1" ]; then'
     )
     for token in [
         "Path.cwd().resolve(strict=True)",
@@ -756,7 +756,7 @@ def _assert_native_shadow_selection_is_explicit(workflow):
         "Validate the strict serial producer and optionally compare the CLI",
     ]:
         step = next(s for s in steps if s.get("name") == name)
-        assert step["env"]["FEP_LEAN_NATIVE_SHADOW"] == expected
+        assert step["env"]["FEP_FORMAL_NATIVE_SHADOW"] == expected
     events = workflow.get("on", workflow.get(True))
     selection = events["workflow_dispatch"]["inputs"]["native_producer_shadow"]
     assert selection["type"] == "boolean"
@@ -787,7 +787,7 @@ def test_native_shadow_selection_requires_manual_explicit_boolean():
 def test_native_shadow_selection_refuses_forced_or_wrong_event_mutants(name, value):
     workflow = yaml.safe_load(CI.read_text())
     step = next(s for s in workflow["jobs"]["lean"]["steps"] if s.get("name") == name)
-    step["env"]["FEP_LEAN_NATIVE_SHADOW"] = value
+    step["env"]["FEP_FORMAL_NATIVE_SHADOW"] = value
     with pytest.raises(AssertionError):
         _assert_native_shadow_selection_is_explicit(workflow)
 
@@ -811,6 +811,7 @@ _FORMAT_SPEC_ROOTS = (
     "specs/cascadia-experiments",
     "specs/gnn-runner-execution",
     "specs/publication-browser-acceptance",
+    "specs/identity-cutover",
 )
 _FORMAT_COMMAND = "uv run ruff format --check src tests scripts docs " + " ".join(
     _FORMAT_SPEC_ROOTS

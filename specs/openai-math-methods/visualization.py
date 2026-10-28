@@ -14,8 +14,8 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
-from fep_lean.methods import build_mathematical_positioning
-from fep_lean.methods.visualization import (
+from fep_formal.methods import build_mathematical_positioning
+from fep_formal.methods.visualization import (
     build_visual_model,
     projection_bytes,
 )

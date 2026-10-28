@@ -11,7 +11,7 @@ from typing import Any
 
 import numpy as np
 
-from fep_lean.bridge import certificates as seam
+from fep_formal.bridge import certificates as seam
 
 AGENTS = ("agent1", "agent2")
 SOURCE_SCHEMA = "gnn-independent-gaussian-composition-v1"

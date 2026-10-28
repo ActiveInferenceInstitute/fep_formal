@@ -1,8 +1,8 @@
-"""Opt-in credential-gated end-to-end test of the full fep_lean pipeline.
+"""Opt-in credential-gated end-to-end test of the full fep_formal pipeline.
 
-Set ``FEP_LEAN_LIVE_TESTS=1`` **and** provide ``OPENROUTER_API_KEY`` (or
+Set ``FEP_FORMAL_LIVE_TESTS=1`` **and** provide ``OPENROUTER_API_KEY`` (or
 ``ANTHROPIC_API_KEY``) to run.  Requires the Lean workspace to be built
-(``uv run fep-lean setup``) and a healthy ``gauss`` CLI on PATH.  Skipped
+(``uv run fep-formal setup``) and a healthy ``gauss`` CLI on PATH.  Skipped
 otherwise so offline developer machines and CI stay green.
 
 This is the pipeline-level counterpart to
@@ -22,15 +22,16 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.pipeline.core import PipelineResult
-from fep_lean.pipeline.orchestrator import run_single_topic
+from fep_formal._paths import resolve_environment
+from fep_formal.pipeline.core import PipelineResult
+from fep_formal.pipeline.orchestrator import run_single_topic
 
 PROJ = Path(__file__).resolve().parent.parent
 
 _HAS_API_KEY = bool(
     os.environ.get("OPENROUTER_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
 )
-_LIVE_VAR = os.environ.get("FEP_LEAN_LIVE_TESTS", "").lower()
+_LIVE_VAR = resolve_environment("FEP_FORMAL_LIVE_TESTS", "").lower()
 _LIVE_ENABLED = _LIVE_VAR in ("1", "true", "yes")
 
 
@@ -52,11 +53,11 @@ def _lean_workspace_ready() -> bool:
 
 @pytest.mark.skipif(
     not (_HAS_API_KEY and _LIVE_ENABLED),
-    reason="Requires FEP_LEAN_LIVE_TESTS=1 and OPENROUTER_API_KEY/ANTHROPIC_API_KEY",
+    reason="Requires FEP_FORMAL_LIVE_TESTS=1 and OPENROUTER_API_KEY/ANTHROPIC_API_KEY",
 )
 @pytest.mark.skipif(
     not _lean_workspace_ready(),
-    reason="Lean workspace not built — run `uv run fep-lean setup` first",
+    reason="Lean workspace not built — run `uv run fep-formal setup` first",
 )
 def test_run_single_topic_full_mode_end_to_end(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
@@ -69,7 +70,7 @@ def test_run_single_topic_full_mode_end_to_end(
     with a populated topic result carrying Hermes and Lean outcome fields,
     and must not crash in any pipeline stage.
     """
-    monkeypatch.setenv("FEP_LEAN_OUTPUT_ROOT", str(tmp_path / "output"))
+    monkeypatch.setenv("FEP_FORMAL_OUTPUT_ROOT", str(tmp_path / "output"))
     result = run_single_topic("fep-001", mode="full")
 
     assert isinstance(result, PipelineResult)

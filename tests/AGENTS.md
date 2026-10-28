@@ -10,7 +10,8 @@ internal implementation details.
 - Catalogue/schema tests reject roster, family-registry, field, semantic,
   primary-theorem, novelty-bridge, and generation drift.
 - Distribution tests build and install the wheel in isolation; only the
-  `fep_lean` namespace may import.
+  `fep_formal` implementation and its deprecated `fep_lean` adapter may
+  import; both names must share module/class identity.
 - Pipeline/report tests use per-test output roots and temporary `GAUSS_HOME`
   paths. Catalogue mode must not invoke external workflows.
 - Evidence/rendering tests reject stale or tampered receipts, catalogue/full
@@ -18,14 +19,14 @@ internal implementation details.
 - Formal-source tests distinguish topic bodies, manifested foundations,
   leaf-composition modules, and the import-only aggregate. Lean tests are
   serial. The opt-in whole-catalogue test uses
-  `FEP_LEAN_CATALOGUE_COMPILE_TEST=1`; CI explicitly selects the same node as
+  `FEP_FORMAL_CATALOGUE_COMPILE_TEST=1`; CI explicitly selects the same node as
   the strict unfiltered production receipt producer. Publication validates its
   native receipt, intent/API record and once-passing JUnit node. Explicit manual
   dual-shadow mode additionally runs the ordinary CLI; local defaults remain
   unchanged. Missing or stale producer evidence never triggers a rescue compile.
 - Provider tests require credentials. Hermes and end-to-end families require
   explicit live-test selection; the Gauss runner live family also enables
-  itself when a provider key is present unless `FEP_LEAN_LIVE_TESTS=0`.
+  itself when a provider key is present unless `FEP_FORMAL_LIVE_TESTS=0`.
   Set that value explicitly for credential-free runs. Missing credentials
   block external acceptance; they never justify fake results.
 
@@ -40,12 +41,12 @@ compiles through the process-group-safe probes in `tests/_support/lean_runner`.
 ## Commands
 
 ```bash
-FEP_LEAN_LIVE_TESTS=0 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
-FEP_LEAN_LIVE_TESTS=0 uv run pytest tests/ -q -n auto --dist loadgroup -m "not serial_lean"
+FEP_FORMAL_LIVE_TESTS=0 uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
+FEP_FORMAL_LIVE_TESTS=0 uv run pytest tests/ -q -n auto --dist loadgroup -m "not serial_lean"
 uv run pytest tests/ --collect-only -q
-FEP_LEAN_CATALOGUE_COMPILE_TEST=1 \
+FEP_FORMAL_CATALOGUE_COMPILE_TEST=1 \
   uv run pytest tests/test_catalogue_bodies_compile.py -q --no-cov
-uv run fep-lean verify \
+uv run fep-formal verify \
   --fail-on-warnings \
   --receipt output/native-verification.json
 ```
@@ -61,7 +62,7 @@ serial/nonserial selections, and an exact reviewed list of moved cases.
 
 Do not run Lean-heavy files concurrently against the shared `.lake` tree.
 Tests that exercise reporters or orchestration must pass `output_root=tmp_path`
-or set `FEP_LEAN_OUTPUT_ROOT` to avoid changing real report selection.
+or set `FEP_FORMAL_OUTPUT_ROOT` to avoid changing real report selection.
 
 When adding a public symbol, update import-surface tests. When adding a
 generator field, add invalid-schema, freshness, and byte-parity tests. A new

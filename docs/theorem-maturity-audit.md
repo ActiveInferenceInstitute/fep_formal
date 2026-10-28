@@ -9,7 +9,7 @@ is a native compilation target, not that the FEP-facing prose has been
 fully formalized.
 
 **Review date:** `2026-10-19`<br>
-**Native evidence boundary:** A validated receipt from uv run fep-lean verify --fail-on-warnings establishes exact-source native compilation only; it does not establish the semantic disposition below or a full Hermes/OpenGauss run.
+**Native evidence boundary:** A validated receipt from uv run fep-formal verify --fail-on-warnings establishes exact-source native compilation only; it does not establish the semantic disposition below or a full Hermes/OpenGauss run.
 
 A `scope_gap` or `assumption_gap` is an honest follow-up boundary, not a
 compiler failure. Dispositions are maintained mathematical judgments,
@@ -208,6 +208,6 @@ aggregate, rerun the native Lean probe, and retain the receipt in
 
 - [Maintained audit data](../config/theorem_maturity.yaml)
 - [Catalog metadata](../config/topics.yaml)
-- [Lean body registry](../src/fep_lean/catalogue/registry.py)
-- [Family-owned Lean bodies](../src/fep_lean/catalogue/bodies/)
+- [Lean body registry](../src/fep_formal/catalogue/registry.py)
+- [Family-owned Lean bodies](../src/fep_formal/catalogue/bodies/)
 - [Native verification command](cli-reference.md)

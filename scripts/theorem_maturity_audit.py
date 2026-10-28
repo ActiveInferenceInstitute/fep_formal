@@ -19,8 +19,8 @@ OUTPUT_PATH = ROOT / "docs" / "theorem-maturity-audit.md"
 # importable module so the release-bundle validator no longer executes this
 # script's namespace with runpy. These re-exports keep the wrapper's public
 # behavior identical.
-from fep_lean.catalogue.generation import check_or_write
-from fep_lean.catalogue.theorem_maturity_projection import (
+from fep_formal.catalogue.generation import check_or_write
+from fep_formal.catalogue.theorem_maturity_projection import (
     render_markdown,
     validate_audit,
 )

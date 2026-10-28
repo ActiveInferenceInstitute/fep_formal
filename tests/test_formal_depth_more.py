@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fep_lean.formal import formal_projection_drift
-from fep_lean.formal.declarations import formal_theorem_modules
+from fep_formal.formal import formal_projection_drift
+from fep_formal.formal.declarations import formal_theorem_modules
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
