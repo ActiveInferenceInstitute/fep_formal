@@ -59,7 +59,7 @@ class TopicEntry:
 
     @property
     def lean_chars(self) -> int:
-        """Character count of the Lean sketch (for catalog metrics)."""
+        """Character count of the canonical Lean topic body (for catalog metrics)."""
         return len(self.lean_sketch)
 
 

@@ -9,6 +9,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path, PurePosixPath
 from typing import Any
 
@@ -363,28 +364,46 @@ def validate_source_blobs(protocol: dict[str, Any], fep: Path, gnn: Path) -> Non
     ]:
         owners = protocol["owners"][key]
         queries = [commit + ":" + member(name) for name in owners]
-        result = subprocess.run(
-            [
-                "git",
-                "--no-optional-locks",
-                "--no-replace-objects",
-                "-C",
-                str(repository),
-                "cat-file",
-                "--batch",
-            ],
-            env={
-                **os.environ,
-                "GIT_NO_LAZY_FETCH": "1",
-                "GIT_NO_REPLACE_OBJECTS": "1",
-                "GIT_OPTIONAL_LOCKS": "0",
-            },
-            input=("\n".join(queries) + "\n").encode(),
-            capture_output=True,
-            check=True,
-            timeout=30,
-        )
-        data = result.stdout
+        # Regular files avoid duplex-pipe backpressure while Git consumes the
+        # complete historical owner batch and emits its captured responses.
+        with (
+            tempfile.TemporaryFile() as batch_input,
+            tempfile.TemporaryFile() as batch_stdout,
+            tempfile.TemporaryFile() as batch_stderr,
+        ):
+            batch_input.write(("\n".join(queries) + "\n").encode())
+            batch_input.seek(0)
+            try:
+                subprocess.run(
+                    [
+                        "git",
+                        "--no-optional-locks",
+                        "--no-replace-objects",
+                        "-C",
+                        str(repository),
+                        "cat-file",
+                        "--batch",
+                    ],
+                    env={
+                        **os.environ,
+                        "GIT_NO_LAZY_FETCH": "1",
+                        "GIT_NO_REPLACE_OBJECTS": "1",
+                        "GIT_OPTIONAL_LOCKS": "0",
+                    },
+                    stdin=batch_input,
+                    stdout=batch_stdout,
+                    stderr=batch_stderr,
+                    check=True,
+                    timeout=30,
+                )
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
+                batch_stdout.seek(0)
+                batch_stderr.seek(0)
+                error.output = batch_stdout.read()
+                error.stderr = batch_stderr.read()
+                raise
+            batch_stdout.seek(0)
+            data = batch_stdout.read()
         offset = 0
         for name, digest in owners.items():
             end = data.find(b"\n", offset)

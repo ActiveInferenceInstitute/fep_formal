@@ -14,6 +14,15 @@
   render, browser, and hosted acceptance; historical receipts remain historical.
   See [the migration guide](docs/identity-migration.md).
 
+- Correct catalogue chart units for Lean source characters and formal signatures.
+  Keep atlas relation edge and named-witness counts on separate lines within their cards.
+
+- Avoid historical Git batch pipe stalls with regular files for query input and captured output.
+
+- Remove an unused private report-validation adapter, four redundant private
+  collection aliases, and an obsolete monorepo integration comment. Use canonical
+  collection helpers and current portability owners and entry points.
+
 - Move 182 source-only test cases into the Python feedback lane while keeping
   all compiler probes serial. That marker-only transition preserves all 4,469
   collected identities and every test function body; native verification and

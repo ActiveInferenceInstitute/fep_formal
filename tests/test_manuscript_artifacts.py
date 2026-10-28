@@ -1198,9 +1198,9 @@ def test_collection_runtime_identity_canonicalizes_interpreter_aliases(
     second_alias.symlink_to(interpreter)
 
     monkeypatch.setattr(sys, "executable", str(first_alias))
-    first = manuscript_module._collection_runtime_identity()
+    first = manuscript_module.collection_runtime_identity()
     monkeypatch.setattr(sys, "executable", str(second_alias))
-    second = manuscript_module._collection_runtime_identity()
+    second = manuscript_module.collection_runtime_identity()
 
     assert first == second
     assert first["interpreter"]["executable"] == interpreter.as_posix()
@@ -1575,9 +1575,9 @@ def test_test_count_cache_is_bound_to_runtime_and_plugin_identity(
     tests = tmp_path / "tests"
     tests.mkdir()
     (tests / "test_sample.py").write_text("def test_sample(): pass\n", encoding="utf-8")
-    identity = manuscript_module._collection_runtime_identity()
+    identity = manuscript_module.collection_runtime_identity()
     monkeypatch.setattr(
-        manuscript_module, "_collection_runtime_identity", lambda: identity
+        manuscript_module, "collection_runtime_identity", lambda: identity
     )
     monkeypatch.setattr(
         subprocess,
@@ -1597,7 +1597,7 @@ def test_test_count_cache_is_bound_to_runtime_and_plugin_identity(
     changed_identity["plugin_distributions"]["pytest"] = "changed-version"
     monkeypatch.setattr(
         manuscript_module,
-        "_collection_runtime_identity",
+        "collection_runtime_identity",
         lambda: changed_identity,
     )
 

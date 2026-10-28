@@ -20082,7 +20082,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `catalogue/relations.py` | `f848780337e03a4b19013a5f45a26a91c1b58d46f78964fcdab5aa54782e182b` |
 | `catalogue/schema.py` | `75c7c90e829eb7373c09bd3fa7e264937aeac1b8d880b513932975deae5677a0` |
 | `catalogue/semantics.py` | `6e16597ba9272c73df43575d3306a0d3cc993629e1edde019a76de3d5781506e` |
-| `catalogue/topics.py` | `6013594ec5ff2a5a8b75e38ce9e340bc756e41c45b0e58049b35d8c8769593d9` |
+| `catalogue/topics.py` | `2398eef3219315dce92957b9425261023df5486b074efc77c0ee50ac16e626d0` |
 | `formal/active_inference.lean` | `260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07` |
 | `formal/bayesian_model_reduction.lean` | `721c1e39ffcfe5557c0138134cac5fb5c1b78669ac475cd99465401653fa441f` |
 | `formal/causal_dynamics.lean` | `a87844ec42f395cb8532fa96c7d5b6b956731e1b0f6069f748d512e43add686c` |

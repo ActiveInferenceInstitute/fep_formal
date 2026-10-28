@@ -1974,6 +1974,3 @@ class Reporter:
             + json.dumps(stats, indent=2, sort_keys=True, default=str)
             + "\n```\n"
         )
-
-    def _validation_md(self, result: Any) -> str:
-        return _render_validation_markdown(_validation_evidence(result))

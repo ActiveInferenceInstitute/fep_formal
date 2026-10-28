@@ -55,6 +55,7 @@ def _write_bar_chart(
     title: str,
     out: Path,
     *,
+    ylabel: str = "Topics",
     show_pct: bool = False,
     subtitle: str | None = None,
 ) -> Path:
@@ -74,7 +75,7 @@ def _write_bar_chart(
     ax.set_title(title)
     if subtitle:
         ax.set_xlabel(subtitle)
-    ax.set_ylabel("Topics")
+    ax.set_ylabel(ylabel)
     ax.grid(axis="y", alpha=0.25)
     total = sum(nums) or 1
     for bar, n in zip(bars, nums, strict=False):
@@ -196,8 +197,9 @@ def write_all_catalogue_figures(
         _write_sequence_diagram(out / "execution_sequence.png"),
         _write_bar_chart(
             {t.id: t.lean_chars for t in catalogue.topics[:10]},
-            "Lean sketch size (first ten)",
+            "Lean source size (first ten)",
             out / "lean_size_sample.png",
+            ylabel="Characters",
         ),
         _write_bar_chart(
             {
@@ -206,6 +208,7 @@ def write_all_catalogue_figures(
             },
             "Lean source size by area",
             out / "lean_size_by_area.png",
+            ylabel="Characters",
         ),
         _write_bar_chart(
             {
@@ -214,6 +217,7 @@ def write_all_catalogue_figures(
             },
             "Formal signatures by area",
             out / "signatures_by_area.png",
+            ylabel="Signatures",
         ),
     ]
     return paths
