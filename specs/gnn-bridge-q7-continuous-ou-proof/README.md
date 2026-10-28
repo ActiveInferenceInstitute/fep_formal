@@ -53,8 +53,9 @@ It never executes the emitted runner. `generate_probe.py --output-root PATH`
 creates a fresh probe and manifest; `--check --output-root PATH` compares bytes
 without writing. `--source-root PATH` selects the current source and parity input
 profile; it defaults to this checkout. Generation refuses existing output paths.
-The retained pre-cutover parity bindings are intentionally stale against current
-source, so a default `--check` must refuse them. Historical source-pair and native
+The retained pre-cutover parity bindings were stale against the canonical
+cutover source and were correctly refused. The October 28 hosted checkpoint
+below explicitly refreshes the mutable working projections. Historical source-pair and native
 receipts remain historical; no identity translation grants current acceptance. The parent
 receipt engine owns source/toolchain/native custody and must check the manifest's
 complete `receipt_contract` before accepting evidence. A generated manifest is
@@ -303,3 +304,22 @@ exact invocation. New records include `--output-root NEW_DIRECTORY`; substitute
 a fresh directory when executing the recipe. Publication accepts earlier
 nonempty string recipes under the same schema, while rejecting missing, empty
 or non-string recipes. Recipe text alone never establishes runtime execution.
+
+
+### Hosted canonical-identity checkpoint (2026-10-28)
+
+[Source-pair qualification run 40765894086](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/40765894086)
+captured the canonical working projections for FEP source
+`36669da54690ddfdc3ee29f5135f79e44f9d0f03` and GNN source
+`714cea22eeb68991c364cef11a23b57f1a618932`. The
+[transport context](source_qualification_ci40765894086.json) retains the
+separate workflow revision, attempt and exact exported-file hashes.
+The [native receipt](native_receipt_ci40765894086_fep36669da_gnn714cea22.json)
+was compiled and independently checked on that Linux producer. Current source
+binding also matches the imported projections locally.
+
+These are five real parser observations and twelve static coefficient/prediction
+bounds, without generated-runner execution, full-mode or release acceptance.
+Native receipts retain their actual compiler environment and command paths;
+a local native claim requires the applicable local capture and check.
+Earlier receipts remain unchanged historical evidence.

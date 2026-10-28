@@ -210,3 +210,16 @@ The remaining sequence has explicit dependencies:
 Coordinate integration and source-pair updates through the repository process.
 Package publication and historical evidence changes retain their separately
 qualified release requirements.
+
+
+## Hosted source-pair capture
+
+The dispatch-only [source-pair qualification workflow](../.github/workflows/source-pair-qualification.yml)
+takes explicit full `fep_revision` and `gnn_revision` SHAs. It produces
+owner-generated bridge/Q7 projections, five real CPython parser observations,
+and a native Q7 receipt validated on the producing host. Its execution context
+records the workflow revision separately from both selected source commits.
+Import its exact artifacts and verify their hashes and source binding before
+committing them; retain previous receipts unchanged. Native receipts remain
+bound to their recorded compiler environment. Local native currency uses a
+fresh local capture and check rather than rewritten receipt paths.

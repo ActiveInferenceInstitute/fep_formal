@@ -14,3 +14,10 @@ release, scientific or general semantic acceptance.
 
 The maintained [migration status](../../../../docs/identity-migration-status.md)
 records subsequent source-pair and main-branch integration results.
+
+
+The [postmerge checkpoint](postmerge-local.json) records the later source-owner
+seal, fresh native catalog, actual Chrome pair, joined floors and hosted Q7
+qualification. Its [private-artifact hash index](postmerge-artifact-hashes.json)
+retains relative artifact identifiers and hashes. Original raw records remain
+unaltered locally. The earlier summary above remains a separate checkpoint.

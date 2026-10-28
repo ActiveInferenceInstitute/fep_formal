@@ -1,0 +1,42 @@
+{
+  "python/junit.xml": {
+    "sha256": "cc1bd7331c087b8159e198f7a10e4298d2e6e3343b175df234a192488763a8d9",
+    "bytes": 742868
+  },
+  "python/console.log": {
+    "sha256": "df03e36156abbf7de334b2ece874472f28d9fc18efb7decbec169fc812ac1234",
+    "bytes": 5544
+  },
+  "chrome/junit.xml": {
+    "sha256": "18f063518902e3252ba155d370751ac3fee7f43bdefdeaffdd622b0564b2adb8",
+    "bytes": 513
+  },
+  "chrome/coverage.xml": {
+    "sha256": "304daab8b19589877df49ee251c6cfc61f3154778ee8ed8d6295a08f9f8e6962",
+    "bytes": 736978
+  },
+  "chrome/package-floors.json": {
+    "sha256": "e9c06c495cbec657f3b45481baa157851bd43d67492fd37e270d796c27070b67",
+    "bytes": 2071
+  },
+  "mac/native-catalogue.json": {
+    "sha256": "7d93dd06ed1b19112732135b703c7adc2e2fd83b73eb41b821dc452663caf417",
+    "bytes": 57514
+  },
+  "mac/native-catalogue-validation.json": {
+    "sha256": "0c34b18fcf3a362ee36f85dcc954feef2080e4d74fc21a7094edc32e9fec2e07",
+    "bytes": 672
+  },
+  "mac/incomplete-serial.log": {
+    "sha256": "56dafa13d489537c3e39a154c93bd2cf54bca1fc35f77ff0b37cb644264ad386",
+    "bytes": 542
+  },
+  "mac/incomplete-orphans.log": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  "local/source-checks.json": {
+    "sha256": "8ae2cad4eb9ad96841c55db68d678eb9ea34c2b5655f43f3e0f591a8fb96c2e9",
+    "bytes": 9443
+  }
+}

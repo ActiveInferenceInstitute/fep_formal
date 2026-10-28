@@ -1,7 +1,8 @@
 # Identity migration status
 
-The canonical cutover is implemented locally across FEP_Formal, GNN and
-GEO_INFER. Main integration is in progress; the source remains unreleased. The [migration guide](identity-migration.md)
+The canonical cutover is implemented across FEP_Formal, GNN and GEO_INFER.
+This page records dated source checkpoints; hosted results belong to the exact
+workflow run and revision, and package publication remains separate. The [migration guide](identity-migration.md)
 owns the compatibility policy and remaining integration plan; the
 [local evidence packet](../specs/identity-cutover/evidence/public-integration-20261028/README.md)
 indexes the local results, original failures and scoped reviews by hash. Full
@@ -23,7 +24,10 @@ private execution records remain preserved locally.
 - Strict bridge verification now preserves actual compiler warnings and rejects
   them in strict mode. Real warning probes failed before this fix and pass after it.
 
-## Observed local validation
+## Premerge local checkpoint (2026-10-27)
+
+The measurements in this section bind the premerge source digest below; they
+do not substitute for qualification of a later source checkpoint.
 
 | Plane | Result and boundary |
 | --- | --- |
@@ -39,12 +43,12 @@ private execution records remain preserved locally.
 | GEO_INFER | 87 ACT cases, four selector controls and 50 broader generator cases pass; all 1,620 generated guides current; four initial import timeouts remain recorded |
 | Independent review | Bounded source approval plus separate final-fixes approval; earlier blocking reports retained; neither review grants release acceptance |
 
-Current executable source digest:
+Premerge executable source digest:
 `dd5e950c504b8f0cf0c5f2ba8ac26f66dbd5a9fcf9d3b451f1dc64822b3cb782`.
 Lean is pinned to 4.35.0 and Mathlib revision
 `56a005855ea17e0b0958f73ec801ae140b0a1679`.
 The native receipt and copied validation bind those exact local owners, rather
-than the unchanged baseline Git HEAD. Full-suite-2 ended with a coverage database
+than the unchanged baseline Git HEAD. At that premerge checkpoint, full-suite-2 ended with a coverage database
 open error and missing XML; it is retained as failed. Full-suite-3 was stopped
 to avoid exhausting GitVault after 827 passes and two skips; it is not a full
 pass. The fresh complete retry
@@ -67,15 +71,43 @@ The final custody ledger retains 1272 byte-identical historical files,
 23 topic-body modules. 22 generated family changes are source-path
 comments only; 4 maintained historical indexes receive link-only repairs.
 
-## Remaining qualification
+## Postmerge local checkpoint (2026-10-28)
 
-Commit, coordinated integration and package publication have not occurred.
+The canonical implementation and the newly merged main fixes have passed a
+fresh strict native CLI run for all 168 topic bodies, 4,086 Python cases
+(with 10 documented skips), and both real isolated Chrome controls. Joined
+line coverage is 92.50% and every package floor passes. Strict mypy, runtime
+adapter mypy, Ruff, and a fresh pinned-template render/receipt check pass.
+These are scoped local measurements, not full-mode or release acceptance.
+
+Source-owner digest: `020c9930f1756ef98bbd496d49329e37d6b70b35b26f89a0e3dd759522e7c275`.
+
+The exhaustive local serial rerun and orphan-module sweep were interrupted
+and retained as incomplete. Fresh mandatory hosted native acceptance remains
+required before main integration; earlier complete serial results above
+remain bound to their earlier checkpoint. The initial skipped Chrome attempt
+and failed package-floor result remain retained separately from the subsequent
+real Chrome run.
+
+The dispatch-only [source-pair qualification workflow](../.github/workflows/source-pair-qualification.yml)
+captures shareable source pins, emissions, canonical rendering, five real
+parser observations and native static Q7 evidence for two explicit source
+commits. The workflow revision, selected source revisions and compiler
+platform remain distinct identities. Its artifacts supply their stated
+source/static-proof scope; full catalog, full mode, publication and release
+use their own acceptance gates.
+
+## Additional qualification boundaries
+
+Source commits and coordinated integration are in progress. Package publication
+is separate from these source changes.
 The next release must bump both distribution versions and their exact dependency;
 changed artifacts must never be uploaded as the already published 2.1.0.
 
-Current source-pair pins, artifact-specific Q7/bridge receipts, full hosted
-PR/main contexts, the 15-cell wheel matrix and publication visual/browser gates
-remain outstanding. Historical custody transitions that require old physical
+The [postmerge checkpoint](../specs/identity-cutover/evidence/public-integration-20261028/postmerge-local.json)
+records fresh source-pair/Q7 qualification. Full hosted PR/main contexts, the
+15-cell wheel matrix and publication visual/browser gates establish their
+own acceptance; these local and Q7 records do not replace them. Historical custody transitions that require old physical
 source owners still refuse this checkout; they require a versioned successor
 checkpoint. Local render acceptance does not close those gates. The serial
 whole-catalog pytest producer is deliberately skipped locally because the

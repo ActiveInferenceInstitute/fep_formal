@@ -317,7 +317,7 @@ Live source-custody and current native-receipt checks require the explicitly
 named GNN pair: `fep-formal bridge status --gnn-root PATH`, both emitters'
 `--check`, and the applicable `verify_native.py --check --gnn-root PATH
 --receipt PATH`. These additional live checks are conditional, are not
-executed by CI, and never repair content drift. Select the exact receipt for
+executed by automatic CI, and never repair content drift. Select the exact receipt for
 the claimed artifact proof. Historical Q5/Q6 receipts remain historical after
 a source re-pin; a fresh Q7 receipt establishes only its own checked native
 statements and source pair.
@@ -375,3 +375,13 @@ remain distinct. Exact final test membership and a new closed validator/source
 projection must qualify before this profile can replace release manual dual
 execution. No production owner, compiler budget, retry or measured speedup is
 changed. See `specs/publication-browser-acceptance/README.md`.
+
+
+### Explicit hosted source-pair qualification
+
+The dispatch-only [source-pair qualification workflow](.github/workflows/source-pair-qualification.yml)
+selects explicit canonical FEP and GNN source SHAs and exports owner-generated
+bridge/Q7 projections, real parser observations and a producer-validated native
+Q7 receipt. Workflow, source and compiler identities remain separately recorded.
+These artifacts have source/static-proof scope; the full catalog, full mode,
+publication and release retain their own acceptance gates.
