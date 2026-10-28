@@ -19,8 +19,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification import gnn_continuous_artifact_proof as q7
-from fep_lean.verification.gnn_continuous_artifact_proof import (
+from fep_formal.verification import gnn_continuous_artifact_proof as q7
+from fep_formal.verification.gnn_continuous_artifact_proof import (
     EPSILON,
     ContinuousArtifactError,
     canonical_json,
@@ -286,7 +286,7 @@ def test_checked_extractor_buffer_rejects_replacement_before_execution(tmp_path)
     assert spec is not None and spec.loader is not None
     generator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(generator)
-    relative = "src/fep_lean/verification/gnn_continuous_artifact_proof.py"
+    relative = "src/fep_formal/verification/gnn_continuous_artifact_proof.py"
     path = tmp_path / relative
     path.parent.mkdir(parents=True)
     good = (ROOT / relative).read_bytes()
@@ -302,7 +302,34 @@ def test_checked_extractor_buffer_rejects_replacement_before_execution(tmp_path)
     assert not marker.exists()
 
 
-def test_generator_is_read_only_and_manifest_does_not_claim_native_evidence():
+def _synthetic_current_profile(
+    root: Path, generator: types.ModuleType, extra=()
+) -> None:
+    """Construct test-only bookkeeping; this does not observe any runtime."""
+    for name in {
+        *generator.PORTABILITY_INPUTS,
+        *generator.EXTRA_FILES,
+        generator.PROVENANCE,
+        *extra,
+    }:
+        destination = root / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, destination)
+    path = root / generator.PORTABILITY_EVIDENCE
+    evidence = json.loads(path.read_text())
+    evidence["test_fixture"] = (
+        "synthetic current bindings; no runtime or native acceptance"
+    )
+    evidence["inputs"] = {
+        name: hashlib.sha256((root / name).read_bytes()).hexdigest()
+        for name in generator.PORTABILITY_INPUTS
+    }
+    path.write_text(json.dumps(evidence))
+
+
+def test_generator_is_read_only_and_manifest_does_not_claim_native_evidence(
+    tmp_path: Path,
+):
     spec = importlib.util.spec_from_file_location(
         "q7_generator_test", SLICE / "generate_probe.py"
     )
@@ -315,7 +342,20 @@ def test_generator_is_read_only_and_manifest_does_not_claim_native_evidence():
         if path.is_file() and "__pycache__" not in path.parts
     ]
     before = {path: (path.read_bytes(), path.stat().st_mtime_ns) for path in watched}
-    texts, manifest = generator.regenerate()
+    _synthetic_current_profile(tmp_path / "source", generator)
+    texts, manifest = generator.regenerate(tmp_path / "source")
+    output = tmp_path / "fresh"
+    args = ["--source-root", str(tmp_path / "source"), "--output-root", str(output)]
+    assert generator.main(args) == 0
+    assert generator.main(["--check", *args]) == 0
+    with pytest.raises(SystemExit):
+        generator.main(args)
+    with pytest.raises(SystemExit):
+        generator.main([])
+    probe = output / "generated/probe.lean"
+    probe.write_text(probe.read_text() + "\n-- tampered\n")
+    with pytest.raises(ValueError, match="generated artifacts differ"):
+        generator.main(["--check", *args])
     assert set(texts) == {
         "generated/probe.lean",
         "generated/artifact_proof_manifest.json",
@@ -334,6 +374,7 @@ def test_generator_is_read_only_and_manifest_does_not_claim_native_evidence():
 
 def test_native_contract_binds_portability_artifacts_and_json_reader(
     monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
 ) -> None:
     """The native snapshot must bind the actual retained serialization inputs."""
     spec = importlib.util.spec_from_file_location(
@@ -347,16 +388,30 @@ def test_native_contract_binds_portability_artifacts_and_json_reader(
         f"{prefix}/scaffold-serialization.md",
         f"{prefix}/generated/scaffold-canonical.json",
         f"{prefix}/generated/scaffold-runtime-parity.json",
-        "src/fep_lean/verification/_jsonutil.py",
-        "src/fep_lean/_paths.py",
+        "src/fep_formal/verification/_jsonutil.py",
+        "src/fep_formal/_paths.py",
     }
     assert required <= set(adapter.CONTRACT.extra_files)
     assert required <= adapter.VERIFICATION._artifact_files()
+    spec = importlib.util.spec_from_file_location(
+        "q7_native_profile", SLICE / "generate_probe.py"
+    )
+    assert spec is not None and spec.loader is not None
+    generator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(generator)
+    original_files = adapter.VERIFICATION._artifact_files()
+    _synthetic_current_profile(tmp_path, generator, original_files)
+    outputs, _ = generator.regenerate(tmp_path)
+    for name, text in outputs.items():
+        destination = tmp_path / generator.PREFIX / name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(text)
+    adapter.VERIFICATION.root = tmp_path
     authority = {
-        name: q7.digest((ROOT / name).read_bytes())
+        name: q7.digest((tmp_path / name).read_bytes())
         for name in adapter.VERIFICATION._artifact_files()
     }
-    poisoned = types.ModuleType("fep_lean.verification._jsonutil")
+    poisoned = types.ModuleType("fep_formal.verification._jsonutil")
 
     def reject_cached_reader(*_args, **_kwargs):
         raise AssertionError("ambient cached JSON reader was executed")
@@ -531,7 +586,7 @@ def test_canonical_candidate_interpreter_guard_runs_before_parse(
         "extra_absent_node",
     ],
 )
-def test_retained_portability_observations_refuse_stale_or_rejecting_inputs(
+def test_synthetic_portability_schema_refuses_stale_or_rejecting_inputs(
     tmp_path: Path, defect: str | None
 ) -> None:
     spec = importlib.util.spec_from_file_location(
@@ -541,14 +596,7 @@ def test_retained_portability_observations_refuse_stale_or_rejecting_inputs(
     generator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(generator)
     api = generator._extractor(ROOT)
-    for name in (
-        *generator.PORTABILITY_INPUTS,
-        generator.CANONICAL_SCAFFOLD,
-        generator.PORTABILITY_EVIDENCE,
-    ):
-        destination = tmp_path / name
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(ROOT / name, destination)
+    _synthetic_current_profile(tmp_path, generator)
     evidence_path = tmp_path / generator.PORTABILITY_EVIDENCE
     evidence = json.loads(evidence_path.read_text())
     source = RUNNER.read_text()
@@ -608,3 +656,237 @@ def test_retained_portability_observations_refuse_stale_or_rejecting_inputs(
     assert before == {
         path: (path.read_bytes(), path.stat().st_mtime_ns) for path in watched
     }
+
+
+def test_q7_stale_parity_is_rejected_without_repair(tmp_path):
+    spec = importlib.util.spec_from_file_location(
+        "q7_stale_profile", SLICE / "generate_probe.py"
+    )
+    assert spec is not None and spec.loader is not None
+    generator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(generator)
+    _synthetic_current_profile(tmp_path, generator)
+    path = tmp_path / generator.PORTABILITY_EVIDENCE
+    evidence = json.loads(path.read_text())
+    evidence["inputs"][generator.EXTRACTOR] = "0" * 64
+    path.write_text(json.dumps(evidence))
+    before = path.read_bytes(), path.stat().st_mtime_ns
+    with pytest.raises(ValueError, match="parity evidence is stale"):
+        generator.validate_scaffold_portability(
+            tmp_path, generator._extractor(tmp_path), RUNNER.read_text()
+        )
+    with pytest.raises(ValueError, match="parity evidence is stale"):
+        generator.main(["--check", "--source-root", str(tmp_path)])
+    assert (path.read_bytes(), path.stat().st_mtime_ns) == before
+
+
+@pytest.mark.parametrize("scaffold", [True, False])
+@pytest.mark.parametrize(
+    "defect",
+    [
+        None,
+        "partial",
+        "unknown",
+        "tamper",
+        "source_drift",
+        "symlink",
+        "directory",
+        "alias",
+        "duplicate_json",
+        "hardlink",
+        "parent_symlink",
+        "unknown_field",
+    ],
+)
+def test_publication_synthetic_schema_controls(tmp_path, scaffold, defect):
+    """Synthetic bookkeeping exercises publication only, never runtime evidence."""
+    spec = importlib.util.spec_from_file_location(
+        "q7_publish_test", SLICE / "generate_probe.py"
+    )
+    assert spec is not None and spec.loader is not None
+    generator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(generator)
+    root = tmp_path / "source"
+    _synthetic_current_profile(
+        root, generator, [generator.MANIFEST, generator.PROBES["ou"]]
+    )
+    evidence_path = root / generator.PORTABILITY_EVIDENCE
+    evidence = json.loads(evidence_path.read_text())
+    evidence.pop("test_fixture")
+    evidence_path.write_text(json.dumps(evidence))
+    incoming = tmp_path / "incoming"
+    generated = incoming / "generated"
+    generated.mkdir(parents=True)
+    if scaffold:
+        for name in (generator.CANONICAL_SCAFFOLD, generator.PORTABILITY_EVIDENCE):
+            shutil.copyfile(root / name, generated / Path(name).name)
+    else:
+        outputs, _ = generator.regenerate(root)
+        for name, data in outputs.items():
+            (incoming / name).write_text(data)
+    chosen = generated / (
+        "scaffold-runtime-parity.json" if scaffold else "artifact_proof_manifest.json"
+    )
+    if defect == "partial":
+        chosen.unlink()
+    elif defect == "unknown":
+        (generated / "extra").write_text("unknown")
+    elif defect == "tamper":
+        chosen.write_text("{}")
+    elif defect == "source_drift":
+        with (root / generator.SERIALIZATION_PROTOCOL).open("a") as stream:
+            stream.write("\nChanged owner\n")
+    elif defect == "symlink":
+        data = chosen.read_bytes()
+        chosen.unlink()
+        target = tmp_path / "linked"
+        target.write_bytes(data)
+        chosen.symlink_to(target)
+    elif defect == "directory":
+        chosen.unlink()
+        chosen.mkdir()
+    elif defect == "alias":
+        incoming = root / generator.PREFIX
+    elif defect == "duplicate_json":
+        chosen.write_text(
+            chosen.read_text().replace(
+                '"schema_version": 1', '"schema_version": 1, "schema_version": 1'
+            )
+        )
+    elif defect == "hardlink":
+        (tmp_path / "hardlink").hardlink_to(chosen)
+    elif defect == "parent_symlink":
+        link = tmp_path / "incoming-link"
+        link.symlink_to(incoming, target_is_directory=True)
+        incoming = link
+    elif defect == "unknown_field":
+        document = json.loads(chosen.read_text())
+        document["unknown"] = True
+        chosen.write_text(json.dumps(document))
+    destination = root / generator.PREFIX / "generated"
+    before = {p.name: p.read_bytes() for p in destination.iterdir()}
+    args = [
+        "--source-root",
+        str(root),
+        "--publish-scaffold-from" if scaffold else "--publish-generated-from",
+        str(incoming),
+    ]
+    if defect is not None:
+        with pytest.raises(ValueError):
+            generator.main(args)
+        assert before == {p.name: p.read_bytes() for p in destination.iterdir()}
+        assert not list(destination.parent.glob(".generated-*"))
+    else:
+        expected_bytes = {p.name: p.read_bytes() for p in generated.iterdir()}
+        assert generator.main(args) == 0
+        assert before | expected_bytes == {
+            p.name: p.read_bytes() for p in destination.iterdir()
+        }
+        backups = list(destination.parent.glob(".generated-before-*"))
+        assert len(backups) == 1
+        assert before == {p.name: p.read_bytes() for p in backups[0].iterdir()}
+        assert not list(destination.parent.glob(".generated-publish-*"))
+
+
+def test_publication_install_failure_restores_real_directory(tmp_path):
+    spec = importlib.util.spec_from_file_location(
+        "q7_publish_rollback", SLICE / "generate_probe.py"
+    )
+    assert spec is not None and spec.loader is not None
+    generator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(generator)
+    destination = tmp_path / "generated"
+    destination.mkdir()
+    (destination / "preimage").write_bytes(b"unchanged")
+    backup = tmp_path / "backup"
+    with pytest.raises(FileNotFoundError):
+        generator._install_publication(tmp_path / "missing-stage", destination, backup)
+    assert (destination / "preimage").read_bytes() == b"unchanged"
+    assert not backup.exists()
+
+
+@pytest.mark.parametrize("mutation", ["owner", "candidate"])
+@pytest.mark.parametrize("scaffold", [True, False])
+def test_publication_rejects_real_post_staging_drift(tmp_path, mutation, scaffold):
+    """Mutate actual files after a real fsync; synthetic parity is not a capture."""
+    spec = importlib.util.spec_from_file_location(
+        "q7_publish_drift", SLICE / "generate_probe.py"
+    )
+    assert spec is not None and spec.loader is not None
+    generator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(generator)
+    root = tmp_path / "source"
+    _synthetic_current_profile(
+        root, generator, [generator.MANIFEST, generator.PROBES["ou"]]
+    )
+    evidence_path = root / generator.PORTABILITY_EVIDENCE
+    evidence = json.loads(evidence_path.read_text())
+    evidence.pop("test_fixture")
+    evidence_path.write_text(json.dumps(evidence))
+    incoming = tmp_path / "incoming"
+    generated = incoming / "generated"
+    generated.mkdir(parents=True)
+    if scaffold:
+        for name in (generator.CANONICAL_SCAFFOLD, generator.PORTABILITY_EVIDENCE):
+            shutil.copyfile(root / name, generated / Path(name).name)
+    else:
+        outputs, _ = generator.regenerate(root)
+        for name, data in outputs.items():
+            (incoming / name).write_text(data)
+    changed_path = (
+        root / generator.SERIALIZATION_PROTOCOL
+        if mutation == "owner"
+        else generated / ("scaffold-canonical.json" if scaffold else "probe.lean")
+    )
+    changed_before = changed_path.read_bytes()
+    destination = root / generator.PREFIX / "generated"
+    before = {p.name: p.read_bytes() for p in destination.iterdir()}
+    original_fsync = generator.os.fsync
+    mutations = []
+
+    def fsync_then_mutate(fd):
+        original_fsync(fd)
+        if not mutations:
+            changed_path.write_bytes(changed_before + b"\nchanged during staging\n")
+            mutations.append(changed_path)
+
+    generator.os.fsync = fsync_then_mutate
+    try:
+        with pytest.raises(ValueError, match="inputs changed before installation"):
+            generator.publish(root, incoming, scaffold=scaffold)
+    finally:
+        generator.os.fsync = original_fsync
+    assert mutations == [changed_path]
+    assert changed_path.read_bytes() != changed_before
+    assert before == {p.name: p.read_bytes() for p in destination.iterdir()}
+    assert not list(destination.parent.glob(".generated-*"))
+
+
+@pytest.mark.parametrize("recipe", [None, 1, "", " \n\t"])
+def test_publication_rejects_malformed_stored_recipe(tmp_path, recipe):
+    spec = importlib.util.spec_from_file_location(
+        "q7_publish_recipe", SLICE / "generate_probe.py"
+    )
+    assert spec is not None and spec.loader is not None
+    generator = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(generator)
+    root = tmp_path / "source"
+    _synthetic_current_profile(
+        root, generator, [generator.MANIFEST, generator.PROBES["ou"]]
+    )
+    incoming = tmp_path / "incoming"
+    generated = incoming / "generated"
+    generated.mkdir(parents=True)
+    shutil.copyfile(
+        root / generator.CANONICAL_SCAFFOLD, generated / "scaffold-canonical.json"
+    )
+    evidence = json.loads((root / generator.PORTABILITY_EVIDENCE).read_text())
+    evidence.pop("test_fixture")
+    evidence["probe_command"] = recipe
+    (generated / "scaffold-runtime-parity.json").write_text(json.dumps(evidence))
+    destination = root / generator.PREFIX / "generated"
+    before = {p.name: p.read_bytes() for p in destination.iterdir()}
+    with pytest.raises(ValueError, match="probe_command must be a nonempty recipe"):
+        generator.publish(root, incoming, scaffold=True)
+    assert before == {p.name: p.read_bytes() for p in destination.iterdir()}
+    assert not list(destination.parent.glob(".generated-*"))

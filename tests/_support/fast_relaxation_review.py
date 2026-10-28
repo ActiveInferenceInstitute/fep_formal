@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 
+from tests._support.landauer_epoch import historical_source_owner
 from tests._support.lean_module_contract import historical_prose_rows
 
 FIXTURE_SHA = "76835362aceb98d23a06887e7ae2ccbe26e3c4326a76a7b6475cf57ff7dae40a"
@@ -46,5 +47,8 @@ def reverse_fast_relaxation_raw(raw: bytes, root: Path) -> bytes:
 def fast_relaxation_theorem_extension(declarations: dict, root: Path) -> set[str]:
     owners = fast_relaxation_review(root)["new_theorem_owners"]
     assert owners.keys() <= declarations.keys()
-    assert {name: declarations[name]["source_owner"] for name in owners} == owners
+    assert {
+        name: historical_source_owner(declarations[name]["source_owner"])
+        for name in owners
+    } == owners
     return set(owners)

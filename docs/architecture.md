@@ -22,7 +22,7 @@ flowchart TD
   X --> W[deterministic numerical witness dashboard]
 ```
 
-FEP_Formal's installable `fep_lean` namespace separates these responsibilities:
+FEP_Formal's installable `fep_formal` namespace separates these responsibilities:
 
 - `catalogue` validates YAML and source parity;
 - `formal` packages the manifested foundations and leaf cross-topic
@@ -37,8 +37,8 @@ FEP_Formal's installable `fep_lean` namespace separates these responsibilities:
   deterministic artifacts, and full-run manifests;
 - `pipeline` enforces the `full`/`catalogue` execution contract.
 
-`src/fep_lean/cli.py` is the only public command surface. Canonical Lean bodies
-live in family modules under `src/fep_lean/catalogue/bodies/`; the validated
+`src/fep_formal/cli.py` is the only public command surface. Canonical Lean bodies
+live in family modules under `src/fep_formal/catalogue/bodies/`; the validated
 registry merges them and `latex.py` projects theorem signatures.
 The checkout/package YAML pair, aggregate Lean file, formal-module workspace
 copies, semantic audit, coverage map, formalism atlas, and formal-kernel

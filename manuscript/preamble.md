@@ -76,7 +76,7 @@
 % retain the package ordering required by cleveref.
 \AddToHook{package/bookmark/after}{\RequirePackage{cleveref}}
 % Headings that name real identifiers (``lean_verifier.py``,
-% ``verify_batch(max_workers=1)``, ``FEP_LEAN_VERIFY_VERBOSE=1``) reach
+% ``verify_batch(max_workers=1)``, ``FEP_FORMAL_VERIFY_VERBOSE=1``) reach
 % hyperref's PDF-string sanitizer as a catcode-8 ``_``: Pandoc writes the
 % heading as \texorpdfstring{visible}{plain text}, and the plain-text branch
 % carries the raw character. hyperref drops every catcode-8 token with

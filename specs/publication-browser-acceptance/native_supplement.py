@@ -522,10 +522,10 @@ def source_snapshot(root: Path) -> dict[str, Any]:
 
 
 def runtime_snapshot(root: Path) -> dict[str, Any]:
-    import fep_lean
+    import fep_formal
 
     require(
-        Path(fep_lean.__file__).resolve().is_relative_to(root / "src"),
+        Path(fep_formal.__file__).resolve().is_relative_to(root / "src"),
         "foreign FEP import",
     )
     metadata = []
@@ -584,7 +584,7 @@ def runtime_snapshot(root: Path) -> dict[str, Any]:
         "executable_sha256": sha(Path(sys.executable).read_bytes()),
         "prefix": sys.prefix,
         "platform": platform.platform(),
-        "fep_origin": str(Path(fep_lean.__file__).resolve()),
+        "fep_origin": str(Path(fep_formal.__file__).resolve()),
         "distributions": sorted(metadata, key=lambda d: (d["name"], d["path"])),
         "runtime_files": files,
         "toolchain": (root / "lean/lean-toolchain").read_text(),

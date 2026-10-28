@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.verification.environment import (
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.verification.environment import (
     _check_catalogue_import,
     _check_dirs,
     _check_hermes_credentials,
@@ -64,8 +64,8 @@ def test_cli_version_checks_follow_the_checkout_pin(
         encoding="utf-8",
     )
     lake_exe.chmod(0o755)
-    monkeypatch.setenv("FEP_LEAN_LEAN_EXE", str(lean_exe))
-    monkeypatch.setenv("FEP_LEAN_LAKE_EXE", str(lake_exe))
+    monkeypatch.setenv("FEP_FORMAL_LEAN_EXE", str(lean_exe))
+    monkeypatch.setenv("FEP_FORMAL_LAKE_EXE", str(lake_exe))
 
     assert _check_lean_cli(tmp_path)[0]
     assert _check_lake(tmp_path)[0]
@@ -156,14 +156,16 @@ def test_output_probe_checks_selected_ancestor_without_creating_directories(
         checked.append((Path(path), mode))
         return Path(path) == selected
 
-    monkeypatch.setattr("fep_lean.verification.environment.os.access", access)
+    monkeypatch.setattr("fep_formal.verification.environment.os.access", access)
     ok, message = _check_output_writable(tmp_path, destination)
     assert ok
     assert str(destination) in message
     assert checked == [(selected, os.W_OK | os.X_OK)]
     assert not destination.exists()
     assert selected.stat().st_mtime_ns == before
-    monkeypatch.setattr("fep_lean.verification.environment.os.access", lambda *_: False)
+    monkeypatch.setattr(
+        "fep_formal.verification.environment.os.access", lambda *_: False
+    )
     assert _check_output_writable(tmp_path, destination)[0] is False
 
 
@@ -285,7 +287,7 @@ def test_references_bib_accepts_project_bibliography() -> None:
 
 
 def test_gauss_state_path_is_writable(monkeypatch, tmp_path: Path) -> None:
-    from fep_lean.verification.environment import _check_gauss_config
+    from fep_formal.verification.environment import _check_gauss_config
 
     path = tmp_path / "gauss"
     monkeypatch.setenv("GAUSS_HOME", str(path))

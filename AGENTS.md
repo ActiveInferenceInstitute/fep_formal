@@ -6,15 +6,19 @@ FEP_Formal is a standalone 168-topic FEP / Active Inference / Bayesian
 Mechanics / Information Geometry / Thermodynamics catalog with Lean 4 source,
 Hermes integration, OpenGauss SQLite persistence, deterministic manuscript
 artifacts and strict reports. The repository is `fep_formal`; the Python
-distribution/import namespace is `fep_lean` and the executable is `fep-lean`.
+distribution/import namespace is `fep_formal` and the executable is `fep-formal`.
 Preserve those package, CLI, environment-variable and Lean namespace interfaces
-when updating project-facing prose.
+when updating project-facing prose. Legacy `fep_lean` imports, `fep-lean`
+commands and public `FEP_LEAN_` variables are deprecated aliases through 2.x;
+new implementation and instructions use the canonical names. The
+[migration guide](docs/identity-migration.md) owns compatibility and evidence
+refresh requirements. Preserve historical receipts and Lean theorem namespaces.
 
 ## Terminology
 
 The Lean code for each catalog row is a **canonical topic body**. Family-owned
-modules under `src/fep_lean/catalogue/bodies/` export those bodies, and
-`src/fep_lean/catalogue/registry.py` validates and merges them. The generated
+modules under `src/fep_formal/catalogue/bodies/` export those bodies, and
+`src/fep_formal/catalogue/registry.py` validates and merges them. The generated
 runtime field remains named `lean_sketch` for API compatibility. The reviewed
 invariant, formal Lean identifiers, and explicit assumptions define the row's
 **theorem proxy** and scientific scope in `config/theorem_maturity.yaml`.
@@ -59,17 +63,17 @@ document wins.
   status/evidence. Never infer these from shared imports; both theorem-backed
   kinds require qualified Lean witnesses. Shared imports never create
   scientific-dependency edges.
-- `src/fep_lean/catalogue/bodies/*.py` — family-owned canonical Lean bodies.
-- `src/fep_lean/catalogue/registry.py` and `latex.py` — validated body registry
+- `src/fep_formal/catalogue/bodies/*.py` — family-owned canonical Lean bodies.
+- `src/fep_formal/catalogue/registry.py` and `latex.py` — validated body registry
   and deterministic theorem-signature projection.
-- `src/fep_lean/catalogue/generation.py` — catalog join for checkout and
+- `src/fep_formal/catalogue/generation.py` — catalog join for checkout and
   package projections.
-- `config/topics.yaml` and `src/fep_lean/data/topics.yaml` — byte-identical,
+- `config/topics.yaml` and `src/fep_formal/data/topics.yaml` — byte-identical,
   generated catalog projections; never author either by hand.
 - `scripts/_maint_build_topics_catalogue.py` — YAML regeneration.
 - `scripts/_maint_build_fep_all_lean.py` — tracked family-shard and compatibility
   aggregate regeneration. Its check covers every manifest-owned output.
-- `src/fep_lean/formal/manifest.py` — explicit foundation, leaf-composition,
+- `src/fep_formal/formal/manifest.py` — explicit foundation, leaf-composition,
   and aggregate resource roster. Cross-topic proofs live in
   `formal/compositions/*.lean`; `formal/composed.lean` is the import-only
   aggregate. `scripts/_maint_build_formal_modules.py` projects the manifest
@@ -77,13 +81,13 @@ document wins.
 - `lean/FepSketches/families/*.lean` — generated family topic modules with
   unchanged public namespaces; composition leaves import their actual families.
 - `lean/FepSketches/fep_all.lean` — import-only whole-catalog compatibility target.
-- `src/fep_lean/output/evidence.py` — frozen readiness/status models and their
+- `src/fep_formal/output/evidence.py` — frozen readiness/status models and their
   process-free snapshot builder; CLI JSON projects those same type/function
   objects. Native/full evidence policy and manuscript
   claim sentences.
-- `src/fep_lean/verification/formalism_audit.py` — declaration and axiom audit
+- `src/fep_formal/verification/formalism_audit.py` — declaration and axiom audit
   with typed receipts.
-- `src/fep_lean/output/formalism_atlas.py` — coverage-graph SVG/HTML renderer.
+- `src/fep_formal/output/formalism_atlas.py` — coverage-graph SVG/HTML renderer.
 - `manuscript/*.md` — authored chapters, rendered into `output/manuscript/`.
 - `ISA.md` — ideal-state criteria, anti-criteria, and evidence gates.
 - `TODO.md` — canonical open-only backlog; completed work is not retained as
@@ -91,9 +95,9 @@ document wins.
 - `HANDOFF.md` — dated next-reviewer protocol and evidence snapshots; the
   [next-step campaign](specs/comprehensive-next-steps/README.md) owns the active
   implementation graph and pickup point.
-- `src/fep_lean/output/provenance.py` — versioned source-owner roster
+- `src/fep_formal/output/provenance.py` — versioned source-owner roster
   (`OWNER_MANIFEST_VERSION`, `SOURCE_OWNER_ROSTER`). New files under
-  `src/fep_lean/**/*.py` or `scripts/*.py` fail report and native receipts
+  `src/fep_formal/**/*.py` or `scripts/*.py` fail report and native receipts
   fail-closed until reviewed into the roster; roster growth is a coordinated
   evidence refresh (the completed refresh is recorded in
   [CHANGELOG.md](CHANGELOG.md); a further roster change re-opens the
@@ -101,7 +105,7 @@ document wins.
   per-PR alternatives: fold new code into an existing owner or keep tooling
   slice-local under `specs/`.
 
-Never hand-edit `config/topics.yaml`, `src/fep_lean/data/topics.yaml`,
+Never hand-edit `config/topics.yaml`, `src/fep_formal/data/topics.yaml`,
 `lean/FepSketches/fep_all.lean`, any manifested `lean/FepSketches` formal resource,
 `docs/formalism-coverage.*`, `docs/formalism-atlas.*`, or generated manuscript
 output. Use the owner-provided generators and their `--check` modes.
@@ -112,7 +116,7 @@ Use American English in maintained prose and comments. Preserve exact public
 identifiers, quotations, external titles, and receipt-bound historical bytes.
 
 Use **FEP_Formal** for the project and `fep_formal` for the checkout/repository.
-Use `fep_lean` for the real Python distribution/import namespace and `fep-lean`
+Use `fep_formal` for the real Python distribution/import namespace and `fep-formal`
 for the CLI. Historical titles, external integration paths, environment
 variables, citation versions and accepted receipts retain their exact identities.
 
@@ -133,27 +137,27 @@ receipt-bound captures and generated outputs under their existing contracts.
 
 ## Execution contract
 
-- `uv run fep-lean catalogue` is explicit offline mode. It creates deterministic
+- `uv run fep-formal catalogue` is explicit offline mode. It creates deterministic
   catalog artifacts and reports zero verified topics. It performs strict
   YAML/schema/source-parity validation and generates offline figures, manuscript
   variables, the unified appendix, and a report. It records
   `verified_topics: 0` and `capabilities.verification: false`.
-- `uv run fep-lean verify` is the Lean-only native compile path. It requires
+- `uv run fep-formal verify` is the Lean-only native compile path. It requires
   the built pinned Mathlib cache but does not call Hermes, OpenGauss, or the
   full pipeline. Use `--receipt PATH --fail-on-warnings` for publication-grade
   native evidence. With `--receipt` it writes a typed, source-digest-bound receipt.
-- `uv run fep-lean atlas` projects the canonical coverage graph to offline SVG
+- `uv run fep-formal atlas` projects the canonical coverage graph to offline SVG
   and accessible HTML; `--check` is a non-mutating freshness gate. The graph distinguishes
   derivational formal edges from checked formal pairings that place two endpoint
   laws side by side without asserting implication. Both name qualified Lean
   witnesses; conceptual and blocker edges remain visibly non-proof evidence.
   It carries no compilation or full-run claim.
-- `uv run fep-lean dashboard` evaluates the typed numerical witnesses and
+- `uv run fep-formal dashboard` evaluates the typed numerical witnesses and
   projects their shared model to offline SVG and accessible HTML; it is
   explanatory non-proof evidence, and `--check` is non-mutating. It renders a
   shared immutable model; every witness names theorem mirrors, parameters,
   typed exact checks with per-check tolerances, and boundary behavior.
-- `uv run fep-lean run` is strict full mode. It requires configured Hermes,
+- `uv run fep-formal run` is strict full mode. It requires configured Hermes,
   OpenGauss, Lean, Lake, and a complete pinned Mathlib build. This is the default
   for the programmatic API. It also requires the isolated `gauss --version` availability probe,
   writable configured output and persistence destinations, and Hermes
@@ -168,25 +172,25 @@ receipt-bound captures and generated outputs under their existing contracts.
   result and no successful report. **Missing capability or incomplete stage →
   `complete: false`, no report directory.**
 - A full-mode report's `complete: true` means all *selected* topics passed (via
-  `FEP_LEAN_MAX_TOPICS` or the default full catalog). It is publication-ready
+  `FEP_FORMAL_MAX_TOPICS` or the default full catalog). It is publication-ready
   only when `validate_report_receipt(...).claim_ready` independently validates
   the complete full-mode artifact set. Catalog-mode completion is never
   Hermes or Lean evidence. A native receipt is separately claim-ready only for
   the live-source-bound sealed roster, actual compiler output matching the pin,
   the resolved Mathlib revision, and zero errors, warnings, or `sorry`.
 - `run_validation_checks` is read-only. Dependency acquisition belongs only to
-  `uv run fep-lean setup` and is bounded by `FEP_LEAN_SETUP_TIMEOUT_SEC`.
+  `uv run fep-formal setup` and is bounded by `FEP_FORMAL_SETUP_TIMEOUT_SEC`.
   It never downloads Mathlib, invokes a build, creates a database, or writes a
   report. The explicit setup command performs dependency acquisition and
   `lake build` with a bounded timeout.
 - `preflight` JSON output is advisory subject to additive field changes between
   releases. Stable referential queries use the CLI exit code and `status` field.
-- `uv run fep-lean status` composes a read-only evidence-currency report from
+- `uv run fep-formal status` composes a read-only evidence-currency report from
   existing checks; exit 0 means the report composed, not that evidence is
   current.
-- `uv run fep-lean topic <id>` verifies one exact topic with the same workflow
+- `uv run fep-formal topic <id>` verifies one exact topic with the same workflow
   choices as `run`.
-- `uv run fep-lean report` runs catalog mode and emits a complete report.
+- `uv run fep-formal report` runs catalog mode and emits a complete report.
 - Python 3.14 is the only accepted validator environment (see
   `.python-version`); `requires-python >=3.10` in `pyproject.toml` is the
   packaging floor, not the validator contract.
@@ -223,7 +227,7 @@ syntax compatibility, and the installed-wheel matrix checks the packaging floor
 separately. Exceptions preserve declared error or compatibility contracts and
 must be justified at the affected line.
 
-For credential-free local test runs, set `FEP_LEAN_LIVE_TESTS=0` explicitly.
+For credential-free local test runs, set `FEP_FORMAL_LIVE_TESTS=0` explicitly.
 The [test contract](tests/AGENTS.md) explains the provider families whose
 selection can otherwise depend on ambient credentials.
 
@@ -248,7 +252,8 @@ uv run python scripts/_maint_build_lean_landscape.py --check
 uv run python scripts/build_formalism_atlas.py --check
 uv run python scripts/build_formal_kernel_dashboard.py --check
 uv run python specs/openai-math-methods/generate_package_methods.py --check
-uv run fep-lean --project-root . methods check --output-root docs/mathematical-positioning
+uv run python specs/identity-cutover/generate_legacy_stubs.py --check
+uv run fep-formal --project-root . methods check --output-root docs/mathematical-positioning
 uv run pytest specs/openai-math-methods/test_methods.py \
   specs/openai-math-methods/test_upstream.py \
   specs/openai-math-methods/test_visualization.py -q --no-cov
@@ -260,7 +265,7 @@ uv run python scripts/audit_formalisms.py \
   --receipt output/formalism-audit.json
 uv run python docs/theorem_ref_audit.py
 uv run python docs/citation_audit.py
-uv run fep-lean catalogue
+uv run fep-formal catalogue
 uv run python scripts/render_manuscript.py --check
 uv run python scripts/build_render_fonts.py --check
 uv run python scripts/check_render_log.py --verify-receipt
@@ -273,8 +278,9 @@ uv run python specs/publication-browser-acceptance/validate_acceptance.py --coll
 uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"
 uv run python docs/check_coverage_floors.py --coverage coverage.xml
 uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py specs/publication-browser-acceptance/native_supplement.py
+uv run python -m mypy --no-incremental src/fep_lean/__init__.py
 uv run ruff check .
-uv run ruff format --check src tests scripts docs specs/openai-math-methods specs/cascadia-experiments specs/gnn-runner-execution specs/publication-browser-acceptance
+uv run ruff format --check src tests scripts docs specs/openai-math-methods specs/cascadia-experiments specs/gnn-runner-execution specs/publication-browser-acceptance specs/identity-cutover
 git diff --check
 uv run python docs/check_links.py --strict --include-root
 uv run python docs/md_hygiene.py --strict --include-root
@@ -292,7 +298,7 @@ and run in the hosted `lean` job:
 ```bash
 (cd lean && lake build FepSketches)
 uv run pytest tests/ -q -m serial_lean -n 1 --no-cov
-uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json
 uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --compile output/cascadia-diagnostic-bounds
 uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --check output/cascadia-diagnostic-bounds
 uv run python specs/gnn-semantic-witness-v1/verify_composition_native.py --output output/gnn-composition-native
@@ -308,10 +314,10 @@ generation establishes fixture/probe/manifest freshness, not current
 GNN-renderer custody or native evidence.
 
 Live source-custody and current native-receipt checks require the explicitly
-named GNN pair: `fep-lean bridge status --gnn-root PATH`, both emitters'
+named GNN pair: `fep-formal bridge status --gnn-root PATH`, both emitters'
 `--check`, and the applicable `verify_native.py --check --gnn-root PATH
 --receipt PATH`. These additional live checks are conditional, are not
-executed by CI, and never repair content drift. Select the exact receipt for
+executed by automatic CI, and never repair content drift. Select the exact receipt for
 the claimed artifact proof. Historical Q5/Q6 receipts remain historical after
 a source re-pin; a fresh Q7 receipt establishes only its own checked native
 statements and source pair.
@@ -322,7 +328,7 @@ evidence planes; state exactly which validated receipt supports a claim.
 
 ## GNN bridge operations
 
-`uv run fep-lean bridge --help` exposes explicit source pinning, emission,
+`uv run fep-formal bridge --help` exposes explicit source pinning, emission,
 read-only status, and numerical comparison receipts. Pass `--gnn-root`; normal
 standalone tests require no sibling checkout. Source pins bind owner bytes,
 not a perpetually refreshed HEAD. Default checks never regenerate reports.
@@ -335,7 +341,7 @@ Numerical agreement is not native proof or proof of current execution.
 CI always selects the existing serial catalog node's strict, unfiltered
 `verify_catalogue` operation and independently validates its fresh native receipt,
 existing intent/API record and once-passing JUnit node. This is the reviewed CI
-decomposition of the strict `fep-lean verify --fail-on-warnings` operation below;
+decomposition of the strict `fep-formal verify --fail-on-warnings` operation below;
 local CLI and the default local catalog test remain unchanged. Missing, failed
 or stale producer evidence fails; the job never hides it with another compile.
 
@@ -369,3 +375,13 @@ remain distinct. Exact final test membership and a new closed validator/source
 projection must qualify before this profile can replace release manual dual
 execution. No production owner, compiler budget, retry or measured speedup is
 changed. See `specs/publication-browser-acceptance/README.md`.
+
+
+### Explicit hosted source-pair qualification
+
+The dispatch-only [source-pair qualification workflow](.github/workflows/source-pair-qualification.yml)
+selects explicit canonical FEP and GNN source SHAs and exports owner-generated
+bridge/Q7 projections, real parser observations and a producer-validated native
+Q7 receipt. Workflow, source and compiler identities remain separately recorded.
+These artifacts have source/static-proof scope; the full catalog, full mode,
+publication and release retain their own acceptance gates.

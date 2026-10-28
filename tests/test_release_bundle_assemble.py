@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.output import release_bundle as bundle_module
-from fep_lean.output.release_bundle import (
+from fep_formal.output import release_bundle as bundle_module
+from fep_formal.output.release_bundle import (
     build_release_bundle,
     validate_release_bundle,
     write_publication_manuscript,
@@ -24,7 +24,7 @@ def test_project_snapshot_captures_each_release_owned_evidence_plane(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     fixture_bytes = {
-        "src/fep_lean/example.py": b"value = 1\n",
+        "src/fep_formal/example.py": b"value = 1\n",
         "lean/FepSketches/example.lean": b"theorem example : True := by trivial\n",
         "pyproject.toml": b"[project]\nname = 'fixture'\n",
         "README.md": b"# Fixture\n",
@@ -47,7 +47,7 @@ def test_project_snapshot_captures_each_release_owned_evidence_plane(
         bundle_module,
         "source_owner_paths",
         lambda root: (
-            root / "src/fep_lean/example.py",
+            root / "src/fep_formal/example.py",
             root / "lean/FepSketches/example.lean",
         ),
     )
@@ -163,7 +163,7 @@ def test_project_snapshot_captures_each_release_owned_evidence_plane(
             "configuration_snapshot",
             b"[project]\nname = 'fixture'\n",
         ),
-        "src/fep_lean/example.py": ("source_owner", b"value = 1\n"),
+        "src/fep_formal/example.py": ("source_owner", b"value = 1\n"),
     }
 
 

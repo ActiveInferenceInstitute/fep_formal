@@ -9,13 +9,13 @@ from types import SimpleNamespace
 import pytest
 import yaml
 
-from fep_lean._paths import resolve_output_root
-from fep_lean.catalogue.topics import CatalogueValidationError, FEPTopicCatalogue
-from fep_lean.gauss.runner import TopicRunResult
-from fep_lean.output import manuscript
-from fep_lean.output.manuscript import _verify_block_from_manifest
-from fep_lean.output.provenance import report_owner_errors, report_source_digest
-from fep_lean.pipeline.core import (
+from fep_formal._paths import resolve_output_root
+from fep_formal.catalogue.topics import CatalogueValidationError, FEPTopicCatalogue
+from fep_formal.gauss.runner import TopicRunResult
+from fep_formal.output import manuscript
+from fep_formal.output.manuscript import _verify_block_from_manifest
+from fep_formal.output.provenance import report_owner_errors, report_source_digest
+from fep_formal.pipeline.core import (
     FEPPipeline,
     PipelineResult,
     StepResult,
@@ -72,7 +72,7 @@ def test_real_catalogue_writes_only_the_private_project(
     appendix = catalogue_project / "manuscript/09z_unified_formalism_catalogue.md"
     assert not variables.exists()
     assert not appendix.exists()
-    monkeypatch.setenv("FEP_LEAN_OUTPUT_ROOT", str(tmp_path / "products"))
+    monkeypatch.setenv("FEP_FORMAL_OUTPUT_ROOT", str(tmp_path / "products"))
     original_atomic_write = manuscript.atomic_write_text
 
     def reject_separate_appendix_write(path: Path, text: str) -> None:
@@ -130,9 +130,9 @@ def test_output_root_precedence(
     (root / "config").mkdir(parents=True)
     (root / "config/settings.yaml").write_text("output:\n  root: configured\n")
     monkeypatch.chdir(tmp_path)
-    monkeypatch.delenv("FEP_LEAN_OUTPUT_ROOT", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_OUTPUT_ROOT", raising=False)
     if environment is not None:
-        monkeypatch.setenv("FEP_LEAN_OUTPUT_ROOT", environment)
+        monkeypatch.setenv("FEP_FORMAL_OUTPUT_ROOT", environment)
     chosen = Path(explicit) if explicit is not None else None
     expected_path = root / expected if expected == "configured" else tmp_path / expected
     assert resolve_output_root(root, chosen).resolve() == expected_path
@@ -151,10 +151,10 @@ def test_output_root_rejects_selected_malformed_settings(
 ) -> None:
     (tmp_path / "config").mkdir()
     (tmp_path / "config/settings.yaml").write_text(settings)
-    monkeypatch.delenv("FEP_LEAN_OUTPUT_ROOT", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_OUTPUT_ROOT", raising=False)
     with pytest.raises(ValueError):
         FEPPipeline(tmp_path)
-    monkeypatch.setenv("FEP_LEAN_OUTPUT_ROOT", str(tmp_path / "environment"))
+    monkeypatch.setenv("FEP_FORMAL_OUTPUT_ROOT", str(tmp_path / "environment"))
     assert FEPPipeline(tmp_path).output_root == tmp_path / "environment"
     assert (
         FEPPipeline(tmp_path, output_root=tmp_path / "explicit").output_root
@@ -166,7 +166,7 @@ def test_output_root_without_settings_uses_project_default(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    monkeypatch.delenv("FEP_LEAN_OUTPUT_ROOT", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_OUTPUT_ROOT", raising=False)
     assert FEPPipeline(tmp_path).output_root == tmp_path / "output"
     assert not (tmp_path / "output").exists()
 
@@ -178,7 +178,7 @@ def test_empty_output_settings_use_default_without_mutation(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, settings: str
 ) -> None:
     """Absent output values are defaults, not permission to write configuration."""
-    monkeypatch.delenv("FEP_LEAN_OUTPUT_ROOT", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_OUTPUT_ROOT", raising=False)
     selected = tmp_path / "config/settings.yaml"
     selected.parent.mkdir()
     selected.write_text(settings)
@@ -213,7 +213,7 @@ def test_empty_or_invalid_selection_fails_before_services_and_writes(
     def forbidden(*_args: object, **_kwargs: object) -> None:
         pytest.fail("rejected selection must not reach capability, provider or writer")
 
-    monkeypatch.setattr("fep_lean.pipeline.core.run_validation_checks", forbidden)
+    monkeypatch.setattr("fep_formal.pipeline.core.run_validation_checks", forbidden)
     monkeypatch.setattr(pipeline, "_run_gauss", forbidden)
     monkeypatch.setattr(pipeline, "_write_artifacts", forbidden)
     result = pipeline.run(mode=mode, **filters)  # type: ignore[arg-type]
@@ -236,7 +236,7 @@ def test_pipeline_validates_selected_output_before_writing(
     pipeline = FEPPipeline(catalogue_project, output_root=selected)
     before = manuscript_owner_state(catalogue_project)
     monkeypatch.setattr(
-        "fep_lean.verification.environment.os.access",
+        "fep_formal.verification.environment.os.access",
         lambda path, _mode: Path(path) != selected,
     )
     monkeypatch.setattr(
@@ -259,8 +259,8 @@ def test_full_mode_fails_without_capabilities(
     # Actual absent capabilities, with no access to host tools or elan state.
     monkeypatch.setenv("PATH", "")
     monkeypatch.setenv("ELAN_HOME", str(tmp_path / "empty-elan"))
-    monkeypatch.delenv("FEP_LEAN_LEAN_EXE", raising=False)
-    monkeypatch.delenv("FEP_LEAN_LAKE_EXE", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_LEAN_EXE", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_LAKE_EXE", raising=False)
     result = FEPPipeline(catalogue_project, output_root=tmp_path / "output").run(
         mode="full", topic_filter=["fep-001"]
     )
@@ -302,7 +302,7 @@ def test_step_result_records_error() -> None:
 def test_filters_and_topic_cap(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, catalogue_project: Path
 ) -> None:
-    monkeypatch.setenv("FEP_LEAN_MAX_TOPICS", "2")
+    monkeypatch.setenv("FEP_FORMAL_MAX_TOPICS", "2")
     result = FEPPipeline(catalogue_project, output_root=tmp_path / "output").run(
         mode="catalogue", area_filter="FEP"
     )
@@ -319,11 +319,11 @@ def test_unknown_topic_is_an_error(tmp_path: Path, catalogue_project: Path) -> N
 
 
 def test_max_topics_from_env(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.delenv("FEP_LEAN_MAX_TOPICS", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_MAX_TOPICS", raising=False)
     assert _max_topics_from_env() is None
-    monkeypatch.setenv("FEP_LEAN_MAX_TOPICS", "3")
+    monkeypatch.setenv("FEP_FORMAL_MAX_TOPICS", "3")
     assert _max_topics_from_env() == 3
-    monkeypatch.setenv("FEP_LEAN_MAX_TOPICS", "0")
+    monkeypatch.setenv("FEP_FORMAL_MAX_TOPICS", "0")
     with pytest.raises(ValueError):
         _max_topics_from_env()
 
@@ -380,7 +380,7 @@ def test_full_pipeline_rejects_compiling_topic_with_warnings(
     )
     warning.as_dict = lambda: vars(warning).copy()
     monkeypatch.setattr(
-        "fep_lean.pipeline.core.run_validation_checks",
+        "fep_formal.pipeline.core.run_validation_checks",
         lambda *_args, **_kwargs: {
             "status": "ok",
             "failed_count": 0,

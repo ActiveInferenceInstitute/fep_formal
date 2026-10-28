@@ -16,8 +16,8 @@ from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
-FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
-BODIES_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "catalogue" / "bodies"
+FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal"
+BODIES_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "catalogue" / "bodies"
 COMPOSITIONS_ROOT = FORMAL_ROOT / "compositions"
 SPIKE_ROOT = PROJECT_ROOT / "specs" / "done" / "formalism-catalogue-155" / "spikes"
 

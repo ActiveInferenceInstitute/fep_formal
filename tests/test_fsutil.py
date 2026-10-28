@@ -8,8 +8,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.bridge.custody import write_text
-from fep_lean.output.fsutil import (
+from fep_formal.bridge.custody import write_text
+from fep_formal.output.fsutil import (
     SHA256_HEX_RE,
     atomic_write_bytes,
     atomic_write_text,

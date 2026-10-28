@@ -8,14 +8,14 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
 from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
-FOUNDATION = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "decision_risk.lean"
+FOUNDATION = PROJECT_ROOT / "src" / "fep_formal" / "formal" / "decision_risk.lean"
 
 
 EXACT_IMPORTS = (

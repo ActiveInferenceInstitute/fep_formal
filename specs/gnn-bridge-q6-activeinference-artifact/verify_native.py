@@ -6,8 +6,8 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 
-from fep_lean.bridge.operations import DOCUMENTS
-from fep_lean.verification.gnn_artifact_receipt import (
+from fep_formal.bridge.operations import DOCUMENTS
+from fep_formal.verification.gnn_artifact_receipt import (
     ArtifactContract,
     ArtifactVerifier,
     RenderBinding,
@@ -49,13 +49,13 @@ CONTRACT = ArtifactContract(
     targets=("FepSketches.gnn_denotation", "FepSketches.gnn_render_statements"),
     scope="Q6 raw embedded Boolean input tables; no consumed-C, Julia runtime, package-agent or EFE equivalence",
     render_route=ROUTE,
-    extractor="src/fep_lean/verification/gnn_julia_artifact_proof.py",
+    extractor="src/fep_formal/verification/gnn_julia_artifact_proof.py",
     adapter=f"{SLICE}/verify_native.py",
     extra_files=(
         f"{SLICE}/skeleton/canonical_bool_runner.jl.in",
         f"{SLICE}/fixtures/symmetric_renderer_input.json",
         f"{SLICE}/fixtures/asymmetric_renderer_input.json",
-        "src/fep_lean/verification/gnn_artifact_proof.py",
+        "src/fep_formal/verification/gnn_artifact_proof.py",
     ),
     render_bindings=(
         RenderBinding(

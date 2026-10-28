@@ -12,25 +12,25 @@ Each view answers a different question:
 | --- | --- |
 | What is the title, area, and Mathlib navigation hint? | [`config/catalogue_metadata.yaml`](../config/catalogue_metadata.yaml) |
 | What is the reviewed invariant, primary theorem, assumption boundary, non-vacuity argument, and disposition? | [`config/theorem_maturity.yaml`](../config/theorem_maturity.yaml) |
-| What Lean code is compiled? | Family modules under [`fep_lean.catalogue.bodies`](../src/fep_lean/catalogue/bodies/) merged by [`registry.py`](../src/fep_lean/catalogue/registry.py) |
+| What Lean code is compiled? | Family modules under [`fep_formal.catalogue.bodies`](../src/fep_formal/catalogue/bodies/) merged by [`registry.py`](../src/fep_formal/catalogue/registry.py) |
 | How are expansion rows distinguished from earlier work? | [`config/formalism_novelty.yaml`](../config/formalism_novelty.yaml) |
 | Which formal/conceptual/blocker links and capability states were explicitly reviewed? | [`config/formalism_relations.yaml`](../config/formalism_relations.yaml) |
 | What is the joined, human-readable coverage view? | [Formalism coverage](formalism-coverage.md) |
 | How do the reviewed nodes and edges look as a graph? | [Interactive formalism atlas](formalism-atlas.html) or [static SVG](formalism-atlas.svg) |
 | How do selected finite laws behave numerically? | [Interactive formal-kernel dashboard](formal-kernel-dashboard.html) or [static SVG](formal-kernel-dashboard.svg) |
-| Which proofs genuinely compose stable topic namespaces? | Manifested leaves under [`src/fep_lean/formal/compositions/`](../src/fep_lean/formal/compositions/); [`composed.lean`](../src/fep_lean/formal/composed.lean) imports them |
-| Which shared finite carriers and laws support those proofs? | [Formal-kernel methods](formal-kernel-methods.md) and [`src/fep_lean/formal/`](../src/fep_lean/formal/) |
+| Which proofs genuinely compose stable topic namespaces? | Manifested leaves under [`src/fep_formal/formal/compositions/`](../src/fep_formal/formal/compositions/); [`composed.lean`](../src/fep_formal/formal/composed.lean) imports them |
+| Which shared finite carriers and laws support those proofs? | [Formal-kernel methods](formal-kernel-methods.md) and [`src/fep_formal/formal/`](../src/fep_formal/formal/) |
 | What exact theorem statements and proofs appear in the publication appendix? | Generated `manuscript/09z_unified_formalism_catalogue.md` |
 | Did the current bytes compile? | A validated native receipt, normally `output/native-verification.json` |
 
-`config/topics.yaml` and `src/fep_lean/data/topics.yaml` are byte-identical
+`config/topics.yaml` and `src/fep_formal/data/topics.yaml` are byte-identical
 generated joins for checkout and installed-wheel use. Do not edit either one
 by hand.
 
 ## Inspect from Python
 
 ```python
-from fep_lean.catalogue import FEPTopicCatalogue
+from fep_formal.catalogue import FEPTopicCatalogue
 
 catalogue = FEPTopicCatalogue.default()
 topic = next(row for row in catalogue.topics if row.id == "fep-014")
@@ -50,19 +50,19 @@ from a source checkout.
 Generate deterministic offline projections:
 
 ```bash
-uv run fep-lean catalogue
+uv run fep-formal catalogue
 ```
 
 Compile one topic for development:
 
 ```bash
-uv run fep-lean verify --topic fep-014 --fail-on-warnings
+uv run fep-formal verify --topic fep-014 --fail-on-warnings
 ```
 
 Create publication-eligible native evidence for the exact roster:
 
 ```bash
-uv run fep-lean verify \
+uv run fep-formal verify \
   --fail-on-warnings \
   --receipt output/native-verification.json
 ```

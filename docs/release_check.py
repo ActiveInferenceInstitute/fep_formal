@@ -73,7 +73,7 @@ def _nested(data: dict[str, Any], *keys: str) -> str | None:
 
 def _lock_version(root: Path) -> str | None:
     packages = tomllib.loads(_text(root, "uv.lock")).get("package", [])
-    versions = [p.get("version") for p in packages if p.get("name") == "fep-lean"]
+    versions = [p.get("version") for p in packages if p.get("name") == "fep-formal"]
     return versions[0] if len(versions) == 1 else None
 
 
@@ -88,14 +88,18 @@ def _sidecar_release(root: Path) -> str | None:
 def read_versions(root: Path) -> dict[str, str | None]:
     """Every version-bearing source, keyed by the file a maintainer edits."""
     pyproject = tomllib.loads(_text(root, "pyproject.toml"))
+    compatibility = tomllib.loads(_text(root, "compat/fep-lean/pyproject.toml"))
     return {
         "pyproject.toml": pyproject.get("project", {}).get("version"),
-        "src/fep_lean/__init__.py": _assignment(
-            root, "src/fep_lean/__init__.py", "__version__"
+        "compat/fep-lean/pyproject.toml": compatibility.get("project", {}).get(
+            "version"
+        ),
+        "src/fep_formal/__init__.py": _assignment(
+            root, "src/fep_formal/__init__.py", "__version__"
         ),
         "release_bundle/_constants.py": _assignment(
             root,
-            "src/fep_lean/output/release_bundle/_constants.py",
+            "src/fep_formal/output/release_bundle/_constants.py",
             "_CANONICAL_RELEASE_VERSION",
         ),
         "CITATION.cff": _nested(_yaml(root, "CITATION.cff"), "version"),
@@ -118,7 +122,7 @@ def read_dates(root: Path) -> dict[str, str | None]:
         ),
         "release_bundle/_constants.py": _assignment(
             root,
-            "src/fep_lean/output/release_bundle/_constants.py",
+            "src/fep_formal/output/release_bundle/_constants.py",
             "_CANONICAL_RELEASE_DATE",
         ),
         SIDECAR: _nested(_yaml(root, SIDECAR), "meta", "updated"),
@@ -134,7 +138,7 @@ def read_release(root: Path) -> Release:
 
 _VERSION_RE = re.compile(r"\d+\.\d+\.\d+")
 _DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
-_CONSTANTS = "src/fep_lean/output/release_bundle/_constants.py"
+_CONSTANTS = "src/fep_formal/output/release_bundle/_constants.py"
 
 
 def _sub_once(text: str, pattern: str, replacement: str) -> str:
@@ -158,7 +162,12 @@ def bump(root: Path, version: str, date: str) -> tuple[str, ...]:
     qv, qd = f'"{version}"', f'"{date}"'
     edits: dict[str, list[tuple[str, str]]] = {
         "pyproject.toml": [(r'^version\s*=\s*"[^"]+"', f"version = {qv}")],
-        "src/fep_lean/__init__.py": [
+        "compat/fep-lean/pyproject.toml": [
+            (r'^version\s*=\s*"[^"]+"', f"version = {qv}"),
+            (r"fep-formal==[0-9.]+", f"fep-formal=={version}"),
+            (r"fep-formal\[dev\]==[0-9.]+", f"fep-formal[dev]=={version}"),
+        ],
+        "src/fep_formal/__init__.py": [
             (r'^__version__\s*=\s*"[^"]+"', f"__version__ = {qv}")
         ],
         _CONSTANTS: [
@@ -214,6 +223,19 @@ def metadata_errors(root: Path) -> tuple[str, ...]:
         for source, value in read_dates(root).items()
         if value != release.date
     ]
+    compatibility = tomllib.loads(_text(root, "compat/fep-lean/pyproject.toml"))[
+        "project"
+    ]
+    if compatibility.get("dependencies") != [f"fep-formal=={release.version}"]:
+        errors.append(
+            "compat/fep-lean/pyproject.toml dependency must match the canonical version"
+        )
+    if compatibility.get("optional-dependencies", {}).get("dev") != [
+        f"fep-formal[dev]=={release.version}"
+    ]:
+        errors.append(
+            "compat/fep-lean/pyproject.toml dev extra must match the canonical version"
+        )
     headings = re.findall(r"(?m)^## .*$", _text(root, "CHANGELOG.md"))
     if not any(h.startswith(_heading(release)) for h in headings):
         errors.append(f"CHANGELOG.md lacks a '{_heading(release)}' section")
@@ -341,7 +363,7 @@ def main(argv: list[str] | None = None) -> int:
         print(
             f"  1. add a '## {args.bump} — {args.date} — title' section to CHANGELOG.md"
         )
-        print("  2. uv lock   # refreshes the fep-lean entry in uv.lock")
+        print("  2. uv lock   # refreshes the fep-formal entry in uv.lock")
         print("  3. uv run python docs/release_check.py")
         return 0
     release = read_release(root)

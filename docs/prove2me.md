@@ -6,7 +6,7 @@ file that the platform type-checks server-side against that statement. A submiss
 receives a verdict (`ACCEPTED`, `SKETCH_ACCEPTED`, `CE`, `WA`, `SORRY`, `FAILED`, or
 `ERROR`) once checking completes.
 
-The `fep_lean.prove2me` package is a stdlib-only client for this platform: credential
+The `fep_formal.prove2me` package is a stdlib-only client for this platform: credential
 resolution, bearer-token auth with automatic re-exchange, mission/theorem search,
 proposal drafting, proof submission, and verdict polling. It follows the same
 transport and error conventions as the [Hermes](hermes.md) client.
@@ -34,7 +34,7 @@ call is 401 again, `Prove2meAuthError` is raised.
 ## Python usage
 
 ```python
-from fep_lean.prove2me import (
+from fep_formal.prove2me import (
     Prove2meClient,
     Prove2meConfig,
     submit_solution,

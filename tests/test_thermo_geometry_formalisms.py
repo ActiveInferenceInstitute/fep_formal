@@ -9,21 +9,21 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.bodies.geometric_optimization import (
+from fep_formal.catalogue.bodies.geometric_optimization import (
     BODIES as GEOMETRY_BODIES,
 )
-from fep_lean.catalogue.bodies.path_thermodynamics import BODIES as THERMO_BODIES
+from fep_formal.catalogue.bodies.path_thermodynamics import BODIES as THERMO_BODIES
 from tests._support.lake import lake_executable
 from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
-FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
+FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal"
 
 THERMO_IDS = tuple(f"fep-{number:03d}" for number in range(93, 100))
 GEOMETRY_IDS = tuple(f"fep-{number:03d}" for number in range(100, 107))
-RUN_NATIVE = os.environ.get("FEP_LEAN_SLICE05_COMPILE_TEST") == "1"
+RUN_NATIVE = os.environ.get("FEP_FORMAL_SLICE05_COMPILE_TEST") == "1"
 
 THERMO_TITLES = (
     "Forward and Reverse Finite Path-Law Ratio",
@@ -201,7 +201,7 @@ def test_slice05_go_no_go_bodies_are_substantive() -> None:
 @pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
-    reason="set FEP_LEAN_SLICE05_COMPILE_TEST=1 for serialized native checks",
+    reason="set FEP_FORMAL_SLICE05_COMPILE_TEST=1 for serialized native checks",
 )
 @pytest.mark.parametrize("topic_id", ("fep-099", "fep-102", "fep-103"))
 def test_slice05_gate_topics_compile_warning_free(
@@ -217,7 +217,7 @@ def test_slice05_gate_topics_compile_warning_free(
 @pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
-    reason="set FEP_LEAN_SLICE05_COMPILE_TEST=1 for serialized native checks",
+    reason="set FEP_FORMAL_SLICE05_COMPILE_TEST=1 for serialized native checks",
 )
 @pytest.mark.parametrize(
     "resource", ("path_thermodynamics.lean", "geometric_optimization.lean")
@@ -232,7 +232,7 @@ def test_slice05_foundations_compile_warning_free(resource: str) -> None:
 @pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
-    reason="set FEP_LEAN_SLICE05_COMPILE_TEST=1 for serialized native checks",
+    reason="set FEP_FORMAL_SLICE05_COMPILE_TEST=1 for serialized native checks",
 )
 @pytest.mark.parametrize(
     ("topic_id", "body"), (*THERMO_BODIES.items(), *GEOMETRY_BODIES.items())

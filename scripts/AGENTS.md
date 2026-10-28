@@ -1,6 +1,6 @@
 # Scripts contract
 
-Public execution belongs to `src/fep_lean/cli.py` and the `fep-lean` console entry
+Public execution belongs to `src/fep_formal/cli.py` and the `fep-formal` console entry
 point. Script files may only provide thin wrappers or deterministic maintenance
 operations; they must not import packages outside this checkout.
 
@@ -8,7 +8,7 @@ operations; they must not import packages outside this checkout.
 installation at `.python-version`, environment checks, two guarded setup
 passes, then catalogue and figure materialization. Its `--catalogue-only`
 tier omits Lean and rasterization. Keep pin validation, cache-miss rejection,
-and deadline enforcement in `fep-lean setup`; do not duplicate that policy in
+and deadline enforcement in `fep-formal setup`; do not duplicate that policy in
 the shell wrapper. The kit prepares local gates but does not refresh custody,
 native, or render receipts. Publication rendering and external full-mode
 services remain separate tiers in [getting started](../docs/getting-started.md).
@@ -17,7 +17,7 @@ and isolated acceptance. Preserve the ordering and acceptance boundaries in
 the [render runbook](README.md#local-render-runbook).
 
 Canonical authoring lives outside this wrapper directory: family-owned modules
-under `src/fep_lean/catalogue/bodies/`, the validated catalogue registry,
+under `src/fep_formal/catalogue/bodies/`, the validated catalogue registry,
 `config/catalogue_metadata.yaml`, `config/theorem_maturity.yaml`,
 `config/formalism_novelty.yaml`, and `config/formalism_relations.yaml`.
 `_maint_build_topics_catalogue.py`,
@@ -39,8 +39,8 @@ errors and dropped glyphs; that template is a separate repository and this
 wrapper does not accept its verdict. `build_render_fonts.py` owns the derived
 font requirement (`docs/render-fonts.json`, `--check` in CI) and the host
 probe. None of the three reconstructs a roster or a policy: the acceptance
-predicates live in `fep_lean.output.render_log`, the requirement in
-`fep_lean.output.render_fonts`.
+predicates live in `fep_formal.output.render_log`, the requirement in
+`fep_formal.output.render_fonts`.
 
 A clean acceptance writes `docs/render-acceptance.json`, and CI runs
 `check_render_log.py --verify-receipt` against it -- both after a real
@@ -52,7 +52,7 @@ The version-2 receipt binds every typeset manuscript source, including
 `manuscript/preamble.md`, plus the cover configuration and bibliography, so
 changing these inputs without a fresh render fails CI. The digest binds the byte-exact generated appendix too
 (e.g. `09z_unified_formalism_catalogue.md`), so a `src/` count change that
-regenerates it via `fep-lean catalogue` moves the digest and stales the
+regenerates it via `fep-formal catalogue` moves the digest and stales the
 receipt; `manuscript_projection_drift` and `stale_render_defects` own the
 placeholder-resolution surface and both run on the render path. A rejected
 render writes no receipt and
@@ -61,7 +61,7 @@ so the digest alone would let a superseded receipt keep vouching. The digests
 are recorded per file, so a stale receipt names what moved.
 
 `build_release_bundle.py` is a thin public wrapper over
-`fep_lean.output.release_bundle`. It never reconstructs the archive roster,
+`fep_formal.output.release_bundle`. It never reconstructs the archive roster,
 renderer policy, manifest, checksum table, or evidence boundaries. `--check`
 must remain non-mutating and bind an existing archive back to current sources.
 Generated Lean output is tracked and must be regeneration-identical. The formal
@@ -73,11 +73,11 @@ from the committed SVG projections) and the authored graphical-abstract asset
 the manuscript cites, copying each into `output/figures/`; `--check` fails
 when a cited PNG is missing or older than its source. The write pass must
 precede the check on a fresh checkout because `output/` is gitignored; CI
-runs exactly that pair after `fep-lean catalogue`. It reconstructs no roster:
-the cited-figure map lives in `fep_lean.output.svg_raster`.
+runs exactly that pair after `fep-formal catalogue`. It reconstructs no roster:
+the cited-figure map lives in `fep_formal.output.svg_raster`.
 
 `build_graphical_abstract.py` is the graphical abstract's producer (thin
-wrapper over `fep_lean.output.graphical_abstract`): it regenerates the
+wrapper over `fep_formal.output.graphical_abstract`): it regenerates the
 sha256-pinned canonical asset `manuscript/assets/graphical-abstract.png`
 byte-deterministically as an 8-bit non-interlaced RGB PNG, and `--check`
 validates the committed asset against its config pin without writing. A new
@@ -87,17 +87,17 @@ other tool write it: the pinned digest must keep describing pixels this
 producer generated.
 
 `verify_report_receipt.py` is a thin wrapper over
-`fep_lean.output.reporter.validate_report_receipt`: it recomputes a report
+`fep_formal.output.reporter.validate_report_receipt`: it recomputes a report
 bundle's artifact hashes, reconciles the summary, run, and verification
 manifests, and compares stored digests with a live checkout.
 `--require-complete` additionally demands a complete, non-empty, zero-warning
 full-mode receipt. It never reruns the pipeline.
 
 `capture_browser_acceptance.py` is a thin wrapper over
-`fep_lean.output.browser_capture.capture_browser_acceptance`: it records the
+`fep_formal.output.browser_capture.capture_browser_acceptance`: it records the
 canonical Chrome/CDP acceptance receipt plus six bound screenshots under
 `output/`. It needs a local browser and is not part of CI; the receipt it
-writes is what `fep_lean.output.release_bundle` validation consumes.
+writes is what `fep_formal.output.release_bundle` validation consumes.
 
 The local verify cache-reuse path lives slice-locally under
 `specs/ci-velocity-local-cache/` (not a `scripts/` wrapper, deliberately

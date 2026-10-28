@@ -11,15 +11,17 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean import __version__
-from fep_lean.formal.manifest import FORMAL_MODULES
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal import __version__
+from fep_formal.formal.manifest import FORMAL_MODULES
+from fep_formal.lean_source import lean_code_without_comments
+from tests._support.custody_fixture_knobs import _logical_source
 from tests._support.h2_r0_custody import (
     H3_ADDED_OWNERS,
     H3_ADDENDUM_PATH,
     H3_OWNER_SOURCE_PATHS,
     MANIFEST_PATH,
     PRIOR_PATH,
+    RECORDED_MANIFEST_PATH,
     RELEASE_METADATA_REPLACEMENTS,
     SUCCESSOR_PATH,
     VALIDATOR_PATH,
@@ -38,6 +40,7 @@ from tests._support.lean435_migration import (
     historical_carrier_bytes,
     historical_custody_root,
     historical_custody_sources,
+    historical_custody_validator_bytes,
     historical_manifest_bytes,
     historical_metadata_bytes,
     historical_toolchain_files,
@@ -85,12 +88,12 @@ SOURCE_BOUND_PATHS = (
     "uv.lock",
     "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json",
     "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
-    "src/fep_lean/formal/manifest.py",
-    "src/fep_lean/formal/gaussian_information_geometry.lean",
+    "src/fep_formal/formal/manifest.py",
+    "src/fep_formal/formal/gaussian_information_geometry.lean",
     "lean/FepSketches/gaussian_information_geometry.lean",
-    "src/fep_lean/formal/smooth_information_geometry.lean",
+    "src/fep_formal/formal/smooth_information_geometry.lean",
     "lean/FepSketches/smooth_information_geometry.lean",
-    "src/fep_lean/formal/compositions/gaussian_filter.lean",
+    "src/fep_formal/formal/compositions/gaussian_filter.lean",
     "lean/FepSketches/compositions/gaussian_filter.lean",
     "specs/done/horizon-2-smooth-stochastic/slices/07-r0-gaussian-vfe-natural-gradient.md",
     "specs/done/horizon-2-smooth-stochastic/spikes/07_gaussian_vfe_natural_gradient.lean",
@@ -191,7 +194,9 @@ def _production_custody_snapshot() -> dict[str, bytes]:
     }
     for relative in records:
         paths.update(json.loads((root / relative).read_bytes())["source_sha256"])
-    return {relative: (root / relative).read_bytes() for relative in paths}
+    return {
+        relative: _logical_source(root, relative).read_bytes() for relative in paths
+    }
 
 
 def _copy_historical_custody_inputs(source: Path, destination: Path) -> None:
@@ -205,9 +210,10 @@ def _copy_historical_custody_inputs(source: Path, destination: Path) -> None:
         HISTORICAL_METADATA_ARCHIVE,
         "tests/fixtures/custody_toolchain_4_34_1.json",
     }:
-        target = destination / relative
+        physical = _logical_source(source, relative)
+        target = destination / physical.relative_to(source)
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source / relative, target)
+        shutil.copy2(physical, target)
 
 
 def _parse_axiom_names(block: str) -> frozenset[str]:
@@ -245,7 +251,7 @@ def _run_lean(source_text: str) -> subprocess.CompletedProcess[str]:
         probe.write_text(source_text, encoding="utf-8")
         return run_lean_probe(
             probe,
-            import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+            import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
             cwd=LEAN_ROOT,
             timeout_s=1800,
         )
@@ -406,7 +412,7 @@ def test_h2_7_r0_is_source_bound_and_reuses_exact_owners() -> None:
         owner = modules[lean_module]
         assert owner.resource == resource
         assert owner.declaration_namespace == namespace
-        canonical = PROJECT_ROOT / "src" / "fep_lean" / "formal" / resource
+        canonical = PROJECT_ROOT / "src" / "fep_formal" / "formal" / resource
         projection = LEAN_ROOT / "FepSketches" / resource
         assert projection.read_bytes() == canonical.read_bytes()
 
@@ -572,7 +578,9 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         match=r"^H3 owner subtraction does not recover the historical custody manifest$",
     ):
         validate_h2_r0_custody(PROJECT_ROOT)
-    assert _sha256(PROJECT_ROOT / VALIDATOR_PATH) == (
+    assert hashlib.sha256(
+        historical_custody_validator_bytes((PROJECT_ROOT / VALIDATOR_PATH).read_bytes())
+    ).hexdigest() == (
         "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53"
     )
     assert _sha256(PROJECT_ROOT / SUCCESSOR_PATH) == (
@@ -683,9 +691,15 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         == W4_CODE_CONSOLIDATION
     )
     assert set(successor["source_sha256"]) == {
-        *SOURCE_BOUND_PATHS,
+        *(
+            path.replace("src/fep_formal/", "src/fep_lean/", 1)
+            for path in SOURCE_BOUND_PATHS
+        ),
         VALIDATOR_PATH,
-        *H3_OWNER_SOURCE_PATHS,
+        *(
+            path.replace("src/fep_formal/", "src/fep_lean/", 1)
+            for path in H3_OWNER_SOURCE_PATHS
+        ),
     }
     historical_pins = historical_toolchain_files(Path(__file__).resolve().parents[1])
     historical_manifest = historical_manifest_bytes(
@@ -696,11 +710,11 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         (PROJECT_ROOT / "pyproject.toml").read_bytes(),
     )
     migrated_sources = {
-        "src/fep_lean/formal/gaussian_information_geometry.lean",
+        "src/fep_formal/formal/gaussian_information_geometry.lean",
         "lean/FepSketches/gaussian_information_geometry.lean",
-        "src/fep_lean/formal/smooth_information_geometry.lean",
+        "src/fep_formal/formal/smooth_information_geometry.lean",
         "lean/FepSketches/smooth_information_geometry.lean",
-        "src/fep_lean/formal/compositions/gaussian_filter.lean",
+        "src/fep_formal/formal/compositions/gaussian_filter.lean",
         "lean/FepSketches/compositions/gaussian_filter.lean",
     }
     historical_only = {
@@ -708,8 +722,11 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
         *H3_OWNER_SOURCE_PATHS,
     }
     for relative, digest in successor["source_sha256"].items():
+        relative = relative.replace("src/fep_lean/", "src/fep_formal/", 1)
         live = (PROJECT_ROOT / relative).read_bytes()
-        if relative in historical_pins:
+        if relative == VALIDATOR_PATH:
+            historical = historical_custody_validator_bytes(live)
+        elif relative in historical_pins:
             historical = historical_pins[relative]
         elif relative == MANIFEST_PATH:
             historical = historical_manifest
@@ -717,8 +734,14 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
             historical = historical_metadata
         elif relative == "uv.lock":
             historical = bridge_dev_lock_predecessor(live)
+            anchor = b'[[package]]\nname = "fep-lean"\nversion = '
+            current = anchor + f'"{__version__}"\n'.encode()
+            assert historical.count(current) == 1
+            historical = historical.replace(current, anchor + b'"1.4.0"\n', 1)
         elif relative in migrated_sources:
-            canonical = relative.replace("lean/FepSketches/", "src/fep_lean/formal/", 1)
+            canonical = relative.replace(
+                "lean/FepSketches/", "src/fep_formal/formal/", 1
+            )
             historical = historical_carrier_bytes(canonical, live)
         elif relative in historical_only:
             # The immutable addendum above seals these historical hashes.
@@ -729,10 +752,11 @@ def test_h2_7_r0_repair_is_source_bound_append_only_go() -> None:
             historical = live
         assert hashlib.sha256(historical).hexdigest() == digest, relative
     assert {
-        relative
+        relative.replace("src/fep_lean/", "src/fep_formal/", 1)
         for relative, digest in successor["source_sha256"].items()
-        if _sha256(PROJECT_ROOT / relative) != digest
+        if _sha256(_logical_source(PROJECT_ROOT, relative)) != digest
     } == set(historical_pins) | migrated_sources | historical_only | {
+        VALIDATOR_PATH,
         MANIFEST_PATH,
         "pyproject.toml",
         "uv.lock",
@@ -770,7 +794,7 @@ def test_historical_custody_control_is_positive_and_explicitly_non_native(
     }
     for relative, data in originals.items():
         assert (restored / relative).read_bytes() == data
-        assert (root / relative).read_bytes() != data
+        assert _logical_source(root, relative).read_bytes() != data
     manifest = (restored / MANIFEST_PATH).read_bytes()
     assert historical_manifest_bytes(root, manifest) == manifest
     assert (
@@ -792,10 +816,22 @@ def test_historical_custody_control_is_positive_and_explicitly_non_native(
     assert marker["archived_source_execution"] is False
     assert before == _production_custody_snapshot()
 
+    validator = (root / VALIDATOR_PATH).read_bytes()
+    historical_validator = historical_custody_validator_bytes(validator)
+    assert (
+        historical_custody_validator_bytes(historical_validator) == historical_validator
+    )
+    assert (restored / VALIDATOR_PATH).read_bytes() == historical_validator
+    for changed_validator in (validator + b"\n", historical_validator + b"\n"):
+        with pytest.raises(AssertionError, match="unreviewed live custody validator"):
+            historical_custody_validator_bytes(changed_validator)
+
     # Exact proof-refactor replay is a static historical control, not H3 acceptance.
     from tests._support import lean435_migration as migration
 
-    scalar = (root / "src/fep_lean/formal/scalar_gaussian_semigroup.lean").read_bytes()
+    scalar = (
+        root / "src/fep_formal/formal/scalar_gaussian_semigroup.lean"
+    ).read_bytes()
     archived = (root / migration._HISTORICAL_SCALAR_REPLAY).read_bytes()
     assert (
         migration.historical_scalar_static_replay_source(scalar, archived) == archived
@@ -869,7 +905,7 @@ def test_historical_manifest_companion_tampering_refuses_before_decode_and_writi
         if tamper == "metadata":
             payload["source_commit"] = "0" * 40
         else:
-            payload["files"][MANIFEST_PATH]["data"] = "not-archived-source"
+            payload["files"][RECORDED_MANIFEST_PATH]["data"] = "not-archived-source"
         changed = json.dumps(payload).encode()
     resource.write_bytes(changed)
 
@@ -1021,7 +1057,7 @@ def test_historical_custody_control_refuses_source_drift_before_writing(
     _copy_historical_custody_inputs(root, source)
     relative = {
         "spike": "specs/done/horizon-2-smooth-stochastic/spikes/07_gaussian_vfe_natural_gradient.lean",
-        "owner": "src/fep_lean/formal/gaussian_information_geometry.lean",
+        "owner": "src/fep_formal/formal/gaussian_information_geometry.lean",
         "manifest": MANIFEST_PATH,
         "category_role": MANIFEST_PATH,
     }.get(tamper, "pyproject.toml")
@@ -1143,7 +1179,7 @@ def test_h2_7_r0_custody_rejects_tampering(tmp_path: Path, tamper: str) -> None:
         manifest_path.write_text(manifest, encoding="utf-8")
         # Even rebinding the live manifest hash must not authorize owner drift.
         digest = _sha256(manifest_path)
-        successor["source_sha256"][MANIFEST_PATH] = digest
+        successor["source_sha256"][RECORDED_MANIFEST_PATH] = digest
         successor["manifest_transition"]["current_sha256"] = digest
     # A semantically unchanged successor keeps its original sealed bytes,
     # allowing source-only tampering to reach its own source-digest guard.
@@ -1312,7 +1348,7 @@ def test_h2_7_h3_custody_addendum_rejects_tampering(
         # A matching current digest cannot authorize different owner bytes,
         # order, roles, or changes to any reconstructed historical code.
         digest = _sha256(manifest_path)
-        addendum["source_sha256"][MANIFEST_PATH] = digest
+        addendum["source_sha256"][RECORDED_MANIFEST_PATH] = digest
         addendum["manifest_transition"]["current_sha256"] = digest
     addendum_path.write_text(json.dumps(addendum), encoding="utf-8")
     expected = H3_TAMPER_ERRORS[tamper]

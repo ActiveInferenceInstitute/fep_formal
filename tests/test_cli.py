@@ -1,4 +1,4 @@
-"""Tests for the canonical fep-lean command-line entrypoint."""
+"""Tests for the canonical fep-formal command-line entrypoint."""
 
 from __future__ import annotations
 
@@ -9,11 +9,11 @@ from typing import ClassVar
 
 import pytest
 
-from fep_lean import cli
-from fep_lean._paths import project_root_errors
-from fep_lean.verification import environment as environment_module
-from fep_lean.verification import lean_verifier as verifier_module
-from fep_lean.verification._toolchain import pinned_lean_semver, read_toolchain_pin
+from fep_formal import cli
+from fep_formal._paths import project_root_errors
+from fep_formal.verification import environment as environment_module
+from fep_formal.verification import lean_verifier as verifier_module
+from fep_formal.verification._toolchain import pinned_lean_semver, read_toolchain_pin
 
 PROJ = Path(__file__).resolve().parent.parent
 _TOOLCHAIN_PIN = read_toolchain_pin(PROJ / "lean")
@@ -45,8 +45,8 @@ def _make_checkout_root(root: Path) -> None:
             '{"packages":[{"name":"mathlib","rev":"' + "a" * 40 + '"}]}\n',
         ),
         ("manuscript/config.yaml", "{}\n"),
-        ("src/fep_lean/__init__.py", "\n"),
-        ("src/fep_lean/catalogue/registry.py", "BODIES = {}\n"),
+        ("src/fep_formal/__init__.py", "\n"),
+        ("src/fep_formal/catalogue/registry.py", "BODIES = {}\n"),
     ):
         path = root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -181,11 +181,11 @@ def setup_checkout(tmp_path: Path, monkeypatch) -> Path:
         f"    print('Lean (version ' + behavior.get('lean_version', '{_PINNED_LEAN_VERSION}') + ', fixture, Release)')\n"
     )
     lake.chmod(0o755)
-    monkeypatch.setenv("FEP_LEAN_LAKE_EXE", str(lake))
+    monkeypatch.setenv("FEP_FORMAL_LAKE_EXE", str(lake))
     monkeypatch.setenv("ELAN_HOME", str(tmp_path / "elan"))
-    monkeypatch.delenv("FEP_LEAN_DIR", raising=False)
-    monkeypatch.delenv("FEP_LEAN_SETUP_TIMEOUT_SEC", raising=False)
-    monkeypatch.delenv("FEP_LEAN_ELAN_EXE", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_DIR", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_ELAN_EXE", raising=False)
     # Keep real git available; no user elan fallback is needed in these tests.
     monkeypatch.setenv("PATH", os.environ["PATH"])
     return tmp_path
@@ -350,7 +350,7 @@ def test_setup_bootstraps_when_lake_is_unavailable(
     )
     elan.chmod(0o755)
     monkeypatch.setattr(environment_module, "find_executable", lambda *_args: None)
-    monkeypatch.setenv("FEP_LEAN_ELAN_EXE", str(elan))
+    monkeypatch.setenv("FEP_FORMAL_ELAN_EXE", str(elan))
     _setup_behavior(root, require_helper=True)
     assert cli._setup(root) == 0
     assert _setup_calls(root)[-1] == ["--wfail", "build", "FepSketches"]
@@ -360,7 +360,7 @@ def test_setup_missing_elan(setup_checkout: Path, monkeypatch, capsys) -> None:
     monkeypatch.setattr(environment_module, "find_executable", lambda *_args: None)
     monkeypatch.setenv("PATH", "")
     assert cli._setup(setup_checkout) == 1
-    assert "install elan or set FEP_LEAN_ELAN_EXE" in capsys.readouterr().out
+    assert "install elan or set FEP_FORMAL_ELAN_EXE" in capsys.readouterr().out
     assert not _setup_calls(setup_checkout)
 
 
@@ -369,14 +369,14 @@ def test_setup_elan_acquisition_failure(setup_checkout: Path, monkeypatch) -> No
     elan.write_text("#!/bin/sh\nexit 7\n")
     elan.chmod(0o755)
     monkeypatch.setattr(environment_module, "find_executable", lambda *_args: None)
-    monkeypatch.setenv("FEP_LEAN_ELAN_EXE", str(elan))
+    monkeypatch.setenv("FEP_FORMAL_ELAN_EXE", str(elan))
     assert cli._setup(setup_checkout) == 7
     assert not _setup_calls(setup_checkout)
 
 
 @pytest.mark.parametrize("timeout", ["not-an-int", "0", "-1"])
 def test_setup_rejects_invalid_timeout(monkeypatch, tmp_path: Path, timeout) -> None:
-    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", timeout)
+    monkeypatch.setenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", timeout)
     assert cli._setup(tmp_path) == 1
 
 
@@ -388,7 +388,7 @@ def test_setup_deadline_kills_real_descendant(
     import time
 
     _setup_behavior(setup_checkout, hang_at=["--wfail", "exe", "cache", "get"])
-    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "2")
+    monkeypatch.setenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", "2")
     start = time.monotonic()
     assert cli._setup(setup_checkout) == 1
     assert time.monotonic() - start < 8
@@ -437,7 +437,7 @@ def test_setup_shell_delegates_to_locked_cli(tmp_path: Path) -> None:
         "--locked",
         "--project",
         str(PROJ),
-        "fep-lean",
+        "fep-formal",
         "--project-root",
         str(PROJ),
         "setup",
@@ -753,7 +753,7 @@ def test_print_result_returns_1_for_incomplete_object_without_as_dict() -> None:
 
 def test_main_returns_2_for_unsupported_command(monkeypatch, tmp_path: Path) -> None:
     """An unrecognised subcommand returns exit code 2 via argparse error."""
-    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "1800")
+    monkeypatch.setenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", "1800")
     try:
         cli.main(["--project-root", str(tmp_path), "nonexistent"])
         assert False, "expected SystemExit"
@@ -823,19 +823,19 @@ def test_every_package_exception_is_a_fep_lean_error() -> None:
     import inspect
     import pkgutil
 
-    import fep_lean
-    from fep_lean import FepLeanError
+    import fep_formal
+    from fep_formal import FepLeanError
 
-    assert "FepLeanError" in fep_lean.__all__
+    assert "FepLeanError" in fep_formal.__all__
     # These two modules are hash-pinned by the Q5/Q6/Q7 artifact-proof manifests
     # and retained native receipts; adopting the base needs a coordinated
     # evidence refresh, so they are tracked here rather than silently skipped.
     pinned = {
-        "fep_lean.verification.gnn_artifact_proof",
-        "fep_lean.verification.gnn_continuous_artifact_proof",
+        "fep_formal.verification.gnn_artifact_proof",
+        "fep_formal.verification.gnn_continuous_artifact_proof",
     }
     found = 0
-    for info in pkgutil.walk_packages(fep_lean.__path__, "fep_lean."):
+    for info in pkgutil.walk_packages(fep_formal.__path__, "fep_formal."):
         module = importlib.import_module(info.name)
         for name, obj in vars(module).items():
             if (
@@ -856,12 +856,12 @@ def test_setup_legacy_alias_is_canonical_acquisition_operation() -> None:
 def test_cli_explicit_root_precedes_nested_caller_without_environment_mutation(
     tmp_path: Path, monkeypatch, capsys
 ) -> None:
-    from fep_lean._paths import project_root, project_root_context
+    from fep_formal._paths import project_root, project_root_context
 
     env_root, caller_root, cli_root = (
         tmp_path / name for name in ("env", "caller", "cli")
     )
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(env_root))
+    monkeypatch.setenv("FEP_FORMAL_PROJECT_ROOT", str(env_root))
     before = dict(os.environ)
     observed = []
 
@@ -886,7 +886,7 @@ def test_cli_explicit_root_precedes_nested_caller_without_environment_mutation(
 def test_cli_context_resets_after_handler_failure(
     tmp_path: Path, monkeypatch, capsys
 ) -> None:
-    from fep_lean._paths import project_root, project_root_context
+    from fep_formal._paths import project_root, project_root_context
 
     def reject(*_args):
         raise OSError("actual handler failed")
@@ -910,7 +910,7 @@ def test_concurrent_cli_roots_do_not_cross_or_mutate_environment(
     from concurrent.futures import ThreadPoolExecutor
     from threading import Barrier
 
-    from fep_lean._paths import project_root
+    from fep_formal._paths import project_root
 
     barrier = Barrier(2)
     before = dict(os.environ)
@@ -939,30 +939,33 @@ def test_concurrent_cli_roots_do_not_cross_or_mutate_environment(
 
 
 _ERROR_TYPES = [
-    ("fep_lean._paths", "FepLeanError"),
-    ("fep_lean.llm.hermes", "HermesAPIError"),
-    ("fep_lean.methods.model", "PositioningError"),
-    ("fep_lean.methods.probes", "BoundaryProbeError"),
-    ("fep_lean.prove2me.config", "Prove2meError"),
-    ("fep_lean.prove2me.config", "Prove2meConfigError"),
-    ("fep_lean.prove2me.config", "Prove2meAuthError"),
-    ("fep_lean.prove2me.config", "Prove2meAPIError"),
-    ("fep_lean.prove2me.config", "Prove2meTransportError"),
-    ("fep_lean.prove2me.config", "Prove2meTimeoutError"),
-    ("fep_lean.output.rendering", "ManuscriptRenderError"),
-    ("fep_lean.output.publication_metadata", "PublicationMetadataError"),
-    ("fep_lean.output.browser_capture", "BrowserCaptureError"),
-    ("fep_lean.output.svg_raster", "SvgRasterError"),
-    ("fep_lean.output.render_fonts", "FontProbeError"),
-    ("fep_lean.output.release_bundle._core", "ReleaseBundleError"),
-    ("fep_lean.verification.gnn_continuous_artifact_proof", "ContinuousArtifactError"),
-    ("fep_lean.verification.gnn_artifact_proof", "ArtifactProofError"),
-    ("fep_lean.custody.refresh", "RefreshRefused"),
-    ("fep_lean.custody.apply", "ApplyRefused"),
-    ("fep_lean.catalogue.registry", "RegistryValidationError"),
-    ("fep_lean.catalogue.semantics", "SemanticValidationError"),
-    ("fep_lean.catalogue.topics", "CatalogueValidationError"),
-    ("fep_lean.catalogue.novelty", "NoveltyValidationError"),
+    ("fep_formal._paths", "FepLeanError"),
+    ("fep_formal.llm.hermes", "HermesAPIError"),
+    ("fep_formal.methods.model", "PositioningError"),
+    ("fep_formal.methods.probes", "BoundaryProbeError"),
+    ("fep_formal.prove2me.config", "Prove2meError"),
+    ("fep_formal.prove2me.config", "Prove2meConfigError"),
+    ("fep_formal.prove2me.config", "Prove2meAuthError"),
+    ("fep_formal.prove2me.config", "Prove2meAPIError"),
+    ("fep_formal.prove2me.config", "Prove2meTransportError"),
+    ("fep_formal.prove2me.config", "Prove2meTimeoutError"),
+    ("fep_formal.output.rendering", "ManuscriptRenderError"),
+    ("fep_formal.output.publication_metadata", "PublicationMetadataError"),
+    ("fep_formal.output.browser_capture", "BrowserCaptureError"),
+    ("fep_formal.output.svg_raster", "SvgRasterError"),
+    ("fep_formal.output.render_fonts", "FontProbeError"),
+    ("fep_formal.output.release_bundle._core", "ReleaseBundleError"),
+    (
+        "fep_formal.verification.gnn_continuous_artifact_proof",
+        "ContinuousArtifactError",
+    ),
+    ("fep_formal.verification.gnn_artifact_proof", "ArtifactProofError"),
+    ("fep_formal.custody.refresh", "RefreshRefused"),
+    ("fep_formal.custody.apply", "ApplyRefused"),
+    ("fep_formal.catalogue.registry", "RegistryValidationError"),
+    ("fep_formal.catalogue.semantics", "SemanticValidationError"),
+    ("fep_formal.catalogue.topics", "CatalogueValidationError"),
+    ("fep_formal.catalogue.novelty", "NoveltyValidationError"),
 ]
 
 
@@ -970,8 +973,8 @@ _ERROR_TYPES = [
 def test_all_owned_errors_share_public_base(module, name):
     import importlib
 
-    from fep_lean import FepLeanError
-    from fep_lean._paths import FepLeanError as owned_base
+    from fep_formal import FepLeanError
+    from fep_formal._paths import FepLeanError as owned_base
 
     error = getattr(importlib.import_module(module), name)
     assert FepLeanError is owned_base
@@ -979,8 +982,8 @@ def test_all_owned_errors_share_public_base(module, name):
 
 
 def test_proof_error_legacy_ancestry_and_setup_identity():
-    from fep_lean.verification.gnn_artifact_proof import ArtifactProofError
-    from fep_lean.verification.gnn_continuous_artifact_proof import (
+    from fep_formal.verification.gnn_artifact_proof import ArtifactProofError
+    from fep_formal.verification.gnn_continuous_artifact_proof import (
         ContinuousArtifactError,
     )
 
@@ -1011,10 +1014,10 @@ def test_proof_error_legacy_ancestry_and_setup_identity():
 def test_canonical_operational_failure_schema(verb, monkeypatch, capsys, tmp_path):
     from types import SimpleNamespace
 
-    from fep_lean import methods
-    from fep_lean.bridge import operations
-    from fep_lean.output import release_bundle
-    from fep_lean.verification import preflight as preflight_owner
+    from fep_formal import methods
+    from fep_formal.bridge import operations
+    from fep_formal.output import release_bundle
+    from fep_formal.verification import preflight as preflight_owner
 
     def refuse(*args, **kwargs):
         raise OSError("controlled owner refusal")
@@ -1056,7 +1059,7 @@ def test_canonical_operational_failure_schema(verb, monkeypatch, capsys, tmp_pat
     monkeypatch.setattr(
         operations, "status", lambda *a: {"status": "error", "checks": {}}
     )
-    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "invalid")
+    monkeypatch.setenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", "invalid")
     arguments = {
         "setup": [],
         "verify": [],
@@ -1111,7 +1114,7 @@ def test_error_schema_preserves_argparse_usage_exit_two(arguments, capsys):
 
 
 def test_projection_failure_callback_preserves_direct_owner_default(capsys):
-    from fep_lean.catalogue.generation import check_or_write
+    from fep_formal.catalogue.generation import check_or_write
 
     assert (
         check_or_write(
@@ -1123,11 +1126,11 @@ def test_projection_failure_callback_preserves_direct_owner_default(capsys):
 
 
 def test_direct_setup_default_retains_existing_failure_text(monkeypatch, capsys):
-    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "invalid")
+    monkeypatch.setenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", "invalid")
     assert environment_module.setup_workspace(PROJ) == 1
     assert (
         capsys.readouterr().out
-        == "setup failed: FEP_LEAN_SETUP_TIMEOUT_SEC must be an integer\n"
+        == "setup failed: FEP_FORMAL_SETUP_TIMEOUT_SEC must be an integer\n"
     )
 
 
@@ -1151,7 +1154,7 @@ def test_native_result_success_bytes_and_failure_exit_are_separate(capsys):
 def test_preflight_adapter_uses_full_mode_without_environment_mutation(
     monkeypatch, capsys
 ):
-    from fep_lean.verification import preflight
+    from fep_formal.verification import preflight
 
     calls = []
     monkeypatch.setattr(preflight, "project_root", lambda: PROJ)
@@ -1174,7 +1177,7 @@ def test_preflight_adapter_uses_full_mode_without_environment_mutation(
 
 
 def test_cli_context_resets_after_unhandled_programming_failure(tmp_path, monkeypatch):
-    from fep_lean._paths import project_root, project_root_context
+    from fep_formal._paths import project_root, project_root_context
 
     def reject(*args):
         raise RuntimeError("programming fixture")
@@ -1192,8 +1195,8 @@ def test_cli_context_resets_after_unhandled_programming_failure(tmp_path, monkey
 def test_setup_cli_late_failure_keeps_stdout_json(monkeypatch, capsys):
     import subprocess
 
-    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "1800")
-    monkeypatch.delenv("FEP_LEAN_DIR", raising=False)
+    monkeypatch.setenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", "1800")
+    monkeypatch.delenv("FEP_FORMAL_DIR", raising=False)
     monkeypatch.setattr(
         environment_module, "find_executable", lambda *a: "/fixture/lake"
     )
@@ -1216,7 +1219,7 @@ def test_setup_cli_late_failure_keeps_stdout_json(monkeypatch, capsys):
     assert payload["status"] == "error" and payload["details"]["exit_code"] == 7
     assert payload["details"]["command"] == "setup"
     assert "compiler progress" in output.err and "compiler diagnostic" in output.err
-    assert "[fep_lean setup]" in output.err
+    assert "[fep_formal setup]" in output.err
 
 
 def test_setup_cli_success_keeps_final_line_and_routes_progress(monkeypatch, capsys):
@@ -1226,8 +1229,8 @@ def test_setup_cli_success_keeps_final_line_and_routes_progress(monkeypatch, cap
     revision = next(
         row["rev"] for row in manifest["packages"] if row["name"] == "mathlib"
     )
-    monkeypatch.setenv("FEP_LEAN_SETUP_TIMEOUT_SEC", "1800")
-    monkeypatch.delenv("FEP_LEAN_DIR", raising=False)
+    monkeypatch.setenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", "1800")
+    monkeypatch.delenv("FEP_FORMAL_DIR", raising=False)
     monkeypatch.setattr(
         environment_module, "find_executable", lambda *a: "/fixture/lake"
     )
@@ -1253,6 +1256,6 @@ def test_setup_cli_success_keeps_final_line_and_routes_progress(monkeypatch, cap
     output = capsys.readouterr()
     assert (
         output.out
-        == f"[fep_lean setup] OK | lean: {_FIXTURE_LEAN_VERSION} | mathlib: {revision}\n"
+        == f"[fep_formal setup] OK | lean: {_FIXTURE_LEAN_VERSION} | mathlib: {revision}\n"
     )
     assert "controlled progress" in output.err

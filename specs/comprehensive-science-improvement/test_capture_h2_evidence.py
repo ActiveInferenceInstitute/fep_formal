@@ -25,6 +25,8 @@ def test_capture_retains_rejecting_record(
     monkeypatch.setattr(sys, "argv", [str(SCRIPT), "--output", str(output)])
     monkeypatch.setenv("PYTEST_ADDOPTS", "-k omitted_parameter")
     monkeypatch.setenv("PYTEST_PLUGINS", "untrusted_selection_plugin")
+    monkeypatch.setenv("FEP_FORMAL_LIVE_TESTS", "1")
+    monkeypatch.setenv("FEP_LEAN_LIVE_TESTS", "1")
     monkeypatch.setattr(capture, "native_source_paths", lambda _: ("fixture",))
     reads = 0
 
@@ -42,7 +44,8 @@ def test_capture_retains_rejecting_record(
         assert isinstance(env, dict)
         assert "PYTEST_ADDOPTS" not in env and "PYTEST_PLUGINS" not in env
         assert env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
-        assert env["FEP_LEAN_LIVE_TESTS"] == "0"
+        assert env["FEP_FORMAL_LIVE_TESTS"] == "0"
+        assert "FEP_LEAN_LIVE_TESTS" not in env
         if phase == "timeout":
             raise subprocess.TimeoutExpired(
                 command, 0.1, output=b"retained stdout", stderr=b"retained stderr"

@@ -1,5 +1,5 @@
 # Maintained schema-2 roster seal and topic metadata.
-# Canonical Lean bodies live in fep_lean.catalogue.bodies.
+# Canonical Lean bodies live in fep_formal.catalogue.bodies.
 schema_version: 2
 roster:
   first_id: fep-001

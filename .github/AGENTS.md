@@ -1,7 +1,7 @@
 # GitHub repository contract
 
 The public project is **FEP_Formal**, hosted as `ActiveInferenceInstitute/fep_formal`.
-The Python import remains `fep_lean`; the CLI remains `fep-lean`.
+The canonical Python import is `fep_formal`; the CLI is `fep-formal`.
 
 ## Repository presentation
 
@@ -42,3 +42,9 @@ Record the new supplement run/attempt before release joining. Dispatch success
 is not test acceptance. Reject automatic reruns, changed bases/heads/trees or
 unaccepted references rather than substituting an arbitrary prior green run.
 This source proposal needs fresh full qualification before activation.
+
+
+The dispatch-only [source-pair qualification workflow](workflows/source-pair-qualification.yml)
+requires explicit FEP and GNN source SHAs. It exports source-bound bridge/Q7
+projections and scoped native evidence for review; it does not publish commits
+or establish the separate full-mode, publication or release acceptance planes.

@@ -3,7 +3,7 @@
 
 The shared rendering template's own success test only looks for four fatal
 markers, so ``! `` errors and ``Missing character:`` notes pass as a successful
-render (see ``fep_lean.output.render_log``).  This wrapper is the project-side
+render (see ``fep_formal.output.render_log``).  This wrapper is the project-side
 fail-closed acceptance for a combined PDF build and must be run after
 ``stage_03_render.py``.
 
@@ -36,8 +36,8 @@ if __name__ == "__main__":
 
 import yaml
 
-from fep_lean.output.publication_metadata import publication_cover_defects
-from fep_lean.output.render_log import (
+from fep_formal.output.publication_metadata import publication_cover_defects
+from fep_formal.output.render_log import (
     build_acceptance_receipt,
     contents_number_overflow_defects,
     equation_numbering_defects,

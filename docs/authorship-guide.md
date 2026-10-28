@@ -27,7 +27,7 @@ Update the relevant rows in:
 1. `config/catalogue_metadata.yaml` for title, area, import hint, or syntactic
    maturity;
 2. `config/theorem_maturity.yaml` for semantic scope and primary theorem;
-3. the matching family module under `src/fep_lean/catalogue/bodies/` for the
+3. the matching family module under `src/fep_formal/catalogue/bodies/` for the
    canonical Lean body. `registry.py` validates the body and `latex.py` derives
    theorem signatures.
 
@@ -46,14 +46,14 @@ lake env lean /absolute/path/to/scratch.lean
 For the maintained row:
 
 ```bash
-uv run fep-lean verify --topic fep-NNN --fail-on-warnings
+uv run fep-formal verify --topic fep-NNN --fail-on-warnings
 ```
 
 If the new statement introduces a normalized carrier or law that multiple
 topics should share, place it in the relevant canonical module under
-`src/fep_lean/formal/`. If it genuinely consumes declarations from multiple
+`src/fep_formal/formal/`. If it genuinely consumes declarations from multiple
 stable topic namespaces, place it in the appropriate manifested leaf under
-`src/fep_lean/formal/compositions/` and add its novelty/relation evidence.
+`src/fep_formal/formal/compositions/` and add its novelty/relation evidence.
 `composed.lean` is an import-only aggregate. Follow the ownership,
 support-assumption, and dependency rules in
 [formal-kernel methods](formal-kernel-methods.md); do not manufacture a formal
@@ -67,8 +67,8 @@ uv run python scripts/_maint_build_fep_all_lean.py
 uv run python scripts/_maint_build_formal_modules.py
 uv run python scripts/theorem_maturity_audit.py
 uv run python scripts/build_formalism_coverage.py
-uv run fep-lean atlas
-uv run fep-lean dashboard
+uv run fep-formal atlas
+uv run fep-formal dashboard
 ```
 
 These commands update the checkout/package catalog pair, whole-catalog
@@ -103,7 +103,7 @@ uv run pytest \
   tests/test_manuscript_references.py \
   -q --no-cov
 uv run python docs/theorem_ref_audit.py
-uv run fep-lean catalogue
+uv run fep-formal catalogue
 uv run python scripts/render_manuscript.py --check
 ```
 

@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification.formalism_audit import parse_axiom_output
-from fep_lean.verification.gnn_continuous_artifact_proof import NAMESPACE, THEOREMS
+from fep_formal.verification.formalism_audit import parse_axiom_output
+from fep_formal.verification.gnn_continuous_artifact_proof import NAMESPACE, THEOREMS
 from tests._support.lean_runner import run_lean_probe
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,7 +28,7 @@ def test_native_ou_bounds_have_complete_standard_axiom_census(tmp_path: Path) ->
     probe.write_text(source)
     result = run_lean_probe(
         probe,
-        import_root=ROOT / "src/fep_lean/formal",
+        import_root=ROOT / "src/fep_formal/formal",
         cwd=ROOT / "lean",
         timeout_s=1800,
     )
@@ -59,7 +59,7 @@ def test_native_wrong_coefficient_cannot_prove_rounding_bound(
     probe.write_text(source)
     result = run_lean_probe(
         probe,
-        import_root=ROOT / "src/fep_lean/formal",
+        import_root=ROOT / "src/fep_formal/formal",
         cwd=ROOT / "lean",
         timeout_s=1800,
     )

@@ -15,7 +15,7 @@ inputs. It does not contain executable code.
 | `topics.yaml` | Generated join; never an authoring source |
 
 Canonical Lean bodies live in family modules under
-`src/fep_lean/catalogue/bodies/`. The validated `registry.py` merger and
+`src/fep_formal/catalogue/bodies/`. The validated `registry.py` merger and
 `latex.py` theorem-signature projection join them with the maintained topic
 inputs and write both checkout and package-data YAML.
 
@@ -49,4 +49,4 @@ Follow the generator ownership in [README.md](README.md) and use the
 [root required-check inventory](../AGENTS.md#required-checks). A generator write
 pass is an explicit owner update; its `--check` mode inspects drift without
 repairing it. Packaged methods resources have the separate owner mapping in
-[the data guide](../src/fep_lean/data/README.md).
+[the data guide](../src/fep_formal/data/README.md).

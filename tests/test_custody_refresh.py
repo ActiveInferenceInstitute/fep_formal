@@ -15,6 +15,7 @@ import hashlib
 import json
 import os
 import shutil
+import subprocess
 import sys
 from collections.abc import Iterator
 from pathlib import Path
@@ -22,12 +23,12 @@ from typing import Any
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.cli import build_parser, main
-from fep_lean.custody import refresh as refresh_module
-from fep_lean.custody.apply import SUCCESSOR_07
-from fep_lean.custody.model import INTACT, LIVE_RED, STALE, Census, CensusRecord
-from fep_lean.custody.refresh import (
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.cli import build_parser, main
+from fep_formal.custody import refresh as refresh_module
+from fep_formal.custody.apply import SUCCESSOR_07
+from fep_formal.custody.model import INTACT, LIVE_RED, STALE, Census, CensusRecord
+from fep_formal.custody.refresh import (
     NATIVE_RECEIPT,
     RENDER_INPUTS,
     RefreshRefused,
@@ -39,12 +40,13 @@ from fep_lean.custody.refresh import (
     refresh,
     resume_refresh,
 )
-from fep_lean.output.evidence import (
+from fep_formal.output.evidence import (
     build_native_lean_receipt,
     validate_native_lean_receipt,
     write_native_lean_receipt,
 )
-from fep_lean.verification._toolchain import pinned_lean_semver
+from fep_formal.output.provenance import SOURCE_OWNER_FILES, source_owner_paths
+from fep_formal.verification._toolchain import pinned_lean_semver
 from tests._support.custody_fixture_knobs import (
     JSON_WHITESPACE_DRIFT,
     drift_file,
@@ -105,7 +107,7 @@ def _ok_run(*command: str, root: Path) -> dict[str, object]:
 
 
 def _all_clear_census(monkeypatch: pytest.MonkeyPatch) -> None:
-    from fep_lean.custody.verify import GATE_EXPECTATIONS
+    from fep_formal.custody.verify import GATE_EXPECTATIONS
 
     records = tuple(
         CensusRecord(path=path, status=INTACT, detail="fixture intact")
@@ -191,7 +193,7 @@ def test_refresh_appends_the_bridge_cascade_warning(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     signature = (
-        "bridge source binding is stale on: src/fep_lean/custody/cli.py "
+        "bridge source binding is stale on: src/fep_formal/custody/cli.py "
         "(freshness STALE cascade expected); run the post-fold bridge pin "
         "cycle (coordinator-side; this command never pins)"
     )
@@ -251,7 +253,7 @@ def test_refresh_native_refused_on_owner_errors(
         )
     assert "x.py" in str(exc.value)
     assert len(calls) == 3  # the verify set runs before the pre-capture gate
-    assert not any(command[2:4] == ["fep-lean", "verify"] for command in calls)
+    assert not any(command[2:4] == ["fep-formal", "verify"] for command in calls)
 
 
 def test_refresh_native_refused_on_dirty_tip(
@@ -276,11 +278,11 @@ def test_refresh_native_refused_on_dirty_tip(
             run_native=True,
         )
     assert len(calls) == 3  # verify set precedes the gate; capture refused
-    assert not any(command[2:4] == ["fep-lean", "verify"] for command in calls)
+    assert not any(command[2:4] == ["fep-formal", "verify"] for command in calls)
 
 
 def test_refresh_native_runs_the_sealed_capture_command(
-    claim_ready_receipt: Path,
+    synthetic_native_capture: Path,
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -292,9 +294,6 @@ def test_refresh_native_runs_the_sealed_capture_command(
 
     _all_clear_census(monkeypatch)
     monkeypatch.setattr(refresh_module, "_run", fake_run)
-    monkeypatch.setattr(refresh_module, "report_owner_errors", lambda root: ())
-    monkeypatch.setattr(refresh_module, "_git_dirty", lambda root: [])
-    monkeypatch.setattr(refresh_module, "_git_head", lambda root: "fix-head")
     report = refresh(
         _stage_specs(tmp_path),
         REPO_ROOT,
@@ -302,17 +301,18 @@ def test_refresh_native_runs_the_sealed_capture_command(
         reason="r",
         run_native=True,
     )
-    assert calls[-1] == [
+    assert len(calls) == 3
+    assert report.native["command"] == [
         "uv",
         "run",
-        "fep-lean",
+        "fep-formal",
         "verify",
         "--fail-on-warnings",
         "--receipt",
-        str(claim_ready_receipt),
+        str(synthetic_native_capture),
     ]
     assert report.native["exit_code"] == 0
-    assert report.native["receipt"] == str(claim_ready_receipt)
+    assert report.native["receipt"] == str(synthetic_native_capture)
     assert report.native["validation"]["claim_ready"] is True
     assert report.native["validation"]["source_bound"] is True
     assert report.native["validation"]["errors"] == []
@@ -327,7 +327,7 @@ def test_refresh_native_command_failure_refused(
 
     def fake_run(*command: str, root: Path) -> dict[str, object]:
         calls.append(list(command))
-        if command[2:4] == ("fep-lean", "verify"):
+        if command[2:4] == ("fep-formal", "verify"):
             return {"command": list(command), "exit_code": 1, "tail": "boom"}
         return _ok_run(*command, root=root)
 
@@ -477,7 +477,7 @@ def test_refresh_native_tree_drift_during_capture_refused(
 
 
 # ---------------------------------------------------------------------------
-# Bridge cascade warning: the fep_lean half of the known signature.
+# Bridge cascade warning: the fep_formal half of the known signature.
 # ---------------------------------------------------------------------------
 
 
@@ -572,7 +572,7 @@ def test_cli_refresh_gate_refusal_names_the_surface_and_writes_nothing(
 
 
 def test_cli_refresh_payload_native_status(
-    claim_ready_receipt: Path,
+    synthetic_native_capture: Path,
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
     capsys: pytest.CaptureFixture[str],
@@ -580,9 +580,6 @@ def test_cli_refresh_payload_native_status(
     """The payload taxonomy separates no-capture from claim-ready capture."""
     _all_clear_census(monkeypatch)
     monkeypatch.setattr(refresh_module, "_run", _ok_run)
-    monkeypatch.setattr(refresh_module, "report_owner_errors", lambda root: ())
-    monkeypatch.setattr(refresh_module, "_git_dirty", lambda root: [])
-    monkeypatch.setattr(refresh_module, "_git_head", lambda root: "fix-head")
     specs_dir = _stage_specs(tmp_path)
     exit_code = main_with_root(
         tmp_path,
@@ -645,7 +642,7 @@ def sandboxed_receipt(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     return receipt
 
 
-def _claim_ready_payload() -> dict[str, object]:
+def _claim_ready_payload(root: Path) -> dict[str, object]:
     """Build a validator-accepted synthetic payload bound to the fixture tree.
 
     Rows are synthetic (every topic compiles clean) but the digests, roster,
@@ -653,12 +650,10 @@ def _claim_ready_payload() -> dict[str, object]:
     No compiler runs; this exercises validation and composition, not actual
     native acceptance.
     """
-    pin = pinned_lean_semver(
-        (REPO_ROOT / "lean" / "lean-toolchain").read_text().strip()
-    )
+    pin = pinned_lean_semver((root / "lean" / "lean-toolchain").read_text().strip())
     assert pin is not None, "lean-toolchain pin must be a canonical semver"
     version = f"Lean (version {pin}, fixture-toolchain, commit 000000000000)"
-    catalogue = FEPTopicCatalogue.from_yaml(REPO_ROOT / "config" / "topics.yaml")
+    catalogue = FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
     live_topic_ids = [topic.id for topic in catalogue.topics]
     rows = [
         {
@@ -673,25 +668,217 @@ def _claim_ready_payload() -> dict[str, object]:
         }
         for topic_id in live_topic_ids
     ]
-    return build_native_lean_receipt(REPO_ROOT, live_topic_ids, rows)
+    return build_native_lean_receipt(root, live_topic_ids, rows)
+
+
+def _native_fixture_git(root: Path, *arguments: str) -> str:
+    result = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(root),
+            "-c",
+            "commit.gpgsign=false",
+            "-c",
+            f"core.hooksPath={root / '.git/hooks'}",
+            *arguments,
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return result.stdout.strip()
 
 
 @pytest.fixture()
-def claim_ready_receipt(sandboxed_receipt: Path) -> Iterator[Path]:
-    """A clearly synthetic native receipt at the sandboxed path.
-
-    The fabricated receipt binds the fixture (digests, roster, toolchain pin)
-    and are revalidated through the real validator, so a toolchain-pin or
-    roster bump fails loudly with the validator's errors, never as a silent
-    test drift. The path lives in the test sandbox: parallel xdist workers
-    never share checkout state, and nothing to restore can leak.
-    """
-    write_native_lean_receipt(sandboxed_receipt, _claim_ready_payload())
-    validation = validate_native_lean_receipt(sandboxed_receipt, project_root=REPO_ROOT)
-    assert validation["native_claim_ready"], (
-        "claim-ready receipt fixture drifted: " + "; ".join(validation["errors"])
+def canonical_native_root(
+    tmp_path: Path,
+    sandboxed_receipt: Path,
+) -> Path:
+    """Keep historical projections separate from a sealed current-source tree."""
+    write_native_lean_receipt(sandboxed_receipt, _claim_ready_payload(REPO_ROOT))
+    rejected = validate_native_lean_receipt(sandboxed_receipt, project_root=REPO_ROOT)
+    assert not rejected["native_claim_ready"]
+    assert rejected["errors"] and all(
+        "source owner is absent from manifest" in error for error in rejected["errors"]
     )
-    yield sandboxed_receipt
+    sandboxed_receipt.unlink()
+    native_root = tmp_path / "canonical-native-project"
+    excluded = {}
+    for source in sorted(REPO_ROOT.rglob("*")):
+        if not source.is_file():
+            continue
+        assert not source.is_symlink()
+        relative = source.relative_to(REPO_ROOT).as_posix()
+        if (
+            relative.startswith("src/fep_lean/")
+            and source.suffix == ".py"
+            and relative not in SOURCE_OWNER_FILES
+        ):
+            excluded[relative] = _sha(source.read_bytes())
+            continue
+        destination = native_root / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, destination)
+    assert excluded
+    (tmp_path / "historical-projection-ledger.json").write_text(
+        json.dumps(excluded, indent=2)
+    )
+    for relative, digest in excluded.items():
+        assert _sha((REPO_ROOT / relative).read_bytes()) == digest
+        assert not (native_root / relative).exists()
+    for source in source_owner_paths(REPO_ROOT):
+        assert (
+            source.read_bytes()
+            == (native_root / source.relative_to(REPO_ROOT)).read_bytes()
+        )
+    assert refresh_module.report_owner_errors(native_root) == ()
+    (native_root / ".gitignore").write_text("output/\n")
+    _native_fixture_git(native_root, "init", "--quiet")
+    _native_fixture_git(native_root, "config", "user.name", "Synthetic custody fixture")
+    _native_fixture_git(native_root, "config", "user.email", "fixture@example.invalid")
+    _native_fixture_git(native_root, "add", "--all")
+    _native_fixture_git(
+        native_root, "commit", "--quiet", "-m", "Synthetic native source fixture"
+    )
+    assert refresh_module._git_dirty(native_root) == []
+    return native_root
+
+
+@pytest.mark.parametrize(
+    ("scenario", "message"),
+    [
+        ("clean", None),
+        ("owner_before", "pre-capture owner gate refused"),
+        ("dirty_before", "requires a committed clean tip"),
+        ("command_failure", "native capture failed"),
+        ("dirty_after", "tree drifted during native capture"),
+        ("head_after", "HEAD moved during native capture"),
+        ("owner_after", "owner drift during native capture"),
+        ("missing_receipt", "native receipt missing"),
+        ("invalid_receipt", "native receipt is not claim-ready"),
+        ("source_after", "native receipt is not claim-ready"),
+    ],
+)
+def test_capture_native_real_source_boundaries(
+    canonical_native_root: Path,
+    sandboxed_receipt: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    scenario: str,
+    message: str | None,
+) -> None:
+    """Real Git/files/owner/receipt checks; synthetic compile rows only."""
+    root = canonical_native_root
+    payload = _claim_ready_payload(root)
+    calls = []
+    if scenario == "owner_before":
+        (root / "src/fep_lean/unrostered.py").write_text("unrostered = True\n")
+    elif scenario == "dirty_before":
+        (root / "dirty.txt").write_text("dirty\n")
+
+    def capture(*command: str, root: Path) -> dict[str, object]:
+        assert root == canonical_native_root
+        calls.append(list(command))
+        if scenario == "command_failure":
+            return {
+                "command": list(command),
+                "exit_code": 7,
+                "tail": "synthetic failure",
+            }
+        if scenario != "missing_receipt":
+            if scenario == "invalid_receipt":
+                sandboxed_receipt.parent.mkdir(parents=True, exist_ok=True)
+                sandboxed_receipt.write_text("{}")
+            else:
+                write_native_lean_receipt(sandboxed_receipt, payload)
+        if scenario == "dirty_after":
+            (root / "dirty.txt").write_text("dirty\n")
+        elif scenario == "head_after":
+            _native_fixture_git(
+                root, "commit", "--quiet", "--allow-empty", "-m", "Moved fixture HEAD"
+            )
+        elif scenario == "owner_after":
+            (root / ".git/info/exclude").write_text("src/fep_lean/unrostered.py\n")
+            (root / "src/fep_lean/unrostered.py").write_text("unrostered = True\n")
+            assert refresh_module._git_dirty(root) == []
+        elif scenario == "source_after":
+            relative = "src/fep_formal/_paths.py"
+            _native_fixture_git(root, "update-index", "--assume-unchanged", relative)
+            source = root / relative
+            source.write_bytes(source.read_bytes() + b"\n# hidden source drift\n")
+            assert refresh_module._git_dirty(root) == []
+        return {"command": list(command), "exit_code": 0, "tail": ""}
+
+    monkeypatch.setattr(refresh_module, "_run", capture)
+    if message is None:
+        result = refresh_module._capture_native(root)
+        assert result["validation"]["claim_ready"] is True
+        assert result["validation"]["source_bound"] is True
+        assert validate_native_lean_receipt(sandboxed_receipt, project_root=root)[
+            "native_claim_ready"
+        ]
+    else:
+        with pytest.raises(RefreshRefused, match=message):
+            refresh_module._capture_native(root)
+    expected = (
+        []
+        if scenario in ("owner_before", "dirty_before")
+        else [
+            [
+                "uv",
+                "run",
+                "fep-formal",
+                "verify",
+                "--fail-on-warnings",
+                "--receipt",
+                str(sandboxed_receipt),
+            ]
+        ]
+    )
+    assert calls == expected
+
+
+@pytest.fixture()
+def synthetic_native_capture(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> Iterator[Path]:
+    """Composition-only seam; independent helper tests own real native checks."""
+    receipt = tmp_path / "synthetic-composition-native.json"
+    receipt.write_text(
+        json.dumps({"kind": "SYNTHETIC-COMPOSITION-NOT-NATIVE-EVIDENCE"})
+    )
+    roots = []
+
+    def capture(root: Path) -> dict[str, Any]:
+        assert root == REPO_ROOT
+        roots.append(root)
+        return {
+            "command": [
+                "uv",
+                "run",
+                "fep-formal",
+                "verify",
+                "--fail-on-warnings",
+                "--receipt",
+                str(receipt),
+            ],
+            "exit_code": 0,
+            "receipt": str(receipt),
+            "fixture_kind": "SYNTHETIC-COMPOSITION-NOT-NATIVE-EVIDENCE",
+            "validation": {
+                "claim_ready": True,
+                "source_bound": True,
+                "live_catalogue_topics": len(
+                    FEPTopicCatalogue.from_yaml(REPO_ROOT / "config/topics.yaml").topics
+                ),
+                "errors": [],
+            },
+        }
+
+    monkeypatch.setattr(refresh_module, "_capture_native", capture)
+    yield receipt
+    assert roots == [REPO_ROOT]
 
 
 # ---------------------------------------------------------------------------
@@ -793,9 +980,9 @@ def test_plan_mode_authorizes_declared_staleness(
 ) -> None:
     """Stale inside --authorized passes the mode gate; outside refuses."""
     _mode_ready(monkeypatch)
-    from fep_lean.custody.verify import GATE_EXPECTATIONS
+    from fep_formal.custody.verify import GATE_EXPECTATIONS
 
-    capture = "src/fep_lean/verification/numerical_witnesses.py"
+    capture = "src/fep_formal/verification/numerical_witnesses.py"
     stale = CensusRecord(path=capture, status=STALE, detail="capture predates")
 
     def census_stub(specs: Path, root: Path) -> Census:
@@ -1203,7 +1390,7 @@ def test_resume_happy_path_completes_verify_set_without_capture(
     # The three verify-set subprocesses ran through the composed refresh().
     assert len(calls) == 3
     assert all(command[0] == "uv" for command in calls)
-    assert not any(command[2:4] == ["fep-lean", "verify"] for command in calls)
+    assert not any(command[2:4] == ["fep-formal", "verify"] for command in calls)
     landed = json.loads((operation / "journal.json").read_text(encoding="utf-8"))
     assert landed["state"] == "captured"
     assert landed["native"] == {"status": "capture_not_requested"}
@@ -1388,7 +1575,7 @@ def test_resume_refuses_when_the_walk_is_not_a_noop(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """One mutation in the verification round means the commit is not agreed."""
-    from fep_lean.custody.apply import ApplyReport
+    from fep_formal.custody.apply import ApplyReport
 
     _resume_ready(monkeypatch)
 
@@ -1498,8 +1685,8 @@ def test_resume_barrier_rearms_on_a_new_render_input(
     changed = {
         "docs/development.md": _sha(docs),
         FIXTURE_PATH: _sha(knobs),
-        "src/fep_lean/output/rendering.py": _sha(
-            _head_bytes("src/fep_lean/output/rendering.py")
+        "src/fep_formal/output/rendering.py": _sha(
+            _head_bytes("src/fep_formal/output/rendering.py")
         ),
     }
     operation = _resume_journal(tmp_path, changed_paths=changed)
@@ -1515,7 +1702,7 @@ def test_resume_barrier_rearms_on_a_new_render_input(
     assert first["state"] == "awaiting-render-acceptance"
     assert first["render_barrier_paths"] == [
         "docs/development.md",
-        "src/fep_lean/output/rendering.py",
+        "src/fep_formal/output/rendering.py",
     ]
     # Validate an accepted render before the re-invocation proceeds.
     monkeypatch.setattr(
@@ -1555,7 +1742,7 @@ def test_resume_barrier_rearms_on_a_new_render_input(
     assert rearmed["render_barrier_paths"] == [
         "docs/development.md",
         "scripts/render_manuscript.py",
-        "src/fep_lean/output/rendering.py",
+        "src/fep_formal/output/rendering.py",
     ]
 
 
@@ -1585,7 +1772,7 @@ def test_resume_reinvocation_cannot_acknowledge_a_rejected_render(
 
 
 def _render_candidate(root: Path) -> Path:
-    from fep_lean.output.render_log import build_acceptance_receipt
+    from fep_formal.output.render_log import build_acceptance_receipt
 
     manuscript = root / "manuscript"
     manuscript.mkdir()
@@ -1638,7 +1825,7 @@ def _render_candidate(root: Path) -> Path:
 def test_render_barrier_rejects_invalid_receipts_before_reproduction(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, defect: str
 ) -> None:
-    from fep_lean.output import release_bundle
+    from fep_formal.output import release_bundle
 
     receipt = _render_candidate(tmp_path)
     if defect == "missing":
@@ -1676,7 +1863,7 @@ def test_render_barrier_rejects_invalid_receipts_before_reproduction(
 def test_render_barrier_binds_acceptance_and_independent_reproduction(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, defect: str
 ) -> None:
-    from fep_lean.output import release_bundle
+    from fep_formal.output import release_bundle
 
     receipt = _render_candidate(tmp_path)
     before = receipt.read_bytes()
@@ -1715,7 +1902,7 @@ def test_render_barrier_binds_acceptance_and_independent_reproduction(
 
 
 def test_resume_native_happy_path_captures_claim_ready(
-    claim_ready_receipt: Path,
+    synthetic_native_capture: Path,
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -1732,9 +1919,11 @@ def test_resume_native_happy_path_captures_claim_ready(
     )
     assert journal["state"] == "captured"
     assert journal["native"]["validation"]["claim_ready"] is True
-    capture = [c for c in calls if c[2:4] == ["fep-lean", "verify"]]
-    assert len(capture) == 1
-    assert capture[0][:2] == ["uv", "run"]
+    capture = [c for c in calls if c[2:4] == ["fep-formal", "verify"]]
+    assert capture == []
+    assert (
+        journal["native"]["fixture_kind"] == "SYNTHETIC-COMPOSITION-NOT-NATIVE-EVIDENCE"
+    )
 
 
 def test_resume_journal_atomic_rewrite_preserves_landed_path(
@@ -1762,16 +1951,16 @@ def test_render_barrier_paths_matches_the_documented_surface() -> None:
     assert _render_barrier_paths(
         [
             "manuscript/sections/intro.tex",
-            "src/fep_lean/output/rendering.py",
+            "src/fep_formal/output/rendering.py",
             "scripts/render_publication.py",
             "render.py",
             "scripts/render_manuscript.py",
             "docs/pin_audit.py",
-            "src/fep_lean/custody/refresh.py",
+            "src/fep_formal/custody/refresh.py",
         ]
     ) == [
         "manuscript/sections/intro.tex",
-        "src/fep_lean/output/rendering.py",
+        "src/fep_formal/output/rendering.py",
         "scripts/render_publication.py",
         "render.py",
         "scripts/render_manuscript.py",
@@ -1779,7 +1968,7 @@ def test_render_barrier_paths_matches_the_documented_surface() -> None:
     ]
     assert RENDER_INPUTS == (
         "manuscript/",
-        "src/fep_lean/output/rendering.py",
+        "src/fep_formal/output/rendering.py",
         "scripts/render_publication.py",
         "render.py",
         "scripts/render_manuscript.py",

@@ -1,4 +1,4 @@
-"""Comprehensive tests for fep_lean.llm.hermes — zero direct, real network/os testing."""
+"""Comprehensive tests for fep_formal.llm.hermes — zero direct, real network/os testing."""
 
 from __future__ import annotations
 
@@ -14,8 +14,8 @@ from types import SimpleNamespace
 import pytest
 from pytest_httpserver import HTTPServer
 
-from fep_lean.llm import hermes
-from fep_lean.llm.hermes import (
+from fep_formal.llm import hermes
+from fep_formal.llm.hermes import (
     HermesAPIError,
     HermesConfig,
     HermesExplainer,
@@ -537,7 +537,7 @@ class TestKeyAffinityValidation:
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         monkeypatch.setenv("GAUSS_HOME", "/tmp/__no_gauss__")
-        caplog.set_level("INFO", logger="fep_lean.llm.hermes")
+        caplog.set_level("INFO", logger="fep_formal.llm.hermes")
 
         cfg = HermesConfig.from_settings(settings_path=Path("/nonexistent"))
         assert cfg.enabled is True
@@ -551,7 +551,7 @@ class TestCallAPI:
     """Test HermesExplainer._call_api using genuine local OS/network operations.
 
     Tests use real sockets on loopback — no external network, no direct execution,
-    no FEP_LEAN_LIVE_TESTS gate.  They exercise ``urllib`` exception branches
+    no FEP_FORMAL_LIVE_TESTS gate.  They exercise ``urllib`` exception branches
     inside ``_call_api``:
 
     * ``urllib.error.HTTPError`` (non-2xx response) → ``HermesAPIError(status_code=N, transient=False)``
@@ -953,7 +953,7 @@ class TestFromSettingsEdgeCases:
         monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         monkeypatch.setenv("GAUSS_HOME", "/tmp/__no_gauss__")
-        with caplog.at_level(logging.ERROR, logger="fep_lean.llm.hermes"):
+        with caplog.at_level(logging.ERROR, logger="fep_formal.llm.hermes"):
             cfg = HermesConfig.from_settings(settings_path=yaml_file)
         assert cfg.api_key == ""
         assert any("rejected" in record.message for record in caplog.records)

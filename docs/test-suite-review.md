@@ -1,4 +1,4 @@
-# Test Suite Review: fep_lean
+# Test Suite Review: fep_formal
 
 > **Historical snapshot (2026-07-31).** Counts, timings, file totals, and
 > conclusions below describe commit `21d4e18`; they are not current acceptance
@@ -35,7 +35,7 @@
 
 ### Structure & Naming
 
-- **[PASS]** Test structure mirrors source: `src/fep_lean/catalogue/topics.py` → `test_fep_topics.py`, `src/fep_lean/gauss/runner.py` → `test_gauss_runner*.py`, etc.
+- **[PASS]** Test structure mirrors source: `src/fep_formal/catalogue/topics.py` → `test_fep_topics.py`, `src/fep_formal/gauss/runner.py` → `test_gauss_runner*.py`, etc.
 - **[PASS]** All 342 test functions use behavior-descriptive naming: `test_verify_sketch_skipped_when_lake_missing`, `test_catalogue_mode_never_reports_as_verified`, `test_validate_report_receipt_detects_tampering_and_path_escape`
 - **[PASS]** No vague names (`test_1`, `test_something`), no redundant prefixes (`test_function_test`)
 - **[PASS]** Fixtures are purposeful and local: 9 `@pytest.fixture()` definitions, none shared across unrelated test files, no grab-bag `conftest.py` fixtures
@@ -82,9 +82,9 @@ None. The test suite is in exceptional shape with no blocking issues.
 
 1. **Branch coverage workflow**: Add a separate `pytest --cov-branch` invocation (without `--cov`) or fix the coverage concurrency config so branch coverage can be measured standalone. Add a `docs/coverage-branch.md` note documenting the known limitation.
 
-2. **Runner prefetch coverage**: `src/fep_lean/gauss/runner.py` has prefetch logic that is exercised by `test_gauss_runner_prefetch.py` but only partially; consider adding a test that exercises the actual `ThreadPoolExecutor` path with `FEP_LEAN_PREFETCH=1`.
+2. **Runner prefetch coverage**: `src/fep_formal/gauss/runner.py` has prefetch logic that is exercised by `test_gauss_runner_prefetch.py` but only partially; consider adding a test that exercises the actual `ThreadPoolExecutor` path with `FEP_FORMAL_PREFETCH=1`.
 
-3. **CLI coverage edges**: `src/fep_lean/cli.py` has missed help/error-passthrough lines that can be covered with focused edge-case tests.
+3. **CLI coverage edges**: `src/fep_formal/cli.py` has missed help/error-passthrough lines that can be covered with focused edge-case tests.
 
 ### Nice to Have (Improvement)
 

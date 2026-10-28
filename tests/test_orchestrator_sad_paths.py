@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.pipeline.orchestrator import run_pipeline, run_single_topic
+from fep_formal.pipeline.orchestrator import run_pipeline, run_single_topic
 
 
 def test_unknown_topic_returns_structured_error() -> None:
@@ -18,7 +18,7 @@ def test_unknown_topic_returns_structured_error() -> None:
 def test_missing_catalogue_returns_structured_error(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(tmp_path))
+    monkeypatch.setenv("FEP_FORMAL_PROJECT_ROOT", str(tmp_path))
     (tmp_path / "config").mkdir()
     result = run_pipeline(mode="catalogue")
     assert result.status == "error"
@@ -28,7 +28,7 @@ def test_missing_catalogue_returns_structured_error(
 def test_invalid_catalogue_is_rejected(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(tmp_path))
+    monkeypatch.setenv("FEP_FORMAL_PROJECT_ROOT", str(tmp_path))
     (tmp_path / "config").mkdir()
     (tmp_path / "config" / "topics.yaml").write_text(
         "topics:\n  - id: fep-001\n", encoding="utf-8"

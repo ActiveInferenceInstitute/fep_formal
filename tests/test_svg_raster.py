@@ -17,7 +17,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.output.svg_raster import (
+from fep_formal.output.svg_raster import (
     MANUSCRIPT_COPIED_FIGURES,
     MANUSCRIPT_SVG_FIGURES,
     RASTER_WIDTH_PX,
@@ -67,7 +67,7 @@ def fake_rasterizer(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     executable.write_text(FAKE_RASTERIZER, encoding="utf-8")
     executable.chmod(0o755)
     monkeypatch.setattr(
-        "fep_lean.output.svg_raster.resolve_rasterizer", lambda: executable
+        "fep_formal.output.svg_raster.resolve_rasterizer", lambda: executable
     )
     return executable
 
@@ -122,7 +122,7 @@ def test_rasterize_fixed_width_is_stable(
     executable.write_text(script, encoding="utf-8")
     executable.chmod(0o755)
     monkeypatch.setattr(
-        "fep_lean.output.svg_raster.resolve_rasterizer", lambda: executable
+        "fep_formal.output.svg_raster.resolve_rasterizer", lambda: executable
     )
     first = tmp_path / "a.png"
     second = tmp_path / "b.png"

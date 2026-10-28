@@ -11,13 +11,14 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
+from tests._support.landauer_epoch import current_source_owner
 from tests._support.lean435_migration import historical_carrier_bytes
 from tests._support.lean_runner import run_lean_compile_probe
 
 ROOT = Path(__file__).resolve().parents[1]
-FOUNDATION = ROOT / "src/fep_lean/formal/h3_reference_model.lean"
+FOUNDATION = ROOT / "src/fep_formal/formal/h3_reference_model.lean"
 PROJECTION = ROOT / "lean/FepSketches/h3_reference_model.lean"
 PROTOCOL = ROOT / "specs/h3-reference-study/preregistration.yaml"
 FREEZE = ROOT / "specs/h3-reference-study/freeze.json"
@@ -44,7 +45,9 @@ def test_h3_foundation_owns_intrinsic_imports_and_preserves_frozen_carrier() -> 
     )
     # Compare original source bytes without renewing the immutable freeze.
     for path, digest in freeze["carrier_sources"].items():
-        historical = historical_carrier_bytes(path, (ROOT / path).read_bytes())
+        historical = historical_carrier_bytes(
+            current_source_owner(path), (ROOT / current_source_owner(path)).read_bytes()
+        )
         assert hashlib.sha256(historical).hexdigest() == digest, path
 
 

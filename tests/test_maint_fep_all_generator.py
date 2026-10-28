@@ -18,13 +18,13 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.catalogue.generation import (
+from fep_formal.catalogue.generation import (
     fep_all_projection_sources,
     hoisted_sketch_imports,
     render_fep_all_lean,
     topic_id_to_namespace,
 )
-from fep_lean.catalogue.registry import BODIES
+from fep_formal.catalogue.registry import BODIES
 from tests._support.lean_module_contract import (
     topic_projection_sources,
     topic_projection_text,

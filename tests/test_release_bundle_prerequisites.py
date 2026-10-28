@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.output import release_bundle as bundle_module
+from fep_formal.output import release_bundle as bundle_module
 
 PROJ = Path(__file__).resolve().parents[1]
 

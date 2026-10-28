@@ -27,24 +27,24 @@ if __name__ == "__main__":
 
 import yaml
 
-from fep_lean.catalogue import FEPTopicCatalogue
-from fep_lean.catalogue.references import (
+from fep_formal.catalogue import FEPTopicCatalogue
+from fep_formal.catalogue.references import (
     hand_maintained_module_cells,
     miscounted_area_labels,
     unattributed_row_declarations,
     unresolved_manuscript_references,
     unverified_non_catalogue_identifiers,
 )
-from fep_lean.formal.declarations import composed_theorem_declarations
-from fep_lean.output.manuscript import (
+from fep_formal.formal.declarations import composed_theorem_declarations
+from fep_formal.output.manuscript import (
     build_manuscript_vars,
     manuscript_projection_drift,
 )
-from fep_lean.output.publication_metadata import (
+from fep_formal.output.publication_metadata import (
     PublicationMetadataError,
     pdf_metadata_drift,
 )
-from fep_lean.output.rendering import (
+from fep_formal.output.rendering import (
     ManuscriptRenderError,
     render_manuscript,
     unreproducible_command_blocks,

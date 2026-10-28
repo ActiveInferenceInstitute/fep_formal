@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from fep_lean.output.release_bundle import (
+from fep_formal.output.release_bundle import (
     ReleaseBundleError,
     build_release_bundle,
     run_python_acceptance,
@@ -67,7 +67,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     project_root = Path(__file__).resolve().parents[1]
     if args.capture_journal is not None or args.plan_capture:
-        from fep_lean.cli import main as run_cli
+        from fep_formal.cli import main as run_cli
 
         if args.output is not None:
             parser.error("--output cannot be combined with a capture action")

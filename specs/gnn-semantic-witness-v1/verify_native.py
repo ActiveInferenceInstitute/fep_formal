@@ -7,11 +7,11 @@ import hashlib
 import json
 from pathlib import Path
 
-from fep_lean.verification._toolchain import (
+from fep_formal.verification._toolchain import (
     lean_version_matches_pin,
     toolchain_identity,
 )
-from fep_lean.verification.lean_verifier import LeanVerifier
+from fep_formal.verification.lean_verifier import LeanVerifier
 
 
 def compile_laws(output: Path) -> dict[str, object]:

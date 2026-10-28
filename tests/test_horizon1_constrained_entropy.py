@@ -5,10 +5,10 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-FOUNDATION = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "variational_duality.lean"
+FOUNDATION = PROJECT_ROOT / "src" / "fep_formal" / "formal" / "variational_duality.lean"
 
 
 def _declaration(source: str, name: str) -> str:

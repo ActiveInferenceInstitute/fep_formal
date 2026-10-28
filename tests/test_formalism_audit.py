@@ -8,9 +8,9 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.registry import BODIES
-from fep_lean.formal.manifest import FORMAL_MODULES
-from fep_lean.verification import formalism_audit
+from fep_formal.catalogue.registry import BODIES
+from fep_formal.formal.manifest import FORMAL_MODULES
+from fep_formal.verification import formalism_audit
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_VERSION = (
@@ -459,7 +459,9 @@ def test_audit_receipt_validation_rejects_live_projection_drift(
     monkeypatch.setattr(
         formalism_audit,
         "formal_aggregate_drift",
-        lambda _root: (PROJECT_ROOT / "src" / "fep_lean" / "formal" / "composed.lean",),
+        lambda _root: (
+            PROJECT_ROOT / "src" / "fep_formal" / "formal" / "composed.lean",
+        ),
     )
 
     errors = formalism_audit.validate_formalism_audit_receipt(receipt, PROJECT_ROOT)

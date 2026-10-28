@@ -25,8 +25,8 @@ from pathlib import Path
 if __name__ == "__main__":
     sys.dont_write_bytecode = True
 
-from fep_lean.catalogue.generation import check_or_write
-from fep_lean.output.render_fonts import (
+from fep_formal.catalogue.generation import check_or_write
+from fep_formal.output.render_fonts import (
     FontProbeError,
     font_coverage_defects,
     render_font_projection,

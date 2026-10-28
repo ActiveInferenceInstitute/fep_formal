@@ -13,8 +13,8 @@ from typing import Any
 
 import pytest
 
-from fep_lean.verification import horizon_acceptance as acceptance
-from fep_lean.verification.numerical_witnesses import NumericalCheck
+from fep_formal.verification import horizon_acceptance as acceptance
+from fep_formal.verification.numerical_witnesses import NumericalCheck
 from tests._support.custody_fixture_knobs import fixture_root
 
 REFERENCE_ROOT = Path(
@@ -182,7 +182,7 @@ def test_terminal_rejects_actual_roster_growth_after_capture(
     evidence: tuple[Path, dict[str, Any]],
 ) -> None:
     root, _ = evidence
-    for owner in ("src/fep_lean/formal", "lean/FepSketches"):
+    for owner in ("src/fep_formal/formal", "lean/FepSketches"):
         (root / owner / "unit_after_capture.lean").write_text(
             "-- synthetic added formal resource, no execution\n"
         )
@@ -211,7 +211,7 @@ def test_terminal_rejects_source_claim_and_review_tampering(
     root, receipt = evidence
     if mutation in {"source", "mirror", "prior"}:
         name = {
-            "source": "src/fep_lean/formal/fin4_gaussian_semigroup.lean",
+            "source": "src/fep_formal/formal/fin4_gaussian_semigroup.lean",
             "mirror": "lean/FepSketches/fin4_gaussian_semigroup.lean",
             "prior": next(iter(acceptance.PREDECESSORS)),
         }[mutation]
@@ -400,7 +400,7 @@ def test_terminal_rejects_input_mtime_change_during_validation(
 
     def touch_input(project_root: Path) -> dict[str, Any]:
         result = original(project_root)
-        path = root / "src/fep_lean/formal/fin4_gaussian_semigroup.lean"
+        path = root / "src/fep_formal/formal/fin4_gaussian_semigroup.lean"
         before = path.stat()
         os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns + 1))
         return result
@@ -418,7 +418,7 @@ def test_diagnostics_reject_source_change_during_evaluation(
 
     def mutate_source(project_root: Path) -> Any:
         result = original(project_root)
-        path = root / "src/fep_lean/verification/numerical_witnesses.py"
+        path = root / "src/fep_formal/verification/numerical_witnesses.py"
         path.write_bytes(path.read_bytes() + b"\n")
         return result
 
@@ -472,9 +472,9 @@ def test_diagnostic_evaluation_rejects_ambiguous_or_failed_boundary(
 @pytest.mark.parametrize(
     "relative",
     [
-        "src/fep_lean/catalogue/registry.py",
-        "src/fep_lean/catalogue/bodies/measure_bayesian_inversion.py",
-        "src/fep_lean/formal/declarations.py",
+        "src/fep_formal/catalogue/registry.py",
+        "src/fep_formal/catalogue/bodies/measure_bayesian_inversion.py",
+        "src/fep_formal/formal/declarations.py",
     ],
 )
 def test_diagnostic_dependency_drift_invalidates_acceptance(

@@ -2,21 +2,21 @@
 
 ## Preflight fails
 
-Run `uv run fep-lean preflight`. The JSON lists the exact missing capability.
-Use `uv run fep-lean setup` only when the failure is a missing Lean/Mathlib
+Run `uv run fep-formal preflight`. The JSON lists the exact missing capability.
+Use `uv run fep-formal setup` only when the failure is a missing Lean/Mathlib
 build. Install OpenGauss and configure Hermes credentials separately.
 
 ## Catalog artifacts are stale
 
-Run `uv run fep-lean catalogue`. The command validates the YAML first and then
+Run `uv run fep-formal catalogue`. The command validates the YAML first and then
 regenerates manuscript variables, the unified appendix, figures, and a report.
 
 ## A full run fails
 
 Inspect the structured `failure_reason` and the failed capability checks. Full
 mode does not create a successful report when any topic or integration fails.
-Check `GAUSS_HOME`, `FEP_LEAN_VERIFY_TIMEOUT`, `FEP_LEAN_LAKE_EXE`,
-`FEP_LEAN_LEAN_EXE`, and the configured Hermes endpoint.
+Check `GAUSS_HOME`, `FEP_FORMAL_VERIFY_TIMEOUT`, `FEP_FORMAL_LAKE_EXE`,
+`FEP_FORMAL_LEAN_EXE`, and the configured Hermes endpoint.
 
 ## Documentation checks fail
 

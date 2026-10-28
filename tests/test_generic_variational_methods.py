@@ -14,8 +14,8 @@ from fractions import Fraction
 
 import pytest
 
-from fep_lean import cli
-from fep_lean.methods import (
+from fep_formal import cli
+from fep_formal.methods import (
     BoundaryProbeError,
     exponential_tilt,
     extended_kl,

@@ -10,10 +10,10 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean import cli
-from fep_lean.catalogue import generation as catalogue_generation
-from fep_lean.catalogue.generation import render_topics_yaml
-from fep_lean.cli import (
+from fep_formal import cli
+from fep_formal.catalogue import generation as catalogue_generation
+from fep_formal.catalogue.generation import render_topics_yaml
+from fep_formal.cli import (
     RENDER_RECEIPT,
     SOURCE_PIN,
     bridge_pin_section,
@@ -21,10 +21,10 @@ from fep_lean.cli import (
     catalogue_products_section,
     render_receipt_section,
 )
-from fep_lean.output import evidence, render_log
-from fep_lean.output import manuscript as manuscript_module
-from fep_lean.output.browser_capture import CANONICAL_BROWSER_SCREENSHOTS
-from fep_lean.output.render_log import RECEIPT_VERSION, manuscript_source_digest
+from fep_formal.output import evidence, render_log
+from fep_formal.output import manuscript as manuscript_module
+from fep_formal.output.browser_capture import CANONICAL_BROWSER_SCREENSHOTS
+from fep_formal.output.render_log import RECEIPT_VERSION, manuscript_source_digest
 
 
 def _projection_owner(name: str):
@@ -98,9 +98,9 @@ def test_top_level_native_claim_ready_tracks_section_state(tmp_path: Path) -> No
     top level with an empty errors list -- a silent contradiction of the
     section authority.
     """
-    from fep_lean.cli import SectionReport, StatusReport
+    from fep_formal.cli import SectionReport, StatusReport
 
-    composes = ("fep_lean.output.evidence.validate_native_lean_receipt",)
+    composes = ("fep_formal.output.evidence.validate_native_lean_receipt",)
     claim_ready = SectionReport(
         name="native_verification_receipt",
         state="claim_ready",
@@ -395,7 +395,7 @@ def test_valid_census_reaches_real_manuscript_builder_without_processes(
 ) -> None:
     """A valid cache must not expose the live Git stamping branch in status."""
     project = Path(__file__).resolve().parent.parent
-    for relative in ("config", "src/fep_lean/formal", "manuscript/assets"):
+    for relative in ("config", "src/fep_formal/formal", "manuscript/assets"):
         shutil.copytree(project / relative, tmp_path / relative)
     (tmp_path / "config/topics.yaml").write_text(render_topics_yaml(tmp_path))
     for relative in (
@@ -620,8 +620,13 @@ def test_unavailable_receipt_comparison_keeps_report_composed_and_blocks_readine
 def test_public_readiness_types_retain_cli_identity_and_projection() -> None:
     from dataclasses import FrozenInstanceError
 
-    from fep_lean import PublicationReadinessReport, SectionReport, StatusReport, output
-    from fep_lean.output import evidence
+    from fep_formal import (
+        PublicationReadinessReport,
+        SectionReport,
+        StatusReport,
+        output,
+    )
+    from fep_formal.output import evidence
 
     assert cli.SectionReport is evidence.SectionReport is SectionReport
     assert cli.PublicationReadinessReport is PublicationReadinessReport
@@ -640,7 +645,7 @@ def test_public_readiness_types_retain_cli_identity_and_projection() -> None:
 
 
 def test_public_inspection_rejects_unknown_plane_before_reading(tmp_path: Path) -> None:
-    from fep_lean.output import release_bundle
+    from fep_formal.output import release_bundle
 
     with pytest.raises(ValueError, match="unknown stored publication evidence plane"):
         release_bundle.inspect_stored_publication_evidence(
@@ -654,18 +659,18 @@ def test_caller_root_context_nests_and_explicitly_projects_child_environment(
 ) -> None:
     import os
 
-    from fep_lean._paths import (
+    from fep_formal._paths import (
         project_child_environment,
         project_root,
         project_root_context,
     )
 
     original = dict(os.environ)
-    base = {"FEP_LEAN_PROJECT_ROOT": "caller-base", "SENTINEL": "unchanged"}
+    base = {"FEP_FORMAL_PROJECT_ROOT": "caller-base", "SENTINEL": "unchanged"}
     before = dict(base)
     with project_root_context(tmp_path / "one"):
         assert project_root() == (tmp_path / "one").resolve()
-        assert project_child_environment(base)["FEP_LEAN_PROJECT_ROOT"] == str(
+        assert project_child_environment(base)["FEP_FORMAL_PROJECT_ROOT"] == str(
             project_root()
         )
         with project_root_context(tmp_path / "two"):
@@ -679,7 +684,7 @@ def test_caller_root_context_nests_and_explicitly_projects_child_environment(
 def test_caller_root_context_isolated_between_contexts(tmp_path: Path) -> None:
     from contextvars import copy_context
 
-    from fep_lean._paths import project_root, project_root_context
+    from fep_formal._paths import project_root, project_root_context
 
     outer = project_root()
 
@@ -692,7 +697,7 @@ def test_caller_root_context_isolated_between_contexts(tmp_path: Path) -> None:
 
 
 def test_caller_root_context_restores_after_error(tmp_path: Path) -> None:
-    from fep_lean._paths import project_root, project_root_context
+    from fep_formal._paths import project_root, project_root_context
 
     previous = project_root()
     with pytest.raises(RuntimeError, match="control"), project_root_context(tmp_path):
@@ -703,7 +708,7 @@ def test_caller_root_context_restores_after_error(tmp_path: Path) -> None:
 def test_caller_roots_do_not_cross_independent_contexts(tmp_path: Path) -> None:
     from contextvars import copy_context
 
-    from fep_lean._paths import project_root, project_root_context
+    from fep_formal._paths import project_root, project_root_context
 
     first, second = copy_context(), copy_context()
     with project_root_context(tmp_path / "outer"):
@@ -722,8 +727,8 @@ def test_public_snapshot_builder_has_one_owner_and_starts_no_tools(
 ) -> None:
     import os
 
-    from fep_lean import build_status_report as public_builder
-    from fep_lean import output
+    from fep_formal import build_status_report as public_builder
+    from fep_formal import output
 
     assert public_builder is output.build_status_report is evidence.build_status_report
     assert cli.build_status_report is public_builder

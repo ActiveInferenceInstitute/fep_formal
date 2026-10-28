@@ -5,7 +5,7 @@ Scope
 -----
 
 The audit runs over **exactly the files the renderer emits** --
-``fep_lean.output.rendering.manuscript_source_files`` -- rather than re-globbing
+``fep_formal.output.rendering.manuscript_source_files`` -- rather than re-globbing
 ``manuscript/*.md``. A gate that measures a different file set than the artifact
 reports "all resolve" while references dangle in every produced PDF, which is
 what a wider glob did here: the excluded ``09z_unified_formalism_catalogue.md``
@@ -63,7 +63,7 @@ DEFAULT_ROOT = PROJECT_ROOT / "manuscript"
 if str(PROJECT_ROOT / "src") not in sys.path:  # pragma: no cover - import shim
     sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from fep_lean.output.rendering import manuscript_source_files
+from fep_formal.output.rendering import manuscript_source_files
 
 #: Anchor definition. Tolerates trailing attributes (``{#fig:x width=100%}``).
 _RE_ANCHOR = re.compile(r"\{#([A-Za-z]+:[\w:.-]+)(?=[\s}])")
@@ -76,7 +76,7 @@ _RE_HAND_NUMBER = re.compile(r"\b(?:Figure|Table|Section|Equation|Appendix)\s+\d
 #: Prefixes pandoc-crossref owns. Other anchors (plain ids) are not audited.
 _CROSSREF_PREFIXES = ("sec", "eq", "fig", "tbl", "lst")
 
-#: Git-ignored manuscript inputs written by ``uv run fep-lean catalogue``. On a
+#: Git-ignored manuscript inputs written by ``uv run fep-formal catalogue``. On a
 #: fresh clone they are absent, so references into them cannot resolve; the
 #: audit still fails, but names the missing step instead of only listing refs.
 _GENERATED_INPUTS = (
@@ -206,7 +206,7 @@ def main(argv: list[str] | None = None) -> int:
         if counts.get("unresolved") and missing:
             print(
                 "NOTE: generated manuscript input(s) absent: "
-                f"{', '.join(missing)}. Run `uv run fep-lean catalogue` first; "
+                f"{', '.join(missing)}. Run `uv run fep-formal catalogue` first; "
                 "references into them cannot resolve until then."
             )
         return 1

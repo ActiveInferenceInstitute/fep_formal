@@ -7,8 +7,8 @@ import json
 
 import pytest
 
-from fep_lean.output.evidence import build_native_lean_receipt
-from fep_lean.verification.lean_verifier import VerifyResult
+from fep_formal.output.evidence import build_native_lean_receipt
+from fep_formal.verification.lean_verifier import VerifyResult
 from tests._support import native_catalogue_shadow as shadow
 from tests.test_native_evidence import (
     LEAN_VERSION,

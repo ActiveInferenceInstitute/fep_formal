@@ -6,7 +6,7 @@ import re
 
 import pytest
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 from tests import test_geometry_continuous_time_formalisms as geometry
 from tests import test_risk_policy_tree_formalisms as risk_policy
 from tests._support.lean_module_contract import (

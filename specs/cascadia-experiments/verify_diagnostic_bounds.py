@@ -27,7 +27,7 @@ from cascadia_diagnostic_evidence import (
     fingerprints,
 )
 
-from fep_lean.verification._subprocess import run_process_group
+from fep_formal.verification._subprocess import run_process_group
 
 
 def _timeout_text(value: str | bytes | None) -> str:

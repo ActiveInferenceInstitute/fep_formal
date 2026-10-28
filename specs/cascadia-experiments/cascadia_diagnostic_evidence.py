@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Final
 
-from fep_lean.verification._jsonutil import load_strict_json
+from fep_formal.verification._jsonutil import load_strict_json
 
 SLICE: Final = Path(__file__).resolve().parent
 ROOT: Final = SLICE.parents[1]
@@ -86,8 +86,8 @@ def fingerprints() -> dict[str, str]:
         ROOT / "lean/lean-toolchain",
         ROOT / "lean/lakefile.lean",
         ROOT / "lean/lake-manifest.json",
-        ROOT / "src/fep_lean/verification/_jsonutil.py",
-        ROOT / "src/fep_lean/verification/_subprocess.py",
+        ROOT / "src/fep_formal/verification/_jsonutil.py",
+        ROOT / "src/fep_formal/verification/_subprocess.py",
     )
     return {
         path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()

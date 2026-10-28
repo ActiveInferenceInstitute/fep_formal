@@ -6,11 +6,11 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.registry import BODIES
-from fep_lean.catalogue.relations import EdgeKind, load_formalism_graph
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.catalogue.semantics import SemanticDisposition, load_theorem_maturity
-from fep_lean.verification.formalism_audit import parse_axiom_output
+from fep_formal.catalogue.registry import BODIES
+from fep_formal.catalogue.relations import EdgeKind, load_formalism_graph
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.catalogue.semantics import SemanticDisposition, load_theorem_maturity
+from fep_formal.verification.formalism_audit import parse_axiom_output
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 

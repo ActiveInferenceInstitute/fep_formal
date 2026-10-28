@@ -9,8 +9,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.custody import apply as apply_module
-from fep_lean.verification import horizon_acceptance as acceptance
+from fep_formal.custody import apply as apply_module
+from fep_formal.verification import horizon_acceptance as acceptance
 from tests._support import custody_fixture_knobs as fixtures
 from tests._support import h2_r0_custody as current_r0
 from tests._support.lean435_migration import (
@@ -19,7 +19,7 @@ from tests._support.lean435_migration import (
     historical_manifest_bytes,
     historical_metadata_bytes,
 )
-from tests._support.release_lineage import custody_root
+from tests._support.release_lineage import custody_root, record_release_metadata
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -113,7 +113,10 @@ def test_synthetic_epoch_uses_real_isolated_historical_validator(
     # Current canonical source copies remain available to shared diagnostics;
     # the fabricated custody epoch does not admit their H3 manifest owners.
     assert all((root / path).exists() for path in current_r0.H3_OWNER_SOURCE_PATHS)
-    owners = current_r0._manifest_owners((root / current_r0.MANIFEST_PATH).read_text())
+    owners = historical._manifest_owners((root / historical.MANIFEST_PATH).read_text())
+    assert (root / current_r0.MANIFEST_PATH).read_bytes() == (
+        REPO_ROOT / current_r0.MANIFEST_PATH
+    ).read_bytes()
     current_owners = current_r0._manifest_owners(
         (REPO_ROOT / current_r0.MANIFEST_PATH).read_text()
     )
@@ -125,6 +128,54 @@ def test_synthetic_epoch_uses_real_isolated_historical_validator(
     # The current validator refuses synthetic rewrites of the immutable past.
     with pytest.raises(ValueError, match="immutable R0 prior changed"):
         current_r0.validate_h2_r0_custody(root)
+
+
+def test_logical_fixture_owner_resolves_only_sealed_canonical_source(
+    tmp_path: Path,
+) -> None:
+    canonical = "src/fep_formal/catalogue/bodies/__init__.py"
+    legacy = canonical.replace("fep_formal", "fep_lean")
+    physical = tmp_path / canonical
+    physical.parent.mkdir(parents=True)
+    physical.write_bytes(b"synthetic canonical owner")
+    assert fixtures._logical_source(tmp_path, legacy) == physical
+    assert not (tmp_path / legacy).exists()
+    shim = tmp_path / "src/fep_lean/__init__.py"
+    shim.parent.mkdir(parents=True)
+    shim.write_bytes(b"synthetic compatibility shim")
+    assert fixtures._logical_source(tmp_path, "src/fep_lean/__init__.py") == shim
+    unsealed = tmp_path / "src/fep_formal/unsealed.py"
+    unsealed.write_bytes(b"not in roster")
+    with pytest.raises(AssertionError, match="unsealed historical fixture owner"):
+        fixtures._logical_source(tmp_path, "src/fep_lean/unsealed.py")
+    physical.unlink()
+    with pytest.raises(AssertionError, match="src/fep_lean/catalogue"):
+        fixtures._logical_source(tmp_path, legacy)
+    physical.symlink_to(shim)
+    with pytest.raises(AssertionError, match="src/fep_lean/catalogue"):
+        fixtures._logical_source(tmp_path, legacy)
+    with pytest.raises(AssertionError):
+        fixtures._logical_source(tmp_path, "../outside.py")
+
+
+@pytest.mark.parametrize("tamper", ("none", "semantic", "extra_identity"))
+def test_manifest_identity_inverse_retains_complete_historical_seal(
+    tamper: str,
+) -> None:
+    live = (REPO_ROOT / current_r0.MANIFEST_PATH).read_bytes()
+    if tamper == "none":
+        restored = historical_manifest_bytes(REPO_ROOT, live)
+        assert b"fep_formal" not in restored
+        assert restored == historical_manifest_bytes(REPO_ROOT, restored)
+    else:
+        changed = live + (
+            b"\n# extra semantic drift\n"
+            if tamper == "semantic"
+            else b"\n# fep_formal\n"
+        )
+        with pytest.raises(AssertionError):
+            historical_manifest_bytes(REPO_ROOT, changed)
+    assert (REPO_ROOT / current_r0.MANIFEST_PATH).read_bytes() == live
 
 
 def test_current_post_h3_terminal_is_still_refused_without_mutation(
@@ -143,13 +194,15 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
     manifest = recorded_root / current_r0.MANIFEST_PATH
     manifest.write_bytes(historical_manifest_bytes(REPO_ROOT, manifest.read_bytes()))
     addendum = json.loads((REPO_ROOT / current_r0.H3_ADDENDUM_PATH).read_bytes())
-    recorded_manifest_digest = addendum["source_sha256"][current_r0.MANIFEST_PATH]
+    recorded_manifest_digest = addendum["source_sha256"][
+        current_r0.RECORDED_MANIFEST_PATH
+    ]
     assert hashlib.sha256(manifest.read_bytes()).hexdigest() == recorded_manifest_digest
     # The uv pin and reviewed tooling scope are real metadata changes beyond
     # the approved release-token reversal; the historical validator refuses.
     with pytest.raises(
         ValueError,
-        match="release metadata has unlisted changes beyond the root version: pyproject.toml",
+        match="release metadata must contain exactly the approved root version: pyproject.toml",
     ):
         current_r0.validate_h2_r0_custody(recorded_root)
     # Authenticate the exact reviewed live profile and historical companion
@@ -163,11 +216,12 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
     # reverse only that exact delta in this disposable historical control.
     with pytest.raises(
         ValueError,
-        match="release metadata has unlisted changes beyond the root version: uv.lock",
+        match="release metadata must contain exactly the approved root version: uv.lock",
     ):
         current_r0.validate_h2_r0_custody(recorded_root)
     lock = recorded_root / "uv.lock"
     lock.write_bytes(bridge_dev_lock_predecessor(lock.read_bytes()))
+    record_release_metadata(recorded_root)
     with pytest.raises(ValueError, match="stale historical custody source digest"):
         current_r0.validate_h2_r0_custody(recorded_root)
     with pytest.raises(
@@ -181,7 +235,7 @@ def test_current_post_h3_terminal_is_still_refused_without_mutation(
 def test_function_ratchet_metadata_reversal_authenticates_complete_profile(
     tamper: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean import __version__
+    from fep_formal import __version__
     from tests._support import lean435_migration as migration
 
     before = _production_snapshot()

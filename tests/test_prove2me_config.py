@@ -1,4 +1,4 @@
-"""Offline tests for fep_lean.prove2me.config (t-0024 slice A).
+"""Offline tests for fep_formal.prove2me.config (t-0024 slice A).
 
 Every ``Prove2meConfig.load`` call injects ``env=`` and ``home=`` so no test
 touches ``os.environ`` or the real home directory; nothing here performs
@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.prove2me.config import (
+from fep_formal.prove2me.config import (
     CREDENTIALS_ENV_VAR,
     DEFAULT_BASE_URL,
     ENV_VAR,

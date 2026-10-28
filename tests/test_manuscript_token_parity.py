@@ -22,9 +22,9 @@ from pathlib import Path
 import pytest
 import yaml
 
-import fep_lean.output.manuscript as manuscript_module
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.output.manuscript import build_manuscript_vars
+import fep_formal.output.manuscript as manuscript_module
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.output.manuscript import build_manuscript_vars
 
 PROJ = Path(__file__).resolve().parent.parent
 SKIP = {
@@ -98,7 +98,7 @@ def test_manuscript_vars_yaml_is_current(
     committed_keys = set(_flatten(committed))
     assert fresh_keys == committed_keys, (
         f"manuscript_vars.yaml out of sync: missing={fresh_keys - committed_keys}, "
-        f"extra={committed_keys - fresh_keys} — run `uv run fep-lean catalogue`"
+        f"extra={committed_keys - fresh_keys} — run `uv run fep-formal catalogue`"
     )
 
 

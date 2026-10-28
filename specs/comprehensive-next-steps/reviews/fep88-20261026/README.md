@@ -8,9 +8,9 @@ conditional meaning. The reviewed maturity disposition is unchanged.
 
 Canonical inputs:
 
-- [Topic bodies](../../../../src/fep_lean/catalogue/bodies/core_thermodynamics.py)
-- [Finite path model](../../../../src/fep_lean/formal/path_thermodynamics.lean)
-- [Conditional composition](../../../../src/fep_lean/formal/compositions/core.lean)
+- [Topic bodies](../../../../src/fep_formal/catalogue/bodies/core_thermodynamics.py)
+- [Finite path model](../../../../src/fep_formal/formal/path_thermodynamics.lean)
+- [Conditional composition](../../../../src/fep_formal/formal/compositions/core.lean)
 - [Maintained native controls](../../../../tests/fixtures/landauer_path_controls.lean)
 - [Maturity review](../../../../config/theorem_maturity.yaml)
 

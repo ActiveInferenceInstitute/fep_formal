@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independently validate a generated fep_lean report bundle."""
+"""Independently validate a generated fep_formal report bundle."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
-from fep_lean.output.reporter import validate_report_receipt
+from fep_formal.output.reporter import validate_report_receipt
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -25,7 +25,7 @@ def main(argv: list[str] | None = None) -> int:
         "--project-root",
         type=Path,
         default=Path(__file__).resolve().parent.parent,
-        help="live fep_lean checkout whose source/config digests must match",
+        help="live fep_formal checkout whose source/config digests must match",
     )
     args = parser.parse_args(argv)
     receipt = validate_report_receipt(

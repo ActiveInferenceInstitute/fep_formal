@@ -38,11 +38,11 @@ from run_synthetic import (
     require,
 )
 
-from fep_lean.output.release_bundle import validate_release_bundle
-from fep_lean.output.release_bundle._core import _capture_parent_fd
-from fep_lean.output.release_bundle._validate import _read_archive
-from fep_lean.verification._jsonutil import load_strict_json
-from fep_lean.verification._subprocess import run_process_group
+from fep_formal.output.release_bundle import validate_release_bundle
+from fep_formal.output.release_bundle._core import _capture_parent_fd
+from fep_formal.output.release_bundle._validate import _read_archive
+from fep_formal.verification._jsonutil import load_strict_json
+from fep_formal.verification._subprocess import run_process_group
 
 PRODUCERS = (*STUDY_SOURCE_FILES, BASE + "bundle_study.py")
 MAX_ARCHIVE_BYTES = 512 * 1024 * 1024
@@ -957,8 +957,8 @@ def reproduce(
             installed_sources = {
                 name: sha
                 for name, sha in metadata["source_sha256"].items()
-                if name.startswith("src/fep_lean/")
-                and name.endswith((".py", ".lean", ".yaml"))
+                if name.startswith(("src/fep_formal/", "src/fep_lean/"))
+                and name.endswith((".py", ".pyi", ".lean", ".yaml", "/py.typed"))
             }
             require(bool(installed_sources), "installed package source roster absent")
             location_code = (
@@ -978,7 +978,12 @@ def reproduce(
                 and type(location["purelib"]) is str,
                 "stdlib installed-location evidence mismatch",
             )
-            package_root = Path(location["purelib"]) / "fep_lean"
+            # Bind physical installed owners, including the compatibility shim,
+            # without rewriting original source keys in a historical bundle.
+            package_root, namespace = (
+                Path(location["purelib"]),
+                "fep_formal" if "src/fep_formal/__init__.py" in installed_sources else "fep_lean",
+            )
             require(
                 package_root.is_relative_to(environment)
                 and package_root.resolve() == package_root,
@@ -986,14 +991,17 @@ def reproduce(
             )
             installed_guard = Inputs(package_root)
             for name, sha in installed_sources.items():
-                installed_guard.read(name.removeprefix("src/fep_lean/"), expected=sha)
+                installed_guard.read(name.removeprefix("src/"), expected=sha)
             runtime_code = (
-                "import json,platform,pathlib,hashlib,fep_lean,numpy; "
-                "p=pathlib.Path(fep_lean.__file__).resolve(); "
+                "import importlib,json,platform,pathlib,hashlib,numpy; "
+                f"package=importlib.import_module({namespace!r}); "
+                "p=pathlib.Path(package.__file__).resolve(); "
+                f"purelib=pathlib.Path({str(package_root)!r}); "
+                f"assert p == purelib / {namespace!r} / '__init__.py'; "
                 f"assert p.is_relative_to(pathlib.Path({str(environment)!r})); "
                 f"assert not p.is_relative_to(pathlib.Path({str(root)!r})); "
                 f"expected={installed_sources!r}; "
-                "observed={name:hashlib.sha256((p.parent/name.removeprefix('src/fep_lean/')).read_bytes()).hexdigest() for name in expected}; "
+                "observed={name:hashlib.sha256((purelib/name.removeprefix('src/')).read_bytes()).hexdigest() for name in expected}; "
                 "assert observed==expected; "
                 "print(json.dumps({'python':platform.python_version(),'numpy':numpy.__version__,'package':str(p),'source_sha256':observed},sort_keys=True))"
             )
@@ -1008,7 +1016,7 @@ def reproduce(
                 and bool(runtime["package"])
                 and runtime.get("python") == original["execution_environment"]["python"]
                 and runtime.get("numpy") == original["execution_environment"]["numpy"]
-                and runtime.get("package") == str(package_root / "__init__.py"),
+                and runtime.get("package") == str(package_root / namespace / "__init__.py"),
                 "installed runtime source evidence mismatch",
             )
             simulated = output / "synthetic"

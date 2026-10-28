@@ -6,8 +6,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from fep_lean.catalogue.generation import check_or_write
-from fep_lean.formal import (
+from fep_formal.catalogue.generation import check_or_write
+from fep_formal.formal import (
     formal_aggregate_drift,
     formal_projection_drift,
     write_formal_aggregate,

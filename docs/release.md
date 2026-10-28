@@ -9,7 +9,7 @@ actually ships, and it is fully checked by
 
 | Requirement | Checked by |
 | --- | --- |
-| One version across `pyproject.toml`, `src/fep_lean/__init__.py`, `CITATION.cff`, `manuscript/config.yaml`, `config/settings.yaml`, `.aii/config.yaml`, `uv.lock` and the release-bundle constants | `release_check.py` |
+| One version across `pyproject.toml`, `compat/fep-lean/pyproject.toml` (including its dependency/extras), `src/fep_formal/__init__.py`, `CITATION.cff`, `manuscript/config.yaml`, `config/settings.yaml`, `.aii/config.yaml`, `uv.lock` and the release-bundle constants | `release_check.py` |
 | One release date across `CITATION.cff`, `manuscript/config.yaml`, `.aii/config.yaml` and the release-bundle constants | `release_check.py` |
 | A `## X.Y.Z — YYYY-MM-DD — title` section in `CHANGELOG.md` | `release_check.py` |
 | Clean working tree; `HEAD` equals `origin/main` | `release_check.py --hosted` |
@@ -60,14 +60,22 @@ A release changes no scientific claim. Unrun lanes stay described as unrun.
 3. Run the local suite and audits (see [development](development.md)), commit
    and push to `main`.
 4. Wait for hosted CI on that commit, then
-   `uv run python docs/release_check.py --hosted --notes /tmp/notes.md`.
-5. Build distributions from the same commit: `uv build`.
+   `uv run python docs/release_check.py --hosted --notes output/release-notes.md`.
+5. Build both distributions from the same commit. The canonical wheel owns
+   the implementation, import adapter and both commands; the deprecated
+   compatibility wheel owns metadata only. The version gate checks their
+   versions and exact dependency/extras pins together.
+
+   ```bash
+   uv build
+   (cd compat/fep-lean && uv build --out-dir ../../dist)
+   ```
 6. Tag and publish:
 
    ```bash
    git tag -a vX.Y.Z -m "FEP_Formal vX.Y.Z" && git push origin vX.Y.Z
    gh release create vX.Y.Z dist/* --title "FEP_Formal vX.Y.Z — title" \
-     --notes-file /tmp/notes.md
+     --notes-file output/release-notes.md
    ```
 
 7. Verify that the GitHub release was archived under the

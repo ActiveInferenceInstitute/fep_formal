@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 
-from fep_lean.verification.gnn_artifact_receipt import (
+from fep_formal.verification.gnn_artifact_receipt import (
     ArtifactContract,
     ArtifactVerifier,
 )
@@ -44,7 +44,7 @@ CONTRACT = ArtifactContract(
         "gnn.render.pomdp_processor.POMDPRenderProcessor._pomdp_to_gnn_spec",
         "gnn.render.processor.render_gnn_spec(jax)",
     ),
-    extractor="src/fep_lean/verification/gnn_continuous_artifact_proof.py",
+    extractor="src/fep_formal/verification/gnn_continuous_artifact_proof.py",
     adapter=f"{SLICE}/verify_native.py",
     extra_files=(
         f"{SLICE}/expected.json",
@@ -53,8 +53,8 @@ CONTRACT = ArtifactContract(
         f"{SLICE}/scaffold-serialization.md",
         f"{SLICE}/generated/scaffold-canonical.json",
         f"{SLICE}/generated/scaffold-runtime-parity.json",
-        "src/fep_lean/verification/_jsonutil.py",
-        "src/fep_lean/_paths.py",
+        "src/fep_formal/verification/_jsonutil.py",
+        "src/fep_formal/_paths.py",
     ),
 )
 VERIFICATION = ArtifactVerifier(Path(__file__).resolve().parents[2], CONTRACT)

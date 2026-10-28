@@ -4,8 +4,8 @@ All documentation is local to this checkout. Keep links relative to the file
 that owns them, keep toolchain/model claims synchronized with the canonical
 configuration, and mark generated values as generated data.
 
-Use FEP_Formal for the current project name. Preserve `fep_lean` imports,
-`fep-lean` commands and other real interface identifiers; dated reviews and
+Use FEP_Formal for the current project name. Preserve `fep_formal` imports,
+`fep-formal` commands and other real interface identifiers; dated reviews and
 coordinated mirror contracts retain their recorded source epoch.
 
 The [repository contract](../AGENTS.md#required-checks) owns the complete check
@@ -28,7 +28,7 @@ The root [`README.md`](../README.md) is authoritative. Its
 editing the root README, never hand-edit the mirror. The default
 `--include-root` link check refuses a missing or stale mirror.
 
-Use `uv run fep-lean catalogue` to materialize manuscript variables and the
+Use `uv run fep-formal catalogue` to materialize manuscript variables and the
 unified appendix before checking manuscript cross-references.
 
 `formalism-coverage.*`, `formalism-atlas.*`, and

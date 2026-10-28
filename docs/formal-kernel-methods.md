@@ -10,8 +10,8 @@ information-geometric, collective, and learning claims can meet under visible
 hypotheses.
 
 The authoritative module set and dependency order live in
-[`src/fep_lean/formal/manifest.py`](../src/fep_lean/formal/manifest.py). The
-files under [`src/fep_lean/formal/`](../src/fep_lean/formal/) are canonical;
+[`src/fep_formal/formal/manifest.py`](../src/fep_formal/formal/manifest.py). The
+files under [`src/fep_formal/formal/`](../src/fep_formal/formal/) are canonical;
 their copies under `lean/FepSketches/` are generated Lake inputs. The
 [formalism coverage report](formalism-coverage.md) is the generated declaration
 inventory, not an authoring surface.
@@ -296,8 +296,8 @@ Run the deterministic formal and visual checks from the repository root:
 ```bash
 uv run python scripts/_maint_build_formal_modules.py --check
 uv run python scripts/build_formalism_coverage.py --check
-uv run fep-lean atlas --check
-uv run fep-lean dashboard --check
+uv run fep-formal atlas --check
+uv run fep-formal dashboard --check
 uv run pytest \
   tests/test_formal_foundations.py \
   tests/test_formalism_coverage.py \
@@ -312,7 +312,7 @@ Run native acceptance separately:
 (cd lean && lake build FepSketches)
 uv run python scripts/audit_formalisms.py \
   --receipt output/formalism-audit.json
-uv run fep-lean verify --fail-on-warnings \
+uv run fep-formal verify --fail-on-warnings \
   --receipt output/native-verification.json
 ```
 
@@ -356,8 +356,8 @@ Regenerate and then drift-check the dashboard with either the public command or
 its deterministic maintenance adapter:
 
 ```bash
-uv run fep-lean dashboard
-uv run fep-lean dashboard --check
+uv run fep-formal dashboard
+uv run fep-formal dashboard --check
 uv run python scripts/build_formal_kernel_dashboard.py --check
 ```
 

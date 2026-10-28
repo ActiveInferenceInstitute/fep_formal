@@ -24,7 +24,7 @@ Catalog generation is offline. Native verification requires the pinned Lean work
 
 The direction of ownership is fixed:
 
-1. `config/catalogue_metadata.yaml`, `config/theorem_maturity.yaml`, `config/formalism_novelty.yaml`, and the family-owned `fep_lean.catalogue.bodies` modules are maintained inputs.
+1. `config/catalogue_metadata.yaml`, `config/theorem_maturity.yaml`, `config/formalism_novelty.yaml`, and the family-owned `fep_formal.catalogue.bodies` modules are maintained inputs.
 2. The catalog generator joins metadata, semantic review, and bodies strictly by stable topic ID, validates every required novelty bridge against the maintained composition leaves, and writes checkout and wheel data from identical bytes.
 3. Native verification reads the generated catalog, invokes Lean, and may write a digest-bound receipt.
 4. Manuscript variables are projected from the catalog plus validated receipts.
@@ -50,7 +50,7 @@ The report validator, rather than this manuscript, owns the exact artifact roste
 
 ### SQLite Storage Boundaries {#sec:sqlite_schema_five_tables}
 
-The optional persistence layer separates sessions, dialogue turns, artifacts, logs, and cached provider responses. This separation exists so a compiler result is not reconstructed from an LLM transcript and a cached provider response is not mistaken for a fresh run. The schema in `fep_lean.gauss.client` is canonical; duplicating its columns here would invite drift.
+The optional persistence layer separates sessions, dialogue turns, artifacts, logs, and cached provider responses. This separation exists so a compiler result is not reconstructed from an LLM transcript and a cached provider response is not mistaken for a fresh run. The schema in `fep_formal.gauss.client` is canonical; duplicating its columns here would invite drift.
 
 ### Environment Variable Reference {#sec:environment_variable_reference}
 
@@ -59,7 +59,7 @@ Environment variables configure credentials, provider budgets, timeouts, and sto
 - credentials enable full mode but do not alter native theorem truth;
 - changing a timeout or model invalidates any claim that a previous full receipt describes the new configuration.
 
-Package imports use the `fep_lean` namespace.
+Package imports use the canonical `fep_formal` namespace; deprecated `fep_lean` imports resolve to the same implementation.
 
 ### Representative Run Statistics {#sec:pipeline_run_statistics}
 
@@ -74,9 +74,9 @@ For receipt `{{verify.run_id}}`, recorded native compiler time is {{verify.durat
 From the project root:
 
 1. synchronize the locked Python environment with `uv sync --locked --extra dev`, whose test extras step 5 needs;
-2. explicitly prepare the pinned Lean workspace with `uv run fep-lean setup` when its cache is absent;
+2. explicitly prepare the pinned Lean workspace with `uv run fep-formal setup` when its cache is absent;
 3. regenerate and drift-check catalog, aggregate Lean, semantic audit, and coverage projections;
-4. run `uv run fep-lean verify --fail-on-warnings --receipt output/native-verification.json` for native evidence;
+4. run `uv run fep-formal verify --fail-on-warnings --receipt output/native-verification.json` for native evidence;
 5. generate manuscript variables, run the placeholder and theorem-reference audits, and render to `output/manuscript/`;
 6. run full mode only when its external capabilities and credentials are intentionally supplied, then validate its report before citing it.
 

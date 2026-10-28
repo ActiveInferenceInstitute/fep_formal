@@ -33,7 +33,7 @@ def _load_script() -> ModuleType:
 
 def _write_module(root: Path, resource: str, imports: tuple[str, ...] = ()) -> Path:
     """Write one canonical formal module with the given import lines."""
-    path = root / "src" / "fep_lean" / "formal" / resource
+    path = root / "src" / "fep_formal" / "formal" / resource
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("".join(f"import {name}\n" for name in imports), encoding="utf-8")
     return path
@@ -143,7 +143,7 @@ def test_main_compiles_every_orphan_from_lean_dir(
 
     orphans = script.orphan_modules(tmp_path)
     expected = tuple(
-        (tmp_path / "lean", tmp_path / "src" / "fep_lean" / "formal" / f"{m}.lean")
+        (tmp_path / "lean", tmp_path / "src" / "fep_formal" / "formal" / f"{m}.lean")
         for m in orphans
     )
     assert code == 0
@@ -225,7 +225,7 @@ def test_main_fails_closed_without_fep_all(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
     script = _load_script()
-    (tmp_path / "src" / "fep_lean" / "formal").mkdir(parents=True)
+    (tmp_path / "src" / "fep_formal" / "formal").mkdir(parents=True)
 
     code = script.main(["--root", str(tmp_path)])
     captured = capsys.readouterr()

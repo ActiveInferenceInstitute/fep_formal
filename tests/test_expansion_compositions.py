@@ -5,11 +5,11 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lean_module_contract import topic_namespace_owner_modules
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-COMPOSITIONS_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "compositions"
+COMPOSITIONS_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal" / "compositions"
 
 BRIDGES = {
     51: (

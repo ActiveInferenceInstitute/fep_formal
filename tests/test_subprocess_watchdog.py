@@ -16,7 +16,7 @@ from typing import Any
 
 import pytest
 
-from fep_lean.verification import _subprocess
+from fep_formal.verification import _subprocess
 from tests._support import lean_runner
 
 

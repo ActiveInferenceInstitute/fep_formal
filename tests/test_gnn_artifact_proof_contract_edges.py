@@ -14,11 +14,11 @@ from typing import Any
 
 import pytest
 
-from fep_lean.verification import gnn_artifact_proof as proof
+from fep_formal.verification import gnn_artifact_proof as proof
 
 ROOT = Path(__file__).resolve().parents[1]
 SLICE = Path("specs/gnn-bridge-q5-artifact-proof")
-EXTRACTOR = Path("src/fep_lean/verification/gnn_artifact_proof.py")
+EXTRACTOR = Path("src/fep_formal/verification/gnn_artifact_proof.py")
 MANIFEST = Path("generated/artifact_proof_manifest.json")
 LITERALS = {
     "A_data": "[[0.5, 0.5], [0.5, 0.5]]",
@@ -233,6 +233,8 @@ def artifact_copy(tmp_path: Path) -> tuple[Path, Path, dict[str, Any]]:
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / relative, target)
     manifest = json.loads((local / MANIFEST).read_text())
+    # This disposable current-source fixture is separate from retained evidence.
+    manifest["extractor_sha256"] = proof.sha256_file_strict(root / EXTRACTOR)
     assert (
         proof.manifest_mismatches(
             json.dumps(manifest), repo_root=root, slice_root=local
@@ -360,3 +362,42 @@ def test_rehashing_an_unparseable_fixture_cannot_bless_payload_evidence(
         for problem in problems
     )
     assert "manifest: expected_payload differs from exact extracted tables" in problems
+
+
+def test_retained_manifest_requires_explicit_historical_extractor(
+    tmp_path: Path,
+) -> None:
+    relative = "specs/identity-cutover/baseline/q5-gnn-artifact-proof.py.txt"
+    text = (ROOT / SLICE / MANIFEST).read_text()
+    current = proof.manifest_mismatches(text, repo_root=ROOT, slice_root=ROOT / SLICE)
+    assert any(problem.startswith(f"{EXTRACTOR}: ") for problem in current)
+    assert (
+        proof.manifest_mismatches(
+            text,
+            repo_root=ROOT,
+            slice_root=ROOT / SLICE,
+            extractor_relative_path=relative,
+        )
+        == []
+    )
+    snapshot = tmp_path / relative
+    snapshot.parent.mkdir(parents=True)
+    snapshot.write_bytes((ROOT / relative).read_bytes() + b"\n# changed\n")
+    problems = proof.manifest_mismatches(
+        text,
+        repo_root=tmp_path,
+        slice_root=ROOT / SLICE,
+        extractor_relative_path=relative,
+    )
+    assert any(problem.startswith(f"{relative}: ") for problem in problems)
+
+
+@pytest.mark.parametrize("relative", ["../outside.py", "/outside.py"])
+def test_historical_extractor_cannot_escape_repository(relative: str) -> None:
+    problems = proof.manifest_mismatches(
+        (ROOT / SLICE / MANIFEST).read_text(),
+        repo_root=ROOT,
+        slice_root=ROOT / SLICE,
+        extractor_relative_path=relative,
+    )
+    assert any("extractor: missing or unsafe" in problem for problem in problems)

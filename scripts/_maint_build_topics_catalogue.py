@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from fep_lean.catalogue.generation import (
+from fep_formal.catalogue.generation import (
     build_topics_data,
     catalogue_projection_drift,
     check_or_write,

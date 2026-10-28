@@ -14,9 +14,9 @@ from typing import Any
 
 import pytest
 
-from fep_lean.gauss import cli as gauss_cli
-from fep_lean.gauss.client import OpenGaussClient, resolve_gauss_home
-from fep_lean.verification import _subprocess, environment
+from fep_formal.gauss import cli as gauss_cli
+from fep_formal.gauss.client import OpenGaussClient, resolve_gauss_home
+from fep_formal.verification import _subprocess, environment
 
 
 def test_failed_artifact_registration_leaves_no_published_file(tmp_path: Path) -> None:

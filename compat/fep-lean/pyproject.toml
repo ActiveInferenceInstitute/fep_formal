@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fep-lean"
+version = "2.1.0"
+description = "Deprecated dependency alias for FEP_Formal; install fep-formal instead"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["fep-formal==2.1.0"]
+license = "CC-BY-4.0"
+classifiers = ["Development Status :: 7 - Inactive"]
+
+[project.optional-dependencies]
+dev = ["fep-formal[dev]==2.1.0"]
+
+[project.urls]
+Repository = "https://github.com/ActiveInferenceInstitute/fep_formal"
+
+[tool.setuptools]
+packages = []

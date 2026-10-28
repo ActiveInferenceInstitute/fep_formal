@@ -8,7 +8,7 @@ repository validation. The packaging floor does not change that requirement.
 
 ## Measured package line floors
 
-The [policy](coverage-floors.json) additionally gates each of the 14 nonempty
+The [policy](coverage-floors.json) additionally gates each of the 15 nonempty
 direct packages in coverage.py's XML. A subpackage has its own floor; its lines
 are not counted again under its parent package. CI checks the XML after the
 parallel Python component and isolated Chrome component have both contributed,
@@ -27,7 +27,7 @@ and the selection rule: `floor(100 * covered / valid)` for each nonempty
 package. No threshold is inferred from the rounded XML display rate. The
 pre-existing aggregate requirement stays at 89%.
 
-`fep_lean.data` has zero executable lines at this checkpoint. It is explicitly
+`fep_formal.data` has zero executable lines at this checkpoint. It is explicitly
 listed as empty rather than credited with a perfect coverage percentage; adding
 executable lines there requires a measured floor. Missing or unexpected packages,
 duplicate file/line records, malformed rates/counts, path mismatches, and aggregate
@@ -74,3 +74,18 @@ See [Testing](testing.md) and the [required checks](../AGENTS.md#required-checks
 for the maintained validation contract. Dated failure ledgers and prior
 measurements remain historical evidence in repository history; they are not
 current operating instructions.
+
+The identity migration maps the historical `fep_lean` package selectors to
+`fep_formal` without changing their recorded baseline counts or floor values.
+Those baseline measurements remain historical; the migrated package and its
+compatibility adapter require a fresh coverage run. The adapter is additional
+code under the same aggregate floor.
+
+The adapter has a separate October 27, 2026 local baseline: all 32 executable
+lines were covered by the 11 identity migration tests. Its measured floor is
+100%. The policy records the source and XML digests separately from the
+historical canonical-package baseline. The adapter-only measurement used an
+explicit zero aggregate threshold solely to collect that isolated baseline;
+the required full-suite aggregate threshold remains 89%. Missing adapter
+coverage fails the same complete-package inventory check. Legacy subpackages
+contain typing aliases only and are not accepted as executable coverage owners.

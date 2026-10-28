@@ -21,6 +21,8 @@ import threading
 from collections.abc import Sequence
 from pathlib import Path
 
+from fep_formal._paths import resolve_environment
+
 __all__ = [
     "run_lake_lean_probe",
     "run_lean_compile_probe",
@@ -32,7 +34,7 @@ def run_lake_lean_probe(
     arguments: Sequence[str],
     *,
     cwd: Path,
-    timeout_s: int = int(os.environ.get("FEP_LEAN_PROBE_TIMEOUT", "1800")),
+    timeout_s: int = int(resolve_environment("FEP_FORMAL_PROBE_TIMEOUT", "1800")),
     executable: str | None = None,
 ) -> subprocess.CompletedProcess[str]:
     """Run ``lake <arguments>`` (e.g. ``["env", "lean", "--version"]``) in its own process group."""
@@ -51,7 +53,7 @@ def run_lean_compile_probe(
     cwd: Path,
     import_root: Path | None = None,
     output_path: Path | None = None,
-    timeout_s: int = int(os.environ.get("FEP_LEAN_PROBE_TIMEOUT", "1800")),
+    timeout_s: int = int(resolve_environment("FEP_FORMAL_PROBE_TIMEOUT", "1800")),
     executable: str | None = None,
 ) -> subprocess.CompletedProcess[str]:
     """Compile ``source_path`` via ``lake env lean [-R import_root] [-o output_path]`` in its own process group."""
@@ -71,7 +73,7 @@ def run_lean_probe(
     *,
     import_root: Path,
     cwd: Path,
-    timeout_s: int = int(os.environ.get("FEP_LEAN_PROBE_TIMEOUT", "1800")),
+    timeout_s: int = int(resolve_environment("FEP_FORMAL_PROBE_TIMEOUT", "1800")),
     executable: str | None = None,
 ) -> subprocess.CompletedProcess[str]:
     """Compile ``probe_path`` via ``lake env lean -R import_root`` in its own process group."""

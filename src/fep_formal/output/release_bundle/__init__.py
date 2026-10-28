@@ -1,0 +1,772 @@
+"""Deterministic, fail-closed publication evidence bundles.
+
+The archive is a transport for already validated evidence, never a new proof
+plane.  Every member is a regular file with normalized metadata; the manifest
+and checksum table describe the exact payload without a recursive self-hash.
+"""
+
+from __future__ import (
+    annotations as annotations,
+)
+
+import argparse
+import gzip as gzip
+import hashlib as hashlib
+import importlib.metadata as importlib  # noqa: F401
+import io as io
+import json as json
+import math as math
+import os as os
+import re as re
+import shlex as shlex
+import shutil as shutil
+import struct as struct
+import subprocess as subprocess
+import sys as sys
+import tarfile as tarfile
+import tempfile as tempfile
+import xml.etree.ElementTree as ET  # noqa: F401
+import zlib as zlib
+from collections import (
+    Counter as Counter,
+)
+from collections.abc import (
+    Mapping as Mapping,
+)
+from collections.abc import (
+    Sequence as Sequence,
+)
+from dataclasses import (
+    dataclass as dataclass,
+)
+from functools import (
+    lru_cache as lru_cache,
+)
+from pathlib import (
+    Path as Path,
+)
+from pathlib import (
+    PurePosixPath as PurePosixPath,
+)
+from typing import (
+    Any as Any,
+)
+
+import yaml as yaml
+
+from fep_formal.catalogue.coverage import (
+    formalism_coverage_drift as formalism_coverage_drift,
+)
+from fep_formal.catalogue.relations import (
+    EdgeKind as EdgeKind,
+)
+from fep_formal.catalogue.theorem_maturity_projection import (
+    render_markdown as render_markdown,
+)
+from fep_formal.catalogue.theorem_maturity_projection import (
+    validate_audit as validate_audit,
+)
+from fep_formal.catalogue.topics import (
+    FEPTopicCatalogue as FEPTopicCatalogue,
+)
+from fep_formal.output.browser_capture import (
+    BROWSER_ASSET_ROOT as BROWSER_ASSET_ROOT,
+)
+from fep_formal.output.browser_capture import (
+    BROWSER_RECEIPT as BROWSER_RECEIPT,
+)
+from fep_formal.output.browser_capture import (
+    CANONICAL_BROWSER_PROJECTIONS as _CANONICAL_BROWSER_PROJECTIONS,  # noqa: F401
+)
+from fep_formal.output.browser_capture import (
+    CANONICAL_BROWSER_SCREENSHOTS as _CANONICAL_BROWSER_SCREENSHOTS,
+)
+from fep_formal.output.browser_capture import (
+    REQUIRED_BROWSER_INTERACTIONS as _REQUIRED_BROWSER_INTERACTIONS,  # noqa: F401
+)
+from fep_formal.output.browser_capture import (
+    BrowserCaptureError as BrowserCaptureError,
+)
+from fep_formal.output.browser_capture import (
+    canonical_browser_capture_provenance as canonical_browser_capture_provenance,
+)
+from fep_formal.output.browser_capture import (
+    canonical_browser_observations as canonical_browser_observations,
+)
+from fep_formal.output.browser_capture import (
+    canonical_browser_render_configuration as canonical_browser_render_configuration,
+)
+from fep_formal.output.browser_capture import (
+    replay_browser_acceptance as replay_browser_acceptance,
+)
+from fep_formal.output.browser_capture import (
+    resolve_browser_executable as resolve_browser_executable,
+)
+from fep_formal.output.evidence import (
+    validate_native_lean_receipt as validate_native_lean_receipt,
+)
+from fep_formal.output.formal_kernel_dashboard import (
+    formal_kernel_dashboard_drift as formal_kernel_dashboard_drift,
+)
+from fep_formal.output.formalism_atlas import (
+    atlas_projection_drift as atlas_projection_drift,
+)
+from fep_formal.output.formalism_presentation import (
+    RELEASE_CAPABILITIES as RELEASE_CAPABILITIES,
+)
+from fep_formal.output.formalism_presentation import (
+    RELEASE_FAMILIES as RELEASE_FAMILIES,
+)
+from fep_formal.output.formalism_presentation import (
+    RELEASE_RELATIONS as RELEASE_RELATIONS,
+)
+from fep_formal.output.formalism_presentation import (
+    RELEASE_SEAL as RELEASE_SEAL,
+)
+from fep_formal.output.formalism_presentation import (
+    RELEASE_TOPICS as RELEASE_TOPICS,
+)
+from fep_formal.output.formalism_presentation import (
+    RELEASE_WITNESSES as RELEASE_WITNESSES,
+)
+from fep_formal.output.formalism_presentation import (
+    FormalismPresentation as FormalismPresentation,
+)
+from fep_formal.output.formalism_presentation import (
+    build_formalism_presentation as build_formalism_presentation,
+)
+from fep_formal.output.fsutil import (
+    atomic_write_bytes as atomic_write_bytes,
+)
+from fep_formal.output.fsutil import (
+    sha256_bytes as sha256_bytes,
+)
+from fep_formal.output.fsutil import (
+    sha256_file as sha256_file,
+)
+from fep_formal.output.manuscript import (
+    collection_runtime_identity as collection_runtime_identity,
+)
+from fep_formal.output.manuscript import (
+    manuscript_projection_drift as manuscript_projection_drift,
+)
+from fep_formal.output.manuscript import (
+    parse_pytest_collection_stdout as parse_pytest_collection_stdout,
+)
+from fep_formal.output.manuscript import (
+    pytest_collection_command as pytest_collection_command,
+)
+from fep_formal.output.manuscript import (
+    pytest_collection_environment as pytest_collection_environment,
+)
+from fep_formal.output.provenance import (
+    config_owner_paths as config_owner_paths,
+)
+from fep_formal.output.provenance import (
+    report_config_digest as report_config_digest,
+)
+from fep_formal.output.provenance import (
+    report_owner_errors as report_owner_errors,
+)
+from fep_formal.output.provenance import (
+    report_source_digest as report_source_digest,
+)
+from fep_formal.output.provenance import (
+    source_owner_paths as source_owner_paths,
+)
+from fep_formal.output.publication_metadata import (
+    GraphicalAbstractAsset as GraphicalAbstractAsset,
+)
+from fep_formal.output.publication_metadata import (
+    PublicationMetadataError as PublicationMetadataError,
+)
+from fep_formal.output.publication_metadata import (
+    load_graphical_abstract as load_graphical_abstract,
+)
+from fep_formal.output.publication_metadata import (
+    load_publication_author as load_publication_author,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _canonical_coverage_path as _canonical_coverage_path,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _canonical_python_source_records as _canonical_python_source_records,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _collect_python_node_ids as _collect_python_node_ids,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _controlled_python_acceptance_path as _controlled_python_acceptance_path,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _distribution_fingerprint as _distribution_fingerprint,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _junit_identity_from_node_id as _junit_identity_from_node_id,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _normalized_python_acceptance_command as _normalized_python_acceptance_command,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _pytest_receipt_errors as _pytest_receipt_errors,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_acceptance_command as _python_acceptance_command,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_acceptance_environment as _python_acceptance_environment,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_acceptance_external_executable as _python_acceptance_external_executable,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_acceptance_home_font_mirrors as _python_acceptance_home_font_mirrors,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_acceptance_receipt_errors as _python_acceptance_receipt_errors,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_acceptance_runtime_identity as _python_acceptance_runtime_identity,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_acceptance_tool_bin as _python_acceptance_tool_bin,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_acceptance_tool_identity as _python_acceptance_tool_identity,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_evidence_summary as _python_evidence_summary,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_input_snapshot as _python_input_snapshot,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _python_test_records as _python_test_records,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    _restore_python_acceptance_files as _restore_python_acceptance_files,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    build_numerical_witness_receipt as build_numerical_witness_receipt,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    build_python_acceptance_receipt as build_python_acceptance_receipt,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    run_python_acceptance as run_python_acceptance,
+)
+from fep_formal.output.release_bundle._acceptance import (
+    write_numerical_witnesses as write_numerical_witnesses,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _add_member as _add_member,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _archive_contents as _archive_contents,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _build_manifest as _build_manifest,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _digest_snapshot_classes as _digest_snapshot_classes,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _live_snapshot_fingerprint as _live_snapshot_fingerprint,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _member_by_path as _member_by_path,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _project_members as _project_members,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _snapshot_fingerprint as _snapshot_fingerprint,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _supplemental_snapshot_records as _supplemental_snapshot_records,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _toolchain_identity as _toolchain_identity,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _toolchain_identity_from_members as _toolchain_identity_from_members,
+)
+from fep_formal.output.release_bundle._assemble import (
+    _write_archive as _write_archive,
+)
+from fep_formal.output.release_bundle._assemble import (
+    build_release_bundle as build_release_bundle,
+)
+from fep_formal.output.release_bundle._browser import (
+    _browser_receipt_errors as _browser_receipt_errors,
+)
+from fep_formal.output.release_bundle._browser import (
+    _browser_screenshot_paths as _browser_screenshot_paths,
+)
+from fep_formal.output.release_bundle._browser import (
+    _live_browser_identity as _live_browser_identity,
+)
+from fep_formal.output.release_bundle._browser import (
+    _png_dimensions as _png_dimensions,
+)
+from fep_formal.output.release_bundle._constants import (
+    _CANONICAL_LICENSE as _CANONICAL_LICENSE,
+)
+from fep_formal.output.release_bundle._constants import (
+    _CANONICAL_PUBLICATION_DOI as _CANONICAL_PUBLICATION_DOI,
+)
+from fep_formal.output.release_bundle._constants import (
+    _CANONICAL_PUBLICATION_JOURNAL as _CANONICAL_PUBLICATION_JOURNAL,
+)
+from fep_formal.output.release_bundle._constants import (
+    _CANONICAL_RELEASE_DATE as _CANONICAL_RELEASE_DATE,
+)
+from fep_formal.output.release_bundle._constants import (
+    _CANONICAL_RELEASE_VERSION as _CANONICAL_RELEASE_VERSION,
+)
+from fep_formal.output.release_bundle._constants import (
+    _CANONICAL_REPOSITORY_URL as _CANONICAL_REPOSITORY_URL,
+)
+from fep_formal.output.release_bundle._constants import (
+    _CHECKSUM_LINE_RE as _CHECKSUM_LINE_RE,
+)
+from fep_formal.output.release_bundle._constants import (
+    _GIT_SHA_RE as _GIT_SHA_RE,
+)
+from fep_formal.output.release_bundle._constants import (
+    _MANUSCRIPT_FIGURE_REFERENCES as _MANUSCRIPT_FIGURE_REFERENCES,
+)
+from fep_formal.output.release_bundle._constants import (
+    _MARKDOWN_IMAGE_RE as _MARKDOWN_IMAGE_RE,
+)
+from fep_formal.output.release_bundle._constants import (
+    _MAX_ARCHIVE_BYTES as _MAX_ARCHIVE_BYTES,
+)
+from fep_formal.output.release_bundle._constants import (
+    _MAX_ARCHIVE_MEMBERS as _MAX_ARCHIVE_MEMBERS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _MAX_MEMBER_BYTES as _MAX_MEMBER_BYTES,
+)
+from fep_formal.output.release_bundle._constants import (
+    _MAX_TOTAL_MEMBER_BYTES as _MAX_TOTAL_MEMBER_BYTES,
+)
+from fep_formal.output.release_bundle._constants import (
+    _MINIMUM_SPDX_SETUPTOOLS_REQUIREMENT as _MINIMUM_SPDX_SETUPTOOLS_REQUIREMENT,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PANDOC_TIMEOUT_SECONDS as _PANDOC_TIMEOUT_SECONDS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PDF_ID_RE as _PDF_ID_RE,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PDF_TIMEOUT_SECONDS as _PDF_TIMEOUT_SECONDS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PROVIDER_MEMBER_PREFIXES as _PROVIDER_MEMBER_PREFIXES,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PYTHON_ACCEPTANCE_ARGUMENTS as _PYTHON_ACCEPTANCE_ARGUMENTS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PYTHON_ACCEPTANCE_DISTRIBUTIONS as _PYTHON_ACCEPTANCE_DISTRIBUTIONS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PYTHON_ACCEPTANCE_EXPLICIT_PLUGINS as _PYTHON_ACCEPTANCE_EXPLICIT_PLUGINS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PYTHON_ACCEPTANCE_EXTERNAL_TOOLS as _PYTHON_ACCEPTANCE_EXTERNAL_TOOLS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PYTHON_ACCEPTANCE_TIMEOUT_SECONDS as _PYTHON_ACCEPTANCE_TIMEOUT_SECONDS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _PYTHON_ACCEPTANCE_USER_FONT_DIRECTORIES as _PYTHON_ACCEPTANCE_USER_FONT_DIRECTORIES,
+)
+from fep_formal.output.release_bundle._constants import (
+    _REQUIRED_STATIC_MEMBERS as _REQUIRED_STATIC_MEMBERS,
+)
+from fep_formal.output.release_bundle._constants import (
+    _RESOURCE_MARKUP_RE as _RESOURCE_MARKUP_RE,
+)
+from fep_formal.output.release_bundle._constants import (
+    _SHA256_RE as _SHA256_RE,
+)
+from fep_formal.output.release_bundle._constants import (
+    _STATIC_REQUIRED_BUNDLE_PATHS as _STATIC_REQUIRED_BUNDLE_PATHS,
+)
+from fep_formal.output.release_bundle._constants import (
+    CHECKSUMS_NAME as CHECKSUMS_NAME,
+)
+from fep_formal.output.release_bundle._constants import (
+    MANIFEST_NAME as MANIFEST_NAME,
+)
+from fep_formal.output.release_bundle._constants import (
+    NUMERICAL_RECEIPT as NUMERICAL_RECEIPT,
+)
+from fep_formal.output.release_bundle._constants import (
+    PUBLICATION_HTML as PUBLICATION_HTML,
+)
+from fep_formal.output.release_bundle._constants import (
+    PUBLICATION_PDF as PUBLICATION_PDF,
+)
+from fep_formal.output.release_bundle._constants import (
+    PYTEST_RECEIPT as PYTEST_RECEIPT,
+)
+from fep_formal.output.release_bundle._constants import (
+    PYTHON_ACCEPTANCE_RECEIPT as PYTHON_ACCEPTANCE_RECEIPT,
+)
+from fep_formal.output.release_bundle._constants import (
+    PYTHON_COVERAGE_RECEIPT as PYTHON_COVERAGE_RECEIPT,
+)
+from fep_formal.output.release_bundle._constants import (
+    RELEASE_BUNDLE_SCHEMA_VERSION as RELEASE_BUNDLE_SCHEMA_VERSION,
+)
+from fep_formal.output.release_bundle._constants import (
+    RENDERER_PROVENANCE as RENDERER_PROVENANCE,
+)
+from fep_formal.output.release_bundle._core import (
+    PublicationCapturePlan as PublicationCapturePlan,
+)
+from fep_formal.output.release_bundle._core import (
+    PublicationCaptureResult as PublicationCaptureResult,
+)
+from fep_formal.output.release_bundle._core import (
+    PublicationCaptureStage as PublicationCaptureStage,
+)
+from fep_formal.output.release_bundle._core import (
+    PublicationManuscript as PublicationManuscript,
+)
+from fep_formal.output.release_bundle._core import (
+    ReleaseBundleError as ReleaseBundleError,
+)
+from fep_formal.output.release_bundle._core import (
+    ReleaseBundleValidation as ReleaseBundleValidation,
+)
+from fep_formal.output.release_bundle._core import (
+    _BundleMember as _BundleMember,
+)
+from fep_formal.output.release_bundle._core import (
+    _canonical_json as _canonical_json,
+)
+from fep_formal.output.release_bundle._core import (
+    _digest_named_bytes as _digest_named_bytes,
+)
+from fep_formal.output.release_bundle._core import (
+    _is_provider_member as _is_provider_member,
+)
+from fep_formal.output.release_bundle._core import (
+    _json_object as _json_object,
+)
+from fep_formal.output.release_bundle._core import (
+    _relative_file_bytes as _relative_file_bytes,
+)
+from fep_formal.output.release_bundle._core import (
+    _safe_member_name as _safe_member_name,
+)
+from fep_formal.output.release_bundle._core import (
+    _source_date_epoch as _source_date_epoch,
+)
+from fep_formal.output.release_bundle._core import (
+    plan_publication_capture as plan_publication_capture,
+)
+from fep_formal.output.release_bundle._core import (
+    run_publication_capture as run_publication_capture,
+)
+from fep_formal.output.release_bundle._identity import (
+    _bounded_manuscript_projection_errors as _bounded_manuscript_projection_errors,
+)
+from fep_formal.output.release_bundle._identity import (
+    _canonical_owner_names as _canonical_owner_names,
+)
+from fep_formal.output.release_bundle._identity import (
+    _expected_evidence_class as _expected_evidence_class,
+)
+from fep_formal.output.release_bundle._identity import (
+    _license_metadata_errors as _license_metadata_errors,
+)
+from fep_formal.output.release_bundle._identity import (
+    _theorem_maturity_projection_errors as _theorem_maturity_projection_errors,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _canonical_pdf_identifier as _canonical_pdf_identifier,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _canonical_renderer_input_records as _canonical_renderer_input_records,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _controlled_renderer_path as _controlled_renderer_path,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _latex_preamble as _latex_preamble,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _manuscript_inputs as _manuscript_inputs,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _manuscript_source_records as _manuscript_source_records,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _manuscript_variables as _manuscript_variables,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _normalized_renderer_environment as _normalized_renderer_environment,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _pandoc_base_command as _pandoc_base_command,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _publication_resource_records as _publication_resource_records,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _render_twice as _render_twice,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _rendered_manuscript_errors as _rendered_manuscript_errors,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _renderer_environment as _renderer_environment,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _replace_publication_set as _replace_publication_set,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _required_graphical_abstract as _required_graphical_abstract,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _run_renderer as _run_renderer,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    _tool_identity as _tool_identity,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    publication_manuscript_errors as publication_manuscript_errors,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    render_publication_manuscript as render_publication_manuscript,
+)
+from fep_formal.output.release_bundle._manuscript import (
+    write_publication_manuscript as write_publication_manuscript,
+)
+from fep_formal.output.release_bundle._prerequisites import (
+    _base_prerequisite_errors as _base_prerequisite_errors,
+)
+from fep_formal.output.release_bundle._prerequisites import (
+    release_bundle_prerequisite_errors as release_bundle_prerequisite_errors,
+)
+from fep_formal.output.release_bundle._validate import (
+    _parse_checksums as _parse_checksums,
+)
+from fep_formal.output.release_bundle._validate import (
+    _parse_manifest as _parse_manifest,
+)
+from fep_formal.output.release_bundle._validate import (
+    _read_archive as _read_archive,
+)
+from fep_formal.output.release_bundle._validate import (
+    validate_release_bundle as validate_release_bundle,
+)
+from fep_formal.output.rendering import (
+    MANUSCRIPT_ASSETS as MANUSCRIPT_ASSETS,
+)
+from fep_formal.output.rendering import (
+    manuscript_source_files as manuscript_source_files,
+)
+from fep_formal.output.rendering import (
+    render_manuscript as render_manuscript,
+)
+from fep_formal.verification.formalism_audit import (
+    validate_formalism_audit_receipt as validate_formalism_audit_receipt,
+)
+from fep_formal.verification.numerical_witnesses import (
+    NON_PROOF_EVIDENCE as NON_PROOF_EVIDENCE,
+)
+from fep_formal.verification.numerical_witnesses import (
+    evaluate_numerical_witnesses as evaluate_numerical_witnesses,
+)
+
+__all__ = [
+    "CHECKSUMS_NAME",
+    "MANIFEST_NAME",
+    "PUBLICATION_HTML",
+    "PUBLICATION_PDF",
+    "RELEASE_BUNDLE_SCHEMA_VERSION",
+    "RENDERER_PROVENANCE",
+    "PublicationCapturePlan",
+    "PublicationCaptureResult",
+    "PublicationCaptureStage",
+    "PublicationManuscript",
+    "ReleaseBundleError",
+    "ReleaseBundleValidation",
+    "build_numerical_witness_receipt",
+    "build_python_acceptance_receipt",
+    "build_release_bundle",
+    "inspect_stored_publication_evidence",
+    "plan_publication_capture",
+    "publication_input_snapshot",
+    "publication_manuscript_errors",
+    "release_bundle_prerequisite_errors",
+    "render_publication_manuscript",
+    "run_publication_capture",
+    "run_python_acceptance",
+    "validate_release_bundle",
+    "validate_render_acceptance_barrier",
+    "write_numerical_witnesses",
+    "write_publication_manuscript",
+]
+
+
+def _publication_display(root: Path, path: Path) -> str:
+    """Render *path* for display, relative to *root* when possible."""
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
+def publication_input_snapshot(
+    root: Path, gnn_root: Path | None
+) -> tuple[dict[str, str], tuple[str, ...]]:
+    """Bind observed inputs without executing tools or materializing products."""
+    from fep_formal.bridge import operations
+    from fep_formal.output.render_log import manuscript_source_digest
+
+    RENDER_RECEIPT = Path("docs/render-acceptance.json")
+    SOURCE_PIN = Path(operations.PIN)
+    CANONICAL_BROWSER_SCREENSHOTS = _CANONICAL_BROWSER_SCREENSHOTS
+    try:
+        snapshot = {
+            "source": report_source_digest(root),
+            "config": report_config_digest(root),
+            "manuscript": manuscript_source_digest(root / "manuscript"),
+        }
+        relatives = {relative for relative, _kind in _REQUIRED_STATIC_MEMBERS} | {
+            RENDER_RECEIPT.as_posix(),
+            SOURCE_PIN.as_posix(),
+            PYTHON_ACCEPTANCE_RECEIPT.as_posix(),
+            NUMERICAL_RECEIPT.as_posix(),
+            "output/.cache/tests_collected.json",
+            *CANONICAL_BROWSER_SCREENSHOTS.values(),
+            *_MANUSCRIPT_FIGURE_REFERENCES.values(),
+            *(source.as_posix() for source, _destination in MANUSCRIPT_ASSETS.values()),
+            *(
+                (Path("output/manuscript") / destination).as_posix()
+                for _source, destination in MANUSCRIPT_ASSETS.values()
+            ),
+            *(
+                (Path("output/manuscript") / source.name).as_posix()
+                for source in manuscript_source_files(root / "manuscript")
+            ),
+        }
+        for relative in sorted(relatives):
+            snapshot[relative] = (
+                sha256_bytes(_relative_file_bytes(root, relative))
+                if (root / relative).exists() or (root / relative).is_symlink()
+                else "<missing>"
+            )
+        if (root / "tests").is_dir():
+            snapshot["test_tree"] = _digest_named_bytes(_python_test_records(root))
+        if gnn_root is not None:
+            for relative in operations.owner_roster(gnn_root, "gnn"):
+                snapshot[f"gnn:{relative}"] = sha256_bytes(
+                    _relative_file_bytes(gnn_root, relative)
+                )
+    except (OSError, TypeError, ValueError) as exc:
+        return {}, (f"readiness inputs cannot be snapshotted: {exc}",)
+    return snapshot, ()
+
+
+def _stored_publication_input_findings(root: Path) -> tuple[str, ...]:
+    """Reuse source/projection/resource gates; no renderer or acceptance run."""
+    defects = list(report_owner_errors(root))
+    defects.extend(_license_metadata_errors(root))
+    for validator in (
+        formalism_coverage_drift,
+        atlas_projection_drift,
+        formal_kernel_dashboard_drift,
+    ):
+        defects.extend(
+            f"stale publication projection: {_publication_display(root, path)}"
+            for path in validator(root)
+        )
+    defects.extend(_theorem_maturity_projection_errors(root))
+    defects.extend(_bounded_manuscript_projection_errors(root))
+    _publication_resource_records(root)
+    for relative, _kind in _REQUIRED_STATIC_MEMBERS:
+        _relative_file_bytes(root, relative)
+    return tuple(dict.fromkeys(defects))
+
+
+def inspect_stored_publication_evidence(root: Path, plane: str) -> tuple[str, ...]:
+    """Inspect one named stored evidence plane without runtime replay.
+
+    Unknown planes refuse; successful browser/Python checks remain static,
+    never fresh execution, archive parity or publication authorization.
+    """
+    if plane == "publication_inputs":
+        return _stored_publication_input_findings(root)
+    if plane == "python_acceptance_receipt":
+        return _python_acceptance_receipt_errors(root, check_runtime=False)
+    if plane == "browser_acceptance_receipt":
+        return _browser_receipt_errors(root, check_runtime=False)
+    raise ValueError(f"unknown stored publication evidence plane: {plane}")
+
+
+def validate_render_acceptance_barrier(root: Path) -> dict[str, str]:
+    """Require source-bound acceptance and independently reproduce publication.
+
+    A repeated resume is not evidence that rendering ran. The committed
+    acceptance receipt must cover the live manuscript, and the strict
+    publication validator must reproduce its installed outputs. This stage
+    uses the renderer's existing deadlines and never writes publication files.
+    """
+    from fep_formal.output.render_log import manuscript_source_digest, receipt_defects
+
+    receipt = root / "docs/render-acceptance.json"
+    try:
+        receipt_bytes = _relative_file_bytes(root, "docs/render-acceptance.json")
+    except (OSError, ValueError) as exc:
+        raise ReleaseBundleError(f"render-acceptance barrier: {exc}") from exc
+    source_digest = manuscript_source_digest(root / "manuscript")
+    problems = list(receipt_defects(receipt, root / "manuscript"))
+    if not problems:
+        problems.extend(_rendered_manuscript_errors(root))
+    if not problems:
+        problems.extend(publication_manuscript_errors(root))
+    if problems:
+        raise ReleaseBundleError(
+            "render-acceptance barrier: current render acceptance refused: "
+            + "; ".join(problems)
+        )
+    if (
+        _relative_file_bytes(root, "docs/render-acceptance.json") != receipt_bytes
+        or manuscript_source_digest(root / "manuscript") != source_digest
+    ):
+        raise ReleaseBundleError(
+            "render-acceptance barrier: inputs changed during acceptance validation"
+        )
+    provenance_bytes = _relative_file_bytes(root, RENDERER_PROVENANCE.as_posix())
+    return {
+        "receipt_sha256": hashlib.sha256(receipt_bytes).hexdigest(),
+        "renderer_provenance_sha256": hashlib.sha256(provenance_bytes).hexdigest(),
+        "manuscript_source_digest": source_digest,
+    }
+
+
+def add_capture_arguments(parser: argparse.ArgumentParser) -> None:
+    """Register existing command flags without changing parser behavior."""
+    parser.add_argument("--template", type=Path, required=True)
+    parser.add_argument("--journal", type=Path)
+    parser.add_argument(
+        "--plan",
+        action="store_true",
+        help="print the fixed stage policy without running tools",
+    )
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help="revalidate and resume an existing journal",
+    )
+    parser.add_argument("--source-date-epoch", type=int, default=0)
+    parser.add_argument("--timeout", type=float, default=21600)

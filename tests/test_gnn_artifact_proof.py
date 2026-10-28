@@ -17,7 +17,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification.gnn_artifact_proof import (
+from fep_formal.verification.gnn_artifact_proof import (
     DISCRETE_BOOL_SHAPES,
     ArtifactProofError,
     PymdpArtifactTables,
@@ -34,10 +34,12 @@ FIXTURES = SLICE / "fixtures"
 GENERATED = SLICE / "generated"
 SYMMETRIC_FIXTURE = FIXTURES / "pymdp_symmetric_runner.py"
 ASYMMETRIC_FIXTURE = FIXTURES / "pymdp_asymmetric_runner.py"
-EXTRACTOR = PROJECT_ROOT / "src" / "fep_lean" / "verification" / "gnn_artifact_proof.py"
+EXTRACTOR = (
+    PROJECT_ROOT / "src" / "fep_formal" / "verification" / "gnn_artifact_proof.py"
+)
 GENERATOR = SLICE / "generate_probe.py"
 MANIFEST = GENERATED / "artifact_proof_manifest.json"
-IMPORT_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
+IMPORT_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal"
 LEAN_ROOT = PROJECT_ROOT / "lean"
 
 ALLOWED_AXIOMS = frozenset({"propext", "Classical.choice", "Quot.sound"})
@@ -639,3 +641,37 @@ def test_lean_rejects_normalized_previous_policy_axis_swap(tmp_path: Path) -> No
     result = _compile_probe(probe)
     assert result.returncode != 0
     assert "unsolved goals" in result.stdout + result.stderr
+
+
+def test_current_source_generation_uses_fresh_output_and_refuses_overwrite(
+    tmp_path: Path,
+) -> None:
+    target = tmp_path / "current-q5"
+    command = [sys.executable, str(GENERATOR), "--output-root", str(target)]
+    generated = subprocess.run(command, capture_output=True, text=True, check=False)
+    assert generated.returncode == 0, generated.stdout + generated.stderr
+    manifest_path = target / "generated/artifact_proof_manifest.json"
+    current_text = manifest_path.read_text()
+    assert json.loads(current_text)["extractor_sha256"] == sha256_file_strict(EXTRACTOR)
+    assert (
+        manifest_mismatches(current_text, repo_root=PROJECT_ROOT, slice_root=target)
+        == []
+    )
+    checked = subprocess.run(
+        [*command, "--check"], capture_output=True, text=True, check=False
+    )
+    assert checked.returncode == 0, checked.stdout + checked.stderr
+    assert "current-source generated artifacts; not native evidence" in checked.stdout
+    repeated = subprocess.run(command, capture_output=True, text=True, check=False)
+    assert repeated.returncode != 0
+    assert manifest_path.read_text() == current_text
+
+
+def test_generator_refuses_implicit_retained_artifact_replacement() -> None:
+    before = MANIFEST.read_bytes()
+    result = subprocess.run(
+        [sys.executable, str(GENERATOR)], capture_output=True, text=True, check=False
+    )
+    assert result.returncode != 0
+    assert "requires a fresh --output-root" in result.stderr
+    assert MANIFEST.read_bytes() == before

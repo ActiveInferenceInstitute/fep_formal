@@ -6,11 +6,11 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from fep_lean.catalogue.coverage import (
+from fep_formal.catalogue.coverage import (
     formalism_coverage_drift,
     write_formalism_coverage,
 )
-from fep_lean.catalogue.generation import check_or_write
+from fep_formal.catalogue.generation import check_or_write
 
 
 def main() -> int:

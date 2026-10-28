@@ -21,7 +21,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.custody.apply import (
+from fep_formal.custody.apply import (
     ACCEPTANCE,
     DIAGNOSTICS,
     H2_R0_CUSTODY,
@@ -42,11 +42,11 @@ from fep_lean.custody.apply import (
     byte_replace,
     dump_json_bytes,
 )
-from fep_lean.custody.census import census as census_from_tree
-from fep_lean.custody.model import LIVE_RED, STALE, Census, CensusRecord
-from fep_lean.custody.verify import Expectations, gate_expectations
-from fep_lean.custody.verify import verify as verify_gate
-from fep_lean.verification.horizon_acceptance import TERMINAL_RECEIPT
+from fep_formal.custody.census import census as census_from_tree
+from fep_formal.custody.model import LIVE_RED, STALE, Census, CensusRecord
+from fep_formal.custody.verify import Expectations, gate_expectations
+from fep_formal.custody.verify import verify as verify_gate
+from fep_formal.verification.horizon_acceptance import TERMINAL_RECEIPT
 from tests._support.custody_fixture_knobs import (
     JSON_WHITESPACE_DRIFT,
     drift_file,
@@ -498,7 +498,7 @@ def test_successor_prior_reference_drift_refuses(tmp_path: Path) -> None:
 def test_diagnostics_byte_drift_without_source_drift_refuses(tmp_path: Path) -> None:
     """Same source maps, different bytes (sorted serialization): refuse."""
     specs_dir = _stage_specs(tmp_path)
-    from fep_lean.verification.horizon_acceptance import diagnostic_record
+    from fep_formal.verification.horizon_acceptance import diagnostic_record
 
     recomputed = diagnostic_record(REPO_ROOT)
     path = specs_dir / DIAGNOSTICS[len("specs/") :]
@@ -615,7 +615,7 @@ def test_fixture_staging_excludes_unrelated_scientific_outputs(tmp_path: Path) -
 
 def test_expanded_native_roster_remains_rejected(tmp_path: Path) -> None:
     """A genuine paired resource addition cannot inherit the synthetic seal."""
-    for owner in ("src/fep_lean/formal", "lean/FepSketches"):
+    for owner in ("src/fep_formal/formal", "lean/FepSketches"):
         (REPO_ROOT / owner / "unit_roster_expansion.lean").write_text(
             "-- synthetic new formal resource, not captured\n"
         )
@@ -627,7 +627,7 @@ def test_expanded_native_roster_remains_rejected(tmp_path: Path) -> None:
 
 
 def test_packet_referenced_moved_diagnostics_are_consumed(tmp_path: Path) -> None:
-    from fep_lean.custody.refresh import _diagnostics_byte_equality
+    from fep_formal.custody.refresh import _diagnostics_byte_equality
 
     staged = _stage_specs(tmp_path)
     old = staged / DIAGNOSTICS[len("specs/") :]
@@ -666,7 +666,7 @@ def test_packet_diagnostics_reference_refuses_invalid_ownership(
     tmp_path: Path,
     mutation: str,
 ) -> None:
-    from fep_lean.custody.refresh import _diagnostics_byte_equality
+    from fep_formal.custody.refresh import _diagnostics_byte_equality
 
     staged = _stage_specs(tmp_path)
     packet_path = staged / TERMINAL_PACKET[len("specs/") :]
@@ -1071,8 +1071,8 @@ def test_cli_census_report_composes_read_only(
         drift_file(root / "tests/test_horizon2_gaussian_filter.py")
         drift_file(spec_path(root, SUCCESSOR_07), JSON_WHITESPACE_DRIFT)
     before = _tree_snapshot(root)
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(root))
-    from fep_lean.cli import main as cli_main
+    monkeypatch.setenv("FEP_FORMAL_PROJECT_ROOT", str(root))
+    from fep_formal.cli import main as cli_main
 
     assert cli_main(["custody", "census"]) == 0
     payload = json.loads(capsys.readouterr().out)
@@ -1098,8 +1098,8 @@ def test_cli_census_report_composes_read_only(
 def test_cli_apply_refuses_without_output_dir(
     capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(REPO_ROOT))
-    from fep_lean.cli import main as cli_main
+    monkeypatch.setenv("FEP_FORMAL_PROJECT_ROOT", str(REPO_ROOT))
+    from fep_formal.cli import main as cli_main
 
     assert cli_main(["custody", "apply"]) == 1
     payload = json.loads(capsys.readouterr().out)
@@ -1116,9 +1116,9 @@ def test_cli_apply_gate_refusal_writes_nothing(
 ) -> None:
     """Exit codes and zero-effect write discipline on the fixture root."""
     root = fixture_root(tmp_path)
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(root))
+    monkeypatch.setenv("FEP_FORMAL_PROJECT_ROOT", str(root))
     out = _out_dir(tmp_path)
-    from fep_lean.cli import main as cli_main
+    from fep_formal.cli import main as cli_main
 
     if state == "sealed":
         assert cli_main(["custody", "apply", "--output-dir", str(out)]) == 0
@@ -1191,7 +1191,7 @@ def test_predecessors_patch_resolves_old_digests_from_view_bytes(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """The live PREDECESSORS import is stale-by-design under the patch."""
-    from fep_lean.verification import horizon_acceptance
+    from fep_formal.verification import horizon_acceptance
 
     real = dict(horizon_acceptance.PREDECESSORS)
     tampered = {**real, next(iter(real)): "f" * 64}

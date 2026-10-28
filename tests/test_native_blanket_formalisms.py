@@ -9,15 +9,15 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.lean_source import lean_code_without_comments
-from fep_lean.verification import formalism_audit
+from fep_formal.lean_source import lean_code_without_comments
+from fep_formal.verification import formalism_audit
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
-FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
-BODIES_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "catalogue" / "bodies"
+FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal"
+BODIES_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "catalogue" / "bodies"
 FOUNDATION = FORMAL_ROOT / "native_blanket.lean"
 COMPOSITION = FORMAL_ROOT / "compositions" / "native_blanket_transfer.lean"
 BODY_MODULE = BODIES_ROOT / "native_blanket_independence.py"

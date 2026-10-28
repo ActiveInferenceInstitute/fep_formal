@@ -1,6 +1,6 @@
 """Regenerate the import-only Lean topic aggregate and its family shards.
 
-Canonical bodies live in ``src/fep_lean/catalogue/bodies``. The explicit body
+Canonical bodies live in ``src/fep_formal/catalogue/bodies``. The explicit body
 manifest fixes one generated ``lean/FepSketches/families/*.lean`` file per
 family. Each shard preserves topic namespaces and hoists exactly its own
 body imports; ``fep_all.lean`` publicly imports those shards for compatibility.
@@ -19,13 +19,13 @@ import argparse
 import sys
 from pathlib import Path
 
-from fep_lean.catalogue.generation import (
+from fep_formal.catalogue.generation import (
     check_or_write,
     fep_all_output_drift,
     fep_all_projection_path,
     fep_all_projection_sources,
 )
-from fep_lean.catalogue.registry import BODIES
+from fep_formal.catalogue.registry import BODIES
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 LEAN_OUT_DIR = PROJECT_ROOT / "lean" / "FepSketches"

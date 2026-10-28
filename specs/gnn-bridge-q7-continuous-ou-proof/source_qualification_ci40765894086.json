@@ -1,0 +1,26 @@
+{
+  "kind": "fep-formal-bridge-source-qualification/v1",
+  "fep_revision": "36669da54690ddfdc3ee29f5135f79e44f9d0f03",
+  "gnn_revision": "714cea22eeb68991c364cef11a23b57f1a618932",
+  "workflow_revision": "e8ddbbc8df918bbd469357774e122fb59fcc4497",
+  "run_id": "40765894086",
+  "run_attempt": "1",
+  "native_outcome": "success",
+  "scope": "Selected source pair, parser serialization, and static Q7 bounds",
+  "runner_execution_verified": false,
+  "full_mode_verified": false,
+  "release_acceptance": false,
+  "sha256": {
+    "native-q7.json": "10778a76d26f7e4cf145b94a3f8e2573a22d56dc67f102c8b374e13759adba43",
+    "projections/specs/gnn-bridge-p1-finite-spike/gnn-input/FepLeanSymmetricBool.md": "4f0ce2e2b04237708b8f2630b7db8c7ec328cae8d536aa87889332557797cc09",
+    "projections/specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md": "4da7982ac12109a6bafc5c9a4368122831933bbf400ccf2e700f8b4622a69b8c",
+    "projections/specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "4da7982ac12109a6bafc5c9a4368122831933bbf400ccf2e700f8b4622a69b8c",
+    "projections/specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py": "07f34e713d5dff0addf17af90c45eb2cab925ee18a0d6b5b34b98a744519c8d0",
+    "projections/specs/gnn-bridge-q7-continuous-ou-proof/generated/artifact_proof_manifest.json": "c6485e1f8c3cb1ecd8619d62cfb17fb007ef8b302aedcd5f217f0d4522beb871",
+    "projections/specs/gnn-bridge-q7-continuous-ou-proof/generated/probe.lean": "54730472f92737bce66581d713c249f7f655905992285b5c8eb153dea4e7358a",
+    "projections/specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-canonical.json": "0a7efe879324b4234283615fe2caf92c473060a2c6c8228e32c1a3c6b41fdf25",
+    "projections/specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-runtime-parity.json": "f1f03ab52d47e451035629a69e1d5f44066d7b3bf2a130cd87b48d406a8f3fbe",
+    "projections/specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "d53fa30a32b77a6e65fb3810e7452b9ac0e520fe083d7076a96d990e3edb5f53",
+    "projections/specs/gnn-bridge-w2-source-custody/source-pin.json": "4015287f776897a7d3345c650f14387c35db82729f62a8ce4f4566e69f693a45"
+  }
+}

@@ -7,14 +7,14 @@ an explicit source checkout for configuration, verification, and publication.
 Outside that checkout, put the global option before the subcommand:
 
 ```bash
-fep-lean --project-root /path/to/fep_formal catalogue
+fep-formal --project-root /path/to/fep_formal catalogue
 ```
 
 ## Portable mathematical inspection
 
 The installed package can inspect and export mathematical contracts without a
-checkout. Start with `fep-lean methods inspect --topic fep-001` and
-`fep-lean methods export --output-root ./mathematical-methods`. The
+checkout. Start with `fep-formal methods inspect --topic fep-001` and
+`fep-formal methods export --output-root ./mathematical-methods`. The
 [mathematical methods guide](mathematical-methods.md) explains the API, offline
 explorer, numerical boundaries and canonical-source option. Native verification
 and publication still require the checkout assets described below.
@@ -31,13 +31,13 @@ bash scripts/setup_checkout.sh
 
 The kit resolves its own checkout root, including paths containing spaces.
 It runs `uv sync --locked --extra dev` with `.python-version`, checks the
-validator interpreter and locked environment, runs guarded `fep-lean setup`
+validator interpreter and locked environment, runs guarded `fep-formal setup`
 twice through the two existing entry points, and generates the catalog and
 manuscript figures. Python can be acquired by uv; Lean and the Mathlib cache
 are acquired by setup. Allow network access, several gigabytes for downloads,
 and tens of gigabytes of free space for the expanded toolchain and workspace.
 Use the same command again after an interrupted acquisition or to check
-idempotency. Each setup pass has its own `FEP_LEAN_SETUP_TIMEOUT_SEC` deadline.
+idempotency. Each setup pass has its own `FEP_FORMAL_SETUP_TIMEOUT_SEC` deadline.
 The kit stops at the first failed command and prints each command it runs.
 
 This prepares the local Python/native gate environment; it does not assert
@@ -65,9 +65,9 @@ the checkout root:
 
 ```bash
 uv sync --locked --extra dev
-uv run --locked fep-lean catalogue
-uv run --locked fep-lean atlas --check
-uv run --locked fep-lean dashboard --check
+uv run --locked fep-formal catalogue
+uv run --locked fep-formal atlas --check
+uv run --locked fep-formal dashboard --check
 ```
 
 Dependency installation requires network access unless already cached. Once
@@ -86,17 +86,17 @@ acquires the exact Lean toolchain recorded in the checkout:
 curl -sSf https://raw.githubusercontent.com/leanprover/elan/0e36a07b9bbcc5381fa6250df109f9a4f94d7bac/elan-init.sh -o elan-init.sh
 sh elan-init.sh -y --default-toolchain none
 export PATH="$HOME/.elan/bin:$PATH"
-uv run --locked fep-lean setup
-uv run --locked fep-lean verify --topic fep-001 --fail-on-warnings
+uv run --locked fep-formal setup
+uv run --locked fep-formal verify --topic fep-001 --fail-on-warnings
 ```
 
 `setup` preserves the checked-in pins and uses a total deadline of 1800
-seconds, configurable with `FEP_LEAN_SETUP_TIMEOUT_SEC`. The shell entry point
+seconds, configurable with `FEP_FORMAL_SETUP_TIMEOUT_SEC`. The shell entry point
 `bash scripts/_maint_bootstrap_lean_toolchain.sh` delegates to the same setup
 implementation. Neither entry point updates the manifest. See
 [the pinned acquisition and repair procedure](lean4.md#lock-preserving-setup).
 An empty `ELAN_HOME` is supported; elan must already be installed or supplied
-via `FEP_LEAN_ELAN_EXE`. Cache acquisition can require several gigabytes and
+via `FEP_FORMAL_ELAN_EXE`. Cache acquisition can require several gigabytes and
 several minutes. Do not copy another checkout's `.lake/packages` as a recipe.
 
 After setup, the maintained formal kernel and catalog have distinct checks:
@@ -105,7 +105,7 @@ After setup, the maintained formal kernel and catalog have distinct checks:
 uv run --locked python scripts/_maint_build_formal_modules.py --check
 (cd lean && lake build FepSketches)
 uv run --locked python scripts/audit_formalisms.py --receipt output/formalism-audit.json
-uv run --locked fep-lean verify --fail-on-warnings --receipt output/native-verification.json
+uv run --locked fep-formal verify --fail-on-warnings --receipt output/native-verification.json
 ```
 
 The build checks projected formal modules; the audit resolves declarations
@@ -121,13 +121,13 @@ pin you have already built) can reuse the compiled Lake state instead of
 rebuilding Mathlib from source:
 
 ```bash
-uv run python specs/ci-velocity-local-cache/lean_cache.py -- uv run --locked fep-lean verify --fail-on-warnings
+uv run python specs/ci-velocity-local-cache/lean_cache.py -- uv run --locked fep-formal verify --fail-on-warnings
 ```
 
 The wrapper validates the toolchain/Mathlib/manifest pins before invoking
 Lake, restores a content-keyed snapshot of `lean/.lake` from
-`~/.cache/fep-lean/lean-build` (override with `--store DIR` or
-`FEP_LEAN_CACHE_DIR`) when one exists for the current pins, and refreshes
+`~/.cache/fep-formal/lean-build` (override with `--store DIR` or
+`FEP_FORMAL_CACHE_DIR`) when one exists for the current pins, and refreshes
 that snapshot after a successful run. Unless `--skip-build` is passed it also
 runs `lake --wfail build FepSketches` first — the same cache-get, aggregate
 build, verify sequence CI's lean lane runs, and the prerequisite that makes
@@ -148,7 +148,7 @@ selected by `manuscript/preamble.md`. Pass a real template path explicitly;
 a symlink into a deleted worktree is not a portable dependency.
 
 ```bash
-uv run --locked fep-lean catalogue
+uv run --locked fep-formal catalogue
 uv run --locked python scripts/build_manuscript_figures.py
 uv run --locked python scripts/build_render_fonts.py --probe
 uv run --locked python scripts/render_publication.py --template /path/to/template
@@ -170,8 +170,8 @@ Keep credentials outside the checkout. Native setup alone does not provide
 these services.
 
 ```bash
-uv run --locked fep-lean preflight
-uv run --locked fep-lean run
+uv run --locked fep-formal preflight
+uv run --locked fep-formal run
 ```
 
 `preflight` is read-only. `setup` acquires Lean dependencies; normal verification

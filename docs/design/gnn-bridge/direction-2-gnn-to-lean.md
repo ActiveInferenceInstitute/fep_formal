@@ -2,14 +2,14 @@
 
 Status: **research program; Q1–Q4 accepted** — Q1 (document AST and
 decidable well-formedness) under `specs/gnn-bridge-q1-syntax-ast/`
-(module `src/fep_lean/formal/gnn_document.lean`, `FEP.GnnDocument`);
-Q2 (discrete denotation, `src/fep_lean/formal/gnn_denotation.lean`,
+(module `src/fep_formal/formal/gnn_document.lean`, `FEP.GnnDocument`);
+Q2 (discrete denotation, `src/fep_formal/formal/gnn_denotation.lean`,
 `FEP.GnnDenotation`) under `specs/gnn-bridge-q2-discrete-denotation/`;
 Q3 (continuous denotation,
-`src/fep_lean/formal/gnn_denotation_continuous.lean`,
+`src/fep_formal/formal/gnn_denotation_continuous.lean`,
 `FEP.GnnContinuous`) under
 `specs/gnn-bridge-q3-continuous-denotation/`; Q4 (renderer and execution
-statements, `src/fep_lean/formal/gnn_render_statements.lean`,
+statements, `src/fep_formal/formal/gnn_render_statements.lean`,
 `FEP.GnnRenderStatements`) under
 `specs/gnn-bridge-q4-renderer-execution-statements/`. Alignment
 statements 1, 3, and 5 (matrix fragment plus the kernel-power execution
@@ -99,7 +99,7 @@ declaration, and none reserves a catalog identifier:
 
 - Lean work follows the standard lifecycle: a bounded spec under `specs/`
   precedes any code; modules project into `lean/FepSketches/` through
-  `scripts/_maint_build_formal_modules.py` per `src/fep_lean/formal/manifest.py`;
+  `scripts/_maint_build_formal_modules.py` per `src/fep_formal/formal/manifest.py`;
   `composed.lean` remains the import-only aggregate.
 - No second research registry is introduced; this directory owns prospective
   goals only, and implementation status belongs to the opened spec while

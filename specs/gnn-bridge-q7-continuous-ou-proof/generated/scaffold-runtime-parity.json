@@ -5,15 +5,15 @@
   "input_stability_verified": true,
   "inputs": {
     "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py": "07f34e713d5dff0addf17af90c45eb2cab925ee18a0d6b5b34b98a744519c8d0",
-    "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "de6c633b48b956ce9745ec413120d2fa7435e1e7475dd94d43ccb947517d0774",
+    "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "b40a72e7567693db5f2ef9a67b6c78a02f2eeca2b2e44618fcf1eae228881537",
     "specs/gnn-bridge-q7-continuous-ou-proof/scaffold-serialization.md": "541d408dccaa8b383aa6cac45c33d5d9d9e072ad93e985f747c58b5a77dc4ea5",
-    "src/fep_lean/_paths.py": "b6be565b318f029ca7d6df6d84b44120a61dabc05912d4ce282df8970146dcc3",
-    "src/fep_lean/verification/_jsonutil.py": "8e389db30143881d795eecc8786df2ff5d9c21dd2fc1592e92e501991cee8e9d",
-    "src/fep_lean/verification/gnn_continuous_artifact_proof.py": "5bcf6ac9b3004a13e077089b463cf21768ad61d54b2ef02bfa75dbf96029aca1"
+    "src/fep_formal/_paths.py": "ff3f60258a2d9a7cabea2ade1ab7596f2c5482d57db932e261a137c969b37cdc",
+    "src/fep_formal/verification/_jsonutil.py": "8e389db30143881d795eecc8786df2ff5d9c21dd2fc1592e92e501991cee8e9d",
+    "src/fep_formal/verification/gnn_continuous_artifact_proof.py": "44b71d1ef7f1fb36cb70349bd6c35c2d293d07e3f2da6404bd700168661659cb"
   },
   "kind": "q7-canonical-scaffold-runtime-parity",
   "native_evidence": "not supplied; new native capture required separately",
-  "probe_command": "uv run --locked python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py --record-scaffold-portability",
+  "probe_command": "uv run --locked python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py --record-scaffold-portability --output-root NEW_DIRECTORY",
   "runner_execution": false,
   "runtimes": [
     {
@@ -32,7 +32,7 @@
         "validator_contract": true
       },
       "implementation": "cpython",
-      "machine": "arm64",
+      "machine": "x86_64",
       "observed_fields": {
         "Add": [],
         "Assign": [
@@ -204,8 +204,8 @@
           "optional_vars"
         ]
       },
-      "platform": "darwin",
-      "version": "3.10.22 (main, Oct  9 2026, 15:10:41) [Clang 22.1.3 ]",
+      "platform": "linux",
+      "version": "3.10.22 (main, Oct  9 2026, 15:21:30) [Clang 22.1.3 ]",
       "version_info": [
         3,
         10,
@@ -228,7 +228,7 @@
         "validator_contract": true
       },
       "implementation": "cpython",
-      "machine": "arm64",
+      "machine": "x86_64",
       "observed_fields": {
         "Add": [],
         "Assign": [
@@ -400,8 +400,8 @@
           "optional_vars"
         ]
       },
-      "platform": "darwin",
-      "version": "3.11.17 (main, Oct 21 2026, 17:46:23) [Clang 23.1.3 ]",
+      "platform": "linux",
+      "version": "3.11.17 (main, Oct  9 2026, 15:21:28) [Clang 22.1.3 ]",
       "version_info": [
         3,
         11,
@@ -424,7 +424,7 @@
         "validator_contract": true
       },
       "implementation": "cpython",
-      "machine": "arm64",
+      "machine": "x86_64",
       "observed_fields": {
         "Add": [],
         "Assign": [
@@ -597,8 +597,8 @@
           "optional_vars"
         ]
       },
-      "platform": "darwin",
-      "version": "3.12.15 (main, Oct 21 2026, 17:38:27) [Clang 23.1.3 ]",
+      "platform": "linux",
+      "version": "3.12.15 (main, Oct  9 2026, 15:22:32) [Clang 22.1.3 ]",
       "version_info": [
         3,
         12,
@@ -621,7 +621,7 @@
         "validator_contract": true
       },
       "implementation": "cpython",
-      "machine": "arm64",
+      "machine": "x86_64",
       "observed_fields": {
         "Add": [],
         "Assign": [
@@ -794,12 +794,12 @@
           "optional_vars"
         ]
       },
-      "platform": "darwin",
-      "version": "3.13.17 (main, Oct 21 2026, 17:49:18) [Clang 23.1.3 ]",
+      "platform": "linux",
+      "version": "3.13.16 (main, Oct  9 2026, 15:23:36) [Clang 22.1.3 ]",
       "version_info": [
         3,
         13,
-        17
+        16
       ]
     },
     {
@@ -818,7 +818,7 @@
         "validator_contract": true
       },
       "implementation": "cpython",
-      "machine": "arm64",
+      "machine": "x86_64",
       "observed_fields": {
         "Add": [],
         "Assign": [
@@ -991,12 +991,12 @@
           "optional_vars"
         ]
       },
-      "platform": "darwin",
-      "version": "3.14.9 (main, Oct 21 2026, 17:47:42) [Clang 23.1.3 ]",
+      "platform": "linux",
+      "version": "3.14.10 (main, Oct 26 2026, 14:19:15) [GCC 13.3.0]",
       "version_info": [
         3,
         14,
-        9
+        10
       ]
     }
   ],

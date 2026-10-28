@@ -46,7 +46,7 @@ htmlcov/
 *.swo
 .DS_Store
 
-# fep_lean specific
+# FEP_Formal specific
 # Generated glyph-projection index (gitignored build product, root-level only)
 /index.md
 /output/
@@ -67,3 +67,12 @@ gauss_grace/
 
 # graft's local graph cache — regenerable, not committed (run `graft build`).
 /graft/
+
+# Private agent plans, captures and isolated test environments
+/.omo/
+
+# Disposable local validator caches and parallel coverage databases
+.mypy_cache/
+.ruff_cache/
+.benchmarks/
+.coverage.*

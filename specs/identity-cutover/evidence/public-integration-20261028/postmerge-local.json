@@ -1,0 +1,82 @@
+{
+  "kind": "dated-postmerge-local-and-hosted-source-pair-checkpoint",
+  "recorded_at": "2026-10-28T21:06:12.351749+00:00",
+  "source_owner_digest": "020c9930f1756ef98bbd496d49329e37d6b70b35b26f89a0e3dd759522e7c275",
+  "source_owner_manifest_version": 27,
+  "python": {
+    "cases": 4096,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 10
+  },
+  "chrome": {
+    "cases": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "joined_line_coverage": {
+    "version": "7.15.2",
+    "timestamp": "1793216956392",
+    "lines-valid": "19810",
+    "lines-covered": "18324",
+    "line-rate": "0.925",
+    "branches-covered": "0",
+    "branches-valid": "0",
+    "branch-rate": "0",
+    "complexity": "0"
+  },
+  "all_package_line_floors_passed": true,
+  "native_catalogue": {
+    "status": "ok",
+    "valid": true,
+    "native_claim_ready": true,
+    "source_bound": true,
+    "live_catalogue_topics": 168,
+    "selected_topics": 168,
+    "verified_topics": 168,
+    "warning_count": 0,
+    "sorry_count": 0,
+    "sorry_occurrences": 0,
+    "duration_s": 941.138,
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_tag": "v4.35.0",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679"
+  },
+  "native_catalogue_receipt_sha256": "7d93dd06ed1b19112732135b703c7adc2e2fd83b73eb41b821dc452663caf417",
+  "q7_hosted_qualification": {
+    "run_url": "https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/40765894086",
+    "fep_revision": "36669da54690ddfdc3ee29f5135f79e44f9d0f03",
+    "gnn_revision": "714cea22eeb68991c364cef11a23b57f1a618932",
+    "workflow_revision": "e8ddbbc8df918bbd469357774e122fb59fcc4497",
+    "native_receipt_sha256": "10778a76d26f7e4cf145b94a3f8e2573a22d56dc67f102c8b374e13759adba43",
+    "native_outcome": "success",
+    "static_theorems": 12,
+    "real_parser_versions": [
+      "3.10",
+      "3.11",
+      "3.12",
+      "3.13",
+      "3.14"
+    ],
+    "current_source_snapshot_match": true,
+    "local_source_and_operations_tests": 324,
+    "runner_execution_verified": false
+  },
+  "local_exhaustive_native_sweeps": {
+    "serial": "interrupted; incomplete; no complete acceptance claimed",
+    "orphan_modules": "interrupted; incomplete; no complete acceptance claimed",
+    "required_acceptance": "Fresh exact-revision hosted native lane before merge"
+  },
+  "render": {
+    "template_revision": "5b3c0f43940f0322fbc6205b3be4c2854f99329d",
+    "actual_render_and_standing_receipt_passed": true,
+    "manual_visual_or_publication_acceptance": false
+  },
+  "retained_failures": [
+    "Initial Chrome component skipped because local binary was not exposed; package floor failed. Subsequent actual Chrome pair and joined floors pass.",
+    "Partial serial and orphan sweeps remain incomplete records."
+  ],
+  "boundary": "Scoped local tests/native catalog and producer-validated hosted Q7 static evidence. Full automatic PR/main, installed-wheel matrix, full-mode, publication and release acceptance are separate."
+}

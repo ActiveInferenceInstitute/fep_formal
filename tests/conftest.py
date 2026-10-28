@@ -1,10 +1,10 @@
-"""Pytest configuration for fep_lean tests.
+"""Pytest configuration for fep_formal tests.
 
 Setup:
 - Adds ``src/`` to ``sys.path`` so test imports resolve without installation.
 - Sets ``MPLBACKEND=Agg`` for headless matplotlib.
 - Probes for ``gauss``, ``lake``, ``lean`` on PATH (or ``~/.elan/bin``).
-- Sets ``FEP_LEAN_TOOLS_MISSING`` env var (comma-separated) when tools are absent.
+- Sets ``FEP_FORMAL_TOOLS_MISSING`` env var (comma-separated) when tools are absent.
 
 Coverage notes:
     Remaining branches include live Lean and provider paths. Provider calls run
@@ -18,6 +18,8 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+
+from fep_formal._paths import resolve_environment
 
 # Several test modules import this fixture owner before registering its
 # pytest plugin. Mark it for rewriting before that first ordinary import.
@@ -77,7 +79,7 @@ def pytest_configure(config: pytest.Config) -> None:
     probes use ``pytest.skip`` (see ``tests/_support/lake.py::
     lake_executable(missing="skip", ...)``), while acceptance probes raise
     ``RuntimeError`` and fail closed. Both stances are intentional.
-    Sets FEP_LEAN_TOOLS_MISSING env var listing any absent tools.
+    Sets FEP_FORMAL_TOOLS_MISSING env var listing any absent tools.
     """
     missing = [name for name in ("gauss", "lake", "lean") if not shutil.which(name)]
     # Also probe ~/.elan/bin (elan-managed lean may not be on PATH in sandboxed shells)
@@ -85,9 +87,9 @@ def pytest_configure(config: pytest.Config) -> None:
     still_missing = [m for m in missing if not (elan_bin / m).is_file()]
     if still_missing:
         # Don't hard-exit — let tests that gracefully handle missing tools still run.
-        os.environ["FEP_LEAN_TOOLS_MISSING"] = ",".join(still_missing)
+        os.environ["FEP_FORMAL_TOOLS_MISSING"] = ",".join(still_missing)
     else:
-        os.environ.setdefault("FEP_LEAN_REQUIRE_GAUSS", "1")
+        os.environ.setdefault("FEP_FORMAL_REQUIRE_GAUSS", "1")
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -104,9 +106,9 @@ def _hermetic_gauss_home(tmp_path_factory: pytest.TempPathFactory) -> Iterator[P
 
     Deliberately host-only: tool-availability probes (``gauss``/``lake``/
     ``lean`` on PATH) are untouched, so their skip semantics still hold, and
-    live-test runs (``FEP_LEAN_LIVE_TESTS=1``) opt back into real host state.
+    live-test runs (``FEP_FORMAL_LIVE_TESTS=1``) opt back into real host state.
     """
-    live_var = os.environ.get("FEP_LEAN_LIVE_TESTS", "").lower()
+    live_var = resolve_environment("FEP_FORMAL_LIVE_TESTS", "").lower()
     if live_var in ("1", "true", "yes"):
         yield Path(os.environ.get("GAUSS_HOME", str(Path.home() / ".gauss")))
         return

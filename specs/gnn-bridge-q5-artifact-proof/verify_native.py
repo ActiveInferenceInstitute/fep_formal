@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 
-from fep_lean.verification.gnn_artifact_receipt import (
+from fep_formal.verification.gnn_artifact_receipt import (
     ArtifactContract,
     ArtifactVerifier,
 )
@@ -48,7 +48,7 @@ CONTRACT = ArtifactContract(
         "POMDPRenderProcessor._pomdp_to_gnn_spec",
         "render_gnn_spec",
     ),
-    extractor="src/fep_lean/verification/gnn_artifact_proof.py",
+    extractor="src/fep_formal/verification/gnn_artifact_proof.py",
     adapter=f"{SLICE}/verify_native.py",
 )
 VERIFICATION = ArtifactVerifier(Path(__file__).resolve().parents[2], CONTRACT)
