@@ -265,12 +265,16 @@ def render_formalism_atlas_svg(atlas: FormalismAtlas) -> str:
                     f'width="{relation_card_width}" height="72" rx="10"/>'
                 ),
                 (
-                    f'<text class="relation-kind" x="{x + 14}" y="{relation_card_y + 27}">'
+                    f'<text class="relation-kind" x="{x + 14}" y="{relation_card_y + 22}">'
                     f"{escape_svg_text(humanize_identifier(kind))}</text>"
                 ),
                 (
-                    f'<text class="relation-count" x="{x + 14}" y="{relation_card_y + 52}">'
-                    f"{count} edges · {witnessed} named witnesses</text>"
+                    f'<text class="relation-count" x="{x + 14}" y="{relation_card_y + 43}">'
+                    f"{count} edges</text>"
+                ),
+                (
+                    f'<text class="relation-count" x="{x + 14}" y="{relation_card_y + 63}">'
+                    f"{witnessed} named witnesses</text>"
                 ),
                 "</g>",
             ]

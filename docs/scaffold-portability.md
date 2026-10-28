@@ -10,23 +10,22 @@ results; receipt freshness depends on the exact checked-out sources.
 
 ## Off-host inventory
 
-The inventory below describes the maintained execution surfaces. Line numbers
-identify the reviewed implementation; follow the linked file if later edits
-move them. A search of `scripts/*.py` and `scripts/*.sh` for `/Users/`,
+The inventory below names the maintained owners and entry points for each
+execution surface. A search of `scripts/*.py` and `scripts/*.sh` for `/Users/`,
 `/home/`, and `/opt/` finds no hard-coded host checkout paths. Paths passed
 through arguments or environment variables still need local substitutions.
 
 | Surface and evidence | What the kit leaves out; what to substitute |
 | --- | --- |
-| [OpenGauss installer](../scripts/00b_install_opengauss_cli.sh), lines 27–42 | Uses `$HOME/.gauss_src` and pulls the service's current main. It is outside the locked kit. Install/configure the service separately for the external full-mode tier. |
-| [Publication template resolver](../scripts/render_publication.py), lines 87–103 | Requires `--template` or `FEP_LEAN_TEMPLATE_DIR`. Supply a real local template checkout and register this checkout as its active project, following the render runbook. |
-| [Browser wrapper](../scripts/capture_browser_acceptance.py), lines 17–20 | Browser acceptance needs a local Chrome/Chromium executable; pass `--browser` when discovery is unsuitable. The kit does not capture browser evidence. |
-| [Manuscript identifier audit](../scripts/render_manuscript.py), line 258 | Reads `lean/.lake/packages/mathlib`. Let guarded setup materialize the manifest's exact revisions at that layout; an arbitrary relocated or rsynced package tree is not a substitute. |
-| [Lean setup](../src/fep_lean/cli.py), lines 69 and 128–135 | `FEP_LEAN_DIR`, `ELAN_HOME`, `XDG_CACHE_HOME`, and `MATHLIB_CACHE_DIR` can redirect state. Remove stale overrides or supply writable local locations. Keep the intended checkout's pin triple together. |
-| [Tool discovery](../src/fep_lean/verification/_toolchain.py), lines 214–240 | `FEP_LEAN_LAKE_EXE` and `FEP_LEAN_LEAN_EXE` override discovery. Remove paths to another host/worktree; setup verifies the actual compiler identity. Cold setup also accepts `FEP_LEAN_ELAN_EXE`. |
-| [Service configuration](../src/fep_lean/llm/hermes.py), lines 229–238 | Full mode needs local service configuration and credentials, optionally read from `$GAUSS_HOME/.env`. Supply them privately; copying a home directory is not part of setup. |
-| [Bridge CLI](../src/fep_lean/bridge/cli.py), lines 25–28 | Live bridge checks require an explicitly selected `--gnn-root` with matching custody pins. Normal standalone tests need no sibling checkout. Do not repin to make a local check pass. |
-| [Collection summary parser](../src/fep_lean/output/manuscript.py), lines 710–718 | Slow hosts can collect tests for over a minute; pytest then appends `H:MM:SS`. This kit's companion parser fix accepts that duration suffix while retaining the exact roster and final-summary checks. Collection still has its existing 120-second timeout; a timeout is a failure, not permission to invent a test count. |
+| [OpenGauss installer](../scripts/00b_install_opengauss_cli.sh) | Uses `$HOME/.gauss_src` and pulls the service's current main. It is outside the locked kit. Install/configure the service separately for the external full-mode tier. |
+| [Publication template resolver](../scripts/render_publication.py) (`resolve_template`) | Requires `--template` or `FEP_LEAN_TEMPLATE_DIR`. Supply a real local template checkout and register this checkout as its active project, following the render runbook. |
+| [Browser wrapper](../scripts/capture_browser_acceptance.py) (`build_parser`, `main`) | Browser acceptance needs a local Chrome/Chromium executable; pass `--browser` when discovery is unsuitable. The kit does not capture browser evidence. |
+| [Manuscript identifier audit](../scripts/render_manuscript.py) (`main`) | Reads `lean/.lake/packages/mathlib`. Let guarded setup materialize the manifest's exact revisions at that layout; an arbitrary relocated or rsynced package tree is not a substitute. |
+| [Lean setup](../src/fep_lean/verification/environment.py) (`setup_workspace`) | `FEP_LEAN_DIR`, `ELAN_HOME`, `XDG_CACHE_HOME`, and `MATHLIB_CACHE_DIR` can redirect state. Remove stale overrides or supply writable local locations. Keep the intended checkout's pin triple together. |
+| [Tool discovery](../src/fep_lean/verification/_toolchain.py) (`find_executable`) | `FEP_LEAN_LAKE_EXE` and `FEP_LEAN_LEAN_EXE` override discovery. Remove paths to another host/worktree; setup verifies the actual compiler identity. Cold setup also accepts `FEP_LEAN_ELAN_EXE`. |
+| [Service configuration](../src/fep_lean/llm/hermes.py) (`HermesConfig.from_settings`) | Full mode needs local service configuration and credentials, optionally read from `$GAUSS_HOME/.env`. Supply them privately; copying a home directory is not part of setup. |
+| [Bridge CLI](../src/fep_lean/bridge/cli.py) (`add_arguments`, `run`) | Live bridge checks require an explicitly selected `--gnn-root` with matching custody pins. Normal standalone tests need no sibling checkout. Do not repin to make a local check pass. |
+| [Collection summary parser](../src/fep_lean/output/manuscript.py) (`parse_pytest_collection_stdout`) | Slow hosts can collect tests for over a minute; pytest then appends `H:MM:SS`. The parser accepts that duration suffix while retaining the exact roster and final-summary checks. Collection still has its existing 120-second timeout; a timeout is a failure, not permission to invent a test count. |
 | [Render runbook](../scripts/README.md#local-render-runbook) | XeLaTeX, pandoc, mermaid, fonts, template registration, and fresh publication receipts remain the publication tier. The kit only generates catalog and rasterized figure inputs. |
 
 Herdr pane IDs, `.herdr-project` briefs/receipts, omp skills, and private PAI

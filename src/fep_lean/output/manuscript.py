@@ -666,7 +666,7 @@ def _test_collection_fingerprint(
     digest = hashlib.sha256()
     digest.update(
         json.dumps(
-            identity if identity is not None else _collection_runtime_identity(),
+            identity if identity is not None else collection_runtime_identity(),
             sort_keys=True,
             separators=(",", ":"),
         ).encode("utf-8")
@@ -849,7 +849,7 @@ def _count_test_cases(project_root: Path, *, write_cache: bool = True) -> int:
         and path.suffix == ".py"
         and path.is_relative_to(tests_root)
     ]
-    identity = _collection_runtime_identity()
+    identity = collection_runtime_identity()
     fingerprint = _test_collection_fingerprint(root, identity=identity)
     if cache.is_file() and tests:
         try:
@@ -889,8 +889,8 @@ def _count_test_cases(project_root: Path, *, write_cache: bool = True) -> int:
             home_dir = temporary_root / "home"
             cache_dir.mkdir()
             home_dir.mkdir()
-            environment = _pytest_collection_environment(temporary_root)
-            command = _pytest_collection_command(cache_dir)
+            environment = pytest_collection_environment(temporary_root)
+            command = pytest_collection_command(cache_dir)
             proc = subprocess.run(
                 command,
                 cwd=root,
@@ -912,9 +912,9 @@ def _count_test_cases(project_root: Path, *, write_cache: bool = True) -> int:
         raise ValueError(
             f"pytest collection wrote unexpected stderr; output tail: {excerpt}"
         )
-    node_ids = _parse_pytest_collection_stdout(proc.stdout)
+    node_ids = parse_pytest_collection_stdout(proc.stdout)
     count = len(node_ids)
-    post_identity = _collection_runtime_identity()
+    post_identity = collection_runtime_identity()
     post_fingerprint = _test_collection_fingerprint(root, identity=post_identity)
     if post_identity != identity or post_fingerprint != fingerprint:
         raise ValueError("test collection inputs or runtime changed during collection")
@@ -936,13 +936,6 @@ def _count_test_cases(project_root: Path, *, write_cache: bool = True) -> int:
             + "\n",
         )
     return count
-
-
-# Backwards-compatible private aliases (SC-16 promoted these to public names).
-_collection_runtime_identity = collection_runtime_identity
-_parse_pytest_collection_stdout = parse_pytest_collection_stdout
-_pytest_collection_command = pytest_collection_command
-_pytest_collection_environment = pytest_collection_environment
 
 
 _SMALL_NUMBER_WORDS = {

@@ -11830,7 +11830,7 @@
     "catalogue/relations.py": "f848780337e03a4b19013a5f45a26a91c1b58d46f78964fcdab5aa54782e182b",
     "catalogue/schema.py": "75c7c90e829eb7373c09bd3fa7e264937aeac1b8d880b513932975deae5677a0",
     "catalogue/semantics.py": "4a47ebebac7aab2120738b1e922790e3f0afb603cc18a8b06dec7307101f131b",
-    "catalogue/topics.py": "97b5e0dd45673df52cd8399332dc1fcddebe0f6f8ad5a5434abec2ed599f564a",
+    "catalogue/topics.py": "cea2591a8f6b0a11df9d49c6ae15fdd18900c22c5992d05f5b3395169e4b67fc",
     "formal/active_inference.lean": "260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07",
     "formal/bayesian_model_reduction.lean": "721c1e39ffcfe5557c0138134cac5fb5c1b78669ac475cd99465401653fa441f",
     "formal/causal_dynamics.lean": "a87844ec42f395cb8532fa96c7d5b6b956731e1b0f6069f748d512e43add686c",

@@ -3,7 +3,9 @@
 import hashlib
 import importlib.util
 import json
+import os
 import shutil
+import stat
 import subprocess
 import tempfile
 import unittest
@@ -82,8 +84,21 @@ class RetainedEvidenceTests(unittest.TestCase):
             self.assertEqual(kwargs["env"]["GIT_NO_REPLACE_OBJECTS"], "1")
             self.assertEqual(kwargs["env"]["GIT_OPTIONAL_LOCKS"], "0")
             self.assertEqual(kwargs["timeout"], 30)
+            self.assertIs(kwargs["check"], True)
+            self.assertNotIn("input", kwargs)
+            self.assertNotIn("capture_output", kwargs)
+            for name in ("stdin", "stdout", "stderr"):
+                self.assertTrue(stat.S_ISREG(os.fstat(kwargs[name].fileno()).st_mode))
+            protocol = json.loads((EVIDENCE / "actual/protocol-v2.json").read_text())
+            expected = "".join(
+                f"{validator.FEP_COMMIT}:{name}\n"
+                for name in protocol["owners"]["fep_lean"]
+            ).encode()
+            self.assertEqual(kwargs["stdin"].read(), expected)
+            kwargs["stdout"].write(b"missing\n")
+            kwargs["stderr"].write(b"diagnostic\n")
             calls.append(command)
-            return subprocess.CompletedProcess(command, 0, stdout=b"missing\n")
+            return subprocess.CompletedProcess(command, 0)
 
         with (
             patch.object(subprocess, "run", side_effect=guarded_run),
@@ -91,6 +106,26 @@ class RetainedEvidenceTests(unittest.TestCase):
         ):
             validator.validate(EVIDENCE, fep_git=Path("fep"), gnn_git=Path("gnn"))
         self.assertEqual(len(calls), 1)
+        for error in (
+            subprocess.CalledProcessError(7, ["git"]),
+            subprocess.TimeoutExpired(["git"], 30),
+        ):
+            with self.subTest(error=type(error).__name__):
+
+                def failed_run(command, error=error, **kwargs):
+                    guarded_run(command, **kwargs)
+                    raise error
+
+                with (
+                    patch.object(subprocess, "run", side_effect=failed_run),
+                    self.assertRaises(type(error)) as raised,
+                ):
+                    validator.validate(
+                        EVIDENCE, fep_git=Path("fep"), gnn_git=Path("gnn")
+                    )
+                self.assertIs(raised.exception, error)
+                self.assertEqual(error.output, b"missing\n")
+                self.assertEqual(error.stderr, b"diagnostic\n")
 
     def test_missing_git_objects_refuse_without_repository_writes(self):
         with tempfile.TemporaryDirectory() as tmp:
