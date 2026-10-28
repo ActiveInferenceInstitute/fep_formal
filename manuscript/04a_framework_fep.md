@@ -1,6 +1,6 @@
 # Formalisms, Model Specifications, and Results {#sec:formalisms_and_results}
 
-The core artifact is a generated catalog of {{total_topics}} topic-scoped Lean bodies plus semantic review metadata, accompanied by reusable maintained foundations. Canonical topic bodies live in the family modules under `fep_lean.catalogue.bodies`; generated YAML and the unified appendix are projections. Native evidence is `{{verify.evidence_kind}}` with rate `{{compile_rate.total}}`. This section discusses mathematical scope; it does not infer full-pipeline evidence from catalog generation.
+The core artifact is a generated catalog of {{total_topics}} topic-scoped Lean bodies plus semantic review metadata, accompanied by reusable maintained foundations. Canonical topic bodies live in the family modules under `fep_formal.catalogue.bodies`; generated YAML and the unified appendix are projections. Native evidence is `{{verify.evidence_kind}}` with rate `{{compile_rate.total}}`. This section discusses mathematical scope; it does not infer full-pipeline evidence from catalog generation.
 
 ## Foundational Dynamics: Free Energy Principle ({{areas.FEP.count}} topics) {#sec:foundational_dynamics_free_energy_principle}
 

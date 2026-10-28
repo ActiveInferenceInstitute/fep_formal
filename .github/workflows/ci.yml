@@ -1,4 +1,4 @@
-name: fep_lean
+name: fep_formal
 
 on:
   push:
@@ -140,7 +140,7 @@ jobs:
           enable-cache: true
       - run: uv sync --locked --extra dev
       - name: Materialize the generated manuscript inputs
-        run: uv run fep-lean catalogue
+        run: uv run fep-formal catalogue
       - name: Check documentation and committed publication evidence
         run: |
           uv run python scripts/_maint_build_topics_catalogue.py --check
@@ -152,7 +152,8 @@ jobs:
           uv run python scripts/build_formalism_atlas.py --check
           uv run python scripts/build_formal_kernel_dashboard.py --check
           uv run python specs/openai-math-methods/generate_package_methods.py --check
-          uv run fep-lean --project-root . methods check --output-root docs/mathematical-positioning
+          uv run python specs/identity-cutover/generate_legacy_stubs.py --check
+          uv run fep-formal --project-root . methods check --output-root docs/mathematical-positioning
           uv run python scripts/build_render_fonts.py --check
           uv run python scripts/check_render_log.py --verify-receipt
           uv run python docs/theorem_ref_audit.py
@@ -173,7 +174,7 @@ jobs:
         # 15 cells: three operating systems and five supported Python versions.
         python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.0
@@ -201,6 +202,10 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
+        with:
+          # The installed transition test builds the exact pre-cutover source.
+          # Keep that immutable baseline available on successor commits.
+          fetch-depth: 0
       - uses: astral-sh/setup-uv@v10.3.0
         with:
           version: "0.13.0"
@@ -218,7 +223,8 @@ jobs:
           uv run python scripts/build_formalism_atlas.py --check
           uv run python scripts/build_formal_kernel_dashboard.py --check
           uv run python specs/openai-math-methods/generate_package_methods.py --check
-          uv run fep-lean --project-root . methods check --output-root docs/mathematical-positioning
+          uv run python specs/identity-cutover/generate_legacy_stubs.py --check
+          uv run fep-formal --project-root . methods check --output-root docs/mathematical-positioning
       # The frozen-custody bridge gates from AGENTS.md's required checks:
       # each is --check validation of committed artifacts and passes on a
       # fresh checkout without any sibling repo.
@@ -234,14 +240,14 @@ jobs:
       - name: Check independent Gaussian composition replay controls
         timeout-minutes: 5
         env:
-          FEP_LEAN_LIVE_TESTS: "0"
+          FEP_FORMAL_LIVE_TESTS: "0"
         run: |
           mkdir -p output
           uv run pytest specs/gnn-semantic-witness-v1/test_composition.py -q -n 0 --no-cov \
             --junitxml=output/gnn-composition-acceptance.xml
       - name: Generate and validate publication inputs
         run: |
-          uv run fep-lean catalogue
+          uv run fep-formal catalogue
           # The glyph projection reads the generated appendix
           # (manuscript/09z_unified_formalism_catalogue.md, a gitignored build
           # product), so this check is only decidable after the catalogue has
@@ -284,7 +290,7 @@ jobs:
       - name: Run the parallel Python acceptance component
         id: python_remainder
         env:
-          FEP_LEAN_COVERAGE_FLOOR_EVIDENCE: "1"
+          FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE: "1"
         run: |
           set -o pipefail
           mkdir -p output
@@ -329,16 +335,16 @@ jobs:
           import hashlib
           import json
           from pathlib import Path
-          from fep_lean.output.release_bundle._core import _capture_regular_file
+          from fep_formal.output.release_bundle._core import _capture_regular_file
 
           root = Path.cwd().resolve(strict=True)
           collection = json.loads((root / "output/python-acceptance-collection.json").read_text())
-          expected = {"src/fep_lean.egg-info/" + name for name in (
+          expected = {"src/fep_formal.egg-info/" + name for name in (
               "PKG-INFO", "SOURCES.txt", "dependency_links.txt", "entry_points.txt",
               "requires.txt", "top_level.txt",
           )}
           sealed = {name: sha for name, sha in collection["source_sha256"].items()
-                    if name.startswith("src/fep_lean.egg-info/")}
+                    if name.startswith("src/fep_formal.egg-info/")}
           if set(sealed) != expected:
               raise SystemExit("sealed package metadata membership differs")
           for name, sha in sorted(sealed.items()):
@@ -363,12 +369,12 @@ jobs:
             output/coverage-floor-control-one.log
             output/coverage-floor-control-both.log
             coverage.xml
-            src/fep_lean.egg-info/PKG-INFO
-            src/fep_lean.egg-info/SOURCES.txt
-            src/fep_lean.egg-info/dependency_links.txt
-            src/fep_lean.egg-info/entry_points.txt
-            src/fep_lean.egg-info/requires.txt
-            src/fep_lean.egg-info/top_level.txt
+            src/fep_formal.egg-info/PKG-INFO
+            src/fep_formal.egg-info/SOURCES.txt
+            src/fep_formal.egg-info/dependency_links.txt
+            src/fep_formal.egg-info/entry_points.txt
+            src/fep_formal.egg-info/requires.txt
+            src/fep_formal.egg-info/top_level.txt
           if-no-files-found: error
       - name: Check mathematical context and numerical visualization boundaries
         run: |
@@ -411,7 +417,7 @@ jobs:
       - run: uv sync --locked --extra dev
       - name: Check composition source inventory
         run: uv run pytest tests/test_composition_source_inventory.py -q -n 0 --no-cov
-      - run: uv run fep-lean catalogue
+      - run: uv run fep-formal catalogue
       - run: uv run python docs/check_links.py --strict --include-root
         if: ${{ !cancelled() }}
       - run: uv run python docs/md_hygiene.py --strict --include-root
@@ -420,9 +426,11 @@ jobs:
         if: ${{ !cancelled() }}
       - run: uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py specs/publication-browser-acceptance/native_supplement.py
         if: ${{ !cancelled() }}
+      - run: uv run python -m mypy --no-incremental src/fep_lean/__init__.py
+        if: ${{ !cancelled() }}
       - run: uv run ruff check .
         if: ${{ !cancelled() }}
-      - run: uv run ruff format --check src tests scripts docs specs/openai-math-methods specs/cascadia-experiments specs/gnn-runner-execution specs/publication-browser-acceptance
+      - run: uv run ruff format --check src tests scripts docs specs/openai-math-methods specs/cascadia-experiments specs/gnn-runner-execution specs/publication-browser-acceptance specs/identity-cutover
         if: ${{ !cancelled() }}
       - run: git diff --check
         if: ${{ !cancelled() }}
@@ -451,12 +459,12 @@ jobs:
         run: |
           # The catalogue figures (status_distribution.png, topics_by_area.png
           # and their seven siblings under output/figures/) are written by
-          # write_all_catalogue_figures during `fep-lean catalogue`, and
+          # write_all_catalogue_figures during `fep-formal catalogue`, and
           # scripts/build_manuscript_figures.py deliberately leaves them to
           # it. Without this step the render-figures artifact ships without
           # the roster pair and the lean job's serial renderer test fails
           # closed on "manuscript asset roster sources are missing".
-          uv run fep-lean catalogue
+          uv run fep-formal catalogue
       - name: Generate the publication figure assets
         run: |
           # Same roster the render lane previously generated inline: the
@@ -464,7 +472,7 @@ jobs:
           # rasterized PNGs under output/figures/.
           uv run python scripts/build_formalism_atlas.py
           uv run python scripts/build_formal_kernel_dashboard.py
-          uv run fep-lean --project-root . methods export --output-root docs/mathematical-positioning
+          uv run fep-formal --project-root . methods export --output-root docs/mathematical-positioning
           uv run python scripts/build_manuscript_figures.py
       - name: Verify the manuscript asset roster before upload
         run: |
@@ -474,7 +482,7 @@ jobs:
           uv run python - <<'PY'
           from pathlib import Path
 
-          from fep_lean.output.rendering import MANUSCRIPT_ASSETS
+          from fep_formal.output.rendering import MANUSCRIPT_ASSETS
 
           root = Path.cwd()
           missing = [
@@ -566,7 +574,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           # render_publication.py resolves the template through
-          # FEP_LEAN_TEMPLATE_DIR and needs scripts/pipeline/stage_03_render.py
+          # FEP_FORMAL_TEMPLATE_DIR and needs scripts/pipeline/stage_03_render.py
           # in it. The template is a separate repository this project does not
           # pin programmatically, so the ref is pinned here instead and must be
           # re-pinned (and the committed render receipts refreshed) after a
@@ -735,10 +743,10 @@ jobs:
               raise SystemExit("publication source checkout is not clean before manuscript hydration")
           print("publication source checkout is clean before manuscript hydration")
           PY
-      - run: uv run fep-lean catalogue
+      - run: uv run fep-formal catalogue
       - name: Render the publication and accept it fail-closed
         env:
-          FEP_LEAN_TEMPLATE_DIR: ${{ github.workspace }}/output/render-template
+          FEP_FORMAL_TEMPLATE_DIR: ${{ github.workspace }}/output/render-template
         run: |
           uv run python - <<'PY'
           import subprocess
@@ -778,8 +786,8 @@ jobs:
           import sys
           from pathlib import Path
 
-          from fep_lean.output.evidence import validate_native_lean_receipt
-          from fep_lean.output.release_bundle._core import (
+          from fep_formal.output.evidence import validate_native_lean_receipt
+          from fep_formal.output.release_bundle._core import (
               _capture_directory_paths,
               _capture_link_bytes,
               _capture_parent_fd,
@@ -787,10 +795,10 @@ jobs:
               _capture_resource_link_target,
               _capture_template_links,
           )
-          from fep_lean.output.render_fonts import declared_fonts
-          from fep_lean.output.render_log import receipt_defects, rendered_manuscript_sources
-          from fep_lean.output.rendering import MANUSCRIPT_ASSETS
-          from fep_lean.verification.formalism_audit import validate_formalism_audit_receipt
+          from fep_formal.output.render_fonts import declared_fonts
+          from fep_formal.output.render_log import receipt_defects, rendered_manuscript_sources
+          from fep_formal.output.rendering import MANUSCRIPT_ASSETS
+          from fep_formal.verification.formalism_audit import validate_formalism_audit_receipt
 
           root = Path.cwd().resolve()
           sha = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
@@ -1166,7 +1174,7 @@ jobs:
           # b5e6a9d reached main with a broken orphaned formal module while
           # the lean job never evaluated the tip (the runs at the adjacent
           # commits were cancelled), and no CI step compiles the canonical
-          # src/fep_lean/formal/*.lean bytes: lake builds only the
+          # src/fep_formal/formal/*.lean bytes: lake builds only the
           # lean/FepSketches/ projections, and the serial_lean probes below
           # compile a topic-driven subset. This gate enumerates the formal
           # modules outside fep_all's import closure and recompiles their
@@ -1205,19 +1213,19 @@ jobs:
         if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         timeout-minutes: 5
         env:
-          FEP_LEAN_VERIFY_TIMEOUT: "60"
+          FEP_FORMAL_VERIFY_TIMEOUT: "60"
         run: >-
           uv run python specs/gnn-semantic-witness-v1/verify_composition_native.py
           --output output/gnn-composition-native
       - name: Run the serial_lean acceptance lane
         if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         env:
-          FEP_LEAN_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
-          FEP_LEAN_CI_NATIVE_RECEIPT: "1"
-          FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
-          FEP_LEAN_SLICE04_COMPILE_TEST: "1"
-          FEP_LEAN_SLICE05_COMPILE_TEST: "1"
-          FEP_LEAN_NATIVE_ENTROPY_EVIDENCE: "1"
+          FEP_FORMAL_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
+          FEP_FORMAL_CI_NATIVE_RECEIPT: "1"
+          FEP_FORMAL_CATALOGUE_COMPILE_TEST: "1"
+          FEP_FORMAL_SLICE04_COMPILE_TEST: "1"
+          FEP_FORMAL_SLICE05_COMPILE_TEST: "1"
+          FEP_FORMAL_NATIVE_ENTROPY_EVIDENCE: "1"
         run: |
           set -o pipefail
           mkdir -p output
@@ -1227,7 +1235,7 @@ jobs:
       - name: Validate the strict serial producer and optionally compare the CLI
         if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         env:
-          FEP_LEAN_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
+          FEP_FORMAL_NATIVE_SHADOW: ${{ github.event_name == 'workflow_dispatch' && inputs.native_producer_shadow && '1' || '0' }}
         run: |
           uv run python - <<'PY_CONSUMER'
           from pathlib import Path
@@ -1255,17 +1263,17 @@ jobs:
           }
           print("FEP_NATIVE_PRODUCER_CONTEXT " + json.dumps(context, sort_keys=True, separators=(",", ":")), flush=True)
           PY_CONSUMER
-          if [ "$FEP_LEAN_NATIVE_SHADOW" = "1" ]; then
+          if [ "$FEP_FORMAL_NATIVE_SHADOW" = "1" ]; then
             test ! -e output/native-verification-serial-producer.json
             test ! -L output/native-verification-serial-producer.json
             cp output/native-verification.json output/native-verification-serial-producer.json
-            uv run fep-lean verify \
+            uv run fep-formal verify \
               --fail-on-warnings \
               --receipt output/native-verification.json
           fi
           uv run python - <<'PY'
           from pathlib import Path
-          from fep_lean.output import validate_native_lean_receipt
+          from fep_formal.output import validate_native_lean_receipt
 
           result = validate_native_lean_receipt(
               Path("output/native-verification.json"),
@@ -1275,7 +1283,7 @@ jobs:
           if not result["native_claim_ready"]:
               raise SystemExit(1)
           import os
-          if os.environ["FEP_LEAN_NATIVE_SHADOW"] == "1":
+          if os.environ["FEP_FORMAL_NATIVE_SHADOW"] == "1":
               import json
               from tests._support.native_catalogue_shadow import compare_native_catalogue_receipts
               comparison = compare_native_catalogue_receipts(
@@ -1296,7 +1304,7 @@ jobs:
       - name: Verify the publication render path against the pinned Mathlib
         if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
         run: |
-          uv run fep-lean catalogue
+          uv run fep-formal catalogue
           uv run python scripts/render_manuscript.py --check
       - name: Audit formal declarations and axioms
         if: (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
@@ -1305,7 +1313,7 @@ jobs:
             --receipt output/formalism-audit.json
           uv run python - <<'PY'
           from pathlib import Path
-          from fep_lean.verification.formalism_audit import (
+          from fep_formal.verification.formalism_audit import (
               validate_formalism_audit_receipt,
           )
 
@@ -1329,10 +1337,10 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.native_supplement_profile == 'native-api-cli-supplement-v1'
         env:
           GH_TOKEN: ${{ github.token }}
-          FEP_LEAN_CI_NATIVE_RECEIPT: "1"
-          FEP_LEAN_CATALOGUE_COMPILE_TEST: "1"
-          FEP_LEAN_NATIVE_SHADOW: "0"
-          FEP_LEAN_LIVE_TESTS: "0"
+          FEP_FORMAL_CI_NATIVE_RECEIPT: "1"
+          FEP_FORMAL_CATALOGUE_COMPILE_TEST: "1"
+          FEP_FORMAL_NATIVE_SHADOW: "0"
+          FEP_FORMAL_LIVE_TESTS: "0"
         shell: bash
         run: |
           set -euo pipefail
@@ -1346,7 +1354,7 @@ jobs:
           set -e
           if [ "$api_rc" -ne 0 ]; then exit "$api_rc"; fi
           set +e
-          uv run --no-sync fep-lean verify --fail-on-warnings --receipt output/native-supplement-cli.json > "$out/cli.stdout.log" 2> "$out/cli.stderr.log"
+          uv run --no-sync fep-formal verify --fail-on-warnings --receipt output/native-supplement-cli.json > "$out/cli.stdout.log" 2> "$out/cli.stderr.log"
           cli_rc=$?
           printf '%s\n' "$cli_rc" > "$out/cli.exitcode"
           set -e

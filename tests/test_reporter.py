@@ -14,21 +14,21 @@ from types import SimpleNamespace
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.output.manuscript import _verify_block_from_manifest
-from fep_lean.output.provenance import (
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.output.manuscript import _verify_block_from_manifest
+from fep_formal.output.provenance import (
     OWNER_MANIFEST_VERSION,
     config_owner_paths,
     source_owner_paths,
 )
-from fep_lean.output.reporter import (
+from fep_formal.output.reporter import (
     Reporter,
     ReportPaths,
     _render_validation_markdown,
     validate_report_receipt,
 )
-from fep_lean.pipeline.core import FEPPipeline, PipelineResult, StepResult
-from fep_lean.verification.environment import (
+from fep_formal.pipeline.core import FEPPipeline, PipelineResult, StepResult
+from fep_formal.verification.environment import (
     CATALOGUE_VALIDATION_CHECK_NAMES,
     FULL_VALIDATION_CHECK_NAMES,
 )
@@ -218,7 +218,7 @@ def test_reporter_with_real_pipeline_result(
     assert receipt["source_bound"] is True
     assert receipt["claim_ready"] is False
 
-    owner = catalogue_project / "src/fep_lean/cli.py"
+    owner = catalogue_project / "src/fep_formal/cli.py"
     owner.write_bytes(owner.read_bytes() + b"\n# isolated source drift\n")
     rejected = validate_report_receipt(paths.root, project_root=catalogue_project)
     assert rejected["valid"] is False
@@ -1184,7 +1184,7 @@ def test_complete_full_receipt_without_live_source_is_not_claim_ready(
 
 def test_live_source_binding_ignores_python_cache_bytes(tmp_path: Path) -> None:
     paths = _complete_full_report(tmp_path, "run_cache_independent_receipt")
-    cache = tmp_path / "src" / "fep_lean" / "__pycache__"
+    cache = tmp_path / "src" / "fep_formal" / "__pycache__"
     cache.mkdir(parents=True, exist_ok=True)
     (cache / "ignored.cpython-314.pyc").write_bytes(b"not a source owner")
 
@@ -1676,7 +1676,7 @@ def test_summary_json_includes_topics_payload(
     tmp_path: Path, catalogue_project: Path
 ) -> None:
     """``Reporter._gen_summary_json`` must include the per-topic rows so
-    ``fep_lean.output.manuscript.build_manuscript_vars`` can derive Hermes aggregates."""
+    ``fep_formal.output.manuscript.build_manuscript_vars`` can derive Hermes aggregates."""
     pl = FEPPipeline(catalogue_project, output_root=tmp_path / "pipeline-output")
     result = pl.run(mode="catalogue")
     assert result.complete is True
@@ -1785,7 +1785,7 @@ def test_validate_receipt_detects_source_drift(tmp_path: Path) -> None:
     # Simulate a historical receipt after one already-rostered live source
     # owner evolves. The owner closure remains complete, so only its digest
     # binding changes.
-    source_owner = tmp_path / "src" / "fep_lean" / "pipeline" / "core.py"
+    source_owner = tmp_path / "src" / "fep_formal" / "pipeline" / "core.py"
     source_owner.write_text(
         source_owner.read_text(encoding="utf-8") + "\n# historical drift\n",
         encoding="utf-8",

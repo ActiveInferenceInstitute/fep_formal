@@ -24,16 +24,16 @@ if __name__ == "__main__":
 
 import yaml
 
-from fep_lean.catalogue.coverage import build_formalism_coverage
-from fep_lean.catalogue.registry import BODIES, BODY_MODULE_MANIFEST
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.catalogue.semantics import load_theorem_maturity
-from fep_lean.formal.declarations import (
+from fep_formal.catalogue.coverage import build_formalism_coverage
+from fep_formal.catalogue.registry import BODIES, BODY_MODULE_MANIFEST
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.catalogue.semantics import load_theorem_maturity
+from fep_formal.formal.declarations import (
     all_formal_theorem_declarations,
     formal_theorem_modules,
 )
-from fep_lean.formal.manifest import FORMAL_MODULES, formal_resource_paths
-from fep_lean.lean_source import LEAN_THEOREM_RE, lean_code_without_comments
+from fep_formal.formal.manifest import FORMAL_MODULES, formal_resource_paths
+from fep_formal.lean_source import LEAN_THEOREM_RE, lean_code_without_comments
 
 ROOT = Path(__file__).resolve().parents[2]
 SLICE = Path("specs/openai-math-methods")
@@ -347,7 +347,7 @@ def numerical_probes() -> list[dict[str, Any]]:
                 "metric sum(v_i^2/p_i) is positive on this nonzero mass-zero tangent. "
                 "These are different coordinate representations of the same family."
             ),
-            "reading_anchor": "src/fep_lean/formal/geometric_optimization.lean",
+            "reading_anchor": "src/fep_formal/formal/geometric_optimization.lean",
         },
         {
             "id": "descent-does-not-identify",
@@ -374,14 +374,14 @@ def source_paths(root: Path) -> tuple[Path, ...]:
         "config/formalism_relations.yaml",
         str(SLICE / "positioning.yaml"),
         str(SLICE / "methods.py"),
-        "src/fep_lean/catalogue/registry.py",
-        "src/fep_lean/catalogue/schema.py",
-        "src/fep_lean/catalogue/semantics.py",
-        "src/fep_lean/catalogue/relations.py",
-        "src/fep_lean/catalogue/coverage.py",
-        "src/fep_lean/formal/declarations.py",
-        "src/fep_lean/formal/manifest.py",
-        "src/fep_lean/lean_source.py",
+        "src/fep_formal/catalogue/registry.py",
+        "src/fep_formal/catalogue/schema.py",
+        "src/fep_formal/catalogue/semantics.py",
+        "src/fep_formal/catalogue/relations.py",
+        "src/fep_formal/catalogue/coverage.py",
+        "src/fep_formal/formal/declarations.py",
+        "src/fep_formal/formal/manifest.py",
+        "src/fep_formal/lean_source.py",
         *(entry.source_relative_path for entry in BODY_MODULE_MANIFEST),
     ]
     return tuple(

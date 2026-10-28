@@ -30,14 +30,14 @@ from run_synthetic import (
     require,
 )
 
-from fep_lean.lean_source import lean_code_without_comments
-from fep_lean.output.provenance import (
+from fep_formal.lean_source import lean_code_without_comments
+from fep_formal.output.provenance import (
     config_owner_paths,
     report_owner_errors,
     source_owner_paths,
 )
-from fep_lean.verification._subprocess import run_process_group
-from fep_lean.verification._toolchain import (
+from fep_formal.verification._subprocess import run_process_group
+from fep_formal.verification._toolchain import (
     find_executable,
     lean_version_matches_pin,
     read_toolchain_pin,

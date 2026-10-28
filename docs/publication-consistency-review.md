@@ -31,7 +31,7 @@ label nor a warning-free compile receipt proves a universal or empirical FEP.
 ## Verification and archival boundary
 
 A current native claim requires an independently validated, live-source-bound
-receipt from `fep-lean verify --fail-on-warnings`. Catalog generation and the
+receipt from `fep-formal verify --fail-on-warnings`. Catalog generation and the
 semantic audit provide source/projection evidence only. Full Hermes/OpenGauss
 execution requires its separate validated report.
 

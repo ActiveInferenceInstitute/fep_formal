@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from fep_lean.pipeline.core import FEPPipeline
+from fep_formal.pipeline.core import FEPPipeline
 
 pytest_plugins = ["tests._support.catalogue_project"]
 

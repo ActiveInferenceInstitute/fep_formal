@@ -8,9 +8,13 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.pipeline.core import PipelineResult
-from fep_lean.pipeline.orchestrator import project_root, run_pipeline, run_single_topic
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.pipeline.core import PipelineResult
+from fep_formal.pipeline.orchestrator import (
+    project_root,
+    run_pipeline,
+    run_single_topic,
+)
 from tests._support.catalogue_project import manuscript_owner_state
 
 PROJ = Path(__file__).resolve().parent.parent
@@ -22,8 +26,8 @@ def isolate(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, catalogue_project: Path
 ) -> Iterator[None]:
     live_before = manuscript_owner_state(PROJ)
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(catalogue_project))
-    monkeypatch.setenv("FEP_LEAN_OUTPUT_ROOT", str(tmp_path / "output"))
+    monkeypatch.setenv("FEP_FORMAL_PROJECT_ROOT", str(catalogue_project))
+    monkeypatch.setenv("FEP_FORMAL_OUTPUT_ROOT", str(tmp_path / "output"))
     monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     yield
@@ -31,14 +35,14 @@ def isolate(
 
 
 def test_project_root_default(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.delenv("FEP_LEAN_PROJECT_ROOT", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_PROJECT_ROOT", raising=False)
     assert project_root().resolve() == PROJ.resolve()
 
 
 def test_project_root_uses_package_specific_override(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    monkeypatch.setenv("FEP_LEAN_PROJECT_ROOT", str(tmp_path))
+    monkeypatch.setenv("FEP_FORMAL_PROJECT_ROOT", str(tmp_path))
     assert project_root().resolve() == tmp_path.resolve()
 
 
@@ -62,7 +66,7 @@ def test_run_pipeline_writes_catalogue_report(catalogue_project: Path) -> None:
     assert result.mode == "catalogue"
     assert result.run_dir
     report = Path(result.run_dir)
-    assert report.is_relative_to(Path(os.environ["FEP_LEAN_OUTPUT_ROOT"]))
+    assert report.is_relative_to(Path(os.environ["FEP_FORMAL_OUTPUT_ROOT"]))
     assert not (catalogue_project / "output/reports").exists()
     assert (report / "summary.json").is_file()
     assert (report / "index.md").is_file()

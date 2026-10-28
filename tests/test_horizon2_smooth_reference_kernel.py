@@ -10,9 +10,10 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.h2_r0_custody import validate_h2_r0_custody
+from tests._support.lean435_migration import historical_custody_validator_bytes
 from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_probe
 
@@ -21,13 +22,13 @@ LEAN_ROOT = PROJECT_ROOT / "lean"
 SOURCE = (
     PROJECT_ROOT
     / "src"
-    / "fep_lean"
+    / "fep_formal"
     / "formal"
     / "compositions"
     / "smooth_reference_kernel.lean"
 )
 PROJECTION = LEAN_ROOT / "FepSketches" / "compositions" / SOURCE.name
-AGGREGATE = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "composed.lean"
+AGGREGATE = PROJECT_ROOT / "src" / "fep_formal" / "formal" / "composed.lean"
 WORKSPACE_AGGREGATE = LEAN_ROOT / "FepSketches" / "composed.lean"
 R0_RECEIPT = (
     PROJECT_ROOT
@@ -108,7 +109,7 @@ def _run_lean(source_text: str) -> subprocess.CompletedProcess[str]:
         probe.write_text(source_text, encoding="utf-8")
         return run_lean_probe(
             probe,
-            import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+            import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
             cwd=LEAN_ROOT,
             timeout_s=1800,
         )
@@ -332,7 +333,7 @@ def test_h2_7_scalar_carrier_bridges_are_source_visible_and_fail_closed() -> Non
 def test_h2_7_compiles_warning_free() -> None:
     result = run_lean_probe(
         SOURCE,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         cwd=LEAN_ROOT,
         timeout_s=1800,
     )
@@ -430,7 +431,9 @@ def test_h2_7_consumes_only_an_accepted_source_bound_r0_decision() -> None:
         match=r"^H3 owner subtraction does not recover the historical custody manifest$",
     ):
         validate_h2_r0_custody(PROJECT_ROOT)
-    assert hashlib.sha256((PROJECT_ROOT / VALIDATOR_PATH).read_bytes()).hexdigest() == (
+    assert hashlib.sha256(
+        historical_custody_validator_bytes((PROJECT_ROOT / VALIDATOR_PATH).read_bytes())
+    ).hexdigest() == (
         "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53"
     )
     assert hashlib.sha256(

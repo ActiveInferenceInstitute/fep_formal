@@ -9,14 +9,14 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.catalogue.generation import build_topics_data
-from fep_lean.catalogue.novelty import (
+from fep_formal.catalogue.generation import build_topics_data
+from fep_formal.catalogue.novelty import (
     NoveltyValidationError,
     load_formalism_novelty,
 )
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.formal.declarations import composed_theorem_sources
-from fep_lean.formal.manifest import FormalModuleRole, formal_resource_paths
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.formal.declarations import composed_theorem_sources
+from fep_formal.formal.manifest import FormalModuleRole, formal_resource_paths
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
@@ -199,9 +199,9 @@ def test_catalogue_generation_rejects_novelty_ledger_drift(tmp_path: Path) -> No
     config_dir.mkdir()
     for name in ("catalogue_metadata.yaml", "theorem_maturity.yaml"):
         shutil.copy2(PROJECT_ROOT / "config" / name, config_dir / name)
-    formal_dir = tmp_path / "src" / "fep_lean" / "formal"
+    formal_dir = tmp_path / "src" / "fep_formal" / "formal"
     formal_dir.mkdir(parents=True)
-    source_formal_dir = PROJECT_ROOT / "src" / "fep_lean" / "formal"
+    source_formal_dir = PROJECT_ROOT / "src" / "fep_formal" / "formal"
     for source in formal_resource_paths(
         FormalModuleRole.COMPOSITION,
         project_root=PROJECT_ROOT,

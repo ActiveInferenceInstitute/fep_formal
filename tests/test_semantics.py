@@ -5,9 +5,9 @@ from __future__ import annotations
 from collections import Counter
 from pathlib import Path
 
-from fep_lean.catalogue.generation import build_topics_data
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.catalogue.semantics import load_theorem_maturity, theorem_names
+from fep_formal.catalogue.generation import build_topics_data
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.catalogue.semantics import load_theorem_maturity, theorem_names
 
 PROJ = Path(__file__).resolve().parent.parent
 SEALED_IDS = load_catalogue_metadata(

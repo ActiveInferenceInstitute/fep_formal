@@ -19,8 +19,8 @@ from typing import Any
 
 import pytest
 
-from fep_lean.verification._subprocess import run_process_group
-from fep_lean.verification.horizon_acceptance import (
+from fep_formal.verification._subprocess import run_process_group
+from fep_formal.verification.horizon_acceptance import (
     MANDATORY_TEST_FILES,
     native_source_paths,
     source_snapshot,
@@ -108,7 +108,8 @@ def main() -> int:
         env.pop(name, None)
     env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
     env["FEP_HEAVY_LEAN_PROBES"] = "1"
-    env["FEP_LEAN_LIVE_TESTS"] = "0"
+    env.pop("FEP_LEAN_LIVE_TESTS", None)
+    env["FEP_FORMAL_LIVE_TESTS"] = "0"
     command = [
         sys.executable,
         str(Path(__file__).resolve()),

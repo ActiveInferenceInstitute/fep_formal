@@ -9,10 +9,10 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.bodies.continuous_time_thermodynamics import (
+from fep_formal.catalogue.bodies.continuous_time_thermodynamics import (
     BODIES as CONTINUOUS_TIME_BODIES,
 )
-from fep_lean.catalogue.bodies.exponential_family_geometry import (
+from fep_formal.catalogue.bodies.exponential_family_geometry import (
     BODIES as EXPONENTIAL_FAMILY_BODIES,
 )
 from tests._support.lake import lake_executable
@@ -20,12 +20,12 @@ from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
-FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
+FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal"
 COMPOSITIONS_ROOT = FORMAL_ROOT / "compositions"
 SPIKE_ROOT = PROJECT_ROOT / "specs" / "done" / "formalism-catalogue-155" / "spikes"
 GEOMETRY_IDS = tuple(f"fep-{number:03d}" for number in range(142, 149))
 CONTINUOUS_TIME_IDS = tuple(f"fep-{number:03d}" for number in range(149, 156))
-RUN_NATIVE = os.environ.get("FEP_LEAN_SLICE04_COMPILE_TEST") == "1"
+RUN_NATIVE = os.environ.get("FEP_FORMAL_SLICE04_COMPILE_TEST") == "1"
 
 COMPOSITION_BRIDGES = {
     "exponential_family.lean": (
@@ -529,7 +529,7 @@ def test_slice04_theorem_names_do_not_overclaim_scope() -> None:
 @pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
-    reason="set FEP_LEAN_SLICE04_COMPILE_TEST=1 for serialized native checks",
+    reason="set FEP_FORMAL_SLICE04_COMPILE_TEST=1 for serialized native checks",
 )
 @pytest.mark.parametrize(
     "resource", ("exponential_family.lean", "continuous_time_markov.lean")
@@ -544,7 +544,7 @@ def test_slice04_foundations_compile_warning_free(resource: str) -> None:
 @pytest.mark.serial_lean
 @pytest.mark.skipif(
     not RUN_NATIVE,
-    reason="set FEP_LEAN_SLICE04_COMPILE_TEST=1 for serialized native checks",
+    reason="set FEP_FORMAL_SLICE04_COMPILE_TEST=1 for serialized native checks",
 )
 @pytest.mark.parametrize(
     ("topic_id", "body"),

@@ -1,8 +1,10 @@
 # Documentation map
 
-FEP_Formal is the project name. The installed Python namespace remains
-`fep_lean`, and the command remains `fep-lean`.
+FEP_Formal is the project name. The installed Python namespace is
+`fep_formal`, and the command is `fep-formal`.
 
+- [Identity migration](identity-migration.md) — canonical names, deprecated compatibility, source custody and release transition.
+- [Identity migration status](identity-migration-status.md) — measured checks, retained failures and outstanding acceptance.
 - [Mathematical methods](mathematical-methods.md) — portable topic contracts, research context and mathematical transfer rules.
 - [Support-aware variational methods](support-aware-variational-methods.md) — sparse Gibbs optimization, finite-path marginals, reversible KL drop and numerical API boundaries.
 - [Mathematical positioning explorer](mathematical-positioning/mathematical-map.html) — offline searchable contracts, typed associations and numerical boundary panels.
@@ -61,7 +63,7 @@ were written; current evidence lives in the generated reports above.
 - [Relations endpoint adjudication](relations-endpoint-adjudication.md) — coverage-gate verdict on the reviewed-primary-qualified endpoint rule.
 
 All paths in this directory resolve within this repository. Catalog-derived
-manuscript inputs are created by `uv run fep-lean catalogue`; coverage, atlas,
+manuscript inputs are created by `uv run fep-formal catalogue`; coverage, atlas,
 dashboard, and manuscript-render checks each retain a separate freshness gate.
 
 The [repository execution contract](../AGENTS.md) owns the required checks.

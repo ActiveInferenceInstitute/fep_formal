@@ -11,7 +11,7 @@ from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SOURCE = PROJECT_ROOT / "src" / "fep_lean" / "formal" / "posterior_convergence.lean"
+SOURCE = PROJECT_ROOT / "src" / "fep_formal" / "formal" / "posterior_convergence.lean"
 FORMAL_ROOT = SOURCE.parent
 LEAN_ROOT = PROJECT_ROOT / "lean"
 EXACT_IMPORTS = (

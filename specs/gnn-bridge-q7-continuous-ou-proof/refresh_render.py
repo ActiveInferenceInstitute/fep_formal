@@ -11,8 +11,19 @@ import subprocess
 import tempfile
 from pathlib import Path
 
-from fep_lean.bridge.custody import contained_file, fingerprint, write_json, write_text
-from fep_lean.bridge.operations import DOCUMENTS, PIN, check_sources, emit, owner_roster
+from fep_formal.bridge.custody import (
+    contained_file,
+    fingerprint,
+    write_json,
+    write_text,
+)
+from fep_formal.bridge.operations import (
+    DOCUMENTS,
+    PIN,
+    check_sources,
+    emit,
+    owner_roster,
+)
 
 SLICE = Path(__file__).resolve().parent
 CODE = """

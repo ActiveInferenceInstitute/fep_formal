@@ -40,7 +40,7 @@ Validation proceeds through independent failure surfaces:
 4. **Declaration and axiom audit:** every primary theorem, derivational relation witness, and formal-pairing witness resolves by qualified name; its declaration kind and axiom footprint are recorded in a source-bound receipt.
 5. **Projection integrity:** coverage JSON/Markdown and atlas SVG/HTML regenerate byte-for-byte from the same source graph.
 6. **Publication integrity:** manuscript variables resolve fail closed, theorem references resolve against the canonical declaration inventory, citations and links pass their audits, and the rendered manuscript receives local copies of its generated visual assets.
-7. **Distribution integrity:** an isolated wheel install must expose the `fep_lean` namespace, package data, and CLI without relying on the repository checkout or collision-prone top-level modules.
+7. **Distribution integrity:** an isolated wheel install must expose the `fep_formal` namespace, package data, and CLI without relying on the repository checkout or collision-prone top-level modules.
 
 No layer subsumes another. Lean can reject an invalid proof but cannot decide whether a theorem title overclaims its type. The semantic firewall can expose a missing scientific capability but cannot certify elaboration. The atlas can make topology inspectable but cannot create a theorem edge. A native receipt can prove compilation for exact bytes but cannot authenticate an optional provider run. The package therefore publishes these receipts and projections side by side rather than collapsing them into one success percentage.
 

@@ -18,9 +18,9 @@ from pathlib import Path, PureWindowsPath
 import pytest
 import yaml
 
-from fep_lean import __version__, cli
-from fep_lean.catalogue.relations import EdgeKind
-from fep_lean.methods import (
+from fep_formal import __version__, cli
+from fep_formal.catalogue.relations import EdgeKind
+from fep_formal.methods import (
     BoundaryProbeError,
     PositioningError,
     SourceOrigin,
@@ -40,7 +40,7 @@ from fep_lean.methods import (
     package_resource_drift,
     positioning_neighbors,
 )
-from fep_lean.methods import model as model_module
+from fep_formal.methods import model as model_module
 from tests._support.fast_relaxation_review import fast_relaxation_theorem_extension
 from tests._support.lean_module_contract import (
     exact_information_review,
@@ -119,7 +119,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         name
         for name, record in declarations.items()
         if record["source_owner"]
-        == "src/fep_lean/formal/compositions/finite_kernel_category.lean"
+        == "src/fep_formal/formal/compositions/finite_kernel_category.lean"
     } == category_extension
     assert len(variational_extension) == 32
     measure_entropy_extension = {
@@ -137,7 +137,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     )
     assert {
         declarations[name]["source_owner"] for name in measure_entropy_extension
-    } == {"src/fep_lean/formal/variational_duality.lean"}
+    } == {"src/fep_formal/formal/variational_duality.lean"}
     # The seven reviewed additions must resolve to their actual existing owner,
     # while the full historical declaration count below stays unchanged.
     scalar_bridges = {
@@ -151,14 +151,14 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     }
     assert scalar_bridges <= declarations.keys()
     assert {declarations[name]["source_owner"] for name in scalar_bridges} == {
-        "src/fep_lean/formal/compositions/core.lean"
+        "src/fep_formal/formal/compositions/core.lean"
     }
     information_bridges = exact_information_review(ROOT)["new_theorem_owners"]
     assert information_bridges.keys() <= declarations.keys()
     assert {
         name: declarations[name]["source_owner"] for name in information_bridges
     } == {
-        name: "src/fep_lean/formal/"
+        name: "src/fep_formal/formal/"
         + module.removeprefix("FepSketches.").replace(".", "/")
         + ".lean"
         for name, module in information_bridges.items()
@@ -173,7 +173,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
     assert finite_weight_kl_helpers <= declarations.keys()
     assert {
         declarations[name]["source_owner"] for name in finite_weight_kl_helpers
-    } == {"src/fep_lean/formal/finite_information.lean"}
+    } == {"src/fep_formal/formal/finite_information.lean"}
     finite_rate_distortion_extension = finite_rate_distortion_theorem_extension(
         declarations, ROOT
     )
@@ -303,7 +303,7 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
 
 
 def test_theorem_import_context_retains_meta_imports_and_ignores_comments():
-    from fep_lean.methods import model as model_module
+    from fep_formal.methods import model as model_module
 
     source = (
         "module\n"
@@ -619,7 +619,7 @@ def test_foreign_checkout_refuses_changed_source_defining_python(tmp_path, owner
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(source.read_bytes())
     assert build_mathematical_positioning(tmp_path).origin is SourceOrigin.CHECKOUT
-    changed = tmp_path / "src/fep_lean" / owner
+    changed = tmp_path / "src/fep_formal" / owner
     # If accidentally executed, this is a real failure, not a harmless comment.
     changed.write_bytes(
         changed.read_bytes() + b"\nraise RuntimeError('foreign owner executed')\n"
@@ -633,19 +633,19 @@ def test_previously_imported_validator_cannot_be_rebound_to_changed_owner_bytes(
 ):
     """Use a real copied package, cached import, and subsequent executable mutation."""
     source_root = tmp_path / "isolated-source"
-    copied = source_root / "fep_lean"
+    copied = source_root / "fep_formal"
     shutil.copytree(
-        ROOT / "src/fep_lean",
+        ROOT / "src/fep_formal",
         copied,
         ignore=shutil.ignore_patterns("__pycache__", "*.pyc"),
     )
     probe = f"""
 import pathlib, sys
 sys.path.insert(0, {str(source_root)!r})
-import fep_lean.catalogue.semantics
+import fep_formal.catalogue.semantics
 owner = pathlib.Path({str(copied / "catalogue/semantics.py")!r})
 owner.write_bytes(owner.read_bytes() + b"\\nraise RuntimeError('changed validator executed')\\n")
-from fep_lean.methods import PositioningError, build_mathematical_positioning
+from fep_formal.methods import PositioningError, build_mathematical_positioning
 try:
     build_mathematical_positioning()
 except PositioningError as error:
@@ -749,13 +749,13 @@ def test_package_resources_refuse_malformed_or_drifting_inputs(
 def test_four_package_copies_have_exact_read_only_canonical_parity(tmp_path):
     assert package_resource_drift(ROOT) == ()
     for name, owner in model_module.RESOURCE_OWNERS.items():
-        source, generated = tmp_path / owner, tmp_path / "src/fep_lean/data" / name
+        source, generated = tmp_path / owner, tmp_path / "src/fep_formal/data" / name
         source.parent.mkdir(parents=True, exist_ok=True)
         generated.parent.mkdir(parents=True, exist_ok=True)
         source.write_bytes((ROOT / owner).read_bytes())
         generated.write_bytes(source.read_bytes())
     assert package_resource_drift(tmp_path) == ()
-    target = tmp_path / "src/fep_lean/data/positioning.yaml"
+    target = tmp_path / "src/fep_formal/data/positioning.yaml"
     target.write_bytes(target.read_bytes() + b"\n")
     before = (target.stat().st_mtime_ns, target.read_bytes())
     assert package_resource_drift(tmp_path) == (target,)
@@ -807,7 +807,7 @@ def test_markdown_fences_exact_namespace_context_and_rejects_raw_brackets(
 ):
     import importlib.util
 
-    from fep_lean.methods.projection import render_markdown
+    from fep_formal.methods.projection import render_markdown
 
     spec = importlib.util.spec_from_file_location(
         "methods_markdown_hygiene", ROOT / "docs/md_hygiene.py"
@@ -856,7 +856,7 @@ def test_boundary_probes_preserve_support_and_float_range_failures():
 def test_cli_methods_branch_is_portable_and_explicit_roots_fail_closed(
     tmp_path, monkeypatch, capsys
 ):
-    monkeypatch.delenv("FEP_LEAN_PROJECT_ROOT", raising=False)
+    monkeypatch.delenv("FEP_FORMAL_PROJECT_ROOT", raising=False)
     monkeypatch.setattr(cli, "project_root", lambda: tmp_path)
     assert cli.main(["methods", "inspect", "--topic", "fep-038"]) == 0
     payload = json.loads(capsys.readouterr().out)
@@ -874,7 +874,7 @@ def test_cli_methods_branch_is_portable_and_explicit_roots_fail_closed(
     assert json.loads(capsys.readouterr().out)["status"] == "error"
     assert cli.main(["--project-root", str(tmp_path), "methods", "inspect"]) == 1
     assert json.loads(capsys.readouterr().out)["status"] == "error"
-    assert "FEP_LEAN_PROJECT_ROOT" not in os.environ
+    assert "FEP_FORMAL_PROJECT_ROOT" not in os.environ
 
 
 def test_installed_wheel_methods_run_without_checkout_or_sibling_imports(tmp_path):
@@ -889,13 +889,13 @@ def test_installed_wheel_methods_run_without_checkout_or_sibling_imports(tmp_pat
         capture_output=True,
         text=True,
     )
-    wheel = next(dist.glob("fep_lean-*.whl"))
+    wheel = next(dist.glob("fep_formal-*.whl"))
     environment = tmp_path / "venv"
     clean_env = {
         key: value
         for key, value in os.environ.items()
         if key not in {"PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV"}
-        and not key.startswith("FEP_LEAN_")
+        and not key.startswith("FEP_FORMAL_")
     }
     subprocess.run(
         [uv, "venv", "--python", sys.executable, str(environment)],
@@ -917,11 +917,11 @@ def test_installed_wheel_methods_run_without_checkout_or_sibling_imports(tmp_pat
     )
     output = tmp_path / "installed-analysis"
     probe = f"""
-import json, pathlib, sys, fep_lean
-from fep_lean.methods import build_mathematical_positioning, inspect_topic, export_mathematical_positioning, mathematical_positioning_drift
-from fep_lean.methods import finite_expectation, log_partition, exponential_tilt, gibbs_duality_diagnostics
-from fep_lean.methods import load_packaged_formalism_query
-assert pathlib.Path(fep_lean.__file__).resolve().is_relative_to(pathlib.Path({str(environment)!r}).resolve())
+import json, pathlib, sys, fep_formal
+from fep_formal.methods import build_mathematical_positioning, inspect_topic, export_mathematical_positioning, mathematical_positioning_drift
+from fep_formal.methods import finite_expectation, log_partition, exponential_tilt, gibbs_duality_diagnostics
+from fep_formal.methods import load_packaged_formalism_query
+assert pathlib.Path(fep_formal.__file__).resolve().is_relative_to(pathlib.Path({str(environment)!r}).resolve())
 assert not any(p and pathlib.Path(p).is_relative_to(pathlib.Path({str(ROOT)!r})) for p in sys.path)
 model = build_mathematical_positioning()
 assert model.origin.value == 'installed_package'
@@ -961,7 +961,7 @@ print(json.dumps({{'topics':len(model.metadata.topic_ids), 'artifacts':len(paths
             capture_output=True,
             text=True,
         )
-    console = scripts / ("fep-lean.exe" if os.name == "nt" else "fep-lean")
+    console = scripts / ("fep-formal.exe" if os.name == "nt" else "fep-formal")
     result = subprocess.run(
         [str(console), "methods", "inspect", "--family", "core-information-geometry"],
         cwd=tmp_path,
@@ -1023,7 +1023,7 @@ def installed_query_record(tmp_path, monkeypatch):
     """
     from importlib import metadata
 
-    package = tmp_path / "fep_lean"
+    package = tmp_path / "fep_formal"
     data = package / "data"
     data.mkdir(parents=True)
     resource = data / "formalism_relations.yaml"
@@ -1032,10 +1032,10 @@ def installed_query_record(tmp_path, monkeypatch):
     )
     owner = package / "owner.py"
     owner.write_text("# fixture-owned Python bytes\n")
-    metadata_root = tmp_path / "fep_lean-1.0.dist-info"
+    metadata_root = tmp_path / "fep_formal-1.0.dist-info"
     metadata_root.mkdir()
     (metadata_root / "METADATA").write_text(
-        "Metadata-Version: 2.4\nName: fep_lean\nVersion: 1.0\n"
+        "Metadata-Version: 2.4\nName: fep_formal\nVersion: 1.0\n"
     )
     record = metadata_root / "RECORD"
     rows = []
@@ -1074,8 +1074,8 @@ def test_installed_query_record_binds_actual_resource_and_python_bytes(
     binding = model_module._installed_query_binding()
     assert len(binding[1]) == 2
     assert {row[0] for row in binding[1]} == {
-        "fep_lean/owner.py",
-        "fep_lean/data/formalism_relations.yaml",
+        "fep_formal/owner.py",
+        "fep_formal/data/formalism_relations.yaml",
     }
     assert before == {path: path.read_bytes() for path in before}
 
@@ -1147,7 +1147,7 @@ def test_installed_query_record_refuses_actual_corruption(
             model_module, "_source_paths", lambda root, inputs: {"fixture": foreign}
         )
     elif corruption == "foreign_distribution":
-        foreign = tmp_path / "foreign/fep_lean-1.0.dist-info"
+        foreign = tmp_path / "foreign/fep_formal-1.0.dist-info"
         foreign.mkdir(parents=True)
         (foreign / "RECORD").write_bytes(record.read_bytes())
         monkeypatch.setattr(
@@ -1184,7 +1184,7 @@ def test_installed_query_record_accepts_directory_alias_without_weakening_record
     if missing_member:
         output = io.StringIO()
         csv.writer(output, lineterminator="\n").writerows(
-            row for row in rows if row[0] != "fep_lean/data/formalism_relations.yaml"
+            row for row in rows if row[0] != "fep_formal/data/formalism_relations.yaml"
         )
         record.write_text(output.getvalue())
     before = {path: path.read_bytes() for path in (resource, owner, record)}
@@ -1194,8 +1194,8 @@ def test_installed_query_record_accepts_directory_alias_without_weakening_record
     else:
         binding = model_module._installed_query_binding()
         assert {row[0] for row in binding[1]} == {
-            "fep_lean/owner.py",
-            "fep_lean/data/formalism_relations.yaml",
+            "fep_formal/owner.py",
+            "fep_formal/data/formalism_relations.yaml",
         }
     assert before == {path: path.read_bytes() for path in before}
 
@@ -1204,7 +1204,7 @@ def test_installed_query_record_accepts_directory_alias_without_weakening_record
 def test_installed_query_reuses_model_and_rechecks_binding(
     installed_query_record, packaged, monkeypatch, race
 ):
-    from fep_lean.methods import load_packaged_formalism_query
+    from fep_formal.methods import load_packaged_formalism_query
 
     _package, resource, _owner, _record, _rows = installed_query_record
     calls = []

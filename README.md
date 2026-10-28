@@ -12,10 +12,11 @@ areas. Each topic connects an invariant, explicit assumptions, a canonical Lean
 4 theorem body and typeset signatures. The catalog is a versioned research
 interface, not an exhaustive census of the FEP literature.
 
-The repository is **FEP_Formal** (`fep_formal` on GitHub). Its Python distribution
-and import namespace remain **`fep_lean`**, and its command is **`fep-lean`**.
-These names identify different interfaces; commands and imports below use their
-actual installed names.
+The project is **FEP_Formal**, the repository and Python import namespace are
+`fep_formal`, and the distribution and command are `fep-formal`.
+The previous `fep_lean` imports, `fep-lean` command, and public `FEP_LEAN_`
+environment variables are deprecated compatibility aliases. New work uses the
+canonical names; see the [migration guide](docs/identity-migration.md).
 
 Lean checks exact statements under their stated assumptions. A successful
 compile does not establish that a theorem captures an entire scientific
@@ -45,7 +46,7 @@ and dependency policy. The project pins [uv](https://docs.astral.sh/uv/)
 git clone https://github.com/ActiveInferenceInstitute/fep_formal.git
 cd fep_formal
 uv sync --locked --extra dev
-uv run fep-lean catalogue
+uv run fep-formal catalogue
 ```
 
 This offline command validates the catalog and creates deterministic figures,
@@ -66,7 +67,7 @@ Choose the interface that matches the work:
   the [atlas](docs/formalism-atlas.html) and the
   [numerical dashboard guide](docs/formal-kernel-methods.md).
 - **Use the Python API:** start with the [API guide](docs/api.md). Installed
-  wheels support packaged catalog resources and `fep-lean --help`; substantive
+  wheels support packaged catalog resources and `fep-formal --help`; substantive
   operator commands require the checkout's configuration, Lean workspace and
   manuscript assets.
 - **Compile the canonical Lean statements:** follow the native setup and
@@ -77,7 +78,7 @@ Choose the interface that matches the work:
   Full mode requires Hermes, OpenGauss, the pinned Lean environment and the
   required credentials. Failed capabilities or topics prevent a successful report.
 - **Audit GNN numerical semantics:** follow the
-  [source-bound semantic audit guide](src/fep_lean/bridge/README.md#independent-semantic-audit).
+  [source-bound semantic audit guide](src/fep_formal/bridge/README.md#independent-semantic-audit).
   It checks a retained receipt against independent finite/Gaussian calculations;
   actual execution and native proof require separate evidence.
 - **Inspect mathematical methods:** use the [methods guide](docs/mathematical-methods.md),
@@ -86,7 +87,7 @@ Choose the interface that matches the work:
 
 From outside the checkout, place `--project-root /path/to/fep_formal` before the
 subcommand. [The command quick reference](docs/quickref.md) and
-`uv run fep-lean --help` describe the available workflows.
+`uv run fep-formal --help` describe the available workflows.
 
 ## Formal depth
 
@@ -128,7 +129,7 @@ The published [**2.1.0 software release**](https://github.com/ActiveInferenceIns
 and [GEO-INFER 0.4.0](https://github.com/ActiveInferenceInstitute/GEO_INFER/releases/tag/v0.4.0). It includes seven
 bounded composition proofs, updated formal relations, and fail-fast Mathlib
 prerequisites. The native supplement remains a separately unactivated proposal. Its
-[semantic audit](src/fep_lean/bridge/README.md#independent-semantic-audit)
+[semantic audit](src/fep_formal/bridge/README.md#independent-semantic-audit)
 compares source-bound finite and passive linear-Gaussian numerical witnesses
 through independent reference algorithms. It retains identity, parameter,
 quantity, refusal and provenance details. The separate
@@ -195,7 +196,7 @@ explains the canonical README and its generated GitHub presentation.
 ## Layout
 
 Authoring lives in [config](config/README.md), the
-[Python package](src/fep_lean/README.md), and the
+[Python package](src/fep_formal/README.md), and the
 [manuscript](manuscript/README.md). The [Lean workspace](lean/README.md)
 compiles the projected formal sources. [Scripts](scripts/README.md) provide
 bounded entry points, [tests](tests/README.md) enforce contracts, and

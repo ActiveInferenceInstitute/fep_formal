@@ -2,8 +2,8 @@
 meta:
   updated: '2026-10-24'
 repo:
-  name: fep_lean
-  slug: fep-lean
+  name: fep_formal
+  slug: fep-formal
   full_name: ActiveInferenceInstitute/fep_formal
   description: 'Release v2.1.0 implementation (2026-10-24) · Concept DOI [10.5281/zenodo.19699233](https://doi.org/10.5281/zenodo.19699233) · License CC BY 4.0. Standalone 168-topic Free Energy Principle / Active Inference Lean 4 catalogue.'
 institute:

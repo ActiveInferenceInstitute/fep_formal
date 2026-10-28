@@ -1,6 +1,6 @@
 """Full-catalogue native compile gate (opt-in).
 
-Set ``FEP_LEAN_CATALOGUE_COMPILE_TEST=1`` to run the sealed roster's
+Set ``FEP_FORMAL_CATALOGUE_COMPILE_TEST=1`` to run the sealed roster's
 ``lake env lean`` checks.
 Default pytest sessions skip this test so developer machines without a Mathlib
 cache stay fast. CI or maintainers enable the gate after
@@ -18,8 +18,9 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.verification.lean_verifier import LeanVerifier
+from fep_formal._paths import resolve_environment
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.verification.lean_verifier import LeanVerifier
 from tests._support.native_catalogue_gate import (
     CI_NATIVE_RECEIPT_ENV,
     produce_native_catalogue_receipt,
@@ -32,12 +33,12 @@ pytestmark = pytest.mark.serial_lean
 
 
 @pytest.mark.skipif(
-    os.environ.get("FEP_LEAN_CATALOGUE_COMPILE_TEST") != "1"
+    resolve_environment("FEP_FORMAL_CATALOGUE_COMPILE_TEST") != "1"
     and CI_NATIVE_RECEIPT_ENV not in os.environ,
-    reason="Set FEP_LEAN_CATALOGUE_COMPILE_TEST=1 for the full sealed Lake sweep.",
+    reason="Set FEP_FORMAL_CATALOGUE_COMPILE_TEST=1 for the full sealed Lake sweep.",
 )
 def test_all_catalogue_bodies_compile(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("FEP_LEAN_VERIFY_TIMEOUT", "300")
+    monkeypatch.setenv("FEP_FORMAL_VERIFY_TIMEOUT", "300")
     if CI_NATIVE_RECEIPT_ENV in os.environ:
         produce_native_catalogue_receipt(PROJ, os.environ[CI_NATIVE_RECEIPT_ENV])
         return

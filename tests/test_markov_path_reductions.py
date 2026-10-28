@@ -7,13 +7,13 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 
 ROOT = Path(__file__).resolve().parents[1]
-FOUNDATION = ROOT / "src/fep_lean/formal/path_thermodynamics.lean"
-COMPOSITION = ROOT / "src/fep_lean/formal/compositions/thermo_geometry.lean"
+FOUNDATION = ROOT / "src/fep_formal/formal/path_thermodynamics.lean"
+COMPOSITION = ROOT / "src/fep_formal/formal/compositions/thermo_geometry.lean"
 NEW_FOUNDATION_THEOREMS = (
     "markovPathLaw_sum_snoc",
     "markovPathLaw_sum_coordinate",

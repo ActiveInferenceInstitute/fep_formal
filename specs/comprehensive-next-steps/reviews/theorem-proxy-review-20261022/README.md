@@ -37,7 +37,7 @@ maintained two-state model explicit.
 
 The aggregate corrects an earlier local ranking: actual Boltzmann control
 optimality and `efeGibbsCertificate` already exist in
-[`efe_policy_selection.lean`](../../../../src/fep_lean/formal/efe_policy_selection.lean).
+[`efe_policy_selection.lean`](../../../../src/fep_formal/formal/efe_policy_selection.lean).
 The next step is to reuse or bridge that content into the selected public
 topics where needed, after checking existing callers. It is not a proposal to
 reimplement an absent Gibbs minimizer. Other coherent priorities are actual

@@ -1,28 +1,28 @@
 # CLI reference
 
-The only public command is `fep-lean`.
+The only public command is `fep-formal`.
 
 `methods` supports portable installed resources and numerical inputs without a checkout. The other
 substantive commands are source-checkout-bound and reject a
 `site-packages` ancestor or incomplete directory with a structured error. Use
-`fep-lean --project-root /path/to/fep_formal COMMAND` when the current process is
+`fep-formal --project-root /path/to/fep_formal COMMAND` when the current process is
 outside the checkout.
 
 ```text
-fep-lean setup       Acquire and build the pinned Lean workspace.
-fep-lean preflight   Run read-only full-mode capability checks.
-fep-lean verify      Compile canonical catalogue bodies with Lean only.
-fep-lean catalogue   Generate deterministic offline artifacts.
-fep-lean atlas       Generate or drift-check the offline formalism atlas.
-fep-lean dashboard   Generate or drift-check finite numerical witnesses.
-fep-lean run         Execute Hermes, Lean, and SQLite verification.
-fep-lean topic ID    Execute one topic in full mode.
-fep-lean report      Generate the offline catalogue report.
-fep-lean bridge      Inspect, pin, emit, certify, or verify GNN bridge custody.
-fep-lean status      Read-only evidence-currency report over existing checks.
-fep-lean methods     Analyze portable mathematical contracts and visualizations.
-fep-lean custody     Census, staged apply and guarded custody refresh.
-fep-lean publication-capture  Plan or run bounded publication evidence capture.
+fep-formal setup       Acquire and build the pinned Lean workspace.
+fep-formal preflight   Run read-only full-mode capability checks.
+fep-formal verify      Compile canonical catalogue bodies with Lean only.
+fep-formal catalogue   Generate deterministic offline artifacts.
+fep-formal atlas       Generate or drift-check the offline formalism atlas.
+fep-formal dashboard   Generate or drift-check finite numerical witnesses.
+fep-formal run         Execute Hermes, Lean, and SQLite verification.
+fep-formal topic ID    Execute one topic in full mode.
+fep-formal report      Generate the offline catalogue report.
+fep-formal bridge      Inspect, pin, emit, certify, or verify GNN bridge custody.
+fep-formal status      Read-only evidence-currency report over existing checks.
+fep-formal methods     Analyze portable mathematical contracts and visualizations.
+fep-formal custody     Census, staged apply and guarded custody refresh.
+fep-formal publication-capture  Plan or run bounded publication evidence capture.
 ```
 
 ## Failure envelope
@@ -64,7 +64,7 @@ formal/execution boundaries are retained in `fep-semantic-witness-audit-v1`.
 This additive operation is separate from the contract-v0.6 emission and
 document-verification surface. It does not execute supplied programs or re-pin
 historical custody. See the
-[semantic audit contract](../src/fep_lean/bridge/README.md#independent-semantic-audit).
+[semantic audit contract](../src/fep_formal/bridge/README.md#independent-semantic-audit).
 
 `status` composes the existing fail-closed checks into one read-only
 evidence-currency report: catalog projection drift, render-receipt
@@ -175,15 +175,15 @@ limits or prohibition on resume.
 ## Portable mathematical methods
 
 ```bash
-fep-lean methods inspect --topic fep-001
-fep-lean methods inspect --family core-information-geometry
-fep-lean methods neighbors core-information-geometry --limit 5
-fep-lean methods probe
-fep-lean methods analyze fep-001
-fep-lean methods theorem fep_fep001.FEP001.fep001_variationalUpperBound_eq_iff
-fep-lean methods embedding
-fep-lean methods export --output-root ./mathematical-methods
-fep-lean methods check --output-root ./mathematical-methods
+fep-formal methods inspect --topic fep-001
+fep-formal methods inspect --family core-information-geometry
+fep-formal methods neighbors core-information-geometry --limit 5
+fep-formal methods probe
+fep-formal methods analyze fep-001
+fep-formal methods theorem fep_fep001.FEP001.fep001_variationalUpperBound_eq_iff
+fep-formal methods embedding
+fep-formal methods export --output-root ./mathematical-methods
+fep-formal methods check --output-root ./mathematical-methods
 ```
 
 These commands work from the installed wheel without checkout markers. An
@@ -198,7 +198,7 @@ mathematical transfer rules.
 The development checkout also provides arbitrary-input Gibbs diagnostics:
 
 ```bash
-fep-lean methods gibbs \
+fep-formal methods gibbs \
   --candidate '[0.5, 0.5]' \
   --reference '[0.5, 0.5]' \
   --potential '[0.0, -1000.0]'

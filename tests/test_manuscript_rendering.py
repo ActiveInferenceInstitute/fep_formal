@@ -16,22 +16,22 @@ from types import ModuleType
 import pytest
 import yaml
 
-from fep_lean.catalogue import FEPTopicCatalogue
-from fep_lean.methods import (
+from fep_formal.catalogue import FEPTopicCatalogue
+from fep_formal.methods import (
     build_mathematical_positioning,
     export_mathematical_positioning,
 )
-from fep_lean.output import manuscript as manuscript_module
-from fep_lean.output.formal_kernel_dashboard import write_formal_kernel_dashboard
-from fep_lean.output.formalism_atlas import write_formalism_atlas
-from fep_lean.output.manuscript import (
+from fep_formal.output import manuscript as manuscript_module
+from fep_formal.output.formal_kernel_dashboard import write_formal_kernel_dashboard
+from fep_formal.output.formalism_atlas import write_formalism_atlas
+from fep_formal.output.manuscript import (
     build_manuscript_vars,
     manuscript_projection_drift,
     write_manuscript_vars,
     write_unified_formalism_appendix_markdown,
 )
-from fep_lean.output.render_log import stale_render_defects
-from fep_lean.output.rendering import (
+from fep_formal.output.render_log import stale_render_defects
+from fep_formal.output.rendering import (
     MANUSCRIPT_ASSETS,
     ManuscriptRenderError,
     manuscript_source_files,
@@ -40,8 +40,8 @@ from fep_lean.output.rendering import (
     unreproducible_command_blocks,
     unresolved_placeholders,
 )
-from fep_lean.output.svg_raster import write_manuscript_figure_pngs
-from fep_lean.pipeline import FEPPipeline
+from fep_formal.output.svg_raster import write_manuscript_figure_pngs
+from fep_formal.pipeline import FEPPipeline
 
 PROJ = Path(__file__).resolve().parent.parent
 pytest_plugins = ["tests._support.catalogue_project"]
@@ -302,13 +302,15 @@ def test_manuscript_projection_drift_detects_stale_stable_data(
         PROJ / "lean", tmp_path / "lean", ignore=shutil.ignore_patterns(".lake")
     )
     shutil.copytree(
-        PROJ / "src" / "fep_lean" / "formal",
-        tmp_path / "src" / "fep_lean" / "formal",
+        PROJ / "src" / "fep_formal" / "formal",
+        tmp_path / "src" / "fep_formal" / "formal",
     )
     (tmp_path / "manuscript").mkdir()
     _copy_publication_metadata(tmp_path)
     (tmp_path / "tests").mkdir()
-    monkeypatch.setattr("fep_lean.output.manuscript._count_test_cases", lambda _root: 0)
+    monkeypatch.setattr(
+        "fep_formal.output.manuscript._count_test_cases", lambda _root: 0
+    )
     catalogue = FEPTopicCatalogue.from_yaml(tmp_path / "config" / "topics.yaml")
     vars_path = write_manuscript_vars(tmp_path, catalogue)
     appendix_path = write_unified_formalism_appendix_markdown(tmp_path, catalogue)
@@ -576,7 +578,7 @@ def test_missing_mathematical_asset_preserves_the_previous_build(
 def test_render_projects_canonical_cover_author_and_rejects_stale_variables(
     tmp_path: Path,
 ) -> None:
-    from fep_lean.output.publication_metadata import load_publication_author
+    from fep_formal.output.publication_metadata import load_publication_author
 
     source = tmp_path / "manuscript"
     source.mkdir()
@@ -869,7 +871,7 @@ def test_published_block_with_a_starved_sync_is_rejected(tmp_path: Path) -> None
     (tmp_path / "06_conclusion.md").write_text(
         _shell_block(
             "uv sync --locked",
-            "uv run fep-lean catalogue",
+            "uv run fep-formal catalogue",
             "uv run python scripts/render_manuscript.py --check",
         ),
         encoding="utf-8",
@@ -884,7 +886,7 @@ def test_published_block_with_the_generator_is_accepted(tmp_path: Path) -> None:
         "Reproduce with:\n\n"
         + _shell_block(
             "uv sync --locked --extra dev",
-            "uv run fep-lean catalogue",
+            "uv run fep-formal catalogue",
             "uv run python scripts/render_manuscript.py --check",
         ),
         encoding="utf-8",
@@ -911,7 +913,7 @@ def test_generating_render_mode_does_not_count_as_the_generator(
 def test_crossref_missing_dependency_fails_closed(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    from fep_lean.output import rendering
+    from fep_formal.output import rendering
 
     monkeypatch.setattr(rendering.shutil, "which", lambda _name: None)
     assert rendering.crossref_toolchain_defects()
@@ -922,8 +924,8 @@ def test_real_pandoc_crossref_preserves_labels_citations_and_code(
 ) -> None:
     import shutil
 
-    from fep_lean.output import rendering
-    from fep_lean.output.render_log import reference_render_defects
+    from fep_formal.output import rendering
+    from fep_formal.output.render_log import reference_render_defects
 
     if not shutil.which("pandoc") or not shutil.which("pandoc-crossref"):
         pytest.skip(
@@ -964,7 +966,7 @@ def test_crossref_probe_rejects_broken_installed_toolchain(
 ) -> None:
     import subprocess
 
-    from fep_lean.output import rendering
+    from fep_formal.output import rendering
 
     monkeypatch.setattr(rendering.shutil, "which", lambda name: "/tools/" + name)
 
@@ -997,7 +999,7 @@ def test_crossref_probe_rejects_broken_installed_toolchain(
 def test_crossref_probe_cleans_up_live_filter_and_held_pipes(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, cancel: bool
 ) -> None:
-    from fep_lean.output import rendering
+    from fep_formal.output import rendering
 
     # Real Pandoc stand-in launches a filter which inherits BOTH capture pipes.
     # Readiness records ensure we test a live descendant, not just a slow launch.

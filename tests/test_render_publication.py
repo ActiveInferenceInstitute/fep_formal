@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import os
 import shutil
 import subprocess
 import sys
@@ -21,11 +20,12 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.output.publication_metadata import (
+from fep_formal._paths import resolve_environment
+from fep_formal.output.publication_metadata import (
     project_cover_author,
     publication_cover_defects,
 )
-from fep_lean.output.render_log import manuscript_source_digest, receipt_defects
+from fep_formal.output.render_log import manuscript_source_digest, receipt_defects
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -726,9 +726,9 @@ def test_identical_pandoc_and_template_author_declarations_pass(tmp_path: Path) 
 
 def test_actual_pinned_template_cover_orcid(tmp_path: Path) -> None:
     """Generate real cover TeX without invoking Pandoc or a PDF compiler."""
-    template_path = os.environ.get("FEP_LEAN_TEMPLATE_DIR")
+    template_path = resolve_environment("FEP_FORMAL_TEMPLATE_DIR")
     if not template_path:
-        pytest.skip("set FEP_LEAN_TEMPLATE_DIR to the pinned template checkout")
+        pytest.skip("set FEP_FORMAL_TEMPLATE_DIR to the pinned template checkout")
     template = Path(template_path).resolve()
     revision = subprocess.run(
         ["git", "rev-parse", "HEAD"],

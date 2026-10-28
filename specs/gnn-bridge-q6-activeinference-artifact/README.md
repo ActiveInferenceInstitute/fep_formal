@@ -63,8 +63,12 @@ All vectors distinguish index reversal; C/D/E differ from each other.
 `gnn_julia_artifact_proof.py` owns restricted extraction, exact input-table
 validation, probe generation, and fixed backend metadata. It reuses Q5's
 immutable table representation, not Q5's Python syntax or runtime claims.
-`generate_probe.py --check` checks frozen artifacts in memory without Julia,
-Lean, a renderer, or writes. Parent-owned shared native receipt tooling must
+`generate_probe.py --check` compares retained artifacts with current source
+without Julia, Lean, a renderer, or writes. After the package identity cutover,
+the retained historical source hashes are intentionally stale for this check.
+Generate a current-source projection with `--output-root PATH`, then check that
+same fresh directory with `--check --output-root PATH`. Generation refuses an
+existing output directory; it never renews historical manifests in place. Parent-owned shared native receipt tooling must
 bind this extractor, generator, skeleton, fixtures, oracles, and recursive
 formal imports; Q6 does not clone or reconfigure the Q5 verifier.
 

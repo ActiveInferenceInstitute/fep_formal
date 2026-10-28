@@ -11,14 +11,14 @@ from typing import Final
 import pytest
 import yaml
 
-from fep_lean import lean_source as _lean_source
-from fep_lean.catalogue.generation import (
+from fep_formal import lean_source as _lean_source
+from fep_formal.catalogue.generation import (
     hoisted_sketch_imports,
     render_fep_all_lean,
     strip_sketch_imports,
 )
-from fep_lean.catalogue.latex import build_theorem_latex, build_topic_latex_equations
-from fep_lean.catalogue.registry import (
+from fep_formal.catalogue.latex import build_theorem_latex, build_topic_latex_equations
+from fep_formal.catalogue.registry import (
     BODIES,
     BODY_MODULE_MANIFEST,
     LATEX_EQUATIONS,
@@ -29,9 +29,9 @@ from fep_lean.catalogue.registry import (
     validate_body_family_ownership,
     validate_body_roster,
 )
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.catalogue.semantics import SemanticValidationError
-from fep_lean.lean_source import (
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.catalogue.semantics import SemanticValidationError
+from fep_formal.lean_source import (
     lean_code_without_comments,
     lean_declaration_conclusion,
     lean_module_source,
@@ -416,7 +416,7 @@ THEOREM_LATEX_GOLDEN: Final[Mapping[str, str]] = MappingProxyType(
 
 
 def test_catalogue_latex_preserves_application_spacing_and_bounded_rows() -> None:
-    from fep_lean.catalogue.registry import THEOREM_LATEX
+    from fep_formal.catalogue.registry import THEOREM_LATEX
 
     lyapunov = THEOREM_LATEX[("fep-155", "fep155_twoStateLyapunov_exact")]
     flattened = THEOREM_LATEX_GOLDEN["fep155_twoStateLyapunov_exact"]
@@ -435,7 +435,7 @@ def test_catalogue_latex_preserves_application_spacing_and_bounded_rows() -> Non
 
 
 def test_theorem_latex_keeps_named_arguments_inside_the_statement() -> None:
-    from fep_lean.catalogue.registry import THEOREM_LATEX
+    from fep_formal.catalogue.registry import THEOREM_LATEX
 
     value = THEOREM_LATEX[("fep-131", "fep131_openLoopEmbedding_value")]
     flat_value = THEOREM_LATEX_GOLDEN["fep131_openLoopEmbedding_value"]
@@ -460,7 +460,7 @@ def test_theorem_latex_keeps_named_arguments_inside_the_statement() -> None:
 
 
 def test_theorem_latex_does_not_rewrite_identifier_suffixes() -> None:
-    from fep_lean.catalogue.registry import THEOREM_LATEX
+    from fep_formal.catalogue.registry import THEOREM_LATEX
 
     affine = THEOREM_LATEX[("fep-105", "fep105_affineProjection_minimizes")]
     measurable = THEOREM_LATEX[("fep-140", "fep140_condIndepFun_measurableImages")]
@@ -480,7 +480,7 @@ def test_theorem_latex_spaces_applications_after_grouped_arguments() -> None:
 def test_theorem_latex_renders_lean_identifiers_and_ascii_lambdas_unambiguously() -> (
     None
 ):
-    from fep_lean.catalogue.registry import THEOREM_LATEX
+    from fep_formal.catalogue.registry import THEOREM_LATEX
 
     derivative = THEOREM_LATEX[("fep-038", "fep038_bernoulliMass_hasDerivAt")]
     wildcard = THEOREM_LATEX[("fep-069", "fep069_zeroCost_unitDesirability")]
@@ -505,7 +505,7 @@ def test_theorem_latex_renders_lean_identifiers_and_ascii_lambdas_unambiguously(
 
 
 def test_catalogue_latex_keeps_short_binders_as_visual_units() -> None:
-    from fep_lean.catalogue.registry import THEOREM_LATEX
+    from fep_formal.catalogue.registry import THEOREM_LATEX
 
     response = THEOREM_LATEX[("fep-037", "fep037_response_eq")]
 
@@ -513,7 +513,7 @@ def test_catalogue_latex_keeps_short_binders_as_visual_units() -> None:
 
 
 def test_catalogue_latex_never_strands_an_operator_at_a_row_end() -> None:
-    from fep_lean.catalogue.registry import THEOREM_LATEX
+    from fep_formal.catalogue.registry import THEOREM_LATEX
 
     unsafe_endings = (" +", " -", " *", " /", " =", " <=", " >=", " <", " >")
     assert all(

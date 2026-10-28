@@ -8,9 +8,9 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal import formal_projection_pairs
-from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.formal import formal_projection_pairs
+from fep_formal.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
 from tests._support.lean_module_contract import assert_exposed_module_header
 from tests._support.lean_runner import run_lean_compile_probe
@@ -18,7 +18,7 @@ from tests._support.lean_runner import run_lean_compile_probe
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
 FOUNDATION = (
-    PROJECT_ROOT / "src" / "fep_lean" / "formal" / "linear_gaussian_semigroup.lean"
+    PROJECT_ROOT / "src" / "fep_formal" / "formal" / "linear_gaussian_semigroup.lean"
 )
 
 pytestmark = pytest.mark.serial_lean
@@ -254,7 +254,7 @@ def test_h2_5b_compiles_warning_free() -> None:
         result = run_lean_compile_probe(
             FOUNDATION,
             cwd=LEAN_ROOT,
-            import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+            import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
             output_path=output_path,
             timeout_s=300,
             executable=lake_executable(
@@ -302,7 +302,7 @@ example (rate center : ℝ) (hRate : 0 < rate) (time : ℝ≥0) :
     result = run_lean_compile_probe(
         probe,
         cwd=LEAN_ROOT,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         timeout_s=300,
         executable=lake_executable(
             missing="raise",

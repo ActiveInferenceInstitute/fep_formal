@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification.environment import (
+from fep_formal.verification.environment import (
     CATALOGUE_VALIDATION_CHECK_NAMES,
     FULL_VALIDATION_CHECK_NAMES,
     run_validation_checks,
@@ -49,7 +49,7 @@ def test_validation_reports_the_selected_output_target(
     selected = tmp_path / "selected"
     selected.mkdir()
     monkeypatch.setattr(
-        "fep_lean.verification.environment.os.access",
+        "fep_formal.verification.environment.os.access",
         lambda path, _mode: Path(path) != selected,
     )
     result = run_validation_checks(PROJ, mode="catalogue", output_root=selected)
@@ -60,7 +60,7 @@ def test_validation_reports_the_selected_output_target(
     assert str(selected) in output["message"]
     assert result["status"] == "error"
 
-    monkeypatch.setenv("FEP_LEAN_OUTPUT_ROOT", str(selected))
+    monkeypatch.setenv("FEP_FORMAL_OUTPUT_ROOT", str(selected))
     implicit = run_validation_checks(PROJ, mode="catalogue")
     implicit_output = next(
         check for check in implicit["checks"] if check["name"] == "output_writable"
@@ -130,6 +130,6 @@ def test_validation_reports_the_selected_output_target(
 def test_lake_banner_requires_the_pinned_embedded_lean_version(
     banner: str, toolchain: str, expected: bool
 ) -> None:
-    from fep_lean.verification._toolchain import lake_version_matches_pin
+    from fep_formal.verification._toolchain import lake_version_matches_pin
 
     assert lake_version_matches_pin(banner, toolchain) is expected

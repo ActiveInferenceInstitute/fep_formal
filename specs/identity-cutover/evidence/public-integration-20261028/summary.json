@@ -1,0 +1,76 @@
+{
+  "kind": "portable-local-identity-validation-summary",
+  "recorded_at": "2026-10-28T15:54:02.525025+00:00",
+  "source_checkpoint_at": "2026-10-28T03:19:11.064391+00:00",
+  "baseline_commit": "7dcc30bc54d00988f3daa420d72f76e38be134b0",
+  "source_digest": "dd5e950c504b8f0cf0c5f2ba8ac26f66dbd5a9fcf9d3b451f1dc64822b3cb782",
+  "python": {
+    "cases": 4065,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 12
+  },
+  "serial": {
+    "cases": 479,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "chrome": {
+    "cases": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "version": "7.15.2",
+    "timestamp": "1793154679856",
+    "lines-valid": "19816",
+    "lines-covered": "18328",
+    "line-rate": "0.9249",
+    "branches-covered": "0",
+    "branches-valid": "0",
+    "branch-rate": "0",
+    "complexity": "0"
+  },
+  "coverage_scope": "Full nonserial data plus actual isolated Chrome pair; original component XML and pre-Chrome floor failure retained.",
+  "custody_counts": {
+    "historical_unchanged": 1272,
+    "maintained_index_link_repairs": 4,
+    "formal_resources_byte_identical": 72,
+    "topic_body_modules_literal_identical": 23,
+    "generated_families_header_only": 22
+  },
+  "native": {
+    "status": "ok",
+    "valid": true,
+    "native_claim_ready": true,
+    "source_bound": true,
+    "live_catalogue_topics": 168,
+    "selected_topics": 168,
+    "verified_topics": 168,
+    "warning_count": 0,
+    "sorry_count": 0,
+    "sorry_occurrences": 0,
+    "duration_s": 519.408,
+    "lean_version": "Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)",
+    "lean_toolchain": "leanprover/lean4:v4.35.0",
+    "mathlib_tag": "v4.35.0",
+    "mathlib_revision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+    "errors": []
+  },
+  "native_receipt_sha256": "74d29b1741a97d373f3ded9762bddbc2d341012f0aa759fa0c5f48d3ee00b470",
+  "scope": "Local validation of the namespace cutover. Full original logs/receipts remain unchanged locally; this is a portable summary, not a replacement receipt or hosted/release acceptance.",
+  "retained_failures": [
+    "Initial full-Python coverage database failure",
+    "Capacity-stopped partial Python retry",
+    "Pre-Chrome package-floor failure",
+    "Missing declared development dependency in initial serial run",
+    "88 historical-fixture identity failures before focused corrections"
+  ],
+  "remaining_qualification": [
+    "Coordinated source-pair and exact artifact evidence refresh",
+    "Hosted PR/main and installed-wheel matrix",
+    "Publication visual/browser and release gates"
+  ]
+}

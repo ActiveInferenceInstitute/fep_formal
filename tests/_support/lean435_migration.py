@@ -11,30 +11,30 @@ from collections.abc import Mapping, Sequence
 from pathlib import Path
 
 _CARRIER_IMPORT_ADDITIONS = {
-    "src/fep_lean/formal/markov_semigroup.lean": (),
-    "src/fep_lean/formal/gaussian_information_geometry.lean": (),
-    "src/fep_lean/formal/smooth_information_geometry.lean": (),
-    "src/fep_lean/formal/h3_reference_model.lean": (),
-    "src/fep_lean/formal/fin4_gaussian_semigroup.lean": (
+    "src/fep_formal/formal/markov_semigroup.lean": (),
+    "src/fep_formal/formal/gaussian_information_geometry.lean": (),
+    "src/fep_formal/formal/smooth_information_geometry.lean": (),
+    "src/fep_formal/formal/h3_reference_model.lean": (),
+    "src/fep_formal/formal/fin4_gaussian_semigroup.lean": (
         "Mathlib.Probability.Distributions.Gaussian.Fernique",
     ),
-    "src/fep_lean/formal/gaussian_precision_conditioning.lean": (
+    "src/fep_formal/formal/gaussian_precision_conditioning.lean": (
         "Mathlib.Probability.Distributions.Gaussian.HasGaussianLaw.Basic",
     ),
-    "src/fep_lean/formal/scalar_gaussian_semigroup.lean": (),
-    "src/fep_lean/formal/compositions/smooth_reference_kernel.lean": (),
-    "src/fep_lean/formal/compositions/gaussian_filter.lean": (
+    "src/fep_formal/formal/scalar_gaussian_semigroup.lean": (),
+    "src/fep_formal/formal/compositions/smooth_reference_kernel.lean": (),
+    "src/fep_formal/formal/compositions/gaussian_filter.lean": (
         "Mathlib.Probability.Kernel.Composition.WithDensity",
     ),
-    "src/fep_lean/formal/compositions/gaussian_control.lean": (),
+    "src/fep_formal/formal/compositions/gaussian_control.lean": (),
 }
 
 _CARRIER_EXPORTED_SUPPORT = {
-    "src/fep_lean/formal/scalar_gaussian_semigroup.lean": (
+    "src/fep_formal/formal/scalar_gaussian_semigroup.lean": (
         "noncomputable def rateDenominator",
         "theorem stationaryVariance_pos",
     ),
-    "src/fep_lean/formal/compositions/gaussian_control.lean": (
+    "src/fep_formal/formal/compositions/gaussian_control.lean": (
         "noncomputable instance actionKernelFamily_isMarkovKernel",
         "noncomputable def boolDynamics",
     ),
@@ -102,7 +102,7 @@ def historical_carrier_bytes(relative: str, live: bytes) -> bytes:
     for historical/static replay only; current execution acceptance is separate.
     """
     if (
-        relative == "src/fep_lean/formal/scalar_gaussian_semigroup.lean"
+        relative == "src/fep_formal/formal/scalar_gaussian_semigroup.lean"
         and hashlib.sha256(live).hexdigest() != _HISTORICAL_SCALAR_BASELINE_SHA256
     ):
         live = historical_scalar_static_replay_source(
@@ -112,7 +112,7 @@ def historical_carrier_bytes(relative: str, live: bytes) -> bytes:
             ).read_bytes(),
         )
     if (
-        relative == "src/fep_lean/formal/gaussian_precision_conditioning.lean"
+        relative == "src/fep_formal/formal/gaussian_precision_conditioning.lean"
         and hashlib.sha256(live).hexdigest() != _HISTORICAL_GAUSSIAN_BASELINE_SHA256
     ):
         live = historical_gaussian_static_replay_source(
@@ -181,33 +181,46 @@ def assert_historical_repair_bindings(
     sealed receipt; updated tests are deliberately not execution evidence for
     that old epoch. No receipt or source file is rewritten by this check.
     """
+    from tests._support.custody_fixture_knobs import _logical_source
+
     receipt_bytes = repair_path.read_bytes()
     assert hashlib.sha256(receipt_bytes).hexdigest() == receipt_sha256
     recorded = json.loads(receipt_bytes)["source_sha256"]
-    assert set(recorded) == set(source_paths)
+    logical_paths = {
+        path.replace("src/fep_formal/", "src/fep_lean/", 1): path
+        for path in source_paths
+    }
+    assert len(logical_paths) == len(source_paths)
+    assert set(recorded) == set(logical_paths)
+    logical_paths = {
+        logical: _logical_source(project_root, path)
+        .relative_to(project_root)
+        .as_posix()
+        for logical, path in logical_paths.items()
+    }
     pins = historical_toolchain_files(project_root)
     migrated = set(pins) | set(historical_tests)
-    for relative in source_paths:
+    for logical, relative in logical_paths.items():
         live = (project_root / relative).read_bytes()
         if relative in pins:
             historical = pins[relative]
         elif relative in historical_tests:
-            assert recorded[relative] == historical_tests[relative]
-            assert hashlib.sha256(live).hexdigest() != recorded[relative]
+            assert recorded[logical] == historical_tests[relative]
+            assert hashlib.sha256(live).hexdigest() != recorded[logical]
             continue
-        elif relative.startswith("src/fep_lean/formal/"):
+        elif relative.startswith("src/fep_formal/formal/"):
             historical = historical_carrier_bytes(relative, live)
             migrated.add(relative)
         else:
             historical = live
-        assert hashlib.sha256(historical).hexdigest() == recorded[relative], relative
+        assert hashlib.sha256(historical).hexdigest() == recorded[logical], relative
     # An exact mismatch roster prevents unrelated source drift from being
     # excused as a generic migration or promoted to current acceptance.
     assert {
         relative
-        for relative in source_paths
+        for logical, relative in logical_paths.items()
         if hashlib.sha256((project_root / relative).read_bytes()).hexdigest()
-        != recorded[relative]
+        != recorded[logical]
     } == migrated
 
 
@@ -314,9 +327,19 @@ def historical_manifest_bytes(project_root: Path, live: bytes) -> bytes:
     fail before decoding, and a changed companion fails before decoding too.
     The historical validator and every existing archive remain unchanged.
     """
+    if b"fep_formal" in live:
+        assert live.count(b"from fep_formal.lean_source import ") == 1
+        assert live.count(b'"fep_formal"') == 3
+        assert live.count(b"fep_formal") == 4
+        live = live.replace(
+            b"from fep_formal.lean_source import ",
+            b"from fep_lean.lean_source import ",
+            1,
+        )
+        live = live.replace(b'"fep_formal"', b'"fep_lean"')
     live_digest = hashlib.sha256(live).hexdigest()
     assert live_digest in {_HISTORICAL_MANIFEST_SHA256, _CATEGORY_MANIFEST_SHA256}, (
-        "unreviewed live custody manifest: src/fep_lean/formal/manifest.py"
+        "unreviewed live custody manifest: src/fep_formal/formal/manifest.py"
     )
     predecessor = live
     if live_digest == _CATEGORY_MANIFEST_SHA256:
@@ -385,6 +408,36 @@ def _recorded_pyproject_release(data: bytes) -> bytes:
     return data.replace(present[0], recorded, 1)
 
 
+def _identity_metadata_predecessor(live: bytes) -> bytes:
+    """Reverse the exact identity packaging delta only after full-profile sealing."""
+    replacements = (
+        (b'name = "fep-formal"\n', b'name = "fep_lean"\n', 1),
+        (
+            b'fep-formal = "fep_formal.cli:main"\nfep-lean = "fep_formal.cli:legacy_main"\n',
+            b'fep-lean = "fep_lean.cli:main"\n',
+            1,
+        ),
+        (b'include = ["fep_formal*", "fep_lean"]\n', b'include = ["fep_lean*"]\n', 1),
+        (
+            b'fep_formal = ["data/*.yaml", "formal/*.lean", "formal/compositions/*.lean"]\nfep_lean = ["**/*.pyi", "py.typed"]\n',
+            b'fep_lean = ["data/*.yaml", "formal/*.lean", "formal/compositions/*.lean"]\n',
+            1,
+        ),
+        (b'"src/fep_formal/', b'"src/fep_lean/', 7),
+    )
+    candidate = live
+    for current, recorded, count in replacements:
+        if candidate.count(current) != count:
+            return live
+        candidate = candidate.replace(current, recorded)
+    normalized = _recorded_pyproject_release(candidate.replace(_UV_REQUIREMENT, b"", 1))
+    if hashlib.sha256(normalized).hexdigest() != (
+        "b735a00e551b460b224e4780765104647f52b1e5bf9f7df9d6effb7ea1cf62f7"
+    ):
+        return live
+    return candidate
+
+
 def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
     """Reverse the exact reviewed P06 lint policy for historical controls only.
 
@@ -392,6 +445,11 @@ def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
     changes survive unchanged so the historical metadata gate still refuses
     them before parsing or decoding any companion.
     """
+    if b'name = "fep-formal"\n' in live:
+        predecessor = _identity_metadata_predecessor(live)
+        if predecessor == live:
+            return live
+        live = predecessor
     if live.count(_UV_REQUIREMENT) != 1:
         return live
     normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
@@ -429,6 +487,8 @@ def bridge_dev_metadata_predecessor(live: bytes) -> bytes:
     neither archives nor production validators are changed.
     """
     live = function_ratchet_metadata_predecessor(live)
+    if b'name = "fep-formal"\n' in live:
+        return live
     if live.count(_UV_REQUIREMENT) != 1:
         return live
     normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
@@ -448,16 +508,24 @@ def bridge_dev_lock_predecessor(live: bytes) -> bytes:
     """Reverse the exact locked safe-XML addition for historical controls only."""
     from tests._support.release_lineage import LATER_RELEASE_VERSIONS
 
+    if live.count(b'[[package]]\nname = "fep-formal"\n') == 1:
+        candidate = live.replace(
+            b'[[package]]\nname = "fep-formal"\n',
+            b'[[package]]\nname = "fep-lean"\n',
+            1,
+        )
+    else:
+        candidate = live
     anchor = b'[[package]]\nname = "fep-lean"\nversion = '
     current = anchor + b'"1.6.0"\n'
     tokens = [
         anchor + f'"{version}"\n'.encode()
         for version in ("1.4.0", *LATER_RELEASE_VERSIONS)
     ]
-    present = [token for token in tokens if token in live]
-    if len(present) != 1 or live.count(present[0]) != 1:
+    present = [token for token in tokens if token in candidate]
+    if len(present) != 1 or candidate.count(present[0]) != 1:
         return live
-    normalized = live.replace(present[0], current, 1)
+    normalized = candidate.replace(present[0], current, 1)
     if (
         hashlib.sha256(normalized).hexdigest()
         != "b8c54ac9d66c570bdd3c8e50f10234ac785dc078bcfa5e52c9749161ab82e252"
@@ -487,8 +555,12 @@ def _authenticated_metadata_archive(project_root: Path, live: bytes) -> bytes:
     metadata input cannot cause any other archived source to be decoded.
     """
     assert live.count(_UV_REQUIREMENT) == 1, "unreviewed uv requirement: pyproject.toml"
+    predecessor = bridge_dev_metadata_predecessor(live)
+    assert b'name = "fep-formal"\n' not in predecessor, (
+        "unreviewed normalized metadata: pyproject.toml"
+    )
     normalized = _recorded_pyproject_release(
-        bridge_dev_metadata_predecessor(live).replace(_UV_REQUIREMENT, b"", 1)
+        predecessor.replace(_UV_REQUIREMENT, b"", 1)
     )
     assert hashlib.sha256(normalized).hexdigest() in {
         _RECORDED_METADATA_SHA256,
@@ -606,6 +678,46 @@ def historical_custody_sources(project_root: Path) -> dict[str, bytes]:
     return sources
 
 
+def historical_custody_validator_bytes(live: bytes) -> bytes:
+    """Recover the exact sealed validator for static custody, never execute it."""
+    historical_digest = (
+        "46c45d3eb5a19c8a6c9814d660ff9e6f8f0ddaeff6b4cd17ff14520fded27b53"
+    )
+    if hashlib.sha256(live).hexdigest() == historical_digest:
+        return live
+    assert hashlib.sha256(live).hexdigest() == (
+        "253aef1ed90e0ca02583693cbd9de3bc338bd75cf70cf5b747cb4dd57a305b64"
+    ), "unreviewed live custody validator: tests/_support/h2_r0_custody.py"
+    replacements = (
+        (
+            'MANIFEST_PATH = "src/fep_formal/formal/manifest.py"\nRECORDED_MANIFEST_PATH = "src/fep_lean/formal/manifest.py"',
+            'MANIFEST_PATH = "src/fep_lean/formal/manifest.py"',
+        ),
+        (
+            '# This pair names immutable predecessor-schema keys, not live source paths.\nALLOWED_PRIOR_CHANGES = (\n    "src/fep_lean/formal/manifest.py",\n    READINESS_TEST_PATH,\n)',
+            "ALLOWED_PRIOR_CHANGES = (MANIFEST_PATH, READINESS_TEST_PATH)",
+        ),
+        (
+            '_sha256(manifest.encode())\n        == successor["source_sha256"][RECORDED_MANIFEST_PATH]',
+            '_sha256(manifest.encode()) == successor["source_sha256"][MANIFEST_PATH]',
+        ),
+        (
+            'path.replace("src/fep_formal/", "src/fep_lean/", 1): _sha256(\n                (project_root / path).read_bytes()\n            )',
+            "path: _sha256((project_root / path).read_bytes())",
+        ),
+    )
+    text = live.decode()
+    for current, previous in replacements:
+        assert text.count(current) == 1
+        text = text.replace(current, previous, 1)
+    assert text.count("RECORDED_MANIFEST_PATH") == 4
+    text = text.replace("RECORDED_MANIFEST_PATH", "MANIFEST_PATH")
+    assert text.count("src/fep_formal/") == 2
+    historical = text.replace("src/fep_formal/", "src/fep_lean/").encode()
+    assert hashlib.sha256(historical).hexdigest() == historical_digest
+    return historical
+
+
 def historical_custody_root(project_root: Path, destination: Path) -> Path:
     """Restore an authentic historical custody control into an empty temp root.
 
@@ -614,6 +726,7 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
     only: archived Lean/test sources are never executed and no native/scientific
     evidence is renewed. Every production file remains read-only.
     """
+    from tests._support.custody_fixture_knobs import _logical_source
     from tests._support.h2_r0_custody import (
         H3_ADDENDUM_PATH,
         MANIFEST_PATH,
@@ -651,18 +764,23 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
     archived = historical_custody_sources(project_root)
     pins = historical_toolchain_files(project_root)
     for relative, digest in recorded_sources.items():
-        canonical = relative.replace("lean/FepSketches/", "src/fep_lean/formal/", 1)
-        if relative == MANIFEST_PATH:
+        canonical = relative.replace("src/fep_lean/", "src/fep_formal/", 1).replace(
+            "lean/FepSketches/", "src/fep_formal/formal/", 1
+        )
+        archive_key = canonical.replace("src/fep_formal/", "src/fep_lean/", 1)
+        if canonical == MANIFEST_PATH:
             data = historical_manifest
         elif relative == "pyproject.toml":
             data = historical_metadata
-        elif canonical in archived:
-            data = archived[canonical]
+        elif archive_key in archived:
+            data = archived[archive_key]
         elif relative in pins:
             data = pins[relative]
         else:
-            data = (project_root / relative).read_bytes()
-            if relative == "uv.lock":
+            data = _logical_source(project_root, relative).read_bytes()
+            if relative == VALIDATOR_PATH:
+                data = historical_custody_validator_bytes(data)
+            elif relative == "uv.lock":
                 data = bridge_dev_lock_predecessor(data)
                 anchor = b'[[package]]\nname = "fep-lean"\nversion = '
                 tokens = [
@@ -674,13 +792,19 @@ def historical_custody_root(project_root: Path, destination: Path) -> Path:
                 data = data.replace(present[0], anchor + b'"1.4.0"\n', 1)
             elif canonical in _CARRIER_IMPORT_ADDITIONS:
                 data = historical_carrier_bytes(canonical, data)
-        assert hashlib.sha256(data).hexdigest() == digest, relative
+        assert hashlib.sha256(data).hexdigest() == digest, canonical
         prepared[relative] = data
     # Nothing is written until every exact original source and record checks.
     for relative, data in prepared.items():
         target = destination / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(data)
+        if relative.startswith("src/fep_lean/"):
+            canonical_target = destination / relative.replace(
+                "src/fep_lean/", "src/fep_formal/", 1
+            )
+            canonical_target.parent.mkdir(parents=True, exist_ok=True)
+            canonical_target.write_bytes(data)
     provenance = {
         "kind": "historical-static-custody-unit-control",
         "source_commit": "5e1cc9095b5f0590772c739d27558c2c711f9a44",

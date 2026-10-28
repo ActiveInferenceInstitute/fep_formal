@@ -17,7 +17,7 @@ from types import ModuleType
 SLICE = Path(__file__).resolve().parent
 ROOT = SLICE.parents[1]
 PREFIX = "specs/gnn-bridge-q7-continuous-ou-proof"
-EXTRACTOR = "src/fep_lean/verification/gnn_continuous_artifact_proof.py"
+EXTRACTOR = "src/fep_formal/verification/gnn_continuous_artifact_proof.py"
 GENERATOR = f"{PREFIX}/generate_probe.py"
 EXPECTED = f"{PREFIX}/expected.json"
 FIXTURES = {"ou": f"{PREFIX}/fixtures/continuous_ou_jax.py"}
@@ -35,8 +35,8 @@ PORTABILITY_INPUTS = (
     GENERATOR,
     FIXTURES["ou"],
     SERIALIZATION_PROTOCOL,
-    "src/fep_lean/verification/_jsonutil.py",
-    "src/fep_lean/_paths.py",
+    "src/fep_formal/verification/_jsonutil.py",
+    "src/fep_formal/_paths.py",
 )
 PORTABILITY_CONTROLS = {
     "argument_order",
@@ -59,8 +59,8 @@ EXTRA_FILES = (
     SERIALIZATION_PROTOCOL,
     CANONICAL_SCAFFOLD,
     PORTABILITY_EVIDENCE,
-    "src/fep_lean/verification/_jsonutil.py",
-    "src/fep_lean/_paths.py",
+    "src/fep_formal/verification/_jsonutil.py",
+    "src/fep_formal/_paths.py",
 )
 
 
@@ -124,8 +124,8 @@ def regenerate(root: Path = ROOT) -> tuple[dict[str, str], dict[str, object]]:
         SERIALIZATION_PROTOCOL,
         CANONICAL_SCAFFOLD,
         PORTABILITY_EVIDENCE,
-        "src/fep_lean/verification/_jsonutil.py",
-        "src/fep_lean/_paths.py",
+        "src/fep_formal/verification/_jsonutil.py",
+        "src/fep_formal/_paths.py",
     ]
     manifest = {
         "schema_version": 1,
@@ -155,10 +155,24 @@ def regenerate(root: Path = ROOT) -> tuple[dict[str, str], dict[str, object]]:
     }, manifest
 
 
-def validate_scaffold_portability(root: Path, api: ModuleType, source: str) -> None:
+def validate_scaffold_portability(
+    root: Path,
+    api: ModuleType,
+    source: str,
+    *,
+    projection: dict[str, bytes] | None = None,
+) -> None:
     """Reject stale parity bookkeeping; stored observations are not new runs."""
-    encoded = (root / CANONICAL_SCAFFOLD).read_bytes()
-    evidence = api.read_json_object((root / PORTABILITY_EVIDENCE).read_bytes())
+    encoded = (
+        (root / CANONICAL_SCAFFOLD).read_bytes()
+        if projection is None
+        else projection["scaffold-canonical.json"]
+    )
+    evidence = api.read_json_object(
+        (root / PORTABILITY_EVIDENCE).read_bytes()
+        if projection is None
+        else projection["scaffold-runtime-parity.json"]
+    )
     expected_inputs = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
         for name in PORTABILITY_INPUTS
@@ -220,14 +234,14 @@ import ast, hashlib, json, platform, sys, types
 from pathlib import Path
 sys.dont_write_bytecode = True
 root = Path(sys.argv[1])
-for name in ("fep_lean", "fep_lean.verification"):
+for name in ("fep_formal", "fep_formal.verification"):
     package = types.ModuleType(name)
     package.__path__ = []
     sys.modules[name] = package
 for name, relative in (
-    ("fep_lean._paths", "src/fep_lean/_paths.py"),
-    ("fep_lean.verification._jsonutil", "src/fep_lean/verification/_jsonutil.py"),
-    ("q7_portability_owner", "src/fep_lean/verification/gnn_continuous_artifact_proof.py"),
+    ("fep_formal._paths", "src/fep_formal/_paths.py"),
+    ("fep_formal.verification._jsonutil", "src/fep_formal/verification/_jsonutil.py"),
+    ("q7_portability_owner", "src/fep_formal/verification/gnn_continuous_artifact_proof.py"),
 ):
     path = root / relative
     data = path.read_bytes()
@@ -296,7 +310,7 @@ print(json.dumps({
 
 def scaffold_portability_evidence(root: Path = ROOT) -> tuple[bytes, dict[str, object]]:
     """Observe real parser/serializer parity; no runner or native execution."""
-    from fep_lean.verification._subprocess import run_process_group
+    from fep_formal.verification._subprocess import run_process_group
 
     root = root.resolve()
     uv = shutil.which("uv")
@@ -359,7 +373,8 @@ def scaffold_portability_evidence(root: Path = ROOT) -> tuple[bytes, dict[str, o
         "runner_execution": False,
         "native_evidence": "not supplied; new native capture required separately",
         "validator_interpreters": ["cpython 3.14"],
-        "probe_command": "uv run --locked python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py --record-scaffold-portability",
+        # Portable recipe template, not the exact invocation of this capture.
+        "probe_command": "uv run --locked python specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py --record-scaffold-portability --output-root NEW_DIRECTORY",
         "inputs": before,
         "input_stability_verified": True,
         "canonical_bytes": len(canonical),
@@ -368,28 +383,213 @@ def scaffold_portability_evidence(root: Path = ROOT) -> tuple[bytes, dict[str, o
     }
 
 
-def main() -> int:
+def _regular_path(path: Path) -> None:
+    if any(parent.is_symlink() for parent in (path, *path.parents)):
+        raise ValueError(f"Q7 publication refuses symlink paths: {path}")
+    if not path.is_file() or path.stat().st_nlink != 1:
+        raise ValueError(f"Q7 publication requires an unaliased regular file: {path}")
+
+
+def _publication_files(directory: Path) -> dict[str, bytes]:
+    if directory.is_symlink() or not directory.is_dir():
+        raise ValueError("Q7 publication requires a regular generated directory")
+    result = {}
+    for path in directory.iterdir():
+        _regular_path(path)
+        result[path.name] = path.read_bytes()
+    return result
+
+
+def _install_publication(staged: Path, destination: Path, backup: Path) -> None:
+    """Restore the complete preimage if installing the staged directory fails."""
+    destination.rename(backup)
+    try:
+        staged.rename(destination)
+    except OSError:
+        backup.rename(destination)
+        raise
+
+
+def publish(root: Path, incoming: Path, *, scaffold: bool) -> Path:
+    """Publish checked working projections, retaining a recoverable preimage.
+
+    Two directory renames expose either complete bytes or a missing directory
+    (fail-closed readers), never a mixed pair. An installation error restores
+    the original directory. A process interruption leaves the named backup.
+    This operation validates stored observations; it does not repeat runtimes.
+    """
+    destination = root / PREFIX / "generated"
+    if (
+        incoming.resolve() == (root / PREFIX).resolve()
+        or incoming.resolve().is_relative_to(destination.resolve())
+        or destination.resolve().is_relative_to(incoming.resolve())
+    ):
+        raise ValueError("Q7 publication source aliases destination")
+    if set(incoming.iterdir()) != {incoming / "generated"}:
+        raise ValueError("Q7 publication source must contain only generated outputs")
+    candidate = _publication_files(incoming / "generated")
+    names = (
+        {"scaffold-canonical.json", "scaffold-runtime-parity.json"}
+        if scaffold
+        else {"probe.lean", "artifact_proof_manifest.json"}
+    )
+    if set(candidate) != names:
+        raise ValueError("Q7 publication output set is incomplete or unknown")
+    owned = {*PORTABILITY_INPUTS, *EXTRA_FILES, PROVENANCE}
+    # Scaffold publication must work when the existing parity is stale.
+    if scaffold:
+        owned -= {CANONICAL_SCAFFOLD, PORTABILITY_EVIDENCE}
+    for name in owned:
+        _regular_path(root / name)
+    before = {name: (root / name).read_bytes() for name in owned}
+    if scaffold:
+        validate_scaffold_portability(
+            root,
+            _extractor(root),
+            (root / FIXTURES["ou"]).read_text(),
+            projection=candidate,
+        )
+        evidence = _extractor(root).read_json_object(
+            candidate["scaffold-runtime-parity.json"]
+        )
+        if set(evidence) != {
+            "schema_version",
+            "kind",
+            "evidence_plane",
+            "runner_execution",
+            "native_evidence",
+            "validator_interpreters",
+            "probe_command",
+            "inputs",
+            "input_stability_verified",
+            "canonical_bytes",
+            "canonical_sha256",
+            "runtimes",
+        }:
+            raise ValueError("Q7 publication parity contains unknown or missing fields")
+        if (
+            not isinstance(evidence["probe_command"], str)
+            or not evidence["probe_command"].strip()
+        ):
+            raise ValueError("Q7 publication probe_command must be a nonempty recipe")
+        for record in evidence.get("runtimes", []):
+            if not isinstance(record, dict) or set(record) != {
+                "implementation",
+                "version",
+                "version_info",
+                "platform",
+                "machine",
+                "canonical_sha256",
+                "controls",
+                "observed_fields",
+            }:
+                raise ValueError(
+                    "Q7 publication runtime contains unknown or missing fields"
+                )
+            if any(
+                not isinstance(record[name], str) or not record[name]
+                for name in ("version", "platform", "machine")
+            ):
+                raise ValueError("Q7 publication runtime metadata is malformed")
+    else:
+        outputs, _ = regenerate(root)
+        if candidate != {
+            Path(name).name: data.encode() for name, data in outputs.items()
+        }:
+            raise ValueError(
+                "Q7 publication generated artifacts differ from current source"
+            )
+    previous = _publication_files(destination)
+    if set(previous) != {
+        "scaffold-canonical.json",
+        "scaffold-runtime-parity.json",
+        "probe.lean",
+        "artifact_proof_manifest.json",
+    }:
+        raise ValueError("Q7 destination contains incomplete or unknown outputs")
+    token = uuid.uuid4().hex
+    staged = destination.with_name(f".generated-publish-{token}")
+    backup = destination.with_name(f".generated-before-{token}")
+    staged.mkdir()
+    try:
+        for name, data in (previous | candidate).items():
+            with (staged / name).open("xb") as stream:
+                stream.write(data)
+                stream.flush()
+                os.fsync(stream.fileno())
+        if (
+            before != {name: (root / name).read_bytes() for name in owned}
+            or candidate != _publication_files(incoming / "generated")
+            or previous != _publication_files(destination)
+        ):
+            raise ValueError("Q7 publication inputs changed before installation")
+        for name in owned:
+            _regular_path(root / name)
+        _install_publication(staged, destination, backup)
+    finally:
+        if staged.exists():
+            shutil.rmtree(staged)
+    return backup
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--record-scaffold-portability", action="store_true")
-    args = parser.parse_args()
+    mode.add_argument("--publish-scaffold-from", type=Path)
+    mode.add_argument("--publish-generated-from", type=Path)
+    parser.add_argument(
+        "--source-root",
+        type=Path,
+        default=ROOT,
+        help="current source and parity input profile",
+    )
+    parser.add_argument(
+        "--output-root",
+        type=Path,
+        help="fresh output slice; retained outputs are never overwritten",
+    )
+    args = parser.parse_args(argv)
+    source_root = args.source_root.resolve()
+    incoming = args.publish_scaffold_from or args.publish_generated_from
+    if incoming is not None:
+        if args.output_root is not None:
+            parser.error("publication does not accept --output-root")
+        _regular_path(args.source_root / EXTRACTOR)
+        backup = publish(
+            source_root,
+            incoming.absolute(),
+            scaffold=args.publish_scaffold_from is not None,
+        )
+        print(
+            f"Published checked Q7 working projections; preimage: {backup}; no runtime/native execution."
+        )
+        return 0
+    target = args.output_root.resolve() if args.output_root else source_root / PREFIX
+    if not args.check:
+        if args.output_root is None:
+            parser.error("current-source generation requires a fresh --output-root")
+        if target.exists():
+            parser.error("--output-root already exists; choose a fresh directory")
     if args.record_scaffold_portability:
-        canonical, evidence = scaffold_portability_evidence()
-        (ROOT / CANONICAL_SCAFFOLD).write_bytes(canonical)
-        (ROOT / PORTABILITY_EVIDENCE).write_text(
+        canonical, evidence = scaffold_portability_evidence(source_root)
+        target.mkdir(parents=True, exist_ok=False)
+        (target / "generated").mkdir()
+        (target / "generated/scaffold-canonical.json").write_bytes(canonical)
+        (target / "generated/scaffold-runtime-parity.json").write_text(
             json.dumps(evidence, sort_keys=True, indent=2) + "\n"
         )
         print(
             f"Five real CPython runtimes returned identical candidate bytes: {evidence['canonical_sha256']}; no runner/native execution."
         )
         return 0
-    outputs, _manifest = regenerate()
+    outputs, _manifest = regenerate(source_root)
     if args.check:
         changed = [
             path
             for path, data in outputs.items()
-            if not (SLICE / path).is_file() or (SLICE / path).read_text() != data
+            if not (target / path).is_file() or (target / path).read_text() != data
         ]
         if changed:
             raise ValueError(f"Q7 generated artifacts differ: {changed}")
@@ -397,9 +597,10 @@ def main() -> int:
             "Q7 generated artifacts current; native evidence must be checked separately."
         )
     else:
+        target.mkdir(parents=True, exist_ok=False)
         for path, data in outputs.items():
-            (SLICE / path).parent.mkdir(parents=True, exist_ok=True)
-            (SLICE / path).write_text(data)
+            (target / path).parent.mkdir(parents=True, exist_ok=True)
+            (target / path).write_text(data)
         print("Generated Q7 probe and manifest; no native compilation performed.")
     return 0
 

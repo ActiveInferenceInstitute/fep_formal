@@ -1,1 +1,1 @@
-"""Tests for fep_lean."""
+"""Tests for fep_formal."""

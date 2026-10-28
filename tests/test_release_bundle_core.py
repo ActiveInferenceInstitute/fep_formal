@@ -11,8 +11,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.output import release_bundle as bundle_module
-from fep_lean.output.release_bundle import (
+from fep_formal.output import release_bundle as bundle_module
+from fep_formal.output.release_bundle import (
     validate_release_bundle,
 )
 from tests._support.release_bundle import (
@@ -112,7 +112,7 @@ def test_manifest_summary_is_derived_only_from_captured_member_bytes(
         bundle_module.PYTHON_ACCEPTANCE_RECEIPT.as_posix(): b"{}",
     }
     source_record = bundle_module._BundleMember(
-        "src/fep_lean/example.py", b"captured source\n", "source_owner"
+        "src/fep_formal/example.py", b"captured source\n", "source_owner"
     )
     config_record = bundle_module._BundleMember(
         "pyproject.toml", b"captured config\n", "configuration_snapshot"

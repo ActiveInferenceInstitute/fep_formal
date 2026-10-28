@@ -3,7 +3,7 @@
 All tests use real objects.  Tests requiring lean/lake on PATH are skipped
 gracefully when the tools are unavailable (respects sandboxed CI).
 
-The verifier is configured with the real fep_lean/lean/ workspace which
+The verifier is configured with the real fep_formal/lean/ workspace which
 now has Mathlib4 as a Lake dependency.  A one-time setup is required before
 compilation tests can pass:
 
@@ -19,7 +19,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification.lean_verifier import (
+from fep_formal.verification.lean_verifier import (
     LeanVerifier,
     VerifyResult,
     _find_exe,
@@ -36,7 +36,7 @@ pytestmark = pytest.mark.serial_lean
 @pytest.fixture(autouse=True)
 def fast_timeout(monkeypatch: pytest.MonkeyPatch) -> None:
     """Force a short timeout for all tests so sandboxed hanging processes don't stall the suite."""
-    monkeypatch.setenv("FEP_LEAN_VERIFY_TIMEOUT", "2")
+    monkeypatch.setenv("FEP_FORMAL_VERIFY_TIMEOUT", "2")
 
 
 @pytest.fixture()
@@ -257,7 +257,7 @@ def test_verify_sketch_with_lake_trivial(verifier: LeanVerifier) -> None:
     """When lake is available and Mathlib is built, verify a trivially true theorem."""
     if not verifier.check_lake_available():
         pytest.skip(
-            "lake not on PATH — run scripts/_maint_bootstrap_lean_toolchain.sh (or uv run fep-lean setup — wraps it) first"
+            "lake not on PATH — run scripts/_maint_bootstrap_lean_toolchain.sh (or uv run fep-formal setup — wraps it) first"
         )
     mathlib_ok, mathlib_msg = verifier.check_mathlib_built()
     if not mathlib_ok:
@@ -274,7 +274,7 @@ def test_verify_sketch_with_lake_and_mathlib_sorry(verifier: LeanVerifier) -> No
     """Typical FEP topic sketch: sorry-based, imports Mathlib, must classify correctly."""
     if not verifier.check_lake_available():
         pytest.skip(
-            "lake not on PATH — run scripts/_maint_bootstrap_lean_toolchain.sh (or uv run fep-lean setup — wraps it) first"
+            "lake not on PATH — run scripts/_maint_bootstrap_lean_toolchain.sh (or uv run fep-formal setup — wraps it) first"
         )
     mathlib_ok, mathlib_msg = verifier.check_mathlib_built()
     if not mathlib_ok:

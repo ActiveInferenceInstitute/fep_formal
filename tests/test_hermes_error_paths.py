@@ -23,8 +23,8 @@ from pathlib import Path
 import pytest
 from pytest_httpserver import HTTPServer
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.llm.hermes import (
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.llm.hermes import (
     _FREE_MODEL_CHAIN,
     HermesConfig,
     HermesExplainer,
@@ -91,7 +91,7 @@ def test_preflight_disables_hermes_on_403(
         enabled=True,
     )
     exp = HermesExplainer(cfg)
-    with caplog.at_level(logging.ERROR, logger="fep_lean.llm.hermes"):
+    with caplog.at_level(logging.ERROR, logger="fep_formal.llm.hermes"):
         ok = exp.preflight()
     assert ok is False
     assert cfg.enabled is False

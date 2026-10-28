@@ -1,7 +1,7 @@
 # Quality-gate decision record (updated 2026-10-15)
 
 **Decision date:** 2026-08-19<br>
-**Owner:** fep_lean repository maintainers<br>
+**Owner:** fep_formal repository maintainers<br>
 **Decision:** Ruff lint and formatting are both blocking zero-debt gates.
 
 ## Current policy — 2026-10-15

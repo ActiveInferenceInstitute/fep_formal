@@ -11,7 +11,7 @@ these rules.
 | Current ordered topic roster and family metadata | [`config/catalogue_metadata.yaml`](../../../config/catalogue_metadata.yaml) | Catalog schema and registry tests |
 | Current primary theorem, assumptions, non-vacuity, and disposition | [`config/theorem_maturity.yaml`](../../../config/theorem_maturity.yaml) | Theorem-maturity audit |
 | Current novelty and cross-topic relation/capability state | [`config/formalism_novelty.yaml`](../../../config/formalism_novelty.yaml) and [`config/formalism_relations.yaml`](../../../config/formalism_relations.yaml) | Coverage and relation validators |
-| Current reusable formal module roster | [`formal/manifest.py`](../../../src/fep_lean/formal/manifest.py) | Formal projection and declaration audits |
+| Current reusable formal module roster | [`formal/manifest.py`](../../../src/fep_formal/formal/manifest.py) | Formal projection and declaration audits |
 | Prospective H1--H3 goals | This directory | Documentation checks and active/future specs |
 | Active implementation status | A bounded directory under `specs/`; accepted history moves to `specs/done/` | Its tests and acceptance record |
 | Lean/Mathlib pin and supported-version policy | [`lean/lean-toolchain`](../../../lean/lean-toolchain), [`lean/lake-manifest.json`](../../../lean/lake-manifest.json), and [`docs/lean4.md`](../../lean4.md) | Pin audit, including `--check-latest` |

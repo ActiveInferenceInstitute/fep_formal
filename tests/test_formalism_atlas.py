@@ -8,14 +8,14 @@ from dataclasses import replace
 from pathlib import Path
 from xml.etree import ElementTree
 
-from fep_lean.output.formalism_atlas import (
+from fep_formal.output.formalism_atlas import (
     atlas_projection_drift,
     build_formalism_atlas,
     render_formalism_atlas_html,
     render_formalism_atlas_svg,
     write_formalism_atlas,
 )
-from fep_lean.output.formalism_presentation import (
+from fep_formal.output.formalism_presentation import (
     FormalismPresentation,
     PresentationRelation,
 )

@@ -1,11 +1,11 @@
 # Documentation specification
 
 Documentation is self-contained within this checkout and must describe the
-current FEP_Formal project, `fep-lean` CLI and `fep_lean` package contract.
+current FEP_Formal project, `fep-formal` CLI and `fep_formal` package contract.
 Project branding must not rename actual imports, commands, environment
 variables, serialized keys or historical mirror identities. Every relative
 link must resolve from its owning Markdown file. Generated manuscript inputs are materialized by
-`uv run fep-lean catalogue` before cross-reference validation.
+`uv run fep-formal catalogue` before cross-reference validation.
 
 The [root required-check inventory](../AGENTS.md#required-checks) owns the
 complete command list, including strict root-inclusive links and Markdown

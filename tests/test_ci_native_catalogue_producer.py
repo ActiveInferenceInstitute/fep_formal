@@ -14,12 +14,12 @@ from types import SimpleNamespace
 
 import pytest
 
-from fep_lean.output.evidence import (
+from fep_formal.output.evidence import (
     build_native_lean_receipt,
     write_native_lean_receipt,
 )
-from fep_lean.output.provenance import config_owner_paths, source_owner_paths
-from fep_lean.verification.lean_verifier import CatalogueVerification, VerifyResult
+from fep_formal.output.provenance import config_owner_paths, source_owner_paths
+from fep_formal.verification.lean_verifier import CatalogueVerification, VerifyResult
 from tests._support import native_catalogue_gate as gate
 from tests.test_native_evidence import (
     LEAN_VERSION,
@@ -78,7 +78,7 @@ def producer(tmp_path, monkeypatch, producer_seed):
         calls.append((at, topic_ids, area, receipt_path, fail_on_warnings))
         write_native_lean_receipt(receipt_path, copy.deepcopy(payload))
         if state.mutate_source:
-            owner = root / "src/fep_lean/lean_source.py"
+            owner = root / "src/fep_formal/lean_source.py"
             owner.write_text(owner.read_text() + "\n# source drift\n")
         return CatalogueVerification(
             {"complete": state.exit_code == 0}, state.exit_code, 2
@@ -257,7 +257,7 @@ def test_exclusive_intent_allows_only_one_concurrent_producer(producer, monkeypa
 
 
 def test_actual_missing_mathlib_path_fails_ci_mode_without_skip(producer, monkeypatch):
-    from fep_lean.verification.lean_verifier import LeanVerifier, verify_catalogue
+    from fep_formal.verification.lean_verifier import LeanVerifier, verify_catalogue
 
     monkeypatch.setattr(gate, "verify_catalogue", verify_catalogue)
     monkeypatch.setattr(
@@ -431,7 +431,7 @@ def test_consumer_requires_once_passing_serial_producer(consumer, mutation):
 
 
 def test_consumer_refuses_stale_source_without_recompile(consumer):
-    owner = consumer.root / "src/fep_lean/lean_source.py"
+    owner = consumer.root / "src/fep_formal/lean_source.py"
     owner.write_text(owner.read_text() + "\n# stale source\n")
     with pytest.raises(ValueError, match="source-bound"):
         gate.validate_native_catalogue_producer(consumer.root, junit=consumer.junit)

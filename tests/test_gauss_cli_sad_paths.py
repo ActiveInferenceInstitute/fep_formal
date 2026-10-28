@@ -1,4 +1,4 @@
-"""Tests for fep_lean.gauss.cli sad paths using genuine filesystem and environment mutation."""
+"""Tests for fep_formal.gauss.cli sad paths using genuine filesystem and environment mutation."""
 
 from __future__ import annotations
 
@@ -6,15 +6,15 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.gauss.cli import _require_gauss_from_env, check_gauss_cli
+from fep_formal.gauss.cli import _require_gauss_from_env, check_gauss_cli
 
 PROJ = Path(__file__).resolve().parent.parent
 
 
 def test_require_gauss_from_env(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("FEP_LEAN_REQUIRE_GAUSS", "1")
+    monkeypatch.setenv("FEP_FORMAL_REQUIRE_GAUSS", "1")
     assert _require_gauss_from_env() is True
-    monkeypatch.setenv("FEP_LEAN_REQUIRE_GAUSS", "false")
+    monkeypatch.setenv("FEP_FORMAL_REQUIRE_GAUSS", "false")
     assert _require_gauss_from_env() is False
 
 

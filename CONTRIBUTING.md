@@ -34,15 +34,15 @@ the command list; run the tier that matches your change.
 
 ## Rules that bite
 
-- **Provenance roster.** A new file under `src/fep_lean/**/*.py` or
+- **Provenance roster.** A new file under `src/fep_formal/**/*.py` or
   `scripts/*.py` fails report and native receipts fail-closed until it is
   reviewed into `SOURCE_OWNER_ROSTER` in
-  [`src/fep_lean/output/provenance.py`](src/fep_lean/output/provenance.py). Roster
+  [`src/fep_formal/output/provenance.py`](src/fep_formal/output/provenance.py). Roster
   growth is a coordinated evidence refresh, not a per-PR append. Fold new code
   into an existing owner, or keep tooling slice-local under `specs/`. Editing
   existing files is fine.
 - **Generated files.** Never hand-edit a generated file (`config/topics.yaml`,
-  `src/fep_lean/data/topics.yaml`, `lean/FepSketches/fep_all.lean`, the atlas,
+  `src/fep_formal/data/topics.yaml`, `lean/FepSketches/fep_all.lean`, the atlas,
   coverage, landscape and maturity-audit documents, formal Lake projections).
   Change the source or the generator listed under "Source of truth" in
   [AGENTS.md](AGENTS.md) and regenerate; the matching `--check` must pass.

@@ -8,7 +8,7 @@ A generated success value cannot establish that imports resolve, types unify, ta
 
 ### The `lean_verifier.py` Architecture {#sec:the_leanverifierpy_architecture}
 
-The compiler bridge lives in `fep_lean.verification.lean_verifier`. Its public contract is intentionally small: isolate a sketch, invoke Lean through Lake, and return a structured `VerifyResult`. The source remains authoritative for implementation details.
+The compiler bridge lives in `fep_formal.verification.lean_verifier`. Its public contract is intentionally small: isolate a sketch, invoke Lean through Lake, and return a structured `VerifyResult`. The source remains authoritative for implementation details.
 
 #### Stage 1: Sketch Isolation and Temporary File Construction {#sec:stage_1_temporary_file_construction}
 
@@ -48,7 +48,7 @@ The only headline used here is receipt-derived: **`{{compile_rate.total}}`** for
 
 Preflight checks that the pinned Lake workspace and required Mathlib object files exist before a batch begins. It is intentionally read-only. A failed preflight stops verification rather than producing one misleading import failure per topic.
 
-### Verbose Mode: `FEP_LEAN_VERIFY_VERBOSE=1` {#sec:fep_lean_verify_verbose}
+### Verbose Mode: `FEP_FORMAL_VERIFY_VERBOSE=1` {#sec:fep_lean_verify_verbose}
 
 Verbose mode increases diagnostic logging for local reproduction. The stable automation surface is the CLI JSON and optional native receipt; prose should not depend on incidental log formatting.
 

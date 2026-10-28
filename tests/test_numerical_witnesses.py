@@ -10,9 +10,9 @@ from typing import Any, cast
 
 import pytest
 
-from fep_lean.formal.declarations import all_formal_theorem_declarations
-from fep_lean.verification import numerical_witnesses as witness_module
-from fep_lean.verification.numerical_witnesses import (
+from fep_formal.formal.declarations import all_formal_theorem_declarations
+from fep_formal.verification import numerical_witnesses as witness_module
+from fep_formal.verification.numerical_witnesses import (
     NON_PROOF_EVIDENCE,
     NumericalCheck,
     NumericalWitness,
@@ -391,7 +391,7 @@ def test_family_witnesses_exercise_nontrivial_boundaries() -> None:
 
 
 def test_core_extension_has_twenty_two_catalogue_and_preserves_old_id_prefix() -> None:
-    from fep_lean.catalogue.registry import BODY_MODULE_MANIFEST
+    from fep_formal.catalogue.registry import BODY_MODULE_MANIFEST
 
     witnesses = evaluate_numerical_witnesses()
     catalogue = evaluate_numerical_witnesses(scope="catalogue")

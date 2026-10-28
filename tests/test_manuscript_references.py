@@ -6,11 +6,11 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.coverage import (
+from fep_formal.catalogue.coverage import (
     render_topic_import_modules,
     topic_import_modules,
 )
-from fep_lean.catalogue.references import (
+from fep_formal.catalogue.references import (
     MATHLIB_CITED_NAMES,
     hand_maintained_module_cells,
     lean_names_introduced,
@@ -21,7 +21,7 @@ from fep_lean.catalogue.references import (
     unresolved_manuscript_references,
     unverified_non_catalogue_identifiers,
 )
-from fep_lean.formal.declarations import composed_theorem_declarations
+from fep_formal.formal.declarations import composed_theorem_declarations
 
 PROJ = Path(__file__).resolve().parent.parent
 MATHLIB = PROJ / "lean" / ".lake" / "packages" / "mathlib"
@@ -66,7 +66,7 @@ def test_import_audit_catches_a_module_a_rename_removed(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """A body importing a renamed-away module must fail, not print a dead path."""
-    from fep_lean.catalogue import references
+    from fep_formal.catalogue import references
 
     monkeypatch.setattr(
         references,
@@ -182,7 +182,7 @@ def test_a_catalogue_row_cannot_pass_as_mathlib_prior_art(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """The exact drift that shipped: fep-008's own theorem, prefix stripped."""
-    from fep_lean.catalogue import references
+    from fep_formal.catalogue import references
 
     monkeypatch.setattr(
         references,

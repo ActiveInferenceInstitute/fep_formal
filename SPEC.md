@@ -29,12 +29,12 @@ generated projections.
 
 ## Public API
 
-FEP_Formal is the project name; `fep_lean` remains the Python distribution and
-import namespace, and `fep-lean` remains the installed command.
+FEP_Formal is the project name; `fep_formal` remains the Python distribution and
+import namespace, and `fep-formal` remains the installed command.
 
 ```python
-from fep_lean.pipeline.core import FEPPipeline
-from fep_lean.pipeline.orchestrator import run_pipeline, run_single_topic
+from fep_formal.pipeline.core import FEPPipeline
+from fep_formal.pipeline.orchestrator import run_pipeline, run_single_topic
 
 result = run_pipeline(mode="catalogue")
 result = run_pipeline(mode="full", topic_filter=["fep-001"])
@@ -55,7 +55,7 @@ validation and explicit setup boundaries; the
 The catalog loader rejects missing fields, divergence from the maintained
 roster seal, duplicate or out-of-order IDs, unsupported areas/statuses, empty
 theorem bodies, mismatched equation counts, and divergence from the validated
-family-body registry under `src/fep_lean/catalogue/`.
+family-body registry under `src/fep_formal/catalogue/`.
 The formalism-graph loader separately rejects unknown or self targets,
 unsupported edge kinds, duplicate edges, derivational-formal cycles,
 unreferenced capabilities, and missing blocker edges for semantic gap rows.

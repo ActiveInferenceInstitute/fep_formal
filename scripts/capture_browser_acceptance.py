@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from fep_lean.output.browser_capture import (
+from fep_formal.output.browser_capture import (
     BrowserCaptureError,
     capture_browser_acceptance,
 )

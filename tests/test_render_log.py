@@ -14,8 +14,8 @@ from typing import Any
 
 import pytest
 
-from fep_lean.output import rendering as rendering_module
-from fep_lean.output.render_log import (
+from fep_formal.output import rendering as rendering_module
+from fep_formal.output.render_log import (
     RECEIPT_VERSION,
     RenderLogDefects,
     _project_with_provenance,
@@ -32,7 +32,10 @@ from fep_lean.output.render_log import (
     stale_render_defects,
     uncaptioned_table_defects,
 )
-from fep_lean.output.rendering import _rewrite_asset_references, substitute_placeholders
+from fep_formal.output.rendering import (
+    _rewrite_asset_references,
+    substitute_placeholders,
+)
 
 CLEAN_LOG = """This is XeTeX, Version 3.141592653
 (./_combined_manuscript.tex
@@ -1278,7 +1281,7 @@ def test_a_moved_generated_appendix_names_the_catalogue_remediation(
     defects = receipt_defects(path, manuscript)
     stale = [line for line in defects if "predates these sources" in line]
     assert len(stale) == 1
-    assert "regenerate the build product with `uv run fep-lean catalogue`" in stale[0]
+    assert "regenerate the build product with `uv run fep-formal catalogue`" in stale[0]
     assert "re-run scripts/render_publication.py" not in stale[0]
     assert "09z_unified_formalism_catalogue.md (generated appendix)" in stale[0]
 
@@ -1299,7 +1302,7 @@ def test_a_moved_authored_chapter_keeps_the_render_remediation(
     stale = [line for line in defects if "predates these sources" in line]
     assert len(stale) == 1
     assert "re-run scripts/render_publication.py" in stale[0]
-    assert "fep-lean catalogue" not in stale[0]
+    assert "fep-formal catalogue" not in stale[0]
     assert "changed since that render: 01_abstract.md" in stale[0]
 
 
@@ -1324,7 +1327,7 @@ def test_mixed_moves_name_both_remediations(tmp_path: Path) -> None:
     assert "09z_unified_formalism_catalogue.md (generated appendix)" in stale[0]
     appendix = [line for line in defects if "generated appendix 09z_" in line]
     assert len(appendix) == 1
-    assert "regenerate it with `uv run fep-lean catalogue`" in appendix[0]
+    assert "regenerate it with `uv run fep-formal catalogue`" in appendix[0]
 
 
 def test_a_missing_generated_appendix_is_a_defect_even_when_the_digest_matches(
@@ -1344,7 +1347,7 @@ def test_a_missing_generated_appendix_is_a_defect_even_when_the_digest_matches(
     defects = receipt_defects(path, manuscript)
     assert any(
         "09z_unified_formalism_catalogue.md" in line
-        and "uv run fep-lean catalogue" in line
+        and "uv run fep-formal catalogue" in line
         for line in defects
     )
     assert not any("predates these sources" in line for line in defects)
@@ -1364,7 +1367,7 @@ def test_a_receipt_covering_a_now_absent_appendix_names_regeneration(
     assert any("predates these sources" in line for line in defects)
     assert any(
         "09z_unified_formalism_catalogue.md is missing" in line
-        and "uv run fep-lean catalogue" in line
+        and "uv run fep-formal catalogue" in line
         for line in defects
     )
 
@@ -1482,7 +1485,7 @@ def test_present_manuscript_vars_keeps_the_unconditional_ok_line(
     ],
 )
 def test_final_undefined_warnings_fail_closed(tmp_path: Path, warning: str) -> None:
-    from fep_lean.output.render_log import reference_render_defects
+    from fep_formal.output.render_log import reference_render_defects
 
     _write(tmp_path, "_combined_manuscript.tex", r"\citep{real-source}")
     _write(tmp_path, "_combined_manuscript.log", warning + "\n" + CLEAN_LOG)
@@ -1490,7 +1493,7 @@ def test_final_undefined_warnings_fail_closed(tmp_path: Path, warning: str) -> N
 
 
 def test_reference_gate_excludes_code_and_preserves_citations(tmp_path: Path) -> None:
-    from fep_lean.output.render_log import reference_render_defects
+    from fep_formal.output.render_log import reference_render_defects
 
     _write(
         tmp_path,
@@ -1523,13 +1526,13 @@ See \ref{sec:real}, \eqref{eq:real}; \citep{scientific-source}.
     ],
 )
 def test_reference_gate_rejects_broken_tex(tmp_path: Path, broken: str) -> None:
-    from fep_lean.output.render_log import reference_render_defects
+    from fep_formal.output.render_log import reference_render_defects
 
     _write(tmp_path, "_combined_manuscript.tex", broken)
     assert reference_render_defects(tmp_path)
 
 
 def test_reference_gate_requires_final_tex(tmp_path: Path) -> None:
-    from fep_lean.output.render_log import reference_render_defects
+    from fep_formal.output.render_log import reference_render_defects
 
     assert "final TeX absent" in reference_render_defects(tmp_path)[0]

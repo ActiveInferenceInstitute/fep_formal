@@ -7,7 +7,7 @@ import argparse
 import json
 from pathlib import Path
 
-from fep_lean.verification.formalism_audit import (
+from fep_formal.verification.formalism_audit import (
     run_formalism_audit,
     write_formalism_audit_receipt,
 )

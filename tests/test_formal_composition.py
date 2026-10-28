@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal import (
+from fep_formal.formal import (
     FORMAL_MODULES,
     FormalModule,
     FormalModuleRole,
@@ -20,7 +20,7 @@ from fep_lean.formal import (
     write_formal_aggregate,
     write_formal_projections,
 )
-from fep_lean.formal import manifest as formal_manifest
+from fep_formal.formal import manifest as formal_manifest
 from tests._support.h2_r0_custody import validate_h2_r0_custody
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lake_lean_probe, run_lean_probe
@@ -245,11 +245,11 @@ def test_formal_module_manifest_is_the_single_explicit_resource_roster() -> None
         for role in FormalModuleRole
     } == expected_resources_by_role
     assert formal_resource_paths() == tuple(
-        PROJECT_ROOT / "src" / "fep_lean" / "formal" / resource
+        PROJECT_ROOT / "src" / "fep_formal" / "formal" / resource
         for resource in resources
     )
     assert formal_resource_paths(project_root=PROJECT_ROOT) == tuple(
-        PROJECT_ROOT / "src" / "fep_lean" / "formal" / resource
+        PROJECT_ROOT / "src" / "fep_formal" / "formal" / resource
         for resource in resources
     )
 
@@ -258,7 +258,7 @@ def test_checkout_resource_origin_is_explicit_and_not_site_package_derived(
     tmp_path: Path,
 ) -> None:
     assert formal_resource_paths(project_root=tmp_path) == tuple(
-        tmp_path / "src" / "fep_lean" / "formal" / module.resource
+        tmp_path / "src" / "fep_formal" / "formal" / module.resource
         for module in FORMAL_MODULES
     )
 
@@ -266,7 +266,7 @@ def test_checkout_resource_origin_is_explicit_and_not_site_package_derived(
 def test_formal_resource_manifest_rejects_missing_and_unlisted_lean_files(
     tmp_path: Path,
 ) -> None:
-    formal_root = tmp_path / "src" / "fep_lean" / "formal"
+    formal_root = tmp_path / "src" / "fep_formal" / "formal"
     for module in FORMAL_MODULES:
         path = formal_root / module.resource
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -291,7 +291,7 @@ def test_formal_resource_manifest_rejects_missing_and_unlisted_lean_files(
 def test_formal_resource_manifest_validates_comment_stripped_namespace_owner(
     tmp_path: Path,
 ) -> None:
-    formal_root = tmp_path / "src" / "fep_lean" / "formal"
+    formal_root = tmp_path / "src" / "fep_formal" / "formal"
     for module in FORMAL_MODULES:
         path = formal_root / module.resource
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -415,11 +415,11 @@ def test_core_composition_leaf_names_cross_topic_witnesses() -> None:
 def test_formal_projection_writer_and_drift_are_byte_exact(tmp_path: Path) -> None:
     assert formal_projection_drift(tmp_path)
     for module in FORMAL_MODULES:
-        canonical = tmp_path / "src" / "fep_lean" / "formal" / module.resource
+        canonical = tmp_path / "src" / "fep_formal" / "formal" / module.resource
         canonical.parent.mkdir(parents=True, exist_ok=True)
         canonical.write_bytes(
             (
-                PROJECT_ROOT / "src" / "fep_lean" / "formal" / module.resource
+                PROJECT_ROOT / "src" / "fep_formal" / "formal" / module.resource
             ).read_bytes()
         )
     written = write_formal_projections(tmp_path)
@@ -428,7 +428,7 @@ def test_formal_projection_writer_and_drift_are_byte_exact(tmp_path: Path) -> No
     )
     assert formal_projection_drift(tmp_path) == ()
 
-    canonical = tmp_path / "src" / "fep_lean" / "formal" / FORMAL_MODULES[0].resource
+    canonical = tmp_path / "src" / "fep_formal" / "formal" / FORMAL_MODULES[0].resource
     original = canonical.read_bytes()
     canonical.write_text(
         "namespace Wrong.Owner\nend Wrong.Owner\n",
@@ -445,7 +445,7 @@ def test_formal_projection_writer_and_drift_are_byte_exact(tmp_path: Path) -> No
 
 
 def test_public_composition_aggregate_is_manifest_generated(tmp_path: Path) -> None:
-    aggregate = tmp_path / "src" / "fep_lean" / "formal" / "composed.lean"
+    aggregate = tmp_path / "src" / "fep_formal" / "formal" / "composed.lean"
     assert formal_aggregate_drift(tmp_path) == (aggregate,)
     assert write_formal_aggregate(tmp_path) == aggregate
     assert aggregate.read_text(encoding="utf-8") == render_formal_aggregate()

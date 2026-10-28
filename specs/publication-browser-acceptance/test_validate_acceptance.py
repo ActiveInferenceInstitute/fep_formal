@@ -568,7 +568,7 @@ def test_ci_template_placement_preserves_actual_clean_source_stamp(
 ) -> None:
     import yaml
 
-    from fep_lean.output.manuscript import _source_stamp_vars
+    from fep_formal.output.manuscript import _source_stamp_vars
 
     root = _render_source_fixture(tmp_path)
     source_commit = _source_stamp_vars(root)["commit"]
@@ -614,7 +614,7 @@ def test_ci_template_placement_preserves_actual_clean_source_stamp(
     assert registered.returncode == 0, registered.stderr
     assert (template / "projects/active/fep_lean").resolve() == root
     render = next(step for step in steps if step.get("name") == _RENDER_GUARD_STEPS[1])
-    assert render["env"]["FEP_LEAN_TEMPLATE_DIR"] == (
+    assert render["env"]["FEP_FORMAL_TEMPLATE_DIR"] == (
         "${{ github.workspace }}/output/render-template"
     )
     source = _source_stamp_vars(root)
@@ -642,7 +642,7 @@ def test_ci_template_placement_preserves_actual_clean_source_stamp(
 def test_ci_hydration_guards_refuse_unfiltered_git_drift_without_path_disclosure(
     tmp_path: Path, step_name: str, mutation: str
 ) -> None:
-    from fep_lean.output.manuscript import _source_stamp_vars
+    from fep_formal.output.manuscript import _source_stamp_vars
 
     root = _render_source_fixture(tmp_path)
     if mutation in {"tracked_source", "staged_source"}:

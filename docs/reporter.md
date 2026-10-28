@@ -1,6 +1,6 @@
 # Report bundles and provenance
 
-`fep_lean.output.reporter.Reporter` writes one timestamped report directory for
+`fep_formal.output.reporter.Reporter` writes one timestamped report directory for
 one pipeline result. It refuses to reuse an existing run directory, so an
 explicit `run_id` cannot overwrite earlier evidence.
 
@@ -52,7 +52,7 @@ structurally valid while `verified_topics` remains zero.
 ## API
 
 ```python
-from fep_lean.output import Reporter, ReportPaths, validate_report_receipt
+from fep_formal.output import Reporter, ReportPaths, validate_report_receipt
 
 reporter = Reporter(
     project_root,

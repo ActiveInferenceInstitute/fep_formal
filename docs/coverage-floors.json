@@ -16,23 +16,97 @@
     "coverage_version": "7.15.2",
     "lines_covered": 17197,
     "lines_valid": 18765,
-    "selection": "Each nonempty direct XML package floor is floor(100 * baseline_lines_covered / baseline_lines_valid). Subpackages have separate, non-overlapping floors. The existing aggregate line floor remains 89. No branch-arc floor is asserted."
+    "selection": "Each nonempty direct XML package floor is floor(100 * baseline_lines_covered / baseline_lines_valid). Subpackages have separate, non-overlapping floors. The existing aggregate line floor remains 89. No branch-arc floor is asserted.",
+    "compatibility_adapter": {
+      "date": "2026-10-27",
+      "scope": "Local adapter-only line measurement; not full-suite or hosted acceptance. Canonical package floors retain their historical counts.",
+      "command": "python -m pytest tests/test_identity_migration.py -q --cov=src/fep_lean --cov-report=xml:adapter-coverage.xml --cov-fail-under=0",
+      "tests_passed": 11,
+      "source_sha256": "5f521b136579b3726d85a46af8248f227563b14764ebde6029276373564d1c17",
+      "coverage_xml_sha256": "6efda451f2d437d4715fbc86ca8936c0e0abce3bfb2c9352b5e1e763a753956f",
+      "evidence": ".omo/evidence/identity-distribution/adapter-coverage.xml",
+      "lines_covered": 32,
+      "lines_valid": 32
+    }
   },
   "packages": {
-    "fep_lean": {"line_floor": 92, "baseline_lines_covered": 665, "baseline_lines_valid": 718},
-    "fep_lean.bridge": {"line_floor": 99, "baseline_lines_covered": 449, "baseline_lines_valid": 453},
-    "fep_lean.catalogue": {"line_floor": 90, "baseline_lines_covered": 1495, "baseline_lines_valid": 1661},
-    "fep_lean.catalogue.bodies": {"line_floor": 100, "baseline_lines_covered": 44, "baseline_lines_valid": 44},
-    "fep_lean.custody": {"line_floor": 93, "baseline_lines_covered": 1229, "baseline_lines_valid": 1311},
-    "fep_lean.formal": {"line_floor": 95, "baseline_lines_covered": 166, "baseline_lines_valid": 173},
-    "fep_lean.gauss": {"line_floor": 91, "baseline_lines_covered": 459, "baseline_lines_valid": 499},
-    "fep_lean.llm": {"line_floor": 90, "baseline_lines_covered": 566, "baseline_lines_valid": 623},
-    "fep_lean.methods": {"line_floor": 92, "baseline_lines_covered": 1323, "baseline_lines_valid": 1425},
-    "fep_lean.output": {"line_floor": 93, "baseline_lines_covered": 4199, "baseline_lines_valid": 4489},
-    "fep_lean.output.release_bundle": {"line_floor": 86, "baseline_lines_covered": 2616, "baseline_lines_valid": 3022},
-    "fep_lean.pipeline": {"line_floor": 92, "baseline_lines_covered": 184, "baseline_lines_valid": 198},
-    "fep_lean.prove2me": {"line_floor": 83, "baseline_lines_covered": 300, "baseline_lines_valid": 358},
-    "fep_lean.verification": {"line_floor": 92, "baseline_lines_covered": 3502, "baseline_lines_valid": 3791}
+    "fep_formal": {
+      "line_floor": 92,
+      "baseline_lines_covered": 665,
+      "baseline_lines_valid": 718
+    },
+    "fep_formal.bridge": {
+      "line_floor": 99,
+      "baseline_lines_covered": 449,
+      "baseline_lines_valid": 453
+    },
+    "fep_formal.catalogue": {
+      "line_floor": 90,
+      "baseline_lines_covered": 1495,
+      "baseline_lines_valid": 1661
+    },
+    "fep_formal.catalogue.bodies": {
+      "line_floor": 100,
+      "baseline_lines_covered": 44,
+      "baseline_lines_valid": 44
+    },
+    "fep_formal.custody": {
+      "line_floor": 93,
+      "baseline_lines_covered": 1229,
+      "baseline_lines_valid": 1311
+    },
+    "fep_formal.formal": {
+      "line_floor": 95,
+      "baseline_lines_covered": 166,
+      "baseline_lines_valid": 173
+    },
+    "fep_formal.gauss": {
+      "line_floor": 91,
+      "baseline_lines_covered": 459,
+      "baseline_lines_valid": 499
+    },
+    "fep_formal.llm": {
+      "line_floor": 90,
+      "baseline_lines_covered": 566,
+      "baseline_lines_valid": 623
+    },
+    "fep_formal.methods": {
+      "line_floor": 92,
+      "baseline_lines_covered": 1323,
+      "baseline_lines_valid": 1425
+    },
+    "fep_formal.output": {
+      "line_floor": 93,
+      "baseline_lines_covered": 4199,
+      "baseline_lines_valid": 4489
+    },
+    "fep_formal.output.release_bundle": {
+      "line_floor": 86,
+      "baseline_lines_covered": 2616,
+      "baseline_lines_valid": 3022
+    },
+    "fep_formal.pipeline": {
+      "line_floor": 92,
+      "baseline_lines_covered": 184,
+      "baseline_lines_valid": 198
+    },
+    "fep_formal.prove2me": {
+      "line_floor": 83,
+      "baseline_lines_covered": 300,
+      "baseline_lines_valid": 358
+    },
+    "fep_formal.verification": {
+      "line_floor": 92,
+      "baseline_lines_covered": 3502,
+      "baseline_lines_valid": 3791
+    },
+    "fep_lean": {
+      "line_floor": 100,
+      "baseline_lines_covered": 32,
+      "baseline_lines_valid": 32
+    }
   },
-  "empty_packages": ["fep_lean.data"]
+  "empty_packages": [
+    "fep_formal.data"
+  ]
 }

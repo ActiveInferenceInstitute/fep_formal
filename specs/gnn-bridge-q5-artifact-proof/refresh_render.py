@@ -11,8 +11,14 @@ from pathlib import Path
 
 from verify_native import VERIFICATION as verification
 
-from fep_lean.bridge.custody import fingerprint, write_json, write_text
-from fep_lean.bridge.operations import DOCUMENTS, PIN, check_sources, emit, owner_roster
+from fep_formal.bridge.custody import fingerprint, write_json, write_text
+from fep_formal.bridge.operations import (
+    DOCUMENTS,
+    PIN,
+    check_sources,
+    emit,
+    owner_roster,
+)
 
 RENDER_CODE = """
 import sys

@@ -8,20 +8,20 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.catalogue import SemanticValidationError
-from fep_lean.catalogue.relations import (
+from fep_formal.catalogue import SemanticValidationError
+from fep_formal.catalogue.relations import (
     CapabilityStatus,
     EdgeKind,
     FormalismGraph,
     load_formalism_graph,
 )
-from fep_lean.catalogue.schema import load_catalogue_metadata
-from fep_lean.formal.declarations import (
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.formal.declarations import (
     all_formal_theorem_declarations,
     composed_theorem_sources,
     formal_theorem_modules,
 )
-from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_formal.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from tests._support.lean_module_contract import (
     reverse_information_entries,
     reverse_obligation_edges,
@@ -34,7 +34,7 @@ SYNTHETIC_ROSTER = ("fep-001", "fep-002", "fep-003")
 def test_attributed_public_declarations_and_source_blocks_remain_visible(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.formal import declarations
+    from fep_formal.formal import declarations
 
     source = """namespace Fixture
 -- @[simp] theorem commentOnly : True := by trivial

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
 import runpy
 import subprocess
@@ -12,14 +11,15 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.verification import formalism_audit
+from fep_formal._paths import resolve_environment
+from fep_formal.verification import formalism_audit
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = PROJECT_ROOT / "lean"
-FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "formal"
-BODIES_ROOT = PROJECT_ROOT / "src" / "fep_lean" / "catalogue" / "bodies"
+FORMAL_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "formal"
+BODIES_ROOT = PROJECT_ROOT / "src" / "fep_formal" / "catalogue" / "bodies"
 
 
 def _compile(source: Path) -> subprocess.CompletedProcess[str]:
@@ -258,7 +258,7 @@ end NativeEntropyConsumer
             missing="raise", context="the Mathlib-only native entropy acceptance probe"
         ),
     )
-    if os.environ.get("FEP_LEAN_NATIVE_ENTROPY_EVIDENCE") == "1":
+    if resolve_environment("FEP_FORMAL_NATIVE_ENTROPY_EVIDENCE") == "1":
         evidence = PROJECT_ROOT / "output" / "native-entropy-consumer.log"
         evidence.parent.mkdir(parents=True, exist_ok=True)
         evidence.write_text(

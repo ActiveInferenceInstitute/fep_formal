@@ -11,22 +11,22 @@ from typing import cast
 
 import pytest
 
-from fep_lean.catalogue.coverage import build_formalism_coverage
-from fep_lean.output import formal_kernel_dashboard, formalism_atlas
-from fep_lean.output.formal_kernel_dashboard import (
+from fep_formal.catalogue.coverage import build_formalism_coverage
+from fep_formal.output import formal_kernel_dashboard, formalism_atlas
+from fep_formal.output.formal_kernel_dashboard import (
     formal_kernel_dashboard_drift,
     write_formal_kernel_dashboard,
 )
-from fep_lean.output.formalism_atlas import (
+from fep_formal.output.formalism_atlas import (
     atlas_projection_drift,
     write_formalism_atlas,
 )
-from fep_lean.output.formalism_presentation import (
+from fep_formal.output.formalism_presentation import (
     FormalismPresentation,
     build_formalism_presentation,
     humanize_formalism_identifier,
 )
-from fep_lean.verification.numerical_witnesses import (
+from fep_formal.verification.numerical_witnesses import (
     NON_PROOF_EVIDENCE,
     evaluate_numerical_witnesses,
 )
@@ -35,7 +35,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_reviewed_candidate_release_seal_matches_actual_owner_join() -> None:
-    from fep_lean.output.formalism_presentation import RELEASE_SEAL
+    from fep_formal.output.formalism_presentation import RELEASE_SEAL
 
     presentation = build_formalism_presentation(PROJECT_ROOT)
     actual = {
@@ -125,11 +125,11 @@ def test_renderers_depend_only_on_the_shared_presentation_join(
         formal_kernel_dashboard, "build_formalism_presentation", _join_stub
     )
     monkeypatch.setattr(
-        "fep_lean.catalogue.coverage.build_formalism_coverage",
+        "fep_formal.catalogue.coverage.build_formalism_coverage",
         _poison_canonical_source,
     )
     monkeypatch.setattr(
-        "fep_lean.verification.numerical_witnesses.evaluate_numerical_witnesses",
+        "fep_formal.verification.numerical_witnesses.evaluate_numerical_witnesses",
         _poison_canonical_source,
     )
 
@@ -180,10 +180,10 @@ def test_presentation_resolves_witnesses_against_the_supplied_checkout(
     ):
         shutil.copy2(PROJECT_ROOT / "config" / name, config / name)
     shutil.copytree(
-        PROJECT_ROOT / "src" / "fep_lean" / "formal",
-        tmp_path / "src" / "fep_lean" / "formal",
+        PROJECT_ROOT / "src" / "fep_formal" / "formal",
+        tmp_path / "src" / "fep_formal" / "formal",
     )
-    predictive = tmp_path / "src" / "fep_lean" / "formal" / "predictive_coding.lean"
+    predictive = tmp_path / "src" / "fep_formal" / "formal" / "predictive_coding.lean"
     source = predictive.read_text(encoding="utf-8")
     source = source.replace(
         "theorem predictionError_update", "theorem predictionError_update_removed", 1

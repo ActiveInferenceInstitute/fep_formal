@@ -21,7 +21,7 @@ RESOURCES = {
 
 def validate_upstream_passports(root: Path) -> None:
     """Bind authored result identities to the reviewed lock without a corpus checkout."""
-    from fep_lean.methods.model import PositioningError, load_yaml
+    from fep_formal.methods.model import PositioningError, load_yaml
 
     policy = load_yaml(root / RESOURCES["positioning.yaml"])
     table = policy.get("cross_corpus")
@@ -69,10 +69,10 @@ def validate_upstream_passports(root: Path) -> None:
 def resource_projection_drift(root: Path) -> tuple[Path, ...]:
     """Compare exact authored bytes; never repair a drifted generated copy."""
     return tuple(
-        root / "src/fep_lean/data" / name
+        root / "src/fep_formal/data" / name
         for name, owner in RESOURCES.items()
-        if not (root / "src/fep_lean/data" / name).is_file()
-        or (root / "src/fep_lean/data" / name).read_bytes()
+        if not (root / "src/fep_formal/data" / name).is_file()
+        or (root / "src/fep_formal/data" / name).read_bytes()
         != (root / owner).read_bytes()
     )
 
@@ -93,7 +93,7 @@ def main() -> int:
         print("methods package resources are current")
         return 0
     for name, owner in RESOURCES.items():
-        (ROOT / "src/fep_lean/data" / name).write_bytes((ROOT / owner).read_bytes())
+        (ROOT / "src/fep_formal/data" / name).write_bytes((ROOT / owner).read_bytes())
     print("wrote methods package resources from canonical owners")
     return 0
 

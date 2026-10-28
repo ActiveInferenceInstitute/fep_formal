@@ -12,11 +12,11 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.output.evidence import _source_snapshot, validate_native_lean_receipt
-from fep_lean.verification.lean_verifier import VerifyResult, verify_catalogue
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.output.evidence import _source_snapshot, validate_native_lean_receipt
+from fep_formal.verification.lean_verifier import VerifyResult, verify_catalogue
 
-CI_NATIVE_RECEIPT_ENV = "FEP_LEAN_CI_NATIVE_RECEIPT"
+CI_NATIVE_RECEIPT_ENV = "FEP_FORMAL_CI_NATIVE_RECEIPT"
 
 
 def produce_native_catalogue_receipt(root: Path, flag: str) -> dict[str, Any]:

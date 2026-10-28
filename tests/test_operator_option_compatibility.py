@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.bridge import cli as bridge_cli
+from fep_formal.bridge import cli as bridge_cli
 
 
 @pytest.mark.parametrize(

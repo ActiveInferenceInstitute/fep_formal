@@ -8,7 +8,7 @@ relations-ledger review entries recorded for every offender row on 2026-09-22.
 The [historical 2026-09-09 scope](https://github.com/ActiveInferenceInstitute/fep_formal/blob/cd4a84cd91d884d6952b2b2f1b0289b2bdfd36ed/SCOPE-2026-09-09.md)
 item SRC 1 proposed tightening the
 theorem-witness endpoint check in
-`src/fep_lean/catalogue/coverage.py:157-164`: instead of accepting any mention
+`src/fep_formal/catalogue/coverage.py:157-164`: instead of accepting any mention
 of each endpoint's topic namespace, require a qualified reference to each
 endpoint's reviewed primary theorem from
 [config/theorem_maturity.yaml](../config/theorem_maturity.yaml). A prior dry-run
@@ -154,8 +154,8 @@ was needed because every topic received a witnessed edge.
 ## FORM-S10: fep-034 → fep-047 conceptual relation (2026-10-23)
 
 Reviewed against source `22dddbdabb32fece60038e08c849f8fd7dca3a9d`, including
-`src/fep_lean/catalogue/bodies/core_active_inference.py` and
-`src/fep_lean/formal/temporal_inference.lean`. Keep the edge **conceptual**;
+`src/fep_formal/catalogue/bodies/core_active_inference.py` and
+`src/fep_formal/formal/temporal_inference.lean`. Keep the edge **conceptual**;
 this review supplies no cross-endpoint Lean witness or maturity promotion.
 
 The actual fep-034 primary, `fep034_filter_joint_reconstruction`, identifies the

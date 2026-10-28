@@ -4,11 +4,11 @@
 
 ```bash
 uv sync --locked --extra dev
-uv run python -c "from fep_lean.catalogue import FEPTopicCatalogue; print(len(FEPTopicCatalogue.default().topics))"
+uv run python -c "from fep_formal.catalogue import FEPTopicCatalogue; print(len(FEPTopicCatalogue.default().topics))"
 ```
 
-The distribution uses a single `fep_lean` namespace under `src/fep_lean/`.
-Use the `fep_lean` namespace for imports. The isolated-wheel test enforces
+The distribution uses a single `fep_formal` namespace under `src/fep_formal/`.
+Use the `fep_formal` namespace for imports. The isolated-wheel test enforces
 this boundary.
 
 ## Profile an isolated runtime
@@ -28,13 +28,13 @@ uv venv --python 3.15 "$fep_profile_dir/venv"
 uv pip install --python "$fep_profile_dir/venv/bin/python" "$fep_profile_dir"/dist/*.whl
 uv pip freeze --python "$fep_profile_dir/venv/bin/python" > "$fep_profile_dir/installed.txt"
 cat > "$fep_profile_dir/profile_query.py" <<'PY'
-from fep_lean.methods import load_packaged_formalism_query
+from fep_formal.methods import load_packaged_formalism_query
 model = load_packaged_formalism_query()
 print(model.as_dict()["counts"])
 PY
 (
   cd "$fep_profile_dir"
-  env -u FEP_LEAN_PROJECT_ROOT "$fep_profile_dir/venv/bin/python" -I \
+  env -u FEP_FORMAL_PROJECT_ROOT "$fep_profile_dir/venv/bin/python" -I \
     -m profiling.tracing -o methods.pstats profile_query.py
 )
 "$fep_profile_dir/venv/bin/python" -c \
@@ -65,13 +65,13 @@ their own evidence boundaries.
 - `config/formalism_relations.yaml`: explicit derivational formal,
   non-implicational formal-pairing, conceptual, and blocker relations plus
   retained capability status/evidence.
-- `src/fep_lean/catalogue/bodies/*.py`: family-owned canonical Lean bodies;
+- `src/fep_formal/catalogue/bodies/*.py`: family-owned canonical Lean bodies;
   `registry.py` validates their sole ordered union and `latex.py` derives
   theorem signatures.
-- `src/fep_lean/formal/`: reusable finite and measure-theoretic foundations plus
+- `src/fep_formal/formal/`: reusable finite and measure-theoretic foundations plus
   exact cross-topic proofs; `manifest.py` owns foundation, leaf-composition,
   and aggregate roles.
-- `config/topics.yaml`, packaged `src/fep_lean/data/topics.yaml`, aggregate
+- `config/topics.yaml`, packaged `src/fep_formal/data/topics.yaml`, aggregate
   Lean, maturity audit, and coverage files: generated projections.
 
 Every body keeps its `namespace FEPNNN ... end FEPNNN` wrapper and may declare
@@ -86,8 +86,8 @@ uv run python scripts/_maint_build_fep_all_lean.py
 uv run python scripts/_maint_build_formal_modules.py
 uv run python scripts/theorem_maturity_audit.py
 uv run python scripts/build_formalism_coverage.py
-uv run fep-lean atlas
-uv run fep-lean dashboard
+uv run fep-formal atlas
+uv run fep-formal dashboard
 ```
 
 The required verification list (`--check` gates, audits, tests, lint, native
@@ -95,7 +95,7 @@ Lean) is owned by the "Required checks" block in
 [`AGENTS.md`](../AGENTS.md#required-checks); it is not repeated here, and
 `tests/test_check_inventory.py` keeps it in step with `.github/workflows/ci.yml`.
 
-Native Lean acceptance (`lake build FepSketches`, `fep-lean verify`, the
+Native Lean acceptance (`lake build FepSketches`, `fep-formal verify`, the
 formalism audit) is the expensive semantic compiler boundary; its commands are in the same
 [required-checks block](../AGENTS.md#required-checks).
 
@@ -104,9 +104,9 @@ roster; the formalism audit separately covers the maintained formal modules
 and reviewed declarations. A credentialed full run remains a distinct gate:
 
 ```bash
-uv run fep-lean preflight
-uv run fep-lean run --topic fep-001
-uv run fep-lean run
+uv run fep-formal preflight
+uv run fep-formal run --topic fep-001
+uv run fep-formal run
 ```
 
 Never inject credentials into source, tests, or generated evidence.
@@ -115,16 +115,16 @@ Never inject credentials into source, tests, or generated evidence.
 
 | Area | Path | Contract |
 | --- | --- | --- |
-| Catalog | `src/fep_lean/catalogue/` | typed authoring, loading, audits, coverage |
-| Formal kernel | `src/fep_lean/formal/` | reusable finite carriers, cross-topic proofs, and exact Lake projection |
-| Bridge | `src/fep_lean/bridge/` | typed cross-repository interchange, AST analysis and custody validation |
-| Custody | `src/fep_lean/custody/` | census, staged refresh and bounded orchestration |
-| Methods | `src/fep_lean/methods/` | portable mathematical contracts, positioning and transfer diagnostics |
-| Verification | `src/fep_lean/verification/` | read-only capability probes, Lean subprocesses, declaration/axiom audit |
-| Hermes | `src/fep_lean/llm/` | provider request, retry, and response validation |
-| Sessions | `src/fep_lean/gauss/` | SQLite ownership and per-topic runner |
-| Pipeline | `src/fep_lean/pipeline/` | strict `catalogue`/`full` orchestration |
-| Output | `src/fep_lean/output/` | receipts, reports, figures, rendering, atlas, and numerical witness dashboard |
+| Catalog | `src/fep_formal/catalogue/` | typed authoring, loading, audits, coverage |
+| Formal kernel | `src/fep_formal/formal/` | reusable finite carriers, cross-topic proofs, and exact Lake projection |
+| Bridge | `src/fep_formal/bridge/` | typed cross-repository interchange, AST analysis and custody validation |
+| Custody | `src/fep_formal/custody/` | census, staged refresh and bounded orchestration |
+| Methods | `src/fep_formal/methods/` | portable mathematical contracts, positioning and transfer diagnostics |
+| Verification | `src/fep_formal/verification/` | read-only capability probes, Lean subprocesses, declaration/axiom audit |
+| Hermes | `src/fep_formal/llm/` | provider request, retry, and response validation |
+| Sessions | `src/fep_formal/gauss/` | SQLite ownership and per-topic runner |
+| Pipeline | `src/fep_formal/pipeline/` | strict `catalogue`/`full` orchestration |
+| Output | `src/fep_formal/output/` | receipts, reports, figures, rendering, atlas, and numerical witness dashboard |
 
 Use type hints on public APIs, immutable dataclasses for source records,
 structured results at subprocess/network boundaries, and temporary paths in
@@ -147,8 +147,8 @@ that scientific review and its native acceptance plan are explicit.
 ## Source-owner roster expansion
 
 The report and native receipts bind a versioned owner roster
-(`SOURCE_OWNER_ROSTER` in `src/fep_lean/output/provenance.py`), not a
-recursive checkout snapshot. Adding a file under `src/fep_lean/**/*.py` or
+(`SOURCE_OWNER_ROSTER` in `src/fep_formal/output/provenance.py`), not a
+recursive checkout snapshot. Adding a file under `src/fep_formal/**/*.py` or
 `scripts/*.py` fails receipt validation fail-closed until the file is
 reviewed into the roster and `OWNER_MANIFEST_VERSION` is bumped. The bump
 orphans every retained receipt that pins the previous version, so roster
@@ -274,7 +274,7 @@ bundle validation and the explicit publication boundary still apply.
 
 ## Custody refresh orchestration
 
-`uv run fep-lean custody <census|apply|refresh>` is the H2.7 custody machinery adapter.
+`uv run fep-formal custody <census|apply|refresh>` is the H2.7 custody machinery adapter.
 `census` is a read-only drift report; `apply` performs one staged 14-phase run into
 `--output-dir` (required, staged-only) with no repo-side writes; `refresh` composes
 the guarded refresh loop.
@@ -306,12 +306,12 @@ is a stop requiring adjudication, never a rewrite.
 every changed path matching the journal's expected post-commit digests, clean owner snapshot,
 census/gate green at the new tip, and one verification apply round with zero mutations and
 zero directives (otherwise the commit is not the agreed candidate — stop). Journal paths
-touching manuscript/render inputs (`manuscript/`, `src/fep_lean/output/rendering.py`,
+touching manuscript/render inputs (`manuscript/`, `src/fep_formal/output/rendering.py`,
 `scripts/render_publication.py`, `scripts/render_manuscript.py`, `docs/`) stop at the
 render-acceptance barrier with state `awaiting-render-acceptance` before any capture.
 Otherwise the full verify set runs at the committed tip — the mode where the writer step
 `scripts/audit_formalisms.py --receipt output/formalism-audit.json` legitimately runs —
-then, with `--native`, exactly one sanctioned `fep-lean verify --fail-on-warnings` capture
+then, with `--native`, exactly one sanctioned `fep-formal verify --fail-on-warnings` capture
 to `output/native-verification.json`, independently validated by
 `validate_native_lean_receipt` to `native_claim_ready`, with post-capture dirty/HEAD/owner
 rechecks.
@@ -331,14 +331,14 @@ context is inside `details`. Successful structured payloads retain their bytes.
 
 ## Bounded publication capture
 
-`fep-lean publication-capture` is an explicit local capture action. Planning
+`fep-formal publication-capture` is an explicit local capture action. Planning
 reads the checkout and an explicitly selected rendering template without
-starting tools or writing a journal. Run `fep-lean catalogue` first so the
+starting tools or writing a journal. Run `fep-formal catalogue` first so the
 paired generated manuscript members exist; capture refreshes their values
 after native acceptance:
 
 ```bash
-uv run fep-lean publication-capture --template /path/to/template --plan
+uv run fep-formal publication-capture --template /path/to/template --plan
 ```
 
 Capture runs native verification, formalism audit, render, Python, numerical,
@@ -357,9 +357,9 @@ inputs and output copies, compares their exact bytes, and rejects unexpected
 members. Capture declares each output and bundles require its recorded payload.
 
 ```bash
-uv run fep-lean publication-capture --template /path/to/template \
+uv run fep-formal publication-capture --template /path/to/template \
   --journal /tmp/fep-publication-capture --source-date-epoch 0 --timeout 21600
-uv run fep-lean publication-capture --template /path/to/template \
+uv run fep-formal publication-capture --template /path/to/template \
   --journal /tmp/fep-publication-capture --source-date-epoch 0 --timeout 21600 --resume
 ```
 

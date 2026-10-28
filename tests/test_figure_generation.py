@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.output.figures import (
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.output.figures import (
     _write_bar_chart,
     _write_maturity_heatmap,
     _write_pipeline_dag,
@@ -31,8 +31,8 @@ def test_write_all_catalogue_figures(tmp_path: Path) -> None:
 def test_write_all_catalogue_figures_serial_env(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    """``FEP_LEAN_FIGURES_MP=0`` exercises in-process sequential path."""
-    monkeypatch.setenv("FEP_LEAN_FIGURES_MP", "0")
+    """``FEP_FORMAL_FIGURES_MP=0`` exercises in-process sequential path."""
+    monkeypatch.setenv("FEP_FORMAL_FIGURES_MP", "0")
     c = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     paths = write_all_catalogue_figures(c, tmp_path)
     assert len(paths) == 9
@@ -118,7 +118,7 @@ def test_area_tick_labels_preserve_counts_and_do_not_overlap(
     import matplotlib.pyplot as plt
     from matplotlib.figure import Figure
 
-    from fep_lean.output import figures
+    from fep_formal.output import figures
 
     values = {
         "FEP": 37,

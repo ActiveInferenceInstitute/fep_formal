@@ -10,9 +10,10 @@ from pathlib import Path
 import pytest
 import yaml
 
-from fep_lean.catalogue.relations import EdgeKind, load_formalism_graph
-from fep_lean.catalogue.semantics import SemanticValidationError
-from fep_lean.output.formalism_atlas import _obligation_markup
+from fep_formal.catalogue.relations import EdgeKind, load_formalism_graph
+from fep_formal.catalogue.semantics import SemanticValidationError
+from fep_formal.output.formalism_atlas import _obligation_markup
+from tests._support.landauer_epoch import current_source_owner
 from tests._support.lean_module_contract import (
     historical_core_prose,
     obligation_review,
@@ -254,7 +255,9 @@ def test_fixture_authenticates_exact_bytes(tmp_path):
 @pytest.mark.parametrize("mutation", ["missing", "duplicate", "old_proof"])
 def test_core_inverse_seals_all_old_proofs(mutation):
     review = obligation_review(ROOT)
-    source = historical_core_prose((ROOT / review["core_owner"]).read_text())
+    source = historical_core_prose(
+        (ROOT / current_source_owner(review["core_owner"])).read_text()
+    )
     block = review["added_core_block"]
     assert source.count(block) == 1
     if mutation == "missing":
@@ -379,7 +382,7 @@ def test_supporting_pairing_native_boundary_controls(tmp_path):
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert not result.stderr
-    from fep_lean.verification.formalism_audit import parse_axiom_output
+    from fep_formal.verification.formalism_audit import parse_axiom_output
 
     expected = ("FEPComposed.fep016_quadratic_pairs_fep032_descent",) + tuple(
         "FEP105RouteControls." + name

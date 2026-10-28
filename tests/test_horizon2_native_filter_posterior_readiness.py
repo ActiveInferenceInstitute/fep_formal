@@ -9,8 +9,8 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal.manifest import FORMAL_MODULES
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.formal.manifest import FORMAL_MODULES
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lean435_migration import assert_historical_repair_bindings
 from tests._support.lean_runner import run_lean_probe
 
@@ -40,8 +40,8 @@ SOURCE_BOUND_PATHS = (
     "specs/done/horizon-2-smooth-stochastic/readiness/acceptance.json",
     "specs/done/horizon-2-smooth-stochastic/readiness/matrix.yaml",
     "specs/done/horizon-2-smooth-stochastic/readiness/probes/08_gaussian_conditioning.lean",
-    "src/fep_lean/formal/gaussian_information_geometry.lean",
-    "src/fep_lean/formal/scalar_gaussian_semigroup.lean",
+    "src/fep_formal/formal/gaussian_information_geometry.lean",
+    "src/fep_formal/formal/scalar_gaussian_semigroup.lean",
     "specs/done/horizon-2-smooth-stochastic/slices/06a-r0-native-posterior.md",
     "specs/done/horizon-2-smooth-stochastic/spikes/06a_native_filter_posterior.lean",
     "tests/test_horizon2_native_filter_posterior_readiness.py",
@@ -220,7 +220,7 @@ def test_h2_6a_r0_spike_compiles_warning_free(tmp_path: Path) -> None:
     probe.write_text(SPIKE.read_text(encoding="utf-8"), encoding="utf-8")
     result = run_lean_probe(
         probe,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         cwd=LEAN_ROOT,
         timeout_s=1800,
     )
@@ -240,7 +240,7 @@ def test_h2_6a_r0_public_theorems_use_only_standard_axioms(tmp_path: Path) -> No
     probe.write_text(f"{source}\n{prints}\n", encoding="utf-8")
     result = run_lean_probe(
         probe,
-        import_root=PROJECT_ROOT / "src" / "fep_lean" / "formal",
+        import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
         cwd=LEAN_ROOT,
         timeout_s=1800,
     )

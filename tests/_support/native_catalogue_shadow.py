@@ -10,7 +10,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from fep_lean.output import validate_native_lean_receipt
+from fep_formal.output import validate_native_lean_receipt
 
 
 def compare_native_catalogue_receipts(

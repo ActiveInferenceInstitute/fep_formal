@@ -23,11 +23,12 @@ from typing import Any
 
 import pytest
 
-from fep_lean.custody import apply as apply_module
-from fep_lean.custody import refresh as refresh_module
-from fep_lean.output.provenance import CONFIG_OWNER_FILES, SOURCE_OWNER_FILES
-from fep_lean.verification import horizon_acceptance as acceptance
-from fep_lean.verification.horizon_acceptance import (
+from fep_formal.custody import apply as apply_module
+from fep_formal.custody import refresh as refresh_module
+from fep_formal.formal.manifest import formal_resource_relative_paths
+from fep_formal.output.provenance import CONFIG_OWNER_FILES, SOURCE_OWNER_FILES
+from fep_formal.verification import horizon_acceptance as acceptance
+from fep_formal.verification.horizon_acceptance import (
     CURRENT_FILES,
     MANDATORY_TEST_FILES,
     PIN_FILES,
@@ -75,14 +76,14 @@ PY_DRIFT_MARKER = b"\n# custody fixture drift\n"
 
 JSON_WHITESPACE_DRIFT = b"\n"
 
-# The fep-lean CLI validates its project root against these checkout-bound
-# markers (src/fep_lean/_paths.py); the fixture root carries copies so the
+# The fep-formal CLI validates its project root against these checkout-bound
+# markers (src/fep_formal/_paths.py); the fixture root carries copies so the
 # custody CLI subcommands dispatch instead of refusing the checkout check.
 _CHECKOUT_ONLY_FILES = (
     "config/topics.yaml",
     "config/settings.yaml",
     "manuscript/config.yaml",
-    "src/fep_lean/__init__.py",
+    "src/fep_formal/__init__.py",
 )
 
 
@@ -156,6 +157,29 @@ def _consumed_paths(record: Any) -> set[str]:
     return paths
 
 
+def _logical_source(source_root: Path, relative: str) -> Path:
+    """Resolve a historical owner only for disposable fixture projection.
+
+    Real files, including the compatibility shim, retain their exact identity.
+    Missing legacy owners must have a currently sealed canonical counterpart;
+    the caller keeps the historical key when copying and rebinding its digest.
+    """
+    assert not Path(relative).is_absolute() and ".." not in Path(relative).parts
+    path = source_root / relative
+    if (
+        not path.exists()
+        and not path.is_symlink()
+        and relative.startswith("src/fep_lean/")
+    ):
+        canonical = relative.replace("src/fep_lean/", "src/fep_formal/", 1)
+        owners = set(SOURCE_OWNER_FILES) | set(CONFIG_OWNER_FILES)
+        owners.update(path.as_posix() for path in formal_resource_relative_paths())
+        assert canonical in owners, ("unsealed historical fixture owner", relative)
+        path = source_root / canonical
+    assert path.is_file() and not path.is_symlink(), relative
+    return path
+
+
 def declared_closure(source_root: Path) -> tuple[str, ...]:
     """Bounded transitive dependencies explicitly consumed by custody validators."""
     _historical_r0_bytes(source_root)
@@ -174,9 +198,7 @@ def declared_closure(source_root: Path) -> tuple[str, ...]:
         pending.remove(relative)
         if relative in included:
             continue
-        path = source_root / relative
-        assert not Path(relative).is_absolute() and ".." not in Path(relative).parts
-        assert path.is_file() and not path.is_symlink(), relative
+        path = _logical_source(source_root, relative)
         included.add(relative)
         if path.suffix == ".json":
             pending |= _consumed_paths(json.loads(path.read_text())) - included
@@ -564,7 +586,7 @@ def fixture_root(tmp_path: Path, monkeypatch: pytest.MonkeyPatch | None = None) 
     for relative in declared_closure(REPO_ROOT):
         destination = root / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(REPO_ROOT / relative, destination)
+        shutil.copy2(_logical_source(REPO_ROOT, relative), destination)
     # The archived custody matrix belongs to its original compiler epoch.
     # Keep this synthetic unit fixture independent of live toolchain upgrades.
     pins = json.loads(

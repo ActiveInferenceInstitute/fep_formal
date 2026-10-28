@@ -9,9 +9,9 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.bridge import custody, operations
-from fep_lean.bridge.certificates import compare, render_markdown
-from fep_lean.bridge.cli import add_arguments, run
+from fep_formal.bridge import custody, operations
+from fep_formal.bridge.certificates import compare, render_markdown
+from fep_formal.bridge.cli import add_arguments, run
 from tests import test_gnn_bridge_operations as bridge_fixtures
 from tests.test_gnn_bridge_operations import (
     document,

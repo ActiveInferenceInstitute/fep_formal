@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from fep_lean.verification.horizon_acceptance import (
+from fep_formal.verification.horizon_acceptance import (
     TERMINAL_RECEIPT,
     validate_continuous_eligibility,
     write_explicit_output,

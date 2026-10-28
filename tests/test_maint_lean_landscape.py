@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal.manifest import FORMAL_MODULES, FormalModuleRole
+from fep_formal.formal.manifest import FORMAL_MODULES, FormalModuleRole
 from tests._support.lean_module_contract import topic_namespace_owner_modules
 
 PROJ = Path(__file__).resolve().parent.parent

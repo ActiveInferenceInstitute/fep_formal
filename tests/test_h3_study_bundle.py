@@ -187,7 +187,7 @@ def test_failed_assembly_retains_frozen_source_rejection_before_any_draw(
     output = tmp_path / "failed-assembly"
     with pytest.raises(
         bundle.StudyRejection,
-        match=r"^stale input: src/fep_lean/formal/fin4_gaussian_semigroup\.lean$",
+        match=r"^missing input: src/fep_lean/formal/fin4_gaussian_semigroup\.lean$",
     ):
         bundle.assemble(
             ROOT, "specs/h3-reference-study/output/absent-descriptor.json", output
@@ -342,7 +342,7 @@ def test_reproduction_timeout_retains_real_child_raw_streams_and_failed_record(
     bundle: ModuleType, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """Explicit child fixture tests retention, not installation or scientific execution."""
-    from fep_lean.verification._subprocess import run_process_group
+    from fep_formal.verification._subprocess import run_process_group
 
     raw, _, _ = toy_archive(bundle)
     monkeypatch.setattr(
@@ -593,7 +593,7 @@ def test_reproduction_parent_snapshots_and_final_seal_fail_closed(
     failure: str | None,
 ) -> None:
     """Real stdlib children test custody; installation/native/science are explicit fixtures."""
-    from fep_lean.verification._subprocess import run_process_group
+    from fep_formal.verification._subprocess import run_process_group
 
     array = io.BytesIO()
     np.save(array, np.asarray([2.0], dtype="<f8"), allow_pickle=False)
@@ -618,7 +618,7 @@ sys.exit(1)
 """
     fixture_sources = {
         bundle.BASE + "run_synthetic.py": producer,
-        "src/fep_lean/__init__.py": b"# explicit installed source fixture\n",
+        "src/fep_formal/__init__.py": b"# explicit installed source fixture\n",
     }
     descriptor_path = bundle.BASE + "output/descriptor.json"
     descriptor = {
@@ -681,10 +681,10 @@ sys.exit(1)
             name = "locked-install"
             assert "--locked" in command and "--no-editable" in command
             installed_file = (
-                Path(env["UV_PROJECT_ENVIRONMENT"]) / "lib/fep_lean/__init__.py"
+                Path(env["UV_PROJECT_ENVIRONMENT"]) / "lib/fep_formal/__init__.py"
             )
             installed_file.parent.mkdir(parents=True)
-            installed_file.write_bytes(fixture_sources["src/fep_lean/__init__.py"])
+            installed_file.write_bytes(fixture_sources["src/fep_formal/__init__.py"])
             actual_command = [
                 sys.executable,
                 "-I",
@@ -714,7 +714,7 @@ sys.exit(1)
                 "numpy": "2.5.1",
                 "package": str(installed_file),
                 "source_sha256": {
-                    "src/fep_lean/__init__.py": bundle.digest(
+                    "src/fep_formal/__init__.py": bundle.digest(
                         installed_file.read_bytes()
                     )
                 },

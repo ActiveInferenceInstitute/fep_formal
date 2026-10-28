@@ -1,4 +1,4 @@
-"""Test the installed ``fep_lean`` package surface."""
+"""Test the installed ``fep_formal`` package surface."""
 
 from __future__ import annotations
 
@@ -11,37 +11,37 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 def test_root_package_init_importable():
     """The distribution name is also the one importable root package."""
-    import fep_lean
+    import fep_formal
 
-    assert fep_lean.__version__
-    assert hasattr(fep_lean, "FEPTopicCatalogue")
-    assert hasattr(fep_lean, "LeanVerifier")
-    assert hasattr(fep_lean, "HermesExplainer")
-    assert hasattr(fep_lean, "FEPPipeline")
-    assert hasattr(fep_lean, "Reporter")
-    assert hasattr(fep_lean, "SemanticDisposition")
-    assert hasattr(fep_lean, "TheoremMaturityAudit")
-    assert hasattr(fep_lean, "validate_native_lean_receipt")
-    assert hasattr(fep_lean, "render_manuscript")
-    assert hasattr(fep_lean, "manuscript_projection_drift")
-    assert hasattr(fep_lean, "build_formalism_atlas")
-    assert hasattr(fep_lean, "build_formal_kernel_dashboard")
-    assert hasattr(fep_lean, "run_formalism_audit")
-    assert len(fep_lean.__all__) > 10
+    assert fep_formal.__version__
+    assert hasattr(fep_formal, "FEPTopicCatalogue")
+    assert hasattr(fep_formal, "LeanVerifier")
+    assert hasattr(fep_formal, "HermesExplainer")
+    assert hasattr(fep_formal, "FEPPipeline")
+    assert hasattr(fep_formal, "Reporter")
+    assert hasattr(fep_formal, "SemanticDisposition")
+    assert hasattr(fep_formal, "TheoremMaturityAudit")
+    assert hasattr(fep_formal, "validate_native_lean_receipt")
+    assert hasattr(fep_formal, "render_manuscript")
+    assert hasattr(fep_formal, "manuscript_projection_drift")
+    assert hasattr(fep_formal, "build_formalism_atlas")
+    assert hasattr(fep_formal, "build_formal_kernel_dashboard")
+    assert hasattr(fep_formal, "run_formalism_audit")
+    assert len(fep_formal.__all__) > 10
 
 
 def test_runtime_version_matches_distribution_metadata() -> None:
     """The public runtime version must not drift from the wheel metadata."""
-    import fep_lean
+    import fep_formal
 
     metadata = tomllib.loads(
         (PROJECT_ROOT / "pyproject.toml").read_text(encoding="utf-8")
     )
-    assert fep_lean.__version__ == metadata["project"]["version"]
+    assert fep_formal.__version__ == metadata["project"]["version"]
 
 
 def test_catalogue_imports():
-    from fep_lean.catalogue import (
+    from fep_formal.catalogue import (
         FEPTopicCatalogue,
         SemanticDisposition,
         TheoremMaturityAudit,
@@ -53,13 +53,13 @@ def test_catalogue_imports():
 
 
 def test_verification_imports():
-    from fep_lean.verification.lean_verifier import LeanVerifier
+    from fep_formal.verification.lean_verifier import LeanVerifier
 
     assert LeanVerifier is not None
 
 
 def test_mathematical_methods_public_import_surface():
-    from fep_lean import methods
+    from fep_formal import methods
 
     expected = {
         "BoundaryProbeError",
@@ -93,19 +93,19 @@ def test_mathematical_methods_public_import_surface():
 
 
 def test_gauss_imports():
-    from fep_lean.gauss.client import OpenGaussClient
+    from fep_formal.gauss.client import OpenGaussClient
 
     assert OpenGaussClient is not None
 
 
 def test_llm_imports():
-    from fep_lean.llm.hermes import HermesExplainer
+    from fep_formal.llm.hermes import HermesExplainer
 
     assert HermesExplainer is not None
 
 
 def test_output_imports():
-    from fep_lean.output import (
+    from fep_formal.output import (
         ManuscriptRenderError,
         ReleaseBundleError,
         build_formal_kernel_dashboard,
@@ -147,13 +147,13 @@ def test_output_imports():
     assert callable(write_formal_kernel_dashboard)
     assert issubclass(ManuscriptRenderError, ValueError)
     assert issubclass(ReleaseBundleError, ValueError)
-    from fep_lean.output.reporter import Reporter
+    from fep_formal.output.reporter import Reporter
 
     assert Reporter is not None
 
 
 def test_pipeline_imports():
-    from fep_lean.pipeline.core import FEPPipeline
+    from fep_formal.pipeline.core import FEPPipeline
 
     assert FEPPipeline is not None
 
@@ -167,20 +167,20 @@ def _layer_import_violations(source: str, *, release_owner: bool = False) -> lis
     for node in ast.walk(tree):
         if isinstance(node, ast.ImportFrom):
             module = node.module or ""
-            if module == "fep_lean.cli" or (
-                module == "fep_lean"
+            if module == "fep_formal.cli" or (
+                module in {"fep_formal", "fep_lean"}
                 and any(alias.name == "cli" for alias in node.names)
             ):
                 violations.append("CLI dependency")
             if not release_owner and (
-                module.startswith("fep_lean.output.release_bundle._")
+                module.startswith("fep_formal.output.release_bundle._")
                 or (
-                    module == "fep_lean.output.release_bundle"
+                    module == "fep_formal.output.release_bundle"
                     and any(alias.name.startswith("_") for alias in node.names)
                 )
             ):
                 violations.append("private release import")
-            if module == "fep_lean.output":
+            if module == "fep_formal.output":
                 bundle_aliases.update(
                     alias.asname or alias.name
                     for alias in node.names
@@ -188,13 +188,13 @@ def _layer_import_violations(source: str, *, release_owner: bool = False) -> lis
                 )
         elif isinstance(node, ast.Import):
             for alias in node.names:
-                if alias.name == "fep_lean.cli":
+                if alias.name == "fep_formal.cli":
                     violations.append("CLI dependency")
                 if not release_owner and alias.name.startswith(
-                    "fep_lean.output.release_bundle._"
+                    "fep_formal.output.release_bundle._"
                 ):
                     violations.append("private release import")
-                if alias.name == "fep_lean.output.release_bundle" and alias.asname:
+                if alias.name == "fep_formal.output.release_bundle" and alias.asname:
                     bundle_aliases.add(alias.asname)
     if not release_owner:
         for node in ast.walk(tree):
@@ -202,7 +202,7 @@ def _layer_import_violations(source: str, *, release_owner: bool = False) -> lis
                 isinstance(node, ast.Attribute)
                 and (
                     ast.unparse(node.value) in bundle_aliases
-                    or ast.unparse(node.value) == "fep_lean.output.release_bundle"
+                    or ast.unparse(node.value) == "fep_formal.output.release_bundle"
                 )
                 and node.attr.startswith("_")
             ):
@@ -217,7 +217,7 @@ def _layer_import_violations(source: str, *, release_owner: bool = False) -> lis
                 if (
                     (
                         ast.unparse(owner) in bundle_aliases
-                        or ast.unparse(owner) == "fep_lean.output.release_bundle"
+                        or ast.unparse(owner) == "fep_formal.output.release_bundle"
                     )
                     and isinstance(attribute, ast.Constant)
                     and isinstance(attribute.value, str)
@@ -228,10 +228,21 @@ def _layer_import_violations(source: str, *, release_owner: bool = False) -> lis
 
 
 def test_production_layers_do_not_import_cli_or_private_release_owners() -> None:
-    package = PROJECT_ROOT / "src/fep_lean"
+    package = PROJECT_ROOT / "src/fep_formal"
     violations = {}
     for path in package.rglob("*.py"):
         relative = path.relative_to(package)
+        if relative.as_posix() == "__main__.py":
+            # This exact executable adapter is the sole package-level caller
+            # of the CLI. Operational layers retain the import-direction gate.
+            import ast
+
+            tree = ast.parse(path.read_text(encoding="utf-8"))
+            assert len(tree.body) == 3
+            assert isinstance(tree.body[1], ast.ImportFrom)
+            assert tree.body[1].module == "fep_formal.cli"
+            assert [alias.name for alias in tree.body[1].names] == ["main"]
+            continue
         found = _layer_import_violations(
             path.read_text(encoding="utf-8"),
             release_owner=relative.parts[:2] == ("output", "release_bundle"),
@@ -243,27 +254,27 @@ def test_production_layers_do_not_import_cli_or_private_release_owners() -> None
 
 def test_import_direction_guard_rejects_local_alias_and_private_access() -> None:
     candidates = [
-        "def worker():\n from fep_lean.cli import main",
-        "from fep_lean import cli as console",
-        "import fep_lean.cli as console",
-        "from fep_lean.output.release_bundle._core import private",
-        "from fep_lean.output.release_bundle import _native_receipt_errors",
-        "from fep_lean.output import release_bundle as rb\nrb._native_receipt_errors()",
-        "import fep_lean.output.release_bundle as rb\ngetattr(rb, '_secret')()",
-        "import fep_lean.output.release_bundle\nfep_lean.output.release_bundle._secret()",
+        "def worker():\n from fep_formal.cli import main",
+        "from fep_formal import cli as console",
+        "import fep_formal.cli as console",
+        "from fep_formal.output.release_bundle._core import private",
+        "from fep_formal.output.release_bundle import _native_receipt_errors",
+        "from fep_formal.output import release_bundle as rb\nrb._native_receipt_errors()",
+        "import fep_formal.output.release_bundle as rb\ngetattr(rb, '_secret')()",
+        "import fep_formal.output.release_bundle\nfep_formal.output.release_bundle._secret()",
     ]
     assert all(_layer_import_violations(source) for source in candidates)
     assert not _layer_import_violations(
-        "from fep_lean.output.release_bundle import publication_input_snapshot"
+        "from fep_formal.output.release_bundle import publication_input_snapshot"
     )
     assert not _layer_import_violations(
-        "from fep_lean.output.release_bundle._core import private", release_owner=True
+        "from fep_formal.output.release_bundle._core import private", release_owner=True
     )
 
 
 def test_verification_subpackage_exports_canonical_operations() -> None:
-    from fep_lean import verification
-    from fep_lean.verification import environment, lean_verifier
+    from fep_formal import verification
+    from fep_formal.verification import environment, lean_verifier
 
     assert verification.setup_workspace is environment.setup_workspace
     assert verification.verify_catalogue is lean_verifier.verify_catalogue
@@ -271,7 +282,7 @@ def test_verification_subpackage_exports_canonical_operations() -> None:
 
 
 def test_explorer_keyboard_policy_has_one_public_owner() -> None:
-    from fep_lean.output import (
+    from fep_formal.output import (
         formal_kernel_dashboard,
         formalism_atlas,
         svg_presentation,

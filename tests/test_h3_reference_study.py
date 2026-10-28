@@ -176,7 +176,7 @@ def test_export_attempt_retains_real_child_failure_and_rejects_source_race(
     failure: str | None,
 ) -> None:
     """Explicit fake compiler fixture tests custody, never native mathematics."""
-    from fep_lean.verification._subprocess import run_process_group
+    from fep_formal.verification._subprocess import run_process_group
 
     root = tmp_path.resolve() / "toy-project"
     producer = root / study.BASE / "export_native.py"
@@ -501,7 +501,7 @@ def test_migrated_source_rejects_frozen_study_before_any_generator(
     monkeypatch.setattr(study.np.random, "Generator", forbidden_generator)
     with pytest.raises(
         study.StudyRejection,
-        match=r"^stale input: src/fep_lean/formal/fin4_gaussian_semigroup\.lean$",
+        match=r"^missing input: src/fep_lean/formal/fin4_gaussian_semigroup\.lean$",
     ):
         study.run_study(
             ROOT,

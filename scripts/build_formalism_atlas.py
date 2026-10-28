@@ -6,8 +6,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from fep_lean.catalogue.generation import check_or_write
-from fep_lean.output.formalism_atlas import (
+from fep_formal.catalogue.generation import check_or_write
+from fep_formal.output.formalism_atlas import (
     atlas_projection_drift,
     write_formalism_atlas,
 )

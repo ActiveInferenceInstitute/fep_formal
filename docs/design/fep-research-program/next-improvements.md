@@ -34,7 +34,7 @@ reviewer. Proposed identifiers here are planning references only. They do not
 reserve topic IDs or create catalog, relation or capability claims.
 
 Use existing owners where practical. New Python owners require the coordinated
-versioned [source roster](../../../src/fep_lean/output/provenance.py) refresh;
+versioned [source roster](../../../src/fep_formal/output/provenance.py) refresh;
 new Lean resources require the six manifest/namespace facts in the research
 contract. Generate projections from their canonical owners. Preserve the
 four dependency pins unless a separately reviewed upgrade changes the program.
@@ -200,7 +200,7 @@ completed at the [accepted Y checkpoint](../../../TODO.md#retired-production-cap
 The maturity records select
 `fep063_finiteChannel_klDataProcessing_of_relativeSupport` and
 `fep064_rateDistortion_dual_lower_bound` from the existing
-[canonical owner](../../../src/fep_lean/catalogue/bodies/variational_duality.py).
+[canonical owner](../../../src/fep_formal/catalogue/bodies/variational_duality.py).
 The former exposes relative input support for finite KL; the latter uses the
 actual Lagrangian infimum for a feasible-joint weak bound. Earlier public APIs
 remain supporting, and the respective `conditional_proxy` and `structural_proxy`
@@ -219,7 +219,7 @@ completed alignment review or satisfy current H3 scientific gates.
 
 The selected-source [Boolean curve scope #69](https://github.com/ActiveInferenceInstitute/fep_formal/issues/69)
 is delivered; [delivery history](../../../CHANGELOG.md) records its accepted
-source epoch. In [variational duality](../../../src/fep_lean/formal/variational_duality.lean),
+source epoch. In [variational duality](../../../src/fep_formal/formal/variational_duality.lean),
 `FEP.VariationalDuality.FairBoolean.boolean_closed_exact_minimum` derives the natural-log value
 `log 2 - binEntropy D` on `0 ≤ D ≤ 1/2`; `half_or_larger_exact` gives zero
 for larger feasible budgets. The finite dual optimizer is derived only for
@@ -240,7 +240,7 @@ does not supply that general theorem.
 
 ### FORM-D2 — fixed-truth consistency for the continuous static-latent model
 
-**Owner:** existing [posterior convergence](../../../src/fep_lean/formal/posterior_convergence.lean)
+**Owner:** existing [posterior convergence](../../../src/fep_formal/formal/posterior_convergence.lean)
 and a justified composition seam. That owner studies a selected Boolean mean
 parameter; the current H3 continuous finite-latent result gives joint-law
 convergence in probability and explicitly does not claim fixed-truth or

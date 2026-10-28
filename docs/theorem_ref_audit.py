@@ -14,9 +14,9 @@ import re
 from collections import Counter
 from pathlib import Path
 
-from fep_lean.catalogue.coverage import COVERAGE_JSON
-from fep_lean.catalogue.references import unresolved_manuscript_references
-from fep_lean.formal.declarations import composed_theorem_declarations
+from fep_formal.catalogue.coverage import COVERAGE_JSON
+from fep_formal.catalogue.references import unresolved_manuscript_references
+from fep_formal.formal.declarations import composed_theorem_declarations
 
 # Scope follows the current overview/contract sections, not every number in
 # every root document. In particular README's Release section and HANDOFF's

@@ -2,7 +2,7 @@
 # Each topic maps to one OpenGauss session when workflows are enabled.
 # Regenerate: uv run python scripts/_maint_build_topics_catalogue.py
 # Fields include compile maturity and a separately reviewed semantic disposition.
-# `latex_equations` is generated from fep_lean.catalogue.registry; do not edit it here.
+# `latex_equations` is generated from fep_formal.catalogue.registry; do not edit it here.
 # Manuscript rendering consumes those same generated equation signatures.
 
 schema_version: 2

@@ -2,14 +2,14 @@
 
 This document defines the design and operation of the bridge with
 `GeneralizedNotationNotation` (GNN). The package command surface is maintained
-in [`src/fep_lean/bridge/cli.py`](../../../src/fep_lean/bridge/cli.py); owner
+in [`src/fep_formal/bridge/cli.py`](../../../src/fep_formal/bridge/cli.py); owner
 selection, emission, and receipt checks are maintained in
-[`src/fep_lean/bridge/operations.py`](../../../src/fep_lean/bridge/operations.py).
+[`src/fep_formal/bridge/operations.py`](../../../src/fep_formal/bridge/operations.py).
 The [bridge contract](bridge-contract.md) owns the shared scientific and custody
 boundaries. Current open acceptance work belongs in
 [`TODO.md`](../../../TODO.md), not a completed-stage checklist.
 
-FEP_Formal is this repository's current project name; `fep_lean` remains its
+FEP_Formal is this repository's current project name; `fep_formal` remains its
 Python namespace, serialized custody key and historical GNN mirror identity.
 The mirrored version-0.6 contract retains its 2026-09-06 source epoch and
 155-topic baseline. Use the [current source owners](../../../AGENTS.md#source-of-truth)
@@ -177,18 +177,18 @@ defined by the CLI and operations sources linked above. For the re-pin order, se
 Run from the FEP_Formal checkout, replacing `GNN_PATH` with the explicit GNN root:
 
 ```bash
-uv run fep-lean bridge pin --gnn-root GNN_PATH
-uv run fep-lean bridge emit --gnn-root GNN_PATH --model finite
-uv run fep-lean bridge emit --gnn-root GNN_PATH --model continuous
-uv run fep-lean bridge status --gnn-root GNN_PATH
-uv run fep-lean bridge emit --gnn-root GNN_PATH --model finite --check
-uv run fep-lean bridge emit --gnn-root GNN_PATH --model continuous --check
-uv run fep-lean bridge verify-document --gnn-root GNN_PATH --model MODEL \
+uv run fep-formal bridge pin --gnn-root GNN_PATH
+uv run fep-formal bridge emit --gnn-root GNN_PATH --model finite
+uv run fep-formal bridge emit --gnn-root GNN_PATH --model continuous
+uv run fep-formal bridge status --gnn-root GNN_PATH
+uv run fep-formal bridge emit --gnn-root GNN_PATH --model finite --check
+uv run fep-formal bridge emit --gnn-root GNN_PATH --model continuous --check
+uv run fep-formal bridge verify-document --gnn-root GNN_PATH --model MODEL \
   --document PATH --fail-on-warnings
 ```
 
 Pin only after reviewing the settled owner changes — on BOTH sides of the
-pair: any `src/fep_lean/**` owner-file change (this repo) invalidates an
+pair: any `src/fep_formal/**` owner-file change (this repo) invalidates an
 existing seal exactly as a GNN owner-file change does, so land FEP_Formal
 owner edits BEFORE starting the pin cycle, or the cycle must re-run after
 them (a pin sealed pre-change fails `bridge status` with
@@ -221,19 +221,19 @@ The CLI performs one pair-wide pin; `--model` selects emission and document
 verification, not a separate source-owner seal.
 
 1. Inspect the explicit pair with
-   `uv run fep-lean bridge status --gnn-root GNN_PATH`. A drift result identifies
+   `uv run fep-formal bridge status --gnn-root GNN_PATH`. A drift result identifies
    changes requiring review; status never repairs them.
 2. Seal the settled pair once:
 
    ```bash
-   uv run fep-lean bridge pin --gnn-root GNN_PATH
+   uv run fep-formal bridge pin --gnn-root GNN_PATH
    ```
 
 3. Emit both reviewed model documents:
 
    ```bash
-   uv run fep-lean bridge emit --gnn-root GNN_PATH --model finite
-   uv run fep-lean bridge emit --gnn-root GNN_PATH --model continuous
+   uv run fep-formal bridge emit --gnn-root GNN_PATH --model finite
+   uv run fep-formal bridge emit --gnn-root GNN_PATH --model continuous
    ```
 
    For a provenance-only change, `--refresh-digests` permits only Signature
@@ -244,9 +244,9 @@ verification, not a separate source-owner seal.
 4. Check both emitted documents and the pair without writes:
 
    ```bash
-   uv run fep-lean bridge emit --gnn-root GNN_PATH --model finite --check
-   uv run fep-lean bridge emit --gnn-root GNN_PATH --model continuous --check
-   uv run fep-lean bridge status --gnn-root GNN_PATH
+   uv run fep-formal bridge emit --gnn-root GNN_PATH --model finite --check
+   uv run fep-formal bridge emit --gnn-root GNN_PATH --model continuous --check
+   uv run fep-formal bridge status --gnn-root GNN_PATH
    ```
 
 5. Complete any required fresh artifact/native acceptance under its selected

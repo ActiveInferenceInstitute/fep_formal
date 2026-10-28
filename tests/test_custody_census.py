@@ -6,7 +6,7 @@ all predecessor maps and terminal capture re-bound to a synthetic current
 source epoch, then deliberate mutations), runs the
 read-only census over it, and checks the FEP-H27-RESEAL reference
 classification. Validation constants are imported from
-``fep_lean.verification.horizon_acceptance`` — never hardcoded.
+``fep_formal.verification.horizon_acceptance`` — never hardcoded.
 These disposable rebindings are not actual native runs or historical reacceptance.
 """
 
@@ -23,8 +23,8 @@ from typing import Any
 
 import pytest
 
-from fep_lean import custody
-from fep_lean.custody import (
+from fep_formal import custody
+from fep_formal.custody import (
     GATE_EXPECTATIONS,
     INTACT,
     LIVE_RED,
@@ -36,11 +36,11 @@ from fep_lean.custody import (
     census,
     verify,
 )
-from fep_lean.custody import apply as apply_module
-from fep_lean.custody import refresh as refresh_module
-from fep_lean.custody.census import _receipt_disk_path
-from fep_lean.verification import horizon_acceptance as acceptance
-from fep_lean.verification.horizon_acceptance import (
+from fep_formal.custody import apply as apply_module
+from fep_formal.custody import refresh as refresh_module
+from fep_formal.custody.census import _receipt_disk_path
+from fep_formal.verification import horizon_acceptance as acceptance
+from fep_formal.verification.horizon_acceptance import (
     MANDATORY_TEST_FILES,
     PREDECESSORS,
     R0_SUCCESSOR,
@@ -48,7 +48,7 @@ from fep_lean.verification.horizon_acceptance import (
     native_source_paths,
     source_snapshot,
 )
-from tests._support.custody_fixture_knobs import fixture_root
+from tests._support.custody_fixture_knobs import _logical_source, fixture_root
 
 REFERENCE_ROOT = Path(
     os.environ.get("FEP_ACCEPTANCE_REFERENCE_ROOT", Path(__file__).resolve().parents[1])
@@ -83,7 +83,7 @@ def _evidence_tree(tmp_path: Path) -> tuple[Path, Path]:
     for name in sorted(paths):
         destination = root / name
         destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(REFERENCE_ROOT / name, destination)
+        shutil.copy2(_logical_source(REFERENCE_ROOT, name), destination)
     return root, specs_dir
 
 

@@ -23,20 +23,20 @@ from typing import Any, Protocol, cast
 import numpy as np
 import yaml
 
-from fep_lean.output.provenance import config_owner_paths, source_owner_paths
-from fep_lean.verification._jsonutil import load_strict_json
-from fep_lean.verification._toolchain import (
+from fep_formal.output.provenance import config_owner_paths, source_owner_paths
+from fep_formal.verification._jsonutil import load_strict_json
+from fep_formal.verification._toolchain import (
     lean_version_matches_pin,
     read_toolchain_pin,
     resolved_mathlib_revision,
 )
-from fep_lean.verification.formalism_audit import validate_formalism_audit_receipt
+from fep_formal.verification.formalism_audit import validate_formalism_audit_receipt
 
 PROTOCOL_SHA256 = "50b3575316fb272dc7bf209f50a21330fc5ea0764da9399e20aedeb0b2302c93"
 FREEZE_SHA256 = "dadbbf4a5f06d5b143dd87c6fb9f7eaca6f9db69b1351e32cad842ab1c8556d5"
 BASE = "specs/h3-reference-study/"
 STUDY_SOURCE_FILES = (BASE + "run_synthetic.py", BASE + "export_native.py")
-NATIVE_EXPORT_FOUNDATION = "src/fep_lean/formal/h3_reference_model.lean"
+NATIVE_EXPORT_FOUNDATION = "src/fep_formal/formal/h3_reference_model.lean"
 NATIVE_EXPORT_STAGE_NAMES = (
     "compiler-version",
     "mathlib-head",

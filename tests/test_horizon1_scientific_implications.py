@@ -5,13 +5,13 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.lean_source import lean_code_without_comments
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SOURCE = (
     PROJECT_ROOT
     / "src"
-    / "fep_lean"
+    / "fep_formal"
     / "formal"
     / "compositions"
     / "finite_scientific_implications.lean"

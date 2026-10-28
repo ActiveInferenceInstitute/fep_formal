@@ -1,0 +1,1479 @@
+"""Manuscript projections and deterministic generated appendices."""
+
+from __future__ import annotations
+
+import hashlib
+import importlib.metadata
+import json
+import os
+import re
+import statistics
+import subprocess
+import sys
+import tempfile
+from collections.abc import Sequence
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+from fep_formal.catalogue.coverage import (
+    build_formalism_coverage,
+    render_topic_import_modules,
+    topic_import_modules,
+)
+from fep_formal.catalogue.novelty import load_formalism_novelty
+from fep_formal.catalogue.relations import EdgeKind
+from fep_formal.catalogue.schema import load_catalogue_metadata
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.output.evidence import (
+    latest_claim_ready_full_report,
+    validate_native_lean_receipt,
+)
+from fep_formal.output.fsutil import atomic_write_bytes, atomic_write_text, sha256_bytes
+from fep_formal.output.provenance import config_owner_paths, source_owner_paths
+from fep_formal.output.publication_metadata import (
+    load_graphical_abstract,
+    load_publication_author,
+    load_repository_url,
+)
+from fep_formal.verification._toolchain import toolchain_identity
+
+UNIFIED_FORMALISM_CATALOGUE_FILENAME = "09z_unified_formalism_catalogue.md"
+# ``source`` carries the checkout identity and the wall-clock render date, so
+# it is run-bound by construction and must not participate in drift equality.
+_RUN_BOUND_MANUSCRIPT_KEYS = frozenset(
+    {"compile_rate", "full", "hermes", "source", "verify"}
+)
+_TEST_COLLECTION_CACHE_SCHEMA_VERSION = 5
+_TEST_COLLECTION_PLUGIN_DISTRIBUTIONS = ("pytest", "pytest-timeout")
+_TEST_COLLECTION_EXPLICIT_PLUGINS = ("pytest_timeout",)
+_TEST_COLLECTION_ENVIRONMENT_POLICY = {
+    "FEP_FORMAL_LIVE_TESTS": "0",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "MPLBACKEND": "Agg",
+    "PATH": os.defpath,
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTEST_ADDOPTS": "",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "TZ": "UTC",
+}
+_TEST_COLLECTION_TEMP_ENVIRONMENT_POLICY = {
+    "HOME": "home",
+    "MPLCONFIGDIR": "matplotlib",
+    "TMPDIR": ".",
+    "XDG_CACHE_HOME": "xdg-cache",
+}
+
+
+def _git_output(project_root: Path, arguments: list[str]) -> str:
+    """Return trimmed ``git`` stdout, or the empty string when git cannot answer."""
+
+    try:
+        completed = subprocess.run(  # nosec B603 B607 - fixed argv, shell=False
+            ["git", "-C", str(project_root), *arguments],
+            capture_output=True,
+            check=False,
+            text=True,
+            timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    if completed.returncode != 0:
+        return ""
+    return completed.stdout.strip()
+
+
+def _default_branch(project_root: Path) -> str:
+    """Return the remote's default branch, falling back to ``main``."""
+
+    head = _git_output(
+        project_root, ["symbolic-ref", "--quiet", "refs/remotes/origin/HEAD"]
+    )
+    branch = head.rsplit("/", 1)[-1] if head else ""
+    return branch or "main"
+
+
+def _published_ref(project_root: Path, commit: str) -> tuple[str, bool, str]:
+    """Return the ref every in-document source link should resolve through.
+
+    A commit-pinned permalink is the right provenance for a link into the
+    repository -- it names the exact tree the sentence describes -- but only
+    once that commit is on the remote. The audited fix pinned five links to a
+    commit that existed on one laptop, so every one of them 404s in the
+    published PDF.
+
+    So the ref is the commit when the commit is reachable from a remote branch,
+    and the default branch when it is not. The link resolves either way, and
+    the accompanying note says which of the two the reader is following, rather
+    than implying a permalink the repository cannot serve.
+    """
+
+    if not commit:
+        return (
+            _default_branch(project_root),
+            False,
+            (
+                "The source commit could not be determined from this checkout, so "
+                "links resolve through the repository's default branch."
+            ),
+        )
+    remote_branches = _git_output(project_root, ["branch", "-r", "--contains", commit])
+    if remote_branches.strip():
+        return (
+            commit,
+            True,
+            (
+                "This commit is on the public repository, so every source link in "
+                "this document is a permalink to the exact tree described here."
+            ),
+        )
+    branch = _default_branch(project_root)
+    return (
+        branch,
+        False,
+        (
+            f"This commit is not yet on the public repository, so source links "
+            f"resolve through the `{branch}` branch until it is pushed; fetch the "
+            f"commit named above to reproduce a number exactly."
+        ),
+    )
+
+
+def _source_stamp_vars(project_root: Path) -> dict[str, str]:
+    """Return the checkout identity this render describes.
+
+    The title page carries an authored ``paper.version``/``paper.date`` from
+    ``manuscript/config.yaml``, which a reader uses to fetch the sources behind
+    the numbers.  When the checkout has moved past the stamped tag, those two
+    fields silently describe a different tree: the audited v1.1.0 stamp sat on
+    a paper whose live-token counts came from a tree 15,033 Lean lines newer,
+    and no reader could reproduce a single headline count from the tag.
+
+    These variables are the reproducible complement -- the exact commit the
+    numbers were computed from, whether that checkout was clean, and when the
+    render happened.  Every value is computed; none is authored.
+    """
+
+    root = Path(project_root)
+    commit = _git_output(root, ["rev-parse", "HEAD"])
+    published_ref, published, published_note = _published_ref(root, commit)
+    short_commit = _git_output(root, ["rev-parse", "--short=12", "HEAD"])
+    describe = _git_output(root, ["describe", "--tags", "--always", "--dirty"])
+    exact_tag = _git_output(root, ["describe", "--exact-match", "--tags", "HEAD"])
+    porcelain = _git_output(root, ["status", "--porcelain"])
+    commit_date = _git_output(root, ["log", "-1", "--format=%cI"])
+    dirty = bool(porcelain)
+    if dirty:
+        link_note = (
+            "The committed base appears in local remote-tracking state; source "
+            "links target that base reference. "
+            if published
+            else f"Source links follow the `{published_ref}` fallback reference "
+            "and may differ from the local committed base. "
+        )
+        published_note = (
+            "This render includes uncommitted local changes. "
+            + link_note
+            + "They may omit candidate additions and do not reproduce the local "
+            "candidate. Its native and publication "
+            "receipts bind the reviewed source bytes."
+        )
+    stamp = short_commit or "unknown"
+    if dirty:
+        stamp = f"{stamp} (uncommitted changes present)"
+    return {
+        "commit": commit or "unknown",
+        "short_commit": short_commit or "unknown",
+        "published_ref": published_ref,
+        "published": "true" if published else "false",
+        "published_note": published_note,
+        "describe": describe or "unknown",
+        "exact_tag": exact_tag or "none",
+        "commit_date": commit_date or "unknown",
+        "dirty": "true" if dirty else "false",
+        "render_date": datetime.now(timezone.utc).date().isoformat(),
+        # One ready-to-typeset line for the title page.
+        "stamp": (
+            f"source snapshot {stamp}, rendered {datetime.now(timezone.utc).date().isoformat()}"
+        ),
+    }
+
+
+def _read_toolchain_vars(project_root: Path) -> dict[str, str]:
+    """Return the validated Lean/Mathlib identity for manuscript stamping."""
+    identity = toolchain_identity(Path(project_root) / "lean")
+    toolchain = identity["lean_toolchain"]
+    lean_version = toolchain.rsplit(":", 1)[-1].removeprefix("v") if toolchain else ""
+    return {
+        "lean_toolchain": toolchain,
+        "lean_version": lean_version,
+        "mathlib_tag": identity["mathlib_tag"],
+    }
+
+
+def _get_latest_verification_manifest(
+    project_root: Path, output_root: Path | None = None
+) -> Path | None:
+    report_root = latest_claim_ready_full_report(
+        project_root,
+        output_root=output_root,
+    )
+    return report_root / "verification_manifest.json" if report_root else None
+
+
+def _topic_duration_spread(durations: Sequence[float]) -> dict[str, float]:
+    """Return the per-topic elapsed-time spread a mean alone cannot show.
+
+    The primer printed "about 1-2 seconds" per verification for four releases.
+    No receipt has ever supported it: the mean is an order of magnitude
+    larger, and the fastest topic in the audited run is still above the top of
+    that range. A mean hides that, because one 183-second topic and a
+    two-second topic average to something neither resembles. Publishing the
+    minimum, median and maximum alongside it makes the hand-typed range
+    unwritable -- the numbers come from the same receipt as the mean.
+    """
+
+    ordered = sorted(float(value) for value in durations)
+    if not ordered:
+        return {"min_topic_s": 0.0, "median_topic_s": 0.0, "max_topic_s": 0.0}
+    return {
+        "min_topic_s": round(ordered[0], 3),
+        "median_topic_s": round(statistics.median(ordered), 3),
+        "max_topic_s": round(ordered[-1], 3),
+    }
+
+
+def _verify_block_from_manifest(path: Path | None) -> dict[str, Any]:
+    base: dict[str, Any] = {
+        "manifest_present": False,
+        "evidence_kind": "unavailable",
+        "claim_ready": False,
+        "run_id": "not available",
+        "verify_lean_ran": False,
+        "topics_with_result": 0,
+        "compiles_true": 0,
+        "compiles_false": 0,
+        "sorry_count": 0,
+        "sorry_topics": 0,
+        "sorry_occurrences": 0,
+        "warning_count": 0,
+        "duration_seconds": 0.0,
+        "duration_min": 0.0,
+        "mean_topic_s": 0.0,
+        "min_topic_s": 0.0,
+        "median_topic_s": 0.0,
+        "max_topic_s": 0.0,
+        "failed_topic_ids": "none",
+        "not_clean_topic_ids": "none",
+        "failed_compile_topic_ids": "none",
+        "clean_topic_ids": [],
+    }
+    if path is None or not path.is_file():
+        return base
+    base["manifest_present"] = True
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return base
+    results = data.get("results") if isinstance(data, dict) else []
+    if not isinstance(results, list):
+        results = []
+    base["verify_lean_ran"] = bool(data.get("verify_lean_ran", False))
+    base["evidence_kind"] = "full-pipeline"
+    base["run_id"] = path.parent.name
+    base["topics_with_result"] = (
+        int(data.get("topics_with_result", len(results)))
+        if str(data.get("topics_with_result", len(results))).isdigit()
+        else len(results)
+    )
+    base["compiles_true"] = int(
+        data.get(
+            "compiles_true",
+            sum(bool(r.get("compiles")) for r in results if isinstance(r, dict)),
+        )
+    )
+    base["compiles_false"] = int(
+        data.get("compiles_false", max(0, len(results) - base["compiles_true"]))
+    )
+    durations = [
+        float(row.get("duration_s", 0.0) or 0.0)
+        for row in results
+        if isinstance(row, dict)
+    ]
+    # Two different questions, two different numbers. ``sorry_topics`` counts
+    # topics that admit anything; ``sorry_occurrences`` counts admitted proofs.
+    # Prose that says "uses of ``sorry``" wants the second. ``sorry_count`` is
+    # retained as the historical alias of ``sorry_topics``.
+    sorry_topics = sum(
+        bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
+        for row in results
+        if isinstance(row, dict)
+    )
+    sorry_occurrences = sum(
+        int(row["sorry_occurrences"])
+        if isinstance(row.get("sorry_occurrences"), int)
+        and not isinstance(row.get("sorry_occurrences"), bool)
+        else bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
+        for row in results
+        if isinstance(row, dict)
+    )
+    warning_count = sum(
+        len(row.get("warnings", []))
+        for row in results
+        if isinstance(row, dict) and isinstance(row.get("warnings", []), list)
+    )
+    clean_ids = [
+        str(row.get("topic_id", ""))
+        for row in results
+        if isinstance(row, dict)
+        and bool(row.get("compiles", False))
+        and not bool(row.get("has_sorry", row.get("lean_has_sorry", False)))
+        and not row.get("warnings", [])
+    ]
+    # ``clean`` means compiled, unadmitted and warning-free, so its complement
+    # includes topics that compiled cleanly but emitted a warning. Printing
+    # that complement under the label "failed" is wrong; name both sets.
+    not_clean_ids = [
+        str(row.get("topic_id", ""))
+        for row in results
+        if isinstance(row, dict) and str(row.get("topic_id", "")) not in clean_ids
+    ]
+    failed_compile_ids = [
+        str(row.get("topic_id", ""))
+        for row in results
+        if isinstance(row, dict) and not bool(row.get("compiles", False))
+    ]
+    duration_seconds = sum(durations)
+    base.update(
+        {
+            "sorry_count": sorry_topics,
+            "sorry_topics": sorry_topics,
+            "sorry_occurrences": sorry_occurrences,
+            "warning_count": warning_count,
+            "duration_seconds": round(duration_seconds, 3),
+            "duration_min": round(duration_seconds / 60, 2),
+            "mean_topic_s": round(duration_seconds / len(durations), 3)
+            if durations
+            else 0.0,
+            **_topic_duration_spread(durations),
+            "failed_topic_ids": ", ".join(not_clean_ids) or "none",
+            "not_clean_topic_ids": ", ".join(not_clean_ids) or "none",
+            "failed_compile_topic_ids": ", ".join(failed_compile_ids) or "none",
+            "clean_topic_ids": clean_ids,
+        }
+    )
+    return base
+
+
+def _verify_block_from_native_receipt(
+    path: Path | None, project_root: Path
+) -> dict[str, Any]:
+    """Project a validated native receipt into manuscript-safe variables."""
+    base = _verify_block_from_manifest(None)
+    if path is None or not path.is_file():
+        return base
+    validation = validate_native_lean_receipt(path, project_root=project_root)
+    base["manifest_present"] = True
+    base["evidence_kind"] = "native-lean"
+    base["claim_ready"] = bool(validation.get("native_claim_ready", False))
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return base
+    rows = payload.get("results", []) if isinstance(payload, dict) else []
+    rows = rows if isinstance(rows, list) else []
+    clean_ids = [
+        str(row.get("topic_id", ""))
+        for row in rows
+        if isinstance(row, dict)
+        and bool(row.get("compiles", False))
+        and not bool(row.get("has_sorry", False))
+        and not row.get("warnings", [])
+    ]
+    not_clean_ids = [
+        str(row.get("topic_id", ""))
+        for row in rows
+        if isinstance(row, dict) and str(row.get("topic_id", "")) not in clean_ids
+    ]
+    failed_compile_ids = [
+        str(row.get("topic_id", ""))
+        for row in rows
+        if isinstance(row, dict) and not bool(row.get("compiles", False))
+    ]
+    duration_seconds = float(payload.get("duration_s", 0.0) or 0.0)
+    row_durations = [
+        float(row.get("duration_s", 0.0) or 0.0)
+        for row in rows
+        if isinstance(row, dict)
+    ]
+    catalogue_digest = str(payload.get("catalogue_sha256", ""))
+    base.update(
+        {
+            "run_id": f"native-{catalogue_digest[:12]}"
+            if catalogue_digest
+            else "native-unidentified",
+            "verify_lean_ran": bool(rows),
+            "topics_with_result": len(rows),
+            "compiles_true": sum(
+                bool(row.get("compiles", False))
+                for row in rows
+                if isinstance(row, dict)
+            ),
+            "compiles_false": sum(
+                not bool(row.get("compiles", False))
+                for row in rows
+                if isinstance(row, dict)
+            ),
+            "sorry_count": int(validation.get("sorry_count", 0)),
+            "sorry_topics": int(validation.get("sorry_count", 0)),
+            "sorry_occurrences": int(
+                validation.get("sorry_occurrences", validation.get("sorry_count", 0))
+            ),
+            "warning_count": int(validation.get("warning_count", 0)),
+            "duration_seconds": round(duration_seconds, 3),
+            "duration_min": round(duration_seconds / 60, 2),
+            "mean_topic_s": round(duration_seconds / len(rows), 3) if rows else 0.0,
+            **_topic_duration_spread(row_durations),
+            "failed_topic_ids": ", ".join(not_clean_ids) or "none",
+            "not_clean_topic_ids": ", ".join(not_clean_ids) or "none",
+            "failed_compile_topic_ids": ", ".join(failed_compile_ids) or "none",
+            "clean_topic_ids": clean_ids,
+        }
+    )
+    return base
+
+
+def _hermes_block_from_summary(path: Path | None) -> dict[str, Any]:
+    keys: dict[str, Any] = {
+        "summary_present": False,
+        "run_id": "",
+        "processed": 0,
+        "success_count": 0,
+        "cache_hits": 0,
+        "mean_topic_s": 0.0,
+        "tokens_total": 0,
+        "tokens_mean": 0,
+        "hermes_lean_compiles_count": 0,
+        "primary_model": "",
+        "models_used": "",
+        "model_fallback_count": 0,
+        "network_retry_count": 0,
+        "chain_advance_reasons": {},
+        "chain_advance_reasons_summary": "none",
+    }
+    if path is None or not path.is_file():
+        return keys
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return keys
+    rows = data.get("topics", []) if isinstance(data, dict) else []
+    rows = rows if isinstance(rows, list) else []
+    models = [
+        str(r.get("hermes_model", ""))
+        for r in rows
+        if isinstance(r, dict) and r.get("hermes_model")
+    ]
+    reasons: dict[str, int] = {}
+    primary_models: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        model = str(row.get("hermes_model", ""))
+        reason = str(row.get("chain_advance_reason", ""))
+        if reason:
+            reasons[reason] = reasons.get(reason, 0) + 1
+        elif model:
+            primary_models.add(model)
+    tokens = [
+        int(r.get("tokens_used", 0) or 0)
+        for r in rows
+        if isinstance(r, dict) and int(r.get("tokens_used", 0) or 0) > 0
+    ]
+    durations = [
+        float(r.get("duration_s", 0.0) or 0.0)
+        for r in rows
+        if isinstance(r, dict) and float(r.get("duration_s", 0.0) or 0.0) > 0
+    ]
+    run_id = str(data.get("run_id", ""))
+    if run_id and not run_id.startswith("run_"):
+        run_id = "run_" + run_id
+    primary_model = next(iter(primary_models)) if len(primary_models) == 1 else ""
+    keys.update(
+        {
+            "summary_present": True,
+            "run_id": run_id,
+            "processed": len(rows),
+            "success_count": sum(
+                bool(r.get("hermes_success")) for r in rows if isinstance(r, dict)
+            ),
+            "cache_hits": sum(
+                bool(r.get("cache_hit")) for r in rows if isinstance(r, dict)
+            ),
+            "mean_topic_s": round(sum(durations) / len(durations), 3)
+            if durations
+            else 0.0,
+            "tokens_total": sum(tokens),
+            "tokens_mean": sum(tokens) // len(tokens) if tokens else 0,
+            "hermes_lean_compiles_count": sum(
+                bool(r.get("hermes_lean_compiles")) for r in rows if isinstance(r, dict)
+            ),
+            "primary_model": primary_model,
+            "models_used": ", ".join(sorted(set(models))),
+            "model_fallback_count": sum(reasons.values()),
+            "network_retry_count": sum(
+                int(r.get("network_retries", 0) or 0)
+                for r in rows
+                if isinstance(r, dict)
+            ),
+            "chain_advance_reasons": reasons,
+        }
+    )
+    keys["chain_advance_reasons_summary"] = (
+        ", ".join(
+            f"{n}× {reason}"
+            for reason, n in sorted(
+                reasons.items(), key=lambda item: (-item[1], item[0])
+            )
+        )
+        or "none"
+    )
+    return keys
+
+
+def _safe_project_path(project_root: Path, path: Path, *, label: str) -> Path:
+    """Return a lexical in-root path after rejecting every symlink component."""
+    root = Path(os.path.abspath(project_root))
+    candidate = Path(os.path.abspath(path))
+    for component in (*reversed(root.parents), root):
+        if component.is_symlink():
+            raise ValueError(
+                f"unsafe {label}: project root ancestor is a symlink: {component}"
+            )
+        if component.exists() and not component.is_dir():
+            raise ValueError(
+                f"unsafe {label}: project root ancestor is not a directory: {component}"
+            )
+    try:
+        relative = candidate.relative_to(root)
+    except ValueError as exc:
+        raise ValueError(f"unsafe {label}: path escapes project root: {path}") from exc
+    current = root
+    for part in relative.parts:
+        current /= part
+        if current.is_symlink():
+            raise ValueError(f"unsafe {label}: symlink path component: {current}")
+        if current != candidate and current.exists() and not current.is_dir():
+            raise ValueError(f"unsafe {label}: non-directory path component: {current}")
+    return candidate
+
+
+def _test_collection_input_paths(project_root: Path) -> tuple[Path, ...]:
+    """Return every file whose bytes can affect pytest collection.
+
+    Collection-time parametrization imports the maintained catalog and formal
+    manifests, so test files and ``pyproject.toml`` alone are not a closed
+    cache key.  Reuse the source/config receipt owners and add every Python
+    test; missing owners remain part of the fingerprint rather than silently
+    shrinking it.
+    """
+    root = Path(os.path.abspath(project_root))
+    tests_root = _safe_project_path(root, root / "tests", label="test collection input")
+    paths = {*source_owner_paths(root), *config_owner_paths(root)}
+    if tests_root.exists():
+        if not tests_root.is_dir():
+            raise ValueError("unsafe test collection input: tests is not a directory")
+        for directory, dirnames, filenames in os.walk(tests_root, followlinks=False):
+            current = Path(directory)
+            for name in (*dirnames, *filenames):
+                child = _safe_project_path(
+                    root, current / name, label="test collection input"
+                )
+                if child.suffix == ".py" and name in filenames:
+                    paths.add(child)
+    validated: set[Path] = set()
+    for path in paths:
+        safe = _safe_project_path(root, path, label="test/source/config input")
+        if safe.exists() and not safe.is_file():
+            raise ValueError(f"unsafe test/source/config input: not a file: {safe}")
+        validated.add(safe)
+    return tuple(sorted(validated, key=lambda path: path.as_posix()))
+
+
+def collection_runtime_identity() -> dict[str, Any]:
+    """Return the interpreter, plugin, and hermetic-policy collection identity."""
+    executable = Path(sys.executable).resolve()
+    if not executable.is_file():
+        raise ValueError(f"pytest collection interpreter is not a file: {executable}")
+    plugins: dict[str, str] = {}
+    for distribution in _TEST_COLLECTION_PLUGIN_DISTRIBUTIONS:
+        try:
+            plugins[distribution] = importlib.metadata.version(distribution)
+        except importlib.metadata.PackageNotFoundError as exc:
+            raise ValueError(
+                f"required pytest collection distribution is missing: {distribution}"
+            ) from exc
+    return {
+        "environment": {
+            **_TEST_COLLECTION_ENVIRONMENT_POLICY,
+            **{
+                name: f"<temporary>/{relative}" if relative != "." else "<temporary>"
+                for name, relative in _TEST_COLLECTION_TEMP_ENVIRONMENT_POLICY.items()
+            },
+        },
+        "explicit_plugins": list(_TEST_COLLECTION_EXPLICIT_PLUGINS),
+        "interpreter": {
+            "cache_tag": sys.implementation.cache_tag,
+            "executable": executable.as_posix(),
+            "executable_sha256": sha256_bytes(executable.read_bytes()),
+            "implementation": sys.implementation.name,
+            "version": sys.version,
+        },
+        "plugin_distributions": plugins,
+        "pytest_arguments": [
+            "tests",
+            "--collect-only",
+            "-q",
+            "--color=no",
+            *(
+                argument
+                for plugin in _TEST_COLLECTION_EXPLICIT_PLUGINS
+                for argument in ("-p", plugin)
+            ),
+            # The canonical acceptance command deselects the serial_lean lane
+            # (hermetic PATH policy); the collection evidence must carry the
+            # same documented filter so the canonical count owner, the
+            # collected roster, and the acceptance JUnit roster all agree.
+            "-m",
+            "not serial_lean",
+            "-o",
+            "cache_dir=<temporary>",
+            "-o",
+            "addopts=",
+        ],
+    }
+
+
+def _test_collection_fingerprint(
+    project_root: Path, *, identity: dict[str, Any] | None = None
+) -> str:
+    root = Path(project_root)
+    digest = hashlib.sha256()
+    digest.update(
+        json.dumps(
+            identity if identity is not None else collection_runtime_identity(),
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    )
+    digest.update(b"\0")
+    for path in _test_collection_input_paths(root):
+        try:
+            relative = path.relative_to(root).as_posix()
+        except ValueError:
+            relative = path.as_posix()
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes() if path.is_file() else b"<missing>")
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def pytest_collection_command(cache_dir: Path) -> list[str]:
+    """Return the exact quiet collection command used by evidence builders."""
+    return [
+        sys.executable,
+        "-m",
+        "pytest",
+        "tests",
+        "--collect-only",
+        # Bind node IDs and conftest discovery to the declared checkout even
+        # when a disposable root lives beneath another configured repository.
+        "--rootdir=.",
+        "--confcutdir=.",
+        "-q",
+        "--color=no",
+        *(
+            argument
+            for plugin in _TEST_COLLECTION_EXPLICIT_PLUGINS
+            for argument in ("-p", plugin)
+        ),
+        # Matches the canonical acceptance command's documented marker filter
+        # (see collection_runtime_identity).
+        "-m",
+        "not serial_lean",
+        "-o",
+        f"cache_dir={cache_dir}",
+        "-o",
+        "addopts=",
+    ]
+
+
+def pytest_collection_environment(temporary_root: Path) -> dict[str, str]:
+    """Return the hermetic environment used for collection evidence."""
+    return {
+        **_TEST_COLLECTION_ENVIRONMENT_POLICY,
+        **{
+            name: str(temporary_root / relative)
+            if relative != "."
+            else str(temporary_root)
+            for name, relative in _TEST_COLLECTION_TEMP_ENVIRONMENT_POLICY.items()
+        },
+    }
+
+
+def parse_pytest_collection_stdout(stdout: str) -> tuple[str, ...]:
+    """Parse the exact ordered node-id roster from quiet pytest output."""
+    summary_pattern = re.compile(
+        r"(?:=+\s+)?([1-9]\d*)(?:/([1-9]\d*))? tests? collected"
+        r"(?: \((\d+) deselected\))? in "
+        # Pytest appends H:MM:SS once collection takes at least a minute.
+        r"[0-9]+(?:\.[0-9]+)?s(?: \([0-9]+:[0-5][0-9]:[0-5][0-9]\))?(?:\s+=+)?"
+    )
+    stdout_lines = [line for line in stdout.splitlines() if line.strip()]
+    matches = [
+        match
+        for line in stdout_lines
+        if (match := summary_pattern.fullmatch(line)) is not None
+    ]
+    if len(matches) != 1:
+        raw_excerpt = " ".join(stdout.split())[-400:]
+        excerpt = raw_excerpt.encode("unicode_escape").decode("ascii") or "<empty>"
+        raise ValueError(
+            "pytest collection did not report exactly one anchored positive "
+            f"summary; found {len(matches)}; stdout tail: {excerpt}"
+        )
+    if not stdout_lines or summary_pattern.fullmatch(stdout_lines[-1]) is None:
+        raise ValueError("pytest collection summary was not the final stdout line")
+    count = int(matches[0].group(1))
+    node_ids = tuple(stdout_lines[:-1])
+    if (
+        len(node_ids) != count
+        or len(set(node_ids)) != len(node_ids)
+        or any(
+            not node_id.startswith("tests/") or "::" not in node_id or "\x00" in node_id
+            for node_id in node_ids
+        )
+    ):
+        raise ValueError(
+            "pytest collection node-id roster is missing, duplicated, malformed, "
+            "or disagrees with the final summary"
+        )
+    return node_ids
+
+
+def _stage_bytes(path: Path, content: bytes) -> Path:
+    """Durably stage bytes beside ``path`` without altering the destination.
+
+    The transactional projection writer must stage every destination before
+    installing any; fsutil's atomic-write pair installs immediately, so this
+    staging primitive stays local (SC-14 folded the single-file writers).
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="wb",
+            dir=path.parent,
+            prefix=f".{path.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        return temporary
+    except BaseException:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+        raise
+
+
+def _transactional_write_texts(writes: tuple[tuple[Path, str], ...]) -> None:
+    """Install a text projection set or restore its exact prior state."""
+    if len({path for path, _content in writes}) != len(writes):
+        raise ValueError("transactional projection destinations must be unique")
+    snapshots: dict[Path, bytes | None] = {}
+    staged: list[tuple[Path, Path]] = []
+    install_started = False
+    for path, _content in writes:
+        if path.exists() and not path.is_file():
+            raise ValueError(f"projection destination is not a regular file: {path}")
+        snapshots[path] = path.read_bytes() if path.is_file() else None
+    try:
+        for path, content in writes:
+            staged.append((_stage_bytes(path, content.encode("utf-8")), path))
+        install_started = True
+        for temporary, destination in staged:
+            os.replace(temporary, destination)
+    except BaseException as exc:
+        rollback_errors: list[str] = []
+        destinations = (
+            reversed([path for path, _content in writes]) if install_started else ()
+        )
+        for destination in destinations:
+            try:
+                previous = snapshots[destination]
+                if previous is None:
+                    destination.unlink(missing_ok=True)
+                else:
+                    atomic_write_bytes(destination, previous)
+            except BaseException as rollback_exc:
+                rollback_errors.append(f"{destination}: {rollback_exc}")
+        if rollback_errors:
+            raise OSError(
+                "manuscript projection rollback failed: " + "; ".join(rollback_errors)
+            ) from exc
+        raise
+    finally:
+        for temporary, _destination in staged:
+            temporary.unlink(missing_ok=True)
+
+
+def _count_test_cases(project_root: Path, *, write_cache: bool = True) -> int:
+    """Collect and cache in generation mode; validate cached evidence in check mode."""
+    root = Path(os.path.abspath(project_root))
+    cache = _safe_project_path(
+        root,
+        root / "output" / ".cache" / "tests_collected.json",
+        label="test collection cache",
+    )
+    inputs = _test_collection_input_paths(root)
+    tests_root = root / "tests"
+    tests = [
+        path
+        for path in inputs
+        if path.name.startswith("test_")
+        and path.suffix == ".py"
+        and path.is_relative_to(tests_root)
+    ]
+    identity = collection_runtime_identity()
+    fingerprint = _test_collection_fingerprint(root, identity=identity)
+    if cache.is_file() and tests:
+        try:
+            payload = json.loads(cache.read_text(encoding="utf-8"))
+            collected = payload.get("collected")
+            node_ids = payload.get("node_ids")
+            if (
+                payload.get("schema_version") == _TEST_COLLECTION_CACHE_SCHEMA_VERSION
+                and payload.get("input_sha256") == fingerprint
+                and payload.get("collection_identity") == identity
+                and payload.get("test_files") == len(tests)
+                and type(collected) is int
+                and collected > 0
+                and isinstance(node_ids, list)
+                and all(isinstance(node_id, str) for node_id in node_ids)
+                and len(node_ids) == collected
+                and len(set(node_ids)) == collected
+                and all(
+                    node_id.startswith("tests/")
+                    and "::" in node_id
+                    and "\x00" not in node_id
+                    for node_id in node_ids
+                )
+            ):
+                return collected
+        except (OSError, ValueError, TypeError):
+            pass
+    if not write_cache:
+        state = "stale or invalid" if cache.exists() else "missing"
+        raise ValueError(
+            f"test collection cache is {state}; run manuscript generation first"
+        )
+    try:
+        with tempfile.TemporaryDirectory(prefix="fep-formal-pytest-collection-") as raw:
+            temporary_root = Path(raw)
+            cache_dir = temporary_root / "cache"
+            home_dir = temporary_root / "home"
+            cache_dir.mkdir()
+            home_dir.mkdir()
+            environment = pytest_collection_environment(temporary_root)
+            command = pytest_collection_command(cache_dir)
+            proc = subprocess.run(
+                command,
+                cwd=root,
+                capture_output=True,
+                text=True,
+                timeout=120,
+                check=False,
+                env=environment,
+            )
+    except subprocess.TimeoutExpired as exc:
+        raise ValueError("pytest collection timed out after 120 seconds") from exc
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise ValueError(f"pytest collection could not run: {exc}") from exc
+    if proc.returncode != 0:
+        raise ValueError(f"pytest collection failed with exit code {proc.returncode}")
+    if proc.stderr.strip():
+        raw_excerpt = " ".join(proc.stderr.split())[-400:]
+        excerpt = raw_excerpt.encode("unicode_escape").decode("ascii") or "<empty>"
+        raise ValueError(
+            f"pytest collection wrote unexpected stderr; output tail: {excerpt}"
+        )
+    node_ids = parse_pytest_collection_stdout(proc.stdout)
+    count = len(node_ids)
+    post_identity = collection_runtime_identity()
+    post_fingerprint = _test_collection_fingerprint(root, identity=post_identity)
+    if post_identity != identity or post_fingerprint != fingerprint:
+        raise ValueError("test collection inputs or runtime changed during collection")
+    if write_cache:
+        atomic_write_text(
+            cache,
+            json.dumps(
+                {
+                    "schema_version": _TEST_COLLECTION_CACHE_SCHEMA_VERSION,
+                    "collected": count,
+                    "collection_identity": identity,
+                    "input_sha256": fingerprint,
+                    "node_ids": list(node_ids),
+                    "test_files": len(tests),
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            + "\n",
+        )
+    return count
+
+
+_SMALL_NUMBER_WORDS = {
+    0: "Zero",
+    1: "One",
+    2: "Two",
+    3: "Three",
+    4: "Four",
+    5: "Five",
+    6: "Six",
+    7: "Seven",
+    8: "Eight",
+    9: "Nine",
+    10: "Ten",
+    11: "Eleven",
+    12: "Twelve",
+    13: "Thirteen",
+    14: "Fourteen",
+    15: "Fifteen",
+    16: "Sixteen",
+    17: "Seventeen",
+    18: "Eighteen",
+    19: "Nineteen",
+    20: "Twenty",
+}
+
+
+def _rate_text(clean: int, total: int) -> str:
+    if total <= 0:
+        return "not verified"
+    return f"{clean}/{total} ({100 * clean / total:.1f}%)"
+
+
+_SECOND_EXPANSION_FIRST_ID = "fep-121"
+_THIRD_EXPANSION_FIRST_ID = "fep-156"
+
+
+def _expansion_family_vars(
+    catalogue: FEPTopicCatalogue, root: Path
+) -> dict[str, int | list[int]]:
+    """Derive structural expansion-family counts from the canonical roster.
+
+    Base versus expansion topics split at the novelty ledger's maintained
+    ``baseline_last_id``; the second expansion begins at
+    ``_SECOND_EXPANSION_FIRST_ID`` and the third at
+    ``_THIRD_EXPANSION_FIRST_ID``. Raises when a family straddles any
+    boundary, when the first- and second-wave families differ in size, or
+    when a third-wave family deviates from the sealed wave-4 shape
+    (standalone-efe-formalizations 6, geometric-mechanics-notation 7),
+    because the manuscript pins those per-family topic counts.
+    """
+    from fep_formal.formal.declarations import composed_theorem_sources
+
+    ledger = load_formalism_novelty(
+        root / "config" / "formalism_novelty.yaml",
+        [topic.id for topic in catalogue.topics],
+        composed_sources=composed_theorem_sources(root),
+    )
+    baseline_last = int(ledger.baseline_last_id.split("-", 1)[1])
+    second_first = int(_SECOND_EXPANSION_FIRST_ID.split("-", 1)[1])
+    third_first = int(_THIRD_EXPANSION_FIRST_ID.split("-", 1)[1])
+    family_ids: dict[str, list[int]] = {}
+    for topic in catalogue.topics:
+        family_ids.setdefault(topic.family, []).append(int(topic.id.split("-", 1)[1]))
+    base_topics = 0
+    first_families: list[str] = []
+    second_families: list[str] = []
+    third_families: list[str] = []
+    for family in sorted(family_ids):
+        ids = family_ids[family]
+        if max(ids) <= baseline_last:
+            base_topics += len(ids)
+            continue
+        if min(ids) <= baseline_last:
+            raise ValueError(
+                f"family {family} straddles the novelty baseline "
+                f"{ledger.baseline_last_id}"
+            )
+        if min(ids) < second_first <= max(ids):
+            raise ValueError(
+                f"family {family} straddles the second-expansion boundary "
+                f"{_SECOND_EXPANSION_FIRST_ID}"
+            )
+        if min(ids) < third_first <= max(ids):
+            raise ValueError(
+                f"family {family} straddles the third-expansion boundary "
+                f"{_THIRD_EXPANSION_FIRST_ID}"
+            )
+        if max(ids) < second_first:
+            first_families.append(family)
+        elif max(ids) < third_first:
+            second_families.append(family)
+        else:
+            third_families.append(family)
+    first_second_sizes = {
+        len(family_ids[family]) for family in first_families + second_families
+    }
+    if len(first_second_sizes) != 1:
+        raise ValueError(
+            "expansion families are not uniformly sized; the manuscript asserts "
+            f"one per-family topic count: {sorted(first_second_sizes)}"
+        )
+    third_sizes = {len(family_ids[family]) for family in third_families}
+    if not third_sizes <= {6, 7}:
+        raise ValueError(
+            "third-expansion family sizes deviate from the sealed wave-4 shape "
+            "(standalone-efe-formalizations 6, geometric-mechanics-notation 7): "
+            f"{sorted(third_sizes)}"
+        )
+    first_topics = sum(len(family_ids[family]) for family in first_families)
+    second_topics = sum(len(family_ids[family]) for family in second_families)
+    third_topics = sum(len(family_ids[family]) for family in third_families)
+    return {
+        "base_topic_count": base_topics,
+        "expansion_families": len(first_families)
+        + len(second_families)
+        + len(third_families),
+        "expansion_family_topics": first_topics + second_topics + third_topics,
+        "expansion_family_size": next(iter(first_second_sizes)),
+        "expansion_first_families": len(first_families),
+        "expansion_second_families": len(second_families),
+        "expansion_second_topics": second_topics,
+        "expansion_third_families": len(third_families),
+        "expansion_third_topics": third_topics,
+        "expansion_third_family_sizes": sorted(third_sizes),
+        "topics_before_second_expansion": base_topics + first_topics,
+        "topics_before_third_expansion": base_topics + first_topics + second_topics,
+    }
+
+
+def build_manuscript_vars(
+    catalogue: FEPTopicCatalogue,
+    project_root: Path,
+    *,
+    output_root: Path | None = None,
+    cache_test_count: bool = True,
+    capture_source_stamp: bool = True,
+) -> dict[str, Any]:
+    """Build canonical variables, with strict live checkout stamping by default.
+
+    Static projection checks may disable checkout stamping. In that mode the
+    run-bound source block has its canonical all-string shape and explicitly
+    unverified values; no Git process is started. Projection checks already
+    exclude source values and compare only this block's mapping shape.
+    """
+    summary = catalogue.summary()
+    topics: dict[str, dict[str, Any]] = {}
+    icons = {"real": "✅", "partial": "◐", "aspirational": "○"}
+    for topic in catalogue.topics:
+        topics[topic.id] = {
+            "title": topic.title,
+            "area": topic.area,
+            "maturity": topic.mathlib_status,
+            "maturity_icon": icons.get(topic.mathlib_status, "?"),
+            "mathlib_status": topic.mathlib_status,
+            "primary_theorem": topic.primary_theorem,
+            "semantic_disposition": topic.semantic_disposition,
+            # The framework chapters print this cell. It is computed from the
+            # body's own ``import`` lines so the column cannot drift away from
+            # what the row compiles against; see FEPLEAN-ACC-07.
+            "imported_modules": render_topic_import_modules(
+                topic_import_modules(topic.id)
+            ),
+            "assumption_review": topic.assumption_review,
+            "non_vacuity": topic.non_vacuity,
+            "acceptance_probe": topic.acceptance_probe,
+            "lean_chars": topic.lean_chars,
+            "nl_statement": topic.nl,
+            "lean_sketch": topic.lean_sketch,
+            "latex_equations": list(topic.latex_equations),
+        }
+    root = Path(project_root)
+    evidence_root = Path(output_root) if output_root is not None else root / "output"
+    native_receipt = evidence_root / "native-verification.json"
+    verify = _verify_block_from_native_receipt(native_receipt, root)
+    manifest = _get_latest_verification_manifest(root, output_root)
+    if not verify["claim_ready"] and manifest is not None:
+        verify = _verify_block_from_manifest(manifest)
+        verify["claim_ready"] = True
+    summary_path = manifest.parent / "summary.json" if manifest else None
+    clean_topic_ids = set(verify.pop("clean_topic_ids", []))
+    area_counts = summary["areas"]
+    area_vars = {area: {"count": count} for area, count in area_counts.items()}
+    if verify["claim_ready"]:
+        compile_rate = {
+            "total": _rate_text(len(clean_topic_ids), len(catalogue.topics)),
+            "by_area": {
+                area: _rate_text(
+                    sum(
+                        topic.id in clean_topic_ids
+                        for topic in catalogue.topics
+                        if topic.area == area
+                    ),
+                    count,
+                )
+                for area, count in area_counts.items()
+            },
+        }
+    else:
+        compile_rate = {
+            "total": "not verified",
+            "by_area": {area: "not verified" for area in area_counts},
+        }
+    combined_info_bayes = area_counts.get("InfoGeometry", 0) + area_counts.get(
+        "BayesianMechanics", 0
+    )
+    coverage = build_formalism_coverage(root)
+    relation_counts = {
+        kind.value: int(coverage["relation_counts"].get(kind.value, 0))
+        for kind in EdgeKind
+    }
+    capability_status_counts = {
+        status: int(coverage["capability_status_counts"].get(status, 0))
+        for status in ("satisfied", "partial", "open")
+    }
+    test_count = (
+        _count_test_cases(project_root)
+        if cache_test_count
+        else _count_test_cases(project_root, write_cache=False)
+    )
+    publication_author = load_publication_author(root)
+    graphical_abstract = load_graphical_abstract(root)
+    source_stamp = (
+        _source_stamp_vars(project_root)
+        if capture_source_stamp
+        else dict.fromkeys(
+            (
+                "commit",
+                "short_commit",
+                "published_ref",
+                "published",
+                "published_note",
+                "describe",
+                "exact_tag",
+                "commit_date",
+                "dirty",
+                "render_date",
+                "stamp",
+            ),
+            "unverified",
+        )
+    )
+    repository_url = load_repository_url(root)
+    return {
+        **summary,
+        "areas": area_vars,
+        "total_areas": len(summary["areas"]),
+        **_expansion_family_vars(catalogue, root),
+        "topic_ids": [topic.id for topic in catalogue.topics],
+        "topics": topics,
+        "combined_info_bayes_count": combined_info_bayes,
+        "combined_info_bayes_count_caps": _SMALL_NUMBER_WORDS.get(
+            combined_info_bayes, str(combined_info_bayes)
+        ),
+        "formalism": {
+            "metrics": coverage["metrics"],
+            "relation_counts": relation_counts,
+            "capability_status_counts": capability_status_counts,
+        },
+        "compile_rate": compile_rate,
+        **_read_toolchain_vars(project_root),
+        "source": source_stamp,
+        "verify": verify,
+        "full": {
+            "claim_ready": manifest is not None,
+            "report_root": str(manifest.parent) if manifest is not None else "",
+        },
+        "hermes": _hermes_block_from_summary(summary_path),
+        "tests": {"collected": test_count},
+        "methods": _mathematical_methods_vars(root),
+        "publication": {
+            "author": publication_author.manuscript_variables(),
+            "graphical_abstract": graphical_abstract.manuscript_variables(),
+            "repository_url": repository_url,
+        },
+    }
+
+
+def _mathematical_methods_vars(project_root: Path) -> dict[str, Any]:
+    """Project printed corpus keys from the same validated authored coordinates.
+
+    Key tables need no numerical eigensolver or theorem-index construction.
+    Minimal callers without this optional policy receive no methods variables;
+    a manuscript requesting absent variables still fails strict substitution.
+    """
+    from fep_formal.formal.manifest import FORMAL_MODULES
+    from fep_formal.methods.model import load_yaml, validate_policy
+
+    root = Path(project_root)
+    path = root / "specs/openai-math-methods/positioning.yaml"
+    if not path.is_file():
+        return {}
+    before = path.read_bytes()
+    policy = load_yaml(path)
+    metadata = load_catalogue_metadata(root / "config/catalogue_metadata.yaml")
+    validate_policy(
+        policy, metadata.families, {module.resource for module in FORMAL_MODULES}
+    )
+    if path.read_bytes() != before:
+        raise ValueError("positioning policy changed during manuscript key projection")
+    table = policy.get("cross_corpus")
+    if table is None:
+        return {}
+
+    def cell(value: str) -> str:
+        return value.replace("|", r"\|").replace("\n", " ").replace("ℓ₁", r"$\ell_1$")
+
+    coordinates = table["coordinates"]
+    coordinate_lines = [
+        "| Code | Context group | Assigned coordinate |",
+        "| --- | --- | --- |",
+    ]
+    coordinate_lines.extend(
+        f"| C{index:02d} | {row['axis_kind']} | {cell(row['id'].split(':', 1)[1])} |"
+        for index, row in enumerate(coordinates, 1)
+    )
+    rows = table["fep_family_features"] + table["upstream_results"]
+    groups: dict[tuple[int, ...], int] = {}
+    row_lines = [
+        "| Point group | Incidence row | Family context or selected result |",
+        "| --- | --- | --- |",
+    ]
+    family_count = len(table["fep_family_features"])
+    for index, row in enumerate(rows):
+        vector = tuple(
+            int(coordinate["id"] in row["features"]) for coordinate in coordinates
+        )
+        group = groups.setdefault(vector, len(groups) + 1)
+        if index < family_count:
+            key = f"F{index + 1:02d}"
+            title = row["family"].replace("-", " ")
+        else:
+            key = f"U{index - family_count + 1:02d}"
+            title = row["title"]
+        row_lines.append(f"| G{group:02d} | {key} | {cell(title)} |")
+    return {
+        "cross_corpus": {
+            "coordinate_key_table": "\n".join(coordinate_lines),
+            "row_key_table": "\n".join(row_lines),
+        }
+    }
+
+
+def _dump_manuscript_vars(variables: dict[str, Any]) -> str:
+    return yaml.safe_dump(
+        variables,
+        sort_keys=False,
+        allow_unicode=True,
+    )
+
+
+def _mapping_shape(value: Any) -> Any:
+    """Return a value-independent schema for run-bound projection blocks."""
+    if isinstance(value, dict):
+        return {key: _mapping_shape(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return ["item"]
+    return "value"
+
+
+def _stable_manuscript_vars(variables: dict[str, Any]) -> dict[str, Any]:
+    """Remove local receipt/provider values while retaining canonical data."""
+    return {
+        key: value
+        for key, value in variables.items()
+        if key not in _RUN_BOUND_MANUSCRIPT_KEYS
+    }
+
+
+def manuscript_projection_drift(
+    project_root: Path,
+    catalogue: FEPTopicCatalogue | None = None,
+    *,
+    output_root: Path | None = None,
+    expected_variables: dict[str, Any] | None = None,
+) -> tuple[Path, ...]:
+    """Return stale generated manuscript projections without trusting run-local data.
+
+    Topic, formalism, toolchain, and test-census values must match canonical
+    sources exactly. Receipt and provider values are intentionally local, so
+    their values are excluded while their typed mapping shapes remain pinned.
+    """
+    root = Path(project_root)
+    cat = catalogue or FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
+    expected_vars = (
+        expected_variables
+        if expected_variables is not None
+        else build_manuscript_vars(cat, root, output_root=output_root)
+    )
+    vars_path = root / "manuscript" / "manuscript_vars.yaml"
+    appendix_path = root / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
+    drift: list[Path] = []
+
+    try:
+        actual_vars = yaml.safe_load(vars_path.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError):
+        actual_vars = None
+    if not isinstance(actual_vars, dict):
+        drift.append(vars_path)
+    else:
+        stable_matches = _stable_manuscript_vars(
+            actual_vars
+        ) == _stable_manuscript_vars(expected_vars)
+        top_level_schema_matches = set(actual_vars) == set(expected_vars)
+        run_bound_shapes_match = all(
+            _mapping_shape(actual_vars.get(key))
+            == _mapping_shape(expected_vars.get(key))
+            for key in _RUN_BOUND_MANUSCRIPT_KEYS
+        )
+        if not (stable_matches and top_level_schema_matches and run_bound_shapes_match):
+            drift.append(vars_path)
+
+    expected_appendix = build_unified_formalism_appendix_markdown(cat, root)
+    try:
+        appendix_matches = (
+            appendix_path.read_text(encoding="utf-8") == expected_appendix
+        )
+    except OSError:
+        appendix_matches = False
+    if not appendix_matches:
+        drift.append(appendix_path)
+    return tuple(drift)
+
+
+def build_lean_catalogue_markdown(catalogue: FEPTopicCatalogue) -> str:
+    lines = [
+        "# Appendix B: Full Lean Catalog {#sec:appendix_b_full_topic_lean_catalogue}",
+        "",
+    ]
+    last_topic_id = catalogue.topics[-1].id
+    for topic in catalogue.topics:
+        if topic.id == last_topic_id:
+            lines.extend([r"\newpage", ""])
+        lines.extend(
+            [
+                f"## {topic.id} — {topic.title} {{#sec:catalogue-{topic.id}}}",
+                "",
+                topic.nl.strip(),
+                "",
+                "### Lean sketch",
+                "",
+                "```lean",
+                topic.lean_sketch.rstrip(),
+                "```",
+                "",
+                "### Typeset statement signatures",
+                "",
+            ]
+        )
+        for equation in topic.latex_equations:
+            lines.extend(["$$", equation, "$$", ""])
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def build_typeset_equations_markdown(
+    catalogue: FEPTopicCatalogue, project_root: Path | None = None
+) -> str:
+    lines = [
+        r"\newpage",
+        "",
+        "# Appendix C: Typeset Equations {#sec:appendix_c_latex_equations}",
+        "",
+    ]
+    last_topic_id = catalogue.topics[-1].id
+    for topic in catalogue.topics:
+        if topic.id == last_topic_id:
+            lines.extend([r"\newpage", ""])
+        lines.extend(
+            [
+                f"## {topic.id} — {topic.title} {{#sec:eqs-{topic.id}}}",
+                "",
+            ]
+        )
+        for index, equation in enumerate(topic.latex_equations, 1):
+            # pandoc-crossref only numbers the ``$$ ... $$ {#eq:x}`` form. A
+            # ``\label`` inside ``$$`` renders as an unnumbered display and is
+            # invisible to the filter, so every reference to it would dangle.
+            lines.extend(["$$", equation, f"$$ {{#eq:{topic.id}-{index}}}", ""])
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def build_unified_formalism_appendix_markdown(
+    catalogue: FEPTopicCatalogue, project_root: Path | None = None
+) -> str:
+    return (
+        "<!-- AUTO-GENERATED by src/fep_formal/output/manuscript.py -->\n\n"
+        + build_lean_catalogue_markdown(catalogue)
+        + "\n"
+        + build_typeset_equations_markdown(catalogue, project_root)
+    )
+
+
+def write_manuscript_vars(
+    project_root: Path,
+    catalogue: FEPTopicCatalogue | None = None,
+    *,
+    output_root: Path | None = None,
+) -> Path:
+    """Transactionally write the variable projection and its paired appendix."""
+    root = Path(os.path.abspath(project_root))
+    cat = catalogue or FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
+    out = _safe_project_path(
+        root,
+        root / "manuscript" / "manuscript_vars.yaml",
+        label="manuscript projection",
+    )
+    appendix = _safe_project_path(
+        root,
+        root / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME,
+        label="manuscript projection",
+    )
+    variables = _dump_manuscript_vars(
+        build_manuscript_vars(cat, root, output_root=output_root)
+    )
+    appendix_markdown = build_unified_formalism_appendix_markdown(cat, root)
+    _transactional_write_texts(
+        (
+            (out, variables),
+            (appendix, appendix_markdown),
+        )
+    )
+    return out
+
+
+def write_unified_formalism_appendix_markdown(
+    project_root: Path, catalogue: FEPTopicCatalogue | None = None
+) -> Path:
+    """Atomically refresh only the generated unified-formalism appendix."""
+    root = Path(os.path.abspath(project_root))
+    cat = catalogue or FEPTopicCatalogue.from_yaml(root / "config" / "topics.yaml")
+    out = _safe_project_path(
+        root,
+        root / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME,
+        label="manuscript projection",
+    )
+    atomic_write_text(out, build_unified_formalism_appendix_markdown(cat, root))
+    return out

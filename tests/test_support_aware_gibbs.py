@@ -7,13 +7,13 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.formal import formal_theorem_modules
-from fep_lean.lean_source import lean_code_without_comments
+from fep_formal.formal import formal_theorem_modules
+from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lake import lake_executable
 from tests._support.lean_runner import run_lean_compile_probe
 
 ROOT = Path(__file__).resolve().parents[1]
-FORMAL = ROOT / "src" / "fep_lean" / "formal"
+FORMAL = ROOT / "src" / "fep_formal" / "formal"
 CONTROLLED_NEW = {
     "boltzmannPosterior_eq_zero_iff",
     "boltzmannPosterior_pos_iff",

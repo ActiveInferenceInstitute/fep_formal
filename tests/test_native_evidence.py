@@ -8,14 +8,14 @@ from pathlib import Path
 
 import pytest
 
-from fep_lean.catalogue.topics import FEPTopicCatalogue
-from fep_lean.output.evidence import (
+from fep_formal.catalogue.topics import FEPTopicCatalogue
+from fep_formal.output.evidence import (
     build_native_lean_receipt,
     latest_claim_ready_full_report,
     validate_native_lean_receipt,
     write_native_lean_receipt,
 )
-from fep_lean.output.provenance import (
+from fep_formal.output.provenance import (
     OWNER_MANIFEST_VERSION,
     catalogue_sources_digest,
     config_owner_paths,
@@ -23,7 +23,7 @@ from fep_lean.output.provenance import (
     report_source_digest,
     source_owner_paths,
 )
-from fep_lean.verification.lean_verifier import VerifyResult
+from fep_formal.verification.lean_verifier import VerifyResult
 
 PROJ = Path(__file__).resolve().parent.parent
 LEAN_VERSION = (
@@ -55,7 +55,7 @@ def _copy_complete_owner_tree(destination: Path) -> None:
 def test_latest_full_report_skips_historical_digests_before_full_validation(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output import reporter
+    from fep_formal.output import reporter
 
     reports = tmp_path / "reports"
     stale = reports / "stale" / "summary.json"
@@ -91,7 +91,7 @@ def test_latest_full_report_skips_historical_digests_before_full_validation(
 def test_latest_full_report_rejects_malformed_stale_and_unready_candidates(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output import reporter
+    from fep_formal.output import reporter
 
     reports = tmp_path / "reports"
     malformed = reports / "malformed" / "summary.json"
@@ -160,7 +160,7 @@ def test_self_consistent_minimal_root_cannot_claim_native_source_binding(
     minimal_root = tmp_path / "minimal"
     for relative in (
         "config/topics.yaml",
-        "src/fep_lean/catalogue/registry.py",
+        "src/fep_formal/catalogue/registry.py",
         "lean/lean-toolchain",
         "lean/lakefile.lean",
         "lean/lake-manifest.json",
@@ -198,7 +198,7 @@ def test_deleted_python_owner_cannot_disappear_from_native_source_universe(
 ) -> None:
     checkout = tmp_path / "checkout"
     _copy_complete_owner_tree(checkout)
-    deleted_owner = checkout / "src" / "fep_lean" / "gauss" / "client.py"
+    deleted_owner = checkout / "src" / "fep_formal" / "gauss" / "client.py"
     deleted_owner.unlink()
     topic_ids = _topic_ids()
     results = [
@@ -221,7 +221,7 @@ def test_deleted_python_owner_cannot_disappear_from_native_source_universe(
     assert validation["source_bound"] is False
     assert validation["native_claim_ready"] is False
     assert any(
-        "canonical report owner is missing: src/fep_lean/gauss/client.py" in error
+        "canonical report owner is missing: src/fep_formal/gauss/client.py" in error
         for error in validation["errors"]
     )
 
@@ -245,7 +245,7 @@ def test_native_source_binding_rejects_owner_bytes_changed_after_receipt(
         tmp_path / "stale-owner-native.json",
         build_native_lean_receipt(checkout, topic_ids, results),
     )
-    owner = checkout / "src" / "fep_lean" / "gauss" / "client.py"
+    owner = checkout / "src" / "fep_formal" / "gauss" / "client.py"
     owner.write_text(
         owner.read_text(encoding="utf-8") + "\n# post-receipt change\n",
         encoding="utf-8",
@@ -320,7 +320,7 @@ def test_native_receipt_builder_rejects_invalid_requested_rosters(
 def test_native_receipt_writer_removes_staging_file_after_replace_failure(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    from fep_lean.output import evidence
+    from fep_formal.output import evidence
 
     destination = tmp_path / "native.json"
     staged_paths: list[Path] = []

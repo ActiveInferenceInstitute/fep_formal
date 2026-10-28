@@ -2,7 +2,7 @@
 
 ### Architecture Overview {#sec:architecture_overview}
 
-`fep_lean.llm.hermes.HermesExplainer` reviews a curated `TopicEntry`. It does not own the catalog, overwrite a canonical topic body, or establish a theorem merely by returning text. Family modules under `src/fep_lean/catalogue/bodies/` own those bodies and `registry.py` validates their ordered union; `config/topics.yaml` is the generated projection. A live model response becomes relevant only after its extracted Lean block is compiled and its complete run bundle passes independent receipt validation.
+`fep_formal.llm.hermes.HermesExplainer` reviews a curated `TopicEntry`. It does not own the catalog, overwrite a canonical topic body, or establish a theorem merely by returning text. Family modules under `src/fep_formal/catalogue/bodies/` own those bodies and `registry.py` validates their ordered union; `config/topics.yaml` is the generated projection. A live model response becomes relevant only after its extracted Lean block is compiled and its complete run bundle passes independent receipt validation.
 
 The client uses standard-library HTTP against an OpenAI-compatible endpoint. Configuration is resolved from explicit environment values, project settings, and built-in defaults. The exact configured model and fallback roster are operational facts in `config/settings.yaml` and the validated run manifest; copying them into the paper would create a second, rapidly stale owner.
 
@@ -49,7 +49,7 @@ Hermes success and Lean success are orthogonal. A well-formed explanation can ac
 
 `LeanVerifier.verify_sketch` returns a structured `VerifyResult`: `compiles`, `has_sorry`, warnings, errors, stdout/stderr, duration, Lean version, skip reason, and an advisory failure class. Its status projection distinguishes `compiles_clean`, `compiles_with_sorry`, `compile_error`, and `skipped (...)`. The failure classifier helps triage missing imports, renamed identifiers, tactic failures, arity/type mismatches, and timeouts, but it is not proof evidence itself.
 
-The full workflow does not treat the canonical body as a hidden success fallback after Hermes failure. If Hermes is disabled, lacks credentials, returns no usable candidate, or exhausts its model attempts, the topic fails full mode. Native verification of the canonical catalog is available as a separate `fep-lean verify` contract.
+The full workflow does not treat the canonical body as a hidden success fallback after Hermes failure. If Hermes is disabled, lacks credentials, returns no usable candidate, or exhausts its model attempts, the topic fails full mode. Native verification of the canonical catalog is available as a separate `fep-formal verify` contract.
 
 ### Token Usage and Cost Profile {#sec:token_usage_and_cost_profile}
 
