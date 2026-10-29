@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "6bbba40f0a2ac289644f15ae00f10177acb34baa",
+    "commit": "a50dc25f3841724f2ba3c93daa0a47ff9342fd5a",
     "owners": {
       "compat/fep-lean/pyproject.toml": "ea55f1f4a6b53f998eb57131f9d45d37829559e482858849ce1ecefc51884f07",
       "docs/design/gnn-bridge/bridge-contract.md": "5165c8a648a59d751277e6a005f3742911f193f0d44a75ef1b46183925539861",
@@ -153,7 +153,7 @@
       "src/fep_formal/output/__init__.py": "469df12d64d3e14a4c987a8be29d3375fae4244d3a05d2ea5c973889a002a34a",
       "src/fep_formal/output/browser_capture.py": "a1597fbeb6ecf68aa01b81b7732b97662cccdbcd3fc86d7230cdcb50345bf1a2",
       "src/fep_formal/output/evidence.py": "19f4615aa19de49c57148b1fc77e0606f06f6fdae005355db35612faaaaa7299",
-      "src/fep_formal/output/figures.py": "78393ea61a60956987914c713ab78f6f8184c916a3ad68b8a7387e2c72188d37",
+      "src/fep_formal/output/figures.py": "ec6e05fd2438ed19ad0dc45d6a989db238f9b47006d2bac8dbeb3b862ea26679",
       "src/fep_formal/output/formal_kernel_dashboard.py": "fad22e921ce66c201e1e5f141099943b337d5880a03ae3ac2897bd4d2c14221e",
       "src/fep_formal/output/formalism_atlas.py": "46cb37ccd6453be1fa0cd9d0a32bbd20a050d3fc0c68df84a163f345ba6912e2",
       "src/fep_formal/output/formalism_presentation.py": "84f37e213a9938058d68a55da1e62c3f1f059ad304b94b8a83a46e29896b969f",

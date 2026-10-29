@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-nvnji6zg/FepLeanContinuousOU.md",
-    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-nvnji6zg/rendered"
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-2whxpv42/FepLeanContinuousOU.md",
+    "/var/folders/qs/rxkntx5d4hlgz0c7x8v15gym0000gn/T/q7-render-2whxpv42/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "561a7bcd9dce55fdd11b3316d9597893abd63b68d4b0ae65f577a4a3762c9181"
+    "sha256": "3719532a41e8cad9b7bd115f39e8d78746c0a4f1c397ce37613946c01b32faee"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -172,7 +172,7 @@
       "src/fep_formal/output/__init__.py": "469df12d64d3e14a4c987a8be29d3375fae4244d3a05d2ea5c973889a002a34a",
       "src/fep_formal/output/browser_capture.py": "a1597fbeb6ecf68aa01b81b7732b97662cccdbcd3fc86d7230cdcb50345bf1a2",
       "src/fep_formal/output/evidence.py": "19f4615aa19de49c57148b1fc77e0606f06f6fdae005355db35612faaaaa7299",
-      "src/fep_formal/output/figures.py": "78393ea61a60956987914c713ab78f6f8184c916a3ad68b8a7387e2c72188d37",
+      "src/fep_formal/output/figures.py": "ec6e05fd2438ed19ad0dc45d6a989db238f9b47006d2bac8dbeb3b862ea26679",
       "src/fep_formal/output/formal_kernel_dashboard.py": "fad22e921ce66c201e1e5f141099943b337d5880a03ae3ac2897bd4d2c14221e",
       "src/fep_formal/output/formalism_atlas.py": "46cb37ccd6453be1fa0cd9d0a32bbd20a050d3fc0c68df84a163f345ba6912e2",
       "src/fep_formal/output/formalism_presentation.py": "84f37e213a9938058d68a55da1e62c3f1f059ad304b94b8a83a46e29896b969f",
@@ -1277,7 +1277,7 @@
       "src/fep_formal/output/__init__.py": "469df12d64d3e14a4c987a8be29d3375fae4244d3a05d2ea5c973889a002a34a",
       "src/fep_formal/output/browser_capture.py": "a1597fbeb6ecf68aa01b81b7732b97662cccdbcd3fc86d7230cdcb50345bf1a2",
       "src/fep_formal/output/evidence.py": "19f4615aa19de49c57148b1fc77e0606f06f6fdae005355db35612faaaaa7299",
-      "src/fep_formal/output/figures.py": "78393ea61a60956987914c713ab78f6f8184c916a3ad68b8a7387e2c72188d37",
+      "src/fep_formal/output/figures.py": "ec6e05fd2438ed19ad0dc45d6a989db238f9b47006d2bac8dbeb3b862ea26679",
       "src/fep_formal/output/formal_kernel_dashboard.py": "fad22e921ce66c201e1e5f141099943b337d5880a03ae3ac2897bd4d2c14221e",
       "src/fep_formal/output/formalism_atlas.py": "46cb37ccd6453be1fa0cd9d0a32bbd20a050d3fc0c68df84a163f345ba6912e2",
       "src/fep_formal/output/formalism_presentation.py": "84f37e213a9938058d68a55da1e62c3f1f059ad304b94b8a83a46e29896b969f",
@@ -2236,7 +2236,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "d465cb7e51b013ae0240e853648f5105144a23f125aed6bc8b14035a478e715f",
+  "source_pin_sha256": "1e051e9bc6becc5d99751324640ef8f89a3432feb920e2f4472e8e9f2ac1f178",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
