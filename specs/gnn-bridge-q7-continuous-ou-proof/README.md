@@ -323,3 +323,24 @@ bounds, without generated-runner execution, full-mode or release acceptance.
 Native receipts retain their actual compiler environment and command paths;
 a local native claim requires the applicable local capture and check.
 Earlier receipts remain unchanged historical evidence.
+
+
+### Website shutdown source checkpoint (2026-10-28)
+
+[Source-pair qualification run40786981014](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/40786981014)
+captured FEP source `daae1d2928fe295c0eea6629f0857d4cb5cdc6d1` with
+GNN source `e7cad532b5a0dea156fa39c9e918cd80f0ef99bb`, after the loopback
+website server retained its bound HTTP server across immediate shutdown.
+The [transport context](source_qualification_ci40786981014.json) records the exact source and workflow
+revisions, attempt and exported-file hashes. The only changed GNN Python
+owner is `src/gnn/website/serve.py`; the source roster and FEP owner bytes
+match the previous checkpoint. The rendered runner, canonical scaffold and
+Lean probe retain their previous bytes.
+
+The [new native receipt](native_receipt_ci40786981014_fepdaae1d2_gnne7cad532.json) compiled and independently checked all
+twelve static Q7 statements on its recorded Linux Lean4.35.0 producer, with
+zero compiler warnings and the same three standard axioms. Five real parser
+observations renew the working serialization projection. Local read-only
+source checks must independently match these imported projections; this does
+not claim local native execution, generated-runner execution, full mode or
+release acceptance. Earlier source and native receipts remain unchanged.

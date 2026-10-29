@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/tmp/q7-render-_93e5lh8/FepLeanContinuousOU.md",
-    "/tmp/q7-render-_93e5lh8/rendered"
+    "/tmp/q7-render-s8nrmmak/FepLeanContinuousOU.md",
+    "/tmp/q7-render-s8nrmmak/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "4da7982ac12109a6bafc5c9a4368122831933bbf400ccf2e700f8b4622a69b8c"
+    "sha256": "084cba8f90ba3c90470a3bac78315c4212cfbda883822c07a8e58c985404a0eb"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -1117,7 +1117,7 @@
       "src/gnn/website/pages.py": "13d131cbf8a2a5f8332c388415ea65e53802ad7b2a88a28998d7c5ef6f77e334",
       "src/gnn/website/processor.py": "05d1764260a5b0ce9ab829c7a3a95197efa3a9e9c06cb9d40d7976100d8bdf47",
       "src/gnn/website/renderer.py": "360b767d66859a6415719150995ec39138081eb31aaa1c8d2fde8572cebd7736",
-      "src/gnn/website/serve.py": "2328a2c36632c0df4006dff28027dd5586e6543e8b6b238f99fa89887ec5bd9b",
+      "src/gnn/website/serve.py": "6f7a99bb06f571cf7281ad6711520ddbe7d0a4b35badef1fe1a1809d2625e79f",
       "src/gnn/website/source_collection.py": "a5fe1fbe4280564087d3ac3761a67e6f62f00a312c393777192039853bd3c9d1",
       "src/gnn/website/steps.py": "3b6a08f261cf1f287cacacf926dcca73b66df5a43c2fdc05da6140ddcd6a3a91",
       "src/gnn/website/templates.py": "5b6ae0e8cabec5fbc0d631616608bc8b215989fd3ab39462130fd9d92bde3bb5",
@@ -2222,7 +2222,7 @@
       "src/gnn/website/pages.py": "13d131cbf8a2a5f8332c388415ea65e53802ad7b2a88a28998d7c5ef6f77e334",
       "src/gnn/website/processor.py": "05d1764260a5b0ce9ab829c7a3a95197efa3a9e9c06cb9d40d7976100d8bdf47",
       "src/gnn/website/renderer.py": "360b767d66859a6415719150995ec39138081eb31aaa1c8d2fde8572cebd7736",
-      "src/gnn/website/serve.py": "2328a2c36632c0df4006dff28027dd5586e6543e8b6b238f99fa89887ec5bd9b",
+      "src/gnn/website/serve.py": "6f7a99bb06f571cf7281ad6711520ddbe7d0a4b35badef1fe1a1809d2625e79f",
       "src/gnn/website/source_collection.py": "a5fe1fbe4280564087d3ac3761a67e6f62f00a312c393777192039853bd3c9d1",
       "src/gnn/website/steps.py": "3b6a08f261cf1f287cacacf926dcca73b66df5a43c2fdc05da6140ddcd6a3a91",
       "src/gnn/website/templates.py": "5b6ae0e8cabec5fbc0d631616608bc8b215989fd3ab39462130fd9d92bde3bb5",
@@ -2236,7 +2236,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "4015287f776897a7d3345c650f14387c35db82729f62a8ce4f4566e69f693a45",
+  "source_pin_sha256": "9fcb92e2f5434e30794bfd02b1f0a39cf2940e426cdac208f0c555fb307a9ef1",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
