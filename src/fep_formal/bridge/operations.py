@@ -66,6 +66,12 @@ def owner_roster(root: Path, repository: str) -> list[str]:
             "src/fep_lean/**/*.pyi",
         )
     elif repository == "gnn":
+        # GNN owns its implementation tree. The bridge binds only the declared
+        # notation contract below: the entry point, the syntax reference, the
+        # step registry, the mirrored contract, and the dependency manifests.
+        # Emitted-document freshness is verified at run time by ``emit --check``,
+        # so pinning every ``src/gnn/**/*.py`` implementation file is unnecessary
+        # and would let any GNN implementation change re-drift the pair.
         fixed = [
             "pyproject.toml",
             "uv.lock",
@@ -73,7 +79,7 @@ def owner_roster(root: Path, repository: str) -> list[str]:
             MIRROR,
             *SYNTAX_FILES,
         ]
-        patterns = ("src/gnn/**/*.py",)
+        patterns = ()
     else:
         raise ValueError("unknown repository")
     return sorted(

@@ -257,10 +257,11 @@ verification, not a separate source-owner seal.
    intended FEP_Formal publication SHA is settled. Its pair reference is the final
    GNN publication change; it does not promote old evidence.
 
-Any GNN owner-file edit (`src/gnn/**/*.py`, `pyproject.toml`, `uv.lock`,
-`src/gnn/main.py`, the contract mirror, `docs/gnn/gnn_syntax.md`,
+Any GNN contract-owner edit (`pyproject.toml`, `uv.lock`, `src/gnn/main.py`,
+the contract mirror, `docs/gnn/gnn_syntax.md`,
 `src/gnn/pipeline/step_registry.py`) after sealing re-drifts the pair — land
-all GNN content edits BEFORE re-pinning.
+all GNN content edits BEFORE re-pinning. The `src/gnn/**/*.py` implementation
+tree is GNN-owned and is not pinned.
 
 Mirror rule: `GeneralizedNotationNotation/docs/other/fep_lean/bridge-contract.md`
 (the GNN side) and `docs/design/gnn-bridge/bridge-contract.md` on this side
