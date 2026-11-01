@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "89999168196837acb61797c4f3993c87e0a5fdc9",
+    "commit": "e244ce5eeec9543ea1869e172e92962311c87edb",
     "owners": {
       "compat/fep-lean/pyproject.toml": "ea55f1f4a6b53f998eb57131f9d45d37829559e482858849ce1ecefc51884f07",
       "docs/design/gnn-bridge/bridge-contract.md": "8bfa57cb73f13b92e3874f81afefa7cce8f8d1ed4c41da532801bd9052c7a1c6",
@@ -13,11 +13,11 @@
       "src/fep_formal/__init__.py": "4aa1cea1c92376b961af0487052040a964de67f21531d956379157bfb556f793",
       "src/fep_formal/__main__.py": "7be6447f21ab6d3d43fcda455cb871976e7b268da03010d5eb01459e9336fa78",
       "src/fep_formal/_paths.py": "ff3f60258a2d9a7cabea2ade1ab7596f2c5482d57db932e261a137c969b37cdc",
-      "src/fep_formal/bridge/__init__.py": "c2440c50855d6e9524d6ee8d8b526c55eac3baaabed6edeeb38431bbc99d66ff",
+      "src/fep_formal/bridge/__init__.py": "a1abe46e10df0b3091ff02095c95833481db6bca36c35901e02bda03469f89be",
       "src/fep_formal/bridge/certificates.py": "5808fb694951aeeee0398a8ecfe864b94618dc62f256403cc8143875cf19fcee",
       "src/fep_formal/bridge/cli.py": "c6e38bfe0ae8c53a8af0c646c421d00e4625ab5eea070426dc305e293f31ef1e",
       "src/fep_formal/bridge/custody.py": "56f89c1e2d75af2b28d227dec01371fe8686322a9310701f50abbe0a36000fae",
-      "src/fep_formal/bridge/operations.py": "a306d96f2908de1bbb686ca57a5d5161778edc914cc8e82e73870aa5531d4acb",
+      "src/fep_formal/bridge/operations.py": "8877c711de64e41eb56f183445559882adae1afaaff33225fb092d78cb13b65b",
       "src/fep_formal/catalogue/__init__.py": "8adb85af29296b38802dc7a593add98220966c4378481d21f8bab2a741c4c6f9",
       "src/fep_formal/catalogue/bodies/__init__.py": "05fb8d3ba5898df1ade0bb3279736b82e120a5211cac5da404f4d6eea5055c29",
       "src/fep_formal/catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
@@ -324,7 +324,7 @@
     }
   },
   "gnn": {
-    "commit": "002a6d52fe27ea83a92e8231280f8e8f14b027f0",
+    "commit": "8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",

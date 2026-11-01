@@ -401,7 +401,7 @@ def _semantic_receipt_bytes(path: Path) -> bytes:
 
 
 # ---------------------------------------------------------------------------
-# Direction 2 S7 (contract v0.5): verify-document
+# Direction 2 S7 (contract v0.7): verify-document
 # ---------------------------------------------------------------------------
 
 _VERIFY_RECEIPT_SCHEMA = 2
@@ -534,7 +534,7 @@ def _probe_sections(space: Any, declared: list[dict[str, Any]]) -> list[str]:
         sections.append(f".actInfOntologyAnnotation [{bindings}]")
 
     sections.append(
-        '.footer "Verified by fep-formal bridge verify-document (contract v0.5)"'
+        '.footer "Verified by fep-formal bridge verify-document (contract v0.7)"'
     )
     return sections
 
@@ -546,7 +546,7 @@ def _probe_lean_code(space: Any, declared: list[dict[str, Any]]) -> str:
         "import FepSketches.gnn_document\n\n"
         "open FEP.GnnDocument\n\n"
         "-- bridge verify-document probe: constructed from the extracted\n"
-        "-- typed payload of one emitted document (contract v0.5, S7).\n"
+        "-- typed payload of one emitted document (contract v0.7, S7).\n"
         "def bridgeProbeDoc : GnnDocument where\n"
         "  sections :=\n"
         "    [ " + sections + "\n"
@@ -565,7 +565,7 @@ def verify_document(
 ) -> dict[str, Any]:
     """Verify one emitted GNN document against the ``FEP.GnnDocument`` AST.
 
-    Direction 2 S7 (contract v0.5): extract the typed payload via the pinned
+    Direction 2 S7 (contract v0.7): extract the typed payload via the pinned
     render route, construct a ``GnnDocument`` value in a compile-once Lean
     probe, and decide ``documentWellFormed``. Proves syntax and mechanical
     well-formedness only — never ``DiscreteConforms``/``ContinuousConforms``
