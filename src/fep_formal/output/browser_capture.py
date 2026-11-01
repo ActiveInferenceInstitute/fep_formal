@@ -75,7 +75,7 @@ _SUPPORTED_BROWSER_VERSION_RE = re.compile(
 _CDP_BROWSER_PRODUCT_RE = re.compile(
     r"^(Chrome|HeadlessChrome|Chromium)/(\d+\.\d+\.\d+\.\d+)$"
 )
-_CDP_START_TIMEOUT_SECONDS = 15.0
+_CDP_START_TIMEOUT_SECONDS = 30.0
 _CDP_COMMAND_TIMEOUT_SECONDS = 120.0
 _NETWORK_QUIET_SECONDS = 0.25
 
