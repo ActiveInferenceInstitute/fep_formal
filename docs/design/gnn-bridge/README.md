@@ -11,7 +11,7 @@ boundaries. Current open acceptance work belongs in
 
 FEP_Formal is this repository's current project name; `fep_formal` remains its
 Python namespace, serialized custody key and historical GNN mirror identity.
-The mirrored version-0.6 contract retains its 2026-09-06 source epoch and
+The mirrored version-0.7 contract retains its 2026-09-06 source epoch and
 155-topic baseline. Use the [current source owners](../../../AGENTS.md#source-of-truth)
 for the live catalog; changing that shared contract requires coordinated
 review and publication on both sides.
@@ -256,6 +256,16 @@ verification, not a separate source-owner seal.
 6. Update `.github/fep-lean-pair.json` in the GNN repository only after the
    intended FEP_Formal publication SHA is settled. Its pair reference is the final
    GNN publication change; it does not promote old evidence.
+
+Canonical release references. `bridge pin` records each checkout's current HEAD
+as the descriptive commit reference. When the intended reference is a release
+commit whose tree the checkout matches but which is not the checkout HEAD — for
+example a tagged release merge — seal with `bridge pin`, then set the two
+`commit` fields to the exact release commits and verify every owner digest
+against that commit's blobs (`git -C GNN_PATH show <commit>:<path>`). A digest
+that disagrees with the live owner bytes is a re-drift: review it, never adopt
+it silently. Re-emit both documents and re-run `status` after any reference
+change; owner bytes and descriptive references remain separate claims.
 
 Any GNN contract-owner edit (`pyproject.toml`, `uv.lock`, `src/gnn/main.py`,
 the contract mirror, `docs/gnn/gnn_syntax.md`,

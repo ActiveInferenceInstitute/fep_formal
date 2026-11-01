@@ -42,7 +42,7 @@ is unchanged. Direct Python setup and drift-check callers retain their default
 text behavior.
 
 `bridge` operates on an explicit sibling GNN checkout (`--gnn-root PATH` is
-required for every verb). The current bridge surface is contract v0.6;
+required for every verb). The current bridge surface is contract v0.7;
 `verify-document` was added in contract v0.5. `status` and
 `verify-certificate` are read-only; `verify-document` writes a receipt only
 with `--receipt PATH`. `pin` and `emit` write receipts; `certify` writes one
@@ -61,7 +61,7 @@ replays a self-contained `gnn-semantic-witness-v2` receipt over the supported
 authored E4 subset. `--receipt NEW.json` optionally writes the audit; without
 it the operation is read-only. Per-quantity outcomes, source identity and
 formal/execution boundaries are retained in `fep-semantic-witness-audit-v1`.
-This additive operation is separate from the contract-v0.6 emission and
+This additive operation is separate from the contract-v0.7 emission and
 document-verification surface. It does not execute supplied programs or re-pin
 historical custody. See the
 [semantic audit contract](../src/fep_formal/bridge/README.md#independent-semantic-audit).

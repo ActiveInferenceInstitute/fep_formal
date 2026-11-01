@@ -59,6 +59,12 @@ manuscript/09z_unified_formalism_catalogue.md
 manuscript/09z_appendix_b_lean_catalogue.md
 manuscript/09zc_appendix_c_lean_equations.md
 
+# Q7 publication keeps the replaced working projections as
+# .generated-before-<id> beside generated/ (operational recovery copies, see
+# specs/gnn-bridge-q7-continuous-ou-proof/README.md). Never committed.
+specs/gnn-bridge-q7-continuous-ou-proof/.generated-before-*/
+specs/gnn-bridge-q7-continuous-ou-proof/.generated-publish-*/
+
 # Test-scratch belt-and-braces — tests MUST use tmp_path; these entries
 # prevent accidental leaks into the repo (see tests/test_gauss_runner_prefetch.py).
 gauss_pf2/

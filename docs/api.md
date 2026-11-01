@@ -523,7 +523,7 @@ exit interpretation for the inspection and execution paths.
 
 ## GNN bridge
 
-`fep_formal.bridge` exposes the cross-repo operations surface (contract v0.6):
+`fep_formal.bridge` exposes the cross-repo operations surface (contract v0.7):
 
 - CLI: `fep-formal bridge {status,pin,emit,certify,verify-certificate,verify-document} --gnn-root PATH`.
 - Python: `status`, `pin_sources`, `check_sources`, `emit`,

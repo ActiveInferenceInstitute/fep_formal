@@ -1,4 +1,4 @@
-"""Bridge v0.5 verify-document: roster glob, orchestration, and well-formedness."""
+"""Bridge v0.7 verify-document: roster glob, orchestration, and well-formedness."""
 
 from __future__ import annotations
 

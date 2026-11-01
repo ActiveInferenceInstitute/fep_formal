@@ -25,8 +25,8 @@ echo "  cores=$CORES  build_jobs=$BUILD_JOBS  cwd=$PWD" | tee -a "$LOGFILE"
 # "no configuration file".
 cd "$SCRIPT_DIR"
 
-# Warm build cache (deterministic — pinned Mathlib revision for Lean v4.34.0,
-# see lake-manifest.json)
+# Warm build cache (deterministic — pinned Mathlib revision from
+# lean/lake-manifest.json)
 echo "  lake exe cache get..." | tee -a "$LOGFILE"
 nice -n 10 lake exe cache get 2>&1 | tee -a "$LOGFILE"
 

@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/Volumes/GitVault/Local/tmp/q7-render-anwkhfj8/FepLeanContinuousOU.md",
-    "/Volumes/GitVault/Local/tmp/q7-render-anwkhfj8/rendered"
+    "/Volumes/GitVault/Local/tmp/source-work/q7-render-afkfz8jv/FepLeanContinuousOU.md",
+    "/Volumes/GitVault/Local/tmp/source-work/q7-render-afkfz8jv/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "5314e7a1e0f91ca7826310b2a552905a9896bb6f8e3ad929354cb3e97e2b8c06"
+    "sha256": "8f4a0fdd7f92ed12218b2404c069e94249c7b8566b13ec5bb532bd52de77ec79"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -32,11 +32,11 @@
       "src/fep_formal/__init__.py": "4aa1cea1c92376b961af0487052040a964de67f21531d956379157bfb556f793",
       "src/fep_formal/__main__.py": "7be6447f21ab6d3d43fcda455cb871976e7b268da03010d5eb01459e9336fa78",
       "src/fep_formal/_paths.py": "ff3f60258a2d9a7cabea2ade1ab7596f2c5482d57db932e261a137c969b37cdc",
-      "src/fep_formal/bridge/__init__.py": "c2440c50855d6e9524d6ee8d8b526c55eac3baaabed6edeeb38431bbc99d66ff",
+      "src/fep_formal/bridge/__init__.py": "a1abe46e10df0b3091ff02095c95833481db6bca36c35901e02bda03469f89be",
       "src/fep_formal/bridge/certificates.py": "5808fb694951aeeee0398a8ecfe864b94618dc62f256403cc8143875cf19fcee",
       "src/fep_formal/bridge/cli.py": "c6e38bfe0ae8c53a8af0c646c421d00e4625ab5eea070426dc305e293f31ef1e",
       "src/fep_formal/bridge/custody.py": "56f89c1e2d75af2b28d227dec01371fe8686322a9310701f50abbe0a36000fae",
-      "src/fep_formal/bridge/operations.py": "a306d96f2908de1bbb686ca57a5d5161778edc914cc8e82e73870aa5531d4acb",
+      "src/fep_formal/bridge/operations.py": "8877c711de64e41eb56f183445559882adae1afaaff33225fb092d78cb13b65b",
       "src/fep_formal/catalogue/__init__.py": "8adb85af29296b38802dc7a593add98220966c4378481d21f8bab2a741c4c6f9",
       "src/fep_formal/catalogue/bodies/__init__.py": "05fb8d3ba5898df1ade0bb3279736b82e120a5211cac5da404f4d6eea5055c29",
       "src/fep_formal/catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
@@ -363,11 +363,11 @@
       "src/fep_formal/__init__.py": "4aa1cea1c92376b961af0487052040a964de67f21531d956379157bfb556f793",
       "src/fep_formal/__main__.py": "7be6447f21ab6d3d43fcda455cb871976e7b268da03010d5eb01459e9336fa78",
       "src/fep_formal/_paths.py": "ff3f60258a2d9a7cabea2ade1ab7596f2c5482d57db932e261a137c969b37cdc",
-      "src/fep_formal/bridge/__init__.py": "c2440c50855d6e9524d6ee8d8b526c55eac3baaabed6edeeb38431bbc99d66ff",
+      "src/fep_formal/bridge/__init__.py": "a1abe46e10df0b3091ff02095c95833481db6bca36c35901e02bda03469f89be",
       "src/fep_formal/bridge/certificates.py": "5808fb694951aeeee0398a8ecfe864b94618dc62f256403cc8143875cf19fcee",
       "src/fep_formal/bridge/cli.py": "c6e38bfe0ae8c53a8af0c646c421d00e4625ab5eea070426dc305e293f31ef1e",
       "src/fep_formal/bridge/custody.py": "56f89c1e2d75af2b28d227dec01371fe8686322a9310701f50abbe0a36000fae",
-      "src/fep_formal/bridge/operations.py": "a306d96f2908de1bbb686ca57a5d5161778edc914cc8e82e73870aa5531d4acb",
+      "src/fep_formal/bridge/operations.py": "8877c711de64e41eb56f183445559882adae1afaaff33225fb092d78cb13b65b",
       "src/fep_formal/catalogue/__init__.py": "8adb85af29296b38802dc7a593add98220966c4378481d21f8bab2a741c4c6f9",
       "src/fep_formal/catalogue/bodies/__init__.py": "05fb8d3ba5898df1ade0bb3279736b82e120a5211cac5da404f4d6eea5055c29",
       "src/fep_formal/catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
@@ -688,7 +688,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "8025fc4cf37999ec70ecb6b2e179f8a79356cc30c159449a7b5d45d6d1e443f4",
+  "source_pin_sha256": "7d7cf974ef3df06ea4794bacbf3af313385a0cf6ac7a358ebf86927afe17607e",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
