@@ -41,7 +41,9 @@ def _save(fig: Figure, path: Path) -> Path:
     fd, raw_path = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
     os.close(fd)
     try:
-        fig.savefig(raw_path, dpi=150, format="png", metadata={"Software": "fep_lean"})
+        fig.savefig(
+            raw_path, dpi=150, format="png", metadata={"Software": "fep_formal"}
+        )
         os.replace(raw_path, path)
     finally:
         if os.path.exists(raw_path):
