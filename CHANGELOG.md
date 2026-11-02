@@ -1,5 +1,12 @@
 ## Unreleased
 
+- CI runs its gate jobs on the validated runner image: the `ubuntu-latest`
+  label migrated to Ubuntu 26.04 on 2026-10-19 (`actions/runner-images#14748`),
+  and 26.04 has already produced image-only gate failures in sibling fleet
+  repositories (locked-`uv` wheel resolution, C-toolchain probes). Workflow
+  only; no gate, dependency or test change. Re-review the pin when the fleet
+  migration is assessed.
+
 - Renew the GNN source-custody projections after the website shutdown fix,
   retaining the named Linux Q7 native receipt and five parser observations.
   The twelve static bounds retain their previous probe and runner bytes;
@@ -89,7 +96,6 @@
   topic verification operations, with a concrete setup diagnostic. Run real Gauss
   compiler probes in the serial Lean lane. Update graph expectations and active American English wording.
 
-
 PR222 retained authored native report (historical source statement, not this
 release's independent qualification):
 
@@ -146,7 +152,6 @@ release's independent qualification):
   receipt. These do not prove GNN parsing/execution, matrix Gaussian conditioning
   or universal translation. The sealed topic roster and its semantic
   dispositions are unchanged by this bounded extension.
-
 
 - Refresh the nine current guidance paths and their inbound callers for
   [#63](https://github.com/ActiveInferenceInstitute/fep_formal/issues/63).
@@ -1172,7 +1177,6 @@ read-only validation after independent document review, with stable custody.
 This closes `FEP-SCAFFOLD-PORTABILITY`. The accepted native JSON stays unchanged;
 Q5/Q6 remain historical, and static parity does not imply runner execution.
 
-
 ### Isolated Q7 evidence and active guidance refresh (2026-10-02)
 
 The [public Q7 observation](specs/comprehensive-science-improvement/evidence/public-q7-closure-20261002-r1/summary.json)
@@ -1478,7 +1482,6 @@ evidence refresh per AGENTS.md. Prerequisite for `fep-lean verify`
 claim-readiness at any tip containing the custody package (the native
 capture fails post-compile otherwise); the next bridge pin cycle re-seals
 the roster-drifted source binding.
-
 
 ### Comprehensive improvement wave (2026-09-20/21) — SCOPE-2026-09-20
 
