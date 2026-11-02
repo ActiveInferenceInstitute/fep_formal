@@ -4,9 +4,21 @@ This slice validates the union of two once-only pytest components. CI first
 runs the complete non-serial suite except the two canonical live Chrome cases
 with parallel `loadgroup` workers and the existing 89% coverage floor. After
 those workers finish, it runs exactly those two cases once with `-n 0`, appends
-coverage, and applies the same 89% floor again. No startup deadline, retry,
-skip, or production browser policy changes. This explicit isolation policy
-does not establish why earlier hosted startups failed.
+coverage, and applies the same 89% floor again. The initial isolation policy
+retained the production startup deadline, retry, skip and browser policies;
+isolation alone does not establish why earlier hosted startups failed.
+
+Chrome startup now uses one launch and one 30-second monotonic deadline for
+both absent and partially written debugging-port files. The
+[failed main run](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/40749700765)
+retains the observation behind this bounded allowance: its first browser had
+no port at 15.00185 seconds, and a parse-valid port was observed at 20.00235
+seconds during cleanup. This does not establish D-Bus causality or how that
+past invocation would have behaved without termination. Deterministic tests
+exercise delayed readiness, expiry with absent or partial port data, and
+early process exit. Fresh real-Chrome acceptance remains mandatory. The
+CDP command budget, process-group cleanup, offline network controls, exact
+mandatory live cases and coverage floors are unchanged.
 
 The checker uses actual current pytest collection to approve membership:
 

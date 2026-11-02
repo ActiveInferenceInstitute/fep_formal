@@ -523,7 +523,7 @@ exit interpretation for the inspection and execution paths.
 
 ## GNN bridge
 
-`fep_formal.bridge` exposes the cross-repo operations surface (contract v0.6):
+`fep_formal.bridge` exposes the cross-repo operations surface (contract v0.7):
 
 - CLI: `fep-formal bridge {status,pin,emit,certify,verify-certificate,verify-document} --gnn-root PATH`.
 - Python: `status`, `pin_sources`, `check_sources`, `emit`,
@@ -534,9 +534,12 @@ exit interpretation for the inspection and execution paths.
   `validate_binding`.
 
 The source-custody pin (`specs/gnn-bridge-w2-source-custody/source-pin.json`)
-seals owner bytes on both sides. The GNN owner-roster glob is
-`src/gnn/**/*.py` plus `src/gnn/main.py`; the pin JSON shape is
-`{"schema_version": 1, "fep_formal": {"commit", "owners"}, "gnn": {"commit", "owners"}}`.
+seals owner bytes on both sides. The GNN owner roster binds the declared
+notation contract — `pyproject.toml`, `uv.lock`, `src/gnn/main.py`, the mirror,
+and the pinned syntax files (`docs/gnn/gnn_syntax.md`,
+`src/gnn/pipeline/step_registry.py`) — not the `src/gnn/**/*.py` implementation
+tree; the pin JSON shape is
+`{"schema_version": 1, "fep_lean": {"commit", "owners"}, "gnn": {"commit", "owners"}}`.
 `verify-document --document PATH` extracts one emitted document through the
 pinned render route (`gnn.extract.pomdp_extractor.extract_pomdp_from_file`,
 strict validation) and decides `FEP.GnnDocument.documentWellFormed` in a

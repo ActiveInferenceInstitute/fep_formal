@@ -3,7 +3,7 @@
 Checks are read-only. Emission and custody pin changes are explicit operations.
 No bridge result establishes native Lean or full-provider verification.
 
-Operations surface (contract v0.6):
+Operations surface (contract v0.7):
 ``status``, ``pin_sources``, ``check_sources``, ``emit``,
 ``certificate_receipt``, ``emit_certificate``, ``validate_certificate``,
 ``verify_document``; custody primitives ``fingerprint``,

@@ -1224,22 +1224,29 @@ def test_status_flags_stale_emitted_document(pair: tuple[Path, Path]) -> None:
     assert snapshot(root) == before
 
 
-@pytest.mark.parametrize("change", ["add", "delete", "change"])
+@pytest.mark.parametrize("change", ["delete", "change"])
 def test_relevant_roster_changes_are_rejected(
     pair: tuple[Path, Path], change: str
 ) -> None:
     root, gnn = pair
-    if change == "add":
-        path = gnn / "src/gnn/render/new.py"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("new owner")
-    elif change == "delete":
+    if change == "delete":
         (gnn / "src/gnn/main.py").unlink()
     else:
         (gnn / "src/gnn/main.py").write_text("changed")
     assert operations.status(root, gnn)["status"] == "error"
     with pytest.raises(ValueError, match="stale"):
         operations.emit(root, gnn, "finite")
+
+
+def test_gnn_implementation_tree_is_not_pinned(pair: tuple[Path, Path]) -> None:
+    """GNN owns its implementation tree: src/gnn code is not a custody owner."""
+    root, gnn = pair
+    implementation = gnn / "src/gnn/render/new.py"
+    implementation.parent.mkdir(parents=True, exist_ok=True)
+    implementation.write_text("new implementation\n")
+    assert operations.status(root, gnn)["status"] == "ok"
+    implementation.write_text("changed implementation\n")
+    assert operations.status(root, gnn)["status"] == "ok"
 
 
 def result_file(root: Path) -> Path:

@@ -190,6 +190,173 @@ def _live_chrome_startup_diagnostics(
     monkeypatch.setattr(capture_module, "_chrome_client", diagnostic_client)
 
 
+def _controlled_chrome_startup(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    *,
+    partial_at: float | None = None,
+    valid_at: float | None = None,
+    exit_at: float | None = None,
+) -> SimpleNamespace:
+    """Exercise the real startup/cleanup owner with no process, socket or sleep."""
+    state = SimpleNamespace(
+        now=0.0,
+        launches=0,
+        connects=[],
+        calls=[],
+        signals=[],
+        waits=[],
+        returncode=None,
+        closes=0,
+        profile=tmp_path / "controlled-profile",
+    )
+    port_file = state.profile / "DevToolsActivePort"
+
+    def publish_port() -> None:
+        if valid_at is not None and state.now >= valid_at:
+            port_file.write_text("9222\n/devtools/browser/control\n", encoding="utf-8")
+        elif partial_at is not None and state.now >= partial_at:
+            port_file.write_text("", encoding="utf-8")
+
+    def make_profile(**kwargs) -> str:
+        state.profile.mkdir()
+        publish_port()
+        return str(state.profile)
+
+    def sleep(seconds: float) -> None:
+        state.now = round(state.now + seconds, 6)
+        publish_port()
+
+    def poll():
+        if exit_at is not None and state.now >= exit_at:
+            state.returncode = 17
+        return state.returncode
+
+    def wait(*, timeout: float):
+        state.waits.append(timeout)
+        assert state.returncode is not None
+        return state.returncode
+
+    def popen(command, **kwargs):
+        state.launches += 1
+        assert kwargs["start_new_session"] is True
+        return SimpleNamespace(pid=4242, poll=poll, wait=wait)
+
+    def killpg(pid: int, sig: int) -> None:
+        state.signals.append((pid, sig))
+        assert pid == 4242
+        state.returncode = -int(sig)
+
+    def connect(host: str, port: int, path: str):
+        state.connects.append((host, port, path))
+        return object()
+
+    def call(method: str, params=None, *, session_id=None):
+        state.calls.append((method, params, session_id))
+        return {
+            "Target.createTarget": {"targetId": "target"},
+            "Target.attachToTarget": {"sessionId": "session"},
+        }.get(method, {})
+
+    def close() -> None:
+        state.closes += 1
+
+    state.client = SimpleNamespace(call=call, close=close)
+    monkeypatch.setattr(
+        capture_module,
+        "time",
+        SimpleNamespace(
+            monotonic=lambda: state.now,
+            sleep=sleep,
+        ),
+    )
+    monkeypatch.setattr(
+        capture_module, "tempfile", SimpleNamespace(mkdtemp=make_profile)
+    )
+    monkeypatch.setattr(
+        capture_module,
+        "subprocess",
+        SimpleNamespace(
+            **{**vars(capture_module.subprocess), "Popen": popen},
+        ),
+    )
+    monkeypatch.setattr(
+        capture_module,
+        "os",
+        SimpleNamespace(
+            **{**vars(capture_module.os), "killpg": killpg},
+        ),
+    )
+    monkeypatch.setattr(capture_module._WebSocket, "connect", connect)
+    monkeypatch.setattr(capture_module, "_CdpClient", lambda websocket: state.client)
+    return state
+
+
+@pytest.mark.parametrize("partial_at", [None, 10.0])
+def test_startup_budget_admits_a_valid_port_after_twenty_seconds(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, partial_at: float | None
+) -> None:
+    state = _controlled_chrome_startup(
+        tmp_path,
+        monkeypatch,
+        partial_at=partial_at,
+        valid_at=20.0,
+    )
+    with capture_module._chrome_client(tmp_path / "fake-chrome") as (client, session):
+        assert (client, session) == (state.client, "session")
+        assert state.now == 20.0
+        assert state.connects == [("127.0.0.1", 9222, "/devtools/browser/control")]
+    assert state.launches == 1
+    assert state.closes == 1
+    assert state.signals == [(4242, capture_module.signal.SIGTERM)]
+    assert state.waits == [5]
+    assert not state.profile.exists()
+
+
+@pytest.mark.parametrize("partial_at", [None, 0.0, "late"])
+def test_startup_expiry_uses_one_deadline_and_cleans_up(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, partial_at: float | str | None
+) -> None:
+    budget = capture_module._CDP_START_TIMEOUT_SECONDS
+    partial_when = budget - 10.0 if partial_at == "late" else partial_at
+    state = _controlled_chrome_startup(tmp_path, monkeypatch, partial_at=partial_when)
+    with (
+        pytest.raises(
+            capture_module.BrowserCaptureError,
+            match="Chrome did not publish a usable CDP port",
+        ),
+        capture_module._chrome_client(tmp_path / "fake-chrome"),
+    ):
+        pytest.fail("an absent or incomplete port must not provide a CDP client")
+    assert state.now == budget
+    assert state.launches == 1
+    assert state.connects == state.calls == []
+    assert state.closes == 0
+    assert state.signals == [(4242, capture_module.signal.SIGTERM)]
+    assert state.waits == [5]
+    assert not state.profile.exists()
+
+
+def test_startup_process_exit_fails_promptly_without_a_client_and_cleans_up(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    state = _controlled_chrome_startup(tmp_path, monkeypatch, exit_at=3.0)
+    with (
+        pytest.raises(
+            capture_module.BrowserCaptureError,
+            match="Chrome exited before CDP became available",
+        ),
+        capture_module._chrome_client(tmp_path / "fake-chrome"),
+    ):
+        pytest.fail("an exited process must not provide a CDP client")
+    assert state.now == 3.0
+    assert state.returncode == 17
+    assert state.launches == 1
+    assert state.connects == state.calls == state.signals == state.waits == []
+    assert state.closes == 0
+    assert not state.profile.exists()
+
+
 def test_startup_stderr_diagnostics_bound_and_decode_tail() -> None:
     with tempfile.TemporaryFile() as stream:
         stream.write(b"discarded-prefix" + b"x" * 8191 + b"\xff")
@@ -226,7 +393,7 @@ def test_startup_diagnostics_retain_stderr_without_hiding_launch_failure(
     ):
         pytest.fail("an exited process must not provide a CDP client")
     assert subprocess.Popen is original_popen
-    assert capture_module._CDP_START_TIMEOUT_SECONDS == 15
+    assert capture_module._CDP_START_TIMEOUT_SECONDS == 30
     assert len(sections) == 1
     when, title, details = sections[0]
     assert (when, title) == ("call", "Chrome startup 1")

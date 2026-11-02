@@ -1,4 +1,4 @@
-"""Bridge v0.5 verify-document: roster glob, orchestration, and well-formedness."""
+"""Bridge v0.7 verify-document: roster glob, orchestration, and well-formedness."""
 
 from __future__ import annotations
 
@@ -23,42 +23,25 @@ LEAN_READY = bool(shutil.which("lake")) and (REPO / "lean" / "lakefile.lean").is
 
 
 def test_owner_roster_gnn_glob() -> None:
-    """Every GNN owner path must live under the renamed src/gnn/ layout."""
+    """The GNN roster is the declared contract, not a whole-tree owner glob."""
     roster = operations.owner_roster(REPO, "gnn")
-    assert roster, "roster must not be empty"
-    assert "src/gnn/main.py" in roster
-    assert operations.MIRROR in roster
-    assert "docs/gnn/gnn_syntax.md" in roster
-    assert "src/gnn/pipeline/step_registry.py" in roster
-    fixed = {
-        "pyproject.toml",
-        "uv.lock",
-        "src/gnn/main.py",
-        operations.MIRROR,
-        "docs/gnn/gnn_syntax.md",
-        "src/gnn/pipeline/step_registry.py",
-    }
-    for path in set(roster) - fixed:
-        assert path.startswith("src/gnn/"), f"stale owner path: {path}"
+    assert roster == sorted(
+        {
+            "pyproject.toml",
+            "uv.lock",
+            "src/gnn/main.py",
+            operations.MIRROR,
+            *operations.SYNTAX_FILES,
+        }
+    )
 
 
 def test_roster_matches_renamed_tree() -> None:
-    """Roster stays in lockstep with the tree (no stale or missing owners)."""
-    roster = set(operations.owner_roster(REPO, "gnn"))
-    on_disk = {
-        p.relative_to(REPO).as_posix()
-        for p in (REPO / "src" / "gnn").rglob("*.py")
-        if "__pycache__" not in p.parts
-    }
-    on_disk |= {
-        "pyproject.toml",
-        "uv.lock",
-        "src/gnn/main.py",
-        operations.MIRROR,
-        "docs/gnn/gnn_syntax.md",
-        "src/gnn/pipeline/step_registry.py",
-    }
-    assert roster == on_disk
+    """GNN owns its implementation tree; src/gnn code is never a roster owner."""
+    implementation = {"src/gnn/main.py", *operations.SYNTAX_FILES}
+    for path in operations.owner_roster(REPO, "gnn"):
+        if path.startswith("src/gnn/"):
+            assert path in implementation, f"implementation path pinned: {path}"
 
 
 @pytest.mark.serial_lean
