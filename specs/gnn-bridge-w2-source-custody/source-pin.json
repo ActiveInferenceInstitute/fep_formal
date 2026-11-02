@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "e244ce5eeec9543ea1869e172e92962311c87edb",
+    "commit": "40e30c7ecb6680a9c01d3486fb65140c2aa49410",
     "owners": {
       "compat/fep-lean/pyproject.toml": "ea55f1f4a6b53f998eb57131f9d45d37829559e482858849ce1ecefc51884f07",
       "docs/design/gnn-bridge/bridge-contract.md": "8bfa57cb73f13b92e3874f81afefa7cce8f8d1ed4c41da532801bd9052c7a1c6",
@@ -151,9 +151,9 @@
       "src/fep_formal/methods/projection.py": "fe13f02fcb239c5d6fb913ca4a430257ec2ef21c8ca2735ffd7166474b1dec0c",
       "src/fep_formal/methods/visualization.py": "b5b7f10277e9e89bf00b1fc93e91cbc9a8cff6faf95a6d3e26bab72e4d2bb1c2",
       "src/fep_formal/output/__init__.py": "469df12d64d3e14a4c987a8be29d3375fae4244d3a05d2ea5c973889a002a34a",
-      "src/fep_formal/output/browser_capture.py": "9787b3eed56f3bb133b651559e39703a4e2af36a761504e596c900385a7525f8",
+      "src/fep_formal/output/browser_capture.py": "a1597fbeb6ecf68aa01b81b7732b97662cccdbcd3fc86d7230cdcb50345bf1a2",
       "src/fep_formal/output/evidence.py": "19f4615aa19de49c57148b1fc77e0606f06f6fdae005355db35612faaaaa7299",
-      "src/fep_formal/output/figures.py": "78393ea61a60956987914c713ab78f6f8184c916a3ad68b8a7387e2c72188d37",
+      "src/fep_formal/output/figures.py": "ec6e05fd2438ed19ad0dc45d6a989db238f9b47006d2bac8dbeb3b862ea26679",
       "src/fep_formal/output/formal_kernel_dashboard.py": "fad22e921ce66c201e1e5f141099943b337d5880a03ae3ac2897bd4d2c14221e",
       "src/fep_formal/output/formalism_atlas.py": "46cb37ccd6453be1fa0cd9d0a32bbd20a050d3fc0c68df84a163f345ba6912e2",
       "src/fep_formal/output/formalism_presentation.py": "84f37e213a9938058d68a55da1e62c3f1f059ad304b94b8a83a46e29896b969f",
@@ -324,14 +324,14 @@
     }
   },
   "gnn": {
-    "commit": "8f293d9ba810e6eda5c09842d9c7ed9ffa5f92c1",
+    "commit": "0f563547caf22f9d222ea40cb11f5fbd6bedeb56",
     "owners": {
       "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",
-      "pyproject.toml": "224bf0be6264c9baa9a627196fb9075bb650fbb62c558da05638d518847f8491",
+      "pyproject.toml": "5b7e377cf6f4b7d54f3203fcf38bd7b311673c4dbaabe142453bd0727fcf5cff",
       "src/gnn/main.py": "6c988ec84ad65d07c85b8e6a00456e8f7fa256564325687bce16839754958d6e",
       "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144",
-      "uv.lock": "14343863cd8d2cbb4ec931f2e5938634d2b14e1dc6cd904e540e6a6d5d4b8de2"
+      "uv.lock": "76b5ce218e1294f2e2d0b7104ebeca3964ff93ee4f5e609f2490f33285847d3c"
     }
   },
   "schema_version": 1
