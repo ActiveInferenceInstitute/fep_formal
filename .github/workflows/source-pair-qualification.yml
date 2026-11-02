@@ -67,7 +67,10 @@ jobs:
           set -euo pipefail
           uv sync --project fep --frozen --extra dev
           uv venv "$RUNNER_TEMP/gnn-uv-tool" --python 3.14
-          uv pip install --python "$RUNNER_TEMP/gnn-uv-tool/bin/python" uv==0.13.4
+          # The GNN project gates its own environment on the uv.toml
+          # required-version. Keep this tool uv equal to it or the frozen GNN
+          # sync below fails closed; the FEP lane keeps its own separate pin.
+          uv pip install --python "$RUNNER_TEMP/gnn-uv-tool/bin/python" uv==0.13.6
           "$RUNNER_TEMP/gnn-uv-tool/bin/uv" sync --project gnn --frozen --extra dev
           uv python install 3.10 3.11 3.12 3.13 3.14
       - name: Install pinned Lean launcher
