@@ -117,6 +117,10 @@ its primary study remains unopened pending its declared package, source and
 review gates. Neither hosted CI nor an offline catalog run supplies
 production-capture, provider, empirical or scientific acceptance.
 
+GNN maintains a [downstream adoption
+guide](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/blob/main/docs/gnn/integration/downstream_adoption.md)
+for repositories that consume the notation.
+
 ## Contract
 
 The [execution contract](../AGENTS.md#execution-contract) owns mode behavior,
