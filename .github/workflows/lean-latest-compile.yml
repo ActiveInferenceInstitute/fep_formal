@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   compile-latest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 150
     # Non-gating by construction: a failure here is information, not a red
     # required check.

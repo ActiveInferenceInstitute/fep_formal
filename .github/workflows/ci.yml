@@ -62,9 +62,18 @@ concurrency:
   # and ordinary CLI, joined later to independently accepted full automatic CI.
   # A reference to an in-progress run is identity only, never release acceptance.
 
+# Runner image is pinned deliberately.
+#
+# The `ubuntu-latest` label migrated to Ubuntu 26.04 on 2026-10-19
+# (actions/runner-images#14748). The gate jobs below were validated on
+# Ubuntu 24.04, and 26.04 has already produced image-only gate failures in
+# sibling fleet repositories (locked-uv wheel resolution and C-toolchain
+# probes). Keep the gates on the validated image and re-review this pin when
+# the fleet migration is assessed.
+
 jobs:
   changes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       docs_only: ${{ steps.classify.outputs.docs_only }}
     steps:
@@ -130,7 +139,7 @@ jobs:
   documentation:
     needs: changes
     if: needs.changes.outputs.docs_only == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -198,7 +207,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -406,7 +415,7 @@ jobs:
   static:
     needs: changes
     if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -444,7 +453,7 @@ jobs:
   render-deps:
     needs: changes
     if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -529,7 +538,7 @@ jobs:
       && needs.lean.result == 'success'
       && (github.event_name != 'workflow_dispatch' || inputs.run_render)
       && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 150
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -1081,7 +1090,7 @@ jobs:
           retention-days: 90
 
   lean:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: changes
     permissions:
       contents: read
