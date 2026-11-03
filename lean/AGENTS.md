@@ -24,6 +24,25 @@ pair and exact dependency revision.
 The [generated-tree contract](FepSketches/AGENTS.md) identifies the two
 projection owners. Never hand-edit a `.lean` workspace projection.
 
+## Custody-critical files
+
+[lean-toolchain](lean-toolchain), [lakefile.lean](lakefile.lean) and
+[lake-manifest.json](lake-manifest.json) define the reproducible pair. Treat
+their bytes as evidence inputs: a pin change is a reviewed migration, not a
+routine edit.
+
+## Traps
+
+- **Editor success is not build success.** A file that elaborates in an editor
+  can still fail `(cd lean && lake build FepSketches)` when its imports, module
+  header or declaration visibility differ from the projection. Run the build.
+- **`.lake/` and `.olean` files are not sources.** They are regenerable build
+  artifacts and are gitignored. Never edit, commit or cite them as evidence.
+- **`sorry`-free is not enough.** The build must be warning-free, and a proof
+  that is `sorry`-free but slow can still fail the per-topic verification
+  deadline (`FEP_FORMAL_VERIFY_TIMEOUT`). Shorten the proof or raise the
+  deadline deliberately; do not disable the check.
+
 ## Setup, resolution and evidence
 
 Explicit `fep-formal setup` owns dependency acquisition under

@@ -22,6 +22,20 @@ exact cache and builds under the `FEP_FORMAL_SETUP_TIMEOUT_SEC` deadline. It
 preserves dependency pins and never runs `lake update`. Ordinary validation
 acquires nothing.
 
+## Build and check
+
+The aggregate build is the baseline check for this workspace. Run it from the
+repository root:
+
+```bash
+(cd lean && lake build FepSketches)
+```
+
+The build must run over this workspace, not just an editor buffer. A file that
+compiles in the editor can still fail this build when its imports, module
+header or declaration visibility differ from the projection. See
+[AGENTS.md](AGENTS.md#traps) for the remaining failure modes.
+
 Topic bodies are authored in the
 [body registry](../src/fep_formal/catalogue/AGENTS.md). Reusable Lean resources are
 authored under the [formal package](../src/fep_formal/formal/AGENTS.md) and selected
