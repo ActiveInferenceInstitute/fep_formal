@@ -70,6 +70,7 @@ until a verified integration or disposition.
 | Work | Size | Predecessors and activation | Closure probe |
 | --- | --- | --- | --- |
 | [CUR-12](https://github.com/ActiveInferenceInstitute/fep_formal/issues/50) — Refresh optional strict Hermes/OpenGauss evidence for all 168 topics | Medium | Secure current credential/model route and concrete spend boundary | Complete source-bound strict full-mode report for all 168 topics independently claim-ready; secure preflight and enforcement of the separately authorized spend ceiling remain required. |
+| [CUSTODY-GNN-1](https://github.com/ActiveInferenceInstitute/fep_formal/issues/244) — Re-freeze the FEP↔GNN source pair after GNN `448bee6d` | Medium | Next GNN `v[0-9]*` tag or explicit source-pair qualification dispatch, after GNN content settles | Re-freeze `syntax-pin.json` by hand (no writer), run `bridge pin` at the selected GNN SHA, re-emit both documents and dispatch the [qualification workflow](.github/workflows/source-pair-qualification.yml) per the [bridge procedure](docs/design/gnn-bridge/README.md); re-drifted owners `docs/gnn/gnn_syntax.md`, `pyproject.toml`, `uv.lock`; prospective `pipeline_owners_sha256` `5e8b97ba…` at `448bee6d`, `source_owners_sha256` unchanged `fd1498d1…`. |
 
 ## Upcoming minor, medium and major scopes
 
