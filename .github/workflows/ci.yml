@@ -136,33 +136,78 @@ jobs:
           print(f"documentation-only pull request: {docs_only}")
           PY
 
+  # This job publishes the required `gnn conformance (pinned)` context on every
+  # pull request. Documentation-only changes skip the expensive steps inside
+  # the job, but the job itself still runs and succeeds so that PR shape cannot
+  # be blocked by a missing required context. Keep the classifier below aligned
+  # with the `changes` job.
   gnn-conformance:
     name: gnn conformance (pinned)
-    needs: changes
-    if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           version: "0.13.0"
           enable-cache: true
+      - id: classify
+        name: Classify documentation-only pull requests
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          uv run --no-project --python 3.14 python - <<'PY'
+          import os
+          import re
+          import subprocess
+          from pathlib import Path, PurePosixPath
+
+          docs_only = False
+          if os.environ["EVENT_NAME"] == "pull_request":
+              base = os.environ["BASE_SHA"]
+              if not re.fullmatch(r"[0-9a-f]{40}", base):
+                  raise SystemExit("invalid pull-request base SHA")
+              changed = subprocess.check_output(
+                  ["git", "diff", "--no-renames", "--name-only", "-z", base, "HEAD"]
+              ).decode().split("\0")
+              paths = [PurePosixPath(name) for name in changed if name]
+              # An allowlist: publication inputs, generated scientific records,
+              # receipts, fonts, workflows and unknown paths take the full gates.
+              docs_only = bool(paths) and all(
+                  path.suffix == ".md"
+                  and (len(path.parts) == 1 or path.parts[0] == "docs")
+                  and path.name not in {
+                      "formalism-coverage.md", "theorem-maturity-audit.md",
+                      "lean-landscape.md",
+                  }
+                  for path in paths
+              )
+          with Path(os.environ["GITHUB_OUTPUT"]).open("a") as output:
+              output.write(f"docs_only={str(docs_only).lower()}\n")
+          print(f"documentation-only pull request: {docs_only}")
+          PY
       - run: uv sync --locked --extra dev
+        if: steps.classify.outputs.docs_only != 'true'
       # The frozen-custody bridge gates from AGENTS.md's required checks:
       # each is --check validation of committed artifacts and passes on a
       # fresh checkout without any sibling repo. The live source-pair
       # qualification remains dispatch-only in source-pair-qualification.yml.
       - name: Check the frozen-custody bridge gates
+        if: steps.classify.outputs.docs_only != 'true'
         run: |
           uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
           uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
           uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
       - name: Validate retained historical runner evidence offline
+        if: steps.classify.outputs.docs_only != 'true'
         run: |
           uv run python -B specs/gnn-runner-execution/validate_retained.py
           uv run python -B specs/gnn-runner-execution/test_validate_retained.py
       - name: Check independent Gaussian composition replay controls
+        if: steps.classify.outputs.docs_only != 'true'
         timeout-minutes: 5
         env:
           FEP_FORMAL_LIVE_TESTS: "0"
