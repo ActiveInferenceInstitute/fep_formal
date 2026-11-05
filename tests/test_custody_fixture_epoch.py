@@ -247,8 +247,10 @@ def test_function_ratchet_metadata_reversal_authenticates_complete_profile(
     normalized = predecessor.replace(
         current, recorded.replace(b'"1.4.0"', b'"1.6.0"'), 1
     )
+    # Epoch-sensitive by design: the complete profile keeps the live uv guard, so
+    # raising `[tool.uv] required-version` moves this digest with the guard.
     assert hashlib.sha256(normalized).hexdigest() == (
-        "734fc9d2bf373242030d38f16bd64439c752ce3f59f5319f83ddec8c5c696705"
+        "b2453f4ba90d7d959bcb84c8c91848d4ee7dcd4bcf786f148b7c4beac4c59ec3"
     )
     if tamper == "none":
         assert function_ratchet_metadata_predecessor(predecessor) == predecessor
