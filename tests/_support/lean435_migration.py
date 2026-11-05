@@ -269,7 +269,7 @@ _HISTORICAL_LOCK_SHA256 = (
 # The reviewed Python 3.11/Pillow 13 lock is a new profile, not a reversible
 # commentary delta: uv removed the 3.10-only resolution and wheel inventory.
 # Its exact predecessor is retained as a frozen archive for historical controls.
-_FLOOR_LOCK_SHA256 = "2ce6cad91f77ea23921aa57eee8870243f4ac8131677848124a098df44dc64a0"
+_FLOOR_LOCK_SHA256 = "5301956db0694e7fe19949769480a03bbe24a4fcdd76511b54490867102d9b36"
 
 
 def _historical_lock_from_archive() -> bytes:
@@ -494,7 +494,10 @@ _FLOOR_METADATA = (
     b"# Pillow is transitive through matplotlib. Keep the resolved decoder at the\n"
     b"# first release outside every open Pillow advisory; 13.0.0 requires Python\n"
     b"# >=3.11, which is also the supported packaging floor. Do not lower.\n"
-    b'constraint-dependencies = ["pillow>=13.0.0"]\n'
+    b"# Werkzeug is transitive through pytest-httpserver. Keep it at the first\n"
+    b"# release outside the open Werkzeug advisory; 3.1.9 is the published fix\n"
+    b"# for security alert 1. Do not lower.\n"
+    b'constraint-dependencies = ["pillow>=13.0.0", "werkzeug>=3.1.9"]\n'
 )
 _FLOOR_REQUIRES_COMMENT = (
     b"# 3.11 is the oldest release still receiving security fixes (3.10 reached\n"
@@ -506,7 +509,7 @@ _FLOOR_MYPY_COMMENT = (
     b"# covered separately by the declared Python 3.11+ distribution matrix.\n"
 )
 _FLOOR_PYPROJECT_SHA256 = (
-    "9930ba79338f3428194734504c82f0c4e87ec32b0d292960929017432080aa8c"
+    "079d3655ee1242d59c73b4668fdad201ede746dfccabeaa0d44e38b54a1061f7"
 )
 
 

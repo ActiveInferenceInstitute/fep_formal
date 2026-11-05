@@ -7,7 +7,10 @@ required-version = "==0.13.7"
 # Pillow is transitive through matplotlib. Keep the resolved decoder at the
 # first release outside every open Pillow advisory; 13.0.0 requires Python
 # >=3.11, which is also the supported packaging floor. Do not lower.
-constraint-dependencies = ["pillow>=13.0.0"]
+# Werkzeug is transitive through pytest-httpserver. Keep it at the first
+# release outside the open Werkzeug advisory; 3.1.9 is the published fix
+# for security alert 1. Do not lower.
+constraint-dependencies = ["pillow>=13.0.0", "werkzeug>=3.1.9"]
 
 [project]
 name = "fep-formal"
