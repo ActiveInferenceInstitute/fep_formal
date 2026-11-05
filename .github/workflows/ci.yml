@@ -136,6 +136,48 @@ jobs:
           print(f"documentation-only pull request: {docs_only}")
           PY
 
+  gnn-conformance:
+    name: gnn conformance (pinned)
+    needs: changes
+    if: needs.changes.outputs.docs_only != 'true' && (github.event_name != 'workflow_dispatch' || inputs.native_supplement_profile != 'native-api-cli-supplement-v1')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: "0.13.0"
+          enable-cache: true
+      - run: uv sync --locked --extra dev
+      # The frozen-custody bridge gates from AGENTS.md's required checks:
+      # each is --check validation of committed artifacts and passes on a
+      # fresh checkout without any sibling repo. The live source-pair
+      # qualification remains dispatch-only in source-pair-qualification.yml.
+      - name: Check the frozen-custody bridge gates
+        run: |
+          uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
+          uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
+          uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
+      - name: Validate retained historical runner evidence offline
+        run: |
+          uv run python -B specs/gnn-runner-execution/validate_retained.py
+          uv run python -B specs/gnn-runner-execution/test_validate_retained.py
+      - name: Check independent Gaussian composition replay controls
+        timeout-minutes: 5
+        env:
+          FEP_FORMAL_LIVE_TESTS: "0"
+        run: |
+          mkdir -p output
+          uv run pytest specs/gnn-semantic-witness-v1/test_composition.py -q -n 0 --no-cov \
+            --junitxml=output/gnn-composition-acceptance.xml
+      - name: Retain GNN conformance evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: gnn-conformance
+          path: output/gnn-composition-acceptance.xml
+          if-no-files-found: warn
+
   documentation:
     needs: changes
     if: needs.changes.outputs.docs_only == 'true'
@@ -234,26 +276,6 @@ jobs:
           uv run python specs/openai-math-methods/generate_package_methods.py --check
           uv run python specs/identity-cutover/generate_legacy_stubs.py --check
           uv run fep-formal --project-root . methods check --output-root docs/mathematical-positioning
-      # The frozen-custody bridge gates from AGENTS.md's required checks:
-      # each is --check validation of committed artifacts and passes on a
-      # fresh checkout without any sibling repo.
-      - name: Check the frozen-custody bridge gates
-        run: |
-          uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
-          uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
-          uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
-      - name: Validate retained historical runner evidence offline
-        run: |
-          uv run python -B specs/gnn-runner-execution/validate_retained.py
-          uv run python -B specs/gnn-runner-execution/test_validate_retained.py
-      - name: Check independent Gaussian composition replay controls
-        timeout-minutes: 5
-        env:
-          FEP_FORMAL_LIVE_TESTS: "0"
-        run: |
-          mkdir -p output
-          uv run pytest specs/gnn-semantic-witness-v1/test_composition.py -q -n 0 --no-cov \
-            --junitxml=output/gnn-composition-acceptance.xml
       - name: Generate and validate publication inputs
         run: |
           uv run fep-formal catalogue
@@ -368,7 +390,6 @@ jobs:
           name: python-acceptance
           path: |
             output/python-acceptance.xml
-            output/gnn-composition-acceptance.xml
             output/live-chrome-acceptance.xml
             output/python-acceptance-collection.json
             output/python-acceptance-summary.json
