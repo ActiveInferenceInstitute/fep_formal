@@ -679,17 +679,17 @@ def _full_profile_distribution_cells(workflow):
     matrix = workflow["jobs"]["distribution"]["strategy"]["matrix"]
     assert set(matrix) == {"os", "python"}
     assert matrix["os"] == ["ubuntu-latest", "macos-latest", "windows-latest"]
-    assert matrix["python"] == ["3.10", "3.11", "3.12", "3.13", "3.14"]
+    assert matrix["python"] == ["3.11", "3.12", "3.13", "3.14"]
     cells = [
         (os_name, version) for os_name in matrix["os"] for version in matrix["python"]
     ]
-    assert len(cells) == len(set(cells)) == 15
+    assert len(cells) == len(set(cells)) == 12
     return cells
 
 
-def test_full_pr15_distribution_matrix_is_event_independent():
+def test_full_pr12_distribution_matrix_is_event_independent():
     workflow = yaml.safe_load(CI.read_text())
-    assert len(_full_profile_distribution_cells(workflow)) == 15
+    assert len(_full_profile_distribution_cells(workflow)) == 12
     # A literal matrix applies equally to automatic PR, push and explicit manual shadow.
     assert isinstance(
         workflow["jobs"]["distribution"]["strategy"]["matrix"]["python"], list
@@ -699,13 +699,13 @@ def test_full_pr15_distribution_matrix_is_event_independent():
 @pytest.mark.parametrize(
     "versions",
     [
-        ["3.10", "3.12", "3.14"],
-        ["3.10", "3.11", "3.12", "3.13"],
-        ["3.10", "3.11", "3.12", "3.13", "3.13"],
-        ["3.10", "3.11", "3.12", "3.13", "3.14", "3.15"],
+        ["3.11", "3.13", "3.14"],
+        ["3.11", "3.12", "3.13"],
+        ["3.11", "3.12", "3.13", "3.13"],
+        ["3.11", "3.12", "3.13", "3.14", "3.15"],
     ],
 )
-def test_full_pr15_matrix_refuses_reduced_missing_duplicate_extra_versions(versions):
+def test_full_pr12_matrix_refuses_reduced_missing_duplicate_extra_versions(versions):
     workflow = yaml.safe_load(CI.read_text())
     workflow["jobs"]["distribution"]["strategy"]["matrix"]["python"] = versions
     with pytest.raises(AssertionError):
@@ -715,7 +715,7 @@ def test_full_pr15_matrix_refuses_reduced_missing_duplicate_extra_versions(versi
 @pytest.mark.parametrize(
     "key,value", [("os", ["ubuntu-latest", "macos-latest"]), ("exclude", [])]
 )
-def test_full_pr15_matrix_refuses_platform_loss_or_filter(key, value):
+def test_full_pr12_matrix_refuses_platform_loss_or_filter(key, value):
     workflow = yaml.safe_load(CI.read_text())
     workflow["jobs"]["distribution"]["strategy"]["matrix"][key] = value
     with pytest.raises(AssertionError):

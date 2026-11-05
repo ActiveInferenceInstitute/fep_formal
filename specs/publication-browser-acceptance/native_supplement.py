@@ -37,10 +37,11 @@ ROLE_NAMES = {
     "lean",
     "render",
     "documentation",
+    "gnn conformance (pinned)",
 } | {
     f"distribution ({system}, {version})"
     for system in ("ubuntu-latest", "macos-latest", "windows-latest")
-    for version in ("3.10", "3.11", "3.12", "3.13", "3.14")
+    for version in ("3.11", "3.12", "3.13", "3.14")
 }
 
 
@@ -409,8 +410,8 @@ def join_release(
         "workflow/artifact policy differs",
     )
     require(
-        len(v["jobs"]) == 22 and {j["name"] for j in v["jobs"]} == ROLE_NAMES,
-        "full22/15 required",
+        len(v["jobs"]) == 20 and {j["name"] for j in v["jobs"]} == ROLE_NAMES,
+        "full20/12 required",
     )
     require(
         all(
@@ -865,7 +866,7 @@ def finalize(root: Path, output: Path) -> None:
             "cli_topics": 168,
             "reference": reference,
             "files_sha256": files,
-            "boundary": "Native-only actual API+ordinary CLI. Reference may still be in progress or may fail; exact independently accepted terminal full automatic22/15/PDF is separately mandatory. No640/wholePython/wheel/render execution claim.",
+            "boundary": "Native-only actual API+ordinary CLI. Reference may still be in progress or may fail; exact independently accepted terminal full automatic20/12/PDF is separately mandatory. No640/wholePython/wheel/render execution claim.",
         },
     )
 

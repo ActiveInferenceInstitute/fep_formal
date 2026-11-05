@@ -278,7 +278,7 @@ lanes that this mathematical integration does not close.
 The [local validation record](../specs/openai-math-methods/VALIDATION.md)
 separates package, native, publication and scientific evidence. Installed-wheel
 methods checks passed locally on Python 3.10 through 3.14. The existing
-15-cell distribution job also runs that supplemental check on its selected
+12-cell distribution job also runs that supplemental check on its selected
 interpreter. Release acceptance requires its successful results on the exact
 release commit; consult the linked GitHub release and workflow evidence for
 that commit. The validator itself remains Python 3.14.

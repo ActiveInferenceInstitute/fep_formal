@@ -164,8 +164,8 @@ See [authorship-guide.md](authorship-guide.md), [testing.md](testing.md), and
 
 ## Interpreter contract
 
-`requires-python = ">=3.10"` declares the packaging floor. CI tests fresh
-installed wheels on CPython 3.10, 3.11, 3.12, 3.13, and 3.14 on Ubuntu, macOS,
+`requires-python = ">=3.11"` declares the packaging floor. CI tests fresh
+installed wheels on CPython 3.11, 3.12, 3.13, and 3.14 on Ubuntu, macOS,
 and Windows. Each target environment resolves the wheel's declared runtime
 dependencies, imports the public API and catalog, verifies every packaged
 Lean/YAML resource against the built sources, and exercises the console script
@@ -191,8 +191,8 @@ AST serialization and accepts evidence validation only on CPython 3.14.
 Unsupported validator interpreters refuse before parsing with a
 `ContinuousArtifactError` naming the accepted set and running interpreter.
 The wheel matrix exercises that
-refusal on 3.10--3.13, alongside the canonical serializer's actual byte parity
-across 3.10--3.14. See the
+refusal on 3.11--3.13, while the separate static Q7 source-parity lane retains
+the canonical serializer's actual byte parity across 3.10--3.14. See the
 [serialization protocol](../specs/gnn-bridge-q7-continuous-ou-proof/scaffold-serialization.md).
 That static parity does not extend validator acceptance or replace the new
 source-bound native/custody capture required by a serializer change. The retained
@@ -214,7 +214,7 @@ execution.
 To exercise a target runtime locally while keeping the harness pinned:
 
 ```bash
-FEP_DISTRIBUTION_PYTHON=3.10 \
+FEP_DISTRIBUTION_PYTHON=3.11 \
   uv run --locked python -m pytest tests/test_distribution.py -q -s --no-cov
 ```
 
@@ -224,8 +224,9 @@ acquired from the package index. No Lean compile or provider call occurs.
 Installed-wheel observations retain their exact guarded source epochs. Each
 local cell reports an actual installed target-runtime case separately from the
 CPython 3.14 harness cases. The hosted run at `c99e933` passed all 15
-Ubuntu/macOS/Windows Python 3.10–3.14 cells. Later source changes require fresh
-acceptance; POSIX controls alone do not establish Windows behavior. The
+Ubuntu/macOS/Windows Python 3.10–3.14 cells at that historical epoch. Later
+source changes require fresh acceptance; POSIX controls alone do not establish
+Windows behavior. The
 [remaining acceptance](../specs/comprehensive-science-improvement/NEXT.md)
 owns current source freezes, actual collection, and package/render gates.
 

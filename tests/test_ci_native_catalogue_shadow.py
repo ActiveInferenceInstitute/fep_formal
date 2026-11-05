@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import copy
 import json
+from pathlib import Path
 
 import pytest
+import yaml
 
 from fep_formal.output.evidence import build_native_lean_receipt
 from fep_formal.verification.lean_verifier import VerifyResult
@@ -90,7 +92,6 @@ def test_compare_two_receipts_with_real_validator(tmp_path, monkeypatch, mode):
 def supplement_contract():
     """Import the exact slice helper; no process, network or actual CI fixture."""
     import importlib.util
-    from pathlib import Path
 
     path = (
         Path(__file__).resolve().parents[1]
@@ -102,6 +103,24 @@ def supplement_contract():
     spec.loader.exec_module(module)
     assert Path(module.__file__).resolve() == path
     return module
+
+
+def test_native_supplement_role_set_matches_the_full_workflow(supplement_contract):
+    """Every full-profile job name, including matrix cells, is pinned by role."""
+    root = Path(__file__).resolve().parents[1]
+    workflow = yaml.safe_load((root / ".github/workflows/ci.yml").read_text())
+    expected: set[str] = set()
+    for job_id, job in workflow["jobs"].items():
+        matrix = job.get("strategy", {}).get("matrix", {})
+        if "os" in matrix and "python" in matrix:
+            expected |= {
+                f"{job_id} ({os_name}, {version})"
+                for os_name in matrix["os"]
+                for version in matrix["python"]
+            }
+        else:
+            expected.add(job.get("name", job_id))
+    assert expected == supplement_contract.ROLE_NAMES
 
 
 def _supplement_join_fixture(module):

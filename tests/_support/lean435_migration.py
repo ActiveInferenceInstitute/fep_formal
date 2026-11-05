@@ -258,6 +258,44 @@ HISTORICAL_METADATA_ARCHIVE = "tests/fixtures/historical_h3_custody_metadata.jso
 HISTORICAL_METADATA_ARCHIVE_SHA256 = (
     "8ae9aff5bdc2061bdae4d419ec8203dc5f10975a379f35c3000cff814ff71d5d"
 )
+_HISTORICAL_LOCK_ARCHIVE = (
+    Path(__file__).resolve().parent.parent
+    / "fixtures"
+    / "historical_h3_custody_lock.json"
+)
+_HISTORICAL_LOCK_SHA256 = (
+    "9ac2d0173116817a20aeb9393f42a32174631a340d830edc7732f00a6a089623"
+)
+# The reviewed Python 3.11/Pillow 13 lock is a new profile, not a reversible
+# commentary delta: uv removed the 3.10-only resolution and wheel inventory.
+# Its exact predecessor is retained as a frozen archive for historical controls.
+_FLOOR_LOCK_SHA256 = "2ce6cad91f77ea23921aa57eee8870243f4ac8131677848124a098df44dc64a0"
+
+
+def _historical_lock_from_archive() -> bytes:
+    """Recover only the exact predecessor lock used by historical custody tests."""
+    payload = json.loads(_HISTORICAL_LOCK_ARCHIVE.read_bytes())
+    assert set(payload) == {
+        "schema_version",
+        "kind",
+        "source_commit",
+        "encoding",
+        "evidence_boundary",
+        "sha256",
+        "size",
+        "data",
+    }
+    assert payload["schema_version"] == 1
+    assert payload["kind"] == "historical-h3-custody-lock-companion"
+    assert payload["source_commit"] == "360139b4d1a6f4f8fba1ae5c9eb9fd505eadf302"
+    assert payload["encoding"] == "zlib+base64"
+    assert payload["sha256"] == _HISTORICAL_LOCK_SHA256
+    raw = zlib.decompress(base64.b64decode(payload["data"]))
+    assert len(raw) == payload["size"]
+    assert hashlib.sha256(raw).hexdigest() == _HISTORICAL_LOCK_SHA256
+    return raw
+
+
 _ARCHIVED_METADATA_SHA256 = (
     "a93635ab635881aac257efdc3a6d627f73bb7865c5626a83aaa6aa8d06b90737"
 )
@@ -438,6 +476,49 @@ def _identity_metadata_predecessor(live: bytes) -> bytes:
     return candidate
 
 
+_FLOOR_METADATA = (
+    b"# Pillow is transitive through matplotlib. Keep the resolved decoder at the\n"
+    b"# first release outside every open Pillow advisory; 13.0.0 requires Python\n"
+    b"# >=3.11, which is also the supported packaging floor. Do not lower.\n"
+    b'constraint-dependencies = ["pillow>=13.0.0"]\n'
+)
+_FLOOR_REQUIRES_COMMENT = (
+    b"# 3.11 is the oldest release still receiving security fixes (3.10 reached\n"
+    b"# end of life 2026-10-01). Pillow 13.0.0 declares requires-python >=3.11, so an\n"
+    b"# older advertised range keeps a vulnerable decoder in the lock while\n"
+    b"# Dependabot resolves at the declared floor. Do not lower.\n"
+)
+_FLOOR_MYPY_COMMENT = (
+    b"# covered separately by the declared Python 3.11+ distribution matrix.\n"
+)
+_FLOOR_PYPROJECT_SHA256 = (
+    "9e620e9199fc8e79f016d38ff3311a8abdf3f46b6cd76aa7eeaae5e511b07129"
+)
+
+
+def _python_floor_metadata_predecessor(live: bytes) -> bytes:
+    """Reverse only the reviewed Python 3.11/Pillow 13 packaging delta."""
+    floor = b'requires-python = ">=3.11"\n'
+    historical = b'requires-python = ">=3.10"\n'
+    mypy_historical = (
+        b"# covered separately by the declared Python 3.10+ distribution matrix.\n"
+    )
+    if (
+        hashlib.sha256(live).hexdigest() != _FLOOR_PYPROJECT_SHA256
+        or live.count(_FLOOR_METADATA) != 1
+        or live.count(_FLOOR_REQUIRES_COMMENT) != 1
+        or live.count(_FLOOR_MYPY_COMMENT) != 1
+        or live.count(floor) != 1
+    ):
+        return live
+    return (
+        live.replace(_FLOOR_METADATA, b"", 1)
+        .replace(_FLOOR_REQUIRES_COMMENT, b"", 1)
+        .replace(_FLOOR_MYPY_COMMENT, mypy_historical, 1)
+        .replace(floor, historical, 1)
+    )
+
+
 def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
     """Reverse the exact reviewed P06 lint policy for historical controls only.
 
@@ -445,6 +526,7 @@ def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
     changes survive unchanged so the historical metadata gate still refuses
     them before parsing or decoding any companion.
     """
+    live = _python_floor_metadata_predecessor(live)
     if b'name = "fep-formal"\n' in live:
         predecessor = _identity_metadata_predecessor(live)
         if predecessor == live:
@@ -508,6 +590,8 @@ def bridge_dev_lock_predecessor(live: bytes) -> bytes:
     """Reverse the exact locked safe-XML addition for historical controls only."""
     from tests._support.release_lineage import LATER_RELEASE_VERSIONS
 
+    if hashlib.sha256(live).hexdigest() == _FLOOR_LOCK_SHA256:
+        live = _historical_lock_from_archive()
     if live.count(b'[[package]]\nname = "fep-formal"\n') == 1:
         candidate = live.replace(
             b'[[package]]\nname = "fep-formal"\n',

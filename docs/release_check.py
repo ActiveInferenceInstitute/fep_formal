@@ -33,7 +33,7 @@ DISTRIBUTION_PREFIX = "distribution ("
 DISTRIBUTION_CELLS = tuple(
     f"distribution ({os}, {python})"
     for os in ("ubuntu-latest", "macos-latest", "windows-latest")
-    for python in ("3.10", "3.11", "3.12", "3.13", "3.14")
+    for python in ("3.11", "3.12", "3.13", "3.14")
 )
 #: InstituteOS sidecar: ``repo.description`` names ``Release vX.Y.Z`` and the
 #: date; ``meta.updated`` carries the release date.
