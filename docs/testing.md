@@ -140,3 +140,7 @@ requires executing the complete explicit capture DAG against frozen current
 inputs, retaining its strict native/audit/Python/render/browser evidence and
 both accepted archives. Focused tests, static readiness and an old journal do
 not substitute for that execution.
+
+Documentation-only pull requests still publish the `gnn conformance (pinned)`
+status context; the job classifies them and skips only the expensive conformance
+steps.
