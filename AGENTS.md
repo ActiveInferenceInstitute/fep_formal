@@ -192,7 +192,7 @@ receipt-bound captures and generated outputs under their existing contracts.
   choices as `run`.
 - `uv run fep-formal report` runs catalog mode and emits a complete report.
 - Python 3.14 is the only accepted validator environment (see
-  `.python-version`); `requires-python >=3.10` in `pyproject.toml` is the
+  `.python-version`); `requires-python >=3.11` in `pyproject.toml` is the
   packaging floor, not the validator contract.
 
 These witnesses expose computational behavior and boundary cases but
@@ -223,9 +223,10 @@ historical/generated/pinned-input exclusions in `pyproject.toml` follow
 `specs/AGENTS.md`; their bytes remain unchanged. Strict mypy covers the package,
 scripts, docs, and the render-dependency and native-supplement helpers at the
 Python 3.14 validator target. Ruff retains Python 3.10
-syntax compatibility, and the installed-wheel matrix checks the packaging floor
-separately. Exceptions preserve declared error or compatibility contracts and
-must be justified at the affected line.
+syntax compatibility for the static Q7 parity lane, and the installed-wheel
+matrix checks the Python 3.11 packaging floor separately. Exceptions preserve
+declared error or compatibility contracts and must be justified at the affected
+line.
 
 For credential-free local test runs, set `FEP_FORMAL_LIVE_TESTS=0` explicitly.
 The [test contract](tests/AGENTS.md) explains the provider families whose
@@ -356,8 +357,8 @@ no measured release speedup follows from this source change alone.
 
 ### Full automatic PR and explicit dual-shadow acceptance profiles
 
-Full automatic code PR and fresh merged-main CI retain all 22 role contexts,
-15 wheel cells, source-bound native evidence and independently scoped PDF
+Full automatic code PR and fresh merged-main CI retain all 20 role contexts,
+12 wheel cells, source-bound native evidence and independently scoped PDF
 acceptance. Release supplement profile `native-api-cli-supplement-v1` requires
 `run_lean=true`, `native_producer_shadow=false`, and the exact automatic run ID,
 attempt and PR number. It may dispatch concurrently with automatic CI; that

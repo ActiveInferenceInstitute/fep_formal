@@ -4,6 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [tool.uv]
 required-version = "==0.13.0"
+# Pillow is transitive through matplotlib. Keep the resolved decoder at the
+# first release outside every open Pillow advisory; 13.0.0 requires Python
+# >=3.11, which is also the supported packaging floor. Do not lower.
+constraint-dependencies = ["pillow>=13.0.0"]
 
 [project]
 name = "fep-formal"
@@ -14,7 +18,11 @@ authors = [
     { name = "Daniel Ari Friedman", email = "daniel@activeinference.institute" },
 ]
 license = "CC-BY-4.0"
-requires-python = ">=3.10"
+# 3.11 is the oldest release still receiving security fixes (3.10 reached
+# end of life 2026-10-01). Pillow 13.0.0 declares requires-python >=3.11, so an
+# older advertised range keeps a vulnerable decoder in the lock while
+# Dependabot resolves at the declared floor. Do not lower.
+requires-python = ">=3.11"
 dependencies = [
     "numpy>=1.24.0",
     "matplotlib>=3.7.0",
@@ -76,7 +84,7 @@ fail_under = 89
 
 [tool.mypy]
 # Evidence validation uses .python-version; wheel runtime compatibility remains
-# covered separately by the declared Python 3.10+ distribution matrix.
+# covered separately by the declared Python 3.11+ distribution matrix.
 python_version = "3.14"
 strict = true
 warn_return_any = true

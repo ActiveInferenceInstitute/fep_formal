@@ -1,5 +1,13 @@
 ## Unreleased
 
+- Raise the packaging floor to Python 3.11 and constrain Pillow to 13.0.0.
+  Pillow 13 is the first release outside every open Pillow advisory and
+  requires Python 3.11; Dependabot resolves at the declared floor, so the old
+  3.10 floor kept producing `security_update_not_possible`. The installed-wheel
+  matrix drops its 3.10 cells (15 to 12), while the separate static Q7
+  source-parity lane retains its 3.10--3.14 observations. This is the seventh
+  repository in the fleet to need the same floor correction.
+
 - CI runs its gate jobs on the validated runner image: the `ubuntu-latest`
   label migrated to Ubuntu 26.04 on 2026-10-19 (`actions/runner-images#14748`),
   and 26.04 has already produced image-only gate failures in sibling fleet

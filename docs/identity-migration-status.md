@@ -106,7 +106,7 @@ changed artifacts must never be uploaded as the already published 2.1.0.
 
 The [postmerge checkpoint](../specs/identity-cutover/evidence/public-integration-20261028/postmerge-local.json)
 records fresh source-pair/Q7 qualification. Full hosted PR/main contexts, the
-15-cell wheel matrix and publication visual/browser gates establish their
+12-cell wheel matrix and publication visual/browser gates establish their
 own acceptance; these local and Q7 records do not replace them. Historical custody transitions that require old physical
 source owners still refuse this checkout; they require a versioned successor
 checkpoint. Local render acceptance does not close those gates. The serial

@@ -54,13 +54,13 @@ See [formal-kernel methods](formal-kernel-methods.md) for the evidence matrix.
 ## Installed-wheel runtime matrix
 
 The `distribution` CI job uses a CPython 3.14 test harness and fresh target
-environments for CPython 3.10--3.14 on Ubuntu, macOS, and Windows. It tests
+environments for CPython 3.11--3.14 on Ubuntu, macOS, and Windows. It tests
 installed API/catalog loading, complete Lean/YAML resource parity, isolated
 imports, CLI help, explicit checkout selection, and Q7's refusal before parsing
 on unsupported validator interpreters. Runtime dependency resolution is
 independent of the validator's locked environment. It does not reuse the
 checkout or parent site-packages and does not compile Lean. Automatic code
-pull requests, pushes to `main` and manual full runs execute all 15 cells;
+pull requests, pushes to `main` and manual full runs execute all 12 cells;
 the release gate requires every one of them.
 
 ```bash

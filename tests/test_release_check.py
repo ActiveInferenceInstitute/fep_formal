@@ -134,7 +134,7 @@ def _jobs(**overrides: str) -> list[dict[str, str]]:
     names = ["changes", "python", "static", "lean", "render-deps", "render"] + [
         f"distribution ({os}, 3.{minor})"
         for os in ("ubuntu-latest", "macos-latest", "windows-latest")
-        for minor in range(10, 15)
+        for minor in range(11, 15)
     ]
     jobs = [{"name": name, "conclusion": "success"} for name in names]
     jobs.append({"name": "documentation", "conclusion": "skipped"})
@@ -151,9 +151,9 @@ def test_hosted_jobs_require_every_promised_lane_to_succeed() -> None:
     assert any("'lean': skipped" in e for e in skipped)
     assert any("'render': skipped" in e for e in skipped)
     failed_cell = check.job_errors(
-        _jobs(**{"distribution (windows-latest, 3.10)": "failure"})
+        _jobs(**{"distribution (windows-latest, 3.11)": "failure"})
     )
-    assert any("windows-latest, 3.10" in e for e in failed_cell)
+    assert any("windows-latest, 3.11" in e for e in failed_cell)
     # A reduced pull-request matrix is not release evidence.
     reduced = [
         job for job in _jobs() if not job["name"].endswith((", 3.11)", ", 3.13)"))
