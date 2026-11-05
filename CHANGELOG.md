@@ -1,5 +1,13 @@
 ## Unreleased
 
+- Align every uv pin to 0.13.7: the twelve `setup-uv` steps in `ci.yml`,
+  `lean-latest.yml`, `lean-latest-compile.yml` and `source-pair-qualification.yml`
+  now install 0.13.7, and `[tool.uv] required-version` moves to `==0.13.7` in the
+  same commit. The guard refuses any project-aware command from a different
+  tool, so a step that installed 0.13.7 against the old `==0.13.0` guard failed
+  closed on its first `uv` invocation. The GNN lane's separate `uv==0.13.6`
+  tool keeps its own pin.
+
 - Raise the packaging floor to Python 3.11 and constrain Pillow to 13.0.0.
   Pillow 13 is the first release outside every open Pillow advisory and
   requires Python 3.11; Dependabot resolves at the declared floor, so the old
