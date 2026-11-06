@@ -949,7 +949,7 @@ def test_historical_metadata_preserves_only_explicit_release_profiles(
     else:
         assert (
             hashlib.sha256(live).hexdigest()
-            == "7b3109accc06616e9cb2fffe50babbe4216ddfc9a8bc154a0a0be09376084e2c"
+            == "c0e87dbd1842f5e0bb608b8029284585a19500534a1e085feccc928f21dbbfb9"
         )
         if profile in {"T01", "P08"}:
             reviewed_note = (
@@ -974,10 +974,10 @@ def test_historical_metadata_preserves_only_explicit_release_profiles(
             assert live.count(marker) == 1
             live = live.replace(marker, marker + filters, 1)
         expected_live_digest = {
-            "T01": "ab94d6fa723dbb547e3e73f70d826060ab63e873e812922cbb30ef090d7d3d3e",
-            "P09": "bd0c17f95d13206cee7f55b7bdaa45745da0a7aa0ae0d9a8d9bfe3ae717eafae",
-            "P08": "7cddff7d00c626e1838f955480c425f187ea04d10b049708ee22366828cc7282",
-            "P08_P09": "7b3109accc06616e9cb2fffe50babbe4216ddfc9a8bc154a0a0be09376084e2c",
+            "T01": "c5fd31e946328e1311f6190af5cc57235c35712209f821014eef957337c6c710",
+            "P09": "5d4810aa01815aa102f5ad466691e7492fbdf2448fdc5da27455275ca7539619",
+            "P08": "6616c6818b9bd3ae1688292f4ba741ef7644a8fef548e02488244c80fa00f8bf",
+            "P08_P09": "c0e87dbd1842f5e0bb608b8029284585a19500534a1e085feccc928f21dbbfb9",
         }[profile]
         assert hashlib.sha256(live).hexdigest() == expected_live_digest
         assert live.count(current_token) == 1
@@ -1090,7 +1090,7 @@ def test_historical_custody_control_refuses_source_drift_before_writing(
             )
         else:
             data = data.replace(
-                b'required-version = "==0.13.0"', b'required-version = "==0.13.1"', 1
+                b'required-version = "==0.13.7"', b'required-version = "==0.13.8"', 1
             )
         assert data != changed.read_bytes()
     else:

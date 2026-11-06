@@ -269,7 +269,7 @@ _HISTORICAL_LOCK_SHA256 = (
 # The reviewed Python 3.11/Pillow 13 lock is a new profile, not a reversible
 # commentary delta: uv removed the 3.10-only resolution and wheel inventory.
 # Its exact predecessor is retained as a frozen archive for historical controls.
-_FLOOR_LOCK_SHA256 = "2ce6cad91f77ea23921aa57eee8870243f4ac8131677848124a098df44dc64a0"
+_FLOOR_LOCK_SHA256 = "5301956db0694e7fe19949769480a03bbe24a4fcdd76511b54490867102d9b36"
 
 
 def _historical_lock_from_archive() -> bytes:
@@ -316,7 +316,21 @@ _P08_NORMALIZED_METADATA_SHA256 = (
 _P08_P09_NORMALIZED_METADATA_SHA256 = (
     "e3dc9c2f05b7793788a8cd9e42f44c6ff9fcf501b7414742ba3b7fc224874cd8"
 )
-_UV_REQUIREMENT = b'\n[tool.uv]\nrequired-version = "==0.13.0"\n'
+_UV_REQUIREMENT = b'\n[tool.uv]\nrequired-version = "==0.13.7"\n'
+# The retained predecessor epoch carries the 0.13.0 guard. Both reviewed epochs
+# strip to the same normalized profile, so either satisfies the requirement.
+_UV_REQUIREMENT_HISTORICAL = b'\n[tool.uv]\nrequired-version = "==0.13.0"\n'
+_UV_REQUIREMENTS = (_UV_REQUIREMENT, _UV_REQUIREMENT_HISTORICAL)
+
+
+def _strip_uv_requirement(profile: bytes) -> bytes:
+    """Remove exactly one reviewed guard; an unknown guard survives unchanged."""
+    for token in _UV_REQUIREMENTS:
+        if profile.count(token) == 1:
+            return profile.replace(token, b"", 1)
+    return profile
+
+
 _HISTORICAL_CUSTODY_ORIGINALS = {
     "src/fep_lean/formal/compositions/h3_case_study.lean": (
         "7a8ba9346dc9ab700ac6276c26421b46c0437eabaab7cd448a2bc05998318849",
@@ -468,7 +482,7 @@ def _identity_metadata_predecessor(live: bytes) -> bytes:
         if candidate.count(current) != count:
             return live
         candidate = candidate.replace(current, recorded)
-    normalized = _recorded_pyproject_release(candidate.replace(_UV_REQUIREMENT, b"", 1))
+    normalized = _recorded_pyproject_release(_strip_uv_requirement(candidate))
     if hashlib.sha256(normalized).hexdigest() != (
         "b735a00e551b460b224e4780765104647f52b1e5bf9f7df9d6effb7ea1cf62f7"
     ):
@@ -480,7 +494,10 @@ _FLOOR_METADATA = (
     b"# Pillow is transitive through matplotlib. Keep the resolved decoder at the\n"
     b"# first release outside every open Pillow advisory; 13.0.0 requires Python\n"
     b"# >=3.11, which is also the supported packaging floor. Do not lower.\n"
-    b'constraint-dependencies = ["pillow>=13.0.0"]\n'
+    b"# Werkzeug is transitive through pytest-httpserver. Keep it at the first\n"
+    b"# release outside the open Werkzeug advisory; 3.1.9 is the published fix\n"
+    b"# for security alert 1. Do not lower.\n"
+    b'constraint-dependencies = ["pillow>=13.0.0", "werkzeug>=3.1.9"]\n'
 )
 _FLOOR_REQUIRES_COMMENT = (
     b"# 3.11 is the oldest release still receiving security fixes (3.10 reached\n"
@@ -492,7 +509,7 @@ _FLOOR_MYPY_COMMENT = (
     b"# covered separately by the declared Python 3.11+ distribution matrix.\n"
 )
 _FLOOR_PYPROJECT_SHA256 = (
-    "9e620e9199fc8e79f016d38ff3311a8abdf3f46b6cd76aa7eeaae5e511b07129"
+    "079d3655ee1242d59c73b4668fdad201ede746dfccabeaa0d44e38b54a1061f7"
 )
 
 
@@ -532,9 +549,9 @@ def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
         if predecessor == live:
             return live
         live = predecessor
-    if live.count(_UV_REQUIREMENT) != 1:
+    if sum(live.count(token) for token in _UV_REQUIREMENTS) != 1:
         return live
-    normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
+    normalized = _recorded_pyproject_release(_strip_uv_requirement(live))
     # Exact American package-description successor; historical/static replay only.
     # Authenticate the complete release-normalized profile before changing bytes.
     if (
@@ -545,7 +562,7 @@ def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
         historical = b'description = "FEP Lean4 catalogue, OpenGauss-oriented session model, manuscript artifacts"\n'
         assert live.count(current) == 1
         live = live.replace(current, historical, 1)
-        normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
+        normalized = _recorded_pyproject_release(_strip_uv_requirement(live))
     if hashlib.sha256(normalized).hexdigest() != (
         "08901ea1eb52a26b19067d292be8169591d16ad16b0112bbaccc2c4cf36353ab"
     ):
@@ -554,7 +571,7 @@ def function_ratchet_metadata_predecessor(live: bytes) -> bytes:
     policy = b'\n# A statement is not a source line. Keep a 100-statement ceiling for active\n# Python and separately enforce the issue\'s 200-line limit in the seven\n# refactored owners. Existing exceptions below are bounded by function name\n# and statement count in test_check_inventory.py; new or larger exceptions fail.\n[tool.ruff.lint.pylint]\nmax-statements = 100\n\n[tool.ruff.lint.per-file-ignores]\n"specs/h3-reference-study/bundle_study.py" = ["PLR0915"]\n"specs/h3-reference-study/export_native.py" = ["PLR0915"]\n"src/fep_lean/catalogue/latex.py" = ["PLR0915"]\n"src/fep_lean/output/evidence.py" = ["PLR0915"]\n"src/fep_lean/output/release_bundle/_acceptance.py" = ["PLR0915"]\n"src/fep_lean/output/release_bundle/_identity.py" = ["PLR0915"]\n"src/fep_lean/output/reporter.py" = ["PLR0915"]\n"src/fep_lean/verification/_subprocess.py" = ["PLR0915"]\n"src/fep_lean/verification/formalism_audit.py" = ["PLR0915"]\n"tests/test_distribution.py" = ["PLR0915"]\n"tests/test_distribution_supplemental.py" = ["PLR0915"]\n"tests/test_h3_reference_study.py" = ["PLR0915"]\n"tests/test_h3_study_bundle.py" = ["PLR0915"]\n'
     assert live.count(rule) == 1 and live.count(policy) == 1
     predecessor = live.replace(rule, b"", 1).replace(policy, b"", 1)
-    restored = _recorded_pyproject_release(predecessor.replace(_UV_REQUIREMENT, b"", 1))
+    restored = _recorded_pyproject_release(_strip_uv_requirement(predecessor))
     assert hashlib.sha256(restored).hexdigest() == (
         "bb9aec5b3afcdb31a0aea57cc220a178bb20824d633e5ac9e5f69fc2c296dc9a"
     )
@@ -571,9 +588,9 @@ def bridge_dev_metadata_predecessor(live: bytes) -> bytes:
     live = function_ratchet_metadata_predecessor(live)
     if b'name = "fep-formal"\n' in live:
         return live
-    if live.count(_UV_REQUIREMENT) != 1:
+    if sum(live.count(token) for token in _UV_REQUIREMENTS) != 1:
         return live
-    normalized = _recorded_pyproject_release(live.replace(_UV_REQUIREMENT, b"", 1))
+    normalized = _recorded_pyproject_release(_strip_uv_requirement(live))
     if hashlib.sha256(normalized).hexdigest() != (
         "bb9aec5b3afcdb31a0aea57cc220a178bb20824d633e5ac9e5f69fc2c296dc9a"
     ):
@@ -581,7 +598,7 @@ def bridge_dev_metadata_predecessor(live: bytes) -> bytes:
     addition = b'    "defusedxml>=0.7.1",\n'
     assert live.count(addition) == 1
     predecessor = live.replace(addition, b"", 1)
-    restored = _recorded_pyproject_release(predecessor.replace(_UV_REQUIREMENT, b"", 1))
+    restored = _recorded_pyproject_release(_strip_uv_requirement(predecessor))
     assert hashlib.sha256(restored).hexdigest() == _P08_P09_NORMALIZED_METADATA_SHA256
     return predecessor
 
@@ -638,14 +655,14 @@ def _authenticated_metadata_archive(project_root: Path, live: bytes) -> bytes:
     The combined constructor runs this before manifest restoration so a bad
     metadata input cannot cause any other archived source to be decoded.
     """
-    assert live.count(_UV_REQUIREMENT) == 1, "unreviewed uv requirement: pyproject.toml"
+    assert sum(live.count(token) for token in _UV_REQUIREMENTS) == 1, (
+        "unreviewed uv requirement: pyproject.toml"
+    )
     predecessor = bridge_dev_metadata_predecessor(live)
     assert b'name = "fep-formal"\n' not in predecessor, (
         "unreviewed normalized metadata: pyproject.toml"
     )
-    normalized = _recorded_pyproject_release(
-        predecessor.replace(_UV_REQUIREMENT, b"", 1)
-    )
+    normalized = _recorded_pyproject_release(_strip_uv_requirement(predecessor))
     assert hashlib.sha256(normalized).hexdigest() in {
         _RECORDED_METADATA_SHA256,
         _T01_NORMALIZED_METADATA_SHA256,

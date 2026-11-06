@@ -82,7 +82,7 @@ jobs:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
       - id: classify
         name: Classify documentation-only pull requests
         env:
@@ -151,7 +151,7 @@ jobs:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
           enable-cache: true
       - id: classify
         name: Classify documentation-only pull requests
@@ -232,7 +232,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
           enable-cache: true
       - run: uv sync --locked --extra dev
       - name: Materialize the generated manuscript inputs
@@ -275,7 +275,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
           enable-cache: true
       # The harness remains a 3.14 validator. Only the fresh wheel environment
       # exercises the packaging floor; no Lean/provider evidence is claimed.
@@ -304,7 +304,7 @@ jobs:
           fetch-depth: 0
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
           enable-cache: true
       - run: uv sync --locked --extra dev
       - run: uv lock --check && uv pip check
@@ -487,7 +487,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
           enable-cache: true
       - run: uv sync --locked --extra dev
       - name: Check composition source inventory
@@ -525,7 +525,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
           enable-cache: true
       - name: Install the SVG rasterizer
         run: sudo apt-get update && sudo apt-get install -y --no-install-recommends librsvg2-bin
@@ -610,7 +610,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
           enable-cache: true
       - name: Cache the elan toolchain
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -1168,7 +1168,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: "0.13.0"
+          version: "0.13.7"
           enable-cache: true
       - name: Freeze concurrent automatic reference for supplement v1
         if: github.event_name == 'workflow_dispatch' && inputs.native_supplement_profile == 'native-api-cli-supplement-v1'

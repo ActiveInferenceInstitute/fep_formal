@@ -40,7 +40,7 @@ witnesses and execution receipts make those boundaries inspectable.
 Use a source checkout for operator commands. Python 3.14 is the accepted
 validator environment; `.python-version` and `pyproject.toml` own the runtime
 and dependency policy. The project pins [uv](https://docs.astral.sh/uv/)
-`0.13.0`; use that version, including through `uvx uv==0.13.0` when necessary.
+`0.13.7`; use that version, including through `uvx uv==0.13.7` when necessary.
 
 ```bash
 git clone https://github.com/ActiveInferenceInstitute/fep_formal.git

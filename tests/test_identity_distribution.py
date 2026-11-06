@@ -9,6 +9,8 @@ import sys
 import zipfile
 from pathlib import Path
 
+from tests._support.lean435_migration import _strip_uv_requirement
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -195,6 +197,13 @@ print('installed identities, resources, and ownership passed')
         cwd=ROOT,
     )
     run("tar", "-xf", str(archive), "-C", str(baseline))
+    # The retained commit pins its own uv guard; the ambient uv answers to the
+    # current one, so remove exactly that reviewed tool-policy section before an
+    # ambient build. Unknown guards survive and fail the build closed.
+    baseline_pyproject = baseline / "pyproject.toml"
+    stripped = _strip_uv_requirement(baseline_pyproject.read_bytes())
+    assert stripped != baseline_pyproject.read_bytes()
+    baseline_pyproject.write_bytes(stripped)
     previous = build(baseline, "previous")
     run(uv, "pip", "uninstall", "--python", str(python), "fep-lean")
     run(uv, "pip", "install", "--python", str(python), "--no-deps", str(previous))
