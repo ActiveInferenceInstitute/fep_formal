@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/var/folders/vc/rgmbpjpj0dbg61vr54xjskc80000gn/T/tmp.cjuFy17Bo1/q7-render-ckdbk4ex/FepLeanContinuousOU.md",
-    "/var/folders/vc/rgmbpjpj0dbg61vr54xjskc80000gn/T/tmp.cjuFy17Bo1/q7-render-ckdbk4ex/rendered"
+    "/private/tmp/fep-q7-public-p5qsdadw/q7-render-v42shxcn/FepLeanContinuousOU.md",
+    "/private/tmp/fep-q7-public-p5qsdadw/q7-render-v42shxcn/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "196bd3285bb177e06e27e276eccd36579c4b7c4ff966631763d81826811b6998"
+    "sha256": "247556b4be4ed24deae122069b7dbb3b7a6f0408ea68caf4c474d20d01fa13ca"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -21,12 +21,12 @@
   },
   "owners_after": {
     "fep_lean": {
-      "compat/fep-lean/pyproject.toml": "ea55f1f4a6b53f998eb57131f9d45d37829559e482858849ce1ecefc51884f07",
+      "compat/fep-lean/pyproject.toml": "71807dc84fc3473512f89116e4d32c4319d6f73dde4cfbec39fcd5c19c701b06",
       "docs/design/gnn-bridge/bridge-contract.md": "8bfa57cb73f13b92e3874f81afefa7cce8f8d1ed4c41da532801bd9052c7a1c6",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
       "lean/lakefile.lean": "7d6f59fa176297445f47fe29397cbfa0880fd2993fbe49991997a4e2f071bb3a",
       "lean/lean-toolchain": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c",
-      "pyproject.toml": "a4d3001fcf06727f287d451e0e45cb0395010ec8f35f8db346ec84d549804283",
+      "pyproject.toml": "079d3655ee1242d59c73b4668fdad201ede746dfccabeaa0d44e38b54a1061f7",
       "specs/gnn-bridge-p1-finite-spike/projection.py": "fbfc63d13d38a319bc8c54b4969a2fbb7c96b5bae4f2d2c80facc5cfe35a527b",
       "specs/gnn-bridge-p4b-continuous-emission/projection_continuous.py": "70d29ff7ff68df98d4fb327fcd92383b8167602e563b0d5d766f35cc9aa5b1ea",
       "src/fep_formal/__init__.py": "4aa1cea1c92376b961af0487052040a964de67f21531d956379157bfb556f793",
@@ -339,25 +339,25 @@
       "src/fep_lean/verification/lean_verifier.pyi": "3a18cd80bb63ef80cfeb97319e52f02ed4abb70c517ddf8e7ce9b9b109a96c1c",
       "src/fep_lean/verification/numerical_witnesses.pyi": "0608768dd3a54348dba67f8a35d97bdb27740017c4ac7fcb5520d688a7d14c23",
       "src/fep_lean/verification/preflight.pyi": "1b16e7f0352372becb1459555f154db5ee36568946613a5815f6f45c190866ca",
-      "uv.lock": "9ac2d0173116817a20aeb9393f42a32174631a340d830edc7732f00a6a089623"
+      "uv.lock": "5301956db0694e7fe19949769480a03bbe24a4fcdd76511b54490867102d9b36"
     },
     "gnn": {
-      "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
+      "docs/gnn/gnn_syntax.md": "4656e7266c32a63acc3a0f14d19496d9e55857bac6a75f5a3ecf1d546e97cacc",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",
-      "pyproject.toml": "5b7e377cf6f4b7d54f3203fcf38bd7b311673c4dbaabe142453bd0727fcf5cff",
+      "pyproject.toml": "97277102f7bb921c1699c7457afd0ba45f8136d03e0dee4b0fb42e9490f1771a",
       "src/gnn/main.py": "6c988ec84ad65d07c85b8e6a00456e8f7fa256564325687bce16839754958d6e",
       "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144",
-      "uv.lock": "76b5ce218e1294f2e2d0b7104ebeca3964ff93ee4f5e609f2490f33285847d3c"
+      "uv.lock": "6f60b3c0d7555568270b2db6607b04c65ba8c7cd7c258fc100f959a0081cb9f4"
     }
   },
   "owners_before": {
     "fep_lean": {
-      "compat/fep-lean/pyproject.toml": "ea55f1f4a6b53f998eb57131f9d45d37829559e482858849ce1ecefc51884f07",
+      "compat/fep-lean/pyproject.toml": "71807dc84fc3473512f89116e4d32c4319d6f73dde4cfbec39fcd5c19c701b06",
       "docs/design/gnn-bridge/bridge-contract.md": "8bfa57cb73f13b92e3874f81afefa7cce8f8d1ed4c41da532801bd9052c7a1c6",
       "lean/lake-manifest.json": "9fdcd10229bbd8c886c6786c4c2287898062cd6cbc029a610bf0530c14a8bd1a",
       "lean/lakefile.lean": "7d6f59fa176297445f47fe29397cbfa0880fd2993fbe49991997a4e2f071bb3a",
       "lean/lean-toolchain": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c",
-      "pyproject.toml": "a4d3001fcf06727f287d451e0e45cb0395010ec8f35f8db346ec84d549804283",
+      "pyproject.toml": "079d3655ee1242d59c73b4668fdad201ede746dfccabeaa0d44e38b54a1061f7",
       "specs/gnn-bridge-p1-finite-spike/projection.py": "fbfc63d13d38a319bc8c54b4969a2fbb7c96b5bae4f2d2c80facc5cfe35a527b",
       "specs/gnn-bridge-p4b-continuous-emission/projection_continuous.py": "70d29ff7ff68df98d4fb327fcd92383b8167602e563b0d5d766f35cc9aa5b1ea",
       "src/fep_formal/__init__.py": "4aa1cea1c92376b961af0487052040a964de67f21531d956379157bfb556f793",
@@ -670,15 +670,15 @@
       "src/fep_lean/verification/lean_verifier.pyi": "3a18cd80bb63ef80cfeb97319e52f02ed4abb70c517ddf8e7ce9b9b109a96c1c",
       "src/fep_lean/verification/numerical_witnesses.pyi": "0608768dd3a54348dba67f8a35d97bdb27740017c4ac7fcb5520d688a7d14c23",
       "src/fep_lean/verification/preflight.pyi": "1b16e7f0352372becb1459555f154db5ee36568946613a5815f6f45c190866ca",
-      "uv.lock": "9ac2d0173116817a20aeb9393f42a32174631a340d830edc7732f00a6a089623"
+      "uv.lock": "5301956db0694e7fe19949769480a03bbe24a4fcdd76511b54490867102d9b36"
     },
     "gnn": {
-      "docs/gnn/gnn_syntax.md": "1a1feaaee71c12c384babcdbb752711453c03204ff443ed0579c9cc644bd557c",
+      "docs/gnn/gnn_syntax.md": "4656e7266c32a63acc3a0f14d19496d9e55857bac6a75f5a3ecf1d546e97cacc",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",
-      "pyproject.toml": "5b7e377cf6f4b7d54f3203fcf38bd7b311673c4dbaabe142453bd0727fcf5cff",
+      "pyproject.toml": "97277102f7bb921c1699c7457afd0ba45f8136d03e0dee4b0fb42e9490f1771a",
       "src/gnn/main.py": "6c988ec84ad65d07c85b8e6a00456e8f7fa256564325687bce16839754958d6e",
       "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144",
-      "uv.lock": "76b5ce218e1294f2e2d0b7104ebeca3964ff93ee4f5e609f2490f33285847d3c"
+      "uv.lock": "6f60b3c0d7555568270b2db6607b04c65ba8c7cd7c258fc100f959a0081cb9f4"
     }
   },
   "render_route": [
@@ -688,7 +688,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "bfbe86a966122a6c2f3319d21374ef0bdf8185713e6b3377b6c431977ec76563",
+  "source_pin_sha256": "55b693c0618df106fdd5e1ebb57750950b2a826049cba37a80fc2da6256ce09d",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }
