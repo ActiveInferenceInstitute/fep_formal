@@ -1,13 +1,18 @@
-# AII sidecar — InstituteOS metadata. Schema: instituteos.platform.aii_sidecar
+# AII sidecar — InstituteOS metadata. Schema: aii_platform.aii_sidecar
 meta:
-  updated: '2026-10-24'
+  sidecar_version: 1.2.1
+  updated: '2026-11-10'
 repo:
   name: fep_formal
   slug: fep-formal
   full_name: ActiveInferenceInstitute/fep_formal
-  description: 'Release v2.1.0 implementation (2026-10-24) · Concept DOI [10.5281/zenodo.19699233](https://doi.org/10.5281/zenodo.19699233) · License CC BY 4.0. Standalone 168-topic Free Energy Principle / Active Inference Lean 4 catalogue.'
+  description: FEP_Formal is a standalone catalog of 168 Free Energy Principle, Active
+    Inference, Bayesian Mechanics, Information Geometry, and Thermodynamics topics.
+    Its reviewed roster spans 22 reviewed families in five areas. Each topic connects
+    an invariant, explicit assumptions, a canonical Lean 4 theorem body and typeset…
 institute:
   category: research-software
+  maturity: released
   steward: Active Inference Institute
 ecosystem:
   relations:
@@ -32,23 +37,51 @@ artifacts:
 - path: LICENSE
   kind: doc
   description: License.
+- path: AGENTS.md
+  kind: doc
+  description: Agent guidance.
+- path: CITATION.cff
+  kind: citation
+  description: Machine-readable citation metadata.
+- path: tests
+  kind: test
+  description: Test suite.
+- path: docs
+  kind: doc
+  description: Documentation tree.
+- path: manuscript
+  kind: publication
+  description: Manuscript sources and artifacts.
+- path: CHANGELOG.md
+  kind: doc
+  description: Changelog.
 provenance:
   license: CC-BY-4.0
   citation:
     doi: 10.5281/zenodo.19699233
+    text: Active Inference Institute — fep_formal.
 instituteos:
   tags:
   - fep
-  - lean
-  - release
-  - '2026'
+  - lean4
+  - formalization
   - doi
-  - python
 capabilities:
 - python-package
 - tested
 - documentation
+- ci
+- citation
+- manuscript-publication
 tasks:
   test:
-    cmd: uv sync --locked --extra dev && uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"
+    cmd: uv sync --locked --extra dev && uv run pytest tests/ -q --cov=src --cov-fail-under=89
+      -m "not serial_lean"
     description: Run the test suite (mirror of the AGENTS.md required check).
+docs:
+- README.md
+- AGENTS.md
+- docs/INTEGRATION.md
+- docs/README.md
+- docs/AGENTS.md
+schema: aii-sidecar/v1

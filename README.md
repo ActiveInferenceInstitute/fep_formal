@@ -219,3 +219,11 @@ FEP_Formal is maintained by the Active Inference Institute and distributed
 under [CC BY 4.0](LICENSE). Use [CITATION.cff](CITATION.cff) for the software and
 preferred scholarly citation, and cite the exact release or source revision
 used in a reproducible result.
+
+## InstituteOS sidecar
+
+This repository carries a committed [`.aii/`](.aii/README.md) sidecar with curated
+InstituteOS metadata (`aii-sidecar/v1`): category, maturity, ecosystem relations,
+key artifacts, provenance, and portable tasks. It is read by
+[InstituteOS](https://github.com/ActiveInferenceInstitute/InstituteOS) tooling and
+does not affect the project's build or runtime.
