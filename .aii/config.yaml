@@ -1,7 +1,7 @@
 # AII sidecar — InstituteOS metadata. Schema: aii_platform.aii_sidecar
 meta:
   sidecar_version: 1.2.1
-  updated: '2026-11-10'
+  updated: '2026-11-11'
 repo:
   name: fep_formal
   slug: fep-formal
@@ -9,7 +9,8 @@ repo:
   description: FEP_Formal is a standalone catalog of 168 Free Energy Principle, Active
     Inference, Bayesian Mechanics, Information Geometry, and Thermodynamics topics.
     Its reviewed roster spans 22 reviewed families in five areas. Each topic connects
-    an invariant, explicit assumptions, a canonical Lean 4 theorem body and typeset…
+    an invariant, explicit assumptions, a canonical Lean 4 theorem body and typeset
+    signatures.
 institute:
   category: research-software
   maturity: released

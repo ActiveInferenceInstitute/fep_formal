@@ -9,7 +9,7 @@ commands these workflows execute.
 
 | File | Trigger | Role |
 | --- | --- | --- |
-| [ci.yml](ci.yml) | Push and pull request to `main`; manual dispatch | The gate. Runs the required-check inventory through its `changes`, `documentation`, `distribution`, `python`, `static`, `render-deps`, `render` and `lean` jobs. |
+| [ci.yml](ci.yml) | Push and pull request to `main`; manual dispatch | The gate. Runs the required-check inventory through its `changes`, `gnn-conformance`, `documentation`, `distribution`, `python`, `static`, `render-deps`, `render` and `lean` jobs. |
 | [lean-latest.yml](lean-latest.yml) | Weekly schedule and manual dispatch | `pin-audit` against the newest stable Lean toolchain. |
 | [lean-latest-compile.yml](lean-latest-compile.yml) | Weekly schedule and manual dispatch | `compile-latest`, a non-gating compile against the newest stable Lean toolchain. |
 | [source-pair-qualification.yml](source-pair-qualification.yml) | Manual dispatch only | `qualify-source-pair` for explicit FEP and GNN source SHAs; produces scoped bridge and Q7 evidence. |
