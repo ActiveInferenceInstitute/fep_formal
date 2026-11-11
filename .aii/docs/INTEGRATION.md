@@ -11,7 +11,7 @@
 | Maturity | `released` |
 | Steward | Active Inference Institute |
 | Default branch | `main` |
-| Current release | — |
+| Current release | v2.1.0 |
 | License | `CC-BY-4.0` |
 | Citation | Active Inference Institute — fep_formal. |
 
@@ -52,7 +52,7 @@
 
 | Task | Command | Working directory | Description |
 | --- | --- | --- | --- |
-| `test` | `uv sync --locked --extra dev && uv run pytest tests/ -q --cov=src --cov-fail-under=89 -m "not serial_lean"` | `.` | Run the test suite (mirror of the AGENTS.md required check). |
+| `test` | `uv sync --locked --extra dev && uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"` | `.` | Run the test suite (mirror of the AGENTS.md required check). |
 
 ## Validation
 

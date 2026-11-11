@@ -120,6 +120,33 @@ Issue as roster-bound wait for a coordinated provenance-roster refresh.
 | Work | Size | Predecessors | Closure probe |
 | --- | --- | --- | --- |
 
+## Local maintenance findings (2026-11-11)
+
+Found during the documentation completion pass. These are local follow-ups,
+not release blockers, and are not yet linked to a GitHub Issue; file one when
+the owner wants the work scheduled.
+
+- **Ruff findings under the declared floor.** A local `ruff check .` under Ruff
+  0.13.0 reports 21 `E402`/`E731`/`E741` findings in `docs/xref_audit.py`,
+  `scripts/render_publication.py`, `scripts/theorem_maturity_audit.py`, the Q5/Q6/Q7
+  `verify_native.py` slices, `src/fep_formal/__init__.py`,
+  `src/fep_formal/gauss/cli.py`, `src/fep_formal/verification/_toolchain.py`,
+  `src/fep_formal/verification/numerical_witnesses.py`,
+  `tests/_support/lean_module_contract.py`,
+  `tests/test_ci_native_catalogue_shadow.py`,
+  `tests/test_formal_kernel_dashboard.py`,
+  `tests/test_generic_variational_methods.py` and
+  `tests/test_geo_notation_bridge_check.py`. The dev extra declares
+  `ruff>=0.15.0` and the lock resolves 0.16.1; Ruff 0.15.22 reproduces the 21
+  findings while 0.17.4 reports none because the default rule set changed. The
+  locked 0.16.1 result cannot be run offline. Reproduce with the locked version
+  and either fix the findings or raise the declared floor.
+- **Sidecar provenance release.** `.aii/config.yaml` now records
+  `provenance.current_release: v2.1.0`, matching the published 2.1.0 software
+  release. The sidecar declares no `provenance.releases_manifest` because the
+  repository commits no release-manifest file; add one only if the sidecar
+  validator requires it.
+
 ## Original requirement coverage and closure
 
 | Original criterion | Required open gates |
