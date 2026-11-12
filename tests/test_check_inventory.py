@@ -194,7 +194,12 @@ def gate_arm_runs(text: str | None = None) -> dict[str, list[tuple[str, str]]]:
             continue
         if current is None or not line:
             continue
-        if line.startswith("run "):
+        if line.startswith("run_log "):
+            _, _, logged = line.partition(" ")
+            log, _, command = logged.partition(" ")
+            assert command, f"run_log {log!r} names no command"
+            arms[current].append(("run", normalise(command)))
+        elif line.startswith("run "):
             arms[current].append(("run", normalise(line[4:])))
         elif re.fullmatch(r"arm_[a-z]+", line):
             arms[current].append(("call", line[4:]))
@@ -413,17 +418,24 @@ def test_package_line_floor_gate_consumes_complete_split_coverage() -> None:
     assert parallel < chrome < floor < membership
     command = "python docs/check_coverage_floors.py --coverage coverage.xml"
     assert command in agents_commands() and command in ci_commands()
-    assert "pipefail" in steps[floor]["run"]
-    assert "output/coverage-floor-summary.json" in steps[floor]["run"]
+    arms = gate_commands()
+    gate_text = GATE.read_text(encoding="utf-8")
+    assert "pipefail" in gate_text
+    assert "output/coverage-floor-summary.json" in gate_text
+    assert steps[parallel]["run"] == "bash scripts/gate.sh remainder"
+    assert steps[chrome]["run"] == "bash scripts/gate.sh chrome"
+    assert steps[floor]["run"] == "bash scripts/gate.sh floor"
     assert "steps.python_remainder.outcome != 'skipped'" in steps[floor]["if"]
     assert "steps.live_chrome.outcome != 'skipped'" in steps[floor]["if"]
-    for index in (parallel, chrome):
-        assert "--cov=src" in steps[index]["run"]
-        assert "--cov-report=xml" in steps[index]["run"]
-        assert "--cov-fail-under=89" in steps[index]["run"]
-        assert "--cov-branch" not in steps[index]["run"]
-    assert "--cov-append" not in steps[parallel]["run"]
-    assert "--cov-append" in steps[chrome]["run"]
+    for arm in ("remainder", "chrome"):
+        joined = " ".join(arms[arm])
+        assert "--cov=src" in joined
+        assert "--cov-report=xml" in joined
+        assert "--cov-fail-under=89" in joined
+        assert "--cov-branch" not in joined
+    assert "--cov-append" not in " ".join(arms["remainder"])
+    assert "--cov-append" in " ".join(arms["chrome"])
+    assert command in arms["floor"]
     assert steps[parallel]["env"]["FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE"] == "1"
     retained = next(
         step

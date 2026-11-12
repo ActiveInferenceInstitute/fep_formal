@@ -312,35 +312,14 @@ jobs:
         id: python_remainder
         env:
           FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE: "1"
-        run: |
-          set -o pipefail
-          mkdir -p output
-          uv run pytest tests/ -q -n auto --dist loadgroup \
-            --cov=src --cov-report=xml --cov-fail-under=89 \
-            -m "not serial_lean" \
-            --deselect=tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request \
-            --deselect=tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer \
-            --junitxml=output/python-acceptance.xml -W always --color=no \
-            2>&1 | tee output/python-warning-inventory.log
+        run: bash scripts/gate.sh remainder
       - name: Run the isolated live Chrome acceptance component
         id: live_chrome
         if: ${{ !cancelled() && steps.python_remainder.outcome != 'skipped' }}
-        run: |
-          set -o pipefail
-          mkdir -p output
-          uv run pytest \
-            tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request \
-            tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer \
-            -q -n 0 --cov=src --cov-append --cov-report=xml \
-            --cov-fail-under=89 --junitxml=output/live-chrome-acceptance.xml \
-            -W always --color=no \
-            2>&1 | tee output/live-chrome-warning-inventory.log
+        run: bash scripts/gate.sh chrome
       - name: Require measured package line coverage floors
         if: ${{ !cancelled() && steps.python_remainder.outcome != 'skipped' && steps.live_chrome.outcome != 'skipped' }}
-        run: |
-          set -o pipefail
-          uv run python docs/check_coverage_floors.py --coverage coverage.xml \
-            | tee output/coverage-floor-summary.json
+        run: bash scripts/gate.sh floor
       - name: Require complete Python membership and all live Chrome controls
         if: ${{ !cancelled() && steps.python_remainder.outcome != 'skipped' && steps.live_chrome.outcome != 'skipped' }}
         run: >-
