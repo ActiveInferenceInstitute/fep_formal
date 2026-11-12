@@ -52,7 +52,7 @@
 
 | Task | Command | Working directory | Description |
 | --- | --- | --- | --- |
-| `test` | `uv sync --locked --extra dev && uv run pytest tests/ -q --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean"` | `.` | Run the test suite (mirror of the AGENTS.md required check). |
+| `test` | `uv sync --locked --extra dev && bash scripts/gate.sh full` | `.` | Run the canonical full gate (Python, Chrome, coverage floors, and warning logs). |
 
 ## Validation
 
