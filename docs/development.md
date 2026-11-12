@@ -94,6 +94,9 @@ The required verification list (`--check` gates, audits, tests, lint, native
 Lean) is owned by the "Required checks" block in
 [`AGENTS.md`](../AGENTS.md#required-checks); it is not repeated here, and
 `tests/test_check_inventory.py` keeps it in step with `.github/workflows/ci.yml`.
+Run `bash scripts/gate.sh fast` for the default fast selection, or
+`bash scripts/gate.sh all` for the local arms; [gate arms](gates.md) owns the
+arm table and measured wall times.
 
 Native Lean acceptance (`lake build FepSketches`, `fep-formal verify`, the
 formalism audit) is the expensive semantic compiler boundary; its commands are in the same

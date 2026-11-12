@@ -31,6 +31,7 @@ FEP_Formal is the project name. The installed Python namespace is
 - [Prove2me](prove2me.md) — Lean-formalization platform client: API-key auth, missions, proposals, and proof verification.
 - [OpenGauss](opengauss.md) — SQLite state and artifact persistence.
 - [Testing](testing.md) — local and CI validation.
+- [Gate arms](gates.md) — the one local entry point, its arms and measured wall times.
 - [Release procedure](release.md) — the versioned release gate and steps.
 - [Cold start](cold-start-and-cleanup.md) — disposable output cleanup.
 - [Theorem maturity audit](theorem-maturity-audit.md) — semantic scope review beyond compilation.

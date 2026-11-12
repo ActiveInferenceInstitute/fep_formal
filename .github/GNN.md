@@ -9,6 +9,12 @@ files (`pyproject.toml`, `uv.lock`, `src/gnn/main.py`,
 `src/gnn/pipeline/step_registry.py`, `docs/gnn/gnn_syntax.md` and
 `docs/other/fep_lean/bridge-contract.md`) rather than a release tag.
 
+The job uses the pinned `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`
+(v7.0.1), `astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2`
+(v10.3.3) and `actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9`
+(v7.0.2), and calls `bash scripts/gate.sh gnn`. It does not use
+`ActiveInferenceInstitute/.github/.github/actions/setup-python-uv@7159e67315330aac8e414aebae0ad1e999a41448`.
+
 The job still reports for documentation-only pull requests, skipping its
 heavier steps, and runs `generate_probe.py --check` under
 `specs/gnn-bridge-q5-artifact-proof` and `specs/cascadia-geo-act-proof`,

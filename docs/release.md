@@ -17,6 +17,15 @@ actually ships, and it is fully checked by
 
 ## Published coordinated 2.1.0 checkpoint
 
+The InstituteOS sidecar (`.aii/config.yaml`) records the same release identity
+the manuscript renders: `provenance.current_release: v2.1.0`,
+`meta.updated: 2026-10-24`, and concept DOI `10.5281/zenodo.19699233`
+(`provenance.citation.doi` in the sidecar, and the scholarly concept in
+[`CITATION.cff`](../CITATION.cff) and [the manuscript](../manuscript/config.yaml)).
+The release gate checks the version and date across the sidecar, citation and
+manuscript files; the concept DOI names the scholarly corpus, not a version
+record.
+
 [FEP_Formal 2.1.0](https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v2.1.0)
 and [GNN 5.0.1](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/releases/tag/v5.0.1)
 are published; [GEO-INFER 0.4.0](https://github.com/ActiveInferenceInstitute/GEO_INFER/releases/tag/v0.4.0)
