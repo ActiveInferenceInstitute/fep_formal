@@ -11,7 +11,10 @@ every command is attempted and the arm exits non-zero if any failed.
 | Arm | What it runs | CI job that calls it |
 | --- | --- | --- |
 | `fast` (default) | CI's composition-inventory test plus the gate-inventory contract | none (local only) |
-| `full` | CI's full non-serial pytest command with coverage, the isolated live Chrome probes with appended coverage, and the measured package-floor gate | none (the `python` job additionally owns membership validation) |
+| `full` | composes `remainder`, `chrome` and `floor` in CI's order | none (the `python` job additionally owns membership validation) |
+| `remainder` | CI's parallel non-serial pytest component with coverage and the warning log | `python` (`python_remainder`) |
+| `chrome` | CI's isolated live Chrome probes with appended coverage and the warning log | `python` (`live_chrome`) |
+| `floor` | CI's measured package-floor gate over the combined coverage | `python` |
 | `lint` | `ruff check .` and the consolidated `ruff format --check` roots | `static` (via the `static` arm) |
 | `types` | strict `mypy` over `src`, `scripts`, `docs` and the two CI helpers, plus the `fep_lean` adapter | `static` (via the `static` arm) |
 | `catalogue` | catalogue materialization, generated projections, methods check, font/render receipts, theorem-reference and citation audits | `python` |

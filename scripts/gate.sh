@@ -8,7 +8,10 @@
 #
 # Arms:
 #   fast    the composition-inventory test and the gate-inventory contract
-#   full    the full non-serial suite with coverage and the package floor
+#   full    remainder, chrome and floor (the CI acceptance components)
+#   remainder  parallel non-serial suite with coverage and its warning log
+#   chrome  isolated live Chrome probes with appended coverage
+#   floor   measured package line floors over the combined coverage
 #   lint    ruff check and ruff format --check
 #   types   strict mypy over the package, scripts, docs and two CI helpers
 #   catalogue  generated projections and committed publication evidence
@@ -44,6 +47,20 @@ run() {
     }
 }
 
+# Like run, but retains the CI warning/log artifact. PIPESTATUS keeps the
+# command's status even though the pipeline's last writer is tee.
+run_log() {
+    log="$1"
+    shift
+    printf '\n==> %s (log %s)\n' "$*" "$log"
+    "$@" 2>&1 | tee "$log"
+    status=${PIPESTATUS[0]}
+    if [ "$status" -ne 0 ]; then
+        printf 'FAILED (%s): %s\n' "$status" "$*" >&2
+        failures=$((failures + 1))
+    fi
+}
+
 # The repository's existing fast selection: the composition inventory CI runs
 # in its static job, plus the inventory contract that guards this entry point.
 # The whole non-serial suite is `full`; it is not a fast default.
@@ -52,24 +69,37 @@ arm_fast() {
     run uv run pytest tests/test_check_inventory.py -q -n 0 --no-cov
 }
 
-# The full non-serial suite plus the isolated live Chrome cases and the
-# measured package floors, in CI's order: the Chrome probes append the coverage
-# the output package floor requires. The membership validator stays in the CI
-# python job, where the step outcomes it consumes exist.
-arm_full() {
+# The three CI acceptance components, each retaining its CI step log. CI calls
+# these same arms from its python job, so the command exists once.
+arm_remainder() {
     mkdir -p output
     export FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE=1
-    run uv run pytest tests/ -q -n auto --dist loadgroup --cov=src --cov-report=xml \
-        --cov-fail-under=89 -m "not serial_lean" \
+    run_log output/python-warning-inventory.log uv run pytest tests/ -q -n auto --dist loadgroup \
+        --cov=src --cov-report=xml --cov-fail-under=89 -m "not serial_lean" \
         --deselect=tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request \
         --deselect=tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer \
         --junitxml=output/python-acceptance.xml -W always --color=no
     unset FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE
-    run uv run pytest tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request \
+}
+
+arm_chrome() {
+    mkdir -p output
+    run_log output/live-chrome-warning-inventory.log uv run pytest tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request \
         tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer \
         -q -n 0 --cov=src --cov-append --cov-report=xml --cov-fail-under=89 \
         --junitxml=output/live-chrome-acceptance.xml -W always --color=no
-    run uv run python docs/check_coverage_floors.py --coverage coverage.xml
+}
+
+arm_floor() {
+    run_log output/coverage-floor-summary.json uv run python docs/check_coverage_floors.py --coverage coverage.xml
+}
+
+# The full acceptance: the same three sub-arms CI runs, in the same order. The
+# membership validator stays in CI, where the step outcomes it consumes exist.
+arm_full() {
+    arm_remainder
+    arm_chrome
+    arm_floor
 }
 
 arm_lint() {
@@ -146,14 +176,14 @@ arm_all() {
 
 arm="${1:-fast}"
 case "$arm" in
-    fast | full | lint | types | catalogue | docs | gnn | static | all) "arm_$arm" ;;
+    fast | full | remainder | chrome | floor | lint | types | catalogue | docs | gnn | static | all) "arm_$arm" ;;
     -h | --help | help)
-        sed -n '2,27p' "$0"
+        sed -n '2,32p' "$0"
         exit 0
         ;;
     *)
         printf 'unknown arm: %s\n' "$arm" >&2
-        printf 'arms: fast full lint types catalogue docs gnn static all\n' >&2
+        printf 'arms: fast full remainder chrome floor lint types catalogue docs gnn static all\n' >&2
         exit 2
         ;;
 esac
