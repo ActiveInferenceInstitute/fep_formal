@@ -172,19 +172,33 @@ review under the [design lifecycle](../README.md).
 The repository has no `.github/gnn-pin.json` and no `gnn-importer-pin/v1`
 record. The canonical custody file is
 [`specs/gnn-bridge-w2-source-custody/source-pin.json`](../../../specs/gnn-bridge-w2-source-custody/source-pin.json),
-whose actual schema is `schema_version: 1`. Its `gnn` entry names the
-descriptive commit `2778e65c2228148417b2cf71832eb86a019785fb` and the SHA-256
+whose actual schema is `schema_version: 1`. Its `gnn` entry names release
+`v5.1.0` at commit `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf` and the SHA-256
 digests of six pinned owner files (`pyproject.toml`, `uv.lock`,
 `src/gnn/main.py`, `src/gnn/pipeline/step_registry.py`,
 `docs/gnn/gnn_syntax.md`, `docs/other/fep_lean/bridge-contract.md`). The
-`fep_lean` entry pins this repository's own owner bytes separately.
+`fep_lean` entry pins this repository's own owner bytes separately. Until this
+change the `gnn` entry named the descriptive commit
+`2778e65c2228148417b2cf71832eb86a019785fb` with no tag; that tree predates the
+shared reader, which is why the entry moved to `v5.1.0`.
 
 The hosted conformance context is job key `gnn-conformance` with display name
 `gnn conformance (pinned)`. [`.github/GNN.md`](../../../.github/GNN.md) owns
-what that job parses: the frozen-custody Q5 and Cascadia probe checks, the GEO
-notation bridge check against `config/theorem_maturity.yaml`, retained runner
-evidence validation, and the Gaussian composition replay controls. The job
-does not re-read the pin against a GNN checkout.
+what that job parses: the shared GNN–FEP reader from the pinned revision, the
+frozen-custody Q5 and Cascadia probe checks, the GEO notation bridge check
+against `config/theorem_maturity.yaml`, retained runner evidence validation, and
+the Gaussian composition replay controls. The job installs the pinned revision
+to run the reader but does not check out a GNN working tree, so the pin's owner
+digests are re-verified against a checkout by `bridge status --gnn-root PATH`
+alone.
+
+Only the `gnn` record was advanced. `bridge pin` seals the pair in one write, and
+this change deliberately left the `fep_lean` record as previously sealed:
+`bridge status --gnn-root PATH` already reported `fep_lean: owner content
+changed: uv.lock` on `943be00`, before this adoption, and re-sealing one side of
+a drifted pair would bless bytes no bridge check has re-reviewed. The emitted
+projections likewise remain those of `2778e65c`; re-emission belongs to the next
+pair-wide pin cycle, which `status` reports as not current until it runs.
 
 The workflow uses `astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2`
 (v10.3.3), `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`

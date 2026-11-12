@@ -19,7 +19,7 @@ every command is attempted and the arm exits non-zero if any failed.
 | `types` | strict `mypy` over `src`, `scripts`, `docs` and the two CI helpers, plus the `fep_lean` adapter | `static` (via the `static` arm) |
 | `catalogue` | catalogue materialization, generated projections, methods check, font/render receipts, theorem-reference and citation audits | `python` |
 | `docs` | `catalogue` plus link, Markdown-hygiene and cross-reference checks | `documentation` |
-| `gnn` | frozen-custody probe checks, GEO notation check, retained runner evidence, Gaussian composition replay | `gnn-conformance` |
+| `gnn` | the shared GNN–FEP reader from the pinned revision (pin, pointer and `*.gnn.md` validation), frozen-custody probe checks, GEO notation check, retained runner evidence, Gaussian composition replay | `gnn-conformance` |
 | `static` | `uv lock --check`, `uv pip check`, composition inventory, catalogue, prose checks, lint, types, `git diff --check` | `static` |
 | `all` | `fast`, `lint`, `types`, `docs`, `gnn` (not `full`) | none |
 
@@ -49,6 +49,13 @@ executed; it is not a hosted-runner measurement.
 | `gnn` | 4 s | 6 s |
 | `static` | not separately measured (new sequence) | 32 s (137 s under heavy host load) |
 | `full` | 391 s (327 s remainder + 64 s Chrome probes, run separately) | not completed in one bounded run; see below |
+
+The `gnn` arm gained the GNN–FEP reader later the same day. That step alone took
+2.07 s, 2.52 s and 2.32 s in three warm runs — it overlays the pinned revision
+onto the project environment, then validates the pin, the pointer and the one
+`*.gnn.md` fixture. The whole arm took 4.97 s on `943be00` before the step and
+3.99 s, 6.53 s and 7.17 s after it, so the arm's total moves less than the
+retained runner tests do between runs.
 
 The `lint` and `types` "after" values are warm-cache runs; the "before"
 values are the first cold runs of the same commands. The `docs` "before" run

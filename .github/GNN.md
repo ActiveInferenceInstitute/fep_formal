@@ -3,11 +3,12 @@
 `gnn conformance (pinned)` is the display name of the `gnn-conformance` job in
 `.github/workflows/ci.yml`. This repository has no `.github/gnn-pin.json`; its
 custody record is `specs/gnn-bridge-w2-source-custody/source-pin.json`
-(schema_version 1), whose `gnn` entry names the descriptive commit
-`2778e65c2228148417b2cf71832eb86a019785fb` and the SHA-256 of six GNN owner
+(schema_version 1), whose `gnn` entry names release `v5.1.0` at commit
+`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf` and the SHA-256 of six GNN owner
 files (`pyproject.toml`, `uv.lock`, `src/gnn/main.py`,
 `src/gnn/pipeline/step_registry.py`, `docs/gnn/gnn_syntax.md` and
-`docs/other/fep_lean/bridge-contract.md`) rather than a release tag.
+`docs/other/fep_lean/bridge-contract.md`). The `fep_lean` entry seals this
+repository's own owner bytes separately.
 
 The job uses the pinned `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`
 (v7.0.1), `astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2`
@@ -16,38 +17,56 @@ The job uses the pinned `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90
 `ActiveInferenceInstitute/.github/.github/actions/setup-python-uv@7159e67315330aac8e414aebae0ad1e999a41448`.
 
 The job still reports for documentation-only pull requests, skipping its
-heavier steps, and runs `generate_probe.py --check` under
-`specs/gnn-bridge-q5-artifact-proof` and `specs/cascadia-geo-act-proof`,
+heavier steps, and runs the GNN–FEP reader described below, then
+`generate_probe.py --check` under `specs/gnn-bridge-q5-artifact-proof` and
+`specs/cascadia-geo-act-proof`,
 `check_geo_notation_bridge.py --check` over
 `specs/geo-infer-notation-bridge/data/notation-map.yaml` against
 `config/theorem_maturity.yaml`, `validate_retained.py` with
 `test_validate_retained.py`, and `pytest` on
 `specs/gnn-semantic-witness-v1/test_composition.py`. The Cascadia gate
 regenerates its instance in memory from
-`specs/cascadia-geo-act-proof/fixtures/smith_river_homing.gnn.md` and the
-sibling fixtures, failing on any byte difference; that fixture is the only
-`*.gnn.md` the job reads, and the job neither re-reads the source pin against a
-GNN checkout nor scans the rest of the repository for `*.gnn.md`.
+`specs/cascadia-geo-act-proof/fixtures/smith_river_homing.gnn.md`, failing on
+any byte difference; the reader's own scan finds that one `*.gnn.md` and no
+other. The job installs the pinned GNN revision but does not check out a GNN
+working tree, so the pin's owner digests are re-verified against a checkout by
+`fep-formal bridge status --gnn-root PATH`, not here.
 
-## GNN–FEP reader migration: blocked
+## GNN–FEP reader: adopted
 
 The [GNN–FEP workflow contract](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/blob/main/docs/workflows/gnn-fep.md)
-requires the shared `gnn.importers` reader from the pinned GNN environment,
-with `--pin specs/gnn-bridge-w2-source-custody/source-pin.json --pin-party gnn`,
-`--require-pointer --workflow .github/workflows/ci.yml --job gnn-conformance`.
-The custody-pinned revision named above does not contain
-`src/gnn/importers.py`. The existing `gnn` arm validates retained artifacts;
-it does not materialize a GNN checkout or install a GNN parser environment.
+gives pin parsing, pin and pointer validation, and `*.gnn.md` validation one
+home: `gnn.importers` in the pinned GNN revision. This repository adopts that
+reader and keeps no copy of it.
 
-The contract identifies `src/fep_formal/bridge/operations.py:pin_sources` as
-the local copy to remove, but that function produces both parties' owner-digest
-custody records. It does not parse an upstream pin. The bridge's strict JSON
-reader also serves custody receipts, rejecting duplicate keys and non-finite
-constants; it is not just a release-pin shape validator.
+The revision recorded here before this change was
+`2778e65c2228148417b2cf71832eb86a019785fb`, with no release tag. That tree
+predates `src/gnn/importers.py` (`e6a9d3917`), so neither the module nor
+`python -m gnn.importers` existed in the environment the pin named:
+`git show 2778e65c:src/gnn/importers.py` fails, and a checker run against a
+newer checkout was diagnostic only. The pin now names `v5.1.0` at
+`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, which carries the reader, so
+`bash scripts/gate.sh gnn` installs that revision and runs it:
 
-No reader cutover is claimed. Completing it needs a qualified source-pair
-update that includes the shared reader and a materialized pinned environment,
-or a clarified upstream instruction compatible with the retained custody pin.
-Neither a newer-parser substitution nor deletion of owner-digest checks is
-part of this migration. A checker run against a newer GNN checkout is only
-diagnostic; it cannot establish conformance under the recorded revision.
+```bash
+python -m gnn.importers check --repo . \
+  --pin specs/gnn-bridge-w2-source-custody/source-pin.json --pin-party gnn \
+  --require-pointer --workflow .github/workflows/ci.yml --job gnn-conformance
+```
+
+The arm installs the package from the pinned commit rather than from a checkout
+(`uv run --with "generalized-notation-notation @ git+https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation@<pinned commit>"`,
+where the commit is read from the pin), so the pin reader, the pointer rules and
+the specification parser are the ones `75c834bd` ships.
+
+The reader reports one warning, `pin-schema-unversioned`: a two-party custody
+pin keeps `schema_version: 1` plus per-file owner digests, so it does not
+declare the flat `gnn-importer-pin/v1` shape. That is the expected state for
+this artifact, not a field this repository should invent.
+
+The cutover deleted no local reader, because this repository never added one:
+the blocked state was a documented pointer with no GNN reader at all. The
+duplicate the contract names, `bridge/operations.py:pin_sources`, produces both
+parties' owner-digest records and is not a pin parser; the contract's own
+member note keeps `fep_formal`'s owner-digest and paired-revision gates, so it
+stays.
