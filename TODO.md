@@ -27,7 +27,7 @@ size and predecessors are carried in the columns below.
 | CUR-10 | Close outcome claims, study archive parity and clean installed 42-array reproduction across three outcome reviews. | `gh issue view 57 --repo ActiveInferenceInstitute/fep_formal --json state -q .state` prints `CLOSED` | CUR-09 | P1 | [Issue #57](https://github.com/ActiveInferenceInstitute/fep_formal/issues/57); [`specs/comprehensive-science-improvement/NEXT.md`](specs/comprehensive-science-improvement/NEXT.md) |
 | CUR-12 | Refresh optional strict Hermes/OpenGauss evidence for all 168 topics under an authorized spend ceiling. | `gh issue view 50 --repo ActiveInferenceInstitute/fep_formal --json state -q .state` prints `CLOSED` | Secure current credential/model route and concrete spend boundary | P2 | [Issue #50](https://github.com/ActiveInferenceInstitute/fep_formal/issues/50); [`docs/configuration.md`](docs/configuration.md) |
 | CUR-14 | Audit all nine original criteria and close the exact FORM-1–FORM-3 semantic/native/axiom boundaries at final source. | `gh issue view 59 --repo ActiveInferenceInstitute/fep_formal --json state -q .state` prints `CLOSED` | CUR-05, CUR-06, CUR-07, CUR-10 | P1 | [Issue #59](https://github.com/ActiveInferenceInstitute/fep_formal/issues/59); [`specs/comprehensive-science-improvement/SCOPE-2026-10-08.md`](specs/comprehensive-science-improvement/SCOPE-2026-10-08.md) |
-| CUSTODY-GNN-1 | Re-freeze the FEP↔GNN source pair at GNN `v5.1.0` (`75c834bd`), re-emit both documents and dispatch the qualification workflow. The reader cutover is delivered: the pin's `gnn` record is sealed at `v5.1.0` and `bash scripts/gate.sh gnn` runs the shared `gnn.importers` check from that revision. Still open: the `fep_lean` record, whose `uv.lock` already failed `bridge status` before the cutover, the emitted projections that remain those of `2778e65c`, and the dispatch. | `gh issue view 244 --repo ActiveInferenceInstitute/fep_formal --json state -q .state` prints `CLOSED` | GNN `v5.1.0` tag — met; remaining: one pair-wide `bridge pin`, `emit` for both models, then dispatch | P2 | [Issue #244](https://github.com/ActiveInferenceInstitute/fep_formal/issues/244); [`docs/design/gnn-bridge/README.md`](docs/design/gnn-bridge/README.md); [`.github/workflows/source-pair-qualification.yml`](.github/workflows/source-pair-qualification.yml) |
+| CUSTODY-GNN-1 | Re-freeze the FEP↔GNN source pair at GNN `v5.1.0` (`75c834bd`), re-emit both documents and dispatch the qualification workflow. The reader cutover is delivered: the pin's `gnn` record is sealed at `v5.1.0` and `bash scripts/gate.sh gnn` runs the shared `gnn.importers` check from that revision. Still open: the `fep_lean` record, whose `uv.lock` already failed `bridge status` before the cutover (on 2026-11-12 the other 318 `fep_lean` owner digests still matched and `uv.lock` alone did not), the emitted projections that remain those of `2778e65c`, and the dispatch. | `gh issue view 244 --repo ActiveInferenceInstitute/fep_formal --json state -q .state` prints `CLOSED` | GNN `v5.1.0` tag — met; remaining: one pair-wide `bridge pin`, `emit` for both models, then dispatch, which the organisation's Actions billing lock currently blocks before any job starts | P2 | [Issue #244](https://github.com/ActiveInferenceInstitute/fep_formal/issues/244); [`docs/design/gnn-bridge/README.md`](docs/design/gnn-bridge/README.md); [`.github/workflows/source-pair-qualification.yml`](.github/workflows/source-pair-qualification.yml) |
 | FORM-D2 | State an explicit infinite fixed-truth law with prefix/native equality and an actual convergence proof, without disturbing the current H3 seeds. | `gh issue view 70 --repo ActiveInferenceInstitute/fep_formal --json state -q .state` prints `CLOSED` | CUR-10 | P2 | [Issue #70](https://github.com/ActiveInferenceInstitute/fep_formal/issues/70); [`docs/design/fep-research-program/next-improvements.md`](docs/design/fep-research-program/next-improvements.md) |
 | CORE-J1 | Provide equivalent Windows capture custody and process supervision, with the seven-stage acceptance yielding identical valid archives. | `gh issue view 66 --repo ActiveInferenceInstitute/fep_formal --json state -q .state` prints `CLOSED` | CUR-05, CUR-06, CUR-07 | P2 | [Issue #66](https://github.com/ActiveInferenceInstitute/fep_formal/issues/66); [`docs/release.md`](docs/release.md) |
 | CORE-J2 | Deliver measured incremental capture and a bounded resource lifecycle with exact dependency invalidation and closed-owned receipts. | `gh issue view 67 --repo ActiveInferenceInstitute/fep_formal --json state -q .state` prints `CLOSED` | CUR-05, CORE-D1 | P2 | [Issue #67](https://github.com/ActiveInferenceInstitute/fep_formal/issues/67); [`docs/release.md`](docs/release.md) |
@@ -44,6 +44,17 @@ and date across version-bearing files, a dated changelog section, and a
 successful hosted `ci.yml` run on the exact `main` commit, all checked by
 `docs/release_check.py`. The untagged `1.4.0` candidate shipped in
 `v1.5.0` (2026-10-06). Nothing above blocks a release.
+
+Hosted acceptance itself is currently unobtainable, and that is the one release
+blocker this backlog does not own. GitHub Actions is billing-locked for the
+organisation: the `ci.yml` run on `main` at `0cf22ab` concluded `failure` in four
+seconds with `The job was not started because your account is locked due to a
+billing issue` ([run 43258439685](https://github.com/ActiveInferenceInstitute/fep_formal/actions/runs/43258439685)),
+and `docs/release_check.py --hosted` reports `hosted ci.yml run for
+0cf22ab7abfb496192045159dcb9e06ace57af28: failure` while the same check without
+`--hosted` passes `release v2.1.0 (2026-10-24)`. No local arm substitutes for the
+hosted matrix, so the gate stays red until an organisation billing administrator
+restores Actions — outside this repository.
 
 ## Retired production-capture dependencies
 
@@ -74,25 +85,33 @@ roster refresh; new topics are not implicitly reserved by this plan.
 
 ## Local maintenance findings (2026-11-11)
 
-Found during the documentation completion pass. These are local follow-ups,
-not release blockers, and are not yet linked to a GitHub Issue; file one when
-the owner wants the work scheduled.
+Found during the documentation completion pass and the 2026-11-12 backlog
+review. These are local follow-ups, not release blockers, and are not yet linked
+to a GitHub Issue; file one when the owner wants the work scheduled.
 
-- **Ruff findings under the declared floor.** A local `ruff check .` under Ruff
-  0.13.0 reports 21 `E402`/`E731`/`E741` findings in `docs/xref_audit.py`,
-  `scripts/render_publication.py`, `scripts/theorem_maturity_audit.py`, the Q5/Q6/Q7
-  `verify_native.py` slices, `src/fep_formal/__init__.py`,
-  `src/fep_formal/gauss/cli.py`, `src/fep_formal/verification/_toolchain.py`,
-  `src/fep_formal/verification/numerical_witnesses.py`,
-  `tests/_support/lean_module_contract.py`,
-  `tests/test_ci_native_catalogue_shadow.py`,
-  `tests/test_formal_kernel_dashboard.py`,
-  `tests/test_generic_variational_methods.py` and
-  `tests/test_geo_notation_bridge_check.py`. The dev extra declares
-  `ruff>=0.15.0` and the lock resolves 0.16.1; Ruff 0.15.22 reproduces the 21
-  findings while 0.17.4 reports none because the default rule set changed. The
-  locked 0.16.1 result cannot be run offline. Reproduce with the locked version
-  and either fix the findings or raise the declared floor.
+- **Ruff findings under the declared floor — resolved 2026-11-12.** `#254`
+  (`cf20b97`) moved the lock's `ruff` from 0.16.1 to 0.17.3, and the gate's own
+  lint commands now pass under it: `ruff check .` prints `All checks passed!` and
+  `ruff format --check src tests scripts docs specs/openai-math-methods
+  specs/cascadia-experiments specs/gnn-runner-execution
+  specs/publication-browser-acceptance specs/identity-cutover` prints `581 files
+  already formatted`. The dev extra still declares only `ruff>=0.15.0`, so the
+  lock, not the floor, decides which default rule set runs. One residue: a
+  whole-tree `ruff format --check .` still lists
+  `specs/ci-velocity-local-cache/lean_cache.py`,
+  `specs/gnn-bridge-p3-certificates/certify.py`,
+  `specs/gnn-bridge-w1-bridge-operations/bridge_status.py` and
+  `specs/h3-reference-study/bundle_study.py`, all outside the arm's directory
+  list; widening that list would turn the arm red.
+- **Coverage table names closed gates.** The [original requirement
+  coverage](#original-requirement-coverage-and-closure) table below points its
+  "Required open gates" column at `CUR-03` (#52), `CUR-05` (#53), `CUR-06` (#49)
+  and `CUR-07` (#54), all `CLOSED` when checked on 2026-11-12, while the closure
+  rule below says an item leaves the backlog when its Issue closes. Criteria 2, 3
+  and 4 therefore cite no open gate, and criteria 1, 5, 6, 7 and 9 cite only
+  `CUR-14` (#59). Either re-point each criterion at the work that still gates it,
+  or record why it stays open with no gate: the retirement paragraph covers the
+  #52/#53 contracts, not the criteria themselves. Owner: backlog maintainer.
 - **Sidecar provenance release.** `.aii/config.yaml` now records
   `provenance.current_release: v2.1.0`, matching the published 2.1.0 software
   release. The sidecar declares no `provenance.releases_manifest` because the
