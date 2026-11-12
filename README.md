@@ -143,6 +143,14 @@ authenticates a supplied execution artifact. The release records retain the
 accepted source pair and its separately qualified native, manuscript, hosted
 and distribution evidence. Later source changes require fresh qualification.
 
+The GNN bridge source pin is a later GNN main commit,
+`2778e65c2228148417b2cf71832eb86a019785fb` (`v5.0.3-206-g2778e65c2`), with FEP
+commit `301c2d2405b260ef8b645b0c5a3914fbcdf5c49c`; the GNN 5.0.1 release named
+above is the coordinated release, not the current pin. The pin's GNN
+`pyproject.toml` and `uv.lock` digests no longer match GNN's current main; that
+is an open owner decision (tracked as CUSTODY-GNN-1 in [TODO.md](TODO.md),
+issue #244) and the source pair must not be silently re-pinned to clear it.
+
 The published [2.1.0 manuscript archive](https://doi.org/10.5281/zenodo.23607007)
 contains the accepted PDF, offline companion, ordinary wheel/source
 distributions, exact tagged source, citation, license, checksums and publication

@@ -540,6 +540,15 @@ and the pinned syntax files (`docs/gnn/gnn_syntax.md`,
 `src/gnn/pipeline/step_registry.py`) — not the `src/gnn/**/*.py` implementation
 tree; the pin JSON shape is
 `{"schema_version": 1, "fep_lean": {"commit", "owners"}, "gnn": {"commit", "owners"}}`.
+
+The recorded pin binds GNN main commit
+`2778e65c2228148417b2cf71832eb86a019785fb` (`v5.0.3-206-g2778e65c2`), not the
+`v5.0.3` release tag or the earlier GNN 5.0.1 release. The pin's GNN
+`pyproject.toml` and `uv.lock` digests (`97277102f7bb…`, `6f60b3c0d755…`) no
+longer match GNN's current main (`de0a22d2d36d…`, `dbee9eb5387b…`), so GNN's
+`check_pair_pin_freshness.py` reports the pair stale until it is re-pinned.
+That is an open owner decision (SCOPING C-1, tracked as CUSTODY-GNN-1); the pin
+is not re-pinned here.
 `verify-document --document PATH` extracts one emitted document through the
 pinned render route (`gnn.extract.pomdp_extractor.extract_pomdp_from_file`,
 strict validation) and decides `FEP.GnnDocument.documentWellFormed` in a

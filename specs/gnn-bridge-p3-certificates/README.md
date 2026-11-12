@@ -110,6 +110,17 @@ output dedicated to this slice (`gnn_output/`), so every consumed
 execution artifact is bound to this slice's run. The shared GNN
 `output/` is never written.
 
+Current provenance versus the retained artefacts: the run recorded in
+[REPORT.md](REPORT.md) used the GNN `12a565b2f18db7f18c3a799568ad057834ba0358`
+(`v3.2.0-3-g12a565b2f`) and FEP
+`315e32994b59fd80e327b5b654c9f7852fad9933` pair, which is what the retained
+`gnn_output/` artefacts stamp. The current source pin is GNN
+`2778e65c2...` (`v5.0.3-206`) with FEP `301c2d24...`, so the current pin
+cannot regenerate these artefacts. The C1/C2/C3/O1 comparisons remain valid
+for the recorded pair; they are not a current-pin re-execution. Do not
+re-label the retained outputs as current, and do not hand-edit them
+(`specs/AGENTS.md` treats `gnn_output*/` as tool output).
+
 ## Acceptance checklist
 
 P3 (all required; boxes flip only after the named command exits 0):

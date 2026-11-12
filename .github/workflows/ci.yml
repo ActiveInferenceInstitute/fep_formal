@@ -138,10 +138,12 @@ jobs:
           PY
 
   # This job publishes the required `gnn conformance (pinned)` context on every
-  # pull request. Documentation-only changes skip the expensive steps inside
-  # the job, but the job itself still runs and succeeds so that PR shape cannot
-  # be blocked by a missing required context. Keep the classifier below aligned
-  # with the `changes` job.
+  # pull request. It validates the recorded source pin, checks out the exact
+  # GNN commit, and re-runs the bridge conformance against that pair.
+  # Documentation-only changes skip the expensive conformance steps, but the
+  # pin-shape check still runs and the job itself still succeeds so that PR
+  # shape cannot be blocked by a missing required context. Keep the classifier
+  # below aligned with the `changes` job.
   gnn-conformance:
     name: gnn conformance (pinned)
     runs-on: ubuntu-24.04
@@ -190,12 +192,35 @@ jobs:
               output.write(f"docs_only={str(docs_only).lower()}\n")
           print(f"documentation-only pull request: {docs_only}")
           PY
+      - id: pin
+        name: Validate the recorded GNN source pin
+        run: |
+          uv run --no-project --python 3.14 python specs/gnn-bridge-w2-source-custody/check_pin.py --check-shape --github-output
+      - name: Check out the recorded GNN source
+        if: steps.classify.outputs.docs_only != 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ActiveInferenceInstitute/Generalized_Notation_Notation
+          ref: ${{ steps.pin.outputs.gnn_sha }}
+          path: gnn
+          persist-credentials: false
       - run: uv sync --locked --extra dev
         if: steps.classify.outputs.docs_only != 'true'
+      - name: Verify the pinned GNN source and owner digests
+        if: steps.classify.outputs.docs_only != 'true'
+        run: |
+          uv run --no-project --python 3.14 python specs/gnn-bridge-w2-source-custody/check_pin.py --verify gnn
+      - name: Run the bridge conformance against the pinned GNN source
+        if: steps.classify.outputs.docs_only != 'true'
+        run: |
+          uv run fep-formal bridge status --gnn-root gnn
+          uv run fep-formal bridge emit --gnn-root gnn --model finite --check
+          uv run fep-formal bridge emit --gnn-root gnn --model continuous --check
       # The frozen-custody bridge gates from AGENTS.md's required checks:
       # each is --check validation of committed artifacts and passes on a
       # fresh checkout without any sibling repo. The live source-pair
-      # qualification remains dispatch-only in source-pair-qualification.yml.
+      # qualification remains dispatch-only in source-pair-qualification.yml;
+      # this job also re-checks the recorded pin against the pinned GNN commit.
       - name: Check the frozen-custody bridge gates
         if: steps.classify.outputs.docs_only != 'true'
         run: |

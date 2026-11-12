@@ -201,3 +201,16 @@ the Lean module/definitions, the rounding policy, and the targeted
 syntax version in its `Signature` section. `gnn_output/` is dedicated
 to this slice; the shared GNN `output/` tree is owned by another agent
 and is never written by this slice.
+
+Current provenance versus the retained artefacts: the on-disk document's
+`Signature` records the current source pin (`source_commit: 301c2d24...`,
+`pipeline_commit: 2778e65c2...`), and `bridge emit --model finite --check`
+reports it fresh against that pin. The retained `gnn_output/` trees were
+produced earlier and stamp `pipeline_commit:
+12a565b2f18db7f18c3a799568ad057834ba0358` (`v3.2.0-3-g12a565b2f`); the
+retained pipeline log ran the pre-rename `src/3_gnn.py` layout on
+2026-09-03. The current pin therefore cannot regenerate the retained
+outputs. They remain historical evidence for the recorded pair and must
+not be described as a current-pin reproduction. The `target_syntax` path
+in the document uses the historical `doc/gnn/gnn_syntax.md` spelling;
+GNN's actual path is `docs/gnn/gnn_syntax.md`.

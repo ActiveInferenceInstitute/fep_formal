@@ -31,6 +31,18 @@ pin and repository gates. Numerical audits, source custody and native proof
 retain separate scopes. Do not relabel a published receipt for a later source;
 preserve historical DOI, tag and artifact identities.
 
+### Current GNN source pin
+
+The GNN bridge source pin is a later GNN main commit than the 5.0.1 release
+named above. The current recorded pin is GNN
+`2778e65c2228148417b2cf71832eb86a019785fb` (`v5.0.3-206-g2778e65c2`), paired
+with FEP commit `301c2d2405b260ef8b645b0c5a3914fbcdf5c49c`. The pin's GNN `pyproject.toml`
+and `uv.lock` digests no longer match GNN's current main, so GNN's
+`check_pair_pin_freshness.py` reports the pair stale. That is an open owner
+decision (SCOPING C-1, tracked as CUSTODY-GNN-1 in [TODO.md](../TODO.md)); the
+release gate does not currently require the pair to be fresh, and the pin must
+not be changed to make it fresh without that owner decision.
+
 ## What does not block a release
 
 Research and evidence lanes stay in [`TODO.md`](../TODO.md) with their own

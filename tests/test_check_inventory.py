@@ -87,6 +87,24 @@ HOSTED_ONLY = {
     "--parallel-junit output/python-acceptance.xml "
     "--chrome-junit output/live-chrome-acceptance.xml --coverage coverage.xml "
     "--output output/python-acceptance-summary.json": "needs the hosted JUnit files",
+    "--no-project --python 3.14 python "
+    "specs/gnn-bridge-w2-source-custody/check_pin.py --check-shape --github-output": (
+        "gnn-conformance: cheap pin-shape gate; exports the pinned GNN SHA"
+    ),
+    "--no-project --python 3.14 python "
+    "specs/gnn-bridge-w2-source-custody/check_pin.py --verify gnn": (
+        "gnn-conformance: pinned-pair owner/commit check against the "
+        "CI-checked-out GNN commit; no workstation sibling by default"
+    ),
+    "fep-formal bridge status --gnn-root gnn": (
+        "gnn-conformance: live source-custody status against the pinned pair"
+    ),
+    "fep-formal bridge emit --gnn-root gnn --model finite --check": (
+        "gnn-conformance: live finite-document freshness against the pinned pair"
+    ),
+    "fep-formal bridge emit --gnn-root gnn --model continuous --check": (
+        "gnn-conformance: live continuous-document freshness against the pinned pair"
+    ),
 }
 
 _TRACKED_PREFIXES = ("uv run", "lake ", "git diff", "uv lock", "uv pip")

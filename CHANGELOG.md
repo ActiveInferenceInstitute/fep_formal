@@ -28,6 +28,16 @@
   The twelve static bounds retain their previous probe and runner bytes;
   generated execution, full mode and release acceptance remain separate.
 
+- Document the GNN bridge source pin and make the required
+  `gnn conformance (pinned)` job actually verify it: the job now validates the
+  pin shape, checks out the pinned GNN commit, re-checks the recorded owner
+  digests and re-runs the bridge `status`/`emit --check` conformance. The bridge
+  pin is GNN main `2778e65c2` (`v5.0.3-206-g2778e65c2`) with FEP `301c2d24`,
+  not the GNN 5.0.1 release named in the historical release sections below.
+  The pin's GNN `pyproject.toml` and `uv.lock` digests differ from GNN's current
+  main; GNN's pair-freshness check reports that open owner question (SCOPING
+  C-1, CUSTODY-GNN-1), and the pin is not changed to clear it.
+
 - Canonical Python imports/distribution/command become `fep_formal`,
   `fep-formal`, and `fep-formal`; public configuration uses `FEP_FORMAL_`.
   Old imports share canonical module/class identity, and old command and

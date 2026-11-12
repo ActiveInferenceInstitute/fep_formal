@@ -314,14 +314,16 @@ retained static artifacts without a sibling checkout. CI runs both. Q5
 generation establishes fixture/probe/manifest freshness, not current
 GNN-renderer custody or native evidence.
 
-Live source-custody and current native-receipt checks require the explicitly
-named GNN pair: `fep-formal bridge status --gnn-root PATH`, both emitters'
-`--check`, and the applicable `verify_native.py --check --gnn-root PATH
---receipt PATH`. These additional live checks are conditional, are not
-executed by automatic CI, and never repair content drift. Select the exact receipt for
-the claimed artifact proof. Historical Q5/Q6 receipts remain historical after
-a source re-pin; a fresh Q7 receipt establishes only its own checked native
-statements and source pair.
+Live source-custody checks against the recorded pair are `fep-formal bridge
+status --gnn-root PATH` and both emitters' `--check`. The required
+`gnn conformance (pinned)` job runs them in automatic CI against a checkout of
+the recorded pin commit, after validating the pin shape; see
+`.github/workflows/ci.yml`. Current native-receipt checks remain conditional
+and are not executed by automatic CI: the applicable `verify_native.py --check
+--gnn-root PATH --receipt PATH` is dispatch-only. None of these checks repair
+content drift. Select the exact receipt for the claimed artifact proof.
+Historical Q5/Q6 receipts remain historical after a source re-pin; a fresh Q7
+receipt establishes only its own checked native statements and source pair.
 
 Do not claim Lean verification from catalog mode or from generated manuscript
 values. Native compilation and full Hermes/OpenGauss execution are distinct

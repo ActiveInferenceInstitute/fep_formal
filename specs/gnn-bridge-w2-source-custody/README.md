@@ -35,3 +35,30 @@ both emitters' `--check` and independently validated comparison receipts.
 - Later expansion order: concrete PyMDP artifacts, then backend-specific
   ActiveInference.jl extraction, then reviewed continuous dynamics. H3 follows
   its independent accepted predecessor gates.
+
+## Current source pin
+
+The retained [source pin](source-pin.json) records GNN main commit
+`2778e65c2228148417b2cf71832eb86a019785fb` (`v5.0.3-206-g2778e65c2`, 206
+commits after the `v5.0.3` release tag) and FEP commit
+`301c2d2405b260ef8b645b0c5a3914fbcdf5c49c`. The six recorded GNN owner digests
+match that GNN commit. The GNN 5.0.1 release named in the repository's release
+records is an earlier coordinated release, not the current bridge pin.
+
+The pin records the revision under the `commit` key only; it has no `tag` or
+`revision` key. A machine inventory that reads `tag`/`revision` therefore finds
+no GNN pin for this repository (the real pin is present and checked). Treat
+`gnn.commit` as the revision; add a `tag` field only if the pin schema itself is
+being revised, which is a separate owner decision.
+
+Open disagreement: the pin's GNN `pyproject.toml` and `uv.lock` digests are
+`97277102f7bb...` and `6f60b3c0d755...`, while GNN's later main carries
+`de0a22d2d36d...` and `dbee9eb5387b...`. GNN's `check_pair_pin_freshness.py`
+exits 2 until the pair is re-pinned. This is an open owner decision (SCOPING
+C-1, tracked as CUSTODY-GNN-1 in [TODO.md](../../TODO.md)): do not re-pin or
+change the pair-pin machinery to resolve it here.
+
+The retained P1/P2 and P3 artefacts are historical. Their `pipeline_commit`
+stamps are `12a565b2f18db7f18c3a799568ad057834ba0358` (`v3.2.0-3-g12a565b2f`),
+and the retained P1 pipeline log shows a pre-rename `src/3_gnn.py` run. The
+current pin cannot regenerate those artefacts; do not re-label them as current.

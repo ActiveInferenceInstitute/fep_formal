@@ -197,6 +197,18 @@ writes; status and `--check` never emit. A provenance-only migration uses
 `emit --refresh-digests`; content drift is rejected, not repaired. The pin
 records actual owner bytes separately from descriptive commit references.
 
+The current recorded pin is GNN main commit
+`2778e65c2228148417b2cf71832eb86a019785fb` (`v5.0.3-206-g2778e65c2`, 206
+commits after the `v5.0.3` release tag) with FEP commit
+`301c2d2405b260ef8b645b0c5a3914fbcdf5c49c`. The earlier GNN 5.0.1 release
+named in the repository's release records is not the current pin. The pin's
+GNN `pyproject.toml` and `uv.lock` digests no longer match GNN's current main
+(`97277102f7bb…` / `6f60b3c0d755…` here versus `de0a22d2d36d…` /
+`dbee9eb5387b…` there; the open owner question SCOPING C-1, tracked as
+CUSTODY-GNN-1). GNN's `check_pair_pin_freshness.py` therefore reports the pair
+stale, which is the expected state until the owner decides; do not re-pin to
+clear it, and do not weaken the freshness check.
+
 Use `bridge certify --gnn-root GNN_PATH --results PATH` to compare one
 identified result without writing. Add `--receipt PATH` for explicit JSON and
 Markdown output, then use `bridge verify-certificate --gnn-root GNN_PATH
