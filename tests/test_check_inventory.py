@@ -1062,3 +1062,71 @@ def test_render_dependency_contract_refuses_gate_or_identity_drift(mutant):
         steps.append(barrier)
     with pytest.raises(AssertionError):
         _assert_render_dependencies_barrier_contract(workflow)
+
+
+def test_sidecar_test_task_uses_full_gate() -> None:
+    sidecar = yaml.safe_load((PROJECT_ROOT / ".aii/config.yaml").read_text())
+    assert sidecar["tasks"]["test"]["cmd"] == (
+        "uv sync --locked --extra dev && bash scripts/gate.sh full"
+    )
+
+
+@pytest.mark.parametrize("drift", [None, "fep_lean", "gnn", "missing-pin"])
+def test_source_pair_checks_committed_pin_before_refresh(tmp_path, drift) -> None:
+    from fep_formal.bridge.operations import PIN, owner_roster
+    from fep_formal.output.fsutil import sha256_bytes
+
+    workflow = yaml.safe_load(
+        (PROJECT_ROOT / ".github/workflows/source-pair-qualification.yml").read_text()
+    )
+    steps = workflow["jobs"]["qualify-source-pair"]["steps"]
+    guard = next(
+        step
+        for step in steps
+        if step.get("name") == "Check the committed source pin without refreshing it"
+    )
+    refresh = next(
+        step for step in steps if "fep-formal bridge pin " in step.get("run", "")
+    )
+    assert steps.index(guard) < steps.index(refresh)
+    assert guard["working-directory"] == refresh["working-directory"] == "fep"
+    script = guard["run"].split("<<'PY'\n", 1)[1].rsplit("\nPY", 1)[0]
+    roots = {"fep_lean": tmp_path / "fep", "gnn": tmp_path / "gnn"}
+    pin = {"schema_version": 1}
+    for key, root in roots.items():
+        owners = {}
+        for relative in owner_roster(root, key):
+            path = root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("committed owner\n")
+            owners[relative] = sha256_bytes(path.read_bytes())
+        pin[key] = {"commit": "a" * 40, "owners": owners}
+    pin_path = roots["fep_lean"] / PIN
+    pin_path.parent.mkdir(parents=True)
+    pin_path.write_text(json.dumps(pin))
+    if drift == "missing-pin":
+        pin_path.unlink()
+    elif drift is not None:
+        (roots[drift] / "pyproject.toml").write_text("changed owner\n")
+    before = {
+        path: (path.read_bytes(), path.stat().st_mtime_ns)
+        for path in tmp_path.rglob("*")
+        if path.is_file()
+    }
+    result = subprocess.run(
+        [sys.executable, "-B", "-c", script],
+        cwd=roots["fep_lean"],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        check=False,
+    )
+    assert (result.returncode == 0) == (drift is None), result.stderr
+    if drift in roots:
+        assert "Committed source pin is stale:" in result.stderr
+        assert f"{drift}:" in result.stderr
+    assert before == {
+        path: (path.read_bytes(), path.stat().st_mtime_ns)
+        for path in tmp_path.rglob("*")
+        if path.is_file()
+    }

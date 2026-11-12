@@ -25,6 +25,9 @@ the manuscript renders: `provenance.current_release: v2.1.0`,
 The release gate checks the version and date across the sidecar, citation and
 manuscript files; the concept DOI names the scholarly corpus, not a version
 record.
+Unlike the generic sidecar edit-date guidance, this repository keeps `meta.updated`
+at the release date even for metadata-only edits; `_license_metadata_errors` in
+`src/fep_formal/output/release_bundle/_identity.py` enforces that identity.
 
 [FEP_Formal 2.1.0](https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v2.1.0)
 and [GNN 5.0.1](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/releases/tag/v5.0.1)
