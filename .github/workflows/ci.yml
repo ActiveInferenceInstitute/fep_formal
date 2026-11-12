@@ -192,30 +192,14 @@ jobs:
           PY
       - run: uv sync --locked --extra dev
         if: steps.classify.outputs.docs_only != 'true'
-      # The frozen-custody bridge gates from AGENTS.md's required checks:
-      # each is --check validation of committed artifacts and passes on a
-      # fresh checkout without any sibling repo. The live source-pair
-      # qualification remains dispatch-only in source-pair-qualification.yml.
-      - name: Check the frozen-custody bridge gates
-        if: steps.classify.outputs.docs_only != 'true'
-        run: |
-          uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
-          uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
-          uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
-      - name: Validate retained historical runner evidence offline
-        if: steps.classify.outputs.docs_only != 'true'
-        run: |
-          uv run python -B specs/gnn-runner-execution/validate_retained.py
-          uv run python -B specs/gnn-runner-execution/test_validate_retained.py
-      - name: Check independent Gaussian composition replay controls
+      # One arm owns every conformance command. The frozen-custody bridge gates
+      # are --check validation of committed artifacts and pass on a fresh
+      # checkout without any sibling repo; the live source-pair qualification
+      # remains dispatch-only in source-pair-qualification.yml.
+      - name: Run the GNN conformance arm
         if: steps.classify.outputs.docs_only != 'true'
         timeout-minutes: 5
-        env:
-          FEP_FORMAL_LIVE_TESTS: "0"
-        run: |
-          mkdir -p output
-          uv run pytest specs/gnn-semantic-witness-v1/test_composition.py -q -n 0 --no-cov \
-            --junitxml=output/gnn-composition-acceptance.xml
+        run: bash scripts/gate.sh gnn
       - name: Retain GNN conformance evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -236,29 +220,8 @@ jobs:
           version: "0.13.7"
           enable-cache: true
       - run: uv sync --locked --extra dev
-      - name: Materialize the generated manuscript inputs
-        run: uv run fep-formal catalogue
       - name: Check documentation and committed publication evidence
-        run: |
-          uv run python scripts/_maint_build_topics_catalogue.py --check
-          uv run python scripts/_maint_build_fep_all_lean.py --check
-          uv run python scripts/_maint_build_formal_modules.py --check
-          uv run python scripts/theorem_maturity_audit.py --check
-          uv run python scripts/build_formalism_coverage.py --check
-          uv run python scripts/_maint_build_lean_landscape.py --check
-          uv run python scripts/build_formalism_atlas.py --check
-          uv run python scripts/build_formal_kernel_dashboard.py --check
-          uv run python specs/openai-math-methods/generate_package_methods.py --check
-          uv run python specs/identity-cutover/generate_legacy_stubs.py --check
-          uv run fep-formal --project-root . methods check --output-root docs/mathematical-positioning
-          uv run python scripts/build_render_fonts.py --check
-          uv run python scripts/check_render_log.py --verify-receipt
-          uv run python docs/theorem_ref_audit.py
-          uv run python docs/citation_audit.py
-          uv run python docs/check_links.py --strict --include-root
-          uv run python docs/md_hygiene.py --strict --include-root
-          uv run python docs/xref_audit.py
-          git diff --check
+        run: bash scripts/gate.sh docs
 
   distribution:
     needs: changes
@@ -308,31 +271,12 @@ jobs:
           version: "0.13.7"
           enable-cache: true
       - run: uv sync --locked --extra dev
-      - run: uv lock --check && uv pip check
-      - name: Check generated catalogue and formalism projections
-        run: |
-          uv run python scripts/_maint_build_topics_catalogue.py --check
-          uv run python scripts/_maint_build_fep_all_lean.py --check
-          uv run python scripts/_maint_build_formal_modules.py --check
-          uv run python scripts/theorem_maturity_audit.py --check
-          uv run python scripts/build_formalism_coverage.py --check
-          uv run python scripts/_maint_build_lean_landscape.py --check
-          uv run python scripts/build_formalism_atlas.py --check
-          uv run python scripts/build_formal_kernel_dashboard.py --check
-          uv run python specs/openai-math-methods/generate_package_methods.py --check
-          uv run python specs/identity-cutover/generate_legacy_stubs.py --check
-          uv run fep-formal --project-root . methods check --output-root docs/mathematical-positioning
-      - name: Generate and validate publication inputs
-        run: |
-          uv run fep-formal catalogue
-          # The glyph projection reads the generated appendix
-          # (manuscript/09z_unified_formalism_catalogue.md, a gitignored build
-          # product), so this check is only decidable after the catalogue has
-          # materialized the manuscript inputs; earlier placement reported a
-          # false STALE on every fresh checkout.
-          uv run python scripts/build_render_fonts.py --check
-          uv run python docs/theorem_ref_audit.py
-          uv run python docs/citation_audit.py
+      # One arm owns the catalogue checks and the committed publication
+      # evidence; the documentation lane reuses a superset of it. The glyph
+      # projection reads the generated appendix, so the arm materializes the
+      # catalogue before checking it.
+      - name: Check generated projections and publication evidence
+        run: bash scripts/gate.sh catalogue
       # The two atlas/dashboard PNGs the manuscript cites live under the
       # gitignored output/ tree, so a fresh checkout has none: `--check` alone
       # would fail on every run ("not produced from ..."). The write pass
@@ -491,25 +435,11 @@ jobs:
           version: "0.13.7"
           enable-cache: true
       - run: uv sync --locked --extra dev
-      - name: Check composition source inventory
-        run: uv run pytest tests/test_composition_source_inventory.py -q -n 0 --no-cov
-      - run: uv run fep-formal catalogue
-      - run: uv run python docs/check_links.py --strict --include-root
-        if: ${{ !cancelled() }}
-      - run: uv run python docs/md_hygiene.py --strict --include-root
-        if: ${{ !cancelled() }}
-      - run: uv run python docs/xref_audit.py
-        if: ${{ !cancelled() }}
-      - run: uv run mypy src scripts docs specs/publication-browser-acceptance/wait_render_dependencies.py specs/publication-browser-acceptance/native_supplement.py
-        if: ${{ !cancelled() }}
-      - run: uv run python -m mypy --no-incremental src/fep_lean/__init__.py
-        if: ${{ !cancelled() }}
-      - run: uv run ruff check .
-        if: ${{ !cancelled() }}
-      - run: uv run ruff format --check src tests scripts docs specs/openai-math-methods specs/cascadia-experiments specs/gnn-runner-execution specs/publication-browser-acceptance specs/identity-cutover
-        if: ${{ !cancelled() }}
-      - run: git diff --check
-        if: ${{ !cancelled() }}
+      # The arm materializes the catalogue first (the link, hygiene and
+      # cross-reference checks scan the generated manuscript inputs), then runs
+      # every static command and reports all failures in one step.
+      - name: Run the static gate arm
+        run: bash scripts/gate.sh static
 
   # The figure assets the render consumes (atlas/dashboard SVG+HTML
   # projections under docs/ and the rasterized PNGs under output/figures/)

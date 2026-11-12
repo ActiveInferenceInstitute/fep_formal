@@ -17,6 +17,7 @@ import yaml
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 AGENTS = PROJECT_ROOT / "AGENTS.md"
 CI = PROJECT_ROOT / ".github" / "workflows" / "ci.yml"
+GATE = PROJECT_ROOT / "scripts" / "gate.sh"
 SECONDARY_DOCS = ("docs/development.md", "docs/testing.md")
 ROOT_REFERENCES = {
     "README.md": {
@@ -89,7 +90,15 @@ HOSTED_ONLY = {
     "--output output/python-acceptance-summary.json": "needs the hosted JUnit files",
 }
 
-_TRACKED_PREFIXES = ("uv run", "lake ", "git diff", "uv lock", "uv pip")
+_TRACKED_PREFIXES = (
+    "uv run",
+    "lake ",
+    "git diff",
+    "uv lock",
+    "uv pip",
+    "bash scripts/gate.sh",
+    "scripts/gate.sh",
+)
 
 
 def _shell_tokens(command: str) -> list[str]:
@@ -168,13 +177,79 @@ def agents_commands() -> list[str]:
     return [normalise(c) for block in blocks for c in split_commands(block)]
 
 
+def gate_arm_runs(text: str | None = None) -> dict[str, list[tuple[str, str]]]:
+    """Return each arm's direct ``run``/``arm`` entries without resolving calls."""
+    source = GATE.read_text(encoding="utf-8") if text is None else text
+    arms: dict[str, list[tuple[str, str]]] = {}
+    current: str | None = None
+    for raw in re.sub(r"\\\n\s*", " ", source).splitlines():
+        line = raw.strip()
+        declaration = re.fullmatch(r"arm_([a-z]+)\(\) \{", line)
+        if declaration:
+            current = declaration.group(1)
+            arms[current] = []
+            continue
+        if line == "}":
+            current = None
+            continue
+        if current is None or not line:
+            continue
+        if line.startswith("run "):
+            arms[current].append(("run", normalise(line[4:])))
+        elif re.fullmatch(r"arm_[a-z]+", line):
+            arms[current].append(("call", line[4:]))
+    assert arms, "scripts/gate.sh declares no arms"
+    return arms
+
+
+def gate_commands(text: str | None = None) -> dict[str, list[str]]:
+    """Resolve every ``scripts/gate.sh`` arm to the commands it executes.
+
+    An arm calling another arm inherits its commands, so a CI arm invocation
+    can be compared with AGENTS.md verbatim.
+    """
+    arms = gate_arm_runs(text)
+
+    def resolve(name: str, seen: tuple[str, ...] = ()) -> list[str]:
+        assert name in arms, f"gate arm {name!r} is not declared"
+        assert name not in seen, f"gate arms recurse: {(*seen, name)}"
+        commands: list[str] = []
+        for kind, value in arms[name]:
+            commands.extend([value] if kind == "run" else resolve(value, (*seen, name)))
+        return commands
+
+    return {name: resolve(name) for name in arms}
+
+
+def gate_direct_commands() -> list[str]:
+    """Commands written once in an arm body, ignoring arm composition."""
+    return [
+        value
+        for entries in gate_arm_runs().values()
+        for kind, value in entries
+        if kind == "run"
+    ]
+
+
+def _gate_arm(command: str) -> str | None:
+    tokens = command.split()
+    if tokens[:2] == ["bash", "scripts/gate.sh"]:
+        return tokens[2] if len(tokens) == 3 else None
+    if tokens[:1] in (["scripts/gate.sh"], ["./scripts/gate.sh"]):
+        return tokens[1] if len(tokens) == 2 else None
+    return None
+
+
 def ci_commands() -> list[str]:
     workflow = yaml.safe_load(CI.read_text(encoding="utf-8"))
+    arms = gate_commands()
     commands: list[str] = []
     for job in workflow["jobs"].values():
         for step in job.get("steps", []):
             if isinstance(step.get("run"), str):
-                commands += [normalise(c) for c in split_commands(step["run"])]
+                for command in (normalise(c) for c in split_commands(step["run"])):
+                    arm = _gate_arm(command)
+                    commands += arms[arm] if arm is not None else [command]
     return commands
 
 
@@ -631,14 +706,14 @@ def test_native_single_producer_and_explicit_dual_shadow_workflow_contract():
         "specs/publication-browser-acceptance/native_supplement.py",
     ):
         mutant = yaml.safe_load(CI.read_text())
-        mypy = next(
-            step
-            for step in mutant["jobs"]["static"]["steps"]
-            if step.get("run", "").startswith("uv run mypy ")
-        )
-        mypy["run"] = mypy["run"].replace(" " + missing, "")
+        flat = [
+            command.replace(" " + missing, "")
+            if command.startswith("mypy src scripts docs")
+            else command
+            for command in _gate_command_flat()
+        ]
         with pytest.raises(AssertionError):
-            _assert_render_dependencies_barrier_contract(mutant)
+            _assert_render_dependencies_barrier_contract(mutant, flat)
     steps = workflow["jobs"]["lean"]["steps"]
     serial = next(
         s for s in steps if s.get("name") == "Run the serial_lean acceptance lane"
@@ -818,9 +893,15 @@ _FORMAT_COMMAND = "uv run ruff format --check src tests scripts docs " + " ".joi
 )
 
 
-def _assert_consolidated_format_contract(workflow):
-    static_runs = [step.get("run", "") for step in workflow["jobs"]["static"]["steps"]]
-    assert static_runs.count(_FORMAT_COMMAND) == 1
+def _gate_command_flat(commands: dict[str, list[str]] | None = None) -> list[str]:
+    resolved = gate_commands() if commands is None else commands
+    return [command for arm in resolved.values() for command in arm]
+
+
+def _assert_consolidated_format_contract(workflow, flat: list[str] | None = None):
+    commands = gate_direct_commands() if flat is None else flat
+    expected = normalise(_FORMAT_COMMAND)
+    assert commands.count(expected) == 1, "format must execute once through the gate"
     assert _FORMAT_COMMAND in AGENTS.read_text(encoding="utf-8")
     for job in ("lean", "python"):
         runs = "\n".join(step.get("run", "") for step in workflow["jobs"][job]["steps"])
@@ -832,16 +913,17 @@ def _assert_consolidated_format_contract(workflow):
 def test_consolidated_format_refuses_missing_roots_or_duplicate_execution():
     workflow = yaml.safe_load(CI.read_text())
     _assert_consolidated_format_contract(workflow)
+    expected = normalise(_FORMAT_COMMAND)
+    flat = gate_direct_commands()
     for root in _FORMAT_SPEC_ROOTS:
-        mutated = yaml.safe_load(CI.read_text())
-        step = next(
-            row
-            for row in mutated["jobs"]["static"]["steps"]
-            if row.get("run") == _FORMAT_COMMAND
-        )
-        step["run"] = step["run"].replace(" " + root, "", 1)
+        mutated = [
+            item.replace(" " + root, "", 1) if item == expected else item
+            for item in flat
+        ]
         with pytest.raises(AssertionError):
-            _assert_consolidated_format_contract(mutated)
+            _assert_consolidated_format_contract(workflow, mutated)
+    with pytest.raises(AssertionError):
+        _assert_consolidated_format_contract(workflow, [*flat, expected])
     for job in ("lean", "python"):
         mutated = yaml.safe_load(CI.read_text())
         mutated["jobs"][job]["steps"].append(
@@ -851,7 +933,9 @@ def test_consolidated_format_refuses_missing_roots_or_duplicate_execution():
             _assert_consolidated_format_contract(mutated)
 
 
-def _assert_render_dependencies_barrier_contract(workflow):
+def _assert_render_dependencies_barrier_contract(
+    workflow, flat: list[str] | None = None
+):
     jobs = workflow["jobs"]
     lean = jobs["lean"]
     assert lean["needs"] == "changes"
@@ -873,21 +957,18 @@ def _assert_render_dependencies_barrier_contract(workflow):
     assert barrier["run"] == (
         "python specs/publication-browser-acceptance/wait_render_dependencies.py"
     )
-    static_runs = [step.get("run", "") for step in workflow["jobs"]["static"]["steps"]]
-    assert (
+    commands = _gate_command_flat() if flat is None else flat
+    mypy = (
         "uv run mypy src scripts docs "
         "specs/publication-browser-acceptance/wait_render_dependencies.py "
         "specs/publication-browser-acceptance/native_supplement.py"
-    ) in static_runs
+    )
+    assert normalise(mypy) in commands
     required = AGENTS.read_text(encoding="utf-8")
     assert "uv run ruff check ." in required
-    assert "uv run ruff check ." in static_runs
+    assert normalise("uv run ruff check .") in commands
     _assert_consolidated_format_contract(workflow)
-    assert (
-        "uv run mypy src scripts docs "
-        "specs/publication-browser-acceptance/wait_render_dependencies.py "
-        "specs/publication-browser-acceptance/native_supplement.py"
-    ) in required
+    assert mypy in required
     download_index = by_name[
         "Download the publication figure assets the render-deps job produced"
     ]

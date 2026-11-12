@@ -218,6 +218,11 @@ allow-lists, if CI runs a gate that is missing here, or if those reference
 sections duplicate the maintained definitions. Add a check to CI and to this
 block in the same change.
 
+The local executable projection is `bash scripts/gate.sh <arm>`
+([arms and measured times](docs/gates.md)); CI calls the same arms (`static`,
+`catalogue`, `docs`, `gnn`), and the inventory test resolves those calls back
+to the commands below.
+
 Ruff checks all active Python tooling, including slice-local specs. The narrow
 historical/generated/pinned-input exclusions in `pyproject.toml` follow
 `specs/AGENTS.md`; their bytes remain unchanged. Strict mypy covers the package,
