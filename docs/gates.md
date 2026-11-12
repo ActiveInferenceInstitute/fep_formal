@@ -39,10 +39,10 @@ executed; it is not a hosted-runner measurement.
 
 | Arm | Before | After |
 | --- | --- | --- |
-| `fast` | not separately measured (new selection) | 3.8 s |
+| `fast` | not separately measured (new selection) | 3.8 s (9 s under load) |
 | `lint` | 0.4 s | 0.1 s |
 | `types` | 4 s | 0.9 s |
-| `docs` | 74 s | 47 s |
+| `docs` | 74 s | 47 s (139 s under load) |
 | `gnn` | 4 s | 6 s |
 | `static` | not separately measured (new sequence) | 32 s (137 s under heavy host load) |
 | `full` | 391 s (327 s remainder + 64 s Chrome probes, run separately) | not completed in one bounded run; see below |
