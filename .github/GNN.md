@@ -28,3 +28,26 @@ regenerates its instance in memory from
 sibling fixtures, failing on any byte difference; that fixture is the only
 `*.gnn.md` the job reads, and the job neither re-reads the source pin against a
 GNN checkout nor scans the rest of the repository for `*.gnn.md`.
+
+## GNN–FEP reader migration: blocked
+
+The [GNN–FEP workflow contract](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/blob/main/docs/workflows/gnn-fep.md)
+requires the shared `gnn.importers` reader from the pinned GNN environment,
+with `--pin specs/gnn-bridge-w2-source-custody/source-pin.json --pin-party gnn`,
+`--require-pointer --workflow .github/workflows/ci.yml --job gnn-conformance`.
+The custody-pinned revision named above does not contain
+`src/gnn/importers.py`. The existing `gnn` arm validates retained artifacts;
+it does not materialize a GNN checkout or install a GNN parser environment.
+
+The contract identifies `src/fep_formal/bridge/operations.py:pin_sources` as
+the local copy to remove, but that function produces both parties' owner-digest
+custody records. It does not parse an upstream pin. The bridge's strict JSON
+reader also serves custody receipts, rejecting duplicate keys and non-finite
+constants; it is not just a release-pin shape validator.
+
+No reader cutover is claimed. Completing it needs a qualified source-pair
+update that includes the shared reader and a materialized pinned environment,
+or a clarified upstream instruction compatible with the retained custody pin.
+Neither a newer-parser substitution nor deletion of owner-digest checks is
+part of this migration. A checker run against a newer GNN checkout is only
+diagnostic; it cannot establish conformance under the recorded revision.
