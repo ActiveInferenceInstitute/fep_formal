@@ -270,6 +270,15 @@ _HISTORICAL_LOCK_SHA256 = (
 # commentary delta: uv removed the 3.10-only resolution and wheel inventory.
 # Its exact predecessor is retained as a frozen archive for historical controls.
 _FLOOR_LOCK_SHA256 = "5301956db0694e7fe19949769480a03bbe24a4fcdd76511b54490867102d9b36"
+# The reviewed python-dependencies upgrade (ast-serialize 0.13.1, librt 0.16.0,
+# matplotlib 3.11.2, mypy 2.4.1, pytest-httpserver 1.2.0, ruff 0.17.3 and
+# types-PyYAML 20261103; pytest stays 9.1.1 because xdist 3.8.0 loses loadgroup
+# grouping under pytest 9.2's private NodeId change) rewrote the wheel
+# inventory and is likewise not reversible line-by-line. Admit only this
+# normalized profile digest; its exact predecessor remains the frozen archive.
+_DEPENDENCY_UPGRADE_LOCK_SHA256 = (
+    "ba277c91ae48671009f68b75a367ec93ce4a598cd678599c22f1534c5ecaae4b"
+)
 
 
 def _historical_lock_from_archive() -> bytes:
@@ -627,10 +636,18 @@ def bridge_dev_lock_predecessor(live: bytes) -> bytes:
     if len(present) != 1 or candidate.count(present[0]) != 1:
         return live
     normalized = candidate.replace(present[0], current, 1)
-    if (
-        hashlib.sha256(normalized).hexdigest()
-        != "b8c54ac9d66c570bdd3c8e50f10234ac785dc078bcfa5e52c9749161ab82e252"
-    ):
+    digest = hashlib.sha256(normalized).hexdigest()
+    if digest == _DEPENDENCY_UPGRADE_LOCK_SHA256:
+        restored = _historical_lock_from_archive()
+        legacy = b'[[package]]\nname = "fep-formal"\n'
+        if restored.count(legacy) == 1:
+            restored = restored.replace(legacy, b'[[package]]\nname = "fep-lean"\n', 1)
+        frozen = [token for token in tokens if token in restored]
+        if len(frozen) != 1 or restored.count(frozen[0]) != 1:
+            return live
+        normalized = restored.replace(frozen[0], current, 1)
+        digest = hashlib.sha256(normalized).hexdigest()
+    if digest != "b8c54ac9d66c570bdd3c8e50f10234ac785dc078bcfa5e52c9749161ab82e252":
         return live
     start = normalized.index(b'[[package]]\nname = "defusedxml"\n')
     end = normalized.index(b"[[package]]\n", start + 1)
