@@ -150,3 +150,25 @@ P3 (all required; boxes flip only after the named command exits 0):
 | Q(π) | compilation (theorem :816-826) + numerical witness (exact rationals) | GNN pipeline execution (`policy_posterior`) |
 | VFE | compilation (equalities :209-214, :762-773, :121-125) + numerical witness (`math.log(2)`) | GNN pipeline execution (`variational_free_energy`) |
 | EFE (O1) | compilation (:148-150, :789-812) — different convention, compared informatively | GNN pipeline execution (`expected_free_energy` = pymdp `neg_efe`) |
+
+## Historical provenance of the retained outputs
+
+`gnn_output/` is a record of the 2026-09-03 certificate run, not a
+reproduction against the current pin.
+
+- The retained `FepLeanSymmetricBool_json.json` and `_parsed.json` signatures
+  stamp `source_commit: 315e32994b59fd80e327b5b654c9f7852fad9933` (the FEP
+  source this slice used) and
+  `pipeline_commit: 12a565b2f18db7f18c3a799568ad057834ba0358`
+  (`git describe` in the GNN repository: `v3.2.0-3-g12a565b2f`).
+- The retained pipeline log shows the run executing the pre-rename step scripts
+  `3_gnn.py`, `5_type_checker.py`, `11_render.py` and `12_execute.py` on
+  2026-09-03; `src/3_gnn.py` no longer exists on current GNN `main`.
+- The stamped `target_syntax` names `doc/gnn/gnn_syntax.md`; the file is now
+  `docs/gnn/gnn_syntax.md`.
+- Current custody is
+  [`../gnn-bridge-w2-source-custody/source-pin.json`](../gnn-bridge-w2-source-custody/source-pin.json)
+  (`gnn` = `v5.1.0` at `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`; projections
+  still from `2778e65c` until the pair-wide re-pin). The numbers in
+  `certificates.json` were produced by the 2026-09-03 execution and are not a
+  claim about the current pin.

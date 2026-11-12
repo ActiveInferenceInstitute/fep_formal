@@ -201,3 +201,30 @@ the Lean module/definitions, the rounding policy, and the targeted
 syntax version in its `Signature` section. `gnn_output/` is dedicated
 to this slice; the shared GNN `output/` tree is owned by another agent
 and is never written by this slice.
+
+## Historical provenance of the retained outputs
+
+The retained `gnn_output/`, `gnn_output_run1_annotated/` and
+`gnn_output_run2_accepted/` trees are a record of the 2026-09-03 acceptance run,
+not a reproduction against the current pin.
+
+- Every retained `*_json.json` / `*_parsed.json` signature stamps
+  `source_commit: 315e32994b59fd80e327b5b654c9f7852fad9933` and
+  `pipeline_commit: 12a565b2f18db7f18c3a799568ad057834ba0358`
+  (`git describe` in the GNN repository: `v3.2.0-3-g12a565b2f`).
+- The retained pipeline logs (`00_pipeline_logs/pipeline.log`) show the
+  2026-09-03 runs executing `3_gnn.py`, `5_type_checker.py`, `11_render.py` and
+  `12_execute.py`. `src/3_gnn.py` is the pre-rename step script; it no longer
+  exists on current GNN `main`.
+- The document's `target_syntax` field reads `GNN v1 (doc/gnn/gnn_syntax.md
+  v1.1 surface)`. That is the path the file had at `12a565b2`; the file is now
+  `docs/gnn/gnn_syntax.md`. The retained stamp is left as run.
+- Current custody is recorded separately in
+  [`../gnn-bridge-w2-source-custody/source-pin.json`](../gnn-bridge-w2-source-custody/source-pin.json),
+  whose `gnn` entry is `v5.1.0` at `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`.
+  The emitted projections, including `gnn-input/FepLeanSymmetricBool.md`
+  (`pipeline_commit: 2778e65c2228148417b2cf71832eb86a019785fb`), still come from
+  `2778e65c` until the pair-wide re-pin described in
+  [`docs/design/gnn-bridge/README.md`](../../docs/design/gnn-bridge/README.md).
+  This note does not assert that `projection.py --check` is fresh against the
+  current pin.
