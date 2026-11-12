@@ -35,3 +35,18 @@ both emitters' `--check` and independently validated comparison receipts.
 - Later expansion order: concrete PyMDP artifacts, then backend-specific
   ActiveInference.jl extraction, then reviewed continuous dynamics. H3 follows
   its independent accepted predecessor gates.
+
+## Retained outputs are historical
+
+This slice owns the custody mechanism (`source-pin.json`), not the retained
+pipeline outputs. The `gnn_output` trees under
+`../gnn-bridge-p1-finite-spike/` and `../gnn-bridge-p3-certificates/` stamp
+`source_commit: 315e32994b59fd80e327b5b654c9f7852fad9933` and
+`pipeline_commit: 12a565b2f18db7f18c3a799568ad057834ba0358`
+(`v3.2.0-3-g12a565b2f`), come from 2026-09-03 runs of the pre-rename
+`3_gnn.py` step script, and name the since-moved `doc/gnn/gnn_syntax.md`
+(now `docs/gnn/gnn_syntax.md`). They are historical records, not a
+reproduction against the current pin. The current pin is `v5.1.0` at
+`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`; the emitted projections still come
+from `2778e65c2228148417b2cf71832eb86a019785fb` until the pair-wide re-pin, and
+nothing here claims `emit --check` is fresh.
