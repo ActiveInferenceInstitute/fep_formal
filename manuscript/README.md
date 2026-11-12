@@ -1,5 +1,13 @@
 # Manuscript sources
 
+The current release identity is version `2.1.0`, dated `2026-10-24`, under the
+scholarly concept DOI `10.5281/zenodo.19699233`. This is the same identity the
+InstituteOS sidecar records (`provenance.current_release`, `meta.updated`,
+`provenance.citation.doi`) and the release gate checks; `config.yaml` carries
+the version and date that the title page renders. The separate 2.1.0
+manuscript-version DOI is `10.5281/zenodo.23607007`; it names the published
+deposit, not the concept.
+
 The chapters are rendered from this directory with the local Pandoc/XeLaTeX
 toolchain. Run `uv run fep-formal catalogue` first to generate
 `manuscript_vars.yaml` and `09z_unified_formalism_catalogue.md`, then run

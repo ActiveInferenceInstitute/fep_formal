@@ -167,6 +167,33 @@ review under the [design lifecycle](../README.md).
    [formal-kernel methods](../../formal-kernel-methods.md); on the GNN side,
    the mirror folder `GeneralizedNotationNotation/docs/other/fep_lean/`.
 
+## Source pin and conformance job
+
+The repository has no `.github/gnn-pin.json` and no `gnn-importer-pin/v1`
+record. The canonical custody file is
+[`specs/gnn-bridge-w2-source-custody/source-pin.json`](../../../specs/gnn-bridge-w2-source-custody/source-pin.json),
+whose actual schema is `schema_version: 1`. Its `gnn` entry names the
+descriptive commit `2778e65c2228148417b2cf71832eb86a019785fb` and the SHA-256
+digests of six pinned owner files (`pyproject.toml`, `uv.lock`,
+`src/gnn/main.py`, `src/gnn/pipeline/step_registry.py`,
+`docs/gnn/gnn_syntax.md`, `docs/other/fep_lean/bridge-contract.md`). The
+`fep_lean` entry pins this repository's own owner bytes separately.
+
+The hosted conformance context is job key `gnn-conformance` with display name
+`gnn conformance (pinned)`. [`.github/GNN.md`](../../../.github/GNN.md) owns
+what that job parses: the frozen-custody Q5 and Cascadia probe checks, the GEO
+notation bridge check against `config/theorem_maturity.yaml`, retained runner
+evidence validation, and the Gaussian composition replay controls. The job
+does not re-read the pin against a GNN checkout.
+
+The workflow uses `astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2`
+(v10.3.3), `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`
+(v7.0.1) and `actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9`
+(v7.0.2). It does not use
+`ActiveInferenceInstitute/.github/.github/actions/setup-python-uv@7159e67315330aac8e414aebae0ad1e999a41448`.
+Run the same checks locally with `bash scripts/gate.sh gnn`; see the
+[gate arms](../../gates.md).
+
 ## Operating the bridge
 
 [W2 source custody](../../../specs/gnn-bridge-w2-source-custody/README.md)
