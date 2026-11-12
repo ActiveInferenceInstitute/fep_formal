@@ -52,10 +52,10 @@ arm_fast() {
     run uv run pytest tests/test_check_inventory.py -q -n 0 --no-cov
 }
 
-# The full non-serial suite and its measured package-floor gate. The two live
-# Chrome probes and the membership validator stay in the CI python job's own
-# steps: they need step outcomes, and duplicating that orchestration here would
-# create a second acceptance contract.
+# The full non-serial suite plus the isolated live Chrome cases and the
+# measured package floors, in CI's order: the Chrome probes append the coverage
+# the output package floor requires. The membership validator stays in the CI
+# python job, where the step outcomes it consumes exist.
 arm_full() {
     mkdir -p output
     export FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE=1
@@ -65,6 +65,10 @@ arm_full() {
         --deselect=tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer \
         --junitxml=output/python-acceptance.xml -W always --color=no
     unset FEP_FORMAL_COVERAGE_FLOOR_EVIDENCE
+    run uv run pytest tests/test_browser_capture.py::test_live_chrome_blocks_and_records_a_delayed_outbound_request \
+        tests/test_browser_capture.py::test_live_chrome_replay_terminates_every_profile_writer \
+        -q -n 0 --cov=src --cov-append --cov-report=xml --cov-fail-under=89 \
+        --junitxml=output/live-chrome-acceptance.xml -W always --color=no
     run uv run python docs/check_coverage_floors.py --coverage coverage.xml
 }
 

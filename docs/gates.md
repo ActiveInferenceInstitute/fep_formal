@@ -11,17 +11,24 @@ every command is attempted and the arm exits non-zero if any failed.
 | Arm | What it runs | CI job that calls it |
 | --- | --- | --- |
 | `fast` (default) | CI's composition-inventory test plus the gate-inventory contract | none (local only) |
-| `full` | CI's full non-serial pytest command with coverage, plus the measured package-floor gate | none (the `python` job still owns the two live Chrome probes and membership) |
+| `full` | CI's full non-serial pytest command with coverage, the isolated live Chrome probes with appended coverage, and the measured package-floor gate | none (the `python` job additionally owns membership validation) |
 | `lint` | `ruff check .` and the consolidated `ruff format --check` roots | `static` (via the `static` arm) |
 | `types` | strict `mypy` over `src`, `scripts`, `docs` and the two CI helpers, plus the `fep_lean` adapter | `static` (via the `static` arm) |
 | `catalogue` | catalogue materialization, generated projections, methods check, font/render receipts, theorem-reference and citation audits | `python` |
-| `docs` | `catalogue` plus manuscript check, link, Markdown-hygiene and cross-reference checks | `documentation` |
+| `docs` | `catalogue` plus link, Markdown-hygiene and cross-reference checks | `documentation` |
 | `gnn` | frozen-custody probe checks, GEO notation check, retained runner evidence, Gaussian composition replay | `gnn-conformance` |
 | `static` | `uv lock --check`, `uv pip check`, composition inventory, catalogue, prose checks, lint, types, `git diff --check` | `static` |
 | `all` | `fast`, `lint`, `types`, `docs`, `gnn` (not `full`) | none |
 
 Setup is not an arm: run `uv sync --locked --extra dev` once first. The arms do
 not install tools, fetch Mathlib or call a provider.
+
+The `full` arm's two live Chrome probes resolve the browser through
+`shutil.which("google-chrome")` / `google-chrome-stable` (or Chromium's command
+names), not through an application bundle or an environment variable. On macOS,
+put a `google-chrome` shim on `PATH` before the arm; without one both probes
+skip and the `fep_formal.output` line floor cannot be met, because the CI split
+coverage depends on their appended lines.
 
 ## Measured wall time
 
@@ -37,8 +44,8 @@ executed; it is not a hosted-runner measurement.
 | `types` | 4 s | 0.9 s |
 | `docs` | 74 s | 47 s |
 | `gnn` | 4 s | 6 s |
-| `static` | not separately measured (new sequence) | 32 s |
-| `full` | 327 s (CI remainder command) | PENDING |
+| `static` | not separately measured (new sequence) | 32 s (137 s under heavy host load) |
+| `full` | 391 s (327 s remainder + 64 s Chrome probes, run separately) | not completed in one bounded run; see below |
 
 The `lint` and `types` "after" values are warm-cache runs; the "before"
 values are the first cold runs of the same commands. The `docs` "before" run
@@ -46,6 +53,16 @@ was the replaced documentation-job command list executed directly; its
 "after" run reuses the catalogue and generated projections warm. The `full`
 "before" number is the baseline parallel remainder with coverage, which is the
 same command the arm now runs.
+
+The `full` arm did not complete as one bounded run on this host. Its parallel
+remainder completed once in 542 s with all tests passing; the following
+package-floor step failed only because both live Chrome probes skipped while
+`google-chrome` was absent from `PATH`, and the `fep_formal.output` floor needs
+their appended lines. With a `google-chrome` shim the two probes pass in 64 s.
+A combined rerun under concurrent host load reached 17% in 3 m 39 s and was
+stopped at the 10-minute measurement bound. The arm therefore has bounded
+component evidence, not a single green run; the hosted `python` job remains the
+owner of that exact sequence.
 
 Arm wall time is not a hosted-runner time. CI billing is locked for this
 organization, so local runs are the only gate evidence; no hosted speedup is
