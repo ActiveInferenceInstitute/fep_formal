@@ -3,6 +3,7 @@
 FEP_Formal is the project name. The installed Python namespace is
 `fep_formal`, and the command is `fep-formal`.
 
+- [Flat documentation index](documentation-index.md) — alphabetical paths across the documentation tree; this page remains the curated map.
 - [Identity migration](identity-migration.md) — canonical names, deprecated compatibility, source custody and release transition.
 - [Identity migration status](identity-migration-status.md) — measured checks, retained failures and outstanding acceptance.
 - [Mathematical methods](mathematical-methods.md) — portable topic contracts, research context and mathematical transfer rules.

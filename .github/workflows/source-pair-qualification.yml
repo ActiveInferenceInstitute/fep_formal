@@ -82,6 +82,18 @@ jobs:
       - name: Acquire and build pinned Lean dependencies explicitly
         working-directory: fep
         run: uv run --frozen --no-sync fep-formal setup
+      - name: Check the committed source pin without refreshing it
+        working-directory: fep
+        run: |
+          uv run --frozen --no-sync python - <<'PY'
+          from pathlib import Path
+          from fep_formal.bridge.operations import PIN, check_sources, read_object
+
+          root = Path.cwd()
+          errors = check_sources(root, (root / "../gnn").resolve(), read_object(root / PIN))
+          if errors:
+              raise SystemExit("Committed source pin is stale: " + "; ".join(errors))
+          PY
       - name: Pin and check both source-owned emissions
         working-directory: fep
         run: |

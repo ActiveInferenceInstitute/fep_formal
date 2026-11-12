@@ -1,5 +1,12 @@
 ## Unreleased
 
+- Add a flat documentation index alongside the curated map and route the
+  InstituteOS sidecar test task through the canonical full gate, including its
+  separate Chrome, coverage-floor, and warning-log handling.
+- Check the committed bridge source pin read-only against the selected FEP/GNN
+  checkouts before source-pair qualification can refresh it. This guard is
+  separate from frozen-artifact PR conformance and supplies no native evidence.
+
 - Align every uv pin to 0.13.7: the twelve `setup-uv` steps in `ci.yml`,
   `lean-latest.yml`, `lean-latest-compile.yml` and `source-pair-qualification.yml`
   now install 0.13.7, and `[tool.uv] required-version` moves to `==0.13.7` in the
