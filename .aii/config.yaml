@@ -1,16 +1,18 @@
 # AII sidecar — InstituteOS metadata. Schema: aii_platform.aii_sidecar
 meta:
   sidecar_version: 1.2.1
-  updated: '2026-11-11'
+  updated: '2026-10-24'
 repo:
   name: fep_formal
   slug: fep-formal
   full_name: ActiveInferenceInstitute/fep_formal
-  description: FEP_Formal is a standalone catalog of 168 Free Energy Principle, Active
+  description: 'Release v2.1.0 implementation (2026-10-24) · Concept DOI
+    [10.5281/zenodo.19699233](https://doi.org/10.5281/zenodo.19699233) · License CC
+    BY 4.0. FEP_Formal is a standalone catalog of 168 Free Energy Principle, Active
     Inference, Bayesian Mechanics, Information Geometry, and Thermodynamics topics.
     Its reviewed roster spans 22 reviewed families in five areas. Each topic connects
     an invariant, explicit assumptions, a canonical Lean 4 theorem body and typeset
-    signatures.
+    signatures.'
 institute:
   category: research-software
   maturity: released
