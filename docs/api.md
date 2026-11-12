@@ -539,7 +539,13 @@ notation contract — `pyproject.toml`, `uv.lock`, `src/gnn/main.py`, the mirror
 and the pinned syntax files (`docs/gnn/gnn_syntax.md`,
 `src/gnn/pipeline/step_registry.py`) — not the `src/gnn/**/*.py` implementation
 tree; the pin JSON shape is
-`{"schema_version": 1, "fep_lean": {"commit", "owners"}, "gnn": {"commit", "owners"}}`.
+`{"schema_version": 1, "fep_lean": {"commit", "owners"}, "gnn": {"commit", "tag", "owners"}}`,
+where `tag` names the release the `gnn` commit belongs to (`v5.1.0` today) and
+is absent from a record sealed before the pair named a release. The shared
+GNN–FEP reader reads that same record with
+`python -m gnn.importers check --repo . --pin specs/gnn-bridge-w2-source-custody/source-pin.json --pin-party gnn`
+from the pinned revision; `bash scripts/gate.sh gnn` runs it.
+
 `verify-document --document PATH` extracts one emitted document through the
 pinned render route (`gnn.extract.pomdp_extractor.extract_pomdp_from_file`,
 strict validation) and decides `FEP.GnnDocument.documentWellFormed` in a

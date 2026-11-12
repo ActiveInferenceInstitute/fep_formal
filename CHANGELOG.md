@@ -1,5 +1,19 @@
 ## Unreleased
 
+- Adopt the shared GNN–FEP reader. The custody pin's `gnn` record advances from
+  the untagged `2778e65c2228148417b2cf71832eb86a019785fb` to release `v5.1.0` at
+  `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, whose tree carries
+  `src/gnn/importers.py`. `bash scripts/gate.sh gnn` installs that revision and
+  runs `python -m gnn.importers check` over the `gnn` record with
+  `--require-pointer`, so pin parsing, pointer validation and specification
+  validation have one home; no copy of the reader is stored here. Among the six
+  pinned owner files only `pyproject.toml` and `uv.lock` changed — the notation
+  contract, the syntax reference, the entry point and the step registry are
+  byte-identical. The `fep_lean` record and the emitted projections stay as
+  previously sealed: `bridge status --gnn-root PATH` already reported
+  `fep_lean: owner content changed: uv.lock` on the base, and a pair-wide
+  re-seal is a separate reviewed change.
+
 - Add a flat documentation index alongside the curated map and route the
   InstituteOS sidecar test task through the canonical full gate, including its
   separate Chrome, coverage-floor, and warning-log handling.

@@ -143,8 +143,23 @@ arm_docs() {
     run git diff --check
 }
 
+# The GNN revision the custody pin names. `uv` installs the reader from that
+# revision, so the pin has to be read once before the reader exists to read it;
+# this is the only pin access outside the reader itself.
+gnn_pin_revision() {
+    uv run --frozen --no-sync python -B -c \
+        'import json, sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["gnn"]["commit"])' \
+        specs/gnn-bridge-w2-source-custody/source-pin.json
+}
+
 arm_gnn() {
     mkdir -p output
+    # The shared GNN-FEP reader (upstream docs/workflows/gnn-fep.md), installed
+    # from the pinned revision into the project environment: the pin shape, the
+    # pointer check and the specification parser are that revision's, and this
+    # repository carries no second copy of any of them. `fep_formal` is a
+    # two-party custody pin, so `--pin` and `--pin-party` name its GNN record.
+    run uv run --frozen --no-sync --with "generalized-notation-notation @ git+https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation@$(gnn_pin_revision)" python -B -m gnn.importers check --repo . --pin specs/gnn-bridge-w2-source-custody/source-pin.json --pin-party gnn --require-pointer --workflow .github/workflows/ci.yml --job gnn-conformance
     run uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
     run uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
     run uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check

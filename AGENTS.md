@@ -223,6 +223,12 @@ The local executable projection is `bash scripts/gate.sh <arm>`
 `catalogue`, `docs`, `gnn`), and the inventory test resolves those calls back
 to the commands below.
 
+The `gnn` arm installs the shared GNN–FEP reader from the revision the custody
+pin records: `gnn_pin_revision` in `scripts/gate.sh` prints that pin's `gnn`
+commit, and `uv run --with` installs it. Nothing of the reader is vendored here,
+so pin parsing, the pointer rules and the specification parser are the pinned
+revision's; [`.github/GNN.md`](.github/GNN.md) records what the job parses.
+
 Ruff checks all active Python tooling, including slice-local specs. The narrow
 historical/generated/pinned-input exclusions in `pyproject.toml` follow
 `specs/AGENTS.md`; their bytes remain unchanged. Strict mypy covers the package,
@@ -293,6 +299,7 @@ uv run python docs/md_hygiene.py --strict --include-root
 uv run python docs/pin_audit.py --check-latest
 uv run python docs/xref_audit.py
 uv run python docs/check_orphan_compiles.py
+uv run --frozen --no-sync --with "generalized-notation-notation @ git+https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation@$(gnn_pin_revision)" python -B -m gnn.importers check --repo . --pin specs/gnn-bridge-w2-source-custody/source-pin.json --pin-party gnn --require-pointer --workflow .github/workflows/ci.yml --job gnn-conformance
 uv run python specs/gnn-bridge-q5-artifact-proof/generate_probe.py --check
 uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
 uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
