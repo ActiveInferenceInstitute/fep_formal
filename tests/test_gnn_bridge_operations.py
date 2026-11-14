@@ -1441,7 +1441,11 @@ def test_markdown_receipt_preserves_numerical_only_scope(
     root, gnn = pair
     receipt = operations.certificate_receipt(root, gnn, result_file(root))
     target = root / "certificate.json"
-    operations.emit_certificate(target, receipt)
+    operations.emit_certificate(
+        target,
+        receipt,
+        inputs=(*operations._bridge_input_paths(root, gnn), root / receipt["results_path"]),
+    )
     markdown = target.with_suffix(".md").read_text()
     assert "execution_source_verified: false" in markdown
     assert "native_claim_ready: false" in markdown
@@ -1481,3 +1485,53 @@ def test_read_object_accepts_wellformed_pin(tmp_path: Path) -> None:
         "schema_version": 1,
         "owners": {"a": "b"},
     }
+
+
+@pytest.mark.parametrize("alias_kind", ["same", "hardlink", "symlink", "markdown", "script"])
+def test_legacy_certifier_rejects_input_aliases_without_writing(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str], alias_kind: str
+) -> None:
+    import runpy
+
+    source = Path(__file__).resolve().parents[1] / "specs/gnn-bridge-p3-certificates/certify.py"
+    script = tmp_path / "specs/gnn-bridge-p3-certificates/certify.py"
+    script.parent.mkdir(parents=True)
+    script.write_text(source.read_text())
+    entry = runpy.run_path(str(script))
+    results = result_file(tmp_path)
+    target = tmp_path / "certificate.json"
+    if alias_kind == "same":
+        target = results
+    elif alias_kind == "script":
+        target = script
+    elif alias_kind == "hardlink":
+        target.hardlink_to(results)
+    elif alias_kind == "symlink":
+        target.symlink_to(results)
+    else:
+        target.write_bytes(b"retained JSON receipt\n")
+        target.with_suffix(".md").hardlink_to(results)
+    before = snapshot(tmp_path)
+    assert entry["main"](["--results", str(results), "--output", str(target)]) == 1
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["status"] == "error"
+    assert snapshot(tmp_path) == before
+
+
+def test_legacy_certifier_nonalias_emission_retains_numerical_only_scope(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    import runpy
+
+    source = Path(__file__).resolve().parents[1] / "specs/gnn-bridge-p3-certificates/certify.py"
+    entry = runpy.run_path(str(source))
+    results = result_file(tmp_path)
+    before = (results.read_bytes(), results.stat().st_mtime_ns)
+    target = tmp_path / "certificate.json"
+    assert entry["main"](["--results", str(results), "--output", str(target)]) == 0
+    printed = json.loads(capsys.readouterr().out)
+    assert json.loads(target.read_text()) == printed
+    assert printed["source_bound"] is False
+    assert printed["native_claim_ready"] is False
+    assert "native_claim_ready: false" in target.with_suffix(".md").read_text()
+    assert (results.read_bytes(), results.stat().st_mtime_ns) == before
