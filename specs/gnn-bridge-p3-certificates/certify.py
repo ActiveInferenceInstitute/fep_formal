@@ -10,8 +10,8 @@ import argparse
 import json
 from pathlib import Path
 
-from fep_formal.bridge.certificates import compare, render_markdown
-from fep_formal.bridge.custody import write_json, write_text
+from fep_formal.bridge.certificates import compare
+from fep_formal.bridge.operations import emit_certificate, owner_roster
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_RESULTS = SCRIPT_DIR / "gnn_output/12_execute_output/FepLeanSymmetricBool/pymdp/simulation_data/simulation_results.json"
@@ -31,8 +31,12 @@ def main(argv: list[str] | None = None) -> int:
         certificates, observations, ok = compare(results, args.tolerance)
         receipt = {"all_certificates_pass": ok, "certificates": certificates, "observations": observations, "tolerance": args.tolerance, "results_path": str(args.results), "source_bound": False, "native_claim_ready": False}
         if args.output is not None:
-            write_json(args.output, receipt)
-            write_text(args.output.with_suffix(".md"), render_markdown(certificates, observations, args.results, ok))
+            root = SCRIPT_DIR.parents[1]
+            emit_certificate(
+                args.output,
+                receipt,
+                inputs=(args.results, Path(__file__), *(root / name for name in owner_roster(root, "fep_lean"))),
+            )
         print(json.dumps(receipt, indent=2, allow_nan=False))
         return 0 if ok else 1
     except (OSError, ValueError, TypeError) as exc:

@@ -2,10 +2,17 @@
 
 from __future__ import annotations
 
+import importlib
 import json
 import os
 import subprocess
+import sys
+import tempfile
+from collections.abc import Iterable, Iterator
+from contextlib import contextmanager
+from importlib.machinery import PathFinder
 from pathlib import Path
+from threading import RLock
 from types import ModuleType
 from typing import Any
 
@@ -321,17 +328,84 @@ def validate_certificate(root: Path, gnn: Path, receipt: dict[str, Any]) -> list
         return [str(exc)]
 
 
-def emit_certificate(path: Path, receipt: dict[str, Any]) -> None:
-    write_json(path, receipt)
-    write_text(
-        path.with_suffix(".md"),
-        render_markdown(
-            receipt["certificates"],
-            receipt["observations"],
-            Path(receipt["results_path"]),
-            receipt["all_certificates_pass"],
-        ),
+def _bridge_input_paths(root: Path, gnn: Path) -> tuple[Path, ...]:
+    """Protect source owners and retained bridge inputs without changing a pin."""
+    from fep_formal.formal.manifest import FORMAL_MODULES
+
+    return (
+        root / PIN,
+        root / SYNTAX_PIN,
+        *(root / name for name in DOCUMENTS.values()),
+        *(root / name for name in owner_roster(root, "fep_lean")),
+        *(root / "lean/FepSketches" / module.resource for module in FORMAL_MODULES),
+        *(gnn / name for name in owner_roster(gnn, "gnn")),
     )
+
+
+def _require_distinct_outputs(
+    outputs: Iterable[Path], inputs: Iterable[Path]
+) -> None:
+    """Reject path and inode aliases before publishing any output."""
+    protected_paths: set[Path] = set()
+    protected_inodes: set[tuple[int, int]] = set()
+    for path in inputs:
+        protected_paths.add(path.resolve())
+        try:
+            stat = path.stat()
+        except FileNotFoundError:
+            continue
+        protected_inodes.add((stat.st_dev, stat.st_ino))
+    output_paths: set[Path] = set()
+    output_inodes: set[tuple[int, int]] = set()
+    for path in outputs:
+        if path.is_symlink():
+            raise ValueError("refusing to overwrite a symlink")
+        try:
+            resolved = path.resolve()
+        except (OSError, RuntimeError) as exc:
+            raise ValueError(f"cannot resolve output path: {path}") from exc
+        try:
+            stat = path.stat()
+        except FileNotFoundError:
+            inode = None
+        except OSError as exc:
+            raise ValueError(f"cannot inspect output path: {path}") from exc
+        else:
+            inode = (stat.st_dev, stat.st_ino)
+        if resolved in protected_paths or inode in protected_inodes:
+            raise ValueError("output must not overwrite or alias an input")
+        if resolved in output_paths or inode in output_inodes:
+            raise ValueError("outputs must not alias one another")
+        if inode is not None and not path.is_file():
+            raise ValueError("output destination must be a regular file")
+        output_paths.add(resolved)
+        if inode is not None:
+            output_inodes.add(inode)
+
+
+def emit_certificate(
+    path: Path, receipt: dict[str, Any], *, inputs: Iterable[Path]
+) -> None:
+    """Publish disjoint JSON/Markdown outputs, protecting all consumed inputs.
+
+    Callers must supply the document/results, pin and source paths consumed
+    when constructing the receipt, including explicitly selected source roots.
+    This preflight preserves the existing per-file atomic publication boundary;
+    it does not claim a filesystem transaction across the pair.
+    """
+    if path.suffix.casefold() == ".md":
+        raise ValueError("JSON and Markdown outputs must not alias one another")
+    markdown_path = path.with_suffix(".md")
+    _require_distinct_outputs((path, markdown_path), inputs)
+    markdown = render_markdown(
+        receipt["certificates"],
+        receipt["observations"],
+        Path(receipt["results_path"]),
+        receipt["all_certificates_pass"],
+    )
+    serialized = json.dumps(receipt, indent=2, sort_keys=True, allow_nan=False) + "\n"
+    write_text(path, serialized)
+    write_text(markdown_path, markdown)
 
 
 def semantic_witness_audit(root: Path, gnn: Path, results: Path) -> dict[str, Any]:
@@ -555,6 +629,95 @@ def _probe_lean_code(space: Any, declared: list[dict[str, Any]]) -> str:
     )
 
 
+_GNN_IMPORT_LOCK = RLock()
+
+
+def _loaded_gnn_sources(package: Path) -> tuple[Path, ...]:
+    """Refuse cached GNN modules or search paths from another selected source."""
+    sources: list[Path] = []
+    for name, module in tuple(sys.modules.items()):
+        if name != "gnn" and not name.startswith("gnn."):
+            continue
+        if not isinstance(module, ModuleType):
+            raise ImportError(f"conflicting cached GNN module: {name}")
+        origin = getattr(module, "__file__", None)
+        locations = list(getattr(module, "__path__", ()))
+        if origin is not None:
+            locations.append(origin)
+            source = Path(origin).resolve()
+            if not source.is_file():
+                raise ImportError(f"cached GNN source is unavailable: {name}")
+            sources.append(source)
+        if not locations or any(
+            not Path(location).resolve().is_relative_to(package)
+            for location in locations
+        ):
+            raise ImportError(f"conflicting cached GNN module origin: {name}")
+    return tuple(sources)
+
+
+def _selected_gnn_sources(source: Path) -> tuple[Path, ...]:
+    """Resolve required routes only inside the explicitly selected source tree."""
+    package = source / "gnn"
+    files: set[Path] = set()
+    importlib.invalidate_caches()
+    for route in ("gnn.extract.pomdp_extractor", "gnn.schema"):
+        search = [str(source)]
+        parts = route.split(".")
+        for index in range(len(parts)):
+            name = ".".join(parts[: index + 1])
+            # Resolve one component without requiring its parent in sys.modules.
+            spec = PathFinder.find_spec(parts[index], search)
+            if spec is None:
+                raise ImportError(f"selected GNN source is missing {name}")
+            locations = list(spec.submodule_search_locations or ())
+            if spec.origin is not None:
+                locations.append(spec.origin)
+                files.add(Path(spec.origin).resolve())
+            if not locations or any(
+                not Path(location).resolve().is_relative_to(package)
+                for location in locations
+            ):
+                raise ImportError(f"selected GNN module origin is outside its source: {name}")
+            search = list(spec.submodule_search_locations or ())
+    return tuple(sorted(files))
+
+
+@contextmanager
+def _selected_gnn_extractors(
+    gnn: Path,
+) -> Iterator[tuple[ModuleType, ModuleType, tuple[Path, ...]]]:
+    """Load selected routes or refuse a cache conflict; never evict host modules."""
+    source = gnn.resolve() / "src"
+    with _GNN_IMPORT_LOCK:
+        _loaded_gnn_sources(source / "gnn")
+        selected = _selected_gnn_sources(source)
+        previous_path = sys.path[:]
+        sys.path.insert(0, str(source))
+        try:
+            extractor = importlib.import_module("gnn.extract.pomdp_extractor")
+            schema = importlib.import_module("gnn.schema")
+            loaded = _loaded_gnn_sources(source / "gnn")
+            if not callable(getattr(extractor, "extract_pomdp_from_file", None)):
+                raise ImportError("selected GNN extractor has no extract_pomdp_from_file")
+            if not callable(getattr(schema, "parse_state_space", None)):
+                raise ImportError("selected GNN schema has no parse_state_space")
+            yield extractor, schema, (*selected, *loaded)
+            _loaded_gnn_sources(source / "gnn")
+        finally:
+            sys.path[:] = previous_path
+
+
+def _document_unchanged(path: Path, content: bytes, before: os.stat_result) -> None:
+    after = path.stat()
+    fields = ("st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")
+    if (
+        any(getattr(before, field) != getattr(after, field) for field in fields)
+        or path.read_bytes() != content
+    ):
+        raise ValueError("document changed during verification")
+
+
 def verify_document(
     root: Path,
     gnn: Path,
@@ -580,27 +743,35 @@ def verify_document(
     if not document.is_file():
         raise FileNotFoundError(f"document not found: {document}")
 
-    document_sha = sha256_bytes(document.read_bytes())
+    inputs = (*_bridge_input_paths(root, gnn), document)
+    if receipt is not None:
+        _require_distinct_outputs((receipt,), inputs)
+    before = document.stat()
+    content = document.read_bytes()
+    _document_unchanged(document, content, before)
+    document_sha = sha256_bytes(content)
 
-    # Render-route extraction (pinned: gnn.extract.pomdp_extractor, strict).
-    gnn_src = gnn.resolve() / "src"
-    import sys as _sys
-
-    inserted = str(gnn_src) not in _sys.path
-    if inserted:
-        _sys.path.insert(0, str(gnn_src))
-    try:
-        # Runtime-bridged imports: the GNN checkout is bound via sys.path
-        # above (see RENDER_ROUTE pinning); gnn is not a fep_formal dependency.
-        from gnn.extract.pomdp_extractor import (  # type: ignore[import-not-found]
-            extract_pomdp_from_file,
-        )
-        from gnn.schema import parse_state_space  # type: ignore[import-not-found]
-
-        space = extract_pomdp_from_file(document, strict_validation=True)
-    finally:
-        if inserted:
-            _sys.path.remove(str(gnn_src))
+    # Both parsers consume the same captured bytes. The path-only extractor
+    # receives a private read-only snapshot, never a second live-source read.
+    with _selected_gnn_extractors(gnn) as (extractor, schema, sources):
+        inputs = (*inputs, *sources)
+        if receipt is not None:
+            _require_distinct_outputs((receipt,), inputs)
+        with tempfile.TemporaryDirectory(prefix="fep-gnn-document-") as temporary:
+            captured = Path(temporary) / document.name
+            captured.write_bytes(content)
+            captured.chmod(0o400)
+            try:
+                space = extractor.extract_pomdp_from_file(captured, strict_validation=True)
+                declared, _decl_errors = schema.parse_state_space(content.decode("utf-8"))
+                if captured.read_bytes() != content:
+                    raise ValueError("captured document changed during extraction")
+            finally:
+                captured.chmod(0o600)
+        inputs = (*inputs, *_loaded_gnn_sources(gnn.resolve() / "src" / "gnn"))
+    _document_unchanged(document, content, before)
+    if receipt is not None:
+        _require_distinct_outputs((receipt,), inputs)
     if space is None:
         raise ValueError(f"document does not extract as a POMDP: {document}")
 
@@ -617,7 +788,6 @@ def verify_document(
     verifier = LeanVerifier(
         lean_dir=root.resolve() / "lean", project_root=root.resolve()
     )
-    declared, _decl_errors = parse_state_space(document.read_text(encoding="utf-8"))
     result = verifier.verify_sketch(
         "bridge-verify-document", _probe_lean_code(space, declared)
     )
@@ -641,6 +811,8 @@ def verify_document(
         "status": status,
         "warnings": warnings,
     }
+    _document_unchanged(document, content, before)
     if receipt is not None:
+        _require_distinct_outputs((receipt,), inputs)
         write_json(receipt, payload)
     return payload

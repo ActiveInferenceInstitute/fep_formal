@@ -1,5 +1,19 @@
 ## Unreleased
 
+- Refuse cyclic certificate destinations, including cyclic parent directories,
+  before either output is written. Path-resolution and filesystem-stat failures
+  use the operational error boundary rather than escaping direct-emitter preflight.
+- Admit selected GNN bridge import origins and refuse conflicting host caches.
+  Translate missing routes/dependencies through the operational JSON error
+  contract; use one captured document observation; reject receipt/input and
+  JSON/Markdown destination aliases before publication. Direct certificate
+  emitters now supply required input-path custody. Numerical-only, warning,
+  skipped, failed, successful, and per-file atomic/no-symlink boundaries remain
+  distinct. This repair refreshes no source pins, generated scientific artifacts,
+  Lean declaration types, or evidence schemas.
+- Correct the backlog's nine-criterion coverage mapping without treating
+  historical or retired gates as current acceptance.
+
 - Adopt the shared GNN–FEP reader. The custody pin's `gnn` record advances from
   the untagged `2778e65c2228148417b2cf71832eb86a019785fb` to release `v5.1.0` at
   `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, whose tree carries
