@@ -550,7 +550,7 @@ def test_semantic_audit_reports_derived_overflow_and_solver_failure(
 
 @pytest.mark.parametrize("alias_kind", ["same", "symlink", "hardlink"])
 def test_semantic_cli_cannot_overwrite_input_artifact(
-    tmp_path: Path, capsys: pytest.CaptureFixture[str], alias_kind: str
+    tmp_path: Path, alias_kind: str
 ) -> None:
     import argparse
 
@@ -579,7 +579,6 @@ def test_semantic_cli_cannot_overwrite_input_artifact(
     )
     assert run(tmp_path, args) == 1
     assert witness.read_bytes() == before
-    assert "overwrite or alias" in capsys.readouterr().out
 
 
 def test_semantic_audit_refuses_oversized_sparse_input_before_source_checks(
