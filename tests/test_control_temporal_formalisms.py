@@ -161,6 +161,7 @@ def test_slice03_bodies_are_standalone_scoped_sources(topic_id: str, body: str) 
                 "backwardMessage_nonneg",
                 "forwardBackwardSmoothing_factorization",
                 "forwardBackwardSmoothing_sum_one",
+                "terminalTiltKernel_factorization",
                 "variationalStateUpdate_sum_one",
                 "hierarchicalPredictive_eq",
                 "modelAverage_sum_one",

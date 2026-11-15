@@ -184,6 +184,53 @@ theorem smoothingNormalizer_zero_boundary (filtered : FiniteLaw State)
   rw [hZero]
   exact lt_irrefl 0
 
+section TerminalTilt
+
+variable {Terminal : Type*} [Fintype Terminal]
+
+/-- Tilt each transition row by a nonnegative terminal weight. A row with zero
+normalizer takes the explicitly supplied fallback law. -/
+noncomputable def terminalTiltKernel (transition : FiniteKernel State Terminal)
+    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y) (fallback : FiniteLaw Terminal) :
+    FiniteKernel State Terminal where
+  mass x y := if h : 0 < smoothingNormalizer (transition.row x) weight then
+    forwardBackwardSmoothing (transition.row x) weight hWeight h y
+    else fallback y
+  nonneg x y := by
+    split
+    · exact (forwardBackwardSmoothing (transition.row x) weight hWeight _).nonneg y
+    · exact fallback.nonneg y
+  sum_one x := by
+    by_cases h : 0 < smoothingNormalizer (transition.row x) weight
+    · simpa only [dite_eq_left h] using
+        (forwardBackwardSmoothing (transition.row x) weight hWeight h).sum_one
+    · simpa only [dite_eq_right h] using fallback.sum_one
+
+/-- The tilted mass times its row normalizer recovers the original weighted mass.
+Every weighted atom is zero on a zero-normalizer row, independently of fallback. -/
+theorem terminalTiltKernel_factorization (transition : FiniteKernel State Terminal)
+    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y) (fallback : FiniteLaw Terminal)
+    (x : State) (y : Terminal) :
+    terminalTiltKernel transition weight hWeight fallback x y *
+        smoothingNormalizer (transition.row x) weight = transition x y * weight y := by
+  change (if h : 0 < smoothingNormalizer (transition.row x) weight then
+      forwardBackwardSmoothing (transition.row x) weight hWeight h y else fallback y) *
+    smoothingNormalizer (transition.row x) weight = transition x y * weight y
+  by_cases h : 0 < smoothingNormalizer (transition.row x) weight
+  · rw [dite_eq_left h]
+    exact forwardBackwardSmoothing_factorization (transition.row x) weight hWeight h y
+  · rw [dite_eq_right h]
+    have hnonneg (z : Terminal) : 0 ≤ transition x z * weight z :=
+      mul_nonneg (transition.nonneg x z) (hWeight z)
+    have hzero : smoothingNormalizer (transition.row x) weight = 0 :=
+      le_antisymm (le_of_not_gt h) (Finset.sum_nonneg fun z _ => hnonneg z)
+    have hterm : transition x y * weight y ≤ smoothingNormalizer (transition.row x) weight :=
+      Finset.single_le_sum (fun z _ => hnonneg z) (Finset.mem_univ y)
+    rw [hzero] at hterm
+    rw [hzero, mul_zero, le_antisymm hterm (hnonneg y)]
+
+end TerminalTilt
+
 /-- One normalized variational state update, expressed as a prior-weighted
 Boltzmann tilt on the shared finite-law carrier. -/
 noncomputable def variationalStateUpdate (prior : FiniteLaw State)

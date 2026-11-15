@@ -25,6 +25,15 @@ regularity or invertibility premises remain in the qualified declarations.
 The [support-aware variational guide](../../../docs/support-aware-variational-methods.md)
 explains the reusable Gibbs/support extension and its claim boundaries.
 
+## Rowwise terminal weighting
+
+`FEP.TemporalInference.terminalTiltKernel` reuses the finite smoothing law at
+each transition row. A nonnegative terminal weight gives a normalized tilted
+row when its average under the original row is positive. A row of zero average
+uses an explicit fallback law. The factorization theorem recovers the original
+weighted transition mass from the tilted mass and the row average, including
+null rows, where all weighted atoms are zero.
+
 ## Changing a resource
 
 Edit the canonical resource and its manifest owner where needed. Preserve
