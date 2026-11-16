@@ -19,6 +19,7 @@ from fep_formal.formal.manifest import (
 )
 from fep_formal.lean_source import lean_code_without_comments
 from tests._support.lean_module_contract import (
+    TERMINAL_COARSE_THEOREM_OWNERS,
     exact_information_review,
     finite_rate_distortion_theorem_extension,
     obligation_theorem_extension,
@@ -128,10 +129,14 @@ def test_formal_kernel_has_exact_manifested_declaration_closure() -> None:
         PROJECT_ROOT,
     )
     assert obligation_extension == {"FEPComposed.fep016_quadratic_pairs_fep032_descent"}
+    assert {
+        name: owners[name] for name in TERMINAL_COARSE_THEOREM_OWNERS
+    } == TERMINAL_COARSE_THEOREM_OWNERS
     assert Counter(
         owner
         for name, owner in owners.items()
-        if name not in scalar_bridges
+        if name not in TERMINAL_COARSE_THEOREM_OWNERS
+        and name not in scalar_bridges
         and name not in information_bridges
         and name not in finite_weight_kl_helpers
         and name not in fast_relaxation_limits

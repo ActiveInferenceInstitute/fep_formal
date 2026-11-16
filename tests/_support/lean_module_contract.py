@@ -11,6 +11,34 @@ from pathlib import Path
 from fep_formal.lean_source import lean_code_without_comments
 from tests._support.landauer_epoch import current_source_owner, historical_source_owner
 
+# Reviewed additions from 47e6283 and ad5187e: terminal path tilts and weighted coarse reductions.
+TERMINAL_COARSE_THEOREM_OWNERS = {
+    "FEP.TemporalInference.boolTerminalTwoStep_distinct_fallbacks": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.boolTerminalTwoStep_evidence": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.boolTerminalTwoStep_positive_path": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.boolTerminalTwoStep_reachable_null_witness": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalBackwardWeight_nonneg": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltJoint_eq_smoothing": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltJoint_fallback_invariant": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltJoint_mass": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltJoint_normalizer": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltKernel_comp_of_pos": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltKernel_factorization": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltSource_null": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltTwoStepPath_eq_smoothing": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltTwoStepPath_fallback_invariant": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltTwoStepPath_mass": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTiltTwoStep_weight": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.terminalTwoStepPath_normalizer": "FepSketches.temporal_inference",
+    "FEP.FiniteMarkovDynamics.bool_conditional_equal_evidence_differs": "FepSketches.finite_markov_dynamics",
+    "FEP.FiniteMarkovDynamics.weightedBlockMass_eq_pushforward": "FepSketches.finite_markov_dynamics",
+    "FEP.FiniteMarkovDynamics.weightedBlockMass_evidence_and_conditional": "FepSketches.finite_markov_dynamics",
+    "FEP.FiniteMarkovDynamics.weightedBlockMass_forall_laws_iff_rowwise": "FepSketches.finite_markov_dynamics",
+    "FEP.FiniteMarkovDynamics.weightedBlockMass_lumpable_evidence_and_conditional": "FepSketches.finite_markov_dynamics",
+    "FEP.FiniteMarkovDynamics.weightedBlockMass_nonneg": "FepSketches.finite_markov_dynamics",
+    "FEP.FiniteMarkovDynamics.weightedBlockRow_eq_of_lumpable": "FepSketches.finite_markov_dynamics",
+}
+
 # Recorded V-to-947 American prose/spacing changes, for historical seals only.
 # Public theorem statements, frozen review bytes, and live production stay intact.
 _HISTORICAL_PROSE_FIELDS = [
