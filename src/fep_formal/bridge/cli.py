@@ -90,9 +90,14 @@ def run(root: Path, args: argparse.Namespace) -> int:
         elif args.operation == "certify":
             if args.results is None:
                 raise ValueError("certify requires --results")
+            inputs = (*operations._bridge_input_paths(root, gnn), args.results)
+            if args.receipt is not None:
+                operations._require_distinct_outputs(
+                    (args.receipt, args.receipt.with_suffix(".md")), inputs
+                )
             receipt = operations.certificate_receipt(root, gnn, args.results)
             if args.receipt is not None:
-                operations.emit_certificate(args.receipt, receipt)
+                operations.emit_certificate(args.receipt, receipt, inputs=inputs)
             result = {
                 "status": "ok" if receipt["all_certificates_pass"] else "error",
                 "receipt": receipt,
@@ -107,12 +112,10 @@ def run(root: Path, args: argparse.Namespace) -> int:
         elif args.operation == "audit-semantic":
             if args.results is None:
                 raise ValueError("audit-semantic requires --results")
-            if args.receipt is not None and (
-                args.receipt.resolve() == args.results.resolve()
-                or (args.receipt.exists() and args.receipt.samefile(args.results))
-            ):
-                raise ValueError(
-                    "audit receipt must not overwrite or alias its input witness"
+            if args.receipt is not None:
+                operations._require_distinct_outputs(
+                    (args.receipt,),
+                    (*operations._bridge_input_paths(root, gnn), args.results),
                 )
             receipt = operations.semantic_witness_audit(root, gnn, args.results)
             if args.receipt is not None:
@@ -139,6 +142,7 @@ def run(root: Path, args: argparse.Namespace) -> int:
         return 0 if result["status"] == "ok" else 1
     except (
         OSError,
+        ImportError,
         ValueError,
         KeyError,
         TypeError,

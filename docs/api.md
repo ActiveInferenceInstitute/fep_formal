@@ -546,11 +546,30 @@ GNN–FEP reader reads that same record with
 `python -m gnn.importers check --repo . --pin specs/gnn-bridge-w2-source-custody/source-pin.json --pin-party gnn`
 from the pinned revision; `bash scripts/gate.sh gnn` runs it.
 
-`verify-document --document PATH` extracts one emitted document through the
-pinned render route (`gnn.extract.pomdp_extractor.extract_pomdp_from_file`,
-strict validation) and decides `FEP.GnnDocument.documentWellFormed` in a
-compile-once Lean probe. Receipt schema: `{"schema_version": 2, "document",
-"model_family", "extracted_family", "toolchain", "status", "warnings"}`.
+`verify-document --document PATH` uses the explicitly selected `--gnn-root`
+extractor and schema routes. Required modules must originate inside that source
+tree; conflicting cached `gnn` origins or package search paths refuse rather
+than silently reusing or evicting host modules. Missing routes and dependencies
+use the existing structured operational CLI failure.
+
+The document digest, strict extractor input and state-space parse share one
+captured byte observation. The path-only extractor receives a private read-only
+snapshot with the original basename. Intervening live-document identity or
+content changes refuse before receipt publication. The compile-once Lean probe
+still decides only `FEP.GnnDocument.documentWellFormed`; receipt schema remains
+`{"schema_version": 2, "document", "model_family", "extracted_family", "toolchain", "status", "warnings"}`.
+Warning, skipped, failed and successful outcomes retain their existing meanings;
+a skipped probe is not native success.
+
+`emit_certificate(path, receipt, *, inputs)` requires every consumed
+document/results/pin/source input path. Before publishing either JSON or adjacent
+Markdown, it rejects input aliases, output aliases, `.md`/`.MD` JSON destinations,
+symlink destinations and nonregular destinations. Alias checks include resolved
+paths and existing device/inode identities. The CLI supplies its source/pin/document
+inventory; the historical P3 script remains numerical-only and protects its own
+consumed inputs. Existing per-file atomic replacement is retained, not a
+transaction or rollback guarantee across the pair. These checks do not
+authenticate generated execution or expand the GNN custody roster.
 
 The additive `fep_formal.bridge.operations.semantic_witness_audit` operation
 accepts a retained `gnn-semantic-witness-v2` JSON artifact and emits the

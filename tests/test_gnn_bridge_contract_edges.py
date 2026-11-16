@@ -268,3 +268,132 @@ def test_verification_cli_requires_an_explicit_receipt(
         == "verify-certificate requires --receipt"
     )
     assert snapshot(root) == before
+
+
+@pytest.mark.parametrize("input_kind", ["results", "document", "pin", "fep-source", "gnn-source"])
+@pytest.mark.parametrize(
+    "placement",
+    [
+        "json-direct",
+        "json-resolved",
+        "json-hardlink",
+        "json-symlink",
+        "markdown-hardlink",
+        "markdown-symlink",
+    ],
+)
+def test_certification_cli_rejects_all_consumed_input_aliases(
+    pair: tuple[Path, Path],
+    capsys: pytest.CaptureFixture[str],
+    input_kind: str,
+    placement: str,
+) -> None:
+    root, gnn = pair
+    results = result_file(root)
+    protected = {
+        "results": results,
+        "document": root / operations.DOCUMENTS["finite"],
+        "pin": root / operations.PIN,
+        "fep-source": root / operations.EMITTERS["finite"],
+        "gnn-source": gnn / "src/gnn/main.py",
+    }[input_kind]
+    target = root / "certificate.json"
+    if placement == "json-direct":
+        target = protected
+    elif placement == "json-resolved":
+        alias = root / "input-directory-alias"
+        alias.symlink_to(protected.parent, target_is_directory=True)
+        target = alias / protected.name
+    else:
+        destination = target if placement.startswith("json-") else target.with_suffix(".md")
+        if placement.endswith("hardlink"):
+            destination.hardlink_to(protected)
+        else:
+            destination.symlink_to(protected)
+        if destination != target:
+            target.write_bytes(b"retained JSON receipt\n")
+    before = (snapshot(root), snapshot(gnn))
+    assert run(
+        root,
+        _arguments(gnn, "certify", "--results", str(results), "--receipt", str(target)),
+    ) == 1
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["status"] == "error"
+    assert (snapshot(root), snapshot(gnn)) == before
+
+
+@pytest.mark.parametrize(
+    "collision",
+    [
+        "markdown-suffix",
+        "uppercase-markdown-suffix",
+        "hardlinked-pair",
+        "symlinked-markdown",
+        "directory-markdown",
+        "cyclic-json",
+        "cyclic-markdown",
+        "cyclic-parent",
+    ],
+)
+def test_direct_emitter_preflights_both_destinations(
+    pair: tuple[Path, Path], collision: str
+) -> None:
+    root, gnn = pair
+    results = result_file(root)
+    receipt = operations.certificate_receipt(root, gnn, results)
+    suffix = {
+        "markdown-suffix": ".md",
+        "uppercase-markdown-suffix": ".MD",
+    }.get(collision, ".json")
+    target = root / ("certificate" + suffix)
+    target.write_bytes(b"retained JSON output\n")
+    markdown = target.with_suffix(".md")
+    if collision == "hardlinked-pair":
+        markdown.hardlink_to(target)
+    elif collision == "symlinked-markdown":
+        other = root / "retained-markdown.md"
+        other.write_bytes(b"retained Markdown output\n")
+        markdown.symlink_to(other)
+    elif collision == "directory-markdown":
+        markdown.mkdir()
+    elif collision in {"cyclic-json", "cyclic-markdown"}:
+        cyclic = target if collision == "cyclic-json" else markdown
+        if cyclic == target:
+            cyclic.unlink()
+        cyclic.symlink_to(cyclic.name)
+    elif collision == "cyclic-parent":
+        parent = root / "cyclic-parent"
+        parent.symlink_to(parent.name, target_is_directory=True)
+        target = parent / "certificate.json"
+    before = (snapshot(root), snapshot(gnn))
+    with pytest.raises(ValueError):
+        operations.emit_certificate(
+            target, receipt, inputs=(*operations._bridge_input_paths(root, gnn), results)
+        )
+    assert (snapshot(root), snapshot(gnn)) == before
+    if collision == "symlinked-markdown":
+        assert markdown.is_symlink()
+    elif collision == "directory-markdown":
+        assert markdown.is_dir()
+
+
+@pytest.mark.parametrize("invalid", ["missing-observations", "nonfinite"])
+def test_direct_emitter_rejects_invalid_payload_before_either_write(
+    pair: tuple[Path, Path], invalid: str
+) -> None:
+    root, gnn = pair
+    results = result_file(root)
+    receipt = operations.certificate_receipt(root, gnn, results)
+    if invalid == "missing-observations":
+        del receipt["observations"]
+    else:
+        receipt["invalid"] = float("nan")
+    target = root / "certificate.json"
+    target.write_bytes(b"retained JSON output\n")
+    target.with_suffix(".md").write_bytes(b"retained Markdown output\n")
+    before = (snapshot(root), snapshot(gnn))
+    with pytest.raises((KeyError, ValueError)):
+        operations.emit_certificate(
+            target, receipt, inputs=(*operations._bridge_input_paths(root, gnn), results)
+        )
+    assert (snapshot(root), snapshot(gnn)) == before

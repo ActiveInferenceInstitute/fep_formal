@@ -103,15 +103,12 @@ to a GitHub Issue; file one when the owner wants the work scheduled.
   `specs/gnn-bridge-w1-bridge-operations/bridge_status.py` and
   `specs/h3-reference-study/bundle_study.py`, all outside the arm's directory
   list; widening that list would turn the arm red.
-- **Coverage table names closed gates.** The [original requirement
-  coverage](#original-requirement-coverage-and-closure) table below points its
-  "Required open gates" column at `CUR-03` (#52), `CUR-05` (#53), `CUR-06` (#49)
-  and `CUR-07` (#54), all `CLOSED` when checked on 2026-11-12, while the closure
-  rule below says an item leaves the backlog when its Issue closes. Criteria 2, 3
-  and 4 therefore cite no open gate, and criteria 1, 5, 6, 7 and 9 cite only
-  `CUR-14` (#59). Either re-point each criterion at the work that still gates it,
-  or record why it stays open with no gate: the retirement paragraph covers the
-  #52/#53 contracts, not the criteria themselves. Owner: backlog maintainer.
+- **Coverage-table mapping corrected.** The [original requirement
+  coverage](#original-requirement-coverage-and-closure) table now separates
+  historical dependencies, accepted scope, and remaining owners/evidence.
+  Retired CUR-03 / C02 and CUR-05 / C03 are not successful acceptance.
+  Correcting this mapping does not accept any of the nine original criteria;
+  their exact-current-source closure rule remains unchanged.
 - **Sidecar provenance release.** `.aii/config.yaml` now records
   `provenance.current_release: v2.1.0`, matching the published 2.1.0 software
   release. The sidecar declares no `provenance.releases_manifest` because the
@@ -120,17 +117,17 @@ to a GitHub Issue; file one when the owner wants the work scheduled.
 
 ## Original requirement coverage and closure
 
-| Original criterion | Required open gates |
-| --- | --- |
-| 1 — truthful static status | CUR-06, CUR-14 |
-| 2 — actual package support | CUR-06, CUR-07 |
-| 3 — docs and accepted render | CUR-07 |
-| 4 — strict capture/archive parity | CUR-03, CUR-05 |
-| 5 — information identity/coarsening | CUR-07, CUR-14 |
-| 6 — relative-support/native information | CUR-07, CUR-14 |
-| 7 — genuine finite rate-distortion | CUR-07, CUR-14 |
-| 8 — frozen H3 full chain | CUR-08, CUR-09, CUR-10 |
-| 9 — all checks/source/remote evidence | CUR-07, CUR-14 |
+| Original criterion | Historical dependency / accepted scope | Remaining owner and exact closure evidence |
+| --- | --- | --- |
+| 1 — truthful static status | CUR-06 / C04 is historical provenance, not an open gate. | CUR-14 / C06 consumes current installed process, byte and mtime evidence; retain inspection-versus-execution boundaries. |
+| 2 — actual package support | CUR-06 / C04 and CUR-07 / C05 retain their accepted source epochs. Historical five-local-runtime and 15-cell receipts do not certify the current matrix. | Current software/distribution owner: packaging floor >=3.11; fresh installed CPython 3.11–3.14 on Ubuntu, macOS and Windows (12 cells), exact wheel/sdist/resource membership and console behavior. CUR-14 audits the retained current-source evidence. |
+| 3 — docs and accepted render | Closed CUR-07 / C05 is historical accepted scope, not an open gate. | Current documentation/render/release owner: exact-source PDF/render receipt, font and renderer identities, source/artifact manifests and applicable hosted acceptance; CUR-14 audits the evidence. |
+| 4 — strict capture/archive parity | CUR-03 / C02 and CUR-05 / C03 were retired, not successfully accepted. Preserve frozen membership and failed/historical evidence. | Owner decision and evidence gap: retain the original criterion as unmet, or explicitly approve a prospective replacement and its acceptance owner. Ordinary package release and issue closure do not satisfy this criterion. CUR-14 records the resulting disposition. |
+| 5 — information identity/coarsening | Historical CUR-07 / C05 evidence remains scoped to its source epoch; accepted mathematics is not reopened. | CUR-14 / C06: exact FORM-1 semantic statements, native consumers and axiom witnesses at final source, without broader scientific promotion. |
+| 6 — relative-support/native information | Historical CUR-07 / C05 evidence remains provenance. | CUR-14 / C06: exact FORM-2 relative-support/native witnesses and current source identity; retain singular and support conventions. |
+| 7 — genuine finite rate-distortion | Historical CUR-07 / C05 evidence and completed finite results retain their bounded scope. | CUR-14 / C06: exact FORM-3 witnesses, distinguishing feasibility, value equality, attainment and weak-dual claims rather than treating them as interchangeable. |
+| 8 — frozen H3 full chain | Preserve the original freeze, carriers, protocol and unopened primary. | H00 epoch decision then CUR-08 / H01 export and distinct proof-role reviews -> CUR-09 / H02 exact-runtime inputs-only admission and one primary with all 42 arrays -> CUR-10 / H03 outcome reviews, archive parity and installed reproduction. |
+| 9 — all checks/source/remote evidence | Historical CUR-07 / C05 acceptance is not current-source or remote acceptance. | CUR-14 / C06 plus the current software/release owner: exact-source checks, custody and actual required hosted acceptance. Retain the documented billing blockage until observed resolved; local success is not a substitute. |
 
 An item leaves this backlog and its Issue closes only after its own
 exact-current-source acceptance is retained and recorded in changelog/release
