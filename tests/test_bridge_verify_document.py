@@ -867,3 +867,56 @@ def test_verify_document_rejects_input_aliases_without_publication(
     assert {
         path: (path.read_bytes(), path.stat().st_mtime_ns) for path in inputs
     } == before
+
+
+@pytest.mark.parametrize(
+    "fault",
+    ["nonmodule", "missing_cached_file", "schema_not_callable", "external_schema"],
+)
+def test_cli_refuses_invalid_selected_module_boundaries_without_publication(
+    tmp_path: Path,
+    gnn_stub: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+    fault: str,
+) -> None:
+    schema = gnn_stub / "src/gnn/schema/__init__.py"
+    if fault == "nonmodule":
+        monkeypatch.setitem(sys.modules, "gnn", object())
+        message = "conflicting cached GNN module"
+    elif fault == "missing_cached_file":
+        cached = ModuleType("gnn")
+        cached.__file__ = str(gnn_stub / "src/gnn/missing.py")
+        monkeypatch.setitem(sys.modules, "gnn", cached)
+        message = "cached GNN source is unavailable"
+    elif fault == "schema_not_callable":
+        schema.write_text(schema.read_text() + "\nparse_state_space = None\n")
+        message = "selected GNN schema has no parse_state_space"
+    else:
+        external = tmp_path / "external_schema.py"
+        schema.rename(external)
+        schema.symlink_to(external)
+        message = "selected GNN module origin is outside its source"
+    document = _write_document(tmp_path, "finite.md", FINITE_DOCUMENT)
+    receipt = tmp_path / "receipt.json"
+    receipt.write_bytes(b"previous receipt\n")
+    before = receipt.read_bytes(), receipt.stat().st_mtime_ns
+    previous_path = sys.path[:]
+    assert (
+        cli.run(
+            tmp_path,
+            _cli_namespace(
+                gnn_stub, "--document", str(document), "--receipt", str(receipt)
+            ),
+        )
+        == 1
+    )
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["status"] == "error"
+    assert message in payload["failure_reason"]
+    assert (receipt.read_bytes(), receipt.stat().st_mtime_ns) == before
+    assert sys.path == previous_path
+    if fault == "nonmodule":
+        assert not isinstance(sys.modules["gnn"], ModuleType)
+    elif fault == "missing_cached_file":
+        assert sys.modules["gnn"] is cached
