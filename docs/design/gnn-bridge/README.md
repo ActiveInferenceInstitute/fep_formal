@@ -172,15 +172,21 @@ review under the [design lifecycle](../README.md).
 The repository has no `.github/gnn-pin.json` and no `gnn-importer-pin/v1`
 record. The canonical custody file is
 [`specs/gnn-bridge-w2-source-custody/source-pin.json`](../../../specs/gnn-bridge-w2-source-custody/source-pin.json),
-whose actual schema is `schema_version: 1`. Its `gnn` entry names release
-`v5.1.0` at commit `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf` and the SHA-256
+whose actual schema is `schema_version: 1`. Its `gnn` entry names the
+untagged GNN `main` commit `d38a20972e34dd83e42b733f16e74e7d87b0a6e1` (`v5.1.0-59-gd38a20972`) and the SHA-256
 digests of six pinned owner files (`pyproject.toml`, `uv.lock`,
 `src/gnn/main.py`, `src/gnn/pipeline/step_registry.py`,
 `docs/gnn/gnn_syntax.md`, `docs/other/fep_lean/bridge-contract.md`). The
-`fep_lean` entry pins this repository's own owner bytes separately. Until this
-change the `gnn` entry named the descriptive commit
+`fep_lean` entry pins this repository's own owner bytes separately. The `gnn`
+entry first named the descriptive commit
 `2778e65c2228148417b2cf71832eb86a019785fb` with no tag; that tree predates the
-shared reader, which is why the entry moved to `v5.1.0`.
+shared reader, which is why the entry moved to release `v5.1.0`
+(`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`). On 2026-11-16 the whole pair
+was re-frozen at `d38a2097` (Issue #244): relative to `v5.1.0`,
+`pyproject.toml`, `uv.lock` and `docs/gnn/gnn_syntax.md` changed; the syntax
+change adds only the `GNN-E006`/`GNN-E007` extractor error rows, and
+`specs/gnn-bridge-w1-bridge-operations/syntax-pin.json` was resealed with it.
+No release tag names `d38a2097`, so the record carries no `tag`.
 
 The hosted conformance context is job key `gnn-conformance` with display name
 `gnn conformance (pinned)`. [`.github/GNN.md`](../../../.github/GNN.md) owns
@@ -192,13 +198,17 @@ to run the reader but does not check out a GNN working tree, so the pin's owner
 digests are re-verified against a checkout by `bridge status --gnn-root PATH`
 alone.
 
-Only the `gnn` record was advanced. `bridge pin` seals the pair in one write, and
-this change deliberately left the `fep_lean` record as previously sealed:
-`bridge status --gnn-root PATH` already reported `fep_lean: owner content
-changed: uv.lock` on `943be00`, before this adoption, and re-sealing one side of
-a drifted pair would bless bytes no bridge check has re-reviewed. The emitted
-projections likewise remain those of `2778e65c`; re-emission belongs to the next
-pair-wide pin cycle, which `status` reports as not current until it runs.
+The `v5.1.0` reader adoption advanced only the `gnn` record and left the
+`fep_lean` record, whose `uv.lock` had already drifted, and the `2778e65c`
+projections as previously sealed. The 2026-11-16 pair-wide cycle (Issue #244)
+closed that gap in one `bridge pin` write against GNN `d38a2097`: it resealed
+the `fep_lean` owner digests, re-emitted both documents with
+`--refresh-digests`, refreshed the Q7 render, parity scaffold and generated
+probe, and checked `bridge status`, both `emit --check` runs and
+`verify_native.py --check`. Hosted dispatch of the qualification workflow
+remains blocked by the organisation's Actions billing lock; the local run of
+the same sequence is the evidence for this pair. Historical Q5/Q6/Q7 receipts
+keep their original pairs.
 
 The workflow uses `astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2`
 (v10.3.3), `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`
