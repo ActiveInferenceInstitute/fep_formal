@@ -168,7 +168,7 @@ reproduction against the current pin.
   `docs/gnn/gnn_syntax.md`.
 - Current custody is
   [`../gnn-bridge-w2-source-custody/source-pin.json`](../gnn-bridge-w2-source-custody/source-pin.json)
-  (`gnn` = `v5.1.0` at `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`; projections
-  still from `2778e65c` until the pair-wide re-pin). The numbers in
+  (`gnn` = untagged `main` commit `d38a20972e34dd83e42b733f16e74e7d87b0a6e1`; projections
+  re-emitted against it on 2026-11-16). The numbers in
   `certificates.json` were produced by the 2026-09-03 execution and are not a
   claim about the current pin.

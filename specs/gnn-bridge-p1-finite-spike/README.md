@@ -221,10 +221,9 @@ not a reproduction against the current pin.
   `docs/gnn/gnn_syntax.md`. The retained stamp is left as run.
 - Current custody is recorded separately in
   [`../gnn-bridge-w2-source-custody/source-pin.json`](../gnn-bridge-w2-source-custody/source-pin.json),
-  whose `gnn` entry is `v5.1.0` at `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`.
-  The emitted projections, including `gnn-input/FepLeanSymmetricBool.md`
-  (`pipeline_commit: 2778e65c2228148417b2cf71832eb86a019785fb`), still come from
-  `2778e65c` until the pair-wide re-pin described in
-  [`docs/design/gnn-bridge/README.md`](../../docs/design/gnn-bridge/README.md).
-  This note does not assert that `projection.py --check` is fresh against the
-  current pin.
+  whose `gnn` entry is the untagged GNN `main` commit
+  `d38a20972e34dd83e42b733f16e74e7d87b0a6e1`.
+  The emitted projection `gnn-input/FepLeanSymmetricBool.md` was re-emitted
+  against that pin in the 2026-11-16 pair-wide cycle described in
+  [`docs/design/gnn-bridge/README.md`](../../docs/design/gnn-bridge/README.md);
+  `fep-formal bridge emit --model finite --check` is the freshness check.

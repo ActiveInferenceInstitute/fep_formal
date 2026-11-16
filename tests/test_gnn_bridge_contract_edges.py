@@ -270,7 +270,9 @@ def test_verification_cli_requires_an_explicit_receipt(
     assert snapshot(root) == before
 
 
-@pytest.mark.parametrize("input_kind", ["results", "document", "pin", "fep-source", "gnn-source"])
+@pytest.mark.parametrize(
+    "input_kind", ["results", "document", "pin", "fep-source", "gnn-source"]
+)
 @pytest.mark.parametrize(
     "placement",
     [
@@ -305,7 +307,9 @@ def test_certification_cli_rejects_all_consumed_input_aliases(
         alias.symlink_to(protected.parent, target_is_directory=True)
         target = alias / protected.name
     else:
-        destination = target if placement.startswith("json-") else target.with_suffix(".md")
+        destination = (
+            target if placement.startswith("json-") else target.with_suffix(".md")
+        )
         if placement.endswith("hardlink"):
             destination.hardlink_to(protected)
         else:
@@ -313,10 +317,15 @@ def test_certification_cli_rejects_all_consumed_input_aliases(
         if destination != target:
             target.write_bytes(b"retained JSON receipt\n")
     before = (snapshot(root), snapshot(gnn))
-    assert run(
-        root,
-        _arguments(gnn, "certify", "--results", str(results), "--receipt", str(target)),
-    ) == 1
+    assert (
+        run(
+            root,
+            _arguments(
+                gnn, "certify", "--results", str(results), "--receipt", str(target)
+            ),
+        )
+        == 1
+    )
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
     assert (snapshot(root), snapshot(gnn)) == before
@@ -368,7 +377,9 @@ def test_direct_emitter_preflights_both_destinations(
     before = (snapshot(root), snapshot(gnn))
     with pytest.raises(ValueError):
         operations.emit_certificate(
-            target, receipt, inputs=(*operations._bridge_input_paths(root, gnn), results)
+            target,
+            receipt,
+            inputs=(*operations._bridge_input_paths(root, gnn), results),
         )
     assert (snapshot(root), snapshot(gnn)) == before
     if collision == "symlinked-markdown":
@@ -394,6 +405,8 @@ def test_direct_emitter_rejects_invalid_payload_before_either_write(
     before = (snapshot(root), snapshot(gnn))
     with pytest.raises((KeyError, ValueError)):
         operations.emit_certificate(
-            target, receipt, inputs=(*operations._bridge_input_paths(root, gnn), results)
+            target,
+            receipt,
+            inputs=(*operations._bridge_input_paths(root, gnn), results),
         )
     assert (snapshot(root), snapshot(gnn)) == before

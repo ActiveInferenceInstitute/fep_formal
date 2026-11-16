@@ -660,7 +660,9 @@ def test_verify_document_refuses_second_source_in_one_host(
     assert sys.path == previous_path
 
 
-@pytest.mark.parametrize("preloaded", ["gnn", "gnn.extract.pomdp_extractor", "gnn.schema"])
+@pytest.mark.parametrize(
+    "preloaded", ["gnn", "gnn.extract.pomdp_extractor", "gnn.schema"]
+)
 def test_cli_refuses_unrelated_preloaded_gnn_without_evicting_it(
     tmp_path: Path,
     gnn_stub: Path,
@@ -676,10 +678,15 @@ def test_cli_refuses_unrelated_preloaded_gnn_without_evicting_it(
     receipt = tmp_path / "receipt.json"
     receipt.write_bytes(b"previous receipt\n")
     before = (receipt.read_bytes(), receipt.stat().st_mtime_ns)
-    assert cli.run(
-        tmp_path,
-        _cli_namespace(gnn_stub, "--document", str(document), "--receipt", str(receipt)),
-    ) == 1
+    assert (
+        cli.run(
+            tmp_path,
+            _cli_namespace(
+                gnn_stub, "--document", str(document), "--receipt", str(receipt)
+            ),
+        )
+        == 1
+    )
     payload = json.loads(capsys.readouterr().out)
     assert set(payload) == {"status", "failure_reason", "details"}
     assert payload["status"] == "error"
@@ -709,7 +716,8 @@ def test_cli_selected_source_import_failure_is_structured_and_read_only(
         (gnn_stub / "src/gnn/schema/__init__.py").unlink()
     else:
         extractor.write_text(
-            extractor.read_text() + "\nimport gnn.group17_missing_extractor_dependency\n"
+            extractor.read_text()
+            + "\nimport gnn.group17_missing_extractor_dependency\n"
         )
     document = _write_document(tmp_path, "finite.md", FINITE_DOCUMENT)
     receipt = tmp_path / "receipt.json"
@@ -717,10 +725,15 @@ def test_cli_selected_source_import_failure_is_structured_and_read_only(
     protected = [document, receipt, *gnn_stub.rglob("*.py")]
     before = {path: (path.read_bytes(), path.stat().st_mtime_ns) for path in protected}
     previous_path = sys.path[:]
-    assert cli.run(
-        tmp_path,
-        _cli_namespace(selected, "--document", str(document), "--receipt", str(receipt)),
-    ) == 1
+    assert (
+        cli.run(
+            tmp_path,
+            _cli_namespace(
+                selected, "--document", str(document), "--receipt", str(receipt)
+            ),
+        )
+        == 1
+    )
     payload = json.loads(capsys.readouterr().out)
     assert set(payload) == {"status", "failure_reason", "details"}
     assert payload["status"] == "error"
@@ -728,7 +741,9 @@ def test_cli_selected_source_import_failure_is_structured_and_read_only(
         assert "group17_missing_extractor_dependency" in payload["failure_reason"]
     else:
         assert "selected GNN" in payload["failure_reason"]
-    assert {path: (path.read_bytes(), path.stat().st_mtime_ns) for path in protected} == before
+    assert {
+        path: (path.read_bytes(), path.stat().st_mtime_ns) for path in protected
+    } == before
     assert sys.path == previous_path
 
 
@@ -758,10 +773,15 @@ def test_document_mutation_during_extraction_preserves_prior_receipt(
     receipt = tmp_path / "receipt.json"
     receipt.write_bytes(b"previous receipt, not evidence for this attempt\n")
     before = (receipt.read_bytes(), receipt.stat().st_mtime_ns)
-    assert cli.run(
-        tmp_path,
-        _cli_namespace(gnn_stub, "--document", str(document), "--receipt", str(receipt)),
-    ) == 1
+    assert (
+        cli.run(
+            tmp_path,
+            _cli_namespace(
+                gnn_stub, "--document", str(document), "--receipt", str(receipt)
+            ),
+        )
+        == 1
+    )
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
     assert payload["failure_reason"] == "document changed during verification"
@@ -814,8 +834,7 @@ def test_verify_document_rejects_input_aliases_without_publication(
         protected = gnn_stub / "src/gnn/lazy_source.py"
         protected.write_text("VALUE = 1\n")
         extractor.write_text(
-            extractor.read_text()
-            + "\n_original_extract = extract_pomdp_from_file\n"
+            extractor.read_text() + "\n_original_extract = extract_pomdp_from_file\n"
             "def extract_pomdp_from_file(file_path, *, strict_validation=False):\n"
             "    import gnn.lazy_source\n"
             "    return _original_extract(file_path, strict_validation=strict_validation)\n"
@@ -833,11 +852,18 @@ def test_verify_document_rejects_input_aliases_without_publication(
         receipt.symlink_to(protected)
     inputs = [document, protected, receipt, *gnn_stub.rglob("*.py")]
     before = {path: (path.read_bytes(), path.stat().st_mtime_ns) for path in inputs}
-    assert cli.run(
-        tmp_path,
-        _cli_namespace(gnn_stub, "--document", str(document), "--receipt", str(receipt)),
-    ) == 1
+    assert (
+        cli.run(
+            tmp_path,
+            _cli_namespace(
+                gnn_stub, "--document", str(document), "--receipt", str(receipt)
+            ),
+        )
+        == 1
+    )
     payload = json.loads(capsys.readouterr().out)
     assert payload["status"] == "error"
     assert any(word in payload["failure_reason"] for word in ("alias", "symlink"))
-    assert {path: (path.read_bytes(), path.stat().st_mtime_ns) for path in inputs} == before
+    assert {
+        path: (path.read_bytes(), path.stat().st_mtime_ns) for path in inputs
+    } == before

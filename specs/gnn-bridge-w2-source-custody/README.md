@@ -46,7 +46,8 @@ pipeline outputs. The `gnn_output` trees under
 (`v3.2.0-3-g12a565b2f`), come from 2026-09-03 runs of the pre-rename
 `3_gnn.py` step script, and name the since-moved `doc/gnn/gnn_syntax.md`
 (now `docs/gnn/gnn_syntax.md`). They are historical records, not a
-reproduction against the current pin. The current pin is `v5.1.0` at
-`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`; the emitted projections still come
-from `2778e65c2228148417b2cf71832eb86a019785fb` until the pair-wide re-pin, and
-nothing here claims `emit --check` is fresh.
+reproduction against the current pin. The current pin is the untagged GNN
+`main` commit `d38a20972e34dd83e42b733f16e74e7d87b0a6e1`, sealed pair-wide on 2026-11-16 (Issue #244)
+together with the `fep_lean` record; both emitted projections were re-emitted
+against it, and `bridge status` plus both `emit --check` runs are the freshness
+checks.

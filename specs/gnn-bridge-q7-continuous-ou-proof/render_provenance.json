@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/private/tmp/fep-q7-public-p5qsdadw/q7-render-v42shxcn/FepLeanContinuousOU.md",
-    "/private/tmp/fep-q7-public-p5qsdadw/q7-render-v42shxcn/rendered"
+    "/var/folders/vc/rgmbpjpj0dbg61vr54xjskc80000gn/T/q7-render-fegsp3hn/FepLeanContinuousOU.md",
+    "/var/folders/vc/rgmbpjpj0dbg61vr54xjskc80000gn/T/q7-render-fegsp3hn/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "247556b4be4ed24deae122069b7dbb3b7a6f0408ea68caf4c474d20d01fa13ca"
+    "sha256": "a09f04edeccb703d0ed6a052f681bea10f239092fe42c9e3cd744fb3ec802bea"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -34,9 +34,9 @@
       "src/fep_formal/_paths.py": "ff3f60258a2d9a7cabea2ade1ab7596f2c5482d57db932e261a137c969b37cdc",
       "src/fep_formal/bridge/__init__.py": "a1abe46e10df0b3091ff02095c95833481db6bca36c35901e02bda03469f89be",
       "src/fep_formal/bridge/certificates.py": "5808fb694951aeeee0398a8ecfe864b94618dc62f256403cc8143875cf19fcee",
-      "src/fep_formal/bridge/cli.py": "c6e38bfe0ae8c53a8af0c646c421d00e4625ab5eea070426dc305e293f31ef1e",
+      "src/fep_formal/bridge/cli.py": "9a4bc6a5eb4e7b54e9217390b1682a18ec24a03d7e89f810e94d56658fa67740",
       "src/fep_formal/bridge/custody.py": "56f89c1e2d75af2b28d227dec01371fe8686322a9310701f50abbe0a36000fae",
-      "src/fep_formal/bridge/operations.py": "8877c711de64e41eb56f183445559882adae1afaaff33225fb092d78cb13b65b",
+      "src/fep_formal/bridge/operations.py": "0dbfbf8f916fbcb5a71e0bd652aba442244073fec0493eedeac316b0cccd4a06",
       "src/fep_formal/catalogue/__init__.py": "8adb85af29296b38802dc7a593add98220966c4378481d21f8bab2a741c4c6f9",
       "src/fep_formal/catalogue/bodies/__init__.py": "05fb8d3ba5898df1ade0bb3279736b82e120a5211cac5da404f4d6eea5055c29",
       "src/fep_formal/catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
@@ -123,7 +123,7 @@
       "src/fep_formal/formal/exponential_family.lean": "5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2",
       "src/fep_formal/formal/fin4_gaussian_semigroup.lean": "7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875",
       "src/fep_formal/formal/finite_information.lean": "963dbd8a1f9d37f719a2e7fdd7d42bc81efe84ccc5ae48d3fae6dc54cf9aaa31",
-      "src/fep_formal/formal/finite_markov_dynamics.lean": "69c8600e5a40d48cfc01b1b8bb36004d60b40655d620794d0b0e94ec1c8c6784",
+      "src/fep_formal/formal/finite_markov_dynamics.lean": "4aba3bdbb7dee16d002fb1bebf9c952738e129f6b1458c7ae211e3d9a36a43f7",
       "src/fep_formal/formal/finite_posterior_learning.lean": "8b4f2e2a985431a016c265887f31389b6764eee987cf6bbd36e18415217ede90",
       "src/fep_formal/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
       "src/fep_formal/formal/gaussian_information_geometry.lean": "42ff2ada4248b9ecaa9aa9df2b77c6473918adc0126401b7c6aa4bfe1049f31e",
@@ -155,7 +155,7 @@
       "src/fep_formal/formal/scalar_gaussian_semigroup.lean": "b10823429b5a182b37303aa970162e8587c9d2bb6c20554c1f5ef20eeb005766",
       "src/fep_formal/formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
       "src/fep_formal/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
-      "src/fep_formal/formal/temporal_inference.lean": "7b1260acd419ac368ea490d58b2e33c02b53d969e690ce1b805a177f2bb9e3b4",
+      "src/fep_formal/formal/temporal_inference.lean": "8422d94e9acb5f4e4f339448e71cf40eeabe2c1fdd005b67a34421df2aa4d493",
       "src/fep_formal/formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
       "src/fep_formal/gauss/__init__.py": "f4fb157d38dbd488cea0a19bbe8c191e86a02f3afc4fe2fadc553a3a65937a4f",
       "src/fep_formal/gauss/cli.py": "ed9569f9426588aef40bb2088b67ed5409b3c2e867a2dfdbd9e079fc6a5c6429",
@@ -339,15 +339,15 @@
       "src/fep_lean/verification/lean_verifier.pyi": "3a18cd80bb63ef80cfeb97319e52f02ed4abb70c517ddf8e7ce9b9b109a96c1c",
       "src/fep_lean/verification/numerical_witnesses.pyi": "0608768dd3a54348dba67f8a35d97bdb27740017c4ac7fcb5520d688a7d14c23",
       "src/fep_lean/verification/preflight.pyi": "1b16e7f0352372becb1459555f154db5ee36568946613a5815f6f45c190866ca",
-      "uv.lock": "5301956db0694e7fe19949769480a03bbe24a4fcdd76511b54490867102d9b36"
+      "uv.lock": "6ee5323de38b1bcceb8467b016a6447484a89adf8ba521d7b50cc47da1476e60"
     },
     "gnn": {
-      "docs/gnn/gnn_syntax.md": "4656e7266c32a63acc3a0f14d19496d9e55857bac6a75f5a3ecf1d546e97cacc",
+      "docs/gnn/gnn_syntax.md": "c12f97444e7e5afc6cbfd9838c308e3ca593283a67ccc94a43a31fe816a276a4",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",
-      "pyproject.toml": "97277102f7bb921c1699c7457afd0ba45f8136d03e0dee4b0fb42e9490f1771a",
+      "pyproject.toml": "9593c0a7a74dc7d03e94584cfa63f1289994e815b31e7fa5af08f77e4c0b603e",
       "src/gnn/main.py": "6c988ec84ad65d07c85b8e6a00456e8f7fa256564325687bce16839754958d6e",
       "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144",
-      "uv.lock": "6f60b3c0d7555568270b2db6607b04c65ba8c7cd7c258fc100f959a0081cb9f4"
+      "uv.lock": "e7e0acbf695dd84f3de660a2936d98c6bfbff962654daf9d789e432025fe3c1b"
     }
   },
   "owners_before": {
@@ -365,9 +365,9 @@
       "src/fep_formal/_paths.py": "ff3f60258a2d9a7cabea2ade1ab7596f2c5482d57db932e261a137c969b37cdc",
       "src/fep_formal/bridge/__init__.py": "a1abe46e10df0b3091ff02095c95833481db6bca36c35901e02bda03469f89be",
       "src/fep_formal/bridge/certificates.py": "5808fb694951aeeee0398a8ecfe864b94618dc62f256403cc8143875cf19fcee",
-      "src/fep_formal/bridge/cli.py": "c6e38bfe0ae8c53a8af0c646c421d00e4625ab5eea070426dc305e293f31ef1e",
+      "src/fep_formal/bridge/cli.py": "9a4bc6a5eb4e7b54e9217390b1682a18ec24a03d7e89f810e94d56658fa67740",
       "src/fep_formal/bridge/custody.py": "56f89c1e2d75af2b28d227dec01371fe8686322a9310701f50abbe0a36000fae",
-      "src/fep_formal/bridge/operations.py": "8877c711de64e41eb56f183445559882adae1afaaff33225fb092d78cb13b65b",
+      "src/fep_formal/bridge/operations.py": "0dbfbf8f916fbcb5a71e0bd652aba442244073fec0493eedeac316b0cccd4a06",
       "src/fep_formal/catalogue/__init__.py": "8adb85af29296b38802dc7a593add98220966c4378481d21f8bab2a741c4c6f9",
       "src/fep_formal/catalogue/bodies/__init__.py": "05fb8d3ba5898df1ade0bb3279736b82e120a5211cac5da404f4d6eea5055c29",
       "src/fep_formal/catalogue/bodies/causal_blankets_interventions.py": "392a9cdc8fc401ca4b684f160049b1b48144dc59c986cbb2ad01760e9643bf99",
@@ -454,7 +454,7 @@
       "src/fep_formal/formal/exponential_family.lean": "5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2",
       "src/fep_formal/formal/fin4_gaussian_semigroup.lean": "7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875",
       "src/fep_formal/formal/finite_information.lean": "963dbd8a1f9d37f719a2e7fdd7d42bc81efe84ccc5ae48d3fae6dc54cf9aaa31",
-      "src/fep_formal/formal/finite_markov_dynamics.lean": "69c8600e5a40d48cfc01b1b8bb36004d60b40655d620794d0b0e94ec1c8c6784",
+      "src/fep_formal/formal/finite_markov_dynamics.lean": "4aba3bdbb7dee16d002fb1bebf9c952738e129f6b1458c7ae211e3d9a36a43f7",
       "src/fep_formal/formal/finite_posterior_learning.lean": "8b4f2e2a985431a016c265887f31389b6764eee987cf6bbd36e18415217ede90",
       "src/fep_formal/formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
       "src/fep_formal/formal/gaussian_information_geometry.lean": "42ff2ada4248b9ecaa9aa9df2b77c6473918adc0126401b7c6aa4bfe1049f31e",
@@ -486,7 +486,7 @@
       "src/fep_formal/formal/scalar_gaussian_semigroup.lean": "b10823429b5a182b37303aa970162e8587c9d2bb6c20554c1f5ef20eeb005766",
       "src/fep_formal/formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
       "src/fep_formal/formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
-      "src/fep_formal/formal/temporal_inference.lean": "7b1260acd419ac368ea490d58b2e33c02b53d969e690ce1b805a177f2bb9e3b4",
+      "src/fep_formal/formal/temporal_inference.lean": "8422d94e9acb5f4e4f339448e71cf40eeabe2c1fdd005b67a34421df2aa4d493",
       "src/fep_formal/formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
       "src/fep_formal/gauss/__init__.py": "f4fb157d38dbd488cea0a19bbe8c191e86a02f3afc4fe2fadc553a3a65937a4f",
       "src/fep_formal/gauss/cli.py": "ed9569f9426588aef40bb2088b67ed5409b3c2e867a2dfdbd9e079fc6a5c6429",
@@ -670,15 +670,15 @@
       "src/fep_lean/verification/lean_verifier.pyi": "3a18cd80bb63ef80cfeb97319e52f02ed4abb70c517ddf8e7ce9b9b109a96c1c",
       "src/fep_lean/verification/numerical_witnesses.pyi": "0608768dd3a54348dba67f8a35d97bdb27740017c4ac7fcb5520d688a7d14c23",
       "src/fep_lean/verification/preflight.pyi": "1b16e7f0352372becb1459555f154db5ee36568946613a5815f6f45c190866ca",
-      "uv.lock": "5301956db0694e7fe19949769480a03bbe24a4fcdd76511b54490867102d9b36"
+      "uv.lock": "6ee5323de38b1bcceb8467b016a6447484a89adf8ba521d7b50cc47da1476e60"
     },
     "gnn": {
-      "docs/gnn/gnn_syntax.md": "4656e7266c32a63acc3a0f14d19496d9e55857bac6a75f5a3ecf1d546e97cacc",
+      "docs/gnn/gnn_syntax.md": "c12f97444e7e5afc6cbfd9838c308e3ca593283a67ccc94a43a31fe816a276a4",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",
-      "pyproject.toml": "97277102f7bb921c1699c7457afd0ba45f8136d03e0dee4b0fb42e9490f1771a",
+      "pyproject.toml": "9593c0a7a74dc7d03e94584cfa63f1289994e815b31e7fa5af08f77e4c0b603e",
       "src/gnn/main.py": "6c988ec84ad65d07c85b8e6a00456e8f7fa256564325687bce16839754958d6e",
       "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144",
-      "uv.lock": "6f60b3c0d7555568270b2db6607b04c65ba8c7cd7c258fc100f959a0081cb9f4"
+      "uv.lock": "e7e0acbf695dd84f3de660a2936d98c6bfbff962654daf9d789e432025fe3c1b"
     }
   },
   "render_route": [
@@ -688,7 +688,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "55b693c0618df106fdd5e1ebb57750950b2a826049cba37a80fc2da6256ce09d",
+  "source_pin_sha256": "afbc3c18273b9bb5ca2545c979a4c80c503d542807ba3e2c4fb8edc472ee1ad3",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- override-dependencies\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }

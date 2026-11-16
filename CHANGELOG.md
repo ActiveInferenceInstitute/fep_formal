@@ -14,6 +14,37 @@
 - Correct the backlog's nine-criterion coverage mapping without treating
   historical or retired gates as current acceptance.
 
+- Re-freeze the FEP↔GNN source pair (CUSTODY-GNN-1, Issue #244). One
+  `bridge pin` write seals the `gnn` record at the untagged GNN `main` commit
+  `d38a20972e34dd83e42b733f16e74e7d87b0a6e1` (PR #404, `v5.1.0-59-gd38a20972`, package
+  version 5.1.0; no release tag names it, so the record carries no `tag`)
+  together with a resealed `fep_lean` record. Relative to release `v5.1.0`
+  (`75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`), GNN's `pyproject.toml`,
+  `uv.lock` and `docs/gnn/gnn_syntax.md` changed; the syntax change only adds
+  the `GNN-E006`/`GNN-E007` extractor error rows, so the W1 `syntax-pin.json` is
+  resealed with it. Entry point, step registry and the mirrored bridge contract
+  are byte-identical. The `fep_lean` record moves from `301c2d24` to
+  `19b7be3f`; of its 319 owners, five changed through already-merged FEP work
+  (`cf20b97` dependency bump in `uv.lock`, `58cff81` bridge input custody in
+  `src/fep_formal/bridge/{cli,operations}.py`, and `47e6283`/`ad5187e` in
+  `src/fep_formal/formal/{finite_markov_dynamics,temporal_inference}.lean`).
+  Both bridge documents are re-emitted with
+  `--refresh-digests`, and the Q7 render, parity scaffold and generated probe
+  are refreshed through their owner scripts. Historical Q5/Q6/Q7 receipts are
+  not relabeled; the fresh native Q7 receipt covers only this pair's static
+  statements. Hosted dispatch of `source-pair-qualification.yml` stays blocked
+  by the organisation's Actions billing lock.
+- Restore the `lint` arm of `bash scripts/gate.sh all`, which failed on `main`
+  under the locked Ruff 0.17.3: the three intentional `ImportError` raises in
+  `src/fep_formal/bridge/operations.py` carry a justified `TRY004` exemption
+  (following `src/fep_formal/_paths.py`), and `ruff format` is applied to that
+  file and to three bridge tests. No behaviour changes; the re-freeze above
+  seals the resulting `operations.py` bytes.
+- Clear `TODO.md`: Issue #97 closed as completed and Issues #50, #55, #56,
+  #57, #59, #66, #67, #70, #71, #72, #100 and #102 closed on 2026-11-16 as
+  stale pre-`v2.1.0` scope, and #244 closes with this change, leaving no open
+  Issues.
+
 - Adopt the shared GNN–FEP reader. The custody pin's `gnn` record advances from
   the untagged `2778e65c2228148417b2cf71832eb86a019785fb` to release `v5.1.0` at
   `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, whose tree carries

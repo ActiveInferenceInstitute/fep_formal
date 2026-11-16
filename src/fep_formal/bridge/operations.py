@@ -342,9 +342,7 @@ def _bridge_input_paths(root: Path, gnn: Path) -> tuple[Path, ...]:
     )
 
 
-def _require_distinct_outputs(
-    outputs: Iterable[Path], inputs: Iterable[Path]
-) -> None:
+def _require_distinct_outputs(outputs: Iterable[Path], inputs: Iterable[Path]) -> None:
     """Reject path and inode aliases before publishing any output."""
     protected_paths: set[Path] = set()
     protected_inodes: set[tuple[int, int]] = set()
@@ -639,7 +637,7 @@ def _loaded_gnn_sources(package: Path) -> tuple[Path, ...]:
         if name != "gnn" and not name.startswith("gnn."):
             continue
         if not isinstance(module, ModuleType):
-            raise ImportError(f"conflicting cached GNN module: {name}")
+            raise ImportError(f"conflicting cached GNN module: {name}")  # noqa: TRY004 -- import custody conflict, not an argument type
         origin = getattr(module, "__file__", None)
         locations = list(getattr(module, "__path__", ()))
         if origin is not None:
@@ -678,7 +676,9 @@ def _selected_gnn_sources(source: Path) -> tuple[Path, ...]:
                 not Path(location).resolve().is_relative_to(package)
                 for location in locations
             ):
-                raise ImportError(f"selected GNN module origin is outside its source: {name}")
+                raise ImportError(
+                    f"selected GNN module origin is outside its source: {name}"
+                )
             search = list(spec.submodule_search_locations or ())
     return tuple(sorted(files))
 
@@ -699,9 +699,11 @@ def _selected_gnn_extractors(
             schema = importlib.import_module("gnn.schema")
             loaded = _loaded_gnn_sources(source / "gnn")
             if not callable(getattr(extractor, "extract_pomdp_from_file", None)):
-                raise ImportError("selected GNN extractor has no extract_pomdp_from_file")
+                raise ImportError(  # noqa: TRY004 -- import custody conflict, not an argument type
+                    "selected GNN extractor has no extract_pomdp_from_file"
+                )
             if not callable(getattr(schema, "parse_state_space", None)):
-                raise ImportError("selected GNN schema has no parse_state_space")
+                raise ImportError("selected GNN schema has no parse_state_space")  # noqa: TRY004 -- import custody conflict, not an argument type
             yield extractor, schema, (*selected, *loaded)
             _loaded_gnn_sources(source / "gnn")
         finally:
@@ -762,8 +764,12 @@ def verify_document(
             captured.write_bytes(content)
             captured.chmod(0o400)
             try:
-                space = extractor.extract_pomdp_from_file(captured, strict_validation=True)
-                declared, _decl_errors = schema.parse_state_space(content.decode("utf-8"))
+                space = extractor.extract_pomdp_from_file(
+                    captured, strict_validation=True
+                )
+                declared, _decl_errors = schema.parse_state_space(
+                    content.decode("utf-8")
+                )
                 if captured.read_bytes() != content:
                     raise ValueError("captured document changed during extraction")
             finally:
