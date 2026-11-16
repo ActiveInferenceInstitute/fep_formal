@@ -1379,7 +1379,7 @@
     },
     {
       "abbreviation_count": 0,
-      "definition_count": 38,
+      "definition_count": 45,
       "formal_dependencies": [
         "FepSketches.controlled_markov"
       ],
@@ -1391,7 +1391,7 @@
       "resource": "temporal_inference.lean",
       "role": "foundation",
       "structure_count": 1,
-      "theorem_count": 52,
+      "theorem_count": 69,
       "theorems": [
         "FEP.TemporalInference.PTree.beliefNormalizer_eq_totalWeight",
         "FEP.TemporalInference.PTree.msg_eq_bruteMass",
@@ -1422,6 +1422,10 @@
         "FEP.TemporalInference.boolSmoothing_false_mass",
         "FEP.TemporalInference.boolSmoothing_sum_one",
         "FEP.TemporalInference.boolSmoothing_true_mass",
+        "FEP.TemporalInference.boolTerminalTwoStep_distinct_fallbacks",
+        "FEP.TemporalInference.boolTerminalTwoStep_evidence",
+        "FEP.TemporalInference.boolTerminalTwoStep_positive_path",
+        "FEP.TemporalInference.boolTerminalTwoStep_reachable_null_witness",
         "FEP.TemporalInference.forwardBackwardSmoothing_factorization",
         "FEP.TemporalInference.forwardBackwardSmoothing_sum_one",
         "FEP.TemporalInference.forwardEvidence_zero_boundary",
@@ -1442,6 +1446,19 @@
         "FEP.TemporalInference.spStar_msg_false",
         "FEP.TemporalInference.spStar_msg_true",
         "FEP.TemporalInference.spStar_rootBelief_true",
+        "FEP.TemporalInference.terminalBackwardWeight_nonneg",
+        "FEP.TemporalInference.terminalTiltJoint_eq_smoothing",
+        "FEP.TemporalInference.terminalTiltJoint_fallback_invariant",
+        "FEP.TemporalInference.terminalTiltJoint_mass",
+        "FEP.TemporalInference.terminalTiltJoint_normalizer",
+        "FEP.TemporalInference.terminalTiltKernel_comp_of_pos",
+        "FEP.TemporalInference.terminalTiltKernel_factorization",
+        "FEP.TemporalInference.terminalTiltSource_null",
+        "FEP.TemporalInference.terminalTiltTwoStepPath_eq_smoothing",
+        "FEP.TemporalInference.terminalTiltTwoStepPath_fallback_invariant",
+        "FEP.TemporalInference.terminalTiltTwoStepPath_mass",
+        "FEP.TemporalInference.terminalTiltTwoStep_weight",
+        "FEP.TemporalInference.terminalTwoStepPath_normalizer",
         "FEP.TemporalInference.variationalStateUpdate_reconstruction",
         "FEP.TemporalInference.variationalStateUpdate_sum_one",
         "FEP.TemporalInference.variationalStateUpdate_zero_energy"
@@ -1449,7 +1466,7 @@
     },
     {
       "abbreviation_count": 0,
-      "definition_count": 6,
+      "definition_count": 11,
       "formal_dependencies": [
         "FepSketches.finite_probability"
       ],
@@ -1462,8 +1479,9 @@
       "resource": "finite_markov_dynamics.lean",
       "role": "foundation",
       "structure_count": 0,
-      "theorem_count": 17,
+      "theorem_count": 24,
       "theorems": [
+        "FEP.FiniteMarkovDynamics.bool_conditional_equal_evidence_differs",
         "FEP.FiniteMarkovDynamics.hasDobrushinBound_comp",
         "FEP.FiniteMarkovDynamics.hasDobrushinBound_identity",
         "FEP.FiniteMarkovDynamics.hasDobrushinBound_kernelPower",
@@ -1480,7 +1498,13 @@
         "FEP.FiniteMarkovDynamics.masterIncrement_sum_zero",
         "FEP.FiniteMarkovDynamics.totalVariation_kernelPower_le",
         "FEP.FiniteMarkovDynamics.totalVariation_nonneg",
-        "FEP.FiniteMarkovDynamics.totalVariation_self"
+        "FEP.FiniteMarkovDynamics.totalVariation_self",
+        "FEP.FiniteMarkovDynamics.weightedBlockMass_eq_pushforward",
+        "FEP.FiniteMarkovDynamics.weightedBlockMass_evidence_and_conditional",
+        "FEP.FiniteMarkovDynamics.weightedBlockMass_forall_laws_iff_rowwise",
+        "FEP.FiniteMarkovDynamics.weightedBlockMass_lumpable_evidence_and_conditional",
+        "FEP.FiniteMarkovDynamics.weightedBlockMass_nonneg",
+        "FEP.FiniteMarkovDynamics.weightedBlockRow_eq_of_lumpable"
       ]
     },
     {
@@ -5162,7 +5186,7 @@
     "authored_relation_edges": 156,
     "capability_nodes": 50,
     "composed_theorems": 386,
-    "definitions": 1062,
+    "definitions": 1074,
     "distinct_mathlib_imports": 80,
     "formal_module_dependency_edges": 173,
     "formal_module_import_edges": 409,
@@ -5170,15 +5194,15 @@
     "formal_pairing_witnesses": 118,
     "formal_relation_witnesses": 32,
     "formal_resource_abbreviations": 39,
-    "formal_resource_definitions": 967,
+    "formal_resource_definitions": 979,
     "formal_resource_structures": 56,
-    "formal_resource_theorems": 1824,
+    "formal_resource_theorems": 1848,
     "foundation_modules": 45,
-    "foundation_theorems": 1438,
+    "foundation_theorems": 1462,
     "open_capabilities": 0,
     "satisfied_capabilities": 50,
     "theorem_witnessed_relations": 150,
-    "theorems": 2414,
+    "theorems": 2438,
     "topic_abbreviations": 7,
     "topic_definitions": 95,
     "topic_import_edges": 268,

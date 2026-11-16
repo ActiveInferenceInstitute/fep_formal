@@ -20124,7 +20124,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/exponential_family.lean` | `5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2` |
 | `formal/fin4_gaussian_semigroup.lean` | `7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875` |
 | `formal/finite_information.lean` | `963dbd8a1f9d37f719a2e7fdd7d42bc81efe84ccc5ae48d3fae6dc54cf9aaa31` |
-| `formal/finite_markov_dynamics.lean` | `69c8600e5a40d48cfc01b1b8bb36004d60b40655d620794d0b0e94ec1c8c6784` |
+| `formal/finite_markov_dynamics.lean` | `4aba3bdbb7dee16d002fb1bebf9c952738e129f6b1458c7ae211e3d9a36a43f7` |
 | `formal/finite_posterior_learning.lean` | `8b4f2e2a985431a016c265887f31389b6764eee987cf6bbd36e18415217ede90` |
 | `formal/finite_probability.lean` | `d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380` |
 | `formal/gaussian_information_geometry.lean` | `42ff2ada4248b9ecaa9aa9df2b77c6473918adc0126401b7c6aa4bfe1049f31e` |
@@ -20155,7 +20155,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/scalar_gaussian_semigroup.lean` | `b10823429b5a182b37303aa970162e8587c9d2bb6c20554c1f5ef20eeb005766` |
 | `formal/smooth_information_geometry.lean` | `1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04` |
 | `formal/statistical_convergence.lean` | `6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf` |
-| `formal/temporal_inference.lean` | `7b1260acd419ac368ea490d58b2e33c02b53d969e690ce1b805a177f2bb9e3b4` |
+| `formal/temporal_inference.lean` | `8422d94e9acb5f4e4f339448e71cf40eeabe2c1fdd005b67a34421df2aa4d493` |
 | `formal/variational_duality.lean` | `05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1` |
 | `inputs/catalogue_metadata.yaml` | `b0af8b16513084cffc6eff8176ba5b1a9a524591a51acbe652256489e698974d` |
 | `inputs/formalism_relations.yaml` | `7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80` |

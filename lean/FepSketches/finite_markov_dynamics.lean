@@ -292,4 +292,171 @@ theorem masterIncrement_add_current
       kernel.predictive law state := by
   simp [masterIncrement]
 
+/-! ## Event-weighted coarse-graining across all preparations -/
+
+section WeightedCoarseGraining
+
+variable {Target CoarseState CoarseTarget : Type*}
+  [Fintype Target] [DecidableEq CoarseTarget]
+
+/-- Unnormalized event-weighted mass in a coarse target block of a fine row. -/
+noncomputable def weightedBlockRow (fine : FiniteKernel State Target)
+    (weight : Target → ℝ) (targetLabel : Target → CoarseTarget)
+    (x : State) (b : CoarseTarget) : ℝ :=
+  ∑ y, if targetLabel y = b then fine x y * weight y else 0
+
+/-- Preparation-averaged unnormalized weighted block mass. -/
+noncomputable def weightedBlockMass (law : FiniteLaw State)
+    (fine : FiniteKernel State Target) (weight : Target → ℝ)
+    (targetLabel : Target → CoarseTarget) (b : CoarseTarget) : ℝ :=
+  ∑ x, law x * weightedBlockRow fine weight targetLabel x b
+
+/-- Reduced weighted rows averaged over the same fine preparation. -/
+noncomputable def reducedWeightedBlockMass (law : FiniteLaw State)
+    (sourceLabel : State → CoarseState) (reduced : CoarseState → CoarseTarget → ℝ)
+    (b : CoarseTarget) : ℝ :=
+  ∑ x, law x * reduced (sourceLabel x) b
+
+/-- The row-average definition is exactly weighted predictive pushforward. -/
+theorem weightedBlockMass_eq_pushforward (law : FiniteLaw State)
+    (fine : FiniteKernel State Target) (weight : Target → ℝ)
+    (targetLabel : Target → CoarseTarget) (b : CoarseTarget) :
+    weightedBlockMass law fine weight targetLabel b =
+      ∑ y, if targetLabel y = b then (fine.predictive law) y * weight y else 0 := by
+  unfold weightedBlockMass weightedBlockRow
+  simp_rw [Finset.mul_sum]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro y _
+  by_cases h : targetLabel y = b
+  · simp only [h, ite_true, FiniteKernel.predictive_mass, Finset.sum_mul]
+    apply Finset.sum_congr rfl
+    intro x _
+    ring
+  · simp [h]
+
+/-- Nonnegative event weights give nonnegative unnormalized coarse masses. -/
+theorem weightedBlockMass_nonneg (law : FiniteLaw State)
+    (fine : FiniteKernel State Target) (weight : Target → ℝ)
+    (hWeight : ∀ y, 0 ≤ weight y) (targetLabel : Target → CoarseTarget)
+    (b : CoarseTarget) : 0 ≤ weightedBlockMass law fine weight targetLabel b := by
+  apply Finset.sum_nonneg
+  intro x _
+  apply mul_nonneg (law.nonneg x)
+  apply Finset.sum_nonneg
+  intro y _
+  split
+  · exact mul_nonneg (fine.nonneg x y) (hWeight y)
+  · exact le_rfl
+
+/-- Equality across every finite preparation is equivalent to rowwise equality.
+Necessity uses point masses; sufficiency is finite-sum linearity. -/
+theorem weightedBlockMass_forall_laws_iff_rowwise
+    (fine : FiniteKernel State Target) (weight : Target → ℝ)
+    (targetLabel : Target → CoarseTarget) (sourceLabel : State → CoarseState)
+    (reduced : CoarseState → CoarseTarget → ℝ) :
+    (∀ law : FiniteLaw State, ∀ b,
+      weightedBlockMass law fine weight targetLabel b =
+        reducedWeightedBlockMass law sourceLabel reduced b) ↔
+    (∀ x b, weightedBlockRow fine weight targetLabel x b = reduced (sourceLabel x) b) := by
+  classical
+  constructor
+  · intro h x b
+    simpa [weightedBlockMass, reducedWeightedBlockMass, FiniteLaw.pointMass] using
+      h (FiniteLaw.pointMass x) b
+  · intro h law b
+    unfold weightedBlockMass reducedWeightedBlockMass
+    apply Finset.sum_congr rfl
+    intro x _
+    rw [h x b]
+
+/-- Fibre-constant weights and lumpable movement give exact reduced weighted rows. -/
+theorem weightedBlockRow_eq_of_lumpable [Fintype CoarseState] [Fintype CoarseTarget]
+    (fine : FiniteKernel State Target) (coarseKernel : FiniteKernel CoarseState CoarseTarget)
+    (sourceLabel : State → CoarseState) (targetLabel : Target → CoarseTarget)
+    (weight : Target → ℝ) (coarseWeight : CoarseTarget → ℝ)
+    (hFibre : ∀ y, weight y = coarseWeight (targetLabel y))
+    (hLump : ∀ x b, (∑ y, if targetLabel y = b then fine x y else 0) =
+      coarseKernel (sourceLabel x) b) (x : State) (b : CoarseTarget) :
+    weightedBlockRow fine weight targetLabel x b =
+      coarseKernel (sourceLabel x) b * coarseWeight b := by
+  calc
+    _ = (∑ y, if targetLabel y = b then fine x y else 0) * coarseWeight b := by
+      rw [Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro y _
+      by_cases h : targetLabel y = b
+      · simp [h, hFibre]
+      · simp [h]
+    _ = _ := by rw [hLump]
+
+variable [Fintype CoarseTarget]
+
+/-- Total unnormalized event evidence of a coarse block mass function. -/
+noncomputable def weightedBlockEvidence (mass : CoarseTarget → ℝ) : ℝ := ∑ b, mass b
+
+/-- Conditional coarse readout; claims use an explicit positive-evidence premise. -/
+noncomputable def conditionalCoarseReadout (mass : CoarseTarget → ℝ) (b : CoarseTarget) : ℝ :=
+  mass b / weightedBlockEvidence mass
+
+/-- Rowwise equality preserves both evidence and positive-evidence readouts. -/
+theorem weightedBlockMass_evidence_and_conditional
+    (law : FiniteLaw State) (fine : FiniteKernel State Target) (weight : Target → ℝ)
+    (targetLabel : Target → CoarseTarget) (sourceLabel : State → CoarseState)
+    (reduced : CoarseState → CoarseTarget → ℝ)
+    (hRows : ∀ x b, weightedBlockRow fine weight targetLabel x b = reduced (sourceLabel x) b) :
+    weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) =
+      weightedBlockEvidence (reducedWeightedBlockMass law sourceLabel reduced) ∧
+    (0 < weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) →
+      ∀ b, conditionalCoarseReadout (weightedBlockMass law fine weight targetLabel) b =
+        conditionalCoarseReadout (reducedWeightedBlockMass law sourceLabel reduced) b) := by
+  have hMass : weightedBlockMass law fine weight targetLabel =
+      reducedWeightedBlockMass law sourceLabel reduced :=
+    funext ((weightedBlockMass_forall_laws_iff_rowwise fine weight targetLabel sourceLabel reduced).mpr hRows law)
+  rw [hMass]
+  exact ⟨rfl, fun _ _ => rfl⟩
+
+/-- Lumpable movement and fibre-constant nonnegative weights preserve evidence
+and conditional readouts for every preparation at positive evidence. -/
+theorem weightedBlockMass_lumpable_evidence_and_conditional [Fintype CoarseState]
+    (law : FiniteLaw State) (fine : FiniteKernel State Target)
+    (coarseKernel : FiniteKernel CoarseState CoarseTarget)
+    (sourceLabel : State → CoarseState) (targetLabel : Target → CoarseTarget)
+    (weight : Target → ℝ) (coarseWeight : CoarseTarget → ℝ)
+    (hWeight : ∀ y, 0 ≤ weight y)
+    (hFibre : ∀ y, weight y = coarseWeight (targetLabel y))
+    (hLump : ∀ x b, (∑ y, if targetLabel y = b then fine x y else 0) =
+      coarseKernel (sourceLabel x) b) :
+    (∀ b, 0 ≤ weightedBlockMass law fine weight targetLabel b) ∧
+    weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) =
+      weightedBlockEvidence (reducedWeightedBlockMass law sourceLabel
+        (fun a b => coarseKernel a b * coarseWeight b)) ∧
+    (0 < weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) →
+      ∀ b, conditionalCoarseReadout (weightedBlockMass law fine weight targetLabel) b =
+        conditionalCoarseReadout (reducedWeightedBlockMass law sourceLabel
+          (fun a b => coarseKernel a b * coarseWeight b)) b) :=
+  ⟨weightedBlockMass_nonneg law fine weight hWeight targetLabel,
+    weightedBlockMass_evidence_and_conditional law fine weight targetLabel sourceLabel _
+      (weightedBlockRow_eq_of_lumpable fine coarseKernel sourceLabel targetLabel
+        weight coarseWeight hFibre hLump)⟩
+
+end WeightedCoarseGraining
+
+/-- Hidden substates can have equal conditional coarse readout despite unequal
+positive event evidence (survival multipliers 4/5 and 2/5). -/
+theorem bool_conditional_equal_evidence_differs :
+    let mass₁ := weightedBlockMass (FiniteLaw.pointMass true)
+      (FiniteKernel.identity : FiniteKernel Bool Bool)
+      (fun y => if y then (4 / 5 : ℝ) else 2 / 5) (fun _ => ())
+    let mass₂ := weightedBlockMass (FiniteLaw.pointMass false)
+      (FiniteKernel.identity : FiniteKernel Bool Bool)
+      (fun y => if y then (4 / 5 : ℝ) else 2 / 5) (fun _ => ())
+    weightedBlockEvidence mass₁ = 4 / 5 ∧ weightedBlockEvidence mass₂ = 2 / 5 ∧
+    0 < weightedBlockEvidence mass₁ ∧ 0 < weightedBlockEvidence mass₂ ∧
+    weightedBlockEvidence mass₁ ≠ weightedBlockEvidence mass₂ ∧
+    (∀ b, conditionalCoarseReadout mass₁ b = conditionalCoarseReadout mass₂ b) := by
+  norm_num [weightedBlockMass, weightedBlockRow, weightedBlockEvidence,
+    conditionalCoarseReadout, FiniteLaw.pointMass, FiniteKernel.identity,
+    FiniteKernel.deterministic, Fintype.sum_bool]
+
 end FEP.FiniteMarkovDynamics

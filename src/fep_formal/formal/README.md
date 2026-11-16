@@ -25,6 +25,38 @@ regularity or invertibility premises remain in the qualified declarations.
 The [support-aware variational guide](../../../docs/support-aware-variational-methods.md)
 explains the reusable Gibbs/support extension and its claim boundaries.
 
+## Endpoint tilts and supported path laws
+
+`FEP.TemporalInference.terminalTiltKernel` reuses the finite smoothing law at
+each transition row, with an explicit fallback on zero-normalizer rows.
+`terminalTiltJoint_eq_smoothing` proves equality to joint endpoint smoothing
+after tilting the initial law by its backward message. Null backward rows have
+zero tilted source mass, so `terminalTiltJoint_fallback_invariant` applies to
+arbitrary fallback laws.
+
+The heterogeneous two-step construction retains the intermediate state in
+`State × Middle × Terminal`. `terminalTiltTwoStepPath_eq_smoothing` factors
+endpoint smoothing into the tilted initial law and two time-inhomogeneous
+kernels. `terminalTiltTwoStepPath_fallback_invariant` proves equality of the
+entire path law for arbitrary middle and terminal fallbacks, including reachable
+null intermediate rows. Positive initial endpoint evidence is required;
+`terminalTiltKernel_comp_of_pos` separately requires a positive backward source
+row. The Boolean witnesses exhibit a positive surviving path and a reachable
+null path with distinct fallback laws. These results cover two heterogeneous
+steps; arbitrary finite-horizon recursion is not asserted.
+
+## Event-weighted coarse-graining
+
+`FEP.FiniteMarkovDynamics.weightedBlockMass` is the unnormalized weighted
+predictive mass pushed into a target block.
+`weightedBlockMass_forall_laws_iff_rowwise` characterizes exact reduction across
+all preparations by rowwise equality, using point masses for necessity and
+finite-sum linearity for sufficiency. Fibre-constant weights and lumpable
+movement preserve total event evidence and positive-evidence conditional
+readouts. `bool_conditional_equal_evidence_differs` exhibits hidden substates
+with survival weights 4/5 and 2/5 and identical conditional coarse readouts;
+conditional agreement alone does not certify event evidence.
+
 ## Changing a resource
 
 Edit the canonical resource and its manifest owner where needed. Preserve
