@@ -229,6 +229,339 @@ theorem terminalTiltKernel_factorization (transition : FiniteKernel State Termin
     rw [hzero] at hterm
     rw [hzero, mul_zero, le_antisymm hterm (hnonneg y)]
 
+/-- Heterogeneous backward propagation of a terminal information weight. -/
+noncomputable def terminalBackwardWeight (transition : FiniteKernel State Terminal)
+    (weight : Terminal → ℝ) (x : State) : ℝ :=
+  smoothingNormalizer (transition.row x) weight
+
+/-- Nonnegative endpoint weights propagate to nonnegative backward messages. -/
+theorem terminalBackwardWeight_nonneg (transition : FiniteKernel State Terminal)
+    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y) (x : State) :
+    0 ≤ terminalBackwardWeight transition weight x :=
+  Finset.sum_nonneg fun y _ => mul_nonneg (transition.nonneg x y) (hWeight y)
+
+/-- Tilting the source by its backward message and then tilting each row. -/
+noncomputable def terminalTiltJoint (prior : FiniteLaw State)
+    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)
+    (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))
+    (fallback : FiniteLaw Terminal) : FiniteLaw (State × Terminal) :=
+  FiniteKernel.joint
+    (forwardBackwardSmoothing prior (terminalBackwardWeight transition weight)
+      (terminalBackwardWeight_nonneg transition weight hWeight) hEvidence)
+    (terminalTiltKernel transition weight hWeight fallback)
+
+/-- Joint endpoint evidence is the source-averaged backward message. -/
+theorem terminalTiltJoint_normalizer (prior : FiniteLaw State)
+    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ) :
+    smoothingNormalizer (FiniteKernel.joint prior transition) (fun xy => weight xy.2) =
+      smoothingNormalizer prior (terminalBackwardWeight transition weight) := by
+  simp only [smoothingNormalizer, FiniteKernel.joint,
+    Fintype.sum_prod_type, terminalBackwardWeight, FiniteKernel.row]
+  simp_rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro x _
+  apply Finset.sum_congr rfl
+  intro y _
+  ring
+
+/-- A null backward row has zero mass in the tilted source, even if reachable. -/
+theorem terminalTiltSource_null (prior : FiniteLaw State)
+    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)
+    (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))
+    (x : State) (hNull : terminalBackwardWeight transition weight x = 0) :
+    forwardBackwardSmoothing prior (terminalBackwardWeight transition weight)
+      (terminalBackwardWeight_nonneg transition weight hWeight) hEvidence x = 0 := by
+  change prior x * terminalBackwardWeight transition weight x / smoothingNormalizer prior (terminalBackwardWeight transition weight) = 0
+  rw [hNull, mul_zero, zero_div]
+
+/-- Exact tilted joint mass, with no positivity assumption on individual rows. -/
+theorem terminalTiltJoint_mass (prior : FiniteLaw State)
+    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)
+    (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))
+    (fallback : FiniteLaw Terminal) (x : State) (y : Terminal) :
+    terminalTiltJoint prior transition weight hWeight hEvidence fallback (x, y) =
+      prior x * transition x y * weight y /
+        smoothingNormalizer prior (terminalBackwardWeight transition weight) := by
+  change (prior x * terminalBackwardWeight transition weight x / smoothingNormalizer prior (terminalBackwardWeight transition weight)) *
+    terminalTiltKernel transition weight hWeight fallback x y = _
+  calc
+    _ = prior x * (terminalTiltKernel transition weight hWeight fallback x y *
+        smoothingNormalizer (transition.row x) weight) / smoothingNormalizer prior (terminalBackwardWeight transition weight) := by
+      unfold terminalBackwardWeight
+      ring
+    _ = _ := by rw [terminalTiltKernel_factorization]; ring
+
+/-- Initial-law tilting and tilted transitions equal smoothing of the joint law. -/
+theorem terminalTiltJoint_eq_smoothing (prior : FiniteLaw State)
+    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)
+    (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))
+    (fallback : FiniteLaw Terminal) :
+    terminalTiltJoint prior transition weight hWeight hEvidence fallback =
+      forwardBackwardSmoothing (FiniteKernel.joint prior transition) (fun xy => weight xy.2)
+        (fun xy => hWeight xy.2)
+        (by rw [terminalTiltJoint_normalizer]; exact hEvidence) := by
+  apply FiniteLaw.ext_mass
+  funext xy
+  rcases xy with ⟨x, y⟩
+  rw [show (terminalTiltJoint prior transition weight hWeight hEvidence fallback).mass (x, y) =
+    prior x * transition x y * weight y / smoothingNormalizer prior (terminalBackwardWeight transition weight) from
+      terminalTiltJoint_mass prior transition weight hWeight hEvidence fallback x y]
+  change _ = (prior x * transition x y) * weight y /
+    smoothingNormalizer (FiniteKernel.joint prior transition) (fun xy => weight xy.2)
+  rw [terminalTiltJoint_normalizer]
+
+/-- Both arbitrary fallbacks induce identically the same supported joint law. -/
+theorem terminalTiltJoint_fallback_invariant (prior : FiniteLaw State)
+    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)
+    (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))
+    (fallback₁ fallback₂ : FiniteLaw Terminal) :
+    terminalTiltJoint prior transition weight hWeight hEvidence fallback₁ =
+      terminalTiltJoint prior transition weight hWeight hEvidence fallback₂ := by
+  rw [terminalTiltJoint_eq_smoothing, terminalTiltJoint_eq_smoothing]
+
+/-- A heterogeneous two-step path kernel retains the intermediate state. -/
+noncomputable def terminalTwoStepKernel (earlier : FiniteKernel State Middle)
+    (later : FiniteKernel Middle Terminal) : FiniteKernel State (Middle × Terminal) where
+  mass x mt := earlier x mt.1 * later mt.1 mt.2
+  nonneg x mt := mul_nonneg (earlier.nonneg x mt.1) (later.nonneg mt.1 mt.2)
+  sum_one x := by
+    rw [Fintype.sum_prod_type]
+    simp_rw [← Finset.mul_sum, later.sum_one, mul_one]
+    exact earlier.sum_one x
+
+/-- The full unconditioned law on source, intermediate and terminal states. -/
+noncomputable def terminalTwoStepPath (prior : FiniteLaw State)
+    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal) :
+    FiniteLaw (State × Middle × Terminal) :=
+  FiniteKernel.joint prior (terminalTwoStepKernel earlier later)
+
+/-- Two-step backward messages agree with propagation through the composite. -/
+theorem terminalTiltTwoStep_weight (earlier : FiniteKernel State Middle)
+    (later : FiniteKernel Middle Terminal) (weight : Terminal → ℝ) (x : State) :
+    terminalBackwardWeight earlier (terminalBackwardWeight later weight) x =
+      terminalBackwardWeight (FiniteKernel.comp later earlier) weight x := by
+  simp only [terminalBackwardWeight, smoothingNormalizer, FiniteKernel.row,
+    FiniteKernel.comp]
+  simp_rw [Finset.mul_sum, Finset.sum_mul]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro t _
+  apply Finset.sum_congr rfl
+  intro m _
+  ring
+
+/-- Path endpoint evidence equals the twice-propagated source normalizer. -/
+theorem terminalTwoStepPath_normalizer (prior : FiniteLaw State)
+    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)
+    (weight : Terminal → ℝ) :
+    smoothingNormalizer (terminalTwoStepPath prior earlier later) (fun p => weight p.2.2) =
+      smoothingNormalizer prior
+        (terminalBackwardWeight earlier (terminalBackwardWeight later weight)) := by
+  simp only [smoothingNormalizer, terminalTwoStepPath, FiniteKernel.joint,
+    terminalTwoStepKernel, Fintype.sum_prod_type,
+    terminalBackwardWeight, FiniteKernel.row]
+  simp_rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro x _
+  apply Finset.sum_congr rfl
+  intro m _
+  apply Finset.sum_congr rfl
+  intro t _
+  ring
+
+/-- Source tilt followed by the two time-inhomogeneous tilted kernels. -/
+noncomputable def terminalTiltTwoStepPath (prior : FiniteLaw State)
+    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)
+    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior
+      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))
+    (middleFallback : FiniteLaw Middle) (terminalFallback : FiniteLaw Terminal) :
+    FiniteLaw (State × Middle × Terminal) :=
+  terminalTwoStepPath
+    (forwardBackwardSmoothing prior
+      (terminalBackwardWeight earlier (terminalBackwardWeight later weight))
+      (terminalBackwardWeight_nonneg earlier _
+        (terminalBackwardWeight_nonneg later weight hWeight)) hEvidence)
+    (terminalTiltKernel earlier (terminalBackwardWeight later weight)
+      (terminalBackwardWeight_nonneg later weight hWeight) middleFallback)
+    (terminalTiltKernel later weight hWeight terminalFallback)
+
+/-- Full path factorization cancels both backward messages, including null rows. -/
+theorem terminalTiltTwoStepPath_mass (prior : FiniteLaw State)
+    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)
+    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior
+      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))
+    (middleFallback : FiniteLaw Middle) (terminalFallback : FiniteLaw Terminal)
+    (x : State) (m : Middle) (t : Terminal) :
+    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence
+      middleFallback terminalFallback (x, m, t) =
+      prior x * earlier x m * later m t * weight t /
+        smoothingNormalizer prior
+          (terminalBackwardWeight earlier (terminalBackwardWeight later weight)) := by
+  let hMid := terminalBackwardWeight_nonneg later weight hWeight
+  let k₁ := terminalTiltKernel earlier (terminalBackwardWeight later weight) hMid middleFallback
+  let k₂ := terminalTiltKernel later weight hWeight terminalFallback
+  change (prior x * terminalBackwardWeight earlier (terminalBackwardWeight later weight) x / smoothingNormalizer prior
+          (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))
+    * (k₁ x m * k₂ m t) = _
+  calc
+    _ = prior x * (k₁ x m * smoothingNormalizer (earlier.row x)
+        (terminalBackwardWeight later weight)) * k₂ m t / smoothingNormalizer prior
+          (terminalBackwardWeight earlier (terminalBackwardWeight later weight)) := by
+      unfold terminalBackwardWeight
+      ring
+    _ = prior x * (earlier x m * terminalBackwardWeight later weight m) * k₂ m t / smoothingNormalizer prior
+          (terminalBackwardWeight earlier (terminalBackwardWeight later weight)) := by
+      rw [show k₁ x m * _ = _ from terminalTiltKernel_factorization earlier _ hMid middleFallback x m]
+    _ = prior x * earlier x m * (k₂ m t * smoothingNormalizer (later.row m) weight) / smoothingNormalizer prior
+          (terminalBackwardWeight earlier (terminalBackwardWeight later weight)) := by
+      unfold terminalBackwardWeight
+      ring
+    _ = _ := by
+      rw [show k₂ m t * _ = _ from terminalTiltKernel_factorization later weight hWeight terminalFallback m t]
+      ring
+
+/-- Two-step tilted path law equals endpoint smoothing of the original path. -/
+theorem terminalTiltTwoStepPath_eq_smoothing (prior : FiniteLaw State)
+    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)
+    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior
+      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))
+    (middleFallback : FiniteLaw Middle) (terminalFallback : FiniteLaw Terminal) :
+    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence
+      middleFallback terminalFallback =
+    forwardBackwardSmoothing (terminalTwoStepPath prior earlier later)
+      (fun p => weight p.2.2) (fun p => hWeight p.2.2)
+      (by rw [terminalTwoStepPath_normalizer]; exact hEvidence) := by
+  apply FiniteLaw.ext_mass
+  funext ⟨x, m, t⟩
+  rw [show (terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence
+    middleFallback terminalFallback).mass (x, m, t) = _ from
+      terminalTiltTwoStepPath_mass prior earlier later weight hWeight hEvidence
+        middleFallback terminalFallback x m t]
+  change _ = (prior x * (earlier x m * later m t)) * weight t /
+    smoothingNormalizer (terminalTwoStepPath prior earlier later) (fun p => weight p.2.2)
+  rw [terminalTwoStepPath_normalizer]
+  ring
+
+/-- The complete path law is invariant to both independent null-row fallbacks. -/
+theorem terminalTiltTwoStepPath_fallback_invariant (prior : FiniteLaw State)
+    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)
+    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)
+    (hEvidence : 0 < smoothingNormalizer prior
+      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))
+    (middleFallback₁ middleFallback₂ : FiniteLaw Middle)
+    (terminalFallback₁ terminalFallback₂ : FiniteLaw Terminal) :
+    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence
+      middleFallback₁ terminalFallback₁ =
+    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence
+      middleFallback₂ terminalFallback₂ := by
+  rw [terminalTiltTwoStepPath_eq_smoothing, terminalTiltTwoStepPath_eq_smoothing]
+
+/-- On a positive backward source row, tilting commutes with kernel composition. -/
+theorem terminalTiltKernel_comp_of_pos (earlier : FiniteKernel State Middle)
+    (later : FiniteKernel Middle Terminal) (weight : Terminal → ℝ)
+    (hWeight : ∀ y, 0 ≤ weight y) (middleFallback : FiniteLaw Middle)
+    (terminalFallback : FiniteLaw Terminal) (x : State) (t : Terminal)
+    (hPos : 0 < terminalBackwardWeight earlier (terminalBackwardWeight later weight) x) :
+    terminalTiltKernel (FiniteKernel.comp later earlier) weight hWeight terminalFallback x t =
+      FiniteKernel.comp (terminalTiltKernel later weight hWeight terminalFallback)
+        (terminalTiltKernel earlier (terminalBackwardWeight later weight)
+          (terminalBackwardWeight_nonneg later weight hWeight) middleFallback) x t := by
+  let hMid := terminalBackwardWeight_nonneg later weight hWeight
+  let k₁ := terminalTiltKernel earlier (terminalBackwardWeight later weight) hMid middleFallback
+  let k₂ := terminalTiltKernel later weight hWeight terminalFallback
+  have hNorm := terminalTiltTwoStep_weight earlier later weight x
+  apply (mul_right_cancel₀ (ne_of_gt hPos))
+  have hComposite : terminalTiltKernel (FiniteKernel.comp later earlier) weight hWeight
+      terminalFallback x t * terminalBackwardWeight earlier (terminalBackwardWeight later weight) x =
+      FiniteKernel.comp later earlier x t * weight t := by
+    rw [hNorm]
+    exact terminalTiltKernel_factorization _ weight hWeight terminalFallback x t
+  rw [hComposite]
+  change _ = (∑ m, k₁ x m * k₂ m t) * _
+  rw [Finset.sum_mul]
+  calc
+    _ = ∑ m, earlier x m * (later m t * weight t) := by
+      simp only [FiniteKernel.comp]
+      rw [Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro m _
+      ring
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro m _
+      calc
+        _ = earlier x m * (k₂ m t * smoothingNormalizer (later.row m) weight) := by
+          rw [show k₂ m t * _ = _ from terminalTiltKernel_factorization later weight hWeight terminalFallback m t]
+        _ = (k₁ x m * smoothingNormalizer (earlier.row x)
+            (terminalBackwardWeight later weight)) * k₂ m t := by
+          rw [show k₁ x m * _ = _ from terminalTiltKernel_factorization earlier _ hMid middleFallback x m]
+          unfold terminalBackwardWeight
+          ring
+        _ = _ := by unfold terminalBackwardWeight; ring
+
+/-- A rational terminal event with a surviving state and a null state. -/
+def boolTerminalEvent (b : Bool) : ℝ := if b then 1 else 0
+
+/-- Uniform initial preparation sees positive terminal evidence of exactly 1/2. -/
+theorem boolTerminalTwoStep_evidence :
+    smoothingNormalizer (FiniteLaw.uniform : FiniteLaw Bool)
+      (terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)
+        (terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)
+          boolTerminalEvent)) = 1 / 2 := by
+  norm_num [smoothingNormalizer, terminalBackwardWeight, FiniteLaw.uniform,
+    FiniteKernel.row, FiniteKernel.identity, FiniteKernel.deterministic,
+    boolTerminalEvent, Fintype.sum_bool]
+
+/-- A reachable path survives, while another reachable intermediate row is null. -/
+theorem boolTerminalTwoStep_reachable_null_witness :
+    terminalTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)
+      FiniteKernel.identity FiniteKernel.identity (true, true, true) = 1 / 2 ∧
+    terminalTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)
+      FiniteKernel.identity FiniteKernel.identity (false, false, false) = 1 / 2 ∧
+    terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)
+      boolTerminalEvent false = 0 := by
+  norm_num [terminalTwoStepPath, terminalTwoStepKernel, FiniteKernel.joint,
+    terminalBackwardWeight, smoothingNormalizer, FiniteLaw.uniform, FiniteKernel.row,
+    FiniteKernel.identity, FiniteKernel.deterministic, boolTerminalEvent, Fintype.sum_bool]
+
+/-- The surviving tilted path has mass one for either choice of fallbacks. -/
+theorem boolTerminalTwoStep_positive_path (middleFallback terminalFallback : FiniteLaw Bool) :
+    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)
+      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent
+      (by intro b; cases b <;> norm_num [boolTerminalEvent])
+      (by rw [boolTerminalTwoStep_evidence]; norm_num)
+      middleFallback terminalFallback (true, true, true) = 1 := by
+  rw [terminalTiltTwoStepPath_mass, boolTerminalTwoStep_evidence]
+  norm_num [FiniteLaw.uniform, FiniteKernel.identity, FiniteKernel.deterministic,
+    boolTerminalEvent]
+
+/-- Concrete fallback invariance uses provably distinct middle and terminal laws. -/
+theorem boolTerminalTwoStep_distinct_fallbacks :
+    (FiniteLaw.pointMass true : FiniteLaw Bool) ≠ FiniteLaw.pointMass false ∧
+    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)
+      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent
+      (by intro b; cases b <;> norm_num [boolTerminalEvent])
+      (by rw [boolTerminalTwoStep_evidence]; norm_num)
+      (FiniteLaw.pointMass true) (FiniteLaw.pointMass true) =
+    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)
+      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent
+      (by intro b; cases b <;> norm_num [boolTerminalEvent])
+      (by rw [boolTerminalTwoStep_evidence]; norm_num)
+      (FiniteLaw.pointMass false) (FiniteLaw.pointMass false) := by
+  constructor
+  · intro h
+    have := congrArg (fun p : FiniteLaw Bool => p true) h
+    norm_num [FiniteLaw.pointMass] at this
+  · exact terminalTiltTwoStepPath_fallback_invariant _ _ _ _ _ _ _ _ _ _
+
 end TerminalTilt
 
 /-- One normalized variational state update, expressed as a prior-weighted

@@ -38,6 +38,12 @@ def test_finite_markov_dynamics_exposes_deep_contracts() -> None:
         "hasDobrushinBound_comp",
         "totalVariation_kernelPower_le",
         "masterIncrement_sum_zero",
+        "weightedBlockMass_eq_pushforward",
+        "weightedBlockMass_forall_laws_iff_rowwise",
+        "weightedBlockRow_eq_of_lumpable",
+        "weightedBlockMass_evidence_and_conditional",
+        "weightedBlockMass_lumpable_evidence_and_conditional",
+        "bool_conditional_equal_evidence_differs",
     }
 
     assert all(f"theorem {name}" in source for name in expected)
