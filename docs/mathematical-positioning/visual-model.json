@@ -11872,7 +11872,7 @@
     "formal/exponential_family.lean": "5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2",
     "formal/fin4_gaussian_semigroup.lean": "7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875",
     "formal/finite_information.lean": "963dbd8a1f9d37f719a2e7fdd7d42bc81efe84ccc5ae48d3fae6dc54cf9aaa31",
-    "formal/finite_markov_dynamics.lean": "69c8600e5a40d48cfc01b1b8bb36004d60b40655d620794d0b0e94ec1c8c6784",
+    "formal/finite_markov_dynamics.lean": "4aba3bdbb7dee16d002fb1bebf9c952738e129f6b1458c7ae211e3d9a36a43f7",
     "formal/finite_posterior_learning.lean": "8b4f2e2a985431a016c265887f31389b6764eee987cf6bbd36e18415217ede90",
     "formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
     "formal/gaussian_information_geometry.lean": "42ff2ada4248b9ecaa9aa9df2b77c6473918adc0126401b7c6aa4bfe1049f31e",
@@ -11903,7 +11903,7 @@
     "formal/scalar_gaussian_semigroup.lean": "b10823429b5a182b37303aa970162e8587c9d2bb6c20554c1f5ef20eeb005766",
     "formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
     "formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
-    "formal/temporal_inference.lean": "7b1260acd419ac368ea490d58b2e33c02b53d969e690ce1b805a177f2bb9e3b4",
+    "formal/temporal_inference.lean": "8422d94e9acb5f4e4f339448e71cf40eeabe2c1fdd005b67a34421df2aa4d493",
     "formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
     "inputs/catalogue_metadata.yaml": "b0af8b16513084cffc6eff8176ba5b1a9a524591a51acbe652256489e698974d",
     "inputs/formalism_relations.yaml": "7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80",
@@ -80671,6 +80671,48 @@
         "statement": "theorem product_sndMarginal_mass (p : FiniteLaw α) (q : FiniteLaw β)\n    (y : β) :\n    (p.product q).sndMarginal y = q y",
         "statement_sha256": "ebc0b0d04c426ac4128193316aa3b079eefd2ebc968865bf9d1824dcd76449b2"
       },
+      "FEP.FiniteMarkovDynamics.bool_conditional_equal_evidence_differs": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "let mass₁ := weightedBlockMass (FiniteLaw.pointMass true)\n      (FiniteKernel.identity : FiniteKernel Bool Bool)\n      (fun y => if y then (4 / 5 : ℝ) else 2 / 5) (fun _ => ())\n    let mass₂ := weightedBlockMass (FiniteLaw.pointMass false)\n      (FiniteKernel.identity : FiniteKernel Bool Bool)\n      (fun y => if y then (4 / 5 : ℝ) else 2 / 5) (fun _ => ())\n    weightedBlockEvidence mass₁ = 4 / 5 ∧ weightedBlockEvidence mass₂ = 2 / 5 ∧\n    0 < weightedBlockEvidence mass₁ ∧ 0 < weightedBlockEvidence mass₂ ∧\n    weightedBlockEvidence mass₁ ≠ weightedBlockEvidence mass₂ ∧\n    (∀ b, conditionalCoarseReadout mass₁ b = conditionalCoarseReadout mass₂ b)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State"
+            ],
+            "role": "typed_binder",
+            "source": "{State : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.Tactic.Ring"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteMarkovDynamics",
+        "namespace_variable_context": [
+          "{State : Type*} [Fintype State]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteMarkovDynamics.bool_conditional_equal_evidence_differs",
+        "source_line": 447,
+        "source_owner": "src/fep_formal/formal/finite_markov_dynamics.lean",
+        "statement": "theorem bool_conditional_equal_evidence_differs :\n    let mass₁ := weightedBlockMass (FiniteLaw.pointMass true)\n      (FiniteKernel.identity : FiniteKernel Bool Bool)\n      (fun y => if y then (4 / 5 : ℝ) else 2 / 5) (fun _ => ())\n    let mass₂ := weightedBlockMass (FiniteLaw.pointMass false)\n      (FiniteKernel.identity : FiniteKernel Bool Bool)\n      (fun y => if y then (4 / 5 : ℝ) else 2 / 5) (fun _ => ())\n    weightedBlockEvidence mass₁ = 4 / 5 ∧ weightedBlockEvidence mass₂ = 2 / 5 ∧\n    0 < weightedBlockEvidence mass₁ ∧ 0 < weightedBlockEvidence mass₂ ∧\n    weightedBlockEvidence mass₁ ≠ weightedBlockEvidence mass₂ ∧\n    (∀ b, conditionalCoarseReadout mass₁ b = conditionalCoarseReadout mass₂ b)",
+        "statement_sha256": "7c75fa5bf81485f4ce175c5438cf5f1e02684db633ffe9b1cda1a0979ac76a17"
+      },
       "FEP.FiniteMarkovDynamics.hasDobrushinBound_comp": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
         "binders": [
@@ -81998,6 +82040,936 @@
         "source_owner": "src/fep_formal/formal/finite_markov_dynamics.lean",
         "statement": "theorem totalVariation_self (law : FiniteLaw State) :\n    totalVariation law law = 0",
         "statement_sha256": "64cf1e2e0ead04d00b659f5b911b5bc5a9a2bc93bd8d51fab595585778f61c1e"
+      },
+      "FEP.FiniteMarkovDynamics.weightedBlockMass_eq_pushforward": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "law"
+            ],
+            "role": "typed_binder",
+            "source": "(law : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fine"
+            ],
+            "role": "typed_binder",
+            "source": "(fine : FiniteKernel State Target)",
+            "type_source": "FiniteKernel State Target",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Target → ℝ)",
+            "type_source": "Target → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "targetLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(targetLabel : Target → CoarseTarget)",
+            "type_source": "Target → CoarseTarget",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "b"
+            ],
+            "role": "typed_binder",
+            "source": "(b : CoarseTarget)",
+            "type_source": "CoarseTarget",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "weightedBlockMass law fine weight targetLabel b =\n      ∑ y, if targetLabel y = b then (fine.predictive law) y * weight y else 0",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State"
+            ],
+            "role": "typed_binder",
+            "source": "{State : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Target",
+              "CoarseState",
+              "CoarseTarget"
+            ],
+            "role": "typed_binder",
+            "source": "{Target CoarseState CoarseTarget : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Target]",
+            "type_source": "Fintype Target",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq CoarseTarget]",
+            "type_source": "DecidableEq CoarseTarget",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.Tactic.Ring"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteMarkovDynamics",
+        "namespace_variable_context": [
+          "{State : Type*} [Fintype State]",
+          "{Target CoarseState CoarseTarget : Type*}\n  [Fintype Target] [DecidableEq CoarseTarget]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockMass_eq_pushforward",
+        "source_line": 321,
+        "source_owner": "src/fep_formal/formal/finite_markov_dynamics.lean",
+        "statement": "theorem weightedBlockMass_eq_pushforward (law : FiniteLaw State)\n    (fine : FiniteKernel State Target) (weight : Target → ℝ)\n    (targetLabel : Target → CoarseTarget) (b : CoarseTarget) :\n    weightedBlockMass law fine weight targetLabel b =\n      ∑ y, if targetLabel y = b then (fine.predictive law) y * weight y else 0",
+        "statement_sha256": "80b0a553d8e5fd7b4ed09c78a0d2c9ccb22009376fc5f7dfa76af97c8ee683c0"
+      },
+      "FEP.FiniteMarkovDynamics.weightedBlockMass_evidence_and_conditional": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "law"
+            ],
+            "role": "typed_binder",
+            "source": "(law : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fine"
+            ],
+            "role": "typed_binder",
+            "source": "(fine : FiniteKernel State Target)",
+            "type_source": "FiniteKernel State Target",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Target → ℝ)",
+            "type_source": "Target → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "targetLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(targetLabel : Target → CoarseTarget)",
+            "type_source": "Target → CoarseTarget",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "sourceLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(sourceLabel : State → CoarseState)",
+            "type_source": "State → CoarseState",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "reduced"
+            ],
+            "role": "typed_binder",
+            "source": "(reduced : CoarseState → CoarseTarget → ℝ)",
+            "type_source": "CoarseState → CoarseTarget → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hRows"
+            ],
+            "role": "typed_binder",
+            "source": "(hRows : ∀ x b, weightedBlockRow fine weight targetLabel x b = reduced (sourceLabel x) b)",
+            "type_source": "∀ x b, weightedBlockRow fine weight targetLabel x b = reduced (sourceLabel x) b",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) =\n      weightedBlockEvidence (reducedWeightedBlockMass law sourceLabel reduced) ∧\n    (0 < weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) →\n      ∀ b, conditionalCoarseReadout (weightedBlockMass law fine weight targetLabel) b =\n        conditionalCoarseReadout (reducedWeightedBlockMass law sourceLabel reduced) b)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State"
+            ],
+            "role": "typed_binder",
+            "source": "{State : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Target",
+              "CoarseState",
+              "CoarseTarget"
+            ],
+            "role": "typed_binder",
+            "source": "{Target CoarseState CoarseTarget : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Target]",
+            "type_source": "Fintype Target",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq CoarseTarget]",
+            "type_source": "DecidableEq CoarseTarget",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype CoarseTarget]",
+            "type_source": "Fintype CoarseTarget",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "weightedBlockMass_forall_laws_iff_rowwise",
+            "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockMass_forall_laws_iff_rowwise",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.Tactic.Ring"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteMarkovDynamics",
+        "namespace_variable_context": [
+          "{State : Type*} [Fintype State]",
+          "{Target CoarseState CoarseTarget : Type*}\n  [Fintype Target] [DecidableEq CoarseTarget]",
+          "[Fintype CoarseTarget]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockMass_evidence_and_conditional",
+        "source_line": 403,
+        "source_owner": "src/fep_formal/formal/finite_markov_dynamics.lean",
+        "statement": "theorem weightedBlockMass_evidence_and_conditional\n    (law : FiniteLaw State) (fine : FiniteKernel State Target) (weight : Target → ℝ)\n    (targetLabel : Target → CoarseTarget) (sourceLabel : State → CoarseState)\n    (reduced : CoarseState → CoarseTarget → ℝ)\n    (hRows : ∀ x b, weightedBlockRow fine weight targetLabel x b = reduced (sourceLabel x) b) :\n    weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) =\n      weightedBlockEvidence (reducedWeightedBlockMass law sourceLabel reduced) ∧\n    (0 < weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) →\n      ∀ b, conditionalCoarseReadout (weightedBlockMass law fine weight targetLabel) b =\n        conditionalCoarseReadout (reducedWeightedBlockMass law sourceLabel reduced) b)",
+        "statement_sha256": "20a45625527d8eafae9a9c220968960ba20ac5f18bf4ab4add7b615a8ac4e15b"
+      },
+      "FEP.FiniteMarkovDynamics.weightedBlockMass_forall_laws_iff_rowwise": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fine"
+            ],
+            "role": "typed_binder",
+            "source": "(fine : FiniteKernel State Target)",
+            "type_source": "FiniteKernel State Target",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Target → ℝ)",
+            "type_source": "Target → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "targetLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(targetLabel : Target → CoarseTarget)",
+            "type_source": "Target → CoarseTarget",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "sourceLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(sourceLabel : State → CoarseState)",
+            "type_source": "State → CoarseState",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "reduced"
+            ],
+            "role": "typed_binder",
+            "source": "(reduced : CoarseState → CoarseTarget → ℝ)",
+            "type_source": "CoarseState → CoarseTarget → ℝ",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(∀ law : FiniteLaw State, ∀ b,\n      weightedBlockMass law fine weight targetLabel b =\n        reducedWeightedBlockMass law sourceLabel reduced b) ↔\n    (∀ x b, weightedBlockRow fine weight targetLabel x b = reduced (sourceLabel x) b)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State"
+            ],
+            "role": "typed_binder",
+            "source": "{State : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Target",
+              "CoarseState",
+              "CoarseTarget"
+            ],
+            "role": "typed_binder",
+            "source": "{Target CoarseState CoarseTarget : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Target]",
+            "type_source": "Fintype Target",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq CoarseTarget]",
+            "type_source": "DecidableEq CoarseTarget",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.Tactic.Ring"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteMarkovDynamics",
+        "namespace_variable_context": [
+          "{State : Type*} [Fintype State]",
+          "{Target CoarseState CoarseTarget : Type*}\n  [Fintype Target] [DecidableEq CoarseTarget]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockMass_forall_laws_iff_rowwise",
+        "source_line": 354,
+        "source_owner": "src/fep_formal/formal/finite_markov_dynamics.lean",
+        "statement": "theorem weightedBlockMass_forall_laws_iff_rowwise\n    (fine : FiniteKernel State Target) (weight : Target → ℝ)\n    (targetLabel : Target → CoarseTarget) (sourceLabel : State → CoarseState)\n    (reduced : CoarseState → CoarseTarget → ℝ) :\n    (∀ law : FiniteLaw State, ∀ b,\n      weightedBlockMass law fine weight targetLabel b =\n        reducedWeightedBlockMass law sourceLabel reduced b) ↔\n    (∀ x b, weightedBlockRow fine weight targetLabel x b = reduced (sourceLabel x) b)",
+        "statement_sha256": "eec4d6866114b82bdd7e86152711584a05fbc303d5d712b8f18d482ddfd3c916"
+      },
+      "FEP.FiniteMarkovDynamics.weightedBlockMass_lumpable_evidence_and_conditional": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype CoarseState]",
+            "type_source": "Fintype CoarseState",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "law"
+            ],
+            "role": "typed_binder",
+            "source": "(law : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fine"
+            ],
+            "role": "typed_binder",
+            "source": "(fine : FiniteKernel State Target)",
+            "type_source": "FiniteKernel State Target",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "coarseKernel"
+            ],
+            "role": "typed_binder",
+            "source": "(coarseKernel : FiniteKernel CoarseState CoarseTarget)",
+            "type_source": "FiniteKernel CoarseState CoarseTarget",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "sourceLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(sourceLabel : State → CoarseState)",
+            "type_source": "State → CoarseState",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "targetLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(targetLabel : Target → CoarseTarget)",
+            "type_source": "Target → CoarseTarget",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Target → ℝ)",
+            "type_source": "Target → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "coarseWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(coarseWeight : CoarseTarget → ℝ)",
+            "type_source": "CoarseTarget → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hFibre"
+            ],
+            "role": "typed_binder",
+            "source": "(hFibre : ∀ y, weight y = coarseWeight (targetLabel y))",
+            "type_source": "∀ y, weight y = coarseWeight (targetLabel y)",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hLump"
+            ],
+            "role": "typed_binder",
+            "source": "(hLump : ∀ x b, (∑ y, if targetLabel y = b then fine x y else 0) =\n      coarseKernel (sourceLabel x) b)",
+            "type_source": "∀ x b, (∑ y, if targetLabel y = b then fine x y else 0) =\n      coarseKernel (sourceLabel x) b",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(∀ b, 0 ≤ weightedBlockMass law fine weight targetLabel b) ∧\n    weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) =\n      weightedBlockEvidence (reducedWeightedBlockMass law sourceLabel\n        (fun a b => coarseKernel a b * coarseWeight b)) ∧\n    (0 < weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) →\n      ∀ b, conditionalCoarseReadout (weightedBlockMass law fine weight targetLabel) b =\n        conditionalCoarseReadout (reducedWeightedBlockMass law sourceLabel\n          (fun a b => coarseKernel a b * coarseWeight b)) b)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State"
+            ],
+            "role": "typed_binder",
+            "source": "{State : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Target",
+              "CoarseState",
+              "CoarseTarget"
+            ],
+            "role": "typed_binder",
+            "source": "{Target CoarseState CoarseTarget : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Target]",
+            "type_source": "Fintype Target",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq CoarseTarget]",
+            "type_source": "DecidableEq CoarseTarget",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype CoarseTarget]",
+            "type_source": "Fintype CoarseTarget",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "weightedBlockMass_evidence_and_conditional",
+            "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockMass_evidence_and_conditional",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "weightedBlockMass_nonneg",
+            "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockMass_nonneg",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "weightedBlockRow_eq_of_lumpable",
+            "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockRow_eq_of_lumpable",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.Tactic.Ring"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteMarkovDynamics",
+        "namespace_variable_context": [
+          "{State : Type*} [Fintype State]",
+          "{Target CoarseState CoarseTarget : Type*}\n  [Fintype Target] [DecidableEq CoarseTarget]",
+          "[Fintype CoarseTarget]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockMass_lumpable_evidence_and_conditional",
+        "source_line": 421,
+        "source_owner": "src/fep_formal/formal/finite_markov_dynamics.lean",
+        "statement": "theorem weightedBlockMass_lumpable_evidence_and_conditional [Fintype CoarseState]\n    (law : FiniteLaw State) (fine : FiniteKernel State Target)\n    (coarseKernel : FiniteKernel CoarseState CoarseTarget)\n    (sourceLabel : State → CoarseState) (targetLabel : Target → CoarseTarget)\n    (weight : Target → ℝ) (coarseWeight : CoarseTarget → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hFibre : ∀ y, weight y = coarseWeight (targetLabel y))\n    (hLump : ∀ x b, (∑ y, if targetLabel y = b then fine x y else 0) =\n      coarseKernel (sourceLabel x) b) :\n    (∀ b, 0 ≤ weightedBlockMass law fine weight targetLabel b) ∧\n    weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) =\n      weightedBlockEvidence (reducedWeightedBlockMass law sourceLabel\n        (fun a b => coarseKernel a b * coarseWeight b)) ∧\n    (0 < weightedBlockEvidence (weightedBlockMass law fine weight targetLabel) →\n      ∀ b, conditionalCoarseReadout (weightedBlockMass law fine weight targetLabel) b =\n        conditionalCoarseReadout (reducedWeightedBlockMass law sourceLabel\n          (fun a b => coarseKernel a b * coarseWeight b)) b)",
+        "statement_sha256": "a13ff797d437e87576b0962c288097f44cd7e4e78099cfff742f9bc58ff22dec"
+      },
+      "FEP.FiniteMarkovDynamics.weightedBlockMass_nonneg": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "law"
+            ],
+            "role": "typed_binder",
+            "source": "(law : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fine"
+            ],
+            "role": "typed_binder",
+            "source": "(fine : FiniteKernel State Target)",
+            "type_source": "FiniteKernel State Target",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Target → ℝ)",
+            "type_source": "Target → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "targetLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(targetLabel : Target → CoarseTarget)",
+            "type_source": "Target → CoarseTarget",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "b"
+            ],
+            "role": "typed_binder",
+            "source": "(b : CoarseTarget)",
+            "type_source": "CoarseTarget",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "0 ≤ weightedBlockMass law fine weight targetLabel b",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State"
+            ],
+            "role": "typed_binder",
+            "source": "{State : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Target",
+              "CoarseState",
+              "CoarseTarget"
+            ],
+            "role": "typed_binder",
+            "source": "{Target CoarseState CoarseTarget : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Target]",
+            "type_source": "Fintype Target",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq CoarseTarget]",
+            "type_source": "DecidableEq CoarseTarget",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.Tactic.Ring"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteMarkovDynamics",
+        "namespace_variable_context": [
+          "{State : Type*} [Fintype State]",
+          "{Target CoarseState CoarseTarget : Type*}\n  [Fintype Target] [DecidableEq CoarseTarget]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockMass_nonneg",
+        "source_line": 339,
+        "source_owner": "src/fep_formal/formal/finite_markov_dynamics.lean",
+        "statement": "theorem weightedBlockMass_nonneg (law : FiniteLaw State)\n    (fine : FiniteKernel State Target) (weight : Target → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y) (targetLabel : Target → CoarseTarget)\n    (b : CoarseTarget) : 0 ≤ weightedBlockMass law fine weight targetLabel b",
+        "statement_sha256": "b8f978da21a0df3edeefb59e80ab8c4b4c284b682d805751b581a7be6fd4d588"
+      },
+      "FEP.FiniteMarkovDynamics.weightedBlockRow_eq_of_lumpable": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype CoarseState]",
+            "type_source": "Fintype CoarseState",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype CoarseTarget]",
+            "type_source": "Fintype CoarseTarget",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fine"
+            ],
+            "role": "typed_binder",
+            "source": "(fine : FiniteKernel State Target)",
+            "type_source": "FiniteKernel State Target",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "coarseKernel"
+            ],
+            "role": "typed_binder",
+            "source": "(coarseKernel : FiniteKernel CoarseState CoarseTarget)",
+            "type_source": "FiniteKernel CoarseState CoarseTarget",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "sourceLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(sourceLabel : State → CoarseState)",
+            "type_source": "State → CoarseState",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "targetLabel"
+            ],
+            "role": "typed_binder",
+            "source": "(targetLabel : Target → CoarseTarget)",
+            "type_source": "Target → CoarseTarget",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Target → ℝ)",
+            "type_source": "Target → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "coarseWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(coarseWeight : CoarseTarget → ℝ)",
+            "type_source": "CoarseTarget → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hFibre"
+            ],
+            "role": "typed_binder",
+            "source": "(hFibre : ∀ y, weight y = coarseWeight (targetLabel y))",
+            "type_source": "∀ y, weight y = coarseWeight (targetLabel y)",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hLump"
+            ],
+            "role": "typed_binder",
+            "source": "(hLump : ∀ x b, (∑ y, if targetLabel y = b then fine x y else 0) =\n      coarseKernel (sourceLabel x) b)",
+            "type_source": "∀ x b, (∑ y, if targetLabel y = b then fine x y else 0) =\n      coarseKernel (sourceLabel x) b",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "b"
+            ],
+            "role": "typed_binder",
+            "source": "(b : CoarseTarget)",
+            "type_source": "CoarseTarget",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "weightedBlockRow fine weight targetLabel x b =\n      coarseKernel (sourceLabel x) b * coarseWeight b",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State"
+            ],
+            "role": "typed_binder",
+            "source": "{State : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Target",
+              "CoarseState",
+              "CoarseTarget"
+            ],
+            "role": "typed_binder",
+            "source": "{Target CoarseState CoarseTarget : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Target]",
+            "type_source": "Fintype Target",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[DecidableEq CoarseTarget]",
+            "type_source": "DecidableEq CoarseTarget",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.finite_probability",
+          "Mathlib.Tactic.Ring"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.FiniteMarkovDynamics",
+        "namespace_variable_context": [
+          "{State : Type*} [Fintype State]",
+          "{Target CoarseState CoarseTarget : Type*}\n  [Fintype Target] [DecidableEq CoarseTarget]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.FiniteMarkovDynamics.weightedBlockRow_eq_of_lumpable",
+        "source_line": 374,
+        "source_owner": "src/fep_formal/formal/finite_markov_dynamics.lean",
+        "statement": "theorem weightedBlockRow_eq_of_lumpable [Fintype CoarseState] [Fintype CoarseTarget]\n    (fine : FiniteKernel State Target) (coarseKernel : FiniteKernel CoarseState CoarseTarget)\n    (sourceLabel : State → CoarseState) (targetLabel : Target → CoarseTarget)\n    (weight : Target → ℝ) (coarseWeight : CoarseTarget → ℝ)\n    (hFibre : ∀ y, weight y = coarseWeight (targetLabel y))\n    (hLump : ∀ x b, (∑ y, if targetLabel y = b then fine x y else 0) =\n      coarseKernel (sourceLabel x) b) (x : State) (b : CoarseTarget) :\n    weightedBlockRow fine weight targetLabel x b =\n      coarseKernel (sourceLabel x) b * coarseWeight b",
+        "statement_sha256": "c713f57f498987049e1ca085ceb4b9bc540f9bc2d3cf3ddbb8b52b809c380339"
       },
       "FEP.FinitePosteriorLearning.centeredLogLikelihoodRatio_hasSubgaussianMGF": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -135239,7 +136211,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.beliefNormalizer_eq_totalWeight",
-        "source_line": 570,
+        "source_line": 950,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem beliefNormalizer_eq_totalWeight [DecidableEq S] (t : PTree S) :\n    beliefNormalizer t = totalWeight t",
         "statement_sha256": "bd8c20940e546c7f02e2a7eef00fbf9afb47aeb7d9ec8806505f30e19da81268"
@@ -135372,7 +136344,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.msg_eq_bruteMass",
-        "source_line": 544,
+        "source_line": 924,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem msg_eq_bruteMass [DecidableEq S] (t : PTree S) (s : S) :\n    msg t s = bruteMass t s",
         "statement_sha256": "4c0bfc32355b2268c092831dc6698f945ee3c105ee242845cfdecca91f5e790b"
@@ -135469,7 +136441,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.msg_nonneg",
-        "source_line": 584,
+        "source_line": 964,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem msg_nonneg : (t : PTree S) → t.Nonneg → ∀ s, 0 ≤ msg t s",
         "statement_sha256": "5b340242f7e6c35c33ae5281d6fef8fb5272597feab154a6fa0ccc5043702c63"
@@ -135608,7 +136580,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.rootBelief_eq_exactMarginal",
-        "source_line": 579,
+        "source_line": 959,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem rootBelief_eq_exactMarginal [DecidableEq S] (t : PTree S) (s : S) :\n    rootBelief t s = exactMarginal t s",
         "statement_sha256": "64b6fda4c72ab2496f924f95926d5a4ae6d8d0834ff0d6ae7dae02f6c7f9312a"
@@ -135756,7 +136728,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.rootBelief_node",
-        "source_line": 521,
+        "source_line": 901,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem rootBelief_node (φ : S → ℝ) (n : ℕ) (ψ : Fin n → S → S → ℝ)\n    (c : Fin n → PTree S) (s : S) :\n    rootBelief (node φ n ψ c) s =\n      (φ s * ∏ i : Fin n, childMessage (ψ i) (c i) s) /\n        ∑ y, φ y * ∏ i : Fin n, childMessage (ψ i) (c i) y",
         "statement_sha256": "c467467a9ed0490852e14d6ed23253e1bb2778c0a4b94acbd8b4f4795d71684b"
@@ -135891,7 +136863,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.rootBelief_nonneg",
-        "source_line": 601,
+        "source_line": 981,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem rootBelief_nonneg (t : PTree S) (ht : t.Nonneg) (s : S) :\n    0 ≤ rootBelief t s",
         "statement_sha256": "f1fb0a4218643217b80b7840e955c58de53a7191581b9bf0fc807ef8dd6399e9"
@@ -136024,7 +136996,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.rootBelief_sum_one",
-        "source_line": 592,
+        "source_line": 972,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem rootBelief_sum_one [DecidableEq S] (t : PTree S) (hpos : 0 < totalWeight t) :\n    ∑ s, rootBelief t s = 1",
         "statement_sha256": "64f6016d608008aaefee02d0f558013843860101033c51e00d719dba25c44c66"
@@ -136150,7 +137122,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.sum_root_weight",
-        "source_line": 530,
+        "source_line": 910,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem sum_root_weight [DecidableEq S] (t : PTree S) (F : S → ℝ) :\n    ∑ x : Conf t, F (Conf.root t x) * weight t x =\n      ∑ y, F y * bruteMass t y",
         "statement_sha256": "809fdb12bb908f14df5f24256d271eeec4f7a6550ab5d8d2b21e03bc3e2f7989"
@@ -136273,7 +137245,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.totalWeight_eq_sum_bruteMass",
-        "source_line": 539,
+        "source_line": 919,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem totalWeight_eq_sum_bruteMass [DecidableEq S] (t : PTree S) :\n    totalWeight t = ∑ y, bruteMass t y",
         "statement_sha256": "e79be22245d22f7b5e8ebeb9b082c4aa80754526b19783dd30c9544d25528c9d"
@@ -136629,7 +137601,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolBackwardEvidence_eq",
-        "source_line": 375,
+        "source_line": 755,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolBackwardEvidence_eq :\n    backwardEvidence boolInitialLaw boolStickyTransition\n        boolAccurateEmission true = 23 / 40",
         "statement_sha256": "75b33de4c337e8d05c05793f9339e351d237e3284f829eb13e9df417086054ad"
@@ -136706,7 +137678,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolBackwardMessage_false_mass",
-        "source_line": 363,
+        "source_line": 743,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolBackwardMessage_false_mass :\n    boolBackwardMessage false = 7 / 20",
         "statement_sha256": "04dda0ca04e908bd108671096e2fba956b2d5668670fcf1435b23f7660d44b92"
@@ -136807,7 +137779,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolBackwardMessage_nonneg",
-        "source_line": 369,
+        "source_line": 749,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolBackwardMessage_nonneg (state : Bool) :\n    0 ≤ boolBackwardMessage state",
         "statement_sha256": "5bed684e5291be5f23df4c672e4859f4bb0141e6285d490e2a865bada8fa7542"
@@ -136884,7 +137856,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolBackwardMessage_true_mass",
-        "source_line": 357,
+        "source_line": 737,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolBackwardMessage_true_mass :\n    boolBackwardMessage true = 13 / 20",
         "statement_sha256": "029dd6ea2515b319d211c9eca79de9f5b1a6cdb0caab54a4d3df45af0b7dab48"
@@ -136961,7 +137933,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardEvidence_true",
-        "source_line": 306,
+        "source_line": 686,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardEvidence_true :\n    forwardEvidence boolInitialLaw boolStickyTransition boolAccurateEmission true =\n      23 / 40",
         "statement_sha256": "618d0e5e3ab3a44362c40307e2c7fd137d9812cc054c01f200b5e82f48c6bc43"
@@ -137045,7 +138017,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardEvidence_true_pos",
-        "source_line": 314,
+        "source_line": 694,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardEvidence_true_pos :\n    0 < forwardEvidence boolInitialLaw boolStickyTransition\n      boolAccurateEmission true",
         "statement_sha256": "540399a6a6acdf79240b47261e2596e5f861a66ce39185305cbc03a2f9e2f888"
@@ -137147,7 +138119,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardFilter_false_mass",
-        "source_line": 336,
+        "source_line": 716,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardFilter_false_mass :\n    boolForwardFilter false = 3 / 23",
         "statement_sha256": "1c3855145678370e2492b3865f36dd712f12ddaa619c527114d3bc1fbdce503e"
@@ -137237,7 +138209,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardFilter_sum_one",
-        "source_line": 346,
+        "source_line": 726,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardFilter_sum_one :\n    boolForwardFilter false + boolForwardFilter true = 1",
         "statement_sha256": "90c5b855cd4596c4ba3cc98b4511a906c4edcda08f614ee8656b2308bc98673f"
@@ -137339,7 +138311,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardFilter_true_mass",
-        "source_line": 326,
+        "source_line": 706,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardFilter_true_mass :\n    boolForwardFilter true = 20 / 23",
         "statement_sha256": "269bd990d2f02244a5542e9d553d04b12738c91b54d7b95e8f6c86b4361cf765"
@@ -137416,7 +138388,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolModelAverage_false_mass",
-        "source_line": 288,
+        "source_line": 668,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolModelAverage_false_mass :\n    modelAverage boolInitialLaw boolAccurateEmission false = 7 / 20",
         "statement_sha256": "26bc5da19085700e8ba9bebcfa0a78d90d2c1f956865d33ce31e98c8178a2972"
@@ -137493,7 +138465,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolModelAverage_true_mass",
-        "source_line": 282,
+        "source_line": 662,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolModelAverage_true_mass :\n    modelAverage boolInitialLaw boolAccurateEmission true = 13 / 20",
         "statement_sha256": "b8eef84e2aa82e127a5450d6e71b91b340205d7c5413f901f5c76785f49f5f42"
@@ -137570,7 +138542,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolPrediction_false_mass",
-        "source_line": 300,
+        "source_line": 680,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolPrediction_false_mass :\n    forwardPrediction boolInitialLaw boolStickyTransition false = 3 / 8",
         "statement_sha256": "d529ec81cb171445777c692e8fe9e0866c466721c595f3fb4e3f0580c5e212d8"
@@ -137647,7 +138619,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolPrediction_true_mass",
-        "source_line": 294,
+        "source_line": 674,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolPrediction_true_mass :\n    forwardPrediction boolInitialLaw boolStickyTransition true = 5 / 8",
         "statement_sha256": "f039f343eac9f7d6950ee02001270ac1864fe7952d02b6424d73410d0b7c0a02"
@@ -137737,7 +138709,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothingNormalizer_eq",
-        "source_line": 381,
+        "source_line": 761,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothingNormalizer_eq :\n    smoothingNormalizer boolInitialLaw boolBackwardMessage = 23 / 40",
         "statement_sha256": "aaddf4e46f8f49b6fab96f5aef5ab52129c1b806ace140ba48035721f69742d9"
@@ -137821,7 +138793,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothingNormalizer_pos",
-        "source_line": 388,
+        "source_line": 768,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothingNormalizer_pos :\n    0 < smoothingNormalizer boolInitialLaw boolBackwardMessage",
         "statement_sha256": "4713f2874d76b08ea8f35c5e8527285a006ea6cbdef08bad512a40cc909634d8"
@@ -137929,7 +138901,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothing_false_mass",
-        "source_line": 410,
+        "source_line": 790,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothing_false_mass :\n    boolSmoothing false = 7 / 46",
         "statement_sha256": "4bcbfda809fc17cbefc8b79290d8bab9e4309218f2af3f853ac27256216901a6"
@@ -138019,7 +138991,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothing_sum_one",
-        "source_line": 421,
+        "source_line": 801,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothing_sum_one :\n    boolSmoothing false + boolSmoothing true = 1",
         "statement_sha256": "e23ec28095c78d77641673e0c95c09ef016a02617370d52f80119473719b5b28"
@@ -138127,10 +139099,438 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothing_true_mass",
-        "source_line": 399,
+        "source_line": 779,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothing_true_mass :\n    boolSmoothing true = 39 / 46",
         "statement_sha256": "f63db146d58b93f76e4c78a7e2b951202abfb744d5d2f954c72145afc2f765cc"
+      },
+      "FEP.TemporalInference.boolTerminalTwoStep_distinct_fallbacks": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "(FiniteLaw.pointMass true : FiniteLaw Bool) ≠ FiniteLaw.pointMass false ∧\n    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      (FiniteLaw.pointMass true) (FiniteLaw.pointMass true) =\n    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      (FiniteLaw.pointMass false) (FiniteLaw.pointMass false)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "boolTerminalTwoStep_evidence",
+            "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_evidence",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "statement_reference"
+          },
+          {
+            "identifier": "terminalTiltTwoStepPath_fallback_invariant",
+            "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_fallback_invariant",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_distinct_fallbacks",
+        "source_line": 547,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem boolTerminalTwoStep_distinct_fallbacks :\n    (FiniteLaw.pointMass true : FiniteLaw Bool) ≠ FiniteLaw.pointMass false ∧\n    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      (FiniteLaw.pointMass true) (FiniteLaw.pointMass true) =\n    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      (FiniteLaw.pointMass false) (FiniteLaw.pointMass false)",
+        "statement_sha256": "6ce9d775af8642f3135b711037b87d7420a87df60e9d68ed544f735d0014196c"
+      },
+      "FEP.TemporalInference.boolTerminalTwoStep_evidence": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "smoothingNormalizer (FiniteLaw.uniform : FiniteLaw Bool)\n      (terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n        (terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n          boolTerminalEvent)) = 1 / 2",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_evidence",
+        "source_line": 514,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem boolTerminalTwoStep_evidence :\n    smoothingNormalizer (FiniteLaw.uniform : FiniteLaw Bool)\n      (terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n        (terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n          boolTerminalEvent)) = 1 / 2",
+        "statement_sha256": "84df0e09d75f0d6c9012e7431e7f5aa1bb3e8d615190b11748029e83c27cf5c7"
+      },
+      "FEP.TemporalInference.boolTerminalTwoStep_positive_path": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "middleFallback",
+              "terminalFallback"
+            ],
+            "role": "typed_binder",
+            "source": "(middleFallback terminalFallback : FiniteLaw Bool)",
+            "type_source": "FiniteLaw Bool",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      middleFallback terminalFallback (true, true, true) = 1",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "boolTerminalTwoStep_evidence",
+            "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_evidence",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "statement_reference"
+          },
+          {
+            "identifier": "boolTerminalTwoStep_evidence",
+            "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_evidence",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "terminalTiltTwoStepPath_mass",
+            "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_mass",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_positive_path",
+        "source_line": 536,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem boolTerminalTwoStep_positive_path (middleFallback terminalFallback : FiniteLaw Bool) :\n    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      middleFallback terminalFallback (true, true, true) = 1",
+        "statement_sha256": "4be3bae8fb744412759eee3cf2af60d197250ac8babc2e5821ae5b66d97e1db2"
+      },
+      "FEP.TemporalInference.boolTerminalTwoStep_reachable_null_witness": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [],
+        "conclusion": "terminalTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity (true, true, true) = 1 / 2 ∧\n    terminalTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity (false, false, false) = 1 / 2 ∧\n    terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n      boolTerminalEvent false = 0",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_reachable_null_witness",
+        "source_line": 524,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem boolTerminalTwoStep_reachable_null_witness :\n    terminalTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity (true, true, true) = 1 / 2 ∧\n    terminalTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity (false, false, false) = 1 / 2 ∧\n    terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n      boolTerminalEvent false = 0",
+        "statement_sha256": "be4067cc2e6c245f9d2f7d0e3b3664fa924b08afaccf06a0dda574471d9cf4b7"
       },
       "FEP.TemporalInference.forwardBackwardSmoothing_factorization": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -138993,7 +140393,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.hierarchicalPredictive_eq",
-        "source_line": 219,
+        "source_line": 599,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem hierarchicalPredictive_eq (top : FiniteLaw Upper)\n    (upperKernel : FiniteKernel Upper Middle)\n    (lowerKernel : FiniteKernel Middle Observation) :\n    hierarchicalPredictive top upperKernel lowerKernel =\n      (FiniteKernel.comp lowerKernel upperKernel).predictive top",
         "statement_sha256": "eb77c949755af877e15fc0ceae9cb75896dcfdd956dd02eedc1fd451da92a820"
@@ -139111,7 +140511,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.hierarchicalPredictive_mass",
-        "source_line": 227,
+        "source_line": 607,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem hierarchicalPredictive_mass (top : FiniteLaw Upper)\n    (upperKernel : FiniteKernel Upper Middle)\n    (lowerKernel : FiniteKernel Middle Observation) (observation : Observation) :\n    hierarchicalPredictive top upperKernel lowerKernel observation =\n      ∑ middle,\n        (∑ upper, top upper * upperKernel upper middle) *\n          lowerKernel middle observation",
         "statement_sha256": "06d42c3a92e62ffb8f38bacc362780ab423f2547c939a4ac0f33d0d7b667a03b"
@@ -139269,7 +140669,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.localUpdate_eq_oneEdge_exactMarginal",
-        "source_line": 719,
+        "source_line": 1099,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem localUpdate_eq_oneEdge_exactMarginal {S : Type uS} [Fintype S] [DecidableEq S]\n    (ψ : S → S → ℝ) (incoming : S → ℝ) (neighbors : Finset S) (i j : S) :\n    localUpdate ψ incoming neighbors i j =\n      PTree.exactMarginal (oneEdgeTree ψ incoming neighbors i) j",
         "statement_sha256": "d3caf0334aa756e607983de076ea84193504b0df63a68d169c4cf4d21c6e420b"
@@ -139414,7 +140814,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.localUpdate_eq_oneEdge_rootBelief",
-        "source_line": 700,
+        "source_line": 1080,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem localUpdate_eq_oneEdge_rootBelief {S : Type uS} [Fintype S] [DecidableEq S]\n    (ψ : S → S → ℝ) (incoming : S → ℝ) (neighbors : Finset S) (i j : S) :\n    localUpdate ψ incoming neighbors i j =\n      PTree.rootBelief (oneEdgeTree ψ incoming neighbors i) j",
         "statement_sha256": "62874993b783ed1bcad811cc9bbf046a3d43a1d10a98fb545f6469499c86d1ba"
@@ -139522,7 +140922,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.modelAverage_mass",
-        "source_line": 242,
+        "source_line": 622,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem modelAverage_mass (modelPrior : FiniteLaw Model)\n    (modelPredictive : FiniteKernel Model Observation)\n    (observation : Observation) :\n    modelAverage modelPrior modelPredictive observation =\n      ∑ model, modelPrior model * modelPredictive model observation",
         "statement_sha256": "641b00991123df3a2ef1339fb0715c5877672e484d570f6361a462095c2c51a6"
@@ -139620,7 +141020,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.modelAverage_sum_one",
-        "source_line": 250,
+        "source_line": 630,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem modelAverage_sum_one (modelPrior : FiniteLaw Model)\n    (modelPredictive : FiniteKernel Model Observation) :\n    ∑ observation, modelAverage modelPrior modelPredictive observation = 1",
         "statement_sha256": "7725f3fe830ef4c1518d9bbf1ed0b34099f8855f927215b43a5cad31796f8e75"
@@ -139805,7 +141205,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spCycle_marginal_true",
-        "source_line": 664,
+        "source_line": 1044,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spCycle_marginal_true :\n    (∑ x₁ : Bool, ∑ x₂ : Bool, spCycleJoint true x₁ x₂) /\n        (∑ x₀ : Bool, ∑ x₁ : Bool, ∑ x₂ : Bool, spCycleJoint x₀ x₁ x₂) =\n      43 / 62",
         "statement_sha256": "fda28cf78fc6cafbf5d9c6a5376dcfc209888ab660c1404ea05669544737e01c"
@@ -139895,7 +141295,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spCycle_naive_message_product_ne_marginal",
-        "source_line": 672,
+        "source_line": 1052,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spCycle_naive_message_product_ne_marginal :\n    PTree.rootBelief spStar true ≠\n      (∑ x₁ : Bool, ∑ x₂ : Bool, spCycleJoint true x₁ x₂) /\n        (∑ x₀ : Bool, ∑ x₁ : Bool, ∑ x₂ : Bool, spCycleJoint x₀ x₁ x₂)",
         "statement_sha256": "815c76c7deae7e6b483eb0f4f3fe7e0ae75f74853955f9b060b9cb8b24a7551f"
@@ -139972,7 +141372,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_bruteForce_true",
-        "source_line": 651,
+        "source_line": 1031,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_bruteForce_true :\n    (∑ x₁ : Bool, ∑ x₂ : Bool, spStarJoint true x₁ x₂) /\n        (∑ x₀ : Bool, ∑ x₁ : Bool, ∑ x₂ : Bool, spStarJoint x₀ x₁ x₂) =\n      49 / 74",
         "statement_sha256": "8b2b9c2dc7957c850b7e5b203f6d36d328caa77371e60d503d54a5934ca7698d"
@@ -140062,7 +141462,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_exactMarginal_true",
-        "source_line": 659,
+        "source_line": 1039,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_exactMarginal_true : PTree.exactMarginal spStar true = 49 / 74",
         "statement_sha256": "64fa2eddbb20c9cbcf0ef34dafb81ea42a15486dd1c912e6980a374b49d19f5d"
@@ -140139,7 +141539,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_msg_false",
-        "source_line": 639,
+        "source_line": 1019,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_msg_false : PTree.msg spStar false = 25",
         "statement_sha256": "a33dcae22d260b22720048d64029645c2ed74cde0463da83ae60cb8011bfb959"
@@ -140216,7 +141616,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_msg_true",
-        "source_line": 634,
+        "source_line": 1014,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_msg_true : PTree.msg spStar true = 49",
         "statement_sha256": "6ba968df82d6ef8714c5120afb7249c03c276f3e9f518dd61db4e8bae976dcaf"
@@ -140306,10 +141706,2225 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_rootBelief_true",
-        "source_line": 644,
+        "source_line": 1024,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_rootBelief_true : PTree.rootBelief spStar true = 49 / 74",
         "statement_sha256": "7afa1aba2add7d796b11f23edf6d8cc58b1615319fc38c16b883c1e96d59c813"
+      },
+      "FEP.TemporalInference.terminalBackwardWeight_nonneg": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "transition"
+            ],
+            "role": "typed_binder",
+            "source": "(transition : FiniteKernel State Terminal)",
+            "type_source": "FiniteKernel State Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "0 ≤ terminalBackwardWeight transition weight x",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalBackwardWeight_nonneg",
+        "source_line": 238,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalBackwardWeight_nonneg (transition : FiniteKernel State Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y) (x : State) :\n    0 ≤ terminalBackwardWeight transition weight x",
+        "statement_sha256": "8df022fbbbbb8c7a4648e1a063c325bf0f909a723a726a34cc10c54741212f65"
+      },
+      "FEP.TemporalInference.terminalTiltJoint_eq_smoothing": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "transition"
+            ],
+            "role": "typed_binder",
+            "source": "(transition : FiniteKernel State Terminal)",
+            "type_source": "FiniteKernel State Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hEvidence"
+            ],
+            "role": "typed_binder",
+            "source": "(hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))",
+            "type_source": "0 < smoothingNormalizer prior (terminalBackwardWeight transition weight)",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fallback"
+            ],
+            "role": "typed_binder",
+            "source": "(fallback : FiniteLaw Terminal)",
+            "type_source": "FiniteLaw Terminal",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltJoint prior transition weight hWeight hEvidence fallback =\n      forwardBackwardSmoothing (FiniteKernel.joint prior transition) (fun xy => weight xy.2)\n        (fun xy => hWeight xy.2)\n        (by rw [terminalTiltJoint_normalizer]; exact hEvidence)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "terminalTiltJoint_normalizer",
+            "qualified_name": "FEP.TemporalInference.terminalTiltJoint_normalizer",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "statement_reference"
+          },
+          {
+            "identifier": "terminalTiltJoint_mass",
+            "qualified_name": "FEP.TemporalInference.terminalTiltJoint_mass",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "terminalTiltJoint_normalizer",
+            "qualified_name": "FEP.TemporalInference.terminalTiltJoint_normalizer",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltJoint_eq_smoothing",
+        "source_line": 298,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltJoint_eq_smoothing (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))\n    (fallback : FiniteLaw Terminal) :\n    terminalTiltJoint prior transition weight hWeight hEvidence fallback =\n      forwardBackwardSmoothing (FiniteKernel.joint prior transition) (fun xy => weight xy.2)\n        (fun xy => hWeight xy.2)\n        (by rw [terminalTiltJoint_normalizer]; exact hEvidence)",
+        "statement_sha256": "d9121e87d61b8d31490751bb056d14b63599b612b53cc2f963c7259181b491c5"
+      },
+      "FEP.TemporalInference.terminalTiltJoint_fallback_invariant": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "transition"
+            ],
+            "role": "typed_binder",
+            "source": "(transition : FiniteKernel State Terminal)",
+            "type_source": "FiniteKernel State Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hEvidence"
+            ],
+            "role": "typed_binder",
+            "source": "(hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))",
+            "type_source": "0 < smoothingNormalizer prior (terminalBackwardWeight transition weight)",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fallback₁",
+              "fallback₂"
+            ],
+            "role": "typed_binder",
+            "source": "(fallback₁ fallback₂ : FiniteLaw Terminal)",
+            "type_source": "FiniteLaw Terminal",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltJoint prior transition weight hWeight hEvidence fallback₁ =\n      terminalTiltJoint prior transition weight hWeight hEvidence fallback₂",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "terminalTiltJoint_eq_smoothing",
+            "qualified_name": "FEP.TemporalInference.terminalTiltJoint_eq_smoothing",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltJoint_fallback_invariant",
+        "source_line": 318,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltJoint_fallback_invariant (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))\n    (fallback₁ fallback₂ : FiniteLaw Terminal) :\n    terminalTiltJoint prior transition weight hWeight hEvidence fallback₁ =\n      terminalTiltJoint prior transition weight hWeight hEvidence fallback₂",
+        "statement_sha256": "82ba4ab9e6b24a9a65191ca7c5d806eeee222fe9b9fca068da0de6e3e16d461e"
+      },
+      "FEP.TemporalInference.terminalTiltJoint_mass": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "transition"
+            ],
+            "role": "typed_binder",
+            "source": "(transition : FiniteKernel State Terminal)",
+            "type_source": "FiniteKernel State Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hEvidence"
+            ],
+            "role": "typed_binder",
+            "source": "(hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))",
+            "type_source": "0 < smoothingNormalizer prior (terminalBackwardWeight transition weight)",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fallback"
+            ],
+            "role": "typed_binder",
+            "source": "(fallback : FiniteLaw Terminal)",
+            "type_source": "FiniteLaw Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "y"
+            ],
+            "role": "typed_binder",
+            "source": "(y : Terminal)",
+            "type_source": "Terminal",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltJoint prior transition weight hWeight hEvidence fallback (x, y) =\n      prior x * transition x y * weight y /\n        smoothingNormalizer prior (terminalBackwardWeight transition weight)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "terminalTiltKernel_factorization",
+            "qualified_name": "FEP.TemporalInference.terminalTiltKernel_factorization",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltJoint_mass",
+        "source_line": 280,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltJoint_mass (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))\n    (fallback : FiniteLaw Terminal) (x : State) (y : Terminal) :\n    terminalTiltJoint prior transition weight hWeight hEvidence fallback (x, y) =\n      prior x * transition x y * weight y /\n        smoothingNormalizer prior (terminalBackwardWeight transition weight)",
+        "statement_sha256": "446e9511efe4f335becc55feecf34fb9a893f0981ca0cf21231d63e7aa20af7b"
+      },
+      "FEP.TemporalInference.terminalTiltJoint_normalizer": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "transition"
+            ],
+            "role": "typed_binder",
+            "source": "(transition : FiniteKernel State Terminal)",
+            "type_source": "FiniteKernel State Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "smoothingNormalizer (FiniteKernel.joint prior transition) (fun xy => weight xy.2) =\n      smoothingNormalizer prior (terminalBackwardWeight transition weight)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltJoint_normalizer",
+        "source_line": 255,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltJoint_normalizer (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ) :\n    smoothingNormalizer (FiniteKernel.joint prior transition) (fun xy => weight xy.2) =\n      smoothingNormalizer prior (terminalBackwardWeight transition weight)",
+        "statement_sha256": "2646874f2ebb4aaa0248dabb406694cbd3549b019dbf2fb5d80c8af9911cf0c2"
+      },
+      "FEP.TemporalInference.terminalTiltKernel_comp_of_pos": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "earlier"
+            ],
+            "role": "typed_binder",
+            "source": "(earlier : FiniteKernel State Middle)",
+            "type_source": "FiniteKernel State Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "later"
+            ],
+            "role": "typed_binder",
+            "source": "(later : FiniteKernel Middle Terminal)",
+            "type_source": "FiniteKernel Middle Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "middleFallback"
+            ],
+            "role": "typed_binder",
+            "source": "(middleFallback : FiniteLaw Middle)",
+            "type_source": "FiniteLaw Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "terminalFallback"
+            ],
+            "role": "typed_binder",
+            "source": "(terminalFallback : FiniteLaw Terminal)",
+            "type_source": "FiniteLaw Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "t"
+            ],
+            "role": "typed_binder",
+            "source": "(t : Terminal)",
+            "type_source": "Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hPos"
+            ],
+            "role": "typed_binder",
+            "source": "(hPos : 0 < terminalBackwardWeight earlier (terminalBackwardWeight later weight) x)",
+            "type_source": "0 < terminalBackwardWeight earlier (terminalBackwardWeight later weight) x",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltKernel (FiniteKernel.comp later earlier) weight hWeight terminalFallback x t =\n      FiniteKernel.comp (terminalTiltKernel later weight hWeight terminalFallback)\n        (terminalTiltKernel earlier (terminalBackwardWeight later weight)\n          (terminalBackwardWeight_nonneg later weight hWeight) middleFallback) x t",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "terminalBackwardWeight_nonneg",
+            "qualified_name": "FEP.TemporalInference.terminalBackwardWeight_nonneg",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "statement_reference"
+          },
+          {
+            "identifier": "terminalBackwardWeight_nonneg",
+            "qualified_name": "FEP.TemporalInference.terminalBackwardWeight_nonneg",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "terminalTiltKernel_factorization",
+            "qualified_name": "FEP.TemporalInference.terminalTiltKernel_factorization",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "terminalTiltTwoStep_weight",
+            "qualified_name": "FEP.TemporalInference.terminalTiltTwoStep_weight",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltKernel_comp_of_pos",
+        "source_line": 468,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltKernel_comp_of_pos (earlier : FiniteKernel State Middle)\n    (later : FiniteKernel Middle Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y) (middleFallback : FiniteLaw Middle)\n    (terminalFallback : FiniteLaw Terminal) (x : State) (t : Terminal)\n    (hPos : 0 < terminalBackwardWeight earlier (terminalBackwardWeight later weight) x) :\n    terminalTiltKernel (FiniteKernel.comp later earlier) weight hWeight terminalFallback x t =\n      FiniteKernel.comp (terminalTiltKernel later weight hWeight terminalFallback)\n        (terminalTiltKernel earlier (terminalBackwardWeight later weight)\n          (terminalBackwardWeight_nonneg later weight hWeight) middleFallback) x t",
+        "statement_sha256": "2c2e841b4c641d4a11065318909bc6cb32aba0a70144459a3638a3f0864126ab"
+      },
+      "FEP.TemporalInference.terminalTiltKernel_factorization": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "transition"
+            ],
+            "role": "typed_binder",
+            "source": "(transition : FiniteKernel State Terminal)",
+            "type_source": "FiniteKernel State Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "fallback"
+            ],
+            "role": "typed_binder",
+            "source": "(fallback : FiniteLaw Terminal)",
+            "type_source": "FiniteLaw Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "y"
+            ],
+            "role": "typed_binder",
+            "source": "(y : Terminal)",
+            "type_source": "Terminal",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltKernel transition weight hWeight fallback x y *\n        smoothingNormalizer (transition.row x) weight = transition x y * weight y",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "forwardBackwardSmoothing_factorization",
+            "qualified_name": "FEP.TemporalInference.forwardBackwardSmoothing_factorization",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltKernel_factorization",
+        "source_line": 211,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltKernel_factorization (transition : FiniteKernel State Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y) (fallback : FiniteLaw Terminal)\n    (x : State) (y : Terminal) :\n    terminalTiltKernel transition weight hWeight fallback x y *\n        smoothingNormalizer (transition.row x) weight = transition x y * weight y",
+        "statement_sha256": "2161f77c2bfcc165a07ddb32c2247aa3a84c96d2a9da2b9e19d99908156bf711"
+      },
+      "FEP.TemporalInference.terminalTiltSource_null": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "transition"
+            ],
+            "role": "typed_binder",
+            "source": "(transition : FiniteKernel State Terminal)",
+            "type_source": "FiniteKernel State Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hEvidence"
+            ],
+            "role": "typed_binder",
+            "source": "(hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))",
+            "type_source": "0 < smoothingNormalizer prior (terminalBackwardWeight transition weight)",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hNull"
+            ],
+            "role": "typed_binder",
+            "source": "(hNull : terminalBackwardWeight transition weight x = 0)",
+            "type_source": "terminalBackwardWeight transition weight x = 0",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "forwardBackwardSmoothing prior (terminalBackwardWeight transition weight)\n      (terminalBackwardWeight_nonneg transition weight hWeight) hEvidence x = 0",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "terminalBackwardWeight_nonneg",
+            "qualified_name": "FEP.TemporalInference.terminalBackwardWeight_nonneg",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "statement_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltSource_null",
+        "source_line": 269,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltSource_null (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))\n    (x : State) (hNull : terminalBackwardWeight transition weight x = 0) :\n    forwardBackwardSmoothing prior (terminalBackwardWeight transition weight)\n      (terminalBackwardWeight_nonneg transition weight hWeight) hEvidence x = 0",
+        "statement_sha256": "59a04f8fea59458791bcbe51200e5a323b0ba24c7ced4db2ed0a04d914e8cba6"
+      },
+      "FEP.TemporalInference.terminalTiltTwoStepPath_eq_smoothing": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "earlier"
+            ],
+            "role": "typed_binder",
+            "source": "(earlier : FiniteKernel State Middle)",
+            "type_source": "FiniteKernel State Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "later"
+            ],
+            "role": "typed_binder",
+            "source": "(later : FiniteKernel Middle Terminal)",
+            "type_source": "FiniteKernel Middle Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hEvidence"
+            ],
+            "role": "typed_binder",
+            "source": "(hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))",
+            "type_source": "0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "middleFallback"
+            ],
+            "role": "typed_binder",
+            "source": "(middleFallback : FiniteLaw Middle)",
+            "type_source": "FiniteLaw Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "terminalFallback"
+            ],
+            "role": "typed_binder",
+            "source": "(terminalFallback : FiniteLaw Terminal)",
+            "type_source": "FiniteLaw Terminal",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback terminalFallback =\n    forwardBackwardSmoothing (terminalTwoStepPath prior earlier later)\n      (fun p => weight p.2.2) (fun p => hWeight p.2.2)\n      (by rw [terminalTwoStepPath_normalizer]; exact hEvidence)",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "terminalTwoStepPath_normalizer",
+            "qualified_name": "FEP.TemporalInference.terminalTwoStepPath_normalizer",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "statement_reference"
+          },
+          {
+            "identifier": "terminalTiltTwoStepPath_mass",
+            "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_mass",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "terminalTwoStepPath_normalizer",
+            "qualified_name": "FEP.TemporalInference.terminalTwoStepPath_normalizer",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_eq_smoothing",
+        "source_line": 431,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltTwoStepPath_eq_smoothing (prior : FiniteLaw State)\n    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))\n    (middleFallback : FiniteLaw Middle) (terminalFallback : FiniteLaw Terminal) :\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback terminalFallback =\n    forwardBackwardSmoothing (terminalTwoStepPath prior earlier later)\n      (fun p => weight p.2.2) (fun p => hWeight p.2.2)\n      (by rw [terminalTwoStepPath_normalizer]; exact hEvidence)",
+        "statement_sha256": "1fce680469dfb0c3df894f1d2d9423dc27553cc147625587caad68d0f98b50c6"
+      },
+      "FEP.TemporalInference.terminalTiltTwoStepPath_fallback_invariant": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "earlier"
+            ],
+            "role": "typed_binder",
+            "source": "(earlier : FiniteKernel State Middle)",
+            "type_source": "FiniteKernel State Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "later"
+            ],
+            "role": "typed_binder",
+            "source": "(later : FiniteKernel Middle Terminal)",
+            "type_source": "FiniteKernel Middle Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hEvidence"
+            ],
+            "role": "typed_binder",
+            "source": "(hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))",
+            "type_source": "0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "middleFallback₁",
+              "middleFallback₂"
+            ],
+            "role": "typed_binder",
+            "source": "(middleFallback₁ middleFallback₂ : FiniteLaw Middle)",
+            "type_source": "FiniteLaw Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "terminalFallback₁",
+              "terminalFallback₂"
+            ],
+            "role": "typed_binder",
+            "source": "(terminalFallback₁ terminalFallback₂ : FiniteLaw Terminal)",
+            "type_source": "FiniteLaw Terminal",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback₁ terminalFallback₁ =\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback₂ terminalFallback₂",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "terminalTiltTwoStepPath_eq_smoothing",
+            "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_eq_smoothing",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_fallback_invariant",
+        "source_line": 454,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltTwoStepPath_fallback_invariant (prior : FiniteLaw State)\n    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))\n    (middleFallback₁ middleFallback₂ : FiniteLaw Middle)\n    (terminalFallback₁ terminalFallback₂ : FiniteLaw Terminal) :\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback₁ terminalFallback₁ =\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback₂ terminalFallback₂",
+        "statement_sha256": "d48e1aab840cceb8f22fb6d7a7449b4d916dcac69a16ecfaaf2598bb15fb25e9"
+      },
+      "FEP.TemporalInference.terminalTiltTwoStepPath_mass": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "earlier"
+            ],
+            "role": "typed_binder",
+            "source": "(earlier : FiniteKernel State Middle)",
+            "type_source": "FiniteKernel State Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "later"
+            ],
+            "role": "typed_binder",
+            "source": "(later : FiniteKernel Middle Terminal)",
+            "type_source": "FiniteKernel Middle Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hWeight"
+            ],
+            "role": "typed_binder",
+            "source": "(hWeight : ∀ y, 0 ≤ weight y)",
+            "type_source": "∀ y, 0 ≤ weight y",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hEvidence"
+            ],
+            "role": "typed_binder",
+            "source": "(hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))",
+            "type_source": "0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "middleFallback"
+            ],
+            "role": "typed_binder",
+            "source": "(middleFallback : FiniteLaw Middle)",
+            "type_source": "FiniteLaw Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "terminalFallback"
+            ],
+            "role": "typed_binder",
+            "source": "(terminalFallback : FiniteLaw Terminal)",
+            "type_source": "FiniteLaw Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "m"
+            ],
+            "role": "typed_binder",
+            "source": "(m : Middle)",
+            "type_source": "Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "t"
+            ],
+            "role": "typed_binder",
+            "source": "(t : Terminal)",
+            "type_source": "Terminal",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback terminalFallback (x, m, t) =\n      prior x * earlier x m * later m t * weight t /\n        smoothingNormalizer prior\n          (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "terminalBackwardWeight_nonneg",
+            "qualified_name": "FEP.TemporalInference.terminalBackwardWeight_nonneg",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "terminalTiltKernel_factorization",
+            "qualified_name": "FEP.TemporalInference.terminalTiltKernel_factorization",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_mass",
+        "source_line": 395,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltTwoStepPath_mass (prior : FiniteLaw State)\n    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))\n    (middleFallback : FiniteLaw Middle) (terminalFallback : FiniteLaw Terminal)\n    (x : State) (m : Middle) (t : Terminal) :\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback terminalFallback (x, m, t) =\n      prior x * earlier x m * later m t * weight t /\n        smoothingNormalizer prior\n          (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
+        "statement_sha256": "a38c5b1b658ba71afd58ee2cf6863dd41af079522b12928e8994e4e9742d3609"
+      },
+      "FEP.TemporalInference.terminalTiltTwoStep_weight": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "earlier"
+            ],
+            "role": "typed_binder",
+            "source": "(earlier : FiniteKernel State Middle)",
+            "type_source": "FiniteKernel State Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "later"
+            ],
+            "role": "typed_binder",
+            "source": "(later : FiniteKernel Middle Terminal)",
+            "type_source": "FiniteKernel Middle Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "x"
+            ],
+            "role": "typed_binder",
+            "source": "(x : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "terminalBackwardWeight earlier (terminalBackwardWeight later weight) x =\n      terminalBackwardWeight (FiniteKernel.comp later earlier) weight x",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTiltTwoStep_weight",
+        "source_line": 344,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTiltTwoStep_weight (earlier : FiniteKernel State Middle)\n    (later : FiniteKernel Middle Terminal) (weight : Terminal → ℝ) (x : State) :\n    terminalBackwardWeight earlier (terminalBackwardWeight later weight) x =\n      terminalBackwardWeight (FiniteKernel.comp later earlier) weight x",
+        "statement_sha256": "3f5f923a4c421d919ca9bebf7cf2dd293defa4a738638e91a60856a5dd2bc31d"
+      },
+      "FEP.TemporalInference.terminalTwoStepPath_normalizer": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "earlier"
+            ],
+            "role": "typed_binder",
+            "source": "(earlier : FiniteKernel State Middle)",
+            "type_source": "FiniteKernel State Middle",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "later"
+            ],
+            "role": "typed_binder",
+            "source": "(later : FiniteKernel Middle Terminal)",
+            "type_source": "FiniteKernel Middle Terminal",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : Terminal → ℝ)",
+            "type_source": "Terminal → ℝ",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "smoothingNormalizer (terminalTwoStepPath prior earlier later) (fun p => weight p.2.2) =\n      smoothingNormalizer prior\n        (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "Terminal"
+            ],
+            "role": "typed_binder",
+            "source": "{Terminal : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Terminal]",
+            "type_source": "Fintype Terminal",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]",
+          "{Terminal : Type*} [Fintype Terminal]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.terminalTwoStepPath_normalizer",
+        "source_line": 359,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem terminalTwoStepPath_normalizer (prior : FiniteLaw State)\n    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)\n    (weight : Terminal → ℝ) :\n    smoothingNormalizer (terminalTwoStepPath prior earlier later) (fun p => weight p.2.2) =\n      smoothingNormalizer prior\n        (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
+        "statement_sha256": "46351d1a930aa3170ac31561aff5122b1c71dabe4be65b7b6815fddc39d5ccd0"
       },
       "FEP.TemporalInference.variationalStateUpdate_reconstruction": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -140423,7 +144038,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.variationalStateUpdate_reconstruction",
-        "source_line": 200,
+        "source_line": 580,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem variationalStateUpdate_reconstruction (prior : FiniteLaw State)\n    (energy : State → ℝ) (state : State) :\n    variationalStateUpdate prior energy state * boltzmannPartition prior energy =\n      boltzmannWeight prior energy state",
         "statement_sha256": "45cf9d6a609e7b9ddd867925ad6556c37534e2b9b6e0824493d017011dd2f34c"
@@ -140521,7 +144136,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.variationalStateUpdate_sum_one",
-        "source_line": 194,
+        "source_line": 574,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem variationalStateUpdate_sum_one (prior : FiniteLaw State)\n    (energy : State → ℝ) :\n    ∑ state, variationalStateUpdate prior energy state = 1",
         "statement_sha256": "95c1dfbbe936c4b24c66a00675decfea9b434c6b7674d2bb00851547051ebfb6"
@@ -140618,7 +144233,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.variationalStateUpdate_zero_energy",
-        "source_line": 207,
+        "source_line": 587,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem variationalStateUpdate_zero_energy (prior : FiniteLaw State) :\n    variationalStateUpdate prior (fun _ => 0) = prior",
         "statement_sha256": "8c4bcbaf766de229485ea736b3fbe82e7433d75a8add9216666bdb5331ea865f"
