@@ -22,6 +22,42 @@ SLICE = PROJECT_ROOT / "specs" / "cascadia-geo-act-proof"
 FIXTURES = SLICE / "fixtures"
 RETAINED_RECEIPT = SLICE / "native_receipt.json"
 
+_HOMING_ELABORATION_GUARD = (
+    "-- Current Mathlib lets `Real.lt` unfold at default transparency, so elaborating\n"
+    "-- `0 < plannedState …` would try to evaluate the whole rollout; keep it folded here.\n"
+    "attribute [local irreducible] plannedState in\n"
+).encode()
+_HOMING_PREIMAGES = {
+    "generate_probe.py": "5911f37092bc948d39db1d9d0d5e82f8e2aa647d780e355d5f58fc16d1a70410",
+    "generated/SmithRiverHoming.lean": "e1c6c01608a2d12b31eeae342bfae113acc9c6931b16aba45d63043242ca4bfe",
+    "generated/manifest.json": "c57d8c242ec4bd026607e4647da87c145cec4f5e983c85e0182ece54ec2ca196",
+}
+
+
+def _historical_homing_source(name: str, source: bytes) -> bytes:
+    """Authenticate the entire retained input after undoing only the 4.36 guard."""
+    digest = _HOMING_PREIMAGES[name]
+    if hashlib.sha256(source).hexdigest() == digest:
+        return source
+    if name == "generated/manifest.json":
+        for current, original in (
+            (
+                b"07dc33587345cc76a180ac4cf7c6ea202c7150db35877f07f667bd5ed3aeb075",
+                _HOMING_PREIMAGES["generate_probe.py"].encode(),
+            ),
+            (
+                b"97e0da0239a6f920de7d28c5676541ebf5cf115e9428bc7578238601172316dc",
+                _HOMING_PREIMAGES["generated/SmithRiverHoming.lean"].encode(),
+            ),
+        ):
+            assert source.count(current) == 1
+            source = source.replace(current, original, 1)
+    else:
+        assert source.count(_HOMING_ELABORATION_GUARD) == 1
+        source = source.replace(_HOMING_ELABORATION_GUARD, b"", 1)
+    assert hashlib.sha256(source).hexdigest() == digest
+    return source
+
 
 def _historical_verifier_source(source: bytes) -> bytes:
     """Authenticate the complete original verifier or its exact UTC successor."""
@@ -216,6 +252,7 @@ def test_retained_receipt_preserves_history_and_rejects_current_pins(
         "lean/lean-toolchain",
         "lean/lake-manifest.json",
         "specs/cascadia-geo-act-proof/verify_native.py",
+        *(f"specs/cascadia-geo-act-proof/{name}" for name in _HOMING_PREIMAGES),
     }
     assert set(receipt["bound_inputs"]) == set(verifier.bound_digests())
     for name, digest in receipt["bound_inputs"].items():
@@ -226,6 +263,9 @@ def test_retained_receipt_preserves_history_and_rejects_current_pins(
         )
         if name == "specs/cascadia-geo-act-proof/verify_native.py":
             source = _historical_verifier_source(source)
+        relative = name.removeprefix("specs/cascadia-geo-act-proof/")
+        if relative in _HOMING_PREIMAGES:
+            source = _historical_homing_source(relative, source)
         assert hashlib.sha256(source).hexdigest() == digest, name
     assert verifier.verdict(receipt) == receipt["verdict"]
     assert receipt["verdict"]["claim_ready"] is True
@@ -251,6 +291,22 @@ def test_retained_receipt_preserves_history_and_rejects_current_pins(
         f"STALE: {name}: bound digest differs from the current file"
         for name in changed_pins
     }
+
+
+@pytest.mark.parametrize("name", _HOMING_PREIMAGES)
+def test_homing_history_inverse_rejects_unrelated_bytes(name: str) -> None:
+    source = (SLICE / name).read_bytes()
+    original = _historical_homing_source(name, source)
+    assert _historical_homing_source(name, original) == original
+    with pytest.raises(AssertionError):
+        _historical_homing_source(name, source + b"\n")
+    if name != "generated/manifest.json":
+        with pytest.raises(AssertionError):
+            _historical_homing_source(name, source + _HOMING_ELABORATION_GUARD)
+        with pytest.raises(AssertionError):
+            _historical_homing_source(
+                name, source.replace(b"[local irreducible]", b"[irreducible]", 1)
+            )
 
 
 def test_receipt_check_detects_a_tampered_verdict(

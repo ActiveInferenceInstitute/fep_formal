@@ -22,7 +22,7 @@ instance {α : Type*} [Fintype α] [MeasurableSpace α] (p : α → ℝ) :
     IsFiniteMeasure (finiteWeightMeasure p) where
   measure_univ_lt_top := by
     simp only [finiteWeightMeasure, Measure.sum_apply_of_countable, tsum_fintype,
-      Measure.smul_apply, Measure.dirac_apply_of_mem (Set.mem_univ _), smul_eq_mul,
+      smul_apply, Measure.dirac_apply_of_mem (Set.mem_univ _), smul_eq_mul,
       mul_one]
     exact ENNReal.sum_lt_top.mpr fun _ _ => ENNReal.ofReal_lt_top
 
@@ -87,7 +87,7 @@ theorem finiteWeightMeasure_probability {α : Type*} [Fintype α]
     (hnormalized : ∑ x, p x = 1) : IsProbabilityMeasure (finiteWeightMeasure p) where
   measure_univ := by
     simp only [finiteWeightMeasure, Measure.sum_apply_of_countable, tsum_fintype,
-      Measure.smul_apply, Measure.dirac_apply_of_mem (Set.mem_univ _), smul_eq_mul,
+      smul_apply, Measure.dirac_apply_of_mem (Set.mem_univ _), smul_eq_mul,
       mul_one]
     rw [← ENNReal.ofReal_sum_of_nonneg (fun x _ => hp x), hnormalized]
     simp

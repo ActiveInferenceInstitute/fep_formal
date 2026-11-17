@@ -97,6 +97,25 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _current_compiler_source() -> str:
+    """Expose fixed domains to Lean 4.36 without changing archived proof bytes."""
+    source = SPIKE.read_text(encoding="utf-8")
+    assert (
+        hashlib.sha256(source.encode()).hexdigest()
+        == "51184185f3adfee7506e95457f352b56910cd127bd05f9140f21437c3d88e612"
+    )
+    assert source.count("(fun state => state sensory)") == 2
+    source = source.replace(
+        "(fun state => state sensory)",
+        "(fun state : StandardizedState => state sensory)",
+    )
+    assert source.count("(fun state => state active)") == 3
+    source = source.replace(
+        "(fun state => state active)", "(fun state : StandardizedState => state active)"
+    )
+    return source
+
+
 def _parse_axiom_names(block: str) -> set[str]:
     return {
         token.strip().strip("'")
@@ -290,7 +309,7 @@ def test_h2_5d_r0_public_surface_is_exact_and_fail_closed() -> None:
 
 def test_h2_5d_r0_spike_compiles_warning_free(tmp_path: Path) -> None:
     probe = tmp_path / "H2_5dGaussianConditioningSpike.lean"
-    probe.write_text(SPIKE.read_text(encoding="utf-8"), encoding="utf-8")
+    probe.write_text(_current_compiler_source(), encoding="utf-8")
     result = run_lean_probe(
         probe,
         import_root=PROJECT_ROOT / "src" / "fep_formal" / "formal",
@@ -305,7 +324,7 @@ def test_h2_5d_r0_spike_compiles_warning_free(tmp_path: Path) -> None:
 
 def test_h2_5d_r0_public_axioms_census_and_typed_consumers(tmp_path: Path) -> None:
     probe = tmp_path / "H2_5dGaussianConditioningAudit.lean"
-    source = SPIKE.read_text(encoding="utf-8")
+    source = _current_compiler_source()
     # v4.34 migration: Lean core rejects `#print prefix`, so emit one
     # `#print axioms` per roster member; a missing declaration fails its own
     # report so the roster stays fail-closed, and reports quote full names.
