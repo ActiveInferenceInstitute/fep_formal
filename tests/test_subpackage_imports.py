@@ -313,8 +313,10 @@ def test_string_enum_compatibility_survives_lint_migration() -> None:
         FormalModuleRole,
         SourceOrigin,
     ):
+        assert issubclass(enum, str)
         assert not issubclass(enum, StrEnum)
         member = next(iter(enum))
+        assert member == member.value
         expected = f"{enum.__name__}.{member.name}"
         assert str(member) == expected
         assert format(member) == expected

@@ -182,6 +182,35 @@ class WorkspaceTests(unittest.TestCase):
         )
         self.assertEqual(workspace.check_project(self.lock())["state"], "not-aligned")
 
+    def _mathlib_lean_lock(self, tag):
+        (self.project / "lakefile.toml").unlink()
+        (self.project / "lakefile.lean").write_text(
+            "import Lake\nopen Lake DSL\npackage Example\n"
+            'require mathlib from git "https://github.com/leanprover-community/mathlib4" @ "'
+            + tag
+            + '"\n'
+            "lean_lib Example\n"
+        )
+        (self.project / "lake-manifest.json").write_text(
+            json.dumps(
+                {"packages": [{"name": "mathlib", "rev": workspace.MATHLIB_REV}]}
+            )
+        )
+        subprocess.run(["git", "add", "."], cwd=self.root, check=True)
+        return workspace.project_lock(self.repo, Path("lean/lakefile.lean"))
+
+    def test_current_mathlib_lean_tag_is_aligned(self):
+        self.assertEqual(
+            workspace.check_project(self._mathlib_lean_lock("v4.36.0"))["state"],
+            "aligned",
+        )
+
+    def test_previous_mathlib_lean_tag_is_not_aligned(self):
+        self.assertEqual(
+            workspace.check_project(self._mathlib_lean_lock("v4.35.0"))["state"],
+            "not-aligned",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

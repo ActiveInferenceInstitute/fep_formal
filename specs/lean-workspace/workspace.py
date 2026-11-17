@@ -181,7 +181,7 @@ def check_project(project: dict) -> dict:
             requires_mathlib = requirement is not None
             pinned = not requires_mathlib or bool(
                 re.search(
-                    r'@[ \t\r\n]*(?:git[ \t\r\n]+)?"(?:v4\.35\.0|'
+                    r'@[ \t\r\n]*(?:git[ \t\r\n]+)?"(?:v4\.36\.0|'
                     + MATHLIB_REV
                     + r')"',
                     requirement.group(),

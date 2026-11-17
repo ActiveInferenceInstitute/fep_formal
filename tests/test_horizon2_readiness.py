@@ -150,7 +150,7 @@ def test_readiness_pin_and_api_surface_probe_are_explicit() -> None:
     # probes deliberately run on the new pinned compiler instead.
     assert (PROJECT_ROOT / "lean" / "lean-toolchain").read_text(
         encoding="utf-8"
-    ).strip() == "leanprover/lean4:v4.35.0"
+    ).strip() == "leanprover/lean4:v4.36.0"
     assert probe.is_file()
     source = probe.read_text(encoding="utf-8")
     assert re.search(r"(?m)^example\b", source)
