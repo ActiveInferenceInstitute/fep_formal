@@ -4,7 +4,7 @@
 `.github/workflows/ci.yml`. This repository has no `.github/gnn-pin.json`; its
 custody record is `specs/gnn-bridge-w2-source-custody/source-pin.json`
 (schema_version 1), whose `gnn` entry names commit
-`89249fd459283f123e099b66bd0b8bff36e8fc22` (the paired GNN `main` source checkpoint, package
+`2001b94fe6f55f7532619d8d53bb28c705997a94` (the paired GNN `main` source checkpoint, package
 version 5.1.0; no release tag names it, so the record carries no `tag`) and
 the SHA-256 of six GNN owner
 files (`pyproject.toml`, `uv.lock`, `src/gnn/main.py`,
@@ -48,7 +48,7 @@ predates `src/gnn/importers.py` (`e6a9d3917`), so neither the module nor
 `git show 2778e65c:src/gnn/importers.py` fails, and a checker run against a
 newer checkout was diagnostic only. The pin then named `v5.1.0` at
 `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, the first release carrying the
-reader, and now names `89249fd459283f123e099b66bd0b8bff36e8fc22`, so
+reader, and now names `2001b94fe6f55f7532619d8d53bb28c705997a94`, so
 `bash scripts/gate.sh gnn` installs that revision and runs it:
 
 ```bash
@@ -60,7 +60,7 @@ python -m gnn.importers check --repo . \
 The arm installs the package from the pinned commit rather than from a checkout
 (`uv run --with "generalized-notation-notation @ git+https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation@<pinned commit>"`,
 where the commit is read from the pin), so the pin reader, the pointer rules and
-the specification parser are the ones `89249fd4` ships.
+the specification parser are the ones `2001b94f` ships.
 
 The reader reports one warning, `pin-schema-unversioned`: a two-party custody
 pin keeps `schema_version: 1` plus per-file owner digests, so it does not

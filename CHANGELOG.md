@@ -1,5 +1,8 @@
 ## Unreleased
 
+- Add publication metadata boundary tests and refresh the GNN source pair to
+  `2001b94fe6f5`, retaining the existing coverage floors.
+
 - Upgrade the reproducible Lean/Mathlib pair to v4.36.0. Add explicit runtime
   JSON imports, use the current measure-scaling API, and remove redundant
   tactics while preserving theorem statements. Align Ruff with the Python 3.11

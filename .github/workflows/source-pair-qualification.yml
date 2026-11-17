@@ -113,7 +113,7 @@ jobs:
           export UV_PYTHON="$GITHUB_WORKSPACE/gnn/.venv/bin/python"
           export PYTHONPATH="$GITHUB_WORKSPACE/fep/src"
           uv run --project gnn --frozen --no-sync python "$GITHUB_WORKSPACE/fep/specs/gnn-bridge-q7-continuous-ou-proof/refresh_render.py" --fep-root "$GITHUB_WORKSPACE/fep" --gnn-root "$GITHUB_WORKSPACE/gnn"
-      - name: Observe five real parsers and publish checked working projections
+      - name: Observe four supported Python parsers and publish checked working projections
         working-directory: fep
         run: |
           set -euo pipefail
