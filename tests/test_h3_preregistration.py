@@ -150,3 +150,11 @@ def test_canonical_protocol_binds_real_pre_outcome_freeze_and_reviews() -> None:
             == digest
         )
         assert hashlib.sha256(live).hexdigest() != digest
+
+
+def test_scalar_436_inverse_rejects_unrelated_byte() -> None:
+    from tests._support.lean435_migration import historical_carrier_bytes
+
+    path = "src/fep_formal/formal/scalar_gaussian_semigroup.lean"
+    with pytest.raises(AssertionError, match="unrecognized live scalar"):
+        historical_carrier_bytes(path, (PROJECT_ROOT / path).read_bytes() + b"\n")

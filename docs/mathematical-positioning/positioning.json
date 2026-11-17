@@ -8953,7 +8953,7 @@
     "catalogue/bodies/continuous_time_thermodynamics.py": "d233e8e33bcdb3f7ece4c7af61707a27a339039ddc560340ede0818c616e2959",
     "catalogue/bodies/controlled_markov.py": "0717b3e72f966d93767cc1f359c4b0f6608714b849306bbe3e67c0248a5445e0",
     "catalogue/bodies/core_active_inference.py": "9d98d865fc701f55fce7fee3d0c34adb154ae666c40dd0ff7d6e3749be39500e",
-    "catalogue/bodies/core_bayesian_mechanics.py": "1f2e57886c3397aa4a08b8bb2a5872aad56e5d046d8422fe395d7efc1afed81d",
+    "catalogue/bodies/core_bayesian_mechanics.py": "f65e7933f02a5bdd53fde3eb6f1065b4bd79754d7e50e9482e81a7d764ccbdb2",
     "catalogue/bodies/core_free_energy.py": "371ccc56c5fb3f834a2a8f42bec7bc9841254108e9f7403597ea3f8b0fa5468b",
     "catalogue/bodies/core_information_geometry.py": "837d0ae1c4b420c09c6c58b217e3a3870a0bc08d8b6db3475bb47606c26de75f",
     "catalogue/bodies/core_thermodynamics.py": "ed78ab84cfaf2bcc7a6306efa822031cea33f0fdd179e3611c00ce5695ec3c18",
@@ -8971,9 +8971,9 @@
     "catalogue/bodies/variational_duality.py": "aa53d3a653b8102b0c6789e3c7102ff962c507d34e6b5f1ac1639044d4e629ce",
     "catalogue/latex.py": "848251fe98430f330818fc89e73318efd54f1155301022edce7c63ba79a0c499",
     "catalogue/registry.py": "d9b04f02e608309e687ca4555b6ba75f91fdc18eecad26f879d07104c273349d",
-    "catalogue/relations.py": "f848780337e03a4b19013a5f45a26a91c1b58d46f78964fcdab5aa54782e182b",
+    "catalogue/relations.py": "0b103e3fa6115d020cbcfb075f7b75953681c3f59a47b060dc7fa1dcc7da5e75",
     "catalogue/schema.py": "75c7c90e829eb7373c09bd3fa7e264937aeac1b8d880b513932975deae5677a0",
-    "catalogue/semantics.py": "6e16597ba9272c73df43575d3306a0d3cc993629e1edde019a76de3d5781506e",
+    "catalogue/semantics.py": "8fe6ddc4e695e3cb6a6942446019de4c35c893cc2dfda2b510c7472bf80090a3",
     "catalogue/topics.py": "2398eef3219315dce92957b9425261023df5486b074efc77c0ee50ac16e626d0",
     "formal/active_inference.lean": "260417ac91c6e0b31b29212ce85c8d643a1ecb10909d4acafa0b53f5504cbf07",
     "formal/bayesian_model_reduction.lean": "721c1e39ffcfe5557c0138134cac5fb5c1b78669ac475cd99465401653fa441f",
@@ -8997,7 +8997,7 @@
     "formal/compositions/gaussian_filter.lean": "9580e9be505e2ca144cc5bdeec470b69483e3d6a06bd094a6793a6a3aedd46e0",
     "formal/compositions/gaussian_grid_path.lean": "cc1f4020ab1cf8762b2eced248ff59976ce140ced7112eea2ab0de23c8d5561a",
     "formal/compositions/geometric_mechanics.lean": "8f696611db7e04cdaae6355b3654375f8aa781c1b1021299e6de27b32d834357",
-    "formal/compositions/h3_case_study.lean": "6a1ebfaa4588cff8c5131fbbf0f5003353367ea74ac4e33a7214e9b8ac466d17",
+    "formal/compositions/h3_case_study.lean": "000ab93934ba57c019bb94782b1cf83cbe3b863d86988c3398e803532ac518f1",
     "formal/compositions/helmholtz_ao_ness.lean": "7de6f6c012d5e134d8bc84a4aec8c560adf2de60722d4466c4f77d9474d66c78",
     "formal/compositions/measure_variational.lean": "63496c6d4add85393bcdbc5b147e94873f8533ee1d88311cf7865c6e7496e69d",
     "formal/compositions/native_blanket_transfer.lean": "24f47ab14eb59463cccf85a9d79b7d666ad9763f81d1557d7301ae8772b290e7",
@@ -9012,10 +9012,10 @@
     "formal/declarations.py": "f06d0f2d10edca4b4ef6eb8c96a924b0c6c1b8251055e1d40fa18fe278b774c6",
     "formal/efe_policy_selection.lean": "ee28ad77d0114ed238518c2112e5d9a99a1b2bb96c5673ef24fbb8ca75550555",
     "formal/efe_time_scale_separation.lean": "d0ff527a45a6d74cad08b128b9c480a76d6e7dcafbb1cffdf86d5dc854a33b1c",
-    "formal/empirical_risk.lean": "f64571536d09b14ba68d0b3bc344f08f14c87bd9c8aec50259a3f2cd35a28574",
+    "formal/empirical_risk.lean": "550e5d03e56a8cd0b6712f508670677e8f1f29f88385ec16967efeb9aa04980e",
     "formal/exponential_family.lean": "5ecf647d3c41c95a7eaebc273468154f0a3ed7fd373a810b58d2766388a50bc2",
     "formal/fin4_gaussian_semigroup.lean": "7c4cb2a06c22a1175079930ce1950303f91b353aa99a9ddd6c45156ba038b875",
-    "formal/finite_information.lean": "963dbd8a1f9d37f719a2e7fdd7d42bc81efe84ccc5ae48d3fae6dc54cf9aaa31",
+    "formal/finite_information.lean": "91bbd43b29d34f3db4a8e979a41a8a6f17ba39af75e58f1b3ac4c90c699207ec",
     "formal/finite_markov_dynamics.lean": "4aba3bdbb7dee16d002fb1bebf9c952738e129f6b1458c7ae211e3d9a36a43f7",
     "formal/finite_posterior_learning.lean": "8b4f2e2a985431a016c265887f31389b6764eee987cf6bbd36e18415217ede90",
     "formal/finite_probability.lean": "d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380",
@@ -9027,24 +9027,24 @@
     "formal/gnn_denotation_continuous.lean": "129988b6ec863776c3834f84ae30bd8b2669bd8b5dd23cdec995001b0ebbc585",
     "formal/gnn_document.lean": "ea6b1efc013149de9e8734aa3e69cc75747e89a3c79ccba167dac1033d2a2cc2",
     "formal/gnn_render_statements.lean": "a8faf6b5f39f85ca75ad98e104164d380a884ffa08df6c01fc52bbfdf69cc6bc",
-    "formal/h3_reference_model.lean": "d3ddfe9ac7218cc9238926291ebaba282fde37fb8d6b2e0f7ae45ab8fd02d0a9",
+    "formal/h3_reference_model.lean": "1916ab890488b5dc8f46f1ccb85db0a4c13e80c8c3700a73b8e3c98f4e0a4d31",
     "formal/helmholtz_ao_ness.lean": "43b57c51a07e49d47e20fcce1af905fb246874f6384e5ac0c5b8ceadc7f7a027",
     "formal/information_geometry.lean": "0b9fddad4758c9e165e9fe13f0fe4ddca57d71d025c92d85068b93835acab88f",
     "formal/law_weighted_split.lean": "8f3337e433c93828fb1a5185c962b47e2d521b4cd3792e75f3a484e5ca14bc35",
     "formal/learning_theory.lean": "f39bf2504d47de1f76399fce0471396c0b546ddc25872572e8efa853b2e75582",
     "formal/linear_gaussian_semigroup.lean": "d4373ff6c120d2b55bf717338b2a4a210f34d89c44a73fd98562f0226098985d",
-    "formal/manifest.py": "acb7ae9827ea76440a767114da8ff91ae544a324b9925cea0f1a8414a0dc2dc0",
+    "formal/manifest.py": "4b6d133a0104403be658e9b9df95e33a2a2c5df31b8a424939c4c44bc6574ad6",
     "formal/markov_blanket.lean": "6e214ee37ba6525d1ca5b44130ceaf4b410e03a0bb18d9b3070c4f8b90280011",
     "formal/markov_semigroup.lean": "03284d5d473fdb3b6a2af5ae43ca2970e6f46af1b3b8915f8d0c123c177f6c02",
     "formal/measure_bayes.lean": "e2fa1b071381bbf684625e7317a02a357337df80596f95d9084d6e721a719c51",
-    "formal/native_blanket.lean": "7af052b9a067be0391097a9e201e367639edc3698204a701f5663340ec9f5a11",
+    "formal/native_blanket.lean": "75390e5966d433782ef1e6dd150a7079bcefac7208f0c0003dcc172a2ecc8860",
     "formal/ness_flow.lean": "d09408edccda4103d6da2b8680c2c4dfcab9ead185983efa5fe25110a462fb38",
     "formal/path_thermodynamics.lean": "86d71ab7a7b77b9e2f2c185bc9723e0c758b28d1c5697b78252455bcaf962540",
     "formal/perception_action_loop.lean": "f465ed42337d950ee8beead385447ca4471da000935bf1de23095d7694db4e8a",
     "formal/policy_tree.lean": "f88e5063dede806e31f4f7106b825ee7b3832bcc66cf17346e24b98cd9361176",
     "formal/posterior_convergence.lean": "21c78105a1c318a717fd67e0c6f0df28cbdc458e4b6a3b3e6b422be19149dd6f",
     "formal/predictive_coding.lean": "ef30d3fbe10511613f48bf6ec165d03c1ba89c356deaa47d61ed285ee4f814d0",
-    "formal/scalar_gaussian_semigroup.lean": "b10823429b5a182b37303aa970162e8587c9d2bb6c20554c1f5ef20eeb005766",
+    "formal/scalar_gaussian_semigroup.lean": "5cd5a0dad0a60f7ea4a6106929db1ec4039b1790c39747be990290b03b8abc73",
     "formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
     "formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
     "formal/temporal_inference.lean": "8422d94e9acb5f4e4f339448e71cf40eeabe2c1fdd005b67a34421df2aa4d493",
@@ -9055,7 +9055,7 @@
     "inputs/theorem_maturity.yaml": "ee493bf4d954be5cb7067d6124231243e386e0d04b08e72212de8dcd125ecb3c",
     "lean_source.py": "67790e70ab3ae3af48d9d2cd570e0d641f18fa03519c06b17c9a0b21acbc6781",
     "methods/__init__.py": "3d9676464dc5a9c196e57bc502e42a7d69672f0add6bc535d31a31917da9ac99",
-    "methods/model.py": "b824d2dc92b17077925710ccc3e36adc51c71fc0c9a32e245e0d5bab2e73d4d6",
+    "methods/model.py": "a0cbe623dfc4ff07ca256690afc61c3b8482fa4fecb73597253985335edd7fa5",
     "methods/probes.py": "4030265b3f3b04dc11f73164474daa2c3db343cc0a65f90a186903a334829e0a",
     "methods/projection.py": "fe13f02fcb239c5d6fb913ca4a430257ec2ef21c8ca2735ffd7166474b1dec0c",
     "methods/visualization.py": "b5b7f10277e9e89bf00b1fc93e91cbc9a8cff6faf95a6d3e26bab72e4d2bb1c2"
@@ -90452,6 +90452,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90460,7 +90462,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.K_eq_carrier",
-        "source_line": 178,
+        "source_line": 180,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem K_eq_carrier : K = FEP.Fin4GaussianSemigroup.K",
         "statement_sha256": "27b3362ee81ba200eebe24b6b00d06624eb7d5bdb302adc87ced756afc00620e"
@@ -90486,6 +90488,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90494,7 +90498,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.K_isSymm",
-        "source_line": 189,
+        "source_line": 191,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem K_isSymm : K.IsSymm",
         "statement_sha256": "bd0de063d4e98370d0c13a659938be4c1105e0e7d7e2f6fda21e04ea817129bc"
@@ -90526,6 +90530,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90534,7 +90540,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.K_mul_Sigma",
-        "source_line": 197,
+        "source_line": 199,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem K_mul_Sigma : K * Sigma = 1",
         "statement_sha256": "d1d6fa0b7f5681d8cdeb8a9e13529efac07a710d0eb6e446fd2e18487a7554c4"
@@ -90560,6 +90566,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90568,7 +90576,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.K_posDef",
-        "source_line": 193,
+        "source_line": 195,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem K_posDef : K.PosDef",
         "statement_sha256": "b56ebb7bd5959ff344195d377d1aa856138c2d532ce73ba453fe610ab406e651"
@@ -90588,6 +90596,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90596,7 +90606,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.Sigma_eq_carrier",
-        "source_line": 185,
+        "source_line": 187,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem Sigma_eq_carrier : Sigma = FEP.Fin4GaussianSemigroup.Sigma",
         "statement_sha256": "85e698f2e1f18ff80f394392cbebe5e0f83bfbc04ac1cdb4b974fa967875c687"
@@ -90622,6 +90632,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90630,7 +90642,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.Sigma_isSymm",
-        "source_line": 205,
+        "source_line": 207,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem Sigma_isSymm : Sigma.IsSymm",
         "statement_sha256": "b6302bbba8f9d142cbc9b287b11097327daf0eb29d516f63a48c4f030980b2fd"
@@ -90662,6 +90674,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90670,7 +90684,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.Sigma_mul_K",
-        "source_line": 201,
+        "source_line": 203,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem Sigma_mul_K : Sigma * K = 1",
         "statement_sha256": "98e83144ec3427c97728ad3fdb46d6c14c41510e8bad9e07246e9e15f230d916"
@@ -90696,6 +90710,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90704,7 +90720,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.Sigma_posDef",
-        "source_line": 209,
+        "source_line": 211,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem Sigma_posDef : Sigma.PosDef",
         "statement_sha256": "2b86e4e33f19149729517780e3fb366db0b7f31bdb05722afb7a74c2f0a659a1"
@@ -90724,6 +90740,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90732,7 +90750,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.axisFin_order",
-        "source_line": 47,
+        "source_line": 49,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem axisFin_order :\n    axisFin external = 0 ∧ axisFin sensory = 1 ∧\n      axisFin active = 2 ∧ axisFin internal = 3",
         "statement_sha256": "28cf58e658be5be3baca330a785e4184b07773d2e50580e6695c600380cc89ec"
@@ -90752,6 +90770,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90760,7 +90780,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.axis_cardinality",
-        "source_line": 52,
+        "source_line": 54,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem axis_cardinality : Fintype.card Axis = 4",
         "statement_sha256": "489a5f3951777e31503b4d65f4fbcb92d4f4cc4f4b456f1b0b7bc2dcbd63046d"
@@ -90773,6 +90793,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90781,7 +90803,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.continuous_fromNativeState",
-        "source_line": 86,
+        "source_line": 88,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem continuous_fromNativeState : Continuous fromNativeState",
         "statement_sha256": "ba4fb619e139c64ddd7d613c18559e3e590a9156860867434b523a3b4e09bfb1"
@@ -90794,6 +90816,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90802,7 +90826,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.continuous_toNativeState",
-        "source_line": 83,
+        "source_line": 85,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem continuous_toNativeState : Continuous toNativeState",
         "statement_sha256": "f3d02dc8be5c864c085bef9f340dffbdd9abf32b3d607b49237b15bf7b729013"
@@ -90840,6 +90864,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90848,7 +90874,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.covarianceRat_eq_native",
-        "source_line": 552,
+        "source_line": 554,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem covarianceRat_eq_native (row column : Fin 4) :\n    (covarianceRat row column : ℝ) = Sigma (axisFin.symm row) (axisFin.symm column)",
         "statement_sha256": "bb034caa173ee88804e370c76402e8df7dd693320cea0544a3cd60abc6e1c02d"
@@ -90882,6 +90908,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90890,7 +90918,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.destandardize_standardize",
-        "source_line": 133,
+        "source_line": 135,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem destandardize_standardize (calibration : PositiveCalibration)\n    (raw : RawState) :\n    destandardize calibration (standardize calibration raw) = raw",
         "statement_sha256": "fa75483e32e9d091263b4698a84f9613d2ee41684c4478588330b7212cd628fc"
@@ -90921,6 +90949,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90929,7 +90959,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.diffusionVarianceRateRat_eq_native",
-        "source_line": 580,
+        "source_line": 582,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem diffusionVarianceRateRat_eq_native (center : ℝ) :\n    (diffusionVarianceRateRat : ℝ) = (scalarParameters center).diffusionVarianceRate",
         "statement_sha256": "fc217cfc58644fc4ed24e4db463a433278204013544b89d35764952d315e49af"
@@ -90949,6 +90979,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90957,7 +90989,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.fromNativeKernel_toNativeKernel",
-        "source_line": 239,
+        "source_line": 241,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem fromNativeKernel_toNativeKernel :\n    fromNativeKernel ∘ₖ toNativeKernel = Kernel.id",
         "statement_sha256": "3a254f1a0a4016d3ee688feb8878472ef26f63a1203a8c052aa167ab03cb9fe9"
@@ -90991,6 +91023,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -90999,7 +91033,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.fromNativeState_apply",
-        "source_line": 80,
+        "source_line": 82,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem fromNativeState_apply (state : NativeState) (axis : Axis) :\n    fromNativeState state axis = state axis",
         "statement_sha256": "d51c638144f4aff70f58a4d4246e850f00954d7d79677fc84a996b2bfcc7fecf"
@@ -91023,6 +91057,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91031,7 +91067,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.fromNative_toNative",
-        "source_line": 71,
+        "source_line": 73,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem fromNative_toNative (state : StandardState) :\n    fromNativeState (toNativeState state) = state",
         "statement_sha256": "63f4e04e9d3758aac40ba75c005c82258bfc5ac941e491d97f06e57db07359ca"
@@ -91044,6 +91080,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91052,7 +91090,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.measurable_fromNativeState",
-        "source_line": 92,
+        "source_line": 94,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem measurable_fromNativeState : Measurable fromNativeState",
         "statement_sha256": "394cdb82c561b6b307454a1a943cbd380a196ee735a106a9d90892210478c125"
@@ -91065,6 +91103,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91073,7 +91113,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.measurable_toNativeState",
-        "source_line": 89,
+        "source_line": 91,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem measurable_toNativeState : Measurable toNativeState",
         "statement_sha256": "e8155c2244273a62d492c2f3384362c07cfd46f18e6a9c7c0d86b17f9b3747f9"
@@ -91098,6 +91138,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91106,7 +91148,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.modeRat_eq_native",
-        "source_line": 486,
+        "source_line": 488,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem modeRat_eq_native (row column : Fin 4) :\n    (modeRat row column : ℝ) = modeVector column (axisFin.symm row)",
         "statement_sha256": "eea09f65bccb88a7317cc8a822a5615b96f26f4b9e1c7932fa417e93900901f3"
@@ -91161,6 +91203,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91169,7 +91213,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.modeRateRat_eigenpair",
-        "source_line": 497,
+        "source_line": 499,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem modeRateRat_eigenpair (mode : Fin 4) :\n    K *ᵥ modeVector mode = (modeRateRat mode : ℝ) • modeVector mode",
         "statement_sha256": "71b4dbbac5cdea6aa06c9f506e2548babc6cbb1c3286b070303a836241257b49"
@@ -91201,6 +91245,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91209,7 +91255,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.modeVector_gram",
-        "source_line": 533,
+        "source_line": 535,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem modeVector_gram (left right : Fin 4) :\n    modeVector left ⬝ᵥ modeVector right =\n      if left = right then (modeSquaredNormRat left : ℝ) else 0",
         "statement_sha256": "ad4f2df8b60904974a4304c472ed4e5c1b77c27c73f692597965c3b36335c3a5"
@@ -91240,6 +91286,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91248,7 +91296,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.modeVector_nonzero",
-        "source_line": 514,
+        "source_line": 516,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem modeVector_nonzero (mode : Fin 4) : modeVector mode ≠ 0",
         "statement_sha256": "d7b1d12a1ab535302473b5418138b15154dfc9d417457f9b8136b07098176ae7"
@@ -91282,6 +91330,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91290,7 +91340,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.nonpositive_scale_excluded",
-        "source_line": 169,
+        "source_line": 171,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem nonpositive_scale_excluded (calibration : PositiveCalibration) (axis : Axis) :\n    ¬ calibration.scale axis ≤ 0",
         "statement_sha256": "23057aa1af830afd3499adfa156dd0a7304d11c65c61383b51c3c5a5c07af1b0"
@@ -91314,6 +91364,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91322,7 +91374,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.offsetRat_eq_native",
-        "source_line": 568,
+        "source_line": 570,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem offsetRat_eq_native (axis : Fin 4) :\n    (offsetRat axis : ℝ) = frozenCalibration.offset (axisFin.symm axis)",
         "statement_sha256": "7dbc90e681d68617aea0a24d10a32e6b829ea2680a52beaf5fc022b2ce3625c7"
@@ -91354,6 +91406,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91362,7 +91416,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.precisionRat_eq_native",
-        "source_line": 543,
+        "source_line": 545,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem precisionRat_eq_native (row column : Fin 4) :\n    (precisionRat row column : ℝ) = K (axisFin.symm row) (axisFin.symm column)",
         "statement_sha256": "c6d84d3b1705475275be93bb31e97c4000b88e2472928abc0602086f899836e3"
@@ -91396,6 +91450,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91404,7 +91460,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.rawValue_strictMono",
-        "source_line": 142,
+        "source_line": 144,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem rawValue_strictMono (calibration : PositiveCalibration) (axis : Axis) :\n    StrictMono (rawValue calibration axis)",
         "statement_sha256": "e3859dd5e60cb37444d33a6293eb0182eeff511cf21435d97fcfaec54ab162d1"
@@ -91436,6 +91492,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91444,7 +91502,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.recognitionMean_eq",
-        "source_line": 387,
+        "source_line": 389,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem recognitionMean_eq (center state : StandardState) :\n    recognitionMean center state = center external +\n      ((state sensory - center sensory) + (state active - center active)) / 4",
         "statement_sha256": "835eca20ed808f557e13c332ca3d6309667d9f79a0e9bbdddaff9b8512e407fe"
@@ -91464,6 +91522,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91472,7 +91532,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.recognitionRat_eq_precision",
-        "source_line": 585,
+        "source_line": 587,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem recognitionRat_eq_precision :\n    (recognitionCoefficientRat : ℝ) = recognitionCoefficient sensory ∧\n      (recognitionCoefficientRat : ℝ) = recognitionCoefficient active ∧\n      (recognitionVarianceRat : ℝ) = recognitionVariance",
         "statement_sha256": "cedfad6e2513894e1fb346349d8c43d5d8e271e516222c6c51ad9dd37ee23cd5"
@@ -91492,6 +91552,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91500,7 +91562,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.recognition_precision_blocks",
-        "source_line": 381,
+        "source_line": 383,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem recognition_precision_blocks :\n    recognitionCoefficient sensory = 1 / 4 ∧\n      recognitionCoefficient active = 1 / 4 ∧ recognitionVariance = 1 / 4",
         "statement_sha256": "e72ea69a5334d83c8e7c64074de64427541303ef6955e3676e75701bfd651fee"
@@ -91531,6 +91593,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91539,7 +91603,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.scalarParameters_exact",
-        "source_line": 367,
+        "source_line": 369,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem scalarParameters_exact (center : ℝ) :\n    (scalarParameters center).rate = 2 ∧\n      (scalarParameters center).diffusionVarianceRate = 2",
         "statement_sha256": "93eccf2dc8b0099761091e7ec5b515cea01471a9b8f1471c293472943ef851fd"
@@ -91570,6 +91634,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91578,7 +91644,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.scalarRateRat_eq_native",
-        "source_line": 575,
+        "source_line": 577,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem scalarRateRat_eq_native (center : ℝ) :\n    (scalarRateRat : ℝ) = (scalarParameters center).rate",
         "statement_sha256": "bd9495b87f133303cd4b9e6686b860b2d2a6ad0bcb4ec24fdbe19f00b7194a32"
@@ -91602,6 +91668,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91610,7 +91678,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.scaleRat_eq_native",
-        "source_line": 561,
+        "source_line": 563,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem scaleRat_eq_native (axis : Fin 4) :\n    (scaleRat axis : ℝ) = frozenCalibration.scale (axisFin.symm axis)",
         "statement_sha256": "65f6e8c940b2d0ed09e1fc0994705295cd8be7b8413d3cc4934b872d760ece35"
@@ -91634,6 +91702,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91642,7 +91712,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.settingRat_eq_native",
-        "source_line": 451,
+        "source_line": 453,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem settingRat_eq_native (setting : Setting) :\n    (∀ axis, (centerRat setting : ℝ) / 2 = (referenceSetting setting).center axis) ∧\n      (∀ axis, (centerRat setting : ℝ) / 2 = (referenceSetting setting).initialMean axis) ∧\n      (observationNoiseRat setting : ℝ) =\n        ((referenceSetting setting).observationNoiseVariance : ℝ) ∧\n      (sampleDurationRat setting : ℝ) = ((referenceSetting setting).sampleDuration : ℝ)",
         "statement_sha256": "39ffd28e2e3f3bec1c7b496eba96a49fa9c4734fd64537546bccf38e2f4ee46b"
@@ -91676,6 +91746,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91684,7 +91756,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.standardize_destandardize",
-        "source_line": 127,
+        "source_line": 129,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem standardize_destandardize (calibration : PositiveCalibration)\n    (state : StandardState) :\n    standardize calibration (destandardize calibration state) = state",
         "statement_sha256": "f14dfa78703bd970bf436d3643fe10e34cce6fbb2df864ac6d9204dab7a7262f"
@@ -91718,6 +91790,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91726,7 +91800,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.standardize_value_strictMono",
-        "source_line": 149,
+        "source_line": 151,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem standardize_value_strictMono (calibration : PositiveCalibration) (axis : Axis) :\n    StrictMono (fun value : ℝ =>\n      (value - calibration.offset axis) / calibration.scale axis)",
         "statement_sha256": "e760eff3720a6f4987338b0da88d8b3d184520d98d5580e297fe356b60c9aad9"
@@ -91763,6 +91837,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91771,7 +91847,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.stationaryLaw_eq_gaussian_map",
-        "source_line": 303,
+        "source_line": 305,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem stationaryLaw_eq_gaussian_map (center : StandardState) :\n    stationaryLaw center =\n      (multivariateGaussian (toNativeState center) Sigma).map fromNativeState",
         "statement_sha256": "2c1b5f4f3d4522f1efbe6b828a8e6a3f6eec00d136058894ffc588055c279496"
@@ -91808,6 +91884,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91816,7 +91894,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.stationaryLaw_invariant",
-        "source_line": 309,
+        "source_line": 311,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem stationaryLaw_invariant (center : StandardState) :\n    FEP.MarkovSemigroup.InvariantLaw (nativeSemigroup center) (stationaryLaw center)",
         "statement_sha256": "94735721dfefd38257bcd7a3dcbc8514b084b8d54758f96543767aa73cb9eff8"
@@ -91840,6 +91918,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91848,7 +91928,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.stationaryProbability_eq",
-        "source_line": 333,
+        "source_line": 335,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem stationaryProbability_eq (center : StandardState) :\n    (stationaryProbability center : Measure StandardState) = stationaryLaw center",
         "statement_sha256": "11ff4098bdae1b1086278b472e465164aa70eaa0ba0c429a6b4fe4321818b99f"
@@ -91868,6 +91948,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91876,7 +91958,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.toNativeKernel_fromNativeKernel",
-        "source_line": 233,
+        "source_line": 235,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem toNativeKernel_fromNativeKernel :\n    toNativeKernel ∘ₖ fromNativeKernel = Kernel.id",
         "statement_sha256": "a3e667ab1f6cd57db5aac2bd80189ada831699364c22fc1bbaa26154755c7eca"
@@ -91910,6 +91992,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91918,7 +92002,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.toNativeState_apply",
-        "source_line": 77,
+        "source_line": 79,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem toNativeState_apply (state : StandardState) (axis : Axis) :\n    toNativeState state axis = state axis",
         "statement_sha256": "19648e21f5670bb0732b25ec8d6949c05101136c84edd576834ad2e0555f91e1"
@@ -91942,6 +92026,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91950,7 +92036,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.toNative_actionCenter",
-        "source_line": 349,
+        "source_line": 351,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem toNative_actionCenter (action : Bool) :\n    toNativeState (actionCenter action) =\n      FEP.Fin4GaussianSemigroup.allOnesEmbedding (if action then 1 else -1)",
         "statement_sha256": "0bd15608ea0cb846a738cd680f1f69b8070e0f4cdad898d803ae1a8078fe2bbf"
@@ -91974,6 +92060,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -91982,7 +92070,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.toNative_fromNative",
-        "source_line": 74,
+        "source_line": 76,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem toNative_fromNative (state : NativeState) :\n    toNativeState (fromNativeState state) = state",
         "statement_sha256": "4e5d730e332b4ce5c1eb8cdf98528d31898d4bbc49c9c65247980bc45cf88766"
@@ -92035,6 +92123,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92043,7 +92133,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transitionCovariance_posDef",
-        "source_line": 222,
+        "source_line": 224,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transitionCovariance_posDef (time : ℝ≥0) (hTime : 0 < time) :\n    (transitionCovariance time).PosDef",
         "statement_sha256": "68f4f836075c18660e550eaed3ecc7d27b2a776fd98fd8b748c721c5bf0917bd"
@@ -92086,6 +92176,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92094,7 +92186,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transitionCovariance_posSemidef",
-        "source_line": 217,
+        "source_line": 219,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transitionCovariance_posSemidef (time : ℝ≥0) :\n    (transitionCovariance time).PosSemidef",
         "statement_sha256": "22e6428e5b99ae029af7af3d60c3a52577b15f9c492f8d830e35aa3e63b79f98"
@@ -92136,6 +92228,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92144,7 +92238,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transitionProbability_eq",
-        "source_line": 327,
+        "source_line": 329,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transitionProbability_eq (center state : StandardState) (time : ℝ≥0) :\n    (transitionProbability center state time : Measure StandardState) =\n      transition center time state",
         "statement_sha256": "dac540a82417dfe04ccade5a4e0b8df7509c567de785301e128fcd9f4bf76da2"
@@ -92182,6 +92276,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92190,7 +92286,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transitionProbability_tendsto_invariant",
-        "source_line": 338,
+        "source_line": 340,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transitionProbability_tendsto_invariant (center state : StandardState) :\n    Tendsto (transitionProbability center state) atTop\n      (nhds (stationaryProbability center))",
         "statement_sha256": "6a410bb23ff53afe379a1aa5e4614dc06f29107986cc8d8750050ca48e1cb0e2"
@@ -92238,6 +92334,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92246,7 +92344,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transition_add",
-        "source_line": 282,
+        "source_line": 284,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transition_add (center : StandardState) (left right : ℝ≥0) :\n    transition center (left + right) = transition center right ∘ₖ transition center left",
         "statement_sha256": "cd7afd03fc321c70bc0888d43a23bcf1c393917399d73c59e85696c61642430c"
@@ -92288,6 +92386,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92296,7 +92396,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transition_apply",
-        "source_line": 257,
+        "source_line": 259,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transition_apply (center state : StandardState) (time : ℝ≥0) :\n    transition center time state =\n      (FEP.Fin4GaussianSemigroup.transition (toNativeState center) time\n        (toNativeState state)).map fromNativeState",
         "statement_sha256": "dbe428202a87f30860e5111f1c106b1bdaf3312bdef795a75962a67f1df6f7f1"
@@ -92356,6 +92456,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92364,7 +92466,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transition_eq_gaussian_map",
-        "source_line": 265,
+        "source_line": 267,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transition_eq_gaussian_map (center state : StandardState) (time : ℝ≥0) :\n    transition center time state =\n      (multivariateGaussian\n        (toNativeState center + Matrix.toEuclideanCLM (𝕜 := ℝ)\n          (NormedSpace.exp ((-(time : ℝ)) • K))\n          (toNativeState state - toNativeState center))\n        (transitionCovariance time)).map fromNativeState",
         "statement_sha256": "c501ffb6565b745b6a532e154f4e15f6e40de2f753ba1548fcac514cf6dc518d"
@@ -92408,6 +92510,8 @@
         "declaration_mentions": [],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92416,7 +92520,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transition_univ",
-        "source_line": 275,
+        "source_line": 277,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transition_univ (center : StandardState) (time : ℝ≥0) (state : StandardState) :\n    transition center time state Set.univ = 1",
         "statement_sha256": "d0f6863367d0226c279351838c9107f0597cd159adc5bd288288d893034c33d5"
@@ -92453,6 +92557,8 @@
         ],
         "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
         "import_context": [
+          "Lean.Data.Json.Basic",
+          "Lean.Data.Json.FromToJson.Basic",
           "FepSketches.fin4_gaussian_semigroup",
           "FepSketches.markov_semigroup"
         ],
@@ -92461,7 +92567,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.H3ReferenceModel.transition_zero",
-        "source_line": 278,
+        "source_line": 280,
         "source_owner": "src/fep_formal/formal/h3_reference_model.lean",
         "statement": "theorem transition_zero (center : StandardState) : transition center 0 = Kernel.id",
         "statement_sha256": "b38499fdbd4b21d4dd161149daa873f4b01bb40d96219d377563348e6d46e0ca"
@@ -208979,7 +209085,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep040.FEP040.fep040_heatCapacity_eq_half",
-        "source_line": 106,
+        "source_line": 102,
         "source_owner": "src/fep_formal/catalogue/bodies/core_bayesian_mechanics.py",
         "statement": "theorem fep040_heatCapacity_eq_half {T : ℝ} (hT : 0 < T) :\n    fep040_heatCapacity T = 1 / 2",
         "statement_sha256": "5477ab18412c5f9b0d7cef81e5ef2d3bad6ad5adb3f79a383bb674b7ea715013"
@@ -209043,7 +209149,7 @@
         "namespace_variable_context": [],
         "preceding_scope_directives": [],
         "qualified_name": "fep_fep040.FEP040.fep040_thermalEntropy_hasDerivAt",
-        "source_line": 78,
+        "source_line": 76,
         "source_owner": "src/fep_formal/catalogue/bodies/core_bayesian_mechanics.py",
         "statement": "theorem fep040_thermalEntropy_hasDerivAt\n    {κ T : ℝ} (hκ : 0 < κ) (hT : 0 < T) :\n    HasDerivAt (fep040_thermalEntropy κ) (1 / (2 * T)) T",
         "statement_sha256": "262b8ea6a1dd324986f0ad97cbcaa25ee44a67c047f856978caed0cceb6642e4"
@@ -242258,7 +242364,7 @@
       "area": "BayesianMechanics",
       "body_source": "src/fep_formal/catalogue/bodies/core_bayesian_mechanics.py",
       "body_theorem_count": 7,
-      "canonical_body_sha256": "7f207e3839ce385a29843570df449c3b593af5418c01e2f1f16732c97139d97b",
+      "canonical_body_sha256": "aeb7d8f21fa7ea961bda554506bcec3a4762e3876737a5673bace7313385f6ec",
       "canonical_namespace": "FEP040",
       "family": "core-bayesian-mechanics",
       "id": "fep-040",

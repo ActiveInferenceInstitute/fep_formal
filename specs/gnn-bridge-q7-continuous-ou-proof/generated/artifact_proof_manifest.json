@@ -81,18 +81,18 @@
   "expected_contract_sha256": "73943b460a43e2929690ba1c6f7cd5fc960e73445734230bcbf7ae8e183e52bc",
   "inputs": {
     "specs/gnn-bridge-q7-continuous-ou-proof/expected.json": "73943b460a43e2929690ba1c6f7cd5fc960e73445734230bcbf7ae8e183e52bc",
-    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "a09f04edeccb703d0ed6a052f681bea10f239092fe42c9e3cd744fb3ec802bea",
+    "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/FepLeanContinuousOU.md": "44f17bbb0c0bb0a53f7b6e9c3b191977e963cdab236f05dfd516d86314a4d2c3",
     "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py": "07f34e713d5dff0addf17af90c45eb2cab925ee18a0d6b5b34b98a744519c8d0",
-    "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "b40a72e7567693db5f2ef9a67b6c78a02f2eeca2b2e44618fcf1eae228881537",
+    "specs/gnn-bridge-q7-continuous-ou-proof/generate_probe.py": "8ceb1abb3e4931a589ca7f0e440dac17f9a2aa3d47304850d12591557c03b8d6",
     "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-canonical.json": "0a7efe879324b4234283615fe2caf92c473060a2c6c8228e32c1a3c6b41fdf25",
-    "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-runtime-parity.json": "894e7fc3cdfdbcabb3194442ffbd412cc2823337f9092a7ebe0ccead2232fc02",
+    "specs/gnn-bridge-q7-continuous-ou-proof/generated/scaffold-runtime-parity.json": "5e1ab101e5e2134e6e6c77d6a77078d55812b9e937e3cded6416ada0497e0903",
     "specs/gnn-bridge-q7-continuous-ou-proof/probe.template.lean": "4ca4dd970d49b09563b3cf3d7b63f1ee14278f0dd49a4ffc45611b599fdb453a",
     "specs/gnn-bridge-q7-continuous-ou-proof/refresh_render.py": "6ba2941a19642706b338f626dcef1ef396eb4714054344150786df61b978a928",
-    "specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "62bfddd0a74cc92ac1a7dfab9aee3055e925b6502089c8e145c8d6b4213578a9",
-    "specs/gnn-bridge-q7-continuous-ou-proof/scaffold-serialization.md": "541d408dccaa8b383aa6cac45c33d5d9d9e072ad93e985f747c58b5a77dc4ea5",
+    "specs/gnn-bridge-q7-continuous-ou-proof/render_provenance.json": "5243175153a9e80695817d36833901fd33ad1f76dcaf2eec861faf43492e34bf",
+    "specs/gnn-bridge-q7-continuous-ou-proof/scaffold-serialization.md": "b469b918528c4f9f6530dcfd1fb4eb725443c9f053fe8a6fae3614a3c6fa30ff",
     "src/fep_formal/_paths.py": "ff3f60258a2d9a7cabea2ade1ab7596f2c5482d57db932e261a137c969b37cdc",
     "src/fep_formal/verification/_jsonutil.py": "8e389db30143881d795eecc8786df2ff5d9c21dd2fc1592e92e501991cee8e9d",
-    "src/fep_formal/verification/gnn_continuous_artifact_proof.py": "44b71d1ef7f1fb36cb70349bd6c35c2d293d07e3f2da6404bd700168661659cb"
+    "src/fep_formal/verification/gnn_continuous_artifact_proof.py": "9d4b8ececc1c97cf941628ac9321d886faadc9d4ecf0f5dd14d1a9bd45e3a9cf"
   },
   "native_evidence": "required separately; not supplied by generation",
   "outputs": {

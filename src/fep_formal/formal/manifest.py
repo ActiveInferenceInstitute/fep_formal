@@ -11,7 +11,7 @@ from fep_formal.lean_source import is_lean_qualified_name, lean_outer_namespaces
 _RELEASED_SHARED_DECLARATION_NAMESPACE = "FEPComposed"
 
 
-class FormalModuleRole(str, Enum):
+class FormalModuleRole(str, Enum):  # noqa: UP042 - Preserve the public Enum string representation.
     """How a maintained Lean module participates in formal evidence."""
 
     FOUNDATION = "foundation"

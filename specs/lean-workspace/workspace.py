@@ -11,12 +11,11 @@ import re
 import subprocess
 import sys
 import time
+import tomllib
 from pathlib import Path
 
-import tomllib
-
-TOOLCHAIN = "leanprover/lean4:v4.35.0"
-MATHLIB_REV = "56a005855ea17e0b0958f73ec801ae140b0a1679"
+TOOLCHAIN = "leanprover/lean4:v4.36.0"
+MATHLIB_REV = "fc4f59e577feb1a4956671bc04ac18aaaf8cd842"
 
 
 def execute(args: list[str], cwd: Path, timeout: int = 30) -> str:
@@ -156,7 +155,7 @@ def check_project(project: dict) -> dict:
             problems.append("package configuration changed; refresh inventory")
         pin = directory / "lean-toolchain"
         if not pin.is_file() or pin.read_text().strip() != TOOLCHAIN:
-            problems.append("toolchain is not exact 4.35.0")
+            problems.append("toolchain is not exact 4.36.0")
         manifest = directory / "lake-manifest.json"
         if project["manifest_sha256"] != (
             digest(manifest) if manifest.is_file() else None
@@ -170,7 +169,7 @@ def check_project(project: dict) -> dict:
             )
             requires_mathlib = requirement is not None
             pinned = not requires_mathlib or requirement.get("rev") in {
-                "v4.35.0",
+                "v4.36.0",
                 MATHLIB_REV,
             }
         else:

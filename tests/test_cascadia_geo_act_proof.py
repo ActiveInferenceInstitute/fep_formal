@@ -23,6 +23,22 @@ FIXTURES = SLICE / "fixtures"
 RETAINED_RECEIPT = SLICE / "native_receipt.json"
 
 
+def _historical_verifier_source(source: bytes) -> bytes:
+    """Authenticate the complete original verifier or its exact UTC successor."""
+    digest = "fb20423bdf4d600a9fd7e9e3b9b5f5c2b11da1437042d2d8a4e601f875b116af"
+    if hashlib.sha256(source).hexdigest() == digest:
+        return source
+    assert source.count(b"from datetime import UTC, datetime") == 1
+    assert source.count(b"datetime.now(UTC)") == 1
+    original = source.replace(
+        b"from datetime import UTC, datetime",
+        b"from datetime import datetime, timezone",
+        1,
+    ).replace(b"datetime.now(UTC)", b"datetime.now(timezone.utc)", 1)
+    assert hashlib.sha256(original).hexdigest() == digest
+    return original
+
+
 def _load(name: str) -> ModuleType:
     spec = importlib.util.spec_from_file_location(
         f"cascadia_{name}", SLICE / f"{name}.py"
@@ -195,14 +211,21 @@ def test_retained_receipt_preserves_history_and_rejects_current_pins(
     historical_pins = json.loads(
         (PROJECT_ROOT / "tests/fixtures/custody_toolchain_4_34_1.json").read_text()
     )["files"]
-    changed_pins = {"lean/lean-toolchain", "lean/lake-manifest.json"}
+    fixture_pins = {"lean/lean-toolchain", "lean/lake-manifest.json"}
+    changed_pins = {
+        "lean/lean-toolchain",
+        "lean/lake-manifest.json",
+        "specs/cascadia-geo-act-proof/verify_native.py",
+    }
     assert set(receipt["bound_inputs"]) == set(verifier.bound_digests())
     for name, digest in receipt["bound_inputs"].items():
         source = (
             historical_pins[name].encode("utf-8")
-            if name in changed_pins
+            if name in fixture_pins
             else (PROJECT_ROOT / name).read_bytes()
         )
+        if name == "specs/cascadia-geo-act-proof/verify_native.py":
+            source = _historical_verifier_source(source)
         assert hashlib.sha256(source).hexdigest() == digest, name
     assert verifier.verdict(receipt) == receipt["verdict"]
     assert receipt["verdict"]["claim_ready"] is True
@@ -251,3 +274,20 @@ def test_native_compile_is_claim_ready_and_rejects_every_mutation(
     assert receipt["verdict"]["claim_ready"] is True
     assert all(receipt["verdict"]["mutations_rejected"].values())
     assert "CascadiaGeo.SmithRiverHoming.homing_lower_bound" in receipt["theorems"]
+
+
+def test_historical_verifier_inverse_rejects_unknown_and_partial_edits() -> None:
+    live = (SLICE / "verify_native.py").read_bytes()
+    original = _historical_verifier_source(live)
+    assert _historical_verifier_source(original) == original
+    for changed in (
+        live + b"\n",
+        live.replace(b"datetime.now(UTC)", b"datetime.now(timezone.utc)", 1),
+        live.replace(
+            b"from datetime import UTC, datetime",
+            b"from datetime import datetime, timezone",
+            1,
+        ),
+    ):
+        with pytest.raises(AssertionError):
+            _historical_verifier_source(changed)

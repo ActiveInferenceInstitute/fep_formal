@@ -72,7 +72,7 @@ jobs:
           # sync below fails closed; the FEP lane keeps its own separate pin.
           uv pip install --python "$RUNNER_TEMP/gnn-uv-tool/bin/python" uv==0.13.6
           "$RUNNER_TEMP/gnn-uv-tool/bin/uv" sync --project gnn --frozen --extra dev
-          uv python install 3.10 3.11 3.12 3.13 3.14
+          uv python install 3.11 3.12 3.13 3.14
       - name: Install pinned Lean launcher
         run: |
           set -euo pipefail

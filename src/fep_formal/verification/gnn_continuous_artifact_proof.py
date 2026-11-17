@@ -83,7 +83,7 @@ ACCEPTED_SCAFFOLD_INTERPRETERS: tuple[tuple[str, tuple[int, int]], ...] = (
     ("cpython", (3, 14)),
 )
 CANONICAL_SCAFFOLD_INTERPRETERS: tuple[tuple[str, tuple[int, int]], ...] = tuple(
-    ("cpython", (3, minor)) for minor in range(10, 15)
+    ("cpython", (3, minor)) for minor in range(11, 15)
 )
 SCAFFOLD_AST_SCHEMA_VERSION = 1
 
@@ -382,7 +382,7 @@ def canonical_scaffold_bytes(source: str) -> bytes:
     if running not in CANONICAL_SCAFFOLD_INTERPRETERS:
         _fail(
             "interpreter",
-            "canonical scaffold serialization accepts only CPython 3.10--3.14",
+            "canonical scaffold serialization accepts only CPython 3.11--3.14",
         )
     tree = _parse(source, type_comments=True)
     assignments = _assignments(tree)

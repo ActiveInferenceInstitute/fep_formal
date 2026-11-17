@@ -14,11 +14,11 @@ import json
 import re
 import subprocess
 import sys
+import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import tomllib
 import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent

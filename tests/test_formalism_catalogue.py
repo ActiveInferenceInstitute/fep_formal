@@ -355,6 +355,15 @@ def _assert_released_body_and_maturity(
     assert set(migration["topics"]) == {"fep-013", "fep-038", "fep-040", "fep-043"}
     for topic_id, change in migration["topics"].items():
         current_body = released_bodies[topic_id]
+        if topic_id == "fep-040":
+            # Reverse only the two Lean 4.36 redundant all_goals removals.
+            # The complete predecessor digest below authenticates both proofs.
+            for anchor in ("convert hscaled using 1", "convert hcomp using 1"):
+                current_body = current_body.replace(
+                    anchor + "\n  rfl\n",
+                    anchor + "\n  all_goals\n    first\n    | rfl\n",
+                    1,
+                )
         assert (
             hashlib.sha256(current_body.encode()).hexdigest()
             == change["migrated_sha256"]
@@ -1198,3 +1207,15 @@ def test_next_cohort_exact_historical_projection_and_tamper_controls(
     monkeypatch.setattr(contract, "_NEXT_COHORT_REVIEW_PATH", changed)
     with pytest.raises(AssertionError):
         contract.next_cohort_review()
+
+
+def test_436_catalogue_inverse_rejects_extra_body_byte() -> None:
+    import pytest
+
+    bodies = dict(BODIES)
+    bodies["fep-040"] += "\n"
+    with pytest.raises(AssertionError):
+        _assert_released_body_and_maturity(
+            bodies,
+            [dict(row) for row in _yaml("theorem_maturity.yaml")["topics"][:120]],
+        )

@@ -30,6 +30,8 @@ def test_h3_foundation_owns_intrinsic_imports_and_preserves_frozen_carrier() -> 
     assert source.startswith("module\n")
     assert "\n@[expose] public section\n" in source
     assert re.findall(r"(?m)^public import (\S+)$", source) == [
+        "Lean.Data.Json.Basic",
+        "Lean.Data.Json.FromToJson.Basic",
         "FepSketches.fin4_gaussian_semigroup",
         "FepSketches.markov_semigroup",
     ]
@@ -224,3 +226,16 @@ example : ¬ ∃ calibration : PositiveCalibration, calibration.scale external =
         "FEP.H3ReferenceModel." + name for name in expected_witnesses
     }
     assert expected_witnesses <= set(names)
+
+
+@pytest.mark.parametrize("duplicated", (False, True))
+def test_historical_h3_inverse_rejects_missing_or_duplicate_json_import(
+    duplicated: bool,
+) -> None:
+    source = FOUNDATION.read_bytes()
+    token = b"public import Lean.Data.Json.Basic\n"
+    changed = source.replace(token, token * 2 if duplicated else b"", 1)
+    with pytest.raises(AssertionError):
+        historical_carrier_bytes(
+            "src/fep_formal/formal/h3_reference_model.lean", changed
+        )

@@ -4436,7 +4436,7 @@ private theorem forward_coordinate_binding (index : Fin 3) :
   fin_cases index <;>
     simp [originalInnovationCoordinate, tripleFromInnovations,
       tripleLinear, forwardCoordinateCoefficient, Fin.sum_univ_three]
-  all_goals ring
+  ring
 
 private theorem informationCoordinate_measurable (index : Fin 3) :
     Measurable (informationCoordinate index) := by

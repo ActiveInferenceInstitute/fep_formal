@@ -233,9 +233,9 @@ Ruff checks all active Python tooling, including slice-local specs. The narrow
 historical/generated/pinned-input exclusions in `pyproject.toml` follow
 `specs/AGENTS.md`; their bytes remain unchanged. Strict mypy covers the package,
 scripts, docs, and the render-dependency and native-supplement helpers at the
-Python 3.14 validator target. Ruff retains Python 3.10
-syntax compatibility for the static Q7 parity lane, and the installed-wheel
-matrix checks the Python 3.11 packaging floor separately. Exceptions preserve
+Python 3.14 validator target. Ruff uses the Python 3.11 packaging floor. The static Q7 parser/serializer
+parity capture covers the supported Python 3.11–3.14 range. The installed-wheel matrix checks
+Python 3.11–3.14 compatibility separately. Exceptions preserve
 declared error or compatibility contracts and must be justified at the affected
 line.
 

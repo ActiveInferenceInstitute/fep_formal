@@ -26,7 +26,7 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Formal-resource structures | 56 |
 | Distinct Mathlib imports | 80 |
 | Topic-to-import edges | 268 |
-| Formal-resource import edges | 409 |
+| Formal-resource import edges | 411 |
 | Internal formal-module dependencies | 173 |
 | Authored formalism relations | 156 |
 | Derivational formal relations | 32 |

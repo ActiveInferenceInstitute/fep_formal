@@ -63,7 +63,7 @@ class WorkspaceTests(unittest.TestCase):
         checked = workspace.check_project(lock)
         self.assertEqual(checked["state"], "reference-only")
         self.assertEqual(checked["alignment"], "not-aligned")
-        self.assertIn("toolchain is not exact 4.35.0", checked["problems"])
+        self.assertIn("toolchain is not exact 4.36.0", checked["problems"])
         built = workspace.build_project(lock, self.root / "logs", "/missing/elan", 5)
         self.assertEqual(built["state"], "reference-only")
         self.assertFalse((self.root / "logs").exists())
@@ -122,14 +122,14 @@ class WorkspaceTests(unittest.TestCase):
         p = self.project / "lakefile.toml"
         p.write_text(
             p.read_text()
-            + '\n[[require]]\nname = "mathlib"\ngit = "https://github.com/leanprover-community/mathlib4"\nrev = "v4.35.0"\n'
+            + '\n[[require]]\nname = "mathlib"\ngit = "https://github.com/leanprover-community/mathlib4"\nrev = "v4.36.0"\n'
         )
         self.assertEqual(workspace.check_project(self.lock())["state"], "not-aligned")
 
     def test_wrong_resolved_mathlib_fails(self):
         p = self.project / "lakefile.toml"
         p.write_text(
-            p.read_text() + '\n[[require]]\nname = "mathlib"\nrev = "v4.35.0"\n'
+            p.read_text() + '\n[[require]]\nname = "mathlib"\nrev = "v4.36.0"\n'
         )
         (self.project / "lake-manifest.json").write_text(
             json.dumps({"packages": [{"name": "mathlib", "rev": "0" * 40}]})
@@ -139,7 +139,7 @@ class WorkspaceTests(unittest.TestCase):
     def test_matching_mathlib_passes_then_manifest_drift_fails(self):
         p = self.project / "lakefile.toml"
         p.write_text(
-            p.read_text() + '\n[[require]]\nname = "mathlib"\nrev = "v4.35.0"\n'
+            p.read_text() + '\n[[require]]\nname = "mathlib"\nrev = "v4.36.0"\n'
         )
         manifest = self.project / "lake-manifest.json"
         manifest.write_text(
@@ -162,6 +162,25 @@ class WorkspaceTests(unittest.TestCase):
             result["folders"], [{"name": one["id"], "path": one["directory"]}]
         )
         self.assertFalse((self.project / "lakefile.lean").exists())
+
+    def test_previous_toolchain_reports_exact_current_requirement(self):
+        lock = self.lock()
+        (self.project / "lean-toolchain").write_text("leanprover/lean4:v4.35.0\n")
+        checked = workspace.check_project(lock)
+        self.assertEqual(checked["state"], "not-aligned")
+        self.assertIn("toolchain is not exact 4.36.0", checked["problems"])
+
+    def test_previous_mathlib_tag_fails_with_current_revision(self):
+        config = self.project / "lakefile.toml"
+        config.write_text(
+            config.read_text() + '\n[[require]]\nname = "mathlib"\nrev = "v4.35.0"\n'
+        )
+        (self.project / "lake-manifest.json").write_text(
+            json.dumps(
+                {"packages": [{"name": "mathlib", "rev": workspace.MATHLIB_REV}]}
+            )
+        )
+        self.assertEqual(workspace.check_project(self.lock())["state"], "not-aligned")
 
 
 if __name__ == "__main__":

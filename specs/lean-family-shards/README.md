@@ -18,7 +18,7 @@ required distribution resources include the same manifest-derived shard roster.
 ## Local incremental observation
 
 The baseline is main `b3e21f6690a22a98cc68b609a818817247fd6868`.
-Both measurements used Lean 4.35.0, the pinned Mathlib cache, and the default
+Both measurements used Lean compiler version `4.35.0`, the pinned Mathlib cache, and the default
 `FepSketches` target with warning failures enabled. After a warm control, the
 canonical generator temporarily received one extra public `True` witness in
 `fep-001`. Existing declarations were unchanged. The generator restored every

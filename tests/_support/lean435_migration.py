@@ -1,4 +1,4 @@
-"""Compare frozen H3 carrier bytes across the enumerated Lean 4.35 migration."""
+"""Compare frozen H3 bytes across enumerated Lean 4.35 and 4.36 migrations."""
 
 from __future__ import annotations
 
@@ -14,7 +14,10 @@ _CARRIER_IMPORT_ADDITIONS = {
     "src/fep_formal/formal/markov_semigroup.lean": (),
     "src/fep_formal/formal/gaussian_information_geometry.lean": (),
     "src/fep_formal/formal/smooth_information_geometry.lean": (),
-    "src/fep_formal/formal/h3_reference_model.lean": (),
+    "src/fep_formal/formal/h3_reference_model.lean": (
+        "Lean.Data.Json.Basic",
+        "Lean.Data.Json.FromToJson.Basic",
+    ),
     "src/fep_formal/formal/fin4_gaussian_semigroup.lean": (
         "Mathlib.Probability.Distributions.Gaussian.Fernique",
     ),
@@ -51,12 +54,19 @@ _RECOGNIZED_SCALAR_PROOF_REFACTOR_SHA256 = (
 
 
 def historical_scalar_static_replay_source(live: bytes, archived: bytes) -> bytes:
-    """Authenticate one exact proof-only successor for historical/static replay.
+    """Authenticate the 4.35 successor and exact 4.36 tactic cleanup for history.
 
     This returns accepted-Y source bytes for the existing migration inverse.
     It does not certify current H3 execution, reseal receipts, or strip proofs.
     """
-    assert hashlib.sha256(live).hexdigest() == (
+    # Undo only the Lean 4.36 unused-tactic cleanup, then authenticate the
+    # entire exact predecessor; unrelated proof/statement drift still fails.
+    predecessor = live.replace(
+        b"(hOne.sub (model.decay_tendsto_zero.pow 2)) using 1\n  norm_num\n",
+        b"(hOne.sub (model.decay_tendsto_zero.pow 2)) using 1\n  all_goals norm_num\n",
+        1,
+    )
+    assert hashlib.sha256(predecessor).hexdigest() == (
         _RECOGNIZED_SCALAR_PROOF_REFACTOR_SHA256
     ), "unrecognized live scalar historical replay source"
     assert hashlib.sha256(archived).hexdigest() == (
@@ -398,6 +408,15 @@ def historical_manifest_bytes(project_root: Path, live: bytes) -> bytes:
             1,
         )
         live = live.replace(b'"fep_formal"', b'"fep_lean"')
+    # The enum stays unchanged; authenticate the complete historical preimage
+    # before removing its reviewed lint-only annotation for static replay.
+    enum_note = b"  # noqa: UP042 - Preserve the public Enum string representation."
+    unannotated = live.replace(enum_note, b"", 1)
+    if live.count(enum_note) == 1 and hashlib.sha256(unannotated).hexdigest() in {
+        _HISTORICAL_MANIFEST_SHA256,
+        _CATEGORY_MANIFEST_SHA256,
+    }:
+        live = unannotated
     live_digest = hashlib.sha256(live).hexdigest()
     assert live_digest in {_HISTORICAL_MANIFEST_SHA256, _CATEGORY_MANIFEST_SHA256}, (
         "unreviewed live custody manifest: src/fep_formal/formal/manifest.py"
@@ -524,6 +543,15 @@ _FLOOR_PYPROJECT_SHA256 = (
 
 def _python_floor_metadata_predecessor(live: bytes) -> bytes:
     """Reverse only the reviewed Python 3.11/Pillow 13 packaging delta."""
+    # Reverse only the Ruff floor successor whose entire preimage is sealed.
+    # Unknown metadata still fails the historical authentication below.
+    ruff_current = b'target-version = "py311"\n'
+    ruff_predecessor = live.replace(ruff_current, b'target-version = "py310"\n', 1)
+    if (
+        live.count(ruff_current) == 1
+        and hashlib.sha256(ruff_predecessor).hexdigest() == _FLOOR_PYPROJECT_SHA256
+    ):
+        live = ruff_predecessor
     floor = b'requires-python = ">=3.11"\n'
     historical = b'requires-python = ">=3.10"\n'
     mypy_historical = (

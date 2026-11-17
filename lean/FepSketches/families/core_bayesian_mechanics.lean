@@ -637,9 +637,7 @@ theorem fep040_gaussianEntropy_hasDerivAt
     field_simp [hconstant, ne_of_gt hv]
   rw [← hcoefficient]
   convert hscaled using 1
-  all_goals
-    first
-    | rfl
+  rfl
 
 /-- Thermal variance scale `κT`. -/
 def fep040_thermalVariance (κ T : ℝ) : ℝ := κ * T
@@ -668,9 +666,7 @@ theorem fep040_thermalEntropy_hasDerivAt
     field_simp [ne_of_gt hκ, ne_of_gt hT]
   rw [← hcoefficient]
   convert hcomp using 1
-  all_goals
-    first
-    | rfl
+  rfl
 
 /-- Dimensionless constant-volume heat capacity `T ∂H/∂T`. -/
 noncomputable def fep040_heatCapacity (T : ℝ) : ℝ :=

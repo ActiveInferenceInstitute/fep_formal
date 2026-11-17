@@ -793,7 +793,7 @@ def neighbors(
 StrictLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _mapping)
 
 
-class SourceOrigin(str, Enum):
+class SourceOrigin(str, Enum):  # noqa: UP042 - Preserve the public Enum string representation.
     """Which actual owner bytes were read for this analysis."""
 
     INSTALLED_PACKAGE = "installed_package"

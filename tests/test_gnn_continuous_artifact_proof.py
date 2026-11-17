@@ -890,3 +890,31 @@ def test_publication_rejects_malformed_stored_recipe(tmp_path, recipe):
         generator.publish(root, incoming, scaffold=True)
     assert before == {p.name: p.read_bytes() for p in destination.iterdir()}
     assert not list(destination.parent.glob(".generated-*"))
+
+
+@pytest.mark.parametrize("minor", (10, 15))
+def test_candidate_scaffold_refuses_unsupported_python_before_parsing(
+    monkeypatch: pytest.MonkeyPatch, minor: int
+) -> None:
+    from fep_formal.verification.gnn_continuous_artifact_proof import (
+        canonical_scaffold_bytes,
+    )
+
+    monkeypatch.setattr(sys, "version_info", (3, minor, 0, "final", 0))
+    with pytest.raises(ContinuousArtifactError) as refused:
+        canonical_scaffold_bytes("invalid syntax !!!")
+    assert refused.value.reason == "interpreter"
+
+
+@pytest.mark.parametrize("minor", (11, 14))
+def test_supported_scaffold_boundary_reaches_parser(
+    monkeypatch: pytest.MonkeyPatch, minor: int
+) -> None:
+    from fep_formal.verification.gnn_continuous_artifact_proof import (
+        canonical_scaffold_bytes,
+    )
+
+    monkeypatch.setattr(sys, "version_info", (3, minor, 0, "final", 0))
+    with pytest.raises(ContinuousArtifactError) as refused:
+        canonical_scaffold_bytes("invalid syntax !!!")
+    assert refused.value.reason != "interpreter"

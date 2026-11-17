@@ -259,7 +259,7 @@ No serializer rule, numerical tolerance or scientific assumption was relaxed.
 All five real Python parser/serializer observations agree; the validator still
 requires CPython 3.14. There were 413 passing extraction/custody controls and
 three passing native positive/wrong-F/wrong-Q controls. A new typed native
-receipt passed compilation and independent retained validation on Lean 4.35.0
+receipt passed compilation and independent retained validation on Lean compiler version `4.35.0`
 with the pinned Mathlib revision. Its exact hash is retained in the public
 observation; the typed receipt stays in the operator evidence set. The public
 observation does not replace that validator. The Lean probe is byte-identical.
@@ -344,3 +344,11 @@ observations renew the working serialization projection. Local read-only
 source checks must independently match these imported projections; this does
 not claim local native execution, generated-runner execution, full mode or
 release acceptance. Earlier source and native receipts remain unchanged.
+
+## Supported portability refresh (2026-11-16)
+
+The active static capture now checks four real CPython runtimes, 3.11–3.14,
+and drops EOL Python 3.10 from candidate serialization and source-pair CI.
+The accepted serialization schema and canonical bytes are unchanged. Historical
+five-runtime observations above retain their dates and evidence boundaries.
+Current native qualification remains separate from these static observations.

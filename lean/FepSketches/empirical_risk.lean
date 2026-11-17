@@ -1241,8 +1241,8 @@ theorem pi_scale_factors {K : Type*} [Fintype K] (μ : K → Measure ℝ)
     Measure.pi (fun i => c i • μ i) = (∏ i, c i) • Measure.pi μ := by
   apply Measure.pi_eq
   intro s hs
-  rw [Measure.smul_apply, Measure.pi_pi]
-  simp_rw [Measure.smul_apply]
+  rw [smul_apply, Measure.pi_pi]
+  simp_rw [smul_apply]
   exact (Finset.prod_mul_distrib).symm
 end
 end FinitePiWeighting
@@ -1446,8 +1446,8 @@ theorem vector_pi_scale_factors {K : Type*} [Fintype K] (μ : K → Measure E)
     Measure.pi (fun i => c i • μ i) = (∏ i, c i) • Measure.pi μ := by
   apply Measure.pi_eq
   intro s hs
-  rw [Measure.smul_apply, Measure.pi_pi]
-  simp_rw [Measure.smul_apply]
+  rw [smul_apply, Measure.pi_pi]
+  simp_rw [smul_apply]
   exact (Finset.prod_mul_distrib).symm
 end
 end ConditioningRowProductProposal

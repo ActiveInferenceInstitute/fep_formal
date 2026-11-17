@@ -1,7 +1,7 @@
 # Lean 4 workspace
 
-The workspace pins `leanprover/lean4:v4.35.0` and the matching Mathlib
-`v4.35.0` release, with `lean/lake-manifest.json` recording the exact Mathlib
+The workspace pins `leanprover/lean4:v4.36.0` and the matching Mathlib
+`v4.36.0` release, with `lean/lake-manifest.json` recording the exact Mathlib
 revision those pins resolve to. These are exact reproducibility pins for the
 newest stable Lean/Mathlib release pair, not floating aliases: release
 candidates and nightlies do not replace the stable line. The networked pin
@@ -12,9 +12,9 @@ pins stay in step with what the workspace actually builds with. A newer Lean
 release without that tag is reported as pending ecosystem support rather
 than installed into an incompatible workspace.
 
-The [v4.35.0 release notes](https://lean-lang.org/doc/reference/latest/releases/v4.35.0/)
+The [v4.36.0 release notes](https://lean-lang.org/doc/reference/latest/releases/v4.36.0/)
 describe the selected stable release. The workspace pairs it with the matching
-[Mathlib4 v4.35.0 release](https://github.com/leanprover-community/mathlib4/releases/tag/v4.35.0)
+[Mathlib4 v4.36.0 release](https://github.com/leanprover-community/mathlib4/releases/tag/v4.36.0)
 which is available at the same version. A pin change alone does not establish
 native verification; rebuild and refresh receipts as described below.
 
