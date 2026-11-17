@@ -18,7 +18,7 @@ This is the active source contract for [issue76](https://github.com/ActiveInfere
 | Human review | Independent Lean, domain and skeptical scientific review of the maintained exact source. This is a finite subpackage, not terminal horizon acceptance; terminal approvals remain separate. |
 | Out of scope | Supplied optimizer/equality certificates, all-budget finite dual attainment, uniqueness, arbitrary-joint MI convexity, continuous alphabets, empirical claims. |
 
-The source uses Lean `v4.35.0`, Mathlib `v4.35.0` at `56a005855ea17e0b0958f73ec801ae140b0a1679`. Pinned scalar entropy concavity, compactness, closed compact-plus-cone geometry and strict Hahn--Banach separation suffice; no upstream library no-go is asserted.
+The source uses Lean `v4.36.0`, Mathlib `v4.36.0` at `fc4f59e577feb1a4956671bc04ac18aaaf8cd842`. Pinned scalar entropy concavity, compactness, closed compact-plus-cone geometry and strict Hahn--Banach separation suffice; no upstream library no-go is asserted.
 
 The primal set and dual-value set are explicitly nonempty. Mutual-information nonnegativity bounds the primal infimum; actual weak duality at a feasible minimizer bounds the dual supremum. Strict separation below the optimum gives arbitrarily close dual lower bounds even when Slater fails. Finite multiplier attainment uses the separate strict-feasibility theorem. No finite endpoint multiplier follows from equality of values.
 

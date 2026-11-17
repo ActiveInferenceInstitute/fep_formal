@@ -50,7 +50,7 @@ theorem embeddedLaw_apply_singleton (law : FiniteLaw α) (state : α) :
 theorem embeddedLaw_apply_univ (law : FiniteLaw α) :
     embeddedLaw law Set.univ = 1 := by
   rw [embeddedLaw, Measure.sum_apply_of_countable, tsum_fintype]
-  simp only [Measure.smul_apply, Measure.dirac_apply]
+  simp only [smul_apply, Measure.dirac_apply]
   simp only [Set.indicator_of_mem (Set.mem_univ _), Pi.one_apply, smul_eq_mul, mul_one]
   rw [← ENNReal.ofReal_sum_of_nonneg (fun state _ => law.nonneg state), law.sum_one]
   simp
@@ -96,7 +96,7 @@ theorem embeddedLaw_map [DecidableEq β]
   rw [Measure.map_apply Measurable.of_discrete MeasurableSet.of_discrete,
     embeddedLaw, Measure.sum_apply_of_countable, tsum_fintype,
     embeddedLaw_apply_singleton, FiniteLaw.map_mass]
-  simp only [Measure.smul_apply, Measure.dirac_apply, Set.indicator_apply,
+  simp only [smul_apply, Measure.dirac_apply, Set.indicator_apply,
     Pi.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]
   rw [ENNReal.ofReal_sum_of_nonneg]
   · apply Finset.sum_congr rfl

@@ -195,15 +195,15 @@ def validate_scaffold_portability(
     ):
         raise ValueError("Q7 canonical scaffold parity evidence is stale or malformed")
     runtimes = evidence.get("runtimes")
-    if not isinstance(runtimes, list) or len(runtimes) != 5:
-        raise ValueError("Q7 scaffold parity needs exactly five runtime observations")
+    if not isinstance(runtimes, list) or len(runtimes) != 4:
+        raise ValueError("Q7 scaffold parity needs exactly four runtime observations")
     # Observations enumerate the reviewed candidate's present node classes.
     # The canonical serializer above still checks every node against the full
     # fail-closed schema; an allowed class need not occur in this candidate.
     present_nodes = {
         type(node).__name__ for node in ast.walk(ast.parse(source, type_comments=True))
     }
-    for minor, record in zip(range(10, 15), runtimes, strict=True):
+    for minor, record in zip(range(11, 15), runtimes, strict=True):
         expected_fields = {
             name: list(api._SCAFFOLD_AST_FIELDS[name]) for name in present_nodes
         }
@@ -315,7 +315,7 @@ def scaffold_portability_evidence(root: Path = ROOT) -> tuple[bytes, dict[str, o
     root = root.resolve()
     uv = shutil.which("uv")
     if uv is None:
-        raise ValueError("scaffold parity requires uv and all five installed runtimes")
+        raise ValueError("scaffold parity requires uv and all four installed runtimes")
     before = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
         for name in PORTABILITY_INPUTS
@@ -327,7 +327,7 @@ def scaffold_portability_evidence(root: Path = ROOT) -> tuple[bytes, dict[str, o
         for key, value in os.environ.items()
         if key not in {"PYTHONPATH", "PYTHONHOME", "VIRTUAL_ENV"}
     }
-    for minor in range(10, 15):
+    for minor in range(11, 15):
         command = [
             uv,
             "run",
@@ -581,7 +581,7 @@ def main(argv: list[str] | None = None) -> int:
             json.dumps(evidence, sort_keys=True, indent=2) + "\n"
         )
         print(
-            f"Five real CPython runtimes returned identical candidate bytes: {evidence['canonical_sha256']}; no runner/native execution."
+            f"Four real CPython runtimes returned identical candidate bytes: {evidence['canonical_sha256']}; no runner/native execution."
         )
         return 0
     outputs, _manifest = regenerate(source_root)

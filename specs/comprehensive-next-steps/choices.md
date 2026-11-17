@@ -647,7 +647,7 @@ that an artifact lacks receipt or review consumers.
 semantic review authenticates that receipt, so deleting a cited file or
 rewriting the receipt would break historical custody. Strict links and
 Markdown hygiene pass. The recorded Lean compiler version for those old
-results is `4.34.1`; the current source uses Lean 4.35.0. Fresh independent
+results is `4.34.1`; the source at that checkpoint used Lean compiler version `4.35.0`. Fresh independent
 custody review found no source blocker in the two
 documents and independently rechecked all 25 receipt artifact hashes.
 Terminal-validator positive/fail-closed controls, separate combined
@@ -998,7 +998,7 @@ conceptual relation. Preserve the distinct capability-blocker edge kind.
 
 **Gap:** The prior S04 contract selected only the 034/047 route through F11,
 although issue105 permits either route. The selected 016/032 conjunction compiled
-with ten boundary controls on Lean 4.35.0 and received independent review.
+with ten boundary controls on Lean compiler version `4.35.0` and received independent review.
 
 **Reach:** Amend only S04's selected route. Keep 034/047 conceptual under issue93
 and F11; retain every other work package and all existing capability evidence.

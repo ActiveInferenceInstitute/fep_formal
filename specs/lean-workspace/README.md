@@ -47,8 +47,8 @@ claims; run each repository's declared additional gates too.
 1. Discover the complete current collection. Keep unavailable repositories
    explicit. Preserve dirty working trees and mirror ownership.
 2. Select one stable compiler and matching Mathlib release. This train uses
-   `leanprover/lean4:v4.35.0` and Mathlib
-   `56a005855ea17e0b0958f73ec801ae140b0a1679` (`v4.35.0`). Keep core-only packages
+   `leanprover/lean4:v4.36.0` and Mathlib
+   `fc4f59e577feb1a4956671bc04ac18aaaf8cd842` (`v4.36.0`). Keep core-only packages
    core-only. Projects depending on FEP_Formal need its accepted source commit
    pinned independently from the compiler release.
 3. Prepare changes in isolated snapshots. Update live toolchain pins, authored

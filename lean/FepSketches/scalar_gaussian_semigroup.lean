@@ -424,7 +424,7 @@ private theorem transitionVariance_tendsto_stationary
     tendsto_const_nhds
   convert hStationary.mul
       (hOne.sub (model.decay_tendsto_zero.pow 2)) using 1
-  all_goals norm_num
+  norm_num
 
 private theorem gaussianReal_charFun_tendsto
     {means : ℕ → ℝ} {variances : ℕ → ℝ≥0}

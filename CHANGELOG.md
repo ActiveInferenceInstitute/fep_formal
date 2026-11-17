@@ -1,5 +1,15 @@
 ## Unreleased
 
+- Add publication metadata boundary tests and refresh the GNN source pair to
+  `2001b94fe6f5`, retaining the existing coverage floors.
+
+- Upgrade the reproducible Lean/Mathlib pair to v4.36.0. Add explicit runtime
+  JSON imports, use the current measure-scaling API, and remove redundant
+  tactics while preserving theorem statements. Align Ruff with the Python 3.11
+  packaging floor, retain public enum formatting, and refresh the Q7 static
+  portability lane on supported CPython 3.11–3.14. Historical native receipts
+  retain their original scope; fresh qualification remains independently gated.
+
 - Refuse cyclic certificate destinations, including cyclic parent directories,
   before either output is written. Path-resolution and filesystem-stat failures
   use the operational error boundary rather than escaping direct-emitter preflight.

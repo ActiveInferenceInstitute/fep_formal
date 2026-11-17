@@ -238,6 +238,9 @@ theorem transition_pos {a : Act} {c c' : Cell} (h : bNum a c c' ≠ 0) :
 theorem homingPlan_chain : Chain model homingPlan outlet home :=
   ⟨2, transition_pos (by decide), ⟨3, transition_pos (by decide), ⟨4, transition_pos (by decide), ⟨5, transition_pos (by decide), ⟨6, transition_pos (by decide), ⟨7, transition_pos (by decide), ⟨8, transition_pos (by decide), ⟨9, transition_pos (by decide), ⟨10, transition_pos (by decide), ⟨22, transition_pos (by decide), ⟨23, transition_pos (by decide), ⟨24, transition_pos (by decide), ⟨25, transition_pos (by decide), rfl⟩⟩⟩⟩⟩⟩⟩⟩⟩⟩⟩⟩⟩
 
+-- Current Mathlib lets `Real.lt` unfold at default transparency, so elaborating
+-- `0 < plannedState …` would try to evaluate the whole rollout; keep it folded here.
+attribute [local irreducible] plannedState in
 /-- The bound is tight: the 13-step homing plan reaches home with positive mass. -/
 theorem homing_bound_tight : 0 < plannedState model homingPlan home := by
   have houtlet : dNum outlet = 1 := by decide

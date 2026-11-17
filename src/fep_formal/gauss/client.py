@@ -39,9 +39,7 @@ import types
 import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
-
-from typing_extensions import Self
+from typing import Any, Self
 
 log = logging.getLogger(__name__)
 

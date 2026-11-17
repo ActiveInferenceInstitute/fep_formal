@@ -47,11 +47,11 @@ order, comparison order and statement order are retained.
 ## Interpreter and evidence boundaries
 
 `canonical_scaffold_bytes` is a candidate-serialization surface restricted to
-CPython 3.10--3.14. Unsupported interpreters fail before parsing. Actual runtime
+CPython 3.11--3.14. Unsupported interpreters fail before parsing. Actual runtime
 parity records its returned bytes, the source and implementation digests,
 interpreter identity, and rejection/mutation controls. Matching hashes alone
 do not establish preservation: the schema rejection and semantic mutation
-tests are required alongside the five real runtime observations.
+tests are required alongside the four supported runtime observations.
 
 `scaffold_digest`, extraction and receipt validation remain accepted only on
 CPython 3.14, with the existing refusal-before-parse contract. The new digest is
@@ -61,3 +61,8 @@ and schema version, so an older contract cannot silently accept the new scheme.
 Regenerating the manifest is static bookkeeping; older native receipts become
 stale and require a separate new capture. Do not rehash a native receipt to
 claim that the changed extractor was accepted.
+
+The 2026-11-16 portability refresh drops EOL CPython 3.10 from the active
+candidate surface and requires fresh 3.11–3.14 observations. The original
+schema review above remains historical; native receipts require independent
+renewal after source-owner changes.

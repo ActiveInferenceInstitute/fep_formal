@@ -57,7 +57,7 @@ log = logging.getLogger(__name__)
 
 def _default_run_id() -> str:
     """Timestamped run identifier; names report directories, never digests."""
-    stamp = datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
+    stamp = datetime.datetime.now(tz=datetime.UTC).strftime("%Y%m%d_%H%M%S_%f")
     return f"run_{stamp}"
 
 

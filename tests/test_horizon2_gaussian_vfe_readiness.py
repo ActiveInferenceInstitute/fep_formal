@@ -423,14 +423,14 @@ def test_h2_7_r0_uses_the_pinned_lean_mathlib_environment() -> None:
     # Frozen acceptance retains that earlier epoch; these native probes must
     # use the actual current compiler, without reissuing the old decision.
     assert (LEAN_ROOT / "lean-toolchain").read_text(encoding="utf-8").strip() == (
-        "leanprover/lean4:v4.35.0"
+        "leanprover/lean4:v4.36.0"
     )
     manifest = json.loads((LEAN_ROOT / "lake-manifest.json").read_text("utf-8"))
     mathlib = next(
         package for package in manifest["packages"] if package["name"] == "mathlib"
     )
-    assert mathlib["rev"] == "56a005855ea17e0b0958f73ec801ae140b0a1679"
-    assert mathlib["inputRev"] == "v4.35.0"
+    assert mathlib["rev"] == "fc4f59e577feb1a4956671bc04ac18aaaf8cd842"
+    assert mathlib["inputRev"] == "v4.36.0"
     result = run_lake_lean_probe(
         ["env", "lean", "--version"],
         cwd=LEAN_ROOT,
@@ -446,8 +446,8 @@ def test_h2_7_r0_uses_the_pinned_lean_mathlib_environment() -> None:
     # by host (the CI runner is x86_64-linux, local hosts may be aarch64-darwin)
     # and is not part of the source-bound environment claim the receipt records.
     version_line = result.stdout.strip()
-    assert version_line.startswith("Lean (version 4.35.0, "), version_line
-    assert "commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)" in version_line
+    assert version_line.startswith("Lean (version 4.36.0, "), version_line
+    assert "commit 611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9, Release)" in version_line
 
 
 def test_h2_7_r0_surface_and_orientation_are_exact_and_fail_closed() -> None:
@@ -555,17 +555,39 @@ def test_h2_7_r0_exact_types_environment_and_axioms() -> None:
 
 
 def test_h2_7_r0_typed_consumer_rejects_reversed_kl() -> None:
-    mutated = _typed_consumers().replace(
+    # Compare the explicit native-KL order after unfolding only VFE. Restricted
+    # transparency avoids reducing measure internals just to reject the swap.
+    # First compile the identical positive consumer at the same transparency.
+    anchor = "evidenceSurprisal model prior observation := rfl"
+    correct = _typed_consumers()
+    assert correct.count(anchor) == 1
+    correct = correct.replace(
+        anchor,
+        "evidenceSurprisal model prior observation := by\n"
+        "  unfold gaussianVariationalFreeEnergy\n"
+        "  with_reducible exact Eq.refl _",
+        1,
+    )
+    prefix = SPIKE.read_text(encoding="utf-8") + "\n"
+    positive = _run_lean(prefix + correct)
+    assert positive.returncode == 0, positive.stdout + positive.stderr
+    assert positive.stdout + positive.stderr == ""
+    original = (
         "(klDiv ((posteriorFamily model prior).law recognitionMean)\n"
-        "        ((posteriorBelief model prior observation).law)).toReal",
+        "        ((posteriorBelief model prior observation).law)).toReal"
+    )
+    assert correct.count(original) == 2
+    mutated = correct.replace(
+        original,
         "(klDiv ((posteriorBelief model prior observation).law)\n"
         "        ((posteriorFamily model prior).law recognitionMean)).toReal",
         1,
     )
-    assert mutated != _typed_consumers()
-    result = _run_lean(SPIKE.read_text(encoding="utf-8") + "\n" + mutated)
+    assert mutated != correct
+    result = _run_lean(prefix + mutated)
     assert result.returncode != 0
     output = result.stdout + result.stderr
+    assert "timeout" not in output.lower(), output
     assert "expected to have type" in output or "type mismatch" in output.lower()
 
 

@@ -70,7 +70,7 @@ recorded failure and repair.
 These results were recorded on 2026-10-01. Their Lean compiler version is
 `4.34.1`, and their Mathlib revision is
 `d13f23b723b8a846827a245b89c10fc7d3f11612`. They are not fresh evidence for the
-current Lean 4.35.0 source. This inventory preserves both attempts, all receipt
+source current at that checkpoint, which used compiler version `4.35.0`. This inventory preserves both attempts, all receipt
 bytes and the separate semantic review unchanged.
 
 ## Bounded acceptance and prospective Issue closure

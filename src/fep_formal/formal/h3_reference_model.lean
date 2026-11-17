@@ -1,4 +1,6 @@
 module
+public import Lean.Data.Json.Basic
+public import Lean.Data.Json.FromToJson.Basic
 public import FepSketches.fin4_gaussian_semigroup
 public import FepSketches.markov_semigroup
 

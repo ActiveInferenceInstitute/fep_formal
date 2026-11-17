@@ -17,9 +17,7 @@ import types
 from concurrent.futures import Future, ThreadPoolExecutor
 from dataclasses import dataclass, field, replace
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
-
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Any, Self
 
 from fep_formal._paths import resolve_environment
 from fep_formal.gauss.cli import check_gauss_cli

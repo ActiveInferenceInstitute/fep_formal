@@ -3259,6 +3259,8 @@
       ],
       "id": "formal-module-h3-reference-model",
       "imports": [
+        "Lean.Data.Json.Basic",
+        "Lean.Data.Json.FromToJson.Basic",
         "FepSketches.fin4_gaussian_semigroup",
         "FepSketches.markov_semigroup"
       ],
@@ -5189,7 +5191,7 @@
     "definitions": 1074,
     "distinct_mathlib_imports": 80,
     "formal_module_dependency_edges": 173,
-    "formal_module_import_edges": 409,
+    "formal_module_import_edges": 411,
     "formal_modules": 72,
     "formal_pairing_witnesses": 118,
     "formal_relation_witnesses": 32,

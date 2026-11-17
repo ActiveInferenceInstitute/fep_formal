@@ -12,7 +12,7 @@ import subprocess
 import sys
 import tempfile
 from collections.abc import Sequence
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -196,10 +196,10 @@ def _source_stamp_vars(project_root: Path) -> dict[str, str]:
         "exact_tag": exact_tag or "none",
         "commit_date": commit_date or "unknown",
         "dirty": "true" if dirty else "false",
-        "render_date": datetime.now(timezone.utc).date().isoformat(),
+        "render_date": datetime.now(UTC).date().isoformat(),
         # One ready-to-typeset line for the title page.
         "stamp": (
-            f"source snapshot {stamp}, rendered {datetime.now(timezone.utc).date().isoformat()}"
+            f"source snapshot {stamp}, rendered {datetime.now(UTC).date().isoformat()}"
         ),
     }
 

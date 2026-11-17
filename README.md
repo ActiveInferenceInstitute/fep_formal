@@ -54,7 +54,7 @@ manuscript inputs and a report. It records **zero verified topics** and does
 not call Hermes or compile Lean. See [getting started](docs/getting-started.md)
 for expected outputs and the separate native and full-mode prerequisites.
 
-The development workspace pins Lean/Mathlib **v4.35.0**. The
+The development workspace pins Lean/Mathlib **v4.36.0**. The
 [Lean guide](docs/lean4.md) explains setup, compilation, diagnostics and deliberate
 toolchain upgrades. Retained release and research receipts keep the toolchains
 they actually verified.

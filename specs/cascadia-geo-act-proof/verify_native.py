@@ -37,7 +37,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -277,7 +277,7 @@ def compile_receipt(receipt_path: Path) -> int:
             mutations[name] = result
     receipt: dict[str, Any] = {
         "schema_version": "fep-lean/cascadia-native-receipt/1",
-        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "created_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "platform": platform.platform(),
         "lean_version": version["stdout"].strip(),
         "bound_inputs": bound_digests(),

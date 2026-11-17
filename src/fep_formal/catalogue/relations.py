@@ -24,7 +24,7 @@ _CAPABILITY_BASE_FIELDS = frozenset({"id", "title", "description", "status"})
 _EDGE_BASE_FIELDS = frozenset({"source", "target", "kind", "rationale"})
 
 
-class CapabilityStatus(str, Enum):
+class CapabilityStatus(str, Enum):  # noqa: UP042 - Preserve the public Enum string representation.
     """Review state of a retained formal capability."""
 
     OPEN = "open"
@@ -32,7 +32,7 @@ class CapabilityStatus(str, Enum):
     SATISFIED = "satisfied"
 
 
-class EdgeKind(str, Enum):
+class EdgeKind(str, Enum):  # noqa: UP042 - Preserve the public Enum string representation.
     """Meaning of one maintained formalism relation."""
 
     FORMAL = "formal"

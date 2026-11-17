@@ -3904,19 +3904,19 @@ topics:
     \ : HasDerivAt (fun x => Real.log (constant * x))\n      (constant / (constant * v)) v := by\n    simpa using ((hasDerivAt_id\
     \ v).const_mul constant).log hargument\n  have hscaled := hlog.const_mul (1 / 2 : ℝ)\n  have hcoefficient :\n      (1\
     \ / 2 : ℝ) * (constant / (constant * v)) = 1 / (2 * v) := by\n    field_simp [hconstant, ne_of_gt hv]\n  rw [← hcoefficient]\n\
-    \  convert hscaled using 1\n  all_goals\n    first\n    | rfl\n\n/-- Thermal variance scale `κT`. -/\ndef fep040_thermalVariance\
-    \ (κ T : ℝ) : ℝ := κ * T\n\n/-- Gaussian entropy as a function of absolute temperature. -/\nnoncomputable def fep040_thermalEntropy\
-    \ (κ T : ℝ) : ℝ :=\n  fep040_gaussianEntropy (fep040_thermalVariance κ T)\n\n/-- For positive scale and temperature, thermal\
+    \  convert hscaled using 1\n  rfl\n\n/-- Thermal variance scale `κT`. -/\ndef fep040_thermalVariance (κ T : ℝ) : ℝ :=\
+    \ κ * T\n\n/-- Gaussian entropy as a function of absolute temperature. -/\nnoncomputable def fep040_thermalEntropy (κ\
+    \ T : ℝ) : ℝ :=\n  fep040_gaussianEntropy (fep040_thermalVariance κ T)\n\n/-- For positive scale and temperature, thermal\
     \ entropy has derivative `1/(2T)`. -/\ntheorem fep040_thermalEntropy_hasDerivAt\n    {κ T : ℝ} (hκ : 0 < κ) (hT : 0 <\
     \ T) :\n    HasDerivAt (fep040_thermalEntropy κ) (1 / (2 * T)) T := by\n  have hvariance : 0 < fep040_thermalVariance\
     \ κ T :=\n    mul_pos hκ hT\n  have houter := fep040_gaussianEntropy_hasDerivAt hvariance\n  have hinner : HasDerivAt\
     \ (fep040_thermalVariance κ) κ T := by\n    convert (hasDerivAt_id T).const_mul κ using 1\n    all_goals\n      first\n\
     \      | rfl\n      | simp\n  have hcomp := houter.comp T hinner\n  have hcoefficient :\n      (1 / (2 * fep040_thermalVariance\
     \ κ T)) * κ = 1 / (2 * T) := by\n    simp only [fep040_thermalVariance]\n    field_simp [ne_of_gt hκ, ne_of_gt hT]\n \
-    \ rw [← hcoefficient]\n  convert hcomp using 1\n  all_goals\n    first\n    | rfl\n\n/-- Dimensionless constant-volume\
-    \ heat capacity `T ∂H/∂T`. -/\nnoncomputable def fep040_heatCapacity (T : ℝ) : ℝ :=\n  T * (1 / (2 * T))\n\n/-- The one-dimensional\
-    \ Gaussian thermal model has heat capacity `1/2`. -/\ntheorem fep040_heatCapacity_eq_half {T : ℝ} (hT : 0 < T) :\n   \
-    \ fep040_heatCapacity T = 1 / 2 := by\n  unfold fep040_heatCapacity\n  field_simp [ne_of_gt hT]\n\nend FEP040\n"
+    \ rw [← hcoefficient]\n  convert hcomp using 1\n  rfl\n\n/-- Dimensionless constant-volume heat capacity `T ∂H/∂T`. -/\n\
+    noncomputable def fep040_heatCapacity (T : ℝ) : ℝ :=\n  T * (1 / (2 * T))\n\n/-- The one-dimensional Gaussian thermal\
+    \ model has heat capacity `1/2`. -/\ntheorem fep040_heatCapacity_eq_half {T : ℝ} (hT : 0 < T) :\n    fep040_heatCapacity\
+    \ T = 1 / 2 := by\n  unfold fep040_heatCapacity\n  field_simp [ne_of_gt hT]\n\nend FEP040\n"
   latex_equations:
   - '\begin{aligned}
 

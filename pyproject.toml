@@ -97,7 +97,7 @@ explicit_package_bases = true
 
 [tool.ruff]
 # Preserve the package's syntax floor while typing the validator at Python 3.14.
-target-version = "py310"
+target-version = "py311"
 # specs/AGENTS.md owns these historical records and generated/pinned inputs.
 # Lint every other active spec; never rewrite retained evidence to satisfy lint.
 extend-exclude = [

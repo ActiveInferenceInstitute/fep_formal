@@ -28,7 +28,7 @@ class SemanticValidationError(ValueError, FepFormalError):
     """Raised when semantic review data cannot be trusted as a projection input."""
 
 
-class SemanticDisposition(str, Enum):
+class SemanticDisposition(str, Enum):  # noqa: UP042 - Preserve the public Enum string representation.
     """How closely a compiled statement matches its topic-facing claim."""
 
     FORMALIZED = "formalized"

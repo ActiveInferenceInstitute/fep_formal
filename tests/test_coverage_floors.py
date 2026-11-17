@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 import sys
+import tomllib
 import xml.etree.ElementTree as ET
 from decimal import Decimal
 from pathlib import Path
@@ -15,7 +16,6 @@ from types import ModuleType
 from typing import Any
 
 import pytest
-import tomllib
 
 from fep_formal._paths import resolve_environment
 

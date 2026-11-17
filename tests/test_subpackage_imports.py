@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import tomllib
+from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -297,3 +296,27 @@ def test_explorer_keyboard_policy_has_one_public_owner() -> None:
         formal_kernel_dashboard.EXPLORER_KEYBOARD_SCRIPT
         is svg_presentation.EXPLORER_KEYBOARD_SCRIPT
     )
+
+
+def test_string_enum_compatibility_survives_lint_migration() -> None:
+    from enum import StrEnum
+
+    from fep_formal.catalogue.relations import CapabilityStatus, EdgeKind
+    from fep_formal.catalogue.semantics import SemanticDisposition
+    from fep_formal.formal.manifest import FormalModuleRole
+    from fep_formal.methods.model import SourceOrigin
+
+    for enum in (
+        CapabilityStatus,
+        EdgeKind,
+        SemanticDisposition,
+        FormalModuleRole,
+        SourceOrigin,
+    ):
+        assert issubclass(enum, str)
+        assert not issubclass(enum, StrEnum)
+        member = next(iter(enum))
+        assert member == member.value
+        expected = f"{enum.__name__}.{member.name}"
+        assert str(member) == expected
+        assert format(member) == expected
