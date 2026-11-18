@@ -243,11 +243,10 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
         TERMINAL_COARSE_THEOREM_OWNERS,
     )
 
-    transport_owners = TERMINAL_COARSE_THEOREM_OWNERS | OBSERVATION_TRANSPORT_THEOREM_OWNERS
-    assert {
-        name: declarations[name]["source_owner"]
-        for name in transport_owners
-    } == {
+    transport_owners = (
+        TERMINAL_COARSE_THEOREM_OWNERS | OBSERVATION_TRANSPORT_THEOREM_OWNERS
+    )
+    assert {name: declarations[name]["source_owner"] for name in transport_owners} == {
         name: "src/fep_formal/formal/"
         + module.removeprefix("FepSketches.").replace(".", "/")
         + ".lean"
