@@ -1216,7 +1216,7 @@ def relation_svg(model: Mapping[str, Any]) -> bytes:
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1000" role="img" aria-labelledby="graph-title graph-desc"><title id="graph-title">Typed authored relation adjacency matrices</title><desc id="graph-desc">Three directed adjacency matrices aggregate exact topic edges by family. Rows are sources, columns are targets. Numbers count original edges, not family theorems. Formal, theorem pairing and conceptual kinds remain separate. Editorial upstream affinities are listed in a fourth separate band. Exact topic endpoints and witnesses are available in the HTML table.</desc><rect width="1240" height="1000" fill="white"/><text x="35" y="35" font-family="sans-serif" font-size="21">Authored relation graph · source rows → target columns</text><text x="35" y="61" font-family="sans-serif" font-size="13">Cell counts aggregate canonical topic edges, not family-level proofs or inferred implications.</text>'
     ]
     for panel_index, (kind, color) in enumerate(colors.items()):
-        x0, y0 = 50 + panel_index * 400, 125
+        x0, y0 = 50 + panel_index * 400, 137
         chunks.append(
             f'<text x="{x0}" y="97" font-family="sans-serif" font-size="18" fill="{color}">{kind}</text>'
         )
@@ -1230,7 +1230,7 @@ def relation_svg(model: Mapping[str, Any]) -> bytes:
             i = indices[row["family"]]
             code = f"F{i + 1:02d}"
             chunks.append(
-                f'<text x="{x0 - 5}" y="{y0 + i * cell + 12}" text-anchor="end" font-family="sans-serif" font-size="9">{code}</text><text x="{x0 + i * cell + 8}" y="{y0 - 6}" text-anchor="middle" font-family="sans-serif" font-size="9" transform="rotate(-70 {x0 + i * cell + 8} {y0 - 6})">{code}</text>'
+                f'<text x="{x0 - 5}" y="{y0 + i * cell + 12}" text-anchor="end" font-family="sans-serif" font-size="11">{code}</text><text x="{x0 + i * cell + 8}" y="{y0 - 6}" text-anchor="middle" font-family="sans-serif" font-size="11" transform="rotate(-70 {x0 + i * cell + 8} {y0 - 6})">{code}</text>'
             )
             for target in families:
                 j = indices[target["family"]]
@@ -1248,9 +1248,9 @@ def relation_svg(model: Mapping[str, Any]) -> bytes:
                 )
                 if count:
                     chunks.append(
-                        f'<rect x="{x0 + j * cell}" y="{y0 + i * cell}" width="{cell}" height="{cell}" fill="{color}" fill-opacity="{opacity:.4f}"><title>{title}</title></rect><text x="{x0 + j * cell + 8}" y="{y0 + i * cell + 12}" text-anchor="middle" font-family="sans-serif" font-size="9" fill="{"white" if opacity > 0.55 else "#152d3a"}">{count}</text>'
+                        f'<rect x="{x0 + j * cell}" y="{y0 + i * cell}" width="{cell}" height="{cell}" fill="{color}" fill-opacity="{opacity:.4f}"><title>{title}</title></rect><text x="{x0 + j * cell + 8}" y="{y0 + i * cell + 12}" text-anchor="middle" font-family="sans-serif" font-size="11" fill="{"white" if opacity > 0.55 else "#152d3a"}">{count}</text>'
                     )
-    legend_y = 125 + size * cell + 40
+    legend_y = 137 + size * cell + 40
     chunks.append(
         f'<text x="35" y="{legend_y}" font-family="sans-serif" font-size="17">Family key (the exact topic graph remains in the accessible HTML table)</text>'
     )
