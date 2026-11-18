@@ -238,21 +238,25 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
             with pytest.raises(AssertionError):
                 proof_performance_theorem_extension(tampered)
 
-    from tests._support.lean_module_contract import TERMINAL_COARSE_THEOREM_OWNERS
+    from tests._support.lean_module_contract import (
+        OBSERVATION_TRANSPORT_THEOREM_OWNERS,
+        TERMINAL_COARSE_THEOREM_OWNERS,
+    )
 
+    transport_owners = TERMINAL_COARSE_THEOREM_OWNERS | OBSERVATION_TRANSPORT_THEOREM_OWNERS
     assert {
         name: declarations[name]["source_owner"]
-        for name in TERMINAL_COARSE_THEOREM_OWNERS
+        for name in transport_owners
     } == {
         name: "src/fep_formal/formal/"
         + module.removeprefix("FepSketches.").replace(".", "/")
         + ".lean"
-        for name, module in TERMINAL_COARSE_THEOREM_OWNERS.items()
+        for name, module in transport_owners.items()
     }
     assert (
         len(
             declarations.keys()
-            - TERMINAL_COARSE_THEOREM_OWNERS.keys()
+            - transport_owners.keys()
             - exposed_support
             - variational_extension
             - measure_entropy_extension

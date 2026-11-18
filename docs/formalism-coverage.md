@@ -14,9 +14,9 @@ Counts describe canonical source coverage. Compilation evidence and full externa
 | Maintained formal modules | 72 |
 | Foundation modules | 45 |
 | Topic theorem declarations | 590 |
-| Formal-resource theorem declarations | 1848 |
-| Foundation theorem declarations | 1462 |
-| Total theorem declarations | 2438 |
+| Formal-resource theorem declarations | 1851 |
+| Foundation theorem declarations | 1465 |
+| Total theorem declarations | 2441 |
 | Topic definitions | 95 |
 | Formal-resource definitions | 979 |
 | Total definitions | 1074 |
@@ -233,7 +233,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 
 | Module | Role | Theorems | Definitions | Structures | Internal dependencies |
 | --- | --- | ---: | ---: | ---: | --- |
-| `FepSketches.finite_probability` | `foundation` | 19 | 13 | 2 | — |
+| `FepSketches.finite_probability` | `foundation` | 20 | 13 | 2 | — |
 | `FepSketches.finite_information` | `foundation` | 35 | 9 | 0 | `FepSketches.finite_probability` |
 | `FepSketches.active_inference` | `foundation` | 44 | 35 | 3 | `FepSketches.finite_information` |
 | `FepSketches.markov_blanket` | `foundation` | 9 | 8 | 2 | `FepSketches.finite_information` |
@@ -242,7 +242,7 @@ These packaged modules are a distinct proof surface from the generated topic ske
 | `FepSketches.measure_bayes` | `foundation` | 12 | 0 | 0 | `FepSketches.finite_probability` |
 | `FepSketches.variational_duality` | `foundation` | 149 | 51 | 3 | `FepSketches.finite_information` |
 | `FepSketches.controlled_markov` | `foundation` | 33 | 28 | 2 | `FepSketches.active_inference` |
-| `FepSketches.temporal_inference` | `foundation` | 69 | 45 | 1 | `FepSketches.controlled_markov` |
+| `FepSketches.temporal_inference` | `foundation` | 71 | 45 | 1 | `FepSketches.controlled_markov` |
 | `FepSketches.finite_markov_dynamics` | `foundation` | 24 | 11 | 0 | `FepSketches.finite_probability` |
 | `FepSketches.causal_dynamics` | `foundation` | 34 | 18 | 2 | `FepSketches.markov_blanket` |
 | `FepSketches.predictive_coding` | `foundation` | 47 | 13 | 1 | — |

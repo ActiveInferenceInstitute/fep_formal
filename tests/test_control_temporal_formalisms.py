@@ -159,7 +159,9 @@ def test_slice03_bodies_are_standalone_scoped_sources(topic_id: str, body: str) 
             (
                 "forwardFilter_reconstruction",
                 "backwardMessage_nonneg",
+                "smoothingNormalizer_map",
                 "forwardBackwardSmoothing_factorization",
+                "forwardBackwardSmoothing_map",
                 "forwardBackwardSmoothing_sum_one",
                 "terminalTiltKernel_factorization",
                 "terminalTiltJoint_eq_smoothing",
