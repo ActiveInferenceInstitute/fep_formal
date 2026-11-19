@@ -284,10 +284,12 @@ _FLOOR_LOCK_SHA256 = "5301956db0694e7fe19949769480a03bbe24a4fcdd76511b5449086710
 # matplotlib 3.11.2, mypy 2.4.1, pytest-httpserver 1.2.0, ruff 0.17.3 and
 # types-PyYAML 20261103; pytest stays 9.1.1 because xdist 3.8.0 loses loadgroup
 # grouping under pytest 9.2's private NodeId change) rewrote the wheel
-# inventory and is likewise not reversible line-by-line. Admit only this
-# normalized profile digest; its exact predecessor remains the frozen archive.
-_DEPENDENCY_UPGRADE_LOCK_SHA256 = (
-    "ba277c91ae48671009f68b75a367ec93ce4a598cd678599c22f1534c5ecaae4b"
+# inventory and is likewise not reversible line-by-line. The next profile
+# advances only pytest-httpserver to 1.2.1, ruff to 0.17.4 and types-PyYAML
+# to 20261111. Both profiles share the authenticated predecessor archive.
+_DEPENDENCY_UPGRADE_LOCK_SHA256S = (
+    "ba277c91ae48671009f68b75a367ec93ce4a598cd678599c22f1534c5ecaae4b",
+    "0dde7b33869c6508caa52c0d836b13e9908429d520a6eafc4f1387021215d918",
 )
 
 
@@ -665,7 +667,7 @@ def bridge_dev_lock_predecessor(live: bytes) -> bytes:
         return live
     normalized = candidate.replace(present[0], current, 1)
     digest = hashlib.sha256(normalized).hexdigest()
-    if digest == _DEPENDENCY_UPGRADE_LOCK_SHA256:
+    if digest in _DEPENDENCY_UPGRADE_LOCK_SHA256S:
         restored = _historical_lock_from_archive()
         legacy = b'[[package]]\nname = "fep-formal"\n'
         if restored.count(legacy) == 1:
