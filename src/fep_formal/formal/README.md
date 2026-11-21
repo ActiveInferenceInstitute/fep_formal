@@ -60,6 +60,25 @@ If that message changes within a readout fibre, the factorization premise
 fails. The next section treats the separate requirements on transitions
 and weighted block masses.
 
+## Paired reads and cause-specific detection
+
+For a fixed latent cause, two specific conditionally independent reads give
+two marginal detected masses and a mass detected by both reads.
+`FEP.TemporalInference.pairedRead_prevalence_identified` recovers the latent
+cause mass as the product of the marginals divided by positive overlap.
+`pairedRead_sensitivities_identified` recovers each sensitivity using the
+other read's positive marginal. `pairedRead_prevalence_of_specific` states
+the prevalence identity for a finite prior and sparse likelihood weights.
+
+With dependence, `pairedRead_cells_feasible_iff` characterizes compatible
+nonnegative cell masses. The condition gives a sharp lower bound equal to
+the observed union, and `pairedRead_competing_prevalence_interval` adds the
+upper bound from a second cause and a known combined mass. Each feasible
+latent mass assigns its unobserved remainder to the double-miss cell.
+These statements concern population probabilities under specific reads
+of an unchanged state. They supply no sampling uncertainty or assumption
+that a second read has independent errors.
+
 ## Event-weighted coarse-graining
 
 `FEP.FiniteMarkovDynamics.weightedBlockMass` is the unnormalized weighted

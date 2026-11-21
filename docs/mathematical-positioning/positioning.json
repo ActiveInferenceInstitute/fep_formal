@@ -7952,7 +7952,7 @@
       "lean_module": "FepSketches.temporal_inference",
       "resource": "temporal_inference.lean",
       "role": "foundation",
-      "theorem_count": 71
+      "theorem_count": 77
     },
     {
       "declaration_namespace": "FEP.FiniteMarkovDynamics",
@@ -9047,7 +9047,7 @@
     "formal/scalar_gaussian_semigroup.lean": "5cd5a0dad0a60f7ea4a6106929db1ec4039b1790c39747be990290b03b8abc73",
     "formal/smooth_information_geometry.lean": "1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04",
     "formal/statistical_convergence.lean": "6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf",
-    "formal/temporal_inference.lean": "4521209e7859837e6e16dd4811a4ae6f7ae154b16dc93affa1516d80568f7d5e",
+    "formal/temporal_inference.lean": "8e685f26f38e1a7cfe2a6cd01a3161f3683abcdb357f59b1d68f3f0b250e5baf",
     "formal/variational_duality.lean": "05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1",
     "inputs/catalogue_metadata.yaml": "b0af8b16513084cffc6eff8176ba5b1a9a524591a51acbe652256489e698974d",
     "inputs/formalism_relations.yaml": "7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80",
@@ -133588,7 +133588,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.beliefNormalizer_eq_totalWeight",
-        "source_line": 987,
+        "source_line": 1094,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem beliefNormalizer_eq_totalWeight [DecidableEq S] (t : PTree S) :\n    beliefNormalizer t = totalWeight t",
         "statement_sha256": "bd8c20940e546c7f02e2a7eef00fbf9afb47aeb7d9ec8806505f30e19da81268"
@@ -133721,7 +133721,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.msg_eq_bruteMass",
-        "source_line": 961,
+        "source_line": 1068,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem msg_eq_bruteMass [DecidableEq S] (t : PTree S) (s : S) :\n    msg t s = bruteMass t s",
         "statement_sha256": "4c0bfc32355b2268c092831dc6698f945ee3c105ee242845cfdecca91f5e790b"
@@ -133818,7 +133818,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.msg_nonneg",
-        "source_line": 1001,
+        "source_line": 1108,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem msg_nonneg : (t : PTree S) → t.Nonneg → ∀ s, 0 ≤ msg t s",
         "statement_sha256": "5b340242f7e6c35c33ae5281d6fef8fb5272597feab154a6fa0ccc5043702c63"
@@ -133957,7 +133957,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.rootBelief_eq_exactMarginal",
-        "source_line": 996,
+        "source_line": 1103,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem rootBelief_eq_exactMarginal [DecidableEq S] (t : PTree S) (s : S) :\n    rootBelief t s = exactMarginal t s",
         "statement_sha256": "64b6fda4c72ab2496f924f95926d5a4ae6d8d0834ff0d6ae7dae02f6c7f9312a"
@@ -134105,7 +134105,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.rootBelief_node",
-        "source_line": 938,
+        "source_line": 1045,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem rootBelief_node (φ : S → ℝ) (n : ℕ) (ψ : Fin n → S → S → ℝ)\n    (c : Fin n → PTree S) (s : S) :\n    rootBelief (node φ n ψ c) s =\n      (φ s * ∏ i : Fin n, childMessage (ψ i) (c i) s) /\n        ∑ y, φ y * ∏ i : Fin n, childMessage (ψ i) (c i) y",
         "statement_sha256": "c467467a9ed0490852e14d6ed23253e1bb2778c0a4b94acbd8b4f4795d71684b"
@@ -134240,7 +134240,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.rootBelief_nonneg",
-        "source_line": 1018,
+        "source_line": 1125,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem rootBelief_nonneg (t : PTree S) (ht : t.Nonneg) (s : S) :\n    0 ≤ rootBelief t s",
         "statement_sha256": "f1fb0a4218643217b80b7840e955c58de53a7191581b9bf0fc807ef8dd6399e9"
@@ -134373,7 +134373,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.rootBelief_sum_one",
-        "source_line": 1009,
+        "source_line": 1116,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem rootBelief_sum_one [DecidableEq S] (t : PTree S) (hpos : 0 < totalWeight t) :\n    ∑ s, rootBelief t s = 1",
         "statement_sha256": "64f6016d608008aaefee02d0f558013843860101033c51e00d719dba25c44c66"
@@ -134499,7 +134499,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.sum_root_weight",
-        "source_line": 947,
+        "source_line": 1054,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem sum_root_weight [DecidableEq S] (t : PTree S) (F : S → ℝ) :\n    ∑ x : Conf t, F (Conf.root t x) * weight t x =\n      ∑ y, F y * bruteMass t y",
         "statement_sha256": "809fdb12bb908f14df5f24256d271eeec4f7a6550ab5d8d2b21e03bc3e2f7989"
@@ -134622,7 +134622,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.PTree.totalWeight_eq_sum_bruteMass",
-        "source_line": 956,
+        "source_line": 1063,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem totalWeight_eq_sum_bruteMass [DecidableEq S] (t : PTree S) :\n    totalWeight t = ∑ y, bruteMass t y",
         "statement_sha256": "e79be22245d22f7b5e8ebeb9b082c4aa80754526b19783dd30c9544d25528c9d"
@@ -134978,7 +134978,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolBackwardEvidence_eq",
-        "source_line": 792,
+        "source_line": 899,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolBackwardEvidence_eq :\n    backwardEvidence boolInitialLaw boolStickyTransition\n        boolAccurateEmission true = 23 / 40",
         "statement_sha256": "75b33de4c337e8d05c05793f9339e351d237e3284f829eb13e9df417086054ad"
@@ -135055,7 +135055,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolBackwardMessage_false_mass",
-        "source_line": 780,
+        "source_line": 887,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolBackwardMessage_false_mass :\n    boolBackwardMessage false = 7 / 20",
         "statement_sha256": "04dda0ca04e908bd108671096e2fba956b2d5668670fcf1435b23f7660d44b92"
@@ -135156,7 +135156,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolBackwardMessage_nonneg",
-        "source_line": 786,
+        "source_line": 893,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolBackwardMessage_nonneg (state : Bool) :\n    0 ≤ boolBackwardMessage state",
         "statement_sha256": "5bed684e5291be5f23df4c672e4859f4bb0141e6285d490e2a865bada8fa7542"
@@ -135233,7 +135233,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolBackwardMessage_true_mass",
-        "source_line": 774,
+        "source_line": 881,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolBackwardMessage_true_mass :\n    boolBackwardMessage true = 13 / 20",
         "statement_sha256": "029dd6ea2515b319d211c9eca79de9f5b1a6cdb0caab54a4d3df45af0b7dab48"
@@ -135310,7 +135310,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardEvidence_true",
-        "source_line": 723,
+        "source_line": 830,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardEvidence_true :\n    forwardEvidence boolInitialLaw boolStickyTransition boolAccurateEmission true =\n      23 / 40",
         "statement_sha256": "618d0e5e3ab3a44362c40307e2c7fd137d9812cc054c01f200b5e82f48c6bc43"
@@ -135394,7 +135394,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardEvidence_true_pos",
-        "source_line": 731,
+        "source_line": 838,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardEvidence_true_pos :\n    0 < forwardEvidence boolInitialLaw boolStickyTransition\n      boolAccurateEmission true",
         "statement_sha256": "540399a6a6acdf79240b47261e2596e5f861a66ce39185305cbc03a2f9e2f888"
@@ -135496,7 +135496,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardFilter_false_mass",
-        "source_line": 753,
+        "source_line": 860,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardFilter_false_mass :\n    boolForwardFilter false = 3 / 23",
         "statement_sha256": "1c3855145678370e2492b3865f36dd712f12ddaa619c527114d3bc1fbdce503e"
@@ -135586,7 +135586,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardFilter_sum_one",
-        "source_line": 763,
+        "source_line": 870,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardFilter_sum_one :\n    boolForwardFilter false + boolForwardFilter true = 1",
         "statement_sha256": "90c5b855cd4596c4ba3cc98b4511a906c4edcda08f614ee8656b2308bc98673f"
@@ -135688,7 +135688,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolForwardFilter_true_mass",
-        "source_line": 743,
+        "source_line": 850,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolForwardFilter_true_mass :\n    boolForwardFilter true = 20 / 23",
         "statement_sha256": "269bd990d2f02244a5542e9d553d04b12738c91b54d7b95e8f6c86b4361cf765"
@@ -135765,7 +135765,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolModelAverage_false_mass",
-        "source_line": 705,
+        "source_line": 812,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolModelAverage_false_mass :\n    modelAverage boolInitialLaw boolAccurateEmission false = 7 / 20",
         "statement_sha256": "26bc5da19085700e8ba9bebcfa0a78d90d2c1f956865d33ce31e98c8178a2972"
@@ -135842,7 +135842,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolModelAverage_true_mass",
-        "source_line": 699,
+        "source_line": 806,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolModelAverage_true_mass :\n    modelAverage boolInitialLaw boolAccurateEmission true = 13 / 20",
         "statement_sha256": "b8eef84e2aa82e127a5450d6e71b91b340205d7c5413f901f5c76785f49f5f42"
@@ -135919,7 +135919,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolPrediction_false_mass",
-        "source_line": 717,
+        "source_line": 824,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolPrediction_false_mass :\n    forwardPrediction boolInitialLaw boolStickyTransition false = 3 / 8",
         "statement_sha256": "d529ec81cb171445777c692e8fe9e0866c466721c595f3fb4e3f0580c5e212d8"
@@ -135996,7 +135996,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolPrediction_true_mass",
-        "source_line": 711,
+        "source_line": 818,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolPrediction_true_mass :\n    forwardPrediction boolInitialLaw boolStickyTransition true = 5 / 8",
         "statement_sha256": "f039f343eac9f7d6950ee02001270ac1864fe7952d02b6424d73410d0b7c0a02"
@@ -136086,7 +136086,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothingNormalizer_eq",
-        "source_line": 798,
+        "source_line": 905,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothingNormalizer_eq :\n    smoothingNormalizer boolInitialLaw boolBackwardMessage = 23 / 40",
         "statement_sha256": "aaddf4e46f8f49b6fab96f5aef5ab52129c1b806ace140ba48035721f69742d9"
@@ -136170,7 +136170,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothingNormalizer_pos",
-        "source_line": 805,
+        "source_line": 912,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothingNormalizer_pos :\n    0 < smoothingNormalizer boolInitialLaw boolBackwardMessage",
         "statement_sha256": "4713f2874d76b08ea8f35c5e8527285a006ea6cbdef08bad512a40cc909634d8"
@@ -136278,7 +136278,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothing_false_mass",
-        "source_line": 827,
+        "source_line": 934,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothing_false_mass :\n    boolSmoothing false = 7 / 46",
         "statement_sha256": "4bcbfda809fc17cbefc8b79290d8bab9e4309218f2af3f853ac27256216901a6"
@@ -136368,7 +136368,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothing_sum_one",
-        "source_line": 838,
+        "source_line": 945,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothing_sum_one :\n    boolSmoothing false + boolSmoothing true = 1",
         "statement_sha256": "e23ec28095c78d77641673e0c95c09ef016a02617370d52f80119473719b5b28"
@@ -136476,7 +136476,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolSmoothing_true_mass",
-        "source_line": 816,
+        "source_line": 923,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolSmoothing_true_mass :\n    boolSmoothing true = 39 / 46",
         "statement_sha256": "f63db146d58b93f76e4c78a7e2b951202abfb744d5d2f954c72145afc2f765cc"
@@ -136585,7 +136585,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_distinct_fallbacks",
-        "source_line": 584,
+        "source_line": 691,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolTerminalTwoStep_distinct_fallbacks :\n    (FiniteLaw.pointMass true : FiniteLaw Bool) ≠ FiniteLaw.pointMass false ∧\n    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      (FiniteLaw.pointMass true) (FiniteLaw.pointMass true) =\n    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      (FiniteLaw.pointMass false) (FiniteLaw.pointMass false)",
         "statement_sha256": "6ce9d775af8642f3135b711037b87d7420a87df60e9d68ed544f735d0014196c"
@@ -136681,7 +136681,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_evidence",
-        "source_line": 551,
+        "source_line": 658,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolTerminalTwoStep_evidence :\n    smoothingNormalizer (FiniteLaw.uniform : FiniteLaw Bool)\n      (terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n        (terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n          boolTerminalEvent)) = 1 / 2",
         "statement_sha256": "84df0e09d75f0d6c9012e7431e7f5aa1bb3e8d615190b11748029e83c27cf5c7"
@@ -136808,7 +136808,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_positive_path",
-        "source_line": 573,
+        "source_line": 680,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolTerminalTwoStep_positive_path (middleFallback terminalFallback : FiniteLaw Bool) :\n    terminalTiltTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity boolTerminalEvent\n      (by intro b; cases b <;> norm_num [boolTerminalEvent])\n      (by rw [boolTerminalTwoStep_evidence]; norm_num)\n      middleFallback terminalFallback (true, true, true) = 1",
         "statement_sha256": "4be3bae8fb744412759eee3cf2af60d197250ac8babc2e5821ae5b66d97e1db2"
@@ -136904,7 +136904,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.boolTerminalTwoStep_reachable_null_witness",
-        "source_line": 561,
+        "source_line": 668,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem boolTerminalTwoStep_reachable_null_witness :\n    terminalTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity (true, true, true) = 1 / 2 ∧\n    terminalTwoStepPath (FiniteLaw.uniform : FiniteLaw Bool)\n      FiniteKernel.identity FiniteKernel.identity (false, false, false) = 1 / 2 ∧\n    terminalBackwardWeight (FiniteKernel.identity : FiniteKernel Bool Bool)\n      boolTerminalEvent false = 0",
         "statement_sha256": "be4067cc2e6c245f9d2f7d0e3b3664fa924b08afaccf06a0dda574471d9cf4b7"
@@ -137937,7 +137937,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.hierarchicalPredictive_eq",
-        "source_line": 636,
+        "source_line": 743,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem hierarchicalPredictive_eq (top : FiniteLaw Upper)\n    (upperKernel : FiniteKernel Upper Middle)\n    (lowerKernel : FiniteKernel Middle Observation) :\n    hierarchicalPredictive top upperKernel lowerKernel =\n      (FiniteKernel.comp lowerKernel upperKernel).predictive top",
         "statement_sha256": "eb77c949755af877e15fc0ceae9cb75896dcfdd956dd02eedc1fd451da92a820"
@@ -138055,7 +138055,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.hierarchicalPredictive_mass",
-        "source_line": 644,
+        "source_line": 751,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem hierarchicalPredictive_mass (top : FiniteLaw Upper)\n    (upperKernel : FiniteKernel Upper Middle)\n    (lowerKernel : FiniteKernel Middle Observation) (observation : Observation) :\n    hierarchicalPredictive top upperKernel lowerKernel observation =\n      ∑ middle,\n        (∑ upper, top upper * upperKernel upper middle) *\n          lowerKernel middle observation",
         "statement_sha256": "06d42c3a92e62ffb8f38bacc362780ab423f2547c939a4ac0f33d0d7b667a03b"
@@ -138213,7 +138213,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.localUpdate_eq_oneEdge_exactMarginal",
-        "source_line": 1136,
+        "source_line": 1243,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem localUpdate_eq_oneEdge_exactMarginal {S : Type uS} [Fintype S] [DecidableEq S]\n    (ψ : S → S → ℝ) (incoming : S → ℝ) (neighbors : Finset S) (i j : S) :\n    localUpdate ψ incoming neighbors i j =\n      PTree.exactMarginal (oneEdgeTree ψ incoming neighbors i) j",
         "statement_sha256": "d3caf0334aa756e607983de076ea84193504b0df63a68d169c4cf4d21c6e420b"
@@ -138358,7 +138358,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.localUpdate_eq_oneEdge_rootBelief",
-        "source_line": 1117,
+        "source_line": 1224,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem localUpdate_eq_oneEdge_rootBelief {S : Type uS} [Fintype S] [DecidableEq S]\n    (ψ : S → S → ℝ) (incoming : S → ℝ) (neighbors : Finset S) (i j : S) :\n    localUpdate ψ incoming neighbors i j =\n      PTree.rootBelief (oneEdgeTree ψ incoming neighbors i) j",
         "statement_sha256": "62874993b783ed1bcad811cc9bbf046a3d43a1d10a98fb545f6469499c86d1ba"
@@ -138466,7 +138466,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.modelAverage_mass",
-        "source_line": 659,
+        "source_line": 766,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem modelAverage_mass (modelPrior : FiniteLaw Model)\n    (modelPredictive : FiniteKernel Model Observation)\n    (observation : Observation) :\n    modelAverage modelPrior modelPredictive observation =\n      ∑ model, modelPrior model * modelPredictive model observation",
         "statement_sha256": "641b00991123df3a2ef1339fb0715c5877672e484d570f6361a462095c2c51a6"
@@ -138564,10 +138564,809 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.modelAverage_sum_one",
-        "source_line": 667,
+        "source_line": 774,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem modelAverage_sum_one (modelPrior : FiniteLaw Model)\n    (modelPredictive : FiniteKernel Model Observation) :\n    ∑ observation, modelAverage modelPrior modelPredictive observation = 1",
         "statement_sha256": "7725f3fe830ef4c1518d9bbf1ed0b34099f8855f927215b43a5cad31796f8e75"
+      },
+      "FEP.TemporalInference.pairedRead_cells_feasible_iff": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prevalence",
+              "readOne",
+              "readTwo",
+              "overlap"
+            ],
+            "role": "typed_binder",
+            "source": "(prevalence readOne readTwo overlap : ℝ)",
+            "type_source": "ℝ",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "PairedReadCellsFeasible prevalence readOne readTwo overlap ↔\n      0 ≤ overlap ∧ overlap ≤ readOne ∧ overlap ≤ readTwo ∧\n        readOne + readTwo - overlap ≤ prevalence",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.pairedRead_cells_feasible_iff",
+        "source_line": 299,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem pairedRead_cells_feasible_iff (prevalence readOne readTwo overlap : ℝ) :\n    PairedReadCellsFeasible prevalence readOne readTwo overlap ↔\n      0 ≤ overlap ∧ overlap ≤ readOne ∧ overlap ≤ readTwo ∧\n        readOne + readTwo - overlap ≤ prevalence",
+        "statement_sha256": "0c1c4d4120fa339e8efef6b046f34d1f47dc321f89022a0abe99b6df8dbb3fa8"
+      },
+      "FEP.TemporalInference.pairedRead_competing_prevalence_interval": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "total",
+              "prevalence",
+              "readOneA",
+              "readTwoA",
+              "overlapA",
+              "readOneB",
+              "readTwoB",
+              "overlapB"
+            ],
+            "role": "typed_binder",
+            "source": "(total prevalence readOneA readTwoA overlapA readOneB readTwoB overlapB : ℝ)",
+            "type_source": "ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOverlapA"
+            ],
+            "role": "typed_binder",
+            "source": "(hOverlapA : 0 ≤ overlapA)",
+            "type_source": "0 ≤ overlapA",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOneA"
+            ],
+            "role": "typed_binder",
+            "source": "(hOneA : overlapA ≤ readOneA)",
+            "type_source": "overlapA ≤ readOneA",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hTwoA"
+            ],
+            "role": "typed_binder",
+            "source": "(hTwoA : overlapA ≤ readTwoA)",
+            "type_source": "overlapA ≤ readTwoA",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOverlapB"
+            ],
+            "role": "typed_binder",
+            "source": "(hOverlapB : 0 ≤ overlapB)",
+            "type_source": "0 ≤ overlapB",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOneB"
+            ],
+            "role": "typed_binder",
+            "source": "(hOneB : overlapB ≤ readOneB)",
+            "type_source": "overlapB ≤ readOneB",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hTwoB"
+            ],
+            "role": "typed_binder",
+            "source": "(hTwoB : overlapB ≤ readTwoB)",
+            "type_source": "overlapB ≤ readTwoB",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "(PairedReadCellsFeasible prevalence readOneA readTwoA overlapA ∧\n      PairedReadCellsFeasible (total - prevalence) readOneB readTwoB overlapB) ↔\n        (readOneA + readTwoA - overlapA ≤ prevalence ∧\n          prevalence ≤ total - (readOneB + readTwoB - overlapB))",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "pairedRead_cells_feasible_iff",
+            "qualified_name": "FEP.TemporalInference.pairedRead_cells_feasible_iff",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.pairedRead_competing_prevalence_interval",
+        "source_line": 315,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem pairedRead_competing_prevalence_interval\n    (total prevalence readOneA readTwoA overlapA readOneB readTwoB overlapB : ℝ)\n    (hOverlapA : 0 ≤ overlapA) (hOneA : overlapA ≤ readOneA)\n    (hTwoA : overlapA ≤ readTwoA)\n    (hOverlapB : 0 ≤ overlapB) (hOneB : overlapB ≤ readOneB)\n    (hTwoB : overlapB ≤ readTwoB) :\n    (PairedReadCellsFeasible prevalence readOneA readTwoA overlapA ∧\n      PairedReadCellsFeasible (total - prevalence) readOneB readTwoB overlapB) ↔\n        (readOneA + readTwoA - overlapA ≤ prevalence ∧\n          prevalence ≤ total - (readOneB + readTwoB - overlapB))",
+        "statement_sha256": "3f2af7921abb22f40dfe31b07b30d1cbd2a4f152f9fbf86b248e8588537ab948"
+      },
+      "FEP.TemporalInference.pairedRead_prevalence_identified": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prevalence",
+              "sensitivityOne",
+              "sensitivityTwo",
+              "readOne",
+              "readTwo",
+              "overlap"
+            ],
+            "role": "typed_binder",
+            "source": "{prevalence sensitivityOne sensitivityTwo readOne readTwo overlap : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOne"
+            ],
+            "role": "typed_binder",
+            "source": "(hOne : readOne = prevalence * sensitivityOne)",
+            "type_source": "readOne = prevalence * sensitivityOne",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hTwo"
+            ],
+            "role": "typed_binder",
+            "source": "(hTwo : readTwo = prevalence * sensitivityTwo)",
+            "type_source": "readTwo = prevalence * sensitivityTwo",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOverlap"
+            ],
+            "role": "typed_binder",
+            "source": "(hOverlap : overlap = prevalence * sensitivityOne * sensitivityTwo)",
+            "type_source": "overlap = prevalence * sensitivityOne * sensitivityTwo",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hPositive"
+            ],
+            "role": "typed_binder",
+            "source": "(hPositive : 0 < overlap)",
+            "type_source": "0 < overlap",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "readOne * readTwo / overlap = prevalence",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.pairedRead_prevalence_identified",
+        "source_line": 228,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem pairedRead_prevalence_identified\n    {prevalence sensitivityOne sensitivityTwo readOne readTwo overlap : ℝ}\n    (hOne : readOne = prevalence * sensitivityOne)\n    (hTwo : readTwo = prevalence * sensitivityTwo)\n    (hOverlap : overlap = prevalence * sensitivityOne * sensitivityTwo)\n    (hPositive : 0 < overlap) :\n    readOne * readTwo / overlap = prevalence",
+        "statement_sha256": "838d9ab45478eeae62fc7690a71eb96126007ebcfb769b0d0d1ac9661deeadb8"
+      },
+      "FEP.TemporalInference.pairedRead_prevalence_of_specific": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "cause"
+            ],
+            "role": "typed_binder",
+            "source": "(cause : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weightOne",
+              "weightTwo"
+            ],
+            "role": "typed_binder",
+            "source": "(weightOne weightTwo : State → ℝ)",
+            "type_source": "State → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOne"
+            ],
+            "role": "typed_binder",
+            "source": "(hOne : ∀ state, state ≠ cause → weightOne state = 0)",
+            "type_source": "∀ state, state ≠ cause → weightOne state = 0",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hTwo"
+            ],
+            "role": "typed_binder",
+            "source": "(hTwo : ∀ state, state ≠ cause → weightTwo state = 0)",
+            "type_source": "∀ state, state ≠ cause → weightTwo state = 0",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hPositive"
+            ],
+            "role": "typed_binder",
+            "source": "(hPositive : 0 < smoothingNormalizer prior\n      (fun state => weightOne state * weightTwo state))",
+            "type_source": "0 < smoothingNormalizer prior\n      (fun state => weightOne state * weightTwo state)",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "smoothingNormalizer prior weightOne * smoothingNormalizer prior weightTwo /\n      smoothingNormalizer prior (fun state => weightOne state * weightTwo state) =\n        prior cause",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [
+          {
+            "identifier": "pairedRead_prevalence_identified",
+            "qualified_name": "FEP.TemporalInference.pairedRead_prevalence_identified",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          },
+          {
+            "identifier": "smoothingNormalizer_eq_mul_of_specific",
+            "qualified_name": "FEP.TemporalInference.smoothingNormalizer_eq_mul_of_specific",
+            "resolution": "exact or same-namespace source identifier",
+            "role": "proof_reference"
+          }
+        ],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.pairedRead_prevalence_of_specific",
+        "source_line": 271,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem pairedRead_prevalence_of_specific (prior : FiniteLaw State)\n    (cause : State) (weightOne weightTwo : State → ℝ)\n    (hOne : ∀ state, state ≠ cause → weightOne state = 0)\n    (hTwo : ∀ state, state ≠ cause → weightTwo state = 0)\n    (hPositive : 0 < smoothingNormalizer prior\n      (fun state => weightOne state * weightTwo state)) :\n    smoothingNormalizer prior weightOne * smoothingNormalizer prior weightTwo /\n      smoothingNormalizer prior (fun state => weightOne state * weightTwo state) =\n        prior cause",
+        "statement_sha256": "d17f2cb1472bf44112615f8a9968608c411732af8ea7f6702139c9ede040632d"
+      },
+      "FEP.TemporalInference.pairedRead_sensitivities_identified": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prevalence",
+              "sensitivityOne",
+              "sensitivityTwo",
+              "readOne",
+              "readTwo",
+              "overlap"
+            ],
+            "role": "typed_binder",
+            "source": "{prevalence sensitivityOne sensitivityTwo readOne readTwo overlap : ℝ}",
+            "type_source": "ℝ",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOne"
+            ],
+            "role": "typed_binder",
+            "source": "(hOne : readOne = prevalence * sensitivityOne)",
+            "type_source": "readOne = prevalence * sensitivityOne",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hTwo"
+            ],
+            "role": "typed_binder",
+            "source": "(hTwo : readTwo = prevalence * sensitivityTwo)",
+            "type_source": "readTwo = prevalence * sensitivityTwo",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hOverlap"
+            ],
+            "role": "typed_binder",
+            "source": "(hOverlap : overlap = prevalence * sensitivityOne * sensitivityTwo)",
+            "type_source": "overlap = prevalence * sensitivityOne * sensitivityTwo",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hPositiveOne"
+            ],
+            "role": "typed_binder",
+            "source": "(hPositiveOne : 0 < readOne)",
+            "type_source": "0 < readOne",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hPositiveTwo"
+            ],
+            "role": "typed_binder",
+            "source": "(hPositiveTwo : 0 < readTwo)",
+            "type_source": "0 < readTwo",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "overlap / readTwo = sensitivityOne ∧ overlap / readOne = sensitivityTwo",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.pairedRead_sensitivities_identified",
+        "source_line": 241,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem pairedRead_sensitivities_identified\n    {prevalence sensitivityOne sensitivityTwo readOne readTwo overlap : ℝ}\n    (hOne : readOne = prevalence * sensitivityOne)\n    (hTwo : readTwo = prevalence * sensitivityTwo)\n    (hOverlap : overlap = prevalence * sensitivityOne * sensitivityTwo)\n    (hPositiveOne : 0 < readOne) (hPositiveTwo : 0 < readTwo) :\n    overlap / readTwo = sensitivityOne ∧ overlap / readOne = sensitivityTwo",
+        "statement_sha256": "ffa5468cfeca2edf463aafa437cd5a189da91e22345ccd8fe2fa474c69646734"
+      },
+      "FEP.TemporalInference.smoothingNormalizer_eq_mul_of_specific": {
+        "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
+        "binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "prior"
+            ],
+            "role": "typed_binder",
+            "source": "(prior : FiniteLaw State)",
+            "type_source": "FiniteLaw State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "cause"
+            ],
+            "role": "typed_binder",
+            "source": "(cause : State)",
+            "type_source": "State",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "weight"
+            ],
+            "role": "typed_binder",
+            "source": "(weight : State → ℝ)",
+            "type_source": "State → ℝ",
+            "visibility": "explicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "hSpecific"
+            ],
+            "role": "typed_binder",
+            "source": "(hSpecific : ∀ state, state ≠ cause → weight state = 0)",
+            "type_source": "∀ state, state ≠ cause → weight state = 0",
+            "visibility": "explicit"
+          }
+        ],
+        "conclusion": "smoothingNormalizer prior weight = prior cause * weight cause",
+        "context_binders": [
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [
+              "State",
+              "Observation",
+              "Model",
+              "Upper",
+              "Middle"
+            ],
+            "role": "typed_binder",
+            "source": "{State Observation Model Upper Middle : Type*}",
+            "type_source": "Type*",
+            "visibility": "implicit"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype State]",
+            "type_source": "Fintype State",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Observation]",
+            "type_source": "Fintype Observation",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Model]",
+            "type_source": "Fintype Model",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Upper]",
+            "type_source": "Fintype Upper",
+            "visibility": "instance"
+          },
+          {
+            "hypothesis_status": "source syntax; proposition elaboration not performed",
+            "names": [],
+            "role": "instance_requirement",
+            "source": "[Fintype Middle]",
+            "type_source": "Fintype Middle",
+            "visibility": "instance"
+          }
+        ],
+        "declaration_mentions": [],
+        "dependency_boundary": "Lexical declaration mentions and import context, not elaborated or minimal proof dependencies. Unresolved names remain unresolved.",
+        "import_context": [
+          "FepSketches.controlled_markov"
+        ],
+        "line_coordinate_kind": "formal_resource_file",
+        "namespace": "FEP.TemporalInference",
+        "namespace_variable_context": [
+          "{State Observation Model Upper Middle : Type*}\n  [Fintype State] [Fintype Observation] [Fintype Model]\n  [Fintype Upper] [Fintype Middle]"
+        ],
+        "preceding_scope_directives": [],
+        "qualified_name": "FEP.TemporalInference.smoothingNormalizer_eq_mul_of_specific",
+        "source_line": 258,
+        "source_owner": "src/fep_formal/formal/temporal_inference.lean",
+        "statement": "theorem smoothingNormalizer_eq_mul_of_specific (prior : FiniteLaw State)\n    (cause : State) (weight : State → ℝ)\n    (hSpecific : ∀ state, state ≠ cause → weight state = 0) :\n    smoothingNormalizer prior weight = prior cause * weight cause",
+        "statement_sha256": "49d56d5223b5b05aadff0a4b3e4461c8339c8590f44dfd40fb50019e227beaae"
       },
       "FEP.TemporalInference.smoothingNormalizer_map": {
         "analysis_boundary": "Source-grounded semantic analysis: exact Lean source slices and lexical roles, joined to maintained review prose. This is neither a certified translation, Lean elaboration, a minimal kernel dependency graph, nor LLM execution. A proposition-looking binder is not classified as a proved hypothesis by this parser.",
@@ -138883,7 +139682,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spCycle_marginal_true",
-        "source_line": 1081,
+        "source_line": 1188,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spCycle_marginal_true :\n    (∑ x₁ : Bool, ∑ x₂ : Bool, spCycleJoint true x₁ x₂) /\n        (∑ x₀ : Bool, ∑ x₁ : Bool, ∑ x₂ : Bool, spCycleJoint x₀ x₁ x₂) =\n      43 / 62",
         "statement_sha256": "fda28cf78fc6cafbf5d9c6a5376dcfc209888ab660c1404ea05669544737e01c"
@@ -138973,7 +139772,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spCycle_naive_message_product_ne_marginal",
-        "source_line": 1089,
+        "source_line": 1196,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spCycle_naive_message_product_ne_marginal :\n    PTree.rootBelief spStar true ≠\n      (∑ x₁ : Bool, ∑ x₂ : Bool, spCycleJoint true x₁ x₂) /\n        (∑ x₀ : Bool, ∑ x₁ : Bool, ∑ x₂ : Bool, spCycleJoint x₀ x₁ x₂)",
         "statement_sha256": "815c76c7deae7e6b483eb0f4f3fe7e0ae75f74853955f9b060b9cb8b24a7551f"
@@ -139050,7 +139849,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_bruteForce_true",
-        "source_line": 1068,
+        "source_line": 1175,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_bruteForce_true :\n    (∑ x₁ : Bool, ∑ x₂ : Bool, spStarJoint true x₁ x₂) /\n        (∑ x₀ : Bool, ∑ x₁ : Bool, ∑ x₂ : Bool, spStarJoint x₀ x₁ x₂) =\n      49 / 74",
         "statement_sha256": "8b2b9c2dc7957c850b7e5b203f6d36d328caa77371e60d503d54a5934ca7698d"
@@ -139140,7 +139939,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_exactMarginal_true",
-        "source_line": 1076,
+        "source_line": 1183,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_exactMarginal_true : PTree.exactMarginal spStar true = 49 / 74",
         "statement_sha256": "64fa2eddbb20c9cbcf0ef34dafb81ea42a15486dd1c912e6980a374b49d19f5d"
@@ -139217,7 +140016,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_msg_false",
-        "source_line": 1056,
+        "source_line": 1163,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_msg_false : PTree.msg spStar false = 25",
         "statement_sha256": "a33dcae22d260b22720048d64029645c2ed74cde0463da83ae60cb8011bfb959"
@@ -139294,7 +140093,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_msg_true",
-        "source_line": 1051,
+        "source_line": 1158,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_msg_true : PTree.msg spStar true = 49",
         "statement_sha256": "6ba968df82d6ef8714c5120afb7249c03c276f3e9f518dd61db4e8bae976dcaf"
@@ -139384,7 +140183,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.spStar_rootBelief_true",
-        "source_line": 1061,
+        "source_line": 1168,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem spStar_rootBelief_true : PTree.rootBelief spStar true = 49 / 74",
         "statement_sha256": "7afa1aba2add7d796b11f23edf6d8cc58b1615319fc38c16b883c1e96d59c813"
@@ -139521,7 +140320,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalBackwardWeight_nonneg",
-        "source_line": 275,
+        "source_line": 382,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalBackwardWeight_nonneg (transition : FiniteKernel State Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y) (x : State) :\n    0 ≤ terminalBackwardWeight transition weight x",
         "statement_sha256": "8df022fbbbbb8c7a4648e1a063c325bf0f909a723a726a34cc10c54741212f65"
@@ -139697,7 +140496,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltJoint_eq_smoothing",
-        "source_line": 335,
+        "source_line": 442,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltJoint_eq_smoothing (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))\n    (fallback : FiniteLaw Terminal) :\n    terminalTiltJoint prior transition weight hWeight hEvidence fallback =\n      forwardBackwardSmoothing (FiniteKernel.joint prior transition) (fun xy => weight xy.2)\n        (fun xy => hWeight xy.2)\n        (by rw [terminalTiltJoint_normalizer]; exact hEvidence)",
         "statement_sha256": "d9121e87d61b8d31490751bb056d14b63599b612b53cc2f963c7259181b491c5"
@@ -139862,7 +140661,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltJoint_fallback_invariant",
-        "source_line": 355,
+        "source_line": 462,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltJoint_fallback_invariant (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))\n    (fallback₁ fallback₂ : FiniteLaw Terminal) :\n    terminalTiltJoint prior transition weight hWeight hEvidence fallback₁ =\n      terminalTiltJoint prior transition weight hWeight hEvidence fallback₂",
         "statement_sha256": "82ba4ab9e6b24a9a65191ca7c5d806eeee222fe9b9fca068da0de6e3e16d461e"
@@ -140046,7 +140845,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltJoint_mass",
-        "source_line": 317,
+        "source_line": 424,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltJoint_mass (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))\n    (fallback : FiniteLaw Terminal) (x : State) (y : Terminal) :\n    terminalTiltJoint prior transition weight hWeight hEvidence fallback (x, y) =\n      prior x * transition x y * weight y /\n        smoothingNormalizer prior (terminalBackwardWeight transition weight)",
         "statement_sha256": "446e9511efe4f335becc55feecf34fb9a893f0981ca0cf21231d63e7aa20af7b"
@@ -140173,7 +140972,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltJoint_normalizer",
-        "source_line": 292,
+        "source_line": 399,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltJoint_normalizer (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ) :\n    smoothingNormalizer (FiniteKernel.joint prior transition) (fun xy => weight xy.2) =\n      smoothingNormalizer prior (terminalBackwardWeight transition weight)",
         "statement_sha256": "2646874f2ebb4aaa0248dabb406694cbd3549b019dbf2fb5d80c8af9911cf0c2"
@@ -140385,7 +141184,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltKernel_comp_of_pos",
-        "source_line": 505,
+        "source_line": 612,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltKernel_comp_of_pos (earlier : FiniteKernel State Middle)\n    (later : FiniteKernel Middle Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y) (middleFallback : FiniteLaw Middle)\n    (terminalFallback : FiniteLaw Terminal) (x : State) (t : Terminal)\n    (hPos : 0 < terminalBackwardWeight earlier (terminalBackwardWeight later weight) x) :\n    terminalTiltKernel (FiniteKernel.comp later earlier) weight hWeight terminalFallback x t =\n      FiniteKernel.comp (terminalTiltKernel later weight hWeight terminalFallback)\n        (terminalTiltKernel earlier (terminalBackwardWeight later weight)\n          (terminalBackwardWeight_nonneg later weight hWeight) middleFallback) x t",
         "statement_sha256": "2c2e841b4c641d4a11065318909bc6cb32aba0a70144459a3638a3f0864126ab"
@@ -140549,7 +141348,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltKernel_factorization",
-        "source_line": 248,
+        "source_line": 355,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltKernel_factorization (transition : FiniteKernel State Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y) (fallback : FiniteLaw Terminal)\n    (x : State) (y : Terminal) :\n    terminalTiltKernel transition weight hWeight fallback x y *\n        smoothingNormalizer (transition.row x) weight = transition x y * weight y",
         "statement_sha256": "2161f77c2bfcc165a07ddb32c2247aa3a84c96d2a9da2b9e19d99908156bf711"
@@ -140723,7 +141522,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltSource_null",
-        "source_line": 306,
+        "source_line": 413,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltSource_null (prior : FiniteLaw State)\n    (transition : FiniteKernel State Terminal) (weight : Terminal → ℝ)\n    (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior (terminalBackwardWeight transition weight))\n    (x : State) (hNull : terminalBackwardWeight transition weight x = 0) :\n    forwardBackwardSmoothing prior (terminalBackwardWeight transition weight)\n      (terminalBackwardWeight_nonneg transition weight hWeight) hEvidence x = 0",
         "statement_sha256": "59a04f8fea59458791bcbe51200e5a323b0ba24c7ced4db2ed0a04d914e8cba6"
@@ -140919,7 +141718,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_eq_smoothing",
-        "source_line": 468,
+        "source_line": 575,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltTwoStepPath_eq_smoothing (prior : FiniteLaw State)\n    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))\n    (middleFallback : FiniteLaw Middle) (terminalFallback : FiniteLaw Terminal) :\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback terminalFallback =\n    forwardBackwardSmoothing (terminalTwoStepPath prior earlier later)\n      (fun p => weight p.2.2) (fun p => hWeight p.2.2)\n      (by rw [terminalTwoStepPath_normalizer]; exact hEvidence)",
         "statement_sha256": "1fce680469dfb0c3df894f1d2d9423dc27553cc147625587caad68d0f98b50c6"
@@ -141105,7 +141904,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_fallback_invariant",
-        "source_line": 491,
+        "source_line": 598,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltTwoStepPath_fallback_invariant (prior : FiniteLaw State)\n    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))\n    (middleFallback₁ middleFallback₂ : FiniteLaw Middle)\n    (terminalFallback₁ terminalFallback₂ : FiniteLaw Terminal) :\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback₁ terminalFallback₁ =\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback₂ terminalFallback₂",
         "statement_sha256": "d48e1aab840cceb8f22fb6d7a7449b4d916dcac69a16ecfaaf2598bb15fb25e9"
@@ -141325,7 +142124,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltTwoStepPath_mass",
-        "source_line": 432,
+        "source_line": 539,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltTwoStepPath_mass (prior : FiniteLaw State)\n    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)\n    (weight : Terminal → ℝ) (hWeight : ∀ y, 0 ≤ weight y)\n    (hEvidence : 0 < smoothingNormalizer prior\n      (terminalBackwardWeight earlier (terminalBackwardWeight later weight)))\n    (middleFallback : FiniteLaw Middle) (terminalFallback : FiniteLaw Terminal)\n    (x : State) (m : Middle) (t : Terminal) :\n    terminalTiltTwoStepPath prior earlier later weight hWeight hEvidence\n      middleFallback terminalFallback (x, m, t) =\n      prior x * earlier x m * later m t * weight t /\n        smoothingNormalizer prior\n          (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
         "statement_sha256": "a38c5b1b658ba71afd58ee2cf6863dd41af079522b12928e8994e4e9742d3609"
@@ -141462,7 +142261,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTiltTwoStep_weight",
-        "source_line": 381,
+        "source_line": 488,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTiltTwoStep_weight (earlier : FiniteKernel State Middle)\n    (later : FiniteKernel Middle Terminal) (weight : Terminal → ℝ) (x : State) :\n    terminalBackwardWeight earlier (terminalBackwardWeight later weight) x =\n      terminalBackwardWeight (FiniteKernel.comp later earlier) weight x",
         "statement_sha256": "3f5f923a4c421d919ca9bebf7cf2dd293defa4a738638e91a60856a5dd2bc31d"
@@ -141599,7 +142398,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.terminalTwoStepPath_normalizer",
-        "source_line": 396,
+        "source_line": 503,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem terminalTwoStepPath_normalizer (prior : FiniteLaw State)\n    (earlier : FiniteKernel State Middle) (later : FiniteKernel Middle Terminal)\n    (weight : Terminal → ℝ) :\n    smoothingNormalizer (terminalTwoStepPath prior earlier later) (fun p => weight p.2.2) =\n      smoothingNormalizer prior\n        (terminalBackwardWeight earlier (terminalBackwardWeight later weight))",
         "statement_sha256": "46351d1a930aa3170ac31561aff5122b1c71dabe4be65b7b6815fddc39d5ccd0"
@@ -141716,7 +142515,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.variationalStateUpdate_reconstruction",
-        "source_line": 617,
+        "source_line": 724,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem variationalStateUpdate_reconstruction (prior : FiniteLaw State)\n    (energy : State → ℝ) (state : State) :\n    variationalStateUpdate prior energy state * boltzmannPartition prior energy =\n      boltzmannWeight prior energy state",
         "statement_sha256": "45cf9d6a609e7b9ddd867925ad6556c37534e2b9b6e0824493d017011dd2f34c"
@@ -141814,7 +142613,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.variationalStateUpdate_sum_one",
-        "source_line": 611,
+        "source_line": 718,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem variationalStateUpdate_sum_one (prior : FiniteLaw State)\n    (energy : State → ℝ) :\n    ∑ state, variationalStateUpdate prior energy state = 1",
         "statement_sha256": "95c1dfbbe936c4b24c66a00675decfea9b434c6b7674d2bb00851547051ebfb6"
@@ -141911,7 +142710,7 @@
         ],
         "preceding_scope_directives": [],
         "qualified_name": "FEP.TemporalInference.variationalStateUpdate_zero_energy",
-        "source_line": 624,
+        "source_line": 731,
         "source_owner": "src/fep_formal/formal/temporal_inference.lean",
         "statement": "theorem variationalStateUpdate_zero_energy (prior : FiniteLaw State) :\n    variationalStateUpdate prior (fun _ => 0) = prior",
         "statement_sha256": "8c4bcbaf766de229485ea736b3fbe82e7433d75a8add9216666bdb5331ea865f"

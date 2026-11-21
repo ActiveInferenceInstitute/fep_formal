@@ -240,11 +240,14 @@ def test_exact_statement_analysis_preserves_all_reviewed_contracts(packaged):
 
     from tests._support.lean_module_contract import (
         OBSERVATION_TRANSPORT_THEOREM_OWNERS,
+        PAIRED_READ_THEOREM_OWNERS,
         TERMINAL_COARSE_THEOREM_OWNERS,
     )
 
     transport_owners = (
-        TERMINAL_COARSE_THEOREM_OWNERS | OBSERVATION_TRANSPORT_THEOREM_OWNERS
+        TERMINAL_COARSE_THEOREM_OWNERS
+        | OBSERVATION_TRANSPORT_THEOREM_OWNERS
+        | PAIRED_READ_THEOREM_OWNERS
     )
     assert {name: declarations[name]["source_owner"] for name in transport_owners} == {
         name: "src/fep_formal/formal/"

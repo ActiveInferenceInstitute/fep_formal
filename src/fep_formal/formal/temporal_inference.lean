@@ -221,6 +221,113 @@ theorem smoothingNormalizer_zero_boundary (filtered : FiniteLaw State)
   rw [hZero]
   exact lt_irrefl 0
 
+section PairedReadCalibration
+
+/-- With cause-specific reads and conditionally independent detection, the
+positive overlap of two reads identifies the latent mass of the cause. -/
+theorem pairedRead_prevalence_identified
+    {prevalence sensitivityOne sensitivityTwo readOne readTwo overlap : ℝ}
+    (hOne : readOne = prevalence * sensitivityOne)
+    (hTwo : readTwo = prevalence * sensitivityTwo)
+    (hOverlap : overlap = prevalence * sensitivityOne * sensitivityTwo)
+    (hPositive : 0 < overlap) :
+    readOne * readTwo / overlap = prevalence := by
+  apply (div_eq_iff (ne_of_gt hPositive)).2
+  rw [hOne, hTwo, hOverlap]
+  ring
+
+/-- Independent reads also identify each sensitivity from the overlap and the
+other read's positive marginal. -/
+theorem pairedRead_sensitivities_identified
+    {prevalence sensitivityOne sensitivityTwo readOne readTwo overlap : ℝ}
+    (hOne : readOne = prevalence * sensitivityOne)
+    (hTwo : readTwo = prevalence * sensitivityTwo)
+    (hOverlap : overlap = prevalence * sensitivityOne * sensitivityTwo)
+    (hPositiveOne : 0 < readOne) (hPositiveTwo : 0 < readTwo) :
+    overlap / readTwo = sensitivityOne ∧ overlap / readOne = sensitivityTwo := by
+  constructor
+  · apply (div_eq_iff (ne_of_gt hPositiveTwo)).2
+    rw [hOverlap, hTwo]
+    ring
+  · apply (div_eq_iff (ne_of_gt hPositiveOne)).2
+    rw [hOverlap, hOne]
+    ring
+
+/-- A read restricted to a single cause has evidence equal to the mass of
+that cause times its conditional read weight. -/
+theorem smoothingNormalizer_eq_mul_of_specific (prior : FiniteLaw State)
+    (cause : State) (weight : State → ℝ)
+    (hSpecific : ∀ state, state ≠ cause → weight state = 0) :
+    smoothingNormalizer prior weight = prior cause * weight cause := by
+  classical
+  rw [smoothingNormalizer, Finset.sum_eq_single cause]
+  · intro state _ hDifferent
+    rw [hSpecific state hDifferent, mul_zero]
+  · simp
+
+/-- For finite law evidence, per-cause specificity and a product likelihood
+for the paired detection recover the latent cause mass. No inverse is
+provided at zero paired evidence. -/
+theorem pairedRead_prevalence_of_specific (prior : FiniteLaw State)
+    (cause : State) (weightOne weightTwo : State → ℝ)
+    (hOne : ∀ state, state ≠ cause → weightOne state = 0)
+    (hTwo : ∀ state, state ≠ cause → weightTwo state = 0)
+    (hPositive : 0 < smoothingNormalizer prior
+      (fun state => weightOne state * weightTwo state)) :
+    smoothingNormalizer prior weightOne * smoothingNormalizer prior weightTwo /
+      smoothingNormalizer prior (fun state => weightOne state * weightTwo state) =
+        prior cause := by
+  have hBoth : ∀ state, state ≠ cause → weightOne state * weightTwo state = 0 := by
+    intro state hDifferent
+    simp [hOne state hDifferent]
+  have hOverlap := smoothingNormalizer_eq_mul_of_specific prior cause _ hBoth
+  exact pairedRead_prevalence_identified
+    (smoothingNormalizer_eq_mul_of_specific prior cause weightOne hOne)
+    (smoothingNormalizer_eq_mul_of_specific prior cause weightTwo hTwo)
+    (hOverlap.trans (mul_assoc _ _ _).symm) hPositive
+
+/-- The three visible cells and the hidden double miss form nonnegative joint
+masses at the specified cause. The rows need no independence assumption. -/
+def PairedReadCellsFeasible (prevalence readOne readTwo overlap : ℝ) : Prop :=
+  ∃ oneOnly twoOnly missed : ℝ,
+    0 ≤ overlap ∧ 0 ≤ oneOnly ∧ 0 ≤ twoOnly ∧ 0 ≤ missed ∧
+      oneOnly + overlap = readOne ∧ twoOnly + overlap = readTwo ∧
+      oneOnly + twoOnly + overlap + missed = prevalence
+
+/-- Dependent read cells are feasible exactly when the overlap fits each
+marginal and the latent prevalence covers the mass of their union. -/
+theorem pairedRead_cells_feasible_iff (prevalence readOne readTwo overlap : ℝ) :
+    PairedReadCellsFeasible prevalence readOne readTwo overlap ↔
+      0 ≤ overlap ∧ overlap ≤ readOne ∧ overlap ≤ readTwo ∧
+        readOne + readTwo - overlap ≤ prevalence := by
+  constructor
+  · rintro ⟨oneOnly, twoOnly, missed, hOverlap, hOneOnly, hTwoOnly, hMissed,
+      hOne, hTwo, hTotal⟩
+    exact ⟨hOverlap, by linarith, by linarith, by linarith⟩
+  · rintro ⟨hOverlap, hOne, hTwo, hUnion⟩
+    refine ⟨readOne - overlap, readTwo - overlap,
+      prevalence - (readOne + readTwo - overlap),
+      hOverlap, sub_nonneg.mpr hOne, sub_nonneg.mpr hTwo, sub_nonneg.mpr hUnion,
+      ?_, ?_, ?_⟩ <;> ring
+
+/-- If only the total mass of two specific causes is known, each point of the
+displayed interval admits compatible dependent read cells for both causes. -/
+theorem pairedRead_competing_prevalence_interval
+    (total prevalence readOneA readTwoA overlapA readOneB readTwoB overlapB : ℝ)
+    (hOverlapA : 0 ≤ overlapA) (hOneA : overlapA ≤ readOneA)
+    (hTwoA : overlapA ≤ readTwoA)
+    (hOverlapB : 0 ≤ overlapB) (hOneB : overlapB ≤ readOneB)
+    (hTwoB : overlapB ≤ readTwoB) :
+    (PairedReadCellsFeasible prevalence readOneA readTwoA overlapA ∧
+      PairedReadCellsFeasible (total - prevalence) readOneB readTwoB overlapB) ↔
+        (readOneA + readTwoA - overlapA ≤ prevalence ∧
+          prevalence ≤ total - (readOneB + readTwoB - overlapB)) := by
+  simp only [pairedRead_cells_feasible_iff, hOverlapA, hOneA, hTwoA,
+    hOverlapB, hOneB, hTwoB, true_and]
+  constructor <;> rintro ⟨hA, hB⟩ <;> exact ⟨hA, by linarith⟩
+
+end PairedReadCalibration
+
 section TerminalTilt
 
 variable {Terminal : Type*} [Fintype Terminal]

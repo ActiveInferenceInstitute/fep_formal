@@ -20155,7 +20155,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/scalar_gaussian_semigroup.lean` | `5cd5a0dad0a60f7ea4a6106929db1ec4039b1790c39747be990290b03b8abc73` |
 | `formal/smooth_information_geometry.lean` | `1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04` |
 | `formal/statistical_convergence.lean` | `6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf` |
-| `formal/temporal_inference.lean` | `4521209e7859837e6e16dd4811a4ae6f7ae154b16dc93affa1516d80568f7d5e` |
+| `formal/temporal_inference.lean` | `8e685f26f38e1a7cfe2a6cd01a3161f3683abcdb357f59b1d68f3f0b250e5baf` |
 | `formal/variational_duality.lean` | `05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1` |
 | `inputs/catalogue_metadata.yaml` | `b0af8b16513084cffc6eff8176ba5b1a9a524591a51acbe652256489e698974d` |
 | `inputs/formalism_relations.yaml` | `7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80` |

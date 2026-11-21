@@ -46,6 +46,19 @@ OBSERVATION_TRANSPORT_THEOREM_OWNERS = {
 }
 
 
+PAIRED_READ_THEOREM_OWNERS = {
+    f"FEP.TemporalInference.{name}": "FepSketches.temporal_inference"
+    for name in (
+        "pairedRead_prevalence_identified",
+        "pairedRead_sensitivities_identified",
+        "smoothingNormalizer_eq_mul_of_specific",
+        "pairedRead_prevalence_of_specific",
+        "pairedRead_cells_feasible_iff",
+        "pairedRead_competing_prevalence_interval",
+    )
+}
+
+
 # Recorded V-to-947 American prose/spacing changes, for historical seals only.
 # Public theorem statements, frozen review bytes, and live production stay intact.
 _HISTORICAL_PROSE_FIELDS = [
