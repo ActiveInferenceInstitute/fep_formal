@@ -146,6 +146,19 @@ noncomputable def smoothingNormalizer (filtered : FiniteLaw State)
     (backward : State → ℝ) : ℝ :=
   ∑ state, filtered state * backward state
 
+/-- Weighting a deterministic readout has the same normalizer as weighting its
+fine law by the pulled-back message. The finite-sum identity permits signed weights. -/
+theorem smoothingNormalizer_map {Label : Type*} [Fintype Label] [DecidableEq Label]
+    (filtered : FiniteLaw State) (readout : State → Label) (backward : Label → ℝ) :
+    smoothingNormalizer (filtered.map readout) backward =
+      smoothingNormalizer filtered (fun state => backward (readout state)) := by
+  unfold smoothingNormalizer
+  simp only [FiniteLaw.map_mass, Finset.sum_mul]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro state _
+  simp [ite_mul, eq_comm]
+
 /-- Normalized forward--backward smoothing marginal at positive normalizer. -/
 noncomputable def forwardBackwardSmoothing (filtered : FiniteLaw State)
     (backward : State → ℝ) (hBackward : ∀ state, 0 ≤ backward state)
@@ -166,6 +179,30 @@ theorem forwardBackwardSmoothing_factorization (filtered : FiniteLaw State)
         smoothingNormalizer filtered backward =
       filtered state * backward state := by
   exact div_mul_cancel₀ _ (ne_of_gt hNormalizer)
+
+/-- At positive evidence, a backward message that factors through a
+deterministic readout can be applied before or after that readout. -/
+theorem forwardBackwardSmoothing_map {Label : Type*} [Fintype Label] [DecidableEq Label]
+    (filtered : FiniteLaw State) (readout : State → Label)
+    (backward : Label → ℝ) (hBackward : ∀ label, 0 ≤ backward label)
+    (hNormalizer : 0 < smoothingNormalizer (filtered.map readout) backward) :
+    (forwardBackwardSmoothing filtered (fun state => backward (readout state))
+      (fun state => hBackward (readout state))
+      (by rw [← smoothingNormalizer_map filtered readout backward]; exact hNormalizer)).map
+        readout =
+      forwardBackwardSmoothing (filtered.map readout) backward hBackward hNormalizer := by
+  apply FiniteLaw.ext_mass
+  funext label
+  change (∑ state, if readout state = label then
+      filtered state * backward (readout state) /
+        smoothingNormalizer filtered (fun x => backward (readout x)) else 0) =
+    (filtered.map readout) label * backward label /
+      smoothingNormalizer (filtered.map readout) backward
+  rw [← smoothingNormalizer_map filtered readout backward, FiniteLaw.map_mass,
+    Finset.sum_mul, Finset.sum_div]
+  apply Finset.sum_congr rfl
+  intro state _
+  by_cases hs : readout state = label <;> simp [hs]
 
 /-- Every positive-normalizer smoothing marginal sums exactly to one. -/
 theorem forwardBackwardSmoothing_sum_one (filtered : FiniteLaw State)
