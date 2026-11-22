@@ -20126,7 +20126,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/finite_information.lean` | `91bbd43b29d34f3db4a8e979a41a8a6f17ba39af75e58f1b3ac4c90c699207ec` |
 | `formal/finite_markov_dynamics.lean` | `4aba3bdbb7dee16d002fb1bebf9c952738e129f6b1458c7ae211e3d9a36a43f7` |
 | `formal/finite_posterior_learning.lean` | `8b4f2e2a985431a016c265887f31389b6764eee987cf6bbd36e18415217ede90` |
-| `formal/finite_probability.lean` | `d99ae05fec4d012ecbb83601d1e361b01b22458790a316bb2ba3e360dfa11380` |
+| `formal/finite_probability.lean` | `5e56d40d623ac93653c89f0fa9e2502ecd7207f0dfc06a4afe97ed999eea45b2` |
 | `formal/gaussian_information_geometry.lean` | `42ff2ada4248b9ecaa9aa9df2b77c6473918adc0126401b7c6aa4bfe1049f31e` |
 | `formal/gaussian_precision_conditioning.lean` | `b77f3f9187f93d15a359df5c22d4b28ee5ccfc6290d8c4bb9d59a8fadb87b93a` |
 | `formal/geometric_mechanics.lean` | `db8b3193566e100ace144840145bcbe2db912e3cd125ac894d75feb9315bc792` |
@@ -20155,7 +20155,7 @@ SHA-256 values bind the bytes read for this informational projection. They are n
 | `formal/scalar_gaussian_semigroup.lean` | `5cd5a0dad0a60f7ea4a6106929db1ec4039b1790c39747be990290b03b8abc73` |
 | `formal/smooth_information_geometry.lean` | `1b6f54ef3516af317b2af2cd615f9c26aeb589b236a12e567facad1832431c04` |
 | `formal/statistical_convergence.lean` | `6ff46d028d91e8fb7473bd2ef83bfa54dd51dd9a2e500a4ee63c8b782e3485cf` |
-| `formal/temporal_inference.lean` | `8422d94e9acb5f4e4f339448e71cf40eeabe2c1fdd005b67a34421df2aa4d493` |
+| `formal/temporal_inference.lean` | `8e685f26f38e1a7cfe2a6cd01a3161f3683abcdb357f59b1d68f3f0b250e5baf` |
 | `formal/variational_duality.lean` | `05cad799baf805992412c82c09ad6d1c3354c24ccd6801114c3e23e546c43ba1` |
 | `inputs/catalogue_metadata.yaml` | `b0af8b16513084cffc6eff8176ba5b1a9a524591a51acbe652256489e698974d` |
 | `inputs/formalism_relations.yaml` | `7c3334ef66f8a2a94071dc7cc27471a0e6122ff49e19d90c926427daa331ba80` |

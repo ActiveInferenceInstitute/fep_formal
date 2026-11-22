@@ -45,6 +45,40 @@ row. The Boolean witnesses exhibit a positive surviving path and a reachable
 null path with distinct fallback laws. These results cover two heterogeneous
 steps; arbitrary finite-horizon recursion is not asserted.
 
+## Deterministic readouts and smoothing
+
+`FEP.FiniteLaw.map_comp` composes successive deterministic readouts on an
+arbitrary finite law. `FEP.TemporalInference.smoothingNormalizer_map`
+transports the weighted finite sum when the fine weight is the pullback of a
+coarse weight. It applies to signed weights at the level of that sum.
+`FEP.TemporalInference.forwardBackwardSmoothing_map` gives the corresponding
+identity of normalized laws with a nonnegative backward message and positive
+evidence. This permits zero prior atoms, zero weights and unused labels.
+
+The test for this transport is specific to the supplied backward message.
+If that message changes within a readout fibre, the factorization premise
+fails. The next section treats the separate requirements on transitions
+and weighted block masses.
+
+## Paired reads and cause-specific detection
+
+For a fixed latent cause, two specific conditionally independent reads give
+two marginal detected masses and a mass detected by both reads.
+`FEP.TemporalInference.pairedRead_prevalence_identified` recovers the latent
+cause mass as the product of the marginals divided by positive overlap.
+`pairedRead_sensitivities_identified` recovers each sensitivity using the
+other read's positive marginal. `pairedRead_prevalence_of_specific` states
+the prevalence identity for a finite prior and sparse likelihood weights.
+
+With dependence, `pairedRead_cells_feasible_iff` characterizes compatible
+nonnegative cell masses. The condition gives a sharp lower bound equal to
+the observed union, and `pairedRead_competing_prevalence_interval` adds the
+upper bound from a second cause and a known combined mass. Each feasible
+latent mass assigns its unobserved remainder to the double-miss cell.
+These statements concern population probabilities under specific reads
+of an unchanged state. They supply no sampling uncertainty or assumption
+that a second read has independent errors.
+
 ## Event-weighted coarse-graining
 
 `FEP.FiniteMarkovDynamics.weightedBlockMass` is the unnormalized weighted

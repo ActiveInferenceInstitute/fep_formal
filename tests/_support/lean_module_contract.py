@@ -39,6 +39,26 @@ TERMINAL_COARSE_THEOREM_OWNERS = {
     "FEP.FiniteMarkovDynamics.weightedBlockRow_eq_of_lumpable": "FepSketches.finite_markov_dynamics",
 }
 
+OBSERVATION_TRANSPORT_THEOREM_OWNERS = {
+    "FEP.FiniteLaw.map_comp": "FepSketches.finite_probability",
+    "FEP.TemporalInference.smoothingNormalizer_map": "FepSketches.temporal_inference",
+    "FEP.TemporalInference.forwardBackwardSmoothing_map": "FepSketches.temporal_inference",
+}
+
+
+PAIRED_READ_THEOREM_OWNERS = {
+    f"FEP.TemporalInference.{name}": "FepSketches.temporal_inference"
+    for name in (
+        "pairedRead_prevalence_identified",
+        "pairedRead_sensitivities_identified",
+        "smoothingNormalizer_eq_mul_of_specific",
+        "pairedRead_prevalence_of_specific",
+        "pairedRead_cells_feasible_iff",
+        "pairedRead_competing_prevalence_interval",
+    )
+}
+
+
 # Recorded V-to-947 American prose/spacing changes, for historical seals only.
 # Public theorem statements, frozen review bytes, and live production stay intact.
 _HISTORICAL_PROSE_FIELDS = [

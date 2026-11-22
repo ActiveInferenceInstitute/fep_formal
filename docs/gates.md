@@ -23,6 +23,13 @@ every command is attempted and the arm exits non-zero if any failed.
 | `static` | `uv lock --check`, `uv pip check`, composition inventory, catalogue, prose checks, lint, types, `git diff --check` | `static` |
 | `all` | `fast`, `lint`, `types`, `docs`, `gnn` (not `full`) | none |
 
+The `full` arm covers the Python component of the [Full integration
+tier](../AGENTS.md#ordinary-pull-request-integration). Also validate the exact
+test collection against the two resulting JUnit files and combined coverage
+with the [repository's acceptance validator](../specs/publication-browser-acceptance/validate_acceptance.py).
+Keep each required local result with the reviewed revision and its runtime
+and source inputs.
+
 Setup is not an arm: run `uv sync --locked --extra dev` once first. The arms do
 not install tools, fetch Mathlib or call a provider.
 
@@ -70,9 +77,9 @@ package-floor step failed only because both live Chrome probes skipped while
 `google-chrome` was absent from `PATH`, and the `fep_formal.output` floor needs
 their appended lines. With a `google-chrome` shim the two probes pass in 64 s.
 A combined rerun under concurrent host load reached 17% in 3 m 39 s and was
-stopped at the 10-minute measurement bound. The arm therefore has bounded
-component evidence, not a single green run; the hosted `python` job remains the
-owner of that exact sequence.
+stopped at the 10-minute measurement bound. This measurement records bounded
+component evidence. The hosted `python` job executes the same sequence for its
+separate evidence profile.
 
 Arm wall time is not a hosted-runner time. CI billing is locked for this
 organization, so local runs are the only gate evidence; no hosted speedup is

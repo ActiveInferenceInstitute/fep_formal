@@ -140,6 +140,32 @@ def map [DecidableEq β] (f : α → β) (p : FiniteLaw α) : FiniteLaw β := by
 theorem map_mass [DecidableEq β] (f : α → β) (p : FiniteLaw α) (y : β) :
     p.map f y = ∑ x : α, if f x = y then p x else 0 := rfl
 
+/-- Two deterministic readouts compose as pushforwards of the original law. -/
+theorem map_comp [DecidableEq β] [DecidableEq γ] (p : FiniteLaw α)
+    (f : α → β) (g : β → γ) : (p.map f).map g = p.map (g ∘ f) := by
+  apply ext_mass
+  funext z
+  simp only [map_mass, Function.comp_apply]
+  calc
+    _ = ∑ y : β, ∑ x : α, if g y = z then (if f x = y then p x else 0) else 0 := by
+      apply Finset.sum_congr rfl
+      intro y _
+      by_cases hy : g y = z <;> simp [hy]
+    _ = ∑ x : α, ∑ y : β, if g y = z then (if f x = y then p x else 0) else 0 :=
+      Finset.sum_comm
+    _ = _ := by
+      apply Finset.sum_congr rfl
+      intro x _
+      calc
+        _ = ∑ y : β, if f x = y then (if g (f x) = z then p x else 0) else 0 := by
+          apply Finset.sum_congr rfl
+          intro y _
+          by_cases hy : f x = y
+          · subst y
+            simp
+          · simp [hy]
+        _ = _ := by simp
+
 /-- Mapping by the identity function preserves a finite law pointwise. -/
 theorem map_id_mass [DecidableEq α] (p : FiniteLaw α) (x : α) :
     p.map id x = p x := by

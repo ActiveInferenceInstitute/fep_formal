@@ -30,7 +30,7 @@ the command list; run the tier that matches your change.
 | --- | --- | --- |
 | Docs-only | Markdown edits | The canonical strict link, root-inclusive Markdown hygiene, pin/latest-stable and cross-reference checks; materialize manuscript inputs before checking their references. |
 | Static | Python, config or generator edits | The docs-only tier plus affected projection checks, repository-wide Ruff lint, formatting and mypy over `src`, `scripts` and `docs`, using the exact commands in the canonical list. |
-| Full | Before requesting merge of code, Lean or manuscript changes | Everything in "Required checks", including the `pytest` coverage run; hosted `ci.yml` repeats it and a green run on the exact commit is the release gate ([release procedure](docs/release.md)) |
+| Full | Before requesting merge of code, Lean or manuscript changes | All [required checks](AGENTS.md#required-checks), including the full local Python, native Lean, and pinned GNN evidence for [ordinary integration](AGENTS.md#ordinary-pull-request-integration). |
 
 ## Rules that bite
 
@@ -55,7 +55,11 @@ the command list; run the tier that matches your change.
 
 Branch from `main` on a short-lived topic branch and open a pull request;
 `main` history uses merge commits (`Merge pull request #N from ...`), and the
-repository deletes the head branch after merge.
+repository deletes the head branch after merge. Follow the [ordinary integration
+contract](AGENTS.md#ordinary-pull-request-integration) and report the evidence for
+the exact reviewed head. The [versioned release procedure](docs/release.md) has
+its own acceptance requirements.
+
 Commit subjects are short and imperative, usually with a conventional-style
 prefix (`docs:`, `tooling:`, `bridge:`, `tests:`, `ci:`, `fix(ci):`); reference
 the issue number where one exists, for example
