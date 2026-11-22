@@ -172,8 +172,11 @@ def setup_checkout(tmp_path: Path, monkeypatch) -> Path:
         "if args == ['--wfail', 'exe', 'cache', 'get'] and behavior.get('cache_miss'):\n"
         "    print('Warning: some files were not found in the cache.', file=sys.stderr)\n"
         "if args == behavior.get('hang_at'):\n"
-        "    child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
-        "    (root / 'child.pid').write_text(str(child.pid))\n"
+        "    import fcntl\n"
+        "    with (root / 'child-lifetime').open('x') as lifetime:\n"
+        "        fcntl.flock(lifetime, fcntl.LOCK_EX)\n"
+        "        child = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'], pass_fds=(lifetime.fileno(),))\n"
+        "        (root / 'child.pid').write_text(str(child.pid))\n"
         "    time.sleep(60)\n"
         "if args == ['--version']:\n"
         f"    print('Lake version fixture (Lean version ' + behavior.get('version', '{_PINNED_LEAN_VERSION}') + ')')\n"
@@ -383,30 +386,35 @@ def test_setup_rejects_invalid_timeout(monkeypatch, tmp_path: Path, timeout) -> 
 def test_setup_deadline_kills_real_descendant(
     setup_checkout: Path, monkeypatch
 ) -> None:
-    import os
-    import subprocess
+    import fcntl
+    import signal
     import time
+    from contextlib import suppress
 
     _setup_behavior(setup_checkout, hang_at=["--wfail", "exe", "cache", "get"])
     monkeypatch.setenv("FEP_FORMAL_SETUP_TIMEOUT_SEC", "2")
     start = time.monotonic()
-    assert cli._setup(setup_checkout) == 1
-    assert time.monotonic() - start < 8
-    pid = int((setup_checkout / "lean/child.pid").read_text())
-    # A killed descendant may briefly be a zombie before init reaps it.
-    for _ in range(30):
-        state = subprocess.run(
-            ["ps", "-o", "stat=", "-p", str(pid)],
-            capture_output=True,
-            text=True,
-            check=False,
-        ).stdout.strip()
-        if not state or state.startswith("Z"):
-            break
-        time.sleep(0.05)
-    else:
-        os.kill(pid, 9)
-        pytest.fail("setup deadline left its grandchild running")
+    result = cli._setup(setup_checkout)
+    elapsed = time.monotonic() - start
+    pid_path = setup_checkout / "lean/child.pid"
+    assert pid_path.is_file(), "setup did not start the grandchild before its deadline"
+    pid = int(pid_path.read_text())
+    # Lake passes its locked descriptor to the sleeping grandchild before
+    # recording the PID. The kernel releases it when that child exits.
+    with (setup_checkout / "lean/child-lifetime").open("r+") as lifetime:
+        for _ in range(30):
+            try:
+                fcntl.flock(lifetime, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                time.sleep(0.05)
+            else:
+                break
+        else:
+            with suppress(ProcessLookupError):
+                os.kill(pid, signal.SIGKILL)
+            pytest.fail("setup deadline left its grandchild running")
+    assert result == 1
+    assert elapsed < 8
     assert _setup_calls(setup_checkout)[-1] == ["--wfail", "exe", "cache", "get"]
 
 

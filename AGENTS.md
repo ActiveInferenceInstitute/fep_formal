@@ -305,8 +305,8 @@ uv run python specs/cascadia-geo-act-proof/generate_probe.py --check
 uv run python specs/geo-infer-notation-bridge/check_geo_notation_bridge.py --check
 ```
 
-Native Lean checks need the built pinned Mathlib cache (`lake exe cache get`)
-and run in the hosted `lean` job:
+Native Lean checks need the built pinned Mathlib cache (`lake exe cache get`).
+Run them for the local Full tier. The hosted `lean` job also executes this lane.
 
 ```bash
 (cd lean && lake build FepSketches)
@@ -317,9 +317,10 @@ uv run python specs/cascadia-experiments/verify_diagnostic_bounds.py --check out
 uv run python specs/gnn-semantic-witness-v1/verify_composition_native.py --output output/gnn-composition-native
 ```
 
-Hosted CI also runs the `distribution` installed-wheel matrix, the isolated
-live Chrome pair and the membership aggregate of
-`validate_acceptance.py`; see `docs/testing.md` for those boundaries.
+Run the isolated live Chrome pair and its exact membership aggregate of
+`validate_acceptance.py` for the local Full tier. Hosted CI runs both checks
+and the `distribution` installed-wheel matrix. See [the test
+contract](docs/testing.md) for their evidence boundaries.
 
 The listed Q5 `generate_probe.py --check` and GEO notation checks validate
 retained static artifacts without a sibling checkout. CI runs both. Q5
@@ -338,6 +339,34 @@ statements and source pair.
 Do not claim Lean verification from catalog mode or from generated manuscript
 values. Native compilation and full Hermes/OpenGauss execution are distinct
 evidence planes; state exactly which validated receipt supports a claim.
+
+## Ordinary pull request integration
+
+Use the [check tier in CONTRIBUTING](CONTRIBUTING.md#check-tiers). For the
+Full tier, use a qualified offline runner with the clean pull-request head
+and the reviewed base. Prepare pinned dependencies and record any required
+live pin observations before the offline execution. Retain each command's
+terminal result and artifact digests with the reviewed head, tree, base,
+runtime, and dependency identities.
+
+Full evidence covers the [required checks](#required-checks), including the
+[Python gate arms](docs/gates.md) and their membership and coverage validation.
+Both real Chrome cases must pass. Retain strict native Lean verification
+and serial checks, the pinned GNN conformance output, and the other required
+results for the same candidate. Revalidate changes to the reviewed source or
+its required inputs before applying the result.
+
+Use the approved publication service to attest each live required status
+against the exact commit and the evidence for that context. The
+`gitvault/fep-gnn-conformance` context reports the pinned GNN conformance
+gate. Retain the separate Full results in the merge record. Honor the active
+branch protections and verify the reviewed tree at the resulting main
+commit.
+
+GitHub Actions provides supplemental evidence for ordinary integration.
+[Versioned releases](docs/release.md) and explicitly [hosted publication
+profiles](#full-automatic-pr-and-explicit-dual-shadow-acceptance-profiles)
+have separate acceptance requirements and keep their own receipt identities.
 
 ## GNN bridge operations
 
@@ -363,13 +392,15 @@ ordinary CLI additionally executes and its receipt is compared with the retained
 first receipt on every non-duration field. Both actual execution origins and
 workflow run/attempt/checkout bindings remain independently validated. Standard
 native artifacts retain the existing intent/API records, without a new schema.
-Until the versioned supplement is qualified, rollout requires actual full automatic PR/default and explicit dual-shadow acceptance;
-no measured release speedup follows from this source change alone.
+Until the versioned supplement is qualified, rollout of the native producer
+requires actual full automatic PR/default and explicit dual-shadow acceptance.
+No measured release speedup follows from this source change alone.
 
 
 ### Full automatic PR and explicit dual-shadow acceptance profiles
 
-Full automatic code PR and fresh merged-main CI retain all 20 role contexts,
+For hosted publication acceptance, the automatic code PR and fresh merged-main
+profiles retain all 20 role contexts,
 12 wheel cells, source-bound native evidence and independently scoped PDF
 acceptance. Release supplement profile `native-api-cli-supplement-v1` requires
 `run_lean=true`, `native_producer_shadow=false`, and the exact automatic run ID,
@@ -379,7 +410,7 @@ independently accepted automatic full profile, its five original artifacts/PDF,
 and independently replayed supplement custody with two genuinely fresh 168-topic
 API/ordinary CLI receipts equal on all non-duration fields. One producer node
 is never described as a 640-case serial run. Fresh full merged-main acceptance
-remains mandatory; no full automatic or main sweep is removed.
+remains mandatory for these hosted publication profiles.
 
 The disabled profile retains existing full manual debug behavior, including
 optional shadow comparison. The versioned release supplement has separate
