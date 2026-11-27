@@ -1,7 +1,7 @@
 """Rasterize the canonical SVG projections into the PNGs the manuscript cites.
 
-``manuscript/04f_semantic_closure_and_validation.md`` and
-``manuscript/04g_finite_active_inference_kernel.md`` include
+``docs/manuscript/04f_semantic_closure_and_validation.md`` and
+``docs/manuscript/04g_finite_active_inference_kernel.md`` include
 ``../output/figures/formalism-atlas.png`` and
 ``../output/figures/formal-kernel-dashboard.png``.  Until this module existed no
 producer wrote either file: they had been rasterized by hand, so a publication
@@ -70,9 +70,9 @@ MANUSCRIPT_SVG_FIGURES: Mapping[str, str] = {
 # Authored image assets a chapter cites that must also be published under
 # ``output/figures/``. The combined renderer flattens an ``assets/<name>``
 # reference to ``../figures/<name>`` relative to ``output/pdf/``, so an asset
-# that lives only in ``manuscript/assets/`` renders as a missing figure.
+# that lives only in ``docs/manuscript/assets/`` renders as a missing figure.
 MANUSCRIPT_COPIED_FIGURES: Mapping[str, str] = {
-    "graphical-abstract.png": "manuscript/assets/graphical-abstract.png",
+    "graphical-abstract.png": "docs/manuscript/assets/graphical-abstract.png",
 }
 # Width in pixels of the rasterized output. Fixed so two runs on the same SVG
 # produce the same bytes regardless of the host's display metrics.

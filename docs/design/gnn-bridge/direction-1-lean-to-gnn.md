@@ -17,7 +17,7 @@ execution-derived quantities back as certificates checked against
 Lean-witnessed properties.
 
 The manuscript's own framing
-(`manuscript/05d_comparative_analysis.md:37-39`) is the grounding: executable
+(`docs/manuscript/05d_comparative_analysis.md:37-39`) is the grounding: executable
 tools "specify and run model instances" while Lean "states and proves
 invariants", and end-to-end assurance needs both plus a proof that the
 executable representation refines the formal one. The certificate stage of

@@ -25,7 +25,7 @@ from fep_formal.verification._subprocess import run_process_group
 PLACEHOLDER_RE = re.compile(r"\{\{([^}]+)\}\}")
 # Every shell block this repository publishes is a promise a reader can run.
 # ``scripts/render_manuscript.py --check`` validates
-# ``manuscript/manuscript_vars.yaml`` and the generated appendix, both build
+# ``docs/manuscript/manuscript_vars.yaml`` and the generated appendix, both build
 # products excluded by ``.gitignore``. On a checkout that has not built them
 # it exits 1 with "test collection cache is missing", so a block that runs the
 # check without a generator ahead of it publishes a recipe that fails on the
@@ -61,7 +61,7 @@ _PUBLISHED_COMMAND_GLOBS: tuple[str, ...] = (
     "*.md",
     ".github/workflows/*.yml",
     "docs/*.md",
-    "manuscript/*.md",
+    "docs/manuscript/*.md",
     "scripts/*.md",
     "src/fep_formal/*.md",
     "tests/*.md",
@@ -311,12 +311,17 @@ def _asset_reference_rewrites(destination_dir: Path) -> tuple[tuple[str, str], .
     destination = Path(destination_dir)
     rewrites: list[tuple[str, str]] = []
     for reference, (
-        _source_relative,
+        source_relative,
         destination_relative,
     ) in MANUSCRIPT_ASSETS.items():
         target = destination_relative
         if destination_relative.suffix in {".html", ".json"}:
             target = Path("..") / destination.name / destination_relative
+        if source_relative.parts[0] == "docs":
+            docs_reference = Path("..", *source_relative.parts[1:])
+        else:
+            docs_reference = Path("..", "..") / source_relative
+        rewrites.append((docs_reference.as_posix(), target.as_posix()))
         rewrites.append((reference, target.as_posix()))
     return tuple(rewrites)
 
@@ -367,6 +372,7 @@ def render_manuscript(
     """
     source = Path(source_dir).resolve()
     destination = Path(destination_dir).resolve()
+    project = source.parent.parent if source.parent.name == "docs" else source.parent
     if source == destination or source.is_relative_to(destination):
         raise ManuscriptRenderError(
             "source must be outside the renderer-owned destination tree"
@@ -393,16 +399,16 @@ def render_manuscript(
     # URLs, so a referenced-only filter silently dropped assets the offline
     # publication must ship. Fail closed when any roster source is absent.
     missing_assets = [
-        str(source.parent / source_relative)
+        str(project / source_relative)
         for source_relative, _destination_relative in MANUSCRIPT_ASSETS.values()
-        if not (source.parent / source_relative).is_file()
+        if not (project / source_relative).is_file()
     ]
     if missing_assets:
         raise ManuscriptRenderError(
             "manuscript asset roster sources are missing:\n" + "\n".join(missing_assets)
         )
     asset_contents = {
-        destination_relative: (source.parent / source_relative).read_bytes()
+        destination_relative: (project / source_relative).read_bytes()
         for source_relative, destination_relative in MANUSCRIPT_ASSETS.values()
     }
     # Minimal rendering callers may omit publication metadata. The strict
@@ -422,7 +428,7 @@ def render_manuscript(
     publication = variables.get("publication")
     if isinstance(publication, Mapping) and "author" in publication:
         try:
-            author = load_publication_author(source.parent)
+            author = load_publication_author(project)
             if publication["author"] != author.manuscript_variables():
                 raise PublicationMetadataError(
                     "publication author variables do not match CITATION.cff"
@@ -431,7 +437,7 @@ def render_manuscript(
             if config_bytes is None:
                 raise PublicationMetadataError("publication cover config is missing")
             asset_contents[Path("config.yaml")] = project_cover_author(
-                config_bytes, source.parent
+                config_bytes, project
             )
         except PublicationMetadataError as exc:
             raise ManuscriptRenderError(str(exc)) from exc
@@ -441,7 +447,7 @@ def render_manuscript(
     )
     if graphical_abstract_requested:
         try:
-            graphical_abstract = load_graphical_abstract(source.parent)
+            graphical_abstract = load_graphical_abstract(project)
         except PublicationMetadataError as exc:
             raise ManuscriptRenderError(str(exc)) from exc
         expected_variables = graphical_abstract.manuscript_variables()

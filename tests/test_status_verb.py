@@ -69,7 +69,7 @@ def accepted_receipt_payload(manuscript_dir: Path) -> dict[str, object]:
 def manuscript_tree(root: Path) -> Path:
     """Stage a minimal typeset manuscript, including the generated appendix
     the render receipt covers and fails closed without, under *root*."""
-    manuscript = root / "manuscript"
+    manuscript = root / "docs" / "manuscript"
     manuscript.mkdir()
     (manuscript / "01_chapter.md").write_text("# Chapter\n\nText.\n")
     (manuscript / "preamble.md").write_text("\\usepackage{fontspec}\n")
@@ -349,7 +349,7 @@ def test_status_is_process_free_and_preserves_file_bytes_and_mtimes(
         path.write_text('{"malformed": true}\n')
     (output / "pytest.xml").write_text("malformed JUnit")
     (output / "coverage.xml").write_text("malformed coverage")
-    (tmp_path / "manuscript/manuscript_vars.yaml").write_text("malformed: true\n")
+    (tmp_path / "docs/manuscript/manuscript_vars.yaml").write_text("malformed: true\n")
 
     def forbid_execution(*_args: object, **_kwargs: object) -> None:
         pytest.fail("status attempted process execution or test collection")
@@ -395,12 +395,12 @@ def test_valid_census_reaches_real_manuscript_builder_without_processes(
 ) -> None:
     """A valid cache must not expose the live Git stamping branch in status."""
     project = Path(__file__).resolve().parent.parent
-    for relative in ("config", "src/fep_formal/formal", "manuscript/assets"):
+    for relative in ("config", "src/fep_formal/formal", "docs/manuscript/assets"):
         shutil.copytree(project / relative, tmp_path / relative)
     (tmp_path / "config/topics.yaml").write_text(render_topics_yaml(tmp_path))
     for relative in (
         "CITATION.cff",
-        "manuscript/config.yaml",
+        "docs/manuscript/config.yaml",
         "lean/lean-toolchain",
         "lean/lakefile.lean",
     ):

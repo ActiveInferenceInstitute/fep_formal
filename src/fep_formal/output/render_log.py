@@ -794,7 +794,7 @@ def equation_numbering_defects(
 # produces one: the ``render`` job in ``.github/workflows/ci.yml`` checks out
 # the shared template at its pinned ref -- a separate repository this project
 # does not pin programmatically -- plus XeLaTeX, pandoc, ``rsvg-convert``, the
-# mermaid CLI and the two faces ``manuscript/preamble.md`` selects, renders,
+# mermaid CLI and the two faces ``docs/manuscript/preamble.md`` selects, renders,
 # and re-runs the acceptance's verification. The committed receipt remains the
 # gate that refuses sources the acceptance has never seen.
 #

@@ -38,10 +38,10 @@ the same objects in Lean 4. The comparative manuscript chapter names the gap:
 > generate proof obligations for normalization and conditional independence,
 > and retain a provenance link back to executable parameters.
 
-(citation markers removed; `manuscript/05d_comparative_analysis.md:37`.) The
+(citation markers removed; `docs/manuscript/05d_comparative_analysis.md:37`.) The
 same chapter adds that a numerical implementation can be tested on data while
 a theorem is checked for deductive correctness, and that "neither subsumes
-the other" (`manuscript/05d_comparative_analysis.md:39`). This program keeps
+the other" (`docs/manuscript/05d_comparative_analysis.md:39`). This program keeps
 both layers and makes their agreement checkable instead of asserted.
 
 ## Parties and authority

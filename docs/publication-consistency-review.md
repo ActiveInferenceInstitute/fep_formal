@@ -17,9 +17,9 @@ The current source resolves this ambiguity through separate contracts:
   acceptance probe, and semantic disposition.
 - [The generated audit](theorem-maturity-audit.md) projects that review;
   compilation alone never changes a disposition.
-- [The abstract](../manuscript/01_abstract.md),
-  [maturity chapter](../manuscript/03c_sorry_maturity.md), and
-  [conclusion](../manuscript/06_conclusion.md) distinguish exact theorem scope
+- [The abstract](manuscript/01_abstract.md),
+  [maturity chapter](manuscript/03c_sorry_maturity.md), and
+  [conclusion](manuscript/06_conclusion.md) distinguish exact theorem scope
   from broader continuous-state, geometric, biological, and empirical claims.
   Mutable totals are generated manuscript variables, not editorial constants.
 

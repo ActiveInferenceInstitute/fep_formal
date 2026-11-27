@@ -2,7 +2,7 @@
 
 This section reports three surfaces separately: catalog coverage, native Lean evidence, and optional full-pipeline evidence. A count from one surface is never substituted for another. The generated formalism coverage audit is authoritative for source structure; native and full receipts are authoritative for execution claims.
 
-![Topic distribution across the five catalog areas. The figure visualizes catalog breadth only.](../output/figures/topics_by_area.png){#fig:topics_by_area width=80%}
+![Topic distribution across the five catalog areas. The figure visualizes catalog breadth only.](../../output/figures/topics_by_area.png){#fig:topics_by_area width=80%}
 
 The area-distribution figure above visualizes catalog breadth only. It does not measure scientific maturity or compilation success.
 

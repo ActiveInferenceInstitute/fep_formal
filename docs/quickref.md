@@ -23,4 +23,4 @@ write artifacts. Re-pinning follows the canonical order in the
 
 The full test and documentation gates are listed in
 [`testing.md`](testing.md). Generated output lives under `output/`; manuscript
-variables and the unified appendix live under `manuscript/`.
+variables and the unified appendix live under `docs/manuscript/`.

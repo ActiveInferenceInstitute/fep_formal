@@ -31,7 +31,7 @@ explicit API paths and `FEP_FORMAL_OUTPUT_ROOT` paths retain their caller workin
 directory semantics. The selected output directory, or its nearest existing
 ancestor, must be writable and searchable. Capability inspection reads that
 exact target without creating directories; an occupied file or dangling link
-rejects. Authored manuscript projections remain paired under `manuscript/`;
+rejects. Authored manuscript projections remain paired under `docs/manuscript/`;
 their run-bound evidence is selected from the resolved output root.
 
 `fep-formal preflight` performs no download, build, database write, or report
@@ -74,7 +74,7 @@ Render `--accept-only` delegates directly to existing-artifact acceptance; it
 skips template resolution, the shared render lock and source hydration.
 `--template`, `--lock-timeout`, `--skip-font-probe` and
 `--require-release-stamp` do not affect that branch. Acceptance still inspects
-the existing manuscript/PDF inputs and writes its receipt.
+the existing docs/manuscript/PDF inputs and writes its receipt.
 
 For `verify`, the import-time timeout fallback captures
 `FEP_FORMAL_VERIFY_TIMEOUT`, defaulting to 1800 seconds. Each native invocation

@@ -462,7 +462,7 @@ def test_publication_html_shows_author_and_embeds_graphical_abstract(
     assert b"data:image/png;base64," in rendered.html
     provenance = json.loads(rendered.provenance)
     inputs = {record["path"]: record for record in provenance["inputs"]}
-    assert inputs["manuscript/assets/graphical-abstract.png"]["sha256"] == (
+    assert inputs["docs/manuscript/assets/graphical-abstract.png"]["sha256"] == (
         "30bd427f4de44042d237ad802518ef34d87741656727481bd6365dfab2871c16"
     )
 
@@ -601,7 +601,7 @@ def test_publication_resources_require_graphical_abstract_contract(
     tmp_path: Path,
 ) -> None:
     _minimal_manuscript(tmp_path)
-    config_path = tmp_path / "manuscript/config.yaml"
+    config_path = tmp_path / "docs/manuscript/config.yaml"
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     del config["publication"]["graphical_abstract"]
     config_path.write_text(
@@ -637,7 +637,7 @@ def test_publication_html_is_two_render_reproducible_and_checkable(
     provenance = json.loads(rendered.provenance)
     assert provenance["html"]["status"] == "reproducible"
     assert provenance["pdf"]["status"] == "xelatex_unavailable"
-    assert "manuscript/preamble.md" in {
+    assert "docs/manuscript/preamble.md" in {
         record["path"] for record in provenance["inputs"]
     }
     assert set(provenance["normalized_environment"]) == {
@@ -691,7 +691,7 @@ def test_rendered_metadata_validates_canonical_bytes_and_rejects_extra_members(
             ).manuscript_variables(),
         },
     }
-    (tmp_path / "manuscript/manuscript_vars.yaml").write_text(
+    (tmp_path / "docs/manuscript/manuscript_vars.yaml").write_text(
         yaml.safe_dump(variables), encoding="utf-8"
     )
     rendered = tmp_path / "output/manuscript"
@@ -722,7 +722,7 @@ def test_release_rejects_manuscript_sources_that_escape_through_symlinks(
     tmp_path: Path,
 ) -> None:
     project_root = tmp_path / "checkout"
-    manuscript = project_root / "manuscript"
+    manuscript = project_root / "docs" / "manuscript"
     rendered = project_root / "output" / "manuscript"
     manuscript.mkdir(parents=True)
     outside = tmp_path / "outside.md"
@@ -738,17 +738,17 @@ def test_release_rejects_manuscript_sources_that_escape_through_symlinks(
     errors = bundle_module._rendered_manuscript_errors(project_root)
 
     assert errors == (
-        "manuscript source is not a canonical regular file: manuscript/01_chapter.md",
+        "manuscript source is not a canonical regular file: docs/manuscript/01_chapter.md",
     )
 
 
 @pytest.mark.parametrize(
     ("relative", "expected_error"),
     [
-        ("manuscript/config.yaml", "path traverses a symlink"),
-        ("manuscript/references.bib", "required regular file is missing"),
+        ("docs/manuscript/config.yaml", "path traverses a symlink"),
+        ("docs/manuscript/references.bib", "required regular file is missing"),
         (
-            "manuscript/09z_unified_formalism_catalogue.md",
+            "docs/manuscript/09z_unified_formalism_catalogue.md",
             "required regular file is missing",
         ),
         (
@@ -770,7 +770,7 @@ def test_publication_renderer_rejects_symlinked_metadata_appendix_and_resources(
     _minimal_manuscript(tmp_path)
     canonical = tmp_path / relative
     if relative.startswith(("output/manuscript/assets/", "docs/")):
-        source = tmp_path / "manuscript/01_chapter.md"
+        source = tmp_path / "docs/manuscript/01_chapter.md"
         rendered = tmp_path / "output/manuscript/01_chapter.md"
         source.write_text("![Atlas](../docs/formalism-atlas.svg)\n", encoding="utf-8")
         rendered.write_text("![Atlas](assets/formalism-atlas.svg)\n", encoding="utf-8")
@@ -782,7 +782,7 @@ def test_publication_renderer_rejects_symlinked_metadata_appendix_and_resources(
             docs.mkdir()
             (docs / "formalism-atlas.svg").write_text("<svg/>", encoding="utf-8")
             (outside / "graphical-abstract.png").write_bytes(
-                (PROJ / "manuscript/assets/graphical-abstract.png").read_bytes()
+                (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
             )
         if canonical.parent.exists():
             shutil.rmtree(canonical.parent)
@@ -1335,7 +1335,7 @@ def test_renderer_provenance_binds_referenced_local_manuscript_figures(
 ) -> None:
     _minimal_manuscript(tmp_path)
     reference = "![Status](../output/figures/status_distribution.png)\n"
-    (tmp_path / "manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
+    (tmp_path / "docs/manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
     (tmp_path / "output/manuscript/01_chapter.md").write_text(
         reference, encoding="utf-8"
     )
@@ -1367,7 +1367,7 @@ def test_publication_renderer_rejects_a_resource_changed_during_rendering(
 ) -> None:
     _minimal_manuscript(tmp_path)
     reference = "![Status](../output/figures/status_distribution.png)\n"
-    (tmp_path / "manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
+    (tmp_path / "docs/manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
     (tmp_path / "output/manuscript/01_chapter.md").write_text(
         reference, encoding="utf-8"
     )
@@ -1416,7 +1416,7 @@ def test_renderer_rejects_unowned_or_provider_manuscript_image_targets(
     error: str,
 ) -> None:
     _minimal_manuscript(tmp_path)
-    (tmp_path / "manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
+    (tmp_path / "docs/manuscript/01_chapter.md").write_text(reference, encoding="utf-8")
     (tmp_path / "output/manuscript/01_chapter.md").write_text(
         reference, encoding="utf-8"
     )

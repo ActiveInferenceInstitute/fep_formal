@@ -6,7 +6,7 @@ Scope
 
 The audit runs over **exactly the files the renderer emits** --
 ``fep_formal.output.rendering.manuscript_source_files`` -- rather than re-globbing
-``manuscript/*.md``. A gate that measures a different file set than the artifact
+``docs/manuscript/*.md``. A gate that measures a different file set than the artifact
 reports "all resolve" while references dangle in every produced PDF, which is
 what a wider glob did here: the excluded ``09z_unified_formalism_catalogue.md``
 supplied 27 anchor definitions that no rendered section can see.
@@ -58,7 +58,7 @@ from pathlib import Path
 
 DOCS_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = DOCS_DIR.parent
-DEFAULT_ROOT = PROJECT_ROOT / "manuscript"
+DEFAULT_ROOT = PROJECT_ROOT / "docs" / "manuscript"
 
 if str(PROJECT_ROOT / "src") not in sys.path:  # pragma: no cover - import shim
     sys.path.insert(0, str(PROJECT_ROOT / "src"))

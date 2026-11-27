@@ -310,7 +310,7 @@ is a stop requiring adjudication, never a rewrite.
 every changed path matching the journal's expected post-commit digests, clean owner snapshot,
 census/gate green at the new tip, and one verification apply round with zero mutations and
 zero directives (otherwise the commit is not the agreed candidate — stop). Journal paths
-touching manuscript/render inputs (`manuscript/`, `src/fep_formal/output/rendering.py`,
+touching docs/manuscript/render inputs (`docs/manuscript/`, `src/fep_formal/output/rendering.py`,
 `scripts/render_publication.py`, `scripts/render_manuscript.py`, `docs/`) stop at the
 render-acceptance barrier with state `awaiting-render-acceptance` before any capture.
 Otherwise the full verify set runs at the committed tip — the mode where the writer step
@@ -353,8 +353,8 @@ final variable bytes. Browser waits for render/numerical acceptance,
 and the final stage requires all six. It builds two independent archives,
 strictly validates each against live inputs and requires byte equality.
 
-The rendered tree owns exact raw copies of `manuscript/config.yaml`,
-`manuscript/preamble.md` and `manuscript/references.bib`. These are metadata,
+The rendered tree owns exact raw copies of `docs/manuscript/config.yaml`,
+`docs/manuscript/preamble.md` and `docs/manuscript/references.bib`. These are metadata,
 not counted or substituted chapter bodies. Hydration stages their bytes with
 the chapters and assets; strict publication requires all three canonical
 inputs and output copies, compares their exact bytes, and rejects unexpected

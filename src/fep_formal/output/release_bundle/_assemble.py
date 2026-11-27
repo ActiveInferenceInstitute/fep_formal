@@ -101,7 +101,7 @@ def _project_members(project_root: Path) -> tuple[_BundleMember, ...]:
                 data=_relative_file_bytes(root, relative),
                 evidence_class=evidence_class,
             )
-    for source in bundle.manuscript_source_files(root / "manuscript"):
+    for source in bundle.manuscript_source_files(root / "docs" / "manuscript"):
         relative = f"output/manuscript/{source.name}"
         if relative not in members:
             _add_member(
@@ -236,7 +236,7 @@ def _supplemental_snapshot_records(
     """Capture release inputs that are validated but intentionally not bundled."""
     root = Path(project_root).resolve()
     records: list[tuple[str, bytes]] = []
-    if (root / "manuscript").is_dir():
+    if (root / "docs" / "manuscript").is_dir():
         records.extend(_manuscript_source_records(root))
     if (root / "tests").is_dir():
         records.extend(_python_test_records(root))

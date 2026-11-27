@@ -212,7 +212,7 @@ The explicit `output_root` argument takes precedence over a nonblank
 `FEP_FORMAL_OUTPUT_ROOT`, then `output.root` settings, then `project_root/output`.
 The [configuration guide](configuration.md) defines relative-path semantics.
 Validation, figures, reports and run-bound manuscript evidence use that same
-selected root; the paired authored projections remain under `manuscript/`.
+selected root; the paired authored projections remain under `docs/manuscript/`.
 
 ## Native Lean verification
 

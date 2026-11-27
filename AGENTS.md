@@ -88,7 +88,7 @@ document wins.
 - `src/fep_formal/verification/formalism_audit.py` — declaration and axiom audit
   with typed receipts.
 - `src/fep_formal/output/formalism_atlas.py` — coverage-graph SVG/HTML renderer.
-- `manuscript/*.md` — authored chapters, rendered into `output/manuscript/`.
+- `docs/manuscript/*.md` — authored chapters, rendered into `output/manuscript/`.
 - `ISA.md` — ideal-state criteria, anti-criteria, and evidence gates.
 - `TODO.md` — canonical open-only backlog; completed work is not retained as
   struck-through rows.

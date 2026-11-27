@@ -82,7 +82,7 @@ JSON_WHITESPACE_DRIFT = b"\n"
 _CHECKOUT_ONLY_FILES = (
     "config/topics.yaml",
     "config/settings.yaml",
-    "manuscript/config.yaml",
+    "docs/manuscript/config.yaml",
     "src/fep_formal/__init__.py",
 )
 

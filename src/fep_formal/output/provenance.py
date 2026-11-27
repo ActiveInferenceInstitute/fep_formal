@@ -297,7 +297,7 @@ CONFIG_OWNER_FILES: tuple[str, ...] = (
     "src/fep_formal/data/formalism_relations.yaml",
     "src/fep_formal/data/positioning.yaml",
     "specs/openai-math-methods/positioning.yaml",
-    "manuscript/config.yaml",
+    "docs/manuscript/config.yaml",
     "lean/lean-toolchain",
     "lean/lakefile.lean",
     "lean/lake-manifest.json",

@@ -54,10 +54,10 @@ reports/
 lean/build/
 lean/.lake/
 lean/FepSketches/_verify_*.lean
-manuscript/manuscript_vars.yaml
-manuscript/09z_unified_formalism_catalogue.md
-manuscript/09z_appendix_b_lean_catalogue.md
-manuscript/09zc_appendix_c_lean_equations.md
+docs/manuscript/manuscript_vars.yaml
+docs/manuscript/09z_unified_formalism_catalogue.md
+docs/manuscript/09z_appendix_b_lean_catalogue.md
+docs/manuscript/09zc_appendix_c_lean_equations.md
 
 # Q7 publication keeps the replaced working projections as
 # .generated-before-<id> beside generated/ (operational recovery copies, see

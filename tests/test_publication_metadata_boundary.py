@@ -18,7 +18,7 @@ from fep_formal.output.publication_metadata import (
 
 
 def _asset_project(root: Path) -> tuple[dict[str, object], bytes]:
-    (root / "manuscript").mkdir()
+    (root / "docs" / "manuscript").mkdir()
     image = root / "cover.png"
     Image.new("RGB", (2, 2), (10, 20, 30)).save(image)
     data = image.read_bytes()
@@ -35,7 +35,7 @@ def _asset_project(root: Path) -> tuple[dict[str, object], bytes]:
 
 
 def _write_asset_metadata(root: Path, value: object) -> None:
-    (root / "manuscript/config.yaml").write_text(
+    (root / "docs/manuscript/config.yaml").write_text(
         yaml.safe_dump({"publication": {"graphical_abstract": value}}), encoding="utf-8"
     )
 

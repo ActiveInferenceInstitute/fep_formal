@@ -3,7 +3,7 @@
 Version 1.6.0 makes the catalog's mathematical location inspectable.
 The portable `fep_formal.methods` interface joins canonical topic contracts and
 authored relations with an explicit interpretive taxonomy. The extended
-[manuscript supplement](../manuscript/08b_mathematical_positioning_supplement.md)
+[manuscript supplement](manuscript/08b_mathematical_positioning_supplement.md)
 develops the mathematics behind that join. The
 [source review](../specs/openai-math-methods/REVIEW.md) records what was inspected
 in the pinned [OpenAI mathematics corpus](https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a).

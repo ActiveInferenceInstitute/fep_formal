@@ -29,7 +29,7 @@ def test_project_snapshot_captures_each_release_owned_evidence_plane(
         "pyproject.toml": b"[project]\nname = 'fixture'\n",
         "README.md": b"# Fixture\n",
         bundle_module.RENDERER_PROVENANCE.as_posix(): (b'{"pdf":{"current":true}}\n'),
-        "manuscript/01_chapter.md": b"# Source chapter\n",
+        "docs/manuscript/01_chapter.md": b"# Source chapter\n",
         "output/manuscript/01_chapter.md": b"# Rendered chapter\n",
         "output/manuscript/config.yaml": b"title: raw {{metadata}}\r\n",
         "output/manuscript/preamble.md": b"% raw {{metadata}}\r\n",
@@ -371,7 +371,7 @@ def test_public_builder_fingerprints_unbundled_manuscript_sources(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     project_root = tmp_path / "checkout"
-    manuscript = project_root / "manuscript"
+    manuscript = project_root / "docs" / "manuscript"
     manuscript.mkdir(parents=True)
     source = manuscript / "01_chapter.md"
     source.write_text("source A\n", encoding="utf-8")

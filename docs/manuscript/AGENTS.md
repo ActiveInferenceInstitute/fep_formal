@@ -45,8 +45,8 @@ The catalog itself is a generated join. Stable metadata is maintained in
 
 ## Required publication checks
 
-The [root required-check inventory](../AGENTS.md#required-checks) owns the
-complete command list. The [render runbook](../scripts/README.md) explains
+The [root required-check inventory](../../AGENTS.md#required-checks) owns the
+complete command list. The [render runbook](../../scripts/README.md) explains
 publication orchestration and independent receipt acceptance. Materialize
 catalog-derived manuscript inputs before cross-reference and render checks;
 font projections and installed-font acceptance remain separate checks.
@@ -103,4 +103,4 @@ claims must be grounded in a verifiable primary or published source.
   provider results. Add a typed manuscript variable and a regression test.
 - Chat notation rules do not alter the manuscript's native Pandoc/LaTeX syntax.
 
-See [../AGENTS.md](../AGENTS.md).
+See [../AGENTS.md](../../AGENTS.md).

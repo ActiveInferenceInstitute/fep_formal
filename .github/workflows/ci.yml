@@ -796,7 +796,7 @@ jobs:
           def validate_evidence():
               if subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip() != sha:
                   raise SystemExit("render checkout changed during evidence staging")
-              defects = receipt_defects(root / "docs/render-acceptance.json", root / "manuscript")
+              defects = receipt_defects(root / "docs/render-acceptance.json", root / "docs" / "manuscript")
               if defects:
                   raise SystemExit("\n".join(defects))
               native = validate_native_lean_receipt(root / "output/native-verification.json", project_root=root)
@@ -821,8 +821,8 @@ jobs:
               "docs/render-fonts.json",
               # These generated inputs have run-bound verification/source
               # values. Retain their exact bytes beside their source hashes.
-              "manuscript/manuscript_vars.yaml",
-              "manuscript/09z_unified_formalism_catalogue.md",
+              "docs/manuscript/manuscript_vars.yaml",
+              "docs/manuscript/09z_unified_formalism_catalogue.md",
           ]
           def artifact_bytes():
               result = {}
@@ -838,12 +838,12 @@ jobs:
               raise SystemExit("accepted render PDF has no PDF signature")
 
           tracked = set(filter(None, subprocess.check_output(["git", "ls-tree", "-r", "--name-only", "-z", "HEAD"]).decode().split("\0")))
-          generated = {"manuscript/manuscript_vars.yaml", "manuscript/09z_unified_formalism_catalogue.md"}
+          generated = {"docs/manuscript/manuscript_vars.yaml", "docs/manuscript/09z_unified_formalism_catalogue.md"}
           source_names = tracked - allowed_outputs
-          source_names.update({"manuscript/manuscript_vars.yaml", "manuscript/09z_unified_formalism_catalogue.md"})
+          source_names.update({"docs/manuscript/manuscript_vars.yaml", "docs/manuscript/09z_unified_formalism_catalogue.md"})
           source_names.update(source.as_posix() for source, _destination in MANUSCRIPT_ASSETS.values())
           def source_manifest():
-              for path in (*rendered_manuscript_sources(root / "manuscript"), root / "manuscript/preamble.md"):
+              for path in (*rendered_manuscript_sources(root / "docs" / "manuscript"), root / "docs/manuscript/preamble.md"):
                   name = path.relative_to(root).as_posix()
                   if name not in tracked and name not in generated:
                       raise SystemExit(f"authored manuscript source is not tracked at workflow SHA: {name}")
@@ -854,7 +854,7 @@ jobs:
                       raise SystemExit(f"source manifest input is absent or a symlink: {name}")
                   result[name] = hashlib.sha256(_capture_regular_file(path)).hexdigest()
               # Membership is rechecked after reading the last named input.
-              for path in (*rendered_manuscript_sources(root / "manuscript"), root / "manuscript/preamble.md"):
+              for path in (*rendered_manuscript_sources(root / "docs" / "manuscript"), root / "docs/manuscript/preamble.md"):
                   name = path.relative_to(root).as_posix()
                   if name not in tracked and name not in generated:
                       raise SystemExit(f"authored manuscript source is not tracked at workflow SHA: {name}")
@@ -990,7 +990,7 @@ jobs:
           fonts = {}
           font_files = {}
           font_bytes = {}
-          for role, family in declared_fonts(root / "manuscript/preamble.md").items():
+          for role, family in declared_fonts(root / "docs/manuscript/preamble.md").items():
               names = subprocess.check_output(["fc-match", "--format=%{file}\n", family], text=True, timeout=30).splitlines()
               if not names or not Path(names[0]).is_file():
                   raise SystemExit(f"selected font is absent: {family}")

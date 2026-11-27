@@ -144,7 +144,7 @@ a key derived from the same pin files.
 
 Add the shared rendering-template checkout, its matching project registration,
 XeLaTeX/TeX packages, pandoc, `rsvg-convert`, the mermaid CLI, and the fonts
-selected by `manuscript/preamble.md`. Pass a real template path explicitly;
+selected by `docs/manuscript/preamble.md`. Pass a real template path explicitly;
 a symlink into a deleted worktree is not a portable dependency.
 
 ```bash

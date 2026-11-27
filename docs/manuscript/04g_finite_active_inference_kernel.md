@@ -4,7 +4,7 @@ The catalog's {{total_topics}} topic bodies are deliberately heterogeneous. To t
 
 The kernel follows the finite-state presentation common in discrete active inference [@dacosta2023bayesian], but it does not treat finiteness as evidence for an unrestricted FEP. Every probability carrier records nonnegativity and normalization; every logarithmic identity states its support hypotheses; every posterior states positive evidence; every asymptotic result states its integrability and independence assumptions. This is also a response to critiques that blanket, stationarity, and inference claims can become stronger than their premises [@biehl2021critique].
 
-![One deterministic numerical witness for each expanded formal family. The panels exercise reconstruction, normalization, update, rank, contraction, and concentration boundaries, but they are explanatory projections rather than proof receipts.](../output/figures/formal-kernel-dashboard.png){#fig:formal_kernel_dashboard height=80%}
+![One deterministic numerical witness for each expanded formal family. The panels exercise reconstruction, normalization, update, rank, contraction, and concentration boundaries, but they are explanatory projections rather than proof receipts.](../../output/figures/formal-kernel-dashboard.png){#fig:formal_kernel_dashboard height=80%}
 
 [Open the offline interactive validation dashboard.]({{publication.repository_url}}/blob/{{source.published_ref}}/docs/formal-kernel-dashboard.html) Its filters expose all {{expansion_families}} family diagnostics, while accessible tables retain the exact parameters, theorem mirrors, typed per-check relations and tolerances, and boundary observations without requiring a network connection.
 

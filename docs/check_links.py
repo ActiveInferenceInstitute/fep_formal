@@ -12,7 +12,7 @@ Features
 - **New**: exits with code ``1`` if any issue is found (suitable for CI).
 - ``--include-root`` widens the scan to the repository's authored Markdown: every
   root ``*.md``, every ``AGENTS.md`` / ``README.md`` under ``src/``, ``tests/``,
-  ``config/``, ``scripts/``, ``lean/`` and ``manuscript/``, and the non-historical
+  ``config/``, ``scripts/``, ``lean/`` and ``docs/manuscript/``, and the non-historical
   documents under ``specs/`` and ``.github/``. It also requires a fresh generated
   ``.github/README.md`` projection of the authoritative root ``README.md``.
   Historical trees (``specs/done/**``,
@@ -49,7 +49,7 @@ PROJECT_ROOT = DOCS_DIR.parent
 # ``--include-root`` widens the scan from ``docs/**`` to the whole repository's
 # authored Markdown: every root ``*.md``, every ``AGENTS.md`` / ``README.md``
 # under the subtrees below, and maintained ``specs/`` / ``.github/`` Markdown.
-CONTRACT_SUBTREES = ("src", "tests", "config", "scripts", "lean", "manuscript")
+CONTRACT_SUBTREES = ("src", "tests", "config", "scripts", "lean")
 CONTRACT_NAMES = frozenset({"AGENTS.md", "README.md"})
 # Historical / retained trees: ``specs/done/**`` and per-spec ``evidence/**``
 # are frozen receipts (their bytes may be hashed), and ``gnn_output*`` /
@@ -96,7 +96,11 @@ def _walk_md(base: Path, *, names: frozenset[str] | None) -> list[Path]:
 
 def discover_files(docs_dir: Path, *, include_root: bool) -> list[Path]:
     """Return the Markdown files in scope (``docs/**``, plus the repo with ``include_root``)."""
-    files = sorted(docs_dir.glob("**/*.md"))
+    manuscript = docs_dir / "manuscript"
+    files = sorted(
+        path for path in docs_dir.glob("**/*.md")
+        if not path.is_relative_to(manuscript) or path.name in CONTRACT_NAMES
+    )
     if not include_root:
         return files
     root = docs_dir.parent

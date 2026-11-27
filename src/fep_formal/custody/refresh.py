@@ -116,7 +116,7 @@ JOURNAL_STATES = (
 #: Manuscript/render surfaces the coordinator re-accepts after a refresh;
 #: a resume whose changed paths intersect this set stops at the barrier.
 RENDER_INPUTS = (
-    "manuscript/",
+    "docs/manuscript/",
     "src/fep_formal/output/rendering.py",
     "scripts/render_publication.py",
     "render.py",
@@ -1013,7 +1013,7 @@ def _changed_paths(journal: dict[str, Any]) -> list[str]:
 
 
 def _render_barrier_paths(changed: list[str]) -> list[str]:
-    """The changed paths that touch a manuscript/render input."""
+    """The changed paths that touch a docs/manuscript/render input."""
     hits: list[str] = []
     for path in changed:
         for surface in RENDER_INPUTS:

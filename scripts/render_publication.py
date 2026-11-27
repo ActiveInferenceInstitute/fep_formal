@@ -261,7 +261,7 @@ def render_publication(
             "--pdf-dir",
             str(project_root / "output" / "pdf"),
             "--manuscript-dir",
-            str(project_root / "manuscript"),
+            str(project_root / "docs" / "manuscript"),
             "--receipt",
             str(project_root / RECEIPT_PATH),
         ]
@@ -320,7 +320,7 @@ def main(argv: list[str] | None = None) -> int:
                 "--pdf-dir",
                 str(project_root / "output" / "pdf"),
                 "--manuscript-dir",
-                str(project_root / "manuscript"),
+                str(project_root / "docs" / "manuscript"),
                 "--receipt",
                 str(project_root / RECEIPT_PATH),
             ]

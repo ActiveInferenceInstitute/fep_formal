@@ -31,7 +31,7 @@ def test_verified_efe_records_remain_pinned() -> None:
     entries = {
         entry.key: entry
         for entry in audit.parse_bibliography(
-            PROJECT_ROOT / "manuscript" / "references.bib"
+            PROJECT_ROOT / "docs" / "manuscript" / "references.bib"
         )
     }
 

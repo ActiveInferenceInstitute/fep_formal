@@ -1,7 +1,7 @@
 """Deterministic builder for the canonical graphical-abstract asset.
 
-``manuscript/assets/graphical-abstract.png`` is an authored image asset whose
-exact bytes are pinned by the ``sha256`` recorded in ``manuscript/config.yaml``
+``docs/manuscript/assets/graphical-abstract.png`` is an authored image asset whose
+exact bytes are pinned by the ``sha256`` recorded in ``docs/manuscript/config.yaml``
 and validated by ``fep_formal.output.publication_metadata.load_graphical_abstract``
 on every manuscript render.  This module is that asset's producer: the art is
 regenerated from a checkout instead of hand-edited pixels, so the pinned bytes
@@ -39,9 +39,9 @@ __all__ = [
     "render_graphical_abstract",
 ]
 
-GRAPHICAL_ABSTRACT_RELATIVE = Path("manuscript/assets/graphical-abstract.png")
+GRAPHICAL_ABSTRACT_RELATIVE = Path("docs/manuscript/assets/graphical-abstract.png")
 
-# The canonical asset dimensions ``manuscript/config.yaml`` declares.  The
+# The canonical asset dimensions ``docs/manuscript/config.yaml`` declares.  The
 # canvas is sized so ``figure`` pixels are exactly these: a mismatch is a hard
 # error, never a rescale.
 WIDTH_PX = 1536

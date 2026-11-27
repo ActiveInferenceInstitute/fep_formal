@@ -116,7 +116,7 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
     )
     _write_release_metadata_fixture(tmp_path)
 
-    (tmp_path / "manuscript/config.yaml").write_text(
+    (tmp_path / "docs/manuscript/config.yaml").write_text(
         "paper:\n"
         '  version: "2.1.0"\n'
         '  date: "2026-10-24"\n'
@@ -131,7 +131,7 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
         "manuscript publication DOI must be 10.5281/zenodo.23607007",
     )
 
-    (tmp_path / "manuscript/config.yaml").write_text(
+    (tmp_path / "docs/manuscript/config.yaml").write_text(
         "paper:\n"
         '  version: "2.1.0"\n'
         '  date: "2026-10-24"\n'
@@ -147,7 +147,7 @@ def test_release_metadata_is_consistent_and_fail_closed(tmp_path: Path) -> None:
         "manuscript metadata license must be CC-BY-4.0",
     )
 
-    (tmp_path / "manuscript/config.yaml").write_text(
+    (tmp_path / "docs/manuscript/config.yaml").write_text(
         "paper:\n"
         '  version: "2.1.0"\n'
         '  date: "2026-10-24"\n'
@@ -226,7 +226,7 @@ def test_release_metadata_rejects_swapped_or_absent_doi_identity(
     tmp_path: Path, plane: str, replacement: str | None
 ) -> None:
     _write_release_metadata_fixture(tmp_path)
-    relative = "manuscript/config.yaml" if plane == "manuscript" else "CITATION.cff"
+    relative = "docs/manuscript/config.yaml" if plane == "manuscript" else "CITATION.cff"
     path = tmp_path / relative
     document = yaml.safe_load(path.read_text(encoding="utf-8"))
     if plane == "software":
@@ -275,7 +275,7 @@ def test_release_metadata_rejects_matching_but_wrong_manuscript_version(
     citation_path.write_text(
         yaml.safe_dump(citation, sort_keys=False), encoding="utf-8"
     )
-    manuscript_path = tmp_path / "manuscript/config.yaml"
+    manuscript_path = tmp_path / "docs/manuscript/config.yaml"
     manuscript = yaml.safe_load(manuscript_path.read_text(encoding="utf-8"))
     manuscript["publication"]["doi"] = wrong_version_doi
     manuscript_path.write_text(
@@ -346,13 +346,13 @@ def test_release_metadata_retains_each_scholarly_concept_guard(
             "CITATION.cff date-released must be 2026-10-24",
         ),
         (
-            "manuscript/config.yaml",
+            "docs/manuscript/config.yaml",
             'version: "2.1.0"',
             'version: "1.2.0"',
             "manuscript paper version must be 2.1.0",
         ),
         (
-            "manuscript/config.yaml",
+            "docs/manuscript/config.yaml",
             'date: "2026-10-24"',
             'date: "2026-09-16"',
             "manuscript paper date must be 2026-10-24",

@@ -15,9 +15,9 @@ FEP_Formal is the project name. The installed Python namespace is
 - [Design programs](design/README.md) — prospective architecture and research goals, kept separate from current catalog and evidence claims.
 - [GNN bridge](design/gnn-bridge/README.md) — cross-repo articulation with the GeneralizedNotationNotation pipeline (bridge CLI, Lean AST, and source custody).
 - [FEP research horizons](design/fep-research-program/README.md) — dependency-ordered finite synthesis, smooth/stochastic lifting, and an end-to-end scientific case study.
-- [Second-expansion chapter (`fep-121` to `fep-155`)](../manuscript/04i_formalism_catalogue_155.md) — finite risk, policy trees, native blankets, exponential-family duality, continuous time, and evidence boundaries.
-- [Horizon-2 smooth/stochastic kernel chapter](../manuscript/04j_horizon2_smooth_stochastic_kernel.md) — posterior convergence, native semigroups, precision conditioning, and smooth information geometry.
-- [Mathematical positioning supplement](../manuscript/08b_mathematical_positioning_supplement.md) — probability, topology, statistical geometry, embeddings, and result-family methods.
+- [Second-expansion chapter (`fep-121` to `fep-155`)](manuscript/04i_formalism_catalogue_155.md) — finite risk, policy trees, native blankets, exponential-family duality, continuous time, and evidence boundaries.
+- [Horizon-2 smooth/stochastic kernel chapter](manuscript/04j_horizon2_smooth_stochastic_kernel.md) — posterior convergence, native semigroups, precision conditioning, and smooth information geometry.
+- [Mathematical positioning supplement](manuscript/08b_mathematical_positioning_supplement.md) — probability, topology, statistical geometry, embeddings, and result-family methods.
 - [OpenAI mathematics review and modular analysis](../specs/openai-math-methods/README.md) — pinned reference corpus, canonical topic/assumption join, family context, and boundary diagnostics.
 - [Topic reference](topics-reference.md) — canonical owners, inspection, and receipt semantics.
 - [Pipeline](pipeline.md) — stages, modes, and result contract.
