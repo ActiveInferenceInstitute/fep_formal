@@ -57,7 +57,7 @@ def _driver():
 
 def _project(tmp_path: Path, log: str) -> Path:
     """A project tree holding one rendered chapter and one compiler log."""
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     pdf = tmp_path / "output" / "pdf"
     manuscript.mkdir(parents=True)
     pdf.mkdir(parents=True)
@@ -711,7 +711,10 @@ def test_accept_only_rejects_noncanonical_cover(
 def test_canonical_escaped_cover_and_projection_pass(tmp_path: Path) -> None:
     project = _project(tmp_path, CLEAN_LOG)
     assert (
-        publication_cover_defects(project / "docs" / "manuscript", project / "output/pdf") == ()
+        publication_cover_defects(
+            project / "docs" / "manuscript", project / "output/pdf"
+        )
+        == ()
     )
 
 
@@ -720,7 +723,10 @@ def test_identical_pandoc_and_template_author_declarations_pass(tmp_path: Path) 
     tex = project / "output/pdf/_combined_manuscript.tex"
     tex.write_text(r"\author{Daniel Friedman}" + "\n" + tex.read_text())
     assert (
-        publication_cover_defects(project / "docs" / "manuscript", project / "output/pdf") == ()
+        publication_cover_defects(
+            project / "docs" / "manuscript", project / "output/pdf"
+        )
+        == ()
     )
 
 

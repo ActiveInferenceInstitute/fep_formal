@@ -11,7 +11,7 @@ from typing import Any
 
 import yaml
 
-from fep_formal._paths import FepFormalError
+from fep_formal._paths import FepFormalError, project_root_from_manuscript
 from fep_formal.output.fsutil import sha256_bytes
 
 
@@ -355,7 +355,9 @@ def pdf_metadata_fields(project_root: Path) -> dict[str, str]:
         project_root, "docs/manuscript/config.yaml", label="docs/manuscript/config.yaml"
     )
     paper = _mapping(config.get("paper"), label="docs/manuscript/config.yaml paper")
-    subtitle = _required_text(paper, "subtitle", label="docs/manuscript/config.yaml paper")
+    subtitle = _required_text(
+        paper, "subtitle", label="docs/manuscript/config.yaml paper"
+    )
     raw_keywords = config.get("keywords")
     if not isinstance(raw_keywords, list) or not raw_keywords:
         raise PublicationMetadataError(
@@ -425,7 +427,7 @@ def publication_cover_defects(manuscript_dir: Path, pdf_dir: Path) -> tuple[str,
     author declaration cannot substitute for the visible title-page block.
     This checks TeX evidence, not PDF pixels or arbitrary TeX execution semantics.
     """
-    root = manuscript_dir.parent
+    root = project_root_from_manuscript(manuscript_dir)
     try:
         source = (manuscript_dir / "config.yaml").read_bytes()
         expected = project_cover_author(source, root)

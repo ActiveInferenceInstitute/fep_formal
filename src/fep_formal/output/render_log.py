@@ -39,6 +39,7 @@ from itertools import accumulate, groupby
 from pathlib import Path
 from typing import Any
 
+from fep_formal._paths import project_root_from_manuscript
 from fep_formal.output.fsutil import sha256_bytes
 from fep_formal.output.rendering import (
     PLACEHOLDER_RE,
@@ -865,7 +866,9 @@ def manuscript_source_digests(manuscript_dir: Path) -> dict[str, str]:
     }
     # The cover projects its author from CFF rather than duplicating identity
     # in config.yaml. Both owners must invalidate an earlier render receipt.
-    sources["../CITATION.cff"] = manuscript.parent / "CITATION.cff"
+    sources["../CITATION.cff"] = (
+        project_root_from_manuscript(manuscript) / "CITATION.cff"
+    )
     return {
         name: sha256_bytes(path.read_bytes() if path.is_file() else b"")
         for name, path in sources.items()

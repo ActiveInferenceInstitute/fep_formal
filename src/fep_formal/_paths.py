@@ -112,6 +112,13 @@ def project_root() -> Path:
     return explicit_project_root() or _PACKAGE_DIR.parent.parent
 
 
+def project_root_from_manuscript(manuscript: Path) -> Path:
+    """Locate project-owned metadata for canonical and legacy manuscript paths."""
+    if manuscript.parts[-2:] == ("docs", "manuscript"):
+        return manuscript.parent.parent
+    return manuscript.parent
+
+
 def explicit_project_root() -> Path | None:
     """Return caller-context then environment root, without checkout fallback."""
     if selected := _CALLER_PROJECT_ROOT.get():

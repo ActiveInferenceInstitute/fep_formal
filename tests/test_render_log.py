@@ -1130,11 +1130,16 @@ def test_every_covered_file_carries_its_own_digest(tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize("owner", ["config.yaml", "../CITATION.cff"])
+@pytest.mark.parametrize("layout", ["legacy", "canonical"])
 def test_cover_owner_change_invalidates_render_receipt(
-    tmp_path: Path, owner: str
+    tmp_path: Path, owner: str, layout: str
 ) -> None:
-    manuscript = _manuscript(tmp_path)
-    source = manuscript / owner
+    docs = tmp_path / "docs" if layout == "canonical" else tmp_path
+    docs.mkdir(exist_ok=True)
+    manuscript = _manuscript(docs)
+    source = (
+        tmp_path / "CITATION.cff" if owner == "../CITATION.cff" else manuscript / owner
+    )
     source.write_text("original cover metadata\n", encoding="utf-8")
     receipt = build_acceptance_receipt(
         manuscript, _pdf_dir(tmp_path), counts=CLEAN_COUNTS
